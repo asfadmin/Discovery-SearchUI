@@ -1,10 +1,12 @@
 @import "asf-theme";
 
 .layer-select-button {
+  @include themify($themes) {
+    background: themed('background-white');
+    color: themed('dark-primary-text')
+  }
   margin: 0;
   padding: 0 0 0 3px;
-  color: rgb(0 0 0 / 87%);
-  background: white;
   font-size: 18px !important;
   height: 27px !important;
   width: 18px !important;

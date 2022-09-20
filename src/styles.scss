@@ -144,7 +144,9 @@ $theme-map: null;
 
   mat-dialog-content {
     padding: 15px 40px;
-    background-color: $asf-background-white;
+    @include themify($themes) {
+      color: themed('background-white');
+    }
   }
 
   mat-dialog-actions {
@@ -158,7 +160,9 @@ $theme-map: null;
 }
 
 .faint-text {
-  color: $dark-secondary-text;
+  @include themify($themes) {
+    color: themed('dark-secondary-text');
+  }
   // color: rgba(0, 0, 0, 0.6);
 }
 

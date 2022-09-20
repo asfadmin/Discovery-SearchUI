@@ -40,7 +40,11 @@ $color: $asf-primary-dark;
 }
 
 .mat-dialog-content {
+  @include themify($themes) {
+    background-color: themed('background-white');
+  }
   position: absolute;
+  
   display: block;
   top: $header-height;
   height: calc(100% - #{$header-height} - #{$footer-height} - #{$bottom-offset});
@@ -48,7 +52,6 @@ $color: $asf-primary-dark;
   width: 100%;
   overflow-y: hidden;
   overflow-x: hidden;
-  background-color: $asf-background-white;
   padding: 0;
   margin: 0;
 

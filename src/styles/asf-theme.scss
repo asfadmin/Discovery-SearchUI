@@ -31,19 +31,14 @@ button,
 $asf-app-primary: mat.define-palette($mat-asf-primary, 700, 400, 900);
 $asf-app-dark-primary: mat.define-palette($mat-dark-asf-primary, 700, 400, 900);
 
-$asf-app-accent:  mat.define-palette(mat.$red-palette, 300, 100, 400);
+$asf-app-accent:  mat.define-palette(mat.$grey-palette, 300, 100, 400);
 $asf-app-blue:  mat.define-palette($mat-asf-blue, 700, 400, 900);
 
 // The warn palette is optional (defaults to red).
 $asf-app-warn:    mat.define-palette($mat-asf-yellow, 200, 100, 500);
 $asf-app-err: mat.define-palette($mat-asf-red, 200, 100, 500);
 // Create the theme object (a Sass map containing all of the palettes).
-$asf-light-theme: mat.define-light-theme($asf-app-primary, $asf-app-accent);
 
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
-@include mat.all-component-themes($asf-light-theme);
 
 // Create your Sass color vars (will be available in all the project)
 $asf-primary: mat.get-color-from-palette($asf-app-primary);
@@ -52,7 +47,7 @@ $asf-accent: mat.get-color-from-palette($asf-app-accent);
 $asf-warn: mat.get-color-from-palette($asf-app-warn);
 $asf-err: mat.get-color-from-palette($asf-app-err);
 $asf-blue: mat.get-color-from-palette($asf-app-blue);
-$asf-primary-light: lighten($asf-primary, 5%);
+$asf-primary-light: lighten($asf-primary, 40%);
 $asf-primary-dark: darken($asf-primary, 15%);
 // TODO: this works on light theme but looks really bad on dark
 // $asf-background-white: lighten($asf-primary, 70%); 
@@ -79,16 +74,17 @@ $themes: (
     light-dividers: rgba(white, 0.12),
     light-focused: rgba(white, 0.12),
 
+    borders: lightgray,
     primary: mat.get-color-from-palette($asf-app-primary),
     accent: mat.get-color-from-palette($asf-app-accent),
     warn: mat.get-color-from-palette($asf-app-warn),
     err: mat.get-color-from-palette($asf-app-err),
     blue: mat.get-color-from-palette($asf-app-blue),
-    primary-light: lighten($asf-primary, 5%),
+    primary-light: lighten($asf-primary, 40%),
     primary-dark: darken($asf-primary, 15%),
   ),
   dark: (
-    light-primary-text: white,
+    light-primary-text: rgba(black, 0.54),
     light-secondary-text: rgba(black, 0.54),
     light-disabled-text: rgba(black, 0.38),
     light-dividers: rgba(black, 0.12),
@@ -99,17 +95,18 @@ $themes: (
     dark-dividers: rgba(white, 0.12),
     dark-focused: rgba(white, 0.12),
 
+    borders: lightgray,
 
     primary: mat.get-color-from-palette($asf-app-dark-primary),
     accent: mat.get-color-from-palette($asf-app-accent),
     warn: mat.get-color-from-palette($asf-app-warn),
     err: mat.get-color-from-palette($asf-app-err),
     blue: mat.get-color-from-palette($asf-app-blue),
-    primary-light: lighten($asf-primary, 5%),
-    primary-dark: darken($asf-primary, 15%),
+    primary-light: lighten($asf-dark-primary, 5%),
+    primary-dark: darken($asf-dark-primary, 15%),
 
 
-    background-white: darken($asf-dark-primary, 15%),
+    background-white: darken($asf-dark-primary, 5%),
   ),
 );
 
@@ -142,42 +139,16 @@ body {
 
 
 .theme-dark {
-
-  $light-primary-text: white;
-  $light-secondary-text: rgba(black, 0.54);
-  $light-disabled-text: rgba(black, 0.38);
-  $light-dividers: rgba(black, 0.12);
-  $light-focused: rgba(black, 0.12);
-  $dark-primary-text: rgb(183, 183, 183);
-  $dark-secondary-text: rgba(183, 183, 183, 0.7);
-  $dark-disabled-text: rgba(183, 183, 183, 0.5);
-  $dark-dividers: rgba(white, 0.12);
-  $dark-focused: rgba(white, 0.12);
-
-
-  $asf-app-primary: mat.define-palette($mat-dark-asf-primary, 700, 400, 900);
-  $asf-app-accent:  mat.define-palette(mat.$red-palette, 300, 100, 400);
-  $asf-app-blue:  mat.define-palette($mat-asf-blue, 700, 400, 900);
-
-  // The warn palette is optional (defaults to red).
-  $asf-app-warn:    mat.define-palette($mat-asf-yellow, 200, 100, 500);
-  $asf-app-err: mat.define-palette($mat-asf-red, 200, 100, 500);
-
-  // Create your Sass color vars (will be available in all the project)
-  $asf-primary: mat.get-color-from-palette($asf-app-primary);
-  $asf-accent: mat.get-color-from-palette($asf-app-accent);
-  $asf-warn: mat.get-color-from-palette($asf-app-warn);
-  $asf-err: mat.get-color-from-palette($asf-app-err);
-  $asf-blue: mat.get-color-from-palette($asf-app-blue);
-  $asf-primary-light: lighten($asf-primary, 5%);
-  $asf-primary-dark: darken($asf-primary, 15%);
-  $asf-background-white: $asf-primary;
-
-  $asf-dark-theme: mat.define-dark-theme($asf-app-primary, $contrast);
+  $asf-dark-theme: mat.define-dark-theme($asf-app-dark-primary, $contrast);
   @include mat.all-component-themes($asf-dark-theme);
 
   .md-icon{
     color: $dark-primary-text;
   }
   // color: $dark-primary-text;
+}
+.theme-light {
+  $asf-light-theme: mat.define-light-theme($asf-app-primary, $asf-app-accent);
+
+  @include mat.all-component-themes($asf-light-theme);
 }

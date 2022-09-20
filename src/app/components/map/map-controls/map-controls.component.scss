@@ -1,11 +1,7 @@
-@use "@angular/material" as mat;
 
 @import "asf-theme";
 
-$config: mat.define-typography-config();
 
-$info-background: $asf-primary-light;
-$info-color: $asf-primary;
 
 .position {
   z-index: 998;
@@ -16,7 +12,9 @@ $info-color: $asf-primary;
 }
 
 .icon-bar {
-  background-color: $info-background;
+  @include themify($themes) {
+    background-color: themed('primary-light');
+  }
   padding: 0;
   pointer-events: auto;
   height: 45px !important;
@@ -24,20 +22,23 @@ $info-color: $asf-primary;
 }
 
 .ribbon-info-top {
-  background-color: $info-background;
-  color: $info-color;
+  @include themify($themes) {
+    background-color: themed('primary-light');
+    color: themed('primary');
+  }
+  background: red;
 }
 
 label {
-  font-family: mat.font-family($config);
   font-size: 11px;
 }
 
 .lat-lon {
-  font-family: mat.font-family($config);
+  @include themify($themes) {
+    background-color: themed('primary');
+    color: themed('primary-light');
+  }
   font-size: 12px;
-  background-color: $asf-primary;
-  color: $asf-primary-light;
   margin-top: 0;
   padding-left: 10px;
   max-height: 14px !important;
@@ -63,26 +64,34 @@ label {
 
 .button-group-label {
   text-align: center;
-  color: $info-color;
+  @include themify($themes) {
+    color: themed('primary');
+  }
 }
 
 .move-handle-div {
-  background-color: $asf-primary-light;
+  @include themify($themes) {
+    background-color: themed('primary-light');
+  }
   cursor: move;
 }
 
 .move-handle {
+  @include themify($themes) {
+    color: themed('primary-dark');
+  }
   margin-top: 16px;
   margin-left: 7px;
   margin-right: 7px;
-  color: $asf-primary-dark;
   cursor: move;
   width: 24px;
   height: 24px;
 }
 
 .move-handle-bottom {
-  background-color: $asf-primary;
+  @include themify($themes) {
+    background-color: themed('primary');
+  }
   height: 14px;
   margin-top: 1px;
 }
@@ -96,10 +105,12 @@ label {
 }
 
 .opacity-slider-button {
+  @include themify($themes) {
+    background: themify('primary-light');
+    color: themify('light-primary-text');
+  }
   margin: 0 0 5px;
   padding: 0 0 0 3px;
-  color: $light-primary-text;
-  background: $asf-primary-light;
   font-size: 14px !important;
   height: 27px !important;
   width: 18px !important;
@@ -110,13 +121,17 @@ label {
 }
 
 .opacity-slider-title {
+  @include themify($themes) {
+    color: themed('primary');
+  }
   text-align: center;
   font-size: small;
-  color: $asf-primary;
 }
 
 .bottom-right {
-  color: $asf-primary;
+  @include themify($themes) {
+    color: themed('primary');
+  }
   position: absolute;
   bottom: -7px;
   right: -4px;
@@ -132,33 +147,44 @@ label {
 }
 
 .opacity-button-text {
+  @include themify($themes) {
+    color: themed('primary');
+  }
   display: inline-block;
   position: absolute;
   top: -4px;
   left: 7px;
   width: 40px;
-  color: $asf-primary;
   text-align: center;
   align-content: center;
 }
 
 .tool-bar-control {
+  @include themify($themes) {
+    color: themed('primary');
+    background-color: themed('primary-light');
+  }
   cursor: pointer;
   display: block;
   width: 30px;
   padding: 14px 0;
   margin-left: 10px;
-  color: $asf-primary;
-  background-color: $asf-primary-light;
 }
 
 .tool-bar-control-bottom {
+  @include themify($themes) {
+    background-color: themed('primary');
+  }
   width: calc(100% + 10px);
   margin: 3px 0 0 -10px;
   height: 14px;
-  background-color: #65665c;
 }
-
+.mat-button-toggle-button {
+  @include themify($themes) {
+    background: themed('background-white');
+    color: themed('light-primary-text')
+  }
+}
 .visible-toggle {
   transition: all 1.2s ease-in-out;
 }

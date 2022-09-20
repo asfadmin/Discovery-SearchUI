@@ -21,7 +21,9 @@
 }
 
 .bottom-right {
-  color: $asf-primary;
+  @include themify($themes) {
+    color: themed('primary');
+  }
   position: absolute;
   bottom: -6px;
   right: -2px;
@@ -29,15 +31,17 @@
 }
 
 .shape-select-button {
+  @include themify($themes) {
+    background: themed('background-white');
+    color: themed('light-primary-text')
+  }
   margin: 0;
   padding: 0;
-  color: rgb(0 0 0 / 87%);
-  background: $asf-background-white;
   font-size: 18px !important;
   height: 27px !important;
   width: 18px !important;
   min-width: 53px !important;
   border-radius: 4px !important;
-  border: solid 1px rgb(0 0 0 / 12%);
+  // border: solid 1px rgb(0 0 0 / 12%);
   text-align: center;
 }

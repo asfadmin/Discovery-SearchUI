@@ -29,15 +29,19 @@
 }
 
 .saved-filters-presets__content {
+  @include themify($themes) {
+    background-color: themed('background-white');
+  }
   max-height: 100%;
   overflow-y: auto;
-  background-color: $asf-background-white;
 }
 
 .saved-filters-presets__content-mobile {
+  @include themify($themes) {
+    background-color: themed('background-white');
+  }
   max-height: 100%;
   overflow-y: auto;
-  background-color: $asf-background-white;
   width: 100%;
 }
 
@@ -77,11 +81,13 @@
 }
 
 .saved-filters-presets__subhead {
+  @include themify($themes) {
+    background-color: themed('background-white');
+  }
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: $asf-background-white;
   padding-top: 15px;
   padding-left: 15px;
   padding-right: 15px;

@@ -55,7 +55,9 @@ $config: mat.define-typography-config();
 }
 
 .additional-filters {
-  color: $asf-primary;
+  @include themify($themes) {
+    color: themed('primary')
+  }
 
   .mat-icon {
     @include md-icon-size(18px);
@@ -63,9 +65,11 @@ $config: mat.define-typography-config();
 }
 
 .additional-filters-button {
+  @include themify($themes) {
+    color: themed('dark-secondary-text');
+  }
   margin-left: 0;
   line-height: 12px;
-  color: $asf-primary;
   margin-top: 18px;
 }
 
@@ -73,7 +77,6 @@ $config: mat.define-typography-config();
   @include themify($themes) {
     background-color: themed('primary');
   }
-  background-color: $asf-primary;
 }
 
 .justify-right {

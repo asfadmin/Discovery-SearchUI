@@ -12,9 +12,12 @@
 }
 
 .drop-file-area {
+
+  @include themify($themes) {
+    background-color: darken(themed('background-white'), 10%);
+  }
   background-size: contain;
   background-repeat: no-repeat;
-  background-color: rgb(245, 245, 245);
   background-position: center;
   width: 350px;
   height: 180px;
@@ -55,8 +58,10 @@
 }
 
 .asf-manual-link {
+  @include themify($themes) {
+    color: themed('primary')
+  }
   display: inline-block;
-  color: $asf-primary;
   line-height: 0;
 
   ::ng-deep.material-icons {

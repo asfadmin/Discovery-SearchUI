@@ -88,8 +88,10 @@ $info-color: $asf-primary;
 }
 
 .list-button {
+  @include themify($themes) {
+    background-color: themed('background-white');
+  }
   border: darkgrey 1px solid;
-  background: $asf-background-white;
   color: inherit;
   padding: 0 0 0 5px;
   margin: 0 5px 0 0;
@@ -123,7 +125,9 @@ $info-color: $asf-primary;
 }
 
 .control-mat-button-toggle {
-  background-color: $asf-background-white;
+  @include themify($themes) {
+    background-color: themed('background-white');
+  }
 }
 
 .space-filler {

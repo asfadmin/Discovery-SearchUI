@@ -31,11 +31,13 @@
 }
 
 .sort-options {
+  @include themify($themes) {
+    background-color: themed('background-white');
+  }
   flex-direction: row;
   display: flex;
   flex-wrap: wrap;
   margin-top: 25px;
-  background-color: $asf-background-white;
 }
 
 .mat-list-base .mat-list-item,
@@ -99,6 +101,8 @@
 }
 
 .pair-expansion-panel-header {
-  background: $asf-background-white !important;
+  @include themify($themes) {
+    background-color: themed('background-white') !important;
+  }
   border-style: none !important;
 }

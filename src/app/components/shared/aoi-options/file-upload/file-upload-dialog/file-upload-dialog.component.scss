@@ -26,10 +26,13 @@
 
 
 .drop-file-area {
+  @include themify($themes) {
+    background-color: darken(themed('background-white'), 10%);
+  }
   background-image: url("/assets/geospatial_upload.png");
   background-size: contain;
   background-repeat: no-repeat;
-  background-color: rgb(245, 245, 245); // TODO: look at this
+  
   background-position: center;
   width: 350px;
   height: 160px;

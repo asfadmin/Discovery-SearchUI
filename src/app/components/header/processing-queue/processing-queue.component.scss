@@ -84,8 +84,10 @@ $color: $asf-primary-dark;
 }
 
 .list-filter {
+  @include themify($themes) {
+    background-color: themed('background-white');
+  }
   border-bottom: solid grey 1px;
-  background: $asf-background-white;
   height: 60px;
 }
 
@@ -169,10 +171,12 @@ $color: $asf-primary-dark;
 }
 
 .error-header {
+  @include themify($themes) {
+    background-color: themed('background-white');
+    border-bottom-color: themed('primary-dark');
+  }
   border-bottom-style: solid;
-  border-bottom-color: $asf-primary-dark;
   border-bottom-width: 1px;
-  background: $asf-background-white;
   z-index: 10;
   display: flex;
   justify-content: space-between;
@@ -229,6 +233,9 @@ $color: $asf-primary-dark;
 }
 
 .mat-dialog-content {
+  @include themify($themes) {
+    background-color: themed('background-white');
+  }
   position: absolute;
   display: block;
   top: $header-height;
@@ -237,7 +244,6 @@ $color: $asf-primary-dark;
   width: 100%;
   overflow-y: auto !important;
   overflow-x: hidden;
-  background-color: $asf-background-white;
   padding: 0;
   margin: 0;
 

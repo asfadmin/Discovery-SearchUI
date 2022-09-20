@@ -22,7 +22,9 @@ hr {
   @include md-icon-size(30px);
 
   margin-right: 0;
-  color: $asf-primary-dark;
+  @include themify($themes) {
+    color: themed('primary-dark');
+  }
 }
 
 .mat-icon-button {
@@ -31,11 +33,15 @@ hr {
   min-width: 60px;
 }
 .mat-list-item {
-  color: $dark-primary-text;
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
 }
 .menu-hr {
-  color: $asf-primary-dark;
-  background-color: $asf-primary-dark;
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+    background-color: themed('primary-dark');
+  }
   background-image: none;
   border: none;
   height: 1px;
@@ -71,12 +77,16 @@ hr {
 }
 
 .item-content {
-  color: $dark-secondary-text;
+  @include themify($themes) {
+    color: themed('dark-secondary-text');
+  }
   line-height: 18px;
 }
 
 .item-title {
-  color: $dark-primary-text;
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
   line-height: 22px;
   font-size: 18px;
   margin-bottom: 12px;
@@ -92,5 +102,7 @@ hr {
   @include md-icon-size(65px);
 
   margin-right: 0;
-  color: $dark-primary-text;
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
 }

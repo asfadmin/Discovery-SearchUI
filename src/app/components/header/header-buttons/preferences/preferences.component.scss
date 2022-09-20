@@ -13,8 +13,10 @@
   flex: 30px;
 
   a {
+    @include themify($themes) {
+      color: themed('primary')
+    }
     text-decoration: none;
-    color: $asf-primary;
   }
 }
 

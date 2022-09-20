@@ -1,8 +1,10 @@
 @import "asf-theme";
 
 .processing-options {
+  @include themify($themes) {
+    background-color: themed('background-white');
+  }
   margin-top: 10px;
-  background-color: $asf-background-white;
 }
 
 .no-processing-options {

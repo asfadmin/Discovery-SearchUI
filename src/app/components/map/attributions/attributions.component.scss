@@ -30,11 +30,13 @@ $config: mat.define-typography-config();
 }
 
 .attribute-box {
-  background-color: $asf-primary-light;
+  @include themify($themes) {
+    background-color: themed('primary-light');
+    color: themed('primary');
+    border-color: themed('primary-light');
+  }
   border-style: solid;
-  border-color: $asf-primary-light;
   border-width: 1px 0 0 1px;
-  color: $asf-primary;
   max-width: calc(50vw - 100px);
   font-family: mat.font-family($config);
   font-weight: 400;
@@ -54,7 +56,10 @@ $config: mat.define-typography-config();
 }
 
 a {
-  color: $asf-primary;
+  @include themify($themes) {
+    color: themed('primary');
+  }
+  
   text-decoration: none;
 }
 
@@ -66,13 +71,16 @@ a {
 }
 
 .bar-layout {
+  @include themify($themes) {
+    background-color: themed('primary-light');
+    color: themed('primary');
+    border-top: 1px solid themed('primary-dark');
+  }
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   flex-shrink: 0;
   padding: 10px;
-  background-color: $asf-primary-light;
-  border-top: 1px solid $asf-primary-dark;
 }
 
 .toggle-button-position {
@@ -83,22 +91,26 @@ a {
 }
 
 .toggle-button {
+  @include themify($themes) {
+    background-color: themed('primary-light');
+    color: themed('primary-dark');
+    border-bottom-color: lighten(themed('primary-light'),10%);
+  }
   pointer-events: auto;
-  background-color: $asf-primary-light;
-  color: $asf-primary-dark;
   font-size: 18px;
   font-family: Roboto, sans-serif;
   font-weight: 400;
   border-bottom-style: solid;
   border-bottom-width: 1px;
-  border-bottom-color: lighten($asf-primary-light, 10%);
 }
 
 .bar {
+  @include themify($themes) {
+    background: themed('primary-light');
+  }
   position: absolute;
   bottom: 0;
   height: 24px;
-  background: $asf-primary-light;
   width: 100%;
   z-index: 997;
 }

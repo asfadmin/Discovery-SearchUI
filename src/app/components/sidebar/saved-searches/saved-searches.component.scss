@@ -29,20 +29,26 @@
 }
 
 .saved-searches__content {
+  @include themify($themes) {
+    background-color: themed('background-white');
+  }
   max-height: calc(100vh - 350px);
   overflow-y: auto;
-  background-color: $asf-background-white;
 }
 
 .saved-searches__content-mobile {
+  @include themify($themes) {
+    background-color: themed('background-white');
+  }
   max-height: calc(100vh - 350px);
   overflow-y: auto;
-  background-color: $asf-background-white;
   width: 100%;
 }
 
 .saved-searches-row:nth-child(odd) {
-  background-color: lighten($asf-primary-light, 15%) !important;
+  @include themify($themes) {
+    background-color: lighten(themed('primary-light'), 15%) !important;//themed('background-white');
+  }
 }
 
 .saved-searches__header {
@@ -76,11 +82,13 @@
 }
 
 .saved-searches__subhead {
+  @include themify($themes) {
+    background-color: themed('background-white');
+  }
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: $asf-background-white;
   padding-top: 15px;
   padding-left: 15px;
   padding-right: 15px;

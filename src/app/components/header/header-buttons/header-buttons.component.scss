@@ -3,8 +3,12 @@
 
 .menu-item {
   display: flex;
-  color: $dark-primary-text;
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
 }
 .mat-icon {
-  color: $dark-primary-text;
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
 }

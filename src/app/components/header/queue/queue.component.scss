@@ -18,19 +18,23 @@ $color: $asf-primary-dark;
 }
 
 .dl-subtitle {
+  @include themify($themes) {
+    color: themed('primary');
+  }
   margin-top: -25px;
   font-style: italic;
   font-size: 16px;
-  color: $asf-primary;
 }
 
 .dl-card-actions {
+  @include themify($themes) {
+    background-color: themed('primary-light');
+    border-top-color: themed('primary-dark');
+    color: themed('primary-dark');
+  }
   height: 100px;
-  background-color: $background-color;
-  color: $color;
   padding: 20px 20px 0 20px;
   border-top-style: solid;
-  border-top-color: $asf-primary-dark;
   border-top-width: 1px;
 }
 
@@ -39,7 +43,9 @@ $color: $asf-primary-dark;
 
   .mat-button {
     font-size: 16px;
-    color: $color;
+    @include themify($themes) {
+      color: themed('primary-dark');
+    }
   }
 }
 
@@ -48,7 +54,9 @@ $color: $asf-primary-dark;
 
   .mat-button {
     font-size: 16px;
-    color: $color;
+    @include themify($themes) {
+      color: themed('primary-dark');
+    }
   }
 }
 
@@ -60,20 +68,26 @@ $color: $asf-primary-dark;
   float: right;
   cursor: pointer;
   z-index: 100;
-  color: $color;
+  @include themify($themes) {
+    color: themed('primary-dark');
+  }
 }
 
 .dl-empty-message {
   text-align: center;
   font-size: 20px;
-  color: $asf-primary-dark;
+  @include themify($themes) {
+    color: themed('primary-dark');
+  }
 }
 
 .dem-warning {
   font-size: 14px;
   padding: 7px;
   color: $asf-blue;
-  background-color: rgb(220, 220, 220);
+  @include themify($themes) {
+    background-color: darken(themed('primary-light'), 10%);
+  }
   width: 100%;
 }
 
@@ -96,7 +110,10 @@ $color: $asf-primary-dark;
 
   a {
     text-decoration: none;
-    color: $asf-primary;
+
+    @include themify($themes) {
+      color: themed('primary-dark');
+    }
   }
 }
 
@@ -113,7 +130,10 @@ button {
   grid-template-columns: auto auto;
   display: grid;
   font-size: 14px;
-  color: $light-primary-text;
+
+  @include themify($themes) {
+    color: themed('light-primary-text');
+  }
   justify-content: center;
   margin: 10px;
 }
@@ -125,7 +145,9 @@ button {
 ::ng-deep.mat-dialog-container {
   resize: both;
   overflow: auto;
-  background: $background-color;
+  @include themify($themes) {
+    background-color: themed('primary-light');
+  }
   width: 80vw;
   height: 86vh;
   min-width: 350px;
@@ -133,9 +155,11 @@ button {
 }
 
 .dl-mat-dialog-content {
+  @include themify($themes) {
+    background-color: themed('background-white');
+  }
   height: calc(100% - #{$header-height} - #{$footer-height} - #{$idk-pad});
   max-height: calc(100% - #{$header-height} - #{$footer-height} - #{$idk-pad});
-  background-color: $asf-background-white;
   padding: 0;
   margin: 0;
 }
@@ -151,9 +175,11 @@ button {
 }
 
 .dl-mat-dialog-actions {
+  @include themify($themes) {
+    background-color: themed('primary-light');
+  }
   position: absolute;
   display: flex;
-  background-color: $background-color;
   width: 100%;
   height: $footer-height;
   bottom: $bottom-offset;
@@ -164,8 +190,10 @@ button {
 [mat-dialog-title] {
   margin: -24px -24px 0 -24px !important;
   padding: 18px 24px;
-  background-color: $background-color;
-  color: $color;
+  @include themify($themes) {
+    background-color: themed('primary-light');
+    color: themed('primary-dark');
+  }
   cursor: move;
   text-align: left;
   height: $header-height;

@@ -53,12 +53,16 @@
 }
 
 .baseline-criteria-button-toggle {
-  background-color: $asf-background-white !important;
+  @include themify($themes) {
+    background-color: themed('background-white') !important;
+  }
   font-size: 14px;
 }
 
 .sbas-criteria-button-toggle {
-  background-color: $asf-background-white !important;
+  @include themify($themes) {
+    background-color: themed('background-white') !important;
+  }
   font-size: 14px;
 }
 
@@ -73,7 +77,9 @@
 }
 
 .control-mat-button-toggle {
-  background-color: $asf-background-white;
+  @include themify($themes) {
+    background-color: themed('background-white');
+  }
 }
 
 .more-horiz {

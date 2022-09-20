@@ -27,10 +27,12 @@
 }
 
 .view-select-button {
+  @include themify($themes) {
+    background: themed('background-white');
+    color: themed('dark-primary-text')
+  }
   margin: 0;
   padding: 0 0 0 10px;
-  color: rgb(0 0 0 / 87%);
-  background: white;
   font-size: 18px !important;
   height: 27px !important;
   width: 18px !important;
@@ -50,7 +52,9 @@
 }
 
 .bottom-right {
-  color: $asf-primary;
+  @include themify($themes) {
+    color: themed('primary');
+  }
   position: absolute;
   bottom: -7px;
   right: -4px;
