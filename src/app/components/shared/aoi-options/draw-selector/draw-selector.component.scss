@@ -3,7 +3,7 @@
 .draw-icon {
   @include md-icon-size($asf-ribbon-icon-size);
 
-  color: rgb(0 0 0 / 87%);
+  // color: rgb(0 0 0 / 87%);
 }
 
 .draw-text {
@@ -44,4 +44,10 @@
   border-radius: 4px !important;
   // border: solid 1px rgb(0 0 0 / 12%);
   text-align: center;
+}
+.control-button {
+  @include themify($themes) {
+    background: themed('background-white');
+    color: themed('light-primary-text')
+  }
 }

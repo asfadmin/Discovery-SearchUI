@@ -4,8 +4,11 @@
 $config: mat.define-typography-config();
 
 .mat-header-base {
-  background-color: $asf-primary-light !important;
-  color: $asf-primary-dark;
+  @include themify($themes) {
+    background: themed('primary') !important;
+    color: themed('primary-dark');
+    color: red !important;
+  }
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   border-left-width: 0;
@@ -18,7 +21,6 @@ $config: mat.define-typography-config();
 
 .mat-expansion-panel-header,
 .mat-expansion-panel-header.mat-expanded {
-  @extend .mat-header-base;
 
   &:hover,
   &:visited,
@@ -31,10 +33,16 @@ $config: mat.define-typography-config();
 }
 
 .mat-expansion-panel-header-title {
-  color: white;
+
   font-size: mat.font-size($config, subheading-2);
 }
-
+.mat-expansion-panel-header {
+  @include themify($themes) {
+    background: themed('primary') !important;
+    color: themed('primary-dark');
+    color: red !important;
+  }
+}
 .mat-expansion-panel-header-description {
   color: white;
 }

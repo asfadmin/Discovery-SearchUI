@@ -12,11 +12,16 @@ main {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  background-color: lighten(lightgrey, 10%);
+  @include themify($themes) {
+    background-color: lighten(themed('primary-light'),15%);
+  }
+  // background-color: lighten(lightgrey, 10%);
 }
 
 footer {
-  background-color: $asf-primary-light;
+  @include themify($themes) {
+    background-color: themed('primary-light');
+  }
 }
 
 section {
@@ -26,10 +31,12 @@ section {
 }
 
 .help-header {
+  @include themify($themes) {
+    background-color: themed('primary-light');
+    color: themed('dark-primary-text');
+  }
   display: flex;
   flex-direction: row;
-  background-color: $asf-primary-light;
-  color: $asf-primary-dark;
   padding: $side-padding-only;
   margin: 0;
 
@@ -40,9 +47,11 @@ section {
 }
 
 .help-menu {
+  @include themify($themes) {
+    background-color: lighten(themed('primary-light'),15%);
+  }
   display: flex;
   flex-direction: row;
-  background-color: lighten(lightgrey, 10%);
   padding-left: 15px;
   padding-right: 15px;
   padding-top: 5px;
@@ -56,3 +65,4 @@ section {
   justify-content: flex-end;
   padding: 10px 15px 10px 15px;
 }
+

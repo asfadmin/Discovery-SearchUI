@@ -26,9 +26,11 @@ a {
 }
 
 .browse-dialog {
+  @include themify($themes) {
+    background-color: themed('primary-light');
+  }
   overflow: hidden;
   font-family: mat.font-family($config);
-  background-color: $asf-primary-light;
   height: 100%;
 
   :focus {
@@ -50,20 +52,24 @@ a {
   }
 
   .browse-list {
+    @include themify($themes) {
+      background-color: themed('primary-light');
+      border-top-color: themed('primary-dark');
+    }
     min-height: 140px;
-    border-top-color: $asf-primary-dark;
     border-top-style: solid;
     border-top-width: 1px;
-    background-color: $asf-primary-light;
   }
 
   .scene-detail-wrapper {
+    @include themify($themes) {
+      background-color: themed('primary-light');
+      border-left-color: themed('primary-dark');
+    }
     min-width: 200px;
-    border-left-color: $asf-primary-dark;
     border-left-style: solid;
     border-left-width: 1px;
     overflow-y: auto;
-    background-color: $asf-primary-light;
 
     .scene-detail {
       margin-left: 10px;
@@ -72,17 +78,21 @@ a {
 }
 
 .dialog-header--layout {
-  color: $asf-primary-dark;
-  border-bottom-color: $asf-primary-dark;
+  @include themify($themes) {
+    color: themed('primary-dark');
+    border-bottom-color: themed('primary-dark');
+  }
   border-bottom-style: solid;
   border-bottom-width: 1px;
   min-height: 60px;
 }
 
 .browse-map--size {
+  @include themify($themes) {
+    background-color: themed('primary-light');
+  }
   max-width: 100%;
   max-height: 100%;
-  background-color: $asf-primary-light;
   overflow: hidden;
 }
 
@@ -107,14 +117,18 @@ a {
 }
 
 .browse-drag-handle {
-  color: $asf-primary;
+  @include themify($themes) {
+    color: themed('primary');
+  }
   cursor: move;
   height: 24px;
 }
 
 .close-button {
+  @include themify($themes) {
+    color: themed('primary');
+  }
   vertical-align: top !important;
-  color: $asf-primary;
   margin-bottom: 5px;
 }
 
@@ -187,7 +201,9 @@ a {
 }
 
 .file-button-download {
-  background-color: lighten($asf-primary-light, 10%);
+  @include themify($themes) {
+    background-color: lighten(themed('primary-light'),10%);
+  }
   border-radius: 2px !important;
   padding-left: 5px !important;
   margin-bottom: 5px;
@@ -202,13 +218,15 @@ a {
 }
 
 .footer {
+  @include themify($themes) {
+    border-top: 1px solid themed('primary-dark');
+  }
   flex-shrink: 0;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   position: sticky;
   bottom: 0;
-  border-top: 1px solid $asf-primary-dark;
   z-index: 1020;
   padding: 10px;
   padding-top: 13.5px;

@@ -3,7 +3,7 @@
 .layer-select-button {
   @include themify($themes) {
     background: themed('background-white');
-    color: themed('dark-primary-text')
+    color: themed('dark-primary-text');
   }
   margin: 0;
   padding: 0 0 0 3px;

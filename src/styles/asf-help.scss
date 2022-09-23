@@ -16,7 +16,10 @@ $top-background-color: lighten(lightgrey, 10%);
 }
 
 .help-top-section {
-  background-color: $top-background-color;
+  @include themify($themes) {
+    background-color: lighten(themed('primary-light'),15%) !important;
+  }
+  // background-color: $top-background-color;
   padding: 0 $side-padding-px 25px $side-padding-px;
   margin: 0;
 }
@@ -31,7 +34,9 @@ $top-background-color: lighten(lightgrey, 10%);
   h2,
   h3,
   h4 {
-    color: $asf-primary-dark;
+    @include themify($themes) {
+      color: themed('light-primary-text');
+    }
   }
 }
 
@@ -68,10 +73,12 @@ $top-background-color: lighten(lightgrey, 10%);
 }
 
 .help-text-row {
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  color: $asf-primary;
   border-bottom: $border-style;
   padding-bottom: 10px;
   padding-top: 10px;

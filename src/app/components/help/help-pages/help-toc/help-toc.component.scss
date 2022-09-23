@@ -15,8 +15,9 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-  color: $asf-primary;
-
+  @include themify($themes) {
+    color: themed('primary');
+  }
   h1,
   h2,
   h3,
@@ -31,7 +32,9 @@
     font-size: 53px;
     width: 54px;
     height: 53px;
-    color: $asf-primary-light;
+    @include themify($themes) {
+      color: themed('primary-light');
+    }
   }
 }
 
@@ -73,7 +76,9 @@
   flex: none;
 
   h3 {
-    color: $asf-primary;
+    @include themify($themes) {
+      color: themed('primary');
+    }
   }
 
   li {
@@ -82,17 +87,21 @@
 }
 
 .help-table {
-  background: none;
+  background: none  !important;
 }
 
 .help-table-header {
+  @include themify($themes) {
+    color: themed('primary');
+  }
   font-size: 1.17em;
   margin-block-start: 1em;
   margin-block-end: 1em;
   margin-inline-start: 0;
   margin-inline-end: 0;
   font-weight: bold;
-  color: #65665c;
+  
+  // color: #65665c;
 }
 
 .help-table-row {
