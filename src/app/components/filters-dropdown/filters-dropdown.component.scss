@@ -50,8 +50,9 @@
     top: 0;
     @include themify($themes) {
       background-color: themed('primary-light');
+      border-bottom: 1px solid themed('primary-dark');
+
     }
-    border-bottom: 1px solid $asf-primary-dark;
     font-size: 24px;
     padding: 15px;
     z-index: 1020;
@@ -88,8 +89,9 @@
     bottom: 0;    
     @include themify($themes) {
       background-color: themed('primary-light');
+      border-top: 1px solid themed('primary-dark');
+
     }
-    border-top: 1px solid $asf-primary-dark;
     z-index: 1020;
     padding: 10px;
     min-height: 30px;

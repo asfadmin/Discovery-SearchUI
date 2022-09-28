@@ -29,16 +29,12 @@ div span {
 .info-bar {
   @include themify($themes) {
     color: themed('dark-primary-text');
+    background-color: themed('primary-light');
+    border-top-color: themed('primary');
   }
   border-top-style: solid;
   border-top-width: 1px;
-  @include themify($themes) {
-    background-color: themed('primary-light');// $asf-primary-light;
-    border-top-color: themed('primary');
-  }
-  color: $asf-primary-dark;
   line-height: 30px;
-  //font-family: mat.font-family($custom-typography);
   font-size: 14px;
   padding-right: 150px;
 }

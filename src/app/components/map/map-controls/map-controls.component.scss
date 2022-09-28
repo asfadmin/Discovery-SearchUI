@@ -26,7 +26,6 @@
     background-color: themed('primary-light');
     color: themed('primary');
   }
-  background: red;
 }
 
 label {
@@ -55,6 +54,9 @@ label {
 
 .control-icon {
   @include md-icon-size($asf-ribbon-icon-size);
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
 }
 
 .button-group {
@@ -65,7 +67,7 @@ label {
 .button-group-label {
   text-align: center;
   @include themify($themes) {
-    color: themed('primary');
+    color: themed('dark-secondary-text');
   }
 }
 
@@ -75,7 +77,11 @@ label {
   }
   cursor: move;
 }
-
+.control-mat-button-toggle {
+  @include themify($themes) {
+    background: themed('background-white');
+  }
+}
 .move-handle {
   @include themify($themes) {
     color: themed('primary-dark');
@@ -106,8 +112,8 @@ label {
 
 .opacity-slider-button {
   @include themify($themes) {
-    background: themify('background-white');
-    color: themify('dark-primary-text');
+    background: themed('background-white');
+    color: themed('dark-primary-text');
   }
   margin: 0 0 5px;
   padding: 0 0 0 3px;
@@ -147,9 +153,6 @@ label {
 }
 
 .opacity-button-text {
-  @include themify($themes) {
-    color: themed('primary');
-  }
   display: inline-block;
   position: absolute;
   top: -4px;

@@ -145,7 +145,7 @@ $theme-map: null;
   mat-dialog-content {
     padding: 15px 40px;
     @include themify($themes) {
-      color: themed('background-white');
+      color: themed('primary-light');
     }
   }
 
@@ -244,27 +244,33 @@ ul {
 }
 
 #dlQueueDialog {
+  @include themify($themes) {
+    background-color: themed('primary-light') !important;
+  }
   position: relative;
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: $asf-primary-light;
 }
 
 #processingQueueDialog {
+  @include themify($themes) {
+    background-color: themed('primary-light');
+  }
   position: relative;
   margin: 0;
   padding: 0 10px 10px 0 !important;
   overflow: hidden;
-  background-color: $asf-primary-light;
 }
 
 #subscriptionQueueDialog {
+  @include themify($themes) {
+    background-color: themed('primary-light');
+  }
   position: relative;
   margin: 0;
   padding: 0 10px 10px 0 !important;
   overflow: hidden;
-  background-color: $asf-primary-light;
 }
 
 .control-mat-button-toggle {
@@ -286,6 +292,9 @@ ul {
 }
 
 .ls-card-content-list .mat-form-field-infix {
+  @include themify($themes) {
+    border-color: themed('primary-light');
+  }
   border-color: $asf-primary-light;
   width: 100%;
   border-style: solid;
@@ -354,6 +363,9 @@ ul {
 }
 
 .mat-dialog-container {
+  @include themify($themes) {
+    background-color: themed('primary-light');
+  }
   border-radius: 0 !important;
 }
 
@@ -362,7 +374,9 @@ ul {
   padding: 0;
 
   .mat-dialog-container {
-    background-color: $asf-primary-light;
+    @include themify($themes) {
+      background-color: themed('primary-light');
+    }
     padding-bottom: 0px;
     padding-top: 11px;
     padding-left: 12px;
@@ -535,7 +549,9 @@ $d-height: 500px;
   color: $dark-primary-text;
 }
 .mat-menu {
-  background: $asf-background-white;
+  @include themify($themes) {
+    background-color: themed('background-white');
+  }
 }
 
 .content-block .mat-step-header .mat-step-icon {

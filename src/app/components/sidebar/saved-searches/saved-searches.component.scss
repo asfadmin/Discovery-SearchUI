@@ -19,7 +19,9 @@
 .saved-searches__header,
 .saved-searches__footer,
 .saved-searches__footer-mobile {
-  background-color: $asf-primary-light;
+  @include themify($themes) {
+    background-color: themed('primary-light');
+  }
 }
 
 .saved-searches__content,
@@ -52,6 +54,9 @@
 }
 
 .saved-searches__header {
+  @include themify($themes){
+    border-bottom-color: themed('primary');
+  }
   height: 70px;
   display: flex;
   flex-direction: row;
@@ -60,7 +65,6 @@
   padding-top: 0;
   padding-left: 15px;
   padding-right: 15px;
-  border-bottom-color: $asf-primary;
   border-bottom-style: solid;
   border-bottom-width: 1px;
 }
@@ -108,15 +112,17 @@
 
 .saved-searches__footer,
 .saved-searches__footer-mobile {
+  @include themify($themes) {
+    background: themed('primary-light');
+    border-top-color: themed('primary');
+  }
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
   height: 60px;
-  border-top-color: $asf-primary;
   border-top-style: solid;
   border-top-width: 1px;
-  background-color: $asf-primary-light;
 }
 
 .saved-searches__footer-mobile {
@@ -129,14 +135,18 @@
 }
 
 .saved-searches__save-button {
+  @include themify($themes) {
+    color: themed('primary-light');
+  }
   display: flex;
-  color: $asf-primary-light;
   margin: 6px;
 }
 
 .saved-searches__close-button {
+  @include themify($themes) {
+    color: themed('primary-light');
+  }
   display: flex;
-  color: $asf-primary-light;
   margin-right: 15px;
   height: fit-content;
 }
@@ -147,6 +157,8 @@
 }
 
 .no-saved-searches {
-  color: $asf-primary-light;
+  @include themify($themes) {
+    color: themed('primary-light');
+  }
   padding-left: 15px;
 }

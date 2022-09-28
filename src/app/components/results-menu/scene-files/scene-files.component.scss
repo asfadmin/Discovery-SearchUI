@@ -38,11 +38,13 @@ $thumb-size: 50px;
 }
 
 .map-button-toggle {
+  @include themify($themes) {
+    background-color: themed('primary') !important;
+    color: themed('light-primary-text') !important;
+  }
   padding-right: 40px;
   font-size: 12px;
   line-height: 24px !important;
-  background-color: $asf-primary !important;
-  color: $light-primary-text !important;
   border: 1px groove rgb(0 0 0 / 25%) !important;
   border-radius: 4px !important;
 }

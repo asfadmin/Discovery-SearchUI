@@ -1,6 +1,5 @@
 @import "asf-theme";
 
-$divider-bar-color: lighten($asf-primary-light, 8%);
 
 a {
   text-decoration: none;
@@ -138,11 +137,10 @@ a {
   display: flex;
   justify-content: flex-start;
   @include themify($themes) {
-    
-    background: themed('primary-light');
+    background: lighten(themed('primary-light'), 4%);
     button[disabled="true"] {
-      background-color: themed('primary-light') !important;
-      color: themed('light-primary-text') !important;
+      background-color: themed('primary-light');
+      color: themed('light-primary-text');
     }
   }
   align-items: center;

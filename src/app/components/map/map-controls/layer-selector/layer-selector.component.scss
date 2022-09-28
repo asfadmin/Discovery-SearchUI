@@ -26,7 +26,9 @@
 }
 
 .bottom-right {
-  color: $asf-primary;
+  @include themify($themes) {
+    color: themed('primary');
+  }
   position: absolute;
   bottom: -7px;
   right: -4px;

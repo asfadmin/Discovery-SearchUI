@@ -15,6 +15,7 @@
 
   @include themify($themes) {
     background-color: darken(themed('background-white'), 10%);
+    outline: 2px dashed themed('primary');
   }
   background-size: contain;
   background-repeat: no-repeat;
@@ -22,8 +23,6 @@
   width: 350px;
   height: 180px;
   display: inline-block;
-  //border: $asf-primary-dark dashed 2px;
-  outline: 2px dashed $asf-primary;
   outline-offset: -8px;
 }
 
@@ -54,7 +53,9 @@
 }
 
 .panel-title {
-  color: $asf-primary-dark !important;
+  @include themify($themes) {
+    color: themed('primary-dark') !important;
+  }
 }
 
 .asf-manual-link {

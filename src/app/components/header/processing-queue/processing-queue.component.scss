@@ -3,8 +3,6 @@
 $header-height: 120px;
 $footer-height: 60px;
 $bottom-offset: 10px;
-$background-color: $asf-primary-light;
-$color: $asf-primary-dark;
 
 ::ng-deep.mat-dialog-container {
   @include themify($themes) {
@@ -160,13 +158,15 @@ $color: $asf-primary-dark;
 }
 
 .dataset-menu {
+  @include themify($themes) {
+    background-color:  adjust-color(themed('primary-light'), $lightness: +7%);
+  }
   display: block;
   position: absolute;
   top: 84px;
   height: 36px;
   width: 100%;
   text-align: left;
-  background-color: adjust-color($asf-primary-light, $lightness: +7%);
   border-top-color: #3d3e38; // TODO: check this
   border-top-width: 1px;
   border-top-style: solid;

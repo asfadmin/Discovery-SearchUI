@@ -4,8 +4,6 @@
 
 $config: mat.define-typography-config();
 
-$info-background: $asf-primary-light;
-$info-color: $asf-primary;
 
 .sbas-chart-row {
   display: flex;
@@ -58,10 +56,12 @@ $info-color: $asf-primary;
 }
 
 .sbas-metadata {
+  @include themify($themes) {
+    border-left: solid 1px themed('primary-light');
+    border-right: solid 2px themed('primary-light');
+  }
   overflow: auto;
   height: 100%;
-  border-left: solid 1px $asf-primary-light;
-  border-right: solid 2px $asf-primary-light;
 }
 
 .product-name {
@@ -70,9 +70,11 @@ $info-color: $asf-primary;
 
 .chart-resize-handle-left,
 .chart-resize-handle-right {
+  @include themify($themes) {
+    background-color: themed('primary-light');
+  }
   height: 100%;
   background-image: url("//assets/div-handles/hsizegrip.png");
-  background-color: $asf-primary-light;
   background-position: left;
   background-repeat: no-repeat;
 }
@@ -104,6 +106,10 @@ $info-color: $asf-primary;
 }
 
 .sbas-header {
+  @include themify($themes) {
+    background-color: themed('primary-light');
+    color: themed('primary-dark')
+  }
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -114,8 +120,6 @@ $info-color: $asf-primary;
   font-weight: 400;
   font-size: 16px;
   text-align: center;
-  background-color: $asf-primary-light;
-  color: $asf-primary-dark;
   margin-top: -20px;
   border-left: none;
 }
@@ -146,8 +150,10 @@ $info-color: $asf-primary;
 }
 
 .button-group-label {
+  @include themify($themes) {
+    color: themed('primary');
+  }
   text-align: center;
-  color: $info-color;
 }
 
 label {

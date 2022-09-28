@@ -2,6 +2,10 @@
 
 .interaction-icon {
   @include md-icon-size($asf-ribbon-icon-size);
+
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
 }
 
 .interaction-toggle-group {

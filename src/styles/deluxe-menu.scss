@@ -1,5 +1,7 @@
 hr {
-  border-top-color: rgba($asf-primary-light, 0.2);
+  @include themify($themes) {
+    border-top-color: rgba(themed('primary-light'), 0.2);
+  }
   margin-block: 0;
 }
 

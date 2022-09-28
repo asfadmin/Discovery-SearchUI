@@ -6,7 +6,6 @@ $header-color: $asf-blue;
 $border-color: lightgray;
 $border-style: 1px solid $border-color;
 $img-border-style: 1px solid black;
-$top-background-color: lighten(lightgrey, 10%);
 
 .help-container {
   display: flex;
@@ -90,10 +89,12 @@ $top-background-color: lighten(lightgrey, 10%);
   flex: 7 0 0;
 
   .material-icons {
+    @include themify($themes) {
+      color: themed('primary-light');
+    }
     font-size: 53px;
     width: 54px;
     height: 53px;
-    color: $asf-primary-light;
   }
 }
 

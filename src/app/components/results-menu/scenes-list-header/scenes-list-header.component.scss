@@ -2,8 +2,6 @@
 @import "asf-theme";
 $config: mat.define-typography-config();
 
-$info-background: $asf-primary-light;
-$info-color: $asf-primary;
 
 .mobile-size {
   margin-left: 5px !important;
@@ -117,8 +115,10 @@ $info-color: $asf-primary;
 }
 
 .button-group-label {
+  @include themify($themes) {
+    color: themed('dark-secondary-text');
+  }
   text-align: center;
-  color: $info-color;
   font-size: 12px;
   margin-left: -10px;
   line-height: 15px;

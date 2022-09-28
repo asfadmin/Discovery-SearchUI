@@ -1,27 +1,29 @@
 @use "@angular/material" as mat;
-
+@import "asf-theme";
 // Create a config with the default typography levels.
 $config: mat.define-typography-config();
 
 .mat-header-base {
-  @include themify($themes) {
-    background: themed('primary') !important;
-    color: themed('primary-dark');
-    color: red !important;
-  }
+  // @include themify($themes) {
+  //   background: themed('primary-dark') !important;
+  //   color: themed('primary-dark');
+  //   border-color: themed('primary');
+  // }
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   border-left-width: 0;
   border-right-width: 0;
   border-top-width: 0;
   border-bottom-width: 0.5px;
-  border-color: $asf-primary;
   border-style: solid;
 }
 
 .mat-expansion-panel-header,
 .mat-expansion-panel-header.mat-expanded {
-
+  // @extend .mat-header-base;
+  @include themify($themes) {
+    background-color: themed('light-primary-text');
+  }
   &:hover,
   &:visited,
   &:link,
@@ -38,9 +40,8 @@ $config: mat.define-typography-config();
 }
 .mat-expansion-panel-header {
   @include themify($themes) {
-    background: themed('primary') !important;
+    background: themed('primary-dark');
     color: themed('primary-dark');
-    color: red !important;
   }
 }
 .mat-expansion-panel-header-description {

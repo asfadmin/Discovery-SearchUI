@@ -69,9 +69,11 @@
 }
 
 .jobs-empty-message {
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
   text-align: center;
   font-size: 20px;
-  color: $asf-primary-dark;
   margin: 0 auto;
   padding-top: 30px;
 }

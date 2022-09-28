@@ -3,8 +3,6 @@
 $header-height: 120px;
 $footer-height: 60px;
 $bottom-offset: 10px;
-$background-color: $asf-primary-light;
-$color: $asf-primary-dark;
 
 .mat-dialog-content {
   @include themify($themes) {

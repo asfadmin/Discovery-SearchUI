@@ -28,6 +28,8 @@
 .drop-file-area {
   @include themify($themes) {
     background-color: darken(themed('background-white'), 10%);
+    outline: 2px dashed themed('primary');
+
   }
   background-image: url("/assets/geospatial_upload.png");
   background-size: contain;
@@ -37,8 +39,6 @@
   width: 350px;
   height: 160px;
   display: inline-block;
-  //border: $asf-primary-dark dashed 2px;
-  outline: 2px dashed $asf-primary;
   outline-offset: -8px;
 }
 

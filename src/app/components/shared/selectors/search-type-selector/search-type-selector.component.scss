@@ -7,10 +7,12 @@
 }
 
 .menu-item-icon {
+  @include themify($themes) {
+    color: themed('primary-dark');
+  }
   @include md-icon-size(70px);
 
   margin-right: 0;
-  color: $asf-primary-dark;
 }
 
 .dataset-hr {

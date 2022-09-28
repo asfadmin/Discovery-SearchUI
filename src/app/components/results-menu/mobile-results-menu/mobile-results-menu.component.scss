@@ -5,6 +5,10 @@
 }
 
 .header {
+  @include themify($themes) {
+    background-color: themed('primary-light');
+    color: themed('primary-dark');
+  }
   padding-top: 20px;
   height: 30px;
   margin-bottom: 0;
@@ -12,8 +16,6 @@
   font-weight: 400;
   font-size: 14px;
   text-align: center;
-  background-color: $asf-primary-light;
-  color: $asf-primary-dark;
   border-left: none;
 }
 
