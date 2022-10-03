@@ -41,16 +41,16 @@ $asf-app-err: mat.define-palette($mat-asf-red, 200, 100, 500);
 
 
 // Create your Sass color vars (will be available in all the project)
-$asf-primary: mat.get-color-from-palette($asf-app-primary);
-$asf-dark-primary: mat.get-color-from-palette($asf-app-dark-primary);
-$asf-accent: mat.get-color-from-palette($asf-app-accent);
+
 $asf-warn: mat.get-color-from-palette($asf-app-warn);
 $asf-err: mat.get-color-from-palette($asf-app-err);
 $asf-blue: mat.get-color-from-palette($asf-app-blue);
+
+$asf-primary: mat.get-color-from-palette($asf-app-primary);
+$asf-dark-primary: mat.get-color-from-palette($asf-app-dark-primary);
+$asf-accent: mat.get-color-from-palette($asf-app-accent);
 $asf-primary-light: lighten($asf-primary, 40%);
 $asf-primary-dark: darken($asf-primary, 15%);
-// TODO: this works on light theme but looks really bad on dark
-// $asf-background-white: lighten($asf-primary, 70%); 
 $asf-background-white: lighten($asf-primary, 80%); 
 @mixin md-icon-size($size: 24px) {
   color: $dark-primary-text;
@@ -126,15 +126,28 @@ $themes: (
 
   }
 }
+
+@mixin themify_non_host($themes: $themes) {
+  @each $theme, $map in $themes {
+
+    .theme-#{$theme} & {
+      $theme-map: () !global;
+      @each $key, $submap in $map {
+        $value: map-get(map-get($themes, $theme), '#{$key}');
+        $theme-map: map-merge($theme-map, ($key: $value)) !global;
+      }
+
+      @content;
+      $theme-map: null !global;
+    }
+
+  }
+}
+
 @function themed($key) {
   @return map-get($theme-map, $key);
 }
 
-body {
- @include themify($themes) {
-  color: themed('textColor');
- }
-}
 
 
 

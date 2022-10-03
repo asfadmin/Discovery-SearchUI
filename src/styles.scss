@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 $theme-map: null;
 
-@import './styles/asf-theme';
+// @import './styles/asf-theme';
 @import './styles/filter-list';
 
 * {
@@ -130,6 +130,11 @@ $theme-map: null;
 }
 
 .banner-dialog {
+  @include themify_non_host($themes) {
+    mat-dialog-content {
+      background: themed('primary-light');
+    }
+  }
   mat-dialog-container {
     padding: 0;
     box-sizing: border-box;
@@ -144,9 +149,7 @@ $theme-map: null;
 
   mat-dialog-content {
     padding: 15px 40px;
-    @include themify($themes) {
-      color: themed('primary-light');
-    }
+    background: blue;
   }
 
   mat-dialog-actions {
@@ -160,16 +163,15 @@ $theme-map: null;
 }
 
 .faint-text {
-  @include themify($themes) {
+  @include themify_non_host($themes) {
     color: themed('dark-secondary-text');
   }
-  // color: rgba(0, 0, 0, 0.6);
 }
 
 .fainter-text {
-  color: $dark-secondary-text;
-
-  // color: rgba(0, 0, 0, 0.4);
+  @include themify_non_host($themes) {
+    color: themed('dark-disabled-text');
+  }
 }
 
 .v-mid {
@@ -244,9 +246,10 @@ ul {
 }
 
 #dlQueueDialog {
-  @include themify($themes) {
+  @include themify_non_host($themes) {
     background-color: themed('primary-light') !important;
   }
+
   position: relative;
   margin: 0;
   padding: 0;
@@ -254,7 +257,7 @@ ul {
 }
 
 #processingQueueDialog {
-  @include themify($themes) {
+  @include themify_non_host($themes) {
     background-color: themed('primary-light');
   }
   position: relative;
@@ -264,7 +267,7 @@ ul {
 }
 
 #subscriptionQueueDialog {
-  @include themify($themes) {
+  @include themify_non_host($themes) {
     background-color: themed('primary-light');
   }
   position: relative;
@@ -292,7 +295,7 @@ ul {
 }
 
 .ls-card-content-list .mat-form-field-infix {
-  @include themify($themes) {
+  @include themify_non_host($themes) {
     border-color: themed('primary-light');
   }
   border-color: $asf-primary-light;
@@ -363,7 +366,7 @@ ul {
 }
 
 .mat-dialog-container {
-  @include themify($themes) {
+  @include themify_non_host($themes) {
     background-color: themed('primary-light');
   }
   border-radius: 0 !important;
@@ -374,7 +377,7 @@ ul {
   padding: 0;
 
   .mat-dialog-container {
-    @include themify($themes) {
+    @include themify_non_host($themes) {
       background-color: themed('primary-light');
     }
     padding-bottom: 0px;
@@ -549,7 +552,7 @@ $d-height: 500px;
   color: $dark-primary-text;
 }
 .mat-menu {
-  @include themify($themes) {
+  @include themify_non_host($themes) {
     background-color: themed('background-white');
   }
 }

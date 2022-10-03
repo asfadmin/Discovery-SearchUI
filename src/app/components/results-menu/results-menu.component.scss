@@ -32,10 +32,9 @@
   font-weight: 400;
   font-size: 16px;
   text-align: center;
-  // this background needs fixed
   @include themify($themes) {
     background-color: themed('primary-light');
-    color: themed('primary-text');
+    color: themed('dark-primary-text');
   }
   border-left: none;
 }

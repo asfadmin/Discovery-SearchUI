@@ -15,7 +15,6 @@ main {
   @include themify($themes) {
     background-color: lighten(themed('primary-light'),15%);
   }
-  // background-color: lighten(lightgrey, 10%);
 }
 
 footer {
