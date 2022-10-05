@@ -57,30 +57,31 @@
       <mat-panel-title style="align-items: center;">
         Date Filters
         <app-docs-modal class="info-icon"
-                        url="https://docs.asf.alaska.edu/vertex/manual/#date-filters">
+                        url="https://docs.asf.alaska.edu/vertex/sbas/#sbas-criteria">
         </app-docs-modal>
       </mat-panel-title>
     </mat-expansion-panel-header>
 
     <div style="margin-top: 20px;">
       <app-date-selector></app-date-selector>
+      <app-season-selector></app-season-selector>
     </div>
   </mat-expansion-panel>
 
-  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
-  (click)="selectPanel(panels.SEASON)"
-  *ngIf="areResultsLoaded"
-  [class.raised-section]="isSelected(panels.SEASON)">
-  <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
-    <mat-panel-title>
-      Season Filters
-    </mat-panel-title>
-  </mat-expansion-panel-header>
+<!--  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"-->
+<!--  (click)="selectPanel(panels.SEASON)"-->
+<!--  *ngIf="areResultsLoaded"-->
+<!--  [class.raised-section]="isSelected(panels.SEASON)">-->
+<!--  <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">-->
+<!--    <mat-panel-title>-->
+<!--      Season Filters-->
+<!--    </mat-panel-title>-->
+<!--  </mat-expansion-panel-header>-->
 
-  <div style="margin-top: 20px;">
-    <app-season-selector></app-season-selector>
-  </div>
-  </mat-expansion-panel>
+<!--  <div style="margin-top: 20px;">-->
+<!--    <app-season-selector></app-season-selector>-->
+<!--  </div>-->
+<!--  </mat-expansion-panel>-->
 
   <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
   (click)="selectPanel(panels.OVERLAP)"
@@ -88,7 +89,10 @@
   [class.raised-section]="isSelected(panels.OVERLAP)">
   <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
     <mat-panel-title>
-      Latitudinal Overlap
+      Latitudinal Overlap Filter
+      <app-docs-modal class="info-icon"
+                      url="https://docs.asf.alaska.edu/vertex/sbas/#sbas-criteria">
+      </app-docs-modal>
     </mat-panel-title>
   </mat-expansion-panel-header>
   <div style="margin-top: 20px;">
