@@ -19,6 +19,7 @@ import { MapService } from './map/map.service';
 import { WktService } from './wkt.service';
 import { RangeService } from './range.service';
 import { PropertyService } from './property.service';
+import { ThemingService } from './theming.service';
 // import { PinnedProduct } from './browse-map.service';
 
 
@@ -40,6 +41,7 @@ export class UrlStateService {
     private rangeService: RangeService,
     private router: Router,
     private prop: PropertyService,
+    private themeService: ThemingService,
   ) {
     const params = [
       ...this.datasetParam(),
@@ -145,10 +147,18 @@ export class UrlStateService {
     if (this.loadLocations['maxResults'] !== models.LoadTypes.URL) {
       this.store$.dispatch(new filterStore.SetMaxResults(profile.maxResults));
     }
-    if(profile.theme) {
+    if(profile.theme && profile.theme !== 'System Preferences') {
       const body = document.getElementsByTagName('body')[0];
       body.removeAttribute('class');
       body.classList.add(`theme-${profile.theme}`);
+    } else {
+      this.themeService.theme.pipe(take(1)).subscribe(
+        themePreference => {
+          const body = document.getElementsByTagName('body')[0];
+          body.removeAttribute('class');
+          body.classList.add(`theme-${themePreference}`);
+        }
+      )
     }
     const action = profile.mapLayer === models.MapLayerTypes.STREET ?
       new mapStore.SetStreetView() :

@@ -8,8 +8,9 @@ import {
   MapLayerTypes, UserAuth, ProductType,
   datasetList, SearchType, SavedFilterPreset, FilterType
 } from '@models';
-import { Hyp3Service } from '@services';
+import { Hyp3Service, ThemingService } from '@services';
 import { SubSink } from 'subsink';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-preferences',
@@ -39,7 +40,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   public selectedSearchType = SearchType.DATASET;
 
 
-  public themeOptions: string[] = ['light', 'dark'];
+  public themeOptions: string[] = ['light', 'dark', 'System Preferences'];
   public userFiltersBySearchType = {};
   public userFilters: SavedFilterPreset[];
   public selectedFiltersIDs = {
@@ -49,13 +50,14 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   };
   public currentTheme = 'light';
   public currentFilterDisplayNames = {};
-  
+
   private subs = new SubSink();
 
   constructor(
     private dialogRef: MatDialogRef<PreferencesComponent>,
     private store$: Store<AppState>,
     private hyp3: Hyp3Service,
+    private themeService: ThemingService,
   ) { }
 
   ngOnInit() {
@@ -149,12 +151,24 @@ export class PreferencesComponent implements OnInit, OnDestroy {
 
   public onChangeDefaultTheme(theme: string) {
     this.currentTheme = theme;
-    let body = document.getElementsByTagName("body")[0];
-    // removes all classes from body, probably not best for later on
-    body.removeAttribute('class');
-    body.classList.add(`theme-${this.currentTheme}`)
-    console.log(this.currentTheme);
-    this.saveProfile()
+    if (theme === 'System Preferences') {
+      this.themeService.theme.pipe(take(1)).subscribe(currentPreference => {
+        let body = document.getElementsByTagName("body")[0];
+        // removes all classes from body, probably not best for later on
+        body.removeAttribute('class');
+        body.classList.add(`theme-${currentPreference}`)
+        console.log(currentPreference);
+        this.saveProfile()
+
+      })
+    } else {
+      let body = document.getElementsByTagName("body")[0];
+      // removes all classes from body, probably not best for later on
+      body.removeAttribute('class');
+      body.classList.add(`theme-${this.currentTheme}`)
+      console.log(this.currentTheme);
+      this.saveProfile()
+    }
   }
 
   public resetHyp3Url() {

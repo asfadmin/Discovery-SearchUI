@@ -84,11 +84,12 @@ $themes: (
     primary-dark: darken($asf-primary, 15%),
   ),
   dark: (
-    light-primary-text: rgba(black, 0.54),
-    light-secondary-text: rgba(black, 0.54),
-    light-disabled-text: rgba(black, 0.38),
-    light-dividers: rgba(black, 0.12),
-    light-focused: rgba(black, 0.12),
+    light-primary-text: white,
+    light-secondary-text: rgba(white, 0.54),
+    light-disabled-text: rgba(white, 0.38),
+    light-dividers: rgba(white, 0.12),
+    light-focused: rgba(white, 0.12),
+    
     dark-primary-text: rgb(183, 183, 183),
     dark-secondary-text: rgba(183, 183, 183, 0.7),
     dark-disabled-text: rgba(183, 183, 183, 0.5),

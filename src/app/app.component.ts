@@ -43,7 +43,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public shouldOmitSearchPolygon$ = this.store$.select(filterStore.getShouldOmitSearchPolygon);
   public isLoading$ = this.store$.select(searchStore.getIsLoading);
-
+  public isAutoTheme = false;
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
 
@@ -77,7 +77,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private dialog: MatDialog,
     private notificationService: services.NotificationService,
     private sarviewsService: services.SarviewsEventsService,
-    private mapService: services.MapService
+    private mapService: services.MapService,
+    private themeService: services.ThemingService,
   ) {}
 
   public ngAfterViewInit(): void {
@@ -89,8 +90,20 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           this.store$.dispatch(new filterStore.SetDefaultFilters(presets)))
     );
   }
-
   public ngOnInit(): void {
+    this.subs.add(
+      this.themeService.theme.subscribe(theme => {
+        // check if the user profile has auto in it.
+        console.log(theme)
+        console.log(this.isAutoTheme)
+        if(this.isAutoTheme) {
+          let body = document.getElementsByTagName('body')[0];
+          body.removeAttribute('class');
+          body.classList.add(`theme-${theme}`);
+          console.log(theme);
+        }
+      })
+    )
     this.subs.add(
       this.store$.select(queueStore.getQueuedJobs).subscribe(
         jobs => this.queuedCustomProducts = jobs
@@ -221,7 +234,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       this.store$.select(userStore.getUserProfile).subscribe(
         profile => {
           this.urlStateService.setDefaults(profile);
-
+          console.log('User profile theme:', profile.theme);
+          this.isAutoTheme = profile.theme === 'System Preferences';
           if (this.searchType !== models.SearchType.LIST
             && this.searchType !== models.SearchType.CUSTOM_PRODUCTS
             && this.searchType !== models.SearchType.SARVIEWS_EVENTS) {

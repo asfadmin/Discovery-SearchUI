@@ -1,5 +1,4 @@
 $light-grey: rgb(0 0 0 / 60%);
-
 .description-layout {
   display: flex;
 }
@@ -187,7 +186,7 @@ $light-grey: rgb(0 0 0 / 60%);
 
 .dataset-date-range {
   @include themify($themes) {
-    color: themed('dark-secondary-text');
+    color: themed('dark-disabled-text') !important;
   }
   font-weight: bold;
   line-height: 30px;

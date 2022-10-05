@@ -38,6 +38,7 @@ $theme-map: null;
 
   .toast-close-button,
   #toast-container > .toast-close-button {
+    
     color: $asf-background-white;
   }
 
@@ -68,13 +69,17 @@ $theme-map: null;
 
 .toast-info,
 #toast-container > .toast-info {
-  color: $asf-primary-dark;
-  background-color: $asf-background-white;
+  @include themify_non_host($themes) {
+    background-color: themed('background-white');
+    color: themed('dark-primary-text');
+    .toast-message {
+      color: themed('dark-secondary-text');
+    }
+  }
+
   background-image: url("/assets/icons/info_black_48dp.svg");
 
-  .toast-message {
-    color: $asf-primary;
-  }
+
 
   a {
     color: $asf-blue;
@@ -298,7 +303,6 @@ ul {
   @include themify_non_host($themes) {
     border-color: themed('primary-light');
   }
-  border-color: $asf-primary-light;
   width: 100%;
   border-style: solid;
   border-width: 1px;
@@ -512,14 +516,15 @@ ul {
   width: 100%;
 }
 
-$background-color: $asf-primary-light;
 $d-width: 600px;
 $d-height: 500px;
 
 #ConfirmProcess {
+  @include themify_non_host($themes) {
+    background: themed('primary-light') !important;
+  }
   resize: none;
   overflow: hidden;
-  background: $background-color !important;
   width: $d-width !important;
   height: $d-height !important;
   min-width: $d-width !important;
@@ -558,8 +563,10 @@ $d-height: 500px;
 }
 
 .content-block .mat-step-header .mat-step-icon {
-  background-color: $asf-primary;
-  color: $light-primary-text;
+  @include themify_non_host($themes) {
+    background-color: themed('primary');
+    color: themed('light-primary-text');
+  }
 }
 
 .content-block .mat-step-label-selected {

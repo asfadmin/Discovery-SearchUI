@@ -71,7 +71,7 @@
         (selectionChange)="onChangeDefaultTheme($event.value)"
         name="preset">
           <mat-option [value]="theme" *ngFor="let theme of themeOptions">
-            {{ theme | titlecase}} Theme
+            {{ theme | titlecase}}
           </mat-option>
         </mat-select>
       </mat-form-field>
