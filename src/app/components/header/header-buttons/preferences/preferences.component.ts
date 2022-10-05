@@ -38,16 +38,18 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   public searchTypeKeys = Object.keys(this.searchType).filter(val => val !== 'LIST' && val !== 'CUSTOM_PRODUCTS');
   public selectedSearchType = SearchType.DATASET;
 
+
+  public themeOptions: string[] = ['light', 'dark'];
   public userFiltersBySearchType = {};
   public userFilters: SavedFilterPreset[];
   public selectedFiltersIDs = {
-    'Baseline Search' : '',
-    'Geographic Search' : '',
-    'SBAS Search' : ''
+    'Baseline Search': '',
+    'Geographic Search': '',
+    'SBAS Search': ''
   };
-
+  public currentTheme = 'light';
   public currentFilterDisplayNames = {};
-
+  
   private subs = new SubSink();
 
   constructor(
@@ -66,6 +68,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
           this.selectedFiltersIDs = profile.defaultFilterPresets;
           this.defaultMaxConcurrentDownloads = profile.defaultMaxConcurrentDownloads;
           this.hyp3BackendUrl = profile.hyp3BackendUrl;
+          this.currentTheme = profile.theme;
           if (this.hyp3BackendUrl) {
             this.hyp3.setApiUrl(this.hyp3BackendUrl);
           } else {
@@ -83,28 +86,28 @@ export class PreferencesComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.store$.select(userStore.getSavedFilters).subscribe(savedFilters => {
-          this.userFilters = savedFilters;
-          for (const searchtype in SearchType) {
-            if (searchtype !== 'LIST' && searchtype !== 'CUSTOM_PRODUCTS') {
-              const defaultPreset: SavedFilterPreset = {
-                filters: {} as FilterType,
-                id: '',
-                name: 'Default',
-                searchType: searchtype[searchtype]
-              };
+        this.userFilters = savedFilters;
+        for (const searchtype in SearchType) {
+          if (searchtype !== 'LIST' && searchtype !== 'CUSTOM_PRODUCTS') {
+            const defaultPreset: SavedFilterPreset = {
+              filters: {} as FilterType,
+              id: '',
+              name: 'Default',
+              searchType: searchtype[searchtype]
+            };
 
-              this.userFiltersBySearchType[SearchType[searchtype]] = [defaultPreset];
-            }
+            this.userFiltersBySearchType[SearchType[searchtype]] = [defaultPreset];
           }
-
-          savedFilters.forEach(preset => this.userFiltersBySearchType[preset.searchType]?.push(preset));
-
-          const searchTypeKeys = Object.keys(this.selectedFiltersIDs);
-          searchTypeKeys.forEach(key =>
-            this.currentFilterDisplayNames[key] = this.userFilters.find(preset => preset.id === this.selectedFiltersIDs[key])?.id
-          );
         }
-        )
+
+        savedFilters.forEach(preset => this.userFiltersBySearchType[preset.searchType]?.push(preset));
+
+        const searchTypeKeys = Object.keys(this.selectedFiltersIDs);
+        searchTypeKeys.forEach(key =>
+          this.currentFilterDisplayNames[key] = this.userFilters.find(preset => preset.id === this.selectedFiltersIDs[key])?.id
+        );
+      }
+      )
     );
 
   }
@@ -144,6 +147,16 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     this.saveProfile();
   }
 
+  public onChangeDefaultTheme(theme: string) {
+    this.currentTheme = theme;
+    let body = document.getElementsByTagName("body")[0];
+    // removes all classes from body, probably not best for later on
+    body.removeAttribute('class');
+    body.classList.add(`theme-${this.currentTheme}`)
+    console.log(this.currentTheme);
+    this.saveProfile()
+  }
+
   public resetHyp3Url() {
     this.hyp3.setDefaultApiUrl();
     this.hyp3BackendUrl = this.hyp3.apiUrl;
@@ -157,20 +170,12 @@ export class PreferencesComponent implements OnInit, OnDestroy {
       defaultMaxConcurrentDownloads: this.defaultMaxConcurrentDownloads,
       defaultFilterPresets: this.selectedFiltersIDs,
       hyp3BackendUrl: this.hyp3BackendUrl,
+      theme: this.currentTheme
     });
 
     this.store$.dispatch(action);
   }
-  public toggleTheme() {
-    let body = document.getElementsByTagName("body")[0];
-    if(body.classList.contains('theme-dark')) {
-      body.classList.remove('theme-dark');
-      body.classList.add('theme-light');
-    } else {
-      body.classList.remove('theme-light');
-      body.classList.add('theme-dark');
-    }
-  }
+
   ngOnDestroy() {
     this.subs.unsubscribe();
   }

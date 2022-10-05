@@ -1,14 +1,16 @@
 @use "@angular/material" as mat;
+
 @import "asf-theme";
+
 // Create a config with the default typography levels.
 $config: mat.define-typography-config();
 
 .mat-header-base {
-  // @include themify($themes) {
-  //   background: themed('primary-dark') !important;
-  //   color: themed('primary-dark');
-  //   border-color: themed('primary');
-  // }
+  @include themify_non_host($themes) {
+    background-color: themed('primary-light');
+    color: themed('dark-primary-text');
+    border-color: themed('primary');
+  }
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   border-left-width: 0;
@@ -20,30 +22,29 @@ $config: mat.define-typography-config();
 
 .mat-expansion-panel-header,
 .mat-expansion-panel-header.mat-expanded {
-  // @extend .mat-header-base;
-  @include themify($themes) {
-    background-color: themed('light-primary-text');
-  }
+  @extend .mat-header-base;
+
   &:hover,
   &:visited,
   &:link,
   &:active,
   &:focus,
   &[aria-disabled="true"] {
+
     @extend .mat-header-base;
+    @include themify_non_host($themes) {
+      background-color: themed('primary-light');
+      color: themed('dark-primary-text');
+      border-color: themed('primary');
+    }
   }
 }
 
 .mat-expansion-panel-header-title {
-
+  color: white;
   font-size: mat.font-size($config, subheading-2);
 }
-.mat-expansion-panel-header {
-  @include themify($themes) {
-    background: themed('primary-dark');
-    color: themed('primary-dark');
-  }
-}
+
 .mat-expansion-panel-header-description {
   color: white;
 }

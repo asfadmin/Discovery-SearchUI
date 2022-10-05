@@ -144,7 +144,9 @@ $light-grey: rgb(0 0 0 / 60%);
 }
 
 .blue-link {
-  color: $uaf-primary-blue;
+  @include themify($themes) {
+    color: themed('blue');
+  }
 }
 
 .mobile-button-wrapper {

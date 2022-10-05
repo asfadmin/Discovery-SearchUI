@@ -152,7 +152,7 @@ $themes: (
 
 
 .theme-dark {
-  $asf-dark-theme: mat.define-dark-theme($asf-app-dark-primary, $contrast);
+  $asf-dark-theme: mat.define-dark-theme($asf-app-dark-primary, $dark_contrast);
   @include mat.all-component-themes($asf-dark-theme);
 
   .md-icon{

@@ -32,7 +32,7 @@ $config: mat.define-typography-config();
 .attribute-box {
   @include themify($themes) {
     background-color: themed('primary-light');
-    color: themed('primary');
+    color: themed('dark-primary-text');
     border-color: themed('primary-light');
   }
   border-style: solid;
@@ -57,7 +57,7 @@ $config: mat.define-typography-config();
 
 a {
   @include themify($themes) {
-    color: themed('primary');
+    color: themed('dark-secondary-text');
   }
   
   text-decoration: none;
@@ -73,7 +73,7 @@ a {
 .bar-layout {
   @include themify($themes) {
     background-color: themed('primary-light');
-    color: themed('primary');
+    color: themed('dark-secondary-text');
     border-top: 1px solid themed('primary-dark');
   }
   display: flex;
@@ -93,7 +93,7 @@ a {
 .toggle-button {
   @include themify($themes) {
     background-color: themed('primary-light');
-    color: themed('primary-dark');
+    color: themed('dark-secondary-text');
     border-bottom-color: lighten(themed('primary-light'),10%);
   }
   pointer-events: auto;

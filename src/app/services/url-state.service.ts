@@ -145,7 +145,11 @@ export class UrlStateService {
     if (this.loadLocations['maxResults'] !== models.LoadTypes.URL) {
       this.store$.dispatch(new filterStore.SetMaxResults(profile.maxResults));
     }
-
+    if(profile.theme) {
+      const body = document.getElementsByTagName('body')[0];
+      body.removeAttribute('class');
+      body.classList.add(`theme-${profile.theme}`);
+    }
     const action = profile.mapLayer === models.MapLayerTypes.STREET ?
       new mapStore.SetStreetView() :
       new mapStore.SetSatelliteView();
