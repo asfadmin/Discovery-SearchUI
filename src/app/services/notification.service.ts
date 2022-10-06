@@ -6,12 +6,17 @@ import * as uiStore from '@store/ui';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import { take } from 'rxjs/operators';
+
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationService {
 
-  constructor(private toastr: ToastrService, private store$: Store<AppState>) {}
+  constructor(
+    private toastr: ToastrService,
+    private store$: Store<AppState>,
+    // private dialog: MatDialog
+    ) {}
 
   // Custom toastr config example, toastClass styling in styles.scss
   private toastOptions: Partial<IndividualConfig> = {

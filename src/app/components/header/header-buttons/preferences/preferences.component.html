@@ -57,7 +57,6 @@
       <mat-form-field class="default-filters-presets">
         <mat-label>HyP3 API URL</mat-label>
         <input matInput
-          (input)="onChangeBackendUrl()"
           [(ngModel)]="hyp3BackendUrl"
           name="backendUrl">
         <button matSuffix mat-icon-button aria-label="Clear" (click)="resetHyp3Url()">

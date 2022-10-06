@@ -33,6 +33,9 @@ export enum UIActionType {
   CLOSE_BOTTOM_MENU = '[UI] Close Bottom Menu',
   OPEN_BOTTOM_MENU = '[UI] Open Bottom Menu ',
 
+  OPEN_PREFERENCE_MENU = '[UI] Open Preferences Menu',
+  CLOSE_PREFERENCE_MENU = '[UI] Close Preferences Menu',
+
   LOAD_BANNERS = '[Banner] Load Banners',
   ADD_BANNERS = '[Banner] Set Banners',
   REMOVE_BANNER = '[Banner] Remove Banner',
@@ -108,6 +111,14 @@ export class OpenResultsMenu implements Action {
   public readonly type = UIActionType.OPEN_BOTTOM_MENU;
 }
 
+export class OpenPreferenceMenu implements Action {
+  public readonly type = UIActionType.OPEN_PREFERENCE_MENU;
+}
+
+export class ClosePreferenceMenu implements Action {
+  public readonly type = UIActionType.CLOSE_PREFERENCE_MENU;
+}
+
 export class SetIsBrowseDialogOpen implements Action {
   public readonly type = UIActionType.SET_IS_BROWSE_DIALOG_OPEN;
 
@@ -172,6 +183,8 @@ export type UIActions =
   | ToggleResultsMenu
   | CloseResultsMenu
   | OpenResultsMenu
+  | OpenPreferenceMenu
+  | ClosePreferenceMenu
   | SetOnlyScenesWithBrowse
   | SetHelpDialogTopic
   | SetIsBrowseDialogOpen
