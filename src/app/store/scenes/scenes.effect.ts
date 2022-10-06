@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { of } from 'rxjs';
-import { map, switchMap, catchError, distinctUntilChanged, filter, withLatestFrom } from 'rxjs/operators';
+import { map, switchMap, catchError, distinctUntilChanged, filter, withLatestFrom, debounceTime } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { UnzipApiService } from '@services/unzip-api.service';
 import { NotificationService } from '@services/notification.service';
@@ -70,7 +70,10 @@ export class ScenesEffects {
 
   public setSelectedSceneOnLoad = createEffect(() => this.actions$.pipe(
     ofType<SetScenes>(ScenesActionType.SET_SCENES),
-    // distinctUntilChanged(),
+    filter(scenes => !!scenes.payload.products),
+    filter(scenes => scenes.payload.products.length > 0),
+    debounceTime(500),
+    distinctUntilChanged(),
     withLatestFrom(this.store$.select(getSelectedScene)),
     map(([action, selected]) => {
       const products = action.payload.products
@@ -115,7 +118,7 @@ export class ScenesEffects {
         }
       }
 
-      this.store$.dispatch(new SetSelectedScene(current_selected))
+      return new SetSelectedScene(current_selected)
     })
-  ), {dispatch: false})
+  ))
 }
