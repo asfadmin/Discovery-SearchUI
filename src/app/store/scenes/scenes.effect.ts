@@ -60,14 +60,6 @@ export class ScenesEffects {
     map(processedEvent => new SetSarviewsEventProducts(!!processedEvent.products ? processedEvent.products : []))
   ));
 
-  private showUnzipApiLoadError(product: CMRProduct): void {
-    this.notificationService.error(
-      `Error loading files for ${product.id}`,
-      'Error',
-      { timeOut: 5000 }
-    );
-  }
-
   public setSelectedSceneOnLoad = createEffect(() => this.actions$.pipe(
     ofType<SetScenes>(ScenesActionType.SET_SCENES),
     filter(scenes => !!scenes.payload.products),
@@ -118,7 +110,15 @@ export class ScenesEffects {
         }
       }
 
-      return new SetSelectedScene(current_selected)
+      return new SetSelectedScene(current_selected);
     })
-  ))
+  ));
+
+  private showUnzipApiLoadError(product: CMRProduct): void {
+    this.notificationService.error(
+      `Error loading files for ${product.id}`,
+      'Error',
+      { timeOut: 5000 }
+    );
+  }
 }
