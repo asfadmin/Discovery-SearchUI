@@ -160,11 +160,14 @@
 
         <div class="menu-item mat-menu-item"
           (click)="onSetSearchType(searchTypes.CUSTOM_PRODUCTS)"
-          [ngClass]="{'disable-search-type' : !isLoggedIn}">
+          [ngClass]="{'disable-search-type-on-demand' : !isLoggedIn}">
           <div class="menu-item-inner">
             <div fxFlex="75%" class="menu-item-content">
               <div class="item-title">
                 On Demand Products
+                <span class="login-prompt" [ngClass]="{'login-hidden' : isLoggedIn}">
+                  - Sign in to access
+                </span>
               </div>
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
                 On Demand search allows you to view your submitted On Demand jobs.
