@@ -10,6 +10,7 @@ $idk-pad: 21px;
 .dl-title-group {
   @include themify($themes) {
     border-bottom-color: themed('primary-dark');
+    color: themed('dark-primary-text');
   }
   padding: 0 10px 0 10px;
   margin-top: -$bottom-offset;
@@ -19,7 +20,7 @@ $idk-pad: 21px;
 
 .dl-subtitle {
   @include themify($themes) {
-    color: themed('primary');
+    color: themed('dark-secondary-text');
   }
   margin-top: -25px;
   font-style: italic;
@@ -77,7 +78,7 @@ $idk-pad: 21px;
   text-align: center;
   font-size: 20px;
   @include themify($themes) {
-    color: themed('primary-dark');
+    color: themed('dark-primary-text');
   }
 }
 
@@ -112,7 +113,7 @@ $idk-pad: 21px;
     text-decoration: none;
 
     @include themify($themes) {
-      color: themed('primary-dark');
+      color: themed('dark-primary-text');
     }
   }
 }

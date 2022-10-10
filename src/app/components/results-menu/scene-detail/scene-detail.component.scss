@@ -137,10 +137,10 @@ a {
   display: flex;
   justify-content: flex-start;
   @include themify($themes) {
-    background: lighten(themed('primary-light'), 4%);
+    background: lighten(themed('primary-light'), 8%);
     button[disabled="true"] {
       background-color: themed('primary-light');
-      color: themed('light-primary-text');
+      color: themed('dark-secondary-text');
     }
   }
   align-items: center;
@@ -169,14 +169,14 @@ a {
   font-size: 14px;
   font-weight: 500;
   @include themify($themes) {
-    color: themed('primary-dark');
+    color: lighten(themed('dark-primary-text'), 10%);
   }
 }
 
 .search-button {
   margin-left: 20px;
   @include themify($themes) {
-    background-color: themed('primary') !important;
+    background-color: themed('primary');
     color: themed('light-primary-text');
   }
   border: 1px groove rgba(0, 0, 0, 0.25) !important;

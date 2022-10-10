@@ -6,7 +6,11 @@
     color: themed('dark-primary-text');
   }
 }
-
+.draw-svg {
+  @include themify($themes) {
+    fill: themed('dark-secondary-text');
+  }
+}
 .draw-text {
   font-size: 14px;
   line-height: 10px;

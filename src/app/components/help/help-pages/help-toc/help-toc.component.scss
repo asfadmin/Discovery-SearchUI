@@ -33,7 +33,7 @@
     width: 54px;
     height: 53px;
     @include themify($themes) {
-      color: themed('primary-light');
+      color: themed('dark-secondary-text');
     }
   }
 }

@@ -612,3 +612,21 @@ $d-height: 500px;
     margin-top: 4px;
   }
 }
+.mat-form-field.mat-focused {
+  .mat-form-field-label {
+    @include themify_non_host($themes) {
+      color: themed('dark-secondary-text') !important;
+    }
+  }
+}
+
+.opacity-slider-title {
+  @include themify_non_host($themes) {
+    color: themed('dark-primary-text');
+  }
+}
+.draw-svg {
+  @include themify_non_host($themes) {
+    fill: themed('dark-secondary-text');
+  }
+}

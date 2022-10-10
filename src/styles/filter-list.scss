@@ -34,7 +34,7 @@ $config: mat.define-typography-config();
     @extend .mat-header-base;
     @include themify_non_host($themes) {
       background-color: themed('primary-light');
-      color: themed('dark-primary-text');
+      color: themed('dark-secondary-text');
       border-color: themed('primary');
     }
   }
