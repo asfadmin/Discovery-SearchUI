@@ -26,7 +26,7 @@ export class ExportService {
     ]
     ).pipe(
       map(([polygon, shouldOmitGeoRegion]) => shouldOmitGeoRegion ? null : { polygon: polygon }),
-    )
+    );
   }
 
   public convertSearchOptionsToAsfSearch(): Observable<string> {
@@ -34,8 +34,8 @@ export class ExportService {
       withLatestFrom(this.searchParamsService.searchType$()),
       withLatestFrom(this.searchPolygon$()),
       map(([[options, type], wkt]) => {
-        let parameters = {};
-        for (let key of Object.keys(options)) {
+        const parameters = {};
+        for (const key of Object.keys(options)) {
           if (options[key]) {
             switch (key) {
               case 'bbox': {
@@ -78,13 +78,13 @@ options = ${JSON.stringify(parameters, function replacer(key, value: String) {
   if (Array.isArray(value)) {
     return { ...value }; // Converts empty array with string properties into a POJO
   }
-  if(typeof(value) === typeof('') &&  key !== 'intersectsWith') {
-    if(value.includes(',')) {
-      return value.split(',')
+  if (typeof(value) === typeof('') &&  key !== 'intersectsWith') {
+    if (value.includes(',')) {
+      return value.split(',');
     }
   }
   return value;
-}, '\t').replace(/"/g, "'")}
+}, '\t').replace(/"/g, '\'')}
 results = asf.${search_keyword}(**options)
 print(results)`;
         return python;
