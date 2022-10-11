@@ -57,7 +57,7 @@
     "install": "^0.13.0",
     "intl": "^1.2.5",
     "jwt-decode": "^2.2.0",
-    "moment": "^2.29.2",
+    "moment": "^2.29.4",
     "moment-range": "^4.0.2",
     "ngx-clipboard": "^15.0.0",
     "ngx-cookieconsent": "^2.2.3",
