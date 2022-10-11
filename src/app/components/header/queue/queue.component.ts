@@ -41,6 +41,7 @@ export class QueueComponent implements OnInit, OnDestroy {
   public queueHasOnDemandProducts = false;
   public queueHasEventMonitoringProducts = false;
   public showDemWarning: boolean;
+  public showRestrictedDatasetWarning;
 
   public copyIcon = faCopy;
   public breakpoint$ = this.screenSize.breakpoint$;
@@ -75,6 +76,7 @@ export class QueueComponent implements OnInit, OnDestroy {
       this.queueHasOnDemandProducts = !products.every(product => !product.metadata.job);
       this.queueHasEventMonitoringProducts = !products.every(product => product.groupId !== 'SARViews');
       this.showDemWarning = (this.areAnyProducts) ? this.demWarning((products)) : false;
+      this.showRestrictedDatasetWarning = (this.areAnyProducts) ? this.restrictedDatasetWarning(products) : false;
     })
   );
 
@@ -212,7 +214,7 @@ export class QueueComponent implements OnInit, OnDestroy {
       }
   }
 
-  public demWarning(products) {
+  public demWarning(products: CMRProduct[]) {
     if (!products) {
       return false;
     }
@@ -222,7 +224,13 @@ export class QueueComponent implements OnInit, OnDestroy {
         product.metadata.productType.includes('RTC_')
       );
   }
-
+  public restrictedDatasetWarning(products: CMRProduct[]) {
+    if(!products) {
+      return false;
+    }
+    return products.filter(product => product.metadata.productType !== null).
+    some(product => product.dataset === 'JERS-1' || product.dataset === 'RADARSAT-1')
+  }
   public onResized(event: ResizedEvent) {
     this.dlWidth = event.newRect.width;
     this.dlHeight = event.newRect.height;

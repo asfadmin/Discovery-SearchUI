@@ -40,7 +40,14 @@
     More...
   </a>
 </div>
-
+<div *ngIf="showRestrictedDatasetWarning" class="dem-warning">
+  Products in your queue may require a restricted dataset agreement.
+  <a class="more-link"
+     target="_blank"
+     href="https://asf.alaska.edu/restricted-data-access-request/">
+    More...
+  </a>
+</div>
 <mat-dialog-content class="dl-mat-dialog-content"
                     [class.dl-mat-dialog-content-warn]="showDemWarning"
                     [class.dl-mat-dialog-content-warn-mobile]="showDemWarning && breakpoint === breakpoints.MOBILE">
