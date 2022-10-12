@@ -1,18 +1,20 @@
 import { Injectable } from '@angular/core';
 
 import { of } from 'rxjs';
-import { map, switchMap, catchError, distinctUntilChanged, filter } from 'rxjs/operators';
+import { map, switchMap, catchError, distinctUntilChanged, filter, withLatestFrom, debounceTime } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { UnzipApiService } from '@services/unzip-api.service';
 import { NotificationService } from '@services/notification.service';
 
-import { CMRProduct } from '@models';
+import { CMRProduct, SearchType } from '@models';
 import {
   ScenesActionType, LoadUnzippedProduct,
-  AddUnzippedProduct, ErrorLoadingUnzipped
+  AddUnzippedProduct, ErrorLoadingUnzipped, SetScenes, SetSelectedScene
 } from './scenes.action';
-import { SetSarviewsEventProducts, SetSelectedSarviewsEvent } from '.';
+import { allScenesFrom, getSelectedScene, SetSarviewsEventProducts, SetSelectedSarviewsEvent } from '.';
 import { SarviewsEventsService } from '@services';
+import { AppState } from '@store/app.reducer';
+import { Store } from '@ngrx/store';
 
 @Injectable()
 export class ScenesEffects {
@@ -21,6 +23,7 @@ export class ScenesEffects {
     private unzipApi: UnzipApiService,
     private notificationService: NotificationService,
     private sarviewsService: SarviewsEventsService,
+    private store$: Store<AppState>
   ) {}
 
   public loadUnzippedProductFiles = createEffect(() => this.actions$.pipe(
@@ -55,6 +58,60 @@ export class ScenesEffects {
     // debounceTime(500),
     filter(event => !!event.products),
     map(processedEvent => new SetSarviewsEventProducts(!!processedEvent.products ? processedEvent.products : []))
+  ));
+
+  public setSelectedSceneOnLoad = createEffect(() => this.actions$.pipe(
+    ofType<SetScenes>(ScenesActionType.SET_SCENES),
+    filter(scenes => !!scenes.payload.products),
+    filter(scenes => scenes.payload.products.length > 0),
+    debounceTime(500),
+    distinctUntilChanged(),
+    withLatestFrom(this.store$.select(getSelectedScene)),
+    map(([action, selected]) => {
+      const products = action.payload.products
+      .reduce((total, product) => {
+        total[product.id] = product;
+
+        return total;
+      }, {});
+
+      let current_selected = selected?.id ?? null;
+
+      if (action.payload.searchType === SearchType.BASELINE) {
+        Object.values(products).forEach((product: CMRProduct) => {
+          if (product.metadata.temporal === 0 && product.metadata.perpendicular === 0) {
+            current_selected = product.id;
+          }
+        });
+      }
+      const productGroups: {[id: string]: string[]} = action.payload.products.reduce((total, product) => {
+        const scene = total[product.groupId] || [];
+
+        total[product.groupId] = [...scene, product.id];
+        return total;
+      }, {});
+
+      const scenes: {[id: string]: string[]} = {};
+      for (const [groupId, productNames] of Object.entries(productGroups)) {
+
+        (<string[]>productNames).sort(
+          (a, b) => products[a].bytes - products[b].bytes
+        ).reverse();
+
+        scenes[groupId] = Array.from(new Set(productNames)) ;
+      }
+
+      if (current_selected === null) {
+        const sceneList = allScenesFrom(scenes, products);
+        const firstScene = sceneList[0];
+
+        if (firstScene) {
+          current_selected = firstScene.id;
+        }
+      }
+
+      return new SetSelectedScene(current_selected);
+    })
   ));
 
   private showUnzipApiLoadError(product: CMRProduct): void {
