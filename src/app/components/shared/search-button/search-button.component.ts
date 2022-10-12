@@ -3,7 +3,7 @@ import { SubSink } from 'subsink';
 
 import { CustomizeEnvComponent } from '@components/header/header-buttons/customize-env/customize-env.component';
 import { combineLatest, Subject } from 'rxjs';
-import { tap, delay } from 'rxjs/operators';
+import { tap, delay, take } from 'rxjs/operators';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
 
@@ -21,6 +21,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { HelpComponent } from '@components/help/help.component';
 import { getFilterMaster } from '@store/scenes';
 import { SaveSearchDialogComponent } from '@components/shared/save-search-dialog';
+import { CodeExportComponent } from '../code-export/code-export.component';
+import { ApiLinkDialogComponent } from '../max-results-selector/api-link-dialog/api-link-dialog.component';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -61,6 +63,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     public clipboard: ClipboardService,
     private dialog: MatDialog,
     private notificationService: services.NotificationService,
+    private exportService: services.ExportService,
   ) {
   }
 
@@ -305,8 +308,22 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     this.maturity = maturity;
     this.env.setMaturity(maturity);
   }
+  public exportPython(): void {
+    this.exportService.convertSearchOptionsToAsfSearch().pipe(take(1)).subscribe(
+      (data) => {
+        this.dialog.open(CodeExportComponent, {
+          data: { codeStuff: data },
+          width: '550px',
+          height: '500px',
+          maxWidth: '550px',
+          maxHeight: '500px',
+        });
+      });
+  }
 
-
+  public exportAPI(): void {
+    this.dialog.open(ApiLinkDialogComponent);
+  }
   ngOnDestroy() {
     this.subs.unsubscribe();
   }

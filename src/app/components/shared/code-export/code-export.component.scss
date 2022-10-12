@@ -1,0 +1,21 @@
+.dialog-header {
+  font-weight: bold;
+  font-size: 30px;
+  margin-bottom: 13px;
+}
+
+.close-x {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  text-align: right;
+  cursor: pointer;
+}
+
+.code-block {
+  padding: 10px;
+  max-height: 300px;
+  overflow: auto;
+  background: #f6f6f6d1;
+  border-radius: 1%;
+}

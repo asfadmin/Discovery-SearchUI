@@ -2,7 +2,8 @@
   (mouseenter)="isHovered = true"
   (mouseleave)="isHovered = false">
 
-  <ng-container matListIcon *ngIf="canUnzip(product)">
+  <!--<ng-container matListIcon *ngIf="canUnzip(product)">-->
+  <ng-container matListIcon *ngIf="false">
     <mat-icon
       *ngIf="!isUnzipLoading && !isOpen"
       (click)="onLoadUnzippedProduct()"
@@ -23,7 +24,8 @@
       <fa-icon icon="spinner" [pulse]="true"></fa-icon>
     </div>
   </ng-container>
-  <ng-container matListIcon *ngIf="!canUnzip(product)">
+  <!--<ng-container matListIcon *ngIf="!canUnzip(product)">-->
+  <ng-container matListIcon>
     <mat-icon mat-icon-button disabled></mat-icon>
   </ng-container>
 

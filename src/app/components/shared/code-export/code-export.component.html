@@ -1,0 +1,20 @@
+<mat-dialog-content>
+    <div style="display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 15px;">
+      <div class="dialog-header" mat-dialog-title>ASF Search Python Export</div>
+      <div>
+        <mat-icon (click)="onCloseCodeExport()" class="clickable">
+          close
+        </mat-icon>
+      </div>
+    </div>
+<pre #codeblock class="code-block">{{codeStuff}}</pre>
+</mat-dialog-content>
+
+<mat-dialog-actions style="margin-top: 15px;">
+    <button mat-flat-button>
+      <app-docs-modal url="https://docs.asf.alaska.edu/asf_search/basics/"
+      text="ASF Search Docs">
+      </app-docs-modal>
+    </button>
+    <button (click)="copyToClipboard()" color="primary" mat-flat-button>Copy</button>
+</mat-dialog-actions>
