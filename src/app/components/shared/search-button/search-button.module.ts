@@ -6,7 +6,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSharedModule } from '@shared';
 import { SearchButtonComponent } from './search-button.component';
 import { SaveSearchDialogModule } from '@components/shared/save-search-dialog';
-
+// import { CodeExportModule } from '@components/shared/code-export'
 @NgModule({
   declarations: [
     SearchButtonComponent
@@ -16,7 +16,8 @@ import { SaveSearchDialogModule } from '@components/shared/save-search-dialog';
     MatSharedModule,
     MatButtonToggleModule,
     MatMenuModule,
-    SaveSearchDialogModule
+    SaveSearchDialogModule,
+    // CodeExportModule
   ],
   exports: [
     SearchButtonComponent

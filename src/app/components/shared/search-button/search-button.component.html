@@ -65,7 +65,12 @@
     matTooltipPosition="after">
       <button mat-menu-item (click)="onOpenHelp('toc')">Help & Tutorials</button>
   </span>
-
+    <button
+    mat-menu-item
+    [matMenuTriggerFor]="exportSearchMenu">
+    Export
+    </button>
+  
   <button *ngIf="isDevMode()" mat-menu-item [matMenuTriggerFor]="apiMaturity" matSuffix>
     <mat-icon>swap_horizontal_circle</mat-icon>
     Maturity
@@ -138,7 +143,14 @@
   </span>
 
 </mat-menu>
-
+<mat-menu #exportSearchMenu="matMenu">
+  <button mat-menu-item (click)="exportPython()" mat-menu-item matSuffix [disabled]="!(searchType === searchTypes.DATASET || searchType === searchTypes.LIST || searchType === searchTypes.BASELINE)">
+    Export Python
+  </button>
+  <button mat-menu-item (click)="exportAPI()">
+    Export API
+  </button>
+</mat-menu>
 <mat-menu #apiMaturity="matMenu">
   <button [class.selected]="maturity === 'test'"
     (click)="onTestSelected()"
@@ -152,9 +164,10 @@
       <span>Production</span>
   </button>
 
-  <button (click)="onOpenCustomizeEnv()" mat-menu-item matSuffix>
+  <button (click)="onOpenCustomizeEnv()" mat-menu-item matSuffix >
     <span>
       Customize Environments
     </span>
   </button>
+
 </mat-menu>
