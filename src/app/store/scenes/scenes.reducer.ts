@@ -2,7 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { ScenesActionType, ScenesActions } from './scenes.action';
 
-import { CMRProduct, UnzippedFolder, ColumnSortDirection, SearchType, SarviewsEvent, SarviewsProduct } from '@models';
+import { CMRProduct, UnzippedFolder, ColumnSortDirection, SarviewsEvent, SarviewsProduct } from '@models';
 import { PinnedProduct } from '@services/browse-map.service';
 
 interface SceneEntities { [id: string]: CMRProduct; }
@@ -89,30 +89,10 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
         scenes[groupId] = Array.from(new Set(productNames)) ;
       }
 
-      let selected = products[state.selected] ? products[state.selected].id : null;
-
-      if (action.payload.searchType === SearchType.BASELINE) {
-        Object.values(products).forEach((product: CMRProduct) => {
-          if (product.metadata.temporal === 0 && product.metadata.perpendicular === 0) {
-            selected = product.id;
-          }
-        });
-      }
-
-      if (selected === null) {
-        const sceneList = allScenesFrom(scenes, products);
-        const firstScene = sceneList[0];
-
-        if (firstScene) {
-          selected = firstScene.id;
-        }
-      }
-
       return {
         ...state,
 
         ids: Object.keys(products),
-        selected,
 
         areResultsLoaded: true,
         products,

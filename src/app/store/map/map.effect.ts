@@ -210,7 +210,7 @@ export class MapEffects {
       && resultsOpen
     ),
     withLatestFrom(this.store$.select(getAreResultsLoaded)),
-    tap(([loaded, _]) => { 
+    tap(([loaded, _]) => {
         if(loaded) {
           return this.store$.dispatch(new SetSearchOutOfDate(true));
         }

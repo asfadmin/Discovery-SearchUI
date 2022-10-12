@@ -88,7 +88,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       this.allJobNames = flattened;
     });
 
-    const sortedScenes$ = this.scenesService.sortScenes$(this.scenesService.scenes$());
+    const sortedScenes$: Observable<CMRProduct[]> = this.scenesService.sortScenes$(this.scenesService.scenes$());
 
     this.subs.add(
       this.store$.select(scenesStore.getSelectedScene).pipe(
