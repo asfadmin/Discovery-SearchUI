@@ -12,7 +12,7 @@ import {
   AddUnzippedProduct, ErrorLoadingUnzipped, SetScenes, SetSelectedScene
 } from './scenes.action';
 import { allScenesFrom, getSelectedScene, SetSarviewsEventProducts, SetSelectedSarviewsEvent } from '.';
-import { SarviewsEventsService } from '@services';
+import { SarviewsEventsService, ScenesService } from '@services';
 import { AppState } from '@store/app.reducer';
 import { Store } from '@ngrx/store';
 
@@ -23,7 +23,8 @@ export class ScenesEffects {
     private unzipApi: UnzipApiService,
     private notificationService: NotificationService,
     private sarviewsService: SarviewsEventsService,
-    private store$: Store<AppState>
+    private store$: Store<AppState>,
+    private sceneService: ScenesService
   ) {}
 
   public loadUnzippedProductFiles = createEffect(() => this.actions$.pipe(
@@ -64,11 +65,13 @@ export class ScenesEffects {
     ofType<SetScenes>(ScenesActionType.SET_SCENES),
     filter(scenes => !!scenes.payload.products),
     filter(scenes => scenes.payload.products.length > 0),
-    debounceTime(500),
+    debounceTime(1000),
+    withLatestFrom(this.sceneService.scenes$()),
+    map(([action, filtered]) => ({products: filtered, searchType: action.payload.searchType})),
     distinctUntilChanged(),
     withLatestFrom(this.store$.select(getSelectedScene)),
     map(([action, selected]) => {
-      const products = action.payload.products
+      const products = action.products
       .reduce((total, product) => {
         total[product.id] = product;
 
@@ -77,14 +80,14 @@ export class ScenesEffects {
 
       let current_selected = selected?.id ?? null;
 
-      if (action.payload.searchType === SearchType.BASELINE) {
+      if (action.searchType === SearchType.BASELINE) {
         Object.values(products).forEach((product: CMRProduct) => {
           if (product.metadata.temporal === 0 && product.metadata.perpendicular === 0) {
             current_selected = product.id;
           }
         });
       }
-      const productGroups: {[id: string]: string[]} = action.payload.products.reduce((total, product) => {
+      const productGroups: {[id: string]: string[]} = action.products.reduce((total, product) => {
         const scene = total[product.groupId] || [];
 
         total[product.groupId] = [...scene, product.id];
