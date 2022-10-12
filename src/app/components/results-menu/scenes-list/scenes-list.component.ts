@@ -16,7 +16,8 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 import * as services from '@services';
 import * as models from '@models';
-import { QueuedHyp3Job, SarviewsEvent } from '@models';
+import { CMRProduct, QueuedHyp3Job, SarviewsEvent } from '@models';
+import { SetSelectedScene } from '@store/scenes';
 
 @Component({
   selector: 'app-scenes-list',
@@ -28,7 +29,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
   @ViewChild(CdkVirtualScrollViewport, { static: true }) scroll: CdkVirtualScrollViewport;
   @Input() resize$: Observable<void>;
 
-  public scenes;
+  public scenes: CMRProduct[];
   public pairs;
   public jobs;
   public sarviewsEvents: SarviewsEvent[];
@@ -144,6 +145,10 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       sortedScenes$.pipe(debounceTime(250)).subscribe(
         scenes => {
           this.scenes = scenes;
+
+          if (!this.scenes.map(scene => scene.id).includes(this.selected)) {
+            this.store$.dispatch(new SetSelectedScene(this.scenes[0].id))
+          }
         }
       )
     );
