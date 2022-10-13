@@ -128,10 +128,10 @@ export class ScenesEffects {
       ),
     map(([[_, scenes], selected]) => {
       if (!scenes.map(scene => scene.id).includes(selected.id)) {
-        this.store$.dispatch(new SetSelectedScene(scenes[0].id))
+        this.store$.dispatch(new SetSelectedScene(scenes[0].id));
       }
     })
-  ), {dispatch: false})
+  ), {dispatch: false});
 
   private showUnzipApiLoadError(product: CMRProduct): void {
     this.notificationService.error(
