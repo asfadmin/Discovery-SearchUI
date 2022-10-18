@@ -90,15 +90,22 @@
   width: 56px;
   height: 25px;
   z-index: 9;
-  background-image: url("/assets/div-handles/hsizegrip.png");
+  // background-image: url("/assets/div-handles/hgrip.svg");
   @include themify($themes) {
     background-color: themed('primary-light');
   }
   background-position: center;
   background-repeat: no-repeat;
   cursor: ns-resize;
+  display: grid;
+  place-content: center;
 }
-
+.hgrip-icon {
+  @include themify($themes) {
+    stroke: themed('dark-primary-text');
+  }
+  width: 33px;
+}
 .resize-spacer {
   width: 64px;
   display: inline-block;

@@ -630,3 +630,13 @@ $d-height: 500px;
     fill: themed('dark-secondary-text');
   }
 }
+.view-btn {
+  @include themify_non_host($themes) {
+    fill: themed('dark-primary-text');
+  }
+}
+.critical-baseline {
+  @include themify_non_host($themes) {
+    fill: darken(themed('background-white'), 5%);
+  }
+}

@@ -74,9 +74,9 @@ $config: mat.define-typography-config();
     background-color: themed('primary-light');
   }
   height: 100%;
-  background-image: url("//assets/div-handles/hsizegrip.png");
-  background-position: left;
-  background-repeat: no-repeat;
+  // background-image: url("//assets/div-handles/hgrip.svg");
+  // background-position: left;
+  // background-repeat: no-repeat;
 }
 
 .mwlResizable {
@@ -84,27 +84,39 @@ $config: mat.define-typography-config();
 }
 
 .chart-draggable-handle {
+  @include themify($themes) {
+    background-color: themed('primary-light');
+    border-color: themed('primary-light');
+    color: themed('primary-light');
+  }
   display: flex;
   align-items: center;
   cursor: ew-resize;
   border-style: solid;
   border-radius: 5px;
-  border-color: #c9cac4;
-  color: #c9cac4;
   position: absolute;
   left: 0;
   top: 0;
 }
 
 .sbas-resize-handle-filler {
+  @include themify($themes) {
+    background-color: themed('primary-light');
+  }
   width: 10px;
-  height: 100%;
-  background-image: url("/assets/div-handles/vsizegrip.png");
-  background-color: #c9cac4;
-  background-position: center;
-  background-repeat: no-repeat;
-}
 
+  height: 100%;
+  // background-image: url("/assets/div-handles/vgrip.svg");
+  // background-color: #c9cac4;
+  // background-position: center;
+  // background-repeat: no-repeat;
+}
+.vgrip-icon {
+  @include themify($themes) {
+    stroke: themed('dark-primary-text');
+  }
+  height: 33px;
+}
 .sbas-header {
   @include themify($themes) {
     background-color: themed('primary-light');

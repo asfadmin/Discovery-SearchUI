@@ -170,7 +170,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
     this.clipContainer = this.svg.append('g')
       .attr('clip-path', 'url(#clip)');
     this.criticalBoxContainer = this.clipContainer.append('g').append('rect')
-      .attr('fill', '#f2f2f2');
+      .attr('class', 'critical-baseline');
     this.x = d3.scaleLinear()
     .domain(this.xExtent ?? [1, 100])
       .range([0, this.width]);

@@ -419,6 +419,26 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       'Volcano',
       this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/Volcano.svg')
     );
+    this.matIconRegistry.addSvgIcon(
+      'arctic',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/arctic.svg')
+    );
+    this.matIconRegistry.addSvgIcon(
+      'equatorial',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/globe.svg')
+    );
+    this.matIconRegistry.addSvgIcon(
+      'antarctic',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/antarctic.svg')
+    );
+    this.matIconRegistry.addSvgIcon(
+      'hgrip',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/div-handles/hgrip.svg')
+    );
+    this.matIconRegistry.addSvgIcon(
+      'vgrip',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/div-handles/vgrip.svg')
+    );
   }
 
   private isEmptySearch(searchState): boolean {

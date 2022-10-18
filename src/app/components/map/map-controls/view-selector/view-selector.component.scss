@@ -1,13 +1,17 @@
 @import "asf-theme";
 
 .view-btn {
-  background-image: url("/assets/icons/projection-icons.png");
-  background-size: 90px 30px;
-  content: "";
-  width: 25px;
-  height: 25px;
-  margin-right: 15px;
-  display: inline-block;
+  @include themify($themes) {
+    svg {
+      fill: themed('dark-primary-text');
+    }
+  }
+  // background-size: 90px 30px;
+  // content: "";
+  width: 19px;
+  height: 19px;
+  // margin-right: 15px;
+  // display: inline-block;
 }
 
 .view-button-group {
@@ -15,15 +19,15 @@
 }
 
 .arctic {
-  background-position: 32px -2px;
+  // background-position: 32px -2px;
 }
 
 .equatorial {
-  background-position: -30px -2px;
+  // background-position: -30px -2px;
 }
 
 .antarctic {
-  background-position: -92px -2px;
+  // background-position: -92px -2px;
 }
 
 .view-select-button {
@@ -32,7 +36,7 @@
     color: themed('dark-primary-text')
   }
   margin: 0;
-  padding: 0 0 0 10px;
+  // padding: 0 0 0 10px;
   font-size: 18px !important;
   height: 27px !important;
   width: 18px !important;
@@ -40,11 +44,14 @@
   border-radius: 4px !important;
   border: solid 1px rgb(0 0 0 / 12%);
   text-align: center;
+  display: grid;
+  place-content: center;
+  line-height: 19px;
 }
 
 .view-select-icon {
   display: inline-block;
-  margin-top: -12px;
+  // margin-top: -12px;
 }
 
 .view-menu-icon {

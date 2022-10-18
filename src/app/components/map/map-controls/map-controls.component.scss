@@ -164,8 +164,9 @@ label {
 
 .tool-bar-control {
   @include themify($themes) {
+    // color: themed('dark-secondary-light');
     color: themed('primary');
-    background-color: themed('primary-light');
+    // background-color: themed('primary-light');
   }
   cursor: pointer;
   display: block;
