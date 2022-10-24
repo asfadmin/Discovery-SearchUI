@@ -3,6 +3,7 @@ $theme-map: null;
 
 // @import './styles/asf-theme';
 @import './styles/filter-list';
+@import "~prismjs/themes/prism-dark.css";
 
 * {
   font-family: Roboto, sans-serif;

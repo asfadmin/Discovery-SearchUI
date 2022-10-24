@@ -27,6 +27,7 @@ import { MatSharedModule } from '@shared';
 import { SidebarModule } from '@components/sidebar';
 import { HeaderModule } from '@components/header';
 import { MapModule } from '@components/map';
+import { CodeExportModule } from '@components/shared/code-export';
 import { ResultsMenuModule } from '@components/results-menu';
 import { BaselineChartModule } from '@components/baseline-chart';
 import { HelpModule } from '@components/help';
@@ -105,6 +106,7 @@ export const routes = [
     HelpModule,
     ToastrModule.forRoot({positionClass: 'inline', preventDuplicates: true}),
     ToastContainerModule,
+    CodeExportModule
   ],
   providers: [
     services.AsfApiService,

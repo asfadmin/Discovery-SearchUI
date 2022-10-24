@@ -33,6 +33,9 @@ export const uavsar = {
     apiValue: 'PROJECTED',
     displayName: 'Ground Projected Complex'
   }, {
+    apiValue: 'PROJECTED_ML3X3',
+    displayName: 'Ground Projected Complex, 3X3 Resampled'
+  }, {
     apiValue: 'PROJECTED_ML5X5',
     displayName: 'Ground Projected Complex, 5X5 Resampled'
   }, {

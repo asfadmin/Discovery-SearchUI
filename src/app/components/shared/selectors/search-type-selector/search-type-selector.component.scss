@@ -148,7 +148,24 @@
   visibility: hidden;
 }
 
-.disable-search-type {
+.disable-search-type-on-demand {
   pointer-events: none;
-  opacity: 0.5;
+
+  .item-title,
+  .item-content {
+    opacity: 0.5;
+  }
+
+  mat-card-actions {
+    pointer-events: auto;
+    opacity: 1 !important;
+  }
+}
+
+.login-prompt {
+  font-style: italic;
+}
+
+.login-hidden {
+  display: none;
 }

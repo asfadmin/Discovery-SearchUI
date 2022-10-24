@@ -95,7 +95,7 @@ export class SearchParamsService {
     );
   }
 
-  private searchType$() {
+  public searchType$() {
     return this.store$.select(getSearchType);
   }
 

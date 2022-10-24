@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -8,7 +7,6 @@ import * as filtersStore from '@store/filters';
 import * as scenesStore from '@store/scenes';
 
 import * as models from '@models';
-import { ApiLinkDialogComponent } from './api-link-dialog/api-link-dialog.component';
 import { SubSink } from 'subsink';
 import { PairService, ScenesService } from '@services';
 
@@ -33,7 +31,6 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
 
   constructor(
     private store$: Store<AppState>,
-    private dialog: MatDialog,
     private pairService: PairService,
     private sceneService: ScenesService,
   ) {}
@@ -90,9 +87,6 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onMoreResults(): void {
-    this.dialog.open(ApiLinkDialogComponent);
-  }
 
   public formatNumber(num: number): string {
     if (typeof num !== 'number') {

@@ -439,6 +439,10 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       'vgrip',
       this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/div-handles/vgrip.svg')
     );
+    this.matIconRegistry.addSvgIcon(
+      'unpin',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/unpin.svg')
+    );
   }
 
   private isEmptySearch(searchState): boolean {
