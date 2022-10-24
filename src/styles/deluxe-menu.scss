@@ -80,7 +80,7 @@ hr {
 
 .item-content {
   @include themify($themes) {
-    color: themed('blue');
+    color: themed('blue-link');
   }
   line-height: 18px;
 }

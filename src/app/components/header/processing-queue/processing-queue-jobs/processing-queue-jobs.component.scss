@@ -95,7 +95,7 @@
 .jobs-empty-message-docs-link,
 .jobs-empty-message-docs-link a {
   @include themify($themes) {
-    color: themed('blue');
+    color: themed('blue-link');
   }
   display: block;
   text-align: center;

@@ -36,7 +36,7 @@
 
 .mat-button {
   @include themify($themes) {
-    color: themed('blue');
+    color: themed('blue-link');
   }
   font-weight: 400;
   font-style: italic;

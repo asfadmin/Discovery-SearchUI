@@ -87,7 +87,7 @@ $idk-pad: 21px;
   padding: 7px;
   @include themify($themes) {
     background-color: darken(themed('primary-light'), 10%);
-    color: themed('blue');
+    color: themed('blue-link');
 
   }
   width: 100%;

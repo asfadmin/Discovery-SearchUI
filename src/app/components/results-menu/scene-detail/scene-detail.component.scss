@@ -3,7 +3,7 @@
 
 a {
   @include themify($themes) {
-    color: themed('blue');
+    color: themed('blue-link') !important;
   }
   text-decoration: none;
 }

@@ -53,7 +53,7 @@ $asf-primary-light: lighten($asf-primary, 40%);
 $asf-primary-dark: darken($asf-primary, 15%);
 $asf-background-white: lighten($asf-primary, 80%); 
 @mixin md-icon-size($size: 24px) {
-  color: $dark-primary-text;
+  // color: $dark-primary-text;
   font-size: $size !important;
   height: $size !important;
   width: $size !important;
@@ -79,7 +79,7 @@ $themes: (
     accent: mat.get-color-from-palette($asf-app-accent),
     warn: mat.get-color-from-palette($asf-app-warn),
     err: mat.get-color-from-palette($asf-app-err),
-    blue: mat.get-color-from-palette($asf-app-blue),
+    blue-link: mat.get-color-from-palette($asf-app-blue),
     primary-light: lighten($asf-primary, 40%),
     primary-dark: darken($asf-primary, 15%),
   ),
@@ -102,7 +102,7 @@ $themes: (
     accent: mat.get-color-from-palette($asf-app-accent),
     warn: mat.get-color-from-palette($asf-app-warn),
     err: mat.get-color-from-palette($asf-app-err),
-    blue: mat.get-color-from-palette($asf-app-blue),
+    blue-link: mat.get-color-from-palette($asf-app-blue),
     primary-light: lighten($asf-dark-primary, 5%),
     primary-dark: darken($asf-dark-primary, 15%),
 

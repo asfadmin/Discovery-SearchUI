@@ -2,7 +2,7 @@
 
 .subset-option {
   @include themify($themes) {
-    color: themed('blue');
+    color: themed('blue-link');
   }
 }
 

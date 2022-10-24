@@ -19,7 +19,7 @@ $thumb-size: 50px;
 
 .dem-warning {
   @include themify($themes) {
-    color: themed('blue');
+    color: themed('blue-link');
   }
   font-size: 14px;
   padding-left: 25px;

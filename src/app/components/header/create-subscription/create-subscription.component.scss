@@ -106,7 +106,7 @@ $bottom-offset: 10px;
 
   a {
     @include themify($themes) {
-      color: themed('blue');
+      color: themed('blue-link');
     }
     text-decoration: underline;
   }
