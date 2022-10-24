@@ -1,15 +1,15 @@
 <mat-chip-list aria-label="Job Status">
 
   <mat-chip class="clickable"
-            [matMenuTriggerFor]='expiredJobMenu'
+            [matMenuTriggerFor]='resubmitJobMenu'
             *ngIf="isExpired(job) && !isFileDetails" 
             color="primary">Expired...
   </mat-chip>
   
   <mat-chip class="clickable"
-    [matMenuTriggerFor]='expiredJobMenu'
-    *ngIf="( isFailed(job)) && !isFileDetails" 
-    color="primary">Failed...
+            [matMenuTriggerFor]='resubmitJobMenu'
+            *ngIf="isFailed(job) && !isFileDetails" 
+            color="primary">Failed...
   </mat-chip>
 
   <mat-chip *ngIf="isExpired(job) && isFileDetails" color="primary">Expired</mat-chip>
@@ -18,7 +18,7 @@
   <mat-chip *ngIf="isRunning(job)" color="secondary">Running</mat-chip>
 </mat-chip-list>
 
-<mat-menu #expiredJobMenu = "matMenu">
+<mat-menu #resubmitJobMenu = "matMenu">
   <button (click)="onReviewExpiredJob()" [disabled]="remaining < 1" mat-menu-item>
       Resubmit Job...
   </button>
