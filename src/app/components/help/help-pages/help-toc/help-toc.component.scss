@@ -108,7 +108,9 @@
   height: 20px !important;
 
   a {
-    color: $asf-blue;
+    @include themify($themes) {
+      color: themed('blue');
+    }
   }
 }
 

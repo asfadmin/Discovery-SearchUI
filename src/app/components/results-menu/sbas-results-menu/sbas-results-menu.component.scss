@@ -17,9 +17,10 @@ $config: mat.define-typography-config();
 }
 
 .sbas-criteria-button-toggle {
-  @include themify($themes) {
-    background-color: themed('background-white') !important;
-  }
+  // @include themify($themes) {
+  //   background-color: themed('primary-light') !important;
+  // }
+  background: red;
   font-size: 14px;
 }
 
@@ -120,7 +121,7 @@ $config: mat.define-typography-config();
 .sbas-header {
   @include themify($themes) {
     background-color: themed('primary-light');
-    color: themed('primary-dark')
+    color: themed('dark-primary-text')
   }
   display: flex;
   flex-direction: row;
@@ -137,9 +138,19 @@ $config: mat.define-typography-config();
 }
 
 .control-icon {
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
   margin-top: -4px;
 
   @include md-icon-size($asf-ribbon-icon-size);
+}
+.mat-button-toggle-disabled {
+  .control-icon {
+    @include themify($themes) {
+      color: themed('dark-disabled-text');
+    }
+  }
 }
 
 .sbas-ribbon-group {
@@ -163,7 +174,7 @@ $config: mat.define-typography-config();
 
 .button-group-label {
   @include themify($themes) {
-    color: themed('primary');
+    color: themed('dark-primary-text');
   }
   text-align: center;
 }
@@ -176,4 +187,10 @@ label {
 .info-icon {
   margin-left: 10px;
   margin-top: 4px;
+}
+.control-mat-button-toggle {
+  @include themify($themes) {
+    background: themed('background-white') !important;
+    // color: themed('dark-primary-text') !important;
+  }
 }

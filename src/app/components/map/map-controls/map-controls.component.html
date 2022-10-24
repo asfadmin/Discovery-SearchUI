@@ -103,6 +103,7 @@
                               class="opacity-slider"
                               name="layerType"
                               (input)="onSetOpacity($event)"
+                              color="primary"
                               [disabled]="!(isBrowseOverlayEnabled$ | async)"
                               [matTooltip]="(isBrowseOverlayEnabled$ | async) ? 'Adjust Overlay Opacity' :
                                'Product Overlays for current scene dataset not available'"

@@ -80,13 +80,13 @@ hr {
 
 .item-content {
   @include themify($themes) {
-    color: themed('dark-secondary-text');
+    color: themed('blue');
   }
   line-height: 18px;
 }
 
 .item-title {
-  @include themify($themes) {
+  @include themify_non_host($themes) {
     color: themed('dark-primary-text');
   }
   line-height: 22px;
@@ -104,7 +104,7 @@ hr {
   @include md-icon-size(65px);
 
   margin-right: 0;
-  @include themify($themes) {
+  @include themify_non_host($themes) {
     color: themed('dark-primary-text');
   }
 }

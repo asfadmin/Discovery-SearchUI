@@ -94,10 +94,12 @@
 
 .jobs-empty-message-docs-link,
 .jobs-empty-message-docs-link a {
+  @include themify($themes) {
+    color: themed('blue');
+  }
   display: block;
   text-align: center;
   font-size: 14px;
-  color: $asf-blue;
   padding-top: 10px;
   margin: 0 auto;
 }

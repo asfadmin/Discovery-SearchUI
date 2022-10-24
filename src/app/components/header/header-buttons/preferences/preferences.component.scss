@@ -14,7 +14,7 @@
 
   a {
     @include themify($themes) {
-      color: themed('primary')
+      color: themed('dark-primary-text')
     }
     text-decoration: none;
   }

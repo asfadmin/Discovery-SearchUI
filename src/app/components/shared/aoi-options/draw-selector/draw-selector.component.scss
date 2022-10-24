@@ -8,7 +8,7 @@
 }
 .draw-svg {
   @include themify($themes) {
-    fill: themed('dark-secondary-text');
+    fill: themed('dark-primary-text');
   }
 }
 .draw-text {
@@ -39,6 +39,7 @@
   @include themify($themes) {
     background: themed('background-white');
     color: themed('light-primary-text')
+    
   }
   margin: 0;
   padding: 0;

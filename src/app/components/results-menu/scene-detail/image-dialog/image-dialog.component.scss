@@ -79,8 +79,8 @@ a {
 
 .dialog-header--layout {
   @include themify($themes) {
-    color: themed('primary-dark');
-    border-bottom-color: themed('primary-dark');
+    color: themed('dark-primary-text');
+    border-bottom-color: themed('dark-primary-text');
   }
   border-bottom-style: solid;
   border-bottom-width: 1px;
@@ -88,9 +88,6 @@ a {
 }
 
 .browse-map--size {
-  @include themify($themes) {
-    background-color: themed('primary-light');
-  }
   max-width: 100%;
   max-height: 100%;
   overflow: hidden;
@@ -118,7 +115,7 @@ a {
 
 .browse-drag-handle {
   @include themify($themes) {
-    color: themed('primary');
+    color: themed('dark-primary-text');
   }
   cursor: move;
   height: 24px;
@@ -126,7 +123,7 @@ a {
 
 .close-button {
   @include themify($themes) {
-    color: themed('primary');
+    color: themed('dark-primary-text');
   }
   vertical-align: top !important;
   margin-bottom: 5px;

@@ -1,6 +1,9 @@
 @import "asf-theme";
 
 .rectangle-wrapper {
+  @include themify($themes) {
+    background: themed('background-white');
+  }
   position: fixed;
 }
 
@@ -143,7 +146,7 @@
   a {
     text-decoration: none;
     @include themify($themes) {
-      color: themed('primary')
+      color: themed('dark-primary-text')
     }
   }
 }

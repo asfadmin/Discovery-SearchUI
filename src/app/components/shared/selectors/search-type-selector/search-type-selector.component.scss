@@ -35,9 +35,11 @@
 }
 
 .mat-button {
+  @include themify($themes) {
+    color: themed('blue');
+  }
   font-weight: 400;
   font-style: italic;
-  color: $asf-blue;
 }
 
 .limitTextHeight {

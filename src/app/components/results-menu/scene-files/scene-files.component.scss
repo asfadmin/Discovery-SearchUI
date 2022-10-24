@@ -18,11 +18,13 @@ $thumb-size: 50px;
 }
 
 .dem-warning {
+  @include themify($themes) {
+    color: themed('blue');
+  }
   font-size: 14px;
   padding-left: 25px;
   padding-top: 2px;
   padding-bottom: 5px;
-  color: $asf-blue;
   background-color: rgb(220  220  220);
 }
 

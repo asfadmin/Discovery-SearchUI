@@ -54,13 +54,13 @@
 
 .panel-title {
   @include themify($themes) {
-    color: themed('primary-dark') !important;
+    color: themed('dark-primary-text') !important;
   }
 }
 
 .asf-manual-link {
   @include themify($themes) {
-    color: themed('primary')
+    color: themed('dark-secondary-text')
   }
   display: inline-block;
   line-height: 0;

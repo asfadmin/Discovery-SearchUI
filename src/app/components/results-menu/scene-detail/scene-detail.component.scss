@@ -2,8 +2,10 @@
 
 
 a {
+  @include themify($themes) {
+    color: themed('blue');
+  }
   text-decoration: none;
-  color: $uaf-primary-blue;
 }
 
 .detail-card {

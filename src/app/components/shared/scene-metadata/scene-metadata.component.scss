@@ -16,7 +16,9 @@ a {
 
   .mat-icon {
     @include md-icon-size(12px);
-
+    @include themify($themes) {
+      color: themed('dark-primary-text');
+    }
     margin-left: 4px;
   }
 }

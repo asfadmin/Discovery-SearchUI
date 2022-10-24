@@ -85,9 +85,10 @@ $idk-pad: 21px;
 .dem-warning {
   font-size: 14px;
   padding: 7px;
-  color: $asf-blue;
   @include themify($themes) {
     background-color: darken(themed('primary-light'), 10%);
+    color: themed('blue');
+
   }
   width: 100%;
 }

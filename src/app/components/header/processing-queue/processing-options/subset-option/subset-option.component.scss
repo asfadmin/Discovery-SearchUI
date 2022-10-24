@@ -1,7 +1,9 @@
 @import "asf-theme";
 
 .subset-option {
-  color: $asf-blue;
+  @include themify($themes) {
+    color: themed('blue');
+  }
 }
 
 button {
