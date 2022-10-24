@@ -2,13 +2,19 @@
 
   <mat-chip class="clickable"
             [matMenuTriggerFor]='expiredJobMenu'
-            *ngIf="(isExpired(job) || isFailed(job)) && !isFileDetails" 
+            *ngIf="isExpired(job) && !isFileDetails" 
             color="primary">Expired...
   </mat-chip>
   
+  <mat-chip class="clickable"
+    [matMenuTriggerFor]='expiredJobMenu'
+    *ngIf="( isFailed(job)) && !isFileDetails" 
+    color="primary">Failed...
+  </mat-chip>
+
   <mat-chip *ngIf="isExpired(job) && isFileDetails" color="primary">Expired</mat-chip>
   <mat-chip *ngIf="isPending(job)" color="secondary">Pending</mat-chip>
-  <mat-chip *ngIf="isFailed(job)" color="accent">Failed</mat-chip>
+  <mat-chip *ngIf="isFailed(job) && isFileDetails" color="accent">Failed</mat-chip>
   <mat-chip *ngIf="isRunning(job)" color="secondary">Running</mat-chip>
 </mat-chip-list>
 
