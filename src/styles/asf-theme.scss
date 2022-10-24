@@ -61,7 +61,7 @@ $asf-background-white: lighten($asf-primary, 80%);
 
 $themes: (
   light: (
-    background-white: lighten($asf-primary, 80%),
+    background-white: lighten(mat.get-color-from-palette($asf-app-primary), 80%),
 
     dark-primary-text: rgba(black, 0.87),
     dark-secondary-text: rgba(black, 0.54),
@@ -78,10 +78,10 @@ $themes: (
     primary: mat.get-color-from-palette($asf-app-primary),
     accent: mat.get-color-from-palette($asf-app-accent),
     warn: mat.get-color-from-palette($asf-app-warn),
-    err: mat.get-color-from-palette($asf-app-err),
+    err: red,// mat.get-color-from-palette($asf-app-err),
     blue-link: mat.get-color-from-palette($asf-app-blue),
-    primary-light: lighten($asf-primary, 40%),
-    primary-dark: darken($asf-primary, 15%),
+    primary-light: lighten(mat.get-color-from-palette($asf-app-primary), 40%),
+    primary-dark: darken(mat.get-color-from-palette($asf-app-primary), 15%),
   ),
   dark: (
     light-primary-text: white,
@@ -101,13 +101,13 @@ $themes: (
     primary: mat.get-color-from-palette($asf-app-dark-primary),
     accent: mat.get-color-from-palette($asf-app-accent),
     warn: mat.get-color-from-palette($asf-app-warn),
-    err: mat.get-color-from-palette($asf-app-err),
+    err: red,//mat.get-color-from-palette($asf-app-err),
     blue-link: mat.get-color-from-palette($asf-app-blue),
-    primary-light: lighten($asf-dark-primary, 5%),
-    primary-dark: darken($asf-dark-primary, 15%),
+    primary-light: lighten(mat.get-color-from-palette($asf-app-dark-primary), 5%),
+    primary-dark: darken(mat.get-color-from-palette($asf-app-dark-primary), 15%),
 
 
-    background-white: darken($asf-dark-primary, 5%),
+    background-white: darken(mat.get-color-from-palette($asf-app-dark-primary), 5%),
   ),
 );
 
@@ -156,9 +156,7 @@ $themes: (
   $asf-dark-theme: mat.define-dark-theme($asf-app-dark-primary, $contrast);
   @include mat.all-component-themes($asf-dark-theme);
 
-  .md-icon{
-    color: $dark-primary-text;
-  }
+
   // color: $dark-primary-text;
 }
 .theme-light {

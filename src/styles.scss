@@ -653,3 +653,8 @@ $d-height: 500px;
     fill: darken(themed('background-white'), 5%);
   }
 }
+.md-icon {
+  @include themify_non_host($themes) {
+    color: themed('dark-primary-text');
+  }
+}

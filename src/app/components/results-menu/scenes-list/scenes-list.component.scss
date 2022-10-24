@@ -12,7 +12,10 @@
 }
 
 .selected .ml-2 {
-  color: $asf-err;
+  @include themify_non_host($themes) {
+    color: themed('err');
+  }
+  // color: $asf-err;
 }
 
 .scene-controls {
