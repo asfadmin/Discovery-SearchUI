@@ -1,3 +1,4 @@
+@import "asf-theme";
 .chart-wrapper {
   height: 100%;
   border-left: lightgrey 1px solid;
@@ -40,5 +41,10 @@ ul {
 @media (max-width: 340px) {
   ul {
     font-size: 0.6em;
+  }
+}
+::ng-deep .baseline-label {
+  @include themify($themes) {
+    fill: themed('dark-primary-text');
   }
 }
