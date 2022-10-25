@@ -117,6 +117,9 @@ $img-border-style: 1px solid black;
 }
 
 .help-step {
+  @include themify($themes) {
+    color: themed('blue-link');
+  }
   //color: $header-color;
   font-weight: bold;
   font-size: larger;

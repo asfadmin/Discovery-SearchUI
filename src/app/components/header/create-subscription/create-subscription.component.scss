@@ -227,7 +227,9 @@ $bottom-offset: 10px;
 }
 
 .step-error {
-  color: $asf-warn;
+  @include themify($themes) {
+    color: themed('err');
+  }
 }
 
 .close-x {

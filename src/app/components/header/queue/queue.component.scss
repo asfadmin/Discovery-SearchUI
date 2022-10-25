@@ -86,9 +86,8 @@ $idk-pad: 21px;
   font-size: 14px;
   padding: 7px;
   @include themify($themes) {
-    background-color: darken(themed('primary-light'), 10%);
+    background-color: lighten(themed('primary-light'), 10%);
     color: themed('err');
-
   }
   width: 100%;
 }
@@ -120,7 +119,9 @@ $idk-pad: 21px;
 }
 
 .more-link {
-  color: $asf-warn;
+  @include themify($themes) {
+    color: themed('err');
+  }
 }
 
 button {

@@ -29,7 +29,9 @@ $thumb-size: 50px;
 }
 
 .more-link {
-  color: $asf-warn;
+  @include themify($themes) {
+    color: themed('warn');
+  }
 }
 
 .map-icon {

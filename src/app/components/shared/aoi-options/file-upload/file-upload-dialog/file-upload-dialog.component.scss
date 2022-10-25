@@ -43,9 +43,11 @@
 }
 
 .is-file-error {
+  @include themify($themes) {
+    color: themed('warn');
+    outline-color: themed('warn');
+  }
   animation: shake 0.82s;
-  color: $asf-warn;
-  outline-color: $asf-warn;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   perspective: 1000px;

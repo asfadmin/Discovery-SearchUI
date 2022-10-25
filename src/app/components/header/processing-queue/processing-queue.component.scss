@@ -374,17 +374,19 @@ $bottom-offset: 10px;
 }
 
 .rectangle {
+  @include themify($themes) {
+    color: themed('warn');
+    border-color: themed('warn');
+  }
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   min-height: 300px;
-  border-color: $asf-warn;
   border-style: solid;
   font-size: 25px;
   font-weight: bold;
-  color: $asf-warn;
   background-color: grey;
 }
 
