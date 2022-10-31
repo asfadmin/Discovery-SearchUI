@@ -130,7 +130,6 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
         })
       ).subscribe(
         idx => {
-          console.log('aaaihavsdibqwebuiqwbeoqwoubh');
           if (!this.selectedFromList) {
             this.scrollTo(idx);
           }

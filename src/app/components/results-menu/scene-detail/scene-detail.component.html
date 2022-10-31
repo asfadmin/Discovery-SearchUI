@@ -6,10 +6,21 @@
   <div *ngIf="sarviewEvent">
     <mat-card-header>
       <mat-card-title class="detail-card-header">
-        <span>{{
-          sarviewEvent.description[0].toUpperCase() +
-            sarviewEvent.description.slice(1)
-        }}</span>
+        <ng-template [ngIf]="!!sarviewEvent.description" [ngIfElse]="NO_DESCRIPTION">
+          <span>
+            {{
+              sarviewEvent.description[0].toUpperCase() +
+                sarviewEvent.description.slice(1)
+            }}
+          </span>
+        </ng-template>
+        <ng-template #NO_DESCRIPTION>
+          <span>
+            {{sarviewEvent.event_type[0].toLocaleUpperCase()}}{{sarviewEvent.event_type.slice(1)}}
+            Event: {{sarviewEvent.processing_timeframe.start | shortDate}}
+          </span>
+        </ng-template>
+
         <app-copy-to-clipboard
         [value]="getEventID()"
         [prompt]="'Copied Event ID'"
