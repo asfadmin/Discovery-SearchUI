@@ -2,5 +2,7 @@
 
 .arrow-button-toggle {
   padding-top: 6px;
-  background-color: $asf-primary !important;
+  @include themify($themes) {
+    background-color: themed('primary') !important;
+  }
 }

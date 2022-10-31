@@ -1,5 +1,4 @@
 $light-grey: rgb(0 0 0 / 60%);
-
 .description-layout {
   display: flex;
 }
@@ -10,7 +9,9 @@ $light-grey: rgb(0 0 0 / 60%);
   font-size: 24px !important;
   height: 47px !important;
   margin-right: 0;
-  color: $asf-primary-dark;
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
 }
 
 .dataset-hr {
@@ -37,9 +38,12 @@ $light-grey: rgb(0 0 0 / 60%);
 }
 
 .mat-button {
+  @include themify_non_host($themes) {
+    color: themed('blue');
+  }
   font-weight: 400;
   font-style: italic;
-  color: $asf-blue;
+  // color: $asf-blue;
 }
 
 .limitTextHeight {
@@ -64,7 +68,10 @@ $light-grey: rgb(0 0 0 / 60%);
 }
 
 .button-label {
-  color: rgb(0 0 0 / 60%);
+  // color: rgb(0 0 0 / 60%);
+  @include themify($themes) {
+    color: themed('dark-secondary-text');
+  }
   font-size: 14px;
   font-weight: 400;
   transform:
@@ -81,7 +88,9 @@ $light-grey: rgb(0 0 0 / 60%);
 .button-text {
   font-size: 16px;
   font-weight: 400;
-  color: black;
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
   text-align: left;
   font-style: normal;
   padding: 0;
@@ -101,8 +110,10 @@ $light-grey: rgb(0 0 0 / 60%);
 .text-underline {
   border: none;
   height: 1px;
-  color: rgb(0 0 0 / 42%); /* old IE */
-  background-color: rgb(0 0 0 / 42%); /* Modern Browsers */
+  @include themify($themes) {
+    color: themed('dark-secondary-text');
+    background-color: themed('dark-secondary-text');
+  }
 }
 
 .mat-select-arrow {
@@ -134,9 +145,6 @@ $light-grey: rgb(0 0 0 / 60%);
   line-height: 30px;
 }
 
-.blue-link {
-  color: $uaf-primary-blue;
-}
 
 .mobile-button-wrapper {
   transform: scale(0.82);
@@ -175,7 +183,9 @@ $light-grey: rgb(0 0 0 / 60%);
 }
 
 .dataset-date-range {
-  color: $light-grey;
+  @include themify($themes) {
+    color: themed('dark-disabled-text') !important;
+  }
   font-weight: bold;
   line-height: 30px;
   font-size: 14px;
@@ -184,13 +194,16 @@ $light-grey: rgb(0 0 0 / 60%);
 }
 
 .dataset-source {
-  color: $uaf-primary-blue;
+  @include themify_non_host($themes) {
+    color: themed('blue-link');
+    a {
+      color: themed('blue-link');
+    }
+  }
   padding-top: 22px;
   font-size: 12px;
 
-  a {
-    color: $uaf-primary-blue !important;
-  }
+
 }
 
 .hyp3-icon {

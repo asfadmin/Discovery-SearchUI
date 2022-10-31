@@ -27,13 +27,14 @@ div span {
 }
 
 .info-bar {
-  border-top-color: $asf-primary;
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+    background-color: themed('primary-light');
+    border-top-color: themed('primary');
+  }
   border-top-style: solid;
   border-top-width: 1px;
-  background-color: $asf-primary-light;
-  color: $asf-primary-dark;
   line-height: 30px;
-  //font-family: mat.font-family($custom-typography);
   font-size: 14px;
   padding-right: 150px;
 }
@@ -44,7 +45,9 @@ div span {
 
 .new-stuff {
   cursor: pointer;
-  color: $uaf-primary-blue;
+  @include themify($themes) {
+    color: themed('blue-link');
+  }
   font-weight: bold;
   margin-right: 10px;
 }

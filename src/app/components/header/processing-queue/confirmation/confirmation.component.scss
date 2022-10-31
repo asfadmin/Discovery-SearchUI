@@ -3,12 +3,12 @@
 $header-height: 120px;
 $footer-height: 60px;
 $bottom-offset: 10px;
-$background-color: $asf-primary-light;
-$color: $asf-primary-dark;
 
 .mat-dialog-content {
+  @include themify($themes) {
+    background-color: themed('background-white');
+  }
   display: block;
-  background-color: white;
   height: 350px;
   overflow-y: auto;
   padding: 10px 175px 0 27px;

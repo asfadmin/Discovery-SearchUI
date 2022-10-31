@@ -1,5 +1,7 @@
 hr {
-  border-top-color: rgba($asf-primary-light, 0.2);
+  @include themify($themes) {
+    border-top-color: rgba(themed('primary-light'), 0.2);
+  }
   margin-block: 0;
 }
 
@@ -22,7 +24,9 @@ hr {
   @include md-icon-size(30px);
 
   margin-right: 0;
-  color: $asf-primary-dark;
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
 }
 
 .mat-icon-button {
@@ -30,10 +34,16 @@ hr {
   line-height: 36px;
   min-width: 60px;
 }
-
+.mat-list-item {
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
+}
 .menu-hr {
-  color: $asf-primary-dark;
-  background-color: $asf-primary-dark;
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+    background-color: themed('primary-dark');
+  }
   background-image: none;
   border: none;
   height: 1px;
@@ -69,12 +79,16 @@ hr {
 }
 
 .item-content {
-  color: $asf-primary;
+  @include themify($themes) {
+    color: themed('blue-link') !important;
+  }
   line-height: 18px;
 }
 
 .item-title {
-  color: $asf-primary-dark;
+  @include themify_non_host($themes) {
+    color: themed('dark-primary-text');
+  }
   line-height: 22px;
   font-size: 18px;
   margin-bottom: 12px;
@@ -90,5 +104,13 @@ hr {
   @include md-icon-size(65px);
 
   margin-right: 0;
-  color: $asf-primary-dark;
+  @include themify_non_host($themes) {
+    color: themed('dark-primary-text');
+  }
+}
+
+.dataset-date-range {
+  @include themify_non_host($themes) {
+   color: themed('dark-disabled-text') !important;
+  }
 }

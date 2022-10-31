@@ -2,10 +2,15 @@
 
 .draw-icon {
   @include md-icon-size($asf-ribbon-icon-size);
-
-  color: rgb(0 0 0 / 87%);
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
 }
-
+.draw-svg {
+  @include themify($themes) {
+    fill: themed('dark-primary-text');
+  }
+}
 .draw-text {
   font-size: 14px;
   line-height: 10px;
@@ -21,7 +26,9 @@
 }
 
 .bottom-right {
-  color: $asf-primary;
+  @include themify($themes) {
+    color: themed('primary');
+  }
   position: absolute;
   bottom: -6px;
   right: -2px;
@@ -29,15 +36,24 @@
 }
 
 .shape-select-button {
+  @include themify($themes) {
+    background: themed('background-white');
+    color: themed('light-primary-text')
+    
+  }
   margin: 0;
   padding: 0;
-  color: rgb(0 0 0 / 87%);
-  background: white;
   font-size: 18px !important;
   height: 27px !important;
   width: 18px !important;
   min-width: 53px !important;
   border-radius: 4px !important;
-  border: solid 1px rgb(0 0 0 / 12%);
+  // border: solid 1px rgb(0 0 0 / 12%);
   text-align: center;
+}
+.control-button {
+  @include themify($themes) {
+    background: themed('background-white');
+    color: themed('light-primary-text')
+  }
 }

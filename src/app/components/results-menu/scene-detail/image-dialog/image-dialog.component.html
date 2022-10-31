@@ -22,7 +22,6 @@
             [href]="dataset.infoUrl"
             target="_blank"
             matTooltip="Dataset"
-            class="faint-text"
           >
             {{ dataset.name }}
           </a>
@@ -205,7 +204,7 @@
             >
               • {{ product.productTypeDisplay }}
               <mat-menu #action_menu="matMenu" xPosition="before">
-                <span style="margin-right: 10px; margin-left: 10px;">
+                <span style="margin-right: 10px; margin-left: 10px;" class="primary-text">
                   <span *ngIf="product.bytes === 0">Virtual</span>
                   <span *ngIf="product.bytes !== 0">{{
                     product.bytes.toString() | readableSizeFromBytes

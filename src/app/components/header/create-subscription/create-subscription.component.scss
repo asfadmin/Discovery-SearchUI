@@ -3,13 +3,13 @@
 $header-height: 95px;
 $footer-height: 60px;
 $bottom-offset: 10px;
-$background-color: $asf-primary-light;
-$color: $asf-primary-dark;
 
 ::ng-deep.mat-dialog-container {
+  @include themify($themes) {
+    background: themed('primary-light');
+  }
   resize: both;
   overflow: auto;
-  background: $background-color;
   width: 80vw;
   height: 86vh;
   min-width: 350px;
@@ -17,13 +17,17 @@ $color: $asf-primary-dark;
 }
 
 [mat-dialog-title] {
-  background: #369;
-  color: #fff;
+  background: #369; // TODO: check this
+  color: $light-primary-text;
   cursor: move;
   text-align: center;
 }
 
 .queue {
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+    background: themed('primary-light');
+  }
   min-width: 350px;
   height: 100%;
   min-height: 500px;
@@ -35,12 +39,14 @@ $color: $asf-primary-dark;
   justify-content: flex-start;
   font-size: 25px;
   font-weight: bold;
-  color: $asf-primary-dark;
-  background-color: $background-color;
 }
 
 .mat-dialog-content {
+  @include themify($themes) {
+    background-color: themed('background-white');
+  }
   position: absolute;
+  
   display: block;
   top: $header-height;
   height: calc(100% - #{$header-height} - #{$footer-height} - #{$bottom-offset});
@@ -48,7 +54,6 @@ $color: $asf-primary-dark;
   width: 100%;
   overflow-y: hidden;
   overflow-x: hidden;
-  background-color: white;
   padding: 0;
   margin: 0;
 
@@ -80,11 +85,13 @@ $color: $asf-primary-dark;
 }
 
 .pq-card-title-group {
-  background-color: $asf-primary-light;
-  color: $asf-primary-dark;
+  @include themify($themes) {
+    background: themed('primary-light');
+    color: themed('dark-primary-text');
+    border-bottom-color: themed('primary-dark');
+  }
   padding: 10px 10px 0 0;
   border-bottom-style: solid;
-  border-bottom-color: $asf-primary-dark;
   border-bottom-width: 1px;
   width: 100%;
   height: calc(#{$header-height} - 16px);
@@ -98,8 +105,10 @@ $color: $asf-primary-dark;
   font-size: 18px;
 
   a {
+    @include themify($themes) {
+      color: themed('blue-link');
+    }
     text-decoration: underline;
-    color: $uaf-primary-blue;
   }
 }
 
@@ -129,20 +138,24 @@ $color: $asf-primary-dark;
 }
 
 .footer {
+  @include themify($themes) {
+    background: themed('primary-light');
+    border-top-color: themed('primary-dark');
+  }
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   height: 100%;
-  background-color: $asf-primary-light;
   border-top: 1px;
   border-top-style: solid;
-  border-top-color: $asf-primary-dark;
 }
 
 .mat-dialog-actions {
+  @include themify($themes) {
+    background-color: themed('primary-light');
+  }
   position: absolute;
   display: flex;
-  background-color: $background-color;
   width: 100%;
   height: $footer-height;
   bottom: $bottom-offset;
@@ -151,14 +164,16 @@ $color: $asf-primary-dark;
 }
 
 .subscription-footer {
+  @include themify($themes) {
+    background-color: themed('primary-light');
+    border-top-color: themed('primary-dark');
+  }
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   height: 100%;
-  background-color: $asf-primary-light;
   border-top: 1px;
   border-top-style: solid;
-  border-top-color: $asf-primary-dark;
 }
 
 .subscription-footer-item {
@@ -166,12 +181,16 @@ $color: $asf-primary-dark;
 }
 
 .validate-toggle {
+  @include themify($themes) {
+    color: themed('dark-secondary-text');
+  }
   margin-top: 22px;
-  color: grey;
 }
 
 .validate-only {
-  color: $asf-primary-dark;
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
 }
 
 .on-demand-branding {
@@ -182,9 +201,11 @@ $color: $asf-primary-dark;
 }
 
 .on-demand-icon {
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
   @include md-icon-size(72px);
 
-  color: $asf-primary-dark;
 }
 
 .on-demand-text {
@@ -193,9 +214,11 @@ $color: $asf-primary-dark;
 }
 
 .on-demand-subtitle {
+  @include themify($themes) {
+    color: themed('dark-secondary-text');
+  }
   font-style: italic;
   font-size: 14px;
-  color: #65665c;
   margin-top: -15px;
 }
 
@@ -204,10 +227,15 @@ $color: $asf-primary-dark;
 }
 
 .step-error {
-  color: red;
+  @include themify($themes) {
+    color: themed('err');
+  }
 }
 
 .close-x {
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
   position: absolute;
   top: 10px;
   right: 24px;
@@ -215,7 +243,6 @@ $color: $asf-primary-dark;
   float: right;
   cursor: pointer;
   z-index: 100;
-  color: $color;
 }
 
 .navigation-row {
@@ -237,10 +264,12 @@ $color: $asf-primary-dark;
 }
 
 .hyp3-url {
+  @include themify($themes) {
+    color: themed('dark-secondary-text');
+  }
   height: 32px;
   font-size: 12px;
   margin: -4px 0 6px 0;
-  color: #65665c;
 }
 
 .hyp3-url-mobile {

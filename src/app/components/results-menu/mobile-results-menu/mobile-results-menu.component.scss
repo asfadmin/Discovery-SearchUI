@@ -5,6 +5,10 @@
 }
 
 .header {
+  @include themify($themes) {
+    background-color: themed('primary-light');
+    color: themed('dark-primary-text');
+  }
   padding-top: 20px;
   height: 30px;
   margin-bottom: 0;
@@ -12,8 +16,6 @@
   font-weight: 400;
   font-size: 14px;
   text-align: center;
-  background-color: $asf-primary-light;
-  color: $asf-primary-dark;
   border-left: none;
 }
 
@@ -53,12 +55,16 @@
 }
 
 .baseline-criteria-button-toggle {
-  background-color: white !important;
+  @include themify($themes) {
+    background-color: themed('background-white') !important;
+  }
   font-size: 14px;
 }
 
 .sbas-criteria-button-toggle {
-  background-color: white !important;
+  @include themify($themes) {
+    background-color: themed('background-white') !important;
+  }
   font-size: 14px;
 }
 
@@ -73,7 +79,9 @@
 }
 
 .control-mat-button-toggle {
-  background-color: white;
+  @include themify($themes) {
+    background-color: themed('background-white');
+  }
 }
 
 .more-horiz {

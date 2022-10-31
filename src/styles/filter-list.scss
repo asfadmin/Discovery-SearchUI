@@ -6,15 +6,17 @@
 $config: mat.define-typography-config();
 
 .mat-header-base {
-  background-color: $asf-primary-light !important;
-  color: $asf-primary-dark;
+  @include themify_non_host($themes) {
+    background-color: themed('primary-light');
+    color: themed('dark-primary-text');
+    border-color: themed('primary');
+  }
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   border-left-width: 0;
   border-right-width: 0;
   border-top-width: 0;
   border-bottom-width: 0.5px;
-  border-color: $asf-primary;
   border-style: solid;
 }
 
@@ -28,7 +30,13 @@ $config: mat.define-typography-config();
   &:active,
   &:focus,
   &[aria-disabled="true"] {
+
     @extend .mat-header-base;
+    @include themify_non_host($themes) {
+      background-color: themed('primary-light');
+      color: themed('dark-secondary-text');
+      border-color: themed('primary');
+    }
   }
 }
 
