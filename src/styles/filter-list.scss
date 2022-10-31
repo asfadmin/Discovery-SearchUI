@@ -1,16 +1,17 @@
 @use "@angular/material" as mat;
 
-@import "asf-theme";
+@import url("asf-theme");
 
 // Create a config with the default typography levels.
 $config: mat.define-typography-config();
 
 .mat-header-base {
   @include themify_non_host($themes) {
-    background-color: themed('primary-light');
-    color: themed('dark-primary-text');
-    border-color: themed('primary');
+    background-color: themed("primary-light");
+    color: themed("dark-primary-text");
+    border-color: themed("primary");
   }
+
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   border-left-width: 0;
@@ -30,12 +31,12 @@ $config: mat.define-typography-config();
   &:active,
   &:focus,
   &[aria-disabled="true"] {
-
     @extend .mat-header-base;
+
     @include themify_non_host($themes) {
-      background-color: themed('primary-light');
-      color: themed('dark-secondary-text');
-      border-color: themed('primary');
+      background-color: themed("primary-light");
+      color: themed("dark-secondary-text");
+      border-color: themed("primary");
     }
   }
 }

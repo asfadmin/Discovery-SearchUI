@@ -1,4 +1,4 @@
-@import "asf-theme";
+@import url("asf-theme");
 
 .chart-wrapper {
   height: calc(100% - 1px);
@@ -9,8 +9,9 @@
   height: 100%;
   width: 100%;
 }
+
 ::ng-deep .sbas-label {
   @include themify($themes) {
-    fill: themed('dark-primary-text');
+    fill: themed("dark-primary-text");
   }
 }

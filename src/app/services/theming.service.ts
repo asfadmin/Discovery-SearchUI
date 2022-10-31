@@ -5,21 +5,21 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class ThemingService {
-  public theme : BehaviorSubject<string> = new BehaviorSubject('light');
+  public theme: BehaviorSubject<string> = new BehaviorSubject('light');
   constructor() {
     const darkModeOn =
     window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches;
-  
+    window.matchMedia('(prefers-color-scheme: dark)').matches;
+
   // If dark mode is enabled then directly switch to the dark-theme
-  if(darkModeOn){
-    this.theme.next("dark");
+  if (darkModeOn) {
+    this.theme.next('dark');
   }
 
   // Watch for changes of the preference
-  window.matchMedia("(prefers-color-scheme: dark)").addListener(e => {
+  window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
     const turnOn = e.matches;
-      this.theme.next(turnOn ? "dark" : "light");
+      this.theme.next(turnOn ? 'dark' : 'light');
     });
    }
 }

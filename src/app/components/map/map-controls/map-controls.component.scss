@@ -1,7 +1,4 @@
-
-@import "asf-theme";
-
-
+@import url("asf-theme");
 
 .position {
   z-index: 998;
@@ -13,8 +10,9 @@
 
 .icon-bar {
   @include themify($themes) {
-    background-color: themed('primary-light');
+    background-color: themed("primary-light");
   }
+
   padding: 0;
   pointer-events: auto;
   height: 45px !important;
@@ -23,8 +21,8 @@
 
 .ribbon-info-top {
   @include themify($themes) {
-    background-color: themed('primary-light');
-    color: themed('primary');
+    background-color: themed("primary-light");
+    color: themed("primary");
   }
 }
 
@@ -34,9 +32,10 @@ label {
 
 .lat-lon {
   @include themify($themes) {
-    background-color: themed('primary');
-    color: themed('light-secondary-text');
+    background-color: themed("primary");
+    color: themed("light-secondary-text");
   }
+
   font-size: 12px;
   margin-top: 0;
   padding-left: 10px;
@@ -54,8 +53,9 @@ label {
 
 .control-icon {
   @include md-icon-size($asf-ribbon-icon-size);
+
   @include themify($themes) {
-    color: themed('dark-primary-text');
+    color: themed("dark-primary-text");
   }
 }
 
@@ -66,26 +66,31 @@ label {
 
 .button-group-label {
   text-align: center;
+
   @include themify($themes) {
-    color: themed('dark-secondary-text');
+    color: themed("dark-secondary-text");
   }
 }
 
 .move-handle-div {
   @include themify($themes) {
-    background-color: themed('primary-light');
+    background-color: themed("primary-light");
   }
+
   cursor: move;
 }
+
 .control-mat-button-toggle {
   @include themify($themes) {
-    background: themed('background-white');
+    background: themed("background-white");
   }
 }
+
 .move-handle {
   @include themify($themes) {
-    color: themed('primary-dark');
+    color: themed("primary-dark");
   }
+
   margin-top: 16px;
   margin-left: 7px;
   margin-right: 7px;
@@ -96,8 +101,9 @@ label {
 
 .move-handle-bottom {
   @include themify($themes) {
-    background-color: themed('primary');
+    background-color: themed("primary");
   }
+
   height: 14px;
   margin-top: 1px;
 }
@@ -112,9 +118,10 @@ label {
 
 .opacity-slider-button {
   @include themify($themes) {
-    background: themed('background-white');
-    color: themed('dark-primary-text');
+    background: themed("background-white");
+    color: themed("dark-primary-text");
   }
+
   margin: 0 0 5px;
   padding: 0 0 0 3px;
   font-size: 14px !important;
@@ -128,16 +135,18 @@ label {
 
 .opacity-slider-title {
   @include themify($themes) {
-    color: themed('primary');
+    color: themed("primary");
   }
+
   text-align: center;
   font-size: small;
 }
 
 .bottom-right {
   @include themify($themes) {
-    color: themed('primary');
+    color: themed("primary");
   }
+
   position: absolute;
   bottom: -7px;
   right: -4px;
@@ -165,9 +174,10 @@ label {
 .tool-bar-control {
   @include themify($themes) {
     // color: themed('dark-secondary-light');
-    color: themed('dark-secondary-text');
+    color: themed("dark-secondary-text");
     // background-color: themed('primary-light');
   }
+
   cursor: pointer;
   display: block;
   width: 30px;
@@ -177,8 +187,9 @@ label {
 
 .tool-bar-control-bottom {
   @include themify($themes) {
-    background-color: themed('primary');
+    background-color: themed("primary");
   }
+
   width: calc(100% + 10px);
   margin: 3px 0 0 -10px;
   height: 14px;

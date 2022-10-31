@@ -1,9 +1,8 @@
 @use "@angular/material" as mat;
 
-@import "asf-theme";
+@import url("asf-theme");
 
 $config: mat.define-typography-config();
-
 
 .sbas-chart-row {
   display: flex;
@@ -58,9 +57,10 @@ $config: mat.define-typography-config();
 
 .sbas-metadata {
   @include themify($themes) {
-    border-left: solid 1px themed('primary-light');
-    border-right: solid 2px themed('primary-light');
+    border-left: solid 1px themed("primary-light");
+    border-right: solid 2px themed("primary-light");
   }
+
   overflow: auto;
   height: 100%;
 }
@@ -72,8 +72,9 @@ $config: mat.define-typography-config();
 .chart-resize-handle-left,
 .chart-resize-handle-right {
   @include themify($themes) {
-    background-color: themed('primary-light');
+    background-color: themed("primary-light");
   }
+
   height: 100%;
   // background-image: url("//assets/div-handles/hgrip.svg");
   // background-position: left;
@@ -86,10 +87,11 @@ $config: mat.define-typography-config();
 
 .chart-draggable-handle {
   @include themify($themes) {
-    background-color: themed('primary-light');
-    border-color: themed('primary-light');
-    color: themed('primary-light');
+    background-color: themed("primary-light");
+    border-color: themed("primary-light");
+    color: themed("primary-light");
   }
+
   display: flex;
   align-items: center;
   cursor: ew-resize;
@@ -102,27 +104,31 @@ $config: mat.define-typography-config();
 
 .sbas-resize-handle-filler {
   @include themify($themes) {
-    background-color: themed('primary-light');
+    background-color: themed("primary-light");
   }
-  width: 10px;
 
+  width: 10px;
   height: 100%;
   // background-image: url("/assets/div-handles/vgrip.svg");
   // background-color: #c9cac4;
   // background-position: center;
   // background-repeat: no-repeat;
 }
+
 .vgrip-icon {
   @include themify($themes) {
-    stroke: themed('dark-primary-text');
+    stroke: themed("dark-primary-text");
   }
+
   height: 33px;
 }
+
 .sbas-header {
   @include themify($themes) {
-    background-color: themed('primary-light');
-    color: themed('dark-primary-text')
+    background-color: themed("primary-light");
+    color: themed("dark-primary-text");
   }
+
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -139,16 +145,18 @@ $config: mat.define-typography-config();
 
 .control-icon {
   @include themify($themes) {
-    color: themed('dark-primary-text');
+    color: themed("dark-primary-text");
   }
+
   margin-top: -4px;
 
   @include md-icon-size($asf-ribbon-icon-size);
 }
+
 .mat-button-toggle-disabled {
   .control-icon {
     @include themify($themes) {
-      color: themed('dark-disabled-text');
+      color: themed("dark-disabled-text");
     }
   }
 }
@@ -174,8 +182,9 @@ $config: mat.define-typography-config();
 
 .button-group-label {
   @include themify($themes) {
-    color: themed('dark-primary-text');
+    color: themed("dark-primary-text");
   }
+
   text-align: center;
 }
 
@@ -188,9 +197,10 @@ label {
   margin-left: 10px;
   margin-top: 4px;
 }
+
 .control-mat-button-toggle {
   @include themify($themes) {
-    background: themed('background-white') !important;
+    background: themed("background-white") !important;
     // color: themed('dark-primary-text') !important;
   }
 }

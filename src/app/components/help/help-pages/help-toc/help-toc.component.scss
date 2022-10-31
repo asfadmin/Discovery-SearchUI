@@ -1,4 +1,4 @@
-@import "asf-help";
+@import url("asf-help");
 
 .help-video {
   height: 300px;
@@ -15,9 +15,11 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
+
   @include themify($themes) {
-    color: themed('primary');
+    color: themed("primary");
   }
+
   h1,
   h2,
   h3,
@@ -32,8 +34,9 @@
     font-size: 53px;
     width: 54px;
     height: 53px;
+
     @include themify($themes) {
-      color: themed('dark-secondary-text');
+      color: themed("dark-secondary-text");
     }
   }
 }
@@ -77,7 +80,7 @@
 
   h3 {
     @include themify($themes) {
-      color: themed('primary');
+      color: themed("primary");
     }
   }
 
@@ -87,20 +90,21 @@
 }
 
 .help-table {
-  background: none  !important;
+  background: none !important;
 }
 
 .help-table-header {
   @include themify($themes) {
-    color: themed('primary');
+    color: themed("primary");
   }
+
   font-size: 1.17em;
   margin-block-start: 1em;
   margin-block-end: 1em;
   margin-inline-start: 0;
   margin-inline-end: 0;
   font-weight: bold;
-  
+
   // color: #65665c;
 }
 
@@ -109,7 +113,7 @@
 
   a {
     @include themify($themes) {
-      color: themed('blue-link');
+      color: themed("blue-link");
     }
   }
 }

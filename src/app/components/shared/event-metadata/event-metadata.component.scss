@@ -1,9 +1,10 @@
-@import "asf-theme";
+@import url("asf-theme");
 
 a {
   text-decoration: none;
+
   @include themify($themes) {
-    color: themed('blue-link');
+    color: themed("blue-link");
   }
 }
 

@@ -1,8 +1,9 @@
-@import "asf-theme";
+@import url("asf-theme");
 
 .arrow-button-toggle {
   padding-top: 6px;
+
   @include themify($themes) {
-    background-color: themed('primary') !important;
+    background-color: themed("primary") !important;
   }
 }

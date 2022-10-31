@@ -1,14 +1,14 @@
-@import "asf-theme";
+@import url("asf-theme");
 
 .subset-option {
   @include themify($themes) {
-    color: themed('blue-link');
+    color: themed("blue-link");
   }
 }
 
 button {
   font-style: italic;
-  border-color: rgb(0, 0, 0, 50%) !important;
+  border-color: rgb(0 0 0 / 50%) !important;
   //font-size: 16px !important;
   //text-decoration: underline;
 }

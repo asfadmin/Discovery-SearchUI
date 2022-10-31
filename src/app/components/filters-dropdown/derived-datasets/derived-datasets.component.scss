@@ -1,5 +1,5 @@
-@import "asf-theme";
-@import "deluxe-menu";
+@import url("asf-theme");
+@import url("deluxe-menu");
 
 .description-layout {
   display: flex;
@@ -7,8 +7,9 @@
 
 .menu-item-icon {
   @include themify($themes) {
-    color: themed('dark-primary-text');
+    color: themed("dark-primary-text");
   }
+
   @include md-icon-size(120px);
 
   margin-right: 0;
@@ -33,8 +34,9 @@
 
 .mat-button {
   @include themify($themes) {
-    color: themed('blue-link');
+    color: themed("blue-link");
   }
+
   font-weight: 400;
   font-style: italic;
 }

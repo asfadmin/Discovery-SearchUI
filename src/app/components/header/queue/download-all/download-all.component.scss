@@ -1,4 +1,4 @@
-@import "asf-theme";
+@import url("asf-theme");
 
 button {
   height: 36px;
@@ -7,15 +7,17 @@ button {
 
 .mat-button {
   @include themify($themes) {
-    color: themed('dark-primary-text');
+    color: themed("dark-primary-text");
   }
+
   font-size: 16px;
 }
 
 .badge {
   @include themify($themes) {
-    background: themed('primary-light');
+    background: themed("primary-light");
   }
+
   display: inline;
   margin: 5px;
   padding: 5px;

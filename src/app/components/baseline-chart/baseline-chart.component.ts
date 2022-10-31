@@ -183,7 +183,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
 
 
     this.svg.append('text').attr('transform', `translate(${this.width / 2}, ${this.height + this.margin.bottom - 20})`).style('text-anchor', 'middle').attr('class', 'baseline-label').text('Temporal (days)');
-    this.svg.append('text').attr('transform', `rotate(-90)`).attr('y', -this.margin.left + 20).attr('x', -this.height / 2).style('text-anchor', 'middle').attr('class','baseline-label').text('Perpendicular (m)');
+    this.svg.append('text').attr('transform', `rotate(-90)`).attr('y', -this.margin.left + 20).attr('x', -this.height / 2).style('text-anchor', 'middle').attr('class', 'baseline-label').text('Perpendicular (m)');
 
     this.tooltip = d3.select('body').append('div')
       .attr('class', 'tooltip')

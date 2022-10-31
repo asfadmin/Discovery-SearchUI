@@ -1,4 +1,4 @@
-@import "asf-theme";
+@import url("asf-theme");
 
 $header-height: 120px;
 $footer-height: 60px;
@@ -6,8 +6,9 @@ $bottom-offset: 10px;
 
 ::ng-deep.mat-dialog-container {
   @include themify($themes) {
-    background: themed('primary-light');
+    background: themed("primary-light");
   }
+
   resize: both;
   overflow: auto;
   width: 80vw;
@@ -22,8 +23,9 @@ $bottom-offset: 10px;
 
 [mat-dialog-title] {
   background: #369; // TODO: check this
+
   @include themify($themes) {
-    color: themed('light-primary-text');
+    color: themed("light-primary-text");
   }
 
   color: $light-primary-text;
@@ -33,9 +35,10 @@ $bottom-offset: 10px;
 
 .processing-queue {
   @include themify($themes) {
-    color: themed('dark-primary-text');
-    background-color: themed('primary-light');
+    color: themed("dark-primary-text");
+    background-color: themed("primary-light");
   }
+
   min-width: 350px;
   height: 100%;
   min-height: 500px;
@@ -51,10 +54,11 @@ $bottom-offset: 10px;
 
 .pq-card-title-group {
   @include themify($themes) {
-    color: themed('dark-primary-text');
-    background-color: themed('primary-light');
-    header-bottom-color: themed('primary-dark');
+    color: themed("dark-primary-text");
+    background-color: themed("primary-light");
+    header-bottom-color: themed("primary-dark");
   }
+
   padding: 10px 10px 0 0;
   border-bottom-style: solid;
   border-bottom-width: 1px;
@@ -93,8 +97,9 @@ $bottom-offset: 10px;
 
 .list-filter {
   @include themify($themes) {
-    background-color: themed('background-white');
+    background-color: themed("background-white");
   }
+
   border-bottom: solid grey 1px;
   height: 60px;
 }
@@ -125,10 +130,10 @@ $bottom-offset: 10px;
 
 .on-demand-icon {
   @include md-icon-size(72px);
-  @include themify($themes) {
-    color: themed('dark-primary-text');
-  }
 
+  @include themify($themes) {
+    color: themed("dark-primary-text");
+  }
 }
 
 .on-demand-text {
@@ -159,8 +164,9 @@ $bottom-offset: 10px;
 
 .dataset-menu {
   @include themify($themes) {
-    background-color:  adjust-color(themed('primary-light'), $lightness: +7%);
+    background-color: adjust-color(themed("primary-light"), $lightness: +7%);
   }
+
   display: block;
   position: absolute;
   top: 84px;
@@ -184,9 +190,10 @@ $bottom-offset: 10px;
 
 .error-header {
   @include themify($themes) {
-    background-color: themed('background-white');
-    border-bottom-color: themed('primary-dark');
+    background-color: themed("background-white");
+    border-bottom-color: themed("primary-dark");
   }
+
   border-bottom-style: solid;
   border-bottom-width: 1px;
   z-index: 10;
@@ -197,8 +204,9 @@ $bottom-offset: 10px;
 
 .mobile-tab-selector {
   @include themify($themes) {
-    border-bottom-color: themed('primary-dark');
+    border-bottom-color: themed("primary-dark");
   }
+
   border-bottom-style: solid;
   border-bottom-width: 1px;
 }
@@ -226,8 +234,9 @@ $bottom-offset: 10px;
 
   a {
     text-decoration: underline;
+
     @include themify($themes) {
-      color: themed('blue-link');
+      color: themed("blue-link");
     }
   }
 }
@@ -243,8 +252,9 @@ $bottom-offset: 10px;
 
 .on-demand-subtitle {
   @include themify($themes) {
-    color: themed('dark-secondary-text');
+    color: themed("dark-secondary-text");
   }
+
   font-style: italic;
   font-size: 14px;
   margin-top: -15px;
@@ -252,8 +262,9 @@ $bottom-offset: 10px;
 
 .mat-dialog-content {
   @include themify($themes) {
-    background-color: themed('background-white');
+    background-color: themed("background-white");
   }
+
   position: absolute;
   display: block;
   top: $header-height;
@@ -322,8 +333,9 @@ $bottom-offset: 10px;
 
 .mat-dialog-actions {
   @include themify($themes) {
-    background-color: themed('primary-light');
+    background-color: themed("primary-light");
   }
+
   position: absolute;
   display: flex;
   width: 100%;
@@ -335,9 +347,10 @@ $bottom-offset: 10px;
 
 .hyp3-footer {
   @include themify($themes) {
-    background-color: themed('primary-light');
-    border-top-color: themed('primary-dark');
+    background-color: themed("primary-light");
+    border-top-color: themed("primary-dark");
   }
+
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -358,8 +371,9 @@ $bottom-offset: 10px;
 
 .footer-job-notification {
   @include themify($themes) {
-    color: themed('dark-primary-text');
+    color: themed("dark-primary-text");
   }
+
   flex: none;
   margin-right: 20px;
   align-self: center;
@@ -377,9 +391,10 @@ $bottom-offset: 10px;
 
 .rectangle {
   @include themify($themes) {
-    color: themed('warn');
-    border-color: themed('warn');
+    color: themed("warn");
+    border-color: themed("warn");
   }
+
   position: relative;
   display: flex;
   align-items: center;
@@ -430,23 +445,25 @@ $bottom-offset: 10px;
 
 .hyp3-url {
   @include themify($themes) {
-    color: themed('dark-secondary-text');
+    color: themed("dark-secondary-text");
   }
+
   height: 32px;
   font-size: 12px;
-  margin: -4px 0 6px 0;
+  margin: -4px 0 6px;
 }
 
 .hyp3-url-mobile {
-  margin: 17px 0 0 0;
+  margin: 17px 0 0;
 }
 
 .branding-block {
   display: flex;
   flex-direction: column;
 }
+
 a {
   @include themify($themes) {
-    color: themed('blue-link')
+    color: themed("blue-link");
   }
 }

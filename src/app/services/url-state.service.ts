@@ -147,7 +147,7 @@ export class UrlStateService {
     if (this.loadLocations['maxResults'] !== models.LoadTypes.URL) {
       this.store$.dispatch(new filterStore.SetMaxResults(profile.maxResults));
     }
-    if(profile.theme && profile.theme !== 'System Preferences') {
+    if (profile.theme && profile.theme !== 'System Preferences') {
       const body = document.getElementsByTagName('body')[0];
       body.removeAttribute('class');
       body.classList.add(`theme-${profile.theme}`);
@@ -158,7 +158,7 @@ export class UrlStateService {
           body.removeAttribute('class');
           body.classList.add(`theme-${themePreference}`);
         }
-      )
+      );
     }
     const action = profile.mapLayer === models.MapLayerTypes.STREET ?
       new mapStore.SetStreetView() :

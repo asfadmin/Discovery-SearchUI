@@ -1,9 +1,10 @@
-@import "asf-theme";
+@import url("asf-theme");
 
 .download-file-button {
   text-decoration: none;
+
   @include themify($themes) {
-    color: themed('dark-primary-text');
+    color: themed("dark-primary-text");
   }
 }
 

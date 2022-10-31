@@ -1,4 +1,4 @@
-@import "asf-theme";
+@import url("asf-theme");
 
 .block-btn {
   width: 100%;
@@ -16,7 +16,7 @@
 }
 
 .active-btn {
-  background-color: rgba(0, 0, 0, 0.07);
+  background-color: rgb(0 0 0 / 7%);
 }
 
 .mat-card {
@@ -40,24 +40,25 @@
 
     p {
       font-size: 20px !important;
-      color: rgba(0, 0, 0, 0.6);
+      color: rgb(0 0 0 / 60%);
     }
 
     .mat-icon-button {
-      color: rgba(0, 0, 0, 0.6);
+      color: rgb(0 0 0 / 60%);
     }
   }
 
   h2 {
     @include themify($themes) {
-      color: themed('primary');
+      color: themed("primary");
     }
+
     margin-bottom: 5px;
-    text-shadow: 0 2px 2px rgba(0, 0, 0, 0.15);
+    text-shadow: 0 2px 2px rgb(0 0 0 / 15%);
   }
 
   .mat-divider {
     margin: 0;
-    border-top-color: rgba(0, 0, 0, 0.15);
+    border-top-color: rgb(0 0 0 / 15%);
   }
 }

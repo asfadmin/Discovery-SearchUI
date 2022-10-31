@@ -1,14 +1,16 @@
-@import "asf-theme";
-@import "deluxe-menu";
+@import url("asf-theme");
+@import url("deluxe-menu");
 
 .menu-item {
   display: flex;
+
   @include themify($themes) {
-    color: themed('dark-primary-text');
+    color: themed("dark-primary-text");
   }
 }
+
 .mat-icon {
   @include themify($themes) {
-    color: themed('dark-primary-text');
+    color: themed("dark-primary-text");
   }
 }

@@ -1,11 +1,12 @@
-@import "asf-theme";
-@import "variables";
+@import url("asf-theme");
+@import url("variables");
 
 %card-base {
   @include themify($themes) {
-    background-color: themed('primary');
-    color: themed('dark-primary-text');
+    background-color: themed("primary");
+    color: themed("dark-primary-text");
   }
+
   border-radius: 0;
 }
 
@@ -25,9 +26,10 @@
 
 .logo-card {
   @include themify($themes) {
-    background-color: themed('primary-light');
-    color: themed('background-white');
+    background-color: themed("primary-light");
+    color: themed("background-white");
   }
+
   padding: 0 8px 0 0 !important;
 
   .header {
@@ -62,9 +64,10 @@ $icon-size: 36px;
 
 .menu-toggle-button {
   @include themify($themes) {
-    background-color: themed('primary');
-    color: themed('dark-primary-text');
+    background-color: themed("primary");
+    color: themed("dark-primary-text");
   }
+
   box-shadow: none !important;
   cursor: pointer;
   border: none;
@@ -118,6 +121,7 @@ $icon-size: 36px;
   padding-top: 0;
   margin-left: 10px;
 }
+
 .mat-card {
   box-shadow: none !important;
 }

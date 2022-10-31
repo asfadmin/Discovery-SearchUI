@@ -1,4 +1,4 @@
-@import "asf-theme";
+@import url("asf-theme");
 
 .dialog-header {
   font-weight: bold;
@@ -16,8 +16,9 @@
 
 .code-block {
   @include themify($themes) {
-    background: darken(themed('background-white'), 10%);
+    background: darken(themed("background-white"), 10%);
   }
+
   padding: 10px;
   max-height: 300px;
   overflow: auto;

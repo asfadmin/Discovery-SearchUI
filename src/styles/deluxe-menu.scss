@@ -1,7 +1,8 @@
 hr {
   @include themify($themes) {
-    border-top-color: rgba(themed('primary-light'), 0.2);
+    border-top-color: rgb(themed("primary-light") 0.2);
   }
+
   margin-block: 0;
 }
 
@@ -24,8 +25,9 @@ hr {
   @include md-icon-size(30px);
 
   margin-right: 0;
+
   @include themify($themes) {
-    color: themed('dark-primary-text');
+    color: themed("dark-primary-text");
   }
 }
 
@@ -34,16 +36,19 @@ hr {
   line-height: 36px;
   min-width: 60px;
 }
+
 .mat-list-item {
   @include themify($themes) {
-    color: themed('dark-primary-text');
+    color: themed("dark-primary-text");
   }
 }
+
 .menu-hr {
   @include themify($themes) {
-    color: themed('dark-primary-text');
-    background-color: themed('primary-dark');
+    color: themed("dark-primary-text");
+    background-color: themed("primary-dark");
   }
+
   background-image: none;
   border: none;
   height: 1px;
@@ -64,7 +69,7 @@ hr {
 }
 
 .disabled {
-  opacity: 20%;
+  opacity: 0.2;
 }
 
 .menu-item {
@@ -80,15 +85,17 @@ hr {
 
 .item-content {
   @include themify($themes) {
-    color: themed('blue-link') !important;
+    color: themed("blue-link") !important;
   }
+
   line-height: 18px;
 }
 
 .item-title {
   @include themify_non_host($themes) {
-    color: themed('dark-primary-text');
+    color: themed("dark-primary-text");
   }
+
   line-height: 22px;
   font-size: 18px;
   margin-bottom: 12px;
@@ -104,13 +111,14 @@ hr {
   @include md-icon-size(65px);
 
   margin-right: 0;
+
   @include themify_non_host($themes) {
-    color: themed('dark-primary-text');
+    color: themed("dark-primary-text");
   }
 }
 
 .dataset-date-range {
   @include themify_non_host($themes) {
-   color: themed('dark-disabled-text') !important;
+    color: themed("dark-disabled-text") !important;
   }
 }

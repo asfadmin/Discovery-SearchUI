@@ -1,6 +1,6 @@
 @use "@angular/material" as mat;
 
-@import "asf-theme";
+@import url("asf-theme");
 
 $config: mat.define-typography-config();
 
@@ -22,15 +22,17 @@ $config: mat.define-typography-config();
 
 a {
   text-decoration: none;
+
   @include themify($themes) {
-    color: themed('blue-link');
+    color: themed("blue-link");
   }
 }
 
 .browse-dialog {
   @include themify($themes) {
-    background-color: themed('primary-light');
+    background-color: themed("primary-light");
   }
+
   overflow: hidden;
   font-family: mat.font-family($config);
   height: 100%;
@@ -55,9 +57,10 @@ a {
 
   .browse-list {
     @include themify($themes) {
-      background-color: themed('primary-light');
-      border-top-color: themed('primary-dark');
+      background-color: themed("primary-light");
+      border-top-color: themed("primary-dark");
     }
+
     min-height: 140px;
     border-top-style: solid;
     border-top-width: 1px;
@@ -65,9 +68,10 @@ a {
 
   .scene-detail-wrapper {
     @include themify($themes) {
-      background-color: themed('primary-light');
-      border-left-color: themed('primary-dark');
+      background-color: themed("primary-light");
+      border-left-color: themed("primary-dark");
     }
+
     min-width: 200px;
     border-left-style: solid;
     border-left-width: 1px;
@@ -81,9 +85,10 @@ a {
 
 .dialog-header--layout {
   @include themify($themes) {
-    color: themed('dark-primary-text');
-    border-bottom-color: themed('dark-primary-text');
+    color: themed("dark-primary-text");
+    border-bottom-color: themed("dark-primary-text");
   }
+
   border-bottom-style: solid;
   border-bottom-width: 1px;
   min-height: 60px;
@@ -117,16 +122,18 @@ a {
 
 .browse-drag-handle {
   @include themify($themes) {
-    color: themed('dark-primary-text');
+    color: themed("dark-primary-text");
   }
+
   cursor: move;
   height: 24px;
 }
 
 .close-button {
   @include themify($themes) {
-    color: themed('dark-primary-text');
+    color: themed("dark-primary-text");
   }
+
   vertical-align: top !important;
   margin-bottom: 5px;
 }
@@ -201,8 +208,9 @@ a {
 
 .file-button-download {
   @include themify($themes) {
-    background-color: lighten(themed('primary-light'),10%);
+    background-color: lighten(themed("primary-light"), 10%);
   }
+
   border-radius: 2px !important;
   padding-left: 5px !important;
   margin-bottom: 5px;
@@ -218,8 +226,9 @@ a {
 
 .footer {
   @include themify($themes) {
-    border-top: 1px solid themed('primary-dark');
+    border-top: 1px solid themed("primary-dark");
   }
+
   flex-shrink: 0;
   display: flex;
   flex-direction: row;
