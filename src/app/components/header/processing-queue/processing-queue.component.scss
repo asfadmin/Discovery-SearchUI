@@ -33,7 +33,7 @@ $bottom-offset: 10px;
 
 .processing-queue {
   @include themify($themes) {
-    color: themed('primary-dark');
+    color: themed('dark-primary-text');
     background-color: themed('primary-light');
   }
   min-width: 350px;
@@ -51,7 +51,7 @@ $bottom-offset: 10px;
 
 .pq-card-title-group {
   @include themify($themes) {
-    color: themed('primary-dark');
+    color: themed('dark-primary-text');
     background-color: themed('primary-light');
     header-bottom-color: themed('primary-dark');
   }
@@ -126,7 +126,7 @@ $bottom-offset: 10px;
 .on-demand-icon {
   @include md-icon-size(72px);
   @include themify($themes) {
-    color: themed('primary-dark');
+    color: themed('dark-primary-text');
   }
 
 }
@@ -358,7 +358,7 @@ $bottom-offset: 10px;
 
 .footer-job-notification {
   @include themify($themes) {
-    color: themed('primary-dark');
+    color: themed('dark-primary-text');
   }
   flex: none;
   margin-right: 20px;

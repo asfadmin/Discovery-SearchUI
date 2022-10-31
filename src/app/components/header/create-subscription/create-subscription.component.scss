@@ -25,7 +25,7 @@ $bottom-offset: 10px;
 
 .queue {
   @include themify($themes) {
-    color: themed('primary-dark');
+    color: themed('dark-primary-text');
     background: themed('primary-light');
   }
   min-width: 350px;
@@ -87,7 +87,7 @@ $bottom-offset: 10px;
 .pq-card-title-group {
   @include themify($themes) {
     background: themed('primary-light');
-    color: themed('primary-dark');
+    color: themed('dark-primary-text');
     border-bottom-color: themed('primary-dark');
   }
   padding: 10px 10px 0 0;
@@ -202,7 +202,7 @@ $bottom-offset: 10px;
 
 .on-demand-icon {
   @include themify($themes) {
-    color: themed('primary-dark');
+    color: themed('dark-primary-text');
   }
   @include md-icon-size(72px);
 

@@ -7,7 +7,7 @@ button {
 
 .mat-button {
   @include themify($themes) {
-    color: themed('primary-dark');
+    color: themed('dark-primary-text');
   }
   font-size: 16px;
 }

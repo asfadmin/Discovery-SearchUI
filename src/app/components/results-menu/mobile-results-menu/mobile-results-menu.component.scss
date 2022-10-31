@@ -7,7 +7,7 @@
 .header {
   @include themify($themes) {
     background-color: themed('primary-light');
-    color: themed('primary-dark');
+    color: themed('dark-primary-text');
   }
   padding-top: 20px;
   height: 30px;

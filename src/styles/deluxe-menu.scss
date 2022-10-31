@@ -25,7 +25,7 @@ hr {
 
   margin-right: 0;
   @include themify($themes) {
-    color: themed('primary-dark');
+    color: themed('dark-primary-text');
   }
 }
 
