@@ -1,10 +1,10 @@
-@import "asf-theme";
+@import url("asf-theme");
 
 .interaction-icon {
   @include md-icon-size($asf-ribbon-icon-size);
 
   @include themify($themes) {
-    color: themed('dark-primary-text');
+    color: themed("dark-primary-text");
   }
 }
 
@@ -14,13 +14,15 @@
 
 .mobile-upload-button {
   @include themify($themes) {
-    background-color: themed('background-white');
+    background-color: themed("background-white");
   }
+
   border-left: 1px #e0e0e0;
 }
+
 .control-mat-button-toggle {
   @include themify($themes) {
-    background: themed('background-white');
-    color: themed('dark-primary-text');
+    background: themed("background-white");
+    color: themed("dark-primary-text");
   }
 }

@@ -94,16 +94,16 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subs.add(
       this.themeService.theme.subscribe(theme => {
         // check if the user profile has auto in it.
-        console.log(theme)
-        console.log(this.isAutoTheme)
-        if(this.isAutoTheme) {
-          let body = document.getElementsByTagName('body')[0];
+        console.log(theme);
+        console.log(this.isAutoTheme);
+        if (this.isAutoTheme) {
+          const body = document.getElementsByTagName('body')[0];
           body.removeAttribute('class');
           body.classList.add(`theme-${theme}`);
           console.log(theme);
         }
       })
-    )
+    );
     this.subs.add(
       this.store$.select(queueStore.getQueuedJobs).subscribe(
         jobs => this.queuedCustomProducts = jobs

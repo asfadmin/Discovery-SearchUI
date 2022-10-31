@@ -1,4 +1,4 @@
-@import "asf-theme";
+@import url("asf-theme");
 
 .header-mobile {
   min-height: 36px;
@@ -6,9 +6,10 @@
 
 .header {
   @include themify($themes) {
-    background-color: themed('primary-light');
-    color: themed('dark-primary-text');
+    background-color: themed("primary-light");
+    color: themed("dark-primary-text");
   }
+
   padding-top: 20px;
   height: 30px;
   margin-bottom: 0;
@@ -56,15 +57,17 @@
 
 .baseline-criteria-button-toggle {
   @include themify($themes) {
-    background-color: themed('background-white') !important;
+    background-color: themed("background-white") !important;
   }
+
   font-size: 14px;
 }
 
 .sbas-criteria-button-toggle {
   @include themify($themes) {
-    background-color: themed('background-white') !important;
+    background-color: themed("background-white") !important;
   }
+
   font-size: 14px;
 }
 
@@ -80,7 +83,7 @@
 
 .control-mat-button-toggle {
   @include themify($themes) {
-    background-color: themed('background-white');
+    background-color: themed("background-white");
   }
 }
 

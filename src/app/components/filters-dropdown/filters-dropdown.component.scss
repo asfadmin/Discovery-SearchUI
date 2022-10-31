@@ -1,4 +1,4 @@
-@import "asf-theme";
+@import url("asf-theme");
 
 .hidden {
   display: none;
@@ -28,17 +28,18 @@
 
 .dataset-filters-card {
   @include themify($themes) {
-    background-color: themed('background-white');
+    background-color: themed("background-white");
   }
+
   z-index: 1020;
   display: flex;
   overflow: hidden;
   flex-direction: column;
   flex-wrap: nowrap;
   box-shadow:
-    0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px rgba(0, 0, 0, 0.12),
-    0 5px 5px -3px rgba(0, 0, 0, 0.4);
+    0 8px 10px 1px rgb(0 0 0 / 14%),
+    0 3px 14px 2px rgb(0 0 0 / 12%),
+    0 5px 5px -3px rgb(0 0 0 / 40%);
 
   .header {
     flex-shrink: 0;
@@ -48,11 +49,12 @@
     align-items: center;
     position: sticky;
     top: 0;
-    @include themify($themes) {
-      background-color: themed('primary-light');
-      border-bottom: 1px solid themed('primary-dark');
 
+    @include themify($themes) {
+      background-color: themed("primary-light");
+      border-bottom: 1px solid themed("primary-dark");
     }
+
     font-size: 24px;
     padding: 15px;
     z-index: 1020;
@@ -86,12 +88,13 @@
     flex-direction: row;
     justify-content: flex-end;
     position: sticky;
-    bottom: 0;    
-    @include themify($themes) {
-      background-color: themed('primary-light');
-      border-top: 1px solid themed('primary-dark');
+    bottom: 0;
 
+    @include themify($themes) {
+      background-color: themed("primary-light");
+      border-top: 1px solid themed("primary-dark");
     }
+
     z-index: 1020;
     padding: 10px;
     min-height: 30px;
@@ -104,14 +107,15 @@
 
 h3 {
   @include themify($themes) {
-    color: themed('primary')
+    color: themed("primary");
   }
 }
 
 .info-icon {
   @include themify($themes) {
-    color: themed('primary')
+    color: themed("primary");
   }
+
   position: absolute;
   margin-left: 212px;
   margin-top: 6px;

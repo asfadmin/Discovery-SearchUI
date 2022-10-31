@@ -1,4 +1,4 @@
-@import "asf-theme";
+@import url("asf-theme");
 
 .saved-filters {
   left: 0;
@@ -20,7 +20,7 @@
 .saved-filters-presets__footer,
 .saved-filters-presets__footer-mobile {
   @include themify($themes) {
-    background-color: themed('primary-light');
+    background-color: themed("primary-light");
   }
 }
 
@@ -32,16 +32,18 @@
 
 .saved-filters-presets__content {
   @include themify($themes) {
-    background-color: themed('background-white');
+    background-color: themed("background-white");
   }
+
   max-height: 100%;
   overflow-y: auto;
 }
 
 .saved-filters-presets__content-mobile {
   @include themify($themes) {
-    background-color: themed('background-white');
+    background-color: themed("background-white");
   }
+
   max-height: 100%;
   overflow-y: auto;
   width: 100%;
@@ -49,13 +51,13 @@
 
 .saved-filters-presets-row:nth-child(even) {
   @include themify($themes) {
-    background-color: darken(themed('primary-light'), 10%) !important;
+    background-color: darken(themed("primary-light"), 10%) !important;
   }
 }
 
 .saved-filters-presets__header {
   @include themify($themes) {
-    border-bottom-color: themed('primary');
+    border-bottom-color: themed("primary");
   }
 
   height: 70px;
@@ -88,8 +90,9 @@
 
 .saved-filters-presets__subhead {
   @include themify($themes) {
-    background-color: themed('background-white');
+    background-color: themed("background-white");
   }
+
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -114,9 +117,10 @@
 .saved-filters-presets__footer,
 .saved-filters-presets__footer-mobile {
   @include themify($themes) {
-    border-top-color: themed('primary');
-    background-color: themed('primary-light');
+    border-top-color: themed("primary");
+    background-color: themed("primary-light");
   }
+
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -138,15 +142,17 @@
 
 .saved-filters-presets__save-button {
   @include themify($themes) {
-    color: themed('primary-light');
+    color: themed("primary-light");
   }
+
   display: flex;
 }
 
 .saved-filters-presets__close-button {
   @include themify($themes) {
-    color: themed('primary-light');
+    color: themed("primary-light");
   }
+
   display: flex;
   margin-right: 15px;
   height: fit-content;
@@ -158,8 +164,9 @@
 
 .no-saved-searches {
   @include themify($themes) {
-    color: themed('primary-light');
+    color: themed("primary-light");
   }
+
   padding-left: 15px;
 }
 

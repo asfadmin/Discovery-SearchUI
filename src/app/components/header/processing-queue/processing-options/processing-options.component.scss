@@ -1,9 +1,10 @@
-@import "asf-theme";
+@import url("asf-theme");
 
 .processing-options {
   @include themify($themes) {
-    background-color: themed('background-white');
+    background-color: themed("background-white");
   }
+
   margin-top: 10px;
 }
 

@@ -1,4 +1,4 @@
-@import "asf-theme";
+@import url("asf-theme");
 
 .add-files-btn {
   float: right;
@@ -24,17 +24,15 @@
   flex-direction: column;
 }
 
-
 .drop-file-area {
   @include themify($themes) {
-    background-color: darken(themed('background-white'), 10%);
-    outline: 2px dashed themed('primary');
-
+    background-color: darken(themed("background-white"), 10%);
+    outline: 2px dashed themed("primary");
   }
+
   background-image: url("/assets/geospatial_upload.png");
   background-size: contain;
   background-repeat: no-repeat;
-  
   background-position: center;
   width: 350px;
   height: 160px;
@@ -44,9 +42,10 @@
 
 .is-file-error {
   @include themify($themes) {
-    color: themed('warn');
-    outline-color: themed('warn');
+    color: themed("warn");
+    outline-color: themed("warn");
   }
+
   animation: shake 0.82s;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;

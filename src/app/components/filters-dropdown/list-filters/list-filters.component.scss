@@ -1,4 +1,4 @@
-@import "asf-theme";
+@import url("asf-theme");
 
 .ls-example {
   font-style: italic;
@@ -12,11 +12,11 @@
 }
 
 .drop-file-area {
-
   @include themify($themes) {
-    background-color: darken(themed('background-white'), 10%);
-    outline: 2px dashed themed('primary');
+    background-color: darken(themed("background-white"), 10%);
+    outline: 2px dashed themed("primary");
   }
+
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -38,7 +38,7 @@
   margin-top: 25%;
   margin-right: 15%;
   margin-left: 20%;
-  color: rgba(0, 0, 0, 0.54);
+  color: rgb(0 0 0 / 54%);
   font-weight: 400;
 }
 
@@ -54,14 +54,15 @@
 
 .panel-title {
   @include themify($themes) {
-    color: themed('dark-primary-text') !important;
+    color: themed("dark-primary-text") !important;
   }
 }
 
 .asf-manual-link {
   @include themify($themes) {
-    color: themed('dark-secondary-text')
+    color: themed("dark-secondary-text");
   }
+
   display: inline-block;
   line-height: 0;
 

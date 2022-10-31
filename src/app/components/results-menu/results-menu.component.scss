@@ -1,9 +1,10 @@
-@import "asf-theme";
+@import url("asf-theme");
 
 .rectangle-wrapper {
   @include themify($themes) {
-    background: themed('background-white');
+    background: themed("background-white");
   }
+
   position: fixed;
 }
 
@@ -23,8 +24,9 @@
 
 .results-menu--background {
   @include themify($themes) {
-    background: themify('primary-dark');
+    background: themify("primary-dark");
   }
+
   pointer-events: auto;
 }
 
@@ -35,10 +37,12 @@
   font-weight: 400;
   font-size: 16px;
   text-align: center;
+
   @include themify($themes) {
-    background-color: themed('primary-light');
-    color: themed('dark-primary-text');
+    background-color: themed("primary-light");
+    color: themed("dark-primary-text");
   }
+
   border-left: none;
 }
 
@@ -63,8 +67,9 @@
 
 .left-border {
   box-shadow: none !important;
+
   @include themify($themes) {
-    border-left: themed('primary-light') 1px solid;
+    border-left: themed("primary-light") 1px solid;
   }
 }
 
@@ -95,20 +100,24 @@
   z-index: 9;
   // background-image: url("/assets/div-handles/hgrip.svg");
   @include themify($themes) {
-    background-color: themed('primary-light');
+    background-color: themed("primary-light");
   }
+
   background-position: center;
   background-repeat: no-repeat;
   cursor: ns-resize;
   display: grid;
   place-content: center;
 }
+
 .hgrip-icon {
   @include themify($themes) {
-    stroke: themed('dark-primary-text');
+    stroke: themed("dark-primary-text");
   }
+
   width: 33px;
 }
+
 .resize-spacer {
   width: 64px;
   display: inline-block;
@@ -128,9 +137,11 @@
   justify-content: center;
   width: 100%;
   height: 25px;
+
   @include themify($themes) {
-    background-color: themed('primary-light');
+    background-color: themed("primary-light");
   }
+
   z-index: 9;
 }
 
@@ -145,8 +156,9 @@
 
   a {
     text-decoration: none;
+
     @include themify($themes) {
-      color: themed('dark-primary-text')
+      color: themed("dark-primary-text");
     }
   }
 }

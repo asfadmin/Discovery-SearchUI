@@ -1,4 +1,4 @@
-@import "asf-theme";
+@import url("asf-theme");
 
 $header-height: 95px;
 $footer-height: 60px;
@@ -6,8 +6,9 @@ $bottom-offset: 10px;
 
 ::ng-deep.mat-dialog-container {
   @include themify($themes) {
-    background: themed('primary-light');
+    background: themed("primary-light");
   }
+
   resize: both;
   overflow: auto;
   width: 80vw;
@@ -25,9 +26,10 @@ $bottom-offset: 10px;
 
 .queue {
   @include themify($themes) {
-    color: themed('dark-primary-text');
-    background: themed('primary-light');
+    color: themed("dark-primary-text");
+    background: themed("primary-light");
   }
+
   min-width: 350px;
   height: 100%;
   min-height: 500px;
@@ -43,10 +45,10 @@ $bottom-offset: 10px;
 
 .mat-dialog-content {
   @include themify($themes) {
-    background-color: themed('background-white');
+    background-color: themed("background-white");
   }
+
   position: absolute;
-  
   display: block;
   top: $header-height;
   height: calc(100% - #{$header-height} - #{$footer-height} - #{$bottom-offset});
@@ -86,10 +88,11 @@ $bottom-offset: 10px;
 
 .pq-card-title-group {
   @include themify($themes) {
-    background: themed('primary-light');
-    color: themed('dark-primary-text');
-    border-bottom-color: themed('primary-dark');
+    background: themed("primary-light");
+    color: themed("dark-primary-text");
+    border-bottom-color: themed("primary-dark");
   }
+
   padding: 10px 10px 0 0;
   border-bottom-style: solid;
   border-bottom-width: 1px;
@@ -106,8 +109,9 @@ $bottom-offset: 10px;
 
   a {
     @include themify($themes) {
-      color: themed('blue-link');
+      color: themed("blue-link");
     }
+
     text-decoration: underline;
   }
 }
@@ -139,9 +143,10 @@ $bottom-offset: 10px;
 
 .footer {
   @include themify($themes) {
-    background: themed('primary-light');
-    border-top-color: themed('primary-dark');
+    background: themed("primary-light");
+    border-top-color: themed("primary-dark");
   }
+
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -152,8 +157,9 @@ $bottom-offset: 10px;
 
 .mat-dialog-actions {
   @include themify($themes) {
-    background-color: themed('primary-light');
+    background-color: themed("primary-light");
   }
+
   position: absolute;
   display: flex;
   width: 100%;
@@ -165,9 +171,10 @@ $bottom-offset: 10px;
 
 .subscription-footer {
   @include themify($themes) {
-    background-color: themed('primary-light');
-    border-top-color: themed('primary-dark');
+    background-color: themed("primary-light");
+    border-top-color: themed("primary-dark");
   }
+
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
@@ -182,14 +189,15 @@ $bottom-offset: 10px;
 
 .validate-toggle {
   @include themify($themes) {
-    color: themed('dark-secondary-text');
+    color: themed("dark-secondary-text");
   }
+
   margin-top: 22px;
 }
 
 .validate-only {
   @include themify($themes) {
-    color: themed('dark-primary-text');
+    color: themed("dark-primary-text");
   }
 }
 
@@ -202,10 +210,10 @@ $bottom-offset: 10px;
 
 .on-demand-icon {
   @include themify($themes) {
-    color: themed('dark-primary-text');
+    color: themed("dark-primary-text");
   }
-  @include md-icon-size(72px);
 
+  @include md-icon-size(72px);
 }
 
 .on-demand-text {
@@ -215,8 +223,9 @@ $bottom-offset: 10px;
 
 .on-demand-subtitle {
   @include themify($themes) {
-    color: themed('dark-secondary-text');
+    color: themed("dark-secondary-text");
   }
+
   font-style: italic;
   font-size: 14px;
   margin-top: -15px;
@@ -228,14 +237,15 @@ $bottom-offset: 10px;
 
 .step-error {
   @include themify($themes) {
-    color: themed('err');
+    color: themed("err");
   }
 }
 
 .close-x {
   @include themify($themes) {
-    color: themed('dark-primary-text');
+    color: themed("dark-primary-text");
   }
+
   position: absolute;
   top: 10px;
   right: 24px;
@@ -265,15 +275,16 @@ $bottom-offset: 10px;
 
 .hyp3-url {
   @include themify($themes) {
-    color: themed('dark-secondary-text');
+    color: themed("dark-secondary-text");
   }
+
   height: 32px;
   font-size: 12px;
-  margin: -4px 0 6px 0;
+  margin: -4px 0 6px;
 }
 
 .hyp3-url-mobile {
-  margin: 17px 0 0 0;
+  margin: 17px 0 0;
 }
 
 .branding-block {

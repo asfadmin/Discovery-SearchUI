@@ -1,6 +1,6 @@
 @use "@angular/material" as mat;
 
-@import "asf-theme";
+@import url("asf-theme");
 $config: mat.define-typography-config();
 
 .medium-header {
@@ -36,8 +36,9 @@ $config: mat.define-typography-config();
 
 .baseline-criteria-button-toggle {
   @include themify($themes) {
-    background-color: themed('background-white') !important;
+    background-color: themed("background-white") !important;
   }
+
   font-size: 14px;
 }
 
@@ -63,8 +64,9 @@ $config: mat.define-typography-config();
 
 .list-button {
   @include themify($themes) {
-    background-color: themed('background-white');
+    background-color: themed("background-white");
   }
+
   border: darkgrey 1px solid;
   color: inherit;
   padding: 0 0 0 5px;
@@ -92,8 +94,9 @@ $config: mat.define-typography-config();
 
 .button-group-label {
   @include themify($themes) {
-    color: themed('dark-secondary-text');
+    color: themed("dark-secondary-text");
   }
+
   text-align: center;
   font-size: 12px;
   margin-left: -10px;

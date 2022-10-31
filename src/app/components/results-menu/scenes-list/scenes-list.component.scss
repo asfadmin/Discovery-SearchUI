@@ -1,4 +1,5 @@
-@import 'asf-theme';
+@import url("asf-theme");
+
 .list-viewport {
   overflow-y: auto;
 }
@@ -13,7 +14,7 @@
 
 .selected .ml-2 {
   @include themify_non_host($themes) {
-    color: themed('err');
+    color: themed("err");
   }
 }
 

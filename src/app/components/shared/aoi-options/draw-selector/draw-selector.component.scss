@@ -1,16 +1,19 @@
-@import "asf-theme";
+@import url("asf-theme");
 
 .draw-icon {
   @include md-icon-size($asf-ribbon-icon-size);
+
   @include themify($themes) {
-    color: themed('dark-primary-text');
+    color: themed("dark-primary-text");
   }
 }
+
 .draw-svg {
   @include themify($themes) {
-    fill: themed('dark-primary-text');
+    fill: themed("dark-primary-text");
   }
 }
+
 .draw-text {
   font-size: 14px;
   line-height: 10px;
@@ -27,8 +30,9 @@
 
 .bottom-right {
   @include themify($themes) {
-    color: themed('primary');
+    color: themed("primary");
   }
+
   position: absolute;
   bottom: -6px;
   right: -2px;
@@ -37,10 +41,10 @@
 
 .shape-select-button {
   @include themify($themes) {
-    background: themed('background-white');
-    color: themed('light-primary-text')
-    
+    background: themed("background-white");
+    color: themed("light-primary-text");
   }
+
   margin: 0;
   padding: 0;
   font-size: 18px !important;
@@ -51,9 +55,10 @@
   // border: solid 1px rgb(0 0 0 / 12%);
   text-align: center;
 }
+
 .control-button {
   @include themify($themes) {
-    background: themed('background-white');
-    color: themed('light-primary-text')
+    background: themed("background-white");
+    color: themed("light-primary-text");
   }
 }

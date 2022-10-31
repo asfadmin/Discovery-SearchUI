@@ -1,15 +1,14 @@
 /* csslint ignoreAtRules: ["include"] */
 @use "@angular/material" as mat;
 
-@import "variables";
-@import "dark_variables";
+@import url("variables");
+@import url("dark_variables");
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
 @include mat.core();
-
 
 //$custom-typography: mat.define-typography-config(
 //  $font-family: 'Roboto, sans-serif',
@@ -18,8 +17,6 @@
 //);
 
 //@include mat.core($custom-typography);
-
-
 
 button,
 .mat-expansion-panel,
@@ -39,7 +36,6 @@ $asf-app-warn:    mat.define-palette($mat-asf-yellow, 200, 100, 500);
 $asf-app-err: mat.define-palette($mat-asf-red, 200, 100, 500);
 // Create the theme object (a Sass map containing all of the palettes).
 
-
 // Create your Sass color vars (will be available in all the project)
 
 $asf-warn: mat.get-color-from-palette($asf-app-warn);
@@ -51,7 +47,8 @@ $asf-dark-primary: mat.get-color-from-palette($asf-app-dark-primary);
 $asf-accent: mat.get-color-from-palette($asf-app-accent);
 $asf-primary-light: lighten($asf-primary, 40%);
 $asf-primary-dark: darken($asf-primary, 15%);
-$asf-background-white: lighten($asf-primary, 80%); 
+$asf-background-white: lighten($asf-primary, 80%);
+
 @mixin md-icon-size($size: 24px) {
   // color: $dark-primary-text;
   font-size: $size !important;
@@ -62,18 +59,16 @@ $asf-background-white: lighten($asf-primary, 80%);
 $themes: (
   light: (
     background-white: lighten(mat.get-color-from-palette($asf-app-primary), 80%),
-
-    dark-primary-text: rgba(black, 0.87),
-    dark-secondary-text: rgba(black, 0.54),
-    dark-disabled-text: rgba(black, 0.38),
-    dark-dividers: rgba(black, 0.12),
-    dark-focused: rgba(black, 0.12),
+    dark-primary-text: rgb(black 0.87),
+    dark-secondary-text: rgb(black 0.54),
+    dark-disabled-text: rgb(black 0.38),
+    dark-dividers: rgb(black 0.12),
+    dark-focused: rgb(black 0.12),
     light-primary-text: white,
-    light-secondary-text: rgba(white, 0.7),
-    light-disabled-text: rgba(white, 0.5),
-    light-dividers: rgba(white, 0.12),
-    light-focused: rgba(white, 0.12),
-
+    light-secondary-text: rgb(white 0.7),
+    light-disabled-text: rgb(white 0.5),
+    light-dividers: rgb(white 0.12),
+    light-focused: rgb(white 0.12),
     borders: lightgray,
     primary: mat.get-color-from-palette($asf-app-primary),
     accent: mat.get-color-from-palette($asf-app-accent),
@@ -85,19 +80,16 @@ $themes: (
   ),
   dark: (
     light-primary-text: white,
-    light-secondary-text: rgba(white, 0.54),
-    light-disabled-text: rgba(white, 0.38),
-    light-dividers: rgba(white, 0.12),
-    light-focused: rgba(white, 0.12),
-    
-    dark-primary-text: rgb(183, 183, 183),
-    dark-secondary-text: rgba(183, 183, 183, 0.7),
-    dark-disabled-text: rgba(183, 183, 183, 0.5),
-    dark-dividers: rgba(white, 0.12),
-    dark-focused: rgba(white, 0.12),
-
+    light-secondary-text: rgb(white 0.54),
+    light-disabled-text: rgb(white 0.38),
+    light-dividers: rgb(white 0.12),
+    light-focused: rgb(white 0.12),
+    dark-primary-text: rgb(183 183 183),
+    dark-secondary-text: rgb(183 183 183 / 70%),
+    dark-disabled-text: rgb(183 183 183 / 50%),
+    dark-dividers: rgb(white 0.12),
+    dark-focused: rgb(white 0.12),
     borders: lightgray,
-
     primary: mat.get-color-from-palette($asf-app-dark-primary),
     accent: mat.get-color-from-palette($asf-app-accent),
     warn: mat.get-color-from-palette($asf-app-warn),
@@ -105,8 +97,6 @@ $themes: (
     blue-link: mat.get-color-from-palette($asf-app-warn),
     primary-light: lighten(mat.get-color-from-palette($asf-app-dark-primary), 5%),
     primary-dark: darken(mat.get-color-from-palette($asf-app-dark-primary), 15%),
-
-
     background-white: darken(mat.get-color-from-palette($asf-app-dark-primary), 5%),
   ),
 );
@@ -116,15 +106,15 @@ $themes: (
 
     :host-context(.theme-#{$theme}) & {
       $theme-map: () !global;
+
       @each $key, $submap in $map {
-        $value: map-get(map-get($themes, $theme), '#{$key}');
+        $value: map-get(map-get($themes, $theme), "#{$key}");
         $theme-map: map-merge($theme-map, ($key: $value)) !global;
       }
 
       @content;
       $theme-map: null !global;
     }
-
   }
 }
 
@@ -133,15 +123,15 @@ $themes: (
 
     .theme-#{$theme} & {
       $theme-map: () !global;
+
       @each $key, $submap in $map {
-        $value: map-get(map-get($themes, $theme), '#{$key}');
+        $value: map-get(map-get($themes, $theme), "#{$key}");
         $theme-map: map-merge($theme-map, ($key: $value)) !global;
       }
 
       @content;
       $theme-map: null !global;
     }
-
   }
 }
 
@@ -149,19 +139,16 @@ $themes: (
   @return map-get($theme-map, $key);
 }
 
-
-
-
 .theme-dark {
   $asf-dark-theme: mat.define-dark-theme($asf-app-dark-primary, $contrast);
-  @include mat.all-component-themes($asf-dark-theme);
 
+  @include mat.all-component-themes($asf-dark-theme);
 
   // color: $dark-primary-text;
 }
+
 .theme-light {
   $asf-light-theme: mat.define-light-theme($asf-app-primary, $asf-app-accent);
 
   @include mat.all-component-themes($asf-light-theme);
 }
-

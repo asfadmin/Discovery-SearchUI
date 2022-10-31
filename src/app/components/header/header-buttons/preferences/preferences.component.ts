@@ -153,21 +153,21 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     this.currentTheme = theme;
     if (theme === 'System Preferences') {
       this.themeService.theme.pipe(take(1)).subscribe(currentPreference => {
-        let body = document.getElementsByTagName("body")[0];
+        const body = document.getElementsByTagName('body')[0];
         // removes all classes from body, probably not best for later on
         body.removeAttribute('class');
-        body.classList.add(`theme-${currentPreference}`)
+        body.classList.add(`theme-${currentPreference}`);
         console.log(currentPreference);
-        this.saveProfile()
+        this.saveProfile();
 
-      })
+      });
     } else {
-      let body = document.getElementsByTagName("body")[0];
+      const body = document.getElementsByTagName('body')[0];
       // removes all classes from body, probably not best for later on
       body.removeAttribute('class');
-      body.classList.add(`theme-${this.currentTheme}`)
+      body.classList.add(`theme-${this.currentTheme}`);
       console.log(this.currentTheme);
-      this.saveProfile()
+      this.saveProfile();
     }
   }
 

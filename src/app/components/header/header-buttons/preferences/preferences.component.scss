@@ -1,4 +1,4 @@
-@import "asf-theme";
+@import url("asf-theme");
 
 .action-controls {
   margin-top: 25px;
@@ -14,8 +14,9 @@
 
   a {
     @include themify($themes) {
-      color: themed('dark-primary-text')
+      color: themed("dark-primary-text");
     }
+
     text-decoration: none;
   }
 }
@@ -27,9 +28,10 @@
 
 .dialog-header {
   @include themify($themes) {
-    background-color: themed('primary-light');
-    color: themed('dark-primary-text');
+    background-color: themed("primary-light");
+    color: themed("dark-primary-text");
   }
+
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -56,7 +58,7 @@
 }
 
 .section-heading {
-  margin: 20px 0 10px 0;
+  margin: 20px 0 10px;
   font-weight: 500;
 }
 

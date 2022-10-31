@@ -1,4 +1,4 @@
-@import "asf-theme";
+@import url("asf-theme");
 
 $side-padding-only: 0 15px 0 15px;
 
@@ -12,14 +12,15 @@ main {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
+
   @include themify($themes) {
-    background-color: lighten(themed('primary-light'),15%);
+    background-color: lighten(themed("primary-light"), 15%);
   }
 }
 
 footer {
   @include themify($themes) {
-    background-color: themed('primary-light');
+    background-color: themed("primary-light");
   }
 }
 
@@ -31,9 +32,10 @@ section {
 
 .help-header {
   @include themify($themes) {
-    background-color: themed('primary-light');
-    color: themed('dark-primary-text');
+    background-color: themed("primary-light");
+    color: themed("dark-primary-text");
   }
+
   display: flex;
   flex-direction: row;
   padding: $side-padding-only;
@@ -47,8 +49,9 @@ section {
 
 .help-menu {
   @include themify($themes) {
-    background-color: lighten(themed('primary-light'),15%);
+    background-color: lighten(themed("primary-light"), 15%);
   }
+
   display: flex;
   flex-direction: row;
   padding-left: 15px;
@@ -62,6 +65,5 @@ section {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  padding: 10px 15px 10px 15px;
+  padding: 10px 15px;
 }
-

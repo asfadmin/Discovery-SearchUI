@@ -1,6 +1,6 @@
 @use "@angular/material" as mat;
 
-@import "asf-theme";
+@import url("asf-theme");
 
 $config: mat.define-typography-config();
 
@@ -31,10 +31,11 @@ $config: mat.define-typography-config();
 
 .attribute-box {
   @include themify($themes) {
-    background-color: themed('primary-light');
-    color: themed('dark-primary-text');
-    border-color: themed('primary-light');
+    background-color: themed("primary-light");
+    color: themed("dark-primary-text");
+    border-color: themed("primary-light");
   }
+
   border-style: solid;
   border-width: 1px 0 0 1px;
   max-width: calc(50vw - 100px);
@@ -57,9 +58,9 @@ $config: mat.define-typography-config();
 
 a {
   @include themify($themes) {
-    color: themed('dark-secondary-text');
+    color: themed("dark-secondary-text");
   }
-  
+
   text-decoration: none;
 }
 
@@ -72,10 +73,11 @@ a {
 
 .bar-layout {
   @include themify($themes) {
-    background-color: themed('primary-light');
-    color: themed('dark-secondary-text');
-    border-top: 1px solid themed('primary-dark');
+    background-color: themed("primary-light");
+    color: themed("dark-secondary-text");
+    border-top: 1px solid themed("primary-dark");
   }
+
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
@@ -92,10 +94,11 @@ a {
 
 .toggle-button {
   @include themify($themes) {
-    background-color: themed('primary-light');
-    color: themed('dark-secondary-text');
-    border-bottom-color: lighten(themed('primary-light'),10%);
+    background-color: themed("primary-light");
+    color: themed("dark-secondary-text");
+    border-bottom-color: lighten(themed("primary-light"), 10%);
   }
+
   pointer-events: auto;
   font-size: 18px;
   font-family: Roboto, sans-serif;
@@ -106,8 +109,9 @@ a {
 
 .bar {
   @include themify($themes) {
-    background: themed('primary-light');
+    background: themed("primary-light");
   }
+
   position: absolute;
   bottom: 0;
   height: 24px;

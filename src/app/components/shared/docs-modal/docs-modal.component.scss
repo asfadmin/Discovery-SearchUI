@@ -1,4 +1,4 @@
-@import "asf-help";
+@import url("asf-help");
 
 .link-pointer {
   cursor: pointer;
@@ -6,7 +6,8 @@
 
 .text-link {
   @include themify($themes) {
-    color: themed('blue-link');
+    color: themed("blue-link");
   }
+
   text-decoration: underline;
 }
