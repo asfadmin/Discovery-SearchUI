@@ -80,7 +80,7 @@ hr {
 
 .item-content {
   @include themify($themes) {
-    color: themed('blue-link');
+    color: themed('blue-link') !important;
   }
   line-height: 18px;
 }
@@ -106,5 +106,11 @@ hr {
   margin-right: 0;
   @include themify_non_host($themes) {
     color: themed('dark-primary-text');
+  }
+}
+
+.dataset-date-range {
+  @include themify_non_host($themes) {
+   color: themed('dark-disabled-text') !important;
   }
 }

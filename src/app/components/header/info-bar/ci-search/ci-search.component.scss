@@ -10,7 +10,9 @@ $config: mat.define-typography-config();
 
 .new-stuff {
   cursor: pointer;
-  color: $uaf-primary-blue;
+  @include themify($themes) {
+    color: themed('blue-link');
+  }
   font-weight: bold;
   margin-right: 10px;
 }

@@ -59,14 +59,14 @@
                   </mat-card-actions>
                 </div>
                 <div fxFlex="20%" class="menu-item-aside">
-                  <div class="dataset-date-range">
+                  <div class="dataset-date-range faint-text">
                     {{ prettyDateRange(dataset.date) }}
                   </div>
                   <div class="material-icons-outlined menu-item-icon">
                     <img src="{{ dataset.platformIcon }}" width="53" height="53">
                   </div>
                   <div *ngIf="dataset.source !== null" class="dataset-source">
-                    <a href="{{ dataset.source.url }}" target="_blank">
+                    <a href="{{ dataset.source.url }}" target="_blank" class="blue-link">
                       {{ dataset.source.name }}
                     </a>
                   </div>

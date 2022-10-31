@@ -2,9 +2,3 @@
 @import "deluxe-menu";
 @import "deluxe-menu-2";
 
-.dataset-date-range {
-    @include themify($themes) {
-      color: red;
-//      color: themed('dark-disabled-text') !important;
-    }
-}

@@ -254,15 +254,15 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
         }
         return 5;
       })
-      .attr('fill', function (d) {
+      .attr('class', function (d) {
         if (self.data[ChartDatasets.MASTER].length > 0 && self.data[ChartDatasets.MASTER][0]?.id === d.id) {
-          return 'black';
+          return 'baseline-reference';
         } else if (self.data[ChartDatasets.SELECTED].length > 0 && self.data[ChartDatasets.SELECTED][0]?.id === d.id) {
-          return '#ff0000';
+          return 'baseline-selected';
         } else if (self.data[ChartDatasets.DOWNLOADS].some(p => p.id === d.id)) {
-          return '#215c8b';
+          return 'baseline-download';
         } else {
-          return '#808080';
+          return 'baseline-base';
         }
       })
       .on('mouseover', function (_event, d: Point) {

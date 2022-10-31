@@ -659,3 +659,8 @@ $d-height: 500px;
     color: themed('dark-primary-text');
   }
 }
+.blue-link {
+  @include themify_non_host($themes) {
+    color: themed('blue-link') !important;
+  }
+}

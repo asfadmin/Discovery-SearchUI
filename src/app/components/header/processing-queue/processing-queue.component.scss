@@ -226,7 +226,9 @@ $bottom-offset: 10px;
 
   a {
     text-decoration: underline;
-    color: $uaf-primary-blue;
+    @include themify($themes) {
+      color: themed('blue-link');
+    }
   }
 }
 
@@ -442,4 +444,9 @@ $bottom-offset: 10px;
 .branding-block {
   display: flex;
   flex-direction: column;
+}
+a {
+  @include themify($themes) {
+    color: themed('blue-link')
+  }
 }

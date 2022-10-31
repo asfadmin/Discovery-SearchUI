@@ -8,7 +8,7 @@
 
 .menu-item-icon {
   @include themify($themes) {
-    color: themed('primary-dark');
+    color: themed('dark-primary-text');
   }
   @include md-icon-size(70px);
 
@@ -136,7 +136,10 @@
 }
 
 .blue-link {
-  color: $uaf-primary-blue;
+  @include themify_non_host($themes) {
+    color: themed('blue-link');
+  }
+  // color: $uaf-primary-blue;
 }
 
 .mobile-button-wrapper {

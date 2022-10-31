@@ -79,7 +79,7 @@ $themes: (
     accent: mat.get-color-from-palette($asf-app-accent),
     warn: mat.get-color-from-palette($asf-app-warn),
     err: red,// mat.get-color-from-palette($asf-app-err),
-    blue-link: mat.get-color-from-palette($asf-app-blue),
+    blue-link: #236192,//mat.get-color-from-palette($asf-app-blue),
     primary-light: lighten(mat.get-color-from-palette($asf-app-primary), 40%),
     primary-dark: darken(mat.get-color-from-palette($asf-app-primary), 15%),
   ),
@@ -102,7 +102,7 @@ $themes: (
     accent: mat.get-color-from-palette($asf-app-accent),
     warn: mat.get-color-from-palette($asf-app-warn),
     err: #f95e5e,//mat.get-color-from-palette($asf-app-err),
-    blue-link: mat.get-color-from-palette($asf-app-blue),
+    blue-link: mat.get-color-from-palette($asf-app-warn),
     primary-light: lighten(mat.get-color-from-palette($asf-app-dark-primary), 5%),
     primary-dark: darken(mat.get-color-from-palette($asf-app-dark-primary), 15%),
 
