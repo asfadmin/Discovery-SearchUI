@@ -1,3 +1,4 @@
+@import 'asf-theme';
 .list-viewport {
   overflow-y: auto;
 }
@@ -11,7 +12,9 @@
 }
 
 .selected .ml-2 {
-  color: red;
+  @include themify_non_host($themes) {
+    color: themed('err');
+  }
 }
 
 .scene-controls {

@@ -1,34 +1,50 @@
-<button mat-stroked-button class="view-select-button" [matMenuTriggerFor]="viewMenu" aria-label="Map projection view">
-  <template *ngIf="view == types.ARCTIC" class="view-btn view-select-icon arctic"></template>
-  <template *ngIf="view == types.EQUATORIAL" class="view-btn view-select-icon equatorial"></template>
-  <template *ngIf="view == types.ANTARCTIC" class="view-btn view-select-icon antarctic"></template>
+<button
+  mat-stroked-button
+  class="view-select-button"
+  [matMenuTriggerFor]="viewMenu"
+  aria-label="Map projection view"
+>
+  <mat-icon *ngIf="view == types.ARCTIC" svgIcon="arctic" class="view-btn view-select-icon" > </mat-icon>
+  <mat-icon *ngIf="view == types.EQUATORIAL" svgIcon="equatorial" class="view-btn view-select-icon" > </mat-icon>
+  <mat-icon *ngIf="view == types.ANTARCTIC" svgIcon="antarctic" class="view-btn view-select-icon" ></mat-icon>
   <span class="fa fa-caret-down bottom-right"></span>
 </button>
 
 <mat-menu #viewMenu="matMenu">
-
-  <button mat-menu-item aria-label="Arctic map projection"
-      (click)="onArcticSelected()"
-      [value]="types.ARCTIC"
+  <button
+    mat-menu-item
+    aria-label="Arctic map projection"
+    (click)="onArcticSelected()"
+    [value]="types.ARCTIC"
   >
-    <span class="view-btn view-menu-icon arctic"></span>
+    <mat-icon svgIcon="arctic" class="view-btn view-menu-icon" ></mat-icon>
+
+    <!-- <img src="/assets/icons/arctic.svg" class="view-btn view-menu-icon" /> -->
+    <!-- <span class="view-btn view-menu-icon arctic"></span> -->
     <span>Arctic Map View</span>
   </button>
 
-  <button mat-menu-item aria-label="Equatorial map projection"
-      (click)="onEquatorialSelected()"
-      [value]="types.EQUATORIAL"
+  <button
+    mat-menu-item
+    aria-label="Equatorial map projection"
+    (click)="onEquatorialSelected()"
+    [value]="types.EQUATORIAL"
   >
-    <span class="view-btn view-menu-icon equatorial"></span>
+    <mat-icon svgIcon="equatorial" class="view-btn view-menu-icon" ></mat-icon>
+    <!-- <img src="/assets/icons/globe.svg" class="view-btn view-menu-icon" /> -->
+    <!-- <span class="view-btn view-menu-icon equatorial"></span> -->
     <span>Equatorial Map View</span>
   </button>
 
-  <button mat-menu-item aria-label="Antarctic map projection"
-      (click)="onAntarcticSelected()"
-      [value]="types.ANTARCTIC"
+  <button
+    mat-menu-item
+    aria-label="Antarctic map projection"
+    (click)="onAntarcticSelected()"
+    [value]="types.ANTARCTIC"
   >
-    <span class="view-btn view-menu-icon antarctic"></span>
+    <mat-icon svgIcon="antarctic" class="view-btn view-menu-icon" ></mat-icon>
+
+    <!-- <span class="view-btn view-menu-icon antarctic"></span> -->
     <span>Antarctic Map View</span>
   </button>
-
 </mat-menu>

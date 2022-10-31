@@ -1,12 +1,14 @@
 @import "asf-theme";
 
 .processing-options {
+  @include themify($themes) {
+    background-color: themed('background-white');
+  }
   margin-top: 10px;
-  background-color: white;
 }
 
 .no-processing-options {
-  color: #c9cac4;
+  color: #c9cac4; // TODO: check this
   padding-left: 15px;
 }
 

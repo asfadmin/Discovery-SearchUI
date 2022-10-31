@@ -71,7 +71,7 @@
                   <div>
                     <mat-button-toggle-group fxFlex="" name="layerType"
                     [disabled]="!(isBrowseOverlayEnabled$ | async)">
-                      <mat-button-toggle class="control-mat-button-toggle"
+                      <mat-button-toggle class="control-mat-button-toggle "
                       *ngIf="searchType === searchTypes.SARVIEWS_EVENTS"
                       (click)="onUnpinAll()"
                       matTooltip="Unpin All Selected Products">
@@ -103,6 +103,7 @@
                               class="opacity-slider"
                               name="layerType"
                               (input)="onSetOpacity($event)"
+                              color="primary"
                               [disabled]="!(isBrowseOverlayEnabled$ | async)"
                               [matTooltip]="(isBrowseOverlayEnabled$ | async) ? 'Adjust Overlay Opacity' :
                                'Product Overlays for current scene dataset not available'"

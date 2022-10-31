@@ -1,3 +1,5 @@
+@import "asf-theme";
+
 .dialog-header {
   font-weight: bold;
   font-size: 30px;
@@ -13,9 +15,11 @@
 }
 
 .code-block {
+  @include themify($themes) {
+    background: darken(themed('background-white'), 10%);
+  }
   padding: 10px;
   max-height: 300px;
   overflow: auto;
-  background: #f6f6f6d1;
-  border-radius: 1%;
+  border-radius: 10px;
 }

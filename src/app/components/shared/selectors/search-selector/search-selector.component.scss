@@ -49,7 +49,9 @@
   }
 
   h2 {
-    color: $asf-primary;
+    @include themify($themes) {
+      color: themed('primary');
+    }
     margin-bottom: 5px;
     text-shadow: 0 2px 2px rgba(0, 0, 0, 0.15);
   }

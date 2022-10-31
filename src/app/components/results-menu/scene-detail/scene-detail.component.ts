@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
-import { map, filter, tap, withLatestFrom } from 'rxjs/operators';
+import { map, filter, tap, withLatestFrom, distinctUntilChanged } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -113,6 +113,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     );
 
     const scene$ = this.store$.select(scenesStore.getSelectedScene).pipe(
+      distinctUntilChanged((previous, current) => previous?.id === current?.id),
       tap(_ => this.isImageLoading = true)
     );
 

@@ -1,5 +1,10 @@
+@import "asf-theme";
+
 .download-file-button {
   text-decoration: none;
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
 }
 
 .progress-spinner {

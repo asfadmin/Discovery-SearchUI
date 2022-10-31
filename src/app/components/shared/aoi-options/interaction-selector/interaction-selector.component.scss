@@ -2,6 +2,10 @@
 
 .interaction-icon {
   @include md-icon-size($asf-ribbon-icon-size);
+
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
 }
 
 .interaction-toggle-group {
@@ -9,6 +13,14 @@
 }
 
 .mobile-upload-button {
+  @include themify($themes) {
+    background-color: themed('background-white');
+  }
   border-left: 1px #e0e0e0;
-  background-color: white;
+}
+.control-mat-button-toggle {
+  @include themify($themes) {
+    background: themed('background-white');
+    color: themed('dark-primary-text');
+  }
 }

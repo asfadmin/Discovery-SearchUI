@@ -16,9 +16,19 @@
     <mat-option *ngFor="let event of (filteredEvents$ | async)"
         [value]="event.description">
         <div matTooltip = 'event description, id, or type'>
+            <ng-template [ngIf]="!!event.description" [ngIfElse]="NO_DESCRIPTION">
             <span>
               {{event.description}}
             </span>
+          </ng-template>
+
+          <ng-template #NO_DESCRIPTION>
+            <span>
+              {{event.event_type[0].toLocaleUpperCase()}}{{event.event_type.slice(1)}} Event: {{event.processing_timeframe.start | shortDate}}
+            </span>
+          </ng-template>
+
+
         </div>
     </mat-option>
   </mat-autocomplete>

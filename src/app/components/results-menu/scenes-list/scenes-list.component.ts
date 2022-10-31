@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 
 import { combineLatest, Observable } from 'rxjs';
-import { tap, withLatestFrom, filter, map, delay, debounceTime, first } from 'rxjs/operators';
+import { tap, withLatestFrom, filter, map, delay, debounceTime, first, distinctUntilChanged } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
@@ -130,7 +130,6 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
         })
       ).subscribe(
         idx => {
-          console.log('aaaihavsdibqwebuiqwbeoqwoubh');
           if (!this.selectedFromList) {
             this.scrollTo(idx);
           }
@@ -141,10 +140,10 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
     );
 
     this.subs.add(
-      sortedScenes$.pipe(debounceTime(250)).subscribe(
-        scenes => {
-          this.scenes = scenes;
-        }
+      sortedScenes$.pipe(debounceTime(250)).pipe(
+        distinctUntilChanged(),
+      ).subscribe(
+        scenes => this.scenes = scenes
       )
     );
 

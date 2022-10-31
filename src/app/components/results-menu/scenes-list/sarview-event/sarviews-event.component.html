@@ -14,12 +14,20 @@
   <div class="div-flex">
     <div class="div-flex-column">
       <div class="div-flex"
-      [title]="event.description"
+      [title]="event.description ?? event.event_id"
       class="bold" matLine>
         <span>
-          <span>
-            {{event.description}}
-          </span>
+          <ng-template [ngIf]="!!event.description" [ngIfElse]="NO_DESCRIPTION">
+            <span>
+              {{event.description}}
+            </span>
+          </ng-template>
+
+          <ng-template #NO_DESCRIPTION>
+            <span>
+              {{event.event_type[0].toLocaleUpperCase()}}{{event.event_type.slice(1)}} Event: {{event.processing_timeframe.start | shortDate}}
+            </span>
+          </ng-template>
         </span>
       </div>
     </div>

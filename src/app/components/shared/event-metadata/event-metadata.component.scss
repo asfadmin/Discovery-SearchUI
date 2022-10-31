@@ -2,7 +2,9 @@
 
 a {
   text-decoration: none;
-  color: $uaf-primary-blue;
+  @include themify($themes) {
+    color: themed('blue-link');
+  }
 }
 
 .scene-metadata {

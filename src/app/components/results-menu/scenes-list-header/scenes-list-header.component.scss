@@ -2,8 +2,6 @@
 @import "asf-theme";
 $config: mat.define-typography-config();
 
-$info-background: $asf-primary-light;
-$info-color: $asf-primary;
 
 .mobile-size {
   margin-left: 5px !important;
@@ -88,8 +86,10 @@ $info-color: $asf-primary;
 }
 
 .list-button {
+  @include themify($themes) {
+    background-color: themed('background-white');
+  }
   border: darkgrey 1px solid;
-  background: white;
   color: inherit;
   padding: 0 0 0 5px;
   margin: 0 5px 0 0;
@@ -115,15 +115,19 @@ $info-color: $asf-primary;
 }
 
 .button-group-label {
+  @include themify($themes) {
+    color: themed('dark-secondary-text');
+  }
   text-align: center;
-  color: $info-color;
   font-size: 12px;
   margin-left: -10px;
   line-height: 15px;
 }
 
 .control-mat-button-toggle {
-  background-color: white;
+  @include themify($themes) {
+    background-color: themed('background-white');
+  }
 }
 
 .space-filler {

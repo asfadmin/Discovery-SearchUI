@@ -13,7 +13,7 @@ import { PairService, ScenesService } from '@services';
 @Component({
   selector: 'app-max-results-selector',
   templateUrl: './max-results-selector.component.html',
-  styleUrls: ['./max-results-selector.component.css']
+  styleUrls: ['./max-results-selector.component.scss']
 })
 export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
   public maxResults: number;

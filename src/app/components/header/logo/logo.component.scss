@@ -2,8 +2,10 @@
 @import "variables";
 
 %card-base {
-  background-color: $asf-primary;
-  color: white;
+  @include themify($themes) {
+    background-color: themed('primary');
+    color: themed('dark-primary-text');
+  }
   border-radius: 0;
 }
 
@@ -22,9 +24,11 @@
 }
 
 .logo-card {
-  background-color: #c9cac4;
+  @include themify($themes) {
+    background-color: themed('primary-light');
+    color: themed('background-white');
+  }
   padding: 0 8px 0 0 !important;
-  color: white;
 
   .header {
     font-size: 20px;
@@ -57,8 +61,10 @@
 $icon-size: 36px;
 
 .menu-toggle-button {
-  background-color: $asf-primary;
-  color: white;
+  @include themify($themes) {
+    background-color: themed('primary');
+    color: themed('dark-primary-text');
+  }
   box-shadow: none !important;
   cursor: pointer;
   border: none;
@@ -111,4 +117,7 @@ $icon-size: 36px;
 .branding-block {
   padding-top: 0;
   margin-left: 10px;
+}
+.mat-card {
+  box-shadow: none !important;
 }

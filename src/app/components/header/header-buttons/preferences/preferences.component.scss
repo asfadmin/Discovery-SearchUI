@@ -13,8 +13,10 @@
   flex: 30px;
 
   a {
+    @include themify($themes) {
+      color: themed('dark-primary-text')
+    }
     text-decoration: none;
-    color: $asf-primary;
   }
 }
 
@@ -24,10 +26,13 @@
 }
 
 .dialog-header {
+  @include themify($themes) {
+    background-color: themed('primary-light');
+    color: themed('dark-primary-text');
+  }
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  background-color: $asf-primary-light;
   height: 40px;
   font-size: 22px !important;
   margin-top: -27px;
