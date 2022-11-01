@@ -1,0 +1,47 @@
+
+{
+  "compileOnSave": false,
+  "angularCompilerOptions": {
+    "strictTemplates": true
+  },
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "module": "es2020",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "target": "es2015",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "paths": {
+      "@components": ["src/app/components"],
+      "@services": ["src/app/services"],
+      "@pipes": ["src/app/pipes"],
+      "@models": ["src/app/models"],
+      "@directives": ["src/app/directives"],
+      "@store": ["src/app/store"],
+      "@shared": ["src/app/shared"],
+      "@environments": ["src/environments"],
+      "@testing": ["src/app/testing"],
+
+      "@components/*": ["src/app/components/*"],
+      "@services/*": ["src/app/services/*"],
+      "@pipes/*": ["src/app/pipes/*"],
+      "@models/*": ["src/app/models/*"],
+      "@directives/*": ["src/app/directives/*"],
+      "@store/*": ["src/app/store/*"],
+      "@shared/*": ["src/app/shared/*"],
+      "@environments/*": ["src/environments/*"],
+      "@testing/*": ["src/app/testing/*"]
+    },
+    "lib": [
+      "es2017",
+      "dom"
+    ]
+  }
+}
