@@ -1,4 +1,4 @@
-@import "asf-theme";
+@import url("asf-theme");
 
 $prod-row-height: 58px;
 $thumb-size: 50px;
@@ -132,7 +132,7 @@ $thumb-size: 50px;
   overflow: visible !important;
 }
 
- mat-expansion-panel-header {
+mat-expansion-panel-header {
   @extend .mat-header-base;
 
   &:hover,
