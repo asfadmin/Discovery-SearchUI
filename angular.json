@@ -141,10 +141,11 @@
       }
     }
   },
-  "defaultProject": "search-ui",
   "cli": {
     "analytics": false,
-    "defaultCollection": "@ngrx/schematics"
+    "schematicCollections": [
+      "@ngrx/schematics"
+    ]
   },
   "schematics": {
     "@schematics/angular:component": {
