@@ -170,7 +170,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
     this.clipContainer = this.svg.append('g')
       .attr('clip-path', 'url(#clip)');
     this.criticalBoxContainer = this.clipContainer.append('g').append('rect')
-      .attr('fill', '#f2f2f2');
+      .attr('class', 'critical-baseline');
     this.x = d3.scaleLinear()
     .domain(this.xExtent ?? [1, 100])
       .range([0, this.width]);
@@ -182,8 +182,8 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
     this.yAxis = this.svg.append('g');
 
 
-    this.svg.append('text').attr('transform', `translate(${this.width / 2}, ${this.height + this.margin.bottom - 20})`).style('text-anchor', 'middle').text('Temporal (days)');
-    this.svg.append('text').attr('transform', `rotate(-90)`).attr('y', -this.margin.left + 20).attr('x', -this.height / 2).style('text-anchor', 'middle').text('Perpendicular (m)');
+    this.svg.append('text').attr('transform', `translate(${this.width / 2}, ${this.height + this.margin.bottom - 20})`).style('text-anchor', 'middle').attr('class', 'baseline-label').text('Temporal (days)');
+    this.svg.append('text').attr('transform', `rotate(-90)`).attr('y', -this.margin.left + 20).attr('x', -this.height / 2).style('text-anchor', 'middle').attr('class','baseline-label').text('Perpendicular (m)');
 
     this.tooltip = d3.select('body').append('div')
       .attr('class', 'tooltip')
@@ -254,15 +254,15 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
         }
         return 5;
       })
-      .attr('fill', function (d) {
+      .attr('class', function (d) {
         if (self.data[ChartDatasets.MASTER].length > 0 && self.data[ChartDatasets.MASTER][0]?.id === d.id) {
-          return 'black';
+          return 'baseline-reference';
         } else if (self.data[ChartDatasets.SELECTED].length > 0 && self.data[ChartDatasets.SELECTED][0]?.id === d.id) {
-          return '#ff0000';
+          return 'baseline-selected';
         } else if (self.data[ChartDatasets.DOWNLOADS].some(p => p.id === d.id)) {
-          return '#215c8b';
+          return 'baseline-download';
         } else {
-          return '#808080';
+          return 'baseline-base';
         }
       })
       .on('mouseover', function (_event, d: Point) {

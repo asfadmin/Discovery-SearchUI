@@ -18,16 +18,20 @@ $thumb-size: 50px;
 }
 
 .dem-warning {
+  @include themify($themes) {
+    color: themed('err');
+  }
   font-size: 14px;
   padding-left: 25px;
   padding-top: 2px;
   padding-bottom: 5px;
-  color: red;
   background-color: rgb(220  220  220);
 }
 
 .more-link {
-  color: red;
+  @include themify($themes) {
+    color: themed('warn');
+  }
 }
 
 .map-icon {
@@ -38,11 +42,13 @@ $thumb-size: 50px;
 }
 
 .map-button-toggle {
+  @include themify($themes) {
+    background-color: themed('primary') !important;
+    color: themed('light-primary-text') !important;
+  }
   padding-right: 40px;
   font-size: 12px;
   line-height: 24px !important;
-  background-color: $asf-primary !important;
-  color: white !important;
   border: 1px groove rgb(0 0 0 / 25%) !important;
   border-radius: 4px !important;
 }

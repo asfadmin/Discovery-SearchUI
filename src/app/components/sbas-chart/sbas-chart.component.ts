@@ -151,14 +151,14 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .style('opacity', 0);
     this.tooltip = tooltip;
     this.chart.append('text')
-      .attr('class', 'x label')
+      .attr('class', 'x sbas-label')
       .attr('text-anchor', 'end')
       .attr('x', (this.widthValue / 2) - 15)
       .attr('y', this.heightValue - (this.margin.top))
       .text('Date');
 
     this.chart.append('text')
-      .attr('class', 'y label')
+      .attr('class', 'y sbas-label')
       .attr('text-anchor', 'end')
       .attr('y', -this.margin.left)
       .attr('x', -((this.heightValue - (this.margin.top)) / 2) + 60)

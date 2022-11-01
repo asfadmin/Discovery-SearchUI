@@ -27,7 +27,9 @@
 }
 
 .dataset-filters-card {
-  background-color: white;
+  @include themify($themes) {
+    background-color: themed('background-white');
+  }
   z-index: 1020;
   display: flex;
   overflow: hidden;
@@ -46,8 +48,11 @@
     align-items: center;
     position: sticky;
     top: 0;
-    background-color: $asf-primary-light;
-    border-bottom: 1px solid $asf-primary-dark;
+    @include themify($themes) {
+      background-color: themed('primary-light');
+      border-bottom: 1px solid themed('primary-dark');
+
+    }
     font-size: 24px;
     padding: 15px;
     z-index: 1020;
@@ -81,9 +86,12 @@
     flex-direction: row;
     justify-content: flex-end;
     position: sticky;
-    bottom: 0;
-    background-color: $asf-primary-light;
-    border-top: 1px solid $asf-primary-dark;
+    bottom: 0;    
+    @include themify($themes) {
+      background-color: themed('primary-light');
+      border-top: 1px solid themed('primary-dark');
+
+    }
     z-index: 1020;
     padding: 10px;
     min-height: 30px;
@@ -95,12 +103,16 @@
 }
 
 h3 {
-  color: $asf-primary;
+  @include themify($themes) {
+    color: themed('primary')
+  }
 }
 
 .info-icon {
+  @include themify($themes) {
+    color: themed('primary')
+  }
   position: absolute;
   margin-left: 212px;
   margin-top: 6px;
-  color: $asf-primary;
 }

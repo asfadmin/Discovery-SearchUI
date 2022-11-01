@@ -31,11 +31,13 @@
 }
 
 .sort-options {
+  @include themify($themes) {
+    background-color: themed('background-white');
+  }
   flex-direction: row;
   display: flex;
   flex-wrap: wrap;
   margin-top: 25px;
-  background-color: white;
 }
 
 .mat-list-base .mat-list-item,
@@ -67,9 +69,11 @@
 }
 
 .jobs-empty-message {
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
   text-align: center;
   font-size: 20px;
-  color: $asf-primary-dark;
   margin: 0 auto;
   padding-top: 30px;
 }
@@ -90,15 +94,19 @@
 
 .jobs-empty-message-docs-link,
 .jobs-empty-message-docs-link a {
+  @include themify($themes) {
+    color: themed('blue-link');
+  }
   display: block;
   text-align: center;
   font-size: 14px;
-  color: $asf-blue;
   padding-top: 10px;
   margin: 0 auto;
 }
 
 .pair-expansion-panel-header {
-  background: white !important;
+  @include themify($themes) {
+    background-color: themed('background-white') !important;
+  }
   border-style: none !important;
 }

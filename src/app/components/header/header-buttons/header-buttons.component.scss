@@ -3,4 +3,12 @@
 
 .menu-item {
   display: flex;
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
+}
+.mat-icon {
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
 }

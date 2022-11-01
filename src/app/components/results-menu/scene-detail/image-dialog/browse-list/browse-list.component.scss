@@ -1,11 +1,13 @@
 @import "asf-theme";
 
 .browse-list {
+  @include themify($themes) {
+    border-top-color: themed('primary-dark');
+    background-color: themed('primary-light');
+  }
   min-height: 140px;
-  border-top-color: $asf-primary-dark;
   border-top-style: solid;
   border-top-width: 1px;
-  background-color: $asf-primary-light;
 }
 
 .browse-list-viewport .cdk-virtual-scroll-content-wrapper {

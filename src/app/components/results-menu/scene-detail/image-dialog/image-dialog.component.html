@@ -22,7 +22,6 @@
             [href]="dataset.infoUrl"
             target="_blank"
             matTooltip="Dataset"
-            class="faint-text"
           >
             {{ dataset.name }}
           </a>
@@ -56,7 +55,8 @@
     >
       <div fxFlex="auto">
         <h3 class="mp0">
-          <span
+          <ng-template [ngIf]="!!event.description" [ngIfElse]="NO_DESCRIPTION">
+            <span
             [ngClass]="{
               'mp0-ellipsis-mobile': breakpoint <= breakpoints.SMALL,
               'mp0-ellipsis': breakpoint > breakpoints.SMALL
@@ -64,6 +64,17 @@
           >
             {{ event.description }}
           </span>
+        </ng-template>
+          <ng-template #NO_DESCRIPTION>
+            <span
+            [ngClass]="{
+              'mp0-ellipsis-mobile': breakpoint <= breakpoints.SMALL,
+              'mp0-ellipsis': breakpoint > breakpoints.SMALL
+            }"
+          >
+              {{event.event_type[0].toLocaleUpperCase()}}{{event.event_type.slice(1)}} Event: {{event.processing_timeframe.start | shortDate}}
+            </span>
+          </ng-template>
         </h3>
         <span class="faint-text">
           <a
@@ -205,7 +216,7 @@
             >
               • {{ product.productTypeDisplay }}
               <mat-menu #action_menu="matMenu" xPosition="before">
-                <span style="margin-right: 10px; margin-left: 10px;">
+                <span style="margin-right: 10px; margin-left: 10px;" class="primary-text">
                   <span *ngIf="product.bytes === 0">Virtual</span>
                   <span *ngIf="product.bytes !== 0">{{
                     product.bytes.toString() | readableSizeFromBytes

@@ -12,15 +12,17 @@
 }
 
 .drop-file-area {
+
+  @include themify($themes) {
+    background-color: darken(themed('background-white'), 10%);
+    outline: 2px dashed themed('primary');
+  }
   background-size: contain;
   background-repeat: no-repeat;
-  background-color: rgb(245, 245, 245);
   background-position: center;
   width: 350px;
   height: 180px;
   display: inline-block;
-  //border: $asf-primary-dark dashed 2px;
-  outline: 2px dashed $asf-primary;
   outline-offset: -8px;
 }
 
@@ -51,12 +53,16 @@
 }
 
 .panel-title {
-  color: $asf-primary-dark !important;
+  @include themify($themes) {
+    color: themed('dark-primary-text') !important;
+  }
 }
 
 .asf-manual-link {
+  @include themify($themes) {
+    color: themed('dark-secondary-text')
+  }
   display: inline-block;
-  color: $asf-primary;
   line-height: 0;
 
   ::ng-deep.material-icons {

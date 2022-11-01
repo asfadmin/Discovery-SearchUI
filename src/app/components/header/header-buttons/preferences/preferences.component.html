@@ -63,6 +63,18 @@
           <mat-icon>refresh</mat-icon>
         </button>
       </mat-form-field>
+      <div class="section-heading">Theming</div>
+      <mat-form-field class="default-filters-presets">
+        <mat-label>Default Theme</mat-label>
+        <mat-select
+        [(value)]="currentTheme"
+        (selectionChange)="onChangeDefaultTheme($event.value)"
+        name="preset">
+          <mat-option [value]="theme" *ngFor="let theme of themeOptions">
+            {{ theme | titlecase}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </form>
   </div>
 

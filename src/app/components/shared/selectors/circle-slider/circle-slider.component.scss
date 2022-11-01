@@ -1,14 +1,18 @@
 @import "asf-theme";
 
 ::ng-deep .circumference {
+  @include themify($themes) {
+    stroke: lighten(themed('primary'), 40%);
+  }
   fill: none;
-  stroke: lighten($asf-primary, 40%);
   stroke-width: 10px;
 }
 
 ::ng-deep .range {
+  @include themify($themes) {
+    stroke: themed('primary');
+  }
   fill: none;
-  stroke: $asf-primary;
   stroke-width: 10px;
 }
 
@@ -17,11 +21,13 @@
 }
 
 ::ng-deep .dot circle {
-  fill: $asf-primary;
+  @include themify($themes) {
+    fill: themed('primary');
+  }
 }
 
 ::ng-deep .dot circle.dragging {
-  fill: darken($asf-blue, 10%);
+  fill: darken($asf-blue, 10%) !important;
   stroke: darken($asf-blue, 10%);
 }
 
@@ -33,12 +39,16 @@ figure {
 }
 
 ::ng-deep .notch {
-  stroke: lighten($asf-primary, 40%);
+  @include themify($themes) {
+    stroke: lighten(themed('primary'), 40%);
+  }
   stroke-width: 1px;
 }
 
 ::ng-deep .selected {
-  stroke: $asf-primary;
+  @include themify($themes) {
+    stroke: themed('primary');
+  }
 }
 
 .container {

@@ -414,7 +414,7 @@ export class SarviewsEventsService {
             const isQuake = event.event_type.toLowerCase() === 'quake';
             const isVolcano = event.event_type.toLowerCase() === 'volcano';
 
-            return event.description.toLowerCase().includes(nameFilter)
+            return (event.description?.toLowerCase().includes(nameFilter) ?? false)
             || event.event_id.toLowerCase().includes(nameFilter)
             || event.event_type.toLowerCase().includes(nameFilter)
             || (!isVolcano ? (isQuake ? (event as models.SarviewsQuakeEvent).usgs_event_id?.includes(nameFilter) :

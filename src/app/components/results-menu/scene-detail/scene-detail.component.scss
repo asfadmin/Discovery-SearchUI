@@ -1,15 +1,18 @@
 @import "asf-theme";
 
-$divider-bar-color: lighten($asf-primary-light, 8%);
 
 a {
+  @include themify($themes) {
+    color: themed('blue-link') !important;
+  }
   text-decoration: none;
-  color: $uaf-primary-blue;
 }
 
 .detail-card {
   max-width: 100%;
-  border-left: lightgrey 1px solid;
+  @include themify($themes) {
+    border-left: themed('primary-light') 1px solid;
+  }
   overflow-x: hidden !important;
 }
 
@@ -41,15 +44,19 @@ a {
 }
 
 .banner {
-  background: $divider-bar-color;
   height: 30px;
+  @include themify($themes) {
+    background: themed('primary-light');
+    color: themed('dark-primary-text');
+    mat-icon {
+      color: themed('dark-primary-text');
+    }
+  }
   width: calc(100% + 32px);
   margin-left: -16px;
   //box-shadow: #00000038 0 7px 18px;
-  color: $asf-primary;
 
   mat-icon {
-    color: $asf-primary;
     margin-top: 4px;
     margin-right: 5px;
     margin-left: 5px;
@@ -58,7 +65,9 @@ a {
 }
 
 .not-clickable {
-  color: $asf-primary-light !important;
+  @include themify($themes) {
+    color: themed('dark-disabled-text') !important;
+  }
   cursor: default;
 }
 
@@ -129,7 +138,13 @@ a {
   position: sticky;
   display: flex;
   justify-content: flex-start;
-  background: $divider-bar-color;
+  @include themify($themes) {
+    background: lighten(themed('primary-light'), 8%);
+    button[disabled="true"] {
+      background-color: themed('primary-light');
+      color: themed('dark-secondary-text');
+    }
+  }
   align-items: center;
   height: 40px;
   bottom: 0;
@@ -140,8 +155,6 @@ a {
 
   button[disabled="true"] {
     cursor: default;
-    background-color: $asf-primary-light !important;
-    color: $asf-primary !important;
   }
 }
 
@@ -157,13 +170,17 @@ a {
   margin-left: 20px;
   font-size: 14px;
   font-weight: 500;
-  color: $asf-primary-dark;
+  @include themify($themes) {
+    color: lighten(themed('dark-primary-text'), 10%);
+  }
 }
 
 .search-button {
   margin-left: 20px;
-  background-color: $asf-primary !important;
-  color: white !important;
+  @include themify($themes) {
+    background-color: themed('primary');
+    color: themed('light-primary-text');
+  }
   border: 1px groove rgba(0, 0, 0, 0.25) !important;
   border-radius: 4px !important;
 }

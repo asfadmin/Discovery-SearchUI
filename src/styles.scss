@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+$theme-map: null;
 
-@import './styles/asf-theme';
+// @import './styles/asf-theme';
 @import './styles/filter-list';
 @import "~prismjs/themes/prism-dark.css";
 
@@ -35,9 +36,11 @@
   color: $asf-background-white;
   background-color: $asf-blue;
   background-image: url("/assets/icons/check_circle_white_48dp.svg");
+  box-shadow: none;
 
   .toast-close-button,
   #toast-container > .toast-close-button {
+    
     color: $asf-background-white;
   }
 
@@ -51,6 +54,7 @@
   color: $asf-background-white;
   background-color: red;
   background-image: url("/assets/icons/error_white_48dp.svg");
+  box-shadow: none;
 
   .toast-message {
     color: antiquewhite;
@@ -68,13 +72,21 @@
 
 .toast-info,
 #toast-container > .toast-info {
-  color: $asf-primary-dark;
-  background-color: $asf-background-white;
+
+  // box-shadow: none;
+  @include themify_non_host($themes) {
+    box-shadow: 0 0 12px lighten(themed('background-white'), 10%); //#999999;
+
+    background-color: themed('background-white');
+    color: themed('dark-primary-text');
+    .toast-message {
+      color: themed('dark-secondary-text');
+    }
+  }
+
   background-image: url("/assets/icons/info_black_48dp.svg");
 
-  .toast-message {
-    color: $asf-primary;
-  }
+
 
   a {
     color: $asf-blue;
@@ -130,6 +142,11 @@
 }
 
 .banner-dialog {
+  @include themify_non_host($themes) {
+    mat-dialog-content {
+      background: themed('primary-light');
+    }
+  }
   mat-dialog-container {
     padding: 0;
     box-sizing: border-box;
@@ -144,7 +161,7 @@
 
   mat-dialog-content {
     padding: 15px 40px;
-    background-color: $asf-background-white;
+    background: blue;
   }
 
   mat-dialog-actions {
@@ -157,12 +174,21 @@
   margin: 4px;
 }
 
+.primary-text {
+  @include themify_non_host($themes) {
+    color: themed('dark-primary-text');
+  }
+}
 .faint-text {
-  color: rgba(0, 0, 0, 0.6);
+  @include themify_non_host($themes) {
+    color: themed('dark-secondary-text');
+  }
 }
 
 .fainter-text {
-  color: rgba(0, 0, 0, 0.4);
+  @include themify_non_host($themes) {
+    color: themed('dark-disabled-text');
+  }
 }
 
 .v-mid {
@@ -170,6 +196,7 @@
 }
 
 .active-btn {
+
   background-color: rgba(0, 0, 0, 0.07);
 }
 
@@ -236,27 +263,34 @@ ul {
 }
 
 #dlQueueDialog {
+  @include themify_non_host($themes) {
+    background-color: themed('primary-light') !important;
+  }
+
   position: relative;
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: $asf-primary-light;
 }
 
 #processingQueueDialog {
+  @include themify_non_host($themes) {
+    background-color: themed('primary-light');
+  }
   position: relative;
   margin: 0;
   padding: 0 10px 10px 0 !important;
   overflow: hidden;
-  background-color: $asf-primary-light;
 }
 
 #subscriptionQueueDialog {
+  @include themify_non_host($themes) {
+    background-color: themed('primary-light');
+  }
   position: relative;
   margin: 0;
   padding: 0 10px 10px 0 !important;
   overflow: hidden;
-  background-color: $asf-primary-light;
 }
 
 .control-mat-button-toggle {
@@ -278,7 +312,9 @@ ul {
 }
 
 .ls-card-content-list .mat-form-field-infix {
-  border-color: $asf-primary-light;
+  @include themify_non_host($themes) {
+    border-color: themed('primary-light');
+  }
   width: 100%;
   border-style: solid;
   border-width: 1px;
@@ -346,6 +382,9 @@ ul {
 }
 
 .mat-dialog-container {
+  @include themify_non_host($themes) {
+    background-color: themed('primary-light');
+  }
   border-radius: 0 !important;
 }
 
@@ -354,7 +393,9 @@ ul {
   padding: 0;
 
   .mat-dialog-container {
-    background-color: $asf-primary-light;
+    @include themify_non_host($themes) {
+      background-color: themed('primary-light');
+    }
     padding-bottom: 0px;
     padding-top: 11px;
     padding-left: 12px;
@@ -487,18 +528,17 @@ ul {
   width: 100%;
 }
 
-$background-color: $asf-primary-light;
 $d-width: 600px;
 $d-height: 500px;
 
 #ConfirmProcess {
+  @include themify_non_host($themes) {
+    background: themed('primary-light') !important;
+  }
   resize: none;
   overflow: hidden;
-  background: $background-color !important;
   width: $d-width !important;
   height: $d-height !important;
-  min-width: $d-width !important;
-  min-height: $d-height !important;
   max-width: $d-width !important;
   max-height: $d-height !important;
 
@@ -524,12 +564,21 @@ $d-height: 500px;
 
 .content-block .mat-step-header .mat-step-icon-selected {
   background-color: $asf-blue !important;
-  color: #fff;
+  @include themify_non_host($themes) {
+    color: themed('dark-primary-text');
+  }
+}
+.mat-menu {
+  @include themify_non_host($themes) {
+    background-color: themed('background-white');
+  }
 }
 
 .content-block .mat-step-header .mat-step-icon {
-  background-color: $asf-primary;
-  color: #fff;
+  @include themify_non_host($themes) {
+    background-color: themed('primary');
+    color: themed('light-primary-text');
+  }
 }
 
 .content-block .mat-step-label-selected {
@@ -542,6 +591,9 @@ $d-height: 500px;
 
 .content-block .mat-horizontal-stepper-header-container {
   margin-bottom: 20px;
+}
+.mat-button-toggle { 
+  background: #424242;
 }
 
 .event-slider {
@@ -570,5 +622,43 @@ $d-height: 500px;
 
   .noUi-value {
     margin-top: 4px;
+  }
+}
+.mat-form-field.mat-focused {
+  .mat-form-field-label {
+    @include themify_non_host($themes) {
+      color: themed('dark-secondary-text') !important;
+    }
+  }
+}
+
+.opacity-slider-title {
+  @include themify_non_host($themes) {
+    color: themed('dark-primary-text');
+  }
+}
+.draw-svg {
+  @include themify_non_host($themes) {
+    fill: themed('dark-secondary-text');
+  }
+}
+.view-btn {
+  @include themify_non_host($themes) {
+    fill: themed('dark-primary-text');
+  }
+}
+.critical-baseline {
+  @include themify_non_host($themes) {
+    fill: darken(themed('background-white'), 5%);
+  }
+}
+.md-icon {
+  @include themify_non_host($themes) {
+    color: themed('dark-primary-text');
+  }
+}
+.blue-link {
+  @include themify_non_host($themes) {
+    color: themed('blue-link') !important;
   }
 }
