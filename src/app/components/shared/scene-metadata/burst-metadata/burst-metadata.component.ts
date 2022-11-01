@@ -10,10 +10,8 @@ export class BurstMetadataComponent implements OnInit {
 
   @Input() burst: models.SLCBurstMetadata;
 
-  // @Input() burst: models.SLCBurstMetadata;
   constructor() { }
 
   ngOnInit(): void {
   }
-
 }

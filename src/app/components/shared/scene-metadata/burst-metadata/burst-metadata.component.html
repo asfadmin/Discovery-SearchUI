@@ -1,8 +1,33 @@
+<!--
+    <li *ngFor="let item of burstDisplay | keyvalue">
 
-  <div>
-  <ul *ngFor="let item of burst | keyvalue">
+      <b> {{item.key}} </b>  • {{item.value}}
+    </li> -->
+
     <li>
-      {{item.key}} : {{item.value}}
+    <b> Relative Burst ID </b>  • {{burst.relativeBurstID}}
     </li>
-  </ul>
-</div>
+    <li>
+      <b> Absolute Burst ID </b>  • {{burst.absoluteBurstID}}
+    </li>
+    <li>
+      <b> Full Burst ID </b>  • {{burst.fullBurstID}}
+    </li>
+    <li>
+      <b> Burst Index </b>  • {{burst.burstIndex}}
+    </li>
+    <li>
+      <b> Burst Anx Time </b>  • {{burst.burstAnxTime}}
+    </li>
+    <li>
+       <b> Burst Anx Time Delta </b>  • {{burst.burstAnxTimeDelta}}
+    </li>
+    <li>
+      <b> Lines Per Burst </b>  • {{burst.linesPerBurst}}
+    </li>
+    <li>
+      <b> Samples Per Burst </b>  • {{burst.samplesPerBurst}}
+    </li>
+    <li>
+      <b> subswath </b>  • {{burst.subswath}}
+    </li>

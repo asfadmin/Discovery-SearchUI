@@ -161,31 +161,12 @@
        matTooltip="How to cite using this data">Citation</a>
   </li>
 
-  <li *ngIf="scene.metadata.burst !== null">
-    <b>relativeBurstID </b> •  {{scene.metadata.burst.relativeBurstID}}
-  </li>
-  <li *ngIf="scene.metadata.burst !== null">
-    <b>absoluteBurstID </b> •  {{scene.metadata.burst.absoluteBurstID}}
-  </li>
-  <li *ngIf="scene.metadata.burst !== null">
-    <b>fullBurstID </b> •  {{scene.metadata.burst.fullBurstID}}
-  </li>
-  <li *ngIf="scene.metadata.burst !== null">
-    <b>burstIndex </b> •  {{scene.metadata.burst.burstIndex}}
-  </li>
-  <li *ngIf="scene.metadata.burst !== null">
-    <b>burstAnxTime </b> •  {{scene.metadata.burst.burstAnxTime}}
-  </li>
-  <li *ngIf="scene.metadata.burst !== null">
-    <b>burstAnxTimeDelta </b> •  {{scene.metadata.burst.burstAnxTimeDelta}}
-  </li>
-  <li *ngIf="scene.metadata.burst !== null">
-    <b>linesPerBurst </b> •  {{scene.metadata.burst.linesPerBurst}}
-  </li>
-  <li *ngIf="scene.metadata.burst !== null">
-    <b>samplesPerBurst </b> •  {{scene.metadata.burst.samplesPerBurst}}
-  </li>
-  <li *ngIf="scene.metadata.burst !== null">
-    <b>subswath </b> •  {{scene.metadata.burst.subswath}}
-  </li>
+</ul>
+
+<hr>
+<h3>SLC Burst</h3>
+<ul class="scene-metadata">
+  <app-burst-metadata *ngIf="!!scene.metadata.burst" [burst]="scene.metadata.burst">
+  </app-burst-metadata>
+
 </ul>
