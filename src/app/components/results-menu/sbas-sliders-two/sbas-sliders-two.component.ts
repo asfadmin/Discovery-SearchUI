@@ -11,7 +11,7 @@ import * as filtersStore from '@store/filters';
 import { SubSink } from 'subsink';
 import { ScreenSizeService } from '@services';
 import * as models from '@models';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 
 declare var wNumb: any;
 
@@ -44,19 +44,19 @@ export class SbasSlidersTwoComponent implements OnInit {
   private firstMeterLoad = true;
   private subs = new SubSink();
 
-  options: FormGroup;
-  colorControl: FormControl;
+  options: UntypedFormGroup;
+  colorControl: UntypedFormControl;
 
-  meterDistanceControl: FormControl;
-  daysControl: FormControl;
+  meterDistanceControl: UntypedFormControl;
+  daysControl: UntypedFormControl;
 
   constructor(
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
-    fb: FormBuilder
+    fb: UntypedFormBuilder
   ) {
-    this.meterDistanceControl = new FormControl(this.perpendicular, Validators.min(-999));
-    this.daysControl = new FormControl(this.daysRange, Validators.min(0));
+    this.meterDistanceControl = new UntypedFormControl(this.perpendicular, Validators.min(-999));
+    this.daysControl = new UntypedFormControl(this.daysRange, Validators.min(0));
 
       this.options = fb.group({
         color: this.colorControl,
@@ -66,9 +66,9 @@ export class SbasSlidersTwoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.colorControl = new FormControl('primary');
-    this.meterDistanceControl = new FormControl(this.perpendicular, Validators.min(-999));
-    this.daysControl = new FormControl(this.daysRange, Validators.min(0));
+    this.colorControl = new UntypedFormControl('primary');
+    this.meterDistanceControl = new UntypedFormControl(this.perpendicular, Validators.min(-999));
+    this.daysControl = new UntypedFormControl(this.daysRange, Validators.min(0));
 
     const daysSliderRef = this.makeDaysSlider$(this.temporalFilter);
     const tempSlider = daysSliderRef.slider;

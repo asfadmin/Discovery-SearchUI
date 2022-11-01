@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 import { startWith, map, tap } from 'rxjs/operators';
 import { SubSink } from 'subsink';
@@ -47,13 +47,13 @@ export class MissionSelectorComponent implements OnInit, OnDestroy {
   public pageIndex = 0;
   private subs = new SubSink();
 
-  stateForm: FormGroup = this.fb.group({
+  stateForm: UntypedFormGroup = this.fb.group({
     missionFilter: '',
   });
 
   constructor(
     private store$: Store<AppState>,
-    private fb: FormBuilder
+    private fb: UntypedFormBuilder
   ) {}
 
   ngOnInit() {

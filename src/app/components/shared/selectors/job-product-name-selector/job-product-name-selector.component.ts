@@ -5,7 +5,7 @@ import * as filtersStore from '@store/filters';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import { filter, map } from 'rxjs/operators';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { ScenesService, ScreenSizeService } from '@services';
 import { getScenes } from '@store/scenes';
 import { combineLatest } from 'rxjs';
@@ -25,7 +25,7 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
   public unfilteredScenes: string[];
 
   public isJobFilterOptionsOpen = false;
-  public myControl = new FormControl();
+  public myControl = new UntypedFormControl();
 
   public breakpoints = Breakpoints;
   public breakpoint: Breakpoints;
