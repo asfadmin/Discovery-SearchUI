@@ -131,3 +131,28 @@ $thumb-size: 50px;
 .no-scroll {
   overflow: visible !important;
 }
+
+ mat-expansion-panel-header {
+  @extend .mat-header-base;
+
+  &:hover,
+  &:visited,
+  &:link,
+  &:active,
+  &:focus,
+  &[aria-disabled="true"] {
+    @extend .mat-header-base;
+  }
+}
+
+.mat-header-base {
+  background-color: $asf-background-white !important;
+  // border-bottom-left-radius: 0;
+  // border-bottom-right-radius: 0;
+  // border-left-width: 0;
+  // border-right-width: 0;
+  // border-top-width: 0;
+  // border-bottom-width: 0.5px;
+  border-color: $asf-background-white !important;
+  border-style: none;
+}
