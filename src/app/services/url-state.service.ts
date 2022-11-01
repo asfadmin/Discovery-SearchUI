@@ -151,7 +151,7 @@ export class UrlStateService {
       const body = document.getElementsByTagName('body')[0];
       body.removeAttribute('class');
       body.classList.add(`theme-${profile.theme}`);
-    } else {
+    } else if(profile.theme){
       this.themeService.theme.pipe(take(1)).subscribe(
         themePreference => {
           const body = document.getElementsByTagName('body')[0];
@@ -159,6 +159,10 @@ export class UrlStateService {
           body.classList.add(`theme-${themePreference}`);
         }
       )
+    } else {
+      const body = document.getElementsByTagName('body')[0];
+      body.removeAttribute('class');
+      body.classList.add('theme-light');
     }
     const action = profile.mapLayer === models.MapLayerTypes.STREET ?
       new mapStore.SetStreetView() :
