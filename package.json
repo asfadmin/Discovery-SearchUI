@@ -60,7 +60,7 @@
     "moment": "^2.29.2",
     "moment-range": "^4.0.2",
     "ngx-clipboard": "^15.0.0",
-    "ngx-cookieconsent": "^2.2.3",
+    "ngx-cookieconsent": "^4.0.1",
     "ngx-csv-parser": "^1.2.0",
     "ngx-toastr": "^14.0.0",
     "nouislider": "^15.5.0",

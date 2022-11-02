@@ -64,7 +64,7 @@ module.exports = {
                 }
             }
         ],
-        '@typescript-eslint/member-ordering': 'error',
+        // '@typescript-eslint/member-ordering': 'error',
         '@typescript-eslint/naming-convention': [
             'error',
             {
@@ -105,7 +105,7 @@ module.exports = {
         ],
         '@typescript-eslint/type-annotation-spacing': 'error',
         '@typescript-eslint/unified-signatures': 'error',
-        'arrow-body-style': 'error',
+        // 'arrow-body-style': 'error',
         'brace-style': [
             'error',
             '1tbs'
