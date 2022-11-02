@@ -1,11 +1,10 @@
 <button mat-stroked-button class="layer-select-button" [matMenuTriggerFor]="layerMenu" aria-label="Map projection view">
-  <template *ngIf="layerType == layerTypes.SATELLITE" class="layer-btn layer-select-icon arctic">
+  <ng-template [ngIf]="layerType === layerTypes.SATELLITE" [ngIfElse]="STREET_VIEW" class="layer-btn layer-select-icon arctic">
     <mat-icon class="control-icon">terrain</mat-icon>
-  </template>
-  <template *ngIf="layerType == layerTypes.STREET" class="layer-btn layer-select-icon equatorial">
+  </ng-template>
+  <ng-template #STREET_VIEW class="layer-btn layer-select-icon equatorial">
     <mat-icon class="control-icon">directions_car</mat-icon>
-  </template>
-<!--  <template *ngIf="layerType == layerTypes.ANTARCTIC" class="layer-btn layer-select-icon antarctic"></template>-->
+  </ng-template>
   <span class="fa fa-caret-down bottom-right"></span>
 </button>
 
