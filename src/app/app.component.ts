@@ -94,13 +94,10 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subs.add(
       this.themeService.theme.subscribe(theme => {
         // check if the user profile has auto in it.
-        console.log(theme);
-        console.log(this.isAutoTheme);
         if (this.isAutoTheme) {
           const body = document.getElementsByTagName('body')[0];
           body.removeAttribute('class');
           body.classList.add(`theme-${theme}`);
-          console.log(theme);
         }
       })
     );
@@ -235,7 +232,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       this.store$.select(userStore.getUserProfile).subscribe(
         profile => {
           this.urlStateService.setDefaults(profile);
-          console.log('User profile theme:', profile.theme);
           this.isAutoTheme = profile.theme === 'System Preferences';
           if (this.searchType !== models.SearchType.LIST
             && this.searchType !== models.SearchType.CUSTOM_PRODUCTS

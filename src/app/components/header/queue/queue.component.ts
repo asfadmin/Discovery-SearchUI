@@ -19,8 +19,6 @@ import * as UAParser from 'ua-parser-js';
 import { DownloadService } from '@services/download.service';
 // import { DownloadService } from '@services/download.service';
 
-
-// tslint:disable-next-line:class-name
 export interface selectedItems {
   id: string;
   url: string;

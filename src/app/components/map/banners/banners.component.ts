@@ -8,7 +8,6 @@ export interface DialogData {
   title: string;
 }
 
-// tslint:disable-next-line:directive-selector
 @Directive({selector: '[bannerCreate]'})
 export class BannerCreateDirective implements OnInit {
   @Input() bannerCreate: Banner;
