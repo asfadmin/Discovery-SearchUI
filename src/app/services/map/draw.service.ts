@@ -12,6 +12,8 @@ import * as polygonStyle from './polygon.style';
 import * as models from '@models';
 import GeometryType from 'ol/geom/GeometryType';
 import Geometry from 'ol/geom/Geometry';
+import Circle from 'ol/geom/Circle';
+import { fromCircle } from 'ol/geom/Polygon';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { DrawNewPolygon } from '@store/map';
@@ -157,6 +159,10 @@ export class DrawService {
       this.clear();
     });
     draw.on('drawend', e => {
+      if (e.feature?.getGeometry().getType() === 'Circle') {
+        const circle = e.feature.getGeometry() as Circle;
+        e.feature.setGeometry(fromCircle(circle))
+      }
       this.drawEndCallback(e.feature);
 
       this.isDrawing$.next(false);

@@ -61,6 +61,15 @@
       Draw a box
     </button>
 
+    <button mat-menu-item
+    (click)="onCircleSelected()"
+    [value]="types.CIRCLE"
+    class="control-button mat-menu-item"
+    matTooltip="Circle Draw">
+    <mat-icon class="draw-icon">format_shapes</mat-icon>
+    Draw a circle
+    </button>
+
   <button mat-menu-item
     *ngIf="breakpoint !== breakpoints.MOBILE"
     (click)="onImportSelected()"

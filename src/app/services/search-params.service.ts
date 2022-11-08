@@ -17,8 +17,6 @@ import { RangeService } from './range.service';
 import * as models from '@models';
 import { DrawService } from './map/draw.service';
 
-import { Circle } from 'ol/geom'
-
 @Injectable({
   providedIn: 'root'
 })
@@ -155,14 +153,6 @@ export class SearchParamsService {
         let feature = polygon.thing;
         let points = feature?.getGeometry().getCoordinates();
 
-        if (feature?.getGeometry() instanceof Circle) {
-          const circle: Circle = feature?.getGeometry() as Circle
-
-          const center = circle.getCenter().map(coord => coord.toString()).join(',')
-          const radius = circle.getRadius().toString()
-
-          return {circle: center+radius}
-        }
 
         if (points && points[0].length === 5) {
           const clonedFeature = feature.clone();
