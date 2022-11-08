@@ -161,7 +161,7 @@ export class DrawService {
     draw.on('drawend', e => {
       if (e.feature?.getGeometry().getType() === 'Circle') {
         const circle = e.feature.getGeometry() as Circle;
-        e.feature.setGeometry(fromCircle(circle))
+        e.feature.setGeometry(fromCircle(circle));
       }
       this.drawEndCallback(e.feature);
 
