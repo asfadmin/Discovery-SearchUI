@@ -20,7 +20,7 @@ $theme-map: null;
 }
 
 // regular style toast
-@import '~ngx-toastr/toastr';
+@import 'ngx-toastr/toastr';
 
 #toast-container {
   position: relative;
@@ -40,7 +40,7 @@ $theme-map: null;
 
   .toast-close-button,
   #toast-container > .toast-close-button {
-    
+
     color: $asf-background-white;
   }
 
@@ -592,7 +592,7 @@ $d-height: 500px;
 .content-block .mat-horizontal-stepper-header-container {
   margin-bottom: 20px;
 }
-.mat-button-toggle { 
+.mat-button-toggle {
   background: #424242;
 }
 

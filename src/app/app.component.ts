@@ -94,16 +94,14 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subs.add(
       this.themeService.theme.subscribe(theme => {
         // check if the user profile has auto in it.
-        console.log(theme)
-        console.log(this.isAutoTheme)
-        if(this.isAutoTheme) {
-          let body = document.getElementsByTagName('body')[0];
+        if (this.isAutoTheme) {
+          const body = document.getElementsByTagName('body')[0];
           body.removeAttribute('class');
           body.classList.add(`theme-${theme}`);
-          console.log(theme);
         }
       })
-    )
+    );
+
     this.subs.add(
       this.store$.select(queueStore.getQueuedJobs).subscribe(
         jobs => this.queuedCustomProducts = jobs
@@ -234,7 +232,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       this.store$.select(userStore.getUserProfile).subscribe(
         profile => {
           this.urlStateService.setDefaults(profile);
-          console.log('User profile theme:', profile.theme);
           this.isAutoTheme = profile.theme === 'System Preferences';
           if (this.searchType !== models.SearchType.LIST
             && this.searchType !== models.SearchType.CUSTOM_PRODUCTS
@@ -377,7 +374,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       };
 
       const toast = this.notificationService.info(
-        'This website uses cookies to ensure you get the best experience on our website. <a href="https://cookiesandyou.com/" target="_blank">Learn More</a>',
+        'This website uses cookies to ensure you get the best \
+        experience on our website. \
+        <a href="https://cookiesandyou.com/" target="_blank">Learn More</a>',
         '',
         options
       );
@@ -548,6 +547,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subs.add(
       this.asfSearchApi.health().pipe(
         map(health => {
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           const { ASFSearchAPI, CMRSearchAPI } = health;
 
           return 'error' in CMRSearchAPI || !ASFSearchAPI['ok?'];
