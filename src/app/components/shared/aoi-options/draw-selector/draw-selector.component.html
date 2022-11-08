@@ -14,6 +14,9 @@
   <template *ngIf="drawMode == types.BOX" class="shape-select-icon equatorial">
     <mat-icon class="draw-icon">format_shapes</mat-icon>
   </template>
+  <template *ngIf="drawMode == types.CIRCLE" class="shape-select-icon equatorial">
+    <mat-icon class="draw-icon">radio_button_unchecked</mat-icon>
+  </template>
   <span class="fa fa-caret-down bottom-right"></span>
 </button>
 
@@ -66,7 +69,7 @@
     [value]="types.CIRCLE"
     class="control-button mat-menu-item"
     matTooltip="Circle Draw">
-    <mat-icon class="draw-icon">format_shapes</mat-icon>
+    <mat-icon class="draw-icon">radio_button_unchecked</mat-icon>
     Draw a circle
     </button>
 
