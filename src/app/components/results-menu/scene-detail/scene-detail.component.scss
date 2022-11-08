@@ -134,14 +134,14 @@ a {
 }
 
 
-@media screen and (min-width: 1700px) {
-  .tool-menu {
-    justify-content: space-around !important;
-  }
+.menu-override{
+  justify-content: space-around !important;
   .search-button {
     margin-left: 0px !important;
   }
 }
+
+
 
 .tool-menu {
   z-index: 2;
