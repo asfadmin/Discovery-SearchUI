@@ -133,6 +133,16 @@ a {
   padding: 0 12px;
 }
 
+
+@media screen and (min-width: 1700px) {
+  .tool-menu {
+    justify-content: space-around !important;
+  }
+  .search-button {
+    margin-left: 0px !important;
+  }
+}
+
 .tool-menu {
   z-index: 2;
   position: sticky;
