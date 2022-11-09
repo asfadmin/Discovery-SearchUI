@@ -14,7 +14,7 @@
   <ng-template [ngIf]="drawMode == types.BOX" class="shape-select-icon equatorial">
     <mat-icon class="draw-icon">format_shapes</mat-icon>
   </ng-template>
-  <ng-template *ngIf="drawMode == types.CIRCLE" class="shape-select-icon equatorial">
+  <ng-template [ngIf]="drawMode == types.CIRCLE" class="shape-select-icon equatorial">
     <mat-icon class="draw-icon">radio_button_unchecked</mat-icon>
   </ng-template>
   <span class="fa fa-caret-down bottom-right"></span>
