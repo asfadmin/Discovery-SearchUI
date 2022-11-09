@@ -17,7 +17,6 @@ import { RangeService } from './range.service';
 import * as models from '@models';
 import { DrawService } from './map/draw.service';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -153,6 +152,7 @@ export class SearchParamsService {
       map(polygon => {
         let feature = polygon.thing;
         let points = feature?.getGeometry().getCoordinates();
+
 
         if (points && points[0].length === 5) {
           const clonedFeature = feature.clone();

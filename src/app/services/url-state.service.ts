@@ -20,7 +20,6 @@ import { WktService } from './wkt.service';
 import { RangeService } from './range.service';
 import { PropertyService } from './property.service';
 import { ThemingService } from './theming.service';
-// import { PinnedProduct } from './browse-map.service';
 
 
 @Injectable({
