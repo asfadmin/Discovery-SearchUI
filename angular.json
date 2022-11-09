@@ -53,7 +53,11 @@
               "css-element-queries",
               "xml2js",
               "moment-range",
-              "geojson-rbush"
+              "geojson-rbush",
+              "rbush",
+              "@turf",
+              "moment",
+              "nouislider"
             ],
             "vendorChunk": true,
             "extractLicenses": false,
@@ -141,10 +145,11 @@
       }
     }
   },
-  "defaultProject": "search-ui",
   "cli": {
     "analytics": false,
-    "defaultCollection": "@ngrx/schematics"
+    "schematicCollections": [
+      "@ngrx/schematics"
+    ]
   },
   "schematics": {
     "@schematics/angular:component": {

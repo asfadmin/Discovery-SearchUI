@@ -98,7 +98,7 @@ export class UrlStateService {
     this.router.navigate(['.'], {
       queryParams: this.params,
     });
-  }
+  };
 
   private loadStateFrom(params: Params): void {
     this.params = { ...this.params, ...params };
@@ -482,7 +482,7 @@ export class UrlStateService {
     }
 
     return new SetSearchType(<models.SearchType>searchType);
-  }
+  };
 
   private loadMapView = (view: string): Action | undefined => {
     if (!Object.values(models.MapViewType).includes(<models.MapViewType>view)) {
@@ -490,7 +490,7 @@ export class UrlStateService {
     }
 
     return new mapStore.SetMapView(<models.MapViewType>view);
-  }
+  };
 
   private loadMapZoom = (zoomStr: string): undefined => {
     const zoom = +zoomStr;
@@ -500,7 +500,7 @@ export class UrlStateService {
     }
 
     return;
-  }
+  };
 
   private loadMapCenter = (centerStr: string): undefined => {
     const center = centerStr.split(',').map(v => +v);
@@ -512,7 +512,7 @@ export class UrlStateService {
     }
 
     return;
-  }
+  };
 
   private loadSelectedDataset = (datasetStr: string): Action | undefined => {
     const datasetIds = models.datasetIds;
@@ -522,7 +522,7 @@ export class UrlStateService {
     }
 
     return new filterStore.SetSelectedDataset(datasetStr);
-  }
+  };
 
   private loadSearchPolygon = (polygon: string): undefined => {
     const features = this.wktService.wktToFeature(
@@ -533,7 +533,7 @@ export class UrlStateService {
     this.mapService.setDrawFeature(features);
 
     return;
-  }
+  };
 
   private loadStartDate = (start: string): Action | undefined => {
     const startDate = new Date(start);
@@ -543,7 +543,7 @@ export class UrlStateService {
     }
 
     return new filterStore.SetStartDate(startDate);
-  }
+  };
 
   private loadEndDate = (end: string): Action => {
     const endDate = new Date(end);
@@ -553,15 +553,15 @@ export class UrlStateService {
     }
 
     return new filterStore.SetEndDate(endDate);
-  }
+  };
 
   private loadSeasonStart = (start: string): Action => {
     return new filterStore.SetSeasonStart(+start);
-  }
+  };
 
   private loadSeasonEnd = (end: string): Action => {
     return new filterStore.SetSeasonEnd(+end);
-  }
+  };
 
   private loadPathRange = (rangeStr: string): Action[] => {
     const range = rangeStr
@@ -572,7 +572,7 @@ export class UrlStateService {
       new filterStore.SetPathStart(range[0] || null),
       new filterStore.SetPathEnd(range[1] || null)
     ];
-  }
+  };
 
   private loadFrameRange = (rangeStr: string): Action[] => {
     const range = rangeStr
@@ -583,7 +583,7 @@ export class UrlStateService {
       new filterStore.SetFrameStart(range[0] || null),
       new filterStore.SetFrameEnd(range[1] || null)
     ];
-  }
+  };
 
   private loadPerpendicularRange = (rangeStr: string): Action => {
     const range = rangeStr
@@ -594,7 +594,7 @@ export class UrlStateService {
       start: range[0],
       end: range[1]
     });
-  }
+  };
 
   private loadTemporalRange = (rangeStr: string): Action => {
     const range = rangeStr
@@ -605,13 +605,13 @@ export class UrlStateService {
       start: range[0],
       end: range[1]
     });
-  }
+  };
 
   private loadSearchList = (listStr: string): Action => {
     const list = listStr.split(',');
 
     return new filterStore.SetSearchList(list);
-  }
+  };
 
   private loadListSearchType = (mode: string): Action | undefined => {
     if (mode === 'Granule') {
@@ -623,7 +623,7 @@ export class UrlStateService {
     }
 
     return new filterStore.SetListSearchType(<models.ListSearchType>mode);
-  }
+  };
 
   private loadProductTypes = (typesStr: string): Action | undefined => {
     const productTypes: models.DatasetProductTypes = this.prop.loadProperties(
@@ -637,7 +637,7 @@ export class UrlStateService {
     }
 
     return new filterStore.SetProductTypes(productTypes);
-  }
+  };
 
   private loadBeamModes = (modesStr: string): Action | undefined => {
     const beamModes = this.prop.loadProperties(modesStr, 'beamModes');
@@ -647,7 +647,7 @@ export class UrlStateService {
     }
 
     return new filterStore.SetBeamModes(beamModes);
-  }
+  };
 
   private loadPolarizations = (polarizationsStr: string): Action | undefined => {
     const polarizations = this.prop.loadProperties(polarizationsStr, 'polarizations');
@@ -657,7 +657,7 @@ export class UrlStateService {
     }
 
     return new filterStore.SetPolarizations(polarizations);
-  }
+  };
 
   private loadSubtypes = (subtypesStr: string): Action | undefined => {
     const subtypes = this.prop.loadProperties(subtypesStr, 'subtypes', v => v.apiValue);
@@ -667,7 +667,7 @@ export class UrlStateService {
     }
 
     return new filterStore.SetSubtypes(subtypes);
-  }
+  };
 
   private loadFlightDirections = (dirsStr: string): Action => {
     const directions: models.FlightDirection[] = dirsStr
@@ -676,19 +676,19 @@ export class UrlStateService {
       .map(direction => <models.FlightDirection>direction);
 
     return new filterStore.SetFlightDirections(directions);
-  }
+  };
 
   private loadSelectedMission = (mission: string): Action => {
     return new filterStore.SelectMission(mission);
-  }
+  };
 
   private loadAreResultsLoaded = (areLoaded: string): Action => {
     return new scenesStore.SetResultsLoaded(areLoaded === 'true');
-  }
+  };
 
   private loadSelectedScene = (sceneId: string): Action => {
     return new scenesStore.SetSelectedScene(sceneId);
-  }
+  };
 
   private loadMaxResults = (maxResults: string): Action | undefined => {
     const results: number = +maxResults;
@@ -698,15 +698,15 @@ export class UrlStateService {
 
       return new filterStore.SetMaxResults(clampedResults);
     }
-  }
+  };
 
   private loadMasterScene = (master: string): Action => {
     return new scenesStore.SetFilterMaster(master);
-  }
+  };
 
   private loadHelpTopic = (topic: string): Action => {
     return new uiStore.SetHelpDialogTopic(topic);
-  }
+  };
 
   private loadSbasPairs = (pairsStr: string): Action => {
     const pairs = pairsStr
@@ -714,25 +714,25 @@ export class UrlStateService {
       .map(pair => pair.split(','));
 
     return new scenesStore.AddCustomPairs(pairs);
-  }
+  };
   private loadSbasSelected = (pair: string): Action => {
     const pairIds = pair.split(',');
     return new scenesStore.SetSelectedPair(pairIds);
-  }
+  };
   private loadEventID = (event_id: string): Action => new scenesStore.SetSelectedSarviewsEvent(event_id);
 
   private loadPinnedProducts = (pinnedProducts: string): Action => {
     const productIDs = pinnedProducts.split(',');
     return new mapStore.SetBrowseOverlays(productIDs);
-  }
+  };
 
   private loadIsDownloadQueueOpen = (isDownloadQueueOpen: string): Action => {
     return new uiStore.SetIsDownloadQueueOpen(!!isDownloadQueueOpen);
-  }
+  };
 
   private loadIsOnDemandQueueOpen = (isOnDemandQueueOpen: string): Action => {
     return new uiStore.SetIsOnDemandQueueOpen(!!isOnDemandQueueOpen);
-  }
+  };
 
   private loadEventNameFilter = (eventStr: string): Action => {
     if (eventStr.length > 100) {
@@ -740,7 +740,7 @@ export class UrlStateService {
     }
 
     return new filterStore.SetSarviewsEventNameFilter(eventStr);
-  }
+  };
 
   private loadMagnitudeRange = (rangeStr: string): Action => {
     const range = rangeStr
@@ -751,7 +751,7 @@ export class UrlStateService {
     start: range[0],
     end: range[1]
   });
-  }
+  };
 
   private loadEventTypes = (eventTypesStr: string): Action => {
     const eventTypes: models.SarviewsEventType[] = eventTypesStr
@@ -760,7 +760,7 @@ export class UrlStateService {
       .map(direction => <models.SarviewsEventType>direction);
 
     return new filterStore.SetSarviewsEventTypes(eventTypes);
-  }
+  };
 
   private loadOnlyActiveEvents = (activeOnly: string): Action => new filterStore.SetSarviewsEventActiveFilter(activeOnly === 'true');
 
@@ -774,7 +774,7 @@ export class UrlStateService {
       return new filterStore.SetHyp3ProductTypes([]);
     }
     return new filterStore.SetHyp3ProductTypes(productTypes);
-  }
+  };
 
   private updateShouldSearch(): void {
     this.store$.select(scenesStore.getAreResultsLoaded).pipe(
@@ -785,5 +785,5 @@ export class UrlStateService {
   private isNumber = n => !isNaN(n) && isFinite(n);
   private isValidDate = (d: Date): boolean => d instanceof Date && !isNaN(d.valueOf());
   private clamp = (value: number, min: number, max: number) =>
-    Math.min(Math.max(value, min), max)
+    Math.min(Math.max(value, min), max);
 }

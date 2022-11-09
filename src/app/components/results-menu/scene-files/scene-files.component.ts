@@ -288,9 +288,8 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     return product_name;
   }
 
-  public downloadProduct(product_url) {
+  public downloadProduct(_product_url) {
     // window.open(product_url);
-    console.log(product_url);
   }
 
   public onSelectSarviewsProduct(selections: MatSelectionListChange) {
