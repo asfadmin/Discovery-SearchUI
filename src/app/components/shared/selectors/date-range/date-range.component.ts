@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import { tap, delay, map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { SubSink } from 'subsink';
-import { FormGroup, FormControl  } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl  } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
 import { NotificationService } from '@services';
@@ -18,9 +18,9 @@ import { NotificationService } from '@services';
   }]
 })
 export class DateRangeComponent implements OnInit, OnDestroy {
-  public dateRangeForm = new FormGroup({
-    StartDateControl: new FormControl(),
-    EndDateControl: new FormControl()
+  public dateRangeForm = new UntypedFormGroup({
+    StartDateControl: new UntypedFormControl(),
+    EndDateControl: new UntypedFormControl()
   });
 
   @Input() minDate: Date;
@@ -37,7 +37,7 @@ export class DateRangeComponent implements OnInit, OnDestroy {
 
   public startDateErrors$ = new Subject<void>();
   public endDateErrors$ = new Subject<void>();
-  public invalidDateError$ = new Subject<FormControl>();
+  public invalidDateError$ = new Subject<UntypedFormControl>();
 
   public isStartError = false;
   public isEndError = false;
@@ -96,18 +96,18 @@ export class DateRangeComponent implements OnInit, OnDestroy {
     this.newEnd.emit(date);
   }
 
-  private isInvalidDateError(control: FormControl) {
+  private isInvalidDateError(control: UntypedFormControl) {
     return !!control.errors?.matDatepickerParse;
   }
 
   private get startControl() {
     return this.dateRangeForm
-      .controls['StartDateControl'] as FormControl;
+      .controls['StartDateControl'] as UntypedFormControl;
   }
 
   private get endControl() {
     return this.dateRangeForm
-      .controls['EndDateControl'] as FormControl;
+      .controls['EndDateControl'] as UntypedFormControl;
   }
 
   private endDateFormat(date: Date) {
@@ -168,7 +168,7 @@ export class DateRangeComponent implements OnInit, OnDestroy {
     );
   }
 
-  private onSetError(control: FormControl) {
+  private onSetError(control: UntypedFormControl) {
     control.reset();
     control.setErrors({'incorrect': true, });
   }

@@ -4,7 +4,7 @@ import { MatStepper } from '@angular/material/stepper';
 import { SubSink } from 'subsink';
 import * as moment from 'moment';
 
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
 import { Store } from '@ngrx/store';
@@ -105,8 +105,8 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
 
   private subs = new SubSink();
 
-  public searchOptionsFormGroup: FormGroup;
-  public reviewFormGroup: FormGroup;
+  public searchOptionsFormGroup: UntypedFormGroup;
+  public reviewFormGroup: UntypedFormGroup;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -118,7 +118,7 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
     public env: EnvironmentService,
     private asfApi: AsfApiService,
     private store$: Store<AppState>,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private notificationService: NotificationService,
   ) { }
 
