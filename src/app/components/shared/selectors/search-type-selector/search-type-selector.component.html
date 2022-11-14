@@ -21,20 +21,6 @@
   <div class="gtm-search-type-selector" fxFlex="nogrow">
 
     <mat-menu #searchTypeMenu="matMenu" [(ngModel)]="searchType" id="searchMenu">
-      <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
-          <button mat-menu-item (click)="onSetSearchType(searchTypes.DATASET)" class="mat-menu-item mobile-search-item">Geographic</button>
-          <button mat-menu-item (click)="onSetSearchType(searchTypes.LIST)" class="mat-menu-item mobile-search-item">List</button>
-          <button mat-menu-item (click)="onSetSearchType(searchTypes.BASELINE)" class="mat-menu-item mobile-search-item">Baseline</button>
-          <button mat-menu-item (click)="onSetSearchType(searchTypes.SBAS)" class="mat-menu-item mobile-search-item">SBAS</button>
-          <button mat-menu-item (click)="onSetSearchType(searchTypes.SARVIEWS_EVENTS)" class="mat-menu-item mobile-search-item">Event</button>
-          <button mat-menu-item (click)="onSetSearchType(searchTypes.CUSTOM_PRODUCTS)"
-            [disabled]="!isLoggedIn" class="mat-menu-item mobile-search-item">
-            On Demand Products
-          </button>
-      </div>
-
-      <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE">
-
         <div id="firstItem" class="menu-item mat-menu-item" aria-selected="true"
              (click)="onSetSearchType(searchTypes.DATASET)">
           <div class="menu-item-inner">
@@ -197,20 +183,12 @@
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
                 Derived datasets contain a collection of datasets available to view and download.
               </div>
-              <!--<mat-card-actions (click)="onOpenDocs($event)">-->
-              <!--<app-docs-modal class="info-text"-->
-              <!--text="More info"-->
-              <!--url="https://docs.asf.alaska.edu/vertex/manual/#area-of-interest-options">-->
-              <!--</app-docs-modal>-->
-              <!--</mat-card-actions>-->
             </div>
             <div fxFlex="25%" class="menu-item-aside">
               <span class="material-icons-outlined menu-item-icon">dataset_linked</span>
             </div>
           </div>
         </div>
-
-      </div>
 
     </mat-menu>
 
