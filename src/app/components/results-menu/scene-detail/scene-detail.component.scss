@@ -133,6 +133,16 @@ a {
   padding: 0 12px;
 }
 
+
+.menu-override{
+  justify-content: space-around !important;
+  .search-button {
+    margin-left: 0px !important;
+  }
+}
+
+
+
 .tool-menu {
   z-index: 2;
   position: sticky;

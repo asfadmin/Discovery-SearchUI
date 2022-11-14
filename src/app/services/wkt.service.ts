@@ -5,7 +5,7 @@ import Feature from 'ol/Feature';
 import WKT from 'ol/format/WKT.js';
 import Geometry from 'ol/geom/Geometry';
 import MultiPolygon from 'ol/geom/MultiPolygon';
-import Polygon from 'ol/geom/Polygon';
+import {Polygon } from 'ol/geom/Polygon';
 import { fromLonLat, toLonLat } from 'ol/proj';
 
 @Injectable({
