@@ -145,17 +145,6 @@ button {
   padding: 0 0 0 5px !important;
 }
 
-::ng-deep.mat-dialog-container {
-  resize: both;
-  overflow: auto;
-  @include themify($themes) {
-    background-color: themed('primary-light');
-  }
-  width: 80vw;
-  height: 86vh;
-  min-width: 350px;
-  min-height: 500px;
-}
 
 .dl-mat-dialog-content {
   @include themify($themes) {

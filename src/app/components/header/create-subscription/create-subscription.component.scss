@@ -4,17 +4,6 @@ $header-height: 95px;
 $footer-height: 60px;
 $bottom-offset: 10px;
 
-::ng-deep.mat-dialog-container {
-  @include themify($themes) {
-    background: themed('primary-light');
-  }
-  resize: both;
-  overflow: auto;
-  width: 80vw;
-  height: 86vh;
-  min-width: 350px;
-  min-height: 500px;
-}
 
 [mat-dialog-title] {
   background: #369; // TODO: check this
