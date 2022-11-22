@@ -1,8 +1,8 @@
-<div *ngIf="text; else elseBlock">
+<ng-container *ngIf="text; else elseBlock">
   <a (click)="showDoc()" class="link-pointer text-link">
     {{ text }}
   </a>
-</div>
+</ng-container>
 <ng-template #elseBlock>
   <a (click)="showDoc()" class="link-pointer" matTooltip="Open link to documentation.">
     <mat-icon>info</mat-icon>

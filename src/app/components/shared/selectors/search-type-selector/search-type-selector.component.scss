@@ -128,6 +128,13 @@
   font-weight: bold;
 }
 
+.mat-card-actions {
+  pointer-events: none;
+  app-docs-modal {
+    pointer-events: auto;
+  }
+}
+
 .mobile-search-item {
   margin: 0;
   padding: 3px 10px;
