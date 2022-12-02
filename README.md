@@ -82,3 +82,5 @@ To get more help on the Angular CLI use `ng help` or check out the [Angular CLI 
 More information about the app is available on the [wiki](https://github.com/asfadmin/SearchUI/wiki)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.4.
+
+Yoreley was here 
