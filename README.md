@@ -83,4 +83,4 @@ More information about the app is available on the [wiki](https://github.com/asf
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.4.
 
-Yoreley was here again!
+And again she is back.
