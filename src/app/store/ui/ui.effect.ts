@@ -73,6 +73,7 @@ export class UIEffects {
       });
 
       const dialogRef = this.dialog.open(PreferencesComponent, {
+        id: 'preferencesDialog',
         maxWidth: '100%',
         maxHeight: '100%'
       });

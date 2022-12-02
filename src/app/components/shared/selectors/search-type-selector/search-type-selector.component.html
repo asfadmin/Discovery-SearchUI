@@ -1,6 +1,5 @@
 <div *ngIf="breakpoint$ | async as breakpoint">
 
-<!--  <div class="menu-button-wrapper" *ngIf="(breakpoint$ | async) != breakpoints.MOBILE">-->
   <div class="menu-button-wrapper" [class.mobile-button-wrapper]="breakpoint === breakpoints.MOBILE">
     <div class="button-label">Search Type</div>
     <div>
@@ -19,8 +18,8 @@
   </div>
 
   <div class="gtm-search-type-selector" fxFlex="nogrow">
-
     <mat-menu #searchTypeMenu="matMenu" [(ngModel)]="searchType" id="searchMenu">
+      <div>
         <div id="firstItem" class="menu-item mat-menu-item" aria-selected="true"
              (click)="onSetSearchType(searchTypes.DATASET)">
           <div class="menu-item-inner">
@@ -31,7 +30,7 @@
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
                 Geographic search allows you to search for data based upon a geographic location.
               </div>
-              <mat-card-actions (click)="onOpenDocs($event)">
+              <mat-card-actions>
                 <app-docs-modal class="info-text"
                                 text="More info"
                                 url="https://docs.asf.alaska.edu/vertex/manual/#geographic-search-options">
@@ -189,17 +188,13 @@
             </div>
           </div>
         </div>
-
+      </div>
     </mat-menu>
 
     <mat-menu #derivedDatasetMenu="matMenu">
       <div mat-menu-item matSuffix *ngFor="let dataset of datasets; last as isLast"
       (click)="onOpenDerivedDataset(dataset.info_url, dataset.name); $event.stopPropagation();">
-        <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
-          <mat-icon>video_library</mat-icon>
-          {{ dataset.name }}
-        </div>
-        <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
+        <div class="menu-item">
           <div class="menu-item-inner">
             <div fxFlex="75%" class="menu-item-content">
               <div class="item-title" (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)">
