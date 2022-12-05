@@ -23,11 +23,9 @@
   padding: 0;
 }
 
-//.menu-item {
-//  display: flex;
-//  margin: 5px 5px 5px 15px;
-//  //margin: 16px 16px 0 26px;
-//}
+.menu-item {
+  display: flex;
+}
 
 .mat-card-actions {
   padding: 0;
@@ -126,6 +124,13 @@
 
 .item-title {
   font-weight: bold;
+}
+
+.mat-card-actions {
+  pointer-events: none;
+  app-docs-modal {
+    pointer-events: auto;
+  }
 }
 
 .mobile-search-item {
