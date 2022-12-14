@@ -107,7 +107,17 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
       }
     }
   }
+  public onInputGeocodePolygon(wkt: string): void {
+    const didLoad = this.mapService.loadPolygonFrom(wkt);
 
+    if (!didLoad) {
+      this.aoiErrors$.next();
+    } else {
+      if (this.searchtype === SearchType.DATASET && this.isResultsMenuOpen && !this.isFiltersMenuOpen) {
+        this.store$.dispatch(new SetSearchOutOfDate(true));
+      }
+    }
+  }
   public onFileUpload(): void {
     const action = new mapStore.SetMapInteractionMode(MapInteractionModeType.UPLOAD);
     this.store$.dispatch(action);

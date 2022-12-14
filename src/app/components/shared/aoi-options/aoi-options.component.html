@@ -39,5 +39,8 @@
 
     <app-file-upload-dialog *ngIf="breakpoint !== breakpoints.MOBILE" style="width: 40%;"></app-file-upload-dialog>
   </div>
+  <app-geocode-selector
+  (geocodeWkt)="onInputGeocodePolygon($event)"
+  ></app-geocode-selector>
 </div>
 
