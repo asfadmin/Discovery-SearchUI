@@ -74,10 +74,11 @@
     min-height: 2em;
     max-height: calc(100vh - 170px);
     padding: 10px;
+
   }
 
   .filters-list-mobile {
-    max-height: calc(100vh - 300px);
+    max-height: calc(100vh - 179px);
   }
 
   .footer {
@@ -86,7 +87,7 @@
     flex-direction: row;
     justify-content: flex-end;
     position: sticky;
-    bottom: 0;    
+    bottom: 0;
     @include themify($themes) {
       background-color: themed('primary-light');
       border-top: 1px solid themed('primary-dark');
@@ -95,6 +96,7 @@
     z-index: 1020;
     padding: 10px;
     min-height: 30px;
+
   }
 }
 
