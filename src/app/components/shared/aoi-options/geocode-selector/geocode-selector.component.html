@@ -5,7 +5,8 @@
 [matAutocomplete]="auto"
 [(ngModel)]="search_key" (ngModelChange)="onChange($event)" >
 </mat-form-field>
-<mat-autocomplete #auto="matAutocomplete" (optionSelected)='onSelect($event.option.value)'>
+<mat-autocomplete #auto="matAutocomplete" (optionSelected)='onSelect($event.option.value)'
+autoActiveFirstOption="'true">
     <mat-option *ngFor="let option of options" [value]="option">
       {{option}}
     </mat-option>
