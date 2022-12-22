@@ -44,11 +44,14 @@ export const RtcGammaJobType: Hyp3JobType = {
       name: 'power',
       apiValue: 'power'
     }, {
+      name: 'decibel',
+      apiValue: 'decibel'
+    }, {
       name: 'amplitude',
       apiValue: 'amplitude'
     }],
     default: 'power',
-    info: `Scale of output image; either power or amplitude.`
+    info: `Scale of output image; power, decibel or amplitude.`
   }, {
     name: 'DEM Name',
     apiName: 'dem_name',
