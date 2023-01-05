@@ -18,7 +18,7 @@
   </div>
 
   <div class="gtm-search-type-selector" fxFlex="nogrow">
-    <mat-menu #searchTypeMenu="matMenu" [(ngModel)]="searchType" id="searchMenu">
+    <mat-menu #searchTypeMenu="matMenu" [(ngModel)]="searchType" name="searchType" id="searchMenu" ngDefaultControl>
       <div>
         <div id="firstItem" class="menu-item mat-menu-item" aria-selected="true"
              (click)="onSetSearchType(searchTypes.DATASET)">

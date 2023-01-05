@@ -93,8 +93,6 @@ export class SearchService {
     if (search.searchType === models.SearchType.SARVIEWS_EVENTS) {
       const filters = <models.SarviewsFiltersType>search.filters;
       const pinnedProductIds = filters.pinnedProductIDs;
-      // if(!!filters.selectedEventID) {
-      // this.store$.dispatch(new scene)
       this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(filters.selectedEventID));
 
         if (!!pinnedProductIds) {
@@ -108,7 +106,6 @@ export class SearchService {
             }, {} as {[product_id in string]: PinnedProduct})
           ));
         }
-      // }
     }
 
     this.store$.dispatch(new filterStore.SetSavedSearch(search));
