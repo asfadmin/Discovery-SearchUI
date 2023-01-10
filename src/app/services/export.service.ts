@@ -65,7 +65,6 @@ export class ExportService {
           search_keyword = 'search';
         } else if (type === SearchType.LIST) {
           search_keyword = 'granule_search';
-          console.log(parameters);
           if (parameters['product_list']) {
             search_keyword = 'product_search';
           }

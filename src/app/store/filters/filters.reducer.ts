@@ -46,6 +46,8 @@ export interface FiltersState {
 
   hyp3ProductTypes: string[];
   sarviewsEventProductSorting: EventProductSort;
+
+  geocode: null | string;
 }
 
 
@@ -112,7 +114,9 @@ export const initState: FiltersState = {
     sortType: EventProductSortType.DATE,
     sortDirection: EventProductSortDirection.DESCENDING
   },
-  hyp3ProductTypes: []
+  hyp3ProductTypes: [],
+
+  geocode: null
 };
 
 
@@ -698,6 +702,12 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         sarviewsEventProductSorting: {...action.payload}
       };
     }
+    case FiltersActionType.SET_GEOCODE: {
+      return {
+        ...state,
+        geocode: action.payload
+      }
+    }
     case FiltersActionType.CLEAR_HYP3_PRODUCT_TYPES: {
       return {
         ...state,
@@ -975,3 +985,8 @@ export const getSarviewsEventProductSorting = createSelector(
   getFiltersState,
   (state: FiltersState) => state.sarviewsEventProductSorting
 );
+
+export const getGeocodeArea = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.geocode
+)

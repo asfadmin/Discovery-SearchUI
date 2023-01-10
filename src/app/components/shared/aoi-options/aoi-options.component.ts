@@ -13,6 +13,7 @@ import { MapService, ScreenSizeService } from '@services';
 import { SubSink } from 'subsink';
 import { getSearchType, SetSearchOutOfDate } from '@store/search';
 import { getIsFiltersMenuOpen, getIsResultsMenuOpen } from '@store/ui';
+import { SetGeocode } from '@store/filters';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -60,6 +61,7 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
       this.mapService.searchPolygon$.subscribe(
         polygon => {
           this.polygon = polygon;
+          this.store$.dispatch(new SetGeocode(''))
           window.dataLayer = window.dataLayer || [];
           window.dataLayer.push({
             'event': 'input-search-polygon',
@@ -107,9 +109,9 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
       }
     }
   }
-  public onInputGeocodePolygon(wkt: string): void {
-    const didLoad = this.mapService.loadPolygonFrom(wkt);
-
+  public onInputGeocodePolygon(event: {wkt: string, geocode: string}): void {
+    const didLoad = this.mapService.loadPolygonFrom(event.wkt);
+    this.store$.dispatch(new SetGeocode(event.geocode))
     if (!didLoad) {
       this.aoiErrors$.next();
     } else {

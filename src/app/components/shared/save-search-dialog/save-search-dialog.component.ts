@@ -41,8 +41,6 @@ export class SaveSearchDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.saveType = this.data.saveType;
-    console.log(this.saveType);
-
     if (this.saveType === models.SidebarType.SAVED_SEARCHES) {
       this.saveTypeName = 'Save Search';
       this.search = this.savedSearchService.makeCurrentSearch('');

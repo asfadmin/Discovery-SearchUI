@@ -122,7 +122,6 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
         .filter(id => !toRemove.has(id));
       let downloads = {...state.downloads};
       toRemove.forEach(id => {
-        console.log(id);
         downloads = remove_product(id, downloads);
       });
 
