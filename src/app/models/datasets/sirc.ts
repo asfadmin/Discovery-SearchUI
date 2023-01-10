@@ -52,8 +52,8 @@ export const sirc = {
     displayName: '',
     apiValue: 'STS-68',
   }],
-  platformDesc: 'The instrument was flown aboard two the space shuttle Endeavour\'s missions. ' +
-    'The instrument, monitored, and assessed large-scale environmental processes.',
+  platformDesc: 'The instrument was flown aboard two of the space shuttle Endeavour\'s missions. ' +
+    'The instrument monitored and assessed large-scale environmental processes.',
   platformIcon: '/assets/icons/rocket_black_48dp.svg',
 
 };

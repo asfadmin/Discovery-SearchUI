@@ -278,6 +278,11 @@
   [ngStyle]="{ bottom: searchType === searchTypes.BASELINE
     && breakpoint <= breakpoints.MEDIUM
     ? '20px' : breakpoint < breakpoints.SMALL ? '17px' : '0' }"
+  [ngClass]="{
+    'menu-override': (searchType === searchTypes.BASELINE
+    && breakpoint === breakpoints.FULL) 
+  }
+  "
 >
   <div class="search-button-label">SEARCH:</div>
   <div *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS"

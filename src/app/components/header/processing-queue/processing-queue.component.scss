@@ -4,17 +4,6 @@ $header-height: 120px;
 $footer-height: 60px;
 $bottom-offset: 10px;
 
-::ng-deep.mat-dialog-container {
-  @include themify($themes) {
-    background: themed('primary-light');
-  }
-  resize: both;
-  overflow: auto;
-  width: 80vw;
-  height: 86vh;
-  min-width: 350px;
-  min-height: 500px;
-}
 
 ::ng-deep .tab-menu .mat-menu-content {
   width: 160px !important;
@@ -340,7 +329,7 @@ $bottom-offset: 10px;
   }
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   height: 100%;
   border-top-style: solid;
   border-top-width: 1px;
@@ -353,7 +342,11 @@ $bottom-offset: 10px;
 
 .footer-submit {
   flex: none;
-  margin: 12px 16px 12px 0;
+  margin: 12px 10px 12px 0;
+}
+
+.footer-submit-mobile {
+  margin-top: 19px;
 }
 
 .footer-job-notification {
@@ -362,6 +355,7 @@ $bottom-offset: 10px;
   }
   flex: none;
   margin-right: 20px;
+  margin-left: 10px;
   align-self: center;
   font-size: 14px;
 }
@@ -369,6 +363,10 @@ $bottom-offset: 10px;
 .footer-submit-button {
   display: inline-flex;
   align-self: center;
+}
+
+.footer-mini-text {
+  font-size: 12px;
 }
 
 .mwlResizable {

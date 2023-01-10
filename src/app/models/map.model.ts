@@ -18,6 +18,7 @@ export enum MapDrawModeType {
   LINESTRING = 'LineString',
   POLYGON = 'Polygon',
   BOX = 'Box',
+  CIRCLE = 'Circle'
 }
 
 export enum MapInteractionModeType {

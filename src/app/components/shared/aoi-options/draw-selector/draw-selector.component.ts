@@ -63,6 +63,9 @@ export class DrawSelectorComponent implements OnInit, OnDestroy {
   public onBoxSelected =
     () => this.selectMode(MapDrawModeType.BOX)
 
+  public onCircleSelected =
+    () => this.selectMode(MapDrawModeType.CIRCLE)
+
   private selectMode(mode): void {
     this.onNewDrawMode(mode);
   }

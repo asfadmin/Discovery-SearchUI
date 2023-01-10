@@ -7,7 +7,7 @@ import os
 import sys
 import json
 
-MEMBERS = ['will', 'greg', 'tyler', 'kim', 'andy']
+MEMBERS = ['will', 'greg', 'tyler', 'kim', 'andy', 'andy2']
 
 def main():
     parser = argparse.ArgumentParser(description='''

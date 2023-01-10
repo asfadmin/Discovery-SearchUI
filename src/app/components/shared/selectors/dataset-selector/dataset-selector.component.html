@@ -18,21 +18,7 @@
 
   <div class="gtm-search-type-selector" fxFlex="nogrow">
     <mat-menu #platformMenu="matMenu" [(ngModel)]="selected" ngDefaultControl>
-
-      <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
-        <div class="dataset-list">
-          <div *ngFor="let dataset of datasets"
-               [class.selected]="dataset.id === selected">
-            <button mat-menu-item (click)="onSelectionChange(dataset.id)" class="mat-menu-item mobile-search-item">
-              <app-dataset [dataset]="dataset">
-                {{ dataset.name }}
-              </app-dataset>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div *ngIf="(breakpoint$ | async) !== breakpoints.MOBILE">
+      <div>
         <div class="dataset-list">
           <div *ngFor="let dataset of datasets; last as isLast">
             <div class="menu-item mat-menu-item" (click)="onSelectionChange(dataset.id)">
