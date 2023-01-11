@@ -61,7 +61,7 @@
     <div *ngIf="scene">
       <mat-card-header>
         <mat-card-title class="detail-card-header">
-          <span>{{ scene.name }}</span>
+          <span>{{ scene.metadata.productType === 'BURST' ? scene.id : scene.name }}</span>
 
           <app-copy-to-clipboard
             [value]="scene.name"
@@ -280,7 +280,7 @@
     ? '20px' : breakpoint < breakpoints.SMALL ? '17px' : '0' }"
   [ngClass]="{
     'menu-override': (searchType === searchTypes.BASELINE
-    && breakpoint === breakpoints.FULL) 
+    && breakpoint === breakpoints.FULL)
   }
   "
 >

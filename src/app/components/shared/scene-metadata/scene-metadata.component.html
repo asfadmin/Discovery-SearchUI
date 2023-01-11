@@ -163,10 +163,12 @@
 
 </ul>
 
+<ng-template *ngIf="!!scene.metadata.burst">
 <hr>
 <h3>SLC Burst Metadata</h3>
 <ul class="scene-metadata">
-  <app-burst-metadata *ngIf="!!scene.metadata.burst" [burst]="scene.metadata.burst">
+  <app-burst-metadata *ngIf="!!scene.metadata.burst" [burst]="scene.metadata.burst" [sceneName]="scene.name">
   </app-burst-metadata>
 
 </ul>
+</ng-template>

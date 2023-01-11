@@ -9,6 +9,7 @@ import * as models from '@models';
 export class BurstMetadataComponent implements OnInit {
 
   @Input() burst: models.SLCBurstMetadata;
+  @Input() sceneName: string
 
   constructor() { }
 

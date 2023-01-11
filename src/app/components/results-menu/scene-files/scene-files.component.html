@@ -11,9 +11,6 @@
 
 <div *ngIf="!showUnzippedProductScreen">
   <mat-list class="products-list" *ngFor="let product of products">
-    <ng-template
-    [ngIf]="product.metadata.productType !== 'BURST'"
-    [ngIfElse]="BURST">
     <app-scene-file
       (toggle)="onToggleQueueProduct(product)"
       (unzip)="onOpenUnzipProduct($event)"
@@ -28,30 +25,6 @@
       [isOpen]="false"
     >
     </app-scene-file>
-  </ng-template>
-    <ng-template #BURST>
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title style="display: block !important;">
-          <app-scene-file
-            (toggle)="onToggleQueueProduct(product)"
-            (unzip)="onOpenUnzipProduct($event)"
-            (queueHyp3Job)="onQueueHyp3Job($event)"
-            [loadingHyp3JobName]="loadingHyp3JobName"
-            [isUserLoggedIn]="isUserLoggedIn"
-            [product]="product"
-            [validHyp3JobTypes]="validJobTypesByProduct[product.id]"
-            [hasAccessToRestrictedData]="hasAccessToRestrictedData"
-            [isUnzipLoading]="unzippedLoading === product.id"
-            [isQueued]="(queuedProductIds$ | async).has(product.id)"
-            [isOpen]="false"
-          ></app-scene-file>
-        </mat-panel-title>
-        </mat-expansion-panel-header>
-        <app-burst-metadata [burst] = product.metadata.burst>
-      </app-burst-metadata>
-    </mat-expansion-panel>
-  </ng-template>
   </mat-list>
 </div>
 
