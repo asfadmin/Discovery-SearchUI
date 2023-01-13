@@ -1,4 +1,4 @@
-@import url("asf-theme");
+@import "asf-theme";
 
 a {
   @include themify($themes) {
