@@ -1,18 +1,20 @@
 @import "asf-theme";
 
-
 a {
   @include themify($themes) {
-    color: themed('blue-link') !important;
+    color: themed("blue-link") !important;
   }
+
   text-decoration: none;
 }
 
 .detail-card {
   max-width: 100%;
+
   @include themify($themes) {
-    border-left: themed('primary-light') 1px solid;
+    border-left: themed("primary-light") 1px solid;
   }
+
   overflow-x: hidden !important;
 }
 
@@ -45,13 +47,16 @@ a {
 
 .banner {
   height: 30px;
+
   @include themify($themes) {
-    background: themed('primary-light');
-    color: themed('dark-primary-text');
+    background: themed("primary-light");
+    color: themed("dark-primary-text");
+
     mat-icon {
-      color: themed('dark-primary-text');
+      color: themed("dark-primary-text");
     }
   }
+
   width: calc(100% + 32px);
   margin-left: -16px;
   //box-shadow: #00000038 0 7px 18px;
@@ -66,8 +71,9 @@ a {
 
 .not-clickable {
   @include themify($themes) {
-    color: themed('dark-disabled-text') !important;
+    color: themed("dark-disabled-text") !important;
   }
+
   cursor: default;
 }
 
@@ -92,7 +98,7 @@ a {
 }
 
 .content {
-  margin: 0 16px 16px 16px;
+  margin: 0 16px 16px;
 }
 
 .detail-item-margin {
@@ -133,18 +139,29 @@ a {
   padding: 0 12px;
 }
 
+.menu-override {
+  justify-content: space-around !important;
+
+  .search-button {
+    margin-left: 0 !important;
+  }
+}
+
 .tool-menu {
   z-index: 2;
   position: sticky;
   display: flex;
   justify-content: flex-start;
+
   @include themify($themes) {
-    background: lighten(themed('primary-light'), 8%);
+    background: lighten(themed("primary-light"), 8%);
+
     button[disabled="true"] {
-      background-color: themed('primary-light');
-      color: themed('dark-secondary-text');
+      background-color: themed("primary-light");
+      color: themed("dark-secondary-text");
     }
   }
+
   align-items: center;
   height: 40px;
   bottom: 0;
@@ -170,17 +187,20 @@ a {
   margin-left: 20px;
   font-size: 14px;
   font-weight: 500;
+
   @include themify($themes) {
-    color: lighten(themed('dark-primary-text'), 10%);
+    color: lighten(themed("dark-primary-text"), 10%);
   }
 }
 
 .search-button {
   margin-left: 20px;
+
   @include themify($themes) {
-    background-color: themed('primary');
-    color: themed('light-primary-text');
+    background-color: themed("primary");
+    color: themed("light-primary-text");
   }
-  border: 1px groove rgba(0, 0, 0, 0.25) !important;
+
+  border: 1px groove rgb(0 0 0 / 25%) !important;
   border-radius: 4px !important;
 }

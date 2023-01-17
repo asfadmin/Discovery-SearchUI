@@ -157,7 +157,6 @@ export class PreferencesComponent implements OnInit, OnDestroy {
         // removes all classes from body, probably not best for later on
         body.removeAttribute('class');
         body.classList.add(`theme-${currentPreference}`)
-        console.log(currentPreference);
         this.saveProfile()
 
       })
@@ -166,7 +165,6 @@ export class PreferencesComponent implements OnInit, OnDestroy {
       // removes all classes from body, probably not best for later on
       body.removeAttribute('class');
       body.classList.add(`theme-${this.currentTheme}`)
-      console.log(this.currentTheme);
       this.saveProfile()
     }
   }

@@ -196,7 +196,10 @@
     <div class="footer-clear">
       <button *ngIf="previousQueue === null"
           [matMenuTriggerFor]="clearJobQueue"
-         mat-button>
+
+              [class.mini-button] = "breakpoint == breakpoints.MOBILE"
+
+              mat-button>
         <mat-icon>delete</mat-icon>
         <span>Clear</span>
       </button>
@@ -216,18 +219,20 @@
       </mat-menu>
 
       <button *ngIf="previousQueue !== null"
+              [class.mini-button] = "breakpoint == breakpoints.MOBILE"
          (click)="onRestoreJobQueue()"
-         mat-flat-button
+        mat-flat-button
          color="primary"
          class="footer-clear-button">
-        <mat-icon>undo</mat-icon>
+<!--        <mat-icon>undo</mat-icon>-->
         <span>Restore</span>
       </button>
     </div>
 
     <div class="footer-job-notification">
       <div *ngIf="isUserLoggedIn && !isUserLoading && user !== ''">
-        <span *ngIf="breakpoint === breakpoints.MOBILE">
+        <span *ngIf="breakpoint === breakpoints.MOBILE"
+        class="footer-mini-text">
           {{ remaining }} job max
         </span>
         <span *ngIf="breakpoint !== breakpoints.MOBILE">
@@ -247,7 +252,8 @@
       </div>
     </div>
 
-    <div class="footer-submit">
+    <div class="footer-submit"
+         [class.footer-submit-mobile] = "breakpoint == breakpoints.MOBILE">
       <mat-slide-toggle
          *ngIf="env.maturity !== 'prod' && breakpoint !== breakpoints.MOBILE"
         style="margin-right: 16px;"
@@ -257,6 +263,7 @@
       </mat-slide-toggle>
 
       <button mat-flat-button (click)="openSubscriptionDialog()"
+              [class.mini-button] = "breakpoint == breakpoints.MOBILE"
         style="margin-right: 16px;">
         Subscription
       </button>
@@ -268,12 +275,16 @@
          allJobs.length === 0 ||
          !isUserLoggedIn
          "
+         [class.mini-button] = "breakpoint == breakpoints.MOBILE"
+
          mat-flat-button
          color="primary"
          class="footer-submit-button"
          >
          <span *ngIf="!isQueueSubmitProcessing">
+
            Submit {{ allJobs.length }} Job<span *ngIf="allJobs.length > 1">s</span>
+
          </span>
 
          <span *ngIf="isQueueSubmitProcessing">

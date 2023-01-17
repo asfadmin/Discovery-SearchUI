@@ -201,7 +201,7 @@ export class MapComponent implements OnInit, OnDestroy  {
               return 'Click to start drawing';
             }
 
-            if (drawMode === models.MapDrawModeType.BOX) {
+            if (drawMode === models.MapDrawModeType.BOX || drawMode === models.MapDrawModeType.CIRCLE) {
               return 'Click to stop drawing';
             } else if (drawMode === models.MapDrawModeType.LINESTRING || drawMode === models.MapDrawModeType.POLYGON) {
               return 'Double click to stop drawing';

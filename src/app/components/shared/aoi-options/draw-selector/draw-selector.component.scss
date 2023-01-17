@@ -18,7 +18,6 @@
 
 .shape-select-icon {
   display: inline-block;
-  margin-top: -5px;
 }
 
 .view-menu-icon {
@@ -39,7 +38,7 @@
   @include themify($themes) {
     background: themed('background-white');
     color: themed('light-primary-text')
-    
+
   }
   margin: 0;
   padding: 0;
@@ -48,6 +47,9 @@
   width: 18px !important;
   min-width: 53px !important;
   border-radius: 4px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   // border: solid 1px rgb(0 0 0 / 12%);
   text-align: center;
 }
