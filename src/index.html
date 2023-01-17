@@ -52,11 +52,12 @@
 
   <style>
     html {
-      height: -webkit-fill-available;
+      height: fill-available;
     }
+
     body {
       background-color: #c9cac4;
-      height: -webkit-fill-available;
+      height: fill-available;
       padding: 0;
       margin: 0;
     }
@@ -92,21 +93,18 @@
         }
 
         .animated {
-          -webkit-animation: load1 0.75s infinite ease-in-out;
           animation: load1 0.75s infinite ease-in-out;
         }
 
         #c1 {
-          -webkit-animation-delay: -0.2s;
           animation-delay: -0.2s;
         }
 
         #c2 {
-          -webkit-animation-delay: -0.12s;
           animation-delay: -0.12s;
         }
 
-        @-webkit-keyframes load1 {
+        @keyframes load1 {
           0%,
           80%,
           100% {
