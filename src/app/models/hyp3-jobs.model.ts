@@ -64,7 +64,7 @@ export const RtcGammaJobType: Hyp3JobType = {
       name: '10 meters',
       apiValue: 10
     }],
-    default: '30',
+    default: 30,
     info: `Resolution of the finished data.`
   }, {
     name: 'DEM Name',
