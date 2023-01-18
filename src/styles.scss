@@ -691,3 +691,14 @@ $d-height: 500px;
     color: themed('blue-link') !important;
   }
 }
+
+.ol-custom-scale-line {
+  position: absolute;
+  width: auto;
+  top: 80px;
+  left: 5px;
+  color: $asf-primary-light;
+  background: $asf-primary-dark;
+  border-radius: 2px;
+  border: 1.5px solid $asf-primary-light;
+}
