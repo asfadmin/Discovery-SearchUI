@@ -2,7 +2,7 @@ import { Component, OnInit, Output, Input, EventEmitter, ViewChild, OnDestroy } 
 import { NgForm } from '@angular/forms';
 
 import { Subject } from 'rxjs';
-import { tap, delay } from 'rxjs/operators';
+import { tap, delay, skip } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 
@@ -58,7 +58,7 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     this.subs.add(
-      this.mapService.searchPolygon$.subscribe(
+      this.mapService.searchPolygon$.pipe(skip(1)).subscribe(
         polygon => {
           this.polygon = polygon;
           this.store$.dispatch(new SetGeocode(''))

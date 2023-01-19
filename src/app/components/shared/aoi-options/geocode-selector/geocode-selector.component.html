@@ -6,8 +6,8 @@
 [(ngModel)]="search_key" (ngModelChange)="onChange($event)" >
 </mat-form-field>
 <mat-autocomplete #auto="matAutocomplete" (optionSelected)='onSelect($event.option.value)'
-autoActiveFirstOption="'true">
+autoActiveFirstOption="'true" [displayWith]="displayFunc">
     <mat-option *ngFor="let option of options" [value]="option">
-      {{option}}
+      {{option.name}}
     </mat-option>
 </mat-autocomplete>

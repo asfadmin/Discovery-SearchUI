@@ -45,23 +45,27 @@ export class GeocodeSelectorComponent implements OnInit {
     )
 
   this.results$.subscribe((value: Observable<any>) => {
-    value.subscribe((a) => {
-      this.options = a['features'].map(thing => thing['place_name_en'])
+    value.subscribe((res) => {
+      this.options = res['features'].map(feature => ({'name': feature['place_name_en'], 'id': feature['id']}))
       this.vectorSource = new VectorSource({
-        features: new GeoJSON().readFeatures(a),
+        features: new GeoJSON().readFeatures(res),
       });
     })
   })
   }
-  public onChange(a) {
-    this.subject.next(a);
+  public onChange(option) {
+    this.search_key = option && (option.name ?? option);
+    this.subject.next(this.search_key);
+  }
+  public displayFunc(option) {
+    return option && (option.name ?? option);
   }
 
   public onSelect(option) {
-    this.search_key = option;
-    let i = this.options.findIndex((a) => a === option)
-    let wktFeature = this.wkt.featureToWkt(this.vectorSource.getFeatures()[i],'EPSG:4326')
-    this.geocodeWkt.emit({wkt: wktFeature, geocode: option});
+    this.search_key = option.name;
+    let feature = this.vectorSource.getFeatures().find(feat => feat.getId() === option.id)
+    let wktFeature = this.wkt.featureToWkt(feature,'EPSG:4326')
+    this.geocodeWkt.emit({wkt: wktFeature, geocode: option.name});
   }
 
 }
