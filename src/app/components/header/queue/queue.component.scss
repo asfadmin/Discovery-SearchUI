@@ -120,7 +120,7 @@ $idk-pad: 21px;
 
 .more-link {
   @include themify($themes) {
-    color: themed('err');
+    color: themed('blue-link');
   }
 }
 
