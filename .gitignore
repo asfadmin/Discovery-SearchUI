@@ -23,6 +23,8 @@
 !.vscode/settings.json
 !.vscode/extensions.json
 
+.history
+
 # misc
 /.angular/cache
 /.sass-cache

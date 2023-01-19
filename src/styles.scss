@@ -411,7 +411,7 @@ ul {
 
 .mini-button {
   font-size: 12px !important;
-  padding: 0 8px !important;
+  padding: 0 4px !important;
   line-height: 24px !important;
   min-width: 1% !important;
 }
@@ -528,7 +528,7 @@ ul {
   width: 100%;
 }
 
-$d-width: 600px;
+//$d-width: 600px;
 $d-height: 500px;
 
 #ConfirmProcess {
@@ -537,9 +537,9 @@ $d-height: 500px;
   }
   resize: none;
   overflow: hidden;
-  width: $d-width !important;
+  //width: $d-width !important;
   height: $d-height !important;
-  max-width: $d-width !important;
+  //max-width: $d-width !important;
   max-height: $d-height !important;
 
   .mat-list-base {

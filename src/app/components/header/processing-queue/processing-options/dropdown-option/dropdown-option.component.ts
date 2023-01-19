@@ -9,7 +9,7 @@ export class DropdownOptionComponent implements OnInit {
   @Input() value: string;
   @Input() optionName: string;
   @Input() optionInfo: string;
-  @Input() options: { apiValue: string; name: string; }[];
+  @Input() options: { apiValue: string | number; name: string; }[];
 
   @Output() valueChange = new EventEmitter<string>();
 

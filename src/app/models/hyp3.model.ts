@@ -103,12 +103,14 @@ export enum InSarGammaLooks {
 }
 
 export enum RtcGammaResolution {
-  THIRTY = '30'
+  THIRTY = '30',
+  TEN = '10'
 }
 
 export enum RtcGammaScale {
   POWER = 'power',
-  AMPLITUDE = 'amplitude'
+  AMPLITUDE = 'amplitude',
+  DECIBEL = 'decibel'
 }
 
 export enum Hyp3JobStatusCode {
