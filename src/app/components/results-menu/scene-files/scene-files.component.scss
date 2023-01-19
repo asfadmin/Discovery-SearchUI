@@ -1,4 +1,4 @@
-@import "asf-theme";
+@import url("asf-theme");
 
 $prod-row-height: 58px;
 $thumb-size: 50px;
@@ -19,9 +19,10 @@ $thumb-size: 50px;
 
 .dem-warning {
   @include themify($themes) {
-    background-color: lighten(themed('primary-light'), 10%);
-    color: themed('err');
+    background-color: lighten(themed("primary-light"), 10%);
+    color: themed("err");
   }
+
   font-size: 14px;
   padding-left: 25px;
   padding-top: 2px;
@@ -31,7 +32,7 @@ $thumb-size: 50px;
 
 .more-link {
   @include themify($themes) {
-    color: themed('blue-link');
+    color: themed("blue-link");
   }
 }
 
@@ -44,9 +45,10 @@ $thumb-size: 50px;
 
 .map-button-toggle {
   @include themify($themes) {
-    background-color: themed('primary') !important;
-    color: themed('light-primary-text') !important;
+    background-color: themed("primary") !important;
+    color: themed("light-primary-text") !important;
   }
+
   padding-right: 40px;
   font-size: 12px;
   line-height: 24px !important;
