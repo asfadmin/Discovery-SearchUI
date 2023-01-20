@@ -83,9 +83,9 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
 
       if (Object.keys(productIDs).length === 1 && Object.keys(productIDs)[0].toUpperCase() === 'BURST') {
         productGroups = action.payload.products.reduce((total, product) => {
-          const scene = total[product.id] || [];
+          const scene = total[product.metadata.burst.absoluteBurstID] || [];
 
-          total[product.id] = [...scene, product.id];
+          total[product.metadata.burst.absoluteBurstID] = [...scene, product.id];
           return total;
         }, {})
       } else {
