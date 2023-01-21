@@ -52,6 +52,20 @@ export const RtcGammaJobType: Hyp3JobType = {
     }],
     default: 'power',
     info: `Scale of output image; power, decibel or amplitude.`
+  },
+  {
+    name: 'Pixel Spacing',
+    apiName: 'resolution',
+    type: JobOptionType.DROPDOWN,
+    options: [{
+      name: '30 meters',
+      apiValue: 30
+    }, {
+      name: '10 meters',
+      apiValue: 10
+    }],
+    default: 30,
+    info: `Product pixel spacing in meters.`
   }, {
     name: 'DEM Name',
     apiName: 'dem_name',
