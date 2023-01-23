@@ -463,9 +463,6 @@ export class MapService {
       overlays: [overlay]
     });
 
-    this.scaleLine = new ScaleLine({className: 'ol-custom-scale-line', units: 'metric'});
-    newMap.addControl(this.scaleLine);
-
     newMap.addInteraction(this.selectClick);
     newMap.addInteraction(this.selectHover);
     newMap.addInteraction(this.selectSarviewEventHover);
@@ -530,8 +527,6 @@ export class MapService {
       this.zoom$.next(zoom);
       this.center$.next({lon, lat});
     });
-
-    console.log(newMap.controls);
 
     return newMap;
   }
@@ -620,6 +615,11 @@ export class MapService {
     }
 
     return this.getPolygonIntersection;
+  }
+
+  public addScaleLine(latlonElement) {
+    this.scaleLine = new ScaleLine({target: latlonElement, className: 'ol-custom-scale-line', units: 'metric'});
+    this.map.addControl(this.scaleLine);
   }
 
   private getPointIntersection(aoi: Feature<Geometry>, polygon: Feature<Geometry>): boolean {
