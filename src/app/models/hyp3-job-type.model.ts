@@ -24,7 +24,7 @@ export interface Hyp3JobOption {
   type: JobOptionType;
   info: string;
   default: any;
-  options?: { apiValue: string; name: string; }[];
+  options?: { apiValue: string | number; name: string; }[];
   optionSubset?: { apiName: string; value: any; }[];
 }
 
