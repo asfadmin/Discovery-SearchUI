@@ -1,14 +1,34 @@
 @import "asf-theme";
 
-.title {
-  background-color: $asf-primary-light;
+[mat-dialog-title] {
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+    background-color: themed('primary-light');
+    header-bottom-color: themed('primary-dark');
+  }
+
+  cursor: move;
+  text-align: center;
+
   border-bottom: 1px solid $asf-primary-dark;
   padding: 15px;
   margin-bottom: 0;
 }
 
+.content {
+  @include themify($themes) {
+    background-color: themed('background-white');
+  }
+}
+
+.content a {
+  color: #3192c8;
+}
+
 .actions {
-  background-color: $asf-primary-light;
+  @include themify($themes) {
+    background-color: themed('primary-light');
+  }
   border-top: 1px solid $asf-primary-dark;
 }
 

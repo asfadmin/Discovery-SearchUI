@@ -1,7 +1,11 @@
 <h2 mat-dialog-title class="title">{{data.title}}</h2>
-<mat-dialog-content class="mat-typography">
-<div [innerHtml]="htmlContent"></div>
+
+<mat-dialog-content class="content mat-typography">
+  <div [innerHtml]="htmlContent"></div>
 </mat-dialog-content>
+
 <mat-dialog-actions align="end" class="actions">
-  <button mat-flat-button color="primary" [mat-dialog-close]="true" cdkFocusInitial>Close</button>
+  <button mat-flat-button cdkFocusInitial [mat-dialog-close]="true" color="primary">
+    Close
+  </button>
 </mat-dialog-actions>

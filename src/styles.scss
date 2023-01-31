@@ -693,12 +693,12 @@ $d-height: 500px;
 }
 
 .ol-custom-scale-line {
-  //position: absolute;
+  height: 14px;
   width: auto;
-  //top: 80px;
-  //left: 5px;
   color: $asf-primary-light;
   background: $asf-primary-dark;
-  border-radius: 2px;
-  border: 1.5px solid $asf-primary-light;
+  border-style: solid;
+  border-color: $asf-primary-light;
+  border-width: 0 1px 0 1px;
+  text-align: center;
 }
