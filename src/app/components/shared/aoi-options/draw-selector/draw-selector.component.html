@@ -73,12 +73,14 @@
     Draw a circle
     </button>
 
+
   <button mat-menu-item
-    *ngIf="breakpoint !== breakpoints.MOBILE"
+    *ngIf="breakpoint > breakpoints.SMALL"
     (click)="onImportSelected()"
     class="control-mat-button-toggle"
     matTooltip="Import Area of Interest">
     <mat-icon class="interaction-icon">upload</mat-icon>
     Upload Geospatial File
+
   </button>
 </mat-menu>
