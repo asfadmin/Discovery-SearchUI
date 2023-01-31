@@ -108,7 +108,8 @@ export enum RtcGammaResolution {
 
 export enum RtcGammaScale {
   POWER = 'power',
-  AMPLITUDE = 'amplitude'
+  AMPLITUDE = 'amplitude',
+  DECIBEL = 'decibel'
 }
 
 export enum Hyp3JobStatusCode {
