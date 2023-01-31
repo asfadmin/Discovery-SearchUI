@@ -8,8 +8,9 @@
 
 .menu-item-icon {
   @include themify($themes) {
-    color: themed('dark-primary-text');
+    color: themed("dark-primary-text");
   }
+
   @include md-icon-size(70px);
 
   margin-right: 0;
@@ -34,8 +35,9 @@
 
 .mat-button {
   @include themify($themes) {
-    color: themed('blue-link');
+    color: themed("blue-link");
   }
+
   font-weight: 400;
   font-style: italic;
 }
@@ -63,8 +65,9 @@
 
 .button-label {
   @include themify($themes) {
-    color: themed('dark-secondary-text');
+    color: themed("dark-secondary-text");
   }
+
   font-size: 14px;
   font-weight: 400;
   transform:
@@ -80,8 +83,9 @@
 
 .button-text {
   @include themify($themes) {
-    color: themed('dark-primary-text');
+    color: themed("dark-primary-text");
   }
+
   font-size: 16px;
   font-weight: 400;
   text-align: left;
@@ -128,6 +132,7 @@
 
 .mat-card-actions {
   pointer-events: none;
+
   app-docs-modal {
     pointer-events: auto;
   }
@@ -142,7 +147,7 @@
 
 .blue-link {
   @include themify_non_host($themes) {
-    color: themed('blue-link');
+    color: themed("blue-link");
   }
   // color: $uaf-primary-blue;
 }
