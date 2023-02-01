@@ -9,6 +9,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { SearchTypeSelectorComponent } from './search-type-selector.component';
 import {MatMenuModule} from '@angular/material/menu';
 import {DocsModalModule} from '@components/shared/docs-modal';
+import {TranslateModule} from "@ngx-translate/core";
+
 
 
 @NgModule({
@@ -23,6 +25,7 @@ import {DocsModalModule} from '@components/shared/docs-modal';
         FlexLayoutModule,
         MatMenuModule,
         DocsModalModule,
+        TranslateModule,
     ],
   exports: [
     SearchTypeSelectorComponent,

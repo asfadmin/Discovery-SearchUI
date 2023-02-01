@@ -12,6 +12,7 @@ import * as models from '@models';
 
 import { ScreenSizeService } from '@services';
 import { AnalyticsEvent, Breakpoints, derivedDatasets } from '@models';
+import { TranslateService} from "@ngx-translate/core";
 
 // Declare GTM dataLayer array.
 declare global {
@@ -39,9 +40,16 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   public isReadMore = true;
 
   constructor(
+    translate: TranslateService,
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService
-  ) { }
+  ) {
+    // this language will be used as a fallback when a translation isn't found in the current language
+    translate.setDefaultLang('en');
+
+    // the lang to use, if the lang isn't available, it will use the current loader to get them
+    translate.use('en');
+  }
 
   ngOnInit() {
     this.subs.add(
@@ -73,10 +81,10 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
       value: dataset_name
     };
 
-    this.openNewWindow(dataset_url, analyticsEvent);
+    SearchTypeSelectorComponent.openNewWindow(dataset_url, analyticsEvent);
   }
 
-  private openNewWindow(url, analyticsEvent: AnalyticsEvent): void {
+  private static openNewWindow(url, analyticsEvent: AnalyticsEvent): void {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       'event': analyticsEvent.name,
@@ -107,4 +115,5 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
+
 }

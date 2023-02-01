@@ -3,7 +3,6 @@ import { RouterModule } from '@angular/router';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
@@ -33,6 +32,8 @@ import { BaselineChartModule } from '@components/baseline-chart';
 import { HelpModule } from '@components/help';
 import { AppComponent } from './app.component';
 import { CustomBreakPointsProvider } from '@services/custom-breakpoints';
+
+import { TranslateModule} from '@ngx-translate/core';
 
 import * as services from '@services';
 
@@ -74,14 +75,15 @@ export const routes = [
   { path: '**', name: 'AppComponent', component: AppComponent },
 ];
 
+
 @NgModule({
   declarations: [
     AppComponent,
   ],
   imports: [
     BrowserModule,
+    TranslateModule.forRoot(),
     BrowserAnimationsModule,
-    HttpClientModule,
     NgcCookieConsentModule.forRoot(cookieConfig),
     MatBottomSheetModule,
     MatSharedModule,
@@ -106,7 +108,7 @@ export const routes = [
     HelpModule,
     ToastrModule.forRoot({positionClass: 'inline', preventDuplicates: true}),
     ToastContainerModule,
-    CodeExportModule
+    CodeExportModule,
   ],
   providers: [
     services.AsfApiService,
@@ -141,5 +143,9 @@ export const routes = [
   ],
   bootstrap: [AppComponent],
     exports: [MatTableModule]
+
 })
-export class AppModule {}
+
+export class AppModule { }
+
+
