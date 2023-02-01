@@ -1,37 +1,41 @@
 @import "asf-theme";
 
 [mat-dialog-title] {
-  @include themify($themes) {
+  margin: 0;
+}
+
+.banner-title {
+  @include themify_non_host($themes) {
     color: themed('dark-primary-text');
     background-color: themed('primary-light');
-    header-bottom-color: themed('primary-dark');
   }
 
   cursor: move;
   text-align: center;
 
   border-bottom: 1px solid $asf-primary-dark;
-  padding: 15px;
-  margin-bottom: 0;
+  padding: 1px;
 }
 
-.content {
-  @include themify($themes) {
+.banner-content {
+  @include themify_non_host($themes) {
     background-color: themed('background-white');
   }
+
+  font: inherit;
 }
 
-.content a {
-  color: #3192c8;
+.banner-content a {
+  @include themify_non_host($themes) {
+    color: themed('blue-link');
+  }
 }
 
-.actions {
-  @include themify($themes) {
+.banner-actions {
+  @include themify_non_host($themes) {
+    color: themed('dark-primary-text');
     background-color: themed('primary-light');
   }
-  border-top: 1px solid $asf-primary-dark;
-}
 
-.mat-typography {
-  font: inherit;
+  border-top: 1px solid $asf-primary-dark;
 }

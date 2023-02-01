@@ -142,11 +142,6 @@ $theme-map: null;
 }
 
 .banner-dialog {
-  @include themify_non_host($themes) {
-    mat-dialog-content {
-      background: themed('primary-light');
-    }
-  }
   mat-dialog-container {
     padding: 0;
     box-sizing: border-box;
@@ -161,7 +156,6 @@ $theme-map: null;
 
   mat-dialog-content {
     padding: 15px 40px;
-    background: blue;
   }
 
   mat-dialog-actions {
