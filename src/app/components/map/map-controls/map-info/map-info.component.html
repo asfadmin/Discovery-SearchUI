@@ -1,0 +1,11 @@
+<div>
+  <div fxFlex="" fxFlexAlign="end">
+    <div fxFlex="75px" class="lat-lon-data">
+      <b>lat</b> {{ mousePos?.lat | number : '2.1-4' }}°
+    </div>
+    <div fxFlex="85px">
+      <b>lon</b> {{ mousePos?.lon | number : '2.1-4' }}°
+    </div>
+  </div>
+  <div #mapScaleComp></div>
+</div>
