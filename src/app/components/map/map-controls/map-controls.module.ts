@@ -13,6 +13,7 @@ import { GridlinesSelectorModule } from './gridlines-selector';
 import { MatSliderModule } from '@angular/material/slider';
 
 import { MapControlsComponent } from './map-controls.component';
+import { MapInfoComponent } from './map-info/map-info.component';
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import { MapControlsComponent } from './map-controls.component';
   ],
   declarations: [
     MapControlsComponent,
+    MapInfoComponent,
   ],
   exports: [
     MapControlsComponent

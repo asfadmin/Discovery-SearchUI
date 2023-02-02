@@ -1,7 +1,15 @@
-<h2 mat-dialog-title class="title">{{data.title}}</h2>
-<mat-dialog-content class="mat-typography">
-<div [innerHtml]="htmlContent"></div>
+<div mat-dialog-title>
+  <div class="banner-title">
+    <h3>{{data.title}}</h3>
+  </div>
+</div>
+
+<mat-dialog-content class="banner-content">
+  <div [innerHtml]="htmlContent"></div>
 </mat-dialog-content>
-<mat-dialog-actions align="end" class="actions">
-  <button mat-flat-button color="primary" [mat-dialog-close]="true" cdkFocusInitial>Close</button>
+
+<mat-dialog-actions align="end" class="banner-actions">
+  <button mat-flat-button cdkFocusInitial [mat-dialog-close]="true" color="primary">
+    Close
+  </button>
 </mat-dialog-actions>
