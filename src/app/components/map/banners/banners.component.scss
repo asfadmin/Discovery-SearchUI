@@ -1,4 +1,4 @@
-@import url("asf-theme");
+@import "asf-theme";
 
 .banner-card {
   @include themify($themes) {
