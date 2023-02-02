@@ -1,10 +1,11 @@
-@import "asf-theme";
+@import url("asf-theme");
 
 .banner-card {
   @include themify($themes) {
-    color: themed('dark-primary-text');
-    background-color: themed('primary-light');
+    color: themed("dark-primary-text");
+    background-color: themed("primary-light");
   }
+
   pointer-events: auto;
   padding-top: 5px;
   padding-bottom: 9px;
