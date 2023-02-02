@@ -72,8 +72,8 @@ $theme-map: null;
 
 .toast-info,
 #toast-container > .toast-info {
+  background-image: url("/assets/icons/info_black_48dp.svg");
 
-  // box-shadow: none;
   @include themify_non_host($themes) {
     box-shadow: 0 0 12px lighten(themed('background-white'), 10%); //#999999;
 
@@ -84,12 +84,10 @@ $theme-map: null;
     }
   }
 
-  background-image: url("/assets/icons/info_black_48dp.svg");
-
-
-
   a {
-    color: $asf-blue;
+    @include themify_non_host($themes) {
+      color: themed('blue-link');
+    }
   }
 }
 
@@ -106,7 +104,9 @@ $theme-map: null;
 
 .toast-close-button,
 #toast-container > .toast-close-button {
-  color: black;
+  @include themify_non_host($themes) {
+    color: themed('dark-primary-text');
+  }
 }
 
 // .toast-info,
@@ -693,6 +693,6 @@ $d-height: 500px;
   background: $asf-primary-dark;
   border-style: solid;
   border-color: $asf-primary-light;
-  border-width: 0 1px 0 1px;
+  border-width: 0 2px 0 2px;
   text-align: center;
 }
