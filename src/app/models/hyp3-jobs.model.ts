@@ -54,7 +54,7 @@ export const RtcGammaJobType: Hyp3JobType = {
     info: `Scale of output image; power, decibel or amplitude.`
   },
   {
-    name: 'Resolution',
+    name: 'Pixel Spacing',
     apiName: 'resolution',
     type: JobOptionType.DROPDOWN,
     options: [{
@@ -65,7 +65,7 @@ export const RtcGammaJobType: Hyp3JobType = {
       apiValue: 10
     }],
     default: 30,
-    info: `Resolution of the finished data.`
+    info: `Product pixel spacing in meters.`
   }, {
     name: 'DEM Name',
     apiName: 'dem_name',
