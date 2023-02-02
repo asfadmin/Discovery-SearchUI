@@ -23,6 +23,7 @@ import { MatSliderChange } from '@angular/material/slider';
   styleUrls: ['./map-controls.component.scss']
 })
 export class MapControlsComponent implements OnInit, OnDestroy {
+
   public view$ = this.store$.select(mapStore.getMapView);
   public browseOverlayOpacity$ = this.store$.select(mapStore.getBrowseOverlayOpacity);
   public pinnedProducts$ = this.store$.select(sceneStore.getImageBrowseProducts);
@@ -85,7 +86,6 @@ export class MapControlsComponent implements OnInit, OnDestroy {
         browseOverlayOpacity => this.browseOverlayOpacity = browseOverlayOpacity
       )
     );
-
 
     this.subs.add(
       combineLatest([this.selectedScene$, this.selectedEvent$]).subscribe(

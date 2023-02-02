@@ -1,14 +1,17 @@
-@import "asf-theme";
+@import url("asf-theme");
 
 .banner-card {
+  @include themify($themes) {
+    color: themed("dark-primary-text");
+    background-color: themed("primary-light");
+  }
+
   pointer-events: auto;
   padding-top: 5px;
   padding-bottom: 9px;
-  background-color: white;
   border-color: $asf-primary-dark;
   border-width: 2px;
   border-style: solid;
-  color: $asf-primary;
   //color: darken($asf-accent, 50%);
   margin-left: 0;
   margin-bottom: 5px;
