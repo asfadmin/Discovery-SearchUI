@@ -1,9 +1,8 @@
 <div *ngIf="breakpoint$ | async as breakpoint">
 
   <div class="menu-button-wrapper" [class.mobile-button-wrapper]="breakpoint === breakpoints.MOBILE">
-    <div class="button-label">Search Type</div>
-<!--    <div class="button-label">{{ 'HELLO' | translate }}</div>-->
-
+<!--    <div class="button-label">Search Type</div>-->
+    <div class="button-label">{{ 'SEARCH TYPE' | translate }}</div>
     <div>
       <button
         [matMenuTriggerFor]="searchTypeMenu" (onMenuOpen)="onSearchTypeMenuOpen()"
@@ -221,3 +220,4 @@
 
   </div>
 </div>
+
