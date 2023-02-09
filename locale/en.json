@@ -1,6 +1,5 @@
 {
-
-  "SEARCH TYPE": "Search Type",
+  "1": "+1",
   "reference": "Reference",
   "selected": "Selected",
   "downloads": "Downloads",
@@ -623,6 +622,3 @@
   "subject": "subject : \"\",",
   "details": "details : \"\""
 }
-
-
-
