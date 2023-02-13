@@ -390,6 +390,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         subtypes: [],
         flightDirections: new Set<models.FlightDirection>([]),
         selectedMission: null,
+        geocode: null
       };
     }
 

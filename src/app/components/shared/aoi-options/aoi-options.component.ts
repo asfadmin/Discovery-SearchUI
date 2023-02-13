@@ -2,7 +2,7 @@ import { Component, OnInit, Output, Input, EventEmitter, ViewChild, OnDestroy } 
 import { NgForm } from '@angular/forms';
 
 import { Subject } from 'rxjs';
-import { tap, delay, skip } from 'rxjs/operators';
+import { tap, delay } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 
@@ -58,10 +58,9 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     this.subs.add(
-      this.mapService.searchPolygon$.pipe(skip(1)).subscribe(
+      this.mapService.searchPolygon$.subscribe(
         polygon => {
           this.polygon = polygon;
-          this.store$.dispatch(new SetGeocode(''))
           window.dataLayer = window.dataLayer || [];
           window.dataLayer.push({
             'event': 'input-search-polygon',
@@ -111,7 +110,7 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
   }
   public onInputGeocodePolygon(event: {wkt: string, geocode: string}): void {
     const didLoad = this.mapService.loadPolygonFrom(event.wkt);
-    this.store$.dispatch(new SetGeocode(event.geocode))
+    this.store$.dispatch(new SetGeocode(event.geocode));
     if (!didLoad) {
       this.aoiErrors$.next();
     } else {
@@ -127,6 +126,7 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
 
   public onClearPolygon(): void {
     this.onNewInteractionMode(MapInteractionModeType.DRAW);
+    this.store$.dispatch(new SetGeocode(''));
     this.mapService.clearDrawLayer();
   }
 
