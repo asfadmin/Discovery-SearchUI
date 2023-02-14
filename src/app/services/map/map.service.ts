@@ -8,7 +8,7 @@ import { Layer, Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 import * as proj from 'ol/proj';
 import Point from 'ol/geom/Point';
-import { OverviewMap } from 'ol/control';
+import { OverviewMap, ScaleLine } from 'ol/control';
 
 import { click, pointerMove } from 'ol/events/condition';
 import Select from 'ol/interaction/Select';
@@ -53,6 +53,7 @@ export class MapService {
 
   private mapView: views.MapView;
   private map: Map;
+  private scaleLine: ScaleLine;
   private polygonLayer: VectorLayer;
   private sarviewsEventsLayer: VectorLayer;
   private browseImageLayer: ImageLayer;
@@ -440,7 +441,6 @@ export class MapService {
     });
   }
 
-
   private createNewMap(overlay): Map {
     this.overviewMap = new OverviewMap({
       layers: [this.mapView.layer],
@@ -559,6 +559,7 @@ export class MapService {
 
     const controlLayer = new TileLayer({source: this.mapView.layer.getSource()});
     this.overviewMap.getOverviewMap().getLayers().setAt(0, controlLayer);
+
     return this.map;
   }
 
@@ -615,6 +616,11 @@ export class MapService {
     }
 
     return this.getPolygonIntersection;
+  }
+
+  public addScaleLine(latlonElement) {
+    this.scaleLine = new ScaleLine({target: latlonElement, className: 'ol-custom-scale-line', units: 'metric'});
+    this.map.addControl(this.scaleLine);
   }
 
   private getPointIntersection(aoi: Feature<Geometry>, polygon: Feature<Geometry>): boolean {

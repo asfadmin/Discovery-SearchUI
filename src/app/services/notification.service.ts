@@ -15,7 +15,6 @@ export class NotificationService {
   constructor(
     private toastr: ToastrService,
     private store$: Store<AppState>,
-    // private dialog: MatDialog
     ) {}
 
   // Custom toastr config example, toastClass styling in styles.scss
