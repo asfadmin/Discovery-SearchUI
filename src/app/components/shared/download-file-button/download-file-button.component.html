@@ -9,7 +9,7 @@
      class="download-file-button"
   >
     <ng-container *ngIf="dFile as download">
-      <template *ngIf="download.state !== 'DONE'"
+      <ng-container *ngIf="download.state !== 'DONE'"
                 class="progress-spinner">
         <mat-progress-spinner
           [mode]="download.state === 'IN_PROGRESS' ? 'determinate' : 'indeterminate'"
@@ -19,7 +19,7 @@
         <span class="progress-spinner-value" *ngIf="download.state === 'IN_PROGRESS'">
           {{ download.progress }}
         </span>
-      </template>
+      </ng-container>
     </ng-container>
 
     <ng-container *ngIf="dFile && dFile.state === 'DONE'">
