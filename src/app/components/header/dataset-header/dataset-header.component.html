@@ -15,7 +15,8 @@
          class="breadcrumb">
       </app-dataset-selector>
 
-      <app-aoi-filter *ngIf="breakpoint > breakpoints.SMALL" class="breadcrumb">
+      <app-aoi-filter class="breadcrumb"
+                      [ngClass]="{'noshow' : breakpoint === breakpoints.SMALL}">
       </app-aoi-filter>
     </div>
 

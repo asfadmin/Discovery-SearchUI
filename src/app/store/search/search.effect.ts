@@ -39,6 +39,9 @@ export class SearchEffects {
     format: new GeoJSON(),
   });
 
+  private on_demand_prod_collections = ['C1214471197-ASF','C1214470533-ASF','C1214471521-ASF','C1214472978-ASF','C1214470682-ASF','C1214472994-ASF','C1214470488-ASF','C1327985697-ASF','C1327985645-ASF','C1327985660-ASF','C1327985644-ASF','C1327985571-ASF','C1327985740-ASF','C1327985661-ASF','C1661710578-ASF','C1661710581-ASF','C1661710583-ASF','C1661710590-ASF','C1661710593-ASF','C1661710596-ASF','C1661710597-ASF','C1661710604-ASF','C1214335471-ASF','C1214336154-ASF','C1214337770-ASF','C1214354144-ASF','C1214354235-ASF']
+  private on_demand_test_collections = ['C1212200781-ASF','C1212201032-ASF','C1212209035-ASF','C1212158327-ASF','C1212158318-ASF','C1205428742-ASF','C1216244597-ASF','C1216244589-ASF','C1216244594-ASF','C1216244588-ASF','C1216244586-ASF','C1216244600-ASF','C1216244348-ASF','C1226557819-ASF','C1226557809-ASF','C1226557808-ASF','C1226557812-ASF','C1226557813-ASF','C1226557814-ASF','C1226557815-ASF','C1226557818-ASF','C1206132445-ASF','C1212005594-ASF','C1207188317-ASF','C1210546638-ASF','C1206122195-ASF']
+  private on_demand_test_collections_asfdev = ['C1245830954-ASFDEV','C1245830954-ASFDEV','C1234413228-ASFDEV','C1234413229-ASFDEV','C1234413230-ASFDEV','C1234413239-ASFDEV','C1234413240-ASFDEV','C1234413241-ASFDEV','C1234413245-ASFDEV','C1234413246-ASFDEV','C1234413247-ASFDEV','C1234413248-ASFDEV','C1234413257-ASFDEV','C1234413258-ASFDEV','C1234413259-ASFDEV','C1234413263-ASFDEV','C1234413264-ASFDEV','C1234413265-ASFDEV','C1234413266-ASFDEV','C1234413269-ASFDEV','C1234413270-ASFDEV','C1234413271-ASFDEV','C1234413272-ASFDEV','C1234413275-ASFDEV']
   constructor(
     private actions$: Actions,
     private store$: Store<AppState>,
@@ -48,7 +51,8 @@ export class SearchEffects {
     private hyp3Service: services.Hyp3Service,
     private sarviewsService: services.SarviewsEventsService,
     private http: HttpClient,
-    private notificationService: services.NotificationService
+    private notificationService: services.NotificationService,
+    // private environmentService: services.EnvironmentService,
   ) {}
 
   public clearMapInteractionModeOnSearch = createEffect(() => this.actions$.pipe(
@@ -280,7 +284,24 @@ export class SearchEffects {
             }
           ).join(',');
 
-          return this.asfApiService.query<any[]>({ 'granule_list': granules }).pipe(
+          let collections: String[] = []
+
+          // In case we wanted to limit searched collections further, limit it based on envionment
+          // let provider = this.environmentService.currentEnv.cmr_provider
+          // let maturity = this.environmentService.maturity
+
+          // if (maturity === 'prod') {
+          collections = this.on_demand_prod_collections
+
+          // } else if(provider === 'ASF') {
+          collections.push(...this.on_demand_test_collections)
+
+          // } else {
+          collections.push(...this.on_demand_test_collections_asfdev)
+
+          // }
+
+          return this.asfApiService.query<any[]>({ 'granule_list': granules, 'collections': collections.join(',') }).pipe(
             map(results => this.productService.fromResponse(results)
               .filter(product => !product.metadata.productType.includes('METADATA'))
               .reduce((products, product) => {
@@ -332,7 +353,24 @@ export class SearchEffects {
             }
           ).join(',');
 
-          return this.asfApiService.query<any[]>({ 'granule_list': granules }).pipe(
+          let collections: String[] = []
+
+          // In case we wanted to limit searched collections further, limit it based on envionment
+          // let provider = this.environmentService.currentEnv.cmr_provider
+          // let maturity = this.environmentService.maturity
+
+          // if (maturity === 'prod') {
+          collections = this.on_demand_prod_collections
+
+          // } else if(provider === 'ASF') {
+          collections.push(...this.on_demand_test_collections)
+
+          // } else {
+          collections.push(...this.on_demand_test_collections_asfdev)
+
+          // }
+
+          return this.asfApiService.query<any[]>({ 'granule_list': granules, 'collections': collections.join(',') }).pipe(
             map(results => this.productService.fromResponse(results)
               .filter(product => !product.metadata.productType.includes('METADATA'))
               .reduce((products, product) => {

@@ -72,8 +72,8 @@ $theme-map: null;
 
 .toast-info,
 #toast-container > .toast-info {
+  background-image: url("/assets/icons/info_black_48dp.svg");
 
-  // box-shadow: none;
   @include themify_non_host($themes) {
     box-shadow: 0 0 12px lighten(themed('background-white'), 10%); //#999999;
 
@@ -84,12 +84,10 @@ $theme-map: null;
     }
   }
 
-  background-image: url("/assets/icons/info_black_48dp.svg");
-
-
-
   a {
-    color: $asf-blue;
+    @include themify_non_host($themes) {
+      color: themed('blue-link');
+    }
   }
 }
 
@@ -106,7 +104,9 @@ $theme-map: null;
 
 .toast-close-button,
 #toast-container > .toast-close-button {
-  color: black;
+  @include themify_non_host($themes) {
+    color: themed('dark-primary-text');
+  }
 }
 
 // .toast-info,
@@ -142,11 +142,6 @@ $theme-map: null;
 }
 
 .banner-dialog {
-  @include themify_non_host($themes) {
-    mat-dialog-content {
-      background: themed('primary-light');
-    }
-  }
   mat-dialog-container {
     padding: 0;
     box-sizing: border-box;
@@ -161,7 +156,6 @@ $theme-map: null;
 
   mat-dialog-content {
     padding: 15px 40px;
-    background: blue;
   }
 
   mat-dialog-actions {
@@ -690,4 +684,15 @@ $d-height: 500px;
   @include themify_non_host($themes) {
     color: themed('blue-link') !important;
   }
+}
+
+.ol-custom-scale-line {
+  height: 14px;
+  width: auto;
+  color: $asf-primary-light;
+  background: $asf-primary-dark;
+  border-style: solid;
+  border-color: $asf-primary-light;
+  border-width: 0 2px 0 2px;
+  text-align: center;
 }
