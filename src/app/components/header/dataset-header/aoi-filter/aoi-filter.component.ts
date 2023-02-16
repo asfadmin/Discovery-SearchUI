@@ -18,7 +18,7 @@ import { DrawNewPolygon } from '@store/map';
 @Component({
   selector: 'app-aoi-filter',
   templateUrl: './aoi-filter.component.html',
-  styleUrls: ['./aoi-filter.component.css', '../../header.component.scss'],
+  styleUrls: ['./aoi-filter.component.scss', '../../header.component.scss'],
   animations: menuAnimation,
 })
 export class AoiFilterComponent implements OnInit, OnDestroy {
