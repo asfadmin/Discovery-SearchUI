@@ -13,7 +13,8 @@
   </div>
 
   <div class="aoi-input-area">
-    <form #polygonInputForm="ngForm"
+    <div class="aoi-text-container">
+      <form #polygonInputForm="ngForm"
       (keydown.enter)="$event.preventDefault()"
       [class.aoi-input--desktop]="breakpoint !== breakpoints.MOBILE"
       [class.aoi-input--mobile]="breakpoint === breakpoints.MOBILE">
@@ -36,11 +37,14 @@
         </button>
       </mat-form-field>
     </form>
+    
+    <app-geocode-selector
+    (geocodeWkt)="onInputGeocodePolygon($event)"
+    ></app-geocode-selector>
+    </div>
 
     <app-file-upload-dialog *ngIf="breakpoint !== breakpoints.MOBILE" style="width: 40%;"></app-file-upload-dialog>
   </div>
-  <app-geocode-selector
-  (geocodeWkt)="onInputGeocodePolygon($event)"
-  ></app-geocode-selector>
+
 </div>
 

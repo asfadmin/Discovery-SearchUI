@@ -15,6 +15,8 @@
 .actions {
   display: flex;
   justify-content: flex-end;
+  align-items: flex-end;
+  height: 100%;
 }
 
 .container {
@@ -36,8 +38,8 @@
   background-repeat: no-repeat;
 
   background-position: center;
-  width: 215px;
-  height: 160px;
+  width: 230px;
+  height: 220px;
   display: inline-block;
   outline-offset: -8px;
 }

@@ -1,13 +1,11 @@
 <mat-form-field class="w100">
-<mat-label> Geocoded Area </mat-label>
+  <mat-label> Geocoded Area </mat-label>
 
-<input type="text" matInput
-[matAutocomplete]="auto"
-[(ngModel)]="search_key" (ngModelChange)="onChange($event)" >
+  <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="search_key" (ngModelChange)="onChange($event)">
 </mat-form-field>
-<mat-autocomplete #auto="matAutocomplete" (optionSelected)='onSelect($event.option.value)'
-autoActiveFirstOption="'true" [displayWith]="displayFunc">
-    <mat-option *ngFor="let option of options" [value]="option">
-      {{option.name}}
-    </mat-option>
+<mat-autocomplete #auto="matAutocomplete" (optionSelected)='onSelect($event.option.value)' autoActiveFirstOption="'true"
+  [displayWith]="displayFunc">
+  <mat-option *ngFor="let option of options" [value]="option">
+    {{option.name}}
+  </mat-option>
 </mat-autocomplete>
