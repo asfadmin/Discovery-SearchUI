@@ -39,6 +39,7 @@ export class UIEffects {
         systime: ''
       }))
     )),
+    tap(console.log),
     map(resp => new uiActions.AddBanners(resp.banners))
   ));
 
