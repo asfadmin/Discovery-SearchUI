@@ -12,13 +12,16 @@ import { FileUploadModule } from './file-upload';
 import { AoiOptionsComponent } from './aoi-options.component';
 import { DrawSelectorComponent } from './draw-selector/draw-selector.component';
 import { InteractionSelectorComponent } from './interaction-selector';
+import { GeocodeSelectorComponent } from './geocode-selector/geocode-selector.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 
 @NgModule({
   declarations: [
     AoiOptionsComponent,
     DrawSelectorComponent,
-    InteractionSelectorComponent
+    InteractionSelectorComponent,
+    GeocodeSelectorComponent
   ],
   imports: [
     CommonModule,
@@ -28,6 +31,7 @@ import { InteractionSelectorComponent } from './interaction-selector';
     MatMenuModule,
     MatSharedModule,
     FileUploadModule,
+    MatAutocompleteModule
   ],
   exports: [
     AoiOptionsComponent,

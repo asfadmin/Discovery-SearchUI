@@ -41,6 +41,7 @@ import Polygon from 'ol/geom/Polygon';
 import LineString from 'ol/geom/LineString';
 import TileLayer from 'ol/layer/Tile';
 import SimpleGeometry from 'ol/geom/SimpleGeometry';
+import { SetGeocode } from '@store/filters';
 
 @Injectable({
   providedIn: 'root'
@@ -187,7 +188,7 @@ export class MapService {
 
   private loadWKT(polygon: string): boolean {
     let didLoad = true;
-
+    this.store$.dispatch(new SetGeocode(''));
     try {
       const features = this.wktService.wktToFeature(
         polygon,

@@ -89,6 +89,8 @@ export enum FiltersActionType {
   CLEAR_EVENT_FILTERS = '[Filters] Clear Event Search Filters',
   CLEAR_HYP3_PRODUCT_TYPES = '[Filters] Clear Hyp3 product types filter',
 
+  SET_GEOCODE = '[Filters] Set geocode area name',
+
 }
 
 export class SetSelectedDataset implements Action {
@@ -412,6 +414,12 @@ export class SetDefaultFilters implements Action {
   }) {}
 }
 
+export class SetGeocode implements Action {
+  public readonly type = FiltersActionType.SET_GEOCODE;
+
+  constructor(public payload: string) {}
+}
+
 export class ClearEventFilters implements Action {
   public readonly type = FiltersActionType.CLEAR_EVENT_FILTERS;
 
@@ -480,6 +488,7 @@ export type FiltersActions =
   | SetSarviewsMagnitudeStart
   | SetSarviewsMagnitudeEnd
   | SetSarviewsMagnitudeRange
+  | SetGeocode
   | ClearSarviewsMagnitudeRange
   | SetHyp3ProductTypes
   | SetEventProductSorting

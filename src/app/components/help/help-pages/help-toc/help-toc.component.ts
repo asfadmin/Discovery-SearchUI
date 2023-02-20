@@ -64,8 +64,6 @@ export class HelpTocComponent implements OnInit {
   }
 
   public matchContentDetails () {
-    console.log('matching content details here');
-    console.log('this.videos', this.videos);
     for ( const video of this.videos) {
       // console.log('video:', video);
       this.YoutubeApiService$.getVideoContentDetails(video.id.videoId)

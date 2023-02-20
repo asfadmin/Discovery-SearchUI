@@ -13,6 +13,7 @@ import { MapService, ScreenSizeService } from '@services';
 import { SubSink } from 'subsink';
 import { getSearchType, SetSearchOutOfDate } from '@store/search';
 import { getIsFiltersMenuOpen, getIsResultsMenuOpen } from '@store/ui';
+import { SetGeocode } from '@store/filters';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -107,7 +108,17 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
       }
     }
   }
-
+  public onInputGeocodePolygon(event: {wkt: string, geocode: string}): void {
+    const didLoad = this.mapService.loadPolygonFrom(event.wkt);
+    this.store$.dispatch(new SetGeocode(event.geocode));
+    if (!didLoad) {
+      this.aoiErrors$.next();
+    } else {
+      if (this.searchtype === SearchType.DATASET && this.isResultsMenuOpen && !this.isFiltersMenuOpen) {
+        this.store$.dispatch(new SetSearchOutOfDate(true));
+      }
+    }
+  }
   public onFileUpload(): void {
     const action = new mapStore.SetMapInteractionMode(MapInteractionModeType.UPLOAD);
     this.store$.dispatch(action);
@@ -115,6 +126,7 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
 
   public onClearPolygon(): void {
     this.onNewInteractionMode(MapInteractionModeType.DRAW);
+    this.store$.dispatch(new SetGeocode(''));
     this.mapService.clearDrawLayer();
   }
 

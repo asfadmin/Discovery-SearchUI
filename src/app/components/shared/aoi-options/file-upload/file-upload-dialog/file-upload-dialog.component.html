@@ -13,7 +13,17 @@
         fxFlex fxLayoutAlign="center" gdAlignColumns="center"
         [class.drop-text-box]="canBeClosed">
 
-        <div *ngIf="canBeClosed" class="drop-file-area"></div>
+        <div *ngIf="canBeClosed" class="drop-file-area">
+
+          <div class="actions">
+            <button (click)="addFiles()"
+              [disabled]="uploading"
+              style="margin-right: 10px; margin-bottom: 10px;"
+              color="primary" class="add-files-btn" mat-raised-button>
+                Import File
+            </button>
+          </div>
+        </div>
 
         <div class="loading-box" *ngIf="!canBeClosed">
           <div class="loading-text">
@@ -27,14 +37,7 @@
       </div>
     </div>
 
-    <div class="actions">
-      <button (click)="addFiles()"
-        [disabled]="uploading"
-        style="margin-right: 10px;"
-        color="primary" class="add-files-btn" mat-raised-button>
-          Import File
-      </button>
-    </div>
+
   </div>
 </div>
 <ng-template #mobileUploadButton>

@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {v1 as uuid} from 'uuid';
 
 import { combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
@@ -41,15 +41,17 @@ export class SaveSearchDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.saveType = this.data.saveType;
-    console.log(this.saveType);
-
     if (this.saveType === models.SidebarType.SAVED_SEARCHES) {
       this.saveTypeName = 'Save Search';
-      this.search = this.savedSearchService.makeCurrentSearch('');
 
-      if (!this.searchCanBeSaved(this.search)) {
-        this.onCancelSave();
-      }
+      this.store$.select(filterStore.getGeocodeArea).pipe(take(1)).subscribe(geocode => {
+        this.search = this.savedSearchService.makeCurrentSearch(geocode ?? '');
+        this.saveName = geocode;
+
+        if (!this.searchCanBeSaved(this.search)) {
+          this.onCancelSave();
+        }
+      })
     }
 
     if (this.saveType === models.SidebarType.USER_FILTERS) {

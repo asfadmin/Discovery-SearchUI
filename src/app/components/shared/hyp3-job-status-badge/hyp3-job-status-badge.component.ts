@@ -123,7 +123,6 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
   }
 
   public onReviewExpiredJob() {
-    console.log(this.job.name);
     const job_types = hyp3JobTypes;
     const job_type = Object.keys(job_types).find(id =>
       this.job.job_type === id as any);
