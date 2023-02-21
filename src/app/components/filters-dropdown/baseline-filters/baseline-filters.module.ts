@@ -12,6 +12,8 @@ import { BaselineSlidersModule } from './baseline-sliders';
 import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
 import {DocsModalModule} from '@components/shared/docs-modal';
 
+import { TranslateModule } from "@ngx-translate/core";
+
 
 @NgModule({
   declarations: [BaselineFiltersComponent],
@@ -25,7 +27,8 @@ import {DocsModalModule} from '@components/shared/docs-modal';
         SearchTypeSelectorModule,
         BaselineSlidersModule,
         CopyToClipboardModule,
-        DocsModalModule
+        DocsModalModule,
+        TranslateModule
     ],
   exports: [
     BaselineFiltersComponent
