@@ -17,17 +17,6 @@
   }
 }
 
-.scene-controls {
-  flex: 0 1 auto;
-  float: right;
-  font-weight: normal;
-  align-self: center;
-}
-
-.mobile-size .scene-controls {
-  line-height: 28px;
-}
-
 .baseline-metrics {
   flex: 0 1 30%;
   float: right;
@@ -89,10 +78,6 @@
 
 .date-time {
   font-size: 14px !important;
-}
-
-.number-queued {
-  margin-left: 10px;
 }
 
 .mobile-size .mat-list-base .mat-list-item {

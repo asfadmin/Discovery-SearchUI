@@ -4,7 +4,7 @@ import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import * as services from '@services';
 import * as models from '@models';
 
-import { QueuedHyp3Job, Hyp3ableProductByJobType } from '@models';
+import { QueuedHyp3Job } from '@models';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 
@@ -25,6 +25,7 @@ export class SceneComponent implements OnInit {
   @Input() isQueued: boolean;
   @Input() jobQueued: boolean;
   @Input() numQueued: number;
+
   @Input() hyp3ableByJobType: { total: number, byJobType: models.Hyp3ableProductByJobType[]};
 
   @Output() zoomTo = new EventEmitter();
@@ -94,42 +95,11 @@ export class SceneComponent implements OnInit {
     }));
   }
 
-  public getExpiredHyp3ableObject(): {byJobType: models.Hyp3ableProductByJobType[], total: number} {
-    const job_types = models.hyp3JobTypes;
-    const job_type = Object.keys(job_types).find(id => {
-        return this.scene.metadata.job.job_type === id as any;
-      });
-
-    const byJobType: Hyp3ableProductByJobType[] = [];
-
-    const temp: models.Hyp3ableByProductType = {
-      productType: this.scene.metadata.job.job_type as any,
-      products: [this.scene.metadata.job.job_parameters.scenes]
-    };
-
-    const byProductType: models.Hyp3ableByProductType[] = [];
-    byProductType.push(temp);
-
-    const hyp3ableProduct = {
-      byProductType,
-      total: 1,
-      jobType: job_types[job_type]
-    } as models.Hyp3ableProductByJobType;
-
-    byJobType.push(hyp3ableProduct);
-
-    const output = {
-      byJobType,
-      total: 1
-    } as {byJobType: models.Hyp3ableProductByJobType[], total: number};
-
-    return output;
+  public isExpired(job: models.Hyp3Job): boolean {
+    return this.hyp3.isExpired(job);
   }
 
-  public isExpired(job: models.Hyp3Job): boolean {
-    if (job == null) {
-      return false;
-    }
-    return this.hyp3.isExpired(job);
+  public getExpiredHyp3ableObject(): {byJobType: models.Hyp3ableProductByJobType[], total: number} {
+    return this.hyp3.getExpiredHyp3ableObject(this.scene);
   }
 }
