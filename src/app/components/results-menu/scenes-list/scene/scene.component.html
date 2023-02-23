@@ -64,8 +64,8 @@
       <app-scene-controls
         (onZoomToScene)="onZoomTo()"
         (onToggleScene)="onToggleScene()"
-        [hyp3ableByJobType]="hyp3ableByJobType"
         [scene]="scene"
+        [hyp3ableByJobType]="hyp3ableByJobType"
         [isQueued]="isQueued"
         [numQueued]="numQueued"
         [searchType]="searchType">
@@ -73,43 +73,13 @@
     </ng-container>
 
     <ng-container *ngIf="searchType === SearchTypes.BASELINE">
-
-      <div style="display: flex;">
-        <div style="display: flex; justify-content: space-evenly;">
-          <div [ngClass]="{'mobile-baseline': breakpoint <= breakpoints.SMALL, 'metric-flex-field': true}">
-            {{ withOffset(scene.metadata.perpendicular, offsets.perpendicular) }}m
-          </div>
-
-            <div [ngClass]="{'mobile-baseline': breakpoint <= breakpoints.SMALL, 'metric-flex-field': true}">
-              {{ withOffset(scene.metadata.temporal, offsets.temporal) }}d
-            </div>
-
-            <div class="cart-flex-field">
-              <mat-icon *ngIf="hyp3ableByJobType.total > 0"
-                [matMenuTriggerFor]="sceneAdd.addMenu"
-                [matMenuTriggerData]="{ hyp3able: hyp3ableByJobType.byJobType }"
-                class="icon-margin mobile-svg"
-                svgIcon="hyp3">
-              </mat-icon>
-              <mat-icon *ngIf="isDownloadable(scene)"
-                (click)="onToggleScene()"
-                class="icon-margin"
-                matTooltip="{{
-                  isQueued ?
-                    'Remove scene files from downloads':
-                    'Add scene files to downloads'
-                }}">
-                {{ isQueued ? 'shopping_cart' : 'add_shopping_cart' }}
-              </mat-icon>
-            </div>
-    </div>
-  </div>
-</ng-container>
-
-<app-on-demand-add-menu #sceneAdd
-  [isExpired]="isExpired(scene.metadata.job)"
-  [expiredJobs]="scene.metadata.job">
-</app-on-demand-add-menu>
-
+      <app-baseline-scene-controls
+        (onToggleScene)="onToggleScene()"
+        [scene]="scene"
+        [offsets]="offsets"
+        [hyp3ableByJobType]="hyp3ableByJobType"
+        [isQueued]="isQueued">
+      </app-baseline-scene-controls>
+    </ng-container>
 </button>
 
