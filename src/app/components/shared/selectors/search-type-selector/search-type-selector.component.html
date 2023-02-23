@@ -1,7 +1,6 @@
 <div *ngIf="breakpoint$ | async as breakpoint">
 
   <div class="menu-button-wrapper" [class.mobile-button-wrapper]="breakpoint === breakpoints.MOBILE">
-<!--    <div class="button-label">Search Type</div>-->
     <div class="button-label">{{ 'SEARCH TYPE' | translate }}</div>
     <div>
       <button
@@ -26,10 +25,10 @@
           <div class="menu-item-inner">
             <div fxFlex="75%" class="menu-item-content">
               <div class="item-title">
-                Geographic
+                {{'GEOGRAPHIC' | translate}}
               </div>
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                Geographic search allows you to search for data based upon a geographic location.
+                {{'GEOGRAPHIC SEARCH ALLOWS YOU TO SEARCH FOR DATA BASED UPON A GEOGRAPHIC LOCATION' | translate }}
               </div>
               <mat-card-actions>
                 <app-docs-modal class="info-text"
@@ -50,10 +49,10 @@
           <div class="menu-item-inner">
             <div fxFlex="75%" class="menu-item-content">
               <div class="item-title">
-                List
+                {{'LIST' | translate }}
               </div>
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                List search allows you to enter or upload a list of scene or file names.
+                {{'LIST SEARCH ALLOWS YOU TO ENTER OR UPLOAD A LIST OF SCENE OR FILE NAMES.' | translate }}
               </div>
               <mat-card-actions (click)="onOpenDocs($event)">
                 <app-docs-modal class="info-text"
@@ -63,7 +62,7 @@
               </mat-card-actions>
             </div>
             <div fxFlex="25%" class="menu-item-aside">
-              <span class="material-icons-outlined menu-item-icon">list</span>
+              <span class="material-icons-outlined menu-item-icon">{{'LIST' | translate }}</span>
             </div>
           </div>
         </div>
@@ -74,11 +73,10 @@
           <div class="menu-item-inner">
             <div fxFlex="75%" class="menu-item-content">
               <div class="item-title">
-                Baseline
+                {{'BASELINE' | translate }}
               </div>
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                Baseline search provides visualization of perpendicular and temporal baseline data for a chosen
-                reference scene.
+                {{'BASELINE SEARCH PROVIDES VISUALIZATION OF PERPENDICULAR AND TEMPORAL BASELINE DATA FOR A CHOSEN' | translate}}
               </div>
               <mat-card-actions (click)="onOpenDocs($event)">
                 <app-docs-modal class="info-text"
@@ -99,11 +97,11 @@
           <div class="menu-item-inner">
             <div fxFlex="75%" class="menu-item-content">
               <div class="item-title">
-                SBAS
+                {{ 'SBAS' | translate }}
               </div>
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                SBAS search provides perpendicular and temporal baseline data, as well as scene pairs, for a chosen
-                reference scene.
+                {{'SEARCH PROVIDES PERPENDICULAR AND TEMPORAL BASELINE DATA, AS WELL AS SCENE PAIRS, FOR A CHOSEN' | translate }}
+                {{'REFERENCE SCENE.' | translate }}
               </div>
               <mat-card-actions (click)="onOpenDocs($event)">
                 <app-docs-modal class="info-text"
@@ -124,10 +122,10 @@
           <div class="menu-item-inner">
             <div fxFlex="75%" class="menu-item-content">
               <div class="item-title">
-                Event
+                {{'EVENT' | translate}}
               </div>
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                Event search harnesses the capabilities of SAR processing to monitor natural disasters.
+                {{'EVENT SEARCH HARNESSES THE CAPABILITIES OF SAR PROCESSING TO MONITOR NATURAL DISASTERS' | translate }}
               </div>
               <mat-card-actions (click)="onOpenDocs($event)">
                 <app-docs-modal class="info-text"
@@ -137,7 +135,7 @@
               </mat-card-actions>
             </div>
             <div fxFlex="25%" class="menu-item-aside">
-              <span class="material-icons-outlined menu-item-icon">volcano</span>
+              <span class="material-icons-outlined menu-item-icon">{{'VOLCANO' | translate }}</span>
             </div>
           </div>
         </div>
@@ -150,13 +148,13 @@
           <div class="menu-item-inner">
             <div fxFlex="75%" class="menu-item-content">
               <div class="item-title">
-                On Demand Products
+                {{'ON DEMAND PRODUCTS' | translate}}
                 <span class="login-prompt" [ngClass]="{'login-hidden' : isLoggedIn}">
-                  - Sign in to access
+                  {{'SIGN IN TO ACCESS' | translate}}
                 </span>
               </div>
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                On Demand search allows you to view your submitted On Demand jobs.
+                {{'ON DEMAND SEARCH ALLOWS YOU TO VIEW YOUR SUBMITTED ON DEMAND JOBS.' | translate}}
               </div>
               <mat-card-actions (click)="onOpenDocs($event)">
                 <app-docs-modal
@@ -178,10 +176,10 @@
           <div class="menu-item-inner">
             <div fxFlex="75%" class="menu-item-content">
               <div class="item-title">
-                Derived Datasets
+                {{'DERIVED DATASETS' | translate }}
               </div>
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                Derived datasets contain a collection of datasets available to view and download.
+                {{'DERIVED DATASETS CONTAIN A COLLECTION OF DATASETS AVAILABLE TO VIEW AND DOWNLOAD.'| translate }}
               </div>
             </div>
             <div fxFlex="25%" class="menu-item-aside">
