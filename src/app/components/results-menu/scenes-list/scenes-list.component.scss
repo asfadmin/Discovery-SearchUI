@@ -1,27 +1,13 @@
 @import 'asf-theme';
+
 .list-viewport {
   overflow-y: auto;
-}
-
-.mat-list-avatar {
-  border-radius: 6px !important;
-}
-
-.icon-margin {
-  margin-left: 10px;
 }
 
 .selected .ml-2 {
   @include themify_non_host($themes) {
     color: themed('err');
   }
-}
-
-.baseline-metrics {
-  flex: 0 1 30%;
-  float: right;
-  font-weight: normal;
-  align-self: center;
 }
 
 .image-flex {
@@ -45,11 +31,6 @@
 
 .mobile-baseline.metric-flex-field {
   flex: 1 0 45px;
-  float: right;
-  text-align: right;
-}
-
-.metric-field {
   float: right;
   text-align: right;
 }

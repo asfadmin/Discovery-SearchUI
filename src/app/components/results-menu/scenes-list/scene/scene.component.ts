@@ -22,7 +22,6 @@ export class SceneComponent implements OnInit {
 
   @Input() hyp3ableByJobType: { total: number, byJobType: models.Hyp3ableProductByJobType[]};
 
-  @Output() zoomTo = new EventEmitter();
   @Output() toggleScene = new EventEmitter();
 
   public hovered: boolean;
@@ -35,6 +34,7 @@ export class SceneComponent implements OnInit {
   constructor(
     public env: services.EnvironmentService,
     private screenSize: services.ScreenSizeService,
+    private mapService: services.MapService,
   ) { }
 
   ngOnInit(): void {
@@ -52,7 +52,7 @@ export class SceneComponent implements OnInit {
   }
 
   public onZoomTo(): void {
-    this.zoomTo.emit();
+    this.mapService.zoomToScene(this.scene);
   }
 
   public onToggleScene(): void {
