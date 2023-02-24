@@ -22,7 +22,7 @@
            [title]="scene.metadata.fileName || scene.name"
            class="bold" matLine>
         <app-file-name
-          [name]="scene.metadata.productType === 'BURST' ? scene.id : (scene.metadata.fileName || scene.name)"
+          [name]="(scene.metadata.fileName || scene.name)"
           [dataset]="scene.dataset"
           [searchType]="searchType">
         </app-file-name>

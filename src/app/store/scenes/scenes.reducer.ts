@@ -83,9 +83,9 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
 
       if (Object.keys(productIDs).length === 1 && Object.keys(productIDs)[0].toUpperCase() === 'BURST') {
         productGroups = action.payload.products.reduce((total, product) => {
-          const scene = total[product.metadata.burst.absoluteBurstID] || [];
+          const scene = total[product.name] || [];
 
-          total[product.metadata.burst.absoluteBurstID] = [...scene, product.id];
+          total[product.name] = [...scene, product.name];
           return total;
         }, {})
       } else {
@@ -463,7 +463,7 @@ const productsForScene = (selected, state) => {
   let products = []
 
   if (Object.keys(productTypes).length === 1 && Object.keys(productTypes)[0] === 'BURST') {
-    products = state.scenes[selected.id] || [];
+    products = state.scenes[selected.name] || [];
   } else {
     products = state.scenes[selected.groupId] || []
   }
