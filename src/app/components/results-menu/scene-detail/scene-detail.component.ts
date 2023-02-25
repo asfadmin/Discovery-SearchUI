@@ -60,6 +60,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
   private defaultBaselineFiltersID = '';
   private defaultSBASFiltersID = '';
+  private dateRange: {start: Date | null, end: Date | null};
 
   public sarviewsProducts: models.SarviewsProduct[] = [];
   public isBrowseOverlayEnabled$: Observable<boolean> = this.browseOverlayService.isBrowseOverlayEnabled$;
@@ -105,6 +106,11 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
       )
     );
 
+    this.subs.add(
+      this.store$.select(filtersStore.getDateRange).subscribe(
+        r => this.dateRange = r
+      )
+    );
 
     this.subs.add(
       this.screenSize.size$.pipe(
@@ -349,43 +355,73 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new scenesStore.SetMaster(this.scene.name));
   }
 
-  public findSimilarScenes(): void {
+  public moreLikeThis(): void {
     if (this.searchType === models.SearchType.SARVIEWS_EVENTS) {
       this.makeSarviewsEventGeoSearch();
     } else {
-    const scene = this.scene;
-    const shouldClear = this.searchType !== models.SearchType.DATASET;
-    this.store$.dispatch(new searchStore.SetSearchType(models.SearchType.DATASET));
+      const scene = this.scene;
+      const shouldClear = this.searchType !== models.SearchType.DATASET;
+      const dateRange = this.dateRange;
 
-    if (shouldClear) {
-      this.store$.dispatch(new searchStore.ClearSearch());
+      this.store$.dispatch(new searchStore.SetSearchType(models.SearchType.DATASET));
+
+      if (shouldClear) {
+        this.store$.dispatch(new searchStore.ClearSearch());
+      }
+
+      this.store$.dispatch(new filtersStore.SetFiltersSimilarTo({product: scene, dataset: this.datasetForProduct.match(scene)}));
+
+      if (!!dateRange.start) {
+        this.store$.dispatch(new filtersStore.SetStartDate(new Date(dateRange.start)));
+      }
+      if (!!this.dateRange.end) {
+        this.store$.dispatch(new filtersStore.SetEndDate(new Date(dateRange.end)));
+      }
+
+      this.store$.dispatch(new searchStore.MakeSearch());
     }
-    this.store$.dispatch(new filtersStore.SetFiltersSimilarTo({product: scene, dataset: this.datasetForProduct.match(scene)}));
-    this.store$.dispatch(new searchStore.MakeSearch());
-  }
   }
 
   public makeBaselineSearch(): void {
     const sceneName = this.baselineSceneName();
+    const dateRange = this.dateRange;
+
     [
       new searchStore.SetSearchType(models.SearchType.BASELINE),
       new searchStore.ClearSearch(),
       new userStore.LoadFiltersPreset(this.defaultBaselineFiltersID),
       new scenesStore.SetFilterMaster(sceneName),
-      new searchStore.MakeSearch()
     ].forEach(action => this.store$.dispatch(action));
+
+    if (!!dateRange.start) {
+      this.store$.dispatch(new filtersStore.SetStartDate(new Date(dateRange.start)));
+    }
+    if (!!dateRange.end) {
+      this.store$.dispatch(new filtersStore.SetEndDate(new Date(dateRange.end)));
+    }
+
+    this.store$.dispatch(new searchStore.MakeSearch());
   }
 
   public makeSBASSearch(): void {
     const sceneName = this.baselineSceneName();
+    const dateRange = this.dateRange;
 
     [
       new searchStore.SetSearchType(models.SearchType.SBAS),
       new searchStore.ClearSearch(),
       new userStore.LoadFiltersPreset(this.defaultSBASFiltersID),
       new scenesStore.SetFilterMaster(sceneName),
-      new searchStore.MakeSearch()
     ].forEach(action => this.store$.dispatch(action));
+
+    if (!!dateRange.start) {
+      this.store$.dispatch(new filtersStore.SetStartDate(new Date(dateRange.start)));
+    }
+    if (!!dateRange.end) {
+      this.store$.dispatch(new filtersStore.SetEndDate(new Date(dateRange.end)));
+    }
+
+    this.store$.dispatch(new searchStore.MakeSearch());
   }
 
   public onSetDetailsOpen(event: Event) {
@@ -429,7 +465,6 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
   public onEventSearchRadiusChange(value: number) {
     this.sarviewsEventGeoSearchRadius = value;
-    // this.mapService.onSetSarviewsPolygon(this.sarviewEvent, this.sarviewsEventGeoSearchRadius);
   }
 
   public makeEventListSearch() {

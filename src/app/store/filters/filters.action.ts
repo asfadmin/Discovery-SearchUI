@@ -18,6 +18,7 @@ export enum FiltersActionType {
 
   SET_START_DATE = '[Filters-Date] Set Start Date',
   SET_END_DATE = '[Filters-Date] Set End Date',
+  SET_DATE_RANGE = '[Filters-Date] Set Date Range',
   CLEAR_DATE_RANGE = '[Filters-Date] Clear Date Range',
 
   SET_SEASON_START = '[Filters-Date] Set Season Start',
@@ -87,6 +88,8 @@ export enum FiltersActionType {
 
   CLEAR_EVENT_FILTERS = '[Filters] Clear Event Search Filters',
   CLEAR_HYP3_PRODUCT_TYPES = '[Filters] Clear Hyp3 product types filter',
+
+  SET_GEOCODE = '[Filters] Set geocode area name',
 
 }
 
@@ -170,6 +173,12 @@ export class ClearSeason implements Action {
 
 export class ClearDateRange implements Action {
   public readonly type = FiltersActionType.CLEAR_DATE_RANGE;
+}
+
+export class SetDateRange implements Action {
+  public readonly type = FiltersActionType.SET_DATE_RANGE;
+
+  constructor(public payload: {start: Date | null, end: Date | null}) {}
 }
 
 export class OmitSearchPolygon implements Action {
@@ -405,6 +414,12 @@ export class SetDefaultFilters implements Action {
   }) {}
 }
 
+export class SetGeocode implements Action {
+  public readonly type = FiltersActionType.SET_GEOCODE;
+
+  constructor(public payload: string) {}
+}
+
 export class ClearEventFilters implements Action {
   public readonly type = FiltersActionType.CLEAR_EVENT_FILTERS;
 
@@ -433,6 +448,7 @@ export type FiltersActions =
   | SetSeasonStart
   | SetSeasonEnd
   | ClearSeason
+  | SetDateRange
   | ClearDateRange
   | OmitSearchPolygon
   | UseSearchPolygon
@@ -472,6 +488,7 @@ export type FiltersActions =
   | SetSarviewsMagnitudeStart
   | SetSarviewsMagnitudeEnd
   | SetSarviewsMagnitudeRange
+  | SetGeocode
   | ClearSarviewsMagnitudeRange
   | SetHyp3ProductTypes
   | SetEventProductSorting

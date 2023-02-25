@@ -19,7 +19,6 @@ export class YoutubeApiService {
                 'search?key=' + this.apiKey +
                 '&channelId=' + channel +
                 '&order=date&part=snippet &type=video,id&maxResults=' + maxResults;
-    console.log('channel url:', url);
     return this.http.get(url)
       .pipe(map((res) => {
         return res;
@@ -32,7 +31,6 @@ export class YoutubeApiService {
       '&fields=items(snippet(title,description,tags))' +
       '&part=snippet' +
       '&id=' + id;
-    console.log('tags url:', url);
     return this.http.get(url)
       .pipe(map((res) => {
         return res;
@@ -44,7 +42,6 @@ export class YoutubeApiService {
                 'key=' + this.apiKey +
                 '&id=' + id +
                 '&part=contentDetails';
-    console.log('details url:', url);
     return this.http.get(url)
       .pipe(map((res) => {
         return res;

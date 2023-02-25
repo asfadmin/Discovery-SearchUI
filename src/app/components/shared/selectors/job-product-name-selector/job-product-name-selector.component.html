@@ -34,7 +34,7 @@
 
     <mat-autocomplete
     [panelWidth] = "isJobFilterOptionsOpen ? 500 : 300"
-    (optionSelected)="onFilterProductName($event.option.value)"
+    (optionSelected)="onSuggestionSelected($event)"
     #jobNameSelector="matAutocomplete">
     <mat-option *ngFor="let fileName of filteredOptionsList"
         [value]="autoCompleteEntry(fileName)">

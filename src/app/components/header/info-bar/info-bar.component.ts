@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
@@ -9,7 +9,6 @@ import * as searchStore from '@store/search';
 
 import * as services from '@services';
 import * as models from '@models';
-import { Observable } from 'rxjs';
 import * as userStore from '@store/user';
 
 // Declare GTM dataLayer array.
@@ -23,7 +22,6 @@ declare global {
   styleUrls: ['./info-bar.component.scss'],
 })
 export class InfoBarComponent implements OnInit, OnDestroy {
-  @Input() resize$: Observable<void>;
   public searchType: models.SearchType = models.SearchType.DATASET;
   public searchTypes = models.SearchType;
   public searchType$ = this.store$.select(searchStore.getSearchType);
@@ -61,9 +59,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
     private hyp3: services.Hyp3Service,
   ) {
   }
-
   ngOnInit() {
-
     const startSub = this.store$.select(filtersStore.getStartDate).subscribe(
       start => this.startDate = start
     );
@@ -157,7 +153,6 @@ export class InfoBarComponent implements OnInit, OnDestroy {
         }
       )
     );
-
   }
 
   ngOnDestroy() {

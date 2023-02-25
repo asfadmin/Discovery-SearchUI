@@ -14,11 +14,12 @@ import { tap, delay } from 'rxjs/operators';
 import { menuAnimation, MapInteractionModeType } from '@models';
 import * as services from '@services';
 import { DrawNewPolygon } from '@store/map';
+import { SetGeocode } from '@store/filters';
 
 @Component({
   selector: 'app-aoi-filter',
   templateUrl: './aoi-filter.component.html',
-  styleUrls: ['./aoi-filter.component.css', '../../header.component.scss'],
+  styleUrls: ['./aoi-filter.component.scss', '../../header.component.scss'],
   animations: menuAnimation,
 })
 export class AoiFilterComponent implements OnInit, OnDestroy {
@@ -84,6 +85,7 @@ export class AoiFilterComponent implements OnInit, OnDestroy {
     if (!didLoad) {
       this.aoiErrors$.next();
     } else {
+      this.store$.dispatch(new SetGeocode(''));
       this.store$.dispatch(new DrawNewPolygon());
     }
 
