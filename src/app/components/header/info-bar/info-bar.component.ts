@@ -53,6 +53,8 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public hyp3BaseUrl = this.hyp3.baseUrl;
   public hyp3BackendUrl: string;
 
+  public dataset: String = ''
+
   constructor(
     private store$: Store<AppState>,
     private screenSize: services.ScreenSizeService,
@@ -153,6 +155,12 @@ export class InfoBarComponent implements OnInit, OnDestroy {
         }
       )
     );
+
+    this.subs.add(
+      this.store$.select(filtersStore.getSelectedDataset).subscribe(
+        dataset => this.dataset = dataset.id
+      )
+    )
   }
 
   ngOnDestroy() {
