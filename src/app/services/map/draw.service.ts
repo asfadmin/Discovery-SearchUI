@@ -120,7 +120,6 @@ export class DrawService {
     this.layer.setStyle(this.defaultStyle);
 
     this.polygon$.next(feature);
-    this.store$.dispatch(new SetGeocode(''));
   }
 
   public clear = (): void => {
