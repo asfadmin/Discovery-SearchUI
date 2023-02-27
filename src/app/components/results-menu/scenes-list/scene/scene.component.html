@@ -3,8 +3,7 @@
     (mouseleave) ="onClearFocused()"
     [class.hovered]="hovered"
     [class.selected]="isSelected"
-    [ngStyle]="{'padding-right': breakpoint > breakpoints.MEDIUM && searchType === SearchTypes.BASELINE ? '10px' : 'auto'}"
-    [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
+    [ngStyle]="{'padding-right': breakpoint > breakpoints.MEDIUM && searchType === SearchTypes.BASELINE ? '10px' : 'auto'}">
 
   <div class="image-flex" *ngIf="searchType !== SearchTypes.BASELINE || breakpoint > breakpoints.SMALL">
     <img class="list-thumbnail"
@@ -57,7 +56,7 @@
   </div>
 
     <ng-container *ngIf="searchType !== SearchTypes.BASELINE">
-      <div class="scene-controls" [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
+      <div class="scene-controls">
         <mat-icon (click)="onZoomTo()" class="ml-2" matTooltip="Zoom to scene">
           settings_overscan
         </mat-icon>
@@ -80,14 +79,13 @@
           }}">
           {{ isQueued ? 'shopping_cart' : 'add_shopping_cart' }}
         </mat-icon>
-
       </div>
 
-      <div *ngIf="isDownloadable(scene)" class="scene-controls" [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
+      <div *ngIf="isDownloadable(scene)" class="scene-controls">
         <span class="number-queued"> {{ numQueued }} </span>
       </div>
 
-      <div *ngIf="searchType === SearchTypes.CUSTOM_PRODUCTS" style="margin-right: 10px;" [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
+      <div *ngIf="searchType === SearchTypes.CUSTOM_PRODUCTS" style="margin-right: 10px;">
       <mat-icon *ngIf="isExpired(scene.metadata.job)"
         [matMenuTriggerFor]="sceneAdd.addMenu"
         [matMenuTriggerData]="{ hyp3able: getExpiredHyp3ableObject().byJobType }"
@@ -102,7 +100,7 @@
     </ng-container>
 
     <ng-container *ngIf="searchType === SearchTypes.BASELINE">
-      <div style="display: flex;" [ngClass]="{'mobile-size': breakpoint <= breakpoints.SMALL}">
+      <div style="display: flex;">
         <div style="display: flex; justify-content: space-evenly;">
           <div [ngClass]="{'mobile-baseline': breakpoint <= breakpoints.SMALL, 'metric-flex-field': true}">
             {{ withOffset(scene.metadata.perpendicular, offsets.perpendicular) }}m
@@ -133,10 +131,9 @@
   </div>
 </ng-container>
 
-<app-on-demand-add-menu
-#sceneAdd
-[isExpired]="isExpired(scene.metadata.job)"
-[expiredJobs]="scene.metadata.job">
+<app-on-demand-add-menu #sceneAdd
+  [isExpired]="isExpired(scene.metadata.job)"
+  [expiredJobs]="scene.metadata.job">
 </app-on-demand-add-menu>
 
 </button>

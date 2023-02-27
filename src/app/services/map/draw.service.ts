@@ -17,6 +17,7 @@ import { fromCircle } from 'ol/geom/Polygon';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { DrawNewPolygon } from '@store/map';
+import { SetGeocode } from '@store/filters';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -168,6 +169,7 @@ export class DrawService {
       this.isDrawing$.next(false);
       this.polygon$.next(e.feature);
       this.store$.dispatch(new DrawNewPolygon());
+      this.store$.dispatch(new SetGeocode(''));
     });
 
     this.snap = new Snap({source: this.source});
@@ -186,6 +188,7 @@ export class DrawService {
 
       this.setDrawStyle(models.DrawPolygonStyle.VALID);
       this.polygon$.next(feature);
+      this.store$.dispatch(new SetGeocode(''));
       this.store$.dispatch(new DrawNewPolygon());
     });
 

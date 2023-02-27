@@ -16,5 +16,4 @@ export class BannerDialogComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }

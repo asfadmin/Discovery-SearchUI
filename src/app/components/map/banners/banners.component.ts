@@ -97,9 +97,16 @@ export class BannerCreateDirective implements OnInit {
           panelClass: 'banner-dialog',
           maxWidth: '80vw',
         });
-        dialogRef.componentInstance.htmlContent = this.bannerCreate.text;
+        dialogRef.componentInstance.htmlContent = this.openLinksInNewTab(this.bannerCreate.text);
       }
     });
+  }
+
+  private openLinksInNewTab(bannerHtml: string): string {
+      return bannerHtml.replace(
+        '<a href=',
+        '<a target="_blank" href='
+      );
   }
 
   private loadClosedBannerIds(): {[id: string]: boolean} {

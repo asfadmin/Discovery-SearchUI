@@ -296,24 +296,30 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
           const searchState = this.savedSearchService.getSearchState(action.payload);
 
-          if (searchState && action.payload !== models.SearchType.DERIVED_DATASETS) {
-            this.searchService.loadSearch(searchState);
-
-            if (!this.isEmptySearch(searchState)) {
-              if (action.payload !== models.SearchType.BASELINE && action.payload !== models.SearchType.SBAS) {
-                this.clearBaselineRanges();
-              }
-              if (action.payload !== models.SearchType.SARVIEWS_EVENTS) {
-                this.clearEventProductFilters();
-              }
-
-              this.store$.dispatch(new searchStore.MakeSearch());
-            } else {
-              this.store$.dispatch(new filterStore.SetDefaultFilters(profile?.defaultFilterPresets));
-            }
-          } else {
+          if (!searchState || action.payload === models.SearchType.DERIVED_DATASETS) {
             this.store$.dispatch(new filterStore.SetDefaultFilters(profile?.defaultFilterPresets));
+            return;
           }
+
+          this.searchService.loadSearch(searchState);
+
+          if (this.isEmptySearch(searchState)) {
+            this.store$.dispatch(new filterStore.SetDefaultFilters(profile?.defaultFilterPresets));
+            return;
+          }
+
+          if (
+            action.payload !== models.SearchType.BASELINE &&
+            action.payload !== models.SearchType.SBAS
+          ) {
+            this.clearBaselineRanges();
+          }
+
+          if (action.payload !== models.SearchType.SARVIEWS_EVENTS) {
+            this.clearEventProductFilters();
+          }
+
+          this.store$.dispatch(new searchStore.MakeSearch());
         }
       )
     );
@@ -392,56 +398,28 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subs.add(this.ccService.popupClose$.subscribe(_ => _));
     this.subs.add(this.ccService.revokeChoice$.subscribe(_ => _));
 
-    this.matIconRegistry.addSvgIcon(
+    const matIcons = [
       'hyp3',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/hyp3.svg')
-    );
-
-    this.matIconRegistry.addSvgIcon(
       'gridlines',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/gridlines.svg')
-    );
-
-    this.matIconRegistry.addSvgIcon(
       'Earthquake_inactive',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/Earthquake_inactive.svg')
-    );
-    this.matIconRegistry.addSvgIcon(
       'Earthquake',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/Earthquake.svg')
-    );
-    this.matIconRegistry.addSvgIcon(
       'Volcano_inactive',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/Volcano_inactive.svg')
-    );
-    this.matIconRegistry.addSvgIcon(
       'Volcano',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/Volcano.svg')
-    );
-    this.matIconRegistry.addSvgIcon(
       'arctic',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/arctic.svg')
-    );
-    this.matIconRegistry.addSvgIcon(
       'equatorial',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/globe.svg')
-    );
-    this.matIconRegistry.addSvgIcon(
       'antarctic',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/antarctic.svg')
-    );
-    this.matIconRegistry.addSvgIcon(
       'hgrip',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/div-handles/hgrip.svg')
-    );
-    this.matIconRegistry.addSvgIcon(
-      'vgrip',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/div-handles/vgrip.svg')
-    );
-    this.matIconRegistry.addSvgIcon(
       'unpin',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/unpin.svg')
-    );
+      'hgrip',
+      'vgrip',
+    ];
+
+    matIcons.forEach((iconName) => {
+      this.matIconRegistry.addSvgIcon(
+        iconName,
+        this.domSanitizer.bypassSecurityTrustResourceUrl(`../assets/icons/${iconName}.svg`)
+      );
+    });
   }
 
   private isEmptySearch(searchState): boolean {
