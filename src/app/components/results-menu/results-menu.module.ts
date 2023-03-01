@@ -1,15 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ResizableModule } from 'angular-resizable-element';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatSliderModule } from '@angular/material/slider';
 
 import { TruncateModule } from '@yellowspot/ng-truncate';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatMenuModule } from '@angular/material/menu';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { PipesModule } from '@pipes';
 import { MatSharedModule } from '@shared';
@@ -27,12 +29,9 @@ import { BaselineChartModule } from '@components/baseline-chart/baseline-chart.m
 import { SBASResultsMenuComponent } from './sbas-results-menu/sbas-results-menu.component';
 import { SBASChartModule } from '@components/sbas-chart/sbas-chart.module';
 import { SbasSlidersComponent } from './sbas-sliders/sbas-sliders.component';
-import { MatSliderModule } from '@angular/material/slider';
 import { SbasSlidersTwoComponent } from './sbas-sliders-two/sbas-sliders-two.component';
 import { SarviewsResultsMenuComponent } from './sarviews-results-menu/sarviews-results-menu.component';
 import { EventProductSortSelectorModule } from '@components/shared/event-product-sort-selector/event-product-sort-selector.module';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import {DocsModalModule} from '@components/shared/docs-modal';
 
 @NgModule({
   declarations: [
@@ -41,37 +40,40 @@ import {DocsModalModule} from '@components/shared/docs-modal';
     MobileResultsMenuComponent,
     DesktopResultsMenuComponent,
     BaselineResultsMenuComponent,
+    SarviewsResultsMenuComponent,
     SBASResultsMenuComponent,
     SbasSlidersComponent,
     SbasSlidersTwoComponent,
-    SarviewsResultsMenuComponent,
   ],
-    imports: [
-        CommonModule,
-        ResizableModule,
-        FlexLayoutModule,
-        TruncateModule,
-        MatMenuModule,
-        MatSharedModule,
-        MatTabsModule,
-        PipesModule,
-        ScenesListModule,
-        SceneFilesModule,
-        SceneDetailModule,
-        BaselineChartModule,
-        OnDemandAddMenuModule,
-        SBASChartModule,
-        MatSliderModule,
-        FormsModule,
-        SceneMetadataModule,
-        MatButtonToggleModule,
-        MatFormFieldModule,
-        MatInputModule,
-        ReactiveFormsModule,
-        FontAwesomeModule,
-        EventProductSortSelectorModule,
-        DocsModalModule
-    ],
-  exports: [ResultsMenuComponent, SbasSlidersTwoComponent, SbasSlidersComponent],
+  imports: [
+    CommonModule,
+    ResizableModule,
+    FlexLayoutModule,
+    TruncateModule,
+    MatMenuModule,
+    MatSharedModule,
+    MatTabsModule,
+    PipesModule,
+    ScenesListModule,
+    SceneFilesModule,
+    SceneDetailModule,
+    BaselineChartModule,
+    OnDemandAddMenuModule,
+    SBASChartModule,
+    MatSliderModule,
+    FormsModule,
+    SceneMetadataModule,
+    MatButtonToggleModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    FontAwesomeModule,
+    EventProductSortSelectorModule,
+  ],
+  exports: [
+    ResultsMenuComponent,
+    SbasSlidersTwoComponent,
+    SbasSlidersComponent
+  ],
 })
 export class ResultsMenuModule { }

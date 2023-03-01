@@ -24,6 +24,7 @@
       <div class="div-flex"
            [title]="scene.metadata.fileName || scene.name"
            class="bold" matLine>
+
         <app-file-name
           [name]="scene.metadata.fileName || scene.name"
           [dataset]="scene.dataset"
@@ -34,9 +35,9 @@
           <app-copy-to-clipboard
             *ngIf="hovered; else notHovered"
             prompt="Copy scene name"
-            [value]="scene.metadata.fileName || scene.name"
-            >
+            [value]="scene.metadata.fileName || scene.name">
           </app-copy-to-clipboard>
+
           <ng-template #notHovered>
             <fa-icon style="visibility: hidden;" [icon]="copyIcon">
             </fa-icon>
