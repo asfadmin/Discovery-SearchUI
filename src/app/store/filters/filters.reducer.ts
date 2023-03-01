@@ -332,16 +332,6 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
-    case FiltersActionType.SET_FRAME_END: {
-      return {
-        ...state,
-        frameRange: {
-          ...state.frameRange,
-          end: action.payload
-        }
-      };
-    }
-
     case FiltersActionType.SET_FILTERS_SIMILAR_TO: {
       const metadata = action.payload.product.metadata;
 
