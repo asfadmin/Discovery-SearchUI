@@ -17,19 +17,20 @@ import { PipesModule } from '@pipes';
 import { MatSharedModule } from '@shared';
 import { ScenesListModule } from './scenes-list';
 import { ScenesListHeaderModule } from './scenes-list-header/scenes-list-header.module';
-import { ResultsMenuComponent } from './results-menu.component';
 import { SceneMetadataModule } from '@components/shared/scene-metadata';
 import { OnDemandAddMenuModule } from '@components/shared/on-demand-add-menu';
 import { SceneFilesModule } from './scene-files';
 import { SceneDetailModule } from './scene-detail';
-import { MobileResultsMenuComponent } from './mobile-results-menu/mobile-results-menu.component';
-import { DesktopResultsMenuComponent } from './desktop-results-menu/desktop-results-menu.component';
-import { BaselineResultsMenuComponent } from './baseline-results-menu/baseline-results-menu.component';
 import { BaselineChartModule } from '@components/baseline-chart/baseline-chart.module';
-import { SbasResultsMenuModule } from './sbas-results-menu/sbas-results-menu.module';
 import { SBASChartModule } from '@components/sbas-chart/sbas-chart.module';
-import { SarviewsResultsMenuComponent } from './sarviews-results-menu/sarviews-results-menu.component';
-import { EventProductSortSelectorModule } from '@components/shared/event-product-sort-selector/event-product-sort-selector.module';
+
+import { SbasResultsMenuModule } from './sbas-results-menu/sbas-results-menu.module';
+import { SarviewsResultsMenuModule } from './sarviews-results-menu/sarviews-results-menu.module';
+
+import { ResultsMenuComponent } from './results-menu.component';
+import { DesktopResultsMenuComponent } from './desktop-results-menu/desktop-results-menu.component';
+import { MobileResultsMenuComponent } from './mobile-results-menu/mobile-results-menu.component';
+import { BaselineResultsMenuComponent } from './baseline-results-menu/baseline-results-menu.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,6 @@ import { EventProductSortSelectorModule } from '@components/shared/event-product
     MobileResultsMenuComponent,
     DesktopResultsMenuComponent,
     BaselineResultsMenuComponent,
-    SarviewsResultsMenuComponent,
   ],
   imports: [
     CommonModule,
@@ -55,7 +55,6 @@ import { EventProductSortSelectorModule } from '@components/shared/event-product
     ScenesListHeaderModule,
     BaselineChartModule,
     OnDemandAddMenuModule,
-    SbasResultsMenuModule,
     SBASChartModule,
     MatSliderModule,
     FormsModule,
@@ -65,7 +64,9 @@ import { EventProductSortSelectorModule } from '@components/shared/event-product
     MatInputModule,
     ReactiveFormsModule,
     FontAwesomeModule,
-    EventProductSortSelectorModule,
+
+    SbasResultsMenuModule,
+    SarviewsResultsMenuModule,
   ],
   exports: [
     ResultsMenuComponent,
