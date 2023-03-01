@@ -16,34 +16,28 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { PipesModule } from '@pipes';
 import { MatSharedModule } from '@shared';
 import { ScenesListModule } from './scenes-list';
+import { ScenesListHeaderModule } from './scenes-list-header/scenes-list-header.module';
 import { ResultsMenuComponent } from './results-menu.component';
 import { SceneMetadataModule } from '@components/shared/scene-metadata';
 import { OnDemandAddMenuModule } from '@components/shared/on-demand-add-menu';
 import { SceneFilesModule } from './scene-files';
 import { SceneDetailModule } from './scene-detail';
-import { ScenesListHeaderComponent } from './scenes-list-header/scenes-list-header.component';
 import { MobileResultsMenuComponent } from './mobile-results-menu/mobile-results-menu.component';
 import { DesktopResultsMenuComponent } from './desktop-results-menu/desktop-results-menu.component';
 import { BaselineResultsMenuComponent } from './baseline-results-menu/baseline-results-menu.component';
 import { BaselineChartModule } from '@components/baseline-chart/baseline-chart.module';
-import { SBASResultsMenuComponent } from './sbas-results-menu/sbas-results-menu.component';
+import { SbasResultsMenuModule } from './sbas-results-menu/sbas-results-menu.module';
 import { SBASChartModule } from '@components/sbas-chart/sbas-chart.module';
-import { SbasSlidersComponent } from './sbas-sliders/sbas-sliders.component';
-import { SbasSlidersTwoComponent } from './sbas-sliders-two/sbas-sliders-two.component';
 import { SarviewsResultsMenuComponent } from './sarviews-results-menu/sarviews-results-menu.component';
 import { EventProductSortSelectorModule } from '@components/shared/event-product-sort-selector/event-product-sort-selector.module';
 
 @NgModule({
   declarations: [
     ResultsMenuComponent,
-    ScenesListHeaderComponent,
     MobileResultsMenuComponent,
     DesktopResultsMenuComponent,
     BaselineResultsMenuComponent,
     SarviewsResultsMenuComponent,
-    SBASResultsMenuComponent,
-    SbasSlidersComponent,
-    SbasSlidersTwoComponent,
   ],
   imports: [
     CommonModule,
@@ -57,8 +51,11 @@ import { EventProductSortSelectorModule } from '@components/shared/event-product
     ScenesListModule,
     SceneFilesModule,
     SceneDetailModule,
+
+    ScenesListHeaderModule,
     BaselineChartModule,
     OnDemandAddMenuModule,
+    SbasResultsMenuModule,
     SBASChartModule,
     MatSliderModule,
     FormsModule,
@@ -72,8 +69,6 @@ import { EventProductSortSelectorModule } from '@components/shared/event-product
   ],
   exports: [
     ResultsMenuComponent,
-    SbasSlidersTwoComponent,
-    SbasSlidersComponent
   ],
 })
 export class ResultsMenuModule { }
