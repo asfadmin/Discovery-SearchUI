@@ -26,18 +26,17 @@ import { SBASChartModule } from '@components/sbas-chart/sbas-chart.module';
 
 import { SbasResultsMenuModule } from './sbas-results-menu/sbas-results-menu.module';
 import { SarviewsResultsMenuModule } from './sarviews-results-menu/sarviews-results-menu.module';
+import { BaselineResultsMenuModule } from './baseline-results-menu/baseline-results-menu.module';
 
 import { ResultsMenuComponent } from './results-menu.component';
 import { DesktopResultsMenuComponent } from './desktop-results-menu/desktop-results-menu.component';
 import { MobileResultsMenuComponent } from './mobile-results-menu/mobile-results-menu.component';
-import { BaselineResultsMenuComponent } from './baseline-results-menu/baseline-results-menu.component';
 
 @NgModule({
   declarations: [
     ResultsMenuComponent,
     MobileResultsMenuComponent,
     DesktopResultsMenuComponent,
-    BaselineResultsMenuComponent,
   ],
   imports: [
     CommonModule,
@@ -67,6 +66,7 @@ import { BaselineResultsMenuComponent } from './baseline-results-menu/baseline-r
 
     SbasResultsMenuModule,
     SarviewsResultsMenuModule,
+    BaselineResultsMenuModule,
   ],
   exports: [
     ResultsMenuComponent,

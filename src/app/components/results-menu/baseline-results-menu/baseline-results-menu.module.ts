@@ -2,40 +2,44 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MatSharedModule } from '@shared';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { ResizableModule } from 'angular-resizable-element';
 
 import { SceneDetailModule } from '../scene-detail';
 import { ScenesListModule } from '../scenes-list';
-import { SceneFilesModule } from '../scene-files';
 import { ScenesListHeaderModule } from '../scenes-list-header/scenes-list-header.module';
+import { OnDemandAddMenuModule } from '@components/shared/on-demand-add-menu';
 
-import { EventProductSortSelectorModule } from '@components/shared/event-product-sort-selector/event-product-sort-selector.module';
+import { BaselineChartModule } from '@components/baseline-chart/baseline-chart.module';
 
-import { SarviewsResultsMenuComponent } from './sarviews-results-menu.component';
+import { BaselineResultsMenuComponent } from './baseline-results-menu.component';
 
 
 @NgModule({
   declarations: [
-    SarviewsResultsMenuComponent
+    BaselineResultsMenuComponent
   ],
   imports: [
     CommonModule,
+    MatMenuModule,
     //Shared?
     MatSharedModule,
     MatButtonToggleModule,
     FlexLayoutModule,
+    ResizableModule,
 
-    SceneFilesModule,
     SceneDetailModule,
     ScenesListModule,
     ScenesListHeaderModule,
-    //End Shared?
+    OnDemandAddMenuModule,
+    //
 
-    EventProductSortSelectorModule,
+    BaselineChartModule,
   ],
   exports: [
-    SarviewsResultsMenuComponent
+    BaselineResultsMenuComponent
   ]
 })
-export class SarviewsResultsMenuModule { }
+export class BaselineResultsMenuModule { }
