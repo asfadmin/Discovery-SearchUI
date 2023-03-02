@@ -112,7 +112,7 @@ export class NotificationService {
     const message = 'Click to show raw results';
 
     const toast = this.info(message, title);
-    toast.onTap.pipe(take(1)).subscribe(_ => this.store$.dispatch(new uiStore.ShowS1RawData));
+    toast.onTap.pipe(take(1)).subscribe(_ => this.store$.dispatch(new uiStore.ShowS1RawData()));
   }
 
   public listImportFailed(fileExtension: string) {

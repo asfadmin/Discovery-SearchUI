@@ -4,7 +4,6 @@ $header-height: 95px;
 $footer-height: 60px;
 $bottom-offset: 10px;
 
-
 [mat-dialog-title] {
   background: #369; // TODO: check this
   color: $light-primary-text;
@@ -17,6 +16,7 @@ $bottom-offset: 10px;
     color: themed('dark-primary-text');
     background: themed('primary-light');
   }
+
   min-width: 350px;
   height: 100%;
   min-height: 500px;
@@ -34,8 +34,8 @@ $bottom-offset: 10px;
   @include themify($themes) {
     background-color: themed('background-white');
   }
+
   position: absolute;
-  
   display: block;
   top: $header-height;
   height: calc(100% - #{$header-height} - #{$footer-height} - #{$bottom-offset});
@@ -79,6 +79,7 @@ $bottom-offset: 10px;
     color: themed('dark-primary-text');
     border-bottom-color: themed('primary-dark');
   }
+
   padding: 10px 10px 0 0;
   border-bottom-style: solid;
   border-bottom-width: 1px;
@@ -97,6 +98,7 @@ $bottom-offset: 10px;
     @include themify($themes) {
       color: themed('blue-link');
     }
+
     text-decoration: underline;
   }
 }
@@ -131,6 +133,7 @@ $bottom-offset: 10px;
     background: themed('primary-light');
     border-top-color: themed('primary-dark');
   }
+
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -143,6 +146,7 @@ $bottom-offset: 10px;
   @include themify($themes) {
     background-color: themed('primary-light');
   }
+
   position: absolute;
   display: flex;
   width: 100%;
@@ -157,6 +161,7 @@ $bottom-offset: 10px;
     background-color: themed('primary-light');
     border-top-color: themed('primary-dark');
   }
+
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
@@ -173,6 +178,7 @@ $bottom-offset: 10px;
   @include themify($themes) {
     color: themed('dark-secondary-text');
   }
+
   margin-top: 22px;
 }
 
@@ -194,7 +200,6 @@ $bottom-offset: 10px;
     color: themed('dark-primary-text');
   }
   @include md-icon-size(72px);
-
 }
 
 .on-demand-text {
@@ -206,6 +211,7 @@ $bottom-offset: 10px;
   @include themify($themes) {
     color: themed('dark-secondary-text');
   }
+
   font-style: italic;
   font-size: 14px;
   margin-top: -15px;
@@ -225,6 +231,7 @@ $bottom-offset: 10px;
   @include themify($themes) {
     color: themed('dark-primary-text');
   }
+
   position: absolute;
   top: 10px;
   right: 24px;
@@ -256,6 +263,7 @@ $bottom-offset: 10px;
   @include themify($themes) {
     color: themed('dark-secondary-text');
   }
+
   height: 32px;
   font-size: 12px;
   margin: -4px 0 6px 0;
