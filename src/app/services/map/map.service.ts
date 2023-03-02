@@ -419,7 +419,7 @@ export class MapService {
   }
 
 
-  private zoomToExtent(extent): void {
+  public zoomToExtent(extent): void {
     this.map
       .getView()
       .fit(extent, {
