@@ -24,7 +24,6 @@ import { BaselineResultsMenuComponent } from './baseline-results-menu.component'
   imports: [
     CommonModule,
     MatMenuModule,
-    //Shared?
     MatSharedModule,
     MatButtonToggleModule,
     FlexLayoutModule,
@@ -34,8 +33,6 @@ import { BaselineResultsMenuComponent } from './baseline-results-menu.component'
     ScenesListModule,
     ScenesListHeaderModule,
     OnDemandAddMenuModule,
-    //
-
     BaselineChartModule,
   ],
   exports: [

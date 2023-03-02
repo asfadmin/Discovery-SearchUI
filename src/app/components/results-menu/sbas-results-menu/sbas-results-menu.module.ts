@@ -30,14 +30,15 @@ import { SBASResultsMenuComponent } from './sbas-results-menu.component';
   imports: [
     CommonModule,
     MatSharedModule,
+    FlexLayoutModule,
     ReactiveFormsModule,
     FormsModule,
-    FlexLayoutModule,
+    ResizableModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonToggleModule,
+
     SBASChartModule,
-    ResizableModule,
     SceneMetadataModule,
     ScenesListModule,
     ScenesListHeaderModule

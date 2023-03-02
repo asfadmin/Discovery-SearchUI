@@ -21,7 +21,6 @@ import { SarviewsResultsMenuComponent } from './sarviews-results-menu.component'
   ],
   imports: [
     CommonModule,
-    //Shared?
     MatSharedModule,
     MatButtonToggleModule,
     FlexLayoutModule,
@@ -30,7 +29,6 @@ import { SarviewsResultsMenuComponent } from './sarviews-results-menu.component'
     SceneDetailModule,
     ScenesListModule,
     ScenesListHeaderModule,
-    //End Shared?
 
     EventProductSortSelectorModule,
   ],

@@ -19,7 +19,6 @@ import { DesktopResultsMenuComponent } from './desktop-results-menu.component';
     MatSharedModule,
     FlexLayoutModule,
 
-    //Shared?
     SceneFilesModule,
     SceneDetailModule,
     ScenesListModule,
