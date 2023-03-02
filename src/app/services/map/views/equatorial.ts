@@ -90,8 +90,9 @@ function equatorialView(url: string): MapView {
 }
 
 export function equatorial(): MapView {
+  const token = 'pk.eyJ1Ijoid2Job3JuIiwiYSI6ImNsZXJiMjF3ZjB1bm8zeXBubm84bm82dGMifQ.BSHcpL0evx7DO1gac2IeLA';
   return equatorialView(
-    `https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=bFwkahiCrAA0526OlsHS`
+    `https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v12/tiles/{z}/{x}/{y}?access_token=${token}`
   );
 }
 
