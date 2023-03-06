@@ -261,13 +261,6 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
-    case FiltersActionType.SET_DATE_RANGE: {
-      return {
-        ...state,
-        dateRange: action.payload
-      };
-    }
-
     case FiltersActionType.CLEAR_DATE_RANGE: {
       return {
         ...state,

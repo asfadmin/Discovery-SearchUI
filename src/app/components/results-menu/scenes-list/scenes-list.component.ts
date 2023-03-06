@@ -140,8 +140,9 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
     );
 
     this.subs.add(
-      sortedScenes$.pipe(debounceTime(250)).pipe(
-        distinctUntilChanged(),
+      sortedScenes$.pipe(
+        debounceTime(250),
+        distinctUntilChanged()
       ).subscribe(
         scenes => this.scenes = scenes
       )
