@@ -23,10 +23,10 @@
             <app-hyp3-url></app-hyp3-url>
           </div>
           <div class="on-demand-text">
-            On Demand
+            {{ 'ON_DEMAND' | translate }}
           </div>
           <div class="on-demand-subtitle">
-            powered by HyP3
+            {{ 'POWERED_BY_HY_P3' |  translate }}
           </div>
         </div>
       </ng-container>
@@ -93,7 +93,7 @@
   </div>
 
   <div class="close-x" (click)="onCloseDialog()">
-    <mat-icon>close</mat-icon>
+    <mat-icon>{{ 'CLOSE'|  translate }} </mat-icon>
   </div>
 </div>
 
@@ -154,7 +154,7 @@
               </div>
               <div>
                 <button (click)="onCloseDialog()" mat-flat-button>
-                  <mat-icon>close</mat-icon>
+                  <mat-icon>{{ 'CLOSE'|  translate }}</mat-icon>
                 </button>
               </div>
             </div>

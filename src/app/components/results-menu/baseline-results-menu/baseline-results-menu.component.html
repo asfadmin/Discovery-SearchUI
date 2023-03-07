@@ -79,7 +79,7 @@
         <div *ngIf="searchType !== SearchTypes.CUSTOM_PRODUCTS || hyp3able.total > 0"
           fxFlex="" style="margin-left: 10px;" class="list-button-group">
           <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-            <label>On Demand</label>
+            <label>{{ 'ON_DEMAND' | translate }}</label>
           </div>
           <div fxLayout="row" fxLayoutAlign="center">
             <div>
@@ -226,7 +226,7 @@
         <mat-button-toggle class="control-mat-button-toggle baseline-criteria-button-toggle"
                            (click)="onToggleFiltersMenu()"
                            >
-          Baseline Criteria<mat-icon class="more-horiz">more_horiz</mat-icon>
+          {{ 'BASELINE_CRITERIA' | translate }}<mat-icon class="more-horiz">more_horiz</mat-icon>
         </mat-button-toggle>
       </mat-button-toggle-group>
     </div>

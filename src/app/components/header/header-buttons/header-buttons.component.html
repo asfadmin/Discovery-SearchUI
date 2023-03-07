@@ -14,7 +14,7 @@
           matBadgeOverlap="true"
           matBadgeSize="small">
         </mat-icon>
-      <div class="text-under faint-text">On Demand</div>
+      <div class="text-under faint-text">{{ 'ON_DEMAND' |  translate }}</div>
     </button>
 
     <mat-menu #onDemandQueue="matMenu">
@@ -40,7 +40,7 @@
       (click)="onOpenDownloadQueue()"
       class="spacing nav-icon-buttons"
       color="basic"
-      matTooltip="Downloads" mat-button>
+      matTooltip="{{ 'DOWNLOADS' | translate }}" mat-button>
 
       <mat-icon
         class="large-icon"
@@ -51,7 +51,7 @@
         matBadgeSize="small">
           shopping_cart
       </mat-icon>
-      <div class="text-under faint-text">Downloads</div>
+      <div class="text-under faint-text">{{ 'DOWNLOADS' | translate }}</div>
     </button>
 
     <button
@@ -172,7 +172,7 @@
 <mat-menu #helpMenu="matMenu">
   <div mat-menu-item matSuffix (click)="onOpenHelp('toc')">
     <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
-      <mat-icon>video_library</mat-icon>
+      <mat-icon>{{ 'VIDEO_LIBRARY' | translate }}</mat-icon>
       Video Tutorials
     </div>
     <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
@@ -183,7 +183,7 @@
         </div>
       </div>
       <div fxFlex="" class="menu-item-aside">
-        <mat-icon class="menu-item-icon">video_library</mat-icon>
+        <mat-icon class="menu-item-icon">{{ 'VIDEO_LIBRARY' | translate }}</mat-icon>
       </div>
     </div>
   </div>

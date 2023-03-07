@@ -203,8 +203,8 @@
                 {{ dataset.info }}
               </div>
               <mat-card-actions>
-                <button class="blue-link" (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)" mat-button>More Info</button>
-                <button class="blue-link" (click)="onOpenDerivedDataset(dataset.download_url, dataset.name)" mat-button>Download</button>
+                <button class="blue-link" (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)" mat-button>{{ 'MORE_INFO | translate }}</button>
+                <button class="blue-link" (click)="onOpenDerivedDataset(dataset.download_url, dataset.name)" mat-button>{{ 'DOWNLOAD' | translate }}</button>
               </mat-card-actions>
             </div>
             <div fxFlex="25%" class="menu-item-aside">

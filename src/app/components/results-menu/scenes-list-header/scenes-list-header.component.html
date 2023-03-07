@@ -142,7 +142,7 @@
           <div *ngIf="searchType !== SearchTypes.CUSTOM_PRODUCTS && hyp3able.total > 0"
             fxFlex="" class="list-button-group">
             <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-              <label>On Demand</label>
+              <label>{{ 'ON_DEMAND' | translate }}</label>
             </div>
             <div fxLayout="row">
               <div>
@@ -204,7 +204,7 @@
           <div *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS && !!sarviewsEventProducts"
           fxFlex="" class="list-button-group">
           <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-            <label>On Demand</label>
+            <label>{{ 'ON_DEMAND' | translate }}</label>
           </div>
           <div fxLayout="row">
             <div>

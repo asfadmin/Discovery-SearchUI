@@ -8,7 +8,7 @@
     [value]="types.EDIT"
     class="control-mat-button-toggle"
     [matTooltip]="interaction === types.EDIT ? 'Stop editing' : 'Edit current area of interest'">
-    <mat-icon class="interaction-icon">edit</mat-icon>
+    <mat-icon class="interaction-icon">{{ 'EDIT' |  translate }}</mat-icon>
   </mat-button-toggle>
 
   <mat-button-toggle

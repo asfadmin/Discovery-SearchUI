@@ -17,10 +17,10 @@
       <b>End:</b> {{ endDate | shortDate }}
     </span>
     <span *ngIf="pathRange.start || pathRange.end">
-      <b>Path:</b> {{pathRange.start}} - {{pathRange.end}}
+      <b>{{ 'PATH' |  translate }}:</b> {{pathRange.start}} - {{pathRange.end}}
     </span>
     <span *ngIf="frameRange.start || frameRange.end">
-      <b>Frame:</b> {{frameRange.start}} - {{frameRange.end}}
+      <b>{{ 'FRAME' |  translate }}:</b> {{frameRange.start}} - {{frameRange.end}}
     </span>
     <span *ngIf="season.start || season.end">
       <b>Season:</b> {{season.start}} - {{season.end}}

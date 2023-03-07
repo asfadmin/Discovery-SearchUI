@@ -7,7 +7,7 @@
 
   <div class="dl-title-group">
     <h1>
-      Downloads
+      {{ 'DOWNLOADS' | translate }}
     </h1>
     <div class="dl-subtitle">
       {{ numberOfProducts$ | async }} Files, {{ (totalSize$ | async) | readableSizeFromBytes }}
@@ -27,7 +27,7 @@
   </div>
 
   <div class="dl-close-x" (click)="onCloseDownloadQueue()">
-    <mat-icon>close</mat-icon>
+    <mat-icon>{{ 'CLOSE'|  translate }}</mat-icon>
   </div>
 
 </div>
@@ -93,7 +93,7 @@
                   </app-download-file-button>
 
                   <button (click)="onRemoveProduct(product)" matTooltip="Remove file" mat-icon-button>
-                    <mat-icon>close</mat-icon>
+                    <mat-icon>{{ 'CLOSE'|  translate }}</mat-icon>
                   </button>
               </mat-list-item>
             </ng-container>
@@ -167,7 +167,7 @@
 
             <ng-container *ngIf="breakpoint === breakpoints.MOBILE || dlWidth < dlWidthMin">
               <button mat-flat-button [matMenuTriggerFor]="typesMenu" style="padding: 0 0 0 5px; margin-left: 15px;">
-                Downloads
+                {{ 'DOWNLOADS' | translate }}
                 <mat-icon>arrow_drop_up</mat-icon>
               </button>
 

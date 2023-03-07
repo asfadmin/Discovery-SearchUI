@@ -12,10 +12,10 @@
     <b>End:</b> {{ filters.dateRange.end | shortDate }}
   </div>
   <div *ngIf="filters.pathRange.start || filters.pathRange.end">
-    <b>Path:</b> {{ filters.pathRange.start }} - {{ filters.pathRange.end }}
+    <b>{{ 'PATH' |  translate }}:</b> {{ filters.pathRange.start }} - {{ filters.pathRange.end }}
   </div>
   <div *ngIf="filters.frameRange.start || filters.frameRange.end">
-    <b>Frame:</b> {{filters.frameRange.start}} - {{ filters.frameRange.end }}
+    <b>{{ 'FRAME' |  translate }}:</b> {{filters.frameRange.start}} - {{ filters.frameRange.end }}
   </div>
   <div *ngIf="filters.season.start || filters.season.end">
     <b>Season:</b> {{filters.season.start}} - {{filters.season.end}}
