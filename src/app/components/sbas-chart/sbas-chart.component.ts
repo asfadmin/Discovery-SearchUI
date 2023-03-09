@@ -62,6 +62,8 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   private sbasChartHeightValue;
   private subs = new SubSink();
 
+  public isDisconnected = false;
+
   constructor(
     private store$: Store<AppState>,
     private scenesService: ScenesService,
@@ -94,7 +96,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         this.scenes = scenes;
         this.pairs = pairs.pairs;
         this.customPairs = pairs.custom;
-
+        this.isDisconnected = this.pairService.isGraphDisconnected(this.pairs);
         if (this.selectedPair === null && Array.isArray(this.pairs)) {
           if (this.pairs.length > 0) {
             const firstPair = this.pairs[0];
