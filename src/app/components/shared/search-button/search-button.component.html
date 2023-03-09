@@ -38,7 +38,7 @@
     <button
     mat-menu-item
     [matMenuTriggerFor]="savedSearchesMenu">
-    Saved Searches
+    {{ 'SAVED_SEARCHES' | translate }}
     </button>
   </span>
 
@@ -50,7 +50,7 @@
     [disabled]="searchType === searchTypes.LIST || searchType === searchTypes.CUSTOM_PRODUCTS"
     mat-menu-item
     [matMenuTriggerFor]="savedFiltersMenu">
-    Saved Filters
+    {{ 'SAVED_FILTERS' | translate }}
     </button>
   </span>
 

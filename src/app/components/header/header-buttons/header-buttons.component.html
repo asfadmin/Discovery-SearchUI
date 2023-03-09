@@ -58,8 +58,8 @@
       [matMenuTriggerFor]="helpMenu"
       matTooltip="Help and information"
       class="spacing nav-icon-buttons" color="basic" mat-button>
-      <mat-icon class="large-icon">help_outline</mat-icon>
-      <div class="text-under faint-text">Help</div>
+      <mat-icon class="large-icon">{{ 'help_outline' | translate }}</mat-icon>
+      <div class="text-under faint-text">{{ 'HELP' | translate }}</div>
     </button>
 
     <button
@@ -68,7 +68,7 @@
       class="spacing nav-icon-buttons" color="basic"
       matTooltip="Login" mat-button>
       <mat-icon class="large-icon">account_circle</mat-icon>
-      <div class="text-under faint-text">Sign in</div>
+      <div class="text-under faint-text">{{ 'SIGN_IN' | translate }}</div>
     </button>
 
     <button
@@ -128,7 +128,7 @@
     <mat-icon
       [matMenuTriggerFor]="helpMenu"
       class="mobile-icon-spacing">
-      help_outline
+      {{ 'HELP_OUTLINE' | translate }}
     </mat-icon>
 
     <mat-icon
@@ -136,36 +136,36 @@
       class="mobile-icon-spacing"
       fontSet="material-icons-outlined"
       (click)="onAccountButtonClicked()">
-        account_circle
+        {{ 'ACCOUNT_CIRCLE' | translate }}
     </mat-icon>
 
     <mat-icon
       *ngIf="isLoggedIn"
       class="mobile-icon-spacing"
       [matMenuTriggerFor]="profileMenu">
-        account_circle
+        {{ 'ACCOUNT_CIRCLE' | translate }}
     </mat-icon>
   </ng-container>
 </div>
 
 <mat-menu #profileMenu="matMenu">
   <button (click)="onOpenSavedSearches()" mat-menu-item matSuffix>
-    Saved Searches
+    {{ 'SAVED_SEARCHES' | translate }}
   </button>
   <button (click)="onOpenSearchHistory()" mat-menu-item matSuffix>
-    Search History
+    {{ 'SEARCH_HISTORY' | translate }}
   </button>
   <button [disabled]="(searchType$ | async) === searchTypes.LIST || (searchType$ | async) === searchTypes.CUSTOM_PRODUCTS" (click)="onOpenSavedFilters()" mat-menu-item matSuffx>
-    Saved Filters
+    {{ 'SAVED_FILTERS' | translate }}
   </button>
   <button (click)="onOpenPreferences()" mat-menu-item matSuffix>
-    Preferences
+    {{ 'PREFERENCES' | translate }}
   </button>
 
   <hr class="menu-hr">
   <button (click)="onLogout()"
       mat-menu-item matSuffix>
-    Sign out
+    {{ 'SIGN_OUT' | translate }}
   </button>
 </mat-menu>
 
@@ -173,17 +173,17 @@
   <div mat-menu-item matSuffix (click)="onOpenHelp('toc')">
     <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
       <mat-icon>{{ 'VIDEO_LIBRARY' | translate }}</mat-icon>
-      Video Tutorials
+      {{ 'VIDEO_TUTORIALS' | translate }}
     </div>
     <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
       <div fxFlex="" class="menu-item-content">
-        <div class="item-title">Watch Our Tutorials</div>
+        <div class="item-title">{{ 'WATCH_OUR_TUTORIALS' | translate }}</div>
         <div class="item-content">
-          We have a collection of videos to help you learn and use Vertex to maximum advantage.
+          {{ 'WE_HAVE_A_COLLECTION_OF_VIDEOS_TO_HELP_YOU_LEARN_AND_USE_VERTEX_TO_MAXIMUM_ADVANTAGE' | translate }}
         </div>
       </div>
       <div fxFlex="" class="menu-item-aside">
-        <mat-icon class="menu-item-icon">{{ 'VIDEO_LIBRARY' | translate }}</mat-icon>
+        <mat-icon class="menu-item-icon">video_library</mat-icon>
       </div>
     </div>
   </div>
@@ -193,18 +193,18 @@
   <div mat-menu-item matSuffix (click)="onOpenUserGuide()">
     <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
       <mat-icon>menu_book</mat-icon>
-      Vertex User Guide
+      {{ 'VERTEX_USER_GUIDE' | translate }}
     </div>
     <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
       <div fxFlex="" class="menu-item-content">
-        <div class="item-title">Read Our User Guide</div>
+        <div class="item-title">{{ 'READ_OUR_USER_GUIDE' | translate }}</div>
         <div class="item-content">
-          Read the Vertex User Guide, including sections on Getting Started, Baseline Searches,
-          SBAS Searches, Event Searches and more.
+          {{ 'READ_THE_VERTEX_USER_GUIDE_INCLUDING_SECTIONS_ON_GETTING_STARTED_BASELINE_SEARCHES' | translate }}
+          {{ 'SBAS_SEARCHES_EVENT_SEARCHES_AND_MORE' | translate }}
         </div>
       </div>
       <div fxFlex="" class="menu-item-aside">
-        <mat-icon class="menu-item-icon">menu_book</mat-icon>
+        <mat-icon class="menu-item-icon">{{ 'MENU_BOOK.' | translate }}</mat-icon>
       </div>
     </div>
   </div>
@@ -214,7 +214,7 @@
   <div mat-menu-item matSuffix (click)="onOpenHyP3Guide()">
     <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
       <mat-icon>book</mat-icon>
-      HyP3 User Guide
+      {{ 'HY_P3_USER_GUIDE' | translate }}
     </div>
     <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
       <div fxFlex="" class="menu-item-content">
