@@ -7,7 +7,7 @@
   <mat-form-field
     [class.invalid-input-animation]="isAOIError"
     class="full-width">
-    <mat-label> Area of Interest • WKT </mat-label>
+    <mat-label> {{ 'AREA_OF_INTEREST_WKT' | translate }} </mat-label>
       <input
         (change)="onInputSearchPolygon($event)"
         [value]="polygon"
@@ -20,7 +20,7 @@
       matTooltip="Copy to clipboard"
       [class.ghost-item]="!isHoveringAOISelector"
       class="clickable copy-icon" matSuffix>
-      file_copy
+      {{ 'FILE_COPY' | translate }}
     </mat-icon>
 
     <mat-icon

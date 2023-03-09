@@ -357,7 +357,7 @@
                   matTooltip="Copy reference scene names to clipboard"
                 >
                   <span> Reference Scenes </span>
-                  <mat-icon>file_copy</mat-icon>
+                  <mat-icon>{{ 'FILE_COPY' | translate }}</mat-icon>
                 </button>
                 <button (click)="onToggleSarviewsProductPin()" mat-menu-item>
                   <span>{{eventSelectedProductIds.includes(currentSarviewsProduct?.product_id) ? 'Unpin browse from map' : 'Pin browse to map'}}</span>

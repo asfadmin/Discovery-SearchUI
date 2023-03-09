@@ -259,7 +259,7 @@
         style="margin-right: 16px;"
         (change)="onValidateOnlyToggle($event.checked)"
         [(ngModel)]="validateOnly">
-        Validate Only
+        {{ 'VALIDATE_ONLY' | translate }}
       </mat-slide-toggle>
 
       <button mat-flat-button (click)="openSubscriptionDialog()"
@@ -283,7 +283,7 @@
          >
          <span *ngIf="!isQueueSubmitProcessing">
 
-           Submit {{ allJobs.length }} Job<span *ngIf="allJobs.length > 1">s</span>
+           {{ 'SUBMIT' | translate }} {{ allJobs.length }} Job<span *ngIf="allJobs.length > 1">s</span>
 
          </span>
 

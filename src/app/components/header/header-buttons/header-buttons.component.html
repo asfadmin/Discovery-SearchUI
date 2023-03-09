@@ -3,7 +3,7 @@
     <button
         [matMenuTriggerFor]="onDemandQueue"
         class="spacing nav-icon-buttons" color="basic"
-        matTooltip="On Demand Queue"
+        matTooltip="{{  'ON_DEMAND_QUEUE'  | translate }}"
         mat-button>
         <mat-icon
           class="large-icon"
@@ -20,20 +20,20 @@
     <mat-menu #onDemandQueue="matMenu">
       <button
       (click)="onOpenProcessingQueue()"
-      mat-menu-item>On Demand Queue</button>
+      mat-menu-item>{{  'ON_DEMAND_QUEUE'  | translate }}</button>
 
       <button
       (click)="onOpenSubscriptions()"
       [disabled]="!isLoggedIn"
-      mat-menu-item>Subscriptions</button>
+      mat-menu-item>{{  'SUBSCRIPTIONS'  | translate }}</button>
 
       <button mat-menu-item
       (click) = "onSetSearchTypeOnDemand()"
-      [disabled]="!isLoggedIn">Submitted Products
+      [disabled]="!isLoggedIn">{{  'SUBMITTED_PRODUCTS'  | translate }}
       </button>
 
       <button mat-menu-item (click)="onOpenOnDemandDocs()">
-        On Demand (HyP3) Docs
+        {{  'ON_DEMAND_HY_P3_DOCS'  | translate }}
       </button>
     </mat-menu>
     <button
@@ -86,7 +86,7 @@
     <mat-icon
       [matMenuTriggerFor]="onDemandQueue"
       class="mobile-icon-spacing"
-      matTooltip="On Demand Queue"
+      matTooltip="{{  'ON_DEMAND_QUEUE'  | translate }}"
       svgIcon="hyp3"
       [matBadge]="queuedCustomProducts.length"
       [matBadgeColor]="this.queuedProducts.length > 0 ? this.accentPalette : this.primaryPalette"
@@ -98,19 +98,19 @@
     <mat-menu #onDemandQueue="matMenu">
       <button
       (click)="onOpenProcessingQueue()"
-      mat-menu-item>On Demand Queue</button>
+      mat-menu-item>{{  'ON_DEMAND_QUEUE'  | translate }}</button>
 
       <button
       (click)="onOpenSubscriptions()"
       [disabled]="!isLoggedIn"
-      mat-menu-item>Subscriptions</button>
+      mat-menu-item>{{  'SUBSCRIPTIONS'  | translate }}</button>
 
       <button mat-menu-item
       (click) = "onSetSearchTypeOnDemand()"
-      [disabled]="!isLoggedIn">Submitted Products</button>
+      [disabled]="!isLoggedIn">{{  'SUBMITTED_PRODUCTS'  | translate }}</button>
 
       <button mat-menu-item (click)="onOpenOnDemandDocs()">
-        On Demand (HyP3) Docs
+        {{  'ON_DEMAND_HY_P3_DOCS'  | translate }}
       </button>
     </mat-menu>
 

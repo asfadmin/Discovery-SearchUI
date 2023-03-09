@@ -20,6 +20,7 @@ import { SceneComponent } from './scene/scene.component';
 import { Hyp3JobComponent } from './hyp3-job/hyp3-job.component';
 import { PairComponent } from './pair/pair.component';
 import { SarviewsEventComponent } from './sarview-event/sarviews-event.component';
+import { SharedModule } from "@shared";
 
 
 @NgModule({
@@ -44,6 +45,7 @@ import { SarviewsEventComponent } from './sarview-event/sarviews-event.component
     PipesModule,
     FileNameModule,
     OnDemandAddMenuModule,
+    SharedModule,
   ],
   exports: [
     ScenesListComponent
