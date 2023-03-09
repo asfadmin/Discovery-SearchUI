@@ -139,7 +139,7 @@
         <!-- PRODUCT LIST AREA STARTS HERE -->
         <div class="mat-dialog-content-2">
           <div class="jobs-dialog">
-            <div *ngIf="isUserLoggedIn && !isUserLoading && allJobs.length > remaining " class="w100 error-header">
+            <div *ngIf="isUserLoggedIn && !isUnlimitedUser && !isUserLoading && allJobs.length > remaining " class="w100 error-header">
               <div style="padding-left: 10px;">
                 <b>Too many jobs in queue </b>
               </div>
@@ -148,7 +148,7 @@
               </div>
             </div>
 
-            <div *ngIf="isUserLoggedIn && !isUserLoading && remaining === 0" class="w100 error-header">
+            <div *ngIf="isUserLoggedIn && !isUnlimitedUser && !isUserLoading && remaining === 0" class="w100 error-header">
               <div style="padding-left: 10px;">
                 <b>No jobs left this month</b>
               </div>
@@ -231,17 +231,25 @@
 
     <div class="footer-job-notification">
       <div *ngIf="isUserLoggedIn && !isUserLoading && user !== ''">
-        <span *ngIf="breakpoint === breakpoints.MOBILE"
-        class="footer-mini-text">
-          {{ remaining }} job max
+        <span>
+          <ng-template *ngIf="!isUnlimitedUser; else unlimited">
+            {{ remaining }}
+          </ng-template>
+          <ng-template #unlimited>Unlimited</ng-template>
+        </span>
+
+        <span *ngIf="breakpoint === breakpoints.MOBILE" class="footer-mini-text">
+          job max
         </span>
         <span *ngIf="breakpoint !== breakpoints.MOBILE">
-          {{ remaining }} jobs left this month
+          jobs left this month
         </span>
       </div>
+
       <div *ngIf="isUserLoggedIn && isUserLoading">
         <b>Loading...</b>
       </div>
+
       <div *ngIf="!isUserLoggedIn">
         <span *ngIf="breakpoint === breakpoints.MOBILE">
           <b>N/A</b> - login to view
@@ -271,20 +279,19 @@
       <button
          (click)="onReviewQueue()"
          [disabled]="
-         allJobs.length > remaining ||
-         allJobs.length === 0 ||
-         !isUserLoggedIn
-         "
-         [class.mini-button] = "breakpoint == breakpoints.MOBILE"
+         !isUnlimitedUser && (
+           allJobs.length > remaining ||
+           allJobs.length === 0 ||
+           !isUserLoggedIn
+         )"
+         [class.mini-button]="breakpoint == breakpoints.MOBILE"
 
          mat-flat-button
          color="primary"
          class="footer-submit-button"
          >
          <span *ngIf="!isQueueSubmitProcessing">
-
            Submit {{ allJobs.length }} Job<span *ngIf="allJobs.length > 1">s</span>
-
          </span>
 
          <span *ngIf="isQueueSubmitProcessing">
