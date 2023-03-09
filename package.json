@@ -8,14 +8,13 @@
     "test": "ng test",
     "lint": "eslint -c .eslintrc.js --ext .ts src",
     "e2e": "ng e2e"
-
   },
   "private": true,
   "dependencies": {
     "@angular-devkit/build-angular": "^14.2.7",
     "@angular/animations": "^14.2.8",
     "@angular/cdk": "^14.2.6",
-    "@angular/cli": "^14.2.7",
+    "@angular/cli": "^14.2.10",
     "@angular/common": "^14.2.8",
     "@angular/compiler": "^14.2.8",
     "@angular/compiler-cli": "^14.2.8",

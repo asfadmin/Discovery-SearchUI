@@ -7,7 +7,6 @@ import * as scenesStore from '@store/scenes';
 import { SubSink } from 'subsink';
 import * as models from '@models';
 import { ScreenSizeService } from '@services';
-import { TranslateService } from "@ngx-translate/core";
 
 enum FilterPanel {
   MASTER = 'Master',
@@ -25,7 +24,6 @@ export class BaselineFiltersComponent implements OnInit, OnDestroy {
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
   public areResultsLoaded: boolean;
-  public translate: TranslateService
 
   selectedPanel: FilterPanel | null = null;
   panels = FilterPanel;

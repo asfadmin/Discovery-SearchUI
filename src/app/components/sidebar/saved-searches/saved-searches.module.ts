@@ -12,7 +12,7 @@ import { MatSharedModule } from '@shared';
 import { SavedSearchesComponent } from './saved-searches.component';
 import { SavedSearchComponent } from './saved-search/saved-search.component';
 import { SearchFiltersModule } from './saved-search/search-filters';
-
+import { SharedModule } from '@shared';
 
 @NgModule({
   declarations: [
@@ -29,6 +29,7 @@ import { SearchFiltersModule } from './saved-search/search-filters';
     MatSharedModule,
     PipesModule,
     SearchFiltersModule,
+    SharedModule
   ],
   exports: [
     SavedSearchesComponent,

@@ -33,6 +33,8 @@ import { SarviewsResultsMenuComponent } from './sarviews-results-menu/sarviews-r
 import { EventProductSortSelectorModule } from '@components/shared/event-product-sort-selector/event-product-sort-selector.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {DocsModalModule} from '@components/shared/docs-modal';
+import { SharedModule } from '@shared';
+
 
 @NgModule({
   declarations: [
@@ -70,7 +72,8 @@ import {DocsModalModule} from '@components/shared/docs-modal';
         ReactiveFormsModule,
         FontAwesomeModule,
         EventProductSortSelectorModule,
-        DocsModalModule
+        DocsModalModule,
+        SharedModule
     ],
   exports: [ResultsMenuComponent, SbasSlidersTwoComponent, SbasSlidersComponent],
 })
