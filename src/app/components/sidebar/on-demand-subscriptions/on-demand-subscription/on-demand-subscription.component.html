@@ -18,7 +18,7 @@
             matTooltip="Edit end date."
             class="edit-tooltip clickable">
             {{ subscription.filters.end | shortDate }}
-            <mat-icon class="edit-icon">{{ 'EDIT' |  translate }}</mat-icon>
+            <mat-icon class="edit-icon">Edit</mat-icon>
           </span>
         </div>
       </div>
@@ -50,7 +50,7 @@
         [checked]="subscription.enabled">
         <div class="t-label">
           <span *ngIf="isToggling">
-            Loading...
+            {{ ' LOADING ' |  translate }}...
           </span>
           <span *ngIf="!isToggling">
             {{ subscription.enabled ? 'Disable' : 'Enable' }}

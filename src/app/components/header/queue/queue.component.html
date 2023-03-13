@@ -27,13 +27,13 @@
   </div>
 
   <div class="dl-close-x" (click)="onCloseDownloadQueue()">
-    <mat-icon>{{ 'CLOSE'|  translate }}</mat-icon>
+    <mat-icon></mat-icon>
   </div>
 
 </div>
 
 <div *ngIf="showDemWarning" class="dem-warning">
-  Resampled DEM (SRTM or NED) used for RTC processing.
+  {{ 'RESAMPLED_DEM_SRTM_OR_NED_USED_FOR_RTC_PROCESSING' |  translate }}
   <a class="more-link"
      target="_blank"
      href="https://asf.alaska.edu/data-sets/derived-data-sets/alos-palsar-rtc/alos-palsar-radiometric-terrain-correction/#DEM_Information">
@@ -41,7 +41,7 @@
   </a>
 </div>
 <div *ngIf="showRestrictedDatasetWarning" class="dem-warning">
-  Products in your queue may require a restricted dataset agreement.
+  {{ 'PRODUCTS_IN_YOUR_QUEUE_MAY_REQUIRE_A_RESTRICTED_DATASET_AGREEMENT' |  translate }}
   <a class="more-link"
      target="_blank"
      href="https://asf.alaska.edu/restricted-data-access-request/">
@@ -93,14 +93,14 @@
                   </app-download-file-button>
 
                   <button (click)="onRemoveProduct(product)" matTooltip="Remove file" mat-icon-button>
-                    <mat-icon>{{ 'CLOSE'|  translate }}</mat-icon>
+                    <mat-icon>close</mat-icon>
                   </button>
               </mat-list-item>
             </ng-container>
             <ng-container *ngIf="(products$ | async).length < 1">
               <div class="dl-empty-message">
                 <br><br>
-                Your download queue is empty.
+                {{ 'YOUR_DOWNLOAD_QUEUE_IS_EMPTY' |  translate }}
               </div>
             </ng-container>
 
@@ -123,7 +123,7 @@
           <button *ngIf="previousQueue !== null"
                   (click)="onRestoreQueue(previousQueue)" mat-button>
             <mat-icon style="margin-right: 5px;">undo</mat-icon>
-            <span>Restore</span>
+            <span>{{ 'RESTORE' |  translate }}</span>
           </button>
         </div>
         <ng-container>
@@ -156,7 +156,7 @@
               <button mat-flat-button color="primary" [matMenuTriggerFor]="dataMenu" [disabled]="!areAnyProducts"
                       class="btn-primary"
                       style="margin-left: 15px;">
-                Data Download
+                {{ 'DATA_DOWNLOAD' |  translate }}
                 <mat-icon>arrow_drop_up</mat-icon>
               </button>
               <button mat-flat-button color="primary" [matMenuTriggerFor]="metadataMenu" [disabled]="!areAnyProducts" class="btn-primary">

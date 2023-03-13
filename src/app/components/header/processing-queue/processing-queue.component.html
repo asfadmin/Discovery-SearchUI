@@ -93,7 +93,7 @@
   </div>
 
   <div class="close-x" (click)="onCloseDialog()">
-    <mat-icon>{{ 'CLOSE'|  translate }} </mat-icon>
+    <mat-icon></mat-icon>
   </div>
 </div>
 
@@ -105,7 +105,7 @@
   <div class="content-block">
     <div #errorHeader *ngIf="!isUserLoggedIn && !isUserLoading" class="w100 error-header">
       <div style="padding-left: 10px;">
-        <b>Sign in to process data</b>
+        <b>{{ ' SIGN_IN_TO_PROCESS_DATA ' |  translate }}</b>
       </div>
       <div>
         <button (click)="onAccountButtonClicked()" color="primary" mat-flat-button>
@@ -141,7 +141,7 @@
           <div class="jobs-dialog">
             <div *ngIf="isUserLoggedIn && !isUserLoading && allJobs.length > remaining " class="w100 error-header">
               <div style="padding-left: 10px;">
-                <b>Too many jobs in queue </b>
+                <b>{{ 'TOO_MANY_JOBS_IN_QUEUE' |  translate }} </b>
               </div>
               <div style="padding: 7px 10px;">
                 <b>({{ allJobs.length - remaining }} extra job{{ (allJobs.length - remaining) === 1 ? '' : 's'  }})</b>
@@ -150,11 +150,11 @@
 
             <div *ngIf="isUserLoggedIn && !isUserLoading && remaining === 0" class="w100 error-header">
               <div style="padding-left: 10px;">
-                <b>No jobs left this month</b>
+                <b>{{ 'NO_JOBS_LEFT_THIS_MONTH' |  translate }}</b>
               </div>
               <div>
                 <button (click)="onCloseDialog()" mat-flat-button>
-                  <mat-icon>{{ 'CLOSE'|  translate }}</mat-icon>
+                  <mat-icon></mat-icon>
                 </button>
               </div>
             </div>
@@ -208,7 +208,7 @@
         <button *ngIf="previousQueue === null"
         (click)="onClearJobQueue()"
         mat-button>
-          <span>Clear All Processing Types</span>
+          <span>{{ 'CLEAR_ALL_PROCESSING_TYPES' |  translate }}</span>
         </button>
 
         <div *ngFor="let hyp3Job of jobTypesWithQueued">
@@ -225,7 +225,7 @@
          color="primary"
          class="footer-clear-button">
 <!--        <mat-icon>undo</mat-icon>-->
-        <span>Restore</span>
+        <span>{{ 'RESTORE' |  translate }}</span>
       </button>
     </div>
 
@@ -240,14 +240,14 @@
         </span>
       </div>
       <div *ngIf="isUserLoggedIn && isUserLoading">
-        <b>Loading...</b>
+        <b>{{ 'LOADING' |  translate }}...</b>
       </div>
       <div *ngIf="!isUserLoggedIn">
         <span *ngIf="breakpoint === breakpoints.MOBILE">
-          <b>N/A</b> - login to view
+          <b>N/A</b> - {{ 'LOGIN_TO_VIEW' |  translate }}
         </span>
         <span *ngIf="breakpoint !== breakpoints.MOBILE">
-          <b>N/A</b> - login to view number of jobs left this month
+          <b>N/A</b> - {{ 'LOGIN_TO_VIEW_NUMBER_OF_JOBS_LEFT_THIS_MONTH' |  translate }}
         </span>
       </div>
     </div>
@@ -265,7 +265,7 @@
       <button mat-flat-button (click)="openSubscriptionDialog()"
               [class.mini-button] = "breakpoint == breakpoints.MOBILE"
         style="margin-right: 16px;">
-        Subscription
+        {{ 'SUBSCRIPTION' |  translate }}
       </button>
 
       <button
@@ -288,7 +288,7 @@
          </span>
 
          <span *ngIf="isQueueSubmitProcessing">
-           Loading...
+           {{ ' LOADING ' |  translate }}...
          </span>
       </button>
     </div>

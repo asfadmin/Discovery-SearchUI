@@ -28,7 +28,7 @@
                 {{'GEOGRAPHIC' | translate}}
               </div>
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                {{'GEOGRAPHIC SEARCH ALLOWS YOU TO SEARCH FOR DATA BASED UPON A GEOGRAPHIC LOCATION' | translate }}
+                {{'GEOGRAPHIC_SEARCH_ALLOWS_YOU_TO_SEARCH_FOR_DATA_BASED_UPON_A_GEOGRAPHIC_LOCATION' | translate }}
               </div>
               <mat-card-actions>
                 <app-docs-modal class="info-text"
@@ -38,7 +38,7 @@
               </mat-card-actions>
             </div>
             <div fxFlex="25%" class="menu-item-aside">
-              <span class="material-icons-outlined menu-item-icon">travel_explore</span>
+              <span class="material-icons-outlined menu-item-icon">{{ ' TRAVEL_EXPLORE ' | translate }}</span>
             </div>
           </div>
         </div>
@@ -52,7 +52,7 @@
                 {{'LIST' | translate }}
               </div>
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                {{'LIST SEARCH ALLOWS YOU TO ENTER OR UPLOAD A LIST OF SCENE OR FILE NAMES.' | translate }}
+                {{'LIST_SEARCH_ALLOWS_YOU_TO_ENTER_OR_UPLOAD_A_LIST_OF_SCENE_OR_FILE_NAMES' | translate }}
               </div>
               <mat-card-actions (click)="onOpenDocs($event)">
                 <app-docs-modal class="info-text"
@@ -76,7 +76,7 @@
                 {{'BASELINE' | translate }}
               </div>
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                {{'BASELINE SEARCH PROVIDES VISUALIZATION OF PERPENDICULAR AND TEMPORAL BASELINE DATA FOR A CHOSEN' | translate}}
+                {{'BASELINE_SEARCH_PROVIDES_VISUALIZATION_OF_PERPENDICULAR_AND_TEMPORAL_BASELINE_DATA_FOR_A_CHOSEN' | translate}}
               </div>
               <mat-card-actions (click)="onOpenDocs($event)">
                 <app-docs-modal class="info-text"
@@ -100,8 +100,8 @@
                 {{ 'SBAS' | translate }}
               </div>
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                {{'SEARCH PROVIDES PERPENDICULAR AND TEMPORAL BASELINE DATA, AS WELL AS SCENE PAIRS, FOR A CHOSEN' | translate }}
-                {{'REFERENCE SCENE.' | translate }}
+                {{'SEARCH_PROVIDES_PERPENDICULAR_AND_TEMPORAL_BASELINE_DATA_AS_WELL_AS_SCENE_PAIRS_FOR_A_CHOSEN' | translate }}
+                {{'REFERENCE_SCENE' | translate }}
               </div>
               <mat-card-actions (click)="onOpenDocs($event)">
                 <app-docs-modal class="info-text"
@@ -125,7 +125,7 @@
                 {{'EVENT' | translate}}
               </div>
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                {{'EVENT SEARCH HARNESSES THE CAPABILITIES OF SAR PROCESSING TO MONITOR NATURAL DISASTERS' | translate }}
+                {{'EVENT_SEARCH_HARNESSES_THE_CAPABILITIES_OF_SAR_PROCESSING_TO_MONITOR_NATURAL_DISASTERS' | translate }}
               </div>
               <mat-card-actions (click)="onOpenDocs($event)">
                 <app-docs-modal class="info-text"
@@ -148,13 +148,13 @@
           <div class="menu-item-inner">
             <div fxFlex="75%" class="menu-item-content">
               <div class="item-title">
-                {{'ON DEMAND PRODUCTS' | translate}}
+                {{'ON_DEMAND_PRODUCTS' | translate}}
                 <span class="login-prompt" [ngClass]="{'login-hidden' : isLoggedIn}">
-                  {{'SIGN IN TO ACCESS' | translate}}
+                  {{'SIGN_IN_TO_ACCESS' | translate}}
                 </span>
               </div>
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                {{'ON DEMAND SEARCH ALLOWS YOU TO VIEW YOUR SUBMITTED ON DEMAND JOBS.' | translate}}
+                {{'ON_DEMAND_SEARCH_ALLOWS_YOU_TO_VIEW_YOUR_SUBMITTED_ON_DEMAND_JOBS' | translate}}
               </div>
               <mat-card-actions (click)="onOpenDocs($event)">
                 <app-docs-modal
@@ -176,10 +176,10 @@
           <div class="menu-item-inner">
             <div fxFlex="75%" class="menu-item-content">
               <div class="item-title">
-                {{'DERIVED DATASETS' | translate }}
+                {{'DERIVED_DATASETS' | translate }}
               </div>
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                {{'DERIVED DATASETS CONTAIN A COLLECTION OF DATASETS AVAILABLE TO VIEW AND DOWNLOAD.'| translate }}
+                {{'DERIVED_DATASETS_CONTAIN_A_COLLECTION_OF_DATASETS_AVAILABLE_TO_VIEW_AND_DOWNLOAD'| translate }}
               </div>
             </div>
             <div fxFlex="25%" class="menu-item-aside">

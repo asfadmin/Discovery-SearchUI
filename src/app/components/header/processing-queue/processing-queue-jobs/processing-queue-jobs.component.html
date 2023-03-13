@@ -3,7 +3,7 @@
   <div class="sort-options">
     <div class="flex-field">
       <mat-form-field>
-        <mat-label>Sort Criteria</mat-label>
+        <mat-label>{{ ' SORT_CRITERIA '  |  translate }}</mat-label>
         <mat-select (selectionChange)="onSortChange()" [(ngModel)]='sortType'>
           <div *ngFor="let item of sortTypes">
             <mat-option [value]="item">
@@ -16,7 +16,7 @@
 
     <div class="flex-field">
       <mat-form-field>
-        <mat-label>Sort Order</mat-label>
+        <mat-label>{{ ' SORT_ORDER '  |  translate }}</mat-label>
         <mat-select (selectionChange)="onSortChange()" [(ngModel)]='sortOrder'>
           <div *ngFor="let item of sortOrders">
             <mat-option [value]="item">
@@ -62,7 +62,7 @@
             <button (click)="onRemoveJob(job)"
                     matTooltip="Remove job"
                     mat-icon-button>
-              <mat-icon> {{ 'CLOSE' |  translate }} </mat-icon>
+              <mat-icon>close</mat-icon>
             </button>
           </div>
       </mat-list-item>
@@ -72,11 +72,11 @@
     <ng-template #emptyQueue>
       <div class="empty-queue">
         <div class="jobs-empty-message">
-          Your jobs queue is empty.
+          {{ ' YOUR_JOBS_QUEUE_IS_EMPTY ' |  translate }}.
         </div>
         <div class="jobs-empty-message-docs-link">
           <a href="https://hyp3-docs.asf.alaska.edu/" target="_blank">
-            {{'On Demand(HyP3) Documentation' | translate}}
+            {{'ON_DEMAND_HY_P3_DOCUMENTATION' | translate}}
           </a>
         </div>
       </div>
@@ -84,9 +84,9 @@
       <div class="jobs-search">
         <button [disabled]="!isLoggedIn"
                 (click)="viewCustomProducts($event)" color="primary" mat-flat-button>
-          View Submitted Jobs
+          {{ ' VIEW_SUBMITTED_JOBS ' |  translate }}
         </button>
-        <p class="not-logged-in" *ngIf="!isLoggedIn">Sign in to view submitted jobs</p>
+        <p class="not-logged-in" *ngIf="!isLoggedIn">{{ ' SIGN_IN_TO_VIEW_SUBMITTED_JOBS ' |  translate }}</p>
       </div>
     </ng-template>
   </mat-list>

@@ -30,16 +30,16 @@
         <button (click)="onToggleFiltersMenu()"
             style="margin-left: 5px;"
             mat-flat-button>
-          <mat-icon>{{ 'EDIT' |  translate }}</mat-icon>
+          <mat-icon>edit</mat-icon>
           <ng-container [ngSwitch]="selectedSearchType">
             <span *ngSwitchCase = searchTypes.SBAS>
-              {{ 'SBAS' |  translate }}
+          SBAS
             </span>
             <span *ngSwitchCase = searchTypes.BASELINE>
-              {{ 'BASELINE' |  translate }}
+          BASELINE
             </span>
             <span *ngSwitchCase = searchTypes.CUSTOM_PRODUCTS>
-              {{ 'ON_DEMAND' | translate }}
+            ON DEMAND
             </span>
             <span *ngSwitchDefault>
             </span>
