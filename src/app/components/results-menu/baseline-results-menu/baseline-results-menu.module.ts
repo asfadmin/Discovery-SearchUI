@@ -15,7 +15,6 @@ import { OnDemandAddMenuModule } from '@components/shared/on-demand-add-menu';
 import { BaselineChartModule } from '@components/baseline-chart/baseline-chart.module';
 
 import { BaselineResultsMenuComponent } from './baseline-results-menu.component';
-import { SharedModule} from "@shared";
 
 
 @NgModule({
@@ -29,7 +28,7 @@ import { SharedModule} from "@shared";
     MatButtonToggleModule,
     FlexLayoutModule,
     ResizableModule,
-    SharedModule,
+
     SceneDetailModule,
     ScenesListModule,
     ScenesListHeaderModule,
