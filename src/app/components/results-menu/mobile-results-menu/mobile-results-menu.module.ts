@@ -15,6 +15,7 @@ import { ScenesListModule } from '../scenes-list';
 import { ScenesListHeaderModule } from '../scenes-list-header';
 
 import { MobileResultsMenuComponent } from './mobile-results-menu.component';
+import { SharedModule} from "@shared";
 
 
 @NgModule({
@@ -26,7 +27,7 @@ import { MobileResultsMenuComponent } from './mobile-results-menu.component';
     MatSharedModule,
     MatButtonToggleModule,
     FlexLayoutModule,
-
+    SharedModule,
     SBASChartModule,
     BaselineChartModule,
     SbasResultsMenuModule,

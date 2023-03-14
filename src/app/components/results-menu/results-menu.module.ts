@@ -30,6 +30,7 @@ import { SharedModule } from '@shared';
     BaselineResultsMenuModule,
     DesktopResultsMenuModule,
     MobileResultsMenuModule,
+    SharedModule
   ],
   exports: [
     ResultsMenuComponent,

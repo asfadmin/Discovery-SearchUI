@@ -9,6 +9,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatSharedModule } from '@shared';
 import { OnDemandAddMenuModule } from '@components/shared/on-demand-add-menu';
 import { ScenesListHeaderComponent } from './scenes-list-header.component';
+import { SharedModule } from "@shared";
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { ScenesListHeaderComponent } from './scenes-list-header.component';
     FlexLayoutModule,
     FontAwesomeModule,
     OnDemandAddMenuModule,
+    SharedModule,
   ],
   exports: [
     ScenesListHeaderComponent
