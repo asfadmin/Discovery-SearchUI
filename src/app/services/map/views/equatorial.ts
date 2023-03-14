@@ -97,8 +97,7 @@ export function equatorial(): MapView {
 
 
 export function equatorialStreet(): MapView {
-
   return equatorialView(
-   'https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=bFwkahiCrAA0526OlsHS'
+    'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/BlueMarble_ShadedRelief_Bathymetry/default/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpeg'
   );
 }
