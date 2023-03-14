@@ -160,7 +160,7 @@
                 <mat-icon>arrow_drop_up</mat-icon>
               </button>
               <button mat-flat-button color="primary" [matMenuTriggerFor]="metadataMenu" [disabled]="!areAnyProducts" class="btn-primary">
-                Metadata Download
+                {{ 'METADATA_DOWNLOAD' |  translate }}
                 <mat-icon>arrow_drop_up</mat-icon>
               </button>
             </ng-container>
@@ -173,7 +173,7 @@
 
               <mat-menu #typesMenu="matMenu">
                 <button mat-menu-item [matMenuTriggerFor]="dataMenu" [disabled]="!areAnyProducts" class="btn-primary">
-                  Data
+                  {{ 'DATA' |  translate }}
                 </button>
                 <button mat-menu-item [matMenuTriggerFor]="metadataMenu" class="btn-primary">
                   Metadata
@@ -188,24 +188,24 @@
               >
               </app-download-all>
               <button mat-menu-item (click)="onMakeDownloadScript()">
-                Download Python Script (.py)
+                {{ 'DOWNLOAD_PYTHON_SCRIPT_PY' |  translate }}
               </button>
               <button mat-menu-item [disabled]="queueHasOnDemandProducts || queueHasEventMonitoringProducts" (click)="onMetalinkDownload()">
-                Metadata (metalink)
+                {{ 'METADATA_METALINK' |  translate }}
               </button>
             </mat-menu>
 
             <mat-menu #metadataMenu="matMenu" yPosition="above">
               <button mat-menu-item [disabled]="queueHasOnDemandProducts || queueHasEventMonitoringProducts" (click)="onCsvDownload()">
-                Metadata (csv)
+                {{ 'METADATA_CSV' |  translate }}
               </button>
 
               <button mat-menu-item [disabled]="queueHasOnDemandProducts || queueHasEventMonitoringProducts" (click)="onKmlDownload()">
-                Metadata (kml)
+                {{ 'METADATA_KML' |  translate }}
               </button>
 
               <button mat-menu-item [disabled]="queueHasOnDemandProducts || queueHasEventMonitoringProducts" (click)="onGeojsonDownload()">
-                Metadata (geojson)
+                {{ 'METADATA_GEOJSON' |  translate }}
               </button>
             </mat-menu>
           </div>
