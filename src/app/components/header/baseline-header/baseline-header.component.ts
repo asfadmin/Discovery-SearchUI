@@ -12,6 +12,7 @@ import { SubSink } from 'subsink';
 import * as searchStore from '@store/search';
 import * as models from '@models';
 
+
 @Component({
   selector: 'app-baseline-header',
   templateUrl: './baseline-header.component.html',
@@ -34,7 +35,7 @@ export class BaselineHeaderComponent implements OnInit {
 
   constructor(
     private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
+    private screenSize: ScreenSizeService
   ) { }
 
   ngOnInit(): void {

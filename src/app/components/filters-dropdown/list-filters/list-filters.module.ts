@@ -14,7 +14,6 @@ import { NgxCsvParserModule } from 'ngx-csv-parser';
 
 import { ListFiltersComponent } from './list-filters.component';
 import {DocsModalModule} from '@components/shared/docs-modal';
-import { SharedModule } from '@shared';
 
 @NgModule({
   declarations: [
@@ -25,7 +24,6 @@ import { SharedModule } from '@shared';
         MatExpansionModule,
         SearchTypeSelectorModule,
 
-
         FormsModule,
         CopyToClipboardModule,
         NgxCsvParserModule,
@@ -34,7 +32,6 @@ import { SharedModule } from '@shared';
         MatButtonToggleModule,
         MatSharedModule,
         DocsModalModule,
-        SharedModule
     ],
   exports: [
     ListFiltersComponent

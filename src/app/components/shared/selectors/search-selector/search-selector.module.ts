@@ -5,7 +5,6 @@ import { SearchSelectorComponent } from './search-selector.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 
 import { MatSharedModule } from '@shared';
-import {SharedModule} from "@shared";
 
 @NgModule({
   declarations: [
@@ -14,8 +13,7 @@ import {SharedModule} from "@shared";
   imports: [
     CommonModule,
     MatExpansionModule,
-    MatSharedModule,
-    SharedModule
+    MatSharedModule
   ],
   exports: [SearchSelectorComponent],
 })

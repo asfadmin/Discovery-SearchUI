@@ -8,7 +8,6 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 import { SarviewsEventSearchSelectorComponent } from './sarviews-event-search-selector.component';
 import { PipesModule } from '@pipes';
-import { SharedModule } from '@shared';
 
 @NgModule({
   declarations: [
@@ -20,8 +19,7 @@ import { SharedModule } from '@shared';
     MatSharedModule,
     MatInputModule,
     MatAutocompleteModule,
-    PipesModule,
-    SharedModule
+    PipesModule
   ],
   exports: [
     SarviewsEventSearchSelectorComponent

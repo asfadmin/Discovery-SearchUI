@@ -14,8 +14,6 @@ import { faSpinner, fas } from '@fortawesome/free-solid-svg-icons';
 import { MaxResultsSelectorComponent } from './max-results-selector.component';
 import { ApiLinkDialogComponent } from './api-link-dialog/api-link-dialog.component';
 import { ClipboardModule } from 'ngx-clipboard';
-import { SharedModule } from '@shared';
-
 
 @NgModule({
   declarations: [MaxResultsSelectorComponent, ApiLinkDialogComponent],
@@ -28,8 +26,7 @@ import { SharedModule } from '@shared';
     MatSelectModule,
     MatSharedModule,
     MatDialogModule,
-    ClipboardModule,
-    SharedModule
+    ClipboardModule
   ],
   exports: [ MaxResultsSelectorComponent ],
 })

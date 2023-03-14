@@ -12,7 +12,6 @@ import {SearchTypeSelectorModule} from '@components/shared/selectors/search-type
 import { PathSelectorModule } from '@components/shared/selectors/path-selector';
 import { Hyp3JobTypeSelectorModule } from '@components/shared/selectors/hyp3-job-type-selector';
 import {DocsModalModule} from '@components/shared/docs-modal';
-import { SharedModule } from '@shared';
 
 @NgModule({
   declarations: [
@@ -30,8 +29,7 @@ import { SharedModule } from '@shared';
         SearchTypeSelectorModule,
         PathSelectorModule,
         Hyp3JobTypeSelectorModule,
-        DocsModalModule,
-        SharedModule
+        DocsModalModule
     ],
   exports: [
     SarviewsFiltersComponent

@@ -2,15 +2,15 @@
   <button
     [matMenuTriggerFor]="derivedDatasetMenu"
     class="spacing nav-icon-buttons" color="basic"
-    matTooltip="{{  'ON_DEMAND_QUEUE'  | translate }}"
+    matTooltip="On Demand Queue"
     mat-button>
-    <div class="text-under faint-text">{{ 'DERIVED_DATASETS' | translate }}...</div>
+    <div class="text-under faint-text">Derived Datasets...</div>
   </button>
 
   <mat-menu #derivedDatasetMenu="matMenu">
     <div mat-menu-item matSuffix *ngFor="let dataset of datasets" (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)">
       <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
-        <mat-icon>{{ 'VIDEO_LIBRARY' | translate }}</mat-icon>
+        <mat-icon>video_library</mat-icon>
         {{ dataset.name }}
       </div>
       <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
@@ -26,8 +26,8 @@
       </div>
 <!--      <mat-divider inset></mat-divider>-->
       <mat-card-actions>
-        <button (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)" mat-button class="link-button">{{ 'MORE_INFO| translate }}</button>
-        <button (click)="onOpenDerivedDataset(dataset.download_url, dataset.name)" mat-button class="link-button">{{ 'DOWNLOAD' | translate }}</button>
+        <button (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)" mat-button class="link-button">More Info</button>
+        <button (click)="onOpenDerivedDataset(dataset.download_url, dataset.name)" mat-button class="link-button">Download</button>
       </mat-card-actions>
       <hr class="dataset-hr">
     </div>

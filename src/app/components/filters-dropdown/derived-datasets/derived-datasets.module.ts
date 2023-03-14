@@ -6,7 +6,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSharedModule } from '@shared';
 
 import { DerivedDatasetsComponent } from './derived-datasets.component';
-import { SharedModule } from '@shared';
+
 
 @NgModule({
   declarations: [
@@ -17,7 +17,6 @@ import { SharedModule } from '@shared';
     MatSharedModule,
     MatExpansionModule,
     MatMenuModule,
-    SharedModule
   ],
   exports: [
     DerivedDatasetsComponent

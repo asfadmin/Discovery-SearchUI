@@ -23,7 +23,6 @@ import { SearchSelectorModule } from '@components/shared/selectors/search-select
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {DocsModalModule} from '@components/shared/docs-modal';
-import { SharedModule } from '@shared';
 
 @NgModule({
   imports: [
@@ -44,7 +43,6 @@ import { SharedModule } from '@shared';
     CancelFilterChangesModule,
     ClearButtonModule,
     MaxResultsSelectorModule,
-    SharedModule,
 
     FlexLayoutModule,
 

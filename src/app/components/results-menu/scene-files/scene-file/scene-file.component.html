@@ -85,7 +85,7 @@
     </button>
 
     <div mat-line class="file-sub-line">
-      <span *ngIf="product.bytes === 0">{{ ' VIRTUAL '  |  translate }}</span>
+      <span *ngIf="product.bytes === 0">Virtual</span>
       <span *ngIf="isDownloadable(product) && product.bytes !== 0">{{product.bytes.toString() | readableSizeFromBytes }}</span>
     </div>
 

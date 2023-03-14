@@ -17,7 +17,6 @@ import { ScenesListComponent } from './scenes-list.component';
 import { SceneModule } from './scene/scene.module';
 import { PairComponent } from './pair/pair.component';
 import { SarviewsEventComponent } from './sarview-event/sarviews-event.component';
-import { SharedModule } from "@shared";
 
 
 @NgModule({
@@ -37,7 +36,6 @@ import { SharedModule } from "@shared";
     MatMenuModule,
     PipesModule,
     OnDemandAddMenuModule,
-    SharedModule,
     SceneModule
   ],
   exports: [

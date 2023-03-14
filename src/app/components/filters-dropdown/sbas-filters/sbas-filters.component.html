@@ -7,7 +7,7 @@
 
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title>
-        {{ 'SEARCH_OPTIONS' | translate }}
+        Search Options
       </mat-panel-title>
     </mat-expansion-panel-header>
 
@@ -34,7 +34,7 @@
 
     </div>
     <div class="sbas-example">
-      {{ 'EXAMPLE:' | translate }}: S1B_IW_SLC__1SDV_20210704T135937_20210704T140004_027645_034CB0_4B2C
+      Example: S1B_IW_SLC__1SDV_20210704T135937_20210704T140004_027645_034CB0_4B2C
       <app-copy-to-clipboard
       value="S1B_IW_SLC__1SDV_20210704T135937_20210704T140004_027645_034CB0_4B2C"
       prompt="Copy Name"
@@ -55,7 +55,7 @@
     [class.raised-section]="isSelected(panels.DATE)">
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title style="align-items: center;">
-        {{ 'DATE_FILTERS' | translate }}
+        Date Filters
         <app-docs-modal class="info-icon"
                         url="https://docs.asf.alaska.edu/vertex/sbas/#sbas-criteria">
         </app-docs-modal>
@@ -89,7 +89,7 @@
   [class.raised-section]="isSelected(panels.OVERLAP)">
   <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
     <mat-panel-title>
-      {{ 'LATITUDINAL_OVERLAP_FILTER' |  translate }}
+      Latitudinal Overlap Filter
       <app-docs-modal class="info-icon"
                       url="https://docs.asf.alaska.edu/vertex/sbas/#sbas-criteria">
       </app-docs-modal>

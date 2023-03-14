@@ -14,7 +14,6 @@ import { PipesModule } from '@pipes';
 
 import { SceneFileComponent } from './scene-file.component';
 import {DownloadFileButtonModule} from '@components/shared/download-file-button/download-file-button.module';
-import {SharedModule} from "@shared";
 
 
 @NgModule({
@@ -31,7 +30,6 @@ import {SharedModule} from "@shared";
         TruncateModule,
         PipesModule,
         DownloadFileButtonModule,
-        SharedModule,
     ],
   exports: [
     SceneFileComponent

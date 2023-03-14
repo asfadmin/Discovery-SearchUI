@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: 'app-help-geo-search',
@@ -8,9 +7,7 @@ import { TranslateService } from "@ngx-translate/core";
 })
 export class HelpGeoSearchComponent implements OnInit {
 
-  constructor(
-    public translate: TranslateService,
-  ) { }
+  constructor() { }
 
   ngOnInit(): void {
   }

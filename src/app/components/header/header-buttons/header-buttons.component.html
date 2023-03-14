@@ -3,7 +3,7 @@
     <button
         [matMenuTriggerFor]="onDemandQueue"
         class="spacing nav-icon-buttons" color="basic"
-        matTooltip="{{  'ON_DEMAND_QUEUE'  | translate }}"
+        matTooltip="On Demand Queue"
         mat-button>
         <mat-icon
           class="large-icon"
@@ -14,33 +14,33 @@
           matBadgeOverlap="true"
           matBadgeSize="small">
         </mat-icon>
-      <div class="text-under faint-text">{{ 'ON_DEMAND' |  translate }}</div>
+      <div class="text-under faint-text">On Demand</div>
     </button>
 
     <mat-menu #onDemandQueue="matMenu">
       <button
       (click)="onOpenProcessingQueue()"
-      mat-menu-item>{{  'ON_DEMAND_QUEUE'  | translate }}</button>
+      mat-menu-item>On Demand Queue</button>
 
       <button
       (click)="onOpenSubscriptions()"
       [disabled]="!isLoggedIn"
-      mat-menu-item>{{  'SUBSCRIPTIONS'  | translate }}</button>
+      mat-menu-item>Subscriptions</button>
 
       <button mat-menu-item
       (click) = "onSetSearchTypeOnDemand()"
-      [disabled]="!isLoggedIn">{{  'SUBMITTED_PRODUCTS'  | translate }}
+      [disabled]="!isLoggedIn">Submitted Products
       </button>
 
       <button mat-menu-item (click)="onOpenOnDemandDocs()">
-        {{  'ON_DEMAND_HY_P3_DOCS'  | translate }}
+        On Demand (HyP3) Docs
       </button>
     </mat-menu>
     <button
       (click)="onOpenDownloadQueue()"
       class="spacing nav-icon-buttons"
       color="basic"
-      matTooltip="{{ 'DOWNLOADS' | translate }}" mat-button>
+      matTooltip="Downloads" mat-button>
 
       <mat-icon
         class="large-icon"
@@ -51,15 +51,15 @@
         matBadgeSize="small">
           shopping_cart
       </mat-icon>
-      <div class="text-under faint-text">{{ 'DOWNLOADS' | translate }}</div>
+      <div class="text-under faint-text">Downloads</div>
     </button>
 
     <button
       [matMenuTriggerFor]="helpMenu"
       matTooltip="Help and information"
       class="spacing nav-icon-buttons" color="basic" mat-button>
-      <mat-icon class="large-icon">{{ 'help_outline' | translate }}</mat-icon>
-      <div class="text-under faint-text">{{ 'HELP' | translate }}</div>
+      <mat-icon class="large-icon">help_outline</mat-icon>
+      <div class="text-under faint-text">Help</div>
     </button>
 
     <button
@@ -68,7 +68,7 @@
       class="spacing nav-icon-buttons" color="basic"
       matTooltip="Login" mat-button>
       <mat-icon class="large-icon">account_circle</mat-icon>
-      <div class="text-under faint-text">{{ 'SIGN_IN' | translate }}</div>
+      <div class="text-under faint-text">Sign in</div>
     </button>
 
     <button
@@ -86,7 +86,7 @@
     <mat-icon
       [matMenuTriggerFor]="onDemandQueue"
       class="mobile-icon-spacing"
-      matTooltip="{{  'ON_DEMAND_QUEUE'  | translate }}"
+      matTooltip="On Demand Queue"
       svgIcon="hyp3"
       [matBadge]="queuedCustomProducts.length"
       [matBadgeColor]="this.queuedProducts.length > 0 ? this.accentPalette : this.primaryPalette"
@@ -98,19 +98,19 @@
     <mat-menu #onDemandQueue="matMenu">
       <button
       (click)="onOpenProcessingQueue()"
-      mat-menu-item>{{  'ON_DEMAND_QUEUE'  | translate }}</button>
+      mat-menu-item>On Demand Queue</button>
 
       <button
       (click)="onOpenSubscriptions()"
       [disabled]="!isLoggedIn"
-      mat-menu-item>{{  'SUBSCRIPTIONS'  | translate }}</button>
+      mat-menu-item>Subscriptions</button>
 
       <button mat-menu-item
       (click) = "onSetSearchTypeOnDemand()"
-      [disabled]="!isLoggedIn">{{  'SUBMITTED_PRODUCTS'  | translate }}</button>
+      [disabled]="!isLoggedIn">Submitted Products</button>
 
       <button mat-menu-item (click)="onOpenOnDemandDocs()">
-        {{  'ON_DEMAND_HY_P3_DOCS'  | translate }}
+        On Demand (HyP3) Docs
       </button>
     </mat-menu>
 
@@ -128,7 +128,7 @@
     <mat-icon
       [matMenuTriggerFor]="helpMenu"
       class="mobile-icon-spacing">
-      {{ 'HELP_OUTLINE' | translate }}
+      help_outline
     </mat-icon>
 
     <mat-icon
@@ -136,50 +136,50 @@
       class="mobile-icon-spacing"
       fontSet="material-icons-outlined"
       (click)="onAccountButtonClicked()">
-        {{ 'ACCOUNT_CIRCLE' | translate }}
+        account_circle
     </mat-icon>
 
     <mat-icon
       *ngIf="isLoggedIn"
       class="mobile-icon-spacing"
       [matMenuTriggerFor]="profileMenu">
-        {{ 'ACCOUNT_CIRCLE' | translate }}
+        account_circle
     </mat-icon>
   </ng-container>
 </div>
 
 <mat-menu #profileMenu="matMenu">
   <button (click)="onOpenSavedSearches()" mat-menu-item matSuffix>
-    {{ 'SAVED_SEARCHES' | translate }}
+    Saved Searches
   </button>
   <button (click)="onOpenSearchHistory()" mat-menu-item matSuffix>
-    {{ 'SEARCH_HISTORY' | translate }}
+    Search History
   </button>
   <button [disabled]="(searchType$ | async) === searchTypes.LIST || (searchType$ | async) === searchTypes.CUSTOM_PRODUCTS" (click)="onOpenSavedFilters()" mat-menu-item matSuffx>
-    {{ 'SAVED_FILTERS' | translate }}
+    Saved Filters
   </button>
   <button (click)="onOpenPreferences()" mat-menu-item matSuffix>
-    {{ 'PREFERENCES' | translate }}
+    Preferences
   </button>
 
   <hr class="menu-hr">
   <button (click)="onLogout()"
       mat-menu-item matSuffix>
-    {{ 'SIGN_OUT' | translate }}
+    Sign out
   </button>
 </mat-menu>
 
 <mat-menu #helpMenu="matMenu">
   <div mat-menu-item matSuffix (click)="onOpenHelp('toc')">
     <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
-      <mat-icon>{{ 'VIDEO_LIBRARY' | translate }}</mat-icon>
-      {{ 'VIDEO_TUTORIALS' | translate }}
+      <mat-icon>video_library</mat-icon>
+      Video Tutorials
     </div>
     <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
       <div fxFlex="" class="menu-item-content">
-        <div class="item-title">{{ 'WATCH_OUR_TUTORIALS' | translate }}</div>
+        <div class="item-title">Watch Our Tutorials</div>
         <div class="item-content">
-          {{ 'WE_HAVE_A_COLLECTION_OF_VIDEOS_TO_HELP_YOU_LEARN_AND_USE_VERTEX_TO_MAXIMUM_ADVANTAGE' | translate }}
+          We have a collection of videos to help you learn and use Vertex to maximum advantage.
         </div>
       </div>
       <div fxFlex="" class="menu-item-aside">
@@ -193,18 +193,18 @@
   <div mat-menu-item matSuffix (click)="onOpenUserGuide()">
     <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
       <mat-icon>menu_book</mat-icon>
-      {{ 'VERTEX_USER_GUIDE' | translate }}
+      Vertex User Guide
     </div>
     <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
       <div fxFlex="" class="menu-item-content">
-        <div class="item-title">{{ 'READ_OUR_USER_GUIDE' | translate }}</div>
+        <div class="item-title">Read Our User Guide</div>
         <div class="item-content">
-          {{ 'READ_THE_VERTEX_USER_GUIDE_INCLUDING_SECTIONS_ON_GETTING_STARTED_BASELINE_SEARCHES' | translate }}
-          {{ 'SBAS_SEARCHES_EVENT_SEARCHES_AND_MORE' | translate }}
+          Read the Vertex User Guide, including sections on Getting Started, Baseline Searches,
+          SBAS Searches, Event Searches and more.
         </div>
       </div>
       <div fxFlex="" class="menu-item-aside">
-        <mat-icon class="menu-item-icon">{{ 'MENU_BOOK.' | translate }}</mat-icon>
+        <mat-icon class="menu-item-icon">menu_book</mat-icon>
       </div>
     </div>
   </div>
@@ -214,14 +214,14 @@
   <div mat-menu-item matSuffix (click)="onOpenHyP3Guide()">
     <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
       <mat-icon>book</mat-icon>
-      {{ 'HY_P3_USER_GUIDE' | translate }}
+      HyP3 User Guide
     </div>
     <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
       <div fxFlex="" class="menu-item-content">
-        <div class="item-title">{{ 'READ_OUR_ON_DEMAND_GUIDE' | translate }}</div>
+        <div class="item-title">Read Our On Demand Guide</div>
         <div class="item-content">
-          {{ 'YOU_CAN_HAVE_ASF_PERFORM_SAR_PROCESSING_FOR_YOU_ON_DEMAND_THE_ON_DEMAND_SYSTEM' | translate }}
-          {{ 'IS_POWERED_BY_THE_HY_P3_READ_ABOUT_IT_HERE' | translate }}
+          You can have ASF perform SAR processing for you On Demand. The On Demand system
+          is powered by the HyP3. Read about it here.
         </div>
       </div>
       <div fxFlex="" class="menu-item-aside">
@@ -235,15 +235,15 @@
   <div mat-menu-item matSuffix (click)="onOpenAPIWebSite()">
     <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
       <mat-icon>api</mat-icon>
-      {{ 'ASF_SEARCH_API' | translate }}
+      ASF Search API
     </div>
     <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
       <div fxFlex="" class="menu-item-content">
-        <div class="item-title">{{ 'FIND_SAR_DATA_USING_ASF_API' | translate }}</div>
+        <div class="item-title">Find SAR Data Using ASF API</div>
         <div class="item-content">
-          {{ 'THIS_INTERFACE_IS_POWERED_BY_A_ROBUST_API_YOU_CAN_USE_THAT_API_DIRECTLY_ALLOWING' | translate }}
-          {{ 'YOU_TO_SEARCH_FOR_DATA_FROM_A_COMMAND_LINE_INTERFACE_SO_YOU_CAN_WRITE_YOUR_OWN' | translate }}
-          {{ 'SCRIPTS_FOR_ACCESSING_SAR_DATA' | translate }}
+          This interface is powered by a robust API. You can use that API directly allowing
+          you to search for data from a command line interface so you can write your own
+          scripts for accessing SAR data.
         </div>
       </div>
       <div fxFlex="" class="menu-item-aside">
@@ -257,13 +257,13 @@
   <div mat-menu-item (click)="onOpenASFWebSite()">
     <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
       <mat-icon>language</mat-icon>
-      {{ 'ASF_WEBSITE' | translate }}
+      ASF Website
     </div>
     <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
       <div fxFlex="" class="menu-item-content">
-        <div class="item-title">{{ 'LEARN_MORE_ABOUT_ASF_AND_SAR' | translate }}</div>
+        <div class="item-title">Learn More About ASF & SAR</div>
         <div class="item-content">
-          {{ 'WE_HAVE_A_LARGE_WEBSITE_FULL_OF_RICH_CONTENT_ABOUT_SAR_DATA_AND_HOW_TO_USE_IT' | translate }}
+          We have a large website full of rich content about SAR data and how to use it.
         </div>
       </div>
       <div fxFlex="" class="menu-item-aside">
@@ -277,13 +277,13 @@
   <div mat-menu-item [matMenuTriggerFor]="developerMenu">
     <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
       <mat-icon>language</mat-icon>
-      {{ ' DEVELOPER' | translate }}
+      Developer
     </div>
     <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
       <div fxFlex="" class="menu-item-content">
-        <div class="item-title">{{ ' STATISTICS_AND_GITHUB_REPOSITORY ' | translate }}</div>
+        <div class="item-title">Statistics and Github Repository</div>
         <div class="item-content">
-          {{ ' VIEW_VERTEX_S_CODE_REPOSITORY_OR_METRICS ' | translate }}
+          View vertex's code repository or metrics
         </div>
       </div>
       <div fxFlex="" class="menu-item-aside">
@@ -310,14 +310,14 @@
     </button>
 
     <mat-menu #asfMenu="matMenu">
-      <a mat-menu-item [href]="asfWebsite.contact" target="_blank">{{ ' CONTACT ' | translate }}</a>
-      <a mat-menu-item href="https://www.alaska.edu/nondiscrimination" target="_blank">{{ ' NON_DISCRIMINATION ' | translate }}</a>
+      <a mat-menu-item [href]="asfWebsite.contact" target="_blank">Contact</a>
+      <a mat-menu-item href="https://www.alaska.edu/nondiscrimination" target="_blank">Non-Discrimination</a>
     </mat-menu>
 
     <mat-menu #copyrightMenu="matMenu">
       <a mat-menu-item [href]="asfWebsite.home" target="_blank">© {{anio}} ASF</a>
-      <a mat-menu-item href="https://www.maptiler.com/copyright/" target="_blank">© {{ ' MAP_TILER ' | translate }}</a>
-      <a mat-menu-item href="https://www.openstreetmap.org/copyright" target="_blank">© {{ ' OPEN_STREET_MAP_CONTRIBUTORS ' | translate }}</a>
+      <a mat-menu-item href="https://www.maptiler.com/copyright/" target="_blank">© MapTiler</a>
+      <a mat-menu-item href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap contributors</a>
     </mat-menu>
   </ng-container>
 </mat-menu>
@@ -327,19 +327,19 @@
         href="https://github.com/asfadmin/Discovery-SearchUI"
         target="_blank">
       <mat-icon>code</mat-icon>
-      {{ ' VERTEX_CODE_REPOSITORY ' | translate }}
+      Vertex Code Repository
     </a>
 
     <a mat-menu-item
         [href]="commitUrl"
         target="_blank">
       <mat-icon>code</mat-icon>
-      {{ ' BUILD_COMMIT ' | translate }}
+      Build Commit
     </a>
 
     <a *ngIf="!env.isProd" (click)="listWebsiteLinks()" mat-menu-item>
       <mat-icon>link</mat-icon>
-      {{ ' WEBSITE_LINKS ' | translate }}
+      Website Links
     </a>
 </mat-menu>
 

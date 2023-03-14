@@ -5,7 +5,7 @@ import { MatSharedModule } from '@shared';
 
 import { BaselineChartComponent } from './baseline-chart.component';
 import { AngularResizeEventModule } from 'angular-resize-event';
-import { TranslateModule } from "@ngx-translate/core";
+
 
 
 @NgModule({
@@ -13,8 +13,7 @@ import { TranslateModule } from "@ngx-translate/core";
   imports: [
     CommonModule,
     MatSharedModule,
-    AngularResizeEventModule,
-    TranslateModule,
+    AngularResizeEventModule
   ],
   exports: [
     BaselineChartComponent,

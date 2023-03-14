@@ -8,7 +8,6 @@ import * as filtersStore from '@store/filters';
 
 import * as models from '@models';
 import { PropertyService, ScreenSizeService } from '@services';
-// import { TranslateService } from "@ngx-translate/core";
 
 enum FilterPanel {
   DATE = 'Date',
@@ -41,15 +40,12 @@ export class DatasetFiltersComponent implements OnInit, OnDestroy {
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
 
-
-
   private subs = new SubSink();
 
   constructor(
     public prop: PropertyService,
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
-    // public translate: TranslateService,
   ) {}
 
   ngOnInit() {

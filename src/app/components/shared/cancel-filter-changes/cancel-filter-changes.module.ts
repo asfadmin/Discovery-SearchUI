@@ -5,7 +5,6 @@ import { MatMenuModule } from '@angular/material/menu';
 
 import { MatSharedModule } from '@shared';
 import { CancelFilterChangesComponent } from './cancel-filter-changes.component';
-import { SharedModule } from "@shared";
 
 @NgModule({
   declarations: [
@@ -16,7 +15,6 @@ import { SharedModule } from "@shared";
     MatSharedModule,
     MatButtonToggleModule,
     MatMenuModule,
-    SharedModule,
   ],
   exports: [
     CancelFilterChangesComponent

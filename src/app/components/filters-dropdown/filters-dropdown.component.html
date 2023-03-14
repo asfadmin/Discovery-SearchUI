@@ -8,34 +8,34 @@
     <div class="header">
       <div class="header-title">
         <ng-container *ngIf="selectedSearchType === searchTypes.DATASET">
-          {{ 'SEARCH_FILTERS' | translate }}
+          Search Filters
         </ng-container>
 
         <ng-container *ngIf="selectedSearchType === searchTypes.LIST">
-          {{ 'LIST_SEARCH' | translate }}
+          List Search
         </ng-container>
 
         <ng-container *ngIf="selectedSearchType === searchTypes.BASELINE">
-          {{ 'BASELINE_SEARCH' | translate }}
+          Baseline Search
         </ng-container>
 
         <ng-container *ngIf="selectedSearchType === searchTypes.SBAS">
-          {{ 'SBAS_SEARCH' | translate }}
+          SBAS Search
         </ng-container>
 
         <ng-container *ngIf="selectedSearchType === searchTypes.CUSTOM_PRODUCTS">
-          {{ 'ON_DEMAND_SEARCH' | translate }}
+          On Demand Search
           <app-docs-modal class="info-icon"
                           url="https://docs.asf.alaska.edu/vertex/manual/#on-demand-products-search-options">
           </app-docs-modal>
         </ng-container>
 
         <ng-container *ngIf="selectedSearchType === searchTypes.SARVIEWS_EVENTS">
-          {{ 'EVENT_SEARCH' | translate }}
+          Event Search
         </ng-container>
 
         <ng-container *ngIf="selectedSearchType === searchTypes.DERIVED_DATASETS">
-          {{ 'DERIVED_DATASETS' | translate }}
+          Derived Datasets
         </ng-container>
       </div>
     </div>

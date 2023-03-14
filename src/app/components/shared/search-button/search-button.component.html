@@ -38,7 +38,7 @@
     <button
     mat-menu-item
     [matMenuTriggerFor]="savedSearchesMenu">
-    {{ 'SAVED_SEARCHES' | translate }}
+    Saved Searches
     </button>
   </span>
 
@@ -50,7 +50,7 @@
     [disabled]="searchType === searchTypes.LIST || searchType === searchTypes.CUSTOM_PRODUCTS"
     mat-menu-item
     [matMenuTriggerFor]="savedFiltersMenu">
-    {{ 'SAVED_FILTERS' | translate }}
+    Saved Filters
     </button>
   </span>
 
@@ -70,7 +70,7 @@
     [matMenuTriggerFor]="exportSearchMenu">
     Export
     </button>
-
+  
   <button *ngIf="isDevMode()" mat-menu-item [matMenuTriggerFor]="apiMaturity" matSuffix>
     <mat-icon>swap_horizontal_circle</mat-icon>
     Maturity
@@ -166,7 +166,7 @@
 
   <button (click)="onOpenCustomizeEnv()" mat-menu-item matSuffix >
     <span>
-      {{  'CUSTOMIZE_ENVIRONMENTS'  | translate }}
+      Customize Environments
     </span>
   </button>
 

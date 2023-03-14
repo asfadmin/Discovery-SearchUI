@@ -12,7 +12,6 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { SaveUserFiltersComponent } from './save-user-filters.component';
 import { SearchFiltersModule } from '../saved-searches/saved-search/search-filters';
 import { SaveUserFilterComponent } from './save-user-filter/save-user-filter.component';
-import { SharedModule } from '@shared';
 
 @NgModule({
   declarations: [
@@ -30,7 +29,6 @@ import { SharedModule } from '@shared';
     MatDialogModule,
     MatExpansionModule,
     SearchFiltersModule,
-    SharedModule
   ],
   exports: [
     SaveUserFiltersComponent

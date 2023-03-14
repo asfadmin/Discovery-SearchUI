@@ -1,7 +1,7 @@
 <div *ngIf="breakpoint$ | async as breakpoint">
 
   <div class="menu-button-wrapper" [class.mobile-button-wrapper]="breakpoint === breakpoints.MOBILE">
-    <div class="button-label">{{ 'SEARCH_TYPE' | translate }}</div>
+    <div class="button-label">Search Type</div>
     <div>
       <button
         [matMenuTriggerFor]="searchTypeMenu" (onMenuOpen)="onSearchTypeMenuOpen()"
@@ -25,10 +25,10 @@
           <div class="menu-item-inner">
             <div fxFlex="75%" class="menu-item-content">
               <div class="item-title">
-                {{'GEOGRAPHIC' | translate}}
+                Geographic
               </div>
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                {{'GEOGRAPHIC_SEARCH_ALLOWS_YOU_TO_SEARCH_FOR_DATA_BASED_UPON_A_GEOGRAPHIC_LOCATION' | translate }}
+                Geographic search allows you to search for data based upon a geographic location.
               </div>
               <mat-card-actions>
                 <app-docs-modal class="info-text"
@@ -38,7 +38,7 @@
               </mat-card-actions>
             </div>
             <div fxFlex="25%" class="menu-item-aside">
-              <span class="material-icons-outlined menu-item-icon">{{ ' TRAVEL_EXPLORE ' | translate }}</span>
+              <span class="material-icons-outlined menu-item-icon">travel_explore</span>
             </div>
           </div>
         </div>
@@ -49,10 +49,10 @@
           <div class="menu-item-inner">
             <div fxFlex="75%" class="menu-item-content">
               <div class="item-title">
-                {{'LIST' | translate }}
+                List
               </div>
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                {{'LIST_SEARCH_ALLOWS_YOU_TO_ENTER_OR_UPLOAD_A_LIST_OF_SCENE_OR_FILE_NAMES' | translate }}
+                List search allows you to enter or upload a list of scene or file names.
               </div>
               <mat-card-actions (click)="onOpenDocs($event)">
                 <app-docs-modal class="info-text"
@@ -62,7 +62,7 @@
               </mat-card-actions>
             </div>
             <div fxFlex="25%" class="menu-item-aside">
-              <span class="material-icons-outlined menu-item-icon">{{'LIST' | translate }}</span>
+              <span class="material-icons-outlined menu-item-icon">list</span>
             </div>
           </div>
         </div>
@@ -73,10 +73,11 @@
           <div class="menu-item-inner">
             <div fxFlex="75%" class="menu-item-content">
               <div class="item-title">
-                {{'BASELINE' | translate }}
+                Baseline
               </div>
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                {{'BASELINE_SEARCH_PROVIDES_VISUALIZATION_OF_PERPENDICULAR_AND_TEMPORAL_BASELINE_DATA_FOR_A_CHOSEN' | translate}}
+                Baseline search provides visualization of perpendicular and temporal baseline data for a chosen
+                reference scene.
               </div>
               <mat-card-actions (click)="onOpenDocs($event)">
                 <app-docs-modal class="info-text"
@@ -97,11 +98,11 @@
           <div class="menu-item-inner">
             <div fxFlex="75%" class="menu-item-content">
               <div class="item-title">
-                {{ 'SBAS' | translate }}
+                SBAS
               </div>
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                {{'SEARCH_PROVIDES_PERPENDICULAR_AND_TEMPORAL_BASELINE_DATA_AS_WELL_AS_SCENE_PAIRS_FOR_A_CHOSEN' | translate }}
-                {{'REFERENCE_SCENE' | translate }}
+                SBAS search provides perpendicular and temporal baseline data, as well as scene pairs, for a chosen
+                reference scene.
               </div>
               <mat-card-actions (click)="onOpenDocs($event)">
                 <app-docs-modal class="info-text"
@@ -122,10 +123,10 @@
           <div class="menu-item-inner">
             <div fxFlex="75%" class="menu-item-content">
               <div class="item-title">
-                {{'EVENT' | translate}}
+                Event
               </div>
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                {{'EVENT_SEARCH_HARNESSES_THE_CAPABILITIES_OF_SAR_PROCESSING_TO_MONITOR_NATURAL_DISASTERS' | translate }}
+                Event search harnesses the capabilities of SAR processing to monitor natural disasters.
               </div>
               <mat-card-actions (click)="onOpenDocs($event)">
                 <app-docs-modal class="info-text"
@@ -135,7 +136,7 @@
               </mat-card-actions>
             </div>
             <div fxFlex="25%" class="menu-item-aside">
-              <span class="material-icons-outlined menu-item-icon">{{'VOLCANO' | translate }}</span>
+              <span class="material-icons-outlined menu-item-icon">volcano</span>
             </div>
           </div>
         </div>
@@ -148,13 +149,13 @@
           <div class="menu-item-inner">
             <div fxFlex="75%" class="menu-item-content">
               <div class="item-title">
-                {{'ON_DEMAND_PRODUCTS' | translate}}
+                On Demand Products
                 <span class="login-prompt" [ngClass]="{'login-hidden' : isLoggedIn}">
-                  {{'SIGN_IN_TO_ACCESS' | translate}}
+                  - Sign in to access
                 </span>
               </div>
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                {{'ON_DEMAND_SEARCH_ALLOWS_YOU_TO_VIEW_YOUR_SUBMITTED_ON_DEMAND_JOBS' | translate}}
+                On Demand search allows you to view your submitted On Demand jobs.
               </div>
               <mat-card-actions (click)="onOpenDocs($event)">
                 <app-docs-modal
@@ -176,10 +177,10 @@
           <div class="menu-item-inner">
             <div fxFlex="75%" class="menu-item-content">
               <div class="item-title">
-                {{'DERIVED_DATASETS' | translate }}
+                Derived Datasets
               </div>
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                {{'DERIVED_DATASETS_CONTAIN_A_COLLECTION_OF_DATASETS_AVAILABLE_TO_VIEW_AND_DOWNLOAD'| translate }}
+                Derived datasets contain a collection of datasets available to view and download.
               </div>
             </div>
             <div fxFlex="25%" class="menu-item-aside">
@@ -203,8 +204,8 @@
                 {{ dataset.info }}
               </div>
               <mat-card-actions>
-                <button class="blue-link" (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)" mat-button>{{ 'MORE_INFO | translate }}</button>
-                <button class="blue-link" (click)="onOpenDerivedDataset(dataset.download_url, dataset.name)" mat-button>{{ 'DOWNLOAD' | translate }}</button>
+                <button class="blue-link" (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)" mat-button>More Info</button>
+                <button class="blue-link" (click)="onOpenDerivedDataset(dataset.download_url, dataset.name)" mat-button>Download</button>
               </mat-card-actions>
             </div>
             <div fxFlex="25%" class="menu-item-aside">
@@ -218,4 +219,3 @@
 
   </div>
 </div>
-

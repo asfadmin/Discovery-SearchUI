@@ -1,7 +1,7 @@
 <form #eventsQueryForm="ngForm">
   <mat-form-field>
     <input type="text"
-    placeholder="{{ 'EVENT_SEARCH' | translate }}"
+    placeholder="Event Search"
     (input)="onSearchQueryChange($event)"
     matInput
     [(ngModel)]="eventQuery"

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DownloadAllComponent } from './download-all.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
-import { SharedModule } from "@shared";
+
 
 
 @NgModule({
@@ -16,8 +16,7 @@ import { SharedModule } from "@shared";
   imports: [
     CommonModule,
     MatTooltipModule,
-    MatMenuModule,
-    SharedModule
+    MatMenuModule
   ]
 })
 export class DownloadAllModule { }
