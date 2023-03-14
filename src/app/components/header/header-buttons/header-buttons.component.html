@@ -172,7 +172,7 @@
 <mat-menu #helpMenu="matMenu">
   <div mat-menu-item matSuffix (click)="onOpenHelp('toc')">
     <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
-      <mat-icon>{{ 'VIDEO_LIBRARY' | translate }}</mat-icon>
+      <mat-icon>video_library</mat-icon>
       {{ 'VIDEO_TUTORIALS' | translate }}
     </div>
     <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
@@ -204,7 +204,7 @@
         </div>
       </div>
       <div fxFlex="" class="menu-item-aside">
-        <mat-icon class="menu-item-icon">{{ 'MENU_BOOK.' | translate }}</mat-icon>
+        <mat-icon class="menu-item-icon">menu_book</mat-icon>
       </div>
     </div>
   </div>
@@ -277,13 +277,13 @@
   <div mat-menu-item [matMenuTriggerFor]="developerMenu">
     <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
       <mat-icon>language</mat-icon>
-      {{ ' DEVELOPER' | translate }}
+      {{ 'DEVELOPER' | translate }}
     </div>
     <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
       <div fxFlex="" class="menu-item-content">
-        <div class="item-title">{{ ' STATISTICS_AND_GITHUB_REPOSITORY ' | translate }}</div>
+        <div class="item-title">{{ 'STATISTICS_AND_GITHUB_REPOSITORY' | translate }}</div>
         <div class="item-content">
-          {{ ' VIEW_VERTEX_S_CODE_REPOSITORY_OR_METRICS ' | translate }}
+          {{ 'VIEW_VERTEX_S_CODE_REPOSITORY_OR_METRICS' | translate }}
         </div>
       </div>
       <div fxFlex="" class="menu-item-aside">
@@ -327,19 +327,19 @@
         href="https://github.com/asfadmin/Discovery-SearchUI"
         target="_blank">
       <mat-icon>code</mat-icon>
-      {{ ' VERTEX_CODE_REPOSITORY ' | translate }}
+      {{ 'VERTEX_CODE_REPOSITORY' | translate }}
     </a>
 
     <a mat-menu-item
         [href]="commitUrl"
         target="_blank">
       <mat-icon>code</mat-icon>
-      {{ ' BUILD_COMMIT ' | translate }}
+      {{ 'BUILD_COMMIT' | translate }}
     </a>
 
     <a *ngIf="!env.isProd" (click)="listWebsiteLinks()" mat-menu-item>
       <mat-icon>link</mat-icon>
-      {{ ' WEBSITE_LINKS ' | translate }}
+      {{ 'WEBSITE_LINKS' | translate }}
     </a>
 </mat-menu>
 
