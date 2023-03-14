@@ -7,7 +7,7 @@
 
   <div class="dl-title-group">
     <h1>
-      Downloads
+      {{ 'DOWNLOADS' | translate }}
     </h1>
     <div class="dl-subtitle">
       {{ numberOfProducts$ | async }} Files, {{ (totalSize$ | async) | readableSizeFromBytes }}
@@ -27,13 +27,13 @@
   </div>
 
   <div class="dl-close-x" (click)="onCloseDownloadQueue()">
-    <mat-icon>close</mat-icon>
+    <mat-icon></mat-icon>
   </div>
 
 </div>
 
 <div *ngIf="showDemWarning" class="dem-warning">
-  Resampled DEM (SRTM or NED) used for RTC processing.
+  {{ 'RESAMPLED_DEM_SRTM_OR_NED_USED_FOR_RTC_PROCESSING' |  translate }}
   <a class="more-link"
      target="_blank"
      href="https://asf.alaska.edu/information/palsar-rtc-dem-information/">
@@ -41,7 +41,7 @@
   </a>
 </div>
 <div *ngIf="showRestrictedDatasetWarning" class="dem-warning">
-  Products in your queue may require a restricted dataset agreement.
+  {{ 'PRODUCTS_IN_YOUR_QUEUE_MAY_REQUIRE_A_RESTRICTED_DATASET_AGREEMENT' |  translate }}
   <a class="more-link"
      target="_blank"
      href="https://asf.alaska.edu/restricted-data-access-request/">
@@ -100,7 +100,7 @@
             <ng-container *ngIf="(products$ | async).length < 1">
               <div class="dl-empty-message">
                 <br><br>
-                Your download queue is empty.
+                {{ 'YOUR_DOWNLOAD_QUEUE_IS_EMPTY' |  translate }}
               </div>
             </ng-container>
 
@@ -123,7 +123,7 @@
           <button *ngIf="previousQueue !== null"
                   (click)="onRestoreQueue(previousQueue)" mat-button>
             <mat-icon style="margin-right: 5px;">undo</mat-icon>
-            <span>Restore</span>
+            <span>{{ 'RESTORE' |  translate }}</span>
           </button>
         </div>
         <ng-container>
@@ -156,24 +156,24 @@
               <button mat-flat-button color="primary" [matMenuTriggerFor]="dataMenu" [disabled]="!areAnyProducts"
                       class="btn-primary"
                       style="margin-left: 15px;">
-                Data Download
+                {{ 'DATA_DOWNLOAD' |  translate }}
                 <mat-icon>arrow_drop_up</mat-icon>
               </button>
               <button mat-flat-button color="primary" [matMenuTriggerFor]="metadataMenu" [disabled]="!areAnyProducts" class="btn-primary">
-                Metadata Download
+                {{ 'METADATA_DOWNLOAD' |  translate }}
                 <mat-icon>arrow_drop_up</mat-icon>
               </button>
             </ng-container>
 
             <ng-container *ngIf="breakpoint === breakpoints.MOBILE || dlWidth < dlWidthMin">
               <button mat-flat-button [matMenuTriggerFor]="typesMenu" style="padding: 0 0 0 5px; margin-left: 15px;">
-                Downloads
+                {{ 'DOWNLOADS' | translate }}
                 <mat-icon>arrow_drop_up</mat-icon>
               </button>
 
               <mat-menu #typesMenu="matMenu">
                 <button mat-menu-item [matMenuTriggerFor]="dataMenu" [disabled]="!areAnyProducts" class="btn-primary">
-                  Data
+                  {{ 'DATA' |  translate }}
                 </button>
                 <button mat-menu-item [matMenuTriggerFor]="metadataMenu" class="btn-primary">
                   Metadata
@@ -188,24 +188,24 @@
               >
               </app-download-all>
               <button mat-menu-item (click)="onMakeDownloadScript()">
-                Download Python Script (.py)
+                {{ 'DOWNLOAD_PYTHON_SCRIPT_PY' |  translate }}
               </button>
               <button mat-menu-item [disabled]="queueHasOnDemandProducts || queueHasEventMonitoringProducts" (click)="onMetalinkDownload()">
-                Metadata (metalink)
+                {{ 'METADATA_METALINK' |  translate }}
               </button>
             </mat-menu>
 
             <mat-menu #metadataMenu="matMenu" yPosition="above">
               <button mat-menu-item [disabled]="queueHasOnDemandProducts || queueHasEventMonitoringProducts" (click)="onCsvDownload()">
-                Metadata (csv)
+                {{ 'METADATA_CSV' |  translate }}
               </button>
 
               <button mat-menu-item [disabled]="queueHasOnDemandProducts || queueHasEventMonitoringProducts" (click)="onKmlDownload()">
-                Metadata (kml)
+                {{ 'METADATA_KML' |  translate }}
               </button>
 
               <button mat-menu-item [disabled]="queueHasOnDemandProducts || queueHasEventMonitoringProducts" (click)="onGeojsonDownload()">
-                Metadata (geojson)
+                {{ 'METADATA_GEOJSON' |  translate }}
               </button>
             </mat-menu>
           </div>

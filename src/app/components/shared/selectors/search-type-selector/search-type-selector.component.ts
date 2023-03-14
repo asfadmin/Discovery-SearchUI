@@ -12,6 +12,7 @@ import * as models from '@models';
 
 import { ScreenSizeService } from '@services';
 import { AnalyticsEvent, Breakpoints, derivedDatasets } from '@models';
+import { TranslateService } from "@ngx-translate/core";
 
 // Declare GTM dataLayer array.
 declare global {
@@ -22,12 +23,15 @@ declare global {
   selector: 'app-search-type-selector',
   templateUrl: './search-type-selector.component.html',
   styleUrls: ['./search-type-selector.component.scss']
+
 })
 export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
   @ViewChild(MatMenu) searchMenu: MatMenu;
   @ViewChild('firstItem') firstItem: ElementRef;
   @Input() selected: string;
+  param = {value: ' world'};
+
 
   public searchType: models.SearchType = models.SearchType.DATASET;
   public datasets = derivedDatasets;
@@ -39,9 +43,11 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   public isReadMore = true;
 
   constructor(
+    public translate: TranslateService,
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService
-  ) { }
+  )
+  {}
 
   ngOnInit() {
     this.subs.add(
@@ -73,10 +79,10 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
       value: dataset_name
     };
 
-    this.openNewWindow(dataset_url, analyticsEvent);
+    SearchTypeSelectorComponent.openNewWindow(dataset_url, analyticsEvent);
   }
 
-  private openNewWindow(url, analyticsEvent: AnalyticsEvent): void {
+  private static openNewWindow(url, analyticsEvent: AnalyticsEvent): void {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       'event': analyticsEvent.name,
@@ -95,14 +101,16 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
     const panelId = this.searchMenu.panelId;
     document.getElementById(panelId).focus();
     setTimeout(() => {
-        this.searchMenu.focusFirstItem();
-        this.searchMenu.resetActiveItem();
-        document.getElementById('firstItem').focus();
-        document.getElementById(panelId).focus();
-      }, 10 );
+      this.searchMenu.focusFirstItem();
+      this.searchMenu.resetActiveItem();
+      document.getElementById('firstItem').focus();
+      document.getElementById(panelId).focus();
+    }, 10);
   }
 
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
+
+
 }

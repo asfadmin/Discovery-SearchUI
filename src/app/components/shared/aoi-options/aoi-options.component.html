@@ -1,7 +1,7 @@
 <div (dragover)="onFileHovered($event)" class="layout">
   <div *ngIf="showHeader" class="header-layout mb">
     <div class="header-layout">
-      <b>AOI Options</b>
+      <b>{{ 'AOI_OPTIONS' |  translate }}</b>
       <mat-icon (click)="onOpenHelp()" class="clickable" style="margin-left: 10px;">info</mat-icon>
     </div>
 
@@ -20,7 +20,7 @@
       [class.aoi-input--mobile]="breakpoint === breakpoints.MOBILE">
 
       <mat-form-field [class.invalid-input-animation]="isAOIError" class="w100">
-        <mat-label> Area of Interest • WKT </mat-label>
+        <mat-label> {{ 'AREA_OF_INTEREST_WKT' | translate }} </mat-label>
         <textarea
           (change)="onInputSearchPolygon($event)"
           [value]="polygon"

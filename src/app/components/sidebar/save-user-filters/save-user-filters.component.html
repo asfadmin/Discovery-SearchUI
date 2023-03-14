@@ -2,7 +2,7 @@
 'saved-filters': breakpoint > breakpoints.SMALL}">
   <div class="saved-filters-presets__header">
     <div class="saved-filters-presets__header-title">
-      <span>Saved Filters</span>
+      <span>{{ 'SAVED_FILTERS' | translate }}</span>
     </div>
   </div>
 
@@ -33,7 +33,7 @@
                 'saved-filters-presets__footer': breakpoint > breakpoints.SMALL}">
     <div class="saved-filters-presets__close-button">
       <button (click)="onClose()" mat-raised-button color="primary">
-        Done
+        {{ ' DONE ' | translate }}
       </button>
     </div>
   </div>

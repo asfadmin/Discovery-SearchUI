@@ -9,7 +9,7 @@
 
       <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
         <mat-panel-title>
-          Search Options
+          {{ 'SEARCH_OPTIONS' | translate }}
         </mat-panel-title>
       </mat-expansion-panel-header>
 
@@ -25,7 +25,7 @@
 
       <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
         <mat-panel-title class="panel-title">
-          Search List Input
+          {{ 'SEARCH_LIST_INPUT'| translate }}
           <div class="asf-manual-link">
             <app-docs-modal
               url="https://docs.asf.alaska.edu/vertex/manual/#list-search-options">
@@ -39,7 +39,7 @@
           <div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: center; margin-bottom: 10px;">
             <div style="margin-right: 15px;">
               <h4>
-                <span>List Type: </span>
+                <span>{{ 'LIST_TYPE'| translate }} </span>
               </h4>
             </div>
             <div>
@@ -49,14 +49,14 @@
                   (click)="onSceneModeSelected()"
                   [value]="types.SCENE"
                   matTooltip="Scene List Search">
-                  Scene
+                  {{ 'SCENE' | translate }}
                 </mat-button-toggle>
 
                 <mat-button-toggle
                   (click)="onProductModeSelected()"
                   [value]="types.PRODUCT"
                   matTooltip="File List Search">
-                  File
+                  {{ 'FILE' |  translate }}
                 </mat-button-toggle>
               </mat-button-toggle-group>
             </div>
@@ -79,7 +79,7 @@
         <div class="ls-example">
           <div>
             <span>
-              Example: {{listExamples[mode]}}
+              {{ 'EXAMPLE:' | translate }}: {{listExamples[mode]}}
             </span>
             <div>
               <app-copy-to-clipboard

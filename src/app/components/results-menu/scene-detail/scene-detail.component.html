@@ -296,8 +296,9 @@
       [disabled]="!hasBaseline"
       (click)="makeBaselineSearch()"
       class="mini-toggle-button search-button"
-      target="_blank">
-      Baseline
+      target="_blank"
+    >
+      {{ 'BASELINE' |  translate }}
     </button>
   </div>
 
@@ -314,8 +315,9 @@
       [disabled]="!hasBaseline"
       (click)="makeSBASSearch()"
       class="mini-toggle-button search-button"
-      target="_blank">
-      SBAS
+      target="_blank"
+    >
+      {{ 'SBAS' |  translate }}
     </button>
   </div>
 
@@ -355,7 +357,7 @@
       class="mini-toggle-button search-button"
       target="_blank"
     >
-      List
+      {{ 'LIST' |  translate }}
     </button>
   </div>
 </div>

@@ -31,6 +31,8 @@ import { AngularResizeEventModule } from 'angular-resize-event';
 import { CreateSubscriptionModule } from '../../header/create-subscription';
 import {DocsModalModule} from '@components/shared/docs-modal';
 import {Hyp3UrlModule} from '@components/shared/hyp3-url/hyp3-url.module';
+import { SharedModule } from '@shared';
+
 
 
 @NgModule({
@@ -64,7 +66,8 @@ import {Hyp3UrlModule} from '@components/shared/hyp3-url/hyp3-url.module';
         ScrollingModule,
         CreateSubscriptionModule,
         DocsModalModule,
-        Hyp3UrlModule
+        Hyp3UrlModule,
+        SharedModule
     ]
 })
 export class ProcessingQueueModule {

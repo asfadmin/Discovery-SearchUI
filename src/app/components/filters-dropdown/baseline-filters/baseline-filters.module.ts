@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatExpansionModule } from '@angular/material/expansion';
 
-import { MatSharedModule } from '@shared';
+import {MatSharedModule, SharedModule} from '@shared';
 import { SeasonSelectorModule } from '@components/shared/selectors/season-selector';
 import { DateSelectorModule } from '@components/shared/selectors/date-selector';
 import { BaselineFiltersComponent } from './baseline-filters.component';
@@ -11,7 +11,6 @@ import { SearchTypeSelectorModule } from '@components/shared/selectors/search-ty
 import { BaselineSlidersModule } from './baseline-sliders';
 import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
 import {DocsModalModule} from '@components/shared/docs-modal';
-
 
 @NgModule({
   declarations: [BaselineFiltersComponent],
@@ -25,7 +24,8 @@ import {DocsModalModule} from '@components/shared/docs-modal';
         SearchTypeSelectorModule,
         BaselineSlidersModule,
         CopyToClipboardModule,
-        DocsModalModule
+        DocsModalModule,
+        SharedModule
     ],
   exports: [
     BaselineFiltersComponent
