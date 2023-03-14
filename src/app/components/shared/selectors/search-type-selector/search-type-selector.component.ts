@@ -98,8 +98,6 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   }
 
   public onSearchTypeMenuOpen() {
-    console.log('menu opened:', this.searchMenu);
-    console.log('setting focus');
     const panelId = this.searchMenu.panelId;
     document.getElementById(panelId).focus();
     setTimeout(() => {

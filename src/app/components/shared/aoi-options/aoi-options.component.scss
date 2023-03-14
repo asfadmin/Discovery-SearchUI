@@ -27,6 +27,14 @@
   flex-direction: row;
   justify-content: flex-start;
 }
+.aoi-text-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: stretch;
+  width: 60%;
+  margin-top: 15px;
+}
 
 .aoi-input-area {
   display: flex;
@@ -45,7 +53,7 @@
 }
 
 .aoi-input--desktop {
-  width: 60%;
+  // width: 60%;
   margin-right: 10px;
 }
 

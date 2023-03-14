@@ -282,16 +282,14 @@
     'menu-override': (searchType === searchTypes.BASELINE
     && breakpoint === breakpoints.FULL)
   }
-  "
->
+  ">
   <div class="search-button-label">SEARCH:</div>
   <div *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS"
     [matTooltip]="
       hasBaseline
         ? 'Use this scene in the Baseline Tool for interferometry'
         : 'No suitable products for this tool'
-    "
-  >
+    ">
     <button
       mat-stroked-button
       color="primary"
@@ -305,13 +303,12 @@
   </div>
 
   <div
-  *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS"
-    [matTooltip]="
-      hasBaseline
-        ? 'Use this scene in the SBAS Tool to make product pairs for interferometry'
-        : 'No suitable products for this tool'
-    "
-  >
+    *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS"
+      [matTooltip]="
+        hasBaseline
+          ? 'Use this scene in the SBAS Tool to make product pairs for interferometry'
+          : 'No suitable products for this tool'
+      ">
     <button
       mat-stroked-button
       color="primary"
@@ -323,30 +320,30 @@
       {{ 'SBAS' |  translate }}
     </button>
   </div>
+
   <div
-  [matTooltip]="
-  searchType === searchTypes.SARVIEWS_EVENTS ? 'Geographic search based on event polygon' : !(
-    !(prop.isRelevant(p.PATH, dataset) &&
-      prop.isRelevant(p.FRAME, dataset)) ||
-    dataset?.id === 'UAVSAR'
-  ) ? 'Geographic search based on this scene\'s path/frame' : 'Not able to select similar scenes from this source'"
-  >
+    [matTooltip]="
+    searchType === searchTypes.SARVIEWS_EVENTS ? 'Geographic search based on event polygon' : !(
+      !(prop.isRelevant(p.PATH, dataset) &&
+        prop.isRelevant(p.FRAME, dataset)) ||
+      dataset?.id === 'UAVSAR'
+    ) ? 'Geographic search based on this scene\'s path/frame' : 'Not able to select similar scenes from this source'">
+
     <button
-    mat-stroked-button
-    color="primary"
-    [disabled]="
-      !(
-        (prop.isRelevant(p.PATH, dataset) &&
-          prop.isRelevant(p.FRAME, dataset)) ||
-        dataset?.id === 'UAVSAR'
-      )
-    "
-    (click)="findSimilarScenes()"
-    class="mini-toggle-button search-button"
-  >
-    <span *ngIf="breakpoint === breakpoints.MOBILE">Similar</span>
-    <span *ngIf="breakpoint != breakpoints.MOBILE">{{searchType !== searchTypes.SARVIEWS_EVENTS ? 'More Like This' : 'Geographic'}}</span>
-</button>
+      mat-stroked-button
+      color="primary"
+      [disabled]="
+        !(
+          (prop.isRelevant(p.PATH, dataset) &&
+            prop.isRelevant(p.FRAME, dataset)) ||
+          dataset?.id === 'UAVSAR'
+        )
+      "
+      (click)="moreLikeThis()"
+      class="mini-toggle-button search-button">
+      <span *ngIf="breakpoint === breakpoints.MOBILE">More</span>
+      <span *ngIf="breakpoint != breakpoints.MOBILE">{{searchType !== searchTypes.SARVIEWS_EVENTS ? 'More Like This' : 'Geographic'}}</span>
+    </button>
   </div>
   <div
   *ngIf="searchType === searchTypes.SARVIEWS_EVENTS"

@@ -10,6 +10,7 @@ import { ScenesService, ScreenSizeService } from '@services';
 import { getScenes } from '@store/scenes';
 import { combineLatest } from 'rxjs';
 import { Breakpoints, menuAnimation } from '@models';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-job-product-name-selector',
@@ -86,12 +87,16 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
     );
   }
 
+  public onSuggestionSelected(event: MatAutocompleteSelectedEvent): void {
+    this.setProductNameFilter(event.option.value);
+  }
+
   public onFilterProductName(event: Event): void {
     const productName = (event.target as HTMLInputElement).value;
     this.setProductNameFilter(productName);
   }
 
-  private setProductNameFilter(productName: string ) {
+  private setProductNameFilter(productName: string) {
     const action = new filtersStore.SetProductNameFilter(productName);
     this.store$.dispatch(action);
   }

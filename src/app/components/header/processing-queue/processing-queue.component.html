@@ -19,7 +19,7 @@
 
       <ng-container *ngIf="breakpoint !== breakpoints.MOBILE">
         <div class="branding-block">
-          <div class="hyp3-url">
+          <div (click)="onOpenPreferences()" class="hyp3-url clickable">
             <app-hyp3-url></app-hyp3-url>
           </div>
           <div class="on-demand-text">
@@ -32,7 +32,7 @@
       </ng-container>
       <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
         <div class="branding-block">
-          <div class="hyp3-url hyp3-url-mobile">
+          <div (click)="onOpenPreferences()" class="clickable hyp3-url hyp3-url-mobile">
             <app-hyp3-url></app-hyp3-url>
           </div>
         </div>

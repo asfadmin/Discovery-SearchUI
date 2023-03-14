@@ -39,6 +39,7 @@ export class SearchEffects {
     format: new GeoJSON(),
   });
 
+
   constructor(
     private actions$: Actions,
     private store$: Store<AppState>,
@@ -48,7 +49,8 @@ export class SearchEffects {
     private hyp3Service: services.Hyp3Service,
     private sarviewsService: services.SarviewsEventsService,
     private http: HttpClient,
-    private notificationService: services.NotificationService
+    private notificationService: services.NotificationService,
+    // private environmentService: services.EnvironmentService,
   ) {}
 
   public clearMapInteractionModeOnSearch = createEffect(() => this.actions$.pipe(
@@ -280,7 +282,9 @@ export class SearchEffects {
             }
           ).join(',');
 
-          return this.asfApiService.query<any[]>({ 'granule_list': granules }).pipe(
+          const collections = this.asfApiService.collections();
+
+          return this.asfApiService.query<any[]>({ 'granule_list': granules, 'collections': collections.join(',') }).pipe(
             map(results => this.productService.fromResponse(results)
               .filter(product => !product.metadata.productType.includes('METADATA'))
               .reduce((products, product) => {
@@ -332,7 +336,9 @@ export class SearchEffects {
             }
           ).join(',');
 
-          return this.asfApiService.query<any[]>({ 'granule_list': granules }).pipe(
+          const collections = this.asfApiService.collections();
+
+          return this.asfApiService.query<any[]>({ 'granule_list': granules, 'collections': collections.join(',') }).pipe(
             map(results => this.productService.fromResponse(results)
               .filter(product => !product.metadata.productType.includes('METADATA'))
               .reduce((products, product) => {

@@ -1,12 +1,14 @@
 <mat-action-list class="h100 mp0"
-[ngClass]="{'list-view': (breakpoint$ | async) >= breakpoints.MEDIUM,
-  'baseline-list-view-medium': (breakpoint$ | async) > breakpoints.SMALL
-  && (breakpoint$ | async) <= breakpoints.MEDIUM
-  && searchType === SearchTypes.BASELINE,
-  'baseline-list-view-small': (breakpoint$ | async) === breakpoints.SMALL
-  && searchType === SearchTypes.BASELINE
-}
-">
+[ngClass]="{
+  'list-view': (breakpoint$ | async) >= breakpoints.MEDIUM,
+  'baseline-list-view-medium':
+      (breakpoint$ | async) > breakpoints.SMALL &&
+      (breakpoint$ | async) <= breakpoints.MEDIUM &&
+      searchType === SearchTypes.BASELINE,
+  'baseline-list-view-small':
+    (breakpoint$ | async) === breakpoints.SMALL &&
+    searchType === SearchTypes.BASELINE
+}">
   <cdk-virtual-scroll-viewport class="list-viewport h100" [itemSize]="searchType === SearchTypes.SBAS ? 48 : 60">
     <div *ngIf="breakpoint$ | async as breakpoint">
       <ng-container
@@ -19,8 +21,6 @@
           <app-scene
             (click)="onSceneSelected(scene.id)"
             (toggleScene)="onToggleScene(scene.groupId)"
-            (ToggleOnDemandScene)="onToggleOnDemandScene($event)"
-            (zoomTo)="onZoomTo(scene)"
             [scene]="scene"
             [offsets]="offsets"
             [searchType]="searchType"
@@ -32,16 +32,15 @@
           </app-scene>
         </div>
       </ng-container>
-      <ng-container
-      *ngIf="
-        searchType === SearchTypes.SARVIEWS_EVENTS">
-      <div *cdkVirtualFor="let event of sarviewsEvents">
-        <app-sarviews-event
-          [event] = event
-          [selected] = "event.event_id === selectedEvent">
-        </app-sarviews-event>
-      </div>
-    </ng-container>
+
+      <ng-container *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS">
+        <div *cdkVirtualFor="let event of sarviewsEvents">
+          <app-sarviews-event
+            [event]=event
+            [selected]="event.event_id === selectedEvent">
+          </app-sarviews-event>
+        </div>
+      </ng-container>
 
       <ng-container *ngIf="searchType === SearchTypes.SBAS">
         <div *cdkVirtualFor="let pair of pairs">

@@ -13,6 +13,7 @@ import * as queueStore from '@store/queue';
 import * as hyp3Store from '@store/hyp3';
 import * as searchStore from '@store/search';
 import * as userStore from '@store/user';
+import * as uiStore from '@store/ui';
 import * as models from '@models';
 import * as services from '@services';
 
@@ -407,6 +408,10 @@ export class ProcessingQueueComponent implements OnInit {
 
   public onOpenTabMenu() {
     this.isTabMenuOpen = true;
+  }
+
+  public onOpenPreferences(): void {
+    this.store$.dispatch(new uiStore.OpenPreferenceMenu());
   }
 
   public onValidateOnlyToggle(val: boolean): void {

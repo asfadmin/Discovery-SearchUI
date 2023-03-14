@@ -46,6 +46,8 @@ export interface FiltersState {
 
   hyp3ProductTypes: string[];
   sarviewsEventProductSorting: EventProductSort;
+
+  geocode: null | string;
 }
 
 
@@ -112,7 +114,9 @@ export const initState: FiltersState = {
     sortType: EventProductSortType.DATE,
     sortDirection: EventProductSortDirection.DESCENDING
   },
-  hyp3ProductTypes: []
+  hyp3ProductTypes: [],
+
+  geocode: null
 };
 
 
@@ -321,16 +325,6 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
-    case FiltersActionType.SET_FRAME_END: {
-      return {
-        ...state,
-        frameRange: {
-          ...state.frameRange,
-          end: action.payload
-        }
-      };
-    }
-
     case FiltersActionType.SET_FILTERS_SIMILAR_TO: {
       const metadata = action.payload.product.metadata;
 
@@ -386,6 +380,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         subtypes: [],
         flightDirections: new Set<models.FlightDirection>([]),
         selectedMission: null,
+        geocode: null
       };
     }
 
@@ -698,6 +693,12 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         sarviewsEventProductSorting: {...action.payload}
       };
     }
+    case FiltersActionType.SET_GEOCODE: {
+      return {
+        ...state,
+        geocode: action.payload
+      }
+    }
     case FiltersActionType.CLEAR_HYP3_PRODUCT_TYPES: {
       return {
         ...state,
@@ -975,3 +976,8 @@ export const getSarviewsEventProductSorting = createSelector(
   getFiltersState,
   (state: FiltersState) => state.sarviewsEventProductSorting
 );
+
+export const getGeocodeArea = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.geocode
+)

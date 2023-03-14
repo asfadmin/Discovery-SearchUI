@@ -143,25 +143,23 @@ export class UrlStateService {
     if (this.loadLocations['dataset'] !== models.LoadTypes.URL) {
       this.store$.dispatch(new filterStore.SetSelectedDataset(profile.defaultDataset));
     }
+
     if (this.loadLocations['maxResults'] !== models.LoadTypes.URL) {
       this.store$.dispatch(new filterStore.SetMaxResults(profile.maxResults));
     }
+
     if (profile.theme && profile.theme !== 'System Preferences') {
-      const body = document.getElementsByTagName('body')[0];
-      body.removeAttribute('class');
-      body.classList.add(`theme-${profile.theme}`);
+      this.themeService.setTheme(`theme-${profile.theme}`);
     } else if (profile.theme) {
-      this.themeService.theme.pipe(take(1)).subscribe(
+      this.themeService.theme$.pipe(
+        take(1)
+      ).subscribe(
         themePreference => {
-          const body = document.getElementsByTagName('body')[0];
-          body.removeAttribute('class');
-          body.classList.add(`theme-${themePreference}`);
+          this.themeService.setTheme(`theme-${themePreference}`);
         }
       );
     } else {
-      const body = document.getElementsByTagName('body')[0];
-      body.removeAttribute('class');
-      body.classList.add('theme-light');
+      this.themeService.setTheme('theme-light');
     }
     const action = profile.mapLayer === models.MapLayerTypes.STREET ?
       new mapStore.SetStreetView() :

@@ -89,6 +89,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(userStore.getSavedFilters).subscribe(savedFilters => {
         this.userFilters = savedFilters;
+
         for (const searchtype in SearchType) {
           if (searchtype !== 'LIST' && searchtype !== 'CUSTOM_PRODUCTS') {
             const defaultPreset: SavedFilterPreset = {
@@ -102,7 +103,9 @@ export class PreferencesComponent implements OnInit, OnDestroy {
           }
         }
 
-        savedFilters.forEach(preset => this.userFiltersBySearchType[preset.searchType]?.push(preset));
+        savedFilters.forEach(
+          preset => this.userFiltersBySearchType[preset.searchType]?.push(preset)
+        );
 
         const searchTypeKeys = Object.keys(this.selectedFiltersIDs);
         searchTypeKeys.forEach(key =>
@@ -151,22 +154,21 @@ export class PreferencesComponent implements OnInit, OnDestroy {
 
   public onChangeDefaultTheme(theme: string) {
     this.currentTheme = theme;
-    if (theme === 'System Preferences') {
-      this.themeService.theme.pipe(take(1)).subscribe(currentPreference => {
-        let body = document.getElementsByTagName("body")[0];
-        // removes all classes from body, probably not best for later on
-        body.removeAttribute('class');
-        body.classList.add(`theme-${currentPreference}`)
-        this.saveProfile()
 
-      })
+    if (theme === 'System Preferences') {
+      this.themeService.theme$.pipe(
+        take(1)
+      ).subscribe(currentPreference => {
+        this.setTheme(`theme-${currentPreference}`);
+      });
     } else {
-      let body = document.getElementsByTagName("body")[0];
-      // removes all classes from body, probably not best for later on
-      body.removeAttribute('class');
-      body.classList.add(`theme-${this.currentTheme}`)
-      this.saveProfile()
+      this.setTheme(`theme-${this.currentTheme}`);
     }
+  }
+
+  public setTheme(themeName: string) {
+    this.themeService.setTheme(themeName);
+    this.saveProfile()
   }
 
   public resetHyp3Url() {
