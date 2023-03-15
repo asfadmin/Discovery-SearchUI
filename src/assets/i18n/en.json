@@ -174,7 +174,7 @@
   "METADATA_METALINK": "Metadata (metalink)",
   "METADATA_CSV": "Metadata (csv)",
   "METADATA_KML": "Metadata (kml)",
-  "METADATA_GEOJSON": "Metadata (geojson)",
+  "METADATA_GEOJSON": "Metadata (geojson)", 
   "LOOKS_ONE": "looks_one",
   "PERFORMING_BASELINE_SEARCHES": "Performing Baseline Searches",
   "WHEN_YOU_PERFORM_A_SEARCH_AND_THE_RESULTS_ARE_RETURNED_YOU_CAN_BROWSE_THE_LIST_OF_RESULTING_SCENES": "When you perform a search and the results are returned, you can browse the list of resulting scenes",
@@ -619,7 +619,6 @@
   "SHOW_ICON_FALSE": "showIcon : false,",
   "TITLE_HOW_CAN_WE_HELP_YOU": "title : \"How can we help you?\",",
   "SUBJECT": "subject : \"\",",
-  "DETAILS": "details : \"\"",
-  "LOOKING_FOR_DEMS": "Looking for DEMs"
+  "DETAILS": "details : \"\""
 }
 
