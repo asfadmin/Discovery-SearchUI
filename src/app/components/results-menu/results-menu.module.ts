@@ -12,6 +12,8 @@ import { DesktopResultsMenuModule } from './desktop-results-menu/desktop-results
 import { MobileResultsMenuModule } from './mobile-results-menu/mobile-results-menu.module';
 
 import { ResultsMenuComponent } from './results-menu.component';
+import { SharedModule } from '@shared';
+
 
 @NgModule({
   declarations: [

@@ -99,7 +99,7 @@
       </div>
       <div fxFlex="35px" class="close-icon">
         <button (click)="closeDialog()" mat-icon-button>
-          <mat-icon class="close-button">close</mat-icon>
+          <mat-icon class="close-button"></mat-icon>
         </button>
       </div>
     </div>
@@ -159,7 +159,7 @@
             class="on-demand-scene-names"
             *ngIf="(searchType$ | async) === searchTypes.CUSTOM_PRODUCTS"
           >
-            <li><b>Reference: </b> {{ (scene$ | async).name }}</li>
+            <li><b>{{ 'REFERENCE' | translate }}: </b> {{ (scene$ | async).name }}</li>
           </ul>
           <app-scene-metadata
             [scene]="scene$ | async"

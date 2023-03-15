@@ -15,6 +15,7 @@ import { HeaderButtonsComponent } from './header-buttons.component';
 import { PreferencesComponent } from './preferences/preferences.component';
 import { CustomizeEnvComponent } from './customize-env/customize-env.component';
 import { OnlynumberDirective } from '@directives/onlynumber.directive';
+import { SharedModule } from '@shared';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { OnlynumberDirective } from '@directives/onlynumber.directive';
         MatSelectModule,
         DatasetSelectorModule,
         MatFormFieldModule,
+        SharedModule
     ],
   exports: [ HeaderButtonsComponent ]
 })

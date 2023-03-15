@@ -10,7 +10,7 @@
 
         <div class="flex-row flex-start">
           <div *ngIf="jobType.id != 'AUTORIFT'" class="flex-field option-header">
-            Processing Options
+            {{ 'PROCESSING_OPTIONS' |  translate }}
           </div>
         </div>
         <div>
@@ -32,7 +32,7 @@
         <div class="flex-row flex-start flex-wrap">
           <div class="flex-field toggle-options">
             <div *ngIf="jobType.id != 'AUTORIFT'" class="option-header">
-              Apply
+              {{ ' APPLY '  |  translate }}
             </div>
             <div class="flex-field checkbox-list" *ngFor="let option of jobType.options">
               <app-checkbox-option
@@ -47,7 +47,7 @@
           </div>
           <div class="flex-field">
             <div *ngIf="jobType.id != 'AUTORIFT'" class="option-header">
-              Include
+              {{ ' INCLUDE '  |  translate }}
             </div>
             <div class="flex-field checkbox-list" *ngFor="let option of jobType.options">
               <app-checkbox-option

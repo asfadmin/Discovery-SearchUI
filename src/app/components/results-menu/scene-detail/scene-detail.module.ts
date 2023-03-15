@@ -16,7 +16,9 @@ import { ImageDialogModule } from './image-dialog';
 import { SceneDetailComponent } from './scene-detail.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSliderModule } from '@angular/material/slider';
-import { EventPolygonSliderModule } from './event-polygon-slider';
+import { EventPolygonSliderModule } from './../event-polygon-slider';
+import { SharedModule } from '@shared';
+
 
 @NgModule({
   declarations: [SceneDetailComponent],
@@ -36,7 +38,8 @@ import { EventPolygonSliderModule } from './event-polygon-slider';
         EventMetadataModule,
         MatButtonToggleModule,
         MatSliderModule,
-        EventPolygonSliderModule
+        EventPolygonSliderModule,
+        SharedModule
     ],
   exports: [SceneDetailComponent],
 })
