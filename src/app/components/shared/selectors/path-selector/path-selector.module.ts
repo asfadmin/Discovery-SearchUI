@@ -9,6 +9,7 @@ import { MatSharedModule } from '@shared';
 
 import { PathSelectorComponent } from './path-selector.component';
 import { AoiClearComponent } from './aoi-clear/aoi-clear.component';
+import { SharedModule } from "@shared";
 
 @NgModule({
   declarations: [PathSelectorComponent, AoiClearComponent],
@@ -19,6 +20,7 @@ import { AoiClearComponent } from './aoi-clear/aoi-clear.component';
     MatSlideToggleModule,
     MatFormFieldModule,
     MatInputModule,
+    SharedModule
   ],
   exports: [PathSelectorComponent],
 })

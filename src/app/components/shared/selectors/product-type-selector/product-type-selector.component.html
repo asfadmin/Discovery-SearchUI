@@ -13,10 +13,10 @@
   </mat-select>
   <mat-hint *ngIf="dataset.productTypes.length >= 1" align="start">
     {{ productTypesList?.length || 0 }}/{{ dataset.productTypes.length }}
-    file types selected
+    {{ 'FILE_TYPES_SELECTED' | translate }}
   </mat-hint>
 
   <mat-hint *ngIf="dataset.productTypes.length < 1" align="start">
-    No file types to select
+    {{ 'NO_FILE_TYPES_TO_SELECT' | translate }}
   </mat-hint>
 </mat-form-field>

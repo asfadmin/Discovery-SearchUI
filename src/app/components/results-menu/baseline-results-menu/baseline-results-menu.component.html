@@ -11,7 +11,7 @@
   </mat-card>
 
   <mat-card class="mp0 no-box-shadow" fxFlex="21" fxFlexFill>
-    <mat-card-subtitle class="header"> Scene Detail </mat-card-subtitle>
+    <mat-card-subtitle class="header"> {{ 'SCENE_DETAIL' |  translate }} </mat-card-subtitle>
 
     <app-scene-detail></app-scene-detail>
   </mat-card>
@@ -59,7 +59,7 @@
 
         <div fxFlex="" class="list-button-group">
           <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-            <label>Queue</label>
+            <label>{{ 'QUEUE' |  translate }}</label>
           </div>
           <div fxLayout="row">
             <div>
@@ -102,7 +102,7 @@
 
         <div fxFlex="" class="list-button-group">
           <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-            <label>Export</label>
+            <label>{{ 'EXPORT' |  translate }}</label>
           </div>
           <div fxLayout="row">
             <div>
@@ -124,7 +124,7 @@
             Add {{ downloadableProds.length }} file{{
               downloadableProds.length === 1 ? "" : "s"
             }}
-            to_downloads
+            {{ 'EXPORT' |  translate }}
           </button>
         </mat-menu>
 
@@ -171,7 +171,7 @@
             [class.selected]="isOfCardView(Views.DETAIL)"
             mat-button
           >
-            Scene Detail
+            {{ 'SCENE_DETAIL' |  translate }}
           </button>
         </div>
       </div>
@@ -202,7 +202,7 @@
           [class.selected]="isOfCardView(Views.DETAIL)"
           mat-button
         >
-          Scene Detail
+          {{ 'SCENE_DETAIL' |  translate }}
         </button>
       </div>
     </mat-card-subtitle>
@@ -226,7 +226,7 @@
         <mat-button-toggle class="control-mat-button-toggle baseline-criteria-button-toggle"
                            (click)="onToggleFiltersMenu()"
                            >
-          {{ 'BASELINE_CRITERIA' | translate }}<mat-icon class="more-horiz">{{  'MORE_HORIZ'  | translate }}</mat-icon>
+          {{ 'BASELINE_CRITERIA' | translate }}<mat-icon class="more-horiz">more_horiz</mat-icon>
         </mat-button-toggle>
       </mat-button-toggle-group>
     </div>

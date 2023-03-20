@@ -27,7 +27,7 @@
       class="control-button mat-menu-item"
       matTooltip="Point draw">
       <mat-icon class="draw-icon">place</mat-icon>
-      Place a Point
+      {{ 'PLACE_A_POINT' | translate }}
     </button>
 
     <button mat-menu-item
@@ -36,7 +36,7 @@
       class="control-button mat-menu-item"
       matTooltip="Line draw">
       <mat-icon class="draw-icon">timeline</mat-icon>
-      Draw a Line
+      {{ 'DRAW_A_LINE' | translate }}
     </button>
 
     <button mat-menu-item
@@ -52,7 +52,7 @@
                   9H18L17.16,16H15V18.06H10V16H7.6M11,10H13V12H11M6,18H8V20H6M17,18H19V20H17"
         />
       </svg>
-      Draw a Polygon
+      {{ 'DRAW_A_POLYGON' | translate }}
     </button>
 
     <button mat-menu-item
@@ -61,7 +61,7 @@
       class="control-button mat-menu-item"
       matTooltip="Box Draw">
       <mat-icon class="draw-icon">format_shapes</mat-icon>
-      Draw a box
+      {{ 'DRAW_A_BOX' | translate }}
     </button>
 
     <button mat-menu-item
@@ -70,7 +70,7 @@
     class="control-button mat-menu-item"
     matTooltip="Circle Draw">
     <mat-icon class="draw-icon">radio_button_unchecked</mat-icon>
-    Draw a circle
+    {{ 'DRAW_A_CIRCLE' | translate }}
     </button>
 
 
@@ -80,7 +80,7 @@
     class="control-mat-button-toggle"
     matTooltip="Import Area of Interest">
     <mat-icon class="interaction-icon">upload</mat-icon>
-    Upload Geospatial File
+    {{'UPLOAD_GEOSPATIAL_FILE' | translate}}
 
   </button>
 </mat-menu>

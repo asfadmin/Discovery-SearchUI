@@ -70,7 +70,7 @@
         <mat-form-field
           [class.invalid-input-animation]="isEndError"
           class="date-input-field">
-          <mat-label>New End Date</mat-label>
+          <mat-label>{{ 'NEW_END_DATE' | translate }}</mat-label>
 
           <input matInput
             [(ngModel)]="newEndDate"

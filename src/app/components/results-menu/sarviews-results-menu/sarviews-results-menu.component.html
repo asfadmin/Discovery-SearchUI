@@ -13,7 +13,7 @@
 <ng-container *ngIf="breakpoint > breakpoints.SMALL">
   <mat-card class="mp0 no-box-shadow" fxFlex="34" fxFlexFill>
     <mat-card-subtitle class="header">
-    Event Detail
+    {{ 'EVENT_DETAIL' | translate }}
     </mat-card-subtitle>
         <app-scene-detail *ngIf="sarviewsEventsLength !== 0"></app-scene-detail>
   </mat-card>
@@ -38,10 +38,10 @@
                            class="control-mat-button-toggle clickable noselect"
                            [matTooltip]="'Show product filters criteria'">
                            <!-- <span> -->
-                           Product Criteria
+                           {{ 'PRODUCT_CRITERIA' | translate }}
                           <mat-icon class="more-horiz"
                           style="font-size: 16px !important; margin-bottom: -11px;">
-                            {{  'MORE_HORIZ'  | translate }}
+                            more_horiz
                           </mat-icon>
                            <!-- </span> -->
         </mat-button-toggle>
@@ -54,12 +54,12 @@
       <div *ngIf="sarviewsProductsLength === 0" class="no-event-products-container">
         <span>
           <p>
-            No Products Available for this Event
+            {{ 'NO_PRODUCTS_AVAILABLE_FOR_THIS_EVENT' | translate }}
           </p>
           </span>
           <span>
           <button (click)="onOpenFiltersPanel()" mat-flat-button color="primary" *ngIf="(unfilteredEventProductsLength$ | async) > 0">
-            Edit Filters
+            {{ 'EDIT_FILTERS' | translate }}
           </button>
         </span>
       </div>
@@ -70,7 +70,7 @@
 <ng-container *ngIf="breakpoint <= breakpoints.SMALL">
   <mat-card class="mp0 no-box-shadow" fxFlex="50" fxFlexFill>
     <mat-card-subtitle class="header">
-      Scene Detail /
+      {{ 'SCENE_DETAIL' |  translate }} /
       <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
         {{ products.length || '' }} File{{ (products || []).length === 1 ? '' : 's'}}
       </span>
@@ -85,7 +85,7 @@
       <div *ngIf="sarviewsProductsLength === 0" class="no-event-products-container">
         <span>
           <p>
-            No Products Available for this Event
+            {{ 'NO_PRODUCTS_AVAILABLE_FOR_THIS_EVENT' | translate }}
           </p>
           </span>
       </div>

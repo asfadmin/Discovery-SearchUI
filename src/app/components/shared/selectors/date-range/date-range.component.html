@@ -23,7 +23,7 @@
 
   <mat-form-field class="date-input-field"
     [class.invalid-input-animation]="isEndError">
-    <mat-label>End Date</mat-label>
+    <mat-label>{{ 'END_DATE' | translate }}</mat-label>
     <input matInput
       name="endInput"
       formControlName="EndDateControl"

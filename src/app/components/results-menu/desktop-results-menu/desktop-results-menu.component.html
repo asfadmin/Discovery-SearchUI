@@ -36,7 +36,7 @@
 <ng-container *ngIf="breakpoint <= breakpoints.SMALL">
   <mat-card class="mp0 no-box-shadow" fxFlex="50" fxFlexFill>
     <mat-card-subtitle class="header">
-      Scene Detail /
+      {{ 'SCENE_DETAIL' |  translate }} /
       <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
         {{ products.length || '' }} File{{ (products || []).length === 1 ? '' : 's'}}
       </span>

@@ -38,7 +38,7 @@
               </mat-card-actions>
             </div>
             <div fxFlex="25%" class="menu-item-aside">
-              <span class="material-icons-outlined menu-item-icon">travel_explore</span>
+              <span class="material-icons-outlined menu-item-icon">{{ 'TRAVEL_EXPLORE' | translate }}</span>
             </div>
           </div>
         </div>
@@ -100,7 +100,7 @@
                 {{ 'SBAS' | translate }}
               </div>
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                {{'SEARCH_PROVIDES_PERPENDICULAR_AND_TEMPORAL_BASELINE_DATA_AS_WELL_AS_SCENE_PAIRS_FOR_A_CHOSEN' | translate }}
+                {{'SBAS_SEARCH_PROVIDES_PERPENDICULAR_AND_TEMPORAL_BASELINE_DATA_AS_WELL_AS_SCENE_PAIRS_FOR_A_CHOSEN' | translate }}
                 {{'REFERENCE_SCENE' | translate }}
               </div>
               <mat-card-actions (click)="onOpenDocs($event)">
@@ -135,7 +135,7 @@
               </mat-card-actions>
             </div>
             <div fxFlex="25%" class="menu-item-aside">
-              <span class="material-icons-outlined menu-item-icon">{{'VOLCANO' | translate }}</span>
+              <span class="material-icons-outlined menu-item-icon">volcano</span>
             </div>
           </div>
         </div>
@@ -183,7 +183,7 @@
               </div>
             </div>
             <div fxFlex="25%" class="menu-item-aside">
-              <span class="material-icons-outlined menu-item-icon">dataset_linked</span>
+              <span class="material-icons-outlined menu-item-icon">{{ 'DATASET_LINKED' | translate }}</span>
             </div>
           </div>
         </div>
@@ -203,7 +203,7 @@
                 {{ dataset.info }}
               </div>
               <mat-card-actions>
-                <button class="blue-link" (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)" mat-button>{{ 'MORE_INFO | translate }}</button>
+                <button class="blue-link" (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)" mat-button>{{ 'MORE_INFO' | translate }}</button>
                 <button class="blue-link" (click)="onOpenDerivedDataset(dataset.download_url, dataset.name)" mat-button>{{ 'DOWNLOAD' | translate }}</button>
               </mat-card-actions>
             </div>

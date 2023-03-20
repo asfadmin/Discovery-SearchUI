@@ -1,6 +1,6 @@
 <mat-dialog-content>
   <div style="display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 15px;">
-    <div class="dialog-header" mat-dialog-title>API URL - Download Search Results</div>
+    <div class="dialog-header" mat-dialog-title>{{ 'API_URL_DOWNLOAD_SEARCH_RESULTS' | translate }}</div>
     <div>
       <mat-icon (click)="onCloseDownloadQueue()" class="clickable">
         close
@@ -9,12 +9,12 @@
   </div>
 
   <div style="margin-bottom: 10px;">
-    Use an ASF Search API query to download more results manually.
+    {{ 'USE_AN_ASF_SEARCH_API_QUERY_TO_DOWNLOAD_MORE_RESULTS_MANUALLY' | translate }}
   </div>
 
   <form #apiLinkForm="ngForm" onsubmit="return false">
     <mat-form-field style="margin-right: 15px;">
-      <mat-label>Amount</mat-label>
+      <mat-label>{{ 'AMOUNT' | translate }}</mat-label>
       <input type="number" name="amount"
       [(ngModel)]="amount"
       (change)="onAmountChange($event)"
@@ -22,7 +22,7 @@
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label>Format</mat-label>
+      <mat-label>{{ 'FORMAT' | translate }}</mat-label>
       <mat-select
         [(ngModel)]="format"
         (selectionChange)="onFormatChange($event.value)" name="format">
@@ -33,7 +33,7 @@
     </mat-form-field>
 
     <mat-form-field class="w100">
-      <mat-label>Api URL</mat-label>
+      <mat-label>{{ 'API_URL' | translate }}</mat-label>
       <textarea (click)="$event.target"
         name="Api URL" [readonly]="true" [(ngModel)]="apiLink" matInput
         cdkTextareaAutosize cdkAutosizeMinRows="2"
@@ -51,8 +51,8 @@
 </mat-dialog-content>
 
 <mat-dialog-actions style="margin-top: 15px;">
-  <a [href]="asfWebsite.api_get_data" target="_blank" mat-flat-button>API Docs</a>
+  <a [href]="asfWebsite.api_get_data" target="_blank" mat-flat-button>{{ 'API_DOCS' | translate }}</a>
   <a [href]="apiLink" target="_blank" color="primary" mat-flat-button>
-    Download Results
+    {{ 'DOWNLOAD_RESULTS' | translate }}
   </a>
 </mat-dialog-actions>

@@ -64,7 +64,7 @@
 
           <div *ngIf="canHideExpiredData" fxFlex="" class="list-button-group">
             <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-              <label>Expired</label>
+              <label>{{ 'EXPIRED' | translate }}</label>
             </div>
             <div fxLayout="row">
               <div>
@@ -103,7 +103,7 @@
 
           <div fxFlex="" class="list-button-group" *ngIf="searchType !== SearchTypes.SARVIEWS_EVENTS">
             <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-              <label>Queue</label>
+              <label>{{ 'QUEUE' |  translate }}</label>
             </div>
             <div fxLayout="row">
               <div>
@@ -122,7 +122,7 @@
 
           <div fxFlex="" class="list-button-group" *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS">
             <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-              <label>Queue</label>
+              <label>{{ 'QUEUE' |  translate }}</label>
             </div>
             <div fxLayout="row">
               <div>
@@ -165,7 +165,7 @@
 
           <div *ngIf="searchType === SearchTypes.BASELINE" fxFlex="" class="list-button-group">
             <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-              <label>Export</label>
+              <label>{{ 'EXPORT' |  translate }}</label>
             </div>
             <div fxLayout="row">
               <div>
@@ -184,7 +184,7 @@
 
           <div *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS" fxFlex="" class="list-button-group">
             <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-              <label>Export</label>
+              <label>{{ 'EXPORT' |  translate }}</label>
             </div>
             <div fxLayout="row">
               <div>
@@ -275,7 +275,7 @@
 
           <div *ngIf="searchType === SearchTypes.SBAS" fxFlex="" class="list-button-group">
             <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-              <label>Pairs</label>
+              <label>{{ 'PAIRS' | translate }}</label>
             </div>
             <div fxLayout="row">
               <div>
@@ -362,7 +362,7 @@
       <ng-container *ngIf="searchType === SearchTypes.BASELINE">
         <div class="header-row-right" *ngIf="breakpoint > breakpoints.MOBILE">
           <div (click)="onTogglePerpendicularSort()" class="header-column noselect clickable">
-              meters
+              {{ 'METERS' | translate }}
               <mat-icon *ngIf="perpendicularSort === SortDirection.NONE"
                 class="sort-icon">unfold_more</mat-icon>
               <mat-icon *ngIf="perpendicularSort === SortDirection.INCREASING"
@@ -371,7 +371,7 @@
                 class="sort-icon sort-active">keyboard_arrow_down</mat-icon>
           </div>
           <div (click)="onToggleTemporalSort()" class="header-column clickable noselect">
-              days
+              {{ 'DAYS' | translate }}
               <mat-icon *ngIf="temporalSort === SortDirection.NONE"
                 class="sort-icon">unfold_more</mat-icon>
               <mat-icon *ngIf="temporalSort === SortDirection.INCREASING"
@@ -395,7 +395,7 @@
     <button mat-menu-item
     [matMenuTriggerFor]="eventMonitoringIDs"
     [matMenuTriggerData]="{selectedProducts: selectedProducts, products: (sarviewsEventProducts$ | async)}">
-    Scene IDs
+    {{ 'SCENE_I_DS' | translate }}
   </button>
   <button mat-menu-item
   [matMenuTriggerFor]="eventMonitoringUrls"

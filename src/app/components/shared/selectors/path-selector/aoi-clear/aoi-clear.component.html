@@ -2,13 +2,13 @@
 *ngIf="!!polygon && (searchType$ | async) !== searchTypes.SARVIEWS_EVENTS"
 (click)="onClearSearchArea()"
 mat-button>
-  Clear Search Area
+  {{ 'CLEAR_SEARCH_AREA' | translate }}
 </button>
 
 <button
   *ngIf="!!savedPolygon"
   (click)="undoPolygonClear()" mat-button>
     <mat-icon style="margin-right: 3px;">undo</mat-icon>
-    <span>Restore Area</span>
+    <span>{{ 'RESTORE_AREA' | translate }}</span>
 </button>
 

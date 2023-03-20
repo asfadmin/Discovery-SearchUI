@@ -15,7 +15,7 @@
                        matTooltip="Satellite Layer"
                        [value]="layerTypes.SATELLITE">
       <mat-icon class="control-icon">terrain</mat-icon>
-      Satellite Layer
+      {{ 'SATELLITE_LAYER' |  translate }}
     </button>
 
     <button mat-menu-item class="control-mat-button-toggle"
@@ -23,7 +23,7 @@
                        [value]="layerTypes.STREET"
                        matTooltip="Street Layer" >
       <mat-icon class="control-icon">directions_car</mat-icon>
-      Street Layer
+      {{ 'STREET_LAYER' |  translate }}
     </button>
 
   <mat-divider></mat-divider>
@@ -36,7 +36,7 @@
       <mat-checkbox class="checkbox"
                     [disabled]="true"
                     [checked]="overviewMapVisible"></mat-checkbox>
-      Overview Map
+      {{ 'OVERVIEW_MAP' |  translate }}
     </button>
 
     <button mat-menu-item
@@ -47,7 +47,7 @@
       <mat-checkbox class="checkbox"
                     [disabled]="true"
                     [checked]="gridActive"></mat-checkbox>
-      Gridlines Overlay
+      {{ 'GRIDLINES_OVERLAY' |  translate }}
     </button>
 
 </mat-menu>

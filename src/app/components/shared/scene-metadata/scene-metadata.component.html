@@ -16,8 +16,8 @@
     </mat-icon>
 
     <mat-menu #addSceneDateMenu="matMenu">
-      <button (click)="setStartDate(scene.metadata.date)" mat-menu-item>Set as start date</button>
-      <button (click)="setEndDate(scene.metadata.date)" mat-menu-item>Set as end date</button>
+      <button (click)="setStartDate(scene.metadata.date)" mat-menu-item>{{ 'SET_AS_START_DATE' | translate }}</button>
+      <button (click)="setEndDate(scene.metadata.date)" mat-menu-item>{{ 'SET_AS_END_DATE' | translate }}</button>
     </mat-menu>
   </li>
 
@@ -30,8 +30,8 @@
     </mat-icon>
 
     <mat-menu #addSceneStopDateMenu="matMenu">
-      <button (click)="setStartDate(scene.metadata.stopDate)" mat-menu-item>Set as start date</button>
-      <button (click)="setEndDate(scene.metadata.stopDate)" mat-menu-item>Set as end date</button>
+      <button (click)="setStartDate(scene.metadata.stopDate)" mat-menu-item>{{ 'SET_AS_START_DATE' | translate }}</button>
+      <button (click)="setEndDate(scene.metadata.stopDate)" mat-menu-item>{{ 'SET_AS_END_DATE' | translate }}</button>
     </mat-menu>
   </li>
 
@@ -59,7 +59,7 @@
     <mat-menu #addPathMenu="matMenu">
       <button (click)="setPathStart()" mat-menu-item>Set as path start</button>
       <button (click)="setPathEnd()" mat-menu-item>Set as path end</button>
-      <button (click)="setPathStart(); setPathEnd();" mat-menu-item>Set as both</button>
+      <button (click)="setPathStart(); setPathEnd();" mat-menu-item>{{ 'SET_AS_BOTH' | translate }}</button>
     </mat-menu>
   </li>
 
@@ -73,9 +73,9 @@
     </mat-icon>
 
     <mat-menu #addFrameMenu="matMenu">
-      <button (click)="setFrameStart()" mat-menu-item>Set as frame start</button>
-      <button (click)="setFrameEnd()" mat-menu-item>Set as frame end</button>
-      <button (click)="setFrameStart(); setFrameEnd();" mat-menu-item>Set as both</button>
+      <button (click)="setFrameStart()" mat-menu-item>{{ 'SET_AS_FRAME_START' | translate }}</button>
+      <button (click)="setFrameEnd()" mat-menu-item>{{ 'SET_AS_FRAME_END' | translate }}</button>
+      <button (click)="setFrameStart(); setFrameEnd();" mat-menu-item>{{ 'SET_AS_BOTH' | translate }}</button>
     </mat-menu>
   </li>
 
@@ -88,7 +88,7 @@
     </mat-icon>
 
     <mat-menu #addFlightDirectionMenu="matMenu">
-      <button (click)="setFlightDirection()" mat-menu-item>Set flight direction</button>
+      <button (click)="setFlightDirection()" mat-menu-item>{{ 'SET_FLIGHT_DIRECTION' | translate }}</button>
     </mat-menu>
   </li>
 
@@ -102,7 +102,7 @@
     </mat-icon>
 
     <mat-menu #addPolMenu="matMenu">
-      <button (click)="addPolarization()" mat-menu-item>Add polarization to search</button>
+      <button (click)="addPolarization()" mat-menu-item>{{ 'ADD_POLARIZATION_TO_SEARCH' | translate }}</button>
     </mat-menu>
   </li>
 
@@ -132,7 +132,7 @@
     </mat-icon>
 
     <mat-menu #addMissionMenu="matMenu">
-      <button (click)="addMission()" mat-menu-item>Set campaign name</button>
+      <button (click)="addMission()" mat-menu-item>{{ 'SET_CAMPAIGN_NAME' | translate }}</button>
     </mat-menu>
   </li>
 
@@ -158,7 +158,7 @@
   <li *ngIf="dataset.citationUrl as citation" class="detail-item-margin">
     <a *ngIf="citation" [href]="citation"
        target="_blank"
-       matTooltip="How to cite using this data">Citation</a>
+       matTooltip="How to cite using this data">{{ 'CITATION' | translate }}</a>
   </li>
 
 </ul>

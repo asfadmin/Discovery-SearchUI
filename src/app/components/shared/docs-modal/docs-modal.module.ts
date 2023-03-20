@@ -5,6 +5,7 @@ import { MatSharedModule } from '@shared';
 import { DocsModalComponent, DocsModalIframeComponent } from './docs-modal.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
+import { SharedModule } from "@shared";
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatSharedModule,
     MatIconModule,
     MatDialogModule,
+    SharedModule
   ],
   exports: [
     DocsModalComponent,

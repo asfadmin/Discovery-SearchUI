@@ -44,11 +44,11 @@
 
     <ng-template #customProductsDisplay>
     <span *ngIf="product.productTypeDisplay.length > 40">
-      <b style="font-size: 14px;">Type:</b>
+      <b style="font-size: 14px;">{{ 'TYPE' | translate }}:</b>
       {{ product.productTypeDisplay | truncate : 36 }}{{ product.productTypeDisplay | truncate : -4 : '' }}
     </span>
     <span *ngIf="product.productTypeDisplay.length <= 40">
-      <b style="font-size: 14px;">Type:</b>
+      <b style="font-size: 14px;">{{ 'TYPE' | translate }}:</b>
       {{ product.productTypeDisplay }}
     </span>
     <span *ngIf="product.metadata.job && product.metadata.job.expiration_time">
@@ -127,7 +127,7 @@
     <mat-menu #expiredJobs ='matMenu'>
 
     <button (click)="queueExpiredHyp3Job()" mat-menu-item>
-      Add job
+      {{ 'ADD_JOB' | translate }}
     </button>
   </mat-menu>
   </div>

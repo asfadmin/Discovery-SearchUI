@@ -1,19 +1,19 @@
 <mat-card class="sizing card-spacing mat-elevation-z0">
-  <h2>SAR File Searches</h2>
+  <h2>{{ 'SAR_FILE_SEARCHES' | translate }}</h2>
   <mat-divider></mat-divider>
 
   <mat-list>
     <mat-list-item class="clickable" (click)="onSetSearchType(searchTypes.DATASET)"
      [class.active-btn]="selectedSearchType === searchTypes.DATASET">
-        <h3 matLine>Geographic</h3>
-        <p matLine>Search by dataset, time, geography, and more.</p>
+        <h3 matLine>{{'GEOGRAPHIC' | translate}}c</h3>
+        <p matLine>{{ 'SEARCH_BY_DATASET_TIME_GEOGRAPHY_AND_MORE' | translate }}</p>
         <mat-icon>chevron_right</mat-icon>
     </mat-list-item>
     <mat-divider [inset]="true"></mat-divider>
     <mat-list-item class="clickable" (click)="onSetSearchType(searchTypes.LIST)"
      [class.active-btn]="selectedSearchType === searchTypes.LIST">
       <h3 matLine>{{ 'LIST' |  translate }}</h3>
-      <p matLine>Search by a list of scene or file names.</p>
+      <p matLine>{{ 'SEARCH_BY_A_LIST_OF_SCENE_OR_FILE_NAMES' | translate }}</p>
       <mat-icon>chevron_right</mat-icon>
     </mat-list-item>
     <mat-divider [inset]="true"></mat-divider>

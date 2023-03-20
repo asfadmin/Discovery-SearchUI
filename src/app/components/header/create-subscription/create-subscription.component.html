@@ -222,7 +222,7 @@
           <h3>{{ 'SEARCH_OPTIONS' | translate }}:</h3>
           <div>
             <div *ngIf="!!subtype">
-              <b>Dataset:</b> {{ subtype }}
+              <b>{{ 'DATASET' | translate }}:</b> {{ subtype }}
             </div>
             <div *ngIf="!!polygon">
               <b>Search Area:</b> {{ showSearchAreaType(polygon) }}
@@ -313,7 +313,7 @@
       <div style="margin: auto;">
         <b>
           <span *ngIf="stepper.selectedIndex === steps.SEARCH_OPTIONS">{{ 'SEARCH OPTIONS' | translate }}</span>
-          <span *ngIf="stepper.selectedIndex === steps.PROCESSING_OPTIONS">Processing Options</span>
+          <span *ngIf="stepper.selectedIndex === steps.PROCESSING_OPTIONS">{{ 'PROCESSING_OPTIONS' | translate }}</span>
           <span *ngIf="stepper.selectedIndex === steps.REVIEW">{{ 'REVIEW' |  translate }}</span>
         </b>
       </div>

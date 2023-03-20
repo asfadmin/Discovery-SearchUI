@@ -19,6 +19,8 @@ import { FiltersDropdownModule } from '@components/filters-dropdown';
 import { BannersModule } from './banners';
 
 import { FileUploadModule } from '@components/shared/aoi-options/file-upload';
+import { SharedModule } from "@shared";
+
 @NgModule({
   imports: [
     CommonModule,
@@ -39,6 +41,7 @@ import { FileUploadModule } from '@components/shared/aoi-options/file-upload';
     MaxResultsSelectorModule,
     BannersModule,
     FileUploadModule,
+    SharedModule
   ],
   declarations: [
     MapComponent,

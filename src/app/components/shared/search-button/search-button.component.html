@@ -57,18 +57,18 @@
   <mat-divider></mat-divider>
   <button mat-menu-item
     [matMenuTriggerFor]="shareSearchMenu">
-      Share Search
+      {{ 'SHARE_SEARCH' | translate }}
   </button>
 
   <span
     matTooltip="Get help on how to user Vertex"
     matTooltipPosition="after">
-      <button mat-menu-item (click)="onOpenHelp('toc')">Help & Tutorials</button>
+      <button mat-menu-item (click)="onOpenHelp('toc')">{{ 'HELP_AND_TUTORIALS' | translate }}</button>
   </span>
     <button
     mat-menu-item
     [matMenuTriggerFor]="exportSearchMenu">
-    Export
+    {{ 'EXPORT' |  translate }}
     </button>
 
   <button *ngIf="isDevMode()" mat-menu-item [matMenuTriggerFor]="apiMaturity" matSuffix>
@@ -83,7 +83,7 @@
         matTooltipPosition="after">
     <button *ngIf="searchType !== searchTypes.CUSTOM_PRODUCTS && searchType !== searchTypes.LIST"
       mat-menu-item [disabled]="!isLoggedIn" (click)="saveCurrentFilters()">
-      Save Filters
+      {{ 'SAVE_FILTERS' | translate }}
     </button>
   </span>
 
@@ -95,7 +95,7 @@
       (click)="onOpenSavedFilters()"
       mat-menu-item
       [disabled]="!isLoggedIn">
-      View Filters...
+      {{ 'VIEW_FILTERS' | translate }}
     </button>
   </span>
 
@@ -105,7 +105,7 @@
   <button (click)="onCopy()"
       mat-menu-item matSuffix>
     <mat-icon>link</mat-icon>
-    Copy Search Link
+    {{ 'COPY_SEARCH_LINK' | translate }}
   </button>
 
   <a (click)="onShareWithEmail()"
@@ -113,7 +113,7 @@
       target="_blank" title="Send email"
                       mat-menu-item matSuffix>
     <mat-icon>email</mat-icon>
-    Share With Email
+    {{'SHARE_WITH_EMAIL' | translate}}
   </a>
 
 </mat-menu>
@@ -124,7 +124,7 @@
         matTooltipPosition = "after">
     <button *ngIf="searchType !== searchTypes.CUSTOM_PRODUCTS"
       mat-menu-item [disabled]="!isLoggedIn" (click)="saveCurrentSearch()">
-      Save Search
+      {{ 'SAVE_SEARCH' | translate }}
     </button>
   </span>
 
@@ -132,7 +132,7 @@
   [matTooltipDisabled]="isLoggedIn"
   matTooltip="Sign in to see your saved searches"
   matTooltipPosition="after">
-    <button mat-menu-item [disabled]="!isLoggedIn" (click)="onOpenSavedSearches()">View Searches...</button>
+    <button mat-menu-item [disabled]="!isLoggedIn" (click)="onOpenSavedSearches()">{{ 'VIEW_SEARCHES' | translate }}</button>
   </span>
 
   <span
@@ -145,23 +145,23 @@
 </mat-menu>
 <mat-menu #exportSearchMenu="matMenu">
   <button mat-menu-item (click)="exportPython()" mat-menu-item matSuffix [disabled]="!(searchType === searchTypes.DATASET || searchType === searchTypes.LIST || searchType === searchTypes.BASELINE)">
-    Export Python
+    {{'EXPORT_PYTHON' | translate }}
   </button>
   <button mat-menu-item (click)="exportAPI()">
-    Export API
+    {{ 'EXPORT_API' | translate }}
   </button>
 </mat-menu>
 <mat-menu #apiMaturity="matMenu">
   <button [class.selected]="maturity === 'test'"
     (click)="onTestSelected()"
     mat-menu-item matSuffix>
-      <span>Test</span>
+      <span>{{ 'TEST' | translate }}</span>
   </button>
 
   <button [class.selected]="maturity === 'prod'"
     (click)="onProdSelected()"
     mat-menu-item matSuffix>
-      <span>Production</span>
+      <span>{{'PRODUCTION' | translate }}</span>
   </button>
 
   <button (click)="onOpenCustomizeEnv()" mat-menu-item matSuffix >

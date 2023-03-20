@@ -11,7 +11,7 @@
 
             <div fxFlex="" class="group-margin" *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS">
               <div fxLayout="row" fxLayoutAlign="left" class="button-group-label">
-                <label>&nbsp;Map View</label>
+                <label>&nbsp;{{ 'MAP_VIEW' |  translate }}</label>
               </div>
 
               <div fxLayout="row">
@@ -22,7 +22,7 @@
 
             <div fxFlex="" class="zoom-buttons">
               <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-                <label>Zoom</label>
+                <label>{{ 'ZOOM' |  translate }}</label>
               </div>
               <div fxLayout="row">
                 <div>
@@ -45,7 +45,7 @@
 
             <div *ngIf="(view$ | async) === viewTypes.EQUATORIAL" fxFlex="" class="group-margin">
               <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-                <label>Layers</label>
+                <label>{{ 'LAYERS' |  translate }}</label>
               </div>
               <div fxLayout="row">
                 <app-layer-selector></app-layer-selector>
@@ -54,7 +54,7 @@
 
             <div *ngIf="searchType === searchTypes.DATASET || searchType === searchTypes.SBAS" fxFlex="" class="group-margin">
               <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-                <label>area of interest</label>
+                <label>{{ 'AREA_OF_INTEREST' |  translate }}</label>
               </div>
               <div fxLayout="row">
                 <app-interaction-selector>
@@ -65,7 +65,7 @@
             <!-- Product Browse  -->
             <div fxFlex="" class="group-margin" *ngIf="searchType === searchTypes.SARVIEWS_EVENTS">
                 <div  fxLayout="row" fxLayoutAlign="center" class="button-group-label" style="white-space: nowrap;">
-                  <label>Product</label>
+                  <label>{{ 'PRODUCT' |  translate }}</label>
                 </div>
                 <div fxLayout="row" fxLayoutAlign="center">
                   <div>
@@ -85,7 +85,7 @@
             <!-- Opacity Control -->
             <div fxFlex="" class="group-margin" *ngIf="searchType !== searchTypes.BASELINE && searchType !== searchTypes.SBAS">
               <div  fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-                <label>Opacity</label>
+                <label>{{'OPACITY' | translate}}</label>
               </div>
               <div fxLayout="row">
                 <button mat-stroked-button class="opacity-slider-button"
@@ -97,7 +97,7 @@
                 </button>
                 <mat-menu #opacitySlider="matMenu" class="opacity-slider-mat-menu">
                   <div class="opacity-slider-title">
-                    Opacity of Browse Images
+                    {{ 'OPACITY_OF_BROWSE_IMAGES' |  translate }}
                   </div>
                   <mat-slider thumbLabel tickInterval="0.1" step="0.05" value="1" min="0.0" max="1.0"
                               class="opacity-slider"

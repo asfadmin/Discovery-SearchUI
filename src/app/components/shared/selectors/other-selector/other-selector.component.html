@@ -17,11 +17,11 @@
     </mat-select>
     <mat-hint *ngIf="prop.isRelevant(p.BEAM_MODE)"  align="start">
       {{ beamModes?.length || 0 }}/{{ dataset.beamModes.length }}
-      beam modes selected
+      {{ 'BEAM_MODES_SELECTED' | translate }}
     </mat-hint>
 
     <mat-hint *ngIf="!prop.isRelevant(p.BEAM_MODE)" align="start">
-      No beam modes to select
+      {{ 'NO_BEAM_MODES_TO_SELECT' | translate }}
     </mat-hint>
   </mat-form-field>
 
@@ -37,10 +37,10 @@
     </mat-select>
     <mat-hint *ngIf="prop.isRelevant(p.POLARIZATION)"  align="start">
       {{ polarizations?.length || 0 }}/{{ dataset.polarizations.length }}
-      polarizations selected
+      {{ 'NO_POLARIZATIONS_TO_SELECT' | translate }}
     </mat-hint>
     <mat-hint *ngIf="!prop.isRelevant(p.POLARIZATION)" align="start">
-      No polarizations to select
+      {{ 'NO_POLARIZATIONS_TO_SELECT' | translate }}
     </mat-hint>
 
   </mat-form-field>
@@ -58,10 +58,10 @@
 
     <mat-hint *ngIf="prop.isRelevant(p.FLIGHT_DIRECTION)" align="start">
       {{ flightDirections?.length || 0 }}/{{ flightDirectionTypes.length }}
-      flight directions selected
+      {{ 'FLIGHT_DIRECTIONS_SELECTED' | translate }}
     </mat-hint>
     <mat-hint *ngIf="!prop.isRelevant(p.FLIGHT_DIRECTION)" align="start">
-      No flight directions to select
+      {{ 'NO_FLIGHT_DIRECTIONS_TO_SELECT' | translate }}
     </mat-hint>
   </mat-form-field>
 
@@ -78,10 +78,10 @@
 
     <mat-hint *ngIf="prop.isRelevant(p.SUBTYPE)" align="start">
       {{ subtypes?.length || 0 }}/{{ dataset.subtypes?.length }}
-      subtypes selected
+      {{ 'SUBTYPES_SELECTED' | translate }}
     </mat-hint>
     <mat-hint *ngIf="!prop.isRelevant(p.SUBTYPE)" align="start">
-      No subtypes to select
+      {{ 'NO_SUBTYPES_TO_SELECT' | translate }}
     </mat-hint>
   </mat-form-field>
 </div>
