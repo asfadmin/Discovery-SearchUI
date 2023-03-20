@@ -40,4 +40,7 @@
     </div>
   </div>
   <mat-progress-bar *ngIf="isLoading" style="width: 100%;" mode="indeterminate"></mat-progress-bar>
+  <select #langSelect (change)="translate.use(langSelect.value)">
+    <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{ lang }}</option>
+  </select>
 </div>

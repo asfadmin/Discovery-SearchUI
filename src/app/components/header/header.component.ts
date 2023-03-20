@@ -7,6 +7,8 @@ import * as searchStore from '@store/search';
 import * as models from '@models/index';
 import * as services from '@services';
 
+import {TranslateService} from "@ngx-translate/core";
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -24,9 +26,11 @@ export class HeaderComponent implements OnInit {
   constructor(
     private store$: Store<AppState>,
     private screenSize: services.ScreenSizeService,
+    public translate: TranslateService,
   ) { }
 
   ngOnInit() {
   }
+
 }
 

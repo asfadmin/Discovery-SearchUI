@@ -619,26 +619,7 @@
   "SHOW_ICON_FALSE": "showIcon : false,",
   "TITLE_HOW_CAN_WE_HELP_YOU": "title : \"How can we help you?\",",
   "SUBJECT": "subject : \"\",",
-
-<<<<<<< HEAD
   "DETAILS": "details : \"\"",
-  "LOOKING_FOR_DEMS": "Looking for DEMs",
-
-=======
-  "DETAILS": "details : \"\""
->>>>>>> DS-4603-Working,
-
-  "JOB_MAX": "job max",
-  "JOBS_LEFT_THIS_MONTH":"jobs left this month",
-  "START_TIME": "Start Time",
-  "STOP_TIME": "Stop Time",
-  "BEAM_MODES": "Beam Modes",
-  "SEASON": "SEASON",
-  "POLARIZATIONS": "Polarizations",
-  "OMIT_GEO": "Omit Geo",
-  "FLIGHT_DIR": "Flight Dir",
-  "CAMPAIGN":"Campaign",
-  "TEMPORAL": "Temporal",
-  "PERPENDICULAR": "Perpendicular"
+  "LOOKING_FOR_DEMS": "Looking for DEMs"
 }
 
