@@ -83,7 +83,7 @@
 
           <div>
             <mat-form-field class="sub-option">
-              <mat-label>Path</mat-label>
+              <mat-label>{{ 'PATH' | translate }}</mat-label>
               <input matInput [(ngModel)]="path" type="number">
               <mat-hint align="start"> {{ path !== null ? '' : ' No path input' }}</mat-hint>
             </mat-form-field>

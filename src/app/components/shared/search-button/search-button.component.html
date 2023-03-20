@@ -8,11 +8,11 @@
       mat-flat-button color="primary">
       {{
       (loading$ | async) ?
-        'LOADING...' :
+        ('LOADING' | translate ):
         (!(canSearch$ | async) && !(isMaxResultsLoading$ | async) ?
-          'NO RESULTS' :
-          (areResultsOutOfDate$ | async) ? 'UPDATE' :
-          'SEARCH')
+          ('NO_RESULTS' | translate ) :
+          (areResultsOutOfDate$ | async) ? ('UPDATE' | translate ) :
+          ('SEARCH' | translate ) )
       }}
     </button>
   </mat-button-toggle>
@@ -26,7 +26,7 @@
 
 <mat-menu #searchActionDropdown="matMenu">
   <button mat-menu-item (click)="onClearSearch()">
-    Clear Search
+    {{'CLEAR_SEARCH' | translate }}
   </button>
 
   <mat-divider></mat-divider>
@@ -73,7 +73,7 @@
 
   <button *ngIf="isDevMode()" mat-menu-item [matMenuTriggerFor]="apiMaturity" matSuffix>
     <mat-icon>swap_horizontal_circle</mat-icon>
-    Maturity
+    {{ 'MATURITY' | translate }}
   </button>
 </mat-menu>
 

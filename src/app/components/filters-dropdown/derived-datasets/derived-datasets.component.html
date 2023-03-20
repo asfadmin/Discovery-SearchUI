@@ -10,7 +10,7 @@
   <mat-menu #derivedDatasetMenu="matMenu">
     <div mat-menu-item matSuffix *ngFor="let dataset of datasets" (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)">
       <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
-        <mat-icon>{{ 'VIDEO_LIBRARY' | translate }}</mat-icon>
+        <mat-icon>video_library</mat-icon>
         {{ dataset.name }}
       </div>
       <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">

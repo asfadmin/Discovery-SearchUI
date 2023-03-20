@@ -201,7 +201,7 @@
 
               mat-button>
         <mat-icon>delete</mat-icon>
-        <span>Clear</span>
+        <span>{{ 'CLEAR' | translate }}</span>
       </button>
 
       <mat-menu #clearJobQueue>
@@ -288,7 +288,7 @@
          </span>
 
          <span *ngIf="isQueueSubmitProcessing">
-           {{ ' LOADING ' |  translate }}...
+           {{ 'LOADING' |  translate }}...
          </span>
       </button>
     </div>

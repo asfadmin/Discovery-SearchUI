@@ -6,7 +6,7 @@
     </button>
     <button (click)="onSelectDetail()"
      [class.selected]="view === Views.DETAIL" mat-button>
-      Scene Detail
+      {{'SCENE_DETAIL' | translate}}
       <ng-container *ngIf="searchType !== SearchTypes.BASELINE &&
                            searchType !== SearchTypes.SBAS">
         {{'AND_FILES' | translate }}
@@ -48,7 +48,7 @@
           <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
             {{ products.length || '' }} File{{ (products || []).length === 1 ? '' : 's'}}
           </span>
-          <ng-template #defaultProductsHeader>Files</ng-template>
+          <ng-template #defaultProductsHeader>{{'FILES' | translate }}</ng-template>
         </ng-container>
       </mat-card-subtitle>
 
