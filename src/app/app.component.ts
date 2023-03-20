@@ -84,9 +84,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ) {
     const browserLang = translate.getBrowserLang();
-    translate.addLangs(['de', 'en', 'es', 'fr', 'zh-yue']);
+    translate.addLangs(['de', 'en', 'es', 'fr']);
     translate.setDefaultLang('en');
-    translate.use(browserLang.match(/de|en|es|fr|zh-yue/) ? browserLang : 'en');
+    translate.use(browserLang.match(/de|en|es|fr/) ? browserLang : 'en');
   }
 
   public ngAfterViewInit(): void {
