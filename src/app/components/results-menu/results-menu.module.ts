@@ -24,13 +24,12 @@ import { SharedModule } from '@shared';
     MatSharedModule,
     ResizableModule,
     FlexLayoutModule,
-
+    SharedModule,
     SbasResultsMenuModule,
     SarviewsResultsMenuModule,
     BaselineResultsMenuModule,
     DesktopResultsMenuModule,
     MobileResultsMenuModule,
-    SharedModule
   ],
   exports: [
     ResultsMenuComponent,
