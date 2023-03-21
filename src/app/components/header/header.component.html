@@ -1,3 +1,9 @@
+<div class="langSelect-div">
+  <select class="langSelect-select" #langSelect (change)="translate.use(langSelect.value)">
+    <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{languageName(lang)}}</option>
+  </select>
+</div>
+
 <div
   *ngIf="breakpoint$ | async as breakpoint"
   class="bounds">
@@ -40,7 +46,4 @@
     </div>
   </div>
   <mat-progress-bar *ngIf="isLoading" style="width: 100%;" mode="indeterminate"></mat-progress-bar>
-  <select class="langSelect" #langSelect (change)="translate.use(langSelect.value)">
-    <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{languageName(lang)}}</option>
-  </select>
 </div>

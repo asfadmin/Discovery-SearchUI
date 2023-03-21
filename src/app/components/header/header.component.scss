@@ -140,7 +140,19 @@ $config: mat.define-typography-config();
   right: 5px;
 }
 
-.langSelect {
+.langSelect-div {
+  display: inline-block;
+  position:absolute;
+  top: -3px;
+  right: 25px;
+}
+
+.langSelect-select {
   border: none;
   width: auto;
+  font-size: 11px;
+  @include themify($themes) {
+    color: themed('dark-secondary-text');
+  }
+  background-color: inherit;
 }

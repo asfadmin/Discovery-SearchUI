@@ -80,10 +80,8 @@ import { SharedModule } from "@shared";
     MatSharedModule,
     MatAutocompleteModule,
     PipesModule,
-
     QueueModule,
     ProcessingQueueModule,
-
     SearchTypeSelectorModule,
     DatasetSelectorModule,
     DateSelectorModule,
