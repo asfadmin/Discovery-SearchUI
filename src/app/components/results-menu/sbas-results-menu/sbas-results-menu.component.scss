@@ -193,3 +193,14 @@ label {
     background: themed('background-white') !important;
   }
 }
+
+.warn-icon {
+  @include themify($themes) {
+    color: themed('warn');
+  }
+}
+.gap-detected-area {
+  @include themify($themes) {
+    color: themed('dark-primary-text') !important;
+  }
+}

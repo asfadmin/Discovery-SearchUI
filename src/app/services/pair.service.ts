@@ -296,11 +296,12 @@ export class PairService {
     return scenes.sort(sortFunc);
   }
 
-  public isGraphDisconnected(pairs: any[]) {
+  public isGraphDisconnected(pairs: any[], numScenes: Number) {
     if(pairs.length === 0) {
       return false
     }
     let graph_model = {}
+    let points = new Set()
     for (let pair of pairs) {
 
       if (graph_model.hasOwnProperty(pair[0].id)) {
@@ -308,6 +309,7 @@ export class PairService {
       } else {
         graph_model[pair[0].id] = new Set()
         graph_model[pair[0].id].add(pair[1].id)
+        points.add(pair[0].id)
       }
 
       if (graph_model.hasOwnProperty(pair[1].id)) {
@@ -316,16 +318,19 @@ export class PairService {
       } else {
         graph_model[pair[1].id] = new Set()
         graph_model[pair[1].id].add(pair[0].id)
+        points.add(pair[1].id)
+
       }
     }
+    if(numScenes !== points.size) {
+      return false;
+    }
 
-
-    let points: Set<String> = new Set(Object.keys(graph_model))
+    // let points: Set<String> = new Set(Object.keys(graph_model))
 
     let to_check = []
     let checked : Set<String> = new Set()
     to_check.push(points.values().next().value)
-
 
     while (to_check.length > 0) {
       let current = to_check.pop()
@@ -342,7 +347,6 @@ export class PairService {
         }
       }
     }
-    console.log(`Are there multiple groups? ${checked.size === points.size ? 'no' : 'yes'}`)
     return !(checked.size === points.size)
   }
 
