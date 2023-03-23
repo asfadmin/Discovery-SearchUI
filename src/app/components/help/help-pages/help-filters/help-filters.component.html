@@ -29,9 +29,9 @@
           </p>
           <ol>
             <li>
-              <b>{{ 'START_DATE' | translate }}</b> {{ 'and'| translate }} <b>{{ 'END_DATE' | translate }}</b> fields. The date picker will automatically constrain
+              <b>{{ 'START_DATE' | translate }}</b> {{ 'AND'| translate }} <b>{{ 'END_DATE' | translate }}</b> fields. The date picker will automatically constrain
               {{ 'YOUR_SELECTION_TO_A_VALID_RANGE_FOR_THE_SELECTED_DATASET' |  translate }}
-              <b>Seasonal Search</b> allows constraining the search to certain annual
+              <b>{{ 'SEASONAL_SEARCH' | translate }}</b> allows constraining the search to certain annual
               {{ 'PERIODS_WITHIN_AN_OVERALL_RANGE_OF_DATES_CLICK_THE_SEASONAL_SEARCH_TOGGLE' |  translate }}
               {{ 'AND_ADDITIONAL_OPTIONS_WILL_APPEAR_ALLOWING_YOU_TO_ENTER_AN_OVERALL_DATE_RANGE' |  translate }}
               {{ 'START_DATE_END_DATE_AND_THE_SEASONAL_RANGE_SEASON_START_DAY_SEASON_END_DAY' |  translate }}
@@ -42,15 +42,15 @@
               all datasets, and this list can change.</em>
               <ol>
                 <li>{{ 'FILE_TYPE' |  translate }}</li>
-                <li>Subtype</li>
-                <li>Beam Mode</li>
-                <li>Polarization</li>
-                <li>Direction</li>
+                <li>{{ 'SUBTYPE' | translate }}</li>
+                <li>{{ 'BEAM_MODE' | translate }}</li>
+                <li>{{ 'Polarization' | translate }}</li>
+                <li>{{ 'Direction' | translate }}</li>
                 <li>{{ 'CAMPAIGN_SELECTOR' | translate }}</li>
               </ol>
             </li>
             <li>
-              <b>{{ 'PATH' |  translate }}</b> and <b>Frame</b> fields are available for select datasets. You may enter
+              <b>{{ 'PATH' |  translate }}</b> {{'AND' | translate }} <b> {{'Frame'| translate }}</b> fields are available for select datasets. You may enter
               a single path or frame, or a range. Due to inconsistent Sentinel-1 framing, we recommend
               searching for a frame of interest by ±1-2 frames.
             </li>

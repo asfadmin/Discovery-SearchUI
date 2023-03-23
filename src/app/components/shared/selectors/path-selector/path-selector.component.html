@@ -5,7 +5,7 @@
       type="number"
       (input)="onValueChanged($event, inputTypes.PATH_START)"
       [(ngModel)]="pathStart"
-      name="pathStart" placeholder="Path Start">
+      name="pathStart" placeholder="{{'PATH_START'| translate}}">
   </mat-form-field>
   <mat-form-field *ngIf="prop.isRelevant(p.PATH)" class="range-form-input"
     [class.invalid-input-animation]="typeHasError(inputTypes.PATH_END)">
@@ -33,6 +33,6 @@
       name="frameEnd" placeholder="Frame End">
   </mat-form-field>
 
-  <button (click)="onClear()" mat-button>Clear</button>
+  <button (click)="onClear()" mat-button>{{ 'CLEAR' | translate }}</button>
   <app-aoi-clear></app-aoi-clear>
 </form>

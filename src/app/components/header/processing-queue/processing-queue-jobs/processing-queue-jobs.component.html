@@ -84,9 +84,9 @@
       <div class="jobs-search">
         <button [disabled]="!isLoggedIn"
                 (click)="viewCustomProducts($event)" color="primary" mat-flat-button>
-          {{ ' VIEW_SUBMITTED_JOBS ' |  translate }}
+          {{ 'VIEW_SUBMITTED_JOBS' |  translate }}
         </button>
-        <p class="not-logged-in" *ngIf="!isLoggedIn">{{ ' SIGN_IN_TO_VIEW_SUBMITTED_JOBS ' |  translate }}</p>
+        <p class="not-logged-in" *ngIf="!isLoggedIn">{{ 'SIGN_IN_TO_VIEW_SUBMITTED_JOBS' |  translate }}</p>
       </div>
     </ng-template>
   </mat-list>

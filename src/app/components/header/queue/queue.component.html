@@ -37,7 +37,7 @@
   <a class="more-link"
      target="_blank"
      href="https://asf.alaska.edu/information/palsar-rtc-dem-information/">
-    More...
+    {{ 'MORE' | translate }}...
   </a>
 </div>
 <div *ngIf="showRestrictedDatasetWarning" class="dem-warning">
@@ -45,7 +45,7 @@
   <a class="more-link"
      target="_blank"
      href="https://asf.alaska.edu/restricted-data-access-request/">
-    More...
+    {{ 'MORE' | translate }}...
   </a>
 </div>
 <mat-dialog-content class="dl-mat-dialog-content"
@@ -117,7 +117,7 @@
             <button *ngIf="previousQueue === null"
                     (click)="onClearQueue(products)" mat-button>
               <mat-icon style="margin-right: 5px;">delete</mat-icon>
-              <span *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin">Clear</span>
+              <span *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin">{{'CLEAR' | translate}}</span>
             </button>
 
           <button *ngIf="previousQueue !== null"
