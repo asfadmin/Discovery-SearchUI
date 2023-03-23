@@ -195,11 +195,13 @@ label {
 }
 
 .warn-icon {
+  margin-right: 5px;
   @include themify($themes) {
     color: themed('warn');
   }
 }
 .gap-detected-area {
+  margin: 5px;
   @include themify($themes) {
     color: themed('dark-primary-text') !important;
   }
