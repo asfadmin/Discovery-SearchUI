@@ -323,10 +323,9 @@ export class PairService {
       }
     }
     if(numScenes !== points.size) {
-      return false;
+      return true;
     }
 
-    // let points: Set<String> = new Set(Object.keys(graph_model))
 
     let to_check = []
     let checked : Set<String> = new Set()
