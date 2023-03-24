@@ -10,7 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSliderModule } from '@angular/material/slider';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import {SharedModule} from "@shared";
+import { SharedModule } from "@shared";
 
 @NgModule({
   declarations: [

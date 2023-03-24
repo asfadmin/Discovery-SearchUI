@@ -120,8 +120,7 @@ export const routes = [
     HelpModule,
     ToastrModule.forRoot({positionClass: 'inline', preventDuplicates: true}),
     ToastContainerModule,
-    CodeExportModule,
-
+    CodeExportModule
   ],
   providers: [
     services.AsfApiService,

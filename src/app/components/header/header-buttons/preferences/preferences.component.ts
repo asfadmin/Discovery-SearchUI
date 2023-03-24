@@ -25,6 +25,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   public defaultMaxConcurrentDownloads: number;
   public defaultProductTypes: ProductType[];
   public hyp3BackendUrl: string;
+  public defaultLanguage: string;
 
   public defaultGeoSearchFiltersID;
   public defaultBaselineSearchFiltersID;
@@ -64,6 +65,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(userStore.getUserProfile).subscribe(
         profile => {
+          this.defaultLanguage = profile.language;
           this.defaultMaxResults = profile.maxResults;
           this.defaultMapLayer = profile.mapLayer;
           this.defaultDataset = profile.defaultDataset;
@@ -71,6 +73,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
           this.defaultMaxConcurrentDownloads = profile.defaultMaxConcurrentDownloads;
           this.hyp3BackendUrl = profile.hyp3BackendUrl;
           this.currentTheme = profile.theme;
+          this.defaultLanguage = profile.language;
           if (this.hyp3BackendUrl) {
             this.hyp3.setApiUrl(this.hyp3BackendUrl);
           } else {
@@ -137,6 +140,11 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     this.saveProfile();
   }
 
+  public onChangeDefaultLanguage(language: string): void {
+    this.defaultLanguage = language;
+    this.saveProfile();
+  }
+
   public onChangeDefaultMaxConcurrentDownloads(maxDownloads: number): void {
     this.defaultMaxConcurrentDownloads = maxDownloads;
     this.saveProfile();
@@ -184,7 +192,8 @@ export class PreferencesComponent implements OnInit, OnDestroy {
       defaultMaxConcurrentDownloads: this.defaultMaxConcurrentDownloads,
       defaultFilterPresets: this.selectedFiltersIDs,
       hyp3BackendUrl: this.hyp3BackendUrl,
-      theme: this.currentTheme
+      theme: this.currentTheme,
+      language: this.defaultLanguage
     });
 
     this.store$.dispatch(action);

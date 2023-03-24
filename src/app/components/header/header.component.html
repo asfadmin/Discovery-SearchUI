@@ -1,8 +1,4 @@
-<div class="langSelect-div">
-  <select class="langSelect-select" #langSelect (change)="translate.use(langSelect.value)">
-    <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{languageName(lang)}}</option>
-  </select>
-</div>
+<app-language-selector [header]="true"></app-language-selector>
 
 <div
   *ngIf="breakpoint$ | async as breakpoint"

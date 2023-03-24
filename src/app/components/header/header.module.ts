@@ -51,6 +51,7 @@ import { SarviewsEventTypeSelectorModule } from '@components/shared/selectors/sa
 import { DerivedDatasetsHeaderComponent } from './derived-datasets-header/derived-datasets-header.component';
 import { Hyp3UrlModule } from '@components/shared/hyp3-url/hyp3-url.module';
 import { SharedModule } from "@shared";
+import { LanguageSelectorModule } from "@components/shared/selectors/language-selector/language-selector.module";
 
 @NgModule({
   declarations: [
@@ -100,7 +101,8 @@ import { SharedModule } from "@shared";
     SarviewsEventSearchSelectorModule,
     SarviewsEventTypeSelectorModule,
     Hyp3UrlModule,
-    SharedModule
+    SharedModule,
+    LanguageSelectorModule
   ],
   exports: [
     HeaderComponent

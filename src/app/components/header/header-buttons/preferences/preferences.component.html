@@ -75,6 +75,10 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+      <app-language-selector
+        (selectedChange)="onChangeDefaultLanguage($event)"
+        >
+      </app-language-selector>
     </form>
   </div>
 

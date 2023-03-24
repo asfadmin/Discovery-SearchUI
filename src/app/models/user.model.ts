@@ -18,6 +18,7 @@ export interface UserProfile {
   };
   hyp3BackendUrl: string;
   theme: string;
+  language: string;
 }
 
 export interface URSGroup {

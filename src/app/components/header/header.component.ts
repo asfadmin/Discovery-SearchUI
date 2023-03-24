@@ -37,6 +37,4 @@ export class HeaderComponent implements OnInit {
     return this.languageNamesInEnglish.of( langName );
   }
 
-
 }
-

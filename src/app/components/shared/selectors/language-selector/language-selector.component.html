@@ -1,0 +1,11 @@
+<div *ngIf="header == false">
+  Language selector here
+</div>
+
+<div *ngIf="header == true"
+     class="langSelect-div">
+  <select class="langSelect-select" #langSelect (change)="translate.use(langSelect.value)">
+    <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{languageName(lang)}}</option>
+  </select>
+</div>
+

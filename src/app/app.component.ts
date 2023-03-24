@@ -61,6 +61,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private subs = new SubSink();
 
+  private browserLang: string;
+
   constructor(
     private store$: Store<AppState>,
     private actions$: ActionsSubject,
@@ -83,10 +85,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     public translate: TranslateService,
 
   ) {
-    const browserLang = translate.getBrowserLang();
-    translate.addLangs(['de', 'en', 'es', 'fr']);
-    translate.setDefaultLang('en');
-    translate.use(browserLang.match(/de|en|es|fr/) ? browserLang : 'en');
+    this.browserLang = this.translate.getBrowserLang();
   }
 
   public ngAfterViewInit(): void {
@@ -94,9 +93,15 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       this.store$.select(userStore.getUserProfile).pipe(
         filter(profile => !!profile.defaultFilterPresets),
         map(profile => profile.defaultFilterPresets)
-        ).subscribe(presets =>
-          this.store$.dispatch(new filterStore.SetDefaultFilters(presets)))
-    );
+        ).subscribe(presets => {
+          this.store$.dispatch(new filterStore.SetDefaultFilters(presets));
+          this.translate.addLangs(['de', 'en', 'es', 'fr']);
+          this.translate.setDefaultLang('en');
+          this.translate.use(this.browserLang.match(/de|en|es|fr/) ? this.browserLang : 'en');
+          // if (profile.defaultLanguage !== undefined) {
+          //   this.translate.use(profile.defaultLanguage);
+          // }
+        }))
   }
   public ngOnInit(): void {
     this.subs.add(
