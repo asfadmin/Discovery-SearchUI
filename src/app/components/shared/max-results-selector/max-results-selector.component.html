@@ -55,7 +55,7 @@
 <mat-menu #menu="matMenu">
   <button *ngFor="let amount of possibleMaxResults"
     (click)="onNewMaxResults(amount)" mat-menu-item>
-      <span>{{ formatNumber(amount) }} Files</span>
+      <span>{{ formatNumber(amount) }} {{'FILES' | translate }}</span>
   </button>
 
 </mat-menu>

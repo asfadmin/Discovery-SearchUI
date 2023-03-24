@@ -1,12 +1,12 @@
 <div class="dialog-header">
-  <div mat-dialog-title class="dialog-title-overrides">Preferences For {{ userAuth.id }}</div>
+  <div mat-dialog-title class="dialog-title-overrides">{{ 'PREFERENCES_FOR' | translate}} {{ userAuth.id }}</div>
 </div>
 
 <mat-dialog-content>
   <div class="display: flex;">
     <form #preferencesForm="ngForm" onsubmit="return false">
 
-      <div class="section-heading">{{ ' DEFAULT_SEARCH_PRESETS ' | translate }}</div>
+      <div class="section-heading">{{ 'DEFAULT_SEARCH_PRESETS' | translate }}</div>
       <div class="default-dataset">
         <app-dataset-selector
           [(selected)]="defaultDataset"
@@ -16,7 +16,7 @@
       </div>
 
       <mat-form-field class="default-max-result">
-        <mat-label>{{ ' DEFAULT_MAX_RESULT_AMOUNT ' | translate }}</mat-label>
+        <mat-label>{{ 'DEFAULT_MAX_RESULT_AMOUNT' | translate }}</mat-label>
         <mat-select
           [(ngModel)]="defaultMaxResults"
           (selectionChange)="onChangeMaxResultsDefault($event.value)" name="maxResult">
@@ -27,7 +27,7 @@
       </mat-form-field>
 
       <mat-form-field class="default-map">
-        <mat-label>{{ ' DEFAULT_MAP_LAYER ' | translate }}</mat-label>
+        <mat-label>{{ 'DEFAULT_MAP_LAYER' | translate }}</mat-label>
         <mat-select
           [(ngModel)]="defaultMapLayer"
           (selectionChange)="onChangeDefaultLayerType($event.value)" name="amount">
@@ -40,7 +40,7 @@
         </mat-select>
       </mat-form-field>
 
-      <div class="section-heading">{{ ' DEFAULT_SEARCH_FILTERS_PRESETS ' | translate }}</div>
+      <div class="section-heading">{{ 'DEFAULT_SEARCH_FILTERS_PRESETS' | translate }}</div>
       <mat-form-field class="default-filters-presets" *ngFor="let type of searchTypeKeys">
         <mat-label>{{type}}</mat-label>
         <mat-select
@@ -53,14 +53,14 @@
         </mat-select>
       </mat-form-field>
 
-      <div class="section-heading">{{ ' DEFAULT_ON_DEMAND_PRESETS ' | translate }}</div>
+      <div class="section-heading">{{ 'DEFAULT_ON_DEMAND_PRESETS' | translate }}</div>
       <mat-form-field class="default-filters-presets">
-        <mat-label>{{ ' HY_P3_API_URL ' | translate }}</mat-label>
+        <mat-label>{{ 'HY_P3_API_URL' | translate }}</mat-label>
         <input matInput
           [(ngModel)]="hyp3BackendUrl"
           name="backendUrl">
         <button matSuffix mat-icon-button aria-label="Clear" (click)="resetHyp3Url()">
-          <mat-icon>{{ ' REFRESH' | translate }}</mat-icon>
+          <mat-icon>{{ 'REFRESH' | translate }}</mat-icon>
         </button>
       </mat-form-field>
 
@@ -99,7 +99,7 @@
   </div>
   <div class="done-button">
     <button (click)="onClose()" color="primary" mat-flat-button>
-      {{ ' DONE ' | translate }}
+      {{ 'DONE' | translate }}
     </button>
   </div>
 </mat-dialog-actions>

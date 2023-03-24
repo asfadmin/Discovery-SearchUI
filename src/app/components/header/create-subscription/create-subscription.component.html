@@ -39,7 +39,7 @@
   </div>
 
   <div class="feedback-div header-link">
-    <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <mat-icon>comment</mat-icon> Feedback</a>
+    <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <mat-icon>comment</mat-icon>Feedback</a>
   </div>
 
   <div class="docs-div header-link">
@@ -204,8 +204,8 @@
 
           <div *ngIf="subEstimate !== null" style="margin-bottom: 5px;">
             {{ 'BASED_ON_YOUR_SEARCH_PARAMETERS_THIS_SUBSCRIPTION_WILL_RUN' |  translate }}
-            <span *ngIf="currentProducts !== null && currentProducts > 0"><b>{{ currentProducts }} jobs now</b> and</span>
-            approximately <b>{{ subEstimate }} jobs per month</b>.
+            <span *ngIf="currentProducts !== null && currentProducts > 0"><b>{{ currentProducts }} {{'JOBS_NOW'}}</b> {{ 'AND' | translate }}</span>
+            {{ 'APPROXIMATELY' | translate }} <b>{{ subEstimate }} {{ 'JOBS_PER_MONTH' | translate }}</b>.
           </div>
 
           <div>
@@ -225,14 +225,14 @@
               <b>{{ 'DATASET' | translate }}:</b> {{ subtype }}
             </div>
             <div *ngIf="!!polygon">
-              <b>Search Area:</b> {{ showSearchAreaType(polygon) }}
+              <b>{{ 'SEARCH_AREA' | translate }}:</b> {{ showSearchAreaType(polygon) }}
             </div>
 
             <div *ngIf="!!dateRange.start">
-              <b>Start:</b> {{ dateRange.start | shortDate }}
+              <b>{{ 'STAR' | translate }}t:</b> {{ dateRange.start | shortDate }}
             </div>
             <div *ngIf="!!dateRange.end">
-              <b>End:</b> {{ dateRange.end | shortDate }}
+              <b>{{ 'END' | translate }}:</b> {{ dateRange.end | shortDate }}
             </div>
 
             <div *ngIf="!!productType">
@@ -240,11 +240,11 @@
             </div>
 
             <div *ngIf="polarization.length > 0">
-              <b>Polarization:</b> {{ polarization }}
+              <b>{{ 'POLARIZATION' | translate }}:</b> {{ polarization }}
             </div>
 
             <div *ngIf="!!flightDirection">
-              <b>Flight Dir:</b> {{ flightDirection }}
+              <b>{{ 'FLIGHT_DIR' | translate }}:</b> {{ flightDirection }}
             </div>
           </div>
 
@@ -266,15 +266,15 @@
                 color="primary"
                 (click)="onBack()"
                 [disabled]="stepper.selectedIndex === 0">
-          <mat-icon>{{ 'ARROW_BACKWARD' |  translate }}</mat-icon>
+          <mat-icon>arrow_backward</mat-icon>
           {{ 'BACK' |  translate }}
         </button>
         &nbsp;
         <button mat-flat-button
                 color="primary"
                 (click)="onNext()">
-          {{ isLastStep() ? 'Submit' : 'Next'}}
-          <mat-icon>{{ 'ARROW_FORWARD' | translate }}</mat-icon>
+          {{ isLastStep() ? ('SUBMIT' | translate ) : ('NEXT'| translate)}}
+          <mat-icon>arrow_forward</mat-icon>
         </button>
       </div>
     </div>
@@ -306,13 +306,13 @@
               color="primary"
               (click)="onBack()"
               [disabled]="stepper.selectedIndex === 0">
-        <mat-icon>{{ 'ARROW_BACKWARD' |  translate }}</mat-icon>
-        {{ 'BACK' |  translate }}
+        <mat-icon>arrow_backward</mat-icon>
+        {{ 'BACK' | translate }}
       </button>
 
       <div style="margin: auto;">
         <b>
-          <span *ngIf="stepper.selectedIndex === steps.SEARCH_OPTIONS">{{ 'SEARCH OPTIONS' | translate }}</span>
+          <span *ngIf="stepper.selectedIndex === steps.SEARCH_OPTIONS">{{ 'SEARCH_OPTIONS' | translate }}</span>
           <span *ngIf="stepper.selectedIndex === steps.PROCESSING_OPTIONS">{{ 'PROCESSING_OPTIONS' | translate }}</span>
           <span *ngIf="stepper.selectedIndex === steps.REVIEW">{{ 'REVIEW' |  translate }}</span>
         </b>
@@ -322,7 +322,7 @@
               color="primary"
               (click)="onNext()">
         {{ isLastStep() ? 'Submit' : 'Next'}}
-        <mat-icon>{{ 'ARROW_FORWARD' | translate }}</mat-icon>
+        <mat-icon>arrow_forward</mat-icon>
       </button>
     </div>
   </div>
