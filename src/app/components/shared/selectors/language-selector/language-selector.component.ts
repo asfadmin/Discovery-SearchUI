@@ -11,6 +11,7 @@ import {TranslateService} from "@ngx-translate/core";
 })
 export class LanguageSelectorComponent implements OnInit {
   @Input() header: boolean;
+  @Input() selected: string;
   @Output() selectedChange = new EventEmitter<string>();
   public languageNamesInEnglish = new Intl.DisplayNames(['en'], { type: 'language' });
 
@@ -33,6 +34,7 @@ export class LanguageSelectorComponent implements OnInit {
       'event': 'language-selected',
       'language': language,
     });
+    this.translate.use(language)
     this.selectedChange.emit(language);
   }
 }

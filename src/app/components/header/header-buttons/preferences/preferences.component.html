@@ -63,22 +63,31 @@
           <mat-icon>{{ ' REFRESH' | translate }}</mat-icon>
         </button>
       </mat-form-field>
-      <div class="section-heading">{{ ' THEMING ' | translate }}</div>
-      <mat-form-field class="default-filters-presets">
-        <mat-label>Default Theme</mat-label>
-        <mat-select
-        [(value)]="currentTheme"
-        (selectionChange)="onChangeDefaultTheme($event.value)"
-        name="preset">
-          <mat-option [value]="theme" *ngFor="let theme of themeOptions">
-            {{ theme | titlecase}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <app-language-selector
-        (selectedChange)="onChangeDefaultLanguage($event)"
-        >
-      </app-language-selector>
+
+      <div class="section-heading">{{ ' DEFAULT_LANGUAGE_AND_THEME ' | translate }}</div>
+      <div class="language-theme">
+        <div class="row-wrapper">
+          <div>
+            <app-language-selector
+              [(selected)]="defaultLanguage"
+              (selectedChange)="onChangeDefaultLanguage($event)">
+            </app-language-selector>
+          </div>
+          <div>
+            <mat-form-field class="default-filters-presets">
+              <mat-label>Default Theme</mat-label>
+              <mat-select
+                [(value)]="currentTheme"
+                (selectionChange)="onChangeDefaultTheme($event.value)"
+                name="preset">
+                <mat-option [value]="theme" *ngFor="let theme of themeOptions">
+                  {{ theme | titlecase}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
     </form>
   </div>
 
