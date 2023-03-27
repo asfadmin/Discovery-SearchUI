@@ -66,14 +66,13 @@
 
       <div class="section-heading">{{ ' DEFAULT_LANGUAGE_AND_THEME ' | translate }}</div>
       <div class="language-theme">
-        <div class="row-wrapper">
-          <div>
+          <div class="language-selector">
             <app-language-selector
               [(selected)]="defaultLanguage"
               (selectedChange)="onChangeDefaultLanguage($event)">
             </app-language-selector>
           </div>
-          <div>
+          <div class="theme-selector">
             <mat-form-field class="default-filters-presets">
               <mat-label>Default Theme</mat-label>
               <mat-select
@@ -86,7 +85,6 @@
               </mat-select>
             </mat-form-field>
           </div>
-        </div>
       </div>
     </form>
   </div>

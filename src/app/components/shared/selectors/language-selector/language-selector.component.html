@@ -1,4 +1,4 @@
-<div *ngIf="header == false">
+<ng-container *ngIf="header == false">
   <mat-form-field appearance="fill">
     <mat-label>Default Language</mat-label>
     <mat-select #langPreference
@@ -10,7 +10,7 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
-</div>
+</ng-container>
 
 <div *ngIf="header == true"
      class="langSelect-div">

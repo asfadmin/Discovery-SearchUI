@@ -67,8 +67,18 @@
 
 .language-theme {
   display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 }
 
-.row-wrapper {
-  flex-direction: row;
+.language-selector {
+  flex-basis: 225px;
+}
+
+.theme-selector {
+  flex-basis: 225px;
+}
+
+.delete-me-this-was-a-test {
+
 }
