@@ -230,7 +230,7 @@
   "CLICK_ON_THE_MAP_ONCE_TO_SPECIFY_THE_STARTING_CORNER_MOVE_THE_MOUSE_THEN_CLICK_AGAIN_TO_FINISH_THE_BOX": "Click on the map once to specify the starting corner, move the mouse, then click again to finish the box.",
   "BY_DEFAULT_THE_MAP_DRAWING_TOOL_IS_A_BOUNDING_BOX": "By default, the map-drawing tool is a bounding box.",
   "ADDITIONAL_DRAWING_TOOL_OPTIONS_ARE_AVAILABLE_IN_THE_TOOLBAR_INCLUDING_POINT_LINESTRING_AND_POLYGON_OPTIONS": "Additional drawing tool options are available in the toolbar, including point, linestring, and polygon options.",
-  "SEARCH": "search",
+  "SEARCH": "Search",
   "ONCE_ALL_PARAMETERS_HAVE_BEEN_CHOSEN_CLICK_SEARCH_SEARCH_RESULTS_WILL_APPEAR_IN_THE_FOOTER_AREA_OF_THE_VERTEX_WINDOW_AND_ON_THE_MAP": "Once all parameters have been chosen, click SEARCH. Search results will appear in the footer area of the Vertex window, and on the map.",
   "NOTE_THE_NUMBER_OF_FILES_THAT_ARE_PREDICTED_TO_MATCH_THE_CURRENT_SEARCH_PARAMETERS_IS_DISPLAYED_UNDER_THE_SEARCH_BUTTON_IF_THERE_ARE_NO_PREDICTED_MATCHES_THE_SEARCH_BUTTON_WILL_BE_GREYED_OUT_AND_DISPLAY_NO_RESULTS": "Note: The number of files that are predicted to match the current search parameters is displayed under the SEARCH button. If there are no predicted matches, the search button will be greyed out and display NO RESULTS.",
   "BASIC_LIST_SEARCH": "Basic List Search",
