@@ -47,8 +47,7 @@
     </div>
 
     <div class="div-flex date-time" matLine>
-      <span>
-        pan *ngIf="scene.metadata.job">
+      <span *ngIf="scene.metadata.job">
         {{ scene.metadata.job.job_type }} -
       </span>
       <span *ngIf="breakpoint > breakpoints.MOBILE && searchType !== SearchTypes.BASELINE"
