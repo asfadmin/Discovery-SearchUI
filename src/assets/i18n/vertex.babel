@@ -84,38 +84,6 @@
 						</translations>
 					</concept_node>
 					<concept_node>
-						<name>ACCOUNT_CIRCLE</name>
-						<description/>
-						<comment/>
-						<default_text/>
-						<translations>
-							<translation>
-								<language>de-DE</language>
-								<approved>false</approved>
-							</translation>
-							<translation>
-								<language>en-US</language>
-								<approved>false</approved>
-							</translation>
-							<translation>
-								<language>es-ES</language>
-								<approved>false</approved>
-							</translation>
-							<translation>
-								<language>fr-FR</language>
-								<approved>false</approved>
-							</translation>
-							<translation>
-								<language>pt-BR</language>
-								<approved>false</approved>
-							</translation>
-							<translation>
-								<language>zh-CN</language>
-								<approved>false</approved>
-							</translation>
-						</translations>
-					</concept_node>
-					<concept_node>
 						<name>ACTIVE_EVENTS_ONLY</name>
 						<description/>
 						<comment/>
@@ -324,6 +292,38 @@
 							<translation>
 								<language>es-ES</language>
 								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>fr-FR</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>pt-BR</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>zh-CN</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>ADD_SCENE_FILES_TO_DOWNLOADS</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>de-DE</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>true</approved>
 							</translation>
 							<translation>
 								<language>fr-FR</language>
@@ -987,7 +987,7 @@
 						<translations>
 							<translation>
 								<language>de-DE</language>
-								<approved>false</approved>
+								<approved>true</approved>
 							</translation>
 							<translation>
 								<language>en-US</language>
@@ -1019,7 +1019,7 @@
 						<translations>
 							<translation>
 								<language>de-DE</language>
-								<approved>false</approved>
+								<approved>true</approved>
 							</translation>
 							<translation>
 								<language>en-US</language>
@@ -1051,7 +1051,7 @@
 						<translations>
 							<translation>
 								<language>de-DE</language>
-								<approved>false</approved>
+								<approved>true</approved>
 							</translation>
 							<translation>
 								<language>en-US</language>
@@ -1083,7 +1083,7 @@
 						<translations>
 							<translation>
 								<language>de-DE</language>
-								<approved>false</approved>
+								<approved>true</approved>
 							</translation>
 							<translation>
 								<language>en-US</language>
@@ -1115,7 +1115,7 @@
 						<translations>
 							<translation>
 								<language>de-DE</language>
-								<approved>false</approved>
+								<approved>true</approved>
 							</translation>
 							<translation>
 								<language>en-US</language>
@@ -1179,39 +1179,7 @@
 						<translations>
 							<translation>
 								<language>de-DE</language>
-								<approved>false</approved>
-							</translation>
-							<translation>
-								<language>en-US</language>
-								<approved>false</approved>
-							</translation>
-							<translation>
-								<language>es-ES</language>
-								<approved>false</approved>
-							</translation>
-							<translation>
-								<language>fr-FR</language>
-								<approved>false</approved>
-							</translation>
-							<translation>
-								<language>pt-BR</language>
-								<approved>false</approved>
-							</translation>
-							<translation>
-								<language>zh-CN</language>
-								<approved>false</approved>
-							</translation>
-						</translations>
-					</concept_node>
-					<concept_node>
-						<name>AREA OF INTEREST OPTIONS</name>
-						<description/>
-						<comment/>
-						<default_text/>
-						<translations>
-							<translation>
-								<language>de-DE</language>
-								<approved>false</approved>
+								<approved>true</approved>
 							</translation>
 							<translation>
 								<language>en-US</language>
@@ -1243,7 +1211,7 @@
 						<translations>
 							<translation>
 								<language>de-DE</language>
-								<approved>false</approved>
+								<approved>true</approved>
 							</translation>
 							<translation>
 								<language>en-US</language>
@@ -1622,7 +1590,8 @@
 					<concept_node>
 						<name>A_LIST_OF_SCENE_NAMES_AND_ACQUISITION_TIMES_THAT_WERE_RETURNED_FROM_A_SEARCH_ARE_DISPLAYED_IN_THE</name>
 						<description/>
-						<comment/>
+						<comment>Testing Yoreley
+</comment>
 						<default_text/>
 						<translations>
 							<translation>
@@ -1846,7 +1815,7 @@
 					<concept_node>
 						<name>BASELINE</name>
 						<description/>
-						<comment>This is a test note made by Andy</comment>
+						<comment/>
 						<default_text/>
 						<translations>
 							<translation>
@@ -1867,7 +1836,7 @@
 							</translation>
 							<translation>
 								<language>pt-BR</language>
-								<approved>false</approved>
+								<approved>true</approved>
 							</translation>
 							<translation>
 								<language>zh-CN</language>
@@ -13124,6 +13093,38 @@
 							<translation>
 								<language>es-ES</language>
 								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>fr-FR</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>pt-BR</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>zh-CN</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>REMOVE_SCENE_FILES_FROM_DOWNLOADS</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>de-DE</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>true</approved>
 							</translation>
 							<translation>
 								<language>fr-FR</language>
