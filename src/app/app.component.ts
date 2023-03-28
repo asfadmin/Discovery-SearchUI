@@ -95,7 +95,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         map(profile => profile.defaultFilterPresets)
         ).subscribe(presets => {
           this.store$.dispatch(new filterStore.SetDefaultFilters(presets));
-          this.translate.addLangs(['de', 'en', 'es', 'fr']);
+          this.translate.addLangs(['de', 'en', 'es', 'fr', 'pt', 'zh']);
           this.translate.setDefaultLang('en');
           this.translate.use(this.browserLang.match(/de|en|es|fr/) ? this.browserLang : 'en');
           // if (profile.defaultLanguage !== undefined) {
