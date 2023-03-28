@@ -128,7 +128,7 @@
     <mat-icon
       [matMenuTriggerFor]="helpMenu"
       class="mobile-icon-spacing">
-      {{ 'HELP_OUTLINE' | translate }}
+      help_outline
     </mat-icon>
 
     <mat-icon
@@ -136,14 +136,14 @@
       class="mobile-icon-spacing"
       fontSet="material-icons-outlined"
       (click)="onAccountButtonClicked()">
-        {{ 'ACCOUNT_CIRCLE' | translate }}
+      account_circle
     </mat-icon>
 
     <mat-icon
       *ngIf="isLoggedIn"
       class="mobile-icon-spacing"
       [matMenuTriggerFor]="profileMenu">
-        {{ 'ACCOUNT_CIRCLE' | translate }}
+      account_circle
     </mat-icon>
   </ng-container>
 </div>
