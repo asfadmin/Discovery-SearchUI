@@ -1,8 +1,8 @@
 /* csslint ignoreAtRules: ["include"] */
 @use "@angular/material" as mat;
 
-@import "variables";
-@import "dark_variables";
+@import url("variables");
+@import url("dark_variables");
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -103,6 +103,7 @@ $themes: (
 
     :host-context(.theme-#{$theme}) & {
       $theme-map: () !global;
+
       @each $key, $submap in $map {
         $value: map-get(map-get($themes, $theme), '#{$key}');
         $theme-map: map-merge($theme-map, ($key: $value)) !global;
@@ -119,6 +120,7 @@ $themes: (
 
     .theme-#{$theme} & {
       $theme-map: () !global;
+
       @each $key, $submap in $map {
         $value: map-get(map-get($themes, $theme), '#{$key}');
         $theme-map: map-merge($theme-map, ($key: $value)) !global;
@@ -136,10 +138,12 @@ $themes: (
 
 .theme-dark {
   $asf-dark-theme: mat.define-dark-theme($asf-app-dark-primary, $contrast);
+
   @include mat.all-component-themes($asf-dark-theme);
 }
 
 .theme-light {
   $asf-light-theme: mat.define-light-theme($asf-app-primary, $asf-app-accent);
+
   @include mat.all-component-themes($asf-light-theme);
 }
