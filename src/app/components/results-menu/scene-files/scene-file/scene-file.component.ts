@@ -2,7 +2,6 @@ import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angu
 
 import * as moment from 'moment';
 
-
 import * as queueStore from '@store/queue';
 import * as searchStore from '@store/search';
 
@@ -40,7 +39,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   public isHovered = false;
   public paramsList = [];
 
-  private subs = new SubSink;
+  private subs = new SubSink();
 
   constructor(
       private hyp3: Hyp3Service,

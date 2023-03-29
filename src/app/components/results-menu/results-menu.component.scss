@@ -4,6 +4,7 @@
   @include themify($themes) {
     background: themed('background-white');
   }
+
   position: fixed;
 }
 
@@ -25,6 +26,7 @@
   @include themify($themes) {
     background: themify('primary-dark');
   }
+
   pointer-events: auto;
 }
 
@@ -39,6 +41,7 @@
     background-color: themed('primary-light');
     color: themed('dark-primary-text');
   }
+
   border-left: none;
 }
 
@@ -97,18 +100,22 @@
   @include themify($themes) {
     background-color: themed('primary-light');
   }
+
   background-position: center;
   background-repeat: no-repeat;
   cursor: ns-resize;
   display: grid;
   place-content: center;
 }
+
 .hgrip-icon {
   @include themify($themes) {
     stroke: themed('dark-primary-text');
   }
+
   width: 33px;
 }
+
 .resize-spacer {
   width: 64px;
   display: inline-block;
@@ -131,6 +138,7 @@
   @include themify($themes) {
     background-color: themed('primary-light');
   }
+
   z-index: 9;
 }
 
@@ -146,7 +154,7 @@
   a {
     text-decoration: none;
     @include themify($themes) {
-      color: themed('dark-primary-text')
+      color: themed('dark-primary-text');
     }
   }
 }

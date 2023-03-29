@@ -3,7 +3,11 @@
     (mouseleave) ="onClearFocused()"
     [class.hovered]="hovered"
     [class.selected]="isSelected"
-    [ngStyle]="{'padding-right': breakpoint > breakpoints.MEDIUM && searchType === SearchTypes.BASELINE ? '10px' : 'auto'}">
+    [ngStyle]="{
+      'padding-right':
+        breakpoint > breakpoints.MEDIUM &&
+        searchType === SearchTypes.BASELINE ? '10px' : 'auto'
+    }">
 
   <div class="image-flex" *ngIf="searchType !== SearchTypes.BASELINE || breakpoint > breakpoints.SMALL">
     <img class="list-thumbnail"
@@ -20,6 +24,7 @@
       <div class="div-flex"
            [title]="scene.metadata.fileName || scene.name"
            class="bold" matLine>
+
         <app-file-name
           [name]="scene.metadata.fileName || scene.name"
           [dataset]="scene.dataset"
@@ -30,9 +35,9 @@
           <app-copy-to-clipboard
             *ngIf="hovered; else notHovered"
             prompt="Copy scene name"
-            [value]="scene.metadata.fileName || scene.name"
-            >
+            [value]="scene.metadata.fileName || scene.name">
           </app-copy-to-clipboard>
+
           <ng-template #notHovered>
             <fa-icon style="visibility: hidden;" [icon]="copyIcon">
             </fa-icon>
@@ -40,6 +45,7 @@
         </span>
       </div>
     </div>
+
     <div class="div-flex date-time" matLine>
       <span *ngIf="scene.metadata.job">
         {{ scene.metadata.job.job_type }} -
@@ -56,85 +62,25 @@
   </div>
 
     <ng-container *ngIf="searchType !== SearchTypes.BASELINE">
-      <div class="scene-controls">
-        <mat-icon (click)="onZoomTo()" class="ml-2" matTooltip="Zoom to scene">
-          settings_overscan
-        </mat-icon>
-
-        <mat-icon
-          *ngIf="!!hyp3ableByJobType && hyp3ableByJobType?.total > 0"
-          class="icon-margin mobile-svg"
-          [matMenuTriggerFor]="sceneAdd.addMenu"
-          [matMenuTriggerData]="{ hyp3able: hyp3ableByJobType.byJobType }"
-          svgIcon="hyp3">
-        </mat-icon>
-
-        <mat-icon *ngIf="isDownloadable(scene)"
-          (click)="onToggleScene()"
-          class="icon-margin"
-          matTooltip="{{
-            isQueued ?
-              'Remove scene files from downloads':
-              'Add scene files to downloads'
-          }}">
-          {{ isQueued ? 'shopping_cart' : 'add_shopping_cart' }}
-        </mat-icon>
-      </div>
-
-      <div *ngIf="isDownloadable(scene)" class="scene-controls">
-        <span class="number-queued"> {{ numQueued }} </span>
-      </div>
-
-      <div *ngIf="searchType === SearchTypes.CUSTOM_PRODUCTS" style="margin-right: 10px;">
-      <mat-icon *ngIf="isExpired(scene.metadata.job)"
-        [matMenuTriggerFor]="sceneAdd.addMenu"
-        [matMenuTriggerData]="{ hyp3able: getExpiredHyp3ableObject().byJobType }"
-        class="icon-margin mobile-svg"
-        svgIcon="hyp3">
-      </mat-icon>
-      </div>
-      <div *ngIf="!isDownloadable(scene)" class="scene-controls ml-2">
-        <app-hyp3-job-status-badge [job]="scene.metadata.job" [isFileDetails]="false">
-        </app-hyp3-job-status-badge>
-      </div>
+      <app-scene-controls
+        (onZoomToScene)="onZoomTo()"
+        (onToggleScene)="onToggleScene()"
+        [scene]="scene"
+        [hyp3ableByJobType]="hyp3ableByJobType"
+        [isQueued]="isQueued"
+        [numQueued]="numQueued"
+        [searchType]="searchType">
+      </app-scene-controls>
     </ng-container>
 
     <ng-container *ngIf="searchType === SearchTypes.BASELINE">
-      <div style="display: flex;">
-        <div style="display: flex; justify-content: space-evenly;">
-          <div [ngClass]="{'mobile-baseline': breakpoint <= breakpoints.SMALL, 'metric-flex-field': true}">
-            {{ withOffset(scene.metadata.perpendicular, offsets.perpendicular) }}m
-          </div>
-
-            <div [ngClass]="{'mobile-baseline': breakpoint <= breakpoints.SMALL, 'metric-flex-field': true}">
-              {{ withOffset(scene.metadata.temporal, offsets.temporal) }}d
-            </div>
-            <div class="cart-flex-field">
-              <mat-icon *ngIf="hyp3ableByJobType.total > 0"
-                [matMenuTriggerFor]="sceneAdd.addMenu"
-                [matMenuTriggerData]="{ hyp3able: hyp3ableByJobType.byJobType }"
-                class="icon-margin mobile-svg"
-                svgIcon="hyp3">
-              </mat-icon>
-              <mat-icon *ngIf="isDownloadable(scene)"
-                (click)="onToggleScene()"
-                class="icon-margin"
-                matTooltip="{{
-                  isQueued ?
-                    'Remove scene files from downloads':
-                    'Add scene files to downloads'
-                }}">
-                {{ isQueued ? 'shopping_cart' : 'add_shopping_cart' }}
-              </mat-icon>
-            </div>
-    </div>
-  </div>
-</ng-container>
-
-<app-on-demand-add-menu #sceneAdd
-  [isExpired]="isExpired(scene.metadata.job)"
-  [expiredJobs]="scene.metadata.job">
-</app-on-demand-add-menu>
-
+      <app-baseline-scene-controls
+        (onToggleScene)="onToggleScene()"
+        [scene]="scene"
+        [offsets]="offsets"
+        [hyp3ableByJobType]="hyp3ableByJobType"
+        [isQueued]="isQueued">
+      </app-baseline-scene-controls>
+    </ng-container>
 </button>
 

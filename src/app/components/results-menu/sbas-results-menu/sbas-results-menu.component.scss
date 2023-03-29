@@ -4,7 +4,6 @@
 
 $config: mat.define-typography-config();
 
-
 .sbas-chart-row {
   display: flex;
   flex-direction: row;
@@ -17,9 +16,6 @@ $config: mat.define-typography-config();
 }
 
 .sbas-criteria-button-toggle {
-  // @include themify($themes) {
-  //   background-color: themed('primary-light') !important;
-  // }
   background: red;
   font-size: 14px;
 }
@@ -61,6 +57,7 @@ $config: mat.define-typography-config();
     border-left: solid 1px themed('primary-light');
     border-right: solid 2px themed('primary-light');
   }
+
   overflow: auto;
   height: 100%;
 }
@@ -74,10 +71,8 @@ $config: mat.define-typography-config();
   @include themify($themes) {
     background-color: themed('primary-light');
   }
+
   height: 100%;
-  // background-image: url("//assets/div-handles/hgrip.svg");
-  // background-position: left;
-  // background-repeat: no-repeat;
 }
 
 .mwlResizable {
@@ -90,6 +85,7 @@ $config: mat.define-typography-config();
     border-color: themed('primary-light');
     color: themed('primary-light');
   }
+
   display: flex;
   align-items: center;
   cursor: ew-resize;
@@ -104,25 +100,25 @@ $config: mat.define-typography-config();
   @include themify($themes) {
     background-color: themed('primary-light');
   }
-  width: 10px;
 
+  width: 10px;
   height: 100%;
-  // background-image: url("/assets/div-handles/vgrip.svg");
-  // background-color: #c9cac4;
-  // background-position: center;
-  // background-repeat: no-repeat;
 }
+
 .vgrip-icon {
   @include themify($themes) {
     stroke: themed('dark-primary-text');
   }
+
   height: 33px;
 }
+
 .sbas-header {
   @include themify($themes) {
     background-color: themed('primary-light');
     color: themed('dark-primary-text')
   }
+
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -141,10 +137,12 @@ $config: mat.define-typography-config();
   @include themify($themes) {
     color: themed('dark-primary-text');
   }
+
   margin-top: -4px;
 
   @include md-icon-size($asf-ribbon-icon-size);
 }
+
 .mat-button-toggle-disabled {
   .control-icon {
     @include themify($themes) {
@@ -176,6 +174,7 @@ $config: mat.define-typography-config();
   @include themify($themes) {
     color: themed('dark-primary-text');
   }
+
   text-align: center;
 }
 
@@ -188,9 +187,9 @@ label {
   margin-left: 10px;
   margin-top: 4px;
 }
+
 .control-mat-button-toggle {
   @include themify($themes) {
     background: themed('background-white') !important;
-    // color: themed('dark-primary-text') !important;
   }
 }

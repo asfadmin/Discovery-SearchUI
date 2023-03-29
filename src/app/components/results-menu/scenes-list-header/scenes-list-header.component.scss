@@ -1,7 +1,7 @@
 @use "@angular/material" as mat;
+
 @import "asf-theme";
 $config: mat.define-typography-config();
-
 
 .mobile-size {
   margin-left: 5px !important;
@@ -89,6 +89,7 @@ $config: mat.define-typography-config();
   @include themify($themes) {
     background-color: themed('background-white');
   }
+
   border: darkgrey 1px solid;
   color: inherit;
   padding: 0 0 0 5px;
@@ -118,6 +119,7 @@ $config: mat.define-typography-config();
   @include themify($themes) {
     color: themed('dark-secondary-text');
   }
+
   text-align: center;
   font-size: 12px;
   margin-left: -10px;

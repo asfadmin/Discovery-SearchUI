@@ -1,9 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { WktService } from '@services';
-import { debounceTime, map, Observable, Subject } from 'rxjs';
+import {
+  MapService,
+  WktService
+} from '@services';
+import { debounceTime, Observable, Subject, switchMap } from 'rxjs';
 import { Vector as VectorSource } from 'ol/source';
 import GeoJSON from 'ol/format/GeoJSON';
+import {transformExtent} from 'ol/proj';
+
 import { SubSink } from 'subsink';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
@@ -28,13 +33,14 @@ export class GeocodeSelectorComponent implements OnInit, OnDestroy {
   @Output() geocodeWkt = new EventEmitter();
   constructor(private http: HttpClient,
     private wkt: WktService,
-    private store$: Store<AppState>
+    private store$: Store<AppState>,
+    private mapService: MapService
   ) { }
 
   ngOnInit(): void {
     this.results$ = this.subject.pipe(
       debounceTime(200),
-      map((geocodeText: string) => this.http.get(`https://api.maptiler.com/geocoding/${encodeURIComponent(geocodeText)}.json?key=${this.key}`)));
+      switchMap((geocodeText: string) => this.http.get(`https://api.maptiler.com/geocoding/${encodeURIComponent(geocodeText)}.json?key=${this.key}`)));
 
     this.subs.add(
       this.store$.select(getGeocodeArea).subscribe(
@@ -44,13 +50,11 @@ export class GeocodeSelectorComponent implements OnInit, OnDestroy {
       )
     )
 
-    this.results$.subscribe((value: Observable<any>) => {
-      value.subscribe((res) => {
-        this.options = res['features'].map(feature => ({ 'name': feature['place_name_en'], 'id': feature['id'] }));
-        this.vectorSource = new VectorSource({
-          features: new GeoJSON().readFeatures(res),
-        });
-      })
+    this.results$.subscribe((res: Observable<any>) => {
+      this.options = res['features'].map(feature => ({ 'name': feature['place_name_en'], 'id': feature['id'], 'bbox': feature['bbox']}));
+      this.vectorSource = new VectorSource({
+        features: new GeoJSON().readFeatures(res),
+      });
     })
   }
 
@@ -70,6 +74,10 @@ export class GeocodeSelectorComponent implements OnInit, OnDestroy {
   public onSelect(option) {
     this.search_key = option.name;
     let feature = this.vectorSource.getFeatures().find(feat => feat.getId() === option.id);
+
+    let zoomExtent = transformExtent(option.bbox, 'EPSG:4326', this.mapService.epsg());
+    this.mapService.zoomToExtent(zoomExtent);
+
     let wktFeature = this.wkt.featureToWkt(feature, 'EPSG:4326');
     this.geocodeWkt.emit({ wkt: wktFeature, geocode: option.name });
   }
