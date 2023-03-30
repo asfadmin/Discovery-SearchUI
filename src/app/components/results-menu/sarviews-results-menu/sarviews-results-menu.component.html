@@ -24,7 +24,7 @@
 
 
       <span style="white-space: nowrap;">
-        {{ sarviewsProductsLength}} of {{(unfilteredEventProductsLength$ | async)}} File{{ sarviewsProductsLength === 1 ? '' : 's'}}
+        {{ sarviewsProductsLength}} {{ 'OF' | translate }} {{(unfilteredEventProductsLength$ | async)}} {{'FILE' | translate }}{{ sarviewsProductsLength === 1 ? '' : 's'}}
       </span>
       <div class="space-filler"></div>
       <div style="display: flex; align-items: flex-end; padding-bottom: 7px;">
@@ -74,7 +74,7 @@
       <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
         {{ products.length || '' }} File{{ (products || []).length === 1 ? '' : 's'}}
       </span>
-      <ng-template #defaultProductsHeader>Files</ng-template>
+      <ng-template #defaultProductsHeader>{{'FILES' | translate }}</ng-template>
     </mat-card-subtitle>
 
     <div class="app-scene-list scroll-y scroll-x">

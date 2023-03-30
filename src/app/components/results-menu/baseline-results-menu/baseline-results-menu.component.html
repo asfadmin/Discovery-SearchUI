@@ -121,7 +121,7 @@
 
         <mat-menu #addAllProducts="matMenu">
           <button (click)="queueAllProducts(downloadableProds)" mat-menu-item>
-            Add {{ downloadableProds.length }} file{{
+            {{'ADD' | translate }} {{ downloadableProds.length }} {{'FILE' | translate}}{{
               downloadableProds.length === 1 ? "" : "s"
             }}
             {{ 'EXPORT' |  translate }}
@@ -164,7 +164,7 @@
             [class.selected]="isOfCardView(Views.LIST)"
             mat-button
           >
-            Scenes
+            {{'SCENES' | translate }}
           </button>
           <button
             (click)="onSelectDetail()"

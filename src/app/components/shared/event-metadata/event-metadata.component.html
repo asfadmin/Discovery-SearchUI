@@ -23,7 +23,7 @@
   </li>
   <li *ngIf="(event | quakeEvent).processing_timeframe.end !== null">
     <span class="v-mid">
-      <b>Stop Time </b> •  {{(event | quakeEvent).processing_timeframe.end | shortDateTime}}
+      <b>{{ 'STOP_TIME' | translate }} </b> •  {{(event | quakeEvent).processing_timeframe.end | shortDateTime}}
     </span>
     <mat-icon
     [matMenuTriggerFor]="addSceneDateMenu"

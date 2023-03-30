@@ -8,11 +8,11 @@
       mat-flat-button color="primary">
       {{
       (loading$ | async) ?
-        ('LOADING' | translate ):
+        ('LOADING' | translate | uppercase ):
         (!(canSearch$ | async) && !(isMaxResultsLoading$ | async) ?
-          ('NO_RESULTS' | translate ) :
+          ('NO_RESULTS' | translate | uppercase ) :
           (areResultsOutOfDate$ | async) ? ('UPDATE' | translate ) :
-          ('SEARCH' | translate ) )
+          ('SEARCH' | translate | uppercase) )
       }}
     </button>
   </mat-button-toggle>

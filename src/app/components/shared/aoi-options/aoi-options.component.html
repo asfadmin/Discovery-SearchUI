@@ -33,11 +33,11 @@
         <button matSuffix mat-button
           (click)="onClearPolygon()"
           aria-label="Clear" >
-          Clear
+          {{ 'CLEAR' | translate }}
         </button>
       </mat-form-field>
     </form>
-    
+
     <app-geocode-selector
     (geocodeWkt)="onInputGeocodePolygon($event)"
     ></app-geocode-selector>

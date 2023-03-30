@@ -89,7 +89,7 @@
             </mat-form-field>
 
             <mat-form-field class="sub-option">
-              <mat-label>Frame</mat-label>
+              <mat-label>{{ 'FRAME' | translate }}</mat-label>
               <input matInput [(ngModel)]="frame" type="number">
               <mat-hint align="start">{{ frame !== null ? '' : ' No frame input'  }}</mat-hint>
             </mat-form-field>
@@ -130,7 +130,7 @@
                 [(value)]="productType"
                 (selectionChange)="onNewProductType($event)"
                 [disabled]="productTypes.length < 1"
-                placeholder="File Type">
+                placeholder="{{ 'FILE_TYPE' | translate }}">
                   <mat-option
                     *ngFor="let type of productTypes"
                     [value]="types[type].apiValue"
@@ -140,7 +140,7 @@
               </mat-select>
 
               <mat-hint align="start">
-                {{ !productType ? 'Select file type' : productType + ' selected' }}
+                {{ !productType ? ( 'SELECT_FILE_TYPE' | translate) : productType + ( 'SELECTED' | translate ) }}
               </mat-hint>
             </mat-form-field>
 
@@ -158,7 +158,7 @@
               </mat-select>
 
               <mat-hint align="start">
-                {{ !productType ? 'Select type' : subtype + ' selected' }}
+                {{ !productType ? ('SELECT_TYPE' | translate ) : subtype + ('SELECTED' | translate ) }}
               </mat-hint>
             </mat-form-field>
 
@@ -166,14 +166,14 @@
               <mat-select
                 (selectionChange)="onNewFlightDirection($event)"
                 [(value)]="flightDirection"
-                placeholder="Direction">
+                placeholder="{{ 'DIRECTION' | translate }}">
                 <mat-option *ngFor="let direction of flightDirectionTypes" [value]="direction">
                   {{direction}}
                 </mat-option>
               </mat-select>
 
               <mat-hint align="start">
-                {{ !flightDirection ? 'No flight direction selected' : 'Flight direction selected' }}
+                {{ !flightDirection ? ('NO_FLIGHT_DIRECTION_SELECTED' | translate ) : ('FLIGHT_DIRECTION_SELECTED' | translate ) }}
               </mat-hint>
             </mat-form-field>
 
@@ -181,14 +181,14 @@
               <mat-select
                 (selectionChange)="onNewPolarization($event)"
                 [(value)]="polarization"
-                placeholder="Polarization" multiple>
+                placeholder="{{ 'POLARIZATION' | translate }}" multiple>
                 <mat-option *ngFor="let pol of polarizations" [value]="pol">
                   {{pol}}
                 </mat-option>
               </mat-select>
 
               <mat-hint align="start">
-                {{ polarization.length === 0 ? 'No polarization selected' : 'Polarization selected' }}
+                {{ polarization.length === 0 ? ('NO_POLARIZATION_SELECTED' | translate ) : ('POLARIZATION_SELECTED' | translate ) }}
               </mat-hint>
             </mat-form-field>
           </div>
@@ -204,7 +204,7 @@
 
           <div *ngIf="subEstimate !== null" style="margin-bottom: 5px;">
             {{ 'BASED_ON_YOUR_SEARCH_PARAMETERS_THIS_SUBSCRIPTION_WILL_RUN' |  translate }}
-            <span *ngIf="currentProducts !== null && currentProducts > 0"><b>{{ currentProducts }} {{'JOBS_NOW'}}</b> {{ 'AND' | translate }}</span>
+            <span *ngIf="currentProducts !== null && currentProducts > 0"><b>{{ currentProducts }} {{'JOBS_NOW' | translate }}</b> {{ 'AND' | translate }}</span>
             {{ 'APPROXIMATELY' | translate }} <b>{{ subEstimate }} {{ 'JOBS_PER_MONTH' | translate }}</b>.
           </div>
 
@@ -321,7 +321,7 @@
       <button mat-flat-button
               color="primary"
               (click)="onNext()">
-        {{ isLastStep() ? 'Submit' : 'Next'}}
+        {{ isLastStep() ? ('SUBMIT' | translate ) : ('NEXT' | translate )}}
         <mat-icon>arrow_forward</mat-icon>
       </button>
     </div>

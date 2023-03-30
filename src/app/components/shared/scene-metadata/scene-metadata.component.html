@@ -1,14 +1,14 @@
 <ul *ngIf="scene !== null" class="scene-metadata">
   <li *ngIf="scene.metadata.perpendicular !== null">
-    <span class="v-mid"><b>Perpendicular </b> • {{ scene.metadata.perpendicular + offsets.perpendicular }}</span>
+    <span class="v-mid"><b>{{ 'PERPENDICULAR' | translate }}</b> • {{ scene.metadata.perpendicular + offsets.perpendicular }}</span>
   </li>
 
   <li *ngIf="scene.metadata.temporal !== null">
-    <span class="v-mid"><b>Temporal </b> • {{ scene.metadata.temporal + offsets.temporal }}</span>
+    <span class="v-mid"><b>{{ 'TEMPORAL' | translate }}</b> • {{ scene.metadata.temporal + offsets.temporal }}</span>
   </li>
 
   <li *ngIf="prop.isRelevant(p.DATE, dataset)">
-    <span class="v-mid"><b>Start Time</b> • {{ scene.metadata.date | shortDateTime }}</span>
+    <span class="v-mid"><b>{{ 'START_TIME' | translate }}</b> • {{ scene.metadata.date | shortDateTime }}</span>
     <mat-icon *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addSceneDateMenu"
       class="v-mid clickable">
@@ -22,7 +22,7 @@
   </li>
 
   <li *ngIf="prop.isRelevant(p.DATE, dataset)">
-    <span class="v-mid"><b>Stop Time</b> • {{ scene.metadata.stopDate | shortDateTime }}</span>
+    <span class="v-mid"><b>{{ 'STOP_TIME' | translate }}</b> • {{ scene.metadata.stopDate | shortDateTime }}</span>
     <mat-icon *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addSceneStopDateMenu"
       class="v-mid clickable">
@@ -36,7 +36,7 @@
   </li>
 
   <li *ngIf="prop.isRelevant(p.BEAM_MODE, dataset)">
-    <span class="v-mid"><b>Beam Mode </b> • {{ scene.metadata.beamMode }}</span>
+    <span class="v-mid"><b>{{ 'BEAM_MODE' |translate }} </b> • {{ scene.metadata.beamMode }}</span>
     <mat-icon *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addBeamModeMenu"
       class="v-mid clickable">
@@ -57,8 +57,8 @@
     </mat-icon>
 
     <mat-menu #addPathMenu="matMenu">
-      <button (click)="setPathStart()" mat-menu-item>Set as path start</button>
-      <button (click)="setPathEnd()" mat-menu-item>Set as path end</button>
+      <button (click)="setPathStart()" mat-menu-item>{{ 'SET_AS_PATH_START' | translate }}</button>
+      <button (click)="setPathEnd()" mat-menu-item>{{'SET_AS_PATH_END' | translate }}</button>
       <button (click)="setPathStart(); setPathEnd();" mat-menu-item>{{ 'SET_AS_BOTH' | translate }}</button>
     </mat-menu>
   </li>
@@ -80,7 +80,7 @@
   </li>
 
   <li *ngIf="prop.isRelevant(p.FLIGHT_DIRECTION, dataset)">
-    <span class="v-mid"> <b>Flight Direction </b> • {{ scene.metadata.flightDirection }} </span>
+    <span class="v-mid"> <b>{{ 'FLIGHT_DIRECTION' | translate }} </b> • {{ scene.metadata.flightDirection }} </span>
     <mat-icon *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addFlightDirectionMenu"
       class="v-mid clickable">
@@ -93,7 +93,7 @@
   </li>
 
   <li *ngIf="prop.isRelevant(p.POLARIZATION, dataset)">
-    <span class="v-mid"> <b>Polarization </b> • {{ scene.metadata.polarization }} </span>
+    <span class="v-mid"> <b>{{ 'POLARIZATION' | translate }} </b> • {{ scene.metadata.polarization }} </span>
 
     <mat-icon *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addPolMenu"

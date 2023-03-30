@@ -22,9 +22,9 @@
   <mat-card class="h100 mp0 no-left-border" fxFlex="33" fxFlexFill>
     <mat-card-subtitle class="header">
       <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
-        {{ products.length || '' }} File{{ (products || []).length === 1 ? '' : 's'}}
+        {{ products.length || '' }} {{ 'File'| translate }}{{ (products || []).length === 1 ? '' : 's'}}
       </span>
-      <ng-template #defaultProductsHeader>Files</ng-template>
+      <ng-template #defaultProductsHeader>{{ 'FILES' | translate }}</ng-template>
     </mat-card-subtitle>
 
     <div class="app-scene-list left-border scroll-y">
@@ -40,7 +40,7 @@
       <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
         {{ products.length || '' }} File{{ (products || []).length === 1 ? '' : 's'}}
       </span>
-      <ng-template #defaultProductsHeader>Files</ng-template>
+      <ng-template #defaultProductsHeader>{{ 'FILES' | translate }}</ng-template>
     </mat-card-subtitle>
 
     <div class="app-scene-list scroll-y scroll-x">

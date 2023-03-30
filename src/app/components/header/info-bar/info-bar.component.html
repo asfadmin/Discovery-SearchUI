@@ -8,16 +8,16 @@
       <app-hyp3-url></app-hyp3-url>
     </span>
     <span *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS && !!eventProductTypes">
-      <b>Product Types:</b> {{eventProductTypes}}
+      <b>{{'PRODUCT_TYPES' | translate }}:</b> {{eventProductTypes}}
     </span>
     <span *ngIf="(breakpoint < breakpoints.FULL) && !!startDate">
-      <b>Start:</b> {{ startDate | shortDate }}
+      <b>{{ 'START' | translate }}:</b> {{ startDate | shortDate }}
     </span>
     <span *ngIf="(breakpoint < breakpoints.FULL) && !!endDate">
-      <b>End:</b> {{ endDate | shortDate }}
+      <b>{{ 'END' | translate }}:</b> {{ endDate | shortDate }}
     </span>
     <span *ngIf="pathRange.start || pathRange.end">
-      <b>{{'Path' | translate }}:</b> {{pathRange.start}} - {{pathRange.end}}
+      <b>{{'PATH' | translate }}:</b> {{pathRange.start}} - {{pathRange.end}}
     </span>
     <span *ngIf="frameRange.start || frameRange.end">
       <b>{{ 'FRAME'| translate }}:</b> {{frameRange.start}} - {{frameRange.end}}

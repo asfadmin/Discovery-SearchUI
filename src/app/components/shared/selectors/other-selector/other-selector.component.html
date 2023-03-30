@@ -10,7 +10,7 @@
       (selectionChange)="onNewDatasetBeamModes($event.value)"
       [(ngModel)]="beamModes"
       [disabled]="!prop.isRelevant(p.BEAM_MODE)"
-      placeholder="Beam Mode" multiple>
+      placeholder="{{'BEAM_MODE' | translate }}" multiple>
         <mat-option *ngFor="let mode of dataset.beamModes" [value]="mode">
           {{mode}}
         </mat-option>
@@ -30,7 +30,7 @@
       (selectionChange)="onNewDatasetPolarizations($event.value)"
       [(ngModel)]="polarizations"
       [disabled]="!prop.isRelevant(p.POLARIZATION)"
-      placeholder="Polarization" multiple>
+      placeholder="{{ 'POLARIZATION' | translate }}" multiple>
       <mat-option *ngFor="let pol of dataset.polarizations" [value]="pol">
         {{pol}}
       </mat-option>
@@ -50,7 +50,7 @@
       (selectionChange)="onNewFlightDirectionsSelected($event.value)"
       [(ngModel)]="flightDirections"
       [disabled]="!prop.isRelevant(p.FLIGHT_DIRECTION)"
-      placeholder="Direction" multiple>
+      placeholder="{{ 'DIRECTION' | translate }}" multiple>
       <mat-option *ngFor="let direction of flightDirectionTypes" [value]="direction">
         {{direction}}
       </mat-option>
@@ -70,7 +70,7 @@
       (selectionChange)="onNewSubtypeSelected($event.value)"
       [(ngModel)]="subtypes"
       [disabled]="!prop.isRelevant(p.SUBTYPE)"
-      placeholder="Subtype" multiple>
+      placeholder="{{ 'SUBTYPE' | translate }}" multiple>
       <mat-option *ngFor="let subtype of dataset.subtypes" [value]="subtype">
         {{ subtype.apiValue }}
       </mat-option>

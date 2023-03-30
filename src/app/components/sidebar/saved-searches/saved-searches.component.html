@@ -43,7 +43,7 @@
          (click)="saveCurrentSearch()"
               mat-raised-button
               color="accent">
-        {{'SAVE_CURRENT_SEARCH' | translate}}
+        {{ 'SAVE_CURRENT_SEARCH' | translate}}
       </button>
     </div>
   </div>
@@ -74,7 +74,7 @@
         </div>
         <ng-template #noSavedSearchBlock>
           <div class="no-saved-searches">
-            <h2>{{'YOU_HAVE_NO_SAVED_SEARCHES' | translate}}</h2>
+            <h2>{{ 'YOU_HAVE_NO_SAVED_SEARCHES' | translate}}</h2>
           </div>
         </ng-template>
       </div>
@@ -86,7 +86,7 @@
       <button (click)="onClose()"
               mat-raised-button
               color="primary">
-        {{ ' DONE ' | translate }}
+        {{ 'DONE' | translate }}
       </button>
     </div>
   </div>

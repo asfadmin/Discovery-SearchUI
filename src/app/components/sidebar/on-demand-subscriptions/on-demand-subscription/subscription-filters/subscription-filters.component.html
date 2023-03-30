@@ -32,23 +32,23 @@
     </div>
 
     <div *ngIf="filters.frame">
-      <b>Frame:</b> {{ filters.frame }}
+      <b>{{ 'FRAME' | translate}}:</b> {{ filters.frame }}
     </div>
 
     <div *ngIf="filters.processingLevel">
-      <b>Product Type:</b> {{ filters.processingLevel }}
+      <b>{{ 'PRODUCT_TYPE' | translate }}:</b> {{ filters.processingLevel }}
     </div>
 
     <div *ngIf="filters.polarization">
-      <b>Polarizations:</b> {{ filters.polarization }}
+      <b>{{ 'POLARIZATIONS' | translate }}:</b> {{ filters.polarization }}
     </div>
 
     <div *ngIf="filters.flightDirection">
-      <b>Flight Direction:</b> {{ filters.flightDirection }}
+      <b>{{ 'FLIGHT_DIRECTION' | translate }}:</b> {{ filters.flightDirection }}
     </div>
 
     <div *ngIf="filters.beamMode">
-      <b>Beam Mode:</b> {{ filters.beamMode }}
+      <b>{{ 'BEAM_MODE' | translate }}:</b> {{ filters.beamMode }}
     </div>
   </div>
 </div>

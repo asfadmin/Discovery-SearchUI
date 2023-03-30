@@ -10,7 +10,7 @@
       {{ 'DOWNLOADS' | translate }}
     </h1>
     <div class="dl-subtitle">
-      {{ numberOfProducts$ | async }} Files, {{ (totalSize$ | async) | readableSizeFromBytes }}
+      {{ numberOfProducts$ | async }} {{ 'FILES' | translate }}, {{ (totalSize$ | async) | readableSizeFromBytes }}
     </div>
     <mat-progress-bar class="global-progress" mode="determinate" value="{{ dlQueueProgress }}"></mat-progress-bar>
   </div>
