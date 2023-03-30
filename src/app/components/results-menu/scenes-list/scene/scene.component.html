@@ -110,7 +110,7 @@
               {{ withOffset(scene.metadata.temporal, offsets.temporal) }}d
             </div>
             <div class="cart-flex-field">
-              <mat-icon *ngIf="hyp3ableByJobType.total > 0"
+              <mat-icon *ngIf="!!hyp3ableByJobType && (hyp3ableByJobType?.total ?? 0) > 0"
                 [matMenuTriggerFor]="sceneAdd.addMenu"
                 [matMenuTriggerData]="{ hyp3able: hyp3ableByJobType.byJobType }"
                 class="icon-margin mobile-svg"
