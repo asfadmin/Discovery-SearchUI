@@ -66,8 +66,7 @@ export interface SLCBurstMetadata {
   absoluteBurstID: number;
   fullBurstID: string;
   burstIndex: number;
-  burstAnxTime: string;
-  timeFromAnxSeconds: string;
+  azimuthAnxTime: string;
   samplesPerBurst: number;
   subswath: string;
 }
