@@ -90,9 +90,10 @@ function equatorialView(url: string): MapView {
 }
 
 export function equatorial(): MapView {
-  const token = 'pk.eyJ1Ijoid2Job3JuIiwiYSI6ImNsZXJiMjF3ZjB1bm8zeXBubm84bm82dGMifQ.BSHcpL0evx7DO1gac2IeLA';
+  const token = 'pk.eyJ1IjoiYXNmLWRpc2NvdmVyeSIsImEiOiJjbGZ2OWdib3UwNTA3M3FwYnNmdjZyM2hoIn0.FdLL6_3wtPhXg2WtkFUlTA';
+  const style = 'styles/v1/asf-discovery/clfv9y4vu002401osasxwehd3';
   return equatorialView(
-    `https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v12/tiles/{z}/{x}/{y}?access_token=${token}`
+    `https://api.mapbox.com/${style}/tiles/{z}/{x}/{y}?access_token=${token}`
   );
 }
 
