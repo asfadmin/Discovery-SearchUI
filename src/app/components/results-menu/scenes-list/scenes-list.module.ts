@@ -12,12 +12,9 @@ import { MatSharedModule } from '@shared';
 import { PipesModule } from '@pipes';
 
 import { OnDemandAddMenuModule } from '@components/shared/on-demand-add-menu';
-import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
-import { Hyp3JobStatusBadgeModule } from '@components/shared/hyp3-job-status-badge';
-import { FileNameModule } from '@components/shared/file-name';
+
 import { ScenesListComponent } from './scenes-list.component';
-import { SceneComponent } from './scene/scene.component';
-import { Hyp3JobComponent } from './hyp3-job/hyp3-job.component';
+import { SceneModule } from './scene/scene.module';
 import { PairComponent } from './pair/pair.component';
 import { SarviewsEventComponent } from './sarview-event/sarviews-event.component';
 
@@ -25,8 +22,6 @@ import { SarviewsEventComponent } from './sarview-event/sarviews-event.component
 @NgModule({
   declarations: [
     ScenesListComponent,
-    SceneComponent,
-    Hyp3JobComponent,
     PairComponent,
     SarviewsEventComponent,
   ],
@@ -37,13 +32,11 @@ import { SarviewsEventComponent } from './sarview-event/sarviews-event.component
     MatChipsModule,
     TruncateModule,
     FontAwesomeModule,
-    CopyToClipboardModule,
-    Hyp3JobStatusBadgeModule,
     MatSharedModule,
     MatMenuModule,
     PipesModule,
-    FileNameModule,
     OnDemandAddMenuModule,
+    SceneModule
   ],
   exports: [
     ScenesListComponent

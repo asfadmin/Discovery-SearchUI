@@ -92,12 +92,10 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   public ngOnInit(): void {
     this.subs.add(
-      this.themeService.theme.subscribe(theme => {
+      this.themeService.theme$.subscribe(theme => {
         // check if the user profile has auto in it.
         if (this.isAutoTheme) {
-          const body = document.getElementsByTagName('body')[0];
-          body.removeAttribute('class');
-          body.classList.add(`theme-${theme}`);
+          this.themeService.setTheme(`theme-${theme}`);
         }
       })
     );

@@ -90,6 +90,7 @@
   @include themify($themes) {
     background-color: themed('background-white');
   }
+
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -117,6 +118,7 @@
     border-top-color: themed('primary');
     background-color: themed('primary-light');
   }
+
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -140,6 +142,7 @@
   @include themify($themes) {
     color: themed('primary-light');
   }
+
   display: flex;
 }
 
@@ -147,6 +150,7 @@
   @include themify($themes) {
     color: themed('primary-light');
   }
+
   display: flex;
   margin-right: 15px;
   height: fit-content;
@@ -160,6 +164,7 @@
   @include themify($themes) {
     color: themed('primary-light');
   }
+
   padding-left: 15px;
 }
 

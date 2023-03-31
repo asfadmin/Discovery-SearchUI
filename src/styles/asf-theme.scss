@@ -10,17 +10,6 @@
 // Be sure that you only ever include this mixin once!
 @include mat.core();
 
-
-//$custom-typography: mat.define-typography-config(
-//  $font-family: 'Roboto, sans-serif',
-//  $headline: mat.define-typography-level(32px, 48px, 700),
-//  $body-1: mat.define-typography-level(16px, 24px, 500)
-//);
-
-//@include mat.core($custom-typography);
-
-
-
 button,
 .mat-expansion-panel,
 .mat-panel,
@@ -39,9 +28,7 @@ $asf-app-warn:    mat.define-palette($mat-asf-yellow, 200, 100, 500);
 $asf-app-err: mat.define-palette($mat-asf-red, 200, 100, 500);
 // Create the theme object (a Sass map containing all of the palettes).
 
-
 // Create your Sass color vars (will be available in all the project)
-
 $asf-warn: mat.get-color-from-palette($asf-app-warn);
 $asf-err: mat.get-color-from-palette($asf-app-err);
 $asf-blue: mat.get-color-from-palette($asf-app-blue);
@@ -52,6 +39,7 @@ $asf-accent: mat.get-color-from-palette($asf-app-accent);
 $asf-primary-light: lighten($asf-primary, 40%);
 $asf-primary-dark: darken($asf-primary, 15%);
 $asf-background-white: lighten($asf-primary, 80%);
+
 @mixin md-icon-size($size: 24px) {
   // color: $dark-primary-text;
   font-size: $size !important;
@@ -106,7 +94,6 @@ $themes: (
     primary-light: lighten(mat.get-color-from-palette($asf-app-dark-primary), 5%),
     primary-dark: darken(mat.get-color-from-palette($asf-app-dark-primary), 15%),
 
-
     background-white: darken(mat.get-color-from-palette($asf-app-dark-primary), 5%),
   ),
 );
@@ -124,7 +111,6 @@ $themes: (
       @content;
       $theme-map: null !global;
     }
-
   }
 }
 
@@ -141,7 +127,6 @@ $themes: (
       @content;
       $theme-map: null !global;
     }
-
   }
 }
 
@@ -149,19 +134,12 @@ $themes: (
   @return map-get($theme-map, $key);
 }
 
-
-
-
 .theme-dark {
   $asf-dark-theme: mat.define-dark-theme($asf-app-dark-primary, $contrast);
   @include mat.all-component-themes($asf-dark-theme);
-
-
-  // color: $dark-primary-text;
 }
+
 .theme-light {
   $asf-light-theme: mat.define-light-theme($asf-app-primary, $asf-app-accent);
-
   @include mat.all-component-themes($asf-light-theme);
 }
-
