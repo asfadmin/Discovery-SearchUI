@@ -28,7 +28,7 @@ export class ProductTypeSelectorComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subs.add(
-      this.datasetProductTypes$.subscribe(types => this.productTypesList = types.map(type => type.apiValue))
+      this.datasetProductTypes$.subscribe(types => this.productTypesList = types.map(type => type.apiValue).filter(v => v !== 'BURST'))
     );
   }
 
