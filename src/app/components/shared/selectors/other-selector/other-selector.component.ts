@@ -21,6 +21,7 @@ export class OtherSelectorComponent implements OnInit, OnDestroy {
   beamModes: models.DatasetBeamModes;
   polarizations: models.DatasetPolarizations;
   subtypes: models.DatasetSubtypes;
+  burstsToggled: boolean = false;
 
   public datasetProductTypes$ = this.store$.select(filtersStore.getProductTypes);
   public flightDirections$ = this.store$.select(filtersStore.getFlightDirections);
@@ -86,6 +87,10 @@ export class OtherSelectorComponent implements OnInit, OnDestroy {
 
   public onNewSubtypeSelected(subtypes): void {
     this.store$.dispatch(new filtersStore.SetSubtypes(subtypes));
+  }
+
+  public onBurstToggled(on: boolean): void {
+    this.burstsToggled = on
   }
 
   ngOnDestroy() {

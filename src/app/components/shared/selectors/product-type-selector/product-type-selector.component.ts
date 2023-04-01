@@ -15,6 +15,7 @@ import { MatSelectChange } from '@angular/material/select';
 })
 export class ProductTypeSelectorComponent implements OnInit, OnDestroy {
   @Input() dataset: models.Dataset;
+  @Input() burstSelected: boolean = false;
   @Output() typesChange = new EventEmitter<models.DatasetProductTypes>();
 
   public productTypesList: string[] = [];
