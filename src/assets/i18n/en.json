@@ -193,6 +193,7 @@
 	"FILES_THE_RIGHT_COLUMN": "Files - the right column",
 	"FILE_COPY": "file_copy",
 	"FILE_I_DS_NAMES_CAN_BE_COPIED": "File IDs (names) can be copied",
+  "FILE_IMPORT_SUPPORTED " : "File Import Supported",
 	"FILE_TYPE": "File Type",
 	"FILE_TYPES": "File Types",
 	"FILE_TYPES_SELECTED": "file types selected",
@@ -634,5 +635,11 @@
 	"YOU_TO_SEARCH_FOR_DATA_FROM_A_COMMAND_LINE_INTERFACE_SO_YOU_CAN_WRITE_YOUR_OWN": "you to search for data from a command line interface so you can write your own",
 	"ZIPPED_FILES_WILL_BE_DENOTED_BY_A_RIGHT_POINTING_CARET_TO_THE_LEFT_OF_THE_FILENAME_CLICKING_THE_CARET": "Zipped files will be denoted by a right-pointing caret to the left of the filename. Clicking the caret",
 	"ZOOM": "Zoom",
-	"ZOOM_IN_AS_NEEDED_USING_THE_AND_BUTTONS_ON_THE_TOOLBAR_BAR": "Zoom in as needed using the '+' and '-' buttons on the toolbar bar."
+	"ZOOM_IN_AS_NEEDED_USING_THE_AND_BUTTONS_ON_THE_TOOLBAR_BAR": "Zoom in as needed using the '+' and '-' buttons on the toolbar bar.",
+  "LIST_OF":"List of",
+  "SCENE_NAMES" : "scene names",
+  "EVENT_TYPES" : "Event Types",
+
+  "FLIGHT_DIRECTION" : "",
+  "DISABLE" : "Disable"
 }

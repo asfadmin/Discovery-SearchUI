@@ -50,7 +50,7 @@
         [checked]="subscription.enabled">
         <div class="t-label">
           <span *ngIf="isToggling">
-            {{ ' LOADING ' |  translate }}...
+            {{ 'LOADING' |  translate }}...
           </span>
           <span *ngIf="!isToggling">
             {{ subscription.enabled ? 'Disable' : 'Enable' }}

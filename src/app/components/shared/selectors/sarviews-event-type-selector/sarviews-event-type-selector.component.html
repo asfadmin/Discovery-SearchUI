@@ -1,6 +1,6 @@
 <mat-form-field>
   <mat-select multiple
-  [placeholder]="'Event Types'"
+  [placeholder]="( 'EVENT_TYPES' | translate)"
   [(value)]="selectedTypesList"
   (selectionChange)="onNewEventTypes($event)">
   <mat-option

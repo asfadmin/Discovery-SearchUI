@@ -67,7 +67,7 @@
                         (input)="onTextInputChange($event)"
                         [(ngModel)]="searchList"
                         style="height: 150px;"
-                        placeholder="List of {{ mode === types.SCENE ? 'Scene names' : 'File IDs.' }}">
+                        placeholder="{{ 'LIST_OF' | translate }} {{ mode === types.SCENE ? ( 'SCENE_NAMES' | translate ): 'File IDs.' }}">
               </textarea>
             </mat-form-field>
             <div class="drop-file-area file-upload-container"
@@ -91,7 +91,7 @@
             </div>
             <div>
               <span>
-                File Import Supported (csv, geojson{{ mode == types.SCENE ? ", metalink, kml" : ""}})
+                {{ 'FILE_IMPORT_SUPPORTED' | translate }} (csv, geojson{{ mode == types.SCENE ? ", metalink, kml" : ""}})
               </span>
             </div>
           </div>
