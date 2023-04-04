@@ -1,6 +1,6 @@
 @use "@angular/material" as mat;
 
-@import "asf-theme";
+@import url("asf-theme");
 
 $config: mat.define-typography-config();
 
@@ -39,9 +39,7 @@ $config: mat.define-typography-config();
 }
 
 .sbas-column-1 {
-  flex-basis: 150px;
-  flex-shrink: 0;
-  flex-grow: 0;
+  flex: 0 0 150px;
 }
 
 .sbas-column-2 {
@@ -196,12 +194,15 @@ label {
 
 .warn-icon {
   margin-right: 5px;
+
   @include themify($themes) {
     color: themed('warn');
   }
 }
+
 .gap-detected-area {
   margin: 5px;
+
   @include themify($themes) {
     color: themed('dark-primary-text') !important;
   }
