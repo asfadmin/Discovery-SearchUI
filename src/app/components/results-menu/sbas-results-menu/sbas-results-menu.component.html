@@ -167,6 +167,10 @@ class="chart-draggable-handle sbas-resize-handle-filler">
         </mat-button-toggle>
       </div>
     </div>
+    <div class="sbas-button-group gap-detected-area" *ngIf="this.isDisconnected" style="display: flex; place-items: center">
+        <mat-icon class="warn-icon" fontSet="material-icons-outlined">error_outline</mat-icon>
+        Gaps Detected
+      </div>
   </mat-card-subtitle>
 
   <div
@@ -185,7 +189,8 @@ class="chart-draggable-handle sbas-resize-handle-filler">
       <app-sbas-chart
         [zoomIn$]="zoomInChart$"
         [zoomToFit$]="zoomToFitChart$"
-        [zoomOut$]="zoomOutChart$">
+        [zoomOut$]="zoomOutChart$"
+        (isGraphDisconnected)="isGraphDisconnected($event)">
       </app-sbas-chart>
     </div>
   </div>
