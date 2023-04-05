@@ -639,7 +639,24 @@
   "LIST_OF":"List of",
   "SCENE_NAMES" : "scene names",
   "EVENT_TYPES" : "Event Types",
-
-  "FLIGHT_DIRECTION" : "",
-  "DISABLE" : "Disable"
+  "FLIGHT_DIRECTION": "Flight Direction",
+  "DISABLE": "Disable",
+  "ABSOLUTE_ORBIT": "Absolute Orbit",
+  "MATCHING_FRAMES": "Matching Frames",
+  "FLIGHT_LINE": " Flight Line",
+  "DATA_COURTESY_OF": "Data courtesy of",
+  "OFF NADIR_ANGLE": "Off Nadir Angle",
+  "POINTING_ANGLE": "Pointing Angle ",
+  "FARADAY_ROTATION": "Faraday Rotation",
+  "CAMPAIGN_NAME" : "Campaign Name",
+  "CLEAR_CURRENT_AREA_OF_INTEREST": "Clear current area of interest",
+  "STOP_EDITING": "Stop editing",
+  "EDIT_CURRENT_AREA_OF_INTEREST": "Edit current area of interest",
+  "STOP_DRAWING": "Stop drawing",
+  "DRAW_NEW_AREA_OF_INTEREST": "Draw new area of interest",
+  "HELP_AND_INFORMATION" : "Help and information",
+  "LOGIN": "Login",
+  "USE_THIS_SCENE_IN_THE_SBAS_TOOL_TO_MAKE_PRODUCT_PAIRS_FOR_INTERFEROMETRY": "Use this scene in the SBAS Tool to make product pairs for interferometry",
+  "NO_SUITABLE_PRODUCTS_FOR_THIS_TOOL": "No suitable products for this tool",
+  "MORE_LIKE_THIS": "More Like This"
 }

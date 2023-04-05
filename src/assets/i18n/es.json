@@ -187,7 +187,7 @@
 	"FIELDS_ARE_AVAILABLE_FOR_SELECT_DATASETS_YOU_MAY_ENTER": "Los campos Ruta y Marco están disponibles para conjuntos de datos seleccionados. ",
 	"FIELDS_THE_DATE_PICKER_WILL_AUTOMATICALLY_CONSTRAIN": "Campos de fecha de inicio y fecha de finalización. ",
 	"FILE": "Archivo",
-	"FILES": "archivos",
+	"FILES": "Archivos",
 	"FILES_CAN_BE_INDIVIDUALLY_DOWNLOADED": "Los archivos se pueden descargar individualmente",
 	"FILES_PROVIDED_BY_THIS_FEATURE_ARE_COMPATIBLE_WITH_THE_GEOGRAPHIC_SEARCH_IMPORT_FEATURE": "Los archivos proporcionados por esta función son compatibles con la función Importación de búsqueda geográfica.",
 	"FILES_THE_RIGHT_COLUMN": "Archivos - la columna derecha",
@@ -638,5 +638,30 @@
 	"ZOOM_IN_AS_NEEDED_USING_THE_AND_BUTTONS_ON_THE_TOOLBAR_BAR": "Haga zoom según sea necesario usando los botones ' ' y '-' en la barra de herramientas.",
   "LIST_OF": "Lista de",
   "SCENE_NAMES": "nombres de escena",
-  "EVENT_TYPES": "Tipos de Evento"
+  "EVENT_TYPES": "Tipos de Evento",
+
+  "FLIGHT_DIRECTION": "Dirección del Vuelo",
+  "DISABLE": "Desactivar",
+  "ABSOLUTE_ORBIT": "Órbita Absoluta",
+  "MATCHING_FRAMES": "Cuadros Coincidentes",
+  "FLIGHT_LINE": "Línea de Vuelo",
+  "DATA_COURTESY_OF": "Datos Cortesía de",
+  "OFF NADIR_ANGLE": "Ángulo Off Nadir",
+  "POINTING_ANGLE": "Ángulo de Apuntamiento",
+  "FARADAY_ROTATION": "Rotación de Faraday",
+  "CAMPAIGN_NAME": "Nombre de la Campaña",
+  "CLEAR_CURRENT_AREA_OF_INTEREST": "Limpiar área de interés actual",
+  "CLEAR_CURRENT_AREA_OF_INTEREST": "Borrar área de interés actual",
+  "STOP_EDITING": "Detener edición",
+  "EDIT_CURRENT_AREA_OF_INTEREST": "Editar área de interés actual",
+  "STOP_DRAWING": "Detener dibujo",
+  "DRAW_NEW_AREA_OF_INTEREST": "Dibujar nueva área de interés",
+  "HELP_AND_INFORMATION" : "Ayuda e información",
+  "LOGIN": "Iniciar sesión",
+  "USE_THIS_SCENE_IN_THE_SBAS_TOOL_TO_MAKE_PRODUCT_PAIRS_FOR_INTERFEROMETRY": "Utilice esta escena en la herramienta SBAS para hacer pares de productos para interferometría",
+  "NO_SUITABLE_PRODUCTS_FOR_THIS_TOOL": "No hay productos adecuados para esta herramienta",
+  "MORE_LIKE_THIS": "Mas Como Esto"
+
 }
+
+

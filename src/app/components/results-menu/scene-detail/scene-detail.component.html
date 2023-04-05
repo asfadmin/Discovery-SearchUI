@@ -306,8 +306,8 @@
     *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS"
       [matTooltip]="
         hasBaseline
-          ? 'Use this scene in the SBAS Tool to make product pairs for interferometry'
-          : 'No suitable products for this tool'
+          ? ('USE_THIS_SCENE_IN_THE_SBAS_TOOL_TO_MAKE_PRODUCT_PAIRS_FOR_INTERFEROMETRY' | translate)
+          : ('NO_SUITABLE_PRODUCTS_FOR_THIS_TOOL' | translate )
       ">
     <button
       mat-stroked-button
@@ -342,7 +342,7 @@
       (click)="moreLikeThis()"
       class="mini-toggle-button search-button">
       <span *ngIf="breakpoint === breakpoints.MOBILE">{{ 'MORE' | translate }}</span>
-      <span *ngIf="breakpoint != breakpoints.MOBILE">{{searchType !== searchTypes.SARVIEWS_EVENTS ? 'More Like This' : 'Geographic'}}</span>
+      <span *ngIf="breakpoint != breakpoints.MOBILE">{{searchType !== searchTypes.SARVIEWS_EVENTS ? ('MORE_LIKE_THIS' | translate ) : 'Geographic'}}</span>
     </button>
   </div>
   <div

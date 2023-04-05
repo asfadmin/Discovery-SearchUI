@@ -138,16 +138,16 @@
 
   <li *ngIf="prop.isRelevant(p.FLIGHT_LINE, dataset)"
     class="detail-item-margin">
-    <b>Flight Line </b> • {{ scene.metadata.flightLine }}
+    <b>{{ 'FLIGHT_LINE' | translate }} </b> • {{ scene.metadata.flightLine }}
   </li>
 
   <li *ngIf="prop.isRelevant(p.ABSOLUTE_ORBIT, dataset)"
     class="detail-item-margin">
-    <b>Absolute Orbit </b> • {{ scene.metadata.absoluteOrbit | join: ', ' }}
+    <b>{{'ABSOLUTE_ORBIT' | translate}} </b> • {{ scene.metadata.absoluteOrbit | join: ', ' }}
   </li>
 
   <li *ngIf="hasValue(scene.metadata.stackSize)" class="detail-item-margin">
-    <b>Matching Frames </b> • {{ scene.metadata.stackSize }}
+    <b>{{ 'MATCHING_FRAMES' | translate }} </b> • {{ scene.metadata.stackSize }}
   </li>
 
   <li *ngIf="dataset.source as source" class="detail-item-margin">

@@ -56,7 +56,7 @@
 
     <button
       [matMenuTriggerFor]="helpMenu"
-      matTooltip="Help and information"
+      matTooltip="{{ 'HELP_AND_INFORMATION' | translate }}"
       class="spacing nav-icon-buttons" color="basic" mat-button>
       <mat-icon class="large-icon">help_outline</mat-icon>
       <div class="text-under faint-text">{{ 'HELP' | translate }}</div>
@@ -66,7 +66,7 @@
       *ngIf="!isLoggedIn"
       (click)="onAccountButtonClicked()"
       class="spacing nav-icon-buttons" color="basic"
-      matTooltip="Login" mat-button>
+      matTooltip="{{ 'LOGIN' | translate }}" mat-button>
       <mat-icon class="large-icon">account_circle</mat-icon>
       <div class="text-under faint-text">{{ 'SIGN_IN' | translate }}</div>
     </button>
