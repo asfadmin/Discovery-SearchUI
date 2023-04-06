@@ -98,7 +98,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         this.scenes = scenes;
         this.pairs = pairs.pairs;
         this.customPairs = pairs.custom;
-        this.isDisconnected = this.pairService.isGraphDisconnected(this.pairs, this.scenes.length);
+        this.isDisconnected = this.pairService.isGraphDisconnected([...this.pairs, ...this.customPairs], this.scenes.length);
         this.isGraphDisconnected.emit(this.isDisconnected);
         if (this.selectedPair === null && Array.isArray(this.pairs)) {
           if (this.pairs.length > 0) {
