@@ -8,7 +8,6 @@ import { MatSharedModule } from '@shared';
 
 import { ProductTypeSelectorModule } from '@components/shared/selectors/product-type-selector';
 import { OtherSelectorComponent } from './other-selector.component';
-import { BurstSelectorModule } from '@components/shared/selectors/burst-selector';
 
 @NgModule({
   declarations: [ OtherSelectorComponent ],
@@ -18,8 +17,7 @@ import { BurstSelectorModule } from '@components/shared/selectors/burst-selector
     MatSelectModule,
     MatButtonToggleModule,
     MatSharedModule,
-    ProductTypeSelectorModule,
-    BurstSelectorModule
+    ProductTypeSelectorModule
   ],
   exports: [ OtherSelectorComponent ],
 })
