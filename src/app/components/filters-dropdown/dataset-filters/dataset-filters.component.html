@@ -116,4 +116,15 @@
     <app-mission-selector></app-mission-selector>
   </mat-expansion-panel>
 
+  <mat-expansion-panel
+  [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled" class="raised-section"
+  (click)="selectPanel(panels.CAMPAIGN)"
+  [class.raised-section]="isSelected(panels.CAMPAIGN)">
+  <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
+    <mat-panel-title>
+      SLC BURST Filters
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+    <app-burst-selector></app-burst-selector>
+  </mat-expansion-panel>
 </mat-accordion>

@@ -17,7 +17,7 @@ import { DateSelectorModule } from '@components/shared/selectors/date-selector';
 import { DatasetSelectorModule } from '@components/shared/selectors/dataset-selector';
 import { AoiOptionsModule } from '@components/shared/aoi-options';
 import { DocsModalModule } from '@components/shared/docs-modal';
-
+import { BurstSelectorModule } from '@components/shared/selectors/burst-selector';
 @NgModule({
   declarations: [
     DatasetFiltersComponent,
@@ -37,7 +37,8 @@ import { DocsModalModule } from '@components/shared/docs-modal';
     DateSelectorModule,
     DatasetSelectorModule,
     AoiOptionsModule,
-    SearchTypeSelectorModule
+    SearchTypeSelectorModule,
+    BurstSelectorModule
   ],
   exports: [
     DatasetFiltersComponent,

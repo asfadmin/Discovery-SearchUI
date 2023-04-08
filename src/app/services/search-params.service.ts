@@ -111,7 +111,8 @@ export class SearchParamsService {
       this.beamModes$(),
       this.polarizations$(),
       this.maxResults$(),
-      this.missionParam$()
+      this.missionParam$(),
+      this.burstParams$(),
     ).pipe(
       map((params: any[]) => params
         .reduce(
@@ -139,6 +140,22 @@ export class SearchParamsService {
   private missionParam$() {
     return this.store$.select(filterStore.getSelectedMission).pipe(
       map(mission => ({ collectionName: mission }))
+    );
+  }
+
+  private burstParams$() {
+    return combineLatest(
+      this.store$.select(filterStore.getAbsoluteBurstIDs),
+      this.store$.select(filterStore.getRelativeBurstIDs),
+      this.store$.select(filterStore.getFullBurstIDs)
+    ).pipe(
+      map(([absoluteIDs, relativeIDs, fullIDs]) => {
+        return {
+          absoluteburstid: absoluteIDs.join(','),
+          relativeburstid: relativeIDs.join(','),
+          fullburstid: fullIDs.join(',')
+        }
+      })
     );
   }
 

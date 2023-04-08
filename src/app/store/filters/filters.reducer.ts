@@ -48,6 +48,10 @@ export interface FiltersState {
   sarviewsEventProductSorting: EventProductSort;
 
   geocode: null | string;
+
+  absoluteBurstIDs: null | number[];
+  relativeBurstIDs: null | number[];
+  fullBurstIDs: null | string[];
 }
 
 
@@ -116,7 +120,11 @@ export const initState: FiltersState = {
   },
   hyp3ProductTypes: [],
 
-  geocode: null
+  geocode: null,
+
+  absoluteBurstIDs: [],
+  relativeBurstIDs: [],
+  fullBurstIDs: []
 };
 
 
@@ -380,7 +388,10 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         subtypes: [],
         flightDirections: new Set<models.FlightDirection>([]),
         selectedMission: null,
-        geocode: null
+        geocode: null,
+        absoluteBurstIDs: [],
+        relativeBurstIDs: [],
+        fullBurstIDs: []
       };
     }
 
@@ -705,6 +716,24 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         hyp3ProductTypes: []
       };
     }
+    case FiltersActionType.SET_ABSOLUTE_BURST: {
+      return {
+        ...state,
+        absoluteBurstIDs: action.payload
+      };
+    }
+    case FiltersActionType.SET_RELATIVE_BURST: {
+      return {
+        ...state,
+        relativeBurstIDs: action.payload
+      }
+    }
+    case FiltersActionType.SET_FULL_BURST: {
+      return {
+        ...state,
+        fullBurstIDs: action.payload
+      }
+    }
     default: {
       return state;
     }
@@ -980,4 +1009,19 @@ export const getSarviewsEventProductSorting = createSelector(
 export const getGeocodeArea = createSelector(
   getFiltersState,
   (state: FiltersState) => state.geocode
+)
+
+export const getAbsoluteBurstIDs = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.absoluteBurstIDs
+)
+
+export const getRelativeBurstIDs = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.relativeBurstIDs
+)
+
+export const getFullBurstIDs = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.fullBurstIDs
 )
