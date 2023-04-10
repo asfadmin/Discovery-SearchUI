@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, OnDestroy } from '@angular/core';
-import { filter, map } from 'rxjs';
+import { debounceTime, filter, map } from 'rxjs';
 import { SubSink } from 'subsink';
 
 import * as filtersStore from '@store/filters';
@@ -16,20 +16,30 @@ export class AbsoluteBurstSelectorComponent implements OnInit, OnDestroy {
   private IDsInputUpdated: EventEmitter<string> = new EventEmitter();
   private subs: SubSink = new SubSink();
 
+  public absoluteIDs
   constructor(private store$: Store<AppState>) { }
 
   ngOnInit(): void {
     this.subs.add(
       this.IDsInputUpdated.pipe(
-        filter(ids => ids !== null),
-        map(ids => ids.split(',').map(data => parseInt(data)))
+        debounceTime(3.0),
+        map(ids => {
+          const idsArray = ids.trim().split(',')
+          if (idsArray.length > 0) {
+            const intIDs = idsArray.map(data => parseInt(data))
+            return intIDs.filter(data => !isNaN(data))
+          } else {
+            return []
+          }
+        }),
+        filter(ids => ids !== this.absoluteIDs)
       ).subscribe(ids => this.updateIDs(ids))
     );
 
     this.subs.add(
       this.store$.select(filtersStore.getAbsoluteBurstIDs)
       .subscribe(
-        ids => this.updateIDs(ids)
+        ids => this.absoluteIDs = ids
       )
     );
   }

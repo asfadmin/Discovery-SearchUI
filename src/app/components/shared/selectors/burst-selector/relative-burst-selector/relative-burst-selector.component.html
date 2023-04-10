@@ -1,5 +1,5 @@
 
 <mat-form-field>
   <mat-label>Relative Burst ID</mat-label>
-  <input type="text" matInput (input)="onChange($event)">
+  <input type="text" matInput [value]="relativeIDs.join(',')" (input)="onChange($event)">
 </mat-form-field>
