@@ -39,7 +39,7 @@
                   </div>
                   <mat-card-actions (click)="onOpenDocs($event, dataset.id)">
                     <app-docs-modal class="info-text"
-                                    text="More info"
+                                    text="{{ 'MORE_INFO' | translate }}"
                                     url="{{ dataset.infoUrl }}">
                     </app-docs-modal>
                   </mat-card-actions>

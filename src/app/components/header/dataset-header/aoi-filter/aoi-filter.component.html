@@ -17,7 +17,7 @@
 
     <mat-icon
       *ngIf="!!polygon" (click)="onCopy()"
-      matTooltip="Copy to clipboard"
+      matTooltip="{{ 'COPY_TO_CLIPBOARD' | translate }}"
       [class.ghost-item]="!isHoveringAOISelector"
       class="clickable copy-icon" matSuffix>
       file_copy

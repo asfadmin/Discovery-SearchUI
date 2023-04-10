@@ -65,7 +65,7 @@
             <div>
               <mat-button-toggle-group fxFlex="" name="layerType" class="criteria-button-group">
                 <mat-button-toggle class="control-mat-button-toggle clickable noselect"
-                                   matTooltip="Add all results to downloads"
+                                   matTooltip="{{ 'ADD_ ALL_RESULTS_TO_DOWNLOADS' | translate }}"
                                    [matMenuTriggerFor]="addAllProducts">
                   <mat-icon class="list-icon">
                     add_shopping_cart
@@ -108,7 +108,7 @@
             <div>
               <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
                 <mat-button-toggle class="control-mat-button-toggle clickable noselect"
-                                   matTooltip="Download data/metadata as"
+                                   matTooltip="{{ 'DOWNLOAD_DATA_METADATA_AS' | translate }}"
                                    [matMenuTriggerFor]="ExportAll">
                   <mat-icon class="list-icon">
                     get_app

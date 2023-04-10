@@ -46,7 +46,7 @@
                       searchType !== SearchTypes.SBAS">
         /
           <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
-            {{ products.length || '' }} File{{ (products || []).length === 1 ? '' : 's'}}
+            {{ products.length || '' }} {{ 'FILE' | translate }}{{ (products || []).length === 1 ? '' : 's'}}
           </span>
           <ng-template #defaultProductsHeader>{{ 'FILES' | translate }}</ng-template>
         </ng-container>

@@ -149,7 +149,7 @@
                 <div
                   class="fullscreen clickable"
                   (click)="onOpenImage()"
-                  matTooltip="Open in Image Viewer"
+                  matTooltip="{{ 'OPEN_IN_IMAGE_VIEWER' | translate }}"
                 >
                   <mat-icon>preview</mat-icon>
                 </div>
@@ -157,7 +157,7 @@
                   class="download clickable"
                   [href]="(browses$ | async)[0]"
                   target="_blank"
-                  matTooltip="Download this image"
+                  matTooltip="{{ 'DOWNLOAD_THIS_IMAGE' | translate }}"
                 >
                   <mat-icon>download</mat-icon>
                 </a>
@@ -213,7 +213,7 @@
         <div
           class="fullscreen clickable"
           (click)="onOpenImage()"
-          matTooltip="Open in Image Viewer"
+          matTooltip="{{ 'OPEN_IN_IMAGE_VIEWER' | translate }}"
         >
           <mat-icon>preview</mat-icon>
         </div>
@@ -221,13 +221,13 @@
           class="download clickable"
           [href]="sarviewsProducts[browseIndex].files.product_url"
           target="_blank"
-          matTooltip="Download this image"
+          matTooltip="{{ 'DOWNLOAD_THIS_IMAGE' | translate }}"
         >
           <mat-icon>download</mat-icon>
         </a>
         <span
         class ="clickable"
-        matTooltip="Pin this product's browse on the map"
+        matTooltip="{{ 'PIN_THIS_PRODUCT_S_BROWSE_ON_THE_MAP' | translate }}"
         (click)="onToggleSarviewsProductPin()"
         >
           <mat-icon>
@@ -283,7 +283,7 @@
     && breakpoint === breakpoints.FULL)
   }
   ">
-  <div class="search-button-label">{{'SEARCH' | translate }}:</div>
+  <div class="search-button-label">{{'SEARCH' | translate |uppercase }}:</div>
   <div *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS"
     [matTooltip]="
       hasBaseline
@@ -342,12 +342,13 @@
       (click)="moreLikeThis()"
       class="mini-toggle-button search-button">
       <span *ngIf="breakpoint === breakpoints.MOBILE">{{ 'MORE' | translate }}</span>
-      <span *ngIf="breakpoint != breakpoints.MOBILE">{{searchType !== searchTypes.SARVIEWS_EVENTS ? ('MORE_LIKE_THIS' | translate ) : 'Geographic'}}</span>
+      <span *ngIf="breakpoint != breakpoints.MOBILE">{{searchType !== searchTypes.SARVIEWS_EVENTS ? ('MORE_LIKE_THIS' | translate ) : ('GEOGRAPHIC' | translate )}}</span>
+
     </button>
   </div>
   <div
   *ngIf="searchType === searchTypes.SARVIEWS_EVENTS"
-    matTooltip="Use this event's product scenes in list search"
+    matTooltip="{{ 'USE_THIS_EVENT_S_PRODUCT_SCENES_IN_LIST_SEARCH' | translate }}"
   >
     <button
       mat-stroked-button

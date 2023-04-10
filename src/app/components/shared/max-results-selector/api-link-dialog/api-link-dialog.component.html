@@ -42,7 +42,7 @@
 
       <mat-icon
         *ngIf="!!apiLink" (click)="onCopyLink()"
-        matTooltip="Copy to clipboard"
+        matTooltip="{{ 'COPY_TO_CLIPBOARD' | translate }}"
         class="clickable copy-icon" matSuffix>
         file_copy
       </mat-icon>

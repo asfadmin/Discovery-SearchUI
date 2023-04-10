@@ -110,7 +110,7 @@
                 <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10 clickable noselect ">
                   <mat-button-toggle class="control-mat-button-toggle"
                                      [matMenuTriggerFor]="addAllProducts"
-                                     matTooltip="Add all results to downloads">
+                                     matTooltip="{{ 'ADD_ ALL_RESULTS_TO_DOWNLOADS' | translate }}">
                     <mat-icon class="list-icon">
                       add_shopping_cart
                     </mat-icon>
@@ -129,7 +129,7 @@
                 <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10 clickable noselect ">
                   <mat-button-toggle class="control-mat-button-toggle"
                                      [matMenuTriggerFor]="QueueAllSARViewsProducts"
-                                     matTooltip="Add {{(productsHiddenByFilters$ | async) ? 'filtered' : 'all'}} products to downloads from selected event">
+                                     matTooltip="{{ 'ADD' |translate }}{{(productsHiddenByFilters$ | async) ? ('FILTERED' | translate) : ( 'ALL' | translate)}} {{'PRODUCTS_TO_DOWNLOADS_FROM_SELECTED_EVENT' | translate}}">
                     <mat-icon class="list-icon">
                       add_shopping_cart
                     </mat-icon>
@@ -172,7 +172,7 @@
                 <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
                   <mat-button-toggle class="control-mat-button-toggle clickable noselect"
                                      [matMenuTriggerFor]="ExportAll"
-                                     matTooltip="Download data/metadata as">
+                                     matTooltip="{{ 'DOWNLOAD_DATA_METADATA_AS' | translate }}">
                     <mat-icon class="list-icon">
                       get_app
                     </mat-icon>
@@ -191,7 +191,7 @@
                 <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
                   <mat-button-toggle class="control-mat-button-toggle clickable noselect"
                                      [matMenuTriggerFor]="ExportAllSARViewsData"
-                                     matTooltip="Download data/metadata as">
+                                     matTooltip="{{ 'DOWNLOAD_DATA_METADATA_AS' | translate }}">
                     <mat-icon class="list-icon">
                       get_app
                     </mat-icon>
@@ -213,7 +213,7 @@
                 [matMenuTriggerFor]="eventMonitoringOnDemand.addMenu"
                 [matMenuTriggerData]="{ hyp3able: hyp3ableEventProducts.byJobType }"
                 class="control-mat-button-toggle clickable noselect"
-                                   matTooltip="Add {{(productsHiddenByFilters$ | async) ? 'filtered' : 'all'}} results to On Demand queue">
+                                   matTooltip="{{'ADD' | translate}} {{(productsHiddenByFilters$ | async) ? ('FILTERED' | translate) : ('ALL'| translate)}} {{'RESULTS_TO_ON_DEMAND_QUEUE' | translate}}">
                   <mat-icon class="list-icon"
                     svgIcon="hyp3">
                   </mat-icon>
@@ -256,7 +256,7 @@
 
         <div *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS" fxFlex="" class="list-button-group">
           <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-            <label>Copy</label>
+            <label>{{ 'COPY' | translate }}</label>
           </div>
           <div fxLayout="row">
             <div>

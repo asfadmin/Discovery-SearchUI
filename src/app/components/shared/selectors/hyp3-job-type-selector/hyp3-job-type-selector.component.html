@@ -2,7 +2,7 @@
 <mat-select
 [value]="selected"
 (selectionChange)="onSelect($event)"
-placeholder="Product Type"
+placeholder="{{ 'PRODUCT_TYPE' | translate }}"
 multiple>
   <mat-option [value]="jobType" *ngFor="let jobType of hyp3JobTypes">
     {{jobType}}

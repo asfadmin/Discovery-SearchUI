@@ -25,7 +25,7 @@
 
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title>
-        {{'SCENE' | translate}}
+        {{ 'SCENE' | translate}}
       </mat-panel-title>
     </mat-expansion-panel-header>
 
@@ -33,7 +33,7 @@
       <app-master-scene-selector class="w100"></app-master-scene-selector>
     </div>
     <div class="bl-example">
-      {{'EXAMPLE:' | translate}} S1A_IW_SLC__1SSV_20150601T010209_20150601T010236_006173_00808F_20A0
+      {{ 'EXAMPLE:' | translate}} S1A_IW_SLC__1SSV_20150601T010209_20150601T010236_006173_00808F_20A0
       <app-copy-to-clipboard
       value="S1A_IW_SLC__1SSV_20150601T010209_20150601T010236_006173_00808F_20A0"
       prompt="Copy Name"
@@ -54,7 +54,7 @@
     [class.raised-section]="isSelected(panels.DATE)">
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title style="align-items: center;">
-        {{'DATA_FILTERS' | translate}}
+        {{ 'DATA_FILTERS' | translate}}
         <app-docs-modal class="info-icon"
                         url="https://docs.asf.alaska.edu/vertex/manual/#date-filters">
         </app-docs-modal>
@@ -75,7 +75,7 @@
     [class.raised-section]="isSelected(panels.BASELINE)">
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title style="align-items: center;">
-        {{'BASELINE_CRITERIA' | translate}}
+        {{ 'BASELINE_CRITERIA' | translate}}
         <app-docs-modal class="info-icon"
                         url="https://docs.asf.alaska.edu/vertex/baseline/#baseline-criteria">
         </app-docs-modal>
