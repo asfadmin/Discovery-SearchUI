@@ -82,26 +82,26 @@ class="chart-draggable-handle sbas-resize-handle-filler">
 
     <div fxFlex="" class="sbas-button-group">
       <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-        <label>Zoom</label>
+        <label>{{ 'ZOOM' | translate }}</label>
       </div>
       <div fxLayout="row">
         <div>
           <mat-button-toggle-group fxFlex="" name="layerType">
             <mat-button-toggle class="control-mat-button-toggle"
                                (click)="zoomIn()"
-                               matTooltip="Zoom In">
+                               matTooltip="{{ 'ZOOM_IN' | translate }}">
               <mat-icon class="control-icon">add</mat-icon>
             </mat-button-toggle>
 
             <mat-button-toggle class="control-mat-button-toggle"
                                (click)="zoomToFit()"
-                               matTooltip="Zoom To Fit">
+                               matTooltip="{{ 'ZOOM_TO_FIT' | translate }}">
               <mat-icon class="control-icon">aspect_ratio</mat-icon>
             </mat-button-toggle>
 
             <mat-button-toggle class="control-mat-button-toggle"
                                (click)="zoomOut()"
-                               matTooltip="Zoom out">
+                               matTooltip="{{ 'ZOOM_OUT' | translate }}">
               <mat-icon class="control-icon">remove</mat-icon>
             </mat-button-toggle>
           </mat-button-toggle-group>

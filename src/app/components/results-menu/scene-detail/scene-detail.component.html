@@ -89,7 +89,7 @@
       <div class="detail-card-info">
         <p class="faint-text accessing-text">
           <span *ngIf="!isLoggedIn">
-            {{ 'ACCESSING_THIS_DATA_REQUIRES_YOU_TO_LOG_IN' | translate }}
+            {{ 'ACCESSING_THIS_DATA_REQUIRES_YOU_TO_LOG_IN' | translate | titlecase}}
           </span>
 
           <span *ngIf="dataset.id === 'RADARSAT-1' || dataset.id === 'JERS-1'">
@@ -287,8 +287,8 @@
   <div *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS"
     [matTooltip]="
       hasBaseline
-        ? 'Use this scene in the Baseline Tool for interferometry'
-        : 'No suitable products for this tool'
+        ? ('USE_THIS_SCENE_IN_THE_BASELINE_TOOL_FOR_INTERFEROMETRY' | translate)
+        : ('NO_SUITABLE_PRODUCTS_FOR_THIS_TOOL' | translate)
     ">
     <button
       mat-stroked-button
@@ -323,11 +323,11 @@
 
   <div
     [matTooltip]="
-    searchType === searchTypes.SARVIEWS_EVENTS ? 'Geographic search based on event polygon' : !(
+    searchType === searchTypes.SARVIEWS_EVENTS ? ( 'GEOGRAPHIC_SEARCH_BASED_ON_EVENT_POLYGON' | translate ) : !(
       !(prop.isRelevant(p.PATH, dataset) &&
         prop.isRelevant(p.FRAME, dataset)) ||
       dataset?.id === 'UAVSAR'
-    ) ? 'Geographic search based on this scene\'s path/frame' : 'Not able to select similar scenes from this source'">
+    ) ? ('GEOGRAPHIC_SEARCH_BASED_ON_THIS_SCENE_S_PATH/FRAME' | translate) : ( 'NOT_ABLE_TO_SELECT_SIMILAR_SCENES_FROM_THIS_SOURCE' | translate)">
 
     <button
       mat-stroked-button

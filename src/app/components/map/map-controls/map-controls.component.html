@@ -29,13 +29,13 @@
                   <mat-button-toggle-group fxFlex="" name="layerType">
                     <mat-button-toggle class="control-mat-button-toggle"
                                        (click)="zoomIn()"
-                                       matTooltip="Zoom In">
+                                       matTooltip="{{ 'ZOOM_IN' | translate }}">
                       <mat-icon class="control-icon">add</mat-icon>
                     </mat-button-toggle>
 
                     <mat-button-toggle class="control-mat-button-toggle"
                                        (click)="zoomOut()"
-                                       matTooltip="Zoom out">
+                                       matTooltip="{{ 'ZOOM_OUT' | translate }}">
                       <mat-icon class="control-icon">remove</mat-icon>
                     </mat-button-toggle>
                   </mat-button-toggle-group>
@@ -105,7 +105,7 @@
                               (input)="onSetOpacity($event)"
                               color="primary"
                               [disabled]="!(isBrowseOverlayEnabled$ | async)"
-                              [matTooltip]="(isBrowseOverlayEnabled$ | async) ? 'Adjust Overlay Opacity' :
+                              [matTooltip]="(isBrowseOverlayEnabled$ | async) ? ('ADJUST_OVERLA_ OPACITY' | translate) :
                                'Product Overlays for current scene dataset not available'"
                   >
                   </mat-slider>

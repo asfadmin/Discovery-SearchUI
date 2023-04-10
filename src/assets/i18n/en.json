@@ -658,5 +658,26 @@
   "LOGIN": "Login",
   "USE_THIS_SCENE_IN_THE_SBAS_TOOL_TO_MAKE_PRODUCT_PAIRS_FOR_INTERFEROMETRY": "Use this scene in the SBAS Tool to make product pairs for interferometry",
   "NO_SUITABLE_PRODUCTS_FOR_THIS_TOOL": "No suitable products for this tool",
-  "MORE_LIKE_THIS": "More Like This"
+  "MORE_LIKE_THIS": "More Like This",
+  "DETAIL": "Detail",
+  "PAIR": "Pair",
+  "DEPTH": "Depth",
+  "EVENT_DATE": "Event Date",
+  "MAGNITUDE": "Magnitude",
+  "GEOGRAPHIC_SEARCH_BASED_ON_THIS_SCENE_S_PATH/FRAME":"Geographic search based on this scene\\'s path/frame",
+  "NOT_ABLE_TO_SELECT_SIMILAR_SCENES_FROM_THIS_SOURCE": "Not able to select similar scenes from this source",
+  "GEOGRAPHIC_SEARCH_BASED_ON_EVENT_POLYGON": "Geographic search based on event polygon",
+  "USE_THIS_SCENE_IN_THE_BASELINE_TOOL_FOR_INTERFEROMETRY": "Use this scene in the Baseline Tool for interferometry",
+  "ZOOM_TO_SCENE": "Zoom to scene",
+  "DOWNLOAD_FILE":"Download file",
+  "ZOOM_IN":"Zoom In",
+  "ZOOM_OUT": "Zoom out",
+  "ZOOM_TO_RESULTS": "Zoom to results",
+  "ZOOM_TO_FIT": "Zoom To Fit",
+
+  "ADJUST_OVERLAY_OPACITY": "Adjust Overlay Opacity",
+  "ADD_ALL_RESULTS_TO_ON_DEMAND_QUEUE":" Add all results to On Demand queue",
+  "ADD_TO_ON_DEMAND QUEUE": "Add to On Demand queue",
+  "ADD_FILE_TO_DOWNLOADS": "Add file to downloads",
+  "Product Overlays for current scene dataset not available": "Product Overlays for current scene dataset not available"
 }

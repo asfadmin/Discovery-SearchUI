@@ -634,12 +634,11 @@
 	"YOU_MAY_DOWNLOAD_FILES_IMMEDIATELY_OR_ADD_THEM_TO_YOUR_DOWNLOAD_QUEUE_BY_CLICKING_ON_THE_APPROPRIATE_ICON": "Puede descargar archivos inmediatamente o agregarlos a su lista de descarga haciendo clic en el icono correspondiente.",
 	"YOU_TO_SEARCH_FOR_DATA_FROM_A_COMMAND_LINE_INTERFACE_SO_YOU_CAN_WRITE_YOUR_OWN": "que busque datos desde una interfaz de línea de comandos para que pueda escribir su propia",
 	"ZIPPED_FILES_WILL_BE_DENOTED_BY_A_RIGHT_POINTING_CARET_TO_THE_LEFT_OF_THE_FILENAME_CLICKING_THE_CARET": "Los archivos comprimidos se indicarán con un signo de intercalación que apunta hacia la derecha a la izquierda del nombre del archivo. ",
-	"ZOOM": "Zoom",
+	"ZOOM": "Acercar",
 	"ZOOM_IN_AS_NEEDED_USING_THE_AND_BUTTONS_ON_THE_TOOLBAR_BAR": "Haga zoom según sea necesario usando los botones ' ' y '-' en la barra de herramientas.",
   "LIST_OF": "Lista de",
   "SCENE_NAMES": "nombres de escena",
   "EVENT_TYPES": "Tipos de Evento",
-
   "FLIGHT_DIRECTION": "Dirección del Vuelo",
   "DISABLE": "Desactivar",
   "ABSOLUTE_ORBIT": "Órbita Absoluta",
@@ -650,7 +649,6 @@
   "POINTING_ANGLE": "Ángulo de Apuntamiento",
   "FARADAY_ROTATION": "Rotación de Faraday",
   "CAMPAIGN_NAME": "Nombre de la Campaña",
-  "CLEAR_CURRENT_AREA_OF_INTEREST": "Limpiar área de interés actual",
   "CLEAR_CURRENT_AREA_OF_INTEREST": "Borrar área de interés actual",
   "STOP_EDITING": "Detener edición",
   "EDIT_CURRENT_AREA_OF_INTEREST": "Editar área de interés actual",
@@ -660,8 +658,26 @@
   "LOGIN": "Iniciar sesión",
   "USE_THIS_SCENE_IN_THE_SBAS_TOOL_TO_MAKE_PRODUCT_PAIRS_FOR_INTERFEROMETRY": "Utilice esta escena en la herramienta SBAS para hacer pares de productos para interferometría",
   "NO_SUITABLE_PRODUCTS_FOR_THIS_TOOL": "No hay productos adecuados para esta herramienta",
-  "MORE_LIKE_THIS": "Mas Como Esto"
-
+  "MORE_LIKE_THIS": "Mas Como Esto",
+  "DETAIL":"Detalles",
+  "PAIR": "Par",
+  "DEPTH": "Profundidad",
+  "EVENT_DATE": "Fecha del evento",
+  "MAGNITUDE": "Magnitud",
+  "GEOGRAPHIC_SEARCH_BASED_ON_THIS_SCENE_S_PATH/FRAME": "Búsqueda geográfica basada en la ruta/cuadro de esta(s) escena(s)",
+  "NOT_ABLE_TO_SELECT_SIMILAR_SCENES_FROM_THIS_SOURCE": "No es posible seleccionar escenas similares de esta fuente",
+  "GEOGRAPHIC_SEARCH_BASED_ON_EVENT_POLYGON": "Búsqueda geográfica basada en el polígono del evento",
+  "USE_THIS_SCENE_IN_THE_BASELINE_TOOL_FOR_INTERFEROMETRY": "Usar esta escena en la herramienta de línea base para interferometría",
+  "ZOOM_TO_SCENE": "Acercar a la escena",
+  "DOWNLOAD_FILE": "Descargar archivo",
+  "ZOOM_IN": "Acercar",
+  "ZOOM_OUT": "Alejar",
+  "ZOOM_TO_RESULTS": "Acercar a los resultados",
+  "ZOOM_TO_FIT": "Acercar para ajustar",
+  "ADJUST_OVERLAY_OPACITY": "Ajustar opacidad de superposición",
+  "ADD_ALL_RESULTS_TO_ON_DEMAND_QUEUE": "Agregar todos los resultados a la lista de pedido",
+  "ADD_TO_ON_DEMAND QUEUE": "Agregar a la lista a pedido",
+  "ADD_FILE_TO_DOWNLOADS": "Agregar archivo a las descargas"
 }
 
 

@@ -206,7 +206,7 @@
             <hr />
           </ng-container>
 
-          <div class="detail-header">{{ products?.length }} Files</div>
+          <div class="detail-header">{{ products?.length }} {{ 'FILES' | translate }}</div>
           <mat-action-list dense class="file-list">
             <button
               *ngFor="let product of products"
@@ -291,7 +291,7 @@
           </ng-container>
 
           <ng-container>
-            <div class="detail-header">File</div>
+            <div class="detail-header">{{ 'FILE' | translate }}</div>
             <mat-action-list dense class="file-list">
               <button
                 class="file-button-download"

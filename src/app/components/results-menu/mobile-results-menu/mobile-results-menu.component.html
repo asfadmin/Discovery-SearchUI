@@ -41,14 +41,14 @@
   <div *ngIf="view === Views.DETAIL" class="h100 w100">
     <mat-card class="h100 w100 mp0 no-box-shadow" fxFlex="100" fxFlex>
       <mat-card-subtitle class="header mobile">
-        {{'SCENE_DETAIL'| translate  }}
+        {{ 'SCENE_DETAIL'| translate  }}
         <ng-container *ngIf="searchType !== SearchTypes.BASELINE &&
                       searchType !== SearchTypes.SBAS">
         /
           <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
             {{ products.length || '' }} File{{ (products || []).length === 1 ? '' : 's'}}
           </span>
-          <ng-template #defaultProductsHeader>{{'FILES' | translate }}</ng-template>
+          <ng-template #defaultProductsHeader>{{ 'FILES' | translate }}</ng-template>
         </ng-container>
       </mat-card-subtitle>
 

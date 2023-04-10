@@ -13,7 +13,7 @@
 <ng-container *ngIf="breakpoint > breakpoints.SMALL">
   <mat-card class="mp0 no-box-shadow" fxFlex="34" fxFlexFill>
     <mat-card-subtitle class="header">
-      {{ (sarviewsEventsLength !== 0 ? 'Event' : 'Scene') + ' Detail'}}
+      {{ (sarviewsEventsLength !== 0 ? ('EVENT' | translate ) : ('SCENE_DETAIL' | translate | titlecase)) }}
     </mat-card-subtitle>
         <app-scene-detail *ngIf="scenesLength !== 0 || sarviewsEventsLength !== 0"></app-scene-detail>
   </mat-card>
@@ -22,7 +22,7 @@
   <mat-card class="h100 mp0 no-left-border" fxFlex="33" fxFlexFill>
     <mat-card-subtitle class="header">
       <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
-        {{ products.length || '' }} {{ 'File'| translate }}{{ (products || []).length === 1 ? '' : 's'}}
+        {{ products.length || '' }} {{ 'FILE'| translate }}{{ (products || []).length === 1 ? '' : 's'}}
       </span>
       <ng-template #defaultProductsHeader>{{ 'FILES' | translate }}</ng-template>
     </mat-card-subtitle>
@@ -38,7 +38,7 @@
     <mat-card-subtitle class="header">
       {{ 'SCENE_DETAIL' |  translate }} /
       <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
-        {{ products.length || '' }} File{{ (products || []).length === 1 ? '' : 's'}}
+        {{ products.length || '' }} {{ 'FILE' | translate }}{{ (products || []).length === 1 ? '' : 's'}}
       </span>
       <ng-template #defaultProductsHeader>{{ 'FILES' | translate }}</ng-template>
     </mat-card-subtitle>

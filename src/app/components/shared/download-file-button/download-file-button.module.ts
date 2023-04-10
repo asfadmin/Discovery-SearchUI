@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
-
+import { SharedModule } from "@shared";
 
 
 @NgModule({
@@ -20,7 +20,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatButtonModule,
     MatTooltipModule,
     MatProgressSpinnerModule,
-    MatIconModule
+    MatIconModule,
+    SharedModule
   ]
 })
 export class DownloadFileButtonModule { }

@@ -1,7 +1,7 @@
 <ul class="scene-metadata" *ngIf="eventType === eventTypes.QUAKE">
   <li *ngIf="(event | quakeEvent).processing_timeframe.start !== null">
     <span class="v-mid">
-      <b>Event Date </b> • {{(event | quakeEvent).event_date | shortDateTime}}
+      <b>{{ 'EVENT_DATE' | translate  }} </b> • {{(event | quakeEvent).event_date | shortDateTime}}
     </span>
     <mat-icon
     [matMenuTriggerFor]="addSceneDateMenu"
@@ -12,7 +12,7 @@
   </li>
   <li *ngIf="(event | quakeEvent).processing_timeframe.start !== null">
     <span class="v-mid">
-      <b>{{'START_TIME' | translate}}</b> • {{(event | quakeEvent).processing_timeframe.start | shortDateTime}}
+      <b>{{ 'START_TIME' | translate}}</b> • {{(event | quakeEvent).processing_timeframe.start | shortDateTime}}
     </span>
     <mat-icon
     [matMenuTriggerFor]="addSceneDateMenu"
@@ -34,7 +34,7 @@
   </li>
   <li>
     <span class="v-mid">
-      <b>Magnitude </b> •  {{ (event | quakeEvent).magnitude }}
+      <b>{{'MAGNITUDE' | translate }}</b> •  {{ (event | quakeEvent).magnitude }}
     </span>
     <mat-icon
     [matMenuTriggerFor]="addSceneMagnitudeMenu"
@@ -45,7 +45,7 @@
   </li>
   <li>
     <span class="v-mid">
-      <b>Depth </b> •  {{(event | quakeEvent).depth}}
+      <b>{{ 'DEPTH'| translate }} </b> •  {{(event | quakeEvent).depth}}
     </span>
   </li>
   <li>
@@ -64,7 +64,7 @@
 <ul class="scene-metadata" *ngIf="eventType === eventTypes.VOLCANO">
   <li *ngIf="event.processing_timeframe.start !== null">
     <span class="v-mid">
-      <b>{{'START TIME' | translate }} </b> •  {{event.processing_timeframe.start | shortDateTime}}
+      <b>{{ 'START_TIME' | translate }} </b> •  {{event.processing_timeframe.start | shortDateTime}}
     </span>
     <mat-icon
     [matMenuTriggerFor]="addSceneDateMenu"
@@ -75,7 +75,7 @@
   </li>
   <li *ngIf="event.processing_timeframe.end !== null">
     <span class="v-mid">
-      <b>{{'STOP_TIME' | translate }} </b> •  {{event.processing_timeframe.end | shortDateTime}}
+      <b>{{ 'STOP_TIME' | translate }} </b> •  {{event.processing_timeframe.end | shortDateTime}}
     </span>
     <mat-icon
     [matMenuTriggerFor]="addSceneDateMenu"
@@ -107,7 +107,7 @@
 
 <mat-menu #addSceneMagnitudeMenu>
   <ng-template matMenuContent let-magnitude="magnitude">
-    <button (click)="onSetStartMagnitude(magnitude)" mat-menu-item>Set as magnitude range start</button>
-    <button (click)="onSetEndMagnitude(magnitude)" mat-menu-item>Set as magnitude range end</button>
+    <button (click)="onSetStartMagnitude(magnitude)" mat-menu-item>{{ 'SET_AS_MAGNITUDE_RANGE_START' | translate }}</button>
+    <button (click)="onSetEndMagnitude(magnitude)" mat-menu-item>{{ 'SET_AS_MAGNITUDE_RANGE_END' | translate }}</button>
   </ng-template>
 </mat-menu>
