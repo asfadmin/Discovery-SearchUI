@@ -25,7 +25,7 @@
         <mat-icon
         *ngIf="headerView"
         (click)="toggleJobFilterOptions()"
-        matTooltip="More options"
+        matTooltip="{{ 'MORE_OPTIONS' | translate }}"
         style="vertical-align: middle;"
         matSuffix>
         {{ isJobFilterOptionsOpen ? 'arrow_drop_up' : 'arrow_drop_down' }}

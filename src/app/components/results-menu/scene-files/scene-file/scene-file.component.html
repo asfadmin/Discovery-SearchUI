@@ -71,7 +71,7 @@
       mat-icon-button>
       <mat-icon *ngIf="loadingHyp3JobName !== product.name"
         svgIcon="hyp3"
-        matTooltip="Add to On Demand queue">
+        matTooltip="{{ 'ADD_TO_ON_DEMAND_QUEUE' | translate }}">
       </mat-icon>
       <fa-icon *ngIf="loadingHyp3JobName === product.name" icon="spinner" [pulse]="true"></fa-icon>
 
@@ -120,7 +120,7 @@
     mat-icon-button>
       <mat-icon
       class="clickable"
-        matTooltip="Add to On Demand queue"
+        matTooltip="{{ 'ADD_TO_ON_DEMAND_QUEUE' | translate }}"
         svgIcon="hyp3">
       </mat-icon>
     </button>

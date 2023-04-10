@@ -558,7 +558,6 @@
 	"TOOLTIP": "SUGERENCIA",
 	"TOO_MANY_JOBS_IN_QUEUE": "Demasiados trabajos en lista",
 	"TO_A_CSV_KML_OR_GEO_JSON_FILE_THE_KML_AND_GEO_JSON": "a un archivo CSV, KML o GeoJSON. ",
-	"TO_DOWNLOADS": "para_descargas",
 	"TO_SAVE_A_SEARCH_FOLLOW_THESE_STEPS": "Para guardar una búsqueda, siga estos pasos:",
 	"TO_THEM_THESE_ARE_FILES_THAT_ARE_ELIGIBLE_FOR_ADDITIONAL_ON_DEMAND_PROCESSING": "a ellos ",
 	"TO_VIEW_MORE_INFORMATION_ABOUT_A_SCENE_CLICK_ON_THE_SCENE_IN_THE_LEFT_COLUMN_AND_THE_SCENE_DETAIL": "Para ver más información sobre una escena, haga clic en la escena en la columna de la izquierda y en Detalle de la escena.",
@@ -677,7 +676,17 @@
   "ADJUST_OVERLAY_OPACITY": "Ajustar opacidad de superposición",
   "ADD_ALL_RESULTS_TO_ON_DEMAND_QUEUE": "Agregar todos los resultados a la lista de pedido",
   "ADD_TO_ON_DEMAND QUEUE": "Agregar a la lista a pedido",
-  "ADD_FILE_TO_DOWNLOADS": "Agregar archivo a las descargas"
+  "ADD_FILE_TO_DOWNLOADS": "Agregar archivo a las descargas",
+  "PRODUCT_OVERLAYS_FOR_CURRENT_SCENE_DATASET_NOT_AVAILABLE": "Superposiciones De Producto para el conjunto de datos de escena actual no disponible",
+  "SHOW_RAW_DATA": "Mostrar datos sin procesar",
+  "HIDE_RAW_DATA": "Ocultar datos sin procesar",
+  "SELECTED_EVENT_PRODUCTS": "Productos De Eventos Seleccionados",
+  "TO_DOWNLOADS": "a descargas",
+  "GEOCODED_AREA": "Área Geocodificada",
+  "MORE_OPTIONS": "Más opciones",
+  "COPY_TO_CLIPBOARD": "Copiar al portapapeles",
+  "OPEN_IN_IMAGE_VIEWER": "Abrir en el visualizador de imágenes"
 }
+
 
 

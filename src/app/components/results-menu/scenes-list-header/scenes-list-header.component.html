@@ -51,7 +51,7 @@
                 <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
                   <mat-button-toggle (click)="onToggleS1RawData()"
                                      class="control-mat-button-toggle clickable noselect"
-                                     [matTooltip]="showS1RawData ? 'Hide raw data' : 'Show raw data'">
+                                     [matTooltip]="showS1RawData ? ('HIDE_RAW_DATA' | translate) : ('SHOW_RAW_DATA' | translate)">
                     <mat-icon class="list-icon"
                               [class.material-icons-outlined]="showS1RawData">
                               remove_red_eye
@@ -150,7 +150,7 @@
                   <mat-button-toggle class="control-mat-button-toggle clickable noselect"
                                      [matMenuTriggerFor]="listAdd.addMenu"
                                      [matMenuTriggerData]="{ hyp3able: hyp3able.byJobType }"
-                                     matTooltip="Add all results to On Demand queue">
+                                     matTooltip="{{'ADD_ALL_RESULTS_TO_ON_DEMAND_QUEUE' | translate }}">
                     <mat-icon class="list-icon"
                       svgIcon="hyp3">
                     </mat-icon>
@@ -295,11 +295,11 @@
 
           <mat-menu #addAllProducts="matMenu">
             <button *ngIf="searchType !== SearchTypes.SBAS" (click)="queueAllProducts(downloadableProds)" mat-menu-item>
-              {{ 'ADD' | translate }} {{ downloadableProds.length }} file{{ downloadableProds.length === 1 ? '' : 's'}} to downloads
+              {{ 'ADD' | translate }} {{ downloadableProds.length }} {{'FILE' | translate}}{{ downloadableProds.length === 1 ? '' : 's'}} to downloads
             </button>
 
             <button *ngIf="searchType === SearchTypes.SBAS" (click)="queueSBASProducts(sbasProducts)" mat-menu-item>
-              {{ 'ADD' | translate }} {{ sbasProducts.length }} file{{ sbasProducts.length === 1 ? '' : 's'}} to downloads
+              {{ 'ADD' | translate }} {{ sbasProducts.length }} {{'FILE' | translate}}{{ sbasProducts.length === 1 ? '' : 's'}} to downloads
             </button>
           </mat-menu>
 
@@ -354,7 +354,7 @@
             {{(productsHiddenByFilters$ | async) ? 'Filtered' : 'All'}} Event Products ({{sarviewsEventProducts.length}} files)
           </button>
           <button (click)="onQueuePinnedSarviewsProducts()" mat-menu-item>
-            Selected Event Products ({{pinnedEventIDs.length}} files)
+            {{'SELECTED_EVENT_PRODUCTS' | translate }} ({{pinnedEventIDs.length}} files)
           </button>
           </div>
       </mat-menu>

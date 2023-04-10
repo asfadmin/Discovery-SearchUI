@@ -558,7 +558,6 @@
 	"TOOLTIP": "TOOLTIP",
 	"TOO_MANY_JOBS_IN_QUEUE": "Too many jobs in queue",
 	"TO_A_CSV_KML_OR_GEO_JSON_FILE_THE_KML_AND_GEO_JSON": "to a CSV, KML, or GeoJSON file. The KML and GeoJSON",
-	"TO_DOWNLOADS": "to_downloads",
 	"TO_SAVE_A_SEARCH_FOLLOW_THESE_STEPS": "To save a search follow these steps:",
 	"TO_THEM_THESE_ARE_FILES_THAT_ARE_ELIGIBLE_FOR_ADDITIONAL_ON_DEMAND_PROCESSING": "to them. These are files that are eligible for additional On Demand Processing.",
 	"TO_VIEW_MORE_INFORMATION_ABOUT_A_SCENE_CLICK_ON_THE_SCENE_IN_THE_LEFT_COLUMN_AND_THE_SCENE_DETAIL": "To view more information about a scene, click on the scene in the left column and the Scene Detail",
@@ -674,10 +673,18 @@
   "ZOOM_OUT": "Zoom out",
   "ZOOM_TO_RESULTS": "Zoom to results",
   "ZOOM_TO_FIT": "Zoom To Fit",
-
   "ADJUST_OVERLAY_OPACITY": "Adjust Overlay Opacity",
-  "ADD_ALL_RESULTS_TO_ON_DEMAND_QUEUE":" Add all results to On Demand queue",
-  "ADD_TO_ON_DEMAND QUEUE": "Add to On Demand queue",
+  "ADD_ALL_RESULTS_TO_ON_DEMAND_QUEUE": "Add all results to On Demand queue",
+  "ADD_TO_ON_DEMAND_QUEUE": "Add to On Demand queue",
   "ADD_FILE_TO_DOWNLOADS": "Add file to downloads",
-  "Product Overlays for current scene dataset not available": "Product Overlays for current scene dataset not available"
+  "REMOVE_FILE_FROM_DOWNLOADS": "Remove file from downloads",
+  "PRODUCT_OVERLAYS_FOR_CURRENT_SCENE_DATASET_NOT_AVAILABLE": "Product Overlays for current scene dataset not available",
+  "SHOW_RAW_DATA": "Show raw data",
+  "HIDE_RAW_DATA": "Hide raw data",
+  "SELECTED_EVENT_PRODUCTS": "Selected Event Products",
+  "TO_DOWNLOADS": "to downloads",
+  "GEOCODED_AREA": "Geocoded Area",
+  "MORE_OPTIONS": "More options",
+  "COPY_TO_CLIPBOARD" : "Copy to clipboard",
+  "OPEN_IN_IMAGE_VIEWER": "Open in Image Viewer"
 }
