@@ -117,6 +117,7 @@
   </mat-expansion-panel>
 
   <mat-expansion-panel
+  *ngIf="selectedDataset === 'SENTINEL-1 BURSTS'"
   [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled" class="raised-section"
   (click)="selectPanel(panels.CAMPAIGN)"
   [class.raised-section]="isSelected(panels.CAMPAIGN)">
@@ -125,6 +126,8 @@
       SLC BURST Filters
     </mat-panel-title>
   </mat-expansion-panel-header>
+  <div class="selector-card-spacing">
     <app-burst-selector></app-burst-selector>
+  </div>
   </mat-expansion-panel>
 </mat-accordion>

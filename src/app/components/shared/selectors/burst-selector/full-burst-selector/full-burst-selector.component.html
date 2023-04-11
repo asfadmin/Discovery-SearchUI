@@ -1,4 +1,4 @@
-<mat-form-field>
+<mat-form-field style="width: 100%">
   <mat-label>Full Burst ID</mat-label>
-  <input type="text" matInput [value]="fullBurstIDs.join(',')" (input)="onChange($event)">
+  <textarea matInput style="height: 100px;" [value]="fullBurstIDs.join(',')" (input)="onChange($event)"></textarea>
 </mat-form-field>

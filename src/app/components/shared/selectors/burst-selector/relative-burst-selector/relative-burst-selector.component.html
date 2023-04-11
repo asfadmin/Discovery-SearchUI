@@ -1,5 +1,5 @@
 
-<mat-form-field>
+<mat-form-field style="width: 100%">
   <mat-label>Relative Burst ID</mat-label>
-  <input type="text" matInput [value]="relativeIDs.join(',')" (input)="onChange($event)">
+  <textarea matInput style="height: 100px;" [value]="relativeIDs.join(',')" (input)="onChange($event)"></textarea>
 </mat-form-field>

@@ -1,4 +1,4 @@
-<mat-form-field>
+<mat-form-field style="width: 100%">
   <mat-label>Absolute Burst ID</mat-label>
-  <input type="text" matInput (input)="onChange($event)">
+  <textarea matInput style="height: 75px;" [value]="absoluteIDs" (input)="onChange($event)"></textarea>
 </mat-form-field>
