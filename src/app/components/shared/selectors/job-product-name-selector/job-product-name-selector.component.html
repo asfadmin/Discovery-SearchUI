@@ -54,7 +54,7 @@
 
         <mat-card-header style="display: block;">
             <strong>{{ 'OPTIONS' | translate }}</strong>
-            <button class="options-clear-button" (click)="onCloseOptions()" matTooltip="Hide options" mat-icon-button>
+            <button class="options-clear-button" (click)="onCloseOptions()" matTooltip="{{'HIDE_OPTIONS' | translate}}" mat-icon-button>
               <mat-icon>clear</mat-icon>
             </button>
         </mat-card-header>
@@ -70,7 +70,7 @@
                 [rows]="5"
                 ></textarea>
             </mat-form-field>
-            <button class="options-clear-button" (click)="onClearFilter()" mat-flat-button matTooltip="Clear Product Name Filter">
+            <button class="options-clear-button" (click)="onClearFilter()" mat-flat-button matTooltip="{{'CLEAR_PRODUCT_NAME_FILTER' | translate}}">
                 <strong>{{'CLEAR' | translate }}</strong>
             </button>
         </mat-card-content>

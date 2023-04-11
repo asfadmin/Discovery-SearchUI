@@ -2,7 +2,7 @@
                'saved-searches': breakpoint > breakpoints.SMALL}">
   <div class="saved-searches__header">
       <div class="saved-searches__header-title">
-        <span *ngIf="sidebarType === SidebarType.SAVED_SEARCHES">{{'SAVED SEARCHES'| translate }}</span>
+        <span *ngIf="sidebarType === SidebarType.SAVED_SEARCHES">{{'SAVED_SEARCHES'| translate }}</span>
         <span *ngIf="sidebarType === SidebarType.SEARCH_HISTORY">{{'SEARCH_HISTORY' | translate }}</span>
       </div>
       <div class="saved-searches__header-actions" >
@@ -31,7 +31,7 @@
                  (input)="onNewFilter($event)"
                  (keyup.enter)="unfocusFilter()"
                  name="filterSearches"
-                 placeholder="Filter Searches">
+                 placeholder="{{'FILTER_SEARCHES' | translate}}">
         </mat-form-field>
       </form>
     </div>

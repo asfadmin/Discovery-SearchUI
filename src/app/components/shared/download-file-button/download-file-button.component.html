@@ -12,7 +12,7 @@
       <ng-container *ngIf="download.state !== 'DONE'"
                 class="progress-spinner">
         <mat-progress-spinner
-          [mode]="download.state === 'IN_PROGRESS' ? 'determinate' : 'indeterminate'"
+          [mode]="download.state === 'IN_PROGRESS' ? ('DETERMINATE' | translate) : ('INDETERMINATE' | translate)"
           [value]='download.progress'
           [diameter]="40">
         </mat-progress-spinner>

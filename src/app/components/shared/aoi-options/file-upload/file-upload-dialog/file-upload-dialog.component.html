@@ -42,7 +42,7 @@
 </div>
 <ng-template #mobileUploadButton>
 <mat-button-toggle
-matTooltip="Upload AOI via file"
+matTooltip="{{'UPLOAD_AOI_VIA_FILE' | translate}}"
 class="control-mat-button-toggle mobile-upload-button"
 [disabled]="uploading"
 (click)="addFiles()">

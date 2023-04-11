@@ -25,7 +25,7 @@
       (click)="onPointSelected()"
       [value]="types.POINT"
       class="control-button mat-menu-item"
-      matTooltip="Point draw">
+      matTooltip="{{'POINT_DRAW' | translate}}">
       <mat-icon class="draw-icon">place</mat-icon>
       {{ 'PLACE_A_POINT' | translate }}
     </button>
@@ -34,7 +34,7 @@
       (click)="onLineStringSelected()"
       [value]="types.LINESTRING"
       class="control-button mat-menu-item"
-      matTooltip="Line draw">
+      matTooltip="{{'LINE_DRAW' | translate}}">
       <mat-icon class="draw-icon">timeline</mat-icon>
       {{ 'DRAW_A_LINE' | translate }}
     </button>
@@ -43,7 +43,7 @@
       (click)="onPolygonSelected()"
       [value]="types.POLYGON"
       class="control-button mat-menu-item"
-      matTooltip="Polygon draw">
+      matTooltip="{{'POLYGON_DRAW' | translate}}">
       <svg viewBox="0 0 24 24" style="width: 18px; height: 18px;margin-right: 16px;"  >
         <path class="draw-svg"
               d="M2,2V8H4.28L5.57,16H4V22H10V20.06L15,20.05V22H21V16H19.17L20,
@@ -59,7 +59,7 @@
       (click)="onBoxSelected()"
       [value]="types.BOX"
       class="control-button mat-menu-item"
-      matTooltip="Box Draw">
+      matTooltip="{{'BOX_DRAW' | translate}}">
       <mat-icon class="draw-icon">format_shapes</mat-icon>
       {{ 'DRAW_A_BOX' | translate }}
     </button>
@@ -68,7 +68,7 @@
     (click)="onCircleSelected()"
     [value]="types.CIRCLE"
     class="control-button mat-menu-item"
-    matTooltip="Circle Draw">
+    matTooltip="{{ 'CIRCLE_DRAW' | translate }}">
     <mat-icon class="draw-icon">radio_button_unchecked</mat-icon>
     {{ 'DRAW_A_CIRCLE' | translate }}
     </button>
@@ -78,7 +78,7 @@
     *ngIf="breakpoint !== breakpoints.MOBILE"
     (click)="onImportSelected()"
     class="control-mat-button-toggle"
-    matTooltip="Import Area of Interest">
+    matTooltip="{{'IMPORT_AREA_OF_INTEREST' | translate}}">
     <mat-icon class="interaction-icon">upload</mat-icon>
     {{'UPLOAD_GEOSPATIAL_FILE' | translate}}
 

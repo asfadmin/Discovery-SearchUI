@@ -48,7 +48,7 @@
                 <mat-button-toggle
                   (click)="onSceneModeSelected()"
                   [value]="types.SCENE"
-                  matTooltip="Scene List Search">
+                  matTooltip="{{'SCENE_LIST_SEARCH' | translate}}">
                   {{ 'SCENE' | translate }}
                 </mat-button-toggle>
 
@@ -67,7 +67,7 @@
                         (input)="onTextInputChange($event)"
                         [(ngModel)]="searchList"
                         style="height: 150px;"
-                        placeholder="{{ 'LIST_OF' | translate }} {{ mode === types.SCENE ? ( 'SCENE_NAMES' | translate ): 'File IDs.' }}">
+                        placeholder="{{ 'LIST_OF' | translate }} {{ mode === types.SCENE ? ( 'SCENE_NAMES' | translate ): ( 'FILE_IDS'|translate ) }}">
               </textarea>
             </mat-form-field>
             <div class="drop-file-area file-upload-container"
@@ -84,7 +84,7 @@
             <div>
               <app-copy-to-clipboard
                 [value]="listExamples[mode]"
-                [prompt]="mode === types.SCENE ? 'Copy Scene names' : 'Copy File IDs'"
+                [prompt]="mode === types.SCENE ? ('COPY_SCENE_NAMES' | translate) : ('COPY_FILE_IDS' | translate)"
                 style="margin: 0 3px;"
                 class="clipboard-icon">
               </app-copy-to-clipboard>

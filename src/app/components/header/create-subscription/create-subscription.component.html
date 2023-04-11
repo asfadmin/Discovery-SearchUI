@@ -39,7 +39,7 @@
   </div>
 
   <div class="feedback-div header-link">
-    <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <mat-icon>comment</mat-icon>Feedback</a>
+    <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <mat-icon>comment</mat-icon>{{ 'FEEDBACK' | translate }}</a>
   </div>
 
   <div class="docs-div header-link">
@@ -85,13 +85,13 @@
             <mat-form-field class="sub-option">
               <mat-label>{{ 'PATH' | translate }}</mat-label>
               <input matInput [(ngModel)]="path" type="number">
-              <mat-hint align="start"> {{ path !== null ? '' : ' No path input' }}</mat-hint>
+              <mat-hint align="start"> {{ path !== null ? '' : ('NO_PATH_INPUT' | translate)}}</mat-hint>
             </mat-form-field>
 
             <mat-form-field class="sub-option">
               <mat-label>{{ 'FRAME' | translate }}</mat-label>
               <input matInput [(ngModel)]="frame" type="number">
-              <mat-hint align="start">{{ frame !== null ? '' : ' No frame input'  }}</mat-hint>
+              <mat-hint align="start">{{ frame !== null ? '' : ('NO_FRAME_INPUT' | translate)  }}</mat-hint>
             </mat-form-field>
           </div>
         </mat-step>

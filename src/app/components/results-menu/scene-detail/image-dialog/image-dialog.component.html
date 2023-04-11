@@ -21,7 +21,7 @@
             *ngIf="dataset"
             [href]="dataset.infoUrl"
             target="_blank"
-            matTooltip="Dataset"
+            matTooltip="{{'DATASET' | translate}}"
           >
             {{ dataset.name }}
           </a>
@@ -354,7 +354,7 @@
                 <button
                   mat-menu-item
                   (click)="onCopyLink(currentSarviewsProduct.granules)"
-                  matTooltip="Copy reference scene names to clipboard"
+                  matTooltip="{{'COPY_REFERENCE_SCENE_NAMES_TO_CLIPBOARD' | translate}}"
                 >
                   <span> {{ 'REFERENCE_SCENES' | translate }} </span>
                   <mat-icon>file_copy</mat-icon>

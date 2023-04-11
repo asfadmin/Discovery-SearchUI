@@ -16,7 +16,7 @@
   </div>
 
   <div class="feedback-div header-link">
-    <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <mat-icon>comment</mat-icon> Feedback</a>
+    <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <mat-icon>comment</mat-icon> {{ 'FEEDBACK' | translate }}</a>
   </div>
 
   <div class="docs-div header-link">
@@ -130,21 +130,21 @@
           <div *ngIf="areAnyProducts" fxFlex="85" class="dl-download-buttons">
             <button (click)="onCopyQueue(products)" mat-button [disabled]="!areAnyProducts" class="btn-primary"
                     [class.button-clipboard-mobile]="breakpoint === breakpoints.MOBILE || dlWidth < dlWidthMin"
-                    matTooltip="Copy File IDs to clipboard"
+                    matTooltip="{{'COPY_FILE_ID_TO_CLIPBOARD' | translate}}"
                     [matTooltipPosition]="'above'">
               <fa-icon style="margin-left: 5px;" [icon]="copyIcon"></fa-icon>
               &nbsp;
-              <span *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin; else mobileCopyFileIds">Copy File IDs</span>
+              <span *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin; else mobileCopyFileIds">{{'COPY_FILE_IDS' | translate}}</span>
               <ng-template #mobileCopyFileIds>IDs</ng-template>
             </button>
 
             <button (click)="onCopyQueueURLs(products)" mat-button [disabled]="!areAnyProducts" class="btn-primary"
                     [class.button-clipboard-mobile]="breakpoint === breakpoints.MOBILE || dlWidth < dlWidthMin"
-                    matTooltip="Copy File URLs to clipboard"
+                    matTooltip="{{'COPY_FILE_URLS_TO_CLIPBOARD' | translate}}"
                     [matTooltipPosition]="'above'">
               <fa-icon style="margin-left: 5px;" [icon]="copyIcon"></fa-icon>
               &nbsp;
-              <span *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin; else mobileCopyURLs">Copy URLs</span>
+              <span *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin; else mobileCopyURLs">{{'COPY_URLS' | translate}}</span>
               <ng-template #mobileCopyURLs>URLs</ng-template>
             </button>
 

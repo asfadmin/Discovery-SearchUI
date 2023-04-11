@@ -33,7 +33,7 @@
 
   <span
   [matTooltipDisabled]="isLoggedIn"
-  matTooltip="Sign in to see your saved searches"
+  matTooltip="{{'SIGN_IN_TO_SEE_YOUR_SAVED_SEARCHES' | translate}}"
   matTooltipPosition="after">
     <button
     mat-menu-item
@@ -44,7 +44,7 @@
 
   <span
   [matTooltipDisabled]="isLoggedIn && searchType !== searchTypes.LIST && searchType !== searchTypes.CUSTOM_PRODUCTS"
-  matTooltip="{{ isLoggedIn && (searchType === searchTypes.LIST || searchType === searchTypes.CUSTOM_PRODUCTS) ? 'Saved Filters are not available for Search Type' : 'Sign in to see your saved filters'}}"
+  matTooltip="{{ isLoggedIn && (searchType === searchTypes.LIST || searchType === searchTypes.CUSTOM_PRODUCTS) ? ('SAVED_FILTERS_ARE_NOT_AVAILABLE_FOR_SEARCH_TYPE' | translate) : ('SIGN_IN_TO_SEE_YOUR_SAVED_FILTERS' |translate)}}"
   matTooltipPosition="after">
     <button
     [disabled]="searchType === searchTypes.LIST || searchType === searchTypes.CUSTOM_PRODUCTS"
@@ -61,7 +61,7 @@
   </button>
 
   <span
-    matTooltip="Get help on how to user Vertex"
+    matTooltip="{{'GET_HELP_ON_HOW_TO_USER_VERTEX' | translate}}"
     matTooltipPosition="after">
       <button mat-menu-item (click)="onOpenHelp('toc')">{{ 'HELP_AND_TUTORIALS' | translate }}</button>
   </span>
@@ -78,7 +78,7 @@
 </mat-menu>
 
 <mat-menu #savedFiltersMenu="matMenu">
-  <span matTooltip="Sign in to save your filters"
+  <span matTooltip="{{'SIGN_IN_TO_SAVE_YOUR_FILTERS' | translate}}"
         [matTooltipDisabled]="isLoggedIn"
         matTooltipPosition="after">
     <button *ngIf="searchType !== searchTypes.CUSTOM_PRODUCTS && searchType !== searchTypes.LIST"
@@ -89,7 +89,7 @@
 
   <span
   [matTooltipDisabled]="isLoggedIn"
-  matTooltip="Sign in to see your saved filters"
+  matTooltip="{{'SIGN_IN_TO_SEE_YOUR_SAVED_FILTERS' | translate}}"
   matTooltipPosition="after">
     <button *ngIf="searchType !== searchTypes.CUSTOM_PRODUCTS && searchType !== searchTypes.LIST"
       (click)="onOpenSavedFilters()"
@@ -120,7 +120,7 @@
 
 <mat-menu #savedSearchesMenu="matMenu">
 
-  <span matTooltip = "Sign in to save your search" [matTooltipDisabled]="isLoggedIn"
+  <span matTooltip = "{{ 'SIGN_IN_TO_SAVE_YOUR_SEARCH' | translate}}" [matTooltipDisabled]="isLoggedIn"
         matTooltipPosition = "after">
     <button *ngIf="searchType !== searchTypes.CUSTOM_PRODUCTS"
       mat-menu-item [disabled]="!isLoggedIn" (click)="saveCurrentSearch()">
@@ -130,16 +130,16 @@
 
   <span
   [matTooltipDisabled]="isLoggedIn"
-  matTooltip="Sign in to see your saved searches"
+  matTooltip="{{'SIGN_IN_TO_SEE_YOUR_SAVED_SEARCHES' | translate}}"
   matTooltipPosition="after">
     <button mat-menu-item [disabled]="!isLoggedIn" (click)="onOpenSavedSearches()">{{ 'VIEW_SEARCHES' | translate }}</button>
   </span>
 
   <span
     [matTooltipDisabled]="isLoggedIn"
-    matTooltip="Sign in to see your search history"
+    matTooltip="{{'SIGN_IN_TO_SEE_YOUR_SEARCH_HISTORY' | translate}}"
     matTooltipPosition="after">
-      <button mat-menu-item [disabled]="!isLoggedIn" (click)="onOpenSearchHistory()">Search History...</button>
+      <button mat-menu-item [disabled]="!isLoggedIn" (click)="onOpenSearchHistory()">{{ 'SEARCH_HISTORY' | translate}}...</button>
   </span>
 
 </mat-menu>
