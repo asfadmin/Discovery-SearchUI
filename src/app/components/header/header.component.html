@@ -14,7 +14,6 @@
           <app-logo></app-logo>
         </div>
       </div>
-
       <div *ngIf="searchType$ | async as searchType" fxLayout="column" fxFill>
         <app-dataset-header *ngIf="searchType === searchTypes.DATASET">
         </app-dataset-header>

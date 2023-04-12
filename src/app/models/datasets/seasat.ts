@@ -38,6 +38,6 @@ export const seasat = {
     'HH'
   ],
   subtypes: [],
-  platformDesc: 'Seasat\'s primary mission was to observe oceans using NASA’s first synthetic aperture radar (SAR) sensor.',
+  platformDesc: 'SEASAT_DESC',
   platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
 };

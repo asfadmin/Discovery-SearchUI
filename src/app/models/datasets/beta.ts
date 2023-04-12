@@ -48,7 +48,6 @@ export const beta = {
   beamModes: ['slc'],
   polarizations: ['VV'],
   subtypes: [],
-  platformDesc: 'Sentinel-1 Interferogram (BETA) products are prototype Level 2 NISAR-Format interferometric products produced using ' +
-    'the ARIA Science Data System.',
+  platformDesc: 'SENTINEL_1_INTERFEROGRAM_BETA_DESC',
   platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
 };

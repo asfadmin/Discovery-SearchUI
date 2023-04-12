@@ -72,6 +72,6 @@ export const uavsar = {
     'HH'
   ],
   subtypes: [],
-  platformDesc: 'Uninhabited Aerial Vehicle Synthetic Aperture Radar (UAVSAR) is specifically designed to acquire airborne repeat-track SAR data for differential interferometric measurements.',
+  platformDesc: 'UAVSAR_DESC',
   platformIcon: '/assets/icons/flight_black_48dp.svg',
 };
