@@ -109,7 +109,7 @@ export const RtcGammaJobType: Hyp3JobType = {
     apiName: 'include_inc_map',
     type: JobOptionType.CHECKBOX,
     default: false,
-    info: `Include the incidence angle map in the product package.`
+    info: `Include the local incidence angle map in the product package.`
   }, {
     name: 'Scattering Area Map',
     apiName: 'include_scattering_area',
