@@ -88,3 +88,15 @@
   font-size: 16px !important;
   margin-bottom: -11px;
 }
+.warn-icon {
+  margin-right: 5px;
+  @include themify($themes) {
+    color: themed('warn');
+  }
+}
+.gap-detected-area {
+  margin-top: -5px;
+  @include themify($themes) {
+    color: themed('dark-primary-text') !important;
+  }
+}
