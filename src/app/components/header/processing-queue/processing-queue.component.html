@@ -232,10 +232,10 @@
     <div class="footer-job-notification">
       <div *ngIf="isUserLoggedIn && !isUserLoading && user !== ''">
         <span>
-          <ng-template *ngIf="!isUnlimitedUser; else unlimited">
+          <span *ngIf="!isUnlimitedUser; else unlimitedText">
             {{ remaining }}
-          </ng-template>
-          <ng-template #unlimited>Unlimited</ng-template>
+          </span>
+          <ng-template #unlimitedText>Unlimited</ng-template>
         </span>
 
         <span *ngIf="breakpoint === breakpoints.MOBILE" class="footer-mini-text">
