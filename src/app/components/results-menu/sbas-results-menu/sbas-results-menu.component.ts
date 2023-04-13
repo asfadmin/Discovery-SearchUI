@@ -51,6 +51,7 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
   public zoomOutChart$ =  new Subject<void>();
   public zoomToFitChart$ =  new Subject<void>();
 
+  public isDisconnected = false;
   constructor(
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
@@ -158,6 +159,10 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
 
   public onOpenHelp(url: string): void {
     window.open(url);
+  }
+
+  public isGraphDisconnected(isDisconnected) {
+    this.isDisconnected = isDisconnected;
   }
 
   ngOnDestroy() {

@@ -26,6 +26,7 @@ enum MobileViews {
 export class MobileResultsMenuComponent implements OnInit, OnDestroy {
   @Input() resize$: Observable<void>;
 
+  public isDisconnected = false;
   public pair: CMRProductPair;
   public isAddingCustomPoint: boolean;
   public isSelectedPairCustom: boolean;
@@ -106,7 +107,10 @@ export class MobileResultsMenuComponent implements OnInit, OnDestroy {
   public onSelectSBASChart(): void {
     this.view = MobileViews.SBAS;
   }
-
+  public isGraphDisconnected(disconnect: boolean) {
+    console.log(disconnect);
+    this.isDisconnected = disconnect;
+  }
   ngOnDestroy() {
     this.subs.unsubscribe();
   }

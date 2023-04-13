@@ -45,9 +45,18 @@ export class Hyp3Service {
   }
 
   public getUser$(): Observable<models.Hyp3User> {
-    const getUserUrl = `${this.apiUrl}/user`;
+    const userUrl = `${this.apiUrl}/user`;
 
-    return this.http.get<models.Hyp3User>(getUserUrl, { withCredentials: true });
+    return this.http.get<models.Hyp3User>(userUrl, { withCredentials: true }).pipe(
+      map(user => ({
+          ...user,
+          quota: {
+            ...user.quota,
+            unlimited: user.quota.max_jobs_per_month === null
+          }
+        })
+      )
+    );
   }
 
   public formatJobs(jobTypesWithQueued, options: {processingOptions: any, projectName: string}) {
