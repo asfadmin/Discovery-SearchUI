@@ -214,7 +214,7 @@
   <div mat-menu-item matSuffix (click)="onOpenHyP3Guide()">
     <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
       <mat-icon>book</mat-icon>
-      {{ 'HY_P3_USER_GUIDE' | translate }}
+      {{ 'HY_P3_USER_GUIDE' | translate | titlecase }}
     </div>
     <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
       <div fxFlex="" class="menu-item-content">

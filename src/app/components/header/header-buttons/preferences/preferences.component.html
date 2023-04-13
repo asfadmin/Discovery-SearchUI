@@ -21,7 +21,7 @@
           [(ngModel)]="defaultMaxResults"
           (selectionChange)="onChangeMaxResultsDefault($event.value)" name="maxResult">
           <mat-option *ngFor="let resultAmount of maxResults" [value]="resultAmount">
-            {{resultAmount}} files
+            {{resultAmount}} {{ 'FILES' | translate }}
           </mat-option>
         </mat-select>
       </mat-form-field>

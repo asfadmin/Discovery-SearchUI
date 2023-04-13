@@ -20,7 +20,7 @@
 
         <div *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS" class="mr-10 event-count" event
         [class.mobile-event]="breakpoint === breakpoints.MOBILE">
-          {{ numberOfFilteredEvents$ | async }} Event{{ (numSarviewsScenes$ | async) === 1 ? '' : 's' }}
+          {{ numberOfFilteredEvents$ | async }} {{'EVENT' | translate}}{{ (numSarviewsScenes$ | async) === 1 ? '' : 's' }}
         </div>
 
         <div *ngIf="searchType === SearchTypes.SBAS" class="mr-10" style="margin-top: -15px;">
@@ -351,7 +351,7 @@
       <mat-menu #QueueAllSARViewsProducts="matMenu">
         <div *ngIf="sarviewsEventProducts">
           <button (click)="onQueueSarviewsProducts(sarviewsEventProducts)" mat-menu-item>
-            {{(productsHiddenByFilters$ | async) ? 'Filtered' : 'All'}} Event Products ({{sarviewsEventProducts.length}} files)
+            {{(productsHiddenByFilters$ | async) ? 'Filtered' : 'All'}} {{'SELECTED_EVENT_PRODUCTS' | translate}} ({{sarviewsEventProducts.length}} files)
           </button>
           <button (click)="onQueuePinnedSarviewsProducts()" mat-menu-item>
             {{'SELECTED_EVENT_PRODUCTS' | translate }} ({{pinnedEventIDs.length}} files)

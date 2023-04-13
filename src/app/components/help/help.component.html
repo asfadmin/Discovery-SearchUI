@@ -5,7 +5,7 @@
     <div class="help-menu" *ngIf="topic != 'toc'">
       <button mat-raised-button color="accent"
               (click)="setHelpTopic('toc')">
-        {{ 'ALL_HELP_AND_TUTORIALS' |  translate }}
+        {{ 'ALL_HELP_AND_TUTORIALS' |  translate  | titlecase}}
       </button>
     </div>
   </header>

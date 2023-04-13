@@ -17,7 +17,7 @@
         <ng-template #NO_DESCRIPTION>
           <span>
             {{sarviewEvent.event_type[0].toLocaleUpperCase()}}{{sarviewEvent.event_type.slice(1)}}
-            Event: {{sarviewEvent.processing_timeframe.start | shortDate}}
+            {{'EVENT' | translate}}: {{sarviewEvent.processing_timeframe.start | shortDate}}
           </span>
         </ng-template>
 
@@ -30,7 +30,7 @@
       </mat-card-title>
       <mat-card-subtitle class="subtitle">
         <span class="faint-text">
-          SARVIEWS Event
+          {{'SARVIEWS_EVENT' | translate}}
         </span> •
         <span matTooltip="eventType">{{ sarviewEvent.event_type }}</span>
       </mat-card-subtitle>
