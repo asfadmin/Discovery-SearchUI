@@ -335,9 +335,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
 
     case FiltersActionType.SET_FILTERS_SIMILAR_TO: {
       const metadata = action.payload.product.metadata;
-
-      return {
-        ...state,
+      let filters: any = {
         frameRange: {
           start: metadata.frame,
           end: metadata.frame
@@ -348,7 +346,18 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         },
         selectedMission: metadata.missionName,
         selectedDatasetId: action.payload.dataset.id ?? 'SENTINEL-1',
-      };
+      }
+
+      if(action.payload.dataset.id === models.sentinel_1_bursts.id) {
+        filters = {
+          absoluteBurstIDs: [metadata.burst.absoluteBurstID],
+          fullBurstIDs: [metadata.burst.fullBurstID],
+        }
+      }
+      return {
+        ...state,
+        ...filters
+        };
     }
 
     case FiltersActionType.CLEAR_FRAME_RANGE: {
