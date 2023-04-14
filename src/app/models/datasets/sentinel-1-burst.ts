@@ -2,7 +2,7 @@ import { Props } from '../filters.model';
 
 export const sentinel_1_bursts = {
   id: 'SENTINEL-1 BURSTS',
-  name: 'Sentinel-1 Bursts',
+  name: 'S1 Bursts',
   subName: '',
   beta: false,
   properties: [
@@ -30,11 +30,13 @@ export const sentinel_1_bursts = {
     }
   ],
   beamModes: [
-    'IW', 'EW', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'WV'
+    'IW', 'EW'
   ],
   polarizations: [
     'VV',
     'HH',
+    'HV',
+    'VH'
   ],
   subtypes: [{
     displayName: 'Sentinel-1A',
@@ -43,7 +45,6 @@ export const sentinel_1_bursts = {
     displayName: 'Sentinel-1B',
     apiValue: 'SB',
   }],
-  platformDesc: 'Sentinel-1 includes twin satellites that each carry C-band synthetic aperture radar (SAR), ' +
-    'together providing all-weather, day-and-night imagery of Earth’s surface.',
+  platformDesc: 'Sentinel-1 BURST products are the individual radar pulse responses that make up a parent SLC.',
   platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
 };

@@ -211,7 +211,13 @@ export class SearchParamsService {
           {
             platform: subtypes
               .map(subtype => subtype.apiValue)
-              .join(',')
+              .join(','),
+            ...Object.entries(dataset.apiValue).reduce((prev, curr) => {
+              if(curr[0] !== 'platform') {
+                prev[curr[0]] = curr[1]
+              }
+              return prev
+            }, {})
           } :
           { ...dataset.apiValue };
       })

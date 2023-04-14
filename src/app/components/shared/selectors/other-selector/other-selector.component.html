@@ -2,7 +2,8 @@
   <app-product-type-selector
     style="padding-right: 10px;"
     (typesChange)="onNewProductTypes($event)"
-    [dataset]="dataset">
+    [dataset]="dataset"
+    *ngIf="dataset.id !== 'SENTINEL-1 BURSTS'">
   </app-product-type-selector>
 
   <mat-form-field>
