@@ -4,7 +4,7 @@
 <mat-button-toggle-group class="sort-button">
   <mat-button-toggle [matMenuTriggerFor]="sortType" style="min-width: 68px !important;">
     <span>
-      {{sortTypeDisplay[0].toUpperCase() + sortTypeDisplay.slice(1)}}
+      {{ sortTypeDisplay.toUpperCase() | translate }}
     </span>
   </mat-button-toggle>
 </mat-button-toggle-group>
