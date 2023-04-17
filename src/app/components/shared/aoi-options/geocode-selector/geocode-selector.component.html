@@ -1,5 +1,5 @@
 <mat-form-field class="w100">
-  <mat-label> Search for a location </mat-label>
+  <mat-label> {{ 'SEARCH_FOR_A_LOCATION' | translate }} </mat-label>
 
   <input type="text" matInput [matAutocomplete]="auto" [(ngModel)]="search_key" (ngModelChange)="onChange($event)">
 </mat-form-field>
