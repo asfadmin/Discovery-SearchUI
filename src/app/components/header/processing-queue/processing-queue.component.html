@@ -139,7 +139,7 @@
         <!-- PRODUCT LIST AREA STARTS HERE -->
         <div class="mat-dialog-content-2">
           <div class="jobs-dialog">
-            <div *ngIf="isUserLoggedIn && !isUserLoading && allJobs.length > remaining " class="w100 error-header">
+            <div *ngIf="isUserLoggedIn && !isUnlimitedUser && !isUserLoading && allJobs.length > remaining " class="w100 error-header">
               <div style="padding-left: 10px;">
                 <b>{{ 'TOO_MANY_JOBS_IN_QUEUE' |  translate }} </b>
               </div>
@@ -148,7 +148,7 @@
               </div>
             </div>
 
-            <div *ngIf="isUserLoggedIn && !isUserLoading && remaining === 0" class="w100 error-header">
+            <div *ngIf="isUserLoggedIn && !isUnlimitedUser && !isUserLoading && remaining === 0" class="w100 error-header">
               <div style="padding-left: 10px;">
                 <b>{{ 'NO_JOBS_LEFT_THIS_MONTH' |  translate }}</b>
               </div>
@@ -231,17 +231,25 @@
 
     <div class="footer-job-notification">
       <div *ngIf="isUserLoggedIn && !isUserLoading && user !== ''">
-        <span *ngIf="breakpoint === breakpoints.MOBILE"
-        class="footer-mini-text">
-          {{ remaining }} job max
+        <span>
+          <span *ngIf="!isUnlimitedUser; else unlimitedText">
+            {{ remaining }}
+          </span>
+          <ng-template #unlimitedText>Unlimited</ng-template>
+        </span>
+
+        <span *ngIf="breakpoint === breakpoints.MOBILE" class="footer-mini-text">
+          job max
         </span>
         <span *ngIf="breakpoint !== breakpoints.MOBILE">
-          {{ remaining }} jobs left this month
+          jobs left this month
         </span>
       </div>
+
       <div *ngIf="isUserLoggedIn && isUserLoading">
         <b>{{ 'LOADING' |  translate }}...</b>
       </div>
+
       <div *ngIf="!isUserLoggedIn">
         <span *ngIf="breakpoint === breakpoints.MOBILE">
           <b>N/A</b> - {{ 'LOGIN_TO_VIEW' |  translate }}
@@ -271,11 +279,12 @@
       <button
          (click)="onReviewQueue()"
          [disabled]="
-         allJobs.length > remaining ||
-         allJobs.length === 0 ||
-         !isUserLoggedIn
-         "
-         [class.mini-button] = "breakpoint == breakpoints.MOBILE"
+         !isUnlimitedUser && (
+           allJobs.length > remaining ||
+           allJobs.length === 0 ||
+           !isUserLoggedIn
+         )"
+         [class.mini-button]="breakpoint == breakpoints.MOBILE"
 
          mat-flat-button
          color="primary"

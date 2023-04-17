@@ -128,11 +128,17 @@
               SBAS Filters<mat-icon class="more-horiz">more_horiz</mat-icon>
             </mat-button-toggle>
           </mat-button-toggle-group>
+          <div class="sbas-button-group gap-detected-area" *ngIf="this.isDisconnected" style="display: flex; place-items: center">
+            <mat-icon class="warn-icon" fontSet="material-icons-outlined">error_outline</mat-icon>
+            Gaps Detected
+          </div>
         </div>
       </mat-card-subtitle>
       <div class="sbas-chart-row">
         <div id="sbas-chart-column" class="sbas-column-2">
-          <app-sbas-chart></app-sbas-chart>
+          <app-sbas-chart
+          (isGraphDisconnected)="isGraphDisconnected($event)"
+          ></app-sbas-chart>
         </div>
       </div>
 

@@ -65,7 +65,7 @@ export class BannerCreateDirective implements OnInit {
 
     switch (type) {
       case 'error': {
-        toast = this.toastr.error(msg, title, this.overrides);
+        // toast = this.toastr.error(msg, title, this.overrides);
         break;
       }
       case 'outages': {
