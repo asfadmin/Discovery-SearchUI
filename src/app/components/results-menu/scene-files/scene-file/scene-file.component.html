@@ -90,11 +90,11 @@
     </div>
 
     <div *ngIf="product.metadata.job && product.metadata.job.name" mat-line>
-      <b>Project Name:</b> {{ product.metadata.job.name }}
+      <b>{{'PROJECT_NAME' | translate}}:</b> {{ product.metadata.job.name }}
     </div>
 
     <div *ngIf="product.metadata.job" mat-line>
-      <b>Job Submitted:</b> {{ product.metadata.job.request_time| fullDate }}
+      <b>{{'JOB_SUBMITTED' | translate}}:</b> {{ product.metadata.job.request_time| fullDate }}
     </div>
 
     <div *ngFor="let param of paramsList" mat-line>

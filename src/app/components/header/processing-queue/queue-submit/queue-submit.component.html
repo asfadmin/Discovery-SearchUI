@@ -1,6 +1,6 @@
 <div class="queue-submit">
   <div style="font-size: 26px;">
-    {{ data.numJobs }} job{{ data.numJobs === 1 ? '' : 's' }} processing
+    {{ data.numJobs }} {{'JOB' | translate}}{{ data.numJobs === 1 ? '' : 's' }} processing
   </div>
   <div>
     <button (click)="viewCustomProducts($event)" color="primary" mat-flat-button>{{ 'VIEW_ON_DEMAND_PRODUCTS' |  translate }}</button>
