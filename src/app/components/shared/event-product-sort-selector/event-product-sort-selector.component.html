@@ -24,7 +24,7 @@
 
 <mat-menu #sortType="matMenu">
   <button *ngFor="let type of sortTypes" (click)="onSetSortType(type)" mat-menu-item>
-    {{type[0].toUpperCase() + type.slice(1)}}
+    {{ type.toUpperCase() | translate }}
   </button>
 
 </mat-menu>
