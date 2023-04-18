@@ -204,6 +204,7 @@
 	"END_DATE": "End Date",
 	"ENTER_A_NAME_FOR_YOUR_SEARCH_IN_THE_SAVE_SEARCH_DIALOG": "Enter a name for your search in the Save Search dialog.",
 	"ENVIRONMENT_FILE": "Environment File",
+  "PGE_VERSION": "PGE Version",
 	"EQUATORIAL_MAP_VIEW": "Equatorial Map View",
 	"ERS_DESC": "Primarily SAR imagery within the ASF and the McMurdo, Antarctica, station masks. Data is suitable for interferometry.",
 	"EVENT": "Event",
