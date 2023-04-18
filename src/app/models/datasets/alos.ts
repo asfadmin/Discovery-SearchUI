@@ -67,7 +67,6 @@ export const alos = {
     'quadrature',
   ],
   subtypes: [],
-  platformDesc: 'PALSAR was developed to ' +
-    'contribute to the fields of mapping, precise regional land-coverage observation, disaster monitoring, and resource surveying.',
+  platformDesc:  'PALSAR_DESC' ,
   platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
 };

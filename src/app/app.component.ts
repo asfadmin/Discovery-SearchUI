@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -60,6 +61,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private subs = new SubSink();
 
+  // @ts-ignore
+  private browserLang: string;
+
   constructor(
     private store$: Store<AppState>,
     private actions$: ActionsSubject,
@@ -79,16 +83,27 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private sarviewsService: services.SarviewsEventsService,
     private mapService: services.MapService,
     private themeService: services.ThemingService,
-  ) {}
+    public translate: TranslateService,
+
+  ) {
+    this.browserLang = this.translate.getBrowserLang();
+  }
 
   public ngAfterViewInit(): void {
     this.subs.add(
       this.store$.select(userStore.getUserProfile).pipe(
         filter(profile => !!profile.defaultFilterPresets),
         map(profile => profile.defaultFilterPresets)
-        ).subscribe(presets =>
-          this.store$.dispatch(new filterStore.SetDefaultFilters(presets)))
-    );
+        ).subscribe(presets => {
+          this.store$.dispatch(new filterStore.SetDefaultFilters(presets));
+          this.translate.addLangs(['de', 'en', 'es', 'fr', 'pt', 'zh']);
+          this.translate.setDefaultLang('en');
+          this.translate.use('en');
+          // this.translate.use(this.browserLang.match(/de|en|es|fr/) ? this.browserLang : 'en');
+          // if (profile.defaultLanguage !== undefined) {
+          //   this.translate.use(profile.defaultLanguage);
+          // }
+        }))
   }
   public ngOnInit(): void {
     this.subs.add(

@@ -1,7 +1,7 @@
 <ul class="scene-metadata" *ngIf="eventType === eventTypes.QUAKE">
   <li *ngIf="(event | quakeEvent).processing_timeframe.start !== null">
     <span class="v-mid">
-      <b>Event Date </b> • {{(event | quakeEvent).event_date | shortDateTime}}
+      <b>{{ 'EVENT_DATE' | translate  }} </b> • {{(event | quakeEvent).event_date | shortDateTime}}
     </span>
     <mat-icon
     [matMenuTriggerFor]="addSceneDateMenu"
@@ -12,7 +12,7 @@
   </li>
   <li *ngIf="(event | quakeEvent).processing_timeframe.start !== null">
     <span class="v-mid">
-      <b>Start Time </b> • {{(event | quakeEvent).processing_timeframe.start | shortDateTime}}
+      <b>{{ 'START_TIME' | translate}}</b> • {{(event | quakeEvent).processing_timeframe.start | shortDateTime}}
     </span>
     <mat-icon
     [matMenuTriggerFor]="addSceneDateMenu"
@@ -23,7 +23,7 @@
   </li>
   <li *ngIf="(event | quakeEvent).processing_timeframe.end !== null">
     <span class="v-mid">
-      <b>Stop Time </b> •  {{(event | quakeEvent).processing_timeframe.end | shortDateTime}}
+      <b>{{ 'STOP_TIME' | translate }} </b> •  {{(event | quakeEvent).processing_timeframe.end | shortDateTime}}
     </span>
     <mat-icon
     [matMenuTriggerFor]="addSceneDateMenu"
@@ -34,7 +34,7 @@
   </li>
   <li>
     <span class="v-mid">
-      <b>Magnitude </b> •  {{ (event | quakeEvent).magnitude }}
+      <b>{{'MAGNITUDE' | translate }}</b> •  {{ (event | quakeEvent).magnitude }}
     </span>
     <mat-icon
     [matMenuTriggerFor]="addSceneMagnitudeMenu"
@@ -45,12 +45,12 @@
   </li>
   <li>
     <span class="v-mid">
-      <b>Depth </b> •  {{(event | quakeEvent).depth}}
+      <b>{{ 'DEPTH'| translate }} </b> •  {{(event | quakeEvent).depth}}
     </span>
   </li>
   <li>
     <span class="v-mid">
-      <b>USGS ID </b> •
+      <b>{{ 'USGS_ID' | translate }}</b> •
       <a target="_blank" href="{{
         'https://earthquake.usgs.gov/earthquakes/eventpage/' +
         (event | quakeEvent).usgs_event_id +
@@ -64,7 +64,7 @@
 <ul class="scene-metadata" *ngIf="eventType === eventTypes.VOLCANO">
   <li *ngIf="event.processing_timeframe.start !== null">
     <span class="v-mid">
-      <b>Start Time </b> •  {{event.processing_timeframe.start | shortDateTime}}
+      <b>{{ 'START_TIME' | translate }} </b> •  {{event.processing_timeframe.start | shortDateTime}}
     </span>
     <mat-icon
     [matMenuTriggerFor]="addSceneDateMenu"
@@ -75,7 +75,7 @@
   </li>
   <li *ngIf="event.processing_timeframe.end !== null">
     <span class="v-mid">
-      <b>Stop Time </b> •  {{event.processing_timeframe.end | shortDateTime}}
+      <b>{{ 'STOP_TIME' | translate }} </b> •  {{event.processing_timeframe.end | shortDateTime}}
     </span>
     <mat-icon
     [matMenuTriggerFor]="addSceneDateMenu"
@@ -86,7 +86,7 @@
   </li>
   <li>
     <span class="v-mid">
-      <b>Smithsonian ID </b> •
+      <b>{{ 'SMITHSONIAN_ID' | translate }} </b> •
       <a target="_blank" href="{{
         'http://volcano.si.edu/volcano.cfm?vn=' +
         (event | volcanicEvent).smithsonian_event_id +
@@ -100,14 +100,14 @@
 
 <mat-menu #addSceneDateMenu="matMenu">
   <ng-template matMenuContent let-date="eventDate">
-  <button (click)="onSetStartDate(date)" mat-menu-item>Set as Start Date</button>
-  <button (click)="onSetEndDate(date)" mat-menu-item>Set as End Date</button>
+  <button (click)="onSetStartDate(date)" mat-menu-item>{{ 'SET_AS_START_DATE' | translate }}</button>
+  <button (click)="onSetEndDate(date)" mat-menu-item>{{ 'SET_AS_END_DATE' | translate }}</button>
 </ng-template>
 </mat-menu>
 
 <mat-menu #addSceneMagnitudeMenu>
   <ng-template matMenuContent let-magnitude="magnitude">
-    <button (click)="onSetStartMagnitude(magnitude)" mat-menu-item>Set as magnitude range start</button>
-    <button (click)="onSetEndMagnitude(magnitude)" mat-menu-item>Set as magnitude range end</button>
+    <button (click)="onSetStartMagnitude(magnitude)" mat-menu-item>{{ 'SET_AS_MAGNITUDE_RANGE_START' | translate }}</button>
+    <button (click)="onSetEndMagnitude(magnitude)" mat-menu-item>{{ 'SET_AS_MAGNITUDE_RANGE_END' | translate }}</button>
   </ng-template>
 </mat-menu>

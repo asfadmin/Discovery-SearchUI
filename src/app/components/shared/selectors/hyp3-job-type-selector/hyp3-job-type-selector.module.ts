@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
+import { SharedModule } from "@shared";
 
 import { Hyp3JobTypeSelectorComponent } from './hyp3-job-type-selector.component';
 
@@ -13,7 +14,8 @@ import { Hyp3JobTypeSelectorComponent } from './hyp3-job-type-selector.component
     CommonModule,
     FormsModule,
     MatCheckboxModule,
-    MatSelectModule
+    MatSelectModule,
+    SharedModule
   ],
   exports: [
     Hyp3JobTypeSelectorComponent

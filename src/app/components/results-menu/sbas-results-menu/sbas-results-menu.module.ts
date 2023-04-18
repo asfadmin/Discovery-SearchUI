@@ -20,6 +20,8 @@ import { SbasSlidersTwoComponent } from './sbas-sliders-two/sbas-sliders-two.com
 
 import { SBASResultsMenuComponent } from './sbas-results-menu.component';
 
+import { SharedModule } from "@shared";
+
 
 @NgModule({
   declarations: [
@@ -37,7 +39,7 @@ import { SBASResultsMenuComponent } from './sbas-results-menu.component';
     MatFormFieldModule,
     MatInputModule,
     MatButtonToggleModule,
-
+    SharedModule,
     SBASChartModule,
     SceneMetadataModule,
     ScenesListModule,

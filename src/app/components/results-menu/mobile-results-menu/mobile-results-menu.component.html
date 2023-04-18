@@ -2,25 +2,25 @@
   <div class="header-mobile">
     <button (click)="onSelectList()"
      [class.selected]="view === Views.LIST" mat-button>
-      Scenes
+      {{'SCENES' | translate }}
     </button>
     <button (click)="onSelectDetail()"
      [class.selected]="view === Views.DETAIL" mat-button>
-      Scene Detail
+      {{'SCENE_DETAIL' | translate}}
       <ng-container *ngIf="searchType !== SearchTypes.BASELINE &&
                            searchType !== SearchTypes.SBAS">
-      &amp; Files
+        {{'AND_FILES' | translate }}
       </ng-container>
     </button>
     <button *ngIf="searchType === SearchTypes.BASELINE"
      (click)="onSelectChart()"
      [class.selected]="view === Views.CHART" mat-button>
-      Chart
+      {{'CHART' | translate }}
     </button>
     <button *ngIf="searchType === SearchTypes.SBAS"
      (click)="onSelectSBASChart()"
      [class.selected]="view === Views.SBAS" mat-button>
-      SBAS Chart
+      {{'SBAS_CHART' | translate }}
     </button>
   </div>
 
@@ -41,14 +41,14 @@
   <div *ngIf="view === Views.DETAIL" class="h100 w100">
     <mat-card class="h100 w100 mp0 no-box-shadow" fxFlex="100" fxFlex>
       <mat-card-subtitle class="header mobile">
-        Scene Detail
+        {{ 'SCENE_DETAIL'| translate  }}
         <ng-container *ngIf="searchType !== SearchTypes.BASELINE &&
                       searchType !== SearchTypes.SBAS">
         /
           <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
-            {{ products.length || '' }} File{{ (products || []).length === 1 ? '' : 's'}}
+            {{ products.length || '' }} {{ 'FILE' | translate }}{{ (products || []).length === 1 ? '' : 's'}}
           </span>
-          <ng-template #defaultProductsHeader>Files</ng-template>
+          <ng-template #defaultProductsHeader>{{ 'FILES' | translate }}</ng-template>
         </ng-container>
       </mat-card-subtitle>
 
@@ -67,7 +67,7 @@
                 </div>
 
                 <div *ngIf="datasetForProduct.match(product) as dataset" style="margin-bottom: 12px;">
-                  <a [href]="dataset.infoUrl" target="_blank" matTooltip="Dataset" class="faint-text">
+                  <a [href]="dataset.infoUrl" target="_blank" matTooltip="{{ 'DATASET' | translate }}" class="faint-text">
                     {{ dataset.name }}
                   </a> •
                   <span matTooltip="Frequency">{{ dataset.frequency }}</span>
@@ -83,7 +83,7 @@
             </div>
             <div *ngIf="!pair" style="margin: 5px; padding-bottom: 36px;">
               <div class="faint-text w100 h100" style="text-align: center; padding-top: 10px;">
-                No Pair Selected
+                {{'NO_PAIR_SELECTED'| translate }}
               </div>
             </div>
           </div>
@@ -107,7 +107,7 @@
             <mat-button-toggle class="control-mat-button-toggle baseline-criteria-button-toggle"
                                (click)="onToggleFiltersMenu()"
             >
-              Baseline Criteria<mat-icon class="more-horiz">more_horiz</mat-icon>
+              {{ 'BASELINE_CRITERIA' | translate }}<mat-icon class="more-horiz">more_horiz</mat-icon>
             </mat-button-toggle>
           </mat-button-toggle-group>
         </div>

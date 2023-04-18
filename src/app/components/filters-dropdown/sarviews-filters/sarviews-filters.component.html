@@ -26,7 +26,7 @@
 
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title>
-        Event Filters
+        {{ 'EVENT_FILTERS' |  translate }}
         <app-docs-modal class="info-icon"
                         url="https://docs.asf.alaska.edu/vertex/events/#beginning-your-event-search">
         </app-docs-modal>
@@ -53,7 +53,7 @@
     [class.raised-section]="isSelected(panels.DATE)">
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title style="align-items: center;">
-        Date Filters
+        {{ 'DATE_FILTERS' | translate }}
         <app-docs-modal class="info-icon"
                         url="https://docs.asf.alaska.edu/vertex/manual/#date-filters">
         </app-docs-modal>
@@ -70,7 +70,7 @@
   [class.raised-section]="isSelected(panels.DATE)">
   <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
     <mat-panel-title style="align-items: center;">
-      Product Filters
+      {{ 'PRODUCT_FILTERS' |  translate }}
       <app-docs-modal class="info-icon"
                       url="https://docs.asf.alaska.edu/vertex/events/#product-filters">
       </app-docs-modal>

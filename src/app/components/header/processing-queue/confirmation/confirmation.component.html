@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Review Submission</h2>
+<h2 mat-dialog-title>{{ 'REVIEW_SUBMISSION' |  translate }}</h2>
 
 <div mat-dialog-content class="mat-dialog-content">
 
@@ -19,14 +19,14 @@
 </div>
 
 <div mat-dialog-actions>
-  <button mat-button (click)="onCancelQueue()">Cancel</button>
+  <button mat-button (click)="onCancelQueue()">{{ 'CANCEL' |  translate | titlecase }}</button>
   <button mat-flat-button
           color="primary"
           (click)="onSubmitQueue()"
           [disabled]="amountSelected(jobTypesWithQueued) === 0"
           cdkFocusInitial>
     <span>
-      Submit {{ amountSelected(jobTypesWithQueued) }}
+      {{ 'SUBMIT' | translate }} {{ amountSelected(jobTypesWithQueued) }}
       Job<span *ngIf="amountSelected(jobTypesWithQueued) > 1">s</span>
     </span>
   </button>

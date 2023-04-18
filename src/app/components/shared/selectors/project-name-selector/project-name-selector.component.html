@@ -2,7 +2,7 @@
   <mat-form-field [class.invalid-input-animation]="isNameError">
     <input type="text"
            name="projectNameInput"
-           placeholder="Project Name"
+           placeholder="{{'PROJECT_NAME' | translate}}"
            aria-label="Project Name"
            matInput
            (input)="onProjectNameInput($event)"

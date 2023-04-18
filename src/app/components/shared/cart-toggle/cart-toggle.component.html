@@ -1,5 +1,5 @@
 <a (click)="onToggle()"
-   [matTooltip]="!isQueued ? 'Add file to downloads' : 'Remove file from downloads'"
+   [matTooltip]="!isQueued ?  ('ADD_FILE_TO_DOWNLOADS' | translate) : ('REMOVE_FILE_FROM_DOWNLOADS' | translate)"
    mat-icon-button>
     <mat-icon *ngIf="!isQueued">add_shopping_cart</mat-icon>
     <mat-icon *ngIf="isQueued">shopping_cart</mat-icon>

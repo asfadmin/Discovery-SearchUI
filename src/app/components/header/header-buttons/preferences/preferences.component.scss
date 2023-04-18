@@ -64,3 +64,21 @@
   font-size: 24px;
   font-weight: 400;
 }
+
+.language-theme {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.language-selector {
+  flex-basis: 225px;
+}
+
+.theme-selector {
+  flex-basis: 225px;
+}
+
+.delete-me-this-was-a-test {
+
+}

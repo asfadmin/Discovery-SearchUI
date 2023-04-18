@@ -9,6 +9,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatSharedModule } from '@shared';
 import { PipesModule } from '@pipes';
 import { CopyToClipboardModule } from './../../../shared/copy-to-clipboard/copy-to-clipboard.module';
+import { SharedModule } from '@shared';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { CopyToClipboardModule } from './../../../shared/copy-to-clipboard/copy-
     MatChipsModule,
     MatExpansionModule,
     CopyToClipboardModule,
-    FormsModule
+    FormsModule,
+    SharedModule
   ],
   exports: [
     ProcessingQueueJobsComponent

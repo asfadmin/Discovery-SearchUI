@@ -39,7 +39,7 @@
       <button
         (click)="onOpenCreateSubscription()"
         [disabled]="!isLoggedIn"
-        mat-menu-item> Create Subscription...
+        mat-menu-item> {{ 'CREATE_SUBSCRIPTION' | translate }}
       </button>
     </div>
   </ng-template>
@@ -52,8 +52,8 @@
         (click)="queueAllOnDemand(prodType.products, byJobType.jobType)"
         [disabled]="" mat-menu-item>
 
-        Add  {{ isExpired ? '' : prodType.products.length}} {{ isExpired ? '' : prodType.productType }}
-        {{ byJobType.jobType.numProducts === 2 ? 'pair' : 'job' }}{{ prodType.products.length > 1 ? 's' : '' }}
+        {{ 'ADD' | translate }}  {{ isExpired ? '' : prodType.products.length}} {{ isExpired ? '' : prodType.productType }}
+        {{ byJobType.jobType.numProducts === 2 ? ('PAIR' | translate) : ('JOB' | translate) }}{{ prodType.products.length > 1 ? 's' : '' }}
       </button>
     </div>
   </ng-template>
@@ -67,8 +67,8 @@
         <button
           (click)="queueBaselinePairOnDemand(prodType.products, jobType)"
           [disabled]="" mat-menu-item>
-          Add {{ prodType.products.length === 1 ? prodType.products.length : prodType.products.length - 1 }} {{ prodType.productType }}
-          {{ 'pair' }}{{ prodType.products.length > 1 ? 's' : '' }}
+          {{ 'ADD' | translate }} {{ prodType.products.length === 1 ? prodType.products.length : prodType.products.length - 1 }} {{ prodType.productType }}
+          {{ 'PAIR' }}{{ prodType.products.length > 1 ? 's' : '' }}
         </button>
       </div>
     </div>

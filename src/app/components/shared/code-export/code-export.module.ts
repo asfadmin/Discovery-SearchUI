@@ -13,6 +13,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSharedModule } from '@shared';
 
 import 'prismjs/components/prism-python';
+import { SharedModule } from '@shared';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import 'prismjs/components/prism-python';
     MatIconModule,
     MatMenuModule,
     DocsModalModule,
+    SharedModule
   ],
   exports: [
     CodeExportComponent

@@ -10,6 +10,7 @@ import { ScenesListModule } from '../scenes-list';
 import { ScenesListHeaderModule } from '../scenes-list-header';
 
 import { DesktopResultsMenuComponent } from './desktop-results-menu.component';
+import { SharedModule } from "@shared";
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { DesktopResultsMenuComponent } from './desktop-results-menu.component';
     SceneDetailModule,
     ScenesListModule,
     ScenesListHeaderModule,
+    SharedModule
   ],
   exports: [
     DesktopResultsMenuComponent

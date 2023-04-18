@@ -4,6 +4,8 @@ import { EventMetadataComponent } from './event-metadata.component';
 import { PipesModule } from '@pipes';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
+import { SharedModule} from "@shared";
+
 @NgModule({
   declarations: [
     EventMetadataComponent
@@ -12,7 +14,9 @@ import { MatIconModule } from '@angular/material/icon';
     CommonModule,
     PipesModule,
     MatMenuModule,
-    MatIconModule
+    MatIconModule,
+    SharedModule
+
   ],
   exports: [
     EventMetadataComponent

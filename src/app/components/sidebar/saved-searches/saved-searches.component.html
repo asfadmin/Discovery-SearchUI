@@ -2,8 +2,8 @@
                'saved-searches': breakpoint > breakpoints.SMALL}">
   <div class="saved-searches__header">
       <div class="saved-searches__header-title">
-        <span *ngIf="sidebarType === SidebarType.SAVED_SEARCHES">Saved Searches</span>
-        <span *ngIf="sidebarType === SidebarType.SEARCH_HISTORY">Search History</span>
+        <span *ngIf="sidebarType === SidebarType.SAVED_SEARCHES">{{'SAVED_SEARCHES'| translate }}</span>
+        <span *ngIf="sidebarType === SidebarType.SEARCH_HISTORY">{{'SEARCH_HISTORY' | translate }}</span>
       </div>
       <div class="saved-searches__header-actions" >
           <div class="saved-searches__more-menu">
@@ -12,9 +12,9 @@
                [value]="sidebarType"
                name="SavedSearchType" aria-label="Saved Search Type">
               <mat-button-toggle
-                [value]="SidebarType.SEARCH_HISTORY">History</mat-button-toggle>
+                [value]="SidebarType.SEARCH_HISTORY">{{'HISTORY' | translate }}</mat-button-toggle>
               <mat-button-toggle
-                [value]="SidebarType.SAVED_SEARCHES">Saved</mat-button-toggle>
+                [value]="SidebarType.SAVED_SEARCHES">{{'Saved' | translate }}</mat-button-toggle>
             </mat-button-toggle-group>
           </div>
       </div>
@@ -31,7 +31,7 @@
                  (input)="onNewFilter($event)"
                  (keyup.enter)="unfocusFilter()"
                  name="filterSearches"
-                 placeholder="Filter Searches">
+                 placeholder="{{'FILTER_SEARCHES' | translate}}">
         </mat-form-field>
       </form>
     </div>
@@ -43,7 +43,7 @@
          (click)="saveCurrentSearch()"
               mat-raised-button
               color="accent">
-        Save Current Search
+        {{ 'SAVE_CURRENT_SEARCH' | translate}}
       </button>
     </div>
   </div>
@@ -74,7 +74,7 @@
         </div>
         <ng-template #noSavedSearchBlock>
           <div class="no-saved-searches">
-            <h2>You have no saved searches.</h2>
+            <h2>{{ 'YOU_HAVE_NO_SAVED_SEARCHES' | translate}}</h2>
           </div>
         </ng-template>
       </div>
@@ -86,7 +86,7 @@
       <button (click)="onClose()"
               mat-raised-button
               color="primary">
-        Done
+        {{ 'DONE' | translate }}
       </button>
     </div>
   </div>
