@@ -3,6 +3,7 @@ import '@formatjs/intl-displaynames/locale-data/en' // locale-data for en
 
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {TranslateService} from "@ngx-translate/core";
+import { CookieService } from "ngx-cookie-service";
 
 @Component({
   selector: 'app-language-selector',
@@ -13,10 +14,12 @@ export class LanguageSelectorComponent implements OnInit {
   @Input() header: boolean;
   @Input() selected: string;
   @Output() selectedChange = new EventEmitter<string>();
+
   public languageNamesInEnglish = new Intl.DisplayNames(['en'], { type: 'language' });
 
   constructor(
     public translate: TranslateService,
+    private cookieService: CookieService
   ) { }
 
   ngOnInit(): void {
@@ -35,6 +38,8 @@ export class LanguageSelectorComponent implements OnInit {
       'language': language,
     });
     this.translate.use(language)
+    const languageCookie = 'Language';
+    this.cookieService.set(languageCookie, language);
     this.selectedChange.emit(language);
   }
 }
