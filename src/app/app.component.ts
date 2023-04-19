@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
-import {TranslateService} from '@ngx-translate/core';
+import { CookieService } from 'ngx-cookie-service';
+import { TranslateService } from '@ngx-translate/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -34,7 +35,8 @@ import { SearchType } from './models';
 @Component({
   selector   : 'app-root',
   templateUrl: './app.component.html',
-  styleUrls  : ['./app.component.scss']
+  styleUrls  : ['./app.component.scss'],
+  providers  : [CookieService]
 })
 export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('sidenav', {static: true}) sidenav: MatSidenav;
@@ -83,6 +85,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private mapService: services.MapService,
     private themeService: services.ThemingService,
     public translate: TranslateService,
+    private cookieService: CookieService
 
   ) {
     this.browserLang = this.translate.getBrowserLang();
@@ -96,12 +99,20 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         ).subscribe(presets => {
           this.store$.dispatch(new filterStore.SetDefaultFilters(presets));
           this.translate.addLangs(['de', 'en', 'es', 'fr', 'pt', 'zh']);
-          this.translate.setDefaultLang('en');
-          // this.translate.use('en');
-          this.translate.use(this.browserLang.match(/de|en|es|fr/) ? this.browserLang : 'en');
-          // if (profile.defaultLanguage !== undefined) {
-          //   this.translate.use(profile.defaultLanguage);
-          // }
+          const languageCookie = 'Language';
+          const defaultLanguage = 'en';
+          this.translate.setDefaultLang(defaultLanguage);
+        // if (profile.defaultLanguage !== undefined) {
+        //   this.translate.use(profile.defaultLanguage);
+        // }
+          let currentLanguage = this.browserLang.match(/de|en|es|fr/) ? this.browserLang : defaultLanguage;
+          const cookieExists: boolean = this.cookieService.check(languageCookie);
+          if (cookieExists) {
+            currentLanguage = this.cookieService.get('Language');
+          } else {
+            this.cookieService.set(languageCookie, currentLanguage);
+          }
+          this.translate.use(currentLanguage);
         }))
   }
   public ngOnInit(): void {
