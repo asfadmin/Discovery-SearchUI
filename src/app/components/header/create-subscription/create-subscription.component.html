@@ -209,7 +209,7 @@
           </div>
 
           <div>
-            <b>{{ 'NAME' |  translate }} </b>
+            <b>{{ 'NAME' |  translate }}:</b>
             <div *ngIf="errors.projectNameError" class="step-error"> *{{ errors.projectNameError }}</div>
             <app-project-name-selector [processName]="true"></app-project-name-selector>
           </div>

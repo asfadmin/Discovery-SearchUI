@@ -246,7 +246,7 @@
               <mat-menu #eventMonitoringOnDemandSelectedProducts>
                 <ng-template matMenuContent let-selected="selected_products">
                   <button [disabled]="selected.length === 0" mat-menu-item (click)="addOnDemandEventProducts(selected)">
-                    {{ 'ADD' | translate }} {{selected.length > 0 ? selected.length : ''}} Selected Job{{selected.length !== 1 ? 's' : ''}}
+                    {{ 'ADD' | translate }} {{selected.length > 0 ? selected.length : ''}} {{ 'SELECTED_JOB' | translate }}{{selected.length !== 1 ? 's' : ''}}
                   </button>
                 </ng-template>
               </mat-menu>
@@ -295,11 +295,11 @@
 
           <mat-menu #addAllProducts="matMenu">
             <button *ngIf="searchType !== SearchTypes.SBAS" (click)="queueAllProducts(downloadableProds)" mat-menu-item>
-              {{ 'ADD' | translate }} {{ downloadableProds.length }} {{'FILE' | translate}}{{ downloadableProds.length === 1 ? '' : 's'}} to downloads
+              {{ 'ADD' | translate }} {{ downloadableProds.length }} {{'FILE' | translate}}{{ downloadableProds.length === 1 ? '' : 's'}} {{'TO_DOWNLOADS' | translate}}
             </button>
 
             <button *ngIf="searchType === SearchTypes.SBAS" (click)="queueSBASProducts(sbasProducts)" mat-menu-item>
-              {{ 'ADD' | translate }} {{ sbasProducts.length }} {{'FILE' | translate}}{{ sbasProducts.length === 1 ? '' : 's'}} to downloads
+              {{ 'ADD' | translate }} {{ sbasProducts.length }} {{'FILE' | translate}}{{ sbasProducts.length === 1 ? '' : 's'}} {{'TO_DOWNLOADS' | translate}}
             </button>
           </mat-menu>
 
