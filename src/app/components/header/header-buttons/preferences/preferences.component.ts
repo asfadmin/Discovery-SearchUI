@@ -11,6 +11,8 @@ import {
 import { Hyp3Service, ThemingService } from '@services';
 import { SubSink } from 'subsink';
 import { take } from 'rxjs';
+import { CookieService } from "ngx-cookie-service";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: 'app-preferences',
@@ -59,6 +61,9 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private hyp3: Hyp3Service,
     private themeService: ThemingService,
+    private cookieService: CookieService,
+    public translate: TranslateService,
+
   ) { }
 
   ngOnInit() {
@@ -141,7 +146,13 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   }
 
   public onChangeDefaultLanguage(language: string): void {
+    console.log('onChangeDefaultLanguage executing')
     this.defaultLanguage = language;
+    const languageCookie = 'Language';
+    this.cookieService.set(languageCookie, language);
+    console.log('Language cookie set to in preferences:', language);
+    this.translate.use(language)
+
     this.saveProfile();
   }
 

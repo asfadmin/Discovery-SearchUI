@@ -31,15 +31,22 @@ export class LanguageSelectorComponent implements OnInit {
     return this.languageNamesInEnglish.of( langName );
   }
 
-  public onSelectionChange(language: string): void {
+  public onProfileSelectionChange(language: string): void {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       'event': 'language-selected',
       'language': language,
     });
-    this.translate.use(language)
     const languageCookie = 'Language';
     this.cookieService.set(languageCookie, language);
+    this.translate.use(language)
+    console.log('onProfileSelectionChange() Language cookie set to:', language);
     this.selectedChange.emit(language);
+  }
+  public onSelectionChange(language: string): void {
+    const languageCookie = 'Language';
+    this.cookieService.set(languageCookie, language);
+    console.log('onSelectionChange Language cookie set to:', language);
+    this.translate.use(language)
   }
 }

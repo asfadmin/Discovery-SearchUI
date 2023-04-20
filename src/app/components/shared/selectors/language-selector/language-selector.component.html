@@ -2,7 +2,7 @@
   <mat-form-field appearance="fill">
     <mat-label>Default Language</mat-label>
     <mat-select #langPreference
-                (change)="onSelectionChange(langPreference.value)"
+                (selectionChange)="onProfileSelectionChange(langPreference.value)"
                 [(value)]=selected
     >
       <mat-option *ngFor="let lang of translate.getLangs()" [value]="lang">
@@ -14,7 +14,7 @@
 
 <div *ngIf="header == true"
      class="langSelect-div">
-  <select class="langSelect-select" #langSelect (change)="translate.use(langSelect.value)">
+  <select #langCurrent class="langSelect-select" #langSelect (change)="onSelectionChange(langCurrent.value)">
     <option *ngFor="let lang of translate.getLangs()"
             [value]="lang"
             [selected]="lang === translate.currentLang">
