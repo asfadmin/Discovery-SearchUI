@@ -238,7 +238,7 @@
               <mat-menu #eventMonitoringOnDemandAllProducts>
                 <ng-template matMenuContent let-jobTypes="job_types">
                   <button (click)="addOnDemandEventProductsBySearchType(t)" mat-menu-item *ngFor="let t of jobTypes">
-                    {{ 'ADD' | translate }} {{EventMonitoringByJobType(t).length}} {{t.name === "RTC GAMMA" ? 'SLC' : t.name}}{{ 'JOBS'| translate}}
+                    {{ 'ADD' | translate }} {{EventMonitoringByJobType(t).length}} {{t.name === "RTC GAMMA" ? 'SLC' : t.name}}{{ 'JOBS' | translate}}
                     <mat-icon (click)="onOpenHelp(t.infoUrl)" class="clickable" style="margin-left: 10px;">info</mat-icon>
                   </button>
                 </ng-template>
