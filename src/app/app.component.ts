@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
-import { CookieService } from 'ngx-cookie-service';
 import { TranslateService } from '@ngx-translate/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -8,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 import { QueueComponent } from '@components/header/queue';
 import { ProcessingQueueComponent } from '@components/header/processing-queue';
+import { AsfLanguageService } from "@services/asf-language.service";
 
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
@@ -36,7 +36,6 @@ import { SearchType } from './models';
   selector   : 'app-root',
   templateUrl: './app.component.html',
   styleUrls  : ['./app.component.scss'],
-  providers  : [CookieService]
 })
 export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('sidenav', {static: true}) sidenav: MatSidenav;
@@ -63,10 +62,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private subs = new SubSink();
 
-  private browserLang: string;
-  private defaultProfileLanguage: any;
-
-
   constructor(
     private store$: Store<AppState>,
     private actions$: ActionsSubject,
@@ -87,11 +82,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private mapService: services.MapService,
     private themeService: services.ThemingService,
     public translate: TranslateService,
-    private cookieService: CookieService,
+    public language: AsfLanguageService,
 
-  ) {
-    this.browserLang = this.translate.getBrowserLang();
-  }
+  ) {}
 
   public ngAfterViewInit(): void {
     this.subs.add(
@@ -100,28 +93,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         map(profile => profile.defaultFilterPresets)
         ).subscribe(presets => {
           this.store$.dispatch(new filterStore.SetDefaultFilters(presets));
-          this.defaultProfileLanguage = presets['Language'];
-          this.translate.addLangs(['de', 'en', 'es', 'fr', 'pt', 'zh']);
-          const languageCookie = 'Language';
-          const defaultLanguage = 'en';
-          this.translate.setDefaultLang(defaultLanguage);
-          // If the browser reports a language we support and if so use it as the current language
-            let currentLanguage = this.browserLang.match(/de|en|es|fr/) ? this.browserLang : defaultLanguage;
-          // If the user has a profile and established a language preference then set the current language to it
-            if (this.defaultProfileLanguage !== undefined) {
-            currentLanguage = this.defaultProfileLanguage;
-            }
-          // If a language cookie exists, override the current language with it.
-          // Else, set a language cookie to the current language
-            const cookieExists: boolean = this.cookieService.check(languageCookie);
-            if (cookieExists) {
-              currentLanguage = this.cookieService.get('Language');
-            } else {
-              this.cookieService.set(languageCookie, currentLanguage);
-            }
-          // Use the current language for the translation target
-          console.log('Current language for translation target:', currentLanguage)
-          this.translate.use(currentLanguage);
+          this.language.initialize(presets);
         }))
   }
   public ngOnInit(): void {

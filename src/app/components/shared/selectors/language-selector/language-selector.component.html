@@ -1,24 +1,9 @@
-<ng-container *ngIf="header == false">
-  <mat-form-field appearance="fill">
-    <mat-label>Default Language</mat-label>
-    <mat-select #langPreference
-                (selectionChange)="onProfileSelectionChange(langPreference.value)"
-                [(value)]=selected
-    >
-      <mat-option *ngFor="let lang of translate.getLangs()" [value]="lang">
-        {{languageName(lang)}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-</ng-container>
-
-<div *ngIf="header == true"
-     class="langSelect-div">
-  <select #langCurrent class="langSelect-select" #langSelect (change)="onSelectionChange(langCurrent.value)">
+<div class="langSelect-div">
+  <select #langCurrent class="langSelect-select" #langSelect (change)="language.setCurrent(langCurrent.value)">
     <option *ngFor="let lang of translate.getLangs()"
             [value]="lang"
             [selected]="lang === translate.currentLang">
-      {{languageName(lang)}}
+      {{language.getName(lang)}}
     </option>
   </select>
 </div>
