@@ -36,24 +36,29 @@ export class AsfLanguageService {
   public initialize(presets): void {
     this.defaultProfileLanguage = presets['Language'];
     this.translate.addLangs(['de', 'en', 'es', 'fr', 'pt', 'zh']);
-    const languageCookie = 'Language';
+    // const languageCookie = 'Language';
     const defaultLanguage = 'en';
     this.translate.setDefaultLang(defaultLanguage);
-    // If the browser reports a language we support and if so use it as the current language
-    let currentLanguage = this.browserLang.match(/de|en|es|fr/) ? this.browserLang : defaultLanguage;
-    // If the user has a profile and established a language preference then set the current language to it
-    if (this.defaultProfileLanguage !== undefined) {
-      currentLanguage = this.defaultProfileLanguage;
-    }
-    // If a language cookie exists, override the current language with it.
-    // Else, set a language cookie to the current language
-    const cookieExists: boolean = this.cookieService.check(languageCookie);
-    if (cookieExists) {
-      currentLanguage = this.cookieService.get('Language');
-    } else {
-      this.cookieService.set(languageCookie, currentLanguage);
-    }
-    // Use the current language for the translation target
+
+    this.defaultProfileLanguage = 'en';
+    let currentLanguage = this.defaultProfileLanguage;
+
+
+    // // If the browser reports a language we support and if so use it as the current language
+    // let currentLanguage = this.browserLang.match(/de|en|es|fr/) ? this.browserLang : defaultLanguage;
+    // // If the user has a profile and established a language preference then set the current language to it
+    // if (this.defaultProfileLanguage !== undefined) {
+    //   currentLanguage = this.defaultProfileLanguage;
+    // }
+    // // If a language cookie exists, override the current language with it.
+    // // Else, set a language cookie to the current language
+    // const cookieExists: boolean = this.cookieService.check(languageCookie);
+    // if (cookieExists) {
+    //   currentLanguage = this.cookieService.get('Language');
+    // } else {
+    //   this.cookieService.set(languageCookie, currentLanguage);
+    // }
+    // // Use the current language for the translation target
     this.translate.use(currentLanguage);
 
   }
