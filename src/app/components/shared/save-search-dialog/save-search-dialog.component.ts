@@ -14,6 +14,8 @@ import * as uiStore from '@store/ui';
 import { SavedSearchService, NotificationService } from '@services';
 import * as models from '@models';
 
+import { AsfLanguageService } from "@services/asf-language.service";
+
 @Component({
   selector: 'app-save-search-dialog',
   templateUrl: './save-search-dialog.component.html',
@@ -37,6 +39,7 @@ export class SaveSearchDialogComponent implements OnInit {
     private store$: Store<AppState>,
     private savedSearchService: SavedSearchService,
     private notificationService: NotificationService,
+    public language: AsfLanguageService,
   ) { }
 
   ngOnInit(): void {
@@ -106,8 +109,6 @@ export class SaveSearchDialogComponent implements OnInit {
 
   public onSubmitSave(): void {
     if (this.saveType === models.SidebarType.SAVED_SEARCHES) {
-      console.log('this.search:', this.search);
-      console.log('this.saveName:', this.saveName);
       this.store$.dispatch(new userStore.AddNewSearch({
         ...this.search, name: this.saveName
       }));
@@ -123,8 +124,9 @@ export class SaveSearchDialogComponent implements OnInit {
     }
 
     const addName = ` as '${this.saveName}'`;
+    const searchTypeTranslated = this.language.translate.instant(this.search.searchType);
     this.notificationService.info(
-      `Saved current ${this.search.searchType}${this.saveName ? addName : ''}`
+      `Saved current ${searchTypeTranslated}${this.saveName ? addName : ''}`
     );
     this.dialogRef.close();
   }

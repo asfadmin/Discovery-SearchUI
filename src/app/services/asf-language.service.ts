@@ -31,7 +31,6 @@ export class AsfLanguageService {
     const languageCookie = 'Language';
     this.cookieService.set(languageCookie, language);
     this.translate.use(language)
-    console.log('asf-language.service set current language to:', language);
   }
 
   public initialize(presets): void {
@@ -55,7 +54,6 @@ export class AsfLanguageService {
       this.cookieService.set(languageCookie, currentLanguage);
     }
     // Use the current language for the translation target
-    console.log('Current language for translation target:', currentLanguage)
     this.translate.use(currentLanguage);
 
   }

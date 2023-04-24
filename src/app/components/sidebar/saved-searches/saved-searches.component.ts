@@ -13,6 +13,8 @@ import { SavedSearchService, ScreenSizeService, SearchService } from '@services'
 import { SaveSearchDialogComponent } from '@components/shared/save-search-dialog';
 import * as models from '@models';
 
+import { AsfLanguageService } from "@services/asf-language.service";
+
 @Component({
   selector: 'app-saved-searches',
   templateUrl: './saved-searches.component.html',
@@ -54,6 +56,7 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
     private savedSearchService: SavedSearchService,
     private screenSize: ScreenSizeService,
     private searchService: SearchService,
+    private language: AsfLanguageService,
   ) { }
 
   ngOnInit() {
@@ -125,7 +128,8 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
 
   public updateSearchName(update: {id: string, name: string}): void {
     if (update.name === '') {
-      update.name = '(No name)' ;
+      const noName = this.language.translate.instant('NO_NAME');
+      update.name = noName;
     }
     this.newSearchId = '';
 
