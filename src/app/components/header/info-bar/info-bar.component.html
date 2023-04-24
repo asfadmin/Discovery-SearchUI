@@ -32,7 +32,7 @@
       <b>{{ 'FILE_TYPES' | translate }}:</b> {{ productTypes }}
     </span>
     <span *ngIf="beamModes.length">
-      <b>{{'BEAM MODES'| translate }}:</b> {{beamModes}}
+      <b>{{'BEAM MODES'| translate | titlecase}}:</b> {{beamModes}}
     </span>
     <span *ngIf="polarizations.length">
       <b>{{'POLARIZATIONS' | translate }}:</b> {{polarizations}}
