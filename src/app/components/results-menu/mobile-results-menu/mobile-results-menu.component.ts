@@ -108,7 +108,6 @@ export class MobileResultsMenuComponent implements OnInit, OnDestroy {
     this.view = MobileViews.SBAS;
   }
   public isGraphDisconnected(disconnect: boolean) {
-    console.log(disconnect);
     this.isDisconnected = disconnect;
   }
   ngOnDestroy() {

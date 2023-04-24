@@ -8,10 +8,10 @@
       <div class="search-title">
       <span *ngIf="!isEditingName"
             (click)="onEditName()"
-            [matTooltip]="isSavedSearch ? ('EDIT_NAME' | translate) : ''"
+            [matTooltip]="isSavedSearch ? ( 'EDIT_NAME' | translate) : ''"
             [class.clickable]="isSavedSearch"
             class="search-name clickable">
-        {{ formatName(search.name) }} <mat-icon *ngIf="isSavedSearch" class="edit-icon">Edit</mat-icon>
+        {{ formatName(search.name) }} <mat-icon *ngIf="isSavedSearch" class="edit-icon">edit</mat-icon>
       </span>
 
         <span *ngIf="isEditingName">
@@ -29,7 +29,7 @@
       </span>
 
         <span>
-        {{ search.searchType }}
+        {{ search.searchType |uppercase| translate }}
       </span>
       </div>
 

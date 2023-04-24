@@ -89,6 +89,5 @@ export class EnvironmentService {
 
   public resetToDefault(): void {
     this.envs = this.loadFromEnvFile();
-    console.log(this.envs);
   }
 }

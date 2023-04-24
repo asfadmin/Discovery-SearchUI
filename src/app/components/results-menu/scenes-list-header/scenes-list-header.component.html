@@ -24,7 +24,7 @@
         </div>
 
         <div *ngIf="searchType === SearchTypes.SBAS" class="mr-10" style="margin-top: -15px;">
-          {{ numPairs$ | async }}{{ 'PAIR'| translate }}{{ (numPairs$ | async) === 1 ? '' : 's' }}
+          {{ numPairs$ | async }} {{ 'PAIR'| translate }}{{ (numPairs$ | async) === 1 ? '' : 's' }}
           <span *ngIf="!!sbasProducts && breakpoint > breakpoints.MEDIUM" style="font-size: small;">
             <br>
             ({{ sbasProducts.length }} {{ 'SCENE' | translate }}{{ sbasProducts.length === 1 ? '' : 's' }})
@@ -110,7 +110,7 @@
                 <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10 clickable noselect ">
                   <mat-button-toggle class="control-mat-button-toggle"
                                      [matMenuTriggerFor]="addAllProducts"
-                                     matTooltip="{{ 'ADD_ ALL_RESULTS_TO_DOWNLOADS' | translate }}">
+                                     matTooltip="{{ 'ADD_ALL_RESULTS_TO_DOWNLOADS' | translate }}">
                     <mat-icon class="list-icon">
                       add_shopping_cart
                     </mat-icon>
@@ -129,7 +129,7 @@
                 <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10 clickable noselect ">
                   <mat-button-toggle class="control-mat-button-toggle"
                                      [matMenuTriggerFor]="QueueAllSARViewsProducts"
-                                     matTooltip="{{ 'ADD' |translate }}{{(productsHiddenByFilters$ | async) ? ('FILTERED' | translate) : ( 'ALL' | translate)}} {{'PRODUCTS_TO_DOWNLOADS_FROM_SELECTED_EVENT' | translate}}">
+                                     matTooltip="{{ 'ADD' | translate | titlecase }} {{(productsHiddenByFilters$ | async) ? ('FILTERED' | translate) : ( 'ALL' | translate ) }} {{ 'PRODUCTS_TO_DOWNLOADS_FROM_SELECTED_EVENT' | translate}}">
                     <mat-icon class="list-icon">
                       add_shopping_cart
                     </mat-icon>
@@ -213,7 +213,7 @@
                 [matMenuTriggerFor]="eventMonitoringOnDemand.addMenu"
                 [matMenuTriggerData]="{ hyp3able: hyp3ableEventProducts.byJobType }"
                 class="control-mat-button-toggle clickable noselect"
-                                   matTooltip="{{'ADD' | translate}} {{(productsHiddenByFilters$ | async) ? ('FILTERED' | translate) : ('ALL'| translate)}} {{'RESULTS_TO_ON_DEMAND_QUEUE' | translate}}">
+                                   matTooltip="{{'ADD' | translate | titlecase }} {{(productsHiddenByFilters$ | async) ? ('FILTERED' | translate) : ( 'ALL' | translate)}} {{'RESULTS_TO_ON_DEMAND_QUEUE' | translate }}">
                   <mat-icon class="list-icon"
                     svgIcon="hyp3">
                   </mat-icon>
@@ -238,7 +238,7 @@
               <mat-menu #eventMonitoringOnDemandAllProducts>
                 <ng-template matMenuContent let-jobTypes="job_types">
                   <button (click)="addOnDemandEventProductsBySearchType(t)" mat-menu-item *ngFor="let t of jobTypes">
-                    {{ 'ADD' | translate }} {{EventMonitoringByJobType(t).length}} {{t.name === "RTC GAMMA" ? 'SLC' : t.name}} Jobs
+                    {{ 'ADD' | translate }} {{EventMonitoringByJobType(t).length}} {{t.name === "RTC GAMMA" ? 'SLC' : t.name}}{{ 'JOBS' | translate}}
                     <mat-icon (click)="onOpenHelp(t.infoUrl)" class="clickable" style="margin-left: 10px;">info</mat-icon>
                   </button>
                 </ng-template>
@@ -246,7 +246,7 @@
               <mat-menu #eventMonitoringOnDemandSelectedProducts>
                 <ng-template matMenuContent let-selected="selected_products">
                   <button [disabled]="selected.length === 0" mat-menu-item (click)="addOnDemandEventProducts(selected)">
-                    {{ 'ADD' | translate }} {{selected.length > 0 ? selected.length : ''}} Selected Job{{selected.length !== 1 ? 's' : ''}}
+                    {{ 'ADD' | translate }} {{selected.length > 0 ? selected.length : ''}} {{ 'SELECTED_JOB' | translate }}{{selected.length !== 1 ? 's' : ''}}
                   </button>
                 </ng-template>
               </mat-menu>
@@ -295,11 +295,11 @@
 
           <mat-menu #addAllProducts="matMenu">
             <button *ngIf="searchType !== SearchTypes.SBAS" (click)="queueAllProducts(downloadableProds)" mat-menu-item>
-              {{ 'ADD' | translate }} {{ downloadableProds.length }} {{'FILE' | translate}}{{ downloadableProds.length === 1 ? '' : 's'}} to downloads
+              {{ 'ADD' | translate }} {{ downloadableProds.length }} {{'FILE' | translate}}{{ downloadableProds.length === 1 ? '' : 's'}} {{'TO_DOWNLOADS' | translate}}
             </button>
 
             <button *ngIf="searchType === SearchTypes.SBAS" (click)="queueSBASProducts(sbasProducts)" mat-menu-item>
-              {{ 'ADD' | translate }} {{ sbasProducts.length }} {{'FILE' | translate}}{{ sbasProducts.length === 1 ? '' : 's'}} to downloads
+              {{ 'ADD' | translate }} {{ sbasProducts.length }} {{'FILE' | translate}}{{ sbasProducts.length === 1 ? '' : 's'}} {{'TO_DOWNLOADS' | translate}}
             </button>
           </mat-menu>
 
@@ -351,10 +351,11 @@
       <mat-menu #QueueAllSARViewsProducts="matMenu">
         <div *ngIf="sarviewsEventProducts">
           <button (click)="onQueueSarviewsProducts(sarviewsEventProducts)" mat-menu-item>
-            {{(productsHiddenByFilters$ | async) ? 'Filtered' : 'All'}} {{'SELECTED_EVENT_PRODUCTS' | translate}} ({{sarviewsEventProducts.length}} files)
+            {{(productsHiddenByFilters$ | async) ? 'Filtered' : ('ALL' | translate | titlecase)}} {{'EVENT_PRODUCTS' | translate}} ({{sarviewsEventProducts.length}}
+            {{ 'FILES' | translate}})
           </button>
           <button (click)="onQueuePinnedSarviewsProducts()" mat-menu-item>
-            {{'SELECTED_EVENT_PRODUCTS' | translate }} ({{pinnedEventIDs.length}} files)
+            {{'SELECTED_EVENT_PRODUCTS' | translate }} ({{pinnedEventIDs.length}} {{ 'FILES' | translate}})
           </button>
           </div>
       </mat-menu>
@@ -408,10 +409,10 @@
 <mat-menu #eventMonitoringIDs="matMenu">
   <ng-template matMenuContent let-selectedProducts="selectedProducts" let-sarviewsProducts="products">
   <button mat-menu-item (click) = "copyProductSourceScenes(sarviewsProducts)">
-    All Products ({{getProductSceneCount(sarviewsProducts)}})
+    {{ 'ALL PRODUCTS' | translate }} ({{getProductSceneCount(sarviewsProducts)}})
   </button>
   <button [disabled]="getProductSceneCount(selectedProducts) === 0" mat-menu-item (click) = "copyProductSourceScenes(selectedProducts)">
-    Selected Products ({{getProductSceneCount(selectedProducts)}})
+    {{ 'SELECTED_PRODUCTS' | translate }} ({{getProductSceneCount(selectedProducts)}})
   </button>
 </ng-template>
 </mat-menu>
@@ -419,10 +420,10 @@
 <mat-menu #eventMonitoringUrls="matMenu">
   <ng-template matMenuContent let-selectedProducts="selectedProducts" let-sarviewsProducts="products">
     <button [disabled]="sarviewsProducts.length === 0" mat-menu-item (click) = "getProductDownloadUrl(sarviewsProducts)">
-      All Products ({{sarviewsProducts.length}})
+      {{ 'ALL PRODUCTS' | translate }}({{sarviewsProducts.length}})
     </button>
     <button [disabled]="getProductSceneCount(selectedProducts) === 0" mat-menu-item (click) = "getProductDownloadUrl(selectedProducts)">
-      Selected Products ({{selectedProducts.length}})
+      {{ 'SELECTED_PRODUCTS' | translate }} ({{selectedProducts.length}})
     </button>
   </ng-template>
 </mat-menu>

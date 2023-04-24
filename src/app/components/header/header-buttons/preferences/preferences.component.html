@@ -66,12 +66,19 @@
 
       <div class="section-heading">Default Theme</div>
       <div class="language-theme">
-<!--          <div class="language-selector">-->
-<!--            <app-language-selector-->
-<!--              [(selected)]="defaultLanguage"-->
-<!--              (selectedChange)="onChangeDefaultLanguage($event)">-->
-<!--            </app-language-selector>-->
-<!--          </div>-->
+          <div class="language-selector">
+            <mat-form-field class="default-filters-presets">
+              <mat-label>Default Language</mat-label>
+              <mat-select
+                [(value)]="translate.currentLang"
+                (selectionChange)="onChangeDefaultLanguage($event.value)"
+                name="preset">
+                <mat-option [value]="lang" *ngFor="let lang of translate.getLangs()">
+                  {{ language.getName(lang) | titlecase}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
           <div class="theme-selector">
             <mat-form-field class="default-filters-presets">
               <mat-label>Default Theme</mat-label>
