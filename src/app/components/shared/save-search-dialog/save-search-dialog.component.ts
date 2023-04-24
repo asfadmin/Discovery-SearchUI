@@ -36,7 +36,7 @@ export class SaveSearchDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data,
     private store$: Store<AppState>,
     private savedSearchService: SavedSearchService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
   ) { }
 
   ngOnInit(): void {
@@ -106,6 +106,8 @@ export class SaveSearchDialogComponent implements OnInit {
 
   public onSubmitSave(): void {
     if (this.saveType === models.SidebarType.SAVED_SEARCHES) {
+      console.log('this.search:', this.search);
+      console.log('this.saveName:', this.saveName);
       this.store$.dispatch(new userStore.AddNewSearch({
         ...this.search, name: this.saveName
       }));
