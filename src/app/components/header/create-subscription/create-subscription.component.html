@@ -140,7 +140,7 @@
               </mat-select>
 
               <mat-hint align="start">
-                {{ !productType ? ( 'SELECT_FILE_TYPE' | translate) : productType + ( 'SELECTED' | translate ) }}
+                {{ !productType ? ( 'SELECT_FILE_TYPE' | translate) : productType +  ' ' + ('SELECTED' | translate | lowercase ) }}
               </mat-hint>
             </mat-form-field>
 
@@ -158,7 +158,7 @@
               </mat-select>
 
               <mat-hint align="start">
-                {{ !productType ? ('SELECT_TYPE' | translate ) : subtype + ('SELECTED' | translate ) }}
+                {{ !productType ? ('SELECT_TYPE' | translate ) : subtype + ' ' + ('SELECTED' | translate | lowercase ) }}
               </mat-hint>
             </mat-form-field>
 
@@ -209,7 +209,7 @@
           </div>
 
           <div>
-            <b>{{ 'NAME' |  translate }} </b>
+            <b>{{ 'NAME' |  translate }}:</b>
             <div *ngIf="errors.projectNameError" class="step-error"> *{{ errors.projectNameError }}</div>
             <app-project-name-selector [processName]="true"></app-project-name-selector>
           </div>

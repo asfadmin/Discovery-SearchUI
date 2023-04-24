@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import {BaselineHeaderComponent} from "./baseline-header.component";
+import { SharedModule } from "../../../shared";
 
 @NgModule({
   declarations: [
@@ -9,6 +10,7 @@ import {BaselineHeaderComponent} from "./baseline-header.component";
   ],
   imports: [
     CommonModule,
+    SharedModule
 
 
   ],

@@ -75,7 +75,7 @@
       *ngIf="isLoggedIn"
       [matMenuTriggerFor]="profileMenu"
       class="spacing nav-icon-buttons" color="basic"
-      matTooltip="{{'PROFILE' | translate}}" mat-button>
+      matTooltip="{{ 'PROFILE' | translate}}" mat-button>
         <mat-icon class="large-icon">account_circle</mat-icon>
         <div class="text-under faint-text"> {{ this.userAuth.id }} </div>
     </button>
