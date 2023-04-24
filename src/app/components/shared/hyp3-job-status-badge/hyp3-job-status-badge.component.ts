@@ -139,7 +139,6 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
   }
 
   public onResubmitExpiredJob(jobTypesWithQueued, validateOnly: boolean) {
-    console.log(jobTypesWithQueued);
     const processOptionKeys = Object.keys(this.job.job_parameters).filter(
       key => key !== 'granules'
     );

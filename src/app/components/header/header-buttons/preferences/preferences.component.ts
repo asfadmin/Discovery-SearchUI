@@ -148,7 +148,6 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   }
 
   public onChangeDefaultLanguage(language: string): void {
-    console.log('onChangeDefaultLanguage executing')
     this.language.setCurrent(language);
     this.defaultLanguage = language
     this.saveProfile();
