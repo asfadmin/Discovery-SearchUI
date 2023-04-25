@@ -68,7 +68,7 @@
           (click)="queueBaselinePairOnDemand(prodType.products, jobType)"
           [disabled]="" mat-menu-item>
           {{ 'ADD' | translate }} {{ prodType.products.length === 1 ? prodType.products.length : prodType.products.length - 1 }} {{ prodType.productType }}
-          {{ 'PAIR' }} {{ prodType.products.length > 1 ? 's' : '' }}
+          {{ 'PAIR' | translate | lowercase }}{{ prodType.products.length > 1 ? 's' : '' }}
         </button>
       </div>
     </div>
