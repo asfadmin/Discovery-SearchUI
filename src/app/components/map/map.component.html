@@ -3,18 +3,17 @@
 </div>
 
 <div class="map-header">
-  <div class="header-controls"
-       [class.map-control-margin]="(areResultsLoaded$ | async) && breakpoint === breakpoints.MOBILE"
-        fxLayout="row" fxFlex>
+  <div class="header-controls fx-row"
+       [class.map-control-margin]="(areResultsLoaded$ | async) && breakpoint === breakpoints.MOBILE">
 
-    <div *ngIf="breakpoint > breakpoints.MOBILE" fxLayout="row">
+    <div *ngIf="breakpoint > breakpoints.MOBILE" class="fx-row">
       <div class="map-controls">
         <app-map-controls></app-map-controls>
       </div>
     </div>
 
-    <div fxLayout="row" class="banner-row">
-      <div fxLayout="column">
+    <div class="fx-row banner-row">
+      <div class="fx-col">
         <app-banners
           [banners]="banners$ | async">
         </app-banners>

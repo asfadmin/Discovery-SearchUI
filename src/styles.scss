@@ -696,3 +696,50 @@ $d-height: 500px;
   border-width: 0 2px 0 2px;
   text-align: center;
 }
+
+.fx-row {
+  flex-direction: row;
+  box-sizing: border-box;
+  display: flex;
+}
+
+.fx-col {
+  flex-direction: column;
+  box-sizing: border-box;
+  display: flex;
+}
+
+.fx-empty {
+  flex: 1 1 0%;
+  box-sizing: border-box;
+}
+
+.fx-auto {
+  flex: 1 1 auto;
+  box-sizing: border-box;
+}
+
+.fx-nogrow {
+  flex: 0 1 auto;
+  box-sizing: border-box;
+}
+
+.fx-75 {
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 75%;
+}
+
+.fx-25 {
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 25%;
+}
+
+.fx-row-center {
+  flex-direction: row;
+  box-sizing: border-box;
+  display: flex;
+  place-content: stretch center;
+  align-items: stretch;
+}

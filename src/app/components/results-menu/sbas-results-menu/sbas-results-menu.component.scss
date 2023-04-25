@@ -10,6 +10,15 @@ $config: mat.define-typography-config();
   height: calc(100% - 137px);
 }
 
+.sbas-chart-card {
+  box-shadow: none;
+  height: 100%;
+  width: 100%;
+  max-width: 60%;
+  flex: 1 1 100%;
+  box-sizing: border-box;
+}
+
 .sbas-criteria-button-toggle-group {
   flex: 0 1 149px !important;
   margin-top: 5px;
@@ -50,6 +59,8 @@ $config: mat.define-typography-config();
 
 .sbas-list-card {
   box-shadow: none !important;
+  flex: 1 1 0%;
+  box-sizing: border-box;
 }
 
 .sbas-metadata {
@@ -156,13 +167,28 @@ $config: mat.define-typography-config();
   max-width: fit-content;
 }
 
+.toggle-group-wrapper--layout {
+  flex-direction: row;
+  box-sizing: border-box;
+  display: flex;
+  place-content: stretch center;
+  align-items: stretch;
+}
+
 .sbas-button-group {
   max-width: fit-content;
+  flex: 1 1 0%;
+  box-sizing: border-box;
 }
 
 .sbas-button-group-filler {
   width: 10px;
   max-width: 10px;
+}
+
+.sbas-toggle-group {
+  flex: 1 1 0%;
+  box-sizing: border-box;
 }
 
 .button-group {
@@ -176,6 +202,11 @@ $config: mat.define-typography-config();
   }
 
   text-align: center;
+  flex-direction: row;
+  box-sizing: border-box;
+  display: flex;
+  place-content: stretch center;
+  align-items: stretch;
 }
 
 label {

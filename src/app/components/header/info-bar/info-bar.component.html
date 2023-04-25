@@ -1,6 +1,4 @@
-<div fxLayout="row wrap"
-     fxFlexFill
-     *ngIf="breakpoint$ | async as breakpoint"
+<div *ngIf="breakpoint$ | async as breakpoint"
      class="info-bar">
 
   <div class="first-info">
@@ -53,7 +51,7 @@
       <b>Perpendicular:</b> {{perpRange.start}} <span *ngIf="!!perpRange.end"> to {{perpRange.end}} </span>
     </span>
   </div>
-  <div fxFlex class="last-info">
+  <div class="last-info">
     <app-ci-search></app-ci-search>
   </div>
 </div>

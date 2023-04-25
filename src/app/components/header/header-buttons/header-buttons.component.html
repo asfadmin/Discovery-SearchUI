@@ -155,7 +155,7 @@
   <button (click)="onOpenSearchHistory()" mat-menu-item matSuffix>
     Search History
   </button>
-  <button [disabled]="(searchType$ | async) === searchTypes.LIST || (searchType$ | async) === searchTypes.CUSTOM_PRODUCTS" (click)="onOpenSavedFilters()" mat-menu-item matSuffx>
+  <button [disabled]="(searchType$ | async) === searchTypes.LIST || (searchType$ | async) === searchTypes.CUSTOM_PRODUCTS" (click)="onOpenSavedFilters()" mat-menu-item matSuffix>
     Saved Filters
   </button>
   <button (click)="onOpenPreferences()" mat-menu-item matSuffix>
@@ -176,13 +176,13 @@
       Video Tutorials
     </div>
     <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
-      <div fxFlex="" class="menu-item-content">
+      <div class="menu-item-content">
         <div class="item-title">Watch Our Tutorials</div>
         <div class="item-content">
           We have a collection of videos to help you learn and use Vertex to maximum advantage.
         </div>
       </div>
-      <div fxFlex="" class="menu-item-aside">
+      <div class="menu-item-aside">
         <mat-icon class="menu-item-icon">video_library</mat-icon>
       </div>
     </div>
@@ -196,14 +196,14 @@
       Vertex User Guide
     </div>
     <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
-      <div fxFlex="" class="menu-item-content">
+      <div class="menu-item-content">
         <div class="item-title">Read Our User Guide</div>
         <div class="item-content">
           Read the Vertex User Guide, including sections on Getting Started, Baseline Searches,
           SBAS Searches, Event Searches and more.
         </div>
       </div>
-      <div fxFlex="" class="menu-item-aside">
+      <div class="menu-item-aside">
         <mat-icon class="menu-item-icon">menu_book</mat-icon>
       </div>
     </div>
@@ -217,14 +217,14 @@
       HyP3 User Guide
     </div>
     <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
-      <div fxFlex="" class="menu-item-content">
+      <div class="menu-item-content">
         <div class="item-title">Read Our On Demand Guide</div>
         <div class="item-content">
           You can have ASF perform SAR processing for you On Demand. The On Demand system
           is powered by the HyP3. Read about it here.
         </div>
       </div>
-      <div fxFlex="" class="menu-item-aside">
+      <div class="menu-item-aside">
         <mat-icon class="menu-item-icon" svgIcon="hyp3"></mat-icon>
       </div>
     </div>
@@ -238,7 +238,7 @@
       ASF Search API
     </div>
     <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
-      <div fxFlex="" class="menu-item-content">
+      <div class="menu-item-content">
         <div class="item-title">Find SAR Data Using ASF API</div>
         <div class="item-content">
           This interface is powered by a robust API. You can use that API directly allowing
@@ -246,7 +246,7 @@
           scripts for accessing SAR data.
         </div>
       </div>
-      <div fxFlex="" class="menu-item-aside">
+      <div class="menu-item-aside">
         <mat-icon class="menu-item-icon">api</mat-icon>
       </div>
     </div>
@@ -260,13 +260,13 @@
       ASF Website
     </div>
     <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
-      <div fxFlex="" class="menu-item-content">
+      <div class="menu-item-content">
         <div class="item-title">Learn More About ASF & SAR</div>
         <div class="item-content">
           We have a large website full of rich content about SAR data and how to use it.
         </div>
       </div>
-      <div fxFlex="" class="menu-item-aside">
+      <div class="menu-item-aside">
         <mat-icon class="menu-item-icon">language</mat-icon>
       </div>
     </div>
@@ -280,13 +280,13 @@
       Developer
     </div>
     <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
-      <div fxFlex="" class="menu-item-content">
+      <div class="menu-item-content">
         <div class="item-title">Statistics and Github Repository</div>
         <div class="item-content">
           View vertex's code repository or metrics
         </div>
       </div>
-      <div fxFlex="" class="menu-item-aside">
+      <div class="menu-item-aside">
         <mat-icon class="menu-item-icon">developer_mode</mat-icon>
       </div>
     </div>

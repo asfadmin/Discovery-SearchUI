@@ -48,7 +48,6 @@ import { MasterSceneSelectorModule } from '@components/shared/selectors/master-s
 import { CreateSubscriptionModule } from './create-subscription/create-subscription.module';
 import { CiSearchModule } from './info-bar/ci-search/ci-search.module';
 import { SarviewsEventTypeSelectorModule } from '@components/shared/selectors/sarviews-event-type-selector';
-import { DerivedDatasetsHeaderComponent } from './derived-datasets-header/derived-datasets-header.component';
 import {Hyp3UrlModule} from '@components/shared/hyp3-url/hyp3-url.module';
 
 @NgModule({
@@ -61,7 +60,6 @@ import {Hyp3UrlModule} from '@components/shared/hyp3-url/hyp3-url.module';
     BaselineHeaderComponent,
     Hyp3HeaderComponent,
     SarviewsHeaderComponent,
-    DerivedDatasetsHeaderComponent,
   ],
   imports: [
     CommonModule,

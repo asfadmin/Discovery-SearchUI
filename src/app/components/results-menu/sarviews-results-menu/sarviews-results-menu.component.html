@@ -1,5 +1,9 @@
 <!-- SCENE LIST -->
-<mat-card class="mp0" [fxFlex]="breakpoint > breakpoints.SMALL ? 33 : 50" fxFlex>
+<mat-card class="mp0"
+  [ngClass]="{
+    'desktop-header--layout': breakpoint > breakpoints.SMALL,
+    'desktop-header--small-layout': breakpoint <= breakpoints.SMALL
+  }">
   <mat-card-subtitle class="header">
     <app-scenes-list-header></app-scenes-list-header>
   </mat-card-subtitle>
@@ -11,15 +15,15 @@
 
 <!-- SCENE DETAIL -->
 <ng-container *ngIf="breakpoint > breakpoints.SMALL">
-  <mat-card class="mp0 no-box-shadow" fxFlex="34" fxFlexFill>
+  <mat-card class="mp0 no-box-shadow scene-detail--layout">
     <mat-card-subtitle class="header">
-    Event Detail
+      Event Detail
     </mat-card-subtitle>
-        <app-scene-detail *ngIf="sarviewsEventsLength !== 0"></app-scene-detail>
+    <app-scene-detail *ngIf="sarviewsEventsLength !== 0"></app-scene-detail>
   </mat-card>
 
   <!-- FILE LIST -->
-  <mat-card class="h100 mp0 no-left-border" fxFlex="33" fxFlexFill>
+  <mat-card class="h100 mp0 no-left-border file-list--layout">
     <mat-card-subtitle class="header product-list-header">
 
 
@@ -28,27 +32,26 @@
       </span>
       <div class="space-filler"></div>
       <div style="display: flex; align-items: flex-end; padding-bottom: 7px;">
-      <app-event-product-sort-selector class="mr-10" name="ProductSorting"></app-event-product-sort-selector>
+        <app-event-product-sort-selector class="mr-10" name="ProductSorting"></app-event-product-sort-selector>
       </div>
 
       <div class="space-filler"></div>
       <mat-button-toggle-group name="ProductFilters" class="mr-10" style="font-size: 16px;">
         <mat-button-toggle
-                          (click) = "onOpenFiltersPanel()"
-                           class="control-mat-button-toggle clickable noselect"
-                           [matTooltip]="'Show product filters criteria'">
-                           <!-- <span> -->
-                           Product Criteria
-                          <mat-icon class="more-horiz"
-                          style="font-size: 16px !important; margin-bottom: -11px;">
-                            more_horiz
-                          </mat-icon>
-                           <!-- </span> -->
+          (click) = "onOpenFiltersPanel()"
+          class="control-mat-button-toggle clickable noselect"
+          [matTooltip]="'Show product filters criteria'">
+          <!-- <span> -->
+          Product Criteria
+          <mat-icon class="more-horiz"
+            style="font-size: 16px !important; margin-bottom: -11px;">
+            more_horiz
+          </mat-icon>
+          <!-- </span> -->
         </mat-button-toggle>
       </mat-button-toggle-group>
 
     </mat-card-subtitle>
-    <!-- <app-event-product-sort-selector></app-event-product-sort-selector> -->
     <div class="app-scene-list left-border">
       <app-scene-files *ngIf="sarviewsProductsLength !== 0"></app-scene-files>
       <div *ngIf="sarviewsProductsLength === 0" class="no-event-products-container">
@@ -56,8 +59,8 @@
           <p>
             No Products Available for this Event
           </p>
-          </span>
-          <span>
+        </span>
+        <span>
           <button (click)="onOpenFiltersPanel()" mat-flat-button color="primary" *ngIf="(unfilteredEventProductsLength$ | async) > 0">
             Edit Filters
           </button>
@@ -68,7 +71,7 @@
 </ng-container>
 
 <ng-container *ngIf="breakpoint <= breakpoints.SMALL">
-  <mat-card class="mp0 no-box-shadow" fxFlex="50" fxFlexFill>
+  <mat-card class="mp0 no-box-shadow scene-info--small-layout">
     <mat-card-subtitle class="header">
       Scene Detail /
       <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
@@ -78,8 +81,8 @@
     </mat-card-subtitle>
 
     <div class="app-scene-list scroll-y scroll-x">
-            <app-scene-detail *ngIf="sarviewsEventsLength !== 0" [isScrollable]="false"></app-scene-detail>
-          <hr/>
+      <app-scene-detail *ngIf="sarviewsEventsLength !== 0" [isScrollable]="false"></app-scene-detail>
+      <hr/>
 
       <app-scene-files *ngIf="sarviewsProductsLength !== 0"></app-scene-files>
       <div *ngIf="sarviewsProductsLength === 0" class="no-event-products-container">
@@ -87,7 +90,7 @@
           <p>
             No Products Available for this Event
           </p>
-          </span>
+        </span>
       </div>
 
     </div>

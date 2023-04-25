@@ -1,6 +1,6 @@
-<div *ngIf="breakpoint$ | async as breakpoint" fxLayout="row" class="breadcrumb-row">
+<div *ngIf="breakpoint$ | async as breakpoint" class="breadcrumb-row fx-row">
   <ng-container *ngIf="breakpoint !== breakpoints.MOBILE">
-    <div fxLayout="row">
+    <div class="fx-row">
       <app-search-type-selector
         (click)="closeAOIOptions()"
         class="breadcrumb">
@@ -10,9 +10,8 @@
          [(selected)]="selectedDataset"
          (selectedChange)="onDatasetChange($event)"
          [datasets]="datasets"
-         fxFlex="130px"
          (click)="closeAOIOptions()"
-         class="breadcrumb">
+         class="breadcrumb dataset-selector--layout">
       </app-dataset-selector>
 
       <app-aoi-filter class="breadcrumb"
@@ -20,23 +19,22 @@
       </app-aoi-filter>
     </div>
 
-    <div fxLayout.lt-md="row">
-      <div fxLayout="row">
+    <div>
+      <div class="fx-row">
         <div
            *ngIf="breakpoint === breakpoints.FULL"
-           fxFlex="300px" fxFlex.lt-lg="50"
-             class="breadcrumb">
+             class="breadcrumb date-selector--layout">
           <app-date-selector></app-date-selector>
         </div>
 
-        <div fxFlex="nogrow" class="breadcrumb">
+        <div class="breadcrumb">
           <button (click)="onToggleFiltersMenu()"
                   mat-button class="additional-filters-button">
             Filters <br> <mat-icon>more_horiz</mat-icon>
           </button>
         </div>
 
-        <div fxFlex="noshrink" class="breadcrumb search-controls">
+        <div class="breadcrumb search-controls">
           <app-search-button></app-search-button>
           <div class="max-results">
             <app-max-results-selector></app-max-results-selector>
