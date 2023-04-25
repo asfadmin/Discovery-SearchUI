@@ -1,6 +1,6 @@
 <mat-form-field style="padding-left: 25px; padding-right: 25px; max-width: 75px;">
 <mat-label>
-    Pairs:
+  {{ 'PAIRS' | translate }}:
 </mat-label>
 <input matInput
 type='number'
@@ -13,10 +13,10 @@ type='number'
 <button
     (click)="queueClosestPair(InSAR)"
     [disabled]="" mat-menu-item>
-    InSAR pair
+    {{ 'IN_SAR_PAIR' | translate }}
 </button>
 <button
     (click)="queueClosestPair(AutoRift)"
     [disabled]="" mat-menu-item>
-    AutoRIFT pair
+    {{ 'AUTO_RIFT_PAIR' | translate }}
 </button>

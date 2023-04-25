@@ -17,7 +17,7 @@
         <ng-template #NO_DESCRIPTION>
           <span>
             {{sarviewEvent.event_type[0].toLocaleUpperCase()}}{{sarviewEvent.event_type.slice(1)}}
-            Event: {{sarviewEvent.processing_timeframe.start | shortDate}}
+            {{'EVENT' | translate}}: {{sarviewEvent.processing_timeframe.start | shortDate}}
           </span>
         </ng-template>
 
@@ -30,7 +30,7 @@
       </mat-card-title>
       <mat-card-subtitle class="subtitle">
         <span class="faint-text">
-          SARVIEWS Event
+          {{'SARVIEWS_EVENT' | translate}}
         </span> •
         <span matTooltip="eventType">{{ sarviewEvent.event_type }}</span>
       </mat-card-subtitle>
@@ -73,7 +73,7 @@
           <a
             [href]="dataset.infoUrl"
             target="_blank"
-            matTooltip="Dataset"
+            matTooltip="{{'DATASET' | translate}}"
             class="faint-text"
           >
             {{ dataset.name }}
@@ -82,23 +82,23 @@
             >
           </a>
           •
-          <span matTooltip="Frequency">{{ dataset.frequency }}</span>
+          <span matTooltip="{{'FREQUENCY' | translate}}">{{ dataset.frequency }}</span>
         </mat-card-subtitle>
       </mat-card-header>
 
       <div class="detail-card-info">
         <p class="faint-text accessing-text">
           <span *ngIf="!isLoggedIn">
-            Accessing this data requires you to log in.
+            {{ 'ACCESSING_THIS_DATA_REQUIRES_YOU_TO_LOG_IN' | translate | titlecase}}
           </span>
 
           <span *ngIf="dataset.id === 'RADARSAT-1' || dataset.id === 'JERS-1'">
-            JERS-1 and RADARSAT-1 datasets require a
+            {{ 'JERS_1_AND_RADARSAT_1_DATASETS_REQUIRE_A' | translate }}
             <a
               [href]="asfWebsite.restricted_data_access"
               target="_blank"
             >
-              Restricted Data Use Agreement
+              {{ 'RESTRICTED_DATA_USE_AGREEMENT' | translate }}
             </a>
           </span>
         </p>
@@ -126,11 +126,11 @@
                 <hr />
                 <span class="detail-card-header"
                   ><b>{{ scene.metadata.job.job_parameters.scenes[1].name }}</b>
-                  (<i>Secondary Scene</i>)</span
+                  (<i>{{ 'SECONDARY_SCENE' | translate }}</i>)</span
                 >
                 <app-copy-to-clipboard
                   [value]="scene.metadata.job.job_parameters.scenes[1].name"
-                  prompt="Copy secondary scene name"
+                  prompt="{{'COPY_SECONDARY_SCENE_NAME' | translate}}"
                   class="clipboard-icon"
                 ></app-copy-to-clipboard>
                 <app-scene-metadata
@@ -149,7 +149,7 @@
                 <div
                   class="fullscreen clickable"
                   (click)="onOpenImage()"
-                  matTooltip="Open in Image Viewer"
+                  matTooltip="{{ 'OPEN_IN_IMAGE_VIEWER' | translate }}"
                 >
                   <mat-icon>preview</mat-icon>
                 </div>
@@ -157,7 +157,7 @@
                   class="download clickable"
                   [href]="(browses$ | async)[0]"
                   target="_blank"
-                  matTooltip="Download this image"
+                  matTooltip="{{ 'DOWNLOAD_THIS_IMAGE' | translate }}"
                 >
                   <mat-icon>download</mat-icon>
                 </a>
@@ -213,7 +213,7 @@
         <div
           class="fullscreen clickable"
           (click)="onOpenImage()"
-          matTooltip="Open in Image Viewer"
+          matTooltip="{{ 'OPEN_IN_IMAGE_VIEWER' | translate }}"
         >
           <mat-icon>preview</mat-icon>
         </div>
@@ -221,13 +221,13 @@
           class="download clickable"
           [href]="sarviewsProducts[browseIndex].files.product_url"
           target="_blank"
-          matTooltip="Download this image"
+          matTooltip="{{ 'DOWNLOAD_THIS_IMAGE' | translate }}"
         >
           <mat-icon>download</mat-icon>
         </a>
         <span
         class ="clickable"
-        matTooltip="Pin this product's browse on the map"
+        matTooltip="{{ 'PIN_THIS_PRODUCT_S_BROWSE_ON_THE_MAP' | translate }}"
         (click)="onToggleSarviewsProductPin()"
         >
           <mat-icon>
@@ -283,12 +283,12 @@
     && breakpoint === breakpoints.FULL)
   }
   ">
-  <div class="search-button-label">SEARCH:</div>
+  <div class="search-button-label">{{'SEARCH' | translate |uppercase }}:</div>
   <div *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS"
     [matTooltip]="
       hasBaseline
-        ? 'Use this scene in the Baseline Tool for interferometry'
-        : 'No suitable products for this tool'
+        ? ('USE_THIS_SCENE_IN_THE_BASELINE_TOOL_FOR_INTERFEROMETRY' | translate)
+        : ('NO_SUITABLE_PRODUCTS_FOR_THIS_TOOL' | translate)
     ">
     <button
       mat-stroked-button
@@ -296,8 +296,9 @@
       [disabled]="!hasBaseline"
       (click)="makeBaselineSearch()"
       class="mini-toggle-button search-button"
-      target="_blank">
-      Baseline
+      target="_blank"
+    >
+      {{ 'BASELINE' |  translate }}
     </button>
   </div>
 
@@ -305,8 +306,8 @@
     *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS"
       [matTooltip]="
         hasBaseline
-          ? 'Use this scene in the SBAS Tool to make product pairs for interferometry'
-          : 'No suitable products for this tool'
+          ? ('USE_THIS_SCENE_IN_THE_SBAS_TOOL_TO_MAKE_PRODUCT_PAIRS_FOR_INTERFEROMETRY' | translate)
+          : ('NO_SUITABLE_PRODUCTS_FOR_THIS_TOOL' | translate )
       ">
     <button
       mat-stroked-button
@@ -314,18 +315,19 @@
       [disabled]="!hasBaseline"
       (click)="makeSBASSearch()"
       class="mini-toggle-button search-button"
-      target="_blank">
-      SBAS
+      target="_blank"
+    >
+      {{ 'SBAS' |  translate }}
     </button>
   </div>
 
   <div
     [matTooltip]="
-    searchType === searchTypes.SARVIEWS_EVENTS ? 'Geographic search based on event polygon' : !(
+    searchType === searchTypes.SARVIEWS_EVENTS ? ( 'GEOGRAPHIC_SEARCH_BASED_ON_EVENT_POLYGON' | translate ) : !(
       !(prop.isRelevant(p.PATH, dataset) &&
         prop.isRelevant(p.FRAME, dataset)) ||
       dataset?.id === 'UAVSAR'
-    ) ? 'Geographic search based on this scene\'s path/frame' : 'Not able to select similar scenes from this source'">
+    ) ? ('GEOGRAPHIC_SEARCH_BASED_ON_THIS_SCENE_S_PATH_FRAME' | translate) : ( 'NOT_ABLE_TO_SELECT_SIMILAR_SCENES_FROM_THIS_SOURCE' | translate)">
 
     <button
       mat-stroked-button
@@ -339,13 +341,14 @@
       "
       (click)="moreLikeThis()"
       class="mini-toggle-button search-button">
-      <span *ngIf="breakpoint === breakpoints.MOBILE">More</span>
-      <span *ngIf="breakpoint != breakpoints.MOBILE">{{searchType !== searchTypes.SARVIEWS_EVENTS ? 'More Like This' : 'Geographic'}}</span>
+      <span *ngIf="breakpoint === breakpoints.MOBILE">{{ 'MORE' | translate }}</span>
+      <span *ngIf="breakpoint != breakpoints.MOBILE">{{searchType !== searchTypes.SARVIEWS_EVENTS ? ('MORE_LIKE_THIS' | translate ) : ('GEOGRAPHIC' | translate )}}</span>
+
     </button>
   </div>
   <div
   *ngIf="searchType === searchTypes.SARVIEWS_EVENTS"
-    matTooltip="Use this event's product scenes in list search"
+    matTooltip="{{ 'USE_THIS_EVENT_S_PRODUCT_SCENES_IN_LIST_SEARCH' | translate }}"
   >
     <button
       mat-stroked-button
@@ -355,13 +358,13 @@
       class="mini-toggle-button search-button"
       target="_blank"
     >
-      List
+      {{ 'LIST' |  translate }}
     </button>
   </div>
 </div>
 
 <div *ngIf="!scene && !sarviewEvent">
   <div fxFlex fxLayoutAlign="center" gdAlignColumns="center">
-    <span class="faint-text">No Scene Selected</span>
+    <span class="faint-text">{{ 'NO_SCENE_SELECTED' | translate }}</span>
   </div>
 </div>

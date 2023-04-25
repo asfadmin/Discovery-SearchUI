@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -6,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 import { QueueComponent } from '@components/header/queue';
 import { ProcessingQueueComponent } from '@components/header/processing-queue';
+import { AsfLanguageService } from "@services/asf-language.service";
 
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
@@ -33,7 +35,7 @@ import { SearchType } from './models';
 @Component({
   selector   : 'app-root',
   templateUrl: './app.component.html',
-  styleUrls  : ['./app.component.scss']
+  styleUrls  : ['./app.component.scss'],
 })
 export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('sidenav', {static: true}) sidenav: MatSidenav;
@@ -79,6 +81,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private sarviewsService: services.SarviewsEventsService,
     private mapService: services.MapService,
     private themeService: services.ThemingService,
+    public translate: TranslateService,
+    public language: AsfLanguageService,
+
   ) {}
 
   public ngAfterViewInit(): void {
@@ -86,9 +91,10 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       this.store$.select(userStore.getUserProfile).pipe(
         filter(profile => !!profile.defaultFilterPresets),
         map(profile => profile.defaultFilterPresets)
-        ).subscribe(presets =>
-          this.store$.dispatch(new filterStore.SetDefaultFilters(presets)))
-    );
+        ).subscribe(presets => {
+          this.store$.dispatch(new filterStore.SetDefaultFilters(presets));
+          this.language.initialize(presets);
+        }))
   }
   public ngOnInit(): void {
     this.subs.add(

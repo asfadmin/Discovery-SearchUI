@@ -11,7 +11,7 @@
   </mat-card>
 
   <mat-card class="mp0 no-box-shadow" fxFlex="21" fxFlexFill>
-    <mat-card-subtitle class="header"> Scene Detail </mat-card-subtitle>
+    <mat-card-subtitle class="header"> {{ 'SCENE_DETAIL' |  translate }} </mat-card-subtitle>
 
     <app-scene-detail></app-scene-detail>
   </mat-card>
@@ -29,7 +29,7 @@
             <div>
               <span fxFlex="" class="mr-10">
                 <span class="control-mat-button-toggle scene-text">
-                  {{ numBaselineScenes$ | async }} Scene{{
+                  {{ numBaselineScenes$ | async }} {{ 'SCENE' | translate }}{{
                     (numBaselineScenes$ | async) === 1 ? "" : "s"
                   }}
                 </span>
@@ -39,7 +39,7 @@
         </div>
         <div fxFlex="" class="list-button-group">
           <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-            <label>Zoom</label>
+            <label>{{ 'ZOOM' | translate }}</label>
           </div>
           <div fxLayout="row">
             <div>
@@ -47,7 +47,7 @@
                 <mat-button-toggle
                   (click)="onZoomToResults()"
                   class="control-mat-button-toggle clickable noselect"
-                  matTooltip="Zoom to results">
+                  matTooltip="{{ 'ZOOM_TO_RESULTS' | translate }}">
                   <mat-icon class="list-icon">
                     settings_overscan
                   </mat-icon>
@@ -59,13 +59,13 @@
 
         <div fxFlex="" class="list-button-group">
           <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-            <label>Queue</label>
+            <label>{{ 'QUEUE' |  translate }}</label>
           </div>
           <div fxLayout="row">
             <div>
               <mat-button-toggle-group fxFlex="" name="layerType" class="criteria-button-group">
                 <mat-button-toggle class="control-mat-button-toggle clickable noselect"
-                                   matTooltip="Add all results to downloads"
+                                   matTooltip="{{ 'ADD_ALL_RESULTS_TO_DOWNLOADS' | translate }}"
                                    [matMenuTriggerFor]="addAllProducts">
                   <mat-icon class="list-icon">
                     add_shopping_cart
@@ -79,7 +79,7 @@
         <div *ngIf="searchType !== SearchTypes.CUSTOM_PRODUCTS || hyp3able.total > 0"
           fxFlex="" style="margin-left: 10px;" class="list-button-group">
           <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-            <label>On Demand</label>
+            <label>{{ 'ON_DEMAND' | translate }}</label>
           </div>
           <div fxLayout="row" fxLayoutAlign="center">
             <div>
@@ -87,7 +87,7 @@
                 <mat-button-toggle class="control-mat-button-toggle clickable noselect"
                                    [matMenuTriggerFor]="baselineAdd?.addMenu"
                                    [matMenuTriggerData]="{ hyp3able: hyp3able?.byJobType }"
-                                   matTooltip="Add all results to On Demand queue">
+                                   matTooltip="{{ 'ADD_ALL_RESULTS_TO_ON_DEMAND_QUEUE' | translate }}">
                   <mat-icon class="list-icon"
                     svgIcon="hyp3">
                   </mat-icon>
@@ -102,13 +102,13 @@
 
         <div fxFlex="" class="list-button-group">
           <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-            <label>Export</label>
+            <label>{{ 'EXPORT' |  translate }}</label>
           </div>
           <div fxLayout="row">
             <div>
               <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
                 <mat-button-toggle class="control-mat-button-toggle clickable noselect"
-                                   matTooltip="Download data/metadata as"
+                                   matTooltip="{{ 'DOWNLOAD_DATA_METADATA_AS' | translate }}"
                                    [matMenuTriggerFor]="ExportAll">
                   <mat-icon class="list-icon">
                     get_app
@@ -121,10 +121,10 @@
 
         <mat-menu #addAllProducts="matMenu">
           <button (click)="queueAllProducts(downloadableProds)" mat-menu-item>
-            Add {{ downloadableProds.length }} file{{
+            {{'ADD' | translate }} {{ downloadableProds.length }} {{'FILE' | translate}}{{
               downloadableProds.length === 1 ? "" : "s"
             }}
-            to_downloads
+            {{ 'EXPORT' |  translate }}
           </button>
         </mat-menu>
 
@@ -133,7 +133,7 @@
             Metadata
           </button>
           <button mat-menu-item [matMenuTriggerFor]="ExportAllData">
-            Data
+            {{ 'DATA' |  translate }}
           </button>
         </mat-menu>
 
@@ -164,14 +164,14 @@
             [class.selected]="isOfCardView(Views.LIST)"
             mat-button
           >
-            Scenes
+            {{ 'SCENES' | translate }}
           </button>
           <button
             (click)="onSelectDetail()"
             [class.selected]="isOfCardView(Views.DETAIL)"
             mat-button
           >
-            Scene Detail
+            {{ 'SCENE_DETAIL' |  translate }}
           </button>
         </div>
       </div>
@@ -195,14 +195,14 @@
           [class.selected]="isOfCardView(Views.LIST)"
           mat-button
         >
-          Scenes
+          {{ 'SCENES' | translate }}
         </button>
         <button
           (click)="onSelectDetail()"
           [class.selected]="isOfCardView(Views.DETAIL)"
           mat-button
         >
-          Scene Detail
+          {{ 'SCENE_DETAIL' |  translate }}
         </button>
       </div>
     </mat-card-subtitle>
@@ -226,7 +226,7 @@
         <mat-button-toggle class="control-mat-button-toggle baseline-criteria-button-toggle"
                            (click)="onToggleFiltersMenu()"
                            >
-          Baseline Criteria<mat-icon class="more-horiz">more_horiz</mat-icon>
+          {{ 'BASELINE_CRITERIA' | translate }}<mat-icon class="more-horiz">more_horiz</mat-icon>
         </mat-button-toggle>
       </mat-button-toggle-group>
     </div>

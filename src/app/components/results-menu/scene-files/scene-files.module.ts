@@ -18,6 +18,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { OnDemandAddMenuModule } from '@components/shared/on-demand-add-menu';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DownloadFileButtonModule } from '@components/shared/download-file-button/download-file-button.module';
+import { SharedModule } from "@shared";
+
 @NgModule({
   declarations: [SceneFilesComponent],
   imports: [
@@ -37,7 +39,8 @@ import { DownloadFileButtonModule } from '@components/shared/download-file-butto
     FontAwesomeModule,
     OnDemandAddMenuModule,
     MatButtonToggleModule,
-    DownloadFileButtonModule
+    DownloadFileButtonModule,
+    SharedModule,
   ],
   exports: [
     SceneFilesComponent

@@ -1,9 +1,9 @@
 <mat-dialog-content>
     <div style="display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 15px;">
-      <div class="dialog-header" mat-dialog-title>ASF Search Python Export</div>
+      <div class="dialog-header" mat-dialog-title>{{ 'ASF_SEARCH_PYTHON_EXPORT' | translate }}</div>
       <div>
         <mat-icon (click)="onCloseCodeExport()" class="clickable">
-          close
+         close
         </mat-icon>
       </div>
     </div>
@@ -16,5 +16,5 @@
       text="ASF Search Docs">
       </app-docs-modal>
     </button>
-    <button (click)="copyToClipboard()" color="primary" mat-flat-button>Copy</button>
+    <button (click)="copyToClipboard()" color="primary" mat-flat-button>{{ 'COPY' | translate }}</button>
 </mat-dialog-actions>

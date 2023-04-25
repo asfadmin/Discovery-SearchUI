@@ -2,9 +2,9 @@
   <button
     [matMenuTriggerFor]="derivedDatasetMenu"
     class="spacing nav-icon-buttons" color="basic"
-    matTooltip="On Demand Queue"
+    matTooltip="{{ 'ON_DEMAND_QUEUE'  | translate }}"
     mat-button>
-    <div class="text-under faint-text">Derived Datasets...</div>
+    <div class="text-under faint-text">{{ 'DERIVED_DATASETS' | translate }}...</div>
   </button>
 
   <mat-menu #derivedDatasetMenu="matMenu">
@@ -26,8 +26,8 @@
       </div>
 <!--      <mat-divider inset></mat-divider>-->
       <mat-card-actions>
-        <button (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)" mat-button class="link-button">More Info</button>
-        <button (click)="onOpenDerivedDataset(dataset.download_url, dataset.name)" mat-button class="link-button">Download</button>
+        <button (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)" mat-button class="link-button">{{ 'MORE_INFO' | translate }}</button>
+        <button (click)="onOpenDerivedDataset(dataset.download_url, dataset.name)" mat-button class="link-button">{{ 'DOWNLOAD' | translate }}</button>
       </mat-card-actions>
       <hr class="dataset-hr">
     </div>
