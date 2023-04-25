@@ -9,7 +9,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSliderModule } from '@angular/material/slider';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 
 @NgModule({
@@ -25,7 +24,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatInputModule,
     MatSlideToggleModule,
     MatSliderModule,
-    FlexLayoutModule,
   ],
   exports: [
     DateRangeComponent

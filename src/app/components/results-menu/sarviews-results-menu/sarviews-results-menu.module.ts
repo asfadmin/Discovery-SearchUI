@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { MatSharedModule } from '@shared';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { SceneDetailModule } from '../scene-detail';
 import { ScenesListModule } from '../scenes-list';
@@ -23,7 +22,6 @@ import { SarviewsResultsMenuComponent } from './sarviews-results-menu.component'
     CommonModule,
     MatSharedModule,
     MatButtonToggleModule,
-    FlexLayoutModule,
 
     SceneFilesModule,
     SceneDetailModule,

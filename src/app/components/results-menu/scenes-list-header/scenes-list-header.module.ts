@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { MatSharedModule } from '@shared';
@@ -20,7 +19,6 @@ import { ScenesListHeaderComponent } from './scenes-list-header.component';
     MatMenuModule,
     MatSharedModule,
     MatButtonToggleModule,
-    FlexLayoutModule,
     FontAwesomeModule,
     OnDemandAddMenuModule,
   ],

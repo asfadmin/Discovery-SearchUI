@@ -20,7 +20,6 @@ import { CustomProductsFiltersModule } from './custom-products-filters';
 import { SarviewsFiltersModule } from './sarviews-filters';
 import { SearchSelectorModule } from '@components/shared/selectors/search-selector';
 
-import { FlexLayoutModule } from '@angular/flex-layout';
 import {DocsModalModule} from '@components/shared/docs-modal';
 
 @NgModule({
@@ -41,8 +40,6 @@ import {DocsModalModule} from '@components/shared/docs-modal';
     CancelFilterChangesModule,
     ClearButtonModule,
     MaxResultsSelectorModule,
-
-    FlexLayoutModule,
 
     SearchSelectorModule,
     DocsModalModule,

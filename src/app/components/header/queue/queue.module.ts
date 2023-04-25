@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 
 import { MatMenuModule } from '@angular/material/menu';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { ClipboardModule } from 'ngx-clipboard';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -43,7 +42,6 @@ import {DocsModalModule} from '@components/shared/docs-modal';
         CopyToClipboardModule,
         MatSharedModule,
         PipesModule,
-        FlexLayoutModule,
         ResizableModule,
         DragDropModule,
         MatDialogModule,

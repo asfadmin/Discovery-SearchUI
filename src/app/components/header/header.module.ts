@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
 
 import { MatBadgeModule } from '@angular/material/badge';
@@ -65,7 +64,6 @@ import {Hyp3UrlModule} from '@components/shared/hyp3-url/hyp3-url.module';
     CommonModule,
     HttpClientModule,
     FormsModule,
-    FlexLayoutModule,
     MatButtonToggleModule,
     MatToolbarModule,
     MatProgressBarModule,

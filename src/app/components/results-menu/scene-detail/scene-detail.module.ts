@@ -5,7 +5,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { TruncateModule } from '@yellowspot/ng-truncate';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { PipesModule } from '@pipes';
 import { MatSharedModule } from '@shared';
@@ -26,7 +25,6 @@ import { EventPolygonSliderModule } from './event-polygon-slider';
         MatButtonModule,
         MatIconModule,
         MatMenuModule,
-        FlexLayoutModule,
         TruncateModule,
         MatSharedModule,
         PipesModule,

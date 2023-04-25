@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSharedModule } from '@shared';
@@ -16,7 +15,6 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
   ],
   imports: [
     CommonModule,
-    FlexLayoutModule,
     MatButtonToggleModule,
     MatMenuModule,
     MatSharedModule,

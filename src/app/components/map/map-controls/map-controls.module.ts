@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -19,7 +18,6 @@ import { MapInfoComponent } from './map-info/map-info.component';
 @NgModule({
   imports: [
     CommonModule,
-    FlexLayoutModule,
     DragDropModule,
     MatButtonToggleModule,
     MatMenuModule,
