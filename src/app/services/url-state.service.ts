@@ -471,6 +471,24 @@ export class UrlStateService {
         map(list => ({ searchList: list.join(',') }))
       ),
       loader: this.loadSearchList
+    }, {
+      name: 'absoluteBurstIDs',
+      source: this.store$.select(filterStore.getAbsoluteBurstIDs).pipe(
+        map(list => ({ absoluteBurstIDs: list.join(',') }))
+      ),
+      loader: this.loadAbsoluteBurstIDs
+    },{
+      name: 'relativeBurstIDs',
+      source: this.store$.select(filterStore.getRelativeBurstIDs).pipe(
+        map(list => ({ relativeBurstIDs: list.map(num => num.toString()).join(',')}))
+      ),
+      loader: this.loadRelativeBurstIDs
+    },{
+      name: 'fullBurstIDs',
+      source: this.store$.select(filterStore.getFullBurstIDs).pipe(
+        map(list => ({ fullBurstIDs: list.map(num => num.toString()).join(',') }))
+      ),
+      loader: this.loadFullBurstIDs
     }];
   }
 
@@ -784,4 +802,19 @@ export class UrlStateService {
   private isValidDate = (d: Date): boolean => d instanceof Date && !isNaN(d.valueOf());
   private clamp = (value: number, min: number, max: number) =>
     Math.min(Math.max(value, min), max);
+
+  private loadAbsoluteBurstIDs = (ids: string): Action => {
+    const list = ids.split(',').map(id => parseInt(id));
+    return new filterStore.setAbsoluteBurst(list);
+  };
+
+  private loadRelativeBurstIDs = (ids: string): Action => {
+    const list = ids.split(',').map(id => parseInt(id));
+    return new filterStore.setRelativeBurst(list);
+  };
+
+  private loadFullBurstIDs = (ids: string): Action => {
+    const list = ids.split(',');
+    return new filterStore.setFullBurst(list);
+  };
 }
