@@ -9,8 +9,8 @@
         <button (click)="onToggleFiltersMenu()"
                 mat-flat-button
                 class="search-dialog-button">
-          <mat-icon>edit</mat-icon>
-          Edit List
+          <mat-icon>edit_list</mat-icon>
+          {{ 'EDIT_LIST' | translate }}
         </button>
       </div>
 
@@ -31,7 +31,7 @@
           style="margin-left: 5px;"
           mat-flat-button>
         <mat-icon>edit</mat-icon>
-        List
+        {{ 'LIST' |  translate }}
       </button>
 
       <div class="mobile-icon-cluster">

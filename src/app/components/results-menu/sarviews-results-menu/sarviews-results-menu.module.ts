@@ -14,6 +14,8 @@ import { EventProductSortSelectorModule } from '@components/shared/event-product
 
 import { SarviewsResultsMenuComponent } from './sarviews-results-menu.component';
 
+import { SharedModule } from "@shared";
+
 
 @NgModule({
   declarations: [
@@ -24,7 +26,7 @@ import { SarviewsResultsMenuComponent } from './sarviews-results-menu.component'
     MatSharedModule,
     MatButtonToggleModule,
     FlexLayoutModule,
-
+    SharedModule,
     SceneFilesModule,
     SceneDetailModule,
     ScenesListModule,

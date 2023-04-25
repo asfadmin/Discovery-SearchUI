@@ -3,7 +3,6 @@ import { RouterModule } from '@angular/router';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
@@ -33,6 +32,10 @@ import { BaselineChartModule } from '@components/baseline-chart';
 import { HelpModule } from '@components/help';
 import { AppComponent } from './app.component';
 import { CustomBreakPointsProvider } from '@services/custom-breakpoints';
+
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClient } from "@angular/common/http";
 
 import * as services from '@services';
 
@@ -70,6 +73,11 @@ const cookieConfig: NgcCookieConsentConfig = {
     }
 };
 
+// AoT requires an exported function for factories
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
+
 export const routes = [
   { path: '**', name: 'AppComponent', component: AppComponent },
 ];
@@ -80,8 +88,14 @@ export const routes = [
   ],
   imports: [
     BrowserModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
     BrowserAnimationsModule,
-    HttpClientModule,
     NgcCookieConsentModule.forRoot(cookieConfig),
     MatBottomSheetModule,
     MatSharedModule,
@@ -140,6 +154,9 @@ export const routes = [
     // { provide: Window, useValue: window },
   ],
   bootstrap: [AppComponent],
-    exports: [MatTableModule]
+    exports: [MatTableModule],
 })
-export class AppModule {}
+
+export class AppModule { }
+
+

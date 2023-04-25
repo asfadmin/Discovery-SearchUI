@@ -13,7 +13,7 @@
 <ng-container *ngIf="breakpoint > breakpoints.SMALL">
   <mat-card class="mp0 no-box-shadow" fxFlex="34" fxFlexFill>
     <mat-card-subtitle class="header">
-    Event Detail
+    {{ 'EVENT_DETAIL' | translate }}
     </mat-card-subtitle>
         <app-scene-detail *ngIf="sarviewsEventsLength !== 0"></app-scene-detail>
   </mat-card>
@@ -24,7 +24,7 @@
 
 
       <span style="white-space: nowrap;">
-        {{ sarviewsProductsLength}} of {{(unfilteredEventProductsLength$ | async)}} File{{ sarviewsProductsLength === 1 ? '' : 's'}}
+        {{ sarviewsProductsLength}} {{ 'OF' | translate }} {{(unfilteredEventProductsLength$ | async)}} {{'FILE' | translate }}{{ sarviewsProductsLength === 1 ? '' : 's'}}
       </span>
       <div class="space-filler"></div>
       <div style="display: flex; align-items: flex-end; padding-bottom: 7px;">
@@ -36,9 +36,9 @@
         <mat-button-toggle
                           (click) = "onOpenFiltersPanel()"
                            class="control-mat-button-toggle clickable noselect"
-                           [matTooltip]="'Show product filters criteria'">
+                           [matTooltip]="('SHOW_PRODUCT_FILTERS_CRITERIA' | translate)">
                            <!-- <span> -->
-                           Product Criteria
+                           {{ 'PRODUCT_CRITERIA' | translate }}
                           <mat-icon class="more-horiz"
                           style="font-size: 16px !important; margin-bottom: -11px;">
                             more_horiz
@@ -54,12 +54,12 @@
       <div *ngIf="sarviewsProductsLength === 0" class="no-event-products-container">
         <span>
           <p>
-            No Products Available for this Event
+            {{ 'NO_PRODUCTS_AVAILABLE_FOR_THIS_EVENT' | translate }}
           </p>
           </span>
           <span>
           <button (click)="onOpenFiltersPanel()" mat-flat-button color="primary" *ngIf="(unfilteredEventProductsLength$ | async) > 0">
-            Edit Filters
+            {{ 'EDIT_FILTERS' | translate }}
           </button>
         </span>
       </div>
@@ -70,11 +70,11 @@
 <ng-container *ngIf="breakpoint <= breakpoints.SMALL">
   <mat-card class="mp0 no-box-shadow" fxFlex="50" fxFlexFill>
     <mat-card-subtitle class="header">
-      Scene Detail /
+      {{ 'SCENE_DETAIL' |  translate }} /
       <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
-        {{ products.length || '' }} File{{ (products || []).length === 1 ? '' : 's'}}
+        {{ products.length || '' }}{{'FILE' | translate }}{{ (products || []).length === 1 ? '' : 's'}}
       </span>
-      <ng-template #defaultProductsHeader>Files</ng-template>
+      <ng-template #defaultProductsHeader>{{'FILES' | translate }}</ng-template>
     </mat-card-subtitle>
 
     <div class="app-scene-list scroll-y scroll-x">
@@ -85,7 +85,7 @@
       <div *ngIf="sarviewsProductsLength === 0" class="no-event-products-container">
         <span>
           <p>
-            No Products Available for this Event
+            {{ 'NO_PRODUCTS_AVAILABLE_FOR_THIS_EVENT' | translate }}
           </p>
           </span>
       </div>

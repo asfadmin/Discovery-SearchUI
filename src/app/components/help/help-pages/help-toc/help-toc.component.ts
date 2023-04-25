@@ -122,7 +122,6 @@ export class HelpTocComponent implements OnInit {
   }
 
   public loadDataTables () {
-    console.log('XXXXX this.videos XXXXX:', this.videos);
     this.dataSource = this.videos;
     this.sort.active = 'description';
     this.sort.direction = 'asc';

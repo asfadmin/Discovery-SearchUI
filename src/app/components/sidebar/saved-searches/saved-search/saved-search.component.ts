@@ -8,6 +8,8 @@ import * as moment from 'moment';
 
 import * as models from '@models';
 
+import { AsfLanguageService } from "@services/asf-language.service";
+
 @Component({
   selector: 'app-saved-search',
   templateUrl: './saved-search.component.html',
@@ -35,6 +37,10 @@ export class SavedSearchComponent implements OnInit {
   public isEditingName = false;
   public editName = '';
 
+  constructor(
+    private language: AsfLanguageService,
+  ) {
+  }
   ngOnInit() {
     if (this.isNew) {
       this.onEditName();
@@ -118,10 +124,10 @@ export class SavedSearchComponent implements OnInit {
 
   public formatName(searchName: string): string {
     if (this.isSavedSearch) {
-      return !!searchName ? searchName : '(No name)';
+      const noName = this.language.translate.instant('NO_NAME');
+      return !!searchName ? searchName : noName;
     } else {
       const date = this.formatIfDate(new Date(+searchName));
-
       return `(${date})`;
     }
   }

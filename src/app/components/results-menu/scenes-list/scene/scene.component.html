@@ -51,11 +51,11 @@
         {{ scene.metadata.job.job_type }} -
       </span>
       <span *ngIf="breakpoint > breakpoints.MOBILE && searchType !== SearchTypes.BASELINE"
-        matTooltip="Scene Start Time">
+        matTooltip="{{'SCENE_START_TIME' | translate}}">
           {{ scene.metadata.date | fullDate }}
       </span>
       <span *ngIf="breakpoint === breakpoints.MOBILE || searchType === SearchTypes.BASELINE"
-        matTooltip="Scene Start Time">
+        matTooltip="{{'SCENE_START_TIME' | translate}}">
         {{ scene.metadata.date| shortDate }}
       </span>
     </div>

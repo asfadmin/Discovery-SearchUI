@@ -39,7 +39,6 @@ export const jers_1 = {
     'HH'
   ],
   subtypes: [],
-  platformDesc: 'The JERS-1 (Japanese Earth Resources Satellite) SAR is a high-resolution, all-weather imaging radar. Data ' +
-    'uses: land surveys, agriculture, forestry, fisheries, environmental...',
+  platformDesc: 'JERS_DESC',
   platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
 };

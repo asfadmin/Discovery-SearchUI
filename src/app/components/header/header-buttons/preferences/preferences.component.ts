@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
@@ -11,6 +11,8 @@ import {
 import { Hyp3Service, ThemingService } from '@services';
 import { SubSink } from 'subsink';
 import { take } from 'rxjs';
+import { TranslateService } from "@ngx-translate/core";
+import { AsfLanguageService } from "@services/asf-language.service";
 
 @Component({
   selector: 'app-preferences',
@@ -18,6 +20,8 @@ import { take } from 'rxjs';
   styleUrls: ['./preferences.component.scss']
 })
 export class PreferencesComponent implements OnInit, OnDestroy {
+  @Output() selectedChange = new EventEmitter<string>();
+
   public datasets = datasetList;
   public defaultMaxResults: number;
   public defaultMapLayer: MapLayerTypes;
@@ -25,6 +29,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   public defaultMaxConcurrentDownloads: number;
   public defaultProductTypes: ProductType[];
   public hyp3BackendUrl: string;
+  public defaultLanguage: string;
 
   public defaultGeoSearchFiltersID;
   public defaultBaselineSearchFiltersID;
@@ -58,12 +63,16 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private hyp3: Hyp3Service,
     private themeService: ThemingService,
+    public translate: TranslateService,
+    public language: AsfLanguageService,
+
   ) { }
 
   ngOnInit() {
     this.subs.add(
       this.store$.select(userStore.getUserProfile).subscribe(
         profile => {
+          this.defaultLanguage = profile.language;
           this.defaultMaxResults = profile.maxResults;
           this.defaultMapLayer = profile.mapLayer;
           this.defaultDataset = profile.defaultDataset;
@@ -71,6 +80,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
           this.defaultMaxConcurrentDownloads = profile.defaultMaxConcurrentDownloads;
           this.hyp3BackendUrl = profile.hyp3BackendUrl;
           this.currentTheme = profile.theme;
+          this.defaultLanguage = profile.language;
           if (this.hyp3BackendUrl) {
             this.hyp3.setApiUrl(this.hyp3BackendUrl);
           } else {
@@ -89,6 +99,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(userStore.getSavedFilters).subscribe(savedFilters => {
         this.userFilters = savedFilters;
+
         for (const searchtype in SearchType) {
           if (searchtype !== 'LIST' && searchtype !== 'CUSTOM_PRODUCTS') {
             const defaultPreset: SavedFilterPreset = {
@@ -102,7 +113,9 @@ export class PreferencesComponent implements OnInit, OnDestroy {
           }
         }
 
-        savedFilters.forEach(preset => this.userFiltersBySearchType[preset.searchType]?.push(preset));
+        savedFilters.forEach(
+          preset => this.userFiltersBySearchType[preset.searchType]?.push(preset)
+        );
 
         const searchTypeKeys = Object.keys(this.selectedFiltersIDs);
         searchTypeKeys.forEach(key =>
@@ -134,6 +147,12 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     this.saveProfile();
   }
 
+  public onChangeDefaultLanguage(language: string): void {
+    this.language.setCurrent(language);
+    this.defaultLanguage = language
+    this.saveProfile();
+  }
+
   public onChangeDefaultMaxConcurrentDownloads(maxDownloads: number): void {
     this.defaultMaxConcurrentDownloads = maxDownloads;
     this.saveProfile();
@@ -151,22 +170,21 @@ export class PreferencesComponent implements OnInit, OnDestroy {
 
   public onChangeDefaultTheme(theme: string) {
     this.currentTheme = theme;
-    if (theme === 'System Preferences') {
-      this.themeService.theme.pipe(take(1)).subscribe(currentPreference => {
-        let body = document.getElementsByTagName("body")[0];
-        // removes all classes from body, probably not best for later on
-        body.removeAttribute('class');
-        body.classList.add(`theme-${currentPreference}`)
-        this.saveProfile()
 
-      })
+    if (theme === 'System Preferences') {
+      this.themeService.theme$.pipe(
+        take(1)
+      ).subscribe(currentPreference => {
+        this.setTheme(`theme-${currentPreference}`);
+      });
     } else {
-      let body = document.getElementsByTagName("body")[0];
-      // removes all classes from body, probably not best for later on
-      body.removeAttribute('class');
-      body.classList.add(`theme-${this.currentTheme}`)
-      this.saveProfile()
+      this.setTheme(`theme-${this.currentTheme}`);
     }
+  }
+
+  public setTheme(themeName: string) {
+    this.themeService.setTheme(themeName);
+    this.saveProfile()
   }
 
   public resetHyp3Url() {
@@ -182,7 +200,8 @@ export class PreferencesComponent implements OnInit, OnDestroy {
       defaultMaxConcurrentDownloads: this.defaultMaxConcurrentDownloads,
       defaultFilterPresets: this.selectedFiltersIDs,
       hyp3BackendUrl: this.hyp3BackendUrl,
-      theme: this.currentTheme
+      theme: this.currentTheme,
+      language: this.defaultLanguage
     });
 
     this.store$.dispatch(action);

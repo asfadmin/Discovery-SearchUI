@@ -1,11 +1,10 @@
 <div *ngIf="breakpoint$ | async as breakpoint">
   <div class="menu-button-wrapper" [class.mobile-button-wrapper]="breakpoint === breakpoints.MOBILE">
-    <div class="button-label">Dataset</div>
+    <div class="button-label">{{ 'DATASET' | translate }}</div>
     <div>
       <button
         [matMenuTriggerFor]="platformMenu"
         class="button-menu-trigger" color="basic"
-        matTooltip="{{ selected }}"
         mat-button>
         <div class="button-text">
           {{ datasetNameLookup( selected ) }}
@@ -35,11 +34,11 @@
                       </span>
                   </div>
                   <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                    {{ dataset.platformDesc }}
+                    {{ dataset.platformDesc | translate }}
                   </div>
                   <mat-card-actions (click)="onOpenDocs($event, dataset.id)">
                     <app-docs-modal class="info-text"
-                                    text="More info"
+                                    text="{{ 'MORE_INFO' | translate }}"
                                     url="{{ dataset.infoUrl }}">
                     </app-docs-modal>
                   </mat-card-actions>
