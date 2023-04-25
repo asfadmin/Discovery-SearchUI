@@ -19,7 +19,6 @@
     "@angular/compiler": "^14.2.8",
     "@angular/compiler-cli": "^14.2.8",
     "@angular/core": "^14.2.8",
-    "@angular/flex-layout": "^14.0.0-beta.41",
     "@angular/forms": "^14.2.8",
     "@angular/material": "^14.2.6",
     "@angular/material-moment-adapter": "^14.2.6",
