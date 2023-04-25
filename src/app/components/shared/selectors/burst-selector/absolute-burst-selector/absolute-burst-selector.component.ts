@@ -9,7 +9,7 @@ import { AppState } from '@store';
 @Component({
   selector: 'app-absolute-burst-selector',
   templateUrl: './absolute-burst-selector.component.html',
-  styleUrls: ['./absolute-burst-selector.component.scss']
+  styleUrls: ['./absolute-burst-selector.component.scss',  '../burst-selector.component.scss']
 })
 export class AbsoluteBurstSelectorComponent implements OnInit, OnDestroy {
 

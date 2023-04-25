@@ -1,0 +1,20 @@
+.burst-selector-container {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  flex-direction: row;
+  align-items: stretch;
+  flex-wrap: wrap;
+}
+
+.burst-selector-filter {
+  max-width: 100%;
+  min-width: 33%;
+  flex-basis: auto;
+  // flex-grow: 1;
+}
+
+mat-form-field {
+  margin-right: 10px;
+  margin-bottom: 10px;
+}

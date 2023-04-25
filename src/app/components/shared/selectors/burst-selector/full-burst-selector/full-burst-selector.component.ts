@@ -8,7 +8,7 @@ import { AppState } from '@store';
 @Component({
   selector: 'app-full-burst-selector',
   templateUrl: './full-burst-selector.component.html',
-  styleUrls: ['./full-burst-selector.component.scss']
+  styleUrls: ['./full-burst-selector.component.scss', '../burst-selector.component.scss']
 })
 export class FullBurstSelectorComponent implements OnInit, OnDestroy {
   public fullBurstIDs: string[] = []

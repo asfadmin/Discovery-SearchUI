@@ -9,7 +9,7 @@ import { AppState } from '@store';
 @Component({
   selector: 'app-relative-burst-selector',
   templateUrl: './relative-burst-selector.component.html',
-  styleUrls: ['./relative-burst-selector.component.scss']
+  styleUrls: ['./relative-burst-selector.component.scss', '../burst-selector.component.scss']
 })
 export class RelativeBurstSelectorComponent implements OnInit, OnDestroy {
 
