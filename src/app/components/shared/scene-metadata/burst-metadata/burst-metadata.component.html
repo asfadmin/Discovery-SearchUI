@@ -1,3 +1,4 @@
+<ul class="scene-metadata">
 <!--
     <li *ngFor="let item of burstDisplay | keyvalue">
 
@@ -8,12 +9,41 @@
     </li>
     <li>
     <b> Relative Burst ID </b>  • {{burst.relativeBurstID}}
+
+    <mat-icon *ngIf="isGeoSearch"
+    [matMenuTriggerFor]="addRelativeBurstMenu"
+    class="v-mid clickable">
+      settings
+  </mat-icon>
+
+  <mat-menu #addRelativeBurstMenu="matMenu">
+    <button (click)="setRelativeBurst()" mat-menu-item>Add relative burst id to search</button>
+  </mat-menu>
     </li>
+
     <li>
       <b> Absolute Burst ID </b>  • {{burst.absoluteBurstID}}
+      <mat-icon *ngIf="isGeoSearch"
+      [matMenuTriggerFor]="addAbsoluteBurstMenu"
+      class="v-mid clickable">
+        settings
+    </mat-icon>
+
+    <mat-menu #addAbsoluteBurstMenu="matMenu">
+      <button (click)="setAbsoluteBurst()" mat-menu-item>Add absolute burst id to search</button>
+    </mat-menu>
     </li>
     <li>
       <b> Full Burst ID </b>  • {{burst.fullBurstID}}
+      <mat-icon *ngIf="isGeoSearch"
+      [matMenuTriggerFor]="addFullBurstMenu"
+      class="v-mid clickable">
+        settings
+    </mat-icon>
+
+    <mat-menu #addFullBurstMenu="matMenu">
+      <button (click)="setFullBurst()" mat-menu-item>Add full burst id to search</button>
+    </mat-menu>
     </li>
     <li>
       <b> Burst Index </b>  • {{burst.burstIndex}}
@@ -30,3 +60,4 @@
     <li>
       <b> subswath </b>  • {{burst.subswath}}
     </li>
+</ul>

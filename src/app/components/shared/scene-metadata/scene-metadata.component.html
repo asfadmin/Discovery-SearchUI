@@ -166,12 +166,10 @@
 <div *ngIf="!!scene.metadata.burst">
 <hr>
 <h3>SLC Burst Metadata</h3>
-<ul class="scene-metadata">
   <app-burst-metadata *ngIf="!!scene.metadata.burst"
   [burst]="scene.metadata.burst"
   [groupID]="scene.groupId"
-  [sceneName]="scene.name">
+  [sceneName]="scene.name"
+  [isGeoSearch]="isGeoSearch()">
   </app-burst-metadata>
-
-</ul>
 </div>
