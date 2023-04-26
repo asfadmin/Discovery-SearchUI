@@ -10,6 +10,14 @@
   display: flex;
 }
 
+.map-view-button--layout {
+  flex-direction: row;
+  box-sizing: border-box;
+  display: flex;
+  place-content: stretch flex-start;
+  align-items: stretch;
+}
+
 .position {
   z-index: 998;
   margin-left: 0;
