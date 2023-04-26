@@ -20,7 +20,7 @@
             *ngIf="dataset"
             [href]="dataset.infoUrl"
             target="_blank"
-            matTooltip="Dataset"
+            matTooltip="{{'DATASET' | translate}}"
           >
             {{ dataset.name }}
           </a>
@@ -67,9 +67,8 @@
               [ngClass]="{
               'mp0-ellipsis-mobile': breakpoint <= breakpoints.SMALL,
               'mp0-ellipsis': breakpoint > breakpoints.SMALL
-              }"
-            >
-              {{event.event_type[0].toLocaleUpperCase()}}{{event.event_type.slice(1)}} Event: {{event.processing_timeframe.start | shortDate}}
+            }">
+              {{event.event_type[0].toLocaleUpperCase()}}{{event.event_type.slice(1)}} {{'EVENT' | translate}}: {{event.processing_timeframe.start | shortDate}}
             </span>
           </ng-template>
         </h3>
@@ -96,7 +95,7 @@
       </div>
       <div class="close-icon">
         <button (click)="closeDialog()" mat-icon-button>
-          <mat-icon class="close-button">close</mat-icon>
+          <mat-icon class="close-button"></mat-icon>
         </button>
       </div>
     </div>
@@ -137,12 +136,12 @@
           *ngIf="(searchType$ | async) !== searchTypes.SARVIEWS_EVENTS"
           class="scene-detail"
         >
-          <div class="detail-header">Scene Detail</div>
+          <div class="detail-header">{{ 'SCENE_DETAIL' |  translate }}</div>
           <ul
             class="on-demand-scene-names"
             *ngIf="(searchType$ | async) === searchTypes.CUSTOM_PRODUCTS"
           >
-            <li><b>Reference: </b> {{ (scene$ | async).name }}</li>
+            <li><b>{{ 'REFERENCE' | translate }}: </b> {{ (scene$ | async).name }}</li>
           </ul>
           <app-scene-metadata
             [scene]="scene$ | async"
@@ -159,8 +158,10 @@
           >
             <ul>
               <li>
-                <b>Secondary: </b>
-                {{ (scene$ | async).metadata?.job?.job_parameters.scenes[1].name }}
+                <b>{{ 'Secondary:' | translate }} </b>
+                {{
+                  (scene$ | async).metadata?.job?.job_parameters.scenes[1].name
+                }}
               </li>
             </ul>
             <app-scene-metadata
@@ -175,7 +176,7 @@
           <ng-container
             *ngIf="(searchType$ | async) === searchTypes.CUSTOM_PRODUCTS"
           >
-            <div class="detail-header">Product Details</div>
+            <div class="detail-header">{{ 'PRODUCT_DETAILS' | translate }}</div>
             <ul style="columns: 1; font-size: 12px;">
               <li *ngIf="scene.metadata.job.name">
                 <b>Project Name:</b> {{ scene.metadata.job.name }}
@@ -187,7 +188,7 @@
             <hr />
           </ng-container>
 
-          <div class="detail-header">{{ products?.length }} Files</div>
+          <div class="detail-header">{{ products?.length }} {{ 'FILES' | translate }}</div>
           <mat-action-list dense class="file-list">
             <button
               *ngFor="let product of products"
@@ -226,7 +227,7 @@
                     <mat-icon>add_shopping_cart</mat-icon>
                   </span>
                   <span *ngIf="queuedProductIds.has(product.id)">
-                    Remove
+                    {{ 'REMOVE' |  translate }}
                     <mat-icon>shopping_cart</mat-icon>
                   </span>
                 </button>
@@ -239,13 +240,13 @@
           *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS"
           class="scene-detail"
         >
-          <div class="detail-header">Event Detail</div>
+          <div class="detail-header">{{ 'EVENT_DETAIL' | translate }}</div>
           <app-event-metadata [event]="sarviewsEvent" [eventType]="eventType">
           </app-event-metadata>
           <hr />
 
           <ng-container>
-            <div class="detail-header">Scene Detail</div>
+            <div class="detail-header">{{ 'SCENE_DETAIL' |  translate }}</div>
             <div style="font-size: 12px;" *ngIf="!!currentSarviewsProduct">
               <app-event-product-metadata [product]="currentSarviewsProduct">
               </app-event-product-metadata>
@@ -254,15 +255,15 @@
           </ng-container>
 
           <ng-container>
-            <div class="detail-header">Product Details</div>
+            <div class="detail-header">{{ 'PRODUCT_DETAILS' | translate }}</div>
             <div style="font-size: 12px;" *ngIf="!!currentSarviewsProduct">
               <ul style="columns: 1; font-size: 12px;">
                 <li style="margin-bottom: 5px; word-break: break-word;">
-                  <b>Product Filename:</b>
+                  <b>{{ 'PRODUCT_FILENAME' | translate }}</b>
                   {{ currentSarviewsProduct.files.product_name }}
                 </li>
                 <li>
-                  <b>Processing Date:</b>
+                  <b>{{ 'PROCESSING_DATE' | translate }}</b>
                   {{ currentSarviewsProduct.processing_date | shortDateTime }}
                 </li>
                 <!-- <li>Frame: {{currentSarviewsProduct.granules[0].frame}}</li> -->
@@ -272,7 +273,7 @@
           </ng-container>
 
           <ng-container>
-            <div class="detail-header">File</div>
+            <div class="detail-header">{{ 'FILE' | translate }}</div>
             <mat-action-list dense class="file-list">
               <button
                 class="file-button-download"
@@ -320,7 +321,7 @@
                     !queuedProductIds.has(currentSarviewsProduct.product_id)
                     "
                   >
-                    Add
+                   {{'ADD' | translate }}
                     <mat-icon>add_shopping_cart</mat-icon>
                   </span>
                   <span
@@ -328,16 +329,16 @@
                     queuedProductIds.has(currentSarviewsProduct.product_id)
                     "
                   >
-                    Remove
+                    {{ 'REMOVE' |  translate }}
                     <mat-icon>shopping_cart</mat-icon>
                   </span>
                 </button>
                 <button
                   mat-menu-item
                   (click)="onCopyLink(currentSarviewsProduct.granules)"
-                  matTooltip="Copy reference scene names to clipboard"
+                  matTooltip="{{'COPY_REFERENCE_SCENE_NAMES_TO_CLIPBOARD' | translate}}"
                 >
-                  <span> Reference Scenes </span>
+                  <span> {{ 'REFERENCE_SCENES' | translate }} </span>
                   <mat-icon>file_copy</mat-icon>
                 </button>
                 <button (click)="onToggleSarviewsProductPin()" mat-menu-item>
@@ -376,9 +377,9 @@
       >
       </mat-checkbox>
       <span *ngIf="breakpoint > breakpoints.MOBILE">
-        Only display scenes with a browse image
+        {{ 'ONLY_DISPLAY_SCENES_WITH_A_BROWSE_IMAGE' | translate }}
       </span>
-      <span *ngIf="breakpoint === breakpoints.MOBILE"> w/Browse Images </span>
+      <span *ngIf="breakpoint === breakpoints.MOBILE"> {{ 'W_BROWSE_IMAGES' | translate }} </span>
     </div>
 
     <div class="fx-nogrow">

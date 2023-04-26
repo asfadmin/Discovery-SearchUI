@@ -9,6 +9,7 @@
     background-color: themed('primary-light');
     color: themed('dark-primary-text');
   }
+
   padding-top: 20px;
   height: 30px;
   margin-bottom: 0;
@@ -47,9 +48,7 @@
 }
 
 .sbas-column-1 {
-  flex-basis: 150px;
-  flex-shrink: 0;
-  flex-grow: 0;
+  flex: 0 0 150px;
 }
 
 .sbas-column-2 {
@@ -71,6 +70,7 @@
   @include themify($themes) {
     background-color: themed('background-white') !important;
   }
+
   font-size: 14px;
 }
 
@@ -78,6 +78,7 @@
   @include themify($themes) {
     background-color: themed('background-white') !important;
   }
+
   font-size: 14px;
 }
 
@@ -101,4 +102,20 @@
 .more-horiz {
   font-size: 16px !important;
   margin-bottom: -11px;
+}
+
+.warn-icon {
+  margin-right: 5px;
+
+  @include themify($themes) {
+    color: themed('warn');
+  }
+}
+
+.gap-detected-area {
+  margin-top: -5px;
+
+  @include themify($themes) {
+    color: themed('dark-primary-text') !important;
+  }
 }

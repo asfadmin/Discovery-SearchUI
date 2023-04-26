@@ -5,7 +5,7 @@
 </mat-dialog-content>
 <hr class="content-hr">
 <mat-dialog-actions align="end">
-  <button mat-raised-button mat-dialog-close cdkFocusInitial>Cancel</button>
+  <button mat-raised-button mat-dialog-close cdkFocusInitial>{{ 'CANCEL' | translate}}</button>
 <!--  <button mat-raised-button [mat-dialog-close]="true" (click)="openDoc()">Open Manual</button>-->
-  <button mat-raised-button mat-dialog-close (click)="openDoc()">Open Manual</button>
+  <button mat-raised-button mat-dialog-close (click)="openDoc()">{{ 'OPEN_MANUAL' | translate }}</button>
 </mat-dialog-actions>

@@ -1,7 +1,7 @@
 <form #jobNameForm="ngForm">
     <mat-form-field [class.filter-view] = '!headerView'
                     [class.filter-view-mobile]='!headerView && (screenWidth <= 450 || breakpoint <= breakpoints.MOBILE)'>
-        <mat-label>Product/Source Scene</mat-label>
+        <mat-label>{{ 'PRODUCT_SOURCE_SCENE' | translate }}</mat-label>
         <div *ngIf="!headerView">
         <textarea *ngIf="!headerView" matInput placeholder="S1A..."
         (input)="onFilterProductName($event)"
@@ -13,7 +13,7 @@
         [rows]="5">
         </textarea>
                 <button *ngIf="breakpoint <= breakpoints.MOBILE" class="options-clear-button" (click)="onClearFilter()" mat-flat-button matTooltip="Clear Product Name Filter">
-                <strong>Clear</strong>
+                <strong>{{ 'CLEAR' | translate }}</strong>
             </button>
         </div>
         <input *ngIf="headerView" matInput placeholder="S1A..."
@@ -25,7 +25,7 @@
         <mat-icon
         *ngIf="headerView"
         (click)="toggleJobFilterOptions()"
-        matTooltip="More options"
+        matTooltip="{{ 'MORE_OPTIONS' | translate }}"
         style="vertical-align: middle;"
         matSuffix>
         {{ isJobFilterOptionsOpen ? 'arrow_drop_up' : 'arrow_drop_down' }}
@@ -53,8 +53,8 @@
         class="breadcrumb-filter">
 
         <mat-card-header style="display: block;">
-            <strong>Options</strong>
-            <button class="options-clear-button" (click)="onCloseOptions()" matTooltip="Hide options" mat-icon-button>
+            <strong>{{ 'OPTIONS' | translate }}</strong>
+            <button class="options-clear-button" (click)="onCloseOptions()" matTooltip="{{'HIDE_OPTIONS' | translate}}" mat-icon-button>
               <mat-icon>clear</mat-icon>
             </button>
         </mat-card-header>
@@ -70,8 +70,8 @@
                 [rows]="5"
                 ></textarea>
             </mat-form-field>
-            <button class="options-clear-button" (click)="onClearFilter()" mat-flat-button matTooltip="Clear Product Name Filter">
-                <strong>Clear</strong>
+            <button class="options-clear-button" (click)="onClearFilter()" mat-flat-button matTooltip="{{'CLEAR_PRODUCT_NAME_FILTER' | translate}}">
+                <strong>{{'CLEAR' | translate }}</strong>
             </button>
         </mat-card-content>
     </mat-card>

@@ -32,30 +32,30 @@
              min="-999" max="999"
              required
              (input)="updatePerpendicular()">
-      <mat-error *ngIf="meterDistanceControl.invalid">Invalid Baseline</mat-error>
+      <mat-error *ngIf="meterDistanceControl.invalid">{{ 'INVALID_BASELINE' | translate }}</mat-error>
     </mat-form-field>
     <div class="field-spacing"></div>
 
     <mat-form-field appearance="fill" [color]="colorControl.value" [style.width.px]=125>
-      <mat-label>Min Days</mat-label>
+      <mat-label>{{ 'MIN_DAYS' | translate }}</mat-label>
       <input [(ngModel)]="daysRange.start"
              matInput placeholder="daysRange.start"
              type="number" pattern="[0-9]*"
              min="0" max="60"
              required
              (input)="updateDaysOffset()">
-      <mat-error *ngIf="daysControl.invalid">Invalid Start Day</mat-error>
+      <mat-error *ngIf="daysControl.invalid">{{ 'INVALID_START_DAY' | translate }}</mat-error>
     </mat-form-field>
     <div class="field-spacing"></div>
     <mat-form-field appearance="fill" [color]="colorControl.value" [style.width.px]=125>
-      <mat-label>Max Days</mat-label>
+      <mat-label>{{ 'MAX_DAYS' | translate }}</mat-label>
       <input [(ngModel)]="daysRange.end"
              matInput placeholder="daysRange.end"
              type="number" pattern="[0-9]*"
              min="0" max="60"
              required
              (input)="updateDaysOffset()">
-      <mat-error *ngIf="daysControl.invalid">Invalid End Day</mat-error>
+      <mat-error *ngIf="daysControl.invalid">{{ 'INVALID_END_DAY' | translate }}</mat-error>
     </mat-form-field>
 
   </div>

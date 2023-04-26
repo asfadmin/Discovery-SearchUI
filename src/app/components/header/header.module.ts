@@ -47,7 +47,9 @@ import { MasterSceneSelectorModule } from '@components/shared/selectors/master-s
 import { CreateSubscriptionModule } from './create-subscription/create-subscription.module';
 import { CiSearchModule } from './info-bar/ci-search/ci-search.module';
 import { SarviewsEventTypeSelectorModule } from '@components/shared/selectors/sarviews-event-type-selector';
-import {Hyp3UrlModule} from '@components/shared/hyp3-url/hyp3-url.module';
+import { Hyp3UrlModule } from '@components/shared/hyp3-url/hyp3-url.module';
+import { SharedModule } from "@shared";
+import { LanguageSelectorModule } from "@components/shared/selectors/language-selector/language-selector.module";
 
 @NgModule({
   declarations: [
@@ -75,10 +77,8 @@ import {Hyp3UrlModule} from '@components/shared/hyp3-url/hyp3-url.module';
     MatSharedModule,
     MatAutocompleteModule,
     PipesModule,
-
     QueueModule,
     ProcessingQueueModule,
-
     SearchTypeSelectorModule,
     DatasetSelectorModule,
     DateSelectorModule,
@@ -96,7 +96,9 @@ import {Hyp3UrlModule} from '@components/shared/hyp3-url/hyp3-url.module';
     CiSearchModule,
     SarviewsEventSearchSelectorModule,
     SarviewsEventTypeSelectorModule,
-    Hyp3UrlModule
+    Hyp3UrlModule,
+    SharedModule,
+    LanguageSelectorModule
   ],
   exports: [
     HeaderComponent

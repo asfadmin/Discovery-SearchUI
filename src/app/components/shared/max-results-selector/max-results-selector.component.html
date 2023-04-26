@@ -7,7 +7,7 @@
         {{ formatNumber(maxResults) }} <mat-icon
           class="faint-text clickable">arrow_drop_down</mat-icon>
     </span>
-      of
+      {{ 'OF' | translate }}
     </span>
 
     <span *ngIf="!isMaxResultsLoading">
@@ -17,7 +17,7 @@
       style="margin: 0 4px;">
       <fa-icon icon="spinner" [pulse]="true"></fa-icon>
     </span>
-    Files
+    {{ 'FILES' | translate }}
 
 </div>
 
@@ -29,7 +29,7 @@
         {{ formatNumber(maxResults) }} <mat-icon
           class="faint-text clickable">arrow_drop_down</mat-icon>
     </span>
-      of
+      {{ 'OF' | translate }}
     </span>
 
     <span *ngIf="!isMaxResultsLoading">
@@ -49,13 +49,13 @@
       style="margin: 0 4px;">
       <fa-icon icon="spinner" [pulse]="true"></fa-icon>
     </span>
-    Files
+    {{ 'FILES' | translate }}
 </div>
 
 <mat-menu #menu="matMenu">
   <button *ngFor="let amount of possibleMaxResults"
     (click)="onNewMaxResults(amount)" mat-menu-item>
-      <span>{{ formatNumber(amount) }} Files</span>
+      <span>{{ formatNumber(amount) }} {{ 'FILES' | translate }}</span>
   </button>
 
 </mat-menu>

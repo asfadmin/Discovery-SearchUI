@@ -17,6 +17,8 @@ import { DateSelectorModule } from '@components/shared/selectors/date-selector';
 import { DatasetSelectorModule } from '@components/shared/selectors/dataset-selector';
 import { AoiOptionsModule } from '@components/shared/aoi-options';
 import { DocsModalModule } from '@components/shared/docs-modal';
+// import { TranslateModule } from "@ngx-translate/core";
+import { SharedModule } from "@shared";
 
 @NgModule({
   declarations: [
@@ -37,7 +39,9 @@ import { DocsModalModule } from '@components/shared/docs-modal';
     DateSelectorModule,
     DatasetSelectorModule,
     AoiOptionsModule,
-    SearchTypeSelectorModule
+    SearchTypeSelectorModule,
+    SharedModule,
+    // TranslateModule
   ],
   exports: [
     DatasetFiltersComponent,

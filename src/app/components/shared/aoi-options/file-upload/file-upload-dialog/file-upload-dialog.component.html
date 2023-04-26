@@ -18,14 +18,14 @@
               [disabled]="uploading"
               style="margin-right: 10px; margin-bottom: 10px;"
               color="primary" class="add-files-btn" mat-raised-button>
-                Import File
+              {{'IMPORT_FILE' | translate}}
             </button>
           </div>
         </div>
 
         <div class="loading-box" *ngIf="!canBeClosed">
           <div class="loading-text">
-            Loading files...
+            {{ 'LOADING_FILES' | translate }}
           </div>
           <div>
             <mat-progress-spinner diameter="40" class="loading-spinner" color="primary" mode="indeterminate">
@@ -40,7 +40,7 @@
 </div>
 <ng-template #mobileUploadButton>
 <mat-button-toggle
-matTooltip="Upload AOI via file"
+matTooltip="{{'UPLOAD_AOI_VIA_FILE' | translate}}"
 class="control-mat-button-toggle mobile-upload-button"
 [disabled]="uploading"
 (click)="addFiles()">

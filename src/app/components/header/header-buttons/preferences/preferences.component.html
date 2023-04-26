@@ -1,12 +1,12 @@
 <div class="dialog-header">
-  <div mat-dialog-title class="dialog-title-overrides">Preferences For {{ userAuth.id }}</div>
+  <div mat-dialog-title class="dialog-title-overrides">{{ 'PREFERENCES_FOR' | translate}} {{ userAuth.id }}</div>
 </div>
 
 <mat-dialog-content>
   <div class="display: flex;">
     <form #preferencesForm="ngForm" onsubmit="return false">
 
-      <div class="section-heading">Default Search Presets</div>
+      <div class="section-heading">{{ 'DEFAULT_SEARCH_PRESETS' | translate }}</div>
       <div class="default-dataset">
         <app-dataset-selector
           [(selected)]="defaultDataset"
@@ -16,18 +16,18 @@
       </div>
 
       <mat-form-field class="default-max-result">
-        <mat-label>Default Max Result Amount</mat-label>
+        <mat-label>{{ 'DEFAULT_MAX_RESULT_AMOUNT' | translate }}</mat-label>
         <mat-select
           [(ngModel)]="defaultMaxResults"
           (selectionChange)="onChangeMaxResultsDefault($event.value)" name="maxResult">
           <mat-option *ngFor="let resultAmount of maxResults" [value]="resultAmount">
-            {{resultAmount}} files
+            {{resultAmount}} {{ 'FILES' | translate }}
           </mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field class="default-map">
-        <mat-label>Default Map Layer</mat-label>
+        <mat-label>{{ 'DEFAULT_MAP_LAYER' | translate }}</mat-label>
         <mat-select
           [(ngModel)]="defaultMapLayer"
           (selectionChange)="onChangeDefaultLayerType($event.value)" name="amount">
@@ -40,7 +40,7 @@
         </mat-select>
       </mat-form-field>
 
-      <div class="section-heading">Default Search Filters Presets</div>
+      <div class="section-heading">{{ 'DEFAULT_SEARCH_FILTERS_PRESETS' | translate }}</div>
       <mat-form-field class="default-filters-presets" *ngFor="let type of searchTypeKeys">
         <mat-label>{{type}}</mat-label>
         <mat-select
@@ -53,9 +53,9 @@
         </mat-select>
       </mat-form-field>
 
-      <div class="section-heading">Default On Demand Presets</div>
+      <div class="section-heading">{{ 'DEFAULT_ON_DEMAND_PRESETS' | translate }}</div>
       <mat-form-field class="default-filters-presets">
-        <mat-label>HyP3 API URL</mat-label>
+        <mat-label>{{ 'HY_P3_API_URL' | translate }}</mat-label>
         <input matInput
           [(ngModel)]="hyp3BackendUrl"
           name="backendUrl">
@@ -63,18 +63,36 @@
           <mat-icon>refresh</mat-icon>
         </button>
       </mat-form-field>
-      <div class="section-heading">Theming</div>
-      <mat-form-field class="default-filters-presets">
-        <mat-label>Default Theme</mat-label>
-        <mat-select
-        [(value)]="currentTheme"
-        (selectionChange)="onChangeDefaultTheme($event.value)"
-        name="preset">
-          <mat-option [value]="theme" *ngFor="let theme of themeOptions">
-            {{ theme | titlecase}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+
+      <div class="section-heading">Default Theme</div>
+      <div class="language-theme">
+<!--          <div class="language-selector">-->
+<!--            <mat-form-field class="default-filters-presets">-->
+<!--              <mat-label>Default Language</mat-label>-->
+<!--              <mat-select-->
+<!--                [(value)]="translate.currentLang"-->
+<!--                (selectionChange)="onChangeDefaultLanguage($event.value)"-->
+<!--                name="preset">-->
+<!--                <mat-option [value]="lang" *ngFor="let lang of translate.getLangs()">-->
+<!--                  {{ language.getName(lang) | titlecase}}-->
+<!--                </mat-option>-->
+<!--              </mat-select>-->
+<!--            </mat-form-field>-->
+<!--          </div>-->
+          <div class="theme-selector">
+            <mat-form-field class="default-filters-presets">
+              <mat-label>Default Theme</mat-label>
+              <mat-select
+                [(value)]="currentTheme"
+                (selectionChange)="onChangeDefaultTheme($event.value)"
+                name="preset">
+                <mat-option [value]="theme" *ngFor="let theme of themeOptions">
+                  {{ theme | titlecase}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+      </div>
     </form>
   </div>
 
@@ -82,11 +100,11 @@
 
 <mat-dialog-actions class="action-controls">
   <div class="feedback-link">
-    <a href="javascript:feedback.showForm();"> <mat-icon>comment</mat-icon> Feedback</a>
+    <a href="javascript:feedback.showForm();"> <mat-icon>comment</mat-icon> {{ 'FEEDBACK' | translate }}</a>
   </div>
   <div class="done-button">
     <button (click)="onClose()" color="primary" mat-flat-button>
-      Done
+      {{ 'DONE' | translate }}
     </button>
   </div>
 </mat-dialog-actions>

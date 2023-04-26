@@ -43,7 +43,6 @@ export const radarsat_1 = {
     'HH'
   ],
   subtypes: [],
-  platformDesc: 'RADARSAT-1 synthetic aperture radar (SAR), was a powerful microwave instrument. It ' +
-    'captured high quality SAR images of the Earth night and day and in all-weather conditions.',
+  platformDesc: 'RADARSAT_1_DESC',
   platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
 };

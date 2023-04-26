@@ -5,14 +5,14 @@
   <button
           [disabled]="(!product?.downloadUrl && !href ) ||  disabled"
      mat-icon-button
-     [matTooltip]="this.dFile?.state === 'IN_PROGRESS' ? 'Stop download' : 'Download file'"
+     [matTooltip]="this.dFile?.state === 'IN_PROGRESS' ? ('STOP_DOWNLOAD' | translate) : ('DOWNLOAD_FILE' | translate)"
      class="download-file-button"
   >
     <ng-container *ngIf="dFile as download">
       <ng-container *ngIf="download.state !== 'DONE'"
                 class="progress-spinner">
         <mat-progress-spinner
-          [mode]="download.state === 'IN_PROGRESS' ? 'determinate' : 'indeterminate'"
+          [mode]="download.state === 'IN_PROGRESS' ? ('DETERMINATE' | translate) : ('INDETERMINATE' | translate)"
           [value]='download.progress'
           [diameter]="40">
         </mat-progress-spinner>

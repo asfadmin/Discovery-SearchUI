@@ -1,20 +1,20 @@
 <div>
   <div *ngIf="!!filters.filterMaster">
-    <b>Reference: </b> {{ filters.filterMaster }}
+    <b>{{ 'REFERENCE' | translate }}: </b> {{ filters.filterMaster }}
   </div>
   <div *ngIf="!!filters.dateRange.start">
-    <b>Start: </b> {{ filters.dateRange.start | shortDate }}
+    <b>{{'START' | translate}}: </b> {{ filters.dateRange.start | shortDate }}
   </div>
   <div *ngIf="!!filters.dateRange.end">
-    <b>End: </b> {{ filters.dateRange.end | shortDate }}
+    <b>{{'END' | translate}}: </b> {{ filters.dateRange.end | shortDate }}
   </div>
   <div *ngIf="filters.temporalRange.start !== null || filters.temporalRange.end !== null">
-    <b>Temporal: </b> {{ filters.temporalRange.start }} to {{ filters.temporalRange.end }}
+    <b>{{'TEMPORAL' | translate}}: </b> {{ filters.temporalRange.start }} to {{ filters.temporalRange.end }}
   </div>
   <div *ngIf="filters.perpendicularRange.start !== null || filters.perpendicularRange.end !== null">
-    <b>Perpendicular: </b> {{ filters.perpendicularRange.start }} to {{ filters.perpendicularRange.end }}
+    <b>{{'PERPENDICULAR' | translate}}: </b> {{ filters.perpendicularRange.start }} to {{ filters.perpendicularRange.end }}
   </div>
   <div *ngIf="filters.season.start !== null || filters.season.end !== null">
-    <b>Season: </b> {{ filters.season.start }} to {{ filters.season.end }}
+    <b>{{'SEASON' | translate}}: </b> {{ filters.season.start }} to {{ filters.season.end }}
   </div>
 </div>

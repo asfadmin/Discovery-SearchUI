@@ -9,12 +9,12 @@
     <div style="display: flex; justify-content: space-between;">
       <div>
         <span style="margin-left: 20px;" class="v-mid">
-          <b>Selected</b> <span> • </span> {{ selectedMission }} </span>
+          <b>{{ 'SELECTED' | translate }}</b> <span> • </span> {{ selectedMission }} </span>
       </div>
       <div>
         <mat-icon (click)="setMission(null)"
           style="margin-right: 10px;" class="clickable v-mid" mat-list-icon
-          matTooltip="Clear selected mission">clear</mat-icon>
+          matTooltip="Clear selected mission">{{'CLEAR' | translate}}</mat-icon>
       </div>
     </div>
     <mat-divider style="margin-top: 12px;" [inset]="true"></mat-divider>

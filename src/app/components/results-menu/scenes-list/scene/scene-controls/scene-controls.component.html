@@ -1,6 +1,6 @@
 <div>
   <div class="scene-control">
-    <mat-icon (click)="onZoomTo()" class="ml-2" matTooltip="Zoom to scene">
+    <mat-icon (click)="onZoomTo()" class="ml-2" matTooltip="{{'ZOOM_TO_SCENE' | translate}}">
       settings_overscan
     </mat-icon>
 
@@ -17,8 +17,8 @@
       class="icon-margin"
       matTooltip="{{
         isQueued ?
-          'Remove scene files from downloads':
-          'Add scene files to downloads'
+          ('REMOVE_SCENE_FILES_FROM_DOWNLOADS' | translate):
+          ('ADD_SCENE_FILES_TO_DOWNLOADS' | translate)
       }}">
       {{ isQueued ? 'shopping_cart' : 'add_shopping_cart' }}
     </mat-icon>

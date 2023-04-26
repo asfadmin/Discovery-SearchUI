@@ -18,6 +18,7 @@ import { SubscriptionFiltersComponent } from './on-demand-subscription/subscript
 import { SubscriptionJobOptionsComponent } from './on-demand-subscription/subscription-job-options/subscription-job-options.component';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {Hyp3UrlModule} from '@components/shared/hyp3-url/hyp3-url.module';
+import { SharedModule } from '@shared';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import {Hyp3UrlModule} from '@components/shared/hyp3-url/hyp3-url.module';
         MatSlideToggleModule,
         CopyToClipboardModule,
         Hyp3UrlModule,
+        SharedModule
     ],
   exports: [
     OnDemandSubscriptionsComponent,

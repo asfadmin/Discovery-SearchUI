@@ -11,6 +11,8 @@ import { JobStatusSelectorModule } from '@components/shared/selectors/job-status
 import { DateSelectorModule } from '@components/shared/selectors/date-selector';
 import { JobProductNameSelectorModule } from '@components/shared/selectors/job-product-name-selector';
 
+import { SharedModule } from '@shared';
+
 @NgModule({
   declarations: [CustomProductsFiltersComponent],
   imports: [
@@ -21,7 +23,8 @@ import { JobProductNameSelectorModule } from '@components/shared/selectors/job-p
     SearchTypeSelectorModule,
     ProjectNameSelectorModule,
     JobStatusSelectorModule,
-    JobProductNameSelectorModule
+    JobProductNameSelectorModule,
+    SharedModule
   ],
   exports: [
     CustomProductsFiltersComponent

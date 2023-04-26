@@ -9,7 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSliderModule } from '@angular/material/slider';
-
+import { SharedModule } from "@shared";
 
 @NgModule({
   declarations: [
@@ -24,6 +24,7 @@ import { MatSliderModule } from '@angular/material/slider';
     MatInputModule,
     MatSlideToggleModule,
     MatSliderModule,
+    SharedModule
   ],
   exports: [
     DateRangeComponent

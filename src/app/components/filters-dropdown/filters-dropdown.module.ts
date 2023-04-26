@@ -21,6 +21,7 @@ import { SarviewsFiltersModule } from './sarviews-filters';
 import { SearchSelectorModule } from '@components/shared/selectors/search-selector';
 
 import {DocsModalModule} from '@components/shared/docs-modal';
+import { SharedModule } from '@shared';
 
 @NgModule({
   imports: [
@@ -40,6 +41,7 @@ import {DocsModalModule} from '@components/shared/docs-modal';
     CancelFilterChangesModule,
     ClearButtonModule,
     MaxResultsSelectorModule,
+    SharedModule,
 
     SearchSelectorModule,
     DocsModalModule,

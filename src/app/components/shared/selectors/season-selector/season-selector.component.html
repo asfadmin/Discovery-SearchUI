@@ -3,7 +3,7 @@
   [(ngModel)]="isSeasonalSearch"
   style="margin: 10px 0;"
 >
-  Seasonal Search
+  {{ 'SEASONAL_SEARCH' | translate }}
 </mat-slide-toggle>
 
 <div *ngIf="isSeasonalSearch" class="season-selector">
@@ -18,7 +18,7 @@
   <!-- <app-date-range></app-date-range> -->
   <div class="dates">
     <div>
-      <b>Season Start Day </b>
+      <b>{{ 'SEASON_START_DAY' | translate }} </b>
       <div class="buttons">
         <div *ngIf="start" class="date">{{ this.start | shortDateSeason }}</div>
         <button (click)="change('start', -1)" mat-raised-button color="accent">-1</button>
@@ -26,7 +26,7 @@
       </div>
     </div>
     <div>
-      <b>Season End Day </b>
+      <b>{{ 'SEASON_END_DAY' | translate }} </b>
       <div class="buttons">
         <div *ngIf="end" class="date">{{ end | shortDateSeason }}</div>
         <button (click)="change('end', -1)" mat-raised-button color="accent">-1</button>

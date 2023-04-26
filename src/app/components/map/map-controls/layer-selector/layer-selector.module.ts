@@ -7,7 +7,8 @@ import { MatMenuModule } from '@angular/material/menu';
 
 import { LayerSelectorComponent } from './layer-selector.component';
 import { GridlinesSelectorModule } from '@components/map/map-controls/gridlines-selector';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { SharedModule } from "@shared";
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatMenuModule,
     MatSharedModule,
     MatCheckboxModule,
-    GridlinesSelectorModule
+    GridlinesSelectorModule,
+    SharedModule
   ],
   exports: [
     LayerSelectorComponent

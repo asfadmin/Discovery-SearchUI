@@ -9,7 +9,7 @@
 
       <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
         <mat-panel-title>
-          Search Options
+          {{ 'SEARCH_OPTIONS' | translate }}
         </mat-panel-title>
       </mat-expansion-panel-header>
 
@@ -25,7 +25,7 @@
 
       <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
         <mat-panel-title class="panel-title">
-          Search List Input
+          {{ 'SEARCH_LIST_INPUT'| translate }}
           <div class="asf-manual-link">
             <app-docs-modal
               url="https://docs.asf.alaska.edu/vertex/manual/#list-search-options">
@@ -39,7 +39,7 @@
           <div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: center; margin-bottom: 10px;">
             <div style="margin-right: 15px;">
               <h4>
-                <span>List Type: </span>
+                <span>{{ 'LIST_TYPE'| translate }} </span>
               </h4>
             </div>
             <div>
@@ -48,15 +48,15 @@
                 <mat-button-toggle
                   (click)="onSceneModeSelected()"
                   [value]="types.SCENE"
-                  matTooltip="Scene List Search">
-                  Scene
+                  matTooltip="{{'SCENE_LIST_SEARCH' | translate}}">
+                  {{ 'SCENE' | translate }}
                 </mat-button-toggle>
 
                 <mat-button-toggle
                   (click)="onProductModeSelected()"
                   [value]="types.PRODUCT"
-                  matTooltip="File List Search">
-                  File
+                  matTooltip="{{ 'FILE_LIST_SEARCH' | translate }}">
+                  {{ 'FILE' |  translate }}
                 </mat-button-toggle>
               </mat-button-toggle-group>
             </div>
@@ -67,7 +67,7 @@
                         (input)="onTextInputChange($event)"
                         [(ngModel)]="searchList"
                         style="height: 150px;"
-                        placeholder="List of {{ mode === types.SCENE ? 'Scene names' : 'File IDs.' }}">
+                        placeholder="{{ 'LIST_OF' | translate }} {{ mode === types.SCENE ? ( 'SCENE_NAMES' | translate ): ( 'FILE_IDS'|translate ) }}">
               </textarea>
             </mat-form-field>
             <div class="drop-file-area file-upload-container"
@@ -79,19 +79,19 @@
         <div class="ls-example">
           <div>
             <span>
-              Example: {{listExamples[mode]}}
+              {{ 'EXAMPLE' | translate }} {{listExamples[mode]}}
             </span>
             <div>
               <app-copy-to-clipboard
                 [value]="listExamples[mode]"
-                [prompt]="mode === types.SCENE ? 'Copy Scene names' : 'Copy File IDs'"
+                [prompt]="mode === types.SCENE ? ('COPY_SCENE_NAMES' | translate) : ('COPY_FILE_IDS' | translate)"
                 style="margin: 0 3px;"
                 class="clipboard-icon">
               </app-copy-to-clipboard>
             </div>
             <div>
               <span>
-                File Import Supported (csv, geojson{{ mode == types.SCENE ? ", metalink, kml" : ""}})
+                {{ 'FILE_IMPORT_SUPPORTED' | translate }} (csv, geojson{{ mode == types.SCENE ? ", metalink, kml" : ""}})
               </span>
             </div>
           </div>

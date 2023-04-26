@@ -9,7 +9,7 @@
 
             <div class="fx-empty group-margin" *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS">
               <div fxLayout="row" fxLayoutAlign="left" class="button-group-label">
-                <label>&nbsp;Map View</label>
+                <label>&nbsp;{{ 'MAP_VIEW' |  translate }}</label>
               </div>
 
               <div class="fx-row">
@@ -20,20 +20,20 @@
 
             <div class="fx-empty zoom-buttons">
               <div class="fx-row-center button-group-label">
-                <label>Zoom</label>
+                <label>{{ 'ZOOM' |  translate }}</label>
               </div>
               <div class="fx-row">
                 <div>
                   <mat-button-toggle-group class="fx-empty" name="layerType">
                     <mat-button-toggle class="control-mat-button-toggle"
                                        (click)="zoomIn()"
-                                       matTooltip="Zoom In">
+                                       matTooltip="{{ 'ZOOM_IN' | translate }}">
                       <mat-icon class="control-icon">add</mat-icon>
                     </mat-button-toggle>
 
                     <mat-button-toggle class="control-mat-button-toggle"
                                        (click)="zoomOut()"
-                                       matTooltip="Zoom out">
+                                       matTooltip="{{ 'ZOOM_OUT' | translate }}">
                       <mat-icon class="control-icon">remove</mat-icon>
                     </mat-button-toggle>
                   </mat-button-toggle-group>
@@ -43,7 +43,7 @@
 
             <div *ngIf="(view$ | async) === viewTypes.EQUATORIAL" class="fx-empty group-margin">
               <div class="fx-row-center button-group-label">
-                <label>Layers</label>
+                <label>{{ 'LAYERS' |  translate }}</label>
               </div>
               <div class="fx-row">
                 <app-layer-selector></app-layer-selector>
@@ -52,7 +52,7 @@
 
             <div *ngIf="searchType === searchTypes.DATASET || searchType === searchTypes.SBAS" class="fx-empty group-margin">
               <div class="fx-row-center button-group-label">
-                <label>Area of Interest</label>
+                <label>{{ 'AREA_OF_INTEREST' |  translate }}</label>
               </div>
               <div class="fx-row">
                 <app-interaction-selector>
@@ -63,7 +63,7 @@
             <!-- Product Browse  -->
             <div class="fx-empty group-margin" *ngIf="searchType === searchTypes.SARVIEWS_EVENTS">
                 <div  class="fx-row-center button-group-label" style="white-space: nowrap;">
-                  <label>Product</label>
+                  <label>{{ 'PRODUCT' |  translate }}</label>
                 </div>
                 <div class="fx-row-center">
                   <div>
@@ -72,7 +72,7 @@
                       <mat-button-toggle class="control-mat-button-toggle "
                       *ngIf="searchType === searchTypes.SARVIEWS_EVENTS"
                       (click)="onUnpinAll()"
-                      matTooltip="Unpin All Selected Products">
+                      matTooltip="{{'UNPIN_ALL_SELECTED_PRODUCTS' | translate}}">
                       <mat-icon class="control-icon" svgIcon="unpin"></mat-icon>
                     </mat-button-toggle>
                     </mat-button-toggle-group>
@@ -81,9 +81,10 @@
             </div>
 
             <!-- Opacity Control -->
-            <div class="fx-empty group-margin" *ngIf="searchType !== searchTypes.BASELINE && searchType !== searchTypes.SBAS">
+            <div *ngIf="searchType !== searchTypes.BASELINE && searchType !== searchTypes.SBAS"
+              class="fx-empty group-margin">
               <div class="fx-row-center button-group-label">
-                <label>Opacity</label>
+                <label>{{'OPACITY' | translate}}</label>
               </div>
               <div class="fx-row">
                 <button mat-stroked-button class="opacity-slider-button"
@@ -95,7 +96,7 @@
                 </button>
                 <mat-menu #opacitySlider="matMenu" class="opacity-slider-mat-menu">
                   <div class="opacity-slider-title">
-                    Opacity of Browse Images
+                    {{ 'OPACITY_OF_BROWSE_IMAGES' |  translate }}
                   </div>
                   <mat-slider thumbLabel tickInterval="0.1" step="0.05" value="1" min="0.0" max="1.0"
                               class="opacity-slider"
@@ -103,7 +104,7 @@
                               (input)="onSetOpacity($event)"
                               color="primary"
                               [disabled]="!(isBrowseOverlayEnabled$ | async)"
-                              [matTooltip]="(isBrowseOverlayEnabled$ | async) ? 'Adjust Overlay Opacity' :
+                              [matTooltip]="(isBrowseOverlayEnabled$ | async) ? ('ADJUST_OVERLA_ OPACITY' | translate) :
                                'Product Overlays for current scene dataset not available'"
                   >
                   </mat-slider>
