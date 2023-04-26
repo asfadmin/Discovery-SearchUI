@@ -70,18 +70,4 @@ export class AsfLanguageService {
     this.setCurrent(currentLanguage);
 
   }
-
-  // public onProfileSelectionChange(language: string): void {
-  //   window.dataLayer = window.dataLayer || [];
-  //   window.dataLayer.push({
-  //     'event': 'language-selected',
-  //     'language': language,
-  //   });
-  //   const languageCookie = 'Language';
-  //   this.cookieService.set(languageCookie, language);
-  //   this.translate.use(language)
-  //   console.log('onProfileSelectionChange() Language cookie set to:', language);
-  //   this.selectedChange.emit(language);
-  // }
-
 }
