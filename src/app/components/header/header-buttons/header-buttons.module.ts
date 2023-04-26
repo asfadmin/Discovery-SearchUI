@@ -16,7 +16,7 @@ import { PreferencesComponent } from './preferences/preferences.component';
 import { CustomizeEnvComponent } from './customize-env/customize-env.component';
 import { OnlynumberDirective } from '@directives/onlynumber.directive';
 import { SharedModule } from '@shared';
-import {LanguageSelectorModule} from "@components/shared/selectors/language-selector/language-selector.module";
+import { LanguageSelectorModule } from "@components/shared/selectors/language-selector/language-selector.module";
 
 @NgModule({
   declarations: [

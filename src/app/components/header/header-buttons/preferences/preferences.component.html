@@ -64,13 +64,13 @@
         </button>
       </mat-form-field>
 
-      <div class="section-heading">Default Theme</div>
+      <div class="section-heading">Default Language and Theme</div>
       <div class="language-theme">
           <div class="language-selector">
             <mat-form-field class="default-filters-presets">
               <mat-label>Default Language</mat-label>
               <mat-select
-                [(value)]="translate.currentLang"
+                [(value)]="defaultLanguage"
                 (selectionChange)="onChangeDefaultLanguage($event.value)"
                 name="preset">
                 <mat-option [value]="lang" *ngFor="let lang of translate.getLangs()">
