@@ -183,7 +183,7 @@
               [disabled]="!(isLoggedIn$ | async)">
             </app-download-all>
             <button mat-menu-item (click)="onMakeDownloadScript()">
-              {{ 'DOWNLOAD_PYTHON_RIPT_PY' |  translate }}
+              {{ 'DOWNLOAD_PYTHON_SCRIPT_PY' |  translate }}
             </button>
             <button mat-menu-item [disabled]="queueHasOnDemandProducts || queueHasEventMonitoringProducts" (click)="onMetalinkDownload()">
               {{ 'METADATA_METALINK' |  translate }}
