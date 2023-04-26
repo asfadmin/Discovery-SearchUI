@@ -10,16 +10,15 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { HttpClient } from "@angular/common/http";
 
-export function TranslateLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-}
-@NgModule({
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}@NgModule({
   imports: [
     CommonModule,
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
-        useFactory: (TranslateLoaderFactory),
+        useFactory: (HttpLoaderFactory),
         deps: [ HttpClient ]
       }
     })
