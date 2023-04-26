@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSharedModule } from '@shared';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { SbasResultsMenuModule } from '../sbas-results-menu/sbas-results-menu.module';
 import { SBASChartModule } from '@components/sbas-chart/sbas-chart.module';
@@ -26,7 +25,7 @@ import { SharedModule } from "@shared";
     CommonModule,
     MatSharedModule,
     MatButtonToggleModule,
-    FlexLayoutModule,
+
     SharedModule,
     SBASChartModule,
     BaselineChartModule,

@@ -1,25 +1,25 @@
 <ng-container *ngIf="(numberOfScenes$ | async) > 0 || (numSarviewsScenes$ | async) > 0">
   <ng-container *ngIf="breakpoint$ | async as breakpoint">
     <div [className]="searchType === SearchTypes.BASELINE && breakpoint > breakpoints.MOBILE ?
-                                        'files-header-baseline' : 'files-header mobile-size'">
+      'files-header-baseline' : 'files-header mobile-size'">
       <div class="header-row-left"
         [ngClass]="{
-          'sbas-header-row-left': searchType === SearchTypes.SBAS,
-          'mobile-size': breakpoint <= breakpoints.SMALL
+        'sbas-header-row-left': searchType === SearchTypes.SBAS,
+        'mobile-size': breakpoint <= breakpoints.SMALL
         }">
 
         <div *ngIf="searchType === SearchTypes.DATASET || searchType === SearchTypes.LIST" class="mr-10 scene-count">
           {{ numberOfScenes$ | async }} {{ 'SCENE' | translate }}{{ (numberOfScenes$ | async) === 1 ? '' : 's' }}
           <span *ngIf="breakpoint > breakpoints.MOBILE" style="font-size: small;">
             <br>
-            ({{ numberOfProducts$ | async }} {{ 'OF' | translate}}
-            {{ formatNumber(totalResultCount$ | async) }}
-            {{ 'FILE' | translate }}{{ (numberOfProducts$ | async) === 1 ? '' : 's' }})
+              ({{ numberOfProducts$ | async }} {{ 'OF' | translate}}
+              {{ formatNumber(totalResultCount$ | async) }}
+              {{ 'FILE' | translate }}{{ (numberOfProducts$ | async) === 1 ? '' : 's' }})
           </span>
         </div>
 
         <div *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS" class="mr-10 event-count" event
-        [class.mobile-event]="breakpoint === breakpoints.MOBILE">
+          [class.mobile-event]="breakpoint === breakpoints.MOBILE">
           {{ numberOfFilteredEvents$ | async }} {{'EVENT' | translate}}{{ (numSarviewsScenes$ | async) === 1 ? '' : 's' }}
         </div>
 
@@ -27,7 +27,7 @@
           {{ numPairs$ | async }} {{ 'PAIR'| translate }}{{ (numPairs$ | async) === 1 ? '' : 's' }}
           <span *ngIf="!!sbasProducts && breakpoint > breakpoints.MEDIUM" style="font-size: small;">
             <br>
-            ({{ sbasProducts.length }} {{ 'SCENE' | translate }}{{ sbasProducts.length === 1 ? '' : 's' }})
+              ({{ sbasProducts.length }} {{ 'SCENE' | translate }}{{ sbasProducts.length === 1 ? '' : 's' }})
           </span>
         </div>
 
@@ -41,20 +41,20 @@
 
         <div class="space-filler"></div>
 
-        <div *ngIf="products">
-          <div *ngIf="canHideRawData" fxFlex="" class="list-button-group">
-            <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+        <div *ngIf="products" class="scenes-list-buttons--layout">
+          <div *ngIf="canHideRawData"  class="list-button-group">
+            <div class="fx-row-center button-group-label">
               <label>{{ 'RAW' | translate }}</label>
             </div>
-            <div fxLayout="row">
+            <div class="fx-row">
               <div>
-                <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
+                <mat-button-toggle-group name="fx-empty layerType" class="mr-10">
                   <mat-button-toggle (click)="onToggleS1RawData()"
-                                     class="control-mat-button-toggle clickable noselect"
-                                     [matTooltip]="showS1RawData ? ('HIDE_RAW_DATA' | translate) : ('SHOW_RAW_DATA' | translate)">
+                    class="control-mat-button-toggle clickable noselect"
+                    [matTooltip]="showS1RawData ? ('HIDE_RAW_DATA' | translate) : ('SHOW_RAW_DATA' | translate)">
                     <mat-icon class="list-icon"
-                              [class.material-icons-outlined]="showS1RawData">
-                              remove_red_eye
+                      [class.material-icons-outlined]="showS1RawData">
+                      remove_red_eye
                     </mat-icon>
                   </mat-button-toggle>
                 </mat-button-toggle-group>
@@ -62,19 +62,19 @@
             </div>
           </div>
 
-          <div *ngIf="canHideExpiredData" fxFlex="" class="list-button-group">
-            <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+          <div *ngIf="canHideExpiredData" class="fx-empty list-button-group">
+            <div class="fx-row-center button-group-label">
               <label>{{ 'EXPIRED' | translate }}</label>
             </div>
-            <div fxLayout="row">
+            <div class="fx-row">
               <div>
-                <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
+                <mat-button-toggle-group name="layerType" class="fx-empty mr-10">
                   <mat-button-toggle (click)="onToggleExpiredData()"
-                                     class="control-mat-button-toggle clickable noselect"
-                                     [matTooltip]="showExpiredData ? 'Hide expired products' : 'Show expired products'">
+                    class="control-mat-button-toggle clickable noselect"
+                    [matTooltip]="showExpiredData ? 'Hide expired products' : 'Show expired products'">
                     <mat-icon class="list-icon"
-                              [class.material-icons-outlined]="showExpiredData">
-                              remove_red_eye
+                      [class.material-icons-outlined]="showExpiredData">
+                      remove_red_eye
                     </mat-icon>
                   </mat-button-toggle>
                 </mat-button-toggle-group>
@@ -82,18 +82,18 @@
             </div>
           </div>
 
-          <div fxFlex="" class="list-button-group">
-            <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+          <div class="fx-empty list-button-group">
+            <div class="fx-row-center button-group-label">
               <label>{{ 'ZOOM' | translate }}</label>
             </div>
-            <div fxLayout="row">
+            <div class="fx-row">
               <div>
-                <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
+                <mat-button-toggle-group name="layerType" class="fx-empty mr-10">
                   <mat-button-toggle (click)="onZoomToResults()"
-                                     class="control-mat-button-toggle clickable noselect"
-                                     matTooltip="{{ 'ZOOM_TO_RESULTS' | translate }}">
+                    class="control-mat-button-toggle clickable noselect"
+                    matTooltip="{{ 'ZOOM_TO_RESULTS' | translate }}">
                     <mat-icon class="list-icon">
-                        settings_overscan
+                      settings_overscan
                     </mat-icon>
                   </mat-button-toggle>
                 </mat-button-toggle-group>
@@ -101,16 +101,16 @@
             </div>
           </div>
 
-          <div fxFlex="" class="list-button-group" *ngIf="searchType !== SearchTypes.SARVIEWS_EVENTS">
-            <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+          <div class="fx-empty list-button-group" *ngIf="searchType !== SearchTypes.SARVIEWS_EVENTS">
+            <div class="fx-row-center button-group-label">
               <label>{{ 'QUEUE' |  translate }}</label>
             </div>
-            <div fxLayout="row">
+            <div class="fx-row">
               <div>
-                <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10 clickable noselect ">
+                <mat-button-toggle-group name="layerType" class="fx-empty mr-10 clickable noselect ">
                   <mat-button-toggle class="control-mat-button-toggle"
-                                     [matMenuTriggerFor]="addAllProducts"
-                                     matTooltip="{{ 'ADD_ALL_RESULTS_TO_DOWNLOADS' | translate }}">
+                    [matMenuTriggerFor]="addAllProducts"
+                    matTooltip="{{ 'ADD_ALL_RESULTS_TO_DOWNLOADS' | translate }}">
                     <mat-icon class="list-icon">
                       add_shopping_cart
                     </mat-icon>
@@ -120,16 +120,16 @@
             </div>
           </div>
 
-          <div fxFlex="" class="list-button-group" *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS">
-            <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+          <div class="fx-empty list-button-group" *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS">
+            <div class="fx-row-center button-group-label">
               <label>{{ 'QUEUE' |  translate }}</label>
             </div>
-            <div fxLayout="row">
+            <div class="fx-row">
               <div>
-                <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10 clickable noselect ">
+                <mat-button-toggle-group name="layerType" class="fx-empty mr-10 clickable noselect ">
                   <mat-button-toggle class="control-mat-button-toggle"
-                                     [matMenuTriggerFor]="QueueAllSARViewsProducts"
-                                     matTooltip="{{ 'ADD' | translate | titlecase }} {{(productsHiddenByFilters$ | async) ? ('FILTERED' | translate) : ( 'ALL' | translate ) }} {{ 'PRODUCTS_TO_DOWNLOADS_FROM_SELECTED_EVENT' | translate}}">
+                    [matMenuTriggerFor]="QueueAllSARViewsProducts"
+                    matTooltip="{{ 'ADD' | translate | titlecase }} {{(productsHiddenByFilters$ | async) ? ('FILTERED' | translate) : ( 'ALL' | translate ) }} {{ 'PRODUCTS_TO_DOWNLOADS_FROM_SELECTED_EVENT' | translate}}">
                     <mat-icon class="list-icon">
                       add_shopping_cart
                     </mat-icon>
@@ -140,17 +140,17 @@
           </div>
 
           <div *ngIf="searchType !== SearchTypes.CUSTOM_PRODUCTS && hyp3able.total > 0"
-            fxFlex="" class="list-button-group">
-            <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+            class="fx-empty list-button-group">
+            <div class="fx-row-center button-group-label">
               <label>{{ 'ON_DEMAND' | translate }}</label>
             </div>
-            <div fxLayout="row">
+            <div class="fx-row">
               <div>
-                <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
+                <mat-button-toggle-group name="layerType" class="fx-empty mr-10">
                   <mat-button-toggle class="control-mat-button-toggle clickable noselect"
-                                     [matMenuTriggerFor]="listAdd.addMenu"
-                                     [matMenuTriggerData]="{ hyp3able: hyp3able.byJobType }"
-                                     matTooltip="{{'ADD_ALL_RESULTS_TO_ON_DEMAND_QUEUE' | translate }}">
+                    [matMenuTriggerFor]="listAdd.addMenu"
+                    [matMenuTriggerData]="{ hyp3able: hyp3able.byJobType }"
+                    matTooltip="{{'ADD_ALL_RESULTS_TO_ON_DEMAND_QUEUE' | translate }}">
                     <mat-icon class="list-icon"
                       svgIcon="hyp3">
                     </mat-icon>
@@ -163,16 +163,16 @@
             </div>
           </div>
 
-          <div *ngIf="searchType === SearchTypes.BASELINE" fxFlex="" class="list-button-group">
-            <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+          <div *ngIf="searchType === SearchTypes.BASELINE" class="fx-empty list-button-group">
+            <div class="fx-row-center button-group-label">
               <label>{{ 'EXPORT' |  translate }}</label>
             </div>
-            <div fxLayout="row">
+            <div class="fx-row">
               <div>
-                <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
+                <mat-button-toggle-group name="layerType" class="fx-empty mr-10">
                   <mat-button-toggle class="control-mat-button-toggle clickable noselect"
-                                     [matMenuTriggerFor]="ExportAll"
-                                     matTooltip="{{ 'DOWNLOAD_DATA_METADATA_AS' | translate }}">
+                    [matMenuTriggerFor]="ExportAll"
+                    matTooltip="{{ 'DOWNLOAD_DATA_METADATA_AS' | translate }}">
                     <mat-icon class="list-icon">
                       get_app
                     </mat-icon>
@@ -182,16 +182,16 @@
             </div>
           </div>
 
-          <div *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS" fxFlex="" class="list-button-group">
-            <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+          <div *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS" class="fx-empty list-button-group">
+            <div class="fx-row-center button-group-label">
               <label>{{ 'EXPORT' |  translate }}</label>
             </div>
-            <div fxLayout="row">
+            <div class="fx-row">
               <div>
-                <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
+                <mat-button-toggle-group name="layerType" class="fx-empty mr-10">
                   <mat-button-toggle class="control-mat-button-toggle clickable noselect"
-                                     [matMenuTriggerFor]="ExportAllSARViewsData"
-                                     matTooltip="{{ 'DOWNLOAD_DATA_METADATA_AS' | translate }}">
+                    [matMenuTriggerFor]="ExportAllSARViewsData"
+                    matTooltip="{{ 'DOWNLOAD_DATA_METADATA_AS' | translate }}">
                     <mat-icon class="list-icon">
                       get_app
                     </mat-icon>
@@ -202,91 +202,77 @@
           </div>
 
           <div *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS && !!sarviewsEventProducts"
-          fxFlex="" class="list-button-group">
-          <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-            <label>{{ 'ON_DEMAND' | translate }}</label>
-          </div>
-          <div fxLayout="row">
-            <div>
-              <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
-                <mat-button-toggle
-                [matMenuTriggerFor]="eventMonitoringOnDemand.addMenu"
-                [matMenuTriggerData]="{ hyp3able: hyp3ableEventProducts.byJobType }"
-                class="control-mat-button-toggle clickable noselect"
-                                   matTooltip="{{'ADD' | translate | titlecase }} {{(productsHiddenByFilters$ | async) ? ('FILTERED' | translate) : ( 'ALL' | translate)}} {{'RESULTS_TO_ON_DEMAND_QUEUE' | translate }}">
-                  <mat-icon class="list-icon"
-                    svgIcon="hyp3">
-                  </mat-icon>
-                </mat-button-toggle>
-              </mat-button-toggle-group>
-              <app-on-demand-add-menu #eventMonitoringOnDemand>
-                <!-- <ng-template matMenuContent>
-                  <button
-                  [matMenuTriggerFor]="eventMonitoringOnDemandAllProducts"
-                  [matMenuTriggerData]="{job_types: [RTC, InSAR]}"
-                  mat-menu-item>
-                  All Event Products
-                </button>
-                  <button
-                  [mat-menu-trigger-for]="eventMonitoringOnDemandSelectedProducts"
-                  [matMenuTriggerData]="{selected_products : (selectedEventProducts$ | async)}"
-                  mat-menu-item>
-                    Selected Event Products
-                  </button>
-                </ng-template> -->
-              </app-on-demand-add-menu>
-              <mat-menu #eventMonitoringOnDemandAllProducts>
-                <ng-template matMenuContent let-jobTypes="job_types">
-                  <button (click)="addOnDemandEventProductsBySearchType(t)" mat-menu-item *ngFor="let t of jobTypes">
-                    {{ 'ADD' | translate }} {{EventMonitoringByJobType(t).length}} {{t.name === "RTC GAMMA" ? 'SLC' : t.name}}{{ 'JOBS' | translate}}
-                    <mat-icon (click)="onOpenHelp(t.infoUrl)" class="clickable" style="margin-left: 10px;">info</mat-icon>
-                  </button>
-                </ng-template>
-              </mat-menu>
-              <mat-menu #eventMonitoringOnDemandSelectedProducts>
-                <ng-template matMenuContent let-selected="selected_products">
-                  <button [disabled]="selected.length === 0" mat-menu-item (click)="addOnDemandEventProducts(selected)">
-                    {{ 'ADD' | translate }} {{selected.length > 0 ? selected.length : ''}} {{ 'SELECTED_JOB' | translate }}{{selected.length !== 1 ? 's' : ''}}
-                  </button>
-                </ng-template>
-              </mat-menu>
+            class="fx-empty list-button-group">
+            <div class="fx-row-center button-group-label">
+              <label>{{ 'ON_DEMAND' | translate }}</label>
+            </div>
+            <div class="fx-row">
+              <div>
+                <mat-button-toggle-group name="layerType" class="fx-empty mr-10">
+                  <mat-button-toggle
+                    [matMenuTriggerFor]="eventMonitoringOnDemand.addMenu"
+                    [matMenuTriggerData]="{ hyp3able: hyp3ableEventProducts.byJobType }"
+                    class="control-mat-button-toggle clickable noselect"
+                    matTooltip="{{'ADD' | translate | titlecase }} {{(productsHiddenByFilters$ | async) ? ('FILTERED' | translate) : ( 'ALL' | translate)}} {{'RESULTS_TO_ON_DEMAND_QUEUE' | translate }}">
+                    <mat-icon class="list-icon"
+                      svgIcon="hyp3">
+                    </mat-icon>
+                  </mat-button-toggle>
+                </mat-button-toggle-group>
+                <app-on-demand-add-menu #eventMonitoringOnDemand>
+                </app-on-demand-add-menu>
+                <mat-menu #eventMonitoringOnDemandAllProducts>
+                  <ng-template matMenuContent let-jobTypes="job_types">
+                    <button (click)="addOnDemandEventProductsBySearchType(t)" mat-menu-item *ngFor="let t of jobTypes">
+                      {{ 'ADD' | translate }} {{EventMonitoringByJobType(t).length}} {{t.name === "RTC GAMMA" ? 'SLC' : t.name}}{{ 'JOBS' | translate}}
+                      <mat-icon (click)="onOpenHelp(t.infoUrl)" class="clickable" style="margin-left: 10px;">info</mat-icon>
+                    </button>
+                  </ng-template>
+                </mat-menu>
+                <mat-menu #eventMonitoringOnDemandSelectedProducts>
+                  <ng-template matMenuContent let-selected="selected_products">
+                    <button [disabled]="selected.length === 0" mat-menu-item (click)="addOnDemandEventProducts(selected)">
+                      {{ 'ADD' | translate }} {{selected.length > 0 ? selected.length : ''}} {{ 'SELECTED_JOB' | translate }}{{selected.length !== 1 ? 's' : ''}}
+                    </button>
+                  </ng-template>
+                </mat-menu>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS" fxFlex="" class="list-button-group">
-          <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-            <label>{{ 'COPY' | translate }}</label>
-          </div>
-          <div fxLayout="row">
-            <div>
-              <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
-                <mat-button-toggle class="control-mat-button-toggle clickable noselect"
-                [matMenuTriggerFor]="eventMonitoringOptions"
-                [matMenuTriggerData]="{ selected: (selectedEventProducts$ | async)}"
-                matTooltip="Copy ids/urls"
-                >
-                <fa-icon class="list-icon" [icon]="copyIcon"></fa-icon>
-                </mat-button-toggle>
-              </mat-button-toggle-group>
+          <div *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS" class="fx-empty list-button-group">
+            <div class="fx-row-center button-group-label">
+              <label>{{ 'COPY' | translate }}</label>
+            </div>
+            <div class="fx-row">
+              <div>
+                <mat-button-toggle-group name="layerType" class="fx-empty mr-10">
+                  <mat-button-toggle class="control-mat-button-toggle clickable noselect"
+                    [matMenuTriggerFor]="eventMonitoringOptions"
+                    [matMenuTriggerData]="{ selected: (selectedEventProducts$ | async)}"
+                    matTooltip="Copy ids/urls"
+                  >
+                    <fa-icon class="list-icon" [icon]="copyIcon"></fa-icon>
+                  </mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
             </div>
           </div>
-        </div>
 
-          <div *ngIf="searchType === SearchTypes.SBAS" fxFlex="" class="list-button-group">
-            <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+          <div *ngIf="searchType === SearchTypes.SBAS" class="fx-empty list-button-group">
+            <div class="fx-row-center button-group-label">
               <label>{{ 'PAIRS' | translate }}</label>
             </div>
-            <div fxLayout="row">
+            <div class="fx-row">
               <div>
-                <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
+                <mat-button-toggle-group name="layerType" class="fx-empty mr-10">
                   <mat-button-toggle
                     (click)="onDownloadPairCSV()"
                     class="control-mat-button-toggle clickable noselect"
                     matTooltip="Download Pair CSV">
-                      <mat-icon class="list-icon">
-                        get_app
-                      </mat-icon>
+                    <mat-icon class="list-icon">
+get_app
+                    </mat-icon>
                   </mat-button-toggle>
                 </mat-button-toggle-group>
               </div>
@@ -337,7 +323,7 @@
           <button (click)="onMetadataExport(ApiFormat.METALINK)" mat-menu-item>
             metalink
           </button>
-      </div>
+        </div>
       </mat-menu>
 
       <mat-menu #ExportAllSARViewsData="matMenu">
@@ -345,7 +331,7 @@
           <button (click)="onMakeSarviewsProductDownloadScript(sarviewsEventProducts)" mat-menu-item>
             python (.py)
           </button>
-          </div>
+        </div>
       </mat-menu>
 
       <mat-menu #QueueAllSARViewsProducts="matMenu">
@@ -357,28 +343,28 @@
           <button (click)="onQueuePinnedSarviewsProducts()" mat-menu-item>
             {{'SELECTED_EVENT_PRODUCTS' | translate }} ({{pinnedEventIDs.length}} {{ 'FILES' | translate}})
           </button>
-          </div>
-      </mat-menu>
+        </div>
+</mat-menu>
 
-      <ng-container *ngIf="searchType === SearchTypes.BASELINE">
+<ng-container *ngIf="searchType === SearchTypes.BASELINE">
         <div class="header-row-right" *ngIf="breakpoint > breakpoints.MOBILE">
           <div (click)="onTogglePerpendicularSort()" class="header-column noselect clickable">
-              {{ 'METERS' | translate }}
-              <mat-icon *ngIf="perpendicularSort === SortDirection.NONE"
-                class="sort-icon">unfold_more</mat-icon>
-              <mat-icon *ngIf="perpendicularSort === SortDirection.INCREASING"
-                class="sort-icon sort-active">keyboard_arrow_up</mat-icon>
-              <mat-icon *ngIf="perpendicularSort === SortDirection.DECREASING"
-                class="sort-icon sort-active">keyboard_arrow_down</mat-icon>
+            {{ 'METERS' | translate }}
+<mat-icon *ngIf="perpendicularSort === SortDirection.NONE"
+              class="sort-icon">unfold_more</mat-icon>
+            <mat-icon *ngIf="perpendicularSort === SortDirection.INCREASING"
+              class="sort-icon sort-active">keyboard_arrow_up</mat-icon>
+            <mat-icon *ngIf="perpendicularSort === SortDirection.DECREASING"
+              class="sort-icon sort-active">keyboard_arrow_down</mat-icon>
           </div>
           <div (click)="onToggleTemporalSort()" class="header-column clickable noselect">
-              {{ 'DAYS' | translate }}
-              <mat-icon *ngIf="temporalSort === SortDirection.NONE"
-                class="sort-icon">unfold_more</mat-icon>
-              <mat-icon *ngIf="temporalSort === SortDirection.INCREASING"
-                class="sort-icon sort-active">keyboard_arrow_up</mat-icon>
-              <mat-icon *ngIf="temporalSort === SortDirection.DECREASING"
-                class="sort-icon sort-active">keyboard_arrow_down</mat-icon>
+            {{ 'DAYS' | translate }}
+            <mat-icon *ngIf="temporalSort === SortDirection.NONE"
+              class="sort-icon">unfold_more</mat-icon>
+            <mat-icon *ngIf="temporalSort === SortDirection.INCREASING"
+              class="sort-icon sort-active">keyboard_arrow_up</mat-icon>
+            <mat-icon *ngIf="temporalSort === SortDirection.DECREASING"
+              class="sort-icon sort-active">keyboard_arrow_down</mat-icon>
           </div>
           <div class="header-column header-cart">
           </div>
@@ -394,27 +380,27 @@
 <mat-menu #eventMonitoringOptions="matMenu">
   <ng-template matMenuContent let-selectedProducts="selected">
     <button mat-menu-item
-    [matMenuTriggerFor]="eventMonitoringIDs"
-    [matMenuTriggerData]="{selectedProducts: selectedProducts, products: (sarviewsEventProducts$ | async)}">
-    {{ 'SCENE_I_DS' | translate }}
-  </button>
-  <button mat-menu-item
-  [matMenuTriggerFor]="eventMonitoringUrls"
-  [matMenuTriggerData]="{selectedProducts: selectedProducts, products: (sarviewsEventProducts$ | async)}">
-    URLs
-  </button>
-</ng-template>
+      [matMenuTriggerFor]="eventMonitoringIDs"
+      [matMenuTriggerData]="{selectedProducts: selectedProducts, products: (sarviewsEventProducts$ | async)}">
+      {{ 'SCENE_I_DS' | translate }}
+    </button>
+    <button mat-menu-item
+      [matMenuTriggerFor]="eventMonitoringUrls"
+      [matMenuTriggerData]="{selectedProducts: selectedProducts, products: (sarviewsEventProducts$ | async)}">
+      URLs
+    </button>
+  </ng-template>
 </mat-menu>
 
 <mat-menu #eventMonitoringIDs="matMenu">
   <ng-template matMenuContent let-selectedProducts="selectedProducts" let-sarviewsProducts="products">
-  <button mat-menu-item (click) = "copyProductSourceScenes(sarviewsProducts)">
-    {{ 'ALL PRODUCTS' | translate }} ({{getProductSceneCount(sarviewsProducts)}})
-  </button>
-  <button [disabled]="getProductSceneCount(selectedProducts) === 0" mat-menu-item (click) = "copyProductSourceScenes(selectedProducts)">
-    {{ 'SELECTED_PRODUCTS' | translate }} ({{getProductSceneCount(selectedProducts)}})
-  </button>
-</ng-template>
+    <button mat-menu-item (click) = "copyProductSourceScenes(sarviewsProducts)">
+      {{ 'ALL PRODUCTS' | translate }} ({{getProductSceneCount(sarviewsProducts)}})
+    </button>
+    <button [disabled]="getProductSceneCount(selectedProducts) === 0" mat-menu-item (click) = "copyProductSourceScenes(selectedProducts)">
+      {{ 'SELECTED_PRODUCTS' | translate }} ({{getProductSceneCount(selectedProducts)}})
+    </button>
+  </ng-template>
 </mat-menu>
 
 <mat-menu #eventMonitoringUrls="matMenu">

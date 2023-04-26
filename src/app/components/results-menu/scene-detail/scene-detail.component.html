@@ -9,8 +9,8 @@
         <ng-template [ngIf]="!!sarviewEvent.description" [ngIfElse]="NO_DESCRIPTION">
           <span>
             {{
-              sarviewEvent.description[0].toUpperCase() +
-                sarviewEvent.description.slice(1)
+            sarviewEvent.description[0].toUpperCase() +
+            sarviewEvent.description.slice(1)
             }}
           </span>
         </ng-template>
@@ -22,11 +22,11 @@
         </ng-template>
 
         <app-copy-to-clipboard
-        [value]="getEventID()"
-        [prompt]="'Copied Event ID'"
-        style="margin: 0 3px;"
-        class="clipboard-icon">
-      </app-copy-to-clipboard>
+          [value]="getEventID()"
+          [prompt]="'Copied Event ID'"
+          style="margin: 0 3px;"
+          class="clipboard-icon">
+        </app-copy-to-clipboard>
       </mat-card-title>
       <mat-card-subtitle class="subtitle">
         <span class="faint-text">
@@ -39,20 +39,15 @@
 
     <div style="display: flex; flex-direction: column;">
     </div>
-    <mat-card-content class="content">
-      <div
-      class="w100"
-      fxFlex
-      fxLayout="column"
-      fxLayoutAlign="space-between">
-      <app-event-metadata
-      [event]="sarviewEvent"
-      [eventType]="sarviewEvent.event_type === 'quake' ? eventTypes.QUAKE : eventTypes.VOLCANO"
-      >
+    <mat-card-content class="content scene-detail--wrapper">
+      <div class="w100 scene-detail--layout" >
+        <app-event-metadata
+          [event]="sarviewEvent"
+          [eventType]="sarviewEvent.event_type === 'quake' ? eventTypes.QUAKE : eventTypes.VOLCANO">
+        </app-event-metadata>
 
-      </app-event-metadata>
-      <app-event-polygon-slider (polygonScale$)="onEventSearchRadiusChange($event)">
-      </app-event-polygon-slider>
+        <app-event-polygon-slider (polygonScale$)="onEventSearchRadiusChange($event)">
+        </app-event-polygon-slider>
       </div>
     </mat-card-content>
   </div>
@@ -78,7 +73,7 @@
           >
             {{ dataset.name }}
             <span *ngIf="dataset.name === 'SMAP'"
-              >V{{ scene.name.slice(-1) }}</span
+            >V{{ scene.name.slice(-1) }}</span
             >
           </a>
           •
@@ -103,13 +98,8 @@
           </span>
         </p>
       </div>
-      <mat-card-content class="content">
-        <div
-          class="w100"
-          fxFlex
-          fxLayout="column"
-          fxLayoutAlign="space-between"
-        >
+      <mat-card-content class="content scene-detail--wrapper">
+        <div class="w100 scene-detail--layout">
           <div class="w100">
             <details open (open)="onSetDetailsOpen($event)">
               <summary class="clickable"></summary>
@@ -124,10 +114,10 @@
             <div *ngIf="searchType === searchTypes.CUSTOM_PRODUCTS">
               <div *ngIf="scene.metadata.job.job_parameters.scenes.length > 1">
                 <hr />
-                <span class="detail-card-header"
-                  ><b>{{ scene.metadata.job.job_parameters.scenes[1].name }}</b>
-                  (<i>{{ 'SECONDARY_SCENE' | translate }}</i>)</span
-                >
+                <span class="detail-card-header">
+                  <b>{{ scene.metadata.job.job_parameters.scenes[1].name }}</b>
+                  (<i>{{ 'SECONDARY_SCENE' | translate }}</i>)
+                </span>
                 <app-copy-to-clipboard
                   [value]="scene.metadata.job.job_parameters.scenes[1].name"
                   prompt="{{'COPY_SECONDARY_SCENE_NAME' | translate}}"
@@ -144,7 +134,7 @@
             </div>
           </div>
           <div class="browse-container w100" *ngIf="sceneHasBrowse()">
-            <div class="banner" fxLayout fxLayout="row" fxLayoutAlign="center">
+            <div class="banner fx-row-center">
               <div class="menu-items">
                 <div
                   class="fullscreen clickable"
@@ -169,7 +159,7 @@
                   (click)="onDecrementBrowseIndex()"
                 >
                   <mat-icon [class.not-clickable]="browseIndex < 1"
-                    >navigate_before</mat-icon
+                  >navigate_before</mat-icon
                   >
                 </span>
                 {{ browseIndex + 1 }} / {{ browses.length }}
@@ -180,7 +170,7 @@
                 >
                   <mat-icon
                     [class.not-clickable]="browseIndex + 1 >= browses.length"
-                    >navigate_next</mat-icon
+                  >navigate_next</mat-icon
                   >
                 </span>
               </div>
@@ -205,10 +195,10 @@
 
 
   <div style="margin-top: 25px;" class="browse-container w100"
-  *ngIf="!!sarviewsProducts
+    *ngIf="!!sarviewsProducts
     && sarviewsProducts?.length > 0
     && searchType === searchTypes.SARVIEWS_EVENTS">
-    <div class="banner" fxLayout fxLayout="row" fxLayoutAlign="center">
+    <div class="banner fx-row-center" >
       <div class="menu-items">
         <div
           class="fullscreen clickable"
@@ -226,9 +216,9 @@
           <mat-icon>download</mat-icon>
         </a>
         <span
-        class ="clickable"
-        matTooltip="{{ 'PIN_THIS_PRODUCT_S_BROWSE_ON_THE_MAP' | translate }}"
-        (click)="onToggleSarviewsProductPin()"
+          class ="clickable"
+          matTooltip="{{ 'PIN_THIS_PRODUCT_S_BROWSE_ON_THE_MAP' | translate }}"
+          (click)="onToggleSarviewsProductPin()"
         >
           <mat-icon>
             push_pin
@@ -241,7 +231,7 @@
           (click)="onDecrementBrowseIndex()"
         >
           <mat-icon
-          [class.not-clickable]="browseIndex < 1"
+            [class.not-clickable]="browseIndex < 1"
           >navigate_before</mat-icon>
         </span>
         {{ browseIndex + 1 }} / {{ sarviewsProducts.length }}
@@ -252,7 +242,7 @@
           "
         >
           <mat-icon
-          [class.not-clickable]="browseIndex + 1 >= sarviewsProducts?.length"
+            [class.not-clickable]="browseIndex + 1 >= sarviewsProducts?.length"
           >navigate_next</mat-icon>
         </span>
       </div>
@@ -276,11 +266,11 @@
   class="tool-menu"
   *ngIf="(scene || sarviewEvent) && breakpoint$ | async as breakpoint"
   [ngStyle]="{ bottom: searchType === searchTypes.BASELINE
-    && breakpoint <= breakpoints.MEDIUM
-    ? '20px' : breakpoint < breakpoints.SMALL ? '17px' : '0' }"
+  && breakpoint <= breakpoints.MEDIUM
+  ? '20px' : breakpoint < breakpoints.SMALL ? '17px' : '0' }"
   [ngClass]="{
-    'menu-override': (searchType === searchTypes.BASELINE
-    && breakpoint === breakpoints.FULL)
+  'menu-override': (searchType === searchTypes.BASELINE
+  && breakpoint === breakpoints.FULL)
   }
   ">
   <div class="search-button-label">{{'SEARCH' | translate |uppercase }}:</div>
@@ -333,11 +323,11 @@
       mat-stroked-button
       color="primary"
       [disabled]="
-        !(
-          (prop.isRelevant(p.PATH, dataset) &&
-            prop.isRelevant(p.FRAME, dataset)) ||
-          dataset?.id === 'UAVSAR'
-        )
+      !(
+      (prop.isRelevant(p.PATH, dataset) &&
+      prop.isRelevant(p.FRAME, dataset)) ||
+      dataset?.id === 'UAVSAR'
+      )
       "
       (click)="moreLikeThis()"
       class="mini-toggle-button search-button">
@@ -346,10 +336,8 @@
 
     </button>
   </div>
-  <div
-  *ngIf="searchType === searchTypes.SARVIEWS_EVENTS"
-    matTooltip="{{ 'USE_THIS_EVENT_S_PRODUCT_SCENES_IN_LIST_SEARCH' | translate }}"
-  >
+  <div *ngIf="searchType === searchTypes.SARVIEWS_EVENTS"
+    matTooltip="{{ 'USE_THIS_EVENT_S_PRODUCT_SCENES_IN_LIST_SEARCH' | translate }}">
     <button
       mat-stroked-button
       color="primary"
@@ -364,7 +352,7 @@
 </div>
 
 <div *ngIf="!scene && !sarviewEvent">
-  <div fxFlex fxLayoutAlign="center" gdAlignColumns="center">
+  <div class="fx-row-center">
     <span class="faint-text">{{ 'NO_SCENE_SELECTED' | translate }}</span>
   </div>
 </div>

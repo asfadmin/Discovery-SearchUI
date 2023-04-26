@@ -3,7 +3,6 @@ import { RouterModule } from '@angular/router';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -31,7 +30,6 @@ import { ResultsMenuModule } from '@components/results-menu';
 import { BaselineChartModule } from '@components/baseline-chart';
 import { HelpModule } from '@components/help';
 import { AppComponent } from './app.component';
-import { CustomBreakPointsProvider } from '@services/custom-breakpoints';
 
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -99,8 +97,6 @@ export const routes = [
     NgcCookieConsentModule.forRoot(cookieConfig),
     MatBottomSheetModule,
     MatSharedModule,
-    FlexLayoutModule.withConfig({disableDefaultBps: true},
-      CustomBreakPointsProvider.useValue),
     RouterModule.forRoot(routes, {useHash: true}),
     StoreModule.forRoot(store.reducers, {metaReducers: store.metaReducers}),
     EffectsModule.forRoot(store.appEffects),
@@ -140,7 +136,6 @@ export const routes = [
     services.BannerApiService,
     services.ScreenSizeService,
     services.KeyboardService,
-    CustomBreakPointsProvider,
     services.UserDataService,
     services.SavedSearchService,
     services.UnzipApiService,
