@@ -57,7 +57,7 @@
       <mat-stepper (selectionChange)="onSelectionChange()" #stepper>
         <mat-step [stepControl]="searchOptionsFormGroup" errorMessage="Missing required option">
           <ng-template matStepLabel>
-            <span *ngIf="breakpoint !== breakpoints.MOBILE" class="searchOptions">{{ 'SEARCH OPTIONS' | translate }}</span>
+            <span *ngIf="breakpoint !== breakpoints.MOBILE" class="searchOptions">{{ 'SEARCH_OPTIONS' | translate }}</span>
           </ng-template>
 
           <div>
@@ -217,9 +217,8 @@
           <div>
             <b>{{ 'JOB_TYPE' |  translate }}:</b> {{ jobTypeId }}
           </div>
-
-
           <h3>{{ 'SEARCH_OPTIONS' | translate }}:</h3>
+
           <div>
             <div *ngIf="!!subtype">
               <b>{{ 'DATASET' | translate }}:</b> {{ subtype }}
