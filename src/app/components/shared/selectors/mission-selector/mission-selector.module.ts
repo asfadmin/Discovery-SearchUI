@@ -13,6 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { SharedModule } from '@shared';
 
 import { MissionSelectorComponent } from './mission-selector.component';
 
@@ -37,6 +38,7 @@ import { MissionSelectorComponent } from './mission-selector.component';
     MatPaginatorModule,
 
     MatSharedModule,
+    SharedModule
   ],
   exports: [
     MissionSelectorComponent

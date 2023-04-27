@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EventPolygonSliderComponent } from './event-polygon-slider.component';
-
+import { SharedModule} from "@shared";
 
 
 @NgModule({
@@ -9,7 +9,8 @@ import { EventPolygonSliderComponent } from './event-polygon-slider.component';
     EventPolygonSliderComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    SharedModule
   ],
   exports: [
     EventPolygonSliderComponent

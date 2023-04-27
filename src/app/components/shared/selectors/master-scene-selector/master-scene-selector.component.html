@@ -1,6 +1,6 @@
 <form>
   <mat-form-field class="w100">
-    <mat-label>Scene</mat-label>
+    <mat-label>{{ 'SCENE' | translate }}</mat-label>
     <input
       (input)="onMasterSceneChanged($event)"
       [(ngModel)]="masterScene"

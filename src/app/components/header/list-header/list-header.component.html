@@ -1,20 +1,20 @@
 <ng-container *ngIf="breakpoint$ | async as breakpoint">
   <div *ngIf="breakpoint > breakpoints.MOBILE"
-    fxLayout="row" class="breadcrumb-row">
-    <div fxLayout="row">
+    class="breadcrumb-row fx-row">
+    <div class="fx-row">
       <app-search-type-selector class="breadcrumb">
       </app-search-type-selector>
 
-     <div fxFlex="nogrow" class="breadcrumb additional-filters">
+     <div class="breadcrumb additional-filters">
         <button (click)="onToggleFiltersMenu()"
                 mat-flat-button
                 class="search-dialog-button">
-          <mat-icon>edit</mat-icon>
-          Edit List
+          <mat-icon>edit_list</mat-icon>
+          {{ 'EDIT_LIST' | translate }}
         </button>
       </div>
 
-      <div fxFlex="nogrow" class="breadcrumb search-controls">
+      <div class="breadcrumb search-controls">
         <app-search-button></app-search-button>
       </div>
 
@@ -31,7 +31,7 @@
           style="margin-left: 5px;"
           mat-flat-button>
         <mat-icon>edit</mat-icon>
-        List
+        {{ 'LIST' |  translate }}
       </button>
 
       <div class="mobile-icon-cluster">

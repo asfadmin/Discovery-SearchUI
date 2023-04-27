@@ -44,11 +44,11 @@
 
     <ng-template #customProductsDisplay>
     <span *ngIf="product.productTypeDisplay.length > 40">
-      <b style="font-size: 14px;">Type:</b>
+      <b style="font-size: 14px;">{{ 'TYPE' | translate }}:</b>
       {{ product.productTypeDisplay | truncate : 36 }}{{ product.productTypeDisplay | truncate : -4 : '' }}
     </span>
     <span *ngIf="product.productTypeDisplay.length <= 40">
-      <b style="font-size: 14px;">Type:</b>
+      <b style="font-size: 14px;">{{ 'TYPE' | translate }}:</b>
       {{ product.productTypeDisplay }}
     </span>
     <span *ngIf="product.metadata.job && product.metadata.job.expiration_time">
@@ -71,30 +71,30 @@
       mat-icon-button>
       <mat-icon *ngIf="loadingHyp3JobName !== product.name"
         svgIcon="hyp3"
-        matTooltip="Add to On Demand queue">
+        matTooltip="{{ 'ADD_TO_ON_DEMAND_QUEUE' | translate }}">
       </mat-icon>
       <fa-icon *ngIf="loadingHyp3JobName === product.name" icon="spinner" [pulse]="true"></fa-icon>
 
       <mat-menu #customJobTypes="matMenu">
         <button *ngFor="let jobType of validHyp3JobTypes"
           (click)="addJobToProcessingQueue(jobType)" mat-menu-item>
-            Add {{ jobType.name }} to On Demand
+            {{ 'ADD' | translate }} {{ jobType.name }} to On Demand
             <mat-icon (click)="onOpenHelp($event, jobType.infoUrl)" class="clickable" style="margin-left: 10px;">info</mat-icon>
         </button>
       </mat-menu>
     </button>
 
     <div mat-line class="file-sub-line">
-      <span *ngIf="product.bytes === 0">Virtual</span>
+      <span *ngIf="product.bytes === 0">{{ 'VIRTUAL'  |  translate }}</span>
       <span *ngIf="isDownloadable(product) && product.bytes !== 0">{{product.bytes.toString() | readableSizeFromBytes }}</span>
     </div>
 
     <div *ngIf="product.metadata.job && product.metadata.job.name" mat-line>
-      <b>Project Name:</b> {{ product.metadata.job.name }}
+      <b>{{'PROJECT_NAME' | translate}}:</b> {{ product.metadata.job.name }}
     </div>
 
     <div *ngIf="product.metadata.job" mat-line>
-      <b>Job Submitted:</b> {{ product.metadata.job.request_time| fullDate }}
+      <b>{{'JOB_SUBMITTED' | translate}}:</b> {{ product.metadata.job.request_time| fullDate }}
     </div>
 
     <div *ngFor="let param of paramsList" mat-line>
@@ -120,14 +120,14 @@
     mat-icon-button>
       <mat-icon
       class="clickable"
-        matTooltip="Add to On Demand queue"
+        matTooltip="{{ 'ADD_TO_ON_DEMAND_QUEUE' | translate }}"
         svgIcon="hyp3">
       </mat-icon>
     </button>
     <mat-menu #expiredJobs ='matMenu'>
 
     <button (click)="queueExpiredHyp3Job()" mat-menu-item>
-      Add job
+      {{ 'ADD_JOB' | translate }}
     </button>
   </mat-menu>
   </div>

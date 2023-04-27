@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { MatSharedModule } from '@shared';
 import { OnDemandAddMenuModule } from '@components/shared/on-demand-add-menu';
 import { ScenesListHeaderComponent } from './scenes-list-header.component';
+import { SharedModule } from "@shared";
 
 
 @NgModule({
@@ -20,9 +20,9 @@ import { ScenesListHeaderComponent } from './scenes-list-header.component';
     MatMenuModule,
     MatSharedModule,
     MatButtonToggleModule,
-    FlexLayoutModule,
     FontAwesomeModule,
     OnDemandAddMenuModule,
+    SharedModule,
   ],
   exports: [
     ScenesListHeaderComponent

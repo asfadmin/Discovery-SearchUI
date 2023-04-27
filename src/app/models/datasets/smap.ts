@@ -57,7 +57,6 @@ export const smap = {
   beamModes: [ 'STD' ],
   polarizations: [],
   subtypes: [],
-  platformDesc: 'The SMAP mission provides global measurements of soil moisture and its freeze-thaw state. ' +
-    'SMAP measures the amount of water in the top 5 cm of soil everywhere...',
+  platformDesc: 'SMAP_DESC',
   platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
 };

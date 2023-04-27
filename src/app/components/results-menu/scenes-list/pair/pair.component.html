@@ -12,7 +12,7 @@
       *ngIf="hyp3able.total > 0"
       class="clickable noselect list-icon"
       style="margin-left: 10px;"
-      matTooltip="Add pair to On Demand queue"
+      matTooltip="{{'ADD_PAIR_TO_ON_DEMAND_QUEUE' | translate}}"
       [matMenuTriggerFor]="pairAdd.addMenu"
       [matMenuTriggerData]="{ hyp3able: hyp3able.byJobType }"
       svgIcon="hyp3">

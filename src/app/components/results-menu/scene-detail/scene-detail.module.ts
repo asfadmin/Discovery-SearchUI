@@ -5,7 +5,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { TruncateModule } from '@yellowspot/ng-truncate';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { PipesModule } from '@pipes';
 import { MatSharedModule } from '@shared';
@@ -17,6 +16,8 @@ import { SceneDetailComponent } from './scene-detail.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSliderModule } from '@angular/material/slider';
 import { EventPolygonSliderModule } from './event-polygon-slider';
+import { SharedModule } from '@shared';
+
 
 @NgModule({
   declarations: [SceneDetailComponent],
@@ -26,7 +27,6 @@ import { EventPolygonSliderModule } from './event-polygon-slider';
         MatButtonModule,
         MatIconModule,
         MatMenuModule,
-        FlexLayoutModule,
         TruncateModule,
         MatSharedModule,
         PipesModule,
@@ -36,7 +36,8 @@ import { EventPolygonSliderModule } from './event-polygon-slider';
         EventMetadataModule,
         MatButtonToggleModule,
         MatSliderModule,
-        EventPolygonSliderModule
+        EventPolygonSliderModule,
+        SharedModule
     ],
   exports: [SceneDetailComponent],
 })

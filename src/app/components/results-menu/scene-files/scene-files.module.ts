@@ -19,6 +19,7 @@ import { OnDemandAddMenuModule } from '@components/shared/on-demand-add-menu';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DownloadFileButtonModule } from '@components/shared/download-file-button/download-file-button.module';
 import { BurstMetadataModule } from '@components/shared/scene-metadata/burst-metadata';
+import { SharedModule } from "@shared";
 
 @NgModule({
   declarations: [SceneFilesComponent],
@@ -40,7 +41,8 @@ import { BurstMetadataModule } from '@components/shared/scene-metadata/burst-met
     OnDemandAddMenuModule,
     MatButtonToggleModule,
     DownloadFileButtonModule,
-    BurstMetadataModule
+    BurstMetadataModule,
+    SharedModule,
   ],
   exports: [
     SceneFilesComponent

@@ -26,6 +26,7 @@ enum MobileViews {
 export class MobileResultsMenuComponent implements OnInit, OnDestroy {
   @Input() resize$: Observable<void>;
 
+  public isDisconnected = false;
   public pair: CMRProductPair;
   public isAddingCustomPoint: boolean;
   public isSelectedPairCustom: boolean;
@@ -50,7 +51,7 @@ export class MobileResultsMenuComponent implements OnInit, OnDestroy {
       this.store$.select(searchStore.getSearchType).subscribe(
         searchType => {
           this.searchType = searchType;
-          this.view = searchType === 'SBAS Search' ?
+          this.view = searchType === 'SBAS_SEARCH' ?
                       MobileViews.SBAS : MobileViews.LIST;
         }
       )
@@ -106,7 +107,9 @@ export class MobileResultsMenuComponent implements OnInit, OnDestroy {
   public onSelectSBASChart(): void {
     this.view = MobileViews.SBAS;
   }
-
+  public isGraphDisconnected(disconnect: boolean) {
+    this.isDisconnected = disconnect;
+  }
   ngOnDestroy() {
     this.subs.unsubscribe();
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter} from '@angular/core';
 
 import { combineLatest, Observable } from 'rxjs';
 import { distinctUntilChanged, map, tap } from 'rxjs/operators';
@@ -33,6 +33,8 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   @Input() zoomOut$: Observable<void>;
   @Input() zoomToFit$: Observable<void>;
 
+  @Output() isGraphDisconnected = new EventEmitter<boolean>();
+
   private hoveredLine;
   private selectedPair = null;
   private scenes: CMRProduct[] = [];
@@ -61,6 +63,8 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   private heightValue;
   private sbasChartHeightValue;
   private subs = new SubSink();
+
+  public isDisconnected = false;
 
   constructor(
     private store$: Store<AppState>,
@@ -94,7 +98,8 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         this.scenes = scenes;
         this.pairs = pairs.pairs;
         this.customPairs = pairs.custom;
-
+        this.isDisconnected = this.pairService.isGraphDisconnected([...this.pairs, ...this.customPairs], this.scenes.length);
+        this.isGraphDisconnected.emit(this.isDisconnected);
         if (this.selectedPair === null && Array.isArray(this.pairs)) {
           if (this.pairs.length > 0) {
             const firstPair = this.pairs[0];

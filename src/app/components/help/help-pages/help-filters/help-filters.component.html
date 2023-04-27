@@ -2,7 +2,7 @@
 
   <div class="help-top-section">
     <div class="help-header">
-      <h1>Using Advanced Filters</h1>
+      <h1>{{ 'USING_ADVANCED_FILTERS' |  translate }}</h1>
     </div>
     <div class="help-video">
       <div class="videoWrapper">
@@ -18,41 +18,41 @@
           <mat-icon>looks_one</mat-icon>
         </div>
         <div class="help-text-block">
-          <div class="help-step">Using Advanced Filters</div>
+          <div class="help-step">{{ 'USING_ADVANCED_FILTERS' |  translate }}</div>
           <p>
-            Filters allow you tune your search to return exactly what interests you.
+            {{ 'FILTERS_ALLOW_YOU_TUNE_YOUR_SEARCH_TO_RETURN_EXACTLY_WHAT_INTERESTS_YOU' | translate }}
           </p>
           <p>
-            Depending on the width of your internet browser, none or some of the filters will be
-            displayed in the search menu at the top. You can access all of the hidden filters by
-            click on the 'Filters ...' button in the search menu. The filters you can specify include:
+            {{ 'DEPENDING_ON_THE_WIDTH_OF_YOUR_INTERNET_BROWSER_NONE_OR_SOME_OF_THE_FILTERS_WILL_BE' | translate }}
+            {{ 'DISPLAYED_IN_THE_SEARCH_MENU_AT_THE_TOP_YOU_CAN_ACCESS_ALL_OF_THE_HIDDEN_FILTERS_BY' | translate }}
+            {{ 'CLICK_ON_THE_FILTERS_BUTTON_IN_THE_SEARCH_MENU_THE_FILTERS_YOU_CAN_SPECIFY_INCLUDE' | translate }}
           </p>
           <ol>
             <li>
-              <b>Start Date</b> and <b>End Date</b> fields. The date picker will automatically constrain
-              your selection to a valid range for the selected dataset.
-              <b>Seasonal Search</b> allows constraining the search to certain annual
-              periods within an overall range of dates.  Click the Seasonal Search toggle
-              and additional options will appear, allowing you to enter an overall date range
-              (Start Date/End Date) and the seasonal range (Season Start Day/Season End Day).
+              <b>{{ 'START_DATE' | translate }}</b> {{ 'AND'| translate }} <b>{{ 'END_DATE' | translate }}</b> {{ 'FIELDS_THE_DATE_PICKER_WILL_AUTOMATICALLY_CONSTRAIN' | translate }}
+              {{ 'YOUR_SELECTION_TO_A_VALID_RANGE_FOR_THE_SELECTED_DATASET' |  translate }}
+              <b>{{ 'SEASONAL_SEARCH' | translate }}</b> {{ 'ALLOWS_CONSTRAINING_THE_SEARCH_TO_CERTAIN_ANNUAL' | translate }}
+              {{ 'PERIODS_WITHIN_AN_OVERALL_RANGE_OF_DATES_CLICK_THE_SEASONAL_SEARCH_TOGGLE' |  translate }}
+              {{ 'AND_ADDITIONAL_OPTIONS_WILL_APPEAR_ALLOWING_YOU_TO_ENTER_AN_OVERALL_DATE_RANGE' |  translate }}
+              {{ 'START_DATE_END_DATE_AND_THE_SEASONAL_RANGE_SEASON_START_DAY_SEASON_END_DAY' |  translate }}
             </li>
             <li>
-              <b>Additional Filters</b> allows for additional parameters to be applied to narrow
-              your search and reduce the number of results. <em>Not all filters will be available for
-              all datasets, and this list can change.</em>
+              <b>{{ 'ADDITIONAL_FILTERS' | translate }}</b> {{ 'ALLOWS_FOR_ADDITIONAL_PARAMETERS_TO_BE_APPLIED_TO_NARROW' | translate}}
+              {{ 'YOUR_SEARCH_AND_REDUCE_THE_NUMBER_OF_RESULTS' | translate }} <em>{{ 'NOT_ALL_FILTERS_WILL_BE_AVAILABLE_FOR' | translate }}
+              {{ 'ALL_DATASETS_AND_THIS_LIST_CAN_CHANGE' | translate }}</em>
               <ol>
-                <li>File Type</li>
-                <li>Subtype</li>
-                <li>Beam Mode</li>
-                <li>Polarization</li>
-                <li>Direction</li>
-                <li>Campaign Selector</li>
+                <li>{{ 'FILE_TYPE' |  translate }}</li>
+                <li>{{ 'SUBTYPE' | translate }}</li>
+                <li>{{ 'BEAM_MODE' | translate }}</li>
+                <li>{{ 'POLARIZATION' | translate }}</li>
+                <li>{{ 'DIRECTION' | translate }}</li>
+                <li>{{ 'CAMPAIGN_SELECTOR' | translate }}</li>
               </ol>
             </li>
             <li>
-              <b>Path</b> and <b>Frame</b> fields are available for select datasets. You may enter
-              a single path or frame, or a range. Due to inconsistent Sentinel-1 framing, we recommend
-              searching for a frame of interest by ±1-2 frames.
+              <b>{{ 'PATH' |  translate }}</b> {{'AND' | translate }} <b> {{'FRAME'| translate }}</b> {{ 'FIELDS_ARE_AVAILABLE_FOR_SELECT_DATASETS_YOU_MAY_ENTER' | translate }}
+              {{ 'A_SINGLE_PATH_OR_FRAME_OR_A_RANGE_DUE_TO_INCONSISTENT_SENTINEL_1_FRAMING_WE_RECOMMEND' | translate }}
+              {{ 'SEARCHING_FOR_A_FRAME_OF_INTEREST_BY_1_2_FRAMES' | translate }}
             </li>
           </ol>
         </div>

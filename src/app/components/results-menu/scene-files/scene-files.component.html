@@ -1,5 +1,5 @@
 <div *ngIf="showDemWarning" class="dem-warning">
-  Looking for DEMs?
+  {{ 'RESAMPLED_DEM_SRTM_OR_NED_USED_FOR_RTC_PROCESSING' |  translate }}
   <a
     class="more-link"
     target="_blank"
@@ -33,23 +33,6 @@
     *ngIf="selectedSarviewEventID && !!sarviewsProducts"
     class="event-wrapper"
   >
-    <!-- <div class="event-product-map-row">
-      <mat-button-toggle-group
-        fxFlex=""
-        name="eventProductMapButton"
-        class="criteria-button-group"
-        [ngClass]="{ 'position-in-header': breakpoint > breakpoints.SMALL }"
-        (click)="onOpenPinnedProducts()"
-      >
-        <mat-button-toggle
-          class="control-mat-button-toggle map-button-toggle"
-          matTooltip="View selected products on map"
-        >
-          Event Products Map<mat-icon class="map-icon">map</mat-icon>
-        </mat-button-toggle>
-      </mat-button-toggle-group>
-    </div> -->
-
     <div class="event-products-wrapper">
       <cdk-virtual-scroll-viewport
         id="event-selection-list"

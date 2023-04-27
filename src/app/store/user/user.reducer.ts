@@ -31,7 +31,8 @@ const initState: UserState = {
       'SBAS Search' : ''
     },
     hyp3BackendUrl: '',
-    theme: 'light'
+    theme: 'light',
+    language: ''
   },
   savedSearches: {
     searches: [],

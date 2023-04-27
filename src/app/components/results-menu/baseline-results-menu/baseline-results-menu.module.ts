@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { MatSharedModule } from '@shared';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { ResizableModule } from 'angular-resizable-element';
 
 import { SceneDetailModule } from '../scene-detail';
@@ -15,6 +14,7 @@ import { OnDemandAddMenuModule } from '@components/shared/on-demand-add-menu';
 import { BaselineChartModule } from '@components/baseline-chart/baseline-chart.module';
 
 import { BaselineResultsMenuComponent } from './baseline-results-menu.component';
+import  { SharedModule } from "@shared";
 
 
 @NgModule({
@@ -26,9 +26,8 @@ import { BaselineResultsMenuComponent } from './baseline-results-menu.component'
     MatMenuModule,
     MatSharedModule,
     MatButtonToggleModule,
-    FlexLayoutModule,
     ResizableModule,
-
+    SharedModule,
     SceneDetailModule,
     ScenesListModule,
     ScenesListHeaderModule,

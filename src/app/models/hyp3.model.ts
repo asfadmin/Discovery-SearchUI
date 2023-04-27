@@ -32,6 +32,7 @@ export interface Hyp3User {
 export interface Hyp3UserQuota {
   max_jobs_per_month: number;
   remaining: number;
+  unlimited: boolean;
 }
 
 export interface Hyp3JobsResponse {

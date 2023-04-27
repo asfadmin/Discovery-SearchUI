@@ -18,6 +18,9 @@ import { DatasetSelectorModule } from '@components/shared/selectors/dataset-sele
 import { AoiOptionsModule } from '@components/shared/aoi-options';
 import { DocsModalModule } from '@components/shared/docs-modal';
 import { BurstSelectorModule } from '@components/shared/selectors/burst-selector';
+// import { TranslateModule } from "@ngx-translate/core";
+import { SharedModule } from "@shared";
+
 @NgModule({
   declarations: [
     DatasetFiltersComponent,
@@ -38,7 +41,9 @@ import { BurstSelectorModule } from '@components/shared/selectors/burst-selector
     DatasetSelectorModule,
     AoiOptionsModule,
     SearchTypeSelectorModule,
-    BurstSelectorModule
+    BurstSelectorModule,
+    SharedModule,
+    // TranslateModule
   ],
   exports: [
     DatasetFiltersComponent,
