@@ -64,11 +64,11 @@
         </button>
       </mat-form-field>
 
-      <div class="section-heading">Default Language and Theme</div>
+      <div class="section-heading">{{ 'DEFAULT_LANGUAGE_AND_THEME' | translate }}</div>
       <div class="language-theme">
           <div class="language-selector">
             <mat-form-field class="default-filters-presets">
-              <mat-label>Default Language</mat-label>
+              <mat-label>{{ 'DEFAULT_LANGUAGE' | translate }}</mat-label>
               <mat-select
                 [(value)]="defaultLanguage"
                 (selectionChange)="onChangeDefaultLanguage($event.value)"
@@ -81,7 +81,7 @@
           </div>
           <div class="theme-selector">
             <mat-form-field class="default-filters-presets">
-              <mat-label>Default Theme</mat-label>
+              <mat-label>{{ 'DEFAULT_THEME' | translate }}</mat-label>
               <mat-select
                 [(value)]="currentTheme"
                 (selectionChange)="onChangeDefaultTheme($event.value)"

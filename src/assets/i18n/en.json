@@ -150,6 +150,8 @@
 	"DATE": "Date",
 	"DATE_FILTERS": "Date Filters",
 	"DAYS": "days",
+	"DEFAULT_LANGUAGE": "Default Language",
+	"DEFAULT_LANGUAGE_AND_THEME": "Default Language and Theme",
 	"DEFAULT_MAP_LAYER": "Default Map Layer",
 	"DEFAULT_MAX_RESULT_AMOUNT": "Default Max Result Amount",
 	"DEFAULT_ON_DEMAND_PRESETS": "Default On Demand Presets",
