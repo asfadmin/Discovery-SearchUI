@@ -150,6 +150,8 @@
 	"DATE": "",
 	"DATE_FILTERS": "Filtres de dates",
 	"DAYS": "jours",
+	"DEFAULT_LANGUAGE": "",
+	"DEFAULT_LANGUAGE_AND_THEME": "",
 	"DEFAULT_MAP_LAYER": "Couche de carte par défaut",
 	"DEFAULT_MAX_RESULT_AMOUNT": "Montant de résultat maximum par défaut",
 	"DEFAULT_ON_DEMAND_PRESETS": "Préréglages à la demande par défaut",

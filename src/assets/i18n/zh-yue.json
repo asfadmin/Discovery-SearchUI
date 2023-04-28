@@ -150,6 +150,8 @@
 	"DATE": "",
 	"DATE_FILTERS": "日期过滤器",
 	"DAYS": "天",
+	"DEFAULT_LANGUAGE": "",
+	"DEFAULT_LANGUAGE_AND_THEME": "",
 	"DEFAULT_MAP_LAYER": "默认地图层",
 	"DEFAULT_MAX_RESULT_AMOUNT": "默认最大结果量",
 	"DEFAULT_ON_DEMAND_PRESETS": "默认点播预设",
