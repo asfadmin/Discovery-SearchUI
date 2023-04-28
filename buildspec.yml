@@ -6,7 +6,7 @@ phases:
       nodejs: 14
     commands:
       - npm set progress=false
-      - npm install -g @angular/cli@14.2.7
+      - npm install -g @angular/cli@15.7.8
   pre_build:
     commands:
       - cp src/app/services/envs/env-${MATURITY}.ts src/app/services/env.ts
