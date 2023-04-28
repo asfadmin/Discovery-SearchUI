@@ -150,6 +150,8 @@
 	"DATE": "Fecha",
 	"DATE_FILTERS": "Filtros de Fecha",
 	"DAYS": "días",
+	"DEFAULT_LANGUAGE": "Idioma",
+	"DEFAULT_LANGUAGE_AND_THEME": "Idioma y Temas Predeterminados",
 	"DEFAULT_MAP_LAYER": "Capa de mapa predeterminada",
 	"DEFAULT_MAX_RESULT_AMOUNT": "Importe de resultado máximo predeterminado",
 	"DEFAULT_ON_DEMAND_PRESETS": "Preajustes predeterminados a pedido",
