@@ -4,7 +4,7 @@
 @import "flex-layout-sass/mixin";
 
 .bounds {
-  padding: 0 !important;
+  padding: 0 0 0 0 !important;
   margin: 0;
   overflow-x: hidden;
   overflow-y: hidden;
@@ -15,6 +15,10 @@ $config: mat.define-typography-config();
   @include themify($themes) {
     background-color: themed('background-white');
   }
+}
+
+.header-buttons-input {
+  margin-top: 10px;
 }
 
 .breadcrumb-filter {
@@ -120,7 +124,7 @@ $config: mat.define-typography-config();
 
 .icon-cluster {
   position: absolute;
-  top: 20px;
+  top: 30px;
   right: 10px;
 }
 
