@@ -19,3 +19,26 @@
   }
   background-color: inherit;
 }
+
+.lang-fab-button {
+  display: inline-block;
+  position: absolute;
+  top: -12px;
+  right: 0;
+  width: auto;
+  height: 34px;
+  padding: 5px;
+  font-size: 12px;
+
+  .mat-icon {
+    font-size: 14px;
+    padding: 4px 0 0 0;
+  }
+
+  .icon-text {
+    display: inline-block;
+    margin-top: -7px;
+    padding-right: 5px;
+  }
+
+}

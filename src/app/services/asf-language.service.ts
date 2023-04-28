@@ -22,6 +22,15 @@ export class AsfLanguageService {
   private matchLanguagesRegex = /de|en|es|fr|pt|zh/;
   private listLanguagesRegex = ['de', 'en', 'es', 'fr', 'pt', 'zh'];
 
+  public languageName = {
+    'de' : 'Deutsch',
+    'en' : 'English',
+    'es' : 'Español' ,
+    'fr' : 'Français',
+    'pt' : 'Português',
+    'zh' : '中文 (Chinese)',
+  }
+
   constructor(
     public translate: TranslateService,
     private cookieService: CookieService
@@ -29,7 +38,14 @@ export class AsfLanguageService {
     this.browserLang = this.translate.getBrowserLang();
   }
 
-  public getName( langName : string ) {
+  public getName( langName? : string ) {
+    if (!langName) {
+      return  this.languageName[this.translate.currentLang]
+    }
+    return this.languageName[langName];
+  }
+
+  public getEnglishName( langName : string ) {
     return this.languageNamesInEnglish.of( langName );
   }
 
