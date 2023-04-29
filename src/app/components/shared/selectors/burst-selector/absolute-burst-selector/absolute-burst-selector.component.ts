@@ -12,11 +12,13 @@ import { AppState } from '@store';
   styleUrls: ['./absolute-burst-selector.component.scss',  '../burst-selector.component.scss']
 })
 export class AbsoluteBurstSelectorComponent implements OnInit, OnDestroy {
+  // readonly IDPATTERN: string = '(\d*,?\s?)*'
+
+  public absoluteIDs: number[] = []
 
   private IDsInputUpdated: EventEmitter<string> = new EventEmitter();
   private subs: SubSink = new SubSink();
 
-  public absoluteIDs
   constructor(private store$: Store<AppState>) { }
 
   ngOnInit(): void {

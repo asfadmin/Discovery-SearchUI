@@ -12,7 +12,7 @@ import { AppState } from '@store';
   styleUrls: ['./relative-burst-selector.component.scss', '../burst-selector.component.scss']
 })
 export class RelativeBurstSelectorComponent implements OnInit, OnDestroy {
-
+  // readonly IDPATTERN: string = '(\\d*,?\\s?)*'
   public relativeIDs: number[] = []
 
   private IDsInputUpdated: EventEmitter<string> = new EventEmitter();
