@@ -350,7 +350,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
 
       if(action.payload.dataset.id === models.sentinel_1_bursts.id) {
         filters = {
-          relativeBurstIDs: [metadata.burst.relativeBurstID],
+          fullBurstIDs: [metadata.burst.fullBurstID],
         }
       }
       return {
