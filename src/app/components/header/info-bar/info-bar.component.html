@@ -2,9 +2,6 @@
      class="info-bar">
 
   <div class="first-info">
-    <span *ngIf="(searchType$ | async) === searchTypes.DATASET && productTypes === '' && dataset === 'SENTINEL-1'">
-      <em>(SLC BURST product type is filtered from default search results)</em>
-    </span>
     <span *ngIf="(searchType$ | async) === searchTypes.CUSTOM_PRODUCTS">
       <app-hyp3-url></app-hyp3-url>
     </span>
