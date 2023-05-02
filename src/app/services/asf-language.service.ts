@@ -5,6 +5,8 @@ import { Injectable } from '@angular/core';
 
 import { TranslateService } from "@ngx-translate/core";
 import { CookieService } from "ngx-cookie-service";
+// import * as moment from 'moment/min/moment-with-locales'
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -50,8 +52,14 @@ export class AsfLanguageService {
   }
 
   public setCurrent(language: string): void {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'language-selected',
+      'language': language,
+    });
     this.cookieService.set(this.languageCookie, language, this.cookieOptions);
     this.translate.use(language)
+    moment.locale(language);
   }
 
   public setProfileLanguage(language: string): void {

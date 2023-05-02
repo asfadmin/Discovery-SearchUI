@@ -1,15 +1,17 @@
 import { Pipe, PipeTransform } from '@angular/core';
-
+import { TranslateService } from "@ngx-translate/core";
 import * as moment from 'moment';
+// import { MomentPipe } from "@pipes/dynamic-moment";
 
 
 @Pipe({
   name: 'fullDate'
 })
 export class FullDatePipe implements PipeTransform {
+  constructor(private translateService: TranslateService) {}
   transform(date: Date | moment.Moment): string {
     const dateUtc = moment.utc(date);
-
+    dateUtc.locale(this.translateService.currentLang);
     return dateUtc.format('MMMM DD YYYY HH:mm:ss') + 'Z';
   }
 }
@@ -19,10 +21,11 @@ export class FullDatePipe implements PipeTransform {
   name: 'shortDate'
 })
 export class ShortDatePipe implements PipeTransform {
+  constructor(private translateService: TranslateService) {}
 
   transform(date: Date | moment.Moment): string {
     const dateUtc = moment.utc(date);
-
+    dateUtc.locale(this.translateService.currentLang);
     return dateUtc.format('MMM DD YYYY');
   }
 }
@@ -31,11 +34,12 @@ export class ShortDatePipe implements PipeTransform {
   name: 'shortDateTime'
 })
 export class ShortDateTimePipe implements PipeTransform {
+  constructor(private translateService: TranslateService) {}
 
   transform(date: Date | moment.Moment): string {
     const dateUtc = moment.utc(date);
-
-    return dateUtc.format('MM/DD/YY, HH:mm:ss') + 'Z';
+    dateUtc.locale(this.translateService.currentLang);
+    return dateUtc.format('L, HH:mm:ss') + 'Z';
   }
 }
 
@@ -43,6 +47,9 @@ export class ShortDateTimePipe implements PipeTransform {
   name: 'shortDateSeason'
 })
 export class ShortDateSeasonPipe implements PipeTransform {
+
+  constructor(private translateService: TranslateService) {}
+
   transform(dayOfYear: number): string {
     const date = new Date();
     date.setFullYear(2019);
@@ -54,9 +61,8 @@ export class ShortDateSeasonPipe implements PipeTransform {
     const dayNumMilli = dayOfYear * dayMilli;
     date.setTime(timeOfFirst + dayNumMilli);
 
-    return  date.toLocaleDateString('en-US', {
+    return  date.toLocaleDateString(this.translateService.currentLang, {
       month: <'numeric'>'short', day: 'numeric'
     });
   }
 }
-
