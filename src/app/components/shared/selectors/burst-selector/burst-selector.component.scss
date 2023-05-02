@@ -8,13 +8,6 @@
 }
 
 .burst-selector-filter {
-  max-width: 100%;
-  min-width: 33%;
+  width: 100%;
   flex-basis: auto;
-  // flex-grow: 1;
-}
-
-mat-form-field {
-  margin-right: 10px;
-  margin-bottom: 10px;
 }

@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import * as models from '@models';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
-import { setAbsoluteBurst, setFullBurst, setRelativeBurst } from '@store/filters';
+import { setFullBurst } from '@store/filters';
 
 @Component({
   selector: 'app-burst-metadata',
@@ -19,14 +19,6 @@ export class BurstMetadataComponent implements OnInit {
   constructor(private store$: Store<AppState>) { }
 
   ngOnInit(): void {
-  }
-
-  public setRelativeBurst(): void {
-    this.store$.dispatch(new setRelativeBurst([this.burst.relativeBurstID]))
-  }
-
-  public setAbsoluteBurst(): void {
-    this.store$.dispatch(new setAbsoluteBurst([this.burst.absoluteBurstID]))
   }
 
   public setFullBurst(): void {

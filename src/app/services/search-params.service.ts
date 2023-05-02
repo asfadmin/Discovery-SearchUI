@@ -144,18 +144,10 @@ export class SearchParamsService {
   }
 
   private burstParams$() {
-    return combineLatest(
-      this.store$.select(filterStore.getAbsoluteBurstIDs),
-      this.store$.select(filterStore.getRelativeBurstIDs),
-      this.store$.select(filterStore.getFullBurstIDs)
-    ).pipe(
-      map(([absoluteIDs, relativeIDs, fullIDs]) => {
-        return {
-          absoluteburstid: absoluteIDs.join(','),
-          relativeburstid: relativeIDs.join(','),
-          fullburstid: fullIDs.join(',')
-        }
-      })
+      return this.store$.select(filterStore.getFullBurstIDs).pipe(
+      map(fullIDs => ({
+          fullburstid: fullIDs.join(',')})
+          )
     );
   }
 

@@ -90,8 +90,6 @@ export enum FiltersActionType {
 
   SET_GEOCODE = '[Filters] Set geocode area name',
 
-  SET_ABSOLUTE_BURST = '[Filters] Set Absolute Burst IDs',
-  SET_RELATIVE_BURST = '[Filters] Set Relative Burst IDs',
   SET_FULL_BURST = '[Filters] Set Full Burst IDs',
 }
 
@@ -428,16 +426,6 @@ export class ClearHyp3ProductTypes implements Action {
   constructor() {}
 }
 
-export class setAbsoluteBurst implements Action {
-  public readonly type = FiltersActionType.SET_ABSOLUTE_BURST;
-
-  constructor(public payload: number[]) {}
-}
-export class setRelativeBurst implements Action {
-  public readonly type = FiltersActionType.SET_RELATIVE_BURST;
-
-  constructor(public payload: number[]) {}
-}
 export class setFullBurst implements Action {
   public readonly type = FiltersActionType.SET_FULL_BURST;
 
@@ -505,6 +493,4 @@ export type FiltersActions =
   | SetEventProductSorting
   | ClearEventFilters
   | ClearHyp3ProductTypes
-  | setAbsoluteBurst
-  | setRelativeBurst
   | setFullBurst;
