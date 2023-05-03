@@ -4,7 +4,7 @@ export const beta = {
   id: 'SENTINEL-1 INTERFEROGRAM (BETA)',
   name: 'ARIA S1 GUNW',
   subName: 'NISAR-format',
-  beta: true,
+  beta: false,
   properties: [
     Props.DATE,
     Props.BEAM_MODE,
