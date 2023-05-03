@@ -1,27 +1,28 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from "@ngx-translate/core";
 import * as moment from 'moment';
-// import { MomentPipe } from "@pipes/dynamic-moment";
-
 
 @Pipe({
-  name: 'fullDate'
+  name: 'fullDate',
+  pure: false
 })
 export class FullDatePipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}
   transform(date: Date | moment.Moment): string {
     const dateUtc = moment.utc(date);
     dateUtc.locale(this.translateService.currentLang);
-    return dateUtc.format('MMMM DD YYYY HH:mm:ss') + 'Z';
+    return dateUtc.format('LL, HH:mm:ss') + 'Z';
   }
 }
 
 
 @Pipe({
-  name: 'shortDate'
+  name: 'shortDate',
+  pure: false
 })
 export class ShortDatePipe implements PipeTransform {
-  constructor(private translateService: TranslateService) {}
+  constructor(private translateService: TranslateService) {
+  }
 
   transform(date: Date | moment.Moment): string {
     const dateUtc = moment.utc(date);
@@ -31,11 +32,11 @@ export class ShortDatePipe implements PipeTransform {
 }
 
 @Pipe({
-  name: 'shortDateTime'
+  name: 'shortDateTime',
+  pure: false
 })
 export class ShortDateTimePipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}
-
   transform(date: Date | moment.Moment): string {
     const dateUtc = moment.utc(date);
     dateUtc.locale(this.translateService.currentLang);
@@ -44,7 +45,8 @@ export class ShortDateTimePipe implements PipeTransform {
 }
 
 @Pipe({
-  name: 'shortDateSeason'
+  name: 'shortDateSeason',
+  pure: false
 })
 export class ShortDateSeasonPipe implements PipeTransform {
 
