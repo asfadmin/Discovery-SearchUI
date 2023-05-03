@@ -271,6 +271,7 @@
 	"FRAME_END": "Fin de cadre",
 	"FRAME_START": "Début de trame",
 	"FREQUENCY": "",
+  "FULL_BURST_ID": "",
 	"FUNCTION_W_D_S_L_I_W_L_W_L_W_L_PUSH_GTM_START": "(fonction(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start' :",
 	"GEOCODED_AREA": "",
 	"GEOGRAPHIC": "Géographique",

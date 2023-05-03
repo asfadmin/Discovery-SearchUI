@@ -271,6 +271,7 @@
 	"FRAME_END": "Frame End",
 	"FRAME_START": "Frame Start",
 	"FREQUENCY": "Frequency",
+  "FULL_BURST_ID": "Full Burst ID",
 	"FUNCTION_W_D_S_L_I_W_L_W_L_W_L_PUSH_GTM_START": "(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':",
 	"GEOCODED_AREA": "Geocoded Area",
 	"GEOGRAPHIC": "Geographic",

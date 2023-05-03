@@ -271,6 +271,7 @@
 	"FRAME_END": "Fin Del Marco",
 	"FRAME_START": "Inicio De Cuadro",
 	"FREQUENCY": "Frecuencia",
+  "FULL_BURST_ID": "",
 	"FUNCTION_W_D_S_L_I_W_L_W_L_W_L_PUSH_GTM_START": "(función(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':",
 	"GEOCODED_AREA": "Área Geocodificada",
 	"GEOGRAPHIC": "Geográfico",

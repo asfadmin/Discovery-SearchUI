@@ -271,6 +271,7 @@
 	"FRAME_END": "",
 	"FRAME_START": "",
 	"FREQUENCY": "",
+  "FULL_BURST_ID": "",
 	"FUNCTION_W_D_S_L_I_W_L_W_L_W_L_PUSH_GTM_START": "(函数(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':",
 	"GEOCODED_AREA": "",
 	"GEOGRAPHIC": "地理的",
