@@ -3,8 +3,9 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 18
+      nodejs: 14
     commands:
+      - n 18
       - npm set progress=false
       - npm install -g @angular/cli@15.2.7
   pre_build:
