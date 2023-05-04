@@ -36,10 +36,10 @@
           SBAS
             </span>
             <span *ngSwitchCase = searchTypes.BASELINE>
-          BASELINE
+          {{ 'BASELINE' | translate}}
             </span>
             <span *ngSwitchCase = searchTypes.CUSTOM_PRODUCTS>
-            ON DEMAND
+          {{ 'ON_DEMAND' |translate}}
             </span>
             <span *ngSwitchDefault>
             </span>

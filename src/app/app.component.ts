@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
-import {TranslateService} from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 import { QueueComponent } from '@components/header/queue';
 import { ProcessingQueueComponent } from '@components/header/processing-queue';
+import { AsfLanguageService } from "@services/asf-language.service";
 
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
@@ -34,7 +35,7 @@ import { SearchType } from './models';
 @Component({
   selector   : 'app-root',
   templateUrl: './app.component.html',
-  styleUrls  : ['./app.component.scss']
+  styleUrls  : ['./app.component.scss'],
 })
 export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('sidenav', {static: true}) sidenav: MatSidenav;
@@ -61,9 +62,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private subs = new SubSink();
 
-  // @ts-ignore
-  private browserLang: string;
-
   constructor(
     private store$: Store<AppState>,
     private actions$: ActionsSubject,
@@ -84,10 +82,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private mapService: services.MapService,
     private themeService: services.ThemingService,
     public translate: TranslateService,
+    public language: AsfLanguageService,
 
-  ) {
-    this.browserLang = this.translate.getBrowserLang();
-  }
+  ) {}
 
   public ngAfterViewInit(): void {
     this.subs.add(
@@ -96,13 +93,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         map(profile => profile.defaultFilterPresets)
         ).subscribe(presets => {
           this.store$.dispatch(new filterStore.SetDefaultFilters(presets));
-          this.translate.addLangs(['de', 'en', 'es', 'fr', 'pt', 'zh']);
-          this.translate.setDefaultLang('en');
-          this.translate.use('en');
-          // this.translate.use(this.browserLang.match(/de|en|es|fr/) ? this.browserLang : 'en');
-          // if (profile.defaultLanguage !== undefined) {
-          //   this.translate.use(profile.defaultLanguage);
-          // }
+          this.language.initialize();
         }))
   }
   public ngOnInit(): void {
@@ -245,6 +236,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       this.store$.select(userStore.getUserProfile).subscribe(
         profile => {
           this.urlStateService.setDefaults(profile);
+          this.language.setProfileLanguage(profile.language);
           this.isAutoTheme = profile.theme === 'System Preferences';
           if (this.searchType !== models.SearchType.LIST
             && this.searchType !== models.SearchType.CUSTOM_PRODUCTS

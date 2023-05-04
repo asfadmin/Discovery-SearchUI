@@ -108,22 +108,22 @@
 
   <li *ngIf="prop.isRelevant(p.OFF_NADIR_ANGLE, dataset)"
     class="detail-item-margin">
-    <b>Off Nadir Angle </b> • {{ scene.metadata.offNadirAngle }}
+    <b>{{'OFF_NADIR_ANGLE' | translate}} </b> • {{ scene.metadata.offNadirAngle }}
   </li>
 
   <li *ngIf="prop.isRelevant(p.POINTING_ANGLE, dataset)"
     class="detail-item-margin">
-    <b>Pointing Angle </b> • {{ scene.metadata.pointingAngle }}
+    <b>{{'POINTING_ANGLE' | translate}} </b> • {{ scene.metadata.pointingAngle }}
   </li>
 
   <li *ngIf="prop.isRelevant(p.FARADAY_ROTATION, dataset) && scene.metadata.faradayRotation !== 0"
     class="detail-item-margin">
-    <b>Faraday Rotation </b> • {{ scene.metadata.faradayRotation }}
+    <b>{{'FARADAY_ROTATION' | translate}} </b> • {{ scene.metadata.faradayRotation }}
   </li>
 
   <li *ngIf="prop.isRelevant(p.MISSION_NAME, dataset)"
     class="detail-item-margin">
-    <span class="v-mid"> <b>Campaign Name </b> • {{ scene.metadata.missionName }} </span>
+    <span class="v-mid"> <b>{{'CAMPAIGN_NAME' | translate}} </b> • {{ scene.metadata.missionName }} </span>
 
     <mat-icon *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addMissionMenu"
@@ -151,14 +151,14 @@
   </li>
 
   <li *ngIf="dataset.source as source" class="detail-item-margin">
-    <a *ngIf="source.url" [href]="source.url" target="_blank"> Data courtesy of {{ dataset.source.name }}</a>
-    <span *ngIf="!source.url" class="faint-text"> Data courtesy of {{ dataset.source.name }}</span>
+    <a *ngIf="source.url" [href]="source.url" target="_blank"> {{'DATA_COURTESY_OF' | translate}} {{ dataset.source.name }}</a>
+    <span *ngIf="!source.url" class="faint-text"> {{'DATA_COURTESY_OF' | translate}} {{ dataset.source.name }}</span>
   </li>
 
   <li *ngIf="dataset.citationUrl as citation" class="detail-item-margin">
     <a *ngIf="citation" [href]="citation"
        target="_blank"
-       matTooltip="How to cite using this data">{{ 'CITATION' | translate }}</a>
+       matTooltip="{{'HOW_TO_CITE_USING_THIS_DATA' | translate}}">{{ 'CITATION' | translate }}</a>
   </li>
 
 </ul>

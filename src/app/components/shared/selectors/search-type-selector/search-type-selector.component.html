@@ -74,7 +74,7 @@
           <div class="menu-item-inner">
             <div fxFlex="75%" class="menu-item-content">
               <div class="item-title">
-                {{'BASELINE' | translate }}
+                {{ 'BASELINE' | translate | titlecase }}
               </div>
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
                 {{'BASELINE_SEARCH_PROVIDES_VISUALIZATION_OF_PERPENDICULAR_AND_TEMPORAL_BASELINE_DATA_FOR_A_CHOSEN' | translate}}
@@ -136,7 +136,7 @@
               </mat-card-actions>
             </div>
             <div fxFlex="25%" class="menu-item-aside">
-              <span class="material-icons-outlined menu-item-icon">volcano</span>
+              <span class="material-icons-outlined menu-item-icon">{{'VOLCANO' | translate}}</span>
             </div>
           </div>
         </div>

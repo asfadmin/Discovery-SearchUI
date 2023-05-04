@@ -17,7 +17,7 @@
       style="margin: 0 4px;">
       <fa-icon icon="spinner" [pulse]="true"></fa-icon>
     </span>
-    {{ 'FILTERS' | translate }}
+    {{ 'FILES' | translate }}
 
 </div>
 
@@ -49,13 +49,13 @@
       style="margin: 0 4px;">
       <fa-icon icon="spinner" [pulse]="true"></fa-icon>
     </span>
-    {{ 'FILTERS' | translate }}
+    {{ 'FILES' | translate }}
 </div>
 
 <mat-menu #menu="matMenu">
   <button *ngFor="let amount of possibleMaxResults"
     (click)="onNewMaxResults(amount)" mat-menu-item>
-      <span>{{ formatNumber(amount) }} {{'FILES' | translate }}</span>
+      <span>{{ formatNumber(amount) }} {{ 'FILES' | translate }}</span>
   </button>
 
 </mat-menu>

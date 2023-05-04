@@ -27,7 +27,7 @@
           cdkFocusInitial>
     <span>
       {{ 'SUBMIT' | translate }} {{ amountSelected(jobTypesWithQueued) }}
-      Job<span *ngIf="amountSelected(jobTypesWithQueued) > 1">s</span>
+      {{ 'JOB' | translate | titlecase }}<span *ngIf="amountSelected(jobTypesWithQueued) > 1">s</span>
     </span>
   </button>
 </div>
