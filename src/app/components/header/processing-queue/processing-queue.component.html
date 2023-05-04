@@ -30,6 +30,7 @@
           </div>
         </div>
       </ng-container>
+
       <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
         <div class="branding-block">
           <div (click)="onOpenPreferences()" class="clickable hyp3-url hyp3-url-mobile">
@@ -37,6 +38,7 @@
           </div>
         </div>
       </ng-container>
+
     </div>
 
     <ng-container *ngIf="breakpoint !== breakpoints.MOBILE;">
@@ -48,6 +50,19 @@
           {{ hyp3Job.jobType.name }} ({{ hyp3Job.jobs.length }})
         </button>
       </ng-container>
+
+      <div class="doc-feedback-div">
+        <div class="docs-div header-link">
+          <app-docs-modal class="text-link"
+                          text="Docs"
+                          url="https://hyp3-docs.asf.alaska.edu/#asf-hyp3">
+          </app-docs-modal>
+        </div>
+
+        <div class="feedback-div header-link">
+          <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <mat-icon>comment</mat-icon> {{ 'FEEDBACK' | translate }}</a>
+        </div>
+      </div>
     </ng-container>
 
     <ng-container *ngIf="
@@ -81,19 +96,8 @@
     </ng-container>
   </div>
 
-  <div class="feedback-div header-link">
-    <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <mat-icon>comment</mat-icon>{{ 'FEEDBACK' | translate }}</a>
-  </div>
-
-  <div class="docs-div header-link">
-    <app-docs-modal class="text-link"
-                    text="Docs"
-                    url="https://hyp3-docs.asf.alaska.edu/#asf-hyp3">
-    </app-docs-modal>
-  </div>
-
   <div class="close-x" (click)="onCloseDialog()">
-    <mat-icon></mat-icon>
+    <mat-icon>close</mat-icon>
   </div>
 </div>
 
