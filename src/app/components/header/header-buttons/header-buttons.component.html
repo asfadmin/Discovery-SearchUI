@@ -63,6 +63,14 @@
     </button>
 
     <button
+      [matMenuTriggerFor]="languageMenu"
+      matTooltip="{{ 'HELP_AND_INFORMATION' | translate }}"
+      class="spacing nav-icon-buttons" color="basic" mat-button>
+      <mat-icon class="large-icon">translate</mat-icon>
+      <div class="text-under faint-text">{{ language.getName()}}</div>
+    </button>
+
+    <button
       *ngIf="!isLoggedIn"
       (click)="onAccountButtonClicked()"
       class="spacing nav-icon-buttons" color="basic"
@@ -129,6 +137,12 @@
       [matMenuTriggerFor]="helpMenu"
       class="mobile-icon-spacing">
       help_outline
+    </mat-icon>
+
+    <mat-icon
+      [matMenuTriggerFor]="languageMenu"
+      class="mobile-icon-spacing">
+      translate
     </mat-icon>
 
     <mat-icon
@@ -342,4 +356,13 @@
       {{ 'WEBSITE_LINKS' | translate }}
     </a>
 </mat-menu>
+
+<mat-menu #languageMenu="matMenu">
+  <div *ngFor="let lang of language.translate.getLangs()">
+    <button mat-menu-item (click)="language.setCurrent(lang)">
+      {{language.getName(lang)}}
+    </button>
+  </div>
+</mat-menu>
+
 

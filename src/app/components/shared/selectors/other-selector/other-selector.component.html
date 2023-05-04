@@ -52,7 +52,7 @@
       [disabled]="!prop.isRelevant(p.FLIGHT_DIRECTION)"
       placeholder="{{ 'DIRECTION' | translate }}" multiple>
       <mat-option *ngFor="let direction of flightDirectionTypes" [value]="direction">
-        {{direction}}
+        {{direction.toUpperCase() | translate}}
       </mat-option>
     </mat-select>
 

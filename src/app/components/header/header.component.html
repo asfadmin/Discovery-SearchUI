@@ -1,8 +1,7 @@
-<app-language-selector [header]="true"></app-language-selector>
-
-<div
-  *ngIf="breakpoint$ | async as breakpoint"
-  class="bounds">
+<div *ngIf="breakpoint$ | async as breakpoint" class="bounds">
+<!--  <div *ngIf="breakpoint !== breakpoints.MOBILE">-->
+<!--    <app-language-selector [header]="true"></app-language-selector>-->
+<!--  </div>-->
   <div>
     <div class="breadcrumb-list"
          [class.mobile-nav-bar]="breakpoint === breakpoints.MOBILE"
@@ -14,7 +13,7 @@
           <app-logo></app-logo>
         </div>
       </div>
-      <div *ngIf="searchType$ | async as searchType" fxLayout="column" fxFill>
+      <div *ngIf="searchType$ | async as searchType" fxLayout="column" fxFill class="header-buttons-input">
         <app-dataset-header *ngIf="searchType === searchTypes.DATASET">
         </app-dataset-header>
 
