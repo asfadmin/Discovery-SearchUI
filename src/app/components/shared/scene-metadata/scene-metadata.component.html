@@ -44,7 +44,7 @@
     </mat-icon>
 
     <mat-menu #addBeamModeMenu="matMenu">
-      <button (click)="setBeamMode()" mat-menu-item>Add beam mode to search</button>
+      <button (click)="setBeamMode()" mat-menu-item>{{ 'ADD_BEAM_MODE_TO_SEARCH' | translate }}</button>
     </mat-menu>
   </li>
 
@@ -80,7 +80,9 @@
   </li>
 
   <li *ngIf="prop.isRelevant(p.FLIGHT_DIRECTION, dataset)">
-    <span class="v-mid"> <b>{{ 'FLIGHT_DIRECTION' | translate }} </b> • {{ scene.metadata.flightDirection }} </span>
+    <span class="v-mid"> <b>{{ 'FLIGHT_DIRECTION' | translate }} </b> •
+      {{ scene.metadata.flightDirection.toUpperCase() | translate }}
+    </span>
     <mat-icon *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addFlightDirectionMenu"
       class="v-mid clickable">
