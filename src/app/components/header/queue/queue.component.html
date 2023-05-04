@@ -15,19 +15,21 @@
     <mat-progress-bar class="global-progress" mode="determinate" value="{{ dlQueueProgress }}"></mat-progress-bar>
   </div>
 
-  <div class="feedback-div header-link">
-    <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <mat-icon>comment</mat-icon> {{ 'FEEDBACK' | translate }}</a>
-  </div>
+  <div class="doc-feedback-div">
+    <div class="docs-div header-link">
+      <app-docs-modal class="text-link"
+                      text="Docs"
+                      url="https://docs.asf.alaska.edu/vertex/manual/#downloads-queue">
+      </app-docs-modal>
+    </div>
 
-  <div class="docs-div header-link">
-    <app-docs-modal class="text-link"
-                    text="Docs"
-                    url="https://docs.asf.alaska.edu/vertex/manual/#downloads-queue">
-    </app-docs-modal>
+    <div class="feedback-div header-link">
+      <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <mat-icon>comment</mat-icon> {{ 'FEEDBACK' | translate }}</a>
+    </div>
   </div>
 
   <div class="dl-close-x" (click)="onCloseDownloadQueue()">
-    <mat-icon></mat-icon>
+    <mat-icon>close</mat-icon>
   </div>
 
 </div>
