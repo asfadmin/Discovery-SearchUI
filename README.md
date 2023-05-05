@@ -72,6 +72,27 @@ Run `npm install --save package_name` to install a package.
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
+## Translating Text
+The package [ngx-translate](http://www.ngx-translate.com/) is use enable multilingual support. Any text a user can view on the UI, excluding possibly
+metadata values and brand names, should be displayed using a translate pipe.
+
+Here is an example:
+```
+<button
+  [matMenuTriggerFor]="helpMenu"
+  matTooltip="{{ 'HELP_AND_INFORMATION' | translate }}"
+  class="spacing nav-icon-buttons" color="basic" mat-button>
+  <mat-icon class="large-icon">help_outline</mat-icon>
+  <div class="text-under faint-text">{{ 'HELP' | translate }}</div>
+</button>
+```
+You can see both text in the Tool Tip and the button text itself are both run through the 'translate' pipe: `{{ 'HELP_AND_INFORMATION' | translate }}`.
+The translate pipe will translate the key e.g. 'HELP_INFORMATION' and replace it with the value from the current language json file
+in use, e.g. 'assets/i18n/en.json'. Add key/value pairs to the json files using [BabelEdit](https://www.codeandweb.com/babeledit).
+
+The 'assets/i18n/vertex.babel' file is the project file to open with BabelEdit to access all of the json translation files.
+Use BabelEdit to add, change, and delete key/value pairs.
+
 ## Testing
 Testing run via [Ghost Inspector](https://ghostinspector.com/).
 
