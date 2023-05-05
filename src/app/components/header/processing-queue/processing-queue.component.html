@@ -42,15 +42,6 @@
     </div>
 
     <ng-container *ngIf="breakpoint !== breakpoints.MOBILE;">
-      <ng-container *ngFor="let hyp3Job of jobTypesWithQueued">
-        <button mat-flat-button
-          class="job-type--button"
-        (click)="onSetSelectedJobType(hyp3Job.jobType)"
-        [color]="selectedJobTypeId === hyp3Job.jobType.id ? 'secondary' : 'primary'">
-          {{ hyp3Job.jobType.name }} ({{ hyp3Job.jobs.length }})
-        </button>
-      </ng-container>
-
       <div class="doc-feedback-div">
         <div class="docs-div header-link">
           <app-docs-modal class="text-link"
@@ -63,6 +54,16 @@
           <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <mat-icon>comment</mat-icon> {{ 'FEEDBACK' | translate }}</a>
         </div>
       </div>
+
+      <ng-container *ngFor="let hyp3Job of jobTypesWithQueued">
+        <button mat-flat-button
+          class="job-type--button"
+        (click)="onSetSelectedJobType(hyp3Job.jobType)"
+        [color]="selectedJobTypeId === hyp3Job.jobType.id ? 'secondary' : 'primary'">
+          {{ hyp3Job.jobType.name }} ({{ hyp3Job.jobs.length }})
+        </button>
+      </ng-container>
+
     </ng-container>
 
     <ng-container *ngIf="
