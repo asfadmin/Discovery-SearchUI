@@ -29,6 +29,7 @@ import { Icon, Style } from 'ol/style';
 import IconAnchorUnits from 'ol/style/IconAnchorUnits';
 import Geometry from 'ol/geom/Geometry';
 import ImageLayer from 'ol/layer/Image';
+import ImageWMS from 'ol/source/ImageWMS';
 import LayerGroup from 'ol/layer/Group';
 import { PinnedProduct } from '@services/browse-map.service';
 import { BrowseOverlayService } from '@services';
@@ -40,6 +41,7 @@ import lineIntersect from '@turf/line-intersect';
 import Polygon from 'ol/geom/Polygon';
 import LineString from 'ol/geom/LineString';
 import TileLayer from 'ol/layer/Tile';
+
 import SimpleGeometry from 'ol/geom/SimpleGeometry';
 import { SetGeocode } from '@store/filters';
 
@@ -57,15 +59,12 @@ export class MapService {
   private polygonLayer: VectorLayer;
   private sarviewsEventsLayer: VectorLayer;
   private browseImageLayer: ImageLayer;
-  // private browseRasterCanvas: RasterSource;
   private gridLinesVisible: boolean;
   private sarviewsFeaturesByID: {[id: string]: Feature} = {};
   private pinnedCollection: Collection<Layer> = new Collection<Layer>([], {unique: true});
   private pinnedProducts: LayerGroup = new LayerGroup({layers: this.pinnedCollection});
 
   private overviewMap: OverviewMap;
-
-  // potential mat-icon for map pan: control_camera
 
   private selectClick = new Select({
     condition: click,
@@ -429,6 +428,23 @@ export class MapService {
       });
   }
 
+  private getCoherenceLayer(): TileLayer {
+    return new ImageLayer({
+      extent: [
+        -2.00375070672E7,
+        -7967398.932400003,
+        2.0037507842788246E7,
+        1.6213801067599997E7
+      ],
+      source: new ImageWMS({
+        url: 'https://gis.uat.earthdata.nasa.gov/image/services/GSSICB/GSSICB_12_day_Median_VV_Coherence_Dec_Jan_Feb/ImageServer/WMSServer',
+        params: {'LAYERS': 'GSSICB_12_day_Median_VV_Coherence_Dec_Jan_Feb:Unscaled Coherence'},
+        ratio: 1,
+        serverType: 'geoserver',
+      }),
+    })
+  }
+
   private setMap(mapView: views.MapView, overlay): void {
     this.mapView = mapView;
 
@@ -450,13 +466,16 @@ export class MapService {
       className: 'ol-overviewmap ol-custom-overviewmap',
     });
 
+
     const newMap = new Map({
-      layers: [ this.mapView.layer,
+      layers: [
+        this.mapView.layer,
         this.drawService.getLayer(),
         this.focusLayer,
         this.selectedLayer,
         this.mapView?.gridlines,
-        this.pinnedProducts
+        this.pinnedProducts,
+        this.getCoherenceLayer()
       ],
       target: 'map',
       view: this.mapView.view,
@@ -475,7 +494,7 @@ export class MapService {
 
     this.selectHover.on('select', e => {
       this.map.getViewport().style.cursor =
-      e.selected.length > 0 ? 'pointer' : 'default';
+        e.selected.length > 0 ? 'pointer' : 'default';
     });
 
     this.selectSarviewEventHover.on('select', e => {
@@ -498,18 +517,18 @@ export class MapService {
 
     newMap.on('singleclick', (evnt) => {
       if (this.map.hasFeatureAtPixel(evnt.pixel)) {
-      this.map.forEachFeatureAtPixel(
-      evnt.pixel,
-      (feature) => {
-        const sarview_id: string = feature.get('sarviews_id');
-        if (!!sarview_id) {
-          this.selectedSarviewEvent$.next(sarview_id);
-          this.store$.dispatch(new sceneStore.SetSelectedSarviewsEvent(sarview_id));
-        }
+        this.map.forEachFeatureAtPixel(
+          evnt.pixel,
+          (feature) => {
+            const sarview_id: string = feature.get('sarviews_id');
+            if (!!sarview_id) {
+              this.selectedSarviewEvent$.next(sarview_id);
+              this.store$.dispatch(new sceneStore.SetSelectedSarviewsEvent(sarview_id));
+            }
 
-        evnt.preventDefault();
+            evnt.preventDefault();
 
-        });
+          });
       }
     });
 
@@ -575,21 +594,11 @@ export class MapService {
     const scenesWithBrowse = scenes.filter(scene => scene.browses?.length > 0).slice(0, 10);
 
     const collection = scenesWithBrowse.reduce((prev, curr) =>
-    prev.concat(this.browseOverlayService.createNormalImageLayer(curr.browses[0], curr.metadata.polygon)), [] as ImageLayer[]);
-
-    // this.browseRasterCanvas = new RasterSource({
-    //   sources: collection,
-    //   operationType: 'image' as RasterOperationType
-    // })
-
-    // const l = new ImageLayer({
-    //   source: this.browseRasterCanvas,
-    // });
+      prev.concat(this.browseOverlayService.createNormalImageLayer(curr.browses[0], curr.metadata.polygon)), [] as ImageLayer[]);
 
     collection.forEach(element => {
       this.map.addLayer(element);
     });
-    // this.map.addLayer(l);
   }
 
   public setPinnedProducts(pinnedProductStates: {[product_id in string]: PinnedProduct}) {
@@ -632,12 +641,12 @@ export class MapService {
 
     return booleanPointInPolygon(
       point.getCoordinates(),
-    {
+      {
         'type': 'Polygon',
         'coordinates': [
           (polygon.getGeometry() as Polygon).getCoordinates()[0]
         ],
-    });
+      });
   }
 
   private getLineIntersection(aoi: Feature<Geometry>, polygon: Feature<Geometry>): boolean {
@@ -648,12 +657,12 @@ export class MapService {
         ...line.getCoordinates()
       ]
     },
-    {
-      'type': 'Polygon',
-      'coordinates': [
-        (polygon.getGeometry() as Polygon).getCoordinates()[0]
-      ],
-    }).features.length > 0;
+      {
+        'type': 'Polygon',
+        'coordinates': [
+          (polygon.getGeometry() as Polygon).getCoordinates()[0]
+        ],
+      }).features.length > 0;
   }
 
   private getPolygonIntersection(aoi: Feature<Geometry>, polygon: Feature<Geometry>): boolean {
@@ -664,13 +673,13 @@ export class MapService {
           (aoi.getGeometry() as Polygon).getCoordinates()[0]
         ],
       },
-    {
-      'type': 'Polygon',
-      'coordinates': [
-        (polygon.getGeometry() as Polygon).getCoordinates()[0]
-      ],
-    }
-  );
+      {
+        'type': 'Polygon',
+        'coordinates': [
+          (polygon.getGeometry() as Polygon).getCoordinates()[0]
+        ],
+      }
+    );
   }
 
 }
