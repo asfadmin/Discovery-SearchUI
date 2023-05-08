@@ -17,7 +17,7 @@ export const beta = {
   apiValue: { asfplatform: 'SENTINEL-1 INTERFEROGRAM (BETA)' },
   date: { start: new Date(2014, 3, 25) },
   infoUrl: 'https://asf.alaska.edu/data-sets/derived-data-sets/sentinel-1-interferograms/',
-  citationUrl: 'https://asf.alaska.edu/how-to/data-basics/datasets-available-from-asf-sar-daac/',
+  citationUrl: 'https://asf.alaska.edu/data-sets/derived-data-sets/sentinel-1-interferograms/',
   frequency: 'C-Band',
   source: {
     name: 'ARIA-JPL',
