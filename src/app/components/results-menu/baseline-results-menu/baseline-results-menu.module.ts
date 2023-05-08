@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { MatSharedModule } from '@shared';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { ResizableModule } from 'angular-resizable-element';
 
 import { SceneDetailModule } from '../scene-detail';
@@ -27,7 +26,6 @@ import  { SharedModule } from "@shared";
     MatMenuModule,
     MatSharedModule,
     MatButtonToggleModule,
-    FlexLayoutModule,
     ResizableModule,
     SharedModule,
     SceneDetailModule,

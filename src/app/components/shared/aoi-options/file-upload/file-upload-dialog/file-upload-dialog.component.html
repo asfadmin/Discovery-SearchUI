@@ -4,13 +4,11 @@
 <div
   *ngIf="(breakpoint$ | async) > breakpoints.MOBILE; else mobileUploadButton"
   (drop)="onFileDrop($event)"
-  fxLayout="column" fxLayoutAlign="space-evenly stretch"
-  class="container">
+  class="container file-upload--layout">
 
-  <div fxFlex fxLayout="column">
-    <div fxFlex>
-      <div [class.is-file-error]="isFileError"
-        fxFlex fxLayoutAlign="center" gdAlignColumns="center"
+  <div class="fx-col">
+    <div class="fx-empty">
+      <div class="file-upload-target--layout" [class.is-file-error]="isFileError"
         [class.drop-text-box]="canBeClosed">
 
         <div *ngIf="canBeClosed" class="drop-file-area">

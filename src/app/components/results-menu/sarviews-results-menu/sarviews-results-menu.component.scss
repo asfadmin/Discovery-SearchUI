@@ -38,3 +38,39 @@
     bottom: 7.5px;
   }
 }
+
+.desktop-header--layout {
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 33%;
+}
+
+.desktop-header--small-layout {
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 50%;
+}
+
+.scene-detail--layout {
+  height: 100%;
+  width: 100%;
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 34%;
+}
+
+.file-list--layout {
+  height: 100%;
+  width: 100%;
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 33%;
+}
+
+.scene-info--small-layout {
+  height: 100%;
+  width: 100%;
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 50%;
+}

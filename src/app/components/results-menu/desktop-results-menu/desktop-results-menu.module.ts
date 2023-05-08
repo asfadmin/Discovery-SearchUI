@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MatSharedModule } from '@shared';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { SceneFilesModule } from '../scene-files';
 import { SceneDetailModule } from '../scene-detail';
@@ -18,7 +17,6 @@ import { SharedModule } from "@shared";
   imports: [
     CommonModule,
     MatSharedModule,
-    FlexLayoutModule,
 
     SceneFilesModule,
     SceneDetailModule,

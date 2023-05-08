@@ -15,14 +15,14 @@
     </div>
   </div>
 
-  <div class="gtm-search-type-selector" fxFlex="nogrow">
+  <div class="gtm-search-type-selector fx-nogrow">
     <mat-menu #platformMenu="matMenu" [(ngModel)]="selected" ngDefaultControl>
       <div>
         <div class="dataset-list">
           <div *ngFor="let dataset of datasets; last as isLast">
             <div class="menu-item mat-menu-item" (click)="onSelectionChange(dataset.id)">
               <div class="menu-item-inner">
-                <div fxFlex="80%" class="menu-item-content">
+                <div class="dataset--layout menu-item-content">
                   <div class="item-title">
                     {{ dataset.name }}
                     <span class="dataset-light-text">
@@ -43,7 +43,7 @@
                     </app-docs-modal>
                   </mat-card-actions>
                 </div>
-                <div fxFlex="20%" class="menu-item-aside">
+                <div class="dataset-aside--layout menu-item-aside">
                   <div class="dataset-date-range faint-text">
                     {{ prettyDateRange(dataset.date) }}
                   </div>
