@@ -16,7 +16,7 @@ export const sentinel_1_bursts = {
   ],
   apiValue: { platform: 'SENTINEL-1', instrument: 'C-SAR', processingLevel: 'BURST' },
   date: { start: new Date('2014/06/15 03:44:43 UTC') },
-  infoUrl: 'https://www.asf.alaska.edu/sar-data-sets/sentinel-1/',
+  infoUrl: 'https://sentinels.copernicus.eu/web/sentinel/user-guides/sentinel-1-sar/acquisition-modes/interferometric-wide-swath',
   citationUrl: 'https://asf.alaska.edu/data-sets/sar-data-sets/sentinel-1/sentinel-1-how-to-cite/',
   frequency: 'C-Band',
   source: {
@@ -45,6 +45,6 @@ export const sentinel_1_bursts = {
     displayName: 'Sentinel-1B',
     apiValue: 'SB',
   }],
-  platformDesc: 'Sentinel-1 BURST products are the individual radar pulse responses that make up a parent SLC.',
+  platformDesc: 'Sentinel-1 BURST products are the individual radar pulse responses that make up the 3 sub-swaths of every Sentinel-1 SLC product.',
   platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
 };
