@@ -45,6 +45,6 @@ export const sentinel_1_bursts = {
     displayName: 'Sentinel-1B',
     apiValue: 'SB',
   }],
-  platformDesc: 'Sentinel-1 BURST products are the individual radar pulse responses that make up the 3 sub-swaths of every Sentinel-1 SLC product.',
+  platformDesc: 'SENTINEL_1_BURST_DESC',
   platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
 };

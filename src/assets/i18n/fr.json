@@ -617,6 +617,7 @@
 	"SELECT_SEARCH_HISTORY_FROM_THE_SEARCH_MENU": "Sélectionnez \"Historique des recherches...\" dans le menu de recherche.",
 	"SELECT_THE_DATASET_OF_INTEREST": "",
 	"SENTINEL_1_INTERFEROGRAM_BETA_DESC": "",
+	"SENTINEL_1_BURST_DESC": "",
 	"SENTINEL_DESC": "",
 	"SET": "Ensemble",
 	"SETTINGS": "paramètres",

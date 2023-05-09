@@ -617,6 +617,7 @@
 	"SELECT_SEARCH_HISTORY_FROM_THE_SEARCH_MENU": "Seleccione 'Buscar historial...' en el menú de búsqueda.",
 	"SELECT_THE_DATASET_OF_INTEREST": "Seleccione el conjunto de datos de interés.",
 	"SENTINEL_1_INTERFEROGRAM_BETA_DESC": "Los productos de interferograma Sentinel-1 (BETA) son prototipos de productos interferométricos de formato NISAR de nivel 2 producidos con el sistema de datos científicos ARIA.",
+	"SENTINEL_1_BURST_DESC": "",
 	"SENTINEL_DESC": "Sentinel-1 incluye satélites gemelos, cada uno de los cuales lleva un radar de apertura sintética (SAR) de banda C, juntos brindan imágenes de la superficie de la Tierra para todo clima, día y noche.",
 	"SET": "Colocar",
 	"SETTINGS": "ajustes",

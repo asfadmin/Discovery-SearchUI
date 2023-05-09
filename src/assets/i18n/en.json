@@ -617,6 +617,7 @@
 	"SELECT_SEARCH_HISTORY_FROM_THE_SEARCH_MENU": "Select 'Search History...' from the search menu.",
 	"SELECT_THE_DATASET_OF_INTEREST": "Select the dataset of interest.",
 	"SENTINEL_1_INTERFEROGRAM_BETA_DESC": "Sentinel-1 Interferogram (BETA) products are prototype Level 2 NISAR-Format interferometric products produced using the ARIA Science Data System.",
+	"SENTINEL_1_BURST_DESC": "Sentinel-1 BURST products are the individual radar pulse responses that make up the 3 sub-swaths of every Sentinel-1 SLC product.",
 	"SENTINEL_DESC": "Sentinel-1 includes twin satellites that each carry C-band synthetic aperture radar (SAR), together providing all-weather, day-and-night imagery of Earth’s surface.",
 	"SET": "Set",
 	"SETTINGS": "settings",
