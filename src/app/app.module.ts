@@ -13,10 +13,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 
-import { environment } from '@environments/environment';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
 
 import * as store from './store';
@@ -100,7 +98,6 @@ export const routes = [
     RouterModule.forRoot(routes, {useHash: true}),
     StoreModule.forRoot(store.reducers, {metaReducers: store.metaReducers}),
     EffectsModule.forRoot(store.appEffects),
-    !environment.production ? StoreDevtoolsModule.instrument() : [],
     MatSidenavModule,
     MatTableModule,
     MatSortModule,
