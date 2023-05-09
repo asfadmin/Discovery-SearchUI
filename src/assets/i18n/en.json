@@ -651,6 +651,7 @@
 	"SIGN_OUT": "Sign out",
 	"SIMILAR": "Similar",
 	"SIRC_DESC": "The instrument was flown aboard two of the space shuttle Endeavour\\'s missions.  The instrument monitored and assessed large-scale environmental processes.",
+	"SLC_BURST_FILTERS": "SLC BURST Filters",
 	"SMAP_DESC": "The SMAP mission provides global measurements of soil moisture and its freeze-thaw state. SMAP measures the amount of water in the top 5 cm of soil everywhere...",
 	"SMITHSONIAN_ID": "Smithsonian ID",
 	"SOME_DATASET_RESULTS_CONTAIN_BUNDLED_AND_COMPRESSED_OR_ZIPPED_FILES_VERTEX_ALLOWS_FOR_THE_CONTENTS": "Some dataset results contain bundled and compressed, or zipped, files. Vertex allows for the contents",
