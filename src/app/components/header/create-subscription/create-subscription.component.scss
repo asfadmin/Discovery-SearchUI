@@ -103,22 +103,23 @@ $bottom-offset: 10px;
   }
 }
 
-.feedback-div {
-  position: absolute;
-  top: 53px;
-  right: 16px;
-  text-align: right;
-  float: right;
-  cursor: pointer;
+.doc-feedback-div {
+  display: flex;
+  justify-content: flex-end;
+  //margin-top: -42px;
+  margin-right: 20px;
 }
 
 .docs-div {
-  position: absolute;
-  top: 56px;
-  right: 140px;
-  text-align: right;
-  float: right;
   cursor: pointer;
+  flex: 0 1 auto;
+  margin-right: 20px;
+  margin-top: 2px;
+}
+
+.feedback-div {
+  cursor: pointer;
+  flex: 0 1 auto;
 }
 
 .content-block {
