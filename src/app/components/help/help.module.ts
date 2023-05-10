@@ -27,6 +27,7 @@ import { HelpOnDemandComponent } from './help-pages/help-on-demand/help-on-deman
 import {MatInputModule} from '@angular/material/input';
 import {DocsModalModule} from '@components/shared/docs-modal';
 
+import { TranslateModule } from "@ngx-translate/core";
 
 @NgModule({
   declarations: [
@@ -54,7 +55,9 @@ import {DocsModalModule} from '@components/shared/docs-modal';
         MatTableModule,
         MatSortModule,
         MatInputModule,
-        DocsModalModule
+        DocsModalModule,
+        TranslateModule,
+
     ],
   exports: [
     HelpComponent

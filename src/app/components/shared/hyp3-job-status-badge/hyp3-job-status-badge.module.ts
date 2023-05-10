@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { Hyp3JobStatusBadgeComponent } from './hyp3-job-status-badge.component';
-
+import { SharedModule } from "@shared";
 
 
 @NgModule({
@@ -18,7 +18,8 @@ import { Hyp3JobStatusBadgeComponent } from './hyp3-job-status-badge.component';
     MatChipsModule,
     MatFormFieldModule,
     MatMenuModule,
-    MatButtonModule
+    MatButtonModule,
+    SharedModule
   ],
   exports: [
     Hyp3JobStatusBadgeComponent

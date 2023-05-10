@@ -8,6 +8,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { JobProductNameSelectorComponent } from './job-product-name-selector.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from "@shared";
+
 @NgModule({
   declarations: [JobProductNameSelectorComponent],
   imports: [
@@ -19,7 +21,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatIconModule,
     MatTooltipModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    SharedModule
   ],
   exports: [
     JobProductNameSelectorComponent

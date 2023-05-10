@@ -18,10 +18,10 @@
             <app-hyp3-url></app-hyp3-url>
           </div>
           <div class="on-demand-text">
-            Create Subscription
+            {{ 'CREATE_SUBSCRIPTION' |  translate }}
           </div>
           <div class="on-demand-subtitle">
-            powered by HyP3
+            {{ 'POWERED_BY_HY_P3' |  translate }}
           </div>
         </div>
       </ng-container>
@@ -34,12 +34,12 @@
       </ng-container>
     </div>
     <div class="close-x" (click)="onCloseDialog()">
-      <mat-icon>close</mat-icon>
+      <mat-icon></mat-icon>
     </div>
   </div>
 
   <div class="feedback-div header-link">
-    <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <mat-icon>comment</mat-icon> Feedback</a>
+    <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <mat-icon>comment</mat-icon>{{ 'FEEDBACK' | translate }}</a>
   </div>
 
   <div class="docs-div header-link">
@@ -57,12 +57,12 @@
       <mat-stepper (selectionChange)="onSelectionChange()" #stepper>
         <mat-step [stepControl]="searchOptionsFormGroup" errorMessage="Missing required option">
           <ng-template matStepLabel>
-            <span *ngIf="breakpoint !== breakpoints.MOBILE" class="searchOptions">Search Options</span>
+            <span *ngIf="breakpoint !== breakpoints.MOBILE" class="searchOptions">{{ 'SEARCH OPTIONS' | translate }}</span>
           </ng-template>
 
           <div>
             <div style="margin-bottom: 5px;">
-              <b>Subscription Date</b>
+              <b>{{ 'SUBSCRIPTION_DATE' |  translate }}</b>
               <div *ngIf="errors.dateError" class="step-error"> *{{ errors.dateError }}</div>
             </div>
             <app-subscription-date-range
@@ -73,9 +73,9 @@
             </app-subscription-date-range>
           </div>
 
-          <div>
-            <div style="margin-bottom: 5px;">
-              <b>AOI Options</b>
+          <div style="margin-bottom: 25px;">
+            <div style="margin-bottom: 25px;">
+              <b>{{ 'AOI_OPTIONS' |  translate }}</b>
               <div *ngIf="errors.polygonError" class="step-error"> *{{ errors.polygonError }}</div>
             </div>
             <app-aoi-options [showHeader]="false"></app-aoi-options>
@@ -83,25 +83,25 @@
 
           <div>
             <mat-form-field class="sub-option">
-              <mat-label>Path</mat-label>
+              <mat-label>{{ 'PATH' | translate }}</mat-label>
               <input matInput [(ngModel)]="path" type="number">
-              <mat-hint align="start"> {{ path !== null ? '' : ' No path input' }}</mat-hint>
+              <mat-hint align="start"> {{ path !== null ? '' : ('NO_PATH_INPUT' | translate)}}</mat-hint>
             </mat-form-field>
 
             <mat-form-field class="sub-option">
-              <mat-label>Frame</mat-label>
+              <mat-label>{{ 'FRAME' | translate }}</mat-label>
               <input matInput [(ngModel)]="frame" type="number">
-              <mat-hint align="start">{{ frame !== null ? '' : ' No frame input'  }}</mat-hint>
+              <mat-hint align="start">{{ frame !== null ? '' : ('NO_FRAME_INPUT' | translate)  }}</mat-hint>
             </mat-form-field>
           </div>
         </mat-step>
 
         <mat-step>
-          <ng-template *ngIf="breakpoint !== breakpoints.MOBILE"  matStepLabel>Subscription Options</ng-template>
+          <ng-template *ngIf="breakpoint !== breakpoints.MOBILE"  matStepLabel>{{ 'SUBSCRIPTION_OPTIONS' |  translate }}</ng-template>
 
           <div style="margin-bottom: 10px;">
             <div style="margin-bottom: 5px;">
-              <b>Job Type</b>
+              <b>{{ 'JOB_TYPE' |  translate }}</b>
             </div>
 
             <mat-form-field class="sub-option">
@@ -109,7 +109,7 @@
                 [(value)]="jobTypeId"
                 (selectionChange)="onNewJobType($event)"
                 [disabled]="hyp3JobTypesList.length < 1"
-                placeholder="Job Type">
+                placeholder="{{ 'JOB_TYPE' |  translate }}">
                   <mat-option
                     *ngFor="let jobType of hyp3JobTypesList"
                     [value]="jobType.id"
@@ -122,7 +122,7 @@
 
           <div style="margin-bottom: 10px;">
             <div style="margin-bottom: 5px;">
-              <b>Dataset Options</b>
+              <b>{{ 'DATASET_OPTIONS' |  translate }}</b>
             </div>
 
             <mat-form-field class="sub-option">
@@ -130,7 +130,7 @@
                 [(value)]="productType"
                 (selectionChange)="onNewProductType($event)"
                 [disabled]="productTypes.length < 1"
-                placeholder="File Type">
+                placeholder="{{ 'FILE_TYPE' | translate }}">
                   <mat-option
                     *ngFor="let type of productTypes"
                     [value]="types[type].apiValue"
@@ -140,7 +140,7 @@
               </mat-select>
 
               <mat-hint align="start">
-                {{ !productType ? 'Select file type' : productType + ' selected' }}
+                {{ !productType ? ( 'SELECT_FILE_TYPE' | translate) : productType +  ' ' + ('SELECTED' | translate | lowercase ) }}
               </mat-hint>
             </mat-form-field>
 
@@ -158,7 +158,7 @@
               </mat-select>
 
               <mat-hint align="start">
-                {{ !productType ? 'Select type' : subtype + ' selected' }}
+                {{ !productType ? ('SELECT_TYPE' | translate ) : subtype + ' ' + ('SELECTED' | translate | lowercase ) }}
               </mat-hint>
             </mat-form-field>
 
@@ -166,14 +166,14 @@
               <mat-select
                 (selectionChange)="onNewFlightDirection($event)"
                 [(value)]="flightDirection"
-                placeholder="Direction">
+                placeholder="{{ 'DIRECTION' | translate }}">
                 <mat-option *ngFor="let direction of flightDirectionTypes" [value]="direction">
                   {{direction}}
                 </mat-option>
               </mat-select>
 
               <mat-hint align="start">
-                {{ !flightDirection ? 'No flight direction selected' : 'Flight direction selected' }}
+                {{ !flightDirection ? ('NO_FLIGHT_DIRECTION_SELECTED' | translate ) : ('FLIGHT_DIRECTION_SELECTED' | translate ) }}
               </mat-hint>
             </mat-form-field>
 
@@ -181,14 +181,14 @@
               <mat-select
                 (selectionChange)="onNewPolarization($event)"
                 [(value)]="polarization"
-                placeholder="Polarization" multiple>
+                placeholder="{{ 'POLARIZATION' | translate }}" multiple>
                 <mat-option *ngFor="let pol of polarizations" [value]="pol">
                   {{pol}}
                 </mat-option>
               </mat-select>
 
               <mat-hint align="start">
-                {{ polarization.length === 0 ? 'No polarization selected' : 'Polarization selected' }}
+                {{ polarization.length === 0 ? ('NO_POLARIZATION_SELECTED' | translate ) : ('POLARIZATION_SELECTED' | translate ) }}
               </mat-hint>
             </mat-form-field>
           </div>
@@ -200,55 +200,55 @@
         </mat-step>
 
         <mat-step [stepControl]="reviewFormGroup" [errorMessage]="errors.projectNameError">
-          <ng-template *ngIf="breakpoint !== breakpoints.MOBILE"  matStepLabel>Review</ng-template>
+          <ng-template *ngIf="breakpoint !== breakpoints.MOBILE"  matStepLabel>{{ 'REVIEW' |  translate }}</ng-template>
 
           <div *ngIf="subEstimate !== null" style="margin-bottom: 5px;">
-            Based on your search parameters, this subscription will run
-            <span *ngIf="currentProducts !== null && currentProducts > 0"><b>{{ currentProducts }} jobs now</b> and</span>
-            approximately <b>{{ subEstimate }} jobs per month</b>.
+            {{ 'BASED_ON_YOUR_SEARCH_PARAMETERS_THIS_SUBSCRIPTION_WILL_RUN' |  translate }}
+            <span *ngIf="currentProducts !== null && currentProducts > 0"><b>{{ currentProducts }} {{'JOBS_NOW' | translate }}</b> {{ 'AND' | translate }}</span>
+            {{ 'APPROXIMATELY' | translate }} <b>{{ subEstimate }} {{ 'JOBS_PER_MONTH' | translate }}</b>.
           </div>
 
           <div>
-            <b>Name: </b>
+            <b>{{ 'NAME' |  translate }}:</b>
             <div *ngIf="errors.projectNameError" class="step-error"> *{{ errors.projectNameError }}</div>
             <app-project-name-selector [processName]="true"></app-project-name-selector>
           </div>
 
           <div>
-            <b>Job Type:</b> {{ jobTypeId }}
+            <b>{{ 'JOB_TYPE' |  translate }}:</b> {{ jobTypeId }}
           </div>
 
 
-          <h3>Search Options:</h3>
+          <h3>{{ 'SEARCH_OPTIONS' | translate }}:</h3>
           <div>
             <div *ngIf="!!subtype">
-              <b>Dataset:</b> {{ subtype }}
+              <b>{{ 'DATASET' | translate }}:</b> {{ subtype }}
             </div>
             <div *ngIf="!!polygon">
-              <b>Search Area:</b> {{ showSearchAreaType(polygon) }}
+              <b>{{ 'SEARCH_AREA' | translate }}:</b> {{ showSearchAreaType(polygon) }}
             </div>
 
             <div *ngIf="!!dateRange.start">
-              <b>Start:</b> {{ dateRange.start | shortDate }}
+              <b>{{ 'STAR' | translate }}t:</b> {{ dateRange.start | shortDate }}
             </div>
             <div *ngIf="!!dateRange.end">
-              <b>End:</b> {{ dateRange.end | shortDate }}
+              <b>{{ 'END' | translate }}:</b> {{ dateRange.end | shortDate }}
             </div>
 
             <div *ngIf="!!productType">
-              <b>File Type:</b> {{ productType }}
+              <b>{{ 'FILE_TYPE' |  translate }}:</b> {{ productType }}
             </div>
 
             <div *ngIf="polarization.length > 0">
-              <b>Polarization:</b> {{ polarization }}
+              <b>{{ 'POLARIZATION' | translate }}:</b> {{ polarization }}
             </div>
 
             <div *ngIf="!!flightDirection">
-              <b>Flight Dir:</b> {{ flightDirection }}
+              <b>{{ 'FLIGHT_DIR' | translate }}:</b> {{ flightDirection }}
             </div>
           </div>
 
-          <h3>Processing Options:</h3>
+          <h3>{{ 'PROCESSING_OPTIONS' |  translate }}:</h3>
 
           <div>
             <div *ngFor="let param of filterOptions(processingOptionsList, jobTypeId)">
@@ -267,13 +267,13 @@
                 (click)="onBack()"
                 [disabled]="stepper.selectedIndex === 0">
           <mat-icon>arrow_backward</mat-icon>
-          Back
+          {{ 'BACK' |  translate }}
         </button>
         &nbsp;
         <button mat-flat-button
                 color="primary"
                 (click)="onNext()">
-          {{ isLastStep() ? 'Submit' : 'Next'}}
+          {{ isLastStep() ? ('SUBMIT' | translate ) : ('NEXT'| translate)}}
           <mat-icon>arrow_forward</mat-icon>
         </button>
       </div>
@@ -288,7 +288,7 @@
       <mat-slide-toggle [class.validate-only]="validateOnly"
         (change)="onValidateOnlyToggle($event.checked)"
         [(ngModel)]="validateOnly">
-        Validate Only
+        {{ 'VALIDATE_ONLY' | translate }}
       </mat-slide-toggle>
     </div>
 
@@ -297,7 +297,7 @@
          (click)="onNext()"
          [disabled]="!isLastStep()"
          color="primary">
-        Submit
+        {{ 'SUBMIT' | translate }}
       </button>
     </div>
 
@@ -307,21 +307,21 @@
               (click)="onBack()"
               [disabled]="stepper.selectedIndex === 0">
         <mat-icon>arrow_backward</mat-icon>
-        Back
+        {{ 'BACK' | translate }}
       </button>
 
       <div style="margin: auto;">
         <b>
-          <span *ngIf="stepper.selectedIndex === steps.SEARCH_OPTIONS">Search Options</span>
-          <span *ngIf="stepper.selectedIndex === steps.PROCESSING_OPTIONS">Processing Options</span>
-          <span *ngIf="stepper.selectedIndex === steps.REVIEW">Review</span>
+          <span *ngIf="stepper.selectedIndex === steps.SEARCH_OPTIONS">{{ 'SEARCH_OPTIONS' | translate }}</span>
+          <span *ngIf="stepper.selectedIndex === steps.PROCESSING_OPTIONS">{{ 'PROCESSING_OPTIONS' | translate }}</span>
+          <span *ngIf="stepper.selectedIndex === steps.REVIEW">{{ 'REVIEW' |  translate }}</span>
         </b>
       </div>
 
       <button mat-flat-button
               color="primary"
               (click)="onNext()">
-        {{ isLastStep() ? 'Submit' : 'Next'}}
+        {{ isLastStep() ? ('SUBMIT' | translate ) : ('NEXT' | translate )}}
         <mat-icon>arrow_forward</mat-icon>
       </button>
     </div>

@@ -14,6 +14,7 @@ import { ToggleOptionComponent } from './toggle-option/toggle-option.component';
 import { DropdownOptionComponent } from './dropdown-option/dropdown-option.component';
 import { CheckboxOptionComponent } from './checkbox-option/checkbox-option.component';
 import { SubsetOptionComponent } from './subset-option/subset-option.component';
+import { SharedModule } from '@shared';
 
 
 
@@ -33,7 +34,8 @@ import { SubsetOptionComponent } from './subset-option/subset-option.component';
     MatCheckboxModule,
     MatSharedModule,
     MatSlideToggleModule,
-    ProjectNameSelectorModule
+    ProjectNameSelectorModule,
+    SharedModule
   ],
   exports: [
     ProcessingOptionsComponent

@@ -261,13 +261,6 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
-    case FiltersActionType.SET_DATE_RANGE: {
-      return {
-        ...state,
-        dateRange: action.payload
-      };
-    }
-
     case FiltersActionType.CLEAR_DATE_RANGE: {
       return {
         ...state,
@@ -318,16 +311,6 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         frameRange: {
           ...state.frameRange,
           start: action.payload
-        }
-      };
-    }
-
-    case FiltersActionType.SET_FRAME_END: {
-      return {
-        ...state,
-        frameRange: {
-          ...state.frameRange,
-          end: action.payload
         }
       };
     }

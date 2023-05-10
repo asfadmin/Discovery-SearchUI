@@ -1,17 +1,17 @@
 <div class="dialg-header">
-  <div mat-dialog-title>Customize Environments</div>
+  <div mat-dialog-title>{{ 'CUSTOMIZE_ENVIRONMENTS' | translate }}</div>
 </div>
 
 <mat-dialog-content class="h100 w100">
   <form #envForm="ngForm">
     <mat-form-field class="w100">
-      <mat-label>Environment File</mat-label>
+      <mat-label>{{ 'ENVIRONMENT_FILE'  | translate }}</mat-label>
       <textarea [(ngModel)]="envStr" name="environFile" [cdkTextareaAutosize]="true" matInput></textarea>
     </mat-form-field>
   </form>
 
   <mat-dialog-actions>
-    <button mat-flat-button (click)="resetToDefaultEnv()">Reset to Default</button>
-    <button mat-flat-button (click)="setCustomEnv()" color="primary">Set</button>
+    <button mat-flat-button (click)="resetToDefaultEnv()">{{ 'RESET_TO_DEFAULT'  | translate }}</button>
+    <button mat-flat-button (click)="setCustomEnv()" color="primary">{{ 'SET'  | translate }}</button>
   </mat-dialog-actions>
 </mat-dialog-content>

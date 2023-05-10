@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -14,12 +13,12 @@ import { MatSliderModule } from '@angular/material/slider';
 
 import { MapControlsComponent } from './map-controls.component';
 import { MapInfoComponent } from './map-info/map-info.component';
+import { SharedModule } from "@shared";
 
 
 @NgModule({
   imports: [
     CommonModule,
-    FlexLayoutModule,
     DragDropModule,
     MatButtonToggleModule,
     MatMenuModule,
@@ -28,7 +27,8 @@ import { MapInfoComponent } from './map-info/map-info.component';
     AoiOptionsModule,
     ViewSelectorModule,
     LayerSelectorModule,
-    GridlinesSelectorModule
+    GridlinesSelectorModule,
+    SharedModule
   ],
   declarations: [
     MapControlsComponent,

@@ -1,17 +1,17 @@
 <div style="display: flex;">
   <div>
-    <label style="font-size: 12px;">Sort By</label>
+    <label style="font-size: 12px;">{{ 'SORT_BY' | translate }}</label>
 <mat-button-toggle-group class="sort-button">
   <mat-button-toggle [matMenuTriggerFor]="sortType" style="min-width: 68px !important;">
     <span>
-      {{sortTypeDisplay[0].toUpperCase() + sortTypeDisplay.slice(1)}}
+      {{ sortTypeDisplay.toUpperCase() | translate }}
     </span>
   </mat-button-toggle>
 </mat-button-toggle-group>
 </div>
 
 <div style="margin-left: 5px;">
-  <label style="font-size: 12px;">Order</label>
+  <label style="font-size: 12px;">{{'ORDER' | translate}}</label>
   <mat-button-toggle-group class="sort-button">
     <mat-button-toggle (click)="onSetSortDirection()">
       <mat-icon>
@@ -24,7 +24,7 @@
 
 <mat-menu #sortType="matMenu">
   <button *ngFor="let type of sortTypes" (click)="onSetSortType(type)" mat-menu-item>
-    {{type[0].toUpperCase() + type.slice(1)}}
+    {{ type.toUpperCase() | translate }}
   </button>
 
 </mat-menu>

@@ -619,7 +619,11 @@ export class MapService {
   }
 
   public addScaleLine(latlonElement) {
-    this.scaleLine = new ScaleLine({target: latlonElement, className: 'ol-custom-scale-line', units: 'metric'});
+    this.scaleLine = new ScaleLine({
+      target: latlonElement,
+      className: 'ol-custom-scale-line',
+      units: 'metric'
+    });
     this.map.addControl(this.scaleLine);
   }
 

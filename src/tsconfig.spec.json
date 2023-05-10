@@ -5,7 +5,8 @@
     "types": [
       "jasmine",
       "node"
-    ]
+    ],
+    "lib": ["dom", "es2020"]
   },
   "files": [
     "test.ts",

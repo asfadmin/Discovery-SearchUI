@@ -61,6 +61,9 @@ export const RtcGammaJobType: Hyp3JobType = {
       name: '30 meters',
       apiValue: 30
     }, {
+      name: '20 meters',
+      apiValue: 20
+    }, {
       name: '10 meters',
       apiValue: 10
     }],
@@ -105,17 +108,17 @@ export const RtcGammaJobType: Hyp3JobType = {
     default: false,
     info: `Include the DEM file in the product package.`
   }, {
-    name: 'Incidence Angle Maps',
+    name: 'Incidence Angle Map',
     apiName: 'include_inc_map',
     type: JobOptionType.CHECKBOX,
     default: false,
-    info: `Include the incidence angle maps (local and ellipsoidal) in the product package.`
+    info: `Include the local incidence angle map in the product package.`
   }, {
-    name: 'Scattering Area',
+    name: 'Scattering Area Map',
     apiName: 'include_scattering_area',
     type: JobOptionType.CHECKBOX,
     default: false,
-    info: `Include the scattering area in the product package.`
+    info: `Include the scattering area map in the product package.`
   }, {
     name: 'RGB Decomposition',
     apiName: 'include_rgb',

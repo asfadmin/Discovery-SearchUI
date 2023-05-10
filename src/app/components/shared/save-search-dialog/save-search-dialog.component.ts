@@ -14,6 +14,8 @@ import * as uiStore from '@store/ui';
 import { SavedSearchService, NotificationService } from '@services';
 import * as models from '@models';
 
+import { AsfLanguageService } from "@services/asf-language.service";
+
 @Component({
   selector: 'app-save-search-dialog',
   templateUrl: './save-search-dialog.component.html',
@@ -36,7 +38,8 @@ export class SaveSearchDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data,
     private store$: Store<AppState>,
     private savedSearchService: SavedSearchService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    public language: AsfLanguageService,
   ) { }
 
   ngOnInit(): void {
@@ -121,8 +124,9 @@ export class SaveSearchDialogComponent implements OnInit {
     }
 
     const addName = ` as '${this.saveName}'`;
+    const searchTypeTranslated = this.language.translate.instant(this.search.searchType);
     this.notificationService.info(
-      `Saved current ${this.search.searchType}${this.saveName ? addName : ''}`
+      `Saved current ${searchTypeTranslated}${this.saveName ? addName : ''}`
     );
     this.dialogRef.close();
   }

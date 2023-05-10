@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 
 import { MatSharedModule } from '@shared';
 import { MasterSceneSelectorComponent } from './master-scene-selector.component';
+import { SharedModule } from '@shared';
 
 
 @NgModule({
@@ -14,6 +15,7 @@ import { MasterSceneSelectorComponent } from './master-scene-selector.component'
     FormsModule,
     MatInputModule,
     MatSharedModule,
+    SharedModule
   ],
   exports: [
     MasterSceneSelectorComponent

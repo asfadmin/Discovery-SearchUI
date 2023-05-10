@@ -1,0 +1,49 @@
+<div>
+  <div class="scene-control">
+    <mat-icon (click)="onZoomTo()" class="ml-2" matTooltip="{{'ZOOM_TO_SCENE' | translate}}">
+      settings_overscan
+    </mat-icon>
+
+    <mat-icon
+      *ngIf="!!hyp3ableByJobType && hyp3ableByJobType?.total > 0"
+      class="icon-margin mobile-svg"
+      [matMenuTriggerFor]="sceneAdd.addMenu"
+      [matMenuTriggerData]="{ hyp3able: hyp3ableByJobType.byJobType }"
+      svgIcon="hyp3">
+    </mat-icon>
+
+    <mat-icon *ngIf="isDownloadable(scene)"
+      (click)="onToggle()"
+      class="icon-margin"
+      matTooltip="{{
+        isQueued ?
+          ('REMOVE_SCENE_FILES_FROM_DOWNLOADS' | translate):
+          ('ADD_SCENE_FILES_TO_DOWNLOADS' | translate)
+      }}">
+      {{ isQueued ? 'shopping_cart' : 'add_shopping_cart' }}
+    </mat-icon>
+  </div>
+
+  <div *ngIf="isDownloadable(scene)" class="scene-control">
+    <span class="number-queued"> {{ numQueued }} </span>
+  </div>
+
+  <div *ngIf="searchType === SearchTypes.CUSTOM_PRODUCTS" class="scene-control" style="margin-right: 10px;">
+    <mat-icon *ngIf="isExpired(scene.metadata.job)"
+      [matMenuTriggerFor]="sceneAdd.addMenu"
+      [matMenuTriggerData]="{ hyp3able: getExpiredHyp3ableObject().byJobType }"
+      class="icon-margin mobile-svg"
+      svgIcon="hyp3">
+    </mat-icon>
+  </div>
+
+  <div *ngIf="!isDownloadable(scene)" class="scene-control ml-2">
+    <app-hyp3-job-status-badge [job]="scene.metadata.job" [isFileDetails]="false">
+    </app-hyp3-job-status-badge>
+  </div>
+</div>
+
+<app-on-demand-add-menu #sceneAdd
+  [isExpired]="isExpired(scene.metadata.job)"
+  [expiredJobs]="scene.metadata.job">
+</app-on-demand-add-menu>

@@ -121,11 +121,8 @@ export class ScenesEffects {
   public onHideRawData = createEffect(() => this.actions$.pipe(
     ofType<HideS1RawData>(UIActionType.HIDE_S1_RAW_DATA),
     debounceTime(1000),
-    withLatestFrom(
-        this.sceneService.scenes$()),
-        withLatestFrom(
-        this.store$.select(getSelectedScene)
-      ),
+    withLatestFrom(this.sceneService.scenes$()),
+    withLatestFrom(this.store$.select(getSelectedScene)),
     map(([[_, scenes], selected]) => {
       if (!scenes.map(scene => scene.id).includes(selected.id)) {
         this.store$.dispatch(new SetSelectedScene(scenes[0].id));

@@ -4,11 +4,19 @@
 
 $config: mat.define-typography-config();
 
-
 .sbas-chart-row {
   display: flex;
   flex-direction: row;
   height: calc(100% - 137px);
+}
+
+.sbas-chart-card {
+  box-shadow: none;
+  height: 100%;
+  width: 100%;
+  max-width: 60%;
+  flex: 1 1 100%;
+  box-sizing: border-box;
 }
 
 .sbas-criteria-button-toggle-group {
@@ -17,9 +25,6 @@ $config: mat.define-typography-config();
 }
 
 .sbas-criteria-button-toggle {
-  // @include themify($themes) {
-  //   background-color: themed('primary-light') !important;
-  // }
   background: red;
   font-size: 14px;
 }
@@ -54,6 +59,8 @@ $config: mat.define-typography-config();
 
 .sbas-list-card {
   box-shadow: none !important;
+  flex: 1 1 0%;
+  box-sizing: border-box;
 }
 
 .sbas-metadata {
@@ -61,6 +68,7 @@ $config: mat.define-typography-config();
     border-left: solid 1px themed('primary-light');
     border-right: solid 2px themed('primary-light');
   }
+
   overflow: auto;
   height: 100%;
 }
@@ -74,10 +82,8 @@ $config: mat.define-typography-config();
   @include themify($themes) {
     background-color: themed('primary-light');
   }
+
   height: 100%;
-  // background-image: url("//assets/div-handles/hgrip.svg");
-  // background-position: left;
-  // background-repeat: no-repeat;
 }
 
 .mwlResizable {
@@ -90,6 +96,7 @@ $config: mat.define-typography-config();
     border-color: themed('primary-light');
     color: themed('primary-light');
   }
+
   display: flex;
   align-items: center;
   cursor: ew-resize;
@@ -104,25 +111,25 @@ $config: mat.define-typography-config();
   @include themify($themes) {
     background-color: themed('primary-light');
   }
-  width: 10px;
 
+  width: 10px;
   height: 100%;
-  // background-image: url("/assets/div-handles/vgrip.svg");
-  // background-color: #c9cac4;
-  // background-position: center;
-  // background-repeat: no-repeat;
 }
+
 .vgrip-icon {
   @include themify($themes) {
     stroke: themed('dark-primary-text');
   }
+
   height: 33px;
 }
+
 .sbas-header {
   @include themify($themes) {
     background-color: themed('primary-light');
     color: themed('dark-primary-text')
   }
+
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -141,10 +148,12 @@ $config: mat.define-typography-config();
   @include themify($themes) {
     color: themed('dark-primary-text');
   }
+
   margin-top: -4px;
 
   @include md-icon-size($asf-ribbon-icon-size);
 }
+
 .mat-button-toggle-disabled {
   .control-icon {
     @include themify($themes) {
@@ -158,13 +167,28 @@ $config: mat.define-typography-config();
   max-width: fit-content;
 }
 
+.toggle-group-wrapper--layout {
+  flex-direction: row;
+  box-sizing: border-box;
+  display: flex;
+  place-content: stretch center;
+  align-items: stretch;
+}
+
 .sbas-button-group {
   max-width: fit-content;
+  flex: 1 1 0%;
+  box-sizing: border-box;
 }
 
 .sbas-button-group-filler {
   width: 10px;
   max-width: 10px;
+}
+
+.sbas-toggle-group {
+  flex: 1 1 0%;
+  box-sizing: border-box;
 }
 
 .button-group {
@@ -176,7 +200,13 @@ $config: mat.define-typography-config();
   @include themify($themes) {
     color: themed('dark-primary-text');
   }
+
   text-align: center;
+  flex-direction: row;
+  box-sizing: border-box;
+  display: flex;
+  place-content: stretch center;
+  align-items: stretch;
 }
 
 label {
@@ -188,9 +218,22 @@ label {
   margin-left: 10px;
   margin-top: 4px;
 }
+
 .control-mat-button-toggle {
   @include themify($themes) {
     background: themed('background-white') !important;
-    // color: themed('dark-primary-text') !important;
+  }
+}
+
+.warn-icon {
+  margin-right: 5px;
+  @include themify($themes) {
+    color: themed('warn');
+  }
+}
+.gap-detected-area {
+  margin: 5px;
+  @include themify($themes) {
+    color: themed('dark-primary-text') !important;
   }
 }

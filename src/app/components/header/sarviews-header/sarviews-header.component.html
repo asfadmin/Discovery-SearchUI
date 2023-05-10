@@ -1,52 +1,38 @@
-<div *ngIf="(breakpoint$ | async) as breakpoint" fxLayout="row" class="breadcrumb-row">
+<div *ngIf="(breakpoint$ | async) as breakpoint" class="breadcrumb-row fx-row">
   <ng-container *ngIf="breakpoint !== breakpoints.MOBILE">
-    <div fxLayout="row">
+    <div class="fx-row">
       <app-search-type-selector
         (click)="closeAOIOptions()"
         class="breadcrumb">
       </app-search-type-selector>
-      <!-- <app-dataset-selector
-         [(selected)]="selectedDataset"
-         (selectedChange)="onDatasetChange($event)"
-         [datasets]="datasets"
-         fxFlex="130px"
-         (click)="closeAOIOptions()"
-         class="breadcrumb">
-      </app-dataset-selector> -->
-
-      <!-- <app-aoi-filter *ngIf="breakpoint > breakpoints.SMALL" class="breadcrumb">
-      </app-aoi-filter> -->
     </div>
 
-    <div fxLayout.lt-md="row">
-      <div fxLayout="row">
+    <div>
+      <div class="fx-row">
         <div
-        *ngIf="breakpoint === breakpoints.FULL"
-        fxFlex="175px" fxFlex.lt-lg="50"
-          class="breadcrumb">
+          *ngIf="breakpoint === breakpoints.FULL"
+          class="breadcrumb medium-selector--layout">
           <app-sarviews-event-search-selector></app-sarviews-event-search-selector>
-     </div>
-     <div
-     *ngIf="breakpoint === breakpoints.FULL"
-     fxFlex="175px" fxFlex.lt-lg="50"
-       class="breadcrumb">
-       <app-sarviews-event-type-selector></app-sarviews-event-type-selector>
-  </div>
+        </div>
         <div
-           *ngIf="breakpoint === breakpoints.FULL"
-           fxFlex="300px" fxFlex.lt-lg="50"
-             class="breadcrumb">
+          *ngIf="breakpoint === breakpoints.FULL"
+          class="breadcrumb medium-selector--layout">
+          <app-sarviews-event-type-selector></app-sarviews-event-type-selector>
+        </div>
+        <div
+          *ngIf="breakpoint === breakpoints.FULL"
+          class="breadcrumb large-selector--layout">
           <app-date-selector></app-date-selector>
         </div>
 
-        <div fxFlex="nogrow" class="breadcrumb">
+        <div class="breadcrumb">
           <button (click)="onToggleFiltersMenu()"
-                  mat-button class="additional-filters-button">
-            Filters <br> <mat-icon>more_horiz</mat-icon>
+            mat-button class="additional-filters-button">
+            {{ 'FILTERS' | translate }} <br> <mat-icon>more_horiz</mat-icon>
           </button>
         </div>
 
-        <div fxFlex="noshrink" class="breadcrumb">
+        <div class="breadcrumb">
           <app-search-button></app-search-button>
         </div>
       </div>
@@ -62,9 +48,9 @@
     <div class="mobile-nav-bar">
       <button
         (click)="onToggleFiltersMenu()"
-         style="margin-left: 5px;"
+        style="margin-left: 5px;"
         mat-flat-button>
-        Filters
+        {{  'FILTERS'  | translate }}
       </button>
 
       <div class="mobile-icon-cluster">

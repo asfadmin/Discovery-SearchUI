@@ -4,7 +4,10 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { MissionDataset, Props, apiParamNames } from '@models';
+import {
+  MissionDataset, Props, apiParamNames,
+  on_demand_prod_collections, on_demand_test_collections, on_demand_test_collections_asfdev
+} from '@models';
 import { EnvironmentService } from './environment.service';
 import { PropertyService } from './property.service';
 
@@ -24,6 +27,25 @@ export class AsfApiService {
 
   public health(): Observable<any> {
     return this.http.get(`${this.apiUrl}/health`);
+  }
+
+  public collections() {
+    let collections: String[] = []
+
+    // In case we wanted to limit searched collections further, limit it based on envionment
+    // let provider = this.environmentService.currentEnv.cmr_provider
+    // let maturity = this.environmentService.maturity
+
+    // if (maturity === 'prod') {
+    collections = on_demand_prod_collections
+
+    // } else if(provider === 'ASF') {
+    collections.push(...on_demand_test_collections)
+
+    // } else {
+    collections.push(...on_demand_test_collections_asfdev)
+    // }
+    return collections;
   }
 
   public query<T>(stateParamsObj: {[paramName: string]: string | number | null}): Observable<T> {
@@ -46,24 +68,24 @@ export class AsfApiService {
     const params = this.queryParamsFrom(stateParamsObj);
 
     const queryParamsStr = params.toString()
-      .replace(/\+/g, '%2B');
+    .replace(/\+/g, '%2B');
 
     const endpoint = params.get('reference') ?
-      this.baselineEndpoint() :
-      this.searchEndpoint({ useProdApi });
+    this.baselineEndpoint() :
+    this.searchEndpoint({ useProdApi });
 
     const formData = this.toFormData(params);
 
     const responseType: any = params.get('output') === 'jsonlite2' ?
-      'json' : 'text';
+    'json' : 'text';
 
     return !this.isUrlToLong(endpoint, queryParamsStr) ?
-      this.http.get<T>(
-        `${endpoint}?${queryParamsStr}`, { responseType }
-      ) :
-      this.http.post<T>(
-        endpoint, formData, { responseType }
-      );
+    this.http.get<T>(
+      `${endpoint}?${queryParamsStr}`, { responseType }
+    ) :
+    this.http.post<T>(
+      endpoint, formData, { responseType }
+    );
   }
 
   public queryUrlFrom(stateParamsObj, options?: {apiUrl: string}) {
@@ -71,7 +93,7 @@ export class AsfApiService {
 
     const endpoint = (options) ?
       `${options.apiUrl}/services/search/param` :
-       this.searchEndpoint();
+      this.searchEndpoint();
 
     const queryParamsStr = params.toString()
       .replace(/\+/g, '%2B');
@@ -97,24 +119,24 @@ export class AsfApiService {
     const stateParams = this.toHttpParams(relevant);
 
     const params = Object.entries(this.baseParams())
-    .filter(
-      ([key, _]) => !stateParams.get(key)
-    )
-    .reduce(
-      (queryParams, [key, val]) => queryParams.append(key, `${val}`)
-      , stateParams
-    );
+      .filter(
+        ([key, _]) => !stateParams.get(key)
+      )
+      .reduce(
+        (queryParams, [key, val]) => queryParams.append(key, `${val}`)
+        , stateParams
+      );
 
     return params;
   }
 
   private toHttpParams(paramsObj): HttpParams {
     return Object.entries(paramsObj)
-    .filter(([_, val]) => !!val)
-    .reduce(
-      (queryParams, [param, val]) => queryParams.set(param, <string>val),
-      new HttpParams()
-    );
+      .filter(([_, val]) => !!val)
+      .reduce(
+        (queryParams, [param, val]) => queryParams.set(param, <string>val),
+        new HttpParams()
+      );
   }
 
   private toFormData(params: HttpParams): FormData {
@@ -128,45 +150,45 @@ export class AsfApiService {
   }
 
   private onlyRelevantParams(paramsObj): {[id: string]: string | null} {
-  const irrelevant = Object.entries(apiParamNames)
+    const irrelevant = Object.entries(apiParamNames)
       .filter(
         ([property, _]) => !this.prop.isRelevant(<Props>property)
       )
       .map(([_, apiName]) => apiName);
 
-  const filteredParams = Object.keys(paramsObj)
-    .filter(key => !irrelevant.includes(key))
-    .reduce((filtered, key) => {
-      filtered[key] = paramsObj[key];
-      return filtered;
-    }, {});
+    const filteredParams = Object.keys(paramsObj)
+      .filter(key => !irrelevant.includes(key))
+      .reduce((filtered, key) => {
+        filtered[key] = paramsObj[key];
+        return filtered;
+      }, {});
 
     return filteredParams;
   }
 
   public loadMissions$() {
     return combineLatest(
-        this.missionSearch(MissionDataset.S1_BETA).pipe(
-          map(resp => ({[MissionDataset.S1_BETA]: resp.result}))
-        ),
-        this.missionSearch(MissionDataset.AIRSAR).pipe(
-          map(resp => ({[MissionDataset.AIRSAR]: resp.result}))
-        ),
-        this.missionSearch(MissionDataset.UAVSAR).pipe(
-          map(resp => ({[MissionDataset.UAVSAR]: resp.result}))
-        )
-      ).pipe(
-        map(missions => missions.reduce(
-          (allMissions, mission) => ({ ...allMissions, ...mission }),
-          {}
-        )
+      this.missionSearch(MissionDataset.S1_BETA).pipe(
+        map(resp => ({[MissionDataset.S1_BETA]: resp.result}))
+      ),
+      this.missionSearch(MissionDataset.AIRSAR).pipe(
+        map(resp => ({[MissionDataset.AIRSAR]: resp.result}))
+      ),
+      this.missionSearch(MissionDataset.UAVSAR).pipe(
+        map(resp => ({[MissionDataset.UAVSAR]: resp.result}))
+      )
+    ).pipe(
+      map(missions => missions.reduce(
+        (allMissions, mission) => ({ ...allMissions, ...mission }),
+        {}
+      )
       )
     );
   }
 
   public missionSearch(dataset: MissionDataset): Observable<{result: string[]}> {
     const params = new HttpParams()
-      .append('platform', dataset);
+    .append('platform', dataset);
 
     const url = `${this.apiUrl}/services/utils/mission_list`;
 
@@ -184,7 +206,7 @@ export class AsfApiService {
 
   public validate(wkt: string): Observable<any> {
     const params = new HttpParams()
-      .append('wkt', wkt);
+    .append('wkt', wkt);
 
     const url = `${this.apiUrl}/services/utils/wkt`;
 
@@ -194,8 +216,8 @@ export class AsfApiService {
     formData.append('wkt', params.get('wkt'));
 
     return (!this.isUrlToLong(url, paramsStr)) ?
-      this.http.get(url, { params }) :
-      this.http.post(url, formData);
+    this.http.get(url, { params }) :
+    this.http.post(url, formData);
   }
 
   private isUrlToLong(url: string, params: string): boolean {

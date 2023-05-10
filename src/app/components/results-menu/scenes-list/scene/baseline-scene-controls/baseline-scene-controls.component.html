@@ -1,0 +1,35 @@
+<div style="display: flex;">
+  <div style="display: flex; justify-content: space-evenly;">
+    <div [ngClass]="{'mobile-baseline': breakpoint <= breakpoints.SMALL, 'metric-flex-field': true}">
+      {{ withOffset(scene.metadata.perpendicular, offsets.perpendicular) }}m
+    </div>
+
+      <div [ngClass]="{'mobile-baseline': breakpoint <= breakpoints.SMALL, 'metric-flex-field': true}">
+        {{ withOffset(scene.metadata.temporal, offsets.temporal) }}d
+      </div>
+
+      <div class="cart-flex-field">
+        <mat-icon *ngIf="hyp3ableByJobType.total > 0"
+          [matMenuTriggerFor]="sceneAdd.addMenu"
+          [matMenuTriggerData]="{ hyp3able: hyp3ableByJobType.byJobType }"
+          class="icon-margin mobile-svg"
+          svgIcon="hyp3">
+        </mat-icon>
+        <mat-icon *ngIf="isDownloadable(scene)"
+          (click)="onToggle()"
+          class="icon-margin"
+          matTooltip="{{
+            isQueued ?
+             ('REMOVE_SCENE_FILES_FROM_DOWNLOADS' | translate) :
+              ('ADD_SCENE_FILES_TO_DOWNLOADS' | translate)
+          }}">
+          {{ isQueued ? 'shopping_cart' : 'add_shopping_cart' }}
+        </mat-icon>
+      </div>
+  </div>
+
+  <app-on-demand-add-menu #sceneAdd
+    [isExpired]="isExpired(scene.metadata.job)"
+    [expiredJobs]="scene.metadata.job">
+  </app-on-demand-add-menu>
+</div>

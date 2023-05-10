@@ -45,9 +45,18 @@ export class Hyp3Service {
   }
 
   public getUser$(): Observable<models.Hyp3User> {
-    const getUserUrl = `${this.apiUrl}/user`;
+    const userUrl = `${this.apiUrl}/user`;
 
-    return this.http.get<models.Hyp3User>(getUserUrl, { withCredentials: true });
+    return this.http.get<models.Hyp3User>(userUrl, { withCredentials: true }).pipe(
+      map(user => ({
+          ...user,
+          quota: {
+            ...user.quota,
+            unlimited: user.quota.max_jobs_per_month === null
+          }
+        })
+      )
+    );
   }
 
   public formatJobs(jobTypesWithQueued, options: {processingOptions: any, projectName: string}) {
@@ -261,6 +270,10 @@ export class Hyp3Service {
   }
 
   public isExpired(job: models.Hyp3Job): boolean {
+    if (job == null) {
+      return false;
+    }
+
     return job.status_code === models.Hyp3JobStatusCode.SUCCEEDED &&
       this.expirationDays(job.expiration_time) <= 0;
   }
@@ -275,6 +288,38 @@ export class Hyp3Service {
 
   public isRunning(job: models.Hyp3Job): boolean {
     return job.status_code === models.Hyp3JobStatusCode.RUNNING;
+  }
+
+  public getExpiredHyp3ableObject(scene: models.CMRProduct): {byJobType: models.Hyp3ableProductByJobType[], total: number} {
+    const job_types = models.hyp3JobTypes;
+    const job_type = Object.keys(job_types).find(id => {
+        return scene.metadata.job.job_type === id as any;
+      });
+
+    const byJobType: models.Hyp3ableProductByJobType[] = [];
+
+    const temp: models.Hyp3ableByProductType = {
+      productType: scene.metadata.job.job_type as any,
+      products: [scene.metadata.job.job_parameters.scenes]
+    };
+
+    const byProductType: models.Hyp3ableByProductType[] = [];
+    byProductType.push(temp);
+
+    const hyp3ableProduct = {
+      byProductType,
+      total: 1,
+      jobType: job_types[job_type]
+    } as models.Hyp3ableProductByJobType;
+
+    byJobType.push(hyp3ableProduct);
+
+    const output = {
+      byJobType,
+      total: 1
+    } as {byJobType: models.Hyp3ableProductByJobType[], total: number};
+
+    return output;
   }
 
   private expirationDays(expiration_time: moment.Moment): number {

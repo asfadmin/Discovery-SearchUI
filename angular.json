@@ -57,7 +57,13 @@
               "rbush",
               "@turf",
               "moment",
-              "nouislider"
+              "nouislider",
+              "prismjs",
+              "ua-parser-js",
+              "@formatjs/intl-displaynames/polyfill",
+              "webfont-matcher/lib/fonts/google.js",
+              "mapbox-to-css-font",
+              "polygon-clipping"
             ],
             "vendorChunk": true,
             "extractLicenses": false,
@@ -153,7 +159,26 @@
   },
   "schematics": {
     "@schematics/angular:component": {
-      "style": "scss"
+      "style": "scss",
+      "skipTests": true
+    },
+    "@schematics/angular:class": {
+      "skipTests": true
+    },
+    "@schematics/angular:directive": {
+      "skipTests": true
+    },
+    "@schematics/angular:pipe": {
+      "skipTests": true
+    },
+    "@schematics/angular:service": {
+      "skipTests": true
+    },
+    "@angular-eslint/schematics:application": {
+      "setParserOptionsProject": true
+    },
+    "@angular-eslint/schematics:library": {
+      "setParserOptionsProject": true
     }
   }
 }

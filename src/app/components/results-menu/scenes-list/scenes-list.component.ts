@@ -140,8 +140,9 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
     );
 
     this.subs.add(
-      sortedScenes$.pipe(debounceTime(250)).pipe(
-        distinctUntilChanged(),
+      sortedScenes$.pipe(
+        debounceTime(250),
+        distinctUntilChanged()
       ).subscribe(
         scenes => this.scenes = scenes
       )
@@ -309,8 +310,8 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
           this.scrollTo(idx);
         }
       }
-    )
-    );
+    ));
+
     this.subs.add(this.pairService.pairs$().pipe(
       filter(loaded => !!loaded),
       withLatestFrom(this.store$.select(scenesStore.getSelectedPair)),
@@ -341,6 +342,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
     this.selectedFromList = true;
     this.store$.dispatch(new scenesStore.SetSelectedScene(id));
   }
+
   public onPairSelected(pair: string[]) {
     this.selectedFromList = true;
     this.store$.dispatch(new scenesStore.SetSelectedPair(pair));
@@ -352,58 +354,6 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
     } else {
       this.store$.dispatch(new queueStore.RemoveSceneFromQueue(groupId));
     }
-  }
-
-  public onToggleOnDemandScene(job: models.QueuedHyp3Job): void {
-    const isJobInQueue = this.queuedJobs.filter(queuedJob =>
-      queuedJob.job_type === job.job_type &&
-      this.sameGranules(job.granules, queuedJob.granules)
-    ).length > 0;
-
-    if (!isJobInQueue) {
-      this.store$.dispatch(new queueStore.AddJob(job));
-    } else {
-      this.store$.dispatch(new queueStore.RemoveJob(job));
-    }
-  }
-
-  public onAddInSarJob(pair: models.CMRProductPair): void {
-    this.store$.dispatch(new queueStore.AddJob({
-      granules: pair,
-      job_type: models.hyp3JobTypes.INSAR_GAMMA
-    }));
-  }
-
-  public onAddAutoRiftJob(pair: models.CMRProductPair): void {
-    this.store$.dispatch(new queueStore.AddJob({
-      granules: pair,
-      job_type: models.hyp3JobTypes.AUTORIFT
-    }));
-  }
-
-  public onZoomTo(scene: models.CMRProduct): void {
-    this.mapService.zoomToScene(scene);
-  }
-
-  public sameGranules(granules1: models.CMRProduct[], granules2: models.CMRProduct[]) {
-    const ids1 = new Set(granules1.map(granule => granule.id));
-    const ids2 = new Set(granules2.map(granule => granule.id));
-
-    return this.eqSet(Array.from(ids1), Array.from(ids2));
-  }
-
-  public eqSet(a1: string[], bs: string[]) {
-    return a1.length === bs.length && this.all(this.isIn(bs), a1);
-  }
-
-  private all(pred, a1: string[]) {
-    return a1.every(pred);
-  }
-
-  private isIn(a1: string[]) {
-    return function (a: string) {
-      return a1.includes(a);
-    };
   }
 
   ngOnDestroy() {

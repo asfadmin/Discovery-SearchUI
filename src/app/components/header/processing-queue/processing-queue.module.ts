@@ -27,10 +27,12 @@ import { ResizableModule } from 'angular-resizable-element';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ProjectNameSelectorModule } from '@components/shared/selectors/project-name-selector';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
-import { AngularResizeEventModule } from 'angular-resize-event';
+import { ResizedEventModule } from '@directives/resized.directive';
 import { CreateSubscriptionModule } from '../../header/create-subscription';
 import {DocsModalModule} from '@components/shared/docs-modal';
 import {Hyp3UrlModule} from '@components/shared/hyp3-url/hyp3-url.module';
+import { SharedModule } from '@shared';
+
 
 
 @NgModule({
@@ -57,14 +59,15 @@ import {Hyp3UrlModule} from '@components/shared/hyp3-url/hyp3-url.module';
         ProcessingOptionsModule,
         MatDialogModule,
         ResizableModule,
-        AngularResizeEventModule,
+        ResizedEventModule,
         DragDropModule,
         MatTabsModule,
         MatMenuModule,
         ScrollingModule,
         CreateSubscriptionModule,
         DocsModalModule,
-        Hyp3UrlModule
+        Hyp3UrlModule,
+        SharedModule
     ]
 })
 export class ProcessingQueueModule {

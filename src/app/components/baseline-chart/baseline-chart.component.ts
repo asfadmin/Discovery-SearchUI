@@ -3,10 +3,13 @@ import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/co
 import { combineLatest } from 'rxjs';
 import { map, tap, filter, } from 'rxjs/operators';
 
+import { TranslateService } from "@ngx-translate/core";
+
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as queueStore from '@store/queue';
+
 
 import { SubSink } from 'subsink';
 import { ScenesService } from '@services';
@@ -63,6 +66,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
   private hoveredElement;
   private clipContainer;
   constructor(
+    public translate: TranslateService,
     private store$: Store<AppState>,
     private scenesService: ScenesService,
   ) { }

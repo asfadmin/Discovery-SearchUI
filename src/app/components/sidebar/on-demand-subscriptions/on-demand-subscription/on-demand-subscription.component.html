@@ -15,7 +15,7 @@
           {{ subscription.filters.start | shortDate }} to
 
           <span (click)="onEditDate()"
-            matTooltip="Edit end date."
+            matTooltip="{{'EDIT_END_DATE' | translate}}."
             class="edit-tooltip clickable">
             {{ subscription.filters.end | shortDate }}
             <mat-icon class="edit-icon">edit</mat-icon>
@@ -50,7 +50,7 @@
         [checked]="subscription.enabled">
         <div class="t-label">
           <span *ngIf="isToggling">
-            Loading...
+            {{ 'LOADING' |  translate }}...
           </span>
           <span *ngIf="!isToggling">
             {{ subscription.enabled ? 'Disable' : 'Enable' }}
@@ -70,7 +70,7 @@
         <mat-form-field
           [class.invalid-input-animation]="isEndError"
           class="date-input-field">
-          <mat-label>New End Date</mat-label>
+          <mat-label>{{ 'NEW_END_DATE' | translate }}</mat-label>
 
           <input matInput
             [(ngModel)]="newEndDate"

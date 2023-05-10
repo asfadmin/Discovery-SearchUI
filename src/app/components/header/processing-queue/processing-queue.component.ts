@@ -41,6 +41,7 @@ export class ProcessingQueueComponent implements OnInit {
   public isUserLoggedIn = false;
   public isUserLoading = true;
   public remaining = 0;
+  public isUnlimitedUser = false;
   public areJobsLoading = false;
   public isQueueSubmitProcessing = false;
   public isTabMenuOpen = false;
@@ -122,6 +123,7 @@ export class ProcessingQueueComponent implements OnInit {
         }
 
         this.user = user.user_id;
+        this.isUnlimitedUser = user.quota.unlimited;
         this.remaining = user.quota.remaining;
       }
     );

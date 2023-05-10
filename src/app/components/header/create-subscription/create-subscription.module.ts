@@ -21,9 +21,9 @@ import { DateRangeModule } from '@components/shared/selectors/date-range/date-ra
 import { MatDialogModule } from '@angular/material/dialog';
 import { PipesModule } from '@pipes';
 import { SubscriptionDateRangeComponent } from './subscription-date-range/subscription-date-range.component';
-import {FlexModule} from '@angular/flex-layout';
 import {DocsModalModule} from '@components/shared/docs-modal';
 import {Hyp3UrlModule} from '@components/shared/hyp3-url/hyp3-url.module';
+import { SharedModule } from '@shared';
 
 @NgModule({
   declarations: [
@@ -47,9 +47,9 @@ import {Hyp3UrlModule} from '@components/shared/hyp3-url/hyp3-url.module';
         AoiOptionsModule,
         DateRangeModule,
         PipesModule,
-        FlexModule,
         DocsModalModule,
         Hyp3UrlModule,
+        SharedModule
     ],
   exports: [
     CreateSubscriptionComponent

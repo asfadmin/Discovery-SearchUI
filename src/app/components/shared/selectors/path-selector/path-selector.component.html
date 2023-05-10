@@ -1,11 +1,11 @@
-<form fxFlex fxLayout="column" #pathForm="ngForm">
+<form class="fx-row" #pathForm="ngForm">
   <mat-form-field *ngIf="prop.isRelevant(p.PATH)"
     [class.invalid-input-animation]="typeHasError(inputTypes.PATH_START)">
     <input matInput
       type="number"
       (input)="onValueChanged($event, inputTypes.PATH_START)"
       [(ngModel)]="pathStart"
-      name="pathStart" placeholder="Path Start">
+      name="pathStart" placeholder="{{'PATH_START'| translate}}">
   </mat-form-field>
   <mat-form-field *ngIf="prop.isRelevant(p.PATH)" class="range-form-input"
     [class.invalid-input-animation]="typeHasError(inputTypes.PATH_END)">
@@ -13,7 +13,7 @@
       type="number"
       (input)="onValueChanged($event, inputTypes.PATH_END)"
       [(ngModel)]="pathEnd"
-      name="pathEnd" placeholder="Path End">
+      name="pathEnd" placeholder="{{'PATH_END' | translate }}">
   </mat-form-field>
 
   <mat-form-field *ngIf="prop.isRelevant(p.FRAME)"
@@ -22,7 +22,7 @@
       type="number"
       (input)="onValueChanged($event, inputTypes.FRAME_START)"
       [(ngModel)]="frameStart"
-      name="frameStart" placeholder="Frame Start">
+      name="frameStart" placeholder="{{ 'FRAME_START' | translate }}">
   </mat-form-field>
   <mat-form-field *ngIf="prop.isRelevant(p.FRAME)" class="range-form-input"
     [class.invalid-input-animation]="typeHasError(inputTypes.FRAME_END)">
@@ -30,9 +30,9 @@
       type="number"
       (input)="onValueChanged($event, inputTypes.FRAME_END)"
       [(ngModel)]="frameEnd"
-      name="frameEnd" placeholder="Frame End">
+      name="frameEnd" placeholder="{{ 'FRAME_END' | translate }}">
   </mat-form-field>
 
-  <button (click)="onClear()" mat-button>Clear</button>
+  <button (click)="onClear()" mat-button>{{ 'CLEAR' | translate }}</button>
   <app-aoi-clear></app-aoi-clear>
 </form>

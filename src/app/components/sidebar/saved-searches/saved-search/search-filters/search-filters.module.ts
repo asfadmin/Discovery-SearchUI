@@ -7,7 +7,7 @@ import { GeographicSearchFiltersComponent } from './geographic-search-filters/ge
 import { ListSearchFiltersComponent } from './list-search-filters/list-search-filters.component';
 import { BaselineSearchFiltersComponent } from './baseline-search-filters/baseline-search-filters.component';
 import { SbasSearchFiltersComponent } from './sbas-search-filters/sbas-search-filters.component';
-
+import { SharedModule } from '@shared';
 
 @NgModule({
   declarations: [
@@ -19,7 +19,8 @@ import { SbasSearchFiltersComponent } from './sbas-search-filters/sbas-search-fi
   ],
   imports: [
     CommonModule,
-    PipesModule
+    PipesModule,
+    SharedModule
   ],
   exports: [
     SearchFiltersComponent,
