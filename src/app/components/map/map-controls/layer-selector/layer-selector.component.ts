@@ -7,6 +7,7 @@ import { AppState } from '@store';
 import * as mapStore from '@store/map';
 
 import * as models from '@models';
+import { MapService } from '@services';
 
 @Component({
   selector: 'app-layer-selector',
@@ -22,11 +23,13 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
 
   public areGridlinesActive$ = this.store$.select(mapStore.getAreGridlinesActive);
   public gridActive = false;
+  public hasCoherenceLayer = false;
 
   private subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>,
+    private mapService: MapService,
   ) { }
 
   ngOnInit() {
@@ -47,6 +50,12 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
         this.gridActive = gridActive;
       })
     );
+
+    this.subs.add(
+      this.mapService.hasCoherenceLayer$.subscribe(
+        hasLayer => this.hasCoherenceLayer = hasLayer
+      )
+    );
   }
 
   public onNewLayerType(layerType: models.MapLayerTypes): void {
@@ -61,6 +70,10 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
     });
 
     this.store$.dispatch(action);
+  }
+
+  public onToggleCoherenceLayer(): void {
+    this.mapService.toggleCoherenceLayer();
   }
 
   public onToggleOverviewMap(isOpen: boolean): void {

@@ -15,6 +15,7 @@ import Select from 'ol/interaction/Select';
 
 import { WktService } from '../wkt.service';
 import { DrawService } from './draw.service';
+import { LayerService } from './layer.service';
 import { LegacyAreaFormatService } from '../legacy-area-format.service';
 import * as models from '@models';
 import * as sceneStore from '@store/scenes';
@@ -29,7 +30,6 @@ import { Icon, Style } from 'ol/style';
 import IconAnchorUnits from 'ol/style/IconAnchorUnits';
 import Geometry from 'ol/geom/Geometry';
 import ImageLayer from 'ol/layer/Image';
-import ImageWMS from 'ol/source/ImageWMS';
 import LayerGroup from 'ol/layer/Group';
 import { PinnedProduct } from '@services/browse-map.service';
 import { BrowseOverlayService } from '@services';
@@ -114,6 +114,7 @@ export class MapService {
   public zoom$ = new Subject<number>();
   public center$ = new Subject<models.LonLat>();
   public epsg$ = new Subject<string>();
+  public hasCoherenceLayer$ = new Subject<boolean>();
 
   public selectedSarviewEvent$: EventEmitter<string> = new EventEmitter();
   public mapInit$: EventEmitter<Map> = new EventEmitter();
@@ -138,6 +139,7 @@ export class MapService {
     private drawService: DrawService,
     private store$: Store<AppState>,
     private browseOverlayService: BrowseOverlayService,
+    private layerService: LayerService,
   ) {}
 
   public epsg(): string {
@@ -428,23 +430,6 @@ export class MapService {
       });
   }
 
-  private getCoherenceLayer(): TileLayer {
-    return new ImageLayer({
-      extent: [
-        -2.00375070672E7,
-        -7967398.932400003,
-        2.0037507842788246E7,
-        1.6213801067599997E7
-      ],
-      source: new ImageWMS({
-        url: 'https://gis.uat.earthdata.nasa.gov/image/services/GSSICB/GSSICB_12_day_Median_VV_Coherence_Dec_Jan_Feb/ImageServer/WMSServer',
-        params: {'LAYERS': 'GSSICB_12_day_Median_VV_Coherence_Dec_Jan_Feb:Unscaled Coherence'},
-        ratio: 1,
-        serverType: 'geoserver',
-      }),
-    })
-  }
-
   private setMap(mapView: views.MapView, overlay): void {
     this.mapView = mapView;
 
@@ -475,7 +460,7 @@ export class MapService {
         this.selectedLayer,
         this.mapView?.gridlines,
         this.pinnedProducts,
-        this.getCoherenceLayer()
+        this.layerService.getCoherenceLayer()
       ],
       target: 'map',
       view: this.mapView.view,
@@ -571,6 +556,7 @@ export class MapService {
     } else {
       layers.find(l => l.get('ol_uid') === '100')?.setVisible(false);
     }
+
     this.mapView.layer.setOpacity(1);
 
     const mapLayers = this.map.getLayers();
@@ -588,6 +574,18 @@ export class MapService {
     }
     this.browseImageLayer = this.browseOverlayService.createNormalImageLayer(url, wkt, 'ol-layer', 'current-overlay');
     this.map.addLayer(this.browseImageLayer);
+  }
+
+  public toggleCoherenceLayer(): void {
+    if (!!this.layerService.coherenceLayer) {
+      this.map.removeLayer(this.layerService.coherenceLayer);
+      this.layerService.coherenceLayer = null;
+      this.hasCoherenceLayer$.next(false);
+    } else {
+      this.layerService.coherenceLayer = this.layerService.getCoherenceLayer();
+      this.map.addLayer(this.layerService.coherenceLayer);
+      this.hasCoherenceLayer$.next(true);
+    }
   }
 
   public createBrowseRasterCanvas(scenes: models.CMRProduct[]) {
