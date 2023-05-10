@@ -554,6 +554,7 @@ $d-height: 500px;
   min-width: 350px;
   min-height: 500px;
 }
+
 #processingQueueDialog {
   @include themify($themes) {
     background: themed('primary-light');
@@ -564,6 +565,7 @@ $d-height: 500px;
   min-width: 350px;
   min-height: 500px;
 }
+
 #subscriptionQueueDialog {
   @include themify($themes) {
     background: themed('primary-light');
@@ -574,6 +576,15 @@ $d-height: 500px;
   min-width: 350px;
   min-height: 500px;
 }
+
+#preferencesDialog {
+  resize: both;
+  width: 80vw;
+  height: 86vh;
+  min-width: 350px;
+  min-height: 500px;
+}
+
 .mat-pseudo-checkbox-checked,
 .mat-pseudo-checkbox-indeterminate,
 .mat-accent .mat-pseudo-checkbox-checked,

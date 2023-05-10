@@ -3,99 +3,92 @@
 </div>
 
 <mat-dialog-content>
-  <div class="display: flex;">
+  <div class="display: flex; width: 100%;">
     <form #preferencesForm="ngForm" onsubmit="return false">
+      <div class="preferences-group">
+        <div class="section-heading">{{ 'DEFAULT_SEARCH_PRESETS' | translate }}</div>
+        <div class="default-dataset">
+          <app-dataset-selector
+            [(selected)]="defaultDataset"
+            (selectedChange)="onDatasetSelectionChange($event)"
+            [datasets]="datasets">
+          </app-dataset-selector>
+        </div>
 
-      <div class="section-heading">{{ 'DEFAULT_SEARCH_PRESETS' | translate }}</div>
-      <div class="default-dataset">
-        <app-dataset-selector
-          [(selected)]="defaultDataset"
-          (selectedChange)="onDatasetSelectionChange($event)"
-          [datasets]="datasets">
-        </app-dataset-selector>
+        <mat-form-field class="default-max-result">
+          <mat-label>{{ 'DEFAULT_MAX_RESULT_AMOUNT' | translate }}</mat-label>
+          <mat-select
+            [(ngModel)]="defaultMaxResults"
+            (selectionChange)="onChangeMaxResultsDefault($event.value)" name="maxResult">
+            <mat-option *ngFor="let resultAmount of maxResults" [value]="resultAmount">
+              {{resultAmount}} {{ 'FILES' | translate }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="default-map">
+          <mat-label>{{ 'DEFAULT_MAP_LAYER' | translate }}</mat-label>
+          <mat-select
+            [(ngModel)]="defaultMapLayer"
+            (selectionChange)="onChangeDefaultLayerType($event.value)" name="amount">
+            <mat-option [value]="mapLayerTypes.SATELLITE">
+              {{ mapLayerTypes.SATELLITE }}
+            </mat-option>
+            <mat-option [value]="mapLayerTypes.STREET ">
+              {{ mapLayerTypes.STREET  }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
+      <hr>
 
-      <mat-form-field class="default-max-result">
-        <mat-label>{{ 'DEFAULT_MAX_RESULT_AMOUNT' | translate }}</mat-label>
-        <mat-select
-          [(ngModel)]="defaultMaxResults"
-          (selectionChange)="onChangeMaxResultsDefault($event.value)" name="maxResult">
-          <mat-option *ngFor="let resultAmount of maxResults" [value]="resultAmount">
-            {{resultAmount}} {{ 'FILES' | translate }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+      <div class="preferences-group">
+        <div class="section-heading">{{ 'DEFAULT_SEARCH_FILTERS_PRESETS' | translate }}</div>
+        <mat-form-field class="default-filters-presets" *ngFor="let type of searchTypeKeys">
+          <mat-label>{{type}}</mat-label>
+          <mat-select
+          [(value)]="currentFilterDisplayNames[searchType[type]]"
+          (selectionChange)="onChangeDefaultFilterType($event.value, type)"
+          name="preset">
+            <mat-option [value]="preset.id" *ngFor="let preset of userFiltersBySearchType[searchType[type]]">
+              {{ preset.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-      <mat-form-field class="default-map">
-        <mat-label>{{ 'DEFAULT_MAP_LAYER' | translate }}</mat-label>
-        <mat-select
-          [(ngModel)]="defaultMapLayer"
-          (selectionChange)="onChangeDefaultLayerType($event.value)" name="amount">
-          <mat-option [value]="mapLayerTypes.SATELLITE">
-            {{ mapLayerTypes.SATELLITE }}
-          </mat-option>
-          <mat-option [value]="mapLayerTypes.STREET ">
-            {{ mapLayerTypes.STREET  }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+        <div class="section-heading">{{ 'DEFAULT_ON_DEMAND_PRESETS' | translate }}</div>
+        <mat-form-field class="default-filters-presets">
+          <mat-label>{{ 'HY_P3_API_URL' | translate }}</mat-label>
+          <input matInput
+            [(ngModel)]="hyp3BackendUrl"
+            name="backendUrl">
+          <button matSuffix mat-icon-button aria-label="Clear" (click)="resetHyp3Url()">
+            <mat-icon>refresh</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+      <hr>
 
-      <div class="section-heading">{{ 'DEFAULT_SEARCH_FILTERS_PRESETS' | translate }}</div>
-      <mat-form-field class="default-filters-presets" *ngFor="let type of searchTypeKeys">
-        <mat-label>{{type}}</mat-label>
-        <mat-select
-        [(value)]="currentFilterDisplayNames[searchType[type]]"
-        (selectionChange)="onChangeDefaultFilterType($event.value, type)"
-        name="preset">
-          <mat-option [value]="preset.id" *ngFor="let preset of userFiltersBySearchType[searchType[type]]">
-            {{ preset.name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <div class="section-heading">{{ 'DEFAULT_ON_DEMAND_PRESETS' | translate }}</div>
-      <mat-form-field class="default-filters-presets">
-        <mat-label>{{ 'HY_P3_API_URL' | translate }}</mat-label>
-        <input matInput
-          [(ngModel)]="hyp3BackendUrl"
-          name="backendUrl">
-        <button matSuffix mat-icon-button aria-label="Clear" (click)="resetHyp3Url()">
-          <mat-icon>refresh</mat-icon>
-        </button>
-      </mat-form-field>
-
-      <div class="section-heading">Default Theme</div>
-      <div class="language-theme">
-<!--          <div class="language-selector">-->
-<!--            <mat-form-field class="default-filters-presets">-->
-<!--              <mat-label>Default Language</mat-label>-->
-<!--              <mat-select-->
-<!--                [(value)]="translate.currentLang"-->
-<!--                (selectionChange)="onChangeDefaultLanguage($event.value)"-->
-<!--                name="preset">-->
-<!--                <mat-option [value]="lang" *ngFor="let lang of translate.getLangs()">-->
-<!--                  {{ language.getName(lang) | titlecase}}-->
-<!--                </mat-option>-->
-<!--              </mat-select>-->
-<!--            </mat-form-field>-->
-<!--          </div>-->
-          <div class="theme-selector">
-            <mat-form-field class="default-filters-presets">
-              <mat-label>Default Theme</mat-label>
-              <mat-select
-                [(value)]="currentTheme"
-                (selectionChange)="onChangeDefaultTheme($event.value)"
-                name="preset">
-                <mat-option [value]="theme" *ngFor="let theme of themeOptions">
-                  {{ theme | titlecase}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
+      <div class="preferences-group">
+        <div class="section-heading">Default Theme</div>
+        <div class="language-theme">
+            <div class="theme-selector">
+              <mat-form-field class="default-filters-presets">
+                <mat-label>Default Theme</mat-label>
+                <mat-select
+                  [(value)]="currentTheme"
+                  (selectionChange)="onChangeDefaultTheme($event.value)"
+                  name="preset">
+                  <mat-option [value]="theme" *ngFor="let theme of themeOptions">
+                    {{ theme | titlecase}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+        </div>
       </div>
     </form>
   </div>
-
 </mat-dialog-content>
 
 <mat-dialog-actions class="action-controls">
