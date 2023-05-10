@@ -141,6 +141,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         beamModes: [],
         polarizations: [],
         subtypes: [],
+        fullBurstIDs: [],
         selectedMission: null,
       };
     }
