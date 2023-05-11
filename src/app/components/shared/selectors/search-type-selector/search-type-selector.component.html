@@ -7,10 +7,10 @@
       <button
         [matMenuTriggerFor]="searchTypeMenu" (onMenuOpen)="onSearchTypeMenuOpen()"
         class="button-menu-trigger" color="basic"
-        matTooltip="{{ searchType | translate }}"
+        matTooltip="{{ searchTranslation[searchType] | translate }}"
         mat-button>
         <div class="button-text">
-          {{ searchType | translate }}
+          {{ searchTranslation[searchType] | translate }}
           <span class="mat-select-arrow"></span>
         </div>
       </button>
