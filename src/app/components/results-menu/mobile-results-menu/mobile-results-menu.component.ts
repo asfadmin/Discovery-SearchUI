@@ -51,7 +51,7 @@ export class MobileResultsMenuComponent implements OnInit, OnDestroy {
       this.store$.select(searchStore.getSearchType).subscribe(
         searchType => {
           this.searchType = searchType;
-          this.view = searchType === 'SBAS_SEARCH' ?
+          this.view = searchType === SearchType.SBAS ?
                       MobileViews.SBAS : MobileViews.LIST;
         }
       )

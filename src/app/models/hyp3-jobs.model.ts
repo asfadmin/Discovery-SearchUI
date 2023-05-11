@@ -61,6 +61,9 @@ export const RtcGammaJobType: Hyp3JobType = {
       name: '30 meters',
       apiValue: 30
     }, {
+      name: '20 meters',
+      apiValue: 20
+    }, {
       name: '10 meters',
       apiValue: 10
     }],

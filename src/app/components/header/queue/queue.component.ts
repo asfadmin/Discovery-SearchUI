@@ -12,7 +12,7 @@ import { NotificationService, ScreenSizeService } from '@services';
 import { CMRProduct, AsfApiOutputFormat, Breakpoints } from '@models';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
-import { ResizedEvent } from 'angular-resize-event';
+import { ResizedEvent } from '@directives/resized.directive';
 import * as userStore from '@store/user';
 import { DownloadFileButtonComponent } from '@components/shared/download-file-button/download-file-button.component';
 import * as UAParser from 'ua-parser-js';
