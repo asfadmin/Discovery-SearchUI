@@ -4,7 +4,6 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { MatDialogModule } from '@angular/material/dialog';
@@ -31,7 +30,6 @@ import { SharedModule } from '@shared';
     imports: [
         CommonModule,
         ScrollingModule,
-        FlexLayoutModule,
         DragDropModule,
         MatBadgeModule,
         MatButtonModule,

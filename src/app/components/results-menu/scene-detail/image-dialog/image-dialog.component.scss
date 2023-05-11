@@ -65,7 +65,7 @@ a {
     border-top-width: 1px;
   }
 
-  .scene-detail-wrapper {
+  .scene-detail--wrapper {
     @include themify($themes) {
       background-color: themed('primary-light');
       border-left-color: themed('primary-dark');
@@ -75,6 +75,9 @@ a {
     border-left-style: solid;
     border-left-width: 1px;
     overflow-y: auto;
+    flex: 1 1 100%;
+    box-sizing: border-box;
+    max-width: 20%;
 
     .scene-detail {
       margin-left: 10px;
@@ -97,6 +100,15 @@ a {
   max-width: 100%;
   max-height: 100%;
   overflow: hidden;
+}
+
+.browse-map--layout {
+  flex-direction: row-reverse;
+  box-sizing: border-box;
+  display: flex;
+  place-content: flex-end;
+  align-items: flex-end;
+  flex: 1 1 0%;
 }
 
 .browse-map--overlay {
@@ -161,10 +173,20 @@ a {
 .bottom-row {
   margin-top: 10px;
   font-size: 14px;
+  text-align: center;
+  flex-direction: row;
+  box-sizing: border-box;
+  display: flex;
+  place-content: flex-end;
+  align-items: flex-end;
 }
 
 .close-icon {
   right: 0;
+  flex: 1 1 35px;
+  box-sizing: border-box;
+  max-width: 35px;
+  min-width: 35px;
 }
 
 .thumbs {
