@@ -1,42 +1,37 @@
-<div *ngIf="breakpoint$ | async as breakpoint" class="bounds">
 <!--  <div *ngIf="breakpoint !== breakpoints.MOBILE">-->
 <!--    <app-language-selector [header]="true"></app-language-selector>-->
 <!--  </div>-->
-  <div>
-    <div class="breadcrumb-list"
-         [class.mobile-nav-bar]="breakpoint === breakpoints.MOBILE"
-         fxLayout="row"
-         fxFlexFill>
-      <div fxLayout="row"
-           fxLayout.gt-lg="column">
-        <div fxFlex="auto" class="logo">
-          <app-logo></app-logo>
-        </div>
+<div
+  *ngIf="breakpoint$ | async as breakpoint"
+  class="bounds">
+  <div class="breadcrumb-list fx-row header--layout"
+    [class.mobile-nav-bar]="breakpoint === breakpoints.MOBILE">
+    <div class="fx-row">
+      <div class="header-logo--layout">
+        <app-logo></app-logo>
       </div>
-      <div *ngIf="searchType$ | async as searchType" fxLayout="column" fxFill class="header-buttons-input">
-        <app-dataset-header *ngIf="searchType === searchTypes.DATASET">
-        </app-dataset-header>
+    </div>
 
-        <app-list-header *ngIf="searchType === searchTypes.LIST">
-        </app-list-header>
+    <div *ngIf="searchType$ | async as searchType" class="header-buttons-input fx-col header-inner--layout">
+      <app-dataset-header *ngIf="searchType === searchTypes.DATASET">
+      </app-dataset-header>
 
-        <app-baseline-header *ngIf="searchType === searchTypes.BASELINE">
-        </app-baseline-header>
+      <app-list-header *ngIf="searchType === searchTypes.LIST">
+      </app-list-header>
 
-        <app-baseline-header *ngIf="searchType === searchTypes.SBAS">
-        </app-baseline-header>
+      <app-baseline-header *ngIf="searchType === searchTypes.BASELINE">
+      </app-baseline-header>
 
-        <app-sarviews-header *ngIf="searchType === searchTypes.SARVIEWS_EVENTS">
-        </app-sarviews-header>
+      <app-baseline-header *ngIf="searchType === searchTypes.SBAS">
+      </app-baseline-header>
 
-        <app-hyp3-header *ngIf="searchType === searchTypes.CUSTOM_PRODUCTS">
-        </app-hyp3-header>
+      <app-sarviews-header *ngIf="searchType === searchTypes.SARVIEWS_EVENTS">
+      </app-sarviews-header>
 
-        <app-derived-datasets-header *ngIf="searchType === searchTypes.DERIVED_DATASETS">
-        </app-derived-datasets-header>
+      <app-hyp3-header *ngIf="searchType === searchTypes.CUSTOM_PRODUCTS">
+      </app-hyp3-header>
 
-        <app-info-bar *ngIf="breakpoint !== breakpoints.MOBILE"></app-info-bar>
-      </div>
+      <app-info-bar *ngIf="breakpoint !== breakpoints.MOBILE"></app-info-bar>
     </div>
   </div>
   <mat-progress-bar *ngIf="isLoading" style="width: 100%;" mode="indeterminate"></mat-progress-bar>

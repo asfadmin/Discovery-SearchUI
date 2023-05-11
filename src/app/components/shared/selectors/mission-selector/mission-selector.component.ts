@@ -81,7 +81,7 @@ export class MissionSelectorComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.dataset$.pipe(
         map(dataset => {
-          return dataset.name.toLowerCase().includes('s1 insar') ?
+          return dataset.id === models.beta.id ?
             models.MissionDataset.S1_BETA :
             dataset.name;
         })

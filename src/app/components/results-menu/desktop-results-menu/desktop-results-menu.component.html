@@ -1,5 +1,9 @@
 <!-- SCENE LIST -->
-<mat-card class="mp0" [fxFlex]="breakpoint > breakpoints.SMALL ? 33 : 50" fxFlex>
+<mat-card class="mp0"
+  [ngClass]="{
+    'desktop-header--layout': breakpoint > breakpoints.SMALL,
+    'desktop-header--small-layout': breakpoint <= breakpoints.SMALL
+  }">
   <mat-card-subtitle class="header">
     <app-scenes-list-header></app-scenes-list-header>
   </mat-card-subtitle>
@@ -11,7 +15,7 @@
 
 <!-- SCENE DETAIL -->
 <ng-container *ngIf="breakpoint > breakpoints.SMALL">
-  <mat-card class="mp0 no-box-shadow" fxFlex="34" fxFlexFill>
+  <mat-card class="mp0 no-box-shadow scene-detail--layout">
     <mat-card-subtitle class="header">
       {{ (sarviewsEventsLength !== 0 ? ('EVENT' | translate ) : ('SCENE_DETAIL' | translate | titlecase)) }}
     </mat-card-subtitle>
@@ -19,7 +23,7 @@
   </mat-card>
 
   <!-- FILE LIST -->
-  <mat-card class="h100 mp0 no-left-border" fxFlex="33" fxFlexFill>
+  <mat-card class="h100 mp0 no-left-border file-list--layout">
     <mat-card-subtitle class="header">
       <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
         {{ products.length || '' }} {{ 'FILE'| translate }}{{ (products || []).length === 1 ? '' : 's'}}
@@ -34,7 +38,7 @@
 </ng-container>
 
 <ng-container *ngIf="breakpoint <= breakpoints.SMALL">
-  <mat-card class="mp0 no-box-shadow" fxFlex="50" fxFlexFill>
+  <mat-card class="mp0 no-box-shadow scene-info--small-layout">
     <mat-card-subtitle class="header">
       {{ 'SCENE_DETAIL' |  translate }} /
       <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">

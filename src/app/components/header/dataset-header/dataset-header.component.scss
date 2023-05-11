@@ -1,4 +1,19 @@
 .noshow {
   width: 1px;
   color: transparent;
+  display: none;
+}
+
+.dataset-selector--layout {
+  flex: 1 1 130px !important;
+  box-sizing: border-box !important;
+  max-width: 130px !important;
+  min-width: 130px !important;
+}
+
+.date-selector--layout {
+  flex: 1 1 300px;
+  box-sizing: border-box;
+  max-width: 300px;
+  min-width: 300px;
 }

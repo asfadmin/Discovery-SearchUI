@@ -1,0 +1,21 @@
+.map-info--layout {
+  align-self: flex-end;
+  flex: 1 1 0%;
+  box-sizing: border-box;
+  flex-direction: row;
+  display: flex;
+}
+
+.lat--layout {
+  flex: 1 1 75px;
+  box-sizing: border-box;
+  max-width: 75px;
+  min-width: 75px;
+}
+
+.lon--layout {
+  flex: 1 1 85px;
+  box-sizing: border-box;
+  max-width: 85px;
+  min-width: 85px;
+}
