@@ -103,10 +103,14 @@ $bottom-offset: 10px;
   }
 }
 
+.doc-feedback-div-wrapper {
+  flex: 1 1 auto;
+}
+
 .doc-feedback-div {
   display: flex;
   justify-content: flex-end;
-  //margin-top: -42px;
+  margin-top: 29px;
   margin-right: 20px;
 }
 
