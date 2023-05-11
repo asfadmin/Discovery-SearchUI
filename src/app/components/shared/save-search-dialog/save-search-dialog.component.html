@@ -19,7 +19,7 @@
 
   <div class="save-search-filters">
     <div style="margin-bottom: 4px;">
-      <b>{{ search.searchType | translate }}</b>
+      <b>{{ searchTranslation[search.searchType] | translate }}</b>
     </div>
 
     <app-search-filters [search]="search">
