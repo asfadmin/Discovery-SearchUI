@@ -23,7 +23,7 @@ export class FullBurstSelectorComponent implements OnInit, OnDestroy {
         debounceTime(3.0),
         filter(ids => ids !== null),
         map(ids => {
-          const idsArray = ids.trim().split(',');
+          const idsArray = ids.split(',').map(id => id.trim());
           return idsArray.filter(entry => entry.length > 0);
         }),
         filter(ids => ids !== this.fullBurstIDs)

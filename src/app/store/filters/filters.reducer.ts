@@ -609,7 +609,8 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           polarizations: filters.polarizations,
           flightDirections: new Set(filters.flightDirections),
           subtypes,
-          selectedMission: filters.selectedMission
+          selectedMission: filters.selectedMission,
+          fullBurstIDs: filters.fullBurstIDs
         };
       }
     }
@@ -895,7 +896,8 @@ export const getGeographicSearch = createSelector(
     polarizations: state.polarizations,
     flightDirections: state.flightDirections,
     subtypes: state.subtypes,
-    selectedMission: state.selectedMission
+    selectedMission: state.selectedMission,
+    fullBurstIDs: state.fullBurstIDs
   })
 );
 
