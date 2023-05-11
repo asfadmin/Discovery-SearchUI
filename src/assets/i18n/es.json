@@ -616,7 +616,7 @@
 	"SELECTED_EVENT_PRODUCTS": "Productos de Eventos Seleccionados",
 	"SELECTED_JOB": "Trabajo Seleccionado",
 	"SELECTING_LIST_FROM_THE_SEARCH_TYPE_DROPDOWN_MENU_OPENS_THE_SCENE_LIST_SEARCH_WINDOW_AND_ALLOWS_YOU_TO_ENTER_A_LIST_OF_SCENE_OR_FILE_NAMES": "Al seleccionar 'Lista' en el menú desplegable Tipo de búsqueda, se abre la ventana Búsqueda de lista de escenas y le permite ingresar una lista de nombres de escenas o archivos.",
-	"SENTINEL_1_INTERFEROGRAM_BETA_DESC": "Los productos de interferograma Sentinel-1 (BETA) son prototipos de productos interferométricos de formato NISAR de nivel 2 producidos con el sistema de datos científicos ARIA.",
+	"SENTINEL_1_INTERFEROGRAM_BETA_DESC": "El nivel 2 son productos de interferograma Sentinel-1 estandarizados y generados por el proyecto Advanced Rapid Imaging and Analysis (ARIA) del JPL.",
 	"SENTINEL_DESC": "Sentinel-1 incluye satélites gemelos, cada uno de los cuales lleva un radar de apertura sintética (SAR) de banda C, juntos brindan imágenes de la superficie de la Tierra para todo clima, día y noche.",
 	"SET": "Colocar",
 	"SET_AS_BOTH": "Establecer como ambos",
