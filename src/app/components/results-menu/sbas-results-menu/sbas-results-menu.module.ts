@@ -5,7 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { ResizableModule } from 'angular-resizable-element';
 
 import { MatSharedModule } from '@shared';
@@ -32,7 +31,6 @@ import { SharedModule } from "@shared";
   imports: [
     CommonModule,
     MatSharedModule,
-    FlexLayoutModule,
     ReactiveFormsModule,
     FormsModule,
     ResizableModule,

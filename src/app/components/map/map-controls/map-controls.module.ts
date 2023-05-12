@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -20,7 +19,6 @@ import { SharedModule } from "@shared";
 @NgModule({
   imports: [
     CommonModule,
-    FlexLayoutModule,
     DragDropModule,
     MatButtonToggleModule,
     MatMenuModule,
