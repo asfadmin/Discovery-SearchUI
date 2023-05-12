@@ -49,7 +49,7 @@ export interface FiltersState {
 
   geocode: null | string;
 
-  fullBurstIDs: null | string[];
+  fullBurstIDs: string[];
 }
 
 
