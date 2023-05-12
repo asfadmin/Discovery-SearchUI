@@ -81,7 +81,8 @@
 
   <li *ngIf="prop.isRelevant(p.FLIGHT_DIRECTION, dataset)">
     <span class="v-mid"> <b>{{ 'FLIGHT_DIRECTION' | translate }} </b> •
-      {{ scene.metadata.flightDirection.toUpperCase() | translate }}
+      {{ scene.metadata.flightDirection | uppercase }}
+<!--      {{ scene.metadata.flightDirection | uppercase | translate }}-->
     </span>
     <mat-icon *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addFlightDirectionMenu"
