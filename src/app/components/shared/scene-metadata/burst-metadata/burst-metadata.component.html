@@ -1,16 +1,16 @@
 <ul class="scene-metadata">
     <li style="word-wrap: anywhere;">
-      <b> Group ID </b> • {{groupID}}
+      <b> {{'GROUP_ID' | translate }} </b> • {{groupID}}
     </li>
     <li>
-    <b> Relative Burst ID </b>  • {{burst.relativeBurstID}}
+    <b> {{'BURST_ID_RELATIVE' | translate }} </b>  • {{burst.relativeBurstID}}
     </li>
 
     <li>
-      <b> Absolute Burst ID </b>  • {{burst.absoluteBurstID}}
+      <b> {{'BURST_ID_ABSOLUTE' | translate }} </b>  • {{burst.absoluteBurstID}}
     </li>
     <li>
-      <b> Full Burst ID </b>  • {{burst.fullBurstID}}
+      <b> {{'BURST_ID_FULL' | translate }} </b>  • {{burst.fullBurstID}}
       <mat-icon *ngIf="isGeoSearch"
       [matMenuTriggerFor]="addFullBurstMenu"
       class="v-mid clickable">
@@ -22,18 +22,31 @@
     </mat-menu>
     </li>
     <li>
-      <b> Burst Index </b>  • {{burst.burstIndex}}
+      <b> {{'BURST_INDEX' | translate }} </b>  • {{burst.burstIndex}}
     </li>
     <li>
-      <b> Azimuth Time </b>  • {{burst.azimuthTime}}
+      <b> {{'AZIMUTH_TIME' | translate }} </b>  • {{burst.azimuthTime | shortDateTime }}
+      <mat-icon
+      [matMenuTriggerFor]="addSceneDateMenu"
+      [matMenuTriggerData]="{eventDate: burst.azimuthTime}"
+      class="v-mid clickable">
+        settings
+    </mat-icon>
     </li>
     <li>
-      <b> Azimuth Anx Time </b>  • {{burst.azimuthAnxTime}}
+      <b> {{'AZIMUTH_ANX_TIME' | translate }} </b>  • {{burst.azimuthAnxTime}}
     </li>
     <li>
-      <b> Samples Per Burst </b>  • {{burst.samplesPerBurst}}
+      <b> {{'SAMPLES_PER_BURST' | translate }} </b>  • {{burst.samplesPerBurst}}
     </li>
     <li>
-      <b> Subswath </b>  • {{burst.subswath}}
+      <b> {{'SUBSWATH' | translate }} </b>  • {{burst.subswath}}
     </li>
 </ul>
+
+<mat-menu #addSceneDateMenu="matMenu">
+  <ng-template matMenuContent let-date="eventDate">
+  <button (click)="onSetStartDate(date)" mat-menu-item>{{ 'SET_AS_START_DATE' | translate }}</button>
+  <button (click)="onSetEndDate(date)" mat-menu-item>{{ 'SET_AS_END_DATE' | translate }}</button>
+</ng-template>
+</mat-menu>
