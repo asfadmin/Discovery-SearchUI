@@ -93,7 +93,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         map(profile => profile.defaultFilterPresets)
         ).subscribe(presets => {
           this.store$.dispatch(new filterStore.SetDefaultFilters(presets));
-          this.language.initialize(presets);
+          this.language.initialize();
         }))
   }
   public ngOnInit(): void {
@@ -236,6 +236,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       this.store$.select(userStore.getUserProfile).subscribe(
         profile => {
           this.urlStateService.setDefaults(profile);
+          this.language.setProfileLanguage(profile.language);
           this.isAutoTheme = profile.theme === 'System Preferences';
           if (this.searchType !== models.SearchType.LIST
             && this.searchType !== models.SearchType.CUSTOM_PRODUCTS

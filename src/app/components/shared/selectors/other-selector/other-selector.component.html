@@ -38,7 +38,7 @@
     </mat-select>
     <mat-hint *ngIf="prop.isRelevant(p.POLARIZATION)"  align="start">
       {{ polarizations?.length || 0 }}/{{ dataset.polarizations.length }}
-      {{ 'NO_POLARIZATIONS_TO_SELECT' | translate }}
+      {{ 'POLARIZATIONS_SELECTED' | translate }}
     </mat-hint>
     <mat-hint *ngIf="!prop.isRelevant(p.POLARIZATION)" align="start">
       {{ 'NO_POLARIZATIONS_TO_SELECT' | translate }}
@@ -53,7 +53,7 @@
       [disabled]="!prop.isRelevant(p.FLIGHT_DIRECTION)"
       placeholder="{{ 'DIRECTION' | translate }}" multiple>
       <mat-option *ngFor="let direction of flightDirectionTypes" [value]="direction">
-        {{direction}}
+        {{direction.toUpperCase() | translate}}
       </mat-option>
     </mat-select>
 
