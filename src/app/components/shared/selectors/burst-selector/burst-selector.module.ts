@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { SharedModule } from "@shared";
 
 import { BurstSelectorComponent } from './burst-selector.component';
 
@@ -20,7 +21,8 @@ import { FullBurstSelectorComponent } from './full-burst-selector/full-burst-sel
     MatExpansionModule,
     MatInputModule,
     FormsModule,
-    MatSharedModule
+    MatSharedModule,
+    SharedModule
   ],
   exports: [
     BurstSelectorComponent
