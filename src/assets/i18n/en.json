@@ -799,5 +799,8 @@
 	"ZOOM_TO_EVENT": "Zoom to event",
 	"ZOOM_TO_FIT": "Zoom To Fit",
 	"ZOOM_TO_RESULTS": "Zoom to results",
-	"ZOOM_TO_SCENE": "Zoom to scene"
+	"ZOOM_TO_SCENE": "Zoom to scene",
+	"DRAG_AND_DROP": "Drag and Drop",
+	"FILES_OPC": "(shp, geojson, kml, zip)",
+	"GEOSPATIAL_FILES_HERE": "Geospatial Files Here"
 }
