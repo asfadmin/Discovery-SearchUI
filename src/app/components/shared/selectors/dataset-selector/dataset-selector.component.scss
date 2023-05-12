@@ -2,3 +2,12 @@
 @import "deluxe-menu";
 @import "deluxe-menu-2";
 
+.dataset--layout {
+  white-space: normal;
+  flex: 7;
+}
+
+.dataset-aside--layout {
+  flex: 3;
+  text-align: center;
+}

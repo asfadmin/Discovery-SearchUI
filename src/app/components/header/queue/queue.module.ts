@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 
 import { MatMenuModule } from '@angular/material/menu';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { ClipboardModule } from 'ngx-clipboard';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -17,7 +16,7 @@ import { QueueComponent } from './queue.component';
 import { ResizableModule } from 'angular-resizable-element';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatDialogModule } from '@angular/material/dialog';
-import { AngularResizeEventModule } from 'angular-resize-event';
+import { ResizedEventModule } from '@directives/resized.directive';
 import { FileDownloadDirective } from '@directives/file-download.directive';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -45,11 +44,10 @@ import { SharedModule } from '@shared';
         CopyToClipboardModule,
         MatSharedModule,
         PipesModule,
-        FlexLayoutModule,
         ResizableModule,
         DragDropModule,
         MatDialogModule,
-        AngularResizeEventModule,
+        ResizedEventModule,
         MatProgressBarModule,
         MatCheckboxModule,
         MatProgressSpinnerModule,

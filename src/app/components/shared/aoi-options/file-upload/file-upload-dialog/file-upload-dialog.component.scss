@@ -26,22 +26,50 @@
   flex-direction: column;
 }
 
-
 .drop-file-area {
   @include themify($themes) {
     background-color: darken(themed('background-white'), 10%);
     outline: 2px dashed themed('primary');
-
   }
-  background-image: url("/assets/geospatial_upload.png");
-  background-size: contain;
-  background-repeat: no-repeat;
 
-  background-position: center;
+  background-image: url('/assets/icons/cloud_upload_black_48dp.svg');
+  background-size: 35%;
+  background-repeat: no-repeat;
+  background-position: center 30%;
   width: 230px;
   height: 220px;
   display: inline-block;
   outline-offset: -8px;
+}
+
+.dd-text {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  @include themify($themes) {
+    color: lighten(themed('dark-primary-text'), 20%);
+  }
+
+  .dd-text-1 {
+    margin-top: 25px;
+    font-size: 20px;
+  }
+
+  .dd-text-2 {
+    margin-top: 65px;
+  }
+
+  .dd-text-3 {
+    margin-top: 4px;
+    font-size: 12px;
+  }
+}
+
+.import-button {
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .is-file-error {
@@ -88,4 +116,22 @@
 .mobile-upload-button {
   border-left: solid 1px #e0e0e0;
   display: flex;
+}
+
+.file-upload--layout {
+  flex-direction: column;
+  box-sizing: border-box;
+  display: flex;
+  place-content: stretch space-evenly;
+  align-items: stretch;
+  max-width: 100%;
+}
+
+.file-upload-target--layout {
+  place-content: center;
+  align-items: stretch;
+  flex-direction: row;
+  box-sizing: border-box;
+  display: grid;
+  flex: 1 1 0%;
 }

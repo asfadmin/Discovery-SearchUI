@@ -7,10 +7,30 @@ $config: mat.define-typography-config();
   padding-bottom: 8px;
 }
 
+.baseline-header-card--layout {
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 38%;
+}
+
 .header-button-group {
   width: 189px;
   display: flex;
   justify-content: center;
+}
+
+.baseline-scene-detail--layout {
+  height: 100%;
+  width: 100%;
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 21%;
+}
+
+.baseline-header--medium-layout {
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 45%;
 }
 
 .baseline-header-button-group {
@@ -108,4 +128,32 @@ $config: mat.define-typography-config();
 
 .button-tabs {
   margin-left: 20px;
+}
+
+.baseline-header--wrapper {
+ display: flex;
+}
+
+.baseline-detail-view--layout {
+  height: 100%;
+  width: 100%;
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 45%;
+}
+
+.criteria-header--layout {
+  height: 100%;
+  width: 100%;
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 55%;
+}
+
+.criteria-header--small-layout {
+  height: 100%;
+  width: 100%;
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 45%;
 }

@@ -23,6 +23,7 @@ import { AsfLanguageService } from "@services/asf-language.service";
 })
 export class SaveSearchDialogComponent implements OnInit {
   public search: models.Search;
+  public searchTranslation = models.SearchTypeTranslation;
 
   private currentFiltersBySearchType = {};
   public searchType: models.SearchType;
