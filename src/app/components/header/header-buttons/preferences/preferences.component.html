@@ -1,10 +1,36 @@
 <div class="dialog-header">
   <div mat-dialog-title class="dialog-title-overrides">{{ 'PREFERENCES_FOR' | translate}} {{ userAuth.id }}</div>
+
+  <div class="dl-close-x" (click)="onCloseDownloadQueue()">
+    <mat-icon>close</mat-icon>
+  </div>
+
 </div>
 
 <mat-dialog-content>
-  <div class="display: flex; width: 100%;">
-    <form #preferencesForm="ngForm" onsubmit="return false">
+  <div class="preferences-body">
+    <form class="preferences-form--layout" #preferencesForm="ngForm" onsubmit="return false">
+      <div class="preferences-group">
+        <div class="section-heading">Default Theme</div>
+        <div class="language-theme">
+            <div class="theme-selector">
+              <mat-form-field class="default-filters-presets">
+                <mat-label>Default Theme</mat-label>
+                <mat-select
+                  [(value)]="currentTheme"
+                  (selectionChange)="onChangeDefaultTheme($event.value)"
+                  name="preset">
+                  <mat-option [value]="theme" *ngFor="let theme of themeOptions">
+                    {{ theme | titlecase}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+        </div>
+      </div>
+
+      <hr>
+
       <div class="preferences-group">
         <div class="section-heading">{{ 'DEFAULT_SEARCH_PRESETS' | translate }}</div>
         <div class="default-dataset">
@@ -40,6 +66,7 @@
           </mat-select>
         </mat-form-field>
       </div>
+
       <hr>
 
       <div class="preferences-group">
@@ -55,7 +82,11 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
+      </div>
 
+      <hr>
+
+      <div class="preferences-group">
         <div class="section-heading">{{ 'DEFAULT_ON_DEMAND_PRESETS' | translate }}</div>
         <mat-form-field class="default-filters-presets">
           <mat-label>{{ 'HY_P3_API_URL' | translate }}</mat-label>
@@ -66,26 +97,6 @@
             <mat-icon>refresh</mat-icon>
           </button>
         </mat-form-field>
-      </div>
-      <hr>
-
-      <div class="preferences-group">
-        <div class="section-heading">Default Theme</div>
-        <div class="language-theme">
-            <div class="theme-selector">
-              <mat-form-field class="default-filters-presets">
-                <mat-label>Default Theme</mat-label>
-                <mat-select
-                  [(value)]="currentTheme"
-                  (selectionChange)="onChangeDefaultTheme($event.value)"
-                  name="preset">
-                  <mat-option [value]="theme" *ngFor="let theme of themeOptions">
-                    {{ theme | titlecase}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-        </div>
       </div>
     </form>
   </div>
