@@ -1,5 +1,6 @@
 import '@formatjs/intl-displaynames/polyfill'
-import '@formatjs/intl-displaynames/locale-data/en' // locale-data for en
+import '@formatjs/intl-displaynames/locale-data/en'
+import '@formatjs/intl-displaynames/locale-data/es'
 
 import { Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from "@ngx-translate/core";

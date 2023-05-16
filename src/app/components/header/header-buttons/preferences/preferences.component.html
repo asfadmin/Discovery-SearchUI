@@ -10,23 +10,33 @@
 <mat-dialog-content>
   <div class="preferences-body">
     <form class="preferences-form--layout" #preferencesForm="ngForm" onsubmit="return false">
+
       <div class="preferences-group">
-        <div class="section-heading">Default Theme</div>
-        <div class="language-theme">
-            <div class="theme-selector">
-              <mat-form-field class="default-filters-presets">
-                <mat-label>Default Theme</mat-label>
-                <mat-select
-                  [(value)]="currentTheme"
-                  (selectionChange)="onChangeDefaultTheme($event.value)"
-                  name="preset">
-                  <mat-option [value]="theme" *ngFor="let theme of themeOptions">
-                    {{ theme | titlecase}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-        </div>
+        <div class="section-heading">{{ 'DEFAULT_LANGUAGE_AND_THEME' | translate }}</div>
+
+        <mat-form-field class="default-filters-presets">
+          <mat-label>{{ 'DEFAULT_LANGUAGE' | translate }}</mat-label>
+          <mat-select
+            [(value)]="defaultLanguage"
+            (selectionChange)="onChangeDefaultLanguage($event.value)"
+            name="preset">
+            <mat-option [value]="lang" *ngFor="let lang of translate.getLangs()">
+              {{ language.getName(lang) | titlecase}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="default-filters-presets">
+          <mat-label>{{ 'DEFAULT_THEME' | translate }}</mat-label>
+          <mat-select
+            [(value)]="currentTheme"
+            (selectionChange)="onChangeDefaultTheme($event.value)"
+            name="preset">
+            <mat-option [value]="theme" *ngFor="let theme of themeOptions">
+              {{ theme | titlecase}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
 
       <hr>
@@ -98,6 +108,7 @@
           </button>
         </mat-form-field>
       </div>
+
     </form>
   </div>
 </mat-dialog-content>
