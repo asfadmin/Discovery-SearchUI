@@ -6,6 +6,7 @@ CodeFactor](https://www.codefactor.io/repository/github/asfadmin/discovery-searc
 
  ASF's Angular search web application
 
+Interested in contributing? Check out our [CONTRIBUTING.md](CONTRIBUTING.md) file!
 ## Deployments
 | Maturity | Deployment |
 | --- | --- |
