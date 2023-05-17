@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSharedModule } from '@shared';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { SearchButtonModule } from '@components/shared/search-button';
 import { ClearButtonModule } from '@components/shared/clear-button';
@@ -27,7 +26,6 @@ import { SharedModule } from "@shared";
 
     MatDialogModule,
     MatSharedModule,
-    FlexLayoutModule,
 
     ViewSelectorModule,
     LayerSelectorModule,

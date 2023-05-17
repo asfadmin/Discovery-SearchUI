@@ -2,8 +2,8 @@
   <ng-container *ngIf="searchType$ | async as selectedSearchType">
 
     <div *ngIf="breakpoint > breakpoints.MOBILE"
-      fxLayout="row" class="breadcrumb-row">
-      <div fxLayout="row">
+      class="breadcrumb-row baseline-header-layout">
+      <div class="baseline-header-wrapper">
         <app-search-type-selector class="breadcrumb">
         </app-search-type-selector>
 
@@ -14,7 +14,7 @@
           <app-master-scene-selector></app-master-scene-selector>
         </div>
 
-        <div fxFlex="nogrow" class="breadcrumb">
+        <div class="breadcrumb search-button-layout">
           <app-search-button></app-search-button>
         </div>
 
@@ -36,10 +36,10 @@
           SBAS
             </span>
             <span *ngSwitchCase = searchTypes.BASELINE>
-          BASELINE
+          {{ 'BASELINE' | translate}}
             </span>
             <span *ngSwitchCase = searchTypes.CUSTOM_PRODUCTS>
-            ON DEMAND
+          {{ 'ON_DEMAND' |translate}}
             </span>
             <span *ngSwitchDefault>
             </span>

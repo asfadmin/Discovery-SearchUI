@@ -1,25 +1,22 @@
-<ng-container *ngIf="header == false">
-  <mat-form-field appearance="fill">
-    <mat-label>Default Language</mat-label>
-    <mat-select #langPreference
-                (change)="onSelectionChange(langPreference.value)"
-                [(value)]=selected
-    >
-      <mat-option *ngFor="let lang of translate.getLangs()" [value]="lang">
-        {{languageName(lang)}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-</ng-container>
+<!--<div class="langSelect-div">-->
+<!--  <select #langCurrent class="langSelect-select" #langSelect (change)="language.setCurrent(langCurrent.value)">-->
+<!--    <option *ngFor="let lang of translate.getLangs()"-->
+<!--            [value]="lang"-->
+<!--            [selected]="lang === translate.currentLang">-->
+<!--      {{language.getName(lang)}}-->
+<!--    </option>-->
+<!--  </select>-->
+<!--</div>-->
 
-<div *ngIf="header == true"
-     class="langSelect-div">
-  <select class="langSelect-select" #langSelect (change)="translate.use(langSelect.value)">
-    <option *ngFor="let lang of translate.getLangs()"
-            [value]="lang"
-            [selected]="lang === translate.currentLang">
-      {{languageName(lang)}}
-    </option>
-  </select>
-</div>
+<button mat-mini-fab extended class="lang-fab-button" [matMenuTriggerFor]="languageMenu">
+  <mat-icon>translate</mat-icon>
+  <div class="icon-text">{{language.getName()}}</div>
+</button>
 
+<mat-menu #languageMenu="matMenu">
+  <div *ngFor="let lang of language.translate.getLangs()">
+    <button mat-menu-item (click)="language.setCurrent(lang)">
+      {{language.getName(lang)}}
+    </button>
+  </div>
+</mat-menu>

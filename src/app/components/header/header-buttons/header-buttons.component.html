@@ -63,6 +63,14 @@
     </button>
 
     <button
+      [matMenuTriggerFor]="languageMenu"
+      matTooltip="{{ 'HELP_AND_INFORMATION' | translate }}"
+      class="spacing nav-icon-buttons" color="basic" mat-button>
+      <mat-icon class="large-icon">translate</mat-icon>
+      <div class="text-under faint-text">{{ language.getName()}}</div>
+    </button>
+
+    <button
       *ngIf="!isLoggedIn"
       (click)="onAccountButtonClicked()"
       class="spacing nav-icon-buttons" color="basic"
@@ -75,7 +83,7 @@
       *ngIf="isLoggedIn"
       [matMenuTriggerFor]="profileMenu"
       class="spacing nav-icon-buttons" color="basic"
-      matTooltip="{{'PROFILE' | translate}}" mat-button>
+      matTooltip="{{ 'PROFILE' | translate}}" mat-button>
         <mat-icon class="large-icon">account_circle</mat-icon>
         <div class="text-under faint-text"> {{ this.userAuth.id }} </div>
     </button>
@@ -132,6 +140,12 @@
     </mat-icon>
 
     <mat-icon
+      [matMenuTriggerFor]="languageMenu"
+      class="mobile-icon-spacing">
+      translate
+    </mat-icon>
+
+    <mat-icon
       *ngIf="!isLoggedIn"
       class="mobile-icon-spacing"
       fontSet="material-icons-outlined"
@@ -155,7 +169,7 @@
   <button (click)="onOpenSearchHistory()" mat-menu-item matSuffix>
     {{ 'SEARCH_HISTORY' | translate }}
   </button>
-  <button [disabled]="(searchType$ | async) === searchTypes.LIST || (searchType$ | async) === searchTypes.CUSTOM_PRODUCTS" (click)="onOpenSavedFilters()" mat-menu-item matSuffx>
+  <button [disabled]="(searchType$ | async) === searchTypes.LIST || (searchType$ | async) === searchTypes.CUSTOM_PRODUCTS" (click)="onOpenSavedFilters()" mat-menu-item matSuffix>
     {{ 'SAVED_FILTERS' | translate }}
   </button>
   <button (click)="onOpenPreferences()" mat-menu-item matSuffix>
@@ -176,13 +190,13 @@
       {{ 'VIDEO_TUTORIALS' | translate }}
     </div>
     <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
-      <div fxFlex="" class="menu-item-content">
+      <div class="menu-item-content">
         <div class="item-title">{{ 'WATCH_OUR_TUTORIALS' | translate }}</div>
         <div class="item-content">
           {{ 'WE_HAVE_A_COLLECTION_OF_VIDEOS_TO_HELP_YOU_LEARN_AND_USE_VERTEX_TO_MAXIMUM_ADVANTAGE' | translate }}
         </div>
       </div>
-      <div fxFlex="" class="menu-item-aside">
+      <div class="menu-item-aside">
         <mat-icon class="menu-item-icon">video_library</mat-icon>
       </div>
     </div>
@@ -196,14 +210,14 @@
       {{ 'VERTEX_USER_GUIDE' | translate }}
     </div>
     <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
-      <div fxFlex="" class="menu-item-content">
+      <div class="menu-item-content">
         <div class="item-title">{{ 'READ_OUR_USER_GUIDE' | translate }}</div>
         <div class="item-content">
           {{ 'READ_THE_VERTEX_USER_GUIDE_INCLUDING_SECTIONS_ON_GETTING_STARTED_BASELINE_SEARCHES' | translate }}
           {{ 'SBAS_SEARCHES_EVENT_SEARCHES_AND_MORE' | translate }}
         </div>
       </div>
-      <div fxFlex="" class="menu-item-aside">
+      <div class="menu-item-aside">
         <mat-icon class="menu-item-icon">menu_book</mat-icon>
       </div>
     </div>
@@ -217,14 +231,14 @@
       {{ 'HY_P3_USER_GUIDE' | translate | titlecase }}
     </div>
     <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
-      <div fxFlex="" class="menu-item-content">
+      <div class="menu-item-content">
         <div class="item-title">{{ 'READ_OUR_ON_DEMAND_GUIDE' | translate }}</div>
         <div class="item-content">
           {{ 'YOU_CAN_HAVE_ASF_PERFORM_SAR_PROCESSING_FOR_YOU_ON_DEMAND_THE_ON_DEMAND_SYSTEM' | translate }}
           {{ 'IS_POWERED_BY_THE_HY_P3_READ_ABOUT_IT_HERE' | translate }}
         </div>
       </div>
-      <div fxFlex="" class="menu-item-aside">
+      <div class="menu-item-aside">
         <mat-icon class="menu-item-icon" svgIcon="hyp3"></mat-icon>
       </div>
     </div>
@@ -238,7 +252,7 @@
       {{ 'ASF_SEARCH_API' | translate }}
     </div>
     <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
-      <div fxFlex="" class="menu-item-content">
+      <div class="menu-item-content">
         <div class="item-title">{{ 'FIND_SAR_DATA_USING_ASF_API' | translate }}</div>
         <div class="item-content">
           {{ 'THIS_INTERFACE_IS_POWERED_BY_A_ROBUST_API_YOU_CAN_USE_THAT_API_DIRECTLY_ALLOWING' | translate }}
@@ -246,7 +260,7 @@
           {{ 'SCRIPTS_FOR_ACCESSING_SAR_DATA' | translate }}
         </div>
       </div>
-      <div fxFlex="" class="menu-item-aside">
+      <div class="menu-item-aside">
         <mat-icon class="menu-item-icon">api</mat-icon>
       </div>
     </div>
@@ -260,13 +274,13 @@
       {{ 'ASF_WEBSITE' | translate }}
     </div>
     <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
-      <div fxFlex="" class="menu-item-content">
+      <div class="menu-item-content">
         <div class="item-title">{{ 'LEARN_MORE_ABOUT_ASF_AND_SAR' | translate }}</div>
         <div class="item-content">
           {{ 'WE_HAVE_A_LARGE_WEBSITE_FULL_OF_RICH_CONTENT_ABOUT_SAR_DATA_AND_HOW_TO_USE_IT' | translate }}
         </div>
       </div>
-      <div fxFlex="" class="menu-item-aside">
+      <div class="menu-item-aside">
         <mat-icon class="menu-item-icon">language</mat-icon>
       </div>
     </div>
@@ -280,13 +294,13 @@
       {{ 'DEVELOPER' | translate }}
     </div>
     <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
-      <div fxFlex="" class="menu-item-content">
+      <div class="menu-item-content">
         <div class="item-title">{{ 'STATISTICS_AND_GITHUB_REPOSITORY' | translate }}</div>
         <div class="item-content">
           {{ 'VIEW_VERTEX_S_CODE_REPOSITORY_OR_METRICS' | translate }}
         </div>
       </div>
-      <div fxFlex="" class="menu-item-aside">
+      <div class="menu-item-aside">
         <mat-icon class="menu-item-icon">developer_mode</mat-icon>
       </div>
     </div>
@@ -342,4 +356,13 @@
       {{ 'WEBSITE_LINKS' | translate }}
     </a>
 </mat-menu>
+
+<mat-menu #languageMenu="matMenu">
+  <div *ngFor="let lang of language.translate.getLangs()">
+    <button mat-menu-item (click)="language.setCurrent(lang)">
+      {{language.getName(lang)}}
+    </button>
+  </div>
+</mat-menu>
+
 

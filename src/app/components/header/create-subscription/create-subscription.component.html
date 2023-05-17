@@ -24,6 +24,20 @@
             {{ 'POWERED_BY_HY_P3' |  translate }}
           </div>
         </div>
+        <div class="doc-feedback-div-wrapper">
+          <div class="doc-feedback-div">
+            <div class="docs-div header-link">
+              <app-docs-modal class="text-link"
+                              text="Docs"
+                              url="https://hyp3-docs.asf.alaska.edu/using/subscriptions/#Subscriptions-in-HyP3">
+              </app-docs-modal>
+            </div>
+
+            <div class="feedback-div header-link">
+              <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <mat-icon>comment</mat-icon> {{ 'FEEDBACK' | translate }}</a>
+            </div>
+          </div>
+        </div>
       </ng-container>
       <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
         <div class="branding-block">
@@ -34,19 +48,8 @@
       </ng-container>
     </div>
     <div class="close-x" (click)="onCloseDialog()">
-      <mat-icon></mat-icon>
+      <mat-icon>close</mat-icon>
     </div>
-  </div>
-
-  <div class="feedback-div header-link">
-    <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <mat-icon>comment</mat-icon>{{ 'FEEDBACK' | translate }}</a>
-  </div>
-
-  <div class="docs-div header-link">
-    <app-docs-modal class="text-link"
-                    text="Docs"
-                    url="https://hyp3-docs.asf.alaska.edu/using/subscriptions/#Subscriptions-in-HyP3">
-    </app-docs-modal>
   </div>
 </div>
 
@@ -57,7 +60,7 @@
       <mat-stepper (selectionChange)="onSelectionChange()" #stepper>
         <mat-step [stepControl]="searchOptionsFormGroup" errorMessage="Missing required option">
           <ng-template matStepLabel>
-            <span *ngIf="breakpoint !== breakpoints.MOBILE" class="searchOptions">{{ 'SEARCH OPTIONS' | translate }}</span>
+            <span *ngIf="breakpoint !== breakpoints.MOBILE" class="searchOptions">{{ 'SEARCH_OPTIONS' | translate }}</span>
           </ng-template>
 
           <div>
@@ -73,8 +76,8 @@
             </app-subscription-date-range>
           </div>
 
-          <div>
-            <div style="margin-bottom: 5px;">
+          <div style="margin-bottom: 25px;">
+            <div style="margin-bottom: 25px;">
               <b>{{ 'AOI_OPTIONS' |  translate }}</b>
               <div *ngIf="errors.polygonError" class="step-error"> *{{ errors.polygonError }}</div>
             </div>
@@ -140,7 +143,7 @@
               </mat-select>
 
               <mat-hint align="start">
-                {{ !productType ? ( 'SELECT_FILE_TYPE' | translate) : productType + ( 'SELECTED' | translate ) }}
+                {{ !productType ? ( 'SELECT_FILE_TYPE' | translate) : productType +  ' ' + ('SELECTED' | translate | lowercase ) }}
               </mat-hint>
             </mat-form-field>
 
@@ -158,7 +161,7 @@
               </mat-select>
 
               <mat-hint align="start">
-                {{ !productType ? ('SELECT_TYPE' | translate ) : subtype + ('SELECTED' | translate ) }}
+                {{ !productType ? ('SELECT_TYPE' | translate ) : subtype + ' ' + ('SELECTED' | translate | lowercase ) }}
               </mat-hint>
             </mat-form-field>
 
@@ -209,7 +212,7 @@
           </div>
 
           <div>
-            <b>{{ 'NAME' |  translate }} </b>
+            <b>{{ 'NAME' |  translate }}:</b>
             <div *ngIf="errors.projectNameError" class="step-error"> *{{ errors.projectNameError }}</div>
             <app-project-name-selector [processName]="true"></app-project-name-selector>
           </div>
@@ -217,9 +220,8 @@
           <div>
             <b>{{ 'JOB_TYPE' |  translate }}:</b> {{ jobTypeId }}
           </div>
-
-
           <h3>{{ 'SEARCH_OPTIONS' | translate }}:</h3>
+
           <div>
             <div *ngIf="!!subtype">
               <b>{{ 'DATASET' | translate }}:</b> {{ subtype }}

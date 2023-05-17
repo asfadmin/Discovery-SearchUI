@@ -1,6 +1,6 @@
 <!-- SCENE LIST -->
 <ng-container *ngIf="breakpoint > breakpoints.MEDIUM">
-  <mat-card class="mp0" fxFlex="38" fxFlex>
+  <mat-card class="mp0 baseline-header-card--layout">
     <mat-card-subtitle class="header">
       <app-scenes-list-header></app-scenes-list-header>
     </mat-card-subtitle>
@@ -10,7 +10,7 @@
     </div>
   </mat-card>
 
-  <mat-card class="mp0 no-box-shadow" fxFlex="21" fxFlexFill>
+  <mat-card class="mp0 no-box-shadow baseline-scene-detail--layout">
     <mat-card-subtitle class="header"> {{ 'SCENE_DETAIL' |  translate }} </mat-card-subtitle>
 
     <app-scene-detail></app-scene-detail>
@@ -18,16 +18,16 @@
 </ng-container>
 
 <ng-container *ngIf="breakpoint <= breakpoints.MEDIUM">
-  <mat-card *ngIf="view === Views.LIST" class="mp0" fxFlex="45" fxFlex>
+  <mat-card *ngIf="view === Views.LIST" class="mp0 baseline-header--medium-layout">
     <mat-card-subtitle class="header medium-header">
-      <div>
-        <div fxFlex="" class="list-button-group">
-          <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+      <div class="baseline-header--wrapper">
+        <div class="fx-empty list-button-group">
+          <div class="fx-row-center button-group-label">
             &nbsp;
           </div>
-          <div fxLayout="row">
+          <div class="fx-row">
             <div>
-              <span fxFlex="" class="mr-10">
+              <span class="fx-empty mr-10">
                 <span class="control-mat-button-toggle scene-text">
                   {{ numBaselineScenes$ | async }} {{ 'SCENE' | translate }}{{
                     (numBaselineScenes$ | async) === 1 ? "" : "s"
@@ -37,13 +37,13 @@
             </div>
           </div>
         </div>
-        <div fxFlex="" class="list-button-group">
-          <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+        <div class="fx-empty list-button-group">
+          <div class="fx-row-center button-group-label">
             <label>{{ 'ZOOM' | translate }}</label>
           </div>
-          <div fxLayout="row">
+          <div class="fx-row">
             <div>
-              <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
+              <mat-button-toggle-group name="layerType" class="fx-empty mr-10">
                 <mat-button-toggle
                   (click)="onZoomToResults()"
                   class="control-mat-button-toggle clickable noselect"
@@ -57,15 +57,15 @@
           </div>
         </div>
 
-        <div fxFlex="" class="list-button-group">
-          <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+        <div class="fx-empty list-button-group">
+          <div class="fx-row-center button-group-label">
             <label>{{ 'QUEUE' |  translate }}</label>
           </div>
-          <div fxLayout="row">
+          <div class="fx-row">
             <div>
-              <mat-button-toggle-group fxFlex="" name="layerType" class="criteria-button-group">
+              <mat-button-toggle-group name="layerType" class="fx-empty criteria-button-group">
                 <mat-button-toggle class="control-mat-button-toggle clickable noselect"
-                                   matTooltip="{{ 'ADD_ ALL_RESULTS_TO_DOWNLOADS' | translate }}"
+                                   matTooltip="{{ 'ADD_ALL_RESULTS_TO_DOWNLOADS' | translate }}"
                                    [matMenuTriggerFor]="addAllProducts">
                   <mat-icon class="list-icon">
                     add_shopping_cart
@@ -77,13 +77,13 @@
         </div>
 
         <div *ngIf="searchType !== SearchTypes.CUSTOM_PRODUCTS || hyp3able.total > 0"
-          fxFlex="" style="margin-left: 10px;" class="list-button-group">
-          <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+          style="margin-left: 10px;" class="fx-empty list-button-group">
+          <div class="fx-row-center button-group-label">
             <label>{{ 'ON_DEMAND' | translate }}</label>
           </div>
-          <div fxLayout="row" fxLayoutAlign="center">
+          <div class="fx-row-center">
             <div>
-              <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
+              <mat-button-toggle-group name="layerType" class="fx-empty mr-10">
                 <mat-button-toggle class="control-mat-button-toggle clickable noselect"
                                    [matMenuTriggerFor]="baselineAdd?.addMenu"
                                    [matMenuTriggerData]="{ hyp3able: hyp3able?.byJobType }"
@@ -100,13 +100,13 @@
           </app-on-demand-add-menu>
         </div>
 
-        <div fxFlex="" class="list-button-group">
-          <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
+        <div class="fx-empty list-button-group">
+          <div class="fx-row-center button-group-label">
             <label>{{ 'EXPORT' |  translate }}</label>
           </div>
-          <div fxLayout="row">
+          <div class="fx-row">
             <div>
-              <mat-button-toggle-group fxFlex="" name="layerType" class="mr-10">
+              <mat-button-toggle-group name="layerType" class="fx-empty mr-10">
                 <mat-button-toggle class="control-mat-button-toggle clickable noselect"
                                    matTooltip="{{ 'DOWNLOAD_DATA_METADATA_AS' | translate }}"
                                    [matMenuTriggerFor]="ExportAll">
@@ -184,10 +184,7 @@
 
   <mat-card
     *ngIf="isOfCardView(Views.DETAIL)"
-    class="mp0 no-box-shadow"
-    fxFlex="45"
-    fxFlexFill
-  >
+    class="mp0 baseline-detail-view--layout no-box-shadow">
     <mat-card-subtitle class="header medium-header">
       <div>
         <button
@@ -213,16 +210,17 @@
 
 <mat-card
   class="mp0 no-box-shadow"
-  [fxFlex]="breakpoint <= breakpoints.MEDIUM ? 55 : 45"
-  fxFlexFill
->
+  [ngClass]="{
+    'criteria-header--layout': breakpoint <= breakpoints.MEDIUM,
+    'criteria-header--small-layout': breakpoint > breakpoints.MEDIUM
+  }">
   <mat-card-subtitle
     [class.medium-header]="breakpoint <= breakpoints.MEDIUM"
     class="header"
   >
     <div class="baseline-header-button-group">
-      <mat-button-toggle-group fxFlex="" name="baselineCriteria"
-                               class="criteria-button-group baseline-criteria-button-toggle-group">
+      <mat-button-toggle-group name="baselineCriteria"
+                               class="fx-empty criteria-button-group baseline-criteria-button-toggle-group">
         <mat-button-toggle class="control-mat-button-toggle baseline-criteria-button-toggle"
                            (click)="onToggleFiltersMenu()"
                            >

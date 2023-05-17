@@ -1,6 +1,4 @@
-<div fxLayout="row wrap"
-     fxFlexFill
-     *ngIf="breakpoint$ | async as breakpoint"
+<div *ngIf="breakpoint$ | async as breakpoint"
      class="info-bar">
 
   <div class="first-info">
@@ -32,7 +30,7 @@
       <b>{{ 'FILE_TYPES' | translate }}:</b> {{ productTypes }}
     </span>
     <span *ngIf="beamModes.length">
-      <b>{{'BEAM MODES'| translate }}:</b> {{beamModes}}
+      <b>{{'BEAM MODES'| translate | titlecase}}:</b> {{beamModes}}
     </span>
     <span *ngIf="polarizations.length">
       <b>{{'POLARIZATIONS' | translate }}:</b> {{polarizations}}
@@ -53,7 +51,7 @@
       <b>{{'PERPENDICULAR' | translate}}:</b> {{perpRange.start}} <span *ngIf="!!perpRange.end"> to {{perpRange.end}} </span>
     </span>
   </div>
-  <div fxFlex class="last-info">
+  <div class="last-info">
     <app-ci-search></app-ci-search>
   </div>
 </div>
