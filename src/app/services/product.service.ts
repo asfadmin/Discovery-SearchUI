@@ -85,6 +85,7 @@ export class ProductService {
       canInSAR: g.in,
       job: null,
       fileName: null,
+      pgeVersion: g.pge !== null ? parseFloat(g.pge) : null
     })
 
   private isNumber = n => !isNaN(n) && isFinite(n);
