@@ -58,7 +58,7 @@ export interface CMRProductMetadata {
   job: Hyp3Job | null;
 
   // versioning
-  pgeVersion: string | null;
+  pgeVersion: number | null;
 }
 
 export enum FlightDirection {
