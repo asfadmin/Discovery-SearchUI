@@ -802,5 +802,17 @@
 	"ZOOM_TO_SCENE": "Zoom to scene",
 	"DRAG_AND_DROP": "Drag and Drop",
 	"FILES_OPC": "(shp, geojson, kml, zip)",
-	"GEOSPATIAL_FILES_HERE": "Geospatial Files Here"
+	"GEOSPATIAL_FILES_HERE": "Geospatial Files Here",
+	"REMOVE_FILE": "Remove file",
+	"ADD_FILE_TO_QUEUE": "Add file to queue",
+	"REMOVE FILE FROM QUEUE": "Remove file from queue",
+	"DATE ADDED": "Date Added",
+	"LATEST": "Latest",
+	"OLDEST": "Oldest",
+	"DARK": "Dark",
+	"SYSTEM PREFERENCES": "System Preferences",
+	"LIGHT": "Light",
+	"SATELLITE": "Satellite",
+	"STREET": "Street",
+	"START DATE": "Start Date"
 }

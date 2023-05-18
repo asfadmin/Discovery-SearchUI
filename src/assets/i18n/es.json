@@ -590,7 +590,7 @@
 	"SEARCH_FILTERS": "Filtros de Búsqueda",
 	"SEARCH_FOR_A_LOCATION": "Buscar una ubicación",
 	"SEARCH_HELP": "Buscar Ayuda",
-	"SEARCH_HISTORY": "Buscar del",
+	"SEARCH_HISTORY": "Buscar Historial",
 	"SEARCH_LIST_INPUT": "Entrada de la Lista de Búsqueda",
 	"SEARCH_NAME": "Buscar Nombre",
 	"SEARCH_OPTIONS": "Opciones de Búsqueda",
@@ -802,5 +802,17 @@
 	"ZOOM_TO_SCENE": "Acercar a la escena",
 	"DRAG_AND_DROP": "Arrastre y Suelte",
 	"FILES_OPC": "(shp, geojson, kml, zip)",
-	"GEOSPATIAL_FILES_HERE": "Archivos Geoespaciales"
+	"GEOSPATIAL_FILES_HERE": "Archivos Geoespaciales",
+	"REMOVE_FILE": "Remover archivo",
+	"ADD_FILE_TO_QUEUE": "Agregar archivo a la lista",
+	"REMOVE FILE FROM QUEUE": "Eliminar archivo de la lista",
+	"DATE ADDED": "Fecha Añadida",
+	"LATEST": "Último",
+	"OLDEST": "Más antiguo",
+	"DARK": "Oscuro",
+	"SYSTEM PREFERENCES": "Preferencias del Sistema",
+	"LIGHT": "Claro",
+	"SATELLITE": "Satélite",
+	"STREET": "Calle",
+	"START DATE": "Fecha de Inicio"
 }
