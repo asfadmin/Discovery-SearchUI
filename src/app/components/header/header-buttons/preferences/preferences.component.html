@@ -32,10 +32,10 @@
           [(ngModel)]="defaultMapLayer"
           (selectionChange)="onChangeDefaultLayerType($event.value)" name="amount">
           <mat-option [value]="mapLayerTypes.SATELLITE">
-            {{ mapLayerTypes.SATELLITE }}
+            {{ mapLayerTypes.SATELLITE | uppercase | translate }}
           </mat-option>
           <mat-option [value]="mapLayerTypes.STREET ">
-            {{ mapLayerTypes.STREET  }}
+            {{ mapLayerTypes.STREET |  uppercase | translate }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -87,7 +87,7 @@
                 (selectionChange)="onChangeDefaultTheme($event.value)"
                 name="preset">
                 <mat-option [value]="theme" *ngFor="let theme of themeOptions">
-                  {{ theme | titlecase}}
+                  {{ theme | uppercase | translate }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
