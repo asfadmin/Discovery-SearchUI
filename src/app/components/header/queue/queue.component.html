@@ -31,7 +31,6 @@
   <div class="dl-close-x" (click)="onCloseDownloadQueue()">
     <mat-icon>close</mat-icon>
   </div>
-
 </div>
 
 <div *ngIf="showDemWarning" class="dem-warning">
@@ -42,6 +41,7 @@
     {{ 'MORE' | translate }}...
   </a>
 </div>
+
 <div *ngIf="showRestrictedDatasetWarning" class="dem-warning">
   {{ 'PRODUCTS_IN_YOUR_QUEUE_MAY_REQUIRE_A_RESTRICTED_DATASET_AGREEMENT' |  translate }}
   <a class="more-link"
@@ -50,6 +50,7 @@
     {{ 'MORE' | translate }}...
   </a>
 </div>
+
 <mat-dialog-content class="dl-mat-dialog-content"
   [class.dl-mat-dialog-content-warn]="showDemWarning"
   [class.dl-mat-dialog-content-warn-mobile]="showDemWarning && breakpoint === breakpoints.MOBILE">

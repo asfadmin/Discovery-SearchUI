@@ -153,6 +153,10 @@
     <b>{{ 'MATCHING_FRAMES' | translate }} </b> • {{ scene.metadata.stackSize }}
   </li>
 
+  <li *ngIf="hasValue(scene.metadata.pgeVersion)" class="detail-item-margin">
+    <b> {{ 'PGE_VERSION' | translate }} </b> • {{ scene.metadata.pgeVersion }}
+  </li>
+
   <li *ngIf="dataset.source as source" class="detail-item-margin">
     <a *ngIf="source.url" [href]="source.url" target="_blank"> {{'DATA_COURTESY_OF' | translate}} {{ dataset.source.name }}</a>
     <span *ngIf="!source.url" class="faint-text"> {{'DATA_COURTESY_OF' | translate}} {{ dataset.source.name }}</span>
