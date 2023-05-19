@@ -82,7 +82,7 @@
         <app-copy-to-clipboard
           *ngIf="!product.isUnzippedFile && !product.metadata.job && product.groupId !== 'SARViews'"
           style="margin-right: 15px;"
-          prompt="Copy File ID"
+          prompt="{{ 'COPY_FILE_ID' | translate}}"
           [value]="product.id"
         >
         </app-copy-to-clipboard>
@@ -95,7 +95,7 @@
           [useNewDownload]="true">
         </app-download-file-button>
 
-        <button (click)="onRemoveProduct(product)" matTooltip="Remove file" mat-icon-button>
+        <button (click)="onRemoveProduct(product)" matTooltip="{{ 'REMOVE_FILE' | translate }}" mat-icon-button>
           <mat-icon>close</mat-icon>
         </button>
       </mat-list-item>
