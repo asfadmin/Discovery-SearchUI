@@ -21,8 +21,8 @@
                 (valueChange)="onSetOptionValue(option.apiName, $event)"
                 [value]="optionValues[option.apiName]"
                 [options]="option.options"
-                [optionName]="option.name"
-                [optionInfo]="option.info"
+                [optionName]="option.name |uppercase | translate"
+                [optionInfo]="option.info | translate"
                 class="margin-right">
               </app-dropdown-option>
             </div>
@@ -40,7 +40,7 @@
                 (valueChange)="onSetOptionValue(option.apiName, $event)"
                 [value]="optionValues[option.apiName]"
                 [optionName]="option.name"
-                [optionInfo]="option.info"
+                [optionInfo]="option.info | translate"
                 class="margin-right">
               </app-checkbox-option>
             </div>
@@ -55,13 +55,13 @@
                 (valueChange)="onSetOptionValue(option.apiName, $event)"
                 [value]="optionValues[option.apiName]"
                 [optionName]="option.name"
-                [optionInfo]="option.info">
+                [optionInfo]="option.info | translate ">
               </app-checkbox-option>
               <app-subset-option
                 *ngIf="option.type === 'SUBSET'"
                 (setSubset)="onSetSubset(option.optionSubset)"
                 [optionName]="option.name"
-                [optionInfo]="option.info"
+                [optionInfo]="option.info | uppercase | translate "
                 class="margin-right">
               </app-subset-option>
             </div>

@@ -68,7 +68,7 @@
 
                 <div *ngIf="datasetForProduct.match(product) as dataset" style="margin-bottom: 12px;">
                   <a [href]="dataset.infoUrl" target="_blank" matTooltip="{{ 'DATASET' | translate }}" class="faint-text">
-                    {{ dataset.name }}
+                    {{ dataset.name | translate }}
                   </a> •
                   <span matTooltip="Frequency">{{ dataset.frequency }}</span>
                 </div>

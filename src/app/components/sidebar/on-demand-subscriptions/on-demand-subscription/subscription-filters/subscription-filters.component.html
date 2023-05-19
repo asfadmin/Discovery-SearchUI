@@ -20,7 +20,7 @@
       <b>Search Area:</b> {{ showSearchAreaType(filters.intersectsWith) }}
       <app-copy-to-clipboard
       [value]="filters.intersectsWith"
-      [prompt]="'Copy Search Area'"
+      [prompt]="'COPY_SEARCH_AREA' | translate "
       [toast]="false"
       style="margin: 0 3px;"
       class="clipboard-icon">
