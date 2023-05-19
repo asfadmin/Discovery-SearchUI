@@ -4,7 +4,8 @@ import { Hyp3JobType, JobOptionType } from './hyp3-job-type.model';
 export const RtcGammaJobType: Hyp3JobType = {
   id: 'RTC_GAMMA',
   name: 'RTC GAMMA',
-  infoUrl: 'https://hyp3-docs.asf.alaska.edu/guides/rtc_product_guide/', description: `
+  infoUrl: 'https://hyp3-docs.asf.alaska.edu/guides/rtc_product_guide/',
+  description: `
     Radiometric Terrain Correction (RTC) removes geometric and radiometric
     distortions in SAR datasets and creates analysis-ready data suitable for use
     in GIS applications.

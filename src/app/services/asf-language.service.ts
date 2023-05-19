@@ -2,13 +2,13 @@ import '@formatjs/intl-displaynames/polyfill'
 import '@formatjs/intl-displaynames/locale-data/en'
 import '@formatjs/intl-displaynames/locale-data/es'
 
-import { Injectable } from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 
 import { TranslateService } from "@ngx-translate/core";
 import { CookieService } from "ngx-cookie-service";
 // import * as moment from 'moment/min/moment-with-locales'
 import * as moment from 'moment';
-
+import {DateAdapter, MAT_DATE_LOCALE} from "@angular/material/core";
 const defaultLanguage = 'en';
 
 @Injectable({
@@ -38,7 +38,9 @@ export class AsfLanguageService {
 
   constructor(
     public translate: TranslateService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private _adapter: DateAdapter<any>,
+    @Inject(MAT_DATE_LOCALE) private _locale: string,
   ) {
     this.browserLang = this.translate.getBrowserLang();
   }
@@ -63,7 +65,9 @@ export class AsfLanguageService {
   public setCurrent(language: string): void {
     this.cookieService.set(this.languageCookie, language, this.cookieOptions);
     moment.locale(language);
-    this.translate.use(language)
+    this.translate.use(language);
+    this._locale = language;
+    this._adapter.setLocale(this._locale);
   }
 
   public setProfileLanguage(language: string): void {
