@@ -20,6 +20,22 @@
 				<name>main</name>
 				<children>
 					<concept_node>
+						<name>30 METERS</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>A_LIST_OF_SCENE_NAMES_AND_ACQUISITION_TIMES_THAT_WERE_RETURNED_FROM_A_SEARCH_ARE_DISPLAYED_IN_THE</name>
 						<description/>
 						<comment>Testing Yoreley
@@ -566,6 +582,22 @@
 					</concept_node>
 					<concept_node>
 						<name>AMOUNT</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>AMPLITUDE</name>
 						<description/>
 						<comment/>
 						<default_text/>
@@ -1909,6 +1941,22 @@
 						</translations>
 					</concept_node>
 					<concept_node>
+						<name>COPIED_EVENT_ID</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>COPY</name>
 						<description/>
 						<comment/>
@@ -1942,6 +1990,22 @@
 					</concept_node>
 					<concept_node>
 						<name>COPY_FILE_I_DS_WILL_COPY_THE_FILE_NAMES_OF_ALL_FILES_IN_THE_QUEUE_FOR_USE_ELSEWHERE</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>COPY_FILE_ID</name>
 						<description/>
 						<comment/>
 						<default_text/>
@@ -2005,6 +2069,22 @@
 						</translations>
 					</concept_node>
 					<concept_node>
+						<name>COPY_NAME</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>COPY_REFERENCE_SCENE_NAMES_TO_CLIPBOARD</name>
 						<description/>
 						<comment/>
@@ -2021,7 +2101,39 @@
 						</translations>
 					</concept_node>
 					<concept_node>
+						<name>COPY_SCENE_NAME</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>true</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>COPY_SCENE_NAMES</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>COPY_SEARCH_AREA</name>
 						<description/>
 						<comment/>
 						<default_text/>
@@ -2501,6 +2613,22 @@
 						</translations>
 					</concept_node>
 					<concept_node>
+						<name>DECIBEL</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>DEFAULT_LANGUAGE</name>
 						<description/>
 						<comment/>
@@ -2773,6 +2901,22 @@
 						</translations>
 					</concept_node>
 					<concept_node>
+						<name>DESCRIPTION_RADIOMETRIC_TERRAIN_CORRECTION</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>true</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>DETAIL</name>
 						<description/>
 						<comment/>
@@ -2982,6 +3126,22 @@
 					</concept_node>
 					<concept_node>
 						<name>DOWNLOAD_FILE</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>DOWNLOAD_PAIR_CSV</name>
 						<description/>
 						<comment/>
 						<default_text/>
@@ -4485,6 +4645,22 @@
 						</translations>
 					</concept_node>
 					<concept_node>
+						<name>GAMMA0</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>GEO_SEARCH</name>
 						<description/>
 						<comment/>
@@ -5297,6 +5473,86 @@
 							<translation>
 								<language>es-ES</language>
 								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>INFO_BACKSCATTER_COEFFICIENT</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>INFO_NAME_OF_THE_DEM</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>INFO_PRODUCT_PIXEL</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>true</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>INFO_PRODUCT_PIXEL </name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>true</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>INFO_SCALE_OF_OUTPUT_IMAGE</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>true</approved>
 							</translation>
 						</translations>
 					</concept_node>
@@ -7877,6 +8133,22 @@
 						</translations>
 					</concept_node>
 					<concept_node>
+						<name>PIXEL SPACING</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>PLACE</name>
 						<description/>
 						<comment/>
@@ -8006,6 +8278,22 @@
 					</concept_node>
 					<concept_node>
 						<name>POLYGON_DRAW</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>POWER</name>
 						<description/>
 						<comment/>
 						<default_text/>
@@ -8485,6 +8773,22 @@
 						</translations>
 					</concept_node>
 					<concept_node>
+						<name>RADIOMETRY</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>RAW</name>
 						<description/>
 						<comment/>
@@ -8645,7 +8949,7 @@
 						</translations>
 					</concept_node>
 					<concept_node>
-						<name>REMOVE FILE FROM QUEUE</name>
+						<name>REMOVE_CUSTOM_PAIR</name>
 						<description/>
 						<comment/>
 						<default_text/>
@@ -8656,7 +8960,7 @@
 							</translation>
 							<translation>
 								<language>es-ES</language>
-								<approved>true</approved>
+								<approved>false</approved>
 							</translation>
 						</translations>
 					</concept_node>
@@ -8689,6 +8993,22 @@
 							<translation>
 								<language>es-ES</language>
 								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>REMOVE_FILE_FROM_QUEUE</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>true</approved>
 							</translation>
 						</translations>
 					</concept_node>
@@ -9318,6 +9638,22 @@
 					</concept_node>
 					<concept_node>
 						<name>SBAS_SEARCHES_EVENT_SEARCHES_AND_MORE</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>SCALE</name>
 						<description/>
 						<comment/>
 						<default_text/>
@@ -10421,6 +10757,22 @@
 						</translations>
 					</concept_node>
 					<concept_node>
+						<name>SIGMA0</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>SIGN_IN</name>
 						<description/>
 						<comment/>
@@ -10757,6 +11109,22 @@
 						</translations>
 					</concept_node>
 					<concept_node>
+						<name>START_ADDING_CUSTOM_PAIR</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>START_DATE</name>
 						<description/>
 						<comment/>
@@ -10849,6 +11217,22 @@
 							<translation>
 								<language>es-ES</language>
 								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>STOP_ADDING_CUSTOM_PAIR</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>true</approved>
 							</translation>
 						</translations>
 					</concept_node>

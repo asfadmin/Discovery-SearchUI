@@ -4,11 +4,10 @@ import { Hyp3JobType, JobOptionType } from './hyp3-job-type.model';
 export const RtcGammaJobType: Hyp3JobType = {
   id: 'RTC_GAMMA',
   name: 'RTC GAMMA',
-  infoUrl: 'https://hyp3-docs.asf.alaska.edu/guides/rtc_product_guide/', description: `
-    Radiometric Terrain Correction (RTC) removes geometric and radiometric
-    distortions in SAR datasets and creates analysis-ready data suitable for use
-    in GIS applications.
-  `,
+  infoUrl: 'https://hyp3-docs.asf.alaska.edu/guides/rtc_product_guide/',
+  description:
+    'DESCRIPTION_RADIOMETRIC_TERRAIN_CORRECTION'
+  ,
   numProducts: 1,
   productTypes: [{
     dataset: sentinel_1,
@@ -32,10 +31,9 @@ export const RtcGammaJobType: Hyp3JobType = {
       apiValue: 'sigma0'
     }],
     default: 'gamma0',
-    info: `
-      Backscatter coefficient normalization, either by ground area
-      (sigma0) or illuminated area projected into the look direction (gamma0).
-    `
+    info:
+      'INFO_BACKSCATTER_COEFFICIENT'
+
   }, {
     name: 'Scale',
     apiName: 'scale',
@@ -51,7 +49,7 @@ export const RtcGammaJobType: Hyp3JobType = {
       apiValue: 'amplitude'
     }],
     default: 'power',
-    info: `Scale of output image; power, decibel or amplitude.`
+    info: 'INFO_SCALE_OF_OUTPUT_IMAGE'
   },
   {
     name: 'Pixel Spacing',
@@ -68,7 +66,7 @@ export const RtcGammaJobType: Hyp3JobType = {
       apiValue: 10
     }],
     default: 30,
-    info: `Product pixel spacing in meters.`
+    info: 'INFO_PRODUCT_PIXEL'
   }, {
     name: 'DEM Name',
     apiName: 'dem_name',
@@ -81,11 +79,8 @@ export const RtcGammaJobType: Hyp3JobType = {
       apiValue: 'legacy'
     }],
     default: 'copernicus',
-    info: `
-      Name of the DEM to use for processing. copernicus will use the Copernicus
-      GLO-30 Public DEM, while legacy will use the DEM with the best coverage
-      from ASF's legacy SRTM/NED datasets.
-    `
+    info:
+      'INFO_NAME_OF_THE_DEM'
   }, {
     name: 'DEM Matching',
     apiName: 'dem_matching',
