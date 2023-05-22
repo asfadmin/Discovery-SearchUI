@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild, AfterViewInit, Inject} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -31,11 +31,21 @@ import * as filtersStore from '@store/filters';
 import * as services from '@services';
 import * as models from './models';
 import { SearchType } from './models';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter} from "@angular/material/core";
+import {MAT_MOMENT_DATE_FORMATS} from "@angular/material-moment-adapter";
 
 @Component({
   selector   : 'app-root',
   templateUrl: './app.component.html',
   styleUrls  : ['./app.component.scss'],
+  providers: [
+    {
+      provide: DateAdapter,
+      useClass: NativeDateAdapter
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+    {provide: MAT_DATE_LOCALE, useValue: 'en'},
+  ]
 })
 export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('sidenav', {static: true}) sidenav: MatSidenav;
@@ -83,6 +93,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private themeService: services.ThemingService,
     public translate: TranslateService,
     public language: AsfLanguageService,
+    public _adapter: DateAdapter<any>,
+    @Inject(MAT_DATE_LOCALE) public _locale: string,
+
 
   ) {}
 
