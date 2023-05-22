@@ -244,7 +244,22 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   }
   async classicDownload(url) {
 
-    window.open(url)
+    const link = document.createElement('a');
+    link.style.display = 'none';
+    link.href = url;
+    link.setAttribute('download', '');
+    // link.type = 'blob';
+    link.target = '_blank';
+
+    // It needs to be added to the DOM so it can be clicked
+    document.body.appendChild(link);
+    link.click();
+
+    // To make this work we need to wait
+    // a little while before removing it.
+    await timer(1000);
+    URL.revokeObjectURL(link.href);
+    link.parentNode.removeChild(link);
 
     this.dFile = {
       progress: 100,
@@ -257,3 +272,5 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
 
   }
 }
+
+function timer(ms) { return new Promise(res => setTimeout(res, ms)); }
