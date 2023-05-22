@@ -31,10 +31,6 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   public hyp3BackendUrl: string;
   public defaultLanguage: string;
 
-  public defaultGeoSearchFiltersID;
-  public defaultBaselineSearchFiltersID;
-  public defaultSBASSearchFiltersID;
-
   public maxResults = [250, 1000, 5000];
   public mapLayerTypes = MapLayerTypes;
 
@@ -205,6 +201,10 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     });
 
     this.store$.dispatch(action);
+  }
+
+  onCloseDownloadQueue() {
+    this.dialogRef.close();
   }
 
   ngOnDestroy() {
