@@ -32,6 +32,15 @@ export class UrlStateService {
   private params = {};
   private shouldDoSearch = false;
 
+
+  public isDefaultSearch$ = this.activatedRoute.queryParams.pipe( map(params => {
+    const DefaultnonGEO = 'searchType' in params && Object.keys(params).length <= 1;
+    const defaultGEO = Object.keys(params).length === 0;
+
+    return defaultGEO || DefaultnonGEO;
+    })
+  );
+
   constructor(
     private store$: Store<AppState>,
     private activatedRoute: ActivatedRoute,
@@ -141,7 +150,9 @@ export class UrlStateService {
 
   public setDefaults(profile: models.UserProfile): void {
     if (this.loadLocations['dataset'] !== models.LoadTypes.URL) {
-      this.store$.dispatch(new filterStore.SetSelectedDataset(profile.defaultDataset));
+      if (this.loadLocations['productTypes'] !== models.LoadTypes.URL) {
+        this.store$.dispatch(new filterStore.SetSelectedDataset(profile.defaultDataset));
+      }
     }
 
     if (this.loadLocations['maxResults'] !== models.LoadTypes.URL) {
@@ -167,7 +178,7 @@ export class UrlStateService {
 
     this.store$.dispatch(action);
 
-    this.store$.dispatch(new filterStore.SetDefaultFilters(profile.defaultFilterPresets));
+    // this.store$.dispatch(new filterStore.SetDefaultFilters(profile.defaultFilterPresets));
   }
 
   private datasetParam(): models.UrlParameter[] {
