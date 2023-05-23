@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild, AfterViewInit, Inject} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -7,7 +7,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 import { QueueComponent } from '@components/header/queue';
 import { ProcessingQueueComponent } from '@components/header/processing-queue';
-import { AsfLanguageService } from "@services/asf-language.service";
 
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
@@ -31,11 +30,21 @@ import * as filtersStore from '@store/filters';
 import * as services from '@services';
 import * as models from './models';
 import { SearchType } from './models';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter} from "@angular/material/core";
+import {MAT_MOMENT_DATE_FORMATS} from "@angular/material-moment-adapter";
 
 @Component({
   selector   : 'app-root',
   templateUrl: './app.component.html',
   styleUrls  : ['./app.component.scss'],
+  providers: [
+    {
+      provide: DateAdapter,
+      useClass: NativeDateAdapter
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+    {provide: MAT_DATE_LOCALE, useValue: 'en'},
+  ]
 })
 export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('sidenav', {static: true}) sidenav: MatSidenav;
@@ -54,6 +63,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   );
   public numberQueuedProducts: number;
   public queuedCustomProducts: models.QueuedHyp3Job[];
+  public currentLanguage: string;
 
   public interactionTypes = models.MapInteractionModeType;
   public searchType: models.SearchType;
@@ -82,7 +92,10 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private mapService: services.MapService,
     private themeService: services.ThemingService,
     public translate: TranslateService,
-    public language: AsfLanguageService,
+    public language: services.AsfLanguageService,
+    public _adapter: DateAdapter<any>,
+    @Inject(MAT_DATE_LOCALE) public _locale: string,
+
 
   ) {}
 
@@ -109,6 +122,12 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subs.add(
       this.store$.select(queueStore.getQueuedJobs).subscribe(
         jobs => this.queuedCustomProducts = jobs
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(uiStore.getCurrentLanguage).subscribe(
+        language => this.currentLanguage = language
       )
     );
 
