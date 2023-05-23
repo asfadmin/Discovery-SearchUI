@@ -1,46 +1,20 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { tap, delay, map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { SubSink } from 'subsink';
 import { UntypedFormGroup, UntypedFormControl  } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import {DateAdapter, MAT_DATE_FORMATS} from '@angular/material/core';
+import { DateAdapter } from '@angular/material/core';
 import { NotificationService } from '@services';
-import { AsfLanguageService } from "@services/asf-language.service";
-import {MAT_MOMENT_DATE_FORMATS} from "@angular/material-moment-adapter";
-
-// import {
-//   MAT_MOMENT_DATE_FORMATS,
-//   MomentDateAdapter,
-//   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
-// } from '@angular/material-moment-adapter';
-// import {MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
-// import { MAT_DATE_LOCALE } from '@angular/material/core';
+import {Store} from "@ngrx/store";
+import {AppState} from "@store";
+import * as uiStore from '@store/ui';
 
 @Component({
   selector: 'app-date-range',
   templateUrl: './date-range.component.html',
   styleUrls: ['./date-range.component.scss'],
-   providers: [
-  //   {
-  //     provide: DateAdapter,
-  //     useClass: NativeDateAdapter
-  //   },
-    // The locale would typically be provided on the root module of your application. We do it at
-    // the component level here, due to limitations of our example generation script.
-    // {provide: MAT_DATE_LOCALE, useValue: 'en'},
-
-    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
-    // `MatMomentDateModule` in your applications root module. We provide it at the component level
-    // here, due to limitations of our example generation script.
-    // {
-    //   provide: DateAdapter,
-    //   useClass: MomentDateAdapter,
-    //   deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
-    // },
-    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
-   ]
 })
 export class DateRangeComponent implements OnInit, OnDestroy {
   public dateRangeForm = new UntypedFormGroup({
@@ -64,17 +38,24 @@ export class DateRangeComponent implements OnInit, OnDestroy {
   public isEndError = false;
   private subs = new SubSink();
 
+
   constructor(
     private notificationService: NotificationService,
     // private _adapter: DateAdapter<any>,
-    public language: AsfLanguageService,
     private dateAdapter: DateAdapter<any>,
-    // @Inject(MAT_DATE_LOCALE) private _locale: string,
-  ) {
-    // const locale = moment.locale();
-  }
+    private store$: Store<AppState>,
+  ) {}
 
   ngOnInit(): void {
+
+    this.subs.add(
+      this.store$.select(uiStore.getCurrentLanguage).subscribe(
+        currentLanguage => {
+          this.setCalLang(currentLanguage);
+        }
+      )
+    );
+
     this.dateAdapter.setLocale(moment.locale());
 
     if (!!this.startDate && this.startDate !== new Date(undefined)) {
@@ -123,7 +104,6 @@ export class DateRangeComponent implements OnInit, OnDestroy {
 
       return;
     }
-
     const date = this.endDateFormat(new Date(e.value));
     this.newEnd.emit(date);
   }
@@ -215,14 +195,20 @@ export class DateRangeComponent implements OnInit, OnDestroy {
 
   getDateFormatString(): string {
     const locale = moment.locale();
-    // console.log('moment.locale():', locale);
-    // this.dateAdapter.setLocale(locale);
     if (locale === 'en') {
       return 'MM/DD/YYYY';
     } else if (locale === 'es') {
       return 'DD/MM/YYYY';
     }
     return '';
+  }
+
+  setCalLang(language) {
+    if (!language) {
+      this.dateAdapter.setLocale('en');
+    } else {
+      this.dateAdapter.setLocale(language);
+    }
   }
 
   ngOnDestroy() {

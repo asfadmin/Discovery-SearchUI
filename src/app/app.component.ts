@@ -7,7 +7,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 import { QueueComponent } from '@components/header/queue';
 import { ProcessingQueueComponent } from '@components/header/processing-queue';
-import { AsfLanguageService } from "@services/asf-language.service";
 
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
@@ -64,6 +63,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   );
   public numberQueuedProducts: number;
   public queuedCustomProducts: models.QueuedHyp3Job[];
+  public currentLanguage: string;
 
   public interactionTypes = models.MapInteractionModeType;
   public searchType: models.SearchType;
@@ -92,7 +92,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private mapService: services.MapService,
     private themeService: services.ThemingService,
     public translate: TranslateService,
-    public language: AsfLanguageService,
+    public language: services.AsfLanguageService,
     public _adapter: DateAdapter<any>,
     @Inject(MAT_DATE_LOCALE) public _locale: string,
 
@@ -122,6 +122,12 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subs.add(
       this.store$.select(queueStore.getQueuedJobs).subscribe(
         jobs => this.queuedCustomProducts = jobs
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(uiStore.getCurrentLanguage).subscribe(
+        language => this.currentLanguage = language
       )
     );
 

@@ -5,10 +5,12 @@ import '@formatjs/intl-displaynames/locale-data/es'
 
 import { TranslateService } from "@ngx-translate/core";
 import { CookieService } from "ngx-cookie-service";
-// import * as moment from 'moment/min/moment-with-locales'
 import * as moment from 'moment';
 import { Injectable } from "@angular/core";
 import { DateAdapter } from "@angular/material/core";
+import { AppState } from '@store';
+import * as uiStore from '@store/ui';
+import { Store } from "@ngrx/store";
 const defaultLanguage = 'en';
 
 @Injectable({
@@ -35,13 +37,23 @@ export class AsfLanguageService {
     'pt' : 'Português',
     'zh' : '中文 (Chinese)',
   }
+  // private currentLanguage: string;
 
   constructor(
     public translate: TranslateService,
     private cookieService: CookieService,
     private dateAdapter: DateAdapter<Date>,
+    private store$: Store<AppState>,
   ) {
     this.browserLang = this.translate.getBrowserLang();
+  }
+
+  public setProfileLanguage(language: string): void {
+    this.defaultProfileLanguage = language;
+  }
+
+  private setCurrentLanguage(language: string): void {
+    this.store$.dispatch(new uiStore.SetCurrentLanguage(language));
   }
 
   public getName( langName? : string ) {
@@ -65,11 +77,8 @@ export class AsfLanguageService {
     this.cookieService.set(this.languageCookie, language, this.cookieOptions);
     moment.locale(language);
     this.translate.use(language);
-    this.dateAdapter.setLocale(moment.locale());
-  }
-
-  public setProfileLanguage(language: string): void {
-    this.defaultProfileLanguage = language;
+    this.dateAdapter.setLocale(language);
+    this.setCurrentLanguage(language);
   }
 
   public initialize(): void {
