@@ -156,19 +156,19 @@
     <div class="sbas-button-group-filler sbas-button-group"></div>
     <div class='sbas-button-group'>
       <div class="button-group-label">
-        <label>Filters</label>
+        <label>{{ 'FILTERS' | translate }}</label>
       </div>
       <div class="toggle-group-wrapper--layout">
         <mat-button-toggle class="control-mat-button-toggle sbas-criteria-button-toggle"
           (click)="onToggleFiltersMenu()"
         >
-          SBAS Filters<mat-icon class="more-horiz">more_horiz</mat-icon>
+          {{ 'SBAS_FILTERS' | translate }}<mat-icon class="more-horiz">more_horiz</mat-icon>
         </mat-button-toggle>
       </div>
     </div>
     <div class="sbas-button-group gap-detected-area" *ngIf="this.isDisconnected" style="display: flex; place-items: center">
         <mat-icon class="warn-icon" fontSet="material-icons-outlined">error_outline</mat-icon>
-        Gaps Detected
+        {{ 'GAPS_DETECTED' | translate }}
       </div>
   </mat-card-subtitle>
 
