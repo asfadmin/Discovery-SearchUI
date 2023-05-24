@@ -38,7 +38,6 @@ export class DateRangeComponent implements OnInit, OnDestroy {
   public isEndError = false;
   private subs = new SubSink();
 
-
   constructor(
     private notificationService: NotificationService,
     // private _adapter: DateAdapter<any>,

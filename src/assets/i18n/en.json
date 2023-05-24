@@ -132,7 +132,6 @@
 	"COPYRIGHT": "Copyright",
 	"CORPORATE_FARE_ASF": "corporate_fareASF",
 	"CREATE_SUBSCRIPTION": "Create Subscription...",
-	"CRITICAL BASELINE": "",
 	"CRITICAL_BASELINE": "Critical Baseline",
 	"CSV": "csv",
 	"CURRENT_SARVIEWS_PRODUCT_FILES_PRODUCT_SIZE_TO_STRING": "currentSarviewsProduct.files.product_size.toString()",
@@ -863,5 +862,6 @@
 	"SARVIEWS_EVENTS": "Sarviews Events",
 	"SEA_ICE_MEASURES": "Sea Ice MEaSUREs",
 	"TO": "to",
-	"WETLANDS_MEASURES": "Wetlands MEaSUREs"
+	"WETLANDS_MEASURES": "Wetlands MEaSUREs",
+	"CRITICAL_BASELINE_ABBR": "Critical Baseline"
 }
