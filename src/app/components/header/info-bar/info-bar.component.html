@@ -45,10 +45,10 @@
       <b>{{'CAMPAIGN' | translate }}:</b> {{ mission }}
     </span>
     <span *ngIf="tempRange.start || tempRange.end">
-      <b>{{'TEMPORAL' | translate }}:</b> {{tempRange.start}} <span *ngIf="!!tempRange.end"> to {{tempRange.end}}</span>
+      <b>{{'TEMPORAL' | translate }}:</b> {{tempRange.start}} <span *ngIf="!!tempRange.end"> {{ 'TO' | translate }} {{tempRange.end}}</span>
     </span>
     <span *ngIf="perpRange.start || perpRange.end">
-      <b>{{'PERPENDICULAR' | translate}}:</b> {{perpRange.start}} <span *ngIf="!!perpRange.end"> to {{perpRange.end}} </span>
+      <b>{{'PERPENDICULAR' | translate}}:</b> {{perpRange.start}} <span *ngIf="!!perpRange.end"> {{ 'TO' | translate }} {{perpRange.end}} </span>
     </span>
   </div>
   <div class="last-info">
