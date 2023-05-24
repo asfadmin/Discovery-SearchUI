@@ -16,14 +16,16 @@
   </div>
 
   <div class="doc-feedback-div">
-    <div class="docs-div header-link">
+    <div class="docs-div header-link"
+         [class.header-link-mobile]="breakpoint === breakpoints.MOBILE">
       <app-docs-modal class="text-link"
                       text="Docs"
                       url="https://docs.asf.alaska.edu/vertex/manual/#downloads-queue">
       </app-docs-modal>
     </div>
 
-    <div class="feedback-div header-link">
+    <div class="feedback-div header-link"
+         [class.header-link-mobile]="breakpoint === breakpoints.MOBILE">
       <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <mat-icon>comment</mat-icon> {{ 'FEEDBACK' | translate }}</a>
     </div>
   </div>
