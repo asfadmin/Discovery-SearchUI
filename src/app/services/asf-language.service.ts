@@ -37,7 +37,6 @@ export class AsfLanguageService {
     'pt' : 'Português',
     'zh' : '中文 (Chinese)',
   }
-  // private currentLanguage: string;
 
   constructor(
     public translate: TranslateService,
