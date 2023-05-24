@@ -124,7 +124,7 @@
       <div class="jobs-detail">
         <div *ngIf="selectedJobTypeId" style="margin-right: 10px;">
           <p>
-            {{ hyp3JobTypes[selectedJobTypeId].description }}
+            {{ hyp3JobTypes[selectedJobTypeId].description | translate }}
             <a target="_blank" [href]="hyp3JobTypes[selectedJobTypeId].infoUrl">[MORE]</a>
           </p>
         </div>
@@ -216,7 +216,7 @@
 
         <div *ngFor="let hyp3Job of jobTypesWithQueued">
           <button (click)="onClearSingleJobQueue(hyp3Job.jobType)" mat-button>
-            Clear {{ hyp3Job.jobType.name }} ({{ hyp3Job.jobs.length }})
+            {{ 'CLEAR' | translate }} {{ hyp3Job.jobType.name }} ({{ hyp3Job.jobs.length }})
           </button>
         </div>
       </mat-menu>
