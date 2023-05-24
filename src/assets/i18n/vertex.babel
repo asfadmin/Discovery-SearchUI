@@ -2341,7 +2341,7 @@
 						</translations>
 					</concept_node>
 					<concept_node>
-						<name>CRITICAL BASELINE</name>
+						<name>CRITICAL_BASELINE</name>
 						<description/>
 						<comment/>
 						<default_text/>
@@ -2357,7 +2357,7 @@
 						</translations>
 					</concept_node>
 					<concept_node>
-						<name>CRITICAL_BASELINE</name>
+						<name>CRITICAL_BASELINE_ABBR</name>
 						<description/>
 						<comment/>
 						<default_text/>

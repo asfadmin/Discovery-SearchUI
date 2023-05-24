@@ -15,6 +15,8 @@ import { SubSink } from 'subsink';
 import { ScenesService } from '@services';
 import { criticalBaselineFor, CMRProduct } from '@models';
 import * as d3 from 'd3';
+import * as models from "@models";
+import * as services from "@services";
 export enum ChartDatasets {
   MASTER = 0,
   SELECTED = 1,
@@ -36,6 +38,8 @@ interface Point {
 })
 export class BaselineChartComponent implements OnInit, OnDestroy {
   @ViewChild('baselineChart', { static: true }) baselineChart: ElementRef;
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoints = models.Breakpoints;
 
   private criticalBaseline: number;
   private isFirstLoad = true;
@@ -69,10 +73,11 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
     public translate: TranslateService,
     private store$: Store<AppState>,
     private scenesService: ScenesService,
+    private screenSize: services.ScreenSizeService,
+
   ) { }
 
   ngOnInit(): void {
-
     this.createSVG();
     const products$ = this.scenesService.scenes$().pipe(
       tap(products => products.map(

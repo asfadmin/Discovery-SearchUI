@@ -132,7 +132,6 @@
 	"COPYRIGHT": "Copyright",
 	"CORPORATE_FARE_ASF": "tarifa_corporativaASF",
 	"CREATE_SUBSCRIPTION": "Crear Suscripción",
-	"CRITICAL BASELINE": "",
 	"CRITICAL_BASELINE": "Línea Base Crítica",
 	"CSV": "CSV",
 	"CURRENT_SARVIEWS_PRODUCT_FILES_PRODUCT_SIZE_TO_STRING": "currentSarviewsProduct.files.product_size.toString()",
@@ -863,5 +862,6 @@
 	"SARVIEWS_EVENTS": "Eventos Sarviews",
 	"SEA_ICE_MEASURES": "Hielo Marino MEaSUREs",
 	"TO": "de",
-	"WETLANDS_MEASURES": "Humedales MEaSUREs"
+	"WETLANDS_MEASURES": "Humedales MEaSUREs",
+	"CRITICAL_BASELINE_ABBR": "Línea Crítica"
 }
