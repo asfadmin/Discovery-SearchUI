@@ -9,8 +9,25 @@
 .range-form-input {
   margin-right: 10px;
 }
-.path-selector {
-flex-wrap: wrap;
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  //justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.flex-item {
+  flex: 0 1 auto;
+}
+
+.date-item {
+  margin-right: 10px;
+}
+
+.clear-button {
+  margin-top: 7px;
+  margin-left: 10px;
 }
 
 // Hides input field up/down arrows
