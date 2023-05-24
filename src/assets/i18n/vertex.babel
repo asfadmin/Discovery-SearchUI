@@ -20,7 +20,55 @@
 				<name>main</name>
 				<children>
 					<concept_node>
+						<name>10 METERS</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>20 METERS</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>30 METERS</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>50% OVERLAP THRESHOLD</name>
 						<description/>
 						<comment/>
 						<default_text/>
@@ -742,6 +790,22 @@
 					</concept_node>
 					<concept_node>
 						<name>ANTARCTIC_MAP_VIEW</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>ANY OVERLAP THRESHOLD</name>
 						<description/>
 						<comment/>
 						<default_text/>
@@ -2805,6 +2869,22 @@
 						</translations>
 					</concept_node>
 					<concept_node>
+						<name>DEM NAME</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>DEPENDING_ON_THE_WIDTH_OF_YOUR_INTERNET_BROWSER_NONE_OR_SOME_OF_THE_FILTERS_WILL_BE</name>
 						<description/>
 						<comment/>
@@ -2886,6 +2966,22 @@
 					</concept_node>
 					<concept_node>
 						<name>DESCENDING</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>DESCRIP_GLOBAL_SEASONAL_SENTINEL_1</name>
 						<description/>
 						<comment/>
 						<default_text/>
@@ -4661,6 +4757,22 @@
 						</translations>
 					</concept_node>
 					<concept_node>
+						<name>GAPS_DETECTED</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>GEO_SEARCH</name>
 						<description/>
 						<comment/>
@@ -4902,6 +5014,54 @@
 					</concept_node>
 					<concept_node>
 						<name>GETTING_STARTED</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>GISMO</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>GLACIER_SPEED</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>GLOBAL_SEASONAL_SENTINEL_1</name>
 						<description/>
 						<comment/>
 						<default_text/>
@@ -5493,6 +5653,70 @@
 						</translations>
 					</concept_node>
 					<concept_node>
+						<name>INFO_GISMO</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>INFO_GLACIER_SPEED</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>INFO_GLOBAL_SEASONAL_SENTINEL_1</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>true</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>INFO_INTERNATIONAL_POLAR_YEAR</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>INFO_NAME_OF_THE_DEM</name>
 						<description/>
 						<comment/>
@@ -5541,6 +5765,22 @@
 						</translations>
 					</concept_node>
 					<concept_node>
+						<name>INFO_RADARSAT_1</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>INFO_SCALE_OF_OUTPUT_IMAGE</name>
 						<description/>
 						<comment/>
@@ -5553,6 +5793,54 @@
 							<translation>
 								<language>es-ES</language>
 								<approved>true</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>INFO_SEA_ICE_MEASURES</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>INFO_WETLANDS_MEASURES</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>INTERNATIONAL_POLAR_YEAR</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
 							</translation>
 						</translations>
 					</concept_node>
@@ -6885,6 +7173,22 @@
 						</translations>
 					</concept_node>
 					<concept_node>
+						<name>NO OVERLAP THRESHOLD</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>NO_BEAM_MODES_TO_SELECT</name>
 						<description/>
 						<comment/>
@@ -8117,6 +8421,22 @@
 						</translations>
 					</concept_node>
 					<concept_node>
+						<name>PGE_VERSION</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>PIN_THIS_PRODUCT_S_BROWSE_ON_THE_MAP</name>
 						<description/>
 						<comment/>
@@ -8741,6 +9061,22 @@
 						</translations>
 					</concept_node>
 					<concept_node>
+						<name>RADARSAT_1</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>RADARSAT_1_DESC</name>
 						<description/>
 						<comment/>
@@ -9333,6 +9669,22 @@
 						</translations>
 					</concept_node>
 					<concept_node>
+						<name>SARVIEWS_EVENTS</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>SATELLITE</name>
 						<description/>
 						<comment/>
@@ -9589,7 +9941,7 @@
 						</translations>
 					</concept_node>
 					<concept_node>
-						<name>SBAS_FILTERSMORE_HORIZ</name>
+						<name>SBAS_FILTERS</name>
 						<description/>
 						<comment/>
 						<default_text/>
@@ -9846,6 +10198,22 @@
 					</concept_node>
 					<concept_node>
 						<name>SCROLL_THROUGH_THE_LIST_OF_RESULTS_AND_YOU_SEE_SOME_FILES_HAVE_AN_ICON_OF_THREE_GRAY_SQUARES_NEXT</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>SEA_ICE_MEASURES</name>
 						<description/>
 						<comment/>
 						<default_text/>
@@ -11861,6 +12229,22 @@
 						</translations>
 					</concept_node>
 					<concept_node>
+						<name>TO</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>TO_A</name>
 						<description/>
 						<comment/>
@@ -12758,6 +13142,22 @@
 					</concept_node>
 					<concept_node>
 						<name>WEBSITE_LINKS</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>WETLANDS_MEASURES</name>
 						<description/>
 						<comment/>
 						<default_text/>
