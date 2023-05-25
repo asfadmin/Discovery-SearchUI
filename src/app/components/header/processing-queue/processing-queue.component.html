@@ -41,7 +41,8 @@
 
     </div>
 
-    <div class="doc-feedback-div">
+    <div class="doc-feedback-div"
+         [class.doc-feedback-div-mobile]="breakpoint === breakpoints.MOBILE">
       <div class="docs-div header-link">
         <app-docs-modal class="text-link"
                         text="Docs"
@@ -97,7 +98,8 @@
     </ng-container>
   </div>
 
-  <div class="close-x" (click)="onCloseDialog()">
+  <div class="close-x" (click)="onCloseDialog()"
+       [class.close-x-mobile]="breakpoint === breakpoints.MOBILE">
     <mat-icon>close</mat-icon>
   </div>
 </div>
