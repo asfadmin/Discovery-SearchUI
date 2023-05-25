@@ -27,6 +27,7 @@
     <li>
       <b> {{'AZIMUTH_TIME' | translate }} </b>  • {{burst.azimuthTime | shortDateTime }}
       <mat-icon
+      *ngIf="isGeoSearch"
       [matMenuTriggerFor]="addSceneDateMenu"
       [matMenuTriggerData]="{eventDate: burst.azimuthTime}"
       class="v-mid clickable">

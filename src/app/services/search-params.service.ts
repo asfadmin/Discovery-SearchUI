@@ -266,7 +266,10 @@ export class SearchParamsService {
         types => Array.from(new Set(types))
           .join(',')
       ),
-      map(beamModes => ({ beamSwath: beamModes }))
+      withLatestFrom(this.store$.select(filterStore.getSelectedDatasetId)),
+      map(([beamModes, dataset]) => 
+      dataset === models.sentinel_1_bursts.id ? 
+      ({ beamMode: beamModes }) : ({ beamSwath: beamModes }))
     );
   }
 
