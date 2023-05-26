@@ -73,6 +73,13 @@
             <div class="drop-file-area file-upload-container"
                  [class.drop-file-area-scenes]=" mode === types.SCENE "
                  [class.drop-file-area-files]=" mode != types.SCENE ">
+              <div class="dd-text">
+                <div class="dd-text-1">{{ 'DRAG_AND_DROP' | translate }}</div>
+                <div class="dd-text-2">{{ 'FILES_HERE' | translate }}</div>
+                <div *ngIf="mode === types.SCENE" class="dd-text-3">(csv, geojson, metalink, kml)</div>
+                <div *ngIf="mode != types.SCENE" class="dd-text-3">(csv, geojson)</div>
+              </div>
+
             </div>
         </div>
         </div>
