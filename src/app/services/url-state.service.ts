@@ -474,7 +474,7 @@ export class UrlStateService {
     }, {
       name: 'fullBurstIDs',
       source: this.store$.select(filterStore.getFullBurstIDs).pipe(
-        map(list => ({ fullBurstIDs: list.map(num => num.toString()).join(',') }))
+        map(list => ({ fullBurstIDs: list?.map(num => num.toString()).join(',') }))
       ),
       loader: this.loadFullBurstIDs
     }];

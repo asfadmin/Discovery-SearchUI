@@ -146,7 +146,7 @@ export class SearchParamsService {
   private burstParams$() {
       return this.store$.select(filterStore.getFullBurstIDs).pipe(
       map(fullIDs => ({
-          fullburstid: fullIDs.join(',')})
+          fullburstid: fullIDs?.join(',')})
           )
     );
   }
