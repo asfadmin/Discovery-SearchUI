@@ -864,5 +864,7 @@
 	"TO": "de",
 	"WETLANDS_MEASURES": "Humedales MEaSUREs",
 	"CRITICAL_BASELINE_ABBR": "Línea Crítica",
-	"FILES_HERE": "Archivos Aquí"
+	"FILES_HERE": "Archivos Aquí",
+	"INSAR_DESC": "El procesamiento del radar interferométrico de apertura sintética (InSAR) utiliza dos imágenes SAR recopiladas en la misma área para determinar las propiedades geométricas de la superficie. Las mediciones de fase de las dos imágenes adquiridas en diferentes momentos se diferencian para detectar y cuantificar cambios en la superficie.",
+	"AUTORIFT_DESC": "autoRIFT es un algoritmo altamente preciso y eficiente para encontrar el desplazamiento de píxeles entre dos imágenes de radar."
 }
