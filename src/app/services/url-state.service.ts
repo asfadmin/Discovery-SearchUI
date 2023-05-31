@@ -177,8 +177,6 @@ export class UrlStateService {
       new mapStore.SetSatelliteView();
 
     this.store$.dispatch(action);
-
-    // this.store$.dispatch(new filterStore.SetDefaultFilters(profile.defaultFilterPresets));
   }
 
   private datasetParam(): models.UrlParameter[] {
