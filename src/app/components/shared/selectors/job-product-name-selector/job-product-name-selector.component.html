@@ -6,7 +6,6 @@
         <textarea *ngIf="!headerView" matInput placeholder="S1A..."
         (input)="onFilterProductName($event)"
         [value]="productNameFilter"
-        [(ngModel)]="productNameFilter"
 
         [matAutocomplete]="jobNameSelector"
         [formControl]="myControl"
@@ -19,7 +18,6 @@
         <input *ngIf="headerView" matInput placeholder="S1A..."
         (input)="onFilterProductName($event)"
         [value]="productNameFilter"
-        [(ngModel)]="productNameFilter"
         [formControl]="myControl"
         [matAutocomplete]="jobNameSelector">
         <mat-icon
@@ -36,7 +34,7 @@
     [panelWidth] = "isJobFilterOptionsOpen ? 500 : 300"
     (optionSelected)="onSuggestionSelected($event)"
     #jobNameSelector="matAutocomplete">
-    <mat-option *ngFor="let fileName of filteredOptionsList"
+    <mat-option *ngFor="let fileName of filteredOptions | async"
         [value]="autoCompleteEntry(fileName)">
         <div [matTooltip] = fileName>
             <span [innerHtml]="autoSuggestionDisplay(fileName)"></span>
@@ -64,7 +62,6 @@
                 matInput placeholder="S1A..."
                 (input)="onFilterProductName($event)"
                 [value]="productNameFilter"
-                [(ngModel)]="productNameFilter"
                 [matAutocomplete]="jobNameSelector"
                 [formControl]="myControl"
                 [rows]="5"

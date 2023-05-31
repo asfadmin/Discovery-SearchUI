@@ -1,4 +1,5 @@
 export { AsfApiService } from './asf-api.service';
+export { AsfLanguageService } from './asf-language.service';
 export { MapService } from './map/map.service';
 export { DrawService } from './map/draw.service';
 export { UrlStateService } from './url-state.service';

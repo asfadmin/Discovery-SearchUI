@@ -109,13 +109,6 @@ $theme-map: null;
   }
 }
 
-// .toast-info,
-// #toast-container > .yourclass {
-//   color: $asf-primary-dark !important;
-//   background-color: $asf-warn !important;
-//   background-image: url("/assets/icons/warning_black_48dp.svg") !important;
-// }
-
 #toast-container > .pinkToast.toast-info {
   position: relative;
   overflow: hidden;
@@ -390,7 +383,7 @@ ul {
     @include themify_non_host($themes) {
       background-color: themed('primary-light');
     }
-    padding-bottom: 0px;
+    padding-bottom: 0;
     padding-top: 11px;
     padding-left: 12px;
     padding-right: 12px;
@@ -554,6 +547,7 @@ $d-height: 500px;
   min-width: 350px;
   min-height: 500px;
 }
+
 #processingQueueDialog {
   @include themify($themes) {
     background: themed('primary-light');
@@ -561,19 +555,38 @@ $d-height: 500px;
   resize: both;
   width: 80vw;
   height: 86vh;
-  min-width: 350px;
-  min-height: 500px;
+  min-width: 450px;
+  min-height: 600px;
 }
+
 #subscriptionQueueDialog {
   @include themify($themes) {
     background: themed('primary-light');
   }
+
   resize: both;
   width: 80vw;
   height: 86vh;
   min-width: 350px;
   min-height: 500px;
 }
+
+#preferencesDialog {
+  .mat-dialog-content {
+    @include themify($themes) {
+      background-color: themed("background-white");
+    }
+
+    padding: 0;
+  }
+
+  width: 80vw;
+  max-width: 100vw;
+  max-height: 100vh;
+  min-width: 350px;
+  min-height: 500px;
+}
+
 .mat-pseudo-checkbox-checked,
 .mat-pseudo-checkbox-indeterminate,
 .mat-accent .mat-pseudo-checkbox-checked,

@@ -118,15 +118,6 @@ $idk-pad: 21px;
   overflow: hidden;
 }
 
-.feedback-div {
-  position: absolute;
-  top: 42px;
-  right: 16px;
-  text-align: right;
-  float: right;
-  cursor: pointer;
-}
-
 .feedback-link {
   font-size: 18px;
 
@@ -259,13 +250,27 @@ button {
   left: -10px;
 }
 
+.doc-feedback-div {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -42px;
+  margin-right: 20px;
+}
+
+.header-link-mobile {
+  font-size: 12px !important;
+}
+
 .docs-div {
-  position: absolute;
-  top: 42px;
-  right: 130px;
-  text-align: right;
-  float: right;
   cursor: pointer;
+  flex: 0 1 auto;
+  margin-right: 20px;
+  margin-top: 2px;
+}
+
+.feedback-div {
+  cursor: pointer;
+  flex: 0 1 auto;
 }
 
 .header-link {
