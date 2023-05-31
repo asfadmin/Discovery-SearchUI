@@ -55,7 +55,7 @@
       </div>
       <div *ngIf="!pair" style="margin: 5px; padding-bottom: 36px;">
         <div class="faint-text w100 h100" style="text-align: center; padding-top: 10px;">
-          No Pair Selected
+          {{ 'NO_PAIR_SELECTED' | translate }}
         </div>
       </div>
     </div>
@@ -124,7 +124,7 @@
               value="add"
               class="control-mat-button-toggle"
               (click)="startAddingCustomPoint()"
-              matTooltip="Start adding custom pair">
+              matTooltip="{{ 'START_ADDING_CUSTOM_PAIR' | translate }}">
               <mat-icon class="control-icon">add_circle</mat-icon>
             </mat-button-toggle>
 
@@ -133,7 +133,7 @@
               value="stop"
               class="control-mat-button-toggle"
               (click)="stopAddingCustomPoint()"
-              matTooltip="Stop adding custom pair"
+              matTooltip="{{ 'STOP_ADDING_CUSTOM_PAIR' | translate }}"
             >
               <mat-icon class="control-icon">stop_circle</mat-icon>
             </mat-button-toggle>
@@ -143,7 +143,7 @@
               value="remove"
               class="control-mat-button-toggle"
               (click)="deleteSelectedPair()"
-              matTooltip="Remove custom pair"
+              matTooltip="{{ 'REMOVE_CUSTOM_PAIR' | translate }}"
             >
               <mat-icon class="control-icon">remove_circle</mat-icon>
             </mat-button-toggle>
@@ -156,19 +156,19 @@
     <div class="sbas-button-group-filler sbas-button-group"></div>
     <div class='sbas-button-group'>
       <div class="button-group-label">
-        <label>Filters</label>
+        <label>{{ 'FILTERS' | translate }}</label>
       </div>
       <div class="toggle-group-wrapper--layout">
         <mat-button-toggle class="control-mat-button-toggle sbas-criteria-button-toggle"
           (click)="onToggleFiltersMenu()"
         >
-          SBAS Filters<mat-icon class="more-horiz">more_horiz</mat-icon>
+          {{ 'SBAS_FILTERS' | translate }}<mat-icon class="more-horiz">more_horiz</mat-icon>
         </mat-button-toggle>
       </div>
     </div>
     <div class="sbas-button-group gap-detected-area" *ngIf="this.isDisconnected" style="display: flex; place-items: center">
         <mat-icon class="warn-icon" fontSet="material-icons-outlined">error_outline</mat-icon>
-        Gaps Detected
+        {{ 'GAPS_DETECTED' | translate }}
       </div>
   </mat-card-subtitle>
 

@@ -16,14 +16,16 @@
   </div>
 
   <div class="doc-feedback-div">
-    <div class="docs-div header-link">
+    <div class="docs-div header-link"
+         [class.header-link-mobile]="breakpoint === breakpoints.MOBILE">
       <app-docs-modal class="text-link"
                       text="Docs"
                       url="https://docs.asf.alaska.edu/vertex/manual/#downloads-queue">
       </app-docs-modal>
     </div>
 
-    <div class="feedback-div header-link">
+    <div class="feedback-div header-link"
+         [class.header-link-mobile]="breakpoint === breakpoints.MOBILE">
       <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <mat-icon>comment</mat-icon> {{ 'FEEDBACK' | translate }}</a>
     </div>
   </div>
@@ -82,7 +84,7 @@
         <app-copy-to-clipboard
           *ngIf="!product.isUnzippedFile && !product.metadata.job && product.groupId !== 'SARViews'"
           style="margin-right: 15px;"
-          prompt="Copy File ID"
+          prompt="{{ 'COPY_FILE_ID' | translate}}"
           [value]="product.id"
         >
         </app-copy-to-clipboard>
@@ -95,7 +97,7 @@
           [useNewDownload]="true">
         </app-download-file-button>
 
-        <button (click)="onRemoveProduct(product)" matTooltip="Remove file" mat-icon-button>
+        <button (click)="onRemoveProduct(product)" matTooltip="{{ 'REMOVE_FILE' | translate }}" mat-icon-button>
           <mat-icon>close</mat-icon>
         </button>
       </mat-list-item>

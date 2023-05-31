@@ -7,7 +7,7 @@
         <mat-select (selectionChange)="onSortChange()" [(ngModel)]='sortType'>
           <div *ngFor="let item of sortTypes">
             <mat-option [value]="item">
-              {{item}}
+              {{item | uppercase | translate}}
             </mat-option>
           </div>
         </mat-select>
@@ -20,7 +20,7 @@
         <mat-select (selectionChange)="onSortChange()" [(ngModel)]='sortOrder'>
           <div *ngFor="let item of sortOrders">
             <mat-option [value]="item">
-              {{item}}
+              {{item | uppercase | translate }}
             </mat-option>
           </div>
         </mat-select>

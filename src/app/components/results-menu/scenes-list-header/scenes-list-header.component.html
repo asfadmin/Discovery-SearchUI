@@ -165,7 +165,7 @@
 
           <div *ngIf="searchType === SearchTypes.BASELINE" class="fx-empty list-button-group">
             <div class="fx-row-center button-group-label">
-              <label>{{ 'EXPORT' |  translate }}</label>
+              <label>  {{ 'EXPORT' |  translate }}</label>
             </div>
             <div class="fx-row">
               <div>
@@ -269,7 +269,7 @@
                   <mat-button-toggle
                     (click)="onDownloadPairCSV()"
                     class="control-mat-button-toggle clickable noselect"
-                    matTooltip="Download Pair CSV">
+                    matTooltip="{{ 'DOWNLOAD_PAIR_CSV' | translate }}">
                     <mat-icon class="list-icon">
 get_app
                     </mat-icon>

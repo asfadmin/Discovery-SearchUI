@@ -6,7 +6,7 @@
     (selectionChange)="onValueChange($event.value)">
     <mat-option *ngFor="let option of options"
       [value]="option.apiValue">
-      {{ option.name }}
+      {{ option.name | uppercase | translate  }}
     </mat-option>
   </mat-select>
 </mat-form-field>
