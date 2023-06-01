@@ -15,6 +15,7 @@ import VectorSource from 'ol/source/Vector';
 import LayerGroup from 'ol/layer/Group';
 import Projection from 'ol/proj/Projection';
 import { BrowseOverlayService, WktService } from '@services';
+import ImageSource from 'ol/source/Image';
 interface Dimension {
   width: number;
   height: number;
@@ -30,7 +31,7 @@ export interface PinnedProduct {
 })
 export class BrowseMapService {
   private map: Map;
-  private browseLayer: ImageLayer;
+  private browseLayer: ImageLayer<ImageSource>;
   private view: View;
   private pinnedProducts: LayerGroup;
 
@@ -90,11 +91,19 @@ export class BrowseMapService {
       this.map.addLayer(this.pinnedProducts);
 
       this.map.on('singleclick', e => {
-        this.map.forEachLayerAtPixel(e.pixel, l => {
+        this.map.forEachFeatureAtPixel(e.pixel, (_, l, __) => {
           this.pinnedProducts.getLayers().remove(l);
           this.pinnedProducts.getLayers().push(l);
           return true;
-        });
+        }),
+        {'layerFilter': (l) => {
+          for (const temp of this.pinnedProducts.getLayersArray()) {
+            if (temp === l) {
+              return true
+            }
+          }
+          return false
+        }}
       });
     }
 
