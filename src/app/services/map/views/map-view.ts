@@ -5,12 +5,13 @@ import * as customProj4 from 'ol/proj/proj4';
 
 import proj4 from 'proj4';
 import { Extent } from 'ol/extent';
+import { TileImage } from 'ol/source';
 
 export class MapView {
   constructor(
     public projection: Projection,
     public view: View,
-    public layer: TileLayer,
+    public layer: TileLayer<TileImage>,
     public gridlines?: GraticuleLayer
   ) {}
 }

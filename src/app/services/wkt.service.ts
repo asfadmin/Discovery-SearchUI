@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 import { Coordinate } from 'ol/coordinate';
 import Feature from 'ol/Feature';
 
-import WKT from 'ol/format/WKT.js';
+import { WKT }  from 'ol/format';
 import Geometry from 'ol/geom/Geometry';
-import MultiPolygon from 'ol/geom/MultiPolygon';
-import {Polygon } from 'ol/geom/Polygon';
+import {Polygon, MultiPolygon } from 'ol/geom';
 import { fromLonLat, toLonLat } from 'ol/proj';
 
 @Injectable({
