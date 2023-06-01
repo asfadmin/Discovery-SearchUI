@@ -16,7 +16,7 @@ import { RangeService } from './range.service';
 
 import * as models from '@models';
 import { DrawService } from './map/draw.service';
-
+import { SimpleGeometry } from 'ol/geom';
 @Injectable({
   providedIn: 'root'
 })
@@ -150,31 +150,35 @@ export class SearchParamsService {
     ).pipe(
       map(([polygon, shouldOmitGeoRegion, asdf]) => shouldOmitGeoRegion ? null : { polygon: polygon, thing: asdf }),
       map(polygon => {
+        
         let feature = polygon.thing;
-        let points = feature?.getGeometry().getCoordinates();
 
 
-        if (points && points[0].length === 5) {
-          const clonedFeature = feature.clone();
-          const clonedProperties = JSON.parse(JSON.stringify(feature.getProperties()));
-          clonedProperties.geometry = clonedFeature.getGeometry();
-          clonedFeature.setProperties(clonedProperties, true);
-          feature = clonedFeature;
-          const geo = feature.getGeometry();
-          geo.transform(this.mapService.epsg(), 'EPSG:4326');
-          points = geo.getCoordinates()[0].slice(0, 4);
-          let extent = [...points[0], ...points[2]];
-          if (JSON.stringify(geo.getExtent()) === JSON.stringify(extent)) {
-            extent = extent.map(value => {
-              if (value > 180) {
-                value = value % 360 - 360;
-              }
-              if (value < -180) {
-                value = value % 360 + 360;
-              }
-              return value;
-            });
-            return {bbox: extent.join(',')};
+        const geom = feature?.getGeometry()
+        if (geom instanceof SimpleGeometry) {
+          let points = (geom as SimpleGeometry).getCoordinates()
+          if (points && points[0].length === 5) {
+            const clonedFeature = feature.clone();
+            const clonedProperties = JSON.parse(JSON.stringify(feature.getProperties()));
+            clonedProperties.geometry = clonedFeature.getGeometry();
+            clonedFeature.setProperties(clonedProperties, true);
+            feature = clonedFeature;
+            const geo = feature.getGeometry();
+            geo.transform(this.mapService.epsg(), 'EPSG:4326');
+            points = points.slice(0, 4);
+            let extent = [...points[0], ...points[2]];
+            if (JSON.stringify(geo.getExtent()) === JSON.stringify(extent)) {
+              extent = extent.map(value => {
+                if (value > 180) {
+                  value = value % 360 - 360;
+                }
+                if (value < -180) {
+                  value = value % 360 + 360;
+                }
+                return value;
+              });
+              return { bbox: extent.join(',') };
+            }
           }
         }
 
