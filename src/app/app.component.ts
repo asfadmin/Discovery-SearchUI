@@ -101,11 +101,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public ngAfterViewInit(): void {
     this.subs.add(
-      this.store$.select(userStore.getUserProfile).pipe(
-        filter(profile => !!profile.defaultFilterPresets),
-        map(profile => profile.defaultFilterPresets)
-        ).subscribe(presets => {
-          this.store$.dispatch(new filterStore.SetDefaultFilters(presets));
+      this.store$.select(userStore.getUserProfile).subscribe(_ => {
           this.language.initialize();
         }))
   }
@@ -252,26 +248,30 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     );
 
     this.subs.add(
-      this.store$.select(userStore.getUserProfile).subscribe(
-        profile => {
+      this.store$.select(userStore.getUserProfile).pipe(
+        withLatestFrom(this.urlStateService.isDefaultSearch$),
+      ).subscribe(
+        ([profile, isDefaultSearch]) => {
           this.urlStateService.setDefaults(profile);
           this.language.setProfileLanguage(profile.language);
           this.isAutoTheme = profile.theme === 'System Preferences';
-          if (this.searchType !== models.SearchType.LIST
-            && this.searchType !== models.SearchType.CUSTOM_PRODUCTS
-            && this.searchType !== models.SearchType.SARVIEWS_EVENTS) {
-            const defaultFilterID = profile.defaultFilterPresets[this.searchType];
-            if (!!defaultFilterID) {
-              this.store$.dispatch(new userStore.LoadFiltersPreset(defaultFilterID));
-            }
-        }
+
+          const presets = Object.entries(profile.defaultFilterPresets).map(([_, val2]) => val2).filter(val2 =>val2 !== '')
+          if(isDefaultSearch && presets.length > 0) {
+            this.loadDefaultFilters(profile)
+          }
         })
     );
 
     this.subs.add(
       this.actions$.pipe(
       ofType<userStore.SetProfile>(userStore.UserActionType.SET_PROFILE),
-      map(action => action.payload.defaultFilterPresets),
+      withLatestFrom(this.urlStateService.isDefaultSearch$),
+      filter(([action, isDefaultSearch]) => {
+        const hasCustomDefaults = Object.entries(action.payload.defaultFilterPresets).map(([_, val2]) => val2).filter(val2 =>val2 !== '').length > 0
+        return isDefaultSearch && hasCustomDefaults;
+      }),
+      map(([action, _]) => action.payload.defaultFilterPresets)
       ).subscribe( defaultFilters =>
         this.store$.dispatch(new filterStore.SetDefaultFilters(defaultFilters))
       )
@@ -280,19 +280,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     const user = this.authService.getUser();
     if (user.id) {
       this.store$.dispatch(new userStore.Login(user));
-      this.subs.add(
-      this.store$.select(userStore.getUserProfile).subscribe(
-        profile => {
-          if (this.searchType !== models.SearchType.LIST
-            && this.searchType !== models.SearchType.CUSTOM_PRODUCTS
-            && this.searchType !== models.SearchType.SARVIEWS_EVENTS) {
-            const defaultFilterID = profile.defaultFilterPresets[this.searchType];
-            if (!!defaultFilterID) {
-              this.store$.dispatch(new userStore.LoadFiltersPreset(defaultFilterID));
-          }
-        }
-      }
-      ));
     }
 
     this.subs.add(
@@ -381,14 +368,10 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           return searchType === models.SearchType.DATASET ?
             models.MapInteractionModeType.DRAW :
             models.MapInteractionModeType.NONE;
-        }),
-        withLatestFrom(this.store$.select(userStore.getUserProfile).pipe(
-          map(profile => profile.defaultFilterPresets))
-        ),
+        })
       ).subscribe(
-        ([mode, defaultFilters]) => {
+        (mode) => {
         this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
-        this.store$.dispatch(new filterStore.SetDefaultFilters(defaultFilters));
         })
     );
 
@@ -446,6 +429,23 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  public onLoadUrlState(): void {
+    this.urlStateService.load();
+  }
+
+  public onClearSearch(): void {
+    this.store$.dispatch(new scenesStore.ClearScenes());
+    this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(''));
+    this.mapService.clearDrawLayer();
+    this.store$.dispatch(new uiStore.CloseResultsMenu());
+    this.searchService.clear(this.searchType);
+    this.store$.dispatch(new searchStore.SetSearchOutOfDate(false));
+  }
+
+  public onCloseSidebar(): void {
+    this.store$.dispatch(new uiStore.CloseSidebar());
+  }
+
   private isEmptySearch(searchState): boolean {
     if (searchState.searchType === models.SearchType.LIST) {
       return searchState.filters.list.length < 1;
@@ -479,21 +479,16 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  public onLoadUrlState(): void {
-    this.urlStateService.load();
-  }
-
-  public onClearSearch(): void {
-    this.store$.dispatch(new scenesStore.ClearScenes());
-    this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(''));
-    this.mapService.clearDrawLayer();
-    this.store$.dispatch(new uiStore.CloseResultsMenu());
-    this.searchService.clear(this.searchType);
-    this.store$.dispatch(new searchStore.SetSearchOutOfDate(false));
-  }
-
-  public onCloseSidebar(): void {
-    this.store$.dispatch(new uiStore.CloseSidebar());
+  private loadDefaultFilters(profile: models.UserProfile): void {
+    this.urlStateService.setDefaults(profile);
+    if (this.searchType !== models.SearchType.LIST
+      && this.searchType !== models.SearchType.CUSTOM_PRODUCTS
+      && this.searchType !== models.SearchType.SARVIEWS_EVENTS) {
+      const defaultFilterID = profile.defaultFilterPresets[this.searchType];
+      if (!!defaultFilterID) {
+        this.store$.dispatch(new userStore.LoadFiltersPreset(defaultFilterID));
+      }
+    }
   }
 
   private updateMaxSearchResults(): void {
