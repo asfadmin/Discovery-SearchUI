@@ -1,21 +1,20 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { tap, delay, map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { SubSink } from 'subsink';
 import { UntypedFormGroup, UntypedFormControl  } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
+import { DateAdapter } from '@angular/material/core';
 import { NotificationService } from '@services';
+import {Store} from "@ngrx/store";
+import {AppState} from "@store";
+import * as uiStore from '@store/ui';
 
 @Component({
   selector: 'app-date-range',
   templateUrl: './date-range.component.html',
   styleUrls: ['./date-range.component.scss'],
-  providers: [{
-    provide: DateAdapter,
-    useClass: NativeDateAdapter
-  }]
 })
 export class DateRangeComponent implements OnInit, OnDestroy {
   public dateRangeForm = new UntypedFormGroup({
@@ -25,28 +24,39 @@ export class DateRangeComponent implements OnInit, OnDestroy {
 
   @Input() minDate: Date;
   @Input() maxDate: Date;
-
   @Input() startDate: Date;
   @Input() endDate: Date;
-
   @Output() newStart = new EventEmitter<Date>();
   @Output() newEnd = new EventEmitter<Date>();
   @Output() startDateError = new EventEmitter<void>();
   @Output() endDateError = new EventEmitter<void>();
 
-
   public startDateErrors$ = new Subject<void>();
   public endDateErrors$ = new Subject<void>();
   public invalidDateError$ = new Subject<UntypedFormControl>();
-
   public isStartError = false;
   public isEndError = false;
-
   private subs = new SubSink();
 
-  constructor(private notificationService: NotificationService) { }
+  constructor(
+    private notificationService: NotificationService,
+    // private _adapter: DateAdapter<any>,
+    private dateAdapter: DateAdapter<any>,
+    private store$: Store<AppState>,
+  ) {}
 
   ngOnInit(): void {
+
+    this.subs.add(
+      this.store$.select(uiStore.getCurrentLanguage).subscribe(
+        currentLanguage => {
+          this.setCalLang(currentLanguage);
+        }
+      )
+    );
+
+    this.dateAdapter.setLocale(moment.locale());
+
     if (!!this.startDate && this.startDate !== new Date(undefined)) {
       this.dateRangeForm.patchValue({
         StartDateControl: this.startDate
@@ -66,6 +76,7 @@ export class DateRangeComponent implements OnInit, OnDestroy {
   }
 
   public onStartDateChange(e: MatDatepickerInputEvent<Date>): void {
+    this.dateAdapter.setLocale(moment.locale());
     if (!this.startControl.valid || !e.value) {
       if (this.isInvalidDateError(this.startControl)) {
         this.invalidDateError$.next(this.startControl);
@@ -82,6 +93,7 @@ export class DateRangeComponent implements OnInit, OnDestroy {
   }
 
   public onEndDateChange(e: MatDatepickerInputEvent<Date>): void {
+    this.dateAdapter.setLocale(moment.locale());
     if (!this.endControl.valid || !e.value) {
       if (this.isInvalidDateError(this.endControl)) {
         this.invalidDateError$.next(this.endControl);
@@ -91,7 +103,6 @@ export class DateRangeComponent implements OnInit, OnDestroy {
 
       return;
     }
-
     const date = this.endDateFormat(new Date(e.value));
     this.newEnd.emit(date);
   }
@@ -178,6 +189,24 @@ export class DateRangeComponent implements OnInit, OnDestroy {
       this.isStartError = value;
     } else if (controlName === 'EndDateControl') {
       this.isEndError = value;
+    }
+  }
+
+  getDateFormatString(): string {
+    const locale = moment.locale();
+    if (locale === 'en') {
+      return 'MM/DD/YYYY';
+    } else if (locale === 'es') {
+      return 'DD/MM/YYYY';
+    }
+    return '';
+  }
+
+  setCalLang(language) {
+    if (!language) {
+      this.dateAdapter.setLocale('en');
+    } else {
+      this.dateAdapter.setLocale(language);
     }
   }
 

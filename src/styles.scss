@@ -383,7 +383,7 @@ ul {
     @include themify_non_host($themes) {
       background-color: themed('primary-light');
     }
-    padding-bottom: 0px;
+    padding-bottom: 0;
     padding-top: 11px;
     padding-left: 12px;
     padding-right: 12px;

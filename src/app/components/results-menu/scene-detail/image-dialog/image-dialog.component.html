@@ -179,7 +179,7 @@
             <div class="detail-header">{{ 'PRODUCT_DETAILS' | translate }}</div>
             <ul style="columns: 1; font-size: 12px;">
               <li *ngIf="scene.metadata.job.name">
-                <b>Project Name:</b> {{ scene.metadata.job.name }}
+                <b>{{ 'PROJECT_NAME' | translate }}:</b> {{ scene.metadata.job.name }}
               </li>
               <li *ngFor="let param of paramsList">
                 <b>{{ param.name }}:</b> {{ param.val }}
@@ -217,13 +217,13 @@
                   "
                   matTooltip="{{
                   !queuedProductIds.has(product.id)
-                  ? 'Add file to queue'
-                  : 'Remove file from queue'
+                  ? ( 'ADD_FILE_TO_QUEUE' | translate )
+                  : ( 'REMOVE_FILE_FROM_QUEUE' | translate )
                   }}"
                   mat-menu-item
                 >
                   <span *ngIf="!queuedProductIds.has(product.id)">
-                    Add
+                    {{ 'ADD' | translate}}
                     <mat-icon>add_shopping_cart</mat-icon>
                   </span>
                   <span *ngIf="queuedProductIds.has(product.id)">
@@ -311,8 +311,8 @@
                   *ngIf="!!currentSarviewsProduct"
                   matTooltip="{{
                   !queuedProductIds.has(currentSarviewsProduct.product_id)
-                  ? 'Add file to queue'
-                  : 'Remove file from queue'
+                  ? ( 'ADD_FILE_TO_QUEUE' | translate )
+                  : ( 'REMOVE_FILE_FROM_QUEUE' | translate )
                   }}"
                   mat-menu-item
                 >

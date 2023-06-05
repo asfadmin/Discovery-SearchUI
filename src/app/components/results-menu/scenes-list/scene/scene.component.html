@@ -34,7 +34,7 @@
         <span style="margin-left: 5px;">
           <app-copy-to-clipboard
             *ngIf="hovered; else notHovered"
-            prompt="Copy scene name"
+            prompt="{{ 'COPY_SCENE_NAME' | translate }}"
             [value]="scene.metadata.fileName || scene.name">
           </app-copy-to-clipboard>
 

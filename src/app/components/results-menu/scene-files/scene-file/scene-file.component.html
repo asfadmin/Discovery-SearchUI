@@ -61,7 +61,7 @@
     <a *ngIf="isHovered && !product.metadata.job" class="icon-margin">
       <app-copy-to-clipboard
         [value]="product.id"
-        prompt="Copy file ID">
+        prompt="{{ 'COPY_FILE_ID' | translate }}">
       </app-copy-to-clipboard>
     </a>
   </div>

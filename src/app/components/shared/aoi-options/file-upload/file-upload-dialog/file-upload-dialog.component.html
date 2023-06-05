@@ -13,14 +13,27 @@
 
         <div *ngIf="canBeClosed" class="drop-file-area">
 
-          <div class="actions">
-            <button (click)="addFiles()"
-              [disabled]="uploading"
-              style="margin-right: 10px; margin-bottom: 10px;"
-              color="primary" class="add-files-btn" mat-raised-button>
+          <div class="dd-text">
+            <div class="dd-text-1">{{ 'DRAG_AND_DROP' | translate }}</div>
+            <div class="dd-text-2">{{ 'GEOSPATIAL_FILES_HERE' | translate }}</div>
+            <div class="dd-text-3">{{ 'FILES_OPC' | translate }}</div>
+          </div>
+
+          <div class="import-button">
+            <button mat-raised-button color="primary"
+              (click)="addFiles()"
+              [disabled]="uploading">
               {{'IMPORT_FILE' | translate}}
             </button>
           </div>
+<!--          <div class="actions">-->
+<!--            <button (click)="addFiles()"-->
+<!--              [disabled]="uploading"-->
+<!--              style="margin-right: 10px; margin-bottom: 10px;"-->
+<!--              color="primary" class="add-files-btn" mat-raised-button>-->
+<!--              {{'IMPORT_FILE' | translate}}-->
+<!--            </button>-->
+<!--          </div>-->
         </div>
 
         <div class="loading-box" *ngIf="!canBeClosed">
