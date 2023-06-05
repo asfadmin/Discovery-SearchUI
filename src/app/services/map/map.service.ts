@@ -42,6 +42,7 @@ import TileLayer from 'ol/layer/Tile';
 import SimpleGeometry from 'ol/geom/SimpleGeometry';
 import { SetGeocode } from '@store/filters';
 import ImageSource from 'ol/source/Image';
+import { Extent } from 'ol/extent';
 
 @Injectable({
   providedIn: 'root'
@@ -419,7 +420,7 @@ export class MapService {
   }
 
 
-  public zoomToExtent(extent): void {
+  public zoomToExtent(extent: Extent): void {
     this.map
       .getView()
       .fit(extent, {
