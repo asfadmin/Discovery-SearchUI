@@ -13,6 +13,7 @@ import { SubSink } from 'subsink';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import { getGeocodeArea } from '@store/filters';
+import { Feature } from 'ol';
 
 @Component({
   selector: 'app-geocode-selector',
@@ -73,9 +74,9 @@ export class GeocodeSelectorComponent implements OnInit, OnDestroy {
 
   public onSelect(option) {
     this.search_key = option.name;
-    let feature = this.vectorSource.getFeatures().find(feat => feat.getId() === option.id);
-
-    let zoomExtent = transformExtent(option.bbox, 'EPSG:4326', this.mapService.epsg());
+    let feature: Feature = this.vectorSource.getFeatures().find(feat => feat.getId() === option.id);
+    
+    let zoomExtent = transformExtent(feature.getGeometry().getExtent(), 'EPSG:4326', this.mapService.epsg());
     this.mapService.zoomToExtent(zoomExtent);
 
     let wktFeature = this.wkt.featureToWkt(feature, 'EPSG:4326');

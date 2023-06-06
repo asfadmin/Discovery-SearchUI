@@ -19,6 +19,7 @@ export interface UIState {
   isDownloadQueueOpen: boolean;
   isOnDemandQueueOpen: boolean;
   helpDialogTopic: string | null;
+  currentLanguage: string | null;
   banners: Banner[];
 }
 
@@ -36,9 +37,9 @@ export const initState: UIState = {
   isDownloadQueueOpen: false,
   isOnDemandQueueOpen: false,
   helpDialogTopic: null,
+  currentLanguage: 'en',
   banners: [],
 };
-
 
 export function uiReducer(state = initState, action: UIActions): UIState {
   switch (action.type) {
@@ -210,6 +211,13 @@ export function uiReducer(state = initState, action: UIActions): UIState {
       };
     }
 
+    case UIActionType.SET_CURRENT_LANGUAGE: {
+      return {
+        ...state,
+        currentLanguage: action.payload
+      };
+    }
+
     case UIActionType.ADD_BANNERS: {
       const banners = [
         ...state.banners, ...action.payload
@@ -293,6 +301,11 @@ export const getShowExpiredData = createSelector(
 export const getHelpDialogTopic = createSelector(
   getUIState,
   state => state.helpDialogTopic
+);
+
+export const getCurrentLanguage = createSelector(
+  getUIState,
+  state => state.currentLanguage
 );
 
 export const getIsDownloadQueueOpen = createSelector(

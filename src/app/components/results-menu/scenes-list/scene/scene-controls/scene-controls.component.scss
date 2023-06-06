@@ -16,3 +16,9 @@
 .icon-margin {
   margin-left: 10px;
 }
+
+::ng-deep .mat-standard-chip {
+  padding: 7px 0 !important;
+}
+
+

@@ -135,6 +135,10 @@ $bottom-offset: 10px;
   cursor: pointer;
 }
 
+.close-x-mobile {
+  right: 32px;
+}
+
 .project-name {
   display: inline-block;
   font-size: 14px;
@@ -203,6 +207,10 @@ $bottom-offset: 10px;
   margin-right: 20px;
 }
 
+.doc-feedback-div-mobile {
+  margin-right: 36px;
+}
+
 .docs-div {
   cursor: pointer;
   flex: 0 1 auto;
@@ -213,6 +221,7 @@ $bottom-offset: 10px;
 .feedback-div {
   cursor: pointer;
   flex: 0 1 auto;
+  width: 133px;
 }
 
 .header-link {

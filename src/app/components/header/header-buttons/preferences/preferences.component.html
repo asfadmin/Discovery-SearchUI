@@ -33,7 +33,7 @@
             (selectionChange)="onChangeDefaultTheme($event.value)"
             name="preset">
             <mat-option [value]="theme" *ngFor="let theme of themeOptions">
-              {{ theme | titlecase}}
+              {{ theme | titlecase | uppercase| translate}}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -68,10 +68,10 @@
             [(ngModel)]="defaultMapLayer"
             (selectionChange)="onChangeDefaultLayerType($event.value)" name="amount">
             <mat-option [value]="mapLayerTypes.SATELLITE">
-              {{ mapLayerTypes.SATELLITE }}
+              {{ mapLayerTypes.SATELLITE | translate }}
             </mat-option>
             <mat-option [value]="mapLayerTypes.STREET ">
-              {{ mapLayerTypes.STREET  }}
+              {{ mapLayerTypes.STREET | translate }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -82,13 +82,13 @@
       <div class="preferences-group">
         <div class="section-heading">{{ 'DEFAULT_SEARCH_FILTERS_PRESETS' | translate }}</div>
         <mat-form-field class="default-filters-presets" *ngFor="let type of searchTypeKeys">
-          <mat-label>{{type}}</mat-label>
+          <mat-label>{{type |translate}}</mat-label>
           <mat-select
           [(value)]="currentFilterDisplayNames[searchType[type]]"
           (selectionChange)="onChangeDefaultFilterType($event.value, type)"
           name="preset">
             <mat-option [value]="preset.id" *ngFor="let preset of userFiltersBySearchType[searchType[type]]">
-              {{ preset.name }}
+              {{ preset.name | translate }}
             </mat-option>
           </mat-select>
         </mat-form-field>

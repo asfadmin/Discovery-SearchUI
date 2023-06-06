@@ -10,7 +10,7 @@ import { createBox } from 'ol/interaction/Draw.js';
 
 import * as polygonStyle from './polygon.style';
 import * as models from '@models';
-import GeometryType from 'ol/geom/GeometryType';
+import { Type as GeometryType} from 'ol/geom/Geometry';
 import Geometry from 'ol/geom/Geometry';
 import Circle from 'ol/geom/Circle';
 import { fromCircle } from 'ol/geom/Polygon';
@@ -29,7 +29,7 @@ declare global {
 })
 export class DrawService {
   private source: VectorSource;
-  private layer: VectorLayer;
+  private layer: VectorLayer<VectorSource>;
 
   private draw: Draw;
   private modify: Modify;
@@ -52,7 +52,7 @@ export class DrawService {
     });
   }
 
-  public getLayer(): VectorLayer {
+  public getLayer(): VectorLayer<VectorSource> {
     return this.layer;
   }
 
