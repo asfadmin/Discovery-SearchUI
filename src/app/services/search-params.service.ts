@@ -111,7 +111,8 @@ export class SearchParamsService {
       this.beamModes$(),
       this.polarizations$(),
       this.maxResults$(),
-      this.missionParam$()
+      this.missionParam$(),
+      this.burstParams$(),
     ).pipe(
       map((params: any[]) => params
         .reduce(
@@ -139,6 +140,14 @@ export class SearchParamsService {
   private missionParam$() {
     return this.store$.select(filterStore.getSelectedMission).pipe(
       map(mission => ({ collectionName: mission }))
+    );
+  }
+
+  private burstParams$() {
+      return this.store$.select(filterStore.getFullBurstIDs).pipe(
+      map(fullIDs => ({
+          fullburstid: fullIDs?.join(',')})
+          )
     );
   }
 
@@ -198,7 +207,13 @@ export class SearchParamsService {
           {
             platform: subtypes
               .map(subtype => subtype.apiValue)
-              .join(',')
+              .join(','),
+            ...Object.entries(dataset.apiValue).reduce((prev, curr) => {
+              if(curr[0] !== 'platform') {
+                prev[curr[0]] = curr[1]
+              }
+              return prev
+            }, {})
           } :
           { ...dataset.apiValue };
       })
@@ -255,7 +270,10 @@ export class SearchParamsService {
         types => Array.from(new Set(types))
           .join(',')
       ),
-      map(beamModes => ({ beamSwath: beamModes }))
+      withLatestFrom(this.store$.select(filterStore.getSelectedDatasetId)),
+      map(([beamModes, dataset]) => 
+      dataset === models.sentinel_1_bursts.id ? 
+      ({ beamMode: beamModes }) : ({ beamSwath: beamModes }))
     );
   }
 

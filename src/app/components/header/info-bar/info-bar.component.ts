@@ -45,6 +45,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public mission: string;
   public perpRange: models.Range<number | null>;
   public tempRange: models.Range<number | null>;
+  public fullBurstIDs: string[] = [];
 
   private subs = new SubSink();
 
@@ -52,6 +53,8 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public hyp3Url = this.hyp3.apiUrl;
   public hyp3BaseUrl = this.hyp3.baseUrl;
   public hyp3BackendUrl: string;
+
+  public dataset: String = ''
 
   constructor(
     private store$: Store<AppState>,
@@ -119,6 +122,10 @@ export class InfoBarComponent implements OnInit, OnDestroy {
         .join(', ')
     );
 
+    const fullBurstIDSub = this.store$.select(filtersStore.getFullBurstIDs).subscribe(
+      burstIDs => this.fullBurstIDs = burstIDs
+    );
+
     [
       startSub, endSub,
       pathSub, frameSub,
@@ -132,7 +139,8 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       subtypeSub,
       missionSub,
       tempSub, perpSub,
-      eventProductType
+      eventProductType,
+      fullBurstIDSub
     ].forEach(sub => this.subs.add(sub));
 
     this.subs.add(
@@ -153,6 +161,12 @@ export class InfoBarComponent implements OnInit, OnDestroy {
         }
       )
     );
+
+    this.subs.add(
+      this.store$.select(filtersStore.getSelectedDataset).subscribe(
+        dataset => this.dataset = dataset.id
+      )
+    )
   }
 
   ngOnDestroy() {
