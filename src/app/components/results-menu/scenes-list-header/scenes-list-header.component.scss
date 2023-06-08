@@ -142,4 +142,12 @@ $config: mat.define-typography-config();
 
 .scenes-list-buttons--layout {
   display: flex;
+  column-gap: .4em;
+}
+
+.scenes-list-button-container {
+  width: 100%;
+  mat-button-toggle-group {
+    margin: auto
+  }
 }
