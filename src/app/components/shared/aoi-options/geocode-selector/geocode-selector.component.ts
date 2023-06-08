@@ -11,6 +11,7 @@ import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import { getGeocodeArea } from '@store/filters';
 import { Feature } from 'ol';
+import * as models from '@models';
 
 @Component({
   selector: 'app-geocode-selector',
@@ -34,13 +35,11 @@ export class GeocodeSelectorComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    const token = 'pk.eyJ1IjoiYXNmLWRpc2NvdmVyeSIsImEiOiJjbGkxaGlzbG4wMWl2M3RvMzF3MTZzYmZwIn0.07e8Inyq9w9DdBG5U1BZwg';
-
     this.subs.add(
       this.subject.pipe(
         debounceTime(500),
         switchMap((geocodeText: string) => this.http.get(
-          `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(geocodeText)}.json?access_token=${token}`
+          `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(geocodeText)}.json?access_token=${models.mapboxToken}`
         ))
       ).subscribe(res => {
           this.options = res['features'].map(

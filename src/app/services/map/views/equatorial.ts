@@ -90,19 +90,17 @@ function equatorialView(url: string): MapView {
 }
 
 export function equatorial(): MapView {
-  const token = 'pk.eyJ1IjoiYXNmLWRpc2NvdmVyeSIsImEiOiJjbGkxaGlzbG4wMWl2M3RvMzF3MTZzYmZwIn0.07e8Inyq9w9DdBG5U1BZwg';
   const style = 'styles/v1/asf-discovery/clhz19vdp000y01ok3smcelx1';
   return equatorialView(
-    `https://api.mapbox.com/${style}/tiles/{z}/{x}/{y}?access_token=${token}`
+    `https://api.mapbox.com/${style}/tiles/{z}/{x}/{y}?access_token=${models.mapboxToken}`
   );
 }
 
 
 export function equatorialStreet(): MapView {
-  const token = 'pk.eyJ1IjoiYXNmLWRpc2NvdmVyeSIsImEiOiJjbGkxaGlzbG4wMWl2M3RvMzF3MTZzYmZwIn0.07e8Inyq9w9DdBG5U1BZwg';
   const style = 'styles/v1/asf-discovery/clhz1c9tt004a01o7c2ut9fss';
 
   return equatorialView(
-    `https://api.mapbox.com/${style}/tiles/{z}/{x}/{y}?access_token=${token}`
+    `https://api.mapbox.com/${style}/tiles/{z}/{x}/{y}?access_token=${models.mapboxToken}`
   );
 }
