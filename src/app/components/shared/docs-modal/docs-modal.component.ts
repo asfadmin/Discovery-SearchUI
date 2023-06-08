@@ -35,7 +35,8 @@ export interface DialogData {
 export class DocsModalComponent implements OnInit {
   @Input() url: string;
   @Input() text: string;
-
+  @Input() icon: string = 'info';
+  @Input() tooltip: string;
   public docURL: string;
   public safeDocURL: any;
 
