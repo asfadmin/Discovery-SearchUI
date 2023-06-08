@@ -20,6 +20,7 @@ import { SbasSlidersTwoComponent } from './sbas-sliders-two/sbas-sliders-two.com
 import { SBASResultsMenuComponent } from './sbas-results-menu.component';
 
 import { SharedModule } from "@shared";
+import { DocsModalModule } from '@components/shared/docs-modal';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import { SharedModule } from "@shared";
     SBASChartModule,
     SceneMetadataModule,
     ScenesListModule,
-    ScenesListHeaderModule
+    ScenesListHeaderModule,
+    DocsModalModule
   ],
   exports: [
     SBASResultsMenuComponent,

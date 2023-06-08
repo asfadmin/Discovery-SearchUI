@@ -1,0 +1,53 @@
+<ul class="scene-metadata">
+    <li style="word-wrap: anywhere;">
+      <b> {{'GROUP_ID' | translate }} </b> • {{groupID}}
+    </li>
+    <li>
+    <b> {{'BURST_ID_RELATIVE' | translate }} </b>  • {{burst.relativeBurstID}}
+    </li>
+
+    <li>
+      <b> {{'BURST_ID_ABSOLUTE' | translate }} </b>  • {{burst.absoluteBurstID}}
+    </li>
+    <li>
+      <b> {{'BURST_ID_FULL' | translate }} </b>  • {{burst.fullBurstID}}
+      <mat-icon *ngIf="isGeoSearch"
+      [matMenuTriggerFor]="addFullBurstMenu"
+      class="v-mid clickable">
+        settings
+    </mat-icon>
+
+    <mat-menu #addFullBurstMenu="matMenu">
+      <button (click)="setFullBurst()" mat-menu-item>Add full burst id to search</button>
+    </mat-menu>
+    </li>
+    <li>
+      <b> {{'BURST_INDEX' | translate }} </b>  • {{burst.burstIndex}}
+    </li>
+    <li>
+      <b> {{'AZIMUTH_TIME' | translate }} </b>  • {{burst.azimuthTime | shortDateTime }}
+      <mat-icon
+      *ngIf="isGeoSearch"
+      [matMenuTriggerFor]="addSceneDateMenu"
+      [matMenuTriggerData]="{eventDate: burst.azimuthTime}"
+      class="v-mid clickable">
+        settings
+    </mat-icon>
+    </li>
+    <li>
+      <b> {{'AZIMUTH_ANX_TIME' | translate }} </b>  • {{burst.azimuthAnxTime}}
+    </li>
+    <li>
+      <b> {{'SAMPLES_PER_BURST' | translate }} </b>  • {{burst.samplesPerBurst}}
+    </li>
+    <li>
+      <b> {{'SUBSWATH' | translate }} </b>  • {{burst.subswath}}
+    </li>
+</ul>
+
+<mat-menu #addSceneDateMenu="matMenu">
+  <ng-template matMenuContent let-date="eventDate">
+  <button (click)="onSetStartDate(date)" mat-menu-item>{{ 'SET_AS_START_DATE' | translate }}</button>
+  <button (click)="onSetEndDate(date)" mat-menu-item>{{ 'SET_AS_END_DATE' | translate }}</button>
+</ng-template>
+</mat-menu>

@@ -4,7 +4,6 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as moment from 'moment';
 import * as filtersStore from '@store/filters';
-// import { Moment } from 'moment';
 
 @Component({
   selector: 'app-event-metadata',

@@ -223,7 +223,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
     if (this.dataset.id === models.sentinel_1.id) {
       return this.selectedProducts.filter(
-          product => product.metadata.productType === 'SLC'
+          product => product.metadata.productType === 'SLC' || product.metadata.productType === 'BURST'
       )[0].name;
     } else {
       return this.scene.name;
@@ -261,7 +261,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     } else {
       return this.selectedProducts
         .map(product => product.metadata.productType)
-        .filter(productType => productType === 'SLC')
+        .filter(productType => productType === 'SLC' || productType === 'BURST')
         .length > 0;
     }
   }

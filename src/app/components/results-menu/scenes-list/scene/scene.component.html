@@ -26,7 +26,7 @@
            class="bold" matLine>
 
         <app-file-name
-          [name]="scene.metadata.fileName || scene.name"
+          [name]="(scene.metadata.fileName || scene.name)"
           [dataset]="scene.dataset"
           [searchType]="searchType">
         </app-file-name>

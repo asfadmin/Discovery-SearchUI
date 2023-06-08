@@ -56,7 +56,7 @@
     <div *ngIf="scene">
       <mat-card-header>
         <mat-card-title class="detail-card-header">
-          <span>{{ scene.name }}</span>
+          <span>{{ scene.metadata.productType === 'BURST' ? scene.id : scene.name }}</span>
 
           <app-copy-to-clipboard
             [value]="scene.name"
@@ -316,7 +316,8 @@
     searchType === searchTypes.SARVIEWS_EVENTS ? ( 'GEOGRAPHIC_SEARCH_BASED_ON_EVENT_POLYGON' | translate ) : !(
       !(prop.isRelevant(p.PATH, dataset) &&
         prop.isRelevant(p.FRAME, dataset)) ||
-      dataset?.id === 'UAVSAR'
+      dataset?.id === 'UAVSAR'||
+      dataset?.id === 'SENTINEL-1 BURSTS'
     ) ? ('GEOGRAPHIC_SEARCH_BASED_ON_THIS_SCENE_S_PATH_FRAME' | translate) : ( 'NOT_ABLE_TO_SELECT_SIMILAR_SCENES_FROM_THIS_SOURCE' | translate)">
 
     <button
@@ -326,7 +327,8 @@
       !(
       (prop.isRelevant(p.PATH, dataset) &&
       prop.isRelevant(p.FRAME, dataset)) ||
-      dataset?.id === 'UAVSAR'
+      dataset?.id === 'UAVSAR'||
+      dataset?.id === 'SENTINEL-1 BURSTS'
       )
       "
       (click)="moreLikeThis()"

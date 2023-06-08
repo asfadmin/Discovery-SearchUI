@@ -307,7 +307,8 @@ export class UserEffects {
       new filterStore.SetPolarizations(datasetFilter.polarizations),
       new filterStore.SetSubtypes(datasetFilter.subtypes),
       new filterStore.SetFlightDirections(Array.from(datasetFilter.flightDirections)),
-      new filterStore.SelectMission(datasetFilter.selectedMission)
+      new filterStore.SelectMission(datasetFilter.selectedMission),
+      new filterStore.setFullBurst(datasetFilter.fullBurstIDs)
     ];
 
     return actions;
