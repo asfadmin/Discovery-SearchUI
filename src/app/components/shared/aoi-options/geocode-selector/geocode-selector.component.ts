@@ -1,10 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import {
-  MapService,
-  WktService
-} from '@services';
-import { debounceTime, Observable, Subject, switchMap } from 'rxjs';
+import { MapService, WktService } from '@services';
+import { debounceTime, Subject, switchMap } from 'rxjs';
 import { Vector as VectorSource } from 'ol/source';
 import GeoJSON from 'ol/format/GeoJSON';
 import {transformExtent} from 'ol/proj';
@@ -14,6 +11,7 @@ import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import { getGeocodeArea } from '@store/filters';
 import { Feature } from 'ol';
+import * as models from '@models';
 
 @Component({
   selector: 'app-geocode-selector',
@@ -21,17 +19,15 @@ import { Feature } from 'ol';
   styleUrls: ['./geocode-selector.component.scss']
 })
 export class GeocodeSelectorComponent implements OnInit, OnDestroy {
-  private key = 'bFwkahiCrAA0526OlsHS';
+  @Output() geocodeWkt = new EventEmitter();
   public options = [];
   public search_key = '';
   public subject = new Subject();
-  public results$ = new Observable();
 
-
-  private vectorSource;
+  private vectorSource: VectorSource;
 
   private subs = new SubSink();
-  @Output() geocodeWkt = new EventEmitter();
+
   constructor(private http: HttpClient,
     private wkt: WktService,
     private store$: Store<AppState>,
@@ -39,9 +35,25 @@ export class GeocodeSelectorComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.results$ = this.subject.pipe(
-      debounceTime(200),
-      switchMap((geocodeText: string) => this.http.get(`https://api.maptiler.com/geocoding/${encodeURIComponent(geocodeText)}.json?key=${this.key}`)));
+    this.subs.add(
+      this.subject.pipe(
+        debounceTime(500),
+        switchMap((geocodeText: string) => this.http.get(
+          `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(geocodeText)}.json?access_token=${models.mapboxToken}`
+        ))
+      ).subscribe(res => {
+          this.options = res['features'].map(
+            (feature: any) => ({
+              'name': feature['place_name'],
+              'id': feature['id'],
+              'bbox': feature['bbox']
+            }));
+
+          this.vectorSource = new VectorSource({
+            features: new GeoJSON().readFeatures(res),
+          });
+        })
+    )
 
     this.subs.add(
       this.store$.select(getGeocodeArea).subscribe(
@@ -50,13 +62,6 @@ export class GeocodeSelectorComponent implements OnInit, OnDestroy {
         }
       )
     )
-
-    this.results$.subscribe((res: Observable<any>) => {
-      this.options = res['features'].map(feature => ({ 'name': feature['place_name_en'], 'id': feature['id'], 'bbox': feature['bbox']}));
-      this.vectorSource = new VectorSource({
-        features: new GeoJSON().readFeatures(res),
-      });
-    })
   }
 
   ngOnDestroy(): void {
@@ -75,7 +80,7 @@ export class GeocodeSelectorComponent implements OnInit, OnDestroy {
   public onSelect(option) {
     this.search_key = option.name;
     let feature: Feature = this.vectorSource.getFeatures().find(feat => feat.getId() === option.id);
-    
+
     let zoomExtent = transformExtent(feature.getGeometry().getExtent(), 'EPSG:4326', this.mapService.epsg());
     this.mapService.zoomToExtent(zoomExtent);
 
