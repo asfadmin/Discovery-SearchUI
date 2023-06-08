@@ -116,4 +116,18 @@
     <app-mission-selector></app-mission-selector>
   </mat-expansion-panel>
 
+  <mat-expansion-panel
+  *ngIf="selectedDataset === 'SENTINEL-1 BURSTS'"
+  [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled" class="raised-section"
+  (click)="selectPanel(panels.CAMPAIGN)"
+  [class.raised-section]="isSelected(panels.CAMPAIGN)">
+  <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
+    <mat-panel-title>
+      {{ 'SLC_BURST_FILTERS' | translate }}
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <div class="selector-card-spacing">
+    <app-burst-selector></app-burst-selector>
+  </div>
+  </mat-expansion-panel>
 </mat-accordion>

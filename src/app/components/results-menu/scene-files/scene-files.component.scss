@@ -140,3 +140,22 @@ $thumb-size: 50px;
 .no-scroll {
   overflow: visible !important;
 }
+
+mat-expansion-panel-header {
+  @extend .mat-header-base;
+
+  &:hover,
+  &:visited,
+  &:link,
+  &:active,
+  &:focus,
+  &[aria-disabled="true"] {
+    @extend .mat-header-base;
+  }
+}
+
+.mat-header-base {
+  background-color: $asf-background-white !important;
+  border-color: $asf-background-white !important;
+  border-style: none;
+}
