@@ -39,7 +39,7 @@
           {{ numBaselineScenes$ | async }} {{ 'PRODUCT' | translate }}{{ (numBaselineScenes$ | async) === 1 ? '' : 's' }}
         </div>
 
-        <div class="space-filler"></div>
+        <div class="space-filler" *ngIf="!(searchType === SearchTypes.SARVIEWS_EVENTS && breakpoint === breakpoints.MOBILE)"></div>
 
         <div *ngIf="products" class="scenes-list-buttons--layout">
           <div *ngIf="canHideRawData"  class="list-button-group">
