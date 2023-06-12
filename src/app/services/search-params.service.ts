@@ -159,7 +159,7 @@ export class SearchParamsService {
     ).pipe(
       map(([polygon, shouldOmitGeoRegion, asdf]) => shouldOmitGeoRegion ? null : { polygon: polygon, thing: asdf }),
       map(polygon => {
-        
+
         let feature = polygon.thing;
 
 
@@ -271,8 +271,8 @@ export class SearchParamsService {
           .join(',')
       ),
       withLatestFrom(this.store$.select(filterStore.getSelectedDatasetId)),
-      map(([beamModes, dataset]) => 
-      dataset === models.sentinel_1_bursts.id ? 
+      map(([beamModes, dataset]) =>
+      dataset === models.sentinel_1_bursts.id ?
       ({ beamMode: beamModes }) : ({ beamSwath: beamModes }))
     );
   }
