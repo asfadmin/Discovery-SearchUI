@@ -4,7 +4,7 @@ export const sentinel_1_bursts = {
   id: 'SENTINEL-1 BURSTS',
   name: 'S1 Bursts',
   subName: '',
-  beta: false,
+  beta: true,
   properties: [
     Props.DATE,
     Props.BEAM_MODE,
