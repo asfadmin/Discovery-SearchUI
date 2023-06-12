@@ -10,3 +10,4 @@ export * from './uavsar';
 export * from './beta';
 export * from './sirc';
 export * from './avnir';
+export * from './sentinel-1-burst';

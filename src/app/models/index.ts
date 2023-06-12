@@ -28,3 +28,4 @@ export * from './derived-datasets.model';
 export * from './download.model';
 export * from './event-product-sort.model';
 export * from './asf-website.model';
+export * from './mapbox.model';

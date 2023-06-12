@@ -166,10 +166,7 @@
         </mat-button-toggle>
       </div>
     </div>
-    <div class="sbas-button-group gap-detected-area" *ngIf="this.isDisconnected" style="display: flex; place-items: center">
-        <mat-icon class="warn-icon" fontSet="material-icons-outlined">error_outline</mat-icon>
-        {{ 'GAPS_DETECTED' | translate }}
-      </div>
+
   </mat-card-subtitle>
 
   <div
@@ -184,7 +181,9 @@
     </div>
 
     <div id="sbas-chart-column" class="sbas-column-2">
-
+      <div class="gap-detected-area" *ngIf="this.isDisconnected">
+        <app-docs-modal class="warn-icon" icon="warning" url="https://docs.asf.alaska.edu/vertex/sbas/#gaps-detected-warning-message" tooltip="GAPS_DETECTED"></app-docs-modal>
+      </div>
       <app-sbas-chart
         [zoomIn$]="zoomInChart$"
         [zoomToFit$]="zoomToFitChart$"

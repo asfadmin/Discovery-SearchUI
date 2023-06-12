@@ -103,10 +103,7 @@
                               name="layerType"
                               (input)="onSetOpacity($event)"
                               color="primary"
-                              [disabled]="!(isBrowseOverlayEnabled$ | async)"
-                              [matTooltip]="(isBrowseOverlayEnabled$ | async) ? ('ADJUST_OVERLA_OPACITY' | translate) :
-                               'Product Overlays for current scene dataset not available'"
-                  >
+                              [disabled]="!(isBrowseOverlayEnabled$ | async)">
                   </mat-slider>
                 </mat-menu>
               </div>
