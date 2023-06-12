@@ -1,10 +1,7 @@
 <ng-container>
   <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
-    <div class="position-left attribute-box">
-      <a href="https://www.mapbox.com/about/maps/" target="_blank">© Mapbox</a>
-      <span class="text-spacing">|</span>
-      <a href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap contributors</a>
-    </div>
+
+    <a href="http://mapbox.com/about/maps" class='mapbox-logo' target="_blank">Mapbox</a>
 
     <div class="position-right attribute-box">
       © {{anio}} ASF
@@ -12,6 +9,14 @@
       <a [href]="asfWebsite.contact" target="_blank">{{ 'CONTACT' | translate }}</a>
       <span class="text-spacing">|</span>
       <a href="https://www.alaska.edu/nondiscrimination" target="_blank">{{ 'NON_DISCRIMINATION' | translate }}</a>
+
+      <span class="text-spacing">|</span>
+      <a href="https://www.mapbox.com/about/maps/" target="_blank">© Mapbox</a>
+      <span class="text-spacing">|</span>
+      <a href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap contributors</a>
+      <span class="text-spacing">|</span>
+      <a href="https://www.mapbox.com/map-feedback/" target="_blank"><strong>Improve this map</strong></a>
+
     </div>
     <div class="position-right--filler attribute-box">&nbsp;</div>
   </ng-container>
