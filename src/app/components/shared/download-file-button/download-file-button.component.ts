@@ -129,7 +129,12 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     const userAgent = new UAParser().getResult();
 
     if (userAgent.browser.name !== 'Chrome') {
-      this.classicDownload(this.url);
+      if (this.product.metadata.productType === 'BURST') {
+        this.burstFunctionality(this.product);
+      }
+      else {
+        this.classicDownload(this.url);
+      }
       return;
     }
 

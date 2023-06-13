@@ -1,7 +1,7 @@
 import {Component, Input, Output, EventEmitter, ViewChild} from '@angular/core';
 
 import * as models from '@models';
-import { EnvironmentService, ScreenSizeService } from '@services';
+import { ScreenSizeService } from '@services';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { DateRange } from '@models';
 
@@ -27,7 +27,6 @@ export class DatasetSelectorComponent {
 
   constructor(
     private screenSize: ScreenSizeService,
-    public env: EnvironmentService,
     
   ) {}
 

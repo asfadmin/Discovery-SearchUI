@@ -43,6 +43,7 @@ import SimpleGeometry from 'ol/geom/SimpleGeometry';
 import { SetGeocode } from '@store/filters';
 import ImageSource from 'ol/source/Image';
 import { Extent } from 'ol/extent';
+import { MultiPolygon } from 'ol/geom';
 
 @Injectable({
   providedIn: 'root'
@@ -411,6 +412,10 @@ export class MapService {
     this.wktService.fixPolygonAntimeridian(features, sarviewEvent.wkt);
 
     features.getGeometry().scale(radius);
+
+    if (features.getGeometry().getType() === 'MultiPolygon') {
+      features.setGeometry((features.getGeometry() as MultiPolygon).getPolygon(0))
+    }
     this.setDrawFeature(features);
   }
 
