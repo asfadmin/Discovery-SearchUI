@@ -20,7 +20,7 @@
       <div>
         <div class="dataset-list">
           <div *ngFor="let dataset of datasets; last as isLast">
-            <div class="menu-item mat-menu-item" (click)="onSelectionChange(dataset.id)" *ngIf="!(env.maturity === 'prod'  && dataset.id === 'SENTINEL-1 BURSTS')">
+            <div class="menu-item mat-menu-item" (click)="onSelectionChange(dataset.id)">
               <div class="menu-item-inner">
                 <div class="dataset--layout menu-item-content">
                   <div class="item-title">
@@ -58,7 +58,7 @@
                 </div>
               </div>
             </div>
-            <hr *ngIf="!isLast && !(env.maturity === 'prod'  && dataset.id === 'SENTINEL-1 BURSTS')" class="dataset-hr">
+            <hr *ngIf="!isLast " class="dataset-hr">
           </div>
         </div>
       </div>
