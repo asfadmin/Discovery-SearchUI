@@ -15,21 +15,24 @@
     <mat-progress-bar class="global-progress" mode="determinate" value="{{ dlQueueProgress }}"></mat-progress-bar>
   </div>
 
-  <div class="feedback-div header-link">
-    <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <mat-icon>comment</mat-icon> {{ 'FEEDBACK' | translate }}</a>
-  </div>
+  <div class="doc-feedback-div">
+    <div class="docs-div header-link"
+         [class.header-link-mobile]="breakpoint === breakpoints.MOBILE">
+      <app-docs-modal class="text-link"
+                      text="Docs"
+                      url="https://docs.asf.alaska.edu/vertex/manual/#downloads-queue">
+      </app-docs-modal>
+    </div>
 
-  <div class="docs-div header-link">
-    <app-docs-modal class="text-link"
-      text="Docs"
-      url="https://docs.asf.alaska.edu/vertex/manual/#downloads-queue">
-    </app-docs-modal>
+    <div class="feedback-div header-link"
+         [class.header-link-mobile]="breakpoint === breakpoints.MOBILE">
+      <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <mat-icon>comment</mat-icon> {{ 'FEEDBACK' | translate }}</a>
+    </div>
   </div>
 
   <div class="dl-close-x" (click)="onCloseDownloadQueue()">
-    <mat-icon></mat-icon>
+    <mat-icon>close</mat-icon>
   </div>
-
 </div>
 
 <div *ngIf="showDemWarning" class="dem-warning">
@@ -40,6 +43,7 @@
     {{ 'MORE' | translate }}...
   </a>
 </div>
+
 <div *ngIf="showRestrictedDatasetWarning" class="dem-warning">
   {{ 'PRODUCTS_IN_YOUR_QUEUE_MAY_REQUIRE_A_RESTRICTED_DATASET_AGREEMENT' |  translate }}
   <a class="more-link"
@@ -48,6 +52,7 @@
     {{ 'MORE' | translate }}...
   </a>
 </div>
+
 <mat-dialog-content class="dl-mat-dialog-content"
   [class.dl-mat-dialog-content-warn]="showDemWarning"
   [class.dl-mat-dialog-content-warn-mobile]="showDemWarning && breakpoint === breakpoints.MOBILE">
@@ -79,7 +84,7 @@
         <app-copy-to-clipboard
           *ngIf="!product.isUnzippedFile && !product.metadata.job && product.groupId !== 'SARViews'"
           style="margin-right: 15px;"
-          prompt="Copy File ID"
+          prompt="{{ 'COPY_FILE_ID' | translate}}"
           [value]="product.id"
         >
         </app-copy-to-clipboard>
@@ -92,7 +97,7 @@
           [useNewDownload]="true">
         </app-download-file-button>
 
-        <button (click)="onRemoveProduct(product)" matTooltip="Remove file" mat-icon-button>
+        <button (click)="onRemoveProduct(product)" matTooltip="{{ 'REMOVE_FILE' | translate }}" mat-icon-button>
           <mat-icon>close</mat-icon>
         </button>
       </mat-list-item>

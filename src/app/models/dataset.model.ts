@@ -51,6 +51,7 @@ export type DatasetPolarizations = string[];
 export type DatasetSubtypes = DatasetSubtype[];
 
 export const sentinel_1 = fromDatasets.sentinel_1;
+export const sentinel_1_bursts = fromDatasets.sentinel_1_bursts;
 export const alos = fromDatasets.alos;
 export const avnir = fromDatasets.avnir;
 export const sirc = fromDatasets.sirc;
@@ -65,6 +66,7 @@ export const seasat = fromDatasets.seasat;
 
 export const datasetList: Dataset[] = [
   fromDatasets.sentinel_1,
+  fromDatasets.sentinel_1_bursts,
   fromDatasets.alos,
   fromDatasets.avnir,
   fromDatasets.sirc,

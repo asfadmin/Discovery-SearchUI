@@ -39,7 +39,7 @@
           {{ numBaselineScenes$ | async }} {{ 'PRODUCT' | translate }}{{ (numBaselineScenes$ | async) === 1 ? '' : 's' }}
         </div>
 
-        <div class="space-filler"></div>
+        <div class="space-filler" *ngIf="!(searchType === SearchTypes.SARVIEWS_EVENTS && breakpoint === breakpoints.MOBILE)"></div>
 
         <div *ngIf="products" class="scenes-list-buttons--layout">
           <div *ngIf="canHideRawData"  class="list-button-group">
@@ -47,7 +47,7 @@
               <label>{{ 'RAW' | translate }}</label>
             </div>
             <div class="fx-row">
-              <div>
+              <div class="scenes-list-button-container">
                 <mat-button-toggle-group name="fx-empty layerType" class="mr-10">
                   <mat-button-toggle (click)="onToggleS1RawData()"
                     class="control-mat-button-toggle clickable noselect"
@@ -67,7 +67,7 @@
               <label>{{ 'EXPIRED' | translate }}</label>
             </div>
             <div class="fx-row">
-              <div>
+              <div class="scenes-list-button-container">
                 <mat-button-toggle-group name="layerType" class="fx-empty mr-10">
                   <mat-button-toggle (click)="onToggleExpiredData()"
                     class="control-mat-button-toggle clickable noselect"
@@ -87,7 +87,7 @@
               <label>{{ 'ZOOM' | translate }}</label>
             </div>
             <div class="fx-row">
-              <div>
+              <div class="scenes-list-button-container">
                 <mat-button-toggle-group name="layerType" class="fx-empty mr-10">
                   <mat-button-toggle (click)="onZoomToResults()"
                     class="control-mat-button-toggle clickable noselect"
@@ -106,7 +106,7 @@
               <label>{{ 'QUEUE' |  translate }}</label>
             </div>
             <div class="fx-row">
-              <div>
+              <div class="scenes-list-button-container">
                 <mat-button-toggle-group name="layerType" class="fx-empty mr-10 clickable noselect ">
                   <mat-button-toggle class="control-mat-button-toggle"
                     [matMenuTriggerFor]="addAllProducts"
@@ -125,7 +125,7 @@
               <label>{{ 'QUEUE' |  translate }}</label>
             </div>
             <div class="fx-row">
-              <div>
+              <div class="scenes-list-button-container">
                 <mat-button-toggle-group name="layerType" class="fx-empty mr-10 clickable noselect ">
                   <mat-button-toggle class="control-mat-button-toggle"
                     [matMenuTriggerFor]="QueueAllSARViewsProducts"
@@ -145,7 +145,7 @@
               <label>{{ 'ON_DEMAND' | translate }}</label>
             </div>
             <div class="fx-row">
-              <div>
+              <div class="scenes-list-button-container">
                 <mat-button-toggle-group name="layerType" class="fx-empty mr-10">
                   <mat-button-toggle class="control-mat-button-toggle clickable noselect"
                     [matMenuTriggerFor]="listAdd.addMenu"
@@ -165,10 +165,10 @@
 
           <div *ngIf="searchType === SearchTypes.BASELINE" class="fx-empty list-button-group">
             <div class="fx-row-center button-group-label">
-              <label>{{ 'EXPORT' |  translate }}</label>
+              <label>  {{ 'EXPORT' |  translate }}</label>
             </div>
             <div class="fx-row">
-              <div>
+              <div class="scenes-list-button-container">
                 <mat-button-toggle-group name="layerType" class="fx-empty mr-10">
                   <mat-button-toggle class="control-mat-button-toggle clickable noselect"
                     [matMenuTriggerFor]="ExportAll"
@@ -187,7 +187,7 @@
               <label>{{ 'EXPORT' |  translate }}</label>
             </div>
             <div class="fx-row">
-              <div>
+              <div class="scenes-list-button-container">
                 <mat-button-toggle-group name="layerType" class="fx-empty mr-10">
                   <mat-button-toggle class="control-mat-button-toggle clickable noselect"
                     [matMenuTriggerFor]="ExportAllSARViewsData"
@@ -207,7 +207,7 @@
               <label>{{ 'ON_DEMAND' | translate }}</label>
             </div>
             <div class="fx-row">
-              <div>
+              <div class="scenes-list-button-container">
                 <mat-button-toggle-group name="layerType" class="fx-empty mr-10">
                   <mat-button-toggle
                     [matMenuTriggerFor]="eventMonitoringOnDemand.addMenu"
@@ -245,7 +245,7 @@
               <label>{{ 'COPY' | translate }}</label>
             </div>
             <div class="fx-row">
-              <div>
+              <div class="scenes-list-button-container">
                 <mat-button-toggle-group name="layerType" class="fx-empty mr-10">
                   <mat-button-toggle class="control-mat-button-toggle clickable noselect"
                     [matMenuTriggerFor]="eventMonitoringOptions"
@@ -264,14 +264,15 @@
               <label>{{ 'PAIRS' | translate }}</label>
             </div>
             <div class="fx-row">
-              <div>
+              <div class="scenes-list-button-container">
                 <mat-button-toggle-group name="layerType" class="fx-empty mr-10">
                   <mat-button-toggle
                     (click)="onDownloadPairCSV()"
                     class="control-mat-button-toggle clickable noselect"
-                    matTooltip="Download Pair CSV">
+
+                    matTooltip="{{ 'DOWNLOAD_PAIR_CSV' | translate }}">
                     <mat-icon class="list-icon">
-get_app
+                      get_app
                     </mat-icon>
                   </mat-button-toggle>
                 </mat-button-toggle-group>

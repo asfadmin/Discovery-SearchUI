@@ -35,7 +35,7 @@
         {{ product.productTypeDisplay | truncate : 36 }}{{ product.productTypeDisplay | truncate : -4 : '' }}
       </span>
       <span *ngIf="product.productTypeDisplay.length <= 40">
-        {{ product.productTypeDisplay }}
+        {{ product.metadata.productType === 'BURST' ? product.id : product.productTypeDisplay }}
       </span>
       <span *ngIf="product.metadata.job && product.metadata.job.expiration_time">
         {{ expirationBadge(product.metadata.job.expiration_time) }}
@@ -61,7 +61,7 @@
     <a *ngIf="isHovered && !product.metadata.job" class="icon-margin">
       <app-copy-to-clipboard
         [value]="product.id"
-        prompt="Copy file ID">
+        prompt="{{ 'COPY_FILE_ID' | translate }}">
       </app-copy-to-clipboard>
     </a>
   </div>

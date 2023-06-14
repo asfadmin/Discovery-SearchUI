@@ -26,7 +26,7 @@
                   <div class="item-title">
                     {{ dataset.name }}
                     <span class="dataset-light-text">
-                        <span *ngIf="dataset.id == 'SENTINEL-1'" matTooltip="Available for On Demand Processing (HyP3)">
+                        <span *ngIf="dataset.id == 'SENTINEL-1'"matTooltip="Available for On Demand Processing (HyP3)">
                           <mat-icon class="hyp3-icon" svgIcon="hyp3"></mat-icon>
                         </span>
                         <span *ngIf="dataset.beta"><em> (beta) </em></span>
@@ -58,7 +58,7 @@
                 </div>
               </div>
             </div>
-            <hr *ngIf="!isLast" class="dataset-hr">
+            <hr *ngIf="!isLast " class="dataset-hr">
           </div>
         </div>
       </div>

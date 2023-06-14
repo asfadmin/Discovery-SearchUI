@@ -68,7 +68,7 @@
 
                 <div *ngIf="datasetForProduct.match(product) as dataset" style="margin-bottom: 12px;">
                   <a [href]="dataset.infoUrl" target="_blank" matTooltip="{{ 'DATASET' | translate }}" class="faint-text">
-                    {{ dataset.name }}
+                    {{ dataset.name | translate }}
                   </a> •
                   <span matTooltip="Frequency">{{ dataset.frequency }}</span>
                 </div>
@@ -125,12 +125,12 @@
             <mat-button-toggle class="control-mat-button-toggle sbas-criteria-button-toggle"
                                (click)="onToggleFiltersMenu()"
             >
-              SBAS Filters<mat-icon class="more-horiz">more_horiz</mat-icon>
+              {{ 'SBAS_FILTERS' | translate }}<mat-icon class="more-horiz">more_horiz</mat-icon>
             </mat-button-toggle>
           </mat-button-toggle-group>
           <div class="sbas-button-group gap-detected-area" *ngIf="this.isDisconnected" style="display: flex; place-items: center">
             <mat-icon class="warn-icon" fontSet="material-icons-outlined">error_outline</mat-icon>
-            Gaps Detected
+            <app-docs-modal text="{{ 'GAPS_DETECTED' | translate }}" url="https://docs.asf.alaska.edu/vertex/sbas/#gaps-detected-warning-message"></app-docs-modal>
           </div>
         </div>
       </mat-card-subtitle>

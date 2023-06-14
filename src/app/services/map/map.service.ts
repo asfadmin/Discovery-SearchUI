@@ -27,14 +27,13 @@ import { EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { Icon, Style } from 'ol/style';
-import IconAnchorUnits from 'ol/style/IconAnchorUnits';
 import Geometry from 'ol/geom/Geometry';
 import ImageLayer from 'ol/layer/Image';
 import LayerGroup from 'ol/layer/Group';
 import { PinnedProduct } from '@services/browse-map.service';
 import { BrowseOverlayService } from '@services';
 import { ViewOptions } from 'ol/View';
-import GeometryType from 'ol/geom/GeometryType';
+import {Type as GeometryType } from 'ol/geom/Geometry';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 import intersect from '@turf/intersect';
 import lineIntersect from '@turf/line-intersect';
@@ -44,6 +43,9 @@ import TileLayer from 'ol/layer/Tile';
 
 import SimpleGeometry from 'ol/geom/SimpleGeometry';
 import { SetGeocode } from '@store/filters';
+import ImageSource from 'ol/source/Image';
+import { Extent } from 'ol/extent';
+import { MultiPolygon } from 'ol/geom';
 
 @Injectable({
   providedIn: 'root'
@@ -56,9 +58,11 @@ export class MapService {
   private mapView: views.MapView;
   private map: Map;
   private scaleLine: ScaleLine;
-  private polygonLayer: VectorLayer;
-  private sarviewsEventsLayer: VectorLayer;
-  private browseImageLayer: ImageLayer;
+
+  private polygonLayer: VectorLayer<VectorSource>;
+  private sarviewsEventsLayer: VectorLayer<VectorSource>;
+  private browseImageLayer: ImageLayer<ImageSource>;
+
   private gridLinesVisible: boolean;
   private sarviewsFeaturesByID: {[id: string]: Feature} = {};
   private pinnedCollection: Collection<Layer> = new Collection<Layer>([], {unique: true});
@@ -205,7 +209,7 @@ export class MapService {
   }
 
 
-  public setLayer(layer: VectorLayer): void {
+  public setLayer(layer: VectorLayer<VectorSource>): void {
     if (!!this.polygonLayer) {
       this.map.removeLayer(this.polygonLayer);
     }
@@ -214,7 +218,7 @@ export class MapService {
     this.map.addLayer(this.polygonLayer);
   }
 
-  public setEventsLayer(layer: VectorLayer): void {
+  public setEventsLayer(layer: VectorLayer<VectorSource>): void {
       if (!!this.sarviewsEventsLayer) {
         this.map.removeLayer(this.sarviewsEventsLayer);
       }
@@ -253,8 +257,8 @@ export class MapService {
           const iconStyle = new Style({
             image: new Icon({
               anchor: [0.5, 46],
-              anchorXUnits: IconAnchorUnits.FRACTION,
-              anchorYUnits: IconAnchorUnits.PIXELS,
+              anchorXUnits: 'fraction',
+              anchorYUnits: 'pixels',
               src: `/assets/icons/${iconName}`,
               scale: 0.1,
               offset: [0, 10]
@@ -411,6 +415,10 @@ export class MapService {
     this.wktService.fixPolygonAntimeridian(features, sarviewEvent.wkt);
 
     features.getGeometry().scale(radius);
+
+    if (features.getGeometry().getType() === 'MultiPolygon') {
+      features.setGeometry((features.getGeometry() as MultiPolygon).getPolygon(0))
+    }
     this.setDrawFeature(features);
   }
 
@@ -420,7 +428,7 @@ export class MapService {
   }
 
 
-  public zoomToExtent(extent): void {
+  public zoomToExtent(extent: Extent): void {
     this.map
       .getView()
       .fit(extent, {
@@ -592,7 +600,7 @@ export class MapService {
     const scenesWithBrowse = scenes.filter(scene => scene.browses?.length > 0).slice(0, 10);
 
     const collection = scenesWithBrowse.reduce((prev, curr) =>
-      prev.concat(this.browseOverlayService.createNormalImageLayer(curr.browses[0], curr.metadata.polygon)), [] as ImageLayer[]);
+      prev.concat(this.browseOverlayService.createNormalImageLayer(curr.browses[0], curr.metadata.polygon)), [] as ImageLayer<ImageSource>[]);
 
     collection.forEach(element => {
       this.map.addLayer(element);

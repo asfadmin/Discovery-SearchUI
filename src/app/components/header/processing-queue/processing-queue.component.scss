@@ -135,6 +135,10 @@ $bottom-offset: 10px;
   cursor: pointer;
 }
 
+.close-x-mobile {
+  right: 32px;
+}
+
 .project-name {
   display: inline-block;
   font-size: 14px;
@@ -196,22 +200,28 @@ $bottom-offset: 10px;
   border-bottom-width: 1px;
 }
 
-.feedback-div {
-  position: absolute;
-  top: 53px;
-  right: 16px;
-  text-align: right;
-  float: right;
-  cursor: pointer;
+.doc-feedback-div {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -42px;
+  margin-right: 20px;
+}
+
+.doc-feedback-div-mobile {
+  margin-right: 36px;
 }
 
 .docs-div {
-  position: absolute;
-  top: 56px;
-  right: 140px;
-  text-align: right;
-  float: right;
   cursor: pointer;
+  flex: 0 1 auto;
+  margin-right: 20px;
+  margin-top: 2px;
+}
+
+.feedback-div {
+  cursor: pointer;
+  flex: 0 1 auto;
+  width: 133px;
 }
 
 .header-link {

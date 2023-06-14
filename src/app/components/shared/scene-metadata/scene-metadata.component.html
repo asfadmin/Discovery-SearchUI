@@ -44,7 +44,7 @@
     </mat-icon>
 
     <mat-menu #addBeamModeMenu="matMenu">
-      <button (click)="setBeamMode()" mat-menu-item>Add beam mode to search</button>
+      <button (click)="setBeamMode()" mat-menu-item>{{ 'ADD_BEAM_MODE_TO_SEARCH' | translate }}</button>
     </mat-menu>
   </li>
 
@@ -80,7 +80,10 @@
   </li>
 
   <li *ngIf="prop.isRelevant(p.FLIGHT_DIRECTION, dataset)">
-    <span class="v-mid"> <b>{{ 'FLIGHT_DIRECTION' | translate }} </b> • {{ scene.metadata.flightDirection }} </span>
+    <span class="v-mid"> <b>{{ 'FLIGHT_DIRECTION' | translate }} </b> •
+      {{ scene.metadata.flightDirection | uppercase }}
+<!--      {{ scene.metadata.flightDirection | uppercase | translate }}-->
+    </span>
     <mat-icon *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addFlightDirectionMenu"
       class="v-mid clickable">
@@ -150,6 +153,10 @@
     <b>{{ 'MATCHING_FRAMES' | translate }} </b> • {{ scene.metadata.stackSize }}
   </li>
 
+  <li *ngIf="hasValue(scene.metadata.pgeVersion)" class="detail-item-margin">
+    <b> {{ 'PGE_VERSION' | translate }} </b> • {{ scene.metadata.pgeVersion }}
+  </li>
+
   <li *ngIf="dataset.source as source" class="detail-item-margin">
     <a *ngIf="source.url" [href]="source.url" target="_blank"> {{'DATA_COURTESY_OF' | translate}} {{ dataset.source.name }}</a>
     <span *ngIf="!source.url" class="faint-text"> {{'DATA_COURTESY_OF' | translate}} {{ dataset.source.name }}</span>
@@ -162,3 +169,14 @@
   </li>
 
 </ul>
+
+<div *ngIf="!!scene.metadata.burst">
+<hr>
+<h3>SLC Burst Metadata</h3>
+  <app-burst-metadata *ngIf="!!scene.metadata.burst"
+  [burst]="scene.metadata.burst"
+  [groupID]="scene.groupId"
+  [sceneName]="scene.name"
+  [isGeoSearch]="isGeoSearch()">
+  </app-burst-metadata>
+</div>

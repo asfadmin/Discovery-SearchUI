@@ -50,7 +50,7 @@ $config: mat.define-typography-config();
 }
 
 .baseline-criteria-button-toggle-group {
-  flex: 0 1 149px !important;
+  flex: 0 1 auto !important;
   margin-top: -5px;
 }
 
@@ -116,7 +116,7 @@ $config: mat.define-typography-config();
   }
   text-align: center;
   font-size: 12px;
-  margin-left: -10px;
+  margin-left: auto;
   line-height: 15px;
 }
 
@@ -132,6 +132,7 @@ $config: mat.define-typography-config();
 
 .baseline-header--wrapper {
  display: flex;
+ column-gap: .4em;
 }
 
 .baseline-detail-view--layout {
@@ -156,4 +157,11 @@ $config: mat.define-typography-config();
   flex: 1 1 100%;
   box-sizing: border-box;
   max-width: 45%;
+}
+
+.scenes-list-button-container {
+  width: 100%;
+  mat-button-toggle-group {
+    margin: auto
+  }
 }

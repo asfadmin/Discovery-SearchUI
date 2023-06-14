@@ -122,7 +122,7 @@ $config: mat.define-typography-config();
 
   text-align: center;
   font-size: 12px;
-  margin-left: -10px;
+  margin-left: 0px;
   line-height: 15px;
 }
 
@@ -142,4 +142,12 @@ $config: mat.define-typography-config();
 
 .scenes-list-buttons--layout {
   display: flex;
+  column-gap: .4em;
+}
+
+.scenes-list-button-container {
+  width: 100%;
+  mat-button-toggle-group {
+    margin: auto
+  }
 }

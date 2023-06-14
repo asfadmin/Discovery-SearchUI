@@ -19,7 +19,8 @@
 
   <button mat-menu-item class="control-mat-button-toggle"
     (click)="onNewLayerType(layerTypes.STREET)"
-    [value]="layerTypes.STREET">
+    [value]="layerTypes.STREET"
+  >
     <mat-icon class="control-icon">directions_car</mat-icon>
     {{ 'STREET_LAYER' |  translate }}
   </button>
@@ -28,8 +29,12 @@
 
   <button mat-menu-item
     class="control-mat-checkbox-toggle"
-    (click)="onToggleCoherenceLayer()">
+    (click)="onToggleOverviewMap(overviewMapVisible)">
+  </button>
 
+  <button mat-menu-item
+    class="control-mat-checkbox-toggle"
+    (click)="onToggleCoherenceLayer()">
     <mat-checkbox class="checkbox"
       [disabled]="true"
       [checked]="hasCoherenceLayer"></mat-checkbox>
@@ -38,22 +43,10 @@
 
   <button mat-menu-item
     class="control-mat-checkbox-toggle"
-    (click)="onToggleOverviewMap(overviewMapVisible)">
-
-    <mat-checkbox class="checkbox"
-      [disabled]="true"
-      [checked]="overviewMapVisible"></mat-checkbox>
-    {{ 'OVERVIEW_MAP' |  translate }}
-  </button>
-
-  <button mat-menu-item
-    class="control-mat-checkbox-toggle"
     (click)="onToggleGridlines()">
-
     <mat-checkbox class="checkbox"
       [disabled]="true"
       [checked]="gridActive"></mat-checkbox>
     {{ 'GRIDLINES_OVERLAY' |  translate }}
   </button>
-
 </mat-menu>

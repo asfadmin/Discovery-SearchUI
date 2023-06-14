@@ -1,6 +1,6 @@
 <div>
   <div class="header">
-    <div style="font-size: 18px;">Filters</div>
+    <div style="font-size: 18px;">{{ 'FILTERS' | translate }}</div>
 
     <button mat-mini-fab
       matTooltip="Search based on subscription filters"
@@ -20,7 +20,7 @@
       <b>Search Area:</b> {{ showSearchAreaType(filters.intersectsWith) }}
       <app-copy-to-clipboard
       [value]="filters.intersectsWith"
-      [prompt]="'Copy Search Area'"
+      [prompt]="'COPY_SEARCH_AREA' | translate "
       [toast]="false"
       style="margin: 0 3px;"
       class="clipboard-icon">

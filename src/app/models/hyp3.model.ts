@@ -105,6 +105,7 @@ export enum InSarGammaLooks {
 
 export enum RtcGammaResolution {
   THIRTY = '30',
+  TWENTY = '20',
   TEN = '10'
 }
 

@@ -23,7 +23,7 @@
 
         <app-copy-to-clipboard
           [value]="getEventID()"
-          [prompt]="'Copied Event ID'"
+          [prompt]=" 'COPIED_EVENT_ID' | translate"
           style="margin: 0 3px;"
           class="clipboard-icon">
         </app-copy-to-clipboard>
@@ -56,11 +56,11 @@
     <div *ngIf="scene">
       <mat-card-header>
         <mat-card-title class="detail-card-header">
-          <span>{{ scene.name }}</span>
+          <span>{{ scene.metadata.productType === 'BURST' ? scene.id : scene.name }}</span>
 
           <app-copy-to-clipboard
             [value]="scene.name"
-            prompt="Copy scene name"
+            prompt="{{'COPY_SCENE_NAME' | translate}}"
             class="clipboard-icon"
           ></app-copy-to-clipboard>
         </mat-card-title>
@@ -273,7 +273,7 @@
   && breakpoint === breakpoints.FULL)
   }
   ">
-  <div class="search-button-label">{{'SEARCH' | translate |uppercase }}:</div>
+  <div class="search-button-label">{{ 'SEARCH' | translate | uppercase }}:</div>
   <div *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS"
     [matTooltip]="
       hasBaseline
@@ -316,7 +316,8 @@
     searchType === searchTypes.SARVIEWS_EVENTS ? ( 'GEOGRAPHIC_SEARCH_BASED_ON_EVENT_POLYGON' | translate ) : !(
       !(prop.isRelevant(p.PATH, dataset) &&
         prop.isRelevant(p.FRAME, dataset)) ||
-      dataset?.id === 'UAVSAR'
+      dataset?.id === 'UAVSAR'||
+      dataset?.id === 'SENTINEL-1 BURSTS'
     ) ? ('GEOGRAPHIC_SEARCH_BASED_ON_THIS_SCENE_S_PATH_FRAME' | translate) : ( 'NOT_ABLE_TO_SELECT_SIMILAR_SCENES_FROM_THIS_SOURCE' | translate)">
 
     <button
@@ -326,7 +327,8 @@
       !(
       (prop.isRelevant(p.PATH, dataset) &&
       prop.isRelevant(p.FRAME, dataset)) ||
-      dataset?.id === 'UAVSAR'
+      dataset?.id === 'UAVSAR'||
+      dataset?.id === 'SENTINEL-1 BURSTS'
       )
       "
       (click)="moreLikeThis()"

@@ -7,10 +7,10 @@
       <button
         [matMenuTriggerFor]="searchTypeMenu" (onMenuOpen)="onSearchTypeMenuOpen()"
         class="button-menu-trigger" color="basic"
-        matTooltip="{{ searchType | translate }}"
+        matTooltip="{{ searchTranslation[searchType] | translate }}"
         mat-button>
         <div class="button-text">
-          {{ searchType | translate }}
+          {{ searchTranslation[searchType] | translate }}
           <span class="mat-select-arrow"></span>
         </div>
       </button>
@@ -135,7 +135,7 @@
                 </app-docs-modal>
               </mat-card-actions>
             </div>
-            <div class="fx25 menu-item-aside">
+            <div class="fx-25 menu-item-aside">
               <span class="material-icons-outlined menu-item-icon">volcano</span>
             </div>
           </div>
@@ -198,10 +198,10 @@
           <div class="menu-item-inner">
             <div class="fx-75 menu-item-content">
               <div class="item-title" (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)">
-                {{ dataset.name }}
+                {{ dataset.name | translate }}
               </div>
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                {{ dataset.info }}
+                {{ dataset.info | translate}}
               </div>
               <mat-card-actions>
                 <button class="blue-link" (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)" mat-button>{{ 'MORE_INFO' | translate }}</button>
