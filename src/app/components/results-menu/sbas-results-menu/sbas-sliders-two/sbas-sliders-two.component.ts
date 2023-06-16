@@ -161,7 +161,7 @@ export class SbasSlidersTwoComponent implements OnInit {
     this.slider = noUiSlider.create(filterRef.nativeElement, {
       orientation: 'horizontal',
       direction: 'ltr',
-      start: [1, 48],
+      start: [1, 12],
       behaviour: 'tap-drag',
       tooltips: false,
       connect: true,
