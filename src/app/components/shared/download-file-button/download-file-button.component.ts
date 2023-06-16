@@ -17,7 +17,7 @@ import { AppState } from '@store';
 
 import * as userStore from '@store/user';
 import { SubSink } from 'subsink';
-import { AuthService } from '@services';
+import { AuthService, NotificationService } from '@services';
 import {
   HttpClient, HttpEventType,
 } from '@angular/common/http';
@@ -49,7 +49,8 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     private downloadService: DownloadService,
     private store$: Store<AppState>,
     private authService: AuthService,
-    private http: HttpClient
+    private http: HttpClient,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -195,6 +196,12 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
           }
           this.burstSubscription.unsubscribe();
           return false;
+        } else {
+          
+        if(!this.downloadService.hasDownloadedBursts && !handle) {
+          this.downloadService.hasDownloadedBursts = true;
+          this.notificationService.info('You may need to enable popups on this site due to needing to extract the burst before downloading.', 'Burst Extraction');
+        }
         }
         return true;
       }),
