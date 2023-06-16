@@ -22,6 +22,7 @@ export class DownloadService {
     private notificationService: NotificationService,
     private store$: Store<AppState>
   ) { }
+  public hasDownloadedBursts = false;
 
   classicResp: Observable<DownloadStatus>;
 
