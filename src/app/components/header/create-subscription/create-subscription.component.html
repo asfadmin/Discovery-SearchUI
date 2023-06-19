@@ -58,7 +58,7 @@
   <div class="content-block">
     <div class="content-area">
       <mat-stepper (selectionChange)="onSelectionChange()" #stepper>
-        <mat-step [stepControl]="searchOptionsFormGroup" errorMessage="Missing required option">
+        <mat-step [stepControl]="searchOptionsFormGroup" errorMessage="{{ 'MISSING_REQUIRED_OPTION' | translate}}">
           <ng-template matStepLabel>
             <span *ngIf="breakpoint !== breakpoints.MOBILE" class="searchOptions">{{ 'SEARCH_OPTIONS' | translate }}</span>
           </ng-template>
@@ -66,7 +66,8 @@
           <div>
             <div style="margin-bottom: 5px;">
               <b>{{ 'SUBSCRIPTION_DATE' |  translate }}</b>
-              <div *ngIf="errors.dateError" class="step-error"> *{{ errors.dateError }}</div>
+              <div *ngIf="errors.dateError" class="step-error"> *{{ errors.dateError | translate  }}</div>
+
             </div>
             <app-subscription-date-range
               (newStart)="onNewStartDate($event)"
@@ -79,7 +80,7 @@
           <div style="margin-bottom: 25px;">
             <div style="margin-bottom: 25px;">
               <b>{{ 'AOI_OPTIONS' |  translate }}</b>
-              <div *ngIf="errors.polygonError" class="step-error"> *{{ errors.polygonError }}</div>
+              <div *ngIf="errors.polygonError" class="step-error"> *{{ errors.polygonError | translate }}</div>
             </div>
             <app-aoi-options [showHeader]="false"></app-aoi-options>
           </div>
@@ -202,7 +203,7 @@
           </app-processing-options>
         </mat-step>
 
-        <mat-step [stepControl]="reviewFormGroup" [errorMessage]="errors.projectNameError">
+        <mat-step [stepControl]="reviewFormGroup" [errorMessage]="errors.projectNameError | translate">
           <ng-template *ngIf="breakpoint !== breakpoints.MOBILE"  matStepLabel>{{ 'REVIEW' |  translate }}</ng-template>
 
           <div *ngIf="subEstimate !== null" style="margin-bottom: 5px;">
@@ -213,7 +214,7 @@
 
           <div>
             <b>{{ 'NAME' |  translate }}:</b>
-            <div *ngIf="errors.projectNameError" class="step-error"> *{{ errors.projectNameError }}</div>
+            <div *ngIf="errors.projectNameError" class="step-error"> *{{ errors.projectNameError  | translate }}</div>
             <app-project-name-selector [processName]="true"></app-project-name-selector>
           </div>
 

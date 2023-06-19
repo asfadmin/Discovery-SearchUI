@@ -863,5 +863,18 @@
 	"SARVIEWS_EVENTS": "Sarviews Events",
 	"SEA_ICE_MEASURES": "Sea Ice MEaSUREs",
 	"TO": "to",
-	"WETLANDS_MEASURES": "Wetlands MEaSUREs"
+	"WETLANDS_MEASURES": "Wetlands MEaSUREs",
+	"ACQUISITION_DATE": "Acquisition Date",
+	"END_DATE_IS_BEFORE_START_DATE": "End date is before start dates",
+	"END_DATE_REQUIRED": "End date required",
+	"EXTRA_JOB": "extra job",
+	"MORE_": "MORE",
+	"NO_PROCESSING_OPTIONS_FOR": "No processing options for",
+	"START_AND_END_DATE_REQUIRED": "Start and end date required",
+	"START_DATE_REQUIRED": "Start date required",
+	"UNLIMITED": "Unlimited",
+	"AREA_OF_INTEREST_PATH_OR_FRAME_REQUIRED": "area of interest, path or frame required (will use polygon from current search)",
+	"MISSING_REQUIRED_OPTION": "Missing required option",
+	"PROJECT_NAME_IS_REQUIRED": "Project Name is required",
+	"SUBSCRIPTION_SUBMITTED": "subscription submitted"
 }

@@ -277,17 +277,17 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
     this.searchOptionErrorsFound = true;
 
     if (!this.dateRange.start && !this.dateRange.end) {
-      this.errors.dateError = 'Start and end date required';
+      this.errors.dateError = 'START_AND_END_DATE_REQUIRED';
     } else if (!this.dateRange.start) {
-      this.errors.dateError = 'Start date required';
+      this.errors.dateError = 'START_DATE_REQUIRED';
     } else if (!this.dateRange.end) {
-      this.errors.dateError = 'End date required';
+      this.errors.dateError = 'END_DATE_REQUIRED';
     } else if (this.dateRange.end < this.dateRange.start) {
-      this.errors.dateError = 'End date is before start date';
+      this.errors.dateError = 'END_DATE_IS_BEFORE_START_DATE';
     }
 
     if (!this.polygon && this.frame === null && this.path === null) {
-      this.errors.polygonError = 'Area of interest, path or frame required (will use polygon from current search)';
+      this.errors.polygonError = 'AREA_OF_INTEREST_PATH_OR_FRAME_REQUIRED';
     }
 
     if (this.errors.dateError) {
@@ -308,7 +308,7 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
 
   public checkReviewOptions() {
     if (!this.projectName) {
-      this.errors.projectNameError = 'Project Name is required';
+      this.errors.projectNameError = 'PROJECT_NAME_IS_REQUIRED';
       this.reviewFormGroup.controls['projectName'].setValue(2);
       this.reviewErrorsFound = true;
     } else {
@@ -350,7 +350,7 @@ export class CreateSubscriptionComponent implements OnInit, OnDestroy {
     this.hyp3.submitSubscription$({
       subscription: sub, validate_only: this.validateOnly
     }).subscribe(_ => {
-      this.notificationService.info(this.projectName + ' subscription submitted');
+      this.notificationService.info(this.projectName + 'SUBSCRIPTION_SUBMITTED');
       this.dialogRef.close();
     });
 

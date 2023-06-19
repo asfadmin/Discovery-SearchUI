@@ -863,5 +863,18 @@
 	"SARVIEWS_EVENTS": "Eventos Sarviews",
 	"SEA_ICE_MEASURES": "Hielo Marino MEaSUREs",
 	"TO": "de",
-	"WETLANDS_MEASURES": "Humedales MEaSUREs"
+	"WETLANDS_MEASURES": "Humedales MEaSUREs",
+	"ACQUISITION_DATE": "Fecha de Adquisición",
+	"END_DATE_IS_BEFORE_START_DATE": "La fecha de finalización es anterior a las fechas de inicio",
+	"END_DATE_REQUIRED": "Fecha de finalización requerida",
+	"EXTRA_JOB": "trabajo extra",
+	"MORE_": "MÁS",
+	"NO_PROCESSING_OPTIONS_FOR": "No hay opciones de procesamiento para",
+	"START_AND_END_DATE_REQUIRED": "Fecha de inicio y finalización requerida",
+	"START_DATE_REQUIRED": "Fecha de inicio requerida",
+	"UNLIMITED": "Ilimitado",
+	"AREA_OF_INTEREST_PATH_OR_FRAME_REQUIRED": "área de interés, ruta o cuadro requerido (se usará el polígono de la búsqueda actual)",
+	"MISSING_REQUIRED_OPTION": "Falta la opción requerida",
+	"PROJECT_NAME_IS_REQUIRED": "Se requiere el nombre del proyecto",
+	"SUBSCRIPTION_SUBMITTED": "suscripción enviada"
 }

@@ -197,6 +197,22 @@
 						</translations>
 					</concept_node>
 					<concept_node>
+						<name>ACQUISITION_DATE</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>ACTIVE_EVENTS_ONLY</name>
 						<description/>
 						<comment/>
@@ -982,6 +998,22 @@
 					</concept_node>
 					<concept_node>
 						<name>AREA_OF_INTEREST_OPTIONS</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>AREA_OF_INTEREST_PATH_OR_FRAME_REQUIRED</name>
 						<description/>
 						<comment/>
 						<default_text/>
@@ -3653,6 +3685,38 @@
 						</translations>
 					</concept_node>
 					<concept_node>
+						<name>END_DATE_IS_BEFORE_START_DATE</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>END_DATE_REQUIRED</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>ENTER_A_NAME_FOR_YOUR_SEARCH_IN_THE_SAVE_SEARCH_DIALOG</name>
 						<description/>
 						<comment/>
@@ -3974,6 +4038,22 @@
 					</concept_node>
 					<concept_node>
 						<name>EXPORT_PYTHON</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>EXTRA_JOB</name>
 						<description/>
 						<comment/>
 						<default_text/>
@@ -6933,7 +7013,39 @@
 						</translations>
 					</concept_node>
 					<concept_node>
+						<name>MISSING_REQUIRED_OPTION</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>MORE</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>MORE_</name>
 						<description/>
 						<comment/>
 						<default_text/>
@@ -7382,6 +7494,22 @@
 					</concept_node>
 					<concept_node>
 						<name>NO_POLARIZATIONS_TO_SELECT</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>NO_PROCESSING_OPTIONS_FOR</name>
 						<description/>
 						<comment/>
 						<default_text/>
@@ -8950,6 +9078,22 @@
 					</concept_node>
 					<concept_node>
 						<name>PROJECT_NAME</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>PROJECT_NAME_IS_REQUIRED</name>
 						<description/>
 						<comment/>
 						<default_text/>
@@ -11493,6 +11637,22 @@
 						</translations>
 					</concept_node>
 					<concept_node>
+						<name>START_AND_END_DATE_REQUIRED</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>START_DATE</name>
 						<description/>
 						<comment/>
@@ -11510,6 +11670,22 @@
 					</concept_node>
 					<concept_node>
 						<name>START_DATE_END_DATE_AND_THE_SEASONAL_RANGE_SEASON_START_DAY_SEASON_END_DAY</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>START_DATE_REQUIRED</name>
 						<description/>
 						<comment/>
 						<default_text/>
@@ -11798,6 +11974,22 @@
 					</concept_node>
 					<concept_node>
 						<name>SUBSCRIPTION_OPTIONS</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>SUBSCRIPTION_SUBMITTED</name>
 						<description/>
 						<comment/>
 						<default_text/>
@@ -12470,6 +12662,22 @@
 					</concept_node>
 					<concept_node>
 						<name>UNDO</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>UNLIMITED</name>
 						<description/>
 						<comment/>
 						<default_text/>

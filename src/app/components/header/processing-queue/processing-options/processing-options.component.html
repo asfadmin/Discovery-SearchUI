@@ -4,7 +4,7 @@
       <ng-container *ngIf="selectedJobType.id === jobType.id">
         <ng-container *ngIf="jobType.options.length === 0">
           <div class="no-processing-options">
-            <h3>No processing options for {{ jobType.name }}</h3>
+            <h3>{{ 'NO_PROCESSING_OPTIONS_FOR' | translate }}{{ jobType.name }}</h3>
           </div>
         </ng-container>
 
