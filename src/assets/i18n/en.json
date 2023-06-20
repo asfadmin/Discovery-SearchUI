@@ -838,7 +838,6 @@
   "WINDOW_DOCUMENT_SCRIPT_DATA_LAYER_GTM_WNP_7_MLF": "})(window,document,'script','dataLayer','GTM-WNP7MLF');",
   "WINDOW_LOCATION_REDIRECT": "window.location = redirect;",
   "WITHIN_THE_DOWNLOAD_QUEUE_THE_LIST_OF_FILES_YOU_HAVE_SELECTED_TO_DOWNLOAD": "Within the download queue, the list of files you have selected to download",
-  "XXX_ANDY_TEST": "This is a test that can be deleted.",
   "YOU_CAN_EXECUTE_THE_SEARCH_AND_VERIFY_IT_PERFORMS_AS_YOU_EXPECT": "You can execute the search and verify it performs as you expect.",
   "YOU_CAN_HAVE_ASF_PERFORM_SAR_PROCESSING_FOR_YOU_ON_DEMAND_THE_ON_DEMAND_SYSTEM": "You can have ASF perform SAR processing for you On Demand. The On Demand system",
   "YOU_CAN_SUBMIT_FOR_PROCESSING": "you can submit for processing.",
@@ -862,5 +861,6 @@
   "ZOOM_TO_EVENT": "Zoom to event",
   "ZOOM_TO_FIT": "Zoom To Fit",
   "ZOOM_TO_RESULTS": "Zoom to results",
-  "ZOOM_TO_SCENE": "Zoom to scene"
+  "ZOOM_TO_SCENE": "Zoom to scene",
+  "XXX_ANDY_TESTING2": "This is a test to see if GitHub commits will force an upload to Phrase Strings"
 }
