@@ -1,0 +1,14 @@
+phrase:
+  host: https://api.us.app.phrase.com/v2
+  access_token: cbf134eaf8c40dd8a7f2747f4506a5d60086dfff76ac81766151e22808433335
+  project_id: a1f4202162d6aef2fcf9c83d4ff56672
+  push:
+    sources:
+    - file: ./src/assets/i18n/en.json
+      params:
+        file_format: i18next
+  pull:
+    targets:
+    - file: ./scr/assets/i18n.en.json
+      params:
+        file_format: i18next
