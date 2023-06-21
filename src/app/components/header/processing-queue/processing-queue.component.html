@@ -125,7 +125,7 @@
     <div #contentTopArea class="content-top-area">
       <div class="jobs-detail">
         <div *ngIf="selectedJobTypeId" style="margin-right: 10px;">
-          <p>
+          <p style="text-wrap: balance;">
             {{ hyp3JobTypes[selectedJobTypeId].description | translate }}
             <a target="_blank" [href]="hyp3JobTypes[selectedJobTypeId].infoUrl">[MORE]</a>
           </p>
@@ -199,7 +199,11 @@
     [value]="progress">
   </mat-progress-bar>
 
-  <div class="w100 hyp3-footer">
+  <div class="w100 hyp3-footer" 
+  [ngStyle]="{
+    'justify-content': breakpoint == breakpoints.MOBILE ? 'inherit' : 'center'
+  }"
+  >
     <div class="footer-clear">
       <button *ngIf="previousQueue === null"
         [matMenuTriggerFor]="clearJobQueue"
