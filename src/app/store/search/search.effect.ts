@@ -71,8 +71,8 @@ export class SearchEffects {
     ofType<SetSearchAmount>(SearchActionType.SET_SEARCH_AMOUNT),
     withLatestFrom(this.store$.select(getSearchType)),
     map(([action, searchType]) =>
-      (action.payload > 0 
-      || searchType === SearchType.BASELINE 
+      (action.payload > 0
+      || searchType === SearchType.BASELINE
       || searchType === SearchType.SBAS) ? new EnableSearch() : new DisableSearch()
     )
   ));
@@ -88,7 +88,7 @@ export class SearchEffects {
   public makeSearches = createEffect(() => this.actions$.pipe(
     ofType(SearchActionType.MAKE_SEARCH),
     withLatestFrom(this.store$.select(getSearchType)),
-    switchMap(([_, searchType]) => 
+    switchMap(([_, searchType]) =>
     {
       if (searchType === SearchType.SARVIEWS_EVENTS) {
         return this.sarviewsEventsQuery$();
