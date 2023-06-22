@@ -493,7 +493,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private updateMaxSearchResults(): void {
     const checkAmount = this.searchParams$.getlatestParams().pipe(
-      filter(_ => this.searchType !== SearchType.SARVIEWS_EVENTS),
+      filter(_ => this.searchType !== SearchType.SARVIEWS_EVENTS 
+        && this.searchType !== SearchType.BASELINE 
+        && this.searchType !== SearchType.SBAS),
       debounceTime(200),
       map(params => ({...params, output: 'COUNT'})),
       tap(_ =>
