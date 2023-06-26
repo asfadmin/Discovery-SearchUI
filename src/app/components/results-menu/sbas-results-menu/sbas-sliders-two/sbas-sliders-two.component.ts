@@ -9,7 +9,7 @@ import { Store } from '@ngrx/store';
 import * as filtersStore from '@store/filters';
 
 import { SubSink } from 'subsink';
-import { ScreenSizeService } from '@services';
+import { ScreenSizeService, MapService } from '@services';
 import * as models from '@models';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 
@@ -33,12 +33,13 @@ export class SbasSlidersTwoComponent implements OnInit {
   public temporalTickInterval = 7;
 
   public tempSlider;
+  public slider;
   public temporal: number;
   public perpendicular: number;
   public daysRange: models.Range<number> = {start: 1, end: 48};
   public daysValues$ = new Subject<number[]>();
   public metersValues$ = new Subject<number[]>();
-  public slider;
+  public hasCoherenceLayer = false;
 
   private firstLoad = true;
   private firstMeterLoad = true;
@@ -53,16 +54,23 @@ export class SbasSlidersTwoComponent implements OnInit {
   constructor(
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
+    private mapService: MapService,
     fb: UntypedFormBuilder
   ) {
     this.meterDistanceControl = new UntypedFormControl(this.perpendicular, Validators.min(-999));
     this.daysControl = new UntypedFormControl(this.daysRange, Validators.min(0));
 
-      this.options = fb.group({
-        color: this.colorControl,
-        meterDistance: this.meterDistanceControl,
-        days: this.daysControl,
+    this.options = fb.group({
+      color: this.colorControl,
+      meterDistance: this.meterDistanceControl,
+      days: this.daysControl,
     });
+
+    this.subs.add(
+      this.mapService.hasCoherenceLayer$.subscribe(
+        hasLayer => this.hasCoherenceLayer = hasLayer
+      )
+    );
   }
 
   ngOnInit(): void {
@@ -84,8 +92,8 @@ export class SbasSlidersTwoComponent implements OnInit {
       debounceTime(500),
       distinctUntilChanged()
     ).subscribe((_: number) => {
-      this.metersValues$.next([this.perpendicular, null] );
-    });
+        this.metersValues$.next([this.perpendicular, null] );
+      });
 
     this.subs.add(
       this.screenSize.breakpoint$.subscribe(breakpoint => this.breakpoint = breakpoint )
@@ -154,6 +162,10 @@ export class SbasSlidersTwoComponent implements OnInit {
   public updateDaysOffset() {
     this.options.controls.days.setValue(this.daysRange);
     this.daysValues$.next([this.daysRange.start, this.daysRange.end] );
+  }
+
+  public onToggleCoherenceLayer(): void {
+    this.mapService.toggleCoherenceLayer();
   }
 
   private makeDaysSlider$(filterRef: ElementRef): {slider: any, daysValues: Observable<number[]>} {

@@ -5,6 +5,11 @@
   <div class="sbas-slider-two-wrapper">
     <div class="sbas-column-1">
       <div>
+        <button (click)="onToggleCoherenceLayer()" mat-flat-button color="primary">
+          {{ !hasCoherenceLayer ? 'Check' : 'Hide' }} Coherence
+        </button>
+      </div>
+      <div>
         <span class="sbas-label">{{ 'DAYS' | translate }}: </span> {{daysRange.start}} {{ 'TO' | translate }} {{daysRange.end}}
       </div>
       <div>
@@ -22,7 +27,6 @@
 <!---->
 <div [hidden]="breakpoint != breakpoints.MOBILE">
   <div class="sbas-slider-two-wrapper-mobile">
-
     <mat-form-field appearance="fill" [color]="colorControl.value" [style.width.px]=125>
       <mat-label>Meters</mat-label>
       <input #meterInputField
@@ -34,6 +38,7 @@
              (input)="updatePerpendicular()">
       <mat-error *ngIf="meterDistanceControl.invalid">{{ 'INVALID_BASELINE' | translate }}</mat-error>
     </mat-form-field>
+
     <div class="field-spacing"></div>
 
     <mat-form-field appearance="fill" [color]="colorControl.value" [style.width.px]=125>
@@ -46,7 +51,9 @@
              (input)="updateDaysOffset()">
       <mat-error *ngIf="daysControl.invalid">{{ 'INVALID_START_DAY' | translate }}</mat-error>
     </mat-form-field>
+
     <div class="field-spacing"></div>
+
     <mat-form-field appearance="fill" [color]="colorControl.value" [style.width.px]=125>
       <mat-label>{{ 'MAX_DAYS' | translate }}</mat-label>
       <input [(ngModel)]="daysRange.end"

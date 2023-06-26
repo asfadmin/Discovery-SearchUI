@@ -467,8 +467,6 @@ export class MapService {
         this.focusLayer,
         this.selectedLayer,
         this.mapView?.gridlines,
-        this.pinnedProducts,
-        this.layerService.getCoherenceLayer()
       ],
       target: 'map',
       view: this.mapView.view,

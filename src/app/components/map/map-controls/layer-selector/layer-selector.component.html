@@ -30,6 +30,11 @@
   <button mat-menu-item
     class="control-mat-checkbox-toggle"
     (click)="onToggleOverviewMap(overviewMapVisible)">
+      <mat-checkbox class="checkbox"
+                    [disabled]="true"
+                    [checked]="overviewMapVisible">
+    </mat-checkbox>
+      {{ 'OVERVIEW_MAP' |  translate }}
   </button>
 
   <button mat-menu-item
@@ -37,7 +42,8 @@
     (click)="onToggleCoherenceLayer()">
     <mat-checkbox class="checkbox"
       [disabled]="true"
-      [checked]="hasCoherenceLayer"></mat-checkbox>
+      [checked]="hasCoherenceLayer">
+    </mat-checkbox>
     {{ 'COHERENCE_LAYER' |  translate }}
   </button>
 
@@ -46,7 +52,8 @@
     (click)="onToggleGridlines()">
     <mat-checkbox class="checkbox"
       [disabled]="true"
-      [checked]="gridActive"></mat-checkbox>
+      [checked]="gridActive">
+    </mat-checkbox>
     {{ 'GRIDLINES_OVERLAY' |  translate }}
   </button>
 </mat-menu>
