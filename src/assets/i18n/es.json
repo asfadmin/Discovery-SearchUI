@@ -286,6 +286,7 @@
 	"Geographic Search": "Búsqueda Geográfica",
 	"GEOGRAPHIC_SEARCH": "Búsqueda Geográfica",
 	"GEOGRAPHIC_SEARCH_ALLOWS_YOU_TO_SEARCH_FOR_DATA_BASED_UPON_A_GEOGRAPHIC_LOCATION": "La búsqueda geográfica le permite buscar datos basados ​​en una ubicación geográfica.",
+	"GEOGRAPHIC_SEARCH_BASED_ON_BURST": "Búsqueda geográfica basada en el ID de Burst Completa",
 	"GEOGRAPHIC_SEARCH_BASED_ON_EVENT_POLYGON": "Búsqueda geográfica basada en el polígono del evento",
 	"GEOGRAPHIC_SEARCH_BASED_ON_THIS_SCENE_S_PATH_FRAME": "Búsqueda geográfica basada en la ruta/marco de esta(s) escena(s)",
 	"GEOGRAPHIC_SEARCH_POLYGON_SCALE": "Escala poligonal de búsqueda geográfica",

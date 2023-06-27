@@ -286,6 +286,7 @@
 	"Geographic Search": "Geographic Search",
 	"GEOGRAPHIC_SEARCH": "Geographic Search",
 	"GEOGRAPHIC_SEARCH_ALLOWS_YOU_TO_SEARCH_FOR_DATA_BASED_UPON_A_GEOGRAPHIC_LOCATION": "Geographic search allows you to search for data based upon a geographic location.",
+	"GEOGRAPHIC_SEARCH_BASED_ON_BURST": "Geographic search based on this burst product's full burst ID",
 	"GEOGRAPHIC_SEARCH_BASED_ON_EVENT_POLYGON": "Geographic search based on event polygon",
 	"GEOGRAPHIC_SEARCH_BASED_ON_THIS_SCENE_S_PATH_FRAME": "Geographic search based on this scene's path/frame",
 	"GEOGRAPHIC_SEARCH_POLYGON_SCALE": "Geographic Search Polygon Scale",
