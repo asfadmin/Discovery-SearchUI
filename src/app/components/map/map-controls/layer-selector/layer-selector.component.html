@@ -37,14 +37,59 @@
       {{ 'OVERVIEW_MAP' |  translate }}
   </button>
 
+
   <button mat-menu-item
     class="control-mat-checkbox-toggle"
-    (click)="onToggleCoherenceLayer()">
+    (click)="clearCoherenceLayer()"
+    [matMenuTriggerFor]="coherenceLayers">
     <mat-checkbox class="checkbox"
       [disabled]="true"
-      [checked]="hasCoherenceLayer">
+      [checked]="coherenceLayerMonths">
     </mat-checkbox>
     {{ 'COHERENCE_LAYER' |  translate }}
+
+    <mat-menu #coherenceLayers="matMenu">
+      <button (click)="onToggleCoherenceLayer('DEC_JAN_FEB')"
+        class="control-mat-checkbox-toggle"
+        mat-menu-item>
+        <mat-checkbox class="checkbox"
+          [disabled]="true"
+          [checked]="coherenceLayerMonths === 'DEC_JAN_FEB'">
+        </mat-checkbox>
+
+        {{ 'DEC_JAN_FEB' |  translate }}
+      </button>
+      <button (click)="onToggleCoherenceLayer('MAR_APR_MAY')"
+        class="control-mat-checkbox-toggle"
+        mat-menu-item>
+        <mat-checkbox class="checkbox"
+          [disabled]="true"
+          [checked]="coherenceLayerMonths === 'MAR_APR_MAY'">
+        </mat-checkbox>
+
+        {{ 'MAR_APR_MAY' |  translate }}
+      </button>
+      <button (click)="onToggleCoherenceLayer('JUN_JUL_AUG')"
+        class="control-mat-checkbox-toggle"
+        mat-menu-item>
+        <mat-checkbox class="checkbox"
+          [disabled]="true"
+          [checked]="coherenceLayerMonths === 'JUN_JUL_AUG'">
+        </mat-checkbox>
+
+        {{ 'JUN_JUL_AUG' |  translate }}
+      </button>
+      <button (click)="onToggleCoherenceLayer('SEP_OCT_NOV')"
+        class="control-mat-checkbox-toggle"
+        mat-menu-item>
+        <mat-checkbox class="checkbox"
+          [disabled]="true"
+          [checked]="coherenceLayerMonths === 'SEP_OCT_NOV'">
+        </mat-checkbox>
+
+        {{ 'SEP_OCT_NOV' |  translate }}
+      </button>
+    </mat-menu>
   </button>
 
   <button mat-menu-item

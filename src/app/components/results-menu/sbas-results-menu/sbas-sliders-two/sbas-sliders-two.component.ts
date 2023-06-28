@@ -9,7 +9,7 @@ import { Store } from '@ngrx/store';
 import * as filtersStore from '@store/filters';
 
 import { SubSink } from 'subsink';
-import { ScreenSizeService, MapService } from '@services';
+import { ScreenSizeService } from '@services';
 import * as models from '@models';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 
@@ -39,7 +39,6 @@ export class SbasSlidersTwoComponent implements OnInit {
   public daysRange: models.Range<number> = {start: 1, end: 48};
   public daysValues$ = new Subject<number[]>();
   public metersValues$ = new Subject<number[]>();
-  public hasCoherenceLayer = false;
 
   private firstLoad = true;
   private firstMeterLoad = true;
@@ -54,7 +53,6 @@ export class SbasSlidersTwoComponent implements OnInit {
   constructor(
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
-    private mapService: MapService,
     fb: UntypedFormBuilder
   ) {
     this.meterDistanceControl = new UntypedFormControl(this.perpendicular, Validators.min(-999));
@@ -65,12 +63,6 @@ export class SbasSlidersTwoComponent implements OnInit {
       meterDistance: this.meterDistanceControl,
       days: this.daysControl,
     });
-
-    this.subs.add(
-      this.mapService.hasCoherenceLayer$.subscribe(
-        hasLayer => this.hasCoherenceLayer = hasLayer
-      )
-    );
   }
 
   ngOnInit(): void {
@@ -162,10 +154,6 @@ export class SbasSlidersTwoComponent implements OnInit {
   public updateDaysOffset() {
     this.options.controls.days.setValue(this.daysRange);
     this.daysValues$.next([this.daysRange.start, this.daysRange.end] );
-  }
-
-  public onToggleCoherenceLayer(): void {
-    this.mapService.toggleCoherenceLayer();
   }
 
   private makeDaysSlider$(filterRef: ElementRef): {slider: any, daysValues: Observable<number[]>} {

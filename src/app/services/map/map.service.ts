@@ -118,7 +118,7 @@ export class MapService {
   public zoom$ = new Subject<number>();
   public center$ = new Subject<models.LonLat>();
   public epsg$ = new Subject<string>();
-  public hasCoherenceLayer$ = new Subject<boolean>();
+  public hasCoherenceLayer$ = new Subject<string>();
 
   public selectedSarviewEvent$: EventEmitter<string> = new EventEmitter();
   public mapInit$: EventEmitter<Map> = new EventEmitter();
@@ -582,16 +582,26 @@ export class MapService {
     this.map.addLayer(this.browseImageLayer);
   }
 
-  public toggleCoherenceLayer(): void {
+  public setCoherenceLayer(months: string): void {
     if (!!this.layerService.coherenceLayer) {
       this.map.removeLayer(this.layerService.coherenceLayer);
       this.layerService.coherenceLayer = null;
-      this.hasCoherenceLayer$.next(false);
-    } else {
-      this.layerService.coherenceLayer = this.layerService.getCoherenceLayer();
-      this.map.addLayer(this.layerService.coherenceLayer);
-      this.hasCoherenceLayer$.next(true);
     }
+
+
+    this.layerService.coherenceLayer = this.layerService.getCoherenceLayer(months);
+    this.map.addLayer(this.layerService.coherenceLayer);
+    this.hasCoherenceLayer$.next(months);
+  }
+
+  public clearCoherence(): void {
+    if (!this.layerService.coherenceLayer) {
+      return;
+    }
+
+    this.map.removeLayer(this.layerService.coherenceLayer);
+    this.layerService.coherenceLayer = null;
+    this.hasCoherenceLayer$.next(null);
   }
 
   public createBrowseRasterCanvas(scenes: models.CMRProduct[]) {

@@ -23,7 +23,7 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
 
   public areGridlinesActive$ = this.store$.select(mapStore.getAreGridlinesActive);
   public gridActive = false;
-  public hasCoherenceLayer = false;
+  public coherenceLayerMonths: string | null = null;
 
   private subs = new SubSink();
 
@@ -53,7 +53,7 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.mapService.hasCoherenceLayer$.subscribe(
-        hasLayer => this.hasCoherenceLayer = hasLayer
+        months => this.coherenceLayerMonths = months
       )
     );
   }
@@ -72,8 +72,20 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
     this.store$.dispatch(action);
   }
 
-  public onToggleCoherenceLayer(): void {
-    this.mapService.toggleCoherenceLayer();
+  public onToggleCoherenceLayer(months: string): void {
+    if (this.coherenceLayerMonths === months) {
+      this.clearCoherenceLayer();
+    } else {
+      this.onSetCoherenceLayer(months);
+    }
+  }
+
+  public onSetCoherenceLayer(months: string): void {
+    this.mapService.setCoherenceLayer(months);
+  }
+
+  public clearCoherenceLayer(): void {
+    this.mapService.clearCoherence();
   }
 
   public onToggleOverviewMap(isOpen: boolean): void {
