@@ -157,26 +157,46 @@
     <b> {{ 'PGE_VERSION' | translate }} </b> • {{ scene.metadata.pgeVersion }}
   </li>
 
+
+  <li *ngIf="!!scene.metadata.burst">
+    <b> {{'BURST_ID_FULL' | translate }} </b> • {{scene.metadata.burst.fullBurstID}}
+    <mat-icon *ngIf="isGeoSearch()" [matMenuTriggerFor]="addFullBurstMenu" class="v-mid clickable">
+      settings
+    </mat-icon>
+
+    <mat-menu #addFullBurstMenu="matMenu">
+      <button (click)="setFullBurst()" mat-menu-item>Add full burst id to search</button>
+    </mat-menu>
+  </li>
+
+  <li *ngIf="!!scene.metadata.burst">
+    <b> {{'BURST_INDEX' | translate }} </b> • {{scene.metadata.burst.burstIndex}}
+  </li>
+
+  <li *ngIf="!!scene.metadata.burst">
+    <b> {{'AZIMUTH_TIME' | translate }} </b> • {{scene.metadata.burst.azimuthTime | shortDateTime}}
+  </li>
+
+
   <li *ngIf="dataset.source as source" class="detail-item-margin">
     <a *ngIf="source.url" [href]="source.url" target="_blank"> {{'DATA_COURTESY_OF' | translate}} {{ dataset.source.name }}</a>
     <span *ngIf="!source.url" class="faint-text"> {{'DATA_COURTESY_OF' | translate}} {{ dataset.source.name }}</span>
   </li>
-
   <li *ngIf="dataset.citationUrl as citation" class="detail-item-margin">
     <a *ngIf="citation" [href]="citation"
        target="_blank"
        matTooltip="{{'HOW_TO_CITE_USING_THIS_DATA' | translate}}">{{ 'CITATION' | translate }}</a>
   </li>
-
+<mat-menu #addSceneDateMenu="matMenu">
+  <ng-template matMenuContent let-date="eventDate">
+    <button (click)="setStartDate(date)" mat-menu-item>{{ 'SET_AS_START_DATE' | translate }}</button>
+    <button (click)="setEndDate(date)" mat-menu-item>{{ 'SET_AS_END_DATE' | translate }}</button>
+  </ng-template>
+</mat-menu>
 </ul>
 
-<div *ngIf="!!scene.metadata.burst">
+<!-- <div *ngIf="!!scene.metadata.burst">
 <hr>
 <h3>SLC Burst Metadata</h3>
-  <app-burst-metadata *ngIf="!!scene.metadata.burst"
-  [burst]="scene.metadata.burst"
-  [groupID]="scene.groupId"
-  [sceneName]="scene.name"
-  [isGeoSearch]="isGeoSearch()">
-  </app-burst-metadata>
-</div>
+
+</div> -->
