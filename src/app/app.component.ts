@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, ViewChild, AfterViewInit, Inject} from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild, Inject} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -46,7 +46,7 @@ import {MAT_MOMENT_DATE_FORMATS} from "@angular/material-moment-adapter";
     {provide: MAT_DATE_LOCALE, useValue: 'en'},
   ]
 })
-export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
+export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('sidenav', {static: true}) sidenav: MatSidenav;
 
   private queueStateKey = 'asf-queue-state-v1';
@@ -99,12 +99,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ) {}
 
-  public ngAfterViewInit(): void {
-    this.subs.add(
-      this.store$.select(userStore.getUserProfile).subscribe(_ => {
-          this.language.initialize();
-        }))
-  }
   public ngOnInit(): void {
     this.subs.add(
       this.themeService.theme$.subscribe(theme => {

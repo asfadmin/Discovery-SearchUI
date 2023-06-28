@@ -45,6 +45,7 @@ export class AsfLanguageService {
     private store$: Store<AppState>,
   ) {
     this.browserLang = this.translate.getBrowserLang();
+    this.initialize();
   }
 
   public setProfileLanguage(language: string): void {
