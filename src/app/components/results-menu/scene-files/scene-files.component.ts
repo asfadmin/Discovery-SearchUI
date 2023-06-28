@@ -113,6 +113,15 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     private screenSize: ScreenSizeService,
   ) { }
 
+  private getBURSTXml(product: models.CMRProduct): models.CMRProduct {
+    return {
+      ...product,
+      downloadUrl: product.downloadUrl.replace('tiff', 'xml'),
+      productTypeDisplay: 'BURST XML',
+      id: product.id + '-XML',
+      bytes: 0
+    } as models.CMRProduct
+  }
   ngOnInit() {
     this.subs.add(
       combineLatest(
@@ -124,6 +133,11 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
         ([products, unzipped, unzippedFiles]) => {
           this.unzippedProducts = unzippedFiles;
           this.products = products;
+          if (this.products?.length === 1) {
+            if (this.products[0].metadata.productType === 'BURST') {
+              this.products.push(this.getBURSTXml(this.products[0]))
+            }
+          }
           this.validJobTypesByProduct = {};
           this.products?.forEach(product => {
             this.validJobTypesByProduct[product.id] = this.hyp3.getValidJobTypes([product]);
