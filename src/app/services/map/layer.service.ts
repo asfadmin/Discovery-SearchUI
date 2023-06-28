@@ -10,9 +10,9 @@ export class LayerService {
 
   public coherenceWMS = {
     'DEC_JAN_FEB': this.gibsWMS('Dec_Jan_Feb'),
-    'SEP_OCT_NOV': this.gibsWMS('Sep_Oct_Nov') ,
     'MAR_APR_MAY': this.gibsWMS('Mar_Apr_May'),
     'JUN_JUL_AUG': this.gibsWMS('Jun_Jul_Aug'),
+    'SEP_OCT_NOV': this.gibsWMS('Sep_Oct_Nov'),
   }
 
   public coherenceLayer: ImageLayer<ImageWMS>;
@@ -21,10 +21,10 @@ export class LayerService {
 
   private gibsWMS(months: string): ImageWMS {
     return new ImageWMS({
-        url: `https://gis.earthdata.nasa.gov/image/services/GSSICB/GSSICB_12_day_Median_VV_Coherence_${months}/ImageServer/WMSServer`,
-        params: {'LAYERS': `GSSICB_12_day_Median_VV_Coherence_${months}:Unscaled Coherence`},
-        ratio: 1,
-        serverType: 'geoserver',
+      url: `https://gis.earthdata.nasa.gov/image/services/GSSICB/GSSICB_12_day_Median_VV_Coherence_${months}/ImageServer/WMSServer`,
+      params: {'LAYERS': `GSSICB_12_day_Median_VV_Coherence_${months}:Unscaled Coherence`},
+      ratio: 1,
+      serverType: 'geoserver',
     });
   }
 

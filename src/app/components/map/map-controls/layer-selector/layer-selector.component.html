@@ -49,45 +49,16 @@
     {{ 'COHERENCE_LAYER' |  translate }}
 
     <mat-menu #coherenceLayers="matMenu">
-      <button (click)="onToggleCoherenceLayer('DEC_JAN_FEB')"
+      <button *ngFor="let layer of months"
+        (click)="onToggleCoherenceLayer(layer)"
         class="control-mat-checkbox-toggle"
         mat-menu-item>
         <mat-checkbox class="checkbox"
           [disabled]="true"
-          [checked]="coherenceLayerMonths === 'DEC_JAN_FEB'">
+          [checked]="coherenceLayerMonths === layer">
         </mat-checkbox>
 
-        {{ 'DEC_JAN_FEB' |  translate }}
-      </button>
-      <button (click)="onToggleCoherenceLayer('MAR_APR_MAY')"
-        class="control-mat-checkbox-toggle"
-        mat-menu-item>
-        <mat-checkbox class="checkbox"
-          [disabled]="true"
-          [checked]="coherenceLayerMonths === 'MAR_APR_MAY'">
-        </mat-checkbox>
-
-        {{ 'MAR_APR_MAY' |  translate }}
-      </button>
-      <button (click)="onToggleCoherenceLayer('JUN_JUL_AUG')"
-        class="control-mat-checkbox-toggle"
-        mat-menu-item>
-        <mat-checkbox class="checkbox"
-          [disabled]="true"
-          [checked]="coherenceLayerMonths === 'JUN_JUL_AUG'">
-        </mat-checkbox>
-
-        {{ 'JUN_JUL_AUG' |  translate }}
-      </button>
-      <button (click)="onToggleCoherenceLayer('SEP_OCT_NOV')"
-        class="control-mat-checkbox-toggle"
-        mat-menu-item>
-        <mat-checkbox class="checkbox"
-          [disabled]="true"
-          [checked]="coherenceLayerMonths === 'SEP_OCT_NOV'">
-        </mat-checkbox>
-
-        {{ 'SEP_OCT_NOV' |  translate }}
+        {{ layer |  translate }}
       </button>
     </mat-menu>
   </button>

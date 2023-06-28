@@ -467,6 +467,7 @@ export class MapService {
         this.focusLayer,
         this.selectedLayer,
         this.mapView?.gridlines,
+        this.pinnedProducts,
       ],
       target: 'map',
       view: this.mapView.view,

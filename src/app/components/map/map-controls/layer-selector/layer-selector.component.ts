@@ -24,6 +24,12 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
   public areGridlinesActive$ = this.store$.select(mapStore.getAreGridlinesActive);
   public gridActive = false;
   public coherenceLayerMonths: string | null = null;
+  public months = [
+    'DEC_JAN_FEB',
+    'MAR_APR_MAY',
+    'JUN_JUL_AUG',
+    'SEP_OCT_NOV',
+  ]
 
   private subs = new SubSink();
 
