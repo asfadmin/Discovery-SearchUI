@@ -12,7 +12,7 @@ export const env = {
   test: {
     api: 'https://api-test.asf.alaska.edu',
     api_maturity: 'test',
-    auth: 'https://auth-test-jenk.asf.alaska.edu',
+    auth: 'https://auth.asf.alaska.edu',
     urs: 'https://uat.urs.earthdata.nasa.gov',
     urs_client_id: 'Qkd0Z9KbhG86qedkRC7nSA',
     banner: 'https://banners.asf.alaska.edu',
