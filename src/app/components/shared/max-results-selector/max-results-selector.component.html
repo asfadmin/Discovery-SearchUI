@@ -11,7 +11,7 @@
     </span>
 
     <span *ngIf="!isMaxResultsLoading">
-      {{ currentSearchAmount !== -1 ? formatNumber(currentSearchAmount) : '0' }}
+      {{ currentSearchAmount + burstXMLFileCount !== -1 ? formatNumber(currentSearchAmount + burstXMLFileCount) : '0' }}
     </span>
     <span *ngIf="isMaxResultsLoading"
       style="margin: 0 4px;">
@@ -26,7 +26,7 @@
   style="padding: 2px;" class="faint-text">
   <span [class.invisible]="true">
     <span>
-        {{ formatNumber(maxResults) }} <mat-icon
+        {{ formatNumber(burstXMLFileCount + maxResults) }} <mat-icon
           class="faint-text clickable">arrow_drop_down</mat-icon>
     </span>
       {{ 'OF' | translate }}

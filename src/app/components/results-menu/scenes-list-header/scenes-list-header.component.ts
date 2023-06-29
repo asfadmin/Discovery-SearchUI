@@ -31,7 +31,12 @@ import { ClipboardService } from 'ngx-clipboard';
 })
 export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public copyIcon = faCopy;
-  public totalResultCount$ = this.store$.select(searchStore.getTotalResultCount);
+  public totalResultCount$ = combineLatest(
+    this.store$.select(searchStore.getTotalResultCount),
+    this.scenesService.scenes$()
+    ).pipe(
+      map(([count, scenes]) => count + scenes?.filter(scene => scene.metadata.productType === 'BURST_XML').length)
+  )
   public numberOfScenes$ = this.store$.select(scenesStore.getNumberOfScenes);
   public numberOfProducts$ = this.store$.select(scenesStore.getNumberOfProducts);
   public numberOfFilteredEvents$ = this.eventMonitoringService.filteredSarviewsEvents$().pipe(

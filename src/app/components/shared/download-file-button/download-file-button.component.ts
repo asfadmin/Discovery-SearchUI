@@ -117,7 +117,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
       return;
     }
     if (!this.useNewDownload) {
-      if (this.product.metadata.productType === 'BURST') {
+      if (!!['BURST', 'BURST_XML'].find(t => t === this.product.metadata.productType)) {
         this.burstFunctionality(this.product);
       }
       else {
@@ -130,7 +130,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     const userAgent = new UAParser().getResult();
 
     if (userAgent.browser.name !== 'Chrome') {
-      if (this.product.metadata.productType === 'BURST') {
+      if (!!['BURST', 'BURST_XML'].find(t => t === this.product.metadata.productType)) {
         this.burstFunctionality(this.product);
       }
       else {
@@ -164,7 +164,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     };
     this.store$.dispatch(new queueStore.DownloadProduct(initStatus));
 
-    if (product.metadata.productType === 'BURST') {
+    if (!!['BURST', 'BURST_XML'].find(t => t === this.product.metadata.productType)) {
       this.burstFunctionality(product, handle);
     }
     else {
@@ -265,7 +265,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
 
     // It needs to be added to the DOM so it can be clicked
     document.body.appendChild(link);
-    if (this.product.metadata.productType === 'BURST') {
+    if (this.product.metadata.productType === 'BURST' || this.product.metadata.productType === 'BURST_XML') {
       window.location.href = url;
     } else {
       link.click();
