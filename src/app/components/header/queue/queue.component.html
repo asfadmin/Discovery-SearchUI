@@ -82,7 +82,7 @@
         </div>
 
         <app-copy-to-clipboard
-          *ngIf="!product.isUnzippedFile && !product.metadata.job && product.groupId !== 'SARViews'"
+          *ngIf="!product.isUnzippedFile && !product.metadata.job && product.groupId !== 'SARViews' && product.metadata.productType !== 'BURST_XML'"
           style="margin-right: 15px;"
           prompt="{{ 'COPY_FILE_ID' | translate}}"
           [value]="product.id"

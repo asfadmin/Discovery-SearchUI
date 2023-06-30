@@ -164,12 +164,15 @@ export class QueueComponent implements OnInit, OnDestroy {
 
   public onCopyQueue(products: CMRProduct[]): void {
     const productListStr = products
-      .filter(product => !product.isUnzippedFile)
+      .filter(product => !product.isUnzippedFile && product.metadata.productType !== 'BURST_XML')
       .map(product => product.id)
       .join('\n');
     this.clipboardService.copyFromContent(productListStr);
     const lines = this.lineCount(productListStr);
-    this.notificationService.clipboardCopyQueue(lines, true);
+    
+    if (lines > 0) {
+      this.notificationService.clipboardCopyQueue(lines, true);
+    }
 
   }
 
@@ -184,6 +187,10 @@ export class QueueComponent implements OnInit, OnDestroy {
   }
 
   private lineCount( str: string ) {
+    if (str === '') {
+      return 0;
+    }
+    
     let length = 1;
     for ( let i = 0; i < str.length; ++i ) {
       if ( str[i] === '\n') {

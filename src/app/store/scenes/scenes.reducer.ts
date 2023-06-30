@@ -67,16 +67,16 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
     case ScenesActionType.SET_SCENES: {
       let bursts: CMRProduct[] = []
 
-      let searchResults = action.payload.products
+      let searchResults = action.payload.products.map(p => ({...p, productTypeDisplay: 'Single Look Complex (BURST)'}) as CMRProduct)
 
-      for (const product of action.payload.products) {
+      for (let product of searchResults) {
         if(product.metadata.productType === 'BURST') {
           const p = burstXMLFromScene(product)
           bursts.push(p)
         } 
       }
 
-      searchResults = action.payload.products.concat(bursts)
+      searchResults = searchResults.concat(bursts)
 
       const products = searchResults
         .reduce((total, product) => {
@@ -742,13 +742,13 @@ function eqSet(aSet, bSet): boolean {
 }
 
 function burstXMLFromScene(product: CMRProduct) {
-  
   let p =  {
     ...product,
     downloadUrl: product.downloadUrl.replace('tiff', 'xml'),
-    productTypeDisplay: product.productTypeDisplay + ' (xml)',
+    productTypeDisplay: 'XML Metadata (BURST)',
     file: product.file.replace('tiff', 'xml'),
     id: product.id + '-XML',
+    bytes: 0,
     metadata: {
       ...product.metadata,
       productType: product.metadata.productType + '_XML'
