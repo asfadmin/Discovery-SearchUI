@@ -281,13 +281,37 @@
           </div>
 
           <mat-menu #addAllProducts="matMenu">
-            <button *ngIf="searchType !== SearchTypes.SBAS" (click)="queueAllProducts(downloadableProds)" mat-menu-item>
+            <button *ngIf="searchType !== SearchTypes.SBAS
+              && !(isBurstStack$ | async) 
+              && !((currentDatasetID$ | async) === 'SENTINEL-1 BURSTS'
+              && searchType === SearchTypes.DATASET)"
+              (click)="queueAllProducts(downloadableProds)" mat-menu-item>
               {{ 'ADD' | translate }} {{ downloadableProds.length }} {{'FILE' | translate}}{{ downloadableProds.length === 1 ? '' : 's'}} {{'TO_DOWNLOADS' | translate}}
             </button>
 
-            <button *ngIf="searchType === SearchTypes.SBAS" (click)="queueSBASProducts(sbasProducts)" mat-menu-item>
+            <button *ngIf="searchType === SearchTypes.SBAS && !(isBurstStack$ | async)" (click)="queueSBASProducts(sbasProducts)" mat-menu-item>
               {{ 'ADD' | translate }} {{ sbasProducts.length }} {{'FILE' | translate}}{{ sbasProducts.length === 1 ? '' : 's'}} {{'TO_DOWNLOADS' | translate}}
             </button>
+
+            <button *ngIf=" (currentDatasetID$ | async) === 'SENTINEL-1 BURSTS'
+            && searchType === SearchTypes.DATASET || (isBurstStack$ | async)" 
+            mat-menu-item [matMenuTriggerFor]="addAllBurstProducts" [matMenuTriggerData]="{
+              'burstData': (burstDataProducts$ | async),
+              'burstMetadata': (burstMetadataProducts$ | async)
+            }">
+              {{ downloadableProds.length }} BURST {{'FILE' | translate}}{{ downloadableProds.length === 1 ? '' : 's'}}
+            </button>
+          </mat-menu>
+
+          <mat-menu #addAllBurstProducts>
+            <ng-template matMenuContent let-burstData="burstData" let-burstMetadata="burstMetadata">
+            <button (click)="queueAllProducts(burstData)" mat-menu-item>
+              {{ 'ADD' | translate }} {{ burstData.length }} {{'FILE' | translate}}{{ burstData.length === 1 ? '' : 's'}} {{'TO_DOWNLOADS' | translate}} (TIFF)
+            </button>
+            <button (click)="queueAllProducts(burstMetadata)" mat-menu-item>
+              {{ 'ADD' | translate }} {{ burstMetadata.length }} {{'FILE' | translate}}{{ burstMetadata.length === 1 ? '' : 's'}} {{'TO_DOWNLOADS' | translate}} (XML)
+            </button>
+          </ng-template>
           </mat-menu>
 
           <mat-menu #ExportAll="matMenu">
