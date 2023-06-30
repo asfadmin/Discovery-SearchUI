@@ -67,7 +67,8 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
     case ScenesActionType.SET_SCENES: {
       let bursts: CMRProduct[] = []
 
-      let searchResults = action.payload.products.map(p => ({...p, productTypeDisplay: 'Single Look Complex (BURST)'}) as CMRProduct)
+      let searchResults = action.payload.products.map(p => 
+        p.metadata.productType === 'BURST' ? ({...p, productTypeDisplay: 'Single Look Complex (BURST)'}) as CMRProduct : p)
 
       for (let product of searchResults) {
         if(product.metadata.productType === 'BURST') {
