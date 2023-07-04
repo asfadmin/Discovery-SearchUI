@@ -1,7 +1,7 @@
 <div
   [matMenuTriggerFor]="menu"
   *ngIf="searchType === searchTypes.DATASET"
-  style="padding: 2px;" class="faint-text clickable">
+  style="padding: 2px;" class="faint-text clickable perspective">
   <span [class.invisible]="searchType !== searchTypes.DATASET">
     <span>
         {{ formatNumber(maxResults) }} <mat-icon
@@ -10,7 +10,7 @@
       {{ 'OF' | translate }}
     </span>
 
-    <span *ngIf="!isMaxResultsLoading">
+    <span *ngIf="!isMaxResultsLoading" >
       {{ currentSearchAmount !== -1 ? formatNumber(currentSearchAmount) : '0' }}
     </span>
     <span *ngIf="isMaxResultsLoading"
@@ -23,7 +23,7 @@
 
 <div
   *ngIf="searchType !== searchTypes.DATASET && searchType !== searchTypes.SARVIEWS_EVENTS"
-  style="padding: 2px;" class="faint-text">
+  style="padding: 2px;" class="faint-text perspective">
   <span [class.invisible]="true">
     <span>
         {{ formatNumber(maxResults) }} <mat-icon

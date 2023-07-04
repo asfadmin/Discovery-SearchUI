@@ -274,19 +274,22 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     const pairRows = this.pairs
       .map(([reference, secondary]) => {
 
-        const temp = Math.abs(reference.metadata.temporal - secondary.metadata.temporal);
+        const temporalBaseline = Math.abs(reference.metadata.temporal - secondary.metadata.temporal);
+        const perpendicularBaseline = Math.abs(reference.metadata.perpendicular - secondary.metadata.perpendicular);
 
         return (
-          `${reference.name},${reference.downloadUrl},${reference.metadata.perpendicular},` +
-          `${secondary.name},${secondary.downloadUrl},${secondary.metadata.perpendicular},${temp}`
+          `${reference.name},${reference.downloadUrl},` +
+          `${secondary.name},${secondary.downloadUrl},` +
+          `${perpendicularBaseline},${temporalBaseline}`
         );
       })
       .join('\n');
 
-    const pairsCSV =
-      `Reference, Reference URL, Reference Perpendicular Baseline (meters),` +
-      `Secondary, Secondary URL, Secondary Perpendicular Baseline (meters),` +
-      `Pair Temporal Baseline (days)\n${pairRows}`;
+    const pairsHeader =
+      `Reference, Reference URL, Secondary, Secondary URL, ` +
+      `Pair Perpendicular Baseline (meters), Pair Temporal Baseline (days)`;
+
+    const pairsCSV = `${pairsHeader}\n${pairRows}`;
 
     const blob = new Blob([pairsCSV], {
       type: 'text/csv;charset=utf-8;',

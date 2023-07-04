@@ -38,6 +38,12 @@
   <div *ngIf="filters.selectedMission">
     <b>{{ 'CAMPAIGN' | translate}}:</b> {{ filters.selectedMission }}
   </div>
+  <div *ngIf="filters.selectedMission">
+    <b>{{ 'CAMPAIGN' | translate}}:</b> {{ filters.selectedMission }}
+  </div>
+  <div *ngIf="filters.fullBurstIDs">
+    <b>{{ 'FULL_BURST_ID' | translate}}:</b> {{ filters.fullBurstIDs }}
+  </div>
 </div>
 
 <div *ngIf="noFilters(filters)">
