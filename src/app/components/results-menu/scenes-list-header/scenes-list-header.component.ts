@@ -55,16 +55,16 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public numBaselineScenes$ = this.scenesService.scenes$().pipe(
     map(scenes => scenes.length),
   );
-  public isBurstStack$ = 
+  public isBurstStack$ =
   combineLatest([
     this.scenesService.products$(),
     this.pairService.pairs$(),
     this.store$.select(searchStore.getSearchType),
   ]
   ).pipe(
-    map(([scenes, pairs, currentSearchType]) => (currentSearchType === 
+    map(([scenes, pairs, currentSearchType]) => (currentSearchType ===
       this.SearchTypes.BASELINE && scenes?.length > 0 ? scenes[0].metadata.productType === 'BURST': false)
-      || (currentSearchType === this.SearchTypes.SBAS && 
+      || (currentSearchType === this.SearchTypes.SBAS &&
         (
           (pairs.pairs?.length > 0 ? pairs.pairs[0][0].metadata.productType === 'BURST' : false)
           || (pairs.custom?.length > 0 ? pairs.custom[0][0].metadata.productType === 'BURST' : false)
@@ -85,7 +85,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   );
 
   private currentBurstProducts$ = this.scenesService.products$().pipe(
-    map(products => 
+    map(products =>
       products.filter(p => p.metadata.productType === 'BURST' || p.metadata.productType === 'BURST_XML')
     )
   );
