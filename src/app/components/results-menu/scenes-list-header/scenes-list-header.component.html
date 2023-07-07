@@ -296,10 +296,10 @@
             <button *ngIf=" (currentDatasetID$ | async) === 'SENTINEL-1 BURSTS'
             && searchType === SearchTypes.DATASET || (isBurstStack$ | async)" 
             mat-menu-item [matMenuTriggerFor]="addAllBurstProducts" [matMenuTriggerData]="{
-              'burstData': (burstDataProducts$ | async),
-              'burstMetadata': (burstMetadataProducts$ | async)
+              'burstData': searchType === SearchTypes.SBAS ? (SBASburstDataProducts$ | async) : (burstDataProducts$ | async),
+              'burstMetadata':searchType === SearchTypes.SBAS ? (SBASburstMetadataProducts$ | async) : (burstMetadataProducts$ | async)
             }">
-              {{ downloadableProds.length }} BURST {{'FILE' | translate}}{{ downloadableProds.length === 1 ? '' : 's'}}
+              {{ searchType !== SearchTypes.SBAS ? downloadableProds.length : (SBASBurstProductsLength$ | async) }} BURST {{'FILE' | translate}}{{ downloadableProds.length === 1 ? '' : 's'}}
             </button>
           </mat-menu>
 

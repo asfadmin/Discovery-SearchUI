@@ -93,9 +93,37 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public burstDataProducts$ = this.currentBurstProducts$.pipe(
     map(products => products.filter(p => p.metadata.productType === 'BURST'))
   );
+
+  public SBASburstDataProducts$ = combineLatest(
+    this.burstDataProducts$,
+    this.pairService.productsFromPairs$()
+    ).pipe(
+    map(([products, pairs]) => {
+      const pairNames = pairs.map(p => p.name);
+      const output = products.filter(p => pairNames.find(name => name === p.name));
+      return output;
+    })
+  );
+
   public burstMetadataProducts$ = this.currentBurstProducts$.pipe(
     map(products => products.filter(p => p.metadata.productType === 'BURST_XML'))
   );
+
+  public SBASburstMetadataProducts$ = combineLatest(
+    this.burstMetadataProducts$,
+    this.pairService.productsFromPairs$()
+    ).pipe(
+    map(([products, pairs]) => {
+      const pairNames = pairs.map(p => p.name);
+      const output = products.filter(p => pairNames.find(name => name === p.name));
+      return output;
+    })
+  );
+
+  public SBASBurstProductsLength$ = combineLatest(
+    this.SBASburstDataProducts$.pipe(map(products => products.length)),
+    this.SBASburstMetadataProducts$.pipe(map(products => products.length))
+  ).pipe(map(([data, metadata]) => data + metadata))
 
   public pairs: models.CMRProductPair[];
   public sbasProducts: models.CMRProduct[] = [];
