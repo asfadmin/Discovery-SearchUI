@@ -1,8 +1,8 @@
-import {Component, OnInit, OnDestroy, ViewChild, Inject} from '@angular/core';
+import {Component, OnInit, OnDestroy, AfterViewChecked, ViewChild, Inject} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatIconRegistry } from '@angular/material/icon';
-import { DomSanitizer } from '@angular/platform-browser';
+import {DomSanitizer, Title} from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 import { QueueComponent } from '@components/header/queue';
@@ -46,7 +46,7 @@ import {MAT_MOMENT_DATE_FORMATS} from "@angular/material-moment-adapter";
     {provide: MAT_DATE_LOCALE, useValue: 'en'},
   ]
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
   @ViewChild('sidenav', {static: true}) sidenav: MatSidenav;
 
   private queueStateKey = 'asf-queue-state-v1';
@@ -94,7 +94,10 @@ export class AppComponent implements OnInit, OnDestroy {
     public translate: TranslateService,
     public language: services.AsfLanguageService,
     public _adapter: DateAdapter<any>,
-    @Inject(MAT_DATE_LOCALE) public _locale: string,
+    private titleService: Title,
+
+
+@Inject(MAT_DATE_LOCALE) public _locale: string,
 
 
   ) {}
@@ -117,7 +120,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.store$.select(uiStore.getCurrentLanguage).subscribe(
-        language => this.currentLanguage = language
+        language => {
+          this.currentLanguage = language;
+        }
       )
     );
 
@@ -440,6 +445,10 @@ export class AppComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new uiStore.CloseSidebar());
   }
 
+  public ngAfterViewChecked(): void {
+    this.titleService.setTitle( this.translate.instant('ASF_DATA_SEARCH_TITLE') );
+  }
+
   private isEmptySearch(searchState): boolean {
     if (searchState.searchType === models.SearchType.LIST) {
       return searchState.filters.list.length < 1;
@@ -482,6 +491,10 @@ export class AppComponent implements OnInit, OnDestroy {
       if (!!defaultFilterID) {
         this.store$.dispatch(new userStore.LoadFiltersPreset(defaultFilterID));
       }
+            let titleStr = this.translate.instant('ASF_DATA_SEARCH_TITLE');
+      console.log('titleStr:', titleStr)
+      this.titleService.setTitle( titleStr );
+
     }
   }
 
