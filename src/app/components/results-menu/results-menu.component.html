@@ -12,11 +12,11 @@
       mwlResizable
       [validateResize]="validate"
       [enableGhostResize]="true"
-
+      *ngIf="products.length !== 0 || !(noSarviewsEvents$ | async)"
       (resizeEnd)="onFinalResize()"
       (resizing)="onResizeEnd($event)">
 
-      <div *ngIf="products.length !== 0 || !(noSarviewsEvents$ | async)" class="resize-controls">
+      <div class="resize-controls">
         <div mwlResizeHandle [resizeEdges]="{ top: !(imageViewerOpen$ | async) }" class="resize-handle-filler">
           <mat-icon svgIcon="hgrip" class="hgrip-icon"></mat-icon>
 

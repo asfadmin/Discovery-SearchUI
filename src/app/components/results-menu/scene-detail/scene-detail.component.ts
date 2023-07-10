@@ -223,7 +223,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
     if (this.dataset.id === models.sentinel_1.id) {
       return this.selectedProducts.filter(
-          product => product.metadata.productType === 'SLC'
+          product => product.metadata.productType === 'SLC' || product.metadata.productType === 'BURST'
       )[0].name;
     } else {
       return this.scene.name;
@@ -261,7 +261,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     } else {
       return this.selectedProducts
         .map(product => product.metadata.productType)
-        .filter(productType => productType === 'SLC')
+        .filter(productType => productType === 'SLC' || productType === 'BURST')
         .length > 0;
     }
   }
@@ -445,7 +445,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
   public makeSarviewsEventGeoSearch() {
     const timeFrame = this.sarviewEvent.processing_timeframe;
-
+    const event = this.sarviewEvent;
     [
       new searchStore.SetSearchType(models.SearchType.DATASET),
       new searchStore.ClearSearch(),
@@ -458,7 +458,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     if (!!timeFrame.end) {
       this.store$.dispatch(new filtersStore.SetEndDate(new Date(timeFrame.end)));
     }
-    this.mapService.onSetSarviewsPolygon(this.sarviewEvent, this.sarviewsEventGeoSearchRadius);
+    this.mapService.onSetSarviewsPolygon(event, this.sarviewsEventGeoSearchRadius);
 
     this.store$.dispatch(new searchStore.MakeSearch());
   }

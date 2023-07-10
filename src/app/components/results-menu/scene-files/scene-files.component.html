@@ -10,9 +10,8 @@
 </div>
 
 <div *ngIf="!showUnzippedProductScreen">
-  <mat-list class="products-list">
+  <mat-list class="products-list" *ngFor="let product of products">
     <app-scene-file
-      *ngFor="let product of products"
       (toggle)="onToggleQueueProduct(product)"
       (unzip)="onOpenUnzipProduct($event)"
       (queueHyp3Job)="onQueueHyp3Job($event)"

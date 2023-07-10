@@ -189,12 +189,16 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
   public onStartDateError() {
     if (this.searchType === SearchType.SARVIEWS_EVENTS) {
       this.onStartDateChange(new Date(2015, 1));
+    } else {
+      this.onStartDateChange(null)
     }
   }
 
   public onEndDateError() {
     if (this.searchType === SearchType.SARVIEWS_EVENTS) {
       this.onEndDateChange(moment(new Date()).endOf('day').date);
+    } else {
+      this.onEndDateChange(null)
     }
   }
 

@@ -226,14 +226,19 @@ label {
 }
 
 .warn-icon {
-  margin-right: 5px;
   @include themify($themes) {
-    color: themed('warn');
+    color: darken(themed('dark-primary-text'), 25%);
   }
 }
 .gap-detected-area {
-  margin: 5px;
+  position: relative;
+  top: 15%;
+  left: 90%;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  width: 30px;
   @include themify($themes) {
-    color: themed('dark-primary-text') !important;
+    background: darken(themed('background-white'), 15%);
   }
 }
