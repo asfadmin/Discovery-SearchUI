@@ -8,7 +8,7 @@ phrase:
           file_format: i18next
           locale_id: en #Can be the name (e.g. en-US)
           #tags: REVIEW_NEEDED  #List of tags separated by comma to be associated with the new keys contained in the upload.
-          update_translations: true #Indicates whether existing translations should be updated with the file content.
+          #update_translations: true #Indicates whether existing translations should be updated with the file content.
   pull:
     targets:
       - file: ./src/assets/i18n/en.json
