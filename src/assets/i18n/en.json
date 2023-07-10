@@ -580,6 +580,7 @@
 	"SAVED_SEARCHES_AND_SEARCH_HISTORY": "Saved Searches and Search History",
 	"SBAS": "SBAS",
 	"SBAS_CHART": "SBAS Chart",
+	"SBAS_COUNT_TOOLTIP": "Applied filters may reduce the number of pairs listed below",
 	"SBAS_FILTERS": "SBAS Filters",
 	"SBAS_SEARCH": "SBAS Search",
 	"SBAS_SEARCH_PROVIDES_PERPENDICULAR_AND_TEMPORAL_BASELINE_DATA_AS_WELL_AS_SCENE_PAIRS_FOR_A_CHOSEN": "SBAS search provides perpendicular and temporal baseline data, as well as scene pairs, for a chosen",
