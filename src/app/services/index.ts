@@ -2,6 +2,7 @@ export { AsfApiService } from './asf-api.service';
 export { AsfLanguageService } from './asf-language.service';
 export { MapService } from './map/map.service';
 export { DrawService } from './map/draw.service';
+export { LayerService } from './map/layer.service';
 export { UrlStateService } from './url-state.service';
 export { DateExtremaService } from './date-extrema.service'; export { WktService } from './wkt.service';
 export { ProductService } from './product.service';

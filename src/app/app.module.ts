@@ -128,6 +128,7 @@ export const routes = [
     services.MapService,
     services.DrawService,
     services.WktService,
+    services.LayerService,
     services.ProductService,
     services.BulkDownloadService,
     services.SearchParamsService,

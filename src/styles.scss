@@ -24,7 +24,7 @@ $theme-map: null;
 
 #toast-container {
   position: relative;
-  top: 115px;
+  top: 130px;
   right: 25px;
   float: right;
   z-index: 1099;
@@ -75,7 +75,7 @@ $theme-map: null;
   background-image: url("/assets/icons/info_black_48dp.svg");
 
   @include themify_non_host($themes) {
-    box-shadow: 0 0 12px lighten(themed('background-white'), 10%); //#999999;
+    box-shadow: 0 0 12px themed('primary');
 
     background-color: themed('background-white');
     color: themed('dark-primary-text');

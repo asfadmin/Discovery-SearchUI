@@ -5,6 +5,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
 import { ResizableModule } from 'angular-resizable-element';
 
 import { MatSharedModule } from '@shared';
@@ -36,6 +38,7 @@ import { DocsModalModule } from '@components/shared/docs-modal';
     FormsModule,
     ResizableModule,
     MatFormFieldModule,
+    MatCheckboxModule,
     MatInputModule,
     MatButtonToggleModule,
     SharedModule,

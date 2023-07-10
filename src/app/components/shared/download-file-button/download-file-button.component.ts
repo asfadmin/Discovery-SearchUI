@@ -265,7 +265,11 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
 
     // It needs to be added to the DOM so it can be clicked
     document.body.appendChild(link);
-    link.click();
+    if (this.product.metadata.productType === 'BURST') {
+      window.location.href = url;
+    } else {
+      link.click();
+    }
 
     // To make this work we need to wait
     // a little while before removing it.
