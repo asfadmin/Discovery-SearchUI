@@ -580,6 +580,7 @@
 	"SAVED_SEARCHES_AND_SEARCH_HISTORY": "Búsquedas guardadas e historial de búsqueda",
 	"SBAS": "SBAS",
 	"SBAS_CHART": "Gráfico SBAS",
+	"SBAS_COUNT_TOOLTIP": "",
 	"SBAS_FILTERS": "Filtros SBAS",
 	"SBAS_SEARCH": "Búsqueda de SBAS",
 	"SBAS_SEARCH_PROVIDES_PERPENDICULAR_AND_TEMPORAL_BASELINE_DATA_AS_WELL_AS_SCENE_PAIRS_FOR_A_CHOSEN": "La búsqueda SBAS proporciona datos de referencia perpendiculares y temporales, así como pares de escenas, para una determinada",
