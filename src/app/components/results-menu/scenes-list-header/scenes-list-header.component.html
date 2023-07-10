@@ -27,7 +27,8 @@
           {{ numPairs$ | async }} {{ 'PAIR'| translate }}{{ (numPairs$ | async) === 1 ? '' : 's' }}
           <span *ngIf="!!sbasProducts && breakpoint > breakpoints.MEDIUM" style="font-size: small;">
             <br>
-              ({{ sbasProducts.length }} {{ 'SCENE' | translate }}{{ sbasProducts.length === 1 ? '' : 's' }})
+              ({{ sbasProducts.length }} {{ 'SCENE' | translate }}{{ sbasProducts.length === 1 ? '' : 's' }} 
+              <mat-icon [matTooltip]="('SBAS_COUNT_TOOLTIP' | translate)" class="sbas-count-tooltip">info</mat-icon>)
           </span>
         </div>
 
