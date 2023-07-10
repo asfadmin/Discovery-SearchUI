@@ -872,10 +872,10 @@
   "ZOOM_TO_FIT": "Zoom To Fit",
   "ZOOM_TO_RESULTS": "Zoom to results",
   "ZOOM_TO_SCENE": "Zoom to scene",
-  "ZZ_TOPS_ANDY_TEST": "ZZ Top",
-  "ZZ_LOCO": "Andy was here. Delete me.",
   "ZZ_LOCA": "Andy was here. Delete me.",
+  "ZZ_LOCA_GRINGA": "Andy was here. Delete me.",
   "ZZ_LOCITO": "Andy was here. Delete me.",
+  "ZZ_LOCO": "Andy was here. Delete me.",
   "ZZ_LOCO_GRINGO": "Andy was here. Delete me.",
-  "ZZ_LOCA_GRINGA": "Andy was here. Delete me."
+  "ZZ_TOPS_ANDY_TEST": "ZZ Top"
 }
