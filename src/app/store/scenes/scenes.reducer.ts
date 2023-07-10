@@ -111,7 +111,6 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
         }, {});
       }
 
-      // scenes: {[id: string]: string[]} = {};
       for (const [groupId, productNames] of Object.entries(productGroups)) {
 
         (<string[]>productNames).sort(
@@ -390,16 +389,6 @@ export const getSelectedSceneProducts = createSelector(
   }
 );
 
-// export const getAllSceneProducts = createSelector(
-//   getScenesState,
-//   (state: ScenesState) => {
-//     return Object.keys(state.products).reduce(
-//       (prev: CMRProduct[], scene_id) =>
-//         Zprev.concat(productsForScene(state.products[scene_id], state)),
-//       [] as CMRProduct[])
-//   }
-// );
-
 export const getSelectedSceneBrowses = createSelector(
   getScenesState,
   (state: ScenesState) => {
@@ -455,9 +444,6 @@ export const getSelectedSarviewsEventProductBrowses = createSelector (
     }
 
     const browses = selected.reduce((acc: string[], curr) => [...acc, curr.files.browse_url], []);
-    // for (const productScene of scenesForProduct) {
-    //   browses.push(productScene.browses[0]);
-    // }
 
     return browses;
   }
@@ -526,13 +512,6 @@ export const getAllSceneProducts = createSelector(
     return allSceneProducts;
   }
 );
-
-// export const getAllEventProducts = createSelector(
-//   getSelectedSarviewsEvent
-//   (state: SarviewsEvent) => {
-//     return state
-//   }
-// );
 
 export const getSelectedScene = createSelector(
   getScenesState,
@@ -757,8 +736,4 @@ function burstXMLFromScene(product: CMRProduct) {
   } as CMRProduct;
 
   return p;
-  // xmlProduct.downloadUrl = xmlProduct.downloadUrl.replace('tiff', 'xml')
-  // xmlProduct.productTypeDisplay = xmlProduct.productTypeDisplay + ' (xml)'
-  // xmlProduct.metadata.productType = xmlProduct.metadata.productType + '_XML'
-  // return xmlProduct
 }
