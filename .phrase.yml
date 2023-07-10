@@ -15,3 +15,7 @@ phrase:
         params:
           file_format: i18next
           locale_id: en #Can be the name (e.g. en-US)
+      - file: ./src/assets/i18n/es.json
+        params:
+          file_format: i18next
+          locale_id: es #Can be the name (e.g. en-US)
