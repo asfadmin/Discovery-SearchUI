@@ -58,9 +58,9 @@
 
 
 
-    <a *ngIf="isHovered && !product.metadata.job && product.metadata.productType !== 'BURST_XML'" class="icon-margin">
+    <a *ngIf="isHovered && !product.metadata.job" class="icon-margin">
       <app-copy-to-clipboard
-        [value]="product.id"
+        [value]="product.metadata.productType === 'BURST_XML' ? product.id?.split('-XML')[0] : product.id"
         prompt="{{ 'COPY_FILE_ID' | translate }}">
       </app-copy-to-clipboard>
     </a>
