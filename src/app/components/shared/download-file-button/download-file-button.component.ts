@@ -115,7 +115,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   private onAccountButtonClicked() {
     this.subs.add(
       this.authService.login$().pipe(
-        first(), 
+        first(),
         filter(user => !!user)
       ).subscribe(
         user => {
