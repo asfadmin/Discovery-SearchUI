@@ -37,7 +37,6 @@ $config: mat.define-typography-config();
   }
   border-style: solid;
   border-width: 1px 0 0 1px;
-  max-width: calc(50vw - 100px);
   font-family: mat.font-family($config);
   font-weight: 400;
   font-size: 13px;
