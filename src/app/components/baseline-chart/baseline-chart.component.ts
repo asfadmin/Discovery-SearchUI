@@ -111,7 +111,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
           this.setDataset(ChartDatasets.MAX_CRITICAL, maxDataset);
           if (this.isFirstLoad) {
             this.updateScales(extrema);
-            let height =  this.y(this.data[ChartDatasets.MIN_CRITICAL][0].y) - this.y(this.data[ChartDatasets.MAX_CRITICAL][1].y) 
+            let height =  this.y(this.data[ChartDatasets.MIN_CRITICAL][0].y) - this.y(this.data[ChartDatasets.MAX_CRITICAL][1].y)
 
             this.criticalBoxContainer
               .attr('x', this.x(this.data[ChartDatasets.MIN_CRITICAL][0].x))
@@ -241,7 +241,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
     this.dotsContainer.selectAll('circle').data(this.data[ChartDatasets.PRODUCTS]).join('circle')
       .attr('cx', d => newX(d.x))
       .attr('cy', d => newY(d.y));
-      let height = newY(this.data[ChartDatasets.MIN_CRITICAL][0].y) - newY(this.data[ChartDatasets.MAX_CRITICAL][1].y) 
+      let height = newY(this.data[ChartDatasets.MIN_CRITICAL][0].y) - newY(this.data[ChartDatasets.MAX_CRITICAL][1].y)
     this.criticalBoxContainer.attr('x', newX(this.data[ChartDatasets.MIN_CRITICAL][0].x))
       .attr('y', newY(this.data[ChartDatasets.MAX_CRITICAL][1].y))
       .attr('width', newX(this.data[ChartDatasets.MAX_CRITICAL][1].x) - newX(this.data[ChartDatasets.MIN_CRITICAL][0].x))
