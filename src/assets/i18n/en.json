@@ -887,5 +887,5 @@
 	"INSAR_DESC": "Interferometric Synthetic Aperture Radar (InSAR) processing uses two SAR images collected over the same area to determine geometric properties of the surface. The phase measurements of the two images acquired at different times are differenced to detect and quantify surface changes.",
 	"AUTORIFT_DESC": "autoRIFT is a highly accurate and efficient algorithm for finding the pixel displacement between two radar images. ",
   "ZZ_ANDY_TEST_JUL_12": "Andy was here",
-  "ZZ_ANDY_PRAYING": "At least I'm not cursing."
+  "ZZ_ANDY_PRAYING": "At least I'm not laughing."
 }
