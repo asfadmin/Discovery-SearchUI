@@ -1,6 +1,6 @@
 phrase:
   host: https://api.us.app.phrase.com/v2
-  project_id: a1f4202162d6aef2fcf9c83d4ff56672
+  project_id: ce3014a470b7ad645166b0757cf63070
   push:
     sources:
       - file: ./src/assets/i18n/en.json
