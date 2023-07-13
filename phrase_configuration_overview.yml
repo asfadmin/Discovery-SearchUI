@@ -2,7 +2,7 @@ phrase:
   access_token: ACCESS_TOKEN #Add your personal access token to authenticate, you can find the steps on how to create one here: https://help.phrase.com/help/access-tokens
   project_id: PROJECT_ID #The public Project ID which can be found in the Project Settings (API tab)
   file_format: FORMAT_API_EXTENSION #Find the format you want to use here: https://help.phrase.com/help/supported-platforms-and-formats , access the article and copi the API extension
-  
+
   push:
     sources:
     - file: ./path/to/file/file.format #Provide the path to the file(s) you want to push here, starting from the location of the configuration file. You can use the placeholders <locale_name>, <locale_code> and <tags> in the path or file-name
@@ -35,7 +35,7 @@ phrase:
           enable_pluralization: true (boolean) #Simple/Nested JSON only. Enables detection of pluralized keys. All matching keys will be persisted as pluralized keys.
           unescape_linebreaks: false (boolean) #Android XML only. All \n will be imported as true newlines
           escape_single_quotes: false (boolean) #Java Properties only. Escape single quotes with another single quote (e.g. I'm -> I''m ).
-          
+
   pull:
     targets:
     - file: ./path/to/file/file.format
