@@ -9,6 +9,7 @@ import { MatSharedModule } from '@shared';
 import { OnDemandAddMenuModule } from '@components/shared/on-demand-add-menu';
 import { ScenesListHeaderComponent } from './scenes-list-header.component';
 import { SharedModule } from "@shared";
+import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import { SharedModule } from "@shared";
   imports: [
     CommonModule,
     MatMenuModule,
+    MatIconModule,
     MatSharedModule,
     MatButtonToggleModule,
     FontAwesomeModule,

@@ -118,7 +118,7 @@ export class MapService {
   public zoom$ = new Subject<number>();
   public center$ = new Subject<models.LonLat>();
   public epsg$ = new Subject<string>();
-  public hasCoherenceLayer$ = new Subject<string>();
+  public hasCoherenceLayer$ = new BehaviorSubject<string>(null);
 
   public selectedSarviewEvent$: EventEmitter<string> = new EventEmitter();
   public mapInit$: EventEmitter<Map> = new EventEmitter();
