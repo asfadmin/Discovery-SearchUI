@@ -491,10 +491,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
       if (!!defaultFilterID) {
         this.store$.dispatch(new userStore.LoadFiltersPreset(defaultFilterID));
       }
-            let titleStr = this.translate.instant('ASF_DATA_SEARCH_TITLE');
-      console.log('titleStr:', titleStr)
-      this.titleService.setTitle( titleStr );
-
     }
   }
 
