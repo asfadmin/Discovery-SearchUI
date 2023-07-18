@@ -82,7 +82,7 @@
       <div class="preferences-group">
         <div class="section-heading">{{ 'DEFAULT_SEARCH_FILTERS_PRESETS' | translate }}</div>
         <mat-form-field class="default-filters-presets" *ngFor="let type of searchTypeKeys">
-          <mat-label>{{type |translate}}</mat-label>
+          <mat-label>{{type  === 'DATASET' ? ('GEOGRAPHIC'|translate) : type|translate}}</mat-label>
           <mat-select
           [(value)]="currentFilterDisplayNames[searchType[type]]"
           (selectionChange)="onChangeDefaultFilterType($event.value, type)"
