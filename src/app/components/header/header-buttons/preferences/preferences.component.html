@@ -12,7 +12,10 @@
     <form class="preferences-form--layout" #preferencesForm="ngForm" onsubmit="return false">
 
       <div class="preferences-group">
-        <div class="section-heading">{{ 'DEFAULT_LANGUAGE_AND_THEME' | translate }}</div>
+        <div class="section-heading"
+             [class.section-heading-mobile]="breakpoint <= breakpoints.SMALL">
+          {{ 'DEFAULT_LANGUAGE_AND_THEME' | translate }}
+        </div>
 
         <mat-form-field class="default-filters-presets">
           <mat-label>{{ 'DEFAULT_LANGUAGE' | translate }}</mat-label>
@@ -42,9 +45,13 @@
       <hr>
 
       <div class="preferences-group">
-        <div class="section-heading">{{ 'DEFAULT_SEARCH_PRESETS' | translate }}</div>
+        <div class="section-heading"
+             [class.section-heading-mobile]="breakpoint <= breakpoints.SMALL">
+          {{ 'DEFAULT_SEARCH_PRESETS' | translate }}
+        </div>
         <div class="default-dataset">
           <app-dataset-selector
+            class="mobile-button-wrapper"
             [(selected)]="defaultDataset"
             (selectedChange)="onDatasetSelectionChange($event)"
             [datasets]="datasets">
@@ -80,7 +87,10 @@
       <hr>
 
       <div class="preferences-group">
-        <div class="section-heading">{{ 'DEFAULT_SEARCH_FILTERS_PRESETS' | translate }}</div>
+        <div class="section-heading"
+             [class.section-heading-mobile]="breakpoint <= breakpoints.SMALL">
+          {{ 'DEFAULT_SEARCH_FILTERS_PRESETS' | translate }}
+        </div>
         <mat-form-field class="default-filters-presets" *ngFor="let type of searchTypeKeys">
           <mat-label>{{type  === 'DATASET' ? ('GEOGRAPHIC'|translate) : type|translate}}</mat-label>
           <mat-select
@@ -97,8 +107,11 @@
       <hr>
 
       <div class="preferences-group">
-        <div class="section-heading">{{ 'DEFAULT_ON_DEMAND_PRESETS' | translate }}</div>
-        <mat-form-field class="default-filters-presets">
+        <div class="section-heading"
+             [class.section-heading-mobile]="breakpoint <= breakpoints.SMALL">
+          {{ 'DEFAULT_ON_DEMAND_PRESETS' | translate }}
+        </div>
+        <mat-form-field class="default-filters-presets hyp3-url">
           <mat-label>{{ 'HY_P3_API_URL' | translate }}</mat-label>
           <input matInput
             [(ngModel)]="hyp3BackendUrl"
