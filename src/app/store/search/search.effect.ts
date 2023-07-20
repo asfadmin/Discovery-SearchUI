@@ -83,7 +83,9 @@ export class SearchEffects {
     switchMap(([_, searchType]) => {
       if(searchType === SearchType.SARVIEWS_EVENTS) {
         return this.sarviewsService.getSarviewsEvents$()
-    }}),
+      } else {
+        return of([])
+      }}),
     map((events) => new SetSarviewsEvents({ events }))
     )
   );
