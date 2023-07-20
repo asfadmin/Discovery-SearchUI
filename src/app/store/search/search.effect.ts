@@ -85,7 +85,8 @@ export class SearchEffects {
         return this.sarviewsService.getSarviewsEvents$()
       } else {
         return of([])
-      }}),
+      }
+    }),
     map((events) => new SetSarviewsEvents({ events }))
     )
   );
