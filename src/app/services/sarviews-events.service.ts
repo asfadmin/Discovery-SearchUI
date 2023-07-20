@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EventProductSortDirection, EventProductSortType, LonLat, SarviewsEvent, SarviewsProcessedEvent, SarviewsProduct } from '@models';
 import { combineLatest, Observable, of } from 'rxjs';
-import { catchError, debounceTime, map } from 'rxjs/operators';
+import { catchError, debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Range } from '@models';
 import { WktService } from '@services';
 import { MapService } from './map/map.service';
@@ -23,7 +23,6 @@ import * as filtersStore from '@store/filters';
 export class SarviewsEventsService {
 
   private eventsUrl = `https://gm3385dq6j.execute-api.us-west-2.amazonaws.com/events`;
-  private sarviewsEvents$ = this.getSarviewsEvents$();
   private Moment = extendMoment(moment);
   constructor(private http: HttpClient,
     private wktService: WktService,
@@ -35,6 +34,8 @@ export class SarviewsEventsService {
 
   public getSarviewsEvents$(): Observable<SarviewsEvent[]> {
     return this.http.get<SarviewsEvent[]>(this.eventsUrl).pipe(
+      debounceTime(2000),
+      distinctUntilChanged(),
       map(events => events.filter(
         event => event.event_type.toLowerCase() !== 'flood'
       )),
@@ -60,6 +61,7 @@ export class SarviewsEventsService {
   public getEventFeature(usgs_id: string): Observable<SarviewsProcessedEvent>  {
     return this.http.get<SarviewsProcessedEvent>(this.eventsUrl + '/' + usgs_id).pipe(
       catchError(error => of(error)),
+      distinctUntilChanged(),
       map((event: SarviewsProcessedEvent) => {
         return {
           ...event,
@@ -70,21 +72,21 @@ export class SarviewsEventsService {
   }
 
   public quakeIds$() {
-    return this.sarviewsEvents$.pipe(
+    return this.getSarviewsEvents$().pipe(
       map(events => events.filter(sarviewsEvent => sarviewsEvent.event_type === 'quake')),
       map(quakeEvents => quakeEvents.map(quake => quake.event_id)),
     );
   }
 
   public volcanoIds$() {
-    return this.sarviewsEvents$.pipe(
+    return this.getSarviewsEvents$().pipe(
     map(events => events.filter(sarviewsEvent => sarviewsEvent.event_type === 'volcano')),
     map(volcanoEvents => volcanoEvents.map(volcano => volcano.event_id)),
     );
   }
 
   public floodIds$() {
-    return this.sarviewsEvents$.pipe(
+    return this.getSarviewsEvents$().pipe(
     map(events => events.filter(sarviewsEvent => sarviewsEvent.event_type === 'flood')),
     map(volcanoEvents => volcanoEvents.map(volcano => volcano.event_id)),
     );

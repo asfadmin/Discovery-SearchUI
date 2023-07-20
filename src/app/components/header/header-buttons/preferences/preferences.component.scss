@@ -2,9 +2,9 @@
 
 .preferences-group {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   gap: 10px;
-  max-width: 300px;
 }
 
 .action-controls {
@@ -56,27 +56,34 @@
   @include themify($themes) {
     background-color: themed("background-white");
   }
-
   display: flex;
   width: 100%;
+  padding-top: 15px;
 }
 
-.default-dataset {
-  display: inline-block;
-  margin-right: 30px;
-  margin-bottom: 10px;
-}
-
+.default-dataset,
 .default-max-result,
 .default-max-concurrent-downloads,
 .default-filters-presets,
 .default-map {
   margin-right: 30px;
+  width: 145px;
+}
+
+.hyp3-url {
+  width: 300px;
+  margin-top: 0;
 }
 
 .section-heading {
-  margin: 20px 0 10px 0;
+  margin: 0;
   font-weight: 500;
+  width: 137px;
+  font-size: 18px;
+}
+
+.section-heading-mobile {
+  width: 100%;
 }
 
 .dialog-title-overrides {
@@ -88,8 +95,4 @@
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-}
-
-.delete-me-this-was-a-test {
-
 }

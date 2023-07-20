@@ -247,6 +247,7 @@
         </span>
 
         <span *ngIf="breakpoint === breakpoints.MOBILE" class="footer-mini-text">
+          <br>
           {{'JOB_MAX' | translate}}
         </span>
         <span *ngIf="breakpoint !== breakpoints.MOBILE">
@@ -280,7 +281,8 @@
 
       <button mat-flat-button (click)="openSubscriptionDialog()"
               [class.mini-button] = "breakpoint == breakpoints.MOBILE"
-        style="margin-right: 16px;">
+              [ngStyle]="{'margin-right': breakpoint === breakpoints.MOBILE ? '5px' : '16px'}"
+        >
         {{ 'SUBSCRIPTION' |  translate }}
       </button>
 

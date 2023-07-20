@@ -43,6 +43,10 @@
 }
 
 .dd-text {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   font-size: 18px;
   font-weight: bold;
   text-align: center;
@@ -55,13 +59,11 @@
     font-size: 18px;
   }
 
-  .dd-text-2 {
-    margin-top: 75px;
-  }
-
-  .dd-text-3 {
-    margin-top: 2px;
-    font-size: 12px;
+  .dd-bottom-text {
+    margin-bottom: 10px;
+    .dd-text-2 {
+      font-size: 12px;
+    }
   }
 }
 
