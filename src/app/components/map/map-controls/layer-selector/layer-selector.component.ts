@@ -7,7 +7,7 @@ import { AppState } from '@store';
 import * as mapStore from '@store/map';
 
 import * as models from '@models';
-import { MapService } from '@services';
+import { MapService, ScreenSizeService } from '@services';
 
 @Component({
   selector: 'app-layer-selector',
@@ -23,7 +23,7 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
 
   public areGridlinesActive$ = this.store$.select(mapStore.getAreGridlinesActive);
   public gridActive = false;
-  public coherenceLayerMonths: string | null = null;
+  public coherenceLayerMonths: string | null;
   public months = [
     'DEC_JAN_FEB',
     'MAR_APR_MAY',
@@ -31,11 +31,16 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
     'SEP_OCT_NOV',
   ]
 
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoint: models.Breakpoints;
+  public breakpoints = models.Breakpoints;
+
   private subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>,
     private mapService: MapService,
+    private screenSize: ScreenSizeService,
   ) { }
 
   ngOnInit() {
@@ -59,8 +64,14 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.mapService.hasCoherenceLayer$.subscribe(
-        months => this.coherenceLayerMonths = months
+        months => {
+          this.coherenceLayerMonths = months;
+        }
       )
+    );
+
+    this.subs.add(
+      this.breakpoint$.subscribe(bp => this.breakpoint = bp)
     );
   }
 
@@ -92,6 +103,14 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
 
   public clearCoherenceLayer(): void {
     this.mapService.clearCoherence();
+  }
+
+  public onClickCoherenceMenu(): void {
+    if (this.breakpoint === this.breakpoints.MOBILE) {
+      return;
+    }
+
+    this.clearCoherenceLayer();
   }
 
   public onToggleOverviewMap(isOpen: boolean): void {

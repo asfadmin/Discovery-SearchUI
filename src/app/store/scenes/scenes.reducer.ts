@@ -65,14 +65,28 @@ export const initState: ScenesState = {
 export function scenesReducer(state = initState, action: ScenesActions): ScenesState {
   switch (action.type) {
     case ScenesActionType.SET_SCENES: {
-      const products = action.payload.products
+      let bursts: CMRProduct[] = []
+
+      let searchResults = action.payload.products.map(p =>
+        p.metadata.productType === 'BURST' ? ({...p, productTypeDisplay: 'Single Look Complex (BURST)'}) as CMRProduct : p)
+
+      for (let product of searchResults) {
+        if(product.metadata.productType === 'BURST') {
+          const p = burstXMLFromScene(product)
+          bursts.push(p)
+        }
+      }
+
+      searchResults = searchResults.concat(bursts)
+
+      const products = searchResults
         .reduce((total, product) => {
           total[product.id] = product;
 
           return total;
         }, {});
-
-      const productIDs = action.payload.products.reduce((total, product) => {
+      
+      const productIDs = searchResults.reduce((total, product) => {
         total[product.metadata.productType] = product;
 
         return total;
@@ -81,15 +95,15 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       let productGroups: {[id: string]: string[]} = {}
       let scenes: {[id: string]: string[]} = {}
 
-      if (Object.keys(productIDs).length === 1 && Object.keys(productIDs)[0].toUpperCase() === 'BURST') {
-        productGroups = action.payload.products.reduce((total, product) => {
+      if (Object.keys(productIDs).length <= 2 && Object.keys(productIDs)[0].toUpperCase() === 'BURST') {
+        productGroups = searchResults.reduce((total, product) => {
           const scene = total[product.name] || [];
-
-          total[product.name] = [...scene, product.name];
+          
+          total[product.name] = [...scene, product.id];
           return total;
         }, {})
       } else {
-        productGroups = action.payload.products.reduce((total, product) => {
+        productGroups = searchResults.reduce((total, product) => {
           const scene = total[product.groupId] || [];
 
           total[product.groupId] = [...scene, product.id];
@@ -97,7 +111,6 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
         }, {});
       }
 
-      // scenes: {[id: string]: string[]} = {};
       for (const [groupId, productNames] of Object.entries(productGroups)) {
 
         (<string[]>productNames).sort(
@@ -376,16 +389,6 @@ export const getSelectedSceneProducts = createSelector(
   }
 );
 
-// export const getAllSceneProducts = createSelector(
-//   getScenesState,
-//   (state: ScenesState) => {
-//     return Object.keys(state.products).reduce(
-//       (prev: CMRProduct[], scene_id) =>
-//         Zprev.concat(productsForScene(state.products[scene_id], state)),
-//       [] as CMRProduct[])
-//   }
-// );
-
 export const getSelectedSceneBrowses = createSelector(
   getScenesState,
   (state: ScenesState) => {
@@ -441,9 +444,6 @@ export const getSelectedSarviewsEventProductBrowses = createSelector (
     }
 
     const browses = selected.reduce((acc: string[], curr) => [...acc, curr.files.browse_url], []);
-    // for (const productScene of scenesForProduct) {
-    //   browses.push(productScene.browses[0]);
-    // }
 
     return browses;
   }
@@ -462,7 +462,7 @@ const productsForScene = (selected, state) => {
 
   let products = []
 
-  if (Object.keys(productTypes).length === 1 && Object.keys(productTypes)[0] === 'BURST') {
+  if (Object.keys(productTypes).length <= 2 && Object.keys(productTypes)[0] === 'BURST') {
     products = state.scenes[selected.name] || [];
   } else {
     products = state.scenes[selected.groupId] || []
@@ -474,7 +474,6 @@ const productsForScene = (selected, state) => {
       return a.bytes - b.bytes;
     }).reverse();
 };
-
 
 export const getAreProductsLoaded = createSelector(
   getScenes,
@@ -513,13 +512,6 @@ export const getAllSceneProducts = createSelector(
     return allSceneProducts;
   }
 );
-
-// export const getAllEventProducts = createSelector(
-//   getSelectedSarviewsEvent
-//   (state: SarviewsEvent) => {
-//     return state
-//   }
-// );
 
 export const getSelectedScene = createSelector(
   getScenesState,
@@ -729,3 +721,19 @@ function eqSet(aSet, bSet): boolean {
   return true;
 }
 
+function burstXMLFromScene(product: CMRProduct) {
+  let p =  {
+    ...product,
+    downloadUrl: product.downloadUrl.replace('tiff', 'xml'),
+    productTypeDisplay: 'XML Metadata (BURST)',
+    file: product.file.replace('tiff', 'xml'),
+    id: product.id + '-XML',
+    bytes: 0,
+    metadata: {
+      ...product.metadata,
+      productType: product.metadata.productType + '_XML'
+    }
+  } as CMRProduct;
+
+  return p;
+}

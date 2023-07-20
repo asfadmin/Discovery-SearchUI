@@ -148,12 +148,12 @@ $light-grey: rgb(0 0 0 / 60%);
 
 
 .mobile-button-wrapper {
-  transform: scale(0.82);
-  margin-top: -6px;
+  //transform: scale(0.82);
+  //margin-top: -6px;
 }
 
 ::ng-deep.mat-menu-submenu-icon {
-  visibility: hidden;
+  // visibility: hidden;
 }
 
 .disable-search-type {
