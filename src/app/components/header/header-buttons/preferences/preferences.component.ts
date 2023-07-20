@@ -6,13 +6,15 @@ import * as userStore from '@store/user';
 import { MatDialogRef } from '@angular/material/dialog';
 import {
   MapLayerTypes, UserAuth, ProductType,
-  datasetList, SearchType, SavedFilterPreset, FilterType
+  datasetList, SearchType, SavedFilterPreset, FilterType, Breakpoints
 } from '@models';
 import { Hyp3Service, ThemingService } from '@services';
 import { SubSink } from 'subsink';
 import { take } from 'rxjs';
 import { TranslateService } from "@ngx-translate/core";
 import { AsfLanguageService } from "@services/asf-language.service";
+import * as models from "@models";
+import * as services from "@services";
 
 @Component({
   selector: 'app-preferences',
@@ -21,6 +23,9 @@ import { AsfLanguageService } from "@services/asf-language.service";
 })
 export class PreferencesComponent implements OnInit, OnDestroy {
   @Output() selectedChange = new EventEmitter<string>();
+
+  public breakpoint: models.Breakpoints;
+  public breakpoints = models.Breakpoints;
 
   public datasets = datasetList;
   public defaultMaxResults: number;
@@ -61,10 +66,15 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     private themeService: ThemingService,
     public translate: TranslateService,
     public language: AsfLanguageService,
-
+    private screenSize: services.ScreenSizeService,
   ) { }
 
   ngOnInit() {
+
+    this.screenSize.breakpoint$.subscribe(
+      breakpoint => this.breakpoint = breakpoint
+    );
+
     this.subs.add(
       this.store$.select(userStore.getUserProfile).subscribe(
         profile => {
@@ -102,9 +112,8 @@ export class PreferencesComponent implements OnInit, OnDestroy {
               filters: {} as FilterType,
               id: '',
               name: 'Default',
-              searchType: searchtype[searchtype]
+              searchType: searchtype[searchtype],
             };
-
             this.userFiltersBySearchType[SearchType[searchtype]] = [defaultPreset];
           }
         }
@@ -210,4 +219,6 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
+
+  protected readonly Breakpoints = Breakpoints;
 }
