@@ -28,7 +28,7 @@
     <div *ngIf="breakpoint === breakpoints.MOBILE">
       <div class="mobile-nav-bar">
         <button (click)="onToggleFiltersMenu()"
-            style="margin-left: 5px;"
+            style="margin-left: 2px; padding-left: 5px; padding-right: 5px;"
             mat-flat-button>
           <mat-icon>edit</mat-icon>
           <ng-container [ngSwitch]="selectedSearchType">

@@ -77,7 +77,11 @@
             <span *ngIf="product.bytes !== 0">{{product.bytes | readableSizeFromBytes }}</span>
           </span>
         </div>
-        <div style="margin-top: 3px; margin-left: 32px;" matLine [ngClass]="{'dl-list-item-mobile' : breakpoint === breakpoints.MOBILE }">
+        <div matLine [ngClass]="{
+          'dl-list-item-mobile' : breakpoint === breakpoints.MOBILE, 
+          'product-display-mobile' : breakpoint === breakpoints.MOBILE,
+          'product-display' : breakpoint !== breakpoints.MOBILE 
+        }">
           {{ product.productTypeDisplay }}
         </div>
 
