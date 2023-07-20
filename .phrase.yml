@@ -19,3 +19,4 @@ phrase:
       - file: ./src/assets/i18n/es.json
         params:
           locale_id: Spanish #Can be the name (e.g. en-US)
+

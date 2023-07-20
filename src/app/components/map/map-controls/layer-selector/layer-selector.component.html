@@ -12,7 +12,7 @@
 
   <button mat-menu-item class="control-mat-button-toggle"
     (click)="onNewLayerType(layerTypes.SATELLITE)"
-    [value]="layerTypes.SATELLITE">
+    [value]="layerTypes.SATELLITE | translate">
     <mat-icon class="control-icon">terrain</mat-icon>
     {{ 'SATELLITE_LAYER' |  translate }}
   </button>

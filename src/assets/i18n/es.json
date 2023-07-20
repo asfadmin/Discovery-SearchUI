@@ -1,4 +1,5 @@
 {
+  "LANGUAGE": "Idioma",
   "10 METERS": "10 metros",
   "20 METERS": "20 metros",
   "30 METERS": "30 metros",
@@ -175,6 +176,7 @@
   "DAYS": "Días",
   "DEC_JAN_FEB": "Dic, Ene, Feb",
   "DECIBEL": "decibel",
+  "DEFAULT": "Predeterminado",
   "DEFAULT_LANGUAGE": "Idioma",
   "DEFAULT_LANGUAGE_AND_THEME": "Idioma y Temas ",
   "DEFAULT_MAP_LAYER": "Capa de mapa ",
