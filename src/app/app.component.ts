@@ -1,8 +1,8 @@
-import {Component, OnInit, OnDestroy, ViewChild, AfterViewInit, Inject} from '@angular/core';
+import {Component, OnInit, OnDestroy, AfterViewChecked, ViewChild, Inject} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatIconRegistry } from '@angular/material/icon';
-import { DomSanitizer } from '@angular/platform-browser';
+import {DomSanitizer, Title} from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 import { QueueComponent } from '@components/header/queue';
@@ -46,7 +46,7 @@ import {MAT_MOMENT_DATE_FORMATS} from "@angular/material-moment-adapter";
     {provide: MAT_DATE_LOCALE, useValue: 'en'},
   ]
 })
-export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
+export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
   @ViewChild('sidenav', {static: true}) sidenav: MatSidenav;
 
   private queueStateKey = 'asf-queue-state-v1';
@@ -94,17 +94,14 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     public translate: TranslateService,
     public language: services.AsfLanguageService,
     public _adapter: DateAdapter<any>,
-    @Inject(MAT_DATE_LOCALE) public _locale: string,
+    private titleService: Title,
+
+
+@Inject(MAT_DATE_LOCALE) public _locale: string,
 
 
   ) {}
 
-  public ngAfterViewInit(): void {
-    this.subs.add(
-      this.store$.select(userStore.getUserProfile).subscribe(_ => {
-          this.language.initialize();
-        }))
-  }
   public ngOnInit(): void {
     this.subs.add(
       this.themeService.theme$.subscribe(theme => {
@@ -123,7 +120,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.subs.add(
       this.store$.select(uiStore.getCurrentLanguage).subscribe(
-        language => this.currentLanguage = language
+        language => {
+          this.currentLanguage = language;
+        }
       )
     );
 
@@ -444,6 +443,10 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public onCloseSidebar(): void {
     this.store$.dispatch(new uiStore.CloseSidebar());
+  }
+
+  public ngAfterViewChecked(): void {
+    this.titleService.setTitle( this.translate.instant('ASF_DATA_SEARCH_TITLE') );
   }
 
   private isEmptySearch(searchState): boolean {

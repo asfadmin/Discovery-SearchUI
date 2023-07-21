@@ -80,10 +80,16 @@ export class SearchEffects {
   public setEventSearchProductsOnClear = createEffect(() => this.actions$.pipe(
     ofType<ClearScenes>(ScenesActionType.CLEAR),
     withLatestFrom(this.store$.select(getSearchType)),
-    filter(([_, searchtype]) => searchtype === models.SearchType.SARVIEWS_EVENTS),
-    withLatestFrom(this.sarviewsService.getSarviewsEvents$()),
-    map(([[_, __], events]) => new SetSarviewsEvents({ events }))
-  ));
+    switchMap(([_, searchType]) => {
+      if(searchType === SearchType.SARVIEWS_EVENTS) {
+        return this.sarviewsService.getSarviewsEvents$()
+      } else {
+        return of([])
+      }
+    }),
+    map((events) => new SetSarviewsEvents({ events }))
+    )
+  );
 
   public makeSearches = createEffect(() => this.actions$.pipe(
     ofType(SearchActionType.MAKE_SEARCH),

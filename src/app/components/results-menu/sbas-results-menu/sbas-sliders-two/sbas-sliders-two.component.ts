@@ -33,12 +33,12 @@ export class SbasSlidersTwoComponent implements OnInit {
   public temporalTickInterval = 7;
 
   public tempSlider;
+  public slider;
   public temporal: number;
   public perpendicular: number;
   public daysRange: models.Range<number> = {start: 1, end: 48};
   public daysValues$ = new Subject<number[]>();
   public metersValues$ = new Subject<number[]>();
-  public slider;
 
   private firstLoad = true;
   private firstMeterLoad = true;
@@ -58,10 +58,10 @@ export class SbasSlidersTwoComponent implements OnInit {
     this.meterDistanceControl = new UntypedFormControl(this.perpendicular, Validators.min(-999));
     this.daysControl = new UntypedFormControl(this.daysRange, Validators.min(0));
 
-      this.options = fb.group({
-        color: this.colorControl,
-        meterDistance: this.meterDistanceControl,
-        days: this.daysControl,
+    this.options = fb.group({
+      color: this.colorControl,
+      meterDistance: this.meterDistanceControl,
+      days: this.daysControl,
     });
   }
 
@@ -84,8 +84,8 @@ export class SbasSlidersTwoComponent implements OnInit {
       debounceTime(500),
       distinctUntilChanged()
     ).subscribe((_: number) => {
-      this.metersValues$.next([this.perpendicular, null] );
-    });
+        this.metersValues$.next([this.perpendicular, null] );
+      });
 
     this.subs.add(
       this.screenSize.breakpoint$.subscribe(breakpoint => this.breakpoint = breakpoint )

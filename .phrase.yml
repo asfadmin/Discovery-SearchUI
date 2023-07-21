@@ -1,0 +1,21 @@
+phrase:
+  host: https://api.us.app.phrase.com/v2
+  project_id: ce3014a470b7ad645166b0757cf63070
+  file_format: i18next
+
+  push:
+    sources:
+      - file: ./src/assets/i18n/en.json
+        params:
+          locale_id: en #Can be the name (e.g. en-US)
+          tags: REVIEW_NEEDED  #List of tags separated by comma to be associated with the new keys contained in the upload.
+          #update_translations: true #Indicates whether existing translations should be updated with the file content.
+
+  pull:
+    targets:
+      - file: ./src/assets/i18n/en.json
+        params:
+          locale_id: English #Can be the name (e.g. en-US)
+      - file: ./src/assets/i18n/es.json
+        params:
+          locale_id: Spanish #Can be the name (e.g. en-US)

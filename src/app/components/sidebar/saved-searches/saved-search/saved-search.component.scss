@@ -62,3 +62,7 @@
   align-items: flex-end;
   word-break: break-all;
 }
+
+.mat-form-field-infix {
+  max-width: 50% !important;
+}
