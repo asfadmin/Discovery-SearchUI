@@ -75,10 +75,10 @@
             [(ngModel)]="defaultMapLayer"
             (selectionChange)="onChangeDefaultLayerType($event.value)" name="amount">
             <mat-option [value]="mapLayerTypes.SATELLITE">
-              {{ mapLayerTypes.SATELLITE | translate }}
+              {{ mapLayerTypes.SATELLITE | uppercase | translate }}
             </mat-option>
             <mat-option [value]="mapLayerTypes.STREET ">
-              {{ mapLayerTypes.STREET | translate }}
+              {{ mapLayerTypes.STREET | uppercase | translate }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -98,7 +98,7 @@
           (selectionChange)="onChangeDefaultFilterType($event.value, type)"
           name="preset">
             <mat-option [value]="preset.id" *ngFor="let preset of userFiltersBySearchType[searchType[type]]">
-              {{ preset.name | translate }}
+              {{ preset.name | uppercase | translate}}
             </mat-option>
           </mat-select>
         </mat-form-field>
