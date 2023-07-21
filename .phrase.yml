@@ -15,8 +15,10 @@ phrase:
     targets:
       - file: ./src/assets/i18n/en.json
         params:
-          locale_id: English #Can be the name (e.g. en-US)
+          locale_id: English
       - file: ./src/assets/i18n/es.json
         params:
-          locale_id: Spanish #Can be the name (e.g. en-US)
-
+          locale_id: Spanish
+      - file: ./src/assets/i18n/de.json
+        params:
+          locale_id: German
