@@ -33,6 +33,8 @@ import { SearchType } from './models';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter} from "@angular/material/core";
 import {MAT_MOMENT_DATE_FORMATS} from "@angular/material-moment-adapter";
 
+import { initializePhraseAppEditor, PhraseConfig} from 'ngx-translate-phraseapp'
+
 @Component({
   selector   : 'app-root',
   templateUrl: './app.component.html',
@@ -103,6 +105,20 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
   ) {}
 
   public ngOnInit(): void {
+
+    let config: PhraseConfig = {
+      projectId: 'ce3014a470b7ad645166b0757cf63070',
+      // @ts-ignore
+      accountID: 'ea98d44ebf5237739c12a22eb7d95391',
+      phraseEnabled: true,
+      baseUrl: "https://us.app.phrase.com",
+      apiBaseUrl: 'https://api.us.app.phrase.com/api/v2',
+      oauthEndpointUrl: "https://api.us.app.phrase.com/api/v2/authorizations",
+      profileUrl: "https://us.app.phrase.com/settings/profile",
+    };
+
+    initializePhraseAppEditor(config);
+
     this.subs.add(
       this.themeService.theme$.subscribe(theme => {
         // check if the user profile has auto in it.

@@ -29,8 +29,9 @@ import { BaselineChartModule } from '@components/baseline-chart';
 import { HelpModule } from '@components/help';
 import { AppComponent } from './app.component';
 
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateModule, TranslateLoader, TranslateCompiler } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { PhraseAppCompiler } from 'ngx-translate-phraseapp'
 import { HttpClient } from "@angular/common/http";
 
 import * as services from '@services';
@@ -95,6 +96,10 @@ export const routes = [
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
+      },
+      compiler: {
+        provide: TranslateCompiler,
+        useClass: PhraseAppCompiler
       }
     }),
     BrowserAnimationsModule,

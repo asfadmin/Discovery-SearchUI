@@ -66,6 +66,7 @@
     "ngx-cookieconsent": "^4.0.1",
     "ngx-csv-parser": "^1.2.2",
     "ngx-toastr": "^16.1.1",
+    "ngx-translate-phraseapp": "^1.1.2",
     "nouislider": "^15.6.1",
     "npm": "^8.11.0",
     "ol": "^7.4.0",
