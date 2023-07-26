@@ -111,6 +111,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
       // @ts-ignore
       accountID: 'ea98d44ebf5237739c12a22eb7d95391',
       phraseEnabled: true,
+      autoLowercase: false,
       baseUrl: "https://us.app.phrase.com",
       apiBaseUrl: 'https://api.us.app.phrase.com/api/v2',
       oauthEndpointUrl: "https://api.us.app.phrase.com/api/v2/authorizations",
