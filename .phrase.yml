@@ -1,6 +1,6 @@
 phrase:
   host: https://api.us.app.phrase.com/v2
-  project_id: ce3014a470b7ad645166b0757cf63070
+  project_id: a7b2ee529aef26c03fc47f367470f8fe
   file_format: i18next
 
   push:

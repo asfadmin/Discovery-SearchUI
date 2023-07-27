@@ -107,7 +107,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
   public ngOnInit(): void {
 
     let config: PhraseConfig = {
-      projectId: 'ce3014a470b7ad645166b0757cf63070',
+      projectId: 'a7b2ee529aef26c03fc47f367470f8fe',
       // @ts-ignore
       accountID: 'ea98d44ebf5237739c12a22eb7d95391',
       phraseEnabled: true,
