@@ -500,6 +500,7 @@
   "ONLY_DISPLAY_SCENES_WITH_A_BROWSE_IMAGE": "Only display scenes with a browse image",
   "OPACITY": "Opacity",
   "OPACITY_OF_BROWSE_IMAGES": "Opacity of Browse Images",
+  "OPACITY_OF_COHERENCE_LAYER": "Opacity of Coherence Layer",
   "OPEN_IN_IMAGE_VIEWER": "Open in Image Viewer",
   "OPEN_LINK_TO_DOCUMENTATION": "Open link to documentation.",
   "OPEN_MANUAL": "Open Manual",
