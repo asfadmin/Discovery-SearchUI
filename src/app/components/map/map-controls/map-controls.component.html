@@ -105,6 +105,16 @@
                               color="primary"
                               [disabled]="!(isBrowseOverlayEnabled$ | async)">
                   </mat-slider>
+                  <div class="opacity-slider-title">
+                    Opacity of Coherence Layers
+                  </div>
+                  <mat-slider thumbLabel tickInterval="0.1" step="0.05" value="1" min="0.0" max="1.0"
+                              class="opacity-slider"
+                              name="layerType"
+                              (input)="onSetCoherenceOpacity($event)"
+                              color="primary"
+                              [disabled]="!(isBrowseOverlayEnabled$ | async)">
+                  </mat-slider>
                 </mat-menu>
               </div>
             </div>
