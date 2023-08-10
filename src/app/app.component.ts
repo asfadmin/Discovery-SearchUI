@@ -431,7 +431,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   public ngAfterViewInit(): void {
     this.subs.add(this.translate.get('ASF_DATA_SEARCH_TITLE').subscribe(title => {
       this.titleService.setTitle(title);
-      console.log('title set');
     }));
   }
 
