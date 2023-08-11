@@ -115,10 +115,10 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
 
   ngOnInit() {
     this.subs.add(
-      combineLatest(
+      combineLatest([
         this.store$.select(scenesStore.getSelectedSceneProducts),
         this.store$.select(scenesStore.getOpenUnzippedProduct),
-        this.store$.select(scenesStore.getUnzippedProducts)
+        this.store$.select(scenesStore.getUnzippedProducts)]
       ).pipe(debounceTime(0))
       .subscribe(
         ([products, unzipped, unzippedFiles]) => {
