@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Observable, combineLatest } from 'rxjs';
-import {  map,  distinctUntilChanged, shareReplay, debounceTime } from 'rxjs/operators';
+import { map, distinctUntilChanged, shareReplay, debounceTime } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store/app.reducer';
@@ -10,7 +10,7 @@ import {
   getTemporalRange, getPerpendicularRange, getDateRange, DateRangeState, getSeason, getSBASOverlapThreshold
 } from '@store/filters/filters.reducer';
 
-import { CMRProduct, CMRProductPair, ColumnSortDirection, Range, SBASOverlap,  } from '@models';
+import { CMRProduct, CMRProductPair, ColumnSortDirection, Range, SBASOverlap, } from '@models';
 import { MapService } from './map/map.service';
 import { WktService } from './wkt.service';
 
@@ -32,54 +32,54 @@ export class PairService {
 
 
   public pairs$: Observable<{ custom: CMRProductPair[], pairs: CMRProductPair[] }> = combineLatest([
-      this.store$.select(getScenes).pipe(
-        map(
-          scenes => this.temporalSort(scenes, ColumnSortDirection.INCREASING)
-        ),
+    this.store$.select(getScenes).pipe(
+      map(
+        scenes => this.temporalSort(scenes, ColumnSortDirection.INCREASING)
       ),
-      this.store$.select(getCustomPairs),
-      this.store$.select(getTemporalRange),
-      this.store$.select(getPerpendicularRange).pipe(
-        map(range => range.start)
-      ),
-      this.store$.select(getDateRange),
-      this.store$.select(getSeason),
-      this.store$.select(getSBASOverlapThreshold),
-      this.mapService.searchPolygon$.pipe(
-        map(wkt => !!wkt ? this.wktService.wktToFeature(wkt, this.mapService.epsg()) : null)
-      ),
-    ]).pipe(
-      debounceTime(250),
-      distinctUntilChanged(),
-      map(([scenes, customPairs, temporalRange, perpendicular, dateRange, season, overlap, polygon]) => {
-        console.log('oh making things again')
-        const pairs = this.makePairs(scenes,
-          temporalRange,
-          perpendicular,
-          dateRange,
-          season,
-          overlap,
-          polygon
-          )
-        return {
-          pairs: [...pairs],
-          custom: [...customPairs]
-        }
-      }),
-      shareReplay({ refCount: true, bufferSize: 1 }),
-    )
-    public productsFromPairs$: Observable<CMRProduct[]> = this.pairs$.pipe(
-      map(({ custom, pairs }) => {
-        const prods = Array.from([...custom, ...pairs].reduce((products, pair) => {
-          products.add(pair[0]);
-          products.add(pair[1]);
+    ),
+    this.store$.select(getCustomPairs),
+    this.store$.select(getTemporalRange),
+    this.store$.select(getPerpendicularRange).pipe(
+      map(range => range.start)
+    ),
+    this.store$.select(getDateRange),
+    this.store$.select(getSeason),
+    this.store$.select(getSBASOverlapThreshold),
+    this.mapService.searchPolygon$.pipe(
+      map(wkt => !!wkt ? this.wktService.wktToFeature(wkt, this.mapService.epsg()) : null)
+    ),
+  ]).pipe(
+    debounceTime(50),
+    distinctUntilChanged(),
+    map(([scenes, customPairs, temporalRange, perpendicular, dateRange, season, overlap, polygon]) => {
+      console.log('oh making things again')
+      const pairs = this.makePairs(scenes,
+        temporalRange,
+        perpendicular,
+        dateRange,
+        season,
+        overlap,
+        polygon
+      )
+      return {
+        pairs: [...pairs],
+        custom: [...customPairs]
+      }
+    }),
+    shareReplay({ refCount: true, bufferSize: 1 }),
+  )
+  public productsFromPairs$: Observable<CMRProduct[]> = this.pairs$.pipe(
+    map(({ custom, pairs }) => {
+      const prods = Array.from([...custom, ...pairs].reduce((products, pair) => {
+        products.add(pair[0]);
+        products.add(pair[1]);
 
-          return products;
-        }, new Set<CMRProduct>()));
+        return products;
+      }, new Set<CMRProduct>()));
 
-        return prods;
-      })
-    );
+      return prods;
+    })
+  );
   private makePairs(scenes: CMRProduct[], tempThreshold: Range<number>, perpThreshold,
     dateRange: DateRangeState,
     season: Range<number>,
@@ -274,7 +274,7 @@ export class PairService {
   }
 
   public isGraphDisconnected(pairs: any[], numScenes: Number) {
-    if(pairs.length === 0) {
+    if (pairs.length === 0) {
       return false
     }
     let graph_model = {}
@@ -299,13 +299,13 @@ export class PairService {
 
       }
     }
-    if(numScenes !== points.size) {
+    if (numScenes !== points.size) {
       return true;
     }
 
 
     let to_check = []
-    let checked : Set<String> = new Set()
+    let checked: Set<String> = new Set()
     to_check.push(points.values().next().value)
 
     while (to_check.length > 0) {
