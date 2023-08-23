@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Observable, combineLatest } from 'rxjs';
-import { debounceTime, map, withLatestFrom } from 'rxjs/operators';
+import {  map,  distinctUntilChanged, shareReplay, debounceTime } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store/app.reducer';
@@ -9,28 +9,15 @@ import { getScenes, getCustomPairs } from '@store/scenes/scenes.reducer';
 import {
   getTemporalRange, getPerpendicularRange, getDateRange, DateRangeState, getSeason, getSBASOverlapThreshold
 } from '@store/filters/filters.reducer';
-import { getSearchType } from '@store/search/search.reducer';
 
-import { CMRProduct, CMRProductPair, ColumnSortDirection, Range, SBASOverlap, SearchType } from '@models';
+import { CMRProduct, CMRProductPair, ColumnSortDirection, Range, SBASOverlap,  } from '@models';
 import { MapService } from './map/map.service';
 import { WktService } from './wkt.service';
 
-import * as models from '@models';
 
 import { Feature } from 'ol';
 import Geometry from 'ol/geom/Geometry';
 
-export interface SBASPairParams {
-  scenes: any[];
-  customPairs: CMRProduct[][];
-  temporalRange: models.Range<number>;
-  perpendicular: number;
-  dateRange: models.Range<Date>;
-  season: models.Range<number>;
-  overlap: models.SBASOverlap;
-  polygon: Feature<Geometry>;
-
-}
 
 @Injectable({
   providedIn: 'root'
@@ -42,23 +29,9 @@ export class PairService {
     private mapService: MapService,
     private wktService: WktService) { }
 
-  public productsFromPairs$(): Observable<CMRProduct[]> {
-    return this.pairs$().pipe(
-      map(({ custom, pairs }) => {
-        const prods = Array.from([...custom, ...pairs].reduce((products, pair) => {
-          products.add(pair[0]);
-          products.add(pair[1]);
 
-          return products;
-        }, new Set<CMRProduct>()));
 
-        return prods;
-      })
-    );
-  }
-
-  public pairs$(): Observable<{ custom: CMRProductPair[], pairs: CMRProductPair[] }> {
-    return combineLatest([
+  public pairs$: Observable<{ custom: CMRProductPair[], pairs: CMRProductPair[] }> = combineLatest([
       this.store$.select(getScenes).pipe(
         map(
           scenes => this.temporalSort(scenes, ColumnSortDirection.INCREASING)
@@ -75,37 +48,38 @@ export class PairService {
       this.mapService.searchPolygon$.pipe(
         map(wkt => !!wkt ? this.wktService.wktToFeature(wkt, this.mapService.epsg()) : null)
       ),
-    ], (scenes, customPairs, temporalRange, perpendicular, dateRange, season, overlap, polygon) =>
-    ({
-      scenes,
-      customPairs,
-      temporalRange,
-      perpendicular,
-      dateRange,
-      season,
-      overlap,
-      polygon
-    } as SBASPairParams)).pipe(
+    ]).pipe(
       debounceTime(250),
-      withLatestFrom(this.store$.select(getSearchType)),
-      map(([params, searchType]) => {
-        return searchType === SearchType.SBAS ? ({
-          pairs: [...this.makePairs(params.scenes,
-            params.temporalRange,
-            params.perpendicular,
-            params.dateRange,
-            params.season,
-            params.overlap,
-            params.polygon)],
-          custom: [...params.customPairs]
-        }) : ({
-          pairs: [],
-          custom: []
-        });
+      distinctUntilChanged(),
+      map(([scenes, customPairs, temporalRange, perpendicular, dateRange, season, overlap, polygon]) => {
+        console.log('oh making things again')
+        const pairs = this.makePairs(scenes,
+          temporalRange,
+          perpendicular,
+          dateRange,
+          season,
+          overlap,
+          polygon
+          )
+        return {
+          pairs: [...pairs],
+          custom: [...customPairs]
+        }
+      }),
+      shareReplay({ refCount: true, bufferSize: 1 }),
+    )
+    public productsFromPairs$: Observable<CMRProduct[]> = this.pairs$.pipe(
+      map(({ custom, pairs }) => {
+        const prods = Array.from([...custom, ...pairs].reduce((products, pair) => {
+          products.add(pair[0]);
+          products.add(pair[1]);
+
+          return products;
+        }, new Set<CMRProduct>()));
+
+        return prods;
       })
     );
-  }
-
   private makePairs(scenes: CMRProduct[], tempThreshold: Range<number>, perpThreshold,
     dateRange: DateRangeState,
     season: Range<number>,
@@ -138,7 +112,7 @@ export class PairService {
       centroid.lat = centroid.lat / 4.0;
       return centroid;
     };
-
+    console.time('pair making')
     scenes.forEach((root, index) => {
 
       if (!!aoi) {
@@ -221,6 +195,9 @@ export class PairService {
         pairs.push([root, scene]);
       }
     });
+    console.timeEnd('pair making')
+    console.log(pairs) // for some reason this takes like no time at all on the base search but still spits out results???????
+
 
     return pairs;
   }

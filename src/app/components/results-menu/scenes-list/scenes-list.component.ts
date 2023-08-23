@@ -27,6 +27,7 @@ import { CMRProduct, QueuedHyp3Job, SarviewsEvent } from '@models';
 export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit {
   @ViewChild(CdkVirtualScrollViewport, { static: true }) scroll: CdkVirtualScrollViewport;
   @Input() resize$: Observable<void>;
+  private pairs$ = this.pairService.pairs$;
 
   public scenes: CMRProduct[];
   public pairs;
@@ -164,7 +165,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
     );
 
     this.subs.add(
-      this.pairService.pairs$().pipe(debounceTime(250)).subscribe(
+      this.pairs$.subscribe(
         pairs => {
           this.pairs = [...pairs.pairs, ...pairs.custom].map(
             pair => {
@@ -266,7 +267,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
 
     this.subs.add(
       this.store$.select(scenesStore.getSelectedPair).pipe(
-        withLatestFrom(this.pairService.pairs$()),
+        withLatestFrom(this.pairs$),
         delay(20),
         filter(([selected, _]) => !!selected),
         map(([selected, pairs]) => {
@@ -312,7 +313,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       }
     ));
 
-    this.subs.add(this.pairService.pairs$().pipe(
+    this.subs.add(this.pairs$.pipe(
       filter(loaded => !!loaded),
       withLatestFrom(this.store$.select(scenesStore.getSelectedPair)),
       map(([pairs, selected]) => ({ selectedPair: selected, pairs })),
