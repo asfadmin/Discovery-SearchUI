@@ -365,7 +365,8 @@ function arrayEquals(a, b) {
   return Array.isArray(a) &&
       Array.isArray(b) &&
       a.length === b.length &&
-      a.toString() === b.toString();
+      a.toString() === b.toString() &&
+      a.every((value, index) => value.toString() === b[index].toString())
 }
 export const createArraySelector =
   createSelectorFactory(
