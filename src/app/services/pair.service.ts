@@ -52,7 +52,6 @@ export class PairService {
     debounceTime(50),
     distinctUntilChanged(),
     map(([scenes, customPairs, temporalRange, perpendicular, dateRange, season, overlap, polygon]) => {
-      console.log('oh making things again')
       const pairs = this.makePairs(scenes,
         temporalRange,
         perpendicular,
@@ -112,7 +111,6 @@ export class PairService {
       centroid.lat = centroid.lat / 4.0;
       return centroid;
     };
-    console.time('pair making')
     scenes.forEach((root, index) => {
 
       if (!!aoi) {
@@ -195,8 +193,6 @@ export class PairService {
         pairs.push([root, scene]);
       }
     });
-    console.timeEnd('pair making')
-    console.log(pairs) // for some reason this takes like no time at all on the base search but still spits out results???????
 
 
     return pairs;
