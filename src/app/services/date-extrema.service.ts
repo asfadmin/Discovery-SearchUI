@@ -22,8 +22,9 @@ export class DateExtremaService {
         map(selected => selected.date.start)
     );
 
-    const startMax$ = combineLatest(
-      selectedDataset$, endDate$
+    const startMax$ = combineLatest([
+      selectedDataset$,
+      endDate$]
     ).pipe(
       map(([selected, userEnd]) => {
         if (!!userEnd) {
@@ -34,9 +35,9 @@ export class DateExtremaService {
       })
     );
 
-    const endMin$ = combineLatest(
+    const endMin$ = combineLatest([
       selectedDataset$,
-      startDate$
+      startDate$]
     ).pipe(
       map(([selected, userStart]) => {
         if (!!userStart) {
@@ -51,7 +52,7 @@ export class DateExtremaService {
       map(selected => selected.date.end || new Date(Date.now()))
     );
 
-    return combineLatest(startMin$, startMax$, endMin$, endMax$).pipe(
+    return combineLatest([startMin$, startMax$, endMin$, endMax$]).pipe(
       map(extrema => this.buildExtrema(...extrema)),
     );
   }
@@ -73,8 +74,9 @@ export class DateExtremaService {
 
     const startMin$ = sceneMin$;
 
-    const startMax$ = combineLatest(
-      sceneMax$, endDate$
+    const startMax$ = combineLatest([
+      sceneMax$,
+      endDate$]
     ).pipe(
       map(([sceneMax, userEnd]) => {
         if (!!userEnd) {
@@ -85,9 +87,9 @@ export class DateExtremaService {
       })
     );
 
-    const endMin$ = combineLatest(
+    const endMin$ = combineLatest([
       sceneMin$,
-      startDate$
+      startDate$]
     ).pipe(
       map(([sceneMin, userStart]) => {
         if (!!userStart) {
