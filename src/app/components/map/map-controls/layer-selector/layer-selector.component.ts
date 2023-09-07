@@ -34,6 +34,8 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
+  private coherenceLayerOpacity: number;
+
 
   private subs = new SubSink();
 
@@ -73,6 +75,13 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.breakpoint$.subscribe(bp => this.breakpoint = bp)
     );
+    this.subs.add(
+      this.store$.select(mapStore.getCoherenceOverlayOpacity).subscribe(
+        opacity => {
+          this.coherenceLayerOpacity = opacity;
+        }
+      )
+    )
   }
 
   public onNewLayerType(layerType: models.MapLayerTypes): void {
@@ -99,6 +108,7 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
 
   public onSetCoherenceLayer(months: string): void {
     this.mapService.setCoherenceLayer(months);
+    this.mapService.updateCoherenceOpacity(this.coherenceLayerOpacity);
   }
 
   public clearCoherenceLayer(): void {
