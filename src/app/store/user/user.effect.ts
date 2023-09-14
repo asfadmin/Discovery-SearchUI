@@ -27,9 +27,9 @@ export class UserEffects {
   public saveUserProfile = createEffect(() => this.actions$.pipe(
     ofType<userActions.SaveProfile>(userActions.UserActionType.SAVE_PROFILE),
     withLatestFrom(
-      combineLatest(
+      combineLatest([
         this.store$.select(userReducer.getUserAuth),
-        this.store$.select(userReducer.getUserProfile)
+        this.store$.select(userReducer.getUserProfile)]
       )
     ),
     switchMap(
@@ -62,9 +62,9 @@ export class UserEffects {
   public saveSavedSearches = createEffect(() => this.actions$.pipe(
     ofType<userActions.SaveSearches>(userActions.UserActionType.SAVE_SEARCHES),
     withLatestFrom(
-      combineLatest(
+      combineLatest([
         this.store$.select(userReducer.getUserAuth),
-        this.store$.select(userReducer.getSavedSearches)
+        this.store$.select(userReducer.getSavedSearches)]
       )
     ),
     switchMap(
@@ -76,9 +76,9 @@ export class UserEffects {
   public saveSavedFilters = createEffect(() => this.actions$.pipe(
     ofType<userActions.SaveFilters>(userActions.UserActionType.SAVE_FILTERS),
     withLatestFrom(
-      combineLatest(
+      combineLatest([
         this.store$.select(userReducer.getUserAuth),
-        this.store$.select(userReducer.getSavedFilters)
+        this.store$.select(userReducer.getSavedFilters)]
       )
     ),
     switchMap(
@@ -90,9 +90,9 @@ export class UserEffects {
   public saveSearchHistory = createEffect(() => this.actions$.pipe(
     ofType<userActions.SaveSearches>(userActions.UserActionType.SAVE_SEARCH_HISTORY),
     withLatestFrom(
-      combineLatest(
+      combineLatest([
         this.store$.select(userReducer.getUserAuth),
-        this.store$.select(userReducer.getSearchHistory)
+        this.store$.select(userReducer.getSearchHistory)]
       )
     ),
     switchMap(
