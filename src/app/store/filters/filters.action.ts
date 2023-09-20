@@ -91,6 +91,8 @@ export enum FiltersActionType {
   SET_GEOCODE = '[Filters] Set geocode area name',
 
   SET_FULL_BURST = '[Filters] Set Full Burst IDs',
+  
+  SET_OPERA_BURST_ID = '[Filters] Set Full OPERA S1 Burst IDs'
 }
 
 export class SetSelectedDataset implements Action {
@@ -432,6 +434,13 @@ export class setFullBurst implements Action {
   constructor(public payload: string[]) {}
 }
 
+export class setOperaBurstID implements Action {
+  public readonly type = FiltersActionType.SET_OPERA_BURST_ID;
+
+  constructor(public payload: string[]) {}
+}
+
+
 
 export type FiltersActions =
   | SetSelectedDataset
@@ -493,4 +502,5 @@ export type FiltersActions =
   | SetEventProductSorting
   | ClearEventFilters
   | ClearHyp3ProductTypes
-  | setFullBurst;
+  | setFullBurst
+  | setOperaBurstID;
