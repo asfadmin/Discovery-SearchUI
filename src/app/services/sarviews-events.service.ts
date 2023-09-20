@@ -386,8 +386,10 @@ export class SarviewsEventsService {
   }
 
   public areEventProductsFiltered$(): Observable<Boolean> {
-    return combineLatest(this.filteredEventProducts$(),
-      this.store$.select(getSelectedSarviewsEventProducts)).pipe(
+    return combineLatest([
+      this.filteredEventProducts$(),
+      this.store$.select(getSelectedSarviewsEventProducts)]
+      ).pipe(
         map(([filtered, unfiltered]) => {
           if (!!unfiltered) {
             return !(filtered?.length === unfiltered.length);

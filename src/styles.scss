@@ -757,3 +757,8 @@ $d-height: 500px;
   place-content: stretch center;
   align-items: stretch;
 }
+
+.pair-row .mat-list-item-content {
+  width: 100%;
+  justify-content: space-between;
+}
