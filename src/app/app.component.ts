@@ -344,9 +344,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     );
 
     this.subs.add(
-      combineLatest(
+      combineLatest([
         this.store$.select(queueStore.getQueuedJobs),
-        this.store$.select(hyp3Store.getProcessingOptions)
+        this.store$.select(hyp3Store.getProcessingOptions)]
       ).subscribe(
        ([jobs, options]) => localStorage.setItem(
          this.customProductsQueueStateKey, JSON.stringify({jobs, options})

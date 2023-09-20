@@ -28,8 +28,8 @@ export class AsfLanguageService {
   public cookieOptions = {
     path: '/'
   };
-  private matchLanguagesRegex = /en|es|de/;
-  private listLanguagesRegex = [ 'en', 'es', 'de' ];
+  private matchLanguagesRegex = /en|es/;
+  private listLanguagesRegex = [ 'en', 'es' ];
 
   public languageName = {
     'de' : 'Deutsch',
