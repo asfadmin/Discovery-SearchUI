@@ -69,7 +69,7 @@ export class MapControlsComponent implements OnInit, OnDestroy {
     private mapService: services.MapService,
     private browseOverlayService: services.BrowseOverlayService,
     private eventMonitoringService: services.SarviewsEventsService,
-  ) { }
+    ) { }
 
   ngOnInit() {
     this.subs.add(

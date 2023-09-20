@@ -13,6 +13,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSharedModule } from '@shared';
 
 import { QueueModule } from './queue';
+import { LayerModalModule } from './layer-modal';
 import { ProcessingQueueModule } from './processing-queue';
 import { HeaderButtonsModule } from './header-buttons';
 
@@ -98,7 +99,8 @@ import { LanguageSelectorModule } from "@components/shared/selectors/language-se
     SarviewsEventTypeSelectorModule,
     Hyp3UrlModule,
     SharedModule,
-    LanguageSelectorModule
+    LanguageSelectorModule,
+    LayerModalModule
   ],
   exports: [
     HeaderComponent

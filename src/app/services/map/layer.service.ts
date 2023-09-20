@@ -15,7 +15,7 @@ export class LayerService {
     'SEP_OCT_NOV': this.gibsWMS('Sep_Oct_Nov'),
   }
 
-  public coherenceLayer: ImageLayer<ImageWMS>;
+  public coherenceLayer: ImageLayer<ImageWMS> = new ImageLayer;
 
   constructor() { }
 

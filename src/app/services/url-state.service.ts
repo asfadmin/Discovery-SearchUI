@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { Store, Action } from '@ngrx/store';
@@ -50,6 +50,8 @@ export class UrlStateService {
     private router: Router,
     private prop: PropertyService,
     private themeService: ThemingService,
+    private zone: NgZone
+
   ) {
     const params = [
       ...this.datasetParam(),
@@ -104,9 +106,9 @@ export class UrlStateService {
 
     this.params = paramsWithValues;
 
-    this.router.navigate(['.'], {
+    this.zone.run(() => {this.router.navigate(['.'], {
       queryParams: this.params,
-    });
+    });});
   };
 
   private loadStateFrom(params: Params): void {

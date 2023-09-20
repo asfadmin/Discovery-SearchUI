@@ -9,6 +9,10 @@ import * as mapStore from '@store/map';
 import * as models from '@models';
 import { MapService, ScreenSizeService } from '@services';
 
+import { MatDialog } from '@angular/material/dialog';
+import { LayerModalComponent } from '@components/header/layer-modal';
+
+
 @Component({
   selector: 'app-layer-selector',
   templateUrl: './layer-selector.component.html',
@@ -43,6 +47,8 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private mapService: MapService,
     private screenSize: ScreenSizeService,
+    private dialog: MatDialog
+
   ) { }
 
   ngOnInit() {
@@ -130,7 +136,13 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
   public onToggleGridlines() {
     this.store$.dispatch(new mapStore.SetGridlines(!this.gridActive));
   }
-
+  public onLayerModalClick() {
+    this.dialog.open(LayerModalComponent, {
+      id: 'layerDialog',
+      maxWidth: '100%',
+      maxHeight: '100%'
+    });
+  }
   ngOnDestroy() {
     this.subs.unsubscribe();
   }

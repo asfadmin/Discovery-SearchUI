@@ -63,6 +63,8 @@ export class MapService {
   private sarviewsEventsLayer: VectorLayer<VectorSource>;
   private browseImageLayer: ImageLayer<ImageSource>;
 
+  // private overlayLayer: ImageLayer<ImageSource>;
+
   private gridLinesVisible: boolean;
   private sarviewsFeaturesByID: {[id: string]: Feature} = {};
   private pinnedCollection: Collection<Layer> = new Collection<Layer>([], {unique: true});
@@ -450,6 +452,8 @@ export class MapService {
     });
   }
 
+
+
   private createNewMap(overlay): Map {
     this.overviewMap = new OverviewMap({
       layers: [this.mapView.layer],
@@ -468,6 +472,7 @@ export class MapService {
         this.selectedLayer,
         this.mapView?.gridlines,
         this.pinnedProducts,
+        this.layerService.coherenceLayer
       ],
       target: 'map',
       view: this.mapView.view,
@@ -542,6 +547,54 @@ export class MapService {
 
     return newMap;
   }
+  public createSampleMap(): Map {
+    const newMap = new Map({
+      layers: [
+        this.mapView.layer,
+        this.drawService.getLayer(),
+        this.focusLayer,
+        this.selectedLayer,
+        this.mapView?.gridlines,
+        this.pinnedProducts,
+      ],
+      target: 'layer-modal-map',
+      view: this.mapView.view,
+      controls: [this.overviewMap],
+    });
+
+    newMap.addInteraction(this.selectHover);
+
+
+
+    newMap.on('pointermove', e => {
+      const [ lon, lat ] = proj.toLonLat(e.coordinate, this.epsg());
+      this.mousePositionSubject$.next({ lon, lat });
+    });
+
+    newMap.on('movestart', () => {
+      newMap.getViewport().style.cursor = 'crosshair';
+    });
+
+    newMap.on('moveend', () => {
+      newMap.getViewport().style.cursor = 'default';
+    });
+
+
+    newMap.on('moveend', e => {
+      const currentMap = e.map;
+
+      const view = currentMap.getView();
+
+      const [lon, lat] = proj.toLonLat(view.getCenter());
+      const zoom = view.getZoom();
+
+      this.zoom$.next(zoom);
+      this.center$.next({lon, lat});
+    });
+
+    return newMap;
+  }
+
 
   private updatedMap(): Map {
     if (this.map.getView().getProjection().getCode() !== this.mapView.projection.epsg) {
@@ -585,13 +638,14 @@ export class MapService {
 
   public setCoherenceLayer(months: string): void {
     if (!!this.layerService.coherenceLayer) {
-      this.map.removeLayer(this.layerService.coherenceLayer);
+      // this.map.removeLayer(this.layerService.coherenceLayer);
       this.layerService.coherenceLayer = null;
     }
 
 
     this.layerService.coherenceLayer = this.layerService.getCoherenceLayer(months);
-    this.map.addLayer(this.layerService.coherenceLayer);
+    console.log(this.layerService.coherenceLayer)
+    // this.map.addLayer(this.layerService.coherenceLayer);
     this.hasCoherenceLayer$.next(months);
   }
 
