@@ -486,6 +486,13 @@ export class UrlStateService {
         map(list => ({ fullBurstIDs: list?.map(num => num.toString()).join(',') }))
       ),
       loader: this.loadFullBurstIDs
+    },
+    {
+      name: 'operaBurstIDs',
+      source: this.store$.select(filterStore.getOperaBurstIDs).pipe(
+        map(list => ({ operaBurstID: list?.map(num => num.toString()).join(',') }))
+      ),
+      loader: this.loadOperaBurstIDs
     }];
   }
 
@@ -803,5 +810,10 @@ export class UrlStateService {
   private loadFullBurstIDs = (ids: string): Action => {
     const list = ids.split(',');
     return new filterStore.setFullBurst(list);
+  };
+
+  private loadOperaBurstIDs = (ids: string): Action => {
+    const list = ids.split(',');
+    return new filterStore.setOperaBurstID(list);
   };
 }
