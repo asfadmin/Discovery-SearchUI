@@ -86,6 +86,7 @@ export class ProductService {
       job: null,
       fileName: null,
       burst: g.s1b ? g.s1b : null,
+      opera: g.s1o ? g.s10 : null,
       pgeVersion: g.pge !== null ? parseFloat(g.pge) : null
     })
 

@@ -57,6 +57,9 @@ export interface CMRProductMetadata {
   // SLC BURST
   burst: SLCBurstMetadata | null;
 
+  // OPERA-S1
+  opera: OperaS1Metadata | null;
+
   fileName: string | null;
   job: Hyp3Job | null;
 
@@ -73,6 +76,10 @@ export interface SLCBurstMetadata {
   azimuthAnxTime: string;
   samplesPerBurst: number;
   subswath: string;
+}
+
+export interface OperaS1Metadata {
+  operaBurstID: string;
 }
 
 export enum FlightDirection {

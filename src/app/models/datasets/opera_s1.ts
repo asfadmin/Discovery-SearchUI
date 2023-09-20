@@ -26,7 +26,16 @@ export const opera_s1 = {
   productTypes: [
     {
       apiValue: 'RTC',
-      displayName: 'OPERA RTC (RTC)'
+      displayName: 'L2 Radiometric Terrain Corrected (RTC)'
+    }, {
+      apiValue: 'CSLC',
+      displayName: 'L2 Co-registered Single Look Complex (CSLC)'
+    }, {
+        apiValue: 'RTC-STATIC',
+        displayName: 'L2 Radiometric Terrain Corrected Static Layer (RTC-STATIC)'
+    }, {
+        apiValue: 'CSLC-STATIC',
+        displayName: 'L2 Co-registered Single Look Complex Static Layer (CSLC-STATIC)'
     }
   ],
   beamModes: [
