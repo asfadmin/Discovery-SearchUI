@@ -14,9 +14,9 @@ export const opera_s1 = {
     Props.BASELINE_TOOL,
     Props.SUBTYPE,
   ],
-  apiValue: { 
+  apiValue: {
     platform: 'SENTINEL-1',
-    collections: 
+    collections:
     "OPERA_L2_CSLC-S1-STATIC_PROVISIONAL_V0,OPERA_L2_CSLC-S1_PROVISIONAL_V0,OPERA_L2_RTC-S1-STATIC_PROVISIONAL_V0,OPERA_L2_RTC-S1_PROVISIONAL_V0,OPERA_L2_RTC-S1_V1,OPERA_L2_RTC-S1-STATIC_V1,OPERA_L2_CSLC-S1_V1,OPERA_L2_CSLC-S1-STATIC_V1" },
   date: { start: new Date('2014/06/15 03:44:43 UTC') },
   infoUrl: 'https://sentinels.copernicus.eu/web/sentinel/user-guides/sentinel-1-sar/acquisition-modes/interferometric-wide-swath',
