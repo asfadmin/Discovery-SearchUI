@@ -14,7 +14,7 @@ export const opera_s1 = {
     Props.BASELINE_TOOL,
     Props.SUBTYPE,
   ],
-  apiValue: { 
+  apiValue: {
     platform: 'SENTINEL-1',
     collections: 
     "C1258354200-ASF,C1258354201-ASF,C1258121071-ASFDEV,C1258121066-ASFDEV" },
