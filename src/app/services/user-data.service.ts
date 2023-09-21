@@ -27,7 +27,11 @@ export class UserDataService {
     return this.http.get<T>(url, {
       headers
     }).pipe(
-      catchError(_ => {
+      catchError(error => {
+        if(error.status === 404) {
+          return of(null)
+        }
+
         this.notificationService.error('Trouble loading profile information', 'Error', {
           timeOut: 5000
         });
