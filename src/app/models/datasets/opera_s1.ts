@@ -15,7 +15,6 @@ export const opera_s1 = {
     Props.SUBTYPE,
   ],
   apiValue: {
-    platform: 'SENTINEL-1',
     collections: 
     "C1258354200-ASF,C1258354201-ASF,C1258121071-ASFDEV,C1258121066-ASFDEV" },
   date: { start: new Date('2014/06/15 03:44:43 UTC') },
