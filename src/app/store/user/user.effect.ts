@@ -250,7 +250,7 @@ export class UserEffects {
   }
 
   private datesToDateObjectFor(searches): models.Search[] | models.SavedFilterPreset[] {
-    return searches.map(search => {
+    return searches?.map(search => {
       if (search.searchType === models.SearchType.LIST || !search.filters.dateRange) {
         return search;
       }
@@ -280,7 +280,9 @@ export class UserEffects {
 
   private isValidProfile(resp) {
     const datasetIds = models.datasetIds;
-
+    if(resp === null) {
+      return false;
+    }
     return (
       datasetIds.includes(resp.defaultDataset) &&
       Object.values(models.MapLayerTypes).includes(resp.mapLayer) &&
