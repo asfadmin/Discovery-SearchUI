@@ -17,7 +17,7 @@ export const opera_s1 = {
   apiValue: { 
     platform: 'SENTINEL-1',
     collections: 
-    "OPERA_L2_CSLC-S1-STATIC_PROVISIONAL_V0,OPERA_L2_CSLC-S1_PROVISIONAL_V0,OPERA_L2_RTC-S1-STATIC_PROVISIONAL_V0,OPERA_L2_RTC-S1_PROVISIONAL_V0,OPERA_L2_RTC-S1_V1,OPERA_L2_RTC-S1-STATIC_V1,OPERA_L2_CSLC-S1_V1,OPERA_L2_CSLC-S1-STATIC_V1" },
+    "C1258354200-ASF,C1258354201-ASF,C1258121071-ASFDEV,C1258121066-ASFDEV" },
   date: { start: new Date('2014/06/15 03:44:43 UTC') },
   infoUrl: 'https://sentinels.copernicus.eu/web/sentinel/user-guides/sentinel-1-sar/acquisition-modes/interferometric-wide-swath',
   citationUrl: 'https://asf.alaska.edu/data-sets/sar-data-sets/sentinel-1/sentinel-1-how-to-cite/',
