@@ -87,13 +87,22 @@
             {{ 'ACCESSING_THIS_DATA_REQUIRES_YOU_TO_LOG_IN' | translate | titlecase}}
           </span>
 
-          <span *ngIf="dataset.id === 'RADARSAT-1' || dataset.id === 'JERS-1'">
-            {{ 'JERS_1_AND_RADARSAT_1_DATASETS_REQUIRE_A' | translate }}
+          <span *ngIf=" dataset.id === 'JERS-1'">
+            {{ 'JERS_1_DATASET_REQUIRES_A' | translate }}
             <a
               [href]="asfWebsite.restricted_data_access"
               target="_blank"
             >
               {{ 'RESTRICTED_DATA_USE_AGREEMENT' | translate }}
+            </a>
+          </span>
+          <span *ngIf=" dataset.id === 'RADARSAT-1'">
+            {{ 'RADARSAT_IS_AVAILABLE_THROUGH' | translate }}
+            <a
+              href="https://open.canada.ca/en/open-government-licence-canada"
+              target="_blank"
+            >
+              {{ 'CANADAS_OPEN_LICENSE' | translate }}
             </a>
           </span>
         </p>
