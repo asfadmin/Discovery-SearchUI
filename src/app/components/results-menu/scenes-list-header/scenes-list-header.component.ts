@@ -59,9 +59,12 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public numBaselineScenes$ = this.scenesService.scenes$().pipe(
     map(scenes => scenes.length),
   );
+
+  private products$ = this.scenesService.products$();
+
   public isBurstStack$ =
   combineLatest([
-    this.scenesService.products$(),
+    this.products$,
     this.pairService.pairs$,
     this.store$.select(searchStore.getSearchType),
   ]
@@ -88,7 +91,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
       this.sarviewsEventProducts.filter(prod => browseIds.includes(prod.product_id)))
   );
 
-  private currentBurstProducts$ = this.scenesService.products$().pipe(
+  private currentBurstProducts$ = this.products$.pipe(
     map(products =>
       products.filter(p => p.metadata.productType === 'BURST' || p.metadata.productType === 'BURST_XML')
     )
@@ -180,7 +183,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       combineLatest([
-        this.scenesService.products$(),
+        this.products$,
         this.pairs$
       ]
       ).subscribe(

@@ -65,6 +65,9 @@ export interface CMRProductMetadata {
 
   // versioning
   pgeVersion: number | null;
+
+  // BURST XML, OPERA-S1
+  subproducts: any[];
 }
 
 export interface SLCBurstMetadata {
@@ -80,6 +83,7 @@ export interface SLCBurstMetadata {
 
 export interface OperaS1Metadata {
   operaBurstID: string;
+  additionalUrls: string[];
 }
 
 export enum FlightDirection {
@@ -96,3 +100,7 @@ export enum ColumnSortDirection {
   DECREASING = 'DECREASING',
   NONE = 'NONE',
 }
+
+export interface CMRSubProduct extends CMRProduct{
+  parentID: string;
+} 
