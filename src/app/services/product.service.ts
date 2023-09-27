@@ -35,7 +35,7 @@ export class ProductService {
         if ( !filename.includes(g.gn)) {
           filename = `${g.gn}-${filename}`;
         }
-        return ({
+        let product = {
           name: g.gn,
           productTypeDisplay: g.ptd || g.gn,
           file: filename,
@@ -48,7 +48,10 @@ export class ProductService {
           groupId: g.gid.replace('{gn}', g.gn),
           isUnzippedFile: false,
           metadata: this.getMetadataFrom(g)
-        });
+        };
+
+        product.metadata.subproducts = this.getSubproducts(product)
+        return product;
       }
     );
 
@@ -86,13 +89,100 @@ export class ProductService {
       job: null,
       fileName: null,
       burst: g.s1b ? g.s1b : null,
-      opera: g.s1o ? g.s10 : null,
-      pgeVersion: g.pge !== null ? parseFloat(g.pge) : null
+      opera: g.s1o ? g.s1o : null,
+      pgeVersion: g.pge !== null ? parseFloat(g.pge) : null,
+      subproducts: []
     })
 
   private isNumber = n => !isNaN(n) && isFinite(n);
   private fromCMRDate =
     (dateString: string): moment.Moment => {
       return moment.utc(dateString);
+    }
+  
+    private getSubproducts(product: models.CMRProduct): models.CMRSubProduct[] {
+      if (product.metadata.productType === 'BURST') {
+        return [this.burstXMLFromScene(product)]
+      }
+      if (!!product.metadata.opera) {
+        return this.operaSubproductsFromScene(product)
+      }
+      return []
+    }
+
+
+    private burstXMLFromScene(product: models.CMRProduct) {
+      let p =  {
+        ...product,
+        downloadUrl: product.downloadUrl.replace('tiff', 'xml'),
+        productTypeDisplay: 'XML Metadata (BURST)',
+        file: product.file.replace('tiff', 'xml'),
+        id: product.id + '-XML',
+        bytes: 0,
+        metadata: {
+          ...product.metadata,
+          productType: product.metadata.productType + '_XML'
+        },
+        parentID: product.id
+      } as models.CMRSubProduct;
+    
+      return p;
+    }
+
+    private operaSubproductsFromScene(product: models.CMRProduct) {
+      let products = []
+      // incidence_angle
+      // local_incidence_angle
+      // mask
+      // number_of_looks
+      // rtc_anf_gamma0_to_beta0
+      // rtc_anf_gamma0_to_sigma0
+
+      // product_types = [
+      //   'incidence_angle',
+      //   'local_incidence_angle',
+      //   'mask',
+      //   'number_of_looks',
+      //   'rtc_anf_gamma0_to_beta0',
+      //   'rtc_anf_gamma0_to_sigma0',
+      // ]
+      const display = {
+        'incidence_angle': 'Incidence Angle (TIF)',
+        'local_incidence_angle': 'Local Incidence Angle (TIF)',
+        'mask': 'Mask (TIF)',
+        'number_of_looks': 'Number of Looks (TIF)',
+        'rtc_anf_gamma0_to_beta0': 'RTC Anf Gamma0 to Beta0 (TIF)',
+        'rtc_anf_gamma0_to_sigma0': 'RTC Anf Gamma0 to Sigma0 (TIF)',
+      }
+      for (const p of product.metadata.opera.additionalUrls.slice(1)) {
+        const file_suffix = p.split('v0.')[1]
+        const fileID = 'v0.' + file_suffix
+        const file_name = file_suffix.slice(2, file_suffix.length - 4)
+        console.log(file_name)
+
+        const extension = p.split('.').slice(-1)[0]
+        const fileDisplay = file_name.replace('_', ' ').toLowerCase() + ` (${extension.toUpperCase()})`
+        
+
+        let subproduct =  {
+          ...product,
+          downloadUrl: p,
+          productTypeDisplay: display[file_name] || fileDisplay,
+          file: fileID,
+          id: product.id + '-' + file_name,
+          bytes: 0,
+          metadata: {
+            ...product.metadata,
+            productType: product.metadata.productType + '_TIF'
+          },
+          parentID: product.id
+        } as models.CMRSubProduct;
+
+        if(subproduct.productTypeDisplay !== 'Opera Subproduct') {
+          products.push(subproduct)
+        }
+      }
+
+      return products
     }
 }

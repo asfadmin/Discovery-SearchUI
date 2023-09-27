@@ -2,7 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { ScenesActionType, ScenesActions } from './scenes.action';
 
-import { CMRProduct, UnzippedFolder, ColumnSortDirection, SarviewsEvent, SarviewsProduct } from '@models';
+import { CMRProduct, UnzippedFolder, ColumnSortDirection, SarviewsEvent, SarviewsProduct, CMRSubProduct } from '@models';
 import { PinnedProduct } from '@services/browse-map.service';
 import { createSelectorFactory, defaultMemoize  } from '@ngrx/store';
 
@@ -66,19 +66,21 @@ export const initState: ScenesState = {
 export function scenesReducer(state = initState, action: ScenesActions): ScenesState {
   switch (action.type) {
     case ScenesActionType.SET_SCENES: {
-      let bursts: CMRProduct[] = []
+      let subproducts: CMRProduct[] = []
 
       let searchResults = action.payload.products.map(p =>
         p.metadata.productType === 'BURST' ? ({...p, productTypeDisplay: 'Single Look Complex (BURST)'}) as CMRProduct : p)
 
       for (let product of searchResults) {
-        if(product.metadata.productType === 'BURST') {
-          const p = burstXMLFromScene(product)
-          bursts.push(p)
+        if(product.metadata.subproducts.length > 0) {
+          // const p = burstXMLFromScene(product)
+          for (let subproduct of product.metadata.subproducts) {
+            subproducts.push(subproduct)
+          }
         }
       }
 
-      searchResults = searchResults.concat(bursts)
+      searchResults = searchResults.concat(subproducts)
 
       const products = searchResults
         .reduce((total, product) => {
@@ -87,30 +89,39 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
           return total;
         }, {});
       
-      const productIDs = searchResults.reduce((total, product) => {
-        total[product.metadata.productType] = product;
+      // const productIDs = searchResults.reduce((total, product) => {
+      //   total[product.metadata.productType] = product;
 
-        return total;
-      }, {});
+      //   return total;
+      // }, {});
 
       let productGroups: {[id: string]: string[]} = {}
       let scenes: {[id: string]: string[]} = {}
 
-      if (Object.keys(productIDs).length <= 2 && Object.keys(productIDs)[0].toUpperCase() === 'BURST') {
-        productGroups = searchResults.reduce((total, product) => {
-          const scene = total[product.name] || [];
+      // if (Object.keys(productIDs).length <= 2 && Object.keys(productIDs)[0].toUpperCase() === 'BURST') {
+      //   productGroups = searchResults.reduce((total, product) => {
+      //     const scene = total[product.name] || [];
           
-          total[product.name] = [...scene, product.id];
-          return total;
-        }, {})
-      } else {
+      //     total[product.name] = [...scene, product.id];
+      //     return total;
+      //   }, {})
+      // } else {
         productGroups = searchResults.reduce((total, product) => {
-          const scene = total[product.groupId] || [];
+          // if isSubProduct(product) {
 
-          total[product.groupId] = [...scene, product.id];
+          // }
+          let groupCriteria = product.groupId;
+          if (product.metadata.subproducts.length > 0) {
+            groupCriteria = product.id;
+          } else if(isSubProduct(product)) {
+            groupCriteria = (product as CMRSubProduct).parentID;
+          }
+          const scene = total[groupCriteria] || [];
+
+          total[groupCriteria] = [...scene, product.id];
           return total;
         }, {});
-      }
+      // }
 
       for (const [groupId, productNames] of Object.entries(productGroups)) {
 
@@ -482,7 +493,10 @@ const productsForScene = (selected, state) => {
 
   if (Object.keys(productTypes).length <= 2 && Object.keys(productTypes)[0] === 'BURST') {
     products = state.scenes[selected.name] || [];
-  } else {
+  } else if(selected.metadata.subproducts.length > 0) {
+    products = state.scenes[selected.id] || [];
+  }
+  else {
     products = state.scenes[selected.groupId] || []
   }
 
@@ -739,19 +753,6 @@ function eqSet(aSet, bSet): boolean {
   return true;
 }
 
-function burstXMLFromScene(product: CMRProduct) {
-  let p =  {
-    ...product,
-    downloadUrl: product.downloadUrl.replace('tiff', 'xml'),
-    productTypeDisplay: 'XML Metadata (BURST)',
-    file: product.file.replace('tiff', 'xml'),
-    id: product.id + '-XML',
-    bytes: 0,
-    metadata: {
-      ...product.metadata,
-      productType: product.metadata.productType + '_XML'
-    }
-  } as CMRProduct;
-
-  return p;
+function isSubProduct(product): boolean {
+  return 'parentID' in product;
 }
