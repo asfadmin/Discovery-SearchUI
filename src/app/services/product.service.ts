@@ -154,15 +154,20 @@ export class ProductService {
         'rtc_anf_gamma0_to_beta0': 'RTC Anf Gamma0 to Beta0 (TIF)',
         'rtc_anf_gamma0_to_sigma0': 'RTC Anf Gamma0 to Sigma0 (TIF)',
       }
-      for (const p of product.metadata.opera.additionalUrls) {
+      for (const p of product.metadata.opera.additionalUrls.slice(1)) {
         const file_suffix = p.split('v0.')[1]
         const fileID = 'v0.' + file_suffix
         const file_name = file_suffix.slice(2, file_suffix.length - 4)
         console.log(file_name)
+
+        const extension = p.split('.').slice(-1)[0]
+        const fileDisplay = file_name.replace('_', ' ').toLowerCase() + ` (${extension.toUpperCase()})`
+        
+
         let subproduct =  {
           ...product,
           downloadUrl: p,
-          productTypeDisplay: display[file_name] || 'Opera Subproduct',
+          productTypeDisplay: display[file_name] || fileDisplay,
           file: fileID,
           id: product.id + '-' + file_name,
           bytes: 0,
