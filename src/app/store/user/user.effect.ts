@@ -27,9 +27,9 @@ export class UserEffects {
   public saveUserProfile = createEffect(() => this.actions$.pipe(
     ofType<userActions.SaveProfile>(userActions.UserActionType.SAVE_PROFILE),
     withLatestFrom(
-      combineLatest(
+      combineLatest([
         this.store$.select(userReducer.getUserAuth),
-        this.store$.select(userReducer.getUserProfile)
+        this.store$.select(userReducer.getUserProfile)]
       )
     ),
     switchMap(
@@ -62,9 +62,9 @@ export class UserEffects {
   public saveSavedSearches = createEffect(() => this.actions$.pipe(
     ofType<userActions.SaveSearches>(userActions.UserActionType.SAVE_SEARCHES),
     withLatestFrom(
-      combineLatest(
+      combineLatest([
         this.store$.select(userReducer.getUserAuth),
-        this.store$.select(userReducer.getSavedSearches)
+        this.store$.select(userReducer.getSavedSearches)]
       )
     ),
     switchMap(
@@ -76,9 +76,9 @@ export class UserEffects {
   public saveSavedFilters = createEffect(() => this.actions$.pipe(
     ofType<userActions.SaveFilters>(userActions.UserActionType.SAVE_FILTERS),
     withLatestFrom(
-      combineLatest(
+      combineLatest([
         this.store$.select(userReducer.getUserAuth),
-        this.store$.select(userReducer.getSavedFilters)
+        this.store$.select(userReducer.getSavedFilters)]
       )
     ),
     switchMap(
@@ -90,9 +90,9 @@ export class UserEffects {
   public saveSearchHistory = createEffect(() => this.actions$.pipe(
     ofType<userActions.SaveSearches>(userActions.UserActionType.SAVE_SEARCH_HISTORY),
     withLatestFrom(
-      combineLatest(
+      combineLatest([
         this.store$.select(userReducer.getUserAuth),
-        this.store$.select(userReducer.getSearchHistory)
+        this.store$.select(userReducer.getSearchHistory)]
       )
     ),
     switchMap(
@@ -250,7 +250,7 @@ export class UserEffects {
   }
 
   private datesToDateObjectFor(searches): models.Search[] | models.SavedFilterPreset[] {
-    return searches.map(search => {
+    return searches?.map(search => {
       if (search.searchType === models.SearchType.LIST || !search.filters.dateRange) {
         return search;
       }
@@ -280,7 +280,9 @@ export class UserEffects {
 
   private isValidProfile(resp) {
     const datasetIds = models.datasetIds;
-
+    if(resp === null) {
+      return false;
+    }
     return (
       datasetIds.includes(resp.defaultDataset) &&
       Object.values(models.MapLayerTypes).includes(resp.mapLayer) &&

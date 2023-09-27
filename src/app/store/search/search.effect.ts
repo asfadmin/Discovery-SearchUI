@@ -83,7 +83,10 @@ export class SearchEffects {
     switchMap(([_, searchType]) => {
       if(searchType === SearchType.SARVIEWS_EVENTS) {
         return this.sarviewsService.getSarviewsEvents$()
-    }}),
+      } else {
+        return of([])
+      }
+    }),
     map((events) => new SetSarviewsEvents({ events }))
     )
   );
@@ -255,9 +258,9 @@ export class SearchEffects {
         this.asfApiService.query<any[]>(params),
         this.asfApiService.query<any[]>(countParams)
       ).pipe(
-        withLatestFrom(combineLatest(
+        withLatestFrom(combineLatest([
           this.store$.select(getSearchType),
-          this.store$.select(getIsCanceled)
+          this.store$.select(getIsCanceled)]
         )),
         map(([[response, totalCount], [searchType, isCanceled]]) =>
           !isCanceled ?
@@ -286,9 +289,9 @@ export class SearchEffects {
     switchMap(
       (params) =>
         this.asfApiService.query<any[]>(params).pipe(
-        withLatestFrom(combineLatest(
+        withLatestFrom(combineLatest([
           this.store$.select(getSearchType),
-          this.store$.select(getIsCanceled)
+          this.store$.select(getIsCanceled)]
         )),
         map(([response, [searchType, isCanceled]]) => {
           const files = this.productService.fromResponse(response)

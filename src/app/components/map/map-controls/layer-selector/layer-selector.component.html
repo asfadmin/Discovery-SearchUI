@@ -12,7 +12,7 @@
 
   <button mat-menu-item class="control-mat-button-toggle"
     (click)="onNewLayerType(layerTypes.SATELLITE)"
-    [value]="layerTypes.SATELLITE">
+    [value]="layerTypes.SATELLITE | translate">
     <mat-icon class="control-icon">terrain</mat-icon>
     {{ 'SATELLITE_LAYER' |  translate }}
   </button>
@@ -53,10 +53,10 @@
         (click)="onToggleCoherenceLayer(layer)"
         class="control-mat-checkbox-toggle"
         mat-menu-item>
-        <mat-checkbox class="checkbox"
+        <mat-radio-button
           [disabled]="true"
           [checked]="coherenceLayerMonths === layer">
-        </mat-checkbox>
+        </mat-radio-button>
 
         {{ layer |  translate }}
       </button>

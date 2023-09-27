@@ -37,7 +37,7 @@ export class DownloadService {
     handle = handle ?? this.dir;
     return resp.pipe(this.download$(filename, id, product, (blob) => this.save(blob, url, filename, handle))).pipe(
       catchError(err => {
-        if(product.dataset === 'JERS-1' || product.dataset === 'RADARSAT-1') {
+        if(product.dataset === 'JERS-1') {
           this.notificationService.error('This file may need you to sign a restricted dataset agreement',
           'Issue Downloading', {
           });

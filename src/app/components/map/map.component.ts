@@ -81,9 +81,9 @@ export class MapComponent implements OnInit, OnDestroy  {
   private subs = new SubSink();
   private gridlinesActive$ = this.store$.select(mapStore.getAreGridlinesActive);
   private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
-  private viewType$ = combineLatest(
+  private viewType$ = combineLatest([
     this.store$.select(mapStore.getMapView),
-    this.store$.select(mapStore.getMapLayerType),
+    this.store$.select(mapStore.getMapLayerType),]
   );
 
   private sarviewsEvents: SarviewsEvent[];
@@ -131,9 +131,9 @@ export class MapComponent implements OnInit, OnDestroy  {
     );
 
     this.subs.add(
-      combineLatest(
+      combineLatest([
         this.store$.select(uiStore.getIsResultsMenuOpen),
-        this.mapService.searchPolygon$
+        this.mapService.searchPolygon$]
       ).pipe(
         filter(_ => !!this.overlay),
         map(([isResultsMenuOpen, polygon]) => !isResultsMenuOpen && !!polygon),
@@ -186,10 +186,10 @@ export class MapComponent implements OnInit, OnDestroy  {
     );
 
     this.subs.add(
-      combineLatest(
+      combineLatest([
         this.mapService.isDrawing$,
         this.drawMode$,
-        this.interactionMode$
+        this.interactionMode$]
       ).pipe(
         map(([isDrawing, drawMode, interactionMode]) => {
           if (interactionMode === models.MapInteractionModeType.DRAW) {

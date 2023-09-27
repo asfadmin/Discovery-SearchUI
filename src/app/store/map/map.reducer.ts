@@ -13,6 +13,7 @@ export interface MapState {
   gridLinesActive: boolean;
   isMapInitialized: boolean;
   browseOverlayOpacity: number;
+  coherenceOverlayOpacity: number;
   overviewMapOpen: boolean;
 }
 
@@ -24,6 +25,8 @@ export const initState: MapState = {
   gridLinesActive: false,
   isMapInitialized: false,
   browseOverlayOpacity: 1.0,
+  coherenceOverlayOpacity: 1.0,
+
   overviewMapOpen: false
 };
 
@@ -88,7 +91,16 @@ export function mapReducer(state = initState, action: MapActions): MapState {
         browseOverlayOpacity
       };
     }
-
+    
+    case MapActionType.SET_COHERENCE_OVERLAY_OPACITY: {
+      const coherenceOverlayOpacity = action.payload < 0
+        ? 0 : action.payload > 1.0
+        ? 1.0 : action.payload;
+      return {
+        ...state,
+        coherenceOverlayOpacity
+      };
+    }
     case MapActionType.TOGGLE_OVERVIEW_MAP: {
       return {
         ...state,
@@ -143,4 +155,8 @@ export const getIsOverviewMapOpen = createSelector(
 export const getBrowseOverlayOpacity = createSelector(
   getMapState,
   (state: MapState) => state.browseOverlayOpacity
+);
+export const getCoherenceOverlayOpacity = createSelector(
+  getMapState,
+  (state: MapState) => state.coherenceOverlayOpacity
 );

@@ -12,10 +12,10 @@ export interface DerivedDataset {
 const pictureFolder = 'assets/derived-datasets';
 
 export const derivedDatasets: DerivedDataset[] = [{
-  name: 'GLOBAL_SEASONAL_SENTINEL_1',
-  info: 'INFO_GLOBAL_SEASONAL_SENTINEL_1',
+  name: 'GLOBAL_SEASONAL_SENTINEL',
+  info: 'INFO_GLOBAL_SEASONAL_SENTINEL',
   description: `
-  'DESCRIP_GLOBAL_SEASONAL_SENTINEL_1'
+  'DESCRIP_GLOBAL_SEASONAL_SENTINEL'
   `,
   info_url: `${asfWebsite.home}/datasets/derived/global-seasonal-sentinel-1-interferometric-coherence-and-backscatter-dataset/`,
   download_url: `${asfWebsite.home}/datasets/derived/global-seasonal-sentinel-1-interferometric-coherence-and-backscatter-dataset/`,

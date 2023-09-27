@@ -11,6 +11,8 @@ import { DateAdapter } from "@angular/material/core";
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 import { Store } from "@ngrx/store";
+import {SubSink} from "subsink";
+import {Title} from "@angular/platform-browser";
 const defaultLanguage = 'en';
 
 @Injectable({
@@ -38,11 +40,15 @@ export class AsfLanguageService {
     'zh' : '中文 (Chinese)',
   }
 
+  private subs = new SubSink();
+
+
   constructor(
     public translate: TranslateService,
     private cookieService: CookieService,
     private dateAdapter: DateAdapter<Date>,
     private store$: Store<AppState>,
+    private titleService: Title,
   ) {
     this.browserLang = this.translate.getBrowserLang();
     this.initialize();
@@ -79,6 +85,10 @@ export class AsfLanguageService {
     this.translate.use(language);
     this.dateAdapter.setLocale(language);
     this.setCurrentLanguage(language);
+    this.subs.add(this.translate.get('ASF_DATA_SEARCH_TITLE').subscribe(title => {
+      this.titleService.setTitle(title);
+    }));
+
   }
 
   public initialize(): void {
