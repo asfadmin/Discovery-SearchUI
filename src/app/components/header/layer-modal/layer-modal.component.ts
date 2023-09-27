@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy, Input, QueryList, ViewChildren } from '@angular/core';
 
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
-import { map} from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
+import * as mapStore from '@store/map';
 
 import { AppState } from '@store';
 
@@ -63,23 +64,51 @@ export class LayerModalComponent implements OnInit, OnDestroy {
     {
       'label': 'Sentinel 1 Coherence',
       'id': 'sentinel-1-coherence',
-      'description': 'This thing does some pretty cool things and I think it is really really cool.',
+      'description': 'These show the general data about .',
+      'doc_link': '',
       'type': 'LIST',
+      'layerFunction': (param) => { this.mapService.clearCoherence(); this.mapService.setCoherenceLayer(param) },
       'sub': [
-        'VV - Dec, Jan, Feb',
-        'VV - Mar, Apr, Jun',
-        'VV - Mar, Apr, Jun2',
-        'VV - Mar, Apr, Jun3',
-        'VH - Dec, Jan, Feb',
-        'VH - Mar, Apr, Jun',
-        'VH - Mar, Apr, Jun2',
-        'VH - Mar, Apr, Jun3',
+        {
+          'name': 'VV - Dec, Jan, Feb',
+          'value': 'VV_DEC_JAN_FEB'
+        },
+        {
+          'name': 'VV - Mar, Apr, May',
+          'value': 'VV_MAR_APR_MAY'
+        },
+        {
+          'name': 'VV - Jun, Jul, Aug',
+          'value': 'VV_JUN_JUL_AUG'
+        },
+        {
+          'name': 'VV - Sep, Oct, Nov',
+          'value': 'VV_SEP_OCT_NOV'
+        },
+        {
+          'name': 'VH - Dec, Jan, Feb',
+          'value': 'Vh_DEC_JAN_FEB'
+        },
+        {
+          'name': 'VH - Mar, Apr, May',
+          'value': 'VH_MAR_APR_MAY'
+        },
+        {
+          'name': 'VH - Jun, Jul, Aug',
+          'value': 'VH_JUN_JUL_AUG'
+        },
+        {
+          'name': 'VH - Sep, Oct, Nov',
+          'value': 'VH_SEP_OCT_NOV'
+        },
       ]
     },
     {
-      'label': 'Browse Overlay',
-      'id': 'browse-overlay',
-      'description': 'Show a preview of what a product would look like on a map',
+      'label': 'Gridlines',
+      'id': 'gridlines',
+      'async-value': this.store$.select(mapStore.getAreGridlinesActive),
+      'description': 'Show gridlines over the map. ',
+      'layerFunction': (param) => { console.log(param); this.store$.dispatch(new mapStore.SetGridlines(param))},
       'type': 'TOGGLE'
     }
   ];
@@ -91,8 +120,8 @@ export class LayerModalComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private dialogRef: MatDialogRef<LayerModalComponent>,
     private screenSize: ScreenSizeService,
-    private mapService: MapService
-  ) {}
+    private mapService: MapService,
+  ) { }
 
   ngOnInit() {
     this.subs.add(
@@ -109,12 +138,18 @@ export class LayerModalComponent implements OnInit, OnDestroy {
       )
     );
 
-    this.mapService.createSampleMap()
+    // this.mapService.createSampleMap()
   }
 
   public setSelectedLayer(layer) {
     this.selectedLayer = layer;
   }
+
+  public onOptionSelect(option, selectedLayer) {
+    console.log(option)
+    selectedLayer.layerFunction(option);
+  }
+
 
   public onResized(event: ResizedEvent) {
     this.dlWidth = event.newRect.width;

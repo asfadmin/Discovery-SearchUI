@@ -9,10 +9,14 @@ import ImageLayer from 'ol/layer/Image';
 export class LayerService {
 
   public coherenceWMS = {
-    'DEC_JAN_FEB': this.gibsWMS('Dec_Jan_Feb'),
-    'MAR_APR_MAY': this.gibsWMS('Mar_Apr_May'),
-    'JUN_JUL_AUG': this.gibsWMS('Jun_Jul_Aug'),
-    'SEP_OCT_NOV': this.gibsWMS('Sep_Oct_Nov'),
+    'VV_DEC_JAN_FEB': this.gibsWMS('Dec_Jan_Feb'),
+    'VV_MAR_APR_MAY': this.gibsWMS('Mar_Apr_May'),
+    'VV_JUN_JUL_AUG': this.gibsWMS('Jun_Jul_Aug'),
+    'VV_SEP_OCT_NOV': this.gibsWMS('Sep_Oct_Nov'),
+    'VH_DEC_JAN_FEB': this.vh_wms('Dec_Jan_Feb'),
+    'VH_MAR_APR_MAY': this.vh_wms('Mar_Apr_May'),
+    'VH_JUN_JUL_AUG': this.vh_wms('Jun_Jul_Aug'),
+    'VH_SEP_OCT_NOV': this.vh_wms('Sep_Oct_Nov'),
   }
 
   public coherenceLayer: ImageLayer<ImageWMS> = new ImageLayer;
@@ -20,6 +24,16 @@ export class LayerService {
   constructor() { }
 
   private gibsWMS(months: string): ImageWMS {
+
+    return new ImageWMS({
+      url:`https://gis.earthdata.nasa.gov/image/services/GSSICB/GSSICB_12_day_Median_VV_Coherence_${months}/ImageServer/WMSServer`,
+      params: {'LAYERS': `GSSICB_12_day_Median_VV_Coherence_${months}:Unscaled Coherence`},
+      ratio: 1,
+      serverType: 'geoserver',
+    });
+  }
+
+  public vh_wms(months: string) {
     return new ImageWMS({
       url: `https://gis.earthdata.nasa.gov/image/services/GSSICB/GSSICB_12_day_Median_VV_Coherence_${months}/ImageServer/WMSServer`,
       params: {'LAYERS': `GSSICB_12_day_Median_VV_Coherence_${months}:Unscaled Coherence`},

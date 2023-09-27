@@ -637,15 +637,15 @@ export class MapService {
   }
 
   public setCoherenceLayer(months: string): void {
-    if (!!this.layerService.coherenceLayer) {
-      // this.map.removeLayer(this.layerService.coherenceLayer);
+    if (this.layerService.coherenceLayer) {
+      this.map.removeLayer(this.layerService.coherenceLayer);
       this.layerService.coherenceLayer = null;
     }
 
 
     this.layerService.coherenceLayer = this.layerService.getCoherenceLayer(months);
     console.log(this.layerService.coherenceLayer)
-    // this.map.addLayer(this.layerService.coherenceLayer);
+    this.map.addLayer(this.layerService.coherenceLayer);
     this.hasCoherenceLayer$.next(months);
   }
 
