@@ -430,7 +430,6 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
   public isRestrictedDataset(): boolean {
     return (
-      this.scene.dataset.includes('RADARSAT-1') ||
       this.scene.dataset.includes('JERS-1')
     );
   }
