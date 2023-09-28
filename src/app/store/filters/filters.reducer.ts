@@ -355,6 +355,11 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           fullBurstIDs: [metadata.burst.fullBurstID],
         }
       }
+      if(action.payload.dataset.id === models.opera_s1.id) {
+        filters = {
+          groupId: action.payload.product.groupId
+        }
+      }
       return {
         ...state,
         ...filters
