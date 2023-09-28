@@ -199,7 +199,7 @@
     [value]="progress">
   </mat-progress-bar>
 
-  <div class="w100 hyp3-footer" 
+  <div class="w100 hyp3-footer"
   [ngStyle]="{
     'justify-content': breakpoint == breakpoints.MOBILE ? 'inherit' : 'center'
   }"
@@ -278,13 +278,6 @@
         [(ngModel)]="validateOnly">
         {{ 'VALIDATE_ONLY' | translate }}
       </mat-slide-toggle>
-
-      <button mat-flat-button (click)="openSubscriptionDialog()"
-              [class.mini-button] = "breakpoint == breakpoints.MOBILE"
-              [ngStyle]="{'margin-right': breakpoint === breakpoints.MOBILE ? '5px' : '16px'}"
-        >
-        {{ 'SUBSCRIPTION' |  translate }}
-      </button>
 
       <button
          (click)="onReviewQueue()"
