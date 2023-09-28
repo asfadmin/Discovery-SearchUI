@@ -17,6 +17,9 @@ export class DatasetForProductService {
     if(scene.metadata.productType === 'BURST') {
       return models.sentinel_1_bursts;
     }
+    if(scene.id.startsWith('OPERA')) {
+      return models.opera_s1;
+    }
 
     const exact = (datasetID, sceneDataset) => (
       datasetID === sceneDataset

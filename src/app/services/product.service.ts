@@ -105,6 +105,7 @@ export class ProductService {
         return [this.burstXMLFromScene(product)]
       }
       if (!!product.metadata.opera) {
+        product.productTypeDisplay = this.operaProductTypeDisplay(product.downloadUrl)
         return this.operaSubproductsFromScene(product)
       }
       return []
@@ -131,43 +132,22 @@ export class ProductService {
 
     private operaSubproductsFromScene(product: models.CMRProduct) {
       let products = []
-      // incidence_angle
-      // local_incidence_angle
-      // mask
-      // number_of_looks
-      // rtc_anf_gamma0_to_beta0
-      // rtc_anf_gamma0_to_sigma0
+      
+      let productType = models.opera_s1.productTypes.find(productType => productType.apiValue === product.metadata.productType)
+      let file_suffix = product.downloadUrl.split(/(_v)\w+.*_/).slice(-1)[0]
+      let file_name = file_suffix.endsWith('h5') ? 'H5' : file_suffix.split('.').slice(0, -1).join('.')
+      product.productTypeDisplay = productType.displayName + `- (${file_name})`
 
-      // product_types = [
-      //   'incidence_angle',
-      //   'local_incidence_angle',
-      //   'mask',
-      //   'number_of_looks',
-      //   'rtc_anf_gamma0_to_beta0',
-      //   'rtc_anf_gamma0_to_sigma0',
-      // ]
-      const display = {
-        'incidence_angle': 'Incidence Angle (TIF)',
-        'local_incidence_angle': 'Local Incidence Angle (TIF)',
-        'mask': 'Mask (TIF)',
-        'number_of_looks': 'Number of Looks (TIF)',
-        'rtc_anf_gamma0_to_beta0': 'RTC Anf Gamma0 to Beta0 (TIF)',
-        'rtc_anf_gamma0_to_sigma0': 'RTC Anf Gamma0 to Sigma0 (TIF)',
-      }
       for (const p of product.metadata.opera.additionalUrls.slice(1)) {
-        const file_suffix = p.split('v0.')[1]
-        const fileID = 'v0.' + file_suffix
-        const file_name = file_suffix.slice(2, file_suffix.length - 4)
-        console.log(file_name)
-
-        const extension = p.split('.').slice(-1)[0]
-        const fileDisplay = file_name.replace('_', ' ').toLowerCase() + ` (${extension.toUpperCase()})`
+        file_suffix = p.split(/(_v)\w+.*_/).slice(-1)[0]
+        file_name = file_suffix.endsWith('h5') ? 'H5' : file_suffix.split('.').slice(0, -1).join('.')
         
+        const fileID = p.split('/').slice(-1)[0]
 
         let subproduct =  {
           ...product,
           downloadUrl: p,
-          productTypeDisplay: display[file_name] || fileDisplay,
+          productTypeDisplay: productType.displayName + `- (${file_name})`,
           file: fileID,
           id: product.id + '-' + file_name,
           bytes: 0,
@@ -184,5 +164,14 @@ export class ProductService {
       }
 
       return products
+    }
+
+    operaProductTypeDisplay(p: string) {
+      const file_suffix = p.split(/(_v)\w+.*_/).slice(-1)[0]
+      const file_name = file_suffix.slice(0, file_suffix.length - 4)
+      const extension = p.split('.').slice(-1)[0]
+      const fileDisplay = file_name.replace('_', ' ').toLowerCase() + ` (${extension.toUpperCase()})`
+      
+      return fileDisplay
     }
 }

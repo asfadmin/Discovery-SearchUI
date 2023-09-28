@@ -2,7 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { ScenesActionType, ScenesActions } from './scenes.action';
 
-import { CMRProduct, UnzippedFolder, ColumnSortDirection, SarviewsEvent, SarviewsProduct, CMRSubProduct } from '@models';
+import { CMRProduct, UnzippedFolder, ColumnSortDirection, SarviewsEvent, SarviewsProduct, CMRSubProduct, opera_s1 } from '@models';
 import { PinnedProduct } from '@services/browse-map.service';
 import { createSelectorFactory, defaultMemoize  } from '@ngrx/store';
 
@@ -71,9 +71,10 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       let searchResults = action.payload.products.map(p =>
         p.metadata.productType === 'BURST' ? ({...p, productTypeDisplay: 'Single Look Complex (BURST)'}) as CMRProduct : p)
 
+
+      const ungrouped_product_types = opera_s1.productTypes.map(m => m.apiValue)
       for (let product of searchResults) {
-        if(product.metadata.subproducts.length > 0) {
-          // const p = burstXMLFromScene(product)
+        if(product.metadata.subproducts.length > 0 || ungrouped_product_types.includes(product.metadata.productType)) {
           for (let subproduct of product.metadata.subproducts) {
             subproducts.push(subproduct)
           }
@@ -88,30 +89,13 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
 
           return total;
         }, {});
-      
-      // const productIDs = searchResults.reduce((total, product) => {
-      //   total[product.metadata.productType] = product;
-
-      //   return total;
-      // }, {});
 
       let productGroups: {[id: string]: string[]} = {}
       let scenes: {[id: string]: string[]} = {}
 
-      // if (Object.keys(productIDs).length <= 2 && Object.keys(productIDs)[0].toUpperCase() === 'BURST') {
-      //   productGroups = searchResults.reduce((total, product) => {
-      //     const scene = total[product.name] || [];
-          
-      //     total[product.name] = [...scene, product.id];
-      //     return total;
-      //   }, {})
-      // } else {
         productGroups = searchResults.reduce((total, product) => {
-          // if isSubProduct(product) {
-
-          // }
           let groupCriteria = product.groupId;
-          if (product.metadata.subproducts.length > 0) {
+          if (product.metadata.subproducts.length > 0 || ungrouped_product_types.includes(product.metadata.productType)) {
             groupCriteria = product.id;
           } else if(isSubProduct(product)) {
             groupCriteria = (product as CMRSubProduct).parentID;
@@ -121,7 +105,6 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
           total[groupCriteria] = [...scene, product.id];
           return total;
         }, {});
-      // }
 
       for (const [groupId, productNames] of Object.entries(productGroups)) {
 
@@ -491,9 +474,10 @@ const productsForScene = (selected, state) => {
 
   let products = []
 
+  const ungrouped_product_types = opera_s1.productTypes.map(m => m.apiValue)
   if (Object.keys(productTypes).length <= 2 && Object.keys(productTypes)[0] === 'BURST') {
     products = state.scenes[selected.name] || [];
-  } else if(selected.metadata.subproducts.length > 0) {
+  } else if(selected.metadata.subproducts.length > 0 || ungrouped_product_types.includes(selected.metadata.productType)) {
     products = state.scenes[selected.id] || [];
   }
   else {
