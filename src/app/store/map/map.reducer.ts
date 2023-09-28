@@ -14,6 +14,7 @@ export interface MapState {
   isMapInitialized: boolean;
   browseOverlayOpacity: number;
   coherenceOverlayOpacity: number;
+  coherenceLayerSelection: string;
   overviewMapOpen: boolean;
 }
 
@@ -26,6 +27,7 @@ export const initState: MapState = {
   isMapInitialized: false,
   browseOverlayOpacity: 1.0,
   coherenceOverlayOpacity: 1.0,
+  coherenceLayerSelection: '',
 
   overviewMapOpen: false
 };
@@ -101,12 +103,19 @@ export function mapReducer(state = initState, action: MapActions): MapState {
         coherenceOverlayOpacity
       };
     }
+    case MapActionType.SET_COHERENCE_LAYER: {
+      return {
+        ...state,
+        coherenceLayerSelection: action.payload
+      };
+    }
     case MapActionType.TOGGLE_OVERVIEW_MAP: {
       return {
         ...state,
         overviewMapOpen: action.payload
       };
     }
+
 
     default: {
       return state;
@@ -159,4 +168,9 @@ export const getBrowseOverlayOpacity = createSelector(
 export const getCoherenceOverlayOpacity = createSelector(
   getMapState,
   (state: MapState) => state.coherenceOverlayOpacity
+);
+
+export const getCoherenceLayerSelection = createSelector(
+  getMapState,
+  (state: MapState) => state.coherenceLayerSelection
 );

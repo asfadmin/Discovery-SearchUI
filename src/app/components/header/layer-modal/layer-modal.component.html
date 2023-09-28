@@ -38,12 +38,12 @@
       <div class="sub-layer-menu-content">
         <span class="layer-description">{{selectedLayer.description}}</span>
         <div *ngIf="selectedLayer.type === 'TOGGLE'">
-          <mat-slide-toggle (change)="onOptionSelect($event.checked, selectedLayer)" value>Enabled</mat-slide-toggle>
+          <mat-slide-toggle (change)="onOptionSelect($event.checked, selectedLayer)" [checked]="selectedLayer.asyncValue | async">Enabled</mat-slide-toggle>
         </div>
         <div *ngIf="selectedLayer.type === 'LIST'" style="display:flex; flex-direction: column;">
           <mat-list-item *ngFor="let item of selectedLayer.sub" class="layer-list-item">
             <mat-radio-button (click)="onOptionSelect(item.value, selectedLayer)"
-              [value]="item.value">{{item.name}}</mat-radio-button>
+              [value]="item.value" [checked]="(selectedLayer.asyncValue | async) === item.value">{{item.name}}</mat-radio-button>
           </mat-list-item>
         </div>
       </div>
