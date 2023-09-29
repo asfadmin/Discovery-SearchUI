@@ -169,7 +169,7 @@ export class QueueComponent implements OnInit, OnDestroy {
         if (product.metadata.productType === 'BURST_XML') {
           return product.id?.split('-XML')[0]
         }
-        return product.id;
+        return product.metadata.parentID || product.id;
       })
       .join('\n');
     this.clipboardService.copyFromContent(productListStr);
