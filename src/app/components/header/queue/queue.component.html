@@ -89,7 +89,9 @@
           *ngIf="!product.isUnzippedFile && !product.metadata.job && product.groupId !== 'SARViews'"
           style="margin-right: 15px;"
           prompt="{{ 'COPY_FILE_ID' | translate}}"
-          [value]="product.metadata.productType === 'BURST_XML' ? product.id?.split('-XML')[0] : product.id"
+          [value]="product.metadata.productType === 'BURST_XML' ? product.id?.split('-XML')[0] : (
+            product.metadata.parentID || product.id
+          )"
         >
         </app-copy-to-clipboard>
 

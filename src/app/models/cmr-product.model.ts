@@ -68,6 +68,7 @@ export interface CMRProductMetadata {
 
   // BURST XML, OPERA-S1
   subproducts: any[];
+  parentID: string;
 }
 
 export interface SLCBurstMetadata {
@@ -100,7 +101,3 @@ export enum ColumnSortDirection {
   DECREASING = 'DECREASING',
   NONE = 'NONE',
 }
-
-export interface CMRSubProduct extends CMRProduct{
-  parentID: string;
-} 

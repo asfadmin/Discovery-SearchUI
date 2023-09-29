@@ -2,7 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { ScenesActionType, ScenesActions } from './scenes.action';
 
-import { CMRProduct, UnzippedFolder, ColumnSortDirection, SarviewsEvent, SarviewsProduct, CMRSubProduct, opera_s1 } from '@models';
+import { CMRProduct, UnzippedFolder, ColumnSortDirection, SarviewsEvent, SarviewsProduct, opera_s1 } from '@models';
 import { PinnedProduct } from '@services/browse-map.service';
 import { createSelectorFactory, defaultMemoize  } from '@ngrx/store';
 
@@ -98,7 +98,7 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
           if (product.metadata.subproducts.length > 0 || ungrouped_product_types.includes(product.metadata.productType)) {
             groupCriteria = product.id;
           } else if(isSubProduct(product)) {
-            groupCriteria = (product as CMRSubProduct).parentID;
+            groupCriteria = product.metadata.parentID;
           }
           const scene = total[groupCriteria] || [];
 
@@ -738,5 +738,5 @@ function eqSet(aSet, bSet): boolean {
 }
 
 function isSubProduct(product): boolean {
-  return 'parentID' in product;
+  return !!product.metadata.parentID;
 }

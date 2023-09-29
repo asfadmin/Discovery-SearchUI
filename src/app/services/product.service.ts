@@ -91,7 +91,8 @@ export class ProductService {
       burst: g.s1b ? g.s1b : null,
       opera: g.s1o ? g.s1o : null,
       pgeVersion: g.pge !== null ? parseFloat(g.pge) : null,
-      subproducts: []
+      subproducts: [],
+      parentID: null
     })
 
   private isNumber = n => !isNaN(n) && isFinite(n);
@@ -100,7 +101,7 @@ export class ProductService {
       return moment.utc(dateString);
     }
   
-    private getSubproducts(product: models.CMRProduct): models.CMRSubProduct[] {
+    private getSubproducts(product: models.CMRProduct): models.CMRProduct[] {
       if (product.metadata.productType === 'BURST') {
         return [this.burstXMLFromScene(product)]
       }
@@ -125,7 +126,7 @@ export class ProductService {
           productType: product.metadata.productType + '_XML'
         },
         parentID: product.id
-      } as models.CMRSubProduct;
+      } as models.CMRProduct;
     
       return p;
     }
@@ -133,10 +134,9 @@ export class ProductService {
     private operaSubproductsFromScene(product: models.CMRProduct) {
       let products = []
       
-      let productType = models.opera_s1.productTypes.find(productType => productType.apiValue === product.metadata.productType)
       let file_suffix = product.downloadUrl.split(/(_v)\w+.*_/).slice(-1)[0]
       let file_name = file_suffix.endsWith('h5') ? 'H5' : file_suffix.split('.').slice(0, -1).join('.')
-      product.productTypeDisplay = productType.displayName + `- (${file_name})`
+      product.productTypeDisplay = file_name
 
       for (const p of product.metadata.opera.additionalUrls.slice(1)) {
         file_suffix = p.split(/(_v)\w+.*_/).slice(-1)[0]
@@ -147,16 +147,16 @@ export class ProductService {
         let subproduct =  {
           ...product,
           downloadUrl: p,
-          productTypeDisplay: productType.displayName + `- (${file_name})`,
+          productTypeDisplay: file_name,
           file: fileID,
           id: product.id + '-' + file_name,
           bytes: 0,
           metadata: {
             ...product.metadata,
-            productType: product.metadata.productType + '_TIF'
+            productType: product.metadata.productType + '_TIF',
+            parentID: product.id
           },
-          parentID: product.id
-        } as models.CMRSubProduct;
+        } as models.CMRProduct;
 
         if(subproduct.productTypeDisplay !== 'Opera Subproduct') {
           products.push(subproduct)
