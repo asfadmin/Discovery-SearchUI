@@ -48,7 +48,7 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
       }
     );
 
-    this.scenesService.scenes$().subscribe(
+    this.scenesService.scenes$.subscribe(
       scenes => {
         this.jobs = scenes.map(scene => scene.metadata.job);
       }

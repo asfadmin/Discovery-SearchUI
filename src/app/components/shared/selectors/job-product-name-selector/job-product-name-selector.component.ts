@@ -57,7 +57,7 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
       )
     );
 
-    const fileNames = this.scenesService.scenes$().pipe(
+    const fileNames = this.scenesService.scenes$.pipe(
       map(scenes =>
           scenes.map(scene => scene.metadata.fileName.toLowerCase().split('.')[0])
       )

@@ -74,7 +74,7 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
 
       const ungrouped_product_types = opera_s1.productTypes.map(m => m.apiValue)
       for (let product of searchResults) {
-        if(product.metadata.subproducts.length > 0 || ungrouped_product_types.includes(product.metadata.productType)) {
+        if(product.metadata.subproducts.length > 0) {
           for (let subproduct of product.metadata.subproducts) {
             subproducts.push(subproduct)
           }
@@ -95,10 +95,14 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
 
         productGroups = searchResults.reduce((total, product) => {
           let groupCriteria = product.groupId;
-          if (product.metadata.subproducts.length > 0 || ungrouped_product_types.includes(product.metadata.productType)) {
+          if (product.metadata.subproducts.length > 0) {
             groupCriteria = product.id;
-          } else if(isSubProduct(product)) {
-            groupCriteria = product.metadata.parentID;
+          } else if(ungrouped_product_types.includes(product.metadata.productType)) {
+            if(isSubProduct(product)) {
+              groupCriteria = product.metadata.parentID;
+            } else {
+              groupCriteria = product.id;
+            }
           }
           const scene = total[groupCriteria] || [];
 
@@ -372,7 +376,7 @@ export const createArraySelector =
       )
   );
 
-export const getScenes = createArraySelector(
+export const getScenes = createSelector(
   getScenesState,
   (state: ScenesState) => allScenesFrom(state.scenes, state.products)
 );
@@ -477,7 +481,7 @@ const productsForScene = (selected, state) => {
   const ungrouped_product_types = opera_s1.productTypes.map(m => m.apiValue)
   if (Object.keys(productTypes).length <= 2 && Object.keys(productTypes)[0] === 'BURST') {
     products = state.scenes[selected.name] || [];
-  } else if(selected.metadata.subproducts.length > 0 || ungrouped_product_types.includes(selected.metadata.productType)) {
+  } else if(ungrouped_product_types.includes(selected.metadata.productType)) {
     products = state.scenes[selected.id] || [];
   }
   else {
