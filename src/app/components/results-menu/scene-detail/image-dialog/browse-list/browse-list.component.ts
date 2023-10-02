@@ -25,7 +25,7 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(CdkVirtualScrollViewport) scroll: CdkVirtualScrollViewport;
 
   public scenesSorted$ = this.scenesService.sortScenes$(
-    this.scenesService.scenes$()
+    this.scenesService.scenes$
   );
   public scenes$: Observable<models.CMRProduct[]>;
   private scene: models.CMRProduct;

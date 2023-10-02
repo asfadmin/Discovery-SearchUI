@@ -37,7 +37,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
   public totalResultCount$ = combineLatest([
     this.store$.select(searchStore.getTotalResultCount),
-    this.scenesService.scenes$()]
+    this.scenesService.scenes$]
   ).pipe(
     map(([count, scenes]) => count + scenes?.filter(scene => scene.metadata.productType === 'BURST').length)
   )
@@ -56,7 +56,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public sarviewsEventProducts: SarviewsProduct[] = [];
   public pinnedEventIDs: string[];
 
-  public numBaselineScenes$ = this.scenesService.scenes$().pipe(
+  public numBaselineScenes$ = this.scenesService.scenes$.pipe(
     map(scenes => scenes.length),
   );
 
@@ -202,16 +202,18 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       combineLatest([
-        this.scenesService.scenes$(),
+        this.scenesService.scenes$,
         this.store$.select(filtersStore.getProductTypes),
-        this.store$.select(searchStore.getSearchType),]
+        this.store$.select(searchStore.getSearchType),
+      this.store$.select(filtersStore.getSelectedDataset)]
       ).pipe(
         debounceTime(250)
-      ).subscribe(([scenes, productTypes, searchType]) => {
+      ).subscribe(([scenes, productTypes, searchType, selectedDataset]) => {
         this.canHideRawData =
           searchType === models.SearchType.DATASET &&
           scenes.every(scene => scene.dataset === 'Sentinel-1B' || scene.dataset === 'Sentinel-1A') &&
-          productTypes.length <= 0;
+          productTypes.length <= 0
+          && selectedDataset.id !== models.opera_s1.id;
       })
     );
 

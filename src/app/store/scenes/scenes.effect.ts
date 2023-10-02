@@ -71,8 +71,7 @@ export class ScenesEffects {
     ofType<SetScenes>(ScenesActionType.SET_SCENES),
     filter(scenes => !!scenes.payload.products),
     filter(scenes => scenes.payload.products.length > 0),
-    debounceTime(1000),
-    withLatestFrom(this.sceneService.scenes$()),
+    withLatestFrom(this.sceneService.scenes$),
     map(([action, filtered]) => ({ products: filtered, searchType: action.payload.searchType })),
     distinctUntilChanged(),
     withLatestFrom(this.store$.select(getSelectedScene)),
@@ -126,7 +125,7 @@ export class ScenesEffects {
   public onHideRawData = createEffect(() => this.actions$.pipe(
     ofType<HideS1RawData>(UIActionType.HIDE_S1_RAW_DATA),
     debounceTime(1000),
-    withLatestFrom(this.sceneService.scenes$()),
+    withLatestFrom(this.sceneService.scenes$),
     withLatestFrom(this.store$.select(getSelectedScene)),
     map(([[_, scenes], selected]) => {
       if (!scenes.map(scene => scene.id).includes(selected.id)) {

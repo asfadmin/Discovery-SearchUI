@@ -46,9 +46,7 @@ export class ScenesService {
     );
   }
 
-  public scenes$(): Observable<CMRProduct[]> {
-    return (
-      this.filterByProductName$(
+  public scenes$: Observable<CMRProduct[]> = this.filterByProductName$(
       this.projectNameFilter$(
       this.hideExpired$(
       this.jobStatusFilter$(
@@ -56,8 +54,7 @@ export class ScenesService {
       this.filterBaselineValues$(
       this.filterByDate$(
           this.store$.select(getScenes)
-    ))))))));
-  }
+    )))))));
 
 
   public withBrowses$(scenes$: Observable<CMRProduct[]>): Observable<CMRProduct[]> {
@@ -72,7 +69,7 @@ export class ScenesService {
       this.store$.select(getTemporalSortDirection),
       this.store$.select(getPerpendicularSortDirection)]
     ).pipe(
-      debounceTime(0),
+      debounceTime(50),
       map(
         ([scenes, tempSort, perpSort]) => {
           if (tempSort === ColumnSortDirection.NONE && perpSort === ColumnSortDirection.NONE) {

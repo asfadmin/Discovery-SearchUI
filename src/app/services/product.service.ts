@@ -123,7 +123,8 @@ export class ProductService {
         bytes: 0,
         metadata: {
           ...product.metadata,
-          productType: product.metadata.productType + '_XML'
+          productType: product.metadata.productType + '_XML',
+          subproducts: []
         },
         parentID: product.id
       } as models.CMRProduct;
@@ -151,16 +152,17 @@ export class ProductService {
           file: fileID,
           id: product.id + '-' + file_name,
           bytes: 0,
+          browses: [],
+          thumbnail: null,
           metadata: {
             ...product.metadata,
-            productType: product.metadata.productType + '_TIF',
-            parentID: product.id
+            productType: product.metadata.productType,
+            parentID: product.id,
+            subproducts: []
           },
         } as models.CMRProduct;
 
-        if(subproduct.productTypeDisplay !== 'Opera Subproduct') {
           products.push(subproduct)
-        }
       }
 
       return products
