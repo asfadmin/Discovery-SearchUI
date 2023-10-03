@@ -360,11 +360,19 @@ export const allScenesWithBrowse = (scenes: {[id: string]: string[]}, products) 
 };
 
 function arrayEquals(a, b) {
+
   return Array.isArray(a) &&
       Array.isArray(b) &&
       a.length === b.length &&
       a.toString() === b.toString() &&
-      a.every((value, index) => value.toString() === b[index].toString())
+      a.every((value, index) => {
+        if(Array.isArray(value) && Array.isArray(b[index])) {
+          return arrayEquals(value, b[index])
+        } else {
+        value.id === b[index].id
+        }
+      }
+      )
 }
 export const createArraySelector =
   createSelectorFactory(
@@ -376,7 +384,7 @@ export const createArraySelector =
       )
   );
 
-export const getScenes = createSelector(
+export const getScenes = createArraySelector(
   getScenesState,
   (state: ScenesState) => allScenesFrom(state.scenes, state.products)
 );
