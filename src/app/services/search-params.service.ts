@@ -112,7 +112,8 @@ export class SearchParamsService {
       this.polarizations$(),
       this.maxResults$(),
       this.missionParam$(),
-      this.burstParams$(),]
+      this.burstParams$(),
+      this.operaBurstParams$()]
     ).pipe(
       map((params: any[]) => params
         .reduce(
@@ -150,7 +151,14 @@ export class SearchParamsService {
           )
     );
   }
-
+  
+  private operaBurstParams$() {
+    return this.store$.select(filterStore.getOperaBurstIDs).pipe(
+    map(operaIDs => ({
+        operaburstid: operaIDs?.join(',')})
+        )
+  );
+}
   private searchPolygon$() {
     return combineLatest([
       this.mapService.searchPolygon$.pipe(startWith(null)),

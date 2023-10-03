@@ -157,6 +157,17 @@
     <b> {{ 'PGE_VERSION' | translate }} </b> • {{ scene.metadata.pgeVersion }}
   </li>
 
+  <li *ngIf="!!scene.metadata.opera">
+    <b> {{'OPERA_BURST_ID' | translate }} </b> • {{scene.metadata.opera.operaBurstID}}
+    <mat-icon *ngIf="isGeoSearch()" [matMenuTriggerFor]="addOperaBurstMenu" class="v-mid clickable">
+      settings
+    </mat-icon>
+
+    <mat-menu #addOperaBurstMenu="matMenu">
+      <button (click)="setOperaBurst()" mat-menu-item>Add OPERA burst ID to search</button>
+    </mat-menu>
+  </li>
+
 
   <li *ngIf="!!scene.metadata.burst">
     <b> {{'BURST_ID_FULL' | translate }} </b> • {{scene.metadata.burst.fullBurstID}}

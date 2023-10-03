@@ -44,6 +44,9 @@
   <div *ngIf="filters.fullBurstIDs">
     <b>{{ 'FULL_BURST_ID' | translate}}:</b> {{ filters.fullBurstIDs }}
   </div>
+  <div *ngIf="filters.operaBurstIDs">
+    <b>{{ 'OPERA_BURST_ID' | translate}}:</b> {{ filters.operaBurstIDs }}
+  </div>
 </div>
 
 <div *ngIf="noFilters(filters)">
