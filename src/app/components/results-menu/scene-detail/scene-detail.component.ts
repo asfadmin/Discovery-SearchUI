@@ -383,11 +383,13 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   }
 
   public staticLayer(){
+    const operaBurstID = this.scene.metadata.opera.operaBurstID;
+    const sensorDate = new Date(this.scene.metadata.date.toDate());
     this.store$.dispatch(new searchStore.ClearSearch());
     this.store$.dispatch(new filtersStore.SetSelectedDataset('OPERA-S1'))
-    this.store$.dispatch(new filtersStore.setOperaBurstID([this.scene.metadata.opera.operaBurstID]));
+    this.store$.dispatch(new filtersStore.setOperaBurstID([operaBurstID]));
     this.store$.dispatch(new filtersStore.SetProductTypes([models.opera_s1.productTypes.find(t => t.apiValue === 'RTC-STATIC')]));
-    this.store$.dispatch(new filtersStore.SetEndDate(new Date(this.scene.metadata.date.toDate())));
+    this.store$.dispatch(new filtersStore.SetEndDate(sensorDate));
     this.store$.dispatch(new searchStore.MakeSearch());
   }
   public makeBaselineSearch(): void {
