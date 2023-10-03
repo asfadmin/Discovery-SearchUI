@@ -56,7 +56,7 @@ export class MapService {
   );
 
   private mapView: views.MapView;
-  private map: Map;
+  public map: Map;
   private scaleLine: ScaleLine;
 
   private polygonLayer: VectorLayer<VectorSource>;

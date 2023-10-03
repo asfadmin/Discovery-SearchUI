@@ -125,6 +125,7 @@ export class LayerModalComponent implements OnInit, OnDestroy {
 
 
     // this.mapService.createSampleMap()
+    this.mapService.map.setTarget('overlay-map');
   }
 
   public setSelectedLayer(layer) {
@@ -146,6 +147,8 @@ export class LayerModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+
+    this.mapService.map.setTarget('map');
     this.subs.unsubscribe();
   }
 }
