@@ -329,7 +329,8 @@
       (prop.isRelevant(p.PATH, dataset) &&
       prop.isRelevant(p.FRAME, dataset)) ||
       dataset?.id === 'UAVSAR'||
-      dataset?.id === 'SENTINEL-1 BURSTS'
+      dataset?.id === 'SENTINEL-1 BURSTS' ||
+      dataset?.id === 'OPERA-S1'
       )
       "
       (click)="moreLikeThis()"
@@ -338,6 +339,17 @@
       <span *ngIf="breakpoint != breakpoints.MOBILE">{{searchType !== searchTypes.SARVIEWS_EVENTS ? ('MORE_LIKE_THIS' | translate ) : ('GEOGRAPHIC' | translate )}}</span>
 
     </button>
+
+    <button *ngIf="dataset?.id === 'OPERA-S1'"
+    mat-stroked-button
+    color="primary"
+    [disabled]="!(dataset?.id === 'OPERA-S1' && scene.metadata.productType === 'RTC-STATIC')"
+    (click)="staticLayer()"
+    class="mini-toggle-button search-button">
+    <span *ngIf="breakpoint === breakpoints.MOBILE">{{ 'Static' }}</span>
+    <span *ngIf="breakpoint != breakpoints.MOBILE">{{'STATIC_LAYER' | translate}}</span>
+
+  </button>
   </div>
   <div *ngIf="searchType === searchTypes.SARVIEWS_EVENTS"
     matTooltip="{{ 'USE_THIS_EVENT_S_PRODUCT_SCENES_IN_LIST_SEARCH' | translate }}">
