@@ -343,7 +343,7 @@
     <button *ngIf="dataset?.id === 'OPERA-S1'"
     mat-stroked-button
     color="primary"
-    [disabled]="!(dataset?.id === 'OPERA-S1' && scene.metadata.productType === 'RTC-STATIC')"
+    [disabled]="!(dataset?.id === 'OPERA-S1' && (scene.metadata.productType === 'RTC' || scene.metadata.productType === 'CSLC'))"
     (click)="staticLayer()"
     class="mini-toggle-button search-button">
     <span *ngIf="breakpoint === breakpoints.MOBILE">{{ 'Static' }}</span>
