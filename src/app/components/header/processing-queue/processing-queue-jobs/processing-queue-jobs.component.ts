@@ -33,7 +33,7 @@ export class ProcessingQueueJobsComponent implements OnInit {
   // change detection keeps updating the view when it shouldn't causing flickering.
   // this observable ensures we only update the dispalyed processing queue list when the values actually change
   // or when the user changes the sorting order.
-  jobsfiltered$ = combineLatest(this.jobs$.pipe(distinctUntilChanged()), this.sortChange$).pipe(
+  jobsfiltered$ = combineLatest([this.jobs$.pipe(distinctUntilChanged()), this.sortChange$]).pipe(
     map(([jobs, _]) => jobs),
     filter(jobs => !!jobs),
     map(jobs => this.sortJobQueue(jobs)));

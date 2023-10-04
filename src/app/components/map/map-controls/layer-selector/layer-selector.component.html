@@ -53,10 +53,10 @@
         (click)="onToggleCoherenceLayer(layer)"
         class="control-mat-checkbox-toggle"
         mat-menu-item>
-        <mat-checkbox class="checkbox"
+        <mat-radio-button
           [disabled]="true"
           [checked]="coherenceLayerMonths === layer">
-        </mat-checkbox>
+        </mat-radio-button>
 
         {{ layer |  translate }}
       </button>

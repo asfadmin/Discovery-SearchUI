@@ -60,9 +60,9 @@ export class FileContentsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subs.add(
-      combineLatest(
+      combineLatest([
         this.store$.select(scenesStore.getUnzippedProducts),
-        this.store$.select(scenesStore.getOpenUnzippedProduct)
+        this.store$.select(scenesStore.getOpenUnzippedProduct)]
       ).pipe(
         tap(([_, product]) => this.product = product),
         map(([unzipped, product]) => unzipped[product ? product.id : null]),

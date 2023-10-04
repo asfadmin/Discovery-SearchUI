@@ -167,7 +167,7 @@ export class AsfApiService {
   }
 
   public loadMissions$() {
-    return combineLatest(
+    return combineLatest([
       this.missionSearch(MissionDataset.S1_BETA).pipe(
         map(resp => ({[MissionDataset.S1_BETA]: resp.result}))
       ),
@@ -176,7 +176,7 @@ export class AsfApiService {
       ),
       this.missionSearch(MissionDataset.UAVSAR).pipe(
         map(resp => ({[MissionDataset.UAVSAR]: resp.result}))
-      )
+      )]
     ).pipe(
       map(missions => missions.reduce(
         (allMissions, mission) => ({ ...allMissions, ...mission }),

@@ -44,7 +44,6 @@ import { AoiFilterComponent } from './dataset-header/aoi-filter/aoi-filter.compo
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MasterSceneSelectorModule } from '@components/shared/selectors/master-scene-selector';
-import { CreateSubscriptionModule } from './create-subscription/create-subscription.module';
 import { CiSearchModule } from './info-bar/ci-search/ci-search.module';
 import { SarviewsEventTypeSelectorModule } from '@components/shared/selectors/sarviews-event-type-selector';
 import { Hyp3UrlModule } from '@components/shared/hyp3-url/hyp3-url.module';
@@ -92,7 +91,6 @@ import { LanguageSelectorModule } from "@components/shared/selectors/language-se
     ProjectNameSelectorModule,
     JobStatusSelectorModule,
     JobProductNameSelectorModule,
-    CreateSubscriptionModule,
     CiSearchModule,
     SarviewsEventSearchSelectorModule,
     SarviewsEventTypeSelectorModule,

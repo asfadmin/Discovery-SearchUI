@@ -106,8 +106,9 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      combineLatest(this.store$.select(getFilterMaster),
-      this.store$.select(uiStore.getIsFiltersMenuOpen)).subscribe(([latestFilter, isOpen]) => {
+      combineLatest([
+        this.store$.select(getFilterMaster),
+        this.store$.select(uiStore.getIsFiltersMenuOpen)]).subscribe(([latestFilter, isOpen]) => {
       if (isOpen && this.searchType === this.searchTypes.BASELINE || this.searchType === this.searchTypes.SBAS) {
           this.latestReferenceScene = latestFilter;
           if (this.stackReferenceScene == null || '') {

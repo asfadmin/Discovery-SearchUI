@@ -77,7 +77,7 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.pairService.productsFromPairs$().subscribe(
+      this.pairService.productsFromPairs$.subscribe(
         products => this.sbasProducts = products
       )
     );

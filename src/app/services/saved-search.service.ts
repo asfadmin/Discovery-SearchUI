@@ -23,11 +23,11 @@ import { getSarviewsMagnitudeRange } from '@store/filters';
 })
 export class SavedSearchService {
 
-  private currentGeographicSearch$ = combineLatest(
+  private currentGeographicSearch$ = combineLatest([
     this.store$.select(filtersStore.getGeographicSearch).pipe(
       map(filters =>  ({ ...filters, flightDirections: Array.from(filters.flightDirections) })),
     ),
-    this.mapService.searchPolygon$
+    this.mapService.searchPolygon$]
   ).pipe(
     map(([filters, polygon]): models.GeographicFiltersType => ({
       ...filters,
@@ -36,10 +36,10 @@ export class SavedSearchService {
   );
 
   private currentListSearch$ = this.store$.select(filtersStore.getListSearch);
-  private currentBaselineSearch$ = combineLatest(
+  private currentBaselineSearch$ = combineLatest([
     this.store$.select(scenesStore.getFilterMaster),
     this.store$.select(scenesStore.getMasterName),
-    this.store$.select(filtersStore.getBaselineSearch),
+    this.store$.select(filtersStore.getBaselineSearch),]
   ).pipe(
     map(([filterMaster, reference, baselineFilters]) => ({
       filterMaster,
@@ -48,12 +48,12 @@ export class SavedSearchService {
     }))
   );
 
-  private currentSbasSearch$: Observable<models.SbasFiltersType> = combineLatest(
+  private currentSbasSearch$: Observable<models.SbasFiltersType> = combineLatest([
     this.store$.select(scenesStore.getFilterMaster),
     this.store$.select(scenesStore.getCustomPairIds),
     this.store$.select(filtersStore.getSbasSearch),
     this.store$.select(filtersStore.getDateRange),
-    this.store$.select(filtersStore.getSBASOverlapThreshold),
+    this.store$.select(filtersStore.getSBASOverlapThreshold),]
   ).pipe(
     map(([reference, customPairIds, sbasFilters, dateRange, thresholdOverlap]) => ({
       reference,
@@ -64,12 +64,12 @@ export class SavedSearchService {
       ...sbasFilters
     }))
   );
-  private currentCustomProductSearch$ = combineLatest(
+  private currentCustomProductSearch$ = combineLatest([
     this.store$.select(filtersStore.getJobStatuses),
     this.store$.select(filtersStore.getDateRange),
     this.store$.select(filtersStore.getProjectName),
     this.store$.select(filtersStore.getProductNameFilter),
-    this.store$.select(filtersStore.getCustomProductSearch)
+    this.store$.select(filtersStore.getCustomProductSearch)]
   ).pipe(
     map(([jobStatuses, dateRange, projectName, productFilterName, customProductFilters]) => ({
       jobStatuses,
@@ -80,7 +80,7 @@ export class SavedSearchService {
     }))
   );
 
-  private currentSarviewsEventSearch$ = combineLatest(
+  private currentSarviewsEventSearch$ = combineLatest([
     this.store$.select(filtersStore.getDateRange),
     this.store$.select(filtersStore.getSarviewsEventTypes),
     this.store$.select(filtersStore.getSarviewsEventNameFilter),
@@ -91,7 +91,7 @@ export class SavedSearchService {
     this.store$.select(filtersStore.getHyp3ProductTypes).pipe(
       map(productTypes => productTypes.map(productType => productType.id))
     ),
-    this.store$.select(filtersStore.getPathFrameRanges),
+    this.store$.select(filtersStore.getPathFrameRanges),]
   ).pipe(
     map(([dateRange, sarviewsEventTypes, sarviewsEventNameFilter,
       activeOnly, magnitude, pinnedProductIDs,

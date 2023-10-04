@@ -90,7 +90,6 @@ export class SceneFileComponent implements OnInit, OnDestroy {
 
   private isRestrictedDataset(): boolean {
     return (
-      this.product.dataset.includes('RADARSAT-1') ||
       this.product.dataset.includes('JERS-1')
     );
   }

@@ -631,7 +631,9 @@ export class MapService {
     this.browseImageLayer?.setOpacity(opacity);
     this.pinnedProducts?.setOpacity(opacity);
   }
-
+  public updateCoherenceOpacity(opacity: number) {
+    this.layerService.coherenceLayer?.setOpacity(opacity);
+  }
   public getAoiIntersectionMethod(geometryType: GeometryType) {
     if (geometryType === 'Point') {
       return this.getPointIntersection;

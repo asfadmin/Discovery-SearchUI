@@ -262,10 +262,6 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new uiStore.SetIsOnDemandQueueOpen(true));
   }
 
-  public onOpenSubscriptions() {
-    this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.ON_DEMAND_SUBSCRIPTIONS));
-  }
-
   public listWebsiteLinks() {
     const links = new Set<string>();
 

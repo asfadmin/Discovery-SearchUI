@@ -29,9 +29,9 @@ export class SearchParamsService {
   ) { }
 
   public getParams(): Observable<any> {
-    return combineLatest(
+    return combineLatest([
       this.searchType$(),
-      this.baselineSearchParams$(),
+      this.baselineSearchParams$(),]
     ).pipe(
       withLatestFrom(this.listParam$()),
       withLatestFrom(this.filterSearchParams$()),
@@ -62,11 +62,11 @@ export class SearchParamsService {
   }
 
   public getlatestParams(): Observable<any> {
-    return combineLatest(
+    return combineLatest([
       this.searchType$(),
       this.listParam$(),
       this.baselineSearchParams$(),
-      this.filterSearchParams$()
+      this.filterSearchParams$()]
     ).pipe(
       map(
         ([searchType, listParam, baselineParams, filterParams]) => {
@@ -99,7 +99,7 @@ export class SearchParamsService {
   }
 
   private filterSearchParams$() {
-    return combineLatest(
+    return combineLatest([
       this.searchPolygon$(),
       this.selectedDataset$(),
       this.dateRange$(),
@@ -112,7 +112,7 @@ export class SearchParamsService {
       this.polarizations$(),
       this.maxResults$(),
       this.missionParam$(),
-      this.burstParams$(),
+      this.burstParams$(),]
     ).pipe(
       map((params: any[]) => params
         .reduce(
@@ -152,10 +152,10 @@ export class SearchParamsService {
   }
 
   private searchPolygon$() {
-    return combineLatest(
+    return combineLatest([
       this.mapService.searchPolygon$.pipe(startWith(null)),
       this.store$.select(filterStore.getShouldOmitSearchPolygon),
-      this.drawService.polygon$
+      this.drawService.polygon$]
     ).pipe(
       map(([polygon, shouldOmitGeoRegion, asdf]) => shouldOmitGeoRegion ? null : { polygon: polygon, thing: asdf }),
       map(polygon => {
@@ -198,9 +198,9 @@ export class SearchParamsService {
   }
 
   private selectedDataset$() {
-    return combineLatest(
+    return combineLatest([
       this.store$.select(filterStore.getSelectedDataset),
-      this.store$.select(filterStore.getSubtypes)
+      this.store$.select(filterStore.getSubtypes)]
     ).pipe(
       map(([dataset, subtypes]) => {
         return subtypes.length > 0 ?

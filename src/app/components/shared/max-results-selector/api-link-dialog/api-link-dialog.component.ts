@@ -55,8 +55,9 @@ export class ApiLinkDialogComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subs.add(
-      combineLatest(
-        this.amount$, this.format$
+      combineLatest([
+        this.amount$,
+        this.format$]
       ).pipe(
         tap(([amount, format]) => {
           this.amount = amount;

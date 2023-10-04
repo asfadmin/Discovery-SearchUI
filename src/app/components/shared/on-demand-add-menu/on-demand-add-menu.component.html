@@ -34,14 +34,6 @@
         </button>
       </div>
     </div>
-
-    <div *ngIf="showSubscriptions">
-      <button
-        (click)="onOpenCreateSubscription()"
-        [disabled]="!isLoggedIn"
-        mat-menu-item> {{ 'CREATE_SUBSCRIPTION' | translate }}
-      </button>
-    </div>
   </ng-template>
 </mat-menu>
 

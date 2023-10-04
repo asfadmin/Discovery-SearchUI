@@ -158,7 +158,7 @@
                   </mat-button-toggle>
                 </mat-button-toggle-group>
 
-                <app-on-demand-add-menu [showSubscriptions]="true" #listAdd>
+                <app-on-demand-add-menu #listAdd>
                 </app-on-demand-add-menu>
               </div>
             </div>
@@ -283,7 +283,7 @@
 
           <mat-menu #addAllProducts="matMenu">
             <button *ngIf="searchType !== SearchTypes.SBAS
-              && !(isBurstStack$ | async) 
+              && !(isBurstStack$ | async)
               && !((currentDatasetID$ | async) === 'SENTINEL-1 BURSTS'
               && searchType === SearchTypes.DATASET)"
               (click)="queueAllProducts(downloadableProds)" mat-menu-item>
@@ -295,7 +295,7 @@
             </button>
 
             <button *ngIf=" (currentDatasetID$ | async) === 'SENTINEL-1 BURSTS'
-            && searchType === SearchTypes.DATASET || (isBurstStack$ | async)" 
+            && searchType === SearchTypes.DATASET || (isBurstStack$ | async)"
             mat-menu-item [matMenuTriggerFor]="addAllBurstProducts" [matMenuTriggerData]="{
               'burstData': searchType === SearchTypes.SBAS ? (SBASburstDataProducts$ | async) : (burstDataProducts$ | async),
               'burstMetadata':searchType === SearchTypes.SBAS ? (SBASburstMetadataProducts$ | async) : (burstMetadataProducts$ | async)
