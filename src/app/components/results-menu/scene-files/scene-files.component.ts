@@ -423,15 +423,15 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
 
   public StaticLayerProduct$ = this.store$.select(scenesStore.getSelectedScene).pipe(
       debounceTime(100),
-      distinctUntilChanged((prev, curr) => prev.id === curr.id),
+      distinctUntilChanged((prev, curr) => prev?.id === curr?.id),
       switchMap(scene => {
-        const queryParams = {
-          processinglevel : scene.metadata.productType + '-STATIC',
-          start: scene.metadata.stopDate === null ? '' : moment.utc( scene.metadata.stopDate ).format(),
-          operaburstid: scene.metadata?.opera?.operaBurstID,
-          collections: models.opera_s1.apiValue.collections,
-        };
         if(!!scene && ['RTC', 'CSLC'].includes(scene?.metadata?.productType) && scene?.id.startsWith('OPERA')) {
+          const queryParams = {
+            processinglevel : scene.metadata.productType + '-STATIC',
+            start: scene.metadata.stopDate === null ? '' : moment.utc( scene.metadata.stopDate ).format(),
+            operaburstid: scene.metadata?.opera?.operaBurstID,
+            collections: models.opera_s1.apiValue.collections,
+          };
           return this.asfApiService.query<any[]>(queryParams).pipe(
             map(products => products.length > 0 ? this.productService.fromResponse(products).slice(0, 1) : [])
             );
