@@ -52,6 +52,8 @@ export interface FiltersState {
   fullBurstIDs: null | string[];
   
   operaBurstIDs: null | string[];
+
+  groupID: null | string;
 }
 
 
@@ -124,7 +126,9 @@ export const initState: FiltersState = {
 
   fullBurstIDs: [],
 
-  operaBurstIDs: []
+  operaBurstIDs: [],
+
+  groupID: null
 };
 
 
@@ -357,7 +361,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       }
       if(action.payload.dataset.id === models.opera_s1.id) {
         filters = {
-          groupId: action.payload.product.groupId
+          groupID: action.payload.product.groupId
         }
       }
       return {
@@ -1031,4 +1035,9 @@ export const getFullBurstIDs = createSelector(
 export const getOperaBurstIDs = createSelector(
   getFiltersState,
   (state: FiltersState) => state.operaBurstIDs
+)
+
+export const getGroupID = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.groupID
 )
