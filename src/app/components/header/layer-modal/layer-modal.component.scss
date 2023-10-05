@@ -303,6 +303,7 @@ button {
 .sub-layer-menu {
   display: flex;
   flex-direction: column;
+  width: 40%;
   border-left: 1px solid black;
 }
 .layer-list-item {
@@ -310,7 +311,6 @@ button {
 }
 .sub-layer-menu-content {
   margin: 5px;
-  width: 40%;
 }
 #overlay-map {
   height: 100%;

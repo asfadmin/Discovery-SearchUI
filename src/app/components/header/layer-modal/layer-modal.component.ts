@@ -5,16 +5,13 @@ import * as mapStore from '@store/map';
 
 import { AppState } from '@store';
 
-import { MapService, ScreenSizeService } from '@services';
-import { Breakpoints } from '@models';
+import { DrawService, MapService, ScreenSizeService } from '@services';
+import { Breakpoints, MapInteractionModeType } from '@models';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 import { ResizedEvent } from '@directives/resized.directive';
 
-export interface selectedItems {
-  id: string;
-  url: string;
-}
+
 
 @Component({
   selector: 'app-layer-modal',
@@ -114,6 +111,7 @@ export class LayerModalComponent implements OnInit, OnDestroy {
     private dialogRef: MatDialogRef<LayerModalComponent>,
     private screenSize: ScreenSizeService,
     private mapService: MapService,
+    private drawService: DrawService
   ) { }
 
   ngOnInit() {
@@ -124,8 +122,10 @@ export class LayerModalComponent implements OnInit, OnDestroy {
     );
 
 
-    // this.mapService.createSampleMap()
     this.mapService.map.setTarget('overlay-map');
+    this.mapService.disableInteractions();
+    this.drawService.getLayer().setVisible(false);
+    this.store$.dispatch(new mapStore.SetMapInteractionMode(MapInteractionModeType.NONE));
   }
 
   public setSelectedLayer(layer) {
@@ -149,6 +149,9 @@ export class LayerModalComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
 
     this.mapService.map.setTarget('map');
+    this.mapService.enableInteractions();
+    this.store$.dispatch(new mapStore.SetMapInteractionMode(MapInteractionModeType.DRAW));
+    this.drawService.getLayer().setVisible(true);
     this.subs.unsubscribe();
   }
 }
