@@ -361,7 +361,8 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       }
       if(action.payload.dataset.id === models.opera_s1.id) {
         filters = {
-          groupID: action.payload.product.groupId
+          groupID: action.payload.product.groupId,
+          selectedDatasetId: 'SENTINEL-1'
         }
       }
       return {
