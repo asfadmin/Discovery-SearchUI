@@ -410,7 +410,8 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         selectedMission: null,
         geocode: null,
         fullBurstIDs: [],
-        operaBurstIDs: []
+        operaBurstIDs: [],
+        groupID: null
       };
     }
 

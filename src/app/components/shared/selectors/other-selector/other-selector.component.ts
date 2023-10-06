@@ -94,6 +94,9 @@ export class OtherSelectorComponent implements OnInit, OnDestroy {
   }
 
   public onNewGroupID(): void {
+    if(this.groupID.length > 29) {
+      this.groupID = this.groupID.slice(0, 29);
+    }
     this.store$.dispatch(new filtersStore.setGroupID(this.groupID));
   }
 

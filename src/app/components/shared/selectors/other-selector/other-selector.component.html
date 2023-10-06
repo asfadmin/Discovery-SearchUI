@@ -91,7 +91,9 @@
       
       (input)="onNewGroupID()"
       [(ngModel)]="groupID"
-      placeholder="Sentinel-1 Group ID">
+      [maxlength]="29"
+      type="text"
+      placeholder="Group ID">
 
     <!-- <mat-hint *ngIf="prop.isRelevant(p.SUBTYPE)" align="start">
       {{ subtypes?.length || 0 }}/{{ dataset.subtypes?.length }}
