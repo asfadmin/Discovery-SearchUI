@@ -124,9 +124,9 @@ export class ProductService {
         metadata: {
           ...product.metadata,
           productType: product.metadata.productType + '_XML',
-          subproducts: []
+          subproducts: [],
+          parentID: product.id,
         },
-        parentID: product.id
       } as models.CMRProduct;
     
       return p;
@@ -138,7 +138,7 @@ export class ProductService {
       let file_suffix = product.downloadUrl.split(/(_v)\w+.*_/).slice(-1)[0]
       let file_name = file_suffix.endsWith('h5') ? 'H5' : file_suffix.split('.').slice(0, -1).join('.')
       product.productTypeDisplay = file_name
-
+      
       for (const p of product.metadata.opera.additionalUrls.slice(1)) {
         file_suffix = p.split(/(_v)\w+.*_/).slice(-1)[0]
         file_name = file_suffix.endsWith('h5') ? 'H5' : file_suffix.split('.').slice(0, -1).join('.')
