@@ -47,6 +47,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public tempRange: models.Range<number | null>;
   public fullBurstIDs: string[] = [];
   public operaBurstIDs: string[] = [];
+  public groupID: string;
 
   private subs = new SubSink();
 
@@ -131,6 +132,9 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       burstIDs => this.operaBurstIDs = burstIDs
     );
     
+    const groupIDSub = this.store$.select(filtersStore.getGroupID).subscribe(
+      groupID => this.groupID = groupID
+    );
 
     [
       startSub, endSub,
@@ -147,7 +151,8 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       tempSub, perpSub,
       eventProductType,
       fullBurstIDSub,
-      operaBurstIDSub
+      operaBurstIDSub,
+      groupIDSub
     ].forEach(sub => this.subs.add(sub));
 
     this.subs.add(

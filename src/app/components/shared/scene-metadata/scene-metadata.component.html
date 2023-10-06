@@ -37,7 +37,7 @@
 
   <li *ngIf="prop.isRelevant(p.BEAM_MODE, dataset)">
     <span class="v-mid"><b>{{ 'BEAM_MODE' |translate }} </b> • {{ scene.metadata.beamMode }}</span>
-    <mat-icon *ngIf="isGeoSearch()"
+    <mat-icon *ngIf="isGeoSearch() && dataset.id !== 'OPERA-S1'"
       [matMenuTriggerFor]="addBeamModeMenu"
       class="v-mid clickable">
         settings
