@@ -21,6 +21,7 @@ export class OtherSelectorComponent implements OnInit, OnDestroy {
   beamModes: models.DatasetBeamModes;
   polarizations: models.DatasetPolarizations;
   subtypes: models.DatasetSubtypes;
+  groupID: string;
 
   public datasetProductTypes$ = this.store$.select(filtersStore.getProductTypes);
   public flightDirections$ = this.store$.select(filtersStore.getFlightDirections);
@@ -28,6 +29,7 @@ export class OtherSelectorComponent implements OnInit, OnDestroy {
   public polarizations$ = this.store$.select(filtersStore.getPolarizations);
   public selectedDataset$ = this.store$.select(filtersStore.getSelectedDataset);
   public subtypes$ = this.store$.select(filtersStore.getSubtypes);
+  public groupID$ = this.store$.select(filtersStore.getGroupID);
 
   public flightDirectionTypes = models.flightDirections;
   public p = models.Props;
@@ -62,6 +64,9 @@ export class OtherSelectorComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.subtypes$.subscribe(subtypes => this.subtypes = subtypes)
     );
+    this.subs.add(
+      this.groupID$.subscribe(groupID => this.groupID = groupID)
+    );
   }
 
   public onNewDatasetBeamModes(beamModes: string[]): void {
@@ -86,6 +91,10 @@ export class OtherSelectorComponent implements OnInit, OnDestroy {
 
   public onNewSubtypeSelected(subtypes): void {
     this.store$.dispatch(new filtersStore.SetSubtypes(subtypes));
+  }
+
+  public onNewGroupID(): void {
+    this.store$.dispatch(new filtersStore.setGroupID(this.groupID));
   }
 
   ngOnDestroy() {

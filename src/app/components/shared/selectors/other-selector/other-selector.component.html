@@ -85,4 +85,20 @@
       {{ 'NO_SUBTYPES_TO_SELECT' | translate }}
     </mat-hint>
   </mat-form-field>
+
+  <mat-form-field *ngIf="['SENTINEL-1', 'SENTINEL-1 BURSTS', 'OPERA-S1'].includes(dataset.id)">
+    <input matInput
+      
+      (input)="onNewGroupID()"
+      [(ngModel)]="groupID"
+      placeholder="Sentinel-1 Group ID">
+
+    <!-- <mat-hint *ngIf="prop.isRelevant(p.SUBTYPE)" align="start">
+      {{ subtypes?.length || 0 }}/{{ dataset.subtypes?.length }}
+      {{ 'SUBTYPES_SELECTED' | translate }}
+    </mat-hint>
+    <mat-hint *ngIf="!prop.isRelevant(p.SUBTYPE)" align="start">
+      {{ 'NO_SUBTYPES_TO_SELECT' | translate }}
+    </mat-hint> -->
+  </mat-form-field>
 </div>

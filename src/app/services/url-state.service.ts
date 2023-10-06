@@ -493,6 +493,13 @@ export class UrlStateService {
         map(list => ({ operaBurstID: list?.map(num => num.toString()).join(',') }))
       ),
       loader: this.loadOperaBurstIDs
+    },
+    {
+      name: 'groupID',
+      source: this.store$.select(filterStore.getGroupID).pipe(
+        map(groupId => ({ groupId })
+      )),
+      loader: this.loadGroupId
     }];
   }
 
@@ -815,5 +822,9 @@ export class UrlStateService {
   private loadOperaBurstIDs = (ids: string): Action => {
     const list = ids.split(',');
     return new filterStore.setOperaBurstID(list);
+  };
+
+  private loadGroupId = (id: string): Action => {
+    return new filterStore.setGroupID(id);
   };
 }

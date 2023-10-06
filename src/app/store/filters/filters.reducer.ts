@@ -749,6 +749,12 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         operaBurstIDs: action.payload
       }
     }
+    case FiltersActionType.SET_GROUP_ID: {
+      return {
+        ...state,
+        groupID: action.payload
+      }
+    }
     default: {
       return state;
     }
