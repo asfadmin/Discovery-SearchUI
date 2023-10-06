@@ -360,10 +360,8 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
   }
 
   public getGroupCriteria(scene: CMRProduct): string {
-    const ungrouped_product_types = models.opera_s1.productTypes.map(m => m.apiValue)
-    if(['BURST', 'BURST_XML'].includes(scene.metadata.productType)) {
-      return scene.name;
-    } else if(ungrouped_product_types.includes(scene.metadata.productType)) {
+    const ungrouped_product_types = [...models.opera_s1.productTypes, {apiValue: 'BURST'}, {apiValue: 'BURST_XML'}].map(m => m.apiValue)
+    if(ungrouped_product_types.includes(scene.metadata.productType)) {
         return scene.metadata.parentID || scene.id;
     }
     return scene.groupId;

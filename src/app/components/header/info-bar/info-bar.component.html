@@ -60,6 +60,11 @@
         <b>{{'OPERA_BURST_ID' | translate}}:</b> {{operaBurstIDs.length <= 4 ? operaBurstIDs.join(', ') : operaBurstIDs.length + ' IDs'}}
       </span>
     </span>
+    <span>
+      <span *ngIf="!!groupID">
+        <b>Group ID:</b> {{groupID}}
+      </span>
+    </span>
   </div>
   <div class="last-info">
     <app-ci-search></app-ci-search>

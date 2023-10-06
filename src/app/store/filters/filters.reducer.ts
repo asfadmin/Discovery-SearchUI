@@ -361,7 +361,8 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       }
       if(action.payload.dataset.id === models.opera_s1.id) {
         filters = {
-          groupID: action.payload.product.groupId
+          groupID: action.payload.product.groupId,
+          selectedDatasetId: 'SENTINEL-1'
         }
       }
       return {
@@ -409,7 +410,8 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         selectedMission: null,
         geocode: null,
         fullBurstIDs: [],
-        operaBurstIDs: []
+        operaBurstIDs: [],
+        groupID: null
       };
     }
 
@@ -746,6 +748,12 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       return {
         ...state,
         operaBurstIDs: action.payload
+      }
+    }
+    case FiltersActionType.SET_GROUP_ID: {
+      return {
+        ...state,
+        groupID: action.payload
       }
     }
     default: {

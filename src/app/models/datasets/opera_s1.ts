@@ -16,14 +16,14 @@ export const opera_s1 = {
   ],
   apiValue: {
     collections: 
-    "C1259974840-ASF,C1259976861-ASF,C1259981910-ASF,C1259982010-ASF,C1259975087-ASFDEV,C1259976862-ASFDEV,C1259983643-ASFDEV,C1259983645-ASFDEV" },
+    "C1259974840-ASF,C1259976861-ASF,C1259981910-ASF,C1259982010-ASF,C1259975087-ASFDEV,C1259976862-ASFDEV,C1259983643-ASFDEV,C1259983645-ASFDEV,C2777443834-ASF,C2777436413-ASF" },
   date: { start: new Date('2014/06/15 03:44:43 UTC') },
-  infoUrl: 'https://sentinels.copernicus.eu/web/sentinel/user-guides/sentinel-1-sar/acquisition-modes/interferometric-wide-swath',
-  citationUrl: 'https://asf.alaska.edu/data-sets/sar-data-sets/sentinel-1/sentinel-1-how-to-cite/',
+  infoUrl: 'https://asf.alaska.edu/datasets/daac/opera/',
+  citationUrl: 'https://asf.alaska.edu/datasets/daac/opera/',
   frequency: 'C-Band',
   source: {
-    name: 'ESA',
-    url: 'https://www.esa.int/ESA'
+    name: 'OPERA-JPL',
+    url: 'https://www.jpl.nasa.gov/go/opera'
   },
   productTypes: [
     {

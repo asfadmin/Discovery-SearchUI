@@ -72,7 +72,7 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
         p.metadata.productType === 'BURST' ? ({...p, productTypeDisplay: 'Single Look Complex (BURST)'}) as CMRProduct : p)
 
 
-      const ungrouped_product_types = opera_s1.productTypes.map(m => m.apiValue)
+      const ungrouped_product_types = [...opera_s1.productTypes, {apiValue: 'BURST'}, {apiValue: 'BURST_XML'}].map(m => m.apiValue)
       for (let product of searchResults) {
         if(product.metadata.subproducts.length > 0) {
           for (let subproduct of product.metadata.subproducts) {
@@ -92,7 +92,19 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
 
       let productGroups: {[id: string]: string[]} = {}
       let scenes: {[id: string]: string[]} = {}
+      // const productIDs = searchResults.reduce((total, product) => {
+      //   total[product.metadata.productType] = product;
 
+      //   return total;
+      // }, {});
+      // if (Object.keys(productIDs).length <= 2 && Object.keys(productIDs)[0].toUpperCase() === 'BURST') {
+      //   productGroups = searchResults.reduce((total, product) => {
+      //     const scene = total[product.name] || [];
+
+      //     total[product.name] = [...scene, product.id];
+      //     return total;
+      //   }, {})
+      // } else {
         productGroups = searchResults.reduce((total, product) => {
           let groupCriteria = product.groupId;
           if (product.metadata.subproducts.length > 0) {
@@ -109,7 +121,7 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
           total[groupCriteria] = [...scene, product.id];
           return total;
         }, {});
-
+      // }
       for (const [groupId, productNames] of Object.entries(productGroups)) {
 
         (<string[]>productNames).sort(
@@ -478,18 +490,18 @@ const productsForScene = (selected, state) => {
     return;
   }
 
-  const productTypes = Object.values(state.products).reduce((total, product: CMRProduct) => {
-    total[product.metadata.productType] = product;
+  // const productTypes = Object.values(state.products).reduce((total, product: CMRProduct) => {
+  //   total[product.metadata.productType] = product;
 
-    return total;
-  }, {});
+  //   return total;
+  // }, {});
 
   let products = []
 
-  const ungrouped_product_types = opera_s1.productTypes.map(m => m.apiValue)
-  if (Object.keys(productTypes).length <= 2 && Object.keys(productTypes)[0] === 'BURST') {
-    products = state.scenes[selected.name] || [];
-  } else if(ungrouped_product_types.includes(selected.metadata.productType)) {
+  const ungrouped_product_types = [...opera_s1.productTypes, {apiValue: 'BURST'}, {apiValue: 'BURST_XML'}].map(m => m.apiValue)
+  // if (Object.keys(productTypes).length <= 2 && Object.keys(productTypes)[0] === 'BURST') {
+  //   products = state.scenes[selected.name] || [];
+  if(ungrouped_product_types.includes(selected.metadata.productType)) {
     products = state.scenes[selected.id] || [];
   }
   else {
