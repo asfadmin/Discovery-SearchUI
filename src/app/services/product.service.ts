@@ -132,23 +132,36 @@ export class ProductService {
       return p;
     }
 
+    private operaProductTypeDisplays = {
+      hh: 'HH GeoTIFF',
+      vv: 'VV GeoTIFF',
+      mask: 'Mask GeoTIFF',
+      h5: 'Metadata HDF5',
+      xml: 'Metadata XML',
+      sigma0: 'RTC Gamma to Sigma GeoTIFF',
+      looks: '# of Looks GeoTIFF',
+      angle: 'Incidence Angle GeoTIFF',
+      beta0: 'RTC Gamm to Beta GeoTIFF',
+      local_incidence_angle: 'Local Incidence Angle GeoTIFF'
+    }
+
     private operaSubproductsFromScene(product: models.CMRProduct) {
       let products = []
       
       let file_suffix = product.downloadUrl.split(/(_v)\w+.*_/).slice(-1)[0]
-      let file_name = file_suffix.endsWith('h5') ? 'H5' : file_suffix.split('.').slice(0, -1).join('.')
-      product.productTypeDisplay = file_name
+      let file_name = this.operaFilename(file_suffix, product.downloadUrl)
+      product.productTypeDisplay = this.operaProductTypeDisplays[file_name.toLowerCase()]
       
-      for (const p of product.metadata.opera.additionalUrls.slice(1)) {
+      for (const p of product.metadata.opera.additionalUrls.filter(url => url !== product.downloadUrl)) {
         file_suffix = p.split(/(_v)\w+.*_/).slice(-1)[0]
-        file_name = file_suffix.endsWith('h5') ? 'H5' : file_suffix.split('.').slice(0, -1).join('.')
+        file_name = this.operaFilename(file_suffix, p)
         
         const fileID = p.split('/').slice(-1)[0]
 
         let subproduct =  {
           ...product,
           downloadUrl: p,
-          productTypeDisplay: file_name,
+          productTypeDisplay: this.operaProductTypeDisplays[file_name.toLowerCase()],
           file: fileID,
           id: product.id + '-' + file_name,
           bytes: 0,
@@ -175,5 +188,17 @@ export class ProductService {
       const fileDisplay = file_name.replace('_', ' ').toLowerCase() + ` (${extension.toUpperCase()})`
       
       return fileDisplay
+    }
+
+    operaFilename(file_suffix: string, url: string) {
+      if(file_suffix.endsWith('h5')) {
+        return 'h5';
+      } else if(file_suffix.endsWith('xml')) {
+        return 'xml';
+      } else if(url.endsWith('local_incidence_angle.tif')) {
+        return 'local_incidence_angle';
+      } else {
+        return file_suffix.split('.').slice(0, -1).join('.')
+      }
     }
 }
