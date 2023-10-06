@@ -92,6 +92,8 @@ in use, e.g. 'assets/i18n/en.json'. Add key/value pairs to the json files using 
 The 'assets/i18n/vertex.babel' file is the project file to open with BabelEdit to access all json translation files.
 Use BabelEdit to add, change, and delete key/value pairs.
 
+Update including Phrase Strings workflow coming.
+
 ## Testing
 Testing run via [Ghost Inspector](https://ghostinspector.com/).
 
