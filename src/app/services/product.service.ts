@@ -106,7 +106,6 @@ export class ProductService {
         return [this.burstXMLFromScene(product)]
       }
       if (!!product.metadata.opera) {
-        product.productTypeDisplay = this.operaProductTypeDisplay(product.downloadUrl)
         return this.operaSubproductsFromScene(product)
       }
       return []
@@ -134,36 +133,39 @@ export class ProductService {
 
     private operaProductTypeDisplays = {
       hh: 'HH GeoTIFF',
+      hv: 'HV GeoTIFF',
       vv: 'VV GeoTIFF',
+      vh: 'VH GeoTIFF',
       mask: 'Mask GeoTIFF',
       h5: 'Metadata HDF5',
       xml: 'Metadata XML',
-      sigma0: 'RTC Gamma to Sigma GeoTIFF',
-      looks: '# of Looks GeoTIFF',
-      angle: 'Incidence Angle GeoTIFF',
-      beta0: 'RTC Gamm to Beta GeoTIFF',
+      rtc_anf_gamma0_to_sigma0: 'RTC Gamma to Sigma GeoTIFF',
+      number_of_looks: '# of Looks GeoTIFF',
+      incidence_angle: 'Incidence Angle GeoTIFF',
+      rtc_anf_gamma0_to_beta0: 'RTC Gamm to Beta GeoTIFF',
       local_incidence_angle: 'Local Incidence Angle GeoTIFF'
     }
 
     private operaSubproductsFromScene(product: models.CMRProduct) {
       let products = []
       
-      let file_suffix = product.downloadUrl.split(/(_v)\w+.*_/).slice(-1)[0]
-      let file_name = this.operaFilename(file_suffix, product.downloadUrl)
-      product.productTypeDisplay = this.operaProductTypeDisplays[file_name.toLowerCase()]
-      
-      for (const p of product.metadata.opera.additionalUrls.filter(url => url !== product.downloadUrl)) {
-        file_suffix = p.split(/(_v)\w+.*_/).slice(-1)[0]
-        file_name = this.operaFilename(file_suffix, p)
-        
-        const fileID = p.split('/').slice(-1)[0]
+      let reg = product.downloadUrl.split(/(_v[0-9]\.[0-9]){1}(\.(\w*)|(_(\w*(_*))*.))*/);
+      let file_suffix = !!reg[3] ? reg[3] : reg[5]
+      product.productTypeDisplay = this.operaProductTypeDisplays[file_suffix.toLowerCase()]
 
+      for (const p of product.metadata.opera.additionalUrls.filter(url => url !== product.downloadUrl)) {
+        reg = p.split(/(_v[0-9]\.[0-9]){1}(\.(\w*)|(_(\w*(_*))*.))*/);
+        file_suffix = !!reg[3] ? reg[3] : reg[5] 
+        const productTypeDisplay = this.operaProductTypeDisplays[file_suffix.toLowerCase()];
+
+        const fileID = p.split('/').slice(-1)[0]
+        
         let subproduct =  {
           ...product,
           downloadUrl: p,
-          productTypeDisplay: this.operaProductTypeDisplays[file_name.toLowerCase()],
+          productTypeDisplay: productTypeDisplay || p,
           file: fileID,
-          id: product.id + '-' + file_name,
+          id: product.id + '-' + file_suffix,
           bytes: 0,
           browses: [],
           thumbnail: null,
@@ -178,27 +180,15 @@ export class ProductService {
           products.push(subproduct)
       }
 
-      return products
-    }
+      return products.sort((a, b) => {
+        if(['hh', 'vv', 'vh', 'hv'].includes(a.productTypeDisplay.slice(0, 2).toLowerCase())) {
+          return -1;
+        } else if(['hh', 'vv', 'vh', 'hv'].includes(b.productTypeDisplay.slice(0, 2).toLowerCase()))
+        return 1;
 
-    operaProductTypeDisplay(p: string) {
-      const file_suffix = p.split(/(_v)\w+.*_/).slice(-1)[0]
-      const file_name = file_suffix.slice(0, file_suffix.length - 4)
-      const extension = p.split('.').slice(-1)[0]
-      const fileDisplay = file_name.replace('_', ' ').toLowerCase() + ` (${extension.toUpperCase()})`
-      
-      return fileDisplay
-    }
-
-    operaFilename(file_suffix: string, url: string) {
-      if(file_suffix.endsWith('h5')) {
-        return 'h5';
-      } else if(file_suffix.endsWith('xml')) {
-        return 'xml';
-      } else if(url.endsWith('local_incidence_angle.tif')) {
-        return 'local_incidence_angle';
-      } else {
-        return file_suffix.split('.').slice(0, -1).join('.')
+        return a.productTypeDisplay < b.productTypeDisplay ? -1 : 1
       }
+      )
     }
+
 }
