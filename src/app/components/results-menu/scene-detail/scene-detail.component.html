@@ -323,12 +323,14 @@
   <div
     [matTooltip]="
     searchType === searchTypes.SARVIEWS_EVENTS ? ( 'GEOGRAPHIC_SEARCH_BASED_ON_EVENT_POLYGON' | translate ) : 
+    (
+      dataset?.id === 'OPERA-S1' ? ('OPERA_S1_SOURCE_DATA' | translate) :
     (dataset?.id === 'SENTINEL-1 BURSTS' ? ('GEOGRAPHIC_SEARCH_BASED_ON_BURST' | translate) :
     !(
       !(prop.isRelevant(p.PATH, dataset) &&
         prop.isRelevant(p.FRAME, dataset)) ||
       dataset?.id === 'UAVSAR'
-    ) ? ('GEOGRAPHIC_SEARCH_BASED_ON_THIS_SCENE_S_PATH_FRAME' | translate) : ( 'NOT_ABLE_TO_SELECT_SIMILAR_SCENES_FROM_THIS_SOURCE' | translate))">
+    ) ? ('GEOGRAPHIC_SEARCH_BASED_ON_THIS_SCENE_S_PATH_FRAME' | translate) : ( 'NOT_ABLE_TO_SELECT_SIMILAR_SCENES_FROM_THIS_SOURCE' | translate)))">
 
     <button
       mat-stroked-button

@@ -360,7 +360,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
       this.makeSarviewsEventGeoSearch();
     } else {
       const scene = this.scene;
-      const shouldClear = this.searchType !== models.SearchType.DATASET;
+      const shouldClear = this.searchType !== models.SearchType.DATASET || this.dataset.id === 'OPERA-S1';
       const dateRange = this.dateRange;
 
       this.store$.dispatch(new searchStore.SetSearchType(models.SearchType.DATASET));

@@ -510,6 +510,7 @@
   "OPEN_STREET_MAP_CONTRIBUTORS": "© OpenStreetMap contributors",
   "OPERA_BURST_ID": "Opera Burst IDs",
   "OPERA_S1_DESC": "Sentinel-1 RTC backscatter products providing near-global coverage, as well as Sentinel-1 CSLC products covering North America.",
+  "OPERA_S1_SOURCE_DATA": "Source Sentinel-1 scene for selected OPERA-S1 product",
   "OPTION_OR": "option or",
   "OPTION_OR ": "option or",
   "OPTIONS": "Options",
