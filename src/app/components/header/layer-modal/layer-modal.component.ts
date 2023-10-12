@@ -41,6 +41,10 @@ export class LayerModalComponent implements OnInit, OnDestroy {
     id: string;
     description: string;
     docLink: string;
+    opacity? : {
+      set: (param: any) => void;
+      value: any
+    }
     type: string;
     layerFunction: (param: any) => void;
     sub?: {
@@ -55,6 +59,10 @@ export class LayerModalComponent implements OnInit, OnDestroy {
         'description': 'A display of how likely data is to be stable over an area.',
         'docLink': '',
         'asyncValue': this.store$.select(mapStore.getCoherenceLayerSelection),
+        'opacity': {
+          'set': (value) => this.store$.dispatch(new mapStore.SetCoherenceOverlayOpacity(value)),
+          'value': this.store$.select(mapStore.getCoherenceOverlayOpacity)
+        },
         'type': 'LIST',
         'layerFunction': (param) => { this.mapService.clearCoherence(); this.mapService.setCoherenceLayer(param); this.store$.dispatch(new mapStore.SetCoherenceOverlay(param)) },
         'sub': [
@@ -126,6 +134,8 @@ export class LayerModalComponent implements OnInit, OnDestroy {
     this.mapService.disableInteractions();
     this.drawService.getLayer().setVisible(false);
     this.store$.dispatch(new mapStore.SetMapInteractionMode(MapInteractionModeType.NONE));
+
+    this.setSelectedLayer(this.layerArray[0])
   }
 
   public setSelectedLayer(layer) {

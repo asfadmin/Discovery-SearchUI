@@ -38,6 +38,15 @@
 
       <ng-container *ngIf="selectedLayer">
         <span class="layer-description">{{selectedLayer.description}}</span>
+        <div *ngIf="selectedLayer.opacity" style="margin: 5px">
+          Opacity: 
+          <mat-slider thumbLabel tickInterval="0.1" step="0.05" value="1" min="0.0" max="1.0"
+          class="opacity-slider"
+          name="layerType"
+          (input)="selectedLayer.opacity.set($event.value)"
+          color="primary">
+          </mat-slider>
+        </div>
         <div *ngIf="selectedLayer.type === 'TOGGLE'">
           <mat-slide-toggle (change)="onOptionSelect($event.checked, selectedLayer)"
             [checked]="selectedLayer.asyncValue | async">Enabled</mat-slide-toggle>

@@ -27,6 +27,7 @@ import {DocsModalModule} from '@components/shared/docs-modal';
 import { SharedModule } from '@shared';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatSliderModule } from '@angular/material/slider';
 
 
 @NgModule({
@@ -55,6 +56,7 @@ import { MatRadioModule } from '@angular/material/radio';
         DocsModalModule,
         MatSlideToggleModule,
         MatRadioModule,
+        MatSliderModule,
         SharedModule
     ],
   exports: [
