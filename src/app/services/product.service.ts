@@ -137,7 +137,7 @@ export class ProductService {
       vv: 'VV GeoTIFF',
       vh: 'VH GeoTIFF',
       mask: 'Mask GeoTIFF',
-      h5: 'Metadata HDF5',
+      h5: 'HDF5',
       xml: 'Metadata XML',
       rtc_anf_gamma0_to_sigma0: 'RTC Gamma to Sigma GeoTIFF',
       number_of_looks: '# of Looks GeoTIFF',

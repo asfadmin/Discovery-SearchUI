@@ -73,7 +73,7 @@
             </ng-container>
           </b> •
           <span>
-            <span *ngIf="product.bytes === 0">Virtual</span>
+            <span *ngIf="product.bytes === 0 && !product.id.startsWith('OPERA')">Virtual</span>
             <span *ngIf="product.bytes !== 0">{{product.bytes | readableSizeFromBytes }}</span>
           </span>
         </div>
