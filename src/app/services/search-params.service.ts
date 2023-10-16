@@ -112,7 +112,9 @@ export class SearchParamsService {
       this.polarizations$(),
       this.maxResults$(),
       this.missionParam$(),
-      this.burstParams$(),]
+      this.burstParams$(),
+      this.operaBurstParams$(),
+      this.groupID$()]
     ).pipe(
       map((params: any[]) => params
         .reduce(
@@ -149,6 +151,22 @@ export class SearchParamsService {
           fullburstid: fullIDs?.join(',')})
           )
     );
+  }
+  
+  private operaBurstParams$() {
+    return this.store$.select(filterStore.getOperaBurstIDs).pipe(
+    map(operaIDs => ({
+        operaburstid: operaIDs?.join(',')})
+        )
+    );
+  }
+
+  private groupID$() {
+    return this.store$.select(filterStore.getGroupID).pipe(
+      map(groupid => ({
+        groupid
+      }))
+    )
   }
 
   private searchPolygon$() {

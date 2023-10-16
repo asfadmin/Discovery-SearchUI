@@ -37,7 +37,7 @@
 
   <li *ngIf="prop.isRelevant(p.BEAM_MODE, dataset)">
     <span class="v-mid"><b>{{ 'BEAM_MODE' |translate }} </b> • {{ scene.metadata.beamMode }}</span>
-    <mat-icon *ngIf="isGeoSearch()"
+    <mat-icon *ngIf="isGeoSearch() && dataset.id !== 'OPERA-S1'"
       [matMenuTriggerFor]="addBeamModeMenu"
       class="v-mid clickable">
         settings
@@ -155,6 +155,17 @@
 
   <li *ngIf="hasValue(scene.metadata.pgeVersion)" class="detail-item-margin">
     <b> {{ 'PGE_VERSION' | translate }} </b> • {{ scene.metadata.pgeVersion }}
+  </li>
+
+  <li *ngIf="!!scene.metadata.opera">
+    <b> {{'OPERA_BURST_ID' | translate }} </b> • {{scene.metadata.opera.operaBurstID}}
+    <mat-icon *ngIf="isGeoSearch()" [matMenuTriggerFor]="addOperaBurstMenu" class="v-mid clickable">
+      settings
+    </mat-icon>
+
+    <mat-menu #addOperaBurstMenu="matMenu">
+      <button (click)="setOperaBurst()" mat-menu-item>Add OPERA burst ID to search</button>
+    </mat-menu>
   </li>
 
 

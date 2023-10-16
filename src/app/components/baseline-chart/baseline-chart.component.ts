@@ -79,7 +79,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.createSVG();
-    const products$ = this.scenesService.scenes$().pipe(
+    const products$ = this.scenesService.scenes$.pipe(
       tap(products => products.map(
         product => this.criticalBaseline = criticalBaselineFor(product)
       )),

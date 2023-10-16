@@ -18,6 +18,7 @@ import { DatasetSelectorModule } from '@components/shared/selectors/dataset-sele
 import { AoiOptionsModule } from '@components/shared/aoi-options';
 import { DocsModalModule } from '@components/shared/docs-modal';
 import { BurstSelectorModule } from '@components/shared/selectors/burst-selector';
+import { OperaS1SelectorModule } from '@components/shared/selectors/opera-s1-selector';
 // import { TranslateModule } from "@ngx-translate/core";
 import { SharedModule } from "@shared";
 
@@ -42,6 +43,7 @@ import { SharedModule } from "@shared";
     AoiOptionsModule,
     SearchTypeSelectorModule,
     BurstSelectorModule,
+    OperaS1SelectorModule,
     SharedModule,
     // TranslateModule
   ],
