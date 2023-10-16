@@ -155,7 +155,7 @@ export class ProductService {
 
       for (const p of product.metadata.opera.additionalUrls.filter(url => url !== product.downloadUrl)) {
         reg = p.split(/(_v[0-9]\.[0-9]){1}(\.(\w*)|(_(\w*(_*))*.))*/);
-        file_suffix = !!reg[3] ? reg[3] : reg[5] 
+        file_suffix = !!reg[3] ? reg[3] : reg[5]
         const productTypeDisplay = this.operaProductTypeDisplays[file_suffix.toLowerCase()];
 
         const fileID = p.split('/').slice(-1)[0]
