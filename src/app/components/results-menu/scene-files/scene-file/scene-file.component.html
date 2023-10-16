@@ -60,7 +60,9 @@
 
     <a *ngIf="isHovered && !product.metadata.job" class="icon-margin">
       <app-copy-to-clipboard
-        [value]="product.metadata.productType === 'BURST_XML' ? product.id?.split('-XML')[0] : product.id"
+        [value]="product.metadata.productType === 'BURST_XML' ? product.id?.split('-XML')[0] : (
+          product.metadata.parentID || product.id
+        )"
         prompt="{{ 'COPY_FILE_ID' | translate }}">
       </app-copy-to-clipboard>
     </a>
@@ -85,7 +87,7 @@
     </button>
 
     <div mat-line class="file-sub-line">
-      <span *ngIf="product.bytes === 0">{{ 'VIRTUAL'  |  translate }}</span>
+      <span *ngIf="product.bytes === 0 && !product?.id?.startsWith('OPERA')">{{ 'VIRTUAL'  |  translate }}</span>
       <span *ngIf="isDownloadable(product) && product.bytes !== 0">{{product.bytes.toString() | readableSizeFromBytes }}</span>
     </div>
 

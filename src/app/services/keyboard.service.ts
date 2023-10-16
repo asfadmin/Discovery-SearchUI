@@ -23,7 +23,7 @@ export class KeyboardService {
 
   init() {
     const scenesSorted$ = this.scenesService.sortScenes$(
-      this.scenesService.scenes$()
+      this.scenesService.scenes$
     );
 
     fromEvent(document, 'keydown').pipe(
