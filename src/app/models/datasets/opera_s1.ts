@@ -4,7 +4,7 @@ export const opera_s1 = {
   id: 'OPERA-S1',
   name: 'OPERA-S1',
   subName: '',
-  beta: true,
+  beta: false,
   properties: [
     Props.DATE,
     Props.BEAM_MODE,
