@@ -15,7 +15,7 @@ export const opera_s1 = {
     Props.SUBTYPE,
   ],
   apiValue: {
-    collections: 
+    collections:
     "C1259974840-ASF,C1259976861-ASF,C1259981910-ASF,C1259982010-ASF,C1259975087-ASFDEV,C1259976862-ASFDEV,C1259983643-ASFDEV,C1259983645-ASFDEV,C2777443834-ASF,C2777436413-ASF" },
   date: { start: new Date('2014/06/15 03:44:43 UTC') },
   infoUrl: 'https://asf.alaska.edu/datasets/daac/opera/',
