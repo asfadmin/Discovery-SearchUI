@@ -64,8 +64,8 @@ export class MapEffects {
       || dataset?.id === 'ALOS'
       || dataset?.id === 'SENTINEL-1'
       || dataset?.id === 'SENTINEL-1 INTERFEROGRAM (BETA)'
-      || dataset?.id === 'UAVSAR'
-      || dataset?.id === 'OPERA-S1';
+      || dataset?.id === 'UAVSAR';
+      // || dataset?.id === 'OPERA-S1';
     }
     return searchType !== SearchType.BASELINE && searchType !== SearchType.SBAS;
   }),
