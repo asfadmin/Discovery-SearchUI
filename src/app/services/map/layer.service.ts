@@ -35,7 +35,8 @@ export class LayerService {
 
   public vh_wms(months: string) {
     return new ImageWMS({
-      url: `https://gis.earthdata.nasa.gov/image/services/GSSICB/GSSICB_12_day_Median_VV_Coherence_${months}/ImageServer/WMSServer`,
+      
+      url: `https://gis.earthdata.nasa.gov/image/services/GSSICB/GSSICB_12_day_Median_HH_Coherence_${months}/ImageServer/WMSServer`,
       params: {'LAYERS': `GSSICB_12_day_Median_VV_Coherence_${months}:Unscaled Coherence`},
       ratio: 1,
       serverType: 'geoserver',

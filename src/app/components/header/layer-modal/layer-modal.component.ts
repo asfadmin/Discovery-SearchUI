@@ -11,6 +11,8 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 import { ResizedEvent } from '@directives/resized.directive';
 
+import * as models from '@models';
+import { map } from 'rxjs';
 
 
 @Component({
@@ -54,9 +56,9 @@ export class LayerModalComponent implements OnInit, OnDestroy {
     asyncValue?: any;
   }[] = [
       {
-        'label': 'SENTINEL_1_COHERENCE',
+        'label': 'Sentinel 1 Coherence',
         'id': 'sentinel-1-coherence',
-        'description': 'A display of how likely data is to be stable over an area.',
+        'description': 'Shows the coherence over locations.',
         'docLink': '',
         'asyncValue': this.store$.select(mapStore.getCoherenceLayerSelection),
         'opacity': {
@@ -67,35 +69,35 @@ export class LayerModalComponent implements OnInit, OnDestroy {
         'layerFunction': (param) => { this.mapService.clearCoherence(); this.mapService.setCoherenceLayer(param); this.store$.dispatch(new mapStore.SetCoherenceOverlay(param)) },
         'sub': [
           {
-            'name': 'VV - Dec, Jan, Feb',
+            'name': '12 Day VV - Dec, Jan, Feb',
             'value': 'VV_DEC_JAN_FEB'
           },
           {
-            'name': 'VV - Mar, Apr, May',
+            'name': '12 Day VV - Mar, Apr, May',
             'value': 'VV_MAR_APR_MAY'
           },
           {
-            'name': 'VV - Jun, Jul, Aug',
+            'name': '12 Day VV - Jun, Jul, Aug',
             'value': 'VV_JUN_JUL_AUG'
           },
           {
-            'name': 'VV - Sep, Oct, Nov',
+            'name': '12 Day VV - Sep, Oct, Nov',
             'value': 'VV_SEP_OCT_NOV'
           },
           {
-            'name': 'VH - Dec, Jan, Feb',
+            'name': '12 Day HH - Dec, Jan, Feb',
             'value': 'Vh_DEC_JAN_FEB'
           },
           {
-            'name': 'VH - Mar, Apr, May',
+            'name': '12 Day HH - Mar, Apr, May',
             'value': 'VH_MAR_APR_MAY'
           },
           {
-            'name': 'VH - Jun, Jul, Aug',
+            'name': '12 Day HH - Jun, Jul, Aug',
             'value': 'VH_JUN_JUL_AUG'
           },
           {
-            'name': 'VH - Sep, Oct, Nov',
+            'name': '12 Day HH - Sep, Oct, Nov',
             'value': 'VH_SEP_OCT_NOV'
           },
         ]
@@ -105,8 +107,28 @@ export class LayerModalComponent implements OnInit, OnDestroy {
         'id': 'gridlines',
         'docLink': '',
         'asyncValue': this.store$.select(mapStore.getAreGridlinesActive),
-        'description': 'Show gridlines over the map. ',
+        'description': 'Show longitude and latitude on map.',
         'layerFunction': (param) => { console.log(param); this.store$.dispatch(new mapStore.SetGridlines(param)) },
+        'type': 'TOGGLE'
+      },
+      {
+        'label': 'Street Map',
+        'id': 'street-map',
+        'docLink': '',
+        'asyncValue': this.store$.select(mapStore.getMapLayerType).pipe(map(layerType => layerType === models.MapLayerTypes.STREET)),
+        'description': 'Show streets and street names.',
+        'layerFunction': (param) => {    const action = param ?
+          new mapStore.SetStreetView() :
+          new mapStore.SetSatelliteView(); console.log(param); this.store$.dispatch(action) },
+        'type': 'TOGGLE'
+      },
+      {
+        'label': 'Overview Map',
+        'id': 'overview-map',
+        'docLink': '',
+        'asyncValue': this.store$.select(mapStore.getIsOverviewMapOpen),
+        'description': 'Show a minimap of overral placement on the globe.',
+        'layerFunction': (param) => { this.store$.dispatch(new mapStore.ToggleOverviewMap(param)) },
         'type': 'TOGGLE'
       }
     ];
