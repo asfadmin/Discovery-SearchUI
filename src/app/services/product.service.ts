@@ -152,6 +152,11 @@ export class ProductService {
       let reg = product.downloadUrl.split(/(_v[0-9]\.[0-9]){1}(\.(\w*)|(_(\w*(_*))*.))*/);
       let file_suffix = !!reg[3] ? reg[3] : reg[5]
       product.productTypeDisplay = this.operaProductTypeDisplays[file_suffix.toLowerCase()]
+      
+      if (product.browses.length === 3) {
+        product.thumbnail = product.browses.pop()
+        product.browses.pop()
+      }
 
       for (const p of product.metadata.opera.additionalUrls.filter(url => url !== product.downloadUrl)) {
         reg = p.split(/(_v[0-9]\.[0-9]){1}(\.(\w*)|(_(\w*(_*))*.))*/);
