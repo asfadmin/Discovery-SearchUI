@@ -152,6 +152,13 @@ export class ProductService {
       let reg = product.downloadUrl.split(/(_v[0-9]\.[0-9]){1}(\.(\w*)|(_(\w*(_*))*.))*/);
       let file_suffix = !!reg[3] ? reg[3] : reg[5]
       product.productTypeDisplay = this.operaProductTypeDisplays[file_suffix.toLowerCase()]
+      
+      const thumbnail_index = product.browses.findIndex(url => url.toLowerCase().includes('thumbnail'))
+      if (thumbnail_index !== -1) {
+        product.thumbnail = product.browses.splice(thumbnail_index, 1)[0];
+      }
+      product.browses = product.browses.filter(url => !url.includes('low-res'));
+
 
       for (const p of product.metadata.opera.additionalUrls.filter(url => url !== product.downloadUrl)) {
         reg = p.split(/(_v[0-9]\.[0-9]){1}(\.(\w*)|(_(\w*(_*))*.))*/);

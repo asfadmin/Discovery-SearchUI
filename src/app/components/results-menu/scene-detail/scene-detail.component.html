@@ -175,7 +175,7 @@
                 <span
                   class="navigation-icon"
                   [class.clickable]="browseIndex + 1 < browses.length"
-                  (click)=onIncrementBrowseIndex()
+                  (click)="onIncrementBrowseIndex()"
                 >
                   <mat-icon
                     [class.not-clickable]="browseIndex + 1 >= browses.length"
