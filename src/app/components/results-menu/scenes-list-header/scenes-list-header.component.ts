@@ -2,7 +2,7 @@ import { Component,  OnDestroy, OnInit } from '@angular/core';
 import { saveAs } from 'file-saver';
 
 import { combineLatest,  } from 'rxjs';
-import { debounceTime, filter, map } from 'rxjs/operators';
+import { debounceTime, filter, map, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -23,6 +23,7 @@ import { SubSink } from 'subsink';
 import { hyp3JobTypes, SarviewsProduct } from '@models';
 import { AddItems, AddJobs } from '@store/queue';
 import { ClipboardService } from 'ngx-clipboard';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-scenes-list-header',
@@ -55,12 +56,34 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public downloadableProds = [];
   public sarviewsEventProducts: SarviewsProduct[] = [];
   public pinnedEventIDs: string[];
+  
+  public operaProductsByType$: Observable<{[key:string]: models.CMRProduct[]}> = this.store$.select(scenesStore.getAllProducts).pipe(
+    map((scenes: []) => 
+    scenes.reduce((prev, curr: models.CMRProduct) => {
+      if(!prev[curr.productTypeDisplay]) {
+        prev[curr.productTypeDisplay] = []
+      }
+      prev[curr.productTypeDisplay].push(curr)
+
+      return prev;
+    }, {})
+    ),
+    tap(products => this.operaProductsByType = products)
+  )
+
+  public operaProductsCountByType$ = this.operaProductsByType$.pipe(
+    map(products => Object.keys(products).reduceRight((prev: {}, curr: string) => {
+      prev[curr] = products[curr].length;
+      return prev
+    }, {}))
+  )
 
   public numBaselineScenes$ = this.scenesService.scenes$.pipe(
     map(scenes => scenes.length),
   );
 
   private products$ = this.scenesService.products$();
+  private operaProductsByType: {[key:string]: models.CMRProduct[]} = {}
 
   public isBurstStack$ =
   combineLatest([
@@ -339,6 +362,10 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     }
 
     this.store$.dispatch(new queueStore.AddItems(products));
+  }
+
+  public queueOperaProductsOfType(productType): void {
+    this.queueAllProducts(this.operaProductsByType[productType as string])
   }
 
   public queueSBASProducts(products: models.CMRProduct[]): void {
