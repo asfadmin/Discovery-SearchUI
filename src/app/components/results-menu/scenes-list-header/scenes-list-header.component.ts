@@ -57,7 +57,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public sarviewsEventProducts: SarviewsProduct[] = [];
   public pinnedEventIDs: string[];
   
-  public operaProductsByType$: Observable<{[key:string]: models.CMRProduct[]}> = this.store$.select(scenesStore.getAllProducts).pipe(
+  public productsByType$: Observable<{[key:string]: models.CMRProduct[]}> = this.store$.select(scenesStore.getAllProducts).pipe(
     map((scenes: []) => 
     scenes.reduce((prev, curr: models.CMRProduct) => {
       if(!prev[curr.productTypeDisplay]) {
@@ -71,7 +71,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     tap(products => this.operaProductsByType = products)
   )
 
-  public operaProductsCountByType$ = this.operaProductsByType$.pipe(
+  public productCountByType$ = this.productsByType$.pipe(
     map(products => Object.keys(products).reduceRight((prev: {}, curr: string) => {
       prev[curr] = products[curr].length;
       return prev
@@ -364,7 +364,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new queueStore.AddItems(products));
   }
 
-  public queueOperaProductsOfType(productType): void {
+  public queueProductsOfType(productType): void {
     this.queueAllProducts(this.operaProductsByType[productType as string])
   }
 

@@ -305,16 +305,16 @@
 
             <button mat-menu-item
             *ngIf="searchType === SearchTypes.DATASET"
-            [matMenuTriggerFor]="addAllOperaProducts"
-            [matMenuTriggerData]="{operaData: (operaProductsCountByType$ | async)}"
+            [matMenuTriggerFor]="addAllProductsOfType"
+            [matMenuTriggerData]="{productData: (productCountByType$ | async)}"
             >
             {{ 'ADD' | translate }} {{ downloadableProds.length }} {{'FILE' | translate}}{{ downloadableProds.length === 1 ? '' : 's'}} {{'TO_DOWNLOADS' | translate}}
           </button>
           </mat-menu>
           
-          <mat-menu #addAllOperaProducts>
-            <ng-template matMenuContent let-operaData="operaData">
-              <button mat-menu-item *ngFor="let item of operaData | keyvalue" (click)="queueOperaProductsOfType(item.key)">
+          <mat-menu #addAllProductsOfType>
+            <ng-template matMenuContent let-productData="productData">
+              <button mat-menu-item *ngFor="let item of productData | keyvalue" (click)="queueProductsOfType(item.key)">
                 {{ 'ADD' | translate }}  {{item.value}} {{item.key}} {{'FILE' | translate}}{{ item.value === 1 ? '' : 's'}} {{'TO_DOWNLOADS' | translate}}
               </button>
           </ng-template>
