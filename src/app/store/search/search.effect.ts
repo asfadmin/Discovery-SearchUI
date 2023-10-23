@@ -7,8 +7,10 @@ import { of, forkJoin, combineLatest, Observable, EMPTY } from 'rxjs';
 import { map, withLatestFrom, switchMap, catchError, filter, first, tap, debounceTime } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
-import { SetSearchAmount, EnableSearch, DisableSearch, SetSearchType, SetNextJobsUrl,
-  Hyp3BatchResponse, SarviewsEventsResponse, SetSearchOutOfDate } from './search.action';
+import {
+  SetSearchAmount, EnableSearch, DisableSearch, SetSearchType, SetNextJobsUrl,
+  Hyp3BatchResponse, SarviewsEventsResponse, SetSearchOutOfDate
+} from './search.action';
 import * as scenesStore from '@store/scenes';
 import * as filtersStore from '@store/filters';
 import * as mapStore from '@store/map';
@@ -51,7 +53,7 @@ export class SearchEffects {
     private http: HttpClient,
     private notificationService: services.NotificationService,
     // private environmentService: services.EnvironmentService,
-  ) {}
+  ) { }
 
   public clearMapInteractionModeOnSearch = createEffect(() => this.actions$.pipe(
     ofType(SearchActionType.MAKE_SEARCH),
@@ -72,8 +74,8 @@ export class SearchEffects {
     withLatestFrom(this.store$.select(getSearchType)),
     map(([action, searchType]) =>
       (action.payload > 0
-      || searchType === SearchType.BASELINE
-      || searchType === SearchType.SBAS) ? new EnableSearch() : new DisableSearch()
+        || searchType === SearchType.BASELINE
+        || searchType === SearchType.SBAS) ? new EnableSearch() : new DisableSearch()
     )
   ));
 
@@ -81,21 +83,20 @@ export class SearchEffects {
     ofType<ClearScenes>(ScenesActionType.CLEAR),
     withLatestFrom(this.store$.select(getSearchType)),
     switchMap(([_, searchType]) => {
-      if(searchType === SearchType.SARVIEWS_EVENTS) {
+      if (searchType === SearchType.SARVIEWS_EVENTS) {
         return this.sarviewsService.getSarviewsEvents$()
       } else {
         return of([])
       }
     }),
     map((events) => new SetSarviewsEvents({ events }))
-    )
+  )
   );
 
   public makeSearches = createEffect(() => this.actions$.pipe(
     ofType(SearchActionType.MAKE_SEARCH),
     withLatestFrom(this.store$.select(getSearchType)),
-    switchMap(([_, searchType]) =>
-    {
+    switchMap(([_, searchType]) => {
       if (searchType === SearchType.SARVIEWS_EVENTS) {
         return this.sarviewsEventsQuery$();
       }
@@ -130,34 +131,40 @@ export class SearchEffects {
     map(_ => new CancelSearch())
   ));
 
-    cancelSearchonOnPanelOpen = createEffect(() => this.actions$.pipe(
-      ofType(uiStore.UIActionType.OPEN_FILTERS_MENU),
-      switchMap(_ => [
-        new filtersStore.StoreCurrentFilters(),
-        new CancelSearch()
-      ])
-    )
+  cancelSearchonOnPanelOpen = createEffect(() => this.actions$.pipe(
+    ofType(uiStore.UIActionType.OPEN_FILTERS_MENU),
+    switchMap(_ => [
+      new filtersStore.StoreCurrentFilters(),
+      new CancelSearch()
+    ])
+  )
   );
 
   public searchResponse = createEffect(() => this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
-    switchMap(action => [
-      new scenesStore.SetScenes({
-        products: action.payload.files,
-        searchType: action.payload.searchType
-      }),
-      new SetSearchAmount(action.payload.totalCount)
-    ])
+    switchMap(action => {
+
+      let output : any[] = [
+        new scenesStore.SetScenes({
+          products: action.payload.files,
+          searchType: action.payload.searchType
+        }), null
+      ];
+      if(action.payload.totalCount) {
+        output.push(new SetSearchAmount(action.payload.totalCount))
+      }
+      return output
+    })
   ));
 
   public onDemandSearchResponse = createEffect(() => this.actions$.pipe(
-      ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
-      withLatestFrom(this.store$.select(getSearchType)),
-      filter(([_, searchType]) => searchType === SearchType.CUSTOM_PRODUCTS),
-      switchMap(([action, _]) =>
-        [!!action.payload.next ? new SetNextJobsUrl(action.payload.next) : new SetNextJobsUrl('')]
-      )
-    ));
+    ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
+    withLatestFrom(this.store$.select(getSearchType)),
+    filter(([_, searchType]) => searchType === SearchType.CUSTOM_PRODUCTS),
+    switchMap(([action, _]) =>
+      [!!action.payload.next ? new SetNextJobsUrl(action.payload.next) : new SetNextJobsUrl('')]
+    )
+  ));
 
   public hyp3BatchResponse = createEffect(() => this.actions$.pipe(
     ofType<Hyp3BatchResponse>(SearchActionType.HYP3_BATCH_RESPONSE),
@@ -205,12 +212,12 @@ export class SearchEffects {
       new scenesStore.ClearScenes(),
       new uiStore.CloseAOIOptions(),
       action.payload === models.SearchType.LIST ||
-      action.payload === models.SearchType.SBAS ||
-      action.payload === models.SearchType.BASELINE ||
-      action.payload === models.SearchType.DERIVED_DATASETS ?
+        action.payload === models.SearchType.SBAS ||
+        action.payload === models.SearchType.BASELINE ||
+        action.payload === models.SearchType.DERIVED_DATASETS ?
         new uiStore.OpenFiltersMenu() :
         new uiStore.CloseFiltersMenu(),
-        new SetSearchOutOfDate(false)
+      new SetSearchOutOfDate(false)
     ]),
     catchError(
       _ => of(new SearchError(`Error loading search results`))
@@ -220,19 +227,19 @@ export class SearchEffects {
   public onChangeFiltersHeader = createEffect(() => this.actions$.pipe(
     ofType(
       FiltersActionType.SET_START_DATE,
-        FiltersActionType.SET_END_DATE,
-        FiltersActionType.SET_SELECTED_DATASET,
-        ScenesActionType.SET_MASTER,
-        ScenesActionType.SET_FILTER_MASTER,
-       ),
-       withLatestFrom(this.store$.select(getIsFiltersMenuOpen)),
-       withLatestFrom(this.store$.select(getIsResultsMenuOpen)),
-       map(([[_, filtersOpen], resultsOpen]) => !filtersOpen && resultsOpen),
-       filter(shouldNotify => shouldNotify),
-       withLatestFrom(this.store$.select(getSearchType)),
-       withLatestFrom(this.store$.select(getareResultsOutOfDate)),
-       withLatestFrom(this.store$.select(getAreResultsLoaded)),
-       filter(([[[_, searchtype], outOfdate], loaded]) => !outOfdate && searchtype === models.SearchType.DATASET && loaded),
+      FiltersActionType.SET_END_DATE,
+      FiltersActionType.SET_SELECTED_DATASET,
+      ScenesActionType.SET_MASTER,
+      ScenesActionType.SET_FILTER_MASTER,
+    ),
+    withLatestFrom(this.store$.select(getIsFiltersMenuOpen)),
+    withLatestFrom(this.store$.select(getIsResultsMenuOpen)),
+    map(([[_, filtersOpen], resultsOpen]) => !filtersOpen && resultsOpen),
+    filter(shouldNotify => shouldNotify),
+    withLatestFrom(this.store$.select(getSearchType)),
+    withLatestFrom(this.store$.select(getareResultsOutOfDate)),
+    withLatestFrom(this.store$.select(getAreResultsLoaded)),
+    filter(([[[_, searchtype], outOfdate], loaded]) => !outOfdate && searchtype === models.SearchType.DATASET && loaded),
   ).pipe(
     map(_ => new SetSearchOutOfDate(true))
   ));
@@ -248,25 +255,23 @@ export class SearchEffects {
     ofType<SetSearchOutOfDate>(SearchActionType.SET_SEARCH_OUT_OF_DATE),
     filter(action => action.payload),
     tap(_ => this.notificationService.info('Refresh search to show new results', 'Results Out of Date'))
-  ), {dispatch: false});
+  ), { dispatch: false });
 
   private asfApiQuery$ = this.searchParams$.getParams.pipe(
     debounceTime(100),
-    map(params => [params, {...params, output: 'COUNT'}]),
+    map(params => [params]),
     switchMap(
-      ([params, countParams]) => forkJoin(
-        this.asfApiService.query<any[]>(params),
-        this.asfApiService.query<any[]>(countParams)
+      ([params]) => forkJoin(
+        this.asfApiService.query<any[]>(params)
       ).pipe(
         withLatestFrom(combineLatest([
           this.store$.select(getSearchType),
           this.store$.select(getIsCanceled)]
         )),
-        map(([[response, totalCount], [searchType, isCanceled]]) =>
+        map(([[response], [searchType, isCanceled]]) =>
           !isCanceled ?
             new SearchResponse({
               files: this.productService.fromResponse(response),
-              totalCount: +totalCount,
               searchType
             }) :
             new SearchCanceled()
@@ -280,45 +285,45 @@ export class SearchEffects {
           }
         ),
       ))
-    );
+  );
 
   public asfApiBaselineQuery$(): Observable<Action> {
     this.logCountries();
     return this.searchParams$.getParams.pipe(
-    switchMap(
-      (params) =>
-        this.asfApiService.query<any[]>(params).pipe(
-        withLatestFrom(combineLatest([
-          this.store$.select(getSearchType),
-          this.store$.select(getIsCanceled)]
-        )),
-        map(([response, [searchType, isCanceled]]) => {
-          const files = this.productService.fromResponse(response)
-          return !isCanceled ?
-            new SearchResponse({
-              files,
-              totalCount: files.length,
-              searchType
-            }) :
-            new SearchCanceled()
-          }
-        ),
-        catchError(
-          (err: HttpErrorResponse) => {
-            if (err.status !== 400) {
-              return of(new SearchError(`Unknown Error`));
+      switchMap(
+        (params) =>
+          this.asfApiService.query<any[]>(params).pipe(
+            withLatestFrom(combineLatest([
+              this.store$.select(getSearchType),
+              this.store$.select(getIsCanceled)]
+            )),
+            map(([response, [searchType, isCanceled]]) => {
+              const files = this.productService.fromResponse(response)
+              return !isCanceled ?
+                new SearchResponse({
+                  files,
+                  totalCount: files.length,
+                  searchType
+                }) :
+                new SearchCanceled()
             }
-            return EMPTY;
-          }
-        ),
-      ))
+            ),
+            catchError(
+              (err: HttpErrorResponse) => {
+                if (err.status !== 400) {
+                  return of(new SearchError(`Unknown Error`));
+                }
+                return EMPTY;
+              }
+            ),
+          ))
     );
   }
 
   private customProductsQuery$(): Observable<Action> {
     return this.hyp3Service.getJobs$().pipe(
       switchMap(
-        (jobsRes: {hyp3Jobs: models.Hyp3Job[], next: string}) => {
+        (jobsRes: { hyp3Jobs: models.Hyp3Job[], next: string }) => {
           const jobs = jobsRes.hyp3Jobs;
           if (jobs.length === 0) {
             return of(new SearchResponse({
@@ -342,7 +347,7 @@ export class SearchEffects {
               .reduce((products, product) => {
                 products[product.name] = product;
                 return products;
-              } , {})
+              }, {})
             ),
             map(products => this.hyp3JobToProducts(jobs, products)),
             withLatestFrom(this.store$.select(getIsCanceled)),
@@ -396,7 +401,7 @@ export class SearchEffects {
               .reduce((products, product) => {
                 products[product.name] = product;
                 return products;
-              } , {})
+              }, {})
             ),
             map(products => this.hyp3JobToProducts(jobs, products)),
             withLatestFrom(this.store$.select(getIsCanceled)),
@@ -425,7 +430,7 @@ export class SearchEffects {
   private sarviewsEventsQuery$() {
     return this.sarviewsService.getSarviewsEvents$().pipe(
       filter(events => !!events),
-      map(events => new SarviewsEventsResponse({events }))
+      map(events => new SarviewsEventsResponse({ events }))
     );
   }
 
@@ -436,7 +441,7 @@ export class SearchEffects {
         const product = products[job.job_parameters.granules[0]];
         const jobFile = !!job.files ?
           job.files[0] :
-          {size: -1, url: '', filename: product.name};
+          { size: -1, url: '', filename: product.name };
 
         const scene_keys = job.job_parameters.granules;
         job.job_parameters.scenes = [];
@@ -487,13 +492,13 @@ export class SearchEffects {
         if (this.vectorSource.getFeatures().length > 0) {
           this.findCountries(params.intersectsWith);
         } else {
-        this.http.get('/assets/countries.geojson').subscribe(f => {
-          this.vectorSource.addFeatures(
-            this.vectorSource.getFormat().readFeatures(f) as Feature<Geometry>[]
-          );
-          this.findCountries(params.intersectsWith);
-        });
-      }
+          this.http.get('/assets/countries.geojson').subscribe(f => {
+            this.vectorSource.addFeatures(
+              this.vectorSource.getFormat().readFeatures(f) as Feature<Geometry>[]
+            );
+            this.findCountries(params.intersectsWith);
+          });
+        }
       }
     });
   }
