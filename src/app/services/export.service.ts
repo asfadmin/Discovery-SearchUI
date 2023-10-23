@@ -30,7 +30,7 @@ export class ExportService {
   }
 
   public convertSearchOptionsToAsfSearch(): Observable<string> {
-    return this.searchParamsService.getParams().pipe(
+    return this.searchParamsService.getParams.pipe(
       withLatestFrom(this.searchParamsService.searchType$()),
       withLatestFrom(this.searchPolygon$()),
       map(([[options, type], wkt]) => {

@@ -4,7 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, Action } from '@ngrx/store';
 
 import { of, forkJoin, combineLatest, Observable, EMPTY } from 'rxjs';
-import { map, withLatestFrom, switchMap, catchError, filter, first, tap } from 'rxjs/operators';
+import { map, withLatestFrom, switchMap, catchError, filter, first, tap, debounceTime } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
 import { SetSearchAmount, EnableSearch, DisableSearch, SetSearchType, SetNextJobsUrl,
@@ -105,8 +105,9 @@ export class SearchEffects {
       if (searchType === SearchType.CUSTOM_PRODUCTS) {
         return this.customProductsQuery$();
       }
+      this.logCountries();
 
-      return this.asfApiQuery$();
+      return this.asfApiQuery$;
     }
     )
   ));
@@ -249,9 +250,8 @@ export class SearchEffects {
     tap(_ => this.notificationService.info('Refresh search to show new results', 'Results Out of Date'))
   ), {dispatch: false});
 
-  private asfApiQuery$(): Observable<Action> {
-    this.logCountries();
-    return this.searchParams$.getParams().pipe(
+  private asfApiQuery$ = this.searchParams$.getParams.pipe(
+    debounceTime(100),
     map(params => [params, {...params, output: 'COUNT'}]),
     switchMap(
       ([params, countParams]) => forkJoin(
@@ -281,11 +281,10 @@ export class SearchEffects {
         ),
       ))
     );
-  }
 
   public asfApiBaselineQuery$(): Observable<Action> {
     this.logCountries();
-    return this.searchParams$.getParams().pipe(
+    return this.searchParams$.getParams.pipe(
     switchMap(
       (params) =>
         this.asfApiService.query<any[]>(params).pipe(
@@ -483,7 +482,7 @@ export class SearchEffects {
     });
   }
   private logCountries(): void {
-    this.searchParams$.getParams().pipe(first()).subscribe(params => {
+    this.searchParams$.getParams.pipe(first()).subscribe(params => {
       if (params.intersectsWith) {
         if (this.vectorSource.getFeatures().length > 0) {
           this.findCountries(params.intersectsWith);
