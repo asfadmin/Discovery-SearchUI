@@ -148,7 +148,7 @@ export class SearchEffects {
         new scenesStore.SetScenes({
           products: action.payload.files,
           searchType: action.payload.searchType
-        }), null
+        })
       ];
       if(action.payload.totalCount) {
         output.push(new SetSearchAmount(action.payload.totalCount))
