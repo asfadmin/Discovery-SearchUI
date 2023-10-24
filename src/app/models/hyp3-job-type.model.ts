@@ -1,5 +1,6 @@
 import { Dataset } from './dataset.model';
 import { CMRProduct } from './cmr-product.model';
+import { Range } from './range.model';
 
 export interface Hyp3JobType {
   id: string;
@@ -26,6 +27,7 @@ export interface Hyp3JobOption {
   default: any;
   options?: { apiValue: string | number; name: string; }[];
   optionSubset?: { apiName: string; value: any; }[];
+  range?: Range<number>
 }
 
 export interface Hyp3ableProductByJobType {
@@ -44,4 +46,5 @@ export enum JobOptionType {
   TOGGLE = 'TOGGLE',
   CHECKBOX = 'CHECKBOX',
   SUBSET = 'SUBSET',
+  RANGE = 'RANGE'
 }
