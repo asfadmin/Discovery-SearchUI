@@ -70,7 +70,7 @@ export class QueueEffects {
   public downloadSearchtypeMetadata = createEffect(() => this.actions$.pipe(
     ofType<DownloadSearchtypeMetadata>(QueueActionType.DOWNLOAD_SEARCHTYPE_METADATA),
     map(action => action.payload),
-    withLatestFrom(this.searchParamsService.getParams()),
+    withLatestFrom(this.searchParamsService.getParams),
     map(
       ([format, searchParams]): MetadataDownload => ({
         params: {

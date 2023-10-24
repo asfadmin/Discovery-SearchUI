@@ -310,7 +310,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     this.env.setMaturity(maturity);
   }
   public exportPython(): void {
-    this.exportService.convertSearchOptionsToAsfSearch().pipe(take(1)).subscribe(
+    this.exportService.convertSearchOptionsToAsfSearch.pipe(take(1)).subscribe(
       (data) => {
         this.dialog.open(CodeExportComponent, {
           data: { codeStuff: data },
