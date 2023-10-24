@@ -95,6 +95,7 @@ export class UserEffects {
         this.store$.select(userReducer.getSearchHistory)]
       )
     ),
+    filter( ([_, [userAuth, _searches]]) => userAuth.id !== null),
     switchMap(
       ([_, [userAuth, searches]]) =>
         this.userDataService.setAttribute$(userAuth, 'History', searches)
@@ -151,11 +152,6 @@ export class UserEffects {
     map(_ => new hyp3Store.LoadUser())
   ));
 
-  public loadOnDemandSubscriptionsOnLogin = createEffect(() => this.actions$.pipe(
-    ofType<userActions.LoadSavedSearches>(userActions.UserActionType.LOGIN),
-    delay(400),
-    map(_ => new hyp3Store.LoadSubscriptions())
-  ));
 
   public loadSavedSearches = createEffect(() => this.actions$.pipe(
     ofType<userActions.LoadSavedSearches>(userActions.UserActionType.LOAD_SAVED_SEARCHES),
