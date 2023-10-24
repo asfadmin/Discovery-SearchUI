@@ -2,5 +2,6 @@
   matTooltipClass="on-demand-tooltip"
   >
   <mat-label>{{ optionName }}</mat-label>
-<input matInput (change)="onValueChange($event)" type="number" max=1.0 min=0.0 value=0.6 step="0.1">
+<input #rangeInput matInput (change)="onValueChange()" type="number" max="{{range.end}}" min="{{range.start}}" [(ngModel)]="value" pattern="\-?[0-9]*\.?[0-9]*" step="0.01">
+<mat-error *ngIf="value < range.start || value > range.start">{{ optionName.toLowerCase() + ' must be between ' + range.start + ' and ' + range.end}}</mat-error>
 </mat-form-field>

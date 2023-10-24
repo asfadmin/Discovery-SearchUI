@@ -11,16 +11,21 @@ export class RangeOptionComponent  implements OnInit{
   @Input() optionName: string;
   @Input() optionInfo: string;
   @Input() range: Range<number>;
+  @Input() default: number;
 
   @Output() valueChange = new EventEmitter<number>();
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {
+    this.value = this.default;
   }
 
-  public onValueChange(rangeValue: Event): void {
-    this.value = (rangeValue.target as HTMLInputElement).valueAsNumber;
+  public onValueChange(): void {
+    if(this.value < this.range.start || this.value > this.range.end) {
+      this.value = Math.min((Math.max(this.range.start, this.value), this.range.end))
+    }
+
     this.valueChange.emit(this.value);
   }
 }
