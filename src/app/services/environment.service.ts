@@ -4,6 +4,7 @@ import { env } from './env';
 export interface Environments {
   prod: Environment;
   test: Environment;
+  [key: string]: Environment | string;
   defaultEnv: string;
 }
 
@@ -56,8 +57,9 @@ export class EnvironmentService {
     }
   }
 
+
   get currentEnv(): Environment {
-    return this.envs[this.maturity];
+    return this.envs[this.maturity] as Environment;
   }
 
   public setMaturity(maturity: string): void {
