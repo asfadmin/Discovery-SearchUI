@@ -1,0 +1,6 @@
+<mat-form-field [matTooltip]="optionInfo"
+  matTooltipClass="on-demand-tooltip"
+  >
+  <mat-label>{{ optionName }}</mat-label>
+<input matInput (change)="onValueChange($event)" type="number" max=1.0 min=0.0 value=0.6 step="0.1">
+</mat-form-field>
