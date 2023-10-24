@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
-import { combineLatest, map, Observable, startWith, withLatestFrom } from 'rxjs';
+import { combineLatest, map, startWith, withLatestFrom } from 'rxjs';
 
 import { SearchParamsService } from './search-params.service';
 import * as filterStore from '@store/filters';
@@ -19,20 +19,17 @@ export class ExportService {
     private store$: Store<AppState>,
   ) { }
 
-  private searchPolygon$() {
-    return combineLatest([
+  private searchPolygon$ = combineLatest([
       this.mapService.searchPolygon$.pipe(startWith(null)),
       this.store$.select(filterStore.getShouldOmitSearchPolygon)
     ]
     ).pipe(
       map(([polygon, shouldOmitGeoRegion]) => shouldOmitGeoRegion ? null : { polygon: polygon }),
     );
-  }
 
-  public convertSearchOptionsToAsfSearch(): Observable<string> {
-    return this.searchParamsService.getParams.pipe(
+  public convertSearchOptionsToAsfSearch = this.searchParamsService.getParams.pipe(
       withLatestFrom(this.searchParamsService.searchType$()),
-      withLatestFrom(this.searchPolygon$()),
+      withLatestFrom(this.searchPolygon$),
       map(([[options, type], wkt]) => {
         const parameters = {};
         for (const key of Object.keys(options)) {
@@ -89,5 +86,4 @@ print(results)`;
         return python;
       }
       ));
-  }
 }

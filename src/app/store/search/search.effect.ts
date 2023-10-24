@@ -83,8 +83,8 @@ export class SearchEffects {
     ofType<ClearScenes>(ScenesActionType.CLEAR),
     withLatestFrom(this.store$.select(getSearchType)),
     switchMap(([_, searchType]) => {
-      if (searchType === SearchType.SARVIEWS_EVENTS) {
-        return this.sarviewsService.getSarviewsEvents$()
+      if(searchType === SearchType.SARVIEWS_EVENTS) {
+        return this.sarviewsService.getSarviewsEvents$
       } else {
         return of([])
       }
@@ -428,7 +428,7 @@ export class SearchEffects {
   }
 
   private sarviewsEventsQuery$() {
-    return this.sarviewsService.getSarviewsEvents$().pipe(
+    return this.sarviewsService.getSarviewsEvents$.pipe(
       filter(events => !!events),
       map(events => new SarviewsEventsResponse({ events }))
     );
