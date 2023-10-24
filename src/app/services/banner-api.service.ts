@@ -21,7 +21,7 @@ export class BannerApiService {
   public load(): Observable<BannerApiResponse> {
     const calendars = ['error', 'outages', 'news'];
 
-    if (this.env.maturity === 'test') {
+    if (!this.env.isProd) {
       calendars.push('test');
     }
 
