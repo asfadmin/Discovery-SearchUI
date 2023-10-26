@@ -79,7 +79,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
       this.store$.select(userStore.getUserProfile).subscribe(
         profile => {
           this.defaultLanguage = profile.language;
-          this.defaultMaxResults = profile.maxResults;
+          this.defaultMaxResults = +profile.maxResults;
           this.defaultMapLayer = profile.mapLayer;
           this.defaultDataset = profile.defaultDataset;
           this.selectedFiltersIDs = profile.defaultFilterPresets;
