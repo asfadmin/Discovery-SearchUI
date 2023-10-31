@@ -183,10 +183,14 @@ export class MapControlsComponent implements OnInit, OnDestroy {
     }
 
     this.browseIndex = newIndex;
-    const [url, wkt] = this.searchType === SearchType.SARVIEWS_EVENTS
+    let [url, wkt] = this.searchType === SearchType.SARVIEWS_EVENTS
     ? [this.selectedEventProducts[this.browseIndex].files.browse_url, this.selectedEventProducts[this.browseIndex].files.browse_url]
     : [this.selectedScene.browses[this.browseIndex], this.selectedScene.metadata.polygon];
 
+
+    if(this.selectedScene?.id.startsWith('OPERA')) {
+      url = this.selectedScene.downloadUrl;
+    }
     this.mapService.setSelectedBrowse(url, wkt);
   }
 
