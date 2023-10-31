@@ -1,11 +1,8 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { MatMenu } from '@angular/material/menu';
-import { MatDialog } from '@angular/material/dialog';
-
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as queueStore from '@store/queue';
-import * as hyp3Store from '@store/hyp3';
 import * as userStore from '@store/user';
 
 import * as models from '@models';
@@ -14,7 +11,6 @@ import { getMasterName, getScenes } from '@store/scenes';
 import { getSearchType } from '@store/search';
 import { CMRProduct, Hyp3ableByProductType, SearchType } from '@models';
 import { withLatestFrom } from 'rxjs/operators';
-import { CreateSubscriptionComponent } from '../../header/create-subscription';
 import { EnvironmentService } from '@services';
 
 @Component({
@@ -26,7 +22,6 @@ export class OnDemandAddMenuComponent implements OnInit {
   @Input() hyp3ableProducts: models.Hyp3ableProductByJobType;
   @Input() isExpired = false;
   @Input() expiredJobs: models.Hyp3Job;
-  @Input() showSubscriptions = false;
 
   @ViewChild('addMenu', {static: true}) addMenu: MatMenu;
 
@@ -44,7 +39,6 @@ export class OnDemandAddMenuComponent implements OnInit {
 
   constructor(
     private store$: Store<AppState>,
-    private dialog: MatDialog,
     public env: EnvironmentService,
   ) { }
 
@@ -126,23 +120,6 @@ export class OnDemandAddMenuComponent implements OnInit {
   });
 
     this.store$.dispatch(new queueStore.AddJobs(jobs));
-  }
-
-  public onOpenCreateSubscription() {
-    const ref = this.dialog.open(CreateSubscriptionComponent, {
-      id: 'subscriptionQueueDialog',
-      maxWidth: '100vw',
-      maxHeight: '100vh',
-      data: {
-        referenceScene: this.referenceScene
-      }
-    });
-
-    ref.afterClosed().subscribe(
-      _ => {
-        this.store$.dispatch(new hyp3Store.LoadSubscriptions());
-      }
-    );
   }
 
   public onOpenHelp(infoUrl) {

@@ -49,7 +49,7 @@ export class AsfApiService {
   }
 
   public query<T>(stateParamsObj: {[paramName: string]: string | number | null}): Observable<T> {
-    const useProdApi = stateParamsObj['maxResults'] >= 5000;
+    const useProdApi = +stateParamsObj['maxResults'] >= 5000;
 
     if (!this.env.isProd) {
       if (!useProdApi) {
@@ -166,8 +166,7 @@ export class AsfApiService {
     return filteredParams;
   }
 
-  public loadMissions$() {
-    return combineLatest(
+  public loadMissions$ = combineLatest([
       this.missionSearch(MissionDataset.S1_BETA).pipe(
         map(resp => ({[MissionDataset.S1_BETA]: resp.result}))
       ),
@@ -176,7 +175,7 @@ export class AsfApiService {
       ),
       this.missionSearch(MissionDataset.UAVSAR).pipe(
         map(resp => ({[MissionDataset.UAVSAR]: resp.result}))
-      )
+      )]
     ).pipe(
       map(missions => missions.reduce(
         (allMissions, mission) => ({ ...allMissions, ...mission }),
@@ -184,7 +183,6 @@ export class AsfApiService {
       )
       )
     );
-  }
 
   public missionSearch(dataset: MissionDataset): Observable<{result: string[]}> {
     const params = new HttpParams()

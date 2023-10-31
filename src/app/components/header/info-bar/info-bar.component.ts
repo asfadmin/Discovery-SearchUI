@@ -46,6 +46,8 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public perpRange: models.Range<number | null>;
   public tempRange: models.Range<number | null>;
   public fullBurstIDs: string[] = [];
+  public operaBurstIDs: string[] = [];
+  public groupID: string;
 
   private subs = new SubSink();
 
@@ -126,6 +128,14 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       burstIDs => this.fullBurstIDs = burstIDs
     );
 
+    const operaBurstIDSub = this.store$.select(filtersStore.getOperaBurstIDs).subscribe(
+      burstIDs => this.operaBurstIDs = burstIDs
+    );
+    
+    const groupIDSub = this.store$.select(filtersStore.getGroupID).subscribe(
+      groupID => this.groupID = groupID
+    );
+
     [
       startSub, endSub,
       pathSub, frameSub,
@@ -140,7 +150,9 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       missionSub,
       tempSub, perpSub,
       eventProductType,
-      fullBurstIDSub
+      fullBurstIDSub,
+      operaBurstIDSub,
+      groupIDSub
     ].forEach(sub => this.subs.add(sub));
 
     this.subs.add(

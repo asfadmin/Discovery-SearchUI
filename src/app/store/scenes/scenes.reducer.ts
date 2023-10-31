@@ -2,8 +2,9 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { ScenesActionType, ScenesActions } from './scenes.action';
 
-import { CMRProduct, UnzippedFolder, ColumnSortDirection, SarviewsEvent, SarviewsProduct } from '@models';
+import { CMRProduct, UnzippedFolder, ColumnSortDirection, SarviewsEvent, SarviewsProduct, opera_s1 } from '@models';
 import { PinnedProduct } from '@services/browse-map.service';
+import { createSelectorFactory, defaultMemoize  } from '@ngrx/store';
 
 interface SceneEntities { [id: string]: CMRProduct; }
 
@@ -65,39 +66,62 @@ export const initState: ScenesState = {
 export function scenesReducer(state = initState, action: ScenesActions): ScenesState {
   switch (action.type) {
     case ScenesActionType.SET_SCENES: {
-      const products = action.payload.products
+      let subproducts: CMRProduct[] = []
+
+      let searchResults = action.payload.products.map(p =>
+        p.metadata.productType === 'BURST' ? ({...p, productTypeDisplay: 'Single Look Complex (BURST)'}) as CMRProduct : p)
+
+
+      const ungrouped_product_types = [...opera_s1.productTypes, {apiValue: 'BURST'}, {apiValue: 'BURST_XML'}].map(m => m.apiValue)
+      for (let product of searchResults) {
+        if(product.metadata.subproducts.length > 0) {
+          for (let subproduct of product.metadata.subproducts) {
+            subproducts.push(subproduct)
+          }
+        }
+      }
+
+      searchResults = searchResults.concat(subproducts)
+
+      const products = searchResults
         .reduce((total, product) => {
           total[product.id] = product;
 
           return total;
         }, {});
 
-      const productIDs = action.payload.products.reduce((total, product) => {
-        total[product.metadata.productType] = product;
-
-        return total;
-      }, {});
-
       let productGroups: {[id: string]: string[]} = {}
       let scenes: {[id: string]: string[]} = {}
+      // const productIDs = searchResults.reduce((total, product) => {
+      //   total[product.metadata.productType] = product;
 
-      if (Object.keys(productIDs).length === 1 && Object.keys(productIDs)[0].toUpperCase() === 'BURST') {
-        productGroups = action.payload.products.reduce((total, product) => {
-          const scene = total[product.name] || [];
+      //   return total;
+      // }, {});
+      // if (Object.keys(productIDs).length <= 2 && Object.keys(productIDs)[0].toUpperCase() === 'BURST') {
+      //   productGroups = searchResults.reduce((total, product) => {
+      //     const scene = total[product.name] || [];
 
-          total[product.name] = [...scene, product.name];
-          return total;
-        }, {})
-      } else {
-        productGroups = action.payload.products.reduce((total, product) => {
-          const scene = total[product.groupId] || [];
+      //     total[product.name] = [...scene, product.id];
+      //     return total;
+      //   }, {})
+      // } else {
+        productGroups = searchResults.reduce((total, product) => {
+          let groupCriteria = product.groupId;
+          if (product.metadata.subproducts.length > 0) {
+            groupCriteria = product.id;
+          } else if(ungrouped_product_types.includes(product.metadata.productType)) {
+            if(isSubProduct(product)) {
+              groupCriteria = product.metadata.parentID;
+            } else {
+              groupCriteria = product.id;
+            }
+          }
+          const scene = total[groupCriteria] || [];
 
-          total[product.groupId] = [...scene, product.id];
+          total[groupCriteria] = [...scene, product.id];
           return total;
         }, {});
-      }
-
-      // scenes: {[id: string]: string[]} = {};
+      // }
       for (const [groupId, productNames] of Object.entries(productGroups)) {
 
         (<string[]>productNames).sort(
@@ -347,7 +371,32 @@ export const allScenesWithBrowse = (scenes: {[id: string]: string[]}, products) 
   return withBrowses;
 };
 
-export const getScenes = createSelector(
+function arrayEquals(a, b) {
+
+  return Array.isArray(a) &&
+      Array.isArray(b) &&
+      a.length === b.length &&
+      a.toString() === b.toString() &&
+      a.every((value, index) => {
+        if(Array.isArray(value) && Array.isArray(b[index])) {
+          return arrayEquals(value, b[index])
+        } else {
+        value.id === b[index].id
+        }
+      }
+      )
+}
+export const createArraySelector =
+  createSelectorFactory(
+    (projectionFn) =>
+      defaultMemoize(
+        projectionFn,
+        arrayEquals,
+        arrayEquals
+      )
+  );
+
+export const getScenes = createArraySelector(
   getScenesState,
   (state: ScenesState) => allScenesFrom(state.scenes, state.products)
 );
@@ -375,16 +424,6 @@ export const getSelectedSceneProducts = createSelector(
     return productsForScene(selected, state);
   }
 );
-
-// export const getAllSceneProducts = createSelector(
-//   getScenesState,
-//   (state: ScenesState) => {
-//     return Object.keys(state.products).reduce(
-//       (prev: CMRProduct[], scene_id) =>
-//         Zprev.concat(productsForScene(state.products[scene_id], state)),
-//       [] as CMRProduct[])
-//   }
-// );
 
 export const getSelectedSceneBrowses = createSelector(
   getScenesState,
@@ -441,9 +480,6 @@ export const getSelectedSarviewsEventProductBrowses = createSelector (
     }
 
     const browses = selected.reduce((acc: string[], curr) => [...acc, curr.files.browse_url], []);
-    // for (const productScene of scenesForProduct) {
-    //   browses.push(productScene.browses[0]);
-    // }
 
     return browses;
   }
@@ -454,17 +490,21 @@ const productsForScene = (selected, state) => {
     return;
   }
 
-  const productTypes = Object.values(state.products).reduce((total, product: CMRProduct) => {
-    total[product.metadata.productType] = product;
+  // const productTypes = Object.values(state.products).reduce((total, product: CMRProduct) => {
+  //   total[product.metadata.productType] = product;
 
-    return total;
-  }, {});
+  //   return total;
+  // }, {});
 
   let products = []
 
-  if (Object.keys(productTypes).length === 1 && Object.keys(productTypes)[0] === 'BURST') {
-    products = state.scenes[selected.name] || [];
-  } else {
+  const ungrouped_product_types = [...opera_s1.productTypes, {apiValue: 'BURST'}, {apiValue: 'BURST_XML'}].map(m => m.apiValue)
+  // if (Object.keys(productTypes).length <= 2 && Object.keys(productTypes)[0] === 'BURST') {
+  //   products = state.scenes[selected.name] || [];
+  if(ungrouped_product_types.includes(selected.metadata.productType)) {
+    products = state.scenes[selected.id] || [];
+  }
+  else {
     products = state.scenes[selected.groupId] || []
   }
 
@@ -474,7 +514,6 @@ const productsForScene = (selected, state) => {
       return a.bytes - b.bytes;
     }).reverse();
 };
-
 
 export const getAreProductsLoaded = createSelector(
   getScenes,
@@ -513,13 +552,6 @@ export const getAllSceneProducts = createSelector(
     return allSceneProducts;
   }
 );
-
-// export const getAllEventProducts = createSelector(
-//   getSelectedSarviewsEvent
-//   (state: SarviewsEvent) => {
-//     return state
-//   }
-// );
 
 export const getSelectedScene = createSelector(
   getScenesState,
@@ -620,7 +652,7 @@ export const getCustomPairIds = createSelector(
   state => state.customPairIds
 );
 
-export const getCustomPairs = createSelector(
+export const getCustomPairs = createArraySelector(
   getScenesState,
   state => state.customPairIds.map(
     pairIds => pairIds.map(id => state.products[id])
@@ -729,3 +761,6 @@ function eqSet(aSet, bSet): boolean {
   return true;
 }
 
+function isSubProduct(product): boolean {
+  return !!product.metadata.parentID;
+}

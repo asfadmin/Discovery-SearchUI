@@ -118,7 +118,7 @@ export class MapService {
   public zoom$ = new Subject<number>();
   public center$ = new Subject<models.LonLat>();
   public epsg$ = new Subject<string>();
-  public hasCoherenceLayer$ = new Subject<string>();
+  public hasCoherenceLayer$ = new BehaviorSubject<string>(null);
 
   public selectedSarviewEvent$: EventEmitter<string> = new EventEmitter();
   public mapInit$: EventEmitter<Map> = new EventEmitter();
@@ -631,7 +631,9 @@ export class MapService {
     this.browseImageLayer?.setOpacity(opacity);
     this.pinnedProducts?.setOpacity(opacity);
   }
-
+  public updateCoherenceOpacity(opacity: number) {
+    this.layerService.coherenceLayer?.setOpacity(opacity);
+  }
   public getAoiIntersectionMethod(geometryType: GeometryType) {
     if (geometryType === 'Point') {
       return this.getPointIntersection;

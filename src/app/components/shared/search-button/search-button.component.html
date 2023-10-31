@@ -152,18 +152,13 @@
   </button>
 </mat-menu>
 <mat-menu #apiMaturity="matMenu">
-  <button [class.selected]="maturity === 'test'"
-    (click)="onTestSelected()"
-    mat-menu-item matSuffix>
-      <span>{{ 'TEST' | translate }}</span>
-  </button>
-
-  <button [class.selected]="maturity === 'prod'"
-    (click)="onProdSelected()"
-    mat-menu-item matSuffix>
-      <span>{{'PRODUCTION' | translate }}</span>
-  </button>
-
+  <ng-container *ngFor="let button_maturity of this.env.envs | keyvalue">
+    <button  [class.selected]="maturity === button_maturity.key" *ngIf="button_maturity.key !== 'defaultEnv'"
+    (click)="onMaturitySelect(button_maturity.key)"
+    mat-menu-item matSuffix >
+      <span>{{button_maturity.key | titlecase}}</span>
+    </button>
+  </ng-container>
   <button (click)="onOpenCustomizeEnv()" mat-menu-item matSuffix >
     <span>
       {{  'CUSTOMIZE_ENVIRONMENTS'  | translate }}

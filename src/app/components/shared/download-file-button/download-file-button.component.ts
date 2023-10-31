@@ -6,6 +6,8 @@ import {
   Observable, Subscription,
   catchError,
   concatMap,
+  filter,
+  first,
   interval,
   // switchMap,
   takeWhile,
@@ -109,15 +111,38 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     });
 
   }
-  public downloadFile(dir: boolean = false) {
 
+  private onAccountButtonClicked() {
+    this.subs.add(
+      this.authService.login$().pipe(
+        first(),
+        filter(user => !!user)
+      ).subscribe(
+        user => {
+          this.store$.dispatch(new userStore.Login(user));
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            'event': 'account-button-clicked',
+            'account-button-clicked': user
+          });
+        }
+      )
+    );
+  }
+
+  public downloadFile(dir: boolean = false) {
+    const isBurstProduct = !!['BURST', 'BURST_XML'].find(t => t === this.product.metadata.productType);
+    if (!this.isUserLoggedIn && isBurstProduct) {
+      this.onAccountButtonClicked();
+      return;
+    }
     if (this.dFile?.state === 'PENDING' || this.dFile?.state === 'IN_PROGRESS') {
       this.cancelDownload();
       this.downloadCancelled.emit(this.product);
       return;
     }
     if (!this.useNewDownload) {
-      if (this.product.metadata.productType === 'BURST') {
+      if (isBurstProduct) {
         this.burstFunctionality(this.product);
       }
       else {
@@ -130,7 +155,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     const userAgent = new UAParser().getResult();
 
     if (userAgent.browser.name !== 'Chrome') {
-      if (this.product.metadata.productType === 'BURST') {
+      if (isBurstProduct) {
         this.burstFunctionality(this.product);
       }
       else {
@@ -164,7 +189,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     };
     this.store$.dispatch(new queueStore.DownloadProduct(initStatus));
 
-    if (product.metadata.productType === 'BURST') {
+    if (!!['BURST', 'BURST_XML'].find(t => t === this.product.metadata.productType)) {
       this.burstFunctionality(product, handle);
     }
     else {
@@ -265,7 +290,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
 
     // It needs to be added to the DOM so it can be clicked
     document.body.appendChild(link);
-    if (this.product.metadata.productType === 'BURST') {
+    if (this.product.metadata.productType === 'BURST' || this.product.metadata.productType === 'BURST_XML') {
       window.location.href = url;
     } else {
       link.click();

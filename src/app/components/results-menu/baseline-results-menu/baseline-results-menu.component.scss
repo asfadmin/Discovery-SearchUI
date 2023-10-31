@@ -114,6 +114,7 @@ $config: mat.define-typography-config();
   @include themify($themes) {
     color: themed('dark-secondary-text');
   }
+  white-space: nowrap;
   text-align: center;
   font-size: 12px;
   margin-left: auto;

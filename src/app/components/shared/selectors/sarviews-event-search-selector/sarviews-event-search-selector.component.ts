@@ -6,6 +6,7 @@ import { NotificationService, SarviewsEventsService } from '@services';
 import { AppState } from '@store';
 
 import * as filterStore from '@store/filters';
+import { getSarviewsEvents } from '@store/scenes';
 import { getIsResultsMenuOpen } from '@store/ui';
 import { combineLatest } from 'rxjs';
 import { map, withLatestFrom } from 'rxjs/operators';
@@ -20,7 +21,7 @@ export class SarviewsEventSearchSelectorComponent implements OnInit, OnDestroy {
 
   public filteredEvents$ = combineLatest([
     this.eventService.filteredSarviewsEvents$(),
-    this.eventService.filterSarviewsEventsByName$(this.eventService.getSarviewsEvents$())
+    this.eventService.filterSarviewsEventsByName$(this.store$.select(getSarviewsEvents))
   ]).pipe(
     map(([filteredEvents, allEvents]) => ({filteredEvents, allEvents})),
     withLatestFrom(this.store$.select(getIsResultsMenuOpen)),

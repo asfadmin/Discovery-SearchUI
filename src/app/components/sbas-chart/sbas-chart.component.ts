@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter} from '@angular/core';
 
-import { combineLatest, Observable } from 'rxjs';
-import { distinctUntilChanged, map, tap } from 'rxjs/operators';
+import {  Observable, combineLatest } from 'rxjs';
+import {  distinctUntilChanged, map, tap,  } from 'rxjs/operators';
 
 import * as d3 from 'd3';
 import { Store } from '@ngrx/store';
@@ -32,7 +32,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   @Input() zoomIn$: Observable<void>;
   @Input() zoomOut$: Observable<void>;
   @Input() zoomToFit$: Observable<void>;
-
+  private pairs$: Observable<any> = this.pairService.pairs$;
   @Output() isGraphDisconnected = new EventEmitter<boolean>();
 
   private hoveredLine;
@@ -73,8 +73,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    const scenes$ = this.scenesService.scenes$();
-    const pairs$ = this.pairService.pairs$();
+    const scenes$ = this.scenesService.scenes$;
 
     this.store$.select(scenesStore.getSelectedPair).pipe(
       map(pair => !!pair?.[0] && !!pair?.[1] ? pair : null)
@@ -93,7 +92,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     this.subs.add(
       combineLatest([
         scenes$.pipe(distinctUntilChanged()),
-        pairs$.pipe(distinctUntilChanged())
+        this.pairs$
       ]).subscribe(([scenes, pairs]) => {
         this.scenes = scenes;
         this.pairs = pairs.pairs;

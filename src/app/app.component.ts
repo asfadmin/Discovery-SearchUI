@@ -1,8 +1,8 @@
-import {Component, OnInit, OnDestroy, ViewChild, Inject} from '@angular/core';
+import {Component, OnInit, OnDestroy, AfterViewInit, ViewChild, Inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatIconRegistry } from '@angular/material/icon';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, Title } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 import { QueueComponent } from '@components/header/queue';
@@ -11,7 +11,7 @@ import { ProcessingQueueComponent } from '@components/header/processing-queue';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
 import { of, combineLatest } from 'rxjs';
-import { skip, filter, map, switchMap, tap, catchError, debounceTime, take, withLatestFrom } from 'rxjs/operators';
+import { skip, filter, map, switchMap, tap, catchError, debounceTime, take, withLatestFrom, distinctUntilChanged } from 'rxjs/operators';
 
 import { NgcCookieConsentService } from 'ngx-cookieconsent';
 import { HelpComponent } from '@components/help/help.component';
@@ -30,8 +30,8 @@ import * as filtersStore from '@store/filters';
 import * as services from '@services';
 import * as models from './models';
 import { SearchType } from './models';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter} from "@angular/material/core";
-import {MAT_MOMENT_DATE_FORMATS} from "@angular/material-moment-adapter";
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from "@angular/material/core";
+import { MAT_MOMENT_DATE_FORMATS } from "@angular/material-moment-adapter";
 
 @Component({
   selector   : 'app-root',
@@ -46,7 +46,7 @@ import {MAT_MOMENT_DATE_FORMATS} from "@angular/material-moment-adapter";
     {provide: MAT_DATE_LOCALE, useValue: 'en'},
   ]
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('sidenav', {static: true}) sidenav: MatSidenav;
 
   private queueStateKey = 'asf-queue-state-v1';
@@ -94,7 +94,10 @@ export class AppComponent implements OnInit, OnDestroy {
     public translate: TranslateService,
     public language: services.AsfLanguageService,
     public _adapter: DateAdapter<any>,
-    @Inject(MAT_DATE_LOCALE) public _locale: string,
+    private titleService: Title,
+
+
+@Inject(MAT_DATE_LOCALE) public _locale: string,
 
 
   ) {}
@@ -117,7 +120,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.store$.select(uiStore.getCurrentLanguage).subscribe(
-        language => this.currentLanguage = language
+        language => {
+          this.currentLanguage = language;
+        }
       )
     );
 
@@ -339,9 +344,9 @@ export class AppComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      combineLatest(
+      combineLatest([
         this.store$.select(queueStore.getQueuedJobs),
-        this.store$.select(hyp3Store.getProcessingOptions)
+        this.store$.select(hyp3Store.getProcessingOptions)]
       ).subscribe(
        ([jobs, options]) => localStorage.setItem(
          this.customProductsQueueStateKey, JSON.stringify({jobs, options})
@@ -423,6 +428,12 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
+  public ngAfterViewInit(): void {
+    this.subs.add(this.translate.get('ASF_DATA_SEARCH_TITLE').subscribe(title => {
+      this.titleService.setTitle(title);
+    }));
+  }
+
   public onLoadUrlState(): void {
     this.urlStateService.load();
   }
@@ -486,7 +497,15 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private updateMaxSearchResults(): void {
-    const checkAmount = this.searchParams$.getlatestParams().pipe(
+    const checkAmount = this.searchParams$.getlatestParams.pipe(
+      distinctUntilChanged((previous, current) => {
+        for(let key of Object.keys(previous)) {
+          if(previous[key] !== current[key]) {
+            return false;
+          }
+        }
+        return true
+      }),
       filter(_ => this.searchType !== SearchType.SARVIEWS_EVENTS
         && this.searchType !== SearchType.BASELINE
         && this.searchType !== SearchType.SBAS),
@@ -528,7 +547,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private loadMissions(): void {
     this.subs.add(
-      this.asfSearchApi.loadMissions$().subscribe(
+      this.asfSearchApi.loadMissions$.subscribe(
         missionsByDataset => this.store$.dispatch(
           new filterStore.SetMissions(missionsByDataset)
         )

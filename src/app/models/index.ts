@@ -22,7 +22,6 @@ export * from './saved-filter-preset.model';
 export * from './sbas-overlap.model';
 export * from './sidebar.model';
 export * from './analytics-event.model';
-export * from './on-demand-subscriptions.model';
 export * from './sarviews-event.model';
 export * from './derived-datasets.model';
 export * from './download.model';

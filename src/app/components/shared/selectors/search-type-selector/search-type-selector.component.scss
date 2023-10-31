@@ -153,12 +153,15 @@
 }
 
 .mobile-button-wrapper {
-  transform: scale(0.82);
-  margin-top: -6px;
+  //transform: scale(0.82);
+  //margin-top: -6px;
 }
 
-::ng-deep.mat-menu-submenu-icon {
-  visibility: hidden;
+:host {
+  .mobile-button-wrapper {
+    transform: none !important;
+    margin-top: 0 !important;
+  }
 }
 
 .disable-search-type-on-demand {

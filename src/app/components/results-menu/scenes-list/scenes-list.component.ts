@@ -27,6 +27,7 @@ import { CMRProduct, QueuedHyp3Job, SarviewsEvent } from '@models';
 export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit {
   @ViewChild(CdkVirtualScrollViewport, { static: true }) scroll: CdkVirtualScrollViewport;
   @Input() resize$: Observable<void>;
+  private pairs$ = this.pairService.pairs$;
 
   public scenes: CMRProduct[];
   public pairs;
@@ -87,7 +88,8 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       this.allJobNames = flattened;
     });
 
-    const sortedScenes$: Observable<CMRProduct[]> = this.scenesService.sortScenes$(this.scenesService.scenes$());
+    const scenes$ = this.scenesService.scenes$;
+    const sortedScenes$: Observable<CMRProduct[]> = this.scenesService.sortScenes$(scenes$);
 
     this.subs.add(
       this.store$.select(scenesStore.getSelectedScene).pipe(
@@ -164,7 +166,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
     );
 
     this.subs.add(
-      this.pairService.pairs$().pipe(debounceTime(250)).subscribe(
+      this.pairs$.subscribe(
         pairs => {
           this.pairs = [...pairs.pairs, ...pairs.custom].map(
             pair => {
@@ -201,17 +203,18 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       }
     );
 
-    const queueScenes$ = combineLatest(
+    const queueScenes$ = combineLatest([
       this.store$.select(queueStore.getQueuedProducts),
-      this.store$.select(scenesStore.getAllSceneProducts),
+      this.store$.select(scenesStore.getAllSceneProducts),]
     ).pipe(
       debounceTime(0),
       map(([queueProducts, searchScenes]) => {
 
         const queuedProductGroups: { [id: string]: string[] } = queueProducts.reduce((total, product) => {
-          const scene = total[product.metadata.productType !== 'BURST' ? product.groupId : product.name] || [];
+          const groupCriteria = this.getGroupCriteria(product)
+          const scene = total[groupCriteria] || [];
 
-          total[product.metadata.productType !== 'BURST' ? product.groupId : product.name] = [...scene, product.id];
+          total[groupCriteria] = [...scene, product.id];
           return total;
         }, {});
 
@@ -266,7 +269,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
 
     this.subs.add(
       this.store$.select(scenesStore.getSelectedPair).pipe(
-        withLatestFrom(this.pairService.pairs$()),
+        withLatestFrom(this.pairs$),
         delay(20),
         filter(([selected, _]) => !!selected),
         map(([selected, pairs]) => {
@@ -312,7 +315,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       }
     ));
 
-    this.subs.add(this.pairService.pairs$().pipe(
+    this.subs.add(this.pairs$.pipe(
       filter(loaded => !!loaded),
       withLatestFrom(this.store$.select(scenesStore.getSelectedPair)),
       map(([pairs, selected]) => ({ selectedPair: selected, pairs })),
@@ -348,14 +351,21 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
     this.store$.dispatch(new scenesStore.SetSelectedPair(pair));
   }
 
-  public onToggleScene(groupId: string): void {
-    if (!this.allQueued[groupId]) {
-      this.store$.dispatch(new queueStore.QueueScene(groupId));
+  public onToggleScene(groupCriteria: string): void {
+    if (!this.allQueued[groupCriteria]) {
+      this.store$.dispatch(new queueStore.QueueScene(groupCriteria));
     } else {
-      this.store$.dispatch(new queueStore.RemoveSceneFromQueue(groupId));
+      this.store$.dispatch(new queueStore.RemoveSceneFromQueue(groupCriteria));
     }
   }
 
+  public getGroupCriteria(scene: CMRProduct): string {
+    const ungrouped_product_types = [...models.opera_s1.productTypes, {apiValue: 'BURST'}, {apiValue: 'BURST_XML'}].map(m => m.apiValue)
+    if(ungrouped_product_types.includes(scene.metadata.productType)) {
+        return scene.metadata.parentID || scene.id;
+    }
+    return scene.groupId;
+  }
   ngOnDestroy() {
     this.subs.unsubscribe();
   }

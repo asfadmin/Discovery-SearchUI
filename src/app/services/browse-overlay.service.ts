@@ -41,6 +41,7 @@ export class BrowseOverlayService {
             || datasetID === 'SENTINEL-1'
             || datasetID === 'SENTINEL-1 INTERFEROGRAM (BETA)'
             || datasetID === 'UAVSAR';
+            // || datasetID === 'OPERA-S1';
           case models.SearchType.SARVIEWS_EVENTS:
             return selectedEventProducts?.length > 0;
           case models.SearchType.LIST:

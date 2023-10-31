@@ -1,12 +1,12 @@
-<button class="button-flex-row" mat-list-item
+<button class="button-flex-row pair-row" mat-list-item
   (click)="onPairSelected(pair)"
   (mouseenter)="onSetHovered()"
   (mouseleave) ="onClearHovered()"
   [class.selected]="selectedPair ? pair[0].id + pair[1].id === selectedPair[0] + selectedPair[1] : false"
   [class.hovered]="hovered">
     <b>{{ pair[0].metadata.date | shortDate }} to {{ pair[1].metadata.date | shortDate }}</b>
-    <div style="margin-left: 10px;">{{ pairPerpBaseline(pair)}}m</div>
-    <div style="margin-left: 10px;">{{ pairTempBaseline(pair)}}d</div>
+    <div class="date">{{ pairPerpBaseline(pair)}}m</div>
+    <div class="date">{{ pairTempBaseline(pair)}}d</div>
     <mat-icon
       *ngIf="hyp3able.total > 0"
       class="clickable noselect list-icon"

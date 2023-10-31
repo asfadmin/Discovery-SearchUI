@@ -22,11 +22,6 @@
       (click)="onOpenProcessingQueue()"
       mat-menu-item>{{  'ON_DEMAND_QUEUE'  | translate }}</button>
 
-      <button
-      (click)="onOpenSubscriptions()"
-      [disabled]="!isLoggedIn"
-      mat-menu-item>{{  'SUBSCRIPTIONS'  | translate }}</button>
-
       <button mat-menu-item
       (click) = "onSetSearchTypeOnDemand()"
       [disabled]="!isLoggedIn">{{  'SUBMITTED_PRODUCTS'  | translate }}
@@ -64,7 +59,7 @@
 
     <button
       [matMenuTriggerFor]="languageMenu"
-      matTooltip="{{ 'HELP_AND_INFORMATION' | translate }}"
+      matTooltip="{{ 'LANGUAGE' | translate }}"
       class="spacing nav-icon-buttons" color="basic" mat-button>
       <mat-icon class="large-icon">translate</mat-icon>
       <div class="text-under faint-text">{{ language.getName()}}</div>
@@ -107,11 +102,6 @@
       <button
       (click)="onOpenProcessingQueue()"
       mat-menu-item>{{ 'ON_DEMAND_QUEUE' | translate }}</button>
-
-      <button
-      (click)="onOpenSubscriptions()"
-      [disabled]="!isLoggedIn"
-      mat-menu-item>{{ 'SUBSCRIPTIONS' | translate }}</button>
 
       <button mat-menu-item
       (click) = "onSetSearchTypeOnDemand()"
@@ -364,5 +354,3 @@
     </button>
   </div>
 </mat-menu>
-
-
