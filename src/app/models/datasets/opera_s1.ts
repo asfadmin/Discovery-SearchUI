@@ -10,9 +10,7 @@ export const opera_s1 = {
     Props.BEAM_MODE,
     Props.FLIGHT_DIRECTION,
     Props.POLARIZATION,
-    Props.ABSOLUTE_ORBIT,
-    Props.BASELINE_TOOL,
-    Props.SUBTYPE,
+    Props.ABSOLUTE_ORBIT
   ],
   apiValue: {
     collections:
@@ -49,13 +47,7 @@ export const opera_s1 = {
     'HV',
     'VH'
   ],
-  subtypes: [{
-    displayName: 'Sentinel-1A',
-    apiValue: 'SA',
-  }, {
-    displayName: 'Sentinel-1B',
-    apiValue: 'SB',
-  }],
+  subtypes: [],
   platformDesc: 'OPERA_S1_DESC',
   platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
 };

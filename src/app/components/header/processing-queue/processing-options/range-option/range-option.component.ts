@@ -23,10 +23,16 @@ export class RangeOptionComponent  implements OnInit{
 
   public onValueChange(): void {
     if(this.value < this.range.start) {
-      this.value = Math.max(this.range.start, this.value)
+      this.value = Math.max(this.range.start, this.value);
     }
     if(this.value > this.range.end) {
-      this.value = Math.min(this.range.end, this.value)
+      this.value = Math.min(this.range.end, this.value);
+    }
+    if(this.value === -0.0) {
+      this.value = 0.0;
+    }
+    if(this.value === null) {
+      this.value = this.default;
     }
 
     this.valueChange.emit(this.value);
