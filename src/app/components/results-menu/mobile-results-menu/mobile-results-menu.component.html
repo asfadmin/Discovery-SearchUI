@@ -26,7 +26,7 @@
 
   <!-- SCENE LIST -->
   <div *ngIf="view === Views.LIST" class="h100 w100">
-    <mat-card class="mp0" fxFlex="100" fxFlexFill>
+    <mat-card class="mp0 mobile-scene-list--layout">
       <mat-card-subtitle class="header">
         <app-scenes-list-header></app-scenes-list-header>
       </mat-card-subtitle>
@@ -39,7 +39,7 @@
 
   <!-- SCENE DETAIL -->
   <div *ngIf="view === Views.DETAIL" class="h100 w100">
-    <mat-card class="h100 w100 mp0 no-box-shadow" fxFlex="100" fxFlex>
+    <mat-card class="h100 w100 mp0 no-box-shadow mobile-detail-menu--layout">
       <mat-card-subtitle class="header mobile">
         {{ 'SCENE_DETAIL'| translate  }}
         <ng-container *ngIf="searchType !== SearchTypes.BASELINE &&
@@ -68,7 +68,7 @@
 
                 <div *ngIf="datasetForProduct.match(product) as dataset" style="margin-bottom: 12px;">
                   <a [href]="dataset.infoUrl" target="_blank" matTooltip="{{ 'DATASET' | translate }}" class="faint-text">
-                    {{ dataset.name }}
+                    {{ dataset.name | translate }}
                   </a> •
                   <span matTooltip="Frequency">{{ dataset.frequency }}</span>
                 </div>
@@ -99,10 +99,10 @@
   </div>
 
   <div *ngIf="view === Views.CHART" class="h100 w100">
-    <mat-card class="h100 w100 mp0 no-box-shadow" fxFlex="100" fxFlex>
+    <mat-card class="h100 w100 mp0 no-box-shadow mobile-detail-menu--layout">
       <mat-card-subtitle class="header">
         <div class="baseline-header-button-group">
-          <mat-button-toggle-group fxFlex="" name="baselineCriteria"
+          <mat-button-toggle-group name="baselineCriteria"
                                    class="criteria-button-group baseline-criteria-button-toggle-group">
             <mat-button-toggle class="control-mat-button-toggle baseline-criteria-button-toggle"
                                (click)="onToggleFiltersMenu()"
@@ -117,20 +117,20 @@
   </div>
 
   <div *ngIf="view === Views.SBAS" class="h100 w100">
-    <mat-card class="h100 w100 mp0 no-box-shadow" fxFlex="100" fxFlex>
+    <mat-card class="h100 w100 mp0 no-box-shadow mobile-detail-menu--layout">
       <mat-card-subtitle class="header">
         <div class="baseline-header-button-group">
-          <mat-button-toggle-group fxFlex="" name="SBASCriteria"
+          <mat-button-toggle-group name="SBASCriteria"
                                    class="criteria-button-group sbas-criteria-button-toggle-group">
             <mat-button-toggle class="control-mat-button-toggle sbas-criteria-button-toggle"
                                (click)="onToggleFiltersMenu()"
             >
-              SBAS Filters<mat-icon class="more-horiz">more_horiz</mat-icon>
+              {{ 'SBAS_FILTERS' | translate }}<mat-icon class="more-horiz">more_horiz</mat-icon>
             </mat-button-toggle>
           </mat-button-toggle-group>
           <div class="sbas-button-group gap-detected-area" *ngIf="this.isDisconnected" style="display: flex; place-items: center">
             <mat-icon class="warn-icon" fontSet="material-icons-outlined">error_outline</mat-icon>
-            Gaps Detected
+            <app-docs-modal text="{{ 'GAPS_DETECTED' | translate }}" url="https://docs.asf.alaska.edu/vertex/sbas/#gaps-detected-warning-message"></app-docs-modal>
           </div>
         </div>
       </mat-card-subtitle>

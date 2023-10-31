@@ -10,7 +10,7 @@
 }
 
 .bounds {
-  height: 103px;
+  height: 118px;
 }
 
 .content {
@@ -28,7 +28,10 @@
     background-color: themed('primary-light');
     color: themed('background-white');
   }
+
   padding: 0 8px 0 0 !important;
+  flex: 1 1 0%;
+  box-sizing: border-box;
 
   .header {
     font-size: 20px;
@@ -104,9 +107,9 @@ $icon-size: 36px;
 }
 
 .asf-logo {
-  width: 95px;
-  margin-top: 11px;
-  margin-left: 16px;
+  width: 103px;
+  margin-top: 12px;
+  margin-left: 11px;
 }
 
 .asf-logo-mobile {
@@ -117,7 +120,12 @@ $icon-size: 36px;
 .branding-block {
   padding-top: 0;
   margin-left: 10px;
+  flex: 1 1 130px;
+  box-sizing: border-box;
+  max-width: 130px;
+  min-width: 130px;
 }
+
 .mat-card {
   box-shadow: none !important;
 }

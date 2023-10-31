@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError} from 'rxjs';
 import { SAVER, Saver } from '@services/saver.provider';
 import { DownloadStatus } from '@models/download.model';
 
@@ -22,6 +22,7 @@ export class DownloadService {
     private notificationService: NotificationService,
     private store$: Store<AppState>
   ) { }
+  public hasDownloadedBursts = false;
 
   classicResp: Observable<DownloadStatus>;
 
@@ -49,6 +50,7 @@ export class DownloadService {
       }),
     );
   }
+  
   async getDirectory( getNew= false): Promise<any> {
     return new Promise(resolve => {
       if (!this.dir || getNew) {
@@ -79,7 +81,6 @@ export class DownloadService {
     id: string,
     product: CMRProduct,
     saver?: (b: Blob) => Promise<any>): (source: Observable<HttpEvent<Blob>>) => Observable<DownloadStatus> {
-
 
     return (source: Observable<HttpEvent<Blob>>) =>
       source.pipe(

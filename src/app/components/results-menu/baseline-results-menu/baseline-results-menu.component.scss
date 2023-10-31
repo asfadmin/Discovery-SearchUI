@@ -7,10 +7,30 @@ $config: mat.define-typography-config();
   padding-bottom: 8px;
 }
 
+.baseline-header-card--layout {
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 38%;
+}
+
 .header-button-group {
   width: 189px;
   display: flex;
   justify-content: center;
+}
+
+.baseline-scene-detail--layout {
+  height: 100%;
+  width: 100%;
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 21%;
+}
+
+.baseline-header--medium-layout {
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 45%;
 }
 
 .baseline-header-button-group {
@@ -30,7 +50,7 @@ $config: mat.define-typography-config();
 }
 
 .baseline-criteria-button-toggle-group {
-  flex: 0 1 149px !important;
+  flex: 0 1 auto !important;
   margin-top: -5px;
 }
 
@@ -96,7 +116,7 @@ $config: mat.define-typography-config();
   }
   text-align: center;
   font-size: 12px;
-  margin-left: -10px;
+  margin-left: auto;
   line-height: 15px;
 }
 
@@ -108,4 +128,40 @@ $config: mat.define-typography-config();
 
 .button-tabs {
   margin-left: 20px;
+}
+
+.baseline-header--wrapper {
+ display: flex;
+ column-gap: .4em;
+}
+
+.baseline-detail-view--layout {
+  height: 100%;
+  width: 100%;
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 45%;
+}
+
+.criteria-header--layout {
+  height: 100%;
+  width: 100%;
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 55%;
+}
+
+.criteria-header--small-layout {
+  height: 100%;
+  width: 100%;
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 45%;
+}
+
+.scenes-list-button-container {
+  width: 100%;
+  mat-button-toggle-group {
+    margin: auto
+  }
 }

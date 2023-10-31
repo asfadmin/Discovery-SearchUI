@@ -1,11 +1,8 @@
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="tree">
   <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+    <div class="expanded-row">
 
-<!--    <button mat-icon-button disabled></button>-->
-
-    <div class="expanded-row" fxLayout="row" fxFill>
-
-      <div [title]="node.name" class="file-name" fxFlex="85">
+      <div [title]="node.name" class="file-name">
 
         <app-file-name
           [name]="node.name"
@@ -19,7 +16,7 @@
       </div>
 
 
-      <div class="download-cart-icons" fxFlex="81px">
+      <div class="download-cart-icons">
         <app-download-file-button
           [href]="node.url"
           [product] = "productFromNode(node, product)"

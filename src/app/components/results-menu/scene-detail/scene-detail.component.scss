@@ -204,3 +204,18 @@ a {
   border: 1px groove rgb(0 0 0 / 25%) !important;
   border-radius: 4px !important;
 }
+
+.scene-detail--wrapper {
+  flex-direction: row;
+  box-sizing: border-box;
+  display: flex;
+}
+
+.scene-detail--layout {
+  flex-direction: column;
+  box-sizing: border-box;
+  display: flex;
+  place-content: stretch space-between;
+  align-items: stretch;
+  flex: 1 1 0%;
+}

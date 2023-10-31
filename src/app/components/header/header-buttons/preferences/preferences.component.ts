@@ -31,10 +31,6 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   public hyp3BackendUrl: string;
   public defaultLanguage: string;
 
-  public defaultGeoSearchFiltersID;
-  public defaultBaselineSearchFiltersID;
-  public defaultSBASSearchFiltersID;
-
   public maxResults = [250, 1000, 5000];
   public mapLayerTypes = MapLayerTypes;
 
@@ -81,7 +77,6 @@ export class PreferencesComponent implements OnInit, OnDestroy {
           this.hyp3BackendUrl = profile.hyp3BackendUrl;
           this.currentTheme = profile.theme;
           this.defaultLanguage = profile.language;
-          console.log('this.defaultLanguage:', this.defaultLanguage);
           if (this.hyp3BackendUrl) {
             this.hyp3.setApiUrl(this.hyp3BackendUrl);
           } else {
@@ -149,7 +144,6 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   }
 
   public onChangeDefaultLanguage(language: string): void {
-    console.log('onChangeDefaultLanguage Profile:', language);
     this.language.setCurrent(language);
     this.defaultLanguage = language
     this.saveProfile();
@@ -207,6 +201,10 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     });
 
     this.store$.dispatch(action);
+  }
+
+  onCloseDownloadQueue() {
+    this.dialogRef.close();
   }
 
   ngOnDestroy() {

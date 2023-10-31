@@ -7,10 +7,10 @@
       <button
         [matMenuTriggerFor]="searchTypeMenu" (onMenuOpen)="onSearchTypeMenuOpen()"
         class="button-menu-trigger" color="basic"
-        matTooltip="{{ searchType | translate }}"
+        matTooltip="{{ searchTranslation[searchType] | translate }}"
         mat-button>
         <div class="button-text">
-          {{ searchType | translate }}
+          {{ searchTranslation[searchType] | translate }}
           <span class="mat-select-arrow"></span>
         </div>
       </button>
@@ -18,13 +18,13 @@
     </div>
   </div>
 
-  <div class="gtm-search-type-selector" fxFlex="nogrow">
+  <div class="gtm-search-type-selector fx-nogrow">
     <mat-menu #searchTypeMenu="matMenu" [(ngModel)]="searchType" name="searchType" id="searchMenu" ngDefaultControl>
       <div>
         <div id="firstItem" class="menu-item mat-menu-item" aria-selected="true"
              (click)="onSetSearchType(searchTypes.DATASET)">
           <div class="menu-item-inner">
-            <div fxFlex="75%" class="menu-item-content">
+            <div class="fx-75 menu-item-content">
               <div class="item-title">
                 {{'GEOGRAPHIC' | translate}}
               </div>
@@ -38,7 +38,7 @@
                 </app-docs-modal>
               </mat-card-actions>
             </div>
-            <div fxFlex="25%" class="menu-item-aside">
+            <div class="fx-25 menu-item-aside">
               <span class="material-icons-outlined menu-item-icon">travel_explore</span>
             </div>
           </div>
@@ -48,7 +48,7 @@
 
         <div class="menu-item mat-menu-item" (click)="onSetSearchType(searchTypes.LIST)">
           <div class="menu-item-inner">
-            <div fxFlex="75%" class="menu-item-content">
+            <div class="fx-75 menu-item-content">
               <div class="item-title">
                 {{'LIST' | translate }}
               </div>
@@ -62,7 +62,7 @@
                 </app-docs-modal>
               </mat-card-actions>
             </div>
-            <div fxFlex="25%" class="menu-item-aside">
+            <div class="fx-25 menu-item-aside">
               <span class="material-icons-outlined menu-item-icon">list</span>
             </div>
           </div>
@@ -72,7 +72,7 @@
 
         <div class="menu-item mat-menu-item" (click)="onSetSearchType(searchTypes.BASELINE)">
           <div class="menu-item-inner">
-            <div fxFlex="75%" class="menu-item-content">
+            <div class="fx-75 menu-item-content">
               <div class="item-title">
                 {{ 'BASELINE' | translate | titlecase }}
               </div>
@@ -86,7 +86,7 @@
                 </app-docs-modal>
               </mat-card-actions>
             </div>
-            <div fxFlex="25%" class="menu-item-aside">
+            <div class="fx-25 menu-item-aside">
               <img src="assets/icons/baseline-chart.jpg" class="menu-item-icon">
             </div>
           </div>
@@ -96,7 +96,7 @@
 
         <div class="menu-item mat-menu-item" (click)="onSetSearchType(searchTypes.SBAS)">
           <div class="menu-item-inner">
-            <div fxFlex="75%" class="menu-item-content">
+            <div class="fx-75 menu-item-content">
               <div class="item-title">
                 {{ 'SBAS' | translate }}
               </div>
@@ -111,7 +111,7 @@
                 </app-docs-modal>
               </mat-card-actions>
             </div>
-            <div fxFlex="25%" class="menu-item-aside">
+            <div class="fx-25 menu-item-aside">
               <img src="assets/icons/sbas-chart.jpg" class="menu-item-icon">
             </div>
           </div>
@@ -121,7 +121,7 @@
 
         <div class="menu-item mat-menu-item" (click)="onSetSearchType(searchTypes.SARVIEWS_EVENTS)">
           <div class="menu-item-inner">
-            <div fxFlex="75%" class="menu-item-content">
+            <div class="fx-75 menu-item-content">
               <div class="item-title">
                 {{'EVENT' | translate}}
               </div>
@@ -135,8 +135,8 @@
                 </app-docs-modal>
               </mat-card-actions>
             </div>
-            <div fxFlex="25%" class="menu-item-aside">
-              <span class="material-icons-outlined menu-item-icon">{{'VOLCANO' | translate}}</span>
+            <div class="fx-25 menu-item-aside">
+              <span class="material-icons-outlined menu-item-icon">volcano</span>
             </div>
           </div>
         </div>
@@ -147,7 +147,7 @@
           (click)="onSetSearchType(searchTypes.CUSTOM_PRODUCTS)"
           [ngClass]="{'disable-search-type-on-demand' : !isLoggedIn}">
           <div class="menu-item-inner">
-            <div fxFlex="75%" class="menu-item-content">
+            <div class="fx-75 menu-item-content">
               <div class="item-title">
                 {{'ON_DEMAND_PRODUCTS' | translate}}
                 <span class="login-prompt" [ngClass]="{'login-hidden' : isLoggedIn}">
@@ -165,7 +165,7 @@
                 </app-docs-modal>
               </mat-card-actions>
             </div>
-            <div fxFlex="25%" class="menu-item-aside">
+            <div class="fx-25 menu-item-aside">
               <img src="assets/asf-logos/HyP3-graphic-only.png" class="menu-item-icon">
             </div>
           </div>
@@ -175,7 +175,7 @@
 
         <div mat-menu-item class="menu-item mat-menu-item" [matMenuTriggerFor]="derivedDatasetMenu">
           <div class="menu-item-inner">
-            <div fxFlex="75%" class="menu-item-content">
+            <div class="fx-75 menu-item-content">
               <div class="item-title">
                 {{'DERIVED_DATASETS' | translate }}
               </div>
@@ -183,7 +183,7 @@
                 {{'DERIVED_DATASETS_CONTAIN_A_COLLECTION_OF_DATASETS_AVAILABLE_TO_VIEW_AND_DOWNLOAD'| translate }}
               </div>
             </div>
-            <div fxFlex="25%" class="menu-item-aside">
+            <div class="fx-25 menu-item-aside">
               <span class="material-icons-outlined menu-item-icon">{{ 'DATASET_LINKED' | translate }}</span>
             </div>
           </div>
@@ -196,19 +196,19 @@
       (click)="onOpenDerivedDataset(dataset.info_url, dataset.name); $event.stopPropagation();">
         <div class="menu-item">
           <div class="menu-item-inner">
-            <div fxFlex="75%" class="menu-item-content">
+            <div class="fx-75 menu-item-content">
               <div class="item-title" (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)">
-                {{ dataset.name }}
+                {{ dataset.name | translate }}
               </div>
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                {{ dataset.info }}
+                {{ dataset.info | translate}}
               </div>
               <mat-card-actions>
                 <button class="blue-link" (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)" mat-button>{{ 'MORE_INFO' | translate }}</button>
                 <button class="blue-link" (click)="onOpenDerivedDataset(dataset.download_url, dataset.name)" mat-button>{{ 'DOWNLOAD' | translate }}</button>
               </mat-card-actions>
             </div>
-            <div fxFlex="25%" class="menu-item-aside">
+            <div class="fx-75 menu-item-aside">
               <img [src]="dataset.picture" (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)" class="menu-item-icon">
             </div>
           </div>

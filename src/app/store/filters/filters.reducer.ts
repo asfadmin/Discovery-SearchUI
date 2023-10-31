@@ -48,6 +48,8 @@ export interface FiltersState {
   sarviewsEventProductSorting: EventProductSort;
 
   geocode: null | string;
+
+  fullBurstIDs: null | string[];
 }
 
 
@@ -116,7 +118,9 @@ export const initState: FiltersState = {
   },
   hyp3ProductTypes: [],
 
-  geocode: null
+  geocode: null,
+
+  fullBurstIDs: []
 };
 
 
@@ -137,6 +141,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         beamModes: [],
         polarizations: [],
         subtypes: [],
+        fullBurstIDs: [],
         selectedMission: null,
       };
     }
@@ -327,9 +332,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
 
     case FiltersActionType.SET_FILTERS_SIMILAR_TO: {
       const metadata = action.payload.product.metadata;
-
-      return {
-        ...state,
+      let filters: any = {
         frameRange: {
           start: metadata.frame,
           end: metadata.frame
@@ -340,7 +343,17 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         },
         selectedMission: metadata.missionName,
         selectedDatasetId: action.payload.dataset.id ?? 'SENTINEL-1',
-      };
+      }
+
+      if(action.payload.dataset.id === models.sentinel_1_bursts.id) {
+        filters = {
+          fullBurstIDs: [metadata.burst.fullBurstID],
+        }
+      }
+      return {
+        ...state,
+        ...filters
+        };
     }
 
     case FiltersActionType.CLEAR_FRAME_RANGE: {
@@ -380,7 +393,8 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         subtypes: [],
         flightDirections: new Set<models.FlightDirection>([]),
         selectedMission: null,
-        geocode: null
+        geocode: null,
+        fullBurstIDs: []
       };
     }
 
@@ -595,7 +609,8 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           polarizations: filters.polarizations,
           flightDirections: new Set(filters.flightDirections),
           subtypes,
-          selectedMission: filters.selectedMission
+          selectedMission: filters.selectedMission,
+          fullBurstIDs: filters.fullBurstIDs
         };
       }
     }
@@ -704,6 +719,12 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         ...state,
         hyp3ProductTypes: []
       };
+    }
+    case FiltersActionType.SET_FULL_BURST: {
+      return {
+        ...state,
+        fullBurstIDs: action.payload
+      }
     }
     default: {
       return state;
@@ -875,7 +896,8 @@ export const getGeographicSearch = createSelector(
     polarizations: state.polarizations,
     flightDirections: state.flightDirections,
     subtypes: state.subtypes,
-    selectedMission: state.selectedMission
+    selectedMission: state.selectedMission,
+    fullBurstIDs: state.fullBurstIDs
   })
 );
 
@@ -980,4 +1002,9 @@ export const getSarviewsEventProductSorting = createSelector(
 export const getGeocodeArea = createSelector(
   getFiltersState,
   (state: FiltersState) => state.geocode
+)
+
+export const getFullBurstIDs = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.fullBurstIDs
 )

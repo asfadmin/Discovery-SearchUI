@@ -15,18 +15,18 @@
     </div>
   </div>
 
-  <div class="gtm-search-type-selector" fxFlex="nogrow">
+  <div class="gtm-search-type-selector fx-nogrow">
     <mat-menu #platformMenu="matMenu" [(ngModel)]="selected" ngDefaultControl>
       <div>
         <div class="dataset-list">
           <div *ngFor="let dataset of datasets; last as isLast">
             <div class="menu-item mat-menu-item" (click)="onSelectionChange(dataset.id)">
               <div class="menu-item-inner">
-                <div fxFlex="80%" class="menu-item-content">
+                <div class="dataset--layout menu-item-content">
                   <div class="item-title">
                     {{ dataset.name }}
                     <span class="dataset-light-text">
-                        <span *ngIf="dataset.id == 'SENTINEL-1'" matTooltip="Available for On Demand Processing (HyP3)">
+                        <span *ngIf="dataset.id == 'SENTINEL-1'"matTooltip="Available for On Demand Processing (HyP3)">
                           <mat-icon class="hyp3-icon" svgIcon="hyp3"></mat-icon>
                         </span>
                         <span *ngIf="dataset.beta"><em> (beta) </em></span>
@@ -43,7 +43,7 @@
                     </app-docs-modal>
                   </mat-card-actions>
                 </div>
-                <div fxFlex="20%" class="menu-item-aside">
+                <div class="dataset-aside--layout menu-item-aside">
                   <div class="dataset-date-range faint-text">
                     {{ prettyDateRange(dataset.date) }}
                   </div>
@@ -58,7 +58,7 @@
                 </div>
               </div>
             </div>
-            <hr *ngIf="!isLast" class="dataset-hr">
+            <hr *ngIf="!isLast " class="dataset-hr">
           </div>
         </div>
       </div>

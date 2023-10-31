@@ -54,8 +54,25 @@ export interface CMRProductMetadata {
   temporal: number | null;
   canInSAR: boolean;
 
+  // SLC BURST
+  burst: SLCBurstMetadata | null;
+
   fileName: string | null;
   job: Hyp3Job | null;
+
+  // versioning
+  pgeVersion: number | null;
+}
+
+export interface SLCBurstMetadata {
+  relativeBurstID: number;
+  absoluteBurstID: number;
+  fullBurstID: string;
+  burstIndex: number;
+  azimuthTime: moment.Moment;
+  azimuthAnxTime: string;
+  samplesPerBurst: number;
+  subswath: string;
 }
 
 export enum FlightDirection {

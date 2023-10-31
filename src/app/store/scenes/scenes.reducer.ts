@@ -72,14 +72,32 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
           return total;
         }, {});
 
-      const productGroups: {[id: string]: string[]} = action.payload.products.reduce((total, product) => {
-        const scene = total[product.groupId] || [];
+      const productIDs = action.payload.products.reduce((total, product) => {
+        total[product.metadata.productType] = product;
 
-        total[product.groupId] = [...scene, product.id];
         return total;
       }, {});
 
-      const scenes: {[id: string]: string[]} = {};
+      let productGroups: {[id: string]: string[]} = {}
+      let scenes: {[id: string]: string[]} = {}
+
+      if (Object.keys(productIDs).length === 1 && Object.keys(productIDs)[0].toUpperCase() === 'BURST') {
+        productGroups = action.payload.products.reduce((total, product) => {
+          const scene = total[product.name] || [];
+
+          total[product.name] = [...scene, product.name];
+          return total;
+        }, {})
+      } else {
+        productGroups = action.payload.products.reduce((total, product) => {
+          const scene = total[product.groupId] || [];
+
+          total[product.groupId] = [...scene, product.id];
+          return total;
+        }, {});
+      }
+
+      // scenes: {[id: string]: string[]} = {};
       for (const [groupId, productNames] of Object.entries(productGroups)) {
 
         (<string[]>productNames).sort(
@@ -436,7 +454,19 @@ const productsForScene = (selected, state) => {
     return;
   }
 
-  const products = state.scenes[selected.groupId] || [];
+  const productTypes = Object.values(state.products).reduce((total, product: CMRProduct) => {
+    total[product.metadata.productType] = product;
+
+    return total;
+  }, {});
+
+  let products = []
+
+  if (Object.keys(productTypes).length === 1 && Object.keys(productTypes)[0] === 'BURST') {
+    products = state.scenes[selected.name] || [];
+  } else {
+    products = state.scenes[selected.groupId] || []
+  }
 
   return products
     .map(id => state.products[id])

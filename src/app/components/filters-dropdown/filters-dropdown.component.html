@@ -33,10 +33,6 @@
         <ng-container *ngIf="selectedSearchType === searchTypes.SARVIEWS_EVENTS">
           {{ 'EVENT_SEARCH' | translate }}
         </ng-container>
-
-        <ng-container *ngIf="selectedSearchType === searchTypes.DERIVED_DATASETS">
-          {{ 'DERIVED_DATASETS' | translate }}
-        </ng-container>
       </div>
     </div>
 
@@ -66,10 +62,6 @@
       <ng-container *ngIf="selectedSearchType === searchTypes.SARVIEWS_EVENTS">
         <app-sarviews-filters></app-sarviews-filters>
       </ng-container>
-
-      <ng-container *ngIf="selectedSearchType === searchTypes.DERIVED_DATASETS">
-        <app-derived-datasets></app-derived-datasets>
-      </ng-container>
     </div>
 
     <div class="footer">
@@ -79,13 +71,12 @@
              selectedSearchType !== searchTypes.BASELINE &&
              selectedSearchType !== searchTypes.SBAS &&
              selectedSearchType !== searchTypes.CUSTOM_PRODUCTS &&
-             selectedSearchType !== searchTypes.SARVIEWS_EVENTS &&
-             selectedSearchType !== searchTypes.DERIVED_DATASETS
+             selectedSearchType !== searchTypes.SARVIEWS_EVENTS
           "
-          style="margin-right: 10px;">
+          style="margin-right: 10px; align-self: center;">
         </app-max-results-selector>
         <app-cancel-filter-changes></app-cancel-filter-changes>
-        <app-search-button *ngIf="selectedSearchType !== searchTypes.DERIVED_DATASETS"></app-search-button>
+        <app-search-button></app-search-button>
       </ng-container>
     </div>
   </div>

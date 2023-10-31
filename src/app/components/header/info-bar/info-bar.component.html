@@ -1,6 +1,4 @@
-<div fxLayout="row wrap"
-     fxFlexFill
-     *ngIf="breakpoint$ | async as breakpoint"
+<div *ngIf="breakpoint$ | async as breakpoint"
      class="info-bar">
 
   <div class="first-info">
@@ -32,7 +30,7 @@
       <b>{{ 'FILE_TYPES' | translate }}:</b> {{ productTypes }}
     </span>
     <span *ngIf="beamModes.length">
-      <b>{{'BEAM MODES'| translate | titlecase}}:</b> {{beamModes}}
+      <b>{{'BEAM_MODES'| translate | titlecase }}:</b> {{beamModes}}
     </span>
     <span *ngIf="polarizations.length">
       <b>{{'POLARIZATIONS' | translate }}:</b> {{polarizations}}
@@ -47,13 +45,18 @@
       <b>{{'CAMPAIGN' | translate }}:</b> {{ mission }}
     </span>
     <span *ngIf="tempRange.start || tempRange.end">
-      <b>{{'TEMPORAL' | translate }}:</b> {{tempRange.start}} <span *ngIf="!!tempRange.end"> to {{tempRange.end}}</span>
+      <b>{{'TEMPORAL' | translate }}:</b> {{tempRange.start}} <span *ngIf="!!tempRange.end"> {{ 'TO' | translate }} {{tempRange.end}}</span>
     </span>
     <span *ngIf="perpRange.start || perpRange.end">
-      <b>{{'PERPENDICULAR' | translate}}:</b> {{perpRange.start}} <span *ngIf="!!perpRange.end"> to {{perpRange.end}} </span>
+      <b>{{'PERPENDICULAR' | translate}}:</b> {{perpRange.start}} <span *ngIf="!!perpRange.end"> {{ 'TO' | translate }} {{perpRange.end}} </span>
+    </span>
+    <span>
+      <span *ngIf="fullBurstIDs?.length > 0">
+        <b>{{'FULL_BURST_ID' | translate}}:</b> {{fullBurstIDs.length <= 4 ? fullBurstIDs.join(', ') : fullBurstIDs.length + ' IDs'}}
+      </span>
     </span>
   </div>
-  <div fxFlex class="last-info">
+  <div class="last-info">
     <app-ci-search></app-ci-search>
   </div>
 </div>

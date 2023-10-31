@@ -24,6 +24,20 @@
             {{ 'POWERED_BY_HY_P3' |  translate }}
           </div>
         </div>
+        <div class="doc-feedback-div-wrapper">
+          <div class="doc-feedback-div">
+            <div class="docs-div header-link">
+              <app-docs-modal class="text-link"
+                              text="Docs"
+                              url="https://hyp3-docs.asf.alaska.edu/using/subscriptions/#Subscriptions-in-HyP3">
+              </app-docs-modal>
+            </div>
+
+            <div class="feedback-div header-link">
+              <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <mat-icon>comment</mat-icon> {{ 'FEEDBACK' | translate }}</a>
+            </div>
+          </div>
+        </div>
       </ng-container>
       <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
         <div class="branding-block">
@@ -34,19 +48,8 @@
       </ng-container>
     </div>
     <div class="close-x" (click)="onCloseDialog()">
-      <mat-icon></mat-icon>
+      <mat-icon>close</mat-icon>
     </div>
-  </div>
-
-  <div class="feedback-div header-link">
-    <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <mat-icon>comment</mat-icon>{{ 'FEEDBACK' | translate }}</a>
-  </div>
-
-  <div class="docs-div header-link">
-    <app-docs-modal class="text-link"
-                    text="Docs"
-                    url="https://hyp3-docs.asf.alaska.edu/using/subscriptions/#Subscriptions-in-HyP3">
-    </app-docs-modal>
   </div>
 </div>
 
@@ -73,8 +76,8 @@
             </app-subscription-date-range>
           </div>
 
-          <div>
-            <div style="margin-bottom: 5px;">
+          <div style="margin-bottom: 25px;">
+            <div style="margin-bottom: 25px;">
               <b>{{ 'AOI_OPTIONS' |  translate }}</b>
               <div *ngIf="errors.polygonError" class="step-error"> *{{ errors.polygonError }}</div>
             </div>
@@ -168,7 +171,7 @@
                 [(value)]="flightDirection"
                 placeholder="{{ 'DIRECTION' | translate }}">
                 <mat-option *ngFor="let direction of flightDirectionTypes" [value]="direction">
-                  {{direction}}
+                  {{direction.toUpperCase() | translate }}
                 </mat-option>
               </mat-select>
 

@@ -20,6 +20,19 @@
   border-left: none;
 }
 
+.mobile-scene-list--layout {
+  height: 100%;
+  width: 100%;
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+.mobile-detail-menu--layout {
+  flex: 1 1 0%;
+  box-sizing: border-box;
+}
+
 .sbas-chart-row {
   display: flex;
   flex-direction: row;
@@ -44,7 +57,7 @@
 }
 
 .baseline-criteria-button-toggle-group {
-  flex: 0 1 149px !important;
+  flex: 0 1 190px !important;
   margin-top: -5px;
 }
 
@@ -73,9 +86,11 @@
   outline: none;
   width: auto;
   line-height: 26px !important;
+  box-sizing: border-box;
 }
 
 .baseline-header-button-group {
+  display: flex;
   justify-content: center;
 }
 

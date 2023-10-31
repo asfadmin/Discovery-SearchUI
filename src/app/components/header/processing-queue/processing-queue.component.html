@@ -30,6 +30,7 @@
           </div>
         </div>
       </ng-container>
+
       <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
         <div class="branding-block">
           <div (click)="onOpenPreferences()" class="clickable hyp3-url hyp3-url-mobile">
@@ -37,9 +38,25 @@
           </div>
         </div>
       </ng-container>
+
+    </div>
+
+    <div class="doc-feedback-div"
+         [class.doc-feedback-div-mobile]="breakpoint === breakpoints.MOBILE">
+      <div class="docs-div header-link">
+        <app-docs-modal class="text-link"
+                        text="Docs"
+                        url="https://hyp3-docs.asf.alaska.edu/#asf-hyp3">
+        </app-docs-modal>
+      </div>
+
+      <div class="feedback-div header-link">
+        <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <mat-icon>comment</mat-icon> {{ 'FEEDBACK' | translate }}</a>
+      </div>
     </div>
 
     <ng-container *ngIf="breakpoint !== breakpoints.MOBILE;">
+
       <ng-container *ngFor="let hyp3Job of jobTypesWithQueued">
         <button mat-flat-button
           class="job-type--button"
@@ -48,11 +65,11 @@
           {{ hyp3Job.jobType.name }} ({{ hyp3Job.jobs.length }})
         </button>
       </ng-container>
+
     </ng-container>
 
-    <ng-container *ngIf="
-      breakpoint === breakpoints.MOBILE &&
-      !!jobTypesWithQueued && jobTypesWithQueued.length > 0">
+    <ng-container *ngIf="breakpoint === breakpoints.MOBILE &&
+                         !!jobTypesWithQueued && jobTypesWithQueued.length > 0">
 
       <button mat-flat-button
         [color]="'primary'"
@@ -81,19 +98,9 @@
     </ng-container>
   </div>
 
-  <div class="feedback-div header-link">
-    <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <mat-icon>comment</mat-icon>{{ 'FEEDBACK' | translate }}</a>
-  </div>
-
-  <div class="docs-div header-link">
-    <app-docs-modal class="text-link"
-                    text="Docs"
-                    url="https://hyp3-docs.asf.alaska.edu/#asf-hyp3">
-    </app-docs-modal>
-  </div>
-
-  <div class="close-x" (click)="onCloseDialog()">
-    <mat-icon></mat-icon>
+  <div class="close-x" (click)="onCloseDialog()"
+       [class.close-x-mobile]="breakpoint === breakpoints.MOBILE">
+    <mat-icon>close</mat-icon>
   </div>
 </div>
 
@@ -118,8 +125,8 @@
     <div #contentTopArea class="content-top-area">
       <div class="jobs-detail">
         <div *ngIf="selectedJobTypeId" style="margin-right: 10px;">
-          <p>
-            {{ hyp3JobTypes[selectedJobTypeId].description }}
+          <p style="text-wrap: balance;">
+            {{ hyp3JobTypes[selectedJobTypeId].description | translate }}
             <a target="_blank" [href]="hyp3JobTypes[selectedJobTypeId].infoUrl">[MORE]</a>
           </p>
         </div>
@@ -192,16 +199,18 @@
     [value]="progress">
   </mat-progress-bar>
 
-  <div class="w100 hyp3-footer">
+  <div class="w100 hyp3-footer" 
+  [ngStyle]="{
+    'justify-content': breakpoint == breakpoints.MOBILE ? 'inherit' : 'center'
+  }"
+  >
     <div class="footer-clear">
       <button *ngIf="previousQueue === null"
-          [matMenuTriggerFor]="clearJobQueue"
-
-              [class.mini-button] = "breakpoint == breakpoints.MOBILE"
-
-              mat-button>
-        <mat-icon>delete</mat-icon>
-        <span>{{ 'CLEAR' | translate }}</span>
+        [matMenuTriggerFor]="clearJobQueue"
+        [class.mini-button] = "breakpoint == breakpoints.MOBILE"
+        mat-button>
+          <mat-icon>delete</mat-icon>
+          <span>{{ 'CLEAR' | translate }}</span>
       </button>
 
       <mat-menu #clearJobQueue>
@@ -213,19 +222,18 @@
 
         <div *ngFor="let hyp3Job of jobTypesWithQueued">
           <button (click)="onClearSingleJobQueue(hyp3Job.jobType)" mat-button>
-            Clear {{ hyp3Job.jobType.name }} ({{ hyp3Job.jobs.length }})
+            {{ 'CLEAR' | translate }} {{ hyp3Job.jobType.name }} ({{ hyp3Job.jobs.length }})
           </button>
         </div>
       </mat-menu>
 
       <button *ngIf="previousQueue !== null"
-              [class.mini-button] = "breakpoint == breakpoints.MOBILE"
-         (click)="onRestoreJobQueue()"
+        [class.mini-button] = "breakpoint == breakpoints.MOBILE"
+        (click)="onRestoreJobQueue()"
         mat-flat-button
-         color="primary"
-         class="footer-clear-button">
-<!--        <mat-icon>undo</mat-icon>-->
-        <span>{{ 'RESTORE' |  translate }}</span>
+        color="primary"
+        class="footer-clear-button">
+          <span>{{ 'RESTORE' |  translate }}</span>
       </button>
     </div>
 
@@ -285,21 +293,19 @@
            !isUserLoggedIn
          )"
          [class.mini-button]="breakpoint == breakpoints.MOBILE"
-
          mat-flat-button
          color="primary"
          class="footer-submit-button"
          >
          <span *ngIf="!isQueueSubmitProcessing">
-
            {{ 'SUBMIT' | translate }} {{ allJobs.length }} {{ 'JOB' | translate }}<span *ngIf="allJobs.length > 1">s</span>
-
          </span>
 
          <span *ngIf="isQueueSubmitProcessing">
            {{ 'LOADING' |  translate }}...
          </span>
       </button>
+
     </div>
   </div>
 </mat-dialog-actions>
