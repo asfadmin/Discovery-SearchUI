@@ -317,9 +317,9 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     : [this.scene.browses[this.browseIndex], this.scene.metadata.polygon];
 
     // for OPERA-S1 geotiffs
-    // if(this.scene?.id.startsWith('OPERA')) {
-    //   url = this.scene.downloadUrl;
-    // }
+    if(this.scene?.id.startsWith('OPERA')) {
+      url = this.scene.downloadUrl;
+    }
     
     this.mapService.setSelectedBrowse(url, wkt);
   }

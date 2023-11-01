@@ -108,10 +108,10 @@ export class MapEffects {
         let url = selectedProduct.browses[0]
 
         // for OPERA-S1 geotiffs
-        // if (selectedProduct.id.startsWith('OPERA')) {
-        //   url = selectedProduct.downloadUrl
-        // }
-        
+        if (selectedProduct.id.startsWith('OPERA')) {
+          url = selectedProduct.downloadUrl
+        }
+
         this.mapService.setSelectedBrowse(url, selectedProduct.metadata.polygon);
       }
     }),

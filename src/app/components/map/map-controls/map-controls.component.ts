@@ -189,9 +189,9 @@ export class MapControlsComponent implements OnInit, OnDestroy {
 
 
     // for OPERA-S1 geotiffs
-    // if(this.selectedScene?.id.startsWith('OPERA')) {
-    //   url = this.selectedScene.downloadUrl;
-    // }
+    if(this.selectedScene?.id.startsWith('OPERA')) {
+      url = this.selectedScene.downloadUrl;
+    }
 
     this.mapService.setSelectedBrowse(url, wkt);
   }
