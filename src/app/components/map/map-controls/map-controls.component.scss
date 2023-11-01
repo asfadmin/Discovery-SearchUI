@@ -82,6 +82,7 @@ label {
 }
 
 .button-group-label {
+  white-space: nowrap;
   text-align: center;
   @include themify($themes) {
     color: themed('dark-secondary-text');

@@ -37,7 +37,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
 
   public totalResultCount$ = combineLatest([
-    this.store$.select(searchStore.getTotalResultCount),
+    this.store$.select(searchStore.getSearchAmount),
     this.scenesService.scenes$]
   ).pipe(
     map(([count, scenes]) => count + scenes?.filter(scene => scene.metadata.productType === 'BURST').length)

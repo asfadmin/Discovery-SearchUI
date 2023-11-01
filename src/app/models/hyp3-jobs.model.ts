@@ -156,6 +156,14 @@ export const InsarGammaJobType: Hyp3JobType = {
     default: '20x4',
     info: `Number of looks to take in range and azimuth.`
   }, {
+    name: 'Phase Filter',
+    apiName: 'phase_filter_parameter',
+    type: JobOptionType.RANGE,
+    info: 'Adaptive phase filter parameter. Useful values fall in the range 0.2 to 1. Larger values result in stronger filtering. If zero, adaptive phase filter will be skipped.',
+    default: 0.6,
+    range: {start: 0.0, end: 1.0}
+  },
+   {
     name: 'Water Mask',
     apiName: 'apply_water_mask',
     type: JobOptionType.TOGGLE,

@@ -32,8 +32,7 @@ export class SarviewsEventsService {
                 extendMoment(moment);
                }
 
-  public getSarviewsEvents$(): Observable<SarviewsEvent[]> {
-    return this.http.get<SarviewsEvent[]>(this.eventsUrl).pipe(
+  public getSarviewsEvents$ = this.http.get<SarviewsEvent[]>(this.eventsUrl).pipe(
       debounceTime(2000),
       distinctUntilChanged(),
       map(events => events.filter(
@@ -56,7 +55,6 @@ export class SarviewsEventsService {
       }
       return 0;
     })));
-  }
 
   public getEventFeature(usgs_id: string): Observable<SarviewsProcessedEvent>  {
     return this.http.get<SarviewsProcessedEvent>(this.eventsUrl + '/' + usgs_id).pipe(
@@ -72,21 +70,21 @@ export class SarviewsEventsService {
   }
 
   public quakeIds$() {
-    return this.getSarviewsEvents$().pipe(
+    return this.getSarviewsEvents$.pipe(
       map(events => events.filter(sarviewsEvent => sarviewsEvent.event_type === 'quake')),
       map(quakeEvents => quakeEvents.map(quake => quake.event_id)),
     );
   }
 
   public volcanoIds$() {
-    return this.getSarviewsEvents$().pipe(
+    return this.getSarviewsEvents$.pipe(
     map(events => events.filter(sarviewsEvent => sarviewsEvent.event_type === 'volcano')),
     map(volcanoEvents => volcanoEvents.map(volcano => volcano.event_id)),
     );
   }
 
   public floodIds$() {
-    return this.getSarviewsEvents$().pipe(
+    return this.getSarviewsEvents$.pipe(
     map(events => events.filter(sarviewsEvent => sarviewsEvent.event_type === 'flood')),
     map(volcanoEvents => volcanoEvents.map(volcano => volcano.event_id)),
     );
