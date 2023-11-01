@@ -14,7 +14,7 @@ export interface UserState {
   savedFilterPresets: models.SavedFilterPreset[];
 }
 
-const initState: UserState = {
+export const initState: UserState = {
   auth: {
     id: null,
     token: null,

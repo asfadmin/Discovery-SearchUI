@@ -45,19 +45,31 @@ export class UserEffects {
       ([_, userAuth]) =>
         this.userDataService.getAttribute$(userAuth, 'Profile')
     ),
-    filter(resp => this.isSuccessfulResponse(resp)),
-    filter(resp => this.isValidProfile(resp)),
     map(
-      (profile: models.UserProfile) => !profile.defaultFilterPresets ? { ...profile,
-        defaultFilterPresets: {
-          'Baseline Search' : '',
-          'Geographic Search' : '',
-          'SBAS Search' : ''
+      (resp) => {
+        const defaultProfile = {...userReducer.initState.profile};
+
+        let profile = this.isValidProfile(resp) ? (<models.UserProfile>resp) : defaultProfile;
+
+        if (!profile.defaultFilterPresets) {
+          profile = this.addDefaultFiltersToProfile(profile);
         }
-      } : profile
+
+        return profile
+      }
     ),
     map(profile => new userActions.SetProfile(<models.UserProfile>profile))
   ));
+
+  private addDefaultFiltersToProfile(profile: models.UserProfile): models.UserProfile {
+    return { ...profile,
+      defaultFilterPresets: {
+        'Baseline Search' : '',
+        'Geographic Search' : '',
+        'SBAS Search' : ''
+      }
+    };
+  }
 
   public saveSavedSearches = createEffect(() => this.actions$.pipe(
     ofType<userActions.SaveSearches>(userActions.UserActionType.SAVE_SEARCHES),
@@ -200,8 +212,8 @@ export class UserEffects {
       }
       return userFilters.filter(preset =>
         preset.searchType === searchType).find(preset => preset.id === presetId);
-      }
-      ),
+    }
+    ),
     filter(targetFilter => !!targetFilter),
     map(targetFilter => {
 
@@ -229,7 +241,7 @@ export class UserEffects {
         }
 
         actions.forEach(action => this.store$.dispatch(action));
-    }
+      }
     })
   ), {dispatch: false});
 
@@ -237,8 +249,8 @@ export class UserEffects {
     try {
       return !(
         !!resp &&
-        'status' in resp &&
-        resp['status'] === 'fail'
+          'status' in resp &&
+          resp['status'] === 'fail'
       );
     } catch {
       return false;
@@ -281,8 +293,8 @@ export class UserEffects {
     }
     return (
       datasetIds.includes(resp.defaultDataset) &&
-      Object.values(models.MapLayerTypes).includes(resp.mapLayer) &&
-      this.isNumber(resp.maxResults) && resp.maxResults <= 5000
+        Object.values(models.MapLayerTypes).includes(resp.mapLayer) &&
+        this.isNumber(resp.maxResults) && resp.maxResults <= 5000
     );
   }
 
