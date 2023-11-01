@@ -106,9 +106,12 @@ export class MapEffects {
       }
       if (selectedProduct.browses[0] !== '/assets/no-browse.png') {
         let url = selectedProduct.browses[0]
-        if (selectedProduct.id.startsWith('OPERA')) {
-          url = selectedProduct.downloadUrl
-        }
+
+        // for OPERA-S1 geotiffs
+        // if (selectedProduct.id.startsWith('OPERA')) {
+        //   url = selectedProduct.downloadUrl
+        // }
+        
         this.mapService.setSelectedBrowse(url, selectedProduct.metadata.polygon);
       }
     }),

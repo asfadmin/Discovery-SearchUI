@@ -188,9 +188,11 @@ export class MapControlsComponent implements OnInit, OnDestroy {
     : [this.selectedScene.browses[this.browseIndex], this.selectedScene.metadata.polygon];
 
 
-    if(this.selectedScene?.id.startsWith('OPERA')) {
-      url = this.selectedScene.downloadUrl;
-    }
+    // for OPERA-S1 geotiffs
+    // if(this.selectedScene?.id.startsWith('OPERA')) {
+    //   url = this.selectedScene.downloadUrl;
+    // }
+
     this.mapService.setSelectedBrowse(url, wkt);
   }
 

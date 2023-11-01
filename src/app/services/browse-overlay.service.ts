@@ -76,7 +76,6 @@ export class BrowseOverlayService {
     return new GeoTIFFSource({
       sources: [{
          url,
-        //  imageExtent: extent,
       }]
        });
   }
