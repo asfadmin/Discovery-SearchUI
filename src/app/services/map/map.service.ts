@@ -28,7 +28,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { Icon, Style } from 'ol/style';
 import Geometry from 'ol/geom/Geometry';
-import ImageLayer from 'ol/layer/Image';
+// import ImageLayer from 'ol/layer/Image';
 import LayerGroup from 'ol/layer/Group';
 import { PinnedProduct } from '@services/browse-map.service';
 import { BrowseOverlayService } from '@services';
@@ -43,7 +43,7 @@ import TileLayer from 'ol/layer/Tile';
 
 import SimpleGeometry from 'ol/geom/SimpleGeometry';
 import { SetGeocode } from '@store/filters';
-import ImageSource from 'ol/source/Image';
+// import ImageSource from 'ol/source/Image';
 import { Extent } from 'ol/extent';
 import { MultiPolygon } from 'ol/geom';
 
@@ -61,7 +61,7 @@ export class MapService {
 
   private polygonLayer: VectorLayer<VectorSource>;
   private sarviewsEventsLayer: VectorLayer<VectorSource>;
-  private browseImageLayer: ImageLayer<ImageSource>;
+  private browseImageLayer: Layer;
 
   private gridLinesVisible: boolean;
   private sarviewsFeaturesByID: {[id: string]: Feature} = {};
@@ -609,7 +609,7 @@ export class MapService {
     const scenesWithBrowse = scenes.filter(scene => scene.browses?.length > 0).slice(0, 10);
 
     const collection = scenesWithBrowse.reduce((prev, curr) =>
-      prev.concat(this.browseOverlayService.createNormalImageLayer(curr.browses[0], curr.metadata.polygon)), [] as ImageLayer<ImageSource>[]);
+      prev.concat(this.browseOverlayService.createNormalImageLayer(curr.browses[0], curr.metadata.polygon)), [] as Layer[]);
 
     collection.forEach(element => {
       this.map.addLayer(element);

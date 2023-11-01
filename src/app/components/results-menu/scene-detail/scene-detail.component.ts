@@ -312,10 +312,15 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     }
 
     this.browseIndex = newIndex;
-    const [url, wkt] = this.searchType === this.searchTypes.SARVIEWS_EVENTS
+    let [url, wkt] = this.searchType === this.searchTypes.SARVIEWS_EVENTS
     ? [this.selectedEventProducts[this.browseIndex].files.browse_url, this.selectedEventProducts[this.browseIndex]?.granules[0].wkt]
     : [this.scene.browses[this.browseIndex], this.scene.metadata.polygon];
 
+    // for OPERA-S1 geotiffs
+    // if(this.scene?.id.startsWith('OPERA')) {
+    //   url = this.scene.downloadUrl;
+    // }
+    
     this.mapService.setSelectedBrowse(url, wkt);
   }
 
