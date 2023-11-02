@@ -15,7 +15,7 @@ export const radarsat_1 = {
     Props.ABSOLUTE_ORBIT,
     Props.BASELINE_TOOL,
   ],
-  apiValue: { platform: 'RADARSAT-1' },
+  apiValue: { datasets: 'RADARSAT-1' },
   date: {
     start: new Date('1996/02/01 03:19:17 UTC'),
     end: new Date('2008/05/02 22:05:26 UTC')

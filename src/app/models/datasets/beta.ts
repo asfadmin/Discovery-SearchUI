@@ -14,7 +14,7 @@ export const beta = {
     Props.MISSION_NAME,
     Props.ABSOLUTE_ORBIT,
   ],
-  apiValue: { asfplatform: 'SENTINEL-1 INTERFEROGRAM (BETA)' },
+  apiValue: { datasets: 'ARIA S1 GUNW' },
   date: { start: new Date(2014, 3, 25) },
   infoUrl: 'https://asf.alaska.edu/data-sets/derived-data-sets/sentinel-1-interferograms/',
   citationUrl: 'https://asf.alaska.edu/data-sets/derived-data-sets/sentinel-1-interferograms/#citation',

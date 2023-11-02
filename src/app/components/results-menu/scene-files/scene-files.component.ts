@@ -430,7 +430,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
             processinglevel : scene.metadata.productType + '-STATIC',
             start: scene.metadata.stopDate === null ? '' : moment.utc( scene.metadata.stopDate ).format(),
             operaburstid: scene.metadata?.opera?.operaBurstID,
-            collections: models.opera_s1.apiValue.collections,
+            datasets: models.opera_s1.apiValue.datasets,
           };
           return this.asfApiService.query<any[]>(queryParams).pipe(
             map(products => products.length > 0 ? this.productService.fromResponse(products).slice(0, 1) : [])

@@ -11,7 +11,7 @@ export const smap = {
     Props.FLIGHT_DIRECTION,
     Props.ABSOLUTE_ORBIT,
   ],
-  apiValue: { platform: 'SMAP' },
+  apiValue: { datasets: 'SMAP' },
   date: { start: new Date('2015/04/13 17:57:07 UTC') },
   infoUrl: 'https://www.asf.alaska.edu/sar-data-sets/soil-moisture-active-passive-smap-mission/',
   frequency: 'L-Band',

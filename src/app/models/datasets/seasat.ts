@@ -14,7 +14,7 @@ export const seasat = {
     Props.POLARIZATION,
     Props.ABSOLUTE_ORBIT,
   ],
-  apiValue: { platform: 'SEASAT' },
+  apiValue: { datasets: 'SEASAT' },
   date: {
     start: new Date('1978/07/04 12:06:00 UTC'),
     end: new Date('1978/10/10 01:29:10 UTC')

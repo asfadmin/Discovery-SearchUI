@@ -16,7 +16,7 @@ export const ers = {
     Props.BASELINE_TOOL,
     Props.SUBTYPE,
   ],
-  apiValue: { platform: 'ERS' },
+  apiValue: { datasets: 'ERS' },
   date: {
     start: new Date('1991/08/08 03:18:11 UTC'),
     end: new Date('2011/07/03 00:23:48 UTC')
