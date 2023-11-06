@@ -58,7 +58,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public pinnedEventIDs: string[];
   
   public productsByType$: Observable<{[key:string]: models.CMRProduct[]}> = this.store$.select(scenesStore.getAllProducts).pipe(
-    map((scenes: []) => 
+    map((scenes: []) =>
     scenes.reduce((prev, curr: models.CMRProduct) => {
       if(!prev[curr.productTypeDisplay]) {
         prev[curr.productTypeDisplay] = []
