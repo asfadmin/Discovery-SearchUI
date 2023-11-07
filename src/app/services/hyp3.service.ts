@@ -158,37 +158,6 @@ export class Hyp3Service {
     return this.http.post(submitJobUrl, body, { withCredentials: true });
   }
 
-  public editSubscription(subId: string, edit: {enabled?: boolean, end?: string}) {
-    const subscriptionUrl = `${this.apiUrl}/subscriptions/${subId}`;
-
-    return this.http.patch(subscriptionUrl, edit, { withCredentials: true });
-  }
-
-  public submitSubscription$(sub) {
-    const submitUrl = `${this.apiUrl}/subscriptions`;
-
-    return this.http.post(submitUrl, sub, { withCredentials: true });
-  }
-
-  public getSubscriptions$(): Observable<models.OnDemandSubscription[]> {
-    const subscriptionsUrl = `${this.apiUrl}/subscriptions`;
-
-    return this.http.get(subscriptionsUrl, { withCredentials: true }).pipe(
-      map((resp: any) => {
-        return resp.subscriptions.map((sub) => {
-          return  {
-            name: sub.job_specification.name,
-            id: sub.subscription_id,
-            jobParameters: sub.job_specification,
-            jobType: models.hyp3JobTypes[sub.job_specification.job_type],
-            filters: sub.search_parameters,
-            enabled: sub.enabled
-          };
-        });
-      })
-    );
-  }
-
   public getHyp3ableProducts(products: models.CMRProduct[][]): {byJobType: models.Hyp3ableProductByJobType[]; total: number} {
     const byJobType = models.hyp3JobTypesList.map(jobType => {
       const hyp3ableProducts = products.filter(

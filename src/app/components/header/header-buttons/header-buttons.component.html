@@ -22,11 +22,6 @@
       (click)="onOpenProcessingQueue()"
       mat-menu-item>{{  'ON_DEMAND_QUEUE'  | translate }}</button>
 
-      <button
-      (click)="onOpenSubscriptions()"
-      [disabled]="!isLoggedIn"
-      mat-menu-item>{{  'SUBSCRIPTIONS'  | translate }}</button>
-
       <button mat-menu-item
       (click) = "onSetSearchTypeOnDemand()"
       [disabled]="!isLoggedIn">{{  'SUBMITTED_PRODUCTS'  | translate }}
@@ -107,11 +102,6 @@
       <button
       (click)="onOpenProcessingQueue()"
       mat-menu-item>{{ 'ON_DEMAND_QUEUE' | translate }}</button>
-
-      <button
-      (click)="onOpenSubscriptions()"
-      [disabled]="!isLoggedIn"
-      mat-menu-item>{{ 'SUBSCRIPTIONS' | translate }}</button>
 
       <button mat-menu-item
       (click) = "onSetSearchTypeOnDemand()"
@@ -364,5 +354,3 @@
     </button>
   </div>
 </mat-menu>
-
-

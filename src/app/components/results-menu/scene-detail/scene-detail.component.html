@@ -175,7 +175,7 @@
                 <span
                   class="navigation-icon"
                   [class.clickable]="browseIndex + 1 < browses.length"
-                  (click)=onIncrementBrowseIndex()
+                  (click)="onIncrementBrowseIndex()"
                 >
                   <mat-icon
                     [class.not-clickable]="browseIndex + 1 >= browses.length"
@@ -323,12 +323,14 @@
   <div
     [matTooltip]="
     searchType === searchTypes.SARVIEWS_EVENTS ? ( 'GEOGRAPHIC_SEARCH_BASED_ON_EVENT_POLYGON' | translate ) : 
+    (
+      dataset?.id === 'OPERA-S1' ? ('OPERA_S1_SOURCE_DATA' | translate) :
     (dataset?.id === 'SENTINEL-1 BURSTS' ? ('GEOGRAPHIC_SEARCH_BASED_ON_BURST' | translate) :
     !(
       !(prop.isRelevant(p.PATH, dataset) &&
         prop.isRelevant(p.FRAME, dataset)) ||
       dataset?.id === 'UAVSAR'
-    ) ? ('GEOGRAPHIC_SEARCH_BASED_ON_THIS_SCENE_S_PATH_FRAME' | translate) : ( 'NOT_ABLE_TO_SELECT_SIMILAR_SCENES_FROM_THIS_SOURCE' | translate))">
+    ) ? ('GEOGRAPHIC_SEARCH_BASED_ON_THIS_SCENE_S_PATH_FRAME' | translate) : ( 'NOT_ABLE_TO_SELECT_SIMILAR_SCENES_FROM_THIS_SOURCE' | translate)))">
 
     <button
       mat-stroked-button
@@ -338,15 +340,26 @@
       (prop.isRelevant(p.PATH, dataset) &&
       prop.isRelevant(p.FRAME, dataset)) ||
       dataset?.id === 'UAVSAR'||
-      dataset?.id === 'SENTINEL-1 BURSTS'
+      dataset?.id === 'SENTINEL-1 BURSTS' ||
+      dataset?.id === 'OPERA-S1'
       )
       "
       (click)="moreLikeThis()"
       class="mini-toggle-button search-button">
       <span *ngIf="breakpoint === breakpoints.MOBILE">{{ 'MORE' | translate }}</span>
-      <span *ngIf="breakpoint != breakpoints.MOBILE">{{searchType !== searchTypes.SARVIEWS_EVENTS ? ('MORE_LIKE_THIS' | translate ) : ('GEOGRAPHIC' | translate )}}</span>
-
+      <span *ngIf="breakpoint != breakpoints.MOBILE">{{searchType !== searchTypes.SARVIEWS_EVENTS ? dataset?.id === 'OPERA-S1' ? ('SOURCE_DATA' | translate) : ('MORE_LIKE_THIS' | translate ) : ('GEOGRAPHIC' | translate )}}</span>
     </button>
+
+    <!-- <button *ngIf="dataset?.id === 'OPERA-S1'"
+    mat-stroked-button
+    color="primary"
+    [disabled]="!(dataset?.id === 'OPERA-S1' && (scene.metadata.productType === 'RTC' || scene.metadata.productType === 'CSLC'))"
+    (click)="staticLayer()"
+    class="mini-toggle-button search-button">
+    <span *ngIf="breakpoint === breakpoints.MOBILE">{{ 'Static' }}</span>
+    <span *ngIf="breakpoint != breakpoints.MOBILE">{{'STATIC_LAYER' | translate}}</span>
+
+  </button> -->
   </div>
   <div *ngIf="searchType === searchTypes.SARVIEWS_EVENTS"
     matTooltip="{{ 'USE_THIS_EVENT_S_PRODUCT_SCENES_IN_LIST_SEARCH' | translate }}">

@@ -88,7 +88,8 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       this.allJobNames = flattened;
     });
 
-    const sortedScenes$: Observable<CMRProduct[]> = this.scenesService.sortScenes$(this.scenesService.scenes$());
+    const scenes$ = this.scenesService.scenes$;
+    const sortedScenes$: Observable<CMRProduct[]> = this.scenesService.sortScenes$(scenes$);
 
     this.subs.add(
       this.store$.select(scenesStore.getSelectedScene).pipe(
@@ -210,9 +211,10 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       map(([queueProducts, searchScenes]) => {
 
         const queuedProductGroups: { [id: string]: string[] } = queueProducts.reduce((total, product) => {
-          const scene = total[product.metadata.productType !== 'BURST' && product.metadata.productType !== 'BURST_XML' ? product.groupId : product.name] || [];
+          const groupCriteria = this.getGroupCriteria(product)
+          const scene = total[groupCriteria] || [];
 
-          total[product.metadata.productType !== 'BURST' && product.metadata.productType !== 'BURST_XML' ? product.groupId : product.name] = [...scene, product.id];
+          total[groupCriteria] = [...scene, product.id];
           return total;
         }, {});
 
@@ -349,14 +351,21 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
     this.store$.dispatch(new scenesStore.SetSelectedPair(pair));
   }
 
-  public onToggleScene(groupId: string): void {
-    if (!this.allQueued[groupId]) {
-      this.store$.dispatch(new queueStore.QueueScene(groupId));
+  public onToggleScene(groupCriteria: string): void {
+    if (!this.allQueued[groupCriteria]) {
+      this.store$.dispatch(new queueStore.QueueScene(groupCriteria));
     } else {
-      this.store$.dispatch(new queueStore.RemoveSceneFromQueue(groupId));
+      this.store$.dispatch(new queueStore.RemoveSceneFromQueue(groupCriteria));
     }
   }
 
+  public getGroupCriteria(scene: CMRProduct): string {
+    const ungrouped_product_types = [...models.opera_s1.productTypes, {apiValue: 'BURST'}, {apiValue: 'BURST_XML'}].map(m => m.apiValue)
+    if(ungrouped_product_types.includes(scene.metadata.productType)) {
+        return scene.metadata.parentID || scene.id;
+    }
+    return scene.groupId;
+  }
   ngOnDestroy() {
     this.subs.unsubscribe();
   }

@@ -73,7 +73,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    const scenes$ = this.scenesService.scenes$();
+    const scenes$ = this.scenesService.scenes$;
 
     this.store$.select(scenesStore.getSelectedPair).pipe(
       map(pair => !!pair?.[0] && !!pair?.[1] ? pair : null)

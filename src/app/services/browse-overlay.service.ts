@@ -21,6 +21,9 @@ import * as sceneStore from '@store/scenes';
 import * as filtersStore from '@store/filters';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
+import GeoTIFFSource from 'ol/source/GeoTIFF';
+import TileLayer from 'ol/layer/Tile';
+import ImageSource from 'ol/source/Image';
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +43,8 @@ export class BrowseOverlayService {
             || datasetID === 'ALOS'
             || datasetID === 'SENTINEL-1'
             || datasetID === 'SENTINEL-1 INTERFEROGRAM (BETA)'
-            || datasetID === 'UAVSAR';
+            || datasetID === 'UAVSAR'
+            || datasetID === 'OPERA-S1';
           case models.SearchType.SARVIEWS_EVENTS:
             return selectedEventProducts?.length > 0;
           case models.SearchType.LIST:
@@ -68,13 +72,30 @@ export class BrowseOverlayService {
        });
   }
 
+  private createGeotiffSource(url: string) {
+    return new GeoTIFFSource({
+      sources: [{
+         url,
+      }]
+       });
+  }
+
   public createNormalImageLayer(url: string, wkt: string, className: string = 'ol-layer', layer_id: string = '') {
     const feature = this.wktService.wktToFeature(wkt, 'EPSG:3857');
     const polygon = this.getPolygonFromFeature(feature, wkt);
-    const source = this.createImageSource(url, polygon.getExtent());
 
-    const output = new ImageLayer({
-      source,
+    const source = url.endsWith('.tif') ? this.createGeotiffSource(url) : this.createImageSource(url, polygon.getExtent());
+
+    const output = url.endsWith('.tif') ? new TileLayer(
+      {
+        source: source as GeoTIFFSource,
+        className,
+        zIndex: 0,
+        extent: polygon.getExtent(),
+        opacity: 1.0,
+      }
+    ) : new ImageLayer({
+      source: source as ImageSource,
       className,
       zIndex: 0,
       extent: polygon.getExtent(),

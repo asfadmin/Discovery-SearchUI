@@ -1,8 +1,8 @@
 import {Component, OnInit, OnDestroy, AfterContentInit, Input, ViewChild} from '@angular/core';
 import { SubSink } from 'subsink';
 
-import { combineLatest } from 'rxjs';
-import { debounceTime, filter, map, take, withLatestFrom } from 'rxjs/operators';
+import { combineLatest, of } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -12,7 +12,7 @@ import * as userStore from '@store/user';
 import * as hyp3Store from '@store/hyp3';
 import * as uiStore from '@store/ui';
 
-import { Hyp3Service, NotificationService, SarviewsEventsService } from '@services';
+import { AsfApiService, Hyp3Service, NotificationService, ProductService, SarviewsEventsService } from '@services';
 import * as models from '@models';
 import { CMRProductMetadata, hyp3JobTypes, SarviewProductGranule, SarviewsProduct } from '@models';
 import { ClipboardService } from 'ngx-clipboard';
@@ -111,6 +111,8 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     private eventMonitoringService: SarviewsEventsService,
     public dialog: MatDialog,
     private screenSize: ScreenSizeService,
+    private asfApiService: AsfApiService,
+    private productService: ProductService
   ) { }
 
   ngOnInit() {
@@ -118,9 +120,10 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
       combineLatest([
         this.store$.select(scenesStore.getSelectedSceneProducts),
         this.store$.select(scenesStore.getOpenUnzippedProduct),
-        this.store$.select(scenesStore.getUnzippedProducts)]
-      ).pipe(debounceTime(0))
-      .subscribe(
+        this.store$.select(scenesStore.getUnzippedProducts),
+        ]
+      ).pipe(debounceTime(0)
+      ).subscribe(
         ([products, unzipped, unzippedFiles]) => {
           this.unzippedProducts = unzippedFiles;
           this.products = products;
@@ -417,6 +420,40 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     };
     return toCMRProduct;
   }
+
+  public StaticLayerProduct$ = this.store$.select(scenesStore.getSelectedScene).pipe(
+      debounceTime(100),
+      distinctUntilChanged((prev, curr) => prev?.id === curr?.id),
+      switchMap(scene => {
+        if(!!scene && ['RTC', 'CSLC'].includes(scene?.metadata?.productType) && scene?.id.startsWith('OPERA')) {
+          const queryParams = {
+            processinglevel : scene.metadata.productType + '-STATIC',
+            start: scene.metadata.stopDate === null ? '' : moment.utc( scene.metadata.stopDate ).format(),
+            operaburstid: scene.metadata?.opera?.operaBurstID,
+            collections: models.opera_s1.apiValue.collections,
+          };
+          return this.asfApiService.query<any[]>(queryParams).pipe(
+            map(products => products.length > 0 ? this.productService.fromResponse(products).slice(0, 1) : [])
+            );
+        } else {
+          return of([]);
+        
+        }
+      }
+
+    )
+  );
+
+    // const queryParams = {
+    //   processinglevel : selectedScene.metadata.productType + '-STATIC',
+    //   start: selectedScene.metadata.stopDate === null ? '' : moment.utc( selectedScene.metadata.stopDate ).format(),
+    //   operaburstid: selectedScene.metadata?.opera?.operaBurstID
+    // }
+
+    // const staticLayer = this.asfApiService.query<any[]>(queryParams).pipe(
+    //   map(products => this.productService.fromResponse(products).slice(0,1))
+    // );
+  // }
   public getProductSceneCount(products: SarviewsProduct[]) {
     const outputList = products.reduce((prev, product) => {
         const temp = product.granules.map(granule => granule.granule_name);

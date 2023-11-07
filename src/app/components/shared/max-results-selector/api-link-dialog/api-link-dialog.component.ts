@@ -64,7 +64,7 @@ export class ApiLinkDialogComponent implements OnInit, OnDestroy {
           this.format = format;
         }),
         filter(([amount, format]) => !!amount && !!format),
-        withLatestFrom(this.searchParams.getParams()),
+        withLatestFrom(this.searchParams.getParams),
         map(([[format, amount], params]) => {
           return {
             ...params,

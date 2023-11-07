@@ -430,7 +430,7 @@ export class MapComponent implements OnInit, OnDestroy  {
   }
 
   private scenesToFeatures(projection: string): Observable<Feature<Geometry>[]> {
-    return this.scenesService.scenes$().pipe(
+    return this.scenesService.scenes$.pipe(
       map(scenes => scenes.filter(scene => scene.id !== this.selectedScene?.id)),
       map(scenes => this.scenesToFeature(scenes, projection)));
   }

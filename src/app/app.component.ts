@@ -11,7 +11,7 @@ import { ProcessingQueueComponent } from '@components/header/processing-queue';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
 import { of, combineLatest } from 'rxjs';
-import { skip, filter, map, switchMap, tap, catchError, debounceTime, take, withLatestFrom } from 'rxjs/operators';
+import { skip, filter, map, switchMap, tap, catchError, debounceTime, take, withLatestFrom, distinctUntilChanged } from 'rxjs/operators';
 
 import { NgcCookieConsentService } from 'ngx-cookieconsent';
 import { HelpComponent } from '@components/help/help.component';
@@ -497,7 +497,15 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private updateMaxSearchResults(): void {
-    const checkAmount = this.searchParams$.getlatestParams().pipe(
+    const checkAmount = this.searchParams$.getlatestParams.pipe(
+      distinctUntilChanged((previous, current) => {
+        for(let key of Object.keys(previous)) {
+          if(previous[key] !== current[key]) {
+            return false;
+          }
+        }
+        return true
+      }),
       filter(_ => this.searchType !== SearchType.SARVIEWS_EVENTS
         && this.searchType !== SearchType.BASELINE
         && this.searchType !== SearchType.SBAS),
@@ -539,7 +547,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private loadMissions(): void {
     this.subs.add(
-      this.asfSearchApi.loadMissions$().subscribe(
+      this.asfSearchApi.loadMissions$.subscribe(
         missionsByDataset => this.store$.dispatch(
           new filterStore.SetMissions(missionsByDataset)
         )

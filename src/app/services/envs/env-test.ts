@@ -22,4 +22,3 @@ export const env = {
   },
   defaultEnv: 'test'
 };
-

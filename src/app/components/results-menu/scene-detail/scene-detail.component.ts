@@ -312,10 +312,15 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     }
 
     this.browseIndex = newIndex;
-    const [url, wkt] = this.searchType === this.searchTypes.SARVIEWS_EVENTS
+    let [url, wkt] = this.searchType === this.searchTypes.SARVIEWS_EVENTS
     ? [this.selectedEventProducts[this.browseIndex].files.browse_url, this.selectedEventProducts[this.browseIndex]?.granules[0].wkt]
     : [this.scene.browses[this.browseIndex], this.scene.metadata.polygon];
 
+    // for OPERA-S1 geotiffs
+    // if(this.scene?.id.startsWith('OPERA')) {
+    //   url = this.scene.downloadUrl;
+    // }
+    
     this.mapService.setSelectedBrowse(url, wkt);
   }
 
@@ -360,7 +365,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
       this.makeSarviewsEventGeoSearch();
     } else {
       const scene = this.scene;
-      const shouldClear = this.searchType !== models.SearchType.DATASET;
+      const shouldClear = this.searchType !== models.SearchType.DATASET || this.dataset.id === 'OPERA-S1';
       const dateRange = this.dateRange;
 
       this.store$.dispatch(new searchStore.SetSearchType(models.SearchType.DATASET));
@@ -382,6 +387,17 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     }
   }
 
+  public staticLayer(){
+    const operaBurstID = this.scene.metadata.opera.operaBurstID;
+    const sensorDate = new Date(this.scene.metadata.date.toDate());
+    const staticType = this.scene.metadata.productType + '-STATIC'
+    this.store$.dispatch(new searchStore.ClearSearch());
+    this.store$.dispatch(new filtersStore.SetSelectedDataset('OPERA-S1'))
+    this.store$.dispatch(new filtersStore.setOperaBurstID([operaBurstID]));
+    this.store$.dispatch(new filtersStore.SetProductTypes([models.opera_s1.productTypes.find(t => t.apiValue === staticType)]));
+    this.store$.dispatch(new filtersStore.SetEndDate(sensorDate));
+    this.store$.dispatch(new searchStore.MakeSearch());
+  }
   public makeBaselineSearch(): void {
     const sceneName = this.baselineSceneName();
     const dateRange = this.dateRange;

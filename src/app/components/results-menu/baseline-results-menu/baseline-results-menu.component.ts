@@ -30,7 +30,7 @@ enum CardViews {
 export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
   @Input() resize$: Observable<void>;
 
-  public numBaselineScenes$ = this.scenesService.scenes$().pipe(
+  public numBaselineScenes$ = this.scenesService.scenes$.pipe(
     map(scenes => scenes.length),
   );
 
