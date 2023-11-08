@@ -64,8 +64,8 @@ export class MapEffects {
       || dataset?.id === 'ALOS'
       || dataset?.id === 'SENTINEL-1'
       || dataset?.id === 'SENTINEL-1 INTERFEROGRAM (BETA)'
-      || dataset?.id === 'UAVSAR';
-      // || dataset?.id === 'OPERA-S1';
+      || dataset?.id === 'UAVSAR'
+      || dataset?.id === 'OPERA-S1';
     }
     return searchType !== SearchType.BASELINE && searchType !== SearchType.SBAS;
   }),
@@ -105,7 +105,14 @@ export class MapEffects {
           }
       }
       if (selectedProduct.browses[0] !== '/assets/no-browse.png') {
-        this.mapService.setSelectedBrowse(selectedProduct.browses[0], selectedProduct.metadata.polygon);
+        let url = selectedProduct.browses[0]
+
+        // for OPERA-S1 geotiffs
+        // if (selectedProduct.id.startsWith('OPERA')) {
+        //   url = selectedProduct.downloadUrl
+        // }
+        
+        this.mapService.setSelectedBrowse(url, selectedProduct.metadata.polygon);
       }
     }),
   ), {dispatch: false});

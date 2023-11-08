@@ -15,7 +15,7 @@ import VectorSource from 'ol/source/Vector';
 import LayerGroup from 'ol/layer/Group';
 import Projection from 'ol/proj/Projection';
 import { BrowseOverlayService, WktService } from '@services';
-import ImageSource from 'ol/source/Image';
+// import ImageSource from 'ol/source/Image';
 interface Dimension {
   width: number;
   height: number;
@@ -31,7 +31,7 @@ export interface PinnedProduct {
 })
 export class BrowseMapService {
   private map: Map;
-  private browseLayer: ImageLayer<ImageSource>;
+  private browseLayer: Layer;
   private view: View;
   private pinnedProducts: LayerGroup;
 

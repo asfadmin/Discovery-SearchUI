@@ -302,6 +302,23 @@
             }">
               {{ searchType !== SearchTypes.SBAS ? downloadableProds.length : (SBASBurstProductsLength$ | async) }} BURST {{'FILE' | translate}}{{ downloadableProds.length === 1 ? '' : 's'}}
             </button>
+
+            <button mat-menu-item
+            *ngIf="searchType === SearchTypes.DATASET && (currentDatasetID$ | async) === 'OPERA-S1'"
+            [matMenuTriggerFor]="addAllProductsOfType"
+            [matMenuTriggerData]="{productData: (productCountByType$ | async)}"
+            >
+            {{ 'ADD_BY_PRODUCT_TYPE' | translate }}
+          </button>
+          </mat-menu>
+          
+          <mat-menu #addAllProductsOfType>
+            <ng-template matMenuContent let-productData="productData">
+              <button mat-menu-item *ngFor="let item of productData | keyvalue" (click)="queueProductsOfType(item.key)">
+                {{ 'ADD' | translate }}  {{item.value}} {{item.key}} {{'FILE' | translate}}{{ item.value === 1 ? '' : 's'}} {{'TO_DOWNLOADS' | translate}}
+              </button>
+          </ng-template>
+
           </mat-menu>
 
           <mat-menu #addAllBurstProducts>
