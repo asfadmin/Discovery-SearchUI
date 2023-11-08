@@ -11,7 +11,7 @@ export const airsar = {
     Props.MISSION_NAME,
     Props.FARADAY_ROTATION,
   ],
-  apiValue: { datasets: 'AIRSAR' },
+  apiValue: { dataset: 'AIRSAR' },
   date: {
     start: new Date('1990/03/02 00:00:00 UTC'),
     end: new Date('2004/12/03 23:59:59 UTC')

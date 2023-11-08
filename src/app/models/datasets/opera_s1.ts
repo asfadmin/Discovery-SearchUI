@@ -13,7 +13,7 @@ export const opera_s1 = {
     Props.ABSOLUTE_ORBIT
   ],
   apiValue: {
-    datasets: 'OPERA-S1' },
+    dataset: 'OPERA-S1' },
   date: { start: new Date('2014/06/15 03:44:43 UTC') },
   infoUrl: 'https://asf.alaska.edu/datasets/daac/opera/',
   citationUrl: 'https://asf.alaska.edu/datasets/daac/opera/',

@@ -18,7 +18,7 @@ export const alos = {
     Props.STACK_SIZE,
     Props.BASELINE_TOOL,
   ],
-  apiValue: { datasets: 'ALOS PALSAR' },
+  apiValue: { dataset: 'ALOS PALSAR' },
   date: {
     start: new Date('2006/05/16 03:36:51 UTC'),
     end: new Date('2011/04/21 20:23:36 UTC')

@@ -14,7 +14,7 @@ export const sirc = {
     Props.ABSOLUTE_ORBIT,
     Props.SUBTYPE,
   ],
-  apiValue: { datasets: 'SIR-C' },
+  apiValue: { dataset: 'SIR-C' },
   date: {
     start: new Date('1994/04/09 11:05:00 UTC'),
     end: new Date('1994/10/11 17:02:09 UTC')

@@ -16,7 +16,7 @@ export const sentinel_1 = {
     Props.BASELINE_TOOL,
     Props.SUBTYPE,
   ],
-  apiValue: { datasets: 'SENTINEL-1' },
+  apiValue: { dataset: 'SENTINEL-1' },
   date: { start: new Date('2014/06/15 03:44:43 UTC') },
   infoUrl: 'https://www.asf.alaska.edu/sar-data-sets/sentinel-1/',
   citationUrl: 'https://asf.alaska.edu/data-sets/sar-data-sets/sentinel-1/sentinel-1-how-to-cite/',

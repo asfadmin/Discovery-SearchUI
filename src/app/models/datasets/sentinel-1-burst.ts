@@ -14,7 +14,7 @@ export const sentinel_1_bursts = {
     Props.BASELINE_TOOL,
     Props.SUBTYPE,
   ],
-  apiValue: { datasets: 'SLC-BURST' },
+  apiValue: { dataset: 'SLC-BURST' },
   date: { start: new Date('2014/06/15 03:44:43 UTC') },
   infoUrl: 'https://sentinels.copernicus.eu/web/sentinel/user-guides/sentinel-1-sar/acquisition-modes/interferometric-wide-swath',
   citationUrl: 'https://asf.alaska.edu/data-sets/sar-data-sets/sentinel-1/sentinel-1-how-to-cite/',
