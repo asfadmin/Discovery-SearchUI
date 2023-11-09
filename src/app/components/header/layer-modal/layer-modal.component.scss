@@ -304,7 +304,10 @@ button {
   display: flex;
   flex-direction: column;
   width: 40%;
-  border-left: 1px solid black;
+  @include themify($themes) {
+    background-color: lighten(themed("background-white"), 10%);
+    color: themed("dark-primary-text");
+  }
 }
 .layer-list-item {
   margin: 5px;
@@ -315,4 +318,16 @@ button {
 #overlay-map {
   height: 100%;
   width: 100%;
+}
+.options-list {
+  @include themify($themes) {
+    background-color: lighten(themed("primary-light"), 10%);
+  }
+}
+.selected-item {
+  background: red;
+  @include themify($themes) {
+    background-color: darken(themed("primary-light"), 10%);
+    color: themed("dark-primary-text");
+  }
 }

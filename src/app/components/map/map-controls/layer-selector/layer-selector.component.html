@@ -1,4 +1,4 @@
-<button mat-stroked-button class="layer-select-button" [matMenuTriggerFor]="layerMenu" aria-label="Map projection view">
+<button mat-stroked-button class="layer-select-button" aria-label="Map projection view"  (click)="onLayerModalClick()">
   <ng-template [ngIf]="layerType === layerTypes.SATELLITE" [ngIfElse]="STREET_VIEW" class="layer-btn layer-select-icon arctic">
     <mat-icon class="control-icon">terrain</mat-icon>
   </ng-template>
