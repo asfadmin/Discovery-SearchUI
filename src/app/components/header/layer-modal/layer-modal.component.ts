@@ -5,7 +5,7 @@ import * as mapStore from '@store/map';
 
 import { AppState } from '@store';
 
-import { DrawService, MapService, ScreenSizeService } from '@services';
+import { DrawService, LayerService, MapService, ScreenSizeService } from '@services';
 import { Breakpoints, MapInteractionModeType } from '@models';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
@@ -66,7 +66,7 @@ export class LayerModalComponent implements OnInit, OnDestroy {
           'value': this.store$.select(mapStore.getCoherenceOverlayOpacity)
         },
         'type': 'LIST',
-        'layerFunction': (param) => { this.mapService.clearCoherence(); this.mapService.setCoherenceLayer(param); this.store$.dispatch(new mapStore.SetCoherenceOverlay(param)) },
+        'layerFunction': (param) => { this.mapService.clearCoherence();this.mapService.addLayer('coherence-' + param, this.layerService.getCoherenceLayer(param)); this.store$.dispatch(new mapStore.SetCoherenceOverlay(param)) },
         'sub': [
           {
             'name': '12 Day VV - Dec, Jan, Feb',
@@ -141,7 +141,8 @@ export class LayerModalComponent implements OnInit, OnDestroy {
     private dialogRef: MatDialogRef<LayerModalComponent>,
     private screenSize: ScreenSizeService,
     private mapService: MapService,
-    private drawService: DrawService
+    private drawService: DrawService,
+    private layerService: LayerService,
   ) { }
 
   ngOnInit() {

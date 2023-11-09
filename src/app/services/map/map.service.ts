@@ -72,6 +72,12 @@ export class MapService {
 
   private overviewMap: OverviewMap;
 
+
+  private layers = {
+  }
+
+
+
   private selectClick = new Select({
     condition: click,
     style: polygonStyle.hidden,
@@ -649,14 +655,38 @@ export class MapService {
     this.hasCoherenceLayer$.next(months);
   }
 
+  public addLayer(layerid: string, layer: any) {
+    this.layers[layerid] = layer;
+
+    if (this.layers[layerid]) {
+      this.map.removeLayer(this.layers[layerid]);
+      delete this.layers[layerid]
+    }
+
+    this.layers[layerid] = layer;
+    console.log(this.layers[layerid])
+    this.map.addLayer(this.layers[layerid]);
+
+  }
+  public removeLayer(layerid: string) {
+    this.map.removeLayer(this.layers[layerid]);
+    delete this.layers[layerid]
+  }
+
+  public updateLayerOpacity(layerid: string, opacity: number) {
+    this.layers[layerid].setOpacity(opacity);
+  }
+
   public clearCoherence(): void {
     if (!this.layerService.coherenceLayer) {
       return;
     }
+    for(let layer of Object.keys(this.layers)) {
+      if (layer.startsWith('coherence')) {
+        this.removeLayer(layer);
+      }
+    }
 
-    this.map.removeLayer(this.layerService.coherenceLayer);
-    this.layerService.coherenceLayer = null;
-    this.hasCoherenceLayer$.next(null);
   }
 
   public createBrowseRasterCanvas(scenes: models.CMRProduct[]) {
@@ -686,7 +716,11 @@ export class MapService {
     this.pinnedProducts?.setOpacity(opacity);
   }
   public updateCoherenceOpacity(opacity: number) {
-    this.layerService.coherenceLayer?.setOpacity(opacity);
+    for(let layer of Object.keys(this.layers)) {
+      if (layer.startsWith('coherence')) {
+        this.layers[layer].setOpacity(opacity);
+      }
+    }
   }
   public getAoiIntersectionMethod(geometryType: GeometryType) {
     if (geometryType === 'Point') {
