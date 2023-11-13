@@ -4,7 +4,7 @@
   margin: 0 10px;
 }
 
-.mat-list-base {
+.mat-mdc-list-base {
   padding-top: 8px;
   display: flex;
   flex-wrap: wrap;
@@ -18,7 +18,7 @@
 }
 
 .flex-list {
-  .mat-list-base {
+  .mat-mdc-list-base {
     display: flex !important;
     flex-wrap: wrap;
     width: 100% !important;
@@ -40,7 +40,7 @@
   margin-top: 25px;
 }
 
-.mat-list-base .mat-list-item,
+.mat-mdc-list-base .mat-mdc-list-item,
 .mat-list-base .mat-list-option {
   display: flex;
   flex: 1 1 740px;

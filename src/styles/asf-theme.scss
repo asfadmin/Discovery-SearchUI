@@ -17,12 +17,12 @@
 //  you can delete this line and instead use:
 //    `@include mat.legacy-typography-hierarchy(mat.define-legacy-typography-config());`
 // @include mat.all-legacy-component-typographies();
-@include mat.legacy-core();
+@include mat.core();
 
 button,
 .mat-expansion-panel,
 .mat-panel,
-.mat-card {
+.mat-mdc-card {
   border-radius: 0 !important;
   //font-size: 14px;
 }
@@ -157,15 +157,17 @@ $my-warn: mat.define-palette(mat.$red-palette);
 //   @include mat.all-legacy-component-themes($asf-dark-theme);
 // }
 
+
 .theme-light {
-  $asf-light-theme: mat.define-light-theme((
-    color: (
-      primary:$asf-app-primary,
-      accent: $asf-app-accent,
-      warn: $my-warn,
-    ),
-    typography: mat.define-typography-config(),
-    density: 0,
-   ));
-  @include mat.all-legacy-component-themes($asf-light-theme);
 }
+
+$asf-light-theme: mat.define-light-theme((
+  color: (
+    primary:$asf-app-primary,
+    accent: $asf-app-accent,
+    warn: $my-warn,
+  ),
+  typography: mat.define-typography-config(),
+  density: 0,
+ ));
+@include mat.core-theme($asf-light-theme);

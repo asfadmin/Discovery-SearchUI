@@ -4,7 +4,7 @@ $header-height: 120px;
 $footer-height: 60px;
 $bottom-offset: 10px;
 
-::ng-deep .tab-menu .mat-menu-content {
+::ng-deep .tab-menu .mat-mdc-menu-content {
   width: 160px !important;
 }
 
@@ -254,7 +254,7 @@ $bottom-offset: 10px;
   margin-top: -15px;
 }
 
-.mat-dialog-content {
+.mat-mdc-dialog-content {
   @include themify($themes) {
     background-color: themed('background-white');
   }
@@ -269,7 +269,7 @@ $bottom-offset: 10px;
   overflow-x: hidden;
   padding: 0;
   margin: 0;
-
+  /* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version.*/
   .mat-dialog-content-2 {
     top: initial;
     height: calc(100% - #{$footer-height});
@@ -325,7 +325,7 @@ $bottom-offset: 10px;
   width: 100%;
 }
 
-.mat-dialog-actions {
+.mat-mdc-dialog-actions {
   @include themify($themes) {
     background-color: themed('primary-light');
   }

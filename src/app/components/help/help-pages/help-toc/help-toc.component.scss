@@ -38,7 +38,7 @@
   }
 }
 
-.mat-card-avatar.help-toc-icon {
+.mat-mdc-card-avatar.help-toc-icon {
   width: 0;
 }
 
@@ -47,22 +47,23 @@
   display: flex;
 }
 
-.mat-card {
+.mat-mdc-card {
   padding: 16px 16px 0;
   height: 75px;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version.*/
 .mat-card-step {
   display: flex;
   margin: 0 3px;
   cursor: pointer;
 }
 
-.mat-card-title {
+.mat-mdc-card-title {
   margin-bottom: 8px;
 }
 
-.mat-card-subtitle {
+.mat-mdc-card-subtitle {
   margin-bottom: 0;
 }
 

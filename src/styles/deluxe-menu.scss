@@ -29,12 +29,12 @@ hr {
   }
 }
 
-.mat-icon-button {
+.mat-mdc-icon-button {
   height: 36px;
   line-height: 36px;
   min-width: 60px;
 }
-.mat-list-item {
+.mat-mdc-list-item {
   @include themify($themes) {
     color: themed('dark-primary-text');
   }
@@ -54,11 +54,14 @@ hr {
   margin: 0 5px;
 }
 
-::ng-deep.mat-menu-panel {
+::ng-deep.mat-mdc-menu-panel {
   max-width: 600px;
 }
 
-.mat-menu-item {
+.mat-mdc-menu-item {
+  @include themify($themes) {
+    background-color: themed('background-white') !important;
+  }
   font-weight: 400;
   height: auto;
 }

@@ -125,7 +125,7 @@ a {
   margin-bottom: 8px !important;
 }
 
-.mat-card-header .mat-card-title {
+.mat-mdc-card-header .mat-mdc-card-title {
   font-size: 16px;
 }
 
@@ -134,6 +134,7 @@ a {
   line-height: 24px !important;
 }
 
+/*TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version.*/
 .mini-toggle-button .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
   line-height: 24px !important;
   padding: 0 12px;

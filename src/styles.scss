@@ -4,7 +4,7 @@ $theme-map: null;
 
 // @import './styles/asf-theme';
 @import './styles/filter-list';
-@import "~prismjs/themes/prism-dark.css";
+@import "prismjs/themes/prism-dark.css";
 
 * {
   font-family: Roboto, sans-serif;
@@ -136,6 +136,7 @@ $theme-map: null;
 }
 
 .banner-dialog {
+  /* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version. */
   mat-dialog-container {
     padding: 0;
     box-sizing: border-box;
@@ -147,11 +148,11 @@ $theme-map: null;
     min-height: inherit;
     max-height: inherit;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version. */
   mat-dialog-content {
     padding: 15px 40px;
   }
-
+  /* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version. */
   mat-dialog-actions {
     padding: 7px 15px 7px 15px;
     margin: 0;
@@ -231,23 +232,25 @@ ul {
   padding-left: 0;
 }
 
-.mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+/* TODO(mdc-migration): The following rule targets internal classes of slide-toggle that may no longer apply for the MDC version. */
+.mat-mdc-slide-toggle.mat-checked .mat-slide-toggle-thumb {
   background-color: $asf-primary;
 }
 
-.mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+/* TODO(mdc-migration): The following rule targets internal classes of slide-toggle that may no longer apply for the MDC version. */
+.mat-mdc-slide-toggle.mat-checked .mat-slide-toggle-bar {
   background-color: darkgrey;
 }
 
 .max-width-100 {
   max-width: 115px !important;
-
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
   .mat-form-field-infix {
     width: 100px !important;
   }
 }
 
-.dl-list-global .mat-list-base .mat-list-item {
+.dl-list-global .mat-mdc-list-base .mat-mdc-list-item {
   height: 24px !important;
 }
 
@@ -282,24 +285,29 @@ ul {
   overflow: hidden;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .control-mat-button-toggle {
   pointer-events: auto;
-
+  /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
   .mat-button-toggle-label-content,
   .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
     line-height: 26px !important;
   }
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .ls-card .mat-button-toggle {
   font-size: $asf-font-size;
-
+  /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
   .mat-button-toggle-label-content,
   .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
     line-height: 24px;
   }
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
 .ls-card-content-list .mat-form-field-infix {
   @include themify_non_host($themes) {
     border-color: themed('primary-light');
@@ -370,7 +378,7 @@ ul {
   background-color: rgba(0, 0, 0, 0.09) !important;
 }
 
-.mat-dialog-container {
+.mat-mdc-dialog-container {
   @include themify_non_host($themes) {
     background-color: themed('primary-light');
   }
@@ -381,7 +389,7 @@ ul {
   margin: 0;
   padding: 0;
 
-  .mat-dialog-container {
+  .mat-mdc-dialog-container {
     @include themify_non_host($themes) {
       background-color: themed('primary-light');
     }
@@ -393,6 +401,7 @@ ul {
 }
 
 .file-list {
+  /* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version. */
   .mat-list-item-content {
     padding: 0 !important;
   }
@@ -405,37 +414,41 @@ ul {
   min-width: 1% !important;
 }
 
-.mat-select-panel {
+.mat-mdc-select-panel {
   max-width: 340px !important;
   max-height: 364px !important;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
 .saved-searches__filter-form-mobile .mat-form-field-infix {
   width: 143px !important;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .mat-button-toggle-label-content .mat-button-toggle-appearance-standard .scene-actions {
   line-height: 24px;
   padding: 0 9px 1px;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 #dataset-button-toggle-group .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
   line-height: 0;
   padding: 0;
 }
 
 .help-panel-config {
-  .mat-dialog-container {
+  .mat-mdc-dialog-container {
     padding: 0;
     overflow: hidden;
   }
 }
 
-.mat-list-base .mat-list-item.mat-2-line,
+.mat-mdc-list-base .mat-mdc-list-item.mat-2-line,
 .mat-list-base .mat-list-option.mat-2-line {
   height: 58px !important;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version. */
 .mat-list-base-item {
   .job-list-item {
     display: flex;
@@ -512,7 +525,7 @@ ul {
   z-index: 100000;
 }
 
-.jobs-display--mobile .mat-list-base .mat-list-item .mat-list-item-content,
+.jobs-display--mobile .mat-mdc-list-base .mat-mdc-list-item .mat-list-item-content,
 .jobs-display--mobile .mat-list-base .mat-list-option .mat-list-item-content {
   width: 100%;
 }
@@ -531,11 +544,11 @@ $d-height: 500px;
   //max-width: $d-width !important;
   max-height: $d-height !important;
 
-  .mat-list-base {
+  .mat-mdc-list-base {
     padding-top: 0;
   }
 
-  .mat-dialog-content {
+  .mat-mdc-dialog-content {
     padding-right: 10px;
   }
 }
@@ -574,7 +587,7 @@ $d-height: 500px;
 }
 
 #preferencesDialog {
-  .mat-dialog-content {
+  .mat-mdc-dialog-content {
     @include themify($themes) {
       background-color: themed("background-white");
     }
@@ -606,9 +619,10 @@ $d-height: 500px;
     color: themed('dark-primary-text');
   }
 }
+/* TODO(mdc-migration): The following rule targets internal classes of menu that may no longer apply for the MDC version. */
 .mat-menu {
   @include themify_non_host($themes) {
-    background-color: themed('background-white');
+    background-color: themed('background-white') !important;
   }
 }
 
@@ -630,6 +644,7 @@ $d-height: 500px;
 .content-block .mat-horizontal-stepper-header-container {
   margin-bottom: 20px;
 }
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .mat-button-toggle {
   background: #424242;
 }
@@ -662,7 +677,8 @@ $d-height: 500px;
     margin-top: 4px;
   }
 }
-.mat-form-field.mat-focused {
+.mat-mdc-form-field.mat-focused {
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
   .mat-form-field-label {
     @include themify_non_host($themes) {
       color: themed('dark-secondary-text') !important;
@@ -759,6 +775,7 @@ $d-height: 500px;
   align-items: stretch;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version. */
 .pair-row .mat-list-item-content {
   width: 100%;
   justify-content: space-between;

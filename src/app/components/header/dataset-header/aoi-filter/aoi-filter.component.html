@@ -32,7 +32,7 @@
     </mat-icon>
   </mat-form-field>
 
-  <mat-card *ngIf="isAOIOptionsOpen"
+  <mat-card appearance="outlined" *ngIf="isAOIOptionsOpen"
            [@fadeTransition]
             class="breadcrumb-filter aoi-mat-card">
     <app-aoi-options (close)="closeAOIOptions()"></app-aoi-options>

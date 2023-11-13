@@ -166,7 +166,8 @@ a {
   margin-top: 8px;
 }
 
-.mat-list-base[dense] .mat-list-item .mat-list-item-content {
+/* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version. */
+.mat-mdc-list-base[dense] .mat-mdc-list-item .mat-list-item-content {
   padding: 0;
 }
 
@@ -207,12 +208,12 @@ a {
   min-height: 150px;
 }
 
-.mat-card-sm-image {
+.mat-mdc-card-sm-image {
   width: 50px;
   height: 50px;
 }
 
-.mat-card-md-image {
+.mat-mdc-card-md-image {
   width: 125px;
   height: 125px;
 }

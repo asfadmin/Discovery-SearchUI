@@ -97,6 +97,7 @@ label {
   cursor: move;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version.*/
 .control-mat-button-toggle {
   @include themify($themes) {
     background: themed('background-white');
@@ -170,6 +171,7 @@ label {
   transform: rotate(-45deg);
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of menu that may no longer apply for the MDC version.*/
 ::ng-deep .opacity-slider-mat-menu {
   padding: 15px 20px 0;
 }
@@ -218,10 +220,12 @@ label {
   margin-left: 10px;
 }
 
-::ng-deep .mat-slider.mat-slider-horizontal {
+/* TODO(mdc-migration): The following rule targets internal classes of slider that may no longer apply for the MDC version.*/
+::ng-deep .mat-mdc-slider.mat-slider-horizontal {
   height: 28px;
 }
 
-::ng-deep .mat-slider.mat-slider-horizontal .mat-slider-wrapper {
+/* TODO(mdc-migration): The following rule targets internal classes of slider that may no longer apply for the MDC version.*/
+::ng-deep .mat-mdc-slider.mat-slider-horizontal .mat-slider-wrapper {
   top: 50%;
 }

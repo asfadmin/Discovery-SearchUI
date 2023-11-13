@@ -12,7 +12,6 @@ $idk-pad: 21px;
     border-bottom-color: themed("primary-dark");
     color: themed("dark-primary-text");
   }
-
   padding: 0 10px;
   margin-top: -$bottom-offset;
   border-bottom-style: solid;
@@ -49,7 +48,7 @@ $idk-pad: 21px;
 .dl-clear-button {
   text-align: left;
 
-  .mat-button {
+  .mat-mdc-button {
     font-size: 16px;
 
     @include themify($themes) {
@@ -65,7 +64,7 @@ $idk-pad: 21px;
 .dl-download-buttons {
   text-align: right;
 
-  .mat-button {
+  .mat-mdc-button {
     font-size: 16px;
 
     @include themify($themes) {
@@ -169,11 +168,13 @@ button {
   margin: 0;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version. */
 .dl-mat-dialog-content-warn {
   height: calc(100% - #{$header-height} - #{$footer-height} - #{$warn-msg-height} - #{$idk-pad});
   max-height: calc(100% - #{$header-height} - #{$footer-height} - #{$warn-msg-height} - #{$idk-pad});
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version. */
 .dl-mat-dialog-content-warn-mobile {
   height: calc(100% - #{$header-height} - #{$footer-height} - #{$warn-msg-mobile-height} - #{$idk-pad});
   max-height: calc(100% - #{$header-height} - #{$footer-height} - #{$warn-msg-mobile-height} - #{$idk-pad});
@@ -207,7 +208,7 @@ button {
   height: $header-height;
 }
 
-.mat-list-base .mat-list-item .mat-list-item-content,
+.mat-mdc-list-base .mat-mdc-list-item .mat-list-item-content,
 .mat-list-base .mat-list-option .mat-list-item-content {
   padding: 0 !important;
 }

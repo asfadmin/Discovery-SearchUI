@@ -54,7 +54,7 @@ $config: mat.define-legacy-typography-config();
 }
 
 .breadcrumb {
-  @extend .mat-form-field;
+  @extend .mat-form-field !optional;
 
   @include fx-flex(auto);
 

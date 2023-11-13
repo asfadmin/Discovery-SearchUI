@@ -26,7 +26,7 @@
 
   <!-- SCENE LIST -->
   <div *ngIf="view === Views.LIST" class="h100 w100">
-    <mat-card class="mp0 mobile-scene-list--layout">
+    <mat-card appearance="outlined" class="mp0 mobile-scene-list--layout">
       <mat-card-subtitle class="header">
         <app-scenes-list-header></app-scenes-list-header>
       </mat-card-subtitle>
@@ -39,7 +39,7 @@
 
   <!-- SCENE DETAIL -->
   <div *ngIf="view === Views.DETAIL" class="h100 w100">
-    <mat-card class="h100 w100 mp0 no-box-shadow mobile-detail-menu--layout">
+    <mat-card appearance="outlined" class="h100 w100 mp0 no-box-shadow mobile-detail-menu--layout">
       <mat-card-subtitle class="header mobile">
         {{ 'SCENE_DETAIL'| translate  }}
         <ng-container *ngIf="searchType !== SearchTypes.BASELINE &&
@@ -99,7 +99,7 @@
   </div>
 
   <div *ngIf="view === Views.CHART" class="h100 w100">
-    <mat-card class="h100 w100 mp0 no-box-shadow mobile-detail-menu--layout">
+    <mat-card appearance="outlined" class="h100 w100 mp0 no-box-shadow mobile-detail-menu--layout">
       <mat-card-subtitle class="header">
         <div class="baseline-header-button-group">
           <mat-button-toggle-group name="baselineCriteria"
@@ -117,7 +117,7 @@
   </div>
 
   <div *ngIf="view === Views.SBAS" class="h100 w100">
-    <mat-card class="h100 w100 mp0 no-box-shadow mobile-detail-menu--layout">
+    <mat-card appearance="outlined" class="h100 w100 mp0 no-box-shadow mobile-detail-menu--layout">
       <mat-card-subtitle class="header">
         <div class="baseline-header-button-group">
           <mat-button-toggle-group name="SBASCriteria"
