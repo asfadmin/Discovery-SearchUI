@@ -2,7 +2,7 @@
 
 @import "asf-theme";
 
-$config: mat.define-typography-config();
+$config: mat.define-legacy-typography-config();
 
 #ASF_SEARCH {
   width: 185px;

@@ -1,7 +1,7 @@
 @use "@angular/material" as mat;
 
 @import "asf-theme";
-$config: mat.define-typography-config();
+$config: mat.define-legacy-typography-config();
 
 .medium-header {
   padding-bottom: 8px;

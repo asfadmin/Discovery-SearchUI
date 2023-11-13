@@ -10,7 +10,7 @@
   overflow-y: hidden;
 }
 
-$config: mat.define-typography-config();
+$config: mat.define-legacy-typography-config();
 .breadcrumb-list {
   @include themify($themes) {
     background-color: themed('background-white');

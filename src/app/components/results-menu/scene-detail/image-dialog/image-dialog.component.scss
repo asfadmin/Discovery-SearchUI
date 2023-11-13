@@ -2,7 +2,7 @@
 
 @import "asf-theme";
 
-$config: mat.define-typography-config();
+$config: mat.define-legacy-typography-config();
 
 .mp0-ellipsis-mobile {
   width: 250px;
