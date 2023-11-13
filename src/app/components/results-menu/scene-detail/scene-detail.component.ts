@@ -211,9 +211,11 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   }
 
   public sceneCanInSAR(): boolean {
-    return this.dataset.id === models.sentinel_1.id ? true : this.selectedProducts
-      .map(product => product.metadata.canInSAR)
-      .some(canInSAR => !!canInSAR);
+    return this.dataset.id === models.sentinel_1.id ||
+      this.selectedProducts
+        .map(product => product.metadata.canInSAR)
+        .some(canInSAR => !!canInSAR);
+    ;
   }
 
   public baselineSceneName(): string {
@@ -223,7 +225,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
     if (this.dataset.id === models.sentinel_1.id) {
       return this.selectedProducts.filter(
-          product => product.metadata.productType === 'SLC' || product.metadata.productType === 'BURST'
+        product => product.metadata.productType === 'SLC' || product.metadata.productType === 'BURST'
       )[0].name;
     } else {
       return this.scene.name;
@@ -233,8 +235,8 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public sceneHasBrowse() {
     return (
       !!this.scene.browses &&
-      this.scene.browses.length > 0 &&
-      !this.scene?.browses[0].includes('no-browse')
+        this.scene.browses.length > 0 &&
+        !this.scene?.browses[0].includes('no-browse')
     );
   }
 
@@ -313,14 +315,14 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
     this.browseIndex = newIndex;
     let [url, wkt] = this.searchType === this.searchTypes.SARVIEWS_EVENTS
-    ? [this.selectedEventProducts[this.browseIndex].files.browse_url, this.selectedEventProducts[this.browseIndex]?.granules[0].wkt]
-    : [this.scene.browses[this.browseIndex], this.scene.metadata.polygon];
+      ? [this.selectedEventProducts[this.browseIndex].files.browse_url, this.selectedEventProducts[this.browseIndex]?.granules[0].wkt]
+      : [this.scene.browses[this.browseIndex], this.scene.metadata.polygon];
 
     // for OPERA-S1 geotiffs
     // if(this.scene?.id.startsWith('OPERA')) {
     //   url = this.scene.downloadUrl;
     // }
-    
+
     this.mapService.setSelectedBrowse(url, wkt);
   }
 
@@ -496,7 +498,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
   private getBrowseCount() {
     return this.searchType === this.searchTypes.SARVIEWS_EVENTS
-    ? this.selectedEventProducts.length : this.scene.browses.length;
+      ? this.selectedEventProducts.length : this.scene.browses.length;
   }
 
   ngOnDestroy() {

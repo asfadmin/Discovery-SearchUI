@@ -25,7 +25,7 @@
             [offsets]="offsets"
             [searchType]="searchType"
             [isQueued]="allQueued[getGroupCriteria(scene)]"
-            [hyp3ableByJobType]="hyp3ableByScene[scene.groupId]"
+            [hyp3ableByJobType]="hyp3ableByScene[scene.groupId] || hyp3ableByScene[scene.name]"
             [jobQueued]="allJobNames.includes(scene.name)"
             [numQueued]="numberOfQueue[scene.groupId]"
             [isSelected]="scene.id === selected">

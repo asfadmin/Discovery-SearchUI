@@ -58,14 +58,22 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
     );
 
     const fileNames = this.scenesService.scenes$.pipe(
-      map(scenes =>
-          scenes.map(scene => scene.metadata.fileName.toLowerCase().split('.')[0])
+      map(scenes => scenes
+        .map(
+            scene => {
+          return scene.metadata.fileName.toLowerCase().split('.')[0];
+        })
       )
     );
 
     this.subs.add(
       this.store$.select(getScenes).subscribe(
-        res => this.unfilteredScenes = Array.from(new Set(res.map(scene => scene.metadata.fileName.toLowerCase().split('.')[0])))
+        res => this.unfilteredScenes = Array.from(
+          new Set(
+            res
+              .map(scene => scene.metadata.fileName.toLowerCase().split('.')[0])
+          )
+        )
       )
     );
 

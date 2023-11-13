@@ -339,11 +339,12 @@ export class SearchEffects {
             }
           ).join(',');
 
-          const collections = this.asfApiService.collections();
-
-          return this.asfApiService.query<any[]>({ 'granule_list': granules, 'collections': collections.join(',') }).pipe(
+          return this.asfApiService.query<any[]>({ 'granule_list': granules }).pipe(
             map(results => this.productService.fromResponse(results)
-              .filter(product => !product.metadata.productType.includes('METADATA'))
+              .filter(product => {
+                return !product.metadata.productType.includes('METADATA') ||
+                !product.metadata.productType.includes('BURST_XML');
+              })
               .reduce((products, product) => {
                 products[product.name] = product;
                 return products;
@@ -363,7 +364,6 @@ export class SearchEffects {
             ),
             catchError(
               _ => {
-                console.log(_);
                 return of(new SearchError(`Error loading search results`));
               }
             ),
@@ -417,7 +417,6 @@ export class SearchEffects {
             ),
             catchError(
               _ => {
-                console.log(_);
                 return of(new SearchError(`Error loading next batch of On Demand results`));
               }
             ),
@@ -466,6 +465,7 @@ export class SearchEffects {
           },
         };
       });
+    console.log(virtualProducts, jobs, products);
 
     return virtualProducts;
   }

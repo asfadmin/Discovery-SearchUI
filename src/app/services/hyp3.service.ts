@@ -179,6 +179,7 @@ export class Hyp3Service {
           if (a.metadata.date < b.metadata.date) {
             return -1;
           }
+
           return 1;
         }));
       });
