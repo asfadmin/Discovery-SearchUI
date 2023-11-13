@@ -61,6 +61,11 @@ $idk-pad: 21px;
   box-sizing: border-box;
   max-width: 15%;
 }
+.options-list {
+  .mat-button {
+    display: flex;
+  }
+}
 
 .dl-download-buttons {
   text-align: right;
