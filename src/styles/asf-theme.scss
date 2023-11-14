@@ -158,10 +158,7 @@ $my-warn: mat.define-palette(mat.$red-palette);
 // }
 
 
-.theme-light {
-}
-
-$asf-light-theme: mat.define-light-theme((
+  $asf-light-theme: mat.define-light-theme((
   color: (
     primary:$asf-app-primary,
     accent: $asf-app-accent,
@@ -170,4 +167,5 @@ $asf-light-theme: mat.define-light-theme((
   typography: mat.define-typography-config(),
   density: 0,
  ));
-@include mat.core-theme($asf-light-theme);
+@include mat.core-color($asf-light-theme);
+@include mat.button-color($asf-light-theme);
