@@ -9,3 +9,12 @@
 .file-sub-line {
   font-size: 14px !important;
 }
+.test {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 16px;
+  position: relative;
+  height: inherit;
+}

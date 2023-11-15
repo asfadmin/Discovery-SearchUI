@@ -779,3 +779,13 @@ $d-height: 500px;
   width: 100%;
   justify-content: space-between;
 }
+
+.mat-tooltip {
+  background: rgba(97,97,97,.9);
+}
+.mat-menu-mdc-content {
+  background: red;
+}
+.mat-mdc-menu-panel {
+  background: red !important;
+}
