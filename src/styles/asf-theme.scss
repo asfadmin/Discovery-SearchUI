@@ -18,6 +18,7 @@
 //    `@include mat.legacy-typography-hierarchy(mat.define-legacy-typography-config());`
 // @include mat.all-legacy-component-typographies();
 @include mat.core();
+@include mat.typography-hierarchy();
 
 button,
 .mat-expansion-panel,
