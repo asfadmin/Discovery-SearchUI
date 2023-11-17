@@ -1,9 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
-$theme-map: null;
 
 // @import './styles/asf-theme';
 @import './styles/filter-list';
 @import "prismjs/themes/prism-dark.css";
+@import "asf-theme";
+
+$theme-map: null;
 
 * {
   font-family: Roboto, sans-serif;
@@ -778,14 +780,4 @@ $d-height: 500px;
 .pair-row .mat-list-item-content {
   width: 100%;
   justify-content: space-between;
-}
-
-.mat-tooltip {
-  background: rgba(97,97,97,.9);
-}
-.mat-menu-mdc-content {
-  background: red;
-}
-.mat-mdc-menu-panel {
-  background: red !important;
 }
