@@ -61,7 +61,8 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
       map(scenes => scenes
         .map(
             scene => {
-          return scene.metadata.fileName.toLowerCase().split('.')[0];
+              const filename = scene.metadata.fileName || '';
+              return filename.toLowerCase().split('.')[0];
         })
       )
     );
@@ -71,7 +72,10 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
         res => this.unfilteredScenes = Array.from(
           new Set(
             res
-              .map(scene => scene.metadata.fileName.toLowerCase().split('.')[0])
+              .map(scene => {
+                const filename = scene.metadata.fileName || '';
+                return filename.toLowerCase().split('.')[0];
+              })
           )
         )
       )
