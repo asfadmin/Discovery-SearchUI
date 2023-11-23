@@ -1,8 +1,8 @@
 import { Component,  OnDestroy, OnInit } from '@angular/core';
 import { saveAs } from 'file-saver';
 
-import { combineLatest, of } from 'rxjs';
-import { debounceTime, filter, map, tap, switchMap, withLatestFrom } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { debounceTime, filter, map, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -14,7 +14,7 @@ import * as filtersStore from '@store/filters';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 
 import {
-  MapService, ScenesService, ScreenSizeService,
+  MapService, ScenesService, ScreenSizeService, PossibleHyp3JobsService,
   PairService, Hyp3Service, SarviewsEventsService, NotificationService
 } from '@services';
 
@@ -184,63 +184,6 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
   private selectedEvent: models.SarviewsEvent;
 
-  private possibleJobs$ = this.products$.pipe(map(
-    products => products.map(p => [p])
-  ));
-
-  private referenceScene$ = this.store$.select(scenesStore.getScenes).pipe(
-    withLatestFrom(this.store$.select(scenesStore.getMasterName)),
-    map(
-      ([scenes, referenceName]) => {
-        if (!!referenceName) {
-          const referenceSceneIdx = scenes.findIndex(scene => scene.name === referenceName);
-
-          if (referenceSceneIdx !== -1) {
-            return scenes[referenceSceneIdx];
-          }
-        }
-      }
-    ));
-
-  private hyp3ableJobsSBAS$ = combineLatest([
-    this.possibleJobs$,
-    this.pairs$,
-  ]).pipe(
-    map(([possibleJobs, {pairs, custom}]) => {
-      const allPossiblePairJobs = [...pairs, ...custom];
-
-      return allPossiblePairJobs.concat(possibleJobs);
-    }));
-
-  private hyp3ableJobsBaseline$ = combineLatest([
-    this.products$,
-    this.referenceScene$
-  ]).pipe(
-    map(([products, referenceScene]) => {
-      if (!referenceScene) {
-        return products.map(p => [p]);
-      }
-
-      const baselinePairs = this.makeBaselinePairs(products, referenceScene);
-      return baselinePairs.concat(products.map(p => [p]));
-    })
-  );
-
-  private makeBaselinePairs(products: models.CMRProduct[], referenceScene: models.CMRProduct) {
-    products = products.filter(prod => prod.id !== referenceScene.id);
-
-    const pairedJobs: models.CMRProduct[][] = products.map(product => {
-      return [referenceScene, product]?.sort((a, b) => {
-          if (a.metadata.date < b.metadata.date) {
-            return -1;
-          }
-          return 1;
-        })
-    });
-
-    return pairedJobs;
-  }
-
   constructor(
     private store$: Store<AppState>,
     private mapService: MapService,
@@ -251,6 +194,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     private hyp3: Hyp3Service,
     private clipboard: ClipboardService,
     private notificationService: NotificationService,
+    private possibleHyp3JobsService: PossibleHyp3JobsService,
   ) { }
 
   ngOnInit() {
@@ -261,21 +205,8 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.store$.select(searchStore.getSearchType).pipe(
-        switchMap((searchType: models.SearchType) => {
-          if (searchType === models.SearchType.DATASET || searchType === models.SearchType.LIST) {
-            return this.possibleJobs$;
-          }
-          else if (searchType === models.SearchType.SBAS) {
-            return this.hyp3ableJobsSBAS$;
-          } else if (searchType === models.SearchType.BASELINE) {
-            return this.hyp3ableJobsBaseline$;
-          } else {
-            return of([]);
-          }
-
-        })
-      ).subscribe(
+      this.possibleHyp3JobsService.possibleJobs$
+      .subscribe(
           possibleJobs => {
             this.hyp3able = this.hyp3.getHyp3ableProducts(possibleJobs);
           }
