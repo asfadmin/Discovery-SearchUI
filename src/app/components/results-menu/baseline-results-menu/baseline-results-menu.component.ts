@@ -86,7 +86,6 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
       .subscribe(
           possibleJobs => {
             this.hyp3able = this.hyp3.getHyp3ableProducts(possibleJobs);
-            console.log(this.hyp3able);
           }
         )
     );
