@@ -33,3 +33,4 @@ export { SarviewsEventsService } from './sarviews-events.service';
 export { BrowseOverlayService } from './browse-overlay.service';
 export { ThemingService } from './theming.service';
 export { ExportService } from './export.service';
+export { PossibleHyp3JobsService } from './possible-hyp3-jobs.service';

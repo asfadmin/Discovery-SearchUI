@@ -60,7 +60,7 @@ export const initState: ScenesState = {
   perpendicularSort: ColumnSortDirection.NONE,
   temporalSort: ColumnSortDirection.NONE,
   pinnedProductBrowses: {}
-};
+}
 
 
 export function scenesReducer(state = initState, action: ScenesActions): ScenesState {

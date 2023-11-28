@@ -165,6 +165,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       )
     );
 
+
     this.subs.add(
       this.pairs$.subscribe(
         pairs => {
@@ -188,20 +189,52 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       )
     );
 
+    const baselineReference$ = combineLatest(
+      this.store$.select(scenesStore.getScenes),
+      this.store$.select(scenesStore.getMasterName),
+      this.store$.select(searchStore.getSearchType)
+    ).pipe(
+        map(
+          ([scenes, referenceName, searchType]) => {
+            if (searchType === models.SearchType.BASELINE && !!referenceName) {
+            const referenceSceneIdx = scenes.findIndex(scene => scene.name === referenceName);
 
-    this.store$.select(scenesStore.getAllSceneProducts).subscribe(
-      searchScenes => {
-        this.hyp3ableByScene = {};
-        Object.entries(searchScenes).forEach(([groupId, products]) => {
-          const hyp3able = this.hyp3.getHyp3ableProducts(
-            (<models.CMRProduct[]>products).map(product => [product])
-          );
-
-
-          this.hyp3ableByScene[groupId] = hyp3able;
-        });
-      }
+            if (referenceSceneIdx !== -1) {
+              return scenes[referenceSceneIdx];
+            }
+          } else {
+            return null;
+          }
+          }
+        ),
     );
+
+    
+    this.store$.select(scenesStore.getAllSceneProducts).pipe(
+      withLatestFrom(baselineReference$)
+    )
+      
+    .subscribe(
+      ([searchScenes, baselineReference]) => {
+        this.hyp3ableByScene = {};
+
+        Object.entries(searchScenes).forEach(([groupId, products]) => {
+          const possibleJobs = [];
+            (<any[]>products).forEach(product => {
+
+              possibleJobs.push([product]);
+
+              if (!!baselineReference) {
+                possibleJobs.push([baselineReference, product]);
+              }
+            });
+
+            const hyp3able = this.hyp3.getHyp3ableProducts(possibleJobs);
+
+            this.hyp3ableByScene[groupId] = hyp3able;
+          });
+        }
+      );
 
     const queueScenes$ = combineLatest([
       this.store$.select(queueStore.getQueuedProducts),
@@ -263,8 +296,8 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       this.store$.select(searchStore.getIsLoading).pipe(
         filter(_ => !!this.scroll)
       ).subscribe(
-        _ => this.scroll.scrollToOffset(0)
-      )
+          _ => this.scroll.scrollToOffset(0)
+        )
     );
 
     this.subs.add(
@@ -278,14 +311,14 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
           return Math.max(0, sceneIdx - 1);
         })
       ).subscribe(
-        idx => {
-          if (!this.selectedFromList) {
-            this.scrollTo(idx);
-          }
+          idx => {
+            if (!this.selectedFromList) {
+              this.scrollTo(idx);
+            }
 
-          this.selectedFromList = false;
-        }
-      )
+            this.selectedFromList = false;
+          }
+        )
     );
 
   }
@@ -308,12 +341,12 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
         return Math.max(0, sceneIdx - 1);
       })
     ).subscribe(
-      idx => {
-        if (!this.selectedFromList) {
-          this.scrollTo(idx);
+        idx => {
+          if (!this.selectedFromList) {
+            this.scrollTo(idx);
+          }
         }
-      }
-    ));
+      ));
 
     this.subs.add(this.pairs$.pipe(
       filter(loaded => !!loaded),
@@ -328,12 +361,12 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
         return Math.max(0, sceneIdx - 1);
       })
     ).subscribe(
-      idx => {
-        if (!this.selectedFromList) {
-          this.scrollTo(idx);
+        idx => {
+          if (!this.selectedFromList) {
+            this.scrollTo(idx);
+          }
         }
-      }
-    )
+      )
     );
   }
 
@@ -362,7 +395,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
   public getGroupCriteria(scene: CMRProduct): string {
     const ungrouped_product_types = [...models.opera_s1.productTypes, {apiValue: 'BURST'}, {apiValue: 'BURST_XML'}].map(m => m.apiValue)
     if(ungrouped_product_types.includes(scene.metadata.productType)) {
-        return scene.metadata.parentID || scene.id;
+      return scene.metadata.parentID || scene.id;
     }
     return scene.groupId;
   }
