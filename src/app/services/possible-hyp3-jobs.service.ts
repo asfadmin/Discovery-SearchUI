@@ -81,7 +81,7 @@ export class PossibleHyp3JobsService {
   public possibleJobs$ = this.store$.select(searchStore.getSearchType).pipe(
     switchMap((searchType: models.SearchType) => {
       if (searchType === models.SearchType.DATASET || searchType === models.SearchType.LIST) {
-        return this.possibleJobs$;
+        return this.possibleProductJobs$;
       }
       else if (searchType === models.SearchType.SBAS) {
         return this.hyp3ableJobsSBAS$;
