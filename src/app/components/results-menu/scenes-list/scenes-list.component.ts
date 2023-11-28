@@ -194,23 +194,27 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       this.store$.select(scenesStore.getMasterName),
       this.store$.select(searchStore.getSearchType)
     ).pipe(
-        filter(([_, __, searchType]) => searchType === models.SearchType.BASELINE),
-        filter(([_, referenceName]) => !!referenceName),
         map(
-          ([scenes, referenceName]) => {
+          ([scenes, referenceName, searchType]) => {
+            if (searchType === models.SearchType.BASELINE && !!referenceName) {
             const referenceSceneIdx = scenes.findIndex(scene => scene.name === referenceName);
 
             if (referenceSceneIdx !== -1) {
               return scenes[referenceSceneIdx];
             }
+          } else {
+            return null;
+          }
           }
         ),
     );
 
-    combineLatest(
-      this.store$.select(scenesStore.getAllSceneProducts),
-      baselineReference$
-    ).subscribe(
+    
+    this.store$.select(scenesStore.getAllSceneProducts).pipe(
+      withLatestFrom(baselineReference$)
+    )
+      
+    .subscribe(
       ([searchScenes, baselineReference]) => {
         this.hyp3ableByScene = {};
 
@@ -220,7 +224,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
 
               possibleJobs.push([product]);
 
-              if (baselineReference) {
+              if (!!baselineReference) {
                 possibleJobs.push([baselineReference, product]);
               }
             });
