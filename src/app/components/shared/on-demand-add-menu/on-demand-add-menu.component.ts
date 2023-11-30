@@ -92,37 +92,39 @@ export class OnDemandAddMenuComponent implements OnInit {
     }
     const slcProducts = this.findSLCs(byProductType).products;
 
-    return slcProducts.length >= 1 &&
-    this.isNotReferenceScene(slcProducts);
+    return (
+      slcProducts.length >= 1 &&
+        this.isNotReferenceScene(slcProducts)
+    );
   }
 
   private findSLCs(byProductType: Hyp3ableByProductType[]): Hyp3ableByProductType {
-    return byProductType.find(prod => prod.productType === 'SLC');
+    return byProductType.find(prod => prod.productType === 'SLC' || prod.productType === 'BURST');
   }
 
   private isNotReferenceScene(products: CMRProduct[][]): boolean {
     return products[0][0].id !== this.referenceScene.id ||
-    products[products.length - 1][0].id !== this.referenceScene.id;
+      products[products.length - 1][0].id !== this.referenceScene.id;
   }
 
   public queueBaselinePairOnDemand(products: models.CMRProduct[][], job_type: models.Hyp3JobType) {
     products = products.filter(prod => prod[0].id !== this.referenceScene.id);
     const jobs: models.QueuedHyp3Job[] = products.map(product => {
       return {
-      granules: [this.referenceScene, product[0]]?.sort((a, b) => {
-        if (a.metadata.date < b.metadata.date) {
-          return -1;
-        }
-        return 1;
-      }),
-      job_type
-    } as models.QueuedHyp3Job;
-  });
+        granules: [this.referenceScene, product[0]]?.sort((a, b) => {
+          if (a.metadata.date < b.metadata.date) {
+            return -1;
+          }
+          return 1;
+        }),
+        job_type
+      } as models.QueuedHyp3Job;
+    });
 
     this.store$.dispatch(new queueStore.AddJobs(jobs));
   }
 
-  public onOpenHelp(infoUrl) {
+  public onOpenHelp(infoUrl: string) {
     window.open(infoUrl);
   }
 }

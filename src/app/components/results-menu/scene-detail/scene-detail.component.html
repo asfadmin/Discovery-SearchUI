@@ -274,12 +274,13 @@
 <div
   class="tool-menu"
   *ngIf="(scene || sarviewEvent) && breakpoint$ | async as breakpoint"
-  [ngStyle]="{ bottom: searchType === searchTypes.BASELINE
-  && breakpoint <= breakpoints.MEDIUM
-  ? '20px' : breakpoint < breakpoints.SMALL ? '17px' : '0' }"
+  [ngStyle]="{
+    bottom:
+      searchType === searchTypes.BASELINE && breakpoint <= breakpoints.MEDIUM ?
+        '20px' : breakpoint < breakpoints.SMALL ? '17px' : '0'
+  }"
   [ngClass]="{
-  'menu-override': (searchType === searchTypes.BASELINE
-  && breakpoint === breakpoints.FULL)
+    'menu-override': (searchType === searchTypes.BASELINE && breakpoint === breakpoints.FULL)
   }
   ">
   <div class="search-button-label">{{ 'SEARCH' | translate | uppercase }}:</div>
@@ -322,7 +323,7 @@
 
   <div
     [matTooltip]="
-    searchType === searchTypes.SARVIEWS_EVENTS ? ( 'GEOGRAPHIC_SEARCH_BASED_ON_EVENT_POLYGON' | translate ) : 
+    searchType === searchTypes.SARVIEWS_EVENTS ? ( 'GEOGRAPHIC_SEARCH_BASED_ON_EVENT_POLYGON' | translate ) :
     (
       dataset?.id === 'OPERA-S1' ? ('OPERA_S1_SOURCE_DATA' | translate) :
     (dataset?.id === 'SENTINEL-1 BURSTS' ? ('GEOGRAPHIC_SEARCH_BASED_ON_BURST' | translate) :
@@ -350,16 +351,6 @@
       <span *ngIf="breakpoint != breakpoints.MOBILE">{{searchType !== searchTypes.SARVIEWS_EVENTS ? dataset?.id === 'OPERA-S1' ? ('SOURCE_DATA' | translate) : ('MORE_LIKE_THIS' | translate ) : ('GEOGRAPHIC' | translate )}}</span>
     </button>
 
-    <!-- <button *ngIf="dataset?.id === 'OPERA-S1'"
-    mat-stroked-button
-    color="primary"
-    [disabled]="!(dataset?.id === 'OPERA-S1' && (scene.metadata.productType === 'RTC' || scene.metadata.productType === 'CSLC'))"
-    (click)="staticLayer()"
-    class="mini-toggle-button search-button">
-    <span *ngIf="breakpoint === breakpoints.MOBILE">{{ 'Static' }}</span>
-    <span *ngIf="breakpoint != breakpoints.MOBILE">{{'STATIC_LAYER' | translate}}</span>
-
-  </button> -->
   </div>
   <div *ngIf="searchType === searchTypes.SARVIEWS_EVENTS"
     matTooltip="{{ 'USE_THIS_EVENT_S_PRODUCT_SCENES_IN_LIST_SEARCH' | translate }}">
