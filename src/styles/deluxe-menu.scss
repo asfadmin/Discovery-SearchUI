@@ -22,7 +22,7 @@ hr {
 
 .large-icon {
   @include md-icon-size(30px);
-
+  min-height: 30px;
   margin-right: 0;
   @include themify($themes) {
     color: themed('dark-primary-text');

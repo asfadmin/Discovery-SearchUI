@@ -165,7 +165,7 @@ color: (
   warn: $my-warn,
 ),
 typography: mat.define-typography-config(),
-density: 0,
+density: -1,
 ));
 @include mat.all-component-themes($asf-light-theme);
 @include mat.core-color($asf-light-theme);
