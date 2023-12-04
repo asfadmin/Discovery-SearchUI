@@ -10,6 +10,8 @@
   // content: "";
   width: 19px;
   height: 19px;
+  margin-right: 0px;
+  margin-left: 0px;
   // margin-right: 15px;
   // display: inline-block;
 }
@@ -63,7 +65,7 @@
     color: themed('primary');
   }
   position: absolute;
-  bottom: -6px;
-  right: -15px;
+  bottom: -9px;
+  right: -21px;
   transform: rotate(-45deg);
 }

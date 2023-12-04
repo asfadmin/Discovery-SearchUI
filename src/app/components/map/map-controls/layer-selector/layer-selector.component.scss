@@ -33,14 +33,11 @@
     color: themed('primary');
   }
   position: absolute;
-  bottom: -6px;
-    right: -15px;
+  bottom: 0px;
+  right: -17px;
   transform: rotate(-45deg);
 }
 
-/* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
-.control-mat-checkbox-toggle {
-}
 
 .checkbox {
   margin-left: 2px;

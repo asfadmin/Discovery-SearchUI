@@ -32,6 +32,7 @@
   }
 
   padding: 0;
+  padding-bottom: 4px;
   pointer-events: auto;
   height: 45px !important;
   max-height: 45px !important;
@@ -166,8 +167,8 @@ label {
   }
 
   position: absolute;
-  bottom: -6px;
-    right: -15px;
+  bottom: 0px;
+  right: -8px;
   transform: rotate(-45deg);
 }
 
@@ -182,9 +183,6 @@ label {
 
 .opacity-button-text {
   display: inline-block;
-  position: absolute;
-  top: -4px;
-  left: 7px;
   width: 40px;
   text-align: center;
   align-content: center;
