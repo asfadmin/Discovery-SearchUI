@@ -502,7 +502,7 @@ const productsForScene = (selected, state) => {
   // if (Object.keys(productTypes).length <= 2 && Object.keys(productTypes)[0] === 'BURST') {
   //   products = state.scenes[selected.name] || [];
   if(ungrouped_product_types.includes(selected.metadata.productType)) {
-    products = state.scenes[selected.id] || [];
+    products = state.scenes[selected.metadata.parentID ?? selected.id] || [];
   }
   else {
     products = state.scenes[selected.groupId] || []

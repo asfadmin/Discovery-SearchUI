@@ -147,6 +147,9 @@ export class ProductService {
     }
 
     private operaSubproductsFromScene(product: models.CMRProduct) {
+      if (!!product.metadata.opera?.validityStartDate) {
+        product.metadata.opera.validityStartDate = this.fromCMRDate((product.metadata.opera?.validityStartDate as unknown) as string)
+      }
       let products = []
       
       let reg = product.downloadUrl.split(/(_v[0-9]\.[0-9]){1}(\.(\w*)|(_(\w*(_*))*.))*/);

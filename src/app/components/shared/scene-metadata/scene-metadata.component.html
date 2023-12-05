@@ -7,7 +7,7 @@
     <span class="v-mid"><b>{{ 'TEMPORAL' | translate }}</b> • {{ scene.metadata.temporal + offsets.temporal }}</span>
   </li>
 
-  <li *ngIf="prop.isRelevant(p.DATE, dataset)">
+  <li *ngIf="prop.isRelevant(p.DATE, dataset) && !scene.metadata?.opera?.validityStartDate">
     <span class="v-mid"><b>{{ 'START_TIME' | translate }}</b> • {{ scene.metadata.date | shortDateTime }}</span>
     <mat-icon *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addSceneDateMenu"
@@ -21,7 +21,7 @@
     </mat-menu>
   </li>
 
-  <li *ngIf="prop.isRelevant(p.DATE, dataset)">
+  <li *ngIf="prop.isRelevant(p.DATE, dataset) && !scene.metadata?.opera?.validityStartDate">
     <span class="v-mid"><b>{{ 'STOP_TIME' | translate }}</b> • {{ scene.metadata.stopDate | shortDateTime }}</span>
     <mat-icon *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addSceneStopDateMenu"
@@ -32,6 +32,20 @@
     <mat-menu #addSceneStopDateMenu="matMenu">
       <button (click)="setStartDate(scene.metadata.stopDate)" mat-menu-item>{{ 'SET_AS_START_DATE' | translate }}</button>
       <button (click)="setEndDate(scene.metadata.stopDate)" mat-menu-item>{{ 'SET_AS_END_DATE' | translate }}</button>
+    </mat-menu>
+  </li>
+
+  <li *ngIf="!!scene.metadata?.opera?.validityStartDate">
+    <span class="v-mid"><b>{{ 'Validity Start Date' }}</b> • {{ scene.metadata.opera.validityStartDate | shortDateTime }}</span>
+    <mat-icon *ngIf="isGeoSearch()"
+      [matMenuTriggerFor]="addSceneStopDateMenu"
+      class="v-mid clickable">
+        settings
+    </mat-icon>
+
+    <mat-menu #addSceneStopDateMenu="matMenu">
+      <button (click)="setStartDate(scene.metadata.opera.validityStartDate)" mat-menu-item>{{ 'SET_AS_START_DATE' | translate }}</button>
+      <button (click)="setEndDate(scene.metadata.opera.validityStartDate)" mat-menu-item>{{ 'SET_AS_END_DATE' | translate }}</button>
     </mat-menu>
   </li>
 
