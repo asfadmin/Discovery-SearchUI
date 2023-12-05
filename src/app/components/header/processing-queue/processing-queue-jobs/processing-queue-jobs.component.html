@@ -35,17 +35,17 @@
 
     <ng-template #jobsQueued>
       <mat-list-item *ngFor="let job of jobsDisplay">
-          <img matListAvatar
+          <img matListItemAvatar
                [src]="job.granules[0].thumbnail"
                onerror="this.src='assets/no-thumb.png'"
                matBadgeOverlap="false"
                matListAvatar>
 
-          <div matLine class="granule-name">
+          <div matListItemLine class="granule-name">
             {{ job.granules[0].name }}
           </div>
 
-          <div *ngIf="job.job_type.name === 'RTC GAMMA'" matLine>
+          <div *ngIf="job.job_type.name === 'RTC GAMMA'" matListItemLine>
             <b>
               {{ job.job_type.name }}
             </b>
@@ -54,11 +54,11 @@
               <span *ngIf="job.granules[0].bytes !== 0">{{ job.granules[0].bytes.toString() | readableSizeFromBytes }}</span>
             </b>
           </div>
-          <div *ngIf="job.job_type.name !== 'RTC GAMMA'" style="font-size: 14px;" matLine>
+          <div *ngIf="job.job_type.name !== 'RTC GAMMA'" style="font-size: 14px;" matListItemLine>
           {{job.granules[1].name}}
           </div>
 
-          <div class="button-remove-job">
+          <div class="button-remove-job" matListItemMeta>
             <button (click)="onRemoveJob(job)"
                     matTooltip="{{'REMOVE_JOB' | translate}}"
                     mat-icon-button>

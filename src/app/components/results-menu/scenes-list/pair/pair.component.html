@@ -4,9 +4,9 @@
   (mouseleave) ="onClearHovered()"
   [class.selected]="selectedPair ? pair[0].id + pair[1].id === selectedPair[0] + selectedPair[1] : false"
   [class.hovered]="hovered">
-    <b>{{ pair[0].metadata.date | shortDate }} to {{ pair[1].metadata.date | shortDate }}</b>
-    <div class="date">{{ pairPerpBaseline(pair)}}m</div>
-    <div class="date">{{ pairTempBaseline(pair)}}d</div>
+    <span matListItemTitle>{{ pair[0].metadata.date | shortDate }} to {{ pair[1].metadata.date | shortDate }}</span>
+    <div class="date" matListItemMeta>{{ pairPerpBaseline(pair)}}m</div>
+    <div class="date" matListItemMeta>{{ pairTempBaseline(pair)}}d</div>
     <mat-icon
       *ngIf="hyp3able.total > 0"
       class="clickable noselect list-icon"
@@ -14,7 +14,9 @@
       matTooltip="{{'ADD_PAIR_TO_ON_DEMAND_QUEUE' | translate}}"
       [matMenuTriggerFor]="pairAdd.addMenu"
       [matMenuTriggerData]="{ hyp3able: hyp3able.byJobType }"
-      svgIcon="hyp3">
+      svgIcon="hyp3"
+      matListItemMeta
+      >
     </mat-icon>
 
     <app-on-demand-add-menu #pairAdd>
