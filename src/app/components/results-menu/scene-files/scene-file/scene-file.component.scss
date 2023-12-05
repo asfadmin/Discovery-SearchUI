@@ -9,12 +9,10 @@
 .file-sub-line {
   font-size: 14px !important;
 }
-.test {
+.mdc-list-item--with-trailing-meta .mdc-list-item__end {
+  margin-left: 0px;
+  margin-right: 10px;
+}
+.mat-mdc-list-item-unscoped-content {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  box-sizing: border-box;
-  padding: 0 16px;
-  position: relative;
-  height: inherit;
 }
