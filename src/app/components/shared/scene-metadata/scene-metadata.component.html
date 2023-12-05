@@ -36,7 +36,7 @@
   </li>
 
   <li *ngIf="!!scene.metadata?.opera?.validityStartDate">
-    <span class="v-mid"><b>{{ 'validity start date' }}</b> • {{ scene.metadata.opera.validityStartDate | shortDateTime }}</span>
+    <span class="v-mid"><b>{{ 'Validity Start Date' }}</b> • {{ scene.metadata.opera.validityStartDate | shortDateTime }}</span>
     <mat-icon *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addSceneStopDateMenu"
       class="v-mid clickable">
