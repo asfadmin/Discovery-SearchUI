@@ -50,7 +50,11 @@
       <span *ngIf="scene.metadata.job">
         {{ scene.metadata.job.job_type }} <br *ngIf="breakpoint === breakpoints.MOBILE && searchType === SearchTypes.CUSTOM_PRODUCTS"> -
       </span>
-      <span *ngIf="breakpoint > breakpoints.MOBILE && searchType !== SearchTypes.BASELINE"
+      <span *ngIf="breakpoint > breakpoints.MOBILE && searchType !== SearchTypes.BASELINE && !!scene.metadata?.opera?.validityStartDate"
+        matTooltip="Validity Start Date">
+          {{ scene.metadata.opera.validityStartDate| fullDate }}
+      </span>
+      <span *ngIf="breakpoint > breakpoints.MOBILE && searchType !== SearchTypes.BASELINE && !scene.metadata?.opera?.validityStartDate"
         matTooltip="{{'SCENE_START_TIME' | translate}}">
           {{ scene.metadata.date | fullDate }}
       </span>

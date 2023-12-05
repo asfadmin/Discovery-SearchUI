@@ -85,6 +85,7 @@ export interface SLCBurstMetadata {
 export interface OperaS1Metadata {
   operaBurstID: string;
   additionalUrls: string[];
+  validityStartDate?: moment.Moment | null;
 }
 
 export enum FlightDirection {
