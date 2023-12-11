@@ -16,7 +16,6 @@
   "ADD_ALL_RESULTS_TO_DOWNLOADS": "Add all results to downloads",
   "ADD_ALL_RESULTS_TO_ON_DEMAND_QUEUE": "Add all results to On Demand queue",
   "ADD_BEAM_MODE_TO_SEARCH": "Add beam mode to search",
-  "ADD_BY_PRODUCT_TYPE": "Add by product type",
   "ADD_FILE_TO_DOWNLOADS": "Add file to downloads",
   "ADD_FILE_TO_QUEUE": "Add file to queue",
   "ADD_JOB": "Add job",
@@ -728,7 +727,6 @@
   "SORT_BY": "Sort By",
   "SORT_CRITERIA": "Sort Criteria",
   "SORT_ORDER": "Sort Order",
-  "SOURCE_DATA": "Source Data",
   "START": "Start",
   "START DATE": "Start Date",
   "START_ADDING_CUSTOM_PAIR": "Start adding custom pair",
@@ -737,7 +735,6 @@
   "START_DATE_TIME_BEAM_MODE_PATH_FRAME_FLIGHT_DIRECTION_POLARIZATION_ABSOLUTE_ORBIT_AND_A": "Start Date/Time, Beam Mode, Path, Frame, Flight Direction, Polarization, Absolute Orbit, and a",
   "START_TIME": "Start Time",
   "STARTING_CORNER_MOVE_THE_MOUSE_THEN_CLICK_AGAIN_TO_FINISH_THE_BOX": "starting corner, move the mouse, then click again to finish the box.",
-  "STATIC_LAYER": "Static Layer",
   "STATISTICS_AND_GITHUB_REPOSITORY": "Statistics and Github Repository",
   "STOP_ADDING_CUSTOM_PAIR": "Stop adding custom pair",
   "STOP_DOWNLOAD": "Stop download",
@@ -882,6 +879,5 @@
   "ZOOM_TO_EVENT": "Zoom to event",
   "ZOOM_TO_FIT": "Zoom To Fit",
   "ZOOM_TO_RESULTS": "Zoom to results",
-  "ZOOM_TO_SCENE": "Zoom to scene",
-  "ZZ_ANDY_PRAYING": "At least I'm not cursing."
+  "ZOOM_TO_SCENE": "Zoom to scene"
 }
