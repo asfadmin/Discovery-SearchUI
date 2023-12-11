@@ -26,6 +26,8 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
   public searchTypes = models.SearchType;
   public sbasProducts: models.CMRProduct[];
 
+  public burstXMLFileCount: number = 0;
+
   public possibleMaxResults = [250, 1000, 5000];
   private subs = new SubSink();
 
@@ -68,7 +70,10 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.sceneService.scenes$().subscribe(
-        scenes => this.numberOfScenes = scenes.length)
+        scenes => {
+          this.numberOfScenes = scenes.length;
+          this.burstXMLFileCount = scenes.filter(p => p.metadata.productType === 'BURST').length
+        })
     );
 
     this.subs.add(

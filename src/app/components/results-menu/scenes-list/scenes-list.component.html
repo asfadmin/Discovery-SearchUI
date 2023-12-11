@@ -20,11 +20,11 @@
         <div *cdkVirtualFor="let scene of scenes">
           <app-scene
             (click)="onSceneSelected(scene.id)"
-            (toggleScene)="onToggleScene(scene.metadata.productType !== 'BURST' ? scene.groupId : scene.name)"
+            (toggleScene)="onToggleScene(scene.metadata.productType !== 'BURST' && scene.metadata.productType !== 'BURST_XML' ? scene.groupId : scene.name)"
             [scene]="scene"
             [offsets]="offsets"
             [searchType]="searchType"
-            [isQueued]="allQueued[scene.metadata.productType !== 'BURST' ? scene.groupId : scene.name]"
+            [isQueued]="allQueued[scene.metadata.productType !== 'BURST' && scene.metadata.productType !== 'BURST_XML' ? scene.groupId : scene.name]"
             [hyp3ableByJobType]="hyp3ableByScene[scene.groupId]"
             [jobQueued]="allJobNames.includes(scene.name)"
             [numQueued]="numberOfQueue[scene.groupId]"
