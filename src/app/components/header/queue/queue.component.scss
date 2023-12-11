@@ -10,13 +10,10 @@ $idk-pad: 21px;
 
 .dl-title-group {
   @include themify($themes) {
-    border-bottom-color: themed("primary-dark");
     color: themed("dark-primary-text");
   }
   padding: 0 10px;
   margin-top: -$bottom-offset;
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
   margin: -44px -24px 0 !important;
 }
 
