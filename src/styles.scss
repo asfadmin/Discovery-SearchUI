@@ -785,3 +785,14 @@ $d-height: 500px;
 .mdc-text-field--filled {
   background: transparent !important;
 }
+
+.layer-select-button {
+  .mdc-button__label {
+    height: 26px;
+  }
+}
+.mdc-list-item__primary-text {
+  //  text-overflow: ellipsis; 
+   white-space: normal; 
+  /* overflow: hidden; */
+}
