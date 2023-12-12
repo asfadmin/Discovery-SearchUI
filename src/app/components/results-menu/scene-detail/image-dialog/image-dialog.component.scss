@@ -56,12 +56,9 @@ a {
   .browse-list {
     @include themify($themes) {
       background-color: themed('primary-light');
-      border-top-color: themed('primary-dark');
     }
 
     min-height: 140px;
-    border-top-style: solid;
-    border-top-width: 1px;
   }
 
   .scene-detail--wrapper {

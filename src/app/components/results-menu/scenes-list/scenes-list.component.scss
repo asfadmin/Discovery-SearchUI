@@ -2,6 +2,14 @@
 
 .list-viewport {
   overflow-y: auto;
+  height: 99%;
+  overflow-x: hidden;
+  .cdk-virtual-scroll-content-wrapper {
+    position: relative;
+  }
+  .cdk-virtual-scroll-spacer {
+    height: 200% !important;
+  }
 }
 
 .selected .ml-2 {
