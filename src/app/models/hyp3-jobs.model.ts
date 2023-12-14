@@ -33,7 +33,6 @@ export const RtcGammaJobType: Hyp3JobType = {
     default: 'gamma0',
     info:
       'INFO_BACKSCATTER_COEFFICIENT'
-
   }, {
     name: 'Scale',
     apiName: 'scale',
@@ -67,20 +66,6 @@ export const RtcGammaJobType: Hyp3JobType = {
     }],
     default: 30,
     info: 'INFO_PRODUCT_PIXEL'
-  }, {
-    name: 'DEM Name',
-    apiName: 'dem_name',
-    type: JobOptionType.DROPDOWN,
-    options: [{
-      name: 'Copernicus DEM',
-      apiValue: 'copernicus'
-    }, {
-      name: 'NED/SRTM',
-      apiValue: 'legacy'
-    }],
-    default: 'copernicus',
-    info:
-      'INFO_NAME_OF_THE_DEM'
   }, {
     name: 'DEM Matching',
     apiName: 'dem_matching',
