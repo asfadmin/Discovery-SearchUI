@@ -106,8 +106,9 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      combineLatest(this.store$.select(getFilterMaster),
-      this.store$.select(uiStore.getIsFiltersMenuOpen)).subscribe(([latestFilter, isOpen]) => {
+      combineLatest([
+        this.store$.select(getFilterMaster),
+        this.store$.select(uiStore.getIsFiltersMenuOpen)]).subscribe(([latestFilter, isOpen]) => {
       if (isOpen && this.searchType === this.searchTypes.BASELINE || this.searchType === this.searchTypes.SBAS) {
           this.latestReferenceScene = latestFilter;
           if (this.stackReferenceScene == null || '') {
@@ -296,20 +297,13 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     return !this.env.isProd;
   }
 
-  public onTestSelected(): void {
-    this.setMaturity('test');
-  }
 
-  public onProdSelected(): void {
-    this.setMaturity('prod');
-  }
-
-  private setMaturity(maturity: string): void {
+  public onMaturitySelect(maturity: string) {
     this.maturity = maturity;
     this.env.setMaturity(maturity);
   }
   public exportPython(): void {
-    this.exportService.convertSearchOptionsToAsfSearch().pipe(take(1)).subscribe(
+    this.exportService.convertSearchOptionsToAsfSearch.pipe(take(1)).subscribe(
       (data) => {
         this.dialog.open(CodeExportComponent, {
           data: { codeStuff: data },

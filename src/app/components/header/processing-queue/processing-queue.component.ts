@@ -17,8 +17,6 @@ import * as uiStore from '@store/ui';
 import * as models from '@models';
 import * as services from '@services';
 
-import { CreateSubscriptionComponent } from '../../header/create-subscription';
-
 enum ProcessingQueueTab {
   SCENES = 'Scenes',
   OPTIONS = 'Options'
@@ -41,6 +39,7 @@ export class ProcessingQueueComponent implements OnInit {
   public isUserLoggedIn = false;
   public isUserLoading = true;
   public remaining = 0;
+  public isUnlimitedUser = false;
   public areJobsLoading = false;
   public isQueueSubmitProcessing = false;
   public isTabMenuOpen = false;
@@ -122,6 +121,7 @@ export class ProcessingQueueComponent implements OnInit {
         }
 
         this.user = user.user_id;
+        this.isUnlimitedUser = user.quota.unlimited;
         this.remaining = user.quota.remaining;
       }
     );
@@ -166,14 +166,6 @@ export class ProcessingQueueComponent implements OnInit {
         });
       }
     );
-  }
-
-  public openSubscriptionDialog() {
-    this.dialog.open(CreateSubscriptionComponent, {
-      id: 'subscriptionQueueDialog',
-      maxWidth: '100vw',
-      maxHeight: '100vh',
-    });
   }
 
   public daysUntilExpiration(expiration_time: moment.Moment): string {

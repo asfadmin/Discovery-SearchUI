@@ -34,6 +34,7 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
 
 
   public searchType: models.SearchType = models.SearchType.DATASET;
+  public searchTranslation = models.SearchTypeTranslation;
   public datasets = derivedDatasets;
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = Breakpoints;
@@ -52,7 +53,9 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subs.add(
       this.store$.select(searchStore.getSearchType).subscribe(
-        searchType => this.searchType = searchType
+        searchType => {
+          this.searchType = searchType
+        }
       )
     );
 

@@ -1,10 +1,10 @@
 <div class ="sbas-selector-container">
 <mat-form-field class="sbas-selector-form-field">
-  <mat-label>Overlap Threshold</mat-label>
+  <mat-label>{{ 'OVERLAP_THRESHOLD' | translate }}</mat-label>
 <mat-select [(ngModel)]="SBASOverlapThreshold" (selectionChange)="onSetThreshold($event.value)">
-  <mat-option [value]="SBASOverlapTypes.HALF_OVERLAP">{{SBASOverlapTypes.HALF_OVERLAP}}</mat-option>
-  <mat-option [value]="SBASOverlapTypes.ANY_OVERLAP">{{SBASOverlapTypes.ANY_OVERLAP}}</mat-option>
-  <mat-option [value]="SBASOverlapTypes.ALL">{{SBASOverlapTypes.ALL}}</mat-option>
+  <mat-option [value]="SBASOverlapTypes.HALF_OVERLAP">{{SBASOverlapTypes.HALF_OVERLAP | uppercase | translate }}</mat-option>
+  <mat-option [value]="SBASOverlapTypes.ANY_OVERLAP">{{SBASOverlapTypes.ANY_OVERLAP | uppercase | translate }}</mat-option>
+  <mat-option [value]="SBASOverlapTypes.ALL">{{SBASOverlapTypes.ALL | uppercase | translate }}</mat-option>
 </mat-select>
 </mat-form-field>
 </div>

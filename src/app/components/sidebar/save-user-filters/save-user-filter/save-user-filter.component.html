@@ -10,7 +10,7 @@
           <span *ngIf="!isEditingName"
            (click)="onEditName()"
            class="filter-name clickable">
-            {{ filterPreset.name }} <mat-icon class="edit-icon">Edit</mat-icon>
+            {{ filterPreset.name }} <mat-icon class="edit-icon">edit</mat-icon>
           </span>
 
           <span *ngIf="isEditingName">
@@ -20,12 +20,12 @@
                   [(ngModel)]="editName"
                   (change)="onNewName($event)"
                   name="editNameInput"
-                  placeholder="Filter Preset Name" #nameEditInput>
+                  placeholder="{{'FILTER_PRESET_NAME' | translate}}" #nameEditInput>
               </mat-form-field>
             </form>
           </span>
 
-          {{ filterPreset.searchType }}
+          {{ filterPreset.searchType |uppercase | translate }}
         </div>
 
         <div style="margin-top: 5px;">
@@ -38,7 +38,7 @@
     </div>
     <div>
       <button mat-button (click)="loadPreset()">
-        Apply Filters
+        {{ 'APPLY_FILTERS' | translate }}
       </button>
       <button
              (click)="onDeletePreset()"

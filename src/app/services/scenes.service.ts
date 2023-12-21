@@ -46,9 +46,7 @@ export class ScenesService {
     );
   }
 
-  public scenes$(): Observable<CMRProduct[]> {
-    return (
-      this.filterByProductName$(
+  public scenes$: Observable<CMRProduct[]> = this.filterByProductName$(
       this.projectNameFilter$(
       this.hideExpired$(
       this.jobStatusFilter$(
@@ -56,8 +54,7 @@ export class ScenesService {
       this.filterBaselineValues$(
       this.filterByDate$(
           this.store$.select(getScenes)
-    ))))))));
-  }
+    )))))));
 
 
   public withBrowses$(scenes$: Observable<CMRProduct[]>): Observable<CMRProduct[]> {
@@ -67,12 +64,12 @@ export class ScenesService {
   }
 
   public sortScenes$(scenes$: Observable<CMRProduct[]>) {
-    return combineLatest(
+    return combineLatest([
       scenes$,
       this.store$.select(getTemporalSortDirection),
-      this.store$.select(getPerpendicularSortDirection)
+      this.store$.select(getPerpendicularSortDirection)]
     ).pipe(
-      debounceTime(0),
+      debounceTime(50),
       map(
         ([scenes, tempSort, perpSort]) => {
           if (tempSort === ColumnSortDirection.NONE && perpSort === ColumnSortDirection.NONE) {
@@ -90,11 +87,11 @@ export class ScenesService {
   }
 
   private hideS1Raw$(products$: Observable<CMRProduct[]>) {
-    return combineLatest(
+    return combineLatest([
       products$,
       this.store$.select(getShowS1RawData),
       this.store$.select(getProductTypes),
-      this.store$.select(getSearchType),
+      this.store$.select(getSearchType),]
     ).pipe(
       debounceTime(0),
       map(([ scenes, showS1RawData, productTypes, searchType ]) => {
@@ -125,10 +122,10 @@ export class ScenesService {
   }
 
   private projectNameFilter$(scenes$: Observable<CMRProduct[]>) {
-    return combineLatest(
+    return combineLatest([
       scenes$,
       this.store$.select(getProjectName),
-      this.store$.select(getSearchType),
+      this.store$.select(getSearchType),]
     ).pipe(
       debounceTime(0),
       map(([scenes, projectName, searchType]) => {
@@ -154,10 +151,10 @@ export class ScenesService {
   }
 
   private jobStatusFilter$(scenes$: Observable<CMRProduct[]>) {
-    return combineLatest(
+    return combineLatest([
       scenes$,
       this.store$.select(getJobStatuses),
-      this.store$.select(getSearchType),
+      this.store$.select(getSearchType),]
     ).pipe(
       debounceTime(0),
       map(([scenes, jobStatuses, searchType]) => {
@@ -184,10 +181,10 @@ export class ScenesService {
   }
 
   private hideExpired$(scenes$: Observable<CMRProduct[]>) {
-    return combineLatest(
+    return combineLatest([
       scenes$,
       this.store$.select(getShowExpiredData),
-      this.store$.select(getSearchType),
+      this.store$.select(getSearchType),]
     ).pipe(
       debounceTime(200),
       map(([scenes, showExpiredData, searchType]) => {
@@ -209,13 +206,13 @@ export class ScenesService {
   }
 
   private filterBaselineValues$(scenes$: Observable<CMRProduct[]>) {
-    return combineLatest(
+    return combineLatest([
       scenes$,
       this.store$.select(getTemporalRange),
       this.store$.select(getPerpendicularRange),
       this.store$.select(getDateRange),
       this.store$.select(getSearchType),
-      this.store$.select(getSeason),
+      this.store$.select(getSeason),]
     ).pipe(
       debounceTime(20),
       map(([scenes, tempRange, perpRange, dateRange, searchType, season]) => {
@@ -232,10 +229,10 @@ export class ScenesService {
   }
 
   private filterByDate$(scenes$: Observable<CMRProduct[]>) {
-    return combineLatest(
+    return combineLatest([
       scenes$,
       this.store$.select(getDateRange),
-      this.store$.select(getSearchType),
+      this.store$.select(getSearchType),]
     ).pipe(
       debounceTime(0),
       map(

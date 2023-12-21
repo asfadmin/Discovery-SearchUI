@@ -2,9 +2,9 @@
     <mat-select
       (selectionChange)="onNewJobStatusSelected($event.value)"
       [(ngModel)]="selectedJobStatuses"
-      placeholder="Job Status" multiple>
+      placeholder="{{'JOB_STATUS' | translate}}" multiple>
       <mat-option *ngFor="let jobStatus of jobStatuses" [value]="jobStatus">
-        {{ upperCaseFirst(jobStatus, true) }}
+        {{ upperCaseFirst(jobStatus | translate, true) }}
       </mat-option>
     </mat-select>
   </mat-form-field>

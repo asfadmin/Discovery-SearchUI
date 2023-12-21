@@ -40,6 +40,10 @@ $idk-pad: 21px;
   padding: 20px 20px 0;
   border-top-style: solid;
   border-top-width: 1px;
+
+  min-height: 100%;
+  min-width: 100%;
+  width: 100%;
 }
 
 .dl-clear-button {
@@ -52,6 +56,10 @@ $idk-pad: 21px;
       color: themed("dark-primary-text");
     }
   }
+
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 15%;
 }
 
 .dl-download-buttons {
@@ -64,6 +72,10 @@ $idk-pad: 21px;
       color: themed("dark-primary-text");
     }
   }
+
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 85%;
 }
 
 .dl-close-x {
@@ -104,15 +116,6 @@ $idk-pad: 21px;
 .dl-list-item-mobile {
   width: 200px;
   overflow: hidden;
-}
-
-.feedback-div {
-  position: absolute;
-  top: 42px;
-  right: 16px;
-  text-align: right;
-  float: right;
-  cursor: pointer;
 }
 
 .feedback-link {
@@ -247,13 +250,27 @@ button {
   left: -10px;
 }
 
+.doc-feedback-div {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -42px;
+  margin-right: 20px;
+}
+
+.header-link-mobile {
+  font-size: 12px !important;
+}
+
 .docs-div {
-  position: absolute;
-  top: 42px;
-  right: 130px;
-  text-align: right;
-  float: right;
   cursor: pointer;
+  flex: 0 1 auto;
+  margin-right: 20px;
+  margin-top: 2px;
+}
+
+.feedback-div {
+  cursor: pointer;
+  flex: 0 1 auto;
 }
 
 .header-link {
@@ -266,4 +283,14 @@ button {
       color: themed("blue-link");
     }
   }
+}
+
+.product-display {
+  margin-top: 3px; 
+  margin-left: 32px;
+}
+
+.product-display-mobile {
+  margin-top: 3px; 
+  margin-left: 16px;
 }

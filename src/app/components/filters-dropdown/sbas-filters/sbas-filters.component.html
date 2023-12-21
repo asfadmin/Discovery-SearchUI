@@ -25,7 +25,7 @@
 
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title>
-        {{ panels.MASTER }}
+        {{ panels.MASTER | uppercase | translate}}
       </mat-panel-title>
     </mat-expansion-panel-header>
 
@@ -34,17 +34,17 @@
 
     </div>
     <div class="sbas-example">
-      {{ 'EXAMPLE:' | translate }}: S1B_IW_SLC__1SDV_20210704T135937_20210704T140004_027645_034CB0_4B2C
+      {{ 'EXAMPLE' | translate }}: S1B_IW_SLC__1SDV_20210704T135937_20210704T140004_027645_034CB0_4B2C
       <app-copy-to-clipboard
       value="S1B_IW_SLC__1SDV_20210704T135937_20210704T140004_027645_034CB0_4B2C"
-      prompt="Copy Name"
+      prompt="{{ 'COPY_NAME' | translate }}"
       style="margin: 0 3px;"
       class="clipboard-icon">
     </app-copy-to-clipboard>
     </div>
     <div>
       <app-docs-modal url="https://docs.asf.alaska.edu/vertex/sbas/"
-                      text="What is SBAS?">
+                      text="{{'WHAT_IS_SBAS' | translate}}?">
       </app-docs-modal>
     </div>
   </mat-expansion-panel>

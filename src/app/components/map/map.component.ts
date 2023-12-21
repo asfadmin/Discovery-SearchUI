@@ -81,9 +81,9 @@ export class MapComponent implements OnInit, OnDestroy  {
   private subs = new SubSink();
   private gridlinesActive$ = this.store$.select(mapStore.getAreGridlinesActive);
   private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
-  private viewType$ = combineLatest(
+  private viewType$ = combineLatest([
     this.store$.select(mapStore.getMapView),
-    this.store$.select(mapStore.getMapLayerType),
+    this.store$.select(mapStore.getMapLayerType),]
   );
 
   private sarviewsEvents: SarviewsEvent[];
@@ -131,9 +131,9 @@ export class MapComponent implements OnInit, OnDestroy  {
     );
 
     this.subs.add(
-      combineLatest(
+      combineLatest([
         this.store$.select(uiStore.getIsResultsMenuOpen),
-        this.mapService.searchPolygon$
+        this.mapService.searchPolygon$]
       ).pipe(
         filter(_ => !!this.overlay),
         map(([isResultsMenuOpen, polygon]) => !isResultsMenuOpen && !!polygon),
@@ -186,10 +186,10 @@ export class MapComponent implements OnInit, OnDestroy  {
     );
 
     this.subs.add(
-      combineLatest(
+      combineLatest([
         this.mapService.isDrawing$,
         this.drawMode$,
-        this.interactionMode$
+        this.interactionMode$]
       ).pipe(
         map(([isDrawing, drawMode, interactionMode]) => {
           if (interactionMode === models.MapInteractionModeType.DRAW) {
@@ -430,18 +430,18 @@ export class MapComponent implements OnInit, OnDestroy  {
   }
 
   private scenesToFeatures(projection: string): Observable<Feature<Geometry>[]> {
-    return this.scenesService.scenes$().pipe(
+    return this.scenesService.scenes$.pipe(
       map(scenes => scenes.filter(scene => scene.id !== this.selectedScene?.id)),
       map(scenes => this.scenesToFeature(scenes, projection)));
   }
 
-  private scenePolygonsLayer(features: Feature<Geometry>[]): VectorLayer {
+  private scenePolygonsLayer(features: Feature<Geometry>[]): VectorLayer<VectorSource> {
       const vectorLayer = this.featuresToSource(features, polygonStyle.scene);
       vectorLayer.set('selectable', 'true');
       return vectorLayer;
   }
 
-  private sceneSARViewsEventsLayer$(projection: string): Observable<VectorLayer> {
+  private sceneSARViewsEventsLayer$(projection: string): Observable<VectorLayer<VectorSource>> {
     return this.eventMonitoringService.filteredSarviewsEvents$().pipe(
       // filter(events => !!events),
       tap(events => this.sarviewsEvents = events),
@@ -494,7 +494,7 @@ export class MapComponent implements OnInit, OnDestroy  {
       return features;
   }
 
-  private featuresToSource(features, style: StyleLike): VectorLayer {
+  private featuresToSource(features, style: StyleLike): VectorLayer<VectorSource> {
     const layer = new VectorLayer({
       source: new VectorSource({
         features, wrapX: true

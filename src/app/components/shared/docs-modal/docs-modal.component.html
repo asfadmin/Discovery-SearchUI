@@ -4,7 +4,7 @@
   </a>
 </ng-container>
 <ng-template #elseBlock>
-  <a (click)="showDoc()" class="link-pointer" matTooltip="Open link to documentation.">
-    <mat-icon>info</mat-icon>
+  <a (click)="showDoc()" class="link-pointer" matTooltip="{{this.tooltip ?? 'OPEN_LINK_TO_DOCUMENTATION' | translate}}">
+    <mat-icon>{{ icon }}</mat-icon>
   </a>
 </ng-template>

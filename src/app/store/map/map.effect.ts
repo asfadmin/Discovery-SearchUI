@@ -16,7 +16,7 @@ import { MapActionType, SetBrowseOverlayOpacity, SetBrowseOverlays, ToggleBrowse
 import { PinnedProduct } from '@services/browse-map.service';
 import { getSelectedDataset } from '@store/filters';
 import { getIsFiltersMenuOpen, getIsResultsMenuOpen } from '@store/ui';
-import { ClearBrowseOverlays } from './map.action';
+import { ClearBrowseOverlays, SetCoherenceOverlayOpacity } from './map.action';
 @Injectable()
 export class MapEffects {
 
@@ -46,6 +46,11 @@ export class MapEffects {
     tap(action => this.mapService.updateBrowseOpacity(action.payload))
   ), {dispatch: false});
 
+  public onSetCoherenceOpacity = createEffect( () => this.actions$.pipe(
+    ofType<SetCoherenceOverlayOpacity>(MapActionType.SET_COHERENCE_OVERLAY_OPACITY),
+    tap(action => this.mapService.updateCoherenceOpacity(action.payload))
+  ), {dispatch: false})
+
   public onSetSelectedScene = createEffect(() => this.actions$.pipe(
     ofType<SetSelectedScene>(ScenesActionType.SET_SELECTED_SCENE),
     map(action => action.payload),
@@ -60,6 +65,7 @@ export class MapEffects {
       || dataset?.id === 'SENTINEL-1'
       || dataset?.id === 'SENTINEL-1 INTERFEROGRAM (BETA)'
       || dataset?.id === 'UAVSAR';
+      // || dataset?.id === 'OPERA-S1';
     }
     return searchType !== SearchType.BASELINE && searchType !== SearchType.SBAS;
   }),

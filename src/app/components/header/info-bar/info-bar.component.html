@@ -1,6 +1,4 @@
-<div fxLayout="row wrap"
-     fxFlexFill
-     *ngIf="breakpoint$ | async as breakpoint"
+<div *ngIf="breakpoint$ | async as breakpoint"
      class="info-bar">
 
   <div class="first-info">
@@ -8,52 +6,67 @@
       <app-hyp3-url></app-hyp3-url>
     </span>
     <span *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS && !!eventProductTypes">
-      <b>Product Types:</b> {{eventProductTypes}}
+      <b>{{'PRODUCT_TYPES' | translate }}:</b> {{eventProductTypes}}
     </span>
     <span *ngIf="(breakpoint < breakpoints.FULL) && !!startDate">
-      <b>Start:</b> {{ startDate | shortDate }}
+      <b>{{ 'START' | translate }}:</b> {{ startDate | shortDate }}
     </span>
     <span *ngIf="(breakpoint < breakpoints.FULL) && !!endDate">
-      <b>End:</b> {{ endDate | shortDate }}
+      <b>{{ 'END' | translate }}:</b> {{ endDate | shortDate }}
     </span>
     <span *ngIf="pathRange.start || pathRange.end">
-      <b>Path:</b> {{pathRange.start}} - {{pathRange.end}}
+      <b>{{'PATH' | translate }}:</b> {{pathRange.start}} - {{pathRange.end}}
     </span>
     <span *ngIf="frameRange.start || frameRange.end">
-      <b>Frame:</b> {{frameRange.start}} - {{frameRange.end}}
+      <b>{{ 'FRAME'| translate }}:</b> {{frameRange.start}} - {{frameRange.end}}
     </span>
     <span *ngIf="season.start || season.end">
-      <b>Season:</b> {{season.start}} - {{season.end}}
+      <b>{{ 'SEASON' | translate}}:</b> {{season.start}} - {{season.end}}
     </span>
     <span *ngIf="shouldOmitSearchPolygon">
-      <b>Omit Geo:</b> {{ shouldOmitSearchPolygon ? 'Yes' : 'No' }}
+      <b>{{ 'OMIT_GEO' | translate }}:</b> {{ shouldOmitSearchPolygon ? 'Yes' : 'No' }}
     </span>
     <span *ngIf="productTypes">
-      <b>File Types:</b> {{ productTypes }}
+      <b>{{ 'FILE_TYPES' | translate }}:</b> {{ productTypes }}
     </span>
     <span *ngIf="beamModes.length">
-      <b>Beam Modes:</b> {{beamModes}}
+      <b>{{'BEAM_MODES'| translate | titlecase }}:</b> {{beamModes}}
     </span>
     <span *ngIf="polarizations.length">
-      <b>Polarizations:</b> {{polarizations}}
+      <b>{{'POLARIZATIONS' | translate }}:</b> {{polarizations}}
     </span>
     <span *ngIf="flightDirections.length">
-      <b>Flight Dir:</b> {{flightDirections}}
+      <b>{{'FLIGHT_DIR' | translate  }}:</b> {{flightDirections}}
     </span>
     <span *ngIf="subtypes">
-      <b>Dataset:</b> {{ subtypes }}
+      <b>{{ 'DATASET' | translate }}:</b> {{ subtypes }}
     </span>
     <span *ngIf="mission">
-      <b>Campaign:</b> {{ mission }}
+      <b>{{'CAMPAIGN' | translate }}:</b> {{ mission }}
     </span>
     <span *ngIf="tempRange.start || tempRange.end">
-      <b>Temporal:</b> {{tempRange.start}} <span *ngIf="!!tempRange.end"> to {{tempRange.end}}</span>
+      <b>{{'TEMPORAL' | translate }}:</b> {{tempRange.start}} <span *ngIf="!!tempRange.end"> {{ 'TO' | translate }} {{tempRange.end}}</span>
     </span>
     <span *ngIf="perpRange.start || perpRange.end">
-      <b>Perpendicular:</b> {{perpRange.start}} <span *ngIf="!!perpRange.end"> to {{perpRange.end}} </span>
+      <b>{{'PERPENDICULAR' | translate}}:</b> {{perpRange.start}} <span *ngIf="!!perpRange.end"> {{ 'TO' | translate }} {{perpRange.end}} </span>
+    </span>
+    <span>
+      <span *ngIf="fullBurstIDs?.length > 0">
+        <b>{{'FULL_BURST_ID' | translate}}:</b> {{fullBurstIDs.length <= 4 ? fullBurstIDs.join(', ') : fullBurstIDs.length + ' IDs'}}
+      </span>
+    </span>
+    <span>
+      <span *ngIf="operaBurstIDs?.length > 0">
+        <b>{{'OPERA_BURST_ID' | translate}}:</b> {{operaBurstIDs.length <= 4 ? operaBurstIDs.join(', ') : operaBurstIDs.length + ' IDs'}}
+      </span>
+    </span>
+    <span>
+      <span *ngIf="!!groupID">
+        <b>Group ID:</b> {{groupID}}
+      </span>
     </span>
   </div>
-  <div fxFlex class="last-info">
+  <div class="last-info">
     <app-ci-search></app-ci-search>
   </div>
 </div>

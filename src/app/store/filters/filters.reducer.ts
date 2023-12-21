@@ -48,6 +48,12 @@ export interface FiltersState {
   sarviewsEventProductSorting: EventProductSort;
 
   geocode: null | string;
+
+  fullBurstIDs: null | string[];
+  
+  operaBurstIDs: null | string[];
+
+  groupID: null | string;
 }
 
 
@@ -116,7 +122,13 @@ export const initState: FiltersState = {
   },
   hyp3ProductTypes: [],
 
-  geocode: null
+  geocode: null,
+
+  fullBurstIDs: [],
+
+  operaBurstIDs: [],
+
+  groupID: null
 };
 
 
@@ -137,6 +149,8 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         beamModes: [],
         polarizations: [],
         subtypes: [],
+        fullBurstIDs: [],
+        operaBurstIDs: [],
         selectedMission: null,
       };
     }
@@ -327,9 +341,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
 
     case FiltersActionType.SET_FILTERS_SIMILAR_TO: {
       const metadata = action.payload.product.metadata;
-
-      return {
-        ...state,
+      let filters: any = {
         frameRange: {
           start: metadata.frame,
           end: metadata.frame
@@ -340,7 +352,23 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         },
         selectedMission: metadata.missionName,
         selectedDatasetId: action.payload.dataset.id ?? 'SENTINEL-1',
-      };
+      }
+
+      if(action.payload.dataset.id === models.sentinel_1_bursts.id) {
+        filters = {
+          fullBurstIDs: [metadata.burst.fullBurstID],
+        }
+      }
+      if(action.payload.dataset.id === models.opera_s1.id) {
+        filters = {
+          groupID: action.payload.product.groupId,
+          selectedDatasetId: 'SENTINEL-1'
+        }
+      }
+      return {
+        ...state,
+        ...filters
+        };
     }
 
     case FiltersActionType.CLEAR_FRAME_RANGE: {
@@ -380,7 +408,10 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         subtypes: [],
         flightDirections: new Set<models.FlightDirection>([]),
         selectedMission: null,
-        geocode: null
+        geocode: null,
+        fullBurstIDs: [],
+        operaBurstIDs: [],
+        groupID: null
       };
     }
 
@@ -595,7 +626,9 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           polarizations: filters.polarizations,
           flightDirections: new Set(filters.flightDirections),
           subtypes,
-          selectedMission: filters.selectedMission
+          selectedMission: filters.selectedMission,
+          fullBurstIDs: filters.fullBurstIDs,
+          operaBurstIDs: filters.operaBurstIDs
         };
       }
     }
@@ -704,6 +737,24 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         ...state,
         hyp3ProductTypes: []
       };
+    }
+    case FiltersActionType.SET_FULL_BURST: {
+      return {
+        ...state,
+        fullBurstIDs: action.payload
+      }
+    }
+    case FiltersActionType.SET_OPERA_BURST_ID: {
+      return {
+        ...state,
+        operaBurstIDs: action.payload
+      }
+    }
+    case FiltersActionType.SET_GROUP_ID: {
+      return {
+        ...state,
+        groupID: action.payload
+      }
     }
     default: {
       return state;
@@ -875,7 +926,9 @@ export const getGeographicSearch = createSelector(
     polarizations: state.polarizations,
     flightDirections: state.flightDirections,
     subtypes: state.subtypes,
-    selectedMission: state.selectedMission
+    selectedMission: state.selectedMission,
+    fullBurstIDs: state.fullBurstIDs,
+    operaBurstIDs: state.operaBurstIDs
   })
 );
 
@@ -980,4 +1033,19 @@ export const getSarviewsEventProductSorting = createSelector(
 export const getGeocodeArea = createSelector(
   getFiltersState,
   (state: FiltersState) => state.geocode
+)
+
+export const getFullBurstIDs = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.fullBurstIDs
+)
+
+export const getOperaBurstIDs = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.operaBurstIDs
+)
+
+export const getGroupID = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.groupID
 )

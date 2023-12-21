@@ -32,6 +32,7 @@ export interface Hyp3User {
 export interface Hyp3UserQuota {
   max_jobs_per_month: number;
   remaining: number;
+  unlimited: boolean;
 }
 
 export interface Hyp3JobsResponse {
@@ -104,6 +105,7 @@ export enum InSarGammaLooks {
 
 export enum RtcGammaResolution {
   THIRTY = '30',
+  TWENTY = '20',
   TEN = '10'
 }
 

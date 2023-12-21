@@ -3,7 +3,6 @@ import { RouterModule } from '@angular/router';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -14,10 +13,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 
-import { environment } from '@environments/environment';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
 
 import * as store from './store';
@@ -31,7 +28,6 @@ import { ResultsMenuModule } from '@components/results-menu';
 import { BaselineChartModule } from '@components/baseline-chart';
 import { HelpModule } from '@components/help';
 import { AppComponent } from './app.component';
-import { CustomBreakPointsProvider } from '@services/custom-breakpoints';
 
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -41,6 +37,12 @@ import * as services from '@services';
 
 import { NgcCookieConsentModule, NgcCookieConsentConfig } from 'ngx-cookieconsent';
 import { getSaver, SAVER } from '@services/saver.provider';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from "@angular/material/core";
+import {
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+  MAT_MOMENT_DATE_FORMATS,
+  MomentDateAdapter
+} from "@angular/material-moment-adapter";
 
 // info about cookie consent module: https://tinesoft.github.io/ngx-cookieconsent/home
 const cookieConfig: NgcCookieConsentConfig = {
@@ -99,12 +101,9 @@ export const routes = [
     NgcCookieConsentModule.forRoot(cookieConfig),
     MatBottomSheetModule,
     MatSharedModule,
-    FlexLayoutModule.withConfig({disableDefaultBps: true},
-      CustomBreakPointsProvider.useValue),
     RouterModule.forRoot(routes, {useHash: true}),
     StoreModule.forRoot(store.reducers, {metaReducers: store.metaReducers}),
     EffectsModule.forRoot(store.appEffects),
-    !environment.production ? StoreDevtoolsModule.instrument() : [],
     MatSidenavModule,
     MatTableModule,
     MatSortModule,
@@ -120,15 +119,16 @@ export const routes = [
     HelpModule,
     ToastrModule.forRoot({positionClass: 'inline', preventDuplicates: true}),
     ToastContainerModule,
-    CodeExportModule,
-
+    CodeExportModule
   ],
   providers: [
     services.AsfApiService,
+    services.AsfLanguageService,
     services.UrlStateService,
     services.MapService,
     services.DrawService,
     services.WktService,
+    services.LayerService,
     services.ProductService,
     services.BulkDownloadService,
     services.SearchParamsService,
@@ -141,7 +141,6 @@ export const routes = [
     services.BannerApiService,
     services.ScreenSizeService,
     services.KeyboardService,
-    CustomBreakPointsProvider,
     services.UserDataService,
     services.SavedSearchService,
     services.UnzipApiService,
@@ -152,6 +151,12 @@ export const routes = [
     services.SceneSelectService,
     services.OnDemandService,
     {provide: SAVER, useFactory: getSaver},
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
     // { provide: Window, useValue: window },
   ],
   bootstrap: [AppComponent],

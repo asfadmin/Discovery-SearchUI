@@ -1,5 +1,9 @@
 <!-- SCENE LIST -->
-<mat-card class="mp0" [fxFlex]="breakpoint > breakpoints.SMALL ? 33 : 50" fxFlex>
+<mat-card class="mp0"
+  [ngClass]="{
+    'desktop-header--layout': breakpoint > breakpoints.SMALL,
+    'desktop-header--small-layout': breakpoint <= breakpoints.SMALL
+  }">
   <mat-card-subtitle class="header">
     <app-scenes-list-header></app-scenes-list-header>
   </mat-card-subtitle>
@@ -11,20 +15,20 @@
 
 <!-- SCENE DETAIL -->
 <ng-container *ngIf="breakpoint > breakpoints.SMALL">
-  <mat-card class="mp0 no-box-shadow" fxFlex="34" fxFlexFill>
+  <mat-card class="mp0 no-box-shadow scene-detail--layout">
     <mat-card-subtitle class="header">
-      {{ (sarviewsEventsLength !== 0 ? 'Event' : 'Scene') + ' Detail'}}
+      {{ (sarviewsEventsLength !== 0 ? ('EVENT' | translate ) : ('SCENE_DETAIL' | translate | titlecase)) }}
     </mat-card-subtitle>
         <app-scene-detail *ngIf="scenesLength !== 0 || sarviewsEventsLength !== 0"></app-scene-detail>
   </mat-card>
 
   <!-- FILE LIST -->
-  <mat-card class="h100 mp0 no-left-border" fxFlex="33" fxFlexFill>
+  <mat-card class="h100 mp0 no-left-border file-list--layout">
     <mat-card-subtitle class="header">
       <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
-        {{ products.length || '' }} File{{ (products || []).length === 1 ? '' : 's'}}
+        {{ products.length || '' }} {{ 'FILE'| translate }}{{ (products || []).length === 1 ? '' : 's'}}
       </span>
-      <ng-template #defaultProductsHeader>Files</ng-template>
+      <ng-template #defaultProductsHeader>{{ 'FILES' | translate }}</ng-template>
     </mat-card-subtitle>
 
     <div class="app-scene-list left-border scroll-y">
@@ -34,13 +38,13 @@
 </ng-container>
 
 <ng-container *ngIf="breakpoint <= breakpoints.SMALL">
-  <mat-card class="mp0 no-box-shadow" fxFlex="50" fxFlexFill>
+  <mat-card class="mp0 no-box-shadow scene-info--small-layout">
     <mat-card-subtitle class="header">
-      Scene Detail /
+      {{ 'SCENE_DETAIL' |  translate }} /
       <span *ngIf="selectedProducts$ | async as products; else defaultProductsHeader">
-        {{ products.length || '' }} File{{ (products || []).length === 1 ? '' : 's'}}
+        {{ products.length || '' }} {{ 'FILE' | translate }}{{ (products || []).length === 1 ? '' : 's'}}
       </span>
-      <ng-template #defaultProductsHeader>Files</ng-template>
+      <ng-template #defaultProductsHeader>{{ 'FILES' | translate }}</ng-template>
     </mat-card-subtitle>
 
     <div class="app-scene-list scroll-y scroll-x">

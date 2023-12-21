@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Observable, combineLatest } from 'rxjs';
-import { debounceTime, map, withLatestFrom } from 'rxjs/operators';
+import { map, distinctUntilChanged, shareReplay, debounceTime } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store/app.reducer';
@@ -9,28 +9,15 @@ import { getScenes, getCustomPairs } from '@store/scenes/scenes.reducer';
 import {
   getTemporalRange, getPerpendicularRange, getDateRange, DateRangeState, getSeason, getSBASOverlapThreshold
 } from '@store/filters/filters.reducer';
-import { getSearchType } from '@store/search/search.reducer';
 
-import { CMRProduct, CMRProductPair, ColumnSortDirection, Range, SBASOverlap, SearchType } from '@models';
+import { CMRProduct, CMRProductPair, ColumnSortDirection, Range, SBASOverlap, } from '@models';
 import { MapService } from './map/map.service';
 import { WktService } from './wkt.service';
 
-import * as models from '@models';
 
 import { Feature } from 'ol';
 import Geometry from 'ol/geom/Geometry';
 
-export interface SBASPairParams {
-  scenes: any[];
-  customPairs: CMRProduct[][];
-  temporalRange: models.Range<number>;
-  perpendicular: number;
-  dateRange: models.Range<Date>;
-  season: models.Range<number>;
-  overlap: models.SBASOverlap;
-  polygon: Feature<Geometry>;
-
-}
 
 @Injectable({
   providedIn: 'root'
@@ -42,70 +29,56 @@ export class PairService {
     private mapService: MapService,
     private wktService: WktService) { }
 
-  public productsFromPairs$(): Observable<CMRProduct[]> {
-    return this.pairs$().pipe(
-      map(({ custom, pairs }) => {
-        const prods = Array.from([...custom, ...pairs].reduce((products, pair) => {
-          products.add(pair[0]);
-          products.add(pair[1]);
 
-          return products;
-        }, new Set<CMRProduct>()));
 
-        return prods;
-      })
-    );
-  }
-
-  public pairs$(): Observable<{custom: CMRProductPair[], pairs: CMRProductPair[]}> {
-    return combineLatest([
-      this.store$.select(getScenes).pipe(
-        map(
-          scenes => this.temporalSort(scenes, ColumnSortDirection.INCREASING)
-        ),
+  public pairs$: Observable<{ custom: CMRProductPair[], pairs: CMRProductPair[] }> = combineLatest([
+    this.store$.select(getScenes).pipe(
+      map(
+        scenes => this.temporalSort(scenes, ColumnSortDirection.INCREASING)
       ),
-      this.store$.select(getCustomPairs),
-      this.store$.select(getTemporalRange),
-      this.store$.select(getPerpendicularRange).pipe(
-        map(range => range.start)
-      ),
-      this.store$.select(getDateRange),
-      this.store$.select(getSeason),
-      this.store$.select(getSBASOverlapThreshold),
-      this.mapService.searchPolygon$.pipe(
-        map(wkt => !!wkt ? this.wktService.wktToFeature(wkt, this.mapService.epsg()) : null)
-      ),
-      ], (scenes, customPairs, temporalRange, perpendicular, dateRange, season, overlap, polygon) =>
-      ({
-        scenes,
-        customPairs,
+    ),
+    this.store$.select(getCustomPairs),
+    this.store$.select(getTemporalRange),
+    this.store$.select(getPerpendicularRange).pipe(
+      map(range => range.start)
+    ),
+    this.store$.select(getDateRange),
+    this.store$.select(getSeason),
+    this.store$.select(getSBASOverlapThreshold),
+    this.mapService.searchPolygon$.pipe(
+      map(wkt => !!wkt ? this.wktService.wktToFeature(wkt, this.mapService.epsg()) : null)
+    ),
+  ]).pipe(
+    debounceTime(50),
+    distinctUntilChanged(),
+    map(([scenes, customPairs, temporalRange, perpendicular, dateRange, season, overlap, polygon]) => {
+      const pairs = this.makePairs(scenes,
         temporalRange,
         perpendicular,
         dateRange,
         season,
         overlap,
         polygon
-      } as SBASPairParams)).pipe(
-      debounceTime(250),
-      withLatestFrom(this.store$.select(getSearchType)),
-      map(([params, searchType]) => {
-        return searchType === SearchType.SBAS ? ({
-          pairs: [...this.makePairs(params.scenes,
-            params.temporalRange,
-            params.perpendicular,
-            params.dateRange,
-            params.season,
-            params.overlap,
-            params.polygon)],
-          custom: [ ...params.customPairs ]
-        }) : ({
-          pairs: [],
-          custom: []
-        });
-      })
-    );
-  }
+      )
+      return {
+        pairs: [...pairs],
+        custom: [...customPairs]
+      }
+    }),
+    shareReplay({ refCount: true, bufferSize: 1 }),
+  )
+  public productsFromPairs$: Observable<CMRProduct[]> = this.pairs$.pipe(
+    map(({ custom, pairs }) => {
+      const prods = Array.from([...custom, ...pairs].reduce((products, pair) => {
+        products.add(pair[0]);
+        products.add(pair[1]);
 
+        return products;
+      }, new Set<CMRProduct>()));
+
+      return prods;
+    })
+  );
   private makePairs(scenes: CMRProduct[], tempThreshold: Range<number>, perpThreshold,
     dateRange: DateRangeState,
     season: Range<number>,
@@ -116,7 +89,7 @@ export class PairService {
     let startDateExtrema: Date;
     let endDateExtrema: Date;
     if (!!dateRange.start) {
-    startDateExtrema = new Date(dateRange.start.toISOString());
+      startDateExtrema = new Date(dateRange.start.toISOString());
     }
     if (!!dateRange.end) {
       endDateExtrema = new Date(dateRange.end.toISOString());
@@ -129,24 +102,23 @@ export class PairService {
     }
 
     const bounds = (x: string) => x.replace('POLYGON ', '').replace('((', '').replace('))', '').split(',').slice(0, 4).
-    map(coord => coord.trimStart().split(' ')).
-      map(coordVal => ({ lon: parseFloat(coordVal[0]), lat: parseFloat(coordVal[1])}));
+      map(coord => coord.trimStart().split(' ')).
+      map(coordVal => ({ lon: parseFloat(coordVal[0]), lat: parseFloat(coordVal[1]) }));
 
-    const calcCenter = (coords: {lat: number, lon: number}[]) => {
-      const centroid = coords.reduce((acc, curr) => ({lat: acc.lat + curr.lat, lon: acc.lon + curr.lon}));
+    const calcCenter = (coords: { lat: number, lon: number }[]) => {
+      const centroid = coords.reduce((acc, curr) => ({ lat: acc.lat + curr.lat, lon: acc.lon + curr.lon }));
       centroid.lon = centroid.lon / 4.0;
       centroid.lat = centroid.lat / 4.0;
       return centroid;
     };
-
     scenes.forEach((root, index) => {
 
-    if (!!aoi) {
-      const rootPolygon = this.wktService.wktToFeature(root.metadata.polygon, this.mapService.epsg());
-      if (!intersectionMethod(aoi, rootPolygon)) {
-        return;
+      if (!!aoi) {
+        const rootPolygon = this.wktService.wktToFeature(root.metadata.polygon, this.mapService.epsg());
+        if (!intersectionMethod(aoi, rootPolygon)) {
+          return;
+        }
       }
-    }
       for (let i = index + 1; i < scenes.length; ++i) {
         const scene = scenes[i];
         const tempDiff = scene.metadata.temporal - root.metadata.temporal;
@@ -164,9 +136,9 @@ export class PairService {
         }
 
         if (!!season.start && !!season.end) {
-            if (!this.dayInSeason(P1StartDate, P1StopDate, P2StartDate, P2StopDate, season)) {
-              continue;
-            }
+          if (!this.dayInSeason(P1StartDate, P1StopDate, P2StartDate, P2StopDate, season)) {
+            continue;
+          }
         }
         if (tempDiff < tempThreshold.start || tempDiff > tempThreshold.end || perpDiff > perpThreshold) {
           continue;
@@ -178,9 +150,9 @@ export class PairService {
         }
 
         if (endDateExtrema !== null) {
-          if ( P1StopDate > endDateExtrema || P2StopDate > endDateExtrema) {
+          if (P1StopDate > endDateExtrema || P2StopDate > endDateExtrema) {
             continue;
-            }
+          }
         }
 
         if (overlapThreshold === SBASOverlap.HALF_OVERLAP) {
@@ -222,6 +194,7 @@ export class PairService {
       }
     });
 
+
     return pairs;
   }
 
@@ -242,16 +215,16 @@ export class PairService {
 
     const SortedScenes = scenes.sort((a, b) => {
 
-        const AtempDiffNormalized = (a.metadata.temporal - temporalRange.start) / totalDays;
-        const BtempDiffNormalized = (b.metadata.temporal - temporalRange.start) / totalDays;
+      const AtempDiffNormalized = (a.metadata.temporal - temporalRange.start) / totalDays;
+      const BtempDiffNormalized = (b.metadata.temporal - temporalRange.start) / totalDays;
 
-        if (Math.abs(AtempDiffNormalized - ReftempDiffNormalized) < Math.abs(BtempDiffNormalized - ReftempDiffNormalized)) {
-          return -1;
-        } else if (Math.abs(AtempDiffNormalized - ReftempDiffNormalized) === Math.abs(BtempDiffNormalized - ReftempDiffNormalized)) {
-          return 0;
-        }
-        return 1;
+      if (Math.abs(AtempDiffNormalized - ReftempDiffNormalized) < Math.abs(BtempDiffNormalized - ReftempDiffNormalized)) {
+        return -1;
+      } else if (Math.abs(AtempDiffNormalized - ReftempDiffNormalized) === Math.abs(BtempDiffNormalized - ReftempDiffNormalized)) {
+        return 0;
       }
+      return 1;
+    }
     );
 
     return SortedScenes.slice(0, Math.min(amount, SortedScenes.length));
@@ -263,24 +236,24 @@ export class PairService {
 
   private dayInSeason(P1StartDate: Date, P1EndDate: Date, P2StartDate: Date, P2EndDate: Date, season) {
     if (season.start < season.end) {
-        return (
-          season.start <= this.getDayOfYear(P1StartDate)
-          && season.end >= this.getDayOfYear(P1EndDate)
-          && season.start <= this.getDayOfYear(P2StartDate)
-          && season.end >= this.getDayOfYear(P2EndDate)
-        );
-      } else {
-        return !(
-          season.start >= this.getDayOfYear(P1StartDate)
-          && season.start >= this.getDayOfYear(P1EndDate)
-          && season.end <= this.getDayOfYear(P1StartDate)
-          && season.end <= this.getDayOfYear(P1EndDate)
-          && season.start >= this.getDayOfYear(P2StartDate)
-          && season.start >= this.getDayOfYear(P2EndDate)
-          && season.end <= this.getDayOfYear(P2StartDate)
-          && season.end <= this.getDayOfYear(P2EndDate)
-        );
-      }
+      return (
+        season.start <= this.getDayOfYear(P1StartDate)
+        && season.end >= this.getDayOfYear(P1EndDate)
+        && season.start <= this.getDayOfYear(P2StartDate)
+        && season.end >= this.getDayOfYear(P2EndDate)
+      );
+    } else {
+      return !(
+        season.start >= this.getDayOfYear(P1StartDate)
+        && season.start >= this.getDayOfYear(P1EndDate)
+        && season.end <= this.getDayOfYear(P1StartDate)
+        && season.end <= this.getDayOfYear(P1EndDate)
+        && season.start >= this.getDayOfYear(P2StartDate)
+        && season.start >= this.getDayOfYear(P2EndDate)
+        && season.end <= this.getDayOfYear(P2StartDate)
+        && season.end <= this.getDayOfYear(P2EndDate)
+      );
+    }
   }
 
   private getDayOfYear(date: Date) {
@@ -290,10 +263,64 @@ export class PairService {
 
   private temporalSort(scenes, direction: ColumnSortDirection) {
     const sortFunc = (direction === ColumnSortDirection.INCREASING) ?
-        (a, b) => a.metadata.temporal - b.metadata.temporal :
-        (a, b) => b.metadata.temporal - a.metadata.temporal;
+      (a, b) => a.metadata.temporal - b.metadata.temporal :
+      (a, b) => b.metadata.temporal - a.metadata.temporal;
 
     return scenes.sort(sortFunc);
   }
+
+  public isGraphDisconnected(pairs: any[], numScenes: Number) {
+    if (pairs.length === 0) {
+      return false
+    }
+    let graph_model = {}
+    let points = new Set()
+    for (let pair of pairs) {
+
+      if (graph_model.hasOwnProperty(pair[0].id)) {
+        graph_model[pair[0].id].add(pair[1].id)
+      } else {
+        graph_model[pair[0].id] = new Set()
+        graph_model[pair[0].id].add(pair[1].id)
+        points.add(pair[0].id)
+      }
+
+      if (graph_model.hasOwnProperty(pair[1].id)) {
+        graph_model[pair[1].id].add(pair[0].id)
+
+      } else {
+        graph_model[pair[1].id] = new Set()
+        graph_model[pair[1].id].add(pair[0].id)
+        points.add(pair[1].id)
+
+      }
+    }
+    if (numScenes !== points.size) {
+      return true;
+    }
+
+
+    let to_check = []
+    let checked: Set<String> = new Set()
+    to_check.push(points.values().next().value)
+
+    while (to_check.length > 0) {
+      let current = to_check.pop()
+      if (!checked.has(current)) {
+
+        checked.add(current)
+
+        if (graph_model[current]) {
+          graph_model[current].forEach((set_value) => {
+            if (!checked.has(set_value)) {
+              to_check.push(set_value)
+            }
+          })
+        }
+      }
+    }
+    return !(checked.size === points.size)
+  }
+
 
 }

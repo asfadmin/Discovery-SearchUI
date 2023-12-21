@@ -5,7 +5,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
 import { ResizableModule } from 'angular-resizable-element';
 
 import { MatSharedModule } from '@shared';
@@ -20,6 +21,9 @@ import { SbasSlidersTwoComponent } from './sbas-sliders-two/sbas-sliders-two.com
 
 import { SBASResultsMenuComponent } from './sbas-results-menu.component';
 
+import { SharedModule } from "@shared";
+import { DocsModalModule } from '@components/shared/docs-modal';
+
 
 @NgModule({
   declarations: [
@@ -30,18 +34,19 @@ import { SBASResultsMenuComponent } from './sbas-results-menu.component';
   imports: [
     CommonModule,
     MatSharedModule,
-    FlexLayoutModule,
     ReactiveFormsModule,
     FormsModule,
     ResizableModule,
     MatFormFieldModule,
+    MatCheckboxModule,
     MatInputModule,
     MatButtonToggleModule,
-
+    SharedModule,
     SBASChartModule,
     SceneMetadataModule,
     ScenesListModule,
-    ScenesListHeaderModule
+    ScenesListHeaderModule,
+    DocsModalModule
   ],
   exports: [
     SBASResultsMenuComponent,

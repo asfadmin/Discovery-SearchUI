@@ -4,7 +4,7 @@
 @import "flex-layout-sass/mixin";
 
 .bounds {
-  padding: 0 !important;
+  padding: 0 0 0 0 !important;
   margin: 0;
   overflow-x: hidden;
   overflow-y: hidden;
@@ -15,6 +15,30 @@ $config: mat.define-typography-config();
   @include themify($themes) {
     background-color: themed('background-white');
   }
+}
+
+.header-buttons-input {
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+
+.header--layout {
+  height: 100%;
+  min-height: 100%;
+  min-width: 100%;
+  width: 100%;
+}
+
+.header-logo--layout {
+  flex: 1 1 auto;
+  box-sizing: border-box;
+}
+
+.header-inner--layout {
+  height: 100%;
+  min-height: 100%;
+  min-width: 100%;
+  width: 100%;
 }
 
 .breadcrumb-filter {
@@ -120,7 +144,7 @@ $config: mat.define-typography-config();
 
 .icon-cluster {
   position: absolute;
-  top: 20px;
+  top: 25px;
   right: 10px;
 }
 
@@ -138,4 +162,21 @@ $config: mat.define-typography-config();
   position: absolute;
   top: 15px;
   right: 5px;
+}
+
+.langSelect-div {
+  display: inline-block;
+  position:absolute;
+  top: -3px;
+  right: 25px;
+}
+
+.langSelect-select {
+  border: none;
+  width: auto;
+  font-size: 11px;
+  @include themify($themes) {
+    color: themed('dark-secondary-text');
+  }
+  background-color: inherit;
 }

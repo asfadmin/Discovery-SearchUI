@@ -15,6 +15,7 @@ import { DropdownOptionComponent } from './dropdown-option/dropdown-option.compo
 import { CheckboxOptionComponent } from './checkbox-option/checkbox-option.component';
 import { SubsetOptionComponent } from './subset-option/subset-option.component';
 import { SharedModule } from '@shared';
+import { RangeOptionComponent } from './range-option/range-option.component';
 
 
 
@@ -24,7 +25,8 @@ import { SharedModule } from '@shared';
     ToggleOptionComponent,
     DropdownOptionComponent,
     CheckboxOptionComponent,
-    SubsetOptionComponent
+    SubsetOptionComponent,
+    RangeOptionComponent
   ],
   imports: [
     CommonModule,

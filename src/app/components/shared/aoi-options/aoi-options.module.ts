@@ -18,6 +18,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 
 
+
 @NgModule({
   declarations: [
     AoiOptionsComponent,
@@ -33,7 +34,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatMenuModule,
     MatSharedModule,
     FileUploadModule,
-    SharedModule
+    SharedModule,
     MatAutocompleteModule
   ],
   exports: [

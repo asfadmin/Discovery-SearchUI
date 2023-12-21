@@ -54,8 +54,37 @@ export interface CMRProductMetadata {
   temporal: number | null;
   canInSAR: boolean;
 
+  // SLC BURST
+  burst: SLCBurstMetadata | null;
+
+  // OPERA-S1
+  opera: OperaS1Metadata | null;
+
   fileName: string | null;
   job: Hyp3Job | null;
+
+  // versioning
+  pgeVersion: number | null;
+
+  // BURST XML, OPERA-S1
+  subproducts: any[];
+  parentID: string;
+}
+
+export interface SLCBurstMetadata {
+  relativeBurstID: number;
+  absoluteBurstID: number;
+  fullBurstID: string;
+  burstIndex: number;
+  azimuthTime: moment.Moment;
+  azimuthAnxTime: string;
+  samplesPerBurst: number;
+  subswath: string;
+}
+
+export interface OperaS1Metadata {
+  operaBurstID: string;
+  additionalUrls: string[];
 }
 
 export enum FlightDirection {

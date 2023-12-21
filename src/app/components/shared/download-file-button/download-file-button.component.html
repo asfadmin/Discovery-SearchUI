@@ -5,7 +5,7 @@
   <button
           [disabled]="(!product?.downloadUrl && !href ) ||  disabled"
      mat-icon-button
-     [matTooltip]="this.dFile?.state === 'IN_PROGRESS' ? 'Stop download' : 'Download file'"
+     [matTooltip]="this.dFile?.state === 'IN_PROGRESS' ? ('STOP_DOWNLOAD' | translate) : ('DOWNLOAD_FILE' | translate)"
      class="download-file-button"
   >
     <ng-container *ngIf="dFile as download">

@@ -15,6 +15,8 @@ import { SubSink } from 'subsink';
 import { ScenesService } from '@services';
 import { criticalBaselineFor, CMRProduct } from '@models';
 import * as d3 from 'd3';
+import * as models from "@models";
+import * as services from "@services";
 export enum ChartDatasets {
   MASTER = 0,
   SELECTED = 1,
@@ -36,6 +38,8 @@ interface Point {
 })
 export class BaselineChartComponent implements OnInit, OnDestroy {
   @ViewChild('baselineChart', { static: true }) baselineChart: ElementRef;
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoints = models.Breakpoints;
 
   private criticalBaseline: number;
   private isFirstLoad = true;
@@ -69,12 +73,13 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
     public translate: TranslateService,
     private store$: Store<AppState>,
     private scenesService: ScenesService,
+    private screenSize: services.ScreenSizeService,
+
   ) { }
 
   ngOnInit(): void {
-
     this.createSVG();
-    const products$ = this.scenesService.scenes$().pipe(
+    const products$ = this.scenesService.scenes$.pipe(
       tap(products => products.map(
         product => this.criticalBaseline = criticalBaselineFor(product)
       )),
@@ -106,11 +111,13 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
           this.setDataset(ChartDatasets.MAX_CRITICAL, maxDataset);
           if (this.isFirstLoad) {
             this.updateScales(extrema);
+            let height =  this.y(this.data[ChartDatasets.MIN_CRITICAL][0].y) - this.y(this.data[ChartDatasets.MAX_CRITICAL][1].y)
+
             this.criticalBoxContainer
               .attr('x', this.x(this.data[ChartDatasets.MIN_CRITICAL][0].x))
               .attr('y', this.y(this.data[ChartDatasets.MAX_CRITICAL][1].y))
               .attr('width', this.x(this.data[ChartDatasets.MAX_CRITICAL][1].x) - this.x(this.data[ChartDatasets.MIN_CRITICAL][0].x))
-              .attr('height', this.y(this.data[ChartDatasets.MIN_CRITICAL][0].y) - this.y(this.data[ChartDatasets.MAX_CRITICAL][1].y));
+              .attr('height', isNaN(height) ? 0 : height);
             this.isFirstLoad = false;
           }
           this.updateChart();
@@ -234,11 +241,11 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
     this.dotsContainer.selectAll('circle').data(this.data[ChartDatasets.PRODUCTS]).join('circle')
       .attr('cx', d => newX(d.x))
       .attr('cy', d => newY(d.y));
-
+      let height = newY(this.data[ChartDatasets.MIN_CRITICAL][0].y) - newY(this.data[ChartDatasets.MAX_CRITICAL][1].y)
     this.criticalBoxContainer.attr('x', newX(this.data[ChartDatasets.MIN_CRITICAL][0].x))
       .attr('y', newY(this.data[ChartDatasets.MAX_CRITICAL][1].y))
       .attr('width', newX(this.data[ChartDatasets.MAX_CRITICAL][1].x) - newX(this.data[ChartDatasets.MIN_CRITICAL][0].x))
-      .attr('height', newY(this.data[ChartDatasets.MIN_CRITICAL][0].y) - newY(this.data[ChartDatasets.MAX_CRITICAL][1].y));
+      .attr('height', isNaN(height) ? 0 : height);
 
       if (this.hoveredElement) {
         this.updateTooltip();
@@ -253,7 +260,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
       .attr('cx', d => transformedX(d.x))
       .attr('cy', d => transformedY(d.y))
       .attr('r', (d) => {
-        if (d.id === this.data[ChartDatasets.SELECTED][0].id) {
+        if (d.id === this.data[ChartDatasets.SELECTED][0]?.id) {
           return 10;
         }
         return 5;

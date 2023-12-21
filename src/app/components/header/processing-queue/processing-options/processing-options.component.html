@@ -21,10 +21,22 @@
                 (valueChange)="onSetOptionValue(option.apiName, $event)"
                 [value]="optionValues[option.apiName]"
                 [options]="option.options"
-                [optionName]="option.name"
-                [optionInfo]="option.info"
+                [optionName]="option.name |uppercase | translate"
+                [optionInfo]="option.info | translate"
                 class="margin-right">
               </app-dropdown-option>
+              <app-range-option
+              *ngIf="option.type === 'RANGE'"
+              (valueChange)="onSetOptionValue(option.apiName, $event)"
+                [value]="optionValues[option.apiName]"
+                [optionName]="option.name |uppercase | translate"
+                [optionInfo]="option.info | translate"
+                [range]="option.range"
+                [default]="option.default"
+                class="margin-right"
+              >
+
+              </app-range-option>
             </div>
           </div>
         </div>
@@ -32,7 +44,7 @@
         <div class="flex-row flex-start flex-wrap">
           <div class="flex-field toggle-options">
             <div *ngIf="jobType.id != 'AUTORIFT'" class="option-header">
-              {{ ' APPLY '  |  translate }}
+              {{ 'APPLY'  |  translate }}
             </div>
             <div class="flex-field checkbox-list" *ngFor="let option of jobType.options">
               <app-checkbox-option
@@ -40,14 +52,14 @@
                 (valueChange)="onSetOptionValue(option.apiName, $event)"
                 [value]="optionValues[option.apiName]"
                 [optionName]="option.name"
-                [optionInfo]="option.info"
+                [optionInfo]="option.info | translate"
                 class="margin-right">
               </app-checkbox-option>
             </div>
           </div>
           <div class="flex-field">
             <div *ngIf="jobType.id != 'AUTORIFT'" class="option-header">
-              {{ ' INCLUDE '  |  translate }}
+              {{ 'INCLUDE'  |  translate }}
             </div>
             <div class="flex-field checkbox-list" *ngFor="let option of jobType.options">
               <app-checkbox-option
@@ -55,13 +67,13 @@
                 (valueChange)="onSetOptionValue(option.apiName, $event)"
                 [value]="optionValues[option.apiName]"
                 [optionName]="option.name"
-                [optionInfo]="option.info">
+                [optionInfo]="option.info | translate ">
               </app-checkbox-option>
               <app-subset-option
                 *ngIf="option.type === 'SUBSET'"
                 (setSubset)="onSetSubset(option.optionSubset)"
                 [optionName]="option.name"
-                [optionInfo]="option.info"
+                [optionInfo]="option.info | uppercase | translate "
                 class="margin-right">
               </app-subset-option>
             </div>

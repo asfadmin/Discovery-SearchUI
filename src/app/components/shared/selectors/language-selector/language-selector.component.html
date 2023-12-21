@@ -1,0 +1,22 @@
+<!--<div class="langSelect-div">-->
+<!--  <select #langCurrent class="langSelect-select" #langSelect (change)="language.setCurrent(langCurrent.value)">-->
+<!--    <option *ngFor="let lang of translate.getLangs()"-->
+<!--            [value]="lang"-->
+<!--            [selected]="lang === translate.currentLang">-->
+<!--      {{language.getName(lang)}}-->
+<!--    </option>-->
+<!--  </select>-->
+<!--</div>-->
+
+<button mat-mini-fab extended class="lang-fab-button" [matMenuTriggerFor]="languageMenu">
+  <mat-icon>translate</mat-icon>
+  <div class="icon-text">{{language.getName()}}</div>
+</button>
+
+<mat-menu #languageMenu="matMenu">
+  <div *ngFor="let lang of language.translate.getLangs()">
+    <button mat-menu-item (click)="language.setCurrent(lang)">
+      {{language.getName(lang)}}
+    </button>
+  </div>
+</mat-menu>

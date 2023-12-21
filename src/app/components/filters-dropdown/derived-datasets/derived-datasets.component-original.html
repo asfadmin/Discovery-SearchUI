@@ -14,15 +14,15 @@
           <div>
             <div style="margin-top: 16px;">
               <b>{{ dataset.info }}</b>
-              <p>{{ dataset.description}}</p>
+              <p>{{ dataset.description | translate}}</p>
             </div>
           </div>
         </div>
       </mat-card-content>
       <mat-divider inset></mat-divider>
       <mat-card-actions>
-        <button (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)" mat-button>MORE INFO</button>
-        <button (click)="onOpenDerivedDataset(dataset.download_url, dataset.name)" mat-button>DOWNLOAD</button>
+        <button (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)" mat-button>{{ 'MORE_INFO' | translate }}</button>
+        <button (click)="onOpenDerivedDataset(dataset.download_url, dataset.name)" mat-button>{{ 'DOWNLOAD' | translate}}</button>
       </mat-card-actions>
     </mat-card>
 </div>

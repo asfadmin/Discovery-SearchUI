@@ -11,27 +11,60 @@
   margin-bottom: 20px;
 }
 
-.drop-file-area {
+//.drop-file-area {
+//
+//  @include themify($themes) {
+//    background-color: darken(themed('background-white'), 10%);
+//    outline: 2px dashed themed('primary');
+//  }
+//  background-size: contain;
+//  background-repeat: no-repeat;
+//  background-position: center;
+//  width: 350px;
+//  height: 180px;
+//  display: inline-block;
+//  outline-offset: -8px;
+//}
 
+.drop-file-area {
   @include themify($themes) {
     background-color: darken(themed('background-white'), 10%);
     outline: 2px dashed themed('primary');
   }
-  background-size: contain;
+
+  background-image: url('/assets/icons/cloud_upload_black_48dp.svg');
+  background-size: 35%;
   background-repeat: no-repeat;
-  background-position: center;
-  width: 350px;
-  height: 180px;
+  background-position: center 40%;
+  width: 230px;
+  height: 175px;
   display: inline-block;
   outline-offset: -8px;
 }
 
-.drop-file-area-scenes {
-  background-image: url("/assets/scene_file_upload.png");
-}
+.dd-text {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  @include themify($themes) {
+    color: lighten(themed('dark-primary-text'), 20%);
+  }
 
-.drop-file-area-files {
-  background-image: url("/assets/file_upload.png");
+  .dd-text-1 {
+    margin-top: 20px;
+    font-size: 18px;
+  }
+
+  .dd-bottom-text {
+    margin-bottom: 10px;
+    .dd-text-2 {
+      font-size: 12px;
+    }
+  }
 }
 
 .file-upload-text {

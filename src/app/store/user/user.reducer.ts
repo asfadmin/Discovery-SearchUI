@@ -14,7 +14,7 @@ export interface UserState {
   savedFilterPresets: models.SavedFilterPreset[];
 }
 
-const initState: UserState = {
+export const initState: UserState = {
   auth: {
     id: null,
     token: null,
@@ -31,7 +31,8 @@ const initState: UserState = {
       'SBAS Search' : ''
     },
     hyp3BackendUrl: '',
-    theme: 'light'
+    theme: 'light',
+    language: ''
   },
   savedSearches: {
     searches: [],

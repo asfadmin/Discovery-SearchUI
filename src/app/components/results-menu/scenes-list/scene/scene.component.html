@@ -26,7 +26,7 @@
            class="bold" matLine>
 
         <app-file-name
-          [name]="scene.metadata.fileName || scene.name"
+          [name]="(scene.metadata.fileName || scene.name)"
           [dataset]="scene.dataset"
           [searchType]="searchType">
         </app-file-name>
@@ -34,7 +34,7 @@
         <span style="margin-left: 5px;">
           <app-copy-to-clipboard
             *ngIf="hovered; else notHovered"
-            prompt="Copy scene name"
+            prompt="{{ 'COPY_SCENE_NAME' | translate }}"
             [value]="scene.metadata.fileName || scene.name">
           </app-copy-to-clipboard>
 
@@ -48,14 +48,14 @@
 
     <div class="div-flex date-time" matLine>
       <span *ngIf="scene.metadata.job">
-        {{ scene.metadata.job.job_type }} -
+        {{ scene.metadata.job.job_type }} <br *ngIf="breakpoint === breakpoints.MOBILE && searchType === SearchTypes.CUSTOM_PRODUCTS"> -
       </span>
       <span *ngIf="breakpoint > breakpoints.MOBILE && searchType !== SearchTypes.BASELINE"
-        matTooltip="Scene Start Time">
+        matTooltip="{{'SCENE_START_TIME' | translate}}">
           {{ scene.metadata.date | fullDate }}
       </span>
       <span *ngIf="breakpoint === breakpoints.MOBILE || searchType === SearchTypes.BASELINE"
-        matTooltip="Scene Start Time">
+        matTooltip="{{'SCENE_START_TIME' | translate}}">
         {{ scene.metadata.date| shortDate }}
       </span>
     </div>

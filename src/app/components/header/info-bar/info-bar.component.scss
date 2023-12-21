@@ -21,9 +21,10 @@ div span {
 }
 
 .last-info {
-  flex: 0 1 35%;
   text-align: right;
   margin-right: 25px;
+  flex: 1 1 0%;
+  box-sizing: border-box;
 }
 
 .info-bar {
@@ -37,6 +38,15 @@ div span {
   line-height: 30px;
   font-size: 14px;
   padding-right: 150px;
+  margin-top: 15px;
+  margin-bottom: -5px;
+  height: 100%;
+  min-height: 100%;
+  min-width: 100%;
+  width: 100%;
+  flex-flow: row wrap;
+  box-sizing: border-box;
+  display: flex;
 }
 
 .search-input {

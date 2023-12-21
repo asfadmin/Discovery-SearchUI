@@ -9,10 +9,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSliderModule } from '@angular/material/slider';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSharedModule } from '@shared';
+import { SharedModule } from "@shared";
 
 
 @NgModule({
@@ -29,9 +29,9 @@ import { MatSharedModule } from '@shared';
     MatInputModule,
     MatSlideToggleModule,
     MatSliderModule,
-    FlexLayoutModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    SharedModule
   ],
   exports: [
     CircleSliderComponent

@@ -24,26 +24,23 @@
     <button mat-menu-item
       (click)="onPointSelected()"
       [value]="types.POINT"
-      class="control-button mat-menu-item"
-      matTooltip="Point draw">
+      class="control-button mat-menu-item">
       <mat-icon class="draw-icon">place</mat-icon>
-      Place a Point
+      {{ 'PLACE_A_POINT' | translate }}
     </button>
 
     <button mat-menu-item
       (click)="onLineStringSelected()"
       [value]="types.LINESTRING"
-      class="control-button mat-menu-item"
-      matTooltip="Line draw">
+      class="control-button mat-menu-item">
       <mat-icon class="draw-icon">timeline</mat-icon>
-      Draw a Line
+      {{ 'DRAW_A_LINE' | translate }}
     </button>
 
     <button mat-menu-item
       (click)="onPolygonSelected()"
       [value]="types.POLYGON"
-      class="control-button mat-menu-item"
-      matTooltip="Polygon draw">
+      class="control-button mat-menu-item">
       <svg viewBox="0 0 24 24" style="width: 18px; height: 18px;margin-right: 16px;"  >
         <path class="draw-svg"
               d="M2,2V8H4.28L5.57,16H4V22H10V20.06L15,20.05V22H21V16H19.17L20,
@@ -52,35 +49,32 @@
                   9H18L17.16,16H15V18.06H10V16H7.6M11,10H13V12H11M6,18H8V20H6M17,18H19V20H17"
         />
       </svg>
-      Draw a Polygon
+      {{ 'DRAW_A_POLYGON' | translate }}
     </button>
 
     <button mat-menu-item
       (click)="onBoxSelected()"
       [value]="types.BOX"
-      class="control-button mat-menu-item"
-      matTooltip="Box Draw">
+      class="control-button mat-menu-item">
       <mat-icon class="draw-icon">format_shapes</mat-icon>
-      Draw a box
+      {{ 'DRAW_A_BOX' | translate }}
     </button>
 
     <button mat-menu-item
     (click)="onCircleSelected()"
     [value]="types.CIRCLE"
-    class="control-button mat-menu-item"
-    matTooltip="Circle Draw">
+    class="control-button mat-menu-item">
     <mat-icon class="draw-icon">radio_button_unchecked</mat-icon>
-    Draw a circle
+    {{ 'DRAW_A_CIRCLE' | translate }}
     </button>
 
 
   <button mat-menu-item
     *ngIf="breakpoint !== breakpoints.MOBILE"
     (click)="onImportSelected()"
-    class="control-mat-button-toggle"
-    matTooltip="Import Area of Interest">
+    class="control-mat-button-toggle">
     <mat-icon class="interaction-icon">upload</mat-icon>
-    Upload Geospatial File
+    {{'UPLOAD_GEOSPATIAL_FILE' | translate}}
 
   </button>
 </mat-menu>

@@ -6,6 +6,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { SharedModule} from "@shared";
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { MatMenuModule } from '@angular/material/menu';
     MatSelectModule,
     MatButtonToggleModule,
     MatIconModule,
-    MatMenuModule
+    MatMenuModule,
+    SharedModule
   ],
   exports: [
     EventProductSortSelectorComponent

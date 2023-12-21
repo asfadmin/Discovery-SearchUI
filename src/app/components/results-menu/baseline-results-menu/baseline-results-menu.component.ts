@@ -30,7 +30,7 @@ enum CardViews {
 export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
   @Input() resize$: Observable<void>;
 
-  public numBaselineScenes$ = this.scenesService.scenes$().pipe(
+  public numBaselineScenes$ = this.scenesService.scenes$.pipe(
     map(scenes => scenes.length),
   );
 
@@ -68,9 +68,9 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subs.add(
-      combineLatest(
+      combineLatest([
         this.scenesService.products$(),
-        this.pairService.pairs$()
+        this.pairService.pairs$]
       ).subscribe(
         ([products, {pairs, custom}]) => {
           this.products = products;
@@ -97,7 +97,7 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.pairService.productsFromPairs$().subscribe(
+      this.pairService.productsFromPairs$.subscribe(
         products => this.sbasProducts = products
       )
     );

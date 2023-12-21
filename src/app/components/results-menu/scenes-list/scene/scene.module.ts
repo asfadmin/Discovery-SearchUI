@@ -15,6 +15,7 @@ import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
 import { FileNameModule } from '@components/shared/file-name';
 import { OnDemandAddMenuModule } from '@components/shared/on-demand-add-menu';
 import { Hyp3JobStatusBadgeModule } from '@components/shared/hyp3-job-status-badge';
+import { SharedModule } from '@shared';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { Hyp3JobStatusBadgeModule } from '@components/shared/hyp3-job-status-bad
     FileNameModule,
     OnDemandAddMenuModule,
     Hyp3JobStatusBadgeModule,
+    SharedModule
   ],
   exports: [
     SceneComponent

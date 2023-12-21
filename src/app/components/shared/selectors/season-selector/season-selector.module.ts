@@ -10,6 +10,8 @@ import { CircleSliderModule} from '@components/shared/selectors/circle-slider/ci
 import { DateRangeModule } from '../date-range/date-range.module';
 import { MatButtonModule } from '@angular/material/button';
 import { PipesModule } from '@pipes';
+import { SharedModule } from "@shared";
+
 @NgModule({
   declarations: [SeasonSelectorComponent],
   imports: [
@@ -22,7 +24,8 @@ import { PipesModule } from '@pipes';
     CircleSliderModule,
     DateRangeModule,
     MatButtonModule,
-    PipesModule
+    PipesModule,
+    SharedModule
   ],
   exports: [SeasonSelectorComponent]
 })

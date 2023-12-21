@@ -12,7 +12,7 @@ import { NotificationService, ScreenSizeService } from '@services';
 import { CMRProduct, AsfApiOutputFormat, Breakpoints } from '@models';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
-import { ResizedEvent } from 'angular-resize-event';
+import { ResizedEvent } from '@directives/resized.directive';
 import * as userStore from '@store/user';
 import { DownloadFileButtonComponent } from '@components/shared/download-file-button/download-file-button.component';
 import * as UAParser from 'ua-parser-js';
@@ -165,11 +165,19 @@ export class QueueComponent implements OnInit, OnDestroy {
   public onCopyQueue(products: CMRProduct[]): void {
     const productListStr = products
       .filter(product => !product.isUnzippedFile)
-      .map(product => product.id)
+      .map(product => {
+        if (product.metadata.productType === 'BURST_XML') {
+          return product.id?.split('-XML')[0]
+        }
+        return product.metadata.parentID || product.id;
+      })
       .join('\n');
     this.clipboardService.copyFromContent(productListStr);
     const lines = this.lineCount(productListStr);
-    this.notificationService.clipboardCopyQueue(lines, true);
+    
+    if (lines > 0) {
+      this.notificationService.clipboardCopyQueue(lines, true);
+    }
 
   }
 
@@ -184,6 +192,10 @@ export class QueueComponent implements OnInit, OnDestroy {
   }
 
   private lineCount( str: string ) {
+    if (str === '') {
+      return 0;
+    }
+    
     let length = 1;
     for ( let i = 0; i < str.length; ++i ) {
       if ( str[i] === '\n') {
@@ -227,7 +239,7 @@ export class QueueComponent implements OnInit, OnDestroy {
       return false;
     }
     return products.filter(product => product.metadata.productType !== null).
-    some(product => product.dataset === 'JERS-1' || product.dataset === 'RADARSAT-1')
+    some(product => product.dataset === 'JERS-1')
   }
   public onResized(event: ResizedEvent) {
     this.dlWidth = event.newRect.width;

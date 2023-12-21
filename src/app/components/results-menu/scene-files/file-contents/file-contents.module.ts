@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { MatTreeModule } from '@angular/material/tree';
 import { PipesModule } from '@pipes';
 import { TruncateModule } from '@yellowspot/ng-truncate';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MatSharedModule } from '@shared';
 import { FileNameModule } from '@components/shared/file-name';
@@ -24,7 +23,6 @@ import {DownloadFileButtonModule} from '@components/shared/download-file-button/
     TruncateModule,
     FileNameModule,
     CartToggleModule,
-    FlexLayoutModule,
     DownloadFileButtonModule,
   ],
   exports: [

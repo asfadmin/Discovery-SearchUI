@@ -223,7 +223,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
     if (this.dataset.id === models.sentinel_1.id) {
       return this.selectedProducts.filter(
-          product => product.metadata.productType === 'SLC'
+          product => product.metadata.productType === 'SLC' || product.metadata.productType === 'BURST'
       )[0].name;
     } else {
       return this.scene.name;
@@ -261,7 +261,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     } else {
       return this.selectedProducts
         .map(product => product.metadata.productType)
-        .filter(productType => productType === 'SLC')
+        .filter(productType => productType === 'SLC' || productType === 'BURST')
         .length > 0;
     }
   }
@@ -360,7 +360,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
       this.makeSarviewsEventGeoSearch();
     } else {
       const scene = this.scene;
-      const shouldClear = this.searchType !== models.SearchType.DATASET;
+      const shouldClear = this.searchType !== models.SearchType.DATASET || this.dataset.id === 'OPERA-S1';
       const dateRange = this.dateRange;
 
       this.store$.dispatch(new searchStore.SetSearchType(models.SearchType.DATASET));
@@ -382,6 +382,17 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     }
   }
 
+  public staticLayer(){
+    const operaBurstID = this.scene.metadata.opera.operaBurstID;
+    const sensorDate = new Date(this.scene.metadata.date.toDate());
+    const staticType = this.scene.metadata.productType + '-STATIC'
+    this.store$.dispatch(new searchStore.ClearSearch());
+    this.store$.dispatch(new filtersStore.SetSelectedDataset('OPERA-S1'))
+    this.store$.dispatch(new filtersStore.setOperaBurstID([operaBurstID]));
+    this.store$.dispatch(new filtersStore.SetProductTypes([models.opera_s1.productTypes.find(t => t.apiValue === staticType)]));
+    this.store$.dispatch(new filtersStore.SetEndDate(sensorDate));
+    this.store$.dispatch(new searchStore.MakeSearch());
+  }
   public makeBaselineSearch(): void {
     const sceneName = this.baselineSceneName();
     const dateRange = this.dateRange;
@@ -430,7 +441,6 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
   public isRestrictedDataset(): boolean {
     return (
-      this.scene.dataset.includes('RADARSAT-1') ||
       this.scene.dataset.includes('JERS-1')
     );
   }
@@ -445,7 +455,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
   public makeSarviewsEventGeoSearch() {
     const timeFrame = this.sarviewEvent.processing_timeframe;
-
+    const event = this.sarviewEvent;
     [
       new searchStore.SetSearchType(models.SearchType.DATASET),
       new searchStore.ClearSearch(),
@@ -458,7 +468,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     if (!!timeFrame.end) {
       this.store$.dispatch(new filtersStore.SetEndDate(new Date(timeFrame.end)));
     }
-    this.mapService.onSetSarviewsPolygon(this.sarviewEvent, this.sarviewsEventGeoSearchRadius);
+    this.mapService.onSetSarviewsPolygon(event, this.sarviewsEventGeoSearchRadius);
 
     this.store$.dispatch(new searchStore.MakeSearch());
   }

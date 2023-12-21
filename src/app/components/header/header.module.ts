@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
 
 import { MatBadgeModule } from '@angular/material/badge';
@@ -45,12 +44,11 @@ import { AoiFilterComponent } from './dataset-header/aoi-filter/aoi-filter.compo
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MasterSceneSelectorModule } from '@components/shared/selectors/master-scene-selector';
-import { CreateSubscriptionModule } from './create-subscription/create-subscription.module';
 import { CiSearchModule } from './info-bar/ci-search/ci-search.module';
 import { SarviewsEventTypeSelectorModule } from '@components/shared/selectors/sarviews-event-type-selector';
-import { DerivedDatasetsHeaderComponent } from './derived-datasets-header/derived-datasets-header.component';
 import { Hyp3UrlModule } from '@components/shared/hyp3-url/hyp3-url.module';
 import { SharedModule } from "@shared";
+import { LanguageSelectorModule } from "@components/shared/selectors/language-selector/language-selector.module";
 
 @NgModule({
   declarations: [
@@ -62,13 +60,11 @@ import { SharedModule } from "@shared";
     BaselineHeaderComponent,
     Hyp3HeaderComponent,
     SarviewsHeaderComponent,
-    DerivedDatasetsHeaderComponent,
   ],
   imports: [
     CommonModule,
     HttpClientModule,
     FormsModule,
-    FlexLayoutModule,
     MatButtonToggleModule,
     MatToolbarModule,
     MatProgressBarModule,
@@ -80,10 +76,8 @@ import { SharedModule } from "@shared";
     MatSharedModule,
     MatAutocompleteModule,
     PipesModule,
-
     QueueModule,
     ProcessingQueueModule,
-
     SearchTypeSelectorModule,
     DatasetSelectorModule,
     DateSelectorModule,
@@ -97,12 +91,12 @@ import { SharedModule } from "@shared";
     ProjectNameSelectorModule,
     JobStatusSelectorModule,
     JobProductNameSelectorModule,
-    CreateSubscriptionModule,
     CiSearchModule,
     SarviewsEventSearchSelectorModule,
     SarviewsEventTypeSelectorModule,
     Hyp3UrlModule,
-    SharedModule
+    SharedModule,
+    LanguageSelectorModule
   ],
   exports: [
     HeaderComponent

@@ -1,0 +1,71 @@
+phrase:
+  access_token: ACCESS_TOKEN #Add your personal access token to authenticate, you can find the steps on how to create one here: https://help.phrase.com/help/access-tokens
+  project_id: PROJECT_ID #The public Project ID which can be found in the Project Settings (API tab)
+  file_format: FORMAT_API_EXTENSION #Find the format you want to use here: https://help.phrase.com/help/supported-platforms-and-formats , access the article and copi the API extension
+
+  push:
+    sources:
+    - file: ./path/to/file/file.format #Provide the path to the file(s) you want to push here, starting from the location of the configuration file. You can use the placeholders <locale_name>, <locale_code> and <tags> in the path or file-name
+      params:
+        file_format: FORMAT_API_EXTENSION (string) #See above. Only required if you deviate from the default format set in the header
+        locale_id: LOCALE_ID (string) #Can be the name (e.g. en-US) or public id (via Language settings -> API) of the locale. Preferred is the public id.
+        tags: TAG_1,TAG_2 (string) #List of tags separated by comma to be associated with the new keys contained in the upload.
+        update_translations: false (boolean) #Indicates whether existing translations should be updated with the file content.
+        update_descriptions: false (boolean) #Existing key descriptions will be updated with the file content. Empty descriptions overwrite existing descriptions.
+        skip_upload_tags: false (boolean) #Indicates whether the upload should not create upload tags.
+        skip_unverification: false (boolean) #Indicates whether the upload should unverify updated translations.
+        file_encoding: ENCODING (string) #Enforces a specific encoding on the file contents. Valid options are "UTF-8", "UTF-16", "UTF-16BE", "UTF-16LE" and "ISO-8859-1".
+        locale_mapping: {"LANGUAGE_CODE": "COLUMN"} (object) #Optional, format specific (Excel, CSV) mapping between locale names and the columns the translations to those locales are contained in.
+        autotranslate: false (boolean) #If set, translations for the uploaded language will be fetched automatically.  
+        mark_reviewed: false (boolean) #Indicated whether the imported translations should be marked as reviewed. This setting is available if the review workflow (currently beta) is enabled for the project.
+        #-------------
+        format_options:
+          ignore_source_translations: false (boolean) #XLIFF/XLIFF 2.0 only. Ignores the source translations in the file during the upload (to avoid accidental source language updates)
+          ignore_target_translations: false (boolean) #XLIFF/XLIFF 2.0 only. Ignores the target translations in the file during the upload (to avoid accidental target language updates)
+          msgid_as_default: false (boolean) #Gettext template POT files. Use the key name (msgid) as translation (key names equal source translation in that format)
+          strip_placeholder_delimiters: false (boolean) #XLIFF only. Removes <ph> tags from translations
+          override_file_language: false (boolean) #XLIFF/XLIFF 2.0 only. This file format typically contains language information in the file itself. Use this option to override the language with one you specify.
+          key_index: [empty](integer) #Excel/CSV only. Index of the column containing the key names. Column indexes start at 1.
+          comment_index: [empty](integer) #Excel/CSV only. Index of the column containing description for the key. Column indexes start at 1.
+          tag_column: [empty](integer) #Excel/CSV only. Index of the column containing a tag for the key. Column indexes start at 1 .
+          column_separator: , (string) #CSV only. Char that is used to separate columns.
+          quote_char: '"' (string) #CSV only. Char that is used to quote newlines and column separator.
+          header_content_row: false (boolean) #CSV only. Indicates whether the first row contains only header information and should be skipped.
+          first_content_row: 1 (integer) #Excel only. Index of first row to contain translation content.
+          enable_pluralization: true (boolean) #Simple/Nested JSON only. Enables detection of pluralized keys. All matching keys will be persisted as pluralized keys.
+          unescape_linebreaks: false (boolean) #Android XML only. All \n will be imported as true newlines
+          escape_single_quotes: false (boolean) #Java Properties only. Escape single quotes with another single quote (e.g. I'm -> I''m ).
+
+  pull:
+    targets:
+    - file: ./path/to/file/file.format
+      params:
+        file_format: FORMAT_API_EXTENSION (string) #See above. Only required if you deviate from the default format set in the header
+        locale_id: LOCALE_ID (string) #Can be the name (e.g. en-US) or public id (via Language settings -> API) of the locale. Preferred is the public id.
+        tags: TAG_1,TAG_2 (string) #Limit results to keys tagged with a list of comma separated tag names.
+        include_empty_translations: false (boolean) #Indicates whether keys without translations should be included in the output as well.
+        exclude_empty_zero_forms: false (boolean) #Indicates whether zero forms should be included when empty in pluralized keys.
+        include_translated_keys: true (boolean) #Include translated keys in the locale file. Use in combination with include_empty_translations to obtain only untranslated keys.
+        keep_notranslate_tags: false (boolean) #Indicates whether [NOTRANSLATE] tags should be kept.
+        encoding: ENCODING (string) #Enforces a specific encoding on the file contents. Valid options are "UTF-8", "UTF-16", "UTF-16BE", "UTF-16LE" and "ISO-8859-1".
+        include_unverified_translations: true (boolean) #If set to false unverified translations are excluded
+        use_last_reviewed_version: false (boolean) #If set to true the last reviewed version of a translation is used. This is only available if the review workflow is enabled for the project.
+        fallback_locale_id: LOCALE_ID (string) #Can be the name (e.g. en-US) or public id (via Language settings -> API) of the locale. Preferred is the public id.
+        #-------------
+        format_options:
+          document_id: DOCUMENT_ID (string) #Takes the document ID of the existing HTML documents in your project the export should be based on.
+          enclose_in_cdata: false (boolean) #XLIFF/Symfony XLIFF/Android XML only. Encloses translations containing html tags in CDATA
+          include_translation_state: false (boolean) #XLIFF/Symfony XLIFF only. Include state of translations in the target locale
+          indent_size: 4 (integer) #XLIFF/Android XML only. Specifies number of indentation characters
+          indent_style: space (string) #XLIFF/Android XML only.Specifies indentation character. Allowed values are space and tab
+          export_key_id_as_resname: true/false (boolean) #XLIFF only. Exports the Key ID as the "resname" attribute.
+          export_key_name_hash_as_extradata: true/false (boolean) #XLIFF only. Exports the Key Name hash as the "extradata" attribute.
+          delimit_placeholders: false (boolean) #XLIFF only. Removes <ph> tags from translations
+          convert_placeholder: false (boolean) #iOS/Android XML only. Placeholder will be converted to match format specific requirements. Example: '$s' => '$@'
+          include_pluralized_keys: false (boolean) #iOS only. Also include pluralized keys in the locale file.
+          export_tags: false (boolean) #Excel/CSV only. Exports tags along with keys and translations.
+          export_max_characters_allowed: false (boolean) #Excel/CSV only.Exports the key character limit along with keys and translations.
+          escape_linebreaks: false (boolean) #Android XML only. All line breaks will be escaped as '\n'
+          escape_single_quotes: false (boolean) #Java/Play Framework Properties only. Escape single quotes with another single quote (e.g. I'm -> I''m ).
+          omit_separator_space: false (boolean) #Java Properties only. Skip the space before and after the separator sign (= ).
+          crlf_line_terminators: false (boolean) #Java Properties only. Use CRLF (Windows) line terminator chars.

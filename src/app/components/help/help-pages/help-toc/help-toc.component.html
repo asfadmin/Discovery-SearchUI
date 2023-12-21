@@ -2,10 +2,10 @@
   <div class="help-top-section">
       <div class="help-toc-title-block">
         <div class="help-toc-all-title">
-          <h1>Learn the Basics</h1>
+          <h1>{{ 'LEARN_THE_BASICS' |  translate }}</h1>
         </div>
         <div class="help-toc-all-title subtitle">
-          <h3>Quickly learn the basics of Vertex Data Search with this getting started series.</h3>
+          <h3>{{ 'QUICKLY_LEARN_THE_BASICS_OF_VERTEX_DATA_SEARCH_WITH_THIS_GETTING_STARTED_SERIES' |  translate }}</h3>
         </div>
       </div>
     <div class="help-video">
@@ -17,8 +17,8 @@
               <mat-icon>looks_one</mat-icon>
             </div>
             <div mat-card-avatar></div>
-            <mat-card-title>Geo Search</mat-card-title>
-            <mat-card-subtitle>How-To basic geographic Search</mat-card-subtitle>
+            <mat-card-title>{{ 'GEO_SEARCH' |  translate }}</mat-card-title>
+            <mat-card-subtitle>{{ 'HOW_TO_BASIC_GEOGRAPHIC_SEARCH' |  translate }}</mat-card-subtitle>
           </mat-card-header>
         </mat-card>
 
@@ -29,7 +29,7 @@
             </div>
             <div mat-card-avatar></div>
             <mat-card-title>{{ 'LIST_SEARCH' | translate }}</mat-card-title>
-            <mat-card-subtitle>How-To basic list Search</mat-card-subtitle>
+            <mat-card-subtitle>{{ 'HOW_TO_BASIC_LIST_SEARCH' |  translate }}</mat-card-subtitle>
           </mat-card-header>
         </mat-card>
 
@@ -39,8 +39,8 @@
               <mat-icon>looks_3</mat-icon>
             </div>
             <div mat-card-avatar></div>
-            <mat-card-title>Search Results</mat-card-title>
-            <mat-card-subtitle>Review search Results</mat-card-subtitle>
+            <mat-card-title>{{ 'SEARCH_RESULTS' | translate}}</mat-card-title>
+            <mat-card-subtitle>{{ 'REVIEW_SEARCH_RESULTS' |  translate }}</mat-card-subtitle>
           </mat-card-header>
         </mat-card>
 
@@ -53,10 +53,10 @@
 
       <div class="help-toc-title-block">
         <div class="help-toc-all-title">
-          <h2>All Tutorials</h2>
+          <h2>{{ 'ALL_TUTORIALS' |  translate }}</h2>
         </div>
         <div class="help-toc-all-title subtitle">
-          <h3>Expand your skills with our full list of Vertex Data Search tutorials.</h3>
+          <h3>{{ 'EXPAND_YOUR_SKILLS_WITH_OUR_FULL_LIST_OF_VERTEX_DATA_SEARCH_TUTORIALS' |  translate }}</h3>
         </div>
       </div>
 
@@ -65,7 +65,7 @@
           <table mat-table [dataSource]="searchDataSource" matSort class="help-table">
             <ng-container matColumnDef="description">
               <th mat-header-cell *matHeaderCellDef class="help-table-header">
-                Defining Data Searches
+                {{ 'DEFINING_DATA_SEARCHES' |  translate }}
               </th>
               <td mat-cell *matCellDef="let video" class="description">
                 <a href="https://www.youtube.com/watch?v={{video.id.videoId}}" target="_blank">
@@ -81,7 +81,7 @@
           <table mat-table [dataSource]="resultsDataSource" matSort class="help-table">
             <ng-container matColumnDef="description">
               <th mat-header-cell *matHeaderCellDef class="help-table-header">
-                Using Search Results
+                {{ 'USING_SEARCH_RESULTS' |  translate }}
               </th>
               <td mat-cell *matCellDef="let video" class="description">
                 <a href="https://www.youtube.com/watch?v={{video.id.videoId}}" target="_blank">
@@ -97,7 +97,7 @@
           <table mat-table [dataSource]="featuresDataSource" matSort class="help-table">
             <ng-container matColumnDef="description">
               <th mat-header-cell *matHeaderCellDef class="help-table-header">
-                Advanced Features
+                {{ 'ADVANCED_FEATURES' |  translate }}
               </th>
               <td mat-cell *matCellDef="let video" class="description">
                 <a href="https://www.youtube.com/watch?v={{video.id.videoId}}" target="_blank">
@@ -113,3 +113,4 @@
   </div>
 
 </div>
+

@@ -6,14 +6,14 @@ import { map, catchError } from 'rxjs/operators';
 
 import { EnvironmentService } from './environment.service';
 import { BannerApiResponse } from '@models';
-import { NotificationService } from './notification.service';
+// import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BannerApiService {
   constructor(
-    private notificationService: NotificationService,
+    // private notificationService: NotificationService,
     private env: EnvironmentService,
     private http: HttpClient
   ) { }
@@ -21,7 +21,7 @@ export class BannerApiService {
   public load(): Observable<BannerApiResponse> {
     const calendars = ['error', 'outages', 'news'];
 
-    if (this.env.maturity === 'test') {
+    if (!this.env.isProd) {
       calendars.push('test');
     }
 
@@ -51,9 +51,9 @@ export class BannerApiService {
             systime: ''
           }),
             catchError(_ => {
-              this.notificationService.error('Trouble loading notifications', 'Error', {
-                timeOut: 5000
-              });
+              // this.notificationService.error('Trouble loading notifications', 'Error', {
+              //   timeOut: 5000
+              // });
 
               return of(null);
             }

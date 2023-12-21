@@ -9,10 +9,16 @@ export class DatasetForProductService {
 
   constructor() { }
 
-  public match(scene: models.CMRProduct): models.Dataset {
+  public match(scene: models.CMRProduct) : models.Dataset {
     if (scene.dataset === 'ALOS') {
       return scene.metadata.instrument === 'AVNIR-2' ?
         models.avnir : models.alos;
+    }
+    if(scene.metadata.productType === 'BURST') {
+      return models.sentinel_1_bursts;
+    }
+    if(scene.id.startsWith('OPERA')) {
+      return models.opera_s1;
     }
 
     const exact = (datasetID, sceneDataset) => (

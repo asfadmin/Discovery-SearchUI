@@ -9,7 +9,7 @@ import * as models from '@models';
 import { ScreenSizeService } from '@services';
 
 enum FilterPanel {
-  SEARCH = 'Search Options',
+  SEARCH = 'SEARCH_OPTIONS',
   PROJECT_NAME = 'Project Name',
   DATE_FILTER = 'Date Filter',
 }

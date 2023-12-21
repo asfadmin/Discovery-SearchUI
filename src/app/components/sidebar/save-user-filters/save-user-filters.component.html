@@ -24,7 +24,7 @@
 
     <ng-template #noSavedFiltersBlock>
       <div class="no-saved-filters-presets">
-        <h2>You have no saved Filters.</h2>
+        <h2>{{ 'YOU_HAVE_NO_SAVED_FILTERS' | translate }}</h2>
       </div>
     </ng-template>
   </div>
@@ -33,7 +33,7 @@
                 'saved-filters-presets__footer': breakpoint > breakpoints.SMALL}">
     <div class="saved-filters-presets__close-button">
       <button (click)="onClose()" mat-raised-button color="primary">
-        {{ ' DONE ' | translate }}
+        {{ 'DONE' | translate }}
       </button>
     </div>
   </div>

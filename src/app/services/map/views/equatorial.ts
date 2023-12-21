@@ -90,15 +90,17 @@ function equatorialView(url: string): MapView {
 }
 
 export function equatorial(): MapView {
+  const style = 'styles/v1/asf-discovery/clhz19vdp000y01ok3smcelx1';
   return equatorialView(
-    `https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=bFwkahiCrAA0526OlsHS`
+    `https://api.mapbox.com/${style}/tiles/{z}/{x}/{y}?access_token=${models.mapboxToken}`
   );
 }
 
 
 export function equatorialStreet(): MapView {
+  const style = 'styles/v1/asf-discovery/clhz1c9tt004a01o7c2ut9fss';
 
   return equatorialView(
-   'https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=bFwkahiCrAA0526OlsHS'
+    `https://api.mapbox.com/${style}/tiles/{z}/{x}/{y}?access_token=${models.mapboxToken}`
   );
 }

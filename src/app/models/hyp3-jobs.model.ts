@@ -4,11 +4,10 @@ import { Hyp3JobType, JobOptionType } from './hyp3-job-type.model';
 export const RtcGammaJobType: Hyp3JobType = {
   id: 'RTC_GAMMA',
   name: 'RTC GAMMA',
-  infoUrl: 'https://hyp3-docs.asf.alaska.edu/guides/rtc_product_guide/', description: `
-    Radiometric Terrain Correction (RTC) removes geometric and radiometric
-    distortions in SAR datasets and creates analysis-ready data suitable for use
-    in GIS applications.
-  `,
+  infoUrl: 'https://hyp3-docs.asf.alaska.edu/guides/rtc_product_guide/',
+  description:
+    'DESCRIPTION_RADIOMETRIC_TERRAIN_CORRECTION'
+  ,
   numProducts: 1,
   productTypes: [{
     dataset: sentinel_1,
@@ -32,10 +31,9 @@ export const RtcGammaJobType: Hyp3JobType = {
       apiValue: 'sigma0'
     }],
     default: 'gamma0',
-    info: `
-      Backscatter coefficient normalization, either by ground area
-      (sigma0) or illuminated area projected into the look direction (gamma0).
-    `
+    info:
+      'INFO_BACKSCATTER_COEFFICIENT'
+
   }, {
     name: 'Scale',
     apiName: 'scale',
@@ -51,7 +49,7 @@ export const RtcGammaJobType: Hyp3JobType = {
       apiValue: 'amplitude'
     }],
     default: 'power',
-    info: `Scale of output image; power, decibel or amplitude.`
+    info: 'INFO_SCALE_OF_OUTPUT_IMAGE'
   },
   {
     name: 'Pixel Spacing',
@@ -61,11 +59,14 @@ export const RtcGammaJobType: Hyp3JobType = {
       name: '30 meters',
       apiValue: 30
     }, {
+      name: '20 meters',
+      apiValue: 20
+    }, {
       name: '10 meters',
       apiValue: 10
     }],
     default: 30,
-    info: `Product pixel spacing in meters.`
+    info: 'INFO_PRODUCT_PIXEL'
   }, {
     name: 'DEM Name',
     apiName: 'dem_name',
@@ -78,11 +79,8 @@ export const RtcGammaJobType: Hyp3JobType = {
       apiValue: 'legacy'
     }],
     default: 'copernicus',
-    info: `
-      Name of the DEM to use for processing. copernicus will use the Copernicus
-      GLO-30 Public DEM, while legacy will use the DEM with the best coverage
-      from ASF's legacy SRTM/NED datasets.
-    `
+    info:
+      'INFO_NAME_OF_THE_DEM'
   }, {
     name: 'DEM Matching',
     apiName: 'dem_matching',
@@ -105,17 +103,17 @@ export const RtcGammaJobType: Hyp3JobType = {
     default: false,
     info: `Include the DEM file in the product package.`
   }, {
-    name: 'Incidence Angle Maps',
+    name: 'Incidence Angle Map',
     apiName: 'include_inc_map',
     type: JobOptionType.CHECKBOX,
     default: false,
-    info: `Include the incidence angle maps (local and ellipsoidal) in the product package.`
+    info: `Include the local incidence angle map in the product package.`
   }, {
-    name: 'Scattering Area',
+    name: 'Scattering Area Map',
     apiName: 'include_scattering_area',
     type: JobOptionType.CHECKBOX,
     default: false,
-    info: `Include the scattering area in the product package.`
+    info: `Include the scattering area map in the product package.`
   }, {
     name: 'RGB Decomposition',
     apiName: 'include_rgb',
@@ -132,12 +130,7 @@ export const InsarGammaJobType: Hyp3JobType = {
   id: 'INSAR_GAMMA',
   name: 'InSAR GAMMA',
   infoUrl: 'https://hyp3-docs.asf.alaska.edu/guides/insar_product_guide/',
-  description: `
-    Interferometric Synthetic Aperture Radar (InSAR) processing uses two SAR images
-    collected over the same area to determine geometric properties of the surface.
-    The phase measurements of the two images acquired at different times are differenced
-    to detect and quantify surface changes.
-  `,
+  description: `INSAR_DESC`,
   numProducts: 2,
   productTypes: [{
     dataset: sentinel_1,
@@ -163,6 +156,14 @@ export const InsarGammaJobType: Hyp3JobType = {
     default: '20x4',
     info: `Number of looks to take in range and azimuth.`
   }, {
+    name: 'Phase Filter',
+    apiName: 'phase_filter_parameter',
+    type: JobOptionType.RANGE,
+    info: 'Adaptive phase filter parameter. Useful values fall in the range 0.2 to 1. Larger values result in stronger filtering. If zero, adaptive phase filter will be skipped.',
+    default: 0.6,
+    range: {start: 0.0, end: 1.0}
+  },
+   {
     name: 'Water Mask',
     apiName: 'apply_water_mask',
     type: JobOptionType.TOGGLE,
@@ -233,10 +234,7 @@ export const AutoRift: Hyp3JobType = {
   id: 'AUTORIFT',
   name: 'autoRIFT',
   infoUrl: 'https://hyp3-docs.asf.alaska.edu/products/#autorift',
-  description: `
-    autoRIFT is a highly accurate and efficient algorithm for finding the pixel
-    displacement between two radar images.
-  `,
+  description: 'AUTORIFT_DESC',
   numProducts: 2,
   productTypes: [{
     dataset: sentinel_1,

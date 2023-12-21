@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
@@ -6,11 +6,15 @@ import * as userStore from '@store/user';
 import { MatDialogRef } from '@angular/material/dialog';
 import {
   MapLayerTypes, UserAuth, ProductType,
-  datasetList, SearchType, SavedFilterPreset, FilterType
+  datasetList, SearchType, SavedFilterPreset, FilterType, Breakpoints
 } from '@models';
 import { Hyp3Service, ThemingService } from '@services';
 import { SubSink } from 'subsink';
 import { take } from 'rxjs';
+import { TranslateService } from "@ngx-translate/core";
+import { AsfLanguageService } from "@services/asf-language.service";
+import * as models from "@models";
+import * as services from "@services";
 
 @Component({
   selector: 'app-preferences',
@@ -18,6 +22,11 @@ import { take } from 'rxjs';
   styleUrls: ['./preferences.component.scss']
 })
 export class PreferencesComponent implements OnInit, OnDestroy {
+  @Output() selectedChange = new EventEmitter<string>();
+
+  public breakpoint: models.Breakpoints;
+  public breakpoints = models.Breakpoints;
+
   public datasets = datasetList;
   public defaultMaxResults: number;
   public defaultMapLayer: MapLayerTypes;
@@ -25,10 +34,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   public defaultMaxConcurrentDownloads: number;
   public defaultProductTypes: ProductType[];
   public hyp3BackendUrl: string;
-
-  public defaultGeoSearchFiltersID;
-  public defaultBaselineSearchFiltersID;
-  public defaultSBASSearchFiltersID;
+  public defaultLanguage: string;
 
   public maxResults = [250, 1000, 5000];
   public mapLayerTypes = MapLayerTypes;
@@ -58,19 +64,29 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private hyp3: Hyp3Service,
     private themeService: ThemingService,
+    public translate: TranslateService,
+    public language: AsfLanguageService,
+    private screenSize: services.ScreenSizeService,
   ) { }
 
   ngOnInit() {
+
+    this.screenSize.breakpoint$.subscribe(
+      breakpoint => this.breakpoint = breakpoint
+    );
+
     this.subs.add(
       this.store$.select(userStore.getUserProfile).subscribe(
         profile => {
-          this.defaultMaxResults = profile.maxResults;
+          this.defaultLanguage = profile.language;
+          this.defaultMaxResults = +profile.maxResults;
           this.defaultMapLayer = profile.mapLayer;
           this.defaultDataset = profile.defaultDataset;
           this.selectedFiltersIDs = profile.defaultFilterPresets;
           this.defaultMaxConcurrentDownloads = profile.defaultMaxConcurrentDownloads;
           this.hyp3BackendUrl = profile.hyp3BackendUrl;
           this.currentTheme = profile.theme;
+          this.defaultLanguage = profile.language;
           if (this.hyp3BackendUrl) {
             this.hyp3.setApiUrl(this.hyp3BackendUrl);
           } else {
@@ -96,9 +112,8 @@ export class PreferencesComponent implements OnInit, OnDestroy {
               filters: {} as FilterType,
               id: '',
               name: 'Default',
-              searchType: searchtype[searchtype]
+              searchType: searchtype[searchtype],
             };
-
             this.userFiltersBySearchType[SearchType[searchtype]] = [defaultPreset];
           }
         }
@@ -134,6 +149,12 @@ export class PreferencesComponent implements OnInit, OnDestroy {
 
   public onChangeDefaultLayerType(layerType: MapLayerTypes): void {
     this.defaultMapLayer = layerType;
+    this.saveProfile();
+  }
+
+  public onChangeDefaultLanguage(language: string): void {
+    this.language.setCurrent(language);
+    this.defaultLanguage = language
     this.saveProfile();
   }
 
@@ -184,13 +205,20 @@ export class PreferencesComponent implements OnInit, OnDestroy {
       defaultMaxConcurrentDownloads: this.defaultMaxConcurrentDownloads,
       defaultFilterPresets: this.selectedFiltersIDs,
       hyp3BackendUrl: this.hyp3BackendUrl,
-      theme: this.currentTheme
+      theme: this.currentTheme,
+      language: this.defaultLanguage
     });
 
     this.store$.dispatch(action);
   }
 
+  onCloseDownloadQueue() {
+    this.dialogRef.close();
+  }
+
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
+
+  protected readonly Breakpoints = Breakpoints;
 }

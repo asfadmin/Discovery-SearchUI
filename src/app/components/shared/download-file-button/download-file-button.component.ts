@@ -2,7 +2,16 @@ import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit } from '@
 import { DownloadService } from '@services/download.service';
 import { CMRProduct, DownloadStatus } from '@models';
 import { UAParser } from 'ua-parser-js';
-import { Observable, Subscription } from 'rxjs';
+import {
+  Observable, Subscription,
+  catchError,
+  concatMap,
+  filter,
+  first,
+  interval,
+  // switchMap,
+  takeWhile,
+} from 'rxjs';
 
 import { Store } from '@ngrx/store';
 import * as queueStore from '@store/queue';
@@ -10,7 +19,10 @@ import { AppState } from '@store';
 
 import * as userStore from '@store/user';
 import { SubSink } from 'subsink';
-import { AuthService } from '@services';
+import { AuthService, NotificationService } from '@services';
+import {
+  HttpClient, HttpEventType,
+} from '@angular/common/http';
 
 @Component({
   selector: 'app-download-file-button',
@@ -30,15 +42,17 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   public fileName: string = null;
 
   public observable$: Observable<DownloadStatus>;
-  public subscription: Subscription;
-
+  public downloadSubscription: Subscription;
+  public burstSubscription: Subscription;
   public isUserLoggedIn: boolean;
   private subs = new SubSink();
 
   constructor(
     private downloadService: DownloadService,
     private store$: Store<AppState>,
-    private authService: AuthService
+    private authService: AuthService,
+    private http: HttpClient,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -61,8 +75,8 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
             this.dFile = queueDownloads[this.product?.id ?? this.fileName];
           } else {
             this.dFile = null;
-            if (this.subscription) {
-              this.subscription.unsubscribe();
+            if (this.downloadSubscription) {
+              this.downloadSubscription.unsubscribe();
             }
           }
         }
@@ -78,7 +92,8 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     );
   }
   public cancelDownload() {
-    this.subscription?.unsubscribe();
+    this.downloadSubscription?.unsubscribe();
+    this.burstSubscription?.unsubscribe();
     this.store$.dispatch(new queueStore.RemoveDownloadProduct(this.dFile));
     this.dFile = null;
   }
@@ -96,10 +111,29 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     });
 
   }
-  public downloadFile(dir: boolean = false) {
 
-    if (!this.useNewDownload) {
-      this.classicDownload(this.url);
+  private onAccountButtonClicked() {
+    this.subs.add(
+      this.authService.login$().pipe(
+        first(),
+        filter(user => !!user)
+      ).subscribe(
+        user => {
+          this.store$.dispatch(new userStore.Login(user));
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            'event': 'account-button-clicked',
+            'account-button-clicked': user
+          });
+        }
+      )
+    );
+  }
+
+  public downloadFile(dir: boolean = false) {
+    const isBurstProduct = !!['BURST', 'BURST_XML'].find(t => t === this.product.metadata.productType);
+    if (!this.isUserLoggedIn && isBurstProduct) {
+      this.onAccountButtonClicked();
       return;
     }
     if (this.dFile?.state === 'PENDING' || this.dFile?.state === 'IN_PROGRESS') {
@@ -107,13 +141,26 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
       this.downloadCancelled.emit(this.product);
       return;
     }
-
+    if (!this.useNewDownload) {
+      if (isBurstProduct) {
+        this.burstFunctionality(this.product);
+      }
+      else {
+        this.classicDownload(this.url);
+      }
+      return;
+    }
 
 
     const userAgent = new UAParser().getResult();
 
     if (userAgent.browser.name !== 'Chrome') {
-      this.classicDownload(this.url);
+      if (isBurstProduct) {
+        this.burstFunctionality(this.product);
+      }
+      else {
+        this.classicDownload(this.url);
+      }
       return;
     }
 
@@ -141,18 +188,77 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
       product: this?.product,
     };
     this.store$.dispatch(new queueStore.DownloadProduct(initStatus));
-    this.observable$ = this.downloadService.download(this.url, this.fileName, this?.product, product?.id ?? this.fileName, handle);
-    this.subscription = this.observable$.subscribe(resp => {
-      if (!this.processSubscription(resp, product, true)) {
-        this.subscription.unsubscribe();
-        // this.observable$ = this.downloadService.download(this.url, this.fileName, this?.product, product?.id ?? this.fileName);
-        this.subscription = this.observable$.subscribe(response => this.processSubscription(response, product, false));
-      }
-    }, () => {
-      this.dFile = undefined;
-      this.classicDownload(this.url);
-    });
+
+    if (!!['BURST', 'BURST_XML'].find(t => t === this.product.metadata.productType)) {
+      this.burstFunctionality(product, handle);
+    }
+    else {
+      this.startDownload(product, handle);
+    }
   }
+  private burstFunctionality(product: CMRProduct, handle?: any) {
+    const initStatus: DownloadStatus = {
+      progress: 0,
+      state: 'PENDING',
+      id: this.product?.id ?? this.fileName,
+      filename: '',
+      product: this?.product,
+    };
+    this.store$.dispatch(new queueStore.DownloadProduct(initStatus));
+
+    this.burstSubscription = interval(2000).pipe(
+      concatMap(() => this.http.get(this.url, {
+        withCredentials: true,
+        observe: 'events',
+        reportProgress: true,
+      })),
+      takeWhile((res: any) => {
+        if (this.isBurstDone(res, this.product)) {
+          if (handle) {
+            this.startDownload(product, handle);
+          } else {
+            this.classicDownload(this.url);
+          }
+          this.burstSubscription.unsubscribe();
+          return false;
+        } else {
+          
+        if(!this.downloadService.hasDownloadedBursts && !handle) {
+          this.downloadService.hasDownloadedBursts = true;
+          this.notificationService.info('You may need to enable popups on this site due to needing to extract the burst before downloading.', 'Burst Extraction');
+        }
+        }
+        return true;
+      }),
+      catchError(err => {
+        console.log(err)
+        return err;
+      })
+    ).subscribe()
+  }
+  private isBurstDone(resp, _product): boolean {
+    if (resp.type === HttpEventType.DownloadProgress || resp.type === HttpEventType.DownloadProgress) {
+      return resp.loaded > 1000;
+    }
+    return false;
+  }
+  private startDownload(product: CMRProduct, handle: any) {
+    this.observable$ = this.downloadService.download(this.url, this.fileName, this?.product, product?.id ?? this.fileName, handle);
+    this.downloadSubscription = this.observable$.subscribe(
+      {
+        next: resp => {
+          if (!this.processSubscription(resp, product, true)) {
+            this.downloadSubscription.unsubscribe();
+            this.downloadSubscription = this.observable$.subscribe(response => this.processSubscription(response, product, false));
+          }
+        },
+        error: () => {
+          this.dFile = undefined;
+          this.classicDownload(this.url);
+        }
+      });
+  }
+
   private processSubscription(resp, product, headerOnly) {
     this.dFile = resp;
     this.store$.dispatch(new queueStore.DownloadProduct(resp));
@@ -174,6 +280,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     this.downloadFile();
   }
   async classicDownload(url) {
+
     const link = document.createElement('a');
     link.style.display = 'none';
     link.href = url;
@@ -183,13 +290,18 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
 
     // It needs to be added to the DOM so it can be clicked
     document.body.appendChild(link);
-    link.click();
+    if (this.product.metadata.productType === 'BURST' || this.product.metadata.productType === 'BURST_XML') {
+      window.location.href = url;
+    } else {
+      link.click();
+    }
 
     // To make this work we need to wait
     // a little while before removing it.
     await timer(1000);
     URL.revokeObjectURL(link.href);
     link.parentNode.removeChild(link);
+
     this.dFile = {
       progress: 100,
       state: 'DONE',
@@ -201,7 +313,5 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
 
   }
 }
-
-
 
 function timer(ms) { return new Promise(res => setTimeout(res, ms)); }

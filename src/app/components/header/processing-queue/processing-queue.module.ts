@@ -27,8 +27,7 @@ import { ResizableModule } from 'angular-resizable-element';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ProjectNameSelectorModule } from '@components/shared/selectors/project-name-selector';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
-import { AngularResizeEventModule } from 'angular-resize-event';
-import { CreateSubscriptionModule } from '../../header/create-subscription';
+import { ResizedEventModule } from '@directives/resized.directive';
 import {DocsModalModule} from '@components/shared/docs-modal';
 import {Hyp3UrlModule} from '@components/shared/hyp3-url/hyp3-url.module';
 import { SharedModule } from '@shared';
@@ -59,12 +58,11 @@ import { SharedModule } from '@shared';
         ProcessingOptionsModule,
         MatDialogModule,
         ResizableModule,
-        AngularResizeEventModule,
+        ResizedEventModule,
         DragDropModule,
         MatTabsModule,
         MatMenuModule,
         ScrollingModule,
-        CreateSubscriptionModule,
         DocsModalModule,
         Hyp3UrlModule,
         SharedModule

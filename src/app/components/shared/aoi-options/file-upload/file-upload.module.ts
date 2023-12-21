@@ -8,11 +8,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSharedModule } from '@shared/mat-shared.module';
 import { FileUploadComponent } from './file-upload.component';
 import { FileUploadDialogComponent } from './file-upload-dialog';
+import { SharedModule } from "@shared";
 
 @NgModule({
   declarations: [
@@ -22,8 +22,8 @@ import { FileUploadDialogComponent } from './file-upload-dialog';
   imports: [
     CommonModule,
     FormsModule,
+    SharedModule,
 
-    FlexLayoutModule,
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,

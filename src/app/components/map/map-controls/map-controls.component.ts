@@ -55,6 +55,7 @@ export class MapControlsComponent implements OnInit, OnDestroy {
   startWith(null));
 
   public isBrowseOverlayEnabled$: Observable<boolean> = this.browseOverlayService.isBrowseOverlayEnabled$;
+  public isCoherenceOverlayEnabled$: Observable<any> = this.mapService.hasCoherenceLayer$;
 
   public browseIndexingEnabled$ = combineLatest([
     this.isBrowseOverlayEnabled$,
@@ -67,7 +68,7 @@ export class MapControlsComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private mapService: services.MapService,
     private browseOverlayService: services.BrowseOverlayService,
-    private eventMonitoringService: services.SarviewsEventsService
+    private eventMonitoringService: services.SarviewsEventsService,
   ) { }
 
   ngOnInit() {
@@ -154,6 +155,9 @@ export class MapControlsComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new mapStore.SetBrowseOverlayOpacity(event.value));
   }
 
+  public onSetCoherenceOpacity(event: MatSliderChange) {
+    this.store$.dispatch(new mapStore.SetCoherenceOverlayOpacity(event.value));
+  }
 
   public onPinProduct(product_id: string) {
     this.store$.dispatch(new ToggleBrowseOverlay(product_id));

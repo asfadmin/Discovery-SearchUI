@@ -1,6 +1,6 @@
-<div *ngIf="breakpoint$ | async as breakpoint" fxLayout="row" class="breadcrumb-row">
+<div *ngIf="breakpoint$ | async as breakpoint" class="breadcrumb-row fx-row">
   <ng-container *ngIf="breakpoint !== breakpoints.MOBILE">
-    <div fxLayout="row">
+    <div class="fx-row">
       <app-search-type-selector
         (click)="closeAOIOptions()"
         class="breadcrumb">
@@ -10,10 +10,9 @@
       </app-project-name-selector>
 
       <div
-      *ngIf="breakpoint > breakpoints.SMALL"
-      fxFlex="300px"
-      class="breadcrumb">
-      <app-date-selector></app-date-selector>
+        *ngIf="breakpoint > breakpoints.SMALL"
+        class="breadcrumb hyp3-date-selector--layout">
+        <app-date-selector></app-date-selector>
       </div>
 
       <app-job-product-name-selector [headerView]="true" *ngIf="breakpoint === breakpoints.FULL" class="breadcrumb">
@@ -23,15 +22,15 @@
       </app-job-status-selector>
 
       <div *ngIf="breakpoint !== breakpoints.FULL"
-           fxFlex="nogrow" class="breadcrumb">
+        class="breadcrumb">
         <button (click)="onToggleFiltersMenu()"
-                mat-button class="additional-filters-button">
-          {{ 'FILTERS' | translate }} <br> <mat-icon>{{  'MORE_HORIZ'  | translate }}</mat-icon>
+          mat-button class="additional-filters-button">
+          {{ 'FILTERS' | translate }} <br> <mat-icon>more_horiz</mat-icon>
         </button>
       </div>
 
       <div class="breadcrumb">
-        <div fxFlex="nogrow" class="breadcrumb search-controls">
+        <div class="breadcrumb search-controls">
           <app-search-button></app-search-button>
         </div>
       </div>
@@ -47,7 +46,7 @@
     <div class="mobile-nav-bar">
       <button
         (click)="onToggleFiltersMenu()"
-         style="margin-left: 5px;"
+        style="margin-left: 5px;"
         mat-flat-button>
         {{ 'FILTERS' | translate }}
       </button>

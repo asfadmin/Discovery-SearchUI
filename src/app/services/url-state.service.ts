@@ -32,6 +32,15 @@ export class UrlStateService {
   private params = {};
   private shouldDoSearch = false;
 
+
+  public isDefaultSearch$ = this.activatedRoute.queryParams.pipe( map(params => {
+    const DefaultnonGEO = 'searchType' in params && Object.keys(params).length <= 1;
+    const defaultGEO = Object.keys(params).length === 0;
+
+    return defaultGEO || DefaultnonGEO;
+    })
+  );
+
   constructor(
     private store$: Store<AppState>,
     private activatedRoute: ActivatedRoute,
@@ -141,7 +150,9 @@ export class UrlStateService {
 
   public setDefaults(profile: models.UserProfile): void {
     if (this.loadLocations['dataset'] !== models.LoadTypes.URL) {
-      this.store$.dispatch(new filterStore.SetSelectedDataset(profile.defaultDataset));
+      if (this.loadLocations['productTypes'] !== models.LoadTypes.URL) {
+        this.store$.dispatch(new filterStore.SetSelectedDataset(profile.defaultDataset));
+      }
     }
 
     if (this.loadLocations['maxResults'] !== models.LoadTypes.URL) {
@@ -166,8 +177,6 @@ export class UrlStateService {
       new mapStore.SetSatelliteView();
 
     this.store$.dispatch(action);
-
-    this.store$.dispatch(new filterStore.SetDefaultFilters(profile.defaultFilterPresets));
   }
 
   private datasetParam(): models.UrlParameter[] {
@@ -471,6 +480,26 @@ export class UrlStateService {
         map(list => ({ searchList: list.join(',') }))
       ),
       loader: this.loadSearchList
+    }, {
+      name: 'fullBurstIDs',
+      source: this.store$.select(filterStore.getFullBurstIDs).pipe(
+        map(list => ({ fullBurstIDs: list?.map(num => num.toString()).join(',') }))
+      ),
+      loader: this.loadFullBurstIDs
+    },
+    {
+      name: 'operaBurstIDs',
+      source: this.store$.select(filterStore.getOperaBurstIDs).pipe(
+        map(list => ({ operaBurstID: list?.map(num => num.toString()).join(',') }))
+      ),
+      loader: this.loadOperaBurstIDs
+    },
+    {
+      name: 'groupID',
+      source: this.store$.select(filterStore.getGroupID).pipe(
+        map(groupId => ({ groupId })
+      )),
+      loader: this.loadGroupId
     }];
   }
 
@@ -784,4 +813,18 @@ export class UrlStateService {
   private isValidDate = (d: Date): boolean => d instanceof Date && !isNaN(d.valueOf());
   private clamp = (value: number, min: number, max: number) =>
     Math.min(Math.max(value, min), max);
+
+  private loadFullBurstIDs = (ids: string): Action => {
+    const list = ids.split(',');
+    return new filterStore.setFullBurst(list);
+  };
+
+  private loadOperaBurstIDs = (ids: string): Action => {
+    const list = ids.split(',');
+    return new filterStore.setOperaBurstID(list);
+  };
+
+  private loadGroupId = (id: string): Action => {
+    return new filterStore.setGroupID(id);
+  };
 }

@@ -1,11 +1,11 @@
 <div class="help-dialog-wrapper">
 
   <header>
-    <div mat-dialog-title class="help-header"><h3>Search Help</h3></div>
+    <div mat-dialog-title class="help-header"><h3>{{ 'SEARCH_HELP' |  translate }}</h3></div>
     <div class="help-menu" *ngIf="topic != 'toc'">
       <button mat-raised-button color="accent"
               (click)="setHelpTopic('toc')">
-        All Help & Tutorials
+        {{ 'ALL_HELP_AND_TUTORIALS' |  translate  | titlecase}}
       </button>
     </div>
   </header>
@@ -72,7 +72,7 @@
     <div class="help-action-controls">
       <div class="done-button">
         <button (click)="onClose()" color="primary" mat-flat-button>
-          {{ ' DONE ' | translate }}
+          {{ 'DONE' | translate }}
         </button>
       </div>
     </div>

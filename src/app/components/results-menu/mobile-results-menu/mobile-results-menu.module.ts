@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSharedModule } from '@shared';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { SbasResultsMenuModule } from '../sbas-results-menu/sbas-results-menu.module';
 import { SBASChartModule } from '@components/sbas-chart/sbas-chart.module';
@@ -15,6 +14,8 @@ import { ScenesListModule } from '../scenes-list';
 import { ScenesListHeaderModule } from '../scenes-list-header';
 
 import { MobileResultsMenuComponent } from './mobile-results-menu.component';
+import { SharedModule } from "@shared";
+import { DocsModalModule } from '@components/shared/docs-modal';
 
 
 @NgModule({
@@ -25,8 +26,8 @@ import { MobileResultsMenuComponent } from './mobile-results-menu.component';
     CommonModule,
     MatSharedModule,
     MatButtonToggleModule,
-    FlexLayoutModule,
 
+    SharedModule,
     SBASChartModule,
     BaselineChartModule,
     SbasResultsMenuModule,
@@ -35,6 +36,7 @@ import { MobileResultsMenuComponent } from './mobile-results-menu.component';
     SceneDetailModule,
     ScenesListModule,
     ScenesListHeaderModule,
+    DocsModalModule
   ],
   exports: [
     MobileResultsMenuComponent

@@ -12,6 +12,7 @@ import { DatasetSelectorComponent } from './dataset-selector.component';
 import { DatasetComponent } from './dataset/dataset.component';
 import {MatBadgeModule} from '@angular/material/badge';
 import {DocsModalModule} from '@components/shared/docs-modal';
+import { SharedModule } from "@shared";
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import {DocsModalModule} from '@components/shared/docs-modal';
         MatSharedModule,
         MatBadgeModule,
         DocsModalModule,
+        SharedModule
     ],
   declarations: [
     DatasetSelectorComponent,

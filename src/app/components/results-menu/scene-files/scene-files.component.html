@@ -10,9 +10,8 @@
 </div>
 
 <div *ngIf="!showUnzippedProductScreen">
-  <mat-list class="products-list">
-    <app-scene-file
-      *ngFor="let product of products"
+  <mat-list class="products-list" >
+    <app-scene-file *ngFor="let product of products"
       (toggle)="onToggleQueueProduct(product)"
       (unzip)="onOpenUnzipProduct($event)"
       (queueHyp3Job)="onQueueHyp3Job($event)"
@@ -20,6 +19,20 @@
       [isUserLoggedIn]="isUserLoggedIn"
       [product]="product"
       [validHyp3JobTypes]="validJobTypesByProduct[product.id]"
+      [hasAccessToRestrictedData]="hasAccessToRestrictedData"
+      [isUnzipLoading]="unzippedLoading === product.id"
+      [isQueued]="(queuedProductIds$ | async).has(product.id)"
+      [isOpen]="false"
+    >
+    </app-scene-file>
+    <app-scene-file *ngFor="let product of (StaticLayerProduct$ | async)"
+      (toggle)="onToggleQueueProduct(product)"
+      (unzip)="onOpenUnzipProduct($event)"
+      (queueHyp3Job)="onQueueHyp3Job($event)"
+      [loadingHyp3JobName]="loadingHyp3JobName"
+      [isUserLoggedIn]="isUserLoggedIn"
+      [product]="product"
+      [validHyp3JobTypes]="[]"
       [hasAccessToRestrictedData]="hasAccessToRestrictedData"
       [isUnzipLoading]="unzippedLoading === product.id"
       [isQueued]="(queuedProductIds$ | async).has(product.id)"
@@ -34,23 +47,6 @@
     *ngIf="selectedSarviewEventID && !!sarviewsProducts"
     class="event-wrapper"
   >
-    <!-- <div class="event-product-map-row">
-      <mat-button-toggle-group
-        fxFlex=""
-        name="eventProductMapButton"
-        class="criteria-button-group"
-        [ngClass]="{ 'position-in-header': breakpoint > breakpoints.SMALL }"
-        (click)="onOpenPinnedProducts()"
-      >
-        <mat-button-toggle
-          class="control-mat-button-toggle map-button-toggle"
-          matTooltip="View selected products on map"
-        >
-          Event Products Map<mat-icon class="map-icon">map</mat-icon>
-        </mat-button-toggle>
-      </mat-button-toggle-group>
-    </div> -->
-
     <div class="event-products-wrapper">
       <cdk-virtual-scroll-viewport
         id="event-selection-list"

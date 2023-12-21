@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, EventEmitter } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import * as filtersStore from '@store/filters';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
-import { filter, map } from 'rxjs/operators';
+import { debounceTime, map } from 'rxjs/operators';
 import { UntypedFormControl } from '@angular/forms';
 import { ScenesService, ScreenSizeService } from '@services';
 import { getScenes } from '@store/scenes';
@@ -22,7 +22,7 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
   @Input() headerView: boolean;
   public productNameFilter = '';
   private subs = new SubSink();
-  public filteredOptionsList: string[];
+  public filteredOptions: EventEmitter<string[]> = new EventEmitter<string[]>()
   public unfilteredScenes: string[];
 
   public isJobFilterOptionsOpen = false;
@@ -40,9 +40,7 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(filtersStore.getProductNameFilter).pipe(
-        filter(filterName => !!filterName),
-      ).subscribe(
+      this.store$.select(filtersStore.getProductNameFilter).subscribe(
         productNameFilter => this.productNameFilter = productNameFilter
       )
     );
@@ -59,7 +57,7 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
       )
     );
 
-    const fileNames = this.scenesService.scenes$().pipe(
+    const fileNames = this.scenesService.scenes$.pipe(
       map(scenes =>
           scenes.map(scene => scene.metadata.fileName.toLowerCase().split('.')[0])
       )
@@ -72,15 +70,17 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      combineLatest([this.myControl.valueChanges, fileNames]).pipe(
+      combineLatest([this.myControl.valueChanges.pipe(
+        debounceTime(200)
+      ), fileNames]).pipe(
         map(([_, filteredRes]) => filteredRes)
       ).subscribe(res => {
           if (this.productNameFilter != null) {
             const temp = this.productNameFilter.replace(/\s+/g, '').endsWith(',')
               ? this.unfilteredScenes.filter(scene => !res.includes(scene)) : res;
-            this.filteredOptionsList = Array.from(new Set(temp.filter(file => this.autoSuggestion(file.toLowerCase()))));
+            this.filteredOptions.emit(Array.from(new Set(temp.filter(file => this.autoSuggestion(file.toLowerCase())))));
           } else {
-            this.filteredOptionsList = this.unfilteredScenes;
+            this.filteredOptions.emit(this.unfilteredScenes);
           }
         }
       )

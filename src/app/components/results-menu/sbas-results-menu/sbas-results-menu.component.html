@@ -1,7 +1,7 @@
 <!-- SCENE LIST -->
 <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
-  <mat-card #listCard class="mp0 sbas-list-card" fxFlex="20" fxFlex
-            [style.width]="listCardMaxWidth">
+  <mat-card #listCard class="mp0 sbas-list-card"
+    [style.width]="listCardMaxWidth">
     <mat-card-subtitle style="display: flex; flex-direction: row; justify-content: center; align-items: center;" class="header">
       <app-scenes-list-header></app-scenes-list-header>
     </mat-card-subtitle>
@@ -18,9 +18,9 @@
           <br>
 
           <app-scene-metadata
-             [scene]="product"
-             [dataset]="datasetForProduct.match(product)"
-             [searchType]="searchType">
+            [scene]="product"
+            [dataset]="datasetForProduct.match(product)"
+            [searchType]="searchType">
           </app-scene-metadata>
           <hr>
         </div>
@@ -28,7 +28,7 @@
     </div>
   </mat-card>
 
-  <mat-card class="mp0 sbas-list-card" fxFlex="20" fxFlex [style.width]="listCardMaxWidth">
+  <mat-card class="mp0 sbas-list-card" [style.width]="listCardMaxWidth">
     <mat-card-subtitle style="display: flex; flex-direction: row; justify-content: center; align-items: flex-start;" class="header">
     </mat-card-subtitle>
     <div class="sbas-metadata scrollable">
@@ -46,16 +46,16 @@
           </div>
 
           <app-scene-metadata
-             [scene]="product"
-             [dataset]="datasetForProduct.match(product)"
-             [searchType]="searchType">
+            [scene]="product"
+            [dataset]="datasetForProduct.match(product)"
+            [searchType]="searchType">
           </app-scene-metadata>
           <hr>
         </div>
       </div>
       <div *ngIf="!pair" style="margin: 5px; padding-bottom: 36px;">
         <div class="faint-text w100 h100" style="text-align: center; padding-top: 10px;">
-          No Pair Selected
+          {{ 'NO_PAIR_SELECTED' | translate }}
         </div>
       </div>
     </div>
@@ -63,45 +63,45 @@
 </ng-container>
 
 <mat-card #chartCard
-          class="mp0" fxFlex="60" fxFlexFill
-          [style.max-width]="chartCardMaxWidth"
-          style="box-shadow: none;"
-          mwlResizable
-          [enableGhostResize]="true"
-          (resizeEnd)="onResizeEnd($event)">
-<div
-  mwlResizeHandle
-  [resizeEdges]="{ left: true }"
-class="chart-draggable-handle sbas-resize-handle-filler">
-  <mat-icon svgIcon="vgrip" class="vgrip-icon"></mat-icon>
+  class="mp0 sbas-chart-card"
+  [style.max-width]="chartCardMaxWidth"
+  style="box-shadow: none;"
+  mwlResizable
+  [enableGhostResize]="true"
+  (resizeEnd)="onResizeEnd($event)">
+  <div
+    mwlResizeHandle
+    [resizeEdges]="{ left: true }"
+    class="chart-draggable-handle sbas-resize-handle-filler">
+    <mat-icon svgIcon="vgrip" class="vgrip-icon"></mat-icon>
 
-</div>
+  </div>
   <mat-card-subtitle
     [class.medium-header]="breakpoint <= breakpoints.MEDIUM"
     class="sbas-header">
 
-    <div fxFlex="" class="sbas-button-group">
-      <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-        <label>Zoom</label>
+    <div class="sbas-button-group">
+      <div class="button-group-label">
+        <label>{{ 'ZOOM' | translate }}</label>
       </div>
-      <div fxLayout="row">
+      <div class="fx-row">
         <div>
-          <mat-button-toggle-group fxFlex="" name="layerType">
+          <mat-button-toggle-group class="sbas-toggle-group" name="layerType">
             <mat-button-toggle class="control-mat-button-toggle"
-                               (click)="zoomIn()"
-                               matTooltip="Zoom In">
+              (click)="zoomIn()"
+              matTooltip="{{ 'ZOOM_IN' | translate }}">
               <mat-icon class="control-icon">add</mat-icon>
             </mat-button-toggle>
 
             <mat-button-toggle class="control-mat-button-toggle"
-                               (click)="zoomToFit()"
-                               matTooltip="Zoom To Fit">
+              (click)="zoomToFit()"
+              matTooltip="{{ 'ZOOM_TO_FIT' | translate }}">
               <mat-icon class="control-icon">aspect_ratio</mat-icon>
             </mat-button-toggle>
 
             <mat-button-toggle class="control-mat-button-toggle"
-                               (click)="zoomOut()"
-                               matTooltip="Zoom out">
+              (click)="zoomOut()"
+              matTooltip="{{ 'ZOOM_OUT' | translate }}">
               <mat-icon class="control-icon">remove</mat-icon>
             </mat-button-toggle>
           </mat-button-toggle-group>
@@ -109,43 +109,42 @@ class="chart-draggable-handle sbas-resize-handle-filler">
       </div>
     </div>
 
-    <div fxFlex="" class="sbas-button-group-filler sbas-button-group"></div>
+    <div class="sbas-button-group-filler sbas-button-group"></div>
 
-    <div fxFlex="" class="sbas-button-group">
-      <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-        <label>Custom Pair</label>
+    <div class="sbas-button-group">
+      <div class="button-group-label">
+        <label>{{ 'CUSTOM_PAIR' | translate }}</label>
       </div>
-      <div fxLayout="row" fxLayoutAlign="center">
+      <div class="toggle-group-wrapper--layout">
         <div>
-
-          <mat-button-toggle-group fxFlex="" class="sbas-ribbon-group" name="pairControl">
+          <mat-button-toggle-group class="sbas-toggle-group sbas-ribbon-group" name="pairControl">
 
             <mat-button-toggle
-                          [disabled]="isAddingCustomPoint"
-                          value="add"
-                          class="control-mat-button-toggle"
-                          (click)="startAddingCustomPoint()"
-                          matTooltip="Start adding custom pair">
+              [disabled]="isAddingCustomPoint"
+              value="add"
+              class="control-mat-button-toggle"
+              (click)="startAddingCustomPoint()"
+              matTooltip="{{ 'START_ADDING_CUSTOM_PAIR' | translate }}">
               <mat-icon class="control-icon">add_circle</mat-icon>
             </mat-button-toggle>
 
             <mat-button-toggle
-                          [disabled]="!isAddingCustomPoint"
-                          value="stop"
-                          class="control-mat-button-toggle"
-                          (click)="stopAddingCustomPoint()"
-                          matTooltip="Stop adding custom pair"
-                          >
+              [disabled]="!isAddingCustomPoint"
+              value="stop"
+              class="control-mat-button-toggle"
+              (click)="stopAddingCustomPoint()"
+              matTooltip="{{ 'STOP_ADDING_CUSTOM_PAIR' | translate }}"
+            >
               <mat-icon class="control-icon">stop_circle</mat-icon>
             </mat-button-toggle>
 
             <mat-button-toggle
-                          [disabled]="!isSelectedPairCustom"
-                          value="remove"
-                          class="control-mat-button-toggle"
-                          (click)="deleteSelectedPair()"
-                          matTooltip="Remove custom pair"
-                          >
+              [disabled]="!isSelectedPairCustom"
+              value="remove"
+              class="control-mat-button-toggle"
+              (click)="deleteSelectedPair()"
+              matTooltip="{{ 'REMOVE_CUSTOM_PAIR' | translate }}"
+            >
               <mat-icon class="control-icon">remove_circle</mat-icon>
             </mat-button-toggle>
 
@@ -154,19 +153,20 @@ class="chart-draggable-handle sbas-resize-handle-filler">
       </div>
     </div>
 
-    <div fxFlex="" class="sbas-button-group-filler sbas-button-group"></div>
-    <div fxFlex="" class = 'sbas-button-group'>
-      <div fxLayout="row" fxLayoutAlign="center" class="button-group-label">
-        <label>Filters</label>
+    <div class="sbas-button-group-filler sbas-button-group"></div>
+    <div class='sbas-button-group'>
+      <div class="button-group-label">
+        <label>{{ 'FILTERS' | translate }}</label>
       </div>
-      <div fxLayout="row" fxLayoutAlign="center">
+      <div class="toggle-group-wrapper--layout">
         <mat-button-toggle class="control-mat-button-toggle sbas-criteria-button-toggle"
-                           (click)="onToggleFiltersMenu()"
-                           >
-          SBAS Filters<mat-icon class="more-horiz">{{  'MORE_HORIZ'  | translate }}</mat-icon>
+          (click)="onToggleFiltersMenu()"
+        >
+          {{ 'SBAS_FILTERS' | translate }}<mat-icon class="more-horiz">more_horiz</mat-icon>
         </mat-button-toggle>
       </div>
     </div>
+
   </mat-card-subtitle>
 
   <div
@@ -181,11 +181,14 @@ class="chart-draggable-handle sbas-resize-handle-filler">
     </div>
 
     <div id="sbas-chart-column" class="sbas-column-2">
-
+      <div class="gap-detected-area" *ngIf="this.isDisconnected">
+        <app-docs-modal class="warn-icon" icon="warning" url="https://docs.asf.alaska.edu/vertex/sbas/#gaps-detected-warning-message" tooltip="GAPS_DETECTED"></app-docs-modal>
+      </div>
       <app-sbas-chart
         [zoomIn$]="zoomInChart$"
         [zoomToFit$]="zoomToFitChart$"
-        [zoomOut$]="zoomOutChart$">
+        [zoomOut$]="zoomOutChart$"
+        (isGraphDisconnected)="isGraphDisconnected($event)">
       </app-sbas-chart>
     </div>
   </div>

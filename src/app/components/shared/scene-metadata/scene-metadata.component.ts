@@ -132,6 +132,14 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
     this.store$.dispatch(action);
   }
 
+  public setFullBurst(): void {
+    this.store$.dispatch(new filtersStore.setFullBurst([this.scene.metadata.burst.fullBurstID]))
+  }
+
+  public setOperaBurst(): void {
+    this.store$.dispatch(new filtersStore.setOperaBurstID([this.scene.metadata.opera.operaBurstID]))
+  }
+
   private capitalizeFirstLetter(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }

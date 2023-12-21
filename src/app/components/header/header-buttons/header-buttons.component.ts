@@ -11,6 +11,8 @@ import * as userStore from '@store/user';
 import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
 
+import { AsfLanguageService } from "@services/asf-language.service";
+
 import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
 import {
   CMRProduct, Breakpoints, UserAuth, SidebarType,
@@ -64,6 +66,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     public asfApiService: AsfApiService,
     private screenSize: ScreenSizeService,
     private store$: Store<AppState>,
+    public language: AsfLanguageService,
   ) {}
 
   ngOnInit() {
@@ -257,10 +260,6 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
 
   public onOpenProcessingQueue() {
     this.store$.dispatch(new uiStore.SetIsOnDemandQueueOpen(true));
-  }
-
-  public onOpenSubscriptions() {
-    this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.ON_DEMAND_SUBSCRIPTIONS));
   }
 
   public listWebsiteLinks() {
