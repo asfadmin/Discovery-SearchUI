@@ -506,10 +506,11 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         return true
       }),
+      debounceTime(200),
       filter(_ => this.searchType !== SearchType.SARVIEWS_EVENTS
+        && this.searchType !== SearchType.CUSTOM_PRODUCTS
         && this.searchType !== SearchType.BASELINE
         && this.searchType !== SearchType.SBAS),
-      debounceTime(200),
       map(params => ({...params, output: 'COUNT'})),
       tap(_ =>
         this.store$.dispatch(new searchStore.SearchAmountLoading())

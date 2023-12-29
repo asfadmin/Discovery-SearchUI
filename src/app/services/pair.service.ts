@@ -9,8 +9,9 @@ import { getScenes, getCustomPairs } from '@store/scenes/scenes.reducer';
 import {
   getTemporalRange, getPerpendicularRange, getDateRange, DateRangeState, getSeason, getSBASOverlapThreshold
 } from '@store/filters/filters.reducer';
+import { getSearchType } from '@store/search/search.reducer';
 
-import { CMRProduct, CMRProductPair, ColumnSortDirection, Range, SBASOverlap, } from '@models';
+import { CMRProduct, CMRProductPair, ColumnSortDirection, Range, SBASOverlap, SearchType } from '@models';
 import { MapService } from './map/map.service';
 import { WktService } from './wkt.service';
 
@@ -27,9 +28,8 @@ export class PairService {
   constructor(
     private store$: Store<AppState>,
     private mapService: MapService,
-    private wktService: WktService) { }
-
-
+    private wktService: WktService
+  ) { }
 
   public pairs$: Observable<{ custom: CMRProductPair[], pairs: CMRProductPair[] }> = combineLatest([
     this.store$.select(getScenes).pipe(
@@ -48,18 +48,26 @@ export class PairService {
     this.mapService.searchPolygon$.pipe(
       map(wkt => !!wkt ? this.wktService.wktToFeature(wkt, this.mapService.epsg()) : null)
     ),
+    this.store$.select(getSearchType),
   ]).pipe(
     debounceTime(50),
     distinctUntilChanged(),
-    map(([scenes, customPairs, temporalRange, perpendicular, dateRange, season, overlap, polygon]) => {
-      const pairs = this.makePairs(scenes,
-        temporalRange,
-        perpendicular,
-        dateRange,
-        season,
-        overlap,
-        polygon
-      )
+    map(([scenes, customPairs, temporalRange, perpendicular, dateRange, season, overlap, polygon, searchType]) => {
+      let pairs: CMRProductPair[];
+
+      if (searchType === SearchType.BASELINE || searchType === SearchType.SBAS) {
+        pairs = this.makePairs(scenes,
+          temporalRange,
+          perpendicular,
+          dateRange,
+          season,
+          overlap,
+          polygon
+        );
+      } else {
+        pairs = [];
+      }
+
       return {
         pairs: [...pairs],
         custom: [...customPairs]
@@ -67,6 +75,7 @@ export class PairService {
     }),
     shareReplay({ refCount: true, bufferSize: 1 }),
   )
+
   public productsFromPairs$: Observable<CMRProduct[]> = this.pairs$.pipe(
     map(({ custom, pairs }) => {
       const prods = Array.from([...custom, ...pairs].reduce((products, pair) => {
@@ -79,6 +88,7 @@ export class PairService {
       return prods;
     })
   );
+
   private makePairs(scenes: CMRProduct[], tempThreshold: Range<number>, perpThreshold,
     dateRange: DateRangeState,
     season: Range<number>,
@@ -94,7 +104,7 @@ export class PairService {
     if (!!dateRange.end) {
       endDateExtrema = new Date(dateRange.end.toISOString());
     }
-    let intersectionMethod;
+    let intersectionMethod: any;
 
     if (!!aoi) {
       const geometryType = aoi.getGeometry().getType();
@@ -163,7 +173,7 @@ export class PairService {
 
           if (
             p1Center.lat > Math.max(p2Bounds[0].lat, p2Bounds[1].lat) ||
-            p1Center.lat < Math.min(p2Bounds[2].lat, p2Bounds[3].lat)
+              p1Center.lat < Math.min(p2Bounds[2].lat, p2Bounds[3].lat)
           ) {
             continue;
           }
@@ -206,8 +216,8 @@ export class PairService {
     scenes = this.hyp3able(scenes);
     scenes = scenes.filter(scene =>
       scene.id.includes('SLC')
-      && !scene.id.includes('METADATA')
-      && scene.metadata.temporal != null
+        && !scene.id.includes('METADATA')
+        && scene.metadata.temporal != null
     );
 
     const totalDays = temporalRange.end - temporalRange.start;
@@ -238,20 +248,20 @@ export class PairService {
     if (season.start < season.end) {
       return (
         season.start <= this.getDayOfYear(P1StartDate)
-        && season.end >= this.getDayOfYear(P1EndDate)
-        && season.start <= this.getDayOfYear(P2StartDate)
-        && season.end >= this.getDayOfYear(P2EndDate)
+          && season.end >= this.getDayOfYear(P1EndDate)
+          && season.start <= this.getDayOfYear(P2StartDate)
+          && season.end >= this.getDayOfYear(P2EndDate)
       );
     } else {
       return !(
         season.start >= this.getDayOfYear(P1StartDate)
-        && season.start >= this.getDayOfYear(P1EndDate)
-        && season.end <= this.getDayOfYear(P1StartDate)
-        && season.end <= this.getDayOfYear(P1EndDate)
-        && season.start >= this.getDayOfYear(P2StartDate)
-        && season.start >= this.getDayOfYear(P2EndDate)
-        && season.end <= this.getDayOfYear(P2StartDate)
-        && season.end <= this.getDayOfYear(P2EndDate)
+          && season.start >= this.getDayOfYear(P1EndDate)
+          && season.end <= this.getDayOfYear(P1StartDate)
+          && season.end <= this.getDayOfYear(P1EndDate)
+          && season.start >= this.getDayOfYear(P2StartDate)
+          && season.start >= this.getDayOfYear(P2EndDate)
+          && season.end <= this.getDayOfYear(P2StartDate)
+          && season.end <= this.getDayOfYear(P2EndDate)
       );
     }
   }
@@ -321,6 +331,4 @@ export class PairService {
     }
     return !(checked.size === points.size)
   }
-
-
 }

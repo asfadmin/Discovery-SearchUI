@@ -2,8 +2,8 @@ import {
   Component, OnInit, Input, ViewChild, ViewEncapsulation, OnDestroy, AfterContentInit
 } from '@angular/core';
 
-import { combineLatest, Observable } from 'rxjs';
-import { tap, withLatestFrom, filter, map, delay, debounceTime, first, distinctUntilChanged } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { tap, withLatestFrom, filter, map, delay, debounceTime, first, distinctUntilChanged, take, switchMap } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
@@ -50,6 +50,10 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
 
   private subs = new SubSink();
 
+  private productPageSize = 250;
+  private numberProductsInList$ = new BehaviorSubject(this.productPageSize);
+  public numberProductsInList: number;
+
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
 
@@ -88,8 +92,44 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       this.allJobNames = flattened;
     });
 
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        searchType => this.searchType = searchType
+      )
+    );
+
+    this.subs.add(
+      combineLatest(
+        this.numberProductsInList$,
+        this.store$.select(searchStore.getSearchType)
+      ).subscribe(
+        ([num, searchType]) => {
+            if (searchType === models.SearchType.CUSTOM_PRODUCTS) {
+              this.numberProductsInList = num;
+            } else {
+              this.numberProductsInList = 2^50;
+            }
+
+          }
+      )
+    );
+
     const scenes$ = this.scenesService.scenes$;
     const sortedScenes$: Observable<CMRProduct[]> = this.scenesService.sortScenes$(scenes$);
+
+    this.store$.select(searchStore.getSearchType).pipe(
+      filter(searchType => searchType === models.SearchType.CUSTOM_PRODUCTS),
+      switchMap(_ => {
+        return scenes$.pipe(
+          take(1),
+          withLatestFrom(this.numberProductsInList$)
+        );
+      })
+    ).subscribe(
+        ([scenes, numLoadedOnDemandProducts]) => {
+          const scenesToLoad = scenes.slice(0, numLoadedOnDemandProducts);
+          this.store$.dispatch(new searchStore.LoadOnDemandScenesList(scenesToLoad));
+        });
 
     this.subs.add(
       this.store$.select(scenesStore.getSelectedScene).pipe(
@@ -110,14 +150,14 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
           return Math.max(0, sceneIdx - 1);
         })
       ).subscribe(
-        idx => {
-          if (!this.selectedFromList) {
-            this.scrollTo(idx);
-          }
+          idx => {
+            if (!this.selectedFromList) {
+              this.scrollTo(idx);
+            }
 
-          this.selectedFromList = false;
-        }
-      )
+            this.selectedFromList = false;
+          }
+        )
     );
 
     this.subs.add(
@@ -131,38 +171,40 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
           return Math.max(0, sceneIdx - 1);
         })
       ).subscribe(
-        idx => {
-          if (!this.selectedFromList) {
-            this.scrollTo(idx);
-          }
+          idx => {
+            if (!this.selectedFromList) {
+              this.scrollTo(idx);
+            }
 
-          this.selectedFromList = false;
-        }
-      )
+            this.selectedFromList = false;
+          }
+        )
     );
 
     this.subs.add(
       sortedScenes$.pipe(
         debounceTime(250),
-        distinctUntilChanged()
+        distinctUntilChanged(),
       ).subscribe(
-        scenes => this.scenes = scenes
-      )
+          scenes => {
+            this.scenes = scenes;
+          }
+        )
     );
 
     this.subs.add(
       this.eventMonitoringService.filteredSarviewsEvents$().pipe(
         filter(_ => this.searchType === this.SearchTypes.SARVIEWS_EVENTS),
       ).subscribe(
-        events => {
-          this.sarviewsEvents = events;
+          events => {
+            this.sarviewsEvents = events;
 
-          const eventIds = events.map(event => event.event_id);
-          if (!eventIds.includes(this.selectedEvent) && eventIds.length > 0 && !!this.selectedEvent) {
-            this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(eventIds[0]));
+            const eventIds = events.map(event => event.event_id);
+            if (!eventIds.includes(this.selectedEvent) && eventIds.length > 0 && !!this.selectedEvent) {
+              this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(eventIds[0]));
+            }
           }
-        }
-      )
+        )
     );
 
 
@@ -183,20 +225,14 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       )
     );
 
-    this.subs.add(
-      this.store$.select(searchStore.getSearchType).subscribe(
-        searchType => this.searchType = searchType
-      )
-    );
-
     const baselineReference$ = combineLatest(
       this.store$.select(scenesStore.getScenes),
       this.store$.select(scenesStore.getMasterName),
       this.store$.select(searchStore.getSearchType)
     ).pipe(
-        map(
-          ([scenes, referenceName, searchType]) => {
-            if (searchType === models.SearchType.BASELINE && !!referenceName) {
+      map(
+        ([scenes, referenceName, searchType]) => {
+          if (searchType === models.SearchType.BASELINE && !!referenceName) {
             const referenceSceneIdx = scenes.findIndex(scene => scene.name === referenceName);
 
             if (referenceSceneIdx !== -1) {
@@ -205,21 +241,21 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
           } else {
             return null;
           }
-          }
-        ),
+        }
+      ),
     );
 
-    
+
     this.store$.select(scenesStore.getAllSceneProducts).pipe(
       withLatestFrom(baselineReference$)
     )
-      
-    .subscribe(
-      ([searchScenes, baselineReference]) => {
-        this.hyp3ableByScene = {};
 
-        Object.entries(searchScenes).forEach(([groupId, products]) => {
-          const possibleJobs = [];
+      .subscribe(
+        ([searchScenes, baselineReference]) => {
+          this.hyp3ableByScene = {};
+
+          Object.entries(searchScenes).forEach(([groupId, products]) => {
+            const possibleJobs = [];
             (<any[]>products).forEach(product => {
 
               possibleJobs.push([product]);
@@ -399,6 +435,20 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
     }
     return scene.groupId;
   }
+
+  public onLoadMoreCustomProducts() {
+    const oldNumProducts = this.numberProductsInList;
+    const newNumProducts = this.numberProductsInList + this.productPageSize;
+
+    const scenesToLoad = this.scenes.slice(oldNumProducts, newNumProducts);
+
+    this.store$.dispatch(new searchStore.LoadOnDemandScenesList(scenesToLoad));
+
+    this.numberProductsInList$.next(
+      newNumProducts
+    );
+  }
+
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
