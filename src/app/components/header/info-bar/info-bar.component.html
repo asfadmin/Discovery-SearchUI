@@ -65,6 +65,11 @@
         <b>Group ID:</b> {{groupID}}
       </span>
     </span>
+    <span>
+      <span *ngIf="!!userID">
+        <b>User ID:</b> {{userID}}
+      </span>
+    </span>
   </div>
   <div class="last-info">
     <app-ci-search></app-ci-search>

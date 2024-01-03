@@ -114,7 +114,6 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
             } else {
               this.numberProductsInList = 2^50;
             }
-
           }
       )
     );
