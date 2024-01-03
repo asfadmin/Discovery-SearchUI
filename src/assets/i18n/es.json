@@ -878,5 +878,8 @@
   "ZOOM_TO_EVENT": "Acercar al evento",
   "ZOOM_TO_FIT": "Acercar para ajustar",
   "ZOOM_TO_RESULTS": "Acercar a los resultados",
-  "ZOOM_TO_SCENE": "Acercar a la escena"
+  "ZOOM_TO_SCENE": "Acercar a la escena",
+  "GROUP_ID_INFO_BAR": "",
+  "USER_ID_INFO_BAR": "",
+  "USER_ID_SELECTOR": ""
 }

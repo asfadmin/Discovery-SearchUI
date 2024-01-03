@@ -34,8 +34,13 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
   private pairs$ = this.pairService.pairs$;
 
   public scenes: CMRProduct[];
-  public pairs;
-  public jobs;
+  public pairs: {
+    pair: models.CMRProductPair;
+    hyp3able: {
+      byJobType: models.Hyp3ableProductByJobType[];
+      total: number;
+    };
+  }[];
   public sarviewsEvents: SarviewsEvent[];
 
   public numberOfQueue: { [scene: string]: number };
@@ -54,7 +59,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
 
   private subs = new SubSink();
 
-  private productPageSize = 250;
+  private productPageSize = 5;
   private numberProductsInList$ = new BehaviorSubject(this.productPageSize);
   public numberProductsInList: number;
 
