@@ -18,11 +18,7 @@
       <app-job-product-name-selector [headerView]="true" *ngIf="breakpoint === breakpoints.FULL" class="breadcrumb">
       </app-job-product-name-selector>
 
-      <app-job-status-selector *ngIf="breakpoint === breakpoints.FULL" class="breadcrumb">
-      </app-job-status-selector>
-
-      <div *ngIf="breakpoint !== breakpoints.FULL"
-        class="breadcrumb">
+      <div class="breadcrumb">
         <button (click)="onToggleFiltersMenu()"
           mat-button class="additional-filters-button">
           {{ 'FILTERS' | translate }} <br> <mat-icon>more_horiz</mat-icon>

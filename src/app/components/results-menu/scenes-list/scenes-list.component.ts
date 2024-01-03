@@ -3,10 +3,14 @@ import {
 } from '@angular/core';
 
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { tap, withLatestFrom, filter, map, delay, debounceTime, first, distinctUntilChanged, take, switchMap } from 'rxjs/operators';
+import {
+  tap, withLatestFrom, filter, map, delay, debounceTime,
+  first, distinctUntilChanged, switchMap, take
+} from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
-import { Store } from '@ngrx/store';
+import { Store, ActionsSubject } from '@ngrx/store';
+import { ofType } from '@ngrx/effects';
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
 import * as scenesStore from '@store/scenes';
@@ -62,6 +66,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
 
   constructor(
     private store$: Store<AppState>,
+    private actions$: ActionsSubject,
     private mapService: services.MapService,
     private screenSize: services.ScreenSizeService,
     private keyboardService: services.KeyboardService,
@@ -121,6 +126,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       filter(searchType => searchType === models.SearchType.CUSTOM_PRODUCTS),
       switchMap(_ => {
         return scenes$.pipe(
+          tap(_ => console.log('loading scenes')),
           take(1),
           withLatestFrom(this.numberProductsInList$)
         );
@@ -130,6 +136,24 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
           const scenesToLoad = scenes.slice(0, numLoadedOnDemandProducts);
           this.store$.dispatch(new searchStore.LoadOnDemandScenesList(scenesToLoad));
         });
+
+    this.subs.add(
+      this.actions$.pipe(
+        ofType<searchStore.SearchResponse>(searchStore.SearchActionType.SEARCH_RESPONSE),
+        withLatestFrom(this.store$.select(searchStore.getSearchType)),
+        filter(([_, searchType]) => searchType === models.SearchType.CUSTOM_PRODUCTS),
+        withLatestFrom(combineLatest([
+          scenes$,
+          this.numberProductsInList$,
+        ]))
+      ).subscribe(
+          ([_, [scenes, numLoadedOnDemandProducts]]) => {
+            console.log(scenes, numLoadedOnDemandProducts);
+            const scenesToLoad = scenes.slice(0, numLoadedOnDemandProducts);
+            this.store$.dispatch(new searchStore.LoadOnDemandScenesList(scenesToLoad));
+          }
+        )
+    );
 
     this.subs.add(
       this.store$.select(scenesStore.getSelectedScene).pipe(

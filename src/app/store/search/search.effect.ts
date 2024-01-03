@@ -136,8 +136,7 @@ export class SearchEffects {
       new filtersStore.StoreCurrentFilters(),
       new CancelSearch()
     ])
-  )
-  );
+  ));
 
   public searchResponse = createEffect(() => this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
@@ -408,22 +407,27 @@ export class SearchEffects {
     );
   }
 
-
   private customProductsQuery$(): Observable<Action> {
-    return this.hyp3Service.getJobs$().pipe(
+    return this.searchParams$.getOnDemandSearchParams.pipe(
       switchMap(
-        (jobsRes: { hyp3Jobs: models.Hyp3Job[], next: string }) => {
-          if (jobsRes.hyp3Jobs.length === 0) {
-            return of(new SearchResponse({
-              files: [],
-              totalCount: 0,
-              searchType: models.SearchType.CUSTOM_PRODUCTS
-            }));
-          }
+        params => {
+          return this.hyp3Service.getJobs$(params.userID).pipe(
+            switchMap(
+              (jobsRes: { hyp3Jobs: models.Hyp3Job[], next: string }) => {
+                if (jobsRes.hyp3Jobs.length === 0) {
+                  return of(new SearchResponse({
+                    files: [],
+                    totalCount: 0,
+                    searchType: models.SearchType.CUSTOM_PRODUCTS
+                  }));
+                }
 
-          return this.onDemandGranuleList$(jobsRes, []);
+                return this.onDemandGranuleList$(jobsRes, []);
+              }
+            ),
+          );
         }
-      ),
+      )
     );
   }
 

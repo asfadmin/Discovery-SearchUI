@@ -51,7 +51,6 @@ export class ProjectNameSelectorComponent implements OnInit, OnDestroy {
       );
     }
 
-
     this.subs.add(
       this.store$.select(hyp3Store.getHyp3User).pipe(
         tap(user => {

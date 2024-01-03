@@ -10,6 +10,7 @@ import { CustomProductsFiltersComponent } from './custom-products-filters.compon
 import { JobStatusSelectorModule } from '@components/shared/selectors/job-status-selector';
 import { DateSelectorModule } from '@components/shared/selectors/date-selector';
 import { JobProductNameSelectorModule } from '@components/shared/selectors/job-product-name-selector';
+import { OnDemandUserSelectorModule} from '@components/shared/selectors/on-demand-user-selector';
 
 import { SharedModule } from '@shared';
 
@@ -24,6 +25,7 @@ import { SharedModule } from '@shared';
     ProjectNameSelectorModule,
     JobStatusSelectorModule,
     JobProductNameSelectorModule,
+    OnDemandUserSelectorModule,
     SharedModule
   ],
   exports: [
