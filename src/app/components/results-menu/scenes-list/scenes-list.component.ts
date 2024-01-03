@@ -126,7 +126,6 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       filter(searchType => searchType === models.SearchType.CUSTOM_PRODUCTS),
       switchMap(_ => {
         return scenes$.pipe(
-          tap(_ => console.log('loading scenes')),
           take(1),
           withLatestFrom(this.numberProductsInList$)
         );
@@ -148,7 +147,6 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
         ]))
       ).subscribe(
           ([_, [scenes, numLoadedOnDemandProducts]]) => {
-            console.log(scenes, numLoadedOnDemandProducts);
             const scenesToLoad = scenes.slice(0, numLoadedOnDemandProducts);
             this.store$.dispatch(new searchStore.LoadOnDemandScenesList(scenesToLoad));
           }
