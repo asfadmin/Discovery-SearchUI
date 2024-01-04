@@ -322,7 +322,10 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
         filter(([selected, _]) => !!selected),
         map(([selected, pairs]) => {
           const pairsCombined = [...pairs.pairs, ...pairs.custom];
-          const sceneIdx = pairsCombined.findIndex(pair => pair[0] === selected[0] && pair[1] === selected[1]);
+          const sceneIdx = pairsCombined.findIndex(
+            pair => pair[0] === selected[0] && pair[1] === selected[1]
+          );
+
           return Math.max(0, sceneIdx - 1);
         })
       ).subscribe(
@@ -351,8 +354,10 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       }),
       first(),
       map(selected => {
+        const sceneIdx = selected.events.findIndex(
+          event => event.event_id === selected.selectedEvent.event_id
+        );
 
-        const sceneIdx = selected.events.findIndex(event => event.event_id === selected.selectedEvent.event_id);
         return Math.max(0, sceneIdx - 1);
       })
     ).subscribe(
@@ -372,7 +377,9 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       first(),
       map(selected => {
         const pairsCombined = [...selected.pairs.pairs, ...selected.pairs.custom];
-        const sceneIdx = pairsCombined.findIndex(pair => pair[0] === selected.selectedPair[0] && pair[1] === selected.selectedPair[1]);
+        const sceneIdx = pairsCombined.findIndex(
+          pair => pair[0] === selected.selectedPair[0] && pair[1] === selected.selectedPair[1]
+        );
         return Math.max(0, sceneIdx - 1);
       })
     ).subscribe(
@@ -408,11 +415,17 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
   }
 
   public getGroupCriteria(scene: CMRProduct): string {
-    const ungrouped_product_types = [...models.opera_s1.productTypes, {apiValue: 'BURST'}, {apiValue: 'BURST_XML'}].map(m => m.apiValue)
+    const ungrouped_product_types = [
+      ...models.opera_s1.productTypes,
+      {apiValue: 'BURST'},
+      {apiValue: 'BURST_XML'}
+    ].map(m => m.apiValue)
+
     if(ungrouped_product_types.includes(scene.metadata.productType)) {
       return scene.metadata.parentID || scene.id;
+    } else {
+      return scene.groupId;
     }
-    return scene.groupId;
   }
 
   public onLoadMoreCustomProducts() {
