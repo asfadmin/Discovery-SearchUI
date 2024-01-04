@@ -144,6 +144,8 @@ $themes: (
 }
 $my-warn: mat.define-palette(mat.$red-palette);
 
+$my-typography: mat.define-typography-config();
+
 // .theme-dark {
 //   $asf-dark-theme: mat.define-dark-theme((
 //     color: (
@@ -151,11 +153,11 @@ $my-warn: mat.define-palette(mat.$red-palette);
 //       accent:$contrast,
 //       warn: $my-warn,
 //     ),
-//     typography: mat.define-typography-config(),
+//     typography: $my-typography,
 //     density: 0,
 //    ));
-//   @include mat.all-legacy-component-themes($asf-dark-theme);
-// }
+//   @include mat.all-component-themes($asf-dark-theme);
+// }      
 
 
 $asf-light-theme: mat.define-light-theme((
@@ -164,8 +166,8 @@ color: (
   accent: $asf-app-accent,
   warn: $my-warn,
 ),
-typography: mat.define-typography-config(),
-density: -1,
+typography: $my-typography,
+density: -2,
 ));
 @include mat.all-component-themes($asf-light-theme);
 @include mat.core-color($asf-light-theme);

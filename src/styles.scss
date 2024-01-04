@@ -8,6 +8,7 @@ $theme-map: null;
 
 * {
   font-family: Roboto, sans-serif;
+  letter-spacing: normal;
 }
 
 .cdk-overlay-container {
@@ -271,7 +272,9 @@ ul {
   }
   position: relative;
   margin: 0;
-  padding: 0 10px 10px 0 !important;
+  padding: 0 
+  0px 10px 0 !important;
+  padding-right: 0px !important;
   overflow: hidden;
 }
 
@@ -795,4 +798,8 @@ $d-height: 500px;
   //  text-overflow: ellipsis; 
    white-space: normal; 
   /* overflow: hidden; */
+}
+.mat-mdc-dialog-container .mdc-dialog__container {
+  width:100%;
+  height: 100%;
 }
