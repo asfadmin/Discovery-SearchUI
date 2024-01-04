@@ -31,7 +31,8 @@
             [isSelected]="scene.id === selected">
           </app-scene>
         </div>
-        <button *ngIf="searchType === SearchTypes.CUSTOM_PRODUCTS"
+
+        <button *ngIf="searchType === SearchTypes.CUSTOM_PRODUCTS && numberProductsInList < scenes?.length"
           (click)="onLoadMoreCustomProducts()" mat-list-item>
           Load more products
         </button>
