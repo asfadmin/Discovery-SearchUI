@@ -20,6 +20,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 })
 export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
   @Input() headerView: boolean;
+
   public productNameFilter = '';
   private subs = new SubSink();
   public filteredOptions: EventEmitter<string[]> = new EventEmitter<string[]>()

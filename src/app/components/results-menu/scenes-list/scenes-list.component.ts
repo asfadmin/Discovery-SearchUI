@@ -61,6 +61,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
   private productPageSize = 250;
   private numberProductsInList$ = new BehaviorSubject(this.productPageSize);
   public numberProductsInList: number;
+  private loadingDummyJobs = new Set<string>();
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
@@ -121,6 +122,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
             this.scenes = scenes;
 
             this.loadDummyProducts(scenes);
+            this.removeLoadedScenes(scenes);
           }
         )
     );
@@ -461,13 +463,23 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
   private loadDummyProducts(scenes: CMRProduct[]) {
     const scenesToLoad = scenes
       .slice(0, this.numberProductsInList)
-      .filter(s => s.isDummyProduct);
+      .filter(s => s.isDummyProduct)
+      .filter(s => !this.loadingDummyJobs.has(s.name));
 
     if (scenesToLoad.length === 0) {
       return;
     }
 
+    scenesToLoad.forEach(
+      s => this.loadingDummyJobs.add(s.name)
+    );
     this.store$.dispatch(new searchStore.LoadOnDemandScenesList(scenesToLoad));
+  }
+
+  private removeLoadedScenes(scenes: CMRProduct[]) {
+    scenes
+      .filter(s => !s.isDummyProduct)
+      .forEach(s => this.loadingDummyJobs.delete(s.name))
   }
 
   ngOnDestroy() {
