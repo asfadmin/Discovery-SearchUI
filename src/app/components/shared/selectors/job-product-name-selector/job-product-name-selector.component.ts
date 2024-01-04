@@ -31,7 +31,7 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
 
   public breakpoints = Breakpoints;
   public breakpoint: Breakpoints;
-  public screenWidth;
+  public screenWidth: number;
 
   constructor(
     private store$: Store<AppState>,
