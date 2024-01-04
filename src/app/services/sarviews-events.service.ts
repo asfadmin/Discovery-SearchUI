@@ -21,9 +21,9 @@ import * as filtersStore from '@store/filters';
   providedIn: 'root'
 })
 export class SarviewsEventsService {
-
   private eventsUrl = `https://gm3385dq6j.execute-api.us-west-2.amazonaws.com/events`;
   private Moment = extendMoment(moment);
+
   constructor(private http: HttpClient,
     private wktService: WktService,
     private mapService: MapService,
@@ -164,6 +164,7 @@ export class SarviewsEventsService {
       dataset: 'Sentinel-1',
       groupId: 'SARViews',
       isUnzippedFile: false,
+      isDummyProduct: false,
 
       metadata: {
         date: moment(product.processing_date),

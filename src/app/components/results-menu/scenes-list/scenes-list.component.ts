@@ -5,12 +5,11 @@ import {
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import {
   tap, withLatestFrom, filter, map, delay, debounceTime,
-  first, distinctUntilChanged, switchMap, take
+  first, distinctUntilChanged,
 } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
-import { Store, ActionsSubject } from '@ngrx/store';
-import { ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
 import * as scenesStore from '@store/scenes';
@@ -59,7 +58,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
 
   private subs = new SubSink();
 
-  private productPageSize = 5;
+  private productPageSize = 250;
   private numberProductsInList$ = new BehaviorSubject(this.productPageSize);
   public numberProductsInList: number;
 
@@ -71,7 +70,6 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
 
   constructor(
     private store$: Store<AppState>,
-    private actions$: ActionsSubject,
     private mapService: services.MapService,
     private screenSize: services.ScreenSizeService,
     private keyboardService: services.KeyboardService,
@@ -108,51 +106,21 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       )
     );
 
-    this.subs.add(
-      combineLatest(
-        this.numberProductsInList$,
-        this.store$.select(searchStore.getSearchType)
-      ).subscribe(
-        ([num, searchType]) => {
-            if (searchType === models.SearchType.CUSTOM_PRODUCTS) {
-              this.numberProductsInList = num;
-            } else {
-              this.numberProductsInList = 2^50;
-            }
-          }
-      )
-    );
-
     const scenes$ = this.scenesService.scenes$;
     const sortedScenes$: Observable<CMRProduct[]> = this.scenesService.sortScenes$(scenes$);
+    const sortedScenesWithDelay$ = sortedScenes$.pipe(
+      debounceTime(250),
+      distinctUntilChanged(),
+    );
 
-    this.store$.select(searchStore.getSearchType).pipe(
-      filter(searchType => searchType === models.SearchType.CUSTOM_PRODUCTS),
-      switchMap(_ => {
-        return scenes$.pipe(
-          take(1),
-          withLatestFrom(this.numberProductsInList$)
-        );
-      })
-    ).subscribe(
-        ([scenes, numLoadedOnDemandProducts]) => {
-          const scenesToLoad = scenes.slice(0, numLoadedOnDemandProducts);
-          this.store$.dispatch(new searchStore.LoadOnDemandScenesList(scenesToLoad));
-        });
+    this.setupCustomProductsSubscriptions();
 
     this.subs.add(
-      this.actions$.pipe(
-        ofType<searchStore.SearchResponse>(searchStore.SearchActionType.SEARCH_RESPONSE),
-        withLatestFrom(this.store$.select(searchStore.getSearchType)),
-        filter(([_, searchType]) => searchType === models.SearchType.CUSTOM_PRODUCTS),
-        withLatestFrom(combineLatest([
-          scenes$,
-          this.numberProductsInList$,
-        ]))
-      ).subscribe(
-          ([_, [scenes, numLoadedOnDemandProducts]]) => {
-            const scenesToLoad = scenes.slice(0, numLoadedOnDemandProducts);
-            this.store$.dispatch(new searchStore.LoadOnDemandScenesList(scenesToLoad));
+      sortedScenesWithDelay$.subscribe(
+          scenes => {
+            this.scenes = scenes;
+
+            this.loadDummyProducts(scenes);
           }
         )
     );
@@ -208,17 +176,6 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
     );
 
     this.subs.add(
-      sortedScenes$.pipe(
-        debounceTime(250),
-        distinctUntilChanged(),
-      ).subscribe(
-          scenes => {
-            this.scenes = scenes;
-          }
-        )
-    );
-
-    this.subs.add(
       this.eventMonitoringService.filteredSarviewsEvents$().pipe(
         filter(_ => this.searchType === this.SearchTypes.SARVIEWS_EVENTS),
       ).subscribe(
@@ -232,7 +189,6 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
           }
         )
     );
-
 
     this.subs.add(
       this.pairs$.subscribe(
@@ -251,11 +207,11 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       )
     );
 
-    const baselineReference$ = combineLatest(
+    const baselineReference$ = combineLatest([
       this.store$.select(scenesStore.getScenes),
       this.store$.select(scenesStore.getMasterName),
       this.store$.select(searchStore.getSearchType)
-    ).pipe(
+    ]).pipe(
       map(
         ([scenes, referenceName, searchType]) => {
           if (searchType === models.SearchType.BASELINE && !!referenceName) {
@@ -271,12 +227,9 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       ),
     );
 
-
     this.store$.select(scenesStore.getAllSceneProducts).pipe(
       withLatestFrom(baselineReference$)
-    )
-
-      .subscribe(
+    ).subscribe(
         ([searchScenes, baselineReference]) => {
           this.hyp3ableByScene = {};
 
@@ -473,6 +426,35 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
     this.numberProductsInList$.next(
       newNumProducts
     );
+  }
+
+  private setupCustomProductsSubscriptions() {
+    this.subs.add(
+      combineLatest([
+        this.numberProductsInList$,
+        this.store$.select(searchStore.getSearchType)
+      ]).subscribe(
+        ([num, searchType]) => {
+            if (searchType === models.SearchType.CUSTOM_PRODUCTS) {
+              this.numberProductsInList = num;
+            } else {
+              this.numberProductsInList = 2^50;
+            }
+          }
+      )
+    );
+  }
+
+  private loadDummyProducts(scenes: CMRProduct[]) {
+    const scenesToLoad = scenes
+      .slice(0, this.numberProductsInList)
+      .filter(s => s.isDummyProduct);
+
+    if (scenesToLoad.length === 0) {
+      return;
+    }
+
+    this.store$.dispatch(new searchStore.LoadOnDemandScenesList(scenesToLoad));
   }
 
   ngOnDestroy() {

@@ -165,7 +165,8 @@ export class SearchEffects {
 
   public onLoadOnDemandScenesList = createEffect(() => this.actions$.pipe(
     ofType<LoadOnDemandScenesList>(SearchActionType.LOAD_ON_DEMAND_SCENES_LIST),
-    switchMap((action) => {
+    filter(action => action.payload.length !== 0),
+    switchMap(action => {
       const products = action.payload;
 
       const granuleNames = products.reduce((names, prod) => {
@@ -481,6 +482,7 @@ export class SearchEffects {
         bytes: jobFile.size,
         groupId: job.job_id,
         id: job.job_id,
+        isDummyProduct: true,
         metadata: {
           ...product.metadata,
           fileName: jobFile.filename || '',
@@ -511,6 +513,7 @@ export class SearchEffects {
       "thumbnail": "/assets/no-thumb.png",
       "groupId": "",
       "isUnzippedFile": false,
+      "isDummyProduct": true,
       "metadata": {
         "date": moment.utc("1970-01-01T00:00:00+00:00"),
         "stopDate": moment.utc("1970-01-01T00:00:00+00:00"),

@@ -371,6 +371,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
         dataset: 'Sentinel-1',
         groupId: 'SARViews',
         isUnzippedFile: false,
+        isDummyProduct: false,
 
         metadata: {
           date: moment(product.processing_date),
@@ -407,6 +408,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
       dataset: 'Sentinel-1',
       groupId: 'SARViews',
       isUnzippedFile: false,
+      isDummyProduct: false,
 
       metadata: {
         date: moment(product.processing_date),
@@ -437,7 +439,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
             );
         } else {
           return of([]);
-        
+
         }
       }
 

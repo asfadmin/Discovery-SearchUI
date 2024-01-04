@@ -47,10 +47,12 @@ export class ProductService {
           thumbnail,
           groupId: g.gid.replace('{gn}', g.gn),
           isUnzippedFile: false,
+          isDummyProduct: false,
           metadata: this.getMetadataFrom(g)
         };
 
         product.metadata.subproducts = this.getSubproducts(product)
+
         return product;
       }
     );
