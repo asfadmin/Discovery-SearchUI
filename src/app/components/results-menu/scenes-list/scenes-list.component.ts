@@ -21,6 +21,8 @@ import * as services from '@services';
 import * as models from '@models';
 import { CMRProduct, QueuedHyp3Job, SarviewsEvent } from '@models';
 
+const INFINITY = 2e10;
+
 @Component({
   selector: 'app-scenes-list',
   templateUrl: './scenes-list.component.html',
@@ -59,7 +61,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
   private subs = new SubSink();
 
   private productPageSize = 250;
-  private numberProductsInList$ = new BehaviorSubject(this.productPageSize);
+  private numberProductsInList$ = new BehaviorSubject(INFINITY);
   public numberProductsInList: number;
   private loadingDummyJobs = new Set<string>();
 
@@ -114,17 +116,36 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       distinctUntilChanged(),
     );
 
-    this.setupCustomProductsSubscriptions();
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        (searchType) => {
+
+          if (searchType === models.SearchType.CUSTOM_PRODUCTS) {
+            this.numberProductsInList = this.productPageSize;
+          } else {
+            this.numberProductsInList = INFINITY;
+          }
+
+          this.numberProductsInList$.next(this.numberProductsInList);
+        }
+      )
+    );
+
+    this.subs.add(
+      this.numberProductsInList$.subscribe(
+        num => this.numberProductsInList = num
+      )
+    );
 
     this.subs.add(
       sortedScenesWithDelay$.subscribe(
-          scenes => {
-            this.scenes = scenes;
+        scenes => {
+          this.scenes = scenes;
 
-            this.loadDummyProducts(scenes);
-            this.removeLoadedScenes(scenes);
-          }
-        )
+          this.loadDummyProducts(scenes);
+          this.removeLoadedScenes(scenes);
+        }
+      )
     );
 
     this.subs.add(
@@ -436,35 +457,18 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
 
     const scenesToLoad = this.scenes.slice(oldNumProducts, newNumProducts);
 
-    this.store$.dispatch(new searchStore.LoadOnDemandScenesList(scenesToLoad));
-
     this.numberProductsInList$.next(
       newNumProducts
     );
-  }
 
-  private setupCustomProductsSubscriptions() {
-    this.subs.add(
-      combineLatest([
-        this.numberProductsInList$,
-        this.store$.select(searchStore.getSearchType)
-      ]).subscribe(
-        ([num, searchType]) => {
-            if (searchType === models.SearchType.CUSTOM_PRODUCTS) {
-              this.numberProductsInList = num;
-            } else {
-              this.numberProductsInList = 2^50;
-            }
-          }
-      )
-    );
+    this.store$.dispatch(new searchStore.LoadOnDemandScenesList(scenesToLoad));
   }
 
   private loadDummyProducts(scenes: CMRProduct[]) {
     const scenesToLoad = scenes
-      .slice(0, this.numberProductsInList)
-      .filter(s => s.isDummyProduct)
-      .filter(s => !this.loadingDummyJobs.has(s.name));
+    .slice(0, this.numberProductsInList)
+    .filter(s => s.isDummyProduct)
+    .filter(s => !this.loadingDummyJobs.has(s.name));
 
     if (scenesToLoad.length === 0) {
       return;
