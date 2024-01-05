@@ -94,18 +94,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "search-ui:build"
+            "buildTarget": "search-ui:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "search-ui:build:production"
+              "buildTarget": "search-ui:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "search-ui:build"
+            "buildTarget": "search-ui:build"
           }
         },
         "test": {
