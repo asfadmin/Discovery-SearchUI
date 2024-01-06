@@ -488,7 +488,7 @@ export class UrlStateService {
       loader: this.loadFullBurstIDs
     },
     {
-      name: 'operaBurstIDs',
+      name: 'operaBurstID',
       source: this.store$.select(filterStore.getOperaBurstIDs).pipe(
         map(list => ({ operaBurstID: list?.map(num => num.toString()).join(',') }))
       ),
