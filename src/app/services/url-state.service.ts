@@ -477,46 +477,49 @@ export class UrlStateService {
           ),
           map(({ lon, lat }) => ({ center: `${lon},${lat}` }))
         ),
-        loader: this.loadMapCenter
-      }, {
-        name: 'zoom',
-        source: this.mapService.zoom$.pipe(
-          map(zoom => ({ zoom: zoom.toFixed(3) }))
-        ),
-        loader: this.loadMapZoom
-      }, {
-        name: 'polygon',
-source: this.mapService.searchPolygon$.pipe(
-          map(polygon => ({ polygon }))
-        ),
-        loader: this.loadSearchPolygon
-      }, {
-        name: 'searchList',
-        source: this.store$.select(filterStore.getSearchList).pipe(
-          map(list => ({ searchList: list.join(',') }))
-        ),
-loader: this.loadSearchList
-      }, {
-        name: 'fullBurstIDs',
-        source: this.store$.select(filterStore.getFullBurstIDs).pipe(
-          map(list => ({ fullBurstIDs: list?.map(num => num.toString()).join(',') }))
-        ),
-        loader: this.loadFullBurstIDs
-      },
-      {
-        name: 'operaBurstIDs',
-        source: this.store$.select(filterStore.getOperaBurstIDs).pipe(
-  map(list => ({ operaBurstID: list?.map(num => num.toString()).join(',') }))
-        ),
-        loader: this.loadOperaBurstIDs
-      },
-      {
-        name: 'groupID',
-        source: this.store$.select(filterStore.getGroupID).pipe(
-          map(groupId => ({ groupId })
-          )),
-loader: this.loadGroupId
-      }];
+
+        map(({ lon, lat }) => ({ center: `${lon},${lat}` }))
+      ),
+      loader: this.loadMapCenter
+    }, {
+      name: 'zoom',
+      source: this.mapService.zoom$.pipe(
+        map(zoom => ({ zoom: zoom.toFixed(3) }))
+      ),
+      loader: this.loadMapZoom
+    }, {
+      name: 'polygon',
+      source: this.mapService.searchPolygon$.pipe(
+        map(polygon => ({ polygon }))
+      ),
+      loader: this.loadSearchPolygon
+    }, {
+      name: 'searchList',
+      source: this.store$.select(filterStore.getSearchList).pipe(
+        map(list => ({ searchList: list.join(',') }))
+      ),
+      loader: this.loadSearchList
+    }, {
+      name: 'fullBurstIDs',
+      source: this.store$.select(filterStore.getFullBurstIDs).pipe(
+        map(list => ({ fullBurstIDs: list?.map(num => num.toString()).join(',') }))
+      ),
+      loader: this.loadFullBurstIDs
+    },
+    {
+      name: 'operaBurstID',
+      source: this.store$.select(filterStore.getOperaBurstIDs).pipe(
+        map(list => ({ operaBurstID: list?.map(num => num.toString()).join(',') }))
+      ),
+      loader: this.loadOperaBurstIDs
+    },
+    {
+      name: 'groupID',
+      source: this.store$.select(filterStore.getGroupID).pipe(
+        map(groupId => ({ groupId })
+      )),
+      loader: this.loadGroupId
+    }];
   }
 
   private loadSearchType = (searchType: string): Action | undefined => {
