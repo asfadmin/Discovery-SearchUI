@@ -17,7 +17,7 @@
           searchType === SearchTypes.BASELINE ||
           searchType === SearchTypes.LIST ||
           searchType === SearchTypes.CUSTOM_PRODUCTS">
-        <div *cdkVirtualFor="let scene of scenes">
+        <div *cdkVirtualFor="let scene of scenes | slice:0:numberProductsInList">
           <app-scene
             (click)="onSceneSelected(scene.id)"
             (toggleScene)="onToggleScene(getGroupCriteria(scene))"
@@ -31,6 +31,15 @@
             [isSelected]="scene.id === selected">
           </app-scene>
         </div>
+
+        <button *ngIf="searchType === SearchTypes.CUSTOM_PRODUCTS && numberProductsInList < scenes?.length"
+          (click)="onLoadMoreCustomProducts()"
+          class="center-button"
+          mat-list-item>
+          <button mat-stroked-button>
+            Load more products
+          </button>
+        </button>
       </ng-container>
 
       <ng-container *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS">

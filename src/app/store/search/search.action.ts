@@ -20,6 +20,7 @@ export enum SearchActionType {
   SEARCH_AMOUNT_LOADING = '[Search] Search Amount Is Loading',
   SET_SEARCH_TYPE = '[UI] Set Search Type',
   SET_SEARCH_TYPE_AFTER_SAVE = '[UI] Set Search Type After Save',
+  LOAD_ON_DEMAND_SCENES_LIST = '[Search] Load on Demand Scenes List',
 
   SARVIEWS_SEARCH_RESPONSE = '[Search] SARViews Search Response',
   MAKE_EVENT_PRODUCT_CMR_SEARCH = '[Search] Make a search for CMR Products with SARVIEWS Products',
@@ -103,6 +104,12 @@ export class SetSearchTypeAfterSave implements Action {
   constructor(public payload: SearchType) {}
 }
 
+export class LoadOnDemandScenesList implements Action {
+  public readonly type = SearchActionType.LOAD_ON_DEMAND_SCENES_LIST;
+
+  constructor(public payload: CMRProduct[]) {}
+}
+
 export class SetSearchOutOfDate implements Action {
   public readonly type = SearchActionType.SET_SEARCH_OUT_OF_DATE;
 
@@ -122,6 +129,7 @@ export type SearchActions =
   | SetNextJobsUrl
   | Hyp3BatchResponse
   | SetSearchType
+  | LoadOnDemandScenesList
   | SetSearchTypeAfterSave
   | SarviewsEventsResponse
   | SetSearchOutOfDate;

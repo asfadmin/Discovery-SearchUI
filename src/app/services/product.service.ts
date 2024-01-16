@@ -7,7 +7,7 @@ import * as models from '@models';
   providedIn: 'root'
 })
 export class ProductService {
-  public fromResponse = (resp: any) => {
+  public fromResponse = (resp: any): models.CMRProduct[] => {
     const products = (resp.results || [])
     .map(
       (g: any): models.CMRProduct => {
@@ -47,10 +47,12 @@ export class ProductService {
           thumbnail,
           groupId: g.gid.replace('{gn}', g.gn),
           isUnzippedFile: false,
+          isDummyProduct: false,
           metadata: this.getMetadataFrom(g)
         };
 
         product.metadata.subproducts = this.getSubproducts(product)
+
         return product;
       }
     );
@@ -100,7 +102,7 @@ export class ProductService {
     (dateString: string): moment.Moment => {
       return moment.utc(dateString);
     }
-  
+
     private getSubproducts(product: models.CMRProduct): models.CMRProduct[] {
       if (product.metadata.productType === 'BURST') {
         return [this.burstXMLFromScene(product)]
@@ -127,7 +129,7 @@ export class ProductService {
           parentID: product.id,
         },
       } as models.CMRProduct;
-    
+
       return p;
     }
 
@@ -148,14 +150,15 @@ export class ProductService {
 
     private operaSubproductsFromScene(product: models.CMRProduct) {
       if (!!product.metadata.opera?.validityStartDate) {
-        product.metadata.opera.validityStartDate = this.fromCMRDate((product.metadata.opera?.validityStartDate as unknown) as string)
+        product.metadata.opera.validityStartDate = this.fromCMRDate(
+        (product.metadata.opera?.validityStartDate as unknown) as string)
       }
       let products = []
-      
+
       let reg = product.downloadUrl.split(/(_v[0-9]\.[0-9]){1}(\.(\w*)|(_(\w*(_*))*.))*/);
       let file_suffix = !!reg[3] ? reg[3] : reg[5]
       product.productTypeDisplay = this.operaProductTypeDisplays[file_suffix.toLowerCase()]
-      
+
       const thumbnail_index = product.browses.findIndex(url => url.toLowerCase().includes('thumbnail'))
       if (thumbnail_index !== -1) {
         product.thumbnail = product.browses.splice(thumbnail_index, 1)[0];
@@ -169,7 +172,7 @@ export class ProductService {
         const productTypeDisplay = this.operaProductTypeDisplays[file_suffix.toLowerCase()];
 
         const fileID = p.split('/').slice(-1)[0]
-        
+
         let subproduct =  {
           ...product,
           downloadUrl: p,
@@ -200,5 +203,4 @@ export class ProductService {
       }
       )
     }
-
 }
