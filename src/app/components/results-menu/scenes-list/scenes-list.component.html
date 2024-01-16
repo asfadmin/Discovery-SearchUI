@@ -33,8 +33,12 @@
         </div>
 
         <button *ngIf="searchType === SearchTypes.CUSTOM_PRODUCTS && numberProductsInList < scenes?.length"
-          (click)="onLoadMoreCustomProducts()" mat-list-item>
-          Load more products
+          (click)="onLoadMoreCustomProducts()"
+          class="center-button"
+          mat-list-item>
+          <button mat-stroked-button>
+            Load more products
+          </button>
         </button>
       </ng-container>
 
