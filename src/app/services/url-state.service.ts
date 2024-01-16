@@ -210,16 +210,15 @@ export class UrlStateService {
         }))
       ),
       loader: this.loadSbasPairs
-    },
-  {
-    name: 'selectedPair',
-    source: this.store$.select(scenesStore.getSelectedPairIds).pipe(
-      map(a => ({
-          selectedPair: a?.join(',')
-      })
-    )),
-    loader: this.loadSbasSelected
-  }];
+    }, {
+      name: 'selectedPair',
+      source: this.store$.select(scenesStore.getSelectedPairIds).pipe(
+        map(a => ({
+            selectedPair: a?.join(',')
+        })
+      )),
+      loader: this.loadSbasSelected
+    }];
   }
 
   private onDemandParameters(): models.UrlParameter[] {
@@ -476,9 +475,6 @@ export class UrlStateService {
             })
           ),
           map(({ lon, lat }) => ({ center: `${lon},${lat}` }))
-        ),
-
-        map(({ lon, lat }) => ({ center: `${lon},${lat}` }))
       ),
       loader: this.loadMapCenter
     }, {
