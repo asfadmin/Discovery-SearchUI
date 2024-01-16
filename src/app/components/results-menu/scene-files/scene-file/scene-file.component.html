@@ -22,11 +22,9 @@
 
   <div [class.clickable]="!product.metadata.job" matListItemTitle>
     <b *ngIf="(searchType$ | async) !== searchTypes.CUSTOM_PRODUCTS; else customProductsDisplay">
-      <span *ngIf="product.productTypeDisplay.length > 40">
-        {{ product.productTypeDisplay | truncate : 36 }}{{ product.productTypeDisplay | truncate : -4 : '' }}
+      <span *ngIf="product.productTypeDisplay.length > 40">{{ product.productTypeDisplay | truncate : 36 }}{{ product.productTypeDisplay | truncate : -4 : '' }}
       </span>
-      <span *ngIf="product.productTypeDisplay.length <= 40">
-        {{ product.productTypeDisplay }}
+      <span *ngIf="product.productTypeDisplay.length <= 40">{{ product.productTypeDisplay }}
       </span>
       <span *ngIf="product.metadata.job && product.metadata.job.expiration_time">
         {{ expirationBadge(product.metadata.job.expiration_time) }}
