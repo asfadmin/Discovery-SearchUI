@@ -1,4 +1,4 @@
-import { sentinel_1 } from './dataset.model';
+import { sentinel_1, sentinel_1_bursts } from './dataset.model';
 import { Hyp3JobType, JobOptionType } from './hyp3-job-type.model';
 
 export const RtcGammaJobType: Hyp3JobType = {
@@ -33,7 +33,6 @@ export const RtcGammaJobType: Hyp3JobType = {
     default: 'gamma0',
     info:
       'INFO_BACKSCATTER_COEFFICIENT'
-
   }, {
     name: 'Scale',
     apiName: 'scale',
@@ -67,20 +66,6 @@ export const RtcGammaJobType: Hyp3JobType = {
     }],
     default: 30,
     info: 'INFO_PRODUCT_PIXEL'
-  }, {
-    name: 'DEM Name',
-    apiName: 'dem_name',
-    type: JobOptionType.DROPDOWN,
-    options: [{
-      name: 'Copernicus DEM',
-      apiValue: 'copernicus'
-    }, {
-      name: 'NED/SRTM',
-      apiValue: 'legacy'
-    }],
-    default: 'copernicus',
-    info:
-      'INFO_NAME_OF_THE_DEM'
   }, {
     name: 'DEM Matching',
     apiName: 'dem_matching',
@@ -230,6 +215,50 @@ export const InsarGammaJobType: Hyp3JobType = {
   }]
 };
 
+export const InsarIsceBurstJobType: Hyp3JobType = {
+  id: 'INSAR_ISCE_BURST',
+  name: 'InSAR ISCE Burst',
+  infoUrl: 'https://hyp3-docs.asf.alaska.edu/guides/burst_insar_product_guide/',
+  description: `INSAR_DESC`,
+  numProducts: 2,
+  productTypes: [{
+    dataset: sentinel_1_bursts,
+    productTypes: [
+      'BURST',
+    ],
+    beamModes: ['IW'],
+    polarizations: [
+      'VV', 'HH'
+    ]
+  }],
+  options: [{
+    name: 'Looks',
+    apiName: 'looks',
+    type: JobOptionType.DROPDOWN,
+    options: [{
+      name: '20x4',
+      apiValue: '20x4'
+    }, {
+      name: '10x2',
+      apiValue: '10x2'
+    }, {
+        name: '5x1',
+        apiValue: '5x1'
+    }],
+    default: '20x4',
+    info: `Number of looks to take in range and azimuth.`
+  }, {
+    name: 'Water Mask',
+    apiName: 'apply_water_mask',
+    type: JobOptionType.TOGGLE,
+    default: false,
+    info: `
+      Sets pixels over coastal and large inland waterbodies as invalid
+      for phase unwrapping.
+    `
+  }]
+};
+
 export const AutoRift: Hyp3JobType = {
   id: 'AUTORIFT',
   name: 'autoRIFT',
@@ -252,6 +281,7 @@ export const AutoRift: Hyp3JobType = {
 export const hyp3JobTypes = {
   RTC_GAMMA: RtcGammaJobType,
   INSAR_GAMMA: InsarGammaJobType,
+  INSAR_ISCE_BURST: InsarIsceBurstJobType,
   AUTORIFT: AutoRift
 };
 

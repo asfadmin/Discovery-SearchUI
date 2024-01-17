@@ -16,6 +16,7 @@ export interface CMRProduct {
   dataset: string;
   groupId: string;
   isUnzippedFile: boolean;
+  isDummyProduct: boolean;
 
   metadata: CMRProductMetadata;
 }
@@ -85,6 +86,7 @@ export interface SLCBurstMetadata {
 export interface OperaS1Metadata {
   operaBurstID: string;
   additionalUrls: string[];
+  validityStartDate?: moment.Moment | null;
 }
 
 export enum FlightDirection {

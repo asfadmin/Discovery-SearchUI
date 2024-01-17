@@ -100,8 +100,13 @@ export class Hyp3Service {
     });
   }
 
-  public getJobs$(): Observable<{hyp3Jobs: models.Hyp3Job[], next: string}> {
-    const getJobsUrl = `${this.apiUrl}/jobs`;
+  public getJobs$(userID?: string): Observable<{hyp3Jobs: models.Hyp3Job[], next: string}> {
+    let getJobsUrl = `${this.apiUrl}/jobs`;
+
+    if (!!userID) {
+      getJobsUrl += `?user_id=${userID}`
+    }
+
     return this.getJobsByUrl$(getJobsUrl);
   }
 
@@ -179,6 +184,7 @@ export class Hyp3Service {
           if (a.metadata.date < b.metadata.date) {
             return -1;
           }
+
           return 1;
         }));
       });
@@ -305,10 +311,13 @@ export class Hyp3Service {
     const message = `There was a problem with your preferred HyP3 API URL, click to open preferences.`;
 
     const toast = this.notifcationService.error(
-    message,
-    title,
-  {timeOut: 500000, enableHtml: true});
+      message,
+      title,
+      {timeOut: 500000, enableHtml: true}
+    );
 
-    toast.onTap.pipe(first()).subscribe(_ => this.store$.dispatch(new uiStore.OpenPreferenceMenu()));
+    toast.onTap.pipe(first()).subscribe(
+      _ => this.store$.dispatch(new uiStore.OpenPreferenceMenu())
+    );
   }
 }

@@ -11,7 +11,7 @@ export const uavsar = {
     Props.POLARIZATION,
     Props.MISSION_NAME,
   ],
-  apiValue: { platform: 'UAVSAR' },
+  apiValue: { dataset: 'UAVSAR' },
   date: { start: new Date('2008/04/28 21:10:16 UTC') },
   infoUrl: 'https://asf.alaska.edu/data-sets/sar-data-sets/uavsar/',
   citationUrl: 'https://asf.alaska.edu/data-sets/sar-data-sets/uavsar/#uavsar_cite',
