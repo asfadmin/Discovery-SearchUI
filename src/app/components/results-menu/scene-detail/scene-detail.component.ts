@@ -119,7 +119,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     );
 
     const scene$ = this.store$.select(scenesStore.getSelectedScene).pipe(
-      distinctUntilChanged((previous, current) => previous?.id === current?.id),
+      distinctUntilChanged(),
       tap(_ => this.isImageLoading = true)
     );
 

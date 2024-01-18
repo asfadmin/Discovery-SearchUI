@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { SubSink } from 'subsink';
 
-import { Subject } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
 import { tap, delay } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
@@ -10,6 +10,7 @@ import { AppState } from '@store';
 import * as hyp3Store from '@store/hyp3';
 import * as filtersStore from '@store/filters';
 import { NotificationService } from '@services/notification.service';
+import { ScenesService } from '@services';
 
 @Component({
   selector: 'app-project-name-selector',
@@ -31,6 +32,7 @@ export class ProjectNameSelectorComponent implements OnInit, OnDestroy {
 
   constructor(
     private store$: Store<AppState>,
+    private scenesService: ScenesService,
     private notificationService: NotificationService,
     ) { }
 
@@ -51,19 +53,33 @@ export class ProjectNameSelectorComponent implements OnInit, OnDestroy {
       );
     }
 
-
     this.subs.add(
-      this.store$.select(hyp3Store.getHyp3User).pipe(
-        tap(user => {
-          if (user === null) {
-            this.store$.dispatch(new hyp3Store.LoadUser());
-          }
-        })
-      ).subscribe(user => {
+      combineLatest([
+        this.scenesService.scenes$,
+        this.store$.select(hyp3Store.getHyp3User).pipe(
+          tap(user => {
+            if (user === null) {
+              this.store$.dispatch(new hyp3Store.LoadUser());
+            }
+          })
+        )
+      ]).subscribe(([scenes, user]) => {
         if (user) {
           this.projectNames = [ ...user.job_names, ];
           this.projectNamesFiltered = [ ...user.job_names, ];
         }
+
+        const projectNamesSet: Set<string> = scenes
+        .filter(s => !!s.metadata.job.name)
+        .reduce(
+          (names, s) => {
+            names.add(s.metadata.job.name);
+            return names;
+          },
+          new Set<string>(this.projectNames)
+        );
+
+        this.projectNames = [ ...Array.from(projectNamesSet) ];
       })
     );
   }
@@ -118,11 +134,11 @@ export class ProjectNameSelectorComponent implements OnInit, OnDestroy {
         }),
         delay(820),
       ).subscribe(_ => {
-        this.isNameError = false;
-        this.projectNameForm.form
-          .controls['projectNameInput']
-          .setErrors(null);
-      })
+          this.isNameError = false;
+          this.projectNameForm.form
+            .controls['projectNameInput']
+            .setErrors(null);
+        })
     );
   }
 

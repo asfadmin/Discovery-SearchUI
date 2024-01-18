@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import * as moment from 'moment';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, Action } from '@ngrx/store';
@@ -19,7 +20,7 @@ import * as uiStore from '@store/ui';
 import * as services from '@services';
 
 import {
-  SearchActionType,
+  SearchActionType, LoadOnDemandScenesList,
   SearchResponse, SearchError, CancelSearch, SearchCanceled
 } from './search.action';
 import { getIsCanceled, getareResultsOutOfDate, getSearchType } from './search.reducer';
@@ -41,7 +42,6 @@ export class SearchEffects {
     format: new GeoJSON(),
   });
 
-
   constructor(
     private actions$: Actions,
     private store$: Store<AppState>,
@@ -52,7 +52,6 @@ export class SearchEffects {
     private sarviewsService: services.SarviewsEventsService,
     private http: HttpClient,
     private notificationService: services.NotificationService,
-    // private environmentService: services.EnvironmentService,
   ) { }
 
   public clearMapInteractionModeOnSearch = createEffect(() => this.actions$.pipe(
@@ -131,19 +130,17 @@ export class SearchEffects {
     map(_ => new CancelSearch())
   ));
 
-  cancelSearchonOnPanelOpen = createEffect(() => this.actions$.pipe(
+  public cancelSearchonOnPanelOpen = createEffect(() => this.actions$.pipe(
     ofType(uiStore.UIActionType.OPEN_FILTERS_MENU),
     switchMap(_ => [
       new filtersStore.StoreCurrentFilters(),
       new CancelSearch()
     ])
-  )
-  );
+  ));
 
   public searchResponse = createEffect(() => this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
     switchMap(action => {
-
       let output : any[] = [
         new scenesStore.SetScenes({
           products: action.payload.files,
@@ -164,6 +161,40 @@ export class SearchEffects {
     switchMap(([action, _]) =>
       [!!action.payload.next ? new SetNextJobsUrl(action.payload.next) : new SetNextJobsUrl('')]
     )
+  ));
+
+  public onLoadOnDemandScenesList = createEffect(() => this.actions$.pipe(
+    ofType<LoadOnDemandScenesList>(SearchActionType.LOAD_ON_DEMAND_SCENES_LIST),
+    filter(action => action.payload.length !== 0),
+    switchMap(action => {
+      const products = action.payload;
+
+      const granuleNames = products.reduce((names, prod) => {
+        const scenes = prod.metadata.job.job_parameters.scenes;
+
+        if (!!scenes) {
+          const gNames = scenes
+            .filter(g => !!g && 'name' in g)
+            .map(g => g.name);
+
+          return names.concat(gNames);
+        } else {
+          return names.push(prod.name);
+        }
+      }, []);
+
+      const params = {'granule_list': (<any>granuleNames).join(',')};
+
+      return this.asfApiService.query(params);
+    }),
+    map(results => this.productService.fromResponse(results).
+      filter(product => {
+        return !product.metadata.productType.includes('METADATA');
+      })
+    ),
+    map(results => {
+      return new scenesStore.AddCmrDataToOnDemandScenes(results);
+    })
   ));
 
   public hyp3BatchResponse = createEffect(() => this.actions$.pipe(
@@ -241,8 +272,8 @@ export class SearchEffects {
     withLatestFrom(this.store$.select(getAreResultsLoaded)),
     filter(([[[_, searchtype], outOfdate], loaded]) => !outOfdate && searchtype === models.SearchType.DATASET && loaded),
   ).pipe(
-    map(_ => new SetSearchOutOfDate(true))
-  ));
+      map(_ => new SetSearchOutOfDate(true))
+    ));
 
   public setSearchUpToDate = createEffect(() => this.actions$.pipe(
     ofType(SearchActionType.MAKE_SEARCH,
@@ -264,27 +295,27 @@ export class SearchEffects {
       ([params]) => forkJoin(
         this.asfApiService.query<any[]>(params)
       ).pipe(
-        withLatestFrom(combineLatest([
-          this.store$.select(getSearchType),
-          this.store$.select(getIsCanceled)]
-        )),
-        map(([[response], [searchType, isCanceled]]) =>
-          !isCanceled ?
-            new SearchResponse({
-              files: this.productService.fromResponse(response),
-              searchType
-            }) :
-            new SearchCanceled()
-        ),
-        catchError(
-          (err: HttpErrorResponse) => {
-            if (err.status !== 400) {
-              return of(new SearchError(`Unknown Error`));
+          withLatestFrom(combineLatest([
+            this.store$.select(getSearchType),
+            this.store$.select(getIsCanceled)]
+          )),
+          map(([[response], [searchType, isCanceled]]) =>
+            !isCanceled ?
+              new SearchResponse({
+                files: this.productService.fromResponse(response),
+                searchType
+              }) :
+              new SearchCanceled()
+          ),
+          catchError(
+            (err: HttpErrorResponse) => {
+              if (err.status !== 400) {
+                return of(new SearchError(`Unknown Error`));
+              }
+              return EMPTY;
             }
-            return EMPTY;
-          }
-        ),
-      ))
+          ),
+        ))
   );
 
   public asfApiBaselineQuery$(): Observable<Action> {
@@ -320,56 +351,84 @@ export class SearchEffects {
     );
   }
 
+  private getAllGranulesFromJobs(jobs: any) {
+    return jobs.reduce(
+      (granuleNames, job) => {
+        return granuleNames.concat(job.job_parameters.granules);
+      },
+      [])
+  }
+
+  private dummyProducts$(granuleNames: string[]) {
+    const dummyProducts = granuleNames.map(granuleName => {
+      return {
+        ...this.dummyProduct(),
+        name: granuleName
+      };
+    })
+
+    return of(dummyProducts);
+  }
+
+  private onDemandGranuleList$(jobsRes, latestScenes) {
+    const jobs = jobsRes.hyp3Jobs;
+
+    const granuleNames = this.getAllGranulesFromJobs(jobs);
+
+    const asfApiListQuery = this.dummyProducts$(granuleNames);
+
+    return asfApiListQuery.pipe(
+      map(products => {
+        return products
+          .reduce((prods, p) => {
+            prods[p.name] = p;
+            return products;
+          }, {})
+      }
+      ),
+      map(products => {
+        return this.hyp3JobToProducts(jobs, products)
+      }),
+      withLatestFrom(this.store$.select(getIsCanceled)),
+      map(([products, isCanceled]) =>
+        !isCanceled ?
+          new SearchResponse({
+            files: latestScenes.concat(products),
+            totalCount: +products.length,
+            searchType: models.SearchType.CUSTOM_PRODUCTS,
+            next: jobsRes.next
+          }) :
+          new SearchCanceled()
+      ),
+      catchError(
+        _ => {
+          return of(new SearchError(`Error loading search results`));
+        }
+      ),
+    );
+  }
+
   private customProductsQuery$(): Observable<Action> {
-    return this.hyp3Service.getJobs$().pipe(
+    return this.searchParams$.getOnDemandSearchParams.pipe(
       switchMap(
-        (jobsRes: { hyp3Jobs: models.Hyp3Job[], next: string }) => {
-          const jobs = jobsRes.hyp3Jobs;
-          if (jobs.length === 0) {
-            return of(new SearchResponse({
-              files: [],
-              totalCount: 0,
-              searchType: models.SearchType.CUSTOM_PRODUCTS
-            }));
-          }
+        params => {
+          return this.hyp3Service.getJobs$(params.userID).pipe(
+            switchMap(
+              (jobsRes: { hyp3Jobs: models.Hyp3Job[], next: string }) => {
+                if (jobsRes.hyp3Jobs.length === 0) {
+                  return of(new SearchResponse({
+                    files: [],
+                    totalCount: 0,
+                    searchType: models.SearchType.CUSTOM_PRODUCTS
+                  }));
+                }
 
-          const granules = jobs.map(
-            job => {
-              return job.job_parameters.granules.join(',');
-            }
-          ).join(',');
-
-          return this.asfApiService.query<any[]>({ 'granule_list': granules }).pipe(
-            map(results => this.productService.fromResponse(results)
-              .filter(product => {
-                return !product.metadata.productType.includes('METADATA') ||
-                !product.metadata.productType.includes('BURST_XML');
-              })
-              .reduce((products, product) => {
-                products[product.name] = product;
-                return products;
-              }, {})
-            ),
-            map(products => this.hyp3JobToProducts(jobs, products)),
-            withLatestFrom(this.store$.select(getIsCanceled)),
-            map(([products, isCanceled]) =>
-              !isCanceled ?
-                new SearchResponse({
-                  files: products,
-                  totalCount: +products.length,
-                  searchType: models.SearchType.CUSTOM_PRODUCTS,
-                  next: jobsRes.next
-                }) :
-                new SearchCanceled()
-            ),
-            catchError(
-              _ => {
-                return of(new SearchError(`Error loading search results`));
+                return this.onDemandGranuleList$(jobsRes, []);
               }
             ),
           );
         }
-      ),
+      )
     );
   }
 
@@ -377,8 +436,7 @@ export class SearchEffects {
     return this.hyp3Service.getJobsByUrl$(next).pipe(
       switchMap(
         (jobsRes) => {
-          const jobs = jobsRes.hyp3Jobs;
-          if (jobs.length === 0) {
+          if (jobsRes.hyp3Jobs.length === 0) {
             return of(new Hyp3BatchResponse({
               files: [],
               totalCount: 0,
@@ -387,40 +445,7 @@ export class SearchEffects {
             }));
           }
 
-          const granules = jobs.map(
-            job => {
-              return job.job_parameters.granules.join(',');
-            }
-          ).join(',');
-
-          const collections = this.asfApiService.collections();
-
-          return this.asfApiService.query<any[]>({ 'granule_list': granules, 'collections': collections.join(',') }).pipe(
-            map(results => this.productService.fromResponse(results)
-              .filter(product => !product.metadata.productType.includes('METADATA'))
-              .reduce((products, product) => {
-                products[product.name] = product;
-                return products;
-              }, {})
-            ),
-            map(products => this.hyp3JobToProducts(jobs, products)),
-            withLatestFrom(this.store$.select(getIsCanceled)),
-            map(([products, isCanceled]) =>
-              !isCanceled ?
-                new Hyp3BatchResponse({
-                  files: latestScenes.concat(products),
-                  totalCount: +products.length,
-                  searchType: models.SearchType.CUSTOM_PRODUCTS,
-                  next: jobsRes.next
-                }) :
-                new SearchCanceled()
-            ),
-            catchError(
-              _ => {
-                return of(new SearchError(`Error loading next batch of On Demand results`));
-              }
-            ),
-          );
+          return this.onDemandGranuleList$(jobsRes, latestScenes);
         }
       ),
     );
@@ -435,41 +460,92 @@ export class SearchEffects {
 
   private hyp3JobToProducts(jobs, products) {
     const virtualProducts = jobs
-      .filter(job => products[job.job_parameters.granules[0]])
-      .map(job => {
+    .filter(job => products[job.job_parameters.granules[0]])
+    .map(job => {
+      const product = products[job.job_parameters.granules[0]];
+      const jobFile = !!job.files ?
+        job.files[0] :
+        { size: -1, url: '', filename: product.name };
 
-        const product = products[job.job_parameters.granules[0]];
-        const jobFile = !!job.files ?
-          job.files[0] :
-          { size: -1, url: '', filename: product.name };
+      const scene_keys = job.job_parameters.granules;
+      job.job_parameters.scenes = [];
+      for (const scene_key of scene_keys) {
+        job.job_parameters.scenes.push(products[scene_key]);
+      }
 
-        const scene_keys = job.job_parameters.granules;
-        job.job_parameters.scenes = [];
-        for (const scene_key of scene_keys) {
-          job.job_parameters.scenes.push(products[scene_key]);
-        }
+      const jobProduct = {
+        ...product,
+        browses: job.browse_images ? job.browse_images : ['assets/no-browse.png'],
+        thumbnail: job.thumbnail_images ? job.thumbnail_images[0] : 'assets/no-thumb.png',
+        productTypeDisplay: `${job.job_type}, ${product.metadata.productType} `,
+        downloadUrl: jobFile.url,
+        bytes: jobFile.size,
+        groupId: job.job_id,
+        id: job.job_id,
+        isDummyProduct: true,
+        metadata: {
+          ...product.metadata,
+          fileName: jobFile.filename || '',
+          productType: job.job_type,
+          job
+        },
+      };
 
-        const jobProduct = {
-          ...product,
-          browses: job.browse_images ? job.browse_images : ['assets/no-browse.png'],
-          thumbnail: job.thumbnail_images ? job.thumbnail_images[0] : 'assets/no-thumb.png',
-          productTypeDisplay: `${job.job_type}, ${product.metadata.productType} `,
-          downloadUrl: jobFile.url,
-          bytes: jobFile.size,
-          groupId: job.job_id,
-          id: job.job_id,
-          metadata: {
-            ...product.metadata,
-            fileName: jobFile.filename || '',
-            productType: job.job_type,
-            job
-          },
-        };
-
-        return jobProduct
-      });
+      return jobProduct
+    });
 
     return virtualProducts;
+  }
+
+  private dummyProduct() {
+    // "2023-11-21T18:03:43+00:00"
+    return {
+      "name": "",
+      "productTypeDisplay": "",
+      "file": "",
+      "id": "",
+      "downloadUrl": "",
+      "bytes": 0,
+      "dataset": "",
+      "browses": [
+        "/assets/no-browse.png"
+      ],
+      "thumbnail": "/assets/no-thumb.png",
+      "groupId": "",
+      "isUnzippedFile": false,
+      "isDummyProduct": true,
+      "metadata": {
+        "date": moment.utc("1970-01-01T00:00:00+00:00"),
+        "stopDate": moment.utc("1970-01-01T00:00:00+00:00"),
+        "polygon": "POLYGON ((0 0, 0 0, 0 0, 0 0, 0 0))",
+        "productType": "",
+        "beamMode": "",
+        "polarization": "",
+        "flightDirection": "",
+        "path": 0,
+        "frame": 0,
+        "absoluteOrbit": [
+          0
+        ],
+        "faradayRotation": 0,
+        "offNadirAngle": 0,
+        "instrument": "",
+        "pointingAngle": null,
+        "missionName": null,
+        "flightLine": null,
+        "stackSize": null,
+        "perpendicular": null,
+        "temporal": null,
+        "canInSAR": true,
+        "job": null,
+        "fileName": null,
+        "burst": null,
+        "opera": null,
+        "pgeVersion": 0,
+        "subproducts": [],
+        "parentID": null
+      }
+    };
   }
 
   private findCountries(shapeString: string) {

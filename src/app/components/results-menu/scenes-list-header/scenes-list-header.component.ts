@@ -2,7 +2,7 @@ import { Component,  OnDestroy, OnInit } from '@angular/core';
 import { saveAs } from 'file-saver';
 
 import { combineLatest } from 'rxjs';
-import { debounceTime, filter, map, tap } from 'rxjs/operators';
+import { debounceTime, filter, map, tap, withLatestFrom } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -86,22 +86,21 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
   public isBurstStack$ = combineLatest([
     this.products$,
-    this.pairService.pairs$,
     this.store$.select(searchStore.getSearchType),
   ]
   ).pipe(
-    map(([scenes, pairs, currentSearchType]) => (currentSearchType ===
+    map(([scenes, currentSearchType]) => (currentSearchType ===
       this.SearchTypes.BASELINE && scenes?.length > 0 ? scenes[0].metadata.productType === 'BURST': false)
-      || (currentSearchType === this.SearchTypes.SBAS &&
-        (
-          (pairs.pairs?.length > 0 ? pairs.pairs[0][0].metadata.productType === 'BURST' : false)
-            || (pairs.custom?.length > 0 ? pairs.custom[0][0].metadata.productType === 'BURST' : false)
-        )
+      || (currentSearchType === this.SearchTypes.SBAS
       )
     )
   )
 
-  public numPairs$ = this.pairService.pairs$.pipe(
+  public numPairs$ =
+  this.store$.select(searchStore.getSearchType).pipe(
+    filter(searchType => searchType !== models.SearchType.CUSTOM_PRODUCTS),
+    withLatestFrom(this.pairs$),
+    map(([_, pairs]) => pairs),
     filter(pairs => !!pairs),
     map(pairs => pairs.pairs.length + pairs.custom.length)
   );
@@ -125,8 +124,8 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
   public SBASburstDataProducts$ = combineLatest([
     this.burstDataProducts$,
-    this.pairProducts$]
-  ).pipe(
+    this.pairProducts$
+  ]).pipe(
     map(([products, pairs]) => {
       const pairNames = pairs.map(p => p.name);
       const output = products.filter(p => pairNames.find(name => name === p.name));
@@ -140,8 +139,8 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
   public SBASburstMetadataProducts$ = combineLatest([
     this.burstMetadataProducts$,
-    this.pairProducts$]
-  ).pipe(
+    this.pairProducts$
+  ]).pipe(
     map(([products, pairs]) => {
       const pairNames = pairs.map(p => p.name);
       const output = products.filter(p => pairNames.find(name => name === p.name));
@@ -206,7 +205,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.possibleHyp3JobsService.possibleJobs$
-      .subscribe(
+        .subscribe(
           possibleJobs => {
             this.hyp3able = this.hyp3.getHyp3ableProducts(possibleJobs);
           }
@@ -215,13 +214,17 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.products$.subscribe(products => {
-       this.products = products;
-       this.downloadableProds = this.hyp3.downloadable(products);
+        this.products = products;
+        this.downloadableProds = this.hyp3.downloadable(products);
       })
     );
 
     this.subs.add(
-      this.pairs$.subscribe(({pairs, custom}) => this.pairs = [...pairs, ...custom])
+      this.store$.select(searchStore.getSearchType).pipe(
+        filter(searchType => searchType !== models.SearchType.CUSTOM_PRODUCTS),
+        withLatestFrom(this.pairs$)
+      ).subscribe(
+          ([_, {pairs, custom}]) => this.pairs = [...pairs, ...custom])
     );
 
     this.subs.add(

@@ -1,4 +1,8 @@
 <ul *ngIf="scene !== null" class="scene-metadata">
+  <li *ngIf="scene.isDummyProduct">
+    <b>Loading Metadata...</b>
+  </li>
+
   <li *ngIf="scene.metadata.perpendicular !== null">
     <span class="v-mid"><b>{{ 'PERPENDICULAR' | translate }}</b> • {{ scene.metadata.perpendicular + offsets.perpendicular }}</span>
   </li>
@@ -36,7 +40,10 @@
   </li>
 
   <li *ngIf="!!scene.metadata?.opera?.validityStartDate">
-    <span class="v-mid"><b>{{ 'Validity Start Date' }}</b> • {{ scene.metadata.opera.validityStartDate | shortDateTime }}</span>
+    <span class="v-mid">
+      <b>{{ 'Validity Start Date' }}</b> • {{ scene.metadata.opera.validityStartDate | shortDateTime }}
+    </span>
+
     <mat-icon *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addSceneStopDateMenu"
       class="v-mid clickable">

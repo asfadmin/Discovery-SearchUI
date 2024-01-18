@@ -31,6 +31,7 @@ import { ProjectNameSelectorModule } from '@components/shared/selectors/project-
 import { JobStatusSelectorModule } from '@components/shared/selectors/job-status-selector';
 import { JobProductNameSelectorModule } from '@components/shared/selectors/job-product-name-selector';
 import { SarviewsEventSearchSelectorModule } from '@components/shared/selectors/sarviews-event-search-selector';
+import { OnDemandUserSelectorModule} from '@components/shared/selectors/on-demand-user-selector';
 import { LogoModule } from '@components/header/logo/logo.module';
 
 import { HeaderComponent } from './header.component';
@@ -96,7 +97,8 @@ import { LanguageSelectorModule } from "@components/shared/selectors/language-se
     SarviewsEventTypeSelectorModule,
     Hyp3UrlModule,
     SharedModule,
-    LanguageSelectorModule
+    LanguageSelectorModule,
+    OnDemandUserSelectorModule,
   ],
   exports: [
     HeaderComponent

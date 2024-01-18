@@ -9,6 +9,7 @@ import { map, withLatestFrom, startWith } from 'rxjs/operators';
 import { AppState } from '@store';
 import * as filterStore from '@store/filters';
 import * as scenesStore from '@store/scenes';
+import * as hyp3Store from '@store/hyp3';
 import { getSearchType } from '@store/search/search.reducer';
 
 import { MapService } from './map/map.service';
@@ -277,6 +278,16 @@ export class SearchParamsService {
         }
       }),
   );
+
+  public getOnDemandSearchParams = combineLatest([
+      this.store$.select(hyp3Store.getOnDemandUserId)
+  ]).pipe(
+    map(([userID]) => {
+      return {
+        'userID': userID
+      };
+    })
+  )
 
   public searchType$() {
     return this.store$.select(getSearchType);
