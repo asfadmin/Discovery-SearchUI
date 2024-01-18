@@ -144,7 +144,6 @@ $themes: (
 }
 $my-warn: mat.define-palette(mat.$red-palette);
 
-$my-typography: mat.define-typography-config();
 
 // .theme-dark {
 //   $asf-dark-theme: mat.define-dark-theme((
@@ -166,8 +165,7 @@ color: (
   accent: $asf-app-accent,
   warn: $my-warn,
 ),
-typography: $my-typography,
-density: -2,
+density: -1,
 ));
 @include mat.all-component-themes($asf-light-theme);
 @include mat.core-color($asf-light-theme);
