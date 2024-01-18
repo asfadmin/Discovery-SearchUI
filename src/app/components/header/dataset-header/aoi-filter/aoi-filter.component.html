@@ -11,7 +11,7 @@
         name="searchPolygon"
         matInput>
         <mat-icon
-        *ngIf="!!polygon && isHoveringAOISelector" (click)="onCopy()"
+        *ngIf="!!polygon" (click)="onCopy()"
         matTooltip="{{ 'COPY_TO_CLIPBOARD' | translate }}"
         [class.ghost-item]="!isHoveringAOISelector"
         class="clickable copy-icon" matSuffix>
