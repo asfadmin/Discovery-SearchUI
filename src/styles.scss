@@ -803,3 +803,6 @@ $d-height: 500px;
   width:100%;
   height: 100%;
 }
+.mat-mdc-form-field-has-icon-suffix .mat-mdc-text-field-wrapper  {
+  padding-left: 0 !important;
+}

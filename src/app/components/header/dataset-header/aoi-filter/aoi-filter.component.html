@@ -1,6 +1,8 @@
   <mat-form-field
     [class.invalid-input-animation]="isAOIError"
-    class="full-width">
+    class="full-width"
+  (mouseenter)="isHoveringAOISelector = true"
+  (mouseleave)="isHoveringAOISelector = false">
     <mat-label> {{ 'AREA_OF_INTEREST_WKT' | translate }} </mat-label>
       <input
         (change)="onInputSearchPolygon($event)"
@@ -9,13 +11,13 @@
         name="searchPolygon"
         matInput>
         <mat-icon
-        *ngIf="!!polygon" (click)="onCopy()"
+        *ngIf="!!polygon && isHoveringAOISelector" (click)="onCopy()"
         matTooltip="{{ 'COPY_TO_CLIPBOARD' | translate }}"
         [class.ghost-item]="!isHoveringAOISelector"
         class="clickable copy-icon" matSuffix>
         file_copy
       </mat-icon>
-  
+
       <mat-icon
         (click)="toggleAOIOptions()"
         matTooltip="{{ 'MORE_OPTIONS' | translate }}"
