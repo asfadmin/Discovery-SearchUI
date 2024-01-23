@@ -68,6 +68,11 @@
       </span>
     </span>
     <span>
+      <span *ngIf="includeCalibrationData">
+        <b>{{'INCLUDE_OPERA_CALIBRATION_DATA' | translate}}:</b> {{ includeCalibrationData }}
+      </span>
+    </span>
+    <span>
       <span *ngIf="!!groupID">
         <b> {{ 'GROUP_ID_INFO_BAR' | translate }}:</b> {{ groupID }}
       </span>

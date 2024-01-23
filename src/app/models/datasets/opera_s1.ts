@@ -47,6 +47,7 @@ export const opera_s1 = {
     'VH'
   ],
   subtypes: [],
+  calibrationDatasets: ['OPERA-S1-CALIBRATION', 'OPERA-S1-CALIBRATION-STATIC'],
   platformDesc: 'OPERA_S1_DESC',
   platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
 };

@@ -7,13 +7,15 @@ import { FormsModule } from '@angular/forms';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatInputModule } from '@angular/material/input';
 import { MatSharedModule, SharedModule } from '@shared';
-
+import { OperaCalibrationDataSelectorComponent } from './opera-calibration-data-selector/opera-calibration-data-selector.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 
 @NgModule({
   declarations: [
     OperaS1SelectorComponent,
     OperaBurstIdSelectorComponent,
+    OperaCalibrationDataSelectorComponent,
   ],
   imports: [
     CommonModule,
@@ -22,7 +24,8 @@ import { MatSharedModule, SharedModule } from '@shared';
     MatInputModule,
     FormsModule,
     MatSharedModule,
-    SharedModule
+    SharedModule,
+    MatSlideToggleModule
   ],
   exports: [
     OperaS1SelectorComponent,
