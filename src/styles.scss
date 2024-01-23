@@ -806,3 +806,11 @@ $d-height: 500px;
 .mat-mdc-form-field-has-icon-suffix .mat-mdc-text-field-wrapper  {
   padding-left: 0 !important;
 }
+
+.breadcrumb-row .mdc-text-field-wrapper {
+  height: 50px !important;
+}
+.field-test .mdc-text-field {
+	height: 50px !important;
+	background: red !important;
+}

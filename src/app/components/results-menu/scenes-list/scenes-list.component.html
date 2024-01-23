@@ -9,7 +9,7 @@
     (breakpoint$ | async) === breakpoints.SMALL &&
     searchType === SearchTypes.BASELINE
 }">
-  <cdk-virtual-scroll-viewport class="list-viewport h100" [itemSize]="searchType === SearchTypes.SBAS ? 48 : 60">
+  <cdk-virtual-scroll-viewport class="list-viewport h100" [itemSize]="searchType === SearchTypes.SBAS ? 48 : 56">
     <ng-container *ngIf="breakpoint$ | async as breakpoint">
       <ng-container
         *ngIf="
