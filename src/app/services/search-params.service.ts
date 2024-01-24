@@ -59,9 +59,9 @@ export class SearchParamsService {
     )
   );
 
-  private operaCalibrationParam$ = this.store$.select(filterStore.getIncludeCalibrationData).pipe(
-    map(includeCalibrationData => includeCalibrationData ? ({
-      dataset: models.opera_s1.calibrationDatasets
+  private operaCalibrationParam$ = this.store$.select(filterStore.getUseCalibrationData).pipe(
+    map(useCalibrationData => useCalibrationData ? ({
+      dataset: models.opera_s1.calibrationDataset
     }) : ({}))
   )
 

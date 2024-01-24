@@ -510,12 +510,20 @@ export class UrlStateService {
       loader: this.loadOperaBurstIDs
     },
     {
-      name: 'groupID',
+      name: 'groupId',
       source: this.store$.select(filterStore.getGroupID).pipe(
         map(groupId => ({ groupId })
       )),
       loader: this.loadGroupId
-    }];
+    },
+    {
+      name: 'useCalibrationData',
+      source: this.store$.select(filterStore.getUseCalibrationData).pipe(
+        map(useCalibrationData => ({useCalibrationData}))
+      ),
+      loader: this.loadUseCalibrationData
+    }
+  ];
   }
 
   private loadSearchType = (searchType: string): Action | undefined => {
@@ -849,4 +857,8 @@ export class UrlStateService {
   private loadGroupId = (id: string): Action => {
     return new filterStore.setGroupID(id);
   };
+
+  private loadUseCalibrationData = (usingCalibrationData: string): Action => {
+    return new filterStore.setUseCalibrationData(!!usingCalibrationData)
+  } 
 }

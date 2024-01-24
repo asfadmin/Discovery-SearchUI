@@ -48,7 +48,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public tempRange: models.Range<number | null>;
   public fullBurstIDs: string[] = [];
   public operaBurstIDs: string[] = [];
-  public includeCalibrationData: boolean = false;
+  public useCalibrationData: boolean = false;
   public groupID: string;
   public userID: string;
 
@@ -135,8 +135,8 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       burstIDs => this.operaBurstIDs = burstIDs
     );
 
-    const includeCalibrationDataSub = this.store$.select(filtersStore.getIncludeCalibrationData).subscribe(
-      includeCalibrationData => this.includeCalibrationData = includeCalibrationData
+    const useCalibrationDataSub = this.store$.select(filtersStore.getUseCalibrationData).subscribe(
+      useCalibrationData => this.useCalibrationData = useCalibrationData
     );
 
     const groupIDSub = this.store$.select(filtersStore.getGroupID).subscribe(
@@ -163,7 +163,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       eventProductType,
       fullBurstIDSub,
       operaBurstIDSub,
-      includeCalibrationDataSub,
+      useCalibrationDataSub,
       groupIDSub,
       userIDSub
     ].forEach(sub => this.subs.add(sub));

@@ -11,7 +11,7 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
   styleUrls: ['./opera-calibration-data-selector.component.scss']
 })
 export class OperaCalibrationDataSelectorComponent implements OnInit, OnDestroy{
-  public includeCalibrationData = false;
+  public useCalibrationData = false;
 
   constructor(
     private store$: Store<AppState>,
@@ -20,14 +20,14 @@ export class OperaCalibrationDataSelectorComponent implements OnInit, OnDestroy{
   private subs = new SubSink();
 
   public ngOnInit(): void {
-    this.subs.add(this.store$.select(filterStore.getIncludeCalibrationData).subscribe(
-      includeCalibrationData => this.includeCalibrationData = includeCalibrationData
+    this.subs.add(this.store$.select(filterStore.getUseCalibrationData).subscribe(
+      useCalibrationData => this.useCalibrationData = useCalibrationData
     ));
   }
 
   public onToggle(event: MatSlideToggleChange): void {
-    this.includeCalibrationData = event.checked;
-    this.store$.dispatch(new filterStore.setIncludeCalibrationData(this.includeCalibrationData))
+    this.useCalibrationData = event.checked;
+    this.store$.dispatch(new filterStore.setUseCalibrationData(this.useCalibrationData))
   }
   public ngOnDestroy() {
     this.subs.unsubscribe()

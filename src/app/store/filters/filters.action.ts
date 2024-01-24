@@ -442,7 +442,7 @@ export class setOperaBurstID implements Action {
   constructor(public payload: string[]) {}
 }
 
-export class setIncludeCalibrationData implements Action {
+export class setUseCalibrationData implements Action {
   public readonly type = FiltersActionType.SET_INCLUDE_CALIBRATION_DATA
 
   constructor(public payload: boolean) {}
@@ -518,5 +518,5 @@ export type FiltersActions =
   | ClearHyp3ProductTypes
   | setFullBurst
   | setOperaBurstID
-  | setIncludeCalibrationData
+  | setUseCalibrationData
   | setGroupID;
