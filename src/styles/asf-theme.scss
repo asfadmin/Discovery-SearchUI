@@ -142,31 +142,25 @@ $themes: (
 @function themed($key) {
   @return map-get($theme-map, $key);
 }
+
 $my-warn: mat.define-palette(mat.$red-palette);
 
+.theme-light {
+  $asf-light-theme: mat.define-light-theme((
+    color: (
+      primary: $asf-app-primary,
+      accent: $asf-app-accent,
+    )
+  ));
+  @include mat.all-component-themes($asf-light-theme);
+}
 
-// .theme-dark {
-//   $asf-dark-theme: mat.define-dark-theme((
-//     color: (
-//       primary: $asf-app-dark-primary,
-//       accent:$contrast,
-//       warn: $my-warn,
-//     ),
-//     typography: $my-typography,
-//     density: 0,
-//    ));
-//   @include mat.all-component-themes($asf-dark-theme);
-// }      
-
-
-$asf-light-theme: mat.define-light-theme((
-color: (
-  primary:$asf-app-primary,
-  accent: $asf-app-accent,
-  warn: $my-warn,
-),
-density: -1,
-));
-@include mat.all-component-themes($asf-light-theme);
-@include mat.core-color($asf-light-theme);
-@include mat.button-color($asf-light-theme);
+.theme-dark {
+  $asf-dark-theme: mat.define-dark-theme((
+    color: (
+      primary: $asf-app-dark-primary,
+      accent: $asf-app-accent,
+    )
+  ));
+  @include mat.all-component-themes($asf-dark-theme);
+}
