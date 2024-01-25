@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatMenuModule } from '@angular/material/menu';
@@ -19,7 +18,6 @@ import { SharedModule } from "@shared";
 @NgModule({
   imports: [
     CommonModule,
-    DragDropModule,
     MatButtonToggleModule,
     MatMenuModule,
     MatSharedModule,
