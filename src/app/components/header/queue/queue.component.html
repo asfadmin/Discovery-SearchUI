@@ -121,7 +121,7 @@
 <mat-dialog-actions class="dl-mat-dialog-actions">
   <div class="fx-row dl-card-actions" *ngIf="breakpoint$ | async as breakpoint">
     <ng-container *ngIf="products$ | async as products">
-      <div class="dl-clear-button">
+      <div class="dl-clear-button btn-primary">
         <button *ngIf="previousQueue === null"
           (click)="onClearQueue(products)" mat-button>
           <mat-icon style="margin-right: 5px;">delete</mat-icon>
