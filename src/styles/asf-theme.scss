@@ -150,7 +150,8 @@ $my-warn: mat.define-palette(mat.$red-palette);
     color: (
       primary: $asf-app-primary,
       accent: $asf-app-accent,
-    )
+    ),
+    typography: mat.define-typography-config(),
   ));
   @include mat.all-component-themes($asf-light-theme);
 }
@@ -160,7 +161,8 @@ $my-warn: mat.define-palette(mat.$red-palette);
     color: (
       primary: $asf-app-dark-primary,
       accent: $asf-app-accent,
-    )
+    ),
+    typography: mat.define-typography-config(),
   ));
   @include mat.all-component-themes($asf-dark-theme);
 }
