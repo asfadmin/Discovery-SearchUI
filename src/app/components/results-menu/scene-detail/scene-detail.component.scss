@@ -60,6 +60,7 @@ a {
       color: themed("dark-primary-text");
     }
   }
+  margin-left: -16px;
 
   width: calc(100% + 32px);
   //box-shadow: #00000038 0 7px 18px;
@@ -118,7 +119,6 @@ a {
 
 .browse-container {
   margin-top: 0;
-  margin-left: -16px;
   margin-right: -16px;
 }
 
