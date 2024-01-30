@@ -689,6 +689,16 @@ $d-height: 500px;
     fill: darken(themed('background-white'), 5%);
   }
 }
+
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle{
+  border-color:$asf-blue
+}
+
+.mat-radio-button.mat-accent .mat-radio-inner-circle{
+  color:$asf-blue;
+  background-color:$asf-blue
+}
+
 .md-icon {
   @include themify_non_host($themes) {
     color: themed('dark-primary-text');

@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { SubSink } from 'subsink';
-import * as filterStore from '@store/filters'
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import * as filterStore from '@store/filters';
+import { MatRadioChange } from '@angular/material/radio';
 
 @Component({
   selector: 'app-opera-calibration-data-selector',
@@ -25,8 +25,8 @@ export class OperaCalibrationDataSelectorComponent implements OnInit, OnDestroy{
     ));
   }
 
-  public onToggle(event: MatSlideToggleChange): void {
-    this.useCalibrationData = event.checked;
+  public onToggle(event: MatRadioChange): void {
+    this.useCalibrationData = event.value;
     this.store$.dispatch(new filterStore.setUseCalibrationData(this.useCalibrationData))
   }
   public ngOnDestroy() {

@@ -1,1 +1,4 @@
-<mat-slide-toggle [checked]="useCalibrationData" (change)="onToggle($event)" [labelPosition]="'before'">{{'USE_OPERA_CALIBRATION_DATA' | translate}}</mat-slide-toggle>
+<mat-radio-group [value]="useCalibrationData" (change)="onToggle($event)">
+<mat-radio-button color="accent" [value]=false>{{'VALIDATED_PRODUCTS_TYPES_OPTION' | translate}}</mat-radio-button>
+<mat-radio-button color="accent" [value]=true>{{'CALIBRATION_PRODUCTS_TYPES_OPTION' | translate}}</mat-radio-button>
+</mat-radio-group>
