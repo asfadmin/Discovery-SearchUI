@@ -60,9 +60,10 @@ export class SearchParamsService {
   );
 
   private operaCalibrationParam$ = this.store$.select(filterStore.getUseCalibrationData).pipe(
-    map(useCalibrationData => useCalibrationData ? ({
-      dataset: models.opera_s1.calibrationDataset
-    }) : ({}))
+    withLatestFrom(this.store$.select(filterStore.getSelectedDatasetId)),
+    map(([useCalibrationData, dataset]) =>
+      dataset === models.opera_s1.id && useCalibrationData ? 
+      ({dataset: models.opera_s1.calibrationDatasets}) : ({}))
   )
 
   private groupID$ = this.store$.select(filterStore.getGroupID).pipe(

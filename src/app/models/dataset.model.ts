@@ -22,6 +22,9 @@ export interface Dataset {
   properties: Props[];
   platformDesc: string;
   platformIcon: string;
+
+  calibrationDatasets?: string[];
+  calibrationProductTypes?: ProductType[];
 }
 
 export enum MissionDataset {

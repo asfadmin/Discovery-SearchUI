@@ -25,10 +25,10 @@ export const opera_s1 = {
   productTypes: [
     {
       apiValue: 'RTC',
-      displayName: 'L2 Radiometric Terrain Corrected (RTC)'
+      displayName: 'L2 Radiometric Terrain Corrected (RTC)',
     }, {
       apiValue: 'CSLC',
-      displayName: 'L2 Co-registered Single Look Complex (CSLC)'
+      displayName: 'L2 Co-registered Single Look Complex (CSLC)',
     }, {
         apiValue: 'RTC-STATIC',
         displayName: 'L2 Radiometric Terrain Corrected Static Layer (RTC-STATIC)'
@@ -47,7 +47,14 @@ export const opera_s1 = {
     'VH'
   ],
   subtypes: [],
-  calibrationDataset: 'OPERA-S1-CALIBRATION',
+  calibrationDatasets: ['OPERA-S1-CALIBRATION'],
+  calibrationProductTypes: [{
+    apiValue: 'RTC',
+    displayName: 'L2 Radiometric Terrain Corrected (RTC)',
+  }, {
+    apiValue: 'CSLC',
+    displayName: 'L2 Co-registered Single Look Complex (CSLC)',
+  }],
   platformDesc: 'OPERA_S1_DESC',
   platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
 };
