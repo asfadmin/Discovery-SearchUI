@@ -691,12 +691,16 @@ $d-height: 500px;
 }
 
 .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle{
-  border-color:$asf-blue
+  @include themify_non_host($themes) {
+  border-color:themed('blue-link') !important;
+  }
 }
 
 .mat-radio-button.mat-accent .mat-radio-inner-circle{
-  color:$asf-blue;
-  background-color:$asf-blue
+  @include themify_non_host($themes) {
+  color: themed('blue-link') !important;
+  background-color: themed('blue-link') !important;
+  }
 }
 
 .md-icon {
