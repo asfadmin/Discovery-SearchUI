@@ -34,7 +34,7 @@ export class ProductTypeSelectorComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.dataset$.subscribe(
         dataset => this.dataset = dataset
-      ) 
+      )
     )
     this.subs.add(
       this.datasetProductTypes$.subscribe(types => this.productTypesList = types.map(type => type.apiValue).filter(v => v !== 'BURST'))

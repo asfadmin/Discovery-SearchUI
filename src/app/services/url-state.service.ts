@@ -460,7 +460,7 @@ export class UrlStateService {
           map(flightDirs => ({ flightDirs }))
         ),
         loader: this.loadFlightDirections
-      }, 
+      },
       {
         name: 'useCalibrationData',
         source: this.store$.select(filterStore.getUseCalibrationData).pipe(
@@ -866,5 +866,5 @@ export class UrlStateService {
 
   private loadUseCalibrationData = (usingCalibrationData: string): Action => {
     return new filterStore.setUseCalibrationData(!!usingCalibrationData)
-  } 
+  }
 }
