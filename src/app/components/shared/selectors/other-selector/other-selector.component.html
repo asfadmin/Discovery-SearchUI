@@ -2,7 +2,6 @@
   <app-product-type-selector
     style="padding-right: 10px;"
     (typesChange)="onNewProductTypes($event)"
-    [dataset]="dataset"
     *ngIf="dataset.id !== 'SENTINEL-1 BURSTS'">
   </app-product-type-selector>
 
@@ -103,4 +102,6 @@
       {{ 'NO_SUBTYPES_TO_SELECT' | translate }}
     </mat-hint> -->
   </mat-form-field>
+
+  <app-opera-calibration-data-selector *ngIf="dataset.id === 'OPERA-S1'"></app-opera-calibration-data-selector>
 </div>

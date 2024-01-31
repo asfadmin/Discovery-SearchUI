@@ -47,6 +47,9 @@
   <div *ngIf="filters.operaBurstIDs">
     <b>{{ 'OPERA_BURST_ID' | translate}}:</b> {{ filters.operaBurstIDs }}
   </div>
+  <div *ngIf="filters.useCalibrationData">
+    <b>{{ 'DATA_TYPE' | translate}}:</b> {{'CALIBRATION' | translate}}
+  </div>
 </div>
 
 <div *ngIf="noFilters(filters)">

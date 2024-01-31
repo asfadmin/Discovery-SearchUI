@@ -36,6 +36,7 @@ export class GeographicSearchFiltersComponent implements OnInit {
       !filters.season.end &&
       !filters.selectedMission &&
       !filters.fullBurstIDs &&
+      !filters.useCalibrationData &&
       filters.productTypes.length === 0 &&
       filters.beamModes.length === 0 &&
       filters.polarizations.length === 0 &&

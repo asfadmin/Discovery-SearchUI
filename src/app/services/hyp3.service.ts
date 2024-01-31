@@ -47,15 +47,27 @@ export class Hyp3Service {
   public getUser$(): Observable<models.Hyp3User> {
     const userUrl = `${this.apiUrl}/user`;
 
-    return this.http.get<models.Hyp3User>(userUrl, { withCredentials: true }).pipe(
-      map(user => ({
+    return this.http.get<any>(userUrl, { withCredentials: true }).pipe(
+      map(user => {
+        if (user.quota) {
+          return {
+            ...user,
+            quota: {
+              ...user.quota,
+              unlimited: user.quota.max_jobs_per_month === null
+            }
+          };
+        }
+
+
+        return {
           ...user,
           quota: {
-            ...user.quota,
-            unlimited: user.quota.max_jobs_per_month === null
+            remaining: user.remaining_credits,
+            unlimited: user.remaining_credits === null
           }
-        })
-      )
+        };
+      })
     );
   }
 
