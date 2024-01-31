@@ -794,7 +794,7 @@
   "TOO_MANY_JOBS_IN_QUEUE": "Demasiados trabajos en lista",
   "TOOLTIP": "SUGERENCIA",
   "TRAVEL_EXPLORE": "viajar_explorar",
-  "TYPE": "Tipo:",
+  "TYPE": "Tipo",
   "UAVSAR_DESC": "El radar de apertura sintética para vehículos aéreos no habitados (UAVSAR) está diseñado específicamente para adquirir datos SAR de seguimiento repetido en el aire para mediciones interferométricas diferenciales.",
   "UNDO": "deshacer",
   "UNPIN_ALL_SELECTED_PRODUCTS": "Desanclar todos los productos seleccionados",
