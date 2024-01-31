@@ -785,7 +785,7 @@
   "TOO_MANY_JOBS_IN_QUEUE": "Zu viele Aufträge in der Warteschlange",
   "TOOLTIP": "QUICKINFO",
   "TRAVEL_EXPLORE": "travel_explore",
-  "TYPE": "Art:",
+  "TYPE": "Art",
   "UAVSAR_DESC": "Das Uninhabited Aerial Vehicle Synthetic Aperture Radar (UAVSAR) wurde speziell für die Erfassung von luftgestützten SAR-Repeat-Track-SAR-Daten für differentielle interferometrische Messungen entwickelt.",
   "UNDO": "aufmachen",
   "UNPIN_ALL_SELECTED_PRODUCTS": "Alle ausgewählten Produkte lösen",
