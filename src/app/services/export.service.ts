@@ -71,7 +71,7 @@ export class ExportService {
         const python =
 `import asf_search as asf
 options = ${JSON.stringify(parameters, function replacer(key, value: String) {
-  if (Array.isArray(value)) {
+  if (Array.isArray(value) && key != 'dataset') {
     return { ...value }; // Converts empty array with string properties into a POJO
   }
   if (typeof(value) === typeof('') &&  key !== 'intersectsWith') {

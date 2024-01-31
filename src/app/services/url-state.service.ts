@@ -32,11 +32,15 @@ export class UrlStateService {
   private loadLocations: {[paramName: string]: models.LoadTypes};
   private params = {};
   private shouldDoSearch = false;
-
+  private defaultbooleanParams = {
+    'useCalibrationData': false
+  }
 
   public isDefaultSearch$ = this.activatedRoute.queryParams.pipe( map(params => {
-    const DefaultnonGEO = 'searchType' in params && Object.keys(params).length <= 1;
-    const defaultGEO = Object.keys(params).length === 0;
+    const keys = Object.keys(params)
+    
+    const DefaultnonGEO = 'searchType' in params && keys.length <= 1;
+    const defaultGEO = keys.length === 0;
 
     return defaultGEO || DefaultnonGEO;
     })
@@ -101,10 +105,11 @@ export class UrlStateService {
     const params = {...this.params, ...queryParams};
 
     const paramsWithValues = Object.keys(params)
-      .filter(key => params[key] !== '')
+      .filter(key => params[key] !== '' && params[key] !== this.defaultbooleanParams?.[key])
       .reduce((res, key) => (res[key] = params[key], res), {});
 
-    this.params = paramsWithValues;
+    
+      this.params = paramsWithValues;
 
     this.router.navigate(['.'], {
       queryParams: this.params,
@@ -455,7 +460,15 @@ export class UrlStateService {
           map(flightDirs => ({ flightDirs }))
         ),
         loader: this.loadFlightDirections
-      }, ];
+      },
+      {
+        name: 'useCalibrationData',
+        source: this.store$.select(filterStore.getUseCalibrationData).pipe(
+          map(useCalibrationData => ({useCalibrationData}))
+        ),
+        loader: this.loadUseCalibrationData
+      }
+    ];
   }
 
   private mapParameters(): models.UrlParameter[] {
@@ -510,12 +523,13 @@ export class UrlStateService {
       loader: this.loadOperaBurstIDs
     },
     {
-      name: 'groupID',
+      name: 'groupId',
       source: this.store$.select(filterStore.getGroupID).pipe(
         map(groupId => ({ groupId })
       )),
       loader: this.loadGroupId
-    }];
+    },
+  ];
   }
 
   private loadSearchType = (searchType: string): Action | undefined => {
@@ -849,4 +863,8 @@ export class UrlStateService {
   private loadGroupId = (id: string): Action => {
     return new filterStore.setGroupID(id);
   };
+
+  private loadUseCalibrationData = (usingCalibrationData: string): Action => {
+    return new filterStore.setUseCalibrationData(!!usingCalibrationData)
+  }
 }

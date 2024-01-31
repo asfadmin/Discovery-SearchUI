@@ -318,7 +318,8 @@ export class UserEffects {
       new filterStore.SetSubtypes(datasetFilter.subtypes),
       new filterStore.SetFlightDirections(Array.from(datasetFilter.flightDirections)),
       new filterStore.SelectMission(datasetFilter.selectedMission),
-      new filterStore.setFullBurst(datasetFilter.fullBurstIDs)
+      new filterStore.setFullBurst(datasetFilter.fullBurstIDs),
+      new filterStore.setUseCalibrationData(datasetFilter.useCalibrationData)
     ];
 
     return actions;
