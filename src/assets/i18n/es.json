@@ -101,6 +101,7 @@
   "BUTTONS_BASELINE_TOOL_AND_SBAS_TOOL_CLICK_THE_SBAS_TOOL_BUTTON_TO_PERFORM_AN_SBAS_SEARCH": "botones: \"Herramienta de línea base\" y \"Herramienta SBAS\". ",
   "BY_DEFAULT_THE_MAP_DRAWING_TOOL_IS_A_BOUNDING_BOX": "De forma predeterminada, la herramienta de dibujo de mapas es un cuadro delimitador.",
   "BY_DEFAULT_THE_MAP_DRAWING_TOOL_IS_A_BOUNDING_BOX_CLICK_ON_THE_MAP_ONCE_TO_SPECIFY_THE": "De forma predeterminada, la herramienta de dibujo de mapas es un cuadro delimitador. ",
+  "CALIBRATION": "CalVal",
   "CALIBRATION_PRODUCTS_OPTION": "Productos de referencia de calibración y validación",
   "CAMPAIGN": "Campaña",
   "CAMPAIGN_NAME": "Nombre de la Campaña",
