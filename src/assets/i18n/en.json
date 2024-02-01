@@ -101,7 +101,7 @@
   "BUTTONS_BASELINE_TOOL_AND_SBAS_TOOL_CLICK_THE_SBAS_TOOL_BUTTON_TO_PERFORM_AN_SBAS_SEARCH": "buttons: \"Baseline Tool\" and \"SBAS Tool\". Click the \"SBAS Tool\" button to perform an SBAS search.",
   "BY_DEFAULT_THE_MAP_DRAWING_TOOL_IS_A_BOUNDING_BOX": "By default, the map-drawing tool is a bounding box.",
   "BY_DEFAULT_THE_MAP_DRAWING_TOOL_IS_A_BOUNDING_BOX_CLICK_ON_THE_MAP_ONCE_TO_SPECIFY_THE": "By default, the map-drawing tool is a bounding box. Click on the map once to specify the",
-  "CALIBRATION": "Calibration",
+  "CALIBRATION": "CalVal",
   "CALIBRATION_PRODUCTS_OPTION": "Calibration & Validation Reference Products",
   "CAMPAIGN": "Campaign",
   "CAMPAIGN_NAME": "Campaign Name",
