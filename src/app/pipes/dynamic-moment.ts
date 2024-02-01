@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
-import * as moment from "moment/moment";
+import moment from "moment";
 import { BehaviorSubject } from "rxjs";
 
 @Pipe({

@@ -16,7 +16,7 @@ import { AsfApiService, Hyp3Service, NotificationService, ProductService, Sarvie
 import * as models from '@models';
 import { CMRProductMetadata, hyp3JobTypes, SarviewProductGranule, SarviewsProduct } from '@models';
 import { ClipboardService } from 'ngx-clipboard';
-import * as moment from 'moment';
+import moment from 'moment';
 
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { MatSelectionListChange } from '@angular/material/list';
@@ -437,7 +437,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
             );
         } else {
           return of([]);
-        
+
         }
       }
 

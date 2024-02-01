@@ -65,7 +65,6 @@
               "mapbox-to-css-font",
               "polygon-clipping"
             ],
-            "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,
             "sourceMap": true,

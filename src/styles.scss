@@ -680,6 +680,7 @@ $d-height: 500px;
     margin-top: 4px;
   }
 }
+
 .mat-mdc-form-field.mat-focused {
   /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
   .mat-form-field-label {
@@ -804,7 +805,7 @@ $d-height: 500px;
   height: 100%;
 }
 .mat-mdc-form-field-has-icon-suffix .mat-mdc-text-field-wrapper  {
-  padding-left: 0 !important;
+  // padding-left: 3 !important;
 }
 
 .breadcrumb-row .mdc-text-field-wrapper {

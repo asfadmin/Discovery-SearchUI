@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 
 import { EnvironmentService } from './environment.service';
-import * as jwt_decode from 'jwt-decode';
+import jwt_decode from 'jwt-decode';
 import * as userStore from '@store/user';
 
 import * as models from '@models';

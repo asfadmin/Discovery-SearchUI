@@ -10,7 +10,7 @@ import { Coordinate } from 'ol/coordinate';
 import MultiPolygon from 'ol/geom/MultiPolygon';
 import Polygon from 'ol/geom/Polygon';
 import * as models from '@models';
-import * as moment from 'moment';
+import moment from 'moment';
 import { extendMoment } from 'moment-range';
 import { getSarviewsEvents, getSelectedSarviewsEventProducts } from '@store/scenes';
 import { Store } from '@ngrx/store';
@@ -23,14 +23,14 @@ import * as filtersStore from '@store/filters';
 export class SarviewsEventsService {
 
   private eventsUrl = `https://gm3385dq6j.execute-api.us-west-2.amazonaws.com/events`;
-  private Moment = extendMoment(moment);
+  private Moment = extendMoment(moment as any);
+
   constructor(private http: HttpClient,
     private wktService: WktService,
     private mapService: MapService,
-    private store$: Store<AppState>
-              ) {
-                extendMoment(moment);
-               }
+    private store$: Store<AppState>) {
+      extendMoment(moment as any);
+   }
 
   public getSarviewsEvents$ = this.http.get<SarviewsEvent[]>(this.eventsUrl).pipe(
       debounceTime(2000),

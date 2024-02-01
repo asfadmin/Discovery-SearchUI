@@ -143,7 +143,7 @@ $themes: (
   @return map-get($theme-map, $key);
 }
 
-$my-warn: mat.define-palette(mat.$red-palette);
+mat.$theme-ignore-duplication-warnings: true;
 
 .theme-light {
   $asf-light-theme: mat.define-light-theme((
@@ -152,6 +152,7 @@ $my-warn: mat.define-palette(mat.$red-palette);
       accent: $asf-app-accent,
     ),
     typography: mat.define-typography-config(),
+    density: -1,
   ));
   @include mat.all-component-themes($asf-light-theme);
 }
@@ -163,6 +164,7 @@ $my-warn: mat.define-palette(mat.$red-palette);
       accent: $asf-app-accent,
     ),
     typography: mat.define-typography-config(),
+    density: -1,
   ));
   @include mat.all-component-themes($asf-dark-theme);
 }
