@@ -13,8 +13,14 @@ $idk-pad: 21px;
     color: themed("dark-primary-text");
   }
   padding: 0 10px;
+  /* padding-top: 10px; */
+  margin-left: -23px;
+  margin-right: -24px;
+  margin-top: -44px;
   margin-top: -$bottom-offset;
-  margin: -22px -24px 0 !important;
+  h1 {
+    margin-top: 0;
+  }
 }
 
 .dl-subtitle {
@@ -139,7 +145,7 @@ $idk-pad: 21px;
 
 button {
   height: 36px;
-  font-weight: 100;
+  font-weight: 500;
 }
 
 .buttons {
@@ -207,7 +213,7 @@ button {
 
   cursor: move;
   text-align: left;
-  height: $header-height;
+  // height: $header-height;
 }
 
 .mat-mdc-list-base .mat-mdc-list-item .mat-list-item-content,
@@ -249,7 +255,9 @@ button {
 }
 
 .global-progress {
-  width: calc(100% + 20px);
+  position: absolute;
+  bottom: 0;
+  width: calc(100% + 10px);
   left: -10px;
 }
 
@@ -296,7 +304,4 @@ button {
 .product-display-mobile {
   margin-top: 3px; 
   margin-left: 16px;
-}
-.btn-primary {
-  font-weight: 500 !important;
 }
