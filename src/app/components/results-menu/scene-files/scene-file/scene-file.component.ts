@@ -177,10 +177,9 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   public onSearchProduct() {
     let actions = []
     if(['RTC-STATIC', 'CSLC-STATIC'].includes(this.product.metadata.productType)) {
-    const processinglevel = this.product.metadata.productType
-    const productType = models.opera_s1.productTypes.find(product => product.apiValue == processinglevel)
-    const operaburstid = this.product.metadata?.opera?.operaBurstID
-    // const dataset =  models.opera_s1.apiValue.dataset
+    const processinglevel = this.product.metadata.productType;
+    const productType = models.opera_s1.productTypes.find(product => product.apiValue == processinglevel);
+    const operaburstid = this.product.metadata?.opera?.operaBurstID;
     
     actions = [
       new searchStore.SetSearchType(models.SearchType.DATASET),

@@ -25,7 +25,7 @@ import { ImageDialogComponent } from '../scene-detail/image-dialog';
 import { MatDialog } from '@angular/material/dialog';
 import { ScreenSizeService } from '@services';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-
+import * as filterStore from '@store/filters';
 
 @Component({
   selector: 'app-scene-files',
@@ -426,8 +426,9 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   public StaticLayerProduct$ = this.store$.select(scenesStore.getSelectedScene).pipe(
       debounceTime(100),
       distinctUntilChanged((prev, curr) => prev?.id === curr?.id),
-      switchMap(scene => {
-        if(!!scene && ['RTC', 'CSLC'].includes(scene?.metadata?.productType) && scene?.id.startsWith('OPERA')) {
+      withLatestFrom(this.store$.select(filterStore.getUseCalibrationData)),
+      switchMap(([scene, useCalibrationData]) => {
+        if(!useCalibrationData && !!scene && ['RTC', 'CSLC'].includes(scene?.metadata?.productType) && scene?.id.startsWith('OPERA')) {
           const queryParams = {
             processinglevel : scene.metadata.productType + '-STATIC',
             end: scene.metadata.date === null ? '' : moment.utc( scene.metadata.date ).format(),
