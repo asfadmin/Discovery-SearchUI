@@ -43,6 +43,15 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
   public isReadMore = true;
 
+  public searchTypeSelector = [{
+    searchType: models.SearchType.LIST,
+    nameKey: 'LIST',
+    descriptionKey:'LIST_SEARCH_ALLOWS_YOU_TO_ENTER_OR_UPLOAD_A_LIST_OF_SCENE_OR_FILE_NAMES',
+    helpUrl:'https://docs.asf.alaska.edu/vertex/manual/#list-search-options',
+    icon: 'list',
+    iconType: models.IconType.MATERIAL,
+  }]
+
   constructor(
     public translate: TranslateService,
     private store$: Store<AppState>,
@@ -96,6 +105,11 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   }
 
   public onOpenDocs(event) {
+    this.trigger.closeMenu();
+    event.stopPropagation();
+  }
+
+  public onCloseMenu(event: Event) {
     this.trigger.closeMenu();
     event.stopPropagation();
   }

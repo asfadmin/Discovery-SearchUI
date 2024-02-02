@@ -1,0 +1,45 @@
+@import "asf-theme";
+@import "deluxe-menu";
+@import "deluxe-menu-2";
+
+.menu-item {
+  display: flex;
+}
+
+.item-title {
+  font-weight: bold;
+}
+
+.limitTextHeight {
+  height: 37px;
+  overflow: hidden;
+}
+
+.info-text {
+  font-style: italic;
+  font-size: 14px;
+}
+
+.disable-search-type-on-demand {
+  pointer-events: none;
+
+  .item-title,
+  .item-content {
+    opacity: 0.5;
+  }
+  /* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
+  mat-card-actions {
+    pointer-events: auto;
+    opacity: 1 !important;
+  }
+}
+
+.menu-item-icon {
+  @include themify($themes) {
+    color: themed("dark-primary-text");
+  }
+
+  @include md-icon-size(70px);
+
+  margin-right: 0;
+}

@@ -20,53 +20,31 @@
 
   <div class="gtm-search-type-selector fx-nogrow">
     <mat-menu #searchTypeMenu="matMenu" [(ngModel)]="searchType" name="searchType" id="searchMenu" ngDefaultControl>
-      <div>
-        <div id="firstItem" class="menu-item mat-menu-item" aria-selected="true"
-             (click)="onSetSearchType(searchTypes.DATASET)">
-          <div class="menu-item-inner">
-            <div class="fx-75 menu-item-content">
-              <div class="item-title">
-                {{'GEOGRAPHIC' | translate}}
-              </div>
-              <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                {{'GEOGRAPHIC_SEARCH_ALLOWS_YOU_TO_SEARCH_FOR_DATA_BASED_UPON_A_GEOGRAPHIC_LOCATION' | translate }}
-              </div>
-              <mat-card-actions>
-                <app-docs-modal class="info-text"
-                                text="{{'MORE_INFO' | translate}}"
-                                url="https://docs.asf.alaska.edu/vertex/manual/#geographic-search-options">
-                </app-docs-modal>
-              </mat-card-actions>
-            </div>
-            <div class="fx-25 menu-item-aside">
-              <span class="material-icons-outlined menu-item-icon">travel_explore</span>
-            </div>
-          </div>
-        </div>
+      <div class="clickable">
+
+        <app-single-search-type
+          id="firstItem"
+          aria-selected="true"
+          (click)="onSetSearchType(searchTypes.DATASET)"
+          (onOpenDocs)="onCloseMenu($event)"
+          [nameKey]="'GEOGRAPHIC'"
+          [descriptionKey]="'GEOGRAPHIC_SEARCH_ALLOWS_YOU_TO_SEARCH_FOR_DATA_BASED_UPON_A_GEOGRAPHIC_LOCATION'"
+          [helpUrl]="'https://docs.asf.alaska.edu/vertex/manual/#geographic-search-options'"
+          [icon]="'travel_explore'"
+          [iconType]="'MATERIAL'">
+        </app-single-search-type>
 
         <hr class="dataset-hr">
 
-        <div class="menu-item mat-menu-item" (click)="onSetSearchType(searchTypes.LIST)">
-          <div class="menu-item-inner">
-            <div class="fx-75 menu-item-content">
-              <div class="item-title">
-                {{'LIST' | translate }}
-              </div>
-              <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                {{'LIST_SEARCH_ALLOWS_YOU_TO_ENTER_OR_UPLOAD_A_LIST_OF_SCENE_OR_FILE_NAMES' | translate }}
-              </div>
-              <mat-card-actions (click)="onOpenDocs($event)">
-                <app-docs-modal class="info-text"
-                                text="{{ 'MORE_INFO' | translate }}"
-                                url="https://docs.asf.alaska.edu/vertex/manual/#list-search-options">
-                </app-docs-modal>
-              </mat-card-actions>
-            </div>
-            <div class="fx-25 menu-item-aside">
-              <span class="material-icons-outlined menu-item-icon">list</span>
-            </div>
-          </div>
-        </div>
+        <app-single-search-type
+          (click)="onSetSearchType(searchTypes.LIST)"
+          (onOpenDocs)="onCloseMenu($event)"
+          [nameKey]="'LIST'"
+          [descriptionKey]="'LIST_SEARCH_ALLOWS_YOU_TO_ENTER_OR_UPLOAD_A_LIST_OF_SCENE_OR_FILE_NAMES'"
+          [helpUrl]="'https://docs.asf.alaska.edu/vertex/manual/#list-search-options'"
+          [icon]="'list'"
+          [iconType]="'MATERIAL'">
+        </app-single-search-type>
 
         <hr class="dataset-hr">
 

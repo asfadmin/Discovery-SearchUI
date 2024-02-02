@@ -1,0 +1,26 @@
+<div class="menu-item mat-menu-item">
+  <div class="menu-item-inner">
+
+    <div class="fx-75 menu-item-content">
+      <div class="item-title">
+        {{ nameKey | translate }}
+      </div>
+      <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
+        {{ descriptionKey | translate }}
+      </div>
+
+      <mat-card-actions (click)="onOpenDocsClick($event)">
+        <app-docs-modal class="info-text"
+          text="{{ 'MORE_INFO' | translate }}"
+          url="{{ helpUrl }}">
+        </app-docs-modal>
+      </mat-card-actions>
+    </div>
+
+    <div  class="fx-25 menu-item-aside">
+      <span *ngIf="iconType === iconTypes.MATERIAL" class="material-icons-outlined menu-item-icon">{{ matIcon}}</span>
+
+      <img *ngIf="iconType === iconTypes.IMAGE" src="{{ imageIcon }}" class="menu-item-icon">
+    </div>
+  </div>
+</div>
