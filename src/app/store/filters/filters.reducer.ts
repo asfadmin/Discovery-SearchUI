@@ -52,6 +52,7 @@ export interface FiltersState {
   fullBurstIDs: null | string[];
   
   operaBurstIDs: null | string[];
+  useCalibrationData: boolean; // used to toggle OPERA-S1 Calval (calibration) datasets
 
   groupID: null | string;
 }
@@ -127,6 +128,7 @@ export const initState: FiltersState = {
   fullBurstIDs: [],
 
   operaBurstIDs: [],
+  useCalibrationData: false,
 
   groupID: null
 };
@@ -151,6 +153,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         subtypes: [],
         fullBurstIDs: [],
         operaBurstIDs: [],
+        useCalibrationData: false,
         selectedMission: null,
       };
     }
@@ -411,6 +414,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         geocode: null,
         fullBurstIDs: [],
         operaBurstIDs: [],
+        useCalibrationData: false,
         groupID: null
       };
     }
@@ -628,7 +632,8 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           subtypes,
           selectedMission: filters.selectedMission,
           fullBurstIDs: filters.fullBurstIDs,
-          operaBurstIDs: filters.operaBurstIDs
+          operaBurstIDs: filters.operaBurstIDs,
+          useCalibrationData: filters.useCalibrationData,
         };
       }
     }
@@ -748,6 +753,12 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       return {
         ...state,
         operaBurstIDs: action.payload
+      }
+    }
+    case FiltersActionType.SET_INCLUDE_CALIBRATION_DATA: {
+      return {
+        ...state,
+        useCalibrationData: action.payload
       }
     }
     case FiltersActionType.SET_GROUP_ID: {
@@ -928,7 +939,8 @@ export const getGeographicSearch = createSelector(
     subtypes: state.subtypes,
     selectedMission: state.selectedMission,
     fullBurstIDs: state.fullBurstIDs,
-    operaBurstIDs: state.operaBurstIDs
+    operaBurstIDs: state.operaBurstIDs,
+    useCalibrationData: state.useCalibrationData
   })
 );
 
@@ -1043,6 +1055,11 @@ export const getFullBurstIDs = createSelector(
 export const getOperaBurstIDs = createSelector(
   getFiltersState,
   (state: FiltersState) => state.operaBurstIDs
+)
+
+export const getUseCalibrationData = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.useCalibrationData
 )
 
 export const getGroupID = createSelector(

@@ -4,10 +4,17 @@
   <div class="first-info">
     <span *ngIf="(searchType$ | async) === searchTypes.CUSTOM_PRODUCTS">
       <app-hyp3-url></app-hyp3-url>
+      <span>
+        <span *ngIf="!!userID">
+          <b>{{ 'USER_ID_INFO_BAR' | translate }}:</b> {{ userID }}
+        </span>
+      </span>
     </span>
+
     <span *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS && !!eventProductTypes">
       <b>{{'PRODUCT_TYPES' | translate }}:</b> {{eventProductTypes}}
     </span>
+
     <span *ngIf="(breakpoint < breakpoints.FULL) && !!startDate">
       <b>{{ 'START' | translate }}:</b> {{ startDate | shortDate }}
     </span>
@@ -61,8 +68,13 @@
       </span>
     </span>
     <span>
+      <span *ngIf="useCalibrationData">
+        <b>{{'DATA_TYPE' | translate}}:</b> {{'CALIBRATION' | translate}}
+      </span>
+    </span>
+    <span>
       <span *ngIf="!!groupID">
-        <b>Group ID:</b> {{groupID}}
+        <b> {{ 'GROUP_ID_INFO_BAR' | translate }}:</b> {{ groupID }}
       </span>
     </span>
   </div>

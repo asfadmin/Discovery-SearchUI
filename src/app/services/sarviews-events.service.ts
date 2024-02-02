@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { EventProductSortDirection, EventProductSortType, LonLat, SarviewsEvent, SarviewsProcessedEvent, SarviewsProduct } from '@models';
 import { combineLatest, Observable, of } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Range } from '@models';
@@ -21,7 +20,6 @@ import * as filtersStore from '@store/filters';
   providedIn: 'root'
 })
 export class SarviewsEventsService {
-
   private eventsUrl = `https://gm3385dq6j.execute-api.us-west-2.amazonaws.com/events`;
   private Moment = extendMoment(moment as any);
 
@@ -32,7 +30,7 @@ export class SarviewsEventsService {
       extendMoment(moment as any);
    }
 
-  public getSarviewsEvents$ = this.http.get<SarviewsEvent[]>(this.eventsUrl).pipe(
+  public getSarviewsEvents$ = this.http.get<models.SarviewsEvent[]>(this.eventsUrl).pipe(
       debounceTime(2000),
       distinctUntilChanged(),
       map(events => events.filter(
@@ -44,7 +42,7 @@ export class SarviewsEventsService {
             ...event,
             processing_timeframe: !!event.processing_timeframe ? this.getDates(event) : null,
             point: this.getEventPoint(event.wkt),
-          } as SarviewsEvent;
+          } as models.SarviewsEvent;
         }
     )),
     map(events => events.sort((a, b) => {
@@ -56,11 +54,11 @@ export class SarviewsEventsService {
       return 0;
     })));
 
-  public getEventFeature(usgs_id: string): Observable<SarviewsProcessedEvent>  {
-    return this.http.get<SarviewsProcessedEvent>(this.eventsUrl + '/' + usgs_id).pipe(
+  public getEventFeature(usgs_id: string): Observable<models.SarviewsProcessedEvent>  {
+    return this.http.get<models.SarviewsProcessedEvent>(this.eventsUrl + '/' + usgs_id).pipe(
       catchError(error => of(error)),
       distinctUntilChanged(),
-      map((event: SarviewsProcessedEvent) => {
+      map((event: models.SarviewsProcessedEvent) => {
         return {
           ...event,
           processing_timeframe: !!event.processing_timeframe ? this.getDates(event) : null
@@ -98,7 +96,7 @@ export class SarviewsEventsService {
     return `http://volcano.si.edu/volcano.cfm?vn=${smithsonian_id}`;
   }
 
-  private getDates(event: SarviewsEvent | SarviewsProcessedEvent): Range<Date> {
+  private getDates(event: models.SarviewsEvent | models.SarviewsProcessedEvent): Range<Date> {
     const eventDates = event.processing_timeframe;
 
     if (!eventDates) {
@@ -114,7 +112,7 @@ export class SarviewsEventsService {
     return eventDates;
   }
 
-  private getEventPoint(wkt: string): LonLat {
+  private getEventPoint(wkt: string): models.LonLat {
     const isMultiPolygon = wkt.includes('MULTIPOLYGON');
     const feature = this.wktService.wktToFeature(wkt, this.mapService.epsg());
 
@@ -146,7 +144,7 @@ export class SarviewsEventsService {
     return this.toCMRProduct(product, product.granules[0]);
   }
 
-  private toCMRProduct(product: SarviewsProduct, granule: models.SarviewProductGranule) {
+  private toCMRProduct(product: models.SarviewsProduct, granule: models.SarviewProductGranule) {
     const jobTypes = Object.values(models.hyp3JobTypes);
     const jobType = jobTypes.find(t => t.id === product.job_type);
 
@@ -164,6 +162,7 @@ export class SarviewsEventsService {
       dataset: 'Sentinel-1',
       groupId: 'SARViews',
       isUnzippedFile: false,
+      isDummyProduct: false,
 
       metadata: {
         date: moment(product.processing_date),
@@ -191,10 +190,6 @@ export class SarviewsEventsService {
   }
 
   public toHyp3ableProducts(products: models.SarviewsProduct[]): {byJobType: models.Hyp3ableProductByJobType[]; total: number} {
-    // let total = 0;
-    // const productsTypes = models.hyp3JobTypes;
-
-    // const types = {};
     const hyp3ProductsByType = {};
     products.forEach( product => {
       const productType = product.job_type;
@@ -209,8 +204,6 @@ export class SarviewsEventsService {
     const byProductType: models.Hyp3ableByProductType[] = [];
     Object.keys(hyp3ProductsByType).forEach(key =>
       byProductType.push({productType: key, products: hyp3ProductsByType[key]}));
-    // byJobType
-    // const byProductType: models.Hyp3ableByProductType[] = [hyp3Prod];
 
     const output: models.Hyp3ableProductByJobType[] = Object.keys(hyp3ProductsByType).map(key => ({
       jobType: models.hyp3JobTypes[key],
@@ -218,17 +211,10 @@ export class SarviewsEventsService {
       total: byProductType.find(prod => prod.productType === key).products.length
     }));
 
-
-    // const output: models.Hyp3ableProductByJobType = {
-    //   jobType: models.hyp3JobTypes[product.job_type],
-    //   byProductType,
-    //   total: 1
-    // } ;
     return {byJobType: output, total: output.reduce((prev, curr) => prev += curr.total, 0)};
-
   }
 
-  public filteredSarviewsEvents$(): Observable<SarviewsEvent[]> {
+  public filteredSarviewsEvents$(): Observable<models.SarviewsEvent[]> {
     return (
       this.filterByEventMagnitude$(
       this.filterSarviewsEventsByName$(
@@ -244,7 +230,7 @@ export class SarviewsEventsService {
     );
   }
 
-  public filteredEventProducts$(): Observable<SarviewsProduct[]> {
+  public filteredEventProducts$(): Observable<models.SarviewsProduct[]> {
     return (
       this.ProductSortOrder$(
        this.filterByProductPathFrame$(
@@ -258,7 +244,7 @@ export class SarviewsEventsService {
     );
   }
 
-  private filterByProductDate$(products$: Observable<SarviewsProduct[]>) {
+  private filterByProductDate$(products$: Observable<models.SarviewsProduct[]>) {
     return combineLatest(
       [
         products$,
@@ -284,7 +270,7 @@ export class SarviewsEventsService {
     );
   }
 
-  private filterByProductPathFrame$(products$: Observable<SarviewsProduct[]>) {
+  private filterByProductPathFrame$(products$: Observable<models.SarviewsProduct[]>) {
     return combineLatest(
       [
         products$,
@@ -322,7 +308,7 @@ export class SarviewsEventsService {
     );
   }
 
-  private filterByProductType$(products$: Observable<SarviewsProduct[]>) {
+  private filterByProductType$(products$: Observable<models.SarviewsProduct[]>) {
     return combineLatest([
       products$,
       this.store$.select(filtersStore.getHyp3ProductTypes).pipe(
@@ -340,7 +326,7 @@ export class SarviewsEventsService {
     );
   }
 
-  private ProductSortOrder$(products$: Observable<SarviewsProduct[]>) {
+  private ProductSortOrder$(products$: Observable<models.SarviewsProduct[]>) {
     return combineLatest([
       products$,
       this.store$.select(filtersStore.getSarviewsEventProductSorting)
@@ -348,7 +334,7 @@ export class SarviewsEventsService {
       map(([products, sorting]) => {
         const sortedProducts = [].concat(products);
         switch (sorting.sortType) {
-          case EventProductSortType.FRAME:
+          case models.EventProductSortType.FRAME:
             sortedProducts.sort((a, b) => {
               if (a.granules[0].frame < b.granules[0].frame) {
                 return -1;
@@ -360,7 +346,7 @@ export class SarviewsEventsService {
               return 0;
             });
             break;
-          case EventProductSortType.PATH:
+          case models.EventProductSortType.PATH:
             sortedProducts.sort((a, b) => {
               if (a.granules[0].path < b.granules[0].path) {
                 return -1;
@@ -374,7 +360,7 @@ export class SarviewsEventsService {
             break;
         }
 
-        if (sorting.sortDirection === EventProductSortDirection.ASCENDING) {
+        if (sorting.sortDirection === models.EventProductSortDirection.ASCENDING) {
           sortedProducts.reverse();
         }
 
@@ -397,7 +383,7 @@ export class SarviewsEventsService {
       );
   }
 
-  public filterSarviewsEventsByName$(events$: Observable<SarviewsEvent[]>) {
+  public filterSarviewsEventsByName$(events$: Observable<models.SarviewsEvent[]>) {
     return combineLatest(
       [
         events$,
@@ -428,7 +414,7 @@ export class SarviewsEventsService {
     );
   }
 
-    private filterByEventDate$(events$: Observable<SarviewsEvent[]>) {
+    private filterByEventDate$(events$: Observable<models.SarviewsEvent[]>) {
       return combineLatest([
         events$,
         this.store$.select(filtersStore.getDateRange),
@@ -465,7 +451,7 @@ export class SarviewsEventsService {
       );
     }
 
-    private filterByEventType$(events$: Observable<SarviewsEvent[]>) {
+    private filterByEventType$(events$: Observable<models.SarviewsEvent[]>) {
       return combineLatest([
         events$,
         this.store$.select(filtersStore.getSarviewsEventTypes)
@@ -482,7 +468,7 @@ export class SarviewsEventsService {
       );
     }
 
-    private filterByEventActivity$(events$: Observable<SarviewsEvent[]>) {
+    private filterByEventActivity$(events$: Observable<models.SarviewsEvent[]>) {
       return combineLatest([
         events$,
         this.store$.select(filtersStore.getSarviewsEventActiveFilter)
@@ -508,7 +494,7 @@ export class SarviewsEventsService {
       );
     }
 
-    private filterByEventMagnitude$(events$: Observable<SarviewsEvent[]>) {
+    private filterByEventMagnitude$(events$: Observable<models.SarviewsEvent[]>) {
       return combineLatest([
         events$,
         this.store$.select(filtersStore.getSarviewsMagnitudeRange),

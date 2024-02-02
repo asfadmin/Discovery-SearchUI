@@ -81,6 +81,7 @@ export interface GeographicFiltersType {
 
   fullBurstIDs: string[];
   operaBurstIDs: string[];
+  useCalibrationData: boolean,
 }
 
 export interface SarviewsFiltersType {

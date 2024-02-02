@@ -11,6 +11,7 @@ import { OtherSelectorComponent } from './other-selector.component';
 import { BurstSelectorModule } from '../burst-selector';
 import { SharedModule } from "@shared";
 import { MatInputModule } from '@angular/material/input';
+import { OperaCalibrationDataSelectorModule } from '../opera-calibration-data-selector';
 
 @NgModule({
   declarations: [ OtherSelectorComponent ],
@@ -23,7 +24,8 @@ import { MatInputModule } from '@angular/material/input';
     ProductTypeSelectorModule,
     BurstSelectorModule,
     SharedModule,
-    MatInputModule
+    MatInputModule,
+    OperaCalibrationDataSelectorModule
   ],
   exports: [ OtherSelectorComponent ],
 })

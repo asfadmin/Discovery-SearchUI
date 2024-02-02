@@ -76,7 +76,7 @@
           </div>
         </div>
 
-        <div *ngIf="searchType !== SearchTypes.CUSTOM_PRODUCTS || hyp3able.total > 0"
+        <div *ngIf="searchType !== SearchTypes.CUSTOM_PRODUCTS && hyp3able?.total > 0"
           class="fx-empty list-button-group">
           <div class="fx-row-center button-group-label">
             <label>{{ 'ON_DEMAND' | translate }}</label>

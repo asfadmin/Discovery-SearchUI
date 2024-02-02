@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
 
 import { AppState } from '@store';
+import * as hyp3Store from '@store/hyp3';
 import * as filtersStore from '@store/filters';
 import * as searchStore from '@store/search';
 
@@ -47,7 +48,9 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public tempRange: models.Range<number | null>;
   public fullBurstIDs: string[] = [];
   public operaBurstIDs: string[] = [];
+  public useCalibrationData: boolean = false;
   public groupID: string;
+  public userID: string;
 
   private subs = new SubSink();
 
@@ -131,9 +134,17 @@ export class InfoBarComponent implements OnInit, OnDestroy {
     const operaBurstIDSub = this.store$.select(filtersStore.getOperaBurstIDs).subscribe(
       burstIDs => this.operaBurstIDs = burstIDs
     );
-    
+
+    const useCalibrationDataSub = this.store$.select(filtersStore.getUseCalibrationData).subscribe(
+      useCalibrationData => this.useCalibrationData = useCalibrationData
+    );
+
     const groupIDSub = this.store$.select(filtersStore.getGroupID).subscribe(
       groupID => this.groupID = groupID
+    );
+
+    const userIDSub = this.store$.select(hyp3Store.getOnDemandUserId).subscribe(
+      userID => this.userID = userID
     );
 
     [
@@ -152,7 +163,9 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       eventProductType,
       fullBurstIDSub,
       operaBurstIDSub,
-      groupIDSub
+      useCalibrationDataSub,
+      groupIDSub,
+      userIDSub
     ].forEach(sub => this.subs.add(sub));
 
     this.subs.add(

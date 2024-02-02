@@ -18,6 +18,8 @@ export enum ScenesActionType {
   ERROR_LOADING_UNZIPPED = '[Scenes] Error loading unzipped',
   CLOSE_ZIP_CONTENTS = '[Scenes] Close Zip Contents',
 
+  ADD_CMR_DATA_TO_ON_DEMAND_JOBS = '[Scenes] Add CMR Data to On Demand Jobs',
+
   SET_SELECTED_SCENE = '[Scenes] Set Selected Scene',
   SET_SELECTED_PAIR = '[Scenes] Set Selected Pair',
   SET_SELECTED_SARVIEWS_EVENT = '[SARViews] Set Selected SARViews Event',
@@ -168,6 +170,11 @@ export class SetImageBrowseProducts implements Action {
   constructor(public payload: {[product_id in string]: PinnedProduct}) {}
 }
 
+export class AddCmrDataToOnDemandScenes implements Action {
+  public readonly type = ScenesActionType.ADD_CMR_DATA_TO_ON_DEMAND_JOBS;
+
+  constructor(public payload: CMRProduct[]) {}
+}
 
 export type ScenesActions =
   | SetScenes
@@ -192,4 +199,5 @@ export type ScenesActions =
   | SetSelectedSarviewsEvent
   | SetSarviewsEventProducts
   | SetSelectedSarviewProduct
+  | AddCmrDataToOnDemandScenes
   | SetImageBrowseProducts;

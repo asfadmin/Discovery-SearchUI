@@ -41,8 +41,9 @@ export class ScenesService {
       this.jobStatusFilter$(
       this.filterBaselineValues$(
       this.filterByDate$(
+      this.filterBurstSubproducts$(
         this.store$.select(getAllProducts)
-      ))))))
+      )))))))
     );
   }
 
@@ -53,9 +54,9 @@ export class ScenesService {
       this.hideS1Raw$(
       this.filterBaselineValues$(
       this.filterByDate$(
+      this.filterBurstSubproducts$(
           this.store$.select(getScenes)
-    )))))));
-
+    ))))))));
 
   public withBrowses$(scenes$: Observable<CMRProduct[]>): Observable<CMRProduct[]> {
     return scenes$.pipe(
@@ -170,16 +171,30 @@ export class ScenesService {
 
         return scenes
           .filter(scene => {
-            const statusCode = scene.metadata.job.status_code;
-
-            return (
-              statuses.has(statusCode)
-            );
+            const job = scene.metadata.job;
+            if(!!job) {
+              const statusCode = job.status_code;
+              return statuses.has(statusCode)
+            }
+            return false;
           });
       })
     );
   }
 
+  private filterBurstSubproducts$(scenes$: Observable<CMRProduct[]>) {
+    return combineLatest([
+        scenes$,
+        this.store$.select(getSearchType)
+      ]).pipe(
+        map(([scenes, searchtype]) => {
+          if (searchtype === SearchType.CUSTOM_PRODUCTS) {
+            return scenes.filter(scene => scene.productTypeDisplay !== 'XML Metadata (BURST)');
+          }
+          return scenes;
+        })
+      )
+  }
   private hideExpired$(scenes$: Observable<CMRProduct[]>) {
     return combineLatest([
       scenes$,

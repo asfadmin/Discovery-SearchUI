@@ -13,8 +13,7 @@ export const opera_s1 = {
     Props.ABSOLUTE_ORBIT
   ],
   apiValue: {
-    collections:
-    "C1259974840-ASF,C1259976861-ASF,C1259981910-ASF,C1259982010-ASF,C1259975087-ASFDEV,C1259976862-ASFDEV,C1259983643-ASFDEV,C1259983645-ASFDEV,C2777443834-ASF,C2777436413-ASF" },
+    dataset: 'OPERA-S1' },
   date: { start: new Date('2014/06/15 03:44:43 UTC') },
   infoUrl: 'https://asf.alaska.edu/datasets/daac/opera/',
   citationUrl: 'https://asf.alaska.edu/datasets/daac/opera/',
@@ -26,10 +25,10 @@ export const opera_s1 = {
   productTypes: [
     {
       apiValue: 'RTC',
-      displayName: 'L2 Radiometric Terrain Corrected (RTC)'
+      displayName: 'L2 Radiometric Terrain Corrected (RTC)',
     }, {
       apiValue: 'CSLC',
-      displayName: 'L2 Co-registered Single Look Complex (CSLC)'
+      displayName: 'L2 Co-registered Single Look Complex (CSLC)',
     }, {
         apiValue: 'RTC-STATIC',
         displayName: 'L2 Radiometric Terrain Corrected Static Layer (RTC-STATIC)'
@@ -48,6 +47,14 @@ export const opera_s1 = {
     'VH'
   ],
   subtypes: [],
+  calibrationDatasets: ['OPERA-S1-CALVAL'],
+  calibrationProductTypes: [{
+    apiValue: 'RTC',
+    displayName: 'L2 Radiometric Terrain Corrected (RTC)',
+  }, {
+    apiValue: 'CSLC',
+    displayName: 'L2 Co-registered Single Look Complex (CSLC)',
+  }],
   platformDesc: 'OPERA_S1_DESC',
   platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
 };

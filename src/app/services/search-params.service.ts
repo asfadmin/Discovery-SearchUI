@@ -9,6 +9,7 @@ import { map, withLatestFrom, startWith } from 'rxjs/operators';
 import { AppState } from '@store';
 import * as filterStore from '@store/filters';
 import * as scenesStore from '@store/scenes';
+import * as hyp3Store from '@store/hyp3';
 import { getSearchType } from '@store/search/search.reducer';
 
 import { MapService } from './map/map.service';
@@ -57,6 +58,13 @@ export class SearchParamsService {
     })
     )
   );
+
+  private operaCalibrationParam$ = this.store$.select(filterStore.getUseCalibrationData).pipe(
+    withLatestFrom(this.store$.select(filterStore.getSelectedDatasetId)),
+    map(([useCalibrationData, dataset]) =>
+      dataset === models.opera_s1.id && useCalibrationData ?
+      ({dataset: models.opera_s1.calibrationDatasets}) : ({}))
+  )
 
   private groupID$ = this.store$.select(filterStore.getGroupID).pipe(
     map(groupid => ({
@@ -206,6 +214,7 @@ export class SearchParamsService {
     this.missionParam$,
     this.burstParams$,
     this.operaBurstParams$,
+    this.operaCalibrationParam$,
     this.groupID$]
   ).pipe(
     map((params: any[]) => params
@@ -277,6 +286,16 @@ export class SearchParamsService {
         }
       }),
   );
+
+  public getOnDemandSearchParams = combineLatest([
+      this.store$.select(hyp3Store.getOnDemandUserId)
+  ]).pipe(
+    map(([userID]) => {
+      return {
+        'userID': userID
+      };
+    })
+  )
 
   public searchType$() {
     return this.store$.select(getSearchType);

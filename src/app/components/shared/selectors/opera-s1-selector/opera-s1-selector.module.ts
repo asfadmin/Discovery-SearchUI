@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatInputModule } from '@angular/material/input';
 import { MatSharedModule, SharedModule } from '@shared';
-
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 
 @NgModule({
@@ -22,7 +22,8 @@ import { MatSharedModule, SharedModule } from '@shared';
     MatInputModule,
     FormsModule,
     MatSharedModule,
-    SharedModule
+    SharedModule,
+    MatSlideToggleModule
   ],
   exports: [
     OperaS1SelectorComponent,

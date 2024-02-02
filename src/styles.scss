@@ -710,6 +710,20 @@ $d-height: 500px;
     fill: darken(themed('background-white'), 5%);
   }
 }
+
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle{
+  @include themify_non_host($themes) {
+  border-color:themed('blue-link') !important;
+  }
+}
+
+.mat-radio-button.mat-accent .mat-radio-inner-circle{
+  @include themify_non_host($themes) {
+  color: themed('blue-link') !important;
+  background-color: themed('blue-link') !important;
+  }
+}
+
 .md-icon {
   @include themify_non_host($themes) {
     color: themed('dark-primary-text');

@@ -149,6 +149,7 @@ export const routes = [
     services.PairService,
     services.SceneSelectService,
     services.OnDemandService,
+    services.PossibleHyp3JobsService,
     {provide: SAVER, useFactory: getSaver},
     {
       provide: DateAdapter,

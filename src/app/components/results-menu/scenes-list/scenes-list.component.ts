@@ -2,8 +2,11 @@ import {
   Component, OnInit, Input, ViewChild, ViewEncapsulation, OnDestroy, AfterContentInit
 } from '@angular/core';
 
-import { combineLatest, Observable } from 'rxjs';
-import { tap, withLatestFrom, filter, map, delay, debounceTime, first, distinctUntilChanged } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import {
+  tap, withLatestFrom, filter, map, delay, debounceTime,
+  first, distinctUntilChanged,
+} from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
@@ -18,6 +21,8 @@ import * as services from '@services';
 import * as models from '@models';
 import { CMRProduct, QueuedHyp3Job, SarviewsEvent } from '@models';
 
+const INFINITY = 2e10;
+
 @Component({
   selector: 'app-scenes-list',
   templateUrl: './scenes-list.component.html',
@@ -30,8 +35,13 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
   private pairs$ = this.pairService.pairs$;
 
   public scenes: CMRProduct[];
-  public pairs;
-  public jobs;
+  public pairs: {
+    pair: models.CMRProductPair;
+    hyp3able: {
+      byJobType: models.Hyp3ableProductByJobType[];
+      total: number;
+    };
+  }[];
   public sarviewsEvents: SarviewsEvent[];
 
   public numberOfQueue: { [scene: string]: number };
@@ -49,6 +59,11 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
   public hoveredPairNames: string | null = null;
 
   private subs = new SubSink();
+
+  private productPageSize = 250;
+  private numberProductsInList$ = new BehaviorSubject(INFINITY);
+  public numberProductsInList: number;
+  private loadingDummyJobs = new Set<string>();
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
@@ -88,8 +103,50 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       this.allJobNames = flattened;
     });
 
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        searchType => this.searchType = searchType
+      )
+    );
+
     const scenes$ = this.scenesService.scenes$;
     const sortedScenes$: Observable<CMRProduct[]> = this.scenesService.sortScenes$(scenes$);
+    const sortedScenesWithDelay$ = sortedScenes$.pipe(
+      debounceTime(250),
+      distinctUntilChanged(),
+    );
+
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        (searchType) => {
+
+          if (searchType === models.SearchType.CUSTOM_PRODUCTS) {
+            this.numberProductsInList = this.productPageSize;
+          } else {
+            this.numberProductsInList = INFINITY;
+          }
+
+          this.numberProductsInList$.next(this.numberProductsInList);
+        }
+      )
+    );
+
+    this.subs.add(
+      this.numberProductsInList$.subscribe(
+        num => this.numberProductsInList = num
+      )
+    );
+
+    this.subs.add(
+      sortedScenesWithDelay$.subscribe(
+        scenes => {
+          this.scenes = scenes;
+
+          this.loadDummyProducts(scenes);
+          this.removeLoadedScenes(scenes);
+        }
+      )
+    );
 
     this.subs.add(
       this.store$.select(scenesStore.getSelectedScene).pipe(
@@ -110,14 +167,14 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
           return Math.max(0, sceneIdx - 1);
         })
       ).subscribe(
-        idx => {
-          if (!this.selectedFromList) {
-            this.scrollTo(idx);
-          }
+          idx => {
+            if (!this.selectedFromList) {
+              this.scrollTo(idx);
+            }
 
-          this.selectedFromList = false;
-        }
-      )
+            this.selectedFromList = false;
+          }
+        )
     );
 
     this.subs.add(
@@ -131,38 +188,29 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
           return Math.max(0, sceneIdx - 1);
         })
       ).subscribe(
-        idx => {
-          if (!this.selectedFromList) {
-            this.scrollTo(idx);
+          idx => {
+            if (!this.selectedFromList) {
+              this.scrollTo(idx);
+            }
+
+            this.selectedFromList = false;
           }
-
-          this.selectedFromList = false;
-        }
-      )
-    );
-
-    this.subs.add(
-      sortedScenes$.pipe(
-        debounceTime(250),
-        distinctUntilChanged()
-      ).subscribe(
-        scenes => this.scenes = scenes
-      )
+        )
     );
 
     this.subs.add(
       this.eventMonitoringService.filteredSarviewsEvents$().pipe(
         filter(_ => this.searchType === this.SearchTypes.SARVIEWS_EVENTS),
       ).subscribe(
-        events => {
-          this.sarviewsEvents = events;
+          events => {
+            this.sarviewsEvents = events;
 
-          const eventIds = events.map(event => event.event_id);
-          if (!eventIds.includes(this.selectedEvent) && eventIds.length > 0 && !!this.selectedEvent) {
-            this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(eventIds[0]));
+            const eventIds = events.map(event => event.event_id);
+            if (!eventIds.includes(this.selectedEvent) && eventIds.length > 0 && !!this.selectedEvent) {
+              this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(eventIds[0]));
+            }
           }
-        }
-      )
+        )
     );
 
     this.subs.add(
@@ -182,26 +230,49 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       )
     );
 
-    this.subs.add(
-      this.store$.select(searchStore.getSearchType).subscribe(
-        searchType => this.searchType = searchType
-      )
+    const baselineReference$ = combineLatest([
+      this.store$.select(scenesStore.getScenes),
+      this.store$.select(scenesStore.getMasterName),
+      this.store$.select(searchStore.getSearchType)
+    ]).pipe(
+      map(
+        ([scenes, referenceName, searchType]) => {
+          if (searchType === models.SearchType.BASELINE && !!referenceName) {
+            const referenceSceneIdx = scenes.findIndex(scene => scene.name === referenceName);
+
+            if (referenceSceneIdx !== -1) {
+              return scenes[referenceSceneIdx];
+            }
+          } else {
+            return null;
+          }
+        }
+      ),
     );
 
+    this.store$.select(scenesStore.getAllSceneProducts).pipe(
+      withLatestFrom(baselineReference$)
+    ).subscribe(
+        ([searchScenes, baselineReference]) => {
+          this.hyp3ableByScene = {};
 
-    this.store$.select(scenesStore.getAllSceneProducts).subscribe(
-      searchScenes => {
-        this.hyp3ableByScene = {};
-        Object.entries(searchScenes).forEach(([groupId, products]) => {
-          const hyp3able = this.hyp3.getHyp3ableProducts(
-            (<models.CMRProduct[]>products).map(product => [product])
-          );
+          Object.entries(searchScenes).forEach(([groupId, products]) => {
+            const possibleJobs = [];
+            (<any[]>products).forEach(product => {
 
+              possibleJobs.push([product]);
 
-          this.hyp3ableByScene[groupId] = hyp3able;
-        });
-      }
-    );
+              if (!!baselineReference) {
+                possibleJobs.push([baselineReference, product]);
+              }
+            });
+
+            const hyp3able = this.hyp3.getHyp3ableProducts(possibleJobs);
+
+            this.hyp3ableByScene[groupId] = hyp3able;
+          });
+        }
+      );
 
     const queueScenes$ = combineLatest([
       this.store$.select(queueStore.getQueuedProducts),
@@ -263,8 +334,8 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       this.store$.select(searchStore.getIsLoading).pipe(
         filter(_ => !!this.scroll)
       ).subscribe(
-        _ => this.scroll.scrollToOffset(0)
-      )
+          _ => this.scroll.scrollToOffset(0)
+        )
     );
 
     this.subs.add(
@@ -274,18 +345,21 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
         filter(([selected, _]) => !!selected),
         map(([selected, pairs]) => {
           const pairsCombined = [...pairs.pairs, ...pairs.custom];
-          const sceneIdx = pairsCombined.findIndex(pair => pair[0] === selected[0] && pair[1] === selected[1]);
+          const sceneIdx = pairsCombined.findIndex(
+            pair => pair[0] === selected[0] && pair[1] === selected[1]
+          );
+
           return Math.max(0, sceneIdx - 1);
         })
       ).subscribe(
-        idx => {
-          if (!this.selectedFromList) {
-            this.scrollTo(idx);
-          }
+          idx => {
+            if (!this.selectedFromList) {
+              this.scrollTo(idx);
+            }
 
-          this.selectedFromList = false;
-        }
-      )
+            this.selectedFromList = false;
+          }
+        )
     );
 
   }
@@ -303,17 +377,19 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       }),
       first(),
       map(selected => {
+        const sceneIdx = selected.events.findIndex(
+          event => event.event_id === selected.selectedEvent.event_id
+        );
 
-        const sceneIdx = selected.events.findIndex(event => event.event_id === selected.selectedEvent.event_id);
         return Math.max(0, sceneIdx - 1);
       })
     ).subscribe(
-      idx => {
-        if (!this.selectedFromList) {
-          this.scrollTo(idx);
+        idx => {
+          if (!this.selectedFromList) {
+            this.scrollTo(idx);
+          }
         }
-      }
-    ));
+      ));
 
     this.subs.add(this.pairs$.pipe(
       filter(loaded => !!loaded),
@@ -324,16 +400,18 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       first(),
       map(selected => {
         const pairsCombined = [...selected.pairs.pairs, ...selected.pairs.custom];
-        const sceneIdx = pairsCombined.findIndex(pair => pair[0] === selected.selectedPair[0] && pair[1] === selected.selectedPair[1]);
+        const sceneIdx = pairsCombined.findIndex(
+          pair => pair[0] === selected.selectedPair[0] && pair[1] === selected.selectedPair[1]
+        );
         return Math.max(0, sceneIdx - 1);
       })
     ).subscribe(
-      idx => {
-        if (!this.selectedFromList) {
-          this.scrollTo(idx);
+        idx => {
+          if (!this.selectedFromList) {
+            this.scrollTo(idx);
+          }
         }
-      }
-    )
+      )
     );
   }
 
@@ -360,12 +438,54 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
   }
 
   public getGroupCriteria(scene: CMRProduct): string {
-    const ungrouped_product_types = [...models.opera_s1.productTypes, {apiValue: 'BURST'}, {apiValue: 'BURST_XML'}].map(m => m.apiValue)
+    const ungrouped_product_types = [
+      ...models.opera_s1.productTypes,
+      {apiValue: 'BURST'},
+      {apiValue: 'BURST_XML'}
+    ].map(m => m.apiValue)
+
     if(ungrouped_product_types.includes(scene.metadata.productType)) {
-        return scene.metadata.parentID || scene.id;
+      return scene.metadata.parentID || scene.id;
+    } else {
+      return scene.groupId;
     }
-    return scene.groupId;
   }
+
+  public onLoadMoreCustomProducts() {
+    const oldNumProducts = this.numberProductsInList;
+    const newNumProducts = this.numberProductsInList + this.productPageSize;
+
+    const scenesToLoad = this.scenes.slice(oldNumProducts, newNumProducts);
+
+    this.numberProductsInList$.next(
+      newNumProducts
+    );
+
+    this.store$.dispatch(new searchStore.LoadOnDemandScenesList(scenesToLoad));
+  }
+
+  private loadDummyProducts(scenes: CMRProduct[]) {
+    const scenesToLoad = scenes
+    .slice(0, this.numberProductsInList)
+    .filter(s => s.isDummyProduct)
+    .filter(s => !this.loadingDummyJobs.has(s.name));
+
+    if (scenesToLoad.length === 0) {
+      return;
+    }
+
+    scenesToLoad.forEach(
+      s => this.loadingDummyJobs.add(s.name)
+    );
+    this.store$.dispatch(new searchStore.LoadOnDemandScenesList(scenesToLoad));
+  }
+
+  private removeLoadedScenes(scenes: CMRProduct[]) {
+    scenes
+      .filter(s => !s.isDummyProduct)
+      .forEach(s => this.loadingDummyJobs.delete(s.name))
+  }
+
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
