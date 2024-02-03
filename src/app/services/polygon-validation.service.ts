@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { of } from 'rxjs';
-import { filter, map, switchMap, catchError } from 'rxjs/operators';
+import { filter, map, switchMap, catchError, withLatestFrom } from 'rxjs/operators';
 
 import { MapService } from './map/map.service';
 import { AsfApiService } from './asf-api.service';
@@ -9,6 +9,9 @@ import { WktService } from './wkt.service';
 
 import * as models from '@models';
 import { NotificationService } from './notification.service';
+import { Feature } from 'ol';
+import { Geometry, Polygon } from 'ol/geom';
+import { DrawService } from './map/draw.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +25,7 @@ export class PolygonValidationService {
     private asfApiService: AsfApiService,
     private wktService: WktService,
     private notificationService: NotificationService,
+    private drawService: DrawService,
   ) { }
 
   public validate(): void {
@@ -33,9 +37,19 @@ export class PolygonValidationService {
         return skip;
       }),
       filter(p => !!p || this.polygons.has(p)),
-      switchMap(polygon => this.asfApiService.validate(polygon).pipe(
-        catchError(_ => of(null))
-      )),
+      // filter(([_, polygon]) => ),
+      map(([wkt, _]) => wkt),
+      withLatestFrom(this.drawService.polygon$),
+      switchMap(([wkt, polygon]) => {
+          const bbox = this.getRectangleBbox(polygon, this.mapService.epsg())
+          if (bbox.length > 0) {
+            return of({ wkt: { unwrapped: wkt }, repairs: [{ type: models.PolygonRepairTypes.BBOX, report: "The provided rectangle's bounding box will be used instead of the wkt" }] })
+          }
+        return this.asfApiService.validate(wkt).pipe(
+          catchError(_ => of(null))
+        );
+
+      }),
       filter(resp => !!resp),
       map(resp => {
         const error = this.getErrorFrom(resp);
@@ -83,7 +97,7 @@ export class PolygonValidationService {
       return resp.wkt.unwrapped;
     }
 
-    const { report, type }  = resp.repairs.pop();
+    const { report, type } = resp.repairs.pop();
 
     if (type !== models.PolygonRepairTypes.WRAP && type !== models.PolygonRepairTypes.REVERSE) {
       this.notificationService.info(
@@ -99,5 +113,56 @@ export class PolygonValidationService {
     );
 
     this.mapService.setDrawFeature(features);
+  }
+
+  public isRectangle(feature: Feature<Geometry>): boolean {
+    const geom = feature?.getGeometry()
+    if (geom instanceof Polygon) {
+      let points = (geom as Polygon).getCoordinates() ?? []
+      const extent = (geom as Polygon).getExtent()
+      for (const point of points[0][0]) {
+        if (!extent.includes(point)) {
+          return false;
+        }
+      }
+      return !!points && points[0].length === 5
+    }
+    return false;
+  }
+
+  public getRectangleBbox(feature: Feature<Geometry>, epsg: string): number[] {
+    // Attempts to get the bounding box of a rectangular polygon
+    if (this.isRectangle(feature)) {
+      const clonedFeature = this.cloneFeature(feature.clone());
+      const rectangle = clonedFeature.getGeometry() as Polygon;
+      return this.getBbox(rectangle, epsg);
+    }
+    return [];
+  }
+
+  private cloneFeature(feature: Feature<Geometry>): Feature<Geometry> {
+    const clonedFeature = feature.clone();
+    const clonedProperties = JSON.parse(JSON.stringify(feature.getProperties()));
+    clonedProperties.geometry = clonedFeature.getGeometry();
+    clonedFeature.setProperties(clonedProperties, true);
+    return clonedFeature;
+  }
+
+  private getBbox(rectangle: Polygon, epsg: string) {
+    rectangle.transform(epsg, 'EPSG:4326');
+    const outerHull = rectangle.getLinearRing(0).getCoordinates().slice(0, 4);
+    return this.wrapBbox([...outerHull[0], ...outerHull[2]]);
+  }
+
+  private wrapBbox(bbox: number[]): number[] {
+    return bbox.map(value => {
+      if (value > 180) {
+        value = value % 360 - 360;
+      }
+      if (value < -180) {
+        value = value % 360 + 360;
+      }
+      return value;
+    });
   }
 }

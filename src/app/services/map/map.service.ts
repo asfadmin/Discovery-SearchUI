@@ -55,7 +55,7 @@ export class MapService {
     tap(isDrawing => this.map.getViewport().style.cursor = isDrawing ?  'crosshair' : 'default')
   );
 
-  private mapView: views.MapView;
+  private mapView: views.MapView = views.equatorial();
   private map: Map;
   private scaleLine: ScaleLine;
 

@@ -17,7 +17,7 @@ import { RangeService } from './range.service';
 
 import * as models from '@models';
 import { DrawService } from './map/draw.service';
-import { Polygon } from 'ol/geom';
+import { PolygonValidationService } from './polygon-validation.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -26,7 +26,8 @@ export class SearchParamsService {
     private store$: Store<AppState>,
     private mapService: MapService,
     private rangeService: RangeService,
-    private drawService: DrawService
+    private drawService: DrawService,
+    private polygonValidationService: PolygonValidationService
   ) { }
 
 
@@ -63,7 +64,7 @@ export class SearchParamsService {
     withLatestFrom(this.store$.select(filterStore.getSelectedDatasetId)),
     map(([useCalibrationData, dataset]) =>
       dataset === models.opera_s1.id && useCalibrationData ?
-      ({dataset: models.opera_s1.calibrationDatasets}) : ({}))
+        ({ dataset: models.opera_s1.calibrationDatasets }) : ({}))
   )
 
   private groupID$ = this.store$.select(filterStore.getGroupID).pipe(
@@ -79,38 +80,11 @@ export class SearchParamsService {
   ).pipe(
     map(([polygon, shouldOmitGeoRegion, asdf]) => shouldOmitGeoRegion ? null : { polygon: polygon, thing: asdf }),
     map(polygon => {
-
       let feature = polygon.thing;
-
-
-      const geom = feature?.getGeometry()
-      if (geom instanceof Polygon) {
-        let points = (geom as Polygon).getCoordinates()
-        if (points && points[0].length === 5) {
-          const clonedFeature = feature.clone();
-          const clonedProperties = JSON.parse(JSON.stringify(feature.getProperties()));
-          clonedProperties.geometry = clonedFeature.getGeometry();
-          clonedFeature.setProperties(clonedProperties, true);
-          feature = clonedFeature;
-          const rectangle = feature.getGeometry() as Polygon;
-          rectangle.transform(this.mapService.epsg(), 'EPSG:4326');
-          const outerHull = rectangle.getCoordinates()[0].slice(0, 4);
-          let extent = [...outerHull[0], ...outerHull[2]];
-          if (JSON.stringify(rectangle.getExtent()) === JSON.stringify(extent)) {
-            extent = extent.map(value => {
-              if (value > 180) {
-                value = value % 360 - 360;
-              }
-              if (value < -180) {
-                value = value % 360 + 360;
-              }
-              return value;
-            });
-            return { bbox: extent.join(',') };
-          }
+        const bbox = this.polygonValidationService.getRectangleBbox(feature, this.mapService.epsg());
+        if (bbox.length > 0) {
+          return { bbox: bbox.join(',') };
         }
-      }
-
 
       return { intersectsWith: polygon.polygon };
     })
@@ -288,7 +262,7 @@ export class SearchParamsService {
   );
 
   public getOnDemandSearchParams = combineLatest([
-      this.store$.select(hyp3Store.getOnDemandUserId)
+    this.store$.select(hyp3Store.getOnDemandUserId)
   ]).pipe(
     map(([userID]) => {
       return {
