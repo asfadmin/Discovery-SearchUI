@@ -374,20 +374,18 @@ export class SearchEffects {
     const jobs = jobsRes.hyp3Jobs;
 
     const granuleNames = this.getAllGranulesFromJobs(jobs);
-
     const asfApiListQuery = this.dummyProducts$(granuleNames);
 
     return asfApiListQuery.pipe(
       map(products => {
         return products
-          .reduce((prods, p) => {
-            prods[p.name] = p;
-            return products;
-          }, {})
-      }
-      ),
+          .reduce((prodsByName, p) => {
+            prodsByName[p.name] = p;
+            return prodsByName;
+          }, {});
+      }),
       map(products => {
-        return this.hyp3JobToProducts(jobs, products)
+        return this.hyp3JobToProducts(jobs, products);
       }),
       withLatestFrom(this.store$.select(getIsCanceled)),
       map(([products, isCanceled]) =>
