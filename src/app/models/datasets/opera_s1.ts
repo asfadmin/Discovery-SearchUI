@@ -47,7 +47,7 @@ export const opera_s1 = {
     'VH'
   ],
   subtypes: [],
-  calibrationDatasets: ['OPERA-S1-CALIBRATION'],
+  calibrationDatasets: ['OPERA-S1-CALVAL'],
   calibrationProductTypes: [{
     apiValue: 'RTC',
     displayName: 'L2 Radiometric Terrain Corrected (RTC)',
