@@ -136,10 +136,23 @@ $config: mat.define-typography-config();
   width: 30px;
 }
 
+.sbas-count-tooltip {
+  font-size: medium;
+  vertical-align: text-top;
+}
+
 .scene-count {
   margin-top: -16px;
 }
 
 .scenes-list-buttons--layout {
   display: flex;
+  column-gap: .4em;
+}
+
+.scenes-list-button-container {
+  width: 100%;
+  mat-button-toggle-group {
+    margin: auto
+  }
 }

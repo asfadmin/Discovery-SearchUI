@@ -1205,6 +1205,54 @@
 						</translations>
 					</concept_node>
 					<concept_node>
+						<name>AUTORIFT_DESC</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>AZIMUTH_ANX_TIME</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>AZIMUTH_TIME</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>BACK</name>
 						<description/>
 						<comment/>
@@ -1478,6 +1526,70 @@
 					</concept_node>
 					<concept_node>
 						<name>BUILD_COMMIT</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>BURST_ID_ABSOLUTE</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>BURST_ID_FULL</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>BURST_ID_RELATIVE</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>BURST_INDEX</name>
 						<description/>
 						<comment/>
 						<default_text/>
@@ -2373,7 +2485,7 @@
 						</translations>
 					</concept_node>
 					<concept_node>
-						<name>CRITICAL BASELINE</name>
+						<name>CRITICAL_BASELINE</name>
 						<description/>
 						<comment/>
 						<default_text/>
@@ -2389,7 +2501,7 @@
 						</translations>
 					</concept_node>
 					<concept_node>
-						<name>CRITICAL_BASELINE</name>
+						<name>CRITICAL_BASELINE_ABBR</name>
 						<description/>
 						<comment/>
 						<default_text/>
@@ -4421,6 +4533,22 @@
 						</translations>
 					</concept_node>
 					<concept_node>
+						<name>FILES_HERE</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>FILES_OPC</name>
 						<description/>
 						<comment/>
@@ -4805,6 +4933,22 @@
 						</translations>
 					</concept_node>
 					<concept_node>
+						<name>FULL_BURST_ID</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>FUNCTION_W_D_S_L_I_W_L_W_L_W_L_PUSH_GTM_START</name>
 						<description/>
 						<comment/>
@@ -5174,6 +5318,22 @@
 					</concept_node>
 					<concept_node>
 						<name>GRIDLINES_OVERLAY</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>GROUP_ID</name>
 						<description/>
 						<comment/>
 						<default_text/>
@@ -5894,6 +6054,22 @@
 					</concept_node>
 					<concept_node>
 						<name>INFO_WETLANDS_MEASURES</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>INSAR_DESC</name>
 						<description/>
 						<comment/>
 						<default_text/>
@@ -9749,6 +9925,22 @@
 						</translations>
 					</concept_node>
 					<concept_node>
+						<name>SAMPLES_PER_BURST</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>SAR_FILE_SEARCHES</name>
 						<description/>
 						<comment/>
@@ -10933,6 +11125,22 @@
 						</translations>
 					</concept_node>
 					<concept_node>
+						<name>SENTINEL_1_BURST_DESC</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>SENTINEL_1_INTERFEROGRAM_BETA_DESC</name>
 						<description/>
 						<comment/>
@@ -11493,6 +11701,22 @@
 						</translations>
 					</concept_node>
 					<concept_node>
+						<name>SLC_BURST_FILTERS</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
 						<name>SMAP_DESC</name>
 						<description/>
 						<comment/>
@@ -12006,6 +12230,22 @@
 					</concept_node>
 					<concept_node>
 						<name>SUBSCRIPTIONS</name>
+						<description/>
+						<comment/>
+						<default_text/>
+						<translations>
+							<translation>
+								<language>en-US</language>
+								<approved>false</approved>
+							</translation>
+							<translation>
+								<language>es-ES</language>
+								<approved>false</approved>
+							</translation>
+						</translations>
+					</concept_node>
+					<concept_node>
+						<name>SUBSWATH</name>
 						<description/>
 						<comment/>
 						<default_text/>

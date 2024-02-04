@@ -7,6 +7,7 @@ import { AppState } from '@store';
 import * as mapStore from '@store/map';
 
 import * as models from '@models';
+import { MapService, ScreenSizeService } from '@services';
 
 @Component({
   selector: 'app-layer-selector',
@@ -22,11 +23,24 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
 
   public areGridlinesActive$ = this.store$.select(mapStore.getAreGridlinesActive);
   public gridActive = false;
+  public coherenceLayerMonths: string | null;
+  public months = [
+    'DEC_JAN_FEB',
+    'MAR_APR_MAY',
+    'JUN_JUL_AUG',
+    'SEP_OCT_NOV',
+  ]
+
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoint: models.Breakpoints;
+  public breakpoints = models.Breakpoints;
 
   private subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>,
+    private mapService: MapService,
+    private screenSize: ScreenSizeService,
   ) { }
 
   ngOnInit() {
@@ -47,6 +61,18 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
         this.gridActive = gridActive;
       })
     );
+
+    this.subs.add(
+      this.mapService.hasCoherenceLayer$.subscribe(
+        months => {
+          this.coherenceLayerMonths = months;
+        }
+      )
+    );
+
+    this.subs.add(
+      this.breakpoint$.subscribe(bp => this.breakpoint = bp)
+    );
   }
 
   public onNewLayerType(layerType: models.MapLayerTypes): void {
@@ -61,6 +87,30 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
     });
 
     this.store$.dispatch(action);
+  }
+
+  public onToggleCoherenceLayer(months: string): void {
+    if (this.coherenceLayerMonths === months) {
+      this.clearCoherenceLayer();
+    } else {
+      this.onSetCoherenceLayer(months);
+    }
+  }
+
+  public onSetCoherenceLayer(months: string): void {
+    this.mapService.setCoherenceLayer(months);
+  }
+
+  public clearCoherenceLayer(): void {
+    this.mapService.clearCoherence();
+  }
+
+  public onClickCoherenceMenu(): void {
+    if (this.breakpoint === this.breakpoints.MOBILE) {
+      return;
+    }
+
+    this.clearCoherenceLayer();
   }
 
   public onToggleOverviewMap(isOpen: boolean): void {

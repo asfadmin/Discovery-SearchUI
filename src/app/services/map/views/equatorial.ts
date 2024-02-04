@@ -90,17 +90,17 @@ function equatorialView(url: string): MapView {
 }
 
 export function equatorial(): MapView {
-  const token = 'pk.eyJ1IjoiYXNmLWRpc2NvdmVyeSIsImEiOiJjbGZ2OWdib3UwNTA3M3FwYnNmdjZyM2hoIn0.FdLL6_3wtPhXg2WtkFUlTA';
-  const style = 'styles/v1/asf-discovery/clfv9y4vu002401osasxwehd3';
+  const style = 'styles/v1/asf-discovery/clhz19vdp000y01ok3smcelx1';
   return equatorialView(
-    `https://api.mapbox.com/${style}/tiles/{z}/{x}/{y}?access_token=${token}`
+    `https://api.mapbox.com/${style}/tiles/{z}/{x}/{y}?access_token=${models.mapboxToken}`
   );
 }
 
 
 export function equatorialStreet(): MapView {
+  const style = 'styles/v1/asf-discovery/clhz1c9tt004a01o7c2ut9fss';
 
   return equatorialView(
-   'https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=bFwkahiCrAA0526OlsHS'
+    `https://api.mapbox.com/${style}/tiles/{z}/{x}/{y}?access_token=${models.mapboxToken}`
   );
 }

@@ -209,9 +209,9 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       map(([queueProducts, searchScenes]) => {
 
         const queuedProductGroups: { [id: string]: string[] } = queueProducts.reduce((total, product) => {
-          const scene = total[product.groupId] || [];
+          const scene = total[product.metadata.productType !== 'BURST' && product.metadata.productType !== 'BURST_XML' ? product.groupId : product.name] || [];
 
-          total[product.groupId] = [...scene, product.id];
+          total[product.metadata.productType !== 'BURST' && product.metadata.productType !== 'BURST_XML' ? product.groupId : product.name] = [...scene, product.id];
           return total;
         }, {});
 

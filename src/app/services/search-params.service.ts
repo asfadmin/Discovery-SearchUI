@@ -16,7 +16,7 @@ import { RangeService } from './range.service';
 
 import * as models from '@models';
 import { DrawService } from './map/draw.service';
-
+import { Polygon } from 'ol/geom';
 @Injectable({
   providedIn: 'root'
 })
@@ -111,7 +111,8 @@ export class SearchParamsService {
       this.beamModes$(),
       this.polarizations$(),
       this.maxResults$(),
-      this.missionParam$()
+      this.missionParam$(),
+      this.burstParams$(),
     ).pipe(
       map((params: any[]) => params
         .reduce(
@@ -142,6 +143,14 @@ export class SearchParamsService {
     );
   }
 
+  private burstParams$() {
+      return this.store$.select(filterStore.getFullBurstIDs).pipe(
+      map(fullIDs => ({
+          fullburstid: fullIDs?.join(',')})
+          )
+    );
+  }
+
   private searchPolygon$() {
     return combineLatest(
       this.mapService.searchPolygon$.pipe(startWith(null)),
@@ -150,31 +159,35 @@ export class SearchParamsService {
     ).pipe(
       map(([polygon, shouldOmitGeoRegion, asdf]) => shouldOmitGeoRegion ? null : { polygon: polygon, thing: asdf }),
       map(polygon => {
+
         let feature = polygon.thing;
-        let points = feature?.getGeometry().getCoordinates();
 
 
-        if (points && points[0].length === 5) {
-          const clonedFeature = feature.clone();
-          const clonedProperties = JSON.parse(JSON.stringify(feature.getProperties()));
-          clonedProperties.geometry = clonedFeature.getGeometry();
-          clonedFeature.setProperties(clonedProperties, true);
-          feature = clonedFeature;
-          const geo = feature.getGeometry();
-          geo.transform(this.mapService.epsg(), 'EPSG:4326');
-          points = geo.getCoordinates()[0].slice(0, 4);
-          let extent = [...points[0], ...points[2]];
-          if (JSON.stringify(geo.getExtent()) === JSON.stringify(extent)) {
-            extent = extent.map(value => {
-              if (value > 180) {
-                value = value % 360 - 360;
-              }
-              if (value < -180) {
-                value = value % 360 + 360;
-              }
-              return value;
-            });
-            return {bbox: extent.join(',')};
+        const geom = feature?.getGeometry()
+        if (geom instanceof Polygon) {
+          let points = (geom as Polygon).getCoordinates()
+          if (points && points[0].length === 5) {
+            const clonedFeature = feature.clone();
+            const clonedProperties = JSON.parse(JSON.stringify(feature.getProperties()));
+            clonedProperties.geometry = clonedFeature.getGeometry();
+            clonedFeature.setProperties(clonedProperties, true);
+            feature = clonedFeature;
+            const rectangle = feature.getGeometry() as Polygon;
+            rectangle.transform(this.mapService.epsg(), 'EPSG:4326');
+            const outerHull = rectangle.getCoordinates()[0].slice(0, 4);
+            let extent = [...outerHull[0], ...outerHull[2]];
+            if (JSON.stringify(rectangle.getExtent()) === JSON.stringify(extent)) {
+              extent = extent.map(value => {
+                if (value > 180) {
+                  value = value % 360 - 360;
+                }
+                if (value < -180) {
+                  value = value % 360 + 360;
+                }
+                return value;
+              });
+              return { bbox: extent.join(',') };
+            }
           }
         }
 
@@ -194,7 +207,13 @@ export class SearchParamsService {
           {
             platform: subtypes
               .map(subtype => subtype.apiValue)
-              .join(',')
+              .join(','),
+            ...Object.entries(dataset.apiValue).reduce((prev, curr) => {
+              if(curr[0] !== 'platform') {
+                prev[curr[0]] = curr[1]
+              }
+              return prev
+            }, {})
           } :
           { ...dataset.apiValue };
       })
@@ -251,7 +270,10 @@ export class SearchParamsService {
         types => Array.from(new Set(types))
           .join(',')
       ),
-      map(beamModes => ({ beamSwath: beamModes }))
+      withLatestFrom(this.store$.select(filterStore.getSelectedDatasetId)),
+      map(([beamModes, dataset]) =>
+      dataset === models.sentinel_1_bursts.id ?
+      ({ beamMode: beamModes }) : ({ beamSwath: beamModes }))
     );
   }
 

@@ -123,10 +123,12 @@ export const routes = [
   ],
   providers: [
     services.AsfApiService,
+    services.AsfLanguageService,
     services.UrlStateService,
     services.MapService,
     services.DrawService,
     services.WktService,
+    services.LayerService,
     services.ProductService,
     services.BulkDownloadService,
     services.SearchParamsService,

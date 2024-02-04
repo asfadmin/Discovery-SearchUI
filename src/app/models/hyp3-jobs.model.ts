@@ -130,12 +130,7 @@ export const InsarGammaJobType: Hyp3JobType = {
   id: 'INSAR_GAMMA',
   name: 'InSAR GAMMA',
   infoUrl: 'https://hyp3-docs.asf.alaska.edu/guides/insar_product_guide/',
-  description: `
-    Interferometric Synthetic Aperture Radar (InSAR) processing uses two SAR images
-    collected over the same area to determine geometric properties of the surface.
-    The phase measurements of the two images acquired at different times are differenced
-    to detect and quantify surface changes.
-  `,
+  description: `INSAR_DESC`,
   numProducts: 2,
   productTypes: [{
     dataset: sentinel_1,
@@ -231,10 +226,7 @@ export const AutoRift: Hyp3JobType = {
   id: 'AUTORIFT',
   name: 'autoRIFT',
   infoUrl: 'https://hyp3-docs.asf.alaska.edu/products/#autorift',
-  description: `
-    autoRIFT is a highly accurate and efficient algorithm for finding the pixel
-    displacement between two radar images.
-  `,
+  description: 'AUTORIFT_DESC',
   numProducts: 2,
   productTypes: [{
     dataset: sentinel_1,

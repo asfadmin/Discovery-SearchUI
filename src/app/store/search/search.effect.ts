@@ -69,8 +69,11 @@ export class SearchEffects {
 
   public setCanSearch = createEffect(() => this.actions$.pipe(
     ofType<SetSearchAmount>(SearchActionType.SET_SEARCH_AMOUNT),
-    map(action =>
-      (action.payload > 0) ? new EnableSearch() : new DisableSearch()
+    withLatestFrom(this.store$.select(getSearchType)),
+    map(([action, searchType]) =>
+      (action.payload > 0
+      || searchType === SearchType.BASELINE
+      || searchType === SearchType.SBAS) ? new EnableSearch() : new DisableSearch()
     )
   ));
 
@@ -85,9 +88,20 @@ export class SearchEffects {
   public makeSearches = createEffect(() => this.actions$.pipe(
     ofType(SearchActionType.MAKE_SEARCH),
     withLatestFrom(this.store$.select(getSearchType)),
-    switchMap(([_, searchType]) => searchType !== models.SearchType.CUSTOM_PRODUCTS ?
-      (searchType === models.SearchType.SARVIEWS_EVENTS ? this.sarviewsEventsQuery$() : this.asfApiQuery$()) :
-      this.customProductsQuery$()
+    switchMap(([_, searchType]) =>
+    {
+      if (searchType === SearchType.SARVIEWS_EVENTS) {
+        return this.sarviewsEventsQuery$();
+      }
+      if (searchType === SearchType.BASELINE || searchType === SearchType.SBAS) {
+        return this.asfApiBaselineQuery$();
+      }
+      if (searchType === SearchType.CUSTOM_PRODUCTS) {
+        return this.customProductsQuery$();
+      }
+
+      return this.asfApiQuery$();
+    }
     )
   ));
 
@@ -250,6 +264,39 @@ export class SearchEffects {
               searchType
             }) :
             new SearchCanceled()
+        ),
+        catchError(
+          (err: HttpErrorResponse) => {
+            if (err.status !== 400) {
+              return of(new SearchError(`Unknown Error`));
+            }
+            return EMPTY;
+          }
+        ),
+      ))
+    );
+  }
+
+  public asfApiBaselineQuery$(): Observable<Action> {
+    this.logCountries();
+    return this.searchParams$.getParams().pipe(
+    switchMap(
+      (params) =>
+        this.asfApiService.query<any[]>(params).pipe(
+        withLatestFrom(combineLatest(
+          this.store$.select(getSearchType),
+          this.store$.select(getIsCanceled)
+        )),
+        map(([response, [searchType, isCanceled]]) => {
+          const files = this.productService.fromResponse(response)
+          return !isCanceled ?
+            new SearchResponse({
+              files,
+              totalCount: files.length,
+              searchType
+            }) :
+            new SearchCanceled()
+          }
         ),
         catchError(
           (err: HttpErrorResponse) => {

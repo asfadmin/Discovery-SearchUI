@@ -41,19 +41,21 @@
 
     </div>
 
-    <ng-container *ngIf="breakpoint !== breakpoints.MOBILE;">
-      <div class="doc-feedback-div">
-        <div class="docs-div header-link">
-          <app-docs-modal class="text-link"
-                          text="Docs"
-                          url="https://hyp3-docs.asf.alaska.edu/#asf-hyp3">
-          </app-docs-modal>
-        </div>
-
-        <div class="feedback-div header-link">
-          <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <mat-icon>comment</mat-icon> {{ 'FEEDBACK' | translate }}</a>
-        </div>
+    <div class="doc-feedback-div"
+         [class.doc-feedback-div-mobile]="breakpoint === breakpoints.MOBILE">
+      <div class="docs-div header-link">
+        <app-docs-modal class="text-link"
+                        text="Docs"
+                        url="https://hyp3-docs.asf.alaska.edu/#asf-hyp3">
+        </app-docs-modal>
       </div>
+
+      <div class="feedback-div header-link">
+        <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <mat-icon>comment</mat-icon> {{ 'FEEDBACK' | translate }}</a>
+      </div>
+    </div>
+
+    <ng-container *ngIf="breakpoint !== breakpoints.MOBILE;">
 
       <ng-container *ngFor="let hyp3Job of jobTypesWithQueued">
         <button mat-flat-button
@@ -66,9 +68,8 @@
 
     </ng-container>
 
-    <ng-container *ngIf="
-      breakpoint === breakpoints.MOBILE &&
-      !!jobTypesWithQueued && jobTypesWithQueued.length > 0">
+    <ng-container *ngIf="breakpoint === breakpoints.MOBILE &&
+                         !!jobTypesWithQueued && jobTypesWithQueued.length > 0">
 
       <button mat-flat-button
         [color]="'primary'"
@@ -97,7 +98,8 @@
     </ng-container>
   </div>
 
-  <div class="close-x" (click)="onCloseDialog()">
+  <div class="close-x" (click)="onCloseDialog()"
+       [class.close-x-mobile]="breakpoint === breakpoints.MOBILE">
     <mat-icon>close</mat-icon>
   </div>
 </div>
@@ -123,7 +125,7 @@
     <div #contentTopArea class="content-top-area">
       <div class="jobs-detail">
         <div *ngIf="selectedJobTypeId" style="margin-right: 10px;">
-          <p>
+          <p style="text-wrap: balance;">
             {{ hyp3JobTypes[selectedJobTypeId].description | translate }}
             <a target="_blank" [href]="hyp3JobTypes[selectedJobTypeId].infoUrl">[{{ 'MORE_' | translate }}]</a>
           </p>
@@ -197,7 +199,11 @@
     [value]="progress">
   </mat-progress-bar>
 
-  <div class="w100 hyp3-footer">
+  <div class="w100 hyp3-footer" 
+  [ngStyle]="{
+    'justify-content': breakpoint == breakpoints.MOBILE ? 'inherit' : 'center'
+  }"
+  >
     <div class="footer-clear">
       <button *ngIf="previousQueue === null"
         [matMenuTriggerFor]="clearJobQueue"

@@ -2,7 +2,7 @@
   <mat-select
     [(value)]="productTypesList"
     (selectionChange)="onNewProductTypes($event)"
-    [disabled]="dataset.productTypes.length < 1"
+    [disabled]="dataset.productTypes.length < 1  || burstSelected"
     placeholder="{{ 'FILE_TYPE' | translate }}" multiple>
       <mat-option
         *ngFor="let type of dataset.productTypes"

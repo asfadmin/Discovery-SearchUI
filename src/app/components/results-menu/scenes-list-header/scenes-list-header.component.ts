@@ -31,7 +31,14 @@ import { ClipboardService } from 'ngx-clipboard';
 })
 export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public copyIcon = faCopy;
-  public totalResultCount$ = this.store$.select(searchStore.getTotalResultCount);
+  public totalResultCount$ = combineLatest(
+    this.store$.select(searchStore.getTotalResultCount),
+    this.scenesService.scenes$()
+    ).pipe(
+      map(([count, scenes]) => count + scenes?.filter(scene => scene.metadata.productType === 'BURST').length)
+  )
+
+  public currentDatasetID$ = this.store$.select(filtersStore.getSelectedDataset).pipe(map(dataset => dataset.id));
   public numberOfScenes$ = this.store$.select(scenesStore.getNumberOfScenes);
   public numberOfProducts$ = this.store$.select(scenesStore.getNumberOfProducts);
   public numberOfFilteredEvents$ = this.eventMonitoringService.filteredSarviewsEvents$().pipe(
@@ -48,6 +55,23 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public numBaselineScenes$ = this.scenesService.scenes$().pipe(
     map(scenes => scenes.length),
   );
+  public isBurstStack$ =
+  combineLatest([
+    this.scenesService.products$(),
+    this.pairService.pairs$(),
+    this.store$.select(searchStore.getSearchType),
+  ]
+  ).pipe(
+    map(([scenes, pairs, currentSearchType]) => (currentSearchType ===
+      this.SearchTypes.BASELINE && scenes?.length > 0 ? scenes[0].metadata.productType === 'BURST': false)
+      || (currentSearchType === this.SearchTypes.SBAS &&
+        (
+          (pairs.pairs?.length > 0 ? pairs.pairs[0][0].metadata.productType === 'BURST' : false)
+          || (pairs.custom?.length > 0 ? pairs.custom[0][0].metadata.productType === 'BURST' : false)
+        )
+    )
+  )
+  )
   public numPairs$ = this.pairService.pairs$().pipe(
     filter(pairs => !!pairs),
     map(pairs => pairs.pairs.length + pairs.custom.length)
@@ -59,6 +83,47 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     map(browseIds =>
       this.sarviewsEventProducts.filter(prod => browseIds.includes(prod.product_id)))
   );
+
+  private currentBurstProducts$ = this.scenesService.products$().pipe(
+    map(products =>
+      products.filter(p => p.metadata.productType === 'BURST' || p.metadata.productType === 'BURST_XML')
+    )
+  );
+
+  public burstDataProducts$ = this.currentBurstProducts$.pipe(
+    map(products => products.filter(p => p.metadata.productType === 'BURST'))
+  );
+
+  public SBASburstDataProducts$ = combineLatest(
+    this.burstDataProducts$,
+    this.pairService.productsFromPairs$()
+    ).pipe(
+    map(([products, pairs]) => {
+      const pairNames = pairs.map(p => p.name);
+      const output = products.filter(p => pairNames.find(name => name === p.name));
+      return output;
+    })
+  );
+
+  public burstMetadataProducts$ = this.currentBurstProducts$.pipe(
+    map(products => products.filter(p => p.metadata.productType === 'BURST_XML'))
+  );
+
+  public SBASburstMetadataProducts$ = combineLatest(
+    this.burstMetadataProducts$,
+    this.pairService.productsFromPairs$()
+    ).pipe(
+    map(([products, pairs]) => {
+      const pairNames = pairs.map(p => p.name);
+      const output = products.filter(p => pairNames.find(name => name === p.name));
+      return output;
+    })
+  );
+
+  public SBASBurstProductsLength$ = combineLatest(
+    this.SBASburstDataProducts$.pipe(map(products => products.length)),
+    this.SBASburstMetadataProducts$.pipe(map(products => products.length))
+  ).pipe(map(([data, metadata]) => data + metadata))
 
   public pairs: models.CMRProductPair[];
   public sbasProducts: models.CMRProduct[] = [];
@@ -274,19 +339,22 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     const pairRows = this.pairs
       .map(([reference, secondary]) => {
 
-        const temp = Math.abs(reference.metadata.temporal - secondary.metadata.temporal);
+        const temporalBaseline = Math.abs(reference.metadata.temporal - secondary.metadata.temporal);
+        const perpendicularBaseline = Math.abs(reference.metadata.perpendicular - secondary.metadata.perpendicular);
 
         return (
-          `${reference.name},${reference.downloadUrl},${reference.metadata.perpendicular},` +
-          `${secondary.name},${secondary.downloadUrl},${secondary.metadata.perpendicular},${temp}`
+          `${reference.name},${reference.downloadUrl},` +
+          `${secondary.name},${secondary.downloadUrl},` +
+          `${perpendicularBaseline},${temporalBaseline}`
         );
       })
       .join('\n');
 
-    const pairsCSV =
-      `Reference, Reference URL, Reference Perpendicular Baseline (meters),` +
-      `Secondary, Secondary URL, Secondary Perpendicular Baseline (meters),` +
-      `Pair Temporal Baseline (days)\n${pairRows}`;
+    const pairsHeader =
+      `Reference, Reference URL, Secondary, Secondary URL, ` +
+      `Pair Perpendicular Baseline (meters), Pair Temporal Baseline (days)`;
+
+    const pairsCSV = `${pairsHeader}\n${pairRows}`;
 
     const blob = new Blob([pairsCSV], {
       type: 'text/csv;charset=utf-8;',

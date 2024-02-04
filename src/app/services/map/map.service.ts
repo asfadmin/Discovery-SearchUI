@@ -15,6 +15,7 @@ import Select from 'ol/interaction/Select';
 
 import { WktService } from '../wkt.service';
 import { DrawService } from './draw.service';
+import { LayerService } from './layer.service';
 import { LegacyAreaFormatService } from '../legacy-area-format.service';
 import * as models from '@models';
 import * as sceneStore from '@store/scenes';
@@ -26,22 +27,25 @@ import { EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { Icon, Style } from 'ol/style';
-import IconAnchorUnits from 'ol/style/IconAnchorUnits';
 import Geometry from 'ol/geom/Geometry';
 import ImageLayer from 'ol/layer/Image';
 import LayerGroup from 'ol/layer/Group';
 import { PinnedProduct } from '@services/browse-map.service';
 import { BrowseOverlayService } from '@services';
 import { ViewOptions } from 'ol/View';
-import GeometryType from 'ol/geom/GeometryType';
+import {Type as GeometryType } from 'ol/geom/Geometry';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 import intersect from '@turf/intersect';
 import lineIntersect from '@turf/line-intersect';
 import Polygon from 'ol/geom/Polygon';
 import LineString from 'ol/geom/LineString';
 import TileLayer from 'ol/layer/Tile';
+
 import SimpleGeometry from 'ol/geom/SimpleGeometry';
 import { SetGeocode } from '@store/filters';
+import ImageSource from 'ol/source/Image';
+import { Extent } from 'ol/extent';
+import { MultiPolygon } from 'ol/geom';
 
 @Injectable({
   providedIn: 'root'
@@ -54,18 +58,17 @@ export class MapService {
   private mapView: views.MapView;
   private map: Map;
   private scaleLine: ScaleLine;
-  private polygonLayer: VectorLayer;
-  private sarviewsEventsLayer: VectorLayer;
-  private browseImageLayer: ImageLayer;
-  // private browseRasterCanvas: RasterSource;
+
+  private polygonLayer: VectorLayer<VectorSource>;
+  private sarviewsEventsLayer: VectorLayer<VectorSource>;
+  private browseImageLayer: ImageLayer<ImageSource>;
+
   private gridLinesVisible: boolean;
   private sarviewsFeaturesByID: {[id: string]: Feature} = {};
   private pinnedCollection: Collection<Layer> = new Collection<Layer>([], {unique: true});
   private pinnedProducts: LayerGroup = new LayerGroup({layers: this.pinnedCollection});
 
   private overviewMap: OverviewMap;
-
-  // potential mat-icon for map pan: control_camera
 
   private selectClick = new Select({
     condition: click,
@@ -115,6 +118,7 @@ export class MapService {
   public zoom$ = new Subject<number>();
   public center$ = new Subject<models.LonLat>();
   public epsg$ = new Subject<string>();
+  public hasCoherenceLayer$ = new BehaviorSubject<string>(null);
 
   public selectedSarviewEvent$: EventEmitter<string> = new EventEmitter();
   public mapInit$: EventEmitter<Map> = new EventEmitter();
@@ -139,6 +143,7 @@ export class MapService {
     private drawService: DrawService,
     private store$: Store<AppState>,
     private browseOverlayService: BrowseOverlayService,
+    private layerService: LayerService,
   ) {}
 
   public epsg(): string {
@@ -204,7 +209,7 @@ export class MapService {
   }
 
 
-  public setLayer(layer: VectorLayer): void {
+  public setLayer(layer: VectorLayer<VectorSource>): void {
     if (!!this.polygonLayer) {
       this.map.removeLayer(this.polygonLayer);
     }
@@ -213,7 +218,7 @@ export class MapService {
     this.map.addLayer(this.polygonLayer);
   }
 
-  public setEventsLayer(layer: VectorLayer): void {
+  public setEventsLayer(layer: VectorLayer<VectorSource>): void {
       if (!!this.sarviewsEventsLayer) {
         this.map.removeLayer(this.sarviewsEventsLayer);
       }
@@ -252,8 +257,8 @@ export class MapService {
           const iconStyle = new Style({
             image: new Icon({
               anchor: [0.5, 46],
-              anchorXUnits: IconAnchorUnits.FRACTION,
-              anchorYUnits: IconAnchorUnits.PIXELS,
+              anchorXUnits: 'fraction',
+              anchorYUnits: 'pixels',
               src: `/assets/icons/${iconName}`,
               scale: 0.1,
               offset: [0, 10]
@@ -410,6 +415,10 @@ export class MapService {
     this.wktService.fixPolygonAntimeridian(features, sarviewEvent.wkt);
 
     features.getGeometry().scale(radius);
+
+    if (features.getGeometry().getType() === 'MultiPolygon') {
+      features.setGeometry((features.getGeometry() as MultiPolygon).getPolygon(0))
+    }
     this.setDrawFeature(features);
   }
 
@@ -419,7 +428,7 @@ export class MapService {
   }
 
 
-  public zoomToExtent(extent): void {
+  public zoomToExtent(extent: Extent): void {
     this.map
       .getView()
       .fit(extent, {
@@ -450,13 +459,15 @@ export class MapService {
       className: 'ol-overviewmap ol-custom-overviewmap',
     });
 
+
     const newMap = new Map({
-      layers: [ this.mapView.layer,
+      layers: [
+        this.mapView.layer,
         this.drawService.getLayer(),
         this.focusLayer,
         this.selectedLayer,
         this.mapView?.gridlines,
-        this.pinnedProducts
+        this.pinnedProducts,
       ],
       target: 'map',
       view: this.mapView.view,
@@ -475,7 +486,7 @@ export class MapService {
 
     this.selectHover.on('select', e => {
       this.map.getViewport().style.cursor =
-      e.selected.length > 0 ? 'pointer' : 'default';
+        e.selected.length > 0 ? 'pointer' : 'default';
     });
 
     this.selectSarviewEventHover.on('select', e => {
@@ -498,18 +509,18 @@ export class MapService {
 
     newMap.on('singleclick', (evnt) => {
       if (this.map.hasFeatureAtPixel(evnt.pixel)) {
-      this.map.forEachFeatureAtPixel(
-      evnt.pixel,
-      (feature) => {
-        const sarview_id: string = feature.get('sarviews_id');
-        if (!!sarview_id) {
-          this.selectedSarviewEvent$.next(sarview_id);
-          this.store$.dispatch(new sceneStore.SetSelectedSarviewsEvent(sarview_id));
-        }
+        this.map.forEachFeatureAtPixel(
+          evnt.pixel,
+          (feature) => {
+            const sarview_id: string = feature.get('sarviews_id');
+            if (!!sarview_id) {
+              this.selectedSarviewEvent$.next(sarview_id);
+              this.store$.dispatch(new sceneStore.SetSelectedSarviewsEvent(sarview_id));
+            }
 
-        evnt.preventDefault();
+            evnt.preventDefault();
 
-        });
+          });
       }
     });
 
@@ -552,6 +563,7 @@ export class MapService {
     } else {
       layers.find(l => l.get('ol_uid') === '100')?.setVisible(false);
     }
+
     this.mapView.layer.setOpacity(1);
 
     const mapLayers = this.map.getLayers();
@@ -571,25 +583,37 @@ export class MapService {
     this.map.addLayer(this.browseImageLayer);
   }
 
+  public setCoherenceLayer(months: string): void {
+    if (!!this.layerService.coherenceLayer) {
+      this.map.removeLayer(this.layerService.coherenceLayer);
+      this.layerService.coherenceLayer = null;
+    }
+
+
+    this.layerService.coherenceLayer = this.layerService.getCoherenceLayer(months);
+    this.map.addLayer(this.layerService.coherenceLayer);
+    this.hasCoherenceLayer$.next(months);
+  }
+
+  public clearCoherence(): void {
+    if (!this.layerService.coherenceLayer) {
+      return;
+    }
+
+    this.map.removeLayer(this.layerService.coherenceLayer);
+    this.layerService.coherenceLayer = null;
+    this.hasCoherenceLayer$.next(null);
+  }
+
   public createBrowseRasterCanvas(scenes: models.CMRProduct[]) {
     const scenesWithBrowse = scenes.filter(scene => scene.browses?.length > 0).slice(0, 10);
 
     const collection = scenesWithBrowse.reduce((prev, curr) =>
-    prev.concat(this.browseOverlayService.createNormalImageLayer(curr.browses[0], curr.metadata.polygon)), [] as ImageLayer[]);
-
-    // this.browseRasterCanvas = new RasterSource({
-    //   sources: collection,
-    //   operationType: 'image' as RasterOperationType
-    // })
-
-    // const l = new ImageLayer({
-    //   source: this.browseRasterCanvas,
-    // });
+      prev.concat(this.browseOverlayService.createNormalImageLayer(curr.browses[0], curr.metadata.polygon)), [] as ImageLayer<ImageSource>[]);
 
     collection.forEach(element => {
       this.map.addLayer(element);
     });
-    // this.map.addLayer(l);
   }
 
   public setPinnedProducts(pinnedProductStates: {[product_id in string]: PinnedProduct}) {
@@ -632,12 +656,12 @@ export class MapService {
 
     return booleanPointInPolygon(
       point.getCoordinates(),
-    {
+      {
         'type': 'Polygon',
         'coordinates': [
           (polygon.getGeometry() as Polygon).getCoordinates()[0]
         ],
-    });
+      });
   }
 
   private getLineIntersection(aoi: Feature<Geometry>, polygon: Feature<Geometry>): boolean {
@@ -648,12 +672,12 @@ export class MapService {
         ...line.getCoordinates()
       ]
     },
-    {
-      'type': 'Polygon',
-      'coordinates': [
-        (polygon.getGeometry() as Polygon).getCoordinates()[0]
-      ],
-    }).features.length > 0;
+      {
+        'type': 'Polygon',
+        'coordinates': [
+          (polygon.getGeometry() as Polygon).getCoordinates()[0]
+        ],
+      }).features.length > 0;
   }
 
   private getPolygonIntersection(aoi: Feature<Geometry>, polygon: Feature<Geometry>): boolean {
@@ -664,13 +688,13 @@ export class MapService {
           (aoi.getGeometry() as Polygon).getCoordinates()[0]
         ],
       },
-    {
-      'type': 'Polygon',
-      'coordinates': [
-        (polygon.getGeometry() as Polygon).getCoordinates()[0]
-      ],
-    }
-  );
+      {
+        'type': 'Polygon',
+        'coordinates': [
+          (polygon.getGeometry() as Polygon).getCoordinates()[0]
+        ],
+      }
+    );
   }
 
 }

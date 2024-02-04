@@ -78,6 +78,8 @@ export interface GeographicFiltersType {
   subtypes: fromDatasets.DatasetSubtypes;
 
   selectedMission: null | string;
+
+  fullBurstIDs: string[];
 }
 
 export interface SarviewsFiltersType {

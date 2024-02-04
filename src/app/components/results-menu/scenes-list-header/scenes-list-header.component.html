@@ -27,7 +27,8 @@
           {{ numPairs$ | async }} {{ 'PAIR'| translate }}{{ (numPairs$ | async) === 1 ? '' : 's' }}
           <span *ngIf="!!sbasProducts && breakpoint > breakpoints.MEDIUM" style="font-size: small;">
             <br>
-              ({{ sbasProducts.length }} {{ 'SCENE' | translate }}{{ sbasProducts.length === 1 ? '' : 's' }})
+              ({{ sbasProducts.length }} {{ 'SCENE' | translate }}{{ sbasProducts.length === 1 ? '' : 's' }} 
+              <mat-icon [matTooltip]="('SBAS_COUNT_TOOLTIP' | translate)" class="sbas-count-tooltip">info</mat-icon>)
           </span>
         </div>
 
@@ -39,7 +40,7 @@
           {{ numBaselineScenes$ | async }} {{ 'PRODUCT' | translate }}{{ (numBaselineScenes$ | async) === 1 ? '' : 's' }}
         </div>
 
-        <div class="space-filler"></div>
+        <div class="space-filler" *ngIf="!(searchType === SearchTypes.SARVIEWS_EVENTS && breakpoint === breakpoints.MOBILE)"></div>
 
         <div *ngIf="products" class="scenes-list-buttons--layout">
           <div *ngIf="canHideRawData"  class="list-button-group">
@@ -47,7 +48,7 @@
               <label>{{ 'RAW' | translate }}</label>
             </div>
             <div class="fx-row">
-              <div>
+              <div class="scenes-list-button-container">
                 <mat-button-toggle-group name="fx-empty layerType" class="mr-10">
                   <mat-button-toggle (click)="onToggleS1RawData()"
                     class="control-mat-button-toggle clickable noselect"
@@ -67,7 +68,7 @@
               <label>{{ 'EXPIRED' | translate }}</label>
             </div>
             <div class="fx-row">
-              <div>
+              <div class="scenes-list-button-container">
                 <mat-button-toggle-group name="layerType" class="fx-empty mr-10">
                   <mat-button-toggle (click)="onToggleExpiredData()"
                     class="control-mat-button-toggle clickable noselect"
@@ -87,7 +88,7 @@
               <label>{{ 'ZOOM' | translate }}</label>
             </div>
             <div class="fx-row">
-              <div>
+              <div class="scenes-list-button-container">
                 <mat-button-toggle-group name="layerType" class="fx-empty mr-10">
                   <mat-button-toggle (click)="onZoomToResults()"
                     class="control-mat-button-toggle clickable noselect"
@@ -106,7 +107,7 @@
               <label>{{ 'QUEUE' |  translate }}</label>
             </div>
             <div class="fx-row">
-              <div>
+              <div class="scenes-list-button-container">
                 <mat-button-toggle-group name="layerType" class="fx-empty mr-10 clickable noselect ">
                   <mat-button-toggle class="control-mat-button-toggle"
                     [matMenuTriggerFor]="addAllProducts"
@@ -125,7 +126,7 @@
               <label>{{ 'QUEUE' |  translate }}</label>
             </div>
             <div class="fx-row">
-              <div>
+              <div class="scenes-list-button-container">
                 <mat-button-toggle-group name="layerType" class="fx-empty mr-10 clickable noselect ">
                   <mat-button-toggle class="control-mat-button-toggle"
                     [matMenuTriggerFor]="QueueAllSARViewsProducts"
@@ -145,7 +146,7 @@
               <label>{{ 'ON_DEMAND' | translate }}</label>
             </div>
             <div class="fx-row">
-              <div>
+              <div class="scenes-list-button-container">
                 <mat-button-toggle-group name="layerType" class="fx-empty mr-10">
                   <mat-button-toggle class="control-mat-button-toggle clickable noselect"
                     [matMenuTriggerFor]="listAdd.addMenu"
@@ -168,7 +169,7 @@
               <label>  {{ 'EXPORT' |  translate }}</label>
             </div>
             <div class="fx-row">
-              <div>
+              <div class="scenes-list-button-container">
                 <mat-button-toggle-group name="layerType" class="fx-empty mr-10">
                   <mat-button-toggle class="control-mat-button-toggle clickable noselect"
                     [matMenuTriggerFor]="ExportAll"
@@ -187,7 +188,7 @@
               <label>{{ 'EXPORT' |  translate }}</label>
             </div>
             <div class="fx-row">
-              <div>
+              <div class="scenes-list-button-container">
                 <mat-button-toggle-group name="layerType" class="fx-empty mr-10">
                   <mat-button-toggle class="control-mat-button-toggle clickable noselect"
                     [matMenuTriggerFor]="ExportAllSARViewsData"
@@ -207,7 +208,7 @@
               <label>{{ 'ON_DEMAND' | translate }}</label>
             </div>
             <div class="fx-row">
-              <div>
+              <div class="scenes-list-button-container">
                 <mat-button-toggle-group name="layerType" class="fx-empty mr-10">
                   <mat-button-toggle
                     [matMenuTriggerFor]="eventMonitoringOnDemand.addMenu"
@@ -245,7 +246,7 @@
               <label>{{ 'COPY' | translate }}</label>
             </div>
             <div class="fx-row">
-              <div>
+              <div class="scenes-list-button-container">
                 <mat-button-toggle-group name="layerType" class="fx-empty mr-10">
                   <mat-button-toggle class="control-mat-button-toggle clickable noselect"
                     [matMenuTriggerFor]="eventMonitoringOptions"
@@ -264,14 +265,15 @@
               <label>{{ 'PAIRS' | translate }}</label>
             </div>
             <div class="fx-row">
-              <div>
+              <div class="scenes-list-button-container">
                 <mat-button-toggle-group name="layerType" class="fx-empty mr-10">
                   <mat-button-toggle
                     (click)="onDownloadPairCSV()"
                     class="control-mat-button-toggle clickable noselect"
+
                     matTooltip="{{ 'DOWNLOAD_PAIR_CSV' | translate }}">
                     <mat-icon class="list-icon">
-get_app
+                      get_app
                     </mat-icon>
                   </mat-button-toggle>
                 </mat-button-toggle-group>
@@ -280,13 +282,37 @@ get_app
           </div>
 
           <mat-menu #addAllProducts="matMenu">
-            <button *ngIf="searchType !== SearchTypes.SBAS" (click)="queueAllProducts(downloadableProds)" mat-menu-item>
+            <button *ngIf="searchType !== SearchTypes.SBAS
+              && !(isBurstStack$ | async) 
+              && !((currentDatasetID$ | async) === 'SENTINEL-1 BURSTS'
+              && searchType === SearchTypes.DATASET)"
+              (click)="queueAllProducts(downloadableProds)" mat-menu-item>
               {{ 'ADD' | translate }} {{ downloadableProds.length }} {{'FILE' | translate}}{{ downloadableProds.length === 1 ? '' : 's'}} {{'TO_DOWNLOADS' | translate}}
             </button>
 
-            <button *ngIf="searchType === SearchTypes.SBAS" (click)="queueSBASProducts(sbasProducts)" mat-menu-item>
+            <button *ngIf="searchType === SearchTypes.SBAS && !(isBurstStack$ | async)" (click)="queueSBASProducts(sbasProducts)" mat-menu-item>
               {{ 'ADD' | translate }} {{ sbasProducts.length }} {{'FILE' | translate}}{{ sbasProducts.length === 1 ? '' : 's'}} {{'TO_DOWNLOADS' | translate}}
             </button>
+
+            <button *ngIf=" (currentDatasetID$ | async) === 'SENTINEL-1 BURSTS'
+            && searchType === SearchTypes.DATASET || (isBurstStack$ | async)" 
+            mat-menu-item [matMenuTriggerFor]="addAllBurstProducts" [matMenuTriggerData]="{
+              'burstData': searchType === SearchTypes.SBAS ? (SBASburstDataProducts$ | async) : (burstDataProducts$ | async),
+              'burstMetadata':searchType === SearchTypes.SBAS ? (SBASburstMetadataProducts$ | async) : (burstMetadataProducts$ | async)
+            }">
+              {{ searchType !== SearchTypes.SBAS ? downloadableProds.length : (SBASBurstProductsLength$ | async) }} BURST {{'FILE' | translate}}{{ downloadableProds.length === 1 ? '' : 's'}}
+            </button>
+          </mat-menu>
+
+          <mat-menu #addAllBurstProducts>
+            <ng-template matMenuContent let-burstData="burstData" let-burstMetadata="burstMetadata">
+            <button (click)="queueAllProducts(burstData)" mat-menu-item>
+              {{ 'ADD' | translate }} {{ burstData.length }} {{'FILE' | translate}}{{ burstData.length === 1 ? '' : 's'}} {{'TO_DOWNLOADS' | translate}} (TIFF)
+            </button>
+            <button (click)="queueAllProducts(burstMetadata)" mat-menu-item>
+              {{ 'ADD' | translate }} {{ burstMetadata.length }} {{'FILE' | translate}}{{ burstMetadata.length === 1 ? '' : 's'}} {{'TO_DOWNLOADS' | translate}} (XML)
+            </button>
+          </ng-template>
           </mat-menu>
 
           <mat-menu #ExportAll="matMenu">

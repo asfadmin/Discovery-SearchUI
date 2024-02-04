@@ -435,13 +435,13 @@ export class MapComponent implements OnInit, OnDestroy  {
       map(scenes => this.scenesToFeature(scenes, projection)));
   }
 
-  private scenePolygonsLayer(features: Feature<Geometry>[]): VectorLayer {
+  private scenePolygonsLayer(features: Feature<Geometry>[]): VectorLayer<VectorSource> {
       const vectorLayer = this.featuresToSource(features, polygonStyle.scene);
       vectorLayer.set('selectable', 'true');
       return vectorLayer;
   }
 
-  private sceneSARViewsEventsLayer$(projection: string): Observable<VectorLayer> {
+  private sceneSARViewsEventsLayer$(projection: string): Observable<VectorLayer<VectorSource>> {
     return this.eventMonitoringService.filteredSarviewsEvents$().pipe(
       // filter(events => !!events),
       tap(events => this.sarviewsEvents = events),
@@ -494,7 +494,7 @@ export class MapComponent implements OnInit, OnDestroy  {
       return features;
   }
 
-  private featuresToSource(features, style: StyleLike): VectorLayer {
+  private featuresToSource(features, style: StyleLike): VectorLayer<VectorSource> {
     const layer = new VectorLayer({
       source: new VectorSource({
         features, wrapX: true
