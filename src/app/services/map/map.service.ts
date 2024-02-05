@@ -39,7 +39,7 @@ import intersect from '@turf/intersect';
 import lineIntersect from '@turf/line-intersect';
 import Polygon from 'ol/geom/Polygon';
 import LineString from 'ol/geom/LineString';
-import TileLayer from 'ol/layer/Tile';
+import TileLayer from 'ol/layer/WebGLTile.js';
 
 import SimpleGeometry from 'ol/geom/SimpleGeometry';
 import { SetGeocode } from '@store/filters';
@@ -579,8 +579,22 @@ export class MapService {
     if (!!this.browseImageLayer) {
       this.map.removeLayer(this.browseImageLayer);
     }
-    this.browseImageLayer = this.browseOverlayService.createNormalImageLayer(url, wkt, 'ol-layer', 'current-overlay');
-    this.map.addLayer(this.browseImageLayer);
+    if(!url.endsWith('.tif')) {
+      this.browseImageLayer = this.browseOverlayService.createNormalImageLayer(url, wkt, 'ol-layer', 'current-overlay');
+      this.map.addLayer(this.browseImageLayer);
+    } else {
+      fetch(url, {
+        credentials: 'include',
+        redirect: 'follow'
+      }).then(response => response.blob()).then((blob) => {
+        this.browseImageLayer = this.browseOverlayService.createGeotiffLayer(blob, wkt, 'ol-layer', 'current-overlay');
+        let s: any = this.browseImageLayer.getSource().getView()!
+        s.then((thing: any) => {
+          this.map?.getView().fit(thing.extent)
+        })
+        this.map.addLayer(this.browseImageLayer);
+      })
+    }
   }
 
   public setCoherenceLayer(months: string): void {

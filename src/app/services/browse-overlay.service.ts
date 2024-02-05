@@ -22,7 +22,7 @@ import * as filtersStore from '@store/filters';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import GeoTIFFSource from 'ol/source/GeoTIFF';
-import TileLayer from 'ol/layer/Tile';
+import TileLayer from 'ol/layer/WebGLTile.js';
 import ImageSource from 'ol/source/Image';
 
 @Injectable({
@@ -72,35 +72,72 @@ export class BrowseOverlayService {
        });
   }
 
-  private createGeotiffSource(url: string) {
+  private createGeotiffSource(blob: Blob) {
+    console.log('making a geotiff thingy')
     return new GeoTIFFSource({
       sources: [{
-         url,
-      }]
+         blob,
+         min: 0.0000,
+         max: 0.15,
+         bands: [1],
+         nodata: 0
+      }], 
        });
   }
 
   public createNormalImageLayer(url: string, wkt: string, className: string = 'ol-layer', layer_id: string = '') {
     const feature = this.wktService.wktToFeature(wkt, 'EPSG:3857');
     const polygon = this.getPolygonFromFeature(feature, wkt);
+    console.log(url)
 
-    const source = url.endsWith('.tif') ? this.createGeotiffSource(url) : this.createImageSource(url, polygon.getExtent());
+    const source = this.createImageSource(url, polygon.getExtent());
 
-    const output = url.endsWith('.tif') ? new TileLayer(
-      {
-        source: source as GeoTIFFSource,
-        className,
-        zIndex: 0,
-        extent: polygon.getExtent(),
-        opacity: 1.0,
-      }
-    ) : new ImageLayer({
+    const output = new ImageLayer({
       source: source as ImageSource,
       className,
       zIndex: 0,
       extent: polygon.getExtent(),
       opacity: 1.0,
     });
+
+    if (layer_id !== '') {
+      output.set('layer_id', layer_id);
+    }
+
+    return output;
+  }
+
+  public createGeotiffLayer(blob: Blob, wkt: string, className: string = 'ol-layer', layer_id: string = '') {
+    const feature = this.wktService.wktToFeature(wkt, 'EPSG:3857');
+    const polygon = this.getPolygonFromFeature(feature, wkt);
+    console.log(polygon)
+
+    const source = this.createGeotiffSource(blob);
+
+
+    const output =  new TileLayer(
+      {
+        source: source as GeoTIFFSource,
+        style: {
+          color: [
+            'interpolate',
+            ['linear'],
+            ['band', 1],
+            0.0,
+            [0, 0, 0, 0],
+            0.00001,
+            [0, 0, 0, 1],
+            1.0,
+            [255, 255, 255, 1],
+          ],
+        },
+        className,
+        zIndex: 0,
+        // extent: polygon.getExtent(),
+        opacity: 1.0,
+      }
+    )
+
 
     if (layer_id !== '') {
       output.set('layer_id', layer_id);

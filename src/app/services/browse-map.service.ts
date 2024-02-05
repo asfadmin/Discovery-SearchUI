@@ -7,7 +7,7 @@ import * as polygonStyle from './map/polygon.style';
 import Static from 'ol/source/ImageStatic.js';
 import { XYZ } from 'ol/source';
 import { mapOptions } from '@models';
-import TileLayer from 'ol/layer/Tile';
+import TileLayer from 'ol/layer/WebGLTile.js';
 import { Layer, Vector } from 'ol/layer';
 import Polygon from 'ol/geom/Polygon';
 import { Extent, getCenter } from 'ol/extent';
