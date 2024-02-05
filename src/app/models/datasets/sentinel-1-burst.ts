@@ -13,6 +13,7 @@ export const sentinel_1_bursts = {
     Props.ABSOLUTE_ORBIT,
     Props.BASELINE_TOOL,
     Props.SUBTYPE,
+    Props.PATH,
   ],
   apiValue: { dataset: 'SLC-BURST' },
   date: { start: new Date('2014/06/15 03:44:43 UTC') },
