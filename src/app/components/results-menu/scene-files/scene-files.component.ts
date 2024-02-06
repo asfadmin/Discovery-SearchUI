@@ -437,7 +437,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
           };
           return this.asfApiService.query<any>(queryParams).pipe(
             map(products => products?.results?.length > 0 ? this.productService.fromResponse(products).slice(0, 1) : []),
-            tap(products => products.map(product => product.productTypeDisplay = scene.metadata.productType + " Static Layer"))
+            tap(products => products.map(product => product.productTypeDisplay = scene.metadata.productType + "-STATIC Layer"))
             );
         } else {
           return of([]);
