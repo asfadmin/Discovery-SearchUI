@@ -103,6 +103,13 @@
       <b>{{ param.name }}:</b> {{ param.val }}
     </div>
 
+    <a (click)="onSearchProduct()"
+    *ngIf="isSearchableProduct"
+   [matTooltip]="('SEARCH' | translate)"
+   mat-icon-button>
+    <mat-icon>search</mat-icon>
+  </a>
+    
     <app-download-file-button
       [attr.id]="'scene_' + product.id"
       [product] = "product"
