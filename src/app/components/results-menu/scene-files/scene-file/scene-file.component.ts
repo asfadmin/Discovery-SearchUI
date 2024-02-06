@@ -175,23 +175,22 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   }
 
   public onSearchProduct() {
-    let actions = []
     if(['RTC-STATIC', 'CSLC-STATIC'].includes(this.product.metadata.productType)) {
-    const processinglevel = this.product.metadata.productType;
-    const productType = models.opera_s1.productTypes.find(product => product.apiValue == processinglevel);
-    const operaburstid = this.product.metadata?.opera?.operaBurstID;
-    
-    actions = [
-      new searchStore.SetSearchType(models.SearchType.DATASET),
-      new filterStore.ClearDatasetFilters(),
-      new filterStore.SetSelectedDataset(models.opera_s1.apiValue.dataset),
-      new filterStore.SetProductTypes([productType]),
-      new filterStore.setOperaBurstID([operaburstid]),
-      new searchStore.MakeSearch()
-    ];
+      const processinglevel = this.product.metadata.productType;
+      const productType = models.opera_s1.productTypes.find(product => product.apiValue == processinglevel);
+      const operaburstid = this.product.metadata?.opera?.operaBurstID;
+      
+      [
+        new searchStore.SetSearchType(models.SearchType.DATASET),
+        new filterStore.ClearDatasetFilters(),
+        new filterStore.SetSelectedDataset(models.opera_s1.apiValue.dataset),
+        new filterStore.SetProductTypes([productType]),
+        new filterStore.setOperaBurstID([operaburstid]),
+        new searchStore.MakeSearch()
+      ].forEach(
+        action => this.store$.dispatch(action)
+      )
   }
-    
-    actions.forEach(action => this.store$.dispatch(action));
   }
 
   ngOnDestroy() {

@@ -104,9 +104,10 @@
     </div>
 
     <a (click)="onSearchProduct()"
+    *ngIf="isSearchableProduct"
    [matTooltip]="('SEARCH' | translate)"
    mat-icon-button>
-    <mat-icon *ngIf="isSearchableProduct">search</mat-icon>
+    <mat-icon>search</mat-icon>
   </a>
     
     <app-download-file-button
