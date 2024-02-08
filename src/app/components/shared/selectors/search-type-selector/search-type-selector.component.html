@@ -20,20 +20,39 @@
   <div class="gtm-search-type-selector fx-nogrow">
     <mat-menu #searchTypeMenu="matMenu" [(ngModel)]="searchType" name="searchType" id="searchMenu" ngDefaultControl>
 
-      <div *ngFor="let type of searchTypeSelectors" class="clickable">
-        <app-single-search-type
-          id="firstItem"
-          aria-selected="true"
-          (click)="onSetSearchType(type.searchType)"
-          (onOpenDocs)="onCloseMenu($event)"
-          [searchTypeSelector]="type">
-        </app-single-search-type>
-
-        <hr class="dataset-hr">
-      </div>
-
       <div>
-        <div class="menu-item mat-menu-item"
+        <menu *ngFor="let type of searchTypeSelectors" class="menu-item mat-menu-item" mat-menu-item
+             (click)="onSetSearchType(type.searchType)">
+          <div class="menu-item-inner">
+            <div class="fx-75 menu-item-content">
+              <div class="item-title">
+                {{ type.nameKey | translate}}
+              </div>
+              <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
+                <span *ngFor="let key of type.descriptionKeys">
+                  {{ key | translate }}
+                </span>
+              </div>
+              <mat-card-actions>
+                <app-docs-modal class="info-text"
+                                text="{{'MORE_INFO' | translate}}"
+                                url="{{ type.helpUrl}}">
+                </app-docs-modal>
+              </mat-card-actions>
+            </div>
+            <div class="fx-25 menu-item-aside">
+              <span *ngIf="type.iconType === iconTypes.MATERIAL" class="material-icons-outlined menu-item-icon">
+                {{ type.icon}}</span>
+
+              <img *ngIf="type.iconType === iconTypes.IMAGE"
+                src="{{ type.icon }}"
+                class="menu-item-icon">
+            </div>
+          </div>
+          <hr class="dataset-hr">
+        </menu>
+
+        <menu class="menu-item mat-menu-item" mat-menu-item
           (click)="onSetSearchType(searchTypes.CUSTOM_PRODUCTS)"
           [ngClass]="{'disable-search-type-on-demand' : !isLoggedIn}">
           <div class="menu-item-inner">
@@ -59,11 +78,11 @@
               <img src="assets/asf-logos/HyP3-graphic-only.png" class="menu-item-icon">
             </div>
           </div>
-        </div>
+        </menu>
 
         <hr class="dataset-hr">
 
-        <div mat-menu-item class="menu-item mat-menu-item" [matMenuTriggerFor]="derivedDatasetMenu">
+        <menu mat-menu-item class="menu-item mat-menu-item" [matMenuTriggerFor]="derivedDatasetMenu" mat-menu-item>
           <div class="menu-item-inner">
             <div class="fx-75 menu-item-content">
               <div class="item-title">
@@ -77,12 +96,12 @@
               <span class="material-icons-outlined menu-item-icon">{{ 'DATASET_LINKED' | translate }}</span>
             </div>
           </div>
-        </div>
+        </menu>
       </div>
     </mat-menu>
 
     <mat-menu #derivedDatasetMenu="matMenu">
-      <div mat-menu-item matSuffix *ngFor="let dataset of datasets; last as isLast"
+      <menu mat-menu-item matSuffix *ngFor="let dataset of datasets; last as isLast"
       (click)="onOpenDerivedDataset(dataset.info_url, dataset.name); $event.stopPropagation();">
         <div class="menu-item">
           <div class="menu-item-inner">
@@ -104,7 +123,7 @@
           </div>
         </div>
         <hr *ngIf="!isLast" class="dataset-hr">
-      </div>
+      </menu>
     </mat-menu>
 
   </div>

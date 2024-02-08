@@ -35,6 +35,7 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
 
   public searchType: models.SearchType = models.SearchType.DATASET;
   public searchTypes = models.SearchType;
+  public iconTypes = models.IconType;
   public searchTranslation = models.SearchTypeTranslation;
   public datasets = derivedDatasets;
   public breakpoint$ = this.screenSize.breakpoint$;
@@ -155,8 +156,6 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.searchMenu.focusFirstItem();
       this.searchMenu.resetActiveItem();
-      document.getElementById('firstItem').focus();
-      document.getElementById(panelId).focus();
     }, 10);
   }
 
