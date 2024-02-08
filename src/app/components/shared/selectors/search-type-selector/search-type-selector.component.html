@@ -1,6 +1,5 @@
 <!--suppress ALL -->
 <div *ngIf="breakpoint$ | async as breakpoint">
-
   <div class="menu-button-wrapper" [class.mobile-button-wrapper]="breakpoint === breakpoints.MOBILE">
     <div class="button-label">{{ 'SEARCH_TYPE' | translate }}</div>
     <div>
@@ -20,107 +19,20 @@
 
   <div class="gtm-search-type-selector fx-nogrow">
     <mat-menu #searchTypeMenu="matMenu" [(ngModel)]="searchType" name="searchType" id="searchMenu" ngDefaultControl>
-      <div class="clickable">
 
+      <div *ngFor="let type of searchTypeSelectors" class="clickable">
         <app-single-search-type
           id="firstItem"
           aria-selected="true"
-          (click)="onSetSearchType(searchTypes.DATASET)"
+          (click)="onSetSearchType(type.searchType)"
           (onOpenDocs)="onCloseMenu($event)"
-          [nameKey]="'GEOGRAPHIC'"
-          [descriptionKey]="'GEOGRAPHIC_SEARCH_ALLOWS_YOU_TO_SEARCH_FOR_DATA_BASED_UPON_A_GEOGRAPHIC_LOCATION'"
-          [helpUrl]="'https://docs.asf.alaska.edu/vertex/manual/#geographic-search-options'"
-          [icon]="'travel_explore'"
-          [iconType]="'MATERIAL'">
+          [searchTypeSelector]="type">
         </app-single-search-type>
 
         <hr class="dataset-hr">
+      </div>
 
-        <app-single-search-type
-          (click)="onSetSearchType(searchTypes.LIST)"
-          (onOpenDocs)="onCloseMenu($event)"
-          [nameKey]="'LIST'"
-          [descriptionKey]="'LIST_SEARCH_ALLOWS_YOU_TO_ENTER_OR_UPLOAD_A_LIST_OF_SCENE_OR_FILE_NAMES'"
-          [helpUrl]="'https://docs.asf.alaska.edu/vertex/manual/#list-search-options'"
-          [icon]="'list'"
-          [iconType]="'MATERIAL'">
-        </app-single-search-type>
-
-        <hr class="dataset-hr">
-
-        <div class="menu-item mat-menu-item" (click)="onSetSearchType(searchTypes.BASELINE)">
-          <div class="menu-item-inner">
-            <div class="fx-75 menu-item-content">
-              <div class="item-title">
-                {{ 'BASELINE' | translate | titlecase }}
-              </div>
-              <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                {{'BASELINE_SEARCH_PROVIDES_VISUALIZATION_OF_PERPENDICULAR_AND_TEMPORAL_BASELINE_DATA_FOR_A_CHOSEN' | translate}}
-              </div>
-              <mat-card-actions (click)="onOpenDocs($event)">
-                <app-docs-modal class="info-text"
-                                text="{{ 'MORE_INFO' | translate }}"
-                                url="https://docs.asf.alaska.edu/vertex/manual/#baseline-search-options">
-                </app-docs-modal>
-              </mat-card-actions>
-            </div>
-            <div class="fx-25 menu-item-aside">
-              <img src="assets/icons/baseline-chart.jpg" class="menu-item-icon">
-            </div>
-          </div>
-        </div>
-
-        <hr class="dataset-hr">
-
-        <div class="menu-item mat-menu-item" (click)="onSetSearchType(searchTypes.SBAS)">
-          <div class="menu-item-inner">
-            <div class="fx-75 menu-item-content">
-              <div class="item-title">
-                {{ 'SBAS' | translate }}
-              </div>
-              <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                {{'SBAS_SEARCH_PROVIDES_PERPENDICULAR_AND_TEMPORAL_BASELINE_DATA_AS_WELL_AS_SCENE_PAIRS_FOR_A_CHOSEN' | translate }}
-                {{'REFERENCE_SCENE' | translate }}
-              </div>
-              <mat-card-actions (click)="onOpenDocs($event)">
-                <app-docs-modal class="info-text"
-                                text="{{ 'MORE_INFO' | translate }}"
-                                url="https://docs.asf.alaska.edu/vertex/manual/#sbas-search-options">
-                </app-docs-modal>
-              </mat-card-actions>
-            </div>
-            <div class="fx-25 menu-item-aside">
-              <img src="assets/icons/sbas-chart.jpg" class="menu-item-icon">
-            </div>
-          </div>
-        </div>
-
-        <hr class="dataset-hr">
-
-        <div class="menu-item mat-menu-item" (click)="onSetSearchType(searchTypes.SARVIEWS_EVENTS)">
-          <div class="menu-item-inner">
-            <div class="fx-75 menu-item-content">
-              <div class="item-title">
-                {{'EVENT' | translate}}
-              </div>
-              <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                {{'EVENT_SEARCH_HARNESSES_THE_CAPABILITIES_OF_SAR_PROCESSING_TO_MONITOR_NATURAL_DISASTERS' | translate }}
-              </div>
-              <mat-card-actions (click)="onOpenDocs($event)">
-                <app-docs-modal class="info-text"
-                                text="{{ 'MORE_INFO' | translate }}"
-                                url="https://docs.asf.alaska.edu/vertex/manual/#event-search-options">
-                </app-docs-modal>
-              </mat-card-actions>
-            </div>
-            <div class="fx-25 menu-item-aside">
-              <span class="material-icons-outlined menu-item-icon">volcano</span>
-            </div>
-          </div>
-        </div>
-
-        <hr class="dataset-hr">
-
+      <div>
         <div class="menu-item mat-menu-item"
           (click)="onSetSearchType(searchTypes.CUSTOM_PRODUCTS)"
           [ngClass]="{'disable-search-type-on-demand' : !isLoggedIn}">
