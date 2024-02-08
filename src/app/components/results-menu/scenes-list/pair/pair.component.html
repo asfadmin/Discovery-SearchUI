@@ -5,8 +5,10 @@
   [class.selected]="selectedPair ? pair[0].id + pair[1].id === selectedPair[0] + selectedPair[1] : false"
   [class.hovered]="hovered">
     <span matListItemTitle>{{ pair[0].metadata.date | shortDate }} to {{ pair[1].metadata.date | shortDate }}</span>
+
     <div class="date" matListItemMeta>{{ pairPerpBaseline(pair)}}m</div>
     <div class="date" matListItemMeta>{{ pairTempBaseline(pair)}}d</div>
+
     <mat-icon
       *ngIf="hyp3able.total > 0"
       class="clickable noselect list-icon"
@@ -22,4 +24,3 @@
     <app-on-demand-add-menu #pairAdd>
     </app-on-demand-add-menu>
 </button>
-

@@ -28,6 +28,10 @@
   display: flex;
 }
 
+.item-title {
+  font-weight: bold;
+}
+
 .mat-mdc-card-actions {
   padding: 0;
   margin: 0;
@@ -127,10 +131,6 @@
   font-size: 14px;
 }
 
-.item-title {
-  font-weight: bold;
-}
-
 .mat-mdc-card-actions {
   pointer-events: none;
 
@@ -178,6 +178,7 @@
     opacity: 1 !important;
   }
 }
+
 
 .login-prompt {
   font-style: italic;
