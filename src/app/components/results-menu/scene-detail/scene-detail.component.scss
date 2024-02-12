@@ -23,13 +23,13 @@ a {
 }
 
 .scrollable {
-  // height: calc(100% - 70px);
   overflow: auto;
 }
 
 .detail-card-header {
   word-break: break-all;
   padding-top: 5px;
+  line-height: 20px;
 }
 
 .detail-card-info {

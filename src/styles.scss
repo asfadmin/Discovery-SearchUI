@@ -818,9 +818,6 @@ $d-height: 500px;
   width:100%;
   height: 100%;
 }
-.mat-mdc-form-field-has-icon-suffix .mat-mdc-text-field-wrapper  {
-  // padding-left: 3 !important;
-}
 
 .breadcrumb-row .mdc-text-field-wrapper {
   height: 50px !important;
@@ -828,4 +825,8 @@ $d-height: 500px;
 .field-test .mdc-text-field {
 	height: 50px !important;
 	background: red !important;
+}
+
+.product-type-selector.mat-mdc-select-panel {
+  max-width: 340px !important;
 }
