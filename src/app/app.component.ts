@@ -67,7 +67,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public interactionTypes = models.MapInteractionModeType;
   public searchType: models.SearchType;
-
   private helpTopic: string | null;
 
   private subs = new SubSink();
