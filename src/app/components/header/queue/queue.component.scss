@@ -3,7 +3,6 @@
 $header-height: 67px;
 $footer-height: 60px;
 $bottom-offset: 10px;
-// $bottom-offset: 62px;
 $warn-msg-height: 27px;
 $warn-msg-mobile-height: 49px;
 $idk-pad: 21px;
@@ -12,8 +11,8 @@ $idk-pad: 21px;
   @include themify($themes) {
     color: themed("dark-primary-text");
   }
+
   padding: 0 10px;
-  /* padding-top: 10px; */
   margin-left: -23px;
   margin-right: -24px;
   margin-top: -44px;
@@ -42,9 +41,9 @@ $idk-pad: 21px;
 
   height: 60px;
   padding: 20px 20px 0;
+  padding-top: 0;
   border-top-style: solid;
   border-top-width: 1px;
-  padding-top: 0px;
 
   min-height: 100%;
   min-width: 100%;
@@ -297,11 +296,11 @@ button {
 }
 
 .product-display {
-  margin-top: 3px; 
+  margin-top: 3px;
   margin-left: 32px;
 }
 
 .product-display-mobile {
-  margin-top: 3px; 
+  margin-top: 3px;
   margin-left: 16px;
 }

@@ -45,7 +45,7 @@ $bottom-offset: 10px;
     header-bottom-color: themed('primary-dark');
   }
 
-  padding: 10px 0px 0 0;
+  padding: 10px 0 0 0;
   border-bottom-style: solid;
   border-bottom-width: 1px;
   width: 100%;
@@ -269,7 +269,8 @@ $bottom-offset: 10px;
   overflow-x: hidden;
   padding: 0;
   margin: 0;
-  /* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version.*/
+
+  /* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version. */
   .mat-dialog-content-2 {
     top: initial;
     height: calc(100% - #{$footer-height});

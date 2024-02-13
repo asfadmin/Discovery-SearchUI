@@ -139,7 +139,7 @@ a {
   line-height: 24px !important;
 }
 
-/*TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version.*/
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .mini-toggle-button .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
   line-height: 24px !important;
   padding: 0 12px;
@@ -225,7 +225,8 @@ a {
   align-items: stretch;
   flex: 1 1 0%;
 }
+
 .no-padding {
-  padding-left: 0px;
-  padding-right: 0px;
+  padding-left: 0;
+  padding-right: 0;
 }

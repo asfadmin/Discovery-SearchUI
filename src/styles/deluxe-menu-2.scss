@@ -117,7 +117,7 @@ $light-grey: rgb(0 0 0 / 60%);
   }
 }
 
-/* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version.*/
+/* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version. */
 .mat-select-arrow {
   width: 0;
   height: 0;
@@ -153,7 +153,7 @@ $light-grey: rgb(0 0 0 / 60%);
   //margin-top: -6px;
 }
 
-/* TODO(mdc-migration): The following rule targets internal classes of menu that may no longer apply for the MDC version.*/
+/* TODO(mdc-migration): The following rule targets internal classes of menu that may no longer apply for the MDC version. */
 ::ng-deep.mat-menu-submenu-icon {
   // visibility: hidden;
 }
