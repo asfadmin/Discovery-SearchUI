@@ -825,3 +825,5 @@ $d-height: 500px;
 .product-type-selector.mat-mdc-select-panel {
   max-width: 340px !important;
 }
+
+ .cdk-overlay-pane:has(.mat-mdc-select-panel) { min-width: fit-content; }
