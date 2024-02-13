@@ -15,7 +15,6 @@ import { combineLatest, Observable } from 'rxjs';
 
 import { filter, map, startWith, tap } from 'rxjs/operators';
 import { ToggleBrowseOverlay} from '@store/map';
-import { MatSliderChange } from '@angular/material/slider';
 
 @Component({
   selector: 'app-map-controls',
@@ -151,11 +150,11 @@ export class MapControlsComponent implements OnInit, OnDestroy {
     this.mapService.zoomOut();
   }
 
-  public onSetOpacity(event: MatSliderChange) {
+  public onSetOpacity(event: any) {
     this.store$.dispatch(new mapStore.SetBrowseOverlayOpacity(event.value));
   }
 
-  public onSetCoherenceOpacity(event: MatSliderChange) {
+  public onSetCoherenceOpacity(event: any) {
     this.store$.dispatch(new mapStore.SetCoherenceOverlayOpacity(event.value));
   }
 

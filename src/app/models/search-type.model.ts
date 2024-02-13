@@ -18,4 +18,18 @@ export const SearchTypeTranslation = {
   'Derived Datasets' : 'DERIVED_DATASETS'
 }
 
+export enum IconType {
+  MATERIAL = 'MATERIAL',
+  IMAGE = 'IMAGE'
+}
+
+export interface SearchTypeSelector {
+  searchType: SearchType;
+  nameKey: string;
+  descriptionKeys: string[];
+  helpUrl: string;
+  icon: string;
+  iconType: IconType;
+}
+
 export const SearchTypes = Object.keys(SearchType);

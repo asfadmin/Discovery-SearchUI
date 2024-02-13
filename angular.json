@@ -15,7 +15,7 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:browser-esbuild",
           "options": {
             "outputPath": "dist/search-ui",
             "index": "src/index.html",
@@ -65,7 +65,6 @@
               "mapbox-to-css-font",
               "polygon-clipping"
             ],
-            "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,
             "sourceMap": true,
@@ -94,18 +93,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "search-ui:build"
+            "buildTarget": "search-ui:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "search-ui:build:production"
+              "buildTarget": "search-ui:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "search-ui:build"
+            "buildTarget": "search-ui:build"
           }
         },
         "test": {

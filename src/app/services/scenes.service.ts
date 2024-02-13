@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Observable, combineLatest } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
-import * as moment from 'moment';
+import moment from 'moment';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store/app.reducer';
 import {

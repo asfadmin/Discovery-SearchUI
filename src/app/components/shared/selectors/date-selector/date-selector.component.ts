@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, OnDestroy, Input } from '@angular/core';
-import * as moment from 'moment';
+import moment from 'moment';
 
 import { combineLatest } from 'rxjs';
 import { filter, map, withLatestFrom } from 'rxjs/operators';
