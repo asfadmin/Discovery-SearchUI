@@ -7,7 +7,7 @@ import * as polygonStyle from './map/polygon.style';
 import Static from 'ol/source/ImageStatic.js';
 import { XYZ } from 'ol/source';
 import { mapOptions } from '@models';
-import TileLayer from 'ol/layer/Tile';
+import TileLayer from 'ol/layer/WebGLTile.js';
 import { Layer, Vector } from 'ol/layer';
 import Polygon from 'ol/geom/Polygon';
 import { Extent, getCenter } from 'ol/extent';
@@ -15,7 +15,6 @@ import VectorSource from 'ol/source/Vector';
 import LayerGroup from 'ol/layer/Group';
 import Projection from 'ol/proj/Projection';
 import { BrowseOverlayService, WktService } from '@services';
-// import ImageSource from 'ol/source/Image';
 interface Dimension {
   width: number;
   height: number;
@@ -56,13 +55,7 @@ export class BrowseMapService {
     const center = getCenter( polygon.getExtent());
 
     const Imagelayer = this.browseOverlayService.createNormalImageLayer(browse, wkt);
-    // const Imagelayer = new ImageLayer({
-    //   source: new Static({
-    //     url: browse,
-    //     imageExtent: polygon.getExtent(),
-    //   }),
-    //   opacity: this.browseLayer?.getOpacity() ?? 1.0
-    // });
+
 
     const mapSource = new XYZ({
       url : `https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=bFwkahiCrAA0526OlsHS`,
