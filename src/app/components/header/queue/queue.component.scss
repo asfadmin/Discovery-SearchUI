@@ -16,7 +16,7 @@ $idk-pad: 21px;
   margin-left: -23px;
   margin-right: -24px;
   margin-top: -44px;
-  margin-top: -$bottom-offset;
+  margin-top: 0;
   h1 {
     margin-top: 0;
   }
@@ -39,7 +39,7 @@ $idk-pad: 21px;
     color: themed("dark-primary-text");
   }
 
-  height: 60px;
+  height: 80px;
   padding: 20px 20px 0;
   padding-top: 0;
   border-top-style: solid;
@@ -230,6 +230,7 @@ button {
 
   position: fixed;
   margin-top: -18px;
+  margin-left: 18px;
 }
 
 .progress-bar {
