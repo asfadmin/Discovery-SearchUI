@@ -6,7 +6,7 @@ import Geometry from 'ol/geom/Geometry';
 import Polygon from 'ol/geom/Polygon';
 import ImageLayer from 'ol/layer/Image';
 import Static from 'ol/source/ImageStatic';
-import Raster from 'ol/source/Raster';
+// import Raster from 'ol/source/Raster';
 
 import { Coordinate } from 'ol/coordinate';
 import MultiPolygon from 'ol/geom/MultiPolygon';
@@ -73,7 +73,6 @@ export class BrowseOverlayService {
   }
 
   private createGeotiffSource(blob: Blob) {
-    console.log('making a geotiff thingy')
     return new GeoTIFFSource({
       sources: [{
          blob,
@@ -88,7 +87,6 @@ export class BrowseOverlayService {
   public createNormalImageLayer(url: string, wkt: string, className: string = 'ol-layer', layer_id: string = '') {
     const feature = this.wktService.wktToFeature(wkt, 'EPSG:3857');
     const polygon = this.getPolygonFromFeature(feature, wkt);
-    console.log(url)
 
     const source = this.createImageSource(url, polygon.getExtent());
 
@@ -107,10 +105,9 @@ export class BrowseOverlayService {
     return output;
   }
 
-  public createGeotiffLayer(blob: Blob, wkt: string, className: string = 'ol-layer', layer_id: string = '') {
-    const feature = this.wktService.wktToFeature(wkt, 'EPSG:3857');
-    const polygon = this.getPolygonFromFeature(feature, wkt);
-    console.log(polygon)
+  public createGeotiffLayer(blob: Blob, _wkt: string, className: string = 'ol-layer', layer_id: string = '') {
+    // const feature = this.wktService.wktToFeature(wkt, 'EPSG:3857');
+    // const polygon = this.getPolygonFromFeature(feature, wkt);
 
     const source = this.createGeotiffSource(blob);
 
@@ -157,37 +154,18 @@ export class BrowseOverlayService {
     const feature = this.wktService.wktToFeature(wkt, 'EPSG:3857');
     const polygon = this.getPolygonFromFeature(feature, wkt);
 
-    const rLayer = new Raster({
-      sources: [new Static({
-        url,
-        imageExtent: polygon.getExtent(),
-      })],
-      // operationType: 'pixel' as RasterOperationType,
-      // operation: (p0: number[][], _) => {
-      //         var pixel = p0[0];
-
-      //       var r = pixel[0];
-      //       var g = pixel[1];
-      //       var b = pixel[2];
-
-      //       if(r + g + b <= 10) {
-      //         return [0, 0, 0, 0];
-      //       }
-      //       // // CIE luminance for the RGB
-      //       // var v = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-
-      //       // pixel[0] = v; // Red
-      //       // pixel[1] = v; // Green
-      //       // pixel[2] = v; // Blue
-      //       // //pixel[3] = 255;
-
-      //       return pixel;
-      //     }
-      // opacity: this.browseLayer?.getOpacity() ?? 1.0
-    });
+    // const _rLayer = new Raster({
+    //   sources: [new Static({
+    //     url,
+    //     imageExtent: polygon.getExtent(),
+    //   })],
+    // });
 
     const Imagelayer = new ImageLayer({
-      source: rLayer,
+      source: new Static({
+        url,
+        imageExtent: polygon.getExtent(),
+      }),
       zIndex: 0,
       extent: polygon.getExtent(),
       opacity: 1.0,
