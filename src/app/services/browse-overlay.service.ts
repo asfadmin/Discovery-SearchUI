@@ -6,7 +6,6 @@ import Geometry from 'ol/geom/Geometry';
 import Polygon from 'ol/geom/Polygon';
 import ImageLayer from 'ol/layer/Image';
 import Static from 'ol/source/ImageStatic';
-// import Raster from 'ol/source/Raster';
 
 import { Coordinate } from 'ol/coordinate';
 import MultiPolygon from 'ol/geom/MultiPolygon';
@@ -106,8 +105,6 @@ export class BrowseOverlayService {
   }
 
   public createGeotiffLayer(blob: Blob, _wkt: string, className: string = 'ol-layer', layer_id: string = '') {
-    // const feature = this.wktService.wktToFeature(wkt, 'EPSG:3857');
-    // const polygon = this.getPolygonFromFeature(feature, wkt);
 
     const source = this.createGeotiffSource(blob);
 
@@ -130,7 +127,6 @@ export class BrowseOverlayService {
         },
         className,
         zIndex: 0,
-        // extent: polygon.getExtent(),
         opacity: 1.0,
       }
     )
@@ -153,13 +149,6 @@ export class BrowseOverlayService {
   public createImageLayer(url: string, wkt: string, className: string = 'ol-layer', layer_id: string = '') {
     const feature = this.wktService.wktToFeature(wkt, 'EPSG:3857');
     const polygon = this.getPolygonFromFeature(feature, wkt);
-
-    // const _rLayer = new Raster({
-    //   sources: [new Static({
-    //     url,
-    //     imageExtent: polygon.getExtent(),
-    //   })],
-    // });
 
     const Imagelayer = new ImageLayer({
       source: new Static({

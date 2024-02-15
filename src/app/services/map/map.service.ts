@@ -28,7 +28,6 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { Icon, Style } from 'ol/style';
 import Geometry from 'ol/geom/Geometry';
-// import ImageLayer from 'ol/layer/Image';
 import LayerGroup from 'ol/layer/Group';
 import { PinnedProduct } from '@services/browse-map.service';
 import { BrowseOverlayService } from '@services';
@@ -43,7 +42,6 @@ import TileLayer from 'ol/layer/WebGLTile.js';
 
 import SimpleGeometry from 'ol/geom/SimpleGeometry';
 import { SetGeocode } from '@store/filters';
-// import ImageSource from 'ol/source/Image';
 import { Extent } from 'ol/extent';
 import { MultiPolygon } from 'ol/geom';
 
