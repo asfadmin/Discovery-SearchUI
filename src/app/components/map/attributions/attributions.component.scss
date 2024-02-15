@@ -2,7 +2,7 @@
 
 @import "asf-theme";
 
-$config: mat.define-typography-config();
+$config: mat.define-legacy-typography-config();
 
 .position-right {
   position: fixed;
@@ -37,7 +37,6 @@ $config: mat.define-typography-config();
   }
   border-style: solid;
   border-width: 1px 0 0 1px;
-  font-family: mat.font-family($config);
   font-weight: 400;
   font-size: 13px;
 }

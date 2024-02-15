@@ -37,6 +37,7 @@
       [isUnzipLoading]="unzippedLoading === product.id"
       [isQueued]="(queuedProductIds$ | async).has(product.id)"
       [isOpen]="false"
+      [isSearchableProduct]="true"
     >
     </app-scene-file>
   </mat-list>

@@ -3,7 +3,7 @@
 @import "asf-theme";
 
 // Create a config with the default typography levels.
-$config: mat.define-typography-config();
+$config: mat.define-legacy-typography-config();
 
 .mat-header-base {
   @include themify_non_host($themes) {

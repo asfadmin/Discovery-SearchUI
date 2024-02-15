@@ -13,7 +13,7 @@ import { ProcessingQueueComponent } from '@components/header/processing-queue';
 import {SubSink} from 'subsink';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { distinctUntilChanged, filter, map } from 'rxjs/operators';
-import * as moment from 'moment';
+import moment from 'moment';
 
 @Component({
   selector: 'app-processing-queue-jobs',

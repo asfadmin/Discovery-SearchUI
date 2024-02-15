@@ -28,7 +28,7 @@ export class RangeOptionComponent  implements OnInit{
     if(this.value > this.range.end) {
       this.value = Math.min(this.range.end, this.value);
     }
-    if(this.value === -0.0) {
+    if(this.value === 0.0) {
       this.value = 0.0;
     }
     if(this.value === null) {

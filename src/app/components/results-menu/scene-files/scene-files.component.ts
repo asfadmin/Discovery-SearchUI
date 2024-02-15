@@ -2,7 +2,7 @@ import {Component, OnInit, OnDestroy, AfterContentInit, Input, ViewChild} from '
 import { SubSink } from 'subsink';
 
 import { combineLatest, of } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -16,7 +16,7 @@ import { AsfApiService, Hyp3Service, NotificationService, ProductService, Sarvie
 import * as models from '@models';
 import { CMRProductMetadata, hyp3JobTypes, SarviewProductGranule, SarviewsProduct } from '@models';
 import { ClipboardService } from 'ngx-clipboard';
-import * as moment from 'moment';
+import moment from 'moment';
 
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { MatSelectionListChange } from '@angular/material/list';
@@ -25,7 +25,7 @@ import { ImageDialogComponent } from '../scene-detail/image-dialog';
 import { MatDialog } from '@angular/material/dialog';
 import { ScreenSizeService } from '@services';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-
+import * as filterStore from '@store/filters';
 
 @Component({
   selector: 'app-scene-files',
@@ -426,36 +426,27 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   public StaticLayerProduct$ = this.store$.select(scenesStore.getSelectedScene).pipe(
       debounceTime(100),
       distinctUntilChanged((prev, curr) => prev?.id === curr?.id),
-      switchMap(scene => {
-        if(!!scene && ['RTC', 'CSLC'].includes(scene?.metadata?.productType) && scene?.id.startsWith('OPERA')) {
+      withLatestFrom(this.store$.select(filterStore.getUseCalibrationData)),
+      switchMap(([scene, useCalibrationData]) => {
+        if(!useCalibrationData && !!scene && ['RTC', 'CSLC'].includes(scene?.metadata?.productType) && scene?.id.startsWith('OPERA')) {
           const queryParams = {
             processinglevel : scene.metadata.productType + '-STATIC',
-            start: scene.metadata.stopDate === null ? '' : moment.utc( scene.metadata.stopDate ).format(),
+            end: scene.metadata.date === null ? '' : moment.utc( scene.metadata.date ).format(),
             operaburstid: scene.metadata?.opera?.operaBurstID,
             dataset: models.opera_s1.apiValue.dataset,
           };
-          return this.asfApiService.query<any[]>(queryParams).pipe(
-            map(products => products.length > 0 ? this.productService.fromResponse(products).slice(0, 1) : [])
+          return this.asfApiService.query<any>(queryParams).pipe(
+            map(products => products?.results?.length > 0 ? this.productService.fromResponse(products).slice(0, 1) : []),
+            tap(products => products.map(product => product.productTypeDisplay = scene.metadata.productType + "-STATIC Layer"))
             );
         } else {
           return of([]);
-
         }
       }
 
     )
   );
-
-    // const queryParams = {
-    //   processinglevel : selectedScene.metadata.productType + '-STATIC',
-    //   start: selectedScene.metadata.stopDate === null ? '' : moment.utc( selectedScene.metadata.stopDate ).format(),
-    //   operaburstid: selectedScene.metadata?.opera?.operaBurstID
-    // }
-
-    // const staticLayer = this.asfApiService.query<any[]>(queryParams).pipe(
-    //   map(products => this.productService.fromResponse(products).slice(0,1))
-    // );
-  // }
+  
   public getProductSceneCount(products: SarviewsProduct[]) {
     const outputList = products.reduce((prev, product) => {
         const temp = product.granules.map(granule => granule.granule_name);

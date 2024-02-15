@@ -1,7 +1,7 @@
 import {Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { tap, delay, map } from 'rxjs/operators';
-import * as moment from 'moment';
+import moment from 'moment';
 import { SubSink } from 'subsink';
 import { UntypedFormGroup, UntypedFormControl  } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
