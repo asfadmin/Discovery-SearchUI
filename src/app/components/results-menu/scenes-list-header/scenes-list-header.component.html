@@ -294,13 +294,13 @@
               {{ 'ADD' | translate }} {{ sbasProducts.length }} {{'FILE' | translate}}{{ sbasProducts.length === 1 ? '' : 's'}} {{'TO_DOWNLOADS' | translate}}
             </button>
 
-            <button *ngIf=" (currentDatasetID$ | async) === 'SENTINEL-1 BURSTS'
+            <button *ngIf="(currentDatasetID$ | async) === 'SENTINEL-1 BURSTS'
             && searchType === SearchTypes.DATASET || (isBurstStack$ | async)"
             mat-menu-item [matMenuTriggerFor]="addAllBurstProducts" [matMenuTriggerData]="{
               'burstData': searchType === SearchTypes.SBAS ? (SBASburstDataProducts$ | async) : (burstDataProducts$ | async),
               'burstMetadata':searchType === SearchTypes.SBAS ? (SBASburstMetadataProducts$ | async) : (burstMetadataProducts$ | async)
             }">
-              {{ searchType !== SearchTypes.SBAS ? downloadableProds.length : (SBASBurstProductsLength$ | async) }} BURST {{'FILE' | translate}}{{ downloadableProds.length === 1 ? '' : 's'}}
+              {{ isBurstStack$ | async }} {{ searchType !== SearchTypes.SBAS ? downloadableProds.length : (SBASBurstProductsLength$ | async) }} BURST {{'FILE' | translate}}{{ downloadableProds.length === 1 ? '' : 's'}}
             </button>
 
             <button mat-menu-item
@@ -311,7 +311,7 @@
             {{ 'ADD_BY_PRODUCT_TYPE' | translate }}
           </button>
           </mat-menu>
-          
+
           <mat-menu #addAllProductsOfType>
             <ng-template matMenuContent let-productData="productData">
               <button mat-menu-item *ngFor="let item of productData | keyvalue" (click)="queueProductsOfType(item.key)">
