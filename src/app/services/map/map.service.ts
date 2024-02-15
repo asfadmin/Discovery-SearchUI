@@ -659,9 +659,9 @@ export class MapService {
     }
     if (!url.endsWith('.tif')) {
       if(url.includes('OPERA')) {
-        console.log('Using a canvas to trim image.')
         this.trimImage(url).then((imageURL: Blob) => {
-          let url = URL.createObjectURL(imageURL)
+          let url = URL.createObjectURL(imageURL);
+          this.clearBrowseOverlays();
           this.browseImageLayer = this.browseOverlayService.createImageLayer(url, wkt, 'ol-layer', 'current-overlay');
           this.map.addLayer(this.browseImageLayer);
         })
