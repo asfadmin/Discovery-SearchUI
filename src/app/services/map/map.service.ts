@@ -578,8 +578,8 @@ export class MapService {
   private trimImage(imageURL) {
     return new Promise((resolve, _reject) => {
       let c = document.createElement('canvas')
-      c.width = 10000
-      c.height = 10000
+      c.width = 5000
+      c.height = 5000
       let ctx = c.getContext('2d')
 
       let base_image = new Image()
