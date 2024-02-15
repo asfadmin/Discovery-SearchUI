@@ -19,6 +19,7 @@ import { LayerService } from './layer.service';
 import { LegacyAreaFormatService } from '../legacy-area-format.service';
 import * as models from '@models';
 import * as sceneStore from '@store/scenes';
+import { HttpClient } from "@angular/common/http";
 
 import * as polygonStyle from './polygon.style';
 import * as views from './views';
@@ -67,6 +68,8 @@ export class MapService {
   private pinnedProducts: LayerGroup = new LayerGroup({ layers: this.pinnedCollection });
 
   private overviewMap: OverviewMap;
+
+  private localBrowseImageURL: string;
 
   private selectClick = new Select({
     condition: click,
@@ -142,6 +145,7 @@ export class MapService {
     private store$: Store<AppState>,
     private browseOverlayService: BrowseOverlayService,
     private layerService: LayerService,
+    private http: HttpClient
   ) { }
 
   public epsg(): string {
@@ -657,8 +661,11 @@ export class MapService {
     }
     if (!url.endsWith('.tif')) {
       if(url.includes('OPERA')) {
-        this.trimImage(url).then((imageURL: Blob) => {
-          let url = URL.createObjectURL(imageURL);
+        this.trimImage(url).then((imageBlob: Blob) => {
+          let url = URL.createObjectURL(imageBlob);
+          URL.revokeObjectURL(this.localBrowseImageURL)
+          this.localBrowseImageURL = url;
+
           this.clearBrowseOverlays();
           this.browseImageLayer = this.browseOverlayService.createImageLayer(url, wkt, 'ol-layer', 'current-overlay');
           this.map.addLayer(this.browseImageLayer);
@@ -668,11 +675,12 @@ export class MapService {
         this.map.addLayer(this.browseImageLayer);
       }
     } else {
-      fetch(url, {
-        credentials: 'include',
-        redirect: 'follow'
-      }).then(response => response.blob()).then((blob) => {
-        this.browseImageLayer = this.browseOverlayService.createGeotiffLayer(blob, wkt, 'ol-layer', 'current-overlay');
+      this.http.get(url, {
+        withCredentials: true,
+        observe: 'response',
+        responseType: 'blob'
+      }).subscribe((response: any) => {
+        this.browseImageLayer = this.browseOverlayService.createGeotiffLayer(response.body, wkt, 'ol-layer', 'current-overlay');
         let s: any = this.browseImageLayer.getSource().getView()!
         s.then((thing: any) => {
           this.map?.getView().fit(thing.extent)

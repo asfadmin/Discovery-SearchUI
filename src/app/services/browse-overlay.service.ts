@@ -79,7 +79,7 @@ export class BrowseOverlayService {
          max: 0.15,
          bands: [1],
          nodata: 0
-      }], 
+      }],
        });
   }
 
