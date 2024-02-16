@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { of } from 'rxjs';
-import { filter, map, switchMap, catchError, withLatestFrom } from 'rxjs/operators';
+import { BehaviorSubject, of } from 'rxjs';
+import { filter, map, switchMap, catchError, tap } from 'rxjs/operators';
 
 import { MapService } from './map/map.service';
 import { AsfApiService } from './asf-api.service';
@@ -11,8 +11,6 @@ import * as models from '@models';
 import { NotificationService } from './notification.service';
 import { Feature } from 'ol';
 import { Geometry, Polygon } from 'ol/geom';
-import { DrawService } from './map/draw.service';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -25,11 +23,17 @@ export class PolygonValidationService {
     private asfApiService: AsfApiService,
     private wktService: WktService,
     private notificationService: NotificationService,
-    private drawService: DrawService,
   ) { }
+
+  public BBOX$: BehaviorSubject<number[]> = new BehaviorSubject<number[]>(null)
 
   public validate(): void {
     this.mapService.searchPolygon$.pipe(
+      tap(wkt => {
+        if(wkt == null) {
+          this.BBOX$.next(null);
+        }
+      }),
       filter(_ => {
         const skip = !this.isUpdatedFromRepair;
         this.isUpdatedFromRepair = false;
@@ -38,13 +42,7 @@ export class PolygonValidationService {
       }),
       filter(p => !!p || this.polygons.has(p)),
       // filter(([_, polygon]) => ),
-      map(([wkt, _]) => wkt),
-      withLatestFrom(this.drawService.polygon$),
-      switchMap(([wkt, polygon]) => {
-          const bbox = this.getRectangleBbox(polygon, this.mapService.epsg())
-          if (bbox.length > 0) {
-            return of({ wkt: { unwrapped: wkt }, repairs: [{ type: models.PolygonRepairTypes.BBOX, report: "The provided rectangle's bounding box will be used instead of the wkt" }] })
-          }
+      switchMap(wkt => {
         return this.asfApiService.validate(wkt).pipe(
           catchError(_ => of(null))
         );
@@ -57,6 +55,7 @@ export class PolygonValidationService {
         if (error) {
           this.displayDrawError(error);
         } else {
+          this.updateBBox(resp);
           this.setValidPolygon(resp);
         }
       }),
@@ -84,7 +83,7 @@ export class PolygonValidationService {
     );
   }
 
-  private setValidPolygon(resp) {
+  private setValidPolygon(resp: models.WKTRepairResponse) {
     this.polygons.add(resp.wkt.unwrapped);
     this.mapService.setDrawStyle(models.DrawPolygonStyle.VALID);
 
@@ -155,14 +154,28 @@ export class PolygonValidationService {
   }
 
   private wrapBbox(bbox: number[]): number[] {
+    // bounds = [(x + 180) % 360 - 180
     return bbox.map(value => {
-      if (value > 180) {
-        value = value % 360 - 360;
-      }
-      if (value < -180) {
-        value = value % 360 + 360;
+      if (Math.abs(value) > 180) {
+        value = (value + 180) % 360 - 180
       }
       return value;
-    });
+    }
+    );
+  }
+
+  public updateBBox(repairResponse: models.WKTRepairResponse): void {
+    if (!this.isRectangle(this.wktService.wktToFeature(repairResponse.wkt.wrapped, this.mapService.epsg()))) {
+      this.BBOX$.next(null);
+    }
+    // if (this.mapService.mapView.view == views.equatorial().view) {
+      const unwrapped = this.wktService.wktToFeature(repairResponse.wkt.unwrapped, this.mapService.epsg())
+      this.BBOX$.next(this.getBbox(unwrapped.getGeometry() as Polygon, this.mapService.epsg()));
+    // } else {
+    //   this.BBOX$.next(null);
+    //   // const wrapped = this.wktService.wktToFeature(repairResponse.wkt.wrapped, this.mapService.epsg())
+    //   // this.BBOX$.next(this.getBbox(wrapped.getGeometry() as Polygon, this.mapService.epsg()));
+    // }
+    
   }
 }

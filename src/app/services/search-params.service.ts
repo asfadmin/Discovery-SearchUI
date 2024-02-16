@@ -76,17 +76,21 @@ export class SearchParamsService {
   private searchPolygon$ = combineLatest([
     this.mapService.searchPolygon$.pipe(startWith(null)),
     this.store$.select(filterStore.getShouldOmitSearchPolygon),
-    this.drawService.polygon$]
+    this.drawService.polygon$,
+    this.polygonValidationService.BBOX$
+  ]
   ).pipe(
-    map(([polygon, shouldOmitGeoRegion, asdf]) => shouldOmitGeoRegion ? null : { polygon: polygon, thing: asdf }),
-    map(polygon => {
-      let feature = polygon.thing;
-        const bbox = this.polygonValidationService.getRectangleBbox(feature, this.mapService.epsg());
-        if (bbox.length > 0) {
-          return { bbox: bbox.join(',') };
+    map(([polygon, shouldOmitGeoRegion, _, bbox]) => shouldOmitGeoRegion ? null : { wkt: polygon, bbox }),
+    map(aoi => {
+        if (!!aoi.bbox) {
+          if (this.mapService.getMapView() == models.MapViewType.EQUATORIAL) {
+            return { bbox: aoi.bbox.join(',') };
+          } else {
+            this.polygonValidationService.BBOX$.next(null);
+          }
         }
 
-      return { intersectsWith: polygon.polygon };
+      return { intersectsWith: aoi.wkt };
     })
   );
 

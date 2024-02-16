@@ -21,6 +21,7 @@ import { WktService } from './wkt.service';
 import { RangeService } from './range.service';
 import { PropertyService } from './property.service';
 import { ThemingService } from './theming.service';
+import { PolygonValidationService } from './polygon-validation.service';
 
 
 @Injectable({
@@ -55,6 +56,7 @@ export class UrlStateService {
     private router: Router,
     private prop: PropertyService,
     private themeService: ThemingService,
+    private polygonValidationService: PolygonValidationService
   ) {
     const params = [
       ...this.datasetParam(),
@@ -585,6 +587,9 @@ export class UrlStateService {
       polygon,
       this.mapService.epsg()
     );
+
+    this.polygonValidationService.updateBBox({wkt: {unwrapped: polygon, wrapped: polygon}, repairs: []})
+    
 
     this.mapService.setDrawFeature(features);
 

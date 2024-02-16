@@ -55,7 +55,7 @@ export class MapService {
     tap(isDrawing => this.map.getViewport().style.cursor = isDrawing ?  'crosshair' : 'default')
   );
 
-  private mapView: views.MapView = views.equatorial();
+  public mapView: views.MapView = views.equatorial();
   private map: Map;
   private scaleLine: ScaleLine;
 
@@ -336,6 +336,17 @@ export class MapService {
     }[viewType];
 
     this.setMap(view, overlay);
+  }
+
+  public getMapView(): models.MapViewType {
+    switch(this.mapView) {
+      case views.antarctic():
+        return models.MapViewType.ANTARCTIC;
+      case views.arctic():
+        return models.MapViewType.ARCTIC;
+      default:
+        return models.MapViewType.EQUATORIAL;
+    }
   }
 
   public clearSelectedScene(): void {
