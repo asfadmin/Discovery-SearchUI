@@ -10,7 +10,7 @@
   overflow-y: hidden;
 }
 
-$config: mat.define-typography-config();
+$config: mat.define-legacy-typography-config();
 .breadcrumb-list {
   @include themify($themes) {
     background-color: themed('background-white');
@@ -54,7 +54,7 @@ $config: mat.define-typography-config();
 }
 
 .breadcrumb {
-  @extend .mat-form-field;
+  @extend .mat-form-field !optional;
 
   @include fx-flex(auto);
 
@@ -67,12 +67,10 @@ $config: mat.define-typography-config();
 }
 
 .search-controls {
-  padding-top: 5px;
 }
 
 .max-results {
   text-align: left;
-  font-family: mat.font-family($config);
   font-size: 14px;
   margin-top: -5px;
   line-height: 28px;
@@ -119,10 +117,12 @@ $config: mat.define-typography-config();
 .copy-icon {
   font-size: 16px;
   margin-left: 10px;
+  padding: 0;
 }
 
 .additional-aoi-toggle {
   margin-left: 3px;
+  padding: 0;
 }
 
 .search-dialog-button {

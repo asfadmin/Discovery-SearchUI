@@ -15,7 +15,7 @@ import { SubSink } from 'subsink';
 import { ResizedEvent } from '@directives/resized.directive';
 import * as userStore from '@store/user';
 import { DownloadFileButtonComponent } from '@components/shared/download-file-button/download-file-button.component';
-import * as UAParser from 'ua-parser-js';
+import UAParser from 'ua-parser-js';
 import { DownloadService } from '@services/download.service';
 // import { DownloadService } from '@services/download.service';
 
@@ -174,7 +174,7 @@ export class QueueComponent implements OnInit, OnDestroy {
       .join('\n');
     this.clipboardService.copyFromContent(productListStr);
     const lines = this.lineCount(productListStr);
-    
+
     if (lines > 0) {
       this.notificationService.clipboardCopyQueue(lines, true);
     }
@@ -195,7 +195,7 @@ export class QueueComponent implements OnInit, OnDestroy {
     if (str === '') {
       return 0;
     }
-    
+
     let length = 1;
     for ( let i = 0; i < str.length; ++i ) {
       if ( str[i] === '\n') {

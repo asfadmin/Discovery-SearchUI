@@ -38,6 +38,7 @@ export class AoiFilterComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private mapService: services.MapService,
     private clipboard: ClipboardService,
+    private notificationService: services.NotificationService
   ) { }
 
   ngOnInit() {
@@ -93,6 +94,7 @@ export class AoiFilterComponent implements OnInit, OnDestroy {
 
   public onCopy(): void {
     this.clipboard.copyFromContent(this.polygon);
+    this.notificationService.info('Copied to clipboard');
   }
 
   private handleAOIErrors(): void {

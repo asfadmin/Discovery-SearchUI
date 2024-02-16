@@ -1,10 +1,6 @@
 {
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "es2020"
-    ],
     "outDir": "../out-tsc/app",
     "types": []
   },

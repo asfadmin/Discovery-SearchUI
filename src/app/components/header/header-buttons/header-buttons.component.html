@@ -1,4 +1,4 @@
-<div *ngIf="breakpoint$ | async as breakpoint">
+<div *ngIf="breakpoint$ | async as breakpoint" class="fx-row">
   <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
     <button
         [matMenuTriggerFor]="onDemandQueue"

@@ -1,41 +1,30 @@
-<mat-list-item
-  (mouseenter)="isHovered = true"
-  (mouseleave)="isHovered = false">
-
+<mat-list-item (mouseenter)="isHovered = true" (mouseleave)="isHovered = false">
   <!--<ng-container matListIcon *ngIf="canUnzip(product)">-->
-  <ng-container matListIcon *ngIf="false">
-    <mat-icon
-      *ngIf="!isUnzipLoading && !isOpen"
-      (click)="onLoadUnzippedProduct()"
+  <ng-container matListItemIcon *ngIf="false">
+    <mat-icon *ngIf="!isUnzipLoading && !isOpen" (click)="onLoadUnzippedProduct()"
       [matTooltip]="unzipTooltip(isUserLoggedIn, hasAccessToRestrictedData)"
       [class.clickable]="!isUnzipDisabled(isUserLoggedIn, hasAccessToRestrictedData)"
       [class.fainter-text]="isUnzipDisabled(isUserLoggedIn, hasAccessToRestrictedData)"
       [class.disabled-cursor]="isUnzipDisabled(isUserLoggedIn, hasAccessToRestrictedData)">
-        keyboard_arrow_right
+      keyboard_arrow_right
     </mat-icon>
-    <mat-icon
-      *ngIf="isOpen"
-      (click)="onCloseProduct()"
-      matTooltip="Close contents"
-      class="clickable">
-        keyboard_arrow_down
+    <mat-icon *ngIf="isOpen" (click)="onCloseProduct()" matTooltip="Close contents" class="clickable">
+      keyboard_arrow_down
     </mat-icon>
     <div *ngIf="isUnzipLoading">
       <fa-icon icon="spinner" [pulse]="true"></fa-icon>
     </div>
   </ng-container>
   <!--<ng-container matListIcon *ngIf="!canUnzip(product)">-->
-  <ng-container matListIcon>
+  <ng-container matListItemIcon>
     <mat-icon mat-icon-button disabled></mat-icon>
   </ng-container>
 
-  <div [class.clickable]="!product.metadata.job" mat-line>
+  <div [class.clickable]="!product.metadata.job" matListItemTitle>
     <b *ngIf="(searchType$ | async) !== searchTypes.CUSTOM_PRODUCTS; else customProductsDisplay">
-      <span *ngIf="product.productTypeDisplay.length > 40">
-        {{ product.productTypeDisplay | truncate : 36 }}{{ product.productTypeDisplay | truncate : -4 : '' }}
+      <span *ngIf="product.productTypeDisplay.length > 40">{{ product.productTypeDisplay | truncate : 36 }}{{ product.productTypeDisplay | truncate : -4 : '' }}
       </span>
-      <span *ngIf="product.productTypeDisplay.length <= 40">
-        {{ product.productTypeDisplay }}
+      <span *ngIf="product.productTypeDisplay.length <= 40">{{ product.productTypeDisplay }}
       </span>
       <span *ngIf="product.metadata.job && product.metadata.job.expiration_time">
         {{ expirationBadge(product.metadata.job.expiration_time) }}
@@ -43,99 +32,82 @@
     </b>
 
     <ng-template #customProductsDisplay>
-    <span *ngIf="product.productTypeDisplay.length > 40">
-      <b style="font-size: 14px;">{{ 'TYPE' | translate }}:</b>
-      {{ product.productTypeDisplay | truncate : 36 }}{{ product.productTypeDisplay | truncate : -4 : '' }}
-    </span>
-    <span *ngIf="product.productTypeDisplay.length <= 40">
-      <b style="font-size: 14px;">{{ 'TYPE' | translate }}:</b>
-      {{ product.productTypeDisplay }}
-    </span>
-    <span *ngIf="product.metadata.job && product.metadata.job.expiration_time">
-      {{ expirationBadge(product.metadata.job.expiration_time) }}
-    </span>
-  </ng-template>
+      <span *ngIf="product.productTypeDisplay.length > 40">
+        <b style="font-size: 14px;">{{ 'TYPE' | translate }}:</b>
+        {{ product.productTypeDisplay | truncate : 36 }}{{ product.productTypeDisplay | truncate : -4 : '' }}
+      </span>
+      <span *ngIf="product.productTypeDisplay.length <= 40">
+        <b style="font-size: 14px;">{{ 'TYPE' | translate }}:</b>
+        {{ product.productTypeDisplay }}
+      </span>
+      <span *ngIf="product.metadata.job && product.metadata.job.expiration_time">
+        {{ expirationBadge(product.metadata.job.expiration_time) }}
+      </span>
+    </ng-template>
 
 
 
     <a *ngIf="isHovered && !product.metadata.job" class="icon-margin">
-      <app-copy-to-clipboard
-        [value]="product.metadata.productType === 'BURST_XML' ? product.id?.split('-XML')[0] : (
+      <app-copy-to-clipboard [value]="product.metadata.productType === 'BURST_XML' ? product.id?.split('-XML')[0] : (
           product.metadata.parentID || product.id
-        )"
-        prompt="{{ 'COPY_FILE_ID' | translate }}">
+        )" prompt="{{ 'COPY_FILE_ID' | translate }}">
       </app-copy-to-clipboard>
     </a>
   </div>
-    <button
-        *ngIf="validHyp3JobTypes.length > 0"
-      [matMenuTriggerFor]="customJobTypes"
-      mat-icon-button>
-      <mat-icon *ngIf="loadingHyp3JobName !== product.name"
-        svgIcon="hyp3"
-        matTooltip="{{ 'ADD_TO_ON_DEMAND_QUEUE' | translate }}">
-      </mat-icon>
-      <fa-icon *ngIf="loadingHyp3JobName === product.name" icon="spinner" [pulse]="true"></fa-icon>
+  <button *ngIf="validHyp3JobTypes.length > 0" [matMenuTriggerFor]="customJobTypes" mat-icon-button matListItemMeta class="hype-icon-button mat-icon-button">
+    <mat-icon *ngIf="loadingHyp3JobName !== product.name" svgIcon="hyp3"
+      matTooltip="{{ 'ADD_TO_ON_DEMAND_QUEUE' | translate }}">
+    </mat-icon>
+    <fa-icon *ngIf="loadingHyp3JobName === product.name" icon="spinner" [pulse]="true"></fa-icon>
 
-      <mat-menu #customJobTypes="matMenu">
-        <button *ngFor="let jobType of validHyp3JobTypes"
-          (click)="addJobToProcessingQueue(jobType)" mat-menu-item>
-            {{ 'ADD' | translate }} {{ jobType.name }} to On Demand
-            <mat-icon (click)="onOpenHelp($event, jobType.infoUrl)" class="clickable" style="margin-left: 10px;">info</mat-icon>
-        </button>
-      </mat-menu>
-    </button>
+    <mat-menu #customJobTypes="matMenu">
+      <button *ngFor="let jobType of validHyp3JobTypes" (click)="addJobToProcessingQueue(jobType)" mat-menu-item>
+        {{ 'ADD' | translate }} {{ jobType.name }} to On Demand
+        <mat-icon (click)="onOpenHelp($event, jobType.infoUrl)" class="clickable"
+          style="margin-left: 10px;">info</mat-icon>
+      </button>
+    </mat-menu>
+  </button>
 
-    <div mat-line class="file-sub-line">
-      <span *ngIf="product.bytes === 0 && !product?.id?.startsWith('OPERA')">{{ 'VIRTUAL'  |  translate }}</span>
-      <span *ngIf="isDownloadable(product) && product.bytes !== 0">{{product.bytes.toString() | readableSizeFromBytes }}</span>
-    </div>
-
-    <div *ngIf="product.metadata.job && product.metadata.job.name" mat-line>
-      <b>{{'PROJECT_NAME' | translate}}:</b> {{ product.metadata.job.name }}
-    </div>
-
-    <div *ngIf="product.metadata.job" mat-line>
-      <b>{{'JOB_SUBMITTED' | translate}}:</b> {{ product.metadata.job.request_time| fullDate }}
-    </div>
-
-    <div *ngFor="let param of paramsList" mat-line>
-      <b>{{ param.name }}:</b> {{ param.val }}
-    </div>
-
-    <app-download-file-button
-      [attr.id]="'scene_' + product.id"
-      [product] = "product"
-      (productDownloaded)="prodDownloaded($event)"
-      [disabled]="isExpired(product.metadata.job)">
-    </app-download-file-button>
-
-    <app-cart-toggle
-      *ngIf="isDownloadable(product)"
-      (toggle)="onToggleQueueProduct()"
-      [isQueued]="isQueued">
-    </app-cart-toggle>
-
-  <div *ngIf="(searchType$ | async) === searchTypes.CUSTOM_PRODUCTS" style="margin-right: 10px;">
-    <button *ngIf="isExpired(product.metadata.job)"
-    [matMenuTriggerFor]="expiredJobs"
-    mat-icon-button>
-      <mat-icon
-      class="clickable"
-        matTooltip="{{ 'ADD_TO_ON_DEMAND_QUEUE' | translate }}"
-        svgIcon="hyp3">
-      </mat-icon>
-    </button>
-    <mat-menu #expiredJobs ='matMenu'>
-
-    <button (click)="queueExpiredHyp3Job()" mat-menu-item>
-      {{ 'ADD_JOB' | translate }}
-    </button>
-  </mat-menu>
+  <div class="file-sub-line" matListItemLine>
+    <span *ngIf="product.bytes === 0 && !product?.id?.startsWith('OPERA')">{{ 'VIRTUAL' | translate }}</span>
+    <span *ngIf="isDownloadable(product) && product.bytes !== 0">{{product.bytes.toString() | readableSizeFromBytes
+      }}</span>
   </div>
 
-    <app-hyp3-job-status-badge
-      *ngIf="!isDownloadable(product)"
-      [job]="product.metadata.job">
-    </app-hyp3-job-status-badge>
+  <div *ngIf="product.metadata.job && product.metadata.job.name" matListItemLine>
+    <b>{{'PROJECT_NAME' | translate}}:</b> {{ product.metadata.job.name }}
+  </div>
+
+  <div *ngIf="product.metadata.job" matListItemLine >
+    <b>{{'JOB_SUBMITTED' | translate}}:</b> {{ product.metadata.job.request_time| fullDate }}
+  </div>
+
+  <div *ngFor="let param of paramsList" matListItemLine>
+    <b>{{ param.name }}:</b> {{ param.val }}
+  </div>
+
+  <app-download-file-button [attr.id]="'scene_' + product.id" [product]="product"
+    (productDownloaded)="prodDownloaded($event)" [disabled]="isExpired(product.metadata.job)" matListItemMeta>
+  </app-download-file-button>
+
+  <app-cart-toggle matListItemMeta *ngIf="isDownloadable(product)" (toggle)="onToggleQueueProduct()"
+    [isQueued]="isQueued">
+  </app-cart-toggle>
+
+  <app-hyp3-job-status-badge *ngIf="!isDownloadable(product)" [job]="product.metadata.job" matListItemMeta>
+  </app-hyp3-job-status-badge>
+  <ng-container *ngIf="(searchType$ | async) === searchTypes.CUSTOM_PRODUCTS" style="margin-right: 10px;" matListItemMeta>
+    <button *ngIf="isExpired(product.metadata.job)" [matMenuTriggerFor]="expiredJobs" mat-icon-button matListItemMeta>
+      <mat-icon class="clickable" matTooltip="{{ 'ADD_TO_ON_DEMAND_QUEUE' | translate }}" svgIcon="hyp3">
+      </mat-icon>
+    </button>
+    <mat-menu #expiredJobs='matMenu'>
+
+      <button (click)="queueExpiredHyp3Job()" mat-menu-item>
+        {{ 'ADD_JOB' | translate }}
+      </button>
+    </mat-menu>
+  </ng-container>
+
 </mat-list-item>

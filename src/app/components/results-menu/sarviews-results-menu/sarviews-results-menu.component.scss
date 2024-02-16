@@ -18,6 +18,8 @@
 
 .more-horiz {
   font-size: 16px !important;
+  margin-left: 0;
+
 }
 
 .space-filler {
@@ -26,7 +28,6 @@
 
 .product-list-header {
   display: flex;
-  // justify-content: space-between;
   padding-right: 15px;
   padding-left: 15px;
 
@@ -34,6 +35,7 @@
     margin-right: 10px;
   }
 
+  /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
   mat-button-toggle-group {
     bottom: 7.5px;
   }

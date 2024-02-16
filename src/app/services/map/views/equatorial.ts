@@ -1,6 +1,8 @@
 import { View } from 'ol';
 import { XYZ } from 'ol/source';
-import { Tile as TileLayer, Graticule as GraticuleLayer } from 'ol/layer';
+import { Graticule as GraticuleLayer } from 'ol/layer';
+import TileLayer from 'ol/layer/WebGLTile.js';
+
 import * as proj from 'ol/proj';
 import { Stroke, Text } from 'ol/style';
 import { MapView, Projection } from './map-view';

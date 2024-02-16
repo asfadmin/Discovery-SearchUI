@@ -1,7 +1,7 @@
 @use "@angular/material" as mat;
 
 @import "asf-theme";
-$config: mat.define-typography-config();
+$config: mat.define-legacy-typography-config();
 
 .mobile-size {
   margin-left: 5px !important;
@@ -122,10 +122,11 @@ $config: mat.define-typography-config();
   white-space: nowrap;
   text-align: center;
   font-size: 12px;
-  margin-left: 0px;
+  margin-left: 0;
   line-height: 15px;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .control-mat-button-toggle {
   @include themify($themes) {
     background-color: themed('background-white');
@@ -152,6 +153,8 @@ $config: mat.define-typography-config();
 
 .scenes-list-button-container {
   width: 100%;
+
+  /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
   mat-button-toggle-group {
     margin: auto
   }

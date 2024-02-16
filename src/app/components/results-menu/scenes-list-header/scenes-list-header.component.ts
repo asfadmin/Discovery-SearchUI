@@ -89,10 +89,11 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     this.store$.select(searchStore.getSearchType),
   ]
   ).pipe(
-    map(([scenes, currentSearchType]) => (currentSearchType ===
-      this.SearchTypes.BASELINE && scenes?.length > 0 ? scenes[0].metadata.productType === 'BURST': false)
-      || (currentSearchType === this.SearchTypes.SBAS
-      )
+    map(([scenes, currentSearchType]) => (
+      currentSearchType === this.SearchTypes.BASELINE &&
+      scenes?.length > 0 ? scenes[0].metadata.productType === 'BURST': false)
+      || (currentSearchType === this.SearchTypes.SBAS &&
+      scenes?.length > 0 ? scenes[0].metadata.productType === 'BURST': false)
     )
   )
 

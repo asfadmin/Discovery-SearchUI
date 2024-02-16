@@ -8,6 +8,8 @@
         breakpoint > breakpoints.MEDIUM &&
         searchType === SearchTypes.BASELINE ? '10px' : 'auto'
     }">
+    <div class="button-flex-row">
+
 
   <div class="image-flex" *ngIf="searchType !== SearchTypes.BASELINE || breakpoint > breakpoints.SMALL">
     <img class="list-thumbnail"
@@ -100,4 +102,5 @@
         [isQueued]="isQueued">
       </app-baseline-scene-controls>
     </ng-container>
+  </div>
 </button>

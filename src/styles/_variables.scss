@@ -36,10 +36,10 @@ $contrast: (
   700: $light-primary-text,
   800: $light-primary-text,
   900: $light-primary-text,
-  a100: $dark-primary-text,
-  a200: $light-primary-text,
-  a400: $light-primary-text,
-  a700: $light-primary-text,
+  A100: $dark-primary-text,
+  A200: $light-primary-text,
+  A400: $light-primary-text,
+  A700: $light-primary-text,
 );
 
 $mat-asf-primary: (
@@ -50,9 +50,13 @@ $mat-asf-primary: (
   400: #c1c2b7,
   500: #a3a499,
   600: #797a70,
-  700: #65665c,
+  700: #65665d,
   800: #46473d,
   900: #24251d,
+  A100 : #fbfcf0,
+  A200 : #fbfcf0,
+  A400 : #fbfcf0,
+  A700 : #fbfcf0,
   contrast: $contrast,
 );
 

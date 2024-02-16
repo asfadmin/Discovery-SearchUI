@@ -5,7 +5,8 @@
     <button
       (click)="onDoSearch()"
       [disabled]="!(canSearch$ | async) && !(isMaxResultsLoading$ | async)"
-      mat-flat-button color="primary">
+      mat-flat-button color="primary"
+      class="search-button">
       {{
       (loading$ | async) ?
         ('LOADING' | translate | uppercase ):

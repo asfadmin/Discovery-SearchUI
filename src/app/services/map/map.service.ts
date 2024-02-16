@@ -19,6 +19,7 @@ import { LayerService } from './layer.service';
 import { LegacyAreaFormatService } from '../legacy-area-format.service';
 import * as models from '@models';
 import * as sceneStore from '@store/scenes';
+import { HttpClient } from "@angular/common/http";
 
 import * as polygonStyle from './polygon.style';
 import * as views from './views';
@@ -28,22 +29,20 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { Icon, Style } from 'ol/style';
 import Geometry from 'ol/geom/Geometry';
-// import ImageLayer from 'ol/layer/Image';
 import LayerGroup from 'ol/layer/Group';
 import { PinnedProduct } from '@services/browse-map.service';
 import { BrowseOverlayService } from '@services';
 import { ViewOptions } from 'ol/View';
-import {Type as GeometryType } from 'ol/geom/Geometry';
+import { Type as GeometryType } from 'ol/geom/Geometry';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 import intersect from '@turf/intersect';
 import lineIntersect from '@turf/line-intersect';
 import Polygon from 'ol/geom/Polygon';
 import LineString from 'ol/geom/LineString';
-import TileLayer from 'ol/layer/Tile';
+import TileLayer from 'ol/layer/WebGLTile.js';
 
 import SimpleGeometry from 'ol/geom/SimpleGeometry';
 import { SetGeocode } from '@store/filters';
-// import ImageSource from 'ol/source/Image';
 import { Extent } from 'ol/extent';
 import { MultiPolygon } from 'ol/geom';
 
@@ -52,7 +51,7 @@ import { MultiPolygon } from 'ol/geom';
 })
 export class MapService {
   public isDrawing$ = this.drawService.isDrawing$.pipe(
-    tap(isDrawing => this.map.getViewport().style.cursor = isDrawing ?  'crosshair' : 'default')
+    tap(isDrawing => this.map.getViewport().style.cursor = isDrawing ? 'crosshair' : 'default')
   );
 
   public mapView: views.MapView = views.equatorial();
@@ -64,11 +63,13 @@ export class MapService {
   private browseImageLayer: Layer;
 
   private gridLinesVisible: boolean;
-  private sarviewsFeaturesByID: {[id: string]: Feature} = {};
-  private pinnedCollection: Collection<Layer> = new Collection<Layer>([], {unique: true});
-  private pinnedProducts: LayerGroup = new LayerGroup({layers: this.pinnedCollection});
+  private sarviewsFeaturesByID: { [id: string]: Feature } = {};
+  private pinnedCollection: Collection<Layer> = new Collection<Layer>([], { unique: true });
+  private pinnedProducts: LayerGroup = new LayerGroup({ layers: this.pinnedCollection });
 
   private overviewMap: OverviewMap;
+
+  private localBrowseImageURL: string;
 
   private selectClick = new Select({
     condition: click,
@@ -144,7 +145,8 @@ export class MapService {
     private store$: Store<AppState>,
     private browseOverlayService: BrowseOverlayService,
     private layerService: LayerService,
-  ) {}
+    private http: HttpClient
+  ) { }
 
   public epsg(): string {
     return this.mapView.projection.epsg;
@@ -219,12 +221,12 @@ export class MapService {
   }
 
   public setEventsLayer(layer: VectorLayer<VectorSource>): void {
-      if (!!this.sarviewsEventsLayer) {
-        this.map.removeLayer(this.sarviewsEventsLayer);
-      }
+    if (!!this.sarviewsEventsLayer) {
+      this.map.removeLayer(this.sarviewsEventsLayer);
+    }
 
-      this.sarviewsEventsLayer = layer;
-      this.map.addLayer(layer);
+    this.sarviewsEventsLayer = layer;
+    this.map.addLayer(layer);
   }
 
   public sarviewsEventsToFeatures(events: SarviewsEvent[], projection: string): Feature<Geometry>[] {
@@ -273,7 +275,7 @@ export class MapService {
 
         return feature;
       });
-      return features;
+    return features;
   }
 
   public setOverlayUpdate(updateCallback): void {
@@ -506,7 +508,7 @@ export class MapService {
     });
 
     newMap.on('pointermove', e => {
-      const [ lon, lat ] = proj.toLonLat(e.coordinate, this.epsg());
+      const [lon, lat] = proj.toLonLat(e.coordinate, this.epsg());
       this.mousePositionSubject$.next({ lon, lat });
     });
 
@@ -548,7 +550,7 @@ export class MapService {
       const zoom = view.getZoom();
 
       this.zoom$.next(zoom);
-      this.center$.next({lon, lat});
+      this.center$.next({ lon, lat });
     });
 
     return newMap;
@@ -558,7 +560,7 @@ export class MapService {
     if (this.map.getView().getProjection().getCode() !== this.mapView.projection.epsg) {
       this.map.setView(this.mapView.view);
 
-      const overviewMapViewOptions = {...this.mapView.view.getProperties()} as ViewOptions;
+      const overviewMapViewOptions = { ...this.mapView.view.getProperties() } as ViewOptions;
       overviewMapViewOptions.center = this.map.getView().getCenter();
 
       this.overviewMap.getOverviewMap().setView(new View(overviewMapViewOptions));
@@ -580,18 +582,123 @@ export class MapService {
     const mapLayers = this.map.getLayers();
     mapLayers.setAt(0, this.mapView.layer);
 
-    const controlLayer = new TileLayer({source: this.mapView.layer.getSource()});
+    const controlLayer = new TileLayer({ source: this.mapView.layer.getSource() });
     this.overviewMap.getOverviewMap().getLayers().setAt(0, controlLayer);
 
     return this.map;
+  }
+
+  private trimImage(imageURL) {
+    return new Promise((resolve, _reject) => {
+      let c = document.createElement('canvas')
+      c.width = 5000
+      c.height = 5000
+      let ctx = c.getContext('2d')
+
+      let base_image = new Image()
+      base_image.crossOrigin = 'Anonymous';
+
+      base_image.src = imageURL
+      base_image.onload = () => {
+
+        ctx.drawImage(base_image, 0, 0)
+        let copy = document.createElement('canvas').getContext('2d'),
+          pixels = ctx.getImageData(0, 0, c.width, c.height),
+          l = pixels.data.length,
+          i,
+          bound = {
+            top: null,
+            left: null,
+            right: null,
+            bottom: null
+          },
+          x, y;
+
+        // Iterate over every pixel to find the highest
+        // and where it ends on every axis ()
+        for (i = 0; i < l; i += 4) {
+          if (pixels.data[i + 3] !== 0) {
+            x = (i / 4) % c.width;
+            y = ~~((i / 4) / c.width);
+
+            if (bound.top === null) {
+              bound.top = y;
+            }
+
+            if (bound.left === null) {
+              bound.left = x;
+            } else if (x < bound.left) {
+              bound.left = x;
+            }
+
+            if (bound.right === null) {
+              bound.right = x;
+            } else if (bound.right < x) {
+              bound.right = x;
+            }
+
+            if (bound.bottom === null) {
+              bound.bottom = y;
+            } else if (bound.bottom < y) {
+              bound.bottom = y;
+            }
+          }
+        }
+
+        // Calculate the height and width of the content
+        let trimHeight = bound.bottom - bound.top,
+          trimWidth = bound.right - bound.left,
+          trimmed = ctx.getImageData(bound.left, bound.top, trimWidth, trimHeight);
+
+        copy.canvas.width = trimWidth;
+        copy.canvas.height = trimHeight;
+
+
+        // ctx.globalCompositeOperation = 'multiply';
+        copy.putImageData(trimmed, 0, 0);
+
+        // Return trimmed canvas
+        copy.canvas.toBlob((blob) => {
+          resolve(blob)
+        }, 'image/jpeg')
+      }
+    })
+
   }
 
   public setSelectedBrowse(url: string, wkt: string) {
     if (!!this.browseImageLayer) {
       this.map.removeLayer(this.browseImageLayer);
     }
-    this.browseImageLayer = this.browseOverlayService.createNormalImageLayer(url, wkt, 'ol-layer', 'current-overlay');
-    this.map.addLayer(this.browseImageLayer);
+    if (!url.endsWith('.tif')) {
+      if(url.includes('OPERA')) {
+        this.trimImage(url).then((imageBlob: Blob) => {
+          let url = URL.createObjectURL(imageBlob);
+          URL.revokeObjectURL(this.localBrowseImageURL)
+          this.localBrowseImageURL = url;
+
+          this.clearBrowseOverlays();
+          this.browseImageLayer = this.browseOverlayService.createImageLayer(url, wkt, 'ol-layer', 'current-overlay');
+          this.map.addLayer(this.browseImageLayer);
+        })
+      } else {
+        this.browseImageLayer = this.browseOverlayService.createNormalImageLayer(url, wkt, 'ol-layer', 'current-overlay');
+        this.map.addLayer(this.browseImageLayer);
+      }
+    } else {
+      this.http.get(url, {
+        withCredentials: true,
+        observe: 'response',
+        responseType: 'blob'
+      }).subscribe((response: any) => {
+        this.browseImageLayer = this.browseOverlayService.createGeotiffLayer(response.body, wkt, 'ol-layer', 'current-overlay');
+        let s: any = this.browseImageLayer.getSource().getView()!
+        s.then((thing: any) => {
+          this.map?.getView().fit(thing.extent)
+        })
+        this.map.addLayer(this.browseImageLayer);
+      })
+    }
   }
 
   public setCoherenceLayer(months: string): void {
@@ -627,7 +734,7 @@ export class MapService {
     });
   }
 
-  public setPinnedProducts(pinnedProductStates: {[product_id in string]: PinnedProduct}) {
+  public setPinnedProducts(pinnedProductStates: { [product_id in string]: PinnedProduct }) {
     this.browseOverlayService.setPinnedProducts(pinnedProductStates, this.pinnedProducts);
   }
 
