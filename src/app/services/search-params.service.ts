@@ -16,8 +16,6 @@ import { MapService } from './map/map.service';
 import { RangeService } from './range.service';
 
 import * as models from '@models';
-import { DrawService } from './map/draw.service';
-import { PolygonValidationService } from './polygon-validation.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -26,8 +24,6 @@ export class SearchParamsService {
     private store$: Store<AppState>,
     private mapService: MapService,
     private rangeService: RangeService,
-    private drawService: DrawService,
-    private polygonValidationService: PolygonValidationService
   ) { }
 
 

@@ -21,7 +21,6 @@ import { WktService } from './wkt.service';
 import { RangeService } from './range.service';
 import { PropertyService } from './property.service';
 import { ThemingService } from './theming.service';
-import { PolygonValidationService } from './polygon-validation.service';
 
 
 @Injectable({
@@ -55,8 +54,7 @@ export class UrlStateService {
     private rangeService: RangeService,
     private router: Router,
     private prop: PropertyService,
-    private themeService: ThemingService,
-    private polygonValidationService: PolygonValidationService
+    private themeService: ThemingService
   ) {
     const params = [
       ...this.datasetParam(),
