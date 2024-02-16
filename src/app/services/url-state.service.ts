@@ -588,9 +588,6 @@ export class UrlStateService {
       this.mapService.epsg()
     );
 
-    this.polygonValidationService.updateBBox({wkt: {unwrapped: polygon, wrapped: polygon}, repairs: []})
-    
-
     this.mapService.setDrawFeature(features);
 
     return;
