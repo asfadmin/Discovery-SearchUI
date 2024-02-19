@@ -13,6 +13,7 @@ import { filter } from 'rxjs/operators';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import { SearchType } from '@models';
+import * as filterStore from '@store/filters';
 
 @Component({
   selector: 'app-scene-file',
@@ -28,6 +29,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   @Input() validHyp3JobTypes: models.Hyp3JobType[];
   @Input() hasAccessToRestrictedData: boolean;
   @Input() loadingHyp3JobName: string | null;
+  @Input() isSearchableProduct: boolean = false;
 
   @Output() toggle = new EventEmitter<void>();
   @Output() unzip = new EventEmitter<models.CMRProduct>();
@@ -90,7 +92,6 @@ export class SceneFileComponent implements OnInit, OnDestroy {
 
   private isRestrictedDataset(): boolean {
     return (
-      this.product.dataset.includes('RADARSAT-1') ||
       this.product.dataset.includes('JERS-1')
     );
   }
@@ -171,6 +172,25 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   }
 
   public prodDownloaded( _product ) {
+  }
+
+  public onSearchProduct() {
+    if(['RTC-STATIC', 'CSLC-STATIC'].includes(this.product.metadata.productType)) {
+      const processinglevel = this.product.metadata.productType;
+      const productType = models.opera_s1.productTypes.find(product => product.apiValue == processinglevel);
+      const operaburstid = this.product.metadata?.opera?.operaBurstID;
+      
+      [
+        new searchStore.SetSearchType(models.SearchType.DATASET),
+        new filterStore.ClearDatasetFilters(),
+        new filterStore.SetSelectedDataset(models.opera_s1.apiValue.dataset),
+        new filterStore.SetProductTypes([productType]),
+        new filterStore.setOperaBurstID([operaburstid]),
+        new searchStore.MakeSearch()
+      ].forEach(
+        action => this.store$.dispatch(action)
+      )
+  }
   }
 
   ngOnDestroy() {

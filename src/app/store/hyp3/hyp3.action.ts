@@ -1,16 +1,15 @@
 import { Action } from '@ngrx/store';
 
-import { Hyp3Job, Hyp3User, Hyp3ProcessingOptions, OnDemandSubscription } from '@models';
+import { Hyp3Job, Hyp3User, Hyp3ProcessingOptions } from '@models';
 
 export enum Hyp3ActionType {
   LOAD_JOBS = '[Hyp3] Load Jobs',
   SET_JOBS = '[Hyp3] Set Jobs',
 
-  LOAD_SUBSCRIPTIONS = '[Hyp3] Load Subscriptions',
-  SET_SUBSCRIPTIONS = '[Hyp3] Set Subscriptions',
-
   SET_PROCESSING_OPTIONS = '[Hyp3] Set Processing Options',
   SET_PROCESSING_PROJECT_NAME = '[Hyp3] Set Processing Project Name',
+
+  SET_ON_DEMAND_USER_ID = '[Hyp3] Set On Demand User ID',
 
   LOAD_USER = '[Hyp3] Load User',
   SET_USER = '[Hyp3] Set User',
@@ -33,16 +32,6 @@ export class SetJobs implements Action {
   constructor(public payload: Hyp3Job[]) {}
 }
 
-export class LoadSubscriptions implements Action {
-  public readonly type = Hyp3ActionType.LOAD_SUBSCRIPTIONS;
-}
-
-export class SetSubscriptions implements Action {
-  public readonly type = Hyp3ActionType.SET_SUBSCRIPTIONS;
-
-  constructor(public payload: OnDemandSubscription[]) {}
-}
-
 export class SetProcessingOptions implements Action {
   public readonly type = Hyp3ActionType.SET_PROCESSING_OPTIONS;
 
@@ -54,6 +43,12 @@ export class ClearProcessingOptions implements Action {
 }
 export class SetProcessingProjectName implements Action {
   public readonly type = Hyp3ActionType.SET_PROCESSING_PROJECT_NAME;
+
+  constructor(public payload: string) {}
+}
+
+export class SetOnDemandUserID implements Action {
+  public readonly type = Hyp3ActionType.SET_ON_DEMAND_USER_ID;
 
   constructor(public payload: string) {}
 }
@@ -89,14 +84,13 @@ export class ErrorLoadingUser implements Action {
 export type Hyp3Actions =
   | LoadJobs
   | SetJobs
-  | LoadSubscriptions
-  | SetSubscriptions
   | LoadUser
   | SetUser
   | ErrorLoadingUser
   | SetProcessingOptions
   | ClearProcessingOptions
   | SetProcessingProjectName
+  | SetOnDemandUserID
   | SubmitJob
   | SuccessfulJobSubmission
   | ErrorJobSubmission;

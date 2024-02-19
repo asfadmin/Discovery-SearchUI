@@ -25,6 +25,18 @@
                 [optionInfo]="option.info | translate"
                 class="margin-right">
               </app-dropdown-option>
+              <app-range-option
+              *ngIf="option.type === 'RANGE'"
+              (valueChange)="onSetOptionValue(option.apiName, $event)"
+                [value]="optionValues[option.apiName]"
+                [optionName]="option.name |uppercase | translate"
+                [optionInfo]="option.info | translate"
+                [range]="option.range"
+                [default]="option.default"
+                class="margin-right"
+              >
+
+              </app-range-option>
             </div>
           </div>
         </div>

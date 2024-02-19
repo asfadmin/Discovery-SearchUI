@@ -16,6 +16,7 @@ export interface CMRProduct {
   dataset: string;
   groupId: string;
   isUnzippedFile: boolean;
+  isDummyProduct: boolean;
 
   metadata: CMRProductMetadata;
 }
@@ -57,11 +58,18 @@ export interface CMRProductMetadata {
   // SLC BURST
   burst: SLCBurstMetadata | null;
 
+  // OPERA-S1
+  opera: OperaS1Metadata | null;
+
   fileName: string | null;
   job: Hyp3Job | null;
 
   // versioning
   pgeVersion: number | null;
+
+  // BURST XML, OPERA-S1
+  subproducts: any[];
+  parentID: string;
 }
 
 export interface SLCBurstMetadata {
@@ -73,6 +81,12 @@ export interface SLCBurstMetadata {
   azimuthAnxTime: string;
   samplesPerBurst: number;
   subswath: string;
+}
+
+export interface OperaS1Metadata {
+  operaBurstID: string;
+  additionalUrls: string[];
+  validityStartDate?: moment.Moment | null;
 }
 
 export enum FlightDirection {

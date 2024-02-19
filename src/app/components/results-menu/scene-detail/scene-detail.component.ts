@@ -119,7 +119,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     );
 
     const scene$ = this.store$.select(scenesStore.getSelectedScene).pipe(
-      distinctUntilChanged((previous, current) => previous?.id === current?.id),
+      distinctUntilChanged(),
       tap(_ => this.isImageLoading = true)
     );
 
@@ -211,9 +211,11 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   }
 
   public sceneCanInSAR(): boolean {
-    return this.dataset.id === models.sentinel_1.id ? true : this.selectedProducts
-      .map(product => product.metadata.canInSAR)
-      .some(canInSAR => !!canInSAR);
+    return this.dataset.id === models.sentinel_1.id ||
+      this.selectedProducts
+        .map(product => product.metadata.canInSAR)
+        .some(canInSAR => !!canInSAR);
+    ;
   }
 
   public baselineSceneName(): string {
@@ -223,7 +225,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
     if (this.dataset.id === models.sentinel_1.id) {
       return this.selectedProducts.filter(
-          product => product.metadata.productType === 'SLC' || product.metadata.productType === 'BURST'
+        product => product.metadata.productType === 'SLC' || product.metadata.productType === 'BURST'
       )[0].name;
     } else {
       return this.scene.name;
@@ -233,8 +235,8 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public sceneHasBrowse() {
     return (
       !!this.scene.browses &&
-      this.scene.browses.length > 0 &&
-      !this.scene?.browses[0].includes('no-browse')
+        this.scene.browses.length > 0 &&
+        !this.scene?.browses[0].includes('no-browse')
     );
   }
 
@@ -312,9 +314,14 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     }
 
     this.browseIndex = newIndex;
-    const [url, wkt] = this.searchType === this.searchTypes.SARVIEWS_EVENTS
-    ? [this.selectedEventProducts[this.browseIndex].files.browse_url, this.selectedEventProducts[this.browseIndex]?.granules[0].wkt]
-    : [this.scene.browses[this.browseIndex], this.scene.metadata.polygon];
+    let [url, wkt] = this.searchType === this.searchTypes.SARVIEWS_EVENTS
+      ? [this.selectedEventProducts[this.browseIndex].files.browse_url, this.selectedEventProducts[this.browseIndex]?.granules[0].wkt]
+      : [this.scene.browses[this.browseIndex], this.scene.metadata.polygon];
+
+    // for OPERA-S1 geotiffs
+    // if(this.scene?.id.startsWith('OPERA')) {
+    //   url = this.scene.downloadUrl;
+    // }
 
     this.mapService.setSelectedBrowse(url, wkt);
   }
@@ -360,7 +367,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
       this.makeSarviewsEventGeoSearch();
     } else {
       const scene = this.scene;
-      const shouldClear = this.searchType !== models.SearchType.DATASET;
+      const shouldClear = this.searchType !== models.SearchType.DATASET || this.dataset.id === 'OPERA-S1';
       const dateRange = this.dateRange;
 
       this.store$.dispatch(new searchStore.SetSearchType(models.SearchType.DATASET));
@@ -382,6 +389,17 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     }
   }
 
+  public staticLayer(){
+    const operaBurstID = this.scene.metadata.opera.operaBurstID;
+    const sensorDate = new Date(this.scene.metadata.date.toDate());
+    const staticType = this.scene.metadata.productType + '-STATIC'
+    this.store$.dispatch(new searchStore.ClearSearch());
+    this.store$.dispatch(new filtersStore.SetSelectedDataset('OPERA-S1'))
+    this.store$.dispatch(new filtersStore.setOperaBurstID([operaBurstID]));
+    this.store$.dispatch(new filtersStore.SetProductTypes([models.opera_s1.productTypes.find(t => t.apiValue === staticType)]));
+    this.store$.dispatch(new filtersStore.SetEndDate(sensorDate));
+    this.store$.dispatch(new searchStore.MakeSearch());
+  }
   public makeBaselineSearch(): void {
     const sceneName = this.baselineSceneName();
     const dateRange = this.dateRange;
@@ -430,7 +448,6 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
   public isRestrictedDataset(): boolean {
     return (
-      this.scene.dataset.includes('RADARSAT-1') ||
       this.scene.dataset.includes('JERS-1')
     );
   }
@@ -481,7 +498,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
   private getBrowseCount() {
     return this.searchType === this.searchTypes.SARVIEWS_EVENTS
-    ? this.selectedEventProducts.length : this.scene.browses.length;
+      ? this.selectedEventProducts.length : this.scene.browses.length;
   }
 
   ngOnDestroy() {

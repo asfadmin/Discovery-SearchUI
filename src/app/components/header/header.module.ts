@@ -32,6 +32,7 @@ import { ProjectNameSelectorModule } from '@components/shared/selectors/project-
 import { JobStatusSelectorModule } from '@components/shared/selectors/job-status-selector';
 import { JobProductNameSelectorModule } from '@components/shared/selectors/job-product-name-selector';
 import { SarviewsEventSearchSelectorModule } from '@components/shared/selectors/sarviews-event-search-selector';
+import { OnDemandUserSelectorModule} from '@components/shared/selectors/on-demand-user-selector';
 import { LogoModule } from '@components/header/logo/logo.module';
 
 import { HeaderComponent } from './header.component';
@@ -45,7 +46,6 @@ import { AoiFilterComponent } from './dataset-header/aoi-filter/aoi-filter.compo
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MasterSceneSelectorModule } from '@components/shared/selectors/master-scene-selector';
-import { CreateSubscriptionModule } from './create-subscription/create-subscription.module';
 import { CiSearchModule } from './info-bar/ci-search/ci-search.module';
 import { SarviewsEventTypeSelectorModule } from '@components/shared/selectors/sarviews-event-type-selector';
 import { Hyp3UrlModule } from '@components/shared/hyp3-url/hyp3-url.module';
@@ -93,14 +93,14 @@ import { LanguageSelectorModule } from "@components/shared/selectors/language-se
     ProjectNameSelectorModule,
     JobStatusSelectorModule,
     JobProductNameSelectorModule,
-    CreateSubscriptionModule,
     CiSearchModule,
     SarviewsEventSearchSelectorModule,
     SarviewsEventTypeSelectorModule,
     Hyp3UrlModule,
     SharedModule,
     LanguageSelectorModule,
-    LayerModalModule
+    LayerModalModule,
+    OnDemandUserSelectorModule,
   ],
   exports: [
     HeaderComponent

@@ -7,7 +7,7 @@ import * as sceneStore from '@store/scenes';
 import {MapService, ScreenSizeService} from '@services';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
-import * as moment from 'moment';
+import moment from 'moment';
 
 @Component({
   selector: 'app-sarviews-event',

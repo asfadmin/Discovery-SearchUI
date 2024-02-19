@@ -50,6 +50,11 @@ export interface FiltersState {
   geocode: null | string;
 
   fullBurstIDs: null | string[];
+  
+  operaBurstIDs: null | string[];
+  useCalibrationData: boolean; // used to toggle OPERA-S1 Calval (calibration) datasets
+
+  groupID: null | string;
 }
 
 
@@ -120,7 +125,12 @@ export const initState: FiltersState = {
 
   geocode: null,
 
-  fullBurstIDs: []
+  fullBurstIDs: [],
+
+  operaBurstIDs: [],
+  useCalibrationData: false,
+
+  groupID: null
 };
 
 
@@ -142,6 +152,8 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         polarizations: [],
         subtypes: [],
         fullBurstIDs: [],
+        operaBurstIDs: [],
+        useCalibrationData: false,
         selectedMission: null,
       };
     }
@@ -350,6 +362,12 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           fullBurstIDs: [metadata.burst.fullBurstID],
         }
       }
+      if(action.payload.dataset.id === models.opera_s1.id) {
+        filters = {
+          groupID: action.payload.product.groupId,
+          selectedDatasetId: 'SENTINEL-1'
+        }
+      }
       return {
         ...state,
         ...filters
@@ -394,7 +412,10 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         flightDirections: new Set<models.FlightDirection>([]),
         selectedMission: null,
         geocode: null,
-        fullBurstIDs: []
+        fullBurstIDs: [],
+        operaBurstIDs: [],
+        useCalibrationData: false,
+        groupID: null
       };
     }
 
@@ -610,7 +631,9 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           flightDirections: new Set(filters.flightDirections),
           subtypes,
           selectedMission: filters.selectedMission,
-          fullBurstIDs: filters.fullBurstIDs
+          fullBurstIDs: filters.fullBurstIDs,
+          operaBurstIDs: filters.operaBurstIDs,
+          useCalibrationData: filters.useCalibrationData,
         };
       }
     }
@@ -724,6 +747,24 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       return {
         ...state,
         fullBurstIDs: action.payload
+      }
+    }
+    case FiltersActionType.SET_OPERA_BURST_ID: {
+      return {
+        ...state,
+        operaBurstIDs: action.payload
+      }
+    }
+    case FiltersActionType.SET_INCLUDE_CALIBRATION_DATA: {
+      return {
+        ...state,
+        useCalibrationData: action.payload
+      }
+    }
+    case FiltersActionType.SET_GROUP_ID: {
+      return {
+        ...state,
+        groupID: action.payload
       }
     }
     default: {
@@ -897,7 +938,9 @@ export const getGeographicSearch = createSelector(
     flightDirections: state.flightDirections,
     subtypes: state.subtypes,
     selectedMission: state.selectedMission,
-    fullBurstIDs: state.fullBurstIDs
+    fullBurstIDs: state.fullBurstIDs,
+    operaBurstIDs: state.operaBurstIDs,
+    useCalibrationData: state.useCalibrationData
   })
 );
 
@@ -1007,4 +1050,19 @@ export const getGeocodeArea = createSelector(
 export const getFullBurstIDs = createSelector(
   getFiltersState,
   (state: FiltersState) => state.fullBurstIDs
+)
+
+export const getOperaBurstIDs = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.operaBurstIDs
+)
+
+export const getUseCalibrationData = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.useCalibrationData
+)
+
+export const getGroupID = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.groupID
 )

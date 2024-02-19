@@ -5,7 +5,7 @@ import { ConfirmationComponent } from './confirmation/confirmation.component';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
-import * as moment from 'moment';
+import moment from 'moment';
 import { of, from } from 'rxjs';
 import { tap, catchError, delay, concatMap, finalize } from 'rxjs/operators';
 
@@ -16,8 +16,6 @@ import * as userStore from '@store/user';
 import * as uiStore from '@store/ui';
 import * as models from '@models';
 import * as services from '@services';
-
-import { CreateSubscriptionComponent } from '../../header/create-subscription';
 
 enum ProcessingQueueTab {
   SCENES = 'Scenes',
@@ -168,14 +166,6 @@ export class ProcessingQueueComponent implements OnInit {
         });
       }
     );
-  }
-
-  public openSubscriptionDialog() {
-    this.dialog.open(CreateSubscriptionComponent, {
-      id: 'subscriptionQueueDialog',
-      maxWidth: '100vw',
-      maxHeight: '100vh',
-    });
   }
 
   public daysUntilExpiration(expiration_time: moment.Moment): string {

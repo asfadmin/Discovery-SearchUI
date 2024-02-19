@@ -1,4 +1,8 @@
 <ul *ngIf="scene !== null" class="scene-metadata">
+  <li *ngIf="scene.isDummyProduct">
+    <b>Loading Metadata...</b>
+  </li>
+
   <li *ngIf="scene.metadata.perpendicular !== null">
     <span class="v-mid"><b>{{ 'PERPENDICULAR' | translate }}</b> • {{ scene.metadata.perpendicular + offsets.perpendicular }}</span>
   </li>
@@ -7,7 +11,7 @@
     <span class="v-mid"><b>{{ 'TEMPORAL' | translate }}</b> • {{ scene.metadata.temporal + offsets.temporal }}</span>
   </li>
 
-  <li *ngIf="prop.isRelevant(p.DATE, dataset)">
+  <li *ngIf="prop.isRelevant(p.DATE, dataset) && !scene.metadata?.opera?.validityStartDate">
     <span class="v-mid"><b>{{ 'START_TIME' | translate }}</b> • {{ scene.metadata.date | shortDateTime }}</span>
     <mat-icon *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addSceneDateMenu"
@@ -21,7 +25,7 @@
     </mat-menu>
   </li>
 
-  <li *ngIf="prop.isRelevant(p.DATE, dataset)">
+  <li *ngIf="prop.isRelevant(p.DATE, dataset) && !scene.metadata?.opera?.validityStartDate">
     <span class="v-mid"><b>{{ 'STOP_TIME' | translate }}</b> • {{ scene.metadata.stopDate | shortDateTime }}</span>
     <mat-icon *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addSceneStopDateMenu"
@@ -35,9 +39,26 @@
     </mat-menu>
   </li>
 
+  <li *ngIf="!!scene.metadata?.opera?.validityStartDate">
+    <span class="v-mid">
+      <b>{{ 'Validity Start Date' }}</b> • {{ scene.metadata.opera.validityStartDate | shortDateTime }}
+    </span>
+
+    <mat-icon *ngIf="isGeoSearch()"
+      [matMenuTriggerFor]="addSceneStopDateMenu"
+      class="v-mid clickable">
+        settings
+    </mat-icon>
+
+    <mat-menu #addSceneStopDateMenu="matMenu">
+      <button (click)="setStartDate(scene.metadata.opera.validityStartDate)" mat-menu-item>{{ 'SET_AS_START_DATE' | translate }}</button>
+      <button (click)="setEndDate(scene.metadata.opera.validityStartDate)" mat-menu-item>{{ 'SET_AS_END_DATE' | translate }}</button>
+    </mat-menu>
+  </li>
+
   <li *ngIf="prop.isRelevant(p.BEAM_MODE, dataset)">
     <span class="v-mid"><b>{{ 'BEAM_MODE' |translate }} </b> • {{ scene.metadata.beamMode }}</span>
-    <mat-icon *ngIf="isGeoSearch()"
+    <mat-icon *ngIf="isGeoSearch() && dataset.id !== 'OPERA-S1'"
       [matMenuTriggerFor]="addBeamModeMenu"
       class="v-mid clickable">
         settings
@@ -155,6 +176,17 @@
 
   <li *ngIf="hasValue(scene.metadata.pgeVersion)" class="detail-item-margin">
     <b> {{ 'PGE_VERSION' | translate }} </b> • {{ scene.metadata.pgeVersion }}
+  </li>
+
+  <li *ngIf="!!scene.metadata.opera">
+    <b> {{'OPERA_BURST_ID' | translate }} </b> • {{scene.metadata.opera.operaBurstID}}
+    <mat-icon *ngIf="isGeoSearch()" [matMenuTriggerFor]="addOperaBurstMenu" class="v-mid clickable">
+      settings
+    </mat-icon>
+
+    <mat-menu #addOperaBurstMenu="matMenu">
+      <button (click)="setOperaBurst()" mat-menu-item>Add OPERA burst ID to search</button>
+    </mat-menu>
   </li>
 
 

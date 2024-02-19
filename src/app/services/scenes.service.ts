@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Observable, combineLatest } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
-import * as moment from 'moment';
+import moment from 'moment';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store/app.reducer';
 import {
@@ -41,24 +41,22 @@ export class ScenesService {
       this.jobStatusFilter$(
       this.filterBaselineValues$(
       this.filterByDate$(
+      this.filterBurstSubproducts$(
         this.store$.select(getAllProducts)
-      ))))))
+      )))))))
     );
   }
 
-  public scenes$(): Observable<CMRProduct[]> {
-    return (
-      this.filterByProductName$(
+  public scenes$: Observable<CMRProduct[]> = this.filterByProductName$(
       this.projectNameFilter$(
       this.hideExpired$(
       this.jobStatusFilter$(
       this.hideS1Raw$(
       this.filterBaselineValues$(
       this.filterByDate$(
+      this.filterBurstSubproducts$(
           this.store$.select(getScenes)
     ))))))));
-  }
-
 
   public withBrowses$(scenes$: Observable<CMRProduct[]>): Observable<CMRProduct[]> {
     return scenes$.pipe(
@@ -72,7 +70,7 @@ export class ScenesService {
       this.store$.select(getTemporalSortDirection),
       this.store$.select(getPerpendicularSortDirection)]
     ).pipe(
-      debounceTime(0),
+      debounceTime(50),
       map(
         ([scenes, tempSort, perpSort]) => {
           if (tempSort === ColumnSortDirection.NONE && perpSort === ColumnSortDirection.NONE) {
@@ -173,16 +171,30 @@ export class ScenesService {
 
         return scenes
           .filter(scene => {
-            const statusCode = scene.metadata.job.status_code;
-
-            return (
-              statuses.has(statusCode)
-            );
+            const job = scene.metadata.job;
+            if(!!job) {
+              const statusCode = job.status_code;
+              return statuses.has(statusCode)
+            }
+            return false;
           });
       })
     );
   }
 
+  private filterBurstSubproducts$(scenes$: Observable<CMRProduct[]>) {
+    return combineLatest([
+        scenes$,
+        this.store$.select(getSearchType)
+      ]).pipe(
+        map(([scenes, searchtype]) => {
+          if (searchtype === SearchType.CUSTOM_PRODUCTS) {
+            return scenes.filter(scene => scene.productTypeDisplay !== 'XML Metadata (BURST)');
+          }
+          return scenes;
+        })
+      )
+  }
   private hideExpired$(scenes$: Observable<CMRProduct[]>) {
     return combineLatest([
       scenes$,

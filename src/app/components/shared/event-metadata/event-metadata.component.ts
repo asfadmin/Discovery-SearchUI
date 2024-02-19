@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import * as models from '@models';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
-import * as moment from 'moment';
+import moment from 'moment';
 import * as filtersStore from '@store/filters';
 
 @Component({

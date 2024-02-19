@@ -2,7 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { ScenesActionType, ScenesActions } from './scenes.action';
 
-import { CMRProduct, UnzippedFolder, ColumnSortDirection, SarviewsEvent, SarviewsProduct } from '@models';
+import { CMRProduct, UnzippedFolder, ColumnSortDirection, SarviewsEvent, SarviewsProduct, opera_s1, Hyp3JobType } from '@models';
 import { PinnedProduct } from '@services/browse-map.service';
 import { createSelectorFactory, defaultMemoize  } from '@ngrx/store';
 
@@ -60,57 +60,62 @@ export const initState: ScenesState = {
   perpendicularSort: ColumnSortDirection.NONE,
   temporalSort: ColumnSortDirection.NONE,
   pinnedProductBrowses: {}
-};
+}
 
 
 export function scenesReducer(state = initState, action: ScenesActions): ScenesState {
   switch (action.type) {
     case ScenesActionType.SET_SCENES: {
-      let bursts: CMRProduct[] = []
-
+      let subproducts: CMRProduct[] = []
       let searchResults = action.payload.products.map(p =>
-        p.metadata.productType === 'BURST' ? ({...p, productTypeDisplay: 'Single Look Complex (BURST)'}) as CMRProduct : p)
+        p.metadata.productType === 'BURST' ? ({
+          ...p,
+          productTypeDisplay: 'Single Look Complex (BURST)'
+        }) as CMRProduct : p);
+
+      const ungrouped_product_types = [
+        ...opera_s1.productTypes,
+        {apiValue: 'BURST'},
+        {apiValue: 'BURST_XML'}
+      ].map(m => m.apiValue)
 
       for (let product of searchResults) {
-        if(product.metadata.productType === 'BURST') {
-          const p = burstXMLFromScene(product)
-          bursts.push(p)
+        if(product.metadata.subproducts.length > 0) {
+          for (let subproduct of product.metadata.subproducts) {
+            subproducts.push(subproduct)
+          }
         }
       }
 
-      searchResults = searchResults.concat(bursts)
+      searchResults = searchResults.concat(subproducts)
 
       const products = searchResults
-        .reduce((total, product) => {
-          total[product.id] = product;
-
-          return total;
-        }, {});
-      
-      const productIDs = searchResults.reduce((total, product) => {
-        total[product.metadata.productType] = product;
+      .reduce((total, product) => {
+        total[product.id] = product;
 
         return total;
       }, {});
 
-      let productGroups: {[id: string]: string[]} = {}
-      let scenes: {[id: string]: string[]} = {}
+      let productGroups: {[id: string]: string[]} = {};
+      let scenes: {[id: string]: string[]} = {};
 
-      if (Object.keys(productIDs).length <= 2 && Object.keys(productIDs)[0].toUpperCase() === 'BURST') {
-        productGroups = searchResults.reduce((total, product) => {
-          const scene = total[product.name] || [];
-          
-          total[product.name] = [...scene, product.id];
-          return total;
-        }, {})
-      } else {
-        productGroups = searchResults.reduce((total, product) => {
-          const scene = total[product.groupId] || [];
+      productGroups = searchResults.reduce((total, product) => {
+        let groupCriteria = product.groupId;
 
-          total[product.groupId] = [...scene, product.id];
-          return total;
-        }, {});
-      }
+        if (product.metadata.subproducts.length > 0) {
+          groupCriteria = product.id;
+        } else if(ungrouped_product_types.includes(product.metadata.productType)) {
+          if(isSubProduct(product)) {
+            groupCriteria = product.metadata.parentID;
+          } else {
+            groupCriteria = product.id;
+          }
+        }
+        const scene = total[groupCriteria] || [];
+
+        total[groupCriteria] = [...scene, product.id];
+        return total;
+      }, {});
 
       for (const [groupId, productNames] of Object.entries(productGroups)) {
 
@@ -132,6 +137,61 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
         unzipped: {},
         productUnzipLoading: null,
         openUnzippedProduct: null
+      };
+    }
+
+    case ScenesActionType.ADD_CMR_DATA_TO_ON_DEMAND_JOBS: {
+      const cmrData = action.payload.reduce((products, product) => {
+        products[product.name] = product;
+        return products;
+      }, {});
+
+      const products = {...state.products};
+
+      Object.values(products).forEach(jobProduct => {
+        const product  = cmrData[jobProduct.name];
+
+        if(!!product) {
+          let job = {
+            ...jobProduct.metadata.job,
+            job_parameters: {
+              ...jobProduct.metadata.job.job_parameters,
+            }
+          };
+          const jobFile = !!job.files ?
+            job.files[0] :
+            { size: -1, url: '', filename: product.name };
+
+          const scene_keys = job.job_parameters.granules;
+          job.job_parameters.scenes = [];
+          for (const scene_key of scene_keys) {
+            job.job_parameters.scenes.push(cmrData[scene_key]);
+          }
+
+          const combinedProduct: any = {
+            ...product,
+            browses: job.browse_images ? job.browse_images : ['assets/no-browse.png'],
+            thumbnail: job.thumbnail_images ? job.thumbnail_images[0] : 'assets/no-thumb.png',
+            productTypeDisplay: `${job.job_type}, ${product.metadata.productType} `,
+            downloadUrl: jobFile.url,
+            bytes: jobFile.size,
+            groupId: job.job_id,
+            id: job.job_id,
+            metadata: {
+              ...product.metadata,
+              fileName: jobFile.filename || '',
+              productType: <Hyp3JobType>job.job_type,
+              job
+            },
+          };
+
+          products[combinedProduct.id] = <CMRProduct>combinedProduct;
+        }
+      });
+
+      return {
+        ...state,
+        products
       };
     }
 
@@ -337,9 +397,9 @@ export const allScenesFrom = (scenes: {[id: string]: string[]}, products) => {
     .map(group => {
 
       const browse = group
-        .map(name => products[name])
-        .filter(hasNoBrowse)
-        .pop();
+      .map(name => products[name])
+      .filter(hasNoBrowse)
+      .pop();
 
       return browse ? browse : products[group[0]];
     });
@@ -348,8 +408,8 @@ export const allScenesFrom = (scenes: {[id: string]: string[]}, products) => {
 const hasNoBrowse = (product) => {
   return (
     !!product.browses &&
-    product.browses.length > 0 &&
-    !product.browses[0].includes('no-browse.png')
+      product.browses.length > 0 &&
+      !product.browses[0].includes('no-browse.png')
   );
 };
 
@@ -362,21 +422,29 @@ export const allScenesWithBrowse = (scenes: {[id: string]: string[]}, products) 
 };
 
 function arrayEquals(a, b) {
+
   return Array.isArray(a) &&
-      Array.isArray(b) &&
-      a.length === b.length &&
-      a.toString() === b.toString() &&
-      a.every((value, index) => value.toString() === b[index].toString())
+    Array.isArray(b) &&
+    a.length === b.length &&
+    a.toString() === b.toString() &&
+    a.every((value, index) => {
+      if(Array.isArray(value) && Array.isArray(b[index])) {
+        return arrayEquals(value, b[index])
+      } else {
+        value.id === b[index].id
+      }
+    }
+    )
 }
 export const createArraySelector =
-  createSelectorFactory(
-    (projectionFn) =>
-      defaultMemoize(
-        projectionFn,
-        arrayEquals,
-        arrayEquals
-      )
-  );
+createSelectorFactory(
+  (projectionFn) =>
+    defaultMemoize(
+      projectionFn,
+      arrayEquals,
+      arrayEquals
+    )
+);
 
 export const getScenes = createArraySelector(
   getScenesState,
@@ -472,17 +540,21 @@ const productsForScene = (selected, state) => {
     return;
   }
 
-  const productTypes = Object.values(state.products).reduce((total, product: CMRProduct) => {
-    total[product.metadata.productType] = product;
+  // const productTypes = Object.values(state.products).reduce((total, product: CMRProduct) => {
+  //   total[product.metadata.productType] = product;
 
-    return total;
-  }, {});
+  //   return total;
+  // }, {});
 
   let products = []
 
-  if (Object.keys(productTypes).length <= 2 && Object.keys(productTypes)[0] === 'BURST') {
-    products = state.scenes[selected.name] || [];
-  } else {
+  const ungrouped_product_types = [...opera_s1.productTypes, {apiValue: 'BURST'}, {apiValue: 'BURST_XML'}].map(m => m.apiValue)
+  // if (Object.keys(productTypes).length <= 2 && Object.keys(productTypes)[0] === 'BURST') {
+  //   products = state.scenes[selected.name] || [];
+  if(ungrouped_product_types.includes(selected.metadata.productType)) {
+    products = state.scenes[selected.metadata.parentID ?? selected.id] || [];
+  }
+  else {
     products = state.scenes[selected.groupId] || []
   }
 
@@ -521,7 +593,7 @@ export const getAllSceneProducts = createSelector(
     Object.entries(state.scenes).forEach(
       ([sceneId, scene]) => {
         const products = scene
-          .map(name => state.products[name]);
+        .map(name => state.products[name]);
 
         allSceneProducts[sceneId] = products;
       }
@@ -542,8 +614,8 @@ export const getSelectedSarviewsEvent = createSelector(
 );
 
 export const getSelectedSarviewsProduct = createSelector(
- getScenesState,
- (state: ScenesState) => state.selectedSarviewsProduct
+  getScenesState,
+  (state: ScenesState) => state.selectedSarviewsProduct
 );
 
 export const getUnzipLoading = createSelector(
@@ -706,15 +778,15 @@ export const getSelectedSarviewsEventProducts = createSelector(
 export const getImageBrowseProducts = createSelector(
   getScenesState,
   state => {
-     const output: {[product_id in string]: PinnedProduct} = Object.keys(state.pinnedProductBrowses).reduce(
-       (out, product_id) => {
+    const output: {[product_id in string]: PinnedProduct} = Object.keys(state.pinnedProductBrowses).reduce(
+      (out, product_id) => {
         const temp = out;
         temp[product_id] = {... state.pinnedProductBrowses[product_id]};
         return temp;
-       }
+      }
       , {} as {[product_id in string]: PinnedProduct});
 
-      return output;
+    return output;
   }
 );
 
@@ -739,19 +811,6 @@ function eqSet(aSet, bSet): boolean {
   return true;
 }
 
-function burstXMLFromScene(product: CMRProduct) {
-  let p =  {
-    ...product,
-    downloadUrl: product.downloadUrl.replace('tiff', 'xml'),
-    productTypeDisplay: 'XML Metadata (BURST)',
-    file: product.file.replace('tiff', 'xml'),
-    id: product.id + '-XML',
-    bytes: 0,
-    metadata: {
-      ...product.metadata,
-      productType: product.metadata.productType + '_XML'
-    }
-  } as CMRProduct;
-
-  return p;
+function isSubProduct(product): boolean {
+  return !!product.metadata.parentID;
 }

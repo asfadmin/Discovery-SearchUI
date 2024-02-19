@@ -45,19 +45,31 @@ export class UserEffects {
       ([_, userAuth]) =>
         this.userDataService.getAttribute$(userAuth, 'Profile')
     ),
-    filter(resp => this.isSuccessfulResponse(resp)),
-    filter(resp => this.isValidProfile(resp)),
     map(
-      (profile: models.UserProfile) => !profile.defaultFilterPresets ? { ...profile,
-        defaultFilterPresets: {
-          'Baseline Search' : '',
-          'Geographic Search' : '',
-          'SBAS Search' : ''
+      (resp) => {
+        const defaultProfile = {...userReducer.initState.profile};
+
+        let profile = this.isValidProfile(resp) ? (<models.UserProfile>resp) : defaultProfile;
+
+        if (!profile.defaultFilterPresets) {
+          profile = this.addDefaultFiltersToProfile(profile);
         }
-      } : profile
+
+        return profile
+      }
     ),
     map(profile => new userActions.SetProfile(<models.UserProfile>profile))
   ));
+
+  private addDefaultFiltersToProfile(profile: models.UserProfile): models.UserProfile {
+    return { ...profile,
+      defaultFilterPresets: {
+        'Baseline Search' : '',
+        'Geographic Search' : '',
+        'SBAS Search' : ''
+      }
+    };
+  }
 
   public saveSavedSearches = createEffect(() => this.actions$.pipe(
     ofType<userActions.SaveSearches>(userActions.UserActionType.SAVE_SEARCHES),
@@ -95,6 +107,7 @@ export class UserEffects {
         this.store$.select(userReducer.getSearchHistory)]
       )
     ),
+    filter( ([_, [userAuth, _searches]]) => userAuth.id !== null),
     switchMap(
       ([_, [userAuth, searches]]) =>
         this.userDataService.setAttribute$(userAuth, 'History', searches)
@@ -151,11 +164,6 @@ export class UserEffects {
     map(_ => new hyp3Store.LoadUser())
   ));
 
-  public loadOnDemandSubscriptionsOnLogin = createEffect(() => this.actions$.pipe(
-    ofType<userActions.LoadSavedSearches>(userActions.UserActionType.LOGIN),
-    delay(400),
-    map(_ => new hyp3Store.LoadSubscriptions())
-  ));
 
   public loadSavedSearches = createEffect(() => this.actions$.pipe(
     ofType<userActions.LoadSavedSearches>(userActions.UserActionType.LOAD_SAVED_SEARCHES),
@@ -204,8 +212,8 @@ export class UserEffects {
       }
       return userFilters.filter(preset =>
         preset.searchType === searchType).find(preset => preset.id === presetId);
-      }
-      ),
+    }
+    ),
     filter(targetFilter => !!targetFilter),
     map(targetFilter => {
 
@@ -233,7 +241,7 @@ export class UserEffects {
         }
 
         actions.forEach(action => this.store$.dispatch(action));
-    }
+      }
     })
   ), {dispatch: false});
 
@@ -241,8 +249,8 @@ export class UserEffects {
     try {
       return !(
         !!resp &&
-        'status' in resp &&
-        resp['status'] === 'fail'
+          'status' in resp &&
+          resp['status'] === 'fail'
       );
     } catch {
       return false;
@@ -250,7 +258,7 @@ export class UserEffects {
   }
 
   private datesToDateObjectFor(searches): models.Search[] | models.SavedFilterPreset[] {
-    return searches.map(search => {
+    return searches?.map(search => {
       if (search.searchType === models.SearchType.LIST || !search.filters.dateRange) {
         return search;
       }
@@ -280,11 +288,13 @@ export class UserEffects {
 
   private isValidProfile(resp) {
     const datasetIds = models.datasetIds;
-
+    if(resp === null) {
+      return false;
+    }
     return (
       datasetIds.includes(resp.defaultDataset) &&
-      Object.values(models.MapLayerTypes).includes(resp.mapLayer) &&
-      this.isNumber(resp.maxResults) && resp.maxResults <= 5000
+        Object.values(models.MapLayerTypes).includes(resp.mapLayer) &&
+        this.isNumber(resp.maxResults) && resp.maxResults <= 5000
     );
   }
 
@@ -308,7 +318,8 @@ export class UserEffects {
       new filterStore.SetSubtypes(datasetFilter.subtypes),
       new filterStore.SetFlightDirections(Array.from(datasetFilter.flightDirections)),
       new filterStore.SelectMission(datasetFilter.selectedMission),
-      new filterStore.setFullBurst(datasetFilter.fullBurstIDs)
+      new filterStore.setFullBurst(datasetFilter.fullBurstIDs),
+      new filterStore.setUseCalibrationData(datasetFilter.useCalibrationData)
     ];
 
     return actions;

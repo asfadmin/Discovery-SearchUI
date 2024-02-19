@@ -10,6 +10,8 @@ import { ProductTypeSelectorModule } from '@components/shared/selectors/product-
 import { OtherSelectorComponent } from './other-selector.component';
 import { BurstSelectorModule } from '../burst-selector';
 import { SharedModule } from "@shared";
+import { MatInputModule } from '@angular/material/input';
+import { OperaCalibrationDataSelectorModule } from '../opera-calibration-data-selector';
 
 @NgModule({
   declarations: [ OtherSelectorComponent ],
@@ -21,7 +23,9 @@ import { SharedModule } from "@shared";
     MatSharedModule,
     ProductTypeSelectorModule,
     BurstSelectorModule,
-    SharedModule
+    SharedModule,
+    MatInputModule,
+    OperaCalibrationDataSelectorModule
   ],
   exports: [ OtherSelectorComponent ],
 })

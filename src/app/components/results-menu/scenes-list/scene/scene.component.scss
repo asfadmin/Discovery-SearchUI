@@ -4,6 +4,12 @@
 
 .list-thumbnail {
   width: 40px;
-  height: auto;
+  height: 40px;
   border-radius: 6px !important;
+}
+.button-flex-row  {
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  height: 56px;
 }

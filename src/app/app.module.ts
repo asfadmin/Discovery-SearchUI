@@ -15,7 +15,7 @@ import { MatSortModule } from '@angular/material/sort';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
+import {  ToastrModule } from 'ngx-toastr';
 
 import * as store from './store';
 
@@ -118,7 +118,6 @@ export const routes = [
     BaselineChartModule,
     HelpModule,
     ToastrModule.forRoot({positionClass: 'inline', preventDuplicates: true}),
-    ToastContainerModule,
     CodeExportModule
   ],
   providers: [
@@ -150,6 +149,7 @@ export const routes = [
     services.PairService,
     services.SceneSelectService,
     services.OnDemandService,
+    services.PossibleHyp3JobsService,
     {provide: SAVER, useFactory: getSaver},
     {
       provide: DateAdapter,

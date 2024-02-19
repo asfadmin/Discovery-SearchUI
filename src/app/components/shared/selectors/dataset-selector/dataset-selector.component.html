@@ -17,16 +17,15 @@
 
   <div class="gtm-search-type-selector fx-nogrow">
     <mat-menu #platformMenu="matMenu" [(ngModel)]="selected" ngDefaultControl>
-      <div>
-        <div class="dataset-list">
-          <div *ngFor="let dataset of datasets; last as isLast">
+          <menu *ngFor="let dataset of datasets; last as isLast" mat-menu-item>
             <div class="menu-item mat-menu-item" (click)="onSelectionChange(dataset.id)">
               <div class="menu-item-inner">
                 <div class="dataset--layout menu-item-content">
                   <div class="item-title">
                     {{ dataset.name }}
                     <span class="dataset-light-text">
-                        <span *ngIf="dataset.id == 'SENTINEL-1'"matTooltip="Available for On Demand Processing (HyP3)">
+                        <span *ngIf="dataset.id == 'SENTINEL-1' || dataset.id == 'SENTINEL-1 BURSTS'"
+                          matTooltip="Available for On Demand Processing (HyP3)">
                           <mat-icon class="hyp3-icon" svgIcon="hyp3"></mat-icon>
                         </span>
                         <span *ngIf="dataset.beta"><em> (beta) </em></span>
@@ -59,9 +58,7 @@
               </div>
             </div>
             <hr *ngIf="!isLast " class="dataset-hr">
-          </div>
-        </div>
-      </div>
+          </menu>
     </mat-menu>
   </div>
 </div>

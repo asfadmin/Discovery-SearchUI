@@ -9,3 +9,19 @@
 .file-sub-line {
   font-size: 14px !important;
 }
+
+.mdc-list-item--with-trailing-meta .mdc-list-item__end {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.mat-mdc-list-item-unscoped-content {
+  display: flex;
+}
+
+.hype-icon-button {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}

@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 import { SavedSearchesModule } from './saved-searches';
 import { SaveUserFiltersModule } from './save-user-filters';
-import { OnDemandSubscriptionsModule } from './on-demand-subscriptions';
 
 import { SidebarComponent } from './sidebar.component';
 
@@ -15,7 +14,6 @@ import { SidebarComponent } from './sidebar.component';
     CommonModule,
     SavedSearchesModule,
     SaveUserFiltersModule,
-    OnDemandSubscriptionsModule,
   ],
   exports: [
     SidebarComponent

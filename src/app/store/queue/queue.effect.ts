@@ -4,7 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 
 import * as FileSaver from 'file-saver';
-import * as moment from 'moment';
+import moment from 'moment';
 import { map, withLatestFrom, switchMap, tap, skip } from 'rxjs/operators';
 
 import { AppState } from '../app.reducer';
@@ -70,7 +70,7 @@ export class QueueEffects {
   public downloadSearchtypeMetadata = createEffect(() => this.actions$.pipe(
     ofType<DownloadSearchtypeMetadata>(QueueActionType.DOWNLOAD_SEARCHTYPE_METADATA),
     map(action => action.payload),
-    withLatestFrom(this.searchParamsService.getParams()),
+    withLatestFrom(this.searchParamsService.getParams),
     map(
       ([format, searchParams]): MetadataDownload => ({
         params: {

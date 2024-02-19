@@ -10,8 +10,8 @@
 </div>
 
 <div *ngIf="!showUnzippedProductScreen">
-  <mat-list class="products-list" *ngFor="let product of products">
-    <app-scene-file
+  <mat-list class="products-list" >
+    <app-scene-file *ngFor="let product of products"
       (toggle)="onToggleQueueProduct(product)"
       (unzip)="onOpenUnzipProduct($event)"
       (queueHyp3Job)="onQueueHyp3Job($event)"
@@ -23,6 +23,21 @@
       [isUnzipLoading]="unzippedLoading === product.id"
       [isQueued]="(queuedProductIds$ | async).has(product.id)"
       [isOpen]="false"
+    >
+    </app-scene-file>
+    <app-scene-file *ngFor="let product of (StaticLayerProduct$ | async)"
+      (toggle)="onToggleQueueProduct(product)"
+      (unzip)="onOpenUnzipProduct($event)"
+      (queueHyp3Job)="onQueueHyp3Job($event)"
+      [loadingHyp3JobName]="loadingHyp3JobName"
+      [isUserLoggedIn]="isUserLoggedIn"
+      [product]="product"
+      [validHyp3JobTypes]="[]"
+      [hasAccessToRestrictedData]="hasAccessToRestrictedData"
+      [isUnzipLoading]="unzippedLoading === product.id"
+      [isQueued]="(queuedProductIds$ | async).has(product.id)"
+      [isOpen]="false"
+      [isSearchableProduct]="true"
     >
     </app-scene-file>
   </mat-list>

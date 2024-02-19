@@ -2,11 +2,10 @@
   <app-product-type-selector
     style="padding-right: 10px;"
     (typesChange)="onNewProductTypes($event)"
-    [dataset]="dataset"
     *ngIf="dataset.id !== 'SENTINEL-1 BURSTS'">
   </app-product-type-selector>
 
-  <mat-form-field>
+  <mat-form-field *ngIf="dataset.id !== 'OPERA-S1'">
     <mat-select
       (selectionChange)="onNewDatasetBeamModes($event.value)"
       [(ngModel)]="beamModes"
@@ -66,7 +65,7 @@
     </mat-hint>
   </mat-form-field>
 
-  <mat-form-field>
+  <mat-form-field *ngIf="dataset.id !== 'OPERA-S1'">
     <mat-select
       (selectionChange)="onNewSubtypeSelected($event.value)"
       [(ngModel)]="subtypes"
@@ -85,4 +84,24 @@
       {{ 'NO_SUBTYPES_TO_SELECT' | translate }}
     </mat-hint>
   </mat-form-field>
+
+  <mat-form-field *ngIf="['SENTINEL-1', 'SENTINEL-1 BURSTS', 'OPERA-S1'].includes(dataset.id)">
+    <input matInput
+      
+      (input)="onNewGroupID()"
+      [(ngModel)]="groupID"
+      [maxlength]="29"
+      type="text"
+      placeholder="Group ID">
+
+    <!-- <mat-hint *ngIf="prop.isRelevant(p.SUBTYPE)" align="start">
+      {{ subtypes?.length || 0 }}/{{ dataset.subtypes?.length }}
+      {{ 'SUBTYPES_SELECTED' | translate }}
+    </mat-hint>
+    <mat-hint *ngIf="!prop.isRelevant(p.SUBTYPE)" align="start">
+      {{ 'NO_SUBTYPES_TO_SELECT' | translate }}
+    </mat-hint> -->
+  </mat-form-field>
+
+  <app-opera-calibration-data-selector *ngIf="dataset.id === 'OPERA-S1'"></app-opera-calibration-data-selector>
 </div>

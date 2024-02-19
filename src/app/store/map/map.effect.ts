@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CMRProduct, SearchType } from '@models';
+import {  SearchType } from '@models';
 
 
 import * as models from '@models';
@@ -17,6 +17,7 @@ import { PinnedProduct } from '@services/browse-map.service';
 import { getSelectedDataset } from '@store/filters';
 import { getIsFiltersMenuOpen, getIsResultsMenuOpen } from '@store/ui';
 import { ClearBrowseOverlays, SetCoherenceOverlayOpacity } from './map.action';
+import { getIsUserLoggedIn } from '@store/user';
 @Injectable()
 export class MapEffects {
 
@@ -64,7 +65,8 @@ export class MapEffects {
       || dataset?.id === 'ALOS'
       || dataset?.id === 'SENTINEL-1'
       || dataset?.id === 'SENTINEL-1 INTERFEROGRAM (BETA)'
-      || dataset?.id === 'UAVSAR';
+      || dataset?.id === 'UAVSAR'
+      || dataset?.id === 'OPERA-S1';
     }
     return searchType !== SearchType.BASELINE && searchType !== SearchType.SBAS;
   }),
@@ -96,7 +98,8 @@ export class MapEffects {
     }),
     map(([product, _]) => product),
     filter(product => product.browses.length > 0),
-    tap((selectedProduct: CMRProduct) => {
+    withLatestFrom(this.store$.select(getIsUserLoggedIn)),
+    tap(([selectedProduct, _loggedIn]) => {
       if (selectedProduct.dataset === 'ALOS') {
         if (selectedProduct.metadata.productType !== 'RTC_LOW_RES'
           && selectedProduct.metadata.productType !== 'RTC_HI_RES') {
@@ -104,7 +107,15 @@ export class MapEffects {
           }
       }
       if (selectedProduct.browses[0] !== '/assets/no-browse.png') {
-        this.mapService.setSelectedBrowse(selectedProduct.browses[0], selectedProduct.metadata.polygon);
+        let url = selectedProduct.browses[0]
+
+        // for OPERA-S1 geotiffs
+        // TODO: Wait for https://github.com/openlayers/openlayers/pull/15402
+        // if (loggedIn && selectedProduct.id.startsWith('OPERA') && selectedProduct.downloadUrl.endsWith('.tif')) {
+        //   url = selectedProduct.downloadUrl
+        // }
+
+        this.mapService.setSelectedBrowse(url, selectedProduct.metadata.polygon);
       }
     }),
   ), {dispatch: false});

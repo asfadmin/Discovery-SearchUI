@@ -10,7 +10,7 @@ import * as queueStore from '@store/queue';
 
 import {
   ScreenSizeService, MapService, ScenesService, PairService,
-  Hyp3Service
+  Hyp3Service, PossibleHyp3JobsService,
 } from '@services';
 
 import { SubSink } from 'subsink';
@@ -30,7 +30,7 @@ enum CardViews {
 export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
   @Input() resize$: Observable<void>;
 
-  public numBaselineScenes$ = this.scenesService.scenes$().pipe(
+  public numBaselineScenes$ = this.scenesService.scenes$.pipe(
     map(scenes => scenes.length),
   );
 
@@ -64,6 +64,7 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
     private scenesService: ScenesService,
     private pairService: PairService,
     private hyp3: Hyp3Service,
+    private possibleHyp3JobsService: PossibleHyp3JobsService,
   ) { }
 
   ngOnInit(): void {
@@ -76,18 +77,17 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
           this.products = products;
           this.downloadableProds = this.hyp3.downloadable(products);
           this.pairs = [ ...pairs, ...custom ];
-
-          this.hyp3able = this.hyp3.getHyp3ableProducts([
-            ...this.products.map(prod => [prod]),
-            ...this.pairs?.sort((a, b) => {
-              if (a.metadata.date < b.metadata.date) {
-                return -1;
-              }
-              return 1;
-            })
-          ]);
         }
       )
+    );
+
+    this.subs.add(
+      this.possibleHyp3JobsService.possibleJobs$
+      .subscribe(
+          possibleJobs => {
+            this.hyp3able = this.hyp3.getHyp3ableProducts(possibleJobs);
+          }
+        )
     );
 
     this.subs.add(

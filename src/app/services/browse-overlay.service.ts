@@ -6,7 +6,6 @@ import Geometry from 'ol/geom/Geometry';
 import Polygon from 'ol/geom/Polygon';
 import ImageLayer from 'ol/layer/Image';
 import Static from 'ol/source/ImageStatic';
-import Raster from 'ol/source/Raster';
 
 import { Coordinate } from 'ol/coordinate';
 import MultiPolygon from 'ol/geom/MultiPolygon';
@@ -21,6 +20,9 @@ import * as sceneStore from '@store/scenes';
 import * as filtersStore from '@store/filters';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
+import GeoTIFFSource from 'ol/source/GeoTIFF';
+import TileLayer from 'ol/layer/WebGLTile.js';
+import ImageSource from 'ol/source/Image';
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +42,8 @@ export class BrowseOverlayService {
             || datasetID === 'ALOS'
             || datasetID === 'SENTINEL-1'
             || datasetID === 'SENTINEL-1 INTERFEROGRAM (BETA)'
-            || datasetID === 'UAVSAR';
+            || datasetID === 'UAVSAR'
+            || datasetID === 'OPERA-S1';
           case models.SearchType.SARVIEWS_EVENTS:
             return selectedEventProducts?.length > 0;
           case models.SearchType.LIST:
@@ -68,18 +71,66 @@ export class BrowseOverlayService {
        });
   }
 
+  private createGeotiffSource(blob: Blob) {
+    return new GeoTIFFSource({
+      sources: [{
+         blob,
+         min: 0.0000,
+         max: 0.15,
+         bands: [1],
+         nodata: 0
+      }],
+       });
+  }
+
   public createNormalImageLayer(url: string, wkt: string, className: string = 'ol-layer', layer_id: string = '') {
     const feature = this.wktService.wktToFeature(wkt, 'EPSG:3857');
     const polygon = this.getPolygonFromFeature(feature, wkt);
+
     const source = this.createImageSource(url, polygon.getExtent());
 
     const output = new ImageLayer({
-      source,
+      source: source as ImageSource,
       className,
       zIndex: 0,
       extent: polygon.getExtent(),
       opacity: 1.0,
     });
+
+    if (layer_id !== '') {
+      output.set('layer_id', layer_id);
+    }
+
+    return output;
+  }
+
+  public createGeotiffLayer(blob: Blob, _wkt: string, className: string = 'ol-layer', layer_id: string = '') {
+
+    const source = this.createGeotiffSource(blob);
+
+
+    const output =  new TileLayer(
+      {
+        source: source as GeoTIFFSource,
+        style: {
+          color: [
+            'interpolate',
+            ['linear'],
+            ['band', 1],
+            0.0,
+            [0, 0, 0, 0],
+            0.00001,
+            [0, 0, 0, 1],
+            1.0,
+            [255, 255, 255, 1],
+          ],
+        },
+        className,
+        zIndex: 0,
+        opacity: 1.0,
+      }
+    )
+
 
     if (layer_id !== '') {
       output.set('layer_id', layer_id);
@@ -99,37 +150,11 @@ export class BrowseOverlayService {
     const feature = this.wktService.wktToFeature(wkt, 'EPSG:3857');
     const polygon = this.getPolygonFromFeature(feature, wkt);
 
-    const rLayer = new Raster({
-      sources: [new Static({
+    const Imagelayer = new ImageLayer({
+      source: new Static({
         url,
         imageExtent: polygon.getExtent(),
-      })],
-      // operationType: 'pixel' as RasterOperationType,
-      // operation: (p0: number[][], _) => {
-      //         var pixel = p0[0];
-
-      //       var r = pixel[0];
-      //       var g = pixel[1];
-      //       var b = pixel[2];
-
-      //       if(r + g + b <= 10) {
-      //         return [0, 0, 0, 0];
-      //       }
-      //       // // CIE luminance for the RGB
-      //       // var v = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-
-      //       // pixel[0] = v; // Red
-      //       // pixel[1] = v; // Green
-      //       // pixel[2] = v; // Blue
-      //       // //pixel[3] = 255;
-
-      //       return pixel;
-      //     }
-      // opacity: this.browseLayer?.getOpacity() ?? 1.0
-    });
-
-    const Imagelayer = new ImageLayer({
-      source: rLayer,
+      }),
       zIndex: 0,
       extent: polygon.getExtent(),
       opacity: 1.0,

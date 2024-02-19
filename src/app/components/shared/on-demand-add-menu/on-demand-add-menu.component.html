@@ -13,34 +13,6 @@
             info
         </mat-icon>
       </button>
-
-      <div *ngIf="isBaselineStack(productsByJobType.byProductType, searchType)">
-        <button
-        [disabled]="productsByJobType.total === 0"
-        [matMenuTriggerFor]="addBaselinePair"
-        [matMenuTriggerData]="{ productsByJobType: productsByJobType, JobType: InSAR }"
-        mat-menu-item>
-        {{InSAR.name}}
-          <mat-icon (click)="onOpenHelp(InSAR.infoUrl)" class="clickable" style="margin-left: 10px;">info</mat-icon>
-        </button>
-
-        <button
-        [disabled]="productsByJobType.total === 0"
-        [matMenuTriggerFor]="addBaselinePair"
-        [matMenuTriggerData]="{ productsByJobType: productsByJobType, JobType: AutoRift }"
-        mat-menu-item>
-          {{AutoRift.name}}
-          <mat-icon (click)="onOpenHelp(AutoRift.infoUrl)" class="clickable" style="margin-left: 10px;">info</mat-icon>
-        </button>
-      </div>
-    </div>
-
-    <div *ngIf="showSubscriptions">
-      <button
-        (click)="onOpenCreateSubscription()"
-        [disabled]="!isLoggedIn"
-        mat-menu-item> {{ 'CREATE_SUBSCRIPTION' | translate }}
-      </button>
     </div>
   </ng-template>
 </mat-menu>
@@ -55,22 +27,6 @@
         {{ 'ADD' | translate }}  {{ isExpired ? '' : prodType.products.length}} {{ isExpired ? '' : prodType.productType }}
         {{ byJobType.jobType.numProducts === 2 ? ('PAIR' | translate) : ('JOB' | translate) }}{{ prodType.products.length > 1 ? 's' : '' }}
       </button>
-    </div>
-  </ng-template>
-</mat-menu>
-
-<mat-menu #addBaselinePair>
-  <ng-template matMenuContent let-byJobType="productsByJobType" let-jobType="JobType">
-
-    <div *ngFor="let prodType of byJobType.byProductType">
-      <div *ngIf="prodType.productType === 'SLC'">
-        <button
-          (click)="queueBaselinePairOnDemand(prodType.products, jobType)"
-          [disabled]="" mat-menu-item>
-          {{ 'ADD' | translate }} {{ prodType.products.length === 1 ? prodType.products.length : prodType.products.length - 1 }} {{ prodType.productType }}
-          {{ 'PAIR' | translate | lowercase }}{{ prodType.products.length > 1 ? 's' : '' }}
-        </button>
-      </div>
     </div>
   </ng-template>
 </mat-menu>

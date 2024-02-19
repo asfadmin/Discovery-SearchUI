@@ -40,7 +40,7 @@ export class DesktopResultsMenuComponent implements OnInit, OnDestroy {
       )
     );
     this.subs.add(
-      this.scenesService.scenes$().subscribe(
+      this.scenesService.scenes$.subscribe(
         scenes => this.scenesLength = scenes.length
       )
     );

@@ -12,7 +12,7 @@ import * as searchStore from '@store/search';
 import * as userStore from '@store/user';
 import * as uiStore from '@store/ui';
 import * as filtersStore from '@store/filters';
-// import * as scenesStore from '@store/scenes';
+import * as hyp3Store from '@store/hyp3';
 
 import * as services from '@services';
 import { ClipboardService } from 'ngx-clipboard';
@@ -148,6 +148,10 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   public onClearSearch(): void {
     this.store$.dispatch(new filtersStore.ClearListFilters());
     this.store$.dispatch(new searchStore.ClearSearch());
+
+    if (this.searchType === SearchType.CUSTOM_PRODUCTS) {
+      this.store$.dispatch(new hyp3Store.SetOnDemandUserID(null));
+    }
   }
 
   private handleSearchErrors() {
@@ -297,20 +301,13 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     return !this.env.isProd;
   }
 
-  public onTestSelected(): void {
-    this.setMaturity('test');
-  }
 
-  public onProdSelected(): void {
-    this.setMaturity('prod');
-  }
-
-  private setMaturity(maturity: string): void {
+  public onMaturitySelect(maturity: string) {
     this.maturity = maturity;
     this.env.setMaturity(maturity);
   }
   public exportPython(): void {
-    this.exportService.convertSearchOptionsToAsfSearch().pipe(take(1)).subscribe(
+    this.exportService.convertSearchOptionsToAsfSearch.pipe(take(1)).subscribe(
       (data) => {
         this.dialog.open(CodeExportComponent, {
           data: { codeStuff: data },

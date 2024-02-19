@@ -1,8 +1,8 @@
 import { Component,  OnDestroy, OnInit } from '@angular/core';
 import { saveAs } from 'file-saver';
 
-import { combineLatest,  } from 'rxjs';
-import { debounceTime, filter, map } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { debounceTime, filter, map, tap, withLatestFrom } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -14,7 +14,7 @@ import * as filtersStore from '@store/filters';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 
 import {
-  MapService, ScenesService, ScreenSizeService,
+  MapService, ScenesService, ScreenSizeService, PossibleHyp3JobsService,
   PairService, Hyp3Service, SarviewsEventsService, NotificationService
 } from '@services';
 
@@ -23,6 +23,7 @@ import { SubSink } from 'subsink';
 import { hyp3JobTypes, SarviewsProduct } from '@models';
 import { AddItems, AddJobs } from '@store/queue';
 import { ClipboardService } from 'ngx-clipboard';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-scenes-list-header',
@@ -34,10 +35,9 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public pairs$ = this.pairService.pairs$;
   private pairProducts$ = this.pairService.productsFromPairs$;
 
-
   public totalResultCount$ = combineLatest([
-    this.store$.select(searchStore.getTotalResultCount),
-    this.scenesService.scenes$()]
+    this.store$.select(searchStore.getSearchAmount),
+    this.scenesService.scenes$]
   ).pipe(
     map(([count, scenes]) => count + scenes?.filter(scene => scene.metadata.productType === 'BURST').length)
   )
@@ -56,27 +56,52 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public sarviewsEventProducts: SarviewsProduct[] = [];
   public pinnedEventIDs: string[];
 
-  public numBaselineScenes$ = this.scenesService.scenes$().pipe(
+  public productsByType$: Observable<{[key:string]: models.CMRProduct[]}> = this.store$.select(scenesStore.getAllProducts).pipe(
+    map((scenes: []) =>
+    scenes.reduce((prev, curr: models.CMRProduct) => {
+      if(!prev[curr.productTypeDisplay]) {
+        prev[curr.productTypeDisplay] = []
+      }
+      prev[curr.productTypeDisplay].push(curr)
+
+      return prev;
+    }, {})
+    ),
+    tap(products => this.operaProductsByType = products)
+  )
+
+  public productCountByType$ = this.productsByType$.pipe(
+    map(products => Object.keys(products).reduceRight((prev: {}, curr: string) => {
+      prev[curr] = products[curr].length;
+      return prev
+    }, {}))
+  )
+
+  public numBaselineScenes$ = this.scenesService.scenes$.pipe(
     map(scenes => scenes.length),
   );
-  public isBurstStack$ =
-  combineLatest([
-    this.scenesService.products$(),
-    this.pairService.pairs$,
+
+  private products$ = this.scenesService.products$();
+  private operaProductsByType: {[key:string]: models.CMRProduct[]} = {}
+
+  public isBurstStack$ = combineLatest([
+    this.products$,
     this.store$.select(searchStore.getSearchType),
   ]
   ).pipe(
-    map(([scenes, pairs, currentSearchType]) => (currentSearchType ===
-      this.SearchTypes.BASELINE && scenes?.length > 0 ? scenes[0].metadata.productType === 'BURST': false)
+    map(([scenes, currentSearchType]) => (
+      currentSearchType === this.SearchTypes.BASELINE &&
+      scenes?.length > 0 ? scenes[0].metadata.productType === 'BURST': false)
       || (currentSearchType === this.SearchTypes.SBAS &&
-        (
-          (pairs.pairs?.length > 0 ? pairs.pairs[0][0].metadata.productType === 'BURST' : false)
-          || (pairs.custom?.length > 0 ? pairs.custom[0][0].metadata.productType === 'BURST' : false)
-        )
+      scenes?.length > 0 ? scenes[0].metadata.productType === 'BURST': false)
     )
   )
-  )
-  public numPairs$ = this.pairService.pairs$.pipe(
+
+  public numPairs$ =
+  this.store$.select(searchStore.getSearchType).pipe(
+    filter(searchType => searchType !== models.SearchType.CUSTOM_PRODUCTS),
+    withLatestFrom(this.pairs$),
+    map(([_, pairs]) => pairs),
     filter(pairs => !!pairs),
     map(pairs => pairs.pairs.length + pairs.custom.length)
   );
@@ -88,7 +113,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
       this.sarviewsEventProducts.filter(prod => browseIds.includes(prod.product_id)))
   );
 
-  private currentBurstProducts$ = this.scenesService.products$().pipe(
+  private currentBurstProducts$ = this.products$.pipe(
     map(products =>
       products.filter(p => p.metadata.productType === 'BURST' || p.metadata.productType === 'BURST_XML')
     )
@@ -100,8 +125,8 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
   public SBASburstDataProducts$ = combineLatest([
     this.burstDataProducts$,
-    this.pairProducts$]
-  ).pipe(
+    this.pairProducts$
+  ]).pipe(
     map(([products, pairs]) => {
       const pairNames = pairs.map(p => p.name);
       const output = products.filter(p => pairNames.find(name => name === p.name));
@@ -115,8 +140,8 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
   public SBASburstMetadataProducts$ = combineLatest([
     this.burstMetadataProducts$,
-    this.pairProducts$]
-  ).pipe(
+    this.pairProducts$
+  ]).pipe(
     map(([products, pairs]) => {
       const pairNames = pairs.map(p => p.name);
       const output = products.filter(p => pairNames.find(name => name === p.name));
@@ -169,6 +194,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     private hyp3: Hyp3Service,
     private clipboard: ClipboardService,
     private notificationService: NotificationService,
+    private possibleHyp3JobsService: PossibleHyp3JobsService,
   ) { }
 
   ngOnInit() {
@@ -179,37 +205,44 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      combineLatest([
-        this.scenesService.products$(),
-        this.pairs$
-      ]
-      ).subscribe(
-        ([products, { pairs, custom }]) => {
-          this.products = products;
-          this.downloadableProds = this.hyp3.downloadable(products);
-          this.pairs = [...pairs, ...custom];
+      this.possibleHyp3JobsService.possibleJobs$
+        .subscribe(
+          possibleJobs => {
+            this.hyp3able = this.hyp3.getHyp3ableProducts(possibleJobs);
+          }
+        )
+    );
 
-          this.hyp3able = this.hyp3.getHyp3ableProducts([
-            ...this.products.map(prod => [prod]),
-            ...this.pairs
-          ]);
-        }
-      )
+    this.subs.add(
+      this.products$.subscribe(products => {
+        this.products = products;
+        this.downloadableProds = this.hyp3.downloadable(products);
+      })
+    );
+
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).pipe(
+        filter(searchType => searchType !== models.SearchType.CUSTOM_PRODUCTS),
+        withLatestFrom(this.pairs$)
+      ).subscribe(
+          ([_, {pairs, custom}]) => this.pairs = [...pairs, ...custom])
     );
 
     this.subs.add(
       combineLatest([
-        this.scenesService.scenes$(),
+        this.scenesService.scenes$,
         this.store$.select(filtersStore.getProductTypes),
-        this.store$.select(searchStore.getSearchType),]
+        this.store$.select(searchStore.getSearchType),
+        this.store$.select(filtersStore.getSelectedDataset)]
       ).pipe(
-        debounceTime(250)
-      ).subscribe(([scenes, productTypes, searchType]) => {
-        this.canHideRawData =
-          searchType === models.SearchType.DATASET &&
-          scenes.every(scene => scene.dataset === 'Sentinel-1B' || scene.dataset === 'Sentinel-1A') &&
-          productTypes.length <= 0;
-      })
+          debounceTime(250)
+        ).subscribe(([scenes, productTypes, searchType, selectedDataset]) => {
+          this.canHideRawData =
+            searchType === models.SearchType.DATASET &&
+              scenes.every(scene => scene.dataset === 'Sentinel-1B' || scene.dataset === 'Sentinel-1A') &&
+              productTypes.length <= 0
+              && selectedDataset.id !== models.opera_s1.id;
+        })
     );
 
     this.subs.add(
@@ -336,28 +369,32 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new queueStore.AddItems(products));
   }
 
+  public queueProductsOfType(productType): void {
+    this.queueAllProducts(this.operaProductsByType[productType as string])
+  }
+
   public queueSBASProducts(products: models.CMRProduct[]): void {
     this.store$.dispatch(new queueStore.AddItems(products));
   }
 
   public onDownloadPairCSV() {
     const pairRows = this.pairs
-      .map(([reference, secondary]) => {
+    .map(([reference, secondary]) => {
 
-        const temporalBaseline = Math.abs(reference.metadata.temporal - secondary.metadata.temporal);
-        const perpendicularBaseline = Math.abs(reference.metadata.perpendicular - secondary.metadata.perpendicular);
+      const temporalBaseline = Math.abs(reference.metadata.temporal - secondary.metadata.temporal);
+      const perpendicularBaseline = Math.abs(reference.metadata.perpendicular - secondary.metadata.perpendicular);
 
-        return (
-          `${reference.name},${reference.downloadUrl},` +
+      return (
+        `${reference.name},${reference.downloadUrl},` +
           `${secondary.name},${secondary.downloadUrl},` +
           `${perpendicularBaseline},${temporalBaseline}`
-        );
-      })
-      .join('\n');
+      );
+    })
+    .join('\n');
 
     const pairsHeader =
       `Reference, Reference URL, Secondary, Secondary URL, ` +
-      `Pair Perpendicular Baseline (meters), Pair Temporal Baseline (days)`;
+        `Pair Perpendicular Baseline (meters), Pair Temporal Baseline (days)`;
 
     const pairsCSV = `${pairsHeader}\n${pairRows}`;
 

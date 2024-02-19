@@ -1,7 +1,7 @@
 @use "@angular/material" as mat;
 
 @import "asf-theme";
-$config: mat.define-typography-config();
+$config: mat.define-legacy-typography-config();
 
 .medium-header {
   padding-bottom: 8px;
@@ -37,6 +37,7 @@ $config: mat.define-typography-config();
   justify-content: center;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .mat-button-toggle-button {
   border: 0;
   background: none;
@@ -75,6 +76,7 @@ $config: mat.define-typography-config();
 .more-horiz {
   font-size: 16px !important;
   margin-bottom: -11px;
+  margin-left: 0;
 }
 
 .mr-10 {
@@ -114,6 +116,7 @@ $config: mat.define-typography-config();
   @include themify($themes) {
     color: themed('dark-secondary-text');
   }
+  white-space: nowrap;
   text-align: center;
   font-size: 12px;
   margin-left: auto;
@@ -161,7 +164,12 @@ $config: mat.define-typography-config();
 
 .scenes-list-button-container {
   width: 100%;
+
+  /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
   mat-button-toggle-group {
     margin: auto
   }
+}
+.baseline-chart {
+  height: 100%;
 }

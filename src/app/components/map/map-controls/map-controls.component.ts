@@ -15,7 +15,6 @@ import { combineLatest, Observable } from 'rxjs';
 
 import { filter, map, startWith, tap } from 'rxjs/operators';
 import { ToggleBrowseOverlay} from '@store/map';
-import { MatSliderChange } from '@angular/material/slider';
 
 @Component({
   selector: 'app-map-controls',
@@ -151,11 +150,11 @@ export class MapControlsComponent implements OnInit, OnDestroy {
     this.mapService.zoomOut();
   }
 
-  public onSetOpacity(event: MatSliderChange) {
+  public onSetOpacity(event: any) {
     this.store$.dispatch(new mapStore.SetBrowseOverlayOpacity(event.value));
   }
 
-  public onSetCoherenceOpacity(event: MatSliderChange) {
+  public onSetCoherenceOpacity(event: any) {
     this.store$.dispatch(new mapStore.SetCoherenceOverlayOpacity(event.value));
   }
 
@@ -183,9 +182,15 @@ export class MapControlsComponent implements OnInit, OnDestroy {
     }
 
     this.browseIndex = newIndex;
-    const [url, wkt] = this.searchType === SearchType.SARVIEWS_EVENTS
+    let [url, wkt] = this.searchType === SearchType.SARVIEWS_EVENTS
     ? [this.selectedEventProducts[this.browseIndex].files.browse_url, this.selectedEventProducts[this.browseIndex].files.browse_url]
     : [this.selectedScene.browses[this.browseIndex], this.selectedScene.metadata.polygon];
+
+
+    // for OPERA-S1 geotiffs
+    // if(this.selectedScene?.id.startsWith('OPERA')) {
+    //   url = this.selectedScene.downloadUrl;
+    // }
 
     this.mapService.setSelectedBrowse(url, wkt);
   }

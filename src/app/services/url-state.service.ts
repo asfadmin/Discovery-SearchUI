@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import { filter, map, skip, debounceTime, take, distinctUntilChanged } from 'rxjs/operators';
 
 import { AppState } from '@store';
+import * as hyp3Store from '@store/hyp3';
 import * as scenesStore from '@store/scenes';
 import * as mapStore from '@store/map';
 import * as filterStore from '@store/filters';
@@ -31,11 +32,15 @@ export class UrlStateService {
   private loadLocations: {[paramName: string]: models.LoadTypes};
   private params = {};
   private shouldDoSearch = false;
-
+  private defaultbooleanParams = {
+    'useCalibrationData': false
+  }
 
   public isDefaultSearch$ = this.activatedRoute.queryParams.pipe( map(params => {
-    const DefaultnonGEO = 'searchType' in params && Object.keys(params).length <= 1;
-    const defaultGEO = Object.keys(params).length === 0;
+    const keys = Object.keys(params)
+    
+    const DefaultnonGEO = 'searchType' in params && keys.length <= 1;
+    const defaultGEO = keys.length === 0;
 
     return defaultGEO || DefaultnonGEO;
     })
@@ -61,6 +66,7 @@ export class UrlStateService {
       ...this.missionParameters(),
       ...this.baselineParameters(),
       ...this.sbasParameters(),
+      ...this.onDemandParameters(),
       ...this.eventMonitorParameters(),
     ];
 
@@ -101,10 +107,11 @@ export class UrlStateService {
     const params = {...this.params, ...queryParams};
 
     const paramsWithValues = Object.keys(params)
-      .filter(key => params[key] !== '')
+      .filter(key => params[key] !== '' && params[key] !== this.defaultbooleanParams?.[key])
       .reduce((res, key) => (res[key] = params[key], res), {});
 
-    this.params = paramsWithValues;
+    
+      this.params = paramsWithValues;
 
     this.zone.run(() => {this.router.navigate(['.'], {
       queryParams: this.params,
@@ -210,17 +217,30 @@ export class UrlStateService {
         }))
       ),
       loader: this.loadSbasPairs
-    },
-  {
-    name: 'selectedPair',
-    source: this.store$.select(scenesStore.getSelectedPairIds).pipe(
-      map(a => ({
-          selectedPair: a?.join(',')
-      })
-    )),
-    loader: this.loadSbasSelected
-  }];
+    }, {
+      name: 'selectedPair',
+      source: this.store$.select(scenesStore.getSelectedPairIds).pipe(
+        map(a => ({
+            selectedPair: a?.join(',')
+        })
+      )),
+      loader: this.loadSbasSelected
+    }];
   }
+
+  private onDemandParameters(): models.UrlParameter[] {
+    return [{
+      name: 'userID',
+      source: this.store$.select(hyp3Store.getOnDemandUserId).pipe(
+        map(userID => ({
+          userID
+        }))
+      ),
+      loader: this.loadOnDemandUserId
+    },
+    ];
+  }
+
 
   private eventMonitorParameters(): models.UrlParameter[] {
     return [{
@@ -233,50 +253,50 @@ export class UrlStateService {
       ),
       loader: this.loadEventID
     }, {
-      name: 'pinnedProducts',
-      source: this.store$.select(scenesStore.getPinnedEventBrowseIDs).pipe(
-        distinctUntilChanged(),
-        map(ids => ({
-          pinnedProducts: ids.join(',')
-        }))
-      ),
-      loader: this.loadPinnedProducts
-    }, {
-      name: 'magnitude',
-      source: this.store$.select(filterStore.getSarviewsMagnitudeRange).pipe(
-        map(range => this.rangeService.toStringWithNegatives(range)),
-        map(magnitudeRange => ({magnitude: magnitudeRange}))
-      ),
-      loader: this.loadMagnitudeRange
-    }, {
-      name: 'activeEvents',
-      source: this.store$.select(filterStore.getSarviewsEventActiveFilter).pipe(
-        map(activeEvents => ({activeEvents}))
-      ),
-      loader: this.loadOnlyActiveEvents
-    }, {
-      name: 'eventTypes',
-      source: this.store$.select(filterStore.getSarviewsEventTypes).pipe(
-        map(types => types.join(',')),
-        map(eventTypes => ({eventTypes}))
-      ),
-      loader: this.loadEventTypes
-    }, {
-      name: 'eventQuery',
-      source: this.store$.select(filterStore.getSarviewsEventNameFilter).pipe(
-        map(eventQuery => ({eventQuery}))
-      ),
-      loader: this.loadEventNameFilter
-    },
-    {
-      name: 'eventProductTypes',
-      source: this.store$.select(filterStore.getHyp3ProductTypes).pipe(
-        map(productTypes => productTypes.map(productType => productType.id)),
-        map(productTypeStrings => productTypeStrings.join(',')),
-        map(productTypes => ({eventProductTypes: productTypes ?? ''}))
-      ),
-       loader: this.loadEventProductTypes
-    }];
+        name: 'pinnedProducts',
+        source: this.store$.select(scenesStore.getPinnedEventBrowseIDs).pipe(
+          distinctUntilChanged(),
+          map(ids => ({
+            pinnedProducts: ids.join(',')
+          }))
+        ),
+        loader: this.loadPinnedProducts
+      }, {
+        name: 'magnitude',
+        source: this.store$.select(filterStore.getSarviewsMagnitudeRange).pipe(
+          map(range => this.rangeService.toStringWithNegatives(range)),
+          map(magnitudeRange => ({magnitude: magnitudeRange}))
+        ),
+        loader: this.loadMagnitudeRange
+      }, {
+        name: 'activeEvents',
+        source: this.store$.select(filterStore.getSarviewsEventActiveFilter).pipe(
+          map(activeEvents => ({activeEvents}))
+        ),
+        loader: this.loadOnlyActiveEvents
+      }, {
+        name: 'eventTypes',
+        source: this.store$.select(filterStore.getSarviewsEventTypes).pipe(
+          map(types => types.join(',')),
+          map(eventTypes => ({eventTypes}))
+        ),
+        loader: this.loadEventTypes
+      }, {
+        name: 'eventQuery',
+        source: this.store$.select(filterStore.getSarviewsEventNameFilter).pipe(
+          map(eventQuery => ({eventQuery}))
+        ),
+        loader: this.loadEventNameFilter
+      },
+      {
+        name: 'eventProductTypes',
+        source: this.store$.select(filterStore.getHyp3ProductTypes).pipe(
+          map(productTypes => productTypes.map(productType => productType.id)),
+          map(productTypeStrings => productTypeStrings.join(',')),
+          map(productTypes => ({eventProductTypes: productTypes ?? ''}))
+        ),
+        loader: this.loadEventProductTypes
+      }];
   }
 
 
@@ -298,44 +318,44 @@ export class UrlStateService {
       ),
       loader: this.loadAreResultsLoaded
     }, {
-      name: 'searchType',
-      source: this.store$.select(getSearchType).pipe(
-        map(searchType => ({ searchType }))
-      ),
-      loader: this.loadSearchType
-    }, {
-      name: 'granule',
-      source: this.store$.select(scenesStore.getSelectedScene).pipe(
-        map(scene => ({ granule: !!scene ? scene.id : null }))
-      ),
-      loader: this.loadSelectedScene
-    }, {
-      name: 'topic',
-      source: this.store$.select(uiStore.getHelpDialogTopic).pipe(
-        map(topic => ({ topic }))
-      ),
-      loader: this.loadHelpTopic
-    }, {
-      name: 'isDlOpen',
-      source: this.store$.select(uiStore.getIsDownloadQueueOpen).pipe(
-        map(isDlOpen => ({ isDlOpen }))
-      ),
-      loader: this.loadIsDownloadQueueOpen
-    }, {
-      name: 'isOnDemandOpen',
-      source: this.store$.select(uiStore.getIsOnDemandQueueOpen).pipe(
-        map(isOnDemandOpen => ({ isOnDemandOpen }))
-      ),
-      loader: this.loadIsOnDemandQueueOpen
-    },
-    // {
-    //   name: 'isImgBrowseOpen',
-    //   source: this.store$.select(uiStore.getIsBrowseDialogOpen).pipe(
-    //     map( isImgBrowseOpen => ({isImgBrowseOpen}))
-    //   ),
-    //   loader: this.loadIsImageBrowseOpen
-    // }
-  ];
+        name: 'searchType',
+        source: this.store$.select(getSearchType).pipe(
+          map(searchType => ({ searchType }))
+        ),
+        loader: this.loadSearchType
+      }, {
+        name: 'granule',
+        source: this.store$.select(scenesStore.getSelectedScene).pipe(
+          map(scene => ({ granule: !!scene ? scene.id : null }))
+        ),
+        loader: this.loadSelectedScene
+      }, {
+        name: 'topic',
+        source: this.store$.select(uiStore.getHelpDialogTopic).pipe(
+          map(topic => ({ topic }))
+        ),
+        loader: this.loadHelpTopic
+      }, {
+        name: 'isDlOpen',
+        source: this.store$.select(uiStore.getIsDownloadQueueOpen).pipe(
+          map(isDlOpen => ({ isDlOpen }))
+        ),
+        loader: this.loadIsDownloadQueueOpen
+      }, {
+        name: 'isOnDemandOpen',
+        source: this.store$.select(uiStore.getIsOnDemandQueueOpen).pipe(
+          map(isOnDemandOpen => ({ isOnDemandOpen }))
+        ),
+        loader: this.loadIsOnDemandQueueOpen
+      },
+      // {
+      //   name: 'isImgBrowseOpen',
+      //   source: this.store$.select(uiStore.getIsBrowseDialogOpen).pipe(
+      //     map( isImgBrowseOpen => ({isImgBrowseOpen}))
+      //   ),
+      //   loader: this.loadIsImageBrowseOpen
+      // }
+    ];
   }
 
   private filtersParameters(): models.UrlParameter[] {
@@ -348,101 +368,109 @@ export class UrlStateService {
       ),
       loader: this.loadSubtypes
     }, {
-      name: 'maxResults',
-      source: this.store$.select(filterStore.getMaxSearchResults).pipe(
-        map(maxResults => ({ maxResults }))
-      ),
-      loader: this.loadMaxResults
-    }, {
-      name: 'start',
-      source: this.store$.select(filterStore.getStartDate).pipe(
-        map(start => ({ start: start === null ? '' : moment.utc( start ).format() }))
-      ),
-      loader: this.loadStartDate
-    }, {
-      name: 'end',
-      source: this.store$.select(filterStore.getEndDate).pipe(
-        map(end => ({ end: end === null ? '' : moment.utc( end ).format() }))
-      ),
-      loader: this.loadEndDate
-    }, {
-      name: 'seasonStart',
-      source: this.store$.select(filterStore.getSeasonStart).pipe(
-        map(seasonStart  => ({ seasonStart }))
-      ),
-      loader: this.loadSeasonStart
-    }, {
-      name: 'seasonEnd',
-      source: this.store$.select(filterStore.getSeasonEnd).pipe(
-        map(seasonEnd => ({ seasonEnd }))
-      ),
-      loader: this.loadSeasonEnd
-    }, {
-      name: 'path',
-      source: this.store$.select(filterStore.getPathRange).pipe(
-        map(range => this.rangeService.toString(range)),
-        map(path => ({ path }))
-      ),
-      loader: this.loadPathRange
-    }, {
-      name: 'frame',
-      source: this.store$.select(filterStore.getFrameRange).pipe(
-        map(range => this.rangeService.toString(range)),
-        map(frame => ({ frame }))
-      ),
-      loader: this.loadFrameRange
-    }, {
-      name: 'perp',
-      source: this.store$.select(filterStore.getPerpendicularRange).pipe(
-        map(range => this.rangeService.toStringWithNegatives(range)),
-        map(perp => ({ perp }))
-      ),
-      loader: this.loadPerpendicularRange
-    }, {
-      name: 'temporal',
-      source: this.store$.select(filterStore.getTemporalRange).pipe(
-        map(range => this.rangeService.toStringWithNegatives(range)),
-        map(temporal => ({ temporal }))
-      ),
-      loader: this.loadTemporalRange
-    }, {
-      name: 'listSearchType',
-      source: this.store$.select(filterStore.getListSearchMode).pipe(
-        map(mode => ({ listSearchType: mode }))
-      ),
-      loader: this.loadListSearchType
-    }, {
-      name: 'productTypes',
-      source: this.store$.select(filterStore.getProductTypes).pipe(
-        map(
-          types => this.prop.saveProperties(types, 'productTypes', v => v.apiValue)
+        name: 'maxResults',
+        source: this.store$.select(filterStore.getMaxSearchResults).pipe(
+          map(maxResults => ({ maxResults }))
         ),
-      ),
-      loader: this.loadProductTypes
-    }, {
-      name: 'beamModes',
-      source: this.store$.select(filterStore.getBeamModes).pipe(
-        map(
-          beamModes => this.prop.saveProperties(beamModes, 'beamModes')
-        )
-      ),
-      loader: this.loadBeamModes
-    }, {
-      name: 'polarizations',
-      source: this.store$.select(filterStore.getPolarizations).pipe(
-        map(
-          pols => this.prop.saveProperties(pols, 'polarizations')
-        )
-      ),
-      loader: this.loadPolarizations
-    }, {
-      name: 'flightDirs',
-      source: this.store$.select(filterStore.getFlightDirections).pipe(
-        map(dirs => dirs.join(',')),
-        map(flightDirs => ({ flightDirs }))
-      ),
-      loader: this.loadFlightDirections
-    }, ];
+        loader: this.loadMaxResults
+      }, {
+        name: 'start',
+        source: this.store$.select(filterStore.getStartDate).pipe(
+          map(start => ({ start: start === null ? '' : moment.utc( start ).format() }))
+        ),
+        loader: this.loadStartDate
+      }, {
+        name: 'end',
+        source: this.store$.select(filterStore.getEndDate).pipe(
+          map(end => ({ end: end === null ? '' : moment.utc( end ).format() }))
+        ),
+        loader: this.loadEndDate
+      }, {
+        name: 'seasonStart',
+        source: this.store$.select(filterStore.getSeasonStart).pipe(
+          map(seasonStart  => ({ seasonStart }))
+        ),
+        loader: this.loadSeasonStart
+      }, {
+        name: 'seasonEnd',
+        source: this.store$.select(filterStore.getSeasonEnd).pipe(
+          map(seasonEnd => ({ seasonEnd }))
+        ),
+        loader: this.loadSeasonEnd
+      }, {
+        name: 'path',
+        source: this.store$.select(filterStore.getPathRange).pipe(
+          map(range => this.rangeService.toString(range)),
+          map(path => ({ path }))
+        ),
+        loader: this.loadPathRange
+      }, {
+        name: 'frame',
+        source: this.store$.select(filterStore.getFrameRange).pipe(
+          map(range => this.rangeService.toString(range)),
+          map(frame => ({ frame }))
+        ),
+        loader: this.loadFrameRange
+      }, {
+        name: 'perp',
+        source: this.store$.select(filterStore.getPerpendicularRange).pipe(
+          map(range => this.rangeService.toStringWithNegatives(range)),
+          map(perp => ({ perp }))
+        ),
+        loader: this.loadPerpendicularRange
+      }, {
+        name: 'temporal',
+        source: this.store$.select(filterStore.getTemporalRange).pipe(
+          map(range => this.rangeService.toStringWithNegatives(range)),
+          map(temporal => ({ temporal }))
+        ),
+        loader: this.loadTemporalRange
+      }, {
+        name: 'listSearchType',
+        source: this.store$.select(filterStore.getListSearchMode).pipe(
+          map(mode => ({ listSearchType: mode }))
+        ),
+        loader: this.loadListSearchType
+      }, {
+        name: 'productTypes',
+        source: this.store$.select(filterStore.getProductTypes).pipe(
+          map(
+            types => this.prop.saveProperties(types, 'productTypes', v => v.apiValue)
+          ),
+        ),
+        loader: this.loadProductTypes
+      }, {
+        name: 'beamModes',
+        source: this.store$.select(filterStore.getBeamModes).pipe(
+          map(
+            beamModes => this.prop.saveProperties(beamModes, 'beamModes')
+          )
+        ),
+        loader: this.loadBeamModes
+      }, {
+        name: 'polarizations',
+        source: this.store$.select(filterStore.getPolarizations).pipe(
+          map(
+            pols => this.prop.saveProperties(pols, 'polarizations')
+          )
+        ),
+        loader: this.loadPolarizations
+      }, {
+        name: 'flightDirs',
+        source: this.store$.select(filterStore.getFlightDirections).pipe(
+          map(dirs => dirs.join(',')),
+          map(flightDirs => ({ flightDirs }))
+        ),
+        loader: this.loadFlightDirections
+      },
+      {
+        name: 'useCalibrationData',
+        source: this.store$.select(filterStore.getUseCalibrationData).pipe(
+          map(useCalibrationData => ({useCalibrationData}))
+        ),
+        loader: this.loadUseCalibrationData
+      }
+    ];
   }
 
   private mapParameters(): models.UrlParameter[] {
@@ -453,15 +481,15 @@ export class UrlStateService {
       ),
       loader: this.loadMapView
     }, {
-      name: 'center',
-      source: this.mapService.center$.pipe(
-        map(
-          ({ lon, lat }) => ({
-            lon: lon.toFixed(3),
-            lat: lat.toFixed(3)
-          })
-        ),
-        map(({ lon, lat }) => ({ center: `${lon},${lat}` }))
+        name: 'center',
+        source: this.mapService.center$.pipe(
+          map(
+            ({ lon, lat }) => ({
+              lon: lon.toFixed(3),
+              lat: lat.toFixed(3)
+            })
+          ),
+          map(({ lon, lat }) => ({ center: `${lon},${lat}` }))
       ),
       loader: this.loadMapCenter
     }, {
@@ -488,7 +516,22 @@ export class UrlStateService {
         map(list => ({ fullBurstIDs: list?.map(num => num.toString()).join(',') }))
       ),
       loader: this.loadFullBurstIDs
-    }];
+    },
+    {
+      name: 'operaBurstID',
+      source: this.store$.select(filterStore.getOperaBurstIDs).pipe(
+        map(list => ({ operaBurstID: list?.map(num => num.toString()).join(',') }))
+      ),
+      loader: this.loadOperaBurstIDs
+    },
+    {
+      name: 'groupId',
+      source: this.store$.select(filterStore.getGroupID).pipe(
+        map(groupId => ({ groupId })
+      )),
+      loader: this.loadGroupId
+    },
+  ];
   }
 
   private loadSearchType = (searchType: string): Action | undefined => {
@@ -580,8 +623,8 @@ export class UrlStateService {
 
   private loadPathRange = (rangeStr: string): Action[] => {
     const range = rangeStr
-      .split('-')
-      .map(v => +v);
+    .split('-')
+    .map(v => +v);
 
     return [
       new filterStore.SetPathStart(range[0] || null),
@@ -591,8 +634,8 @@ export class UrlStateService {
 
   private loadFrameRange = (rangeStr: string): Action[] => {
     const range = rangeStr
-      .split('-')
-      .map(v => +v);
+    .split('-')
+    .map(v => +v);
 
     return [
       new filterStore.SetFrameStart(range[0] || null),
@@ -602,8 +645,8 @@ export class UrlStateService {
 
   private loadPerpendicularRange = (rangeStr: string): Action => {
     const range = rangeStr
-      .split('to')
-      .map(v => +v);
+    .split('to')
+    .map(v => +v);
 
     return new filterStore.SetPerpendicularRange({
       start: range[0],
@@ -613,8 +656,8 @@ export class UrlStateService {
 
   private loadTemporalRange = (rangeStr: string): Action => {
     const range = rangeStr
-      .split('to')
-      .map(v => +v);
+    .split('to')
+    .map(v => +v);
 
     return new filterStore.SetTemporalRange({
       start: range[0],
@@ -686,9 +729,9 @@ export class UrlStateService {
 
   private loadFlightDirections = (dirsStr: string): Action => {
     const directions: models.FlightDirection[] = dirsStr
-      .split(',')
-      .filter(direction => !Object.values(models.FlightDirection).includes(<models.FlightDirection>direction))
-      .map(direction => <models.FlightDirection>direction);
+    .split(',')
+    .filter(direction => !Object.values(models.FlightDirection).includes(<models.FlightDirection>direction))
+    .map(direction => <models.FlightDirection>direction);
 
     return new filterStore.SetFlightDirections(directions);
   };
@@ -725,15 +768,22 @@ export class UrlStateService {
 
   private loadSbasPairs = (pairsStr: string): Action => {
     const pairs = pairsStr
-      .split('$')
-      .map(pair => pair.split(','));
+    .split('$')
+    .map(pair => pair.split(','));
 
     return new scenesStore.AddCustomPairs(pairs);
   };
+
   private loadSbasSelected = (pair: string): Action => {
     const pairIds = pair.split(',');
     return new scenesStore.SetSelectedPair(pairIds);
   };
+
+  private loadOnDemandUserId = (userIdStr: string): Action  => {
+    console.log(userIdStr);
+    return new hyp3Store.SetOnDemandUserID(userIdStr);
+  }
+
   private loadEventID = (event_id: string): Action => new scenesStore.SetSelectedSarviewsEvent(event_id);
 
   private loadPinnedProducts = (pinnedProducts: string): Action => {
@@ -762,17 +812,17 @@ export class UrlStateService {
     .split('to')
     .map(v => +v);
 
-  return new filterStore.SetSarviewsMagnitudeRange({
-    start: range[0],
-    end: range[1]
-  });
+    return new filterStore.SetSarviewsMagnitudeRange({
+      start: range[0],
+      end: range[1]
+    });
   };
 
   private loadEventTypes = (eventTypesStr: string): Action => {
     const eventTypes: models.SarviewsEventType[] = eventTypesStr
-      .split(',')
-      .filter(direction => !Object.values(models.SarviewsEventType).includes(models.SarviewsEventType[direction]))
-      .map(direction => <models.SarviewsEventType>direction);
+    .split(',')
+    .filter(direction => !Object.values(models.SarviewsEventType).includes(models.SarviewsEventType[direction]))
+    .map(direction => <models.SarviewsEventType>direction);
 
     return new filterStore.SetSarviewsEventTypes(eventTypes);
   };
@@ -782,8 +832,8 @@ export class UrlStateService {
 
   private loadEventProductTypes = (types: string): Action => {
     const productTypes = types.split(',')
-      .filter(type => Object.keys(models.hyp3JobTypes)
-        .find(jobType => jobType === type) !== undefined);
+    .filter(type => Object.keys(models.hyp3JobTypes)
+      .find(jobType => jobType === type) !== undefined);
 
     if (productTypes?.length === 0) {
       return new filterStore.SetHyp3ProductTypes([]);
@@ -806,4 +856,17 @@ export class UrlStateService {
     const list = ids.split(',');
     return new filterStore.setFullBurst(list);
   };
+
+  private loadOperaBurstIDs = (ids: string): Action => {
+    const list = ids.split(',');
+    return new filterStore.setOperaBurstID(list);
+  };
+
+  private loadGroupId = (id: string): Action => {
+    return new filterStore.setGroupID(id);
+  };
+
+  private loadUseCalibrationData = (usingCalibrationData: string): Action => {
+    return new filterStore.setUseCalibrationData(!!usingCalibrationData)
+  }
 }
