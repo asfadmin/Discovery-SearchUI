@@ -305,3 +305,20 @@ button {
   margin-top: 3px;
   margin-left: 16px;
 }
+.clipboard-button {
+  margin-right: 15px !important;
+  font-size: 16px !important;
+  @include themify($themes) {
+    color: themed("dark-primary-text");
+  }
+}
+.download-button {
+  margin: 0 !important;
+}
+.close-button {
+  margin-left:0 !important;
+  display: flex !important;
+  @include themify($themes) {
+    color: themed("dark-primary-text");
+  }
+}
