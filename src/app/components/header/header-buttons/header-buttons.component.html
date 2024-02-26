@@ -7,6 +7,7 @@
         mat-button>
         <mat-icon
           class="large-icon"
+          aria-hidden="false"
           svgIcon="hyp3"
           [matBadge]="queuedCustomProducts.length"
           [matBadgeColor]="this.queuedProducts.length > 0 ? this.accentPalette : this.primaryPalette"
@@ -39,6 +40,7 @@
 
       <mat-icon
         class="large-icon"
+        aria-hidden="false"
         [matBadge]="queuedProducts.length"
         [matBadgeColor]="this.queuedProducts.length > 0 ? this.accentPalette : this.primaryPalette"
         matBadgePosition="above after"
