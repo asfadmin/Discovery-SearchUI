@@ -156,12 +156,14 @@
 .mobile-button-wrapper {
   //transform: scale(0.82);
   //margin-top: -6px;
+
 }
 
 :host {
   .mobile-button-wrapper {
     transform: none !important;
     margin-top: 0 !important;
+    min-width: 112px;
   }
 }
 

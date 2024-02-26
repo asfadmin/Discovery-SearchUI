@@ -87,16 +87,17 @@
 
         <app-copy-to-clipboard
           *ngIf="!product.isUnzippedFile && !product.metadata.job && product.groupId !== 'SARViews'"
-          style="margin-right: 15px;"
           prompt="{{ 'COPY_FILE_ID' | translate}}"
           [value]="product.metadata.productType === 'BURST_XML' ? product.id?.split('-XML')[0] : (
             product.metadata.parentID || product.id
           )"
+          class="clipboard-button"
           matListItemMeta
         >
         </app-copy-to-clipboard>
 
         <app-download-file-button
+          class="download-button"
           [attr.id]="'dlq_' + product.id"
           [product] = "product"
           (productDownloaded)="downloadContinue($event)"
@@ -104,7 +105,7 @@
           [useNewDownload]="true" matListItemMeta>
         </app-download-file-button>
 
-        <button (click)="onRemoveProduct(product)" matTooltip="{{ 'REMOVE_FILE' | translate }}" mat-icon-button matListItemMeta>
+        <button class="close-button" (click)="onRemoveProduct(product)" matTooltip="{{ 'REMOVE_FILE' | translate }}" mat-icon-button matListItemMeta>
           <mat-icon>close</mat-icon>
         </button>
       </mat-list-item>
