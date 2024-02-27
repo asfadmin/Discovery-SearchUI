@@ -266,6 +266,9 @@ export class ScenesService {
           }
 
           return scenes.filter(scene => {
+            if (scene.metadata.date <  moment.utc("1970-01-02T00:00:00+00:00")) {
+              return true
+            }
             if (dateRange.start === null && dateRange.end !== null) {
               return scene.metadata.date <= range.end ;
             } else if (dateRange.start !== null && dateRange.end === null) {
