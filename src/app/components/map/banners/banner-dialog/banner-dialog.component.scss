@@ -10,10 +10,15 @@
     background-color: themed("primary-light");
   }
 
+  padding: 10px 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   cursor: move;
   text-align: center;
+  font-size: x-large !important;
   border-bottom: 1px solid $asf-primary-dark;
-  padding: 1px;
 }
 
 .banner-content {
@@ -22,6 +27,7 @@
   }
 
   font: inherit;
+  padding-top: 20px !important;
 }
 
 .banner-content a {
