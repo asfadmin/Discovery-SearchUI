@@ -2,6 +2,7 @@
   *ngIf="breakpoint$ | async as breakpoint"
   class="detail-card scrollable"
   [class.scrollable]="isScrollable"
+  [class.detail-card-info-mobile]="breakpoint < breakpoints.FULL"
 >
   <div *ngIf="sarviewEvent">
     <mat-card-header>
@@ -52,8 +53,8 @@
     </mat-card-content>
   </div>
 
-  <div *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS">
-    <div *ngIf="scene">
+  <ng-container *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS">
+    <ng-container *ngIf="scene">
       <mat-card-header>
         <mat-card-title class="detail-card-header">
           <span>{{ scene.metadata.productType === 'BURST' ? scene.id : scene.name }}</span>
@@ -81,7 +82,8 @@
         </mat-card-subtitle>
       </mat-card-header>
 
-      <div class="detail-card-info">
+  <div class="detail-card-info"
+   >
         <p class="faint-text accessing-text">
           <span *ngIf="!isLoggedIn">
             {{ 'ACCESSING_THIS_DATA_REQUIRES_YOU_TO_LOG_IN' | translate | titlecase}}
@@ -198,8 +200,8 @@
           </div>
         </div>
       </mat-card-content>
-    </div>
-  </div>
+    </ng-container>
+  </ng-container>
 
 
   <div style="margin-top: 25px;" class="browse-container w100"
@@ -276,7 +278,7 @@
   [ngStyle]="{
     bottom:
       searchType === searchTypes.BASELINE && breakpoint <= breakpoints.MEDIUM ?
-        '20px' : breakpoint < breakpoints.SMALL ? '17px' : '0'
+        '20px' : breakpoint < breakpoints.SMALL ? '0px' : '0'
   }"
   [ngClass]="{
     'menu-override': (searchType === searchTypes.BASELINE && breakpoint === breakpoints.FULL)
