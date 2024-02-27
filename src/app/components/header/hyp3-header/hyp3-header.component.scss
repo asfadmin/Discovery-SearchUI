@@ -1,6 +1,8 @@
+$width: 330px;
+
 .hyp3-date-selector--layout {
-  flex: 1 1 300px !important;
+  flex: 1 1 $width !important;
   box-sizing: border-box !important;
-  max-width: 300px !important;
-  min-width: 300px !important;
+  max-width: $width !important;
+  min-width: $width !important;
 }
