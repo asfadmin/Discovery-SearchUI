@@ -1,7 +1,7 @@
 import { Component,  OnDestroy, OnInit } from '@angular/core';
 import { saveAs } from 'file-saver';
 
-import { combineLatest } from 'rxjs';
+import { combineLatest, switchMap } from 'rxjs';
 import { debounceTime, filter, map, tap, withLatestFrom } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
@@ -89,20 +89,20 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     this.store$.select(searchStore.getSearchType),
   ]
   ).pipe(
-    map(([scenes, currentSearchType]) => (currentSearchType ===
-      this.SearchTypes.BASELINE && scenes?.length > 0 ? scenes[0].metadata.productType === 'BURST': false)
-      || (currentSearchType === this.SearchTypes.SBAS
-      )
+    map(([scenes, currentSearchType]) => (
+      currentSearchType === this.SearchTypes.BASELINE &&
+      scenes?.length > 0 ? scenes[0].metadata.productType === 'BURST': false)
+      || (currentSearchType === this.SearchTypes.SBAS &&
+      scenes?.length > 0 ? scenes[0].metadata.productType === 'BURST': false)
     )
   )
 
   public numPairs$ =
   this.store$.select(searchStore.getSearchType).pipe(
     filter(searchType => searchType !== models.SearchType.CUSTOM_PRODUCTS),
-    withLatestFrom(this.pairs$),
-    map(([_, pairs]) => pairs),
+    switchMap(_ => this.pairs$),
     filter(pairs => !!pairs),
-    map(pairs => pairs.pairs.length + pairs.custom.length)
+    map(pairs => pairs.pairs.length + pairs.custom.length),
   );
 
   public sarviewsEventProducts$ = this.eventMonitoringService.filteredEventProducts$();

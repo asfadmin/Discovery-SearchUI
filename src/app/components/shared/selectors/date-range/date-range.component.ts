@@ -1,15 +1,16 @@
 import {Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { tap, delay, map } from 'rxjs/operators';
-import * as moment from 'moment';
+import moment from 'moment';
 import { SubSink } from 'subsink';
 import { UntypedFormGroup, UntypedFormControl  } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { DateAdapter } from '@angular/material/core';
-import { NotificationService } from '@services';
+import { NotificationService, ScreenSizeService } from '@services';
 import {Store} from "@ngrx/store";
 import {AppState} from "@store";
 import * as uiStore from '@store/ui';
+import * as models from '@models';
 
 @Component({
   selector: 'app-date-range',
@@ -38,10 +39,13 @@ export class DateRangeComponent implements OnInit, OnDestroy {
   public isEndError = false;
   private subs = new SubSink();
 
+  public breakpoint: models.Breakpoints;
+  public breakpoints = models.Breakpoints;
+
   constructor(
     private notificationService: NotificationService,
-    // private _adapter: DateAdapter<any>,
     private dateAdapter: DateAdapter<any>,
+    private screenSize: ScreenSizeService,
     private store$: Store<AppState>,
   ) {}
 
@@ -53,6 +57,10 @@ export class DateRangeComponent implements OnInit, OnDestroy {
           this.setCalLang(currentLanguage);
         }
       )
+    );
+
+    this.screenSize.breakpoint$.subscribe(
+      breakpoint => this.breakpoint = breakpoint
     );
 
     this.dateAdapter.setLocale(moment.locale());

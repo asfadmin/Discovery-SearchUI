@@ -8,6 +8,8 @@
         breakpoint > breakpoints.MEDIUM &&
         searchType === SearchTypes.BASELINE ? '10px' : 'auto'
     }">
+    <div class="button-flex-row">
+
 
   <div class="image-flex" *ngIf="searchType !== SearchTypes.BASELINE || breakpoint > breakpoints.SMALL">
     <img class="list-thumbnail"
@@ -47,34 +49,34 @@
     </div>
 
     <div class="div-flex date-time" matLine>
-      <span *ngIf="scene.metadata.job">
+      <ng-container *ngIf="scene.metadata.job">
         {{ scene.metadata.job.job_type }}
         <br *ngIf="breakpoint === breakpoints.MOBILE && searchType === SearchTypes.CUSTOM_PRODUCTS"> -
-      </span>
-      <span *ngIf="!scene.isDummyProduct">
-        <span *ngIf="
+      </ng-container>
+      <ng-container *ngIf="!scene.isDummyProduct">
+        <ng-container *ngIf="
           breakpoint > breakpoints.MOBILE &&
           searchType !== SearchTypes.BASELINE &&
           !!scene.metadata?.opera?.validityStartDate"
           matTooltip="Validity Start Date">
             {{ scene.metadata.opera.validityStartDate | fullDate }}
-        </span>
+        </ng-container>
 
-        <span *ngIf="
+        <ng-container *ngIf="
           breakpoint > breakpoints.MOBILE &&
           searchType !== SearchTypes.BASELINE &&
           !scene.metadata?.opera?.validityStartDate"
           matTooltip="{{'SCENE_START_TIME' | translate}}">
             {{ scene.metadata.date | fullDate }}
-        </span>
+        </ng-container>
 
-        <span *ngIf="
+        <ng-container *ngIf="
           breakpoint === breakpoints.MOBILE ||
           searchType === SearchTypes.BASELINE"
           matTooltip="{{'SCENE_START_TIME' | translate}}">
           {{ scene.metadata.date| shortDate }}
-        </span>
-      </span>
+        </ng-container>
+      </ng-container>
       <span *ngIf="scene.isDummyProduct">Loading...</span>
     </div>
   </div>
@@ -100,4 +102,5 @@
         [isQueued]="isQueued">
       </app-baseline-scene-controls>
     </ng-container>
+  </div>
 </button>

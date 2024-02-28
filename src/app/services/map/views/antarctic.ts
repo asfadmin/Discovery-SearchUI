@@ -2,9 +2,11 @@ import { View } from 'ol';
 import WMTSTileGrid from 'ol/tilegrid/WMTS.js';
 import { WMTS } from 'ol/source';
 import { Options as WMTS_Options } from 'ol/source/WMTS';
-import { Tile as TileLayer,
+import {
   Graticule as GraticuleLayer
  } from 'ol/layer';
+import TileLayer from 'ol/layer/WebGLTile.js';
+
 import * as proj from 'ol/proj';
 import { Stroke } from 'ol/style';
 import { MapView, CustomProjection } from './map-view';

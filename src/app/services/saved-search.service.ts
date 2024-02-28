@@ -23,6 +23,20 @@ import { getSarviewsMagnitudeRange } from '@store/filters';
 })
 export class SavedSearchService {
 
+  constructor(
+    private store$: Store<AppState>,
+    private mapService: MapService,
+  ) {
+    this.currentSearch$.subscribe(
+      current => this.currentSearch = current
+    );
+
+    this.searchType$.subscribe(
+      searchType => this.searchType = searchType
+    );
+  }
+
+
   private currentGeographicSearch$ = combineLatest([
     this.store$.select(filtersStore.getGeographicSearch).pipe(
       map(filters =>  ({ ...filters, flightDirections: Array.from(filters.flightDirections) })),
@@ -131,19 +145,6 @@ export class SavedSearchService {
     acc[searchType] = null;
     return acc;
   }, {});
-
-  constructor(
-    private store$: Store<AppState>,
-    private mapService: MapService,
-  ) {
-    this.currentSearch$.subscribe(
-      current => this.currentSearch = current
-    );
-
-    this.searchType$.subscribe(
-      searchType => this.searchType = searchType
-    );
-  }
 
   public saveSearchState(searchType: models.SearchType, search: models.Search | null) {
     this.searchStateByType[searchType] = search;

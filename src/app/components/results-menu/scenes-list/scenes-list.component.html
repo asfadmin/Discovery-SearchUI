@@ -1,4 +1,4 @@
-<mat-action-list class="h100 mp0"
+<mat-action-list class="h100 mp0" style="padding: 0;"
 [ngClass]="{
   'list-view': (breakpoint$ | async) >= breakpoints.MEDIUM,
   'baseline-list-view-medium':
@@ -9,8 +9,8 @@
     (breakpoint$ | async) === breakpoints.SMALL &&
     searchType === SearchTypes.BASELINE
 }">
-  <cdk-virtual-scroll-viewport class="list-viewport h100" [itemSize]="searchType === SearchTypes.SBAS ? 48 : 60">
-    <div *ngIf="breakpoint$ | async as breakpoint">
+  <cdk-virtual-scroll-viewport class="list-viewport h100" [itemSize]="searchType === SearchTypes.SBAS ? 48 : 58">
+    <ng-container *ngIf="breakpoint$ | async as breakpoint">
       <ng-container
         *ngIf="
           searchType === SearchTypes.DATASET ||
@@ -43,23 +43,23 @@
       </ng-container>
 
       <ng-container *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS">
-        <div *cdkVirtualFor="let event of sarviewsEvents">
+        <ng-container *cdkVirtualFor="let event of sarviewsEvents">
           <app-sarviews-event
             [event]=event
             [selected]="event.event_id === selectedEvent">
           </app-sarviews-event>
-        </div>
+        </ng-container>
       </ng-container>
 
       <ng-container *ngIf="searchType === SearchTypes.SBAS">
-        <div *cdkVirtualFor="let pair of pairs">
+        <ng-container *cdkVirtualFor="let pair of pairs">
           <app-pair
             (togglePair)="onPairSelected($event)"
             [pair]="pair.pair"
             [hyp3able]="pair.hyp3able">
           </app-pair>
-        </div>
+        </ng-container>
       </ng-container>
-    </div>
+    </ng-container>
   </cdk-virtual-scroll-viewport>
 </mat-action-list>

@@ -1,3 +1,5 @@
+
+/* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version. */
 ::ng-deep .mat-list-item-content {
   justify-content: space-between;
 }
@@ -10,4 +12,8 @@
 
 .mobile-event-sub-text {
   font-size: 12px !important;
+}
+.scene-controls {
+  margin-top: auto;
+  margin-bottom: auto;
 }

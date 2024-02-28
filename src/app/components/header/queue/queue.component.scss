@@ -9,14 +9,17 @@ $idk-pad: 21px;
 
 .dl-title-group {
   @include themify($themes) {
-    border-bottom-color: themed("primary-dark");
     color: themed("dark-primary-text");
   }
 
   padding: 0 10px;
-  margin-top: -$bottom-offset;
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
+  margin-left: -23px;
+  margin-right: -24px;
+  margin-top: -44px;
+  margin-top: 0;
+  h1 {
+    margin-top: 0;
+  }
 }
 
 .dl-subtitle {
@@ -36,20 +39,23 @@ $idk-pad: 21px;
     color: themed("dark-primary-text");
   }
 
-  height: 100px;
+  height: 80px;
   padding: 20px 20px 0;
+  padding-top: 0;
   border-top-style: solid;
   border-top-width: 1px;
 
   min-height: 100%;
   min-width: 100%;
   width: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .dl-clear-button {
   text-align: left;
 
-  .mat-button {
+  .mat-mdc-button {
     font-size: 16px;
 
     @include themify($themes) {
@@ -65,7 +71,7 @@ $idk-pad: 21px;
 .dl-download-buttons {
   text-align: right;
 
-  .mat-button {
+  .mat-mdc-button {
     font-size: 16px;
 
     @include themify($themes) {
@@ -138,7 +144,7 @@ $idk-pad: 21px;
 
 button {
   height: 36px;
-  font-weight: 100;
+  font-weight: 500;
 }
 
 .buttons {
@@ -169,11 +175,13 @@ button {
   margin: 0;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version. */
 .dl-mat-dialog-content-warn {
   height: calc(100% - #{$header-height} - #{$footer-height} - #{$warn-msg-height} - #{$idk-pad});
   max-height: calc(100% - #{$header-height} - #{$footer-height} - #{$warn-msg-height} - #{$idk-pad});
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version. */
 .dl-mat-dialog-content-warn-mobile {
   height: calc(100% - #{$header-height} - #{$footer-height} - #{$warn-msg-mobile-height} - #{$idk-pad});
   max-height: calc(100% - #{$header-height} - #{$footer-height} - #{$warn-msg-mobile-height} - #{$idk-pad});
@@ -187,14 +195,14 @@ button {
   position: absolute;
   display: flex;
   width: 100%;
-  height: $footer-height;
-  bottom: $bottom-offset;
+  bottom: 0;
   margin-bottom: 0;
   padding: 0;
 }
-
+.mdc-dialog__title::before {
+  display: none;
+}
 [mat-dialog-title] {
-  margin: -24px -24px 0 !important;
   padding: 18px 24px;
 
   @include themify($themes) {
@@ -204,10 +212,10 @@ button {
 
   cursor: move;
   text-align: left;
-  height: $header-height;
+  // height: $header-height;
 }
 
-.mat-list-base .mat-list-item .mat-list-item-content,
+.mat-mdc-list-base .mat-mdc-list-item .mat-list-item-content,
 .mat-list-base .mat-list-option .mat-list-item-content {
   padding: 0 !important;
 }
@@ -246,7 +254,9 @@ button {
 }
 
 .global-progress {
-  width: calc(100% + 20px);
+  position: absolute;
+  bottom: 0;
+  width: calc(100% + 10px);
   left: -10px;
 }
 
@@ -286,11 +296,28 @@ button {
 }
 
 .product-display {
-  margin-top: 3px; 
+  margin-top: 3px;
   margin-left: 32px;
 }
 
 .product-display-mobile {
-  margin-top: 3px; 
+  margin-top: 3px;
   margin-left: 16px;
+}
+.clipboard-button {
+  margin-right: 15px !important;
+  font-size: 16px !important;
+  @include themify($themes) {
+    color: themed("dark-primary-text");
+  }
+}
+.download-button {
+  margin: 0 !important;
+}
+.close-button {
+  margin-left:0 !important;
+  display: flex !important;
+  @include themify($themes) {
+    color: themed("dark-primary-text");
+  }
 }

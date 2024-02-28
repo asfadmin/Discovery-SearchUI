@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Observable, combineLatest } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
-import * as moment from 'moment';
+import moment from 'moment';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store/app.reducer';
 import {
@@ -266,6 +266,9 @@ export class ScenesService {
           }
 
           return scenes.filter(scene => {
+            if (scene.metadata.date <  moment.utc("1970-01-02T00:00:00+00:00")) {
+              return true
+            }
             if (dateRange.start === null && dateRange.end !== null) {
               return scene.metadata.date <= range.end ;
             } else if (dateRange.start !== null && dateRange.end === null) {

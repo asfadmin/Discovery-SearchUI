@@ -94,6 +94,7 @@
   justify-content: center;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .control-mat-button-toggle {
   @include themify($themes) {
     background-color: themed('background-white');
@@ -103,6 +104,8 @@
 .more-horiz {
   font-size: 16px !important;
   margin-bottom: -11px;
+  margin-left: 0;
+
 }
 
 .warn-icon {
@@ -119,4 +122,7 @@
   @include themify($themes) {
     color: themed('dark-primary-text') !important;
   }
+}
+.baseline-chart {
+  height: 100%;
 }

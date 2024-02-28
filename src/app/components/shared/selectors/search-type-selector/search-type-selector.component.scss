@@ -20,7 +20,7 @@
   padding: 0;
 }
 
-.mat-menu-item {
+.mat-mdc-menu-item {
   padding: 0;
 }
 
@@ -28,12 +28,16 @@
   display: flex;
 }
 
-.mat-card-actions {
+.item-title {
+  font-weight: bold;
+}
+
+.mat-mdc-card-actions {
   padding: 0;
   margin: 0;
 }
 
-.mat-button {
+.mat-mdc-button {
   @include themify($themes) {
     color: themed("blue-link");
   }
@@ -111,6 +115,7 @@
   background-color: rgb(0 0 0 / 42%); /* Modern Browsers */
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version. */
 .mat-select-arrow {
   width: 0;
   height: 0;
@@ -126,11 +131,7 @@
   font-size: 14px;
 }
 
-.item-title {
-  font-weight: bold;
-}
-
-.mat-card-actions {
+.mat-mdc-card-actions {
   pointer-events: none;
 
   app-docs-modal {
@@ -155,12 +156,14 @@
 .mobile-button-wrapper {
   //transform: scale(0.82);
   //margin-top: -6px;
+
 }
 
 :host {
   .mobile-button-wrapper {
     transform: none !important;
     margin-top: 0 !important;
+    min-width: 112px;
   }
 }
 
@@ -172,11 +175,13 @@
     opacity: 0.5;
   }
 
+  /* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
   mat-card-actions {
     pointer-events: auto;
     opacity: 1 !important;
   }
 }
+
 
 .login-prompt {
   font-style: italic;

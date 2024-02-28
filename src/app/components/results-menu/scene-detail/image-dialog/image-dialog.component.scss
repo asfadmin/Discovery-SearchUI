@@ -2,7 +2,7 @@
 
 @import "asf-theme";
 
-$config: mat.define-typography-config();
+$config: mat.define-legacy-typography-config();
 
 .mp0-ellipsis-mobile {
   width: 250px;
@@ -33,7 +33,6 @@ a {
   }
 
   overflow: hidden;
-  font-family: mat.font-family($config);
   height: 100%;
 
   :focus {
@@ -57,18 +56,16 @@ a {
   .browse-list {
     @include themify($themes) {
       background-color: themed('primary-light');
-      border-top-color: themed('primary-dark');
     }
 
     min-height: 140px;
-    border-top-style: solid;
-    border-top-width: 1px;
   }
 
   .scene-detail--wrapper {
     @include themify($themes) {
       background-color: themed('primary-light');
       border-left-color: themed('primary-dark');
+      color: themed('dark-primary-text');
     }
 
     min-width: 200px;
@@ -77,10 +74,10 @@ a {
     overflow-y: auto;
     flex: 1 1 100%;
     box-sizing: border-box;
-    max-width: 20%;
+    max-width: 25%;
 
     .scene-detail {
-      margin-left: 10px;
+      margin: 0 10px;
     }
   }
 }
@@ -94,6 +91,7 @@ a {
   border-bottom-style: solid;
   border-bottom-width: 1px;
   min-height: 60px;
+  margin: 6px;
 }
 
 .browse-map--size {
@@ -166,7 +164,8 @@ a {
   margin-top: 8px;
 }
 
-.mat-list-base[dense] .mat-list-item .mat-list-item-content {
+/* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version. */
+.mat-mdc-list-base[dense] .mat-mdc-list-item .mat-list-item-content {
   padding: 0;
 }
 
@@ -185,7 +184,7 @@ a {
   right: 0;
   flex: 1 1 35px;
   box-sizing: border-box;
-  max-width: 35px;
+  max-width: 42px;
   min-width: 35px;
 }
 
@@ -207,12 +206,12 @@ a {
   min-height: 150px;
 }
 
-.mat-card-sm-image {
+.mat-mdc-card-sm-image {
   width: 50px;
   height: 50px;
 }
 
-.mat-card-md-image {
+.mat-mdc-card-md-image {
   width: 125px;
   height: 125px;
 }
@@ -228,11 +227,7 @@ a {
     background-color: lighten(themed('primary-light'), 10%);
   }
 
-  border-radius: 2px !important;
-  padding-left: 5px !important;
   margin-bottom: 5px;
-  padding-right: 15px !important;
-  width: fit-content !important;
 }
 
 .on-demand-scene-names {

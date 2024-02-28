@@ -1,13 +1,15 @@
+$width: 330px;
+
 .medium-selector--layout {
   flex: 1 1 175px;
   box-sizing: border-box;
-  max-width: 175px;
-  min-width: 175px;
+  max-width: 212px;
+  min-width: 212px;
 }
 
 .large-selector--layout {
-  flex: 1 1 300px;
+  flex: 1 1 $width;
   box-sizing: border-box;
-  max-width: 300px;
-  min-width: 300px;
+  max-width: $width;
+  min-width: $width;
 }

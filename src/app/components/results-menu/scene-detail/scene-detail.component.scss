@@ -1,5 +1,8 @@
 @import "asf-theme";
 
+:host {
+  height: 100%;
+}
 a {
   @include themify($themes) {
     color: themed("blue-link") !important;
@@ -10,6 +13,7 @@ a {
 
 .detail-card {
   max-width: 100%;
+  height: 90%;
 
   @include themify($themes) {
     border-left: themed("primary-light") 1px solid;
@@ -17,15 +21,17 @@ a {
 
   overflow-x: hidden !important;
 }
-
+.detail-card-info-mobile {
+  height: auto;
+}
 .scrollable {
-  height: calc(100% - 70px);
   overflow: auto;
 }
 
 .detail-card-header {
   word-break: break-all;
   padding-top: 5px;
+  line-height: 20px;
 }
 
 .detail-card-info {
@@ -56,9 +62,9 @@ a {
       color: themed("dark-primary-text");
     }
   }
+  margin-left: -16px;
 
   width: calc(100% + 32px);
-  margin-left: -16px;
   //box-shadow: #00000038 0 7px 18px;
 
   mat-icon {
@@ -115,6 +121,7 @@ a {
 
 .browse-container {
   margin-top: 0;
+  margin-right: -16px;
 }
 
 .accessing-text {
@@ -125,7 +132,7 @@ a {
   margin-bottom: 8px !important;
 }
 
-.mat-card-header .mat-card-title {
+.mat-mdc-card-header .mat-mdc-card-title {
   font-size: 16px;
 }
 
@@ -134,6 +141,7 @@ a {
   line-height: 24px !important;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .mini-toggle-button .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
   line-height: 24px !important;
   padding: 0 12px;
@@ -218,4 +226,9 @@ a {
   place-content: stretch space-between;
   align-items: stretch;
   flex: 1 1 0%;
+}
+
+.no-padding {
+  padding-left: 0;
+  padding-right: 0;
 }

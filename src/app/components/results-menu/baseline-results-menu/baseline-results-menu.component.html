@@ -1,6 +1,6 @@
 <!-- SCENE LIST -->
 <ng-container *ngIf="breakpoint > breakpoints.MEDIUM">
-  <mat-card class="mp0 baseline-header-card--layout">
+  <mat-card  class="mp0 baseline-header-card--layout">
     <mat-card-subtitle class="header">
       <app-scenes-list-header></app-scenes-list-header>
     </mat-card-subtitle>
@@ -10,15 +10,15 @@
     </div>
   </mat-card>
 
-  <mat-card class="mp0 no-box-shadow baseline-scene-detail--layout">
+  <mat-card  class="mp0 no-box-shadow baseline-scene-detail--layout">
     <mat-card-subtitle class="header"> {{ 'SCENE_DETAIL' |  translate }} </mat-card-subtitle>
 
-    <app-scene-detail></app-scene-detail>
+    <app-scene-detail style="height: 100%"></app-scene-detail>
   </mat-card>
 </ng-container>
 
 <ng-container *ngIf="breakpoint <= breakpoints.MEDIUM">
-  <mat-card *ngIf="view === Views.LIST" class="mp0 baseline-header--medium-layout">
+  <mat-card  *ngIf="view === Views.LIST" class="mp0 baseline-header--medium-layout">
     <mat-card-subtitle class="header medium-header">
       <div class="baseline-header--wrapper">
         <div class="fx-empty list-button-group">
@@ -208,6 +208,7 @@
 </ng-container>
 
 <mat-card
+  
   class="mp0 no-box-shadow"
   [ngClass]="{
     'criteria-header--layout': breakpoint <= breakpoints.MEDIUM,
@@ -228,5 +229,5 @@
       </mat-button-toggle-group>
     </div>
   </mat-card-subtitle>
-  <app-baseline-chart></app-baseline-chart>
+  <app-baseline-chart class="baseline-chart"></app-baseline-chart>
 </mat-card>

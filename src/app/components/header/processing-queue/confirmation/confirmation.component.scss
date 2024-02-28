@@ -4,7 +4,7 @@ $header-height: 120px;
 $footer-height: 60px;
 $bottom-offset: 10px;
 
-.mat-dialog-content {
+.mat-mdc-dialog-content {
   @include themify($themes) {
     background-color: themed('background-white');
   }
@@ -14,6 +14,6 @@ $bottom-offset: 10px;
   padding: 10px 175px 0 27px;
 }
 
-.mat-dialog-actions {
+.mat-mdc-dialog-actions {
   float: right;
 }

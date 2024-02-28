@@ -59,7 +59,7 @@
   <mat-list id="matListProducts" role="list" class="dl-list">
     <ng-container *ngIf="products$ | async as products">
       <mat-list-item *ngFor="let product of products" role="listitem">
-        <div matLine
+        <div matListItemTitle
           class="item-content"
           [ngClass]="{'dl-list-item-mobile' : breakpoint === breakpoints.MOBILE }">
           <b *ngIf="(((product.metadata.fileName || product.file) | filterExtension)) as fileName">
@@ -77,7 +77,7 @@
             <span *ngIf="product.bytes !== 0">{{product.bytes | readableSizeFromBytes }}</span>
           </span>
         </div>
-        <div matLine [ngClass]="{
+        <div matListItemLine [ngClass]="{
           'dl-list-item-mobile' : breakpoint === breakpoints.MOBILE, 
           'product-display-mobile' : breakpoint === breakpoints.MOBILE,
           'product-display' : breakpoint !== breakpoints.MOBILE 
@@ -87,23 +87,25 @@
 
         <app-copy-to-clipboard
           *ngIf="!product.isUnzippedFile && !product.metadata.job && product.groupId !== 'SARViews'"
-          style="margin-right: 15px;"
           prompt="{{ 'COPY_FILE_ID' | translate}}"
           [value]="product.metadata.productType === 'BURST_XML' ? product.id?.split('-XML')[0] : (
             product.metadata.parentID || product.id
           )"
+          class="clipboard-button"
+          matListItemMeta
         >
         </app-copy-to-clipboard>
 
         <app-download-file-button
+          class="download-button"
           [attr.id]="'dlq_' + product.id"
           [product] = "product"
           (productDownloaded)="downloadContinue($event)"
           (downloadCancelled)="downloadContinue($event)"
-          [useNewDownload]="true">
+          [useNewDownload]="true" matListItemMeta>
         </app-download-file-button>
 
-        <button (click)="onRemoveProduct(product)" matTooltip="{{ 'REMOVE_FILE' | translate }}" mat-icon-button>
+        <button class="close-button" (click)="onRemoveProduct(product)" matTooltip="{{ 'REMOVE_FILE' | translate }}" mat-icon-button matListItemMeta>
           <mat-icon>close</mat-icon>
         </button>
       </mat-list-item>
@@ -120,7 +122,7 @@
 <mat-dialog-actions class="dl-mat-dialog-actions">
   <div class="fx-row dl-card-actions" *ngIf="breakpoint$ | async as breakpoint">
     <ng-container *ngIf="products$ | async as products">
-      <div class="dl-clear-button">
+      <div class="dl-clear-button btn-primary">
         <button *ngIf="previousQueue === null"
           (click)="onClearQueue(products)" mat-button>
           <mat-icon style="margin-right: 5px;">delete</mat-icon>

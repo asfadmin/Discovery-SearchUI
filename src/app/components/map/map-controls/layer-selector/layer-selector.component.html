@@ -13,7 +13,7 @@
   <button mat-menu-item class="control-mat-button-toggle"
     (click)="onNewLayerType(layerTypes.SATELLITE)"
     [value]="layerTypes.SATELLITE | translate">
-    <mat-icon class="control-icon">terrain</mat-icon>
+    <mat-icon class="control-icon" iconPositionEnd>terrain</mat-icon>
     {{ 'SATELLITE_LAYER' |  translate }}
   </button>
 
@@ -21,7 +21,7 @@
     (click)="onNewLayerType(layerTypes.STREET)"
     [value]="layerTypes.STREET"
   >
-    <mat-icon class="control-icon">directions_car</mat-icon>
+    <mat-icon class="control-icon" iconPositionEnd>directions_car</mat-icon>
     {{ 'STREET_LAYER' |  translate }}
   </button>
 

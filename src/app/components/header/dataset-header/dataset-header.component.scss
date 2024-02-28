@@ -11,9 +11,14 @@
   min-width: 130px !important;
 }
 
+$width: 330px;
+
 .date-selector--layout {
-  flex: 1 1 300px;
+  flex: 1 1 $width;
   box-sizing: border-box;
-  max-width: 300px;
-  min-width: 300px;
+  max-width: $width;
+  min-width: $width;
+}
+.more-horiz {
+  margin-left: 0 !important;
 }

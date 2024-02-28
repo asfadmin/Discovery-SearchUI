@@ -2,6 +2,15 @@
 
 .list-viewport {
   overflow-y: auto;
+  height: 99%;
+  overflow-x: hidden;
+  .cdk-virtual-scroll-content-wrapper {
+    position: relative;
+    max-width: 100%;
+  }
+  // .cdk-virtual-scroll-spacer {
+  //   height: 200% !important;
+  // }
 }
 
 .selected .ml-2 {
@@ -56,7 +65,7 @@
   font-size: 14px !important;
 }
 
-.mobile-size .mat-list-base .mat-list-item {
+.mobile-size .mat-mdc-list-base .mat-mdc-list-item {
   font-size: 14px;
 }
 

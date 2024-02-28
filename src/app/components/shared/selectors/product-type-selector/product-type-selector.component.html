@@ -3,6 +3,7 @@
     [(value)]="productTypesList"
     (selectionChange)="onNewProductTypes($event)"
     [disabled]="selectableProductTypes.length < 1  || burstSelected"
+    panelClass="product-type-selector"
     placeholder="{{ 'FILE_TYPE' | translate }}" multiple>
       <mat-option
         *ngFor="let type of selectableProductTypes"
@@ -11,6 +12,7 @@
           {{type.displayName}}
       </mat-option>
   </mat-select>
+
   <mat-hint *ngIf="selectableProductTypes.length >= 1" align="start">
     {{ productTypesList?.length || 0 }}/{{ selectableProductTypes.length }}
     {{ 'FILE_TYPES_SELECTED' | translate }}

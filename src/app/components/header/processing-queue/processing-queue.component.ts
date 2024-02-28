@@ -5,7 +5,7 @@ import { ConfirmationComponent } from './confirmation/confirmation.component';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
-import * as moment from 'moment';
+import moment from 'moment';
 import { of, from } from 'rxjs';
 import { tap, catchError, delay, concatMap, finalize } from 'rxjs/operators';
 

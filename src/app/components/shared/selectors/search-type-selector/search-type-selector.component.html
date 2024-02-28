@@ -1,6 +1,5 @@
 <!--suppress ALL -->
 <div *ngIf="breakpoint$ | async as breakpoint">
-
   <div class="menu-button-wrapper" [class.mobile-button-wrapper]="breakpoint === breakpoints.MOBILE">
     <div class="button-label">{{ 'SEARCH_TYPE' | translate }}</div>
     <div>
@@ -20,130 +19,40 @@
 
   <div class="gtm-search-type-selector fx-nogrow">
     <mat-menu #searchTypeMenu="matMenu" [(ngModel)]="searchType" name="searchType" id="searchMenu" ngDefaultControl>
+
       <div>
-        <div id="firstItem" class="menu-item mat-menu-item" aria-selected="true"
-             (click)="onSetSearchType(searchTypes.DATASET)">
+        <menu *ngFor="let type of searchTypeSelectors" class="menu-item mat-menu-item" mat-menu-item
+             (click)="onSetSearchType(type.searchType)">
           <div class="menu-item-inner">
             <div class="fx-75 menu-item-content">
               <div class="item-title">
-                {{'GEOGRAPHIC' | translate}}
+                {{ type.nameKey | translate}}
               </div>
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                {{'GEOGRAPHIC_SEARCH_ALLOWS_YOU_TO_SEARCH_FOR_DATA_BASED_UPON_A_GEOGRAPHIC_LOCATION' | translate }}
+                <span *ngFor="let key of type.descriptionKeys">
+                  {{ key | translate }}
+                </span>
               </div>
               <mat-card-actions>
                 <app-docs-modal class="info-text"
                                 text="{{'MORE_INFO' | translate}}"
-                                url="https://docs.asf.alaska.edu/vertex/manual/#geographic-search-options">
+                                url="{{ type.helpUrl}}">
                 </app-docs-modal>
               </mat-card-actions>
             </div>
             <div class="fx-25 menu-item-aside">
-              <span class="material-icons-outlined menu-item-icon">travel_explore</span>
+              <span *ngIf="type.iconType === iconTypes.MATERIAL" class="material-icons-outlined menu-item-icon">
+                {{ type.icon}}</span>
+
+              <img *ngIf="type.iconType === iconTypes.IMAGE"
+                src="{{ type.icon }}"
+                class="menu-item-icon">
             </div>
           </div>
-        </div>
+          <hr class="dataset-hr">
+        </menu>
 
-        <hr class="dataset-hr">
-
-        <div class="menu-item mat-menu-item" (click)="onSetSearchType(searchTypes.LIST)">
-          <div class="menu-item-inner">
-            <div class="fx-75 menu-item-content">
-              <div class="item-title">
-                {{'LIST' | translate }}
-              </div>
-              <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                {{'LIST_SEARCH_ALLOWS_YOU_TO_ENTER_OR_UPLOAD_A_LIST_OF_SCENE_OR_FILE_NAMES' | translate }}
-              </div>
-              <mat-card-actions (click)="onOpenDocs($event)">
-                <app-docs-modal class="info-text"
-                                text="{{ 'MORE_INFO' | translate }}"
-                                url="https://docs.asf.alaska.edu/vertex/manual/#list-search-options">
-                </app-docs-modal>
-              </mat-card-actions>
-            </div>
-            <div class="fx-25 menu-item-aside">
-              <span class="material-icons-outlined menu-item-icon">list</span>
-            </div>
-          </div>
-        </div>
-
-        <hr class="dataset-hr">
-
-        <div class="menu-item mat-menu-item" (click)="onSetSearchType(searchTypes.BASELINE)">
-          <div class="menu-item-inner">
-            <div class="fx-75 menu-item-content">
-              <div class="item-title">
-                {{ 'BASELINE' | translate | titlecase }}
-              </div>
-              <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                {{'BASELINE_SEARCH_PROVIDES_VISUALIZATION_OF_PERPENDICULAR_AND_TEMPORAL_BASELINE_DATA_FOR_A_CHOSEN' | translate}}
-              </div>
-              <mat-card-actions (click)="onOpenDocs($event)">
-                <app-docs-modal class="info-text"
-                                text="{{ 'MORE_INFO' | translate }}"
-                                url="https://docs.asf.alaska.edu/vertex/manual/#baseline-search-options">
-                </app-docs-modal>
-              </mat-card-actions>
-            </div>
-            <div class="fx-25 menu-item-aside">
-              <img src="assets/icons/baseline-chart.jpg" class="menu-item-icon">
-            </div>
-          </div>
-        </div>
-
-        <hr class="dataset-hr">
-
-        <div class="menu-item mat-menu-item" (click)="onSetSearchType(searchTypes.SBAS)">
-          <div class="menu-item-inner">
-            <div class="fx-75 menu-item-content">
-              <div class="item-title">
-                {{ 'SBAS' | translate }}
-              </div>
-              <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                {{'SBAS_SEARCH_PROVIDES_PERPENDICULAR_AND_TEMPORAL_BASELINE_DATA_AS_WELL_AS_SCENE_PAIRS_FOR_A_CHOSEN' | translate }}
-                {{'REFERENCE_SCENE' | translate }}
-              </div>
-              <mat-card-actions (click)="onOpenDocs($event)">
-                <app-docs-modal class="info-text"
-                                text="{{ 'MORE_INFO' | translate }}"
-                                url="https://docs.asf.alaska.edu/vertex/manual/#sbas-search-options">
-                </app-docs-modal>
-              </mat-card-actions>
-            </div>
-            <div class="fx-25 menu-item-aside">
-              <img src="assets/icons/sbas-chart.jpg" class="menu-item-icon">
-            </div>
-          </div>
-        </div>
-
-        <hr class="dataset-hr">
-
-        <div class="menu-item mat-menu-item" (click)="onSetSearchType(searchTypes.SARVIEWS_EVENTS)">
-          <div class="menu-item-inner">
-            <div class="fx-75 menu-item-content">
-              <div class="item-title">
-                {{'EVENT' | translate}}
-              </div>
-              <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                {{'EVENT_SEARCH_HARNESSES_THE_CAPABILITIES_OF_SAR_PROCESSING_TO_MONITOR_NATURAL_DISASTERS' | translate }}
-              </div>
-              <mat-card-actions (click)="onOpenDocs($event)">
-                <app-docs-modal class="info-text"
-                                text="{{ 'MORE_INFO' | translate }}"
-                                url="https://docs.asf.alaska.edu/vertex/manual/#event-search-options">
-                </app-docs-modal>
-              </mat-card-actions>
-            </div>
-            <div class="fx-25 menu-item-aside">
-              <span class="material-icons-outlined menu-item-icon">volcano</span>
-            </div>
-          </div>
-        </div>
-
-        <hr class="dataset-hr">
-
-        <div class="menu-item mat-menu-item"
+        <menu class="menu-item mat-menu-item" mat-menu-item
           (click)="onSetSearchType(searchTypes.CUSTOM_PRODUCTS)"
           [ngClass]="{'disable-search-type-on-demand' : !isLoggedIn}">
           <div class="menu-item-inner">
@@ -169,11 +78,11 @@
               <img src="assets/asf-logos/HyP3-graphic-only.png" class="menu-item-icon">
             </div>
           </div>
-        </div>
+        </menu>
 
         <hr class="dataset-hr">
 
-        <div mat-menu-item class="menu-item mat-menu-item" [matMenuTriggerFor]="derivedDatasetMenu">
+        <menu mat-menu-item class="menu-item mat-menu-item" [matMenuTriggerFor]="derivedDatasetMenu" mat-menu-item>
           <div class="menu-item-inner">
             <div class="fx-75 menu-item-content">
               <div class="item-title">
@@ -187,12 +96,12 @@
               <span class="material-icons-outlined menu-item-icon">{{ 'DATASET_LINKED' | translate }}</span>
             </div>
           </div>
-        </div>
+        </menu>
       </div>
     </mat-menu>
 
     <mat-menu #derivedDatasetMenu="matMenu">
-      <div mat-menu-item matSuffix *ngFor="let dataset of datasets; last as isLast"
+      <menu mat-menu-item matSuffix *ngFor="let dataset of datasets; last as isLast"
       (click)="onOpenDerivedDataset(dataset.info_url, dataset.name); $event.stopPropagation();">
         <div class="menu-item">
           <div class="menu-item-inner">
@@ -214,9 +123,8 @@
           </div>
         </div>
         <hr *ngIf="!isLast" class="dataset-hr">
-      </div>
+      </menu>
     </mat-menu>
 
   </div>
 </div>
-

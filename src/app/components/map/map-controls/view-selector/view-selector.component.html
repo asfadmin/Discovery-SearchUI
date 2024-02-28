@@ -4,7 +4,7 @@
   [matMenuTriggerFor]="viewMenu"
   aria-label="Map projection view"
 >
-  <mat-icon *ngIf="view == types.ARCTIC" svgIcon="arctic" class="view-btn view-select-icon" > </mat-icon>
+  <mat-icon *ngIf="view == types.ARCTIC" svgIcon="arctic" class="view-btn view-select-icon"  > </mat-icon>
   <mat-icon *ngIf="view == types.EQUATORIAL" svgIcon="equatorial" class="view-btn view-select-icon" > </mat-icon>
   <mat-icon *ngIf="view == types.ANTARCTIC" svgIcon="antarctic" class="view-btn view-select-icon" ></mat-icon>
   <span class="fa fa-caret-down bottom-right"></span>
@@ -17,10 +17,8 @@
     (click)="onArcticSelected()"
     [value]="types.ARCTIC"
   >
-    <mat-icon svgIcon="arctic" class="view-btn view-menu-icon" ></mat-icon>
+    <mat-icon svgIcon="arctic" class="view-btn view-menu-icon" iconPositionEnd></mat-icon>
 
-    <!-- <img src="/assets/icons/arctic.svg" class="view-btn view-menu-icon" /> -->
-    <!-- <span class="view-btn view-menu-icon arctic"></span> -->
     <span>{{ 'ARCTIC_MAP_VIEW' |  translate }}</span>
   </button>
 
@@ -30,9 +28,7 @@
     (click)="onEquatorialSelected()"
     [value]="types.EQUATORIAL"
   >
-    <mat-icon svgIcon="equatorial" class="view-btn view-menu-icon" ></mat-icon>
-    <!-- <img src="/assets/icons/globe.svg" class="view-btn view-menu-icon" /> -->
-    <!-- <span class="view-btn view-menu-icon equatorial"></span> -->
+    <mat-icon svgIcon="equatorial" class="view-btn view-menu-icon" iconPositionEnd></mat-icon>
     <span>{{ 'EQUATORIAL_MAP_VIEW' |  translate }}</span>
   </button>
 
@@ -42,9 +38,8 @@
     (click)="onAntarcticSelected()"
     [value]="types.ANTARCTIC"
   >
-    <mat-icon svgIcon="antarctic" class="view-btn view-menu-icon" ></mat-icon>
+    <mat-icon svgIcon="antarctic" class="view-btn view-menu-icon" iconPositionEnd></mat-icon>
 
-    <!-- <span class="view-btn view-menu-icon antarctic"></span> -->
     <span>{{ 'ANTARCTIC_MAP_VIEW' |  translate }}</span>
   </button>
 </mat-menu>

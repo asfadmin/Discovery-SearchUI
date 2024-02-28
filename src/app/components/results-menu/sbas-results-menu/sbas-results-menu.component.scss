@@ -2,7 +2,7 @@
 
 @import "asf-theme";
 
-$config: mat.define-typography-config();
+$config: mat.define-legacy-typography-config();
 
 .sbas-chart-row {
   display: flex;
@@ -154,6 +154,7 @@ $config: mat.define-typography-config();
   @include md-icon-size($asf-ribbon-icon-size);
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .mat-button-toggle-disabled {
   .control-icon {
     @include themify($themes) {
@@ -211,7 +212,6 @@ $config: mat.define-typography-config();
 }
 
 label {
-  font-family: mat.font-family($config);
   font-size: 11px;
 }
 
@@ -220,6 +220,7 @@ label {
   margin-top: 4px;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .control-mat-button-toggle {
   @include themify($themes) {
     background: themed('background-white') !important;
