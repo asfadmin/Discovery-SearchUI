@@ -67,6 +67,7 @@ export const ers = fromDatasets.ers;
 export const jers_1 = fromDatasets.jers_1;
 export const airsar = fromDatasets.airsar;
 export const seasat = fromDatasets.seasat;
+export const nisar = fromDatasets.nisar;
 
 export const datasetList: Dataset[] = [
   fromDatasets.sentinel_1,
@@ -83,6 +84,7 @@ export const datasetList: Dataset[] = [
   fromDatasets.jers_1,
   fromDatasets.airsar,
   fromDatasets.seasat,
+  fromDatasets.nisar
 ];
 
 export const datasetIds = datasetList.map(dataset => dataset.id);
