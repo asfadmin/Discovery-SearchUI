@@ -230,12 +230,12 @@ ul {
   padding-left: 0;
 }
 
-.mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
-  background-color: $asf-primary;
+.theme-light .mat-slide-toggle-bar {
+  background-color: lightgrey;
 }
 
-.mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
-  background-color: darkgrey;
+.theme-light .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+  background-color: $uaf-accent-4;
 }
 
 .max-width-100 {

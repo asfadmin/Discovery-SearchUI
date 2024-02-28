@@ -10,7 +10,7 @@ import { MatSliderModule } from '@angular/material/slider';
   ],
   imports: [
     CommonModule,
-    MatSliderModule
+    MatSliderModule,
   ],
   exports: [
     SarviewsEventMagnitudeSelectorComponent
