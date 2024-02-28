@@ -1,4 +1,5 @@
-<div style="display: flex;">
+<div class="action-buttons--container"
+  [ngClass]="{'mobile-padding': breakpoint === breakpoints.MOBILE}">
   <div style="display: flex; justify-content: space-evenly;">
     <div [ngClass]="{'mobile-baseline': breakpoint <= breakpoints.SMALL, 'metric-flex-field': true}">
       {{ withOffset(scene.metadata.perpendicular, offsets.perpendicular) }}m
