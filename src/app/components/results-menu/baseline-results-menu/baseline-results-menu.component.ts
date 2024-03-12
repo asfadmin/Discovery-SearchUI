@@ -34,6 +34,10 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
     map(scenes => scenes.length),
   );
 
+  public numUnfilteredBaselineScenes$ = this.scenesService.unfilteredScenes$.pipe(
+    map(scenes => scenes.length),
+  );
+
   public pairs = [];
   public products = [];
   public downloadableProds = [];

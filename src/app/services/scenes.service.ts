@@ -58,6 +58,8 @@ export class ScenesService {
           this.store$.select(getScenes)
     ))))))));
 
+  public unfilteredScenes$: Observable<CMRProduct[]> = this.store$.select(getScenes);
+
   public withBrowses$(scenes$: Observable<CMRProduct[]>): Observable<CMRProduct[]> {
     return scenes$.pipe(
       map(scenes => scenes.filter(scene => this.sceneHasBrowse(scene)))
