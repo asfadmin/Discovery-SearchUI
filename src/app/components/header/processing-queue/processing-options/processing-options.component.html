@@ -23,6 +23,7 @@
                 [options]="option.options"
                 [optionName]="option.name |uppercase | translate"
                 [optionInfo]="option.info | translate"
+                [costsTable]="getCostTable(costs, jobType, option)"
                 class="margin-right">
               </app-dropdown-option>
               <app-range-option
@@ -33,9 +34,7 @@
                 [optionInfo]="option.info | translate"
                 [range]="option.range"
                 [default]="option.default"
-                class="margin-right"
-              >
-
+                class="margin-right">
               </app-range-option>
             </div>
           </div>

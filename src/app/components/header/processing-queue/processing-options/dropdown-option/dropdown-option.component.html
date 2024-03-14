@@ -7,7 +7,12 @@
     <mat-option *ngFor="let option of options"
       [value]="option.apiValue">
       {{ option.name | uppercase | translate  }}
+      <ng-container *ngIf="!!costsTable">
+        ({{ costsTable[option.apiValue] }} <span [ngPlural]="costsTable[option.apiValue]">
+            <ng-template ngPluralCase="=1">credit</ng-template>
+            <ng-template ngPluralCase="other">credits</ng-template>
+          </span>)
+      </ng-container>
     </mat-option>
   </mat-select>
 </mat-form-field>
-
