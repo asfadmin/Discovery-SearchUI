@@ -24,7 +24,7 @@ import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 
 import * as models from '@models';
-import { MapService, WktService, ScreenSizeService, ScenesService, SarviewsEventsService } from '@services';
+import { MapService, WktService, ScreenSizeService, ScenesService, SarviewsEventsService, NetcdfServiceService } from '@services';
 import * as polygonStyle from '@services/map/polygon.style';
 import { CMRProduct, SarviewsEvent } from '@models';
 import { StyleLike } from 'ol/style/Style';
@@ -95,6 +95,7 @@ export class MapComponent implements OnInit, OnDestroy  {
     private screenSize: ScreenSizeService,
     private scenesService: ScenesService,
     private eventMonitoringService: SarviewsEventsService,
+    private netcdfService: NetcdfServiceService
   ) {}
 
   ngOnInit(): void {
@@ -241,6 +242,8 @@ export class MapComponent implements OnInit, OnDestroy  {
         isOpen => this.isFiltersMenuOpen = isOpen
       )
     );
+
+    this.netcdfService.getGeotiffLayers()
   }
 
   public onFileHovered(e): void {

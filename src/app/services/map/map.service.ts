@@ -229,6 +229,10 @@ export class MapService {
     this.map.addLayer(layer);
   }
 
+  public addLayer(layer: Layer) {
+    this.map.addLayer(layer)
+  }
+
   public sarviewsEventsToFeatures(events: SarviewsEvent[], projection: string): Feature<Geometry>[] {
     const currentDate = new Date();
     const features = events
