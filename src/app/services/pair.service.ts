@@ -218,6 +218,7 @@ export class PairService {
       scene.id.includes('SLC')
         && !scene.id.includes('METADATA')
         && scene.metadata.temporal != null
+        && scene.id !== reference_scene.id
     );
 
     const totalDays = temporalRange.end - temporalRange.start;
