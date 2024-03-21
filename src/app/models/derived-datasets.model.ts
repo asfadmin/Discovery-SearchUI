@@ -57,7 +57,7 @@ International Polar Year (IPY) was a collaborative research event focused on the
   picture: `${pictureFolder}/polar_year.jpeg`,
 }, {
   name: 'RADARSAT_1',
-  info: 'The RADARSAT-1 Antarctic Mapping Project (RAMP) acquired a complete map of Antarctica.',
+  info: 'INFO_RADARSAT',
   description: `
 The RADARSAT-1 Antarctic Mapping Project (RAMP) was composed of two main missions, the first Antarctic Mapping Mission (AMM-1) and the Modified Antarctic Mapping Mission (MAMM). AMM-1 started on September 9, 1997 and was completed on October 20, 1997. Its goals were to acquire a complete map of Antarctica and better understand the relationships between the southernmost continent’s environmental elements. MAMM started on September 3, 2000 and was completed on November 17, 2000. It planned to remap Antarctica and measure ice velocity data using interferometric analysis and data from AMM-1.
   `,
