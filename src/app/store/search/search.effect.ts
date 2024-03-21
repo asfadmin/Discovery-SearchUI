@@ -109,13 +109,9 @@ export class SearchEffects {
     map(searchAmount => {
       const amount = +<number>searchAmount;
 
-        // if (amount < 0) {
-        //   this.setErrorBanner();
-        // }
-
-        this.store$.dispatch(new searchStore.SetSearchAmount(amount));
+      this.store$.dispatch(new searchStore.SetSearchAmount(amount));
     })
-  ), {dispatch: false});
+  ), { dispatch: false });
 
   public setEventSearchProductsOnClear = createEffect(() => this.actions$.pipe(
     ofType<ClearScenes>(ScenesActionType.CLEAR),
