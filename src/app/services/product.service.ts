@@ -40,7 +40,7 @@ export class ProductService {
           productTypeDisplay: g.ptd || g.gn,
           file: filename,
           id: g.pid.replace('{gn}', g.gn),
-          downloadUrl: g.du.replace('{gn}', g.gn),
+          downloadUrl: g.du.replaceAll('{gn}', g.gn),
           bytes: g.s * 1000000,
           dataset: (g.d === 'STS-59' || g.d === 'STS-68') ? 'SIR-C' : g.d,
           browses,
