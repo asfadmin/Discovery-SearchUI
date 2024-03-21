@@ -27,15 +27,15 @@
       </mat-form-field>
     </div>
 
-    <div class="flex-field jobs-overview">
+    <div *ngIf="jobsDisplay.length > 0" class="flex-field jobs-overview">
       <div>
         {{ jobsDisplay.length }} <span [ngPlural]="jobsDisplay.length">
-          <ng-template ngPluralCase="=1">job</ng-template>
-          <ng-template ngPluralCase="other">jobs</ng-template>
+          <ng-template ngPluralCase="=1">{{ 'JOB' | translate }}</ng-template>
+          <ng-template ngPluralCase="other">{{ 'JOBS' | translate }}</ng-template>
         </span>,
         {{ costPerJob * jobsDisplay.length }} <span [ngPlural]="costPerJob * jobsDisplay.length">
-          <ng-template ngPluralCase="=1">credit</ng-template>
-          <ng-template ngPluralCase="other">credits</ng-template>
+          <ng-template ngPluralCase="=1">{{ 'CREDIT' | translate }}</ng-template>
+          <ng-template ngPluralCase="other">{{ 'CREDITS' | translate }}</ng-template>
         </span>
       </div>
     </div>
@@ -68,8 +68,8 @@
             </b>
             <span> ({{costPerJob}}
               <span [ngPlural]="costPerJob * jobsDisplay.length">
-                <ng-template ngPluralCase="=1">CREDIT</ng-template>
-                <ng-template ngPluralCase="other">CREDITS</ng-template>
+            <ng-template ngPluralCase="=1">{{ 'CREDIT' | uppercase | translate }}</ng-template>
+            <ng-template ngPluralCase="other">{{ 'CREDITS' | uppercase | translate }}</ng-template>
               </span>)
             </span>
           </div>

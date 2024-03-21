@@ -71,9 +71,9 @@ export class ProcessingQueueComponent implements OnInit {
     public authService: services.AuthService,
     public env: services.EnvironmentService,
     public dialog: MatDialog,
+    public hyp3: services.Hyp3Service,
     private dialogRef: MatDialogRef<ProcessingQueueComponent>,
     private store$: Store<AppState>,
-    private hyp3: services.Hyp3Service,
     private screenSize: services.ScreenSizeService,
     private notificationService: services.NotificationService,
   ) { }
@@ -195,9 +195,9 @@ export class ProcessingQueueComponent implements OnInit {
     const confirmationRef = this.dialog.open(ConfirmationComponent, {
       id: 'ConfirmProcess',
       width: '350px',
-      height: '500px',
+      height: '600px',
       maxWidth: '350px',
-      maxHeight: '500px',
+      maxHeight: '600px',
       data: this.jobTypesWithQueued
     });
 

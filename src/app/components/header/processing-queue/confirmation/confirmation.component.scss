@@ -21,3 +21,10 @@ $bottom-offset: 10px;
 .project-selector {
   padding-top: 20px;
 }
+
+a {
+  text-decoration: underline;
+  @include themify($themes) {
+    color: themed('blue-link');
+  }
+}
