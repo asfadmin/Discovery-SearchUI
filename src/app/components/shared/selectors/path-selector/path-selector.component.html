@@ -2,7 +2,7 @@
     <div class="flex-container">
 
     <div class="flex-item">
-      <mat-form-field *ngIf="prop.isRelevant(p.PATH)"
+      <mat-form-field style="width: 140px;"*ngIf="prop.isRelevant(p.PATH)"
                       class="date-item"
                       [class.invalid-input-animation]="typeHasError(inputTypes.PATH_START)">
         <input matInput
@@ -12,7 +12,7 @@
                name="pathStart" placeholder="{{'PATH_START'| translate}}">
       </mat-form-field>
 
-      <mat-form-field *ngIf="prop.isRelevant(p.PATH)" class="range-form-input"
+      <mat-form-field style="width: 140px;"*ngIf="prop.isRelevant(p.PATH)" class="range-form-input"
                       class="date-item"
                       [class.invalid-input-animation]="typeHasError(inputTypes.PATH_END)">
         <input matInput
@@ -24,7 +24,7 @@
     </div>
 
     <div class="flex-item">
-      <mat-form-field *ngIf="prop.isRelevant(p.FRAME)"
+      <mat-form-field style="width: 150px;"*ngIf="prop.isRelevant(p.FRAME)"
                       class="date-item"
                       [class.invalid-input-animation]="typeHasError(inputTypes.FRAME_START)">
         <input matInput
@@ -34,7 +34,7 @@
                name="frameStart" placeholder="{{ 'FRAME_START' | translate }}">
       </mat-form-field>
 
-      <mat-form-field *ngIf="prop.isRelevant(p.FRAME)" class="range-form-input"
+      <mat-form-field style="width: 140px;" *ngIf="prop.isRelevant(p.FRAME)" class="range-form-input"
                       class="date-item"
                       [class.invalid-input-animation]="typeHasError(inputTypes.FRAME_END)">
         <input matInput
