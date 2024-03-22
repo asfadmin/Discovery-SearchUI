@@ -7,6 +7,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSharedModule } from '@shared';
 
 import { ProductTypeSelectorModule } from '@components/shared/selectors/product-type-selector';
+import { ShortNameSelectorModule } from '@components/shared/selectors/short-name-selector';
+
 import { OtherSelectorComponent } from './other-selector.component';
 import { BurstSelectorModule } from '../burst-selector';
 import { SharedModule } from "@shared";
@@ -22,6 +24,7 @@ import { OperaCalibrationDataSelectorModule } from '../opera-calibration-data-se
     MatButtonToggleModule,
     MatSharedModule,
     ProductTypeSelectorModule,
+    ShortNameSelectorModule,
     BurstSelectorModule,
     SharedModule,
     MatInputModule,

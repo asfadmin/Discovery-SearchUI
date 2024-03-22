@@ -1,0 +1,24 @@
+<mat-form-field class="short-name-form">
+    <mat-select
+        class="short-name-dropdown"
+      [(value)]="shortNamesList"
+      (selectionChange)="onNewShortNames($event)"
+      [disabled]="selectableShortNames.length == 0"
+      panelClass="short-name-selector"
+      placeholder="{{ 'SHORT_NAME' | translate }}" multiple>
+        <mat-option
+          *ngFor="let type of selectableShortNames"
+          [value]="type.apiValue"
+          [matTooltip]="type.apiValue"
+          >
+          {{type.displayName}} 
+        </mat-option>
+    </mat-select>
+  
+    <mat-hint *ngIf="selectableShortNames.length >= 1" align="start">
+      {{ shortNamesList?.length || 0 }}/{{ selectableShortNames.length }}
+      {{ 'SHORT_NAMES_SELECTED' | translate }}
+    </mat-hint>
+  
+  </mat-form-field>
+  

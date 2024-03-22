@@ -85,6 +85,10 @@ export class OtherSelectorComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new filtersStore.SetProductTypes(productTypes));
   }
 
+  public onNewShortNames(shortNames: models.DatasetShortName): void {
+    this.store$.dispatch(new filtersStore.setShortNames(shortNames));
+  }
+
   public onNewMaxResults(maxResults): void {
     this.store$.dispatch(new filtersStore.SetMaxResults(maxResults));
   }

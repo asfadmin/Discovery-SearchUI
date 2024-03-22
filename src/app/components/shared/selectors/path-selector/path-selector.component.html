@@ -6,6 +6,7 @@
                       class="date-item"
                       [class.invalid-input-animation]="typeHasError(inputTypes.PATH_START)">
         <input matInput
+               [disabled]="selectedDataset === 'NISAR'"
                type="number"
                (input)="onValueChanged($event, inputTypes.PATH_START)"
                [(ngModel)]="pathStart"
@@ -16,6 +17,7 @@
                       class="date-item"
                       [class.invalid-input-animation]="typeHasError(inputTypes.PATH_END)">
         <input matInput
+               [disabled]="selectedDataset === 'NISAR'"
                type="number"
                (input)="onValueChanged($event, inputTypes.PATH_END)"
                [(ngModel)]="pathEnd"
@@ -28,6 +30,7 @@
                       class="date-item"
                       [class.invalid-input-animation]="typeHasError(inputTypes.FRAME_START)">
         <input matInput
+               [disabled]="selectedDataset === 'NISAR'"
                type="number"
                (input)="onValueChanged($event, inputTypes.FRAME_START)"
                [(ngModel)]="frameStart"
@@ -38,6 +41,7 @@
                       class="date-item"
                       [class.invalid-input-animation]="typeHasError(inputTypes.FRAME_END)">
         <input matInput
+               [disabled]="selectedDataset === 'NISAR'"
                type="number"
                (input)="onValueChanged($event, inputTypes.FRAME_END)"
                [(ngModel)]="frameEnd"
@@ -47,6 +51,7 @@
 
     <div class="flex-item">
       <button mat-button mat-stroked-button
+              [disabled]="selectedDataset === 'NISAR'"
               class="clear-button"
               (click)="onClear()" mat-button>
         {{ 'CLEAR' | translate }}

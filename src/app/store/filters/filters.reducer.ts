@@ -21,6 +21,7 @@ export interface FiltersState {
   searchList: string[];
 
   productTypes: models.DatasetProductTypes;
+  shortNames: models.DatasetShortName;
   beamModes: models.DatasetBeamModes;
   polarizations: models.DatasetPolarizations;
   flightDirections: Set<models.FlightDirection>;
@@ -62,7 +63,7 @@ export type DateRangeState = models.Range<null | Date>;
 
 
 export const initState: FiltersState = {
-  selectedDatasetId: 'SENTINEL-1',
+  selectedDatasetId: 'NISAR',
   dateRange: {
     start: null,
     end: null
@@ -130,7 +131,8 @@ export const initState: FiltersState = {
   operaBurstIDs: [],
   useCalibrationData: false,
 
-  groupID: null
+  groupID: null,
+  shortNames: []
 };
 
 
@@ -458,6 +460,13 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
+    case FiltersActionType.SET_SHORT_NAMES: {
+      return {
+        ...state,
+        shortNames: [ ...action.payload ]
+      };
+    }
+    
     case FiltersActionType.ADD_BEAM_MODE: {
       return {
         ...state,
@@ -875,6 +884,11 @@ export const getProductTypes = createSelector(
   (state: FiltersState) => state.productTypes
 );
 
+export const getShortNames = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.shortNames
+);
+
 export const getBeamModes = createSelector(
   getFiltersState,
   (state: FiltersState) => state.beamModes
@@ -940,7 +954,8 @@ export const getGeographicSearch = createSelector(
     selectedMission: state.selectedMission,
     fullBurstIDs: state.fullBurstIDs,
     operaBurstIDs: state.operaBurstIDs,
-    useCalibrationData: state.useCalibrationData
+    useCalibrationData: state.useCalibrationData,
+    shortNames: state.shortNames
   })
 );
 
