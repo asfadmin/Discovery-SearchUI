@@ -56,6 +56,8 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public sarviewsEventProducts: SarviewsProduct[] = [];
   public pinnedEventIDs: string[];
 
+  public numOfScenesWithPolygon$  = this.scenesService.scenes$.pipe(map(scenes => scenes.filter(scene => !!scene.metadata.polygon).length))
+
   public productsByType$: Observable<{[key:string]: models.CMRProduct[]}> = this.store$.select(scenesStore.getAllProducts).pipe(
     map((scenes: []) =>
     scenes.reduce((prev, curr: models.CMRProduct) => {

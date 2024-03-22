@@ -43,7 +43,7 @@ import TileLayer from 'ol/layer/WebGLTile.js';
 
 import SimpleGeometry from 'ol/geom/SimpleGeometry';
 import { SetGeocode } from '@store/filters';
-import { Extent } from 'ol/extent';
+import {Extent, isEmpty} from 'ol/extent';
 import { MultiPolygon } from 'ol/geom';
 
 @Injectable({
@@ -371,8 +371,10 @@ export class MapService {
     const extent = this.polygonLayer
       .getSource()
       .getExtent();
-
-    this.zoomToExtent(extent);
+    
+      if(!isEmpty(extent)) {
+        this.zoomToExtent(extent);
+      }
   }
 
   public zoomToScene(scene: models.CMRProduct): void {
