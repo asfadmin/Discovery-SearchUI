@@ -417,7 +417,8 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         fullBurstIDs: [],
         operaBurstIDs: [],
         useCalibrationData: false,
-        groupID: null
+        groupID: null,
+        shortNames: []
       };
     }
 

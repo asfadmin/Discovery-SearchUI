@@ -18,24 +18,24 @@ export class ShortNameSelectorComponent implements OnInit, OnDestroy {
   public selectableShortNames: models.ShortName[] = []
 
   private dataset$ = this.store$.select(filtersStore.getSelectedDataset);
-  
-  
+
+
   constructor(private store$: Store<AppState>) { }
 
   private subs = new SubSink();
-  
+
   ngOnInit(): void {
     this.subs.add(
       this.dataset$.subscribe(
-        dataset => this.dataset = dataset
+        dataset => {
+          this.dataset = dataset
+          this.selectableShortNames = dataset?.shortNames ?? []
+        }
       )
     )
-
     this.subs.add(
-      this.dataset$.subscribe(
-        (dataset) => {
-            this.selectableShortNames = dataset?.shortNames ?? []
-        }
+      this.store$.select(filtersStore.getShortNames).subscribe(
+        shortNamesList => this.shortNamesList = shortNamesList.map(val => val.apiValue)
       )
     )
   }
