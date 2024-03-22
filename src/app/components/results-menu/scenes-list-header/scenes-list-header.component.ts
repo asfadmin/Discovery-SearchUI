@@ -81,6 +81,10 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     map(scenes => scenes.length),
   );
 
+  public numUnfilteredBaselineScenes$ = this.scenesService.unfilteredScenes$.pipe(
+    map(scenes => scenes.length),
+  );
+
   private products$ = this.scenesService.products$();
   private operaProductsByType: {[key:string]: models.CMRProduct[]} = {}
 
