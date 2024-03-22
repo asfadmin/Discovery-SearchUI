@@ -33,7 +33,7 @@
         </div>
 
         <div *ngIf="searchType === SearchTypes.BASELINE" class="mr-10">
-          {{ numBaselineScenes$ | async }} {{ 'SCENE' | translate }}{{ (numBaselineScenes$ | async) === 1 ? '' : 's' }}
+          {{ numBaselineScenes$ | async }} of {{ numUnfilteredBaselineScenes$ | async }} {{ 'SCENE' | translate }}{{ (numBaselineScenes$ | async) === 1 ? '' : 's' }}
         </div>
 
         <div *ngIf="searchType === SearchTypes.CUSTOM_PRODUCTS" class="mr-10">
@@ -389,11 +389,11 @@
         </div>
 </mat-menu>
 
-<ng-container *ngIf="searchType === SearchTypes.BASELINE">
+      <ng-container *ngIf="searchType === SearchTypes.BASELINE">
         <div class="header-row-right" *ngIf="breakpoint > breakpoints.MOBILE">
           <div (click)="onTogglePerpendicularSort()" class="header-column noselect clickable">
             {{ 'METERS' | translate }}
-<mat-icon *ngIf="perpendicularSort === SortDirection.NONE"
+            <mat-icon *ngIf="perpendicularSort === SortDirection.NONE"
               class="sort-icon">unfold_more</mat-icon>
             <mat-icon *ngIf="perpendicularSort === SortDirection.INCREASING"
               class="sort-icon sort-active">keyboard_arrow_up</mat-icon>
