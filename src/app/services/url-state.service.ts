@@ -532,8 +532,8 @@ export class UrlStateService {
     {
       name: 'shortNames',
       source: this.store$.select(filterStore.getShortNames).pipe(
-        map(shortNames => ({ shortNames })
-      )),
+        map(shortNames => ({'shortNames': shortNames.map(name => name.apiValue).join(',')}))
+      ),
       loader: this.loadShortNames
 
     }
@@ -714,7 +714,7 @@ export class UrlStateService {
       return;
     }
 
-    return new filterStore.SetProductTypes(shortNames);
+    return new filterStore.setShortNames(shortNames);
   };
 
   private loadBeamModes = (modesStr: string): Action | undefined => {
