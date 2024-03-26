@@ -348,9 +348,6 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
           const sceneIdx = pairsCombined.findIndex(
             pair => pair[0] === selected[0] && pair[1] === selected[1]
           );
-          console.log('test')
-          console.log(pairs[0])
-
           return Math.max(0, sceneIdx - 1);
         })
       ).subscribe(
