@@ -97,22 +97,22 @@
                   <div class="opacity-slider-title">
                     {{ 'OPACITY_OF_BROWSE_IMAGES' |  translate }}
                   </div>
-                  <!-- TODO: The 'tickInterval' property no longer exists -->
                   <mat-slider thumbLabel step="0.05" min="0.0" max="1.0"
                               class="opacity-slider"
                               name="layerType"
-                              (valueChange)="onSetOpacity($event)"
+                              (input)="onSetOpacity($event)"
+                              (click)="$event.stopPropagation()"
                               color="primary"
                               [disabled]="!(isBrowseOverlayEnabled$ | async)"><input matSliderThumb value="1" />
                   </mat-slider>
                   <div class="opacity-slider-title">
                     {{ 'OPACITY_OF_COHERENCE_LAYER' | translate }}
                   </div>
-                  <!-- TODO: The 'tickInterval' property no longer exists -->
                   <mat-slider thumbLabel step="0.05" min="0.0" max="1.0"
                               class="opacity-slider"
                               name="layerType"
-                              (valueChange)="onSetCoherenceOpacity($event)"
+                              (input)="onSetCoherenceOpacity($event)"
+                              (click)="$event.stopPropagation()"
                               color="primary"
                               [disabled]="!(isCoherenceOverlayEnabled$| async)"><input matSliderThumb value="1" />
                   </mat-slider>
