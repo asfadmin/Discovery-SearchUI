@@ -65,7 +65,7 @@
           class="job-type--button"
         (click)="onSetSelectedJobType(hyp3Job.jobType)"
         [color]="selectedJobTypeId === hyp3Job.jobType.id ? 'secondary' : 'primary'">
-          {{ hyp3Job.jobType.name }} ({{ hyp3Job.creditTotal }}
+          {{ hyp3Job.jobType.name }} ({{ hyp3Job.creditTotal | number }}
           <span [ngPlural]="hyp3Job.creditTotal">
             <ng-template ngPluralCase="=1">{{ 'CREDIT' | translate }}</ng-template>
             <ng-template ngPluralCase="other">{{ 'CREDITS' | translate }}</ng-template>
@@ -84,7 +84,7 @@
         (onMenuOpen)='onOpenTabMenu()'
         (onMenuClose)='onCloseTabMenu()'
         style="padding-right: 5px;">
-          {{selectedJobTypeId}} ({{ jobTypesWithQueued[getTabIdIndex(selectedJobTypeId)].creditTotal }}
+          {{selectedJobTypeId}} ({{ jobTypesWithQueued[getTabIdIndex(selectedJobTypeId)].creditTotal | number }}
           <span [ngPlural]=" jobTypesWithQueued[getTabIdIndex(selectedJobTypeId)].creditTotal ">
             <ng-template ngPluralCase="=1">{{ 'CREDIT' | translate }}</ng-template>
             <ng-template ngPluralCase="other">{{ 'CREDITS' | translate }}</ng-template>
@@ -253,7 +253,7 @@
       <div *ngIf="isUserLoggedIn && !isUserLoading && user !== ''">
         <span>
           <span *ngIf="!isUnlimitedUser; else unlimitedText">
-            {{ remaining }}
+            {{ remaining | number}}
           </span>
           <ng-template #unlimitedText>Unlimited</ng-template>
         </span>
