@@ -534,7 +534,7 @@ ul {
 }
 
 //$d-width: 600px;
-$d-height: 500px;
+$d-height: 550px;
 
 #ConfirmProcess {
   @include themify_non_host($themes) {
@@ -555,6 +555,7 @@ $d-height: 500px;
     padding-right: 10px;
   }
 }
+
 #dlQueueDialog {
   resize: both;
   @include themify($themes) {
