@@ -54,7 +54,7 @@ export class UrlStateService {
     private rangeService: RangeService,
     private router: Router,
     private prop: PropertyService,
-    private themeService: ThemingService,
+    private themeService: ThemingService
   ) {
     const params = [
       ...this.datasetParam(),
