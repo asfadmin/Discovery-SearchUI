@@ -70,9 +70,13 @@ export function hyp3Reducer(state = initState, action: Hyp3Actions): Hyp3State {
 
 
     case Hyp3ActionType.SET_PROCESSING_OPTIONS: {
+      const {jobTypeId, options} = action.payload;
+      const newOptions = { ...state.processingOptions };
+      newOptions[jobTypeId] = options;
+
       return {
         ...state,
-        processingOptions: action.payload
+        processingOptions: newOptions
       };
     }
 

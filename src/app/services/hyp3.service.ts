@@ -93,7 +93,7 @@ export class Hyp3Service {
     models.hyp3JobTypesList.forEach(jobType => {
       ops[jobType.id] = {};
 
-      Object.entries(options.processingOptions).forEach(([name, value]) => {
+      Object.entries(options.processingOptions[jobType.id]).forEach(([name, value]) => {
         if (jobOptionNames[jobType.id].has(name)) {
           ops[jobType.id][name] = value;
         }

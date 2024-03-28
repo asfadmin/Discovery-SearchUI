@@ -52,26 +52,32 @@ export class ProcessingOptionsComponent implements OnInit {
   }
 
   public onSetOptionValue(apiName: string, value: any) {
-    this.optionValues = {
-      ...this.optionValues,
+    const newOptions = {
+      ...this.optionValues[this.selectedJobType.id],
       [apiName]: value
     };
 
     this.store$.dispatch(new hyp3Store.SetProcessingOptions({
-      ...this.optionValues
+      jobTypeId: this.selectedJobType.id,
+      options: newOptions
     }));
   }
 
   public onSetSubset(options): void {
-    options.forEach(option => {
-      this.optionValues = {
-        ...this.optionValues,
-        [option.apiName]: option.value
-      };
-    });
+    const optionSubset = options.reduce((subset, option) => {
+      subset[option.apiName] = option.value;
+
+      return subset;
+    }, {});
+
+    const newOptions = {
+      ...this.optionValues[this.selectedJobType.id],
+      ...optionSubset
+    }
 
     this.store$.dispatch(new hyp3Store.SetProcessingOptions({
-      ...this.optionValues
+      jobTypeId: this.selectedJobType.id,
+      options: newOptions
     }));
   }
 

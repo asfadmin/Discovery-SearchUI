@@ -37,7 +37,7 @@ export class SetJobs implements Action {
 export class SetProcessingOptions implements Action {
   public readonly type = Hyp3ActionType.SET_PROCESSING_OPTIONS;
 
-  constructor(public payload: Hyp3ProcessingOptions) {}
+  constructor(public payload: {jobTypeId: string; options: Hyp3ProcessingOptions}) {}
 }
 
 export class ClearProcessingOptions implements Action {

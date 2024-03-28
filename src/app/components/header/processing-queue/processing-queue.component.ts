@@ -114,7 +114,7 @@ export class ProcessingQueueComponent implements OnInit {
 
       this.jobTypesWithQueued = jobTypes.map((jobType) => {
 
-        const costPerJob = this.hyp3.calculateCredits(options, costs[jobType.id]);
+        const costPerJob = this.hyp3.calculateCredits(options[jobType.id], costs[jobType.id]);
         this.costPerJobByType[jobType.id] = costPerJob;
 
         const jobsFiltered = this.allJobs.filter(

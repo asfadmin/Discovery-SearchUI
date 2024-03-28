@@ -490,8 +490,20 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     if (queueItemsStr) {
       const {jobs, options} = JSON.parse(queueItemsStr);
       this.store$.dispatch(new queueStore.AddJobs(jobs));
-      this.store$.dispatch(new hyp3Store.SetProcessingOptions(options));
+      if (this.areOptionsByJobType(options)) {
+        this.store$.dispatch(new hyp3Store.SetProcessingOptions(options));
+      }
     }
+  }
+
+  private areOptionsByJobType(options): boolean {
+    const jobTypeIds = new Set(Object.keys(models.hyp3JobTypes));
+    const optionsIds = Object.keys(options);
+
+    return (
+      jobTypeIds.size === optionsIds.length &&
+      optionsIds.every(optionId => jobTypeIds.has(optionId))
+    );
   }
 
   private loadDefaultFilters(profile: models.UserProfile): void {

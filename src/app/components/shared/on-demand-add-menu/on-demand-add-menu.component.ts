@@ -141,7 +141,7 @@ export class OnDemandAddMenuComponent implements OnInit {
   }
 
   public calculateCost(jobTypeId: string, numberOfJobs: number): number {
-    return this.hyp3.calculateCredits(this.options, this.costs[jobTypeId]) * numberOfJobs;
+    return this.hyp3.calculateCredits(this.options[jobTypeId], this.costs[jobTypeId]) * numberOfJobs;
   }
 
   public onOpenHelp(infoUrl: string) {

@@ -19,7 +19,7 @@
               <app-dropdown-option
                 *ngIf="option.type === 'DROPDOWN'"
                 (valueChange)="onSetOptionValue(option.apiName, $event)"
-                [value]="optionValues[option.apiName]"
+                [value]="optionValues[selectedJobType.id][option.apiName]"
                 [options]="option.options"
                 [optionName]="option.name |uppercase | translate"
                 [optionInfo]="option.info | translate"
@@ -29,7 +29,7 @@
               <app-range-option
               *ngIf="option.type === 'RANGE'"
               (valueChange)="onSetOptionValue(option.apiName, $event)"
-                [value]="optionValues[option.apiName]"
+                [value]="optionValues[selectedJobType.id][option.apiName]"
                 [optionName]="option.name |uppercase | translate"
                 [optionInfo]="option.info | translate"
                 [range]="option.range"
@@ -49,7 +49,7 @@
               <app-checkbox-option
                 *ngIf="option.type === 'TOGGLE'"
                 (valueChange)="onSetOptionValue(option.apiName, $event)"
-                [value]="optionValues[option.apiName]"
+                [value]="optionValues[selectedJobType.id][option.apiName]"
                 [optionName]="option.name"
                 [optionInfo]="option.info | translate"
                 class="margin-right">
@@ -64,7 +64,7 @@
               <app-checkbox-option
                 *ngIf="option.type === 'CHECKBOX'"
                 (valueChange)="onSetOptionValue(option.apiName, $event)"
-                [value]="optionValues[option.apiName]"
+                [value]="optionValues[selectedJobType.id][option.apiName]"
                 [optionName]="option.name"
                 [optionInfo]="option.info | translate ">
               </app-checkbox-option>
