@@ -50,6 +50,7 @@ export interface Hyp3Job {
   status_code: Hyp3JobStatusCode;
   thumbnail_images: string[];
   user_id: string;
+  credit_cost: number;
 }
 
 export interface Hyp3ProductFile {
