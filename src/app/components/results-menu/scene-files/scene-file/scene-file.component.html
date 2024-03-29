@@ -1,5 +1,4 @@
 <mat-list-item (mouseenter)="isHovered = true" (mouseleave)="isHovered = false">
-  <!--<ng-container matListIcon *ngIf="canUnzip(product)">-->
   <ng-container matListItemIcon *ngIf="false">
     <mat-icon *ngIf="!isUnzipLoading && !isOpen" (click)="onLoadUnzippedProduct()"
       [matTooltip]="unzipTooltip(isUserLoggedIn, hasAccessToRestrictedData)"
@@ -15,7 +14,7 @@
       <fa-icon icon="spinner" [pulse]="true"></fa-icon>
     </div>
   </ng-container>
-  <!--<ng-container matListIcon *ngIf="!canUnzip(product)">-->
+
   <ng-container matListItemIcon>
     <mat-icon mat-icon-button disabled></mat-icon>
   </ng-container>
@@ -45,8 +44,6 @@
       </span>
     </ng-template>
 
-
-
     <a *ngIf="isHovered && !product.metadata.job" class="icon-margin">
       <app-copy-to-clipboard [value]="product.metadata.productType === 'BURST_XML' ? product.id?.split('-XML')[0] : (
           product.metadata.parentID || product.id
@@ -54,6 +51,7 @@
       </app-copy-to-clipboard>
     </a>
   </div>
+
   <button *ngIf="validHyp3JobTypes.length > 0" [matMenuTriggerFor]="customJobTypes" mat-icon-button matListItemMeta class="hype-icon-button mat-icon-button">
     <mat-icon *ngIf="loadingHyp3JobName !== product.name" svgIcon="hyp3"
       matTooltip="{{ 'ADD_TO_ON_DEMAND_QUEUE' | translate }}">
@@ -81,6 +79,10 @@
 
   <div *ngIf="product.metadata.job" matListItemLine >
     <b>{{'JOB_SUBMITTED' | translate}}:</b> {{ product.metadata.job.request_time| fullDate }}
+  </div>
+
+  <div *ngIf="product.metadata.job && product.metadata.job.credit_cost" matListItemLine>
+    <b>{{'CREDIT_COST' | translate}}:</b> {{ product.metadata.job.credit_cost }}
   </div>
 
   <div *ngFor="let param of paramsList" matListItemLine>

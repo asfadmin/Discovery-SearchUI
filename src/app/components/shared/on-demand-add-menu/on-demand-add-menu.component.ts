@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as queueStore from '@store/queue';
 import * as userStore from '@store/user';
+import * as hyp3Store from '@store/hyp3';
 
 import * as models from '@models';
 import { SubSink } from 'subsink';
@@ -11,7 +12,7 @@ import { getMasterName, getScenes } from '@store/scenes';
 import { getSearchType } from '@store/search';
 import { CMRProduct, Hyp3ableByProductType, SearchType } from '@models';
 import { withLatestFrom } from 'rxjs/operators';
-import { EnvironmentService } from '@services';
+import { EnvironmentService, Hyp3Service } from '@services';
 
 @Component({
   selector: 'app-on-demand-add-menu',
@@ -29,6 +30,8 @@ export class OnDemandAddMenuComponent implements OnInit {
 
   public referenceScene: CMRProduct;
   private scenes: CMRProduct[];
+  public costs;
+  public options;
 
   public searchType: models.SearchType;
   public searchTypes = models.SearchType;
@@ -40,6 +43,7 @@ export class OnDemandAddMenuComponent implements OnInit {
   constructor(
     private store$: Store<AppState>,
     public env: EnvironmentService,
+    public hyp3: Hyp3Service,
   ) { }
 
   ngOnInit(): void {
@@ -52,6 +56,18 @@ export class OnDemandAddMenuComponent implements OnInit {
     this.subs.add(
       this.store$.select(userStore.getIsUserLoggedIn).subscribe(
         isLoggedIn => this.isLoggedIn = isLoggedIn
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(hyp3Store.getCosts).subscribe(
+        costs => this.costs = costs
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(hyp3Store.getProcessingOptions).subscribe(
+        options => this.options = options
       )
     );
 
@@ -122,6 +138,10 @@ export class OnDemandAddMenuComponent implements OnInit {
     });
 
     this.store$.dispatch(new queueStore.AddJobs(jobs));
+  }
+
+  public calculateCost(jobTypeId: string, numberOfJobs: number): number {
+    return this.hyp3.calculateCredits(this.options[jobTypeId], this.costs[jobTypeId]) * numberOfJobs;
   }
 
   public onOpenHelp(infoUrl: string) {

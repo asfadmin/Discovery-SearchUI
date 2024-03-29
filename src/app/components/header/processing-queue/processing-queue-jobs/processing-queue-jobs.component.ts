@@ -22,9 +22,8 @@ import moment from 'moment';
 })
 
 export class ProcessingQueueJobsComponent implements OnInit {
-
-
   @Input() areJobsLoading: boolean;
+  @Input() costPerJob: number;
 
   @Input('jobs') set jobs(val: models.QueuedHyp3Job[]) { this.jobs$.next(val); }
   private jobs$ = new BehaviorSubject<models.QueuedHyp3Job[]>([]);
