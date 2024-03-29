@@ -25,7 +25,8 @@ export class ConfirmationComponent implements OnInit {
           return {
             jobType: tab.jobType,
             selected: !tab.selected,
-            jobs: tab.jobs
+            jobs: tab.jobs,
+            creditTotal: tab.creditTotal,
           };
         } else {
           return tab;
@@ -38,6 +39,13 @@ export class ConfirmationComponent implements OnInit {
     return jobTypes
       .filter((jobType) => jobType.selected)
       .map(jobType => jobType.jobs.length)
+      .reduce((a, b) => a + b, 0);
+  }
+
+  public creditsSelected(jobTypes): number {
+    return jobTypes
+      .filter((jobType) => jobType.selected)
+      .map(jobType => jobType.creditTotal)
       .reduce((a, b) => a + b, 0);
   }
 

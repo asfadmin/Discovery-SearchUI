@@ -50,6 +50,7 @@ export interface Hyp3Job {
   status_code: Hyp3JobStatusCode;
   thumbnail_images: string[];
   user_id: string;
+  credit_cost: number;
 }
 
 export interface Hyp3ProductFile {
@@ -87,6 +88,23 @@ export interface Hyp3InSarGammaParameters {
   granules: string[];
 }
 
+export type Hyp3Costs = Hyp3JobCost[]
+export type Hyp3CostsByJobType = {
+  [jobType: string]: Hyp3JobCost;
+}
+
+
+export interface Hyp3JobCost {
+  job_type: string;
+  cost_parameter?: number | string;
+  cost_table?: any;
+  cost?: number;
+}
+
+export interface Hyp3CostTableValue {
+  parameter_value: string | number;
+  cost: number;
+}
 
 export interface Hyp3ProcessingOptions {
   [key: string]: any;

@@ -26,6 +26,11 @@
 
         {{ 'ADD' | translate }}  {{ isExpired ? '' : prodType.products.length}} {{ isExpired ? '' : prodType.productType }}
         {{ byJobType.jobType.numProducts === 2 ? ('PAIR' | translate) : ('JOB' | translate) }}{{ prodType.products.length > 1 ? 's' : '' }}
+
+        ({{ calculateCost(byJobType.jobType.id, prodType.products.length) | number }} <span [ngPlural]="calculateCost(byJobType.jobType.id, prodType.products.length)">
+            <ng-template ngPluralCase="=1">{{ 'CREDIT' | translate }}</ng-template>
+            <ng-template ngPluralCase="other">{{ 'CREDITS' | translate }}</ng-template>
+          </span>)
       </button>
     </div>
   </ng-template>
