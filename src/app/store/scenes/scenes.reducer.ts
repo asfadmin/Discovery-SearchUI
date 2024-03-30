@@ -104,7 +104,7 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
 
         if (product.metadata.subproducts.length > 0) {
           groupCriteria = product.id;
-        } else if(ungrouped_product_types.includes(product.metadata.productType)) {
+        } else if(ungrouped_product_types.includes(product.metadata.productType) || product.dataset === 'NISAR') {
           if(isSubProduct(product)) {
             groupCriteria = product.metadata.parentID;
           } else {
@@ -551,7 +551,7 @@ const productsForScene = (selected, state) => {
   const ungrouped_product_types = [...opera_s1.productTypes, {apiValue: 'BURST'}, {apiValue: 'BURST_XML'}].map(m => m.apiValue)
   // if (Object.keys(productTypes).length <= 2 && Object.keys(productTypes)[0] === 'BURST') {
   //   products = state.scenes[selected.name] || [];
-  if(ungrouped_product_types.includes(selected.metadata.productType)) {
+  if(ungrouped_product_types.includes(selected.metadata.productType) || selected.dataset === 'NISAR') {
     products = state.scenes[selected.metadata.parentID ?? selected.id] || [];
   }
   else {

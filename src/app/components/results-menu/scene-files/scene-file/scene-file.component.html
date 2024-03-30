@@ -47,11 +47,25 @@
 
 
 
-    <a *ngIf="isHovered && !product.metadata.job" class="icon-margin">
+    <a *ngIf="!product.metadata.job" class="icon-margin">
       <app-copy-to-clipboard [value]="product.metadata.productType === 'BURST_XML' ? product.id?.split('-XML')[0] : (
           product.metadata.parentID || product.id
-        )" prompt="{{ 'COPY_FILE_ID' | translate }}">
+        )" prompt="{{ 'COPY_FILE_ID' | translate }}"
+        >
       </app-copy-to-clipboard>
+      <span></span>
+      <app-copy-to-clipboard
+            prompt="copy S3 URL"
+            class="clipboard-icon"
+            [submenu]="[
+              [
+              'Download Url', product.downloadUrl
+            ],
+              [
+              'S3 Url', product.metadata?.s3URI
+            ]]"
+            [copyIcon]="copyIcons.LINK"
+          ></app-copy-to-clipboard>
     </a>
   </div>
   <button *ngIf="validHyp3JobTypes.length > 0" [matMenuTriggerFor]="customJobTypes" mat-icon-button matListItemMeta class="hype-icon-button mat-icon-button">
