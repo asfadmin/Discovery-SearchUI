@@ -361,6 +361,21 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
         )
     );
 
+    this.subs.add(
+        combineLatest([
+          this.scenesService.scenes$,
+          this.store$.select(scenesStore.getSelectedScene)
+        ]).subscribe(([scenes, selectedScene]: any) => {
+          if(scenes) {
+            if(scenes.slice(0, this.numberProductsInList).findIndex((value) => {
+              return value.id === selectedScene.id;
+            }) === -1) {
+              this.selectedFromList = false;
+              this.store$.dispatch(new scenesStore.SetSelectedScene(null))
+            }
+          }
+        })
+      )
   }
 
   ngAfterContentInit() {
