@@ -304,7 +304,7 @@
             </button>
 
             <button mat-menu-item
-            *ngIf="searchType === SearchTypes.DATASET && (currentDatasetID$ | async) === 'OPERA-S1'"
+            *ngIf="searchType === SearchTypes.DATASET && ((currentDatasetID$ | async) === 'OPERA-S1'|| (currentDatasetID$ | async) === 'NISAR')"
             [matMenuTriggerFor]="addAllProductsOfType"
             [matMenuTriggerData]="{productData: (productCountByType$ | async)}"
             >
