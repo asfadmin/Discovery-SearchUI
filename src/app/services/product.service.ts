@@ -211,6 +211,7 @@ export class ProductService {
 
   private nisarProductTypeDisplays = {
     vc06: 'VC06',
+    vc05: 'VC05',
     yaml: 'YAML',
     kml: 'KML',
     png: 'Browse PNG',
@@ -237,7 +238,13 @@ export class ProductService {
     // let reg = product.downloadUrl.split(/(_v[0-9]\.[0-9]){1}(\.(\w*)|(_(\w*(_*))*.))*/);
     // let file_suffix = !!reg[3] ? reg[3] : reg[5]
     product.productTypeDisplay = this.nisarProductTypeDisplays[file_extension.toLowerCase()] ? this.nisarProductTypeDisplays[file_extension.toLowerCase()] : 'Missing Display'
-
+    if (product.productTypeDisplay === 'Missing Display') {
+      if (file_extension.includes('vc')) {
+        product.productTypeDisplay = file_extension.toUpperCase()
+      } else {
+      console.log(`Missing product type display for file extension "${file_extension}"`);
+    }
+  }
     const thumbnail_index = product.browses.findIndex(url => url.toLowerCase().includes('thumbnail'))
     if (thumbnail_index !== -1) {
       product.thumbnail = product.browses.splice(thumbnail_index, 1)[0];
