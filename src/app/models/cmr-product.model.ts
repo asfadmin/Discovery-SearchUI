@@ -60,6 +60,7 @@ export interface CMRProductMetadata {
 
   // OPERA-S1
   opera: OperaS1Metadata | null;
+  nisar: NISARMetadata | null;
 
   fileName: string | null;
   job: Hyp3Job | null;
@@ -67,8 +68,9 @@ export interface CMRProductMetadata {
   // versioning
   pgeVersion: number | null;
 
-  // BURST XML, OPERA-S1
+  // BURST XML, OPERA-S1, NISAR
   subproducts: any[];
+  s3URI?: string;
   parentID: string;
 }
 
@@ -87,6 +89,11 @@ export interface OperaS1Metadata {
   operaBurstID: string;
   additionalUrls: string[];
   validityStartDate?: moment.Moment | null;
+}
+
+export interface NISARMetadata {
+  additionalUrls: string[];
+  s3Urls: string[];
 }
 
 export enum FlightDirection {

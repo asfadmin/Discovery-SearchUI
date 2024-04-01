@@ -103,6 +103,24 @@ export class NotificationService {
     }
   }
 
+  public linkCopyIcon(prompt: string, count: number) {
+    let contentType = prompt.includes('S3') ? 'S3 Url' : 'Download Url';
+
+    let headerText: string;
+    let infoText: string;
+
+    if (count > 1) {
+      headerText = `${contentType}s Copied`;
+      infoText = `${count} ${contentType}s copied`;
+
+      this.info(infoText, headerText);
+    } else {
+      infoText = `${contentType} Copied`;
+
+      this.info(infoText);
+    }
+  }
+
   public closeFiltersPanel() {
     this.info('Filters dismissed and not applied');
   }
