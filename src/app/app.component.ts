@@ -89,19 +89,18 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private notificationService: services.NotificationService,
     private sarviewsService: services.SarviewsEventsService,
     private mapService: services.MapService,
+    private hyp3Service: services.Hyp3Service,
     private themeService: services.ThemingService,
     public translate: TranslateService,
     public language: services.AsfLanguageService,
     public _adapter: DateAdapter<any>,
     private titleService: Title,
-
-
-@Inject(MAT_DATE_LOCALE) public _locale: string,
-
-
+    @Inject(MAT_DATE_LOCALE) public _locale: string,
   ) {}
 
   public ngOnInit(): void {
+    this.store$.dispatch(new hyp3Store.LoadCosts());
+
     this.subs.add(
       this.themeService.theme$.subscribe(theme => {
         // check if the user profile has auto in it.
@@ -259,6 +258,18 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             this.loadDefaultFilters(profile)
           }
         })
+    );
+
+    this.subs.add(
+      this.store$.select(userStore.getUserProfile).subscribe(
+        profile => {
+          if (profile.hyp3BackendUrl) {
+            this.hyp3Service.setApiUrl(profile.hyp3BackendUrl);
+          }
+
+          this.store$.dispatch(new hyp3Store.LoadCosts());
+        }
+)
     );
 
     this.subs.add(
@@ -479,8 +490,20 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     if (queueItemsStr) {
       const {jobs, options} = JSON.parse(queueItemsStr);
       this.store$.dispatch(new queueStore.AddJobs(jobs));
-      this.store$.dispatch(new hyp3Store.SetProcessingOptions(options));
+      if (this.areOptionsByJobType(options)) {
+        this.store$.dispatch(new hyp3Store.SetProcessingOptions(options));
+      }
     }
+  }
+
+  private areOptionsByJobType(options): boolean {
+    const jobTypeIds = new Set(Object.keys(models.hyp3JobTypes));
+    const optionsIds = Object.keys(options);
+
+    return (
+      jobTypeIds.size === optionsIds.length &&
+      optionsIds.every(optionId => jobTypeIds.has(optionId))
+    );
   }
 
   private loadDefaultFilters(profile: models.UserProfile): void {

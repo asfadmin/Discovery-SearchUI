@@ -6,7 +6,7 @@ import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import moment from 'moment';
-import { of, from } from 'rxjs';
+import { of, from, combineLatest } from 'rxjs';
 import { tap, catchError, delay, concatMap, finalize } from 'rxjs/operators';
 
 import * as queueStore from '@store/queue';
@@ -58,6 +58,8 @@ export class ProcessingQueueComponent implements OnInit {
   public hyp3JobTypesList: models.Hyp3JobType[];
   public selectedJobTypeId: string | null = null;
   public jobTypesWithQueued = [];
+  public costPerJobByType = {};
+  public totalCreditCost = 0;
 
   public contentAreaHeight = 0;
   public contentTopAreaHeight = 0;
@@ -69,9 +71,9 @@ export class ProcessingQueueComponent implements OnInit {
     public authService: services.AuthService,
     public env: services.EnvironmentService,
     public dialog: MatDialog,
+    public hyp3: services.Hyp3Service,
     private dialogRef: MatDialogRef<ProcessingQueueComponent>,
     private store$: Store<AppState>,
-    private hyp3: services.Hyp3Service,
     private screenSize: services.ScreenSizeService,
     private notificationService: services.NotificationService,
   ) { }
@@ -84,7 +86,12 @@ export class ProcessingQueueComponent implements OnInit {
         this.isUserLoading = isUserLoading;
     });
 
-    this.store$.select(queueStore.getQueuedJobs).subscribe((jobs) => {
+    combineLatest(
+      this.store$.select(queueStore.getQueuedJobs),
+      this.store$.select(hyp3Store.getCosts),
+      this.store$.select(hyp3Store.getProcessingOptions),
+    )
+    .subscribe(([jobs, costs, options]) => {
       const jobTypes: models.Hyp3JobType[] = Object.values(jobs
         .map(job => job.job_type)
         .reduce((types, jobType) => {
@@ -103,15 +110,29 @@ export class ProcessingQueueComponent implements OnInit {
         job => job.job_type.id === this.selectedJobTypeId
       );
 
+      this.processingOptions = options;
+
       this.jobTypesWithQueued = jobTypes.map((jobType) => {
+
+        const costPerJob = this.hyp3.calculateCredits(options[jobType.id], costs[jobType.id]);
+        this.costPerJobByType[jobType.id] = costPerJob;
+
+        const jobsFiltered = this.allJobs.filter(
+          job => job.job_type.id === jobType.id
+        );
+
         return {
           jobType: jobType,
           selected: true,
-          jobs: this.allJobs.filter(
-            job => job.job_type.id === jobType.id
-          )
+          jobs: jobsFiltered,
+          creditTotal: costPerJob * jobsFiltered.length
         };
       });
+
+        this.totalCreditCost = this.jobTypesWithQueued.reduce((total, jobType) => {
+          total += jobType.creditTotal;
+          return total;
+        }, 0)
     });
 
     this.store$.select(hyp3Store.getHyp3User).subscribe(
@@ -128,10 +149,6 @@ export class ProcessingQueueComponent implements OnInit {
 
     this.screenSize.breakpoint$.subscribe(
       breakpoint => this.breakpoint = breakpoint
-    );
-
-    this.store$.select(hyp3Store.getProcessingOptions).subscribe(
-      options => this.processingOptions = options
     );
 
     this.store$.select(hyp3Store.getProcessingProjectName).subscribe(
@@ -178,9 +195,9 @@ export class ProcessingQueueComponent implements OnInit {
     const confirmationRef = this.dialog.open(ConfirmationComponent, {
       id: 'ConfirmProcess',
       width: '350px',
-      height: '500px',
+      height: '600px',
       maxWidth: '350px',
-      maxHeight: '500px',
+      maxHeight: '600px',
       data: this.jobTypesWithQueued
     });
 

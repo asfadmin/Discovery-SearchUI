@@ -286,12 +286,18 @@ export const hyp3JobTypes = {
 };
 
 export const hyp3JobTypesList = Object.values(hyp3JobTypes);
+
 export const hyp3DefaultJobOptions = hyp3JobTypesList.reduce((options, jobType) => {
+  const optionsForJobType = {};
+
   jobType.options.forEach(
-    option => options[option.apiName] = option.default
+    option => optionsForJobType[option.apiName] = option.default
   );
+  options[jobType.id] = optionsForJobType;
+
   return options;
 }, {});
+
 export const hyp3JobOptionsByName = hyp3JobTypesList.reduce((options, jobType) => {
   jobType.options.forEach(
     option => options[option.apiName] = option

@@ -262,7 +262,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
 
               possibleJobs.push([product]);
 
-              if (!!baselineReference) {
+              if (!!baselineReference && baselineReference.id !== product.id) {
                 possibleJobs.push([baselineReference, product]);
               }
             });
@@ -348,7 +348,6 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
           const sceneIdx = pairsCombined.findIndex(
             pair => pair[0] === selected[0] && pair[1] === selected[1]
           );
-
           return Math.max(0, sceneIdx - 1);
         })
       ).subscribe(

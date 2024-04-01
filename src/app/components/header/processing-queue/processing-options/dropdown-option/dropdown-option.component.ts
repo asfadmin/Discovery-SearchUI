@@ -11,6 +11,8 @@ export class DropdownOptionComponent implements OnInit {
   @Input() optionInfo: string;
   @Input() options: { apiValue: string | number; name: string; }[];
 
+  @Input() costsTable: any = null;
+
   @Output() valueChange = new EventEmitter<string>();
 
   constructor() { }

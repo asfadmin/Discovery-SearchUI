@@ -20,9 +20,12 @@
 
 .mobile-menu-offset {
   bottom: 117px;
+  z-index: 2000;
+
 }
 
 .desktop-menu-offset {
+  z-index: 2000;
   bottom: 20px;
 }
 

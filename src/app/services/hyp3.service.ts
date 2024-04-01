@@ -11,12 +11,15 @@ import { NotificationService } from './notification.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class Hyp3Service {
   private hyp3ApiUrl = 'https://hyp3-api.asf.alaska.edu';
   private baseHyp3ApiUrl = 'https://hyp3-api.asf.alaska.edu';
+
+  private costs: models.Hyp3Costs;
 
   constructor(
     private http: HttpClient,
@@ -42,6 +45,10 @@ export class Hyp3Service {
 
   public isDefaultApi(): boolean {
     return (this.hyp3ApiUrl === this.baseHyp3ApiUrl);
+  }
+
+  public get getCosts(): models.Hyp3Costs {
+    return this.costs;
   }
 
   public getUser$(): Observable<models.Hyp3User> {
@@ -71,7 +78,10 @@ export class Hyp3Service {
     );
   }
 
-  public formatJobs(jobTypesWithQueued, options: {processingOptions: any, projectName: string}) {
+  public formatJobs(
+    jobTypesWithQueued,
+    options: {processingOptions: any, projectName: string}
+  ) {
     const jobOptionNames = {};
     models.hyp3JobTypesList.forEach(
       jobType => jobOptionNames[jobType.id] = new Set(
@@ -83,7 +93,7 @@ export class Hyp3Service {
     models.hyp3JobTypesList.forEach(jobType => {
       ops[jobType.id] = {};
 
-      Object.entries(options.processingOptions).forEach(([name, value]) => {
+      Object.entries(options.processingOptions[jobType.id]).forEach(([name, value]) => {
         if (jobOptionNames[jobType.id].has(name)) {
           ops[jobType.id][name] = value;
         }
@@ -173,6 +183,12 @@ export class Hyp3Service {
     };
 
     return this.http.post(submitJobUrl, body, { withCredentials: true });
+  }
+
+  public getCosts$() {
+    const costsUrl = `${this.apiUrl}/costs`;
+
+    return this.http.get<models.Hyp3Costs>(costsUrl);
   }
 
   public getHyp3ableProducts(products: models.CMRProduct[][]): {byJobType: models.Hyp3ableProductByJobType[]; total: number} {
@@ -307,6 +323,17 @@ export class Hyp3Service {
     } as {byJobType: models.Hyp3ableProductByJobType[], total: number};
 
     return output;
+  }
+
+  public calculateCredits(options: models.Hyp3ProcessingOptions, cost: models.Hyp3JobCost) {
+    if (cost?.cost) {
+      const fixedCost = cost;
+      return fixedCost.cost;
+    }
+
+    const selectedCostValue = options[cost.cost_parameter];
+
+    return cost.cost_table[selectedCostValue] || 1;
   }
 
   private expirationDays(expiration_time: moment.Moment): number {
