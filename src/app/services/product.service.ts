@@ -231,9 +231,9 @@ export class ProductService {
       if (file_extension.includes('vc')) {
         product.productTypeDisplay = file_extension.toUpperCase();
       } else {
-      console.log(`Missing product type display for file extension "${file_extension}"`);
+        console.log(`Missing product type display for file extension "${file_extension}"`);
+      }
     }
-  }
     const thumbnail_index = product.browses.findIndex(url => url.toLowerCase().includes('thumbnail'))
     if (thumbnail_index !== -1) {
       product.thumbnail = product.browses.splice(thumbnail_index, 1)[0];
@@ -251,7 +251,7 @@ export class ProductService {
 
 
     product.metadata.s3URI = s3UrlsByProductID[product.file] ?? null;
-    
+
     for (const p of product.metadata.nisar.additionalUrls.filter(url => url !== product.downloadUrl)) {
       temp = p.split('.')
       file_extension = temp[temp.length - 1]
@@ -260,47 +260,48 @@ export class ProductService {
         if (file_extension.includes('vc')) {
           productTypeDisplay = file_extension.toUpperCase();
         } else {
-        console.log(`Missing product type display for file extension "${file_extension}"`);
+          console.log(`Missing product type display for file extension "${file_extension}"`);
+        }
+        if (p.includes('QA_')) {
+          productTypeDisplay += (' (QA)')
+        }
+
+
+
+        const fileID = p.split('/').slice(-1)[0]
+        const s3Url = s3UrlsByProductID[fileID] ?? null
+        let subproduct = {
+          ...product,
+          downloadUrl: p,
+          productTypeDisplay: productTypeDisplay || p,
+          file: fileID,
+          id: product.id + '-' + file_extension,
+          bytes: 0,
+          browses: [],
+          thumbnail: null,
+          metadata: {
+            ...product.metadata,
+            productType: product.metadata.productType,
+            parentID: product.id,
+            subproducts: [],
+            s3URI: s3Url
+          },
+
+        } as models.CMRProduct;
+
+        products.push(subproduct)
       }
-      if (p.includes('QA_')) {
-        productTypeDisplay += (' (QA)')
+
+      return products.sort((a, b) => {
+        if (a.productTypeDisplay.includes('Metadata') || a.productTypeDisplay.includes('QA')) {
+          return 1;
+        } else if (b.productTypeDisplay.includes('Metadata') || b.productTypeDisplay.includes('QA')) {
+          return -1;
+        }
+
+        return a.productTypeDisplay < b.productTypeDisplay ? -1 : 1
       }
-
-      
-
-      const fileID = p.split('/').slice(-1)[0]
-      const s3Url = s3UrlsByProductID[fileID] ?? null
-      let subproduct = {
-        ...product,
-        downloadUrl: p,
-        productTypeDisplay: productTypeDisplay || p,
-        file: fileID,
-        id: product.id + '-' + file_extension,
-        bytes: 0,
-        browses: [],
-        thumbnail: null,
-        metadata: {
-          ...product.metadata,
-          productType: product.metadata.productType,
-          parentID: product.id,
-          subproducts: [],
-          s3URI: s3Url
-        },
-        
-      } as models.CMRProduct;
-
-      products.push(subproduct)
+      )
     }
-
-    return products.sort((a, b) => {
-      if (a.productTypeDisplay.includes('Metadata') || a.productTypeDisplay.includes('QA')) {
-        return 1;
-      } else if (b.productTypeDisplay.includes('Metadata') || b.productTypeDisplay.includes('QA')) {
-        return -1;
-      }
-
-      return a.productTypeDisplay < b.productTypeDisplay ? -1 : 1
-    }
-    )
   }
 }
