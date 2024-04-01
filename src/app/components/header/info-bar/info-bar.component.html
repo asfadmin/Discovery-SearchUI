@@ -77,7 +77,13 @@
         <b> {{ 'GROUP_ID_INFO_BAR' | translate }}:</b> {{ groupID }}
       </span>
     </span>
+    <span>
+      <span *ngIf="!!shortNames">
+        <b> {{ 'SHORT_NAMES' | translate }}:</b> {{ shortNames }}
+      </span>
+    </span>
   </div>
+  <div>
   <div class="last-info">
     <app-ci-search></app-ci-search>
   </div>

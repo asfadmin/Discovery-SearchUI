@@ -94,7 +94,8 @@ export enum FiltersActionType {
   
   SET_OPERA_BURST_ID = '[Filters] Set Full OPERA S1 Burst IDs',
   SET_INCLUDE_CALIBRATION_DATA = '[Filters] Set use calbiration data in OPERA-S1 search',
-  SET_GROUP_ID = '[Filters] Set Sentinel-1 Group ID'
+  SET_GROUP_ID = '[Filters] Set Sentinel-1 Group ID',
+  SET_SHORT_NAMES = '[Filters] Set Short Names'
 }
 
 export class SetSelectedDataset implements Action {
@@ -231,6 +232,11 @@ export class SetProductTypes implements Action {
   constructor(public payload: models.DatasetProductTypes) {}
 }
 
+export class setShortNames implements Action {
+  public readonly type = FiltersActionType.SET_SHORT_NAMES;
+
+  constructor(public payload: models.DatasetShortName) {}
+}
 export class SetListSearchType implements Action {
   public readonly type = FiltersActionType.SET_LIST_SEARCH_TYPE;
 
@@ -482,6 +488,7 @@ export type FiltersActions =
   | SetFiltersSimilarTo
   | ClearFrameRange
   | SetProductTypes
+  | setShortNames
   | SetListSearchType
   | SetSearchList
   | SetFlightDirections

@@ -4,9 +4,10 @@ import { SubSink } from 'subsink';
 import { of } from 'rxjs';
 import { tap, delay } from 'rxjs/operators';
 
-import { faCopy } from '@fortawesome/free-solid-svg-icons';
+import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { ClipboardService } from 'ngx-clipboard';
 import { NotificationService } from '@services/notification.service';
+import { CopyIcons } from '@models';
 
 @Component({
   selector: 'app-copy-to-clipboard',
@@ -15,13 +16,13 @@ import { NotificationService } from '@services/notification.service';
 })
 export class CopyToClipboardComponent implements OnDestroy {
   @Input() value: string;
+  @Input({required: false}) submenu: [string, string][] = [];
   @Input() prompt = 'Copy to clipboard';
   @Input() notification = 'Copied';
   @Input() toast = true;
-
+  @Input({required: false}) copyIcon: IconDefinition = CopyIcons.COPY;
   @ViewChild('copyTooltip', { static: true }) copyTooltip: ElementRef;
 
-  public copyIcon = faCopy;
   private subs = new SubSink();
 
   constructor(
@@ -45,6 +46,22 @@ export class CopyToClipboardComponent implements OnDestroy {
     );
 
     e.stopPropagation();
+  }
+
+  public onCopyFromMenu(prompt: string, value: string) {
+    this.clipboardService.copyFromContent(value);
+    if (this.toast) {
+      this.notificationService.linkCopyIcon(prompt, value.split(',').length);
+    }
+
+    this.subs.add(
+      of((' ' + prompt).slice(1)).pipe(
+        tap(() => prompt = this.notification),
+        delay(2200)
+      ).subscribe(
+        msg => prompt = msg
+      )
+    );
   }
 
   ngOnDestroy() {

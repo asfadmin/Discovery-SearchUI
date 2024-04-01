@@ -25,6 +25,7 @@ export interface Dataset {
 
   calibrationDatasets?: string[];
   calibrationProductTypes?: ProductType[];
+  shortNames?: ShortName[]; // For NISAR shortnames
 }
 
 export enum MissionDataset {
@@ -43,12 +44,18 @@ export interface ProductType {
   apiValue: string;
 }
 
+export interface ShortName {
+  displayName: string;
+  apiValue: string;
+}
+
 export interface DatasetSubtype {
   displayName: string;
   apiValue: string;
 }
 
 export type DatasetProductTypes = ProductType[];
+export type DatasetShortName = ShortName[];
 export type DatasetBeamModes = string[];
 export type DatasetPolarizations = string[];
 export type DatasetSubtypes = DatasetSubtype[];
@@ -67,8 +74,10 @@ export const ers = fromDatasets.ers;
 export const jers_1 = fromDatasets.jers_1;
 export const airsar = fromDatasets.airsar;
 export const seasat = fromDatasets.seasat;
+export const nisar = fromDatasets.nisar;
 
 export const datasetList: Dataset[] = [
+  fromDatasets.nisar,
   fromDatasets.sentinel_1,
   fromDatasets.sentinel_1_bursts,
   fromDatasets.opera_s1,

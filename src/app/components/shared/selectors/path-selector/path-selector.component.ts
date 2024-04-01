@@ -29,13 +29,14 @@ export class PathSelectorComponent implements OnInit, OnDestroy {
 
   private inputErrors$ = new Subject<PathFormInputType>();
   private currentError: PathFormInputType | null = null;
-
+  
   public inputTypes = PathFormInputType;
   public pathStart: number | null;
   public pathEnd: number | null;
   public frameStart: number | null;
   public frameEnd: number | null;
-
+  public selectedDataset: string | null = '';
+  
   private get pathStartControl() {
     return this.pathForm.form
       .controls['pathStart'];
@@ -68,6 +69,11 @@ export class PathSelectorComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.handlePathFrameErrors();
 
+    this.subs.add(
+      this.store$.select(filtersStore.getSelectedDatasetId).subscribe(
+        selected => this.selectedDataset = selected
+      )
+    );
     this.subs.add(
       this.store$.select(filtersStore.getPathRange).subscribe(
         range => {

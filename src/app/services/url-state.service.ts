@@ -529,6 +529,14 @@ export class UrlStateService {
       )),
       loader: this.loadGroupId
     },
+    {
+      name: 'shortNames',
+      source: this.store$.select(filterStore.getShortNames).pipe(
+        map(shortNames => ({'shortNames': shortNames.map(name => name.apiValue).join(',')}))
+      ),
+      loader: this.loadShortNames
+
+    }
   ];
   }
 
@@ -693,6 +701,20 @@ export class UrlStateService {
     }
 
     return new filterStore.SetProductTypes(productTypes);
+  };
+
+  private loadShortNames  = (shortNameStr: string): Action | undefined => {
+    const shortNames: models.DatasetShortName = this.prop.loadProperties(
+      shortNameStr,
+      'shortNames',
+      (v: models.ShortName) => v.apiValue
+    );
+
+    if (!shortNames) {
+      return;
+    }
+
+    return new filterStore.setShortNames(shortNames);
   };
 
   private loadBeamModes = (modesStr: string): Action | undefined => {

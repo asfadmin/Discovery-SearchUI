@@ -39,6 +39,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public listSearchMode: models.ListSearchType;
   public searchList: string[];
   public productTypes: string;
+  public shortNames: string;
   public beamModes: models.DatasetBeamModes;
   public polarizations: models.DatasetPolarizations;
   public flightDirections: models.FlightDirection[];
@@ -94,6 +95,11 @@ export class InfoBarComponent implements OnInit, OnDestroy {
     );
     const productTypesSub = this.store$.select(filtersStore.getProductTypes).subscribe(
       productTypes => this.productTypes = productTypes
+        .map(subtype => subtype.apiValue)
+        .join(',')
+    );
+    const shortNamesSub = this.store$.select(filtersStore.getShortNames).subscribe(
+      shortNames => this.shortNames = shortNames
         .map(subtype => subtype.apiValue)
         .join(',')
     );
@@ -154,6 +160,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       omitSub,
       listSearchModeSub, searchListSub,
       productTypesSub,
+      shortNamesSub,
       polsSub,
       beamModesSub,
       flightDirsSub,

@@ -147,7 +147,7 @@
             <ng-template #mobileCopyFileIds>IDs</ng-template>
           </button>
 
-          <button (click)="onCopyQueueURLs(products)" mat-button [disabled]="!areAnyProducts" class="btn-primary"
+          <button (click)="onCopyQueueURLs(products)" *ngIf="(numberOfS3Products$ | async) === 0" mat-button [disabled]="!areAnyProducts" class="btn-primary"
             [class.button-clipboard-mobile]="breakpoint === breakpoints.MOBILE || dlWidth < dlWidthMin"
             matTooltip="{{'COPY_FILE_URLS_TO_CLIPBOARD' | translate}}"
             [matTooltipPosition]="'above'">
@@ -156,6 +156,24 @@
             <span *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin; else mobileCopyURLs">{{'COPY_URLS' | translate}}</span>
             <ng-template #mobileCopyURLs>URLs</ng-template>
           </button>
+
+          <button [matMenuTriggerFor]="urlTypeMenu" *ngIf="(numberOfS3Products$ | async) > 0" mat-button [disabled]="!areAnyProducts" class="btn-primary"
+          [class.button-clipboard-mobile]="breakpoint === breakpoints.MOBILE || dlWidth < dlWidthMin"
+          matTooltip="{{'COPY_FILE_URLS_TO_CLIPBOARD' | translate}}"
+          [matTooltipPosition]="'above'">
+          <fa-icon style="margin-left: 5px;" [icon]="copyIcon"></fa-icon>
+          &nbsp;
+          <span *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin; else mobileCopyURLs">{{'COPY_URLS' | translate}}</span>
+          <ng-template #mobileCopyURLs>URLs</ng-template>
+        </button>
+        <mat-menu #urlTypeMenu>
+          <button mat-menu-item (click)="onCopyQueueURLs(products)">
+            Download Urls
+          </button>
+          <button mat-menu-item (click)="onCopyQueueURLs(products, true)">
+            S3 Urls
+          </button>
+        </mat-menu>
 
           <ng-container *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin">
             <span *ngIf="queueHasOnDemandProducts || queueHasEventMonitoringProducts" class="on-demand-warning">

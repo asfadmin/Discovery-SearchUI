@@ -171,6 +171,15 @@ export class SearchParamsService {
     map(types => ({ processinglevel: types }))
   );
 
+  private shortNames$ = this.store$.select(filterStore.getShortNames).pipe(
+    map(types => types.map(type => type.apiValue)),
+    map(
+      shortNames => Array.from(new Set(shortNames))
+        .join(',')
+    ),
+    map(shortNames => ({ shortname: shortNames }))
+  );
+
   private beamModes$ = this.store$.select(filterStore.getBeamModes).pipe(
     map(
       types => Array.from(new Set(types))
@@ -207,6 +216,7 @@ export class SearchParamsService {
     this.pathRange$,
     this.frameRange$,
     this.productType$,
+    this.shortNames$,
     this.flightDirections$,
     this.beamModes$,
     this.polarizations$,
