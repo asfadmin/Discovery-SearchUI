@@ -365,14 +365,35 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
         combineLatest([
           this.scenesService.scenes$,
           this.store$.select(scenesStore.getSelectedScene)
-        ]).subscribe(([scenes, selectedScene]: any) => {
-          if(scenes) {
+        ]).pipe(
+          debounceTime(50),
+        ).subscribe(([scenes, selectedScene]: any) => {
+          if(scenes && selectedScene) {
             if(scenes.slice(0, this.numberProductsInList).findIndex((value) => {
               return value.id === selectedScene.id;
             }) === -1) {
               this.selectedFromList = false;
               this.store$.dispatch(new scenesStore.SetSelectedScene(null))
             }
+          }
+        })
+      )
+
+      this.subs.add(
+        combineLatest([
+          this.pairService.pairs$,
+          this.store$.select(scenesStore.getSelectedPair)
+        ]).pipe(
+          debounceTime(50)
+        ).subscribe(([pairs, selectedPair]: any) => {
+          if(!selectedPair){
+            return
+          }
+          if([...pairs.pairs, ...pairs.custom].findIndex((value) => {
+            return value[0].id === selectedPair[0].id && value[1].id === selectedPair[1].id
+          }) === -1) {
+            this.selectedFromList = false;
+            this.store$.dispatch(new scenesStore.SetSelectedPair(null))
           }
         })
       )
