@@ -210,25 +210,14 @@ export class ProductService {
   }
 
   private nisarProductTypeDisplays = {
-    vc06: 'VC06',
-    vc05: 'VC05',
     yaml: 'YAML',
     kml: 'KML',
     png: 'Browse PNG',
     csv: 'Metadata CSV',
-    // hv: 'HV GeoTIFF',
-    // vv: 'VV GeoTIFF',
-    // vh: 'VH GeoTIFF',
-    // mask: 'Mask GeoTIFF',
     h5: 'HDF5',
     xml: 'Metadata XML',
     json: 'Metadata JSON',
     pdf: 'PDF Report',
-    // rtc_anf_gamma0_to_sigma0: 'RTC Gamma to Sigma GeoTIFF',
-    // number_of_looks: '# of Looks GeoTIFF',
-    // incidence_angle: 'Incidence Angle GeoTIFF',
-    // rtc_anf_gamma0_to_beta0: 'RTC Gamm to Beta GeoTIFF',
-    // local_incidence_angle: 'Local Incidence Angle GeoTIFF'
   }
 
   private nisarSubproductsFromScene(product: models.CMRProduct) {
@@ -240,7 +229,7 @@ export class ProductService {
     product.productTypeDisplay = this.nisarProductTypeDisplays[file_extension.toLowerCase()] ? this.nisarProductTypeDisplays[file_extension.toLowerCase()] : 'Missing Display'
     if (product.productTypeDisplay === 'Missing Display') {
       if (file_extension.includes('vc')) {
-        product.productTypeDisplay = file_extension.toUpperCase()
+        product.productTypeDisplay = file_extension.toUpperCase();
       } else {
       console.log(`Missing product type display for file extension "${file_extension}"`);
     }
@@ -266,10 +255,18 @@ export class ProductService {
     for (const p of product.metadata.nisar.additionalUrls.filter(url => url !== product.downloadUrl)) {
       temp = p.split('.')
       file_extension = temp[temp.length - 1]
-      let productTypeDisplay = this.nisarProductTypeDisplays[file_extension.toLowerCase()];
+      let productTypeDisplay = this.nisarProductTypeDisplays[file_extension.toLowerCase()] ?? 'Missing Display';
+      if (productTypeDisplay === 'Missing Display') {
+        if (file_extension.includes('vc')) {
+          productTypeDisplay = file_extension.toUpperCase();
+        } else {
+        console.log(`Missing product type display for file extension "${file_extension}"`);
+      }
       if (p.includes('QA_')) {
         productTypeDisplay += (' (QA)')
       }
+
+      
 
       const fileID = p.split('/').slice(-1)[0]
       const s3Url = s3UrlsByProductID[fileID] ?? null
