@@ -26,6 +26,19 @@
         </mat-select>
       </mat-form-field>
     </div>
+
+    <div *ngIf="jobsDisplay.length > 0" class="flex-field jobs-overview">
+      <div>
+        {{ jobsDisplay.length }} <span [ngPlural]="jobsDisplay.length">
+          <ng-template ngPluralCase="=1">{{ 'JOB' | translate }}</ng-template>
+          <ng-template ngPluralCase="other">{{ 'JOBS' | translate }}</ng-template>
+        </span>,
+        {{ costPerJob * jobsDisplay.length }} <span [ngPlural]="costPerJob * jobsDisplay.length">
+          <ng-template ngPluralCase="=1">{{ 'CREDIT' | translate }}</ng-template>
+          <ng-template ngPluralCase="other">{{ 'CREDITS' | translate }}</ng-template>
+        </span>
+      </div>
+    </div>
   </div>
 
   <mat-list *ngIf="!areJobsLoading" role="list" class="flex-list">
@@ -53,6 +66,12 @@
               <span *ngIf="job.granules[0].bytes === 0">Virtual</span>
               <span *ngIf="job.granules[0].bytes !== 0">{{ job.granules[0].bytes.toString() | readableSizeFromBytes }}</span>
             </b>
+            <span> ({{costPerJob}}
+              <span [ngPlural]="costPerJob * jobsDisplay.length">
+            <ng-template ngPluralCase="=1">{{ 'CREDIT' | uppercase | translate }}</ng-template>
+            <ng-template ngPluralCase="other">{{ 'CREDITS' | uppercase | translate }}</ng-template>
+              </span>)
+            </span>
           </div>
           <div *ngIf="job.job_type.name !== 'RTC GAMMA'" style="font-size: 14px;" matListItemLine>
           {{job.granules[1].name}}
