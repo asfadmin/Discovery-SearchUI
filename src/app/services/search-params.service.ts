@@ -18,6 +18,8 @@ import { RangeService } from './range.service';
 import * as models from '@models';
 import { DrawService } from './map/draw.service';
 import { Polygon } from 'ol/geom';
+import * as userStore from '@store/user';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -26,7 +28,8 @@ export class SearchParamsService {
     private store$: Store<AppState>,
     private mapService: MapService,
     private rangeService: RangeService,
-    private drawService: DrawService
+    private drawService: DrawService,
+    // private authService: AuthService
   ) { }
 
 
@@ -237,30 +240,31 @@ export class SearchParamsService {
 
   public getParams = combineLatest([
     this.store$.select(getSearchType),
-    this.baselineSearchParams$]
+    this.baselineSearchParams$,
+    this.store$.select(userStore.getUserEDLToken)]
   ).pipe(
     withLatestFrom(this.listParam$),
     withLatestFrom(this.filterSearchParams$),
     map(
-      ([[[searchType, baselineParams], listParam], filterParams]) => {
+      ([[[searchType, baselineParams, cmr_token], listParam], filterParams]) => {
         switch (searchType) {
           case models.SearchType.LIST: {
-            return listParam;
+            return {cmr_token, ...listParam};
           }
           case models.SearchType.DATASET: {
-            return filterParams;
+            return {cmr_token, ...filterParams};
           }
           case models.SearchType.BASELINE: {
-            return baselineParams;
+            return {cmr_token, ...baselineParams};
           }
           case models.SearchType.SBAS: {
-            return baselineParams;
+            return {cmr_token, ...baselineParams};
           }
           case models.SearchType.CUSTOM_PRODUCTS: {
-            return listParam;
+            return {cmr_token, ...listParam};
           }
           default: {
-            return filterParams;
+            return {cmr_token, ...filterParams};
           }
         }
       }),
@@ -270,28 +274,30 @@ export class SearchParamsService {
     this.store$.select(getSearchType),
     this.listParam$,
     this.baselineSearchParams$,
-    this.filterSearchParams$]
+    this.filterSearchParams$,
+    this.store$.select(userStore.getUserEDLToken)
+  ]
   ).pipe(
     map(
-      ([searchType, listParam, baselineParams, filterParams]) => {
+      ([searchType, listParam, baselineParams, filterParams, cmr_token]) => {
         switch (searchType) {
           case models.SearchType.LIST: {
-            return listParam;
+            return {cmr_token, ...listParam};
           }
           case models.SearchType.DATASET: {
-            return filterParams;
+            return {cmr_token, ...filterParams};
           }
           case models.SearchType.BASELINE: {
-            return baselineParams;
+            return {cmr_token, ...baselineParams};
           }
           case models.SearchType.SBAS: {
-            return baselineParams;
+            return {cmr_token, ...baselineParams};
           }
           case models.SearchType.CUSTOM_PRODUCTS: {
-            return listParam;
+            return {cmr_token, ...listParam};
           }
           default: {
-            return filterParams;
+            return {cmr_token, ...filterParams};
           }
         }
       }),
