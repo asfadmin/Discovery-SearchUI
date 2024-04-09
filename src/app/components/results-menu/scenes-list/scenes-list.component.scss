@@ -64,6 +64,9 @@
 
 .date-time {
   font-size: 14px !important;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .mobile-size .mat-mdc-list-base .mat-mdc-list-item {
