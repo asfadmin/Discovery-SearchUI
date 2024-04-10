@@ -151,11 +151,11 @@ export class MapControlsComponent implements OnInit, OnDestroy {
   }
 
   public onSetOpacity(event: any) {
-    this.store$.dispatch(new mapStore.SetBrowseOverlayOpacity(event.value));
+    this.store$.dispatch(new mapStore.SetBrowseOverlayOpacity(+event.target.value));
   }
 
   public onSetCoherenceOpacity(event: any) {
-    this.store$.dispatch(new mapStore.SetCoherenceOverlayOpacity(event.value));
+    this.store$.dispatch(new mapStore.SetCoherenceOverlayOpacity(+event.target.value));
   }
 
   public onPinProduct(product_id: string) {

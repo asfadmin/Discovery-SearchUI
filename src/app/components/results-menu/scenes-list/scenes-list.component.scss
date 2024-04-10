@@ -5,8 +5,9 @@
   height: 99%;
   overflow-x: hidden;
   .cdk-virtual-scroll-content-wrapper {
-    position: relative;
+    // position: relative;
     max-width: 100%;
+    // height: 100%;
   }
   // .cdk-virtual-scroll-spacer {
   //   height: 200% !important;
@@ -63,6 +64,9 @@
 
 .date-time {
   font-size: 14px !important;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .mobile-size .mat-mdc-list-base .mat-mdc-list-item {

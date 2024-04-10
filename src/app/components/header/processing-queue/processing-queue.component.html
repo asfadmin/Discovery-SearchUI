@@ -38,11 +38,14 @@
           </div>
         </div>
       </ng-container>
-
     </div>
 
     <div class="doc-feedback-div"
          [class.doc-feedback-div-mobile]="breakpoint === breakpoints.MOBILE">
+      <div class="docs-div header-link">
+        <a href="https://hyp3-docs.asf.alaska.edu/using/credits" target="_blank"> {{ 'CREDITS' | titlecase | translate }}</a>
+      </div>
+
       <div class="docs-div header-link">
         <app-docs-modal class="text-link"
                         text="Docs"
@@ -62,7 +65,11 @@
           class="job-type--button"
         (click)="onSetSelectedJobType(hyp3Job.jobType)"
         [color]="selectedJobTypeId === hyp3Job.jobType.id ? 'secondary' : 'primary'">
-          {{ hyp3Job.jobType.name }} ({{ hyp3Job.jobs.length }})
+          {{ hyp3Job.jobType.name }} ({{ hyp3Job.creditTotal | number }}
+          <span [ngPlural]="hyp3Job.creditTotal">
+            <ng-template ngPluralCase="=1">{{ 'CREDIT' | translate }}</ng-template>
+            <ng-template ngPluralCase="other">{{ 'CREDITS' | translate }}</ng-template>
+          </span>)
         </button>
       </ng-container>
 
@@ -77,7 +84,12 @@
         (onMenuOpen)='onOpenTabMenu()'
         (onMenuClose)='onCloseTabMenu()'
         style="padding-right: 5px;">
-          {{selectedJobTypeId}} ({{ jobTypesWithQueued[getTabIdIndex(selectedJobTypeId)].jobs.length }})
+          {{selectedJobTypeId}} ({{ jobTypesWithQueued[getTabIdIndex(selectedJobTypeId)].creditTotal | number }}
+          <span [ngPlural]=" jobTypesWithQueued[getTabIdIndex(selectedJobTypeId)].creditTotal ">
+            <ng-template ngPluralCase="=1">{{ 'CREDIT' | translate }}</ng-template>
+            <ng-template ngPluralCase="other">{{ 'CREDITS' | translate }}</ng-template>
+          </span>)
+
           <mat-icon>
             {{isTabMenuOpen ? 'arrow_drop_up' : 'arrow_drop_down'}}
           </mat-icon>
@@ -85,12 +97,10 @@
 
       <mat-menu #TabMenu="matMenu" class="tab-menu">
         <ng-container *ngFor="let hyp3Job of jobTypesWithQueued">
-          <button mat-button
-          style="background-color: white;"
-          (click)="onSetSelectedJobType(hyp3Job.jobType)"
-          [color]="selectedJobTypeId === hyp3Job.jobType.id ? 'secondary' : 'primary'">
+          <button mat-menu-item
+          (click)="onSetSelectedJobType(hyp3Job.jobType)">
           <div>
-            {{ hyp3Job.jobType.name }} ({{ hyp3Job.jobs.length }})
+            {{ hyp3Job.jobType.name }}
           </div>
           </button>
         </ng-container>
@@ -157,7 +167,7 @@
 
             <div *ngIf="isUserLoggedIn && !isUnlimitedUser && !isUserLoading && remaining === 0" class="w100 error-header">
               <div style="padding-left: 10px;">
-                <b>{{ 'NO_JOBS_LEFT_THIS_MONTH' |  translate }}</b>
+                <b>{{ 'NO_CREDITS_LEFT_THIS_MONTH' |  translate }}</b>
               </div>
               <div>
                 <button (click)="onCloseDialog()" mat-flat-button>
@@ -170,6 +180,7 @@
               <div class="jobs-list-panel">
                 <app-processing-queue-jobs
                    [jobs]="jobs"
+                   [costPerJob]="costPerJobByType[selectedJobTypeId]"
                    [areJobsLoading]="areJobsLoading"
                    (removeJob)="onRemoveJob($event)">
                 </app-processing-queue-jobs>
@@ -180,6 +191,7 @@
               <div class="jobs-display--mobile">
                 <app-processing-queue-jobs
                    [jobs]="jobs"
+                   [costPerJob]="costPerJobByType[selectedJobTypeId]"
                    [areJobsLoading]="areJobsLoading"
                    (removeJob)="onRemoveJob($event)">
                 </app-processing-queue-jobs>
@@ -241,17 +253,24 @@
       <div *ngIf="isUserLoggedIn && !isUserLoading && user !== ''">
         <span>
           <span *ngIf="!isUnlimitedUser; else unlimitedText">
-            {{ remaining }}
+            {{ remaining | number}}
           </span>
           <ng-template #unlimitedText>Unlimited</ng-template>
         </span>
 
         <span *ngIf="breakpoint === breakpoints.MOBILE" class="footer-mini-text">
           <br>
-          {{'JOB_MAX' | translate}}
+          <a href="https://hyp3-docs.asf.alaska.edu/using/credits" target="_blank">{{'CREDIT_MAX' | translate}}</a>
         </span>
         <span *ngIf="breakpoint !== breakpoints.MOBILE">
-          {{'JOBS_LEFT_THIS_MONTH' | translate}}
+          <a href="https://hyp3-docs.asf.alaska.edu/using/credits" target="_blank">
+            <span *ngIf="hyp3.isDefaultApi()">
+              {{'CREDITS_LEFT_THIS_MONTH' | translate}}
+            </span>
+            <span *ngIf="!hyp3.isDefaultApi()">
+              {{'CREDITS_LEFT' | translate}}
+            </span>
+          </a>
         </span>
       </div>
 
@@ -264,7 +283,7 @@
           <b>N/A</b> - {{ 'LOGIN_TO_VIEW' |  translate }}
         </span>
         <span *ngIf="breakpoint !== breakpoints.MOBILE">
-          <b>N/A</b> - {{ 'LOGIN_TO_VIEW_NUMBER_OF_JOBS_LEFT_THIS_MONTH' |  translate }}
+          <b>N/A</b> - {{ 'LOGIN_TO_VIEW_NUMBER_OF_CREDITS_LEFT_THIS_MONTH' |  translate }}
         </span>
       </div>
     </div>
@@ -294,6 +313,10 @@
          >
          <span *ngIf="!isQueueSubmitProcessing">
            {{ 'SUBMIT' | translate }} {{ allJobs.length }} {{ 'JOB' | translate }}<span *ngIf="allJobs.length > 1">s</span>
+           ({{ totalCreditCost }} <span [ngPlural]="totalCreditCost">
+              <ng-template ngPluralCase="=1">{{ 'CREDIT' | translate }}</ng-template>
+              <ng-template ngPluralCase="other">{{ 'CREDITS' | translate }}</ng-template>
+            </span>)
          </span>
 
          <span *ngIf="isQueueSubmitProcessing">

@@ -19,6 +19,7 @@ export class ProcessingOptionsComponent implements OnInit {
   public JobTypesList = models.hyp3JobTypesList;
 
   public optionValues = {};
+  public costs: models.Hyp3CostsByJobType;
 
   constructor(
     private store$: Store<AppState>,
@@ -26,12 +27,20 @@ export class ProcessingOptionsComponent implements OnInit {
 
   ngOnInit() {
     this.store$.select(queueStore.getQueuedJobs).subscribe(
-      jobs => this.jobs = jobs
+      jobs => {
+        this.jobs = jobs
+      }
     );
 
     this.store$.select(hyp3Store.getProcessingOptions).subscribe(
       options => {
         this.optionValues = options;
+      }
+    );
+
+    this.store$.select(hyp3Store.getCosts).subscribe(
+      costs => {
+        this.costs = costs;
       }
     );
   }
@@ -43,26 +52,43 @@ export class ProcessingOptionsComponent implements OnInit {
   }
 
   public onSetOptionValue(apiName: string, value: any) {
-    this.optionValues = {
-      ...this.optionValues,
+    const newOptions = {
+      ...this.optionValues[this.selectedJobType.id],
       [apiName]: value
     };
 
     this.store$.dispatch(new hyp3Store.SetProcessingOptions({
-      ...this.optionValues
+      jobTypeId: this.selectedJobType.id,
+      options: newOptions
     }));
   }
 
   public onSetSubset(options): void {
-    options.forEach(option => {
-      this.optionValues = {
-        ...this.optionValues,
-        [option.apiName]: option.value
-      };
-    });
+    const optionSubset = options.reduce((subset, option) => {
+      subset[option.apiName] = option.value;
+
+      return subset;
+    }, {});
+
+    const newOptions = {
+      ...this.optionValues[this.selectedJobType.id],
+      ...optionSubset
+    }
 
     this.store$.dispatch(new hyp3Store.SetProcessingOptions({
-      ...this.optionValues
+      jobTypeId: this.selectedJobType.id,
+      options: newOptions
     }));
+  }
+
+  public getCostTable(costs, jobType, option) {
+
+    const jobTypeCost = costs[jobType.id];
+
+    if (jobTypeCost.cost_table && option.apiName === jobTypeCost.cost_parameter) {
+      return jobTypeCost.cost_table;
+    } else {
+      return null;
+    }
   }
 }

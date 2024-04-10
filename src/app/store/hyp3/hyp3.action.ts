@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { Hyp3Job, Hyp3User, Hyp3ProcessingOptions } from '@models';
+import { Hyp3Job, Hyp3User, Hyp3ProcessingOptions, Hyp3Costs } from '@models';
 
 export enum Hyp3ActionType {
   LOAD_JOBS = '[Hyp3] Load Jobs',
@@ -14,6 +14,8 @@ export enum Hyp3ActionType {
   LOAD_USER = '[Hyp3] Load User',
   SET_USER = '[Hyp3] Set User',
   ERROR_LOADING_USER = '[Hyp3] Error Loading User',
+  LOAD_COSTS = '[Hyp3] Load Costs',
+  SET_COSTS = '[Hyp3] Set Costs',
 
   SUBMIT_JOB = '[Hyp3] Submit Job',
   SUCCESSFUL_JOB_SUBMISSION = '[Hyp3] Successful Job Submission',
@@ -35,7 +37,7 @@ export class SetJobs implements Action {
 export class SetProcessingOptions implements Action {
   public readonly type = Hyp3ActionType.SET_PROCESSING_OPTIONS;
 
-  constructor(public payload: Hyp3ProcessingOptions) {}
+  constructor(public payload: {jobTypeId: string; options: Hyp3ProcessingOptions}) {}
 }
 
 export class ClearProcessingOptions implements Action {
@@ -77,6 +79,16 @@ export class SetUser implements Action {
   constructor(public payload: Hyp3User) {}
 }
 
+export class LoadCosts implements Action {
+  public readonly type = Hyp3ActionType.LOAD_COSTS;
+}
+
+export class SetCosts implements Action {
+  public readonly type = Hyp3ActionType.SET_COSTS;
+
+  constructor(public payload: Hyp3Costs) {}
+}
+
 export class ErrorLoadingUser implements Action {
   public readonly type = Hyp3ActionType.ERROR_LOADING_USER;
 }
@@ -86,6 +98,8 @@ export type Hyp3Actions =
   | SetJobs
   | LoadUser
   | SetUser
+  | LoadCosts
+  | SetCosts
   | ErrorLoadingUser
   | SetProcessingOptions
   | ClearProcessingOptions
