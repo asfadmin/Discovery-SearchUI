@@ -15,7 +15,7 @@
   <button [disabled]="disabled" mat-button
   [matTooltip]="('STOP_DOWNLOAD' | translate)"
   class="download-file-button"
-  *ngIf="dFile"
+  *ngIf="dFile && (dFile.state !== 'DONE')"
   >
   <ng-container *ngIf="dFile as download">
     <div *ngIf="download.state !== 'DONE'" class="progress-spinner">
