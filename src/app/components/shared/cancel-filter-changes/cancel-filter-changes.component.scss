@@ -1,6 +1,8 @@
-.button-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
+.cancel-button {
+  margin-right: 13px;
+  margin-top: 1px;
+  height: 36px !important;
+  border-radius: 3px !important;
+  border-width: 2px;
+  border-color: white;
 }
