@@ -13,7 +13,7 @@ export const smap = {
   ],
   apiValue: { dataset: 'SMAP' },
   date: { start: new Date('2015/04/13 17:57:07 UTC') },
-  infoUrl: 'https://www.asf.alaska.edu/sar-data-sets/soil-moisture-active-passive-smap-mission/',
+  infoUrl: 'https://asf.alaska.edu/datasets/daac/soil-moisture-active-passive-smap-mission/',
   frequency: 'L-Band',
   source: {
     name: 'NASA',
