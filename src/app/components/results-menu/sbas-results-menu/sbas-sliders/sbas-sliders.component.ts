@@ -75,7 +75,7 @@ export class SbasSlidersComponent implements OnInit {
     const slider = noUiSlider.create(filterRef.nativeElement, {
       orientation: 'vertical',
       direction: 'rtl',
-      start: [400],
+      start: [800],
       behaviour: 'tap-drag',
       tooltips: false,
       connect: 'lower',

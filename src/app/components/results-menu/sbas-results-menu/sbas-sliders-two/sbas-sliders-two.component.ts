@@ -120,7 +120,7 @@ export class SbasSlidersTwoComponent implements OnInit {
           if (this.firstMeterLoad) {
             this.firstMeterLoad = false;
             if (!perp.start) {
-              const action = new filtersStore.SetPerpendicularRange({ start: 400, end: null });
+              const action = new filtersStore.SetPerpendicularRange({ start: 800, end: null });
               this.store$.dispatch(action);
             }
           }
