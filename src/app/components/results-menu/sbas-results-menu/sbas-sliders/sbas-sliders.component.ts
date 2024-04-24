@@ -75,18 +75,18 @@ export class SbasSlidersComponent implements OnInit {
     const slider = noUiSlider.create(filterRef.nativeElement, {
       orientation: 'vertical',
       direction: 'rtl',
-      start: [300],
+      start: [800],
       behaviour: 'tap-drag',
       tooltips: false,
       connect: 'lower',
       step: 1,
       range: {
         'min': 0,
-        'max': 300
+        'max': 800
       },
       pips: {
         mode: noUiSlider.PipsMode.Positions,
-        values: [0, 50, 100, 150, 200, 250],
+        values: [0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750],
         density: 4,
         stepped: true,
         format: wNumb({
