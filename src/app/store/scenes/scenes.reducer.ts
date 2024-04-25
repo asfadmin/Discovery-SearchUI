@@ -426,12 +426,14 @@ function arrayEquals(a, b) {
   return Array.isArray(a) &&
     Array.isArray(b) &&
     a.length === b.length &&
-    a.toString() === b.toString() &&
     a.every((value, index) => {
       if(Array.isArray(value) && Array.isArray(b[index])) {
         return arrayEquals(value, b[index])
       } else {
-        value.id === b[index].id
+        return b.findIndex((b_value) =>
+        {
+          return b_value?.id === value?.id
+        }) >= 0
       }
     }
     )
