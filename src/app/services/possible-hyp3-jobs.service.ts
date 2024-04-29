@@ -40,7 +40,9 @@ export class PossibleHyp3JobsService {
     ));
 
   private hyp3ableJobsSBAS$ = combineLatest([
-    this.possibleProductJobs$,
+    this.pairService.productsFromPairs$.pipe(map(
+    products => products.map(p => [p])
+    )),
     this.pairs$,
   ]).pipe(
     map(([possibleJobs, {pairs, custom}]) => {
