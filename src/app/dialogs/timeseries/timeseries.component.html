@@ -1,0 +1,61 @@
+<div class="timeseries-dialog-wrapper">
+<header>
+    <div mat-dialog-title><h3>Time Series</h3></div>
+    <h4>(lat: {{data.coordinates[0]}} lon: {{data.coordinates[1]}})</h4>
+    <!-- <div class="help-menu" *ngIf="topic != 'toc'"> -->
+      <!-- <button mat-raised-button color="accent"
+              (click)="setHelpTopic('toc')"> -->
+
+        <!-- {{ 'ALL_HELP_AND_TUTORIALS' |  translate  | titlecase}} -->
+      <!-- </button> -->
+    <!-- </div> -->
+  </header>
+
+  <main>
+    <table mat-table [dataSource]="dataSource">
+
+        <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef> No. </th>
+            <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+          </ng-container>
+        
+          <!-- Name Column -->
+          <!-- <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+          </ng-container> -->
+        
+           ,'' ,''
+          <!-- Weight Column -->
+          <ng-container matColumnDef="unwrapped_phase">
+            <th mat-header-cell *matHeaderCellDef> Unwrapped Phase </th>
+            <td mat-cell *matCellDef="let element"> {{element.unwrapped_phase}} </td>
+          </ng-container>
+        
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="interferometric_correlation">
+            <th mat-header-cell *matHeaderCellDef> Interferometric Correlation </th>
+            <td mat-cell *matCellDef="let element"> {{element.interferometric_correlation}} </td>
+          </ng-container>
+          <ng-container matColumnDef="temporal_coherence">
+            <th mat-header-cell *matHeaderCellDef> Temporal Coherence </th>
+            <td mat-cell *matCellDef="let element"> {{element.temporal_coherence}} </td>
+          </ng-container>     
+          
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <!-- {{json_data}} -->
+</main>
+
+<footer>
+    <div class="help-action-controls">
+      <div class="done-button">
+        <button (click)="onClose()" color="primary" mat-flat-button>
+          <!-- {{ 'DONE' | translate }} -->
+          Close
+        </button>
+      </div>
+    </div>
+  </footer>
+</div>

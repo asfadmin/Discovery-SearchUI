@@ -49,6 +49,10 @@ export class InteractionSelectorComponent implements OnInit, OnDestroy {
       this.interaction === MapInteractionModeType.DRAW ? MapInteractionModeType.NONE : MapInteractionModeType.DRAW
     )
 
+    public onTimeseriesSelected =
+    () => this.onNewInteractionMode(
+      this.interaction === MapInteractionModeType.TIMERSERIES ? MapInteractionModeType.NONE : MapInteractionModeType.TIMERSERIES
+    )
   public onEditSelected =
     () => this.onNewInteractionMode(
       this.interaction === MapInteractionModeType.EDIT ? MapInteractionModeType.NONE : MapInteractionModeType.EDIT

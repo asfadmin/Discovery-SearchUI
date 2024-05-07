@@ -74,8 +74,19 @@ export class MapService {
   private selectClick = new Select({
     condition: click,
     style: polygonStyle.hidden,
-    layers: l => l.get('selectable') || false
+    layers: l => l.get('selectable') || l.get('netcdf-layer') || false // make work with netcdf-layer class
   });
+
+  // private timeseriesClick = new Select({
+  //   condition: click,
+  //   // style: null,
+  //   layers: l => {
+  //     if (l.get('netcdf-layer')) {
+  //       return true;
+  //     }
+  //     return false
+  //   }
+  // });
 
   private selectHover = new Select({
     condition: pointerMove,
@@ -123,7 +134,7 @@ export class MapService {
 
   public selectedSarviewEvent$: EventEmitter<string> = new EventEmitter();
   public mapInit$: EventEmitter<Map> = new EventEmitter();
-
+  public timeseriesPixelSelected$ = new EventEmitter();
   public mousePosition$ = this.mousePositionSubject$.pipe(
     sampleTime(100)
   );
@@ -145,7 +156,7 @@ export class MapService {
     private store$: Store<AppState>,
     private browseOverlayService: BrowseOverlayService,
     private layerService: LayerService,
-    private http: HttpClient
+    private http: HttpClient,
   ) { }
 
   public epsg(): string {
@@ -169,13 +180,15 @@ export class MapService {
     this.selectSarviewEventHover.setActive(true);
     this.selectClick.setActive(true);
     this.searchPolygonHover.setActive(true);
-  }
 
+  }
+  
   public disableInteractions(): void {
     this.selectHover.setActive(false);
     this.selectSarviewEventHover.setActive(false);
     this.selectClick.setActive(false);
     this.searchPolygonHover.setActive(false);
+    // this.timeseriesClick.setActive(false);
   }
 
   private zoom(amount: number): void {
@@ -482,13 +495,20 @@ export class MapService {
     });
 
     newMap.addInteraction(this.selectClick);
+    // newMap.addInteraction(this.timeseriesClick);
     newMap.addInteraction(this.selectHover);
     newMap.addInteraction(this.selectSarviewEventHover);
     this.selectClick.on('select', e => {
+      // netcdf-layer
+      // if (this.drawService.in)
+        this.timeseriesPixelSelected$.emit(null)
       e.target.getFeatures().forEach(
         feature => this.newSelectedScene$.next(feature.get('filename'))
       );
     });
+    // this.timeseriesClick.on('select', _ => {
+      // this.timeseriesPixelSelected$.next(null);
+    // });
 
     this.selectHover.on('select', e => {
       this.map.getViewport().style.cursor =

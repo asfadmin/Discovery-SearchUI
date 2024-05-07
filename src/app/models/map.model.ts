@@ -27,6 +27,7 @@ export enum MapInteractionModeType {
   UPLOAD = 'Upload',
   NONE = 'None',
   CLEAR = 'Clear',
+  TIMERSERIES = 'TimeSeries',
 }
 
 export enum DrawPolygonStyle {

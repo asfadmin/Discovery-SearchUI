@@ -20,6 +20,14 @@
   </mat-button-toggle>
 
   <mat-button-toggle
+  (click)="onTimeseriesSelected()"
+  [value]="types.TIMERSERIES"
+  class="control-mat-button-toggle"
+  [matTooltip]="interaction === types.TIMERSERIES ? ('STOP_DRAWING'| translate) : ('DRAW_NEW_AREA_OF_INTEREST'| translate)">
+  <mat-icon class="interaction-icon">stacks</mat-icon>
+</mat-button-toggle>
+
+  <mat-button-toggle
     (click)="onClearSelected()"
     class="control-mat-button-toggle"
     matTooltip="{{'CLEAR_CURRENT_AREA_OF_INTEREST' | translate}}"

@@ -7,6 +7,7 @@ import { Observable, combineLatest } from 'rxjs';
 import {
   map, filter, switchMap, tap,
   withLatestFrom,
+  first,
 } from 'rxjs/operators';
 
 import { Vector as VectorLayer} from 'ol/layer';
@@ -30,6 +31,8 @@ import { CMRProduct, SarviewsEvent } from '@models';
 import { StyleLike } from 'ol/style/Style';
 import { Feature } from 'ol';
 import Geometry from 'ol/geom/Geometry';
+import { MatDialog } from '@angular/material/dialog';
+import { TimeseriesComponent} from '../../dialogs/timeseries'
 
 enum FullscreenControls {
   MAP = 'Map',
@@ -95,7 +98,8 @@ export class MapComponent implements OnInit, OnDestroy  {
     private screenSize: ScreenSizeService,
     private scenesService: ScenesService,
     private eventMonitoringService: SarviewsEventsService,
-    private netcdfService: NetcdfServiceService
+    private netcdfService: NetcdfServiceService,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -150,7 +154,11 @@ export class MapComponent implements OnInit, OnDestroy  {
         mode => {
           if (mode === models.MapInteractionModeType.NONE) {
             this.mapService.enableInteractions();
-          } else {
+          } 
+          // else if(mode === models.MapInteractionModeType.TIMERSERIES) {
+            // this.mapService.enableTimeSeries();
+          // }
+          else {
             this.mapService.disableInteractions();
           }
         }
@@ -209,6 +217,8 @@ export class MapComponent implements OnInit, OnDestroy  {
             }
           } else if (interactionMode === models.MapInteractionModeType.EDIT) {
             return 'Click and drag on area of interest';
+          } else if (interactionMode === models.MapInteractionModeType.TIMERSERIES) {
+            return 'Click to select a point for time series analysis';
           }
         })
       ).subscribe(
@@ -243,7 +253,39 @@ export class MapComponent implements OnInit, OnDestroy  {
       )
     );
 
-    this.netcdfService.getGeotiffLayers()
+    // this.netcdfService.getGeotiffLayers();
+    for (let layer of this.netcdfService.get_layers()) {
+      layer.pipe(
+        first()
+    //     tap(layer => {
+          // layer.getSource().on
+          // this.scenePolygonsLayer(layer)
+    // })
+      ).subscribe(displacementProduct =>
+        {
+        this.mapService.addLayer(displacementProduct.browse);
+        
+        const feature_polygon = this.scenePolygonsLayer([displacementProduct.feature])
+        feature_polygon.set('netcdf-layer', true)
+        this.mapService.addLayer(feature_polygon)
+        feature_polygon.setZIndex(10)
+        this.mapService.setSelectedFeature(feature_polygon  )
+        }
+      )
+      // this.featuresToSource(layer)
+    }
+    this.mapService.timeseriesPixelSelected$.pipe(
+      withLatestFrom(this.mapService.mousePosition$)
+    ).subscribe(
+      ([_, mousePos]) => {
+        console.log(mousePos);
+        this.netcdfService.getTimeSeries(mousePos).pipe(
+          first()
+        ).subscribe(
+          response => this.dialog.open(TimeseriesComponent, {data: response})
+        );
+      }
+    )
   }
 
   public onFileHovered(e): void {
@@ -438,7 +480,7 @@ export class MapComponent implements OnInit, OnDestroy  {
       map(scenes => this.scenesToFeature(scenes, projection)));
   }
 
-  private scenePolygonsLayer(features: Feature<Geometry>[]): VectorLayer<VectorSource> {
+  public scenePolygonsLayer(features: Feature<Geometry>[]): VectorLayer<VectorSource> {
       const vectorLayer = this.featuresToSource(features, polygonStyle.scene);
       vectorLayer.set('selectable', 'true');
       return vectorLayer;
