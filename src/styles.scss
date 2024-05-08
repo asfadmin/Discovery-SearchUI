@@ -2,7 +2,7 @@
 
 @import './styles/asf-theme';
 @import './styles/filter-list';
-@import "prismjs/themes/prism-dark.css";
+@import "prismjs/themes/prism-solarizedlight.css";
 
 $theme-map: null;
 
@@ -827,4 +827,8 @@ $d-height: 550px;
   max-width: 340px !important;
 }
 
- .cdk-overlay-pane:has(.mat-mdc-select-panel) { min-width: fit-content; }
+.cdk-overlay-pane:has(.mat-mdc-select-panel) { min-width: fit-content; }
+
+.breadcrumb-list .mat-mdc-form-field {
+  margin-top: -2px;
+}

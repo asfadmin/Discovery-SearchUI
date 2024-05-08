@@ -649,7 +649,7 @@ export class MapService {
         // Return trimmed canvas
         copy.canvas.toBlob((blob) => {
           resolve(blob)
-        }, 'image/jpeg')
+        }, 'image/png')
       }
     })
 

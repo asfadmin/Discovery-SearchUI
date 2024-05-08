@@ -21,7 +21,9 @@
 
   <div [ngClass]="{
     'baseline-flex': searchType === SearchTypes.BASELINE && breakpoint > breakpoints.SMALL,
-    'div-flex': searchType !== SearchTypes.BASELINE || breakpoint <= breakpoints.SMALL }">
+    'div-flex': searchType !== SearchTypes.BASELINE || breakpoint <= breakpoints.SMALL }"
+    class="detail-bar"
+    >
     <div class="div-flex-column">
       <div class="div-flex"
            [title]="scene.metadata.fileName || scene.name"
@@ -48,7 +50,7 @@
       </div>
     </div>
 
-    <div class="div-flex date-time" matLine>
+    <div class="date-time" matLine>
       <ng-container *ngIf="scene.metadata.job">
         {{ scene.metadata.job.job_type }}
         <br *ngIf="breakpoint === breakpoints.MOBILE && searchType === SearchTypes.CUSTOM_PRODUCTS"> -
@@ -62,13 +64,13 @@
             {{ scene.metadata.opera.validityStartDate | fullDate }}
         </ng-container>
 
-        <ng-container *ngIf="
+        <span *ngIf="
           breakpoint > breakpoints.MOBILE &&
           searchType !== SearchTypes.BASELINE &&
           !scene.metadata?.opera?.validityStartDate"
           matTooltip="{{'SCENE_START_TIME' | translate}}">
             {{ scene.metadata.date | fullDate }}
-        </ng-container>
+      </span>
 
         <ng-container *ngIf="
           breakpoint === breakpoints.MOBILE ||
@@ -99,7 +101,8 @@
         [scene]="scene"
         [offsets]="offsets"
         [hyp3ableByJobType]="hyp3ableByJobType"
-        [isQueued]="isQueued">
+        [isQueued]="isQueued"
+        style="min-width:200px;">
       </app-baseline-scene-controls>
     </ng-container>
   </div>
