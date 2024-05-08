@@ -70,6 +70,9 @@ export interface CMRProductMetadata {
   // BURST XML, OPERA-S1
   subproducts: any[];
   parentID: string;
+
+  // ARIA S1 GUNW
+  ariaVersion: string | null;
 }
 
 export interface SLCBurstMetadata {

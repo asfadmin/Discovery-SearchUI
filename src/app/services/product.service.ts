@@ -94,7 +94,8 @@ export class ProductService {
       opera: g.s1o ? g.s1o : null,
       pgeVersion: g.pge !== null ? parseFloat(g.pge) : null,
       subproducts: [],
-      parentID: null
+      parentID: null,
+      ariaVersion: g.ariav ? g.ariav : null
     })
 
   private isNumber = n => !isNaN(n) && isFinite(n);
