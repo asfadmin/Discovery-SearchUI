@@ -137,7 +137,7 @@
         <div *ngIf="selectedJobTypeId" style="margin-right: 10px;">
           <p style="text-wrap: balance;">
             {{ hyp3JobTypes[selectedJobTypeId].description | translate }}
-            <a target="_blank" [href]="hyp3JobTypes[selectedJobTypeId].infoUrl">[MORE]</a>
+            <a target="_blank" [href]="hyp3JobTypes[selectedJobTypeId].infoUrl">[{{ 'MORE_' | translate }}]</a>
           </p>
         </div>
 
@@ -161,7 +161,7 @@
                 <b>{{ 'TOO_MANY_JOBS_IN_QUEUE' |  translate }} </b>
               </div>
               <div style="padding: 7px 10px;">
-                <b>({{ allJobs.length - remaining }} extra job{{ (allJobs.length - remaining) === 1 ? '' : 's'  }})</b>
+                <b>({{ allJobs.length - remaining }} {{ 'EXTRA_JOB' | translate }}{{ (allJobs.length - remaining) === 1 ? '' : 's'  }})</b>
               </div>
             </div>
 
@@ -255,7 +255,7 @@
           <span *ngIf="!isUnlimitedUser; else unlimitedText">
             {{ remaining | number}}
           </span>
-          <ng-template #unlimitedText>Unlimited</ng-template>
+          <ng-template #unlimitedText>{{ 'UNLIMITED' | translate }}</ng-template>
         </span>
 
         <span *ngIf="breakpoint === breakpoints.MOBILE" class="footer-mini-text">

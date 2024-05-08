@@ -1,0 +1,332 @@
+<div mat-dialog-title
+  class="queue">
+  <div class="pq-card-title-group">
+    <div style="display: flex;">
+      <div class="on-demand-branding">
+        <mat-icon
+           class="on-demand-icon"
+           svgIcon="hyp3"
+           matBadgePosition="above after"
+           matBadgeOverlap="true"
+           matBadgeSize="small">
+        </mat-icon>
+      </div>
+
+      <ng-container *ngIf="breakpoint !== breakpoints.MOBILE">
+        <div class="branding-block">
+          <div class="hyp3-url">
+            <app-hyp3-url></app-hyp3-url>
+          </div>
+          <div class="on-demand-text">
+            {{ 'CREATE_SUBSCRIPTION' |  translate }}
+          </div>
+          <div class="on-demand-subtitle">
+            {{ 'POWERED_BY_HY_P3' |  translate }}
+          </div>
+        </div>
+        <div class="doc-feedback-div-wrapper">
+          <div class="doc-feedback-div">
+            <div class="docs-div header-link">
+              <app-docs-modal class="text-link"
+                              text="Docs"
+                              url="https://hyp3-docs.asf.alaska.edu/using/subscriptions/#Subscriptions-in-HyP3">
+              </app-docs-modal>
+            </div>
+
+            <div class="feedback-div header-link">
+              <a href="javascript:feedback.showForm();" onfocus="this.blur()"> <mat-icon>comment</mat-icon> {{ 'FEEDBACK' | translate }}</a>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
+        <div class="branding-block">
+          <div class="hyp3-url">
+            <app-hyp3-url></app-hyp3-url>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <div class="close-x" (click)="onCloseDialog()">
+      <mat-icon>close</mat-icon>
+    </div>
+  </div>
+</div>
+
+<mat-dialog-content
+  #contentArea style="overflow: auto;" class="mat-dialog-content">
+  <div class="content-block">
+    <div class="content-area">
+      <mat-stepper (selectionChange)="onSelectionChange()" #stepper>
+        <mat-step [stepControl]="searchOptionsFormGroup" errorMessage="{{ 'MISSING_REQUIRED_OPTION' | translate}}">
+          <ng-template matStepLabel>
+            <span *ngIf="breakpoint !== breakpoints.MOBILE" class="searchOptions">{{ 'SEARCH_OPTIONS' | translate }}</span>
+          </ng-template>
+
+          <div>
+            <div style="margin-bottom: 5px;">
+              <b>{{ 'SUBSCRIPTION_DATE' |  translate }}</b>
+              <div *ngIf="errors.dateError" class="step-error"> *{{ errors.dateError | translate  }}</div>
+
+            </div>
+            <app-subscription-date-range
+              (newStart)="onNewStartDate($event)"
+              (newEnd)="onNewEndDate($event)"
+              [startDate]="dateRange.start"
+              [endDate]="dateRange.end">
+            </app-subscription-date-range>
+          </div>
+
+          <div style="margin-bottom: 25px;">
+            <div style="margin-bottom: 25px;">
+              <b>{{ 'AOI_OPTIONS' |  translate }}</b>
+              <div *ngIf="errors.polygonError" class="step-error"> *{{ errors.polygonError | translate }}</div>
+            </div>
+            <app-aoi-options [showHeader]="false"></app-aoi-options>
+          </div>
+
+          <div>
+            <mat-form-field class="sub-option">
+              <mat-label>{{ 'PATH' | translate }}</mat-label>
+              <input matInput [(ngModel)]="path" type="number">
+              <mat-hint align="start"> {{ path !== null ? '' : ('NO_PATH_INPUT' | translate)}}</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="sub-option">
+              <mat-label>{{ 'FRAME' | translate }}</mat-label>
+              <input matInput [(ngModel)]="frame" type="number">
+              <mat-hint align="start">{{ frame !== null ? '' : ('NO_FRAME_INPUT' | translate)  }}</mat-hint>
+            </mat-form-field>
+          </div>
+        </mat-step>
+
+        <mat-step>
+          <ng-template *ngIf="breakpoint !== breakpoints.MOBILE"  matStepLabel>{{ 'SUBSCRIPTION_OPTIONS' |  translate }}</ng-template>
+
+          <div style="margin-bottom: 10px;">
+            <div style="margin-bottom: 5px;">
+              <b>{{ 'JOB_TYPE' |  translate }}</b>
+            </div>
+
+            <mat-form-field class="sub-option">
+              <mat-select
+                [(value)]="jobTypeId"
+                (selectionChange)="onNewJobType($event)"
+                [disabled]="hyp3JobTypesList.length < 1"
+                placeholder="{{ 'JOB_TYPE' |  translate }}">
+                  <mat-option
+                    *ngFor="let jobType of hyp3JobTypesList"
+                    [value]="jobType.id"
+                    [matTooltip]="jobType.name">
+                      {{jobType.name}}
+                  </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div style="margin-bottom: 10px;">
+            <div style="margin-bottom: 5px;">
+              <b>{{ 'DATASET_OPTIONS' |  translate }}</b>
+            </div>
+
+            <mat-form-field class="sub-option">
+              <mat-select
+                [(value)]="productType"
+                (selectionChange)="onNewProductType($event)"
+                [disabled]="productTypes.length < 1"
+                placeholder="{{ 'FILE_TYPE' | translate }}">
+                  <mat-option
+                    *ngFor="let type of productTypes"
+                    [value]="types[type].apiValue"
+                    [matTooltip]="types[type].displayName">
+                      {{types[type].displayName}}
+                  </mat-option>
+              </mat-select>
+
+              <mat-hint align="start">
+                {{ !productType ? ( 'SELECT_FILE_TYPE' | translate) : productType +  ' ' + ('SELECTED' | translate | lowercase ) }}
+              </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="sub-option">
+              <mat-select
+                [(value)]="subtype"
+                (selectionChange)="onNewSubType($event)"
+                placeholder="Sentinel-1 Type">
+                  <mat-option
+                    *ngFor="let type of s1Subtypes"
+                    [value]="type.apiValue"
+                    [matTooltip]="type.displayName">
+                      {{type.displayName}}
+                  </mat-option>
+              </mat-select>
+
+              <mat-hint align="start">
+                {{ !productType ? ('SELECT_TYPE' | translate ) : subtype + ' ' + ('SELECTED' | translate | lowercase ) }}
+              </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="sub-option">
+              <mat-select
+                (selectionChange)="onNewFlightDirection($event)"
+                [(value)]="flightDirection"
+                placeholder="{{ 'DIRECTION' | translate }}">
+                <mat-option *ngFor="let direction of flightDirectionTypes" [value]="direction">
+                  {{direction.toUpperCase() | translate }}
+                </mat-option>
+              </mat-select>
+
+              <mat-hint align="start">
+                {{ !flightDirection ? ('NO_FLIGHT_DIRECTION_SELECTED' | translate ) : ('FLIGHT_DIRECTION_SELECTED' | translate ) }}
+              </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field class="sub-option">
+              <mat-select
+                (selectionChange)="onNewPolarization($event)"
+                [(value)]="polarization"
+                placeholder="{{ 'POLARIZATION' | translate }}" multiple>
+                <mat-option *ngFor="let pol of polarizations" [value]="pol">
+                  {{pol}}
+                </mat-option>
+              </mat-select>
+
+              <mat-hint align="start">
+                {{ polarization.length === 0 ? ('NO_POLARIZATION_SELECTED' | translate ) : ('POLARIZATION_SELECTED' | translate ) }}
+              </mat-hint>
+            </mat-form-field>
+          </div>
+
+          <app-processing-options
+              *ngIf="selectedJobTypeId"
+              [selectedJobType]="hyp3JobTypes[jobTypeId]">
+          </app-processing-options>
+        </mat-step>
+
+        <mat-step [stepControl]="reviewFormGroup" [errorMessage]="errors.projectNameError | translate">
+          <ng-template *ngIf="breakpoint !== breakpoints.MOBILE"  matStepLabel>{{ 'REVIEW' |  translate }}</ng-template>
+
+          <div *ngIf="subEstimate !== null" style="margin-bottom: 5px;">
+            {{ 'BASED_ON_YOUR_SEARCH_PARAMETERS_THIS_SUBSCRIPTION_WILL_RUN' |  translate }}
+            <span *ngIf="currentProducts !== null && currentProducts > 0"><b>{{ currentProducts }} {{'JOBS_NOW' | translate }}</b> {{ 'AND' | translate }}</span>
+            {{ 'APPROXIMATELY' | translate }} <b>{{ subEstimate }} {{ 'JOBS_PER_MONTH' | translate }}</b>.
+          </div>
+
+          <div>
+            <b>{{ 'NAME' |  translate }}:</b>
+            <div *ngIf="errors.projectNameError" class="step-error"> *{{ errors.projectNameError  | translate }}</div>
+            <app-project-name-selector [processName]="true"></app-project-name-selector>
+          </div>
+
+          <div>
+            <b>{{ 'JOB_TYPE' |  translate }}:</b> {{ jobTypeId }}
+          </div>
+          <h3>{{ 'SEARCH_OPTIONS' | translate }}:</h3>
+
+          <div>
+            <div *ngIf="!!subtype">
+              <b>{{ 'DATASET' | translate }}:</b> {{ subtype }}
+            </div>
+            <div *ngIf="!!polygon">
+              <b>{{ 'SEARCH_AREA' | translate }}:</b> {{ showSearchAreaType(polygon) }}
+            </div>
+
+            <div *ngIf="!!dateRange.start">
+              <b>{{ 'STAR' | translate }}t:</b> {{ dateRange.start | shortDate }}
+            </div>
+            <div *ngIf="!!dateRange.end">
+              <b>{{ 'END' | translate }}:</b> {{ dateRange.end | shortDate }}
+            </div>
+
+            <div *ngIf="!!productType">
+              <b>{{ 'FILE_TYPE' |  translate }}:</b> {{ productType }}
+            </div>
+
+            <div *ngIf="polarization.length > 0">
+              <b>{{ 'POLARIZATION' | translate }}:</b> {{ polarization }}
+            </div>
+
+            <div *ngIf="!!flightDirection">
+              <b>{{ 'FLIGHT_DIR' | translate }}:</b> {{ flightDirection }}
+            </div>
+          </div>
+
+          <h3>{{ 'PROCESSING_OPTIONS' |  translate }}:</h3>
+
+          <div>
+            <div *ngFor="let param of filterOptions(processingOptionsList, jobTypeId)">
+              <b>{{ param.name }}:</b> {{ param.val }}
+            </div>
+          </div>
+
+        </mat-step>
+      </mat-stepper>
+    </div>
+
+    <div *ngIf="breakpoint !== breakpoints.MOBILE" class="navigation-row">
+      <div class="navigation-item">
+        <button mat-flat-button
+                color="primary"
+                (click)="onBack()"
+                [disabled]="stepper.selectedIndex === 0">
+          <mat-icon>arrow_backward</mat-icon>
+          {{ 'BACK' |  translate }}
+        </button>
+        &nbsp;
+        <button mat-flat-button
+                color="primary"
+                (click)="onNext()">
+          {{ isLastStep() ? ('SUBMIT' | translate ) : ('NEXT'| translate)}}
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions class="mat-dialog-actions">
+  <div class="w100 subscription-footer">
+    <div class="subscription-footer-item validate-toggle"
+         *ngIf="breakpoint !== breakpoints.MOBILE && isDevMode()">
+      <mat-slide-toggle [class.validate-only]="validateOnly"
+        (change)="onValidateOnlyToggle($event.checked)"
+        [(ngModel)]="validateOnly">
+        {{ 'VALIDATE_ONLY' | translate }}
+      </mat-slide-toggle>
+    </div>
+
+    <div *ngIf="breakpoint !== breakpoints.MOBILE" class="subscription-footer-item">
+      <button mat-flat-button
+         (click)="onNext()"
+         [disabled]="!isLastStep()"
+         color="primary">
+        {{ 'SUBMIT' | translate }}
+      </button>
+    </div>
+
+    <div *ngIf="breakpoint === breakpoints.MOBILE"  class="mobile-navigation-item">
+      <button mat-flat-button
+              color="primary"
+              (click)="onBack()"
+              [disabled]="stepper.selectedIndex === 0">
+        <mat-icon>arrow_backward</mat-icon>
+        {{ 'BACK' | translate }}
+      </button>
+
+      <div style="margin: auto;">
+        <b>
+          <span *ngIf="stepper.selectedIndex === steps.SEARCH_OPTIONS">{{ 'SEARCH_OPTIONS' | translate }}</span>
+          <span *ngIf="stepper.selectedIndex === steps.PROCESSING_OPTIONS">{{ 'PROCESSING_OPTIONS' | translate }}</span>
+          <span *ngIf="stepper.selectedIndex === steps.REVIEW">{{ 'REVIEW' |  translate }}</span>
+        </b>
+      </div>
+
+      <button mat-flat-button
+              color="primary"
+              (click)="onNext()">
+        {{ isLastStep() ? ('SUBMIT' | translate ) : ('NEXT' | translate )}}
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
+  </div>
+</mat-dialog-actions>
