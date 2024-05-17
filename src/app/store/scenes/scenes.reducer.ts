@@ -432,7 +432,7 @@ function arrayEquals(a, b) {
       } else {
         return b.findIndex((b_value) =>
         {
-          return b_value?.id === value?.id
+          return b_value?.id === value?.id && b_value.metadata.date === value.metadata.date
         }) >= 0
       }
     }
