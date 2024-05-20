@@ -104,6 +104,8 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
           if (selected) {
             const selectedPoint = this.productToPoint(selected);
             this.setDataset(ChartDatasets.SELECTED, [selectedPoint]);
+          } else {
+            this.setDataset(ChartDatasets.SELECTED, [])
           }
 
           this.setDataset(ChartDatasets.PRODUCTS, points);

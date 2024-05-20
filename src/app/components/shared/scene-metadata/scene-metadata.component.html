@@ -210,6 +210,10 @@
   </li>
 
 
+  <li *ngIf="!!scene.metadata.ariaVersion">
+    <b> {{'ARIA_VERSION' | translate }} </b> • {{scene.metadata.ariaVersion}}
+  </li>
+
   <li *ngIf="dataset.source as source" class="detail-item-margin">
     <a *ngIf="source.url" [href]="source.url" target="_blank"> {{'DATA_COURTESY_OF' | translate}} {{ dataset.source.name }}</a>
     <span *ngIf="!source.url" class="faint-text"> {{'DATA_COURTESY_OF' | translate}} {{ dataset.source.name }}</span>
