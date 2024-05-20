@@ -19,7 +19,8 @@ import * as services from '@services';
 
 enum ProcessingQueueTab {
   SCENES = 'Scenes',
-  OPTIONS = 'Options'
+  OPTIONS = 'Options',
+  SIGNUP = 'Signup'
 }
 
 @Component({
@@ -66,6 +67,10 @@ export class ProcessingQueueComponent implements OnInit {
   public contentBottomAreaHeight = 0;
   public errorHeaderHeight = 0;
   public progress = null;
+
+
+  public userStatus = 'NOT_STARTED';
+  public isSignupSelected = false;
 
   constructor(
     public authService: services.AuthService,
@@ -144,6 +149,8 @@ export class ProcessingQueueComponent implements OnInit {
         this.user = user.user_id;
         this.isUnlimitedUser = user.quota.unlimited;
         this.remaining = user.quota.remaining;
+        this.userStatus = user.application_status;
+        this.userStatus = 'NOT_STARTED';
       }
     );
 
@@ -330,6 +337,8 @@ export class ProcessingQueueComponent implements OnInit {
     this.jobs = this.allJobs.filter(
       job => job.job_type.id === this.selectedJobTypeId
     );
+
+    this.isSignupSelected = false;
   }
 
   public onRemoveJob(job: models.QueuedHyp3Job): void {
@@ -430,5 +439,13 @@ export class ProcessingQueueComponent implements OnInit {
   private selectDefaultJobType(): void {
     this.selectedJobTypeId = !!this.hyp3JobTypesList[0] ?
       this.hyp3JobTypesList[0].id : null;
+      if(this.userStatus === 'NOT_STARTED' || this.userStatus === 'PENDING') {
+        this.isSignupSelected = true;
+        this.selectedJobTypeId = null;
+      }
+  }
+  public openSignup(): void {
+    this.isSignupSelected = true;
+    this.selectedJobTypeId = null;
   }
 }

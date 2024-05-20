@@ -24,6 +24,7 @@ export interface Hyp3JobSubmission {
 }
 
 export interface Hyp3User {
+  application_status: string;
   quota: Hyp3UserQuota;
   user_id: string;
   job_names: string[];

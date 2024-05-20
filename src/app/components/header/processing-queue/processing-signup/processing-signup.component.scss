@@ -1,0 +1,10 @@
+@import "asf-theme";
+.container {
+	@include themify($themes) {
+		color: themed('dark-primary-text');
+	}
+}
+.data-list b {
+	width: 120px;
+	display: inline-block;
+}

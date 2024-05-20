@@ -59,7 +59,14 @@
     </div>
 
     <ng-container *ngIf="breakpoint !== breakpoints.MOBILE;">
-
+      @if(userStatus === 'NOT_STARTED' || userStatus === 'PENDING') {
+        <button mat-flat-button
+        class="job-type--button" (click)="openSignup()"
+        [color]="isSignupSelected ? 'secondary' : 'primary'"
+        >
+          User Signup
+        </button>
+      }
       <ng-container *ngFor="let hyp3Job of jobTypesWithQueued">
         <button mat-flat-button
           class="job-type--button"
@@ -118,90 +125,94 @@
   (resized)="onResized()"
   class="mat-dialog-content"
   [class.dialog-content-mobile]="breakpoint === breakpoints.MOBILE">
-
-  <div class="content-block">
-    <div #errorHeader *ngIf="!isUserLoggedIn && !isUserLoading" class="w100 error-header">
-      <div style="padding-left: 10px;">
-        <b>{{ 'SIGN_IN_TO_PROCESS_DATA' |  translate }}</b>
-      </div>
-      <div>
-        <button (click)="onAccountButtonClicked()" color="primary" mat-flat-button>
-          {{ 'SIGN_IN' | translate }}
-          <mat-icon>account_circle</mat-icon>
-        </button>
-      </div>
-    </div>
-
-    <div #contentTopArea class="content-top-area">
-      <div class="jobs-detail">
-        <div *ngIf="selectedJobTypeId" style="margin-right: 10px;">
-          <p style="text-wrap: balance;">
-            {{ hyp3JobTypes[selectedJobTypeId].description | translate }}
-            <a target="_blank" [href]="hyp3JobTypes[selectedJobTypeId].infoUrl">[MORE]</a>
-          </p>
+  @if (!this.isSignupSelected) {
+    <div class="content-block">
+      <div #errorHeader *ngIf="!isUserLoggedIn && !isUserLoading" class="w100 error-header">
+        <div style="padding-left: 10px;">
+          <b>{{ 'SIGN_IN_TO_PROCESS_DATA' |  translate }}</b>
         </div>
-
-        <app-processing-options
-           *ngIf="selectedJobTypeId"
-           [selectedJobType]="hyp3JobTypes[selectedJobTypeId]">
-        </app-processing-options>
+        <div>
+          <button (click)="onAccountButtonClicked()" color="primary" mat-flat-button>
+            {{ 'SIGN_IN' | translate }}
+            <mat-icon>account_circle</mat-icon>
+          </button>
+        </div>
       </div>
-    </div>
-
-    <div #contentBottomArea class="content-bottom-area"
-         [style.height.px]="contentBottomAreaHeight"
-         [class.content-bottom-area-mobile]="breakpoint == breakpoints.MOBILE">
-      <div class="bottom-item">
-
-        <!-- PRODUCT LIST AREA STARTS HERE -->
-        <div class="mat-dialog-content-2">
-          <div class="jobs-dialog">
-            <div *ngIf="isUserLoggedIn && !isUnlimitedUser && !isUserLoading && allJobs.length > remaining " class="w100 error-header">
-              <div style="padding-left: 10px;">
-                <b>{{ 'TOO_MANY_JOBS_IN_QUEUE' |  translate }} </b>
+  
+      <div #contentTopArea class="content-top-area">
+        <div class="jobs-detail">
+          <div *ngIf="selectedJobTypeId" style="margin-right: 10px;">
+            <p style="text-wrap: balance;">
+              {{ hyp3JobTypes[selectedJobTypeId].description | translate }}
+              <a target="_blank" [href]="hyp3JobTypes[selectedJobTypeId].infoUrl">[MORE]</a>
+            </p>
+          </div>
+  
+          <app-processing-options
+             *ngIf="selectedJobTypeId"
+             [selectedJobType]="hyp3JobTypes[selectedJobTypeId]">
+          </app-processing-options>
+        </div>
+      </div>
+  
+      <div #contentBottomArea class="content-bottom-area"
+           [style.height.px]="contentBottomAreaHeight"
+           [class.content-bottom-area-mobile]="breakpoint == breakpoints.MOBILE">
+        <div class="bottom-item">
+  
+          <!-- PRODUCT LIST AREA STARTS HERE -->
+          <div class="mat-dialog-content-2">
+            <div class="jobs-dialog">
+              <div *ngIf="isUserLoggedIn && !isUnlimitedUser && !isUserLoading && allJobs.length > remaining " class="w100 error-header">
+                <div style="padding-left: 10px;">
+                  <b>{{ 'TOO_MANY_JOBS_IN_QUEUE' |  translate }} </b>
+                </div>
+                <div style="padding: 7px 10px;">
+                  <b>({{ allJobs.length - remaining }} extra job{{ (allJobs.length - remaining) === 1 ? '' : 's'  }})</b>
+                </div>
               </div>
-              <div style="padding: 7px 10px;">
-                <b>({{ allJobs.length - remaining }} extra job{{ (allJobs.length - remaining) === 1 ? '' : 's'  }})</b>
+  
+              <div *ngIf="isUserLoggedIn && !isUnlimitedUser && !isUserLoading && remaining === 0" class="w100 error-header">
+                <div style="padding-left: 10px;">
+                  <b>{{ 'NO_CREDITS_LEFT_THIS_MONTH' |  translate }}</b>
+                </div>
+                <div>
+                  <button (click)="onCloseDialog()" mat-flat-button>
+                    <mat-icon></mat-icon>
+                  </button>
+                </div>
               </div>
-            </div>
-
-            <div *ngIf="isUserLoggedIn && !isUnlimitedUser && !isUserLoading && remaining === 0" class="w100 error-header">
-              <div style="padding-left: 10px;">
-                <b>{{ 'NO_CREDITS_LEFT_THIS_MONTH' |  translate }}</b>
+  
+              <div *ngIf="breakpoint !== breakpoints.MOBILE" class="jobs-display--desktop">
+                <div class="jobs-list-panel">
+                  <app-processing-queue-jobs
+                     [jobs]="jobs"
+                     [costPerJob]="costPerJobByType[selectedJobTypeId]"
+                     [areJobsLoading]="areJobsLoading"
+                     (removeJob)="onRemoveJob($event)">
+                  </app-processing-queue-jobs>
+                </div>
               </div>
-              <div>
-                <button (click)="onCloseDialog()" mat-flat-button>
-                  <mat-icon></mat-icon>
-                </button>
-              </div>
-            </div>
-
-            <div *ngIf="breakpoint !== breakpoints.MOBILE" class="jobs-display--desktop">
-              <div class="jobs-list-panel">
-                <app-processing-queue-jobs
-                   [jobs]="jobs"
-                   [costPerJob]="costPerJobByType[selectedJobTypeId]"
-                   [areJobsLoading]="areJobsLoading"
-                   (removeJob)="onRemoveJob($event)">
-                </app-processing-queue-jobs>
-              </div>
-            </div>
-
-            <div *ngIf="breakpoint === breakpoints.MOBILE">
-              <div class="jobs-display--mobile">
-                <app-processing-queue-jobs
-                   [jobs]="jobs"
-                   [costPerJob]="costPerJobByType[selectedJobTypeId]"
-                   [areJobsLoading]="areJobsLoading"
-                   (removeJob)="onRemoveJob($event)">
-                </app-processing-queue-jobs>
+  
+              <div *ngIf="breakpoint === breakpoints.MOBILE">
+                <div class="jobs-display--mobile">
+                  <app-processing-queue-jobs
+                     [jobs]="jobs"
+                     [costPerJob]="costPerJobByType[selectedJobTypeId]"
+                     [areJobsLoading]="areJobsLoading"
+                     (removeJob)="onRemoveJob($event)">
+                  </app-processing-queue-jobs>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  }
+  @else {
+    <app-processing-signup></app-processing-signup>
+  }
 </mat-dialog-content>
 
 <mat-dialog-actions class="mat-dialog-actions">
