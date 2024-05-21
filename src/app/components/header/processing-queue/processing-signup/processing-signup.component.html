@@ -1,4 +1,5 @@
-<div style="display: flex; justify-content: space-between; align-items: start; height: 100%;" class="container">
+<form style="display: flex; justify-content: space-between; align-items: start; height: 100%;" class="container" [formGroup]="signupForm">
+
 	<div style="display: flex; flex-direction: column; margin: 15px; max-width: 50%;">
 		<h1>Request On Demand Access</h1>
 		<p>Thank you for your interest in ASF's On Demand processing service.
@@ -23,10 +24,10 @@
 			<li><b>Name:</b> John Doe</li>
 			<li><b>Username:</b> username</li>
 			<li><b>Email Address:</b> user&#64;example.com</li>
-			<li><b>Organization:</b> Example Organization/li>
+			<li><b>Organization:</b> Example Organization<li>
 			<li><b>Country:</b> Example Country</li>
 		</ul>
-		<mat-checkbox color="primary">Yes, my Earthdata Login profile information is correct and I will monitor
+		<mat-checkbox color="primary" formControlName="infoConfirmation">Yes, my Earthdata Login profile information is correct and I will monitor
 			user&#64;example.com for status updates.</mat-checkbox>
 	</div>
 	<div style="display: flex; flex-direction: column; max-width: 50%; margin: 15px;">
@@ -74,14 +75,10 @@
 			</mat-expansion-panel>
 		</mat-accordion>
 		<br />
-		<form>
 			<mat-form-field class="example-full-width" style="width:100%;">
 				<mat-label>How do you want to use our service?</mat-label>
-				<textarea matInput placeholder="Ex. I am a..." style="height: 150px"></textarea>
+				<textarea matInput placeholder="Ex. I am a..." style="height: 150px;" formControlName="useCase"></textarea>
 			</mat-form-field>
-		</form>
-		<button mat-flat-button color="primary">Register</button>
-
+		<button mat-flat-button color="primary" (click)="onRegisterPressed()" [disabled]="signupForm.invalid">Register</button>
 	</div>
-
-</div>
+</form>

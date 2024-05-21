@@ -69,7 +69,7 @@ export class ProcessingQueueComponent implements OnInit {
   public progress = null;
 
 
-  public userStatus = 'NOT_STARTED';
+  public userStatus = '';
   public isSignupSelected = false;
 
   constructor(
@@ -151,6 +151,10 @@ export class ProcessingQueueComponent implements OnInit {
         this.remaining = user.quota.remaining;
         this.userStatus = user.application_status;
         this.userStatus = 'NOT_STARTED';
+        if(this.userStatus === 'NOT_STARTED' || this.userStatus === 'PENDING') {
+          this.isSignupSelected = true;
+          this.selectedJobTypeId = null;
+        }
       }
     );
 
@@ -439,10 +443,7 @@ export class ProcessingQueueComponent implements OnInit {
   private selectDefaultJobType(): void {
     this.selectedJobTypeId = !!this.hyp3JobTypesList[0] ?
       this.hyp3JobTypesList[0].id : null;
-      if(this.userStatus === 'NOT_STARTED' || this.userStatus === 'PENDING') {
-        this.isSignupSelected = true;
-        this.selectedJobTypeId = null;
-      }
+
   }
   public openSignup(): void {
     this.isSignupSelected = true;
