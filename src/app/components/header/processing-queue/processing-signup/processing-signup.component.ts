@@ -38,7 +38,9 @@ export class ProcessingSignupComponent implements OnInit {
   ngOnInit(): void {
     this.store$.select(userStore.getUserAuth).subscribe(userAuth => {
       this.userService.getUserInfo$(userAuth).subscribe((data: EarthdataUserInfo) => {
-        this.userInfo = data;
+        if(data) {
+          this.userInfo = data;
+        }
       })
     })
     this.signupForm.statusChanges.subscribe(_formValidity => {
