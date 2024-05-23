@@ -1,10 +1,40 @@
 @import "asf-theme";
 .container {
-	@include themify($themes) {
-		color: themed('dark-primary-text');
-	}
+  @include themify($themes) {
+    color: themed("dark-primary-text");
+  }
 }
 .data-list b {
-	width: 120px;
-	display: inline-block;
+  width: 120px;
+  display: inline-block;
+}
+.list-item {
+  word-wrap: break-word;
+  overflow: visible;
+  height: auto;
+}
+.list-item-content {
+  overflow: visible;
+  word-wrap: normal;
+  white-space: normal;
+  cursor: text;
+}
+.container {
+  display: flex;
+  justify-content: space-around;
+  align-items: start;
+  height: 100%;
+  flex-wrap: wrap;
+}
+.form-submit-button-container {
+  width: 100%;
+}
+.form-submit-button {
+  width: 100%;
+}
+.form-column {
+  display: flex;
+  flex-direction: column;
+  max-width: 47%;
+  margin: 15px;
 }
