@@ -1,7 +1,7 @@
 <form style="display: flex; justify-content: space-between; align-items: start; height: 100%;" class="container" [formGroup]="signupForm">
 
 	<div style="display: flex; flex-direction: column; margin: 15px; max-width: 50%;">
-		<h1>Request On Demand Access</h1>
+		<!-- <h1>Request On Demand Access</h1> -->
 		<p>Thank you for your interest in ASF's On Demand processing service.
 
 			This service allows users to submit Sentinel-1 acquisitions for conversion to analysis-ready products,
@@ -21,11 +21,11 @@
 		If any of this information is incorrect, please update your Earthdata Login profile and then refresh this
 		page to view your updated information.
 		<ul class="data-list">
-			<li><b>Name:</b> John Doe</li>
-			<li><b>Username:</b> username</li>
-			<li><b>Email Address:</b> user&#64;example.com</li>
-			<li><b>Organization:</b> Example Organization<li>
-			<li><b>Country:</b> Example Country</li>
+			<li><b>Name:</b> {{userInfo.first_name}} {{userInfo.last_name}}</li>
+			<li><b>Username:</b> {{userInfo.uid}}</li>
+			<li><b>Email Address:</b> {{userInfo.email_address}}</li>
+			<li><b>Organization:</b> {{userInfo.organization}}<li>
+			<li><b>Country:</b> {{userInfo.country}}</li>
 		</ul>
 		<mat-checkbox color="primary" formControlName="infoConfirmation">Yes, my Earthdata Login profile information is correct and I will monitor
 			user&#64;example.com for status updates.</mat-checkbox>
