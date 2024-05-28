@@ -78,8 +78,12 @@
 				<mat-label>How do you want to use our service?</mat-label>
 				<textarea matInput placeholder="Ex. I am a..." style="height: 150px;" formControlName="useCase"></textarea>
 			</mat-form-field>
+			<mat-form-field style="width:100%;">
+				<mat-label>Have an access code?</mat-label>
+				<textarea matInput placeholder="Ex. I am a..." style="height: 50px;" formControlName="accessCode"></textarea>
+			</mat-form-field>
 			<div [matTooltip]="submitButtonTooltip" class="form-submit-button-container">
-				<button mat-flat-button color="primary" (click)="onRegisterPressed()" [disabled]="signupForm.invalid" class="form-submit-button">Register</button>
+				<button mat-flat-button color="primary" (click)="onRegisterPressed()" [disabled]="signupForm.invalid" class="form-submit-button">{{submitButtonText}}</button>
 			</div>
 	</div>
 </form>

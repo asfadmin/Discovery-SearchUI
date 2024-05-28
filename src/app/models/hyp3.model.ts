@@ -28,6 +28,7 @@ export interface Hyp3User {
   quota: Hyp3UserQuota;
   user_id: string;
   job_names: string[];
+  use_case: string;
 }
 
 export interface Hyp3UserQuota {
