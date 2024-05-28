@@ -76,7 +76,6 @@ export class OnDemandAddMenuComponent implements OnInit {
     this.subs.add(
       this.store$.select(hyp3Store.getHyp3User).subscribe(profile => {
         this.userStatus = profile.application_status;
-        this.userStatus = 'NOT_STARTED';
       })
     )
 
