@@ -185,6 +185,15 @@ export class Hyp3Service {
     return this.http.post(submitJobUrl, body, { withCredentials: true });
   }
 
+  public submitSignupForm$(form) {
+    const signupFormURL = `${this.apiUrl}/user`;
+    const body = {
+      use_case: form.useCase,
+      access_code: form.accessCode
+    };
+    return this.http.patch(signupFormURL, body, { withCredentials: true });
+  }
+
   public getCosts$() {
     const costsUrl = `${this.apiUrl}/costs`;
 

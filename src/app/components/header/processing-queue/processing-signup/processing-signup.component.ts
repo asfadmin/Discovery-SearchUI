@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { UserDataService } from '@services';
+import { Hyp3Service, NotificationService, UserDataService } from '@services';
 import { EarthdataUserInfo, Hyp3User } from '@models';
 
 import * as userStore from '@store/user';
@@ -36,6 +36,8 @@ export class ProcessingSignupComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserDataService,
+    private hyp3Service: Hyp3Service,
+    private notificationService: NotificationService,
     private store$: Store,
   ) { }
 
@@ -76,6 +78,11 @@ export class ProcessingSignupComponent implements OnInit {
 
   public onRegisterPressed() {
     console.log(this.signupForm.value)
+    this.hyp3Service.submitSignupForm$(this.signupForm.value).subscribe((response) => {
+      console.log(response)
+      this.notificationService.info('Submitted Form')
+      this.store$.dispatch(new hyp3Store.LoadUser())
+    });
   }
 
 }
