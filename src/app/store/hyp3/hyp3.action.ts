@@ -22,6 +22,8 @@ export enum Hyp3ActionType {
   ERROR_JOB_SUBMISSION = '[Hyp3] Error Job Submission',
 
   CLEAR_PROCESSING_OPTIONS = '[Hyp3] Clear Processing Options',
+  SET_DEBUG_STATUS = '[Hyp3] Set debug status',
+
 }
 
 export class LoadJobs implements Action {
@@ -72,7 +74,11 @@ export class ErrorJobSubmission implements Action {
 export class LoadUser implements Action {
   public readonly type = Hyp3ActionType.LOAD_USER;
 }
+export class SetDebugStatus implements Action {
+  public readonly type = Hyp3ActionType.SET_DEBUG_STATUS;
 
+  constructor(public payload: string) {}
+}
 export class SetUser implements Action {
   public readonly type = Hyp3ActionType.SET_USER;
 
@@ -107,4 +113,5 @@ export type Hyp3Actions =
   | SetOnDemandUserID
   | SubmitJob
   | SuccessfulJobSubmission
-  | ErrorJobSubmission;
+  | ErrorJobSubmission
+  | SetDebugStatus;

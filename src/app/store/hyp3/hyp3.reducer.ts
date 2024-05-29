@@ -18,6 +18,7 @@ export interface Hyp3State {
   projectName: string;
   userId: string;
   costs: Hyp3CostsByJobType;
+  debug_status: string;
 }
 
 const initState: Hyp3State = {
@@ -28,6 +29,7 @@ const initState: Hyp3State = {
   submittingJobName: null,
   processingOptions: hyp3DefaultJobOptions,
   projectName: '',
+  debug_status: '',
   userId: '',
   costs: {
     "AUTORIFT": {
@@ -135,10 +137,23 @@ export function hyp3Reducer(state = initState, action: Hyp3Actions): Hyp3State {
       };
     }
 
-    case Hyp3ActionType.SET_USER: {
+    case Hyp3ActionType.SET_DEBUG_STATUS: {
       return {
         ...state,
-        user: action.payload,
+        debug_status: action.payload
+      }
+    }
+
+    case Hyp3ActionType.SET_USER: {
+      let temp_user = {
+        ...action.payload
+      }
+      if(state.debug_status !== '') {
+        temp_user.application_status = state.debug_status
+      }
+      return {
+        ...state,
+        user: temp_user,
         isUserLoading: false
       };
     }
