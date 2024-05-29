@@ -23,7 +23,7 @@ export class NotificationService {
     // toastComponent: ToastrMessageComponent
   };
 
-  public demandQueue(added: boolean = true, count: number = 0, job_type: string, duplicates = 0) {
+  public demandQueue(added: boolean = true, count: number = 0, job_type: string, duplicates = 0, application_status='') {
     let headerText: string;
     let infoText = '';
     const action = added ? 'added to' : 'removed from';
@@ -42,9 +42,15 @@ export class NotificationService {
       if (duplicates && added) {
         infoText += ` ${duplicates} duplicate ${duplicates > 1 ? 'jobs' : 'job'} not ${action} the queue.`;
       }
+      if(application_status === 'NOT_STARTED') {
+        infoText += ' Hyp3 Account still needs to be registered.'
+      }
       this.info(infoText, headerText);
     } else {
       infoText = `${job_type === '' ? '' : job_type + ' '}job ${action} the On Demand Queue.`;
+      if(application_status === 'NOT_STARTED') {
+        infoText += ' Hyp3 Account still needs to be registered.'
+      }
       this.info(infoText, `Job ${action} queue`);
     }
   }
