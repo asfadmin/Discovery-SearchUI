@@ -12,6 +12,8 @@ import { take } from 'rxjs/operators';
 })
 export class NotificationService {
 
+  private shownSignupMessage = false;
+
   constructor(
     private toastr: ToastrService,
     private store$: Store<AppState>,
@@ -42,16 +44,21 @@ export class NotificationService {
       if (duplicates && added) {
         infoText += ` ${duplicates} duplicate ${duplicates > 1 ? 'jobs' : 'job'} not ${action} the queue.`;
       }
-      if(application_status === 'NOT_STARTED') {
-        infoText += ' Hyp3 Account still needs to be registered.'
-      }
+
       this.info(infoText, headerText);
     } else {
       infoText = `${job_type === '' ? '' : job_type + ' '}job ${action} the On Demand Queue.`;
-      if(application_status === 'NOT_STARTED') {
-        infoText += ' Hyp3 Account still needs to be registered.'
-      }
+
       this.info(infoText, `Job ${action} queue`);
+    }
+    if(application_status === 'NOT_STARTED' && !this.shownSignupMessage) {
+      this.shownSignupMessage = true;
+      this.error('Click here to open registration form', 'Not registered with hyp3 service', {
+        disableTimeOut: true,
+        closeButton: true
+      }).onTap.subscribe(()=> {
+        this.store$.dispatch(new uiStore.SetIsOnDemandQueueOpen(true))
+      })
     }
   }
 
