@@ -52,8 +52,9 @@ export interface FiltersState {
   fullBurstIDs: null | string[];
   
   operaBurstIDs: null | string[];
+  operaV3Only: boolean;
   useCalibrationData: boolean; // used to toggle OPERA-S1 Calval (calibration) datasets
-
+  
   groupID: null | string;
 }
 
@@ -128,6 +129,7 @@ export const initState: FiltersState = {
   fullBurstIDs: [],
 
   operaBurstIDs: [],
+  operaV3Only: false,
   useCalibrationData: false,
 
   groupID: null
@@ -767,6 +769,12 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         groupID: action.payload
       }
     }
+    case FiltersActionType.SET_OPERA_V3_ONLY: {
+      return {
+        ...state,
+        operaV3Only: action.payload
+      }
+    }
     default: {
       return state;
     }
@@ -1065,4 +1073,9 @@ export const getUseCalibrationData = createSelector(
 export const getGroupID = createSelector(
   getFiltersState,
   (state: FiltersState) => state.groupID
+)
+
+export const getOperaV3Only = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.operaV3Only
 )

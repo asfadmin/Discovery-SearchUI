@@ -66,6 +66,13 @@ export class SearchParamsService {
       ({dataset: models.opera_s1.calibrationDatasets}) : ({}))
   )
 
+  private operaV3OnlyParams$ = this.store$.select(filterStore.getOperaV3Only).pipe(
+    withLatestFrom(this.store$.select(filterStore.getSelectedDatasetId)),
+    map(([operaV3Only, dataset]) =>
+      dataset === models.opera_s1.id && operaV3Only ?
+      ({collections: ["C2777443834-ASF", "C1259976861-ASF"].join(',')}) : ({}))
+  )
+
   private groupID$ = this.store$.select(filterStore.getGroupID).pipe(
     map(groupid => ({
       groupid
@@ -215,6 +222,7 @@ export class SearchParamsService {
     this.burstParams$,
     this.operaBurstParams$,
     this.operaCalibrationParam$,
+    this.operaV3OnlyParams$,
     this.groupID$]
   ).pipe(
     map((params: any[]) => params

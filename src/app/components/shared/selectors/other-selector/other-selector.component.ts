@@ -100,6 +100,10 @@ export class OtherSelectorComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new filtersStore.setGroupID(this.groupID));
   }
 
+  // public onToggleV3(value: boolean) {
+  //   this.store$.dispatch(new filtersStore)
+  // }
+
   ngOnDestroy() {
     this.subs.unsubscribe();
   }

@@ -93,6 +93,7 @@ export enum FiltersActionType {
   SET_FULL_BURST = '[Filters] Set Full Burst IDs',
   
   SET_OPERA_BURST_ID = '[Filters] Set Full OPERA S1 Burst IDs',
+  SET_OPERA_V3_ONLY = '[Filters] Set OPERA v3 visible only',
   SET_INCLUDE_CALIBRATION_DATA = '[Filters] Set use calbiration data in OPERA-S1 search',
   SET_GROUP_ID = '[Filters] Set Sentinel-1 Group ID'
 }
@@ -454,6 +455,12 @@ export class setGroupID implements Action {
   constructor(public payload: string) {} 
 }
 
+export class setOperaV3Only implements Action {
+  public readonly type = FiltersActionType.SET_OPERA_V3_ONLY;
+
+  constructor(public payload: boolean) {}
+}
+
 
 
 export type FiltersActions =
@@ -518,5 +525,6 @@ export type FiltersActions =
   | ClearHyp3ProductTypes
   | setFullBurst
   | setOperaBurstID
+  | setOperaV3Only
   | setUseCalibrationData
   | setGroupID;

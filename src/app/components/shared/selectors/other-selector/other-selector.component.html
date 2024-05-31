@@ -69,21 +69,22 @@
     <mat-select
       (selectionChange)="onNewSubtypeSelected($event.value)"
       [(ngModel)]="subtypes"
-      [disabled]="!prop.isRelevant(p.SUBTYPE)"
+      [disabled]="!prop.isRelevant(p.SUBTYPE, dataset)"
       placeholder="{{ 'SUBTYPE' | translate }}" multiple>
       <mat-option *ngFor="let subtype of dataset.subtypes" [value]="subtype">
         {{ subtype.apiValue }}
       </mat-option>
     </mat-select>
 
-    <mat-hint *ngIf="prop.isRelevant(p.SUBTYPE)" align="start">
+    <mat-hint *ngIf="prop.isRelevant(p.SUBTYPE, dataset)" align="start">
       {{ subtypes?.length || 0 }}/{{ dataset.subtypes?.length }}
       {{ 'SUBTYPES_SELECTED' | translate }}
     </mat-hint>
-    <mat-hint *ngIf="!prop.isRelevant(p.SUBTYPE)" align="start">
+    <mat-hint *ngIf="!prop.isRelevant(p.SUBTYPE, dataset)" align="start">
       {{ 'NO_SUBTYPES_TO_SELECT' | translate }}
     </mat-hint>
   </mat-form-field>
+
 
   <mat-form-field *ngIf="['SENTINEL-1', 'SENTINEL-1 BURSTS', 'OPERA-S1'].includes(dataset.id)">
     <input matInput
@@ -103,5 +104,10 @@
     </mat-hint> -->
   </mat-form-field>
 
+
   <app-opera-calibration-data-selector *ngIf="dataset.id === 'OPERA-S1'"></app-opera-calibration-data-selector>
 </div>
+
+<mat-slide-toggle *ngIf="dataset.id === 'SENTINEL-1 INTERFEROGRAM (BETA)'">
+  V3+ Only  
+</mat-slide-toggle>
