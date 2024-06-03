@@ -85,7 +85,7 @@
 				<input matInput style="height: 50px;" formControlName="accessCode" type="text"/>
 			</mat-form-field>
 			<div [matTooltip]="submitButtonTooltip" class="form-submit-button-container">
-				<button mat-flat-button color="primary" (click)="onRegisterPressed()" [disabled]="signupForm.invalid || hyp3User.application_status === 'PENDING'" class="form-submit-button">{{submitButtonText}}</button>
+				<button mat-flat-button color="primary" (click)="onRegisterPressed()" [disabled]="signupForm.invalid" class="form-submit-button">{{submitButtonText}}</button>
 			</div>
 	</div>
 </form>

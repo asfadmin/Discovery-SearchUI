@@ -53,11 +53,10 @@ export class ProcessingSignupComponent implements OnInit {
       this.hyp3User = user;
       console.log(this.hyp3User)
       if (this.hyp3User.application_status === 'PENDING') {
-        this.signupForm.disable()
         this.signupForm.controls.useCase.setValue(user.use_case);
         this.signupForm.controls.infoConfirmation.setValue(true);
         this.submitButtonTooltip = ''
-        this.submitButtonText = 'Awaiting Approval'
+        this.submitButtonText = 'Resubmit'
       } else {
         this.submitButtonText = 'Register'
       }
