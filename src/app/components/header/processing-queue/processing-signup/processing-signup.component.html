@@ -78,9 +78,11 @@
 				<mat-label>How do you want to use our service?</mat-label>
 				<textarea matInput placeholder="Ex. I am a..." style="height: 150px;" formControlName="useCase"></textarea>
 			</mat-form-field>
+			<h4 style="margin-bottom: 5px">Workshop/Tutorial Participant?</h4>
+			<span>If you are attending a workshop or tutorial where the instructor has provided you with an access code</span>
 			<mat-form-field style="width:100%;">
-				<mat-label>Have an access code?</mat-label>
-				<textarea matInput placeholder="Ex. I am a..." style="height: 50px;" formControlName="accessCode"></textarea>
+				<mat-label>Enter access code (optional)</mat-label>
+				<input matInput style="height: 50px;" formControlName="accessCode" type="text"/>
 			</mat-form-field>
 			<div [matTooltip]="submitButtonTooltip" class="form-submit-button-container">
 				<button mat-flat-button color="primary" (click)="onRegisterPressed()" [disabled]="signupForm.invalid || hyp3User.application_status === 'PENDING'" class="form-submit-button">{{submitButtonText}}</button>
