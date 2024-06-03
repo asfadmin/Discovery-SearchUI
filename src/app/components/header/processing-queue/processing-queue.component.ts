@@ -57,7 +57,7 @@ export class ProcessingQueueComponent implements OnInit {
   public hyp3JobTypes = models.hyp3JobTypes;
   public hyp3JobTypesList: models.Hyp3JobType[];
   public selectedJobTypeId: string | null = null;
-  public jobTypesWithQueued = [];
+  public jobTypesWithQueued: models.JobTypesWithQueued[] = [];
   public costPerJobByType = {};
   public totalCreditCost = 0;
 
@@ -120,7 +120,7 @@ export class ProcessingQueueComponent implements OnInit {
         const jobsFiltered = this.allJobs.filter(
           job => job.job_type.id === jobType.id
         );
-
+        console.log(jobsFiltered);
         return {
           jobType: jobType,
           selected: true,
@@ -198,7 +198,11 @@ export class ProcessingQueueComponent implements OnInit {
       height: '600px',
       maxWidth: '350px',
       maxHeight: '600px',
-      data: this.jobTypesWithQueued
+      data: {
+        jobTypesWithQueued: this.jobTypesWithQueued,
+        projectName: this.projectName,
+        processingOptions: this.processingOptions
+      }
     });
 
     confirmationRef.afterClosed().subscribe(

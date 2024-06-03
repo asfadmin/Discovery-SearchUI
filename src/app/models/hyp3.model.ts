@@ -8,6 +8,20 @@ export interface QueuedHyp3Job {
   job_type: Hyp3JobType;
 }
 
+export interface JobTypesWithQueued {
+  jobType: Hyp3JobType,
+  selected: boolean,
+  jobs: QueuedHyp3Job[],
+  creditTotal: number,
+}
+
+export interface ConfirmationDialogData {
+  jobTypesWithQueued: JobTypesWithQueued[];
+  projectName: string;
+  processingOptions: Hyp3ProcessingOptions
+  validateOnly: boolean;
+}
+
 export interface Hyp3JobWithScene {
   job: Hyp3Job;
   scene: CMRProduct;

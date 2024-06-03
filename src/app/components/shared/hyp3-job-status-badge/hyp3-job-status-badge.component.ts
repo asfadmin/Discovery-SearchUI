@@ -81,7 +81,8 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
       data: [{
         jobType,
         selected: true,
-        jobs
+        jobs,
+        creditTotal: 10
       }]
     });
 
