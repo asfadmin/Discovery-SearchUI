@@ -21,6 +21,7 @@ import { PipesModule } from '@pipes';
 import { ProcessingQueueComponent } from './processing-queue.component';
 import { ProcessingQueueJobsModule } from './processing-queue-jobs';
 import { ProcessingOptionsModule } from './processing-options';
+import { ProcessingSignupModule } from './processing-signup';
 import { MatDialogModule } from '@angular/material/dialog';
 import { QueueSubmitComponent } from './queue-submit/queue-submit.component';
 import { ResizableModule } from 'angular-resizable-element';
@@ -38,7 +39,7 @@ import { SharedModule } from '@shared';
   declarations: [
     ProcessingQueueComponent,
     QueueSubmitComponent,
-    ConfirmationComponent
+    ConfirmationComponent,
   ],
     imports: [
         CommonModule,
@@ -56,6 +57,7 @@ import { SharedModule } from '@shared';
         ProjectNameSelectorModule,
         ProcessingQueueJobsModule,
         ProcessingOptionsModule,
+        ProcessingSignupModule,
         MatDialogModule,
         ResizableModule,
         ResizedEventModule,

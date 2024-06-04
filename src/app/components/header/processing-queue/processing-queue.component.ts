@@ -8,6 +8,7 @@ import { AppState } from '@store';
 import moment from 'moment';
 import { of, from, combineLatest } from 'rxjs';
 import { tap, catchError, delay, concatMap, finalize } from 'rxjs/operators';
+import { ApplicationStatus } from '@models';
 
 import * as queueStore from '@store/queue';
 import * as hyp3Store from '@store/hyp3';
@@ -19,7 +20,8 @@ import * as services from '@services';
 
 enum ProcessingQueueTab {
   SCENES = 'Scenes',
-  OPTIONS = 'Options'
+  OPTIONS = 'Options',
+  SIGNUP = 'Signup'
 }
 
 @Component({
@@ -28,6 +30,8 @@ enum ProcessingQueueTab {
   styleUrls: ['./processing-queue.component.scss']
 })
 export class ProcessingQueueComponent implements OnInit {
+  readonly ApplicationStatus = ApplicationStatus;
+
   @ViewChild('contentArea') contentAreaRef: ElementRef;
   @ViewChild('contentTopArea') topRef: ElementRef;
   @ViewChild('contentBottomArea') bottomRef: ElementRef;
@@ -66,6 +70,10 @@ export class ProcessingQueueComponent implements OnInit {
   public contentBottomAreaHeight = 0;
   public errorHeaderHeight = 0;
   public progress = null;
+
+
+  public userStatus = '';
+  public isSignupSelected = false;
 
   constructor(
     public authService: services.AuthService,
@@ -144,6 +152,14 @@ export class ProcessingQueueComponent implements OnInit {
         this.user = user.user_id;
         this.isUnlimitedUser = user.quota.unlimited;
         this.remaining = user.quota.remaining;
+        this.userStatus = user.application_status;
+        if(this.userStatus === ApplicationStatus.NOT_STARTED || this.userStatus === ApplicationStatus.PENDING || this.userStatus === ApplicationStatus.REJECTED) {
+          this.isSignupSelected = true;
+          this.selectedJobTypeId = null;
+        } else if(this.isSignupSelected && this.userStatus === ApplicationStatus.APPROVED) {
+          this.isSignupSelected = false;
+          this.selectDefaultJobType();
+        }
       }
     );
 
@@ -330,6 +346,8 @@ export class ProcessingQueueComponent implements OnInit {
     this.jobs = this.allJobs.filter(
       job => job.job_type.id === this.selectedJobTypeId
     );
+
+    this.isSignupSelected = false;
   }
 
   public onRemoveJob(job: models.QueuedHyp3Job): void {
@@ -430,5 +448,10 @@ export class ProcessingQueueComponent implements OnInit {
   private selectDefaultJobType(): void {
     this.selectedJobTypeId = !!this.hyp3JobTypesList[0] ?
       this.hyp3JobTypesList[0].id : null;
+
+  }
+  public openSignup(): void {
+    this.isSignupSelected = true;
+    this.selectedJobTypeId = null;
   }
 }
