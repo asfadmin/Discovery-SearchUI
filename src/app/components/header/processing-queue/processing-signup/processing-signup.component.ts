@@ -75,9 +75,7 @@ export class ProcessingSignupComponent implements OnInit {
   }
 
   public onRegisterPressed() {
-    console.log(this.signupForm.value)
-    this.hyp3Service.submitSignupForm$(this.signupForm.value).subscribe((response) => {
-      console.log(response);
+    this.hyp3Service.submitSignupForm$(this.signupForm.value).subscribe((_response) => {
       this.notificationService.info('Submitted Form');
       this.store$.dispatch(new hyp3Store.LoadUser());
     }, (error) => {

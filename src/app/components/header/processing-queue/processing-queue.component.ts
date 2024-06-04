@@ -153,6 +153,9 @@ export class ProcessingQueueComponent implements OnInit {
         if(this.userStatus === 'NOT_STARTED' || this.userStatus === 'PENDING' || this.userStatus === 'REJECTED') {
           this.isSignupSelected = true;
           this.selectedJobTypeId = null;
+        } else if(this.isSignupSelected && this.userStatus === 'APPROVED') {
+          this.isSignupSelected = false;
+          this.selectDefaultJobType();
         }
       }
     );
