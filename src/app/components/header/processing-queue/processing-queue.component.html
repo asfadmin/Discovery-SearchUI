@@ -294,7 +294,8 @@
            allJobs.length === 0 ||
            !isUserLoggedIn ||
            userStatus === 'NOT_STARTED' ||
-           userStatus === 'PENDING'
+           userStatus === 'PENDING' ||
+           userStatus === 'REJECTED'
          )" [class.mini-button]="breakpoint == breakpoints.MOBILE" mat-flat-button color="primary"
         class="footer-submit-button">
         <span *ngIf="!isQueueSubmitProcessing">

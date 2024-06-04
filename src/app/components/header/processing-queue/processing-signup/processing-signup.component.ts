@@ -51,24 +51,23 @@ export class ProcessingSignupComponent implements OnInit {
     })
     this.store$.select(hyp3Store.getHyp3User).subscribe(user => {
       this.hyp3User = user;
-      console.log(this.hyp3User)
       if (this.hyp3User.application_status === 'PENDING') {
         this.signupForm.controls.useCase.setValue(user.use_case);
         this.signupForm.controls.infoConfirmation.setValue(true);
-        this.submitButtonTooltip = ''
-        this.submitButtonText = 'Resubmit'
+        this.submitButtonTooltip = '';
+        this.submitButtonText = 'Resubmit';
       } else {
-        this.submitButtonText = 'Register'
+        this.submitButtonText = 'Register';
       }
     }
     )
     this.signupForm.statusChanges.subscribe(_formValidity => {
       if (!this.signupForm.controls.infoConfirmation.valid && !this.signupForm.controls.useCase.valid) {
-        this.submitButtonTooltip = 'Must confirm user information as well as write use case.'
+        this.submitButtonTooltip = 'Must confirm user information as well as write use case.';
       } else if (!this.signupForm.controls.infoConfirmation.valid) {
-        this.submitButtonTooltip = 'Must confirm user information.'
+        this.submitButtonTooltip = 'Must confirm user information.';
       } else if (!this.signupForm.controls.useCase.valid) {
-        this.submitButtonTooltip = 'Must write use case.'
+        this.submitButtonTooltip = 'Must write use case.';
       } else {
         this.submitButtonTooltip = '';
       }
