@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { Hyp3Job, Hyp3User, Hyp3ProcessingOptions, Hyp3Costs } from '@models';
+import { Hyp3Job, Hyp3User, Hyp3ProcessingOptions, Hyp3Costs, ApplicationStatus } from '@models';
 
 export enum Hyp3ActionType {
   LOAD_JOBS = '[Hyp3] Load Jobs',
@@ -77,7 +77,7 @@ export class LoadUser implements Action {
 export class SetDebugStatus implements Action {
   public readonly type = Hyp3ActionType.SET_DEBUG_STATUS;
 
-  constructor(public payload: string) {}
+  constructor(public payload: ApplicationStatus) {}
 }
 export class SetUser implements Action {
   public readonly type = Hyp3ActionType.SET_USER;

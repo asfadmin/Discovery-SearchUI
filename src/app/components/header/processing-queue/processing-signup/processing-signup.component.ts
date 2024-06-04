@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Hyp3Service, NotificationService, UserDataService } from '@services';
-import { EarthdataUserInfo, Hyp3User } from '@models';
+import { EarthdataUserInfo, Hyp3User, ApplicationStatus } from '@models';
 
 import * as userStore from '@store/user';
 import * as hyp3Store from '@store/hyp3';
@@ -51,7 +51,7 @@ export class ProcessingSignupComponent implements OnInit {
     })
     this.store$.select(hyp3Store.getHyp3User).subscribe(user => {
       this.hyp3User = user;
-      if (this.hyp3User.application_status === 'PENDING') {
+      if (this.hyp3User.application_status === ApplicationStatus.PENDING) {
         this.signupForm.controls.useCase.setValue(user.use_case);
         this.signupForm.controls.infoConfirmation.setValue(true);
         this.submitButtonTooltip = '';

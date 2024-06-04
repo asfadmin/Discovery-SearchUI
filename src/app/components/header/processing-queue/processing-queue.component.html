@@ -183,7 +183,7 @@
   </div>
   }
   @else {
-    @if (this.userStatus === 'REJECTED') {
+    @if (this.userStatus === this.ApplicationStatus.REJECTED) {
       <div style="width: 100%; height: 100%; display: grid; place-items: center;"><div style="display: flex; flex-direction: column; align-items: center;"><h3>Request for access has been rejected.</h3><a href="https://hyp3-docs.asf.alaska.edu/using/requesting_access" target="_blank">Learn more</a></div></div>
     } @else {
       <app-processing-signup></app-processing-signup>

@@ -8,6 +8,7 @@ import { AppState } from '@store';
 import moment from 'moment';
 import { of, from, combineLatest } from 'rxjs';
 import { tap, catchError, delay, concatMap, finalize } from 'rxjs/operators';
+import { ApplicationStatus } from '@models';
 
 import * as queueStore from '@store/queue';
 import * as hyp3Store from '@store/hyp3';
@@ -29,6 +30,8 @@ enum ProcessingQueueTab {
   styleUrls: ['./processing-queue.component.scss']
 })
 export class ProcessingQueueComponent implements OnInit {
+  readonly ApplicationStatus = ApplicationStatus;
+
   @ViewChild('contentArea') contentAreaRef: ElementRef;
   @ViewChild('contentTopArea') topRef: ElementRef;
   @ViewChild('contentBottomArea') bottomRef: ElementRef;
@@ -150,10 +153,10 @@ export class ProcessingQueueComponent implements OnInit {
         this.isUnlimitedUser = user.quota.unlimited;
         this.remaining = user.quota.remaining;
         this.userStatus = user.application_status;
-        if(this.userStatus === 'NOT_STARTED' || this.userStatus === 'PENDING' || this.userStatus === 'REJECTED') {
+        if(this.userStatus === ApplicationStatus.NOT_STARTED || this.userStatus === ApplicationStatus.PENDING || this.userStatus === ApplicationStatus.REJECTED) {
           this.isSignupSelected = true;
           this.selectedJobTypeId = null;
-        } else if(this.isSignupSelected && this.userStatus === 'APPROVED') {
+        } else if(this.isSignupSelected && this.userStatus === ApplicationStatus.APPROVED) {
           this.isSignupSelected = false;
           this.selectDefaultJobType();
         }

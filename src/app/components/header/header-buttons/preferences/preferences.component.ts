@@ -189,7 +189,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
       this.setTheme(`theme-${this.currentTheme}`);
     }
   }
-  public onDebugStatus(status: string) {
+  public onDebugStatus(status: models.ApplicationStatus) {
     this.hyp3DebugStatus = status;
     this.store$.dispatch(new hyp3Store.SetDebugStatus(status))
   }

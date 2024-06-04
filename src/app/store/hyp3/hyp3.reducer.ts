@@ -3,7 +3,8 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { Hyp3ActionType, Hyp3Actions } from './hyp3.action';
 import {
   Hyp3Job, Hyp3User, Hyp3ProcessingOptions,
-  hyp3DefaultJobOptions, Hyp3CostsByJobType
+  hyp3DefaultJobOptions, Hyp3CostsByJobType,
+  ApplicationStatus
 } from '@models';
 
 /* State */
@@ -18,7 +19,7 @@ export interface Hyp3State {
   projectName: string;
   userId: string;
   costs: Hyp3CostsByJobType;
-  debug_status: string;
+  debug_status: ApplicationStatus | null;
 }
 
 const initState: Hyp3State = {
@@ -29,7 +30,7 @@ const initState: Hyp3State = {
   submittingJobName: null,
   processingOptions: hyp3DefaultJobOptions,
   projectName: '',
-  debug_status: '',
+  debug_status: null,
   userId: '',
   costs: {
     "AUTORIFT": {
@@ -148,10 +149,9 @@ export function hyp3Reducer(state = initState, action: Hyp3Actions): Hyp3State {
       let temp_user = {
         ...action.payload
       }
-      if(state.debug_status !== '') {
+      if(state.debug_status) {
         temp_user.application_status = state.debug_status
       }
-      temp_user.application_status = temp_user.application_status.toUpperCase();
       return {
         ...state,
         user: temp_user,
