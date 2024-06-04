@@ -151,6 +151,7 @@ export function hyp3Reducer(state = initState, action: Hyp3Actions): Hyp3State {
       if(state.debug_status !== '') {
         temp_user.application_status = state.debug_status
       }
+      temp_user.application_status = temp_user.application_status.toUpperCase();
       return {
         ...state,
         user: temp_user,

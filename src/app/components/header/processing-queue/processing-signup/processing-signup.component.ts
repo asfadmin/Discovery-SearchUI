@@ -82,7 +82,6 @@ export class ProcessingSignupComponent implements OnInit {
       this.notificationService.info('Submitted Form');
       this.store$.dispatch(new hyp3Store.LoadUser());
     }, (error) => {
-      console.log(error);
       this.notificationService.error(error.error.detail, 'Hyp3 Signup Error');
     });
   }

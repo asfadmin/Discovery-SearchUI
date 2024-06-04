@@ -232,8 +232,11 @@
           Currently awaiting approval
         </a>
       }
-      @case ('DISABLED') {
-        Account Disabled
+      @case ('REJECTED') {
+        
+        <a href="https://hyp3-docs.asf.alaska.edu/using/requesting_access" target="_blank">
+          Account Disabled
+        </a>
       }
       @default {
       <div *ngIf="isUserLoggedIn && !isUserLoading && user !== ''">
