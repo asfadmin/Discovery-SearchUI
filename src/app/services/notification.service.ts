@@ -53,7 +53,7 @@ export class NotificationService {
     }
     if(application_status === 'NOT_STARTED' && !this.shownSignupMessage) {
       this.shownSignupMessage = true;
-      this.error('Click here to open registration form', 'Not registered with hyp3 service', {
+      this.error('Click here to open registration form', 'Not registered with On Demand service', {
         disableTimeOut: true,
         closeButton: true
       }).onTap.subscribe(()=> {
