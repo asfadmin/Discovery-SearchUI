@@ -150,7 +150,7 @@ export class ProcessingQueueComponent implements OnInit {
         this.isUnlimitedUser = user.quota.unlimited;
         this.remaining = user.quota.remaining;
         this.userStatus = user.application_status;
-        if(this.userStatus === 'NOT_STARTED' || this.userStatus === 'PENDING') {
+        if(this.userStatus === 'NOT_STARTED' || this.userStatus === 'PENDING' || this.userStatus === 'REJECTED') {
           this.isSignupSelected = true;
           this.selectedJobTypeId = null;
         }
