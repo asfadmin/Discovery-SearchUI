@@ -83,6 +83,7 @@
 			<mat-form-field style="width:100%;">
 				<mat-label>Access Code (optional)</mat-label>
 				<input matInput style="height: 50px;" formControlName="accessCode" type="text"/>
+				<mat-error>{{accessCodeErrorMessage}}</mat-error>
 			</mat-form-field>
 			<div [matTooltip]="submitButtonTooltip" class="form-submit-button-container">
 				<button mat-flat-button color="primary" (click)="onRegisterPressed()" [disabled]="signupForm.invalid" class="form-submit-button">{{submitButtonText}}</button>

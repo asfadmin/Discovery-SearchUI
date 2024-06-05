@@ -6,6 +6,7 @@ import { EarthdataUserInfo, Hyp3User, ApplicationStatus } from '@models';
 
 import * as userStore from '@store/user';
 import * as hyp3Store from '@store/hyp3';
+import { ValidationError } from 'xml2js';
 
 @Component({
   selector: 'app-processing-signup',
@@ -32,6 +33,7 @@ export class ProcessingSignupComponent implements OnInit {
   public submitButtonText;
 
   public submitButtonTooltip = 'Must confirm user information as well as write use case.';
+  public accessCodeErrorMessage = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -79,7 +81,12 @@ export class ProcessingSignupComponent implements OnInit {
       this.notificationService.info('Submitted Form');
       this.store$.dispatch(new hyp3Store.LoadUser());
     }, (error) => {
-      this.notificationService.error(error.error.detail, 'On Demand Signup Error');
+      if(error.error.detail.includes('access code')) {
+        this.signupForm.controls.accessCode.setErrors(new ValidationError(error.error.detail))
+        this.accessCodeErrorMessage = error.error.detail;
+      } else {
+        this.notificationService.error(error.error.detail, 'On Demand Signup Error');
+      }
     });
   }
 
