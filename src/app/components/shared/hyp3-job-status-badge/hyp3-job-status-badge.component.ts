@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 import { EnvironmentService, Hyp3Service, NotificationService, ScenesService } from '@services';
-import { Hyp3Job, hyp3JobTypes, QueuedHyp3Job } from '@models';
+import { Hyp3Job, hyp3JobTypes, QueuedHyp3Job, Hyp3ProcessingOptions } from '@models';
 import { ConfirmationComponent } from '@components/header/processing-queue/confirmation/confirmation.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AppState } from '@store';
@@ -21,6 +21,8 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
   @Input() isFileDetails = true;
 
   private jobs;
+  private costs;
+  private processingOptions: Hyp3ProcessingOptions;
   private projectName = '';
   private validateOnly = false;
   public remaining = 0;
@@ -36,6 +38,14 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
   ngOnInit(): void {
     this.store$.select(hyp3Store.getProcessingProjectName).subscribe(
       projectName => this.projectName = projectName
+    );
+
+    this.store$.select(hyp3Store.getProcessingOptions).subscribe(
+      options => this.processingOptions = options
+    );
+
+    this.store$.select(hyp3Store.getCosts).subscribe(
+      costs => this.costs = costs
     );
 
     this.store$.select(hyp3Store.getHyp3User).subscribe(
@@ -72,18 +82,44 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
   }
 
   private openConfirmationDialog(jobType, jobs) {
+    let options: Hyp3ProcessingOptions = this.processingOptions;
+
+    jobs.forEach(job => {
+      const jobTypeOptions = {...options[jobType.id]};
+
+      for (const [optionName, optionVal] of Object.entries(job.processingOptions)) {
+        if (optionName in this.processingOptions[jobType.id]) {
+          jobTypeOptions[optionName] = optionVal;
+        }
+      }
+
+      options = {
+        ...options,
+        [jobType.id]: jobTypeOptions
+      };
+    });
+
+    const costPerJob = this.hyp3.calculateCredits(options[jobType.id], this.costs[jobType.id]);
+
+    const jobTypesWithQueued = [{
+      jobType: jobType,
+      selected: true,
+      jobs: jobs,
+      creditTotal: costPerJob
+    }];
+
     const confirmationRef = this.dialog.open(ConfirmationComponent, {
       id: 'ConfirmProcess',
       width: '350px',
       height: '500px',
       maxWidth: '350px',
       maxHeight: '500px',
-      data: [{
-        jobType,
-        selected: true,
-        jobs,
-        creditTotal: 10
-      }]
+      data: {
+        jobTypesWithQueued: jobTypesWithQueued,
+        projectName: this.projectName,
+        processingOptions: options,
+        validateOnly: this.validateOnly,
+      }
     });
 
     confirmationRef.afterClosed().subscribe(
@@ -111,12 +147,16 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
     const jobType = job_types[job_type];
 
     const projectJobs = this.jobs
-      .filter(job => job.name === this.job.name && this.isExpired(job) && !this.isFailed(job))
-      .map(job => ({
-          granules: job.job_parameters.scenes,
-          job_type: jobType
-        } as QueuedHyp3Job
-    ));
+    .filter(job => job.name === this.job.name && this.isExpired(job) && !this.isFailed(job))
+    .map(job => {
+
+      return {
+        job: job.job_parameters.scenes,
+        job_type: jobType,
+        processingOptions: this.job.job_parameters
+      };
+    }
+    );
 
     this.openConfirmationDialog(
       jobType, projectJobs
@@ -130,9 +170,10 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
     const jobType = job_types[job_type];
 
     const job = [{
-        granules: this.job.job_parameters.scenes,
-        job_type: jobType
-      } as QueuedHyp3Job];
+      granules: this.job.job_parameters.scenes,
+      job_type: jobType,
+      processingOptions: this.job.job_parameters
+    } as QueuedHyp3Job];
 
     this.openConfirmationDialog(
       jobType, job
@@ -160,7 +201,7 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
           if (resp.error.detail === 'No authorization token provided' || resp.error.detail === 'Provided apikey is not valid') {
             this.notificationService.error('Your authorization has expired. Please sign in again.', 'Error', {
               timeOut: 5000,
-          });
+            });
           } else {
             this.notificationService.error( resp.error.detail, 'Error', {
               timeOut: 5000,
@@ -178,11 +219,11 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
         jobText = submittedJobs > 1 ? `${submittedJobs} Jobs` : 'Job';
         if (jobText) {
           this.notificationService.info(`${submittedJobs} expired ${jobText} submitted for re-processing.`,
-          `Expired ${jobText} Submitted`,
-          {
-            closeButton: true,
-            disableTimeOut: true,
-          });
+            `Expired ${jobText} Submitted`,
+            {
+              closeButton: true,
+              disableTimeOut: true,
+            });
         }
       }),
       first(),
