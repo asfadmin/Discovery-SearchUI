@@ -81,7 +81,7 @@ export class ProcessingSignupComponent implements OnInit {
       this.notificationService.info('Submitted Form');
       this.store$.dispatch(new hyp3Store.LoadUser());
     }, (error) => {
-      if(error.error.detail.includes('access code')) {
+      if(error.error.detail.toLowerCase().includes('access code')) {
         this.signupForm.controls.accessCode.setErrors(new ValidationError(error.error.detail))
         this.accessCodeErrorMessage = error.error.detail;
       } else {
