@@ -10,8 +10,8 @@
 }
 .list-item {
   word-wrap: break-word;
-  overflow: visible;
-  height: auto;
+  overflow: visible !important;
+  height: auto !important;
 }
 .list-item-content {
   overflow: visible;
