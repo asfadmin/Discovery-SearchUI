@@ -265,20 +265,21 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         this.setSelected(pair);
       });
     };
+    if(this.scenes.length > 0) {
+      addPairAttributes(
+        lines
+          .data(this.pairs)
+          .join('path')
+            .style('mix-blend-mode', 'multiply')
+      );
 
-    addPairAttributes(
-      lines
-        .data(this.pairs)
-        .join('path')
-          .style('mix-blend-mode', 'multiply')
-    );
-
-    addPairAttributes(
-      lines
-        .data(this.customPairs)
-        .join('path')
-          .style('stroke-dasharray', ' 5,5')
-    );
+      addPairAttributes(
+        lines
+          .data(this.customPairs)
+          .join('path')
+            .style('stroke-dasharray', ' 5,5')
+      );
+    }
 
     this.scatter.append('g')
       .selectAll('circle')
