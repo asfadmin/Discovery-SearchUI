@@ -206,8 +206,6 @@ export class ProcessingQueueComponent implements OnInit {
   }
 
   public onReviewQueue() {
-    console.log(this.processingOptions);
-
     const confirmationRef = this.dialog.open(ConfirmationComponent, {
       id: 'ConfirmProcess',
       width: '350px',

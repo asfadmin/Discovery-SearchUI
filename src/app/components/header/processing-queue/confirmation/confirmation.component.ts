@@ -37,8 +37,6 @@ export class ConfirmationComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.data);
-
     this.jobTypesWithQueued = this.data.jobTypesWithQueued;
     this.processingOptions = this.data.processingOptions;
     this.projectName = this.data.projectName;
