@@ -8,6 +8,7 @@ import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 
 import * as hyp3Store from '@store/hyp3';
+import * as queueStore from '@store/queue';
 import { catchError, finalize, first } from 'rxjs/operators';
 import { of } from 'rxjs';
 
@@ -142,25 +143,17 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
 
   public onReviewExpiredJobs() {
     const job_types = hyp3JobTypes;
-    const job_type = Object.keys(job_types).find(id =>
-      this.job.job_type === id as any);
-    const jobType = job_types[job_type];
 
     const projectJobs = this.jobs
     .filter(job => job.name === this.job.name && this.isExpired(job) && !this.isFailed(job))
     .map(job => {
+      return ({
+        granules: job.job_parameters.scenes,
+        job_type: job_types[job.job_type],
+      } as QueuedHyp3Job);
+    });
 
-      return {
-        job: job.job_parameters.scenes,
-        job_type: jobType,
-        processingOptions: this.job.job_parameters
-      };
-    }
-    );
-
-    this.openConfirmationDialog(
-      jobType, projectJobs
-    );
+    this.store$.dispatch(new queueStore.AddJobs(projectJobs));
   }
 
   public onReviewExpiredJob() {

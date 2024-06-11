@@ -1,20 +1,27 @@
+  @if(job.job_parameters.scenes[0].isDummyProduct) {
+    <mat-chip color="primary">Loading...</mat-chip>
+  } @else {
 
-  <mat-chip class="clickable"
-            [matMenuTriggerFor]='resubmitJobMenu'
-            *ngIf="isExpired(job) && !isFileDetails"
-            color="primary">{{ 'EXPIRED' | translate }}...
-  </mat-chip>
-
-  <mat-chip class="clickable"
-            [matMenuTriggerFor]='resubmitJobMenu'
-            *ngIf="isFailed(job) && !isFileDetails"
-            color="primary">{{ 'FAILED' | translate }}...
-  </mat-chip>
-
-  <mat-chip *ngIf="isExpired(job) && isFileDetails" color="primary">{{ 'EXPIRED' | translate }}</mat-chip>
-  <mat-chip *ngIf="isPending(job)" color="secondary">{{ 'PENDING' | translate }}</mat-chip>
-  <mat-chip *ngIf="isFailed(job) && isFileDetails" color="accent">{{ 'FAILED' | translate }}</mat-chip>
-  <mat-chip *ngIf="isRunning(job)" color="secondary">{{ 'RUNNING' | translate }}</mat-chip>
+    @if(isExpired(job) && !isFileDetails) {
+      <mat-chip class="clickable"
+                [matMenuTriggerFor]='resubmitJobMenu'
+                color="primary">{{ 'EXPIRED' | translate }}...
+      </mat-chip>
+    } @else if (isFailed(job) && !isFileDetails) {
+      <mat-chip class="clickable"
+                [matMenuTriggerFor]='resubmitJobMenu'
+                color="primary">{{ 'FAILED' | translate }}...
+      </mat-chip>
+    } @else if (isExpired(job) && isFileDetails) {
+      <mat-chip color="primary">{{ 'EXPIRED' | translate }}</mat-chip>
+    } @else if (isPending(job)) {
+      <mat-chip color="secondary">{{ 'PENDING' | translate }}</mat-chip>
+    } @else if (isFailed(job) && isFileDetails) {
+      <mat-chip color="accent">{{ 'FAILED' | translate }}</mat-chip>
+    } @else if (isRunning(job)) {
+      <mat-chip color="secondary">{{ 'RUNNING' | translate }}</mat-chip>
+    }
+  }
 
 <mat-menu #resubmitJobMenu = "matMenu">
   <button (click)="onReviewExpiredJob()" [disabled]="remaining < 1" mat-menu-item>
