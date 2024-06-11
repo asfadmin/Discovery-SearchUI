@@ -268,6 +268,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           }
 
           this.store$.dispatch(new hyp3Store.LoadCosts());
+          this.store$.dispatch(new hyp3Store.LoadUser());
         }
 )
     );

@@ -5,6 +5,7 @@ import { AppState } from '@store';
 import * as queueStore from '@store/queue';
 import * as userStore from '@store/user';
 import * as hyp3Store from '@store/hyp3';
+import * as uiStore from '@store/ui';
 
 import * as models from '@models';
 import { SubSink } from 'subsink';
@@ -38,6 +39,8 @@ export class OnDemandAddMenuComponent implements OnInit {
   public InSAR = models.hyp3JobTypes.INSAR_GAMMA;
   public AutoRift = models.hyp3JobTypes.AUTORIFT;
 
+  public userStatus;
+
   private subs = new SubSink();
 
   constructor(
@@ -70,6 +73,11 @@ export class OnDemandAddMenuComponent implements OnInit {
         options => this.options = options
       )
     );
+    this.subs.add(
+      this.store$.select(hyp3Store.getHyp3User).subscribe(profile => {
+        this.userStatus = profile?.application_status;
+      })
+    )
 
     this.subs.add(
       this.store$.select(getScenes).pipe(
@@ -146,5 +154,8 @@ export class OnDemandAddMenuComponent implements OnInit {
 
   public onOpenHelp(infoUrl: string) {
     window.open(infoUrl);
+  }
+  public onOpenSignup() : void {
+    this.store$.dispatch(new uiStore.SetIsOnDemandQueueOpen(true));
   }
 }
