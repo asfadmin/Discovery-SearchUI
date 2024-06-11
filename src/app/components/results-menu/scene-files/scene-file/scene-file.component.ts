@@ -55,7 +55,6 @@ export class SceneFileComponent implements OnInit, OnDestroy {
         of(this.product).pipe(
           filter(prod => !!prod.metadata)
         ).subscribe( prod => {
-
           if (!prod.metadata.job) {
             this.paramsList = [];
           } else {
@@ -179,7 +178,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
       const processinglevel = this.product.metadata.productType;
       const productType = models.opera_s1.productTypes.find(product => product.apiValue == processinglevel);
       const operaburstid = this.product.metadata?.opera?.operaBurstID;
-      
+
       [
         new searchStore.SetSearchType(models.SearchType.DATASET),
         new filterStore.ClearDatasetFilters(),

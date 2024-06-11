@@ -4,13 +4,15 @@
       settings_overscan
     </mat-icon>
 
-    <mat-icon
-      *ngIf="!!hyp3ableByJobType && hyp3ableByJobType?.total > 0"
-      class="icon-margin mobile-svg"
-      [matMenuTriggerFor]="sceneAdd.addMenu"
-      [matMenuTriggerData]="{ hyp3able: hyp3ableByJobType.byJobType }"
-      svgIcon="hyp3">
-    </mat-icon>
+    @if(!scene.isDummyProduct) {
+      <mat-icon
+        *ngIf="!!hyp3ableByJobType && hyp3ableByJobType?.total > 0"
+        class="icon-margin mobile-svg"
+        [matMenuTriggerFor]="sceneAdd.addMenu"
+        [matMenuTriggerData]="{ hyp3able: hyp3ableByJobType.byJobType }"
+        svgIcon="hyp3">
+      </mat-icon>
+    }
 
     <mat-icon *ngIf="isDownloadable(scene)"
       (click)="onToggle()"
@@ -29,12 +31,14 @@
   </div>
 
   <div *ngIf="searchType === SearchTypes.CUSTOM_PRODUCTS" class="scene-control" style="margin-right: 10px;">
-    <mat-icon *ngIf="isExpired(scene.metadata.job)"
-      [matMenuTriggerFor]="sceneAdd.addMenu"
-      [matMenuTriggerData]="{ hyp3able: getExpiredHyp3ableObject().byJobType }"
-      class="icon-margin mobile-svg"
-      svgIcon="hyp3">
-    </mat-icon>
+    @if(!scene.isDummyProduct) {
+      <mat-icon *ngIf="isExpired(scene.metadata.job)"
+        [matMenuTriggerFor]="sceneAdd.addMenu"
+        [matMenuTriggerData]="{ hyp3able: getExpiredHyp3ableObject().byJobType }"
+        class="icon-margin mobile-svg"
+        svgIcon="hyp3">
+      </mat-icon>
+    }
   </div>
 
   <div *ngIf="!isDownloadable(scene)" class="scene-control ml-2">
