@@ -1,7 +1,7 @@
 import { Props } from '../filters.model';
 
 export const beta = {
-  id: 'SENTINEL-1A',
+  id: 'SENTINEL-1 INTERFEROGRAM (BETA)',
   name: 'ARIA S1 GUNW',
   subName: 'NISAR-format',
   beta: false,
