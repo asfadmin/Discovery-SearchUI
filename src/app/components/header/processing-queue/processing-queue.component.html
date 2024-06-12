@@ -296,6 +296,7 @@
          !isUnlimitedUser && (
            allJobs.length > remaining ||
            allJobs.length === 0 ||
+           remaining < totalCreditCost ||
            !isUserLoggedIn ||
            userStatus === 'NOT_STARTED' ||
            userStatus === 'PENDING' ||
