@@ -9,7 +9,6 @@ import { WktService } from './wkt.service';
 
 import * as models from '@models';
 import { NotificationService } from './notification.service';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -33,9 +32,13 @@ export class PolygonValidationService {
         return skip;
       }),
       filter(p => !!p || this.polygons.has(p)),
-      switchMap(polygon => this.asfApiService.validate(polygon).pipe(
-        catchError(_ => of(null))
-      )),
+      // filter(([_, polygon]) => ),
+      switchMap(wkt => {
+        return this.asfApiService.validate(wkt).pipe(
+          catchError(_ => of(null))
+        );
+
+      }),
       filter(resp => !!resp),
       map(resp => {
         const error = this.getErrorFrom(resp);
@@ -70,7 +73,7 @@ export class PolygonValidationService {
     );
   }
 
-  private setValidPolygon(resp) {
+  private setValidPolygon(resp: models.WKTRepairResponse) {
     this.polygons.add(resp.wkt.unwrapped);
     this.mapService.setDrawStyle(models.DrawPolygonStyle.VALID);
 
@@ -83,7 +86,7 @@ export class PolygonValidationService {
       return resp.wkt.unwrapped;
     }
 
-    const { report, type }  = resp.repairs.pop();
+    const { report, type } = resp.repairs.pop();
 
     if (type !== models.PolygonRepairTypes.WRAP && type !== models.PolygonRepairTypes.REVERSE) {
       this.notificationService.info(
