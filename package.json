@@ -46,7 +46,7 @@
     "@yellowspot/ng-truncate": "^2.0.0",
     "ajv": "^6.12.6",
     "angular-resizable-element": "^5.0.0",
-    "braces": "^3.0.2",
+    "braces": "^3.0.3",
     "cookieconsent": "^3.1.1",
     "core-js": "^3.12.1",
     "css-loader": "^3.6.0",
