@@ -71,10 +71,8 @@ export class SearchEffects {
   public setCanSearch = createEffect(() => this.actions$.pipe(
     ofType<SetSearchAmount>(SearchActionType.SET_SEARCH_AMOUNT),
     withLatestFrom(this.store$.select(getSearchType)),
-    map(([action, searchType]) =>
-      (action.payload > 0
-        || searchType === SearchType.BASELINE
-        || searchType === SearchType.SBAS) ? new EnableSearch() : new DisableSearch()
+    map(([action, _searchType]) =>
+      (action.payload > 0 ) ? new EnableSearch() : new DisableSearch() // this
     )
   ));
 
