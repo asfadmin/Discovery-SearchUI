@@ -72,7 +72,7 @@ export class SearchEffects {
     ofType<SetSearchAmount>(SearchActionType.SET_SEARCH_AMOUNT),
     withLatestFrom(this.store$.select(getSearchType)),
     map(([action, _searchType]) =>
-      (action.payload > 0 ) ? new EnableSearch() : new DisableSearch() // this
+      (action.payload > 0 ) ? new EnableSearch() : new DisableSearch()
     )
   ));
 
