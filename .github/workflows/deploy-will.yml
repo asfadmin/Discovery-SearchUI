@@ -1,4 +1,4 @@
-name: Update BulkDownload Stack (test)
+name: Update SearchUI (will)
 
 on:
   push:
