@@ -1,0 +1,25 @@
+name: Update BulkDownload Stack (test)
+
+on:
+  push:
+    branches:
+      - actions
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: test
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: build
+        uses: ./.github/workflows/bulk-download-deploy-composite
+        with:
+          maturity: test
+          application: ${{ vars.APPLICATION }}
+          cdn-id: ${{ vars.CDN_ID }}
+          s3-bucket: ${{ vars.S3_BUCKET }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
