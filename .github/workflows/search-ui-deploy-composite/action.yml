@@ -32,7 +32,6 @@ runs:
         node-version: 18
 
     - name: Install dependencies
-      shell: bash
       run: |
         cp src/app/services/envs/env-${{ inputs.maturity }}.ts src/app/services/env.ts
         echo "{\"hash\":\"${{ github.sha }}\"}" > src/assets/commit-hash.json
