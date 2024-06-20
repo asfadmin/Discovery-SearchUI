@@ -48,7 +48,7 @@ runs:
     - name: Angular Build
       shell: bash
       run: |
-        ng build --configuration production
+        npm run build
 
     - name: Deploy to AWS
       shell: bash
