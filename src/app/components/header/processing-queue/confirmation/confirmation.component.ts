@@ -39,13 +39,17 @@ export class ConfirmationComponent implements OnInit {
   ngOnInit(): void {
     this.jobTypesWithQueued = this.data.jobTypesWithQueued;
     this.processingOptions = this.data.processingOptions;
-    this.projectName = this.data.projectName;
     this.validateOnly = this.data.validateOnly;
     this.allJobs = this.jobTypesWithQueued.reduce((total, jobs) => {
       total = [...total, ...jobs.jobs];
 
       return total;
     }, []);
+    this.store$.dispatch(new hyp3Store.SetProcessingProjectName(null));
+
+    this.store$.select(hyp3Store.getProcessingProjectName).subscribe(name => {
+      this.projectName = name;
+    });
   }
 
   public onToggleJobType(tabQueue): void {
