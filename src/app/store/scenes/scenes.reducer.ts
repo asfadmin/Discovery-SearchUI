@@ -66,7 +66,8 @@ export const initState: ScenesState = {
 export function scenesReducer(state = initState, action: ScenesActions): ScenesState {
   switch (action.type) {
     case ScenesActionType.SET_SCENES: {
-      let subproducts: CMRProduct[] = []
+      let subproducts: CMRProduct[] = [];
+
       let searchResults = action.payload.products.map(p =>
         p.metadata.productType === 'BURST' ? ({
           ...p,
@@ -89,8 +90,15 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
 
       searchResults = searchResults.concat(subproducts)
 
+
       const products = searchResults
       .reduce((total, product) => {
+        if (product.isDummyProduct && isAlreadyLoaded(product, state.products[product.id])) {
+          total[product.id] = state.products[product.id];
+
+          return total;
+        }
+
         total[product.id] = product;
 
         return total;
@@ -111,6 +119,7 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
             groupCriteria = product.id;
           }
         }
+
         const scene = total[groupCriteria] || [];
 
         total[groupCriteria] = [...scene, product.id];
@@ -118,7 +127,6 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       }, {});
 
       for (const [groupId, productNames] of Object.entries(productGroups)) {
-
         (<string[]>productNames).sort(
           (a, b) => products[a].bytes - products[b].bytes
         ).reverse();
@@ -177,6 +185,7 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
             bytes: jobFile.size,
             groupId: job.job_id,
             id: job.job_id,
+            isDummyProduct: false,
             metadata: {
               ...product.metadata,
               fileName: jobFile.filename || '',
@@ -566,6 +575,10 @@ const productsForScene = (selected, state) => {
       return a.bytes - b.bytes;
     }).reverse();
 };
+
+const isAlreadyLoaded = (product, oldProduct) => {
+  return !!oldProduct && !oldProduct.isDummyProduct && product.isDummyProduct;
+}
 
 export const getAreProductsLoaded = createSelector(
   getScenes,
