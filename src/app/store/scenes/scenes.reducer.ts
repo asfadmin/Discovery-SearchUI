@@ -90,7 +90,6 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
 
       searchResults = searchResults.concat(subproducts)
 
-
       const products = searchResults
       .reduce((total, product) => {
         if (product.isDummyProduct && isAlreadyLoaded(product, state.products[product.id])) {
@@ -160,10 +159,13 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
         const product  = cmrData[jobProduct.name];
 
         if(!!product) {
+          if (!jobProduct.metadata.job) {
+            return;
+          }
           let job = {
             ...jobProduct.metadata.job,
             job_parameters: {
-              ...jobProduct.metadata.job.job_parameters,
+              ...jobProduct.metadata.job?.job_parameters,
             }
           };
           const jobFile = !!job.files ?

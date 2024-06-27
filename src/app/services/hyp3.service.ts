@@ -118,6 +118,10 @@ export class Hyp3Service {
         jobOptions.name = options.projectName;
       }
 
+      if (!jobOptions.name) {
+        delete jobOptions.name;
+      }
+
       return jobOptions;
     });
   }

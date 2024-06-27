@@ -142,8 +142,8 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
         scenes => {
           this.scenes = scenes;
 
-          this.removeLoadedScenes(scenes);
           this.loadDummyProducts(scenes);
+          this.removeLoadedScenes(scenes);
         }
       )
     );
