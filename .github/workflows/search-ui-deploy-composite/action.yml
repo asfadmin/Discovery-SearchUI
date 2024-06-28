@@ -35,6 +35,7 @@ runs:
         aws-region: us-east-1
 
     - name: Fetch the caller identity
+      shell: bash
       run: |
         aws sts get-caller-identity
 
