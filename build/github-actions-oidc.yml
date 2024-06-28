@@ -16,8 +16,7 @@ Resources:
             Action: sts:AssumeRoleWithWebIdentity
             Condition:
               StringLike:
-                ## THESE ARE CASE SENSITIVE!
-                'token.actions.githubusercontent.com:sub': ['repo:asfadmin/Discovery-SearchUI']
+                'token.actions.githubusercontent.com:sub': ['repo:asfadmin/Discovery-SearchUI:*']
               StringEqualsIgnoreCase:
                 'token.actions.githubusercontent.com:aud': sts.amazonaws.com
       Policies:
