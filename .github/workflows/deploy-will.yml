@@ -23,6 +23,11 @@ jobs:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHub_Actions_Role
           aws-region: us-east-1
 
+      - name: Fetch the caller identity
+        shell: bash
+        run: |
+          aws sts get-caller-identity
+
       - name: build
         uses: ./.github/workflows/search-ui-deploy-composite
         with:
