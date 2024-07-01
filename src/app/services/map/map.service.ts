@@ -74,19 +74,19 @@ export class MapService {
   private selectClick = new Select({
     condition: click,
     style: polygonStyle.hidden,
-    layers: l => l.get('selectable') || l.get('netcdf-layer') || false // make work with netcdf-layer class
+    layers: l => l.get('selectable')
   });
 
-  // private timeseriesClick = new Select({
-  //   condition: click,
-  //   // style: null,
-  //   layers: l => {
-  //     if (l.get('netcdf-layer')) {
-  //       return true;
-  //     }
-  //     return false
-  //   }
-  // });
+  private timeseriesClick = new Select({
+    condition: click,
+    // style: null,
+    layers: l => {
+      if (l.get('netcdf-layer')) {
+        return true;
+      }
+      return false
+    }
+  });
 
   private selectHover = new Select({
     condition: pointerMove,
@@ -180,15 +180,23 @@ export class MapService {
     this.selectSarviewEventHover.setActive(true);
     this.selectClick.setActive(true);
     this.searchPolygonHover.setActive(true);
+    this.timeseriesClick.setActive(false);
 
   }
-  
+  public enableTimeSeries(): void {
+    this.selectHover.setActive(false);
+    this.selectSarviewEventHover.setActive(false);
+    this.selectClick.setActive(false);
+    this.searchPolygonHover.setActive(false);
+    this.timeseriesClick.setActive(true);
+
+  }
   public disableInteractions(): void {
     this.selectHover.setActive(false);
     this.selectSarviewEventHover.setActive(false);
     this.selectClick.setActive(false);
     this.searchPolygonHover.setActive(false);
-    // this.timeseriesClick.setActive(false);
+    this.timeseriesClick.setActive(false);
   }
 
   private zoom(amount: number): void {
@@ -495,7 +503,7 @@ export class MapService {
     });
 
     newMap.addInteraction(this.selectClick);
-    // newMap.addInteraction(this.timeseriesClick);
+    newMap.addInteraction(this.timeseriesClick);
     newMap.addInteraction(this.selectHover);
     newMap.addInteraction(this.selectSarviewEventHover);
     this.selectClick.on('select', e => {
@@ -506,9 +514,9 @@ export class MapService {
         feature => this.newSelectedScene$.next(feature.get('filename'))
       );
     });
-    // this.timeseriesClick.on('select', _ => {
-      // this.timeseriesPixelSelected$.next(null);
-    // });
+    this.timeseriesClick.on('select', _ => {
+      this.timeseriesPixelSelected$.next(null);
+    });
 
     this.selectHover.on('select', e => {
       this.map.getViewport().style.cursor =

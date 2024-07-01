@@ -155,9 +155,9 @@ export class MapComponent implements OnInit, OnDestroy  {
           if (mode === models.MapInteractionModeType.NONE) {
             this.mapService.enableInteractions();
           } 
-          // else if(mode === models.MapInteractionModeType.TIMERSERIES) {
-            // this.mapService.enableTimeSeries();
-          // }
+          else if(mode === models.MapInteractionModeType.TIMERSERIES) {
+            this.mapService.enableTimeSeries();
+          }
           else {
             this.mapService.disableInteractions();
           }

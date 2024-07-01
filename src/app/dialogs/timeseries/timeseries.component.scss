@@ -1,5 +1,42 @@
+@import "asf-theme";
+
 .timeseries-dialog-wrapper {
     display: flex;
     flex-direction: column;
     height: 100%;
   }
+
+  
+.dialog-header {
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 22px !important;
+}
+.dl-close-x {
+  position: absolute;
+  top: 6px;
+  right: 12px;
+  text-align: right;
+  float: right;
+  cursor: pointer;
+  z-index: 100;
+
+  @include themify($themes) {
+    color: themed("dark-primary-text");
+  }
+}
+#timeseriesChart {
+  height: 460px;
+  width: 680px;
+}
+
+::ng-deep .timeseries-base {
+  @include themify($themes) {
+    fill: lighten(themed('dark-primary-text'), 45%);
+  }
+}
