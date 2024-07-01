@@ -44,7 +44,8 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
   public isReadMore = true;
 
-  public searchTypeSelectors: models.SearchTypeSelector[] = [
+  public searchTypeSelectors: {'search':models.SearchTypeSelector[]; 'tools':models.SearchTypeSelector[] } = {
+    'search':[
     {
       searchType: models.SearchType.DATASET,
       nameKey:'GEOGRAPHIC',
@@ -60,6 +61,17 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
       icon: 'list',
       iconType: models.IconType.MATERIAL,
     }, {
+      searchType: models.SearchType.SARVIEWS_EVENTS,
+      nameKey:'EVENT',
+      descriptionKeys:['EVENT_SEARCH_HARNESSES_THE_CAPABILITIES_OF_SAR_PROCESSING_TO_MONITOR_NATURAL_DISASTERS'],
+      helpUrl:'https://docs.asf.alaska.edu/vertex/manual/#event-search-options',
+      icon:'volcano',
+      iconType: models.IconType.MATERIAL,
+    }
+  ],
+
+'tools':[
+    {
       searchType: models.SearchType.BASELINE,
       nameKey:'BASELINE',
       descriptionKeys:[
@@ -87,7 +99,7 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
       icon:'volcano',
       iconType: models.IconType.MATERIAL,
     }
-  ];
+  ]};
 
   constructor(
     public translate: TranslateService,

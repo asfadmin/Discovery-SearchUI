@@ -3,17 +3,16 @@
   <div class="menu-button-wrapper" [class.mobile-button-wrapper]="breakpoint === breakpoints.MOBILE">
     <div class="button-label">{{ 'SEARCH_TYPE' | translate }}</div>
     <div>
-      <button
-        [matMenuTriggerFor]="searchTypeMenu" (onMenuOpen)="onSearchTypeMenuOpen()"
-        class="button-menu-trigger" color="basic"
-        matTooltip="{{ searchTranslation[searchType] | translate }}"
-        mat-button>
+      <button [matMenuTriggerFor]="searchTypeMenu" (onMenuOpen)="onSearchTypeMenuOpen()" class="button-menu-trigger"
+        color="basic" matTooltip="{{ searchTranslation[searchType] | translate }}" mat-button>
         <div class="button-text">
           {{ searchTranslation[searchType] | translate }}
           <span class="mat-select-arrow"></span>
         </div>
       </button>
-      <div class="hr-wrapper"><hr class="text-underline"></div>
+      <div class="hr-wrapper">
+        <hr class="text-underline">
+      </div>
     </div>
   </div>
 
@@ -21,39 +20,45 @@
     <mat-menu #searchTypeMenu="matMenu" [(ngModel)]="searchType" name="searchType" id="searchMenu" ngDefaultControl>
 
       <div>
-        <menu *ngFor="let type of searchTypeSelectors" class="menu-item mat-menu-item" mat-menu-item
-             (click)="onSetSearchType(type.searchType)">
+        <menu mat-menu-item class="menu-item mat-menu-item" [matMenuTriggerFor]="searchMenu" mat-menu-item>
           <div class="menu-item-inner">
             <div class="fx-75 menu-item-content">
               <div class="item-title">
-                {{ type.nameKey | translate}}
+                Search Types
               </div>
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                <span *ngFor="let key of type.descriptionKeys">
-                  {{ key | translate }}
-                </span>
+                A collection of different search types available for perusal.
               </div>
-              <mat-card-actions>
-                <app-docs-modal class="info-text"
-                                text="{{'MORE_INFO' | translate}}"
-                                url="{{ type.helpUrl}}">
-                </app-docs-modal>
-              </mat-card-actions>
             </div>
             <div class="fx-25 menu-item-aside">
-              <span *ngIf="type.iconType === iconTypes.MATERIAL" class="material-icons-outlined menu-item-icon">
-                {{ type.icon}}</span>
+              <span class="material-icons-outlined menu-item-icon">
+                search</span>
 
-              <img *ngIf="type.iconType === iconTypes.IMAGE"
-                src="{{ type.icon }}"
-                class="menu-item-icon">
             </div>
           </div>
-          <hr class="dataset-hr">
         </menu>
+        <hr class="dataset-hr">
 
-        <menu class="menu-item mat-menu-item" mat-menu-item
-          (click)="onSetSearchType(searchTypes.CUSTOM_PRODUCTS)"
+        <menu mat-menu-item class="menu-item mat-menu-item" [matMenuTriggerFor]="toolMenu" mat-menu-item>
+          <div class="menu-item-inner">
+            <div class="fx-75 menu-item-content">
+              <div class="item-title">
+                Tools
+              </div>
+              <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
+                A collection of different tools available for refining searches.
+              </div>
+            </div>
+            <div class="fx-25 menu-item-aside">
+              <span class="material-icons-outlined menu-item-icon">
+                gear</span>
+
+            </div>
+          </div>
+        </menu>
+        <hr class="dataset-hr">
+
+        <menu class="menu-item mat-menu-item" mat-menu-item (click)="onSetSearchType(searchTypes.CUSTOM_PRODUCTS)"
           [ngClass]="{'disable-search-type-on-demand' : !isLoggedIn}">
           <div class="menu-item-inner">
             <div class="fx-75 menu-item-content">
@@ -67,9 +72,7 @@
                 {{'ON_DEMAND_SEARCH_ALLOWS_YOU_TO_VIEW_YOUR_SUBMITTED_ON_DEMAND_JOBS' | translate}}
               </div>
               <mat-card-actions (click)="onOpenDocs($event)">
-                <app-docs-modal
-                  class="info-text"
-                  text="{{ 'MORE_INFO' | translate }}"
+                <app-docs-modal class="info-text" text="{{ 'MORE_INFO' | translate }}"
                   url="https://docs.asf.alaska.edu/vertex/manual/#on-demand-products-search-options">
                 </app-docs-modal>
               </mat-card-actions>
@@ -102,7 +105,7 @@
 
     <mat-menu #derivedDatasetMenu="matMenu">
       <menu mat-menu-item matSuffix *ngFor="let dataset of datasets; last as isLast"
-      (click)="onOpenDerivedDataset(dataset.info_url, dataset.name); $event.stopPropagation();">
+        (click)="onOpenDerivedDataset(dataset.info_url, dataset.name); $event.stopPropagation();">
         <div class="menu-item">
           <div class="menu-item-inner">
             <div class="fx-75 menu-item-content">
@@ -113,12 +116,15 @@
                 {{ dataset.info | translate}}
               </div>
               <mat-card-actions>
-                <button class="blue-link" (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)" mat-button>{{ 'MORE_INFO' | translate }}</button>
-                <button class="blue-link" (click)="onOpenDerivedDataset(dataset.download_url, dataset.name)" mat-button>{{ 'DOWNLOAD' | translate }}</button>
+                <button class="blue-link" (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)" mat-button>{{
+                  'MORE_INFO' | translate }}</button>
+                <button class="blue-link" (click)="onOpenDerivedDataset(dataset.download_url, dataset.name)"
+                  mat-button>{{ 'DOWNLOAD' | translate }}</button>
               </mat-card-actions>
             </div>
             <div class="fx-75 menu-item-aside">
-              <img [src]="dataset.picture" (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)" class="menu-item-icon">
+              <img [src]="dataset.picture" (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)"
+                class="menu-item-icon">
             </div>
           </div>
         </div>
@@ -126,5 +132,69 @@
       </menu>
     </mat-menu>
 
+    <mat-menu #searchMenu="matMenu">
+      @for(type of searchTypeSelectors.search; track type.nameKey; let last = $last) {
+      <menu class="menu-item mat-menu-item" mat-menu-item (click)="onSetSearchType(type.searchType)">
+        <div class="menu-item-inner">
+          <div class="fx-75 menu-item-content">
+            <div class="item-title">
+              {{ type.nameKey | translate}}
+            </div>
+            <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
+              <span *ngFor="let key of type.descriptionKeys">
+                {{ key | translate }}
+              </span>
+            </div>
+            <mat-card-actions>
+              <app-docs-modal class="info-text" text="{{'MORE_INFO' | translate}}" url="{{ type.helpUrl}}">
+              </app-docs-modal>
+            </mat-card-actions>
+          </div>
+          <div class="fx-25 menu-item-aside">
+            <span *ngIf="type.iconType === iconTypes.MATERIAL" class="material-icons-outlined menu-item-icon">
+              {{ type.icon}}</span>
+
+            <img *ngIf="type.iconType === iconTypes.IMAGE" src="{{ type.icon }}" class="menu-item-icon">
+          </div>
+        </div>
+        @if(!last) {
+        <hr class="dataset-hr">
+        }
+      </menu>
+      }
+
+    </mat-menu>
+    <mat-menu #toolMenu="matMenu">
+      @for(type of searchTypeSelectors.tools; track type.nameKey; let last = $last) {
+      <menu class="menu-item mat-menu-item" mat-menu-item (click)="onSetSearchType(type.searchType)">
+        <div class="menu-item-inner">
+          <div class="fx-75 menu-item-content">
+            <div class="item-title">
+              {{ type.nameKey | translate}}
+            </div>
+            <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
+              <span *ngFor="let key of type.descriptionKeys">
+                {{ key | translate }}
+              </span>
+            </div>
+            <mat-card-actions>
+              <app-docs-modal class="info-text" text="{{'MORE_INFO' | translate}}" url="{{ type.helpUrl}}">
+              </app-docs-modal>
+            </mat-card-actions>
+          </div>
+          <div class="fx-25 menu-item-aside">
+            <span *ngIf="type.iconType === iconTypes.MATERIAL" class="material-icons-outlined menu-item-icon">
+              {{ type.icon}}</span>
+
+            <img *ngIf="type.iconType === iconTypes.IMAGE" src="{{ type.icon }}" class="menu-item-icon">
+          </div>
+        </div>
+        @if(!last) {
+        <hr class="dataset-hr">
+        }
+      </menu>
+      }
+
+    </mat-menu>
   </div>
 </div>
