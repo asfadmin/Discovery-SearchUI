@@ -1,4 +1,4 @@
-name: Update SearchUI (will)
+name: Deploy dev SearchUI
 
 on:
   push:
