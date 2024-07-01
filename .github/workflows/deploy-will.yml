@@ -3,12 +3,12 @@ name: Update SearchUI (will)
 on:
   push:
     branches:
-      - actions
+      - dev/*
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: will
+    environment: dev-deployments
     permissions:
       id-token: write
       contents: read
@@ -17,11 +17,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract_branch
+
       - name: build
         uses: ./.github/workflows/search-ui-deploy-composite
         with:
-          maturity: test
-          application: ${{ vars.APPLICATION }}
+          maturity: ${{ vars.MATURITY }}
+          application: ${{ steps.extract_branch.outputs.branch }}
           cdn-id: ${{ vars.CDN_ID }}
           s3-bucket: ${{ vars.S3_BUCKET }}
           aws-account-id: ${{ secrets.AWS_ACCOUNT_ID }}
