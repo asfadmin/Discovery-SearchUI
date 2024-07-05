@@ -943,6 +943,7 @@
   "AREA_OF_INTEREST": "Area Of Interest",
   "AREA_OF_INTEREST_OPTIONS": "Area of Interest Options",
   "AREA_OF_INTEREST_WKT": "Area of Interest • WKT",
+  "ARIA_VERSION": "ARIA Version",
   "ARROW_BACKWARD": "arrow_backward",
   "ARROW_FORWARD": "arrow_forward",
   "ASCENDING": "Ascending",
@@ -1510,6 +1511,7 @@
   "RESTRICTED_DATA_USE_AGREEMENT": "Restricted Data Use Agreement",
   "RESUBMIT_JOB": "Resubmit Job",
   "RESUBMIT_PROJECT": "Resubmit Project",
+  "REQUEUE_PROJECT": "Add Project to Queue",
   "RESULTS_TO_ON_DEMAND_QUEUE": "results to On Demand queue",
   "RESULTS_WILL_NOW_CONTAIN_ONLY_SCENES_WITH_THE_SAME_PATH_AND_FRAME": "results will now contain only scenes with the same path and frame.",
   "REVIEW": "Review",
@@ -1796,9 +1798,12 @@
 <<<<<<< HEAD
   "ZOOM_TO_SCENE": "Zoom to scene"
 }
+<<<<<<< HEAD
 =======
   "ZOOM_TO_SCENE": "Zoom to scene",
   "ZZ_ANDY_PRAYING": "At least I'm not cursing."
 }
 >>>>>>> test
 >>>>>>> test
+=======
+>>>>>>> asfadmin/test

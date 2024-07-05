@@ -2,6 +2,7 @@ import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core'
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
+import * as hyp3Store from '@store/hyp3';
 
 import { MatDialogRef } from '@angular/material/dialog';
 import {
@@ -34,6 +35,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   public defaultMaxConcurrentDownloads: number;
   public defaultProductTypes: ProductType[];
   public hyp3BackendUrl: string;
+  public hyp3DebugStatus: string;
   public defaultLanguage: string;
 
   public maxResults = [250, 1000, 5000];
@@ -63,6 +65,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     private dialogRef: MatDialogRef<PreferencesComponent>,
     private store$: Store<AppState>,
     private hyp3: Hyp3Service,
+    public env: services.EnvironmentService,
     private themeService: ThemingService,
     public translate: TranslateService,
     public language: AsfLanguageService,
@@ -185,6 +188,10 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     } else {
       this.setTheme(`theme-${this.currentTheme}`);
     }
+  }
+  public onDebugStatus(status: models.ApplicationStatus) {
+    this.hyp3DebugStatus = status;
+    this.store$.dispatch(new hyp3Store.SetDebugStatus(status))
   }
 
   public setTheme(themeName: string) {
