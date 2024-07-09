@@ -6,7 +6,7 @@ Resources:
   GitHubActionsRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: GitHub_Actions_Role
+      RoleName: GitHub_Actions_Role_SearchUI_test
       AssumeRolePolicyDocument:
         Version: 2012-10-17
         Statement:
