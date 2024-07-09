@@ -4,9 +4,6 @@ inputs:
   maturity:
     required: true
     type: string
-  application:
-    required: true
-    type: string
   cdn-id:
     required: true
     type: string
@@ -55,14 +52,14 @@ runs:
       shell: bash
       run: |
         cd dist/search-ui
-        aws s3 sync . "s3://${{ inputs.s3-bucket }}/${{ inputs.application }}"
+        aws s3 sync . "s3://${{ inputs.s3-bucket }}"
         aws cloudfront create-invalidation \
             --distribution-id ${{ inputs.cdn-id }} \
             --paths \
-                ${{ inputs.application }}/index.html \
-                ${{ inputs.application }}/manifest.json \
-                ${{ inputs.application }}/ngsw.json \
-                ${{ inputs.application }}/favicon.ico \
-                ${{ inputs.application }}/assets/i18n/* \
-                ${{ inputs.application }}/assets/* \
-                ${{ inputs.application }}/docs/*
+                /index.html \
+                /manifest.json \
+                /ngsw.json \
+                /favicon.ico \
+                /assets/i18n/* \
+                /assets/* \
+                /docs/*
