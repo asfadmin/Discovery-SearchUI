@@ -44,6 +44,16 @@ Resources:
                 Resource:
                   - arn:aws:s3:::search-ui-custom-deployments
                   - arn:aws:s3:::search-ui-custom-deployments/*
+                  - arn:aws:s3:::asf-search-ui-4
+                  - arn:aws:s3:::asf-search-ui-4/*
+                  - arn:aws:s3:::asf-search-ui-3
+                  - arn:aws:s3:::asf-search-ui-3/*
+                  - arn:aws:s3:::asf-search-ui-2
+                  - arn:aws:s3:::asf-search-ui-2/*
+                  - arn:aws:s3:::asf-search-ui-1
+                  - arn:aws:s3:::asf-search-ui-1/*
+                  - arn:aws:s3:::asf-search-ui-andy-2
+                  - arn:aws:s3:::asf-search-ui-andy-2/*
         - PolicyName: CloudfrontInvalidation
           PolicyDocument:
             Version: '2012-10-17'

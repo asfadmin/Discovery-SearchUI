@@ -1,4 +1,4 @@
-name: Deploy dev SearchUI
+name: Deploy will SearchUI
 
 on:
   push:
