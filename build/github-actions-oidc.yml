@@ -42,6 +42,8 @@ Resources:
                   - s3:ListBucket
                   - s3:PutObject
                 Resource:
+                  - arn:aws:s3:::asf-search-ui-test
+                  - arn:aws:s3:::asf-search-ui-test/*
                   - arn:aws:s3:::search-ui-custom-deployments
                   - arn:aws:s3:::search-ui-custom-deployments/*
                   - arn:aws:s3:::asf-search-ui-4
