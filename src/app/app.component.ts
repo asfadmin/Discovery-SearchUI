@@ -268,6 +268,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           }
 
           this.store$.dispatch(new hyp3Store.LoadCosts());
+          this.store$.dispatch(new hyp3Store.LoadUser());
         }
 )
     );
@@ -530,9 +531,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       }),
       debounceTime(200),
       filter(_ => this.searchType !== SearchType.SARVIEWS_EVENTS
-        && this.searchType !== SearchType.CUSTOM_PRODUCTS
-        && this.searchType !== SearchType.BASELINE
-        && this.searchType !== SearchType.SBAS),
+        && this.searchType !== SearchType.CUSTOM_PRODUCTS),
       map(params => ({...params, output: 'COUNT'})),
       tap(_ =>
         this.store$.dispatch(new searchStore.SearchAmountLoading())

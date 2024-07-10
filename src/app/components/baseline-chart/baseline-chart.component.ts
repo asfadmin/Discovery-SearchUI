@@ -104,6 +104,8 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
           if (selected) {
             const selectedPoint = this.productToPoint(selected);
             this.setDataset(ChartDatasets.SELECTED, [selectedPoint]);
+          } else {
+            this.setDataset(ChartDatasets.SELECTED, [])
           }
 
           this.setDataset(ChartDatasets.PRODUCTS, points);
@@ -210,7 +212,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
       });
 
 
-    this.clipContainer.call(this.zoom);
+    d3.select('#baseline-chart').selectChild().call(this.zoom);
 
     this.svg.append('defs').append('SVG:clipPath')
       .attr('id', 'clip')

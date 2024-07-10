@@ -16,7 +16,7 @@ export const env = {
     urs: 'https://urs.earthdata.nasa.gov',
     urs_client_id: 'BO_n7nTIlMljdvU6kRRB3g',
     banner: 'https://banners.asf.alaska.edu',
-    user_data: 'https://e0visv5gj4.execute-api.us-east-1.amazonaws.com/prod/',
+    user_data: 'https://cgdjuem3wc.execute-api.us-east-1.amazonaws.com/prod/',
     unzip: 'https://unzip.asf.alaska.edu',
     bulk_download: 'https://bulk-download.asf.alaska.edu',
   },

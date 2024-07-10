@@ -72,6 +72,7 @@
   <button mat-menu-item
     *ngIf="breakpoint !== breakpoints.MOBILE"
     (click)="onImportSelected()"
+    [disabled]="breakpoint <= breakpoints.SMALL"
     class="control-mat-button-toggle">
     <mat-icon class="interaction-icon">upload</mat-icon>
     {{'UPLOAD_GEOSPATIAL_FILE' | translate}}

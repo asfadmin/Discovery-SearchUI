@@ -35,7 +35,6 @@ export class SearchService {
       new filterStore.ClearPerpendicularRange(),
       new filterStore.ClearTemporalRange(),
       new filterStore.ClearSeason(),
-      new uiStore.CloseFiltersMenu(),
     ];
 
     actions.forEach(

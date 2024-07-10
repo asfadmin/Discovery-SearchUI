@@ -1,0 +1,7 @@
+@import "asf-theme";
+
+a {
+    @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
+}
