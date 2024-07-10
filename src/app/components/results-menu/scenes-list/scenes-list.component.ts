@@ -500,6 +500,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
   }
 
   private loadDummyProducts(scenes: CMRProduct[]) {
+
     const scenesToLoad = scenes
     .slice(0, this.numberProductsInList)
     .filter(s => s.isDummyProduct)
