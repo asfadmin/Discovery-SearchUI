@@ -1,0 +1,247 @@
+@use "@angular/material" as mat;
+
+@import "asf-theme";
+
+.timeseries-chart-row {
+	display: flex;
+	flex-direction: row;
+	height: calc(100% - 137px);
+}
+
+.timeseries-chart-card {
+	box-shadow: none;
+	height: 100%;
+	width: 100%;
+	max-width: 60%;
+	flex: 1 1 100%;
+	box-sizing: border-box;
+}
+
+.timeseries-criteria-button-toggle-group {
+	flex: 0 1 149px !important;
+	margin-top: 5px;
+}
+
+.timeseries-criteria-button-toggle {
+	background: red;
+	font-size: 14px;
+}
+
+.criteria-button-group {
+	outline: none;
+	width: auto;
+	line-height: 26px !important;
+}
+
+.timeseries-filter-row {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 137px;
+	margin-top: 10px;
+}
+
+.select-button {
+	padding: 2px 10px;
+}
+
+.timeseries-column-1 {
+	flex-basis: 150px;
+	flex-shrink: 0;
+	flex-grow: 0;
+}
+
+.timeseries-column-2 {
+	flex: 1 1 auto;
+}
+
+.timeseries-list-card {
+	box-shadow: none !important;
+	flex: 1 1 0%;
+	box-sizing: border-box;
+}
+
+.timeseries-metadata {
+	@include themify($themes) {
+		border-left: solid 1px themed('primary-light');
+		border-right: solid 2px themed('primary-light');
+	}
+
+	overflow: auto;
+	height: 100%;
+}
+
+.product-name {
+	word-break: break-all;
+}
+
+.chart-resize-handle-left,
+.chart-resize-handle-right {
+	@include themify($themes) {
+		background-color: themed('primary-light');
+	}
+
+	height: 100%;
+}
+
+.mwlResizable {
+	box-sizing: border-box; // required for the enableGhostResize option to work
+}
+
+.chart-draggable-handle {
+	@include themify($themes) {
+		background-color: themed('primary-light');
+		border-color: themed('primary-light');
+		color: themed('primary-light');
+	}
+
+	display: flex;
+	align-items: center;
+	cursor: ew-resize;
+	border-style: solid;
+	border-radius: 5px;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
+.timeseries-resize-handle-filler {
+	@include themify($themes) {
+		background-color: themed('primary-light');
+	}
+
+	width: 10px;
+	height: 100%;
+}
+
+.vgrip-icon {
+	@include themify($themes) {
+		stroke: themed('dark-primary-text');
+	}
+
+	height: 33px;
+}
+
+.timeseries-header {
+	@include themify($themes) {
+		background-color: themed('primary-light');
+		color: themed('dark-primary-text')
+	}
+
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	height: 50px;
+	padding-top: 0;
+	margin-bottom: 0;
+	font-family: Roboto,
+	sans-serif;
+	font-weight: 400;
+	font-size: 16px;
+	text-align: center;
+	margin-top: -20px;
+	border-left: none;
+}
+
+.control-icon {
+	@include themify($themes) {
+		color: themed('dark-primary-text');
+	}
+
+	margin-top: -4px;
+
+	@include md-icon-size($asf-ribbon-icon-size);
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
+.mat-button-toggle-disabled {
+	.control-icon {
+		@include themify($themes) {
+			color: themed('dark-disabled-text');
+		}
+	}
+}
+
+.timeseries-ribbon-group {
+	justify-content: center;
+	max-width: fit-content;
+}
+
+.toggle-group-wrapper--layout {
+	flex-direction: row;
+	box-sizing: border-box;
+	display: flex;
+	place-content: stretch center;
+	align-items: stretch;
+}
+
+.timeseries-button-group {
+	max-width: fit-content;
+	flex: 1 1 0%;
+	box-sizing: border-box;
+}
+
+.timeseries-button-group-filler {
+	width: 10px;
+	max-width: 10px;
+}
+
+.timeseries-toggle-group {
+	flex: 1 1 0%;
+	box-sizing: border-box;
+}
+
+.button-group {
+	margin: 0 3px 3px 1px;
+	pointer-events: auto;
+}
+
+.button-group-label {
+	@include themify($themes) {
+		color: themed('dark-primary-text');
+	}
+
+	white-space: nowrap;
+	text-align: center;
+	flex-direction: row;
+	box-sizing: border-box;
+	display: flex;
+	place-content: stretch center;
+	align-items: stretch;
+}
+
+label {
+	font-size: 11px;
+}
+
+.info-icon {
+	margin-left: 10px;
+	margin-top: 4px;
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
+.control-mat-button-toggle {
+	@include themify($themes) {
+		background: themed('background-white') !important;
+	}
+}
+
+.warn-icon {
+	@include themify($themes) {
+		color: darken(themed('dark-primary-text'), 25%);
+	}
+}
+
+.gap-detected-area {
+	position: relative;
+	top: 15%;
+	left: 90%;
+	border-radius: 50%;
+	display: grid;
+	place-items: center;
+	width: 30px;
+
+	@include themify($themes) {
+		background: darken(themed('background-white'), 15%);
+	}
+}

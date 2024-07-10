@@ -1,0 +1,12 @@
+@import "asf-theme";
+
+#timeseriesChart {
+	height: 460px;
+	width: 680px;
+  }
+  
+  ::ng-deep .timeseries-base {
+	@include themify($themes) {
+	  fill: lighten(themed('dark-primary-text'), 45%);
+	}
+  }

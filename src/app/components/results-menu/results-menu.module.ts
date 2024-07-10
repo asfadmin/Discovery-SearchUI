@@ -9,10 +9,10 @@ import { SarviewsResultsMenuModule } from './sarviews-results-menu/sarviews-resu
 import { BaselineResultsMenuModule } from './baseline-results-menu/baseline-results-menu.module';
 import { DesktopResultsMenuModule } from './desktop-results-menu/desktop-results-menu.module';
 import { MobileResultsMenuModule } from './mobile-results-menu/mobile-results-menu.module';
+import { TimeseriesResultsMenuModule } from './timeseries-results-menu/timeseries-results-menu.module';
 
 import { ResultsMenuComponent } from './results-menu.component';
 import { SharedModule } from '@shared';
-
 
 @NgModule({
   declarations: [
@@ -28,6 +28,7 @@ import { SharedModule } from '@shared';
     BaselineResultsMenuModule,
     DesktopResultsMenuModule,
     MobileResultsMenuModule,
+    TimeseriesResultsMenuModule,
   ],
   exports: [
     ResultsMenuComponent,

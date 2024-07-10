@@ -37,6 +37,7 @@ import { LogoModule } from '@components/header/logo/logo.module';
 import { HeaderComponent } from './header.component';
 import { InfoBarComponent } from './info-bar/info-bar.component';
 import { DatasetHeaderComponent } from './dataset-header/dataset-header.component';
+import { TimeseriesHeaderComponent } from './timeseries-header/timeseries-header.component';
 import { ListHeaderComponent } from './list-header/list-header.component';
 import { BaselineHeaderComponent } from './baseline-header/baseline-header.component';
 import { SarviewsHeaderComponent } from './sarviews-header/sarviews-header.component';
@@ -61,6 +62,7 @@ import { LanguageSelectorModule } from "@components/shared/selectors/language-se
     BaselineHeaderComponent,
     Hyp3HeaderComponent,
     SarviewsHeaderComponent,
+    TimeseriesHeaderComponent  
   ],
   imports: [
     CommonModule,
@@ -98,7 +100,7 @@ import { LanguageSelectorModule } from "@components/shared/selectors/language-se
     Hyp3UrlModule,
     SharedModule,
     LanguageSelectorModule,
-    OnDemandUserSelectorModule,
+    OnDemandUserSelectorModule
   ],
   exports: [
     HeaderComponent

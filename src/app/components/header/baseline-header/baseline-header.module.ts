@@ -11,8 +11,6 @@ import { SharedModule } from "../../../shared";
   imports: [
     CommonModule,
     SharedModule
-
-
   ],
   exports: [
     BaselineHeaderComponent

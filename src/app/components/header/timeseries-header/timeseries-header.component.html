@@ -1,0 +1,23 @@
+<ng-container *ngIf="breakpoint$ | async as breakpoint">
+	<div *ngIf="breakpoint > breakpoints.MOBILE" class="breadcrumb-row baseline-header-layout">
+		<div class="baseline-header-wrapper">
+			<app-search-type-selector class="breadcrumb">
+			</app-search-type-selector>
+
+			<div class="breadcrumb scene-selector" [class.scene-selector]="breakpoint === breakpoints.FULL"
+				[class.medium-scene-selector]="breakpoint === breakpoints.MEDIUM"
+				[class.small-scene-selector]="breakpoint === breakpoints.SMALL">
+				<app-master-scene-selector></app-master-scene-selector>
+			</div>
+
+			<div class="breadcrumb search-button-layout">
+				<app-search-button></app-search-button>
+			</div>
+
+			<div class="icon-cluster">
+				<app-header-buttons>
+				</app-header-buttons>
+			</div>
+		</div>
+	</div>
+</ng-container>

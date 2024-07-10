@@ -72,6 +72,17 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
 
 'tools':[
     {
+      searchType: models.SearchType.TIMESERIES,
+      nameKey:'TIMESERIES',
+      descriptionKeys:[
+        'BASELINE_SEARCH_PROVIDES_VISUALIZATION_OF_PERPENDICULAR_AND_TEMPORAL_BASELINE_DATA_FOR_A_CHOSEN',
+        'REFERENCE_SCENE',
+      ],
+      helpUrl:'https://docs.asf.alaska.edu/vertex/manual/#baseline-search-options',
+      icon:'zoom',
+      iconType: models.IconType.MATERIAL,
+    },
+    {
       searchType: models.SearchType.BASELINE,
       nameKey:'BASELINE',
       descriptionKeys:[

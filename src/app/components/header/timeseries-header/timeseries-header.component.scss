@@ -1,0 +1,33 @@
+.baseline-header-layout {
+	flex-direction: row;
+	box-sizing: border-box;
+	display: flex;
+  }
+  
+  .baseline-header-wrapper {
+	flex-direction: row;
+	box-sizing: border-box;
+	display: flex;
+  }
+  
+  .search-button-layout {
+	flex: 0 1 auto;
+	box-sizing: border-box;
+  }
+  
+  .scene-selector {
+	width: 670px;
+  }
+  
+  .medium-scene-selector {
+	width: 405px;
+  }
+  
+  .small-scene-selector {
+	width: 200px;
+  }
+  .icon-cluster {
+	position: absolute;
+	top: 25px;
+	right: 10px;
+  }
