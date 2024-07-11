@@ -1,12 +1,10 @@
 <!-- SCENE LIST -->
 <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
-	<mat-card #listCard class="mp0 timeseries-list-card" [style.width]="listCardMaxWidth">
-		<mat-card-subtitle style="display: flex; flex-direction: row; justify-content: center; align-items: center;"
-			class="header">
+	<mat-card #listCard class="mp0 timeseries-list-card">
+		<mat-card-subtitle class=" timeseries-scene-list-header header">
 			<app-scenes-list-header></app-scenes-list-header>
-			
-
 		</mat-card-subtitle>
+
 		<div>
 			<mat-list>
 
@@ -15,7 +13,7 @@
 						{{point.flatCoordinates[0]}}, {{point.flatCoordinates[1]}}
 					</mat-list-item>
 				}
-	
+
 				</mat-list>
 		</div>
 
