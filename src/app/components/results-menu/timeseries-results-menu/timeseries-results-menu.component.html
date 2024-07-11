@@ -9,7 +9,7 @@
 			<mat-radio-group>
 
 				@for (point of pointHistory; track $index) {
-					<mat-radio-button>
+					<mat-radio-button color="primary">
 						{{point.flatCoordinates[0]}}, {{point.flatCoordinates[1]}}
 					</mat-radio-button>
 				}
