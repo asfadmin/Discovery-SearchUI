@@ -16,7 +16,10 @@
           searchType === SearchTypes.DATASET ||
           searchType === SearchTypes.BASELINE ||
           searchType === SearchTypes.LIST ||
-          searchType === SearchTypes.CUSTOM_PRODUCTS">
+          searchType === SearchTypes.CUSTOM_PRODUCTS ||
+          searchType === SearchTypes.TIMESERIES
+          "
+          >
         <div *cdkVirtualFor="let scene of scenes | slice:0:numberProductsInList">
           <app-scene
             (click)="onSceneSelected(scene.id)"
