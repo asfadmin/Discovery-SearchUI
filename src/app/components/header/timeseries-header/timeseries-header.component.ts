@@ -10,7 +10,7 @@ import { Breakpoints } from '@models';
 @Component({
   selector: 'app-timeseries-header',
   templateUrl: './timeseries-header.component.html',
-  styleUrl: './timeseries-header.component.scss'
+  styleUrls: ['./timeseries-header.component.scss',  '../header.component.scss']
 })
 export class TimeseriesHeaderComponent {
   public breakpoint$ = this.screenSize.breakpoint$;

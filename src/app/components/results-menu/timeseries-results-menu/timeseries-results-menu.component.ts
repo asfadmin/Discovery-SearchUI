@@ -16,7 +16,8 @@ import { SubSink } from 'subsink';
 @Component({
   selector: 'app-timeseries-results-menu',
   templateUrl: './timeseries-results-menu.component.html',
-  styleUrl: './timeseries-results-menu.component.scss'
+  styleUrls: ['./timeseries-results-menu.component.scss',  '../results-menu.component.scss']
+
 })
 export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
 
