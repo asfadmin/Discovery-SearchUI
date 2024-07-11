@@ -6,15 +6,15 @@
 		</mat-card-subtitle>
 
 		<div>
-			<mat-list>
+			<mat-radio-group>
 
 				@for (point of pointHistory; track $index) {
-					<mat-list-item>
+					<mat-radio-button>
 						{{point.flatCoordinates[0]}}, {{point.flatCoordinates[1]}}
-					</mat-list-item>
+					</mat-radio-button>
 				}
 
-				</mat-list>
+				</mat-radio-group>
 		</div>
 
 	</mat-card>
