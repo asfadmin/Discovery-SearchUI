@@ -1,29 +1,26 @@
 <!-- SCENE LIST -->
 <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
-	<mat-card #listCard class="mp0 timeseries-list-card">
-		<mat-card-subtitle class=" timeseries-scene-list-header header">
+
+	<mat-card #listCard class="mp0 ts-list-card">
+		<mat-card-subtitle class="header ts-scene-list-header">
 			<app-scenes-list-header></app-scenes-list-header>
 		</mat-card-subtitle>
 
 		<div>
 			<mat-radio-group>
-
 				@for (point of pointHistory; track $index) {
 					<mat-radio-button color="primary">
 						{{point.flatCoordinates[0]}}, {{point.flatCoordinates[1]}}
 					</mat-radio-button>
 				}
-
-				</mat-radio-group>
+			</mat-radio-group>
 		</div>
-
 	</mat-card>
 
-	<mat-card class="mp0 timeseries-list-card" [style.width]="listCardMaxWidth">
-		<mat-card-subtitle style="display: flex; flex-direction: row; justify-content: center; align-items: flex-start;"
-			class="header">
+	<mat-card class="mp0 ts-list-card ts-layer-list" >
+		<mat-card-subtitle class="header ts-layer-list-header">
 		</mat-card-subtitle>
-		<div class="timeseries-metadata scrollable">
+		<div class="ts-metadata scrollable">
 			<app-scenes-list [resize$]="resize$"></app-scenes-list>
 			<div *ngIf="false" style="margin: 5px; padding-bottom: 36px;">
 				<div class="faint-text w100 h100" style="text-align: center; padding-top: 10px;">
@@ -34,21 +31,21 @@
 	</mat-card>
 </ng-container>
 
-<mat-card #chartCard class="mp0 timeseries-chart-card" [style.max-width]="chartCardMaxWidth" style="box-shadow: none;"
+<mat-card #chartCard class="mp0 ts-chart-card"
 	mwlResizable [enableGhostResize]="true" (resizeEnd)="onResizeEnd($event)">
-	<div mwlResizeHandle [resizeEdges]="{ left: true }" class="chart-draggable-handle timeseries-resize-handle-filler">
+	<div mwlResizeHandle [resizeEdges]="{ left: true }" class="chart-draggable-handle ts-resize-handle-filler">
 		<mat-icon svgIcon="vgrip" class="vgrip-icon"></mat-icon>
 
 	</div>
-	<mat-card-subtitle [class.medium-header]="breakpoint <= breakpoints.MEDIUM" class="timeseries-header">
+	<mat-card-subtitle [class.medium-header]="breakpoint <= breakpoints.MEDIUM" class="ts-header">
 
-		<div class="timeseries-button-group">
+		<div class="ts-button-group">
 			<div class="button-group-label">
 				<label>{{ 'ZOOM' | translate }}</label>
 			</div>
 			<div class="fx-row">
 				<div>
-					<mat-button-toggle-group class="timeseries-toggle-group" name="layerType">
+					<mat-button-toggle-group class="ts-toggle-group" name="layerType">
 						<mat-button-toggle class="control-mat-button-toggle" (click)="zoomIn()"
 							matTooltip="{{ 'ZOOM_IN' | translate }}">
 							<mat-icon class="control-icon">add</mat-icon>
@@ -68,15 +65,15 @@
 			</div>
 		</div>
 
-		<div class="timeseries-button-group-filler timeseries-button-group"></div>
+		<div class="ts-button-group-filler ts-button-group"></div>
 
-		<div class="timeseries-button-group-filler timeseries-button-group"></div>
-		<div class='timeseries-button-group'>
+		<div class="ts-button-group-filler ts-button-group"></div>
+		<div class='ts-button-group'>
 			<div class="button-group-label">
 				<label>{{ 'FILTERS' | translate }}</label>
 			</div>
 			<div class="toggle-group-wrapper--layout">
-				<mat-button-toggle class="control-mat-button-toggle timeseries-criteria-button-toggle"
+				<mat-button-toggle class="control-mat-button-toggle ts-criteria-button-toggle"
 					(click)="onToggleFiltersMenu()">
 					{{ 'TIMESERIES FILTERS' | translate }}<mat-icon class="more-horiz">more_horiz</mat-icon>
 				</mat-button-toggle>
@@ -88,15 +85,15 @@
 	<div class="resize-handle-left" mwlResizeHandle [resizeEdges]="{ left: true }">
 	</div>
 
-	<div class="timeseries-chart-row">
-		<div class="timeseries-column-1">
+	<div class="ts-chart-row">
+		<div class="ts-column-1">
 		</div>
 
-		<div id="timeseries-chart-column" class="timeseries-column-2">
+		<div id="ts-chart-column" class="ts-column-2">
 			<app-timeseries-chart></app-timeseries-chart>
 		</div>
 	</div>
 
-	<div class="timeseries-filter-row">
+	<div class="ts-filter-row">
 	</div>
 </mat-card>
