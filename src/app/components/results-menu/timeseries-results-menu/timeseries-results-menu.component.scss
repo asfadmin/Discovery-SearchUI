@@ -57,8 +57,17 @@
 
 .timeseries-list-card {
 	box-shadow: none !important;
-	flex: 1 1 0%;
 	box-sizing: border-box;
+  width: 130px;
+}
+
+.timeseries-scene-list-header {
+  justify-content: flex-start;
+  align-items: center;
+  flex-basis: 130px;
+  flex-grow: 0;
+  max-height: 30px;
+  max-width: 130px;
 }
 
 .timeseries-metadata {

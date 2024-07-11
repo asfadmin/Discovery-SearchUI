@@ -14,6 +14,7 @@ import { ScenesListHeaderModule } from '../scenes-list-header';
 import { SceneMetadataModule } from '@components/shared/scene-metadata';
 import { TimeseriesChartModule } from '@components/timeseries-chart/timeseries-chart.module';
 import { ResizableModule } from 'angular-resizable-element';
+import {MatRadioButton, MatRadioGroup} from '@angular/material/radio';
 
 
 @NgModule({
@@ -28,11 +29,13 @@ import { ResizableModule } from 'angular-resizable-element';
     MatButtonToggleModule,
     FontAwesomeModule,
     SharedModule,
-	ScenesListModule,
-	ScenesListHeaderModule,
-	SceneMetadataModule,
-	TimeseriesChartModule,
+    ScenesListModule,
+    ScenesListHeaderModule,
+    SceneMetadataModule,
+    TimeseriesChartModule,
     ResizableModule,
+    MatRadioGroup,
+    MatRadioButton,
   ],
   exports: [
     TimeseriesResultsMenuComponent
