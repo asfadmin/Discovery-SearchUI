@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: build
-        uses: ./.github/workflows/search-ui-deploy-composite
+        uses: ./.github/workflows/search-ui-edc-deploy-composite
         with:
           maturity: ${{ vars.MATURITY }}
           s3-bucket: ${{ vars.S3_BUCKET }}
