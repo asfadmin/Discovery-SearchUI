@@ -1,4 +1,4 @@
-name: Composite search-ui deploy action
+name: Composite search-ui edc test deploy action
 
 inputs:
   maturity:
