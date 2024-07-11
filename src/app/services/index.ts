@@ -35,3 +35,4 @@ export { ThemingService } from './theming.service';
 export { ExportService } from './export.service';
 export { PossibleHyp3JobsService } from './possible-hyp3-jobs.service';
 export { NetcdfServiceService } from './netcdf-service.service';
+export { PointHistoryService } from './point-history.service';

@@ -9,11 +9,12 @@ import * as searchStore from '@store/search';
 import * as sceneStore from '@store/scenes';
 
 import { Breakpoints,  SearchType } from '@models';
-import { ScreenSizeService } from '@services';
+import { PointHistoryService, ScreenSizeService } from '@services';
 
 import { SubSink } from 'subsink';
 
 import moment from 'moment';
+import { Point } from 'ol/geom';
 
 
 @Component({
@@ -44,9 +45,12 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public zoomOutChart$ =  new Subject<void>();
   public zoomToFitChart$ =  new Subject<void>();
 
+  public pointHistory = [];
+
   constructor(
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
+    private pointHistoryService: PointHistoryService,
   ) { }
 
   ngOnInit(): void {
@@ -133,6 +137,12 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       ],
       "searchType": SearchType.TIMESERIES
     }))
+    this.pointHistoryService.history$.subscribe(history => {
+      this.pointHistory = history;
+    console.log(this.pointHistory)
+
+    })
+    this.pointHistoryService.addPoint(new Point([11,11]))
   }
 
   public onResizeEnd(event: ResizeEvent): void {

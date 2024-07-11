@@ -4,8 +4,20 @@
 		<mat-card-subtitle style="display: flex; flex-direction: row; justify-content: center; align-items: center;"
 			class="header">
 			<app-scenes-list-header></app-scenes-list-header>
-		</mat-card-subtitle>
+			
 
+		</mat-card-subtitle>
+		<div>
+			<mat-list>
+
+				@for (point of pointHistory; track $index) {
+					<mat-list-item>
+						{{point.flatCoordinates[0]}}, {{point.flatCoordinates[1]}}
+					</mat-list-item>
+				}
+	
+				</mat-list>
+		</div>
 
 	</mat-card>
 
