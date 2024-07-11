@@ -4,9 +4,6 @@ inputs:
   maturity:
     required: true
     type: string
-  cdn-id:
-    required: true
-    type: string
   s3-bucket:
     required: true
     type: string

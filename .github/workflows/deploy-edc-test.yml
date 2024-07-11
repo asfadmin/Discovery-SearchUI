@@ -21,6 +21,5 @@ jobs:
         uses: ./.github/workflows/search-ui-deploy-composite
         with:
           maturity: ${{ vars.MATURITY }}
-          cdn-id: ${{ vars.CDN_ID }}
           s3-bucket: ${{ vars.S3_BUCKET }}
           aws-account-id: ${{ secrets.AWS_ACCOUNT_ID }}
