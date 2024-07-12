@@ -11,8 +11,7 @@
 .ts-chart-card {
 	box-shadow: none;
 	height: 100%;
-	width: 100%;
-	flex: 1 1 100%;
+	flex: 1 1 auto;
 	box-sizing: border-box;
 }
 
@@ -61,8 +60,7 @@
 }
 
 .ts-layer-list {
-  flex-basis: 500px;
-  flex-grow: 0;
+  flex: 1 1 500px;
 }
 
 .ts-layer-list-header {
