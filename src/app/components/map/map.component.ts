@@ -32,7 +32,6 @@ import { StyleLike } from 'ol/style/Style';
 import { Feature } from 'ol';
 import Geometry from 'ol/geom/Geometry';
 import { MatDialog } from '@angular/material/dialog';
-import { TimeseriesComponent} from '../../dialogs/timeseries'
 
 enum FullscreenControls {
   MAP = 'Map',
@@ -282,7 +281,7 @@ export class MapComponent implements OnInit, OnDestroy  {
         this.netcdfService.getTimeSeries(mousePos).pipe(
           first()
         ).subscribe(
-          response => this.dialog.open(TimeseriesComponent, {data: response})
+          response => console.log(response)
         );
       }
     )
