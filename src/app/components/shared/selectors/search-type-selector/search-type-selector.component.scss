@@ -34,11 +34,15 @@
 }
 
 .menu-item-inner {
-  min-width: 580px;
+  width: calc(100% - 20px);
 }
 
 .menu-item-content {
   min-width: 450px;
+}
+
+.menu-item-aside {
+  min-width: 130px;
 }
 
 .item-title {

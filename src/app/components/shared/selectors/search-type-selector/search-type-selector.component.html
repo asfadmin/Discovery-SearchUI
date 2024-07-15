@@ -62,10 +62,10 @@
                   <img *ngIf="type.iconType === iconTypes.IMAGE" src="{{ type.icon }}" class="menu-item-icon">
                 </div>
               </div>
-              @if(!last) {
-                <hr class="dataset-hr">
-              }
             </menu>
+            @if(!last) {
+              <hr class="dataset-hr">
+            }
           }
           <hr class="dataset-hr">
           <menu mat-menu-item class="menu-item mat-menu-item" [matMenuTriggerFor]="derivedDatasetMenu" mat-menu-item>
