@@ -34,7 +34,7 @@
 }
 
 .menu-item-inner {
-  width: calc(100% - 20px);
+  width: calc(100% - 20px) !important;
 }
 
 .menu-item-content {
@@ -42,7 +42,7 @@
 }
 
 .menu-item-aside {
-  min-width: 130px;
+  //min-width: 130px;
 }
 
 .item-title {
