@@ -102,13 +102,6 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
       helpUrl:'https://docs.asf.alaska.edu/vertex/manual/#sbas-search-options',
       icon:'assets/icons/sbas-chart.jpg',
       iconType: models.IconType.IMAGE,
-    }, {
-      searchType: models.SearchType.SARVIEWS_EVENTS,
-      nameKey:'EVENT',
-      descriptionKeys:['EVENT_SEARCH_HARNESSES_THE_CAPABILITIES_OF_SAR_PROCESSING_TO_MONITOR_NATURAL_DISASTERS'],
-      helpUrl:'https://docs.asf.alaska.edu/vertex/manual/#event-search-options',
-      icon:'volcano',
-      iconType: models.IconType.MATERIAL,
     }
   ]};
 

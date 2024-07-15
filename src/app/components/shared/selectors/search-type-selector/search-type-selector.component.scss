@@ -20,6 +20,11 @@
   padding: 0;
 }
 
+.category-hr {
+  padding: 0;
+  border-top: 2px solid;
+}
+
 .mat-mdc-menu-item {
   padding: 0;
 }
@@ -28,8 +33,19 @@
   display: flex;
 }
 
+.menu-item-inner {
+  min-width: 580px;
+}
+
+.menu-item-content {
+  min-width: 450px;
+}
+
 .item-title {
   font-weight: bold;
+}
+
+.item-content {
 }
 
 .mat-mdc-card-actions {

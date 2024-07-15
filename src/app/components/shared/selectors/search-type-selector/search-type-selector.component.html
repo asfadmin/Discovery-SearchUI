@@ -20,25 +20,71 @@
     <mat-menu #searchTypeMenu="matMenu" [(ngModel)]="searchType" name="searchType" id="searchMenu" ngDefaultControl>
 
       <div>
-        <menu mat-menu-item class="menu-item mat-menu-item" [matMenuTriggerFor]="searchMenu" mat-menu-item>
-          <div class="menu-item-inner">
-            <div class="fx-75 menu-item-content">
-              <div class="item-title">
-                Search Types
+<!--        <menu mat-menu-item class="menu-item mat-menu-item" [matMenuTriggerFor]="searchMenu" mat-menu-item>-->
+<!--          <div class="menu-item-inner">-->
+<!--            <div class="fx-75 menu-item-content">-->
+<!--              <div class="item-title">-->
+<!--                Search Types AAA-->
+<!--              </div>-->
+<!--              <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">-->
+<!--                A collection of different search types available for perusal.-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="fx-25 menu-item-aside">-->
+<!--              <span class="material-icons-outlined menu-item-icon">-->
+<!--                search-->
+<!--              </span>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </menu>-->
+
+          @for(type of searchTypeSelectors.search; track type.nameKey; let last = $last) {
+            <menu class="menu-item mat-menu-item" mat-menu-item (click)="onSetSearchType(type.searchType)">
+              <div class="menu-item-inner">
+                <div class="fx-75 menu-item-content">
+                  <div class="item-title">
+                    {{ type.nameKey | translate}}
+                  </div>
+                  <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
+                    <span *ngFor="let key of type.descriptionKeys">
+                      {{ key | translate }}
+                    </span>
+                  </div>
+                  <mat-card-actions>
+                    <app-docs-modal class="info-text" text="{{'MORE_INFO' | translate}}" url="{{ type.helpUrl}}">
+                    </app-docs-modal>
+                  </mat-card-actions>
+                </div>
+                <div class="fx-25 menu-item-aside">
+                  <span *ngIf="type.iconType === iconTypes.MATERIAL" class="material-icons-outlined menu-item-icon">
+                    {{ type.icon}}
+                  </span>
+                  <img *ngIf="type.iconType === iconTypes.IMAGE" src="{{ type.icon }}" class="menu-item-icon">
+                </div>
               </div>
-              <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                A collection of different search types available for perusal.
+              @if(!last) {
+                <hr class="dataset-hr">
+              }
+            </menu>
+          }
+          <hr class="dataset-hr">
+          <menu mat-menu-item class="menu-item mat-menu-item" [matMenuTriggerFor]="derivedDatasetMenu" mat-menu-item>
+            <div class="menu-item-inner">
+              <div class="fx-75 menu-item-content">
+                <div class="item-title">
+                  {{'DERIVED_DATASETS' | translate }}
+                </div>
+                <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
+                  {{'DERIVED_DATASETS_CONTAIN_A_COLLECTION_OF_DATASETS_AVAILABLE_TO_VIEW_AND_DOWNLOAD'| translate }}
+                </div>
+              </div>
+              <div class="fx-25 menu-item-aside">
+                <span class="material-icons-outlined menu-item-icon">{{ 'DATASET_LINKED' | translate }}</span>
               </div>
             </div>
-            <div class="fx-25 menu-item-aside">
-              <span class="material-icons-outlined menu-item-icon">
-                search</span>
+          </menu>
 
-            </div>
-          </div>
-        </menu>
-        <hr class="dataset-hr">
-
+        <hr class="category-hr">
         <menu mat-menu-item class="menu-item mat-menu-item" [matMenuTriggerFor]="toolMenu" mat-menu-item>
           <div class="menu-item-inner">
             <div class="fx-75 menu-item-content">
@@ -46,57 +92,14 @@
                 Tools
               </div>
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                A collection of different tools available for refining searches.
+                A collection of different tools available for refining searches:
+                <b>SBAS, Baseline, Time Series, and On Demand Products</b>
               </div>
             </div>
             <div class="fx-25 menu-item-aside">
               <span class="material-icons-outlined menu-item-icon">
-                gear</span>
-
-            </div>
-          </div>
-        </menu>
-        <hr class="dataset-hr">
-
-        <menu class="menu-item mat-menu-item" mat-menu-item (click)="onSetSearchType(searchTypes.CUSTOM_PRODUCTS)"
-          [ngClass]="{'disable-search-type-on-demand' : !isLoggedIn}">
-          <div class="menu-item-inner">
-            <div class="fx-75 menu-item-content">
-              <div class="item-title">
-                {{'ON_DEMAND_PRODUCTS' | translate}}
-                <span class="login-prompt" [ngClass]="{'login-hidden' : isLoggedIn}">
-                  {{'SIGN_IN_TO_ACCESS' | translate}}
-                </span>
-              </div>
-              <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                {{'ON_DEMAND_SEARCH_ALLOWS_YOU_TO_VIEW_YOUR_SUBMITTED_ON_DEMAND_JOBS' | translate}}
-              </div>
-              <mat-card-actions (click)="onOpenDocs($event)">
-                <app-docs-modal class="info-text" text="{{ 'MORE_INFO' | translate }}"
-                  url="https://docs.asf.alaska.edu/vertex/manual/#on-demand-products-search-options">
-                </app-docs-modal>
-              </mat-card-actions>
-            </div>
-            <div class="fx-25 menu-item-aside">
-              <img src="assets/asf-logos/HyP3-graphic-only.png" class="menu-item-icon">
-            </div>
-          </div>
-        </menu>
-
-        <hr class="dataset-hr">
-
-        <menu mat-menu-item class="menu-item mat-menu-item" [matMenuTriggerFor]="derivedDatasetMenu" mat-menu-item>
-          <div class="menu-item-inner">
-            <div class="fx-75 menu-item-content">
-              <div class="item-title">
-                {{'DERIVED_DATASETS' | translate }}
-              </div>
-              <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                {{'DERIVED_DATASETS_CONTAIN_A_COLLECTION_OF_DATASETS_AVAILABLE_TO_VIEW_AND_DOWNLOAD'| translate }}
-              </div>
-            </div>
-            <div class="fx-25 menu-item-aside">
-              <span class="material-icons-outlined menu-item-icon">{{ 'DATASET_LINKED' | translate }}</span>
+                construction
+              </span>
             </div>
           </div>
         </menu>
@@ -132,38 +135,6 @@
       </menu>
     </mat-menu>
 
-    <mat-menu #searchMenu="matMenu">
-      @for(type of searchTypeSelectors.search; track type.nameKey; let last = $last) {
-      <menu class="menu-item mat-menu-item" mat-menu-item (click)="onSetSearchType(type.searchType)">
-        <div class="menu-item-inner">
-          <div class="fx-75 menu-item-content">
-            <div class="item-title">
-              {{ type.nameKey | translate}}
-            </div>
-            <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-              <span *ngFor="let key of type.descriptionKeys">
-                {{ key | translate }}
-              </span>
-            </div>
-            <mat-card-actions>
-              <app-docs-modal class="info-text" text="{{'MORE_INFO' | translate}}" url="{{ type.helpUrl}}">
-              </app-docs-modal>
-            </mat-card-actions>
-          </div>
-          <div class="fx-25 menu-item-aside">
-            <span *ngIf="type.iconType === iconTypes.MATERIAL" class="material-icons-outlined menu-item-icon">
-              {{ type.icon}}</span>
-
-            <img *ngIf="type.iconType === iconTypes.IMAGE" src="{{ type.icon }}" class="menu-item-icon">
-          </div>
-        </div>
-        @if(!last) {
-        <hr class="dataset-hr">
-        }
-      </menu>
-      }
-
-    </mat-menu>
     <mat-menu #toolMenu="matMenu">
       @for(type of searchTypeSelectors.tools; track type.nameKey; let last = $last) {
       <menu class="menu-item mat-menu-item" mat-menu-item (click)="onSetSearchType(type.searchType)">
@@ -194,6 +165,33 @@
         }
       </menu>
       }
+
+      <hr class="dataset-hr">
+      <menu class="menu-item mat-menu-item" mat-menu-item (click)="onSetSearchType(searchTypes.CUSTOM_PRODUCTS)"
+            [ngClass]="{'disable-search-type-on-demand' : !isLoggedIn}">
+        <div class="menu-item-inner">
+          <div class="fx-75 menu-item-content">
+            <div class="item-title">
+              {{'ON_DEMAND_PRODUCTS' | translate}}
+              <span class="login-prompt" [ngClass]="{'login-hidden' : isLoggedIn}">
+                    {{'SIGN_IN_TO_ACCESS' | translate}}
+                  </span>
+            </div>
+            <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
+              {{'ON_DEMAND_SEARCH_ALLOWS_YOU_TO_VIEW_YOUR_SUBMITTED_ON_DEMAND_JOBS' | translate}}
+            </div>
+            <mat-card-actions (click)="onOpenDocs($event)">
+              <app-docs-modal class="info-text" text="{{ 'MORE_INFO' | translate }}"
+                              url="https://docs.asf.alaska.edu/vertex/manual/#on-demand-products-search-options">
+              </app-docs-modal>
+            </mat-card-actions>
+          </div>
+          <div class="fx-25 menu-item-aside">
+            <img src="assets/asf-logos/HyP3-graphic-only.png" class="menu-item-icon">
+          </div>
+        </div>
+      </menu>
+
 
     </mat-menu>
   </div>
