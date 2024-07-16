@@ -383,6 +383,7 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       };
     }
 
+
     case ScenesActionType.SET_SELECTED_SARVIEW_PRODUCT: {
       return {
         ...state,

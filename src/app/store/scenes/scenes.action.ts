@@ -8,6 +8,7 @@ export enum ScenesActionType {
   CLEAR = '[Granules] Clear Scenes',
   SET_SARVIEWS_EVENTS = '[SARViews] Set SARViews Events',
   SET_SARVIEWS_EVENT_PRODUCTS = '[SARViews] Set Selected SARViews Event Products',
+  SET_TIMESERIES_PRODUCTS = '[Timeseries] Set Selected Timeseries Products',
 
   SET_IMAGE_BROWSE_PRODUCTS = '[Products-Browse] Set product browse image view',
 
