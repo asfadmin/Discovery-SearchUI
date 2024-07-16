@@ -14,6 +14,7 @@ import { FiltersDropdownComponent } from './filters-dropdown.component';
 
 import { ListFiltersModule } from './list-filters';
 import { DatasetFiltersModule } from './dataset-filters';
+import { TimeseriesFiltersModule } from './timeseries-filters';
 import { BaselineFiltersModule } from './baseline-filters';
 import { SbasFiltersModule } from './sbas-filters';
 import { CustomProductsFiltersModule } from './custom-products-filters';
@@ -37,6 +38,7 @@ import { SharedModule } from '@shared';
     SbasFiltersModule,
     CustomProductsFiltersModule,
     SarviewsFiltersModule,
+    TimeseriesFiltersModule,
     SearchButtonModule,
     CancelFilterChangesModule,
     ClearButtonModule,

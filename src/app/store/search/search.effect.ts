@@ -10,7 +10,8 @@ import { map, withLatestFrom, switchMap, catchError, filter, first, tap, debounc
 import { AppState } from '../app.reducer';
 import {
   SetSearchAmount, EnableSearch, DisableSearch, SetSearchType, SetNextJobsUrl,
-  Hyp3BatchResponse, SarviewsEventsResponse, SetSearchOutOfDate
+  Hyp3BatchResponse, SarviewsEventsResponse, SetSearchOutOfDate,
+  TimeseriesSearchResponse
 } from './search.action';
 import * as scenesStore from '@store/scenes';
 import * as filtersStore from '@store/filters';
@@ -52,6 +53,7 @@ export class SearchEffects {
     private sarviewsService: services.SarviewsEventsService,
     private http: HttpClient,
     private notificationService: services.NotificationService,
+    private netCdfService: services.NetcdfServiceService
   ) { }
 
   public clearMapInteractionModeOnSearch = createEffect(() => this.actions$.pipe(
@@ -103,6 +105,10 @@ export class SearchEffects {
       if (searchType === SearchType.CUSTOM_PRODUCTS) {
         return this.customProductsQuery$();
       }
+      if (searchType === SearchType.TIMESERIES) {
+        return this.timeseriesQuery$();
+      }
+
 
       this.logCountries();
 
@@ -220,6 +226,23 @@ export class SearchEffects {
     ])
   ));
 
+  public timeseriesSearchResponse = createEffect(() => this.actions$.pipe(
+    ofType<TimeseriesSearchResponse>(SearchActionType.TIMESERIES_SEARCH_RESPONSE),
+    withLatestFrom(this.store$.select(getSearchType)),
+    filter(([_, searchType]) => searchType === SearchType.TIMESERIES),
+    switchMap(([action, _]) => {
+      console.log('SEARCH RESPONSE')
+      console.log(action)
+      
+      return [
+        new scenesStore.SetScenes({
+          products: [],
+          searchType: action.payload.searchType
+        })
+      ]
+    })
+  ))
+
   public showResultsMenuOnSearchResponse = createEffect(() => this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
     map(_ => new uiStore.OpenResultsMenu()),
@@ -233,7 +256,15 @@ export class SearchEffects {
   public setMapInteractionModeBasedOnSearchType = createEffect(() => this.actions$.pipe(
     ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE),
     filter(action => action.payload === models.SearchType.DATASET || action.payload === models.SearchType.TIMESERIES),
-    map(_ => new mapStore.SetMapInteractionMode(models.MapInteractionModeType.DRAW))
+    switchMap((action) => {
+      let output : any[] = [
+        new mapStore.SetMapInteractionMode(models.MapInteractionModeType.DRAW)
+      ];
+      if (action.payload === models.SearchType.TIMESERIES) {
+        output.push(new mapStore.SetMapDrawMode(models.MapDrawModeType.POINT))
+      }
+      return output;
+    })
   ));
 
   public clearResultsWhenSearchTypeChanges = createEffect(() => this.actions$.pipe(
@@ -454,6 +485,25 @@ export class SearchEffects {
       filter(events => !!events),
       map(events => new SarviewsEventsResponse({ events }))
     );
+  }
+
+  private timeseriesQuery$() {
+    return combineLatest(
+      this.asfApiQuery$,
+      this.searchParams$.getParams.pipe(
+        map(params => {
+          this.netCdfService.getTimeSeries(params)
+        })
+      )
+    ).pipe(
+      switchMap(([_project, _test]) => {
+        console.log(_project)
+        return of(new TimeseriesSearchResponse({}))
+      })
+    //   results => {
+    //   )
+    // }
+  )
   }
 
   private hyp3JobToProducts(jobs, products) {
