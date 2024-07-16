@@ -103,6 +103,7 @@ export class SearchEffects {
       if (searchType === SearchType.CUSTOM_PRODUCTS) {
         return this.customProductsQuery$();
       }
+
       this.logCountries();
 
       return this.asfApiQuery$;
@@ -231,7 +232,7 @@ export class SearchEffects {
 
   public setMapInteractionModeBasedOnSearchType = createEffect(() => this.actions$.pipe(
     ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE),
-    filter(action => action.payload === models.SearchType.DATASET),
+    filter(action => action.payload === models.SearchType.DATASET || action.payload === models.SearchType.TIMESERIES),
     map(_ => new mapStore.SetMapInteractionMode(models.MapInteractionModeType.DRAW))
   ));
 
@@ -427,6 +428,7 @@ export class SearchEffects {
       )
     );
   }
+
 
   private nextCustomProduct$(next: string, latestScenes: models.CMRProduct[]): Observable<Action> {
     return this.hyp3Service.getJobsByUrl$(next).pipe(
