@@ -1,4 +1,4 @@
-name: Deploy edc test SearchUI
+name: Deploy edc prod SearchUI
 
 on:
   push:
