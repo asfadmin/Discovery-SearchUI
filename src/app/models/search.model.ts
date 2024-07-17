@@ -20,6 +20,7 @@ export type FilterType =
   BaselineFiltersType |
   CustomProductFiltersType |
   SbasFiltersType |
+  TimeseriesFiltersType |
   SarviewsFiltersType;
 
 export interface ListFiltersType {
@@ -97,4 +98,7 @@ export interface SarviewsFiltersType {
   sarviewsEventNameFilter: string;
   pinnedProductIDs: string[];
   selectedEventID: string;
+}
+export interface TimeseriesFiltersType {
+  fullBurstIDs: string[];
 }

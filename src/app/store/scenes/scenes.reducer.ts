@@ -19,6 +19,7 @@ export interface ScenesState {
   selectedPair: string[] | null;
   areResultsLoaded: boolean;
   scenes: {[id: string]: string[]};
+  timeseriesResults: any;
   unzipped: {[id: string]: UnzippedFolder[]};
   openUnzippedProduct: string | null;
   productUnzipLoading: string | null;
@@ -49,6 +50,7 @@ export const initState: ScenesState = {
   openUnzippedProduct: null,
   products: {},
   areResultsLoaded: false,
+  timeseriesResults: {},
 
   selected: null,
   master: null,
@@ -380,6 +382,7 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
         selectedSarviewsEventProducts: [...action.payload]
       };
     }
+
 
     case ScenesActionType.SET_SELECTED_SARVIEW_PRODUCT: {
       return {

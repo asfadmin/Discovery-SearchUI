@@ -89,6 +89,15 @@ export function searchReducer(state = initState, action: SearchActions): SearchS
       };
     }
 
+    case SearchActionType.TIMESERIES_SEARCH_RESPONSE: {
+      return {
+        ...state,
+        totalResults: 1,
+        isLoading: false,
+        isCanceled: false,
+      }
+    }
+
     case SearchActionType.SEARCH_ERROR: {
       return {
         ...state,

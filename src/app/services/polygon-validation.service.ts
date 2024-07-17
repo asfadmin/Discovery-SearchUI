@@ -50,6 +50,11 @@ export class PolygonValidationService {
     ).subscribe(_ => _);
   }
 
+  public validateTimeseriesSelection(_sceneWKt: string) {
+    this.mapService.searchPolygon$.pipe(
+    )
+  }
+
   private getErrorFrom(resp) {
     if (resp.error) {
       return resp.error;
