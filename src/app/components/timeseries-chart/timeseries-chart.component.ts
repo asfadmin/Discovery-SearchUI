@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NetcdfServiceService } from '@services';
+import { NetcdfService } from '@services';
 
 // import * as models from '@models';
 import * as d3 from 'd3';
@@ -31,9 +31,7 @@ export class TimeseriesChartComponent implements OnInit {
 
 
 
-  constructor(private netcdfService: NetcdfServiceService) {
-    // this.json_data = JSON.stringify(data, null, " ")
-
+  constructor(private netcdfService: NetcdfService) {
   }
 
   public ngOnInit(): void {
@@ -53,17 +51,18 @@ export class TimeseriesChartComponent implements OnInit {
 
   public initChart(data): void {
     console.log(data)
-    for (let i = 0; i < data.time_series.unwrapped_phase.length; i++) {
+
+    for(let key of Object.keys(data)) {
+      console.log(key)
       this.dataSource.push({
-        'position': i,
-        'unwrapped_phase': data.time_series.unwrapped_phase[i],
-        'interferometric_correlation': data.time_series.interferometric_correlation[i],
-        'temporal_coherence': data.time_series.temporal_coherence[0]
+        'unwrapped_phase': data[key].unwrapped_phase,
+        'interferometric_correlation': data[key].interferometric_correlation,
+        'temporal_coherence': data[key].temporal_coherence,
+        'date': data[key].time
       })
     }
     this.averageData = ({
-      'position': 'average',
-      ...data.averages
+      ...data.mean
     })
     this.svg.selectChildren().remove();
     

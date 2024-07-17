@@ -54,7 +54,7 @@ export class SearchEffects {
     private sarviewsService: services.SarviewsEventsService,
     private http: HttpClient,
     private notificationService: services.NotificationService,
-    private netCdfService: services.NetcdfServiceService
+    private netCdfService: services.NetcdfService
   ) { }
 
   public clearMapInteractionModeOnSearch = createEffect(() => this.actions$.pipe(

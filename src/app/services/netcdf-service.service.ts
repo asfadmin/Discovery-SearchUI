@@ -13,7 +13,7 @@ import Geometry from 'ol/geom/Geometry';
 @Injectable({
   providedIn: 'root'
 })
-export class NetcdfServiceService {
+export class NetcdfService {
   private url: string = 'http://127.0.0.1:8080/'
   private itemsEndpoint: string = 'items/'
   private timeSeriesEndpoint: string = 'timeseries'
@@ -62,49 +62,37 @@ export class NetcdfServiceService {
     return output
   }
 
-  // public getGeotiffLayers() {
-  //   for (let layer of this.get_layers()) {
-  //     layer.pipe(tap(l => {
-  //       l.set('netcdf-layer', true);
-  //       l.set('selectable', true);
-  //       this.mapService.addLayer(l);
-  //   })).subscribe(l => this.layers.push(l))
-  //   }
-  // }
-
   public getTimeSeries(coords: LonLat) {
     return of({
-      "time_series": {
-        "unwrapped_phase": [
-          -24.5294189453125,
-          -7.865759372711182,
-          -5.049846649169922,
-          -4.983147144317627,
-          0.2701125144958496,
-          8.003214836120605
-        ],
-        "temporal_coherence": [
-          0.80419921875
-        ],
-        "interferometric_correlation": [
-          0.94873046875,
-          0.9521484375,
-          0.95556640625,
-          0.95849609375,
-          0.9609375,
-          0.962890625
-        ]
+      "20221107_20221213.unw.nc": {
+          "time": "2022-12-13T14:07:50.748",
+          "unwrapped_phase": -7.1020755768,
+          "interferometric_correlation": 0.9609375,
+          "temporal_coherence": 0.8041992188,
+          "bytes": 331350016.0
       },
-      "coordinates": [
-        38.57,
-        -121.53
-      ],
-      "averages": {
-        "unwrapped_phase": -5.692474365234375,
-        "interferometric_correlation": 0.9564616084098816,
-        "temporal_coherence": 0.80419921875
+      "20221107_20230106.unw.nc": {
+          "time": "2023-01-06T14:07:49.520",
+          "unwrapped_phase": 25.0342712402,
+          "interferometric_correlation": 0.9604492188,
+          "temporal_coherence": 0.8041992188,
+          "bytes": 318767104.0
+      },
+      "20221107_20230130.unw.nc": {
+          "time": "2023-01-30T14:07:48.874",
+          "unwrapped_phase": 11.7699642181,
+          "interferometric_correlation": 0.9711914062,
+          "temporal_coherence": 0.8041992188,
+          "bytes": 335544320.0
+      },
+      "mean": {
+          "time": null,
+          "unwrapped_phase": 9.9007196426,
+          "interferometric_correlation": 0.9641926885,
+          "temporal_coherence": 0.8041992188,
+          "bytes": 328553813.3333333135
       }
-    })
+  })
     this.http.get(`${this.url}${this.timeSeriesEndpoint}?layer=unwrapped_phase&x=${coords.lat}&y=${coords.lon}`, { responseType: 'json' }).pipe(first(),
     ).pipe(
       map(response => response as TimeSeriesResult),
