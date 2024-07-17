@@ -226,7 +226,9 @@ export class SearchParamsService {
 
   private timeseriesParams$ = combineLatest([
     this.searchPolygon$,
-    this.burstParams$
+    this.burstParams$,
+    this.maxResults$,
+    this.selectedDataset$,
   ]).pipe(
     map((params: any[]) => params
       .reduce(

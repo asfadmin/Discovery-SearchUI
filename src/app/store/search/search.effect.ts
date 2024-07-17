@@ -54,6 +54,7 @@ export class SearchEffects {
     private sarviewsService: services.SarviewsEventsService,
     private http: HttpClient,
     private notificationService: services.NotificationService,
+    private netCdfService: services.NetcdfServiceService
   ) { }
 
   public clearMapInteractionModeOnSearch = createEffect(() => this.actions$.pipe(
@@ -573,28 +574,38 @@ export class SearchEffects {
   }
 
   private timeseriesQuery$() {
-    return of(new TimeseriesSearchResponse({}))
-    // this.netCdfService.getTimeSeries({'lon': 1, 'lat':1}).pipe(
-    //   map(_stuff => {
-    //     console.log(_stuff)
-    //     return of(new TimeseriesSearchResponse({}))
-    //   })
-    // )
-    // return combineLatest(
-    //   this.asfApiQuery$,
-    //   this.searchParams$.getParams.pipe(
-    //     map(params => {
-    //       this.netCdfService.getTimeSeries(params)
-    //     })
-    //   )
-    // ).pipe(
-    //   switchMap(([_project, _test]) => {
-    //     console.log(_project)
-    //     return of(new TimeseriesSearchResponse({}))
-    //   })
-    //   results => {
-    //   )
-    // }
+    return this.searchParams$.getParams.pipe(
+      switchMap(
+        (params) =>
+          this.asfApiService.query<any[]>(params).pipe(
+            withLatestFrom(combineLatest([
+              this.store$.select(getSearchType),
+              this.store$.select(getIsCanceled),
+              this.netCdfService.getTimeSeries({'lon': 1, 'lat':1}) // eventually grab params for points in this part
+            ]
+            )),
+            map(([response, [searchType, isCanceled, timseries]]) => {
+              const files = this.productService.fromResponse(response)
+              return !isCanceled ?
+                new TimeseriesSearchResponse({
+                  files,
+                  totalCount: files.length,
+                  searchType,
+                  timseries
+                }) :
+                new SearchCanceled()
+            }
+            ),
+            catchError(
+              (err: HttpErrorResponse) => {
+                if (err.status !== 400) {
+                  return of(new SearchError(`Unknown Error`));
+                }
+                return EMPTY;
+              }
+            ),
+          ))
+    );
   }
 
   private hyp3JobToProducts(jobs, products) {
