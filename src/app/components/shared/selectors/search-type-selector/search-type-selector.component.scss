@@ -9,9 +9,12 @@
 .menu-item-icon {
   @include themify($themes) {
     color: themed("dark-primary-text");
+    font-size: 50px !important;
+    height: 50px !important;
+    width: 50px !important;
   }
 
-  @include md-icon-size(70px);
+  @include md-icon-size(50px);
 
   margin-right: 0;
 }
@@ -35,10 +38,11 @@
 
 .menu-item-inner {
   width: calc(100% - 20px) !important;
+  margin: 5px 5px 15px 15px;
 }
 
 .menu-item-content {
-  min-width: 450px;
+  min-width: 400px;
 }
 
 .menu-item-aside {
@@ -202,11 +206,16 @@
   }
 }
 
-
 .login-prompt {
   font-style: italic;
 }
 
 .login-hidden {
   display: none;
+}
+
+.read-more-icon {
+  margin-top: 1px;
+  margin-left: 5px;
+  position: absolute;
 }

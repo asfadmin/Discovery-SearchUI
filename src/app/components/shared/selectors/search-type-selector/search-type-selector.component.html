@@ -22,7 +22,7 @@
       <div>
 <!--        <menu mat-menu-item class="menu-item mat-menu-item" [matMenuTriggerFor]="searchMenu" mat-menu-item>-->
 <!--          <div class="menu-item-inner">-->
-<!--            <div class="fx-75 menu-item-content">-->
+<!--            <div class="fx-80 menu-item-content">-->
 <!--              <div class="item-title">-->
 <!--                Search Types AAA-->
 <!--              </div>-->
@@ -30,7 +30,7 @@
 <!--                A collection of different search types available for perusal.-->
 <!--              </div>-->
 <!--            </div>-->
-<!--            <div class="fx-25 menu-item-aside">-->
+<!--            <div class="fx-20 menu-item-aside">-->
 <!--              <span class="material-icons-outlined menu-item-icon">-->
 <!--                search-->
 <!--              </span>-->
@@ -41,21 +41,18 @@
           @for(type of searchTypeSelectors.search; track type.nameKey; let last = $last) {
             <menu class="menu-item mat-menu-item" mat-menu-item (click)="onSetSearchType(type.searchType)">
               <div class="menu-item-inner">
-                <div class="fx-75 menu-item-content">
+                <div class="fx-80 menu-item-content">
                   <div class="item-title">
                     {{ type.nameKey | translate}}
                   </div>
                   <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
                     <span *ngFor="let key of type.descriptionKeys">
                       {{ key | translate }}
+                      <app-docs-modal url="{{ type.helpUrl}}" class="read-more-icon"></app-docs-modal>
                     </span>
                   </div>
-                  <mat-card-actions>
-                    <app-docs-modal class="info-text" text="{{'MORE_INFO' | translate}}" url="{{ type.helpUrl}}">
-                    </app-docs-modal>
-                  </mat-card-actions>
                 </div>
-                <div class="fx-25 menu-item-aside">
+                <div class="fx-20 menu-item-aside">
                   <span *ngIf="type.iconType === iconTypes.MATERIAL" class="material-icons-outlined menu-item-icon">
                     {{ type.icon}}
                   </span>
@@ -70,7 +67,7 @@
           <hr class="dataset-hr">
           <menu mat-menu-item class="menu-item mat-menu-item" [matMenuTriggerFor]="derivedDatasetMenu" mat-menu-item>
             <div class="menu-item-inner">
-              <div class="fx-75 menu-item-content">
+              <div class="fx-80 menu-item-content">
                 <div class="item-title">
                   {{'DERIVED_DATASETS' | translate }}
                 </div>
@@ -78,7 +75,7 @@
                   {{'DERIVED_DATASETS_CONTAIN_A_COLLECTION_OF_DATASETS_AVAILABLE_TO_VIEW_AND_DOWNLOAD'| translate }}
                 </div>
               </div>
-              <div class="fx-25 menu-item-aside">
+              <div class="fx-20 menu-item-aside">
                 <span class="material-icons-outlined menu-item-icon">{{ 'DATASET_LINKED' | translate }}</span>
               </div>
             </div>
@@ -87,7 +84,7 @@
         <hr class="category-hr">
         <menu mat-menu-item class="menu-item mat-menu-item" [matMenuTriggerFor]="toolMenu" mat-menu-item>
           <div class="menu-item-inner">
-            <div class="fx-75 menu-item-content">
+            <div class="fx-80 menu-item-content">
               <div class="item-title">
                 Tools
               </div>
@@ -96,7 +93,7 @@
                 <b>SBAS, Baseline, Time Series, and On Demand Products</b>
               </div>
             </div>
-            <div class="fx-25 menu-item-aside">
+            <div class="fx-20 menu-item-aside">
               <span class="material-icons-outlined menu-item-icon">
                 construction
               </span>
@@ -111,7 +108,7 @@
         (click)="onOpenDerivedDataset(dataset.info_url, dataset.name); $event.stopPropagation();">
         <div class="menu-item">
           <div class="menu-item-inner">
-            <div class="fx-75 menu-item-content">
+            <div class="fx-80 menu-item-content">
               <div class="item-title" (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)">
                 {{ dataset.name | translate }}
               </div>
@@ -125,7 +122,7 @@
                   mat-button>{{ 'DOWNLOAD' | translate }}</button>
               </mat-card-actions>
             </div>
-            <div class="fx-75 menu-item-aside">
+            <div class="fx-80 menu-item-aside">
               <img [src]="dataset.picture" (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)"
                 class="menu-item-icon">
             </div>
@@ -139,7 +136,7 @@
       @for(type of searchTypeSelectors.tools; track type.nameKey; let last = $last) {
       <menu class="menu-item mat-menu-item" mat-menu-item (click)="onSetSearchType(type.searchType)">
         <div class="menu-item-inner">
-          <div class="fx-75 menu-item-content">
+          <div class="fx-80 menu-item-content">
             <div class="item-title">
               {{ type.nameKey | translate}}
             </div>
@@ -153,7 +150,7 @@
               </app-docs-modal>
             </mat-card-actions>
           </div>
-          <div class="fx-25 menu-item-aside">
+          <div class="fx-20 menu-item-aside">
             <span *ngIf="type.iconType === iconTypes.MATERIAL" class="material-icons-outlined menu-item-icon">
               {{ type.icon}}</span>
 
@@ -170,7 +167,7 @@
       <menu class="menu-item mat-menu-item" mat-menu-item (click)="onSetSearchType(searchTypes.CUSTOM_PRODUCTS)"
             [ngClass]="{'disable-search-type-on-demand' : !isLoggedIn}">
         <div class="menu-item-inner">
-          <div class="fx-75 menu-item-content">
+          <div class="fx-80 menu-item-content">
             <div class="item-title">
               {{'ON_DEMAND_PRODUCTS' | translate}}
               <span class="login-prompt" [ngClass]="{'login-hidden' : isLoggedIn}">
@@ -186,7 +183,7 @@
               </app-docs-modal>
             </mat-card-actions>
           </div>
-          <div class="fx-25 menu-item-aside">
+          <div class="fx-20 menu-item-aside">
             <img src="assets/asf-logos/HyP3-graphic-only.png" class="menu-item-icon">
           </div>
         </div>
@@ -194,5 +191,6 @@
 
 
     </mat-menu>
+
   </div>
 </div>

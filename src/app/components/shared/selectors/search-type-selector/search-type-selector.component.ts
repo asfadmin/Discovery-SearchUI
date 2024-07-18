@@ -67,8 +67,40 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
       helpUrl:'https://docs.asf.alaska.edu/vertex/manual/#event-search-options',
       icon:'volcano',
       iconType: models.IconType.MATERIAL,
+    },
+    {
+      searchType: models.SearchType.TIMESERIES,
+      nameKey:'TIMESERIES',
+      descriptionKeys:[
+        'BASELINE_SEARCH_PROVIDES_VISUALIZATION_OF_PERPENDICULAR_AND_TEMPORAL_BASELINE_DATA_FOR_A_CHOSEN',
+        'REFERENCE_SCENE',
+      ],
+      helpUrl:'https://docs.asf.alaska.edu/vertex/manual/#baseline-search-options',
+      icon:'zoom',
+      iconType: models.IconType.MATERIAL,
+    },
+    {
+      searchType: models.SearchType.BASELINE,
+      nameKey:'BASELINE',
+      descriptionKeys:[
+        'BASELINE_SEARCH_PROVIDES_VISUALIZATION_OF_PERPENDICULAR_AND_TEMPORAL_BASELINE_DATA_FOR_A_CHOSEN',
+        'REFERENCE_SCENE',
+      ],
+      helpUrl:'https://docs.asf.alaska.edu/vertex/manual/#baseline-search-options',
+      icon:'assets/icons/baseline-chart.jpg',
+      iconType: models.IconType.IMAGE,
+    }, {
+      searchType: models.SearchType.SBAS,
+      nameKey:'SBAS',
+      descriptionKeys:[
+        'SBAS_SEARCH_PROVIDES_PERPENDICULAR_AND_TEMPORAL_BASELINE_DATA_AS_WELL_AS_SCENE_PAIRS_FOR_A_CHOSEN',
+        'REFERENCE_SCENE',
+      ],
+      helpUrl:'https://docs.asf.alaska.edu/vertex/manual/#sbas-search-options',
+      icon:'assets/icons/sbas-chart.jpg',
+      iconType: models.IconType.IMAGE,
     }
-  ],
+    ],
 
 'tools':[
     {

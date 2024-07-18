@@ -781,6 +781,18 @@ $d-height: 550px;
   max-width: 25%;
 }
 
+.fx-80 {
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 80%;
+}
+
+.fx-20 {
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 20%;
+}
+
 .fx-row-center {
   flex-direction: row;
   box-sizing: border-box;
