@@ -150,6 +150,7 @@ $config: mat.define-legacy-typography-config();
   }
 
   margin-top: -4px;
+  transform: rotate(0.4deg);
 
   @include md-icon-size($asf-ribbon-icon-size);
 }

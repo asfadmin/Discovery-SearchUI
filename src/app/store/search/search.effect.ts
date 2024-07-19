@@ -71,10 +71,8 @@ export class SearchEffects {
   public setCanSearch = createEffect(() => this.actions$.pipe(
     ofType<SetSearchAmount>(SearchActionType.SET_SEARCH_AMOUNT),
     withLatestFrom(this.store$.select(getSearchType)),
-    map(([action, searchType]) =>
-      (action.payload > 0
-        || searchType === SearchType.BASELINE
-        || searchType === SearchType.SBAS) ? new EnableSearch() : new DisableSearch()
+    map(([action, _searchType]) =>
+      (action.payload > 0 ) ? new EnableSearch() : new DisableSearch()
     )
   ));
 
@@ -374,18 +372,18 @@ export class SearchEffects {
     const jobs = jobsRes.hyp3Jobs;
 
     const granuleNames = this.getAllGranulesFromJobs(jobs);
-    const asfApiListQuery = this.dummyProducts$(granuleNames);
+    const fakeApiListQuery = this.dummyProducts$(granuleNames);
 
-    return asfApiListQuery.pipe(
-      map(products => {
-        return products
+    return fakeApiListQuery.pipe(
+      map(dummyProducts => {
+        return dummyProducts
           .reduce((prodsByName, p) => {
             prodsByName[p.name] = p;
             return prodsByName;
           }, {});
       }),
-      map(products => {
-        return this.hyp3JobToProducts(jobs, products);
+      map(dummyProducts => {
+        return this.hyp3JobToProducts(jobs, dummyProducts);
       }),
       withLatestFrom(this.store$.select(getIsCanceled)),
       map(([products, isCanceled]) =>
