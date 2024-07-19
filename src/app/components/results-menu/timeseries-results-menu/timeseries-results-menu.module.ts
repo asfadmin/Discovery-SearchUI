@@ -15,6 +15,7 @@ import { SceneMetadataModule } from '@components/shared/scene-metadata';
 import { TimeseriesChartModule } from '@components/timeseries-chart/timeseries-chart.module';
 import { ResizableModule } from 'angular-resizable-element';
 import { MatRadioModule } from '@angular/material/radio';
+import { PipesModule } from '@pipes';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { MatRadioModule } from '@angular/material/radio';
     TimeseriesChartModule,
     ResizableModule,
     MatRadioModule,
+    PipesModule
   ],
   exports: [
     TimeseriesResultsMenuComponent

@@ -50,10 +50,8 @@ export class TimeseriesChartComponent implements OnInit {
   }
 
   public initChart(data): void {
-    console.log(data)
 
     for(let key of Object.keys(data)) {
-      console.log(key)
       this.dataSource.push({
         'unwrapped_phase': data[key].unwrapped_phase,
         'interferometric_correlation': data[key].interferometric_correlation,

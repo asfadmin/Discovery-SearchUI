@@ -51,7 +51,6 @@ export class NetcdfService {
             ),
             first(),
             tap(output => {
-              console.log(output.browse);
               output.browse.set('file', this.files[0]);
 
               // browseImageLayer.on('select', (_) => console.log(browseImageLayer.get('file')))
