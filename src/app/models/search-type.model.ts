@@ -4,7 +4,7 @@ export enum SearchType {
   BASELINE = 'Baseline Search',
   SBAS = 'SBAS Search',
   CUSTOM_PRODUCTS = 'On Demand',
-  TIMESERIES = 'TIMESERIES',
+  DISPLACEMENT = 'DISPLACEMENT',
   SARVIEWS_EVENTS = 'Event Search',
   DERIVED_DATASETS = 'Derived Datasets',
 }
@@ -13,7 +13,7 @@ export const SearchTypeTranslation = {
   'Geographic Search' : 'GEOGRAPHIC_SEARCH',
   'List Search' : 'LIST_SEARCH',
   'Baseline Search' : 'BASELINE_SEARCH',
-  'Timeseries Tool' : 'TIMESERIES_TOOL',
+  'Timeseries Tool' : 'DISPLACEMENT_TOOL',
   'SBAS Search' : 'SBAS_SEARCH',
   'On Demand' : 'ON_DEMAND',
   'Event Search' : 'EVENT_SEARCH',

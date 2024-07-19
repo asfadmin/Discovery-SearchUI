@@ -39,13 +39,13 @@
               searchType !== SearchTypes.BASELINE &&
               searchType !== SearchTypes.SBAS &&
               searchType !== SearchTypes.SARVIEWS_EVENTS &&
-              searchType !== SearchTypes.TIMESERIES
+              searchType !== SearchTypes.DISPLACEMENT
               "
               [class.small-size]="breakpoint === breakpoints.SMALL"
               [resize$]="resize$">
             </app-desktop-results-menu>
 
-            <app-timeseries-results-menu class="w100 h100 results-menu--layout" *ngIf="searchType === SearchTypes.TIMESERIES">
+            <app-timeseries-results-menu class="w100 h100 results-menu--layout" *ngIf="searchType === SearchTypes.DISPLACEMENT">
 
             </app-timeseries-results-menu>
             <app-sarviews-results-menu class="w100 h100 results-menu--layout"

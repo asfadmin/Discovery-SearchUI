@@ -71,7 +71,7 @@
 }
 
 .limitTextHeight {
-  height: 37px;
+  height: 55px;
   overflow: hidden;
 }
 
@@ -215,7 +215,6 @@
 }
 
 .read-more-icon {
-  margin-top: 1px;
-  margin-left: 5px;
-  position: absolute;
+  position: relative;
+  top: 3px;
 }
