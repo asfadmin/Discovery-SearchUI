@@ -1,7 +1,7 @@
 <!-- SCENE LIST -->
 <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
 
-	<mat-card #listCard class="mp0 ts-list-card">
+	<mat-card #listCard class="mp0 ts-list-card" >
 		<mat-card-subtitle class="header ts-scene-list-header">
 			<app-scenes-list-header></app-scenes-list-header>
 		</mat-card-subtitle>
@@ -86,9 +86,6 @@
 	</div>
 
 	<div class="ts-chart-row">
-		<div class="ts-column-1">
-		</div>
-
 		<div id="ts-chart-column" class="ts-column-2">
 			<app-timeseries-chart></app-timeseries-chart>
 		</div>

@@ -57,11 +57,11 @@
 .ts-list-card {
 	box-shadow: none !important;
 	box-sizing: border-box;
-  width: 130px;
+  	width: 170px;
 }
 
 .ts-layer-list {
-  flex-basis: 500px;
+  flex-basis: 650px;
   flex-grow: 0;
 }
 
@@ -78,7 +78,7 @@
   flex-basis: 130px;
   flex-grow: 0;
   max-height: 30px;
-  max-width: 130px;
+//   max-width: 130px;
 }
 
 .ts-metadata {
@@ -264,4 +264,7 @@ label {
 	@include themify($themes) {
 		background: darken(themed('background-white'), 15%);
 	}
+}
+.ts-column-2 {
+	margin: 25px;
 }
