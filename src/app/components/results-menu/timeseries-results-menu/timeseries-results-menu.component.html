@@ -87,7 +87,10 @@
 
 	<div class="ts-chart-row">
 		<div id="ts-chart-column" class="ts-column-2">
-			<app-timeseries-chart></app-timeseries-chart>
+			<app-timeseries-chart
+			[zoomIn$]="zoomInChart$"
+			[zoomToFit$]="zoomToFitChart$"
+			[zoomOut$]="zoomOutChart$"></app-timeseries-chart>
 		</div>
 	</div>
 

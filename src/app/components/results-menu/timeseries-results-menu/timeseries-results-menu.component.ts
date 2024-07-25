@@ -45,6 +45,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
 
   public pointHistory = [];
 
+
   constructor(
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
