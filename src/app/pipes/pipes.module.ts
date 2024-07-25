@@ -9,6 +9,7 @@ import { BaselineFilterPipe, SBASFilterPipe, GeographicFilterPipe, ListFilterPip
 import { HTMLInputValuePipe } from './html-input-value.pipe';
 import { QuakePipe, VolcanoPipe } from './sarviews-event.pipe';
 import { FilterExtensionPipe } from './filter-extension.pipe';
+import { FloatPrecisionPipe } from './float-precision.pipe';
 @NgModule({
   declarations: [
     ReadableSizeFromBytesPipe,
@@ -25,8 +26,8 @@ import { FilterExtensionPipe } from './filter-extension.pipe';
     HTMLInputValuePipe,
     QuakePipe,
     VolcanoPipe,
-    FilterExtensionPipe
-    // floodPipe
+    FilterExtensionPipe,
+    FloatPrecisionPipe
   ],
   imports: [
     CommonModule
@@ -47,7 +48,7 @@ import { FilterExtensionPipe } from './filter-extension.pipe';
     QuakePipe,
     VolcanoPipe,
     FilterExtensionPipe,
-    // floodPipe,
+    FloatPrecisionPipe
   ]
 })
 export class PipesModule { }

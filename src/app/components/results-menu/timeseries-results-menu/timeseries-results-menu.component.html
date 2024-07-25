@@ -1,7 +1,7 @@
 <!-- SCENE LIST -->
 <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
 
-	<mat-card #listCard class="mp0 ts-list-card">
+	<mat-card #listCard class="mp0 ts-list-card" >
 		<mat-card-subtitle class="header ts-scene-list-header">
 			<app-scenes-list-header></app-scenes-list-header>
 		</mat-card-subtitle>
@@ -10,7 +10,7 @@
 			<mat-radio-group>
 				@for (point of pointHistory; track $index) {
 					<mat-radio-button color="primary">
-						{{point.flatCoordinates[0]}}, {{point.flatCoordinates[1]}}
+						{{point.flatCoordinates[0] | floatPrecision: 4}}, {{point.flatCoordinates[1] | floatPrecision: 4}}
 					</mat-radio-button>
 				}
 			</mat-radio-group>
@@ -86,11 +86,11 @@
 	</div>
 
 	<div class="ts-chart-row">
-		<div class="ts-column-1">
-		</div>
-
 		<div id="ts-chart-column" class="ts-column-2">
-			<app-timeseries-chart></app-timeseries-chart>
+			<app-timeseries-chart
+			[zoomIn$]="zoomInChart$"
+			[zoomToFit$]="zoomToFitChart$"
+			[zoomOut$]="zoomOutChart$"></app-timeseries-chart>
 		</div>
 	</div>
 

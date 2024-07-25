@@ -1,8 +1,8 @@
 @import "asf-theme";
 
 #timeseriesChart {
-	height: 460px;
-	width: 680px;
+	// height: 460px;
+	// width: 680px;
   }
   
   ::ng-deep .timeseries-base {
@@ -10,3 +10,13 @@
 	  fill: lighten(themed('dark-primary-text'), 45%);
 	}
   }
+
+.chart-wrapper {
+	height: calc(100% - 1px);
+	width: calc(50% - 30px);
+}
+
+#timeseriesChart {
+	height: 100%;
+	width: 100%;
+}

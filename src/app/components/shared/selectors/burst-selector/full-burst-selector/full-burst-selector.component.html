@@ -1,4 +1,15 @@
-<mat-form-field style="display: block">
-  <mat-label>{{'BURST_ID_FULL' | translate}}</mat-label>
-  <textarea matInput style="height: 75px;" [value]="fullBurstIDs.join(',')" (input)="onChange($event)"></textarea>
-</mat-form-field>
+<ng-container *ngIf="searchType$ | async as type">
+  <ng-container *ngIf="type === searchTypes.TIMESERIES; else other_stuff">
+    <mat-form-field style="display: block">
+
+      <mat-label>{{'BURST_ID_FULL' | translate}}</mat-label>
+      <input type="text" matInput [value]="fullBurstIDs.join(',')" (input)="onChange($event)">
+    </mat-form-field>
+  </ng-container>
+  <ng-template #other_stuff>
+    <mat-form-field style="display: block">
+      <mat-label>{{'BURST_ID_FULL' | translate}}</mat-label>
+      <textarea matInput style="height: 75px;" [value]="fullBurstIDs.join(',')" (input)="onChange($event)"></textarea>
+    </mat-form-field>
+  </ng-template>
+</ng-container>

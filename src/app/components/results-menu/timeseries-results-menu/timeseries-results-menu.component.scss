@@ -5,7 +5,7 @@
 .ts-chart-row {
 	display: flex;
 	flex-direction: row;
-	height: calc(100% - 137px);
+	height: calc(100%);
 }
 
 .ts-chart-card {
@@ -56,11 +56,13 @@
 .ts-list-card {
 	box-shadow: none !important;
 	box-sizing: border-box;
-  width: 130px;
+  	width: 170px;
 }
 
 .ts-layer-list {
-  flex: 1 1 500px;
+  // flex: 1 1 500px;
+  flex-basis: 650px;
+  flex-grow: 0;
 }
 
 .ts-layer-list-header {
@@ -76,7 +78,7 @@
   flex-basis: 130px;
   flex-grow: 0;
   max-height: 30px;
-  max-width: 130px;
+//   max-width: 130px;
 }
 
 .ts-metadata {
@@ -151,13 +153,14 @@
 	justify-content: center;
 	height: 50px;
 	padding-top: 0;
+	padding-bottom: 5px;
 	margin-bottom: 0;
 	font-family: Roboto,
 	sans-serif;
 	font-weight: 400;
 	font-size: 16px;
 	text-align: center;
-	margin-top: -20px;
+	margin-top: -25px;
 	border-left: none;
 }
 
@@ -262,4 +265,7 @@ label {
 	@include themify($themes) {
 		background: darken(themed('background-white'), 15%);
 	}
+}
+.ts-column-2 {
+	margin: 25px;
 }

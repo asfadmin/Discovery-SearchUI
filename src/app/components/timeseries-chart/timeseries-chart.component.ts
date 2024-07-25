@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { NetcdfServiceService } from '@services';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { NetcdfService } from '@services';
 
 // import * as models from '@models';
 import * as d3 from 'd3';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-timeseries-chart',
@@ -10,6 +11,10 @@ import * as d3 from 'd3';
   styleUrl: './timeseries-chart.component.scss'
 })
 export class TimeseriesChartComponent implements OnInit {
+  @ViewChild('timeseriesChart', { static: true }) timeseriesChart: ElementRef;
+  @Input() zoomIn$: Observable<void>;
+  @Input() zoomOut$: Observable<void>;
+  @Input() zoomToFit$: Observable<void>;
   public json_data: string = '';
   private svg?: any;
   public dataSource = [];
@@ -26,44 +31,48 @@ export class TimeseriesChartComponent implements OnInit {
   private yAxis;
   private dots;
   private margin = { top: 10, right: 30, bottom: 60, left: 20 };
+  private thing
 
 
 
 
-
-  constructor(private netcdfService: NetcdfServiceService) {
-    // this.json_data = JSON.stringify(data, null, " ")
-
+  constructor(private netcdfService: NetcdfService) {
   }
 
   public ngOnInit(): void {
 
 
-    this.svg = d3.select('#timeseriesChart').append('svg')
-      .attr('width', this.width + this.margin.left + this.margin.right)
-      .attr('height', this.height + this.margin.top + this.margin.bottom)
-      .append('g')
-      .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
-      this.drawChart();
+    // this.svg = d3.select('#timeseriesChart').append('svg')
+    //   .attr('width', this.width + this.margin.left + this.margin.right)
+    //   .attr('height', this.height + this.margin.top + this.margin.bottom)
+    //   .append('g')
+    //   .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
+    //   this.drawChart();
+    this.createSVG();
 
-      this.netcdfService.getTimeSeries({'lon': 0, 'lat': 0}).subscribe(data => {
-        this.initChart(data);
-      })
+    this.netcdfService.getTimeSeries({'lon': 0, 'lat': 0}).subscribe(data => {
+      this.initChart(data);
+    })
+    this.zoomOut$.subscribe(_ => {
+      this.thing.transition().call(this.zoom.scaleBy, .5);
+    });
+    this.zoomIn$.subscribe(_ => {
+      this.thing.transition().call(this.zoom.scaleBy, 2);
+    });
   }
 
   public initChart(data): void {
-    console.log(data)
-    for (let i = 0; i < data.time_series.unwrapped_phase.length; i++) {
+
+    for(let key of Object.keys(data)) {
       this.dataSource.push({
-        'position': i,
-        'unwrapped_phase': data.time_series.unwrapped_phase[i],
-        'interferometric_correlation': data.time_series.interferometric_correlation[i],
-        'temporal_coherence': data.time_series.temporal_coherence[0]
+        'unwrapped_phase': data[key].unwrapped_phase,
+        'interferometric_correlation': data[key].interferometric_correlation,
+        'temporal_coherence': data[key].temporal_coherence,
+        'date': data[key].time
       })
     }
     this.averageData = ({
-      'position': 'average',
-      ...data.averages
+      ...data.mean
     })
     this.svg.selectChildren().remove();
     
@@ -97,7 +106,8 @@ export class TimeseriesChartComponent implements OnInit {
         this.currentTransform = eve.transform;
         this.updateChart();
       });
-    d3.select('#timeseriesChart').selectChild().call(this.zoom)
+      this.thing = d3.select('#timeseriesChart').selectChild()
+    this.thing.call(this.zoom)
 
     this.svg.append('defs').append('SVG:clipPath')
       .attr('id', 'clip')
@@ -143,6 +153,24 @@ export class TimeseriesChartComponent implements OnInit {
 
   public updateAxis(_axis, _value) {
 
+  }
+  public onResized() {
+    this.createSVG();
+  }
+
+  private createSVG() {
+    if (this.svg) {
+      d3.selectAll('#timeseries-chart > svg').remove();
+      d3.selectAll('.tooltip').remove();
+    }
+    this.height = this.timeseriesChart.nativeElement.offsetHeight - this.margin.top - this.margin.bottom;
+    this.width = this.timeseriesChart.nativeElement.offsetWidth - this.margin.left - this.margin.right;
+    this.svg = d3.select(this.timeseriesChart.nativeElement).append('svg')
+      .attr('width', this.width + this.margin.left + this.margin.right)
+      .attr('height', this.height + this.margin.top + this.margin.bottom)
+      .append('g')
+      .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
+    this.drawChart();
   }
 
 }
