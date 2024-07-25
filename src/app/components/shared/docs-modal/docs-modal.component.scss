@@ -4,6 +4,11 @@
   cursor: pointer;
 }
 
+.icon-size {
+  height: 16px !important;
+  line-height: 16px !important;
+}
+
 .text-link {
   @include themify($themes) {
     color: themed('blue-link');
