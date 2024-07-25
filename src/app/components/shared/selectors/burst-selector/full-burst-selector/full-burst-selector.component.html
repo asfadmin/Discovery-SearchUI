@@ -1,5 +1,5 @@
 <ng-container *ngIf="searchType$ | async as type">
-  <ng-container *ngIf="type === searchTypes.TIMESERIES; else other_stuff">
+  <ng-container *ngIf="type === searchTypes.DISPLACEMENT; else other_stuff">
     <mat-form-field style="display: block">
 
       <mat-label>{{'BURST_ID_FULL' | translate}}</mat-label>

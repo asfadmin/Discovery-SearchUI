@@ -89,7 +89,7 @@ export function searchReducer(state = initState, action: SearchActions): SearchS
       };
     }
 
-    case SearchActionType.TIMESERIES_SEARCH_RESPONSE: {
+    case SearchActionType.DISPLACEMENT_SEARCH_RESPONSE: {
       return {
         ...state,
         totalResults: 1,

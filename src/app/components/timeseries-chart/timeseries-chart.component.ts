@@ -75,7 +75,7 @@ export class TimeseriesChartComponent implements OnInit {
       ...data.mean
     })
     this.svg.selectChildren().remove();
-    
+
     this.drawChart();
   }
 
@@ -154,8 +154,9 @@ export class TimeseriesChartComponent implements OnInit {
   public updateAxis(_axis, _value) {
 
   }
+
   public onResized() {
-    this.createSVG();
+    // this.createSVG();
   }
 
   private createSVG() {
@@ -171,6 +172,7 @@ export class TimeseriesChartComponent implements OnInit {
       .append('g')
       .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
     this.drawChart();
+
   }
 
 }

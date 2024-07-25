@@ -106,7 +106,7 @@ export class SearchEffects {
       if (searchType === SearchType.CUSTOM_PRODUCTS) {
         return this.customProductsQuery$();
       }
-      if (searchType === SearchType.TIMESERIES) {
+      if (searchType === SearchType.DISPLACEMENT) {
         return this.timeseriesQuery$();
       }
 
@@ -229,9 +229,9 @@ export class SearchEffects {
 
 
   public timeseriesSearchResponse = createEffect(() => this.actions$.pipe(
-    ofType<TimeseriesSearchResponse>(SearchActionType.TIMESERIES_SEARCH_RESPONSE),
+    ofType<TimeseriesSearchResponse>(SearchActionType.DISPLACEMENT_SEARCH_RESPONSE),
     withLatestFrom(this.store$.select(getSearchType)),
-    filter(([_, searchType]) => searchType === SearchType.TIMESERIES),
+    filter(([_, searchType]) => searchType === SearchType.DISPLACEMENT),
     switchMap(([action, _]) => {
       return [
         new scenesStore.SetScenes({
@@ -296,18 +296,18 @@ export class SearchEffects {
   ));
 
   public showTimeseriesResultsMenuOnSearchResponse = createEffect(() => this.actions$.pipe(
-    ofType<TimeseriesSearchResponse>(SearchActionType.TIMESERIES_SEARCH_RESPONSE),
+    ofType<TimeseriesSearchResponse>(SearchActionType.DISPLACEMENT_SEARCH_RESPONSE),
     map(_ => new uiStore.OpenResultsMenu()),
   ));
 
   public setMapInteractionModeBasedOnSearchType = createEffect(() => this.actions$.pipe(
     ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE),
-    filter(action => action.payload === models.SearchType.DATASET || action.payload === models.SearchType.TIMESERIES),
+    filter(action => action.payload === models.SearchType.DATASET || action.payload === models.SearchType.DISPLACEMENT),
     switchMap((action) => {
       let output : any[] = [
         new mapStore.SetMapInteractionMode(models.MapInteractionModeType.DRAW)
       ];
-      if (action.payload === models.SearchType.TIMESERIES) {
+      if (action.payload === models.SearchType.DISPLACEMENT) {
         output.push(new mapStore.SetMapDrawMode(models.MapDrawModeType.POINT))
       }
       return output;

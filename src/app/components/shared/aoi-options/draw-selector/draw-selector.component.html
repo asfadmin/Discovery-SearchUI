@@ -28,7 +28,7 @@
       <mat-icon class="draw-icon">place</mat-icon>
       {{ 'PLACE_A_POINT' | translate }}
     </button>
-    @if(searchType !== searchTypes.TIMESERIES) {
+    @if(searchType !== searchTypes.DISPLACEMENT) {
 
       <button mat-menu-item
       (click)="onLineStringSelected()"
