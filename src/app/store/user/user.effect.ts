@@ -236,7 +236,7 @@ export class UserEffects {
           case SearchType.SBAS:
             actions = this.setSBASFilters(targetFilter.filters as SbasFiltersType);
             break;
-          case SearchType.TIMESERIES:
+          case SearchType.DISPLACEMENT:
             actions = this.setTimeseriesFilters(targetFilter.filters as TimeseriesFiltersType);
           default:
             break;

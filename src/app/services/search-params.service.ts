@@ -263,7 +263,7 @@ export class SearchParamsService {
           case models.SearchType.CUSTOM_PRODUCTS: {
             return listParam;
           }
-          case models.SearchType.TIMESERIES: {
+          case models.SearchType.DISPLACEMENT: {
             return timeseriesParams;
           }
           default: {
