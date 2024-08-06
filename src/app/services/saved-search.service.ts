@@ -69,7 +69,8 @@ export class SavedSearchService {
     this.store$.select(filtersStore.getDateRange),
     this.store$.select(filtersStore.getSBASOverlapThreshold),]
   ).pipe(
-    map(([reference, customPairIds, sbasFilters, dateRange, thresholdOverlap]) => ({
+    map(([reference, customPairIds, sbasFilters,
+           dateRange, thresholdOverlap]) => ({
       reference,
       dateRange,
       customPairIds,
