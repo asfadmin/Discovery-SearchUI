@@ -44,7 +44,7 @@ export interface SbasFiltersType {
   dateRange: Range<null | Date>;
 
   season: Range<number | null>;
-  temporal: number;
+  temporalRange: Range<number | null>;
   perpendicular: number;
   customPairIds: string[][];
 
