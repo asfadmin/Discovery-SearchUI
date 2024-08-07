@@ -205,6 +205,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     case FiltersActionType.SET_TEMPORAL_RANGE: {
       return {
         ...state,
+        // temporalRange: action.payload
         temporalRange: action.payload
       };
     }

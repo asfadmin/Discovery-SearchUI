@@ -11,8 +11,8 @@ import * as filtersStore from '@store/filters';
 import * as scenesStore from '@store/scenes';
 import { getSearchType } from '@store/search/search.reducer';
 import { UpdateSearchWithFilters, UpdateSearchName, DeleteSavedSearch,
-  SaveSearches, LoadSavedSearches
-} from '@store/user/user.action';
+          SaveSearches, LoadSavedSearches
+        } from '@store/user/user.action';
 
 import * as models from '@models';
 import { getSarviewsMagnitudeRange } from '@store/filters';
