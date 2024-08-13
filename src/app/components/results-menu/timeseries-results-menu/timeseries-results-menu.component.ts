@@ -13,6 +13,7 @@ import { DrawService, MapService, PointHistoryService, ScreenSizeService } from 
 import { SubSink } from 'subsink';
 
 import { Point} from 'ol/geom';
+import { WKT } from 'ol/format';
 
 
 @Component({
@@ -53,6 +54,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     private drawService: DrawService,
     private mapService: MapService
   ) { }
+  private passDraw = false;
 
   ngOnInit(): void {
     this.subs.add(
@@ -72,10 +74,12 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     })
     this.drawService.polygon$.subscribe(polygon => {
       if(polygon) {
-        if (polygon.getGeometry().getType() === 'Point') {
+        if (polygon.getGeometry().getType() === 'Point' && !this.passDraw) {
           let temp = polygon.getGeometry().clone() as Point;
           temp.transform('EPSG:3857', 'EPSG:4326')
           this.pointHistoryService.addPoint(temp)
+        } else {
+          this.passDraw = false;
         }
       }
     })
@@ -114,7 +118,12 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public onOpenHelp(url: string): void {
     window.open(url);
   }
-
+  public onPointClick(index: number) {
+    this.passDraw = true;
+    var format = new WKT();
+    var wktRepresenation  = format.writeGeometry(this.pointHistory[index]);
+    this.mapService.loadPolygonFrom(wktRepresenation.toString())
+  }
 
   ngOnDestroy() {
     this.subs.unsubscribe();

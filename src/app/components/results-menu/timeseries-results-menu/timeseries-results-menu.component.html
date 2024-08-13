@@ -10,7 +10,7 @@
 			@if(pointHistory.length !== 0) {
 			<mat-radio-group>
 				@for (point of pointHistory; track $index) {
-					<mat-radio-button color="primary">
+					<mat-radio-button color="primary" (click)="onPointClick($index)">
 						{{point.flatCoordinates[0] | floatPrecision: 4}}, {{point.flatCoordinates[1] | floatPrecision: 4}}
 					</mat-radio-button>
 				}
