@@ -9,7 +9,7 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class PointHistoryService {
-  private history : Point[] = [new Point([50,50])];
+  private history : Point[] = [];
   public history$ = new Subject<Point[]>();
 
   constructor(

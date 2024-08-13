@@ -8,7 +8,7 @@ import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
 
 import { Breakpoints,  SearchType } from '@models';
-import { DrawService, PointHistoryService, ScreenSizeService } from '@services';
+import { DrawService, MapService, PointHistoryService, ScreenSizeService } from '@services';
 
 import { SubSink } from 'subsink';
 
@@ -50,7 +50,8 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
     private pointHistoryService: PointHistoryService,
-    private drawService: DrawService
+    private drawService: DrawService,
+    private mapService: MapService
   ) { }
 
   ngOnInit(): void {
@@ -67,6 +68,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     );
     this.pointHistoryService.history$.subscribe(history => {
       this.pointHistory = history;
+      this.mapService.setDisplacementLayer(history);
     })
     this.drawService.polygon$.subscribe(polygon => {
       if(polygon) {
@@ -77,7 +79,6 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
         }
       }
     })
-    this.pointHistoryService.addPoint(new Point([11,11]))
   }
 
   public onResizeEnd(event: ResizeEvent): void {

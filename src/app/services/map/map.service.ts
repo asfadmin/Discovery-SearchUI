@@ -60,6 +60,7 @@ export class MapService {
 
   private polygonLayer: VectorLayer<VectorSource>;
   private sarviewsEventsLayer: VectorLayer<VectorSource>;
+  private displacmentLayer: VectorLayer<VectorSource>;
   private browseImageLayer: Layer;
 
   private gridLinesVisible: boolean;
@@ -732,6 +733,27 @@ export class MapService {
     this.layerService.coherenceLayer = this.layerService.getCoherenceLayer(months);
     this.map.addLayer(this.layerService.coherenceLayer);
     this.hasCoherenceLayer$.next(months);
+  }
+
+  public setDisplacementLayer(points: Point[]) {
+    if (!!this.displacmentLayer) {
+      this.map.removeLayer(this.displacmentLayer);
+      this.displacmentLayer = null;
+    }
+
+    let source = new VectorSource();
+    let pointFeatures = points.map((point: Point) => {
+      let temp = point.clone() as Point;
+      temp.transform( 'EPSG:4326', 'EPSG:3857')
+      return new Feature(temp)
+    });
+    source.addFeatures(pointFeatures);
+    this.displacmentLayer = new VectorLayer({
+      source: source,
+      // TODO: figure out a good style to put here.
+    })
+
+    this.map.addLayer(this.displacmentLayer);
   }
 
   public clearCoherence(): void {

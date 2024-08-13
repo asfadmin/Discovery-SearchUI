@@ -7,6 +7,7 @@
 		</mat-card-subtitle>
 
 		<div>
+			@if(pointHistory.length !== 0) {
 			<mat-radio-group>
 				@for (point of pointHistory; track $index) {
 					<mat-radio-button color="primary">
@@ -14,6 +15,12 @@
 					</mat-radio-button>
 				}
 			</mat-radio-group>
+		}
+		@else {
+			<div>
+				No points selected yet
+			</div>
+		}
 		</div>
 	</mat-card>
 
