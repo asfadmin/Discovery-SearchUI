@@ -117,6 +117,7 @@ export class SbasSlidersTwoComponent implements OnInit {
     this.subs.add(
       this.store$.select(filtersStore.getPerpendicularRange).subscribe(
         perp => {
+          console.log('perp in getPerpendicularRange:', perp);
           this.perpendicular = perp.start;
           this.options.controls.meterDistance.setValue(this.perpendicular);
           if (this.firstMeterLoad) {
@@ -133,6 +134,7 @@ export class SbasSlidersTwoComponent implements OnInit {
     this.subs.add(
       this.metersValues$.subscribe(
         ([start]) => {
+          console.log('start in metersValues$:', start);
           const action = new filtersStore.SetPerpendicularRange({ start, end: null });
           this.store$.dispatch(action);
         }
