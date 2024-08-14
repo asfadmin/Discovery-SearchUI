@@ -37,6 +37,7 @@ export class SbasSlidersTwoComponent implements OnInit {
   public temporal: number;
   public perpendicular: number;
   public daysRange: models.Range<number> = {start: 1, end: 48};
+  public lastRange: models.Range<number> = {start: 0, end: 0};
   public daysValues$ = new Subject<number[]>();
   public metersValues$ = new Subject<number[]>();
   // public perpStart = 800;
@@ -104,12 +105,14 @@ export class SbasSlidersTwoComponent implements OnInit {
     this.subs.add(
       this.store$.select(filtersStore.getTemporalRange).subscribe(
         temp => {
+          console.log('getTemporalRange:', temp);
           this.daysRange = {start: temp.start, end: temp.end};
-          this.slider.set([temp.start, temp.end]);
-          // if (this.firstLoad) {
-          //   this.slider.set([temp.start, temp.end]);
-          //   this.firstLoad = false;
-          // }
+          if (this.lastRange.start !== this.daysRange.start || this.lastRange.end !== this.daysRange.end) {
+            console.log('getTemporalRange:', this.daysRange);
+            this.lastRange.start = this.daysRange.start;
+            this.lastRange.end = this.daysRange.end;
+            this.slider.set([temp.start, temp.end]);
+          }
         }
       )
     );
