@@ -20,6 +20,11 @@ export class NetcdfService {
   private files: string[] = [""] //, "20221107_20230130.unw.nc", "20221107_20230106.unw.nc", "20221107_20230729.unw.nc", "20221107_20230319.unw.nc", "20221107_20221213.unw.nc", "20221107_20230530.unw.nc", "20221107_20230717.unw.nc", "20221107_20230412.unw.nc", "20221107_20230506.unw.nc", "20221107_20230223.unw.nc", "20221107_20230211.unw.nc", "20221107_20230331.unw.nc", "20221107_20230705.unw.nc"]
   public layers: { feature: Feature<Geometry>, browse: ImageLayer<ImageSource> }[] = []
   // private data = []
+
+  private cache = {};
+  private totalKeys = [];
+  private maxCacheSize = 10;
+
   constructor(
     private http: HttpClient,
     private browseOverlayService: BrowseOverlayService,
@@ -62,39 +67,56 @@ export class NetcdfService {
   }
 
   public getTimeSeries(coords: LonLat) {
-    return of({
-      "20221107_20221213.unw.nc": {
-          "time": "2022-12-13T14:07:50.748",
-          "unwrapped_phase": -7.1020755768,
-          "interferometric_correlation": 0.9609375,
-          "temporal_coherence": 0.8041992188,
-          "bytes": 331350016.0
-      },
-      "20221107_20230106.unw.nc": {
-          "time": "2023-01-06T14:07:49.520",
-          "unwrapped_phase": 25.0342712402,
-          "interferometric_correlation": 0.9604492188,
-          "temporal_coherence": 0.8041992188,
-          "bytes": 318767104.0
-      },
-      "20221107_20230130.unw.nc": {
-          "time": "2023-01-30T14:07:48.874",
-          "unwrapped_phase": 11.7699642181,
-          "interferometric_correlation": 0.9711914062,
-          "temporal_coherence": 0.8041992188,
-          "bytes": 335544320.0
-      },
-      "mean": {
-          "time": null,
-          "unwrapped_phase": 9.9007196426,
-          "interferometric_correlation": 0.9641926885,
-          "temporal_coherence": 0.8041992188,
-          "bytes": 328553813.3333333135
+    let index_id = `${coords.lat}-${coords.lon}`
+    if(this.cache.hasOwnProperty(index_id)) {
+      return of(this.cache[index_id])
+    } else {
+      return of({
+        "20221107_20221213.unw.nc": {
+            "time": "2022-12-13T14:07:50.748",
+            "unwrapped_phase": -7.1020755768,
+            "interferometric_correlation": 0.9609375,
+            "temporal_coherence": 0.8041992188,
+            "bytes": 331350016.0
+        },
+        "20221107_20230106.unw.nc": {
+            "time": "2023-01-06T14:07:49.520",
+            "unwrapped_phase": 25.0342712402,
+            "interferometric_correlation": 0.9604492188,
+            "temporal_coherence": 0.8041992188,
+            "bytes": 318767104.0
+        },
+        "20221107_20230130.unw.nc": {
+            "time": "2023-01-30T14:07:48.874",
+            "unwrapped_phase": 11.7699642181,
+            "interferometric_correlation": 0.9711914062,
+            "temporal_coherence": 0.8041992188,
+            "bytes": 335544320.0
+        },
+        "mean": {
+            "time": null,
+            "unwrapped_phase": 9.9007196426,
+            "interferometric_correlation": 0.9641926885,
+            "temporal_coherence": 0.8041992188,
+            "bytes": 328553813.3333333135
+        }
+    }).pipe(map(
+      response => {
+        this.cache[index_id] = response;
+        this.totalKeys.push(index_id)
+        if(this.totalKeys.length > this.maxCacheSize) {
+          let deleted = this.totalKeys.splice(0);
+          delete this.cache[deleted[0]];
+        }
+        return response
       }
-  })
-    this.http.get(`${this.url}${this.timeSeriesEndpoint}?layer=unwrapped_phase&x=${coords.lat}&y=${coords.lon}`, { responseType: 'json' }).pipe(first(),
-    ).pipe(
-      map(response => response as TimeSeriesResult),
-    )
+    ))
+      this.http.get(`${this.url}${this.timeSeriesEndpoint}?layer=unwrapped_phase&x=${coords.lat}&y=${coords.lon}`, { responseType: 'json' }).pipe(first(),
+      ).pipe(
+        map(response => response as TimeSeriesResult),
+      )
+      // get data, then set things
+    }
+
   }
 }
