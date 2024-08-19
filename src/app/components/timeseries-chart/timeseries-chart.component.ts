@@ -1,9 +1,8 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { NetcdfService } from '@services';
 
 // import * as models from '@models';
 import * as d3 from 'd3';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-timeseries-chart',
@@ -15,6 +14,7 @@ export class TimeseriesChartComponent implements OnInit {
   @Input() zoomIn$: Observable<void>;
   @Input() zoomOut$: Observable<void>;
   @Input() zoomToFit$: Observable<void>;
+  @Input() chartData: Subject<any>;
   public json_data: string = '';
   private svg?: any;
   public dataSource = [];
@@ -36,21 +36,14 @@ export class TimeseriesChartComponent implements OnInit {
 
 
 
-  constructor(private netcdfService: NetcdfService) {
+  constructor() {
   }
 
   public ngOnInit(): void {
 
-
-    // this.svg = d3.select('#timeseriesChart').append('svg')
-    //   .attr('width', this.width + this.margin.left + this.margin.right)
-    //   .attr('height', this.height + this.margin.top + this.margin.bottom)
-    //   .append('g')
-    //   .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
-    //   this.drawChart();
     this.createSVG();
 
-    this.netcdfService.getTimeSeries({'lon': 0, 'lat': 0}).subscribe(data => {
+    this.chartData.subscribe(data => {
       this.initChart(data);
     })
     this.zoomOut$.subscribe(_ => {
@@ -62,7 +55,7 @@ export class TimeseriesChartComponent implements OnInit {
   }
 
   public initChart(data): void {
-
+    this.dataSource = []
     for(let key of Object.keys(data)) {
       this.dataSource.push({
         'unwrapped_phase': data[key].unwrapped_phase,

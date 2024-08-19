@@ -7,7 +7,6 @@ import { Observable, combineLatest } from 'rxjs';
 import {
   map, filter, switchMap, tap,
   withLatestFrom,
-  first,
 } from 'rxjs/operators';
 
 import { Vector as VectorLayer} from 'ol/layer';
@@ -25,7 +24,7 @@ import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 
 import * as models from '@models';
-import { MapService, WktService, ScreenSizeService, ScenesService, SarviewsEventsService, NetcdfService } from '@services';
+import { MapService, WktService, ScreenSizeService, ScenesService, SarviewsEventsService } from '@services';
 import * as polygonStyle from '@services/map/polygon.style';
 import { CMRProduct, SarviewsEvent } from '@models';
 import { StyleLike } from 'ol/style/Style';
@@ -97,7 +96,6 @@ export class MapComponent implements OnInit, OnDestroy  {
     private screenSize: ScreenSizeService,
     private scenesService: ScenesService,
     private eventMonitoringService: SarviewsEventsService,
-    private netcdfService: NetcdfService,
     public dialog: MatDialog
   ) {}
 
@@ -252,39 +250,6 @@ export class MapComponent implements OnInit, OnDestroy  {
       )
     );
 
-    // this.netcdfService.getGeotiffLayers();
-    for (let layer of this.netcdfService.get_layers()) {
-      layer.pipe(
-        first()
-    //     tap(layer => {
-          // layer.getSource().on
-          // this.scenePolygonsLayer(layer)
-    // })
-      ).subscribe(displacementProduct =>
-        {
-        this.mapService.addLayer(displacementProduct.browse);
-        
-        const feature_polygon = this.scenePolygonsLayer([displacementProduct.feature])
-        feature_polygon.set('netcdf-layer', true)
-        this.mapService.addLayer(feature_polygon)
-        feature_polygon.setZIndex(10)
-        this.mapService.setSelectedFeature(feature_polygon  )
-        }
-      )
-      // this.featuresToSource(layer)
-    }
-    this.mapService.timeseriesPixelSelected$.pipe(
-      withLatestFrom(this.mapService.mousePosition$)
-    ).subscribe(
-      ([_, mousePos]) => {
-        console.log(mousePos);
-        this.netcdfService.getTimeSeries(mousePos).pipe(
-          first()
-        ).subscribe(
-          response => console.log(response)
-        );
-      }
-    )
   }
 
   public onFileHovered(e): void {

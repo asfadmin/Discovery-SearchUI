@@ -68,6 +68,7 @@ export class NetcdfService {
 
   public getTimeSeries(coords: LonLat) {
     let index_id = `${coords.lat}-${coords.lon}`
+    console.log(`getting ${index_id}`)
     if(this.cache.hasOwnProperty(index_id)) {
       return of(this.cache[index_id])
     } else {

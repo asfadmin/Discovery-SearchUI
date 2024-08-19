@@ -7,8 +7,8 @@ import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
 
-import { Breakpoints,  SearchType } from '@models';
-import { DrawService, MapService, PointHistoryService, ScreenSizeService } from '@services';
+import { Breakpoints,  LonLat,  SearchType } from '@models';
+import { DrawService, MapService, NetcdfService, PointHistoryService, ScreenSizeService } from '@services';
 
 import { SubSink } from 'subsink';
 
@@ -47,12 +47,16 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public pointHistory = [];
 
 
+  public chartData = new Subject<any>
+
+
   constructor(
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
     private pointHistoryService: PointHistoryService,
     private drawService: DrawService,
-    private mapService: MapService
+    private mapService: MapService,
+    private netcdfService: NetcdfService
   ) { }
   private passDraw = false;
 
@@ -74,13 +78,14 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     })
     this.drawService.polygon$.subscribe(polygon => {
       if(polygon) {
+        let temp = polygon.getGeometry().clone() as Point;
+        temp.transform('EPSG:3857', 'EPSG:4326')
         if (polygon.getGeometry().getType() === 'Point' && !this.passDraw) {
-          let temp = polygon.getGeometry().clone() as Point;
-          temp.transform('EPSG:3857', 'EPSG:4326')
           this.pointHistoryService.addPoint(temp)
         } else {
           this.passDraw = false;
         }
+        this.updateChart({'lon': temp.getFlatCoordinates()[0], 'lat': temp.getFlatCoordinates()[1]});
       }
     })
   }
@@ -123,6 +128,11 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     var format = new WKT();
     var wktRepresenation  = format.writeGeometry(this.pointHistory[index]);
     this.mapService.loadPolygonFrom(wktRepresenation.toString())
+  }
+  public updateChart(lonlat: LonLat): void {
+    this.netcdfService.getTimeSeries(lonlat).subscribe(data => {
+      this.chartData.next(data);
+    })
   }
 
   ngOnDestroy() {

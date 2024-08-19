@@ -54,7 +54,6 @@ export class SearchEffects {
     private sarviewsService: services.SarviewsEventsService,
     private http: HttpClient,
     private notificationService: services.NotificationService,
-    private netCdfService: services.NetcdfService
   ) { }
 
   public clearMapInteractionModeOnSearch = createEffect(() => this.actions$.pipe(
@@ -542,17 +541,15 @@ export class SearchEffects {
             withLatestFrom(combineLatest([
               this.store$.select(getSearchType),
               this.store$.select(getIsCanceled),
-              this.netCdfService.getTimeSeries({'lon': 1, 'lat':1}) // eventually grab params for points in this part
             ]
             )),
-            map(([response, [searchType, isCanceled, timseries]]) => {
+            map(([response, [searchType, isCanceled]]) => {
               const files = this.productService.fromResponse(response)
               return !isCanceled ?
                 new TimeseriesSearchResponse({
                   files,
                   totalCount: files.length,
                   searchType,
-                  timseries
                 }) :
                 new SearchCanceled()
             }
