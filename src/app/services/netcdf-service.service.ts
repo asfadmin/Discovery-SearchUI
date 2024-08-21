@@ -5,16 +5,17 @@ import { Observable, first, map, of, tap } from 'rxjs';
 // import WebGLTileLayer from 'ol/layer/WebGLTile';
 import ImageLayer from 'ol/layer/Image';
 // import Static from 'ol/source/ImageStatic';
-import { LonLat, TimeSeriesResult } from '@models';
+import { TimeSeriesResult } from '@models';
 import ImageSource from 'ol/source/Image';
 import Feature from 'ol/Feature';
 import Geometry from 'ol/geom/Geometry';
+import WKT from 'ol/format/WKT';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NetcdfService {
-  private url: string = 'http://127.0.0.1:8080/'
+  private url: string = 'https://ztcnv66fekaaijerj5hhytfrdu0xcuho.lambda-url.us-east-1.on.aws/'
   private itemsEndpoint: string = 'items/'
   private timeSeriesEndpoint: string = 'timeseries'
   private files: string[] = [""] //, "20221107_20230130.unw.nc", "20221107_20230106.unw.nc", "20221107_20230729.unw.nc", "20221107_20230319.unw.nc", "20221107_20221213.unw.nc", "20221107_20230530.unw.nc", "20221107_20230717.unw.nc", "20221107_20230412.unw.nc", "20221107_20230506.unw.nc", "20221107_20230223.unw.nc", "20221107_20230211.unw.nc", "20221107_20230331.unw.nc", "20221107_20230705.unw.nc"]
@@ -66,57 +67,30 @@ export class NetcdfService {
     return output
   }
 
-  public getTimeSeries(coords: LonLat) {
-    let index_id = `${coords.lat}-${coords.lon}`
+  public getTimeSeries(geometry) {
+
+    var format = new WKT();
+    var wktRepresenation  = format.writeGeometry(geometry);
+    let index_id = wktRepresenation;
     console.log(`getting ${index_id}`)
     if(this.cache.hasOwnProperty(index_id)) {
       return of(this.cache[index_id])
     } else {
-      return of({
-        "20221107_20221213.unw.nc": {
-            "time": "2022-12-13T14:07:50.748",
-            "unwrapped_phase": -7.1020755768,
-            "interferometric_correlation": 0.9609375,
-            "temporal_coherence": 0.8041992188,
-            "bytes": 331350016.0
-        },
-        "20221107_20230106.unw.nc": {
-            "time": "2023-01-06T14:07:49.520",
-            "unwrapped_phase": 25.0342712402,
-            "interferometric_correlation": 0.9604492188,
-            "temporal_coherence": 0.8041992188,
-            "bytes": 318767104.0
-        },
-        "20221107_20230130.unw.nc": {
-            "time": "2023-01-30T14:07:48.874",
-            "unwrapped_phase": 11.7699642181,
-            "interferometric_correlation": 0.9711914062,
-            "temporal_coherence": 0.8041992188,
-            "bytes": 335544320.0
-        },
-        "mean": {
-            "time": null,
-            "unwrapped_phase": 9.9007196426,
-            "interferometric_correlation": 0.9641926885,
-            "temporal_coherence": 0.8041992188,
-            "bytes": 328553813.3333333135
-        }
-    }).pipe(map(
-      response => {
-        this.cache[index_id] = response;
-        this.totalKeys.push(index_id)
-        if(this.totalKeys.length > this.maxCacheSize) {
-          let deleted = this.totalKeys.splice(0);
-          delete this.cache[deleted[0]];
-        }
-        return response
+      return this.http.post(`${this.url}${this.timeSeriesEndpoint}`, {
+        "wkt": wktRepresenation,
+        "file_store": "s3://kfbx-opera-disp-test-bucket/11114.json"
+      }, { responseType: 'json' }).pipe(
+        first(),
+        map( response => {
+          this.cache[index_id] = response;
+          this.totalKeys.push(index_id)
+          if(this.totalKeys.length > this.maxCacheSize) {
+            let deleted = this.totalKeys.splice(0);
+            delete this.cache[deleted[0]];
+          }
+          return response as TimeSeriesResult
       }
     ))
-      this.http.get(`${this.url}${this.timeSeriesEndpoint}?layer=unwrapped_phase&x=${coords.lat}&y=${coords.lon}`, { responseType: 'json' }).pipe(first(),
-      ).pipe(
-        map(response => response as TimeSeriesResult),
-      )
-      // get data, then set things
     }
 
   }

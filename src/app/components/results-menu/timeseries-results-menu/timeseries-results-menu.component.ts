@@ -7,7 +7,7 @@ import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
 
-import { Breakpoints,  LonLat,  SearchType } from '@models';
+import { Breakpoints,   SearchType } from '@models';
 import { DrawService, MapService, NetcdfService, PointHistoryService, ScreenSizeService } from '@services';
 
 import { SubSink } from 'subsink';
@@ -85,7 +85,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
         } else {
           this.passDraw = false;
         }
-        this.updateChart({'lon': temp.getFlatCoordinates()[0], 'lat': temp.getFlatCoordinates()[1]});
+        this.updateChart(temp);
       }
     }))
   }
@@ -129,8 +129,8 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     var wktRepresenation  = format.writeGeometry(this.pointHistory[index]);
     this.mapService.loadPolygonFrom(wktRepresenation.toString())
   }
-  public updateChart(lonlat: LonLat): void {
-    this.netcdfService.getTimeSeries(lonlat).pipe(first()).subscribe(data => {
+  public updateChart(geometry): void {
+    this.netcdfService.getTimeSeries(geometry).pipe(first()).subscribe(data => {
       this.chartData.next(data);
     })
   }
