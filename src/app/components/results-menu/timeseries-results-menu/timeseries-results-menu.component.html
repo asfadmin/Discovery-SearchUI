@@ -12,7 +12,9 @@
 				@for (point of pointHistory; track $index) {
 					<mat-radio-button color="primary" (click)="onPointClick($index)">
             <mat-icon class="ts-wkt-icon">place</mat-icon>
-						{{point.flatCoordinates[0] | floatPrecision: 2}},&ensp;{{point.flatCoordinates[1] | floatPrecision: 2}}
+            <span class="ts-wkt-text">
+						  {{point.flatCoordinates[0] | floatPrecision: 2}},&ensp;{{point.flatCoordinates[1] | floatPrecision: 2}}
+            </span>
 					</mat-radio-button>
 				}
 			</mat-radio-group>
