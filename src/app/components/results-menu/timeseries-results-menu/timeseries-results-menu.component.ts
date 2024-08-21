@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { first, Observable, Subject } from 'rxjs';
 import { ResizeEvent } from 'angular-resizable-element';
 
 import { Store } from '@ngrx/store';
@@ -72,11 +72,11 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
         searchType => this.searchType = searchType
       )
     );
-    this.pointHistoryService.history$.subscribe(history => {
+    this.subs.add(this.pointHistoryService.history$.subscribe(history => {
       this.pointHistory = history;
       this.mapService.setDisplacementLayer(history);
-    })
-    this.drawService.polygon$.subscribe(polygon => {
+    }));
+    this.subs.add(this.drawService.polygon$.subscribe(polygon => {
       if(polygon) {
         let temp = polygon.getGeometry().clone() as Point;
         temp.transform('EPSG:3857', 'EPSG:4326')
@@ -87,7 +87,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
         }
         this.updateChart({'lon': temp.getFlatCoordinates()[0], 'lat': temp.getFlatCoordinates()[1]});
       }
-    })
+    }))
   }
 
   public onResizeEnd(event: ResizeEvent): void {
@@ -130,7 +130,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     this.mapService.loadPolygonFrom(wktRepresenation.toString())
   }
   public updateChart(lonlat: LonLat): void {
-    this.netcdfService.getTimeSeries(lonlat).subscribe(data => {
+    this.netcdfService.getTimeSeries(lonlat).pipe(first()).subscribe(data => {
       this.chartData.next(data);
     })
   }
