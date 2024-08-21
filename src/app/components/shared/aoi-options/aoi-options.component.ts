@@ -100,7 +100,7 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
     const polygon = (event.target as HTMLInputElement).value;
     const didLoad = this.mapService.loadPolygonFrom(polygon);
 
-    if (!didLoad) {
+    if (!didLoad || (this.searchtype === SearchType.DISPLACEMENT && !(polygon.toLowerCase().includes('point')))) {
       this.aoiErrors$.next();
     } else {
       if (this.searchtype === SearchType.DATASET && this.isResultsMenuOpen && !this.isFiltersMenuOpen) {
@@ -111,7 +111,7 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
   public onInputGeocodePolygon(event: {wkt: string, geocode: string}): void {
     const didLoad = this.mapService.loadPolygonFrom(event.wkt);
     this.store$.dispatch(new SetGeocode(event.geocode));
-    if (!didLoad) {
+    if (!didLoad || (this.searchtype === SearchType.DISPLACEMENT && !(event.wkt.toLowerCase().includes('point')))) {
       this.aoiErrors$.next();
     } else {
       if (this.searchtype === SearchType.DATASET && this.isResultsMenuOpen && !this.isFiltersMenuOpen) {
