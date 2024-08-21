@@ -5,8 +5,8 @@
   <div *ngIf="!!filters.customPairIds && filters.customPairIds.length !== 0">
     <b>{{'CUSTOM_PAIRS' | translate}}: </b> {{ filters.customPairIds.length }}
   </div>
-  <div *ngIf="filters.temporal !== null">
-    <b>{{ 'TEMPORAL' | translate }}: </b> {{ filters.temporal }}
+  <div *ngIf="filters.temporalRange !== null">
+    <b>{{ 'TEMPORAL' | translate }}: </b> {{ filters.temporalRange.start }} {{ 'TO' | translate }} {{ filters.temporalRange.end }}
   </div>
   <div *ngIf="filters.perpendicular !== null">
     <b>{{'PERPENDICULAR' | translate}}: </b> {{ filters.perpendicular }}
