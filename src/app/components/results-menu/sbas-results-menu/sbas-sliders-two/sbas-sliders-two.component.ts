@@ -37,10 +37,12 @@ export class SbasSlidersTwoComponent implements OnInit {
   public temporal: number;
   public perpendicular: number;
   public daysRange: models.Range<number> = {start: 1, end: 48};
+  public lastRange: models.Range<number> = {start: 0, end: 0};
   public daysValues$ = new Subject<number[]>();
   public metersValues$ = new Subject<number[]>();
+  // public perpStart = 800;
 
-  private firstLoad = true;
+  // private firstLoad = true;
   private firstMeterLoad = true;
   private subs = new SubSink();
 
@@ -103,10 +105,13 @@ export class SbasSlidersTwoComponent implements OnInit {
     this.subs.add(
       this.store$.select(filtersStore.getTemporalRange).subscribe(
         temp => {
+          // console.log('getTemporalRange:', temp);
           this.daysRange = {start: temp.start, end: temp.end};
-          if (this.firstLoad) {
+          if (this.lastRange.start !== this.daysRange.start || this.lastRange.end !== this.daysRange.end) {
+            // console.log('getTemporalRange:', this.daysRange);
+            this.lastRange.start = this.daysRange.start;
+            this.lastRange.end = this.daysRange.end;
             this.slider.set([temp.start, temp.end]);
-            this.firstLoad = false;
           }
         }
       )
@@ -115,6 +120,7 @@ export class SbasSlidersTwoComponent implements OnInit {
     this.subs.add(
       this.store$.select(filtersStore.getPerpendicularRange).subscribe(
         perp => {
+          // console.log('perp in getPerpendicularRange:', perp);
           this.perpendicular = perp.start;
           this.options.controls.meterDistance.setValue(this.perpendicular);
           if (this.firstMeterLoad) {
@@ -131,6 +137,7 @@ export class SbasSlidersTwoComponent implements OnInit {
     this.subs.add(
       this.metersValues$.subscribe(
         ([start]) => {
+          console.log('start in metersValues$:', start);
           const action = new filtersStore.SetPerpendicularRange({ start, end: null });
           this.store$.dispatch(action);
         }
