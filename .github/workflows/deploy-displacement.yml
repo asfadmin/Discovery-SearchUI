@@ -1,4 +1,4 @@
-name: Deploy tyler SearchUI
+name: Deploy Displacement SearchUI
 
 on:
   push:
