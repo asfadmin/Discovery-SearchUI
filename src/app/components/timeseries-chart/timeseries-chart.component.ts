@@ -62,8 +62,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(sceneStore.getSelectedScene).subscribe(test => {
         this.selectedScene = test.id;
-        console.log(test)
-        console.log(this.selectedScene)
         this.updateCircles();
 
       })
