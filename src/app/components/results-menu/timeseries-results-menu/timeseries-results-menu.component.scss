@@ -56,7 +56,7 @@
 .ts-list-card {
 	box-shadow: none !important;
 	box-sizing: border-box;
-  	width: 170px;
+  	width: 200px;
 }
 
 .ts-layer-list {
@@ -268,4 +268,23 @@ label {
 }
 .ts-column-2 {
 	margin: 25px;
+}
+
+.ts-left-column-results {
+  overflow-x: auto;
+}
+
+.ts-no-point-selected {
+  text-align: center;
+  padding-top: 20px;
+}
+
+.ts-wkt-icon {
+  @include themify($themes) {
+    color: darken(themed('dark-primary-text'), 25%);
+  }
+}
+
+.ts-wkt-text {
+  vertical-align: super;
 }

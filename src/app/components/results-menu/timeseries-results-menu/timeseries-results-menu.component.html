@@ -6,19 +6,22 @@
 			<app-scenes-list-header></app-scenes-list-header>
 		</mat-card-subtitle>
 
-		<div>
+		<div class="ts-left-column-results">
 			@if(pointHistory.length !== 0) {
 			<mat-radio-group>
 				@for (point of pointHistory; track $index) {
 					<mat-radio-button color="primary" (click)="onPointClick($index)">
-						{{point.flatCoordinates[0] | floatPrecision: 4}}, {{point.flatCoordinates[1] | floatPrecision: 4}}
+            <mat-icon class="ts-wkt-icon">place</mat-icon>
+            <span class="ts-wkt-text">
+						  {{point.flatCoordinates[0] | floatPrecision: 2}},&ensp;{{point.flatCoordinates[1] | floatPrecision: 2}}
+            </span>
 					</mat-radio-button>
 				}
 			</mat-radio-group>
 		}
 		@else {
-			<div>
-				No points selected yet
+			<div class="ts-no-point-selected">
+        {{ 'NO_POINT_SELECTED' | translate }}
 			</div>
 		}
 		</div>
@@ -82,7 +85,7 @@
 			<div class="toggle-group-wrapper--layout">
 				<mat-button-toggle class="control-mat-button-toggle ts-criteria-button-toggle"
 					(click)="onToggleFiltersMenu()">
-					{{ 'DISPLACEMENT FILTERS' | translate }}<mat-icon class="more-horiz">more_horiz</mat-icon>
+					{{ 'DISPLACEMENT_FILTERS' | translate }}<mat-icon class="more-horiz">more_horiz</mat-icon>
 				</mat-button-toggle>
 			</div>
 		</div>
