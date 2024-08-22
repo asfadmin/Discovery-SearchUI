@@ -35,6 +35,8 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public chartCardMaxWidth = '55%';
   private minChartWidth = 25.0;
 
+  public tsPath: any
+
   public breakpoint: Breakpoints;
   public breakpoints = Breakpoints;
   private subs = new SubSink();
