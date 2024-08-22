@@ -30,7 +30,7 @@ export class TimeseriesChartComponent implements OnInit {
   private xAxis;
   private yAxis;
   private dots;
-  private margin = { top: 10, right: 30, bottom: 60, left: 20 };
+  private margin = { top: 10, right: 30, bottom: 60, left: 45 };
   private thing
 
 
@@ -56,12 +56,13 @@ export class TimeseriesChartComponent implements OnInit {
 
   public initChart(data): void {
     this.dataSource = []
-    for(let key of Object.keys(data)) {
+    for (let key of Object.keys(data)) {
       this.dataSource.push({
         'unwrapped_phase': data[key].unwrapped_phase,
         'interferometric_correlation': data[key].interferometric_correlation,
         'temporal_coherence': data[key].temporal_coherence,
-        'date': data[key].time
+        'date': data[key].time,
+        'temporal_baseline': data[key].temporal_baseline
       })
     }
     this.averageData = ({
@@ -75,14 +76,20 @@ export class TimeseriesChartComponent implements OnInit {
 
   private drawChart() {
     const marginBottom = 40;
-
+    const unwrapped_phases = this.dataSource.map(p => p['unwrapped_phase'] as number)
+    const temporal_baselines = this.dataSource.map(p => p['temporal_baseline'] as number)
+    const inner_margins = 1.25
+    const min_y = Math.min(...unwrapped_phases) * inner_margins
+    const min_x = Math.min(...temporal_baselines) * inner_margins
+    const max_y = Math.max(...unwrapped_phases) * inner_margins
+    const max_x = Math.max(...temporal_baselines) * inner_margins
     this.x = d3.scaleLinear()
-    .domain([1, 100])
+      .domain([min_x, max_x])
       .range([0, this.width]);
     this.xAxis = this.svg.append('g')
       .attr('transform', `translate(0, ${this.height})`);
     this.y = d3.scaleLinear()
-    .domain([1, 100])
+      .domain([min_y, max_y])
       .range([this.height, 0]);
     this.yAxis = this.svg.append('g');
     this.svg.append("g")
@@ -91,15 +98,15 @@ export class TimeseriesChartComponent implements OnInit {
 
     this.clipContainer = this.svg.append('g')
       .attr('clip-path', 'url(#clip)');
-      this.dots = this.clipContainer.append('g');
-      this.updateCircles();
+    this.dots = this.clipContainer.append('g');
+    this.updateCircles();
     this.zoom = d3.zoom()
       .extent([[0, 0], [this.width, this.height]])
       .on('zoom', (eve: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
         this.currentTransform = eve.transform;
         this.updateChart();
       });
-      this.thing = d3.select('#timeseriesChart').selectChild()
+    this.thing = d3.select('#timeseriesChart').selectChild()
     this.thing.call(this.zoom)
 
     this.svg.append('defs').append('SVG:clipPath')
@@ -109,6 +116,9 @@ export class TimeseriesChartComponent implements OnInit {
       .attr('height', this.height)
       .attr('x', 0)
       .attr('y', 0);
+
+    this.svg.append('text').attr('transform', `translate(${this.width / 2}, ${this.height + this.margin.bottom - 20})`).style('text-anchor', 'middle').attr('class', 'baseline-label').text('Temporal Baseline (days)');
+    this.svg.append('text').attr('transform', `rotate(-90)`).attr('y', -this.margin.left + 20).attr('x', -this.height / 2).style('text-anchor', 'middle').attr('class', 'baseline-label').text('Unwrapped Phase (radians)');
     this.updateChart();
   }
 
@@ -128,8 +138,8 @@ export class TimeseriesChartComponent implements OnInit {
     );
 
     this.dots.selectAll('circle').data(this.dataSource).join('circle')
-      .attr('cx', d => newX(d.unwrapped_phase ))
-      .attr('cy', d => newY(d.interferometric_correlation));
+      .attr('cx', d => newX(d.temporal_baseline))
+      .attr('cy', d => newY(d.unwrapped_phase));
 
   }
 
@@ -138,8 +148,8 @@ export class TimeseriesChartComponent implements OnInit {
     const transformedY = this.currentTransform?.rescaleY(this.y) ?? this.y;
     const transformedX = this.currentTransform?.rescaleX(this.x) ?? this.x;
     this.dots.selectAll('circle').data(this.dataSource).join('circle')
-      .attr('cx', d => {return transformedX(d.unwrapped_phase)})
-      .attr('cy', d => transformedY(d.interferometric_correlation))
+      .attr('cx', d => { return transformedX(d.temporal_baseline) })
+      .attr('cy', d => transformedY(d.unwrapped_phase))
       .attr('r', 5)
       .attr('class', 'timeseries-base')
   }
