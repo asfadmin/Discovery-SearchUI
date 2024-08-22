@@ -1,15 +1,20 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
 // import * as models from '@models';
 import * as d3 from 'd3';
 import { Observable, Subject } from 'rxjs';
+
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+import * as sceneStore from '@store/scenes';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-timeseries-chart',
   templateUrl: './timeseries-chart.component.html',
   styleUrl: './timeseries-chart.component.scss'
 })
-export class TimeseriesChartComponent implements OnInit {
+export class TimeseriesChartComponent implements OnInit, OnDestroy {
   @ViewChild('timeseriesChart', { static: true }) timeseriesChart: ElementRef;
   @Input() zoomIn$: Observable<void>;
   @Input() zoomOut$: Observable<void>;
@@ -33,10 +38,12 @@ export class TimeseriesChartComponent implements OnInit {
   private margin = { top: 10, right: 30, bottom: 60, left: 20 };
   private thing
 
+  private selectedScene: string;
 
-
-
-  constructor() {
+  private subs = new SubSink();
+  constructor(
+    private store$: Store<AppState>,
+  ) {
   }
 
   public ngOnInit(): void {
@@ -52,6 +59,18 @@ export class TimeseriesChartComponent implements OnInit {
     this.zoomIn$.subscribe(_ => {
       this.thing.transition().call(this.zoom.scaleBy, 2);
     });
+    this.subs.add(
+      this.store$.select(sceneStore.getSelectedScene).subscribe(test => {
+        this.selectedScene = test.id;
+        console.log(test)
+        console.log(this.selectedScene)
+        this.updateCircles();
+
+      })
+    )
+  }
+  public ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 
   public initChart(data): void {
@@ -61,7 +80,8 @@ export class TimeseriesChartComponent implements OnInit {
         'unwrapped_phase': data[key].unwrapped_phase,
         'interferometric_correlation': data[key].interferometric_correlation,
         'temporal_coherence': data[key].temporal_coherence,
-        'date': data[key].time
+        'date': data[key].time,
+        'id': key
       })
     }
     this.averageData = ({
@@ -141,7 +161,16 @@ export class TimeseriesChartComponent implements OnInit {
       .attr('cx', d => {return transformedX(d.unwrapped_phase)})
       .attr('cy', d => transformedY(d.interferometric_correlation))
       .attr('r', 5)
-      .attr('class', 'timeseries-base')
+      .attr('class', (d) => {
+        if (this.selectedScene === d.id) {
+          return 'timeseries-selected';
+        } else {
+          return 'timeseries-base';
+        }
+      })
+      .on('click', (_event, d) => {
+        this.store$.dispatch(new sceneStore.SetSelectedScene(d.id))
+      })
   }
 
   public updateAxis(_axis, _value) {
