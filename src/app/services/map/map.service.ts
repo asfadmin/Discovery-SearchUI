@@ -5,7 +5,7 @@ import { map, sampleTime, tap } from 'rxjs/operators';
 
 import { Collection, Feature, Map, View } from 'ol';
 import { Layer, Vector as VectorLayer } from 'ol/layer';
-import { Vector as VectorSource } from 'ol/source';
+import { TileImage, Vector as VectorSource } from 'ol/source';
 import * as proj from 'ol/proj';
 import Point from 'ol/geom/Point';
 import { OverviewMap, ScaleLine } from 'ol/control';
@@ -486,7 +486,15 @@ export class MapService {
       collapsed: true,
       className: 'ol-overviewmap ol-custom-overviewmap',
     });
-
+    let test_url: string = `https://api.mapbox.com/v4/asf-discovery.5yu0fdlg/{z}/{x}/{y}.png?access_token=${models.mapboxToken}`
+    const test_source = new TileImage({
+      'url': test_url,
+      wrapX: models.mapOptions.wrapX,
+    });
+  
+    const test_layer = new TileLayer({ 'source': test_source,
+      extent: [-13636084.632833757, 4583385.933366808, -13260513.67832392, 4858513.493065873]
+     });
 
     const newMap = new Map({
       layers: [
@@ -496,6 +504,7 @@ export class MapService {
         this.selectedLayer,
         this.mapView?.gridlines,
         this.pinnedProducts,
+        test_layer
       ],
       target: 'map',
       view: this.mapView.view,
@@ -562,6 +571,7 @@ export class MapService {
     this.drawService.getLayer().setZIndex(100);
     this.focusLayer.setZIndex(99);
     this.selectedLayer.setZIndex(98);
+
 
     newMap.on('moveend', e => {
       const currentMap = e.map;
