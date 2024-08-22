@@ -1,7 +1,7 @@
 <!-- SCENE LIST -->
 <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
 
-	<mat-card #listCard class="mp0 ts-list-card" >
+	<mat-card #listCard class="mp0 ts-column-1" [style.width]="wktListMaxWidth">
 		<mat-card-subtitle class="header ts-scene-list-header">
 			<app-scenes-list-header></app-scenes-list-header>
 		</mat-card-subtitle>
@@ -27,7 +27,7 @@
 		</div>
 	</mat-card>
 
-	<mat-card class="mp0 ts-list-card ts-layer-list" >
+	<mat-card class="mp0 ts-column-2 ts-layer-list" [style.width]="listCardMaxWidth">
 		<mat-card-subtitle class="header ts-layer-list-header">
 		</mat-card-subtitle>
 		<div class="ts-metadata scrollable">
@@ -42,7 +42,8 @@
 </ng-container>
 
 <mat-card #chartCard class="mp0 ts-chart-card"
-	mwlResizable [enableGhostResize]="true" (resizeEnd)="onResizeEnd($event)">
+          [style.width]="chartCardMaxWidth"
+	        mwlResizable [enableGhostResize]="true" (resizeEnd)="onResizeEnd($event)">
 	<div mwlResizeHandle [resizeEdges]="{ left: true }" class="chart-draggable-handle ts-resize-handle-filler">
 		<mat-icon svgIcon="vgrip" class="vgrip-icon"></mat-icon>
 

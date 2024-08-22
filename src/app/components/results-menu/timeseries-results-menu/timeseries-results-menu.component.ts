@@ -30,14 +30,13 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   @Input() resize$: Observable<void>;
   public searchType: SearchType;
 
-
-  public listCardMaxWidth = '38%';
+  public wktListMaxWidth = '225px';
+  public listCardMaxWidth = '300px';
   public chartCardMaxWidth = '55%';
   private minChartWidth = 25.0;
 
   public breakpoint: Breakpoints;
   public breakpoints = Breakpoints;
-  public isSelectedPairCustom: boolean;
   private subs = new SubSink();
 
   public zoomInChart$ = new Subject<void>();
@@ -46,9 +45,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
 
   public pointHistory = [];
 
-
   public chartData = new Subject<any>
-
 
   constructor(
     private store$: Store<AppState>,
@@ -104,6 +101,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     this.listCardMaxWidth = newListMaxWidth.toString() + '%';
     this.chartCardMaxWidth = newChartMaxWidth.toString() + '%';
   }
+
   public onToggleFiltersMenu(): void {
     this.store$.dispatch(new uiStore.OpenFiltersMenu());
   }
