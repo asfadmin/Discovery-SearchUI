@@ -1,6 +1,5 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 
-// import * as models from '@models';
 import * as d3 from 'd3';
 import { Observable, Subject } from 'rxjs';
 
@@ -10,28 +9,28 @@ import { Observable, Subject } from 'rxjs';
   styleUrl: './timeseries-chart.component.scss'
 })
 export class TimeseriesChartComponent implements OnInit {
-  @ViewChild('timeseriesChart', { static: true }) timeseriesChart: ElementRef;
+  @ViewChild('timeseriesChart', { static: true }) timeseriesChart: ElementRef<HTMLDivElement>;
   @Input() zoomIn$: Observable<void>;
   @Input() zoomOut$: Observable<void>;
   @Input() zoomToFit$: Observable<void>;
   @Input() chartData: Subject<any>;
   public json_data: string = '';
-  private svg?: any;
-  public dataSource = [];
+  private svg?: d3.Selection<SVGElement, {}, HTMLDivElement, any>;
+  public dataSource: TimeSeriesChartPoint[] = [];
   public averageData = {};
   public displayedColumns: string[] = ['position', 'unwrapped_phase', 'interferometric_correlation', 'temporal_coherence']
-  private currentTransform;
-  private zoom;
-  private clipContainer;
+  private currentTransform: d3.ZoomTransform;
+  private zoom: d3.ZoomBehavior<SVGElement, {}>;
+  private clipContainer: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private width = 640;
   private height = 400;
-  private x;
-  private y;
-  private xAxis;
-  private yAxis;
-  private dots;
+  private x: d3.ScaleTime<number, number, never>;
+  private y: d3.ScaleLinear<number, number, never>;
+  public xAxis: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;;
+  private yAxis: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;;
+  private dots: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;;
   private margin = { top: 10, right: 30, bottom: 60, left: 45 };
-  private thing
+  private thing: d3.Selection<SVGGElement, {}, HTMLElement, any>
 
 
 
@@ -56,7 +55,7 @@ export class TimeseriesChartComponent implements OnInit {
 
   public initChart(data): void {
     this.dataSource = []
-    for (let key of Object.keys(data)) {
+    for (let key of Object.keys(data).filter(x => x !== 'mean')) {
       this.dataSource.push({
         'unwrapped_phase': data[key].unwrapped_phase,
         'interferometric_correlation': data[key].interferometric_correlation,
@@ -77,15 +76,16 @@ export class TimeseriesChartComponent implements OnInit {
   private drawChart() {
     const marginBottom = 40;
     const unwrapped_phases = this.dataSource.map(p => p['unwrapped_phase'] as number)
-    const temporal_baselines = this.dataSource.map(p => p['temporal_baseline'] as number)
+    const dates = this.dataSource.map(p => Date.parse(p['date'])).filter(d => !isNaN(d))
     const inner_margins = 1.25
     const min_y = Math.min(...unwrapped_phases) * inner_margins
-    const min_x = Math.min(...temporal_baselines) * inner_margins
+    const min_x = Math.min(...dates)
     const max_y = Math.max(...unwrapped_phases) * inner_margins
-    const max_x = Math.max(...temporal_baselines) * inner_margins
-    this.x = d3.scaleLinear()
+    const max_x = Math.max(...dates)
+    this.x = d3.scaleUtc()
       .domain([min_x, max_x])
-      .range([0, this.width]);
+      .range([0, this.width])
+      .nice()
     this.xAxis = this.svg.append('g')
       .attr('transform', `translate(0, ${this.height})`);
     this.y = d3.scaleLinear()
@@ -100,13 +100,13 @@ export class TimeseriesChartComponent implements OnInit {
       .attr('clip-path', 'url(#clip)');
     this.dots = this.clipContainer.append('g');
     this.updateCircles();
-    this.zoom = d3.zoom()
+    this.zoom = d3.zoom<SVGElement, {}>()
       .extent([[0, 0], [this.width, this.height]])
       .on('zoom', (eve: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
         this.currentTransform = eve.transform;
         this.updateChart();
       });
-    this.thing = d3.select('#timeseriesChart').selectChild()
+    this.thing = d3.select<HTMLDivElement, {}>('#timeseriesChart').selectChild()
     this.thing.call(this.zoom)
 
     this.svg.append('defs').append('SVG:clipPath')
@@ -117,7 +117,7 @@ export class TimeseriesChartComponent implements OnInit {
       .attr('x', 0)
       .attr('y', 0);
 
-    this.svg.append('text').attr('transform', `translate(${this.width / 2}, ${this.height + this.margin.bottom - 20})`).style('text-anchor', 'middle').attr('class', 'baseline-label').text('Temporal Baseline (days)');
+    this.svg.append('text').attr('transform', `translate(${this.width / 2}, ${this.height + this.margin.bottom - 20})`).style('text-anchor', 'middle').attr('class', 'baseline-label').text('Scene Date');
     this.svg.append('text').attr('transform', `rotate(-90)`).attr('y', -this.margin.left + 20).attr('x', -this.height / 2).style('text-anchor', 'middle').attr('class', 'baseline-label').text('Unwrapped Phase (radians)');
     this.updateChart();
   }
@@ -129,7 +129,6 @@ export class TimeseriesChartComponent implements OnInit {
     this.xAxis.call(
       d3.axisBottom(newX)
         .tickSize(-this.height)
-        .ticks(smallChart ? 10 : 5, 's')
     );
     this.yAxis.call(
       d3.axisLeft(newY)
@@ -138,7 +137,7 @@ export class TimeseriesChartComponent implements OnInit {
     );
 
     this.dots.selectAll('circle').data(this.dataSource).join('circle')
-      .attr('cx', d => newX(d.temporal_baseline))
+      .attr('cx', d => newX(Date.parse(d.date)))
       .attr('cy', d => newY(d.unwrapped_phase));
 
   }
@@ -148,7 +147,7 @@ export class TimeseriesChartComponent implements OnInit {
     const transformedY = this.currentTransform?.rescaleY(this.y) ?? this.y;
     const transformedX = this.currentTransform?.rescaleX(this.x) ?? this.x;
     this.dots.selectAll('circle').data(this.dataSource).join('circle')
-      .attr('cx', d => { return transformedX(d.temporal_baseline) })
+      .attr('cx', d => transformedX(Date.parse(d.date)))
       .attr('cy', d => transformedY(d.unwrapped_phase))
       .attr('r', 5)
       .attr('class', 'timeseries-base')
@@ -179,3 +178,11 @@ export class TimeseriesChartComponent implements OnInit {
   }
 
 }
+
+interface TimeSeriesChartPoint {
+  unwrapped_phase: number
+  interferometric_correlation: number
+  temporal_coherence: number
+  date: string
+  temporal_baseline: number
+};
