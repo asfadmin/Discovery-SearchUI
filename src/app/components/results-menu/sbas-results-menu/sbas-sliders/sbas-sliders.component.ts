@@ -42,7 +42,7 @@ export class SbasSlidersComponent implements OnInit {
     this.subs.add(
       baselineSlider.values$.subscribe(
         ([start]) => {
-          console.log('baselineSlider.values$ subscription start:', start);
+          // console.log('baselineSlider.values$ subscription start:', start);
           const action = new filtersStore.SetPerpendicularRange({ start, end: null });
           this.store$.dispatch(action);
         }
@@ -52,7 +52,7 @@ export class SbasSlidersComponent implements OnInit {
     this.subs.add(
       this.store$.select(filtersStore.getPerpendicularRange).subscribe(
         temp => {
-          console.log('getPerpendicularRange subscription temp:', temp);
+          // console.log('getPerpendicularRange subscription temp:', temp);
           this.temporal = temp.start;
 
           if (this.lastValue !== this.temporal) {
