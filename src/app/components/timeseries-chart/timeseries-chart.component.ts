@@ -26,12 +26,12 @@ export class TimeseriesChartComponent implements OnInit {
   private height = 400;
   private x: d3.ScaleTime<number, number, never>;
   private y: d3.ScaleLinear<number, number, never>;
-  public xAxis: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;;
-  private yAxis: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;;
-  private dots: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;;
+  public xAxis: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
+  private yAxis: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
+  private dots: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
+  private lineGraph: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private margin = { top: 10, right: 30, bottom: 60, left: 45 };
   private thing: d3.Selection<SVGGElement, {}, HTMLElement, any>
-
 
 
 
@@ -95,10 +95,10 @@ export class TimeseriesChartComponent implements OnInit {
     this.svg.append("g")
       .attr("transform", `translate(0,${this.height - marginBottom})`)
 
-
     this.clipContainer = this.svg.append('g')
       .attr('clip-path', 'url(#clip)');
     this.dots = this.clipContainer.append('g');
+    this.lineGraph = this.clipContainer.append("path")
     this.updateCircles();
     this.zoom = d3.zoom<SVGElement, {}>()
       .extent([[0, 0], [this.width, this.height]])
@@ -136,23 +136,64 @@ export class TimeseriesChartComponent implements OnInit {
         .ticks(smallChart ? 10 : 5, 's')
     );
 
+    var lineFunction = d3.line<TimeSeriesChartPoint>()
+      .x(function (d) { return newX(Date.parse(d.date)); })
+      .y(function (d) { return newY(d.unwrapped_phase); })
+
     this.dots.selectAll('circle').data(this.dataSource).join('circle')
       .attr('cx', d => newX(Date.parse(d.date)))
-      .attr('cy', d => newY(d.unwrapped_phase));
+      .attr('cy', d => newY(d.unwrapped_phase))
 
+      this.addPairAttributes(
+        this.lineGraph
+          .attr('d', _ => lineFunction(this.dataSource))
+          .attr('fill', 'none')
+        )
   }
 
   private updateCircles() {
 
     const transformedY = this.currentTransform?.rescaleY(this.y) ?? this.y;
     const transformedX = this.currentTransform?.rescaleX(this.x) ?? this.x;
+
+    var lineFunction = d3.line<TimeSeriesChartPoint>()
+      .x(function (d) { return transformedX(Date.parse(d.date)); })
+      .y(function (d) { return transformedY(d.unwrapped_phase); })
+
     this.dots.selectAll('circle').data(this.dataSource).join('circle')
       .attr('cx', d => transformedX(Date.parse(d.date)))
       .attr('cy', d => transformedY(d.unwrapped_phase))
       .attr('r', 5)
       .attr('class', 'timeseries-base')
+
+
+    this.addPairAttributes(
+    this.lineGraph
+      .attr('d', _ => lineFunction(this.dataSource))
+      .attr('fill', 'none')
+    )
   }
 
+  private addPairAttributes(ps) {
+    return ps
+      .attr('class', 'base-line')
+      .attr('stroke', 'steelblue')
+      .attr('stroke-width', 3)
+      // .attr('cursor', 'pointer')
+      // .attr('d', pair => this.line(pair))
+    // .on('mouseover', function (_) {
+    //   self.setHovered(d3.select(this));
+    // })
+    // .on('mouseleave', function (_) {
+    //   self.clearHovered();
+    // })
+    // .on('click', (_event, pair) => {
+    //   this.store$.dispatch(
+    //     new scenesStore.SetSelectedPair(pair.map(product => product.id))
+    //   );
+    //   this.setSelected(pair);
+    // });
+  };
   public updateAxis(_axis, _value) {
 
   }
