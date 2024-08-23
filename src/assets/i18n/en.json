@@ -1,5 +1,4 @@
 {
-  " ADD_BY_PRODUCT_TYPE ": "Add by product type\n\n\n\n\n\n\n",
   "10 METERS": "10 meters",
   "20 METERS": "20 meters",
   "30 METERS": "30 meters",
@@ -17,6 +16,7 @@
   "ADD_ALL_RESULTS_TO_DOWNLOADS": "Add all results to downloads",
   "ADD_ALL_RESULTS_TO_ON_DEMAND_QUEUE": "Add all results to On Demand queue",
   "ADD_BEAM_MODE_TO_SEARCH": "Add beam mode to search",
+  "ADD_BY_PRODUCT_TYPE ": "Add by product type",
   "ADD_FILE_TO_DOWNLOADS": "Add file to downloads",
   "ADD_FILE_TO_QUEUE": "Add file to queue",
   "ADD_JOB": "Add job",
