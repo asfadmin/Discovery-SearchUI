@@ -30,6 +30,7 @@ export class TimeseriesChartComponent implements OnInit {
   private yAxis: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private dots: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private lineGraph: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
+  private toolTip: d3.Selection<SVGTextElement, {}, HTMLDivElement, any>
   private margin = { top: 10, right: 30, bottom: 60, left: 45 };
   private thing: d3.Selection<SVGGElement, {}, HTMLElement, any>
 
@@ -97,9 +98,13 @@ export class TimeseriesChartComponent implements OnInit {
 
     this.clipContainer = this.svg.append('g')
       .attr('clip-path', 'url(#clip)');
-    this.dots = this.clipContainer.append('g');
+
+    // this.toolTip = toolTip;
+    // this.toolTip.text()
+    this.dots = this.clipContainer.append('g')
+    this.toolTip = this.dots.append('text').text('hello!')
+    this.toolTip.attr('transform', `translate(0, 0)`).style('text-anchor', 'middle').style('z-index', 100).style('opacity', 0)
     this.lineGraph = this.clipContainer.append("path")
-    this.updateCircles();
     this.zoom = d3.zoom<SVGElement, {}>()
       .extent([[0, 0], [this.width, this.height]])
       .on('zoom', (eve: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
@@ -143,34 +148,28 @@ export class TimeseriesChartComponent implements OnInit {
     this.dots.selectAll('circle').data(this.dataSource).join('circle')
       .attr('cx', d => newX(Date.parse(d.date)))
       .attr('cy', d => newY(d.unwrapped_phase))
-
-      this.addPairAttributes(
-        this.lineGraph
-          .attr('d', _ => lineFunction(this.dataSource))
-          .attr('fill', 'none')
-        )
-  }
-
-  private updateCircles() {
-
-    const transformedY = this.currentTransform?.rescaleY(this.y) ?? this.y;
-    const transformedX = this.currentTransform?.rescaleX(this.x) ?? this.x;
-
-    var lineFunction = d3.line<TimeSeriesChartPoint>()
-      .x(function (d) { return transformedX(Date.parse(d.date)); })
-      .y(function (d) { return transformedY(d.unwrapped_phase); })
-
-    this.dots.selectAll('circle').data(this.dataSource).join('circle')
-      .attr('cx', d => transformedX(Date.parse(d.date)))
-      .attr('cy', d => transformedY(d.unwrapped_phase))
       .attr('r', 5)
       .attr('class', 'timeseries-base')
-
+      .on(
+        'mouseover', (event, point: TimeSeriesChartPoint) => {
+          this.toolTip.interrupt()
+          this.toolTip.style('opacity', .9);
+          
+          this.toolTip.text(`${point.date}: ${point.unwrapped_phase} radians`)
+          const [x, y] = d3.pointer(event)
+          this.toolTip.attr('transform', `translate(${x}, ${y - 20})`).style('text-anchor', 'middle')
+        }
+      )
+      .on('mouseleave', (_event, _point: TimeSeriesChartPoint) => {
+        this.toolTip.transition()
+          .duration(500)
+          .style('opacity', 0);
+      });
 
     this.addPairAttributes(
-    this.lineGraph
-      .attr('d', _ => lineFunction(this.dataSource))
-      .attr('fill', 'none')
+      this.lineGraph
+        .attr('d', _ => lineFunction(this.dataSource))
+        .attr('fill', 'none')
     )
   }
 
@@ -179,20 +178,6 @@ export class TimeseriesChartComponent implements OnInit {
       .attr('class', 'base-line')
       .attr('stroke', 'steelblue')
       .attr('stroke-width', 3)
-      // .attr('cursor', 'pointer')
-      // .attr('d', pair => this.line(pair))
-    // .on('mouseover', function (_) {
-    //   self.setHovered(d3.select(this));
-    // })
-    // .on('mouseleave', function (_) {
-    //   self.clearHovered();
-    // })
-    // .on('click', (_event, pair) => {
-    //   this.store$.dispatch(
-    //     new scenesStore.SetSelectedPair(pair.map(product => product.id))
-    //   );
-    //   this.setSelected(pair);
-    // });
   };
   public updateAxis(_axis, _value) {
 
