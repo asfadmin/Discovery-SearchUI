@@ -50,7 +50,7 @@ export interface FiltersState {
   geocode: null | string;
 
   fullBurstIDs: null | string[];
-  
+
   operaBurstIDs: null | string[];
   useCalibrationData: boolean; // used to toggle OPERA-S1 Calval (calibration) datasets
 
@@ -181,17 +181,6 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     }
 
     case FiltersActionType.SET_TEMPORAL_START: {
-      const end = action.payload;
-
-      return {
-        ...state,
-        temporalRange: {
-          ...state.temporalRange, end
-        }
-      };
-    }
-
-    case FiltersActionType.SET_TEMPORAL_END: {
       const start = action.payload;
 
       return {
@@ -202,9 +191,21 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
+    case FiltersActionType.SET_TEMPORAL_END: {
+      const end = action.payload;
+
+      return {
+        ...state,
+        temporalRange: {
+          ...state.temporalRange, end
+        }
+      };
+    }
+
     case FiltersActionType.SET_TEMPORAL_RANGE: {
       return {
         ...state,
+        // temporalRange: action.payload
         temporalRange: action.payload
       };
     }
@@ -563,7 +564,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         return {
           ...state,
           dateRange: filters.dateRange,
-          temporalRange: {start: filters.temporal, end: null},
+          temporalRange: {start: filters.temporalRange.start, end: filters.temporalRange.end},
           perpendicularRange: {start: filters.perpendicular, end: null},
         };
       } else if (search.searchType === models.SearchType.CUSTOM_PRODUCTS) {
@@ -957,7 +958,7 @@ export const getBaselineSearch = createSelector(
 export const getSbasSearch = createSelector(
   getFiltersState,
   (state: FiltersState) => ({
-    temporal: state.temporalRange.start,
+    temporalRange: state.temporalRange,
     dateRange: state.dateRange,
     season: state.season,
     perpendicular: state.perpendicularRange.start,

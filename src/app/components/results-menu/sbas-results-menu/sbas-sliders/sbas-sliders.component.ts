@@ -26,7 +26,8 @@ export class SbasSlidersComponent implements OnInit {
   public tempSlider;
   public temporal: number;
 
-  private firstLoad = true;
+  // private firstLoad = true;
+  private lastValue = 0
   private subs = new SubSink();
 
   constructor(
@@ -41,6 +42,7 @@ export class SbasSlidersComponent implements OnInit {
     this.subs.add(
       baselineSlider.values$.subscribe(
         ([start]) => {
+          // console.log('baselineSlider.values$ subscription start:', start);
           const action = new filtersStore.SetPerpendicularRange({ start, end: null });
           this.store$.dispatch(action);
         }
@@ -50,11 +52,12 @@ export class SbasSlidersComponent implements OnInit {
     this.subs.add(
       this.store$.select(filtersStore.getPerpendicularRange).subscribe(
         temp => {
+          // console.log('getPerpendicularRange subscription temp:', temp);
           this.temporal = temp.start;
 
-          if (this.firstLoad) {
+          if (this.lastValue !== this.temporal) {
             this.tempSlider.set([this.temporal]);
-            this.firstLoad = false;
+            this.lastValue = this.temporal;
           }
         }
       )
