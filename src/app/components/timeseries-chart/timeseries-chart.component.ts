@@ -1,15 +1,20 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
 import * as d3 from 'd3';
 import { Observable, Subject } from 'rxjs';
+
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+import * as sceneStore from '@store/scenes';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-timeseries-chart',
   templateUrl: './timeseries-chart.component.html',
   styleUrl: './timeseries-chart.component.scss'
 })
-export class TimeseriesChartComponent implements OnInit {
-  @ViewChild('timeseriesChart', { static: true }) timeseriesChart: ElementRef<HTMLDivElement>;
+export class TimeseriesChartComponent implements OnInit, OnDestroy {
+  @ViewChild('timeseriesChart', { static: true }) timeseriesChart: ElementRef;
   @Input() zoomIn$: Observable<void>;
   @Input() zoomOut$: Observable<void>;
   @Input() zoomToFit$: Observable<void>;
@@ -24,6 +29,7 @@ export class TimeseriesChartComponent implements OnInit {
   private clipContainer: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private width = 640;
   private height = 400;
+
   private x: d3.ScaleTime<number, number, never>;
   private y: d3.ScaleLinear<number, number, never>;
   public xAxis: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
@@ -32,10 +38,14 @@ export class TimeseriesChartComponent implements OnInit {
   private lineGraph: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private margin = { top: 10, right: 30, bottom: 60, left: 45 };
   private thing: d3.Selection<SVGGElement, {}, HTMLElement, any>
+    
+  private selectedScene: string;
+    
 
-
-
-  constructor() {
+  private subs = new SubSink();
+  constructor(
+    private store$: Store<AppState>,
+  ) {
   }
 
   public ngOnInit(): void {
@@ -51,6 +61,16 @@ export class TimeseriesChartComponent implements OnInit {
     this.zoomIn$.subscribe(_ => {
       this.thing.transition().call(this.zoom.scaleBy, 2);
     });
+    this.subs.add(
+      this.store$.select(sceneStore.getSelectedScene).subscribe(test => {
+        this.selectedScene = test.id;
+        this.updateCircles();
+
+      })
+    )
+  }
+  public ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 
   public initChart(data): void {
@@ -61,6 +81,7 @@ export class TimeseriesChartComponent implements OnInit {
         'interferometric_correlation': data[key].interferometric_correlation,
         'temporal_coherence': data[key].temporal_coherence,
         'date': data[key].time,
+        'id': key
         'temporal_baseline': data[key].temporal_baseline
       })
     }
@@ -164,7 +185,16 @@ export class TimeseriesChartComponent implements OnInit {
       .attr('cx', d => transformedX(Date.parse(d.date)))
       .attr('cy', d => transformedY(d.unwrapped_phase))
       .attr('r', 5)
-      .attr('class', 'timeseries-base')
+      .attr('class', (d) => {
+        if (this.selectedScene === d.id) {
+          return 'timeseries-selected';
+        } else {
+          return 'timeseries-base';
+        }
+      })
+      .on('click', (_event, d) => {
+        this.store$.dispatch(new sceneStore.SetSelectedScene(d.id))
+      })
 
 
     this.addPairAttributes(

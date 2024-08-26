@@ -11,7 +11,8 @@ import { Subject } from 'rxjs';
 export class PointHistoryService {
   private history : Point[] = [];
   public history$ = new Subject<Point[]>();
-
+  public passDraw: boolean = false;
+  public selectedPoint: number = 0;
   constructor(
   ) {
   }
@@ -22,6 +23,10 @@ export class PointHistoryService {
 
 
   public addPoint(point: Point) {
+    if(this.passDraw) {
+      this.passDraw = false
+      return
+    }
     this.history.push(point);
     this.history$.next(this.history);
   }

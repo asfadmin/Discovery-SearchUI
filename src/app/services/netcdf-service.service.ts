@@ -5,7 +5,7 @@ import { Observable, first, map, of, tap } from 'rxjs';
 // import WebGLTileLayer from 'ol/layer/WebGLTile';
 import ImageLayer from 'ol/layer/Image';
 // import Static from 'ol/source/ImageStatic';
-import { TimeSeriesResult } from '@models';
+// import { TimeSeriesResult } from '@models';
 import ImageSource from 'ol/source/Image';
 import Feature from 'ol/Feature';
 import Geometry from 'ol/geom/Geometry';
@@ -67,10 +67,10 @@ export class NetcdfService {
     return output
   }
 
-  public getTimeSeries(geometry) {
+  public getTimeSeries(geometry): Observable<any> {
 
-    var format = new WKT();
-    var wktRepresenation  = format.writeGeometry(geometry);
+    let format = new WKT();
+    let wktRepresenation  = format.writeGeometry(geometry);
     let index_id = wktRepresenation;
     console.log(`getting ${index_id}`)
     if(this.cache.hasOwnProperty(index_id)) {
@@ -88,7 +88,7 @@ export class NetcdfService {
             let deleted = this.totalKeys.splice(0);
             delete this.cache[deleted[0]];
           }
-          return response as TimeSeriesResult
+          return response
       }
     ))
     }

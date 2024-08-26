@@ -10,7 +10,8 @@
 			@if(pointHistory.length !== 0) {
 			<mat-radio-group>
 				@for (point of pointHistory; track $index) {
-					<mat-radio-button color="primary" (click)="onPointClick($index)">
+
+					<mat-radio-button color="primary" (click)="onPointClick($index)"  [checked]="$index === pointHistoryService.selectedPoint">
             <mat-icon class="ts-wkt-icon">place</mat-icon>
             <span class="ts-wkt-text">
 						  {{point.flatCoordinates[0] | floatPrecision: 2}},&ensp;{{point.flatCoordinates[1] | floatPrecision: 2}}
@@ -61,7 +62,6 @@
 	        mwlResizable [enableGhostResize]="true" (resizeEnd)="onResizeEnd($event)">
 	<div mwlResizeHandle [resizeEdges]="{ left: true }" class="chart-draggable-handle ts-resize-handle-filler">
 		<mat-icon svgIcon="vgrip" class="vgrip-icon"></mat-icon>
-
 	</div>
 	<mat-card-subtitle [class.medium-header]="breakpoint <= breakpoints.MEDIUM" class="ts-header">
 

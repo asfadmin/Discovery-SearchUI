@@ -5,11 +5,16 @@
 	// width: 680px;
   }
   
-  ::ng-deep .timeseries-base {
-	@include themify($themes) {
-	  fill: lighten(themed('dark-primary-text'), 45%);
-	}
-  }
+::ng-deep .timeseries-base {
+@include themify($themes) {
+	fill: lighten(themed('dark-primary-text'), 45%);
+}
+}
+::ng-deep .baseline-selected {
+@include themify($themes) {
+	fill: themed('err');
+}
+}
 
 .chart-wrapper {
 	height: calc(100% - 1px);
