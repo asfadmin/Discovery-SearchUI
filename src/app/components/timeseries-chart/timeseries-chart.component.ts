@@ -1,15 +1,20 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
 import * as d3 from 'd3';
 import { Observable, Subject } from 'rxjs';
+
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+import * as sceneStore from '@store/scenes';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-timeseries-chart',
   templateUrl: './timeseries-chart.component.html',
   styleUrl: './timeseries-chart.component.scss'
 })
-export class TimeseriesChartComponent implements OnInit {
-  @ViewChild('timeseriesChart', { static: true }) timeseriesChart: ElementRef<HTMLDivElement>;
+export class TimeseriesChartComponent implements OnInit, OnDestroy {
+  @ViewChild('timeseriesChart', { static: true }) timeseriesChart: ElementRef;
   @Input() zoomIn$: Observable<void>;
   @Input() zoomOut$: Observable<void>;
   @Input() zoomToFit$: Observable<void>;
@@ -24,6 +29,7 @@ export class TimeseriesChartComponent implements OnInit {
   private clipContainer: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private width = 640;
   private height = 400;
+
   private x: d3.ScaleTime<number, number, never>;
   private y: d3.ScaleLinear<number, number, never>;
   public xAxis: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
@@ -36,7 +42,12 @@ export class TimeseriesChartComponent implements OnInit {
   private hoveredElement;
 
 
-  constructor() {
+  private selectedScene: string;
+
+  private subs = new SubSink();
+  constructor(
+    private store$: Store<AppState>,
+  ) {
   }
 
   public ngOnInit(): void {
@@ -52,6 +63,16 @@ export class TimeseriesChartComponent implements OnInit {
     this.zoomIn$.subscribe(_ => {
       this.thing.transition().call(this.zoom.scaleBy, 2);
     });
+    this.subs.add(
+      this.store$.select(sceneStore.getSelectedScene).subscribe(test => {
+        this.selectedScene = test.id;
+        this.updateChart();
+
+      })
+    )
+  }
+  public ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 
   public initChart(data): void {
@@ -62,6 +83,7 @@ export class TimeseriesChartComponent implements OnInit {
         'interferometric_correlation': data[key].interferometric_correlation,
         'temporal_coherence': data[key].temporal_coherence,
         'date': data[key].time,
+        'id': key,
         'temporal_baseline': data[key].temporal_baseline
       })
     }
@@ -127,7 +149,16 @@ export class TimeseriesChartComponent implements OnInit {
           .duration(500)
           .style('opacity', 0);
       })
-      .attr('class', 'timeseries-base')
+      .on('click', (_event, d) => {
+        this.store$.dispatch(new sceneStore.SetSelectedScene(d.id))
+      })
+      .attr('class', (d) => {
+        if (this.selectedScene === d.id) {
+          return 'timeseries-selected';
+        } else {
+          return 'timeseries-base';
+        }
+      })
       .attr('r', 7)
 
     this.lineGraph = this.clipContainer.append("path")
@@ -174,6 +205,16 @@ export class TimeseriesChartComponent implements OnInit {
     this.dots
       .attr('cx', d => newX(Date.parse(d.date)))
       .attr('cy', d => newY(d.unwrapped_phase))
+      .attr('class', (d) => {
+        if (this.selectedScene === d.id) {
+          return 'timeseries-selected';
+        } else {
+          return 'timeseries-base';
+        }
+      })
+      .on('click', (_event, d) => {
+        this.store$.dispatch(new sceneStore.SetSelectedScene(d.id))
+      })
 
     this.addPairAttributes(
       this.lineGraph
@@ -181,6 +222,7 @@ export class TimeseriesChartComponent implements OnInit {
         .attr('fill', 'none')
     )
   }
+
   private updateTooltip() {
     const bounding = this.hoveredElement.getBoundingClientRect();
     const a = bounding.x > document.body.clientWidth - 200;
@@ -225,7 +267,7 @@ export class TimeseriesChartComponent implements OnInit {
       }
       return a.map(format).join(s);
     }
-  
+
     const dateFormat = [{ month: 'short' }, { day: 'numeric' }, { year: 'numeric' }];
     return join(date, dateFormat, ' ');
   }
@@ -237,4 +279,5 @@ interface TimeSeriesChartPoint {
   temporal_coherence: number
   date: string
   temporal_baseline: number
+  id: string
 };
