@@ -12,7 +12,7 @@ import { DrawService, MapService, NetcdfService, PointHistoryService, ScreenSize
 
 import { SubSink } from 'subsink';
 
-import { Point} from 'ol/geom';
+import {  Point} from 'ol/geom';
 import { WKT } from 'ol/format';
 import moment2 from 'moment';
 import { SetScenes } from '@store/scenes';
@@ -28,6 +28,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
 
   @ViewChild('listCard', {read: ElementRef}) listCardView: ElementRef;
   @ViewChild('chartCard', {read: ElementRef}) chartCardView: ElementRef;
+  @ViewChild('radio-group', {read: ElementRef}) radioGroup: ElementRef;
 
   @Input() resize$: Observable<void>;
   public searchType: SearchType;
@@ -49,13 +50,14 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public pointHistory = [];
 
 
-  public chartData = new Subject<any>
+  public chartData = new Subject<any>;
+  public selectedPoint: number;
 
 
   constructor(
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
-    private pointHistoryService: PointHistoryService,
+    public pointHistoryService: PointHistoryService,
     private drawService: DrawService,
     private mapService: MapService,
     private netcdfService: NetcdfService
@@ -83,6 +85,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
         temp.transform('EPSG:3857', 'EPSG:4326')
         if (polygon.getGeometry().getType() === 'Point') {
           this.pointHistoryService.addPoint(temp);
+          // this.selectedPoint = temp;
         }
         this.updateChart(temp);
       }
@@ -123,9 +126,10 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     window.open(url);
   }
   public onPointClick(index: number) {
+    this.pointHistoryService.selectedPoint = index;
     this.pointHistoryService.passDraw = true;
-    var format = new WKT();
-    var wktRepresenation  = format.writeGeometry(this.pointHistory[index]);
+    let format = new WKT();
+    let wktRepresenation  = format.writeGeometry(this.pointHistory[index]);
     this.mapService.loadPolygonFrom(wktRepresenation.toString())
   }
   public updateChart(geometry): void {

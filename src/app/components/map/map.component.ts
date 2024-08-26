@@ -24,7 +24,7 @@ import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 
 import * as models from '@models';
-import { MapService, WktService, ScreenSizeService, ScenesService, SarviewsEventsService } from '@services';
+import { MapService, WktService, ScreenSizeService, ScenesService, SarviewsEventsService, PointHistoryService } from '@services';
 import * as polygonStyle from '@services/map/polygon.style';
 import { CMRProduct, SarviewsEvent } from '@models';
 import { StyleLike } from 'ol/style/Style';
@@ -97,7 +97,8 @@ export class MapComponent implements OnInit, OnDestroy  {
     private screenSize: ScreenSizeService,
     private scenesService: ScenesService,
     private eventMonitoringService: SarviewsEventsService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private pointHistoryService: PointHistoryService
   ) {}
 
   ngOnInit(): void {
@@ -244,8 +245,16 @@ export class MapComponent implements OnInit, OnDestroy  {
 
     this.subs.add(
       this.mapService.newSelectedDisplacement$.subscribe(point => {
-        var format = new WKT();
-        var wktRepresenation  = format.writeGeometry(point);
+        let format = new WKT();
+        let wktRepresenation  = format.writeGeometry(point);
+
+        let pointIndex = this.pointHistoryService.getHistory().findIndex((thing) => {
+          if(thing === point) {
+            return true
+          }
+        })
+        this.pointHistoryService.selectedPoint = pointIndex;
+
         this.mapService.loadPolygonFrom(wktRepresenation.toString())
       })
     )

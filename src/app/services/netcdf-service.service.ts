@@ -69,8 +69,8 @@ export class NetcdfService {
 
   public getTimeSeries(geometry): Observable<any> {
 
-    var format = new WKT();
-    var wktRepresenation  = format.writeGeometry(geometry);
+    let format = new WKT();
+    let wktRepresenation  = format.writeGeometry(geometry);
     let index_id = wktRepresenation;
     console.log(`getting ${index_id}`)
     if(this.cache.hasOwnProperty(index_id)) {

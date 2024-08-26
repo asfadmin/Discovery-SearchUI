@@ -12,6 +12,7 @@ export class PointHistoryService {
   private history : Point[] = [];
   public history$ = new Subject<Point[]>();
   public passDraw: boolean = false;
+  public selectedPoint: number = 0;
   constructor(
   ) {
   }
