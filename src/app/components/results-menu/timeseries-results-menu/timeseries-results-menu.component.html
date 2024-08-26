@@ -1,45 +1,62 @@
 <!-- SCENE LIST -->
-<ng-container *ngIf="breakpoint > breakpoints.MOBILE">
+<ng-container *ngIf="breakpoint > breakpoints.MOBILE" xmlns="http://www.w3.org/1999/html">
 
-	<mat-card #listCard class="mp0 ts-list-card" >
+	<mat-card #listCard class="mp0 ts-column-1" [style.width]="wktListMaxWidth">
 		<mat-card-subtitle class="header ts-scene-list-header">
 			<app-scenes-list-header></app-scenes-list-header>
 		</mat-card-subtitle>
 
-		<div>
+		<div class="ts-left-column-results">
 			@if(pointHistory.length !== 0) {
 			<mat-radio-group>
 				@for (point of pointHistory; track $index) {
 					<mat-radio-button color="primary" (click)="onPointClick($index)">
-						{{point.flatCoordinates[0] | floatPrecision: 4}}, {{point.flatCoordinates[1] | floatPrecision: 4}}
+            <mat-icon class="ts-wkt-icon">place</mat-icon>
+            <span class="ts-wkt-text">
+						  {{point.flatCoordinates[0] | floatPrecision: 2}},&ensp;{{point.flatCoordinates[1] | floatPrecision: 2}}
+            </span>
 					</mat-radio-button>
 				}
 			</mat-radio-group>
 		}
 		@else {
-			<div>
-				No points selected yet
+			<div class="ts-no-point-selected">
+        {{ 'NO_POINT_SELECTED' | translate }}
 			</div>
 		}
 		</div>
 	</mat-card>
 
-	<mat-card class="mp0 ts-list-card ts-layer-list" >
+	<mat-card class="mp0 ts-column-2 ts-layer-list" [style.width]="listCardMaxWidth">
 		<mat-card-subtitle class="header ts-layer-list-header">
 		</mat-card-subtitle>
 		<div class="ts-metadata scrollable">
-			<app-scenes-list [resize$]="resize$"></app-scenes-list>
-			<div *ngIf="false" style="margin: 5px; padding-bottom: 36px;">
-				<div class="faint-text w100 h100" style="text-align: center; padding-top: 10px;">
-					{{ 'NO_POINT_SELECTED' | translate }}
-				</div>
-			</div>
-		</div>
+      <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" dynamicHeight>
+        <mat-tab label="Metadata">
+          <div style="text-align: center; margin-top: 20px;">Interesting Metadata Goes Here</div>
+        </mat-tab>
+        <mat-tab label="Scenes">
+          <div style="height: 1000px;">
+            <app-scenes-list [resize$]="resize$"></app-scenes-list>
+            <div *ngIf="false" style="margin: 5px; padding-bottom: 36px;">
+              <div class="faint-text w100 h100" style="text-align: center; padding-top: 10px; height: 100px !important;">
+                {{ 'NO_POINT_SELECTED' | translate }}
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Extra">Content 3</mat-tab>
+      </mat-tab-group>
+      <!--		<div class= "ts-metadata scrollable">-->
+      <!--		</div>-->
+
+    </div>
 	</mat-card>
 </ng-container>
 
 <mat-card #chartCard class="mp0 ts-chart-card"
-	mwlResizable [enableGhostResize]="true" (resizeEnd)="onResizeEnd($event)">
+          [style.width]="chartCardMaxWidth"
+	        mwlResizable [enableGhostResize]="true" (resizeEnd)="onResizeEnd($event)">
 	<div mwlResizeHandle [resizeEdges]="{ left: true }" class="chart-draggable-handle ts-resize-handle-filler">
 		<mat-icon svgIcon="vgrip" class="vgrip-icon"></mat-icon>
 
@@ -82,7 +99,7 @@
 			<div class="toggle-group-wrapper--layout">
 				<mat-button-toggle class="control-mat-button-toggle ts-criteria-button-toggle"
 					(click)="onToggleFiltersMenu()">
-					{{ 'DISPLACEMENT FILTERS' | translate }}<mat-icon class="more-horiz">more_horiz</mat-icon>
+					{{ 'DISPLACEMENT_FILTERS' | translate }}<mat-icon class="more-horiz">more_horiz</mat-icon>
 				</mat-button-toggle>
 			</div>
 		</div>

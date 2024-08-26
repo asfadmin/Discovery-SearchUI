@@ -14,6 +14,7 @@ import { SubSink } from 'subsink';
 
 import { Point} from 'ol/geom';
 import { WKT } from 'ol/format';
+import {getPathRange} from '@store/filters';
 
 
 @Component({
@@ -30,14 +31,15 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   @Input() resize$: Observable<void>;
   public searchType: SearchType;
 
-
-  public listCardMaxWidth = '38%';
+  public wktListMaxWidth = '225px';
+  public listCardMaxWidth = '300px';
   public chartCardMaxWidth = '55%';
   private minChartWidth = 25.0;
 
+  public tsPath: any
+
   public breakpoint: Breakpoints;
   public breakpoints = Breakpoints;
-  public isSelectedPairCustom: boolean;
   private subs = new SubSink();
 
   public zoomInChart$ = new Subject<void>();
@@ -46,9 +48,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
 
   public pointHistory = [];
 
-
   public chartData = new Subject<any>
-
 
   constructor(
     private store$: Store<AppState>,
@@ -72,10 +72,12 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
         searchType => this.searchType = searchType
       )
     );
+
     this.subs.add(this.pointHistoryService.history$.subscribe(history => {
       this.pointHistory = history;
       this.mapService.setDisplacementLayer(history);
     }));
+
     this.subs.add(this.drawService.polygon$.subscribe(polygon => {
       if(polygon) {
         let temp = polygon.getGeometry().clone() as Point;
@@ -88,6 +90,10 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
         this.updateChart(temp);
       }
     }))
+
+    this.netcdfService.getTimeSeries(getPathRange).pipe(first()).subscribe(data => {
+      this.tsPath = data;
+    });
   }
 
   public onResizeEnd(event: ResizeEvent): void {
@@ -104,6 +110,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     this.listCardMaxWidth = newListMaxWidth.toString() + '%';
     this.chartCardMaxWidth = newChartMaxWidth.toString() + '%';
   }
+
   public onToggleFiltersMenu(): void {
     this.store$.dispatch(new uiStore.OpenFiltersMenu());
   }
@@ -123,12 +130,14 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public onOpenHelp(url: string): void {
     window.open(url);
   }
+
   public onPointClick(index: number) {
     this.passDraw = true;
     var format = new WKT();
-    var wktRepresenation  = format.writeGeometry(this.pointHistory[index]);
-    this.mapService.loadPolygonFrom(wktRepresenation.toString())
+    var wktRepresentation  = format.writeGeometry(this.pointHistory[index]);
+    this.mapService.loadPolygonFrom(wktRepresentation.toString())
   }
+
   public updateChart(geometry): void {
     this.netcdfService.getTimeSeries(geometry).pipe(first()).subscribe(data => {
       this.chartData.next(data);

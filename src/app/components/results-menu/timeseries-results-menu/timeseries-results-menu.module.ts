@@ -16,6 +16,7 @@ import { TimeseriesChartModule } from '@components/timeseries-chart/timeseries-c
 import { ResizableModule } from 'angular-resizable-element';
 import { MatRadioModule } from '@angular/material/radio';
 import { PipesModule } from '@pipes';
+import {MatTab, MatTabGroup} from '@angular/material/tabs';
 
 
 @NgModule({
@@ -36,7 +37,9 @@ import { PipesModule } from '@pipes';
     TimeseriesChartModule,
     ResizableModule,
     MatRadioModule,
-    PipesModule
+    PipesModule,
+    MatTabGroup,
+    MatTab
   ],
   exports: [
     TimeseriesResultsMenuComponent
