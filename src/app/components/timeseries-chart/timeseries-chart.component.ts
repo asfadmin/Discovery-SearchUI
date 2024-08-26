@@ -81,7 +81,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         'interferometric_correlation': data[key].interferometric_correlation,
         'temporal_coherence': data[key].temporal_coherence,
         'date': data[key].time,
-        'id': key
+        'id': key,
         'temporal_baseline': data[key].temporal_baseline
       })
     }
@@ -256,4 +256,5 @@ interface TimeSeriesChartPoint {
   temporal_coherence: number
   date: string
   temporal_baseline: number
+  id: string
 };
