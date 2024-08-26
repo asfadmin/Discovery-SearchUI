@@ -60,7 +60,6 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     private mapService: MapService,
     private netcdfService: NetcdfService
   ) { }
-  private passDraw = false;
 
   ngOnInit(): void {
     this.subs.add(
@@ -82,10 +81,8 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       if(polygon) {
         let temp = polygon.getGeometry().clone() as Point;
         temp.transform('EPSG:3857', 'EPSG:4326')
-        if (polygon.getGeometry().getType() === 'Point' && !this.passDraw) {
-          this.pointHistoryService.addPoint(temp)
-        } else {
-          this.passDraw = false;
+        if (polygon.getGeometry().getType() === 'Point') {
+          this.pointHistoryService.addPoint(temp);
         }
         this.updateChart(temp);
       }
@@ -126,7 +123,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     window.open(url);
   }
   public onPointClick(index: number) {
-    this.passDraw = true;
+    this.pointHistoryService.passDraw = true;
     var format = new WKT();
     var wktRepresenation  = format.writeGeometry(this.pointHistory[index]);
     this.mapService.loadPolygonFrom(wktRepresenation.toString())

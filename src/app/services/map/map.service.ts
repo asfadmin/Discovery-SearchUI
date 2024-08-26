@@ -31,7 +31,7 @@ import { Icon, Style } from 'ol/style';
 import Geometry from 'ol/geom/Geometry';
 import LayerGroup from 'ol/layer/Group';
 import { PinnedProduct } from '@services/browse-map.service';
-import { BrowseOverlayService } from '@services';
+import { BrowseOverlayService, PointHistoryService } from '@services';
 import { ViewOptions } from 'ol/View';
 import { Type as GeometryType } from 'ol/geom/Geometry';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
@@ -82,7 +82,7 @@ export class MapService {
     condition: click,
     // style: null,
     layers: l => {
-      if (l.get('netcdf-layer')) {
+      if (l.get('displacement-layer')) {
         return true;
       }
       return false
@@ -141,6 +141,7 @@ export class MapService {
   );
 
   public newSelectedScene$ = new Subject<string>();
+  public newSelectedDisplacement$ = new Subject<Point>();
 
   public searchPolygon$ = this.drawService.polygon$.pipe(
     map(
@@ -158,6 +159,7 @@ export class MapService {
     private browseOverlayService: BrowseOverlayService,
     private layerService: LayerService,
     private http: HttpClient,
+    private pointHistoryService: PointHistoryService
   ) { }
 
   public epsg(): string {
@@ -181,17 +183,10 @@ export class MapService {
     this.selectSarviewEventHover.setActive(true);
     this.selectClick.setActive(true);
     this.searchPolygonHover.setActive(true);
-    this.timeseriesClick.setActive(false);
-
-  }
-  public enableTimeSeries(): void {
-    this.selectHover.setActive(false);
-    this.selectSarviewEventHover.setActive(false);
-    this.selectClick.setActive(false);
-    this.searchPolygonHover.setActive(false);
     this.timeseriesClick.setActive(true);
 
   }
+
   public disableInteractions(): void {
     this.selectHover.setActive(false);
     this.selectSarviewEventHover.setActive(false);
@@ -524,8 +519,10 @@ export class MapService {
         feature => this.newSelectedScene$.next(feature.get('filename'))
       );
     });
-    this.timeseriesClick.on('select', _ => {
-      this.timeseriesPixelSelected$.next(null);
+    this.timeseriesClick.on('select', e => {
+      e.target.getFeatures().forEach(
+        feature => {this.pointHistoryService.passDraw = true; this.newSelectedDisplacement$.next(feature.get('point'))}
+      );
     });
 
     this.selectHover.on('select', e => {
@@ -755,13 +752,17 @@ export class MapService {
     let pointFeatures = points.map((point: Point) => {
       let temp = point.clone() as Point;
       temp.transform( 'EPSG:4326', 'EPSG:3857')
-      return new Feature(temp)
+      let temp_feature = new Feature(temp)
+      temp_feature.set('point', point)
+      return temp_feature;
     });
     source.addFeatures(pointFeatures);
     this.displacmentLayer = new VectorLayer({
       source: source,
       // TODO: figure out a good style to put here.
     })
+
+    this.displacmentLayer.set('displacement-layer', 'true');
 
     this.map.addLayer(this.displacmentLayer);
   }

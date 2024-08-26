@@ -31,6 +31,7 @@ import { StyleLike } from 'ol/style/Style';
 import { Feature } from 'ol';
 import Geometry from 'ol/geom/Geometry';
 import { MatDialog } from '@angular/material/dialog';
+import WKT from 'ol/format/WKT';
 
 enum FullscreenControls {
   MAP = 'Map',
@@ -151,9 +152,6 @@ export class MapComponent implements OnInit, OnDestroy  {
         mode => {
           if (mode === models.MapInteractionModeType.NONE) {
             this.mapService.enableInteractions();
-          } 
-          else if(mode === models.MapInteractionModeType.TIMERSERIES) {
-            this.mapService.enableTimeSeries();
           }
           else {
             this.mapService.disableInteractions();
@@ -245,6 +243,14 @@ export class MapComponent implements OnInit, OnDestroy  {
     );
 
     this.subs.add(
+      this.mapService.newSelectedDisplacement$.subscribe(point => {
+        var format = new WKT();
+        var wktRepresenation  = format.writeGeometry(point);
+        this.mapService.loadPolygonFrom(wktRepresenation.toString())
+      })
+    )
+
+    this.subs.add(
       this.store$.select(uiStore.getIsFiltersMenuOpen).subscribe(
         isOpen => this.isFiltersMenuOpen = isOpen
       )
@@ -321,7 +327,10 @@ export class MapComponent implements OnInit, OnDestroy  {
           )
         ),
       ).subscribe(
-        feature => this.mapService.setSelectedFeature(feature)
+        feature => {
+          if(this.searchType !== this.searchTypes.DISPLACEMENT){
+            this.mapService.setSelectedFeature(feature)
+          }}
       )
     );
 
@@ -375,6 +384,9 @@ export class MapComponent implements OnInit, OnDestroy  {
             const intersectionMethod = this.mapService.getAoiIntersectionMethod(geometryType);
 
             polygonFeatures = features.filter(feature => intersectionMethod(searchPolygon, feature));
+          }
+          if(this.searchType === this.searchTypes.DISPLACEMENT) {
+            return this.scenePolygonsLayer([])
           }
 
           return this.scenePolygonsLayer(polygonFeatures);
