@@ -28,12 +28,12 @@ export class TimeseriesChartComponent implements OnInit {
   private y: d3.ScaleLinear<number, number, never>;
   public xAxis: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private yAxis: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
-  private dots: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
+  private dots: d3.Selection<SVGCircleElement, TimeSeriesChartPoint, SVGGElement, {}>;
   private lineGraph: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
-  private toolTip: d3.Selection<SVGTextElement, {}, HTMLDivElement, any>
+  private toolTip: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>
   private margin = { top: 10, right: 30, bottom: 60, left: 45 };
   private thing: d3.Selection<SVGGElement, {}, HTMLElement, any>
-
+  private hoveredElement;
 
 
   constructor() {
@@ -99,11 +99,37 @@ export class TimeseriesChartComponent implements OnInit {
     this.clipContainer = this.svg.append('g')
       .attr('clip-path', 'url(#clip)');
 
-    // this.toolTip = toolTip;
-    // this.toolTip.text()
-    this.dots = this.clipContainer.append('g')
-    this.toolTip = this.dots.append('text').text('hello!')
+    const toolTip = d3.select('body').append('div')
+      .attr('class', 'tooltip')
+      .style('opacity', 0);
+
+    this.toolTip = toolTip
     this.toolTip.attr('transform', `translate(0, 0)`).style('text-anchor', 'middle').style('z-index', 100).style('opacity', 0)
+
+    const self = this;
+    this.dots = this.clipContainer.append('g').selectAll('circle')
+      .data(this.dataSource)
+      .enter()
+      .append('circle')
+      .attr('cx', (d: TimeSeriesChartPoint) => this.x(Date.parse(d.date)))
+      .attr('cy', (d: TimeSeriesChartPoint) => this.y(d.unwrapped_phase))
+      .on('mouseover', function (_event: any, p: TimeSeriesChartPoint) {
+        self.hoveredElement = this;
+        const date = new Date(p.date)
+        toolTip.interrupt();
+        toolTip
+          .style('opacity', .9);
+        toolTip.html(`${self.tooltipDateFormat(date)}, ${p.unwrapped_phase.toFixed(2)} radians`);
+        self.updateTooltip();
+      })
+      .on('mouseleave', function (_) {
+        toolTip.transition()
+          .duration(500)
+          .style('opacity', 0);
+      })
+      .attr('class', 'timeseries-base')
+      .attr('r', 7)
+
     this.lineGraph = this.clipContainer.append("path")
     this.zoom = d3.zoom<SVGElement, {}>()
       .extent([[0, 0], [this.width, this.height]])
@@ -122,8 +148,8 @@ export class TimeseriesChartComponent implements OnInit {
       .attr('x', 0)
       .attr('y', 0);
 
-    this.svg.append('text').attr('transform', `translate(${this.width / 2}, ${this.height + this.margin.bottom - 20})`).style('text-anchor', 'middle').attr('class', 'baseline-label').text('Scene Date');
-    this.svg.append('text').attr('transform', `rotate(-90)`).attr('y', -this.margin.left + 20).attr('x', -this.height / 2).style('text-anchor', 'middle').attr('class', 'baseline-label').text('Unwrapped Phase (radians)');
+    this.svg.append('text').attr('transform', `translate(${this.width / 2}, ${this.height + this.margin.bottom - 20})`).style('text-anchor', 'middle').attr('class', 'disp-label').text('Scene Date');
+    this.svg.append('text').attr('transform', `rotate(-90)`).attr('y', -this.margin.left + 20).attr('x', -this.height / 2).style('text-anchor', 'middle').attr('class', 'disp-label').text('Unwrapped Phase (radians)');
     this.updateChart();
   }
 
@@ -145,26 +171,9 @@ export class TimeseriesChartComponent implements OnInit {
       .x(function (d) { return newX(Date.parse(d.date)); })
       .y(function (d) { return newY(d.unwrapped_phase); })
 
-    this.dots.selectAll('circle').data(this.dataSource).join('circle')
+    this.dots
       .attr('cx', d => newX(Date.parse(d.date)))
       .attr('cy', d => newY(d.unwrapped_phase))
-      .attr('r', 5)
-      .attr('class', 'timeseries-base')
-      .on(
-        'mouseover', (event, point: TimeSeriesChartPoint) => {
-          this.toolTip.interrupt()
-          this.toolTip.style('opacity', .9);
-          
-          this.toolTip.text(`${point.date}: ${point.unwrapped_phase} radians`)
-          const [x, y] = d3.pointer(event)
-          this.toolTip.attr('transform', `translate(${x}, ${y - 20})`).style('text-anchor', 'middle')
-        }
-      )
-      .on('mouseleave', (_event, _point: TimeSeriesChartPoint) => {
-        this.toolTip.transition()
-          .duration(500)
-          .style('opacity', 0);
-      });
 
     this.addPairAttributes(
       this.lineGraph
@@ -172,7 +181,12 @@ export class TimeseriesChartComponent implements OnInit {
         .attr('fill', 'none')
     )
   }
-
+  private updateTooltip() {
+    const bounding = this.hoveredElement.getBoundingClientRect();
+    const a = bounding.x > document.body.clientWidth - 200;
+    this.toolTip.style('left', `${bounding.x + (a ? -150 : 20)}px`)
+      .style('top', `${bounding.y - 10}px`);
+  }
   private addPairAttributes(ps) {
     return ps
       .attr('class', 'base-line')
@@ -203,6 +217,18 @@ export class TimeseriesChartComponent implements OnInit {
 
   }
 
+  private tooltipDateFormat(date) {
+    function join(t, a, s) {
+      function format(m) {
+        const f = new Intl.DateTimeFormat('en', m);
+        return f.format(t);
+      }
+      return a.map(format).join(s);
+    }
+  
+    const dateFormat = [{ month: 'short' }, { day: 'numeric' }, { year: 'numeric' }];
+    return join(date, dateFormat, ' ');
+  }
 }
 
 interface TimeSeriesChartPoint {
