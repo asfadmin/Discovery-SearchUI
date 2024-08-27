@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { first, Observable, Subject } from 'rxjs';
+import { first, Observable, Subject, Subscription } from 'rxjs';
 import { ResizeEvent } from 'angular-resizable-element';
 
 import { Store } from '@ngrx/store';
@@ -54,6 +54,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
 
   public chartData = new Subject<any>;
   public selectedPoint: number;
+  private timeseries_subscription: Subscription;
 
 
   constructor(
@@ -144,10 +145,12 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   }
 
   public updateChart(geometry): void {
-    this.netcdfService.getTimeSeries(geometry).pipe(first()).subscribe(data => {
+    if (this.timeseries_subscription) {
+      this.timeseries_subscription.unsubscribe();
+    }
+    this.timeseries_subscription = this.netcdfService.getTimeSeries(geometry).pipe(first()).subscribe(data => {
       this.chartData.next(data);
-      // just going to use the data here to have some test 
-      
+
       let test_products = []
       for(let a of Object.keys(data)) {
         if(a === 'mean') {
