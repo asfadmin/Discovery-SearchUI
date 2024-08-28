@@ -9,6 +9,7 @@ import { Store } from '@ngrx/store';
 import * as filtersStore from '@store/filters';
 
 import { SubSink } from 'subsink';
+import * as models from "@models";
 declare var wNumb: any;
 
 @Component({
@@ -24,27 +25,34 @@ export class SbasSlidersComponent implements OnInit {
   public temporalTickInterval = 7;
 
   public tempSlider;
-  public temporal: number;
+  public temporalRange: models.Range<number> = {start: 0, end: 800};
 
   // private firstLoad = true;
-  private lastValue = 0
+  private lastValue: models.Range<number> = {start: 0, end: 800};
   private subs = new SubSink();
+
+  private lastStartValue: number;
+  private lastEndValue: number;
 
   constructor(
     private store$: Store<AppState>,
   ) { }
 
   ngOnInit(): void {
-    const baselineSlider = this.makeBaselineSlider$(this.temporalFilter);
+    const distanceSlider = this.makeDistanceSlider$(this.temporalFilter);
 
-    this.tempSlider = baselineSlider.slider;
+    this.tempSlider = distanceSlider.slider;
 
     this.subs.add(
-      baselineSlider.values$.subscribe(
-        ([start]) => {
-          // console.log('baselineSlider.values$ subscription start:', start);
-          const action = new filtersStore.SetPerpendicularRange({ start, end: null });
-          this.store$.dispatch(action);
+      distanceSlider.values$.subscribe(
+        ([start, end]) => {
+          if (this.lastStartValue !== start || this.lastEndValue !== end){
+            console.log('distanceSlider.values$ subscription start, end:', start, end);
+            this.lastStartValue = start;
+            this.lastEndValue = end;
+            const action = new filtersStore.SetPerpendicularRange({ start: start, end: end });
+            this.store$.dispatch(action);
+          }
         }
       )
     );
@@ -53,11 +61,11 @@ export class SbasSlidersComponent implements OnInit {
       this.store$.select(filtersStore.getPerpendicularRange).subscribe(
         temp => {
           // console.log('getPerpendicularRange subscription temp:', temp);
-          this.temporal = temp.start;
+          this.temporalRange = {start: temp.start, end: temp.end};
 
-          if (this.lastValue !== this.temporal) {
-            this.tempSlider.set([this.temporal]);
-            this.lastValue = this.temporal;
+          if (this.lastValue !== this.temporalRange) {
+            this.tempSlider.set([this.temporalRange]);
+            this.lastValue = this.temporalRange;
           }
         }
       )
@@ -72,16 +80,16 @@ export class SbasSlidersComponent implements OnInit {
     return 0;
   }
 
-  private makeBaselineSlider$(filterRef: ElementRef) {
+  private makeDistanceSlider$(filterRef: ElementRef) {
     const values$ = new Subject<number[]>();
 
     const slider = noUiSlider.create(filterRef.nativeElement, {
       orientation: 'vertical',
       direction: 'rtl',
-      start: [800],
+      start: [0, 800],
       behaviour: 'tap-drag',
       tooltips: false,
-      connect: 'lower',
+      connect: true,
       step: 1,
       range: {
         'min': 0,

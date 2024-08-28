@@ -8,7 +8,7 @@
         <span class="sbas-label">{{ 'DAYS' | translate }}: </span> {{daysRange.start}} {{ 'TO' | translate }} {{daysRange.end}}
       </div>
       <div>
-        <span class="sbas-label">{{ 'METERS' | translate}} (m): </span> {{perpendicular}}
+        <span class="sbas-label">{{ 'METERS' | translate}} (m): </span> {{perpendicular.start}} {{ 'TO' | translate }} {{perpendicular.end}}
       </div>
     </div>
 
@@ -25,8 +25,8 @@
     <mat-form-field appearance="fill" [color]="colorControl.value" [style.width.px]=125>
       <mat-label>Meters</mat-label>
       <input #meterInputField
-             [(ngModel)]="perpendicular"
-             matInput placeholder="Meters"
+             [(ngModel)]="perpendicular.start"
+             matInput placeholder="perpendicular"
              type="number" pattern="[0-9]*"
              min="-999" max="999"
              required

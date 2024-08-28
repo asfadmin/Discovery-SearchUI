@@ -35,15 +35,15 @@ export class SbasSlidersTwoComponent implements OnInit {
   public tempSlider;
   public slider;
   public temporal: number;
-  public perpendicular: number;
+  public perpendicular: models.Range<number> = {start: 0, end: 800};
+  public lastPerpendicular: models.Range<number> = {start: 0, end: 800};
+
   public daysRange: models.Range<number> = {start: 1, end: 48};
   public lastRange: models.Range<number> = {start: 0, end: 0};
   public daysValues$ = new Subject<number[]>();
   public metersValues$ = new Subject<number[]>();
   // public perpStart = 800;
 
-  // private firstLoad = true;
-  private firstMeterLoad = true;
   private subs = new SubSink();
 
   options: UntypedFormGroup;
@@ -57,7 +57,7 @@ export class SbasSlidersTwoComponent implements OnInit {
     private screenSize: ScreenSizeService,
     fb: UntypedFormBuilder
   ) {
-    this.meterDistanceControl = new UntypedFormControl(this.perpendicular, Validators.min(-999));
+    this.meterDistanceControl = new UntypedFormControl(this.perpendicular.start, Validators.min(-999));
     this.daysControl = new UntypedFormControl(this.daysRange, Validators.min(0));
 
     this.options = fb.group({
@@ -86,7 +86,7 @@ export class SbasSlidersTwoComponent implements OnInit {
       debounceTime(500),
       distinctUntilChanged()
     ).subscribe((_: number) => {
-        this.metersValues$.next([this.perpendicular, null] );
+        this.metersValues$.next([this.perpendicular.start, this.perpendicular.end] );
       });
 
     this.subs.add(
@@ -121,14 +121,16 @@ export class SbasSlidersTwoComponent implements OnInit {
       this.store$.select(filtersStore.getPerpendicularRange).subscribe(
         perp => {
           // console.log('perp in getPerpendicularRange:', perp);
-          this.perpendicular = perp.start;
-          this.options.controls.meterDistance.setValue(this.perpendicular);
-          if (this.firstMeterLoad) {
-            this.firstMeterLoad = false;
-            if (!perp.start) {
-              const action = new filtersStore.SetPerpendicularRange({ start: 800, end: null });
-              this.store$.dispatch(action);
-            }
+          this.perpendicular.start = perp.start;
+          this.perpendicular.end  = perp.end;
+          if (this.perpendicular.start !== this.lastPerpendicular.start || this.perpendicular.end !== this.perpendicular.end) {
+            console.log('getPerpendicularRange Subscription: things are not equal');
+            this.options.controls.meterDistance.setValue(this.perpendicular.start, this.perpendicular.end);
+            this.lastPerpendicular = this.perpendicular;
+            const action = new filtersStore.SetPerpendicularRange({
+              start: this.perpendicular.start,
+              end: this.perpendicular.end });
+            this.store$.dispatch(action);
           }
         }
       )
@@ -136,9 +138,9 @@ export class SbasSlidersTwoComponent implements OnInit {
 
     this.subs.add(
       this.metersValues$.subscribe(
-        ([start]) => {
+        ([start, end]) => {
           console.log('start in metersValues$:', start);
-          const action = new filtersStore.SetPerpendicularRange({ start, end: null });
+          const action = new filtersStore.SetPerpendicularRange({ start, end });
           this.store$.dispatch(action);
         }
       )
