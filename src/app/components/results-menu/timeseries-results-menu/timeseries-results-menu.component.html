@@ -34,7 +34,16 @@
 		<div class="ts-metadata scrollable">
       <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" dynamicHeight>
         <mat-tab label="Metadata">
-          <div style="text-align: center; margin-top: 20px;">Interesting Metadata Goes Here</div>
+         	<div style="text-align: center; margin-top: 20px;">
+				@if(chartData | async; as data) {
+					<ul>
+						<li><b>Average Displacement: </b> {{data.mean.unwrapped_phase | floatPrecision: 2}}</li>
+					</ul>
+				}
+				@else {
+					Interesting Metadata here
+				}
+			</div>
         </mat-tab>
         <mat-tab label="Scenes">
           <div style="height: 1000px;">
