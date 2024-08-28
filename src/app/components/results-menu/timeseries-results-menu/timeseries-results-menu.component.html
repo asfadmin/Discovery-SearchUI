@@ -37,7 +37,11 @@
          	<div style="text-align: center; margin-top: 20px;">
 				@if(chartData | async; as data) {
 					<ul>
-						<li><b>Average Displacement: </b> {{data.mean.unwrapped_phase | floatPrecision: 2}}</li>
+						<li><b>Total Displacement: </b> {{totalDisplacement | floatPrecision: 2}}</li>
+						<li><b>Total Points: </b> {{totalPoints}}</li>
+						<li><b>Date Range: </b> {{dateRange[0] | shortDate }} - {{dateRange[1] | shortDate }}</li>
+						<li><b>Orbit Direction: </b></li>
+						<li><b>Relative Orbit: </b></li>
 					</ul>
 				}
 				@else {

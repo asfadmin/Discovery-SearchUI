@@ -57,6 +57,10 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   private timeseries_subscription: Subscription;
 
 
+  public totalDisplacement = 0;
+  public dateRange = [];
+  public totalPoints = 0;
+
   constructor(
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
@@ -145,13 +149,17 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   }
 
   public updateChart(geometry): void {
+    this.totalDisplacement = 0;
+    this.dateRange = [];
+    this.totalPoints = 0;
     if (this.timeseries_subscription) {
       this.timeseries_subscription.unsubscribe();
     }
     this.timeseries_subscription = this.netcdfService.getTimeSeries(geometry).pipe(first()).subscribe(data => {
       this.chartData.next(data);
 
-      let test_products = []
+      let test_products = [];
+      this.totalPoints = Object.keys(data).length - 1;
       for(let a of Object.keys(data)) {
         if(a === 'mean') {
           continue
@@ -209,6 +217,14 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
         dummy_product.downloadUrl = response_file.uri
         dummy_product.metadata.date = moment2(response_file.time)
         test_products.push(dummy_product)
+
+        if(!this.dateRange[0] || this.dateRange[0] > moment2(response_file.time)) {
+          this.dateRange[0] = moment2(response_file.time)
+        }
+        if(!this.dateRange[1] || this.dateRange[1] < moment2(response_file.time)) {
+          this.dateRange[1] = moment2(response_file.time)
+        }
+        this.totalDisplacement += response_file.unwrapped_phase
       }
       this.store$.dispatch(new SetScenes({
         products: test_products,
