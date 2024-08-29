@@ -15,6 +15,7 @@ import { SubSink } from 'subsink';
 })
 export class TimeseriesChartComponent implements OnInit, OnDestroy {
   @ViewChild('timeseriesChart', { static: true }) timeseriesChart: ElementRef;
+  @ViewChild('tsChartWrapper', { static: true }) tsChartWrapper: ElementRef;
   @Input() zoomIn$: Observable<void>;
   @Input() zoomOut$: Observable<void>;
   @Input() zoomToFit$: Observable<void>;
@@ -27,6 +28,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private currentTransform: d3.ZoomTransform;
   private zoom: d3.ZoomBehavior<SVGElement, {}>;
   private clipContainer: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
+
   private width = 640;
   private height = 400;
 
@@ -90,6 +92,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.averageData = ({
       ...data.mean
     })
+
     this.svg.selectChildren().remove();
 
     this.drawChart();
@@ -240,7 +243,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   }
 
   public onResized() {
-    // this.createSVG();
+    this.createSVG();
   }
 
   private createSVG() {
@@ -248,6 +251,10 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       d3.selectAll('#timeseries-chart > svg').remove();
       d3.selectAll('.tooltip').remove();
     }
+
+    const element = document.getElementById("timeseriesChart");
+    element.innerHTML = '';
+
     this.height = this.timeseriesChart.nativeElement.offsetHeight - this.margin.top - this.margin.bottom;
     this.width = this.timeseriesChart.nativeElement.offsetWidth - this.margin.left - this.margin.right;
     this.svg = d3.select(this.timeseriesChart.nativeElement).append('svg')
