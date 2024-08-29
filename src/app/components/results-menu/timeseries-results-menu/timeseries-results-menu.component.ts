@@ -146,8 +146,8 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public updateChart(geometry): void {
     this.netcdfService.getTimeSeries(geometry).pipe(first()).subscribe(data => {
       this.chartData.next(data);
-      // just going to use the data here to have some test 
-      
+      // just going to use the data here to have some test
+
       let test_products = []
       for(let a of Object.keys(data)) {
         if(a === 'mean') {
