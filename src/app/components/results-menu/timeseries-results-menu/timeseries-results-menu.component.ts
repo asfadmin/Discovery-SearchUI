@@ -8,7 +8,7 @@ import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
 
 import { Breakpoints,   SearchType } from '@models';
-import { DrawService, MapService, NetcdfService, PointHistoryService, ScreenSizeService } from '@services';
+import { DrawService, MapService, NetcdfService, PointHistoryService, ScreenSizeService, WktService } from '@services';
 
 import { SubSink } from 'subsink';
 
@@ -16,7 +16,7 @@ import {  Point} from 'ol/geom';
 import { WKT } from 'ol/format';
 import moment2 from 'moment';
 import { SetScenes } from '@store/scenes';
-import {getPathRange} from '@store/filters';
+// import {getPathRange} from '@store/filters';
 
 
 @Component({
@@ -67,10 +67,13 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     public pointHistoryService: PointHistoryService,
     private drawService: DrawService,
     private mapService: MapService,
-    private netcdfService: NetcdfService
+    private netcdfService: NetcdfService,
+    private wktService: WktService
   ) { }
 
   ngOnInit(): void {
+    this.pointHistoryService.clearPoints();
+
     this.subs.add(
       this.screenSize.breakpoint$.subscribe(
         point => this.breakpoint = point
@@ -88,6 +91,14 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       this.mapService.setDisplacementLayer(history);
     }));
 
+    let previous_points: any[] = localStorage.getItem('timeseries-points')?.split(';');
+    previous_points = previous_points?.map(value => {
+      return this.wktService.wktToFeature(value, 'EPSG:4326');
+    })
+    previous_points?.forEach(point => {
+      this.pointHistoryService.addPoint(point.getGeometry());
+    })
+
     this.subs.add(this.drawService.polygon$.subscribe(polygon => {
       if(polygon) {
         let temp = polygon.getGeometry().clone() as Point;
@@ -100,9 +111,6 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       }
     }))
 
-    this.netcdfService.getTimeSeries(getPathRange).pipe(first()).subscribe(data => {
-      this.tsPath = data;
-    });
   }
 
   public onResizeEnd(event: ResizeEvent): void {
@@ -155,6 +163,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     if (this.timeseries_subscription) {
       this.timeseries_subscription.unsubscribe();
     }
+    this.chartData.next(null);
     this.timeseries_subscription = this.netcdfService.getTimeSeries(geometry).pipe(first()).subscribe(data => {
       this.chartData.next(data);
 
@@ -235,6 +244,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.pointHistoryService.clearPoints();
     this.subs.unsubscribe();
   }
 }

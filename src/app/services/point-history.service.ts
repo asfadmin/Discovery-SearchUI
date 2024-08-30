@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import WKT from 'ol/format/WKT';
 
 import { Point } from 'ol/geom';
 import { Subject } from 'rxjs';
@@ -15,6 +16,8 @@ export class PointHistoryService {
   public selectedPoint: number = 0;
   constructor(
   ) {
+
+
   }
 
   public getHistory(): Point[] {
@@ -29,6 +32,21 @@ export class PointHistoryService {
     }
     this.history.push(point);
     this.history$.next(this.history);
+    this.savePoints();
+    console.log(this.history)
+  }
+
+  public clearPoints() {
+    this.history = [];
+    this.history$.next(this.history);
+  }
+
+  private savePoints() {
+    let format = new WKT();
+    let converted = this.history.map((value) => {
+      return format.writeGeometry(value)
+    })
+    localStorage.setItem('timeseries-points', converted.join(';'))
   }
 
 
