@@ -132,6 +132,9 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.toolTip.attr('transform', `translate(0, 0)`).style('text-anchor', 'middle').style('z-index', 100).style('opacity', 0)
 
     const self = this;
+
+    this.lineGraph = this.clipContainer.append("path")
+
     this.dots = this.clipContainer.append('g').selectAll('circle')
       .data(this.dataSource)
       .enter()
@@ -164,7 +167,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       })
       .attr('r', 7)
 
-    this.lineGraph = this.clipContainer.append("path")
     this.zoom = d3.zoom<SVGElement, {}>()
       .extent([[0, 0], [this.width, this.height]])
       .on('zoom', (eve: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
@@ -204,6 +206,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     var lineFunction = d3.line<TimeSeriesChartPoint>()
       .x(function (d) { return newX(Date.parse(d.date)); })
       .y(function (d) { return newY(d.unwrapped_phase); })
+
 
     this.dots
       .attr('cx', d => newX(Date.parse(d.date)))
