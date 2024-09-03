@@ -165,7 +165,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           return 'timeseries-base';
         }
       })
-      .attr('r', 7)
+      .attr('r', 5)
 
     this.zoom = d3.zoom<SVGElement, {}>()
       .extent([[0, 0], [this.width, this.height]])
@@ -239,7 +239,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     return ps
       .attr('class', 'base-line')
       .attr('stroke', 'steelblue')
-      .attr('stroke-width', 3)
+      .attr('stroke-width', 1)
   };
   public updateAxis(_axis, _value) {
 
