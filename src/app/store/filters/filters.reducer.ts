@@ -245,10 +245,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     case FiltersActionType.SET_PERPENDICULAR_RANGE: {
       return {
         ...state,
-        perpendicularRange: {
-          start: null,
-          end: null
-        }
+        perpendicularRange: action.payload
       };
     }
 
@@ -568,7 +565,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           ...state,
           dateRange: filters.dateRange,
           temporalRange: {start: filters.temporalRange.start, end: filters.temporalRange.end},
-          perpendicularRange: {start: filters.perpendicular, end: null},
+          perpendicularRange: {start: filters.perpendicular.start, end: filters.perpendicular.end},
         };
       } else if (search.searchType === models.SearchType.CUSTOM_PRODUCTS) {
           const filters = <models.CustomProductFiltersType>search.filters;
@@ -964,7 +961,7 @@ export const getSbasSearch = createSelector(
     temporalRange: state.temporalRange,
     dateRange: state.dateRange,
     season: state.season,
-    perpendicular: state.perpendicularRange.start,
+    perpendicular: state.perpendicularRange,
     thresholdOverlap: state.sbasOverlapThreshold
   })
 );

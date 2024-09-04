@@ -9,7 +9,7 @@
     <b>{{ 'TEMPORAL' | translate }}: </b> {{ filters.temporalRange.start }} {{ 'TO' | translate }} {{ filters.temporalRange.end }}
   </div>
   <div *ngIf="filters.perpendicular !== null">
-    <b>{{'PERPENDICULAR' | translate}}: </b> {{ filters.perpendicular }}
+    <b>{{'PERPENDICULAR' | translate}}: </b> {{ filters.perpendicular.start }} {{ 'TO' | translate }} {{ filters.perpendicular.end }}
   </div>
   <div *ngIf="filters.season.start !== null || filters.season.end !== null">
     <b>{{'SEASON' | translate}}: </b> {{ filters.season.start }} {{ 'TO' | translate }} {{ filters.season.end }}
