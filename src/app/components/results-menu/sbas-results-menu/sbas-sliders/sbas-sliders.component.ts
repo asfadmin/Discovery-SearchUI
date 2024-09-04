@@ -18,14 +18,14 @@ declare var wNumb: any;
   styleUrls: ['./sbas-sliders.component.scss']
 })
 export class SbasSlidersComponent implements OnInit {
-  @ViewChild('temporalFilter', { static: true }) temporalFilter: ElementRef;
+  @ViewChild('distanceFilter', { static: true }) temporalFilter: ElementRef;
 
   public temporalAutoTicks = false;
   public temporalShowTicks = true;
   public temporalTickInterval = 7;
 
-  public tempSlider;
-  public temporalRange: models.Range<number> = {start: 0, end: 800};
+  public distSlider;
+  public distanceRange: models.Range<number> = {start: 0, end: 800};
 
   // private firstLoad = true;
   private lastValue: models.Range<number> = {start: 0, end: 800};
@@ -41,7 +41,7 @@ export class SbasSlidersComponent implements OnInit {
   ngOnInit(): void {
     const distanceSlider = this.makeDistanceSlider$(this.temporalFilter);
 
-    this.tempSlider = distanceSlider.slider;
+    this.distSlider = distanceSlider.slider;
 
     this.subs.add(
       distanceSlider.values$.subscribe(
@@ -61,11 +61,11 @@ export class SbasSlidersComponent implements OnInit {
       this.store$.select(filtersStore.getPerpendicularRange).subscribe(
         temp => {
           // console.log('getPerpendicularRange subscription temp:', temp);
-          this.temporalRange = {start: temp.start, end: temp.end};
+          this.distanceRange = {start: temp.start, end: temp.end};
 
-          if (this.lastValue !== this.temporalRange) {
-            this.tempSlider.set([this.temporalRange]);
-            this.lastValue = this.temporalRange;
+          if (this.lastValue !== this.distanceRange) {
+            this.distSlider.set([this.distanceRange]);
+            this.lastValue = this.distanceRange;
           }
         }
       )

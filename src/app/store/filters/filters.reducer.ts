@@ -221,17 +221,6 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     }
 
     case FiltersActionType.SET_PERPENDICULAR_START: {
-      const end = action.payload;
-
-      return {
-        ...state,
-        perpendicularRange: {
-          ...state.perpendicularRange, end
-        }
-      };
-    }
-
-    case FiltersActionType.SET_PERPENDICULAR_END: {
       const start = action.payload;
 
       return {
@@ -242,10 +231,24 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
+    case FiltersActionType.SET_PERPENDICULAR_END: {
+      const end = action.payload;
+
+      return {
+        ...state,
+        perpendicularRange: {
+          ...state.perpendicularRange, end
+        }
+      };
+    }
+
     case FiltersActionType.SET_PERPENDICULAR_RANGE: {
       return {
         ...state,
-        perpendicularRange: action.payload
+        perpendicularRange: {
+          start: null,
+          end: null
+        }
       };
     }
 
