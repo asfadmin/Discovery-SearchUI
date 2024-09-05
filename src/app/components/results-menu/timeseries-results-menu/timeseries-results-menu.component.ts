@@ -6,8 +6,9 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
+import * as mapStore from '@store/map';
 
-import { Breakpoints,   SearchType } from '@models';
+import { Breakpoints,   SearchType, MapInteractionModeType, MapDrawModeType } from '@models';
 import { DrawService, MapService, NetcdfService, PointHistoryService, ScreenSizeService } from '@services';
 
 import { SubSink } from 'subsink';
@@ -33,6 +34,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
 
   @Input() resize$: Observable<void>;
   public searchType: SearchType;
+  public isAddingPoints = false;
 
   public wktListMaxWidth = '225px';
   public listCardMaxWidth = '300px';
@@ -51,7 +53,6 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
 
   public pointHistory = [];
 
-
   public chartData = new Subject<any>;
   public selectedPoint: number;
 
@@ -69,6 +70,12 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.screenSize.breakpoint$.subscribe(
         point => this.breakpoint = point
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(mapStore.getMapInteractionMode).subscribe(
+        mode => this.isAddingPoints = mode === MapInteractionModeType.DRAW
       )
     );
 
@@ -135,6 +142,15 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     window.open(url);
   }
 
+  public onAddPointsMode(): void {
+    this.store$.dispatch(new mapStore.SetMapInteractionMode(MapInteractionModeType.DRAW));
+    this.store$.dispatch(new mapStore.SetMapDrawMode(MapDrawModeType.POINT));
+  }
+
+  public onStopAddPoints(): void {
+    this.store$.dispatch(new mapStore.SetMapInteractionMode(MapInteractionModeType.NONE));
+  }
+
   public onPointClick(index: number) {
     this.pointHistoryService.selectedPoint = index;
     this.pointHistoryService.passDraw = true;
@@ -146,8 +162,8 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public updateChart(geometry): void {
     this.netcdfService.getTimeSeries(geometry).pipe(first()).subscribe(data => {
       this.chartData.next(data);
-      // just going to use the data here to have some test 
-      
+      // just going to use the data here to have some test
+
       let test_products = []
       for(let a of Object.keys(data)) {
         if(a === 'mean') {

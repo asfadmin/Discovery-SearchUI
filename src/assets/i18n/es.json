@@ -221,8 +221,9 @@
   "DIRECTION": "Dirección",
   "DISABLE": "Desactivar",
   "DISPLACEMENT": "Desplazamiento",
-  "DISPLACEMENT_DESCRIPTION": "Una buena descripción de Desplazamiento va aquí. Bla, bla, bla, y más bla, bla bla para ocupar espacio.",
+  "DISPLACEMENT_DESCRIPTION": "Los productos de desplazamiento proporcionan información sobre los cambios antropogénicos y naturales en la superficie de la Tierra, cubriendo América del Norte.",
   "DISPLACEMENT_FILTERS": "Filtros de desplazamiento",
+  "DISPLACEMENT_SEARCH": "Búsqueda de Desplazamiento",
   "DISPLAYED_IF_YOU_WISH_TO_UNDO_THIS_ACTION": "aparecerá si desea deshacer esta acción.",
   "DISPLAYED_IN_THE_SEARCH_MENU_AT_THE_TOP_YOU_CAN_ACCESS_ALL_OF_THE_HIDDEN_FILTERS_BY": "que se muestra en el menú de búsqueda en la parte superior. ",
   "DONE": "Hecho",
@@ -919,5 +920,7 @@
   "ZOOM_TO_EVENT": "Acercar al evento",
   "ZOOM_TO_FIT": "Acercar para ajustar",
   "ZOOM_TO_RESULTS": "Acercar a los resultados",
-  "ZOOM_TO_SCENE": "Acercar a la escena"
+  "ZOOM_TO_SCENE": "Acercar a la escena",
+  "ADD_POINTS":"",
+  "STOP_ADDING_POINTS":""
 }
