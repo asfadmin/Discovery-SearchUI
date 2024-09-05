@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 import * as noUiSlider from 'nouislider';
-import { Subject } from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 import { AppState } from '@store';
@@ -18,13 +18,14 @@ declare var wNumb: any;
   styleUrls: ['./sbas-sliders.component.scss']
 })
 export class SbasSlidersComponent implements OnInit {
-  @ViewChild('distanceFilter', { static: true }) temporalFilter: ElementRef;
+  @ViewChild('distanceFilter', { static: true }) distanceFilter: ElementRef;
 
   public temporalAutoTicks = false;
   public temporalShowTicks = true;
   public temporalTickInterval = 7;
 
   public distSlider;
+  public slider;
   public distanceRange: models.Range<number> = {start: 0, end: 800};
 
   // private firstLoad = true;
@@ -34,17 +35,19 @@ export class SbasSlidersComponent implements OnInit {
   private lastStartValue: number;
   private lastEndValue: number;
 
+  public metersValues$ = new Subject<number[]>();
+
   constructor(
     private store$: Store<AppState>,
   ) { }
 
   ngOnInit(): void {
-    const distanceSlider = this.makeDistanceSlider$(this.temporalFilter);
+    const distanceSlider = this.makeDistanceSlider$(this.distanceFilter);
 
     this.distSlider = distanceSlider.slider;
 
     this.subs.add(
-      distanceSlider.values$.subscribe(
+      distanceSlider.metersValues.subscribe(
         ([start, end]) => {
           if (this.lastStartValue !== start || this.lastEndValue !== end){
             console.log('distanceSlider.values$ subscription start, end:', start, end);
@@ -80,10 +83,9 @@ export class SbasSlidersComponent implements OnInit {
     return 0;
   }
 
-  private makeDistanceSlider$(filterRef: ElementRef) {
-    const values$ = new Subject<number[]>();
+  private makeDistanceSlider$(filterRef: ElementRef): {slider: any, metersValues: Observable<number[]>} {
 
-    const slider = noUiSlider.create(filterRef.nativeElement, {
+    this.slider = noUiSlider.create(filterRef.nativeElement, {
       orientation: 'vertical',
       direction: 'rtl',
       start: [0, 800],
@@ -107,16 +109,16 @@ export class SbasSlidersComponent implements OnInit {
       }
     });
 
-    slider.on('update', (values, _) => {
-      values$.next(values.map(v => +v));
+    this.slider.on('update', (values, _) => {
+      this.metersValues$.next(values.map(v => +v));
     });
 
     return {
-      slider,
-      values$: values$.asObservable().pipe(
+      slider: this.slider,
+      metersValues: this.metersValues$.asObservable().pipe(
         debounceTime(500),
         distinctUntilChanged()
       )
-      };
+    };
   }
 }

@@ -57,7 +57,7 @@ export class SbasSlidersTwoComponent implements OnInit {
     private screenSize: ScreenSizeService,
     fb: UntypedFormBuilder
   ) {
-    this.meterDistanceControl = new UntypedFormControl(this.perpendicular.start, Validators.min(-999));
+    this.meterDistanceControl = new UntypedFormControl(this.perpendicular, Validators.min(-999));
     this.daysControl = new UntypedFormControl(this.daysRange, Validators.min(0));
 
     this.options = fb.group({
@@ -85,7 +85,7 @@ export class SbasSlidersTwoComponent implements OnInit {
       filter(res => res.length > 0),
       debounceTime(500),
       distinctUntilChanged()
-    ).subscribe((_: number) => {
+    ).subscribe((_: Range) => {
         this.metersValues$.next([this.perpendicular.start, this.perpendicular.end] );
       });
 
