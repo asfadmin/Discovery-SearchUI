@@ -6,7 +6,17 @@
 			<app-scenes-list-header></app-scenes-list-header>
 		</mat-card-subtitle>
 
+      <div>
+        @if(!isAddingPoints) {
+        <button (click)="onAddPointsMode()" mat-button>{{ 'ADD_POINTS' | translate }}</button>
+        }
+        @else {
+          <button (click)="onStopAddPoints()" mat-button>{{ 'STOP_ADDING_POINTS' | translate }}</button>
+        }
+      </div>
+
 		<div class="ts-left-column-results">
+
 			@if(pointHistory.length !== 0) {
 			<mat-radio-group>
 				@for (point of pointHistory; track $index) {
