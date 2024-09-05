@@ -76,7 +76,7 @@ function equatorialView(url: string): MapView {
     projection: projection.epsg,
     zoom: 3,
     minZoom: 3,
-    maxZoom: 13,
+    maxZoom: 17,
     extent: proj.transformExtent(
       [-Number.MAX_VALUE, -90, Number.MAX_VALUE, 90],
       'EPSG:4326', projection.epsg
