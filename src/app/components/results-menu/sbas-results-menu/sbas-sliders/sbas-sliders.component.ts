@@ -47,7 +47,6 @@ export class SbasSlidersComponent implements OnInit {
           if (start === this.perpRange.start && end === this.perpRange.end) {
             return;
           }
-          console.log('baselineSlider.values$ subscription start, end:', start, end);
           const action = new filtersStore.SetPerpendicularRange({ start, end });
           this.store$.dispatch(action);
         }
@@ -57,7 +56,6 @@ export class SbasSlidersComponent implements OnInit {
     this.subs.add(
       this.store$.select(filtersStore.getPerpendicularRange).subscribe(
         perp => {
-          console.log('getPerpendicularRange subscription perp:', perp);
           this.perpRange = perp;
           if (this.lastRange !== this.perpRange) {
             this.perpendicularSlider.set([perp.start, perp.end]);
