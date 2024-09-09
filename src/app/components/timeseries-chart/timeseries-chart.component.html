@@ -1,4 +1,13 @@
 
 <div #tsChartWrapper class="chart-wrapper" (resized)="onResized()">
-	<div #timeseriesChart id="timeseriesChart" ></div>
+	<div style="width: 100%; height:100%;">
+		<div #timeseriesChart id="timeseriesChart" >
+
+		</div>
+		@if(dataSource.length <= 0){
+			<div class="disp-spinner">
+				<mat-spinner></mat-spinner>
+			</div>
+		}
+	</div>
 </div>

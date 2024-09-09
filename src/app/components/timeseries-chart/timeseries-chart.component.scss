@@ -23,9 +23,20 @@
   }
 }
 
-
 ::ng-deep .disp-label {
 	@include themify($themes) {
 	  fill: themed('dark-primary-text');
 	}
+}
+
+::ng-deep .loading-rect {
+	@include themify($themes) {
+	  fill: themed('dark-secondary-text');
+	}
+	fill-opacity: 40%;
+}
+.disp-spinner {
+    position: absolute;
+    top: 24%;
+    left: 48%;
 }

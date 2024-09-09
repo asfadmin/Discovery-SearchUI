@@ -79,19 +79,24 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
   public initChart(data): void {
     this.dataSource = []
-    for (let key of Object.keys(data).filter(x => x !== 'mean')) {
-      this.dataSource.push({
-        'unwrapped_phase': data[key].unwrapped_phase,
-        'interferometric_correlation': data[key].interferometric_correlation,
-        'temporal_coherence': data[key].temporal_coherence,
-        'date': data[key].time,
-        'id': key,
-        'temporal_baseline': data[key].temporal_baseline
+    if(data !== null) {
+      for (let key of Object.keys(data).filter(x => x !== 'mean')) {
+        this.dataSource.push({
+          'unwrapped_phase': data[key].unwrapped_phase,
+          'interferometric_correlation': data[key].interferometric_correlation,
+          'temporal_coherence': data[key].temporal_coherence,
+          'date': data[key].time,
+          'id': key,
+          'temporal_baseline': data[key].temporal_baseline
+        })
+      }
+      this.averageData = ({
+        ...data.mean
       })
+    } else {
+      this.dataSource = [];
+      this.averageData = {};
     }
-    this.averageData = ({
-      ...data.mean
-    })
 
     this.svg.selectChildren().remove();
 
@@ -183,6 +188,16 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .attr('height', this.height)
       .attr('x', 0)
       .attr('y', 0);
+
+    if(this.dataSource.length <= 0) {
+      this.svg.append('rect')
+      .attr('width', this.width)
+      .attr('height', this.height)
+      .attr('x', 0)
+      .attr('y', 0)
+      .attr('class', 'loading-rect');
+    }
+
 
     this.svg.append('text').attr('transform', `translate(${this.width / 2}, ${this.height + this.margin.bottom - 20})`).style('text-anchor', 'middle').attr('class', 'disp-label').text('Scene Date');
     this.svg.append('text').attr('transform', `rotate(-90)`).attr('y', -this.margin.left + 20).attr('x', -this.height / 2).style('text-anchor', 'middle').attr('class', 'disp-label').text('Unwrapped Phase (radians)');
