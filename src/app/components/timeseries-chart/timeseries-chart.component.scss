@@ -1,33 +1,31 @@
 @import "asf-theme";
 
+
 #timeseriesChart {
-	// height: 460px;
-	// width: 680px;
-  }
-  
-::ng-deep .timeseries-base {
-@include themify($themes) {
-	fill: lighten(themed('dark-primary-text'), 45%);
-}
-}
-::ng-deep .baseline-selected {
-@include themify($themes) {
-	fill: themed('err');
-}
+  height: 100%;
+  width: 100%;
 }
 
 .chart-wrapper {
-	height: calc(100% - 1px);
-	width: calc(50% - 30px);
+  height: 100%;
+  width: 100%;
 }
 
-#timeseriesChart {
-	height: 100%;
-	width: 100%;
+::ng-deep .timeseries-base {
+@include themify($themes) {
+	fill: themed('blue-link');
+  }
 }
+
+::ng-deep .baseline-selected {
+@include themify($themes) {
+	fill: themed('err');
+  }
+}
+
 
 ::ng-deep .disp-label {
 	@include themify($themes) {
 	  fill: themed('dark-primary-text');
 	}
-  }
+}

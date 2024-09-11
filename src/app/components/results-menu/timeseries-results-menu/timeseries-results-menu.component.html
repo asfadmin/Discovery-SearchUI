@@ -5,8 +5,17 @@
 		<mat-card-subtitle class="header ts-scene-list-header">
 			<app-scenes-list-header></app-scenes-list-header>
 		</mat-card-subtitle>
+      <div>
+        @if(!isAddingPoints) {
+        <button (click)="onAddPointsMode()" mat-button>{{ 'ADD_POINTS' | translate }}</button>
+        }
+        @else {
+          <button (click)="onStopAddPoints()" mat-button>{{ 'STOP_ADDING_POINTS' | translate }}</button>
+        }
+      </div>
 
 		<div class="ts-left-column-results">
+
 			@if(pointHistory.length !== 0) {
 			<mat-radio-group>
 				@for (point of pointHistory; track $index) {
@@ -33,9 +42,14 @@
 		</mat-card-subtitle>
 		<div class="ts-metadata scrollable">
       <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" dynamicHeight>
-        <mat-tab label="Metadata">
+        <mat-tab label="Summary">
           <div style="text-align: center; margin-top: 20px;">Interesting Metadata Goes Here</div>
         </mat-tab>
+
+        <mat-tab label="Export">
+          <div style="text-align: center; margin-top: 20px;">Export Functionality Here</div>
+        </mat-tab>
+
         <mat-tab label="Scenes">
           <div style="height: 1000px;">
             <app-scenes-list [resize$]="resize$"></app-scenes-list>
@@ -46,12 +60,7 @@
             </div>
           </div>
         </mat-tab>
-        <mat-tab label="Export">
-          <div style="text-align: center; margin-top: 20px;">Export Functionality Here</div>
-        </mat-tab>
       </mat-tab-group>
-      <!--		<div class= "ts-metadata scrollable">-->
-      <!--		</div>-->
 
     </div>
 	</mat-card>
@@ -112,7 +121,7 @@
 	</div>
 
 	<div class="ts-chart-row">
-		<div id="ts-chart-column" class="ts-column-2">
+		<div id="ts-chart-column">
 			<app-timeseries-chart
 			[zoomIn$]="zoomInChart$"
 			[zoomToFit$]="zoomToFitChart$"

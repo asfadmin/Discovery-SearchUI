@@ -15,6 +15,7 @@ import { SubSink } from 'subsink';
 })
 export class TimeseriesChartComponent implements OnInit, OnDestroy {
   @ViewChild('timeseriesChart', { static: true }) timeseriesChart: ElementRef;
+  @ViewChild('tsChartWrapper', { static: true }) tsChartWrapper: ElementRef;
   @Input() zoomIn$: Observable<void>;
   @Input() zoomOut$: Observable<void>;
   @Input() zoomToFit$: Observable<void>;
@@ -27,6 +28,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private currentTransform: d3.ZoomTransform;
   private zoom: d3.ZoomBehavior<SVGElement, {}>;
   private clipContainer: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
+
   private width = 640;
   private height = 400;
 
@@ -90,6 +92,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.averageData = ({
       ...data.mean
     })
+
     this.svg.selectChildren().remove();
 
     this.drawChart();
@@ -129,6 +132,9 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.toolTip.attr('transform', `translate(0, 0)`).style('text-anchor', 'middle').style('z-index', 100).style('opacity', 0)
 
     const self = this;
+
+    this.lineGraph = this.clipContainer.append("path")
+
     this.dots = this.clipContainer.append('g').selectAll('circle')
       .data(this.dataSource)
       .enter()
@@ -159,9 +165,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           return 'timeseries-base';
         }
       })
-      .attr('r', 7)
+      .attr('r', 5)
 
-    this.lineGraph = this.clipContainer.append("path")
     this.zoom = d3.zoom<SVGElement, {}>()
       .extent([[0, 0], [this.width, this.height]])
       .on('zoom', (eve: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
@@ -202,6 +207,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .x(function (d) { return newX(Date.parse(d.date)); })
       .y(function (d) { return newY(d.unwrapped_phase); })
 
+
     this.dots
       .attr('cx', d => newX(Date.parse(d.date)))
       .attr('cy', d => newY(d.unwrapped_phase))
@@ -233,14 +239,14 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     return ps
       .attr('class', 'base-line')
       .attr('stroke', 'steelblue')
-      .attr('stroke-width', 3)
+      .attr('stroke-width', 1)
   };
   public updateAxis(_axis, _value) {
 
   }
 
   public onResized() {
-    // this.createSVG();
+    this.createSVG();
   }
 
   private createSVG() {
@@ -248,6 +254,10 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       d3.selectAll('#timeseries-chart > svg').remove();
       d3.selectAll('.tooltip').remove();
     }
+
+    const element = document.getElementById("timeseriesChart");
+    element.innerHTML = '';
+
     this.height = this.timeseriesChart.nativeElement.offsetHeight - this.margin.top - this.margin.bottom;
     this.width = this.timeseriesChart.nativeElement.offsetWidth - this.margin.left - this.margin.right;
     this.svg = d3.select(this.timeseriesChart.nativeElement).append('svg')
