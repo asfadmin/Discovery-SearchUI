@@ -8,6 +8,11 @@ import { AppState } from '@store';
 import * as sceneStore from '@store/scenes';
 import { SubSink } from 'subsink';
 
+interface ChartBounds {
+  x: number[];
+  y: number[];
+}
+
 @Component({
   selector: 'app-timeseries-chart',
   templateUrl: './timeseries-chart.component.html',
@@ -98,22 +103,23 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
   private drawChart() {
     const marginBottom = 40;
-    const unwrapped_phases = this.dataSource.map(p => p['unwrapped_phase'] as number)
-    const dates = this.dataSource.map(p => Date.parse(p['date'])).filter(d => !isNaN(d))
-    const inner_margins = 1.25
-    const min_y = Math.min(...unwrapped_phases) * inner_margins
-    const min_x = Math.min(...dates)
-    const max_y = Math.max(...unwrapped_phases) * inner_margins
-    const max_x = Math.max(...dates)
+    const unwrapped_phases = this.dataSource.map(p => p['unwrapped_phase'] as number);
+    const dates = this.dataSource.map(p => Date.parse(p['date'])).filter(d => !isNaN(d));
+
+    const bounds = this.getChartBounds(unwrapped_phases, dates);
+
     this.x = d3.scaleUtc()
-      .domain([min_x, max_x])
+      .domain(bounds.x)
       .range([0, this.width])
-      .nice()
+      .nice();
+
     this.xAxis = this.svg.append('g')
       .attr('transform', `translate(0, ${this.height})`);
+
     this.y = d3.scaleLinear()
-      .domain([min_y, max_y])
+      .domain(bounds.y)
       .range([this.height, 0]);
+
     this.yAxis = this.svg.append('g');
     this.svg.append("g")
       .attr("transform", `translate(0,${this.height - marginBottom})`)
@@ -179,9 +185,36 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .attr('x', 0)
       .attr('y', 0);
 
-    this.svg.append('text').attr('transform', `translate(${this.width / 2}, ${this.height + this.margin.bottom - 20})`).style('text-anchor', 'middle').attr('class', 'disp-label').text('Scene Date');
-    this.svg.append('text').attr('transform', `rotate(-90)`).attr('y', -this.margin.left + 20).attr('x', -this.height / 2).style('text-anchor', 'middle').attr('class', 'disp-label').text('Unwrapped Phase (radians)');
+    this.svg.append('text')
+      .attr('transform', `translate(${this.width / 2}, ${this.height + this.margin.bottom - 20})`)
+      .style('text-anchor', 'middle')
+      .attr('class', 'disp-label')
+      .text('Scene Date');
+    this.svg.append('text')
+      .attr('transform', `rotate(-90)`)
+      .attr('y', -this.margin.left + 20)
+      .attr('x', -this.height / 2)
+      .style('text-anchor', 'middle')
+      .attr('class', 'disp-label')
+      .text('Unwrapped Phase (radians)');
     this.updateChart();
+  }
+
+  private getChartBounds(unwrapped_phases, dates): ChartBounds {
+
+    const max_phase = Math.max(...unwrapped_phases.map(Math.abs));
+    const y_margin = max_phase * .2;
+
+    const min_y = -(max_phase + y_margin);
+    const max_y = max_phase + y_margin;
+
+    const max_x = Math.max(...dates);
+    const min_x = Math.min(...dates);
+
+    return {
+      x: [min_x, max_x],
+      y: [min_y, max_y]
+    };
   }
 
   private updateChart() {
@@ -229,12 +262,14 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.toolTip.style('left', `${bounding.x + (a ? -150 : 20)}px`)
       .style('top', `${bounding.y - 10}px`);
   }
+
   private addPairAttributes(ps) {
     return ps
       .attr('class', 'base-line')
       .attr('stroke', 'steelblue')
       .attr('stroke-width', 3)
   };
+
   public updateAxis(_axis, _value) {
 
   }

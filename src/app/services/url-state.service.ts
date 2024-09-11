@@ -38,7 +38,7 @@ export class UrlStateService {
 
   public isDefaultSearch$ = this.activatedRoute.queryParams.pipe( map(params => {
     const keys = Object.keys(params)
-    
+
     const DefaultnonGEO = 'searchType' in params && keys.length <= 1;
     const defaultGEO = keys.length === 0;
 
@@ -108,7 +108,7 @@ export class UrlStateService {
       .filter(key => params[key] !== '' && params[key] !== this.defaultbooleanParams?.[key])
       .reduce((res, key) => (res[key] = params[key], res), {});
 
-    
+
       this.params = paramsWithValues;
 
     this.router.navigate(['.'], {
@@ -778,7 +778,6 @@ export class UrlStateService {
   };
 
   private loadOnDemandUserId = (userIdStr: string): Action  => {
-    console.log(userIdStr);
     return new hyp3Store.SetOnDemandUserID(userIdStr);
   }
 
