@@ -59,12 +59,12 @@ export class SearchParamsService {
     )
   );
 
-  private operaCalibrationParam$ = this.store$.select(filterStore.getUseCalibrationData).pipe(
-    withLatestFrom(this.store$.select(filterStore.getSelectedDatasetId)),
-    map(([useCalibrationData, dataset]) =>
-      dataset === models.opera_s1.id && useCalibrationData ?
-      ({dataset: models.opera_s1.calibrationDatasets}) : ({}))
-  )
+  // private operaCalibrationParam$ = this.store$.select(filterStore.getUseCalibrationData).pipe(
+  //   withLatestFrom(this.store$.select(filterStore.getSelectedDatasetId)),
+  //   map(([useCalibrationData, dataset]) =>
+  //     dataset === models.opera_s1.id && useCalibrationData ?
+  //     ({dataset: models.opera_s1.calibrationDatasets}) : ({}))
+  // )
 
   private groupID$ = this.store$.select(filterStore.getGroupID).pipe(
     map(groupid => ({
@@ -214,7 +214,7 @@ export class SearchParamsService {
     this.missionParam$,
     this.burstParams$,
     this.operaBurstParams$,
-    this.operaCalibrationParam$,
+    // this.operaCalibrationParam$,
     this.groupID$]
   ).pipe(
     map((params: any[]) => params
