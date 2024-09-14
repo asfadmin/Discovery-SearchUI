@@ -27,5 +27,6 @@
 ::ng-deep .disp-label {
 	@include themify($themes) {
 	  fill: themed('dark-primary-text');
+	  overflow-x: visible;
 	}
 }
