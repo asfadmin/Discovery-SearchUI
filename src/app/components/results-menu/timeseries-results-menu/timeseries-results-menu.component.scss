@@ -294,3 +294,11 @@ label {
 .ts-wkt-text {
   vertical-align: super;
 }
+
+::ng-deep .mdc-radio__inner-circle {
+  border-color: #236192 !important; /*change radio button color when selected*/
+}
+
+::ng-deep .mdc-radio__outer-circle {
+  border-color: #ffcc33 !important; /*change radio button color when selected*/
+}
