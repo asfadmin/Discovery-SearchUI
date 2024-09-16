@@ -41,7 +41,7 @@ export class SbasSlidersTwoComponent implements OnInit {
   public metersValues$ = new Subject<number[]>();
   // public perpStart = 800;
 
-  // private firstLoad = true;
+  private firstLoad = true;
   private firstMeterLoad = true;
   private subs = new SubSink();
 
@@ -105,11 +105,11 @@ export class SbasSlidersTwoComponent implements OnInit {
       this.store$.select(filtersStore.getTemporalRange).subscribe(
         temp => {
           this.daysRange = {start: temp.start, end: temp.end};
-          this.slider.set([temp.start, temp.end]);
-          // if (this.firstLoad) {
-          //   this.slider.set([temp.start, temp.end]);
-          //   this.firstLoad = false;
-          // }
+          // this.slider.set([temp.start, temp.end]);
+          if (this.firstLoad) {
+            this.slider.set([temp.start, temp.end]);
+            this.firstLoad = false;
+          }
         }
       )
     );
