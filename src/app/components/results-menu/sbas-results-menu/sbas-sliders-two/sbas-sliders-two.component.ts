@@ -105,10 +105,9 @@ export class SbasSlidersTwoComponent implements OnInit {
     this.subs.add(
       this.store$.select(filtersStore.getTemporalRange).subscribe(
         temp => {
-          // if (this.daysRange.start !== temp.start || this.daysRange.end !== temp.end) {
+          this.daysRange = {start: temp.start, end: temp.end};
           if (this.firstLoad) {
             this.firstLoad = false;
-            this.daysRange = {start: temp.start, end: temp.end};
             this.slider.set([temp.start, temp.end]);
           }
         }
