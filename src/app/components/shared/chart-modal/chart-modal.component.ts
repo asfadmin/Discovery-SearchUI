@@ -30,12 +30,6 @@ export class ChartModalComponent implements OnInit, OnDestroy {
   public searchType: SearchType;
   public SearchTypes = SearchType;
 
-  chartBySearchType = {
-    [SearchType.SBAS]: null,
-    [SearchType.BASELINE]: null,
-    [SearchType.DISPLACEMENT]: TimeseriesChartConfigComponent
-
-  }
   constructor(public dialog: MatDialog,
     private $store: Store<AppState>,
   ) {

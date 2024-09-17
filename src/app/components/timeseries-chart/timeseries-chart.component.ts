@@ -8,12 +8,11 @@ import { AppState } from '@store';
 import * as sceneStore from '@store/scenes';
 import * as chartsStore from '@store/charts';
 import { SubSink } from 'subsink';
-// import { TimeseriesChartConfigComponent } from './timeseries-chart-config';
 
 @Component({
   selector: 'app-timeseries-chart',
   templateUrl: './timeseries-chart.component.html',
-  styleUrl: './timeseries-chart.component.scss',
+  styleUrl: './timeseries-chart.component.scss'
 })
 export class TimeseriesChartComponent implements OnInit, OnDestroy {
   @ViewChild('timeseriesChart', { static: true }) timeseriesChart: ElementRef;
@@ -151,7 +150,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     const self = this;
 
     this.lineGraph = this.clipContainer.append("path")
-    
+
     this.dots = this.clipContainer.append('g').selectAll('circle')
       .data(this.dataSource)
       .enter()

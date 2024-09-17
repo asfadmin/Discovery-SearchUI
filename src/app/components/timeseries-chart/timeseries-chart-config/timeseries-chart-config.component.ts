@@ -15,29 +15,28 @@ import * as chartsStore from '@store/charts'
   styleUrl: './timeseries-chart-config.component.scss'
 })
 
-// private DEFAULT_CHART: TimeseriesChartConfigDialogData = {showLines: {default: true, Checkbox}}
-
 export class TimeseriesChartConfigComponent implements OnInit, OnDestroy {
   private subs = new SubSink()
   public showLines: boolean = true
 
-  constructor(private store$: Store<AppState>) {}
+  constructor(private store$: Store<AppState>) { }
 
-    public onToggleLines(event: MatCheckboxChange) {
-      console.log(event)
-      if(event.checked) {
-        this.store$.dispatch(chartsStore.showGraphLines())
-      } else {
-        this.store$.dispatch(chartsStore.hideGraphLines())
-      }
-
+  public onToggleLines(event: MatCheckboxChange) {
+    if (event.checked) {
+      this.store$.dispatch(chartsStore.showGraphLines())
+    } else {
+      this.store$.dispatch(chartsStore.hideGraphLines())
     }
+  }
 
-    ngOnInit(): void {
-      this.subs.add(this.store$.select(chartsStore.getShowLines).subscribe(showLines => this.showLines = showLines))
-    }
+  ngOnInit(): void {
+    this.subs.add(this.store$.select(chartsStore.getShowLines).subscribe(
+      showLines => this.showLines = showLines
+    )
+    );
+  }
 
-    ngOnDestroy(): void {
-      this.subs.unsubscribe()
-    }
+  ngOnDestroy(): void {
+    this.subs.unsubscribe()
+  }
 }
