@@ -1,0 +1,15 @@
+<button mat-button [matMenuTriggerFor]="menu">chart config<mat-icon>shape_line</mat-icon></button>
+<mat-menu #menu="matMenu">
+    <!-- <button mat-menu> -->
+    
+    
+    <span [ngSwitch]="searchType" (click) = "$event.stopPropagation()">
+        <p *ngSwitchCase="SearchTypes.DISPLACEMENT">
+            <app-timeseries-chart-config></app-timeseries-chart-config>
+        </p>
+        <p *ngSwitchDefault>
+            <app-timeseries-chart-config></app-timeseries-chart-config>
+        </p>
+    </span>
+</mat-menu>
+<!-- </button> -->

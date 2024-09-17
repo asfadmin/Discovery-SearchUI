@@ -8,8 +8,9 @@ import { TimeseriesChartComponent } from './timeseries-chart.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import {ResizedEventModule} from '@directives/resized.directive';
-
-
+// import {MatButtonModule} from '@angular/material/button';
+import { TimeseriesChartConfigComponent } from './timeseries-chart-config'
+import { ChartModalComponent } from '@components/shared/chart-modal/chart-modal.component'
 @NgModule({
   declarations: [TimeseriesChartComponent],
     imports: [
@@ -18,7 +19,11 @@ import {ResizedEventModule} from '@directives/resized.directive';
         TranslateModule,
         MatTableModule,
         MatIconModule,
-        ResizedEventModule
+        ResizedEventModule,
+        MatSharedModule,
+        ChartModalComponent,
+        TimeseriesChartConfigComponent
+        // MatButtonModule
     ],
   exports: [
     TimeseriesChartComponent,

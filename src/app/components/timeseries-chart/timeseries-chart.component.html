@@ -1,4 +1,10 @@
 
 <div #tsChartWrapper class="chart-wrapper" (resized)="onResized()">
 	<div #timeseriesChart id="timeseriesChart" ></div>
+	<app-chart-modal [style]="{'margin-right': this.margin.right - 20, 'margin-top': '10px'}"></app-chart-modal>
+	<!-- <button mat-button (click)="" [style]="{'margin-right': this.margin.right - 20, 'margin-top': '10px'}">
+		chart config
+		<mat-icon>shape_line</mat-icon>
+	</button> -->
 </div>
+<!-- .attr('y', -this.margin.left + 20).attr('x', -this.height / 2).style('text-anchor', 'middle') -->
