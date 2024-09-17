@@ -13,21 +13,27 @@
 }
 
 ::ng-deep .timeseries-base {
-@include themify($themes) {
-	fill: themed('blue-link');
+  @include themify($themes) {
+    fill: themed('blue-link');
   }
 }
 
 ::ng-deep .baseline-selected {
-@include themify($themes) {
-	fill: themed('err');
+  @include themify($themes) {
+    fill: themed('err');
   }
 }
 
 
 ::ng-deep .disp-label {
-	@include themify($themes) {
-	  fill: themed('dark-primary-text');
-	  overflow-x: visible;
-	}
+  @include themify($themes) {
+    fill: themed('dark-primary-text');
+    overflow-x: visible;
+  }
+}
+
+
+.ts-chart-config-button {
+  margin-right: 15px;
+  margin-top: 10px;
 }

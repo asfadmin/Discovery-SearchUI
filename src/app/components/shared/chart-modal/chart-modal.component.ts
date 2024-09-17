@@ -10,6 +10,7 @@ import { getSearchType } from '@store/search';
 import { SearchType } from '@models';
 import { CommonModule } from '@angular/common';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 @Component({
   selector: 'app-chart-modal',
   standalone: true,
@@ -19,7 +20,8 @@ import { MatMenuModule } from '@angular/material/menu';
     MatIconModule,
     MatButtonModule,
     TimeseriesChartConfigComponent,
-    MatMenuModule
+    MatMenuModule,
+    MatButtonToggleModule,
 ],
   templateUrl: './chart-modal.component.html',
   styleUrl: './chart-modal.component.scss'

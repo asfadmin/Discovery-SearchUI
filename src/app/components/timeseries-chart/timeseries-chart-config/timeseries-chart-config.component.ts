@@ -31,8 +31,8 @@ export class TimeseriesChartConfigComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subs.add(this.store$.select(chartsStore.getShowLines).subscribe(
-      showLines => this.showLines = showLines
-    )
+        showLines => this.showLines = showLines
+      )
     );
   }
 
