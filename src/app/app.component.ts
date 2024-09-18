@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, AfterViewInit, ViewChild, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, Inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -34,20 +34,20 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } fro
 import { MAT_MOMENT_DATE_FORMATS } from "@angular/material-moment-adapter";
 
 @Component({
-  selector   : 'app-root',
+  selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls  : ['./app.component.scss'],
+  styleUrls: ['./app.component.scss'],
   providers: [
     {
       provide: DateAdapter,
       useClass: NativeDateAdapter
     },
-    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
-    {provide: MAT_DATE_LOCALE, useValue: 'en'},
+    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
+    { provide: MAT_DATE_LOCALE, useValue: 'en' },
   ]
 })
 export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('sidenav', {static: true}) sidenav: MatSidenav;
+  @ViewChild('sidenav', { static: true }) sidenav: MatSidenav;
 
   private queueStateKey = 'asf-queue-state-v1';
   private customProductsQueueStateKey = 'asf-custom-products-queue-state-v2';
@@ -91,12 +91,13 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private mapService: services.MapService,
     private hyp3Service: services.Hyp3Service,
     private themeService: services.ThemingService,
+    private drawService: services.DrawService,
     public translate: TranslateService,
     public language: services.AsfLanguageService,
     public _adapter: DateAdapter<any>,
     private titleService: Title,
     @Inject(MAT_DATE_LOCALE) public _locale: string,
-  ) {}
+  ) { }
 
   public ngOnInit(): void {
     this.store$.dispatch(new hyp3Store.LoadCosts());
@@ -125,89 +126,89 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     );
 
     this.subs.add(
-    this.store$.select(uiStore.getHelpDialogTopic).subscribe(topic => {
-      const previousTopic = this.helpTopic;
-      this.helpTopic = topic;
+      this.store$.select(uiStore.getHelpDialogTopic).subscribe(topic => {
+        const previousTopic = this.helpTopic;
+        this.helpTopic = topic;
 
-      if (!topic || !!previousTopic) {
-        return;
-      }
+        if (!topic || !!previousTopic) {
+          return;
+        }
 
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
-        'event': 'open-help',
-        'open-help': topic
-      });
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          'event': 'open-help',
+          'open-help': topic
+        });
 
-      const ref = this.dialog.open(HelpComponent, {
-        panelClass: 'help-panel-config',
-        data: {helpTopic: topic},
-        width: '80vw',
-        height: '80vh',
-        maxWidth: '100%',
-        maxHeight: '100%'
-      });
+        const ref = this.dialog.open(HelpComponent, {
+          panelClass: 'help-panel-config',
+          data: { helpTopic: topic },
+          width: '80vw',
+          height: '80vh',
+          maxWidth: '100%',
+          maxHeight: '100%'
+        });
 
-      ref.afterClosed().subscribe(_ => {
-        this.store$.dispatch(new uiStore.SetHelpDialogTopic(null));
-      });
-    })
+        ref.afterClosed().subscribe(_ => {
+          this.store$.dispatch(new uiStore.SetHelpDialogTopic(null));
+        });
+      })
     );
 
     this.subs.add(
-    this.store$.select(uiStore.getIsDownloadQueueOpen).subscribe(isDownloadQueueOpen => {
-      if (!isDownloadQueueOpen) {
-        return;
-      }
+      this.store$.select(uiStore.getIsDownloadQueueOpen).subscribe(isDownloadQueueOpen => {
+        if (!isDownloadQueueOpen) {
+          return;
+        }
 
-      this.store$.dispatch(new hyp3Store.LoadUser());
+        this.store$.dispatch(new hyp3Store.LoadUser());
 
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
-        'event': 'open-download-queue',
-        'open-download-queue': this.numberQueuedProducts
-      });
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          'event': 'open-download-queue',
+          'open-download-queue': this.numberQueuedProducts
+        });
 
-      const ref = this.dialog.open(QueueComponent, {
-        id: 'dlQueueDialog',
-        maxWidth: '100vw',
-        maxHeight: '100vh'
-      });
+        const ref = this.dialog.open(QueueComponent, {
+          id: 'dlQueueDialog',
+          maxWidth: '100vw',
+          maxHeight: '100vh'
+        });
 
-      this.subs.add(
-        ref.afterClosed().subscribe(
-          _ => this.store$.dispatch(new uiStore.SetIsDownloadQueueOpen(null))
-        )
-      );
-    })
+        this.subs.add(
+          ref.afterClosed().subscribe(
+            _ => this.store$.dispatch(new uiStore.SetIsDownloadQueueOpen(null))
+          )
+        );
+      })
     );
 
     this.subs.add(
-    this.store$.select(uiStore.getIsOnDemandQueueOpen).subscribe(isOnDemandQueueOpen => {
-      if (!isOnDemandQueueOpen) {
-        return;
-      }
+      this.store$.select(uiStore.getIsOnDemandQueueOpen).subscribe(isOnDemandQueueOpen => {
+        if (!isOnDemandQueueOpen) {
+          return;
+        }
 
-      this.store$.dispatch(new hyp3Store.LoadUser());
+        this.store$.dispatch(new hyp3Store.LoadUser());
 
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
-        'event': 'open-processing-queue',
-        'open-processing-queue': this.queuedCustomProducts.length
-      });
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          'event': 'open-processing-queue',
+          'open-processing-queue': this.queuedCustomProducts.length
+        });
 
-      const ref = this.dialog.open(ProcessingQueueComponent, {
-        id: 'processingQueueDialog',
-        maxWidth: '100vw',
-        maxHeight: '100vh'
-      });
+        const ref = this.dialog.open(ProcessingQueueComponent, {
+          id: 'processingQueueDialog',
+          maxWidth: '100vw',
+          maxHeight: '100vh'
+        });
 
-      this.subs.add(
-        ref.afterClosed().subscribe(
-          _ => this.store$.dispatch(new uiStore.SetIsOnDemandQueueOpen(null))
-        )
-      );
-    })
+        this.subs.add(
+          ref.afterClosed().subscribe(
+            _ => this.store$.dispatch(new uiStore.SetIsOnDemandQueueOpen(null))
+          )
+        );
+      })
     );
 
     this.store$.dispatch(new uiStore.LoadBanners());
@@ -253,8 +254,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           this.language.setProfileLanguage(profile.language);
           this.isAutoTheme = profile.theme === 'System Preferences';
 
-          const presets = Object.entries(profile.defaultFilterPresets).map(([_, val2]) => val2).filter(val2 =>val2 !== '')
-          if(isDefaultSearch && presets.length > 0) {
+          const presets = Object.entries(profile.defaultFilterPresets).map(([_, val2]) => val2).filter(val2 => val2 !== '')
+          if (isDefaultSearch && presets.length > 0) {
             this.loadDefaultFilters(profile)
           }
         })
@@ -270,19 +271,19 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           this.store$.dispatch(new hyp3Store.LoadCosts());
           this.store$.dispatch(new hyp3Store.LoadUser());
         }
-)
+      )
     );
 
     this.subs.add(
       this.actions$.pipe(
-      ofType<userStore.SetProfile>(userStore.UserActionType.SET_PROFILE),
-      withLatestFrom(this.urlStateService.isDefaultSearch$),
-      filter(([action, isDefaultSearch]) => {
-        const hasCustomDefaults = Object.entries(action.payload.defaultFilterPresets).map(([_, val2]) => val2).filter(val2 =>val2 !== '').length > 0
-        return isDefaultSearch && hasCustomDefaults;
-      }),
-      map(([action, _]) => action.payload.defaultFilterPresets)
-      ).subscribe( defaultFilters =>
+        ofType<userStore.SetProfile>(userStore.UserActionType.SET_PROFILE),
+        withLatestFrom(this.urlStateService.isDefaultSearch$),
+        filter(([action, isDefaultSearch]) => {
+          const hasCustomDefaults = Object.entries(action.payload.defaultFilterPresets).map(([_, val2]) => val2).filter(val2 => val2 !== '').length > 0
+          return isDefaultSearch && hasCustomDefaults;
+        }),
+        map(([action, _]) => action.payload.defaultFilterPresets)
+      ).subscribe(defaultFilters =>
         this.store$.dispatch(new filterStore.SetDefaultFilters(defaultFilters))
       )
     );
@@ -359,9 +360,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         this.store$.select(queueStore.getQueuedJobs),
         this.store$.select(hyp3Store.getProcessingOptions)]
       ).subscribe(
-       ([jobs, options]) => localStorage.setItem(
-         this.customProductsQueueStateKey, JSON.stringify({jobs, options})
-       )
+        ([jobs, options]) => localStorage.setItem(
+          this.customProductsQueueStateKey, JSON.stringify({ jobs, options })
+        )
       )
     );
 
@@ -381,7 +382,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         })
       ).subscribe(
         (mode) => {
-        this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
+          this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
         })
     );
 
@@ -507,7 +508,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     const queueItemsStr = localStorage.getItem(this.customProductsQueueStateKey);
 
     if (queueItemsStr) {
-      const {jobs, options} = JSON.parse(queueItemsStr);
+      const { jobs, options } = JSON.parse(queueItemsStr);
       this.store$.dispatch(new queueStore.AddJobs(jobs));
       if (this.areOptionsByJobType(options)) {
         this.store$.dispatch(new hyp3Store.SetProcessingOptions(options));
@@ -540,8 +541,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   private updateMaxSearchResults(): void {
     const checkAmount = this.searchParams$.getlatestParams.pipe(
       distinctUntilChanged((previous, current) => {
-        for(let key of Object.keys(previous)) {
-          if(previous[key] !== current[key]) {
+        for (let key of Object.keys(previous)) {
+          if (previous[key] !== current[key]) {
             return false;
           }
         }
@@ -550,7 +551,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       debounceTime(200),
       filter(_ => this.searchType !== SearchType.SARVIEWS_EVENTS
         && this.searchType !== SearchType.CUSTOM_PRODUCTS),
-      map(params => ({...params, output: 'COUNT'})),
+      map(params => ({ ...params, output: 'COUNT' })),
       tap(_ =>
         this.store$.dispatch(new searchStore.SearchAmountLoading())
       ),
@@ -559,15 +560,15 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           return this.sarviewsService.filteredSarviewsEvents$().pipe(map(events => events.length));
         }
         return this.asfSearchApi.query<any[]>(params).pipe(
-        catchError(resp => {
-          const { error } = resp;
-          if (!resp.ok || error && error.includes('VALIDATION_ERROR')) {
-            return of(0);
-          }
+          catchError(resp => {
+            const { error } = resp;
+            if (!resp.ok || error && error.includes('VALIDATION_ERROR')) {
+              return of(0);
+            }
 
-          return of(-1);
-        })
-      );
+            return of(-1);
+          })
+        );
       }
       ),
     );
@@ -625,7 +626,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private errorBanner(): models.Banner {
-    return  {
+    return {
       id: 'Error',
       text: 'ASF is experiencing errors loading data.  Please try again later.',
       name: 'Error',
