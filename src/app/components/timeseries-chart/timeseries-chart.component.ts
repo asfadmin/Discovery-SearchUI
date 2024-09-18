@@ -6,6 +6,7 @@ import { Observable, Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as sceneStore from '@store/scenes';
+import * as chartsStore from '@store/charts';
 import { SubSink } from 'subsink';
 
 @Component({
@@ -20,6 +21,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   @Input() zoomOut$: Observable<void>;
   @Input() zoomToFit$: Observable<void>;
   @Input() chartData: Subject<any>;
+
   public json_data: string = '';
   private svg?: d3.Selection<SVGElement, {}, HTMLDivElement, any>;
   public dataSource: TimeSeriesChartPoint[] = [];
@@ -39,12 +41,13 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private dots: d3.Selection<SVGCircleElement, TimeSeriesChartPoint, SVGGElement, {}>;
   private lineGraph: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private toolTip: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>
-  private margin = { top: 10, right: 30, bottom: 60, left: 45 };
+  public margin = { top: 10, right: 10, bottom: 60, left: 45 };
   private thing: d3.Selection<SVGGElement, {}, HTMLElement, any>
   private hoveredElement;
 
 
   private selectedScene: string;
+  private showLines = true;
 
   private subs = new SubSink();
   constructor(
@@ -71,6 +74,19 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         this.updateChart();
 
       })
+    );
+    this.subs.add(
+      this.store$.select(chartsStore.getShowLines).subscribe(
+        showLines => {
+          this.showLines = showLines;
+          if (this.showLines) {
+            this.lineGraph = this.clipContainer.append("path")
+          } else {
+            this.lineGraph.remove()
+          }
+          this.updateChart();
+        }
+      )
     )
   }
   public ngOnDestroy(): void {
@@ -186,6 +202,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
     this.svg.append('text').attr('transform', `translate(${this.width / 2}, ${this.height + this.margin.bottom - 20})`).style('text-anchor', 'middle').attr('class', 'disp-label').text('Scene Date');
     this.svg.append('text').attr('transform', `rotate(-90)`).attr('y', -this.margin.left + 20).attr('x', -this.height / 2).style('text-anchor', 'middle').attr('class', 'disp-label').text('Shortwave Displacement (meters)');
+
     this.updateChart();
   }
 
@@ -222,11 +239,13 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         this.store$.dispatch(new sceneStore.SetSelectedScene(d.id))
       })
 
-    this.addPairAttributes(
-      this.lineGraph
-        .attr('d', _ => lineFunction(this.dataSource))
-        .attr('fill', 'none')
-    )
+    if (this.showLines) {
+      this.addPairAttributes(
+        this.lineGraph
+          .attr('d', _ => lineFunction(this.dataSource))
+          .attr('fill', 'none')
+      )
+    }
   }
 
   private updateTooltip() {
