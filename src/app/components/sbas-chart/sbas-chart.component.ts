@@ -380,7 +380,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .attr('d', (pair: CMRProductPair) => this.line(pair));
 
     // andy
-    this.scatter.selectAll('.selected-line').remove();
+    // this.scatter.selectAll('.selected-line').remove();
 
     if (this.selectedPair !== null && this.selectedPair[0] !== null && this.selectedPair[1] !== null) {
       this.setSelected(this.selectedPair);
