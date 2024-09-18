@@ -437,6 +437,24 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         this.domSanitizer.bypassSecurityTrustResourceUrl(`../assets/icons/${iconName}.svg`)
       );
     });
+
+    this.subs.add(
+      combineLatest(
+        [
+          this.drawService.polygon$,
+          this.store$.select(searchStore.getSearchType),
+          this.store$.select(uiStore.getIsResultsMenuOpen),
+          this.store$.select(scenesStore.getAreResultsLoaded)
+        ]).pipe(
+          filter(([_, searchType, _resultsOpen, resultsLoaded]) => searchType == SearchType.DISPLACEMENT && !resultsLoaded)
+        ).subscribe(([polygon, _, __]) => {
+          if (polygon) {
+            if (polygon.getGeometry().getType() === 'Point') {
+              this.store$.dispatch(new searchStore.MakeSearch());
+              this.store$.dispatch(new scenesStore.SetResultsLoaded(true))
+        }
+          }
+        }))
   }
 
   public ngAfterViewInit(): void {
