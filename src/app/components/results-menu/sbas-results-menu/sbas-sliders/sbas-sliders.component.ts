@@ -1,3 +1,4 @@
+// Perpendicular baseline slider component
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 import * as noUiSlider from 'nouislider';
@@ -58,8 +59,8 @@ export class SbasSlidersComponent implements OnInit {
         perp => {
           this.perpRange = perp;
           if (this.lastRange !== this.perpRange) {
-            this.perpendicularSlider.set([perp.start, perp.end]);
             this.lastRange = this.perpRange;
+            this.perpendicularSlider.set([perp.start, perp.end]);
           }
         }
       )

@@ -78,7 +78,9 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     this.store$.select(scenesStore.getSelectedPair).pipe(
       map(pair => !!pair?.[0] && !!pair?.[1] ? pair : null)
     ).subscribe(
-      selected => this.selectedPair = selected
+      selected => {
+        this.selectedPair = selected;
+      }
     );
 
     this.subs.add(
@@ -97,12 +99,24 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         this.scenes = scenes;
         this.pairs = pairs.pairs;
         this.customPairs = pairs.custom;
+        // this.selectedPair = null;
         this.isDisconnected = this.pairService.isGraphDisconnected([...this.pairs, ...this.customPairs], this.scenes.length);
         this.isGraphDisconnected.emit(this.isDisconnected);
+        let thisPair = null;
+        if (this.selectedPair) {
+          thisPair = this.selectedPair.map(product => product.id);
+        }
+        this.selectedPair = null;
+        if (thisPair && this.pairs) {
+          this.pairs.forEach( (pair) => {
+              if (pair[0].id === thisPair[0] && pair[1].id === thisPair[1]) {
+                this.selectedPair = pair;
+              }
+            })
+        }
         if (this.selectedPair === null && Array.isArray(this.pairs)) {
           if (this.pairs.length > 0) {
             const firstPair = this.pairs[0];
-
             this.store$.dispatch(
               new scenesStore.SetSelectedPair(firstPair.map(product => product.id))
             );
@@ -132,6 +146,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     if (this.chart) {
       d3.selectAll('#sbasChart > svg').remove();
       d3.selectAll('.tooltip').remove();
+      d3.selectAll('.selected-line').remove();
     }
 
     this.margin = { top: 10, right: 0, bottom: 25, left: 50 };
@@ -236,7 +251,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
 
     this.line = d3.line<CMRProduct>()
       .x((product: CMRProduct) => this.x(product?.metadata.date.valueOf() ?? 0))
-      .y((product: CMRProduct) => this.y(product?.metadata.perpendicular ?? 0));
+      .y((product: CMRProduct) => this.y(product?.metadata.perpendicular.valueOf() ?? 0));
 
     const lines = this.scatter.append('g')
       .attr('fill', 'none')
@@ -258,36 +273,36 @@ export class SBASChartComponent implements OnInit, OnDestroy {
         .on('mouseleave', function(_) {
           self.clearHovered();
         })
-      .on('click', (_event, pair) => {
-        this.store$.dispatch(
-          new scenesStore.SetSelectedPair(pair.map(product => product.id))
-        );
-        this.setSelected(pair);
-      });
+        .on('click', (_event, pair) => {
+          this.store$.dispatch(
+            new scenesStore.SetSelectedPair(pair.map(product => product.id))
+          );
+          this.setSelected(pair);
+        });
     };
     if(this.scenes.length > 0) {
+      this.scatter.selectAll('.selected-line').remove();
       addPairAttributes(
         lines
           .data(this.pairs)
           .join('path')
             .style('mix-blend-mode', 'multiply')
       );
-
       addPairAttributes(
         lines
           .data(this.customPairs)
           .join('path')
             .style('stroke-dasharray', ' 5,5')
       );
-    }
 
+    }
     this.scatter.append('g')
       .selectAll('circle')
       .data(this.scenes)
       .enter()
       .append('circle')
         .attr('cx', (d: CMRProduct) => this.x(d.metadata.date.valueOf()) )
-        .attr('cy', (d: CMRProduct) => this.y(d.metadata.perpendicular) )
+        .attr('cy', (d: CMRProduct) => this.y(d.metadata.perpendicular.valueOf()) )
         .on('click', function(_event, p) {
           self.toggleDrawing(p, d3.select(this));
         })
@@ -364,6 +379,9 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     this.scatter.selectAll('.base-line')
       .attr('d', (pair: CMRProductPair) => this.line(pair));
 
+    // andy
+    this.scatter.selectAll('.selected-line').remove();
+
     if (this.selectedPair !== null && this.selectedPair[0] !== null && this.selectedPair[1] !== null) {
       this.setSelected(this.selectedPair);
     }
@@ -418,8 +436,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
 
   public setSelected = (pair) => {
     this.selectedPair = pair;
-
-    this.scatter.select('.selected-line').remove();
+    this.scatter.selectAll('.selected-line').remove();
     this.scatter.append('path')
       .attr('class', 'selected-line')
       .attr('stroke', 'red')

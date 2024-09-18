@@ -1,3 +1,4 @@
+// Days Slider
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 import * as noUiSlider from 'nouislider';
@@ -151,6 +152,7 @@ export class SbasSlidersTwoComponent implements OnInit {
 
   public updatePerpendicular() {
     this.options.controls.meterDistance.setValue(this.perpendicular);
+    this.metersValues$.next([this.perpendicular.start, this.perpendicular.end] );
   }
 
   public updateDaysOffset() {
