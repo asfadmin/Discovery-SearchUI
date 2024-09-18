@@ -4,7 +4,7 @@
 		<div #timeseriesChart id="timeseriesChart" >
 
 		</div>
-		@if(dataSource.length <= 0){
+		@if(isLoading){
 			<div class="disp-spinner">
 				<mat-spinner></mat-spinner>
 			</div>

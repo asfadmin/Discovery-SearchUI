@@ -62,6 +62,8 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public dateRange = [];
   public totalPoints = 0;
 
+  public isLoading = false;
+
   constructor(
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
@@ -180,8 +182,10 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       this.timeseries_subscription.unsubscribe();
     }
     this.chartData.next(null);
+    this.isLoading = true;
     this.timeseries_subscription = this.netcdfService.getTimeSeries(geometry).pipe(first()).subscribe(data => {
       this.chartData.next(data);
+      this.isLoading = false;
 
       let test_products = [];
       this.totalPoints = Object.keys(data).length - 1;

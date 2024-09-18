@@ -45,6 +45,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
 
   private selectedScene: string;
+  @Input() isLoading: boolean = false;
 
   private subs = new SubSink();
   constructor(
