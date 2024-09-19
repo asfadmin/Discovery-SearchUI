@@ -66,7 +66,8 @@ export class MapEffects {
       || dataset?.id === 'SENTINEL-1'
       || dataset?.id === 'SENTINEL-1 INTERFEROGRAM (BETA)'
       || dataset?.id === 'UAVSAR'
-      || dataset?.id === 'OPERA-S1';
+      || dataset?.id === 'OPERA-S1'
+      || dataset?.id === 'NISAR';
     }
     return searchType !== SearchType.BASELINE && searchType !== SearchType.SBAS;
   }),
@@ -83,7 +84,8 @@ export class MapEffects {
         || product.dataset === 'Sentinel-1A'
         || product.dataset === 'Sentinel-1B'
         || product.dataset === 'Sentinel-1 Interferogram (BETA)'
-        || product.dataset === 'UAVSAR';
+        || product.dataset === 'UAVSAR'
+        || product.dataset === 'NISAR';
       } else if (searchType === SearchType.CUSTOM_PRODUCTS) {
         const failed = product.metadata.job?.status_code === models.Hyp3JobStatusCode.FAILED;
         const running = product.metadata.job?.status_code === models.Hyp3JobStatusCode.RUNNING;

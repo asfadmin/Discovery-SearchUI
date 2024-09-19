@@ -252,6 +252,7 @@ export class ProductService {
 
     product.metadata.s3URI = s3UrlsByProductID[product.file] ?? null;
 
+    let browses = []
     for (const p of product.metadata.nisar.additionalUrls.filter(url => url !== product.downloadUrl)) {
       temp = p.split('.')
       file_extension = temp[temp.length - 1]
@@ -262,6 +263,9 @@ export class ProductService {
         } else {
           console.log(`Missing product type display for file extension "${file_extension}"`);
         }
+      }
+      if (productTypeDisplay === 'Browse PNG') {
+        browses.push(p)
       }
       if (p.includes('QA_')) {
         productTypeDisplay += (' (QA)')
@@ -278,7 +282,7 @@ export class ProductService {
         file: fileID,
         id: product.id + '-' + file_extension,
         bytes: 0,
-        browses: [],
+        browses,
         thumbnail: null,
         metadata: {
           ...product.metadata,
@@ -289,7 +293,7 @@ export class ProductService {
         },
 
       } as models.CMRProduct;
-
+      
       products.push(subproduct)
     }
 
