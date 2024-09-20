@@ -481,14 +481,13 @@ export class MapService {
       collapsed: true,
       className: 'ol-overviewmap ol-custom-overviewmap',
     });
-    let test_url: string = `https://api.mapbox.com/v4/tylercchase.summer-vv/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidHlsZXJjY2hhc2UiLCJhIjoiY20xODg3ZnJkMTNjNjJ2b2poMnZ1YmdpNiJ9.-F7GhIotsvWDrmIvbsxoSg`
+    let test_url: string = `https://api.mapbox.com/v4/asf-discovery.summer-vv/{z}/{x}/{y}.png?access_token=${models.mapboxToken}`
     const test_source = new TileImage({
       'url': test_url,
       wrapX: models.mapOptions.wrapX,
     });
 
     const test_layer = new TileLayer({ 'source': test_source,
-      extent: [-17893882.22973062, 2090020.8294203477, -17156794.461290296, 2592988.0148758255]
     });
 
     const newMap = new Map({
