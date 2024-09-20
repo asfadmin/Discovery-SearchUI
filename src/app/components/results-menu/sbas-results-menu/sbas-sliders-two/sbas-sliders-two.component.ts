@@ -1,5 +1,5 @@
 // Days Slider
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 
 import * as noUiSlider from 'nouislider';
 import { Subject,  fromEvent, Observable} from 'rxjs';
@@ -21,7 +21,7 @@ declare var wNumb: any;
   templateUrl: './sbas-sliders-two.component.html',
   styleUrls: ['./sbas-sliders-two.component.scss']
 })
-export class SbasSlidersTwoComponent implements OnInit {
+export class SbasSlidersTwoComponent implements OnInit, OnDestroy {
   @ViewChild('temporalFilter2', { static: true }) temporalFilter: ElementRef;
   @ViewChild('meterInputField', { static: true }) meterFilter: ElementRef;
 
@@ -197,5 +197,9 @@ export class SbasSlidersTwoComponent implements OnInit {
         distinctUntilChanged()
       )
     };
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }
