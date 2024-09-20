@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+// Perpendicular baseline slider component
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 
 import * as noUiSlider from 'nouislider';
 import { Subject } from 'rxjs';
@@ -17,7 +18,7 @@ declare var wNumb: any;
   templateUrl: './sbas-sliders.component.html',
   styleUrls: ['./sbas-sliders.component.scss']
 })
-export class SbasSlidersComponent implements OnInit {
+export class SbasSlidersComponent implements OnInit, OnDestroy {
   @ViewChild('perpendicularFilter', { static: true }) perpendicularFilter: ElementRef;
 
   // public temporalAutoTicks = false;
@@ -58,8 +59,8 @@ export class SbasSlidersComponent implements OnInit {
         perp => {
           this.perpRange = perp;
           if (this.lastRange !== this.perpRange) {
-            this.perpendicularSlider.set([perp.start, perp.end]);
             this.lastRange = this.perpRange;
+            this.perpendicularSlider.set([perp.start, perp.end]);
           }
         }
       )
@@ -111,5 +112,9 @@ export class SbasSlidersComponent implements OnInit {
         distinctUntilChanged()
       )
       };
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }
