@@ -1,6 +1,5 @@
 @import "asf-theme";
 
-
 #timeseriesChart {
   height: 100%;
   width: 100%;
@@ -34,6 +33,7 @@
 
 
 .ts-chart-config-button {
-  margin-right: 15px;
-  margin-top: 10px;
+  position: absolute;
+  top: 18px;
+  right: 20px;
 }
