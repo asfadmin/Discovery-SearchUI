@@ -2,6 +2,7 @@
 <div #tsChartWrapper class="chart-wrapper" (resized)="onResized()">
 	<div style="width: 100%; height:100%;">
 		<div #timeseriesChart id="timeseriesChart" >
+		<app-chart-modal class="ts-chart-config-button"></app-chart-modal>
 
 		</div>
 		@if(isLoading){
