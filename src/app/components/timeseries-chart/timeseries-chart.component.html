@@ -1,4 +1,5 @@
 
-<div class="chart-wrapper" (resized)="onResized()">
-	<div #timeseriesChart id="timeseriesChart" ></div>
+<div #tsChartWrapper class="chart-wrapper" (resized)="onResized()">
+	<div #timeseriesChart id="timeseriesChart"></div>
+	<app-chart-modal class="ts-chart-config-button"></app-chart-modal>
 </div>

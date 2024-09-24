@@ -1,0 +1,12 @@
+<div class="toggle-group-wrapper--layout">
+<mat-button-toggle [matMenuTriggerFor]="menu" type="button"
+    class="control-mat-button-toggle ts-criteria-button-toggle">
+    chart config<mat-icon class="more-horiz">shape_line</mat-icon>
+</mat-button-toggle>
+</div>
+<mat-menu #menu="matMenu">
+    <div class="chart-config-menu-panel" [ngSwitch]="searchType" (click)="$event.stopPropagation()">
+            <app-timeseries-chart-config *ngSwitchCase="SearchTypes.DISPLACEMENT"></app-timeseries-chart-config>
+            <app-timeseries-chart-config *ngSwitchDefault></app-timeseries-chart-config>
+    </div>
+</mat-menu>

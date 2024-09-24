@@ -23,7 +23,7 @@
 					<mat-radio-button color="primary" (click)="onPointClick($index)"  [checked]="$index === pointHistoryService.selectedPoint">
             <mat-icon class="ts-wkt-icon">place</mat-icon>
             <span class="ts-wkt-text">
-						  {{point.flatCoordinates[0] | floatPrecision: 2}},&ensp;{{point.flatCoordinates[1] | floatPrecision: 2}}
+						  {{point.flatCoordinates[1] | floatPrecision: 2}},&ensp;{{point.flatCoordinates[0] | floatPrecision: 2}}
             </span>
 					</mat-radio-button>
 				}
@@ -121,7 +121,7 @@
 	</div>
 
 	<div class="ts-chart-row">
-		<div id="ts-chart-column" class="ts-column-2">
+		<div id="ts-chart-column">
 			<app-timeseries-chart
 			[zoomIn$]="zoomInChart$"
 			[zoomToFit$]="zoomToFitChart$"

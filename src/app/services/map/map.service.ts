@@ -27,7 +27,7 @@ import { SarviewsEvent } from '@models';
 import { EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
-import { Icon, Style } from 'ol/style';
+import {Circle as CircleStyle, Fill, Icon, Stroke, Style} from 'ol/style';
 import Geometry from 'ol/geom/Geometry';
 import LayerGroup from 'ol/layer/Group';
 import { PinnedProduct } from '@services/browse-map.service';
@@ -486,7 +486,7 @@ export class MapService {
       'url': test_url,
       wrapX: models.mapOptions.wrapX,
     });
-  
+
     const test_layer = new TileLayer({ 'source': test_source,
       extent: [-13636084.632833757, 4583385.933366808, -13260513.67832392, 4858513.493065873]
      });
@@ -757,10 +757,26 @@ export class MapService {
       return temp_feature;
     });
     source.addFeatures(pointFeatures);
+
     this.displacmentLayer = new VectorLayer({
       source: source,
-      // TODO: figure out a good style to put here.
-    })
+      style: new Style({
+        image: new CircleStyle({
+          stroke: new Stroke({
+            // color: '#000000',
+            color: '#ffcc33',
+            width: 5,
+            lineDash: [3],
+            lineDashOffset: 5
+          }),
+          radius: 7,
+          fill: new Fill({
+            color: '#236192',
+            // color: '#ffcc33',
+          }),
+        })
+      })
+    });
 
     this.displacmentLayer.set('displacement-layer', 'true');
 

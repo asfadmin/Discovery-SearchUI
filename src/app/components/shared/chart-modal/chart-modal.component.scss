@@ -1,0 +1,46 @@
+@use "@angular/material" as mat;
+
+@import "asf-theme";
+$config: mat.define-legacy-typography-config();
+
+.mat-button-toggle-button {
+    border: 0;
+    background: none;
+    color: inherit;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    outline: none;
+    width: 100%;
+    cursor: pointer;
+}
+
+.ts-criteria-button-toggle-group {
+    flex: 0 1 149px !important;
+    margin-top: 5px;
+}
+
+.ts-criteria-button-toggle {
+    @include themify($themes) {
+        background-color: themed('background-white') !important;
+    }
+    font-size: 14px;
+}
+
+.more-horiz {
+    font-size: 16px !important;
+    margin-left: 0;
+}
+
+.toggle-group-wrapper--layout {
+    flex-direction: row;
+    box-sizing: border-box;
+    display: flex;
+    place-content: stretch center;
+    align-items: stretch;
+}
+
+.chart-config-menu-panel {
+    padding-left: 15px; 
+    padding-right: 15px;
+}

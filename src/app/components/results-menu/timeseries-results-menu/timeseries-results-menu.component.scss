@@ -15,6 +15,11 @@
 	box-sizing: border-box;
 }
 
+#ts-chart-column {
+  //flex: 1 1 auto;
+  width: 100%;
+  margin-left: 30px;
+}
 .ts-criteria-button-toggle-group {
 	flex: 0 1 149px !important;
 	margin-top: 5px;
@@ -288,4 +293,12 @@ label {
 
 .ts-wkt-text {
   vertical-align: super;
+}
+
+::ng-deep .mdc-radio__inner-circle {
+  border-color: #236192 !important; /*change radio button color when selected*/
+}
+
+::ng-deep .mdc-radio__outer-circle {
+  border-color: #ffcc33 !important; /*change radio button color when selected*/
 }

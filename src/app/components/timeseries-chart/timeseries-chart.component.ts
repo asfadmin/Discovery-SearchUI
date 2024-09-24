@@ -6,6 +6,7 @@ import { Observable, Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as sceneStore from '@store/scenes';
+import * as chartsStore from '@store/charts';
 import { SubSink } from 'subsink';
 
 interface ChartBounds {
@@ -20,10 +21,12 @@ interface ChartBounds {
 })
 export class TimeseriesChartComponent implements OnInit, OnDestroy {
   @ViewChild('timeseriesChart', { static: true }) timeseriesChart: ElementRef;
+  @ViewChild('tsChartWrapper', { static: true }) tsChartWrapper: ElementRef;
   @Input() zoomIn$: Observable<void>;
   @Input() zoomOut$: Observable<void>;
   @Input() zoomToFit$: Observable<void>;
   @Input() chartData: Subject<any>;
+
   public json_data: string = '';
   private svg?: d3.Selection<SVGElement, {}, HTMLDivElement, any>;
   public dataSource: TimeSeriesChartPoint[] = [];
@@ -32,6 +35,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private currentTransform: d3.ZoomTransform;
   private zoom: d3.ZoomBehavior<SVGElement, {}>;
   private clipContainer: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
+
   private width = 640;
   private height = 400;
 
@@ -42,12 +46,13 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private dots: d3.Selection<SVGCircleElement, TimeSeriesChartPoint, SVGGElement, {}>;
   private lineGraph: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private toolTip: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>
-  private margin = { top: 10, right: 30, bottom: 60, left: 45 };
+  public margin = { top: 10, right: 10, bottom: 60, left: 45 };
   private thing: d3.Selection<SVGGElement, {}, HTMLElement, any>
   private hoveredElement;
 
 
   private selectedScene: string;
+  private showLines = true;
 
   private subs = new SubSink();
   constructor(
@@ -74,6 +79,19 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         this.updateChart();
 
       })
+    );
+    this.subs.add(
+      this.store$.select(chartsStore.getShowLines).subscribe(
+        showLines => {
+          this.showLines = showLines;
+          if (this.showLines) {
+            this.lineGraph = this.clipContainer.append("path")
+          } else {
+            this.lineGraph.remove()
+          }
+          this.updateChart();
+        }
+      )
     )
   }
   public ngOnDestroy(): void {
@@ -95,6 +113,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.averageData = ({
       ...data.mean
     })
+
     this.svg.selectChildren().remove();
 
     this.drawChart();
@@ -135,6 +154,9 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.toolTip.attr('transform', `translate(0, 0)`).style('text-anchor', 'middle').style('z-index', 100).style('opacity', 0)
 
     const self = this;
+
+    this.lineGraph = this.clipContainer.append("path")
+
     this.dots = this.clipContainer.append('g').selectAll('circle')
       .data(this.dataSource)
       .enter()
@@ -147,7 +169,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         toolTip.interrupt();
         toolTip
           .style('opacity', .9);
-        toolTip.html(`${self.tooltipDateFormat(date)}, ${p.unwrapped_phase.toFixed(2)} radians`);
+        toolTip.html(`${self.tooltipDateFormat(date)}, ${p.unwrapped_phase.toFixed(2)} meters`);
         self.updateTooltip();
       })
       .on('mouseleave', function (_) {
@@ -165,9 +187,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           return 'timeseries-base';
         }
       })
-      .attr('r', 7)
+      .attr('r', 5)
 
-    this.lineGraph = this.clipContainer.append("path")
     this.zoom = d3.zoom<SVGElement, {}>()
       .extent([[0, 0], [this.width, this.height]])
       .on('zoom', (eve: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
@@ -185,18 +206,9 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .attr('x', 0)
       .attr('y', 0);
 
-    this.svg.append('text')
-      .attr('transform', `translate(${this.width / 2}, ${this.height + this.margin.bottom - 20})`)
-      .style('text-anchor', 'middle')
-      .attr('class', 'disp-label')
-      .text('Scene Date');
-    this.svg.append('text')
-      .attr('transform', `rotate(-90)`)
-      .attr('y', -this.margin.left + 20)
-      .attr('x', -this.height / 2)
-      .style('text-anchor', 'middle')
-      .attr('class', 'disp-label')
-      .text('Unwrapped Phase (radians)');
+    this.svg.append('text').attr('transform', `translate(${this.width / 2}, ${this.height + this.margin.bottom - 20})`).style('text-anchor', 'middle').attr('class', 'disp-label').text('Scene Date');
+    this.svg.append('text').attr('transform', `rotate(-90)`).attr('y', -this.margin.left + 20).attr('x', -this.height / 2).style('text-anchor', 'middle').attr('class', 'disp-label').text('Shortwave Displacement (meters)');
+
     this.updateChart();
   }
 
@@ -235,6 +247,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .x(function (d) { return newX(Date.parse(d.date)); })
       .y(function (d) { return newY(d.unwrapped_phase); })
 
+
     this.dots
       .attr('cx', d => newX(Date.parse(d.date)))
       .attr('cy', d => newY(d.unwrapped_phase))
@@ -249,11 +262,13 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         this.store$.dispatch(new sceneStore.SetSelectedScene(d.id))
       })
 
-    this.addPairAttributes(
-      this.lineGraph
-        .attr('d', _ => lineFunction(this.dataSource))
-        .attr('fill', 'none')
-    )
+    if (this.showLines) {
+      this.addPairAttributes(
+        this.lineGraph
+          .attr('d', _ => lineFunction(this.dataSource))
+          .attr('fill', 'none')
+      )
+    }
   }
 
   private updateTooltip() {
@@ -267,7 +282,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     return ps
       .attr('class', 'base-line')
       .attr('stroke', 'steelblue')
-      .attr('stroke-width', 3)
+      .attr('stroke-width', 1)
   };
 
   public updateAxis(_axis, _value) {
@@ -275,7 +290,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   }
 
   public onResized() {
-    // this.createSVG();
+    this.createSVG();
   }
 
   private createSVG() {
@@ -283,6 +298,10 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       d3.selectAll('#timeseries-chart > svg').remove();
       d3.selectAll('.tooltip').remove();
     }
+
+    const element = document.getElementById("timeseriesChart");
+    element.innerHTML = '';
+
     this.height = this.timeseriesChart.nativeElement.offsetHeight - this.margin.top - this.margin.bottom;
     this.width = this.timeseriesChart.nativeElement.offsetWidth - this.margin.left - this.margin.right;
     this.svg = d3.select(this.timeseriesChart.nativeElement).append('svg')
