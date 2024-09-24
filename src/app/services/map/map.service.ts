@@ -488,6 +488,7 @@ export class MapService {
     });
 
     const test_layer = new TileLayer({ 'source': test_source,
+      'extent': [-13384677.834384585, 1442940.3527617827, -6677339.914001508, 3778194.9375690296]
     });
 
     const newMap = new Map({
