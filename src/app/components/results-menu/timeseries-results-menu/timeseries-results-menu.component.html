@@ -74,31 +74,31 @@
 	</div>
 	<mat-card-subtitle [class.medium-header]="breakpoint <= breakpoints.MEDIUM" class="ts-header">
 
-		<div class="ts-button-group">
-			<div class="button-group-label">
-				<label>{{ 'ZOOM' | translate }}</label>
-			</div>
-			<div class="fx-row">
-				<div>
-					<mat-button-toggle-group class="ts-toggle-group" name="layerType">
-						<mat-button-toggle class="control-mat-button-toggle" (click)="zoomIn()"
-							matTooltip="{{ 'ZOOM_IN' | translate }}">
-							<mat-icon class="control-icon">add</mat-icon>
-						</mat-button-toggle>
+<!--		<div class="ts-button-group">-->
+<!--			<div class="button-group-label">-->
+<!--				<label>{{ 'ZOOM' | translate }}</label>-->
+<!--			</div>-->
+<!--			<div class="fx-row">-->
+<!--				<div>-->
+<!--					<mat-button-toggle-group class="ts-toggle-group" name="layerType">-->
+<!--						<mat-button-toggle class="control-mat-button-toggle" (click)="zoomIn()"-->
+<!--							matTooltip="{{ 'ZOOM_IN' | translate }}">-->
+<!--							<mat-icon class="control-icon">add</mat-icon>-->
+<!--						</mat-button-toggle>-->
 
-						<mat-button-toggle class="control-mat-button-toggle" (click)="zoomToFit()"
-							matTooltip="{{ 'ZOOM_TO_FIT' | translate }}">
-							<mat-icon class="control-icon">aspect_ratio</mat-icon>
-						</mat-button-toggle>
+<!--						<mat-button-toggle class="control-mat-button-toggle" (click)="zoomToFit()"-->
+<!--							matTooltip="{{ 'ZOOM_TO_FIT' | translate }}">-->
+<!--							<mat-icon class="control-icon">aspect_ratio</mat-icon>-->
+<!--						</mat-button-toggle>-->
 
-						<mat-button-toggle class="control-mat-button-toggle" (click)="zoomOut()"
-							matTooltip="{{ 'ZOOM_OUT' | translate }}">
-							<mat-icon class="control-icon">remove</mat-icon>
-						</mat-button-toggle>
-					</mat-button-toggle-group>
-				</div>
-			</div>
-		</div>
+<!--						<mat-button-toggle class="control-mat-button-toggle" (click)="zoomOut()"-->
+<!--							matTooltip="{{ 'ZOOM_OUT' | translate }}">-->
+<!--							<mat-icon class="control-icon">remove</mat-icon>-->
+<!--						</mat-button-toggle>-->
+<!--					</mat-button-toggle-group>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--		</div>-->
 
 		<div class="ts-button-group-filler ts-button-group"></div>
 
@@ -110,7 +110,11 @@
 			<div class="toggle-group-wrapper--layout">
 				<mat-button-toggle class="control-mat-button-toggle ts-criteria-button-toggle"
 					(click)="onToggleFiltersMenu()">
-					{{ 'DISPLACEMENT_FILTERS' | translate }}<mat-icon class="more-horiz">more_horiz</mat-icon>
+          <span class="material-symbols-outlined">
+          filter_alt
+          </span>
+<!--					<mat-icon>filter_alt</mat-icon>-->
+<!--					{{ 'DISPLACEMENT_FILTERS' | translate }}<mat-icon class="more-horiz">more_horiz</mat-icon>-->
 				</mat-button-toggle>
 			</div>
 		</div>
