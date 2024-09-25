@@ -87,9 +87,13 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true
+            },
+            "local": {
+              "optimization": false,
+              "sourceMap": true
             }
           },
-          "defaultConfiguration": ""
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -99,6 +103,9 @@
           "configurations": {
             "production": {
               "buildTarget": "search-ui:build:production"
+            },
+            "local": {
+              "buildTarget": "search-ui:build:local"
             }
           }
         },
