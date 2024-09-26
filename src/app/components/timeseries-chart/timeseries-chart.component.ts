@@ -50,6 +50,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private showLines = true;
 
   private subs = new SubSink();
+
   constructor(
     private store$: Store<AppState>,
   ) {
@@ -66,6 +67,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       this.thing.transition().call(this.zoom.scaleBy, .5);
     });
     this.zoomIn$.subscribe(_ => {
+      console.log('zooming in');
       this.thing.transition().call(this.zoom.scaleBy, 2);
     });
     this.subs.add(
@@ -93,6 +95,18 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.subs.unsubscribe();
   }
 
+  public onZoomIn(): void {
+    this.thing.transition().call(this.zoom.scaleBy, 2);
+  }
+
+  public onZoomOut(): void {
+    this.thing.transition().call(this.zoom.scaleBy, .5);
+  }
+
+  public onZoomToFit(): void {
+    this.thing.transition().call(this.zoom.transform, d3.zoomIdentity);
+  }
+
   public initChart(data): void {
     this.dataSource = []
     for (let key of Object.keys(data).filter(x => x !== 'mean')) {
@@ -113,7 +127,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
     this.drawChart();
   }
-
 
   private drawChart() {
     const marginBottom = 40;
@@ -309,4 +322,5 @@ interface TimeSeriesChartPoint {
   date: string
   temporal_baseline: number
   id: string
-};
+}
+

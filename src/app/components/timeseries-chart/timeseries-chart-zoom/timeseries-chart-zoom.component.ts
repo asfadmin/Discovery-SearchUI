@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {MatButtonToggle, MatButtonToggleGroup} from '@angular/material/button-toggle';
 import {MatIcon} from '@angular/material/icon';
 import {MatTooltip} from '@angular/material/tooltip';
 import {TranslateModule} from '@ngx-translate/core';
-import {Subject} from 'rxjs';
 
 @Component({
   selector: 'app-timeseries-chart-zoom',
@@ -19,21 +18,27 @@ import {Subject} from 'rxjs';
   styleUrl: './timeseries-chart-zoom.component.scss'
 })
 export class TimeseriesChartZoomComponent {
+  // @Output('zoomIn$') zoomIn$: Subject<void> = new Subject<void>();
+  // @Output('zoomInChart$') zoomInChart$: EventEmitter<any> = new EventEmitter();
+  @Output() zoomInEvent = new EventEmitter<void>();
+  @Output() zoomOutEvent = new EventEmitter<void>();
+  @Output() zoomToFitEvent = new EventEmitter<void>();
 
-  public zoomInChart$ = new Subject<void>();
-  public zoomOutChart$ =  new Subject<void>();
-  public zoomToFitChart$ =  new Subject<void>();
+  // public zoomInChart$ = new Subject<void>();
+  // public zoomOutChart$ =  new Subject<void>();
+  // public zoomToFitChart$ =  new Subject<void>();
 
   public zoomIn(): void {
-    this.zoomInChart$.next();
+    console.log('zoomIn');
+    this.zoomInEvent.emit();
   }
 
   public zoomOut(): void {
-    this.zoomOutChart$.next();
+    this.zoomOutEvent.emit();
   }
 
   public zoomToFit(): void {
-    this.zoomToFitChart$.next();
+    this.zoomToFitEvent.emit();
   }
 
 
