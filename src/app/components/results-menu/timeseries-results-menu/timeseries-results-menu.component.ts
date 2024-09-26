@@ -8,16 +8,16 @@ import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
 import * as mapStore from '@store/map';
 
-import { Breakpoints,   SearchType, MapInteractionModeType, MapDrawModeType } from '@models';
+import { Breakpoints, SearchType, MapInteractionModeType, MapDrawModeType } from '@models';
 import { DrawService, MapService, NetcdfService, PointHistoryService, ScreenSizeService } from '@services';
 
 import { SubSink } from 'subsink';
 
-import {  Point} from 'ol/geom';
+import { Point } from 'ol/geom';
 import { WKT } from 'ol/format';
 import moment2 from 'moment';
 import { SetScenes } from '@store/scenes';
-import {getPathRange} from '@store/filters';
+import { getPathRange } from '@store/filters';
 
 
 @Component({
@@ -46,10 +46,6 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public breakpoint: Breakpoints;
   public breakpoints = Breakpoints;
   private subs = new SubSink();
-
-  public zoomInChart$ = new Subject<void>();
-  public zoomOutChart$ =  new Subject<void>();
-  public zoomToFitChart$ =  new Subject<void>();
 
   public pointHistory = [];
 
@@ -124,18 +120,6 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
 
   public onToggleFiltersMenu(): void {
     this.store$.dispatch(new uiStore.OpenFiltersMenu());
-  }
-
-  public zoomIn(): void {
-    this.zoomInChart$.next();
-  }
-
-  public zoomOut(): void {
-    this.zoomOutChart$.next();
-  }
-
-  public zoomToFit(): void {
-    this.zoomToFitChart$.next();
   }
 
   public onOpenHelp(url: string): void {

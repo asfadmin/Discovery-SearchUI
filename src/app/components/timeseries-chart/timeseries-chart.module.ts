@@ -10,19 +10,21 @@ import { MatTableModule } from '@angular/material/table';
 import { ResizedEventModule } from '@directives/resized.directive';
 import { TimeseriesChartConfigComponent } from './timeseries-chart-config'
 import { ChartModalComponent } from '@components/shared/chart-modal/chart-modal.component'
+import {TimeseriesChartZoomComponent} from '@components/timeseries-chart/timeseries-chart-zoom/timeseries-chart-zoom.component';
 @NgModule({
   declarations: [TimeseriesChartComponent],
-  imports: [
-    CommonModule,
-    MatSharedModule,
-    TranslateModule,
-    MatTableModule,
-    MatIconModule,
-    ResizedEventModule,
-    MatSharedModule,
-    ChartModalComponent,
-    TimeseriesChartConfigComponent
-  ],
+    imports: [
+        CommonModule,
+        MatSharedModule,
+        TranslateModule,
+        MatTableModule,
+        MatIconModule,
+        ResizedEventModule,
+        MatSharedModule,
+        ChartModalComponent,
+        TimeseriesChartConfigComponent,
+        TimeseriesChartZoomComponent
+    ],
   exports: [
     TimeseriesChartComponent,
   ]

@@ -1,13 +1,12 @@
 @import "asf-theme";
 
-
 #timeseriesChart {
   height: 100%;
   width: 100%;
 }
 
 .chart-wrapper {
-  height: 100%;
+  height: 90%;
   width: 100%;
   display: flex;
 }
@@ -34,6 +33,14 @@
 
 
 .ts-chart-config-button {
-  margin-right: 15px;
-  margin-top: 10px;
+  position: absolute;
+  top: 18px;
+  right: 20px;
+}
+
+.ts-chart-zoom {
+  position: absolute;
+  top: 17px;
+  right: 50px;
+
 }

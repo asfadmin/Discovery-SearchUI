@@ -1,0 +1,17 @@
+@use "@angular/material" as mat;
+@import "asf-theme";
+
+.ts-toggle-group {
+  height: 20px !important;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 5px -1px,
+              rgba(0, 0, 0, 0.14) 0px 6px 10px 0px,
+              rgba(0, 0, 0, 0.12) 0px 1px 18px 0px;
+}
+
+.control-icon {
+  font-size: 16px;
+}
+
+::ng-deep .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+  padding: 0 5px !important;
+}
