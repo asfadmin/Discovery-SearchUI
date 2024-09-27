@@ -24,23 +24,24 @@
 }
 
 
-::ng-deep .disp-label {
+::ng-deep .ts-chart-label {
   @include themify($themes) {
     fill: themed('dark-primary-text');
     overflow-x: visible;
+    font-size: 14px;
   }
 }
-
 
 .ts-chart-config-button {
   position: absolute;
   top: 18px;
-  right: 20px;
+  right: 30px;
 }
 
 .ts-chart-zoom {
   position: absolute;
   top: 17px;
-  right: 50px;
-
+  right: 60px;
 }
+
+

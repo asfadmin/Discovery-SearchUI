@@ -8,6 +8,9 @@ import { AppState } from '@store';
 import * as sceneStore from '@store/scenes';
 import * as chartsStore from '@store/charts';
 import { SubSink } from 'subsink';
+import { AsfLanguageService } from "@services/asf-language.service";
+import * as uiStore from '@store/ui';
+
 
 @Component({
   selector: 'app-timeseries-chart',
@@ -41,35 +44,33 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private dots: d3.Selection<SVGCircleElement, TimeSeriesChartPoint, SVGGElement, {}>;
   private lineGraph: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private toolTip: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>
-  public margin = { top: 10, right: 10, bottom: 60, left: 45 };
+  public margin = { top: 10, right: 20, bottom: 60, left: 55 };
   private thing: d3.Selection<SVGGElement, {}, HTMLElement, any>
   private hoveredElement;
 
-
   private selectedScene: string;
   private showLines = true;
+  private xAxisTitle = '';
+  private yAxisTitle = '';
+  private currentLanguage: string = null;
 
   private subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>,
+    private language: AsfLanguageService,
   ) {
   }
 
   public ngOnInit(): void {
 
+    this.translateChartText();
     this.createSVG();
 
     this.chartData.subscribe(data => {
       this.initChart(data);
     })
-    this.zoomOut$.subscribe(_ => {
-      this.thing.transition().call(this.zoom.scaleBy, .5);
-    });
-    this.zoomIn$.subscribe(_ => {
-      console.log('zooming in');
-      this.thing.transition().call(this.zoom.scaleBy, 2);
-    });
+
     this.subs.add(
       this.store$.select(sceneStore.getSelectedScene).subscribe(test => {
         this.selectedScene = test.id;
@@ -77,6 +78,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
       })
     );
+
     this.subs.add(
       this.store$.select(chartsStore.getShowLines).subscribe(
         showLines => {
@@ -90,9 +92,29 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         }
       )
     )
+
+    this.subs.add(
+      this.store$.select(uiStore.getCurrentLanguage).subscribe(
+        (lang) => {
+          if (this.currentLanguage == null) {
+            // First time through, don't do anything
+            this.currentLanguage = lang;
+            return;
+          }
+          this.currentLanguage = lang;
+          this.translateChartText();
+          this.createSVG();
+        }
+      )
+    );
   }
-  public ngOnDestroy(): void {
-    this.subs.unsubscribe();
+
+  public translateChartText() {
+    this.xAxisTitle = this.language.translate.instant('SCENE') + ' ' +
+        this.language.translate.instant('DATE');
+
+    this.yAxisTitle = this.language.translate.instant('SHORTWAVE_DISPLACEMENT') + ' (' +
+        this.language.translate.instant('METERS') + ')';
   }
 
   public onZoomIn(): void {
@@ -213,8 +235,19 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .attr('x', 0)
       .attr('y', 0);
 
-    this.svg.append('text').attr('transform', `translate(${this.width / 2}, ${this.height + this.margin.bottom - 20})`).style('text-anchor', 'middle').attr('class', 'disp-label').text('Scene Date');
-    this.svg.append('text').attr('transform', `rotate(-90)`).attr('y', -this.margin.left + 20).attr('x', -this.height / 2).style('text-anchor', 'middle').attr('class', 'disp-label').text('Shortwave Displacement (meters)');
+    this.svg.append('text')
+      .attr('transform', `translate(${this.width / 2}, ${this.height + this.margin.bottom - 20})`)
+      .style('text-anchor', 'middle')
+      .attr('class', 'ts-chart-label')
+      .text(this.xAxisTitle);
+
+    this.svg.append('text')
+      .attr('transform', `rotate(-90)`)
+      .attr('y', -this.margin.left + 20)
+      .attr('x', -this.height / 2)
+      .style('text-anchor', 'middle')
+      .attr('class', 'ts-chart-label')
+      .text(this.yAxisTitle);
 
     this.updateChart();
   }
@@ -313,6 +346,11 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     const dateFormat = [{ month: 'short' }, { day: 'numeric' }, { year: 'numeric' }];
     return join(date, dateFormat, ' ');
   }
+
+  public ngOnDestroy(): void {
+    this.subs.unsubscribe();
+  }
+
 }
 
 interface TimeSeriesChartPoint {
