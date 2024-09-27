@@ -18,15 +18,9 @@ import {TranslateModule} from '@ngx-translate/core';
   styleUrl: './timeseries-chart-zoom.component.scss'
 })
 export class TimeseriesChartZoomComponent {
-  // @Output('zoomIn$') zoomIn$: Subject<void> = new Subject<void>();
-  // @Output('zoomInChart$') zoomInChart$: EventEmitter<any> = new EventEmitter();
   @Output() zoomInEvent = new EventEmitter<void>();
   @Output() zoomOutEvent = new EventEmitter<void>();
   @Output() zoomToFitEvent = new EventEmitter<void>();
-
-  // public zoomInChart$ = new Subject<void>();
-  // public zoomOutChart$ =  new Subject<void>();
-  // public zoomToFitChart$ =  new Subject<void>();
 
   public zoomIn(): void {
     console.log('zoomIn');
@@ -40,6 +34,5 @@ export class TimeseriesChartZoomComponent {
   public zoomToFit(): void {
     this.zoomToFitEvent.emit();
   }
-
 
 }
