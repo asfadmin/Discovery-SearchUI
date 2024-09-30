@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+// Perpendicular baseline slider component
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 
 import * as noUiSlider from 'nouislider';
 import { Subject } from 'rxjs';
@@ -9,6 +10,7 @@ import { Store } from '@ngrx/store';
 import * as filtersStore from '@store/filters';
 
 import { SubSink } from 'subsink';
+import * as models from '@models';
 declare var wNumb: any;
 
 @Component({
@@ -16,18 +18,19 @@ declare var wNumb: any;
   templateUrl: './sbas-sliders.component.html',
   styleUrls: ['./sbas-sliders.component.scss']
 })
-export class SbasSlidersComponent implements OnInit {
-  @ViewChild('temporalFilter', { static: true }) temporalFilter: ElementRef;
+export class SbasSlidersComponent implements OnInit, OnDestroy {
+  @ViewChild('perpendicularFilter', { static: true }) perpendicularFilter: ElementRef;
 
-  public temporalAutoTicks = false;
-  public temporalShowTicks = true;
-  public temporalTickInterval = 7;
+  // public temporalAutoTicks = false;
+  // public temporalShowTicks = true;
+  // public temporalTickInterval = 7;
 
-  public tempSlider;
+  public perpendicularSlider: any;
+  public perpRange: models.Range<number>;
   public temporal: number;
 
   // private firstLoad = true;
-  private lastValue = 0
+  private lastRange: models.Range<number> = { start: 0, end: 800 };
   private subs = new SubSink();
 
   constructor(
@@ -35,15 +38,17 @@ export class SbasSlidersComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const baselineSlider = this.makeBaselineSlider$(this.temporalFilter);
+    const baselineSlider = this.makeBaselineSlider$(this.perpendicularFilter);
 
-    this.tempSlider = baselineSlider.slider;
+    this.perpendicularSlider = baselineSlider.slider;
 
     this.subs.add(
       baselineSlider.values$.subscribe(
-        ([start]) => {
-          // console.log('baselineSlider.values$ subscription start:', start);
-          const action = new filtersStore.SetPerpendicularRange({ start, end: null });
+        ([start, end]) => {
+          if (start === this.perpRange.start && end === this.perpRange.end) {
+            return;
+          }
+          const action = new filtersStore.SetPerpendicularRange({ start, end });
           this.store$.dispatch(action);
         }
       )
@@ -51,37 +56,34 @@ export class SbasSlidersComponent implements OnInit {
 
     this.subs.add(
       this.store$.select(filtersStore.getPerpendicularRange).subscribe(
-        temp => {
-          // console.log('getPerpendicularRange subscription temp:', temp);
-          this.temporal = temp.start;
-
-          if (this.lastValue !== this.temporal) {
-            this.tempSlider.set([this.temporal]);
-            this.lastValue = this.temporal;
+        perp => {
+          this.perpRange = perp;
+          if (this.lastRange !== this.perpRange) {
+            this.lastRange = this.perpRange;
+            this.perpendicularSlider.set([perp.start, perp.end]);
           }
         }
       )
     );
   }
 
-  public getBaselineSliderTickInterval(): number | 'auto' {
-    if (this.temporalShowTicks) {
-      return this.temporalAutoTicks ? 'auto' : this.temporalTickInterval;
-    }
-
-    return 0;
-  }
+  // public getBaselineSliderTickInterval(): number | 'auto' {
+  //   if (this.temporalShowTicks) {
+  //     return this.temporalAutoTicks ? 'auto' : this.temporalTickInterval;
+  //   }
+  //
+  //   return 0;
+  // }
 
   private makeBaselineSlider$(filterRef: ElementRef) {
     const values$ = new Subject<number[]>();
-
     const slider = noUiSlider.create(filterRef.nativeElement, {
       orientation: 'vertical',
       direction: 'rtl',
-      start: [800],
+      start: [0, 800],
       behaviour: 'tap-drag',
       tooltips: false,
-      connect: 'lower',
+      connect: true,
       step: 1,
       range: {
         'min': 0,
@@ -110,5 +112,9 @@ export class SbasSlidersComponent implements OnInit {
         distinctUntilChanged()
       )
       };
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

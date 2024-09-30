@@ -9,8 +9,6 @@ import * as sceneStore from '@store/scenes';
 import * as chartsStore from '@store/charts';
 import { SubSink } from 'subsink';
 import { AsfLanguageService } from "@services/asf-language.service";
-import * as uiStore from '@store/ui';
-
 
 @Component({
   selector: 'app-timeseries-chart',
@@ -52,7 +50,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private showLines = true;
   private xAxisTitle = '';
   private yAxisTitle = '';
-  private currentLanguage: string = null;
+  // private currentLanguage: string = null;
 
   private subs = new SubSink();
 
@@ -94,22 +92,19 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     )
 
     this.subs.add(
-      this.store$.select(uiStore.getCurrentLanguage).subscribe(
-        (lang) => {
-          if (this.currentLanguage == null) {
-            // First time through, don't do anything
-            this.currentLanguage = lang;
-            return;
-          }
-          this.currentLanguage = lang;
-          this.translateChartText();
-          this.createSVG();
+      this.language.translate.onLangChange.subscribe( () => {
+          this.language.translate.get('SCENE').subscribe( (translated: string) => {
+            console.log(translated);
+            this.translateChartText();
+            this.createSVG();
+          });
         }
       )
     );
   }
 
   public translateChartText() {
+
     this.xAxisTitle = this.language.translate.instant('SCENE') + ' ' +
         this.language.translate.instant('DATE');
 
