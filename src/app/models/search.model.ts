@@ -46,7 +46,7 @@ export interface SbasFiltersType {
 
   season: Range<number | null>;
   temporalRange: Range<number | null>;
-  perpendicular: number;
+  perpendicular: Range<number | null>;
   customPairIds: string[][];
 
   thresholdOverlap: SBASOverlap;
