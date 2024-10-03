@@ -20,6 +20,7 @@ import {MatTab, MatTabGroup} from '@angular/material/tabs';
 import {
     TimeseriesChartTemporalSliderComponent
 } from '@components/timeseries-chart/timeseries-chart-temporal-slider/timeseries-chart-temporal-slider.component';
+import {MatCheckbox} from '@angular/material/checkbox';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import {
         PipesModule,
         MatTabGroup,
         MatTab,
-        TimeseriesChartTemporalSliderComponent
+        TimeseriesChartTemporalSliderComponent,
+        MatCheckbox
     ],
   exports: [
     TimeseriesResultsMenuComponent

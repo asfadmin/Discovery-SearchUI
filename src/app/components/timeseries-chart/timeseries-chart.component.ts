@@ -10,6 +10,15 @@ import * as chartsStore from '@store/charts';
 import { SubSink } from 'subsink';
 import { AsfLanguageService } from "@services/asf-language.service";
 
+interface TimeSeriesChartPoint {
+  unwrapped_phase: number
+  interferometric_correlation: number
+  temporal_coherence: number
+  date: string
+  temporal_baseline: number
+  id: string
+}
+
 @Component({
   selector: 'app-timeseries-chart',
   templateUrl: './timeseries-chart.component.html',
@@ -179,6 +188,9 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
     const self = this;
 
+    const Observable10 = this.swatches();
+    console.log(Observable10);
+
     this.lineGraph = this.clipContainer.append("path")
 
     this.dots = this.clipContainer.append('g').selectAll('circle')
@@ -325,8 +337,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .attr('height', this.height + this.margin.top + this.margin.bottom)
       .append('g')
       .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
-    this.drawChart();
 
+    this.drawChart();
   }
 
   private tooltipDateFormat(date) {
@@ -342,18 +354,33 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     return join(date, dateFormat, ' ');
   }
 
+  public swatches() {
+    const colors = d3.schemeCategory10
+    const n = colors.length;
+    const dark = d3.lab(colors[0]).l < 50;
+
+    console.log( colors, n, dark);
+
+    return colors;
+
+    // const canvas = this.svg`<svg viewBox="0 0 ${n} 1" style="display:block;width:${n * 33}px;height:33px;margin:0 -14px;cursor:pointer;">${colors.map((c, i) => this.svg`<rect x=${i} width=1 height=1 fill=${c}>`)}`;
+    // const canvas = '';
+    // const label = document.createElement("DIV");
+    // label.textContent = name;
+    // label.style.position = "absolute";
+    // label.style.top = "4px";
+    // label.style.color = dark ? `#fff` : `#000`;
+    // canvas.onclick = () => {
+    //   label.textContent = "Copied!";
+    //   navigator.clipboard.writeText(JSON.stringify(colors));
+    //   setTimeout(() => label.textContent = name, 2000);
+    // };
+    // @ts-ignore
+    // return html`${canvas}${label}`;
+  }
+
   public ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
 
 }
-
-interface TimeSeriesChartPoint {
-  unwrapped_phase: number
-  interferometric_correlation: number
-  temporal_coherence: number
-  date: string
-  temporal_baseline: number
-  id: string
-}
-

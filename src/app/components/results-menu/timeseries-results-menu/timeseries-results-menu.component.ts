@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import {Component, OnInit, Input, OnDestroy, ViewChild, ElementRef, ChangeDetectionStrategy, computed, signal} from '@angular/core';
 import { first, Observable, Subject } from 'rxjs';
 import { ResizeEvent } from 'angular-resizable-element';
 
@@ -19,11 +19,17 @@ import moment2 from 'moment';
 import { SetScenes } from '@store/scenes';
 import { getPathRange } from '@store/filters';
 
+export interface Task {
+  name: string;
+  completed: boolean;
+  subtasks?: Task[];
+}
 
 @Component({
   selector: 'app-timeseries-results-menu',
   templateUrl: './timeseries-results-menu.component.html',
-  styleUrls: ['./timeseries-results-menu.component.scss',  '../results-menu.component.scss']
+  styleUrls: ['./timeseries-results-menu.component.scss',  '../results-menu.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 
 })
 export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
@@ -213,6 +219,37 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       }))
 
     })
+  }
+
+  readonly task = signal<Task>({
+    name: 'ALL POINTS',
+    completed: false,
+    subtasks: [
+      {name: 'Child task 1', completed: false},
+      {name: 'Child task 2', completed: false},
+      {name: 'Child task 3', completed: false},
+    ],
+  });
+
+  readonly partiallyComplete = computed(() => {
+    const task = this.task();
+    if (!task.subtasks) {
+      return false;
+    }
+    return task.subtasks.some(t => t.completed) && !task.subtasks.every(t => t.completed);
+  });
+
+  update(completed: boolean, index?: number) {
+    this.task.update(task => {
+      if (index === undefined) {
+        task.completed = completed;
+        task.subtasks?.forEach(t => (t.completed = completed));
+      } else {
+        task.subtasks![index].completed = completed;
+        task.completed = task.subtasks?.every(t => t.completed) ?? true;
+      }
+      return {...task};
+    });
   }
 
   ngOnDestroy() {
