@@ -140,7 +140,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         'unwrapped_phase': data[key].unwrapped_phase,
         'interferometric_correlation': data[key].interferometric_correlation,
         'temporal_coherence': data[key].temporal_coherence,
-        'date': data[key].time,
+        'date': data[key].secondary_datetime,
+        'file_name': data[key].source_file_name,
         'id': key,
         'temporal_baseline': data[key].temporal_baseline
       })
@@ -384,3 +385,14 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   }
 
 }
+
+interface TimeSeriesChartPoint {
+  unwrapped_phase: number
+  interferometric_correlation: number
+  temporal_coherence: number
+  date: string
+  file_name: string,
+  temporal_baseline: number
+  id: string
+}
+
