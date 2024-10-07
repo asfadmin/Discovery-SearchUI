@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, OnDestroy, ViewChild, ElementRef, ChangeDetectionStrategy, computed, signal} from '@angular/core';
+import {Component, OnInit, Input, OnDestroy, ViewChild, ElementRef, computed, signal} from '@angular/core';
 import { first, Observable, Subject } from 'rxjs';
 import { ResizeEvent } from 'angular-resizable-element';
 
@@ -29,8 +29,6 @@ export interface Task {
   selector: 'app-timeseries-results-menu',
   templateUrl: './timeseries-results-menu.component.html',
   styleUrls: ['./timeseries-results-menu.component.scss',  '../results-menu.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-
 })
 export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
 

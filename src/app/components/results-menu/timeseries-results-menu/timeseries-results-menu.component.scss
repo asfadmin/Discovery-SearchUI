@@ -292,6 +292,16 @@ label {
   @include themify($themes) {
     color: darken(themed('dark-primary-text'), 25%);
   }
+  font-size: 18px;
+  line-height: 29px;
+  margin: 0 0;
+  width: 18px;
+}
+
+.ts-wkt-label {
+  margin-left: 5px;
+  position: relative;
+  top: -5px;
 }
 
 .ts-wkt-text {

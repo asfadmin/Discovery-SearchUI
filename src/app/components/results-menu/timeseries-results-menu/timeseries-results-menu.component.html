@@ -37,7 +37,10 @@
               <li>
                 <mat-checkbox [checked]="point.completed"
                               (change)="updateSeries($event.checked, $index)">
-                  {{point.flatCoordinates[1] | floatPrecision: 2}},&ensp;{{point.flatCoordinates[0] | floatPrecision: 2}}
+                  <mat-icon class="ts-wkt-icon">place</mat-icon>
+                  <span class="ts-wkt-label">
+                    {{point.flatCoordinates[1] | floatPrecision: 2}},&ensp;{{point.flatCoordinates[0] | floatPrecision: 2}}
+                  </span>
                 </mat-checkbox>
               </li>
             }

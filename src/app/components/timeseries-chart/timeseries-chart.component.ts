@@ -15,6 +15,7 @@ interface TimeSeriesChartPoint {
   interferometric_correlation: number
   temporal_coherence: number
   date: string
+  file_name: string,
   temporal_baseline: number
   id: string
 }
@@ -25,8 +26,8 @@ interface TimeSeriesChartPoint {
   styleUrl: './timeseries-chart.component.scss'
 })
 export class TimeseriesChartComponent implements OnInit, OnDestroy {
-  @ViewChild('timeseriesChart', { static: true }) timeseriesChart: ElementRef;
   @ViewChild('tsChartWrapper', { static: true }) tsChartWrapper: ElementRef;
+  @ViewChild('timeseriesChart', { static: true }) timeseriesChart: ElementRef;
   @Input() zoomIn$: Observable<void>;
   @Input() zoomOut$: Observable<void>;
   @Input() zoomToFit$: Observable<void>;
@@ -59,15 +60,13 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private showLines = true;
   private xAxisTitle = '';
   private yAxisTitle = '';
-  // private currentLanguage: string = null;
 
   private subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>,
     private language: AsfLanguageService,
-  ) {
-  }
+  ) { }
 
   public ngOnInit(): void {
 
@@ -113,10 +112,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   }
 
   public translateChartText() {
-
     this.xAxisTitle = this.language.translate.instant('SCENE') + ' ' +
         this.language.translate.instant('DATE');
-
     this.yAxisTitle = this.language.translate.instant('SHORTWAVE_DISPLACEMENT') + ' (' +
         this.language.translate.instant('METERS') + ')';
   }
@@ -314,9 +311,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .attr('stroke', 'steelblue')
       .attr('stroke-width', 1)
   };
-  public updateAxis(_axis, _value) {
-
-  }
 
   public onResized() {
     this.createSVG();
@@ -363,21 +357,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     console.log( colors, n, dark);
 
     return colors;
-
-    // const canvas = this.svg`<svg viewBox="0 0 ${n} 1" style="display:block;width:${n * 33}px;height:33px;margin:0 -14px;cursor:pointer;">${colors.map((c, i) => this.svg`<rect x=${i} width=1 height=1 fill=${c}>`)}`;
-    // const canvas = '';
-    // const label = document.createElement("DIV");
-    // label.textContent = name;
-    // label.style.position = "absolute";
-    // label.style.top = "4px";
-    // label.style.color = dark ? `#fff` : `#000`;
-    // canvas.onclick = () => {
-    //   label.textContent = "Copied!";
-    //   navigator.clipboard.writeText(JSON.stringify(colors));
-    //   setTimeout(() => label.textContent = name, 2000);
-    // };
-    // @ts-ignore
-    // return html`${canvas}${label}`;
   }
 
   public ngOnDestroy(): void {
@@ -385,14 +364,3 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   }
 
 }
-
-interface TimeSeriesChartPoint {
-  unwrapped_phase: number
-  interferometric_correlation: number
-  temporal_coherence: number
-  date: string
-  file_name: string,
-  temporal_baseline: number
-  id: string
-}
-
