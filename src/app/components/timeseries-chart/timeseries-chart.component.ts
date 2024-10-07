@@ -126,6 +126,14 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
   public initChart(data): void {
     this.dataSource = []
+
+    // pre-process data, remove test v_2 files from results
+    // won't be necessary in production
+    for (let key of Object.keys(data)) {
+      if (key.startsWith('v_2_')) {
+        delete data[key]
+      }
+    }
     for (let key of Object.keys(data).filter(x => x !== 'mean')) {
       this.dataSource.push({
         'unwrapped_phase': data[key].unwrapped_phase,
