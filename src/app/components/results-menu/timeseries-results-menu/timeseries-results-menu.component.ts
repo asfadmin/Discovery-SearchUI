@@ -239,7 +239,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     return task.subtasks.some(t => t.completed) && !task.subtasks.every(t => t.completed);
   });
 
-  update(completed: boolean, index?: number) {
+  public updateSeries(completed: boolean, index?: number) {
     this.task.update(task => {
       if (index === undefined) {
         task.completed = completed;
@@ -247,6 +247,12 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       } else {
         task.subtasks![index].completed = completed;
         task.completed = task.subtasks?.every(t => t.completed) ?? true;
+        this.pointHistoryService.selectedPoint = index;
+        this.pointHistoryService.passDraw = true;
+        let format = new WKT();
+        let wktRepresentation  = format.writeGeometry(this.pointHistory[index]);
+        this.mapService.loadPolygonFrom(wktRepresentation.toString())
+
       }
       return {...task};
     });

@@ -24,7 +24,7 @@
             class="parent-checkbox"
             [checked]="task().completed"
             [indeterminate]="partiallyComplete()"
-            (change)="update($event.checked)"
+            (change)="updateSeries($event.checked)"
           >
             <span class="parent-checkbox-label">
               {{task().name}}
@@ -33,10 +33,11 @@
         </span>
         <span class="point-list-ul-section">
           <ul>
-            @for (subtask of task().subtasks; track subtask; let i = $index) {
+            @for (point of pointHistory; track $index) {
               <li>
-                <mat-checkbox [checked]="subtask.completed" (change)="update($event.checked, i)">
-                  {{subtask.name}}
+                <mat-checkbox [checked]="point.completed"
+                              (change)="updateSeries($event.checked, $index)">
+                  {{point.flatCoordinates[1] | floatPrecision: 2}},&ensp;{{point.flatCoordinates[0] | floatPrecision: 2}}
                 </mat-checkbox>
               </li>
             }
