@@ -140,6 +140,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         delete data[key]
       }
     }
+
     for (let key of Object.keys(data).filter(x => x !== 'mean')) {
       this.dataSource.push({
         'unwrapped_phase': data[key].unwrapped_phase,
@@ -161,7 +162,9 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   }
 
   private drawChart() {
-    const marginBottom = 40;
+
+    // Determine scale extents
+    // const marginBottom = 40;
     const unwrapped_phases = this.dataSource.map(p => p['unwrapped_phase'] as number)
     const dates = this.dataSource.map(p => Date.parse(p['date'])).filter(d => !isNaN(d))
     const inner_margins = 1.25
@@ -169,6 +172,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     const min_x = Math.min(...dates)
     const max_y = Math.max(...unwrapped_phases) * inner_margins
     const max_x = Math.max(...dates)
+
+    // Create scales
     this.x = d3.scaleUtc()
       .domain([min_x, max_x])
       .range([0, this.width])
@@ -180,7 +185,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .range([this.height, 0]);
     this.yAxis = this.svg.append('g');
     this.svg.append("g")
-      .attr("transform", `translate(0,${this.height - marginBottom})`)
+      // .attr("transform", `translate(0,${this.height - marginBottom})`)
+      .attr("transform", `translate(0,${this.height})`)
 
     this.clipContainer = this.svg.append('g')
       .attr('clip-path', 'url(#clip)');
@@ -192,12 +198,13 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.toolTip = toolTip
     this.toolTip.attr('transform', `translate(0, 0)`).style('text-anchor', 'middle').style('z-index', 100).style('opacity', 0)
 
-    const self = this;
-
+    // Set up color scale
     const Observable10 = this.swatches();
     console.log(Observable10);
 
-    this.lineGraph = this.clipContainer.append("path")
+    this.lineGraph = this.clipContainer.append("path");
+
+    const self = this;
 
     this.dots = this.clipContainer.append('g').selectAll('circle')
       .data(this.dataSource)
@@ -229,7 +236,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           return 'timeseries-base';
         }
       })
-      .attr('r', 5)
+      .attr('r', 5);
 
     this.zoom = d3.zoom<SVGElement, {}>()
       .extent([[0, 0], [this.width, this.height]])
@@ -313,6 +320,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.toolTip.style('left', `${bounding.x + (a ? -150 : 20)}px`)
       .style('top', `${bounding.y - 10}px`);
   }
+
   private addPairAttributes(ps) {
     return ps
       .attr('class', 'base-line')
