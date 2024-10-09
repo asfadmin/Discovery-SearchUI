@@ -8,6 +8,7 @@ import { AppState } from '@store';
 import * as sceneStore from '@store/scenes';
 import * as chartsStore from '@store/charts';
 import { SubSink } from 'subsink';
+import { AsfLanguageService } from "@services/asf-language.service";
 
 interface ChartBounds {
   x: number[];
@@ -46,33 +47,33 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private dots: d3.Selection<SVGCircleElement, TimeSeriesChartPoint, SVGGElement, {}>;
   private lineGraph: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private toolTip: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>
-  public margin = { top: 10, right: 10, bottom: 60, left: 45 };
+  public margin = { top: 10, right: 20, bottom: 60, left: 55 };
   private thing: d3.Selection<SVGGElement, {}, HTMLElement, any>
   private hoveredElement;
 
-
   private selectedScene: string;
   private showLines = true;
+  private xAxisTitle = '';
+  private yAxisTitle = '';
+  // private currentLanguage: string = null;
 
   private subs = new SubSink();
+
   constructor(
     private store$: Store<AppState>,
+    private language: AsfLanguageService,
   ) {
   }
 
   public ngOnInit(): void {
 
+    this.translateChartText();
     this.createSVG();
 
     this.chartData.subscribe(data => {
       this.initChart(data);
     })
-    this.zoomOut$.subscribe(_ => {
-      this.thing.transition().call(this.zoom.scaleBy, .5);
-    });
-    this.zoomIn$.subscribe(_ => {
-      this.thing.transition().call(this.zoom.scaleBy, 2);
-    });
+
     this.subs.add(
       this.store$.select(sceneStore.getSelectedScene).subscribe(test => {
         this.selectedScene = test.id;
@@ -80,6 +81,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
       })
     );
+
     this.subs.add(
       this.store$.select(chartsStore.getShowLines).subscribe(
         showLines => {
@@ -93,19 +95,57 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         }
       )
     )
+
+    this.subs.add(
+      this.language.translate.onLangChange.subscribe( () => {
+          this.language.translate.get('SCENE').subscribe( (translated: string) => {
+            console.log(translated);
+            this.translateChartText();
+            this.createSVG();
+          });
+        }
+      )
+    );
   }
-  public ngOnDestroy(): void {
-    this.subs.unsubscribe();
+
+  public translateChartText() {
+
+    this.xAxisTitle = this.language.translate.instant('SCENE') + ' ' +
+        this.language.translate.instant('DATE');
+
+    this.yAxisTitle = this.language.translate.instant('SHORTWAVE_DISPLACEMENT') + ' (' +
+        this.language.translate.instant('METERS') + ')';
+  }
+
+  public onZoomIn(): void {
+    this.thing.transition().call(this.zoom.scaleBy, 2);
+  }
+
+  public onZoomOut(): void {
+    this.thing.transition().call(this.zoom.scaleBy, .5);
+  }
+
+  public onZoomToFit(): void {
+    this.thing.transition().call(this.zoom.transform, d3.zoomIdentity);
   }
 
   public initChart(data): void {
     this.dataSource = []
+
+    // pre-process data, remove test v_2 files from results
+    // won't be necessary in production
+    for (let key of Object.keys(data)) {
+      if (key.startsWith('v_2_')) {
+        delete data[key]
+      }
+    }
     for (let key of Object.keys(data).filter(x => x !== 'mean')) {
       this.dataSource.push({
         'unwrapped_phase': data[key].unwrapped_phase,
         'interferometric_correlation': data[key].interferometric_correlation,
         'temporal_coherence': data[key].temporal_coherence,
-        'date': data[key].time,
+        'date': data[key].secondary_datetime,
+        'file_name': data[key].source_file_name,
         'id': key,
         'temporal_baseline': data[key].temporal_baseline
       })
@@ -118,7 +158,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
     this.drawChart();
   }
-
 
   private drawChart() {
     const marginBottom = 40;
@@ -206,8 +245,19 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .attr('x', 0)
       .attr('y', 0);
 
-    this.svg.append('text').attr('transform', `translate(${this.width / 2}, ${this.height + this.margin.bottom - 20})`).style('text-anchor', 'middle').attr('class', 'disp-label').text('Scene Date');
-    this.svg.append('text').attr('transform', `rotate(-90)`).attr('y', -this.margin.left + 20).attr('x', -this.height / 2).style('text-anchor', 'middle').attr('class', 'disp-label').text('Shortwave Displacement (meters)');
+    this.svg.append('text')
+      .attr('transform', `translate(${this.width / 2}, ${this.height + this.margin.bottom - 20})`)
+      .style('text-anchor', 'middle')
+      .attr('class', 'ts-chart-label')
+      .text(this.xAxisTitle);
+
+    this.svg.append('text')
+      .attr('transform', `rotate(-90)`)
+      .attr('y', -this.margin.left + 20)
+      .attr('x', -this.height / 2)
+      .style('text-anchor', 'middle')
+      .attr('class', 'ts-chart-label')
+      .text(this.yAxisTitle);
 
     this.updateChart();
   }
@@ -325,6 +375,11 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     const dateFormat = [{ month: 'short' }, { day: 'numeric' }, { year: 'numeric' }];
     return join(date, dateFormat, ' ');
   }
+
+  public ngOnDestroy(): void {
+    this.subs.unsubscribe();
+  }
+
 }
 
 interface TimeSeriesChartPoint {
@@ -332,6 +387,8 @@ interface TimeSeriesChartPoint {
   interferometric_correlation: number
   temporal_coherence: number
   date: string
+  file_name: string,
   temporal_baseline: number
   id: string
-};
+}
+

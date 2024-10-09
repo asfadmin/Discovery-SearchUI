@@ -855,7 +855,8 @@ export class UrlStateService {
   };
 
   private loadOperaBurstIDs = (ids: string): Action => {
-    const list = ids.split(',');
+    // Deep links from opera products use '-' instead of '_'
+    const list = ids.split(',').map(id => id.replaceAll('-', '_'));
     return new filterStore.setOperaBurstID(list);
   };
 
