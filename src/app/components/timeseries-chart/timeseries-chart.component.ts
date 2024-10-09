@@ -165,11 +165,14 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     const dates = this.dataSource.map(p => Date.parse(p['date'])).filter(d => !isNaN(d));
 
     const bounds = this.getChartBounds(unwrapped_phases, dates);
+    console.log(bounds);
+    const line = this.findLineByLeastSquares(dates, unwrapped_phases);
+    console.log(line);
+
 
     this.x = d3.scaleUtc()
       .domain(bounds.x)
       .range([0, this.width])
-      .nice();
 
     this.xAxis = this.svg.append('g')
       .attr('transform', `translate(0, ${this.height})`);
@@ -263,12 +266,25 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   }
 
   private getChartBounds(unwrapped_phases, dates): ChartBounds {
+    const y_threshold = 0.400;
 
-    const max_phase = Math.max(...unwrapped_phases.map(Math.abs));
-    const y_margin = max_phase * .2;
+    let max_phase = Math.max(...unwrapped_phases);
+    let min_phase = Math.min(...unwrapped_phases);
 
-    const min_y = -(max_phase + y_margin);
-    const max_y = max_phase + y_margin;
+    const y_span = (max_phase - min_phase);
+    let y_margin: number;
+
+    // console.log(`y_span: ${y_span}, threshold: ${y_threshold}`);
+    if (y_span < y_threshold) {
+      y_margin = (y_threshold - y_span) / 2;
+      // console.log(`Smaller than threshold, y_margin: ${y_margin}, threshold: ${y_threshold}, span: ${y_span}`);
+    } else {
+      y_margin = y_span * .2;
+    }
+
+
+    const min_y = Math.min(min_phase - y_margin);
+    const max_y = Math.max(max_phase + y_margin);
 
     const max_x = Math.max(...dates);
     const min_x = Math.min(...dates);
@@ -277,6 +293,54 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       x: [min_x, max_x],
       y: [min_y, max_y]
     };
+  }
+
+  private findLineByLeastSquares(values_x: number[], values_y: number[]) {
+    var sum_x = 0;
+    var sum_y = 0;
+    var sum_xy = 0;
+    var sum_xx = 0;
+    var count = 0;
+
+    /*
+     * We'll use those variables for faster read/write access.
+     */
+    var x = 0;
+    var y = 0;
+    var values_length = values_x.length;
+
+    if (values_length != values_y.length) {
+      throw new Error('The parameters values_x and values_y need to have same size!');
+    }
+
+    /*
+     * Nothing to do.
+     */
+    if (values_length === 0) {
+      return [ [], [] ];
+    }
+
+    /*
+     * Calculate the sum for each of the parts necessary.
+     */
+    for (var v = 0; v < values_length; v++) {
+      x = values_x[v];
+      y = values_y[v];
+      sum_x += x;
+      sum_y += y;
+      sum_xx += x*x;
+      sum_xy += x*y;
+      count++;
+    }
+
+    /*
+     * Calculate m and b for the formular:
+     * y = x * m + b
+     */
+    var m = (count*sum_xy - sum_x*sum_y) / (count*sum_xx - sum_x*sum_x);
+    var b = (sum_y/count) - (m*sum_x)/count;
+
+    return {m, b};
   }
 
   private updateChart() {
@@ -294,8 +358,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     );
 
     var lineFunction = d3.line<TimeSeriesChartPoint>()
-      .x(function (d) { return newX(Date.parse(d.date)); })
-      .y(function (d) { return newY(d.unwrapped_phase); })
+    .x(function (d) { return newX(Date.parse(d.date)); })
+    .y(function (d) { return newY(d.unwrapped_phase); })
 
 
     this.dots
@@ -391,4 +455,3 @@ interface TimeSeriesChartPoint {
   temporal_baseline: number
   id: string
 }
-
