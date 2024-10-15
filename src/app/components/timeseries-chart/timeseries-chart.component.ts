@@ -97,6 +97,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
     // Compute the points in pixel space as [x, y, z], where z is the name of the series.
     const points = unemployment.map((d) => [x(new Date(d.date)), y(d.unemployment), d.division]);
+    console.log('points', points);
+    console.log('unemployment', unemployment);
 
     // An optional Voronoi display (for fun).
     if (voronoi) this.svg.append("path")
