@@ -28,6 +28,8 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   }
 
 }

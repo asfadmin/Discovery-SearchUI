@@ -1,10 +1,10 @@
-
-<div #tsChartWrapper class="chart-wrapper" (resized)="onResized()">
-	<div #timeseriesChart id="timeseriesChart"></div>
-	<app-chart-modal class="ts-chart-config-button"></app-chart-modal>
-  <app-timeseries-chart-zoom class="ts-chart-zoom"
-    (zoomInEvent)="onZoomIn()"
-    (zoomOutEvent)="onZoomOut()"
-    (zoomToFitEvent)="onZoomToFit()"
-  ></app-timeseries-chart-zoom>
+<div>
+  <mat-checkbox
+    [checked]="showVoronoi"
+    (change)="toggleVoronoi()">
+    Show Voronoi
+  </mat-checkbox>
+</div>
+<div #tsChartWrapper class="chart-wrapper">
+  <div #timeseriesChart id="timeseriesChart"></div>
 </div>

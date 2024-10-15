@@ -150,6 +150,8 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public updateChart(geometry): void {
     this.netcdfService.getTimeSeries(geometry).pipe(first()).subscribe(data => {
       this.chartData.next(data);
+      console.log('this.chartData:',this.chartData);
+      console.log('data:',data);
       // just going to use the data here to have some test
 
       let test_products = []
@@ -247,6 +249,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
         task.completed = task.subtasks?.every(t => t.completed) ?? true;
         this.pointHistoryService.selectedPoint = index;
         this.pointHistoryService.passDraw = true;
+        console.log('this.pointHistory:',this.pointHistory);
         let format = new WKT();
         let wktRepresentation  = format.writeGeometry(this.pointHistory[index]);
         this.mapService.loadPolygonFrom(wktRepresentation.toString())

@@ -9,6 +9,7 @@
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "experimentalDecorators": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
