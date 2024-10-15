@@ -11,9 +11,9 @@ import * as d3 from 'd3';
 })
 export class TimeseriesChartComponent implements OnInit, OnDestroy {
   @ViewChild('timeseriesChart', {static: true}) timeseriesChart: ElementRef;
-  url: string = '/assets/unemployment.json';
-  unemploymentData: any;
-  private svg?: d3.Selection<SVGElement, {}, HTMLDivElement, any>;
+  public url: string = '/assets/unemployment.json';
+  public unemploymentData: any;
+  public svg?: d3.Selection<SVGElement, {}, HTMLDivElement, any>;
   public showVoronoi = false;
 
 
@@ -37,12 +37,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.makeChartFromFile();
   }
 
-  public _voronoi(Inputs){return(
-      Inputs.toggle({label: "Show voronoi"})
-  )}
-
-  public makeChart(d3,unemployment,voronoi)
-  {
+  public makeChart(d3,unemployment,voronoi){
     console.log('***** makeChart *****');
     console.log('d3', d3);
     console.log('unemployment', unemployment);
@@ -142,36 +137,36 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         .attr("y", -8);
 
     this.svg
-        .on("pointerenter", pointerentered)
-        .on("pointermove", pointermoved)
-        .on("pointerleave", pointerleft)
+        .on("pointerenter", pointerEntered)
+        .on("pointermove", pointerMoved)
+        .on("pointerleave", pointerLeft)
         .on("touchstart", event => event.preventDefault());
 
-    return this.svg.node();
+    return;
 
     // When the pointer moves, find the closest point, update the interactive tip, and highlight
     // the corresponding line. Note: we don't actually use Voronoi here, since an exhaustive search
     // is fast enough.
-    function pointermoved(event) {
+    function pointerMoved(event) {
       const [xm, ym] = d3.pointer(event);
       const i = d3.leastIndex(points, ([x, y]) => Math.hypot(x - xm, y - ym));
       const [x, y, k] = points[i];
       path.style("stroke", ({z}) => z === k ? null : "#ddd").filter(({z}) => z === k).raise();
       dot.attr("transform", `translate(${x},${y})`);
       dot.select("text").text(k);
-      this.svg.property("value", unemployment[i]).dispatch("input", {bubbles: true});
+      // this.svg.property("value", unemployment[i]).dispatch("input", {bubbles: true});
     }
 
-    function pointerentered() {
+    function pointerEntered() {
       path.style("mix-blend-mode", null).style("stroke", "#ddd");
       dot.attr("display", null);
     }
 
-    function pointerleft() {
+    function pointerLeft() {
       path.style("mix-blend-mode", "multiply").style("stroke", null);
       dot.attr("display", "none");
-      this.svg.node().value = null;
-      this.svg.dispatch("input", {bubbles: true});
+      // this.svg.node().value = null;
+      // this.svg.dispatch("input", {bubbles: true});
     }
 
   }
