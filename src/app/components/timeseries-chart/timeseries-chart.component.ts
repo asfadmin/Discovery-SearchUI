@@ -29,11 +29,12 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   }
 
   public makeChartFromFile() {
-    this.makeChart(d3, this.unemploymentData, this._voronoi);
+    this.makeChart(d3, this.unemploymentData, this.showVoronoi);
   }
 
   public toggleVoronoi() {
     this.showVoronoi = !this.showVoronoi;
+    this.makeChartFromFile();
   }
 
   public _voronoi(Inputs){return(
