@@ -386,7 +386,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
         ]).pipe(
           debounceTime(50)
         ).subscribe(([pairs, selectedPair]: any) => {
-          if(!selectedPair){
+          if(!pairs.pairs || !selectedPair){
             return
           }
           if([...pairs.pairs, ...pairs.custom].findIndex((value) => {

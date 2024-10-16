@@ -344,8 +344,10 @@ export class UserEffects {
       new filterStore.SetEndDate(sbasFilter.dateRange.end),
       new filterStore.SetSeasonStart(sbasFilter.season.start),
       new filterStore.SetSeasonEnd(sbasFilter.season.end),
-      new filterStore.SetTemporalEnd(sbasFilter.temporal),
-      new filterStore.SetPerpendicularEnd(sbasFilter.perpendicular)
+      new filterStore.SetTemporalEnd(sbasFilter.temporalRange.end),
+      new filterStore.SetTemporalStart(sbasFilter.temporalRange.start),
+      new filterStore.SetPerpendicularStart(sbasFilter.perpendicular.start),
+      new filterStore.SetPerpendicularEnd(sbasFilter.perpendicular.end),
     ];
 
     return actions;
