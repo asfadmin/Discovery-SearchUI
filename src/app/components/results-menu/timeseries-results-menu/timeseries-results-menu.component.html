@@ -22,12 +22,12 @@
         <span class="parent-checkbox-section">
           <mat-checkbox
             class="parent-checkbox"
-            [checked]="task().completed"
+            [checked]="task().checked"
             [indeterminate]="partiallyComplete()"
             (change)="updateSeries($event.checked)"
           >
             <span class="parent-checkbox-label">
-              {{task().name}}
+              {{task().aoi}}
             </span>
           </mat-checkbox>
         </span>
@@ -35,7 +35,7 @@
           <ul>
             @for (point of pointHistory; track $index) {
               <li>
-                <mat-checkbox [checked]="point.completed"
+                <mat-checkbox [checked]="point.checked"
                               (change)="updateSeries($event.checked, $index)">
                   <mat-icon class="ts-wkt-icon">place</mat-icon>
                   <span class="ts-wkt-label">
@@ -53,22 +53,6 @@
         {{ 'NO_POINT_SELECTED' | translate }}
       </div>
     }
-    <!--  Start of Radio Group  -->
-      <!--			@if(pointHistory.length !== 0) {-->
-      <!--			<mat-radio-group>-->
-      <!--				@for (point of pointHistory; track $index) {-->
-
-      <!--					<mat-radio-button color="primary" (click)="onPointClick($index)"  [checked]="$index === pointHistoryService.selectedPoint">-->
-      <!--            <mat-icon class="ts-wkt-icon">place</mat-icon>-->
-      <!--            <span class="ts-wkt-text">-->
-      <!--						  {{point.flatCoordinates[1] | floatPrecision: 2}},&ensp;{{point.flatCoordinates[0] | floatPrecision: 2}}-->
-      <!--            </span>-->
-      <!--					</mat-radio-button>-->
-      <!--				}-->
-      <!--			</mat-radio-group>-->
-      <!--		}-->
-    <!--  End of Radio Group  -->
-
 
 		</div>
 	</mat-card>

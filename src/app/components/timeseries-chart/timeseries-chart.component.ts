@@ -140,8 +140,11 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         delete data[key]
       }
     }
-
-    for (let key of Object.keys(data).filter(x => x !== 'mean')) {
+    console.log('****** timeseries-chart init data *******', data);
+    for (let key of Object.keys(data).filter(x => x !== 'mean' && x !== 'aoi')) {
+      console.log('timeseries-chart init key', key);
+      console.log('timeseries-chart init data', data);
+      console.log('timeseries-chart init data[key]', data[key]);
       this.dataSource.push({
         'unwrapped_phase': data[key].unwrapped_phase,
         'interferometric_correlation': data[key].interferometric_correlation,
@@ -206,8 +209,16 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
     const self = this;
 
-    this.dots = this.clipContainer.append('g').selectAll('circle')
+    console.log('dataSource', this.dataSource);
+    const points = this.dataSource.map((d) => [this.x(new Date(d.date)), this.y(d.unwrapped_phase), d.id]);
+    console.log('points', points);
+    const groups = d3.rollup(points, v => Object.assign(v, {z: v[0][2]}), d => d[2]);
+    console.log('groups', groups);
+
+    this.dots = this.clipContainer.append('g')
+      .selectAll('circle')
       .data(this.dataSource)
+      // .data(groups.values())
       .enter()
       .append('circle')
       .attr('cx', (d: TimeSeriesChartPoint) => this.x(Date.parse(d.date)))
@@ -367,10 +378,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
   public swatches() {
     const colors = d3.schemeCategory10
-    const n = colors.length;
-    const dark = d3.lab(colors[0]).l < 50;
-
-    console.log( colors, n, dark);
+    // const n = colors.length;
+    // const dark = d3.lab(colors[0]).l < 50;
 
     return colors;
   }
