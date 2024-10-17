@@ -117,7 +117,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
           this.pointHistoryService.addPoint(temp);
           // this.selectedPoint = temp;
         }
-        this.updateChart(temp);
+        this.updateChart();
       }
     }))
 
@@ -166,13 +166,17 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     this.mapService.loadPolygonFrom(wktRepresenation.toString())
   }
 
-  public updateChart(geometry): void {
-    this.netcdfService.getTimeSeries(geometry).pipe(first()).subscribe(data => {
-      console.log('updateChart data', data);
-      console.log('updateChart geometry', geometry);
-      this.chartData.next(data);
-      console.log('updateChart this.chartData', this.chartData);
-    })
+  public updateChart(): void {
+    let allPointsData = [];
+    for (const geometry of this.pointHistory) {
+      this.netcdfService.getTimeSeries(geometry).pipe(first()).subscribe(data => {
+        console.log('updateChart data', data);
+        console.log('updateChart geometry', geometry);
+        allPointsData.push(data);
+      })
+      console.log('updateChart allPointsData', allPointsData);
+      this.chartData.next(allPointsData);
+    }
   }
 
   readonly task = signal<Task>({

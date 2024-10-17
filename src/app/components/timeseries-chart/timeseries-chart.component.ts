@@ -11,6 +11,7 @@ import { SubSink } from 'subsink';
 import { AsfLanguageService } from "@services/asf-language.service";
 
 interface TimeSeriesChartPoint {
+  aoi: string
   unwrapped_phase: number
   interferometric_correlation: number
   temporal_coherence: number
@@ -131,29 +132,37 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   }
 
   public initChart(data): void {
-    this.dataSource = []
-
-    // pre-process data, remove test v_2 files from results
-    // won't be necessary in production
-    for (let key of Object.keys(data)) {
-      if (key.startsWith('v_2_')) {
-        delete data[key]
-      }
-    }
     console.log('****** timeseries-chart init data *******', data);
-    for (let key of Object.keys(data).filter(x => x !== 'mean' && x !== 'aoi')) {
-      console.log('timeseries-chart init key', key);
-      console.log('timeseries-chart init data', data);
-      console.log('timeseries-chart init data[key]', data[key]);
-      this.dataSource.push({
-        'unwrapped_phase': data[key].unwrapped_phase,
-        'interferometric_correlation': data[key].interferometric_correlation,
-        'temporal_coherence': data[key].temporal_coherence,
-        'date': data[key].secondary_datetime,
-        'file_name': data[key].source_file_name,
-        'id': key,
-        'temporal_baseline': data[key].temporal_baseline
-      })
+    this.dataSource = []
+    let aoi: string = '';
+    console.log('****** timeseries-chart init data *******', data);
+    for (let result of data) {
+      aoi = '';
+      // pre-process data, remove test v_2 files from results
+      // won't be necessary in production
+      for (let key of Object.keys(result)) {
+        if (key.startsWith('v_2_')) {
+          delete result[key];
+        }
+        if (key.startsWith('aoi')) {
+          aoi = result[key];
+        }
+      }
+      for (let key of Object.keys(result).filter(x => x !== 'mean' && x !== 'aoi')) {
+        console.log('timeseries-chart init key', key);
+        console.log('timeseries-chart init result', result);
+        console.log('timeseries-chart init result[key]', result[key]);
+        this.dataSource.push({
+          'aoi': aoi,
+          'unwrapped_phase': result[key].unwrapped_phase,
+          'interferometric_correlation': result[key].interferometric_correlation,
+          'temporal_coherence': result[key].temporal_coherence,
+          'date': result[key].secondary_datetime,
+          'file_name': result[key].source_file_name,
+          'id': key,
+          'temporal_baseline': result[key].temporal_baseline
+        })
+      }
     }
     this.averageData = ({
       ...data.mean
