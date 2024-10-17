@@ -13,11 +13,10 @@ import { Breakpoints,   SearchType, MapInteractionModeType, MapDrawModeType } fr
 
 import { SubSink } from 'subsink';
 
-import {  Point} from 'ol/geom';
+import { Point } from 'ol/geom';
 import { WKT } from 'ol/format';
 import moment2 from 'moment';
 import { SetScenes } from '@store/scenes';
-// import {getPathRange} from '@store/filters';
 
 
 @Component({
@@ -46,10 +45,6 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public breakpoint: Breakpoints;
   public breakpoints = Breakpoints;
   private subs = new SubSink();
-
-  public zoomInChart$ = new Subject<void>();
-  public zoomOutChart$ =  new Subject<void>();
-  public zoomToFitChart$ =  new Subject<void>();
 
   public pointHistory = [];
 
@@ -139,18 +134,6 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
 
   public onToggleFiltersMenu(): void {
     this.store$.dispatch(new uiStore.OpenFiltersMenu());
-  }
-
-  public zoomIn(): void {
-    this.zoomInChart$.next();
-  }
-
-  public zoomOut(): void {
-    this.zoomOutChart$.next();
-  }
-
-  public zoomToFit(): void {
-    this.zoomToFitChart$.next();
   }
 
   public onOpenHelp(url: string): void {

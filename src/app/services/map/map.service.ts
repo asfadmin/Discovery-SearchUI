@@ -5,7 +5,7 @@ import { map, sampleTime, tap } from 'rxjs/operators';
 
 import { Collection, Feature, Map, View } from 'ol';
 import { Layer, Vector as VectorLayer } from 'ol/layer';
-import { TileImage, Vector as VectorSource } from 'ol/source';
+import { Vector as VectorSource, XYZ } from 'ol/source';
 import * as proj from 'ol/proj';
 import Point from 'ol/geom/Point';
 import { OverviewMap, ScaleLine } from 'ol/control';
@@ -481,15 +481,16 @@ export class MapService {
       collapsed: true,
       className: 'ol-overviewmap ol-custom-overviewmap',
     });
-    let test_url: string = `https://api.mapbox.com/v4/asf-discovery.summer-vv/{z}/{x}/{y}.png?access_token=${models.mapboxToken}`
-    const test_source = new TileImage({
+    let test_url: string = 'https://d1riv60tezqha9.cloudfront.net/asjohnston/tiles/{z}/{x}/{-y}.png';
+    const test_source = new XYZ({
       'url': test_url,
       wrapX: models.mapOptions.wrapX,
+      tileSize: [256,256]
     });
 
     const test_layer = new TileLayer({ 'source': test_source,
-      'extent': [-13384677.834384585, 1442940.3527617827, -6677339.914001508, 3778194.9375690296]
-    });
+      extent: [-13914936.349159, 2753366.075619,-7235730.950894, 6274861.394007]
+     });
 
     const newMap = new Map({
       layers: [

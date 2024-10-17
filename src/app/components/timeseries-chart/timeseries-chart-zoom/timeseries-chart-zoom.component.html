@@ -1,0 +1,22 @@
+<div class="ts-button-group">
+  <div class="fx-row">
+    <div>
+      <mat-button-toggle-group class="ts-toggle-group" name="layerType">
+        <mat-button-toggle class="control-mat-button-toggle" (click)="zoomIn()"
+                           matTooltip="{{ 'ZOOM_IN' | translate }}">
+          <mat-icon class="control-icon">add</mat-icon>
+        </mat-button-toggle>
+
+        <mat-button-toggle class="control-mat-button-toggle" (click)="zoomToFit()"
+                           matTooltip="{{ 'ZOOM_TO_FIT' | translate }}">
+          <mat-icon class="control-icon">aspect_ratio</mat-icon>
+        </mat-button-toggle>
+
+        <mat-button-toggle class="control-mat-button-toggle" (click)="zoomOut()"
+                           matTooltip="{{ 'ZOOM_OUT' | translate }}">
+          <mat-icon class="control-icon">remove</mat-icon>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+  </div>
+</div>

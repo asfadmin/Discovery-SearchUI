@@ -1,13 +1,12 @@
 @import "asf-theme";
 
-
 #timeseriesChart {
   height: 100%;
   width: 100%;
 }
 
 .chart-wrapper {
-  height: 100%;
+  height: 90%;
   width: 100%;
   display: flex;
 }
@@ -24,17 +23,19 @@
   }
 }
 
-::ng-deep .disp-label {
+
+::ng-deep .ts-chart-label {
   @include themify($themes) {
     fill: themed('dark-primary-text');
     overflow-x: visible;
+    font-size: 14px;
   }
 }
 
-
 .ts-chart-config-button {
-  margin-right: 15px;
-  margin-top: 10px;
+  position: absolute;
+  top: 18px;
+  right: 30px;
 }
 
 ::ng-deep .loading-rect {
@@ -48,3 +49,10 @@
     top: 24%;
     left: 48%;
 }
+.ts-chart-zoom {
+  position: absolute;
+  top: 17px;
+  right: 60px;
+}
+
+
