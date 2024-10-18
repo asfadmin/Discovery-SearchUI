@@ -9,6 +9,7 @@ import { AppState } from '@store';
 import * as chartsStore from '@store/charts';
 import { SubSink } from 'subsink';
 import { AsfLanguageService } from "@services/asf-language.service";
+// import {line} from 'd3';
 
 interface TimeSeriesChartPoint {
   aoi: string
@@ -339,7 +340,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         .ticks(smallChart ? 10 : 5, 's')
     );
 
-    var lineFunction = d3.line<TimeSeriesChartPoint>()
+    var lineFunction = d3.line<TimeSeriesData>()
       .x(function (d) { return newX(Date.parse(d.date)); })
       .y(function (d) { return newY(d.unwrapped_phase); })
 
@@ -361,8 +362,12 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     if (this.showLines) {
       this.addPairAttributes(
         this.lineGraph
-          .attr('d', _ => lineFunction(this.dataSource))
-          .attr('fill', 'none')
+          // .data(this.dataReadyForChart)
+          .join("path")
+            // .attr("d", d => line(d.values))
+            // .attr("stroke", d => (d.name))
+            .attr('d', _ => lineFunction(this.dataReadyForChart.flatMap(d => d.values)))
+            .attr('fill', 'none')
       )
     }
   }
