@@ -21,6 +21,16 @@ interface TimeSeriesChartPoint {
   id: string
 }
 
+interface TimeSeriesData {
+  unwrapped_phase: number
+  date: string
+}
+
+interface DataReady {
+  name: string,
+  values: TimeSeriesData[]
+}
+
 @Component({
   selector: 'app-timeseries-chart',
   templateUrl: './timeseries-chart.component.html',
@@ -37,6 +47,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   public json_data: string = '';
   private svg?: d3.Selection<SVGElement, {}, HTMLDivElement, any>;
   public dataSource: TimeSeriesChartPoint[] = [];
+  public dataReadyForChart: DataReady[] = [];
+  public timeSeriesData: TimeSeriesData[] = [];
   public averageData = {};
   public displayedColumns: string[] = ['position', 'unwrapped_phase', 'interferometric_correlation', 'temporal_coherence']
   private currentTransform: d3.ZoomTransform;
@@ -50,6 +62,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private y: d3.ScaleLinear<number, number, never>;
   public xAxis: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private yAxis: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
+  // private dots: d3.Selection<SVGCircleElement, DataReady, SVGGElement, {}>;
   private dots: d3.Selection<SVGCircleElement, TimeSeriesChartPoint, SVGGElement, {}>;
   private lineGraph: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private toolTip: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>
@@ -148,6 +161,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           aoi = result[key];
         }
       }
+      this.timeSeriesData = [];
       for (let key of Object.keys(result).filter(x => x !== 'mean' && x !== 'aoi')) {
         console.log('timeseries-chart init key', key);
         console.log('timeseries-chart init result', result);
@@ -162,8 +176,15 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           'id': key,
           'temporal_baseline': result[key].temporal_baseline
         })
+        this.timeSeriesData.push({
+          'unwrapped_phase': result[key].unwrapped_phase,
+          'date': result[key].secondary_datetime
+        });
       }
+      this.dataReadyForChart.push({ 'name': aoi, 'values': this.timeSeriesData });
+
     }
+    console.log('timeseries-chart init dataReadyForChart', this.dataReadyForChart);
     this.averageData = ({
       ...data.mean
     })
@@ -219,7 +240,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     const self = this;
 
     console.log('dataSource', this.dataSource);
-    const points = this.dataSource.map((d) => [this.x(new Date(d.date)), this.y(d.unwrapped_phase), d.id]);
+    const points = this.dataSource.map((d) => [this.x(new Date(d.date)), this.y(d.unwrapped_phase), d.aoi]);
     console.log('points', points);
     const groups = d3.rollup(points, v => Object.assign(v, {z: v[0][2]}), d => d[2]);
     console.log('groups', groups);
@@ -227,6 +248,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.dots = this.clipContainer.append('g')
       .selectAll('circle')
       .data(this.dataSource)
+      // .data(this.dataReadyForChart)
       // .data(groups.values())
       .enter()
       .append('circle')
