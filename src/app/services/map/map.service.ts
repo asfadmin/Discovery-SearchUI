@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, Subject } from 'rxjs';
-import { map, sampleTime, tap } from 'rxjs/operators';
+import { first, map, sampleTime, tap } from 'rxjs/operators';
 
 import { Collection, Feature, Map, View } from 'ol';
 import { Layer, Vector as VectorLayer } from 'ol/layer';
@@ -71,6 +71,8 @@ export class MapService {
   private overviewMap: OverviewMap;
 
   private localBrowseImageURL: string;
+
+  private displacementOverview: TileLayer;
 
   private selectClick = new Select({
     condition: click,
@@ -481,16 +483,7 @@ export class MapService {
       collapsed: true,
       className: 'ol-overviewmap ol-custom-overviewmap',
     });
-    let test_url: string = 'https://d1riv60tezqha9.cloudfront.net/asjohnston/tiles/{z}/{x}/{-y}.png';
-    const test_source = new XYZ({
-      'url': test_url,
-      wrapX: models.mapOptions.wrapX,
-      tileSize: [256,256]
-    });
 
-    const test_layer = new TileLayer({ 'source': test_source,
-      extent: [-13914936.349159, 2753366.075619,-7235730.950894, 6274861.394007]
-     });
 
     const newMap = new Map({
       layers: [
@@ -500,7 +493,6 @@ export class MapService {
         this.selectedLayer,
         this.mapView?.gridlines,
         this.pinnedProducts,
-        test_layer
       ],
       target: 'map',
       view: this.mapView.view,
@@ -741,6 +733,37 @@ export class MapService {
     this.layerService.coherenceLayer = this.layerService.getCoherenceLayer(months);
     this.map.addLayer(this.layerService.coherenceLayer);
     this.hasCoherenceLayer$.next(months);
+  }
+
+  public setDisplacementOverview(type: string) {
+
+    let base_url = `https://opera-disp-tms-dev.s3.amazonaws.com/${type.toLowerCase()}/mask`;
+
+    this.http.get(`${base_url}/extent.json`).pipe(
+      first()
+    ).subscribe((response: any) => {
+      if (this.displacementOverview) {
+        this.map.removeLayer(this.displacementOverview);
+        this.displacementOverview = null;
+      }
+
+      const overview_source = new XYZ({
+        'url': `${base_url}/{z}/{x}/{y}.png`,
+        wrapX: models.mapOptions.wrapX,
+        tileSize: [256,256]
+      });
+
+      this.displacementOverview = new TileLayer({ 'source': overview_source,
+        'extent': response['extent']
+       });
+
+       this.map.addLayer(this.displacementOverview);
+    })
+
+  }
+  public clearDisplacementOverview() {
+    this.map.removeLayer(this.displacementOverview);
+    this.displacementOverview = null;
   }
 
   public setDisplacementLayer(points: Point[]) {
