@@ -9,7 +9,6 @@ import { AppState } from '@store';
 import * as chartsStore from '@store/charts';
 import { SubSink } from 'subsink';
 import { AsfLanguageService } from "@services/asf-language.service";
-// import {line} from 'd3';
 
 interface TimeSeriesChartPoint {
   aoi: string
@@ -77,6 +76,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private yAxisTitle = '';
 
   private subs = new SubSink();
+  private allGroup: string[];
 
   constructor(
     private store$: Store<AppState>,
@@ -232,16 +232,15 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.toolTip = toolTip
     this.toolTip.attr('transform', `translate(0, 0)`).style('text-anchor', 'middle').style('z-index', 100).style('opacity', 0)
 
-    const allGroup = [...new Set(this.dataReadyForChart.map(d => d.name))];
-    console.log('allGroup', allGroup);
-
-    // Set up color scale
-    // A color scale: one color for each group
-    const colorPalette = d3.scaleOrdinal()
-      .domain(allGroup)
-      .range(d3.schemeSet2);
+    this.allGroup = [...new Set(this.dataReadyForChart.map(d => d.name))];
+    console.log('allGroup', this.allGroup);
 
     this.lineGraph = this.clipContainer.append("path");
+
+    // A color scale: one color for each group
+    const colorPalette = d3.scaleOrdinal()
+        .domain(this.allGroup)
+        .range(d3.schemeSet2);
 
     const self = this;
 
@@ -340,9 +339,9 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         .ticks(smallChart ? 10 : 5, 's')
     );
 
-    var lineFunction = d3.line<TimeSeriesData>()
-      .x(function (d) { return newX(Date.parse(d.date)); })
-      .y(function (d) { return newY(d.unwrapped_phase); })
+    // var lineFunction = d3.line<TimeSeriesData>()
+    //   .x(function (d) { return newX(Date.parse(d.date)); })
+    //   .y(function (d) { return newY(d.unwrapped_phase); })
 
 
     this.dots
@@ -360,15 +359,36 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       // })
 
     if (this.showLines) {
-      this.addPairAttributes(
-        this.lineGraph
-          // .data(this.dataReadyForChart)
-          .join("path")
-            // .attr("d", d => line(d.values))
-            // .attr("stroke", d => (d.name))
-            .attr('d', _ => lineFunction(this.dataReadyForChart.flatMap(d => d.values)))
-            .attr('fill', 'none')
-      )
+      // this.addPairAttributes(
+      //   this.lineGraph
+      //     // .data(this.dataReadyForChart)
+      //     .join("path")
+      //       // .attr("d", d => line(d.values))
+      //       // .attr("stroke", d => (d.name))
+      //       .attr('d', _ => lineFunction(this.dataReadyForChart.flatMap(d => d.values)))
+      //       .attr('fill', 'none')
+      // )
+
+      // A color scale: one color for each group
+      const colorPalette = d3.scaleOrdinal()
+        .domain(this.allGroup)
+        .range(d3.schemeSet2);
+
+      // Add the lines
+      let line = d3.line<TimeSeriesData>()
+          .x(function (d) { return newX(Date.parse(d.date)); })
+          .y(function (d) { return newY(d.unwrapped_phase); })
+      this.svg.selectAll("myLines")
+        .data(this.dataReadyForChart)
+        .enter()
+        .append("path")
+        .attr("d", function(d){ // @ts-ignore
+          return line(d.values) } )
+        // @ts-ignore
+        .attr("stroke", function (d: DataReady){ return colorPalette(d.name) })
+        .style("stroke-width", 2)
+        .style("fill", "none")
+
     }
   }
 
@@ -379,12 +399,12 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .style('top', `${bounding.y - 10}px`);
   }
 
-  private addPairAttributes(ps) {
-    return ps
-      .attr('class', 'base-line')
-      .attr('stroke', 'steelblue')
-      .attr('stroke-width', 1)
-  };
+  // private addPairAttributes(ps) {
+  //   return ps
+  //     .attr('class', 'base-line')
+  //     .attr('stroke', 'steelblue')
+  //     .attr('stroke-width', 1)
+  // };
 
   public onResized() {
     this.createSVG();
@@ -423,12 +443,11 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     return join(date, dateFormat, ' ');
   }
 
-  public swatches() {
-    const colors = d3.schemeCategory10
-    // const n = colors.length;
-    // const dark = d3.lab(colors[0]).l < 50;
+  public swatches(d: any) {
+    return d3.scaleOrdinal()
+      .domain(d)
+      .range(d3.schemeCategory10);
 
-    return colors;
   }
 
   public ngOnDestroy(): void {
