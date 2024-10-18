@@ -322,6 +322,40 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .attr('class', 'ts-chart-label')
       .text(this.yAxisTitle);
 
+    // this.svg
+    //   .on("pointerenter", pointerentered)
+    //   .on("pointermove", pointermoved)
+    //   .on("pointerleave", pointerleft)
+    //   .on("touchstart", event => event.preventDefault());
+    //
+    // // When the pointer moves, find the closest point, update the interactive tip, and highlight
+    // // the corresponding line. Note: we don't actually use Voronoi here, since an exhaustive search
+    // // is fast enough.
+    // function pointermoved(event) {
+    //   const [xm, ym] = d3.pointer(event);
+    //   // @ts-ignore
+    //   const i = d3.leastIndex(points, ([x, y]) => Math.hypot(x - xm, y - ym));
+    //   const [x, y, k] = points[i];
+    //   this.path.style("stroke", ({z}) => z === k ? null : "#ddd").filter(({z}) => z === k).raise();
+    //   this.dot.attr("transform", `translate(${x},${y})`);
+    //   this.dot.select("text").text(k);
+    //   // @ts-ignore
+    //   self.svg.property("value", self.dataReadyForChart[i]).dispatch("input", {bubbles: true});
+    // }
+    //
+    // function pointerentered() {
+    //   this.path.style("mix-blend-mode", null).style("stroke", "#ddd");
+    //   this.dot.attr("display", null);
+    // }
+    //
+    // function pointerleft() {
+    //   this.path.style("mix-blend-mode", "multiply").style("stroke", null);
+    //   this.dot.attr("display", "none");
+    //   this.svg.node().value = null;
+    //   // @ts-ignore
+    //   self.svg.dispatch("input", {bubbles: true});
+    // }
+
     this.updateChart();
   }
 
