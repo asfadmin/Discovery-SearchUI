@@ -137,14 +137,17 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
   public onZoomIn(): void {
     this.thing.transition().call(this.zoom.scaleBy, 2);
+    this.drawChart();
   }
 
   public onZoomOut(): void {
     this.thing.transition().call(this.zoom.scaleBy, .5);
+    this.drawChart();
   }
 
   public onZoomToFit(): void {
     this.thing.transition().call(this.zoom.transform, d3.zoomIdentity);
+    this.drawChart();
   }
 
   public initChart(data): void {
@@ -297,7 +300,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .extent([[0, 0], [this.width, this.height]])
       .on('zoom', (eve: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
         this.currentTransform = eve.transform;
-        this.updateChart();
+        this.initChart(this.data);
       });
     this.thing = d3.select<HTMLDivElement, {}>('#timeseriesChart').selectChild()
     this.thing.call(this.zoom)
