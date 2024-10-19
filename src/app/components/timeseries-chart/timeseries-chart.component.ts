@@ -69,6 +69,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   public margin = { top: 10, right: 20, bottom: 60, left: 55 };
   private thing: d3.Selection<SVGGElement, {}, HTMLElement, any>
   private hoveredElement;
+  private data: any;
 
   // private selectedScene: string;
   private showLines = true;
@@ -89,6 +90,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.createSVG();
 
     this.chartData.subscribe(data => {
+      this.data = data;
       this.initChart(data);
     })
 
@@ -109,7 +111,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           } else {
             this.lineGraph.remove()
           }
-          this.updateChart();
+          this.initChart(this.data);
         }
       )
     )
