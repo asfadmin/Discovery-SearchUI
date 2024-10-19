@@ -421,6 +421,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         .data(this.dataReadyForChart)
         .enter()
         .append("path")
+        .attr('clip-path', 'url(#clip)')
         .attr("d", function(d){ // @ts-ignore
           return line(d.values) } )
         // @ts-ignore
