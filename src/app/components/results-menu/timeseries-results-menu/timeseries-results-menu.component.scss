@@ -292,6 +292,16 @@ label {
   @include themify($themes) {
     color: darken(themed('dark-primary-text'), 25%);
   }
+  font-size: 18px;
+  line-height: 29px;
+  margin: 0 0;
+  width: 18px;
+}
+
+.ts-wkt-label {
+  margin-left: 5px;
+  position: relative;
+  top: -5px;
 }
 
 .ts-wkt-text {
@@ -304,4 +314,34 @@ label {
 
 :host ::ng-deep .mdc-radio__outer-circle {
   border-color: #ffcc33 !important; /*change radio button color when selected*/
+}
+
+.point-list-section {
+
+}
+
+.parent-checkbox-section {
+  margin: 0;
+}
+
+.parent-checkbox-label {
+  font-weight: bold;
+}
+
+.point-list-ul-section {
+  display: block;
+  margin-left: 10px;
+}
+
+ul {
+  list-style-type: none;
+  margin-top: 0;
+}
+
+::ng-deep .mdc-checkbox {
+  height: 7px;
+}
+
+::ng-deep .mat-mdc-checkbox .mdc-checkbox__background {
+  top: 4px
 }
