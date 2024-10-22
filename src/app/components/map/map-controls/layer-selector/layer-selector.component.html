@@ -88,6 +88,15 @@
 
   <button mat-menu-item
     class="control-mat-checkbox-toggle"
+    (click)="togglePriority()">
+    <mat-checkbox class="checkbox"
+      [disabled]="true"
+      [checked]="priorityEnabled">
+    </mat-checkbox>
+    Displacement Priority
+  </button>
+  <button mat-menu-item
+    class="control-mat-checkbox-toggle"
     (click)="onToggleGridlines()">
     <mat-checkbox class="checkbox"
       [disabled]="true"

@@ -36,6 +36,7 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
   public breakpoints = models.Breakpoints;
   private coherenceLayerOpacity: number;
   public displacementOverview;
+  public priorityEnabled = false;
 
 
   private subs = new SubSink();
@@ -130,6 +131,16 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
     }
 
     this.clearCoherenceLayer();
+  }
+  public togglePriority(): void {
+    if(!this.priorityEnabled) {
+      this.mapService.enablePriority();
+      this.priorityEnabled = true;
+    }
+    else {
+      this.priorityEnabled = false;
+      this.mapService.disablePriority();
+    }
   }
 
   public onToggleOverviewMap(isOpen: boolean): void {
