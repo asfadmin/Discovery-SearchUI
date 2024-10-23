@@ -1,14 +1,14 @@
 @import "asf-theme";
 
-#timeseriesChart {
-  height: 100%;
-  width: 100%;
-}
-
 .chart-wrapper {
   height: 90%;
   width: 100%;
   display: flex;
+}
+
+#timeseriesChart {
+  height: 100%;
+  width: 100%;
 }
 
 ::ng-deep .timeseries-base {

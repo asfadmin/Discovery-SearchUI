@@ -16,67 +16,74 @@
 
 		<div class="ts-left-column-results">
 
-			@if(pointHistory.length !== 0) {
-			<mat-radio-group>
-				@for (point of pointHistory; track $index) {
+    @if(pointHistory.length !== 0) {
 
-					<mat-radio-button color="primary" (click)="onPointClick($index)"  [checked]="$index === pointHistoryService.selectedPoint">
-            <mat-icon class="ts-wkt-icon">place</mat-icon>
-            <span class="ts-wkt-text">
-						  {{point.flatCoordinates[1] | floatPrecision: 2}},&ensp;{{point.flatCoordinates[0] | floatPrecision: 2}}
+      <section class="point-list-section">
+        <span class="parent-checkbox-section">
+          <mat-checkbox
+            class="parent-checkbox"
+            [checked]="task().checked"
+            [indeterminate]="partiallyComplete()"
+            (change)="updateSeries($event.checked)"
+          >
+            <span class="parent-checkbox-label">
+              {{task().aoi}}
             </span>
-					</mat-radio-button>
-				}
-			</mat-radio-group>
-		}
-		@else {
-			<div class="ts-no-point-selected">
+          </mat-checkbox>
+        </span>
+        <span class="point-list-ul-section">
+          <ul>
+            @for (point of pointHistory; track $index) {
+              <li>
+                <mat-checkbox [checked]="point.checked"
+                              (change)="updateSeries($event.checked, $index)">
+                  <mat-icon class="ts-wkt-icon">place</mat-icon>
+                  <span class="ts-wkt-label">
+                    {{point.flatCoordinates[1] | floatPrecision: 2}},&ensp;{{point.flatCoordinates[0] | floatPrecision: 2}}
+                  </span>
+                </mat-checkbox>
+              </li>
+            }
+          </ul>
+        </span>
+      </section>
+    }
+    @else {
+      <div class="ts-no-point-selected">
         {{ 'NO_POINT_SELECTED' | translate }}
-			</div>
-		}
+      </div>
+    }
+
 		</div>
 	</mat-card>
 
-	<mat-card class="mp0 ts-column-2 ts-layer-list" [style.width]="listCardMaxWidth">
-		<mat-card-subtitle class="header ts-layer-list-header">
-		</mat-card-subtitle>
-		<div class="ts-metadata scrollable">
-      <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" dynamicHeight>
-        <mat-tab label="Summary">
-			<div style="text-align: center; margin-top: 20px;">
-				@if(chartData | async; as data) {
-					<ul>
-						<li><b>Total Displacement: </b> {{totalDisplacement | floatPrecision: 2}}</li>
-						<li><b>Total Points: </b> {{totalPoints}}</li>
-						<li><b>Date Range: </b> {{dateRange[0] | shortDate }} - {{dateRange[1] | shortDate }}</li>
-						<li><b>Orbit Direction: </b></li>
-						<li><b>Relative Orbit: </b></li>
-					</ul>
-				}
-				@else {
-					Interesting Metadata here
-				}
-			</div>
-        </mat-tab>
+<!--	<mat-card class="mp0 ts-column-2 ts-layer-list" [style.width]="listCardMaxWidth">-->
+<!--		<mat-card-subtitle class="header ts-layer-list-header">-->
+<!--		</mat-card-subtitle>-->
+<!--		<div class="ts-metadata scrollable">-->
+<!--      <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" dynamicHeight>-->
+<!--        <mat-tab label="Summary">-->
+<!--          <div style="text-align: center; margin-top: 20px;">Interesting Metadata Goes Here</div>-->
+<!--        </mat-tab>-->
 
-        <mat-tab label="Export">
-          <div style="text-align: center; margin-top: 20px;">Export Functionality Here</div>
-        </mat-tab>
+<!--        <mat-tab label="Export">-->
+<!--          <div style="text-align: center; margin-top: 20px;">Export Functionality Here</div>-->
+<!--        </mat-tab>-->
 
-        <mat-tab label="Scenes">
-          <div style="height: 1000px;">
-            <app-scenes-list [resize$]="resize$"></app-scenes-list>
-            <div *ngIf="false" style="margin: 5px; padding-bottom: 36px;">
-              <div class="faint-text w100 h100" style="text-align: center; padding-top: 10px; height: 100px !important;">
-                {{ 'NO_POINT_SELECTED' | translate }}
-              </div>
-            </div>
-          </div>
-        </mat-tab>
-      </mat-tab-group>
+<!--        <mat-tab label="Scenes">-->
+<!--          <div style="height: 1000px;">-->
+<!--            <app-scenes-list [resize$]="resize$"></app-scenes-list>-->
+<!--            <div *ngIf="false" style="margin: 5px; padding-bottom: 36px;">-->
+<!--              <div class="faint-text w100 h100" style="text-align: center; padding-top: 10px; height: 100px !important;">-->
+<!--                {{ 'NO_POINT_SELECTED' | translate }}-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </mat-tab>-->
+<!--      </mat-tab-group>-->
 
-    </div>
-	</mat-card>
+<!--    </div>-->
+<!--	</mat-card>-->
 </ng-container>
 
 <mat-card #chartCard class="mp0 ts-chart-card"

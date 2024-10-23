@@ -3,15 +3,19 @@
 <div mat-dialog-content class="mat-dialog-content">
   <div>
     <form #saveSearchName="ngForm">
-      <mat-form-field [class.invalid-input-animation]="isNameError">
-        <input type="text" autofocus
+      <mat-form-field [class.invalid-input-animation]="isNameError" hintLabel="Max 20 {{ 'CHARACTERS' | translate }}">
+        <input type="text"
+               autofocus
                #saveNameInput="ngModel" ngModel
                name="searchNameInput"
-               placeholder="{{ (saveTypeName | uppercase | translate) + ' ' + ( 'NAME' | translate) }}" matInput
+               placeholder="{{ (saveTypeName | uppercase | translate) + ' ' + ( 'NAME' | translate) }}"
+               matInput
                (input)="onSaveNameInput($event)"
                (change)="onSaveNameChange($event)"
                [value]="saveName"
-               [(ngModel)]="saveName">
+               [(ngModel)]="saveName"
+               [maxLength]="20">
+        <mat-hint align="end">{{saveNameInput.value?.length || 0}}/20</mat-hint>
       </mat-form-field>
     </form>
 

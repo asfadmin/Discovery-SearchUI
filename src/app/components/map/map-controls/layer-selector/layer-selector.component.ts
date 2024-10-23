@@ -35,6 +35,7 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
   private coherenceLayerOpacity: number;
+  public displacementOverview;
 
 
   private subs = new SubSink();
@@ -104,6 +105,14 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
     } else {
       this.onSetCoherenceLayer(months);
     }
+  }
+  public onSetDisplacementLayer(type: string) {
+    this.displacementOverview = type;
+    this.mapService.setDisplacementOverview(type);
+  }
+  public clearDisplacementLayer() {
+    this.displacementOverview = null;
+    this.mapService.clearDisplacementOverview();
   }
 
   public onSetCoherenceLayer(months: string): void {
