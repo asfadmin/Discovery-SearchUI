@@ -223,7 +223,6 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
         let format = new WKT();
         let wktRepresentation  = format.writeGeometry(this.pointHistory[index]);
         this.mapService.loadPolygonFrom(wktRepresentation.toString())
-
       }
       console.log('updateSeries() task', task);
       console.log('updateSeries() task.subtasks', task.subtasks);
