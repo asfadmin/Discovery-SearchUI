@@ -338,7 +338,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         })
         // @ts-ignore
         .attr("stroke", function (d: DataReady) { return colorPalette(d.name) })
-        .style("stroke-width", 2)
+        .style("stroke-width", 1)
         .style("fill", "none")
 
 
@@ -396,7 +396,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .attr("d", function (d) { // @ts-ignore
         return line(d.values)
       })
-      this.lineLabels
+    this.lineLabels
       .attr("transform",d => `translate(${newX(Date.parse(d.value.date))},${newY(d.value.unwrapped_phase)})`) // Put the text at the position of the last point
 
   }
