@@ -340,6 +340,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         .attr("stroke", function (d: DataReady) { return colorPalette(d.name) })
         .style("stroke-width", 1)
         .style("fill", "none")
+        .style("shape-rendering", "geometricprecision")
 
 
 
