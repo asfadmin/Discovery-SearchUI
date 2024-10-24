@@ -9,6 +9,7 @@ import { AppState } from '@store';
 import * as chartsStore from '@store/charts';
 import { SubSink } from 'subsink';
 import { AsfLanguageService } from "@services/asf-language.service";
+// import {style} from '@angular/animations';
 
 interface TimeSeriesChartPoint {
   aoi: string
@@ -66,11 +67,12 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   // private dots: d3.Selection<SVGCircleElement, TimeSeriesChartPoint, SVGGElement, {}>;
   private lineGraph: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private toolTip: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>
-  public margin = { top: 10, right: 20, bottom: 60, left: 55 };
+  public margin = { top: 10, right: 120, bottom: 60, left: 55 };
   private thing: d3.Selection<SVGGElement, {}, HTMLElement, any>
   private hoveredElement;
   private data: any;
   private lines;
+  private lineLabels;
 
   // private selectedScene: string;
   @Input() isLoading: boolean = false;
@@ -338,6 +340,31 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         .attr("stroke", function (d: DataReady) { return colorPalette(d.name) })
         .style("stroke-width", 2)
         .style("fill", "none")
+
+
+
+    this.lineLabels = this.svg
+    .selectAll("seriesLabels")
+    .data(this.dataReadyForChart)
+    .join('g')
+      .append("text")
+        .datum(d => { return {name: d.name, value: d.values[d.values.length - 1]}; }) // keep only the last value of each time series
+
+      .attr("transform",d => `translate(${this.x(Date.parse(d.value.date))},${this.y(d.value.unwrapped_phase)})`) // Put the text at the position of the last point
+      .attr("x", 12) // shift the text a bit more right
+      .text(d => {
+        if (d.name.replace(/\s/g, '').substring(0, 5).toUpperCase() === 'POINT') {
+          const longLat = d.name.substring(6).replace(/[\(\)]/g, '');
+          const longLatParsed = longLat.split(' ');
+          const pointLong = parseFloat(longLatParsed[0]).toFixed(2);
+          const pointLat = parseFloat(longLatParsed[1]).toFixed(2);
+          return `${pointLat}, ${pointLong}`;
+        }
+        return d.name;
+      } )
+      // @ts-ignore
+      .style("fill", function (d: DataReady){ return colorPalette(d.name) })
+      .style("font-size", 10)
     }
 
     this.updateChart();
@@ -369,6 +396,9 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .attr("d", function (d) { // @ts-ignore
         return line(d.values)
       })
+      this.lineLabels
+      .attr("transform",d => `translate(${newX(Date.parse(d.value.date))},${newY(d.value.unwrapped_phase)})`) // Put the text at the position of the last point
+
   }
 
   private updateTooltip() {
