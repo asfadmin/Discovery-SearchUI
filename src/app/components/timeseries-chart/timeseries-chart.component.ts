@@ -67,7 +67,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   // private dots: d3.Selection<SVGCircleElement, TimeSeriesChartPoint, SVGGElement, {}>;
   private lineGraph: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private toolTip: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>
-  public margin = { top: 10, right: 120, bottom: 60, left: 55 };
+  public margin = { top: 10, right: 60, bottom: 60, left: 55 };
   private thing: d3.Selection<SVGGElement, {}, HTMLElement, any>
   private hoveredElement;
   private data: any;
@@ -132,17 +132,17 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
   public onZoomIn(): void {
     this.thing.transition().call(this.zoom.scaleBy, 2);
-    this.drawChart();
+    this.updateChart();
   }
 
   public onZoomOut(): void {
     this.thing.transition().call(this.zoom.scaleBy, .5);
-    this.drawChart();
+    this.updateChart();
   }
 
   public onZoomToFit(): void {
     this.thing.transition().call(this.zoom.transform, d3.zoomIdentity);
-    this.drawChart();
+    this.updateChart();
   }
 
   public initChart(data): void {
