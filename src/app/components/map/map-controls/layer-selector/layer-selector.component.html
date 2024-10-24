@@ -62,7 +62,39 @@
       </button>
     </mat-menu>
   </button>
+  <button mat-menu-item class="control-mat-checkbox-toggle" [matMenuTriggerFor]="timeseriesCoherence"
+  (click)="clearDisplacementLayer()"
+  >
+    <mat-checkbox class="checkbox" [disabled]="true" [checked]="displacementOverview">
+    </mat-checkbox>
+    Displacement Overview
+    <mat-menu #timeseriesCoherence="matMenu">
+      <button class="control-mat-checkbox-toggle" mat-menu-item (click)="onSetDisplacementLayer('ASC')">
+        <mat-radio-button
+        [disabled]="true"
+        [checked]="displacementOverview === 'ASC'"
+        ></mat-radio-button>
+        ASC
+      </button>
+      <button class="control-mat-checkbox-toggle" mat-menu-item (click)="onSetDisplacementLayer('DESC')">
+        <mat-radio-button
+        [disabled]="true"
+        [checked]="displacementOverview === 'DESC'"
+        ></mat-radio-button>
+        DESC
+      </button>
+    </mat-menu>
+  </button>
 
+  <button mat-menu-item
+    class="control-mat-checkbox-toggle"
+    (click)="togglePriority()">
+    <mat-checkbox class="checkbox"
+      [disabled]="true"
+      [checked]="priorityEnabled">
+    </mat-checkbox>
+    Displacement Priority
+  </button>
   <button mat-menu-item
     class="control-mat-checkbox-toggle"
     (click)="onToggleGridlines()">
