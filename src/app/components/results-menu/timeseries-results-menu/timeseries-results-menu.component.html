@@ -41,6 +41,7 @@
                   <span class="ts-wkt-label">
                     {{point.flatCoordinates[1] | floatPrecision: 2}},&ensp;{{point.flatCoordinates[0] | floatPrecision: 2}}
                   </span>
+                  <button mat-icon-button (click)="deletePoint($index)"><mat-icon>delete</mat-icon></button>
                 </mat-checkbox>
               </li>
             }

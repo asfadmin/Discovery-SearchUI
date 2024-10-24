@@ -119,13 +119,19 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
 
     }));
 
-    let previous_points: any[] = localStorage.getItem('timeseries-points')?.split(';');
-    previous_points = previous_points?.map(value => {
-      return this.wktService.wktToFeature(value, 'EPSG:4326');
-    })
-    previous_points?.forEach(point => {
-      this.pointHistoryService.addPoint(point.getGeometry());
-    })
+    let thing: string = localStorage.getItem('timeseries-points')
+    if(thing.length > 0) {
+      let previous_points: any[] = thing?.split(';');
+      if(previous_points.length > 0) {
+        console.log(previous_points)
+        previous_points = previous_points?.map(value => {
+          return this.wktService.wktToFeature(value, 'EPSG:4326');
+        })
+        previous_points?.forEach(point => {
+          this.pointHistoryService.addPoint(point.getGeometry());
+        })
+      }
+  }
 
     this.subs.add(this.drawService.polygon$.subscribe(polygon => {
       if(polygon) {
@@ -230,7 +236,10 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       return {...task};
     });
   }
-
+  public deletePoint(index: number) {
+    console.log('delete', index);
+    this.pointHistoryService.removePoint(index);
+  }
   ngOnDestroy() {
     this.pointHistoryService.clearPoints();
     this.subs.unsubscribe();

@@ -33,7 +33,12 @@ export class PointHistoryService {
     this.history.push(point);
     this.history$.next(this.history);
     this.savePoints();
-    console.log(this.history)
+  }
+  public removePoint(index) {
+    this.history.splice(index,1);
+    this.history$.next(this.history)
+    this.savePoints();
+
   }
 
   public clearPoints() {
