@@ -120,7 +120,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     }));
 
     let thing: string = localStorage.getItem('timeseries-points')
-    if(thing.length > 0) {
+    if(thing && thing.length > 0) {
       let previous_points: any[] = thing?.split(';');
       if(previous_points.length > 0) {
         console.log(previous_points)
