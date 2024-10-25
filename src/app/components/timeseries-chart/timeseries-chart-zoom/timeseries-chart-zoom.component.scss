@@ -12,6 +12,6 @@
   font-size: 16px;
 }
 
-::ng-deep .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+:host ::ng-deep .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
   padding: 0 5px !important;
 }

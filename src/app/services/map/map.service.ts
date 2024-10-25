@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, Subject } from 'rxjs';
-import { map, sampleTime, tap } from 'rxjs/operators';
+import { first, map, sampleTime, tap } from 'rxjs/operators';
 
 import { Collection, Feature, Map, View } from 'ol';
 import { Layer, Vector as VectorLayer } from 'ol/layer';
@@ -45,6 +45,7 @@ import SimpleGeometry from 'ol/geom/SimpleGeometry';
 import { SetGeocode } from '@store/filters';
 import { Extent } from 'ol/extent';
 import { MultiPolygon } from 'ol/geom';
+import GeoJSON from 'ol/format/GeoJSON.js';
 
 @Injectable({
   providedIn: 'root'
@@ -71,6 +72,9 @@ export class MapService {
   private overviewMap: OverviewMap;
 
   private localBrowseImageURL: string;
+
+  private displacementOverview: TileLayer;
+  private priorityOverview: VectorLayer<VectorSource>;
 
   private selectClick = new Select({
     condition: click,
@@ -481,16 +485,7 @@ export class MapService {
       collapsed: true,
       className: 'ol-overviewmap ol-custom-overviewmap',
     });
-    let test_url: string = 'https://d1riv60tezqha9.cloudfront.net/asjohnston/tiles/{z}/{x}/{-y}.png';
-    const test_source = new XYZ({
-      'url': test_url,
-      wrapX: models.mapOptions.wrapX,
-      tileSize: [256,256]
-    });
 
-    const test_layer = new TileLayer({ 'source': test_source,
-      extent: [-13914936.349159, 2753366.075619,-7235730.950894, 6274861.394007]
-     });
 
     const newMap = new Map({
       layers: [
@@ -500,7 +495,6 @@ export class MapService {
         this.selectedLayer,
         this.mapView?.gridlines,
         this.pinnedProducts,
-        test_layer
       ],
       target: 'map',
       view: this.mapView.view,
@@ -743,6 +737,37 @@ export class MapService {
     this.hasCoherenceLayer$.next(months);
   }
 
+  public setDisplacementOverview(type: string) {
+
+    let base_url = `https://opera-disp-tms-dev.s3.amazonaws.com/${type.toLowerCase()}/mask`;
+
+    this.http.get(`${base_url}/extent.json`).pipe(
+      first()
+    ).subscribe((response: any) => {
+      if (this.displacementOverview) {
+        this.map.removeLayer(this.displacementOverview);
+        this.displacementOverview = null;
+      }
+
+      const overview_source = new XYZ({
+        'url': `${base_url}/{z}/{x}/{y}.png`,
+        wrapX: models.mapOptions.wrapX,
+        tileSize: [256,256]
+      });
+
+      this.displacementOverview = new TileLayer({ 'source': overview_source,
+        'extent': response['extent']
+       });
+
+       this.map.addLayer(this.displacementOverview);
+    })
+
+  }
+  public clearDisplacementOverview() {
+    this.map.removeLayer(this.displacementOverview);
+    this.displacementOverview = null;
+  }
+
   public setDisplacementLayer(points: Point[]) {
     if (!!this.displacmentLayer) {
       this.map.removeLayer(this.displacmentLayer);
@@ -793,7 +818,49 @@ export class MapService {
     this.layerService.coherenceLayer = null;
     this.hasCoherenceLayer$.next(null);
   }
-
+  public enablePriority(): void {
+    const source = new VectorSource({
+      url: '/assets/priority_rollout.json',
+      format: new GeoJSON({})
+    },
+    )
+    const colorTable = [
+      'rgba(092, 174, 099, 0.9)',
+      'rgba(195, 164, 207, 0.9)',
+      'rgba(152, 110, 172, 0.8)',
+      'rgba(116, 040, 129, 0.4)',
+    ]
+    this.priorityOverview = new VectorLayer({
+      source: source,
+      style: function(feature, _resolution) {
+        const test = feature.getProperties();
+        const priority= +test['priority'];
+        let color = '#FF0000';
+        if(priority === 0) {
+          color = colorTable[0];
+        } else if(priority <= 5) {
+          color = colorTable[1];
+        } else if(priority <= 20) {
+          color = colorTable[2];
+        } else {
+          color = colorTable[3]
+        }
+        return new Style({
+          fill: new Fill({
+            color: color
+          }),
+          stroke: new Stroke({
+            color: 'black',
+          })
+        });
+      }
+    })
+    this.map.addLayer(this.priorityOverview)
+  }
+  public disablePriority(): void {
+    this.map.removeLayer(this.priorityOverview);
+    this.priorityOverview = null;
+  }
   public createBrowseRasterCanvas(scenes: models.CMRProduct[]) {
     const scenesWithBrowse = scenes.filter(scene => scene.browses?.length > 0).slice(0, 10);
 

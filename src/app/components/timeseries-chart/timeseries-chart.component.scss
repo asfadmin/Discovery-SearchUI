@@ -1,14 +1,14 @@
 @import "asf-theme";
 
-#timeseriesChart {
-  height: 100%;
-  width: 100%;
-}
-
 .chart-wrapper {
   height: 90%;
   width: 100%;
   display: flex;
+}
+
+#timeseriesChart {
+  height: 100%;
+  width: 100%;
 }
 
 ::ng-deep .timeseries-base {
@@ -35,13 +35,24 @@
 .ts-chart-config-button {
   position: absolute;
   top: 18px;
-  right: 30px;
+  right: 65px;
 }
 
+::ng-deep .loading-rect {
+	@include themify($themes) {
+	  fill: themed('dark-secondary-text');
+	}
+	fill-opacity: 40%;
+}
+.disp-spinner {
+    position: absolute;
+    top: 24%;
+    left: 48%;
+}
 .ts-chart-zoom {
   position: absolute;
   top: 17px;
-  right: 60px;
+  right: 95px;
 }
 
 

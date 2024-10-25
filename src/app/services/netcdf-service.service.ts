@@ -74,6 +74,7 @@ export class NetcdfService {
     let index_id = wktRepresenation;
     console.log(`getting ${index_id}`)
     if(this.cache.hasOwnProperty(index_id)) {
+      console.log('cache hit', of(this.cache[index_id]));
       return of(this.cache[index_id])
     } else {
       return this.http.post(`${this.url}${this.timeSeriesEndpoint}`, {
@@ -82,12 +83,14 @@ export class NetcdfService {
       }, { responseType: 'json' }).pipe(
         first(),
         map( response => {
+          (response as any).aoi = wktRepresenation;
           this.cache[index_id] = response;
-          this.totalKeys.push(index_id)
+          this.totalKeys.push(index_id);
           if(this.totalKeys.length > this.maxCacheSize) {
             let deleted = this.totalKeys.splice(0);
             delete this.cache[deleted[0]];
           }
+          console.log('cache miss', response);
           return response
       }
     ))
