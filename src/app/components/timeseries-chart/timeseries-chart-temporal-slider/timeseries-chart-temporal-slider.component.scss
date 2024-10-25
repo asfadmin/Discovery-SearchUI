@@ -1,0 +1,42 @@
+/* Contenedor principal del slider */
+.slider {
+  margin: 0 auto; /* Centra el slider horizontalmente */
+  width: 100%; /* Ocupa todo el ancho disponible */
+  max-width: 95%; /* Opcional: Limita el ancho máximo para que no se extienda demasiado */
+  box-sizing: border-box;
+}
+
+.noUi-connect {
+  background-color: #007BFF; /* Color principal */
+  height: 6px; /* Ajusta el grosor de la barra conectada */
+}
+
+.noUi-handle {
+  background-color: #FFFFFF;
+  border: 2px solid #007BFF; /* Borde que combine con el color principal */
+  border-radius: 50%; /* Hace que el control sea redondo */
+  height: 20px;
+  width: 20px;
+}
+
+.noUi-tooltip {
+  background-color: #333;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+/* Estilos de las etiquetas debajo del slider */
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  width: 100%; /* Ocupa todo el ancho del slider */
+  max-width: 95%; /* Limita el ancho para alinearse con el slider */
+  margin: 10px auto 0; /* Centra y da espacio superior al slider */
+  box-sizing: border-box;
+}
+
+.slider-labels span {
+  font-size: 12px;
+  color: #666; /* Color de las etiquetas */
+}
