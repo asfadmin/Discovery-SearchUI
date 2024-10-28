@@ -825,10 +825,10 @@ export class MapService {
     },
     )
     const colorTable = [
-      'rgba(092, 174, 099, 0.9)',
-      'rgba(195, 164, 207, 0.9)',
-      'rgba(152, 110, 172, 0.8)',
-      'rgba(116, 040, 129, 0.4)',
+      'rgba(174, 174, 174, 0.6)',
+      'rgba(253, 231, 37, 0.6)',
+      'rgba(53, 183, 121, 0.6)',
+      'rgba(49, 104, 142, 0.6)',
     ]
     this.priorityOverview = new VectorLayer({
       source: source,
@@ -836,14 +836,14 @@ export class MapService {
         const test = feature.getProperties();
         const priority= +test['priority'];
         let color = '#FF0000';
-        if(priority === 0) {
-          color = colorTable[0];
-        } else if(priority <= 5) {
+        if(priority === 1) {
           color = colorTable[1];
-        } else if(priority <= 20) {
+        } else if(priority === 2) {
           color = colorTable[2];
+        } else if(priority === 3) {
+          color = colorTable[3];
         } else {
-          color = colorTable[3]
+          color = colorTable[0]
         }
         return new Style({
           fill: new Fill({
