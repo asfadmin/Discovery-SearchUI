@@ -737,9 +737,9 @@ export class MapService {
     this.hasCoherenceLayer$.next(months);
   }
 
-  public setDisplacementOverview(type: string) {
+  public setDisplacementOverview(direction: string, type: string) {
 
-    let base_url = `https://opera-disp-tms-dev.s3.amazonaws.com/${type.toLowerCase()}/mask`;
+    let base_url = `https://d12uktych8nckw.cloudfront.net/main/${direction.toLowerCase()}/${type.toLowerCase()}`;
 
     this.http.get(`${base_url}/extent.json`).pipe(
       first()
