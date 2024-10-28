@@ -6,7 +6,7 @@ export interface TimeSeriesResult {
 }
 
 export interface layerInfo {
-    unwrapped_phase: number[],
+    short_wavelength_displacement: number[],
     interferometric_correlation: number[],
     temporal_coherence: number[]
 }
