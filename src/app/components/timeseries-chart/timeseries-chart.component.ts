@@ -13,7 +13,7 @@ import { AsfLanguageService } from "@services/asf-language.service";
 
 interface TimeSeriesChartPoint {
   aoi: string
-  unwrapped_phase: number
+  short_wavelength_displacement: number
   interferometric_correlation: number
   temporal_coherence: number
   date: string
@@ -23,7 +23,7 @@ interface TimeSeriesChartPoint {
 }
 
 interface TimeSeriesData {
-  unwrapped_phase: number
+  short_wavelength_displacement: number
   date: string
 }
 
@@ -51,7 +51,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   public dataReadyForChart: DataReady[] = [];
   public timeSeriesData: TimeSeriesData[] = [];
   public averageData = {};
-  public displayedColumns: string[] = ['position', 'unwrapped_phase', 'interferometric_correlation', 'temporal_coherence']
+  public displayedColumns: string[] = ['position', 'short_wavelength_displacement', 'interferometric_correlation', 'temporal_coherence']
   private currentTransform: d3.ZoomTransform;
   private zoom: d3.ZoomBehavior<SVGElement, {}>;
   private clipContainer: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
@@ -165,19 +165,26 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         for (let key of Object.keys(result).filter(x => x !== 'mean' && x !== 'aoi')) {
           this.dataSource.push({
             'aoi': aoi,
-            'unwrapped_phase': result[key].unwrapped_phase,
+            'short_wavelength_displacement': result[key].short_wavelength_displacement,
             'interferometric_correlation': result[key].interferometric_correlation,
             'temporal_coherence': result[key].temporal_coherence,
             'date': result[key].secondary_datetime,
-            'file_name': result[key].source_file_name,
+            'file_name': key,
             'id': key,
             'temporal_baseline': result[key].temporal_baseline
           })
           this.timeSeriesData.push({
-            'unwrapped_phase': result[key].unwrapped_phase,
+            'short_wavelength_displacement': result[key].short_wavelength_displacement,
             'date': result[key].secondary_datetime
           });
         }
+        this.timeSeriesData.sort((a, b) => {
+          if(a.date < b.date) {
+            return -1
+          } else {
+            return 1
+          }
+      })
         this.dataReadyForChart.push({ 'name': aoi, 'values': this.timeSeriesData });
         this.averageData = ({
           ...data.mean
@@ -199,12 +206,12 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
     // Determine scale extents
     // const marginBottom = 40;
-    const unwrapped_phases = this.dataSource.map(p => p['unwrapped_phase'] as number)
+    const short_wavelength_displacements = this.dataSource.map(p => p['short_wavelength_displacement'] as number)
     const dates = this.dataSource.map(p => Date.parse(p['date'])).filter(d => !isNaN(d))
     const inner_margins = 1.25
-    const min_y = Math.min(...unwrapped_phases) * inner_margins
+    const min_y = Math.min(...short_wavelength_displacements) * inner_margins
     const min_x = Math.min(...dates)
-    const max_y = Math.max(...unwrapped_phases) * inner_margins
+    const max_y = Math.max(...short_wavelength_displacements) * inner_margins
     const max_x = Math.max(...dates)
 
     // Create scales
@@ -243,7 +250,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
     const self = this;
 
-    const points = this.dataSource.map((d) => [this.x(new Date(d.date)), this.y(d.unwrapped_phase), d.aoi]);
+    const points = this.dataSource.map((d) => [this.x(new Date(d.date)), this.y(d.short_wavelength_displacement), d.aoi]);
     const groups = d3.rollup(points, v => Object.assign(v, { z: v[0][2] }), d => d[2]);
     groups // just do something
     this.dots = this.clipContainer.append('g')
@@ -260,14 +267,14 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .enter()
       .append('circle')
       .attr('cx', (d) => this.x(Date.parse(d.date)))
-      .attr('cy', (d) => this.y(d.unwrapped_phase))
+      .attr('cy', (d) => this.y(d.short_wavelength_displacement))
       .on('mouseover', function (_event: any, p: TimeSeriesData) {
         self.hoveredElement = this;
         const date = new Date(p.date);
         toolTip.interrupt();
         toolTip
           .style('opacity', .9);
-        toolTip.html(`${self.tooltipDateFormat(date)}, ${p.unwrapped_phase.toFixed(2)} meters`);
+        toolTip.html(`${self.tooltipDateFormat(date)}, ${p.short_wavelength_displacement.toFixed(5)} meters`);
         self.updateTooltip();
       })
       .on('mouseleave', function (_) {
@@ -327,7 +334,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       // Add the lines
       let line = d3.line<TimeSeriesData>()
         .x(function (d) { return self.x(Date.parse(d.date)); })
-        .y(function (d) { return self.y(d.unwrapped_phase); })
+        .y(function (d) { return self.y(d.short_wavelength_displacement); })
       this.lines = this.svg.selectAll("myLines")
         .data(this.dataReadyForChart)
         .enter()
@@ -351,7 +358,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .append("text")
         .datum(d => { return {name: d.name, value: d.values[d.values.length - 1]}; }) // keep only the last value of each time series
 
-      .attr("transform",d => `translate(${this.x(Date.parse(d.value.date))},${this.y(d.value.unwrapped_phase)})`) // Put the text at the position of the last point
+      .attr("transform",d => `translate(${this.x(Date.parse(d.value.date))},${this.y(d.value.short_wavelength_displacement)})`) // Put the text at the position of the last point
       .attr("x", 12) // shift the text a bit more right
       .text(d => {
         if (d.name.replace(/\s/g, '').substring(0, 5).toUpperCase() === 'POINT') {
@@ -387,18 +394,18 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
     this.dots
       .attr('cx', d => newX(Date.parse(d.date)))
-      .attr('cy', d => newY(d.unwrapped_phase))
+      .attr('cy', d => newY(d.short_wavelength_displacement))
 
     const line = d3.line<TimeSeriesData>()
       .x(function (d) { return newX(Date.parse(d.date)); })
-      .y(function (d) { return newY(d.unwrapped_phase); })
+      .y(function (d) { return newY(d.short_wavelength_displacement); })
 
     this.lines
       .attr("d", function (d) { // @ts-ignore
         return line(d.values)
       })
     this.lineLabels
-      .attr("transform",d => `translate(${newX(Date.parse(d.value.date))},${newY(d.value.unwrapped_phase)})`) // Put the text at the position of the last point
+      .attr("transform",d => `translate(${newX(Date.parse(d.value.date))},${newY(d.value.short_wavelength_displacement)})`) // Put the text at the position of the last point
 
   }
 

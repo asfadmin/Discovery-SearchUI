@@ -15,7 +15,7 @@ import WKT from 'ol/format/WKT';
   providedIn: 'root'
 })
 export class NetcdfService {
-  private url: string = 'https://ztcnv66fekaaijerj5hhytfrdu0xcuho.lambda-url.us-east-1.on.aws/'
+  private url: string = 'https://qapbt7mupnms222yprxdwmq63u0ojmkc.lambda-url.us-west-2.on.aws/' //'https://ztcnv66fekaaijerj5hhytfrdu0xcuho.lambda-url.us-east-1.on.aws/'
   private itemsEndpoint: string = 'items/'
   private timeSeriesEndpoint: string = 'timeseries'
   private files: string[] = [""] //, "20221107_20230130.unw.nc", "20221107_20230106.unw.nc", "20221107_20230729.unw.nc", "20221107_20230319.unw.nc", "20221107_20221213.unw.nc", "20221107_20230530.unw.nc", "20221107_20230717.unw.nc", "20221107_20230412.unw.nc", "20221107_20230506.unw.nc", "20221107_20230223.unw.nc", "20221107_20230211.unw.nc", "20221107_20230331.unw.nc", "20221107_20230705.unw.nc"]
@@ -51,7 +51,7 @@ export class NetcdfService {
               const wkt = wkt_response['wkt']
               const feature = this.wktService.wktToFeature(wkt, 'EPSG:3857');
               // const polygon = this.browseOverlayService.getPolygonFromFeature(feature, wkt);
-              return { feature, browse: this.browseOverlayService.createNormalImageLayer(`http://127.0.0.1:8080/${this.itemsEndpoint}layers?file_name=${file}&layer=unwrapped_phase`, wkt, 'ol-layer', 'current-overlay') }
+              return { feature, browse: this.browseOverlayService.createNormalImageLayer(`http://127.0.0.1:8080/${this.itemsEndpoint}layers?file_name=${file}&layer=short_wavelength_displacement`, wkt, 'ol-layer', 'current-overlay') }
             }
               // this.browseOverlayService.createGeotiffLayer(response, wkt_response['wkt'], 'ol-layer', 'current-overlay')
             ),
@@ -79,7 +79,7 @@ export class NetcdfService {
     } else {
       return this.http.post(`${this.url}${this.timeSeriesEndpoint}`, {
         "wkt": wktRepresenation,
-        "file_store": "s3://kfbx-opera-disp-test-bucket/11114.json"
+        "file_store": "s3://kfbx-opera-disp-test-bucket-v0.6/OPERA_L3_DISP-S1_IW_F42779_VV.json.zarr.gz"
       }, { responseType: 'json' }).pipe(
         first(),
         map( response => {
