@@ -62,7 +62,54 @@
       </button>
     </mat-menu>
   </button>
+  <button mat-menu-item class="control-mat-checkbox-toggle" [matMenuTriggerFor]="timeseriesCoherence"
+  (click)="clearDisplacementLayer()"
+  >
+    <mat-checkbox class="checkbox" [disabled]="true" [checked]="displacementOverview">
+    </mat-checkbox>
+    Displacement Overview
+    <mat-menu #timeseriesCoherence="matMenu">
+      <button class="control-mat-checkbox-toggle" mat-menu-item (click)="onSetDisplacementLayer('ASC', 'VEL')">
+        <mat-radio-button
+        [disabled]="true"
+        [checked]="displacementOverview && displacementOverview[0] === 'ASC' && displacementOverview[1] === 'VEL'"
+        ></mat-radio-button>
+        ASC Velocity
+      </button>
+      <button class="control-mat-checkbox-toggle" mat-menu-item (click)="onSetDisplacementLayer('DESC', 'VEL')">
+        <mat-radio-button
+        [disabled]="true"
+        [checked]="displacementOverview && displacementOverview[0] === 'DESC' && displacementOverview[1] === 'VEL'"
+        ></mat-radio-button>
+        DESC Velocity
+      </button>
+      <button class="control-mat-checkbox-toggle" mat-menu-item (click)="onSetDisplacementLayer('ASC', 'DISP')">
+        <mat-radio-button
+        [disabled]="true"
+        [checked]="displacementOverview && displacementOverview[0] === 'ASC' && displacementOverview[1] === 'DISP'"
+        ></mat-radio-button>
+        ASC Displacement
+      </button>
+      <button class="control-mat-checkbox-toggle" mat-menu-item (click)="onSetDisplacementLayer('DESC', 'DISP')">
+        <mat-radio-button
+        [disabled]="true"
+        [checked]="displacementOverview && displacementOverview[0] === 'DESC' && displacementOverview[1] === 'DISP'"
+        ></mat-radio-button>
+        DESC Displacement
+      </button>
 
+    </mat-menu>
+  </button>
+
+  <button mat-menu-item
+    class="control-mat-checkbox-toggle"
+    (click)="togglePriority()">
+    <mat-checkbox class="checkbox"
+      [disabled]="true"
+      [checked]="priorityEnabled">
+    </mat-checkbox>
+    Displacement Priority
+  </button>
   <button mat-menu-item
     class="control-mat-checkbox-toggle"
     (click)="onToggleGridlines()">

@@ -1,5 +1,4 @@
 @use "@angular/material" as mat;
-
 @import "asf-theme";
 $config: mat.define-legacy-typography-config();
 
@@ -27,9 +26,20 @@ $config: mat.define-legacy-typography-config();
     font-size: 14px;
 }
 
-.more-horiz {
-    font-size: 16px !important;
-    margin-left: 0;
+.mdc-fab--mini {
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  padding-top: 8px;
+  border-radius: 4px !important;
+}
+
+.settings-icon {
+  @include themify($themes) {
+    color: themed('dark-primary-text') !important;
+  }
+  font-size: 16px !important;
+  margin-left: 0;
 }
 
 .toggle-group-wrapper--layout {
@@ -41,6 +51,6 @@ $config: mat.define-legacy-typography-config();
 }
 
 .chart-config-menu-panel {
-    padding-left: 15px; 
+    padding-left: 15px;
     padding-right: 15px;
 }

@@ -38,6 +38,14 @@ export const scene = new Style({
     fill,
   });
 
+  export const staticAOI = new Style({
+    stroke: new Stroke({
+      color: '#ff5555',
+      width: 4
+    }),
+    fill,
+  });
+
   export const icon = new Style({
     stroke,
     fill,

@@ -16,54 +16,75 @@
 
 		<div class="ts-left-column-results">
 
-			@if(pointHistory.length !== 0) {
-			<mat-radio-group>
-				@for (point of pointHistory; track $index) {
+    @if(pointHistory.length !== 0) {
 
-					<mat-radio-button color="primary" (click)="onPointClick($index)"  [checked]="$index === pointHistoryService.selectedPoint">
-            <mat-icon class="ts-wkt-icon">place</mat-icon>
-            <span class="ts-wkt-text">
-						  {{point.flatCoordinates[1] | floatPrecision: 2}},&ensp;{{point.flatCoordinates[0] | floatPrecision: 2}}
+      <section class="point-list-section">
+        <span class="parent-checkbox-section">
+          <mat-checkbox
+            class="parent-checkbox"
+            [checked]="task().checked"
+            [indeterminate]="partiallyComplete()"
+            (change)="updateSeries($event.checked)"
+          >
+            <span class="parent-checkbox-label">
+              {{task().aoi}}
             </span>
-					</mat-radio-button>
-				}
-			</mat-radio-group>
-		}
-		@else {
-			<div class="ts-no-point-selected">
+          </mat-checkbox>
+        </span>
+        <span class="point-list-ul-section">
+          <ul>
+            @for (point of pointHistory; track $index) {
+              <li>
+                <mat-checkbox [checked]="point.checked"
+                              (change)="updateSeries($event.checked, $index)">
+                  <mat-icon class="ts-wkt-icon">place</mat-icon>
+                  <span class="ts-wkt-label">
+                    {{point.flatCoordinates[1] | floatPrecision: 2}},&ensp;{{point.flatCoordinates[0] | floatPrecision: 2}}
+                  </span>
+                  <button mat-icon-button (click)="deletePoint($index)"><mat-icon>delete</mat-icon></button>
+                </mat-checkbox>
+              </li>
+            }
+          </ul>
+        </span>
+      </section>
+    }
+    @else {
+      <div class="ts-no-point-selected">
         {{ 'NO_POINT_SELECTED' | translate }}
-			</div>
-		}
+      </div>
+    }
+
 		</div>
 	</mat-card>
 
-	<mat-card class="mp0 ts-column-2 ts-layer-list" [style.width]="listCardMaxWidth">
-		<mat-card-subtitle class="header ts-layer-list-header">
-		</mat-card-subtitle>
-		<div class="ts-metadata scrollable">
-      <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" dynamicHeight>
-        <mat-tab label="Summary">
-          <div style="text-align: center; margin-top: 20px;">Interesting Metadata Goes Here</div>
-        </mat-tab>
+<!--	<mat-card class="mp0 ts-column-2 ts-layer-list" [style.width]="listCardMaxWidth">-->
+<!--		<mat-card-subtitle class="header ts-layer-list-header">-->
+<!--		</mat-card-subtitle>-->
+<!--		<div class="ts-metadata scrollable">-->
+<!--      <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" dynamicHeight>-->
+<!--        <mat-tab label="Summary">-->
+<!--          <div style="text-align: center; margin-top: 20px;">Interesting Metadata Goes Here</div>-->
+<!--        </mat-tab>-->
 
-        <mat-tab label="Export">
-          <div style="text-align: center; margin-top: 20px;">Export Functionality Here</div>
-        </mat-tab>
+<!--        <mat-tab label="Export">-->
+<!--          <div style="text-align: center; margin-top: 20px;">Export Functionality Here</div>-->
+<!--        </mat-tab>-->
 
-        <mat-tab label="Scenes">
-          <div style="height: 1000px;">
-            <app-scenes-list [resize$]="resize$"></app-scenes-list>
-            <div *ngIf="false" style="margin: 5px; padding-bottom: 36px;">
-              <div class="faint-text w100 h100" style="text-align: center; padding-top: 10px; height: 100px !important;">
-                {{ 'NO_POINT_SELECTED' | translate }}
-              </div>
-            </div>
-          </div>
-        </mat-tab>
-      </mat-tab-group>
+<!--        <mat-tab label="Scenes">-->
+<!--          <div style="height: 1000px;">-->
+<!--            <app-scenes-list [resize$]="resize$"></app-scenes-list>-->
+<!--            <div *ngIf="false" style="margin: 5px; padding-bottom: 36px;">-->
+<!--              <div class="faint-text w100 h100" style="text-align: center; padding-top: 10px; height: 100px !important;">-->
+<!--                {{ 'NO_POINT_SELECTED' | translate }}-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </mat-tab>-->
+<!--      </mat-tab-group>-->
 
-    </div>
-	</mat-card>
+<!--    </div>-->
+<!--	</mat-card>-->
 </ng-container>
 
 <mat-card #chartCard class="mp0 ts-chart-card"
@@ -74,31 +95,31 @@
 	</div>
 	<mat-card-subtitle [class.medium-header]="breakpoint <= breakpoints.MEDIUM" class="ts-header">
 
-		<div class="ts-button-group">
-			<div class="button-group-label">
-				<label>{{ 'ZOOM' | translate }}</label>
-			</div>
-			<div class="fx-row">
-				<div>
-					<mat-button-toggle-group class="ts-toggle-group" name="layerType">
-						<mat-button-toggle class="control-mat-button-toggle" (click)="zoomIn()"
-							matTooltip="{{ 'ZOOM_IN' | translate }}">
-							<mat-icon class="control-icon">add</mat-icon>
-						</mat-button-toggle>
+<!--		<div class="ts-button-group">-->
+<!--			<div class="button-group-label">-->
+<!--				<label>{{ 'ZOOM' | translate }}</label>-->
+<!--			</div>-->
+<!--			<div class="fx-row">-->
+<!--				<div>-->
+<!--					<mat-button-toggle-group class="ts-toggle-group" name="layerType">-->
+<!--						<mat-button-toggle class="control-mat-button-toggle" (click)="zoomIn()"-->
+<!--							matTooltip="{{ 'ZOOM_IN' | translate }}">-->
+<!--							<mat-icon class="control-icon">add</mat-icon>-->
+<!--						</mat-button-toggle>-->
 
-						<mat-button-toggle class="control-mat-button-toggle" (click)="zoomToFit()"
-							matTooltip="{{ 'ZOOM_TO_FIT' | translate }}">
-							<mat-icon class="control-icon">aspect_ratio</mat-icon>
-						</mat-button-toggle>
+<!--						<mat-button-toggle class="control-mat-button-toggle" (click)="zoomToFit()"-->
+<!--							matTooltip="{{ 'ZOOM_TO_FIT' | translate }}">-->
+<!--							<mat-icon class="control-icon">aspect_ratio</mat-icon>-->
+<!--						</mat-button-toggle>-->
 
-						<mat-button-toggle class="control-mat-button-toggle" (click)="zoomOut()"
-							matTooltip="{{ 'ZOOM_OUT' | translate }}">
-							<mat-icon class="control-icon">remove</mat-icon>
-						</mat-button-toggle>
-					</mat-button-toggle-group>
-				</div>
-			</div>
-		</div>
+<!--						<mat-button-toggle class="control-mat-button-toggle" (click)="zoomOut()"-->
+<!--							matTooltip="{{ 'ZOOM_OUT' | translate }}">-->
+<!--							<mat-icon class="control-icon">remove</mat-icon>-->
+<!--						</mat-button-toggle>-->
+<!--					</mat-button-toggle-group>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--		</div>-->
 
 		<div class="ts-button-group-filler ts-button-group"></div>
 
@@ -110,7 +131,11 @@
 			<div class="toggle-group-wrapper--layout">
 				<mat-button-toggle class="control-mat-button-toggle ts-criteria-button-toggle"
 					(click)="onToggleFiltersMenu()">
-					{{ 'DISPLACEMENT_FILTERS' | translate }}<mat-icon class="more-horiz">more_horiz</mat-icon>
+          <span class="material-symbols-outlined">
+          filter_alt
+          </span>
+<!--					<mat-icon>filter_alt</mat-icon>-->
+<!--					{{ 'DISPLACEMENT_FILTERS' | translate }}<mat-icon class="more-horiz">more_horiz</mat-icon>-->
 				</mat-button-toggle>
 			</div>
 		</div>
@@ -123,10 +148,9 @@
 	<div class="ts-chart-row">
 		<div id="ts-chart-column">
 			<app-timeseries-chart
-			[zoomIn$]="zoomInChart$"
-			[zoomToFit$]="zoomToFitChart$"
-			[zoomOut$]="zoomOutChart$"
-			[chartData]="chartData"></app-timeseries-chart>
+			[chartData]="chartData"
+			[isLoading]="isLoading"></app-timeseries-chart>
+      <app-timeseries-chart-temporal-slider></app-timeseries-chart-temporal-slider>
 		</div>
 	</div>
 

@@ -17,30 +17,36 @@ import { ResizableModule } from 'angular-resizable-element';
 import { MatRadioModule } from '@angular/material/radio';
 import { PipesModule } from '@pipes';
 import {MatTab, MatTabGroup} from '@angular/material/tabs';
+import {
+    TimeseriesChartTemporalSliderComponent
+} from '@components/timeseries-chart/timeseries-chart-temporal-slider/timeseries-chart-temporal-slider.component';
+import {MatCheckbox} from '@angular/material/checkbox';
 
 
 @NgModule({
   declarations: [
     TimeseriesResultsMenuComponent
   ],
-  imports: [
-    CommonModule,
-    MatMenuModule,
-    MatIconModule,
-    MatSharedModule,
-    MatButtonToggleModule,
-    FontAwesomeModule,
-    SharedModule,
-    ScenesListModule,
-    ScenesListHeaderModule,
-    SceneMetadataModule,
-    TimeseriesChartModule,
-    ResizableModule,
-    MatRadioModule,
-    PipesModule,
-    MatTabGroup,
-    MatTab
-  ],
+    imports: [
+        CommonModule,
+        MatMenuModule,
+        MatIconModule,
+        MatSharedModule,
+        MatButtonToggleModule,
+        FontAwesomeModule,
+        SharedModule,
+        ScenesListModule,
+        ScenesListHeaderModule,
+        SceneMetadataModule,
+        TimeseriesChartModule,
+        ResizableModule,
+        MatRadioModule,
+        PipesModule,
+        MatTabGroup,
+        MatTab,
+        TimeseriesChartTemporalSliderComponent,
+        MatCheckbox
+    ],
   exports: [
     TimeseriesResultsMenuComponent
   ]

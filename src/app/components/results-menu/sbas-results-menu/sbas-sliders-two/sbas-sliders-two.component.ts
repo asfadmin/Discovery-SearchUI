@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+// Days Slider
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 
 import * as noUiSlider from 'nouislider';
 import { Subject,  fromEvent, Observable} from 'rxjs';
@@ -20,7 +21,7 @@ declare var wNumb: any;
   templateUrl: './sbas-sliders-two.component.html',
   styleUrls: ['./sbas-sliders-two.component.scss']
 })
-export class SbasSlidersTwoComponent implements OnInit {
+export class SbasSlidersTwoComponent implements OnInit, OnDestroy {
   @ViewChild('temporalFilter2', { static: true }) temporalFilter: ElementRef;
   @ViewChild('meterInputField', { static: true }) meterFilter: ElementRef;
 
@@ -35,14 +36,14 @@ export class SbasSlidersTwoComponent implements OnInit {
   public tempSlider;
   public slider;
   public temporal: number;
-  public perpendicular: number;
+  public perpendicular: models.Range<number> = {start: 0, end: 800};
   public daysRange: models.Range<number> = {start: 1, end: 48};
   public lastRange: models.Range<number> = {start: 0, end: 0};
   public daysValues$ = new Subject<number[]>();
   public metersValues$ = new Subject<number[]>();
   // public perpStart = 800;
 
-  // private firstLoad = true;
+  private firstLoad = true;
   private firstMeterLoad = true;
   private subs = new SubSink();
 
@@ -86,7 +87,7 @@ export class SbasSlidersTwoComponent implements OnInit {
       debounceTime(500),
       distinctUntilChanged()
     ).subscribe((_: number) => {
-        this.metersValues$.next([this.perpendicular, null] );
+        this.metersValues$.next([this.perpendicular.start, this.perpendicular.end] );
       });
 
     this.subs.add(
@@ -105,12 +106,9 @@ export class SbasSlidersTwoComponent implements OnInit {
     this.subs.add(
       this.store$.select(filtersStore.getTemporalRange).subscribe(
         temp => {
-          // console.log('getTemporalRange:', temp);
           this.daysRange = {start: temp.start, end: temp.end};
-          if (this.lastRange.start !== this.daysRange.start || this.lastRange.end !== this.daysRange.end) {
-            // console.log('getTemporalRange:', this.daysRange);
-            this.lastRange.start = this.daysRange.start;
-            this.lastRange.end = this.daysRange.end;
+          if (this.firstLoad) {
+            this.firstLoad = false;
             this.slider.set([temp.start, temp.end]);
           }
         }
@@ -120,13 +118,12 @@ export class SbasSlidersTwoComponent implements OnInit {
     this.subs.add(
       this.store$.select(filtersStore.getPerpendicularRange).subscribe(
         perp => {
-          // console.log('perp in getPerpendicularRange:', perp);
-          this.perpendicular = perp.start;
+          this.perpendicular = perp;
           this.options.controls.meterDistance.setValue(this.perpendicular);
           if (this.firstMeterLoad) {
             this.firstMeterLoad = false;
-            if (!perp.start) {
-              const action = new filtersStore.SetPerpendicularRange({ start: 800, end: null });
+            if (!perp.start || !perp.end) {
+              const action = new filtersStore.SetPerpendicularRange({ start: 0, end: 800 });
               this.store$.dispatch(action);
             }
           }
@@ -136,9 +133,8 @@ export class SbasSlidersTwoComponent implements OnInit {
 
     this.subs.add(
       this.metersValues$.subscribe(
-        ([start]) => {
-          console.log('start in metersValues$:', start);
-          const action = new filtersStore.SetPerpendicularRange({ start, end: null });
+        ([start, end]) => {
+          const action = new filtersStore.SetPerpendicularRange({ start, end });
           this.store$.dispatch(action);
         }
       )
@@ -156,6 +152,7 @@ export class SbasSlidersTwoComponent implements OnInit {
 
   public updatePerpendicular() {
     this.options.controls.meterDistance.setValue(this.perpendicular);
+    this.metersValues$.next([this.perpendicular.start, this.perpendicular.end] );
   }
 
   public updateDaysOffset() {
@@ -200,5 +197,9 @@ export class SbasSlidersTwoComponent implements OnInit {
         distinctUntilChanged()
       )
     };
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }
