@@ -326,11 +326,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
 
     if (this.showLines) {
-
-      const colorPalette = d3.scaleOrdinal()
-        .domain(this.allGroup)
-        .range(d3.schemeSet2);
-
       // Add the lines
       let line = d3.line<TimeSeriesData>()
         .x(function (d) { return self.x(Date.parse(d.date)); })
@@ -349,30 +344,28 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         .style("fill", "none")
         .style("shape-rendering", "geometricprecision")
 
+      this.lineLabels = this.svg
+      .selectAll("seriesLabels")
+      .data(this.dataReadyForChart)
+      .join('g')
+        .append("text")
+          .datum(d => { return {name: d.name, value: d.values[d.values.length - 1]}; }) // keep only the last value of each time series
 
-
-    this.lineLabels = this.svg
-    .selectAll("seriesLabels")
-    .data(this.dataReadyForChart)
-    .join('g')
-      .append("text")
-        .datum(d => { return {name: d.name, value: d.values[d.values.length - 1]}; }) // keep only the last value of each time series
-
-      .attr("transform",d => `translate(${this.x(Date.parse(d.value.date))},${this.y(d.value.short_wavelength_displacement)})`) // Put the text at the position of the last point
-      .attr("x", 12) // shift the text a bit more right
-      .text(d => {
-        if (d.name.replace(/\s/g, '').substring(0, 5).toUpperCase() === 'POINT') {
-          const longLat = d.name.substring(6).replace(/[\(\)]/g, '');
-          const longLatParsed = longLat.split(' ');
-          const pointLong = parseFloat(longLatParsed[0]).toFixed(2);
-          const pointLat = parseFloat(longLatParsed[1]).toFixed(2);
-          return `${pointLat}, ${pointLong}`;
-        }
-        return d.name;
-      } )
-      // @ts-ignore
-      .style("fill", function (d: DataReady){ return colorPalette(d.name) })
-      .style("font-size", 10)
+        .attr("transform",d => `translate(${this.x(Date.parse(d.value.date))},${this.y(d.value.short_wavelength_displacement)})`) // Put the text at the position of the last point
+        .attr("x", 12) // shift the text a bit more right
+        .text(d => {
+          if (d.name.replace(/\s/g, '').substring(0, 5).toUpperCase() === 'POINT') {
+            const longLat = d.name.substring(6).replace(/[\(\)]/g, '');
+            const longLatParsed = longLat.split(' ');
+            const pointLong = parseFloat(longLatParsed[0]).toFixed(2);
+            const pointLat = parseFloat(longLatParsed[1]).toFixed(2);
+            return `${pointLat}, ${pointLong}`;
+          }
+          return d.name;
+        } )
+        // @ts-ignore
+        .style("fill", function (d: DataReady){ return colorPalette(d.name) })
+        .style("font-size", 10)
     }
 
     this.updateChart();
