@@ -65,6 +65,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private yAxis: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private dots: d3.Selection<SVGCircleElement, TimeSeriesData, SVGGElement, {}>;
   // private dots: d3.Selection<SVGCircleElement, TimeSeriesChartPoint, SVGGElement, {}>;
+  // private pointGraph: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private lineGraph: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private toolTip: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>
   public margin = { top: 10, right: 60, bottom: 60, left: 55 };
@@ -73,6 +74,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private data: any;
   private lines;
   private lineLabels;
+  private points;
 
   // private selectedScene: string;
   @Input() isLoading: boolean = false;
@@ -103,6 +105,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         showLines => {
           this.showLines = showLines;
           if (this.showLines) {
+            // this.pointGraph = this.clipContainer.append("pointGraph")
             this.lineGraph = this.clipContainer.append("path")
           } else {
             this.lineGraph.remove()
@@ -195,8 +198,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       this.averageData = {};
     }
 
-
-
     this.svg.selectChildren().remove();
 
     this.drawChart();
@@ -241,6 +242,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
     this.allGroup = [...new Set(this.dataReadyForChart.map(d => d.name))];
 
+    // this.pointGraph = this.clipContainer.append("pointGraph");
     this.lineGraph = this.clipContainer.append("path");
 
     // A color scale: one color for each group
@@ -250,39 +252,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
     const self = this;
 
-    const points = this.dataSource.map((d) => [this.x(new Date(d.date)), this.y(d.short_wavelength_displacement), d.aoi]);
-    const groups = d3.rollup(points, v => Object.assign(v, { z: v[0][2] }), d => d[2]);
-    groups // just do something
-    this.dots = this.clipContainer.append('g')
-      .selectAll("myDots")
-      .data(this.dataReadyForChart)
-      .enter()
-      .append('g')
-      // @ts-ignore
-      .style("fill", function (d: DataReady) { return colorPalette(d.name) })
-      .selectAll('circle')
-      .data(d => d.values)
-      // .data(this.dataSource)
-      // .data(groups.values())
-      .enter()
-      .append('circle')
-      .attr('cx', (d) => this.x(Date.parse(d.date)))
-      .attr('cy', (d) => this.y(d.short_wavelength_displacement))
-      .on('mouseover', function (_event: any, p: TimeSeriesData) {
-        self.hoveredElement = this;
-        const date = new Date(p.date);
-        toolTip.interrupt();
-        toolTip
-          .style('opacity', .9);
-        toolTip.html(`${self.tooltipDateFormat(date)}, ${p.short_wavelength_displacement.toFixed(5)} meters`);
-        self.updateTooltip();
-      })
-      .on('mouseleave', function (_) {
-        toolTip.transition()
-          .duration(500)
-          .style('opacity', 0);
-      })
-      .attr('r', 5);
+    this.points = this.dataSource.map((d) => [this.x(new Date(d.date)), this.y(d.short_wavelength_displacement), d.aoi]);
 
     this.zoom = d3.zoom<SVGElement, {}>()
       .extent([[0, 0], [this.width, this.height]])
@@ -324,13 +294,21 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .attr('class', 'ts-chart-label')
       .text(this.yAxisTitle);
 
+    this.svg
+      .on("pointermove", () => this.pointerMoved(event, this.lines, this.dots, this.points))
+      .on("pointerenter", () => this.pointerEntered(self.lines, self.dots))
+      .on("pointerleave", () => this.pointerLeft(self.lines, self.dots))
+      .on("touchstart", event => event.preventDefault());
 
+    // Add the lines
     if (this.showLines) {
-      // Add the lines
+
       let line = d3.line<TimeSeriesData>()
         .x(function (d) { return self.x(Date.parse(d.date)); })
         .y(function (d) { return self.y(d.short_wavelength_displacement); })
-      this.lines = this.svg.selectAll("myLines")
+
+      this.lines = this.svg.append('g')
+        .selectAll("myLines")
         .data(this.dataReadyForChart)
         .enter()
         .append("path")
@@ -368,7 +346,73 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         .style("font-size", 10)
     }
 
+    // add the dots
+    this.dots = this.svg.append('g')
+      .selectAll("myDots")
+      .data(this.dataReadyForChart)
+      .enter()
+      .append('g')
+      .attr('clip-path', 'url(#clip)')
+      // @ts-ignore
+      .style("fill", function (d: DataReady) { return colorPalette(d.name) })
+      .selectAll('circle')
+      .data(d => d.values)
+      // .data(this.dataSource)
+      // .data(groups.values())
+      .enter()
+      .append('circle')
+      .attr('cx', (d) => this.x(Date.parse(d.date)))
+      .attr('cy', (d) => this.y(d.short_wavelength_displacement))
+      .on('mouseover', function (_event: any, p: TimeSeriesData) {
+        self.hoveredElement = this;
+        const date = new Date(p.date);
+        toolTip.interrupt();
+        toolTip
+          .style('opacity', .9);
+        toolTip.html(`${self.tooltipDateFormat(date)}, ${p.short_wavelength_displacement.toFixed(5)} meters`);
+        self.updateTooltip();
+      })
+      .on('mouseleave', function (_) {
+        toolTip.transition()
+          .duration(500)
+          .style('opacity', 0);
+      })
+      .attr('r', 5);
+
     this.updateChart();
+  }
+
+  // When the pointer moves, find the closest point, update the interactive tip, and highlight
+  // the corresponding line. Note: we don't actually use Voronoi here, since an exhaustive search
+  // is fast enough.
+  private pointerMoved(event, lines, dots, points) {
+    console.log('pointerMoved: ', event, lines, dots, points);
+    const [xm, ym] = d3.pointer(event);
+    console.log('xm', xm, 'ym', ym);
+    const i = d3.leastIndex(points, ([x, y]) => Math.hypot(Number(x) - xm, Number(y) - ym));
+    console.log('i', i);
+    const [x, y, k] = points[i];
+    console.log('x', x, 'y', y, 'k', k);
+    lines.style("stroke", "red");
+    // .attr("stroke", function (d: DataReady) { return colorPalette(d.name) })
+    // lines.style("stroke", ({z}) => z === k ? null : "#ddd").filter(({z}) => z === k).raise();
+    // dots.attr("transform", `translate(${x},${y})`);
+    dots.select("text").text(k);
+    // this.svg.property("value", this.dataReadyForChart[i]).dispatch("input", {bubbles: true});
+  }
+
+  private pointerEntered(lines, dots) {
+    console.log('pointerEntered');
+    lines.style("mix-blend-mode", null).style("stroke", "#ddd");
+    dots.attr("display", null);
+  }
+
+  private pointerLeft(lines, dots) {
+    console.log('pointerLeft', lines, dots);
+    // lines.style("mix-blend-mode", "multiply").style("stroke", null);
+    // dots.attr("display", "none");
+    // this.svg.node().value = null;
+    // self.svg.dispatch("input", {bubbles: true});
   }
 
   private updateChart() {
