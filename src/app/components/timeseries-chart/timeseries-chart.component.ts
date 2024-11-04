@@ -404,14 +404,14 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       }
       return '#ddd';
     });
-    this.svg.selectAll('circle').style("fill", '#858585');
+    this.svg.selectAll('circle').style("fill", '#9F9F9F9F');
     this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", colorName);
     dots.select("text").text(k);
   }
 
   private pointerEntered(lines, dots) {
     console.log('pointerEntered lines, dots', lines, dots);
-    lines.style("mix-blend-mode", null).style("stroke", "#ddd");
+    lines.style("mix-blend-mode", null).style("stroke", "#9F9F9F9F");
     dots.attr("display", null);
   }
 
