@@ -75,6 +75,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private lines;
   private lineLabels;
   private points;
+  public gColorPalette: any;
 
   // private selectedScene: string;
   @Input() isLoading: boolean = false;
@@ -150,7 +151,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
   public initChart(data): void {
     this.dataSource = []
-    if (data !== null) {
+    if (data?.[Symbol.iterator]) {
       let aoi: string = '';
       for (let result of data) {
         aoi = '';
@@ -250,6 +251,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .domain(this.allGroup)
       .range(d3.schemeSet2);
 
+    this.gColorPalette = colorPalette;
+
     const self = this;
 
     this.points = this.dataSource.map((d) => [this.x(new Date(d.date)), this.y(d.short_wavelength_displacement), d.aoi]);
@@ -296,8 +299,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
     this.svg
       .on("pointermove", () => this.pointerMoved(event, this.lines, this.dots, this.points))
-      .on("pointerenter", () => this.pointerEntered(self.lines, self.dots))
-      .on("pointerleave", () => this.pointerLeft(self.lines, self.dots))
+      .on("pointerenter", () => this.pointerEntered(this.lines, this.dots))
+      .on("pointerleave", () => this.pointerLeft(this.lines, this.dots))
       .on("touchstart", event => event.preventDefault());
 
     // Add the lines
@@ -341,8 +344,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           }
           return d.name;
         } )
-        // @ts-ignore
-        .style("fill", function (d: DataReady){ return colorPalette(d.name) })
+        .style("fill", (d) : string=>  { return <string>colorPalette(d.name) })
         .style("font-size", 10)
     }
 
@@ -353,12 +355,10 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .enter()
       .append('g')
       .attr('clip-path', 'url(#clip)')
-      // @ts-ignore
-      .style("fill", function (d: DataReady) { return colorPalette(d.name) })
+      .style('fill', (d) : string=>  { return <string>colorPalette(d.name) })
+      .attr('class', (d) : string=>  { return d.name.replace(/\W/g, '')})
       .selectAll('circle')
       .data(d => d.values)
-      // .data(this.dataSource)
-      // .data(groups.values())
       .enter()
       .append('circle')
       .attr('cx', (d) => this.x(Date.parse(d.date)))
@@ -386,14 +386,41 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   // the corresponding line. Note: we don't actually use Voronoi here, since an exhaustive search
   // is fast enough.
   private pointerMoved(event, lines, dots, points) {
-    console.log('pointerMoved: ', event, lines, dots, points);
+    console.log('pointerMoved');
+    if (typeof points === 'undefined') { return; }
+    if (points == null) { return; }
     const [xm, ym] = d3.pointer(event);
-    console.log('xm', xm, 'ym', ym);
     const i = d3.leastIndex(points, ([x, y]) => Math.hypot(Number(x) - xm, Number(y) - ym));
-    console.log('i', i);
+    if (typeof points[i] === 'undefined') { return; }
     const [x, y, k] = points[i];
+    let colorName: string;
+    let dClassName: string;
+    console.log('points', points);
+    console.log('points[i]', points[i]);
+    console.log('dots', dots);
+    console.log('xm', xm, 'ym', ym);
+    console.log('i', i);
     console.log('x', x, 'y', y, 'k', k);
-    lines.style("stroke", "red");
+    lines.style("stroke", (d: DataReady)=> {
+      if (d.name === k) {
+        dClassName = 'g.' + d.name.replace(/\W/g, '');
+        colorName = this.gColorPalette(d.name);
+        return colorName;
+      }
+      return '#ddd';
+    });
+    dots.selectAll('circle').style("fill", '#ddd');
+    dots.selectAll(dClassName).style("fill", 'red');
+
+    // dots.selectAll('myDots').data(this.dataReadyForChart).style("fill", (d: DataReady) => {
+    // dots.selectAll('circle').style("fill", (d: DataReady) => {
+    //   console.log('dots d:', d);
+    //   if (d.name === k) {
+    //     return this.gColorPalette(d.name);
+    //   }
+    //   return '#ddd';
+    // });
+    // this.lines.style("stroke", "red").filter(({ z }) => z === k).raise();
     // .attr("stroke", function (d: DataReady) { return colorPalette(d.name) })
     // lines.style("stroke", ({z}) => z === k ? null : "#ddd").filter(({z}) => z === k).raise();
     // dots.attr("transform", `translate(${x},${y})`);
@@ -402,13 +429,16 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   }
 
   private pointerEntered(lines, dots) {
-    console.log('pointerEntered');
+    console.log('pointerEntered lines, dots', lines, dots);
     lines.style("mix-blend-mode", null).style("stroke", "#ddd");
     dots.attr("display", null);
   }
 
   private pointerLeft(lines, dots) {
     console.log('pointerLeft', lines, dots);
+    lines.style("stroke", (d: DataReady)=> {
+      return this.gColorPalette(d.name);
+    })
     // lines.style("mix-blend-mode", "multiply").style("stroke", null);
     // dots.attr("display", "none");
     // this.svg.node().value = null;
