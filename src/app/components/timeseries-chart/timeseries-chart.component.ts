@@ -32,6 +32,8 @@ interface DataReady {
   values: TimeSeriesData[]
 }
 
+const unSelectedColor = '#9F9F9F9F';
+
 @Component({
   selector: 'app-timeseries-chart',
   templateUrl: './timeseries-chart.component.html',
@@ -350,6 +352,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
     // add the dots
     this.dots = this.svg.append('g')
+      .attr("id", "dotsParent")
       .selectAll("myDots")
       .data(this.dataReadyForChart)
       .enter()
@@ -383,8 +386,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   }
 
   // When the pointer moves, find the closest point, update the interactive tip, and highlight
-  // the corresponding line. Note: we don't actually use Voronoi here, since an exhaustive search
-  // is fast enough.
+  // the corresponding line.
   private pointerMoved(event, lines, dots, points) {
     console.log('pointerMoved');
     if (typeof points === 'undefined') { return; }
@@ -392,34 +394,49 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     const [xm, ym] = d3.pointer(event);
     const i = d3.leastIndex(points, ([x, y]) => Math.hypot(Number(x) - xm, Number(y) - ym));
     if (typeof points[i] === 'undefined') { return; }
-    const [x, y, k] = points[i];
-    console.log('x, y, k', x, y, k);
+    const [_x, _y, k] = points[i];
     let colorName: string;
     let dClassName: string;
+    // set the color of the selected line to the color of the series; make all other lines grey
     lines.style("stroke", (d: DataReady)=> {
       if (d.name === k) {
         dClassName = '.' + d.name.replace(/\W/g, '');
         colorName = this.gColorPalette(d.name);
         return colorName;
       }
-      return '#ddd';
+      return unSelectedColor;
     });
-    this.svg.selectAll('circle').style("fill", '#9F9F9F9F');
+    // sort the lines so that the selected line is on top
+    lines.selectAll("path").sort(function (a, _b) {
+      if (a.attr('stroke') != colorName) return -1;
+      else return 1;
+    });
+    this.svg.selectAll('circle').style("fill", unSelectedColor);
     this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", colorName);
+    this.svg.selectAll("dotsParent").sort(function (a, _b) {
+      // @ts-ignore
+      if (a.attr('class') != dClassName) return -1;
+      else return 1;
+    });
     dots.select("text").text(k);
   }
 
   private pointerEntered(lines, dots) {
     console.log('pointerEntered lines, dots', lines, dots);
-    lines.style("mix-blend-mode", null).style("stroke", "#9F9F9F9F");
+    lines.style("mix-blend-mode", null).style("stroke", unSelectedColor);
     dots.attr("display", null);
   }
 
   private pointerLeft(lines, dots) {
     console.log('pointerLeft', lines, dots);
-    // lines.style("stroke", (d: DataReady)=> {
-    //   return this.gColorPalette(d.name);
-    // })
+    let colorName: string;
+    let dClassName: string;
+    lines.style("stroke", (d: DataReady)=> {
+      dClassName = '.' + d.name.replace(/\W/g, '');
+      colorName = this.gColorPalette(d.name);
+      this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", colorName);
+      return colorName;
+    });
   }
 
   private updateChart() {
