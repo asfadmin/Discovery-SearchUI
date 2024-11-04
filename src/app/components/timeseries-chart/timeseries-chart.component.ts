@@ -65,6 +65,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private yAxis: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private dots: d3.Selection<SVGCircleElement, TimeSeriesData, SVGGElement, {}>;
   // private dots: d3.Selection<SVGCircleElement, TimeSeriesChartPoint, SVGGElement, {}>;
+  // private pointGraph: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private lineGraph: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private toolTip: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>
   public margin = { top: 10, right: 60, bottom: 60, left: 55 };
@@ -73,6 +74,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private data: any;
   private lines;
   private lineLabels;
+  private points;
+  public gColorPalette: any;
 
   // private selectedScene: string;
   @Input() isLoading: boolean = false;
@@ -103,6 +106,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         showLines => {
           this.showLines = showLines;
           if (this.showLines) {
+            // this.pointGraph = this.clipContainer.append("pointGraph")
             this.lineGraph = this.clipContainer.append("path")
           } else {
             this.lineGraph.remove()
@@ -147,7 +151,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
   public initChart(data): void {
     this.dataSource = []
-    if (data !== null) {
+    if (data?.[Symbol.iterator]) {
       let aoi: string = '';
       for (let result of data) {
         aoi = '';
@@ -195,8 +199,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       this.averageData = {};
     }
 
-
-
     this.svg.selectChildren().remove();
 
     this.drawChart();
@@ -241,6 +243,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
     this.allGroup = [...new Set(this.dataReadyForChart.map(d => d.name))];
 
+    // this.pointGraph = this.clipContainer.append("pointGraph");
     this.lineGraph = this.clipContainer.append("path");
 
     // A color scale: one color for each group
@@ -248,41 +251,11 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .domain(this.allGroup)
       .range(d3.schemeSet2);
 
+    this.gColorPalette = colorPalette;
+
     const self = this;
 
-    const points = this.dataSource.map((d) => [this.x(new Date(d.date)), this.y(d.short_wavelength_displacement), d.aoi]);
-    const groups = d3.rollup(points, v => Object.assign(v, { z: v[0][2] }), d => d[2]);
-    groups // just do something
-    this.dots = this.clipContainer.append('g')
-      .selectAll("myDots")
-      .data(this.dataReadyForChart)
-      .enter()
-      .append('g')
-      // @ts-ignore
-      .style("fill", function (d: DataReady) { return colorPalette(d.name) })
-      .selectAll('circle')
-      .data(d => d.values)
-      // .data(this.dataSource)
-      // .data(groups.values())
-      .enter()
-      .append('circle')
-      .attr('cx', (d) => this.x(Date.parse(d.date)))
-      .attr('cy', (d) => this.y(d.short_wavelength_displacement))
-      .on('mouseover', function (_event: any, p: TimeSeriesData) {
-        self.hoveredElement = this;
-        const date = new Date(p.date);
-        toolTip.interrupt();
-        toolTip
-          .style('opacity', .9);
-        toolTip.html(`${self.tooltipDateFormat(date)}, ${p.short_wavelength_displacement.toFixed(5)} meters`);
-        self.updateTooltip();
-      })
-      .on('mouseleave', function (_) {
-        toolTip.transition()
-          .duration(500)
-          .style('opacity', 0);
-      })
-      .attr('r', 5);
+    this.points = this.dataSource.map((d) => [this.x(new Date(d.date)), this.y(d.short_wavelength_displacement), d.aoi]);
 
     this.zoom = d3.zoom<SVGElement, {}>()
       .extent([[0, 0], [this.width, this.height]])
@@ -324,18 +297,21 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .attr('class', 'ts-chart-label')
       .text(this.yAxisTitle);
 
+    this.svg
+      .on("pointermove", () => this.pointerMoved(event, this.lines, this.dots, this.points))
+      .on("pointerenter", () => this.pointerEntered(this.lines, this.dots))
+      .on("pointerleave", () => this.pointerLeft(this.lines, this.dots))
+      .on("touchstart", event => event.preventDefault());
 
+    // Add the lines
     if (this.showLines) {
 
-      const colorPalette = d3.scaleOrdinal()
-        .domain(this.allGroup)
-        .range(d3.schemeSet2);
-
-      // Add the lines
       let line = d3.line<TimeSeriesData>()
         .x(function (d) { return self.x(Date.parse(d.date)); })
         .y(function (d) { return self.y(d.short_wavelength_displacement); })
-      this.lines = this.svg.selectAll("myLines")
+
+      this.lines = this.svg.append('g')
+        .selectAll("myLines")
         .data(this.dataReadyForChart)
         .enter()
         .append("path")
@@ -349,33 +325,124 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         .style("fill", "none")
         .style("shape-rendering", "geometricprecision")
 
+      this.lineLabels = this.svg
+      .selectAll("seriesLabels")
+      .data(this.dataReadyForChart)
+      .join('g')
+        .append("text")
+          .datum(d => { return {name: d.name, value: d.values[d.values.length - 1]}; }) // keep only the last value of each time series
 
-
-    this.lineLabels = this.svg
-    .selectAll("seriesLabels")
-    .data(this.dataReadyForChart)
-    .join('g')
-      .append("text")
-        .datum(d => { return {name: d.name, value: d.values[d.values.length - 1]}; }) // keep only the last value of each time series
-
-      .attr("transform",d => `translate(${this.x(Date.parse(d.value.date))},${this.y(d.value.short_wavelength_displacement)})`) // Put the text at the position of the last point
-      .attr("x", 12) // shift the text a bit more right
-      .text(d => {
-        if (d.name.replace(/\s/g, '').substring(0, 5).toUpperCase() === 'POINT') {
-          const longLat = d.name.substring(6).replace(/[\(\)]/g, '');
-          const longLatParsed = longLat.split(' ');
-          const pointLong = parseFloat(longLatParsed[0]).toFixed(2);
-          const pointLat = parseFloat(longLatParsed[1]).toFixed(2);
-          return `${pointLat}, ${pointLong}`;
-        }
-        return d.name;
-      } )
-      // @ts-ignore
-      .style("fill", function (d: DataReady){ return colorPalette(d.name) })
-      .style("font-size", 10)
+        .attr("transform",d => `translate(${this.x(Date.parse(d.value.date))},${this.y(d.value.short_wavelength_displacement)})`) // Put the text at the position of the last point
+        .attr("x", 12) // shift the text a bit more right
+        .text(d => {
+          if (d.name.replace(/\s/g, '').substring(0, 5).toUpperCase() === 'POINT') {
+            const longLat = d.name.substring(6).replace(/[\(\)]/g, '');
+            const longLatParsed = longLat.split(' ');
+            const pointLong = parseFloat(longLatParsed[0]).toFixed(2);
+            const pointLat = parseFloat(longLatParsed[1]).toFixed(2);
+            return `${pointLat}, ${pointLong}`;
+          }
+          return d.name;
+        } )
+        .style("fill", (d) : string=>  { return <string>colorPalette(d.name) })
+        .style("font-size", 10)
     }
 
+    // add the dots
+    this.dots = this.svg.append('g')
+      .selectAll("myDots")
+      .data(this.dataReadyForChart)
+      .enter()
+      .append('g')
+      .attr('clip-path', 'url(#clip)')
+      .style('fill', (d) : string=>  { return <string>colorPalette(d.name) })
+      .attr('class', (d) : string=>  { return d.name.replace(/\W/g, '')})
+      .selectAll('circle')
+      .data(d => d.values)
+      .enter()
+      .append('circle')
+      .attr('cx', (d) => this.x(Date.parse(d.date)))
+      .attr('cy', (d) => this.y(d.short_wavelength_displacement))
+      .on('mouseover', function (_event: any, p: TimeSeriesData) {
+        self.hoveredElement = this;
+        const date = new Date(p.date);
+        toolTip.interrupt();
+        toolTip
+          .style('opacity', .9);
+        toolTip.html(`${self.tooltipDateFormat(date)}, ${p.short_wavelength_displacement.toFixed(5)} meters`);
+        self.updateTooltip();
+      })
+      .on('mouseleave', function (_) {
+        toolTip.transition()
+          .duration(500)
+          .style('opacity', 0);
+      })
+      .attr('r', 5);
+
     this.updateChart();
+  }
+
+  // When the pointer moves, find the closest point, update the interactive tip, and highlight
+  // the corresponding line. Note: we don't actually use Voronoi here, since an exhaustive search
+  // is fast enough.
+  private pointerMoved(event, lines, dots, points) {
+    console.log('pointerMoved');
+    if (typeof points === 'undefined') { return; }
+    if (points == null) { return; }
+    const [xm, ym] = d3.pointer(event);
+    const i = d3.leastIndex(points, ([x, y]) => Math.hypot(Number(x) - xm, Number(y) - ym));
+    if (typeof points[i] === 'undefined') { return; }
+    const [x, y, k] = points[i];
+    let colorName: string;
+    let dClassName: string;
+    console.log('points', points);
+    console.log('points[i]', points[i]);
+    console.log('dots', dots);
+    console.log('xm', xm, 'ym', ym);
+    console.log('i', i);
+    console.log('x', x, 'y', y, 'k', k);
+    lines.style("stroke", (d: DataReady)=> {
+      if (d.name === k) {
+        dClassName = 'g.' + d.name.replace(/\W/g, '');
+        colorName = this.gColorPalette(d.name);
+        return colorName;
+      }
+      return '#ddd';
+    });
+    dots.selectAll('circle').style("fill", '#ddd');
+    dots.selectAll(dClassName).style("fill", 'red');
+
+    // dots.selectAll('myDots').data(this.dataReadyForChart).style("fill", (d: DataReady) => {
+    // dots.selectAll('circle').style("fill", (d: DataReady) => {
+    //   console.log('dots d:', d);
+    //   if (d.name === k) {
+    //     return this.gColorPalette(d.name);
+    //   }
+    //   return '#ddd';
+    // });
+    // this.lines.style("stroke", "red").filter(({ z }) => z === k).raise();
+    // .attr("stroke", function (d: DataReady) { return colorPalette(d.name) })
+    // lines.style("stroke", ({z}) => z === k ? null : "#ddd").filter(({z}) => z === k).raise();
+    // dots.attr("transform", `translate(${x},${y})`);
+    dots.select("text").text(k);
+    // this.svg.property("value", this.dataReadyForChart[i]).dispatch("input", {bubbles: true});
+  }
+
+  private pointerEntered(lines, dots) {
+    console.log('pointerEntered lines, dots', lines, dots);
+    lines.style("mix-blend-mode", null).style("stroke", "#ddd");
+    dots.attr("display", null);
+  }
+
+  private pointerLeft(lines, dots) {
+    console.log('pointerLeft', lines, dots);
+    lines.style("stroke", (d: DataReady)=> {
+      return this.gColorPalette(d.name);
+    })
+    // lines.style("mix-blend-mode", "multiply").style("stroke", null);
+    // dots.attr("display", "none");
+    // this.svg.node().value = null;
+    // self.svg.dispatch("input", {bubbles: true});
   }
 
   private updateChart() {
