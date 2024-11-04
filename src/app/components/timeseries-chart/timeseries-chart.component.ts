@@ -417,9 +417,9 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
   private pointerLeft(lines, dots) {
     console.log('pointerLeft', lines, dots);
-    lines.style("stroke", (d: DataReady)=> {
-      return this.gColorPalette(d.name);
-    })
+    // lines.style("stroke", (d: DataReady)=> {
+    //   return this.gColorPalette(d.name);
+    // })
   }
 
   private updateChart() {
