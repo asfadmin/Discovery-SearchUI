@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, AfterViewInit, ViewChild, Inject } from '@angular/core';
+import {Component, OnInit, OnDestroy, AfterViewInit, ViewChild, Inject, HostListener } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -57,6 +57,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   public isAutoTheme = false;
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
+  public commandPaletteOpen = false;
 
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts).pipe(
     map(q => q || [])
@@ -70,6 +71,13 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   private helpTopic: string | null;
 
   private subs = new SubSink();
+
+  @HostListener('window:keydown.shift.ArrowRight', ['$event'])
+  handleKeyDown(event: KeyboardEvent) {
+    console.log('Open Command Palette')
+    this.commandPaletteOpen = true;
+    event.stopPropagation()
+  }
 
   constructor(
     private store$: Store<AppState>,
@@ -622,6 +630,10 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private clearEventProductFilters() {
     this.store$.dispatch(new filterStore.ClearHyp3ProductTypes());
+  }
+
+  public toggleCommandPalette(val: boolean) {
+    this.commandPaletteOpen = val
   }
 
   ngOnDestroy() {

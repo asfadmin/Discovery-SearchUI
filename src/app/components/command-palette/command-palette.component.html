@@ -1,0 +1,14 @@
+<div>
+    YEEEEHAW
+    <form>
+        <mat-form-field>
+            <mat-label>Command Palette</mat-label>
+            <input matInput #commandPaletteField [formControl]="myControl" placeholder="Switch Search Type" [matAutocomplete]="auto">
+        </mat-form-field>
+    </form>
+    <mat-autocomplete (optionSelected)="selectionMade($event)" #auto="matAutocomplete">
+        @for (option of filteredOptions | async; track option.display) {
+          <mat-option [value]="option.display">{{option.display}}</mat-option>
+        }
+      </mat-autocomplete>
+</div>

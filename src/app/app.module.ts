@@ -32,7 +32,7 @@ import { AppComponent } from './app.component';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from "@angular/common/http";
-
+import { CommandPaletteComponent } from '@components/command-palette/command-palette.component'
 import * as services from '@services';
 
 import { NgcCookieConsentModule, NgcCookieConsentConfig } from 'ngx-cookieconsent';
@@ -118,7 +118,8 @@ export const routes = [
     BaselineChartModule,
     HelpModule,
     ToastrModule.forRoot({positionClass: 'inline', preventDuplicates: true}),
-    CodeExportModule
+    CodeExportModule,
+    CommandPaletteComponent
   ],
   providers: [
     services.AsfApiService,

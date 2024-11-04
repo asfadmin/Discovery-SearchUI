@@ -1,0 +1,27 @@
+@use "@angular/material" as mat;
+
+@import "asf-theme";
+
+$config: mat.define-legacy-typography-config();
+
+form {
+    width: 100%;
+    mat-form-field {
+        width: 100%;
+    }
+    // display: block;
+    // padding-left: 50%;
+    // padding-top: 25%;
+}
+
+
+
+div {
+    position: absolute;
+    left: 35%;
+    top: 200px;
+    width: 30%;
+    z-index: 9999;
+    opacity: 100%;
+    // background: white;
+}
