@@ -74,10 +74,10 @@ export class SbasSlidersTwoComponent implements OnInit, OnDestroy {
     this.daysControl = new UntypedFormControl(this.daysRange, Validators.min(0));
 
     const daysSliderRef = this.makeDaysSlider$(this.temporalFilter);
-    const tempSlider = daysSliderRef.slider;
+    // const tempSlider = daysSliderRef.slider;
     const daysValues$ = daysSliderRef.daysValues;
 
-    this.tempSlider = tempSlider;
+    // this.tempSlider = tempSlider;
 
     fromEvent(this.meterFilter.nativeElement, 'keyup').pipe(
       map((event: any) => {
