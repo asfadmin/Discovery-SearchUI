@@ -393,39 +393,20 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     const i = d3.leastIndex(points, ([x, y]) => Math.hypot(Number(x) - xm, Number(y) - ym));
     if (typeof points[i] === 'undefined') { return; }
     const [x, y, k] = points[i];
+    console.log('x, y, k', x, y, k);
     let colorName: string;
     let dClassName: string;
-    console.log('points', points);
-    console.log('points[i]', points[i]);
-    console.log('dots', dots);
-    console.log('xm', xm, 'ym', ym);
-    console.log('i', i);
-    console.log('x', x, 'y', y, 'k', k);
     lines.style("stroke", (d: DataReady)=> {
       if (d.name === k) {
-        dClassName = 'g.' + d.name.replace(/\W/g, '');
+        dClassName = '.' + d.name.replace(/\W/g, '');
         colorName = this.gColorPalette(d.name);
         return colorName;
       }
       return '#ddd';
     });
-    dots.selectAll('circle').style("fill", '#ddd');
-    dots.selectAll(dClassName).style("fill", 'red');
-
-    // dots.selectAll('myDots').data(this.dataReadyForChart).style("fill", (d: DataReady) => {
-    // dots.selectAll('circle').style("fill", (d: DataReady) => {
-    //   console.log('dots d:', d);
-    //   if (d.name === k) {
-    //     return this.gColorPalette(d.name);
-    //   }
-    //   return '#ddd';
-    // });
-    // this.lines.style("stroke", "red").filter(({ z }) => z === k).raise();
-    // .attr("stroke", function (d: DataReady) { return colorPalette(d.name) })
-    // lines.style("stroke", ({z}) => z === k ? null : "#ddd").filter(({z}) => z === k).raise();
-    // dots.attr("transform", `translate(${x},${y})`);
+    this.svg.selectAll('circle').style("fill", '#858585');
+    this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", colorName);
     dots.select("text").text(k);
-    // this.svg.property("value", this.dataReadyForChart[i]).dispatch("input", {bubbles: true});
   }
 
   private pointerEntered(lines, dots) {
@@ -439,10 +420,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     lines.style("stroke", (d: DataReady)=> {
       return this.gColorPalette(d.name);
     })
-    // lines.style("mix-blend-mode", "multiply").style("stroke", null);
-    // dots.attr("display", "none");
-    // this.svg.node().value = null;
-    // self.svg.dispatch("input", {bubbles: true});
   }
 
   private updateChart() {
