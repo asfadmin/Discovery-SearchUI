@@ -1,9 +1,9 @@
-import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
+import {Component, ElementRef, ViewChild, OnInit, Input, OnChanges, SimpleChanges} from '@angular/core';
 import * as noUiSlider from 'nouislider';
 import { Store } from "@ngrx/store";
 import { AppState } from "@store";
 import * as models from "@models";
-import {Subject} from "rxjs";
+import {Subject} from 'rxjs';
 import {UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 import * as filtersStore from "@store/filters";
 import {SubSink} from "subsink";
@@ -15,10 +15,11 @@ import {debounceTime, distinctUntilChanged} from "rxjs/operators";
   templateUrl: './timeseries-chart-temporal-slider.component.html',
   styleUrls: ['./timeseries-chart-temporal-slider.component.scss']
 })
-export class TimeseriesChartTemporalSliderComponent implements OnInit {
+export class TimeseriesChartTemporalSliderComponent implements OnInit, OnChanges {
+  @Input() maxRange: models.Range<number> = {start: 0, end: 0};
   @ViewChild('slider', { static: true }) sliderRef: ElementRef;
 
-  public daysRange: models.Range<number> = {start: 1, end: 48};
+  public daysRange: models.Range<number> = {start: 0, end: 0};
   public lastRange: models.Range<number> = {start: 0, end: 0};
   public daysValues$ = new Subject<number[]>();
   public slider;
@@ -71,25 +72,30 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit {
     );
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.maxRange && changes.maxRange.currentValue) {
+      console.log('changes.maxRange', changes.maxRange.currentValue);
+      this.maxRange = changes.maxRange.currentValue;
+      this.slider.noUiSlider.updateOptions({
+        start: [this.maxRange.start.valueOf(), this.maxRange.end.valueOf()],
+        range: {
+          'min': this.maxRange.start.valueOf(),
+          'max': this.maxRange.end.valueOf()
+        }
+      });
+    }
+  }
+
   public makeDaysSlider(filterRef: ElementRef) {
+    console.log('makeDaysSlider maxRange', this.maxRange);
     this.slider = noUiSlider.create(filterRef.nativeElement, {
-      start: [2000, 2023], // Rango inicial con fechas
+      start: [2000, 2023],
       connect: true,
       step: 1,
-      tooltips: {
-        to: function (value) {
-          return Math.round(value).toString(); // Muestra solo el año
-        }
-      },
       range: {
-        min: timestamp('2016-01-01'), // January 1st, 2016
-        max: timestamp('2017-12-31') // December 31st, 2017
-      },
-      step: 24 * 60 * 60 * 1000, // 1 day in milliseconds
-      start: [timestamp('2016-06-01'), timestamp('2017-03-01')], // Initial range: June 1st, 2016 to March 1st, 2017
-      connect: true // Connect the handle
-      behaviour: 'tap-drag',
-      orientation: 'horizontal'
+        'min': 2000,
+        'max': 2023
+      }
     });
 
     this.slider.on('update', (values, _) => {
