@@ -7,6 +7,7 @@ import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
 import * as mapStore from '@store/map';
+import * as models from '@models';
 
 import { DrawService, MapService, NetcdfService, PointHistoryService, ScreenSizeService, WktService } from '@services';
 import { Breakpoints,   SearchType, MapInteractionModeType, MapDrawModeType } from '@models';
@@ -21,6 +22,20 @@ export interface Task {
   aoi: string;
   checked: boolean;
   subtasks?: Task[];
+}
+
+export interface PointSeries {
+  bytes: number;
+  interferometric_correlation: number;
+  netcdf_uri: string;
+  persistent_scatterer_mask: number;
+  reference_datetime: string;
+  secondary_datetime: string;
+  short_wavelength_displacement: number;
+  temporal_baseline: number;
+  temporal_coherence: number;
+  x: number;
+  y: number;
 }
 
 @Component({
@@ -52,6 +67,9 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public pointHistory = [];
 
   public chartData = new Subject<any>;
+  public maxRange: models.Range<number> = {start: 0, end: 0};
+  public dataDateMin: Date;
+  public dataDateMax: Date;
   public selectedPoint: number;
   // private timeseries_subscription: Subscription;
 
@@ -188,15 +206,17 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   }
 
   public updateChart(): void {
-    let allPointsData = [];
+    let allPointsData: PointSeries[] = [];
     for (const geometry of this.pointHistory) {
       this.netcdfService.getTimeSeries(geometry).pipe(first()).subscribe(data => {
         console.log('updateChart data', data);
         console.log('updateChart geometry', geometry);
         allPointsData.push(data);
+        this.chartData.next(allPointsData);
+        this.maxRange = this.getMaxRange(allPointsData);
+        console.log('updateChart dataDateMin, dataDateMax', this.dataDateMin, this.dataDateMax);
+        console.log('updateChart allPointsData', allPointsData);
       })
-      console.log('updateChart allPointsData', allPointsData);
-      this.chartData.next(allPointsData);
     }
   }
 
@@ -213,6 +233,29 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     }
     return task.subtasks.some(t => t.checked) && !task.subtasks.every(t => t.checked);
   });
+
+  public getMaxRange(allSeries: PointSeries[]) {
+    let minDate = null;
+    let maxDate = null;
+    for (let points of allSeries) {
+      for (let key of Object.keys(points).filter(x => x !== 'mean' && x !== 'aoi')) {
+        console.log('getMaxRange key', key);
+        console.log('getMaxRange points[key]', points[key]);
+        let date = new Date(points[key].secondary_datetime);
+        console.log('getMaxRange date', date);
+        if (minDate === null || date < minDate) {
+          minDate = date;
+        }
+        if (maxDate === null || date > maxDate) {
+          maxDate = date;
+        }
+      }
+    }
+    let dateRange: models.Range<any> = {start: minDate, end: maxDate};
+    console.log('getMaxRange dateRange', dateRange);
+    return dateRange;
+  }
+
 
   public updateSeries(checked: boolean, index?: number) {
     console.log('updateSeries', checked, index);
