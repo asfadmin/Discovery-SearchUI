@@ -16,18 +16,6 @@ import { NetcdfService } from '@services';
 import * as models from '@models';
 // import {style} from '@angular/animations';
 
-interface TimeSeriesChartPoint {
-  aoi: string
-  short_wavelength_displacement: number
-  interferometric_correlation: number
-  temporal_coherence: number
-  date: string
-  file_name: string,
-  temporal_baseline: number
-  id: string,
-  checked: boolean
-}
-
 interface TimeSeriesData {
   short_wavelength_displacement: number
   date: string
@@ -38,6 +26,8 @@ interface DataReady {
   values: TimeSeriesData[],
   opacity: number,
 }
+
+const unSelectedColor = '#9F9F9F9F';
 
 @Component({
   selector: 'app-timeseries-chart',
@@ -54,7 +44,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
   public json_data: string = '';
   private svg?: d3.Selection<SVGElement, {}, HTMLDivElement, any>;
-  public dataSource: TimeSeriesChartPoint[] = [];
+  public dataSource: models.TimeSeriesChartPoint[] = [];
   public dataReadyForChart: DataReady[] = [];
   public timeSeriesData: TimeSeriesData[] = [];
   public averageData = {};
@@ -71,8 +61,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   public xAxis: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private yAxis: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private dots: d3.Selection<SVGCircleElement, TimeSeriesData, SVGGElement, {}>;
-  // private dots: d3.Selection<SVGCircleElement, TimeSeriesChartPoint, SVGGElement, {}>;
-  // private pointGraph: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private lineGraph: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private toolTip: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>
   public margin = { top: 10, right: 60, bottom: 60, left: 55 };
@@ -207,7 +195,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
               'file_name': key,
               'id': key,
               'temporal_baseline': result.point[key].temporal_baseline,
-              'checked': result.state.checked
             })
             this.timeSeriesData.push({
               'short_wavelength_displacement': result.point[key].short_wavelength_displacement,
@@ -383,6 +370,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
     // add the dots
     this.dots = this.svg.append('g')
+      .attr("id", "dotsParent")
       .selectAll("myDots")
       .data(this.dataReadyForChart)
       .enter()
@@ -417,8 +405,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   }
 
   // When the pointer moves, find the closest point, update the interactive tip, and highlight
-  // the corresponding line. Note: we don't actually use Voronoi here, since an exhaustive search
-  // is fast enough.
+  // the corresponding line.
   private pointerMoved(event, lines, dots, points) {
     if (typeof points === 'undefined') { return; }
     if (points == null) { return; }
@@ -428,33 +415,46 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     const [_x, _y, k] = points[i];
     let colorName: string;
     let dClassName: string;
+    // set the color of the selected line to the color of the series; make all other lines grey
     lines.style("stroke", (d: DataReady)=> {
       if (d.name === k) {
-        dClassName = 'g.' + d.name.replace(/\W/g, '');
+        dClassName = '.' + d.name.replace(/\W/g, '');
         colorName = this.gColorPalette(d.name);
         return colorName;
       }
-      return '#ddd';
-    })
-    dots.selectAll('circle').style("fill", '#ddd').style('opacity', d => d.opacity);
-    dots.selectAll(dClassName).style("fill", 'red');
-
+      return unSelectedColor;
+    });
+    // sort the lines so that the selected line is on top
+    lines.selectAll("path").sort(function (a, _b) {
+      if (a.attr('stroke') != colorName) return -1;
+      else return 1;
+    });
+    this.svg.selectAll('circle').style("fill", unSelectedColor);
+    this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", colorName);
+    this.svg.selectAll("dotsParent").sort(function (a, _b) {
+      // @ts-ignore
+      if (a.attr('class') != dClassName) return -1;
+      else return 1;
+    });
     dots.select("text").text(k);
   }
 
   private pointerEntered(lines, dots) {
-    lines.style("mix-blend-mode", null).style("stroke", "#ddd");
+    console.log('pointerEntered lines, dots', lines, dots);
+    lines.style("mix-blend-mode", null).style("stroke", unSelectedColor);
     dots.attr("display", null);
   }
 
-  private pointerLeft(lines, _dots) {
+  private pointerLeft(lines, dots) {
+    console.log('pointerLeft', lines, dots);
+    let colorName: string;
+    let dClassName: string;
     lines.style("stroke", (d: DataReady)=> {
-      return this.gColorPalette(d.name);
-    })
-    // lines.style("mix-blend-mode", "multiply").style("stroke", null);
-    // dots.attr("display", "none");
-    // this.svg.node().value = null;
-    // self.svg.dispatch("input", {bubbles: true});
+      dClassName = '.' + d.name.replace(/\W/g, '');
+      colorName = this.gColorPalette(d.name);
+      this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", colorName);
+      return colorName;
+    });
   }
 
   private updateChart() {
