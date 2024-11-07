@@ -1,5 +1,7 @@
 import {Component, OnInit, Input, OnDestroy, ViewChild, ElementRef, computed, signal} from '@angular/core';
-import { first, Observable, Subject } from 'rxjs';
+import { first, Observable, 
+  // Subject
+} from 'rxjs';
 import { ResizeEvent } from 'angular-resizable-element';
 
 import { Store } from '@ngrx/store';
@@ -7,15 +9,20 @@ import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
 import * as mapStore from '@store/map';
+import * as chartStore from '@store/charts';
 
-import { DrawService, MapService, NetcdfService, PointHistoryService, ScreenSizeService, WktService } from '@services';
+import { DrawService, MapService, NetcdfService, PointHistoryService, ScreenSizeService,
+  // WktService
+} from '@services';
 import { Breakpoints,   SearchType, MapInteractionModeType, MapDrawModeType } from '@models';
 
 import { SubSink } from 'subsink';
 
 import { Point } from 'ol/geom';
-import { WKT } from 'ol/format';
+// import { WKT } from 'ol/format';
+import { getTimeseriesChartStates } from '@store/charts';
 // import { getPathRange } from '@store/filters';
+import * as models from '@models';
 
 export interface Task {
   aoi: string;
@@ -49,9 +56,11 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public breakpoints = Breakpoints;
   private subs = new SubSink();
 
-  public pointHistory = [];
+  // public pointHistory = [];
 
-  public chartData = new Subject<any>;
+  // public chartData = new Subject<any>;
+  public chartStates: models.timeseriesChartItemState[] = []
+  public allSeriesChecked$ = this.store$.select(chartStore.getAreAllTimeseriesChecked)
   public selectedPoint: number;
   // private timeseries_subscription: Subscription;
 
@@ -60,7 +69,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public dateRange = [];
   public totalPoints = 0;
 
-  public isLoading = false;
+  // public isLoading = false;
 
   constructor(
     private store$: Store<AppState>,
@@ -69,7 +78,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     private drawService: DrawService,
     private mapService: MapService,
     private netcdfService: NetcdfService,
-    private wktService: WktService
+    // private wktService: WktService
   ) { }
 
   ngOnInit(): void {
@@ -93,45 +102,47 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       )
     );
 
+    this.subs.add(this.store$.select(getTimeseriesChartStates).subscribe(chartStates => {
+      this.chartStates = Object.values(chartStates);
+    }
+    ))
     this.subs.add(this.pointHistoryService.history$.subscribe(history => {
-      this.pointHistory = history;
+      // this.store$.dispatch(chartStore.set)
+      // this.pointHistory = history;
       this.mapService.setDisplacementLayer(history);
-      console.log('results menu sub this.pointHistory', this.pointHistory);
-      const task = this.task();
-      let found = false
-      for (const point of this.pointHistory) {
-        found = false;
-        for (const pt of task.subtasks) {
-          if (pt.aoi.toString() === point.flatCoordinates.toString()) {
-            found = true;
-            break;
-          }
-        }
-        if (!found) {
-          let p = {aoi: point.flatCoordinates, checked: true};
-          task.subtasks.push(p);
-        }
-      }
+      // const task = this.task();
+      // let found = false
+      // for (const point of this.pointHistory) {
+      //   found = false;
+      //   for (const pt of task.subtasks) {
+      //     if (pt.aoi.toString() === point.flatCoordinates.toString()) {
+      //       found = true;
+      //       break;
+      //     }
+      //   }
+      //   if (!found) {
+      //     let p = {aoi: point.flatCoordinates, checked: true};
+      //     task.subtasks.push(p);
+      //   }
+      // }
 
-      console.log('results menu sub task.subtasks', task.subtasks);
-
-      return {...task};
+      // return {...task};
 
     }));
 
-    let thing: string = localStorage.getItem('timeseries-points')
-    if(thing && thing.length > 0) {
-      let previous_points: any[] = thing?.split(';');
-      if(previous_points.length > 0) {
-        console.log(previous_points)
-        previous_points = previous_points?.map(value => {
-          return this.wktService.wktToFeature(value, 'EPSG:4326');
-        })
-        previous_points?.forEach(point => {
-          this.pointHistoryService.addPoint(point.getGeometry());
-        })
-      }
-  }
+    // let thing: string = localStorage.getItem('timeseries-points')
+    // if(thing && thing.length > 0) {
+    //   let previous_points: any[] = thing?.split(';');
+    //   if(previous_points.length > 0) {
+    //     console.log(previous_points)
+    //     previous_points = previous_points?.map(value => {
+    //       return this.wktService.wktToFeature(value, 'EPSG:4326');
+    //     })
+    //     previous_points?.forEach(point => {
+    //       this.pointHistoryService.addPoint(point.getGeometry());
+    //     })
+    //   }
+    // }
 
     this.subs.add(this.drawService.polygon$.subscribe(polygon => {
       if(polygon) {
@@ -179,24 +190,21 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new mapStore.SetMapInteractionMode(MapInteractionModeType.NONE));
   }
 
-  public onPointClick(index: number) {
-    this.pointHistoryService.selectedPoint = index;
-    this.pointHistoryService.passDraw = true;
-    let format = new WKT();
-    let wktRepresenation  = format.writeGeometry(this.pointHistory[index]);
-    this.mapService.loadPolygonFrom(wktRepresenation.toString())
-  }
+  // public onPointClick(index: number) {
+  //   this.pointHistoryService.selectedPoint = index;
+  //   this.pointHistoryService.passDraw = true;
+  //   let format = new WKT();
+  //   let wktRepresenation  = format.writeGeometry(this.pointHistory[index]);
+  //   this.mapService.loadPolygonFrom(wktRepresenation.toString())
+  // }
 
   public updateChart(): void {
     let allPointsData = [];
-    for (const geometry of this.pointHistory) {
-      this.netcdfService.getTimeSeries(geometry).pipe(first()).subscribe(data => {
-        console.log('updateChart data', data);
-        console.log('updateChart geometry', geometry);
+    for (const series of this.chartStates) {
+      this.netcdfService.getTimeSeries(series.geoemetry).pipe(first()).subscribe(data => {
         allPointsData.push(data);
       })
-      console.log('updateChart allPointsData', allPointsData);
-      this.chartData.next(allPointsData);
+      // this.chartData.next(allPointsData);
     }
   }
 
@@ -214,27 +222,29 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     return task.subtasks.some(t => t.checked) && !task.subtasks.every(t => t.checked);
   });
 
+  public toggleAllSeries(checked: boolean) {
+    this.store$.dispatch(chartStore.setAllTimeseriesChecked({checked}))
+  }
   public updateSeries(checked: boolean, index?: number) {
-    console.log('updateSeries', checked, index);
-    this.task.update(task => {
-      if (index === undefined) {
-        task.checked = checked;
-        task.subtasks?.forEach(t => (t.checked = checked));
-      } else {
-        task.subtasks![index].checked = checked;
-        task.checked = task.subtasks?.every(t => t.checked) ?? true;
-        this.pointHistoryService.selectedPoint = index;
-        console.log('updateSeries() this.pointHistoryService.selectedPoint', this.pointHistoryService.selectedPoint);
-        this.pointHistoryService.passDraw = true;
-        let format = new WKT();
-        let wktRepresentation  = format.writeGeometry(this.pointHistory[index]);
-        this.mapService.loadPolygonFrom(wktRepresentation.toString())
-      }
-      console.log('updateSeries() task', task);
-      console.log('updateSeries() task.subtasks', task.subtasks);
-      console.log('updateSeries() this.pointHistory', this.pointHistory);
-      return {...task};
-    });
+    const wkt = this.chartStates[index]?.wkt
+
+    this.store$.dispatch(chartStore.setTimeseriesChecked({wkt, checked}))
+    
+    // this.task.update(task => {
+    //   if (index === undefined) {
+    //     task.checked = checked;
+    //     task.subtasks?.forEach(t => (t.checked = checked));
+    //   } else {
+    //     task.subtasks![index].checked = checked;
+    //     task.checked = task.subtasks?.every(t => t.checked) ?? true;
+    //     this.pointHistoryService.selectedPoint = index;
+    //     this.pointHistoryService.passDraw = true;
+    //     let format = new WKT();
+    //     let wktRepresentation  = format.writeGeometry(this.pointHistory[index]);
+    //     this.mapService.loadPolygonFrom(wktRepresentation.toString())
+    //   }
+    //   return {...task};
+    // });
   }
   public deletePoint(index: number) {
     console.log('delete', index);

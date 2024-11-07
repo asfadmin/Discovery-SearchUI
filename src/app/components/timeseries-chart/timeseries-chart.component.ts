@@ -1,7 +1,10 @@
 import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
 import * as d3 from 'd3';
-import { Observable, Subject } from 'rxjs';
+// import * as models from '@models';
+import { first, Observable, 
+  // Subject 
+} from 'rxjs';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -9,6 +12,8 @@ import { AppState } from '@store';
 import * as chartsStore from '@store/charts';
 import { SubSink } from 'subsink';
 import { AsfLanguageService } from "@services/asf-language.service";
+import { NetcdfService } from '@services';
+import * as models from '@models';
 // import {style} from '@angular/animations';
 
 interface TimeSeriesChartPoint {
@@ -19,7 +24,8 @@ interface TimeSeriesChartPoint {
   date: string
   file_name: string,
   temporal_baseline: number
-  id: string
+  id: string,
+  checked: boolean
 }
 
 interface TimeSeriesData {
@@ -29,7 +35,8 @@ interface TimeSeriesData {
 
 interface DataReady {
   name: string,
-  values: TimeSeriesData[]
+  values: TimeSeriesData[],
+  opacity: number,
 }
 
 @Component({
@@ -43,7 +50,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   @Input() zoomIn$: Observable<void>;
   @Input() zoomOut$: Observable<void>;
   @Input() zoomToFit$: Observable<void>;
-  @Input() chartData: Subject<any>;
+  // @Input() chartData: models.timeseriesChartItemState[];
 
   public json_data: string = '';
   private svg?: d3.Selection<SVGElement, {}, HTMLDivElement, any>;
@@ -76,6 +83,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private lineLabels;
   private points;
   public gColorPalette: any;
+  
 
   // private selectedScene: string;
   @Input() isLoading: boolean = false;
@@ -89,17 +97,39 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   constructor(
     private store$: Store<AppState>,
     private language: AsfLanguageService,
+    private netcdfService: NetcdfService
   ) { }
 
   public ngOnInit(): void {
 
     this.translateChartText();
     this.createSVG();
+    this.subs.add(
+      this.store$.select(chartsStore.getIsChartOutOfDate).subscribe(
 
-    this.chartData.subscribe(data => {
-      this.data = data;
-      this.initChart(data);
-    })
+      )
+    )
+    this.subs.add(
+      this.store$.select(chartsStore.getTimeseriesChartStates).subscribe(
+        chartStates => {
+          const allPointsData: {point: {}, state: models.timeseriesChartItemState}[] = []
+          this.store$.dispatch(chartsStore.setChartOutOfDate())
+          for (const state of Object.values(chartStates)) {
+          this.netcdfService.getTimeSeries(state.geoemetry).pipe(first()).subscribe(data => {
+            allPointsData.push({point: data, state});
+          })
+        }
+        this.isLoading = false
+        this.store$.dispatch(chartsStore.setChartUpToDate())
+        this.data = allPointsData
+        this.initChart(this.data)
+      }
+      )
+    )
+    // this.chartData.subscribe(data => {
+    //   this.data = data;
+    //   this.initChart(data);
+    // })
 
     this.subs.add(
       this.store$.select(chartsStore.getShowLines).subscribe(
@@ -149,50 +179,52 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.updateChart();
   }
 
-  public initChart(data): void {
+  public initChart(data: {point: {}, state: models.timeseriesChartItemState}[]): void {
     this.dataSource = []
+    this.dataReadyForChart = []
     if (data?.[Symbol.iterator]) {
       let aoi: string = '';
-      for (let result of data) {
-        aoi = '';
-        // pre-process data, remove test v_2 files from results
-        // won't be necessary in production
-        for (let key of Object.keys(result)) {
-          if (key.startsWith('v_2_')) {
-            delete result[key];
+        for (let result of data) {
+          aoi = '';
+          // pre-process data, remove test v_2 files from results
+          // won't be necessary in production
+          for (let key of Object.keys(result.point)) {
+            if (key.startsWith('v_2_')) {
+              delete result.point[key];
+            }
+            if (key.startsWith('aoi')) {
+              aoi = result.point[key];
+            }
           }
-          if (key.startsWith('aoi')) {
-            aoi = result[key];
+          this.timeSeriesData = [];
+          for (let key of Object.keys(result.point).filter(x => x !== 'mean' && x !== 'aoi')) {
+            this.dataSource.push({
+              'aoi': aoi,
+              'short_wavelength_displacement': result.point[key].short_wavelength_displacement,
+              'interferometric_correlation': result.point[key].interferometric_correlation,
+              'temporal_coherence': result.point[key].temporal_coherence,
+              'date': result.point[key].secondary_datetime,
+              'file_name': key,
+              'id': key,
+              'temporal_baseline': result.point[key].temporal_baseline,
+              'checked': result.state.checked
+            })
+            this.timeSeriesData.push({
+              'short_wavelength_displacement': result.point[key].short_wavelength_displacement,
+              'date': result.point[key].secondary_datetime,
+            });
           }
-        }
-        this.timeSeriesData = [];
-        for (let key of Object.keys(result).filter(x => x !== 'mean' && x !== 'aoi')) {
-          this.dataSource.push({
-            'aoi': aoi,
-            'short_wavelength_displacement': result[key].short_wavelength_displacement,
-            'interferometric_correlation': result[key].interferometric_correlation,
-            'temporal_coherence': result[key].temporal_coherence,
-            'date': result[key].secondary_datetime,
-            'file_name': key,
-            'id': key,
-            'temporal_baseline': result[key].temporal_baseline
-          })
-          this.timeSeriesData.push({
-            'short_wavelength_displacement': result[key].short_wavelength_displacement,
-            'date': result[key].secondary_datetime
-          });
-        }
-        this.timeSeriesData.sort((a, b) => {
-          if(a.date < b.date) {
-            return -1
-          } else {
-            return 1
-          }
-      })
-        this.dataReadyForChart.push({ 'name': aoi, 'values': this.timeSeriesData });
-        this.averageData = ({
-          ...data.mean
+          this.timeSeriesData.sort((a, b) => {
+            if(a.date < b.date) {
+              return -1
+            } else {
+              return 1
+            }
         })
+          this.dataReadyForChart.push({ 'name': aoi, 'values': this.timeSeriesData, 'opacity':  result.state.checked ? 1.0 : 0.4});
+          // this.averageData = ({
+            // ...data.mean
+          // })
       }
     } else {
       this.dataSource = [];
@@ -321,6 +353,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         })
         // @ts-ignore
         .attr("stroke", function (d: DataReady) { return colorPalette(d.name) })
+        .style("opacity", (d: DataReady) => d.opacity)
         .style("stroke-width", 1)
         .style("fill", "none")
         .style("shape-rendering", "geometricprecision")
@@ -356,6 +389,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .append('g')
       .attr('clip-path', 'url(#clip)')
       .style('fill', (d) : string=>  { return <string>colorPalette(d.name) })
+      .style('opacity', (d) => d.opacity)
       .attr('class', (d) : string=>  { return d.name.replace(/\W/g, '')})
       .selectAll('circle')
       .data(d => d.values)
@@ -386,21 +420,14 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   // the corresponding line. Note: we don't actually use Voronoi here, since an exhaustive search
   // is fast enough.
   private pointerMoved(event, lines, dots, points) {
-    console.log('pointerMoved');
     if (typeof points === 'undefined') { return; }
     if (points == null) { return; }
     const [xm, ym] = d3.pointer(event);
     const i = d3.leastIndex(points, ([x, y]) => Math.hypot(Number(x) - xm, Number(y) - ym));
     if (typeof points[i] === 'undefined') { return; }
-    const [x, y, k] = points[i];
+    const [_x, _y, k] = points[i];
     let colorName: string;
     let dClassName: string;
-    console.log('points', points);
-    console.log('points[i]', points[i]);
-    console.log('dots', dots);
-    console.log('xm', xm, 'ym', ym);
-    console.log('i', i);
-    console.log('x', x, 'y', y, 'k', k);
     lines.style("stroke", (d: DataReady)=> {
       if (d.name === k) {
         dClassName = 'g.' + d.name.replace(/\W/g, '');
@@ -408,34 +435,19 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         return colorName;
       }
       return '#ddd';
-    });
-    dots.selectAll('circle').style("fill", '#ddd');
+    })
+    dots.selectAll('circle').style("fill", '#ddd').style('opacity', d => d.opacity);
     dots.selectAll(dClassName).style("fill", 'red');
 
-    // dots.selectAll('myDots').data(this.dataReadyForChart).style("fill", (d: DataReady) => {
-    // dots.selectAll('circle').style("fill", (d: DataReady) => {
-    //   console.log('dots d:', d);
-    //   if (d.name === k) {
-    //     return this.gColorPalette(d.name);
-    //   }
-    //   return '#ddd';
-    // });
-    // this.lines.style("stroke", "red").filter(({ z }) => z === k).raise();
-    // .attr("stroke", function (d: DataReady) { return colorPalette(d.name) })
-    // lines.style("stroke", ({z}) => z === k ? null : "#ddd").filter(({z}) => z === k).raise();
-    // dots.attr("transform", `translate(${x},${y})`);
     dots.select("text").text(k);
-    // this.svg.property("value", this.dataReadyForChart[i]).dispatch("input", {bubbles: true});
   }
 
   private pointerEntered(lines, dots) {
-    console.log('pointerEntered lines, dots', lines, dots);
     lines.style("mix-blend-mode", null).style("stroke", "#ddd");
     dots.attr("display", null);
   }
 
-  private pointerLeft(lines, dots) {
-    console.log('pointerLeft', lines, dots);
+  private pointerLeft(lines, _dots) {
     lines.style("stroke", (d: DataReady)=> {
       return this.gColorPalette(d.name);
     })
@@ -471,6 +483,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .attr("d", function (d) { // @ts-ignore
         return line(d.values)
       })
+      .style('opacity', (d: DataReady) => d.opacity)
     this.lineLabels
       .attr("transform",d => `translate(${newX(Date.parse(d.value.date))},${newY(d.value.short_wavelength_displacement)})`) // Put the text at the position of the last point
 
