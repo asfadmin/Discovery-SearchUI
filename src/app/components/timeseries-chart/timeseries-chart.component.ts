@@ -88,6 +88,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
   private allGroup: string[];
 
+  private baseData: TimeSeriesData;
   constructor(
     private store$: Store<AppState>,
     private language: AsfLanguageService,
@@ -152,7 +153,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   }
 
   public initChart(data): void {
-    this.dataSource = []
+    this.dataSource = [];
+    this.dataReadyForChart = [];
     if (data?.[Symbol.iterator]) {
       let aoi: string = '';
       for (let result of data) {
@@ -179,10 +181,18 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
             'id': key,
             'temporal_baseline': result[key].temporal_baseline
           })
-          this.timeSeriesData.push({
-            'short_wavelength_displacement': result[key].short_wavelength_displacement,
-            'date': result[key].secondary_datetime
-          });
+          if(this.baseData) {
+            this.timeSeriesData.push({
+              'short_wavelength_displacement': result[key].short_wavelength_displacement - this.baseData.short_wavelength_displacement,
+              'date': result[key].secondary_datetime
+            });
+          }
+          else {
+            this.timeSeriesData.push({
+              'short_wavelength_displacement': result[key].short_wavelength_displacement,
+              'date': result[key].secondary_datetime
+            });
+          }
         }
         this.timeSeriesData.sort((a, b) => {
           if(a.date < b.date) {
@@ -239,7 +249,9 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     const toolTip = d3.select('body').append('div')
       .attr('class', 'tooltip')
       .style('opacity', 0);
-
+    if(this.toolTip) {
+      this.toolTip.remove();
+    }
     this.toolTip = toolTip
     this.toolTip.attr('transform', `translate(0, 0)`).style('text-anchor', 'middle').style('z-index', 100).style('opacity', 0)
 
@@ -380,6 +392,12 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           .duration(500)
           .style('opacity', 0);
       })
+      .on('contextmenu', function (event, d) {
+        event.preventDefault();
+        console.log(d);
+        self.baseData = d;
+        self.initChart(self.data);
+      })
       .attr('r', 5);
 
     this.updateChart();
@@ -519,6 +537,10 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .domain(d)
       .range(d3.schemeCategory10);
 
+  }
+  public resetBasePoint() {
+    this.baseData = null;
+    this.initChart(this.data);
   }
 
   public ngOnDestroy(): void {

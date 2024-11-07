@@ -1,1 +1,4 @@
-<mat-checkbox (change)="onToggleLines($event)" [checked]="showLines">Show Lines</mat-checkbox>
+<div style="display: flex; flex-direction: column;">
+    <mat-checkbox (change)="onToggleLines($event)" [checked]="showLines">Show Lines</mat-checkbox>
+    <button mat-button (click)="resetReference()">Reset chart reference</button>
+</div>
