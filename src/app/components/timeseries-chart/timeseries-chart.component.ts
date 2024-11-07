@@ -24,7 +24,8 @@ interface TimeSeriesChartPoint {
 
 interface TimeSeriesData {
   short_wavelength_displacement: number
-  date: string
+  date: string,
+  id: string
 }
 
 interface DataReady {
@@ -181,18 +182,11 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
             'id': key,
             'temporal_baseline': result[key].temporal_baseline
           })
-          if(this.baseData) {
-            this.timeSeriesData.push({
-              'short_wavelength_displacement': result[key].short_wavelength_displacement - this.baseData.short_wavelength_displacement,
-              'date': result[key].secondary_datetime
-            });
-          }
-          else {
-            this.timeSeriesData.push({
-              'short_wavelength_displacement': result[key].short_wavelength_displacement,
-              'date': result[key].secondary_datetime
-            });
-          }
+          this.timeSeriesData.push({
+            'short_wavelength_displacement': result[key].short_wavelength_displacement - (this.baseData?.short_wavelength_displacement ?? 0),
+            'date': result[key].secondary_datetime,
+            'id': key + result[key].short_wavelength_displacement
+          })
         }
         this.timeSeriesData.sort((a, b) => {
           if(a.date < b.date) {
@@ -378,6 +372,9 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .append('circle')
       .attr('cx', (d) => this.x(Date.parse(d.date)))
       .attr('cy', (d) => this.y(d.short_wavelength_displacement))
+      .attr('class', (d) : string=>  { if(this.baseData && this.baseData.id === d.id) {
+        return 'ts-reference-point'
+      }})
       .on('mouseover', function (_event: any, p: TimeSeriesData) {
         self.hoveredElement = this;
         const date = new Date(p.date);
