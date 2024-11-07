@@ -89,8 +89,9 @@
               "buildOptimizer": true
             },
             "local": {
+              "sourceMap": true,
               "optimization": false,
-              "sourceMap": true
+              "extractLicenses": false
             }
           },
           "defaultConfiguration": "production"
