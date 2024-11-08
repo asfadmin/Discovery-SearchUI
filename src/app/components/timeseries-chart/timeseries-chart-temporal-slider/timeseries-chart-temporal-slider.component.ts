@@ -1,4 +1,4 @@
-import {Component, ElementRef, ViewChild, OnInit, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, ElementRef, ViewChild, OnInit} from '@angular/core';
 import * as noUiSlider from 'nouislider';
 import { Store } from "@ngrx/store";
 import { AppState } from "@store";
@@ -8,6 +8,7 @@ import {UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators} fr
 import * as filtersStore from "@store/filters";
 import {SubSink} from "subsink";
 import {debounceTime, distinctUntilChanged} from "rxjs/operators";
+import wNumb from 'wnumb';
 
 @Component({
   selector: 'app-timeseries-chart-temporal-slider',
@@ -15,8 +16,7 @@ import {debounceTime, distinctUntilChanged} from "rxjs/operators";
   templateUrl: './timeseries-chart-temporal-slider.component.html',
   styleUrls: ['./timeseries-chart-temporal-slider.component.scss']
 })
-export class TimeseriesChartTemporalSliderComponent implements OnInit, OnChanges {
-  @Input() maxRange: models.Range<number> = {start: 0, end: 0};
+export class TimeseriesChartTemporalSliderComponent implements OnInit {
   @ViewChild('slider', { static: true }) sliderRef: ElementRef;
 
   public daysRange: models.Range<number> = {start: 0, end: 0};
@@ -63,52 +63,39 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit, OnChanges
       this.store$.select(filtersStore.getTemporalRange).subscribe(
         temp => {
           this.daysRange = {start: temp.start, end: temp.end};
+          console.log('temporal chart slider temporal range', temp);
+          // this.slider.set.range({min: temp.start, max: temp.end});
           if (this.firstLoad) {
             this.firstLoad = false;
-            this.slider.set([temp.start, temp.end]);
+          //   this.slider.set([temp.start, temp.end]);
           }
         }
       )
     );
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.maxRange && changes.maxRange.currentValue) {
-      this.maxRange = changes.maxRange.currentValue;
-      console.log('changes start time:', this.maxRange.start.valueOf());
-      console.log('changes end time:', this.maxRange.end.valueOf());
-      this.daysRange = {start: this.maxRange.start.valueOf(),
-                        end: this.maxRange.end.valueOf()};
-      if (this.firstLoad) {
-        this.firstLoad = false;
-        this.slider.set([this.daysRange.start, this.daysRange.end]);
-      }
-      // this.slider.noUiSlider.updateOptions({
-      //   start: [this.maxRange.start.valueOf(), this.maxRange.end.valueOf()],
-      //   range: {
-      //     'min': this.maxRange.start.valueOf(),
-      //     'max': this.maxRange.end.valueOf()
-      //   }
-    }
-  }
-
-  public updateDaysOffset() {
+  updateDaysOffset() {
     this.options.controls.days.setValue(this.daysRange);
     this.daysValues$.next([this.daysRange.start, this.daysRange.end] );
   }
 
   public makeDaysSlider(filterRef: ElementRef): {slider: any, daysValues: Observable<number[]>} {
-    console.log('makeDaysSlider maxRange', this.maxRange);
+    console.log('makeDaysSlider daysRange', this.daysRange);
     this.slider = noUiSlider.create(filterRef.nativeElement, {
-      start: [2000, 2023],
+      start: [1995, 2025],
       behaviour: 'tap-drag',
       tooltips: false,
       connect: true,
-      step: 1,
+      // Steps of one week
+      step: 7 * 24 * 60 * 60 * 1000,
       range: {
-        'min': 2000,
-        'max': 2023
-      }
+        'min': 1995,
+        'max': 2025
+      },
+      // No decimals
+      format: wNumb({
+        decimals: 0
+      })
     });
 
     this.slider.on('update', (values, _) => {
