@@ -16,6 +16,7 @@ import { SubSink } from 'subsink';
 
 import { Point } from 'ol/geom';
 import { WKT } from 'ol/format';
+import * as filtersStore from '@store/filters';
 // import { getPathRange } from '@store/filters';
 
 export interface Task {
@@ -67,6 +68,8 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public pointHistory = [];
 
   public chartData = new Subject<any>;
+  public temporalRange: models.Range<number> = {start: 0, end: 0};
+  public temporalRangeValues$ = new Subject<number[]>();
   public maxRange: models.Range<number> = {start: 0, end: 0};
   public dataDateMin: Date;
   public dataDateMax: Date;
@@ -108,6 +111,15 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(searchStore.getSearchType).subscribe(
         searchType => this.searchType = searchType
+      )
+    );
+
+    this.subs.add(
+      this.temporalRangeValues$.subscribe(
+        range => {
+          const action = new filtersStore.SetTemporalRange({ start: range[0], end: range[1] });
+          this.store$.dispatch(action);
+        }
       )
     );
 
@@ -213,7 +225,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
         console.log('updateChart geometry', geometry);
         allPointsData.push(data);
         this.chartData.next(allPointsData);
-        this.maxRange = this.getMaxRange(allPointsData);
+        this.temporalRange = this.getMaxRange(allPointsData);
         console.log('updateChart dataDateMin, dataDateMax', this.dataDateMin, this.dataDateMax);
         console.log('updateChart allPointsData', allPointsData);
       })
@@ -252,6 +264,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       }
     }
     let dateRange: models.Range<any> = {start: minDate, end: maxDate};
+    this.temporalRangeValues$.next([dateRange.start, dateRange.end]);
     console.log('getMaxRange dateRange', dateRange);
     return dateRange;
   }
