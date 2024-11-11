@@ -11,7 +11,9 @@ import * as searchStore from '@store/search';
 import * as mapStore from '@store/map';
 import * as chartStore from '@store/charts';
 
-import { DrawService, MapService, NetcdfService, PointHistoryService, ScreenSizeService, WktService} from '@services';
+import { DrawService, MapService, NetcdfService, PointHistoryService, ScreenSizeService,
+  WktService
+} from '@services';
 import { Breakpoints,   SearchType, MapInteractionModeType, MapDrawModeType } from '@models';
 
 import { SubSink } from 'subsink';
@@ -136,7 +138,8 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
         })
         previous_points?.forEach(point => {
           this.pointHistoryService.addPoint(point.getGeometry());
-        })
+          this.netcdfService.getTimeSeries(point.getGeometry()).pipe(first()).subscribe()
+        });
       }
     }
 

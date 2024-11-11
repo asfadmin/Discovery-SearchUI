@@ -17,7 +17,7 @@ export const getCheckedTimeseries = createSelector(
     getTimeseriesChartStates,
     (chartStates) => {
         const output = {};
-        for (const key in Object.keys(chartStates)) {
+        for (const key of Object.keys(chartStates)) {
             if (chartStates[key].checked) {
                 output[key] = chartStates[key];
             }
@@ -29,7 +29,7 @@ export const getCheckedTimeseries = createSelector(
 
 export const getAreAllTimeseriesChecked = createSelector(
     getTimeseriesChartStates,
-    getTimeseriesChartStates,
+    getCheckedTimeseries,
     (checked, all) => {
         return Object.keys(checked).length === Object.keys(all).length 
     }
@@ -38,4 +38,9 @@ export const getAreAllTimeseriesChecked = createSelector(
 export const getIsChartOutOfDate = createSelector(
     getChartsState,
     (state) => state.outOfDate
+)
+
+export const getChartWKTs = createSelector(
+    getTimeseriesChartStates,
+    (chartStates) => Object.keys(chartStates)
 )

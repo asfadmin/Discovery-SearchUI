@@ -2,7 +2,7 @@ import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@ang
 
 import * as d3 from 'd3';
 // import * as models from '@models';
-import { first, Observable, 
+import { debounceTime, Observable, withLatestFrom, 
   // Subject 
 } from 'rxjs';
 
@@ -25,6 +25,7 @@ interface DataReady {
   name: string,
   values: TimeSeriesData[],
   opacity: number,
+  color: string,
 }
 
 const unSelectedColor = '#9F9F9F9F';
@@ -97,27 +98,24 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
       )
     )
+
+
+
+    this.subs.add(
+      this.netcdfService.cacheUpdated.pipe(
+        debounceTime(1000),
+        withLatestFrom(this.store$.select(chartsStore.getTimeseriesChartStates))
+      ).subscribe(([_updated_id, chartStates]) => {
+      this.refreshChart(chartStates);
+    }));
+    
     this.subs.add(
       this.store$.select(chartsStore.getTimeseriesChartStates).subscribe(
         chartStates => {
-          const allPointsData: {point: {}, state: models.timeseriesChartItemState}[] = []
-          this.store$.dispatch(chartsStore.setChartOutOfDate())
-          for (const state of Object.values(chartStates)) {
-          this.netcdfService.getTimeSeries(state.geoemetry).pipe(first()).subscribe(data => {
-            allPointsData.push({point: data, state});
-          })
-        }
-        this.isLoading = false
-        this.store$.dispatch(chartsStore.setChartUpToDate())
-        this.data = allPointsData
-        this.initChart(this.data)
+          this.refreshChart(chartStates);
       }
       )
-    )
-    // this.chartData.subscribe(data => {
-    //   this.data = data;
-    //   this.initChart(data);
-    // })
+    );
 
     this.subs.add(
       this.store$.select(chartsStore.getShowLines).subscribe(
@@ -144,7 +142,14 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       )
     );
   }
-
+  private refreshChart(chartStates: {[key: string]: models.timeseriesChartItemState}): void {
+    const cache = this.netcdfService.getCache()
+    const allPointsData: {point: {}, state: models.timeseriesChartItemState}[] = Object.keys(chartStates).map(
+      wkt => ({point: cache[wkt], state: chartStates[wkt]})
+    );
+    this.data = allPointsData;
+    this.initChart(this.data)
+  }
   public translateChartText() {
     this.xAxisTitle = this.language.translate.instant('SCENE') + ' ' +
       this.language.translate.instant('DATE');
@@ -208,7 +213,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
               return 1
             }
         })
-          this.dataReadyForChart.push({ 'name': aoi, 'values': this.timeSeriesData, 'opacity':  result.state.checked ? 1.0 : 0.4});
+          this.dataReadyForChart.push({ name: aoi, values: this.timeSeriesData, color: result.state.color, opacity:  result.state.checked ? 1.0 : 0.4});
           // this.averageData = ({
             // ...data.mean
           // })

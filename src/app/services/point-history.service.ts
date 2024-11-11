@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
-import { addTimeseriesState } from '@store/charts';
+import { addTimeseriesState, removeTimeseriesState } from '@store/charts';
 import WKT from 'ol/format/WKT';
 
 import { Point } from 'ol/geom';
@@ -36,7 +36,6 @@ export class PointHistoryService {
       return
     }
     const format = new WKT()
-    // this.history.map((value) => {
     const wkt = format.writeGeometry(point)
     this.history.push(point);
     this.store$.dispatch(addTimeseriesState({item: {geoemetry: point, checked: true, wkt: wkt, color: '#FFFFFF', name: `Series ${this.history.length}`}}))
@@ -44,8 +43,11 @@ export class PointHistoryService {
     this.savePoints();
   }
   public removePoint(index) {
+    const format = new WKT()
+    const wkt = format.writeGeometry(this.history[index])
     this.history.splice(index,1);
     this.history$.next(this.history)
+    this.store$.dispatch(removeTimeseriesState({wkt}))
     this.savePoints();
 
   }

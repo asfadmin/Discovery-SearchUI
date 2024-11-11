@@ -49,5 +49,10 @@ export const chartsReducer = createReducer(
   }),
   on(chartActions.setChartOutOfDate, (state) => ({...state, outOfDate: true})),
   on(chartActions.setChartUpToDate, (state) => ({...state, outOfDate: false})),
+  on(chartActions.removeTimeseriesState, (state, {wkt}) => {
+    const seriesStates = {...state.seriesStates}
+    delete seriesStates[wkt]
+    return {...state, seriesStates}
+  }),
   on(chartActions.reset, (_) => initialState)
 );

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BrowseOverlayService, WktService } from '@services';
-import { Observable, first, map, of, tap } from 'rxjs';
+import { Observable, Subject, first, map, of, tap } from 'rxjs';
 // import WebGLTileLayer from 'ol/layer/WebGLTile';
 import ImageLayer from 'ol/layer/Image';
 // import Static from 'ol/source/ImageStatic';
@@ -35,6 +35,19 @@ export class NetcdfService {
   ) {
   }
 
+  public cacheUpdated = new Subject<string>();
+  
+  public getCache() {
+    return this.cache
+  }
+
+  public removeFromCache(wkt: string): void {
+    if(this.cache.hasOwnProperty(wkt)) {
+      delete this.cache[wkt];
+    }
+    this.cacheUpdated.next(wkt);
+  }
+    
   public get_layers(): Observable<{ feature: Feature<Geometry>, browse: ImageLayer<ImageSource> }>[] {
     let output: Observable<{ feature: Feature<Geometry>, browse: ImageLayer<ImageSource> }>[] = []
     for (let file of this.files) {
@@ -91,6 +104,7 @@ export class NetcdfService {
             delete this.cache[deleted[0]];
           }
           console.log('cache miss', response);
+          this.cacheUpdated.next(index_id)
           return response
       }
     ))
