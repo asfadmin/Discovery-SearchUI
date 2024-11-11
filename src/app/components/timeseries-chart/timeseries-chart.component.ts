@@ -1,7 +1,10 @@
 import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
 import * as d3 from 'd3';
-import { Observable, Subject } from 'rxjs';
+// import * as models from '@models';
+import { debounceTime, Observable, withLatestFrom, 
+  // Subject 
+} from 'rxjs';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -9,18 +12,9 @@ import { AppState } from '@store';
 import * as chartsStore from '@store/charts';
 import { SubSink } from 'subsink';
 import { AsfLanguageService } from "@services/asf-language.service";
+import { NetcdfService } from '@services';
+import * as models from '@models';
 // import {style} from '@angular/animations';
-
-interface TimeSeriesChartPoint {
-  aoi: string
-  short_wavelength_displacement: number
-  interferometric_correlation: number
-  temporal_coherence: number
-  date: string
-  file_name: string,
-  temporal_baseline: number
-  id: string
-}
 
 interface TimeSeriesData {
   short_wavelength_displacement: number
@@ -29,7 +23,9 @@ interface TimeSeriesData {
 
 interface DataReady {
   name: string,
-  values: TimeSeriesData[]
+  values: TimeSeriesData[],
+  opacity: number,
+  color: string,
 }
 
 const unSelectedColor = '#9F9F9F9F';
@@ -45,11 +41,11 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   @Input() zoomIn$: Observable<void>;
   @Input() zoomOut$: Observable<void>;
   @Input() zoomToFit$: Observable<void>;
-  @Input() chartData: Subject<any>;
+  // @Input() chartData: models.timeseriesChartItemState[];
 
   public json_data: string = '';
   private svg?: d3.Selection<SVGElement, {}, HTMLDivElement, any>;
-  public dataSource: TimeSeriesChartPoint[] = [];
+  public dataSource: models.TimeSeriesChartPoint[] = [];
   public dataReadyForChart: DataReady[] = [];
   public timeSeriesData: TimeSeriesData[] = [];
   public averageData = {};
@@ -66,8 +62,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   public xAxis: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private yAxis: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private dots: d3.Selection<SVGCircleElement, TimeSeriesData, SVGGElement, {}>;
-  // private dots: d3.Selection<SVGCircleElement, TimeSeriesChartPoint, SVGGElement, {}>;
-  // private pointGraph: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private lineGraph: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private toolTip: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>
   public margin = { top: 10, right: 60, bottom: 60, left: 55 };
@@ -78,6 +72,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private lineLabels;
   private points;
   public gColorPalette: any;
+  
 
   // private selectedScene: string;
   @Input() isLoading: boolean = false;
@@ -91,17 +86,36 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   constructor(
     private store$: Store<AppState>,
     private language: AsfLanguageService,
+    private netcdfService: NetcdfService
   ) { }
 
   public ngOnInit(): void {
 
     this.translateChartText();
     this.createSVG();
+    this.subs.add(
+      this.store$.select(chartsStore.getIsChartOutOfDate).subscribe(
 
-    this.chartData.subscribe(data => {
-      this.data = data;
-      this.initChart(data);
-    })
+      )
+    )
+
+
+
+    this.subs.add(
+      this.netcdfService.cacheUpdated.pipe(
+        debounceTime(1000),
+        withLatestFrom(this.store$.select(chartsStore.getTimeseriesChartStates))
+      ).subscribe(([_updated_id, chartStates]) => {
+      this.refreshChart(chartStates);
+    }));
+    
+    this.subs.add(
+      this.store$.select(chartsStore.getTimeseriesChartStates).subscribe(
+        chartStates => {
+          this.refreshChart(chartStates);
+      }
+      )
+    );
 
     this.subs.add(
       this.store$.select(chartsStore.getShowLines).subscribe(
@@ -128,7 +142,14 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       )
     );
   }
-
+  private refreshChart(chartStates: {[key: string]: models.timeseriesChartItemState}): void {
+    const cache = this.netcdfService.getCache()
+    const allPointsData: {point: {}, state: models.timeseriesChartItemState}[] = Object.keys(chartStates).map(
+      wkt => ({point: cache[wkt], state: chartStates[wkt]})
+    );
+    this.data = allPointsData;
+    this.initChart(this.data)
+  }
   public translateChartText() {
     this.xAxisTitle = this.language.translate.instant('SCENE') + ' ' +
       this.language.translate.instant('DATE');
@@ -151,50 +172,51 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.updateChart();
   }
 
-  public initChart(data): void {
+  public initChart(data: {point: {}, state: models.timeseriesChartItemState}[]): void {
     this.dataSource = []
+    this.dataReadyForChart = []
     if (data?.[Symbol.iterator]) {
       let aoi: string = '';
-      for (let result of data) {
-        aoi = '';
-        // pre-process data, remove test v_2 files from results
-        // won't be necessary in production
-        for (let key of Object.keys(result)) {
-          if (key.startsWith('v_2_')) {
-            delete result[key];
+        for (let result of data) {
+          aoi = '';
+          // pre-process data, remove test v_2 files from results
+          // won't be necessary in production
+          for (let key of Object.keys(result.point)) {
+            if (key.startsWith('v_2_')) {
+              delete result.point[key];
+            }
+            if (key.startsWith('aoi')) {
+              aoi = result.point[key];
+            }
           }
-          if (key.startsWith('aoi')) {
-            aoi = result[key];
+          this.timeSeriesData = [];
+          for (let key of Object.keys(result.point).filter(x => x !== 'mean' && x !== 'aoi')) {
+            this.dataSource.push({
+              'aoi': aoi,
+              'short_wavelength_displacement': result.point[key].short_wavelength_displacement,
+              'interferometric_correlation': result.point[key].interferometric_correlation,
+              'temporal_coherence': result.point[key].temporal_coherence,
+              'date': result.point[key].secondary_datetime,
+              'file_name': key,
+              'id': key,
+              'temporal_baseline': result.point[key].temporal_baseline,
+            })
+            this.timeSeriesData.push({
+              'short_wavelength_displacement': result.point[key].short_wavelength_displacement,
+              'date': result.point[key].secondary_datetime,
+            });
           }
-        }
-        this.timeSeriesData = [];
-        for (let key of Object.keys(result).filter(x => x !== 'mean' && x !== 'aoi')) {
-          this.dataSource.push({
-            'aoi': aoi,
-            'short_wavelength_displacement': result[key].short_wavelength_displacement,
-            'interferometric_correlation': result[key].interferometric_correlation,
-            'temporal_coherence': result[key].temporal_coherence,
-            'date': result[key].secondary_datetime,
-            'file_name': key,
-            'id': key,
-            'temporal_baseline': result[key].temporal_baseline
-          })
-          this.timeSeriesData.push({
-            'short_wavelength_displacement': result[key].short_wavelength_displacement,
-            'date': result[key].secondary_datetime
-          });
-        }
-        this.timeSeriesData.sort((a, b) => {
-          if(a.date < b.date) {
-            return -1
-          } else {
-            return 1
-          }
-      })
-        this.dataReadyForChart.push({ 'name': aoi, 'values': this.timeSeriesData });
-        this.averageData = ({
-          ...data.mean
+          this.timeSeriesData.sort((a, b) => {
+            if(a.date < b.date) {
+              return -1
+            } else {
+              return 1
+            }
         })
+          this.dataReadyForChart.push({ name: aoi, values: this.timeSeriesData, color: result.state.color, opacity:  result.state.checked ? 1.0 : 0.4});
+          // this.averageData = ({
+            // ...data.mean
+          // })
       }
     } else {
       this.dataSource = [];
@@ -323,6 +345,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         })
         // @ts-ignore
         .attr("stroke", function (d: DataReady) { return colorPalette(d.name) })
+        .style("opacity", (d: DataReady) => d.opacity)
         .style("stroke-width", 1)
         .style("fill", "none")
         .style("shape-rendering", "geometricprecision")
@@ -359,6 +382,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .append('g')
       .attr('clip-path', 'url(#clip)')
       .style('fill', (d) : string=>  { return <string>colorPalette(d.name) })
+      .style('opacity', (d) => d.opacity)
       .attr('class', (d) : string=>  { return d.name.replace(/\W/g, '')})
       .selectAll('circle')
       .data(d => d.values)
@@ -388,7 +412,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   // When the pointer moves, find the closest point, update the interactive tip, and highlight
   // the corresponding line.
   private pointerMoved(event, lines, dots, points) {
-    console.log('pointerMoved');
     if (typeof points === 'undefined') { return; }
     if (points == null) { return; }
     const [xm, ym] = d3.pointer(event);
@@ -465,6 +488,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .attr("d", function (d) { // @ts-ignore
         return line(d.values)
       })
+      .style('opacity', (d: DataReady) => d.opacity)
     this.lineLabels
       .attr("transform",d => `translate(${newX(Date.parse(d.value.date))},${newY(d.value.short_wavelength_displacement)})`) // Put the text at the position of the last point
 
