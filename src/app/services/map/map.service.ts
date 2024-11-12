@@ -27,7 +27,7 @@ import { SarviewsEvent } from '@models';
 import { EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
-import {Circle as CircleStyle, Fill, Icon, Stroke, Style} from 'ol/style';
+import { Circle as CircleStyle, Fill, Icon, Stroke, Style, Text as olText } from 'ol/style';
 import Geometry from 'ol/geom/Geometry';
 import LayerGroup from 'ol/layer/Group';
 import { PinnedProduct } from '@services/browse-map.service';
@@ -509,14 +509,14 @@ export class MapService {
     this.selectClick.on('select', e => {
       // netcdf-layer
       // if (this.drawService.in)
-        this.timeseriesPixelSelected$.emit(null)
+      this.timeseriesPixelSelected$.emit(null)
       e.target.getFeatures().forEach(
         feature => this.newSelectedScene$.next(feature.get('filename'))
       );
     });
     this.timeseriesClick.on('select', e => {
       e.target.getFeatures().forEach(
-        feature => {this.pointHistoryService.passDraw = true; this.newSelectedDisplacement$.next(feature.get('point'))}
+        feature => { this.pointHistoryService.passDraw = true; this.newSelectedDisplacement$.next(feature.get('point')) }
       );
     });
 
@@ -695,7 +695,7 @@ export class MapService {
       this.map.removeLayer(this.browseImageLayer);
     }
     if (!url.endsWith('.tif')) {
-      if(url.includes('OPERA')) {
+      if (url.includes('OPERA')) {
         this.trimImage(url).then((imageBlob: Blob) => {
           let url = URL.createObjectURL(imageBlob);
           URL.revokeObjectURL(this.localBrowseImageURL)
@@ -752,14 +752,15 @@ export class MapService {
       const overview_source = new XYZ({
         'url': `${base_url}/{z}/{x}/{y}.png`,
         wrapX: models.mapOptions.wrapX,
-        tileSize: [256,256]
+        tileSize: [256, 256]
       });
 
-      this.displacementOverview = new TileLayer({ 'source': overview_source,
+      this.displacementOverview = new TileLayer({
+        'source': overview_source,
         'extent': response['extent']
-       });
+      });
 
-       this.map.addLayer(this.displacementOverview);
+      this.map.addLayer(this.displacementOverview);
     })
 
   }
@@ -768,25 +769,34 @@ export class MapService {
     this.displacementOverview = null;
   }
 
-  public setDisplacementLayer(points: Point[]) {
+  public setDisplacementLayer(points: { point: Point, seriesNumber: number, color: string }[]) {
     if (!!this.displacmentLayer) {
       this.map.removeLayer(this.displacmentLayer);
       this.displacmentLayer = null;
     }
 
     let source = new VectorSource();
-    let pointFeatures = points.map((point: Point) => {
-      let temp = point.clone() as Point;
-      temp.transform( 'EPSG:4326', 'EPSG:3857')
+    let pointFeatures = points.map(dataPoint => {
+      let temp = dataPoint.point.clone() as Point;
+      temp.transform('EPSG:4326', 'EPSG:3857')
       let temp_feature = new Feature(temp)
-      temp_feature.set('point', point)
+      temp_feature.set('point', dataPoint.point)
+      temp_feature.set('seriesNumber', dataPoint.seriesNumber)
+      temp_feature.set('seriesColor', dataPoint.color);
       return temp_feature;
     });
     source.addFeatures(pointFeatures);
 
-    this.displacmentLayer = new VectorLayer({
-      source: source,
-      style: new Style({
+    const stylize = function StyleFunction(feature: Feature) {
+      const textFunction = function (f: Feature) {
+        let labelContent = f.get('seriesNumber');
+        return labelContent.toString();
+      }
+      const textColorFunction = function (f: Feature) {
+        return f.get('seriesColor') ?? "#000000";
+      }
+      let layerStyle = new Style({
+        // image: symbol,
         image: new CircleStyle({
           stroke: new Stroke({
             // color: '#000000',
@@ -800,8 +810,29 @@ export class MapService {
             color: '#236192',
             // color: '#ffcc33',
           }),
+        }),
+        text: new olText({
+          overflow: true,
+          offsetY: 15,
+          offsetX: -15,
+          font: '25px sans-serif',
+          stroke: new Stroke({
+            color: '#000000',
+            width: 3
+          }),
+          fill: new Fill({
+            color: textColorFunction(feature),
+          }),
+          text: textFunction(feature)
         })
       })
+  
+      return layerStyle
+    }
+
+    this.displacmentLayer = new VectorLayer({
+      source: source,
+      style: stylize
     });
 
     this.displacmentLayer.set('displacement-layer', 'true');
@@ -832,15 +863,15 @@ export class MapService {
     ]
     this.priorityOverview = new VectorLayer({
       source: source,
-      style: function(feature, _resolution) {
+      style: function (feature, _resolution) {
         const test = feature.getProperties();
-        const priority= +test['priority'];
+        const priority = +test['priority'];
         let color = '#FF0000';
-        if(priority === 1) {
+        if (priority === 1) {
           color = colorTable[1];
-        } else if(priority === 2) {
+        } else if (priority === 2) {
           color = colorTable[2];
-        } else if(priority === 3) {
+        } else if (priority === 3) {
           color = colorTable[3];
         } else {
           color = colorTable[0]

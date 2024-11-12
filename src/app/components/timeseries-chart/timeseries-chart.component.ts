@@ -181,31 +181,33 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           aoi = '';
           // pre-process data, remove test v_2 files from results
           // won't be necessary in production
-          for (let key of Object.keys(result.point)) {
-            if (key.startsWith('v_2_')) {
-              delete result.point[key];
+          if (!!result.point)  {
+            for (let key of Object.keys(result.point)) {
+              if (key.startsWith('v_2_')) {
+                delete result.point[key];
+              }
+              if (key.startsWith('aoi')) {
+                aoi = result.point[key];
+              }
             }
-            if (key.startsWith('aoi')) {
-              aoi = result.point[key];
+            
+            this.timeSeriesData = [];
+            for (let key of Object.keys(result.point).filter(x => x !== 'mean' && x !== 'aoi')) {
+              this.dataSource.push({
+                'aoi': aoi,
+                'short_wavelength_displacement': result.point[key].short_wavelength_displacement,
+                'interferometric_correlation': result.point[key].interferometric_correlation,
+                'temporal_coherence': result.point[key].temporal_coherence,
+                'date': result.point[key].secondary_datetime,
+                'file_name': key,
+                'id': key,
+                'temporal_baseline': result.point[key].temporal_baseline,
+              })
+              this.timeSeriesData.push({
+                'short_wavelength_displacement': result.point[key].short_wavelength_displacement,
+                'date': result.point[key].secondary_datetime,
+              });
             }
-          }
-          this.timeSeriesData = [];
-          for (let key of Object.keys(result.point).filter(x => x !== 'mean' && x !== 'aoi')) {
-            this.dataSource.push({
-              'aoi': aoi,
-              'short_wavelength_displacement': result.point[key].short_wavelength_displacement,
-              'interferometric_correlation': result.point[key].interferometric_correlation,
-              'temporal_coherence': result.point[key].temporal_coherence,
-              'date': result.point[key].secondary_datetime,
-              'file_name': key,
-              'id': key,
-              'temporal_baseline': result.point[key].temporal_baseline,
-            })
-            this.timeSeriesData.push({
-              'short_wavelength_displacement': result.point[key].short_wavelength_displacement,
-              'date': result.point[key].secondary_datetime,
-            });
-          }
           this.timeSeriesData.sort((a, b) => {
             if(a.date < b.date) {
               return -1
@@ -217,6 +219,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           // this.averageData = ({
             // ...data.mean
           // })
+      }
       }
     } else {
       this.dataSource = [];
