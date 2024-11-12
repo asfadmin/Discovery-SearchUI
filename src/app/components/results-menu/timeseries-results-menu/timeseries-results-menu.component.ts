@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, OnDestroy, ViewChild, ElementRef, computed, signal} from '@angular/core';
-import { first, Observable, Subject } from 'rxjs';
+import { first, Observable, Subject, withLatestFrom } from 'rxjs';
 import { ResizeEvent } from 'angular-resizable-element';
 
 import { Store } from '@ngrx/store';
@@ -7,17 +7,19 @@ import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
 import * as mapStore from '@store/map';
-import * as models from '@models';
+import * as chartStore from '@store/charts';
 
-import { DrawService, MapService, NetcdfService, PointHistoryService, ScreenSizeService, WktService } from '@services';
+import { DrawService, MapService, NetcdfService, PointHistoryService, ScreenSizeService,
+  WktService
+} from '@services';
 import { Breakpoints,   SearchType, MapInteractionModeType, MapDrawModeType } from '@models';
 
 import { SubSink } from 'subsink';
 
 import { Point } from 'ol/geom';
-import { WKT } from 'ol/format';
+import { getTimeseriesChartStates } from '@store/charts';
 import * as filtersStore from '@store/filters';
-// import { getPathRange } from '@store/filters';
+import * as models from '@models';
 
 export interface Task {
   aoi: string;
@@ -65,9 +67,11 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public breakpoints = Breakpoints;
   private subs = new SubSink();
 
-  public pointHistory = [];
+  // public pointHistory = [];
 
-  public chartData = new Subject<any>;
+  // public chartData = new Subject<any>;
+  public chartStates: models.timeseriesChartItemState[] = []
+  public allSeriesChecked$ = this.store$.select(chartStore.getAreAllTimeseriesChecked)
   public temporalRange: models.Range<number> = {start: 0, end: 0};
   public temporalRangeValues$ = new Subject<number[]>();
   public maxRange: models.Range<number> = {start: 0, end: 0};
@@ -81,7 +85,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public dateRange = [];
   public totalPoints = 0;
 
-  public isLoading = false;
+  // public isLoading = false;
 
   constructor(
     private store$: Store<AppState>,
@@ -114,6 +118,11 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       )
     );
 
+    this.subs.add(this.store$.select(getTimeseriesChartStates).subscribe(chartStates => {
+      this.chartStates = Object.values(chartStates);
+    }
+    ));
+    
     this.subs.add(
       this.temporalRangeValues$.subscribe(
         range => {
@@ -124,28 +133,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(this.pointHistoryService.history$.subscribe(history => {
-      this.pointHistory = history;
       this.mapService.setDisplacementLayer(history);
-      console.log('results menu sub this.pointHistory', this.pointHistory);
-      const task = this.task();
-      let found = false
-      for (const point of this.pointHistory) {
-        found = false;
-        for (const pt of task.subtasks) {
-          if (pt.aoi.toString() === point.flatCoordinates.toString()) {
-            found = true;
-            break;
-          }
-        }
-        if (!found) {
-          let p = {aoi: point.flatCoordinates, checked: true};
-          task.subtasks.push(p);
-        }
-      }
-
-      console.log('results menu sub task.subtasks', task.subtasks);
-
-      return {...task};
 
     }));
 
@@ -157,18 +145,22 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
         previous_points = previous_points?.map(value => {
           return this.wktService.wktToFeature(value, 'EPSG:4326');
         })
-        previous_points?.forEach(point => {
-          this.pointHistoryService.addPoint(point.getGeometry());
-        })
+        previous_points?.forEach((point, idx) => {
+          this.pointHistoryService.addPoint(point.getGeometry(), idx);
+          this.netcdfService.getTimeSeries(point.getGeometry()).pipe(first()).subscribe()
+        });
       }
-  }
+    }
 
-    this.subs.add(this.drawService.polygon$.subscribe(polygon => {
+
+    this.subs.add(this.drawService.polygon$.pipe(
+      withLatestFrom(this.store$.select(chartStore.getMinSeriesNumber))
+    ).subscribe(([polygon, minSeriesNumber]) => {
       if(polygon) {
         let temp = polygon.getGeometry().clone() as Point;
         temp.transform('EPSG:3857', 'EPSG:4326')
         if (polygon.getGeometry().getType() === 'Point') {
-          this.pointHistoryService.addPoint(temp);
+          this.pointHistoryService.addPoint(temp, minSeriesNumber);
           // this.selectedPoint = temp;
         }
         this.updateChart();
@@ -209,27 +201,20 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new mapStore.SetMapInteractionMode(MapInteractionModeType.NONE));
   }
 
-  public onPointClick(index: number) {
-    this.pointHistoryService.selectedPoint = index;
-    this.pointHistoryService.passDraw = true;
-    let format = new WKT();
-    let wktRepresenation  = format.writeGeometry(this.pointHistory[index]);
-    this.mapService.loadPolygonFrom(wktRepresenation.toString())
-  }
-
   public updateChart(): void {
-    let allPointsData: PointSeries[] = [];
-    for (const geometry of this.pointHistory) {
-      this.netcdfService.getTimeSeries(geometry).pipe(first()).subscribe(data => {
-        console.log('updateChart data', data);
-        console.log('updateChart geometry', geometry);
+    let allPointsData = [];
+    for (const series of this.chartStates) {
+      this.netcdfService.getTimeSeries(series.geoemetry).pipe(first()).subscribe(data => {
         allPointsData.push(data);
-        this.chartData.next(allPointsData);
+        // this.chartData.next(allPointsData);
         this.temporalRange = this.getMaxRange(allPointsData);
         console.log('updateChart dataDateMin, dataDateMax', this.dataDateMin, this.dataDateMax);
         console.log('updateChart allPointsData', allPointsData);
       })
     }
+    this.maxRange = this.getMaxRange(allPointsData);
+    console.log('updateChart dataDateMin, dataDateMax', this.dataDateMin, this.dataDateMax);
+    console.log('updateChart allPointsData', allPointsData);
   }
 
   readonly task = signal<Task>({
@@ -246,6 +231,9 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     return task.subtasks.some(t => t.checked) && !task.subtasks.every(t => t.checked);
   });
 
+  public toggleAllSeries(checked: boolean) {
+    this.store$.dispatch(chartStore.setAllTimeseriesChecked({checked}))
+  }
   public getMaxRange(allSeries: PointSeries[]) {
     let minDate = null;
     let maxDate = null;
@@ -271,26 +259,9 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
 
 
   public updateSeries(checked: boolean, index?: number) {
-    console.log('updateSeries', checked, index);
-    this.task.update(task => {
-      if (index === undefined) {
-        task.checked = checked;
-        task.subtasks?.forEach(t => (t.checked = checked));
-      } else {
-        task.subtasks![index].checked = checked;
-        task.checked = task.subtasks?.every(t => t.checked) ?? true;
-        this.pointHistoryService.selectedPoint = index;
-        console.log('updateSeries() this.pointHistoryService.selectedPoint', this.pointHistoryService.selectedPoint);
-        this.pointHistoryService.passDraw = true;
-        let format = new WKT();
-        let wktRepresentation  = format.writeGeometry(this.pointHistory[index]);
-        this.mapService.loadPolygonFrom(wktRepresentation.toString())
-      }
-      console.log('updateSeries() task', task);
-      console.log('updateSeries() task.subtasks', task.subtasks);
-      console.log('updateSeries() this.pointHistory', this.pointHistory);
-      return {...task};
-    });
+    const wkt = this.chartStates[index]?.wkt
+
+    this.store$.dispatch(chartStore.setTimeseriesChecked({wkt, checked}))
   }
   public deletePoint(index: number) {
     console.log('delete', index);
