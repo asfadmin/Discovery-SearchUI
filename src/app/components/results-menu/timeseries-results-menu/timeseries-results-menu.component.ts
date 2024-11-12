@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, OnDestroy, ViewChild, ElementRef, computed, signal} from '@angular/core';
-import { first, Observable, Subject } from 'rxjs';
+import { first, Observable, Subject, withLatestFrom } from 'rxjs';
 import { ResizeEvent } from 'angular-resizable-element';
 
 import { Store } from '@ngrx/store';
@@ -145,19 +145,22 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
         previous_points = previous_points?.map(value => {
           return this.wktService.wktToFeature(value, 'EPSG:4326');
         })
-        previous_points?.forEach(point => {
-          this.pointHistoryService.addPoint(point.getGeometry());
+        previous_points?.forEach((point, idx) => {
+          this.pointHistoryService.addPoint(point.getGeometry(), idx);
           this.netcdfService.getTimeSeries(point.getGeometry()).pipe(first()).subscribe()
         });
       }
     }
 
-    this.subs.add(this.drawService.polygon$.subscribe(polygon => {
+
+    this.subs.add(this.drawService.polygon$.pipe(
+      withLatestFrom(this.store$.select(chartStore.getMinSeriesNumber))
+    ).subscribe(([polygon, minSeriesNumber]) => {
       if(polygon) {
         let temp = polygon.getGeometry().clone() as Point;
         temp.transform('EPSG:3857', 'EPSG:4326')
         if (polygon.getGeometry().getType() === 'Point') {
-          this.pointHistoryService.addPoint(temp);
+          this.pointHistoryService.addPoint(temp, minSeriesNumber);
           // this.selectedPoint = temp;
         }
         this.updateChart();
