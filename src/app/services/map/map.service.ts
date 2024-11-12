@@ -826,9 +826,9 @@ export class MapService {
     )
     const colorTable = [
       'rgba(174, 174, 174, 0.6)',
-      'rgba(253, 231, 37, 0.6)',
-      'rgba(53, 183, 121, 0.6)',
-      'rgba(49, 104, 142, 0.6)',
+      'rgba(102, 204, 136, 0.8)',
+      'rgba(32, 128, 64, 0.7)',
+      'rgba(0, 77, 26, 0.6)',
     ]
     this.priorityOverview = new VectorLayer({
       source: source,
