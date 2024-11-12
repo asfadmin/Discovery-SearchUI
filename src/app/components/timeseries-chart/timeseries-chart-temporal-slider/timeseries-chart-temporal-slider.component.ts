@@ -64,9 +64,7 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit, OnDestroy
                 this.store$.dispatch(action);
                 const action2 = new filtersStore.SetEndDate(new Date(end));
                 this.store$.dispatch(action2);
-
                 this.timeSeriesSlider = this.makeTimeSeriesSlider(this.sliderRef);
-
               }
             )
           );
@@ -74,57 +72,7 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit, OnDestroy
       )
     );
 
-    // this.subs.add(
-    //   this.store$.select(filtersStore.getStartDate).subscribe(
-    //     start => {
-    //       this.startDate = start;
-    //       if (this.lastRange !== this.perpRange) {
-    //         this.lastRange = this.perpRange;
-    //         this.perpendicularSlider.set([perp.start, perp.end]);
-    //       }
-    //     }
-    //   )
-    // );
-
-    // this.subs.add(
-    //   this.startDate$.subscribe(
-    //     start => {
-    //       this.startDate = start;
-    //       if (this.endDate < this.startDate && !!this.endDate) {
-    //         const endOfDay = this.endDateFormat(this.startDate);
-    //         this.store$.dispatch(new filtersStore.SetEndDate(endOfDay));
-    //       }
-    //     }
-    //   )
-    // );
-    //
-    // this.subs.add(
-    //   this.endDate$.subscribe(
-    //     end => {
-    //       this.endDate = end;
-    //       if (this.startDate > this.endDate && !!this.startDate && !!this.endDate) {
-    //         this.store$.dispatch(new filtersStore.SetStartDate(this.endDate));
-    //       }
-    //     }
-    //   )
-    // );
-
-
   }
-
-  // public onStartDateChange(date): void {
-  //     this.store$.dispatch(new filtersStore.SetStartDate(date));
-  //   }
-  //
-  // public onEndDateChange(date): void {
-  //     this.store$.dispatch(new filtersStore.SetEndDate(date));
-  //   }
-  //
-  // private endDateFormat(date: Date | moment.Moment) {
-  //     const endDate = moment(date).utc().endOf('day');
-  //     return this.toJSDate(endDate);
-  //   }
-
 
   private timestamp(str) {
     return new Date(str).getTime();
@@ -185,7 +133,6 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit, OnDestroy
       });
 
       this.tsSlider.on('update', (values: any[], _: any) => {
-        console.log('*** timeseries-chart-temporal-slider values ***', values);
         values$.next(values.map(v => +v));
       });
 
