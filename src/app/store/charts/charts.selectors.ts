@@ -49,14 +49,10 @@ export const getMinSeriesNumber = createSelector(
     getTimeseriesChartStates,
     (seriesStates) => {
         const taken = new Set(Object.values(seriesStates).map(state => state.seriesNumber))
-        let min = Math.min(...taken)
-        let max = Math.max(...taken)
 
-        let output = 0;
-        if (Number.isFinite(min) && Number.isFinite(max)) {
-            while (taken.has(output)) {
-                output++
-            }
+        let output = 1;
+        while (taken.has(output)) {
+            output++
         }
         return output;
     }
