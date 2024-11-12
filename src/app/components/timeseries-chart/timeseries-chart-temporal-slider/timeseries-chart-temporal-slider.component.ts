@@ -1,4 +1,4 @@
-import {Component, ElementRef, ViewChild, OnInit} from '@angular/core';
+import {Component, ElementRef, ViewChild, OnInit, OnDestroy} from '@angular/core';
 import * as noUiSlider from 'nouislider';
 import { Store } from "@ngrx/store";
 import { AppState } from "@store";
@@ -11,7 +11,7 @@ import {SubSink} from "subsink";
 // import wNumb from 'wnumb';
 import * as filtersStore from '@store/filters';
 import * as models from '@models';
-import moment from 'moment/moment';
+// import moment from 'moment/moment';
 import {Observable, Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 // import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
@@ -22,7 +22,7 @@ import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
   templateUrl: './timeseries-chart-temporal-slider.component.html',
   styleUrls: ['./timeseries-chart-temporal-slider.component.scss']
 })
-export class TimeseriesChartTemporalSliderComponent implements OnInit {
+export class TimeseriesChartTemporalSliderComponent implements OnInit, OnDestroy {
   @ViewChild('ts_slider', { static: true }) sliderRef: ElementRef;
 
   private subs = new SubSink();
@@ -44,66 +44,86 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit {
 
   ngOnInit() {
 
-    // this.subs.add(
-    //   this.timeSeriesSlider.values$.subscribe(
-    //     ([start, end]) => {
-    //       console.log('*** timeseries-chart-temporal-slider selected range values$ ***', start, end);
-    //       if (start === this.selectedRange.start && end === this.selectedRange.end) {
-    //         return;
-    //       }
-    //       // const action = new filtersStore.SetPerpendicularRange({ start, end });
-    //       // this.store$.dispatch(action);
-    //     }
-    //   )
-    // );
-
     this.subs.add(
       this.store$.select(filtersStore.getTemporalRange).subscribe(
         temp => {
           this.maxRange = {start: temp.start, end: temp.end};
+          this.selectedRange = {start: temp.start, end: temp.end};
           console.log('timeseries-chart-temporal-slider', this.maxRange);
           this.timeSeriesSlider = this.makeTimeSeriesSlider(this.sliderRef);
           console.log('**** this.timeSeriesSlider ****', this.timeSeriesSlider);
+          this.subs.add(
+            this.timeSeriesSlider.values$.subscribe(
+              ([start, end]) => {
+                console.log('*** timeseries-chart-temporal-slider selected range values$ ***', start, end);
+                console.log('*** timeseries-chart-temporal-slider selected range types ***', typeof start, typeof end);
+                if (start === this.selectedRange.start && end === this.selectedRange.end) {
+                  return;
+                }
+                const action = new filtersStore.SetStartDate(new Date(start));
+                this.store$.dispatch(action);
+                const action2 = new filtersStore.SetEndDate(new Date(end));
+                this.store$.dispatch(action2);
+
+                this.timeSeriesSlider = this.makeTimeSeriesSlider(this.sliderRef);
+
+              }
+            )
+          );
         }
       )
     );
 
-    this.subs.add(
-      this.startDate$.subscribe(
-        start => {
-          this.startDate = start;
-          if (this.endDate < this.startDate && !!this.endDate) {
-            const endOfDay = this.endDateFormat(this.startDate);
-            this.store$.dispatch(new filtersStore.SetEndDate(endOfDay));
-          }
-        }
-      )
-    );
+    // this.subs.add(
+    //   this.store$.select(filtersStore.getStartDate).subscribe(
+    //     start => {
+    //       this.startDate = start;
+    //       if (this.lastRange !== this.perpRange) {
+    //         this.lastRange = this.perpRange;
+    //         this.perpendicularSlider.set([perp.start, perp.end]);
+    //       }
+    //     }
+    //   )
+    // );
 
-    this.subs.add(
-      this.endDate$.subscribe(
-        end => {
-          this.endDate = end;
-          if (this.startDate > this.endDate && !!this.startDate && !!this.endDate) {
-            this.store$.dispatch(new filtersStore.SetStartDate(this.endDate));
-          }
-        }
-      )
-    );
+    // this.subs.add(
+    //   this.startDate$.subscribe(
+    //     start => {
+    //       this.startDate = start;
+    //       if (this.endDate < this.startDate && !!this.endDate) {
+    //         const endOfDay = this.endDateFormat(this.startDate);
+    //         this.store$.dispatch(new filtersStore.SetEndDate(endOfDay));
+    //       }
+    //     }
+    //   )
+    // );
+    //
+    // this.subs.add(
+    //   this.endDate$.subscribe(
+    //     end => {
+    //       this.endDate = end;
+    //       if (this.startDate > this.endDate && !!this.startDate && !!this.endDate) {
+    //         this.store$.dispatch(new filtersStore.SetStartDate(this.endDate));
+    //       }
+    //     }
+    //   )
+    // );
+
+
   }
 
-  public onStartDateChange(date): void {
-      this.store$.dispatch(new filtersStore.SetStartDate(date));
-    }
-
-  public onEndDateChange(date): void {
-      this.store$.dispatch(new filtersStore.SetEndDate(date));
-    }
-
-  private endDateFormat(date: Date | moment.Moment) {
-      const endDate = moment(date).utc().endOf('day');
-      return this.toJSDate(endDate);
-    }
+  // public onStartDateChange(date): void {
+  //     this.store$.dispatch(new filtersStore.SetStartDate(date));
+  //   }
+  //
+  // public onEndDateChange(date): void {
+  //     this.store$.dispatch(new filtersStore.SetEndDate(date));
+  //   }
+  //
+  // private endDateFormat(date: Date | moment.Moment) {
+  //     const endDate = moment(date).utc().endOf('day');
+  //     return this.toJSDate(endDate);
+  //   }
 
 
   private timestamp(str) {
@@ -122,9 +142,9 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit {
     return new Date(value).toLocaleDateString();
   }
 
-  private toJSDate(date: moment.Moment) {
-    return date.toDate();
-  }
+  // private toJSDate(date: moment.Moment) {
+  //   return date.toDate();
+  // }
 
   // private isNumber(x: any): x is number {
   //   return typeof x === "number";
@@ -137,10 +157,12 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit {
     const increment = 24 * 60 * 60 * 1000;
     let maxStart = this.maxRange.start ? this.maxRange.start.valueOf() : 0;
     let maxEnd = this.maxRange.end ? this.maxRange.end.valueOf() : 0;
+    let selectedStart = this.selectedRange.start ? this.selectedRange.start.valueOf() : 0;
+    let selectedEnd = this.selectedRange.end ? this.selectedRange.end.valueOf() : 0;
     if (maxStart != 0 && maxEnd != 0) {
       if (filterRef.nativeElement && filterRef.nativeElement.noUiSlider) { filterRef.nativeElement.noUiSlider.destroy(); }
       this.tsSlider = noUiSlider.create(filterRef.nativeElement, {
-        start: [maxStart, maxEnd],
+        start: [selectedStart, selectedEnd],
         behaviour: 'tap-drag',
         tooltips: [{to: (d) => self.toFormat(d)}, {to: (d) => self.toFormat(d)}],
         connect: true,
