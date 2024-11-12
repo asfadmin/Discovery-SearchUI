@@ -6,9 +6,13 @@
   <div class="header-controls fx-row"
        [class.map-control-margin]="(areResultsLoaded$ | async) && breakpoint === breakpoints.MOBILE">
 
-    <div *ngIf="breakpoint > breakpoints.MOBILE" class="fx-row">
+    <div *ngIf="breakpoint > breakpoints.MOBILE" class="fx-col">
       <div class="map-controls">
         <app-map-controls></app-map-controls>
+      </div>
+
+      <div class="disp-layers">
+        <app-displacement-layers></app-displacement-layers>
       </div>
     </div>
 
