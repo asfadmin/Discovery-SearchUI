@@ -11,9 +11,11 @@
         <app-map-controls></app-map-controls>
       </div>
 
-      <div class="disp-layers">
-        <app-displacement-layers></app-displacement-layers>
-      </div>
+      @if (searchType === searchTypes.DISPLACEMENT && breakpoint > breakpoints.MOBILE) {
+        <div class="disp-layers">
+          <app-displacement-layers></app-displacement-layers>
+        </div>
+      }
     </div>
 
     <div class="fx-row banner-row">

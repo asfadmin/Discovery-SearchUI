@@ -818,6 +818,7 @@ export class MapService {
     this.layerService.coherenceLayer = null;
     this.hasCoherenceLayer$.next(null);
   }
+
   public enablePriority(): void {
     const source = new VectorSource({
       url: '/assets/priority_rollout.json',
@@ -857,10 +858,16 @@ export class MapService {
     })
     this.map.addLayer(this.priorityOverview)
   }
+
   public disablePriority(): void {
     this.map.removeLayer(this.priorityOverview);
     this.priorityOverview = null;
   }
+
+  public isPriorityEnabled(): boolean {
+    return !!this.priorityOverview;
+  }
+
   public createBrowseRasterCanvas(scenes: models.CMRProduct[]) {
     const scenesWithBrowse = scenes.filter(scene => scene.browses?.length > 0).slice(0, 10);
 
