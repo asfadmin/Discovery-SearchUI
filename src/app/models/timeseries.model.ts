@@ -5,7 +5,8 @@ export interface timeseriesChartItemState {
     color: string,
     name: string,
     wkt: string,
-    geoemetry: SimpleGeometry
+    geoemetry: SimpleGeometry,
+    seriesNumber: number,
 }
 
 export interface TimeSeriesChartPoint {

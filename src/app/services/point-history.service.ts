@@ -17,9 +17,9 @@ export class PointHistoryService {
   public history$ = new Subject<Point[]>();
   public passDraw: boolean = false;
   public selectedPoint: number = 0;
-  
+
   constructor(
-    private store$: Store<AppState>
+    private store$: Store<AppState>,
   ) {
 
 
@@ -30,7 +30,7 @@ export class PointHistoryService {
   }
 
 
-  public addPoint(point: Point) {
+  public addPoint(point: Point, seriesNumber: number) {
     if(this.passDraw) {
       this.passDraw = false
       return
@@ -38,7 +38,7 @@ export class PointHistoryService {
     const format = new WKT()
     const wkt = format.writeGeometry(point)
     this.history.push(point);
-    this.store$.dispatch(addTimeseriesState({item: {geoemetry: point, checked: true, wkt: wkt, color: '#FFFFFF', name: `Series ${this.history.length}`}}))
+    this.store$.dispatch(addTimeseriesState({item: {geoemetry: point, checked: true, seriesNumber, wkt: wkt, color: '#FFFFFF', name: `Series ${this.history.length}`}}))
     this.history$.next(this.history);
     this.savePoints();
   }

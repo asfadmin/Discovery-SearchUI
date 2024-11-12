@@ -31,7 +31,7 @@ export const getAreAllTimeseriesChecked = createSelector(
     getTimeseriesChartStates,
     getCheckedTimeseries,
     (checked, all) => {
-        return Object.keys(checked).length === Object.keys(all).length 
+        return Object.keys(checked).length === Object.keys(all).length
     }
 )
 
@@ -44,3 +44,16 @@ export const getChartWKTs = createSelector(
     getTimeseriesChartStates,
     (chartStates) => Object.keys(chartStates)
 )
+
+export const getMinSeriesNumber = createSelector(
+    getTimeseriesChartStates,
+    (seriesStates) => {
+        const taken = new Set(Object.values(seriesStates).map(state => state.seriesNumber))
+
+        let output = 1;
+        while (taken.has(output)) {
+            output++
+        }
+        return output;
+    }
+);
