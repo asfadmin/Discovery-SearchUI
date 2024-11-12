@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, OnDestroy, ViewChild, ElementRef, computed, signal} from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef, computed, signal } from '@angular/core';
 import { first, Observable, Subject, withLatestFrom } from 'rxjs';
 import { ResizeEvent } from 'angular-resizable-element';
 
@@ -9,10 +9,11 @@ import * as searchStore from '@store/search';
 import * as mapStore from '@store/map';
 import * as chartStore from '@store/charts';
 
-import { DrawService, MapService, NetcdfService, PointHistoryService, ScreenSizeService,
+import {
+  DrawService, MapService, NetcdfService, PointHistoryService, ScreenSizeService,
   WktService
 } from '@services';
-import { Breakpoints,   SearchType, MapInteractionModeType, MapDrawModeType } from '@models';
+import { Breakpoints, SearchType, MapInteractionModeType, MapDrawModeType } from '@models';
 
 import { SubSink } from 'subsink';
 
@@ -132,21 +133,27 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       )
     );
 
-    this.subs.add(this.pointHistoryService.history$.subscribe(history => {
-      this.mapService.setDisplacementLayer(history);
+    this.subs.add(this.store$.select(getTimeseriesChartStates).pipe(
+      withLatestFrom(this.pointHistoryService.history$)
+    ).subscribe(([chartStates, history]) => {
+      let data = []
+      for (const p of history) {
+        data.push({ point: p.point, seriesNumber: chartStates[p.wkt].seriesNumber, color: chartStates[p.wkt].color })
+      }
+      this.mapService.setDisplacementLayer(data);
 
     }));
 
     let thing: string = localStorage.getItem('timeseries-points')
-    if(thing && thing.length > 0) {
+    if (thing && thing.length > 0) {
       let previous_points: any[] = thing?.split(';');
-      if(previous_points.length > 0) {
-        console.log(previous_points)
+      if (previous_points.length > 0) {
+        // console.log(previous_points)
         previous_points = previous_points?.map(value => {
           return this.wktService.wktToFeature(value, 'EPSG:4326');
         })
         previous_points?.forEach((point, idx) => {
-          this.pointHistoryService.addPoint(point.getGeometry(), idx);
+          this.pointHistoryService.addPoint(point.getGeometry(), idx + 1);
           this.netcdfService.getTimeSeries(point.getGeometry()).pipe(first()).subscribe()
         });
       }
