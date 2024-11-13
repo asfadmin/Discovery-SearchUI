@@ -54,7 +54,6 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit, OnDestroy
           if (this.lastMaxRange.start !== this.maxRange.start || this.lastMaxRange.end !== this.maxRange.end) {
             this.lastMaxRange.start = this.maxRange.start;
             this.lastMaxRange.end = this.maxRange.end;
-
             this.sliderRef.nativeElement.noUiSlider.updateOptions({
               start: [this.maxRange.start, this.maxRange.end],
               range: {
@@ -86,7 +85,6 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit, OnDestroy
       )
     );
 
-
   }
 
   private timestamp(str) {
@@ -103,14 +101,6 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit, OnDestroy
     if (value == 0) return 0;
     return new Date(value).toLocaleDateString();
   }
-
-  // private toJSDate(date: moment.Moment) {
-  //   return date.toDate();
-  // }
-
-  // private isNumber(x: any): x is number {
-  //   return typeof x === "number";
-  // }
 
   public makeTimeSeriesSlider(filterRef: ElementRef): { slider: noUiSlider.API; values$: Observable<number[]> } {
     const self = this;
