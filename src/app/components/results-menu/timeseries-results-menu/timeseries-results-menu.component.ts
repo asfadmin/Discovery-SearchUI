@@ -152,8 +152,13 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
           return this.wktService.wktToFeature(value, 'EPSG:4326');
         })
         previous_points?.forEach((point, idx) => {
+          let allPointsData = [];
           this.pointHistoryService.addPoint(point.getGeometry(), idx + 1);
-          this.netcdfService.getTimeSeries(point.getGeometry()).pipe(first()).subscribe()
+          this.netcdfService.getTimeSeries(point.getGeometry()).pipe(first()).subscribe( data => {
+            allPointsData.push(data);
+            // this.chartData.next(allPointsData);
+            this.maxRange = this.temporalRange = this.getMaxRange(allPointsData);
+          })
         });
       }
     }
@@ -236,6 +241,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public toggleAllSeries(checked: boolean) {
     this.store$.dispatch(chartStore.setAllTimeseriesChecked({checked}))
   }
+
   public getMaxRange(allSeries: PointSeries[]) {
     let minDate = null;
     let maxDate = null;
@@ -255,15 +261,15 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     return dateRange;
   }
 
-
   public updateSeries(checked: boolean, index?: number) {
     const wkt = this.chartStates[index]?.wkt
-
     this.store$.dispatch(chartStore.setTimeseriesChecked({wkt, checked}))
   }
+
   public deletePoint(index: number) {
     this.pointHistoryService.removePoint(index);
   }
+
   ngOnDestroy() {
     this.pointHistoryService.clearPoints();
     this.subs.unsubscribe();
