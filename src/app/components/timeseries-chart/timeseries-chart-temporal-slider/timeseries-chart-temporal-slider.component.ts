@@ -1,4 +1,4 @@
-import {Component, ElementRef, ViewChild, OnInit} from '@angular/core';
+import {Component, ElementRef, ViewChild, OnInit, OnDestroy} from '@angular/core';
 import * as noUiSlider from 'nouislider';
 import { Store } from "@ngrx/store";
 import { AppState } from "@store";
@@ -11,6 +11,10 @@ import {SubSink} from "subsink";
 // import wNumb from 'wnumb';
 import * as filtersStore from '@store/filters';
 import * as models from '@models';
+// import moment from 'moment/moment';
+import {Observable, Subject} from 'rxjs';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+// import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 @Component({
   selector: 'app-timeseries-chart-temporal-slider',
@@ -18,34 +22,71 @@ import * as models from '@models';
   templateUrl: './timeseries-chart-temporal-slider.component.html',
   styleUrls: ['./timeseries-chart-temporal-slider.component.scss']
 })
-export class TimeseriesChartTemporalSliderComponent implements OnInit {
+export class TimeseriesChartTemporalSliderComponent implements OnInit, OnDestroy {
   @ViewChild('ts_slider', { static: true }) sliderRef: ElementRef;
 
   private subs = new SubSink();
 
-  public slider;
-  public maxRange: models.Range<any> = {start: Date.now.valueOf(), end: Date.now.valueOf()};
-  // private firstLoad = true;
-
-
+  public tsSlider: noUiSlider.API;
+  public timeSeriesSlider: any;
+  public maxRange: models.Range<any> = {start: 0, end: 100};
+  public lastMaxRange: models.Range<any> = {start: 0, end: 100};
+  public selectedRange: models.Range<any> = {start: 0, end: 100};
+  public startDate$ = this.store$.select(filtersStore.getStartDate);
+  public endDate$ = this.store$.select(filtersStore.getEndDate);
+  public startDate: Date = new Date();
+  public endDate: Date = new Date();
 
   constructor(
     private store$: Store<AppState>
   ){}
 
   ngOnInit() {
+
+    this.timeSeriesSlider = this.makeTimeSeriesSlider(this.sliderRef);
+    this.tsSlider = this.timeSeriesSlider.slider;
+
     this.subs.add(
       this.store$.select(filtersStore.getTemporalRange).subscribe(
         temp => {
-          this.maxRange = {start: temp.start, end: temp.end};
-          console.log('timeseries-chart-temporal-slider', this.maxRange);
-          if (this.slider) { this.slider.destroy(); }
-          this.makeDaysSlider(this.sliderRef);
+          if (!temp.start || !temp.end) { return; }
+          this.maxRange = {start: temp.start.valueOf(), end: temp.end.valueOf()};
+          if (this.lastMaxRange.start !== this.maxRange.start || this.lastMaxRange.end !== this.maxRange.end) {
+            this.lastMaxRange.start = this.maxRange.start;
+            this.lastMaxRange.end = this.maxRange.end;
+
+            this.sliderRef.nativeElement.noUiSlider.updateOptions({
+              start: [this.maxRange.start, this.maxRange.end],
+              range: {
+                'min': this.maxRange.start,
+                'max': this.maxRange.end
+              }
+            });
+          }
         }
       )
     );
 
-    // this.makeDaysSlider(this.sliderRef);
+    this.subs.add(
+      this.timeSeriesSlider.values$.subscribe(
+        ([start, end]) => {
+          if (!start || !end) { return; }
+          if (start === this.selectedRange.start && end === this.selectedRange.end) {
+            return;
+          }
+          this.selectedRange = {start: start, end: end};
+          this.sliderRef.nativeElement.noUiSlider.updateOptions({
+            start: [this.selectedRange.start, this.selectedRange.end]
+          });
+          const action = new filtersStore.SetStartDate(new Date(start));
+          this.store$.dispatch(action);
+          const action2 = new filtersStore.SetEndDate(new Date(end));
+          this.store$.dispatch(action2);
+        }
+      )
+    );
+
+
   }
 
   private timestamp(str) {
@@ -55,7 +96,6 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit {
   // Create a string representation of the date.
   public formatDate(date: any) :string {
     let fDateStr = date.toLocaleDateString()
-    console.log('date, formatDate', date, fDateStr);
     return ( fDateStr );
   }
 
@@ -64,19 +104,28 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit {
     return new Date(value).toLocaleDateString();
   }
 
-  public makeDaysSlider(filterRef: ElementRef): void {
+  // private toJSDate(date: moment.Moment) {
+  //   return date.toDate();
+  // }
+
+  // private isNumber(x: any): x is number {
+  //   return typeof x === "number";
+  // }
+
+  public makeTimeSeriesSlider(filterRef: ElementRef): { slider: noUiSlider.API; values$: Observable<number[]> } {
     const self = this;
+    const values$ = new Subject<number[]>();
     // Steps of one day
     const increment = 24 * 60 * 60 * 1000;
-    this.slider = noUiSlider.create(filterRef.nativeElement, {
-      start: [this.maxRange.start.valueOf(), this.maxRange.end.valueOf()],
+    const slider = noUiSlider.create(filterRef.nativeElement, {
+      start: [1, 100],
       behaviour: 'tap-drag',
       tooltips: [{to: (d) => self.toFormat(d)}, {to: (d) => self.toFormat(d)}],
       connect: true,
       step: increment,
       range: {
-        'min': this.maxRange.start.valueOf(),
-        'max': this.maxRange.end.valueOf()
+        'min': 1,
+        'max': 100
       },
       pips: {
         // @ts-ignore
@@ -90,6 +139,19 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit {
         }
       },
     });
+
+    slider.on('update', (values: any[], _: any) => {
+      values$.next(values.map(v => +v));
+    });
+
+    return {
+      slider,
+      values$: values$.asObservable().pipe(
+        debounceTime(500),
+        distinctUntilChanged()
+      )
+    };
+
   }
 
   ngOnDestroy(){

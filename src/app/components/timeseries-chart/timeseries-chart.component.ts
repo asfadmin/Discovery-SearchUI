@@ -2,11 +2,12 @@ import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@ang
 
 import * as d3 from 'd3';
 // import * as models from '@models';
-import { debounceTime, Observable, withLatestFrom, 
-  // Subject 
+import { debounceTime, Observable, withLatestFrom,
+  // Subject
 } from 'rxjs';
 
 import { Store } from '@ngrx/store';
+import * as filtersStore from '@store/filters';
 import { AppState } from '@store';
 // import * as sceneStore from '@store/scenes';
 import * as chartsStore from '@store/charts';
@@ -73,7 +74,12 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private lineLabels;
   private points;
   public gColorPalette: any;
-  
+  public startDate: Date = new Date();
+  public endDate: Date = new Date();
+  public lastStartDate: Date = new Date();
+  public lastEndDate: Date = new Date();
+
+
 
   // private selectedScene: string;
   @Input() isLoading: boolean = false;
@@ -100,8 +106,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       )
     )
 
-
-
     this.subs.add(
       this.netcdfService.cacheUpdated.pipe(
         debounceTime(1000),
@@ -109,12 +113,12 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       ).subscribe(([_updated_id, chartStates]) => {
       this.refreshChart(chartStates);
     }));
-    
+
     this.subs.add(
       this.store$.select(chartsStore.getTimeseriesChartStates).subscribe(
         chartStates => {
           this.refreshChart(chartStates);
-      }
+        }
       )
     );
 
@@ -131,7 +135,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           this.initChart(this.data);
         }
       )
-    )
+    );
 
     this.subs.add(
       this.language.translate.onLangChange.subscribe(() => {
@@ -142,7 +146,31 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       }
       )
     );
+
+    this.subs.add(
+      this.store$.select(filtersStore.getStartDate).subscribe(
+        start => {
+          this.startDate = start;
+          if (this.lastStartDate !== this.startDate) {
+            this.lastStartDate = this.startDate;
+            this.initChart(this.data);          }
+        }
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(filtersStore.getEndDate).subscribe(
+        end => {
+          this.endDate = end;
+          if (this.lastEndDate !== this.endDate) {
+            this.lastEndDate = this.endDate;
+            this.initChart(this.data);          }
+        }
+      )
+    );
+
   }
+
   private refreshChart(chartStates: {[key: string]: models.timeseriesChartItemState}): void {
     const cache = this.netcdfService.getCache()
     const allPointsData: {point: {}, state: models.timeseriesChartItemState}[] = Object.keys(chartStates).map(
@@ -151,6 +179,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.data = allPointsData;
     this.initChart(this.data)
   }
+
   public translateChartText() {
     this.xAxisTitle = this.language.translate.instant('SCENE') + ' ' +
       this.language.translate.instant('DATE');
@@ -191,9 +220,11 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
                 aoi = result.point[key];
               }
             }
-            
+
             this.timeSeriesData = [];
             for (let key of Object.keys(result.point).filter(x => x !== 'mean' && x !== 'aoi')) {
+              let daDate = new Date(result.point[key].secondary_datetime).valueOf();
+              if (daDate < this.startDate.valueOf() || daDate > this.endDate.valueOf()) { continue; }
               this.dataSource.push({
                 'aoi': aoi,
                 'short_wavelength_displacement': result.point[key].short_wavelength_displacement,
@@ -450,13 +481,11 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   }
 
   private pointerEntered(lines, dots) {
-    console.log('pointerEntered lines, dots', lines, dots);
     lines.style("mix-blend-mode", null).style("stroke", unSelectedColor);
     dots.attr("display", null);
   }
 
-  private pointerLeft(lines, dots) {
-    console.log('pointerLeft', lines, dots);
+  private pointerLeft(lines, _dots) {
     let colorName: string;
     let dClassName: string;
     lines.style("stroke", (d: DataReady)=> {

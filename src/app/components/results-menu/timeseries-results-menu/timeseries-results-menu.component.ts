@@ -123,7 +123,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       this.chartStates = Object.values(chartStates);
     }
     ));
-    
+
     this.subs.add(
       this.temporalRangeValues$.subscribe(
         range => {
@@ -148,7 +148,6 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     if (thing && thing.length > 0) {
       let previous_points: any[] = thing?.split(';');
       if (previous_points.length > 0) {
-        // console.log(previous_points)
         previous_points = previous_points?.map(value => {
           return this.wktService.wktToFeature(value, 'EPSG:4326');
         })
@@ -215,13 +214,9 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
         allPointsData.push(data);
         // this.chartData.next(allPointsData);
         this.temporalRange = this.getMaxRange(allPointsData);
-        console.log('updateChart dataDateMin, dataDateMax', this.dataDateMin, this.dataDateMax);
-        console.log('updateChart allPointsData', allPointsData);
       })
     }
     this.maxRange = this.getMaxRange(allPointsData);
-    console.log('updateChart dataDateMin, dataDateMax', this.dataDateMin, this.dataDateMax);
-    console.log('updateChart allPointsData', allPointsData);
   }
 
   readonly task = signal<Task>({
@@ -246,10 +241,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     let maxDate = null;
     for (let points of allSeries) {
       for (let key of Object.keys(points).filter(x => x !== 'mean' && x !== 'aoi')) {
-        console.log('getMaxRange key', key);
-        console.log('getMaxRange points[key]', points[key]);
         let date = new Date(points[key].secondary_datetime);
-        console.log('getMaxRange date', date);
         if (minDate === null || date < minDate) {
           minDate = date;
         }
@@ -260,7 +252,6 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     }
     let dateRange: models.Range<any> = {start: minDate, end: maxDate};
     this.temporalRangeValues$.next([dateRange.start, dateRange.end]);
-    console.log('getMaxRange dateRange', dateRange);
     return dateRange;
   }
 
@@ -271,7 +262,6 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     this.store$.dispatch(chartStore.setTimeseriesChecked({wkt, checked}))
   }
   public deletePoint(index: number) {
-    console.log('delete', index);
     this.pointHistoryService.removePoint(index);
   }
   ngOnDestroy() {
