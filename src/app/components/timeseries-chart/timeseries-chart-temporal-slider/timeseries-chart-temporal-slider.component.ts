@@ -49,16 +49,12 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit, OnDestroy
     this.subs.add(
       this.store$.select(filtersStore.getTemporalRange).subscribe(
         temp => {
-          console.log('timeseries-chart-temporal-slider temporal range', temp);
           if (!temp.start || !temp.end) { return; }
           this.maxRange = {start: temp.start.valueOf(), end: temp.end.valueOf()};
-          console.log('timeseries-chart-temporal-slider maxRange', this.maxRange);
-          console.log('**** this.timeSeriesSlider ****', this.timeSeriesSlider);
           if (this.lastMaxRange.start !== this.maxRange.start || this.lastMaxRange.end !== this.maxRange.end) {
             this.lastMaxRange.start = this.maxRange.start;
             this.lastMaxRange.end = this.maxRange.end;
 
-            console.log('**** this.timeSeriesSlider.noUiSlider.updateOptions range ****', this.maxRange.start, this.maxRange.end);
             this.sliderRef.nativeElement.noUiSlider.updateOptions({
               start: [this.maxRange.start, this.maxRange.end],
               range: {
@@ -75,13 +71,10 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit, OnDestroy
       this.timeSeriesSlider.values$.subscribe(
         ([start, end]) => {
           if (!start || !end) { return; }
-          console.log('*** timeseries-chart-temporal-slider selected range values$ ***', start, end);
-          console.log('*** timeseries-chart-temporal-slider selected range types ***', typeof start, typeof end);
           if (start === this.selectedRange.start && end === this.selectedRange.end) {
             return;
           }
           this.selectedRange = {start: start, end: end};
-          console.log('**** this.timeSeriesSlider.noUiSlider.updateOptions start ****', this.selectedRange.start, this.selectedRange.end);
           this.sliderRef.nativeElement.noUiSlider.updateOptions({
             start: [this.selectedRange.start, this.selectedRange.end]
           });
@@ -103,7 +96,6 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit, OnDestroy
   // Create a string representation of the date.
   public formatDate(date: any) :string {
     let fDateStr = date.toLocaleDateString()
-    console.log('date, formatDate', date, fDateStr);
     return ( fDateStr );
   }
 
@@ -148,9 +140,9 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit, OnDestroy
       },
     });
 
-    // this.tsSlider.on('update', (values: any[], _: any) => {
-    //   values$.next(values.map(v => +v));
-    // });
+    slider.on('update', (values: any[], _: any) => {
+      values$.next(values.map(v => +v));
+    });
 
     return {
       slider,

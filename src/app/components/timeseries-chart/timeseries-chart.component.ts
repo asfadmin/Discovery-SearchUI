@@ -152,10 +152,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           this.startDate = start;
           if (this.lastStartDate !== this.startDate) {
             this.lastStartDate = this.startDate;
-            console.log('timeseries-chart has a new start date', this.startDate);
-            // this.lastRange = this.perpRange;
-            // this.perpendicularSlider.set([perp.start, perp.end]);
-          }
+            this.initChart(this.data);          }
         }
       )
     );
@@ -166,10 +163,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           this.endDate = end;
           if (this.lastEndDate !== this.endDate) {
             this.lastEndDate = this.endDate;
-            console.log('timeseries-chart has a new end date', this.endDate);
-            // this.lastRange = this.perpRange;
-            // this.perpendicularSlider.set([perp.start, perp.end]);
-          }
+            this.initChart(this.data);          }
         }
       )
     );
@@ -228,6 +222,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
             this.timeSeriesData = [];
             for (let key of Object.keys(result.point).filter(x => x !== 'mean' && x !== 'aoi')) {
+              let daDate = new Date(result.point[key].secondary_datetime).valueOf();
+              if (daDate < this.startDate.valueOf() || daDate > this.endDate.valueOf()) { continue; }
               this.dataSource.push({
                 'aoi': aoi,
                 'short_wavelength_displacement': result.point[key].short_wavelength_displacement,
@@ -483,13 +479,11 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   }
 
   private pointerEntered(lines, dots) {
-    console.log('pointerEntered lines, dots', lines, dots);
     lines.style("mix-blend-mode", null).style("stroke", unSelectedColor);
     dots.attr("display", null);
   }
 
-  private pointerLeft(lines, dots) {
-    console.log('pointerLeft', lines, dots);
+  private pointerLeft(lines, _dots) {
     let colorName: string;
     let dClassName: string;
     lines.style("stroke", (d: DataReady)=> {
