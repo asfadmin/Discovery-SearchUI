@@ -1,6 +1,7 @@
 /* Contenedor principal del slider */
 .displacement-slider {
-  margin: 20px auto; /* Centra el slider horizontalmente */
+  display: block;
+  margin: 10px 20px 20px 45px; /* Centra el slider horizontalmente */
   width: 100%; /* Ocupa todo el ancho disponible */
   max-width: 95%; /* Opcional: Limita el ancho máximo para que no se extienda demasiado */
   box-sizing: border-box;
