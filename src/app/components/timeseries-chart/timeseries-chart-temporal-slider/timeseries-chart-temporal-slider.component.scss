@@ -1,5 +1,5 @@
 /* Contenedor principal del slider */
-.slider {
+.displacement-slider {
   margin: 20px auto; /* Centra el slider horizontalmente */
   width: 100%; /* Ocupa todo el ancho disponible */
   max-width: 95%; /* Opcional: Limita el ancho máximo para que no se extienda demasiado */
@@ -39,4 +39,13 @@
 .slider-labels span {
   font-size: 12px;
   color: #666; /* Color de las etiquetas */
+}
+
+.noUi-vertical {
+  width: 8px;
+}
+
+div.noUi-handle.noUi-handle-lower {
+  width: 16px !important;
+  right: -5px !important;
 }
