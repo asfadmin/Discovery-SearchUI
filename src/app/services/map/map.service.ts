@@ -796,32 +796,21 @@ export class MapService {
         return f.get('seriesColor') ?? "#000000";
       }
       let layerStyle = new Style({
-        // image: symbol,
         image: new CircleStyle({
           stroke: new Stroke({
-            // color: '#000000',
             color: '#ffcc33',
-            width: 5,
-            lineDash: [3],
-            lineDashOffset: 5
+            width: 2,
           }),
-          radius: 7,
+          radius: 10,
           fill: new Fill({
-            color: '#236192',
-            // color: '#ffcc33',
+            color: textColorFunction(feature),
           }),
         }),
         text: new olText({
           overflow: true,
-          offsetY: 15,
-          offsetX: -15,
-          font: '25px sans-serif',
-          stroke: new Stroke({
-            color: '#000000',
-            width: 3
-          }),
+          font: '13px sans-serif',
           fill: new Fill({
-            color: textColorFunction(feature),
+            color: '#000000',
           }),
           text: textFunction(feature)
         })

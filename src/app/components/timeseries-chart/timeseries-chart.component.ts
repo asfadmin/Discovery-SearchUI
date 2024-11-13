@@ -24,6 +24,7 @@ interface TimeSeriesData {
   id: string,
   base: number,
   seriesNumber: number,
+  color: string,
 }
 
 interface DataReady {
@@ -76,7 +77,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private data: any;
   private lines;
   private points;
-  public gColorPalette: any;
   public startDate: Date = new Date();
   public endDate: Date = new Date();
   public lastStartDate: Date = new Date();
@@ -91,7 +91,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private yAxisTitle = '';
 
   private subs = new SubSink();
-  private allGroup: string[];
+  // private allGroup: string[];
 
   private baseData: TimeSeriesData;
   constructor(
@@ -245,6 +245,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
                 'short_wavelength_displacement': result.point[key].short_wavelength_displacement - (this.baseData?.base ?? 0),
                 'date': result.point[key].secondary_datetime,
                 'seriesNumber': result.state.seriesNumber,
+                'color': result.state.color,
                 'base': result.point[key].short_wavelength_displacement,
                 'id': key + result.point[key].short_wavelength_displacement
               });
@@ -311,17 +312,10 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.toolTip = toolTip
     this.toolTip.attr('transform', `translate(0, 0)`).style('text-anchor', 'middle').style('z-index', 100).style('opacity', 0)
 
-    this.allGroup = [...new Set(this.dataReadyForChart.map(d => d.name))];
+    // this.allGroup = [...new Set(this.dataReadyForChart.map(d => d.name))];
 
     // this.pointGraph = this.clipContainer.append("pointGraph");
     this.lineGraph = this.clipContainer.append("path");
-
-    // A color scale: one color for each group
-    const colorPalette = d3.scaleOrdinal()
-      .domain(this.allGroup)
-      .range(d3.schemeSet2);
-
-    this.gColorPalette = colorPalette;
 
     const self = this;
 
@@ -390,7 +384,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           return line(d.values)
         })
         // @ts-ignore
-        .attr("stroke", function (d: DataReady) { return colorPalette(d.name) })
+        .attr("stroke", function (d: DataReady) { return d.color })
         .style("opacity", (d: DataReady) => d.opacity)
         .style("stroke-width", 1)
         .style("fill", "none")
@@ -405,7 +399,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .enter()
       .append('g')
       .attr('clip-path', 'url(#clip)')
-      .style('fill', (d): string => { return <string>colorPalette(d.name) })
+      .style('fill', (d) : string=>  { return d.color })
       .style('opacity', (d) => d.opacity)
       .attr('class', (d): string => { return d.name.replace(/\W/g, '') })
       .selectAll('circle')
@@ -426,7 +420,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         toolTip.interrupt();
         toolTip
           .style('opacity', .9);
-        toolTip.html(`<div style="text-align: left"><b>Series ${p.seriesNumber}</b><br>${self.tooltipDateFormat(date)}, ${p.short_wavelength_displacement.toFixed(5)} meters</div>`);
+        toolTip.html(`<div style="text-align: left">${self.tooltipDateFormat(date)}, ${p.short_wavelength_displacement.toFixed(5)} meters<br><b>Series ${p.seriesNumber}</b></div>`);
         self.updateTooltip();
       })
       .on('mouseleave', function (_) {
@@ -458,7 +452,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     lines.style("stroke", (d: DataReady) => {
       if (d.name === k) {
         dClassName = '.' + d.name.replace(/\W/g, '');
-        colorName = this.gColorPalette(d.name);
+        colorName = d.color;
         return colorName;
       }
       return unSelectedColor;
@@ -484,13 +478,11 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   }
 
   private pointerLeft(lines, _dots) {
-    let colorName: string;
     let dClassName: string;
     lines.style("stroke", (d: DataReady) => {
       dClassName = '.' + d.name.replace(/\W/g, '');
-      colorName = this.gColorPalette(d.name);
-      this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", colorName);
-      return colorName;
+      this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", d.color);
+      return d.color;
     });
   }
 
