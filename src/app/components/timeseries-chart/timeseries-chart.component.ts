@@ -19,7 +19,8 @@ import * as models from '@models';
 
 interface TimeSeriesData {
   short_wavelength_displacement: number
-  date: string
+  date: string,
+  seriesNumber: number,
 }
 
 interface DataReady {
@@ -237,6 +238,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
               this.timeSeriesData.push({
                 'short_wavelength_displacement': result.point[key].short_wavelength_displacement,
                 'date': result.point[key].secondary_datetime,
+                'seriesNumber': result.state.seriesNumber,
               });
             }
           this.timeSeriesData.sort((a, b) => {
@@ -430,7 +432,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         toolTip.interrupt();
         toolTip
           .style('opacity', .9);
-        toolTip.html(`${self.tooltipDateFormat(date)}, ${p.short_wavelength_displacement.toFixed(5)} meters`);
+        toolTip.html(`<div style="text-align: left"><b>Series ${p.seriesNumber}</b><br>${self.tooltipDateFormat(date)}, ${p.short_wavelength_displacement.toFixed(5)} meters</div>`);
         self.updateTooltip();
       })
       .on('mouseleave', function (_) {
