@@ -74,6 +74,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   public margin = { top: 10, right: 60, bottom: 60, left: 55 };
   private thing: d3.Selection<SVGGElement, {}, HTMLElement, any>
   private hoveredElement;
+  public hoveredData;
   private data: any;
   private lines;
   private lineLabels;
@@ -377,6 +378,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       }})
       .on('mouseover', function (_event: any, p: TimeSeriesData) {
         self.hoveredElement = this;
+        self.hoveredData = p;
         const date = new Date(p.date);
         toolTip.interrupt();
         toolTip
@@ -385,21 +387,19 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         self.updateTooltip();
       })
       .on('mouseleave', function (_) {
+        self.hoveredData = null;
         toolTip.transition()
           .duration(500)
           .style('opacity', 0);
-      })
-      .on('contextmenu', function (event, d) {
-        event.preventDefault();
-        console.log(d);
-        self.baseData = d;
-        self.initChart(self.data);
       })
       .attr('r', 5);
 
     this.updateChart();
   }
-
+  public setReference(reference) {
+    this.baseData = reference;
+    this.initChart(this.data);
+  }
   // When the pointer moves, find the closest point, update the interactive tip, and highlight
   // the corresponding line.
   private pointerMoved(event, lines, dots, points) {

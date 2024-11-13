@@ -13,8 +13,13 @@ import { ChartModalComponent } from '@components/shared/chart-modal/chart-modal.
 import {TimeseriesChartZoomComponent} from '@components/timeseries-chart/timeseries-chart-zoom/timeseries-chart-zoom.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatMenuModule } from '@angular/material/menu';
+import { ContextMenuTriggerDirective } from '@directives/context-menu.directive';
+
 @NgModule({
-  declarations: [TimeseriesChartComponent],
+  declarations: [TimeseriesChartComponent,
+    ContextMenuTriggerDirective
+
+  ],
   imports: [
       CommonModule,
       MatSharedModule,
@@ -27,7 +32,7 @@ import { MatMenuModule } from '@angular/material/menu';
       TimeseriesChartConfigComponent,
       TimeseriesChartZoomComponent,
       MatProgressSpinnerModule,
-      MatMenuModule
+      MatMenuModule,
 
     ],
   exports: [
