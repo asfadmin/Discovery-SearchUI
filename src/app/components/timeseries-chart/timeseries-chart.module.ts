@@ -12,8 +12,14 @@ import { TimeseriesChartConfigComponent } from './timeseries-chart-config'
 import { ChartModalComponent } from '@components/shared/chart-modal/chart-modal.component'
 import {TimeseriesChartZoomComponent} from '@components/timeseries-chart/timeseries-chart-zoom/timeseries-chart-zoom.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatMenuModule } from '@angular/material/menu';
+import { ContextMenuTriggerDirective } from '@directives/context-menu.directive';
+
 @NgModule({
-  declarations: [TimeseriesChartComponent],
+  declarations: [TimeseriesChartComponent,
+    ContextMenuTriggerDirective
+
+  ],
   imports: [
       CommonModule,
       MatSharedModule,
@@ -25,7 +31,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
       ChartModalComponent,
       TimeseriesChartConfigComponent,
       TimeseriesChartZoomComponent,
-      MatProgressSpinnerModule
+      MatProgressSpinnerModule,
+      MatMenuModule,
 
     ],
   exports: [

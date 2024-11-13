@@ -8,8 +8,7 @@
 </button>
 </div>
 <mat-menu #menu="matMenu">
-    <div class="chart-config-menu-panel" [ngSwitch]="searchType" (click)="$event.stopPropagation()">
-            <app-timeseries-chart-config *ngSwitchCase="SearchTypes.DISPLACEMENT"></app-timeseries-chart-config>
-            <app-timeseries-chart-config *ngSwitchDefault></app-timeseries-chart-config>
+    <div class="chart-config-menu-panel" (click)="$event.stopPropagation()">
+            <app-timeseries-chart-config (resetReferenceEvent)="onResetReference()"></app-timeseries-chart-config>
     </div>
 </mat-menu>

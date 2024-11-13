@@ -2,7 +2,8 @@ import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@ang
 
 import * as d3 from 'd3';
 // import * as models from '@models';
-import { debounceTime, Observable, withLatestFrom,
+import {
+  debounceTime, Observable, withLatestFrom,
   // Subject
 } from 'rxjs';
 
@@ -20,6 +21,8 @@ import * as models from '@models';
 interface TimeSeriesData {
   short_wavelength_displacement: number
   date: string,
+  id: string,
+  base: number,
   seriesNumber: number,
   color: string,
 }
@@ -70,6 +73,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   public margin = { top: 10, right: 30, bottom: 60, left: 55 };
   private thing: d3.Selection<SVGGElement, {}, HTMLElement, any>
   private hoveredElement;
+  public hoveredData;
   private data: any;
   private lines;
   private points;
@@ -89,6 +93,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
   // private allGroup: string[];
 
+  private baseData: TimeSeriesData;
   constructor(
     private store$: Store<AppState>,
     private language: AsfLanguageService,
@@ -110,8 +115,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         debounceTime(1000),
         withLatestFrom(this.store$.select(chartsStore.getTimeseriesChartStates))
       ).subscribe(([_updated_id, chartStates]) => {
-      this.refreshChart(chartStates);
-    }));
+        this.refreshChart(chartStates);
+      }));
 
     this.subs.add(
       this.store$.select(chartsStore.getTimeseriesChartStates).subscribe(
@@ -152,7 +157,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           this.startDate = start;
           if (this.lastStartDate !== this.startDate) {
             this.lastStartDate = this.startDate;
-            this.initChart(this.data);          }
+            this.initChart(this.data);
+          }
         }
       )
     );
@@ -163,17 +169,18 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           this.endDate = end;
           if (this.lastEndDate !== this.endDate) {
             this.lastEndDate = this.endDate;
-            this.initChart(this.data);          }
+            this.initChart(this.data);
+          }
         }
       )
     );
 
   }
 
-  private refreshChart(chartStates: {[key: string]: models.timeseriesChartItemState}): void {
+  private refreshChart(chartStates: { [key: string]: models.timeseriesChartItemState }): void {
     const cache = this.netcdfService.getCache()
-    const allPointsData: {point: {}, state: models.timeseriesChartItemState}[] = Object.keys(chartStates).map(
-      wkt => ({point: cache[wkt], state: chartStates[wkt]})
+    const allPointsData: { point: {}, state: models.timeseriesChartItemState }[] = Object.keys(chartStates).map(
+      wkt => ({ point: cache[wkt], state: chartStates[wkt] })
     );
     this.data = allPointsData;
     this.initChart(this.data)
@@ -235,10 +242,12 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
                 'temporal_baseline': result.point[key].temporal_baseline,
               })
               this.timeSeriesData.push({
-                'short_wavelength_displacement': result.point[key].short_wavelength_displacement,
+                'short_wavelength_displacement': result.point[key].short_wavelength_displacement - (this.baseData?.base ?? 0),
                 'date': result.point[key].secondary_datetime,
                 'seriesNumber': result.state.seriesNumber,
                 'color': result.state.color,
+                'base': result.point[key].short_wavelength_displacement,
+                'id': key + result.point[key].short_wavelength_displacement
               });
             }
           this.timeSeriesData.sort((a, b) => {
@@ -297,7 +306,9 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     const toolTip = d3.select('body').append('div')
       .attr('class', 'tooltip')
       .style('opacity', 0);
-
+    if (this.toolTip) {
+      this.toolTip.remove();
+    }
     this.toolTip = toolTip
     this.toolTip.attr('transform', `translate(0, 0)`).style('text-anchor', 'middle').style('z-index', 100).style('opacity', 0)
 
@@ -390,23 +401,30 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .attr('clip-path', 'url(#clip)')
       .style('fill', (d) : string=>  { return d.color })
       .style('opacity', (d) => d.opacity)
-      .attr('class', (d) : string=>  { return d.name.replace(/\W/g, '')})
+      .attr('class', (d): string => { return d.name.replace(/\W/g, '') })
       .selectAll('circle')
       .data(d => d.values)
       .enter()
       .append('circle')
       .attr('cx', (d) => this.x(Date.parse(d.date)))
       .attr('cy', (d) => this.y(d.short_wavelength_displacement))
+      .attr('class', (d): string => {
+        if (this.baseData && this.baseData.id === d.id) {
+          return 'ts-reference-point'
+        }
+      })
       .on('mouseover', function (_event: any, p: TimeSeriesData) {
         self.hoveredElement = this;
+        self.hoveredData = p;
         const date = new Date(p.date);
         toolTip.interrupt();
         toolTip
           .style('opacity', .9);
-        toolTip.html(`<div style="text-align: left"><b>Series ${p.seriesNumber}</b><br>${self.tooltipDateFormat(date)}, ${p.short_wavelength_displacement.toFixed(5)} meters</div>`);
+        toolTip.html(`<div style="text-align: left">${self.tooltipDateFormat(date)}, ${p.short_wavelength_displacement.toFixed(5)} meters<br><b>Series ${p.seriesNumber}</b></div>`);
         self.updateTooltip();
       })
       .on('mouseleave', function (_) {
+        self.hoveredData = null;
         toolTip.transition()
           .duration(500)
           .style('opacity', 0);
@@ -415,7 +433,10 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
     this.updateChart();
   }
-
+  public setReference(reference) {
+    this.baseData = reference;
+    this.initChart(this.data);
+  }
   // When the pointer moves, find the closest point, update the interactive tip, and highlight
   // the corresponding line.
   private pointerMoved(event, lines, dots, points) {
@@ -428,7 +449,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     let colorName: string;
     let dClassName: string;
     // set the color of the selected line to the color of the series; make all other lines grey
-    lines.style("stroke", (d: DataReady)=> {
+    lines.style("stroke", (d: DataReady) => {
       if (d.name === k) {
         dClassName = '.' + d.name.replace(/\W/g, '');
         colorName = d.color;
@@ -458,7 +479,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
   private pointerLeft(lines, _dots) {
     let dClassName: string;
-    lines.style("stroke", (d: DataReady)=> {
+    lines.style("stroke", (d: DataReady) => {
       dClassName = '.' + d.name.replace(/\W/g, '');
       this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", d.color);
       return d.color;
@@ -544,6 +565,10 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .domain(d)
       .range(d3.schemeCategory10);
 
+  }
+  public resetBasePoint() {
+    this.baseData = null;
+    this.initChart(this.data);
   }
 
   public ngOnDestroy(): void {
