@@ -242,7 +242,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
                 'temporal_baseline': result.point[key].temporal_baseline,
               })
               this.timeSeriesData.push({
-                'short_wavelength_displacement': result.point[key].short_wavelength_displacement + (this.baseData?.short_wavelength_displacement ?? 0),
+                'short_wavelength_displacement': result.point[key].short_wavelength_displacement - (this.baseData?.base ?? 0),
                 'date': result.point[key].secondary_datetime,
                 'seriesNumber': result.state.seriesNumber,
                 'base': result.point[key].short_wavelength_displacement,
