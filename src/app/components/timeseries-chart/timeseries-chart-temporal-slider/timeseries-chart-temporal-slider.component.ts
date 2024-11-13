@@ -1,12 +1,13 @@
-import {Component, ElementRef, ViewChild, OnInit, OnDestroy} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild, Renderer2} from '@angular/core';
 import * as noUiSlider from 'nouislider';
-import { Store } from "@ngrx/store";
-import { AppState } from "@store";
+import {PipsMode} from 'nouislider';
+import {Store} from '@ngrx/store';
+import {AppState} from '@store';
 // import * as models from "@models";
 // import {Observable, Subject} from 'rxjs';
 // import {UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 // import * as filtersStore from "@store/filters";
-import {SubSink} from "subsink";
+import {SubSink} from 'subsink';
 // import {debounceTime, distinctUntilChanged} from "rxjs/operators";
 // import wNumb from 'wnumb';
 import * as filtersStore from '@store/filters';
@@ -14,6 +15,7 @@ import * as models from '@models';
 // import moment from 'moment/moment';
 import {Observable, Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+
 // import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 @Component({
@@ -36,9 +38,11 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit, OnDestroy
   public endDate$ = this.store$.select(filtersStore.getEndDate);
   public startDate: Date = new Date();
   public endDate: Date = new Date();
+  private userChangedRange: boolean = false;
 
   constructor(
-    private store$: Store<AppState>
+    private store$: Store<AppState>,
+    private renderer: Renderer2
   ){}
 
   ngOnInit() {
@@ -55,12 +59,17 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit, OnDestroy
             this.lastMaxRange.start = this.maxRange.start;
             this.lastMaxRange.end = this.maxRange.end;
             this.sliderRef.nativeElement.noUiSlider.updateOptions({
-              start: [this.maxRange.start, this.maxRange.end],
               range: {
                 'min': this.maxRange.start,
                 'max': this.maxRange.end
               }
             });
+            if (!this.userChangedRange) {
+              this.sliderRef.nativeElement.noUiSlider.updateOptions({
+                start: [this.maxRange.start, this.maxRange.end],
+              });
+            }
+            this.renderer.setStyle(this.sliderRef.nativeElement, 'visibility', 'visible');
           }
         }
       )
@@ -77,6 +86,7 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit, OnDestroy
           this.sliderRef.nativeElement.noUiSlider.updateOptions({
             start: [this.selectedRange.start, this.selectedRange.end]
           });
+          this.userChangedRange = true;
           const action = new filtersStore.SetStartDate(new Date(start));
           this.store$.dispatch(action);
           const action2 = new filtersStore.SetEndDate(new Date(end));
@@ -118,8 +128,7 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit, OnDestroy
         'max': 100
       },
       pips: {
-        // @ts-ignore
-        mode: 'count',
+        mode: PipsMode.Count,
         values: 5,
         stepped: true,
         density: 4,
