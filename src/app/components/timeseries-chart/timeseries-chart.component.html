@@ -1,7 +1,7 @@
 <div #tsChartWrapper class="chart-wrapper" (resized)="onResized()">
-	<div #timeseriesChart id="timeseriesChart">
+	<div #timeseriesChart id="timeseriesChart" [contextMenuTriggerFor]="menu" [contextMenuTriggerData]="{'tooltipData': hoveredData}">
 	</div>
-	<app-chart-modal class="ts-chart-config-button"></app-chart-modal>
+	<app-chart-modal class="ts-chart-config-button" (resetReferenceEvent)="resetBasePoint()"></app-chart-modal>
 	<app-timeseries-chart-zoom class="ts-chart-zoom" (zoomInEvent)="onZoomIn()" (zoomOutEvent)="onZoomOut()"
 		(zoomToFitEvent)="onZoomToFit()"></app-timeseries-chart-zoom>
 
@@ -10,4 +10,10 @@
 		<mat-spinner></mat-spinner>
 	</div>
 	}
+	<mat-menu #menu="matMenu">
+		<ng-template matMenuContent let-tooltipData="tooltipData">
+			<button mat-button (click)="setReference(tooltipData)">Set as Reference</button>
+
+		</ng-template>
+	</mat-menu>
 </div>

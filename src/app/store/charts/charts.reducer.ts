@@ -45,14 +45,20 @@ export const chartsReducer = createReducer(
       prev[curr.wkt] = { ...curr, checked }
       return prev
     }, {});
-    return {...state, seriesStates}
+    return { ...state, seriesStates }
   }),
-  on(chartActions.setChartOutOfDate, (state) => ({...state, outOfDate: true})),
-  on(chartActions.setChartUpToDate, (state) => ({...state, outOfDate: false})),
-  on(chartActions.removeTimeseriesState, (state, {wkt}) => {
-    const seriesStates = {...state.seriesStates}
+  on(chartActions.setChartOutOfDate, (state) => ({ ...state, outOfDate: true })),
+  on(chartActions.setChartUpToDate, (state) => ({ ...state, outOfDate: false })),
+  on(chartActions.removeTimeseriesState, (state, { wkt }) => {
+    const seriesStates = { ...state.seriesStates }
     delete seriesStates[wkt]
-    return {...state, seriesStates}
+    return { ...state, seriesStates }
+  }),
+  on(chartActions.setTimeseriesColor, (state, { wkt, color }) => {
+    const seriesStates = { ...state.seriesStates };
+    seriesStates[wkt] = { ...seriesStates[wkt], color };
+
+    return { ...state, seriesStates };
   }),
   on(chartActions.reset, (_) => initialState)
 );

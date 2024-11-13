@@ -2,7 +2,7 @@ import { SimpleGeometry } from "ol/geom"
 
 export interface timeseriesChartItemState {
     checked: boolean,
-    color: string,
+    color?: string,
     name: string,
     wkt: string,
     geoemetry: SimpleGeometry,

@@ -54,5 +54,6 @@
   top: 17px;
   right: 95px;
 }
-
-
+:host ::ng-deep .ts-reference-point {
+  fill: red !important;
+}

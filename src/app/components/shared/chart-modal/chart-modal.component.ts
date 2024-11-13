@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon'
 import { MatButtonModule } from '@angular/material/button'
@@ -31,6 +31,7 @@ export class ChartModalComponent implements OnInit, OnDestroy {
   private subs = new SubSink()
   public searchType: SearchType;
   public SearchTypes = SearchType;
+  @Output() public resetReferenceEvent = new EventEmitter();
 
   constructor(public dialog: MatDialog,
     private $store: Store<AppState>,
@@ -41,6 +42,9 @@ export class ChartModalComponent implements OnInit, OnDestroy {
     this.subs.add(this.$store.select(getSearchType).subscribe(
       searchtype => this.searchType = searchtype
     ))
+  }
+  public onResetReference() {
+    this.resetReferenceEvent.emit();
   }
 
   ngOnDestroy(): void {
