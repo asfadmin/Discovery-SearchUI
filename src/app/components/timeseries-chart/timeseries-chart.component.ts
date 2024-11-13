@@ -66,12 +66,11 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private dots: d3.Selection<SVGCircleElement, TimeSeriesData, SVGGElement, {}>;
   private lineGraph: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private toolTip: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>
-  public margin = { top: 10, right: 60, bottom: 60, left: 55 };
+  public margin = { top: 10, right: 30, bottom: 60, left: 55 };
   private thing: d3.Selection<SVGGElement, {}, HTMLElement, any>
   private hoveredElement;
   private data: any;
   private lines;
-  private lineLabels;
   private points;
   public gColorPalette: any;
   public startDate: Date = new Date();
@@ -385,28 +384,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         .style("stroke-width", 1)
         .style("fill", "none")
         .style("shape-rendering", "geometricprecision")
-
-      this.lineLabels = this.svg
-      .selectAll("seriesLabels")
-      .data(this.dataReadyForChart)
-      .join('g')
-        .append("text")
-          .datum(d => { return {name: d.name, value: d.values[d.values.length - 1]}; }) // keep only the last value of each time series
-
-        .attr("transform",d => `translate(${this.x(Date.parse(d.value.date))},${this.y(d.value.short_wavelength_displacement)})`) // Put the text at the position of the last point
-        .attr("x", 12) // shift the text a bit more right
-        .text(d => {
-          if (d.name.replace(/\s/g, '').substring(0, 5).toUpperCase() === 'POINT') {
-            const longLat = d.name.substring(6).replace(/[\(\)]/g, '');
-            const longLatParsed = longLat.split(' ');
-            const pointLong = parseFloat(longLatParsed[0]).toFixed(2);
-            const pointLat = parseFloat(longLatParsed[1]).toFixed(2);
-            return `${pointLat}, ${pointLong}`;
-          }
-          return d.name;
-        } )
-        .style("fill", (d) : string=>  { return <string>colorPalette(d.name) })
-        .style("font-size", 10)
     }
 
     // add the dots
@@ -523,8 +500,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         return line(d.values)
       })
       .style('opacity', (d: DataReady) => d.opacity)
-    this.lineLabels
-      .attr("transform",d => `translate(${newX(Date.parse(d.value.date))},${newY(d.value.short_wavelength_displacement)})`) // Put the text at the position of the last point
 
   }
 
