@@ -1,13 +1,20 @@
-import {Component, ElementRef, ViewChild, OnInit, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, ElementRef, ViewChild, OnInit, OnDestroy} from '@angular/core';
 import * as noUiSlider from 'nouislider';
 import { Store } from "@ngrx/store";
 import { AppState } from "@store";
-import * as models from "@models";
-import {Observable, Subject} from 'rxjs';
-import {UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
-import * as filtersStore from "@store/filters";
+// import * as models from "@models";
+// import {Observable, Subject} from 'rxjs';
+// import {UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
+// import * as filtersStore from "@store/filters";
 import {SubSink} from "subsink";
-import {debounceTime, distinctUntilChanged} from "rxjs/operators";
+// import {debounceTime, distinctUntilChanged} from "rxjs/operators";
+// import wNumb from 'wnumb';
+import * as filtersStore from '@store/filters';
+import * as models from '@models';
+// import moment from 'moment/moment';
+import {Observable, Subject} from 'rxjs';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+// import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 @Component({
   selector: 'app-timeseries-chart-temporal-slider',
@@ -15,109 +22,121 @@ import {debounceTime, distinctUntilChanged} from "rxjs/operators";
   templateUrl: './timeseries-chart-temporal-slider.component.html',
   styleUrls: ['./timeseries-chart-temporal-slider.component.scss']
 })
-export class TimeseriesChartTemporalSliderComponent implements OnInit, OnChanges {
-  @Input() maxRange: models.Range<number> = {start: 0, end: 0};
-  @ViewChild('slider', { static: true }) sliderRef: ElementRef;
+export class TimeseriesChartTemporalSliderComponent implements OnInit, OnDestroy {
+  @ViewChild('ts_slider', { static: true }) sliderRef: ElementRef;
 
-  public daysRange: models.Range<number> = {start: 0, end: 0};
-  public lastRange: models.Range<number> = {start: 0, end: 0};
-  public daysValues$ = new Subject<number[]>();
-  public slider;
-
-  options: UntypedFormGroup;
-
-  daysControl: UntypedFormControl;
-
-  private firstLoad = true;
   private subs = new SubSink();
 
-  constructor(
-    private store$: Store<AppState>,
-    fb: UntypedFormBuilder
-  ) {
-    this.daysControl = new UntypedFormControl(this.daysRange, Validators.min(0));
+  public tsSlider: noUiSlider.API;
+  public timeSeriesSlider: any;
+  public maxRange: models.Range<any> = {start: 0, end: 100};
+  public lastMaxRange: models.Range<any> = {start: 0, end: 100};
+  public selectedRange: models.Range<any> = {start: 0, end: 100};
+  public startDate$ = this.store$.select(filtersStore.getStartDate);
+  public endDate$ = this.store$.select(filtersStore.getEndDate);
+  public startDate: Date = new Date();
+  public endDate: Date = new Date();
 
-    this.options = fb.group({
-      days: this.daysControl,
-    });
-  }
+  constructor(
+    private store$: Store<AppState>
+  ){}
 
   ngOnInit() {
-    this.daysControl = new UntypedFormControl(this.daysRange, Validators.min(0));
-    const daysSliderRef = this.makeDaysSlider(this.sliderRef);
-    const daysValues$ = daysSliderRef.daysValues;
 
-    // this.tempSlider = tempSlider;
-
-    this.subs.add(
-      daysValues$.subscribe(
-        range => {
-          console.log(range);
-          const action = new filtersStore.SetTemporalRange({ start: range[0], end: range[1] });
-          this.store$.dispatch(action);
-        }
-      )
-    );
+    this.timeSeriesSlider = this.makeTimeSeriesSlider(this.sliderRef);
+    this.tsSlider = this.timeSeriesSlider.slider;
 
     this.subs.add(
       this.store$.select(filtersStore.getTemporalRange).subscribe(
         temp => {
-          this.daysRange = {start: temp.start, end: temp.end};
-          if (this.firstLoad) {
-            this.firstLoad = false;
-            this.slider.set([temp.start, temp.end]);
+          if (!temp.start || !temp.end) { return; }
+          this.maxRange = {start: temp.start.valueOf(), end: temp.end.valueOf()};
+          if (this.lastMaxRange.start !== this.maxRange.start || this.lastMaxRange.end !== this.maxRange.end) {
+            this.lastMaxRange.start = this.maxRange.start;
+            this.lastMaxRange.end = this.maxRange.end;
+            this.sliderRef.nativeElement.noUiSlider.updateOptions({
+              start: [this.maxRange.start, this.maxRange.end],
+              range: {
+                'min': this.maxRange.start,
+                'max': this.maxRange.end
+              }
+            });
           }
         }
       )
     );
+
+    this.subs.add(
+      this.timeSeriesSlider.values$.subscribe(
+        ([start, end]) => {
+          if (!start || !end) { return; }
+          if (start === this.selectedRange.start && end === this.selectedRange.end) {
+            return;
+          }
+          this.selectedRange = {start: start, end: end};
+          this.sliderRef.nativeElement.noUiSlider.updateOptions({
+            start: [this.selectedRange.start, this.selectedRange.end]
+          });
+          const action = new filtersStore.SetStartDate(new Date(start));
+          this.store$.dispatch(action);
+          const action2 = new filtersStore.SetEndDate(new Date(end));
+          this.store$.dispatch(action2);
+        }
+      )
+    );
+
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.maxRange && changes.maxRange.currentValue) {
-      this.maxRange = changes.maxRange.currentValue;
-      console.log('changes start time:', this.maxRange.start.valueOf());
-      console.log('changes end time:', this.maxRange.end.valueOf());
-      this.daysRange = {start: this.maxRange.start.valueOf(),
-                        end: this.maxRange.end.valueOf()};
-      if (this.firstLoad) {
-        this.firstLoad = false;
-        this.slider.set([this.daysRange.start, this.daysRange.end]);
-      }
-      // this.slider.noUiSlider.updateOptions({
-      //   start: [this.maxRange.start.valueOf(), this.maxRange.end.valueOf()],
-      //   range: {
-      //     'min': this.maxRange.start.valueOf(),
-      //     'max': this.maxRange.end.valueOf()
-      //   }
-    }
+  private timestamp(str) {
+    return new Date(str).getTime();
   }
 
-  public updateDaysOffset() {
-    this.options.controls.days.setValue(this.daysRange);
-    this.daysValues$.next([this.daysRange.start, this.daysRange.end] );
+  // Create a string representation of the date.
+  public formatDate(date: any) :string {
+    let fDateStr = date.toLocaleDateString()
+    return ( fDateStr );
   }
 
-  public makeDaysSlider(filterRef: ElementRef): {slider: any, daysValues: Observable<number[]>} {
-    console.log('makeDaysSlider maxRange', this.maxRange);
-    this.slider = noUiSlider.create(filterRef.nativeElement, {
-      start: [2000, 2023],
+  public toFormat(value: any) {
+    if (value == 0) return 0;
+    return new Date(value).toLocaleDateString();
+  }
+
+  public makeTimeSeriesSlider(filterRef: ElementRef): { slider: noUiSlider.API; values$: Observable<number[]> } {
+    const self = this;
+    const values$ = new Subject<number[]>();
+    // Steps of one day
+    const increment = 24 * 60 * 60 * 1000;
+    const slider = noUiSlider.create(filterRef.nativeElement, {
+      start: [1, 100],
       behaviour: 'tap-drag',
-      tooltips: false,
+      tooltips: [{to: (d) => self.toFormat(d)}, {to: (d) => self.toFormat(d)}],
       connect: true,
-      step: 1,
+      step: increment,
       range: {
-        'min': 2000,
-        'max': 2023
-      }
+        'min': 1,
+        'max': 100
+      },
+      pips: {
+        // @ts-ignore
+        mode: 'count',
+        values: 5,
+        stepped: true,
+        density: 4,
+        format: {
+          from: (value) => {return self.timestamp(value);},
+          to: self.toFormat
+        }
+      },
     });
 
-    this.slider.on('update', (values, _) => {
-      this.daysValues$.next(values.map(v => +v));
+    slider.on('update', (values: any[], _: any) => {
+      values$.next(values.map(v => +v));
     });
 
     return {
-      slider: this.slider,
-      daysValues: this.daysValues$.asObservable().pipe(
+      slider,
+      values$: values$.asObservable().pipe(
         debounceTime(500),
         distinctUntilChanged()
       )
@@ -125,7 +144,7 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit, OnChanges
 
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(){
     this.subs.unsubscribe();
   }
 }

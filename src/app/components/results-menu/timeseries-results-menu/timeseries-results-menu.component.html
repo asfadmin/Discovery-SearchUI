@@ -16,30 +16,30 @@
 
 		<div class="ts-left-column-results">
 
-    @if(pointHistory.length !== 0) {
+    @if(chartStates.length !== 0) {
 
       <section class="point-list-section">
         <span class="parent-checkbox-section">
           <mat-checkbox
             class="parent-checkbox"
-            [checked]="task().checked"
+            [checked]="(allSeriesChecked$ | async)"
             [indeterminate]="partiallyComplete()"
-            (change)="updateSeries($event.checked)"
+            (change)="toggleAllSeries($event.checked)"
           >
             <span class="parent-checkbox-label">
-              {{task().aoi}}
+              All AOIs
             </span>
           </mat-checkbox>
         </span>
         <span class="point-list-ul-section">
           <ul>
-            @for (point of pointHistory; track $index) {
+            @for (point of chartStates; track $index) {
               <li>
                 <mat-checkbox [checked]="point.checked"
                               (change)="updateSeries($event.checked, $index)">
                   <mat-icon class="ts-wkt-icon">place</mat-icon>
                   <span class="ts-wkt-label">
-                    {{point.flatCoordinates[1] | floatPrecision: 2}},&ensp;{{point.flatCoordinates[0] | floatPrecision: 2}}
+                    {{'SERIES' | translate}} {{point.seriesNumber}}
                   </span>
                   <button mat-icon-button (click)="deletePoint($index)"><mat-icon>delete</mat-icon></button>
                 </mat-checkbox>
@@ -147,11 +147,8 @@
 
 	<div class="ts-chart-row">
 		<div id="ts-chart-column">
-			<app-timeseries-chart
-			[chartData]="chartData"
-			[isLoading]="isLoading"></app-timeseries-chart>
-      <app-timeseries-chart-temporal-slider
-        [maxRange]="maxRange" ></app-timeseries-chart-temporal-slider>
+			<app-timeseries-chart></app-timeseries-chart>
+      <app-timeseries-chart-temporal-slider></app-timeseries-chart-temporal-slider>
 		</div>
 	</div>
 

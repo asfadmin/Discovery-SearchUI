@@ -249,7 +249,7 @@ export class MapComponent implements OnInit, OnDestroy  {
         let wktRepresenation  = format.writeGeometry(point);
 
         let pointIndex = this.pointHistoryService.getHistory().findIndex((thing) => {
-          if(thing === point) {
+          if(thing.point === point) {
             return true
           }
         })
