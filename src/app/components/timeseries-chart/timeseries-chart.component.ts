@@ -25,7 +25,8 @@ interface TimeSeriesChartPoint {
 interface TimeSeriesData {
   short_wavelength_displacement: number
   date: string,
-  id: string
+  id: string,
+  base: number
 }
 
 interface DataReady {
@@ -172,6 +173,10 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           }
         }
         this.timeSeriesData = [];
+        let offset = 0;
+        if(this.baseData) {
+          offset = this.baseData.base;
+        }
         for (let key of Object.keys(result).filter(x => x !== 'mean' && x !== 'aoi')) {
           this.dataSource.push({
             'aoi': aoi,
@@ -184,9 +189,10 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
             'temporal_baseline': result[key].temporal_baseline
           })
           this.timeSeriesData.push({
-            'short_wavelength_displacement': result[key].short_wavelength_displacement - (this.baseData?.short_wavelength_displacement ?? 0),
+            'short_wavelength_displacement': result[key].short_wavelength_displacement - (offset),
             'date': result[key].secondary_datetime,
-            'id': key + result[key].short_wavelength_displacement
+            'id': key + result[key].short_wavelength_displacement,
+            'base': result[key].short_wavelength_displacement
           })
         }
         this.timeSeriesData.sort((a, b) => {
