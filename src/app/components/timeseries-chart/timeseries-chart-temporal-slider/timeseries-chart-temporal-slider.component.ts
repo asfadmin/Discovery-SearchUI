@@ -28,15 +28,14 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit, OnDestroy
   private subs = new SubSink();
 
   public tsSlider: noUiSlider.API;
-  public timeSeriesSlider: { slider: noUiSlider.API; values$: Observable<number[]> };
-  public maxRange: models.Range<any> = {start: Date.now.valueOf(), end: Date.now.valueOf()};
-  public selectedRange: models.Range<any> = {start: Date.now.valueOf(), end: Date.now.valueOf()};
+  public timeSeriesSlider: any;
+  public maxRange: models.Range<any> = {start: 0, end: 100};
+  public lastMaxRange: models.Range<any> = {start: 0, end: 100};
+  public selectedRange: models.Range<any> = {start: 0, end: 100};
   public startDate$ = this.store$.select(filtersStore.getStartDate);
   public endDate$ = this.store$.select(filtersStore.getEndDate);
   public startDate: Date = new Date();
   public endDate: Date = new Date();
-
-
 
   constructor(
     private store$: Store<AppState>
@@ -44,33 +43,56 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit, OnDestroy
 
   ngOnInit() {
 
+    this.timeSeriesSlider = this.makeTimeSeriesSlider(this.sliderRef);
+    this.tsSlider = this.timeSeriesSlider.slider;
+
     this.subs.add(
       this.store$.select(filtersStore.getTemporalRange).subscribe(
         temp => {
-          this.maxRange = {start: temp.start, end: temp.end};
-          this.selectedRange = {start: temp.start, end: temp.end};
-          console.log('timeseries-chart-temporal-slider', this.maxRange);
-          this.timeSeriesSlider = this.makeTimeSeriesSlider(this.sliderRef);
+          console.log('timeseries-chart-temporal-slider temporal range', temp);
+          if (!temp.start || !temp.end) { return; }
+          this.maxRange = {start: temp.start.valueOf(), end: temp.end.valueOf()};
+          console.log('timeseries-chart-temporal-slider maxRange', this.maxRange);
           console.log('**** this.timeSeriesSlider ****', this.timeSeriesSlider);
-          this.subs.add(
-            this.timeSeriesSlider.values$.subscribe(
-              ([start, end]) => {
-                console.log('*** timeseries-chart-temporal-slider selected range values$ ***', start, end);
-                console.log('*** timeseries-chart-temporal-slider selected range types ***', typeof start, typeof end);
-                if (start === this.selectedRange.start && end === this.selectedRange.end) {
-                  return;
-                }
-                const action = new filtersStore.SetStartDate(new Date(start));
-                this.store$.dispatch(action);
-                const action2 = new filtersStore.SetEndDate(new Date(end));
-                this.store$.dispatch(action2);
-                this.timeSeriesSlider = this.makeTimeSeriesSlider(this.sliderRef);
+          if (this.lastMaxRange.start !== this.maxRange.start || this.lastMaxRange.end !== this.maxRange.end) {
+            this.lastMaxRange.start = this.maxRange.start;
+            this.lastMaxRange.end = this.maxRange.end;
+
+            console.log('**** this.timeSeriesSlider.noUiSlider.updateOptions range ****', this.maxRange.start, this.maxRange.end);
+            this.sliderRef.nativeElement.noUiSlider.updateOptions({
+              start: [this.maxRange.start, this.maxRange.end],
+              range: {
+                'min': this.maxRange.start,
+                'max': this.maxRange.end
               }
-            )
-          );
+            });
+          }
         }
       )
     );
+
+    this.subs.add(
+      this.timeSeriesSlider.values$.subscribe(
+        ([start, end]) => {
+          if (!start || !end) { return; }
+          console.log('*** timeseries-chart-temporal-slider selected range values$ ***', start, end);
+          console.log('*** timeseries-chart-temporal-slider selected range types ***', typeof start, typeof end);
+          if (start === this.selectedRange.start && end === this.selectedRange.end) {
+            return;
+          }
+          this.selectedRange = {start: start, end: end};
+          console.log('**** this.timeSeriesSlider.noUiSlider.updateOptions start ****', this.selectedRange.start, this.selectedRange.end);
+          this.sliderRef.nativeElement.noUiSlider.updateOptions({
+            start: [this.selectedRange.start, this.selectedRange.end]
+          });
+          const action = new filtersStore.SetStartDate(new Date(start));
+          this.store$.dispatch(action);
+          const action2 = new filtersStore.SetEndDate(new Date(end));
+          this.store$.dispatch(action2);
+        }
+      )
+    );
+
 
   }
 
@@ -103,47 +125,41 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit, OnDestroy
     const values$ = new Subject<number[]>();
     // Steps of one day
     const increment = 24 * 60 * 60 * 1000;
-    let maxStart = this.maxRange.start ? this.maxRange.start.valueOf() : 0;
-    let maxEnd = this.maxRange.end ? this.maxRange.end.valueOf() : 0;
-    let selectedStart = this.selectedRange.start ? this.selectedRange.start.valueOf() : 0;
-    let selectedEnd = this.selectedRange.end ? this.selectedRange.end.valueOf() : 0;
-    if (maxStart != 0 && maxEnd != 0) {
-      if (filterRef.nativeElement && filterRef.nativeElement.noUiSlider) { filterRef.nativeElement.noUiSlider.destroy(); }
-      this.tsSlider = noUiSlider.create(filterRef.nativeElement, {
-        start: [selectedStart, selectedEnd],
-        behaviour: 'tap-drag',
-        tooltips: [{to: (d) => self.toFormat(d)}, {to: (d) => self.toFormat(d)}],
-        connect: true,
-        step: increment,
-        range: {
-          'min': maxStart,
-          'max': maxEnd
-        },
-        pips: {
-          // @ts-ignore
-          mode: 'count',
-          values: 5,
-          stepped: true,
-          density: 4,
-          format: {
-            from: (value) => {return self.timestamp(value);},
-            to: self.toFormat
-          }
-        },
-      });
+    const slider = noUiSlider.create(filterRef.nativeElement, {
+      start: [1, 100],
+      behaviour: 'tap-drag',
+      tooltips: [{to: (d) => self.toFormat(d)}, {to: (d) => self.toFormat(d)}],
+      connect: true,
+      step: increment,
+      range: {
+        'min': 1,
+        'max': 100
+      },
+      pips: {
+        // @ts-ignore
+        mode: 'count',
+        values: 5,
+        stepped: true,
+        density: 4,
+        format: {
+          from: (value) => {return self.timestamp(value);},
+          to: self.toFormat
+        }
+      },
+    });
 
-      this.tsSlider.on('update', (values: any[], _: any) => {
-        values$.next(values.map(v => +v));
-      });
+    // this.tsSlider.on('update', (values: any[], _: any) => {
+    //   values$.next(values.map(v => +v));
+    // });
 
-      return {
-        slider: this.tsSlider,
-        values$: values$.asObservable().pipe(
-          debounceTime(500),
-          distinctUntilChanged()
-        )
-      };
-    }
+    return {
+      slider,
+      values$: values$.asObservable().pipe(
+        debounceTime(500),
+        distinctUntilChanged()
+      )
+    };
+
   }
 
   ngOnDestroy(){
