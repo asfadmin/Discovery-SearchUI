@@ -11,7 +11,7 @@ import * as scenesStore from '@store/scenes';
 import * as mapStore from '@store/map';
 import * as filterStore from '@store/filters';
 import * as uiStore from '@store/ui';
-import { SetSearchType, MakeSearch } from '@store/search/search.action';
+import { SetSearchType, MakeSearch, setSearchKioskMode } from '@store/search/search.action';
 import { getSearchType } from '@store/search/search.reducer';
 
 import * as models from '@models';
@@ -27,14 +27,17 @@ import { ThemingService } from './theming.service';
   providedIn: 'root'
 })
 export class UrlStateService {
-  private urlParamNames: string[];
+  private urlParamNames: string[] = [];
   private urlParams: {[id: string]: models.UrlParameter};
-  private loadLocations: {[paramName: string]: models.LoadTypes};
+  private loadLocations: {[paramName: string]: models.LoadTypes} = {};
   private params = {};
   private shouldDoSearch = false;
   private defaultbooleanParams = {
     'useCalibrationData': false
   }
+
+  private kioskMode = false; // for opera displacement
+  private displacementHostName = 'displacement.asf.alaska.edu';
 
   public isDefaultSearch$ = this.activatedRoute.queryParams.pipe( map(params => {
     const keys = Object.keys(params)
@@ -56,49 +59,61 @@ export class UrlStateService {
     private prop: PropertyService,
     private themeService: ThemingService,
   ) {
-    const params = [
-      ...this.datasetParam(),
-      ...this.mapParameters(),
-      ...this.uiParameters(),
-      ...this.filtersParameters(),
-      ...this.missionParameters(),
-      ...this.baselineParameters(),
-      ...this.sbasParameters(),
-      ...this.onDemandParameters(),
-      ...this.eventMonitorParameters(),
-    ];
 
-    this.urlParamNames = params.map(param => param.name);
-    this.loadLocations = this.urlParamNames.reduce((locations, paramName) => {
-      locations[paramName] = models.LoadTypes.DEFAULT;
+    this.kioskMode = window.location.hostname === this.displacementHostName;
 
-      return locations;
-    }, {});
-    this.urlParams = params.reduce((res, param) => {
-      res[param.name] = param;
+    if(this.kioskMode) {
+      this.store$.dispatch(new setSearchKioskMode(true));
+    } else {
+      const params = [
+        ...this.datasetParam(),
+        ...this.mapParameters(),
+        ...this.uiParameters(),
+        ...this.filtersParameters(),
+        ...this.missionParameters(),
+        ...this.baselineParameters(),
+        ...this.sbasParameters(),
+        ...this.onDemandParameters(),
+        ...this.eventMonitorParameters(),
+      ];
 
-      return res;
-    }, {});
+      this.urlParamNames = params.map(param => param.name);
+      this.loadLocations = this.urlParamNames.reduce((locations, paramName) => {
+        locations[paramName] = models.LoadTypes.DEFAULT;
 
+        return locations;
+      }, {});
+      this.urlParams = params.reduce((res, param) => {
+        res[param.name] = param;
+
+        return res;
+      }, {});
+    }
     this.updateShouldSearch();
+    
   }
 
   public load(): void {
-    this.activatedRoute.queryParams.pipe(
-      skip(1),
-      take(1),
-    ).subscribe(
-      params => this.loadStateFrom(params)
-    );
-
-    this.urlParamNames.forEach(
-      paramName => this.urlParams[paramName].source.pipe(
+    if (this.kioskMode) {
+      this.store$.dispatch(new SetSearchType(models.SearchType.DISPLACEMENT))
+    }
+    else {
+      this.activatedRoute.queryParams.pipe(
         skip(1),
-        debounceTime(300)
+        take(1),
       ).subscribe(
-        this.updateRouteWithParams
-      )
-    );
+        params => this.loadStateFrom(params)
+      );
+
+      this.urlParamNames.forEach(
+        paramName => this.urlParams[paramName].source.pipe(
+          skip(1),
+          debounceTime(300)
+        ).subscribe(
+          this.updateRouteWithParams
+        )
+      );
+    }
   }
 
   private updateRouteWithParams = (queryParams: Params): void => {
@@ -156,28 +171,30 @@ export class UrlStateService {
   }
 
   public setDefaults(profile: models.UserProfile): void {
-    if (this.loadLocations['dataset'] !== models.LoadTypes.URL) {
-      if (this.loadLocations['productTypes'] !== models.LoadTypes.URL) {
-        this.store$.dispatch(new filterStore.SetSelectedDataset(profile.defaultDataset));
-      }
-    }
-
-    if (this.loadLocations['maxResults'] !== models.LoadTypes.URL) {
-      this.store$.dispatch(new filterStore.SetMaxResults(profile.maxResults));
-    }
-
-    if (profile.theme && profile.theme !== 'System Preferences') {
-      this.themeService.setTheme(`theme-${profile.theme}`);
-    } else if (profile.theme) {
-      this.themeService.theme$.pipe(
-        take(1)
-      ).subscribe(
-        themePreference => {
-          this.themeService.setTheme(`theme-${themePreference}`);
+    if (!this.kioskMode) {
+      if (this.loadLocations['dataset'] !== models.LoadTypes.URL) {
+        if (this.loadLocations['productTypes'] !== models.LoadTypes.URL) {
+          this.store$.dispatch(new filterStore.SetSelectedDataset(profile.defaultDataset));
         }
-      );
-    } else {
-      this.themeService.setTheme('theme-light');
+      }
+
+      if (this.loadLocations['maxResults'] !== models.LoadTypes.URL) {
+        this.store$.dispatch(new filterStore.SetMaxResults(profile.maxResults));
+      }
+
+      if (profile.theme && profile.theme !== 'System Preferences') {
+        this.themeService.setTheme(`theme-${profile.theme}`);
+      } else if (profile.theme) {
+        this.themeService.theme$.pipe(
+          take(1)
+        ).subscribe(
+          themePreference => {
+            this.themeService.setTheme(`theme-${themePreference}`);
+          }
+        );
+      } else {
+        this.themeService.setTheme('theme-light');
+      }
     }
     const action = profile.mapLayer === models.MapLayerTypes.STREET ?
       new mapStore.SetStreetView() :

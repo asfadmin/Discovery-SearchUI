@@ -11,7 +11,8 @@ import { AppState } from '../app.reducer';
 import {
   SetSearchAmount, EnableSearch, DisableSearch, SetSearchType, SetNextJobsUrl,
   Hyp3BatchResponse, SarviewsEventsResponse, SetSearchOutOfDate,
-  TimeseriesSearchResponse
+  TimeseriesSearchResponse,
+  setSearchKioskMode
 } from './search.action';
 import * as scenesStore from '@store/scenes';
 import * as filtersStore from '@store/filters';
@@ -364,6 +365,11 @@ export class SearchEffects {
     tap(_ => this.notificationService.info('Refresh search to show new results', 'Results Out of Date'))
   ), { dispatch: false });
 
+  public OnSetKioskMode = createEffect(() => this.actions$.pipe(
+    ofType<setSearchKioskMode>(SearchActionType.SET_SEARCH_KIOSK_MODE),
+    filter(action => action.payload),
+    map(_ => new SetSearchType(SearchType.DISPLACEMENT))
+  ))
   private asfApiQuery$ = this.searchParams$.getParams.pipe(
     debounceTime(100),
     map(params => [params]),
