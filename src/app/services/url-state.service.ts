@@ -37,7 +37,7 @@ export class UrlStateService {
   }
 
   private kioskMode = false; // for opera displacement
-  private displacementHostName = 'displacement.asf.alaska.edu';
+  private displacementHostNames = ['displacement.asf.alaska.edu', 'search-displacement.asf.alaska.edu'];
 
   public isDefaultSearch$ = this.activatedRoute.queryParams.pipe( map(params => {
     const keys = Object.keys(params)
@@ -60,7 +60,7 @@ export class UrlStateService {
     private themeService: ThemingService,
   ) {
 
-    this.kioskMode = window.location.hostname === this.displacementHostName;
+    this.kioskMode = this.displacementHostNames.includes(window.location.hostname);
 
     if(this.kioskMode) {
       this.store$.dispatch(new setSearchKioskMode(true));
