@@ -737,9 +737,12 @@ export class MapService {
     this.hasCoherenceLayer$.next(months);
   }
 
-  public setDisplacementOverview(direction: string, type: string) {
+  public setDisplacementOverview(direction: models.FlightDirection, type: models.DisplacementLayerTypes) {
+    const dir = direction === models.FlightDirection.ASCENDING ? 'ASC' : 'DESC';
+    const layerType = type === models.DisplacementLayerTypes.DISPLACEMENT ? 'DISP' : 'VEL';
 
-    let base_url = `https://d12uktych8nckw.cloudfront.net/main/${direction.toLowerCase()}/${type.toLowerCase()}`;
+    let base_url = `https://d12uktych8nckw.cloudfront.net/main/${dir.toLowerCase()}/${layerType.toLowerCase()}`;
+    console.log(base_url);
 
     this.http.get(`${base_url}/extent.json`).pipe(
       first()
@@ -815,7 +818,7 @@ export class MapService {
           text: textFunction(feature)
         })
       })
-  
+
       return layerStyle
     }
 
