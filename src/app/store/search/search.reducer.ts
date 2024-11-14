@@ -15,6 +15,7 @@ export interface SearchState {
   totalResults: null | number;
   searchType: SearchType | null;
   nextHyp3JobUrl: null | string;
+  kioskMode: boolean;
 }
 
 export const initState: SearchState = {
@@ -27,7 +28,8 @@ export const initState: SearchState = {
   totalResults: null,
   searchType: SearchType.DATASET,
   nextHyp3JobUrl: null,
-  areResultsOutOfDate: false
+  areResultsOutOfDate: false,
+  kioskMode: false,
 };
 
 export function searchReducer(state = initState, action: SearchActions): SearchState {
@@ -135,6 +137,13 @@ export function searchReducer(state = initState, action: SearchActions): SearchS
       };
     }
 
+    case SearchActionType.SET_SEARCH_KIOSK_MODE: {
+      return {
+        ... state,
+        kioskMode: action.payload
+      };
+    }
+
     default: {
       return state;
     }
@@ -191,4 +200,9 @@ export const getNextHyp3JobsUrl = createSelector(
 export const getareResultsOutOfDate = createSelector(
   getSearchState,
   (state: SearchState) => state.areResultsOutOfDate
+);
+
+export const getKioskMode = createSelector(
+  getSearchState,
+  (state: SearchState) => state.kioskMode
 );
