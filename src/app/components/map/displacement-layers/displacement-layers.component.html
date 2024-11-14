@@ -1,19 +1,19 @@
 <div class="disp-layers--layout position">
   <div class="layers-selector fx-col">
-    <mat-checkbox>
+    <mat-checkbox (change)="onUpdateDeformation($event.checked)">
       <div class="selector-text">
         Cumulative Deformation
       </div>
     </mat-checkbox>
 
-    <mat-checkbox>
+    <mat-checkbox (change)="onUpdateVelocity($event.checked)">
       <div class="selector-text">
         Cumulative Velocity
 
       </div>
     </mat-checkbox>
 
-    <mat-checkbox (change)="updatePriority($event.checked)">
+    <mat-checkbox (change)="onUpdatePriority($event.checked)">
       <div class="selector-text">
         Rollout
       </div>

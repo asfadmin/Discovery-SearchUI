@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
+import * as searchStore from '@store/search';
 
 import { ScreenSizeService } from '@services';
 import { Breakpoints } from '@models';
@@ -27,4 +28,6 @@ export class TimeseriesHeaderComponent {
   public onToggleFiltersMenu(): void {
     this.store$.dispatch(new uiStore.OpenFiltersMenu());
   }
+
+  public isKioskMode$ = this.store$.select(searchStore.getKioskMode);
 }
