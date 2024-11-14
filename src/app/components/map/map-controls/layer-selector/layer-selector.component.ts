@@ -110,7 +110,7 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
 
   public onSetDisplacementLayer(direction: string, type: string) {
     this.displacementOverview = [direction, type];
-    this.mapService.setDisplacementOverview(direction, type);
+    console.log(this.displacementOverview);
   }
 
   public clearDisplacementLayer() {

@@ -15,7 +15,7 @@ export class DisplacementLayersComponent {
     private mapService: MapService,
   ) { }
 
-  public updatePriority(isChecked: boolean): void {
+  public onUpdatePriority(isChecked: boolean): void {
     if(isChecked) {
       this.mapService.enablePriority();
     }
@@ -24,15 +24,23 @@ export class DisplacementLayersComponent {
     }
   }
 
-  public onUpdateDeformation(isChecked): void {
+  public onUpdateDeformation(isChecked: boolean): void {
     if (isChecked) {
-      this.onSetDisplacementLayer(this.flightDir, models.DisplacementLayerTypes.DISPLACEMENT);
+      this.setDisplacementLayer(this.flightDir, models.DisplacementLayerTypes.DISPLACEMENT);
     } else {
       this.clearDisplacementLayer();
     }
   }
 
-  public onSetDisplacementLayer(direction: models.FlightDirection, type: models.DisplacementLayerTypes) {
+  public onUpdateVelocity(isChecked: boolean): void {
+    if (isChecked) {
+      this.setDisplacementLayer(this.flightDir, models.DisplacementLayerTypes.VELOCITY);
+    } else {
+      this.clearDisplacementLayer();
+    }
+  }
+
+  public setDisplacementLayer(direction: models.FlightDirection, type: models.DisplacementLayerTypes) {
     this.mapService.setDisplacementOverview(direction, type);
   }
 
