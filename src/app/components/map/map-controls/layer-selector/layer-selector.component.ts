@@ -107,10 +107,12 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
       this.onSetCoherenceLayer(months);
     }
   }
-  public onSetDisplacementLayer(direction: string,type: string) {
+
+  public onSetDisplacementLayer(direction: string, type: string) {
     this.displacementOverview = [direction, type];
-    this.mapService.setDisplacementOverview(direction,type);
+    this.mapService.setDisplacementOverview(direction, type);
   }
+
   public clearDisplacementLayer() {
     this.displacementOverview = null;
     this.mapService.clearDisplacementOverview();
