@@ -375,33 +375,35 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         .y(function (d) { return self.y(d.short_wavelength_displacement); })
 
       this.lines = this.svg.append('g')
-        .selectAll("myLines")
+        .attr('id', 'linesParent')
+        .selectAll('myLines')
         .data(this.dataReadyForChart)
         .enter()
-        .append("path")
+        .append('path')
         .attr('clip-path', 'url(#clip)')
-        .attr("d", function (d) { // @ts-ignore
+        .attr('d', function (d) { // @ts-ignore
           return line(d.values)
         })
         // @ts-ignore
-        .attr("stroke", function (d: DataReady) { return d.color })
-        .style("opacity", (d: DataReady) => d.opacity)
-        .style("stroke-width", 1)
-        .style("fill", "none")
-        .style("shape-rendering", "geometricprecision")
+        .attr('stroke', function (d: DataReady) { return d.color })
+        // .style('opacity', (d: DataReady) => d.opacity)
+        .style('stroke-width', 1)
+        .style('fill', 'none')
+        .style('shape-rendering', 'geometricprecision')
     }
 
     // add the dots
     this.dots = this.svg.append('g')
-      .attr("id", "dotsParent")
-      .selectAll("myDots")
+      .attr('id', 'dotsParent')
+      .attr('class', 'dotsParent')
+      .selectAll('myDots')
       .data(this.dataReadyForChart)
       .enter()
       .append('g')
       .attr('clip-path', 'url(#clip)')
       .style('fill', (d) : string=>  { return d.color })
-      .style('opacity', (d) => d.opacity)
-      .attr('class', (d): string => { return d.name.replace(/\W/g, '') })
+      // .style('opacity', (d) => d.opacity)
+      .attr('class', (d): string => { return d.name.replace(/\W/g, '') + ' dotsChildren' })
       .selectAll('circle')
       .data(d => d.values)
       .enter()
@@ -449,7 +451,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     let colorName: string;
     let dClassName: string;
     // set the color of the selected line to the color of the series; make all other lines grey
-    lines.style("stroke", (d: DataReady) => {
+    lines.style('stroke', (d: DataReady) => {
       if (d.name === k) {
         dClassName = '.' + d.name.replace(/\W/g, '');
         colorName = d.color;
@@ -457,17 +459,23 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       }
       return unSelectedColor;
     });
-    // sort the lines so that the selected line is on top
-    lines.selectAll("path").sort(function (a, _b) {
-      if (a.attr('stroke') != colorName) return -1;
-      else return 1;
+    lines.style('stroke-width', (d: DataReady) => {
+      if (d.name === k) {
+        return 2;
+      }
+      return 1;
     });
-    this.svg.selectAll('circle').style("fill", unSelectedColor);
-    this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", colorName);
-    this.svg.selectAll("dotsParent").sort(function (a, _b) {
+    // sort the lines so that the selected line is on top
+    lines.sort(function (a, _b) {
+      if (a.dname === k) return 1;
+        else return -1;
+    });
+    this.svg.selectAll('circle').style("fill", unSelectedColor).attr('r', 5);
+    this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", colorName).attr('r', 6);
+    this.svg.selectAll('.dotsChildren').sort(function (a, _b) {
       // @ts-ignore
-      if (a.attr('class') != dClassName) return -1;
-      else return 1;
+      if (a.name === k) return 1;
+        else return -1;
     });
     dots.select("text").text(k);
   }
@@ -481,9 +489,10 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     let dClassName: string;
     lines.style("stroke", (d: DataReady) => {
       dClassName = '.' + d.name.replace(/\W/g, '');
-      this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", d.color);
+      this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", d.color).attr('r', 5);
       return d.color;
     });
+    lines.style("stroke-width", 1);
   }
 
   private updateChart() {
@@ -512,7 +521,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .attr("d", function (d) { // @ts-ignore
         return line(d.values)
       })
-      .style('opacity', (d: DataReady) => d.opacity)
+      // .style('opacity', (d: DataReady) => d.opacity)
 
   }
 
