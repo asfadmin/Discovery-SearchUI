@@ -17,7 +17,7 @@ import { AsfLanguageService } from "@services/asf-language.service";
 import { NetcdfService } from '@services';
 import * as models from '@models';
 // import {style} from '@angular/animations';
-
+import {linearRegression, linearRegressionLine} from './regression-line'
 interface TimeSeriesData {
   short_wavelength_displacement: number
   date: string,
@@ -81,7 +81,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   public endDate: Date = new Date();
   public lastStartDate: Date = new Date();
   public lastEndDate: Date = new Date();
-
+  private bestFitLine;
 
 
   // private selectedScene: string;
@@ -433,6 +433,33 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       })
       .attr('r', 5);
 
+      if(this.dataReadyForChart.length > 0) {
+        let regression = linearRegression(this.dataReadyForChart[0]?.values?.map((x,i) => [i, x.short_wavelength_displacement]))
+          let lineregression = linearRegressionLine(regression);
+          let regressionPoints = () => {
+            return Array.from(Array(this.dataReadyForChart[0].values.length).keys()).map(d => ({
+              x: Date.parse(this.dataReadyForChart[0].values[d].date),                         // We pick x and y arbitrarily, just make sure they match d3.line accessors
+              y: lineregression(d)
+            }));
+          }
+
+          let line = d3.line()
+            .x( (d) => { return this.x(d[0]) })
+            .y( (d) =>  { return this.y(d[1]) })
+          this.bestFitLine = this.svg.append('g')
+          .attr('id', 'linesParent2')
+          .append("path")
+          .datum(regressionPoints())
+          .attr('clip-path', 'url(#clip)')
+          .attr("d",(d) => {
+            return line(d.map(a => [a.x,a.y]))
+          })
+          .attr("stroke", '#000000')
+          .style("stroke-width", 1)
+          .style("fill", "none")
+          .style("shape-rendering", "geometricprecision")
+      }
+
     this.updateChart();
   }
   public setReference(reference) {
@@ -521,7 +548,17 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .attr("d", function (d) { // @ts-ignore
         return line(d.values)
       })
-      // .style('opacity', (d: DataReady) => d.opacity)
+
+    if(this.bestFitLine) {
+      let line2 = d3.line()
+      .x( (d) => { return newX(d[0]) })
+      .y( (d) =>  { return newY(d[1]) })
+
+      this.bestFitLine
+        .attr('d', (d) => {
+          return line2(d.map((a) => [a.x,a.y]))
+        })
+    }
 
   }
 
