@@ -569,12 +569,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     return join(date, dateFormat, ' ');
   }
 
-  public swatches(d: any) {
-    return d3.scaleOrdinal()
-      .domain(d)
-      .range(d3.schemeCategory10);
-
-  }
   public resetBasePoint() {
     this.baseData = null;
     this.initChart(this.data);
