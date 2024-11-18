@@ -11,6 +11,17 @@
   width: 100%;
 }
 
+.chart-details {
+  position: absolute;
+  margin-top: 15px;
+  margin-left: 70px;
+  padding: 5px;
+  color: #65665c;
+  font-size: 14px;
+  font-style: italic;
+  background-color: #f5f5f5;
+}
+
 ::ng-deep .timeseries-base {
   @include themify($themes) {
     fill: themed('blue-link');
