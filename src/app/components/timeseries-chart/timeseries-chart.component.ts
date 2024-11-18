@@ -257,7 +257,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
               return 1
             }
         })
-          this.dataReadyForChart.push({ name: aoi, values: this.timeSeriesData, color: result.state.color, opacity:  result.state.checked ? 1.0 : 0.4});
+          this.dataReadyForChart.push({ name: aoi, values: this.timeSeriesData, color: result.state.color, opacity:  result.state.checked ? 1.0 : 0.2});
           // this.averageData = ({
             // ...data.mean
           // })
@@ -386,7 +386,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         })
         // @ts-ignore
         .attr('stroke', function (d: DataReady) { return d.color })
-        // .style('opacity', (d: DataReady) => d.opacity)
+        .style('opacity', (d: DataReady) => d.opacity)
         .style('stroke-width', 1)
         .style('fill', 'none')
         .style('shape-rendering', 'geometricprecision')
@@ -402,7 +402,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .append('g')
       .attr('clip-path', 'url(#clip)')
       .style('fill', (d) : string=>  { return d.color })
-      // .style('opacity', (d) => d.opacity)
+      .style('opacity', (d) => d.opacity)
       .attr('class', (d): string => { return d.name.replace(/\W/g, '') + ' dotsChildren' })
       .selectAll('circle')
       .data(d => d.values)
@@ -521,7 +521,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .attr("d", function (d) { // @ts-ignore
         return line(d.values)
       })
-      // .style('opacity', (d: DataReady) => d.opacity)
+      .style('opacity', (d: DataReady) => d.opacity)
 
   }
 
