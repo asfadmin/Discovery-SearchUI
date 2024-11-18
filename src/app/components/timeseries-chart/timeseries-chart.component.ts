@@ -422,7 +422,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         toolTip.interrupt();
         toolTip
           .style('opacity', .9);
-        toolTip.html(`<div style="text-align: left">${self.tooltipDateFormat(date)}, ${p.short_wavelength_displacement.toFixed(5)} meters<br><b>Series ${p.seriesNumber}</b></div>`);
+        toolTip.html(`<div style="text-align: left">${self.tooltipDateFormat(date)}, ${p.short_wavelength_displacement.toFixed(2)} meters<br><b>Series ${p.seriesNumber}</b></div>`);
         self.updateTooltip();
       })
       .on('mouseleave', function (_) {
@@ -606,12 +606,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     return join(date, dateFormat, ' ');
   }
 
-  public swatches(d: any) {
-    return d3.scaleOrdinal()
-      .domain(d)
-      .range(d3.schemeCategory10);
-
-  }
   public resetBasePoint() {
     this.baseData = null;
     this.initChart(this.data);
