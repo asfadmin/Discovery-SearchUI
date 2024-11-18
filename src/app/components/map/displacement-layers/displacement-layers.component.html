@@ -1,12 +1,14 @@
 <div class="disp-layers--layout position">
   <div class="layers-selector fx-col">
-    <mat-checkbox (change)="onUpdateDeformation($event.checked)">
+    <mat-checkbox (change)="onUpdateDeformation($event.checked)"
+      [checked]="displacementOverview === DispLayerTypes.DISPLACEMENT">
       <div class="selector-text">
         Cumulative Deformation
       </div>
     </mat-checkbox>
 
-    <mat-checkbox (change)="onUpdateVelocity($event.checked)">
+    <mat-checkbox (change)="onUpdateVelocity($event.checked)"
+      [checked]="displacementOverview === DispLayerTypes.VELOCITY">
       <div class="selector-text">
         Cumulative Velocity
 
