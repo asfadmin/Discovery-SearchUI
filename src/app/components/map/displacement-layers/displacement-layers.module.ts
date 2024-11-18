@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MatMenuModule } from '@angular/material/menu';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { DisplacementLayersComponent } from './displacement-layers.component';
@@ -16,6 +17,7 @@ import { SharedModule } from "@shared";
     CommonModule,
     MatMenuModule,
     MatCheckboxModule,
+    MatRadioModule,
     MatSharedModule,
     SharedModule,
     DocsModalModule,

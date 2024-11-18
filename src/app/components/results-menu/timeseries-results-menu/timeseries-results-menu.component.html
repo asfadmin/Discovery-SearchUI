@@ -5,14 +5,6 @@
 		<mat-card-subtitle class="header ts-scene-list-header">
 			<app-scenes-list-header></app-scenes-list-header>
 		</mat-card-subtitle>
-      <div class="ts-add-points">
-        @if(!isAddingPoints) {
-          <button (click)="onAddPointsMode()" mat-fab extended><mat-icon>add_location_alt</mat-icon>{{ 'ADD_POINTS' | translate }}</button>
-        }
-        @else {
-          <button (click)="onStopAddPoints()" mat-fab extended><mat-icon>location_off</mat-icon>{{ 'STOP_ADDING_POINTS' | translate }}</button>
-        }
-      </div>
 
 		<div class="ts-left-column-results">
 
