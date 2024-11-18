@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, Inject, HostListener } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -67,6 +67,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public interactionTypes = models.MapInteractionModeType;
   public searchType: models.SearchType;
+  public kioskMode = false;
+  
   private helpTopic: string | null;
 
   private subs = new SubSink();
@@ -98,8 +100,14 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private titleService: Title,
     @Inject(MAT_DATE_LOCALE) public _locale: string,
   ) { }
-
+  
+  @HostListener('window:keydown.control./', ['$event'])
+  handleKeyDown(_event: KeyboardEvent) {
+    console.log('Toggling kiosk mode. Use "ctrl+/" to re-toggle')
+    this.store$.dispatch(new searchStore.setSearchKioskMode(!this.kioskMode))
+  }
   public ngOnInit(): void {
+    console.log('To toggle kiosk mode, use "ctrl+/"')
     this.store$.dispatch(new hyp3Store.LoadCosts());
 
     this.subs.add(
@@ -125,6 +133,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       )
     );
 
+    this.subs.add(
+      this.store$.select(searchStore.getKioskMode).subscribe(kioskMode => this.kioskMode = kioskMode)
+    )
     this.subs.add(
       this.store$.select(uiStore.getHelpDialogTopic).subscribe(topic => {
         const previousTopic = this.helpTopic;

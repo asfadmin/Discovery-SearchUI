@@ -1,7 +1,7 @@
 <ng-container *ngIf="breakpoint$ | async as breakpoint">
 	<div *ngIf="breakpoint > breakpoints.MOBILE" class="breadcrumb-row baseline-header-layout">
 		<div class="baseline-header-wrapper">
-			<app-search-type-selector class="breadcrumb">
+			<app-search-type-selector *ngIf="!(isKioskMode$ | async)" class="breadcrumb">
 			</app-search-type-selector>
 
 			<div class="breadcrumb scene-selector" [class.scene-selector]="breakpoint === breakpoints.FULL"
