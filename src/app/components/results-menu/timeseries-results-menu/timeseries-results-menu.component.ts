@@ -6,14 +6,13 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
-import * as mapStore from '@store/map';
 import * as chartStore from '@store/charts';
 
 import {
   DrawService, MapService, NetcdfService, PointHistoryService, ScreenSizeService,
   WktService
 } from '@services';
-import { Breakpoints, SearchType, MapInteractionModeType, MapDrawModeType } from '@models';
+import { Breakpoints, SearchType } from '@models';
 
 import { SubSink } from 'subsink';
 
@@ -108,12 +107,6 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.store$.select(mapStore.getMapInteractionMode).subscribe(
-        mode => this.isAddingPoints = mode === MapInteractionModeType.DRAW
-      )
-    );
-
-    this.subs.add(
       this.store$.select(searchStore.getSearchType).subscribe(
         searchType => this.searchType = searchType
       )
@@ -201,15 +194,6 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
 
   public onOpenHelp(url: string): void {
     window.open(url);
-  }
-
-  public onAddPointsMode(): void {
-    this.store$.dispatch(new mapStore.SetMapInteractionMode(MapInteractionModeType.DRAW));
-    this.store$.dispatch(new mapStore.SetMapDrawMode(MapDrawModeType.POINT));
-  }
-
-  public onStopAddPoints(): void {
-    this.store$.dispatch(new mapStore.SetMapInteractionMode(MapInteractionModeType.NONE));
   }
 
   public updateChart(): void {

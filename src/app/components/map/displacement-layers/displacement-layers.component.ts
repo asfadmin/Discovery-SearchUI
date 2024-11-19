@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { SubSink } from 'subsink';
 
 import { MapService } from '@services';
 import * as models from '@models';
@@ -9,11 +10,27 @@ import * as models from '@models';
   templateUrl: './displacement-layers.component.html',
   styleUrl: './displacement-layers.component.scss'
 })
-export class DisplacementLayersComponent {
+export class DisplacementLayersComponent implements OnInit, OnDestroy {
   public flightDir = models.FlightDirection.ASCENDING;
+  public displacementOverview: models.DisplacementLayerTypes | null = null;
+
+  public DispLayerTypes = models.DisplacementLayerTypes;
+
+  private subs = new SubSink();
+
   constructor(
     private mapService: MapService,
   ) { }
+
+  ngOnInit() {
+    this.subs.add(
+      this.mapService.displacementOverview$.subscribe(
+        t => {
+          this.displacementOverview = t;
+        }
+      )
+    );
+  }
 
   public onUpdatePriority(isChecked: boolean): void {
     if(isChecked) {
@@ -46,5 +63,9 @@ export class DisplacementLayersComponent {
 
   public clearDisplacementLayer() {
     this.mapService.clearDisplacementOverview();
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

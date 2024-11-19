@@ -7,7 +7,15 @@
 			<div class="breadcrumb scene-selector" [class.scene-selector]="breakpoint === breakpoints.FULL"
 				[class.medium-scene-selector]="breakpoint === breakpoints.MEDIUM"
 				[class.small-scene-selector]="breakpoint === breakpoints.SMALL">
-				<app-aoi-filter></app-aoi-filter>
+
+        <div class="ts-add-points">
+          @if(!isAddingPoints) {
+            <button (click)="onAddPointsMode()" mat-fab extended><mat-icon>add_location_alt</mat-icon>{{ 'ADD_POINTS' | translate }}</button>
+          }
+          @else {
+            <button (click)="onStopAddPoints()" mat-fab extended><mat-icon>location_off</mat-icon>{{ 'STOP_ADDING_POINTS' | translate }}</button>
+          }
+        </div>
 			</div>
 
 			<div class="breadcrumb search-button-layout">
