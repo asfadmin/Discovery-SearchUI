@@ -1,4 +1,8 @@
 <div #tsChartWrapper class="chart-wrapper" (resized)="onResized()">
+  <div *ngIf="hoveredData" class="chart-details">
+    Series: {{hoveredData?.seriesNumber}},&nbsp;&nbsp;{{tooltipDateFormat(hoveredDate)}},&nbsp;&nbsp;{{hoveredData?.short_wavelength_displacement.toFixed(2)}} meters<br>
+    Best Fit: y = ax + b
+  </div>
 	<div #timeseriesChart id="timeseriesChart" [contextMenuTriggerFor]="menu" [contextMenuTriggerData]="{'tooltipData': hoveredData}">
 	</div>
 	<app-chart-modal class="ts-chart-config-button" (resetReferenceEvent)="resetBasePoint()"></app-chart-modal>

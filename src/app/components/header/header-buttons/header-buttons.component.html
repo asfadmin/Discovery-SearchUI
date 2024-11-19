@@ -1,90 +1,103 @@
-<div *ngIf="breakpoint$ | async as breakpoint" class="fx-row">
+<div *ngIf="breakpoint$ | async as breakpoint" xmlns="http://www.w3.org/1999/html" class="fx-row">
   <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
-    <button
-        [matMenuTriggerFor]="onDemandQueue"
-        class="spacing nav-icon-buttons" color="basic"
-        matTooltip="{{ 'ON_DEMAND_QUEUE' | translate }}"
-        mat-button>
-        <mat-icon
-          class="large-icon"
-          aria-hidden="false"
-          svgIcon="hyp3"
-          [matBadge]="queuedCustomProducts.length"
-          [matBadgeColor]="this.queuedProducts.length > 0 ? this.accentPalette : this.primaryPalette"
-          matBadgePosition="above after"
-          matBadgeOverlap="true"
-          matBadgeSize="small">
-        </mat-icon>
-      <div class="text-under faint-text">{{ 'ON_DEMAND' |  translate }}</div>
-    </button>
+    <ng-container *ngIf="searchType$ | async as searchType">
+      <ng-container *ngIf="searchType !== searchTypes.DISPLACEMENT">
+        <button
+            [matMenuTriggerFor]="onDemandQueue"
+            class="spacing nav-icon-buttons" color="basic"
+            matTooltip="{{ 'ON_DEMAND_QUEUE' | translate }}"
+            mat-button>
+            <mat-icon
+              class="large-icon"
+              aria-hidden="false"
+              svgIcon="hyp3"
+              [matBadge]="queuedCustomProducts.length"
+              [matBadgeColor]="this.queuedProducts.length > 0 ? this.accentPalette : this.primaryPalette"
+              matBadgePosition="above after"
+              matBadgeOverlap="true"
+              matBadgeSize="small">
+            </mat-icon>
+          <div class="text-under faint-text">{{ 'ON_DEMAND' |  translate }}</div>
+        </button>
 
-    <mat-menu #onDemandQueue="matMenu">
-      <button
-      (click)="onOpenProcessingQueue()"
-      mat-menu-item>{{  'ON_DEMAND_QUEUE'  | translate }}</button>
+        <mat-menu #onDemandQueue="matMenu">
+          <button
+          (click)="onOpenProcessingQueue()"
+          mat-menu-item>{{  'ON_DEMAND_QUEUE'  | translate }}</button>
 
-      <button mat-menu-item
-      (click) = "onSetSearchTypeOnDemand()"
-      [disabled]="!isLoggedIn">{{  'SUBMITTED_PRODUCTS'  | translate }}
-      </button>
+          <button mat-menu-item
+          (click) = "onSetSearchTypeOnDemand()"
+          [disabled]="!isLoggedIn">{{  'SUBMITTED_PRODUCTS'  | translate }}
+          </button>
 
-      <button mat-menu-item (click)="onOpenOnDemandDocs()">
-        {{  'ON_DEMAND_HY_P3_DOCS'  | translate }}
-      </button>
-    </mat-menu>
-    <button
-      (click)="onOpenDownloadQueue()"
-      class="spacing nav-icon-buttons"
-      color="basic"
-      matTooltip="{{ 'DOWNLOADS' | translate }}" mat-button>
+          <button mat-menu-item (click)="onOpenOnDemandDocs()">
+            {{  'ON_DEMAND_HY_P3_DOCS'  | translate }}
+          </button>
+        </mat-menu>
+        <button
+          (click)="onOpenDownloadQueue()"
+          class="spacing nav-icon-buttons"
+          color="basic"
+          matTooltip="{{ 'DOWNLOADS' | translate }}" mat-button>
 
-      <mat-icon
-        class="large-icon"
-        aria-hidden="false"
-        [matBadge]="queuedProducts.length"
-        [matBadgeColor]="this.queuedProducts.length > 0 ? this.accentPalette : this.primaryPalette"
-        matBadgePosition="above after"
-        matBadgeOverlap="true"
-        matBadgeSize="small">
-          shopping_cart
-      </mat-icon>
-      <div class="text-under faint-text">{{ 'DOWNLOADS' | translate }}</div>
-    </button>
+          <mat-icon
+            class="large-icon"
+            aria-hidden="false"
+            [matBadge]="queuedProducts.length"
+            [matBadgeColor]="this.queuedProducts.length > 0 ? this.accentPalette : this.primaryPalette"
+            matBadgePosition="above after"
+            matBadgeOverlap="true"
+            matBadgeSize="small">
+              shopping_cart
+          </mat-icon>
+          <div class="text-under faint-text">{{ 'DOWNLOADS' | translate }}</div>
+        </button>
+      </ng-container>
 
-    <button
-      [matMenuTriggerFor]="helpMenu"
-      matTooltip="{{ 'HELP_AND_INFORMATION' | translate }}"
-      class="spacing nav-icon-buttons" color="basic" mat-button>
-      <mat-icon class="large-icon">help_outline</mat-icon>
-      <div class="text-under faint-text">{{ 'HELP' | translate }}</div>
-    </button>
+     <ng-container *ngIf="searchType === searchTypes.DISPLACEMENT">
+        <button
+          class="spacing nav-icon-buttons" color="basic" mat-button>
+          <mat-icon class="large-icon">
+            description
+          </mat-icon>
+          <div class="text-under faint-text">{{ language.getName()}}</div>
+        </button>
+      </ng-container>
 
-    <button
-      [matMenuTriggerFor]="languageMenu"
-      matTooltip="{{ 'LANGUAGE' | translate }}"
-      class="spacing nav-icon-buttons" color="basic" mat-button>
-      <mat-icon class="large-icon">translate</mat-icon>
-      <div class="text-under faint-text">{{ language.getName()}}</div>
-    </button>
+        <button
+          [matMenuTriggerFor]="helpMenu"
+          matTooltip="{{ 'HELP_AND_INFORMATION' | translate }}"
+          class="spacing nav-icon-buttons" color="basic" mat-button>
+          <mat-icon class="large-icon">help_outline</mat-icon>
+          <div class="text-under faint-text">{{ 'HELP' | translate }}</div>
+        </button>
 
-    <button
-      *ngIf="!isLoggedIn"
-      (click)="onAccountButtonClicked()"
-      class="spacing nav-icon-buttons" color="basic"
-      matTooltip="{{ 'LOGIN' | translate }}" mat-button>
-      <mat-icon class="large-icon">account_circle</mat-icon>
-      <div class="text-under faint-text">{{ 'SIGN_IN' | translate }}</div>
-    </button>
+        <button
+          [matMenuTriggerFor]="languageMenu"
+          matTooltip="{{ 'LANGUAGE' | translate }}"
+          class="spacing nav-icon-buttons" color="basic" mat-button>
+          <mat-icon class="large-icon">translate</mat-icon>
+          <div class="text-under faint-text">{{ language.getName()}}</div>
+        </button>
 
-    <button
-      *ngIf="isLoggedIn"
-      [matMenuTriggerFor]="profileMenu"
-      class="spacing nav-icon-buttons" color="basic"
-      matTooltip="{{ 'PROFILE' | translate}}" mat-button>
-        <mat-icon class="large-icon">account_circle</mat-icon>
-        <div class="text-under faint-text"> {{ this.userAuth.id }} </div>
-    </button>
+        <button
+          *ngIf="!isLoggedIn"
+          (click)="onAccountButtonClicked()"
+          class="spacing nav-icon-buttons" color="basic"
+          matTooltip="{{ 'LOGIN' | translate }}" mat-button>
+          <mat-icon class="large-icon">account_circle</mat-icon>
+          <div class="text-under faint-text">{{ 'SIGN_IN' | translate }}</div>
+        </button>
 
+        <button
+          *ngIf="isLoggedIn"
+          [matMenuTriggerFor]="profileMenu"
+          class="spacing nav-icon-buttons" color="basic"
+          matTooltip="{{ 'PROFILE' | translate}}" mat-button>
+            <mat-icon class="large-icon">account_circle</mat-icon>
+            <div class="text-under faint-text"> {{ this.userAuth.id }} </div>
+        </button>
+    </ng-container>
   </ng-container>
 
   <ng-container *ngIf="breakpoint === breakpoints.MOBILE">

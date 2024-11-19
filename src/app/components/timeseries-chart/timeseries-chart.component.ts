@@ -74,6 +74,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private thing: d3.Selection<SVGGElement, {}, HTMLElement, any>
   private hoveredElement;
   public hoveredData;
+  public hoveredDate;
   private data: any;
   private lines;
   private points;
@@ -418,15 +419,16 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .on('mouseover', function (_event: any, p: TimeSeriesData) {
         self.hoveredElement = this;
         self.hoveredData = p;
-        const date = new Date(p.date);
+        self.hoveredDate = new Date(p.date);
         toolTip.interrupt();
         toolTip
           .style('opacity', .9);
-        toolTip.html(`<div style="text-align: left">${self.tooltipDateFormat(date)}, ${p.short_wavelength_displacement.toFixed(2)} meters<br><b>Series ${p.seriesNumber}</b></div>`);
+        // toolTip.html(`<div style="text-align: left">${self.tooltipDateFormat(self.hoveredDate)}, ${p.short_wavelength_displacement.toFixed(2)} meters<br><b>Series ${p.seriesNumber}</b></div>`);
         self.updateTooltip();
       })
       .on('mouseleave', function (_) {
         self.hoveredData = null;
+        self.hoveredDate = null;
         toolTip.transition()
           .duration(500)
           .style('opacity', 0);
@@ -556,7 +558,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.drawChart();
   }
 
-  private tooltipDateFormat(date) {
+  public tooltipDateFormat(_date) {
+    if (!_date) { return; }
     function join(t, a, s) {
       function format(m) {
         const f = new Intl.DateTimeFormat('en', m);
@@ -566,7 +569,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     }
 
     const dateFormat = [{ month: 'short' }, { day: 'numeric' }, { year: 'numeric' }];
-    return join(date, dateFormat, ' ');
+    return join(_date, dateFormat, ' ');
   }
 
   public resetBasePoint() {
@@ -578,4 +581,5 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.subs.unsubscribe();
   }
 
+  protected readonly Date = Date;
 }
