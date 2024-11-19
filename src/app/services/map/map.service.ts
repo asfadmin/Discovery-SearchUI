@@ -74,6 +74,7 @@ export class MapService {
   private localBrowseImageURL: string;
 
   private displacementOverview: TileLayer;
+  public displacementOverview$ = new BehaviorSubject<models.DisplacementLayerTypes | null>(null);
   private priorityOverview: VectorLayer<VectorSource>;
 
   private selectClick = new Select({
@@ -738,11 +739,21 @@ export class MapService {
   }
 
   public setDisplacementOverview(direction: models.FlightDirection, type: models.DisplacementLayerTypes) {
-    const dir = direction === models.FlightDirection.ASCENDING ? 'ASC' : 'DESC';
-    const layerType = type === models.DisplacementLayerTypes.DISPLACEMENT ? 'DISP' : 'VEL';
+    const apiDirValues = {
+      [models.FlightDirection.ASCENDING]: 'ASC',
+      [models.FlightDirection.DESCENDING]: 'DESC'
+    }
+    const apiDispValues = {
+      [models.DisplacementLayerTypes.DISPLACEMENT]: 'DISP',
+      [models.DisplacementLayerTypes.VELOCITY]: 'VEL'
+    }
+
+    const dir = apiDirValues[direction];
+    const layerType = apiDispValues[type];
 
     let base_url = `https://d12uktych8nckw.cloudfront.net/main/${dir.toLowerCase()}/${layerType.toLowerCase()}`;
-    console.log(base_url);
+    this.displacementOverview$.next(type);
+    console.log(type, base_url);
 
     this.http.get(`${base_url}/extent.json`).pipe(
       first()
@@ -770,6 +781,7 @@ export class MapService {
   public clearDisplacementOverview() {
     this.map.removeLayer(this.displacementOverview);
     this.displacementOverview = null;
+    this.displacementOverview$.next(null);
   }
 
   public setDisplacementLayer(points: { point: Point, seriesNumber: number, color: string }[]) {

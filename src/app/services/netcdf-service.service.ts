@@ -15,7 +15,7 @@ import WKT from 'ol/format/WKT';
   providedIn: 'root'
 })
 export class NetcdfService {
-  private url: string = 'https://qapbt7mupnms222yprxdwmq63u0ojmkc.lambda-url.us-west-2.on.aws/' //'https://ztcnv66fekaaijerj5hhytfrdu0xcuho.lambda-url.us-east-1.on.aws/'
+  private url: string = 'https://yhiuvmgxrec5dbkwjwpdpkwysy0aopmh.lambda-url.us-west-2.on.aws/'
   private itemsEndpoint: string = 'items/'
   private timeSeriesEndpoint: string = 'timeseries'
   private files: string[] = [""] //, "20221107_20230130.unw.nc", "20221107_20230106.unw.nc", "20221107_20230729.unw.nc", "20221107_20230319.unw.nc", "20221107_20221213.unw.nc", "20221107_20230530.unw.nc", "20221107_20230717.unw.nc", "20221107_20230412.unw.nc", "20221107_20230506.unw.nc", "20221107_20230223.unw.nc", "20221107_20230211.unw.nc", "20221107_20230331.unw.nc", "20221107_20230705.unw.nc"]
