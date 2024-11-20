@@ -474,6 +474,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       if(this.dataReadyForChart.length > 0 && this.linearFitLineIndex.length > 0) {
         this.linearFitLine = this.svg.append('g')
           .attr('id', 'linesParent2')
+          .attr('clip-path', 'url(#clip)')
+
         let filteredData: DataReady[] = this.dataReadyForChart.filter(x => x.linearFit)
         for(let linearFitData of filteredData) {
 
