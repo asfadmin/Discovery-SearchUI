@@ -52,7 +52,7 @@ import { Hyp3UrlModule } from '@components/shared/hyp3-url/hyp3-url.module';
 import { SharedModule } from "@shared";
 import { LanguageSelectorModule } from "@components/shared/selectors/language-selector/language-selector.module";
 import { BurstSelectorModule } from '@components/shared/selectors/burst-selector';
-
+import { TimeseriesChartFlightDirectionToggleComponent} from '@components/timeseries-chart/timeseries-chart-flight-direction-toggle';
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -63,7 +63,7 @@ import { BurstSelectorModule } from '@components/shared/selectors/burst-selector
     BaselineHeaderComponent,
     Hyp3HeaderComponent,
     SarviewsHeaderComponent,
-    TimeseriesHeaderComponent  
+    TimeseriesHeaderComponent
   ],
   imports: [
     CommonModule,
@@ -102,7 +102,8 @@ import { BurstSelectorModule } from '@components/shared/selectors/burst-selector
     SharedModule,
     LanguageSelectorModule,
     OnDemandUserSelectorModule,
-    BurstSelectorModule
+    BurstSelectorModule,
+    TimeseriesChartFlightDirectionToggleComponent
   ],
   exports: [
     HeaderComponent

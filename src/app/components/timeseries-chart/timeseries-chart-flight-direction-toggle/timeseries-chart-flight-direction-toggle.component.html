@@ -1,0 +1,8 @@
+<button mat-fab extended (click)="onToggle()" class="control-mat-button-toggle">
+    <div class="button-display-container">
+        <label class="button-label">{{"FLIGHT_DIRECTION" | translate}}<br><b>{{flightDirection}}</b></label>
+        <mat-icon class="control-icon">
+            {{flightDirection === FlightDirections.ASCENDING ? 'north_east' : 'south_east'}}
+        </mat-icon>
+    </div>
+</button>
