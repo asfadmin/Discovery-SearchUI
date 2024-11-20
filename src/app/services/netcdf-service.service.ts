@@ -10,6 +10,7 @@ import ImageSource from 'ol/source/Image';
 import Feature from 'ol/Feature';
 import Geometry from 'ol/geom/Geometry';
 import WKT from 'ol/format/WKT';
+// import { timeseriesChartItemState } from '@models';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,7 @@ export class NetcdfService {
   private cache = {};
   private totalKeys = [];
   private maxCacheSize = 10;
+  private csvHeaders = 'series, longitude, latitude, date (mm/dd/yr), short wavelength displacement, source file'
 
   constructor(
     private http: HttpClient,
@@ -36,18 +38,18 @@ export class NetcdfService {
   }
 
   public cacheUpdated = new Subject<string>();
-  
+
   public getCache() {
     return this.cache
   }
 
   public removeFromCache(wkt: string): void {
-    if(this.cache.hasOwnProperty(wkt)) {
+    if (this.cache.hasOwnProperty(wkt)) {
       delete this.cache[wkt];
     }
     this.cacheUpdated.next(wkt);
   }
-    
+
   public get_layers(): Observable<{ feature: Feature<Geometry>, browse: ImageLayer<ImageSource> }>[] {
     let output: Observable<{ feature: Feature<Geometry>, browse: ImageLayer<ImageSource> }>[] = []
     for (let file of this.files) {
@@ -83,10 +85,10 @@ export class NetcdfService {
   public getTimeSeries(geometry): Observable<any> {
 
     let format = new WKT();
-    let wktRepresenation  = format.writeGeometry(geometry);
+    let wktRepresenation = format.writeGeometry(geometry);
     let index_id = wktRepresenation;
     console.log(`getting ${index_id}`)
-    if(this.cache.hasOwnProperty(index_id)) {
+    if (this.cache.hasOwnProperty(index_id)) {
       console.log('cache hit', of(this.cache[index_id]));
       return of(this.cache[index_id])
     } else {
@@ -95,20 +97,60 @@ export class NetcdfService {
         "file_store": "s3://kfbx-opera-disp-test-bucket-v0.6/OPERA_L3_DISP-S1_IW_F42779_VV.json.zarr.gz"
       }, { responseType: 'json' }).pipe(
         first(),
-        map( response => {
+        map(response => {
           (response as any).aoi = wktRepresenation;
           this.cache[index_id] = response;
           this.totalKeys.push(index_id);
-          if(this.totalKeys.length > this.maxCacheSize) {
+          if (this.totalKeys.length > this.maxCacheSize) {
             let deleted = this.totalKeys.splice(0);
             delete this.cache[deleted[0]];
           }
           console.log('cache miss', response);
           this.cacheUpdated.next(index_id)
           return response
-      }
-    ))
+        }
+        ))
     }
 
+  }
+
+  // series, longitude, latitude, date (mm/dd/yr), short wavelength displacement, source file
+  // series 1, 1.0, 2.0,  05/14/2020, 0.500, granule1.nc
+  // ...
+  public toCSV(seriesData: { [index:string]: {}[]}): string {
+    const reg = /-?\d*\.\d+|\d+/g
+    let output = `${this.csvHeaders}\n`
+    const sortedSeriesKeys = Object.keys(seriesData).sort((s1, s2) => s1 < s2 ? -1 : 1)
+    for (const seriesNumber of sortedSeriesKeys) {
+
+      let points = seriesData[seriesNumber][0]['wkt'].match(reg)
+      const lon = points[0]
+      const lat = points[1]
+
+      for (const timestep of seriesData[seriesNumber]) {
+        if (timestep !== 'aoi') {
+          let dateDisplay = ''
+          // const sample = data.data[timestep]
+          if (timestep !== 'mean') {
+            
+            const d = new Date(timestep['date'])
+
+            let month = d.getUTCMonth() + 1
+            let monthDisplay = month.toString()
+            if (month < 10) {
+              monthDisplay = `0${monthDisplay}`
+            }
+            let day = d.getUTCDate()
+            let dayDisplay = day.toString()
+            if (day < 10) {
+              dayDisplay = `0${dayDisplay}`
+            }
+            dateDisplay = `${monthDisplay}/${dayDisplay}/${d.getUTCFullYear()}`
+          }
+          output += `${seriesNumber}, ${lon}, ${lat}, ${dateDisplay}, ${timestep['short_wavelength_displacement']}, ${timestep['fileName']}\n`
+        }
+      }
+    }
+    return output
   }
 }

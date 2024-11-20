@@ -85,6 +85,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   public lastEndDate: Date = new Date();
   private linearFitLine;
 
+  public exportableData: { [index:string]: {}[]} = {}
+
 
   // private selectedScene: string;
   @Input() isLoading: boolean = false;
@@ -223,6 +225,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   public initChart(data: {point: {}, state: models.timeseriesChartItemState}[]): void {
     this.dataSource = []
     this.dataReadyForChart = []
+    this.exportableData = {}
     if (data?.[Symbol.iterator]) {
       let aoi: string = '';
         for (let result of data) {
@@ -259,9 +262,24 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
                 'seriesNumber': result.state.seriesNumber,
                 'color': result.state.color,
                 'base': result.point[key].short_wavelength_displacement,
-                'id': key + result.point[key].short_wavelength_displacement
+                'id': key + result.point[key].short_wavelength_displacement,
               });
-            }
+
+              if (result.state.checked) {
+                const series_key = `series ${result.state.seriesNumber}`
+                if (!!!this.exportableData[series_key]) {
+                  this.exportableData[series_key] = []
+                }
+                const slice = {
+                  'short_wavelength_displacement': result.point[key].short_wavelength_displacement - (this.baseData?.base ?? 0),
+                  'date': result.point[key].secondary_datetime,
+                  'wkt': aoi,
+                  'fileName': key,
+
+                }
+                this.exportableData[series_key].push(slice)
+              }
+          }
           this.timeSeriesData.sort((a, b) => {
             if(a.date < b.date) {
               return -1
@@ -435,7 +453,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         toolTip.interrupt();
         toolTip
           .style('opacity', .9);
-        // toolTip.html(`<div style="text-align: left">${self.tooltipDateFormat(self.hoveredDate)}, ${p.short_wavelength_displacement.toFixed(2)} meters<br><b>Series ${p.seriesNumber}</b></div>`);
+        toolTip.html(`<div style="text-align: left">${self.tooltipDateFormat(self.hoveredDate)}, ${p.short_wavelength_displacement.toFixed(2)} meters<br><b>Series ${p.seriesNumber}</b></div>`);
         self.updateTooltip();
       })
       .on('mouseleave', function (_) {
