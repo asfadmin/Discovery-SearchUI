@@ -213,6 +213,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   public initChart(data: {point: {}, state: models.timeseriesChartItemState}[]): void {
     this.dataSource = []
     this.dataReadyForChart = []
+    this.exportableData = {}
     if (data?.[Symbol.iterator]) {
       let aoi: string = '';
         for (let result of data) {
@@ -251,19 +252,22 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
                 'base': result.point[key].short_wavelength_displacement,
                 'id': key + result.point[key].short_wavelength_displacement,
               });
-              const series_key = `series ${result.state.seriesNumber}`
-              if (!!!this.exportableData[series_key]) {
-                this.exportableData[series_key] = []
-              }
-              const slice = {
-                'short_wavelength_displacement': result.point[key].short_wavelength_displacement - (this.baseData?.base ?? 0),
-                'date': result.point[key].secondary_datetime,
-                'wkt': aoi,
-                'fileName': key,
 
+              if (result.state.checked) {
+                const series_key = `series ${result.state.seriesNumber}`
+                if (!!!this.exportableData[series_key]) {
+                  this.exportableData[series_key] = []
+                }
+                const slice = {
+                  'short_wavelength_displacement': result.point[key].short_wavelength_displacement - (this.baseData?.base ?? 0),
+                  'date': result.point[key].secondary_datetime,
+                  'wkt': aoi,
+                  'fileName': key,
+
+                }
+                this.exportableData[series_key].push(slice)
               }
-              this.exportableData[series_key].push(slice)
-            }
+          }
           this.timeSeriesData.sort((a, b) => {
             if(a.date < b.date) {
               return -1
