@@ -83,6 +83,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   public lastStartDate: Date = new Date();
   public lastEndDate: Date = new Date();
 
+  public exportableData: { [index:string]: {}[]} = {}
 
 
   // private selectedScene: string;
@@ -248,8 +249,20 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
                 'seriesNumber': result.state.seriesNumber,
                 'color': result.state.color,
                 'base': result.point[key].short_wavelength_displacement,
-                'id': key + result.point[key].short_wavelength_displacement
+                'id': key + result.point[key].short_wavelength_displacement,
               });
+              const series_key = `series ${result.state.seriesNumber}`
+              if (!!!this.exportableData[series_key]) {
+                this.exportableData[series_key] = []
+              }
+              const slice = {
+                'short_wavelength_displacement': result.point[key].short_wavelength_displacement - (this.baseData?.base ?? 0),
+                'date': result.point[key].secondary_datetime,
+                'wkt': aoi,
+                'fileName': key,
+
+              }
+              this.exportableData[series_key].push(slice)
             }
           this.timeSeriesData.sort((a, b) => {
             if(a.date < b.date) {
