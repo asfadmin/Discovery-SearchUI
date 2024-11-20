@@ -48,6 +48,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   @Input() zoomIn$: Observable<void>;
   @Input() zoomOut$: Observable<void>;
   @Input() zoomToFit$: Observable<void>;
+
+  public linearFitEquations : {[key: string]: {m: number, b: number}};
   // @Input() chartData: models.timeseriesChartItemState[];
 
   public json_data: string = '';
@@ -287,10 +289,14 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
               return 1
             }
         })
-          this.dataReadyForChart.push({ name: aoi, values: this.timeSeriesData, color: result.state.color, opacity:  result.state.checked ? 1.0 : 0.2, linearFit: this.linearFitLineIndex.findIndex((a) => a === aoi) >= 0});
-          // this.averageData = ({
-            // ...data.mean
-          // })
+          let isLinearFitEnabled = this.linearFitLineIndex.findIndex((a) => a === aoi) >= 0
+          this.dataReadyForChart.push({
+            name: aoi,
+            values: this.timeSeriesData,
+            color: result.state.color,
+            opacity:  result.state.checked ? 1.0 : 0.2,
+            linearFit: isLinearFitEnabled,
+          });
       }
       }
     } else {
@@ -464,7 +470,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           .style('opacity', 0);
       })
       .attr('r', 5);
-
+      this.linearFitEquations = {}
       if(this.dataReadyForChart.length > 0 && this.linearFitLineIndex.length > 0) {
         this.linearFitLine = this.svg.append('g')
           .attr('id', 'linesParent2')
@@ -472,24 +478,18 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         for(let linearFitData of filteredData) {
 
           let regression = linearRegression(linearFitData.values.map((x,i) => [i, x.short_wavelength_displacement]));
+          this.linearFitEquations[linearFitData.name] = regression;
           let lineregression = linearRegressionLine(regression);
-          let regressionPoints = () => {
-            return Array.from(Array(linearFitData.values.length).keys()).map(d => ({
-              x: Date.parse(linearFitData.values[d].date),                         // We pick x and y arbitrarily, just make sure they match d3.line accessors
-              y: lineregression(d)
-            }));
-          }
 
           let line = d3.line()
-            .x( (d) => { return this.x(d[0]) })
-            .y( (d) =>  { return this.y(d[1]) });
-          
+            .x((d) => { return this.x(d[0]) })
+            .y((d) => { return this.y(d[1]) });
           this.linearFitLine.append("path")
-          .datum(regressionPoints())
-          .attr('clip-path', 'url(#clip)')
-          .attr("d",(d) => {
-            return line(d.map(a => [a.x,a.y]))
-          })
+            .datum([regression.m, regression.b])
+            .attr("d", (_d) => {
+              return line([
+                [this.x.domain()[0].getTime(), lineregression(0)], [this.x.domain()[1].getTime(), lineregression(1)]])
+            })
           .attr("stroke", linearFitData.color)
           .style("stroke-width", 1)
           .attr('stroke-dasharray', '4')
@@ -592,10 +592,13 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       let line2 = d3.line()
       .x( (d) => { return newX(d[0]) })
       .y( (d) =>  { return newY(d[1]) });
-      this.linearFitLine.selectChildren().each(function() {
+      this.linearFitLine.selectChildren().each(function () {
         d3.select(this).attr('d', (d: Array<any>) => {
-          return line2(d.map((a) => [a.x,a.y]))
-      });
+
+          let lineregression = linearRegressionLine({ m: d[0], b: d[1] });
+          return line2([
+            [newX.domain()[0].getTime(), lineregression(0)], [newX.domain()[1].getTime(), lineregression(1)]])
+        });
       })
     }
 
