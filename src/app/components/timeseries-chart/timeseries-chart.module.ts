@@ -11,6 +11,7 @@ import { ResizedEventModule } from '@directives/resized.directive';
 import { TimeseriesChartConfigComponent } from './timeseries-chart-config'
 import { ChartModalComponent } from '@components/shared/chart-modal/chart-modal.component'
 import {TimeseriesChartZoomComponent} from '@components/timeseries-chart/timeseries-chart-zoom/timeseries-chart-zoom.component';
+import { TimeseriesChartExportComponent } from '@components/timeseries-chart/timeseries-chart-export';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatMenuModule } from '@angular/material/menu';
 import { ContextMenuTriggerDirective } from '@directives/context-menu.directive';
@@ -31,6 +32,7 @@ import { ContextMenuTriggerDirective } from '@directives/context-menu.directive'
       ChartModalComponent,
       TimeseriesChartConfigComponent,
       TimeseriesChartZoomComponent,
+      TimeseriesChartExportComponent,
       MatProgressSpinnerModule,
       MatMenuModule,
 
