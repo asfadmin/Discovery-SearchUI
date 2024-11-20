@@ -26,7 +26,19 @@ export const getCheckedTimeseries = createSelector(
         return output;
     }
 );
+export const getLinearFitTimeseries = createSelector(
+    getTimeseriesChartStates,
+    (chartStates) => {
+        const output = [];
+        for (const key of Object.keys(chartStates)) {
+            if (chartStates[key].linearFit) {
+                output.push(key);
+            }
+        }
 
+        return output;
+    }
+)
 export const getAreAllTimeseriesChecked = createSelector(
     getTimeseriesChartStates,
     getCheckedTimeseries,
