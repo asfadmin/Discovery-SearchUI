@@ -24,7 +24,6 @@ export class NetcdfService {
   public layers: { feature: Feature<Geometry>, browse: ImageLayer<ImageSource> }[] = []
   // private data = []
 
-  private cache = {};
   private ascendingCache = {}
   private descendingCache = {}
   private totalKeys = [];
