@@ -10,6 +10,7 @@ import ImageSource from 'ol/source/Image';
 import Feature from 'ol/Feature';
 import Geometry from 'ol/geom/Geometry';
 import WKT from 'ol/format/WKT';
+import { FlightDirection } from '@models';
 // import { timeseriesChartItemState } from '@models';
 
 @Injectable({
@@ -23,7 +24,8 @@ export class NetcdfService {
   public layers: { feature: Feature<Geometry>, browse: ImageLayer<ImageSource> }[] = []
   // private data = []
 
-  private cache = {};
+  private ascendingCache = {}
+  private descendingCache = {}
   private totalKeys = [];
   private maxCacheSize = 10;
   private csvHeaders = 'series, longitude, latitude, date (mm/dd/yr), short wavelength displacement, source file'
@@ -32,20 +34,25 @@ export class NetcdfService {
     private http: HttpClient,
     private browseOverlayService: BrowseOverlayService,
     // private mapService: MapService
-    private wktService: WktService
+    private wktService: WktService,
+    // private store$: Store<AppState>,
 
   ) {
   }
 
   public cacheUpdated = new Subject<string>();
-
-  public getCache() {
-    return this.cache
+  private getTargetCache(flightDir: FlightDirection) {
+    return flightDir === FlightDirection.ASCENDING ? this.ascendingCache : this.descendingCache;
+  }
+  public getCache(flightDir: FlightDirection = FlightDirection.ASCENDING) {
+    return this.getTargetCache(flightDir)
   }
 
   public removeFromCache(wkt: string): void {
-    if (this.cache.hasOwnProperty(wkt)) {
-      delete this.cache[wkt];
+    for (const cache of [this.ascendingCache, this.descendingCache]) {
+      if (cache.hasOwnProperty(wkt)) {
+        delete cache[wkt];
+      }
     }
     this.cacheUpdated.next(wkt);
   }
@@ -82,15 +89,19 @@ export class NetcdfService {
     return output
   }
 
-  public getTimeSeries(geometry): Observable<any> {
+  public getTimeSeries(geometry, flightDirection =FlightDirection.ASCENDING): Observable<any> {
 
     let format = new WKT();
     let wktRepresenation = format.writeGeometry(geometry);
     let index_id = wktRepresenation;
     console.log(`getting ${index_id}`)
-    if (this.cache.hasOwnProperty(index_id)) {
-      console.log('cache hit', of(this.cache[index_id]));
-      return of(this.cache[index_id])
+
+    let target_cache = this.getTargetCache(flightDirection)
+
+
+    if (target_cache.hasOwnProperty(index_id)) {
+      console.log('cache hit', of(target_cache[index_id]));
+      return of(target_cache[index_id])
     } else {
       return this.http.post(`${this.url}${this.timeSeriesEndpoint}`, {
         "wkt": wktRepresenation,
@@ -99,11 +110,11 @@ export class NetcdfService {
         first(),
         map(response => {
           (response as any).aoi = wktRepresenation;
-          this.cache[index_id] = response;
+          target_cache[index_id] = response;
           this.totalKeys.push(index_id);
           if (this.totalKeys.length > this.maxCacheSize) {
             let deleted = this.totalKeys.splice(0);
-            delete this.cache[deleted[0]];
+            delete target_cache[deleted[0]];
           }
           console.log('cache miss', response);
           this.cacheUpdated.next(index_id)
