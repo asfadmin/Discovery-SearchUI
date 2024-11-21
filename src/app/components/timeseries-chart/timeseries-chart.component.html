@@ -1,3 +1,30 @@
+<div class="ts-chart-details">
+  <div class="ts-best-fit-nav">
+    <button mat-flat-button (click)="onButtonClickPlus()" class="ts-best-fit-nav">
+      <span class="material-symbols-outlined">
+        arrow_forward_ios
+      </span>
+    </button>
+  </div>
+  <div class="ts-best-fit-formulas">
+    <cdk-virtual-scroll-viewport
+      orientation="horizontal"
+      itemSize="50"
+      minBufferPx="200"
+      maxBufferPx="400"
+      class="ts-best-fit-viewport">
+       <div *cdkVirtualFor="let item of items" class="ts-best-fit-item">Series {{item}}</div>
+    </cdk-virtual-scroll-viewport>
+  </div>
+  <div class="ts-best-fit-nav">
+    <button mat-flat-button (click)="onButtonClickMinus()">
+      <span class="material-symbols-outlined">
+        arrow_back_ios
+      </span>
+    </button>
+  </div>
+</div>
+
 <div #tsChartWrapper class="chart-wrapper" (resized)="onResized()">
 <!--  <div *ngIf="hoveredData" class="chart-details">-->
 <!--    Series: {{hoveredData?.seriesNumber}},&nbsp;&nbsp;{{tooltipDateFormat(hoveredDate)}},&nbsp;&nbsp;{{hoveredData?.short_wavelength_displacement.toFixed(2)}} meters<br>-->
