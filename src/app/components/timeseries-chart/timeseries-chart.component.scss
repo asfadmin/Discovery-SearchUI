@@ -87,6 +87,12 @@
   right: 65px;
 }
 
+.ts-chart-export-button {
+  position: absolute;
+  top: 18px;
+  right: 210px;
+}
+
 ::ng-deep .loading-rect {
 	@include themify($themes) {
 	  fill: themed('dark-secondary-text');

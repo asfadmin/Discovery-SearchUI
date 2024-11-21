@@ -16,9 +16,9 @@ import { AsfLanguageService } from "@services/asf-language.service";
 import { NetcdfService } from '@services';
 import * as models from '@models';
 import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
-import {hidden} from '@services/map/polygon.style';
+// import {hidden} from '@services/map/polygon.style';
 // import {style} from '@angular/animations';
-
+import {linearRegression, linearRegressionLine} from './regression-line'
 interface TimeSeriesData {
   short_wavelength_displacement: number
   date: string,
@@ -39,6 +39,7 @@ interface DataReady {
   values: TimeSeriesData[],
   opacity: number,
   color: string,
+  linearFit: boolean
 }
 
 const unSelectedColor = '#9F9F9F9F';
@@ -59,6 +60,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   @Input() zoomIn$: Observable<void>;
   @Input() zoomOut$: Observable<void>;
   @Input() zoomToFit$: Observable<void>;
+
+  public linearFitEquations : {[key: string]: {m: number, b: number}};
   // @Input() chartData: models.timeseriesChartItemState[];
 
   // public scrollIndex = 1;
@@ -100,6 +103,10 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   public lastEndDate: Date = new Date();
   public items = Array.from({length: 100000}).map((_, i) => `Item #${i}`);
   // public bestFitItems: TimeSeriesFit[] = [];
+  private linearFitLine;
+
+  public exportableData: { [index:string]: {}[]} = {}
+
 
   // private selectedScene: string;
   @Input() isLoading: boolean = false;
@@ -109,7 +116,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
   private subs = new SubSink();
   // private allGroup: string[];
-
+  private linearFitLineIndex = [];
   private baseData: TimeSeriesData;
   constructor(
     private store$: Store<AppState>,
@@ -192,6 +199,16 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         }
       )
     );
+    this.subs.add(
+      this.store$.select(chartsStore.getLinearFitTimeseries).subscribe(
+        things => {
+
+          this.linearFitLineIndex = things;
+
+          this.initChart(this.data);
+        }
+      )
+    )
 
   }
 
@@ -250,6 +267,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   public initChart(data: {point: {}, state: models.timeseriesChartItemState}[]): void {
     this.dataSource = []
     this.dataReadyForChart = []
+    this.exportableData = {}
     if (data?.[Symbol.iterator]) {
       let aoi: string = '';
         for (let result of data) {
@@ -286,24 +304,39 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
                 'seriesNumber': result.state.seriesNumber,
                 'color': result.state.color,
                 'base': result.point[key].short_wavelength_displacement,
-                'id': key + result.point[key].short_wavelength_displacement
+                'id': key + result.point[key].short_wavelength_displacement,
               });
-            }
+
+              if (result.state.checked) {
+                const series_key = `series ${result.state.seriesNumber}`
+                if (!!!this.exportableData[series_key]) {
+                  this.exportableData[series_key] = []
+                }
+                const slice = {
+                  'short_wavelength_displacement': result.point[key].short_wavelength_displacement - (this.baseData?.base ?? 0),
+                  'date': result.point[key].secondary_datetime,
+                  'wkt': aoi,
+                  'fileName': key,
+
+                }
+                this.exportableData[series_key].push(slice)
+              }
+          }
           this.timeSeriesData.sort((a, b) => {
             if(a.date < b.date) {
               return -1
             } else {
               return 1
             }
-          })
-          this.dataReadyForChart.push({ name: aoi, values: this.timeSeriesData, color: result.state.color, opacity:  result.state.checked ? 1.0 : 0.2});
-          // for (let item of this.timeSeriesData) {
-          //   this.bestFitItems.push({
-          //     seriesNumber: item.seriesNumber,
-          //     color: item.color,
-          //     formula: 'formula goes here'  // Tyler
-          //   })
-          // }
+        })
+          let isLinearFitEnabled = this.linearFitLineIndex.findIndex((a) => a === aoi) >= 0
+          this.dataReadyForChart.push({
+            name: aoi,
+            values: this.timeSeriesData,
+            color: result.state.color,
+            opacity:  result.state.checked ? 1.0 : 0.2,
+            linearFit: isLinearFitEnabled,
+          });
         }
       }
     } else {
@@ -311,12 +344,13 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       this.averageData = {};
     }
 
-    this.svg.selectChildren().remove();
 
     this.drawChart();
   }
 
   private drawChart() {
+
+    this.svg.selectChildren().remove();
 
     // Determine scale extents
     // const marginBottom = 40;
@@ -476,6 +510,35 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           .style('opacity', 0);
       })
       .attr('r', 5);
+      this.linearFitEquations = {}
+      if(this.dataReadyForChart.length > 0 && this.linearFitLineIndex.length > 0) {
+        this.linearFitLine = this.svg.append('g')
+          .attr('id', 'linesParent2')
+          .attr('clip-path', 'url(#clip)')
+
+        let filteredData: DataReady[] = this.dataReadyForChart.filter(x => x.linearFit)
+        for(let linearFitData of filteredData) {
+
+          let regression = linearRegression(linearFitData.values.map((x,i) => [i, x.short_wavelength_displacement]));
+          this.linearFitEquations[linearFitData.name] = regression;
+          let lineregression = linearRegressionLine(regression);
+
+          let line = d3.line()
+            .x((d) => { return this.x(d[0]) })
+            .y((d) => { return this.y(d[1]) });
+          this.linearFitLine.append("path")
+            .datum([regression.m, regression.b])
+            .attr("d", (_d) => {
+              return line([
+                [this.x.domain()[0].getTime(), lineregression(0)], [this.x.domain()[1].getTime(), lineregression(1)]])
+            })
+          .attr("stroke", linearFitData.color)
+          .style("stroke-width", 1)
+          .attr('stroke-dasharray', '4')
+          .style("fill", "none")
+          .style("shape-rendering", "geometricprecision");
+        }
+      }
 
     this.updateChart();
   }
@@ -567,6 +630,20 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       })
       .style('opacity', (d: DataReady) => d.opacity)
 
+    if(this.linearFitLine && this.linearFitLineIndex.length > 0) {
+      let line2 = d3.line()
+      .x( (d) => { return newX(d[0]) })
+      .y( (d) =>  { return newY(d[1]) });
+      this.linearFitLine.selectChildren().each(function () {
+        d3.select(this).attr('d', (d: Array<any>) => {
+
+          let lineregression = linearRegressionLine({ m: d[0], b: d[1] });
+          return line2([
+            [newX.domain()[0].getTime(), lineregression(0)], [newX.domain()[1].getTime(), lineregression(1)]])
+        });
+      })
+    }
+
   }
 
   private updateTooltip() {
@@ -624,5 +701,5 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   }
 
   protected readonly Date = Date;
-  protected readonly hidden = hidden;
+
 }

@@ -38,7 +38,7 @@ export class PointHistoryService {
     const format = new WKT()
     const wkt = format.writeGeometry(point)
     this.history.push({point, wkt});
-    this.store$.dispatch(addTimeseriesState({item: {geoemetry: point, checked: true, seriesNumber, wkt: wkt, name: `Series ${seriesNumber}`}}))
+    this.store$.dispatch(addTimeseriesState({item: {geoemetry: point, checked: true, seriesNumber, wkt: wkt, name: `Series ${seriesNumber}`, linearFit: false}}))
     this.history$.next(this.history);
     this.savePoints();
   }

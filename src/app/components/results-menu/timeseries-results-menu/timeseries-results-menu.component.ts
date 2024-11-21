@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef, computed, signal } from '@angular/core';
-import { first, Observable, Subject, withLatestFrom } from 'rxjs';
+import { distinctUntilChanged, first, map, Observable, Subject, withLatestFrom } from 'rxjs';
 import { ResizeEvent } from 'angular-resizable-element';
 
 import { Store } from '@ngrx/store';
@@ -66,6 +66,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public breakpoint: Breakpoints;
   public breakpoints = Breakpoints;
   private subs = new SubSink();
+  private flightDirection: models.FlightDirection = models.FlightDirection.ASCENDING;
 
   // public pointHistory = [];
 
@@ -100,6 +101,17 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.pointHistoryService.clearPoints();
 
+    this.subs.add(
+      this.store$.select(filtersStore.getFlightDirections).pipe(
+        map(flightDirs => flightDirs[0] ?? models.FlightDirection.ASCENDING),
+        distinctUntilChanged(),
+      ).subscribe(
+        flightDir => {
+          this.flightDirection = flightDir;
+          this.updateChart()
+        }
+      )
+    )
     this.subs.add(
       this.screenSize.breakpoint$.subscribe(
         point => this.breakpoint = point
@@ -147,7 +159,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
         previous_points?.forEach((point, idx) => {
           let allPointsData = [];
           this.pointHistoryService.addPoint(point.getGeometry(), idx + 1);
-          this.netcdfService.getTimeSeries(point.getGeometry()).pipe(first()).subscribe( data => {
+          this.netcdfService.getTimeSeries(point.getGeometry(), this.flightDirection).pipe(first()).subscribe( data => {
             allPointsData.push(data);
             // this.chartData.next(allPointsData);
             this.maxRange = this.temporalRange = this.getMaxRange(allPointsData);
@@ -199,7 +211,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public updateChart(): void {
     let allPointsData = [];
     for (const series of this.chartStates) {
-      this.netcdfService.getTimeSeries(series.geoemetry).pipe(first()).subscribe(data => {
+      this.netcdfService.getTimeSeries(series.geoemetry, this.flightDirection).pipe(first()).subscribe(data => {
         allPointsData.push(data);
         // this.chartData.next(allPointsData);
         this.temporalRange = this.getMaxRange(allPointsData);
@@ -252,6 +264,13 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
 
   public deletePoint(index: number) {
     this.pointHistoryService.removePoint(index);
+  }
+  public setLinearFitLine(index: number) {
+    const wkt = this.chartStates[index]?.wkt;
+
+    const isLinearFitEnabled = !(this.chartStates[index]?.linearFit ?? false);
+
+    this.store$.dispatch(chartStore.setLinearFit({wkt, 'linearFit': isLinearFitEnabled}))
   }
 
   ngOnDestroy() {

@@ -7,6 +7,7 @@ export interface timeseriesChartItemState {
     wkt: string,
     geoemetry: SimpleGeometry,
     seriesNumber: number,
+    linearFit: boolean
 }
 
 export interface TimeSeriesChartPoint {

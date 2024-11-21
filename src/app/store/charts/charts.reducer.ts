@@ -11,7 +11,7 @@ export interface ChartsState {
 export const initialState: ChartsState = {
   showLines: true,
   seriesStates: {},
-  outOfDate: false
+  outOfDate: false,
 };
 
 export const chartsReducer = createReducer(
@@ -30,7 +30,7 @@ export const chartsReducer = createReducer(
   }),
   on(chartActions.setTimeseriesStates, (state, { items }) => ({
     ...state, seriesStates: items.reduce((prev: { [key: string]: models.timeseriesChartItemState }, curr) => {
-      prev[curr.wkt] = { checked: true, color: curr.color, seriesNumber: curr.seriesNumber, name: curr.name, wkt: curr.wkt, geoemetry: curr.geoemetry }
+      prev[curr.wkt] = { checked: true, color: curr.color, seriesNumber: curr.seriesNumber, name: curr.name, wkt: curr.wkt, geoemetry: curr.geoemetry, linearFit: curr.linearFit }
       return prev
     }, {})
   }
@@ -57,6 +57,12 @@ export const chartsReducer = createReducer(
   on(chartActions.setTimeseriesColor, (state, { wkt, color }) => {
     const seriesStates = { ...state.seriesStates };
     seriesStates[wkt] = { ...seriesStates[wkt], color };
+
+    return { ...state, seriesStates };
+  }),
+  on(chartActions.setLinearFit, (state, {wkt, linearFit}) => {
+    const seriesStates = { ...state.seriesStates };
+    seriesStates[wkt] = { ...seriesStates[wkt], linearFit };
 
     return { ...state, seriesStates };
   }),
