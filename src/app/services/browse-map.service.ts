@@ -5,7 +5,7 @@ import View from 'ol/View.js';
 import ImageLayer from 'ol/layer/Image';
 import * as polygonStyle from './map/polygon.style';
 import Static from 'ol/source/ImageStatic.js';
-import { XYZ } from 'ol/source';
+import XYZ from 'ol/source/XYZ';
 import { mapOptions } from '@models';
 import TileLayer from 'ol/layer/WebGLTile.js';
 import { Layer, Vector } from 'ol/layer';
@@ -62,7 +62,7 @@ export class BrowseMapService {
       wrapX: mapOptions.wrapX,
       tileSize: [512, 512]
     });
-
+    //@ts-ignore
     const map_layer = new TileLayer({ source: mapSource });
 
     if (!this.map) {

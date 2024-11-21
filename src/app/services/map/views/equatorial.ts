@@ -17,6 +17,7 @@ function equatorialView(url: string): MapView {
     tileSize: [512, 512]
   });
 
+    //@ts-ignore
   const layer = new TileLayer({ source });
 
   const lonFormatter = function(lon: number) {

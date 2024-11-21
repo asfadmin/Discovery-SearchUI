@@ -40,6 +40,7 @@ export function antarctic(): MapView {
 
   const source = new WMTS(options);
 
+    //@ts-ignore
   const layer = new TileLayer({ source, extent });
 
   const view = new View({

@@ -48,6 +48,7 @@ export function arctic(): MapView  {
   };
 
   const source = new WMTS(options);
+    //@ts-ignore
   const layer = new TileLayer({ source, extent });
 
 

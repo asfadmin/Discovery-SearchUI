@@ -5,7 +5,7 @@ import { first, map, sampleTime, tap } from 'rxjs/operators';
 
 import { Collection, Feature, Map, View } from 'ol';
 import { Layer, Vector as VectorLayer } from 'ol/layer';
-import { Vector as VectorSource, XYZ } from 'ol/source';
+import { ImageTile,  Vector as VectorSource } from 'ol/source';
 import * as proj from 'ol/proj';
 import Point from 'ol/geom/Point';
 import { OverviewMap, ScaleLine } from 'ol/control';
@@ -46,6 +46,8 @@ import { SetGeocode } from '@store/filters';
 import { Extent } from 'ol/extent';
 import { MultiPolygon } from 'ol/geom';
 import GeoJSON from 'ol/format/GeoJSON.js';
+import RasterSource from 'ol/source/Raster';
+import ImageLayer from 'ol/layer/Image';
 
 @Injectable({
   providedIn: 'root'
@@ -73,7 +75,7 @@ export class MapService {
 
   private localBrowseImageURL: string;
 
-  private displacementOverview: TileLayer;
+  private displacementOverview: ImageLayer<any>;
   public displacementOverview$ = new BehaviorSubject<models.DisplacementLayerTypes | null>(null);
   private priorityOverview: VectorLayer<VectorSource>;
 
@@ -763,15 +765,23 @@ export class MapService {
         this.displacementOverview = null;
       }
 
-      const overview_source = new XYZ({
-        'url': `${base_url}/{z}/{x}/{y}.png`,
-        wrapX: models.mapOptions.wrapX,
-        tileSize: [256, 256]
+      const overview_source = new RasterSource({
+        sources: [
+          new ImageTile({
+            'url': `${base_url}/{z}/{x}/{y}.png`,
+            tileSize: 256,
+            maxZoom: 12
+          })
+        ],
+        operation: function (pixels, _data) {
+          let test = pixels[0];
+          test[1] = 255;
+          return test;
+        },
       });
-
-      this.displacementOverview = new TileLayer({
+      this.displacementOverview = new ImageLayer({
         'source': overview_source,
-        'extent': response['extent']
+        'extent': response['extent'],
       });
 
       this.map.addLayer(this.displacementOverview);
