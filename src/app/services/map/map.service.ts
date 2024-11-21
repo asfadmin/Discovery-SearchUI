@@ -774,7 +774,7 @@ export class MapService {
         'source': overview_source,
         'extent': response['extent'],
         'style': {
-          'color': 'pink',
+          // 'color': 'pink',
           // 'fill': new Fill({
           //   'color': 'red'
           // })
