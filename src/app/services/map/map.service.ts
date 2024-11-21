@@ -22,6 +22,7 @@ import * as sceneStore from '@store/scenes';
 import { HttpClient } from "@angular/common/http";
 
 import * as polygonStyle from './polygon.style';
+// import * as tileStyle from 'ol/style'
 import * as views from './views';
 import { SarviewsEvent } from '@models';
 import { EventEmitter } from '@angular/core';
@@ -771,7 +772,13 @@ export class MapService {
 
       this.displacementOverview = new TileLayer({
         'source': overview_source,
-        'extent': response['extent']
+        'extent': response['extent'],
+        'style': {
+          'color': 'pink',
+          // 'fill': new Fill({
+          //   'color': 'red'
+          // })
+        }
       });
 
       this.map.addLayer(this.displacementOverview);
