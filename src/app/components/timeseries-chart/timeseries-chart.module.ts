@@ -14,6 +14,8 @@ import {TimeseriesChartZoomComponent} from '@components/timeseries-chart/timeser
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatMenuModule } from '@angular/material/menu';
 import { ContextMenuTriggerDirective } from '@directives/context-menu.directive';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+
 
 @NgModule({
   declarations: [TimeseriesChartComponent,
@@ -33,7 +35,7 @@ import { ContextMenuTriggerDirective } from '@directives/context-menu.directive'
       TimeseriesChartZoomComponent,
       MatProgressSpinnerModule,
       MatMenuModule,
-
+      ScrollingModule
     ],
   exports: [
     TimeseriesChartComponent,
