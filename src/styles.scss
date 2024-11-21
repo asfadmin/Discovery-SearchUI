@@ -850,3 +850,10 @@ $d-height: 550px;
 .breadcrumb-list .mat-mdc-form-field {
   margin-top: -2px;
 }
+
+.ts-chart-details {
+  .cdk-virtual-scrollable {
+    overflow-y: clip;
+    overflow-x: auto;
+  }
+}

@@ -1,5 +1,4 @@
-import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-
+import {Component, ElementRef, Input, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren, ViewEncapsulation} from '@angular/core';
 import * as d3 from 'd3';
 // import * as models from '@models';
 import {
@@ -16,6 +15,8 @@ import { SubSink } from 'subsink';
 import { AsfLanguageService } from "@services/asf-language.service";
 import { NetcdfService } from '@services';
 import * as models from '@models';
+import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
+// import {hidden} from '@services/map/polygon.style';
 // import {style} from '@angular/animations';
 import {linearRegression, linearRegressionLine} from './regression-line'
 interface TimeSeriesData {
@@ -26,6 +27,12 @@ interface TimeSeriesData {
   seriesNumber: number,
   color: string,
 }
+
+// interface TimeSeriesFit {
+//   seriesNumber: number,
+//   color: string,
+//   formula: string
+// }
 
 interface DataReady {
   name: string,
@@ -40,9 +47,14 @@ const unSelectedColor = '#9F9F9F9F';
 @Component({
   selector: 'app-timeseries-chart',
   templateUrl: './timeseries-chart.component.html',
-  styleUrl: './timeseries-chart.component.scss'
+  styleUrl: './timeseries-chart.component.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class TimeseriesChartComponent implements OnInit, OnDestroy {
+  // @ViewChild(CdkVirtualScrollViewport) scroll: CdkVirtualScrollViewport;
+  scrollIndex = 1;
+  @ViewChildren(CdkVirtualScrollViewport)
+  viewPorts: QueryList<CdkVirtualScrollViewport>;
   @ViewChild('tsChartWrapper', { static: true }) tsChartWrapper: ElementRef;
   @ViewChild('timeseriesChart', { static: true }) timeseriesChart: ElementRef;
   @Input() zoomIn$: Observable<void>;
@@ -51,6 +63,10 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
   public linearFitEquations : {[key: string]: {m: number, b: number}};
   // @Input() chartData: models.timeseriesChartItemState[];
+
+  // public scrollIndex = 1;
+  // public viewPorts: QueryList<CdkVirtualScrollViewport>;
+
 
   public json_data: string = '';
   private svg?: d3.Selection<SVGElement, {}, HTMLDivElement, any>;
@@ -85,6 +101,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   public endDate: Date = new Date();
   public lastStartDate: Date = new Date();
   public lastEndDate: Date = new Date();
+  public items = Array.from({length: 100000}).map((_, i) => `Item #${i}`);
+  // public bestFitItems: TimeSeriesFit[] = [];
   private linearFitLine;
 
   public exportableData: { [index:string]: {}[]} = {}
@@ -104,6 +122,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private language: AsfLanguageService,
     private netcdfService: NetcdfService
+
   ) { }
 
   public ngOnInit(): void {
@@ -209,6 +228,27 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       this.language.translate.instant('METERS') + ')';
   }
 
+  public onButtonClickPlus() {
+    // console.log(this.viewPorts.toArray());
+    this.viewPorts
+      .toArray()
+      .forEach((el) => el.scrollToIndex(this.scrollIndex, 'smooth'));
+    //this.viewPort.scrollToIndex(100, 'smooth');
+    this.scrollIndex += 1;
+  }
+
+  onButtonClickMinus() {
+    // console.log(this.viewPorts.toArray());
+    if (this.scrollIndex <= 2) {
+      this.scrollIndex = 1;
+    }
+    this.scrollIndex -= 1;
+    this.viewPorts
+      .toArray()
+      .forEach((el) => el.scrollToIndex(this.scrollIndex, 'smooth'));
+    //this.viewPort.scrollToIndex(100, 'smooth');
+  }
+
   public onZoomIn(): void {
     this.thing.transition().call(this.zoom.scaleBy, 2);
     this.updateChart();
@@ -297,7 +337,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
             opacity:  result.state.checked ? 1.0 : 0.2,
             linearFit: isLinearFitEnabled,
           });
-      }
+        }
       }
     } else {
       this.dataSource = [];
