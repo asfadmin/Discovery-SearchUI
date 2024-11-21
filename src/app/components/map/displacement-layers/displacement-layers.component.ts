@@ -3,6 +3,10 @@ import { SubSink } from 'subsink';
 
 import { MapService } from '@services';
 import * as models from '@models';
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+import { getFlightDirections } from '@store/filters';
+import { distinctUntilChanged, map } from 'rxjs';
 
 
 @Component({
@@ -20,6 +24,7 @@ export class DisplacementLayersComponent implements OnInit, OnDestroy {
 
   constructor(
     private mapService: MapService,
+    private store$: Store<AppState>,
   ) { }
 
   ngOnInit() {
@@ -30,10 +35,22 @@ export class DisplacementLayersComponent implements OnInit, OnDestroy {
         }
       )
     );
+    this.subs.add(
+      this.store$.select(getFlightDirections).pipe(
+        map(flightDirs => flightDirs[0] ?? models.FlightDirection.ASCENDING),
+        distinctUntilChanged(),
+      ).subscribe(flightDir => {
+        this.flightDir = flightDir;
+        if (!!this.displacementOverview) {
+          this.setDisplacementLayer(this.flightDir, this.displacementOverview)
+        }
+      }
+      )
+    )
   }
 
   public onUpdatePriority(isChecked: boolean): void {
-    if(isChecked) {
+    if (isChecked) {
       this.mapService.enablePriority();
     }
     else {
