@@ -28,7 +28,7 @@ export class NetcdfService {
   private descendingCache = {}
   private totalKeys = [];
   private maxCacheSize = 10;
-  private csvHeaders = 'series, longitude, latitude, date (mm/dd/yr), short wavelength displacement, source file'
+  private csvHeaders = 'name, geometry, date (mm/dd/yr), short wavelength displacement, source file'
 
   constructor(
     private http: HttpClient,
@@ -129,19 +129,13 @@ export class NetcdfService {
   // series 1, 1.0, 2.0,  05/14/2020, 0.500, granule1.nc
   // ...
   public toCSV(seriesData: { [index:string]: {}[]}): string {
-    const reg = /-?\d*\.\d+|\d+/g
     let output = `${this.csvHeaders}\n`
     const sortedSeriesKeys = Object.keys(seriesData).sort((s1, s2) => s1 < s2 ? -1 : 1)
     for (const seriesNumber of sortedSeriesKeys) {
 
-      let points = seriesData[seriesNumber][0]['wkt'].match(reg)
-      const lon = points[0]
-      const lat = points[1]
-
       for (const timestep of seriesData[seriesNumber]) {
         if (timestep !== 'aoi') {
           let dateDisplay = ''
-          // const sample = data.data[timestep]
           if (timestep !== 'mean') {
             
             const d = new Date(timestep['date'])
@@ -158,7 +152,7 @@ export class NetcdfService {
             }
             dateDisplay = `${monthDisplay}/${dayDisplay}/${d.getUTCFullYear()}`
           }
-          output += `${seriesNumber}, ${lon}, ${lat}, ${dateDisplay}, ${timestep['short_wavelength_displacement']}, ${timestep['fileName']}\n`
+          output += `Series ${seriesNumber}, ${timestep['wkt']}, ${dateDisplay}, ${timestep['short_wavelength_displacement']}, ${timestep['fileName']}\n`
         }
       }
     }
