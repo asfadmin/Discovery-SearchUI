@@ -770,8 +770,31 @@ export class MapService {
       });
 
       this.displacementOverview = new TileLayer({
+        'style': {
+          color: [
+            'palette',
+            [
+              'case',
+              ['between', ['band', 4], 0.0, 0.99],
+              0,
+              ['between', ['band', 1], 0.0, 0.2],
+              0,
+              ['between', ['band', 1], 0.2, 0.5],
+              1,
+              ['between', ['band', 1], 0.5, 0.6],
+              2,
+              ['between', ['band', 1], 0.6, 0.8],
+              3,
+              ['between', ['band', 1], 0.8, 1.0],
+              4,
+              0
+            ],
+            ['#00000000', '#0d0887', '#7e03a8', '#cb4778', '#f89540', '#f0f921']
+          ],
+          gamma: 1
+        },
         'source': overview_source,
-        'extent': response['extent']
+        'extent': response['extent'],
       });
 
       this.map.addLayer(this.displacementOverview);
