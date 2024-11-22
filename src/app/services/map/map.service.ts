@@ -752,7 +752,7 @@ export class MapService {
     const dir = apiDirValues[direction];
     const layerType = apiDispValues[type];
 
-    let base_url = `https://d12uktych8nckw.cloudfront.net/main/${dir.toLowerCase()}/${layerType.toLowerCase()}`;
+    let base_url = `https://d3g9emy65n853h.cloudfront.net/main/${dir.toLowerCase()}/${layerType.toLowerCase()}`;
     this.displacementOverview$.next(type);
     console.log(type, base_url);
 
