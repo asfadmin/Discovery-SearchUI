@@ -63,7 +63,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   @Input() zoomOut$: Observable<void>;
   @Input() zoomToFit$: Observable<void>;
 
-  public linearFitEquations : {[key: string]: {m: number, b: number}};
   // @Input() chartData: models.timeseriesChartItemState[];
 
   // public scrollIndex = 1;
@@ -107,126 +106,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   public formulaOverflow = false;
   // Tyler this is where you would put the series and their best fit formulas
   public bestFitItems: TimeSeriesFit[] = [
-    {
-      seriesNumber: 1,
-      color: 'red',
-      formula: 'e=mcsquared'
-    },
-    {
-      seriesNumber: 2,
-      color: 'blue',
-      formula: 'e=mcsquared'
-    },
-    {
-      seriesNumber: 3,
-      color: 'red',
-      formula: 'e=mcsquared'
-    },
-    {
-      seriesNumber: 4,
-      color: 'red',
-      formula: 'e=mcsquared'
-    },
-    {
-      seriesNumber: 5,
-      color: 'blue',
-      formula: 'e=mcsquared'
-    },
-    {
-      seriesNumber: 6,
-      color: 'red',
-      formula: 'e=mcsquared'
-    },
-    {
-      seriesNumber: 7,
-      color: 'red',
-      formula: 'e=mcsquared'
-    },
-    {
-      seriesNumber: 8,
-      color: 'blue',
-      formula: 'e=mcsquared'
-    },
-    {
-      seriesNumber: 9,
-      color: 'red',
-      formula: 'e=mcsquared'
-    },
-    {
-      seriesNumber: 10,
-      color: 'red',
-      formula: 'e=mcsquared'
-    },
-    {
-      seriesNumber: 11,
-      color: 'blue',
-      formula: 'e=mcsquared'
-    },
-    {
-      seriesNumber: 12,
-      color: 'red',
-      formula: 'e=mcsquared'
-    },
-    {
-      seriesNumber: 12,
-      color: 'red',
-      formula: 'e=mcsquared'
-    },
-    {
-      seriesNumber: 13,
-      color: 'blue',
-      formula: 'e=mcsquared'
-    },
-    {
-      seriesNumber: 14,
-      color: 'red',
-      formula: 'e=mcsquared'
-    },
-    {
-      seriesNumber: 15,
-      color: 'red',
-      formula: 'e=mcsquared'
-    },
-    {
-      seriesNumber: 16,
-      color: 'blue',
-      formula: 'e=mcsquared'
-    },
-    {
-      seriesNumber: 17,
-      color: 'red',
-      formula: 'e=mcsquared'
-    },
-    {
-      seriesNumber: 18,
-      color: 'red',
-      formula: 'e=mcsquared'
-    },
-    {
-      seriesNumber: 19,
-      color: 'blue',
-      formula: 'e=mcsquared'
-    },
-    {
-      seriesNumber: 20,
-      color: 'red',
-      formula: 'e=mcsquared'
-    },
-    {
-      seriesNumber: 21,
-      color: 'red',
-      formula: 'e=mcsquared'
-    },
-    {
-      seriesNumber: 22,
-      color: 'blue',
-      formula: 'e=mcsquared'
-    },
-    {
-      seriesNumber: 23,
-      color: 'red',
-      formula: 'e=mcsquared'
-    },
 
   ];
   private linearFitLine;
@@ -639,7 +518,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           .style('opacity', 0);
       })
       .attr('r', 5);
-      this.linearFitEquations = {}
+      this.bestFitItems = [];
       if(this.dataReadyForChart.length > 0 && this.linearFitLineIndex.length > 0) {
         this.linearFitLine = this.svg.append('g')
           .attr('id', 'linesParent2')
@@ -649,7 +528,11 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         for(let linearFitData of filteredData) {
 
           let regression = linearRegression(linearFitData.values.map((x,i) => [i, x.short_wavelength_displacement]));
-          this.linearFitEquations[linearFitData.name] = regression;
+          this.bestFitItems.push({
+            seriesNumber: linearFitData.values[0].seriesNumber,
+            color: linearFitData.values[0].color,
+            formula: `y = ${regression.m.toFixed(2)}x ${regression.b < 0 ? '-' : '+'} ${Math.abs(regression.b).toFixed(2)}`
+          })
           let lineregression = linearRegressionLine(regression);
 
           let line = d3.line()

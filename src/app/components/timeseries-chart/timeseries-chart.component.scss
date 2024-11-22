@@ -37,7 +37,7 @@
 
 
 .ts-best-fit-formulas .ts-best-fit-viewport {
-  height: 30px;
+  height: 35px;
   width: 100%;
   border: none;
 }
@@ -48,9 +48,18 @@
 }
 
 .ts-best-fit-item {
-  width: 100px;
+  width: 120px;
   height: 100%;
   //writing-mode: vertical-lr;
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.ts-color-swatch {
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
 }
 
 ::ng-deep .cdk-virtual-scrollable {
