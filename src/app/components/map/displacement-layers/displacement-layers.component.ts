@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { MapService } from '@services';
@@ -7,6 +7,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { getFlightDirections } from '@store/filters';
 import { distinctUntilChanged, map } from 'rxjs';
+import { MatCheckbox } from '@angular/material/checkbox';
 
 
 @Component({
@@ -15,6 +16,7 @@ import { distinctUntilChanged, map } from 'rxjs';
   styleUrl: './displacement-layers.component.scss'
 })
 export class DisplacementLayersComponent implements OnInit, OnDestroy {
+  @ViewChild("priorityRollout", { static: true }) priorityCheckbox: MatCheckbox;
   public flightDir = models.FlightDirection.ASCENDING;
   public displacementOverview: models.DisplacementLayerTypes | null = null;
 
@@ -44,6 +46,10 @@ export class DisplacementLayersComponent implements OnInit, OnDestroy {
         if (!!this.displacementOverview) {
           this.setDisplacementLayer(this.flightDir, this.displacementOverview)
         }
+        if (this.priorityCheckbox.checked) {
+          this.mapService.disablePriority()
+          this.onUpdatePriority(this.priorityCheckbox.checked)
+        }
       }
       )
     )
@@ -51,7 +57,7 @@ export class DisplacementLayersComponent implements OnInit, OnDestroy {
 
   public onUpdatePriority(isChecked: boolean): void {
     if (isChecked) {
-      this.mapService.enablePriority();
+      this.mapService.enablePriority(this.flightDir);
     }
     else {
       this.mapService.disablePriority();
