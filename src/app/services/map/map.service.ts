@@ -861,9 +861,9 @@ export class MapService {
     this.hasCoherenceLayer$.next(null);
   }
 
-  public enablePriority(): void {
+  public enablePriority(flight_dir: models.FlightDirection): void {
     const source = new VectorSource({
-      url: '/assets/priority_rollout.json',
+      url: `/assets/priority_rollout_${flight_dir}.geojson`,
       format: new GeoJSON({})
     },
     )
