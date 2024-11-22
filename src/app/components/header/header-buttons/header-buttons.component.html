@@ -56,11 +56,10 @@
 
      <ng-container *ngIf="searchType === searchTypes.DISPLACEMENT">
         <button
+          matTooltip="{{ 'Dataset Info' | translate }}"
           class="spacing nav-icon-buttons" color="basic" mat-button>
-          <mat-icon class="large-icon">
-            description
-          </mat-icon>
-          <div class="text-under faint-text">{{ language.getName()}}</div>
+          <mat-icon class="large-icon">info</mat-icon>
+          <div class="text-under faint-text">{{ 'Info' | translate }}</div>
         </button>
       </ng-container>
 
