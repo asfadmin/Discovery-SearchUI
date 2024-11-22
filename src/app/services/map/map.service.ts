@@ -22,6 +22,7 @@ import * as sceneStore from '@store/scenes';
 import { HttpClient } from "@angular/common/http";
 
 import * as polygonStyle from './polygon.style';
+// import * as tileStyle from 'ol/style'
 import * as views from './views';
 import { SarviewsEvent } from '@models';
 import { EventEmitter } from '@angular/core';
@@ -877,9 +878,9 @@ export class MapService {
     this.hasCoherenceLayer$.next(null);
   }
 
-  public enablePriority(): void {
+  public enablePriority(flight_dir: models.FlightDirection): void {
     const source = new VectorSource({
-      url: '/assets/priority_rollout.json',
+      url: `/assets/priority_rollout_${flight_dir}.geojson`,
       format: new GeoJSON({})
     },
     )

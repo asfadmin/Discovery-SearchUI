@@ -1,5 +1,4 @@
-import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-
+import {Component, ElementRef, Input, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren, ViewEncapsulation} from '@angular/core';
 import * as d3 from 'd3';
 // import * as models from '@models';
 import {
@@ -16,6 +15,8 @@ import { SubSink } from 'subsink';
 import { AsfLanguageService } from "@services/asf-language.service";
 import { NetcdfService } from '@services';
 import * as models from '@models';
+import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
+// import {hidden} from '@services/map/polygon.style';
 // import {style} from '@angular/animations';
 import {linearRegression, linearRegressionLine} from './regression-line'
 interface TimeSeriesData {
@@ -25,6 +26,12 @@ interface TimeSeriesData {
   base: number,
   seriesNumber: number,
   color: string,
+}
+
+interface TimeSeriesFit {
+  seriesNumber: number,
+  color: string,
+  formula: string
 }
 
 interface DataReady {
@@ -40,17 +47,27 @@ const unSelectedColor = '#9F9F9F9F';
 @Component({
   selector: 'app-timeseries-chart',
   templateUrl: './timeseries-chart.component.html',
-  styleUrl: './timeseries-chart.component.scss'
+  styleUrl: './timeseries-chart.component.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class TimeseriesChartComponent implements OnInit, OnDestroy {
+  // @ViewChild(CdkVirtualScrollViewport) scroll: CdkVirtualScrollViewport;
+  scrollIndex = 1;
+  @ViewChildren(CdkVirtualScrollViewport)
+  viewPorts: QueryList<CdkVirtualScrollViewport>;
   @ViewChild('tsChartWrapper', { static: true }) tsChartWrapper: ElementRef;
   @ViewChild('timeseriesChart', { static: true }) timeseriesChart: ElementRef;
+  @ViewChild('tsBestFitFormulas', { static: true }) tsBestFitFormulas: ElementRef;
+  @ViewChild(CdkVirtualScrollViewport) virtualScroll: CdkVirtualScrollViewport;
   @Input() zoomIn$: Observable<void>;
   @Input() zoomOut$: Observable<void>;
   @Input() zoomToFit$: Observable<void>;
 
-  public linearFitEquations : {[key: string]: {m: number, b: number}};
   // @Input() chartData: models.timeseriesChartItemState[];
+
+  // public scrollIndex = 1;
+  // public viewPorts: QueryList<CdkVirtualScrollViewport>;
+
 
   public json_data: string = '';
   private svg?: d3.Selection<SVGElement, {}, HTMLDivElement, any>;
@@ -85,6 +102,12 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   public endDate: Date = new Date();
   public lastStartDate: Date = new Date();
   public lastEndDate: Date = new Date();
+  public items = Array.from({length: 100000}).map((_, i) => `Item #${i}`);
+  public formulaOverflow = false;
+  // Tyler this is where you would put the series and their best fit formulas
+  public bestFitItems: TimeSeriesFit[] = [
+
+  ];
   private linearFitLine;
 
   public exportableData: { [index:string]: {}[]} = {}
@@ -104,6 +127,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private language: AsfLanguageService,
     private netcdfService: NetcdfService
+
   ) { }
 
   public ngOnInit(): void {
@@ -199,7 +223,12 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       wkt => ({ point: cache[wkt], state: chartStates[wkt] })
     );
     this.data = allPointsData;
+    this.formulaOverflow = this.isOverflowing();
     this.initChart(this.data)
+  }
+
+  public isOverflowing(): boolean {
+    return this.virtualScroll.measureRenderedContentSize() > this.virtualScroll.getViewportSize();
   }
 
   public translateChartText() {
@@ -207,6 +236,25 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       this.language.translate.instant('DATE');
     this.yAxisTitle = this.language.translate.instant('SHORTWAVE_DISPLACEMENT') + ' (' +
       this.language.translate.instant('METERS') + ')';
+  }
+
+  public onButtonClickPlus() {
+    this.viewPorts
+      .toArray()
+      .forEach((el) => el.scrollToIndex(this.scrollIndex, 'smooth'));
+    //this.viewPort.scrollToIndex(100, 'smooth');
+    this.scrollIndex += 1;
+  }
+
+  onButtonClickMinus() {
+    if (this.scrollIndex <= 2) {
+      this.scrollIndex = 1;
+    }
+    this.scrollIndex -= 1;
+    this.viewPorts
+      .toArray()
+      .forEach((el) => el.scrollToIndex(this.scrollIndex, 'smooth'));
+    //this.viewPort.scrollToIndex(100, 'smooth');
   }
 
   public onZoomIn(): void {
@@ -268,7 +316,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
               });
 
               if (result.state.checked) {
-                const series_key = `series ${result.state.seriesNumber}`
+                const series_key = result.state.seriesNumber.toString()
                 if (!!!this.exportableData[series_key]) {
                   this.exportableData[series_key] = []
                 }
@@ -297,7 +345,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
             opacity:  result.state.checked ? 1.0 : 0.2,
             linearFit: isLinearFitEnabled,
           });
-      }
+        }
       }
     } else {
       this.dataSource = [];
@@ -470,7 +518,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           .style('opacity', 0);
       })
       .attr('r', 5);
-      this.linearFitEquations = {}
+      this.bestFitItems = [];
       if(this.dataReadyForChart.length > 0 && this.linearFitLineIndex.length > 0) {
         this.linearFitLine = this.svg.append('g')
           .attr('id', 'linesParent2')
@@ -480,7 +528,11 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         for(let linearFitData of filteredData) {
 
           let regression = linearRegression(linearFitData.values.map((x,i) => [i, x.short_wavelength_displacement]));
-          this.linearFitEquations[linearFitData.name] = regression;
+          this.bestFitItems.push({
+            seriesNumber: linearFitData.values[0].seriesNumber,
+            color: linearFitData.values[0].color,
+            formula: `y = ${regression.m.toFixed(2)}x ${regression.b < 0 ? '-' : '+'} ${Math.abs(regression.b).toFixed(2)}`
+          })
           let lineregression = linearRegressionLine(regression);
 
           let line = d3.line()

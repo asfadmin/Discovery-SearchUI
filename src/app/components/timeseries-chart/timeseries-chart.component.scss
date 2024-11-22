@@ -11,10 +11,12 @@
   width: 100%;
 }
 
-.chart-details {
-  position: absolute;
-  margin-top: 15px;
-  margin-left: 70px;
+.ts-chart-details {
+//  position: absolute;
+  display: flex;
+  flex-direction: row;
+  background-color: #f5f5f5;
+  margin: 0 25px 0 45px;
   padding: 5px;
   color: #65665c;
   font-size: 14px;
@@ -22,6 +24,51 @@
   background-color: #f5f5f5;
 }
 
+.ts-best-fit-nav {
+  flex: 0 1 auto;
+  width: 40px;
+  min-width: 0;
+  margin-top: -2px;
+}
+
+.ts-best-fit-formulas {
+  flex: 1 1 auto
+}
+
+
+.ts-best-fit-formulas .ts-best-fit-viewport {
+  height: 35px;
+  width: 100%;
+  border: none;
+}
+
+.ts-best-fit-formulas .ts-best-fit-viewport .cdk-virtual-scroll-content-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.ts-best-fit-item {
+  width: 120px;
+  height: 100%;
+  //writing-mode: vertical-lr;
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.ts-color-swatch {
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
+}
+
+::ng-deep .cdk-virtual-scrollable {
+  overflow-x: auto;
+  overflow-y: clip;
+  will-change: scroll-position;
+  contain: strict;
+  -webkit-overflow-scrolling: touch;
+}
 ::ng-deep .timeseries-base {
   @include themify($themes) {
     fill: themed('blue-link');
@@ -45,13 +92,13 @@
 
 .ts-chart-config-button {
   position: absolute;
-  top: 18px;
+  top: 54px;
   right: 65px;
 }
 
 .ts-chart-export-button {
   position: absolute;
-  top: 18px;
+  top: 54px;
   right: 210px;
 }
 
@@ -68,7 +115,7 @@
 }
 .ts-chart-zoom {
   position: absolute;
-  top: 17px;
+  top: 54px;
   right: 95px;
 }
 :host ::ng-deep .ts-reference-point {
