@@ -28,11 +28,11 @@ interface TimeSeriesData {
   color: string,
 }
 
-// interface TimeSeriesFit {
-//   seriesNumber: number,
-//   color: string,
-//   formula: string
-// }
+interface TimeSeriesFit {
+  seriesNumber: number,
+  color: string,
+  formula: string
+}
 
 interface DataReady {
   name: string,
@@ -57,6 +57,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   viewPorts: QueryList<CdkVirtualScrollViewport>;
   @ViewChild('tsChartWrapper', { static: true }) tsChartWrapper: ElementRef;
   @ViewChild('timeseriesChart', { static: true }) timeseriesChart: ElementRef;
+  @ViewChild('tsBestFitFormulas', { static: true }) tsBestFitFormulas: ElementRef;
+  @ViewChild(CdkVirtualScrollViewport) virtualScroll: CdkVirtualScrollViewport;
   @Input() zoomIn$: Observable<void>;
   @Input() zoomOut$: Observable<void>;
   @Input() zoomToFit$: Observable<void>;
@@ -102,7 +104,131 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   public lastStartDate: Date = new Date();
   public lastEndDate: Date = new Date();
   public items = Array.from({length: 100000}).map((_, i) => `Item #${i}`);
-  // public bestFitItems: TimeSeriesFit[] = [];
+  public formulaOverflow = false;
+  // Tyler this is where you would put the series and their best fit formulas
+  public bestFitItems: TimeSeriesFit[] = [
+    {
+      seriesNumber: 1,
+      color: 'red',
+      formula: 'e=mcsquared'
+    },
+    {
+      seriesNumber: 2,
+      color: 'blue',
+      formula: 'e=mcsquared'
+    },
+    {
+      seriesNumber: 3,
+      color: 'red',
+      formula: 'e=mcsquared'
+    },
+    {
+      seriesNumber: 4,
+      color: 'red',
+      formula: 'e=mcsquared'
+    },
+    {
+      seriesNumber: 5,
+      color: 'blue',
+      formula: 'e=mcsquared'
+    },
+    {
+      seriesNumber: 6,
+      color: 'red',
+      formula: 'e=mcsquared'
+    },
+    {
+      seriesNumber: 7,
+      color: 'red',
+      formula: 'e=mcsquared'
+    },
+    {
+      seriesNumber: 8,
+      color: 'blue',
+      formula: 'e=mcsquared'
+    },
+    {
+      seriesNumber: 9,
+      color: 'red',
+      formula: 'e=mcsquared'
+    },
+    {
+      seriesNumber: 10,
+      color: 'red',
+      formula: 'e=mcsquared'
+    },
+    {
+      seriesNumber: 11,
+      color: 'blue',
+      formula: 'e=mcsquared'
+    },
+    {
+      seriesNumber: 12,
+      color: 'red',
+      formula: 'e=mcsquared'
+    },
+    {
+      seriesNumber: 12,
+      color: 'red',
+      formula: 'e=mcsquared'
+    },
+    {
+      seriesNumber: 13,
+      color: 'blue',
+      formula: 'e=mcsquared'
+    },
+    {
+      seriesNumber: 14,
+      color: 'red',
+      formula: 'e=mcsquared'
+    },
+    {
+      seriesNumber: 15,
+      color: 'red',
+      formula: 'e=mcsquared'
+    },
+    {
+      seriesNumber: 16,
+      color: 'blue',
+      formula: 'e=mcsquared'
+    },
+    {
+      seriesNumber: 17,
+      color: 'red',
+      formula: 'e=mcsquared'
+    },
+    {
+      seriesNumber: 18,
+      color: 'red',
+      formula: 'e=mcsquared'
+    },
+    {
+      seriesNumber: 19,
+      color: 'blue',
+      formula: 'e=mcsquared'
+    },
+    {
+      seriesNumber: 20,
+      color: 'red',
+      formula: 'e=mcsquared'
+    },
+    {
+      seriesNumber: 21,
+      color: 'red',
+      formula: 'e=mcsquared'
+    },
+    {
+      seriesNumber: 22,
+      color: 'blue',
+      formula: 'e=mcsquared'
+    },
+    {
+      seriesNumber: 23,
+      color: 'red',
+      formula: 'e=mcsquared'
+    },
+
+  ];
   private linearFitLine;
 
   public exportableData: { [index:string]: {}[]} = {}
@@ -218,7 +344,12 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       wkt => ({ point: cache[wkt], state: chartStates[wkt] })
     );
     this.data = allPointsData;
+    this.formulaOverflow = this.isOverflowing();
     this.initChart(this.data)
+  }
+
+  public isOverflowing(): boolean {
+    return this.virtualScroll.measureRenderedContentSize() > this.virtualScroll.getViewportSize();
   }
 
   public translateChartText() {
@@ -229,7 +360,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   }
 
   public onButtonClickPlus() {
-    // console.log(this.viewPorts.toArray());
     this.viewPorts
       .toArray()
       .forEach((el) => el.scrollToIndex(this.scrollIndex, 'smooth'));
@@ -238,7 +368,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   }
 
   onButtonClickMinus() {
-    // console.log(this.viewPorts.toArray());
     if (this.scrollIndex <= 2) {
       this.scrollIndex = 1;
     }
