@@ -55,16 +55,14 @@
       </ng-container>
 
      <ng-container *ngIf="searchType === searchTypes.DISPLACEMENT">
-<!--        <button-->
-<!--          class="spacing nav-icon-buttons" color="basic" mat-button>-->
-<!--          <mat-icon class="large-icon">-->
-<!--            description-->
-<!--          </mat-icon>-->
-<!--          <div class="text-under faint-text">{{ language.getName()}}</div>-->
-<!--        </button>-->
-       <app-docs-modal url="https://docs.asf.alaska.edu/vertex/baseline/"
-                       text="{{'WHAT_IS_BASELINE' | translate}}?">
-       </app-docs-modal>
+        <button
+          class="spacing nav-icon-buttons" color="basic" mat-button>
+          <app-docs-modal class="icon-description"
+                          description="description"
+                          url="https://asf.alaska.edu/datasets/daac/opera/">
+          </app-docs-modal>
+          <div class="text-under faint-text">{{ 'INFO' | translate }}</div>
+        </button>
       </ng-container>
 
         <button
