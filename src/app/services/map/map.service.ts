@@ -773,20 +773,15 @@ export class MapService {
       this.displacementOverview = new TileLayer({
         'style': {
           color: [
-              'case',
-              ['<=', ['band',4],0.1],
-              '#00000000',
-              [
-                'interpolate',
-                ['linear'],
-                ['*', ['band', 1], 255],
-                0,
-                [0,0,0],
-                127,
-                [255,0,0],
-                255,
-                [0,0,255]
-            ]
+            'interpolate',
+            ['linear'],
+            ['*', ['band', 1], 255],
+            0,
+            ['color', 255,255,255, ['band', 4]],
+            127,
+            ['color', 255,0,0,['band', 4]],
+            255,
+            ['color', 0,0,255,['band', 4]]
             // 'palette',
             // [
             //   'case',
