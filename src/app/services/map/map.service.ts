@@ -773,9 +773,19 @@ export class MapService {
       // Eventually let users define this part somehow
       let defined_stops: (number | number[])[][] = [
         // [Stop, Color[R,G,B]]
-        [0.0, [255,0,0]],
-        [0.5, [255,255,255]],
-        [1.0, [0,0,255]],
+        [1.0, [0, 18, 97]],
+        [29.0, [3, 62, 125]],
+        [58.0, [30, 111, 157]],
+        [86.0, [113, 168, 196]],
+        [114.0, [201, 221, 231]],
+        [143.0, [234, 206, 189]],
+        [171.0, [211, 151, 116]],
+        [199.0, [190, 101, 51]],
+        [228.0, [139, 39, 6]],
+        [256.0, [89, 0, 8]],
+        // [0.0, [89,0,8]],
+        // [0.5, [255,255,255]],
+        // [1.0, [0,18,97]],
       ];
 
       let parsed_color_stops = defined_stops.flat().map(x => {
@@ -791,7 +801,7 @@ export class MapService {
           color: [
             'interpolate',
             ['linear'],
-            ['band', 1],
+            ['*', ['band', 1], 255],
             ...parsed_color_stops
           ]
         },
