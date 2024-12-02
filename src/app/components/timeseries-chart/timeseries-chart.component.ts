@@ -222,6 +222,14 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     const allPointsData: { point: {}, state: models.timeseriesChartItemState }[] = Object.keys(chartStates).map(
       wkt => ({ point: cache[wkt], state: chartStates[wkt] })
     );
+    if(this.baseData) {
+      const missingBaseSeries = Object.keys(chartStates).findIndex(
+        wkt => {return chartStates[wkt].seriesNumber === this.baseData.seriesNumber});
+        console.log(missingBaseSeries)
+      if(missingBaseSeries === -1) {
+        this.baseData = null;
+      }
+    }
     this.data = allPointsData;
     this.formulaOverflow = this.isOverflowing();
     this.initChart(this.data)
