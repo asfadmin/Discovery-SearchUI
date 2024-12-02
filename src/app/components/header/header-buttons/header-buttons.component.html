@@ -57,10 +57,13 @@
      <ng-container *ngIf="searchType === searchTypes.DISPLACEMENT">
         <button
           class="spacing nav-icon-buttons" color="basic" mat-button>
-          <mat-icon class="large-icon">
-            description
-          </mat-icon>
-          <div class="text-under faint-text">{{ language.getName()}}</div>
+
+          <app-docs-modal class="icon-description"
+                          matTooltip="{{ 'DATASET_INFO' | translate }}"
+                          description="description"
+                          url="https://asf.alaska.edu/datasets/daac/opera/">
+          </app-docs-modal>
+          <div class="text-under faint-text" style="margin-top: -3px;">{{ 'INFO' | translate }}</div>
         </button>
       </ng-container>
 
