@@ -770,18 +770,30 @@ export class MapService {
         tileSize: [256, 256]
       });
 
+      // Eventually let users define this part somehow
+      let defined_stops: (number | number[])[][] = [
+        // [Stop, Color[R,G,B]]
+        [0.0, [255,0,0]],
+        [0.5, [255,255,255]],
+        [1.0, [0,0,255]],
+      ];
+
+      let parsed_color_stops = defined_stops.flat().map(x => {
+        if(Array.isArray(x)) {
+          return ['color', ...x, ['band', 4]]
+        } else {
+          return x
+        }
+      })
+
       this.displacementOverview = new TileLayer({
         'style': {
           color: [
             'interpolate',
             ['linear'],
-            ['*', ['band', 1], 255],
-            0,
-            ['color', 255, 255, 255, ['band', 4]],
-            127,
-            ['color', 255, 0, 0, ['band', 4]],
-            255,
-            ['color', 0, 0, 255, ['band', 4]]],
+            ['band', 1],
+            ...parsed_color_stops
+          ]
         },
         'source': overview_source,
         'extent': response['extent'],
