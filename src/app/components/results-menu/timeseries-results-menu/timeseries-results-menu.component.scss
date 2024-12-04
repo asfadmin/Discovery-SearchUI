@@ -306,8 +306,7 @@ label {
 
 .ts-trash-can {
   margin-bottom: -4px;
-  margin-left: auto;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .ts-add-points {
@@ -340,7 +339,7 @@ label {
 
 .point-list-ul-section {
   display: block;
-  margin-left: 5px;
+  margin-left: 0;
 }
 
 ul {
@@ -354,4 +353,8 @@ ul {
 
 ::ng-deep .mat-mdc-checkbox .mdc-checkbox__background {
   top: 4px
+}
+
+.ts-buttons {
+  border: none;
 }
