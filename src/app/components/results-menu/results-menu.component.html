@@ -6,9 +6,8 @@
     <div
       id="result-div"
       class="w100"
-
+      [class.displacement-results]="searchType === SearchTypes.DISPLACEMENT"
       [ngClass]="{'mobile-size': breakpoint === breakpoints.MOBILE}"
-      [ngClass]="{'displacement-results': searchType === SearchTypes.DISPLACEMENT}"
       [style.height.px]="menuHeightPx"
       mwlResizable
       [validateResize]="validate"

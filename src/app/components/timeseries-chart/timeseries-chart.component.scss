@@ -1,7 +1,10 @@
 @import "asf-theme";
 
+$chart-ctrl-top: 60px;
+$chart-ctrl-top-x: 62px;
+
 .chart-wrapper {
-  height: 90%;
+  height: calc(100% - 50px);
   width: 100%;
   display: flex;
 }
@@ -96,13 +99,13 @@
 
 .ts-chart-config-button {
   position: absolute;
-  top: 54px;
+  top: $chart-ctrl-top-x;
   right: 65px;
 }
 
 .ts-chart-export-button {
   position: absolute;
-  top: 54px;
+  top: $chart-ctrl-top-x;
   right: 210px;
 }
 
@@ -119,7 +122,7 @@
 }
 .ts-chart-zoom {
   position: absolute;
-  top: 54px;
+  top: $chart-ctrl-top;
   right: 95px;
 }
 :host ::ng-deep .ts-reference-point {
