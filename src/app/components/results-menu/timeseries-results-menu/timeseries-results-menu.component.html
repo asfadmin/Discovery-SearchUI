@@ -33,8 +33,7 @@
                   <span class="ts-wkt-label">
                     {{'SERIES' | translate}} {{point.seriesNumber}}
                   </span>
-                  <button class="ts-buttons"(click)="setLinearFitLine($index)"><mat-icon class="ts-trash-can" matTooltip="Draw Trendline">open_in_full</mat-icon></button>
-                  <button class="ts-buttons"(click)="deletePoint($index)"><mat-icon class="ts-trash-can" matTooltip="Remove Series">delete</mat-icon></button>
+                  <button mat-icon-button (click)="deletePoint($index)"><mat-icon class="ts-trash-can">delete</mat-icon></button>
                 </mat-checkbox>
               </li>
             }

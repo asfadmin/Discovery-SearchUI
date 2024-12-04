@@ -12,4 +12,5 @@ export const setAllTimeseriesChecked = createAction('[Chart] set all timeseries 
 export const setTimeseriesColor = createAction('[Chart] set the color of a single timeseries', props<{'wkt': string, 'color': string}>())
 export const setChartOutOfDate = createAction('[Chart] mark chart as out of date')
 export const setChartUpToDate = createAction('[Chart], mark chart as up to date')
-export const setLinearFit = createAction('[Chart] set best fit line visibility',props<{'wkt': string, 'linearFit': boolean}>())
+export const showLinearFit = createAction('[Chart] show all linear fit lines')
+export const hideLinearFit = createAction('[Chart] hide all linear fit lines')
