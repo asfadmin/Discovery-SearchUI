@@ -8,6 +8,7 @@
       class="w100"
 
       [ngClass]="{'mobile-size': breakpoint === breakpoints.MOBILE}"
+      [ngClass]="{'displacement-results': searchType === SearchTypes.DISPLACEMENT}"
       [style.height.px]="menuHeightPx"
       mwlResizable
       [validateResize]="validate"
@@ -45,8 +46,9 @@
               [resize$]="resize$">
             </app-desktop-results-menu>
 
-            <app-timeseries-results-menu class="w100 h100 results-menu--layout" [resize$]="resize$" *ngIf="searchType === SearchTypes.DISPLACEMENT">
-
+            <app-timeseries-results-menu class="w100 h100 results-menu--layout"
+               [resize$]="resize$"
+               *ngIf="searchType === SearchTypes.DISPLACEMENT">
             </app-timeseries-results-menu>
             <app-sarviews-results-menu class="w100 h100 results-menu--layout"
               *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS"

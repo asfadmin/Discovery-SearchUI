@@ -236,7 +236,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   }
 
   public isOverflowing(): boolean {
-    return this.virtualScroll.measureRenderedContentSize() > this.virtualScroll.getViewportSize();
+    console.log('content/viewport size:', this.virtualScroll.measureRenderedContentSize(), this.virtualScroll.getViewportSize())
+    return this.virtualScroll.measureRenderedContentSize() > this.virtualScroll.getViewportSize()-270;
   }
 
   public translateChartText() {

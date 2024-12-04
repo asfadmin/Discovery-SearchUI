@@ -56,10 +56,14 @@
   margin-left: 10px;
   margin-right: 10px;
 }
+
 .ts-color-swatch {
   width: 15px;
   height: 15px;
   margin-right: 5px;
+  text-align: center;
+  color: black;
+  font-weight: bolder;
 }
 
 ::ng-deep .cdk-virtual-scrollable {

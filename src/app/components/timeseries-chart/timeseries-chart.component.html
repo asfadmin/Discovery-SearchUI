@@ -15,9 +15,8 @@
       maxBufferPx="400"
       class="ts-best-fit-viewport">
        <div *cdkVirtualFor="let item of bestFitItems" class="ts-best-fit-item">
-        <div [style.background-color]="item.color" class="ts-color-swatch"></div>
+        <div [style.background-color]="item.color" class="ts-color-swatch">{{item.seriesNumber}}</div>
         <div style="display: flex; flex-direction: column;">
-          <div>Series {{item.seriesNumber}}</div>
           <div>{{item.formula}}</div>
         </div>
       </div>
