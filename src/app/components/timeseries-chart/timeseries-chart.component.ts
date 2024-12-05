@@ -365,7 +365,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     const short_wavelength_displacements = this.dataSource.map(p => p['short_wavelength_displacement'] as number)
     const dates = this.dataSource.map(p => Date.parse(p['date'])).filter(d => !isNaN(d))
     const inner_margins = 1.25
-    const min_y = Math.min(...short_wavelength_displacements) * inner_margins
+    const min_y = Math.min(...short_wavelength_displacements)
     const min_x = Math.min(...dates)
     const max_y = Math.max(...short_wavelength_displacements) * inner_margins
     const max_x = Math.max(...dates)
@@ -625,7 +625,10 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.yAxis.call(
       d3.axisLeft(newY)
         .tickSize(-this.width)
-        .ticks(smallChart ? 10 : 5, 's')
+        .ticks(smallChart ? 10 : 5, '.1f')
+        .tickFormat(
+          (val: number, _index) => `${val}m`
+        )
     );
 
     this.dots
