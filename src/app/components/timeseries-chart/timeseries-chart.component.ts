@@ -19,6 +19,7 @@ import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
 // import {hidden} from '@services/map/polygon.style';
 // import {style} from '@angular/animations';
 import {linearRegression, linearRegressionLine} from './regression-line'
+
 interface TimeSeriesData {
   short_wavelength_displacement: number
   date: string,
@@ -53,11 +54,11 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   // @ViewChild(CdkVirtualScrollViewport) scroll: CdkVirtualScrollViewport;
   scrollIndex = 1;
   @ViewChildren(CdkVirtualScrollViewport)
-  viewPorts: QueryList<CdkVirtualScrollViewport>;
+  viewPorts: QueryList<CdkVirtualScrollViewport>
   @ViewChild('tsChartWrapper', { static: true }) tsChartWrapper: ElementRef;
   @ViewChild('timeseriesChart', { static: true }) timeseriesChart: ElementRef;
   @ViewChild('tsBestFitFormulas', { static: true }) tsBestFitFormulas: ElementRef;
-  @ViewChild(CdkVirtualScrollViewport) virtualScroll: CdkVirtualScrollViewport;
+  // @ViewChild(CdkVirtualScrollViewport) virtualScroll: CdkVirtualScrollViewport;
   @Input() zoomIn$: Observable<void>;
   @Input() zoomOut$: Observable<void>;
   @Input() zoomToFit$: Observable<void>;
@@ -161,9 +162,10 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           this.showLines = showLines;
           if (this.showLines) {
             // this.pointGraph = this.clipContainer.append("pointGraph")
-            this.lineGraph = this.clipContainer.append("path")
+            this.lineGraph = this.clipContainer.append("path");
+            this.formulaOverflow = true;
           } else {
-            this.lineGraph.remove()
+            this.lineGraph.remove();
           }
           this.initChart(this.data);
         }
@@ -228,14 +230,17 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       }
     }
     this.data = allPointsData;
-    this.formulaOverflow = this.isOverflowing();
+    // this.formulaOverflow = this.isOverflowing();
     this.initChart(this.data)
   }
 
   public isOverflowing(): boolean {
-    console.log('content/viewport size:', this.virtualScroll.measureRenderedContentSize(), this.virtualScroll.getViewportSize())
-    return this.virtualScroll.measureRenderedContentSize() > this.virtualScroll.getViewportSize()-270;
+    // console.log('content/viewport size:', this.viewPorts.measureRenderedContentSize(), this.virtualScroll.getViewportSize())
+    // return this.virtualScroll.measureRenderedContentSize() > this.virtualScroll.getViewportSize()-270;
+    return (this.bestFitItems.length > 5);
   }
+
+
 
   public translateChartText() {
     this.xAxisTitle = this.language.translate.instant('SCENE') + ' ' +
@@ -553,13 +558,14 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           .style("shape-rendering", "geometricprecision");
         }
       }
-
     this.updateChart();
   }
+
   public setReference(reference) {
     this.baseData = reference;
     this.initChart(this.data);
   }
+
   // When the pointer moves, find the closest point, update the interactive tip, and highlight
   // the corresponding line.
   private pointerMoved(event, lines, dots, points) {
@@ -716,4 +722,5 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
   protected readonly Date = Date;
 
+  protected readonly length = length;
 }
