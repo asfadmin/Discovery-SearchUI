@@ -633,7 +633,10 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.yAxis.call(
       d3.axisLeft(newY)
         .tickSize(-this.width)
-        .ticks(smallChart ? 10 : 5, 's')
+        .ticks(smallChart ? 10 : 5, '.1f')
+        .tickFormat(
+          (val: number, _index) => `${val}m`
+        )
     );
 
     this.dots
