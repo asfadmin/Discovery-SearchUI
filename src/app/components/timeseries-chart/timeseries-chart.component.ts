@@ -374,7 +374,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     const short_wavelength_displacements = this.dataSource.map(p => p['short_wavelength_displacement'] as number)
     const dates = this.dataSource.map(p => Date.parse(p['date'])).filter(d => !isNaN(d))
     const inner_margins = 1.25
-    const min_y = Math.min(...short_wavelength_displacements)
+    const min_y = Math.min(...short_wavelength_displacements) * inner_margins
     const min_x = Math.min(...dates)
     const max_y = Math.max(...short_wavelength_displacements) * inner_margins
     const max_x = Math.max(...dates)
