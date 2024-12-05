@@ -1,6 +1,6 @@
 <div class="ts-chart-details">
   <div class="ts-best-fit-nav"
-       [ngStyle]="{'visibility':formulaOverflow ? 'visible' : 'hidden'}">
+       [ngStyle]="{'visibility': isOverflowing() ? 'visible' : 'hidden'}">
     <button mat-flat-button (click)="onButtonClickPlus()" class="ts-best-fit-nav">
       <span class="material-symbols-outlined">
         arrow_forward_ios
@@ -23,7 +23,7 @@
     </cdk-virtual-scroll-viewport>
   </div>
   <div class="ts-best-fit-nav"
-       [ngStyle]="{'visibility':formulaOverflow ? 'visible' : 'hidden'}">
+       [ngStyle]="{'visibility': isOverflowing() ? 'visible' : 'hidden'}">
     <button mat-flat-button (click)="onButtonClickMinus()">
       <span class="material-symbols-outlined">
         arrow_back_ios
