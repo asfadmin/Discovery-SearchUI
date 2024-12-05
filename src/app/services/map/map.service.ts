@@ -959,6 +959,10 @@ export class MapService {
       this.map.removeLayer(this.browseImageLayer);
     }
   }
+  public clearTimeseriesOverlay() {
+    this.map.removeLayer(this.displacmentLayer);
+    this.displacmentLayer = null;
+  }
 
   public updateBrowseOpacity(opacity: number) {
     this.browseImageLayer?.setOpacity(opacity);
