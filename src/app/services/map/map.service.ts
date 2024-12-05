@@ -752,7 +752,7 @@ export class MapService {
     const dir = apiDirValues[direction];
     const layerType = apiDispValues[type];
 
-    let base_url = `https://d12uktych8nckw.cloudfront.net/main/${dir.toLowerCase()}/${layerType.toLowerCase()}`;
+    let base_url = `https://d3g9emy65n853h.cloudfront.net/main/${dir.toLowerCase()}/${layerType.toLowerCase()}`;
     this.displacementOverview$.next(type);
     console.log(type, base_url);
 
@@ -770,15 +770,43 @@ export class MapService {
         tileSize: [256, 256]
       });
 
+      // Eventually let users define this part somehow
+      let defined_stops: (number | number[])[][] = [
+        // [Stop, Color[R,G,B]]
+        [1.0, [0, 18, 97]],
+        [29.0, [3, 62, 125]],
+        [58.0, [30, 111, 157]],
+        [86.0, [113, 168, 196]],
+        [114.0, [201, 221, 231]],
+        [143.0, [234, 206, 189]],
+        [171.0, [211, 151, 116]],
+        [199.0, [190, 101, 51]],
+        [228.0, [139, 39, 6]],
+        [256.0, [89, 0, 8]],
+        // [0.0, [89,0,8]],
+        // [0.5, [255,255,255]],
+        // [1.0, [0,18,97]],
+      ];
+
+      let parsed_color_stops = defined_stops.flat().map(x => {
+        if(Array.isArray(x)) {
+          return ['color', ...x, ['band', 4]]
+        } else {
+          return x
+        }
+      })
+
       this.displacementOverview = new TileLayer({
+        'style': {
+          color: [
+            'interpolate',
+            ['linear'],
+            ['*', ['band', 1], 255],
+            ...parsed_color_stops
+          ]
+        },
         'source': overview_source,
         'extent': response['extent'],
-        'style': {
-          // 'color': 'pink',
-          // 'fill': new Fill({
-          //   'color': 'red'
-          // })
-        }
       });
 
       this.map.addLayer(this.displacementOverview);
@@ -930,6 +958,10 @@ export class MapService {
     if (!!this.browseImageLayer) {
       this.map.removeLayer(this.browseImageLayer);
     }
+  }
+  public clearTimeseriesOverlay() {
+    this.map.removeLayer(this.displacmentLayer);
+    this.displacmentLayer = null;
   }
 
   public updateBrowseOpacity(opacity: number) {

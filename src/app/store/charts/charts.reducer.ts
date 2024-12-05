@@ -4,12 +4,14 @@ import * as models from '@models';
 
 export interface ChartsState {
   showLines: boolean;
+  showLinearFit: boolean;
   seriesStates: { [key: string]: models.timeseriesChartItemState };
   outOfDate: boolean;
 }
 
 export const initialState: ChartsState = {
   showLines: true,
+  showLinearFit: false,
   seriesStates: {},
   outOfDate: false,
 };
@@ -60,11 +62,11 @@ export const chartsReducer = createReducer(
 
     return { ...state, seriesStates };
   }),
-  on(chartActions.setLinearFit, (state, {wkt, linearFit}) => {
-    const seriesStates = { ...state.seriesStates };
-    seriesStates[wkt] = { ...seriesStates[wkt], linearFit };
-
-    return { ...state, seriesStates };
+  on(chartActions.showLinearFit, (state) => {
+    return {...state, showLinearFit: true}
+  }),
+  on(chartActions.hideLinearFit, (state) => {
+    return {...state, showLinearFit: false}
   }),
   on(chartActions.reset, (_) => initialState)
 );

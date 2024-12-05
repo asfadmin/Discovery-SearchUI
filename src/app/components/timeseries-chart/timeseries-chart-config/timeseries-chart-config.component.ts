@@ -18,6 +18,7 @@ import * as chartsStore from '@store/charts'
 export class TimeseriesChartConfigComponent implements OnInit, OnDestroy {
   private subs = new SubSink()
   public showLines: boolean = true
+  public showLinearFit = false;
   @Output() public resetReferenceEvent = new EventEmitter();
   constructor(private store$: Store<AppState>) { }
 
@@ -28,12 +29,22 @@ export class TimeseriesChartConfigComponent implements OnInit, OnDestroy {
       this.store$.dispatch(chartsStore.hideGraphLines())
     }
   }
+  public onToggleLinearFit(event: MatCheckboxChange) {
+    if(event.checked) {
+      this.store$.dispatch(chartsStore.showLinearFit());
+    } else {
+      this.store$.dispatch(chartsStore.hideLinearFit());
+    }
+  }
 
   ngOnInit(): void {
     this.subs.add(this.store$.select(chartsStore.getShowLines).subscribe(
         showLines => this.showLines = showLines
       )
     );
+    this.subs.add(this.store$.select(chartsStore.getShowLinearFit).subscribe(
+      showLinearFit => this.showLinearFit = showLinearFit
+    ))
   }
 
   public resetReference() {

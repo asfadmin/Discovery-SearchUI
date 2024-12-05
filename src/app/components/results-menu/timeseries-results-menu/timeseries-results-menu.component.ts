@@ -265,13 +265,6 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public deletePoint(index: number) {
     this.pointHistoryService.removePoint(index);
   }
-  public setLinearFitLine(index: number) {
-    const wkt = this.chartStates[index]?.wkt;
-
-    const isLinearFitEnabled = !(this.chartStates[index]?.linearFit ?? false);
-
-    this.store$.dispatch(chartStore.setLinearFit({wkt, 'linearFit': isLinearFitEnabled}))
-  }
 
   ngOnDestroy() {
     this.pointHistoryService.clearPoints();
