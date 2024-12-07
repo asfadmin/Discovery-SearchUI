@@ -17,7 +17,8 @@ import { FlightDirection } from '@models';
   providedIn: 'root'
 })
 export class NetcdfService {
-  private url: string = 'https://yhiuvmgxrec5dbkwjwpdpkwysy0aopmh.lambda-url.us-west-2.on.aws/'
+  private url: string = 'https://7erfifvestajbcuotmg5frkl740dihdl.lambda-url.us-west-2.on.aws/'
+  // private url: string = 'http://127.0.0.1:8000/'
   private itemsEndpoint: string = 'items/'
   private timeSeriesEndpoint: string = 'timeseries'
   private files: string[] = [""] //, "20221107_20230130.unw.nc", "20221107_20230106.unw.nc", "20221107_20230729.unw.nc", "20221107_20230319.unw.nc", "20221107_20221213.unw.nc", "20221107_20230530.unw.nc", "20221107_20230717.unw.nc", "20221107_20230412.unw.nc", "20221107_20230506.unw.nc", "20221107_20230223.unw.nc", "20221107_20230211.unw.nc", "20221107_20230331.unw.nc", "20221107_20230705.unw.nc"]
