@@ -16,6 +16,7 @@ import { AsfLanguageService } from "@services/asf-language.service";
 import { NetcdfService } from '@services';
 import * as models from '@models';
 import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
+import * as uiStore from '@store/ui';
 // import {hidden} from '@services/map/polygon.style';
 // import {style} from '@angular/animations';
 import {linearRegression, linearRegressionLine} from './regression-line'
@@ -134,6 +135,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
     this.translateChartText();
     this.createSVG();
+
     this.subs.add(
       this.store$.select(chartsStore.getIsChartOutOfDate).subscribe(
 
@@ -171,6 +173,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         }
       )
     );
+
     this.subs.add(
       this.store$.select(chartsStore.getShowLinearFit).subscribe(
         showLinearFit => {
@@ -217,6 +220,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   }
 
   private refreshChart(chartStates: { [key: string]: models.timeseriesChartItemState }): void {
+    console.log('timeseries-chart.component chartStates:', chartStates);
     const cache = this.netcdfService.getCache()
     const allPointsData: { point: {}, state: models.timeseriesChartItemState }[] = Object.keys(chartStates).map(
       wkt => ({ point: cache[wkt], state: chartStates[wkt] })
@@ -575,6 +579,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     const i = d3.leastIndex(points, ([x, y]) => Math.hypot(Number(x) - xm, Number(y) - ym));
     if (typeof points[i] === 'undefined') { return; }
     const [_x, _y, k] = points[i];
+    console.log('timeseries-chart.component points[i]:', points[i]);
     let colorName: string;
     let dClassName: string;
     // set the color of the selected line to the color of the series; make all other lines grey
@@ -582,6 +587,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       if (d.name === k) {
         dClassName = '.' + d.name.replace(/\W/g, '');
         colorName = d.color;
+        console.log('timeseries-chart-component selected line d:', d);
+        this.store$.dispatch(new uiStore.SetActiveWkt(d.name));
         return colorName;
       }
       return unSelectedColor;

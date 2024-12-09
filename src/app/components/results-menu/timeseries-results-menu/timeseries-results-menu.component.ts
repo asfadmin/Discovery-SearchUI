@@ -2,9 +2,7 @@ import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef, computed, s
 import { distinctUntilChanged, first, map, Observable, Subject, withLatestFrom } from 'rxjs';
 import { ResizeEvent } from 'angular-resizable-element';
 
-import { Store } from '@ngrx/store';
 import { AppState } from '@store';
-import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
 import * as chartStore from '@store/charts';
 
@@ -20,6 +18,8 @@ import { Point } from 'ol/geom';
 import { getTimeseriesChartStates } from '@store/charts';
 import * as filtersStore from '@store/filters';
 import * as models from '@models';
+import * as uiStore from '@store/ui';
+import {Store} from '@ngrx/store';
 
 export interface Task {
   aoi: string;
@@ -96,10 +96,16 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     private mapService: MapService,
     private netcdfService: NetcdfService,
     private wktService: WktService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.pointHistoryService.clearPoints();
+
+    this.subs.add(
+      this.store$.select(uiStore.getActiveWkt).pipe(distinctUntilChanged()).subscribe(wkt => {
+        if (!wkt) return;
+        this.respondToActiveWkt(wkt);
+      }));
 
     this.subs.add(
       this.store$.select(filtersStore.getFlightDirections).pipe(
@@ -146,7 +152,6 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
         data.push({ point: p.point, seriesNumber: chartStates[p.wkt].seriesNumber, color: chartStates[p.wkt].color })
       }
       this.mapService.setDisplacementLayer(data);
-
     }));
 
     let thing: string = localStorage.getItem('timeseries-points')
@@ -167,7 +172,6 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
         });
       }
     }
-
 
     this.subs.add(this.drawService.polygon$.pipe(
       withLatestFrom(this.store$.select(chartStore.getMinSeriesNumber))
@@ -235,7 +239,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   });
 
   public toggleAllSeries(checked: boolean) {
-    this.store$.dispatch(chartStore.setAllTimeseriesChecked({checked}))
+    this.store$.dispatch(chartStore.setAllTimeseriesChecked({checked}));
   }
 
   public getMaxRange(allSeries: PointSeries[]) {
@@ -260,6 +264,14 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public updateSeries(checked: boolean, index?: number) {
     const wkt = this.chartStates[index]?.wkt
     this.store$.dispatch(chartStore.setTimeseriesChecked({wkt, checked}))
+  }
+
+  public respondToActiveWkt(wkt: string) {
+    this.chartStates.forEach((item) => {
+      if (item.wkt == wkt) {
+        console.log('Now active Wkt:', wkt, 'Series', item.seriesNumber);
+      }
+    });
   }
 
   public deletePoint(index: number) {
