@@ -2,7 +2,7 @@ import {Component, ElementRef, Input, OnDestroy, OnInit, QueryList, ViewChild, V
 import * as d3 from 'd3';
 // import * as models from '@models';
 import {
-  debounceTime, Observable, withLatestFrom,
+  debounceTime, map, Observable, withLatestFrom,
   // Subject
 } from 'rxjs';
 
@@ -104,6 +104,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   public lastEndDate: Date = new Date();
   public items = Array.from({length: 100000}).map((_, i) => `Item #${i}`);
   public formulaOverflow = false;
+  private flightDirection = models.FlightDirection.ASCENDING;
   // Tyler this is where you would put the series and their best fit formulas
   public bestFitItems: TimeSeriesFit[] = [
 
@@ -214,10 +215,19 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       )
     );
 
+    this.subs.add(
+      this.store$.select(filtersStore.getFlightDirections).pipe(
+        map(dir => dir[0] ?? this.flightDirection)
+      ).subscribe(
+        dir => this.flightDirection = dir
+      )
+    )
+
   }
 
   private refreshChart(chartStates: { [key: string]: models.timeseriesChartItemState }): void {
-    const cache = this.netcdfService.getCache()
+    const cache = this.netcdfService.getCache(this.flightDirection)
+
     const allPointsData: { point: {}, state: models.timeseriesChartItemState }[] = Object.keys(chartStates).map(
       wkt => ({ point: cache[wkt], state: chartStates[wkt] })
     );
@@ -302,7 +312,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
                 aoi = result.point[key];
               }
             }
-
             this.timeSeriesData = [];
             for (let key of Object.keys(result.point).filter(x => x !== 'mean' && x !== 'aoi')) {
               let daDate = new Date(result.point[key].secondary_datetime).valueOf();
@@ -360,7 +369,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       this.dataSource = [];
       this.averageData = {};
     }
-
+    console.log(this.dataSource)
 
     this.drawChart();
   }
