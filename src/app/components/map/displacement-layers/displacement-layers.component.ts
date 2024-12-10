@@ -21,7 +21,7 @@ export class DisplacementLayersComponent implements OnInit, OnDestroy {
   public displacementOverview: models.DisplacementLayerTypes | null = null;
   public cumulativeDisplacementSelectionDisabled: boolean = true;
   public DispLayerTypes = models.DisplacementLayerTypes;
-
+  public priorityEnabled = false;
   private subs = new SubSink();
 
   constructor(
@@ -54,6 +54,11 @@ export class DisplacementLayersComponent implements OnInit, OnDestroy {
         }
       }
       )
+    )
+    this.subs.add(
+      this.mapService.priorityEnabled$.subscribe(t => {
+        this.priorityEnabled = t !== null;
+      })
     )
   }
 

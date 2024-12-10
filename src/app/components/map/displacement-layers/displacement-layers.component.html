@@ -20,7 +20,8 @@
         </div>
       </mat-radio-button>
     </mat-radio-group>
-    <mat-checkbox #priorityRollout (change)="onUpdatePriority($event.checked)">
+    <mat-checkbox #priorityRollout (change)="onUpdatePriority($event.checked)"
+    [checked]="priorityEnabled">
       <div class="selector-text">
         Rollout
       </div>

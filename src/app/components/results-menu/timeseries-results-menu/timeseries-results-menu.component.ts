@@ -9,7 +9,7 @@ import * as searchStore from '@store/search';
 import * as chartStore from '@store/charts';
 
 import {
-  DrawService, MapService, NetcdfService, PointHistoryService, ScreenSizeService,
+  DrawService, NetcdfService, PointHistoryService, ScreenSizeService,
   WktService
 } from '@services';
 import { Breakpoints, SearchType } from '@models';
@@ -93,7 +93,6 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     private screenSize: ScreenSizeService,
     public pointHistoryService: PointHistoryService,
     private drawService: DrawService,
-    private mapService: MapService,
     private netcdfService: NetcdfService,
     private wktService: WktService
   ) { }
@@ -138,16 +137,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       )
     );
 
-    this.subs.add(this.store$.select(getTimeseriesChartStates).pipe(
-      withLatestFrom(this.pointHistoryService.history$)
-    ).subscribe(([chartStates, history]) => {
-      let data = []
-      for (const p of history) {
-        data.push({ point: p.point, seriesNumber: chartStates[p.wkt].seriesNumber, color: chartStates[p.wkt].color })
-      }
-      this.mapService.setDisplacementLayer(data);
 
-    }));
 
     let thing: string = localStorage.getItem('timeseries-points')
     if (thing && thing.length > 0) {
