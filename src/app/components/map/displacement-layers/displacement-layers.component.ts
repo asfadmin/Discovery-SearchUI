@@ -19,7 +19,7 @@ export class DisplacementLayersComponent implements OnInit, OnDestroy {
   @ViewChild("priorityRollout", { static: true }) priorityCheckbox: MatCheckbox;
   public flightDir = models.FlightDirection.ASCENDING;
   public displacementOverview: models.DisplacementLayerTypes | null = null;
-
+  public cumulativeDisplacementSelectionDisabled: boolean = true;
   public DispLayerTypes = models.DisplacementLayerTypes;
 
   private subs = new SubSink();
@@ -64,21 +64,33 @@ export class DisplacementLayersComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onUpdateDeformation(isChecked: boolean): void {
-    if (isChecked) {
-      this.setDisplacementLayer(this.flightDir, models.DisplacementLayerTypes.DISPLACEMENT);
-    } else {
+  public onUpdateLayerType(layerType: models.DisplacementLayerTypes): void {
+    // if (isChecked) {
+    if (!this.cumulativeDisplacementSelectionDisabled) {
       this.clearDisplacementLayer();
+      this.setDisplacementLayer(this.flightDir, layerType);
     }
+    // } else {
+      // this.clearDisplacementLayer();
+    // }
   }
 
-  public onUpdateVelocity(isChecked: boolean): void {
-    if (isChecked) {
-      this.setDisplacementLayer(this.flightDir, models.DisplacementLayerTypes.VELOCITY);
+
+  public onToggleCumulativeLayerDisplay(checked: boolean) {
+    this.cumulativeDisplacementSelectionDisabled = !checked
+    if(checked) {
+      this.setDisplacementLayer(this.flightDir, this.displacementOverview)
     } else {
-      this.clearDisplacementLayer();
+      this.clearDisplacementLayer()
     }
   }
+  // public onUpdateVelocity(isChecked: boolean): void {
+  //   if (isChecked) {
+  //     this.setDisplacementLayer(this.flightDir, models.DisplacementLayerTypes.VELOCITY);
+  //   } else {
+  //     this.clearDisplacementLayer();
+  //   }
+  // }
 
   public setDisplacementLayer(direction: models.FlightDirection, type: models.DisplacementLayerTypes) {
     this.mapService.setDisplacementOverview(direction, type);
