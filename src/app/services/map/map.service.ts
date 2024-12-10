@@ -754,7 +754,6 @@ export class MapService {
 
     let base_url = `https://d3g9emy65n853h.cloudfront.net/main/${dir.toLowerCase()}/${layerType.toLowerCase()}`;
     this.displacementOverview$.next(type);
-    console.log(type, base_url);
 
     this.http.get(`${base_url}/extent.json`).pipe(
       first()

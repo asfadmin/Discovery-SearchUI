@@ -7,6 +7,7 @@ import { filter, map, skip, debounceTime, take, distinctUntilChanged } from 'rxj
 
 import { AppState } from '@store';
 import * as hyp3Store from '@store/hyp3';
+import * as chartsStore from '@store/charts';
 import * as scenesStore from '@store/scenes';
 import * as mapStore from '@store/map';
 import * as filterStore from '@store/filters';
@@ -21,6 +22,9 @@ import { WktService } from './wkt.service';
 import { RangeService } from './range.service';
 import { PropertyService } from './property.service';
 import { ThemingService } from './theming.service';
+import { PointHistoryService } from './point-history.service';
+import WKT from 'ol/format/WKT';
+import { Point } from 'ol/geom';
 
 
 @Injectable({
@@ -37,7 +41,7 @@ export class UrlStateService {
   }
 
   private kioskMode = false; // for opera displacement
-  private displacementHostNames = ['displacement.asf.alaska.edu', 'search-displacement.asf.alaska.edu'];
+  private displacementHostNames = ['local.asf.alaska.edu', 'displacement.asf.alaska.edu', 'search-displacement.asf.alaska.edu'];
 
   public isDefaultSearch$ = this.activatedRoute.queryParams.pipe( map(params => {
     const keys = Object.keys(params)
@@ -58,14 +62,19 @@ export class UrlStateService {
     private router: Router,
     private prop: PropertyService,
     private themeService: ThemingService,
+    private pointHistoryService: PointHistoryService
   ) {
 
     this.kioskMode = this.displacementHostNames.includes(window.location.hostname);
-
+    let params = [];
     if(this.kioskMode) {
       this.store$.dispatch(new setSearchKioskMode(true));
+      params = [
+        ...this.displacementParameters(),
+        ...this.displacementKioskParameters$()
+      ]
     } else {
-      const params = [
+      params = [
         ...this.datasetParam(),
         ...this.mapParameters(),
         ...this.uiParameters(),
@@ -75,20 +84,21 @@ export class UrlStateService {
         ...this.sbasParameters(),
         ...this.onDemandParameters(),
         ...this.eventMonitorParameters(),
+        ...this.displacementParameters(),
       ];
-
-      this.urlParamNames = params.map(param => param.name);
-      this.loadLocations = this.urlParamNames.reduce((locations, paramName) => {
-        locations[paramName] = models.LoadTypes.DEFAULT;
-
-        return locations;
-      }, {});
-      this.urlParams = params.reduce((res, param) => {
-        res[param.name] = param;
-
-        return res;
-      }, {});
     }
+
+    this.urlParamNames = params.map(param => param.name);
+    this.loadLocations = this.urlParamNames.reduce((locations, paramName) => {
+      locations[paramName] = models.LoadTypes.DEFAULT;
+
+      return locations;
+    }, {});
+    this.urlParams = params.reduce((res, param) => {
+      res[param.name] = param;
+
+      return res;
+    }, {});
     this.updateShouldSearch();
     
   }
@@ -97,23 +107,21 @@ export class UrlStateService {
     if (this.kioskMode) {
       this.store$.dispatch(new SetSearchType(models.SearchType.DISPLACEMENT))
     }
-    else {
-      this.activatedRoute.queryParams.pipe(
-        skip(1),
-        take(1),
-      ).subscribe(
-        params => this.loadStateFrom(params)
-      );
+    this.activatedRoute.queryParams.pipe(
+      skip(1),
+      take(1),
+    ).subscribe(
+      params => this.loadStateFrom(params)
+    );
 
-      this.urlParamNames.forEach(
-        paramName => this.urlParams[paramName].source.pipe(
-          skip(1),
-          debounceTime(300)
-        ).subscribe(
-          this.updateRouteWithParams
-        )
-      );
-    }
+    this.urlParamNames.forEach(
+      paramName => this.urlParams[paramName].source.pipe(
+        skip(1),
+        debounceTime(300)
+      ).subscribe(
+        this.updateRouteWithParams
+      )
+    );
   }
 
   private updateRouteWithParams = (queryParams: Params): void => {
@@ -123,7 +131,6 @@ export class UrlStateService {
       .filter(key => params[key] !== '' && params[key] !== this.defaultbooleanParams?.[key])
       .reduce((res, key) => (res[key] = params[key], res), {});
 
-    
       this.params = paramsWithValues;
 
     this.router.navigate(['.'], {
@@ -195,6 +202,8 @@ export class UrlStateService {
       } else {
         this.themeService.setTheme('theme-light');
       }
+    } else {
+      this.store$.dispatch(new scenesStore.SetResultsLoaded(true))
     }
     const action = profile.mapLayer === models.MapLayerTypes.STREET ?
       new mapStore.SetStreetView() :
@@ -312,6 +321,55 @@ export class UrlStateService {
         ),
         loader: this.loadEventProductTypes
       }];
+  }
+
+  private displacementParameters() {
+    return [
+      {
+        name: 'series',
+        source: this.store$.select(chartsStore.getTimeseriesChartStates).pipe(
+          // map(productTypes => productTypes.map(productType => productType.id)),
+          // map(productTypeStrings => productTypeStrings.join(',')),
+          // map(productTypes => ({eventProductTypes: productTypes ?? ''}))
+          // this.store$.dispatch(addTimeseriesState({item: {geoemetry: point, checked: true, seriesNumber, wkt: wkt, name: `Series ${seriesNumber}`, linearFit: false}}))
+
+          map(seriesState => {
+            return {'series': Object.values(seriesState).map(x => [x.wkt, x.seriesNumber].join(';')).join(',')}
+          }),
+        ),
+        loader: this.loadSeriesState
+      }
+    ]
+  }
+
+  private displacementKioskParameters$() {
+    return [
+      {
+        name: 'view',
+        source: this.store$.select(mapStore.getMapView).pipe(
+          map(view => ({ view }))
+        ),
+        loader: this.loadMapView
+      }, {
+          name: 'center',
+          source: this.mapService.center$.pipe(
+            map(
+              ({ lon, lat }) => ({
+                lon: lon.toFixed(3),
+                lat: lat.toFixed(3)
+              })
+            ),
+            map(({ lon, lat }) => ({ center: `${lon},${lat}` }))
+        ),
+        loader: this.loadMapCenter
+      }, {
+        name: 'zoom',
+        source: this.mapService.zoom$.pipe(
+          map(zoom => ({ zoom: zoom.toFixed(3) }))
+        ),
+        loader: this.loadMapZoom
+      }, 
+    ]
   }
 
 
@@ -884,5 +942,17 @@ export class UrlStateService {
 
   private loadUseCalibrationData = (usingCalibrationData: string): Action => {
     return new filterStore.setUseCalibrationData(!!usingCalibrationData)
+  }
+
+  private loadSeriesState = (seriesState)=> {
+    let states: models.timeseriesChartItemState[] = [];
+    seriesState.split(',').forEach(x => {
+      const format = new WKT()
+      let thing = x.split(';')
+      const point = format.readFeature(thing[0]) as unknown as Point;
+      states.push({ geoemetry: point, checked: true, seriesNumber: thing[1], wkt: thing[0], name: `Series ${thing[1]}`, linearFit: false })
+    })
+    this.pointHistoryService.addPoints(states)
+    return ;
   }
 }

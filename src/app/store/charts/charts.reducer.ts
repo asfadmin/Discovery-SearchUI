@@ -37,6 +37,9 @@ export const chartsReducer = createReducer(
     }, {})
   }
   )),
+  on(chartActions.resetTimeseriesStates, (state) => {
+    return {...state, seriesStates: {}}
+  }),
   on(chartActions.addTimeseriesState, (state, { item }) => {
 
     const seriesState = { ...state.seriesStates, [item.wkt]: item }
