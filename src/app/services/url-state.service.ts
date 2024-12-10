@@ -342,12 +342,25 @@ export class UrlStateService {
         loader: this.loadDispOverview
       },
       {
-        
         name: 'isPriorityEnabled',
         source: this.mapService.priorityEnabled$.pipe(
           map(isPriorityEnabled => ({isPriorityEnabled})),
         ),
         loader: this.loadDispPriority
+      },
+      {
+        name: 'isShowLinesEnabled',
+        source: this.store$.select(chartsStore.getShowLines).pipe(
+          map(isShowLinesEnabled => ({isShowLinesEnabled})),
+        ),
+        loader: this.loadDispShowLines
+      },
+      {
+        name: 'isLinearFitEnabled',
+        source: this.store$.select(chartsStore.getShowLinearFit).pipe(
+          map(isLinearFitEnabled => ({isLinearFitEnabled})),
+        ),
+        loader: this.loadDispShowLinearFit
       }
     ]
   }
@@ -994,6 +1007,22 @@ export class UrlStateService {
   private loadDispPriority = (isDispPriorityEnabled) => {
     if(isDispPriorityEnabled) {
       this.mapService.enablePriority(isDispPriorityEnabled);
+    }
+    return;
+  }
+  private loadDispShowLines = (isShowLinesEnabled) => {
+    if(isShowLinesEnabled === 'true') {
+      this.store$.dispatch(chartsStore.showGraphLines())
+    } else {
+      this.store$.dispatch(chartsStore.hideGraphLines())
+    }
+    return;
+  }
+  private loadDispShowLinearFit = (isLinearFitEnabled) => {
+    if(isLinearFitEnabled  === 'true') {
+      this.store$.dispatch(chartsStore.showLinearFit())
+    } else {
+      this.store$.dispatch(chartsStore.hideLinearFit())
     }
     return;
   }
