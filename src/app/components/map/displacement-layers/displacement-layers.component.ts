@@ -67,14 +67,10 @@ export class DisplacementLayersComponent implements OnInit, OnDestroy {
   }
 
   public onUpdateLayerType(layerType: models.DisplacementLayerTypes): void {
-    // if (isChecked) {
     if (!this.cumulativeDisplacementSelectionDisabled) {
       this.clearDisplacementLayer();
       this.setDisplacementLayer(this.flightDir, layerType);
     }
-    // } else {
-    // this.clearDisplacementLayer();
-    // }
   }
 
 
@@ -86,13 +82,6 @@ export class DisplacementLayersComponent implements OnInit, OnDestroy {
       this.clearDisplacementLayer()
     }
   }
-  // public onUpdateVelocity(isChecked: boolean): void {
-  //   if (isChecked) {
-  //     this.setDisplacementLayer(this.flightDir, models.DisplacementLayerTypes.VELOCITY);
-  //   } else {
-  //     this.clearDisplacementLayer();
-  //   }
-  // }
 
   public setDisplacementLayer(direction: models.FlightDirection, type: models.DisplacementLayerTypes) {
     this.mapService.setDisplacementOverview(direction, type);

@@ -5,34 +5,21 @@
         Cumulative Layer
       </div>
     </mat-checkbox>
-    <mat-radio-group #cumulativeLayers (change)="onUpdateLayerType($event.value)" [disabled]="cumulativeDisplacementSelectionDisabled" style="display: flex; flex-direction: column; margin-left: 10px">
-    <mat-radio-button [value]="DispLayerTypes.DISPLACEMENT" [disabled]="cumulativeDisplacementSelectionDisabled">
-      <div class="selector-text">
-        Deformation
-      </div>
-    </mat-radio-button>
-    <mat-radio-button [value]="DispLayerTypes.VELOCITY" [disabled]="cumulativeDisplacementSelectionDisabled">
-      <div class="selector-text">
-        Velocity
+    <mat-radio-group #cumulativeLayers (change)="onUpdateLayerType($event.value)"
+      [disabled]="cumulativeDisplacementSelectionDisabled"
+      style="display: flex; flex-direction: column; margin-left: 10px">
+      <mat-radio-button [value]="DispLayerTypes.DISPLACEMENT" [disabled]="cumulativeDisplacementSelectionDisabled">
+        <div class="selector-text">
+          Deformation
+        </div>
+      </mat-radio-button>
+      <mat-radio-button [value]="DispLayerTypes.VELOCITY" [disabled]="cumulativeDisplacementSelectionDisabled">
+        <div class="selector-text">
+          Velocity
 
-      </div>
-    </mat-radio-button>
-  </mat-radio-group>
-    <!-- <mat-checkbox (change)="onUpdateDeformation($event.checked)"
-      [checked]="displacementOverview === DispLayerTypes.DISPLACEMENT">
-      <div class="selector-text">
-        Cumulative Deformation
-      </div>
-    </mat-checkbox>
-
-    <mat-checkbox (change)="onUpdateVelocity($event.checked)"
-      [checked]="displacementOverview === DispLayerTypes.VELOCITY">
-      <div class="selector-text">
-        Cumulative Velocity
-
-      </div>
-    </mat-checkbox> -->
-
+        </div>
+      </mat-radio-button>
+    </mat-radio-group>
     <mat-checkbox #priorityRollout (change)="onUpdatePriority($event.checked)">
       <div class="selector-text">
         Rollout
@@ -41,8 +28,7 @@
 
     <div class="help-text">
       What are these?
-      <app-docs-modal class="info-icon"
-                      url="https://docs.asf.alaska.edu/vertex/displacement/#map-layers">
+      <app-docs-modal class="info-icon" url="https://docs.asf.alaska.edu/vertex/displacement/#map-layers">
       </app-docs-modal>
     </div>
   </div>
