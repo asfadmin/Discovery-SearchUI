@@ -18,6 +18,7 @@ import { HelpComponent } from '@components/help/help.component';
 
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
+import * as chartsStore from '@store/charts';
 import * as filterStore from '@store/filters';
 import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
@@ -98,6 +99,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     public language: services.AsfLanguageService,
     public _adapter: DateAdapter<any>,
     private titleService: Title,
+    private pointHistoryService: services.PointHistoryService,
     @Inject(MAT_DATE_LOCALE) public _locale: string,
   ) { }
   
@@ -458,7 +460,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           this.store$.select(uiStore.getIsResultsMenuOpen),
           this.store$.select(scenesStore.getAreResultsLoaded)
         ]).pipe(
-          filter(([_, searchType, _resultsOpen, resultsLoaded]) => searchType == SearchType.DISPLACEMENT && !resultsLoaded)
+          filter(([_, searchType, _resultsOpen, resultsLoaded]) => {
+            // TODO: this seems to sometimes not work, sometimes clearing isn't actually setting resultsLoaded to false
+            return searchType == SearchType.DISPLACEMENT && !resultsLoaded})
         ).subscribe(([polygon, _, __]) => {
           if (polygon) {
             if (polygon.getGeometry().getType() === 'Point') {
@@ -467,6 +471,18 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         }
           }
         }))
+
+
+        this.subs.add(this.store$.select(chartsStore.getTimeseriesChartStates).pipe(
+          withLatestFrom(this.pointHistoryService.history$)
+        ).subscribe(([chartStates, history]) => {
+          let data = []
+          for (const p of history) {
+            data.push({ point: p.point, seriesNumber: chartStates[p.wkt].seriesNumber, color: chartStates[p.wkt].color })
+          }
+          this.mapService.setDisplacementLayer(data);
+    
+        }));
   }
 
   public ngAfterViewInit(): void {
@@ -480,6 +496,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public onClearSearch(): void {
+    this.pointHistoryService.clear();
     this.store$.dispatch(new scenesStore.ClearScenes());
     this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(''));
     this.mapService.clearDrawLayer();
