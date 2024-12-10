@@ -476,11 +476,14 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         this.subs.add(this.store$.select(chartsStore.getTimeseriesChartStates).pipe(
           withLatestFrom(this.pointHistoryService.history$)
         ).subscribe(([chartStates, history]) => {
-          let data = []
-          for (const p of history) {
-            data.push({ point: p.point, seriesNumber: chartStates[p.wkt].seriesNumber, color: chartStates[p.wkt].color })
+          if(Object.keys(chartStates).length === history.length) {
+            let data = []
+
+            for (const p of history) {
+              data.push({ point: p.point, seriesNumber: chartStates[p.wkt].seriesNumber, color: chartStates[p.wkt].color })
+            }
+            this.mapService.setDisplacementLayer(data);
           }
-          this.mapService.setDisplacementLayer(data);
     
         }));
   }

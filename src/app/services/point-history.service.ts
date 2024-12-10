@@ -45,6 +45,9 @@ export class PointHistoryService {
   }
 
   public addPoints(states: timeseriesChartItemState[]) {
+    if(states.length <= 0) {
+      return
+    }
     for(let state of states) {
       const point = state.geoemetry as Point;
       this.history.push({point, wkt: state.wkt});

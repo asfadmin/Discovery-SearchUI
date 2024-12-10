@@ -41,7 +41,7 @@ export class UrlStateService {
   }
 
   private kioskMode = false; // for opera displacement
-  private displacementHostNames = ['local.asf.alaska.edu', 'displacement.asf.alaska.edu', 'search-displacement.asf.alaska.edu'];
+  private displacementHostNames = [ 'displacement.asf.alaska.edu', 'search-displacement.asf.alaska.edu'];
 
   public isDefaultSearch$ = this.activatedRoute.queryParams.pipe( map(params => {
     const keys = Object.keys(params)
@@ -375,7 +375,20 @@ export class UrlStateService {
           map(flightDirs => ({ flightDirs }))
         ),
         loader: this.loadFlightDirections
-      }
+      },
+      {
+        name: 'start',
+        source: this.store$.select(filterStore.getStartDate).pipe(
+          map(start => ({ start: start === null ? '' : moment.utc( start ).format() }))
+        ),
+        loader: this.loadStartDate
+      }, {
+        name: 'end',
+        source: this.store$.select(filterStore.getEndDate).pipe(
+          map(end => ({ end: end === null ? '' : moment.utc( end ).format() }))
+        ),
+        loader: this.loadEndDate
+      },
     ]
   }
 
@@ -808,13 +821,10 @@ export class UrlStateService {
   };
 
   private loadFlightDirections = (dirsStr: string): Action => {
-    console.log('test')
-    console.log(dirsStr)
     const directions: models.FlightDirection[] = dirsStr
     .split(',')
     .filter(direction => !Object.values(models.FlightDirection).includes(<models.FlightDirection>direction))
     .map(direction => <models.FlightDirection>direction);
-    console.log(directions)
     return new filterStore.SetFlightDirections(directions);
   };
 
@@ -964,6 +974,5 @@ export class UrlStateService {
     this.pointHistoryService.addPoints(states)
     return ;
   }
-
 
 }
