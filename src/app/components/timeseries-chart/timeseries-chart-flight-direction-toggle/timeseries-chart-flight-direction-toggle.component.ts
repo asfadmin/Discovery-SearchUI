@@ -37,14 +37,10 @@ export class TimeseriesChartFlightDirectionToggleComponent implements OnInit {
     const outputDirection = this.flightDirection === this.FlightDirections.ASCENDING ? this.FlightDirections.DESCENDING : this.FlightDirections.ASCENDING
 
     const dir = outputDirection
-      .toLowerCase();
+      .toUpperCase();
 
-    const capitalized = this.capitalizeFirstLetter(dir);
 
-    const action = new filtersStore.SetFlightDirections([<models.FlightDirection>capitalized]);
+    const action = new filtersStore.SetFlightDirections([<models.FlightDirection>dir]);
     this.store$.dispatch(action);
-  }
-  private capitalizeFirstLetter(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
   }
 }

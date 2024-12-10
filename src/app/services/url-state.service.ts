@@ -328,17 +328,19 @@ export class UrlStateService {
       {
         name: 'series',
         source: this.store$.select(chartsStore.getTimeseriesChartStates).pipe(
-          // map(productTypes => productTypes.map(productType => productType.id)),
-          // map(productTypeStrings => productTypeStrings.join(',')),
-          // map(productTypes => ({eventProductTypes: productTypes ?? ''}))
-          // this.store$.dispatch(addTimeseriesState({item: {geoemetry: point, checked: true, seriesNumber, wkt: wkt, name: `Series ${seriesNumber}`, linearFit: false}}))
-
           map(seriesState => {
             return {'series': Object.values(seriesState).map(x => [x.wkt, x.seriesNumber].join(';')).join(',')}
           }),
         ),
         loader: this.loadSeriesState
-      }
+      },
+      //  {
+      //   name: 'dispOverview',
+      //   source: this.mapService.displacementOverview$.pipe(
+      //     map(dispOverview => ({dispOverview})),
+      //   ),
+      //   loader: this.loadDispOverview
+      // }
     ]
   }
 
@@ -823,11 +825,14 @@ export class UrlStateService {
   private loadFlightDirections = (dirsStr: string): Action => {
     const directions: models.FlightDirection[] = dirsStr
     .split(',')
-    .filter(direction => !Object.values(models.FlightDirection).includes(<models.FlightDirection>direction))
+    .filter(direction => !Object.values(models.FlightDirection).includes(<models.FlightDirection>this.capitalizeFirstLetter(direction.toLowerCase())))
     .map(direction => <models.FlightDirection>direction);
     return new filterStore.SetFlightDirections(directions);
   };
 
+  private capitalizeFirstLetter(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
   private loadSelectedMission = (mission: string): Action => {
     return new filterStore.SelectMission(mission);
   };
@@ -972,7 +977,10 @@ export class UrlStateService {
       states.push({ geoemetry: point, checked: true, seriesNumber: thing[1], wkt: thing[0], name: `Series ${thing[1]}`, linearFit: false })
     })
     this.pointHistoryService.addPoints(states)
-    return ;
+    return;
   }
-
+  // private loadDispOverview = (dispOverview) => {
+  //   this.mapService.setDisplacementType(dispOverview);
+  //   return;
+  // }
 }

@@ -748,7 +748,6 @@ export class MapService {
       [models.DisplacementLayerTypes.DISPLACEMENT]: 'DISP',
       [models.DisplacementLayerTypes.VELOCITY]: 'VEL'
     }
-
     const dir = apiDirValues[direction];
     const layerType = apiDispValues[type];
 
@@ -817,6 +816,7 @@ export class MapService {
     this.displacementOverview = null;
     this.displacementOverview$.next(null);
   }
+
 
   public setDisplacementLayer(points: { point: Point, seriesNumber: number, color: string }[]) {
     if (!!this.displacmentLayer) {
