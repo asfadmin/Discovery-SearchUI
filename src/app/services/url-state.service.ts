@@ -334,13 +334,21 @@ export class UrlStateService {
         ),
         loader: this.loadSeriesState
       },
-      //  {
-      //   name: 'dispOverview',
-      //   source: this.mapService.displacementOverview$.pipe(
-      //     map(dispOverview => ({dispOverview})),
-      //   ),
-      //   loader: this.loadDispOverview
-      // }
+       {
+        name: 'dispOverview',
+        source: this.mapService.displacementOverview$.pipe(
+          map(dispOverview => ({dispOverview})),
+        ),
+        loader: this.loadDispOverview
+      },
+      {
+        
+        name: 'isPriorityEnabled',
+        source: this.mapService.priorityEnabled$.pipe(
+          map(isPriorityEnabled => ({isPriorityEnabled})),
+        ),
+        loader: this.loadDispPriority
+      }
     ]
   }
 
@@ -979,8 +987,14 @@ export class UrlStateService {
     this.pointHistoryService.addPoints(states)
     return;
   }
-  // private loadDispOverview = (dispOverview) => {
-  //   this.mapService.setDisplacementType(dispOverview);
-  //   return;
-  // }
+  private loadDispOverview = (dispOverview) => {
+    this.mapService.setDisplacementType(dispOverview);
+    return;
+  }
+  private loadDispPriority = (isDispPriorityEnabled) => {
+    if(isDispPriorityEnabled) {
+      this.mapService.enablePriority(isDispPriorityEnabled);
+    }
+    return;
+  }
 }

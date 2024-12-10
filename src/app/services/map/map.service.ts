@@ -77,6 +77,7 @@ export class MapService {
   private displacementOverview: TileLayer;
   public displacementOverview$ = new BehaviorSubject<models.DisplacementLayerTypes | null>(null);
   private priorityOverview: VectorLayer<VectorSource>;
+  public priorityEnabled$ = new BehaviorSubject<models.FlightDirection | null>(null);
 
   private selectClick = new Select({
     condition: click,
@@ -816,6 +817,9 @@ export class MapService {
     this.displacementOverview = null;
     this.displacementOverview$.next(null);
   }
+  public setDisplacementType(type) {
+    this.displacementOverview$.next(type)
+  }
 
 
   public setDisplacementLayer(points: { point: Point, seriesNumber: number, color: string }[]) {
@@ -894,6 +898,8 @@ export class MapService {
       format: new GeoJSON({})
     },
     )
+    this.priorityEnabled$.next(flight_dir);
+
     const colorTable = [
       'rgba(174, 174, 174, 0.6)',
       'rgba(127, 206, 255, 0.8)',
@@ -931,6 +937,8 @@ export class MapService {
   public disablePriority(): void {
     this.map.removeLayer(this.priorityOverview);
     this.priorityOverview = null;
+    this.priorityEnabled$.next(null);
+
   }
 
   public isPriorityEnabled(): boolean {
