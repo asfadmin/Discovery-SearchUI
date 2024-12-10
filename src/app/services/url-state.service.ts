@@ -368,7 +368,14 @@ export class UrlStateService {
           map(zoom => ({ zoom: zoom.toFixed(3) }))
         ),
         loader: this.loadMapZoom
-      }, 
+      }, {
+        name: 'flightDirs',
+        source: this.store$.select(filterStore.getFlightDirections).pipe(
+          map(dirs => dirs.join(',')),
+          map(flightDirs => ({ flightDirs }))
+        ),
+        loader: this.loadFlightDirections
+      }
     ]
   }
 
@@ -801,11 +808,13 @@ export class UrlStateService {
   };
 
   private loadFlightDirections = (dirsStr: string): Action => {
+    console.log('test')
+    console.log(dirsStr)
     const directions: models.FlightDirection[] = dirsStr
     .split(',')
     .filter(direction => !Object.values(models.FlightDirection).includes(<models.FlightDirection>direction))
     .map(direction => <models.FlightDirection>direction);
-
+    console.log(directions)
     return new filterStore.SetFlightDirections(directions);
   };
 
@@ -955,4 +964,6 @@ export class UrlStateService {
     this.pointHistoryService.addPoints(states)
     return ;
   }
+
+
 }

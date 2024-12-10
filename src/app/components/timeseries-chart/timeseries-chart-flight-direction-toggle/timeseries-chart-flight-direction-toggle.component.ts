@@ -4,7 +4,6 @@ import { AppState } from '@store';
 import { SubSink } from 'subsink';
 import * as filtersStore from '@store/filters';
 import * as models from '@models';
-import { SetFlightDirections } from '@store/filters';
 import { map } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -23,19 +22,29 @@ export class TimeseriesChartFlightDirectionToggleComponent implements OnInit {
   public FlightDirections = models.FlightDirection;
   constructor(private store$: Store<AppState>) {}
 
-ngOnInit(): void {
-  this.subs.add(
-    this.store$.select(filtersStore.getFlightDirections).pipe(
-      map(dir => dir[0] ?? this.flightDirection)
-    ).subscribe(
-      dir => this.flightDirection = dir
+  ngOnInit(): void {
+    this.subs.add(
+      this.store$.select(filtersStore.getFlightDirections).pipe(
+        map(dir => dir[0] ?? this.flightDirection)
+      ).subscribe(
+        dir => this.flightDirection = dir
+      )
     )
-  )
-  
-}
 
-public onToggle(): void {
-  const outputDirection = this.flightDirection === this.FlightDirections.ASCENDING ? this.FlightDirections.DESCENDING : this.FlightDirections.ASCENDING
-  this.store$.dispatch(new SetFlightDirections([outputDirection]))
-}
+  }
+
+  public onToggle(): void {
+    const outputDirection = this.flightDirection === this.FlightDirections.ASCENDING ? this.FlightDirections.DESCENDING : this.FlightDirections.ASCENDING
+
+    const dir = outputDirection
+      .toLowerCase();
+
+    const capitalized = this.capitalizeFirstLetter(dir);
+
+    const action = new filtersStore.SetFlightDirections([<models.FlightDirection>capitalized]);
+    this.store$.dispatch(action);
+  }
+  private capitalizeFirstLetter(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
 }
