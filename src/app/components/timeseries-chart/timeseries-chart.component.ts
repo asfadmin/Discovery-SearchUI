@@ -90,7 +90,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private dots: d3.Selection<SVGCircleElement, TimeSeriesData, SVGGElement, {}>;
   private lineGraph: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private toolTip: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>
-  public margin = { top: 10, right: 30, bottom: 60, left: 55 };
+  public margin = { top: 10, right: 30, bottom: 60, left: 65 };
   private thing: d3.Selection<SVGGElement, {}, HTMLElement, any>
   private hoveredElement;
   public hoveredData;
