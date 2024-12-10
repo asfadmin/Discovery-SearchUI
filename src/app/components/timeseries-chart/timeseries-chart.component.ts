@@ -369,7 +369,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       this.dataSource = [];
       this.averageData = {};
     }
-    console.log(this.dataSource)
 
     this.drawChart();
   }
