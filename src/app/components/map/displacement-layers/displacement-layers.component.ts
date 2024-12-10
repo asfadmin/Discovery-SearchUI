@@ -6,7 +6,7 @@ import * as models from '@models';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { getFlightDirections } from '@store/filters';
-import { distinctUntilChanged, map } from 'rxjs';
+import { distinctUntilChanged, filter, map } from 'rxjs';
 import { MatCheckbox } from '@angular/material/checkbox';
 
 
@@ -19,7 +19,7 @@ export class DisplacementLayersComponent implements OnInit, OnDestroy {
   @ViewChild("priorityRollout", { static: true }) priorityCheckbox: MatCheckbox;
   public flightDir = models.FlightDirection.ASCENDING;
   public displacementOverview: models.DisplacementLayerTypes | null = null;
-
+  public cumulativeDisplacementSelectionDisabled: boolean = true;
   public DispLayerTypes = models.DisplacementLayerTypes;
   public priorityEnabled = false;
   private subs = new SubSink();
@@ -31,7 +31,9 @@ export class DisplacementLayersComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subs.add(
-      this.mapService.displacementOverview$.subscribe(
+      this.mapService.displacementOverview$.pipe(
+        filter(overview => !!overview)
+      ).subscribe(
         t => {
           this.displacementOverview = t;
         }
@@ -69,19 +71,20 @@ export class DisplacementLayersComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onUpdateDeformation(isChecked: boolean): void {
-    if (isChecked) {
-      this.setDisplacementLayer(this.flightDir, models.DisplacementLayerTypes.DISPLACEMENT);
-    } else {
+  public onUpdateLayerType(layerType: models.DisplacementLayerTypes): void {
+    if (!this.cumulativeDisplacementSelectionDisabled) {
       this.clearDisplacementLayer();
+      this.setDisplacementLayer(this.flightDir, layerType);
     }
   }
 
-  public onUpdateVelocity(isChecked: boolean): void {
-    if (isChecked) {
-      this.setDisplacementLayer(this.flightDir, models.DisplacementLayerTypes.VELOCITY);
+
+  public onToggleCumulativeLayerDisplay(checked: boolean) {
+    this.cumulativeDisplacementSelectionDisabled = !checked
+    if (checked) {
+      this.setDisplacementLayer(this.flightDir, this.displacementOverview)
     } else {
-      this.clearDisplacementLayer();
+      this.clearDisplacementLayer()
     }
   }
 
