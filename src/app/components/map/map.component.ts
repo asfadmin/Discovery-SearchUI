@@ -246,18 +246,20 @@ export class MapComponent implements OnInit, OnDestroy  {
     this.subs.add(
       this.mapService.newSelectedDisplacement$.subscribe(point => {
         let format = new WKT();
-        let wktRepresenation  = format.writeGeometry(point);
+        let wktRepresentation  = format.writeGeometry(point);
 
         let pointIndex = this.pointHistoryService.getHistory().findIndex((thing) => {
           if(thing.point === point) {
             console.log('map existing point:', point);
+            console.log('map existing wktRepresentation:', wktRepresentation);
+            this.store$.dispatch(new uiStore.SetActiveWkt(wktRepresentation));
             return true
           }
         })
         this.pointHistoryService.selectedPoint = pointIndex;
         console.log('map selected pointIndex:', pointIndex);
 
-        this.mapService.loadPolygonFrom(wktRepresenation.toString())
+        this.mapService.loadPolygonFrom(wktRepresentation.toString())
       })
     )
 
