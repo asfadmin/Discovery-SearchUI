@@ -17,7 +17,7 @@ import { FlightDirection } from '@models';
   providedIn: 'root'
 })
 export class NetcdfService {
-  private url: string = 'https://7erfifvestajbcuotmg5frkl740dihdl.lambda-url.us-west-2.on.aws/'
+  private url: string = 'https://dly8dsparg.execute-api.us-west-2.amazonaws.com/prod/'
   // private url: string = 'http://127.0.0.1:8000/'
   private bucket: string = 'kfbx-opera-disp-test-bucket-v0.6'
   private itemsEndpoint: string = 'items/'
