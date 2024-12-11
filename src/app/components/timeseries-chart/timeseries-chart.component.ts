@@ -2,7 +2,7 @@ import {Component, ElementRef, Input, OnDestroy, OnInit, QueryList, ViewChild, V
 import * as d3 from 'd3';
 // import * as models from '@models';
 import {
-  debounceTime, Observable, withLatestFrom,
+  debounceTime, map, Observable, withLatestFrom,
   // Subject
 } from 'rxjs';
 
@@ -21,14 +21,7 @@ import * as uiStore from '@store/ui';
 // import {style} from '@angular/animations';
 import {linearRegression, linearRegressionLine} from './regression-line'
 
-interface TimeSeriesData {
-  short_wavelength_displacement: number
-  date: string,
-  id: string,
-  base: number,
-  seriesNumber: number,
-  color: string,
-}
+
 
 interface TimeSeriesFit {
   seriesNumber: number,
@@ -38,7 +31,7 @@ interface TimeSeriesFit {
 
 interface DataReady {
   name: string,
-  values: TimeSeriesData[],
+  values: models.TimeSeriesData[],
   opacity: number,
   color: string,
 }
@@ -74,7 +67,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private svg?: d3.Selection<SVGElement, {}, HTMLDivElement, any>;
   public dataSource: models.TimeSeriesChartPoint[] = [];
   public dataReadyForChart: DataReady[] = [];
-  public timeSeriesData: TimeSeriesData[] = [];
+  public timeSeriesData: models.TimeSeriesData[] = [];
   public averageData = {};
   public displayedColumns: string[] = ['position', 'short_wavelength_displacement', 'interferometric_correlation', 'temporal_coherence']
   private currentTransform: d3.ZoomTransform;
@@ -88,10 +81,10 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private y: d3.ScaleLinear<number, number, never>;
   public xAxis: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private yAxis: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
-  private dots: d3.Selection<SVGCircleElement, TimeSeriesData, SVGGElement, {}>;
+  private dots: d3.Selection<SVGCircleElement, models.TimeSeriesData, SVGGElement, {}>;
   private lineGraph: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private toolTip: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>
-  public margin = { top: 10, right: 30, bottom: 60, left: 55 };
+  public margin = { top: 10, right: 30, bottom: 60, left: 65 };
   private thing: d3.Selection<SVGGElement, {}, HTMLElement, any>
   private hoveredElement;
   public hoveredData;
@@ -105,6 +98,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   public lastEndDate: Date = new Date();
   public items = Array.from({length: 100000}).map((_, i) => `Item #${i}`);
   public formulaOverflow = false;
+  private flightDirection = models.FlightDirection.ASCENDING;
   // Tyler this is where you would put the series and their best fit formulas
   public bestFitItems: TimeSeriesFit[] = [
 
@@ -123,7 +117,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
   private subs = new SubSink();
   // private allGroup: string[];
-  private baseData: TimeSeriesData;
+  private baseData: models.TimeSeriesData;
+
   constructor(
     private store$: Store<AppState>,
     private language: AsfLanguageService,
@@ -217,18 +212,33 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       )
     );
 
+    this.subs.add(
+      this.store$.select(filtersStore.getFlightDirections).pipe(
+        map(dir => dir[0] ?? this.flightDirection)
+      ).subscribe(
+        dir => this.flightDirection = dir
+      )
+    )
+    this.subs.add(
+      this.store$.select(chartsStore.getTimeseriesReference).subscribe(
+        data => {
+          this.baseData = data;
+          this.initChart(this.data);
+        }
+      )
+    )
+
   }
 
   private refreshChart(chartStates: { [key: string]: models.timeseriesChartItemState }): void {
-    console.log('timeseries-chart.component chartStates:', chartStates);
-    const cache = this.netcdfService.getCache()
+    const cache = this.netcdfService.getCache(this.flightDirection)
+
     const allPointsData: { point: {}, state: models.timeseriesChartItemState }[] = Object.keys(chartStates).map(
       wkt => ({ point: cache[wkt], state: chartStates[wkt] })
     );
     if(this.baseData) {
       const missingBaseSeries = Object.keys(chartStates).findIndex(
         wkt => {return chartStates[wkt].seriesNumber === this.baseData.seriesNumber});
-        console.log(missingBaseSeries)
       if(missingBaseSeries === -1) {
         this.baseData = null;
       }
@@ -306,7 +316,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
                 aoi = result.point[key];
               }
             }
-
             this.timeSeriesData = [];
             for (let key of Object.keys(result.point).filter(x => x !== 'mean' && x !== 'aoi')) {
               let daDate = new Date(result.point[key].secondary_datetime).valueOf();
@@ -364,7 +373,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       this.dataSource = [];
       this.averageData = {};
     }
-
 
     this.drawChart();
   }
@@ -468,7 +476,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     // Add the lines
     if (this.showLines) {
 
-      let line = d3.line<TimeSeriesData>()
+      let line = d3.line<models.TimeSeriesData>()
         .x(function (d) { return self.x(Date.parse(d.date)); })
         .y(function (d) { return self.y(d.short_wavelength_displacement); })
 
@@ -513,7 +521,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           return 'ts-reference-point'
         }
       })
-      .on('mouseover', function (_event: any, p: TimeSeriesData) {
+      .on('mouseover', function (_event: any, p: models.TimeSeriesData) {
         self.hoveredElement = this;
         self.hoveredData = p;
         self.hoveredDate = new Date(p.date);
@@ -566,8 +574,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   }
 
   public setReference(reference) {
-    this.baseData = reference;
-    this.initChart(this.data);
+    this.store$.dispatch(chartsStore.setReferenceData({data:reference}))
   }
 
   // When the pointer moves, find the closest point, update the interactive tip, and highlight
@@ -651,7 +658,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .attr('cx', d => newX(Date.parse(d.date)))
       .attr('cy', d => newY(d.short_wavelength_displacement))
 
-    const line = d3.line<TimeSeriesData>()
+    const line = d3.line<models.TimeSeriesData>()
       .x(function (d) { return newX(Date.parse(d.date)); })
       .y(function (d) { return newY(d.short_wavelength_displacement); })
 
@@ -723,8 +730,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   }
 
   public resetBasePoint() {
-    this.baseData = null;
-    this.initChart(this.data);
+    this.store$.dispatch(chartsStore.resetReferenceData())
   }
 
   public ngOnDestroy(): void {

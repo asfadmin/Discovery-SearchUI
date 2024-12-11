@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef, computed, signal } from '@angular/core';
-import { distinctUntilChanged, first, map, Observable, Subject, withLatestFrom } from 'rxjs';
+import { catchError, distinctUntilChanged, filter, first, map, Observable, of, Subject, switchMap, withLatestFrom } from 'rxjs';
 import { ResizeEvent } from 'angular-resizable-element';
 
 import { AppState } from '@store';
@@ -7,7 +7,11 @@ import * as searchStore from '@store/search';
 import * as chartStore from '@store/charts';
 
 import {
-  DrawService, MapService, NetcdfService, PointHistoryService, ScreenSizeService,
+  DrawService,
+  NetcdfService,
+  NotificationService,
+  PointHistoryService,
+  ScreenSizeService,
   WktService
 } from '@services';
 import { Breakpoints, SearchType } from '@models';
@@ -93,10 +97,10 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     private screenSize: ScreenSizeService,
     public pointHistoryService: PointHistoryService,
     private drawService: DrawService,
-    private mapService: MapService,
     private netcdfService: NetcdfService,
-    private wktService: WktService
-  ) {}
+    private wktService: WktService,
+    private notificationService: NotificationService,
+  ) { }
 
   ngOnInit(): void {
     this.pointHistoryService.clearPoints();
@@ -146,15 +150,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       )
     );
 
-    this.subs.add(this.store$.select(getTimeseriesChartStates).pipe(
-      withLatestFrom(this.pointHistoryService.history$)
-    ).subscribe(([chartStates, history]) => {
-      let data = []
-      for (const p of history) {
-        data.push({ point: p.point, seriesNumber: chartStates[p.wkt].seriesNumber, color: chartStates[p.wkt].color })
-      }
-      this.mapService.setDisplacementLayer(data);
-    }));
+
 
     let thing: string = localStorage.getItem('timeseries-points')
     if (thing && thing.length > 0) {
@@ -176,9 +172,19 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     }
 
     this.subs.add(this.drawService.polygon$.pipe(
+      filter(polygon => !!polygon),
+      switchMap(
+        polygon => this.netcdfService.verifyWKT(polygon, 'VV').pipe(
+          catchError(error => {
+            this.notificationService.error(error.error.detail, 'Timeseries Service Error')
+            return of(null)
+          }),
+          map(valid => !!valid ? polygon : null)
+        ),
+      ),
       withLatestFrom(this.store$.select(chartStore.getMinSeriesNumber))
     ).subscribe(([polygon, minSeriesNumber]) => {
-      if(polygon) {
+      if(!!polygon) {
         let temp = polygon.getGeometry().clone() as Point;
         temp.transform('EPSG:3857', 'EPSG:4326')
         if (polygon.getGeometry().getType() === 'Point') {
@@ -221,7 +227,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
         allPointsData.push(data);
         // this.chartData.next(allPointsData);
         this.temporalRange = this.getMaxRange(allPointsData);
-      })
+    })
     }
     this.maxRange = this.getMaxRange(allPointsData);
   }

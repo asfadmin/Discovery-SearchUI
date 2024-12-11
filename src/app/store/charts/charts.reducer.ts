@@ -7,13 +7,16 @@ export interface ChartsState {
   showLinearFit: boolean;
   seriesStates: { [key: string]: models.timeseriesChartItemState };
   outOfDate: boolean;
+  baseReferenceDate: models.TimeSeriesData;
 }
+
 
 export const initialState: ChartsState = {
   showLines: true,
   showLinearFit: false,
   seriesStates: {},
   outOfDate: false,
+  baseReferenceDate: null
 };
 
 export const chartsReducer = createReducer(
@@ -37,6 +40,9 @@ export const chartsReducer = createReducer(
     }, {})
   }
   )),
+  on(chartActions.resetTimeseriesStates, (state) => {
+    return {...state, seriesStates: {}}
+  }),
   on(chartActions.addTimeseriesState, (state, { item }) => {
 
     const seriesState = { ...state.seriesStates, [item.wkt]: item }
@@ -67,6 +73,12 @@ export const chartsReducer = createReducer(
   }),
   on(chartActions.hideLinearFit, (state) => {
     return {...state, showLinearFit: false}
+  }),
+  on(chartActions.setReferenceData, (state, {data}) => {
+    return {...state, baseReferenceDate: data}
+  }),
+  on(chartActions.resetReferenceData, (state) => {
+    return {...state, baseReferenceDate: null}
   }),
   on(chartActions.reset, (_) => initialState)
 );

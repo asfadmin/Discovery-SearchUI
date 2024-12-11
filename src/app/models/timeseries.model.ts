@@ -20,3 +20,11 @@ export interface TimeSeriesChartPoint {
     temporal_baseline: number
     id: string
 }
+export interface TimeSeriesData {
+    short_wavelength_displacement: number
+    date: string,
+    id: string,
+    base: number,
+    seriesNumber: number,
+    color: string,
+  }
