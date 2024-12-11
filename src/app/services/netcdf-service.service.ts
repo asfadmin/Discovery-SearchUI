@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BrowseOverlayService, WktService } from '@services';
+import { BrowseOverlayService, MapService, WktService } from '@services';
 import { Observable, Subject, first, map, of, tap } from 'rxjs';
 // import WebGLTileLayer from 'ol/layer/WebGLTile';
 import ImageLayer from 'ol/layer/Image';
@@ -19,6 +19,7 @@ import { FlightDirection } from '@models';
 export class NetcdfService {
   private url: string = 'https://7erfifvestajbcuotmg5frkl740dihdl.lambda-url.us-west-2.on.aws/'
   // private url: string = 'http://127.0.0.1:8000/'
+  private bucket: string = 'kfbx-opera-disp-test-bucket-v0.6'
   private itemsEndpoint: string = 'items/'
   private timeSeriesEndpoint: string = 'timeseries'
   private files: string[] = [""] //, "20221107_20230130.unw.nc", "20221107_20230106.unw.nc", "20221107_20230729.unw.nc", "20221107_20230319.unw.nc", "20221107_20221213.unw.nc", "20221107_20230530.unw.nc", "20221107_20230717.unw.nc", "20221107_20230412.unw.nc", "20221107_20230506.unw.nc", "20221107_20230223.unw.nc", "20221107_20230211.unw.nc", "20221107_20230331.unw.nc", "20221107_20230705.unw.nc"]
@@ -34,6 +35,7 @@ export class NetcdfService {
   constructor(
     private http: HttpClient,
     private browseOverlayService: BrowseOverlayService,
+    private mapSerice: MapService,
     // private mapService: MapService
     private wktService: WktService,
     // private store$: Store<AppState>,
@@ -106,7 +108,8 @@ export class NetcdfService {
     } else {
       return this.http.post(`${this.url}${this.timeSeriesEndpoint}`, {
         "wkt": wktRepresenation,
-        "file_store": "s3://kfbx-opera-disp-test-bucket-v0.6/OPERA_L3_DISP-S1_IW_F42779_VV.json.zarr.gz"
+        "bucket": this.bucket,
+        "polarization": "VV",
       }, { responseType: 'json' }).pipe(
         first(),
         map(response => {
@@ -158,5 +161,12 @@ export class NetcdfService {
       }
     }
     return output
+  }
+
+  public verifyWKT(polygon: Feature<Geometry>, polarization: String): Observable<Object> {
+    const wkt = this.wktService.featureToWkt(polygon, this.mapSerice.epsg())
+    return this.http.post(`${this.url}validate_aoi`,{wkt, polarization, bucket: this.bucket}).pipe(
+      first()
+    )
   }
 }

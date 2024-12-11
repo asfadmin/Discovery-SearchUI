@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef, computed, signal } from '@angular/core';
-import { distinctUntilChanged, first, map, Observable, Subject, withLatestFrom } from 'rxjs';
+import { catchError, distinctUntilChanged, filter, first, map, Observable, of, Subject, switchMap, withLatestFrom } from 'rxjs';
 import { ResizeEvent } from 'angular-resizable-element';
 
 import { Store } from '@ngrx/store';
@@ -9,7 +9,11 @@ import * as searchStore from '@store/search';
 import * as chartStore from '@store/charts';
 
 import {
-  DrawService, NetcdfService, PointHistoryService, ScreenSizeService,
+  DrawService,
+  NetcdfService,
+  NotificationService,
+  PointHistoryService,
+  ScreenSizeService,
   WktService
 } from '@services';
 import { Breakpoints, SearchType } from '@models';
@@ -94,7 +98,8 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     public pointHistoryService: PointHistoryService,
     private drawService: DrawService,
     private netcdfService: NetcdfService,
-    private wktService: WktService
+    private wktService: WktService,
+    private notificationService: NotificationService,
   ) { }
 
   ngOnInit(): void {
@@ -160,9 +165,19 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
 
 
     this.subs.add(this.drawService.polygon$.pipe(
+      filter(polygon => !!polygon),
+      switchMap(
+        polygon => this.netcdfService.verifyWKT(polygon, 'VV').pipe(
+          catchError(error => {
+            this.notificationService.error(error.error.detail, 'Timeseries Service Error')
+            return of(null)
+          }),
+          map(valid => !!valid ? polygon : null)
+        ),
+      ),
       withLatestFrom(this.store$.select(chartStore.getMinSeriesNumber))
     ).subscribe(([polygon, minSeriesNumber]) => {
-      if(polygon) {
+      if(!!polygon) {
         let temp = polygon.getGeometry().clone() as Point;
         temp.transform('EPSG:3857', 'EPSG:4326')
         if (polygon.getGeometry().getType() === 'Point') {
@@ -205,7 +220,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
         allPointsData.push(data);
         // this.chartData.next(allPointsData);
         this.temporalRange = this.getMaxRange(allPointsData);
-      })
+    })
     }
     this.maxRange = this.getMaxRange(allPointsData);
   }
