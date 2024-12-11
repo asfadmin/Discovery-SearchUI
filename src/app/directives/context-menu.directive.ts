@@ -51,7 +51,6 @@ export class ContextMenuTriggerDirective extends MatMenuTrigger implements OnIni
   @HostListener('contextmenu', ['$event'])
   public handleContextMenu(event: MouseEvent) {
     event.preventDefault();
-    console.log(this.menuData);
     this.anchorElement.style.top = `${ event.clientY }px`;
     this.anchorElement.style.left = `${ event.clientX }px`;
     super._handleClick(event);

@@ -15,3 +15,5 @@ export const setChartOutOfDate = createAction('[Chart] mark chart as out of date
 export const setChartUpToDate = createAction('[Chart], mark chart as up to date')
 export const showLinearFit = createAction('[Chart] show all linear fit lines')
 export const hideLinearFit = createAction('[Chart] hide all linear fit lines')
+export const setReferenceData = createAction('[Chart] set reference point data', props<{'data': models.TimeSeriesData}>())
+export const resetReferenceData = createAction('[Chart] Reset chart reference point data')

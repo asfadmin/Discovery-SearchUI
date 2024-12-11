@@ -39,6 +39,11 @@ export const getAreAllTimeseriesChecked = createSelector(
     }
 )
 
+export const getTimeseriesReference = createSelector(
+    getChartsState,
+    (state: ChartsState) => state.baseReferenceDate
+)
+
 export const getIsChartOutOfDate = createSelector(
     getChartsState,
     (state) => state.outOfDate
