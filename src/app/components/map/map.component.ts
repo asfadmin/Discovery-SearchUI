@@ -250,10 +250,12 @@ export class MapComponent implements OnInit, OnDestroy  {
 
         let pointIndex = this.pointHistoryService.getHistory().findIndex((thing) => {
           if(thing.point === point) {
+            console.log('map existing point:', point);
             return true
           }
         })
         this.pointHistoryService.selectedPoint = pointIndex;
+        console.log('map selected pointIndex:', pointIndex);
 
         this.mapService.loadPolygonFrom(wktRepresenation.toString())
       })

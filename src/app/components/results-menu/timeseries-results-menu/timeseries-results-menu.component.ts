@@ -78,7 +78,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public maxRange: models.Range<number> = {start: 0, end: 0};
   public dataDateMin: Date;
   public dataDateMax: Date;
-  public selectedPoint: number;
+  public selectedSeries: number = -1;
   // private timeseries_subscription: Subscription;
 
 
@@ -103,8 +103,10 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.store$.select(uiStore.getActiveWkt).pipe(distinctUntilChanged()).subscribe(wkt => {
-        if (!wkt) return;
-        this.respondToActiveWkt(wkt);
+        if (!wkt)
+          this.selectedSeries = null;
+        else
+          this.respondToActiveWkt(wkt);
       }));
 
     this.subs.add(
@@ -269,7 +271,8 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public respondToActiveWkt(wkt: string) {
     this.chartStates.forEach((item) => {
       if (item.wkt == wkt) {
-        console.log('Now active Wkt:', wkt, 'Series', item.seriesNumber);
+        console.log('timeseries-result-menu matched active Wkt:', wkt, 'Series', item.seriesNumber);
+        this.selectedSeries = item.seriesNumber;
       }
     });
   }

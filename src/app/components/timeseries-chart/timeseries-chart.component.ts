@@ -627,6 +627,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       return d.color;
     });
     lines.style("stroke-width", 1);
+    this.store$.dispatch(new uiStore.SetActiveWkt(null));
   }
 
   private updateChart() {

@@ -26,7 +26,7 @@
         <span class="point-list-ul-section">
           <ul>
             @for (point of chartStates; track $index) {
-              <li>
+              <li [class.ts-highlighted]="point.seriesNumber === selectedSeries">
                 <mat-checkbox [checked]="point.checked"
                               (change)="updateSeries($event.checked, $index)">
                   <mat-icon class="ts-wkt-icon" [style.color]="point.color">place</mat-icon>

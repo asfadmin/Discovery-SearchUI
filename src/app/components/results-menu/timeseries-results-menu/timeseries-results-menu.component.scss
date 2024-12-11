@@ -358,3 +358,14 @@ ul {
 .ts-buttons {
   border: none;
 }
+
+.ts-highlighted {
+  @include themify($themes) {
+    background-color: themed('primary-light');
+  }
+
+  .ts-wkt-label {
+    font-weight: bolder;
+  }
+}
+

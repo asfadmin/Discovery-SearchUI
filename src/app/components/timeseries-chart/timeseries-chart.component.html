@@ -32,7 +32,7 @@
   </div>
 </div>
 
-<div #tsChartWrapper class="chart-wrapper" (resized)="onResized()">
+<div #tsChartWrapper class="chart-wrapper" (resized)="onResized()" style="display: initial;">
 	<div #timeseriesChart id="timeseriesChart" [contextMenuTriggerFor]="menu" [contextMenuTriggerData]="{'tooltipData': hoveredData}">
 	</div>
 	<app-timeseries-chart-export class="ts-chart-export-button" [timeSeriesData]="exportableData"></app-timeseries-chart-export>
