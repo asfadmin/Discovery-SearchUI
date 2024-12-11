@@ -277,10 +277,13 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public respondToActiveWkt(wkt: string) {
     this.chartStates.forEach((item) => {
       if (item.wkt == wkt) {
-        console.log('timeseries-result-menu matched active Wkt:', wkt, 'Series', item.seriesNumber);
         this.selectedSeries = item.seriesNumber;
       }
     });
+  }
+
+  public setActiveWkt(wkt: string) {
+    this.store$.dispatch(new uiStore.SetActiveWkt(wkt));
   }
 
   public deletePoint(index: number) {

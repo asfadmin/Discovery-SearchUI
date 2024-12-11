@@ -2,7 +2,7 @@ import {Component, ElementRef, Input, OnDestroy, OnInit, QueryList, ViewChild, V
 import * as d3 from 'd3';
 // import * as models from '@models';
 import {
-  debounceTime, map, Observable, withLatestFrom,
+  debounceTime, distinctUntilChanged, map, Observable, withLatestFrom,
   // Subject
 } from 'rxjs';
 
@@ -219,6 +219,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         dir => this.flightDirection = dir
       )
     )
+
     this.subs.add(
       this.store$.select(chartsStore.getTimeseriesReference).subscribe(
         data => {
@@ -227,6 +228,15 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         }
       )
     )
+
+    this.subs.add(
+      this.store$.select(uiStore.getActiveWkt).pipe(distinctUntilChanged()).subscribe(wkt => {
+        if (!wkt)
+          return;
+        else
+          this.highlightSeries(wkt);
+      }));
+
 
   }
 
@@ -577,21 +587,11 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.store$.dispatch(chartsStore.setReferenceData({data:reference}))
   }
 
-  // When the pointer moves, find the closest point, update the interactive tip, and highlight
-  // the corresponding line.
-  private pointerMoved(event, lines, dots, points) {
-    if (typeof points === 'undefined') { return; }
-    if (points == null) { return; }
-    const [xm, ym] = d3.pointer(event);
-    const i = d3.leastIndex(points, ([x, y]) => Math.hypot(Number(x) - xm, Number(y) - ym));
-    if (typeof points[i] === 'undefined') { return; }
-    const [_x, _y, k] = points[i];
-    console.log('timeseries-chart.component points[i]:', points[i]);
+  private highlightSeries(wkt) {
     let colorName: string;
     let dClassName: string;
-    // set the color of the selected line to the color of the series; make all other lines grey
-    lines.style('stroke', (d: DataReady) => {
-      if (d.name === k) {
+    this.lines.style('stroke', (d: DataReady) => {
+      if (d.name === wkt) {
         dClassName = '.' + d.name.replace(/\W/g, '');
         colorName = d.color;
         console.log('timeseries-chart-component selected line d:', d);
@@ -600,25 +600,43 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       }
       return unSelectedColor;
     });
-    lines.style('stroke-width', (d: DataReady) => {
-      if (d.name === k) {
+
+    // increase width of selected series
+    this.lines.style('stroke-width', (d: DataReady) => {
+      if (d.name === wkt) {
         return 2;
       }
       return 1;
     });
-    // sort the lines so that the selected line is on top
-    lines.sort(function (a, _b) {
-      if (a.dname === k) return 1;
-        else return -1;
+
+    // sort the lines so that the selected series is on top
+    this.lines.sort(function (a, _b) {
+      if (a.dname === wkt) return 1;
+      else return -1;
     });
+
     this.svg.selectAll('circle').style("fill", unSelectedColor).attr('r', 5);
     this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", colorName).attr('r', 6);
     this.svg.selectAll('.dotsChildren').sort(function (a, _b) {
       // @ts-ignore
-      if (a.name === k) return 1;
-        else return -1;
+      if (a.name === wkt) return 1;
+      else return -1;
     });
-    dots.select("text").text(k);
+    this.dots.select("text").text(wkt);
+
+  }
+
+  // When the pointer moves, find the closest point, update the interactive tip, and highlight
+  // the corresponding line.
+  private pointerMoved(event, _lines, dots, points) {
+    this.dots = dots;
+    if (typeof points === 'undefined') { return; }
+    if (points == null) { return; }
+    const [xm, ym] = d3.pointer(event);
+    const i = d3.leastIndex(points, ([x, y]) => Math.hypot(Number(x) - xm, Number(y) - ym));
+    if (typeof points[i] === 'undefined') { return; }
+    const [_x, _y, k] = points[i];
+    this.highlightSeries(k);
   }
 
   private pointerEntered(lines, dots) {

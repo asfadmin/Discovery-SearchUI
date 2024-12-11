@@ -250,8 +250,6 @@ export class MapComponent implements OnInit, OnDestroy  {
 
         let pointIndex = this.pointHistoryService.getHistory().findIndex((thing) => {
           if(thing.point === point) {
-            console.log('map existing point:', point);
-            console.log('map existing wktRepresentation:', wktRepresentation);
             this.store$.dispatch(new uiStore.SetActiveWkt(wktRepresentation));
             return true
           }
