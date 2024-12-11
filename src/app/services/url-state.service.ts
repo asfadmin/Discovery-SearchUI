@@ -361,6 +361,13 @@ export class UrlStateService {
           map(isLinearFitEnabled => ({isLinearFitEnabled})),
         ),
         loader: this.loadDispShowLinearFit
+      },
+      {
+        name: 'referencePoint',
+        source: this.store$.select(chartsStore.getTimeseriesReference).pipe(
+          map(referencePoint => ({referencePoint: encodeURIComponent(JSON.stringify(referencePoint))}))
+        ),
+        loader: this.loadDispReferencePoint
       }
     ]
   }
@@ -1024,6 +1031,12 @@ export class UrlStateService {
     } else {
       this.store$.dispatch(chartsStore.hideLinearFit())
     }
+    return;
+  }
+  private loadDispReferencePoint = (referencePoint) => {
+    let fixedString = decodeURIComponent(referencePoint)//referencePoint.slice(1,referencePoint.length-1).replace('\"','"')
+    let pointObject = JSON.parse(fixedString)
+    this.store$.dispatch(chartsStore.setReferenceData({data: pointObject}))
     return;
   }
 }
