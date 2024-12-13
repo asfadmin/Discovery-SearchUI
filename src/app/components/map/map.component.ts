@@ -102,19 +102,20 @@ export class MapComponent implements OnInit, OnDestroy  {
   ) {}
 
   ngOnInit(): void {
+
     this.subs.add(
-    this.mapService.selectedSarviewEvent$.pipe(
-      filter(id => !!id)
-    ).subscribe(
-      id => this.selectedSarviewEvent = this.sarviewsEvents?.find(event => event?.event_id === id)
-    ));
+      this.mapService.selectedSarviewEvent$.pipe(
+        filter(id => !!id)
+      ).subscribe(
+        id => this.selectedSarviewEvent = this.sarviewsEvents?.find(event => event?.event_id === id)
+      )
+    );
 
     this.subs.add(
       this.store$.select(scenesStore.getSelectedScene).subscribe(
         scene => this.selectedScene = scene
       )
     );
-
 
     this.subs.add(
       this.screenSize.breakpoint$.subscribe(
@@ -246,16 +247,18 @@ export class MapComponent implements OnInit, OnDestroy  {
     this.subs.add(
       this.mapService.newSelectedDisplacement$.subscribe(point => {
         let format = new WKT();
-        let wktRepresenation  = format.writeGeometry(point);
+        let wktRepresentation  = format.writeGeometry(point);
 
         let pointIndex = this.pointHistoryService.getHistory().findIndex((thing) => {
           if(thing.point === point) {
+            this.store$.dispatch(new uiStore.SetActiveWkt(wktRepresentation));
             return true
           }
         })
         this.pointHistoryService.selectedPoint = pointIndex;
+        console.log('map selected point history:', this.pointHistoryService.getHistory());
 
-        this.mapService.loadPolygonFrom(wktRepresenation.toString())
+        this.mapService.loadPolygonFrom(wktRepresentation.toString())
       })
     )
 
@@ -288,7 +291,6 @@ export class MapComponent implements OnInit, OnDestroy  {
     const newMode = successful ?
     models.MapInteractionModeType.EDIT :
     models.MapInteractionModeType.NONE;
-
     this.onNewInteractionMode(newMode);
   }
 

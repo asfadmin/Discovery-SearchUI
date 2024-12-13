@@ -52,7 +52,7 @@ export class PointHistoryService {
     }
     for(let state of states) {
       const point = state.geoemetry as Point;
-      this.history.push({point, wkt: state.wkt});
+      this.history = [...this.history,{point, wkt: state.wkt} ]
       this.store$.dispatch(addTimeseriesState({item: state}))
     }
     this.history$.next(this.history);

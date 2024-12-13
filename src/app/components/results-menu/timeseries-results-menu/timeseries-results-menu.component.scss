@@ -368,3 +368,13 @@ ul {
 .invalid-aoi-text {
 	font-size: 14px;
 }
+.ts-highlighted {
+  @include themify($themes) {
+    background-color: themed('primary-light');
+  }
+
+  .ts-wkt-label {
+    font-weight: bolder;
+  }
+}
+

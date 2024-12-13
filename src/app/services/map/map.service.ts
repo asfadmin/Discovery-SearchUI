@@ -213,7 +213,6 @@ export class MapService {
     if (this.legacyAreaFormat.isValid(polygon)) {
       polygon = this.legacyAreaFormat.toWkt(polygon);
     }
-
     return this.loadWKT(polygon);
   }
 
@@ -225,7 +224,6 @@ export class MapService {
         polygon,
         this.epsg()
       );
-
       this.setDrawFeature(features);
     } catch (e) {
       didLoad = false;
@@ -519,7 +517,11 @@ export class MapService {
     });
     this.timeseriesClick.on('select', e => {
       e.target.getFeatures().forEach(
-        feature => { this.pointHistoryService.passDraw = true; this.newSelectedDisplacement$.next(feature.get('point')) }
+        feature => {
+          this.pointHistoryService.passDraw = true;
+          this.newSelectedDisplacement$.next(feature.get('point'));
+          console.log('map.service this.timeseriesClick feature:', feature);
+        }
       );
     });
 
