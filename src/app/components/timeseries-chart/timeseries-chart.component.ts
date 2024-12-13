@@ -230,7 +230,11 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private refreshChart(chartStates: { [key: string]: models.timeseriesChartItemState }): void {
     const cache = this.netcdfService.getCache(this.flightDirection)
 
-    const allPointsData: { point: {}, state: models.timeseriesChartItemState }[] = Object.keys(chartStates).map(
+    const allPointsData: { point: {}, state: models.timeseriesChartItemState }[] = Object.keys(chartStates)
+    .filter(
+      wkt => chartStates[wkt].valid
+    )
+    .map(
       wkt => ({ point: cache[wkt], state: chartStates[wkt] })
     );
     if(this.baseData) {

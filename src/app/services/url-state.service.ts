@@ -995,7 +995,7 @@ export class UrlStateService {
       const format = new WKT()
       let thing = x.split(';')
       const point = format.readFeature(thing[0]) as unknown as Point;
-      states.push({ geoemetry: point, checked: true, seriesNumber: thing[1], wkt: thing[0], name: `Series ${thing[1]}`, linearFit: false })
+      states.push({ geoemetry: point, checked: true, seriesNumber: thing[1], wkt: thing[0], name: `Series ${thing[1]}`, linearFit: false, valid: true })
     })
     this.pointHistoryService.addPoints(states)
     return;
