@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BrowseOverlayService, MapService, WktService } from '@services';
-import { Observable, Subject, first, map, of, tap } from 'rxjs';
+import { BrowseOverlayService, NotificationService, WktService } from '@services';
+import { Observable, Subject, catchError, first, map, of, tap } from 'rxjs';
 // import WebGLTileLayer from 'ol/layer/WebGLTile';
 import ImageLayer from 'ol/layer/Image';
 // import Static from 'ol/source/ImageStatic';
@@ -11,6 +11,9 @@ import Feature from 'ol/Feature';
 import Geometry from 'ol/geom/Geometry';
 import WKT from 'ol/format/WKT';
 import { FlightDirection } from '@models';
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+import { setTimeseriesValid } from '@store/charts';
 // import { timeseriesChartItemState } from '@models';
 
 @Injectable({
@@ -35,11 +38,9 @@ export class NetcdfService {
   constructor(
     private http: HttpClient,
     private browseOverlayService: BrowseOverlayService,
-    private mapSerice: MapService,
-    // private mapService: MapService
+    private notificationService: NotificationService,
+    private store$: Store<AppState>,
     private wktService: WktService,
-    // private store$: Store<AppState>,
-
   ) {
   }
 
@@ -112,8 +113,15 @@ export class NetcdfService {
         "polarization": "VV",
       }, { responseType: 'json' }).pipe(
         first(),
+        catchError(error => {
+          this.notificationService.error(error.error.detail, 'Timeseries Service Error')
+          this.store$.dispatch(setTimeseriesValid({wkt: wktRepresenation, valid: false}))
+          return of(null)
+        }),
         map(response => {
+          if (!!response) {
           (response as any).aoi = wktRepresenation;
+          }
           target_cache[index_id] = response;
           this.totalKeys.push(index_id);
           if (this.totalKeys.length > this.maxCacheSize) {
@@ -163,10 +171,4 @@ export class NetcdfService {
     return output
   }
 
-  public verifyWKT(polygon: Feature<Geometry>, polarization: String): Observable<Object> {
-    const wkt = this.wktService.featureToWkt(polygon, this.mapSerice.epsg())
-    return this.http.post(`${this.url}validate_aoi`,{wkt, polarization, bucket: this.bucket}).pipe(
-      first()
-    )
-  }
 }

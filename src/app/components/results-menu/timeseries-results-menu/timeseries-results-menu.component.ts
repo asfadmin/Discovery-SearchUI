@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef, computed, signal } from '@angular/core';
-import { catchError, distinctUntilChanged, filter, first, map, Observable, of, Subject, switchMap, withLatestFrom } from 'rxjs';
+import { distinctUntilChanged, filter, first, map, Observable, Subject, withLatestFrom } from 'rxjs';
 import { ResizeEvent } from 'angular-resizable-element';
 
 import { AppState } from '@store';
@@ -9,7 +9,6 @@ import * as chartStore from '@store/charts';
 import {
   DrawService,
   NetcdfService,
-  NotificationService,
   PointHistoryService,
   ScreenSizeService,
   WktService
@@ -99,7 +98,6 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     private drawService: DrawService,
     private netcdfService: NetcdfService,
     private wktService: WktService,
-    private notificationService: NotificationService,
   ) { }
 
   ngOnInit(): void {
@@ -163,8 +161,9 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
           let allPointsData = [];
           this.pointHistoryService.addPoint(point.getGeometry(), idx + 1);
           this.netcdfService.getTimeSeries(point.getGeometry(), this.flightDirection).pipe(first()).subscribe( data => {
-            allPointsData.push(data);
-            // this.chartData.next(allPointsData);
+            if (!!data) {
+              allPointsData.push(data);
+            }
             this.maxRange = this.temporalRange = this.getMaxRange(allPointsData);
           })
         });
@@ -173,15 +172,6 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
 
     this.subs.add(this.drawService.polygon$.pipe(
       filter(polygon => !!polygon),
-      switchMap(
-        polygon => this.netcdfService.verifyWKT(polygon, 'VV').pipe(
-          catchError(error => {
-            this.notificationService.error(error.error.detail, 'Timeseries Service Error')
-            return of(null)
-          }),
-          map(valid => !!valid ? polygon : null)
-        ),
-      ),
       withLatestFrom(this.store$.select(chartStore.getMinSeriesNumber))
     ).subscribe(([polygon, minSeriesNumber]) => {
       if(!!polygon) {
@@ -224,8 +214,9 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     let allPointsData = [];
     for (const series of this.chartStates) {
       this.netcdfService.getTimeSeries(series.geoemetry, this.flightDirection).pipe(first()).subscribe(data => {
-        allPointsData.push(data);
-        // this.chartData.next(allPointsData);
+        if(!!data) {
+          allPointsData.push(data);
+        }
         this.temporalRange = this.getMaxRange(allPointsData);
     })
     }
