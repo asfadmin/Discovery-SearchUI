@@ -596,7 +596,9 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         // savable searches better
         return {...state};
       } else if(search.searchType === models.SearchType.DISPLACEMENT) {
-        return {...state};
+        const filters = <models.DisplacementFiltersType>search.filters;
+
+        return {...state, flightDirections: new Set(filters.flightDirections)};
       }
       else {
         const filters = <models.GeographicFiltersType>search.filters;
