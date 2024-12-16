@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { BaselineFiltersType, FilterType, GeographicFiltersType, ListFiltersType, SbasFiltersType, TimeseriesFiltersType } from '@models';
+import { BaselineFiltersType, FilterType, GeographicFiltersType, ListFiltersType, SbasFiltersType, TimeseriesFiltersType, DisplacementFiltersType } from '@models';
 
 @Pipe({
     name: 'baselineFilter'
@@ -44,4 +44,11 @@ export class ListFilterPipe implements PipeTransform {
       return input as ListFiltersType;
   }
 }
-
+@Pipe({
+  name: 'displacementFilter'
+})
+export class DisplacementFilterPipe implements PipeTransform {
+  transform(input: FilterType): DisplacementFiltersType {
+      return input as DisplacementFiltersType;
+  }
+}
