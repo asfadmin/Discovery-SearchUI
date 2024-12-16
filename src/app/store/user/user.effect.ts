@@ -66,7 +66,8 @@ export class UserEffects {
       defaultFilterPresets: {
         'Baseline Search' : '',
         'Geographic Search' : '',
-        'SBAS Search' : ''
+        'SBAS Search' : '',
+        'Displacement': ''
       }
     };
   }
