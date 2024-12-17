@@ -595,7 +595,12 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         // TODO: Don't make geosearch default case or handle no
         // savable searches better
         return {...state};
-      } else {
+      } else if(search.searchType === models.SearchType.DISPLACEMENT) {
+        const filters = <models.DisplacementFiltersType>search.filters;
+
+        return {...state, flightDirections: new Set(filters.flightDirections)};
+      }
+      else {
         const filters = <models.GeographicFiltersType>search.filters;
 
         const dataset = models.datasetList.filter(

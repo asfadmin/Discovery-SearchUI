@@ -465,7 +465,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             return searchType == SearchType.DISPLACEMENT && !resultsLoaded})
         ).subscribe(([polygon, _, __]) => {
           if (polygon) {
-            if (polygon.getGeometry().getType() === 'Point') {
+            if (polygon?.getGeometry()?.getType() === 'Point') {
               this.store$.dispatch(new searchStore.MakeSearch());
               this.store$.dispatch(new scenesStore.SetResultsLoaded(true))
         }

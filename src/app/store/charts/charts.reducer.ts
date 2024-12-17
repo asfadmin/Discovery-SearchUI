@@ -35,7 +35,7 @@ export const chartsReducer = createReducer(
   }),
   on(chartActions.setTimeseriesStates, (state, { items }) => ({
     ...state, seriesStates: items.reduce((prev: { [key: string]: models.timeseriesChartItemState }, curr) => {
-      prev[curr.wkt] = { checked: true, color: curr.color, seriesNumber: curr.seriesNumber, name: curr.name, wkt: curr.wkt, geoemetry: curr.geoemetry, linearFit: curr.linearFit }
+      prev[curr.wkt] = { checked: true, color: curr.color, seriesNumber: curr.seriesNumber, name: curr.name, wkt: curr.wkt, geoemetry: curr.geoemetry, linearFit: curr.linearFit, valid: true }
       return prev
     }, {})
   }
@@ -79,6 +79,13 @@ export const chartsReducer = createReducer(
   }),
   on(chartActions.resetReferenceData, (state) => {
     return {...state, baseReferenceDate: null}
+  }),
+  on(chartActions.setTimeseriesValid, (state, {wkt, valid}) => {
+    const seriesStates = Object.values(state.seriesStates).reduce((prev, curr) => {
+      prev[curr.wkt] = { ...curr, valid:  curr.wkt == wkt ? valid : curr.valid}
+      return prev
+    }, {});
+    return { ...state, seriesStates }
   }),
   on(chartActions.reset, (_) => initialState)
 );

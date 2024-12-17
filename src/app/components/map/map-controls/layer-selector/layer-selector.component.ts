@@ -8,6 +8,7 @@ import * as mapStore from '@store/map';
 
 import * as models from '@models';
 import * as filtersStore from '@store/filters';
+import * as searchStore from '@store/search';
 
 import { MapService, ScreenSizeService } from '@services';
 import { map } from 'rxjs';
@@ -19,6 +20,8 @@ import { map } from 'rxjs';
 })
 export class LayerSelectorComponent implements OnInit, OnDestroy {
   public overviewMapVisible$ = this.store$.select(mapStore.getIsOverviewMapOpen);
+  public searchType$ = this.store$.select(searchStore.getSearchType);
+  public searchTypes = models.SearchType;
   public overviewMapVisible = false;
 
   public layerTypes = models.MapLayerTypes;

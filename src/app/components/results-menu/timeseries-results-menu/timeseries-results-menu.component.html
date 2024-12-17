@@ -25,9 +25,10 @@
         </span>
         <span class="point-list-ul-section">
           <ul>
-            @for (point of chartStates; track $index) {
+            @for (point of chartStates; track point.valid) {
               <li [class.ts-highlighted]="point.seriesNumber === selectedSeries"
                   on-mouseover="setActiveWkt(point.wkt)">
+                  @if (point.valid) {
                 <mat-checkbox [checked]="point.checked"
                               (change)="updateSeries($event.checked, $index)">
                   <mat-icon class="ts-wkt-icon" [style.color]="point.color">place</mat-icon>
@@ -36,6 +37,14 @@
                   </span>
                   <button mat-icon-button (click)="deletePoint($index)"><mat-icon class="ts-trash-can">delete</mat-icon></button>
                 </mat-checkbox>
+              } @else {
+                <mat-icon color="warn" class="invalid-aoi-icon">block</mat-icon>
+                  <mat-icon class="ts-wkt-icon" [style.color]="point.color">place</mat-icon>
+                  <span class="ts-wkt-label invalid-aoi-text">
+                    {{'SERIES' | translate}} {{point.seriesNumber}}
+                  </span>
+                  <button mat-icon-button (click)="deletePoint($index)"><mat-icon class="ts-trash-can">delete</mat-icon></button>
+              }
               </li>
             }
           </ul>
