@@ -130,12 +130,14 @@ export class SavedSearchService {
 
   private currentDisplacementSearch$ = combineLatest([
     this.store$.select(chartsStore.getTimeseriesChartStates),
-    this.store$.select(filtersStore.getFlightDirections)
+    this.store$.select(filtersStore.getFlightDirections),
+    this.store$.select(filtersStore.getDateRange),
   ]
   ).pipe(
-    map(([seriesStates, flightDirections]) => ({
+    map(([seriesStates, flightDirections, dateRange]) => ({
       seriesStates,
-      flightDirections
+      flightDirections,
+      dateRange
     }))
   );
 
