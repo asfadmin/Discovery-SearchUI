@@ -1,5 +1,5 @@
 <div style="display: flex; flex-direction: column;">
-    <mat-checkbox (change)="onToggleLines($event)" [checked]="showLines">Show Lines</mat-checkbox>
-    <mat-checkbox (change)="onToggleLinearFit($event)" [checked]="showLinearFit">Show Linear Fit</mat-checkbox>
-    <button mat-button (click)="resetReference()">Reset chart reference</button>
+    <mat-checkbox (change)="onToggleLines($event)" [checked]="showLines">{{ 'SHOW_LINES' | translate}}</mat-checkbox>
+    <mat-checkbox (change)="onToggleLinearFit($event)" [checked]="showLinearFit">{{ 'SHOW_LINEAR_FIT' | translate }}</mat-checkbox>
+    <button mat-button (click)="resetReference()">{{ 'RESET_CHART_REFERENCE' | translate }}</button>
 </div>

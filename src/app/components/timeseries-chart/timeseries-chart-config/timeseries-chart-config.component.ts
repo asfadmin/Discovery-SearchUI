@@ -6,14 +6,17 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { SubSink } from 'subsink';
 import * as chartsStore from '@store/charts'
+import { SharedModule } from "@shared";
 
 @Component({
   selector: 'app-timeseries-chart-config',
   standalone: true,
-  imports: [MatIconModule, MatButtonModule, MatCheckboxModule],
+  imports: [MatIconModule, MatButtonModule, MatCheckboxModule,SharedModule,],
   templateUrl: './timeseries-chart-config.component.html',
   styleUrl: './timeseries-chart-config.component.scss'
 })
+
+
 
 export class TimeseriesChartConfigComponent implements OnInit, OnDestroy {
   private subs = new SubSink()
@@ -21,6 +24,7 @@ export class TimeseriesChartConfigComponent implements OnInit, OnDestroy {
   public showLinearFit = false;
   @Output() public resetReferenceEvent = new EventEmitter();
   constructor(private store$: Store<AppState>) { }
+
 
   public onToggleLines(event: MatCheckboxChange) {
     if (event.checked) {
