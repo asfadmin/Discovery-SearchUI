@@ -104,6 +104,7 @@ export interface SarviewsFiltersType {
 export interface DisplacementFiltersType {
   seriesStates: { [key: string]: timeseriesChartItemState }
   flightDirections: FlightDirection[];
+  dateRange: Range<null | Date>;
 }
 export interface TimeseriesFiltersType {
   fullBurstIDs: string[];

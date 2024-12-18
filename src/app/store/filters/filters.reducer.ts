@@ -598,7 +598,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       } else if(search.searchType === models.SearchType.DISPLACEMENT) {
         const filters = <models.DisplacementFiltersType>search.filters;
 
-        return {...state, flightDirections: new Set(filters.flightDirections)};
+        return {...state, flightDirections: new Set(filters.flightDirections), dateRange: filters.dateRange};
       }
       else {
         const filters = <models.GeographicFiltersType>search.filters;

@@ -2,7 +2,7 @@
   <div class="layers-selector fx-col">
     <mat-checkbox (change)="onToggleCumulativeLayerDisplay($event.checked)">
       <div class="selector-text">
-        Cumulative Layer
+        {{ 'CUMULATIVE_LAYER' | translate}}
       </div>
     </mat-checkbox>
     <mat-radio-group #cumulativeLayers (change)="onUpdateLayerType($event.value)"
@@ -10,25 +10,24 @@
       style="display: flex; flex-direction: column; margin-left: 10px">
       <mat-radio-button [value]="DispLayerTypes.DISPLACEMENT" [disabled]="cumulativeDisplacementSelectionDisabled">
         <div class="selector-text">
-          Deformation
+          {{ 'DEFORMATION' | translate}}
         </div>
       </mat-radio-button>
       <mat-radio-button [value]="DispLayerTypes.VELOCITY" [disabled]="cumulativeDisplacementSelectionDisabled">
         <div class="selector-text">
-          Velocity
-
+          {{ 'VELOCITY' | translate}}
         </div>
       </mat-radio-button>
     </mat-radio-group>
     <mat-checkbox #priorityRollout (change)="onUpdatePriority($event.checked)"
     [checked]="priorityEnabled">
       <div class="selector-text">
-        Rollout
+        {{ 'ROLLOUT' | translate}}
       </div>
     </mat-checkbox>
 
     <div class="help-text">
-      What are these?
+      {{ 'WHAT_ARE_THESE ?' | translate}}
       <app-docs-modal class="info-icon" url="https://docs.asf.alaska.edu/vertex/displacement/#map-layers">
       </app-docs-modal>
     </div>
@@ -36,7 +35,7 @@
 
   <div class="footer">
     <div class="footer--text">
-      Map Layers
+      {{ 'MAP_LAYERS' | translate}}
     </div>
   </div>
 </div>
