@@ -47,6 +47,7 @@ import { SetGeocode } from '@store/filters';
 import { Extent } from 'ol/extent';
 import { MultiPolygon } from 'ol/geom';
 import GeoJSON from 'ol/format/GeoJSON.js';
+import WKT from 'ol/format/WKT';
 
 @Injectable({
   providedIn: 'root'
@@ -62,7 +63,7 @@ export class MapService {
 
   private polygonLayer: VectorLayer<VectorSource>;
   private sarviewsEventsLayer: VectorLayer<VectorSource>;
-  private displacmentLayer: VectorLayer<VectorSource>;
+  public displacmentLayer: VectorLayer<VectorSource>;
   private browseImageLayer: Layer;
 
   private gridLinesVisible: boolean;
@@ -450,11 +451,9 @@ export class MapService {
     this.setDrawFeature(features);
   }
 
-
   public onMapReady(m: Map) {
     this.mapInit$.next(m);
   }
-
 
   public zoomToExtent(extent: Extent): void {
     this.map
@@ -520,7 +519,15 @@ export class MapService {
         feature => {
           this.pointHistoryService.passDraw = true;
           this.newSelectedDisplacement$.next(feature.get('point'));
-          console.log('map.service this.timeseriesClick feature:', feature);
+          const format = new WKT()
+          const wkt = format.writeGeometry(feature.get('point'))
+          let w1 = feature.get('point').getCoordinates()[0];
+          let w2 = feature.get('point').getCoordinates()[1];
+          let wktX = 'POINT(' + w1 + ' ' + w2 +')';
+          console.log('map.service this.timeseriesClick feature point:', feature.get('point'));
+          console.log('map.service this.timeseriesClick feature wkt:', wkt);
+          console.log('map.service this.timeseriesClick feature wktX:', wktX);
+          console.log('map.service this.timeseriesClick feature coordinates:', feature.get('point').getCoordinates());
         }
       );
     });
@@ -829,6 +836,7 @@ export class MapService {
       this.map.removeLayer(this.displacmentLayer);
       this.displacmentLayer = null;
     }
+    let self = this;
 
     let source = new VectorSource();
     let pointFeatures = points.map(dataPoint => {
@@ -843,13 +851,26 @@ export class MapService {
     source.addFeatures(pointFeatures);
 
     const stylize = function StyleFunction(feature: Feature) {
+
       const textFunction = function (f: Feature) {
         let labelContent = f.get('seriesNumber');
         return labelContent.toString();
       }
+
       const textColorFunction = function (f: Feature) {
-        return f.get('seriesColor') ?? "#000000";
+        console.log('map.service textColorFunction seriesNumber', f.get('seriesNumber'));
+        console.log('map.service textColorFunction seriesColor', f.get('seriesColor'));
+        console.log('map.service textColorFunction self.pointHistoryService.selectedPoint', self.pointHistoryService.selectedPoint);
+        let color: string = '#000000'
+        if (f.get('seriesNumber') === self.pointHistoryService.selectedPoint) {
+          color = 'red';
+        } else {
+          color = f.get('seriesColor') ?? "#000000";
+        }
+        // return f.get('seriesColor') ?? "#000000";
+        return color;
       }
+
       let layerStyle = new Style({
         image: new CircleStyle({
           stroke: new Stroke({

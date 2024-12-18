@@ -21,15 +21,22 @@ export class PointHistoryService {
 
   constructor(
     private store$: Store<AppState>,
-  ) {
-
-
-  }
+  ) { }
 
   public getHistory(): {point: Point, wkt: string}[] {
     return this.history;
   }
 
+  public findPoint(wkt: string){
+    return this.history.find( (value, _index) => {
+      if (value.wkt === wkt)
+        console.log('findPoint for', wkt, 'is point', value.point);
+        return {
+          point: value.point,
+          wkt: wkt
+        };
+    })
+  }
 
   public addPoint(point: Point, seriesNumber: number) {
     if(this.passDraw) {
