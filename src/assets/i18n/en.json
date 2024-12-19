@@ -733,6 +733,7 @@
   "SENTINEL_DESC": "Sentinel-1 includes twin satellites that each carry C-band synthetic aperture radar (SAR), together providing all-weather, day-and-night imagery of Earth’s surface.",
   "SEP_OCT_NOV": "Sep, Oct, Nov",
   "SET": "Set",
+  "SET_AS_BASELINE": "Set as Baseline",
   "SET_AS_BOTH": "Set as both",
   "SET_AS_END_DATE": "Set as End Date",
   "SET_AS_FRAME_END": "Set as frame end",
