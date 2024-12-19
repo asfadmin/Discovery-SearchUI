@@ -734,6 +734,7 @@
   "SENTINEL_DESC": "Sentinel-1 incluye satélites gemelos, cada uno de los cuales lleva un radar de apertura sintética (SAR) de banda C, juntos brindan imágenes de la superficie de la Tierra para todo clima, día y noche.",
   "SEP_OCT_NOV": "Sep, Oct, Nov",
   "SET": "Colocar",
+  "SET_AS_BASELINE": "Fijar Línea base",
   "SET_AS_BOTH": "Establecer como ambos",
   "SET_AS_END_DATE": "Establecer como fecha de finalización",
   "SET_AS_FRAME_END": "Establecer como final de marco",
