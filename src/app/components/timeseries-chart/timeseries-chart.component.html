@@ -46,7 +46,7 @@
 	}
 	<mat-menu #menu="matMenu">
 		<ng-template matMenuContent let-tooltipData="tooltipData">
-			<button mat-button (click)="setReference(tooltipData)">Set as Baseline</button>
+			<button mat-button (click)="setReference(tooltipData)">{{ 'SET_AS_BASELINE' | translate }}</button>
 		</ng-template>
 	</mat-menu>
 </div>
