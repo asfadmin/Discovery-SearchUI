@@ -256,17 +256,12 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       }
     }
     this.data = allPointsData;
-    // this.formulaOverflow = this.isOverflowing();
     this.initChart(this.data)
   }
 
   public isOverflowing(): boolean {
-    // console.log('content/viewport size:', this.viewPorts.measureRenderedContentSize(), this.virtualScroll.getViewportSize())
-    // return this.virtualScroll.measureRenderedContentSize() > this.virtualScroll.getViewportSize()-270;
     return (this.bestFitItems.length > 5);
   }
-
-
 
   public translateChartText() {
     this.xAxisTitle = this.language.translate.instant('SCENE') + ' ' +
@@ -596,7 +591,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       if (d.name === wkt) {
         dClassName = '.' + d.name.replace(/\W/g, '');
         colorName = d.color;
-        console.log('timeseries-chart-component selected line d:', d);
         this.store$.dispatch(new uiStore.SetActiveWkt(d.name));
         return colorName;
       }
