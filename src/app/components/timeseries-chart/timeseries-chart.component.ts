@@ -231,9 +231,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.store$.select(uiStore.getActiveWkt).pipe(distinctUntilChanged()).subscribe(wkt => {
-        if (!wkt)
-          return;
-        else
+        if (wkt)
           this.highlightSeries(wkt);
       }));
 

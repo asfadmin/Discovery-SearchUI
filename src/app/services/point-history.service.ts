@@ -30,7 +30,6 @@ export class PointHistoryService {
   public findPoint(wkt: string){
     return this.history.find( (value, _index) => {
       if (value.wkt === wkt)
-        console.log('findPoint for', wkt, 'is point', value.point);
         return {
           point: value.point,
           wkt: wkt

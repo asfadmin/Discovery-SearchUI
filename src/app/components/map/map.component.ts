@@ -20,13 +20,21 @@ import * as uiStore from '@store/ui';
 
 import * as models from '@models';
 import {CMRProduct, SarviewsEvent} from '@models';
-import {MapService, PointHistoryService, SarviewsEventsService, ScenesService, ScreenSizeService, WktService} from '@services';
+import {
+  MapService,
+  PointHistoryService,
+  SarviewsEventsService,
+  ScenesService,
+  ScreenSizeService,
+  WktService
+} from '@services';
 import * as polygonStyle from '@services/map/polygon.style';
 import {StyleLike} from 'ol/style/Style';
 import {Feature} from 'ol';
 import Geometry from 'ol/geom/Geometry';
 import {MatDialog} from '@angular/material/dialog';
 import WKT from 'ol/format/WKT';
+import {getTimeseriesChartStates} from '@store/charts';
 
 enum FullscreenControls {
   MAP = 'Map',
@@ -84,6 +92,8 @@ export class MapComponent implements OnInit, OnDestroy  {
   );
 
   private sarviewsEvents: SarviewsEvent[];
+  private chartStates: models.timeseriesChartItemState[] = [];
+  private selectedSeries: any = null;
 
   constructor(
     private store$: Store<AppState>,
@@ -93,7 +103,7 @@ export class MapComponent implements OnInit, OnDestroy  {
     private scenesService: ScenesService,
     private eventMonitoringService: SarviewsEventsService,
     public dialog: MatDialog,
-    private pointHistoryService: PointHistoryService
+    private pointHistoryService: PointHistoryService,
   ) {}
 
   ngOnInit(): void {
@@ -245,6 +255,12 @@ export class MapComponent implements OnInit, OnDestroy  {
           this.respondToActiveWkt(wkt);
       }));
 
+    this.subs.add(this.store$.select(getTimeseriesChartStates).subscribe(chartStates => {
+        this.chartStates = Object.values(chartStates);
+      }
+    ));
+
+
     this.subs.add(
       this.mapService.newSelectedDisplacement$.subscribe(point => {
         let format = new WKT();
@@ -257,8 +273,6 @@ export class MapComponent implements OnInit, OnDestroy  {
           }
         })
         this.pointHistoryService.selectedPoint = pointIndex;
-        console.log('map selected point history:', this.pointHistoryService.getHistory());
-
         this.mapService.loadPolygonFrom(wktRepresentation.toString())
       })
     )
@@ -270,29 +284,15 @@ export class MapComponent implements OnInit, OnDestroy  {
     );
   }
 
-  public respondToActiveWkt(wkt) {
-    console.log('map is respondToActiveWkt', wkt);
-    // this.mapService.loadPolygonFrom(wkt);
-
-    let point = this.pointHistoryService.findPoint(wkt);
-    if (!point) return;
-
-    this.pointHistoryService.selectedPoint = this.pointHistoryService.getHistory().findIndex((thing) => {
-      if (thing.point === point.point) {
-        console.log('map respondToActiveWkt pointHistory selected point thing:', thing);
-        return true;
+  public respondToActiveWkt(wkt: string) {
+    this.selectedSeries = null;
+    this.chartStates.forEach((item) => {
+      if (item.wkt == wkt) {
+        this.selectedSeries = item;
       }
-      return false
-    })
-
-    // this.mapService.displacmentLayer.getSource().forEachFeature(f => {
-    //   let thing = f.get('seriesNumber');
-    //   if(thing == seriesId || (!seriesId)) {
-    //     f.set('currentColor', f.get('seriesColor'))
-    //   } else {
-    //     f.set('currentColor', '#FFFFFF')
-    //   }
-    // })
+    });
+    this.pointHistoryService.selectedPoint = this.selectedSeries.seriesNumber;
+    this.mapService.displacmentLayer.changed();
   }
 
   public onFileHovered(e): void {
