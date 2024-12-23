@@ -47,6 +47,8 @@ import { SetGeocode } from '@store/filters';
 import { Extent } from 'ol/extent';
 import { MultiPolygon } from 'ol/geom';
 import GeoJSON from 'ol/format/GeoJSON.js';
+import WKT from 'ol/format/WKT';
+import * as uiStore from '@store/ui';
 
 @Injectable({
   providedIn: 'root'
@@ -62,7 +64,7 @@ export class MapService {
 
   private polygonLayer: VectorLayer<VectorSource>;
   private sarviewsEventsLayer: VectorLayer<VectorSource>;
-  private displacmentLayer: VectorLayer<VectorSource>;
+  public displacmentLayer: VectorLayer<VectorSource>;
   private browseImageLayer: Layer;
 
   private gridLinesVisible: boolean;
@@ -87,7 +89,18 @@ export class MapService {
 
   private timeseriesClick = new Select({
     condition: click,
-    // style: null,
+    style: null,
+    layers: l => {
+      if (l.get('displacement-layer')) {
+        return true;
+      }
+      return false
+    }
+  });
+
+  private timeseriesHover = new Select({
+    condition: pointerMove,
+    style: null,
     layers: l => {
       if (l.get('displacement-layer')) {
         return true;
@@ -191,6 +204,7 @@ export class MapService {
     this.selectClick.setActive(true);
     this.searchPolygonHover.setActive(true);
     this.timeseriesClick.setActive(true);
+    this.timeseriesHover.setActive(true);
 
   }
 
@@ -200,6 +214,7 @@ export class MapService {
     this.selectClick.setActive(false);
     this.searchPolygonHover.setActive(false);
     this.timeseriesClick.setActive(false);
+    this.timeseriesHover.setActive(false);
   }
 
   private zoom(amount: number): void {
@@ -450,11 +465,9 @@ export class MapService {
     this.setDrawFeature(features);
   }
 
-
   public onMapReady(m: Map) {
     this.mapInit$.next(m);
   }
-
 
   public zoomToExtent(extent: Extent): void {
     this.map
@@ -505,6 +518,7 @@ export class MapService {
 
     newMap.addInteraction(this.selectClick);
     newMap.addInteraction(this.timeseriesClick);
+    newMap.addInteraction(this.timeseriesHover);
     newMap.addInteraction(this.selectHover);
     newMap.addInteraction(this.selectSarviewEventHover);
     this.selectClick.on('select', e => {
@@ -515,14 +529,21 @@ export class MapService {
         feature => this.newSelectedScene$.next(feature.get('filename'))
       );
     });
+
     this.timeseriesClick.on('select', e => {
-      e.target.getFeatures().forEach(
-        feature => {
-          this.pointHistoryService.passDraw = true;
-          this.newSelectedDisplacement$.next(feature.get('point'));
-          console.log('map.service this.timeseriesClick feature:', feature);
-        }
-      );
+      let selectedPoint =  e.selected[0].get('point');
+      const format = new WKT();
+      const wkt = format.writeGeometry(selectedPoint);
+      this.store$.dispatch(new uiStore.SetActiveWkt(wkt));
+      e.preventDefault();
+    });
+
+    this.timeseriesHover.on('select', e => {
+      let selectedPoint =  e.selected[0].get('point');
+      const format = new WKT();
+      const wkt = format.writeGeometry(selectedPoint);
+      this.store$.dispatch(new uiStore.SetActiveWkt(wkt));
+      e.preventDefault();
     });
 
     this.selectHover.on('select', e => {
@@ -829,6 +850,7 @@ export class MapService {
       this.map.removeLayer(this.displacmentLayer);
       this.displacmentLayer = null;
     }
+    let self = this;
 
     let source = new VectorSource();
     let pointFeatures = points.map(dataPoint => {
@@ -843,27 +865,33 @@ export class MapService {
     source.addFeatures(pointFeatures);
 
     const stylize = function StyleFunction(feature: Feature) {
+
       const textFunction = function (f: Feature) {
         let labelContent = f.get('seriesNumber');
         return labelContent.toString();
       }
+
       const textColorFunction = function (f: Feature) {
-        return f.get('seriesColor') ?? "#000000";
+        let color: string = f.get('seriesColor') ?? "#000000";
+        return color;
       }
-      let layerStyle = new Style({
+
+      let selected = (feature.get('seriesNumber') === self.pointHistoryService.selectedPoint);
+
+        let layerStyle = new Style({
         image: new CircleStyle({
           stroke: new Stroke({
-            color: '#ffcc33',
-            width: 2,
+            color: (selected) ? 'red' : '#ffcc33',
+            width: (selected) ? 3 : 2,
           }),
-          radius: 10,
+          radius: (selected) ? 12 : 10,
           fill: new Fill({
             color: textColorFunction(feature),
           }),
         }),
         text: new olText({
           overflow: true,
-          font: '13px sans-serif',
+          font: (selected) ? 'bold 16px sans-serif' : '13px sans-serif',
           fill: new Fill({
             color: '#000000',
           }),

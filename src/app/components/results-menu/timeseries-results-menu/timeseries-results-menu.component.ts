@@ -71,25 +71,17 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
   private flightDirection: models.FlightDirection = models.FlightDirection.ASCENDING;
 
-  // public pointHistory = [];
-
-  // public chartData = new Subject<any>;
   public chartStates: models.timeseriesChartItemState[] = []
   public allSeriesChecked$ = this.store$.select(chartStore.getAreAllTimeseriesChecked)
   public temporalRange: models.Range<number> = {start: 0, end: 0};
   public temporalRangeValues$ = new Subject<number[]>();
   public maxRange: models.Range<number> = {start: 0, end: 0};
-  public dataDateMin: Date;
-  public dataDateMax: Date;
   public selectedSeries: number = -1;
-  // private timeseries_subscription: Subscription;
 
 
   public totalDisplacement = 0;
   public dateRange = [];
   public totalPoints = 0;
-
-  // public isLoading = false;
 
   constructor(
     private store$: Store<AppState>,
