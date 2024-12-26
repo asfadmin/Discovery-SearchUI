@@ -232,7 +232,7 @@ export class SearchEffects {
     ofType<TimeseriesSearchResponse>(SearchActionType.DISPLACEMENT_SEARCH_RESPONSE),
     withLatestFrom(this.store$.select(getSearchType)),
     filter(([_, searchType]) => searchType === SearchType.DISPLACEMENT),
-    switchMap(([action, _]) => {
+    switchMap(([_action, _]) => {
       return [
         new scenesStore.SetScenes({
           products: [{
@@ -279,7 +279,7 @@ export class SearchEffects {
               ariaVersion:  null,
             }
           }],
-          searchType: action.payload.searchType
+          searchType: models.SearchType.DISPLACEMENT
         })
       ]
     })
@@ -540,36 +540,8 @@ export class SearchEffects {
   }
 
   private timeseriesQuery$() {
-    return this.searchParams$.getParams.pipe(
-      switchMap(
-        (params) =>
-          this.asfApiService.query<any[]>(params).pipe(
-            withLatestFrom(combineLatest([
-              this.store$.select(getSearchType),
-              this.store$.select(getIsCanceled),
-            ]
-            )),
-            map(([response, [searchType, isCanceled]]) => {
-              const files = this.productService.fromResponse(response)
-              return !isCanceled ?
-                new TimeseriesSearchResponse({
-                  files,
-                  totalCount: files.length,
-                  searchType,
-                }) :
-                new SearchCanceled()
-            }
-            ),
-            catchError(
-              (err: HttpErrorResponse) => {
-                if (err.status !== 400) {
-                  return of(new SearchError(`Unknown Error`));
-                }
-                return EMPTY;
-              }
-            ),
-          ))
-    );
+    return of(new TimeseriesSearchResponse({
+    }))
   }
 
   private hyp3JobToProducts(jobs, products) {
