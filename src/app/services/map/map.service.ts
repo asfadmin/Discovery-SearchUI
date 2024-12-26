@@ -539,7 +539,13 @@ export class MapService {
     });
 
     this.timeseriesHover.on('select', e => {
-      let selectedPoint =  e.selected[0].get('point');
+      let selectedPoint =  e.selected[0]?.get('point');
+      if(!selectedPoint) {
+        // TODO: not sure if we want to keep the point active or unselect it
+        // this.store$.dispatch(new uiStore.SetActiveWkt(null));
+        e.preventDefault()
+        return
+      }
       const format = new WKT();
       const wkt = format.writeGeometry(selectedPoint);
       this.store$.dispatch(new uiStore.SetActiveWkt(wkt));
