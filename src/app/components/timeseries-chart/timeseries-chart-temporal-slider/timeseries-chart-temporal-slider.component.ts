@@ -14,7 +14,7 @@ import * as filtersStore from '@store/filters';
 import * as models from '@models';
 // import moment from 'moment/moment';
 import {Observable, Subject} from 'rxjs';
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, withLatestFrom} from 'rxjs/operators';
 
 // import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
@@ -51,8 +51,8 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit, OnDestroy
     this.tsSlider = this.timeSeriesSlider.slider;
 
     this.subs.add(
-      this.store$.select(filtersStore.getTemporalRange).subscribe(
-        temp => {
+      this.store$.select(filtersStore.getTemporalRange).pipe(withLatestFrom(this.store$.select(filtersStore.getDateRange))).subscribe(
+        ([temp,dateRange]) => {
           if (!temp.start || !temp.end) { return; }
           this.maxRange = {start: temp.start.valueOf(), end: temp.end.valueOf()};
           if (this.lastMaxRange.start !== this.maxRange.start || this.lastMaxRange.end !== this.maxRange.end) {
@@ -66,7 +66,7 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit, OnDestroy
             });
             if (!this.userChangedRange) {
               this.sliderRef.nativeElement.noUiSlider.updateOptions({
-                start: [this.maxRange.start, this.maxRange.end],
+                start: [dateRange.start ?? this.maxRange.start, dateRange.end ?? this.maxRange.end],
               });
             }
             this.renderer.setStyle(this.sliderRef.nativeElement, 'visibility', 'visible');
