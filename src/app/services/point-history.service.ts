@@ -9,7 +9,6 @@ import { Point } from 'ol/geom';
 import { Subject } from 'rxjs';
 
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -46,7 +45,7 @@ export class PointHistoryService {
     const wkt = format.writeGeometry(point)
     if (!!!this.history.find(x => x.wkt == wkt)) {
       this.history.push({point, wkt});
-      this.store$.dispatch(addTimeseriesState({item: {geoemetry: point, checked: true, seriesNumber, wkt: wkt, name: `Series ${seriesNumber}`, linearFit: false, valid: true}}))
+      this.store$.dispatch(addTimeseriesState({item: {geometry: point, checked: true, seriesNumber, wkt: wkt, name: `Series ${seriesNumber}`, linearFit: false, valid: true}}))
       this.history$.next(this.history);
       this.savePoints();
     }
@@ -57,7 +56,7 @@ export class PointHistoryService {
       return
     }
     for(let state of states) {
-      const point = state.geoemetry as Point;
+      const point = state.geometry as Point;
       this.history = [...this.history,{point, wkt: state.wkt} ]
       this.store$.dispatch(addTimeseriesState({item: state}))
     }
@@ -69,6 +68,7 @@ export class PointHistoryService {
     this.history = [];
     this.history$.next(this.history);
     this.store$.dispatch(resetTimeseriesStates())
+    this.selectedPoint = -1;
     this.savePoints();
   }
   public removePoint(index) {
