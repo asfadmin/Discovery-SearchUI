@@ -128,3 +128,7 @@ $chart-ctrl-top-x: 62px;
 :host ::ng-deep .ts-reference-point {
   fill: red !important;
 }
+
+.no-data {
+  display: none;
+}

@@ -37,7 +37,6 @@ export class TimeseriesHeaderComponent implements OnInit, OnDestroy {
   }
 
   public onAddPointsMode(): void {
-    console.log('points');
     this.store$.dispatch(new mapStore.SetMapInteractionMode(MapInteractionModeType.DRAW));
     this.store$.dispatch(new mapStore.SetMapDrawMode(MapDrawModeType.POINT));
   }

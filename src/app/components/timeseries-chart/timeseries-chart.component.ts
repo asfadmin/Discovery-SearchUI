@@ -20,7 +20,7 @@ import * as uiStore from '@store/ui';
 // import {hidden} from '@services/map/polygon.style';
 // import {style} from '@angular/animations';
 import {linearRegression, linearRegressionLine} from './regression-line'
-
+import {types} from 'sass';
 
 
 interface TimeSeriesFit {
@@ -89,7 +89,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private hoveredElement;
   public hoveredData;
   public hoveredDate;
-  private data: any;
+  public data: any;
   private lines;
   private points;
   public startDate: Date = new Date();
@@ -757,4 +757,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   protected readonly Date = Date;
 
   protected readonly length = length;
+  protected readonly types = types;
+  protected readonly Number = Number;
 }

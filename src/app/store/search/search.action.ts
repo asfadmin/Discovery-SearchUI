@@ -79,7 +79,7 @@ export class SarviewsEventsResponse implements Action {
 export class TimeseriesSearchResponse implements Action {
   public readonly type = SearchActionType.DISPLACEMENT_SEARCH_RESPONSE;
 
-  constructor(public payload: any) {}
+  constructor(public payload: {}) {}
 }
 
 export class SearchError implements Action {

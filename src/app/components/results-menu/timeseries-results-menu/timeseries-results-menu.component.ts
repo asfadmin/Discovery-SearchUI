@@ -205,7 +205,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public updateChart(): void {
     let allPointsData = [];
     for (const series of this.chartStates) {
-      this.netcdfService.getTimeSeries(series.geoemetry, this.flightDirection).pipe(first()).subscribe(data => {
+      this.netcdfService.getTimeSeries(series.geometry, this.flightDirection).pipe(first()).subscribe(data => {
         if(!!data) {
           allPointsData.push(data);
         }
