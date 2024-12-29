@@ -51,7 +51,7 @@
   </mat-menu>
 </div>
 
-
+<app-timeseries-chart-temporal-slider [class.no-data] = "!data || data.length < 1"></app-timeseries-chart-temporal-slider>
 
 <div #noData [class.no-data] = "data !== undefined && data.length >= 1">
   There is no data. Data length {{data.length}}
