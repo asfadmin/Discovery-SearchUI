@@ -128,3 +128,40 @@ $chart-ctrl-top-x: 62px;
 :host ::ng-deep .ts-reference-point {
   fill: red !important;
 }
+
+.message-container{
+  text-align: center;
+  padding-top: 100px;
+  font-size: 18px;
+}
+
+
+.icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto;
+  padding: 10px;
+  width: auto;
+  height: auto;
+  max-width: 150px;
+  max-height: 150px;
+  border-radius: 10px;
+}
+
+
+.icon-container mat-icon {
+  font-size: 200px;
+  color: lightgray;
+  width: auto;
+  height: auto;
+  line-height: 1;
+  overflow: visible;
+}
+
+
+
+.no-data {
+  display: none;
+
+}
