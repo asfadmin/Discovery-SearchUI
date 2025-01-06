@@ -1,0 +1,20 @@
+@import "asf-theme";
+
+.map-legend {
+  width: -webkit-fill-available;
+  height: 20px;
+  margin: 0 4px;
+  padding: 0 4px;
+  background-image: linear-gradient(to right, white, blue, red);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.layout {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 5px;
+}
