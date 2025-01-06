@@ -5,7 +5,7 @@ export interface timeseriesChartItemState {
     color?: string,
     name: string,
     wkt: string,
-    geoemetry: SimpleGeometry,
+    geometry: SimpleGeometry,
     seriesNumber: number,
     linearFit: boolean,
     valid: boolean,

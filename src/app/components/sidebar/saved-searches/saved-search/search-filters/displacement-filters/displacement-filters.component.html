@@ -14,12 +14,12 @@
                   </ul>
             </div>
       }
-      @if(filters.dateRange.start) {
+      @if(filters.dateRange && filters.dateRange.start) {
             <div>
                   <b>{{ 'START' | translate}}:</b> {{ filters.dateRange.start | shortDate }}
             </div>
       }
-      @if(filters.dateRange.end) {
+      @if(filters.dateRange && filters.dateRange.end) {
             <div>
                   <b>{{'END' | translate}}:</b> {{ filters.dateRange.end | shortDate }}
             </div>

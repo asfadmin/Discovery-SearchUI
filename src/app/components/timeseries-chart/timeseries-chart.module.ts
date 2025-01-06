@@ -16,6 +16,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatMenuModule } from '@angular/material/menu';
 import { ContextMenuTriggerDirective } from '@directives/context-menu.directive';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import {
+  TimeseriesChartTemporalSliderComponent
+} from '@components/timeseries-chart/timeseries-chart-temporal-slider/timeseries-chart-temporal-slider.component';
 
 
 @NgModule({
@@ -24,21 +27,22 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 
   ],
   imports: [
-      CommonModule,
-      MatSharedModule,
-      TranslateModule,
-      MatTableModule,
-      MatIconModule,
-      ResizedEventModule,
-      MatSharedModule,
-      ChartModalComponent,
-      TimeseriesChartConfigComponent,
-      TimeseriesChartZoomComponent,
-      TimeseriesChartExportComponent,
-      MatProgressSpinnerModule,
-      MatMenuModule,
-      ScrollingModule
-    ],
+    CommonModule,
+    MatSharedModule,
+    TranslateModule,
+    MatTableModule,
+    MatIconModule,
+    ResizedEventModule,
+    MatSharedModule,
+    ChartModalComponent,
+    TimeseriesChartConfigComponent,
+    TimeseriesChartZoomComponent,
+    TimeseriesChartExportComponent,
+    MatProgressSpinnerModule,
+    MatMenuModule,
+    ScrollingModule,
+    TimeseriesChartTemporalSliderComponent
+  ],
   exports: [
     TimeseriesChartComponent,
   ]

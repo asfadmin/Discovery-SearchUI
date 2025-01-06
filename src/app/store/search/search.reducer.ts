@@ -179,7 +179,7 @@ export const getIsCanceled = createSelector(
 
 export const getCanSearch = createSelector(
   getSearchState,
-  (state: SearchState) => state.searchType === SearchType.CUSTOM_PRODUCTS || state.canSearch
+  (state: SearchState) => state.searchType === SearchType.CUSTOM_PRODUCTS || state.searchType === SearchType.DISPLACEMENT || state.canSearch
 );
 
 export const getIsMaxResultsLoading = createSelector(

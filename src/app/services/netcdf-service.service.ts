@@ -98,13 +98,11 @@ export class NetcdfService {
     let format = new WKT();
     let wktRepresenation = format.writeGeometry(geometry);
     let index_id = wktRepresenation;
-    console.log(`getting ${index_id}`)
 
     let target_cache = this.getTargetCache(flightDirection)
 
 
     if (target_cache.hasOwnProperty(index_id)) {
-      console.log('cache hit', of(target_cache[index_id]));
       return of(target_cache[index_id])
     } else {
       return this.http.post(`${this.url}${this.timeSeriesEndpoint}`, {
@@ -128,7 +126,6 @@ export class NetcdfService {
             let deleted = this.totalKeys.splice(0);
             delete target_cache[deleted[0]];
           }
-          console.log('cache miss', response);
           this.cacheUpdated.next(index_id)
           return response
         }

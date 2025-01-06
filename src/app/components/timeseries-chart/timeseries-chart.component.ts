@@ -20,7 +20,7 @@ import * as uiStore from '@store/ui';
 // import {hidden} from '@services/map/polygon.style';
 // import {style} from '@angular/animations';
 import {linearRegression, linearRegressionLine} from './regression-line'
-
+import {types} from 'sass';
 
 
 interface TimeSeriesFit {
@@ -89,7 +89,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private hoveredElement;
   public hoveredData;
   public hoveredDate;
-  private data: any;
+  public data: any;
   private lines;
   private points;
   public startDate: Date = new Date();
@@ -231,9 +231,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.store$.select(uiStore.getActiveWkt).pipe(distinctUntilChanged()).subscribe(wkt => {
-        if (!wkt)
-          return;
-        else
+        if (wkt)
           this.highlightSeries(wkt);
       }));
 
@@ -258,17 +256,12 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       }
     }
     this.data = allPointsData;
-    // this.formulaOverflow = this.isOverflowing();
     this.initChart(this.data)
   }
 
   public isOverflowing(): boolean {
-    // console.log('content/viewport size:', this.viewPorts.measureRenderedContentSize(), this.virtualScroll.getViewportSize())
-    // return this.virtualScroll.measureRenderedContentSize() > this.virtualScroll.getViewportSize()-270;
     return (this.bestFitItems.length > 5);
   }
-
-
 
   public translateChartText() {
     this.xAxisTitle = this.language.translate.instant('SCENE') + ' ' +
@@ -542,7 +535,10 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         toolTip.interrupt();
         toolTip
           .style('opacity', .9);
-        toolTip.html(`<div style="text-align: left">${self.tooltipDateFormat(self.hoveredDate)}, ${p.short_wavelength_displacement.toFixed(2)} meters<br><b>Series ${p.seriesNumber}</b></div>`);
+        toolTip.html(`<div style="text-align: left">
+      ${self.tooltipDateFormat(self.hoveredDate)},
+      ${p.short_wavelength_displacement.toFixed(2)} ${self.language.translate.instant('METERS')} <br>
+      <b>${self.language.translate.instant('SERIES')} ${p.seriesNumber}</b></div>`);
         self.updateTooltip();
       })
       .on('mouseleave', function (_) {
@@ -598,7 +594,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       if (d.name === wkt) {
         dClassName = '.' + d.name.replace(/\W/g, '');
         colorName = d.color;
-        console.log('timeseries-chart-component selected line d:', d);
         this.store$.dispatch(new uiStore.SetActiveWkt(d.name));
         return colorName;
       }
@@ -762,4 +757,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   protected readonly Date = Date;
 
   protected readonly length = length;
+  protected readonly types = types;
+  protected readonly Number = Number;
 }
