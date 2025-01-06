@@ -55,3 +55,32 @@
   text-align: end;
   padding-right: 10px;
 }
+
+.priority-legend {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 5px;
+}
+
+.priority-box {
+  flex: 1;
+  margin: 0;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.first-priority {
+  background-color: rgba(127, 206, 255, 0.8);
+}
+
+.second-priority {
+  color: white;
+  background-color: rgba(45, 128, 179, 0.7);
+}
+
+.third-priority {
+  color: white;
+  background-color: rgba(0, 64, 103, 0.6);
+}

@@ -6,6 +6,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { DisplacementLayersComponent } from './displacement-layers.component';
+import { MapLegendComponent } from './map-legend/map-legend.component';
 import { DocsModalModule } from '@components/shared/docs-modal';
 
 import { MatSharedModule } from '@shared';
@@ -21,6 +22,7 @@ import { SharedModule } from "@shared";
     MatSharedModule,
     SharedModule,
     DocsModalModule,
+    MapLegendComponent
   ],
   declarations: [
     DisplacementLayersComponent
