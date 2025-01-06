@@ -53,6 +53,15 @@
 
 <app-timeseries-chart-temporal-slider [class.no-data] = "!data || data.length < 1"></app-timeseries-chart-temporal-slider>
 
-<div #noData [class.no-data] = "data !== undefined && data.length >= 1">
-  There is no data. Data length {{data.length}}
+<div #noData
+     [class.no-data]="data !== undefined && data.length >= 1">
+  <div class="message-container">
+    {{ 'NO_AREA_ON_INTEREST_SPECIFIED' | translate }}<br>
+    {{ 'PLEASE_SELECT_A_POINT_ON_THE_MAP' | translate }}
+  </div>
 </div>
+
+<div class="icon-container">
+  <mat-icon>place</mat-icon>
+</div>
+
