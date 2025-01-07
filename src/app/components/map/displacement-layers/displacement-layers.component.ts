@@ -36,7 +36,7 @@ export class DisplacementLayersComponent implements OnInit, OnDestroy {
       ).subscribe(
         t => {
           this.displacementOverview = t;
-          this.cumulativeDisplacementSelectionDisabled = false
+          this.cumulativeDisplacementSelectionEnabled = true
         }
       )
     );
