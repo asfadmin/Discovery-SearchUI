@@ -537,7 +537,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           .style('opacity', .9);
         toolTip.html(`<div style="text-align: left">
       ${self.tooltipDateFormat(self.hoveredDate)},
-      ${p.short_wavelength_displacement.toFixed(2)} ${self.language.translate.instant('METERS')} <br>
+      ${p.short_wavelength_displacement.toFixed(4)} ${self.language.translate.instant('METERS')} <br>
       <b>${self.language.translate.instant('SERIES')} ${p.seriesNumber}</b></div>`);
         self.updateTooltip();
       })
@@ -560,7 +560,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           this.bestFitItems.push({
             seriesNumber: linearFitData.values[0].seriesNumber,
             color: linearFitData.values[0].color,
-            formula: `y = ${regression.m.toFixed(2)}x ${regression.b < 0 ? '-' : '+'} ${Math.abs(regression.b).toFixed(2)}`
+            formula: `y = ${regression.m.toFixed(4)}x ${regression.b < 0 ? '-' : '+'} ${Math.abs(regression.b).toFixed(4)}`
           })
           let lineregression = linearRegressionLine(regression);
 
