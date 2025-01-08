@@ -635,15 +635,19 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     const i = d3.leastIndex(points, ([x, y]) => Math.hypot(Number(x) - xm, Number(y) - ym));
     if (typeof points[i] === 'undefined') { return; }
     const [_x, _y, k] = points[i];
+    return;
+    // TODO: Fix this to grab the correct series all the time.
     this.highlightSeries(k);
   }
 
   private pointerEntered(lines, dots) {
+    return
     lines.style("mix-blend-mode", null).style("stroke", unSelectedColor);
     dots.attr("display", null);
   }
 
   private pointerLeft(lines, _dots) {
+    return
     let dClassName: string;
     lines.style("stroke", (d: DataReady) => {
       dClassName = '.' + d.name.replace(/\W/g, '');
