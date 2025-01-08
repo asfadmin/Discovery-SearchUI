@@ -23,13 +23,24 @@
     </mat-radio-group>
 
     @if (cumulativeDisplacementSelectionEnabled) {
-      <app-map-legend
-        [min]="0"
-        [max]="1">
-    </app-map-legend>
+      @if (displacementOverview === DispLayerTypes.VELOCITY) {
+        <app-map-legend
+          [min]="-0.05"
+          [max]="0.05"
+          [units]="'m/yr'">
+        </app-map-legend>
+      }
+      @else {
+        <app-map-legend
+          [min]="0"
+          [max]="1"
+          [units]="'m'">
+        </app-map-legend>
+      }
     }
 
-    <mat-checkbox #priorityRollout (change)="onUpdatePriority($event.checked)"
+    <mat-checkbox #priorityRollout class="rollout-checkbox"
+    (change)="onUpdatePriority($event.checked)"
     [checked]="priorityEnabled">
       <div class="selector-text">
         {{ 'ROLLOUT' | translate}}

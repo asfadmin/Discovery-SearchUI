@@ -5,7 +5,21 @@
   height: 20px;
   margin: 0 4px;
   padding: 0 4px;
-  background-image: linear-gradient(to right, white, blue, red);
+  color: white;
+  font-size: 12px;
+  background-image: linear-gradient(to right,
+        rgba(0, 18, 97),
+        rgba(3, 62, 125),
+        rgba(30, 111, 157),
+        rgba(113, 168, 196),
+        rgba(201, 221, 231),
+        rgba(234, 206, 189),
+        rgba(211, 151, 116),
+        rgba(190, 101, 51),
+        rgba(139, 39, 6),
+        rgba(89, 0, 8),
+  );
+  border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: space-between;
