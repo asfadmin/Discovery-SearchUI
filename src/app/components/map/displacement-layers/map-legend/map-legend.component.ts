@@ -10,5 +10,5 @@ import { Component, Input } from '@angular/core';
 export class MapLegendComponent {
   @Input() min: number;
   @Input() max: number;
-
+  @Input() units: string;
 }
