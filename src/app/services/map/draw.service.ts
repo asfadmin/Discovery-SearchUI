@@ -70,17 +70,17 @@ export class DrawService {
       map.addInteraction(this.snap);
       map.addInteraction(this.modify);
 
-    this.modify.on('modifystart', () => {
-      map.getViewport().style.cursor = 'pointer';
-    });
+      this.modify.on('modifystart', () => {
+        map.getViewport().style.cursor = 'pointer';
+      });
 
-    this.modify.on('modifyend', () => {
-      map.getViewport().style.cursor = 'default';
-    });
+      this.modify.on('modifyend', () => {
+        map.getViewport().style.cursor = 'default';
+      });
 
-    map.once('pointermove', (_) => {
-      map.getViewport().style.cursor = 'default';
-    });
+      map.once('pointermove', (_) => {
+        map.getViewport().style.cursor = 'default';
+      });
 
     }
   }
@@ -100,6 +100,10 @@ export class DrawService {
     switch (style) {
       case models.DrawPolygonStyle.VALID: {
         this.setValidStyle();
+        break;
+      }
+      case models.DrawPolygonStyle.VALID_DISPLACEMENT: {
+        this.setValidDisplacementStyle();
         break;
       }
       case models.DrawPolygonStyle.INVALID: {
@@ -197,6 +201,11 @@ export class DrawService {
 
   private setValidStyle(): void {
     this.defaultStyle = polygonStyle.valid;
+    this.layer.setStyle(this.defaultStyle);
+  }
+
+  private setValidDisplacementStyle(): void {
+    this.defaultStyle = polygonStyle.validDisplacement;
     this.layer.setStyle(this.defaultStyle);
   }
 

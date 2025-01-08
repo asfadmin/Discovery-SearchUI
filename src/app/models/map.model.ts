@@ -32,6 +32,7 @@ export enum MapInteractionModeType {
 
 export enum DrawPolygonStyle {
   VALID = 'Valid',
+  VALID_DISPLACEMENT = 'ValidDisplacement',
   INVALID = 'Invalid',
   OMITTED = 'Omitted'
 }

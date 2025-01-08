@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 
 import { BehaviorSubject, Subject } from 'rxjs';
-import { first, map, sampleTime, tap } from 'rxjs/operators';
+import {first, map, sampleTime, tap} from 'rxjs/operators';
+import {SubSink} from 'subsink';
 
 import { Collection, Feature, Map, View } from 'ol';
 import { Layer, Vector as VectorLayer } from 'ol/layer';
@@ -32,7 +33,7 @@ import { Circle as CircleStyle, Fill, Icon, Stroke, Style, Text as olText } from
 import Geometry from 'ol/geom/Geometry';
 import LayerGroup from 'ol/layer/Group';
 import { PinnedProduct } from '@services/browse-map.service';
-import { BrowseOverlayService, PointHistoryService } from '@services';
+import {BrowseOverlayService, PointHistoryService} from '@services';
 import { ViewOptions } from 'ol/View';
 import { Type as GeometryType } from 'ol/geom/Geometry';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
@@ -49,15 +50,17 @@ import { MultiPolygon } from 'ol/geom';
 import GeoJSON from 'ol/format/GeoJSON.js';
 import WKT from 'ol/format/WKT';
 import * as uiStore from '@store/ui';
+import * as searchStore from '@store/search';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MapService {
+export class MapService implements OnDestroy {
   public isDrawing$ = this.drawService.isDrawing$.pipe(
     tap(isDrawing => this.map.getViewport().style.cursor = isDrawing ? 'crosshair' : 'default')
   );
 
+  private subs = new SubSink();
   private mapView: views.MapView;
   private map: Map;
   private scaleLine: ScaleLine;
@@ -80,6 +83,26 @@ export class MapService {
   public displacementOverview$ = new BehaviorSubject<models.DisplacementLayerTypes | null>(null);
   private priorityOverview: VectorLayer<VectorSource>;
   public priorityEnabled$ = new BehaviorSubject<models.FlightDirection | null>(null);
+  public searchType: models.SearchType;
+
+  constructor(
+    private wktService: WktService,
+    private legacyAreaFormat: LegacyAreaFormatService,
+    private drawService: DrawService,
+    private store$: Store<AppState>,
+    private browseOverlayService: BrowseOverlayService,
+    private layerService: LayerService,
+    private http: HttpClient,
+    private pointHistoryService: PointHistoryService
+  ) {
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        searchType => {
+          this.searchType = searchType;
+        }
+      )
+    );
+  }
 
   private selectClick = new Select({
     condition: click,
@@ -171,17 +194,6 @@ export class MapService {
     )
   );
 
-  constructor(
-    private wktService: WktService,
-    private legacyAreaFormat: LegacyAreaFormatService,
-    private drawService: DrawService,
-    private store$: Store<AppState>,
-    private browseOverlayService: BrowseOverlayService,
-    private layerService: LayerService,
-    private http: HttpClient,
-    private pointHistoryService: PointHistoryService
-  ) { }
-
   public epsg(): string {
     return this.mapView.projection.epsg;
   }
@@ -246,7 +258,6 @@ export class MapService {
 
     return didLoad;
   }
-
 
   public setLayer(layer: VectorLayer<VectorSource>): void {
     if (!!this.polygonLayer) {
@@ -324,7 +335,11 @@ export class MapService {
   }
 
   public setDrawStyle(style: models.DrawPolygonStyle): void {
-    this.drawService.setDrawStyle(style);
+    if (this.searchType == 'Displacement') {
+      this.drawService.setDrawStyle(models.DrawPolygonStyle.VALID_DISPLACEMENT);
+    }else {
+      this.drawService.setDrawStyle(style);
+    }
   }
 
   public setDrawFeature(feature): void {
@@ -884,7 +899,7 @@ export class MapService {
 
       let selected = (feature.get('seriesNumber') === self.pointHistoryService.selectedPoint);
 
-        let layerStyle = new Style({
+      let layerStyle = new Style({
         image: new CircleStyle({
           stroke: new Stroke({
             color: (selected) ? 'red' : '#ffcc33',
@@ -1077,6 +1092,10 @@ export class MapService {
         ],
       }
     );
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
 }

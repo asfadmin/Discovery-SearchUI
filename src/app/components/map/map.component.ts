@@ -273,7 +273,7 @@ export class MapComponent implements OnInit, OnDestroy  {
           }
         })
         this.pointHistoryService.selectedPoint = pointIndex;
-        this.mapService.loadPolygonFrom(wktRepresentation.toString())
+        this.mapService.loadPolygonFrom(wktRepresentation.toString());
       })
     )
 
