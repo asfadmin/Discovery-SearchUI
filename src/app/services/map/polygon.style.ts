@@ -20,6 +20,27 @@ export const valid = new Style({
   })
 });
 
+export const validDisplacement = new Style({
+  fill: new Fill({
+    color: 'rgba(255, 255, 255, 0.2)'
+  }),
+  stroke: new Stroke({
+    color: '#236192',
+    width: 2
+  }),
+  image: new CircleStyle({
+    stroke: new Stroke({
+      color: '#ffcc33',
+      width: 2
+    }),
+    radius: 10,
+    fill: new Fill({
+      // color: '#236192',
+      color: 'rgba(0,0,0,0.25)',
+    }),
+  })
+});
+
 const fill = new Fill({
   color: 'rgba(255,255,255,0.0)'
 });

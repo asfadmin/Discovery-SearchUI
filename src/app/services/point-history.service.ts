@@ -37,6 +37,7 @@ export class PointHistoryService {
   }
 
   public addPoint(point: Point, seriesNumber: number) {
+    console.log('point-history addPoint(Point, seriesNumber):', point, seriesNumber);
     if(this.passDraw) {
       this.passDraw = false
       return
