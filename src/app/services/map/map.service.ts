@@ -557,7 +557,7 @@ export class MapService implements OnDestroy {
       let selectedPoint =  e.selected[0]?.get('point');
       if(!selectedPoint) {
         // TODO: not sure if we want to keep the point active or unselect it
-        // this.store$.dispatch(new uiStore.SetActiveWkt(null));
+        this.store$.dispatch(new uiStore.SetActiveWkt(null));
         e.preventDefault()
         return
       }
