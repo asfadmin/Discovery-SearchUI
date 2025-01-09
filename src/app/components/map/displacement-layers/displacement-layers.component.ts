@@ -19,7 +19,7 @@ export class DisplacementLayersComponent implements OnInit, OnDestroy {
   @ViewChild("priorityRollout", { static: true }) priorityCheckbox: MatCheckbox;
   public flightDir = models.FlightDirection.ASCENDING;
   public displacementOverview: models.DisplacementLayerTypes | null = null;
-  public cumulativeDisplacementSelectionDisabled: boolean = true;
+  public cumulativeDisplacementSelectionEnabled: boolean = false;
   public DispLayerTypes = models.DisplacementLayerTypes;
   public priorityEnabled = false;
   private subs = new SubSink();
@@ -36,7 +36,7 @@ export class DisplacementLayersComponent implements OnInit, OnDestroy {
       ).subscribe(
         t => {
           this.displacementOverview = t;
-          this.cumulativeDisplacementSelectionDisabled = false
+          this.cumulativeDisplacementSelectionEnabled = true
         }
       )
     );
@@ -73,7 +73,7 @@ export class DisplacementLayersComponent implements OnInit, OnDestroy {
   }
 
   public onUpdateLayerType(layerType: models.DisplacementLayerTypes): void {
-    if (!this.cumulativeDisplacementSelectionDisabled) {
+    if (this.cumulativeDisplacementSelectionEnabled) {
       this.clearDisplacementLayer();
       this.setDisplacementLayer(this.flightDir, layerType);
     }
@@ -81,7 +81,7 @@ export class DisplacementLayersComponent implements OnInit, OnDestroy {
 
 
   public onToggleCumulativeLayerDisplay(checked: boolean) {
-    this.cumulativeDisplacementSelectionDisabled = !checked
+    this.cumulativeDisplacementSelectionEnabled = checked;
     if (checked) {
       this.setDisplacementLayer(this.flightDir, this.displacementOverview)
     } else {

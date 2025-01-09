@@ -110,7 +110,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
 
   // private selectedScene: string;
-  @Input() isLoading: boolean = false;
+  @Input() isLoading: boolean = true;
   private showLines = true;
   private xAxisTitle = '';
   private yAxisTitle = '';
@@ -142,6 +142,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         debounceTime(1000),
         withLatestFrom(this.store$.select(chartsStore.getTimeseriesChartStates))
       ).subscribe(([_updated_id, chartStates]) => {
+        this.isLoading = false;
         this.refreshChart(chartStates);
       }));
 
@@ -233,6 +234,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       this.store$.select(uiStore.getActiveWkt).pipe(distinctUntilChanged()).subscribe(wkt => {
         if (wkt)
           this.highlightSeries(wkt);
+        else
+          this.resetHighlight()
       }));
 
 
@@ -537,7 +540,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           .style('opacity', .9);
         toolTip.html(`<div style="text-align: left">
       ${self.tooltipDateFormat(self.hoveredDate)},
-      ${p.short_wavelength_displacement.toFixed(2)} ${self.language.translate.instant('METERS')} <br>
+      ${p.short_wavelength_displacement.toFixed(4)} ${self.language.translate.instant('METERS')} <br>
       <b>${self.language.translate.instant('SERIES')} ${p.seriesNumber}</b></div>`);
         self.updateTooltip();
       })
@@ -560,7 +563,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           this.bestFitItems.push({
             seriesNumber: linearFitData.values[0].seriesNumber,
             color: linearFitData.values[0].color,
-            formula: `y = ${regression.m.toFixed(2)}x ${regression.b < 0 ? '-' : '+'} ${Math.abs(regression.b).toFixed(2)}`
+            formula: `y = ${regression.m.toFixed(4)}x ${regression.b < 0 ? '-' : '+'} ${Math.abs(regression.b).toFixed(4)}`
           })
           let lineregression = linearRegressionLine(regression);
 
@@ -624,6 +627,15 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.dots.select("text").text(wkt);
 
   }
+  private resetHighlight() {
+    let dClassName: string;
+    this.lines.style("stroke", (d: DataReady) => {
+      dClassName = '.' + d.name.replace(/\W/g, '');
+      this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", d.color).attr('r', 5);
+      return d.color;
+    });
+    this.lines.style("stroke-width", 1);
+  }
 
   // When the pointer moves, find the closest point, update the interactive tip, and highlight
   // the corresponding line.
@@ -635,15 +647,19 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     const i = d3.leastIndex(points, ([x, y]) => Math.hypot(Number(x) - xm, Number(y) - ym));
     if (typeof points[i] === 'undefined') { return; }
     const [_x, _y, k] = points[i];
+    return;
+    // TODO: Fix this to grab the correct series all the time.
     this.highlightSeries(k);
   }
 
   private pointerEntered(lines, dots) {
+    return
     lines.style("mix-blend-mode", null).style("stroke", unSelectedColor);
     dots.attr("display", null);
   }
 
   private pointerLeft(lines, _dots) {
+    return
     let dClassName: string;
     lines.style("stroke", (d: DataReady) => {
       dClassName = '.' + d.name.replace(/\W/g, '');

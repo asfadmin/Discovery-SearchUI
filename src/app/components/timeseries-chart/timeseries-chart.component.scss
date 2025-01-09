@@ -24,7 +24,6 @@ $chart-ctrl-top-x: 62px;
   color: #65665c;
   font-size: 14px;
   font-style: italic;
-  background-color: #f5f5f5;
 }
 
 .ts-best-fit-nav {
@@ -37,7 +36,6 @@ $chart-ctrl-top-x: 62px;
 .ts-best-fit-formulas {
   flex: 1 1 auto
 }
-
 
 .ts-best-fit-formulas .ts-best-fit-viewport {
   height: 35px;
@@ -88,7 +86,6 @@ $chart-ctrl-top-x: 62px;
   }
 }
 
-
 ::ng-deep .ts-chart-label {
   @include themify($themes) {
     fill: themed('dark-primary-text');
@@ -111,14 +108,16 @@ $chart-ctrl-top-x: 62px;
 
 ::ng-deep .loading-rect {
 	@include themify($themes) {
-	  fill: themed('dark-secondary-text');
+	  fill: lighten(themed('dark-secondary-text'),20%);
 	}
 	fill-opacity: 40%;
 }
 .disp-spinner {
     position: absolute;
-    top: 24%;
-    left: 48%;
+    display:grid;
+    height: 75%;
+    width: 100%;
+    place-items: center;
 }
 .ts-chart-zoom {
   position: absolute;
@@ -134,7 +133,6 @@ $chart-ctrl-top-x: 62px;
   padding-top: 50px;
   font-size: 18px;
 }
-
 
 .icon-container {
   display: flex;
