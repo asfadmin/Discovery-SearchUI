@@ -110,7 +110,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
 
   // private selectedScene: string;
-  @Input() isLoading: boolean = false;
+  @Input() isLoading: boolean = true;
   private showLines = true;
   private xAxisTitle = '';
   private yAxisTitle = '';
@@ -142,6 +142,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         debounceTime(1000),
         withLatestFrom(this.store$.select(chartsStore.getTimeseriesChartStates))
       ).subscribe(([_updated_id, chartStates]) => {
+        this.isLoading = false;
         this.refreshChart(chartStates);
       }));
 
