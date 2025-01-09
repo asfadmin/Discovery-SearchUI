@@ -234,6 +234,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       this.store$.select(uiStore.getActiveWkt).pipe(distinctUntilChanged()).subscribe(wkt => {
         if (wkt)
           this.highlightSeries(wkt);
+        else
+          this.resetHighlight()
       }));
 
 
@@ -624,6 +626,15 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     });
     this.dots.select("text").text(wkt);
 
+  }
+  private resetHighlight() {
+    let dClassName: string;
+    this.lines.style("stroke", (d: DataReady) => {
+      dClassName = '.' + d.name.replace(/\W/g, '');
+      this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", d.color).attr('r', 5);
+      return d.color;
+    });
+    this.lines.style("stroke-width", 1);
   }
 
   // When the pointer moves, find the closest point, update the interactive tip, and highlight
