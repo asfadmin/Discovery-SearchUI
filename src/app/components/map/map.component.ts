@@ -251,8 +251,7 @@ export class MapComponent implements OnInit, OnDestroy  {
 
     this.subs.add(
       this.store$.select(uiStore.getActiveWkt).pipe(distinctUntilChanged()).subscribe(wkt => {
-        if (wkt)
-          this.respondToActiveWkt(wkt);
+        this.respondToActiveWkt(wkt);
       }));
 
     this.subs.add(this.store$.select(getTimeseriesChartStates).subscribe(chartStates => {
@@ -291,7 +290,7 @@ export class MapComponent implements OnInit, OnDestroy  {
         this.selectedSeries = item;
       }
     });
-    this.pointHistoryService.selectedPoint = this.selectedSeries.seriesNumber;
+    this.pointHistoryService.selectedPoint = this.selectedSeries?.seriesNumber ?? -1;
     this.mapService.displacmentLayer.changed();
   }
 
