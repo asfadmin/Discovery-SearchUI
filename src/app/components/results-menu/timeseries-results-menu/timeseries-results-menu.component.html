@@ -32,7 +32,7 @@
                   on-mouseleave="setActiveWkt(null)">
                   @if (point.valid) {
                 <mat-checkbox [checked]="point.checked"
-                              (change)="updateSeries($event.checked, $index)">
+                              (change)="updateSeries($event.checked, $index)"  style="display: flex;">
                   <mat-icon class="ts-wkt-icon" [style.color]="point.color">place</mat-icon>
                   <span class="ts-wkt-label">
                     {{'SERIES' | translate}} {{point.seriesNumber}}
@@ -40,13 +40,15 @@
                 </mat-checkbox>
                 <button mat-icon-button (click)="deletePoint($index)" *ngIf="point.seriesNumber === selectedSeries"><mat-icon class="ts-trash-can">delete</mat-icon></button>
               } @else {
+                <div>
                 <mat-icon color="warn" class="invalid-aoi-icon">block</mat-icon>
                   <mat-icon class="ts-wkt-icon" [style.color]="point.color">place</mat-icon>
                   <span class="ts-wkt-label invalid-aoi-text">
                     {{'SERIES' | translate}} {{point.seriesNumber}}
                   </span>
                   <button mat-icon-button (click)="deletePoint($index)"><mat-icon class="ts-trash-can">delete</mat-icon></button>
-              }
+                </div>
+                }
               </li>
             }
           </ul>
