@@ -3,7 +3,7 @@ name: Deploy edc prod SearchUI
 on:
   push:
     branches:
-      - test-edc/*
+      - prod
 
 jobs:
   deploy:
