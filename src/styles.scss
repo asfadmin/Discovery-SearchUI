@@ -474,7 +474,8 @@ ul {
 }
 
 .sbas-column-1 {
-  div.noUi-handle.noUi-handle-lower {
+  div.noUi-handle.noUi-handle-lower,
+  div.noUi-handle.noUi-handle-upper {
     width: 16px;
     right: -5px;
   }
