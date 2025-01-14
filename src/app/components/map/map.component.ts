@@ -221,6 +221,8 @@ export class MapComponent implements OnInit, OnDestroy  {
             return 'Click and drag on area of interest';
           } else if (interactionMode === models.MapInteractionModeType.TIMERSERIES) {
             return 'Click to select a point for time series analysis';
+          } else {
+            return ''
           }
         })
       ).subscribe(
@@ -291,7 +293,7 @@ export class MapComponent implements OnInit, OnDestroy  {
       }
     });
     this.pointHistoryService.selectedPoint = this.selectedSeries?.seriesNumber ?? -1;
-    this.mapService.displacmentLayer.changed();
+    this.mapService.displacmentLayer?.changed();
   }
 
   public onFileHovered(e): void {
