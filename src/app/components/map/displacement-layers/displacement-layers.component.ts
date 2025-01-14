@@ -82,10 +82,11 @@ export class DisplacementLayersComponent implements OnInit, OnDestroy {
 
   public onToggleCumulativeLayerDisplay(checked: boolean) {
     this.cumulativeDisplacementSelectionEnabled = checked;
-    if (checked) {
+    if (checked && this.displacementOverview) {
       this.setDisplacementLayer(this.flightDir, this.displacementOverview)
     } else {
       this.clearDisplacementLayer()
+      this.displacementOverview = null;
     }
   }
 
