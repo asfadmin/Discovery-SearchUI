@@ -416,6 +416,14 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       // .attr("transform", `translate(0,${this.height - marginBottom})`)
       .attr("transform", `translate(0,${this.height})`)
 
+    this.svg.append('text')
+      .attr('transform', `rotate(-90)`)
+      .attr('y', -this.margin.left + 20)
+      .attr('x', -this.height / 2)
+      .style('text-anchor', 'middle')
+      .attr('class', 'ts-chart-label')
+      .text(this.yAxisTitle);
+
     this.clipContainer = this.svg.append('g')
       .attr('clip-path', 'url(#clip)');
 
@@ -468,14 +476,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .style('text-anchor', 'middle')
       .attr('class', 'ts-chart-label')
       .text(this.xAxisTitle);
-
-    this.svg.append('text')
-      .attr('transform', `rotate(-90)`)
-      .attr('y', -this.margin.left + 20)
-      .attr('x', -this.height / 2)
-      .style('text-anchor', 'middle')
-      .attr('class', 'ts-chart-label')
-      .text(this.yAxisTitle);
 
     this.svg
       .on("pointermove", () => this.pointerMoved(event, this.lines, this.dots, this.points))
