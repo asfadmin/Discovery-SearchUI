@@ -39,7 +39,7 @@
   <app-chart-modal class="ts-chart-config-button" (resetReferenceEvent)="resetBasePoint()"></app-chart-modal>
   <app-timeseries-chart-zoom class="ts-chart-zoom" (zoomInEvent)="onZoomIn()" (zoomOutEvent)="onZoomOut()"
                              (zoomToFitEvent)="onZoomToFit()"></app-timeseries-chart-zoom>
-  @if(isLoading){
+  @if(isLoading && this.dataSource.length <= 0){
     <div class="disp-spinner">
       <mat-spinner></mat-spinner>
     </div>
@@ -59,9 +59,12 @@
     {{ 'NO_AREA_ON_INTEREST_SPECIFIED' | translate }}<br>
     {{ 'PLEASE_SELECT_A_POINT_ON_THE_MAP' | translate }}
   </div>
+
+  
+  <div class="icon-container">
+    <mat-icon>place</mat-icon>
+  </div>
+
 </div>
 
-<div class="icon-container">
-  <mat-icon>place</mat-icon>
-</div>
 

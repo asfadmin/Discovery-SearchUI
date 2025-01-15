@@ -285,7 +285,7 @@ label {
 
 .ts-no-point-selected {
   text-align: center;
-  padding-top: 120px;
+  padding-top: 60px;
 }
 
 .ts-wkt-icon {
@@ -305,7 +305,7 @@ label {
 }
 
 .ts-trash-can {
-  margin-bottom: -4px;
+//   margin-bottom: -4px;
   font-size: 18px;
 }
 
@@ -370,7 +370,7 @@ ul {
 }
 .ts-highlighted {
   @include themify($themes) {
-    background-color: themed('primary-light');
+    background-color: lighten(themed('primary-light'),5%);
   }
 
   .ts-wkt-label {
@@ -378,3 +378,10 @@ ul {
   }
 }
 
+.point-list-item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	overflow: hidden;
+	height: 45px;
+}

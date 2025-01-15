@@ -108,14 +108,16 @@ $chart-ctrl-top-x: 62px;
 
 ::ng-deep .loading-rect {
 	@include themify($themes) {
-	  fill: themed('dark-secondary-text');
+	  fill: lighten(themed('dark-secondary-text'),20%);
 	}
 	fill-opacity: 40%;
 }
 .disp-spinner {
     position: absolute;
-    top: 24%;
-    left: 48%;
+    display:grid;
+    height: 75%;
+    width: 100%;
+    place-items: center;
 }
 .ts-chart-zoom {
   position: absolute;
@@ -128,7 +130,7 @@ $chart-ctrl-top-x: 62px;
 
 .message-container{
   text-align: center;
-  padding-top: 100px;
+  padding-top: 50px;
   font-size: 18px;
 }
 

@@ -6,25 +6,54 @@
       </div>
     </mat-checkbox>
     <mat-radio-group #cumulativeLayers (change)="onUpdateLayerType($event.value)"
-      [disabled]="cumulativeDisplacementSelectionDisabled"
+      [disabled]="!cumulativeDisplacementSelectionEnabled"
       style="display: flex; flex-direction: column; margin-left: 10px">
-      <mat-radio-button [value]="DispLayerTypes.DISPLACEMENT" [disabled]="cumulativeDisplacementSelectionDisabled" [checked]="this.displacementOverview === DispLayerTypes.DISPLACEMENT">
+
+      <mat-radio-button [value]="DispLayerTypes.DISPLACEMENT" [disabled]="!cumulativeDisplacementSelectionEnabled" [checked]="this.displacementOverview === DispLayerTypes.DISPLACEMENT">
         <div class="selector-text">
           {{ 'DEFORMATION' | translate}}
         </div>
       </mat-radio-button>
-      <mat-radio-button [value]="DispLayerTypes.VELOCITY" [disabled]="cumulativeDisplacementSelectionDisabled" [checked]="this.displacementOverview === DispLayerTypes.VELOCITY">
+      <mat-radio-button [value]="DispLayerTypes.VELOCITY" [disabled]="!cumulativeDisplacementSelectionEnabled" [checked]="this.displacementOverview === DispLayerTypes.VELOCITY">
+
         <div class="selector-text">
           {{ 'VELOCITY' | translate}}
         </div>
       </mat-radio-button>
     </mat-radio-group>
-    <mat-checkbox #priorityRollout (change)="onUpdatePriority($event.checked)"
+
+    @if (cumulativeDisplacementSelectionEnabled) {
+      @if (displacementOverview === DispLayerTypes.VELOCITY) {
+        <app-map-legend
+          [min]="-0.05"
+          [max]="0.05"
+          [units]="'m/yr'">
+        </app-map-legend>
+      }
+      @else {
+        <app-map-legend
+          [min]="0"
+          [max]="1"
+          [units]="'m'">
+        </app-map-legend>
+      }
+    }
+
+    <mat-checkbox #priorityRollout class="rollout-checkbox"
+    (change)="onUpdatePriority($event.checked)"
     [checked]="priorityEnabled">
       <div class="selector-text">
         {{ 'ROLLOUT' | translate}}
       </div>
     </mat-checkbox>
+
+    @if (priorityEnabled) {
+      <div class="priority-legend">
+        <div class="priority-box first-priority"> 1st </div>
+        <div class="priority-box second-priority"> 2nd </div>
+        <div class="priority-box third-priority"> 3rd </div>
+      </div>
+    }
 
     <div class="help-text">
       {{ 'WHAT_ARE_THESE?' | translate}}
