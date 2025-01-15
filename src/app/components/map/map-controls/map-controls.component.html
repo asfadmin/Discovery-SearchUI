@@ -1,9 +1,10 @@
 <div class="icon-bar--layout position">
-  <div class="fx-row icon-bar">
-    <div class="fx-col">
+  <!-- TODO: For some reason displacement styles are making the toolbar extend too far, this works for now -->
+  <div class="fx-row icon-bar" [ngClass]="{'toolbar-collpased': !showToolBar && searchType === searchTypes.DISPLACEMENT}">
+    <div class="fx-col" *ngIf="showToolBar == true">
       <div class="fx-row">
 
-        <div *ngIf="showToolBar == true" class="fx-col visible-toggle">
+        <div  class="fx-col visible-toggle">
           <div class="fx-row icon-bar tool-bar-common">
 
             <div class="fx-empty group-margin" *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS">
