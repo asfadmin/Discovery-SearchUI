@@ -426,7 +426,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .attr('y', -this.margin.left + 12)
       .attr('x', -this.height / 2)
       .style('text-anchor', 'middle')
-      .attr('class', 'ts-chart-label')
+      .attr('class', 'ts-chart-label ts-axis-title')
       .text(this.yAxisTitle);
 
     this.clipContainer = this.svg.append('g')
