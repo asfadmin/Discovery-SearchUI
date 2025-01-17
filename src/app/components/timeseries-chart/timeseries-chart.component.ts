@@ -114,6 +114,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private showLines = true;
   private xAxisTitle = '';
   private yAxisTitle = '';
+  private dotToolTipText = '';
 
   private subs = new SubSink();
   // private allGroup: string[];
@@ -271,6 +272,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       this.language.translate.instant('DATE');
     this.yAxisTitle = this.language.translate.instant('SHORTWAVE_DISPLACEMENT') + ' (' +
       this.language.translate.instant('METERS') + ')';
+    this.dotToolTipText = this.language.translate.instant('RIGHT_CLICK_SET_BASELINE');
   }
 
   public onButtonClickPlus() {
@@ -547,7 +549,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         toolTip.html(`<div style="text-align: left">
       ${self.tooltipDateFormat(self.hoveredDate)},
       ${p.short_wavelength_displacement.toFixed(4)} ${self.language.translate.instant('METERS')} <br>
-      <b>${self.language.translate.instant('SERIES')} ${p.seriesNumber}</b></div>`);
+      <b>${self.language.translate.instant('SERIES')} ${p.seriesNumber}</b> <br>
+      <em>${self.dotToolTipText}</em></div>`);
         self.updateTooltip();
       })
       .on('mouseleave', function (_) {
