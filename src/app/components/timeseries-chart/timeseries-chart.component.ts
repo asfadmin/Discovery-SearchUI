@@ -550,7 +550,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       ${self.tooltipDateFormat(self.hoveredDate)},
       ${p.short_wavelength_displacement.toFixed(4)} ${self.language.translate.instant('METERS')} <br>
       <b>${self.language.translate.instant('SERIES')} ${p.seriesNumber}</b> <br>
-      ${self.dotToolTipText}</div>`);
+      <em>${self.dotToolTipText}</em></div>`);
         self.updateTooltip();
       })
       .on('mouseleave', function (_) {
