@@ -547,9 +547,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         toolTip
           .style('opacity', .9);
         toolTip.html(`<div style="text-align: left">
-      ${self.tooltipDateFormat(self.hoveredDate)},
+      <b>${self.language.translate.instant('SERIES')} ${p.seriesNumber}:&nbsp;&nbsp;</b>${self.tooltipDateFormat(self.hoveredDate)},&nbsp;
       ${p.short_wavelength_displacement.toFixed(4)} ${self.language.translate.instant('METERS')} <br>
-      <b>${self.language.translate.instant('SERIES')} ${p.seriesNumber}</b> <br>
       <em>${self.dotToolTipText}</em></div>`);
         self.updateTooltip();
       })
