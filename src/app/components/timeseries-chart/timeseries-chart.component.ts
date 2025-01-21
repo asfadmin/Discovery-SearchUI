@@ -114,6 +114,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private showLines = true;
   private xAxisTitle = '';
   private yAxisTitle = '';
+  private dotToolTipText = '';
 
   private subs = new SubSink();
   // private allGroup: string[];
@@ -271,6 +272,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       this.language.translate.instant('DATE');
     this.yAxisTitle = this.language.translate.instant('SHORTWAVE_DISPLACEMENT') + ' (' +
       this.language.translate.instant('METERS') + ')';
+    this.dotToolTipText = this.language.translate.instant('RIGHT_CLICK_SET_BASELINE');
   }
 
   public onButtonClickPlus() {
@@ -393,7 +395,9 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
     // Determine scale extents
     // const marginBottom = 40;
-    const short_wavelength_displacements = this.dataSource.map(p => p['short_wavelength_displacement'] as number)
+    const short_wavelength_displacements = this.dataSource.map(p => Math.round(((p['short_wavelength_displacement'] as number)
+                                                                    + Number.EPSILON) * 10000) / 10000);
+    // const short_wavelength_displacements = this.dataSource.map(p => p['short_wavelength_displacement'] as number)
     const dates = this.dataSource.map(p => Date.parse(p['date'])).filter(d => !isNaN(d))
     const inner_margins = 1.25
     const min_y = Math.min(...short_wavelength_displacements) * inner_margins
@@ -410,7 +414,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .attr('transform', `translate(0, ${this.height})`);
     this.y = d3.scaleLinear()
       .domain([min_y, max_y])
-      .range([this.height, 0]);
+      .range([this.height, 0])
+      .nice();
     this.yAxis = this.svg.append('g');
     this.svg.append("g")
       // .attr("transform", `translate(0,${this.height - marginBottom})`)
@@ -418,10 +423,10 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
     this.svg.append('text')
       .attr('transform', `rotate(-90)`)
-      .attr('y', -this.margin.left + 20)
+      .attr('y', -this.margin.left + 12)
       .attr('x', -this.height / 2)
       .style('text-anchor', 'middle')
-      .attr('class', 'ts-chart-label')
+      .attr('class', 'ts-chart-label ts-axis-title')
       .text(this.yAxisTitle);
 
     this.clipContainer = this.svg.append('g')
@@ -444,6 +449,9 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     const self = this;
 
     this.points = this.dataSource.map((d) => [this.x(new Date(d.date)), this.y(d.short_wavelength_displacement), d.aoi]);
+    // this.points = this.dataSource.map((d) =>  [this.x(new Date(d.date)),
+    //                                           Math.round((this.y(d.short_wavelength_displacement) + Number.EPSILON) * 10000) / 10000,
+    //                                           d.aoi]);
 
     this.zoom = d3.zoom<SVGElement, {}>()
       .extent([[0, 0], [this.width, this.height]])
@@ -539,9 +547,9 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         toolTip
           .style('opacity', .9);
         toolTip.html(`<div style="text-align: left">
-      ${self.tooltipDateFormat(self.hoveredDate)},
+      <b>${self.language.translate.instant('SERIES')} ${p.seriesNumber}:&nbsp;&nbsp;</b>${self.tooltipDateFormat(self.hoveredDate)},&nbsp;
       ${p.short_wavelength_displacement.toFixed(4)} ${self.language.translate.instant('METERS')} <br>
-      <b>${self.language.translate.instant('SERIES')} ${p.seriesNumber}</b></div>`);
+      <em>${self.dotToolTipText}</em></div>`);
         self.updateTooltip();
       })
       .on('mouseleave', function (_) {
