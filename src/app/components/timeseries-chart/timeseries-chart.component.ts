@@ -84,7 +84,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private dots: d3.Selection<SVGCircleElement, models.TimeSeriesData, SVGGElement, {}>;
   private lineGraph: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private toolTip: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>
-  public margin = { top: 10, right: 30, bottom: 60, left: 65 };
+  public margin = { top: 10, right: 30, bottom: 60, left: 95 };
   private thing: d3.Selection<SVGGElement, {}, HTMLElement, any>
   private hoveredElement;
   public hoveredData;
@@ -113,7 +113,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   @Input() isLoading: boolean = true;
   private showLines = true;
   private xAxisTitle = '';
-  private yAxisTitle = '';
+  private yAxisTitle1 = '';
+  private yAxisTitle2 = '';
   private dotToolTipText = '';
 
   private subs = new SubSink();
@@ -270,8 +271,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   public translateChartText() {
     this.xAxisTitle = this.language.translate.instant('SCENE') + ' ' +
       this.language.translate.instant('DATE');
-    this.yAxisTitle = this.language.translate.instant('SHORTWAVE_DISPLACEMENT') + ' (' +
-      this.language.translate.instant('METERS') + ')';
+    this.yAxisTitle1 = this.language.translate.instant('SHORTWAVE_DISPLACEMENT');
+    this.yAxisTitle2 = ' (' + this.language.translate.instant('METERS') + ')';
     this.dotToolTipText = this.language.translate.instant('RIGHT_CLICK_SET_BASELINE');
   }
 
@@ -424,10 +425,18 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.svg.append('text')
       .attr('transform', `rotate(-90)`)
       .attr('y', -this.margin.left + 12)
-      .attr('x', -this.height / 2)
+      .attr('x', -(this.height / 2) - 24)
       .style('text-anchor', 'middle')
       .attr('class', 'ts-chart-label ts-axis-title')
-      .text(this.yAxisTitle);
+      .text(this.yAxisTitle1);
+
+    this.svg.append('text')
+      .attr('transform', `rotate(-90)`)
+      .attr('y', -this.margin.left + 36)
+      .attr('x', -(this.height / 2) - 24)
+      .style('text-anchor', 'middle')
+      .attr('class', 'ts-chart-label ts-axis-title')
+      .text(this.yAxisTitle2);
 
     this.clipContainer = this.svg.append('g')
       .attr('clip-path', 'url(#clip)');
@@ -652,22 +661,23 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     if (typeof points === 'undefined') { return; }
     if (points == null) { return; }
     const [xm, ym] = d3.pointer(event);
+    console.log('pointerMoved [xm, ym]', xm, ym);
     const i = d3.leastIndex(points, ([x, y]) => Math.hypot(Number(x) - xm, Number(y) - ym));
     if (typeof points[i] === 'undefined') { return; }
     const [_x, _y, k] = points[i];
-    return;
+    // return;
     // TODO: Fix this to grab the correct series all the time.
     this.highlightSeries(k);
   }
 
   private pointerEntered(lines, dots) {
-    return
+    // return
     lines.style("mix-blend-mode", null).style("stroke", unSelectedColor);
     dots.attr("display", null);
   }
 
   private pointerLeft(lines, _dots) {
-    return
+    // return
     let dClassName: string;
     lines.style("stroke", (d: DataReady) => {
       dClassName = '.' + d.name.replace(/\W/g, '');
