@@ -326,15 +326,10 @@
     <hr>
 
     <button
-        [matMenuTriggerFor]="asfMenu"
         mat-menu-item>
       <mat-icon>corporate_fare</mat-icon>ASF
     </button>
 
-    <mat-menu #asfMenu="matMenu">
-      <a mat-menu-item [href]="asfWebsite.contact" target="_blank">{{ 'CONTACT' | translate }}</a>
-      <a mat-menu-item href="https://www.alaska.edu/nondiscrimination" target="_blank">{{ 'NON_DISCRIMINATION' | translate }}</a>
-    </mat-menu>
 
     <mat-menu #copyrightMenu="matMenu">
       <a mat-menu-item [href]="asfWebsite.home" target="_blank">© {{anio}} ASF</a>
