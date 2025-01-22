@@ -28,8 +28,7 @@ export const initState: UserState = {
     defaultFilterPresets: {
       'Baseline Search' : '',
       'Geographic Search' : '',
-      'SBAS Search' : '',
-      'Displacement': ''
+      'SBAS Search' : ''
     },
     hyp3BackendUrl: '',
     theme: 'light',

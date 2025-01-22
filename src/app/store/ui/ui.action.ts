@@ -27,7 +27,6 @@ export enum UIActionType {
   SET_ONLY_SCENES_WITH_BROWSE = '[UI] Set Only Scenes With Browse',
   SET_HELP_DIALOG_TOPIC = '[UI] Set Help Dialog Topic',
   SET_CURRENT_LANGUAGE = '[UI] Set Current Language',
-  SET_ACTIVE_WKT = '[UI] Set Active Wkt',
   SET_IS_DOWNLOAD_QUEUE_OPEN = '[UI] Is Download Queue Open',
   SET_IS_ON_DEMAND_QUEUE_OPEN = '[UI] Is On Demand Queue Open',
 
@@ -41,6 +40,7 @@ export enum UIActionType {
   LOAD_BANNERS = '[Banner] Load Banners',
   ADD_BANNERS = '[Banner] Set Banners',
   REMOVE_BANNER = '[Banner] Remove Banner',
+
 }
 
 export class ToggleAOIOptions implements Action {
@@ -157,12 +157,6 @@ export class SetCurrentLanguage implements Action {
   constructor(public payload: string | null) {}
 }
 
-export class SetActiveWkt implements Action {
-  public readonly type = UIActionType.SET_ACTIVE_WKT;
-
-  constructor(public payload: string | null) {}
-}
-
 export class RemoveBanner implements Action {
   public readonly type = UIActionType.REMOVE_BANNER;
 
@@ -202,7 +196,6 @@ export type UIActions =
   | SetOnlyScenesWithBrowse
   | SetHelpDialogTopic
   | SetCurrentLanguage
-  | SetActiveWkt
   | SetIsBrowseDialogOpen
   | SetIsDownloadQueueOpen
   | SetIsOnDemandQueueOpen

@@ -15,7 +15,6 @@ export interface SearchState {
   totalResults: null | number;
   searchType: SearchType | null;
   nextHyp3JobUrl: null | string;
-  kioskMode: boolean;
 }
 
 export const initState: SearchState = {
@@ -28,8 +27,7 @@ export const initState: SearchState = {
   totalResults: null,
   searchType: SearchType.DATASET,
   nextHyp3JobUrl: null,
-  areResultsOutOfDate: false,
-  kioskMode: false,
+  areResultsOutOfDate: false
 };
 
 export function searchReducer(state = initState, action: SearchActions): SearchState {
@@ -91,15 +89,6 @@ export function searchReducer(state = initState, action: SearchActions): SearchS
       };
     }
 
-    case SearchActionType.DISPLACEMENT_SEARCH_RESPONSE: {
-      return {
-        ...state,
-        totalResults: 1,
-        isLoading: false,
-        isCanceled: false,
-      }
-    }
-
     case SearchActionType.SEARCH_ERROR: {
       return {
         ...state,
@@ -134,13 +123,6 @@ export function searchReducer(state = initState, action: SearchActions): SearchS
       return {
         ...state,
         areResultsOutOfDate: action.payload
-      };
-    }
-
-    case SearchActionType.SET_SEARCH_KIOSK_MODE: {
-      return {
-        ... state,
-        kioskMode: action.payload
       };
     }
 
@@ -179,7 +161,7 @@ export const getIsCanceled = createSelector(
 
 export const getCanSearch = createSelector(
   getSearchState,
-  (state: SearchState) => state.searchType === SearchType.CUSTOM_PRODUCTS || state.searchType === SearchType.DISPLACEMENT || state.canSearch
+  (state: SearchState) => state.searchType === SearchType.CUSTOM_PRODUCTS || state.canSearch
 );
 
 export const getIsMaxResultsLoading = createSelector(
@@ -200,9 +182,4 @@ export const getNextHyp3JobsUrl = createSelector(
 export const getareResultsOutOfDate = createSelector(
   getSearchState,
   (state: SearchState) => state.areResultsOutOfDate
-);
-
-export const getKioskMode = createSelector(
-  getSearchState,
-  (state: SearchState) => state.kioskMode
 );

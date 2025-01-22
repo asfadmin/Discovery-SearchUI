@@ -1,40 +1,35 @@
-import {Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
+import {
+  Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, OnDestroy
+} from '@angular/core';
 
-import {Store} from '@ngrx/store';
-import {combineLatest, distinctUntilChanged, Observable} from 'rxjs';
-import {filter, map, switchMap, tap, withLatestFrom,} from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { Observable, combineLatest } from 'rxjs';
+import {
+  map, filter, switchMap, tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
-import {Vector as VectorLayer} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
+import { Vector as VectorLayer} from 'ol/layer';
+import { Vector as VectorSource } from 'ol/source';
 import Overlay from 'ol/Overlay';
 import Point from 'ol/geom/Point';
 
 import tippy, {followCursor} from 'tippy.js';
-import {SubSink} from 'subsink';
+import { SubSink } from 'subsink';
 
-import {AppState} from '@store';
+import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as searchStore from '@store/search';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 
 import * as models from '@models';
-import {CMRProduct, SarviewsEvent} from '@models';
-import {
-  MapService,
-  PointHistoryService,
-  SarviewsEventsService,
-  ScenesService,
-  ScreenSizeService,
-  WktService
-} from '@services';
+import { MapService, WktService, ScreenSizeService, ScenesService, SarviewsEventsService } from '@services';
 import * as polygonStyle from '@services/map/polygon.style';
-import {StyleLike} from 'ol/style/Style';
-import {Feature} from 'ol';
+import { CMRProduct, SarviewsEvent } from '@models';
+import { StyleLike } from 'ol/style/Style';
+import { Feature } from 'ol';
 import Geometry from 'ol/geom/Geometry';
-import {MatDialog} from '@angular/material/dialog';
-import WKT from 'ol/format/WKT';
-import {getTimeseriesChartStates} from '@store/charts';
 
 enum FullscreenControls {
   MAP = 'Map',
@@ -92,8 +87,6 @@ export class MapComponent implements OnInit, OnDestroy  {
   );
 
   private sarviewsEvents: SarviewsEvent[];
-  private chartStates: models.timeseriesChartItemState[] = [];
-  private selectedSeries: any = null;
 
   constructor(
     private store$: Store<AppState>,
@@ -102,25 +95,22 @@ export class MapComponent implements OnInit, OnDestroy  {
     private screenSize: ScreenSizeService,
     private scenesService: ScenesService,
     private eventMonitoringService: SarviewsEventsService,
-    public dialog: MatDialog,
-    private pointHistoryService: PointHistoryService,
   ) {}
 
   ngOnInit(): void {
-
     this.subs.add(
-      this.mapService.selectedSarviewEvent$.pipe(
-        filter(id => !!id)
-      ).subscribe(
-        id => this.selectedSarviewEvent = this.sarviewsEvents?.find(event => event?.event_id === id)
-      )
-    );
+    this.mapService.selectedSarviewEvent$.pipe(
+      filter(id => !!id)
+    ).subscribe(
+      id => this.selectedSarviewEvent = this.sarviewsEvents?.find(event => event?.event_id === id)
+    ));
 
     this.subs.add(
       this.store$.select(scenesStore.getSelectedScene).subscribe(
         scene => this.selectedScene = scene
       )
     );
+
 
     this.subs.add(
       this.screenSize.breakpoint$.subscribe(
@@ -159,8 +149,7 @@ export class MapComponent implements OnInit, OnDestroy  {
         mode => {
           if (mode === models.MapInteractionModeType.NONE) {
             this.mapService.enableInteractions();
-          }
-          else {
+          } else {
             this.mapService.disableInteractions();
           }
         }
@@ -219,10 +208,6 @@ export class MapComponent implements OnInit, OnDestroy  {
             }
           } else if (interactionMode === models.MapInteractionModeType.EDIT) {
             return 'Click and drag on area of interest';
-          } else if (interactionMode === models.MapInteractionModeType.TIMERSERIES) {
-            return 'Click to select a point for time series analysis';
-          } else {
-            return ''
           }
         })
       ).subscribe(
@@ -252,48 +237,10 @@ export class MapComponent implements OnInit, OnDestroy  {
     );
 
     this.subs.add(
-      this.store$.select(uiStore.getActiveWkt).pipe(distinctUntilChanged()).subscribe(wkt => {
-        this.respondToActiveWkt(wkt);
-      }));
-
-    this.subs.add(this.store$.select(getTimeseriesChartStates).subscribe(chartStates => {
-        this.chartStates = Object.values(chartStates);
-      }
-    ));
-
-
-    this.subs.add(
-      this.mapService.newSelectedDisplacement$.subscribe(point => {
-        let format = new WKT();
-        let wktRepresentation  = format.writeGeometry(point);
-
-        let pointIndex = this.pointHistoryService.getHistory().findIndex((thing) => {
-          if(thing.point === point) {
-            this.store$.dispatch(new uiStore.SetActiveWkt(wktRepresentation));
-            return true
-          }
-        })
-        this.pointHistoryService.selectedPoint = pointIndex;
-        this.mapService.loadPolygonFrom(wktRepresentation.toString());
-      })
-    )
-
-    this.subs.add(
       this.store$.select(uiStore.getIsFiltersMenuOpen).subscribe(
         isOpen => this.isFiltersMenuOpen = isOpen
       )
     );
-  }
-
-  public respondToActiveWkt(wkt: string) {
-    this.selectedSeries = null;
-    this.chartStates.forEach((item) => {
-      if (item.wkt == wkt) {
-        this.selectedSeries = item;
-      }
-    });
-    this.pointHistoryService.selectedPoint = this.selectedSeries?.seriesNumber ?? -1;
-    this.mapService.displacmentLayer?.changed();
   }
 
   public onFileHovered(e): void {
@@ -317,6 +264,7 @@ export class MapComponent implements OnInit, OnDestroy  {
     const newMode = successful ?
     models.MapInteractionModeType.EDIT :
     models.MapInteractionModeType.NONE;
+
     this.onNewInteractionMode(newMode);
   }
 
@@ -364,10 +312,7 @@ export class MapComponent implements OnInit, OnDestroy  {
           )
         ),
       ).subscribe(
-        feature => {
-          if(this.searchType !== this.searchTypes.DISPLACEMENT){
-            this.mapService.setSelectedFeature(feature)
-          }}
+        feature => this.mapService.setSelectedFeature(feature)
       )
     );
 
@@ -421,14 +366,6 @@ export class MapComponent implements OnInit, OnDestroy  {
             const intersectionMethod = this.mapService.getAoiIntersectionMethod(geometryType);
 
             polygonFeatures = features.filter(feature => intersectionMethod(searchPolygon, feature));
-          }
-          if(this.searchType === this.searchTypes.DISPLACEMENT) {
-            // TODO: Remove placehohttps://local.asf.alaska.edu:4446/#/lder frame when more data arrives
-            let vectorFeature = this.wktService.wktToFeature(
-              'POLYGON ((-149.451139279365 62.1287442968912, -149.489207371942 62.045616952959, -149.476221395717 62.0129791068178, -149.519088628246 61.955889388159, -149.536405309494 61.854259222719, -149.586547633797 61.725062981579, -149.594933718237 61.6491856726608, -149.81365221469 60.9678772131571, -149.835750622071 60.9420795477735, -149.859662107215 60.8380786660427, -149.904017634358 60.7487221866998, -149.925244567858 60.643143005989, -148.495889771202 60.5277410743715, -148.470041402483 60.584602367533, -146.906606463731 60.4396563701975, -146.873685244838 60.4951172124558, -145.386267125578 60.3396641673686, -145.290423628369 60.5402632158137, -145.280500106703 60.5829732084687, -145.301225650796 60.5845853001108, -145.236822870895 60.6909796637016, -145.247262492305 60.7010850131082, -145.224251585634 60.7495463006203, -145.232581050756 60.7682458705588, -145.187153890321 60.8021251581012, -145.208019152527 60.8234194914492, -145.058111527729 61.0387595374364, -145.099374030659 61.0732930019398, -145.024138665138 61.1204393557309, -145.047326954518 61.1417906129957, -145.030470686787 61.1886939957555, -144.963180408383 61.2453544268513, -144.984671478238 61.2677677145688, -144.976235627719 61.337959599446, -144.89834894171 61.4289187444297, -144.910469614585 61.4579328980322, -144.890927390867 61.4721803217938, -144.897062103683 61.4897872096134, -144.874529671332 61.5309281203528, -144.843140879426 61.5522585942678, -144.843705014899 61.5929497163114, -144.762933706766 61.6622405486587, -144.700945264316 61.8174811273622, -146.289453228815 61.9803053628305, -146.329597119308 61.9247592198443, -147.983354118586 62.073430473257, -148.010743582664 62.0164065972356, -149.451139279365 62.1287442968912))',
-              'EPSG:3857'
-            )
-            return this.featuresToSource([vectorFeature], polygonStyle.staticAOI)
           }
 
           return this.scenePolygonsLayer(polygonFeatures);
@@ -498,7 +435,7 @@ export class MapComponent implements OnInit, OnDestroy  {
       map(scenes => this.scenesToFeature(scenes, projection)));
   }
 
-  public scenePolygonsLayer(features: Feature<Geometry>[]): VectorLayer<VectorSource> {
+  private scenePolygonsLayer(features: Feature<Geometry>[]): VectorLayer<VectorSource> {
       const vectorLayer = this.featuresToSource(features, polygonStyle.scene);
       vectorLayer.set('selectable', 'true');
       return vectorLayer;

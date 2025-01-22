@@ -17,7 +17,6 @@ import { CustomizeEnvComponent } from './customize-env/customize-env.component';
 import { OnlynumberDirective } from '@directives/onlynumber.directive';
 import { SharedModule } from '@shared';
 import { LanguageSelectorModule } from "@components/shared/selectors/language-selector/language-selector.module";
-import {DocsModalModule} from '@components/shared/docs-modal';
 
 @NgModule({
   declarations: [
@@ -26,21 +25,20 @@ import {DocsModalModule} from '@components/shared/docs-modal';
     CustomizeEnvComponent,
     OnlynumberDirective
   ],
-    imports: [
-        CommonModule,
-        FormsModule,
-        MatBadgeModule,
-        MatMenuModule,
-        MatInputModule,
-        MatDialogModule,
-        MatSharedModule,
-        MatSelectModule,
-        DatasetSelectorModule,
-        MatFormFieldModule,
-        SharedModule,
-        LanguageSelectorModule,
-        DocsModalModule,
-    ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatBadgeModule,
+    MatMenuModule,
+    MatInputModule,
+    MatDialogModule,
+    MatSharedModule,
+    MatSelectModule,
+    DatasetSelectorModule,
+    MatFormFieldModule,
+    SharedModule,
+    LanguageSelectorModule,
+  ],
   exports: [ HeaderButtonsComponent ]
 })
 export class HeaderButtonsModule { }

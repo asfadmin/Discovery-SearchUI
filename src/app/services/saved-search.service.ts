@@ -8,7 +8,6 @@ import {v1 as uuid} from 'uuid';
 import { MapService } from './map/map.service';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
-import * as chartsStore from '@store/charts';
 import * as scenesStore from '@store/scenes';
 import { getSearchType } from '@store/search/search.reducer';
 import { UpdateSearchWithFilters, UpdateSearchName, DeleteSavedSearch,
@@ -128,19 +127,6 @@ export class SavedSearchService {
   )
   );
 
-  private currentDisplacementSearch$ = combineLatest([
-    this.store$.select(chartsStore.getTimeseriesChartStates),
-    this.store$.select(filtersStore.getFlightDirections),
-    this.store$.select(filtersStore.getDateRange),
-  ]
-  ).pipe(
-    map(([seriesStates, flightDirections, dateRange]) => ({
-      seriesStates,
-      flightDirections,
-      dateRange
-    }))
-  );
-
   private searchType$ = this.store$.select(getSearchType);
 
   public currentSearch$ = this.searchType$.pipe(
@@ -152,7 +138,6 @@ export class SavedSearchService {
       [models.SearchType.CUSTOM_PRODUCTS]: this.currentCustomProductSearch$,
       [models.SearchType.SARVIEWS_EVENTS]: this.currentSarviewsEventSearch$,
       [models.SearchType.DERIVED_DATASETS]: this.currentSarviewsEventSearch$,
-      [models.SearchType.DISPLACEMENT]: this.currentDisplacementSearch$
     })[searchType]
     )
   );

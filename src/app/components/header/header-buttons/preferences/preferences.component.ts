@@ -54,8 +54,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   public selectedFiltersIDs = {
     'Baseline Search': '',
     'Geographic Search': '',
-    'SBAS Search': '',
-    'Displacement': ''
+    'SBAS Search': ''
   };
   public currentTheme = 'light';
   public currentFilterDisplayNames = {};

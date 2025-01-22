@@ -33,10 +33,6 @@
         <ng-container *ngIf="selectedSearchType === searchTypes.SARVIEWS_EVENTS">
           {{ 'EVENT_SEARCH' | translate }}
         </ng-container>
-
-        @if(selectedSearchType === searchTypes.DISPLACEMENT) {
-          {{ 'DISPLACEMENT_SEARCH' | translate }}
-        }
       </div>
     </div>
 
@@ -66,9 +62,6 @@
       <ng-container *ngIf="selectedSearchType === searchTypes.SARVIEWS_EVENTS">
         <app-sarviews-filters></app-sarviews-filters>
       </ng-container>
-      @if(selectedSearchType === searchTypes.DISPLACEMENT) {
-        <app-timeseries-filters></app-timeseries-filters>
-      }
     </div>
 
     <div class="footer">
