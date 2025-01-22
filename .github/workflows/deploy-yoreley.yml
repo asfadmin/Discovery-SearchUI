@@ -3,7 +3,7 @@ name: Deploy yoreley SearchUI
 on:
   push:
     branches:
-      - '**'
+      - test
 
 jobs:
   deploy:
