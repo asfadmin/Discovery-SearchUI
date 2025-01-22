@@ -7,6 +7,7 @@ import { GeographicSearchFiltersComponent } from './geographic-search-filters/ge
 import { ListSearchFiltersComponent } from './list-search-filters/list-search-filters.component';
 import { BaselineSearchFiltersComponent } from './baseline-search-filters/baseline-search-filters.component';
 import { SbasSearchFiltersComponent } from './sbas-search-filters/sbas-search-filters.component';
+import { DisplacementFiltersComponent } from './displacement-filters/displacement-filters.component';
 import { SharedModule } from '@shared';
 
 @NgModule({
@@ -15,12 +16,13 @@ import { SharedModule } from '@shared';
     GeographicSearchFiltersComponent,
     ListSearchFiltersComponent,
     BaselineSearchFiltersComponent,
-    SbasSearchFiltersComponent
+    SbasSearchFiltersComponent,
+    DisplacementFiltersComponent
   ],
   imports: [
     CommonModule,
     PipesModule,
-    SharedModule
+    SharedModule,
   ],
   exports: [
     SearchFiltersComponent,

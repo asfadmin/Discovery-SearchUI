@@ -9,15 +9,23 @@
 .menu-item-icon {
   @include themify($themes) {
     color: themed("dark-primary-text");
+    font-size: 50px !important;
+    height: 50px !important;
+    width: 50px !important;
   }
 
-  @include md-icon-size(70px);
+  @include md-icon-size(50px);
 
   margin-right: 0;
 }
 
 .dataset-hr {
   padding: 0;
+}
+
+.category-hr {
+  padding: 0;
+  border-top: 2px solid;
 }
 
 .mat-mdc-menu-item {
@@ -28,8 +36,24 @@
   display: flex;
 }
 
+.menu-item-inner {
+  width: calc(100% - 20px) !important;
+  margin: 5px 5px 15px 15px;
+}
+
+.menu-item-content {
+  min-width: 400px;
+}
+
+.menu-item-aside {
+  //min-width: 130px;
+}
+
 .item-title {
   font-weight: bold;
+}
+
+.item-content {
 }
 
 .mat-mdc-card-actions {
@@ -47,7 +71,7 @@
 }
 
 .limitTextHeight {
-  height: 37px;
+  height: 55px;
   overflow: hidden;
 }
 
@@ -182,11 +206,15 @@
   }
 }
 
-
 .login-prompt {
   font-style: italic;
 }
 
 .login-hidden {
   display: none;
+}
+
+.read-more-icon {
+  position: relative;
+  top: 3px;
 }

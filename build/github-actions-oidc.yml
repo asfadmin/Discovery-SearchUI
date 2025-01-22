@@ -42,22 +42,10 @@ Resources:
                   - s3:ListBucket
                   - s3:PutObject
                 Resource:
-                  - arn:aws:s3:::asf-search-ui-dev
-                  - arn:aws:s3:::asf-search-ui-dev/*
-                  - arn:aws:s3:::asf-search-ui-test
-                  - arn:aws:s3:::asf-search-ui-test/*
+                  - arn:aws:s3:::asf-search-*
+                  - arn:aws:s3:::asf-search-*/*
                   - arn:aws:s3:::search-ui-custom-deployments
                   - arn:aws:s3:::search-ui-custom-deployments/*
-                  - arn:aws:s3:::asf-search-ui-4
-                  - arn:aws:s3:::asf-search-ui-4/*
-                  - arn:aws:s3:::asf-search-ui-3
-                  - arn:aws:s3:::asf-search-ui-3/*
-                  - arn:aws:s3:::asf-search-ui-2
-                  - arn:aws:s3:::asf-search-ui-2/*
-                  - arn:aws:s3:::asf-search-ui-1
-                  - arn:aws:s3:::asf-search-ui-1/*
-                  - arn:aws:s3:::asf-search-ui-andy-2
-                  - arn:aws:s3:::asf-search-ui-andy-2/*
         - PolicyName: CloudfrontInvalidation
           PolicyDocument:
             Version: '2012-10-17'
