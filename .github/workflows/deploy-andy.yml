@@ -3,6 +3,7 @@ name: Deploy andy SearchUI
 on:
   push:
     branches:
+      - andy/*
       - test
 
 jobs:

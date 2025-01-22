@@ -3,6 +3,7 @@ name: Deploy kim SearchUI
 on:
   push:
     branches:
+      - kim/*
       - test
 
 jobs:
