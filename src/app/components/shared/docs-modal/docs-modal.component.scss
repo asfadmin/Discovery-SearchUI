@@ -4,9 +4,24 @@
   cursor: pointer;
 }
 
+.icon-size {
+  height: 16px !important;
+  line-height: 16px !important;
+}
+
 .text-link {
   @include themify($themes) {
     color: themed('blue-link');
   }
   text-decoration: underline;
+
+}
+
+.large-icon {
+  @include md-icon-size(30px);
+  min-height: 30px;
+  margin-right: 0;
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
 }

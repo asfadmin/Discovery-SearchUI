@@ -492,6 +492,7 @@ ul {
   }
 }
 
+.displacement-slider.noUi-horizontal,
 .sbas-column-2.noUi-horizontal {
   height: 8px;
 
@@ -510,6 +511,10 @@ ul {
   .noUi-value-horizontal {
     font-size: 13px;
     top: 17px;
+  }
+
+  .noUi-tooltip {
+    font-size: 14px;
   }
 }
 
@@ -782,6 +787,18 @@ $d-height: 550px;
   max-width: 25%;
 }
 
+.fx-80 {
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 80%;
+}
+
+.fx-20 {
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 20%;
+}
+
 .fx-row-center {
   flex-direction: row;
   box-sizing: border-box;
@@ -832,4 +849,11 @@ $d-height: 550px;
 
 .breadcrumb-list .mat-mdc-form-field {
   margin-top: -2px;
+}
+
+.ts-best-fit-formulas {
+  .cdk-virtual-scrollable {
+    overflow-y: clip;
+    overflow-x: auto;
+  }
 }

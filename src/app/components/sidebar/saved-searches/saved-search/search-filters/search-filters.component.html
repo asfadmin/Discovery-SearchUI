@@ -18,4 +18,9 @@
     *ngIf="search.searchType === SearchType.SBAS"
     [filters]="search.filters | SBASFilter">
   </app-sbas-search-filters>
+  <app-displacement-filters
+  *ngIf="search.searchType === SearchType.DISPLACEMENT"
+  [filters]="search.filters | displacementFilter"
+  >
+  </app-displacement-filters>
 </div>

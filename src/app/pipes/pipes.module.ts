@@ -5,10 +5,11 @@ import { ReadableSizeFromBytesPipe } from './readable-size-from-bytes.pipe';
 import { ShortDatePipe, ShortDateTimePipe, FullDatePipe, ShortDateSeasonPipe } from './short-date.pipe';
 import { MomentPipe} from "@pipes/dynamic-moment";
 import { JoinPipe } from './join.pipe';
-import { BaselineFilterPipe, SBASFilterPipe, GeographicFilterPipe, ListFilterPipe } from './filter-type.pipe';
+import { BaselineFilterPipe, SBASFilterPipe, GeographicFilterPipe, ListFilterPipe, DisplacementFilterPipe } from './filter-type.pipe';
 import { HTMLInputValuePipe } from './html-input-value.pipe';
 import { QuakePipe, VolcanoPipe } from './sarviews-event.pipe';
 import { FilterExtensionPipe } from './filter-extension.pipe';
+import { FloatPrecisionPipe } from './float-precision.pipe';
 @NgModule({
   declarations: [
     ReadableSizeFromBytesPipe,
@@ -22,11 +23,12 @@ import { FilterExtensionPipe } from './filter-extension.pipe';
     SBASFilterPipe,
     GeographicFilterPipe,
     ListFilterPipe,
+    DisplacementFilterPipe,
     HTMLInputValuePipe,
     QuakePipe,
     VolcanoPipe,
-    FilterExtensionPipe
-    // floodPipe
+    FilterExtensionPipe,
+    FloatPrecisionPipe
   ],
   imports: [
     CommonModule
@@ -38,6 +40,7 @@ import { FilterExtensionPipe } from './filter-extension.pipe';
     ShortDateSeasonPipe,
     FullDatePipe,
     MomentPipe,
+    DisplacementFilterPipe,
     JoinPipe,
     BaselineFilterPipe,
     SBASFilterPipe,
@@ -47,7 +50,7 @@ import { FilterExtensionPipe } from './filter-extension.pipe';
     QuakePipe,
     VolcanoPipe,
     FilterExtensionPipe,
-    // floodPipe,
+    FloatPrecisionPipe
   ]
 })
 export class PipesModule { }

@@ -139,7 +139,7 @@ export class BrowseOverlayService {
     return output;
   }
 
-  private getPolygonFromFeature(feature: Feature<Geometry>, wkt: string): Polygon {
+  public getPolygonFromFeature(feature: Feature<Geometry>, wkt: string): Polygon {
     const polygon: Polygon = feature.getGeometry() as Polygon;
     this.fixPolygonAntimeridian(feature, wkt);
 

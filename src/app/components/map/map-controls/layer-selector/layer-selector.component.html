@@ -38,31 +38,32 @@
   </button>
 
 
-  <button mat-menu-item
-    class="control-mat-checkbox-toggle"
-    (click)="onClickCoherenceMenu()"
-    [matMenuTriggerFor]="coherenceLayers">
-    <mat-checkbox class="checkbox"
-      [disabled]="true"
-      [checked]="coherenceLayerMonths">
-    </mat-checkbox>
-    {{ 'COHERENCE_LAYER' |  translate }}
+    @if ((searchType$ | async) !== searchTypes.DISPLACEMENT) {
+    <button mat-menu-item
+      class="control-mat-checkbox-toggle"
+      (click)="onClickCoherenceMenu()"
+      [matMenuTriggerFor]="coherenceLayers">
+      <mat-checkbox class="checkbox"
+        [disabled]="true"
+        [checked]="coherenceLayerMonths">
+      </mat-checkbox>
+      {{ 'COHERENCE_LAYER' |  translate }}
 
-    <mat-menu #coherenceLayers="matMenu">
-      <button *ngFor="let layer of months"
-        (click)="onToggleCoherenceLayer(layer)"
-        class="control-mat-checkbox-toggle"
-        mat-menu-item>
-        <mat-radio-button
-          [disabled]="true"
-          [checked]="coherenceLayerMonths === layer">
-        </mat-radio-button>
+      <mat-menu #coherenceLayers="matMenu">
+        <button *ngFor="let layer of months"
+          (click)="onToggleCoherenceLayer(layer)"
+          class="control-mat-checkbox-toggle"
+          mat-menu-item>
+          <mat-radio-button
+            [disabled]="true"
+            [checked]="coherenceLayerMonths === layer">
+          </mat-radio-button>
 
-        {{ layer |  translate }}
-      </button>
-    </mat-menu>
-  </button>
-
+          {{ layer |  translate }}
+        </button>
+      </mat-menu>
+    </button>
+  }
   <button mat-menu-item
     class="control-mat-checkbox-toggle"
     (click)="onToggleGridlines()">
