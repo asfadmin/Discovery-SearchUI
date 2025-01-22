@@ -3,7 +3,7 @@ name: Deploy test SearchUI
 on:
   push:
     branches:
-      - test
+      - '**'
 
 jobs:
   deploy:

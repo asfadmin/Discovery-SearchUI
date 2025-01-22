@@ -3,7 +3,7 @@ name: Deploy will SearchUI
 on:
   push:
     branches:
-      - will/*
+      - '**'
 
 jobs:
   deploy:
