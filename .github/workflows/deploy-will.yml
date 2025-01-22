@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - will/*
+      - test
 
 jobs:
   deploy:

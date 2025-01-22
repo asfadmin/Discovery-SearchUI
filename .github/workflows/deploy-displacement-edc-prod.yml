@@ -1,14 +1,14 @@
-name: Deploy dev SearchUI
+name: Deploy Displacement SearchUI EDC
 
 on:
   push:
     branches:
-      - andy2/*
+      - test-edc/*
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: dev-andy2
+    environment: displacement-edc-prod
     permissions:
       id-token: write
       contents: read
@@ -18,9 +18,8 @@ jobs:
         uses: actions/checkout@v4
 
       - name: build
-        uses: ./.github/workflows/search-ui-deploy-composite
+        uses: ./.github/workflows/search-ui-edc-deploy-composite
         with:
           maturity: ${{ vars.MATURITY }}
-          cdn-id: ${{ vars.CDN_ID }}
           s3-bucket: ${{ vars.S3_BUCKET }}
           aws-account-id: ${{ secrets.AWS_ACCOUNT_ID }}

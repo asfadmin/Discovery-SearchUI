@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - yoreley/*
+      - test
 
 jobs:
   deploy:
