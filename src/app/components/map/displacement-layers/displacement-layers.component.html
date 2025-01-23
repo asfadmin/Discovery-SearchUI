@@ -22,7 +22,7 @@
       </mat-radio-button>
     </mat-radio-group>
 
-    @if (cumulativeDisplacementSelectionEnabled) {
+    @if (cumulativeDisplacementSelectionEnabled && this.displacementOverview) {
         <app-map-legend
         [min]="this.mapService.displacementRange?.range[0]"
         [max]="this.mapService.displacementRange?.range[1]"
