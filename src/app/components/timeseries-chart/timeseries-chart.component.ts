@@ -663,6 +663,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     if (points == null) { return; }
     const [xm, ym] = d3.pointer(event);
     console.log('pointerMoved [xm, ym]', xm, ym);
+    console.log('points:', points);
     const i = d3.leastIndex(points, ([x, y]) => Math.hypot(Number(x) - xm, Number(y) - ym));
     if (typeof points[i] === 'undefined') { return; }
     const [_x, _y, k] = points[i];
