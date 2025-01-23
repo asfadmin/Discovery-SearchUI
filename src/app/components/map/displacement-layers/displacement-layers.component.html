@@ -23,20 +23,11 @@
     </mat-radio-group>
 
     @if (cumulativeDisplacementSelectionEnabled) {
-      @if (displacementOverview === DispLayerTypes.VELOCITY) {
         <app-map-legend
-          [min]="-0.05"
-          [max]="0.05"
-          [units]="'m/yr'">
-        </app-map-legend>
-      }
-      @else {
-        <app-map-legend
-          [min]="0"
-          [max]="1"
-          [units]="'m'">
-        </app-map-legend>
-      }
+        [min]="this.mapService.displacementRange?.range[0]"
+        [max]="this.mapService.displacementRange?.range[1]"
+        [units]="this.mapService.displacementRange?.units">
+      </app-map-legend>
     }
 
     <mat-checkbox #priorityRollout class="rollout-checkbox"

@@ -85,6 +85,11 @@ export class MapService implements OnDestroy {
   public priorityEnabled$ = new BehaviorSubject<models.FlightDirection | null>(null);
   public searchType: models.SearchType;
 
+  public displacementRange: {
+    range: number[],
+    units: string
+  }
+
   constructor(
     private wktService: WktService,
     private legacyAreaFormat: LegacyAreaFormatService,
@@ -812,6 +817,7 @@ export class MapService implements OnDestroy {
         wrapX: models.mapOptions.wrapX,
         tileSize: [256, 256]
       });
+      this.displacementRange = response.scale_range;
 
       // Eventually let users define this part somehow
       let defined_stops: (number | number[])[][] = [
