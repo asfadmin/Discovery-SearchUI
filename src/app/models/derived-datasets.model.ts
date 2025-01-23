@@ -46,16 +46,7 @@ This dataset was produced by Evan Burgess and colleagues at the University of Ut
   info_url: `${asfWebsite.home}/sar-data-sets/glacier-speed`,
   download_url: `${asfWebsite.home}/data-sets/derived-data-sets/glacier-speed/glacier-speed-download-data`,
   picture: `${pictureFolder}/glacier_speed.jpg`,
-}, {
-  name: 'INTERNATIONAL_POLAR_YEAR',
-  info: 'INFO_INTERNATIONAL_POLAR_YEAR',
-  description: `
-International Polar Year (IPY) was a collaborative research event focused on the Arctic and Antarctic. IPY 2007-2009 focused on collaborative research and extensively explored the complex relationships between the Arctic and Antarctic. Over 60 countries and thousands of researchers participated, investigating more than 200 projects. Topics included Arctic and Antarctic relationships with geophysical elements, oceans and sea ice, Earth’s atmosphere, space, and human relations. ASF hosts an archive of the IPY project titled the Global Inter-agency IPY Polar Snapshot Year (GIIPSY). GIIPSY’s objective was to obtain high-definition satellite snapshots of the polar regions during 2007-2008.
-  `,
-  info_url: `${asfWebsite.home}/sar-data-sets/international-polar-year-2007-2008`,
-  download_url: `${asfWebsite.home}/sar-data-sets/international-polar-year-2007-2008`,
-  picture: `${pictureFolder}/polar_year.jpeg`,
-}, {
+},{
   name: 'RADARSAT_1',
   info: 'INFO_RADARSAT',
   description: `
