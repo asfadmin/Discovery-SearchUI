@@ -20,9 +20,9 @@ import { setTimeseriesValid } from '@store/charts';
   providedIn: 'root'
 })
 export class NetcdfService {
-  private url: string = 'https://dly8dsparg.execute-api.us-west-2.amazonaws.com/prod/'
+  private url: string = 'https://d8itg4twhevb5.cloudfront.net/'
   // private url: string = 'http://127.0.0.1:8000/'
-  private bucket: string = 'kfbx-opera-disp-test-bucket-v0.6'
+  private bucket: string = 'asf-cumulus-test-opera-products'
   private itemsEndpoint: string = 'items/'
   private timeSeriesEndpoint: string = 'timeseries'
   private files: string[] = [""] //, "20221107_20230130.unw.nc", "20221107_20230106.unw.nc", "20221107_20230729.unw.nc", "20221107_20230319.unw.nc", "20221107_20221213.unw.nc", "20221107_20230530.unw.nc", "20221107_20230717.unw.nc", "20221107_20230412.unw.nc", "20221107_20230506.unw.nc", "20221107_20230223.unw.nc", "20221107_20230211.unw.nc", "20221107_20230331.unw.nc", "20221107_20230705.unw.nc"]
@@ -111,6 +111,7 @@ export class NetcdfService {
         "wkt": wktRepresenation,
         "bucket": this.bucket,
         "polarization": "VV",
+        // "flightDirection": flightDirection,
       }, { responseType: 'json' }).pipe(
         first(),
         catchError(error => {
