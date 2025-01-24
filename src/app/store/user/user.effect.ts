@@ -14,7 +14,7 @@ import * as filterStore from '@store/filters';
 import * as searchStore from '@store/search';
 import { UserDataService } from '@services/user-data.service';
 import * as models from '@models';
-import { BaselineFiltersType, GeographicFiltersType, SbasFiltersType, SearchType } from '@models';
+import { BaselineFiltersType, GeographicFiltersType, SbasFiltersType, TimeseriesFiltersType, SearchType } from '@models';
 
 @Injectable()
 export class UserEffects {
@@ -66,7 +66,8 @@ export class UserEffects {
       defaultFilterPresets: {
         'Baseline Search' : '',
         'Geographic Search' : '',
-        'SBAS Search' : ''
+        'SBAS Search' : '',
+        'Displacement': ''
       }
     };
   }
@@ -236,6 +237,8 @@ export class UserEffects {
           case SearchType.SBAS:
             actions = this.setSBASFilters(targetFilter.filters as SbasFiltersType);
             break;
+          case SearchType.DISPLACEMENT:
+            actions = this.setTimeseriesFilters(targetFilter.filters as TimeseriesFiltersType);
           default:
             break;
         }
@@ -349,6 +352,15 @@ export class UserEffects {
       new filterStore.SetPerpendicularStart(sbasFilter.perpendicular.start),
       new filterStore.SetPerpendicularEnd(sbasFilter.perpendicular.end),
     ];
+
+    return actions;
+  }
+  private setTimeseriesFilters(timeseriesFilter: TimeseriesFiltersType) {
+
+
+    const actions = [
+      new filterStore.setFullBurst(timeseriesFilter.fullBurstIDs),
+    ]
 
     return actions;
   }

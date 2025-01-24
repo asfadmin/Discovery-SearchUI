@@ -7,11 +7,12 @@ import { filter, map, skip, debounceTime, take, distinctUntilChanged } from 'rxj
 
 import { AppState } from '@store';
 import * as hyp3Store from '@store/hyp3';
+import * as chartsStore from '@store/charts';
 import * as scenesStore from '@store/scenes';
 import * as mapStore from '@store/map';
 import * as filterStore from '@store/filters';
 import * as uiStore from '@store/ui';
-import { SetSearchType, MakeSearch } from '@store/search/search.action';
+import { SetSearchType, MakeSearch, setSearchKioskMode } from '@store/search/search.action';
 import { getSearchType } from '@store/search/search.reducer';
 
 import * as models from '@models';
@@ -21,20 +22,26 @@ import { WktService } from './wkt.service';
 import { RangeService } from './range.service';
 import { PropertyService } from './property.service';
 import { ThemingService } from './theming.service';
+import { PointHistoryService } from './point-history.service';
+import WKT from 'ol/format/WKT';
+import { Point } from 'ol/geom';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class UrlStateService {
-  private urlParamNames: string[];
+  private urlParamNames: string[] = [];
   private urlParams: {[id: string]: models.UrlParameter};
-  private loadLocations: {[paramName: string]: models.LoadTypes};
+  private loadLocations: {[paramName: string]: models.LoadTypes} = {};
   private params = {};
   private shouldDoSearch = false;
   private defaultbooleanParams = {
     'useCalibrationData': false
   }
+
+  private kioskMode = false; // for opera displacement
+  private displacementHostNames = [ 'displacement.asf.alaska.edu', 'search-displacement.asf.alaska.edu'];
 
   public isDefaultSearch$ = this.activatedRoute.queryParams.pipe( map(params => {
     const keys = Object.keys(params)
@@ -55,18 +62,31 @@ export class UrlStateService {
     private router: Router,
     private prop: PropertyService,
     private themeService: ThemingService,
+    private pointHistoryService: PointHistoryService
   ) {
-    const params = [
-      ...this.datasetParam(),
-      ...this.mapParameters(),
-      ...this.uiParameters(),
-      ...this.filtersParameters(),
-      ...this.missionParameters(),
-      ...this.baselineParameters(),
-      ...this.sbasParameters(),
-      ...this.onDemandParameters(),
-      ...this.eventMonitorParameters(),
-    ];
+
+    this.kioskMode = this.displacementHostNames.includes(window.location.hostname);
+    let params = [];
+    if(this.kioskMode) {
+      this.store$.dispatch(new setSearchKioskMode(true));
+      params = [
+        ...this.displacementParameters(),
+        ...this.displacementKioskParameters$()
+      ]
+    } else {
+      params = [
+        ...this.datasetParam(),
+        ...this.mapParameters(),
+        ...this.uiParameters(),
+        ...this.filtersParameters(),
+        ...this.missionParameters(),
+        ...this.baselineParameters(),
+        ...this.sbasParameters(),
+        ...this.onDemandParameters(),
+        ...this.eventMonitorParameters(),
+        ...this.displacementParameters(),
+      ];
+    }
 
     this.urlParamNames = params.map(param => param.name);
     this.loadLocations = this.urlParamNames.reduce((locations, paramName) => {
@@ -79,11 +99,14 @@ export class UrlStateService {
 
       return res;
     }, {});
-
     this.updateShouldSearch();
+    
   }
 
   public load(): void {
+    if (this.kioskMode) {
+      this.store$.dispatch(new SetSearchType(models.SearchType.DISPLACEMENT))
+    }
     this.activatedRoute.queryParams.pipe(
       skip(1),
       take(1),
@@ -108,7 +131,6 @@ export class UrlStateService {
       .filter(key => params[key] !== '' && params[key] !== this.defaultbooleanParams?.[key])
       .reduce((res, key) => (res[key] = params[key], res), {});
 
-    
       this.params = paramsWithValues;
 
     this.router.navigate(['.'], {
@@ -156,28 +178,32 @@ export class UrlStateService {
   }
 
   public setDefaults(profile: models.UserProfile): void {
-    if (this.loadLocations['dataset'] !== models.LoadTypes.URL) {
-      if (this.loadLocations['productTypes'] !== models.LoadTypes.URL) {
-        this.store$.dispatch(new filterStore.SetSelectedDataset(profile.defaultDataset));
-      }
-    }
-
-    if (this.loadLocations['maxResults'] !== models.LoadTypes.URL) {
-      this.store$.dispatch(new filterStore.SetMaxResults(profile.maxResults));
-    }
-
-    if (profile.theme && profile.theme !== 'System Preferences') {
-      this.themeService.setTheme(`theme-${profile.theme}`);
-    } else if (profile.theme) {
-      this.themeService.theme$.pipe(
-        take(1)
-      ).subscribe(
-        themePreference => {
-          this.themeService.setTheme(`theme-${themePreference}`);
+    if (!this.kioskMode) {
+      if (this.loadLocations['dataset'] !== models.LoadTypes.URL) {
+        if (this.loadLocations['productTypes'] !== models.LoadTypes.URL) {
+          this.store$.dispatch(new filterStore.SetSelectedDataset(profile.defaultDataset));
         }
-      );
+      }
+
+      if (this.loadLocations['maxResults'] !== models.LoadTypes.URL) {
+        this.store$.dispatch(new filterStore.SetMaxResults(profile.maxResults));
+      }
+
+      if (profile.theme && profile.theme !== 'System Preferences') {
+        this.themeService.setTheme(`theme-${profile.theme}`);
+      } else if (profile.theme) {
+        this.themeService.theme$.pipe(
+          take(1)
+        ).subscribe(
+          themePreference => {
+            this.themeService.setTheme(`theme-${themePreference}`);
+          }
+        );
+      } else {
+        this.themeService.setTheme('theme-light');
+      }
     } else {
-      this.themeService.setTheme('theme-light');
+      this.store$.dispatch(new scenesStore.SetResultsLoaded(true))
     }
     const action = profile.mapLayer === models.MapLayerTypes.STREET ?
       new mapStore.SetStreetView() :
@@ -295,6 +321,105 @@ export class UrlStateService {
         ),
         loader: this.loadEventProductTypes
       }];
+  }
+
+  private displacementParameters() {
+    return [
+      {
+        name: 'series',
+        source: this.store$.select(chartsStore.getTimeseriesChartStates).pipe(
+          map(seriesState => {
+            return {'series': Object.values(seriesState).map(x => [x.wkt, x.seriesNumber].join(';')).join(',')}
+          }),
+        ),
+        loader: this.loadSeriesState
+      },
+       {
+        name: 'dispOverview',
+        source: this.mapService.displacementOverview$.pipe(
+          map(dispOverview => ({dispOverview})),
+        ),
+        loader: this.loadDispOverview
+      },
+      {
+        name: 'isPriorityEnabled',
+        source: this.mapService.priorityEnabled$.pipe(
+          map(isPriorityEnabled => ({isPriorityEnabled})),
+        ),
+        loader: this.loadDispPriority
+      },
+      {
+        name: 'isShowLinesEnabled',
+        source: this.store$.select(chartsStore.getShowLines).pipe(
+          map(isShowLinesEnabled => ({isShowLinesEnabled})),
+        ),
+        loader: this.loadDispShowLines
+      },
+      {
+        name: 'isLinearFitEnabled',
+        source: this.store$.select(chartsStore.getShowLinearFit).pipe(
+          map(isLinearFitEnabled => ({isLinearFitEnabled})),
+        ),
+        loader: this.loadDispShowLinearFit
+      },
+      {
+        name: 'referencePoint',
+        source: this.store$.select(chartsStore.getTimeseriesReference).pipe(
+          map(referencePoint => ({referencePoint: encodeURIComponent(JSON.stringify(referencePoint))}))
+        ),
+        loader: this.loadDispReferencePoint
+      }
+    ]
+  }
+
+  private displacementKioskParameters$() {
+    return [
+      {
+        name: 'view',
+        source: this.store$.select(mapStore.getMapView).pipe(
+          map(view => ({ view }))
+        ),
+        loader: this.loadMapView
+      }, {
+          name: 'center',
+          source: this.mapService.center$.pipe(
+            map(
+              ({ lon, lat }) => ({
+                lon: lon.toFixed(3),
+                lat: lat.toFixed(3)
+              })
+            ),
+            map(({ lon, lat }) => ({ center: `${lon},${lat}` }))
+        ),
+        loader: this.loadMapCenter
+      }, {
+        name: 'zoom',
+        source: this.mapService.zoom$.pipe(
+          map(zoom => ({ zoom: zoom.toFixed(3) }))
+        ),
+        loader: this.loadMapZoom
+      }, {
+        name: 'flightDirs',
+        source: this.store$.select(filterStore.getFlightDirections).pipe(
+          map(dirs => dirs.join(',')),
+          map(flightDirs => ({ flightDirs }))
+        ),
+        loader: this.loadFlightDirections
+      },
+      {
+        name: 'start',
+        source: this.store$.select(filterStore.getStartDate).pipe(
+          map(start => ({ start: start === null ? '' : moment.utc( start ).format() }))
+        ),
+        loader: this.loadStartDate
+      }, {
+        name: 'end',
+        source: this.store$.select(filterStore.getEndDate).pipe(
+          map(end => ({ end: end === null ? '' : moment.utc( end ).format() }))
+        ),
+        loader: this.loadEndDate
+      },
+    ]
   }
 
 
@@ -728,12 +853,14 @@ export class UrlStateService {
   private loadFlightDirections = (dirsStr: string): Action => {
     const directions: models.FlightDirection[] = dirsStr
     .split(',')
-    .filter(direction => !Object.values(models.FlightDirection).includes(<models.FlightDirection>direction))
+    .filter(direction => !Object.values(models.FlightDirection).includes(<models.FlightDirection>this.capitalizeFirstLetter(direction.toLowerCase())))
     .map(direction => <models.FlightDirection>direction);
-
     return new filterStore.SetFlightDirections(directions);
   };
 
+  private capitalizeFirstLetter(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
   private loadSelectedMission = (mission: string): Action => {
     return new filterStore.SelectMission(mission);
   };
@@ -867,5 +994,49 @@ export class UrlStateService {
 
   private loadUseCalibrationData = (usingCalibrationData: string): Action => {
     return new filterStore.setUseCalibrationData(!!usingCalibrationData)
+  }
+
+  private loadSeriesState = (seriesState)=> {
+    let states: models.timeseriesChartItemState[] = [];
+    seriesState.split(',').forEach(x => {
+      const format = new WKT()
+      let thing = x.split(';')
+      const point = format.readFeature(thing[0]) as unknown as Point;
+      states.push({ geometry: point, checked: true, seriesNumber: thing[1], wkt: thing[0], name: `Series ${thing[1]}`, linearFit: false, valid: true })
+    })
+    this.pointHistoryService.addPoints(states)
+    return;
+  }
+  private loadDispOverview = (dispOverview) => {
+    this.mapService.setDisplacementType(dispOverview);
+    return;
+  }
+  private loadDispPriority = (isDispPriorityEnabled) => {
+    if(isDispPriorityEnabled) {
+      this.mapService.enablePriority(isDispPriorityEnabled);
+    }
+    return;
+  }
+  private loadDispShowLines = (isShowLinesEnabled) => {
+    if(isShowLinesEnabled === 'true') {
+      this.store$.dispatch(chartsStore.showGraphLines())
+    } else {
+      this.store$.dispatch(chartsStore.hideGraphLines())
+    }
+    return;
+  }
+  private loadDispShowLinearFit = (isLinearFitEnabled) => {
+    if(isLinearFitEnabled  === 'true') {
+      this.store$.dispatch(chartsStore.showLinearFit())
+    } else {
+      this.store$.dispatch(chartsStore.hideLinearFit())
+    }
+    return;
+  }
+  private loadDispReferencePoint = (referencePoint) => {
+    let fixedString = decodeURIComponent(referencePoint)//referencePoint.slice(1,referencePoint.length-1).replace('\"','"')
+    let pointObject = JSON.parse(fixedString)
+    this.store$.dispatch(chartsStore.setReferenceData({data: pointObject}))
+    return;
   }
 }

@@ -5,9 +5,10 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
+import * as searchStore from '@store/search';
 
 import { ScreenSizeService } from '@services';
-import { MapDrawModeType, MapInteractionModeType, Breakpoints } from '@models';
+import { MapDrawModeType, MapInteractionModeType, Breakpoints, SearchType } from '@models';
 
 @Component({
   selector: 'app-draw-selector',
@@ -20,6 +21,8 @@ export class DrawSelectorComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   public breakpoint: Breakpoints;
+  public searchType: SearchType;
+  public searchTypes = SearchType;
   public breakpoints = Breakpoints;
 
   constructor(
@@ -39,6 +42,12 @@ export class DrawSelectorComponent implements OnInit, OnDestroy {
         breakpoint => this.breakpoint = breakpoint
       )
     );
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        searchType => this.searchType = searchType
+      )
+    );
+      
   }
 
   public onNewDrawMode(mode: MapDrawModeType): void {
