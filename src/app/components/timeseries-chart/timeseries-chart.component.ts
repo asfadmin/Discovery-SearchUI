@@ -84,7 +84,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private dots: d3.Selection<SVGCircleElement, models.TimeSeriesData, SVGGElement, {}>;
   private lineGraph: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private toolTip: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>
-  public margin = { top: 10, right: 30, bottom: 60, left: 65 };
+  public margin = { top: 10, right: 30, bottom: 60, left: 95 };
   private thing: d3.Selection<SVGGElement, {}, HTMLElement, any>
   private hoveredElement;
   public hoveredData;
@@ -113,7 +113,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   @Input() isLoading: boolean = true;
   private showLines = true;
   private xAxisTitle = '';
-  private yAxisTitle = '';
+  private yAxisTitle1 = '';
+  private yAxisTitle2 = '';
   private dotToolTipText = '';
 
   private subs = new SubSink();
@@ -270,8 +271,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   public translateChartText() {
     this.xAxisTitle = this.language.translate.instant('SCENE') + ' ' +
       this.language.translate.instant('DATE');
-    this.yAxisTitle = this.language.translate.instant('SHORTWAVE_DISPLACEMENT') + ' (' +
-      this.language.translate.instant('METERS') + ')';
+    this.yAxisTitle1 = this.language.translate.instant('SHORTWAVE_DISPLACEMENT');
+    this.yAxisTitle2 = ' (' + this.language.translate.instant('METERS') + ')';
     this.dotToolTipText = this.language.translate.instant('RIGHT_CLICK_SET_BASELINE');
   }
 
@@ -349,6 +350,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
                 'color': result.state.color,
                 'base': result.point[key].short_wavelength_displacement,
                 'id': key + result.point[key].short_wavelength_displacement,
+                'aoi': aoi,
               });
 
               if (result.state.checked) {
@@ -424,10 +426,18 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.svg.append('text')
       .attr('transform', `rotate(-90)`)
       .attr('y', -this.margin.left + 12)
-      .attr('x', -this.height / 2)
+      .attr('x', -(this.height / 2) - 24)
       .style('text-anchor', 'middle')
       .attr('class', 'ts-chart-label ts-axis-title')
-      .text(this.yAxisTitle);
+      .text(this.yAxisTitle1);
+
+    this.svg.append('text')
+      .attr('transform', `rotate(-90)`)
+      .attr('y', -this.margin.left + 36)
+      .attr('x', -(this.height / 2) - 24)
+      .style('text-anchor', 'middle')
+      .attr('class', 'ts-chart-label ts-axis-title')
+      .text(this.yAxisTitle2);
 
     this.clipContainer = this.svg.append('g')
       .attr('clip-path', 'url(#clip)');
@@ -487,7 +497,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
     this.svg
       .on("pointermove", () => this.pointerMoved(event, this.lines, this.dots, this.points))
-      .on("pointerenter", () => this.pointerEntered(this.lines, this.dots))
+      // .on("pointerenter", () => this.pointerEntered(this.lines, this.dots))
       .on("pointerleave", () => this.pointerLeft(this.lines, this.dots))
       .on("touchstart", event => event.preventDefault());
 
@@ -547,10 +557,12 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         toolTip
           .style('opacity', .9);
         toolTip.html(`<div style="text-align: left">
-      <b>${self.language.translate.instant('SERIES')} ${p.seriesNumber}:&nbsp;&nbsp;</b>${self.tooltipDateFormat(self.hoveredDate)},&nbsp;
-      ${p.short_wavelength_displacement.toFixed(4)} ${self.language.translate.instant('METERS')} <br>
-      <em>${self.dotToolTipText}</em></div>`);
+        <b>${self.language.translate.instant('SERIES')} ${p.seriesNumber}:</b><br>
+        ${self.tooltipDateFormat(self.hoveredDate)}<br>
+        ${p.short_wavelength_displacement.toFixed(4)} ${self.language.translate.instant('METERS')} <br>
+        <em>${self.dotToolTipText}</em></div>`);
         self.updateTooltip();
+        self.highlightSeries(p.aoi);
       })
       .on('mouseleave', function (_) {
         self.hoveredData = null;
@@ -566,7 +578,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           .attr('id', 'linesParent2')
           .attr('clip-path', 'url(#clip)')
         for(let linearFitData of this.dataReadyForChart) {
-
           let regression = linearRegression(linearFitData.values.map((x,i) => [i, x.short_wavelength_displacement]));
           this.bestFitItems.push({
             seriesNumber: linearFitData.values[0].seriesNumber,
@@ -654,20 +665,20 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     const [xm, ym] = d3.pointer(event);
     const i = d3.leastIndex(points, ([x, y]) => Math.hypot(Number(x) - xm, Number(y) - ym));
     if (typeof points[i] === 'undefined') { return; }
-    const [_x, _y, k] = points[i];
+    const [_x, _y, _k] = points[i];
     return;
     // TODO: Fix this to grab the correct series all the time.
-    this.highlightSeries(k);
+    // this.highlightSeries(_k);
   }
 
-  private pointerEntered(lines, dots) {
-    return
-    lines.style("mix-blend-mode", null).style("stroke", unSelectedColor);
-    dots.attr("display", null);
-  }
-
+  // private pointerEntered(lines, dots) {
+  //   // return
+  //   lines.style("mix-blend-mode", null).style("stroke", unSelectedColor);
+  //   dots.attr("display", null);
+  // }
+  //
   private pointerLeft(lines, _dots) {
-    return
+    // return
     let dClassName: string;
     lines.style("stroke", (d: DataReady) => {
       dClassName = '.' + d.name.replace(/\W/g, '');

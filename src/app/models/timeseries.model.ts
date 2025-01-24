@@ -28,4 +28,5 @@ export interface TimeSeriesData {
     base: number,
     seriesNumber: number,
     color: string,
+    aoi: string,
   }
