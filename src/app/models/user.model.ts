@@ -14,8 +14,7 @@ export interface UserProfile {
   defaultFilterPresets: {
     'Baseline Search': string,
     'Geographic Search': string,
-    'SBAS Search': string,
-    'Displacement': string
+    'SBAS Search': string
   };
   hyp3BackendUrl: string;
   theme: string;

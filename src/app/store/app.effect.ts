@@ -6,7 +6,6 @@ import { UIEffects } from './ui';
 import { UserEffects } from './user';
 import { Hyp3Effects } from './hyp3';
 import { MapEffects } from './map';
-import { ChartsEffects } from './charts';
 
 export const appEffects = [
   FiltersEffects,
@@ -17,5 +16,4 @@ export const appEffects = [
   UserEffects,
   Hyp3Effects,
   MapEffects,
-  ChartsEffects,
 ];

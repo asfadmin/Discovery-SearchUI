@@ -1,12 +1,11 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, Subject } from 'rxjs';
-import {first, map, sampleTime, tap} from 'rxjs/operators';
-import {SubSink} from 'subsink';
+import { map, sampleTime, tap } from 'rxjs/operators';
 
 import { Collection, Feature, Map, View } from 'ol';
 import { Layer, Vector as VectorLayer } from 'ol/layer';
-import { Vector as VectorSource, XYZ } from 'ol/source';
+import { Vector as VectorSource } from 'ol/source';
 import * as proj from 'ol/proj';
 import Point from 'ol/geom/Point';
 import { OverviewMap, ScaleLine } from 'ol/control';
@@ -23,17 +22,16 @@ import * as sceneStore from '@store/scenes';
 import { HttpClient } from "@angular/common/http";
 
 import * as polygonStyle from './polygon.style';
-// import * as tileStyle from 'ol/style'
 import * as views from './views';
 import { SarviewsEvent } from '@models';
 import { EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
-import { Circle as CircleStyle, Fill, Icon, Stroke, Style, Text as olText } from 'ol/style';
+import { Icon, Style } from 'ol/style';
 import Geometry from 'ol/geom/Geometry';
 import LayerGroup from 'ol/layer/Group';
 import { PinnedProduct } from '@services/browse-map.service';
-import {BrowseOverlayService, PointHistoryService} from '@services';
+import { BrowseOverlayService } from '@services';
 import { ViewOptions } from 'ol/View';
 import { Type as GeometryType } from 'ol/geom/Geometry';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
@@ -47,27 +45,21 @@ import SimpleGeometry from 'ol/geom/SimpleGeometry';
 import { SetGeocode } from '@store/filters';
 import { Extent } from 'ol/extent';
 import { MultiPolygon } from 'ol/geom';
-import GeoJSON from 'ol/format/GeoJSON.js';
-import WKT from 'ol/format/WKT';
-import * as uiStore from '@store/ui';
-import * as searchStore from '@store/search';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MapService implements OnDestroy {
+export class MapService {
   public isDrawing$ = this.drawService.isDrawing$.pipe(
     tap(isDrawing => this.map.getViewport().style.cursor = isDrawing ? 'crosshair' : 'default')
   );
 
-  private subs = new SubSink();
   private mapView: views.MapView;
   private map: Map;
   private scaleLine: ScaleLine;
 
   private polygonLayer: VectorLayer<VectorSource>;
   private sarviewsEventsLayer: VectorLayer<VectorSource>;
-  public displacmentLayer: VectorLayer<VectorSource>;
   private browseImageLayer: Layer;
 
   private gridLinesVisible: boolean;
@@ -112,29 +104,7 @@ export class MapService implements OnDestroy {
   private selectClick = new Select({
     condition: click,
     style: polygonStyle.hidden,
-    layers: l => l.get('selectable')
-  });
-
-  private timeseriesClick = new Select({
-    condition: click,
-    style: null,
-    layers: l => {
-      if (l.get('displacement-layer')) {
-        return true;
-      }
-      return false
-    }
-  });
-
-  private timeseriesHover = new Select({
-    condition: pointerMove,
-    style: null,
-    layers: l => {
-      if (l.get('displacement-layer')) {
-        return true;
-      }
-      return false
-    }
+    layers: l => l.get('selectable') || false
   });
 
   private selectHover = new Select({
@@ -183,13 +153,12 @@ export class MapService implements OnDestroy {
 
   public selectedSarviewEvent$: EventEmitter<string> = new EventEmitter();
   public mapInit$: EventEmitter<Map> = new EventEmitter();
-  public timeseriesPixelSelected$ = new EventEmitter();
+
   public mousePosition$ = this.mousePositionSubject$.pipe(
     sampleTime(100)
   );
 
   public newSelectedScene$ = new Subject<string>();
-  public newSelectedDisplacement$ = new Subject<Point>();
 
   public searchPolygon$ = this.drawService.polygon$.pipe(
     map(
@@ -198,6 +167,16 @@ export class MapService implements OnDestroy {
         null
     )
   );
+
+  constructor(
+    private wktService: WktService,
+    private legacyAreaFormat: LegacyAreaFormatService,
+    private drawService: DrawService,
+    private store$: Store<AppState>,
+    private browseOverlayService: BrowseOverlayService,
+    private layerService: LayerService,
+    private http: HttpClient
+  ) { }
 
   public epsg(): string {
     return this.mapView.projection.epsg;
@@ -220,9 +199,6 @@ export class MapService implements OnDestroy {
     this.selectSarviewEventHover.setActive(true);
     this.selectClick.setActive(true);
     this.searchPolygonHover.setActive(true);
-    this.timeseriesClick.setActive(true);
-    this.timeseriesHover.setActive(true);
-
   }
 
   public disableInteractions(): void {
@@ -230,8 +206,6 @@ export class MapService implements OnDestroy {
     this.selectSarviewEventHover.setActive(false);
     this.selectClick.setActive(false);
     this.searchPolygonHover.setActive(false);
-    this.timeseriesClick.setActive(false);
-    this.timeseriesHover.setActive(false);
   }
 
   private zoom(amount: number): void {
@@ -245,6 +219,7 @@ export class MapService implements OnDestroy {
     if (this.legacyAreaFormat.isValid(polygon)) {
       polygon = this.legacyAreaFormat.toWkt(polygon);
     }
+
     return this.loadWKT(polygon);
   }
 
@@ -256,6 +231,7 @@ export class MapService implements OnDestroy {
         polygon,
         this.epsg()
       );
+
       this.setDrawFeature(features);
     } catch (e) {
       didLoad = false;
@@ -263,6 +239,7 @@ export class MapService implements OnDestroy {
 
     return didLoad;
   }
+
 
   public setLayer(layer: VectorLayer<VectorSource>): void {
     if (!!this.polygonLayer) {
@@ -280,10 +257,6 @@ export class MapService implements OnDestroy {
 
     this.sarviewsEventsLayer = layer;
     this.map.addLayer(layer);
-  }
-
-  public addLayer(layer: Layer) {
-    this.map.addLayer(layer)
   }
 
   public sarviewsEventsToFeatures(events: SarviewsEvent[], projection: string): Feature<Geometry>[] {
@@ -340,11 +313,7 @@ export class MapService implements OnDestroy {
   }
 
   public setDrawStyle(style: models.DrawPolygonStyle): void {
-    if (this.searchType == 'Displacement') {
-      this.drawService.setDrawStyle(models.DrawPolygonStyle.VALID_DISPLACEMENT);
-    }else {
-      this.drawService.setDrawStyle(style);
-    }
+    this.drawService.setDrawStyle(style);
   }
 
   public setDrawFeature(feature): void {
@@ -485,9 +454,11 @@ export class MapService implements OnDestroy {
     this.setDrawFeature(features);
   }
 
+
   public onMapReady(m: Map) {
     this.mapInit$.next(m);
   }
+
 
   public zoomToExtent(extent: Extent): void {
     this.map
@@ -537,39 +508,12 @@ export class MapService implements OnDestroy {
     });
 
     newMap.addInteraction(this.selectClick);
-    newMap.addInteraction(this.timeseriesClick);
-    newMap.addInteraction(this.timeseriesHover);
     newMap.addInteraction(this.selectHover);
     newMap.addInteraction(this.selectSarviewEventHover);
     this.selectClick.on('select', e => {
-      // netcdf-layer
-      // if (this.drawService.in)
-      this.timeseriesPixelSelected$.emit(null)
       e.target.getFeatures().forEach(
         feature => this.newSelectedScene$.next(feature.get('filename'))
       );
-    });
-
-    this.timeseriesClick.on('select', e => {
-      let selectedPoint =  e.selected[0].get('point');
-      const format = new WKT();
-      const wkt = format.writeGeometry(selectedPoint);
-      this.store$.dispatch(new uiStore.SetActiveWkt(wkt));
-      e.preventDefault();
-    });
-
-    this.timeseriesHover.on('select', e => {
-      let selectedPoint =  e.selected[0]?.get('point');
-      if(!selectedPoint) {
-        // TODO: not sure if we want to keep the point active or unselect it
-        this.store$.dispatch(new uiStore.SetActiveWkt(null));
-        e.preventDefault()
-        return
-      }
-      const format = new WKT();
-      const wkt = format.writeGeometry(selectedPoint);
-      this.store$.dispatch(new uiStore.SetActiveWkt(wkt));
-      e.preventDefault();
     });
 
     this.selectHover.on('select', e => {
@@ -615,7 +559,6 @@ export class MapService implements OnDestroy {
     this.drawService.getLayer().setZIndex(100);
     this.focusLayer.setZIndex(99);
     this.selectedLayer.setZIndex(98);
-
 
     newMap.on('moveend', e => {
       const currentMap = e.map;
@@ -747,7 +690,7 @@ export class MapService implements OnDestroy {
       this.map.removeLayer(this.browseImageLayer);
     }
     if (!url.endsWith('.tif')) {
-      if (url.includes('OPERA')) {
+      if(url.includes('OPERA')) {
         this.trimImage(url).then((imageBlob: Blob) => {
           let url = URL.createObjectURL(imageBlob);
           URL.revokeObjectURL(this.localBrowseImageURL)
@@ -949,59 +892,6 @@ export class MapService implements OnDestroy {
     this.hasCoherenceLayer$.next(null);
   }
 
-  public enablePriority(flight_dir: models.FlightDirection): void {
-    const source = new VectorSource({
-      url: `/assets/priority_rollout_${flight_dir}.geojson`,
-      format: new GeoJSON({})
-    },
-    )
-    this.priorityEnabled$.next(flight_dir);
-
-    const colorTable = [
-      'rgba(174, 174, 174, 0.6)',
-      'rgba(127, 206, 255, 0.8)',
-      'rgba(45, 128, 179, 0.7)',
-      'rgba(0, 64, 103, 0.6)',
-    ]
-    this.priorityOverview = new VectorLayer({
-      source: source,
-      style: function (feature, _resolution) {
-        const test = feature.getProperties();
-        const priority = +test['priority'];
-        let color = '#FF0000';
-        if (priority === 1) {
-          color = colorTable[1];
-        } else if (priority === 2) {
-          color = colorTable[2];
-        } else if (priority === 3) {
-          color = colorTable[3];
-        } else {
-          color = colorTable[0]
-        }
-        return new Style({
-          fill: new Fill({
-            color: color
-          }),
-          stroke: new Stroke({
-            color: 'black',
-          })
-        });
-      }
-    })
-    this.map.addLayer(this.priorityOverview)
-  }
-
-  public disablePriority(): void {
-    this.map.removeLayer(this.priorityOverview);
-    this.priorityOverview = null;
-    this.priorityEnabled$.next(null);
-
-  }
-
-  public isPriorityEnabled(): boolean {
-    return !!this.priorityOverview;
-  }
-
   public createBrowseRasterCanvas(scenes: models.CMRProduct[]) {
     const scenesWithBrowse = scenes.filter(scene => scene.browses?.length > 0).slice(0, 10);
 
@@ -1022,10 +912,6 @@ export class MapService implements OnDestroy {
     if (!!this.browseImageLayer) {
       this.map.removeLayer(this.browseImageLayer);
     }
-  }
-  public clearTimeseriesOverlay() {
-    this.map.removeLayer(this.displacmentLayer);
-    this.displacmentLayer = null;
   }
 
   public updateBrowseOpacity(opacity: number) {
@@ -1098,10 +984,6 @@ export class MapService implements OnDestroy {
         ],
       }
     );
-  }
-
-  ngOnDestroy() {
-    this.subs.unsubscribe();
   }
 
 }

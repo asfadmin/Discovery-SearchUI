@@ -7,12 +7,11 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 import * as mapStore from '@store/map';
-import * as searchStore from '@store/search';
 
 import { Subject } from 'rxjs';
 import { tap, delay } from 'rxjs/operators';
 
-import { menuAnimation, MapInteractionModeType, SearchType } from '@models';
+import { menuAnimation, MapInteractionModeType } from '@models';
 import * as services from '@services';
 import { DrawNewPolygon } from '@store/map';
 import { SetGeocode } from '@store/filters';
@@ -32,9 +31,6 @@ export class AoiFilterComponent implements OnInit, OnDestroy {
   public isHoveringAOISelector = false;
   public isAOIOptionsOpen: boolean;
 
-  public searchType$ = this.store$.select(searchStore.getSearchType);
-  public searchtype: SearchType;
-
   public polygon: string;
   private subs = new SubSink();
 
@@ -51,9 +47,7 @@ export class AoiFilterComponent implements OnInit, OnDestroy {
         isAOIOptionsOpen => this.isAOIOptionsOpen = isAOIOptionsOpen
       )
     );
-    this.subs.add(
-      this.searchType$.subscribe( searchtype => this.searchtype = searchtype)
-    );
+
     this.subs.add(
       this.mapService.searchPolygon$.subscribe(
         p => {
@@ -89,7 +83,7 @@ export class AoiFilterComponent implements OnInit, OnDestroy {
     const polygon = (event.target as HTMLInputElement).value;
     const didLoad = this.mapService.loadPolygonFrom(polygon);
 
-    if (!didLoad || (this.searchtype === SearchType.DISPLACEMENT && !(polygon.toLowerCase().includes('point')))) {
+    if (!didLoad) {
       this.aoiErrors$.next();
     } else {
       this.store$.dispatch(new SetGeocode(''));

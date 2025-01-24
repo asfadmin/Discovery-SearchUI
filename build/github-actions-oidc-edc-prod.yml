@@ -1,12 +1,12 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: GitHub OIDC for when GitHub wants to communicate with AWS.
-Resources:
+Description: GitHub OIDC for when GitHub wants to communicate with AWS EDC Test Account.
 
+Resources:
   # This is the bare-bones role.
   GitHubActionsRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: GitHub_Actions_Role_SearchUI_test
+      RoleName: GitHub_Actions_Role_SearchUI_prod
       AssumeRolePolicyDocument:
         Version: 2012-10-17
         Statement:
@@ -42,31 +42,8 @@ Resources:
                   - s3:ListBucket
                   - s3:PutObject
                 Resource:
-                  - arn:aws:s3:::asf-search-ui-dev
-                  - arn:aws:s3:::asf-search-ui-dev/*
-                  - arn:aws:s3:::asf-search-ui-test
-                  - arn:aws:s3:::asf-search-ui-test/*
-                  - arn:aws:s3:::search-ui-custom-deployments
-                  - arn:aws:s3:::search-ui-custom-deployments/*
-                  - arn:aws:s3:::asf-search-ui-4
-                  - arn:aws:s3:::asf-search-ui-4/*
-                  - arn:aws:s3:::asf-search-ui-3
-                  - arn:aws:s3:::asf-search-ui-3/*
-                  - arn:aws:s3:::asf-search-ui-2
-                  - arn:aws:s3:::asf-search-ui-2/*
-                  - arn:aws:s3:::asf-search-ui-1
-                  - arn:aws:s3:::asf-search-ui-1/*
-                  - arn:aws:s3:::asf-search-ui-andy-2
-                  - arn:aws:s3:::asf-search-ui-andy-2/*
-        - PolicyName: CloudfrontInvalidation
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Sid: AllowInvalidations
-                Effect: Allow
-                Action:
-                  - cloudfront:CreateInvalidation
-                Resource: "*"
+                  - arn:aws:s3:::asf-search-ui-edc-prod
+                  - arn:aws:s3:::asf-search-ui-edc-prod/*
 
 
   # This is the OIDC provider hookup itself. This tells AWS to delegate authN GitHub

@@ -83,7 +83,7 @@
             </div>
           </div>
 
-          <div *ngIf="searchType !== SearchTypes.DISPLACEMENT" class="fx-empty list-button-group">
+          <div class="fx-empty list-button-group">
             <div class="fx-row-center button-group-label">
               <label>{{ 'ZOOM' | translate }}</label>
             </div>
@@ -102,8 +102,7 @@
             </div>
           </div>
 
-          <div class="fx-empty list-button-group"
-               *ngIf="searchType !== SearchTypes.SARVIEWS_EVENTS && searchType !== SearchTypes.DISPLACEMENT ">
+          <div class="fx-empty list-button-group" *ngIf="searchType !== SearchTypes.SARVIEWS_EVENTS">
             <div class="fx-row-center button-group-label">
               <label>{{ 'QUEUE' |  translate }}</label>
             </div>
@@ -388,7 +387,7 @@
             {{'SELECTED_EVENT_PRODUCTS' | translate }} ({{pinnedEventIDs.length}} {{ 'FILES' | translate}})
           </button>
         </div>
-      </mat-menu>
+</mat-menu>
 
       <ng-container *ngIf="searchType === SearchTypes.BASELINE">
         <div class="header-row-right" *ngIf="breakpoint > breakpoints.MOBILE">

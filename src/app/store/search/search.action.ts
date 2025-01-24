@@ -23,11 +23,9 @@ export enum SearchActionType {
   LOAD_ON_DEMAND_SCENES_LIST = '[Search] Load on Demand Scenes List',
 
   SARVIEWS_SEARCH_RESPONSE = '[Search] SARViews Search Response',
-  DISPLACEMENT_SEARCH_RESPONSE = '[Search] Timeseries Search Response',
   MAKE_EVENT_PRODUCT_CMR_SEARCH = '[Search] Make a search for CMR Products with SARVIEWS Products',
   EVENT_PRODUCT_CMR_RESPONSE = '[Search] Event Monitoring CMR Search Response',
-  SET_SEARCH_OUT_OF_DATE = '[Search] Set if Search is Out of Date',
-  SET_SEARCH_KIOSK_MODE = '[Search] Set Vertex to kiosk mode for Opera Displacement',
+  SET_SEARCH_OUT_OF_DATE = '[Search] Set if Search is Out of Date'
 }
 
 export class MakeSearch implements Action {
@@ -76,12 +74,6 @@ export class SarviewsEventsResponse implements Action {
   constructor(public payload: {events: SarviewsEvent[]}) {}
 }
 
-export class TimeseriesSearchResponse implements Action {
-  public readonly type = SearchActionType.DISPLACEMENT_SEARCH_RESPONSE;
-
-  constructor(public payload: {}) {}
-}
-
 export class SearchError implements Action {
   public readonly type = SearchActionType.SEARCH_ERROR;
 
@@ -124,12 +116,6 @@ export class SetSearchOutOfDate implements Action {
   constructor(public payload: boolean) {}
 }
 
-export class setSearchKioskMode implements Action {
-  public readonly type = SearchActionType.SET_SEARCH_KIOSK_MODE;
-
-  constructor(public payload: boolean) {}
-}
-
 export type SearchActions =
   | MakeSearch
   | SetSearchAmount
@@ -146,6 +132,4 @@ export type SearchActions =
   | LoadOnDemandScenesList
   | SetSearchTypeAfterSave
   | SarviewsEventsResponse
-  | TimeseriesSearchResponse
-  | SetSearchOutOfDate
-  | setSearchKioskMode;
+  | SetSearchOutOfDate;

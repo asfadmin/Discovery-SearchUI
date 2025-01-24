@@ -224,19 +224,6 @@ export class SearchParamsService {
     )
   );
 
-  private timeseriesParams$ = combineLatest([
-    this.searchPolygon$,
-    this.burstParams$,
-    this.maxResults$,
-    this.selectedDataset$,
-  ]).pipe(
-    map((params: any[]) => params
-      .reduce(
-        (total, param) => ({ ...total, ...param }),
-        {})
-    )
-  )
-
 
   public getParams = combineLatest([
     this.store$.select(getSearchType),
@@ -244,9 +231,8 @@ export class SearchParamsService {
   ).pipe(
     withLatestFrom(this.listParam$),
     withLatestFrom(this.filterSearchParams$),
-    withLatestFrom(this.timeseriesParams$),
     map(
-      ([[[[searchType, baselineParams], listParam], filterParams], timeseriesParams]) => {
+      ([[[searchType, baselineParams], listParam], filterParams]) => {
         switch (searchType) {
           case models.SearchType.LIST: {
             return listParam;
@@ -262,9 +248,6 @@ export class SearchParamsService {
           }
           case models.SearchType.CUSTOM_PRODUCTS: {
             return listParam;
-          }
-          case models.SearchType.DISPLACEMENT: {
-            return timeseriesParams;
           }
           default: {
             return filterParams;

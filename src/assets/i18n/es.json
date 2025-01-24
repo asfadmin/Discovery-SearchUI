@@ -399,7 +399,6 @@
   "INFO_GISMO": "El proyecto Ice-Sheet Mapping Observatory (GISMO) mapeó el vuelo sobre la capa de hielo de Groenlandia.",
   "INFO_GLACIER_SPEED": "Este conjunto de datos revela patrones complejos de flujo de glaciares en Alaska.",
   "INFO_GLOBAL_SEASONAL_SENTINEL": "Este conjunto de datos representa la coherencia interferométrica y las firmas de retrodispersión globales en múltiples temporadas.",
-  "INFO_INTERNATIONAL_POLAR_YEAR": "Es evento de investigación colaborativa centrado en el Ártico y la Antártida.",
   "INFO_NAME_OF_THE_DEM": "Nombre del DEM a utilizar para el procesamiento. copernicus usará el Copernicus GLO-30 DEM público, mientras que el legado utilizará el DEM con la mejor cobertura de los conjuntos de datos SRTM/NED heredados de ASF.",
   "INFO_PRODUCT_PIXEL": "Espaciado de píxeles del producto en metros",
   "INFO_PRODUCT_PIXEL ": "Espaciado de píxeles del producto en metros.",
@@ -409,7 +408,6 @@
   "INFO_SEA_ICE_MEASURES": "Este conjunto de datos incluye capturas de radar del hielo marino en el Ártico y el Océano Austral.",
   "INFO_WETLANDS_MEASURES": "Este conjunto de datos incluye mapas a escala regional y continental que cubren sistemas de humedales cruciales.",
   "INSAR_DESC": "El procesamiento del radar interferométrico de apertura sintética (InSAR) utiliza dos imágenes SAR recopiladas en la misma área para determinar las propiedades geométricas de la superficie. Las mediciones de fase de las dos imágenes adquiridas en diferentes momentos se diferencian para detectar y cuantificar cambios en la superficie.",
-  "INTERNATIONAL_POLAR_YEAR": "Año Polar Internacional",
   "INVALID_BASELINE": "Línea de base no válida",
   "INVALID_END_DAY": "Día de finalización no válido",
   "INVALID_START_DAY": "Día de inicio no válido",
@@ -657,7 +655,7 @@
   "REVIEW_SEARCH_RESULTS": "Revisar resultados de búsqueda",
   "REVIEW_SUBMISSION": "Envío de revisión",
   "RGB_DECOMPOSITION": "Descomposición RGB",
-  "RIGHT_CLICK_SET_BASELINE": "Haga clic con el botón derecho para establecer la línea de base.",
+  "RIGHT_CLICK_SET_BASELINE": "Haga clic derecho para fijar la línea base.",
   "ROLLOUT": "Implementación",
   "RUNNING": "Corriendo",
   "SAMPLES_PER_BURST": "Muestras Por Burst",
@@ -940,7 +938,5 @@
   "ZOOM_TO_EVENT": "Acercar al evento",
   "ZOOM_TO_FIT": "Acercar para ajustar",
   "ZOOM_TO_RESULTS": "Acercar a los resultados",
-  "ZOOM_TO_SCENE": "Acercar a la escena",
-  "ADD_POINTS":"",
-  "STOP_ADDING_POINTS":""
+  "ZOOM_TO_SCENE": "Acercar a la escena"
 }

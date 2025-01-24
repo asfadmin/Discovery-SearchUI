@@ -44,11 +44,11 @@
   </span>
 
   <span
-  [matTooltipDisabled]="isLoggedIn && searchType !== searchTypes.LIST && searchType !== searchTypes.CUSTOM_PRODUCTS && searchType !== searchTypes.DISPLACEMENT"
-  matTooltip="{{ isLoggedIn && (searchType === searchTypes.LIST || searchType === searchTypes.CUSTOM_PRODUCTS || searchType === searchTypes.DISPLACEMENT) ? ('SAVED_FILTERS_ARE_NOT_AVAILABLE_FOR_SEARCH_TYPE' | translate) : ('SIGN_IN_TO_SEE_YOUR_SAVED_FILTERS' |translate)}}"
+  [matTooltipDisabled]="isLoggedIn && searchType !== searchTypes.LIST && searchType !== searchTypes.CUSTOM_PRODUCTS"
+  matTooltip="{{ isLoggedIn && (searchType === searchTypes.LIST || searchType === searchTypes.CUSTOM_PRODUCTS) ? ('SAVED_FILTERS_ARE_NOT_AVAILABLE_FOR_SEARCH_TYPE' | translate) : ('SIGN_IN_TO_SEE_YOUR_SAVED_FILTERS' |translate)}}"
   matTooltipPosition="after">
     <button
-    [disabled]="searchType === searchTypes.LIST || searchType === searchTypes.CUSTOM_PRODUCTS || searchType === searchTypes.DISPLACEMENT"
+    [disabled]="searchType === searchTypes.LIST || searchType === searchTypes.CUSTOM_PRODUCTS"
     mat-menu-item
     [matMenuTriggerFor]="savedFiltersMenu">
     {{ 'SAVED_FILTERS' | translate }}
@@ -82,7 +82,7 @@
   <span matTooltip="{{'SIGN_IN_TO_SAVE_YOUR_FILTERS' | translate}}"
         [matTooltipDisabled]="isLoggedIn"
         matTooltipPosition="after">
-    <button *ngIf="searchType !== searchTypes.CUSTOM_PRODUCTS && searchType !== searchTypes.LIST && searchType !== searchTypes.DISPLACEMENT"
+    <button *ngIf="searchType !== searchTypes.CUSTOM_PRODUCTS && searchType !== searchTypes.LIST"
       mat-menu-item [disabled]="!isLoggedIn" (click)="saveCurrentFilters()">
       {{ 'SAVE_FILTERS' | translate }}
     </button>
@@ -92,7 +92,7 @@
   [matTooltipDisabled]="isLoggedIn"
   matTooltip="{{'SIGN_IN_TO_SEE_YOUR_SAVED_FILTERS' | translate}}"
   matTooltipPosition="after">
-    <button *ngIf="searchType !== searchTypes.CUSTOM_PRODUCTS && searchType !== searchTypes.LIST && searchType !== searchTypes.DISPLACEMENT"
+    <button *ngIf="searchType !== searchTypes.CUSTOM_PRODUCTS && searchType !== searchTypes.LIST"
       (click)="onOpenSavedFilters()"
       mat-menu-item
       [disabled]="!isLoggedIn">
