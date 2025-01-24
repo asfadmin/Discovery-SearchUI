@@ -350,6 +350,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
                 'color': result.state.color,
                 'base': result.point[key].short_wavelength_displacement,
                 'id': key + result.point[key].short_wavelength_displacement,
+                'aoi': aoi,
               });
 
               if (result.state.checked) {
@@ -496,7 +497,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
     this.svg
       .on("pointermove", () => this.pointerMoved(event, this.lines, this.dots, this.points))
-      .on("pointerenter", () => this.pointerEntered(this.lines, this.dots))
+      // .on("pointerenter", () => this.pointerEntered(this.lines, this.dots))
       .on("pointerleave", () => this.pointerLeft(this.lines, this.dots))
       .on("touchstart", event => event.preventDefault());
 
@@ -561,6 +562,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         ${p.short_wavelength_displacement.toFixed(4)} ${self.language.translate.instant('METERS')} <br>
         <em>${self.dotToolTipText}</em></div>`);
         self.updateTooltip();
+        self.highlightSeries(p.aoi);
       })
       .on('mouseleave', function (_) {
         self.hoveredData = null;
@@ -576,7 +578,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           .attr('id', 'linesParent2')
           .attr('clip-path', 'url(#clip)')
         for(let linearFitData of this.dataReadyForChart) {
-
           let regression = linearRegression(linearFitData.values.map((x,i) => [i, x.short_wavelength_displacement]));
           this.bestFitItems.push({
             seriesNumber: linearFitData.values[0].seriesNumber,
@@ -662,22 +663,20 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     if (typeof points === 'undefined') { return; }
     if (points == null) { return; }
     const [xm, ym] = d3.pointer(event);
-    console.log('pointerMoved [xm, ym]', xm, ym);
-    console.log('points:', points);
     const i = d3.leastIndex(points, ([x, y]) => Math.hypot(Number(x) - xm, Number(y) - ym));
     if (typeof points[i] === 'undefined') { return; }
-    const [_x, _y, k] = points[i];
-    // return;
+    const [_x, _y, _k] = points[i];
+    return;
     // TODO: Fix this to grab the correct series all the time.
-    this.highlightSeries(k);
+    // this.highlightSeries(_k);
   }
 
-  private pointerEntered(lines, dots) {
-    // return
-    lines.style("mix-blend-mode", null).style("stroke", unSelectedColor);
-    dots.attr("display", null);
-  }
-
+  // private pointerEntered(lines, dots) {
+  //   // return
+  //   lines.style("mix-blend-mode", null).style("stroke", unSelectedColor);
+  //   dots.attr("display", null);
+  // }
+  //
   private pointerLeft(lines, _dots) {
     // return
     let dClassName: string;
