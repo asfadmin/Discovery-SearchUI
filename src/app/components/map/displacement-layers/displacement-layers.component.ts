@@ -25,7 +25,7 @@ export class DisplacementLayersComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   constructor(
-    private mapService: MapService,
+    public mapService: MapService,
     private store$: Store<AppState>,
   ) { }
 

@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - tyler/*
+      - test
 
 jobs:
   deploy:
