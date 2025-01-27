@@ -146,3 +146,19 @@ export const hover = new Style({
     })
   })
 });
+
+export const reference = new Style({
+  fill: new Fill({
+    color: 'rgba(255, 0, 0, 0.2)'
+  }),
+  stroke: new Stroke({
+    color: 'rgba(255, 0, 0, 0.2)',
+    width: 4
+  }),
+  image: new CircleStyle({
+    radius: 7,
+    fill: new Fill({
+      color: 'rgba(255, 0, 0, 0.4)'
+    })
+  })
+});

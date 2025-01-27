@@ -7,7 +7,7 @@ import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
 import * as mapStore from '@store/map';
 
-import { ScreenSizeService } from '@services';
+import { MapService, ScreenSizeService } from '@services';
 import { Breakpoints, MapDrawModeType, MapInteractionModeType } from '@models';
 
 @Component({
@@ -24,7 +24,8 @@ export class TimeseriesHeaderComponent implements OnInit, OnDestroy {
 
   constructor(
     private store$: Store<AppState>,
-    private screenSize: ScreenSizeService
+    private screenSize: ScreenSizeService,
+    private mapService: MapService
   ) { }
 
   ngOnInit() {
@@ -48,6 +49,10 @@ export class TimeseriesHeaderComponent implements OnInit, OnDestroy {
 
   public onToggleFiltersMenu(): void {
     this.store$.dispatch(new uiStore.OpenFiltersMenu());
+  }
+
+  public zoomToReference() {
+    this.mapService.zoomToReference();
   }
 
   public isKioskMode$ = this.store$.select(searchStore.getKioskMode);

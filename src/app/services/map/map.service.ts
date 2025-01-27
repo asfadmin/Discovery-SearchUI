@@ -51,6 +51,7 @@ import GeoJSON from 'ol/format/GeoJSON.js';
 import WKT from 'ol/format/WKT';
 import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
+import Translate from 'ol/interaction/Translate';
 
 @Injectable({
   providedIn: 'root'
@@ -171,6 +172,10 @@ export class MapService implements OnDestroy {
     source: this.focusSource,
     style: polygonStyle.hover
   });
+  private referencePointLayer = new VectorLayer({
+    source: new VectorSource({}),
+    style: polygonStyle.reference
+  })
 
   private mousePositionSubject$ = new BehaviorSubject<models.LonLat>({
     lon: 0, lat: 0
@@ -436,6 +441,11 @@ export class MapService implements OnDestroy {
     this.zoomToExtent(extent);
   }
 
+  public zoomToReference(): void {
+    const extent = this.referencePointLayer.getSource().getExtent()
+    this.zoomToExtent(extent);
+  }
+
   public zoomToScene(scene: models.CMRProduct): void {
     const feature = this.wktService.wktToFeature(
       scene.metadata.polygon,
@@ -529,11 +539,12 @@ export class MapService implements OnDestroy {
         this.selectedLayer,
         this.mapView?.gridlines,
         this.pinnedProducts,
+        this.referencePointLayer
       ],
       target: 'map',
       view: this.mapView.view,
       controls: [this.overviewMap],
-      overlays: [overlay]
+      overlays: [overlay],
     });
 
     newMap.addInteraction(this.selectClick);
@@ -541,6 +552,26 @@ export class MapService implements OnDestroy {
     newMap.addInteraction(this.timeseriesHover);
     newMap.addInteraction(this.selectHover);
     newMap.addInteraction(this.selectSarviewEventHover);
+
+
+    let referenceFeature = new Feature(
+      { geometry: new Point([-9960050, 4344069]) }
+    )
+
+    var select = new Select({
+      condition: click,
+      filter: function (feature) { return feature === referenceFeature }
+    });
+    this.referencePointLayer.getSource().addFeature(referenceFeature)
+    var translate = new Translate({
+      features: select.getFeatures()
+    });
+    translate.on('translateend', (_event) => {
+      
+      // console.log(this.referencePointLayer.getSource().getFeatures()[0].getGeometry())
+    });
+    newMap.addInteraction(select)
+    newMap.addInteraction(translate);
     this.selectClick.on('select', e => {
       // netcdf-layer
       // if (this.drawService.in)
