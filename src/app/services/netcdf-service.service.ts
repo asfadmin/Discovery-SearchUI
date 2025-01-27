@@ -142,6 +142,10 @@ export class NetcdfService {
             delete target_cache[deleted[0]];
           }
           this.cacheUpdated.next(index_id)
+          if(response) {
+            this.store$.dispatch(setTimeseriesValid({wkt: wktRepresenation, valid: true}))
+          }
+
           return response
         }
         ))
