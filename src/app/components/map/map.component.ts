@@ -422,6 +422,10 @@ export class MapComponent implements OnInit, OnDestroy  {
 
             polygonFeatures = features.filter(feature => intersectionMethod(searchPolygon, feature));
           }
+          if(this.searchType === this.searchTypes.DISPLACEMENT) {
+            let vectorFeature = new Feature();
+            return this.featuresToSource([vectorFeature], polygonStyle.staticAOI)
+          }
 
           return this.scenePolygonsLayer(polygonFeatures);
         }),
