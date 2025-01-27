@@ -815,7 +815,8 @@ export class MapService implements OnDestroy {
       const overview_source = new XYZ({
         'url': `${base_url}/{z}/{x}/{y}.png`,
         wrapX: models.mapOptions.wrapX,
-        tileSize: [256, 256]
+        tileSize: [256, 256],
+        maxZoom: 11
       });
       this.displacementRange = response.scale_range;
 
