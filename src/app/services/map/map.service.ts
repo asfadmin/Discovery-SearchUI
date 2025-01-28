@@ -79,7 +79,7 @@ export class MapService implements OnDestroy {
 
   private localBrowseImageURL: string;
 
-  private displacementOverview: TileLayer;
+  private displacementOverview: TileLayer = new TileLayer({});
   public displacementOverview$ = new BehaviorSubject<models.DisplacementLayerTypes | null>(null);
   private priorityOverview: VectorLayer<VectorSource>;
   public priorityEnabled$ = new BehaviorSubject<models.FlightDirection | null>(null);
@@ -529,6 +529,7 @@ export class MapService implements OnDestroy {
         this.selectedLayer,
         this.mapView?.gridlines,
         this.pinnedProducts,
+        this.displacementOverview
       ],
       target: 'map',
       view: this.mapView.view,
@@ -808,8 +809,7 @@ export class MapService implements OnDestroy {
       first()
     ).subscribe((response: any) => {
       if (this.displacementOverview) {
-        this.map.removeLayer(this.displacementOverview);
-        this.displacementOverview = null;
+        this.displacementOverview.setSource(null);
       }
 
       const overview_source = new XYZ({
@@ -833,9 +833,6 @@ export class MapService implements OnDestroy {
         [199.0, [190, 101, 51]],
         [228.0, [139, 39, 6]],
         [256.0, [89, 0, 8]],
-        // [0.0, [89,0,8]],
-        // [0.5, [255,255,255]],
-        // [1.0, [0,18,97]],
       ];
 
       let parsed_color_stops = defined_stops.flat().map(x => {
@@ -845,27 +842,22 @@ export class MapService implements OnDestroy {
           return x
         }
       })
-
-      this.displacementOverview = new TileLayer({
-        'style': {
-          color: [
-            'interpolate',
-            ['linear'],
-            ['*', ['band', 1], 255],
-            ...parsed_color_stops
-          ]
-        },
-        'source': overview_source,
-        'extent': response['extent'],
-      });
-
-      this.map.addLayer(this.displacementOverview);
+      console.log(this.displacementOverview)
+      this.displacementOverview.setStyle({
+        color: [
+          'interpolate',
+          ['linear'],
+          ['*', ['band', 1], 255],
+          ...parsed_color_stops
+        ]
+      })
+      this.displacementOverview.setExtent(response['extent']);
+      this.displacementOverview.setSource(overview_source);
     })
 
   }
   public clearDisplacementOverview() {
-    this.map.removeLayer(this.displacementOverview);
-    this.displacementOverview = null;
+    this.displacementOverview.setSource(null);
     this.displacementOverview$.next(null);
   }
   public setDisplacementType(type) {
