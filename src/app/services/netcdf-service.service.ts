@@ -109,7 +109,7 @@ export class NetcdfService {
         "wkt": wktRepresenation,
         "bucket": this.bucket,
         "polarization": "VV",
-        // "flightDirection": flightDirection,
+        "flightDirection": flightDirection,
       }, { responseType: 'json' }).pipe(
         first(),
         catchError(error => {
