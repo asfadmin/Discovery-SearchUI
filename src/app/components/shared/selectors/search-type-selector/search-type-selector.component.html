@@ -26,7 +26,7 @@
               <div class="fx-80 menu-item-content">
                 <div class="item-title">
                   {{ type.nameKey | translate}}
-                  <span *ngIf="type.nameKey === 'DISPLACEMENT'" class="badge-new">New!</span>
+                  <span *ngIf="type.nameKey === 'DISPLACEMENT'" class="badge-new">{{ 'NEW'  | translate }}</span>
                 </div>
                 <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
                   <span *ngFor="let key of type.descriptionKeys">
