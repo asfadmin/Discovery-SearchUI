@@ -81,7 +81,7 @@ export class MapService implements OnDestroy {
 
   private displacementOverview: TileLayer = new TileLayer({});
   public displacementOverview$ = new BehaviorSubject<models.DisplacementLayerTypes | null>(null);
-  private priorityOverview: VectorLayer<VectorSource>;
+  private priorityOverview: VectorLayer<VectorSource> = new VectorLayer();
   public priorityEnabled$ = new BehaviorSubject<models.FlightDirection | null>(null);
   public searchType: models.SearchType;
 
@@ -529,6 +529,7 @@ export class MapService implements OnDestroy {
         this.selectedLayer,
         this.mapView?.gridlines,
         this.pinnedProducts,
+        this.priorityOverview,
         this.displacementOverview
       ],
       target: 'map',
@@ -842,7 +843,6 @@ export class MapService implements OnDestroy {
           return x
         }
       })
-      console.log(this.displacementOverview)
       this.displacementOverview.setStyle({
         color: [
           'interpolate',
@@ -956,43 +956,38 @@ export class MapService implements OnDestroy {
       'rgba(45, 128, 179, 0.7)',
       'rgba(0, 64, 103, 0.6)',
     ]
-    this.priorityOverview = new VectorLayer({
-      source: source,
-      style: function (feature, _resolution) {
-        const test = feature.getProperties();
-        const priority = +test['priority'];
-        let color = '#FF0000';
-        if (priority === 1) {
-          color = colorTable[1];
-        } else if (priority === 2) {
-          color = colorTable[2];
-        } else if (priority === 3) {
-          color = colorTable[3];
-        } else {
-          color = colorTable[0]
-        }
-        return new Style({
-          fill: new Fill({
-            color: color
-          }),
-          stroke: new Stroke({
-            color: 'black',
-          })
-        });
+    this.priorityOverview.setSource(source);
+    this.priorityOverview.setStyle(function (feature, _resolution) {
+      const test = feature.getProperties();
+      const priority = +test['priority'];
+      let color = '#FF0000';
+      if (priority === 1) {
+        color = colorTable[1];
+      } else if (priority === 2) {
+        color = colorTable[2];
+      } else if (priority === 3) {
+        color = colorTable[3];
+      } else {
+        color = colorTable[0]
       }
+      return new Style({
+        fill: new Fill({
+          color: color
+        }),
+        stroke: new Stroke({
+          color: 'black',
+        })
+      });
     })
-    this.map.addLayer(this.priorityOverview)
   }
 
   public disablePriority(): void {
-    this.map.removeLayer(this.priorityOverview);
-    this.priorityOverview = null;
+    this.priorityOverview.setSource(null);
     this.priorityEnabled$.next(null);
-
   }
 
   public isPriorityEnabled(): boolean {
-    return !!this.priorityOverview;
+    return !!this.priorityEnabled$.value
   }
 
   public createBrowseRasterCanvas(scenes: models.CMRProduct[]) {
