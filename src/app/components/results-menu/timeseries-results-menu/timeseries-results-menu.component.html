@@ -30,7 +30,7 @@
                   class="point-list-item"
                   on-mouseover="setActiveWkt(point.wkt)"
                   on-mouseleave="setActiveWkt(null)">
-                  @if (point.valid) {
+                  @if (point.valid == true) {
                   <mat-checkbox [checked]="point.checked" (change)="updateSeries($event.checked, $index)" style="display: flex;">
                     <mat-icon class="ts-wkt-icon" [style.color]="point.color">place</mat-icon>
                     <span class="ts-wkt-label">
@@ -40,14 +40,19 @@
                   <button mat-icon-button (click)="deletePoint($index)" *ngIf="point.seriesNumber === selectedSeries"><mat-icon
                       class="ts-trash-can">delete</mat-icon></button>
                   } @else {
-                  <div>
-                    <mat-icon color="warn" class="invalid-aoi-icon">block</mat-icon>
-                    <mat-icon class="ts-wkt-icon" [style.color]="point.color">place</mat-icon>
-                    <span class="ts-wkt-label invalid-aoi-text">
-                      {{'SERIES' | translate}} {{point.seriesNumber}}
-                    </span>
-                  </div>
-                  <button mat-icon-button (click)="deletePoint($index)"><mat-icon class="ts-trash-can" *ngIf="point.seriesNumber === selectedSeries">delete</mat-icon></button>
+                    <div class="error-line">
+                      @if(point.valid == false) {
+                        <mat-icon color="warn" class="invalid-aoi-icon">block</mat-icon>
+                      }
+                      @else {
+                        <mat-spinner diameter="20" class="loading-spinner"></mat-spinner>
+                      }
+                      <mat-icon class="ts-wkt-icon" [style.color]="point.color">place</mat-icon>
+                      <span class="ts-wkt-label invalid-aoi-text">
+                        {{'SERIES' | translate}} {{point.seriesNumber}}
+                      </span>
+                    </div>
+                    <button mat-icon-button (click)="deletePoint($index)"><mat-icon class="ts-trash-can" *ngIf="point.seriesNumber === selectedSeries">delete</mat-icon></button>
                   }
               </li>
             }

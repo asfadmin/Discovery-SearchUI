@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BrowseOverlayService, NotificationService, WktService } from '@services';
-import { Observable, Subject, catchError, first, map, of, tap } from 'rxjs';
+import { Observable, Subject, catchError, delay, first, map, of, retryWhen, scan, tap } from 'rxjs';
 // import WebGLTileLayer from 'ol/layer/WebGLTile';
 import ImageLayer from 'ol/layer/Image';
 // import Static from 'ol/source/ImageStatic';
@@ -92,6 +92,19 @@ export class NetcdfService {
 
     return output
   }
+  private handleRetry<T>(source: Observable<T>): Observable<T> {
+    return source.pipe(retryWhen(e => e.pipe(scan((errorCount, error) => {
+        if(error.status !== 0) {
+          throw error;
+        }
+        if (errorCount >= 3) {
+            throw error;
+        }
+        return errorCount + 1;
+    }, 0),
+        delay(1000)
+    )));
+}
 
   public getTimeSeries(geometry, flightDirection =FlightDirection.ASCENDING): Observable<any> {
 
@@ -111,6 +124,7 @@ export class NetcdfService {
         "polarization": "VV",
         "flightDirection": flightDirection,
       }, { responseType: 'json' }).pipe(
+        this.handleRetry,
         first(),
         catchError(error => {
           this.notificationService.error(error.error.detail, 'Timeseries Service Error')
@@ -128,6 +142,10 @@ export class NetcdfService {
             delete target_cache[deleted[0]];
           }
           this.cacheUpdated.next(index_id)
+          if(response) {
+            this.store$.dispatch(setTimeseriesValid({wkt: wktRepresenation, valid: true}))
+          }
+
           return response
         }
         ))
