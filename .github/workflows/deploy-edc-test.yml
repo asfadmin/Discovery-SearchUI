@@ -1,15 +1,14 @@
-name: Deploy kim SearchUI
+name: Deploy edc test SearchUI
 
 on:
   push:
     branches:
-      - kim/*
       - test
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: dev-kim
+    environment: test-edc
     permissions:
       id-token: write
       contents: read
@@ -19,9 +18,8 @@ jobs:
         uses: actions/checkout@v4
 
       - name: build
-        uses: ./.github/workflows/search-ui-deploy-composite
+        uses: ./.github/workflows/search-ui-edc-deploy-composite
         with:
           maturity: ${{ vars.MATURITY }}
-          cdn-id: ${{ vars.CDN_ID }}
           s3-bucket: ${{ vars.S3_BUCKET }}
           aws-account-id: ${{ secrets.AWS_ACCOUNT_ID }}

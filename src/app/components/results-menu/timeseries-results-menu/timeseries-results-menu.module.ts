@@ -21,6 +21,7 @@ import {
     TimeseriesChartTemporalSliderComponent
 } from '@components/timeseries-chart/timeseries-chart-temporal-slider/timeseries-chart-temporal-slider.component';
 import {MatCheckbox} from '@angular/material/checkbox';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import {MatCheckbox} from '@angular/material/checkbox';
         MatTabGroup,
         MatTab,
         TimeseriesChartTemporalSliderComponent,
-        MatCheckbox
+        MatCheckbox,
+        MatProgressSpinnerModule
     ],
   exports: [
     TimeseriesResultsMenuComponent
