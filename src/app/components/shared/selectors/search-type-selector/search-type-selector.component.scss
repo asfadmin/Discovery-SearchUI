@@ -220,16 +220,17 @@
 }
 
 .badge-new {
-  background-color:#236192;
-  color: white;
+  //background-color: lighten(#236192, 15%);
+  color: #236192;
   font-size: 0.8rem;
   padding: 3px 8px;
   border-radius: 12px;
-  margin-left: 10px;
   text-transform: uppercase;
   font-weight: bold;
   animation: fadeInUp 1.5s ease-out forwards;
-  position: relative;
+  position: absolute;
+  margin-left: 4px;
+  margin-top: -3px;
 }
 
 
