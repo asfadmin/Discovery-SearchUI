@@ -491,6 +491,7 @@
   "NAME": "Nombre",
   "NAVIGATE_TO_YOUR_AREA_OF_INTEREST": "Navegue a su área de interés",
   "NAVIGATE_TO_YOUR_AREA_OF_INTEREST_BY_DRAGGING_THE_MAP_WHILE_HOLDING_DOWN_THE_LEFT_MOUSE_BUTTON": "Navegue a su área de interés arrastrando el mapa mientras mantiene presionado el botón izquierdo del mouse.",
+  "NEW": "¡Nuevo!",
   "NEW_DATE_GET_TIME_EVENT_GTM_JS_VAR_F_D_GET_ELEMENTS_BY_TAG_NAME_S": "nueva Fecha().getTime(),evento:'gtm.js'});var f=d.getElementsByTagName(s)[0],",
   "NEW_END_DATE": "Nueva fecha de finalización",
   "NEXT": "Próximo",
