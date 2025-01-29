@@ -487,6 +487,7 @@
   "NAME": "Name",
   "NAVIGATE_TO_YOUR_AREA_OF_INTEREST": "Navigate To Your Area of Interest",
   "NAVIGATE_TO_YOUR_AREA_OF_INTEREST_BY_DRAGGING_THE_MAP_WHILE_HOLDING_DOWN_THE_LEFT_MOUSE_BUTTON": "Navigate to your area of interest by dragging the map while holding down the left mouse button.",
+  "NEW": "New!",
   "NEW_DATE_GET_TIME_EVENT_GTM_JS_VAR_F_D_GET_ELEMENTS_BY_TAG_NAME_S": "new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],",
   "NEW_END_DATE": "New End Date",
   "NEXT": "Next",
