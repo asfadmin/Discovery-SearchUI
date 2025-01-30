@@ -24,7 +24,7 @@ import { PropertyService } from './property.service';
 import { ThemingService } from './theming.service';
 import { PointHistoryService } from './point-history.service';
 import WKT from 'ol/format/WKT';
-import { Point } from 'ol/geom';
+import { Geometry } from 'ol/geom';
 
 
 @Injectable({
@@ -329,7 +329,7 @@ export class UrlStateService {
         name: 'series',
         source: this.store$.select(chartsStore.getTimeseriesChartStates).pipe(
           map(seriesState => {
-            return {'series': Object.values(seriesState).map(x => [x.wkt, x.seriesNumber].join(';')).join(',')}
+            return {'series': Object.values(seriesState).map(x => [x.wkt, x.seriesNumber].join('--')).join('::')}
           }),
         ),
         loader: this.loadSeriesState
@@ -998,10 +998,10 @@ export class UrlStateService {
 
   private loadSeriesState = (seriesState)=> {
     let states: models.timeseriesChartItemState[] = [];
-    seriesState.split(',').forEach(x => {
+    seriesState.split('::').forEach(x => {
       const format = new WKT()
-      let thing = x.split(';')
-      const point = format.readFeature(thing[0]) as unknown as Point;
+      let thing = x.split('--')
+      const point = format.readFeature(thing[0]) as unknown as Geometry;
       states.push({ geometry: point, checked: true, seriesNumber: thing[1], wkt: thing[0], name: `Series ${thing[1]}`, linearFit: false, valid: true })
     })
     this.pointHistoryService.addPoints(states)

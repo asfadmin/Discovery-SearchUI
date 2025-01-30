@@ -17,7 +17,7 @@ import { Breakpoints, SearchType } from '@models';
 
 import { SubSink } from 'subsink';
 
-import { Point } from 'ol/geom';
+import { Geometry} from 'ol/geom';
 import { getTimeseriesChartStates } from '@store/charts';
 import * as filtersStore from '@store/filters';
 import * as models from '@models';
@@ -167,12 +167,9 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       withLatestFrom(this.store$.select(chartStore.getMinSeriesNumber))
     ).subscribe(([polygon, minSeriesNumber]) => {
       if(!!polygon) {
-        let temp = polygon.getGeometry().clone() as Point;
+        let temp = polygon.getGeometry().clone() as Geometry;
         temp.transform('EPSG:3857', 'EPSG:4326')
-        if (polygon.getGeometry().getType() === 'Point') {
-          this.pointHistoryService.addPoint(temp, minSeriesNumber);
-          // this.selectedPoint = temp;
-        }
+        this.pointHistoryService.addPoint(temp, minSeriesNumber);
         this.updateChart();
       }
     }))

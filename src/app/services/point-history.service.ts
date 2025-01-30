@@ -5,7 +5,7 @@ import { AppState } from '@store';
 import { addTimeseriesState, removeTimeseriesState, resetTimeseriesStates } from '@store/charts';
 import WKT from 'ol/format/WKT';
 
-import { Point } from 'ol/geom';
+import { Geometry } from 'ol/geom';
 import { Subject } from 'rxjs';
 
 
@@ -13,8 +13,8 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class PointHistoryService {
-  private history : {point: Point, wkt: string}[] = [];
-  public history$ = new Subject<{point: Point, wkt: string}[]>();
+  private history : {point: Geometry, wkt: string}[] = [];
+  public history$ = new Subject<{point: Geometry, wkt: string}[]>();
   public passDraw: boolean = false;
   public selectedPoint: number = 0;
 
@@ -22,7 +22,7 @@ export class PointHistoryService {
     private store$: Store<AppState>,
   ) { }
 
-  public getHistory(): {point: Point, wkt: string}[] {
+  public getHistory(): {point: Geometry, wkt: string}[] {
     return this.history;
   }
 
@@ -36,7 +36,7 @@ export class PointHistoryService {
     })
   }
 
-  public addPoint(point: Point, seriesNumber: number) {
+  public addPoint(point: Geometry, seriesNumber: number) {
     if(this.passDraw) {
       this.passDraw = false
       return
@@ -56,7 +56,7 @@ export class PointHistoryService {
       return
     }
     for(let state of states) {
-      const point = state.geometry as Point;
+      const point = state.geometry as Geometry;
       this.history = [...this.history,{point, wkt: state.wkt} ]
       this.store$.dispatch(addTimeseriesState({item: state}))
     }

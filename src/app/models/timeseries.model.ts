@@ -1,11 +1,11 @@
-import { SimpleGeometry } from "ol/geom"
+import { Geometry } from "ol/geom"
 
 export interface timeseriesChartItemState {
     checked: boolean,
     color?: string,
     name: string,
     wkt: string,
-    geometry: SimpleGeometry,
+    geometry: Geometry,
     seriesNumber: number,
     linearFit: boolean,
     valid?: boolean,

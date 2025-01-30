@@ -342,8 +342,11 @@ export class MapService implements OnDestroy {
   public setDrawStyle(style: models.DrawPolygonStyle): void {
     if (this.searchType == 'Displacement') {
       this.drawService.setDrawStyle(models.DrawPolygonStyle.VALID_DISPLACEMENT);
+      this.drawService.getLayer().setVisible(false);
     }else {
       this.drawService.setDrawStyle(style);
+      this.drawService.getLayer().setVisible(true);
+
     }
   }
 
@@ -852,6 +855,7 @@ export class MapService implements OnDestroy {
         ]
       })
       this.displacementOverview.setExtent(response['extent']);
+      //@ts-ignore
       this.displacementOverview.setSource(overview_source);
     })
 
@@ -874,7 +878,7 @@ export class MapService implements OnDestroy {
 
     let source = new VectorSource();
     let pointFeatures = points.map(dataPoint => {
-      let temp = dataPoint.point.clone() as Point;
+      let temp = dataPoint.point.clone() as Geometry;
       temp.transform('EPSG:4326', 'EPSG:3857')
       let temp_feature = new Feature(temp)
       temp_feature.set('point', dataPoint.point)
@@ -883,7 +887,6 @@ export class MapService implements OnDestroy {
       return temp_feature;
     });
     source.addFeatures(pointFeatures);
-
     const stylize = function StyleFunction(feature: Feature) {
 
       const textFunction = function (f: Feature) {
@@ -898,6 +901,11 @@ export class MapService implements OnDestroy {
 
       let selected = (feature.get('seriesNumber') === self.pointHistoryService.selectedPoint);
 
+      let zoom = self.map.getView().getZoom();
+      let font_size = zoom > 8 ? 1.3 * zoom : 0.9 * zoom;
+      if(feature.getGeometry().getType() === 'Point') {
+        font_size = 13;
+      }
       let layerStyle = new Style({
         image: new CircleStyle({
           stroke: new Stroke({
@@ -909,13 +917,25 @@ export class MapService implements OnDestroy {
             color: textColorFunction(feature),
           }),
         }),
+        fill: new Fill({
+          color: textColorFunction(feature),
+        }),
+        stroke: new Stroke({
+          color: (selected) ? 'red' : '#ffcc33',
+          width: (selected) ? 3 : 2
+        }),
         text: new olText({
           overflow: true,
-          font: (selected) ? 'bold 16px sans-serif' : '13px sans-serif',
+          // font: (selected) ? 'bold 16px sans-serif' : '13px sans-serif',
+          font: (selected) ? `bold ${font_size + 1}px sans-serif` : `${font_size}px sans-serif`,
+
           fill: new Fill({
             color: '#000000',
           }),
-          text: textFunction(feature)
+          text: textFunction(feature),
+          // @ts-ignore
+          // declutterMode: 'declutter'
+          
         })
       })
 
