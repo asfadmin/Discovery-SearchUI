@@ -925,7 +925,6 @@ export class MapService implements OnDestroy {
           width: (selected) ? 3 : 2
         }),
         text: new olText({
-          overflow: true,
           // font: (selected) ? 'bold 16px sans-serif' : '13px sans-serif',
           font: (selected) ? `bold ${font_size + 1}px sans-serif` : `${font_size}px sans-serif`,
 
@@ -933,10 +932,8 @@ export class MapService implements OnDestroy {
             color: '#000000',
           }),
           text: textFunction(feature),
-          // @ts-ignore
-          // declutterMode: 'declutter'
-          
-        })
+        }),
+        zIndex: (selected) ? 1000 : +feature.get('seriesNumber')
       })
 
       return layerStyle
