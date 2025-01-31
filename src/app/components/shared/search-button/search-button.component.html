@@ -1,36 +1,52 @@
-<mat-button-toggle-group
-  [class.invalid-input-animation]="isSearchError"
-  id="dataset-button-toggle-group">
-  <mat-button-toggle>
-    <button
-      (click)="onDoSearch()"
-      [disabled]="!(canSearch$ | async) && !(isMaxResultsLoading$ | async)"
-      mat-flat-button color="primary"
-      class="search-button">
-      {{
-      (loading$ | async) ?
-        ('LOADING' | translate | uppercase ):
-        (!(canSearch$ | async) && !(isMaxResultsLoading$ | async) ?
-          ('NO_RESULTS' | translate | uppercase ) :
-          (areResultsOutOfDate$ | async) ? ('UPDATE' | translate ) :
-          ('SEARCH' | translate | uppercase) )
-      }}
+<ng-container *ngIf="searchType !== searchTypes.DISPLACEMENT">
+  <mat-button-toggle-group
+    [class.invalid-input-animation]="isSearchError"
+    id="dataset-button-toggle-group">
+    <mat-button-toggle>
+      <button
+        (click)="onDoSearch()"
+        [disabled]="!(canSearch$ | async) && !(isMaxResultsLoading$ | async)"
+        mat-flat-button color="primary"
+        class="search-button">
+        {{
+          (loading$ | async) ?
+            ('LOADING' | translate | uppercase ):
+            (!(canSearch$ | async) && !(isMaxResultsLoading$ | async) ?
+              ('NO_RESULTS' | translate | uppercase ) :
+              (areResultsOutOfDate$ | async) ? ('UPDATE' | translate ) :
+                ('SEARCH' | translate | uppercase) )
+        }}
+      </button>
+    </mat-button-toggle>
+    <mat-button-toggle
+      [matMenuTriggerFor]="searchActionDropdown"
+      class="arrow-button-toggle">
+      <mat-icon
+        [ngStyle]="{'color':'#ddd'}">arrow_drop_down</mat-icon>
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+</ng-container>
+
+<ng-container *ngIf="searchType === searchTypes.DISPLACEMENT">
+  <span class="displacement-header-menu">
+    <button mat-button [matMenuTriggerFor]="searchActionDropdown">
+      <em>Search</em><br>
+      <b>Tools</b>
+      <mat-icon class="control-icon">
+        handyman
+      </mat-icon>
     </button>
-  </mat-button-toggle>
-  <mat-button-toggle
-    [matMenuTriggerFor]="searchActionDropdown"
-    class="arrow-button-toggle">
-    <mat-icon
-      [ngStyle]="{'color':'#ddd'}">arrow_drop_down</mat-icon>
-  </mat-button-toggle>
-</mat-button-toggle-group>
+  </span>
+</ng-container>
 
 <mat-menu #searchActionDropdown="matMenu">
-  <button mat-menu-item (click)="onClearSearch()">
-    {{'CLEAR_SEARCH' | translate }}
-  </button>
 
-  <mat-divider></mat-divider>
+  <ng-container *ngIf="searchType !== searchTypes.DISPLACEMENT">
+    <button mat-menu-item (click)="onClearSearch()">
+      {{'CLEAR_SEARCH' | translate }}
+    </button>
+    <mat-divider></mat-divider>
+  </ng-container>
 
   <span
   [matTooltipDisabled]="isLoggedIn"
@@ -43,34 +59,38 @@
     </button>
   </span>
 
-  <span
-  [matTooltipDisabled]="isLoggedIn && searchType !== searchTypes.LIST && searchType !== searchTypes.CUSTOM_PRODUCTS && searchType !== searchTypes.DISPLACEMENT"
-  matTooltip="{{ isLoggedIn && (searchType === searchTypes.LIST || searchType === searchTypes.CUSTOM_PRODUCTS || searchType === searchTypes.DISPLACEMENT) ? ('SAVED_FILTERS_ARE_NOT_AVAILABLE_FOR_SEARCH_TYPE' | translate) : ('SIGN_IN_TO_SEE_YOUR_SAVED_FILTERS' |translate)}}"
-  matTooltipPosition="after">
-    <button
-    [disabled]="searchType === searchTypes.LIST || searchType === searchTypes.CUSTOM_PRODUCTS || searchType === searchTypes.DISPLACEMENT"
-    mat-menu-item
-    [matMenuTriggerFor]="savedFiltersMenu">
-    {{ 'SAVED_FILTERS' | translate }}
-    </button>
-  </span>
+  <ng-container *ngIf="searchType !== searchTypes.DISPLACEMENT">
+    <span
+      [matTooltipDisabled]="isLoggedIn && searchType !== searchTypes.LIST && searchType !== searchTypes.CUSTOM_PRODUCTS"
+      matTooltip="{{ isLoggedIn && (searchType === searchTypes.LIST || searchType === searchTypes.CUSTOM_PRODUCTS) ? ('SAVED_FILTERS_ARE_NOT_AVAILABLE_FOR_SEARCH_TYPE' | translate) : ('SIGN_IN_TO_SEE_YOUR_SAVED_FILTERS' |translate)}}"
+      matTooltipPosition="after">
+      <button
+        [disabled]="searchType === searchTypes.LIST || searchType === searchTypes.CUSTOM_PRODUCTS"
+        mat-menu-item
+        [matMenuTriggerFor]="savedFiltersMenu">
+      {{ 'SAVED_FILTERS' | translate }}
+      </button>
+    </span>
+    <mat-divider></mat-divider>
+  </ng-container>
 
-  <mat-divider></mat-divider>
   <button mat-menu-item
     [matMenuTriggerFor]="shareSearchMenu">
       {{ 'SHARE_SEARCH' | translate }}
   </button>
 
-  <span
-    matTooltip="{{'GET_HELP_ON_HOW_TO_USER_VERTEX' | translate}}"
-    matTooltipPosition="after">
-      <button mat-menu-item (click)="onOpenHelp('toc')">{{ 'HELP_AND_TUTORIALS' | translate }}</button>
-  </span>
+  <ng-container *ngIf="searchType !== searchTypes.DISPLACEMENT">
+    <span
+      matTooltip="{{'GET_HELP_ON_HOW_TO_USER_VERTEX' | translate}}"
+      matTooltipPosition="after">
+        <button mat-menu-item (click)="onOpenHelp('toc')">{{ 'HELP_AND_TUTORIALS' | translate }}</button>
+    </span>
     <button
-    mat-menu-item
-    [matMenuTriggerFor]="exportSearchMenu">
-    {{ 'EXPORT' |  translate }}
+      mat-menu-item
+      [matMenuTriggerFor]="exportSearchMenu">
+      {{ 'EXPORT' |  translate }}
     </button>
+  </ng-container>
 
   <button *ngIf="isDevMode()" mat-menu-item [matMenuTriggerFor]="apiMaturity" matSuffix>
     <mat-icon>swap_horizontal_circle</mat-icon>
