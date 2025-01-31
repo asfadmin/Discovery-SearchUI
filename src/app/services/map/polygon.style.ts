@@ -5,17 +5,13 @@ export const valid = new Style({
     color: 'rgba(255, 255, 255, 0.2)'
   }),
   stroke: new Stroke({
-    color: '#236192',
-    width: 2
+    color: '#ffcc33',
+    width: 4
   }),
   image: new CircleStyle({
-    stroke: new Stroke({
-      color: '#ffcc33',
-      width: 2
-    }),
-    radius: 10,
+    radius: 7,
     fill: new Fill({
-      color: '#236192',
+      color: '#ffcc33',
     }),
   })
 });
