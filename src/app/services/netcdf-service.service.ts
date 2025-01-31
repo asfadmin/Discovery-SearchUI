@@ -125,7 +125,6 @@ export class NetcdfService {
         "flightDirection": flightDirection,
       }, { responseType: 'json' }).pipe(
         this.handleRetry,
-        first(),
         catchError(error => {
           this.notificationService.error(error.error.detail, 'Timeseries Service Error')
           this.store$.dispatch(setTimeseriesValid({wkt: wktRepresenation, valid: false}))

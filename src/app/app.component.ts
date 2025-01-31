@@ -353,6 +353,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           if (action.payload !== models.SearchType.SARVIEWS_EVENTS) {
             this.clearEventProductFilters();
           }
+          if(action.payload === models.SearchType.DISPLACEMENT) {
+            this.mapService.clearDrawLayer();
+          }
 
           this.store$.dispatch(new searchStore.MakeSearch());
         }
