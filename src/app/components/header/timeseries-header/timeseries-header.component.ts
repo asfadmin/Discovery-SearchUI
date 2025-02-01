@@ -8,7 +8,8 @@ import * as searchStore from '@store/search';
 import * as mapStore from '@store/map';
 
 import { ScreenSizeService } from '@services';
-import { Breakpoints, MapDrawModeType, MapInteractionModeType } from '@models';
+import { MapDrawModeType, MapInteractionModeType } from '@models';
+import * as models from '@models';
 
 @Component({
   selector: 'app-timeseries-header',
@@ -17,7 +18,7 @@ import { Breakpoints, MapDrawModeType, MapInteractionModeType } from '@models';
 })
 export class TimeseriesHeaderComponent implements OnInit, OnDestroy {
   public breakpoint$ = this.screenSize.breakpoint$;
-  public breakpoints = Breakpoints;
+  public breakpoints = models.Breakpoints;
   public isAddingPoints = false;
 
   private subs = new SubSink();
