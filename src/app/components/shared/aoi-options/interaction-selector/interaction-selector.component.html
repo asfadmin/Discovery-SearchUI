@@ -3,13 +3,14 @@
 
   <app-draw-selector></app-draw-selector>
 
-  <mat-button-toggle
+    <mat-button-toggle *ngIf="searchType !== searchTypes.DISPLACEMENT"
     (click)="onEditSelected()"
     [value]="types.EDIT"
     class="control-mat-button-toggle"
     [matTooltip]="interaction === types.EDIT ? ('STOP_EDITING' | translate) : ('EDIT_CURRENT_AREA_OF_INTEREST' | translate)">
     <mat-icon class="interaction-icon">edit</mat-icon>
   </mat-button-toggle>
+
 
   <mat-button-toggle
     (click)="onDrawSelected()"
