@@ -102,7 +102,7 @@ export class NetcdfService {
         }
         return errorCount + 1;
     }, 0),
-        delay(1000)
+        delay(4000)
     )));
 }
 
