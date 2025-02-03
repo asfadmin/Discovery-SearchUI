@@ -209,6 +209,4 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
-
-
 }
