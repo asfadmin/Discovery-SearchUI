@@ -1,6 +1,6 @@
 <button mat-button (click)="onToggle()">
   {{"FLIGHT_DIRECTION" | translate}}<br>
-  <b>{{flightDirection}}</b>
+  <b>{{flightDirection.toString() | translate}}</b>
   <mat-icon class="control-icon">
       {{flightDirection === FlightDirections.ASCENDING ? 'north_west' : 'south_west'}}
   </mat-icon>
