@@ -21,7 +21,7 @@ import { setTimeseriesValid } from '@store/charts';
 })
 export class NetcdfService {
   private url: string = 'https://d8itg4twhevb5.cloudfront.net/'
-  // private url: string = 'http://127.0.0.1:8000/'
+//   private url: string = 'http://127.0.0.1:8080/'
   private bucket: string = 'asf-cumulus-test-opera-products'
   private itemsEndpoint: string = 'items/'
   private timeSeriesEndpoint: string = 'timeseries'

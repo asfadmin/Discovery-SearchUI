@@ -218,3 +218,30 @@
   position: relative;
   top: 3px;
 }
+
+.badge-new {
+  color: #236192;
+  font-style: italic;
+  font-size: 15px;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-weight: bold;
+  animation: fadeInUp 1.5s ease-out forwards;
+  position: absolute;
+  margin-left: 3px;
+  margin-top: -2px;
+  text-shadow: 0.3px 0.3px 1.5px rgba(35, 97, 146, 0.2);
+  sfilter: brightness(1.05);
+}
+
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
