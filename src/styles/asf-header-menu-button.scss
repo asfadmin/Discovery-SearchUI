@@ -1,0 +1,84 @@
+@import "asf-theme";
+@import "deluxe-menu";
+@import "deluxe-menu-2";
+
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
+.control-mat-button-toggle {
+  @include themify($themes) {
+    background-color: themed('background-white');
+  }
+}
+
+.button-display-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.menu-button-wrapper {
+  display: block;
+}
+
+.ts-button-label {
+  @include themify($themes) {
+    color: themed("dark-secondary-text");
+  }
+
+  font-size: 14px;
+  font-weight: 400;
+  transform:
+    translateZ(0.0011px);
+}
+
+.button-menu-trigger {
+  padding: 0;
+}
+
+.button-text {
+  @include themify($themes) {
+    color: themed("dark-primary-text");
+  }
+
+  font-size: 16px;
+  font-weight: 400;
+  text-align: left;
+  font-style: normal;
+  padding: 0;
+  margin: 0;
+  line-height: 29px;
+}
+
+.mat-select-arrow {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid;
+  margin: 0 4px 3px 10px;
+  display: inline-flex;
+}
+
+.hr-wrapper {
+  height: 1px;
+  transform: matrix(1, 0, 0, 1.0001, 0, 0);
+}
+
+.text-underline {
+  border: none;
+  height: 1px;
+  color: rgb(0 0 0 / 42%); /* old IE */
+  background-color: rgb(0 0 0 / 42%); /* Modern Browsers */
+}
+
+.option-description {
+  text-wrap: normal;
+}
+
+.ts-menu-item {
+  margin-left: 10px;
+}
+
+::ng-deep .mat-mdc-menu-panel {
+  overflow: hidden;
+  min-width: 130px;
+}
