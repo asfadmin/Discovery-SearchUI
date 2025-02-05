@@ -60,7 +60,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
 
   private subs = new SubSink();
 
-  private productPageSize = 250;
+  private productPageSize = 1000; // TODO: previously 250, breaks when adding project to queue with products not loaded in (temp workaround bumping up the default load)
   private numberProductsInList$ = new BehaviorSubject(INFINITY);
   public numberProductsInList: number;
   private loadingDummyJobs = new Set<string>();
