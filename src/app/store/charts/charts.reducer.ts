@@ -82,7 +82,11 @@ export const chartsReducer = createReducer(
   }),
   on(chartActions.setTimeseriesValid, (state, {wkt, valid, error}) => {
     const seriesStates = Object.values(state.seriesStates).reduce((prev, curr) => {
-      prev[curr.wkt] = { ...curr, valid:  curr.wkt == wkt ? valid : curr.valid, errror: curr.wkt === wkt ? error : curr.error}
+      if (curr.wkt === wkt) {
+        prev[curr.wkt] = {...curr, valid: valid, error: error}
+      } else {
+        prev[curr.wkt] = {...curr}
+      }
       return prev
     }, {});
     return { ...state, seriesStates }

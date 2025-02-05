@@ -31,18 +31,18 @@
                   on-mouseover="setActiveWkt(point.wkt)"
                   on-mouseleave="setActiveWkt(null)">
                   @if (point.valid == true) {
-                  <mat-checkbox [checked]="point.checked" (change)="updateSeries($event.checked, $index)" style="display: flex;">
+                  <mat-checkbox [checked]="point.checked" (change)="updateSeries($event.checked, $index)" style="display: flex;" disableRipple>
                     <mat-icon class="ts-wkt-icon" [style.color]="point.color">place</mat-icon>
                     <span class="ts-wkt-label">
                       {{'SERIES' | translate}} {{point.seriesNumber}}
                     </span>
                   </mat-checkbox>
                   <button mat-icon-button (click)="deletePoint($index)" *ngIf="point.seriesNumber === selectedSeries"><mat-icon
-                      class="ts-trash-can">delete</mat-icon></button>
+                      class="ts-trash-can" disableRipple>delete</mat-icon></button>
                   } @else {
                     <div class="error-line">
                       @if(point.valid == false) {
-                        <mat-icon color="warn" class="invalid-aoi-icon">block</mat-icon>
+                        <mat-icon color="warn" class="invalid-aoi-icon" [matTooltip]="point.error">block</mat-icon>
                       }
                       @else {
                         <mat-spinner diameter="20" class="loading-spinner"></mat-spinner>
@@ -52,7 +52,7 @@
                         {{'SERIES' | translate}} {{point.seriesNumber}}
                       </span>
                     </div>
-                    <button mat-icon-button (click)="deletePoint($index)"><mat-icon class="ts-trash-can" *ngIf="point.seriesNumber === selectedSeries">delete</mat-icon></button>
+                    <button mat-icon-button (click)="deletePoint($index)"><mat-icon class="ts-trash-can" *ngIf="point.seriesNumber === selectedSeries" disableRipple>delete</mat-icon></button>
                   }
               </li>
             }
