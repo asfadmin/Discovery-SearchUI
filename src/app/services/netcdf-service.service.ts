@@ -114,9 +114,15 @@ export class NetcdfService {
 
     let target_cache = this.getTargetCache(flightDirection)
 
-
     if (target_cache.hasOwnProperty(index_id)) {
-      return of(target_cache[index_id])
+      if(target_cache[index_id]?.error === null || target_cache[index_id]?.error === undefined) {
+        this.store$.dispatch(setTimeseriesValid({wkt: wktRepresenation, valid: true}))
+        return of(target_cache[index_id])
+      } else {
+        let errorDetails = target_cache[index_id]?.error?.error.detail ?? 'No details, try again.';
+        this.store$.dispatch(setTimeseriesValid({wkt: wktRepresenation, valid: false, error: errorDetails}))
+        return of()
+      }
     } else {
       return this.http.post(`${this.url}${this.timeSeriesEndpoint}`, {
         "wkt": wktRepresenation,
@@ -126,9 +132,11 @@ export class NetcdfService {
       }, { responseType: 'json' }).pipe(
         this.handleRetry,
         catchError(error => {
-          this.notificationService.error(error.error.detail, 'Timeseries Service Error')
-          this.store$.dispatch(setTimeseriesValid({wkt: wktRepresenation, valid: false}))
-          return of(null)
+          let errorDetails = error.error.detail ?? 'No details, try again.';
+          this.notificationService.error(errorDetails, 'Timeseries Service Error')
+
+          this.store$.dispatch(setTimeseriesValid({wkt: wktRepresenation, valid: false, error: errorDetails}))
+          return of({error})
         }),
         map(response => {
           if (!!response) {
@@ -141,8 +149,10 @@ export class NetcdfService {
             delete target_cache[deleted[0]];
           }
           this.cacheUpdated.next(index_id)
-          if(response) {
+          if(response && !(response as any)?.error) {
             this.store$.dispatch(setTimeseriesValid({wkt: wktRepresenation, valid: true}))
+          } else {
+            response = null
           }
 
           return response

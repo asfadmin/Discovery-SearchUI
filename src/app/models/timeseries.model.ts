@@ -9,6 +9,7 @@ export interface timeseriesChartItemState {
     seriesNumber: number,
     linearFit: boolean,
     valid?: boolean,
+    error?: any
 }
 
 export interface TimeSeriesChartPoint {
