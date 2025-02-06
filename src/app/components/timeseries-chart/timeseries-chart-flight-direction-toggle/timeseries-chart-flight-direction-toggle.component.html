@@ -1,27 +1,3 @@
-<!--<button mat-button (click)="onToggle()">-->
-<!--  {{"FLIGHT_DIRECTION" | translate}}<br>-->
-<!--  <b>{{flightDirection.toString() | translate}}</b>-->
-<!--  <mat-icon class="control-icon">-->
-<!--      {{flightDirection === FlightDirections.ASCENDING ? 'north_west' : 'south_west'}}-->
-<!--  </mat-icon>-->
-<!--</button>-->
-
-<!--<mat-form-field appearance="fill">-->
-<!--  <mat-label>{{"FLIGHT_DIRECTION" | translate}}</mat-label>-->
-<!--  <input matInput placeholder="Placeholder">-->
-<!--  <mat-select>-->
-<!--    <mat-option value="option">-->
-<!--      Ascending-->
-<!--      <mat-icon matSuffix>north_west</mat-icon>-->
-<!--    </mat-option>-->
-<!--    <mat-option value="option">-->
-<!--      Descending-->
-<!--      <mat-icon matSuffix>south_west</mat-icon>-->
-<!--    </mat-option>-->
-<!--  </mat-select>-->
-<!--&lt;!&ndash;  <mat-hint>Hint</mat-hint>&ndash;&gt;-->
-<!--</mat-form-field>-->
-
 <div style="display: inline-flex; margin-top: 16px;">
   <div class="menu-button-wrapper">
     <div class="ts-button-label">{{ 'FLIGHT_DIRECTION' | translate }}</div>
@@ -38,10 +14,15 @@
       </div>
     </div>
   </div>
-
 </div>
 
 <mat-menu #flightDirectionMenu="matMenu" id="flightDirectionMenu" class="button-menu-trigger" >
-  <button mat-menu-item class="ts-menu-item" (click)="setFlightDirection(FlightDirections.ASCENDING)">{{FlightDirections.ASCENDING | translate}}</button>
-  <button mat-menu-item class="ts-menu-item" (click)="setFlightDirection(FlightDirections.DESCENDING)">{{FlightDirections.DESCENDING | translate}}</button>
+  <button mat-menu-item class="ts-menu-item" (click)="setFlightDirection(FlightDirections.ASCENDING)">
+      <mat-icon class="control-icon">north_west</mat-icon>
+    {{FlightDirections.ASCENDING | translate}}
+  </button>
+  <button mat-menu-item class="ts-menu-item" (click)="setFlightDirection(FlightDirections.DESCENDING)">
+    <mat-icon class="control-icon">south_west</mat-icon>
+    {{FlightDirections.DESCENDING | translate}}
+  </button>
 </mat-menu>

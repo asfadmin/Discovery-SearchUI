@@ -25,7 +25,7 @@ export class TimeseriesHeaderComponent implements OnInit, OnDestroy {
 
   constructor(
     private store$: Store<AppState>,
-    private screenSize: ScreenSizeService
+    private screenSize: ScreenSizeService,
   ) { }
 
   ngOnInit() {

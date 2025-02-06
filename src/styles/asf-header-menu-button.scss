@@ -74,11 +74,16 @@
   text-wrap: normal;
 }
 
-.ts-menu-item {
-  margin-left: 10px;
+.menu-component-wrapper {
+  display: inline-flex;
+  margin: 16px 16px 0 0;
 }
 
 ::ng-deep .mat-mdc-menu-panel {
   overflow: hidden;
   min-width: 130px;
+}
+
+::ng-deep .mat-mdc-menu-content {
+  padding: 8px 16px
 }

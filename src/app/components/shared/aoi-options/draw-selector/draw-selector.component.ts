@@ -42,12 +42,13 @@ export class DrawSelectorComponent implements OnInit, OnDestroy {
         breakpoint => this.breakpoint = breakpoint
       )
     );
+
     this.subs.add(
       this.store$.select(searchStore.getSearchType).subscribe(
         searchType => this.searchType = searchType
       )
     );
-      
+
   }
 
   public onNewDrawMode(mode: MapDrawModeType): void {

@@ -1,4 +1,7 @@
-<button mat-stroked-button class="shape-select-button" [matMenuTriggerFor]="drawMenu" aria-label="Map projection view">
+<button mat-stroked-button *ngIf="searchType != searchTypes.DISPLACEMENT; else displacementAOI"
+        class="shape-select-button"
+        [matMenuTriggerFor]="drawMenu"
+        aria-label="Map projection view">
   <ng-template [ngIf]="drawMode == types.POINT" class="shape-select-icon antarctic">
     <mat-icon class="draw-icon">place</mat-icon>
   </ng-template>
@@ -20,6 +23,26 @@
   <span class="fa fa-caret-down bottom-right"></span>
 </button>
 
+<ng-template #displacementAOI>
+  <div class = menu-component-wrapper>
+    <div class="menu-button-wrapper">
+      <div class="ts-button-label">{{ 'AREA_OF_INTEREST' | translate }}</div>
+      <div>
+        <button [matMenuTriggerFor]="drawMenu" class="button-menu-trigger"
+                color="basic" matTooltip="{{ 'AREA_OF_INTEREST' | translate }}" mat-button>
+          <div class="button-text">
+            {{drawMode.toUpperCase() | translate}}
+            <span class="mat-select-arrow"></span>
+          </div>
+        </button>
+        <div class="hr-wrapper">
+          <hr class="text-underline">
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
 <mat-menu #drawMenu="matMenu">
     <button mat-menu-item
       (click)="onPointSelected()"
@@ -29,7 +52,7 @@
       {{ 'PLACE_A_POINT' | translate }}
     </button>
 
-      <button mat-menu-item
+      <button mat-menu-item *ngIf="searchType !== searchTypes.DISPLACEMENT"
       (click)="onLineStringSelected()"
       [value]="types.LINESTRING"
       class="control-button mat-menu-item">
@@ -70,7 +93,7 @@
 
 
   <button mat-menu-item
-    *ngIf="breakpoint !== breakpoints.MOBILE"
+    *ngIf="breakpoint !== breakpoints.MOBILE && searchType !== searchTypes.DISPLACEMENT"
     (click)="onImportSelected()"
     [disabled]="breakpoint <= breakpoints.SMALL"
     class="control-mat-button-toggle">
