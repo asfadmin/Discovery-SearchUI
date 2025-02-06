@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - andy/*
-      - test
 
 jobs:
   deploy:
