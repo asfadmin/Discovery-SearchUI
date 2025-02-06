@@ -53,7 +53,7 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit, OnDestroy
     this.subs.add(
       this.store$.select(filtersStore.getTemporalRange).pipe(withLatestFrom(this.store$.select(filtersStore.getDateRange))).subscribe(
         ([temp,dateRange]) => {
-          if (!temp.start || !temp.end) { return; }
+          if (!temp.start || !temp.end || Number.isNaN(temp.start.valueOf()) || Number.isNaN(temp.end.valueOf())) { return; }
           this.maxRange = {start: temp.start.valueOf(), end: temp.end.valueOf()};
           if (this.lastMaxRange.start !== this.maxRange.start || this.lastMaxRange.end !== this.maxRange.end) {
             this.lastMaxRange.start = this.maxRange.start;
