@@ -40,6 +40,17 @@
         </div>
       </div>
     </div>
+    <div class="draw-button-wrapper">
+      <mat-button-toggle
+        (click)="toggleDrawMode()"
+        [value]="interactionTypes.DRAW"
+        class="draw-button"
+        [matTooltip]="isDrawing ? ('STOP_DRAWING'| translate) : ('DRAW_NEW_AREA_OF_INTEREST'| translate)">
+        <mat-icon class="interaction-icon">
+          {{isDrawing ? 'draw' : 'edit'}}
+        </mat-icon>
+      </mat-button-toggle>
+    </div>
   </div>
 </ng-template>
 

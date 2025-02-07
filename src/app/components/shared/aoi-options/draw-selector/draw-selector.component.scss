@@ -56,9 +56,16 @@
   // border: solid 1px rgb(0 0 0 / 12%);
   text-align: center;
 }
+
 .control-button {
   @include themify($themes) {
     background: themed('background-white');
     color: themed('light-primary-text')
   }
+}
+
+.draw-button-wrapper {
+}
+
+.draw-button {
 }

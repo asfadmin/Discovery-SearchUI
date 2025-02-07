@@ -19,7 +19,7 @@ import * as models from '@models';
 export class TimeseriesHeaderComponent implements OnInit, OnDestroy {
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
-  public isAddingPoints = false;
+  public isDrawing = false;
 
   private subs = new SubSink();
 
@@ -31,7 +31,7 @@ export class TimeseriesHeaderComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subs.add(
       this.store$.select(mapStore.getMapInteractionMode).subscribe(
-        mode => this.isAddingPoints = mode === MapInteractionModeType.DRAW
+        mode => this.isDrawing = mode === MapInteractionModeType.DRAW
       )
     );
 
