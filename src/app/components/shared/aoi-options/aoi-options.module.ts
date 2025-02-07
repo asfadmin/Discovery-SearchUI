@@ -15,6 +15,7 @@ import { InteractionSelectorComponent } from './interaction-selector';
 import { SharedModule } from '@shared';
 import { GeocodeSelectorComponent } from './geocode-selector/geocode-selector.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import {MatSlideToggle} from '@angular/material/slide-toggle';
 
 
 
@@ -35,7 +36,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatSharedModule,
     FileUploadModule,
     SharedModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatSlideToggle
   ],
   exports: [
     AoiOptionsComponent,

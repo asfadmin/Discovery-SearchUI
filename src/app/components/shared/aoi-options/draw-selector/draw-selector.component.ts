@@ -9,6 +9,7 @@ import * as searchStore from '@store/search';
 
 import { ScreenSizeService } from '@services';
 import { MapDrawModeType, MapInteractionModeType, Breakpoints, SearchType } from '@models';
+import {ThemePalette} from '@angular/material/core';
 
 @Component({
   selector: 'app-draw-selector',
@@ -28,12 +29,16 @@ export class DrawSelectorComponent implements OnInit, OnDestroy {
   public interaction: MapInteractionModeType;
   public interactionTypes = MapInteractionModeType;
 
-  public isDrawing = false;
+  public isDrawing = true;
+  isDisabled = false;
+  color: ThemePalette = 'accent';
 
   constructor(
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
-  ) {}
+  ) {
+    this.onPointSelected()
+  }
 
   ngOnInit() {
 
