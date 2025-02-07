@@ -1,27 +1,12 @@
 <ng-container *ngIf="breakpoint$ | async as breakpoint">
 	<div *ngIf="breakpoint > breakpoints.MOBILE" class="breadcrumb-row baseline-header-layout">
 		<div class="baseline-header-wrapper">
-			<app-search-type-selector *ngIf="!(isKioskMode$ | async)" class="breadcrumb">
+			<app-search-type-selector *ngIf="!(isKioskMode$ | async)" class="breadcrumb" style="margin-right: 16px;">
 			</app-search-type-selector>
 
       <div class="displacement-header-menu">
-        @if(!isAddingPoints) {
-          <button mat-button (click)="onAddPointsMode()">
-            <em>Points</em><br>
-            <b>{{ 'ADD_POINTS' | translate }}</b>
-            <mat-icon>add_location_alt</mat-icon>
-          </button>
-        }
-        @else {
-          <button mat-button (click)="onStopAddPoints()">
-            <em>Points</em><br>
-            <b>{{ 'STOP_ADDING_POINTS' | translate }}</b>
-            <mat-icon>location_off</mat-icon>
-          </button>
-        }
-
+        <app-draw-selector></app-draw-selector>
         <app-timeseries-chart-flight-direction-toggle></app-timeseries-chart-flight-direction-toggle>
-
         <app-search-button></app-search-button>
       </div>
 
