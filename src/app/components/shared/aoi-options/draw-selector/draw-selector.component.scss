@@ -71,14 +71,14 @@
 }
 
 .draw-toggle-wrapper {
-  margin: 2px 0 0 10px;
+  margin: 2px 0 0 8px;
   display: block;
   transform: scale(0.9);
 }
 
 ::ng-deep .theme-light .mat-mdc-slide-toggle.mat-accent {
   --mdc-switch-selected-focus-state-layer-color: #757575;
-  --mdc-switch-selected-handle-color: #757575;
+  --mdc-switch-selected-handle-color: #236192;
   --mdc-switch-selected-hover-state-layer-color: #757575;
   --mdc-switch-selected-pressed-state-layer-color: #757575;
   --mdc-switch-selected-focus-handle-color: #236192;
