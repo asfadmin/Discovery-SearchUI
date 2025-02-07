@@ -60,10 +60,12 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
 
   private subs = new SubSink();
 
-  private productPageSize = 1000; // TODO: previously 250, breaks when adding project to queue with products not loaded in (temp workaround bumping up the default load)
+  private productPageSize = 250;
   private numberProductsInList$ = new BehaviorSubject(INFINITY);
   public numberProductsInList: number;
   private loadingDummyJobs = new Set<string>();
+  private loadingJobs = {};
+  private loadedInProjects = new Set<string>();
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
@@ -498,28 +500,36 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
 
     this.store$.dispatch(new searchStore.LoadOnDemandScenesList(scenesToLoad));
   }
-
   private loadDummyProducts(scenes: CMRProduct[]) {
-
-    const scenesToLoad = scenes
+    let scenesToLoad = scenes
     .slice(0, this.numberProductsInList)
     .filter(s => s.isDummyProduct)
     .filter(s => !this.loadingDummyJobs.has(s.name));
 
-    if (scenesToLoad.length === 0) {
+    scenesToLoad.forEach(
+      s => {this.loadingDummyJobs.add(s.name); this.loadedInProjects.add(s.metadata.job.name);}
+    );
+
+    let scenesOutsideInitialLoad = scenes
+    .slice(this.numberProductsInList)
+    .filter(s => s.isDummyProduct)
+    .filter(s => this.loadedInProjects.has(s.metadata.job.name) && !this.loadingDummyJobs.has(s.name));
+
+    if (scenesToLoad.length === 0 && scenesOutsideInitialLoad.length === 0) {
       return;
     }
-
+    scenesToLoad = [...scenesToLoad, ...scenesOutsideInitialLoad]
     scenesToLoad.forEach(
-      s => this.loadingDummyJobs.add(s.name)
-    );
-    this.store$.dispatch(new searchStore.LoadOnDemandScenesList(scenesToLoad));
+      s => this.loadingJobs[s.name] = s
+    )
+
+    this.store$.dispatch(new searchStore.LoadOnDemandScenesList(Object.values(this.loadingJobs)));
   }
 
   private removeLoadedScenes(scenes: CMRProduct[]) {
     scenes
       .filter(s => !s.isDummyProduct)
-      .forEach(s => this.loadingDummyJobs.delete(s.name))
+      .forEach(s => {this.loadingDummyJobs.delete(s.name); delete this.loadingJobs[s.name]})
   }
 
   ngOnDestroy() {
