@@ -488,29 +488,13 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
     }
   }
 
-  public onLoadMoreCustomProducts() {
-    const oldNumProducts = this.numberProductsInList;
-    const newNumProducts = this.numberProductsInList + this.productPageSize;
-
-    const scenesToLoad = this.scenes.slice(oldNumProducts, newNumProducts);
-
-    this.numberProductsInList$.next(
-      newNumProducts
-    );
-
-    this.store$.dispatch(new searchStore.LoadOnDemandScenesList(scenesToLoad));
-  }
-  private loadDummyProducts(scenes: CMRProduct[]) {
-    let scenesToLoad = scenes
-    .slice(0, this.numberProductsInList)
-    .filter(s => s.isDummyProduct)
-    .filter(s => !this.loadingDummyJobs.has(s.name));
+  private addToQueue(scenesToLoad: models.CMRProduct[]) {
 
     scenesToLoad.forEach(
       s => {this.loadingDummyJobs.add(s.name); this.loadedInProjects.add(s.metadata.job.name);}
     );
 
-    let scenesOutsideInitialLoad = scenes
+    let scenesOutsideInitialLoad = this.scenes
     .slice(this.numberProductsInList)
     .filter(s => s.isDummyProduct)
     .filter(s => this.loadedInProjects.has(s.metadata.job.name) && !this.loadingDummyJobs.has(s.name));
@@ -524,6 +508,30 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
     )
 
     this.store$.dispatch(new searchStore.LoadOnDemandScenesList(Object.values(this.loadingJobs)));
+
+  }
+
+  public onLoadMoreCustomProducts() {
+    const oldNumProducts = this.numberProductsInList;
+    const newNumProducts = this.numberProductsInList + this.productPageSize;
+
+    const scenesToLoad = this.scenes.slice(oldNumProducts, newNumProducts)
+    .filter(s => s.isDummyProduct)
+    .filter(s => !this.loadingDummyJobs.has(s.name));
+
+    this.addToQueue(scenesToLoad);
+
+    this.numberProductsInList$.next(
+      newNumProducts
+    );
+  }
+  private loadDummyProducts(scenes: CMRProduct[]) {
+    let scenesToLoad = scenes
+    .slice(0, this.numberProductsInList)
+    .filter(s => s.isDummyProduct)
+    .filter(s => !this.loadingDummyJobs.has(s.name));
+
+    this.addToQueue(scenesToLoad);
   }
 
   private removeLoadedScenes(scenes: CMRProduct[]) {
