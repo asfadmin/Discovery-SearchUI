@@ -234,14 +234,14 @@ ul {
 }
 
 /* TODO(mdc-migration): The following rule targets internal classes of slide-toggle that may no longer apply for the MDC version. */
-.mat-mdc-slide-toggle.mat-checked .mat-slide-toggle-thumb {
-  background-color: $asf-primary;
-}
+//.mat-mdc-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+//  background-color: $asf-primary;
+//}
 
 /* TODO(mdc-migration): The following rule targets internal classes of slide-toggle that may no longer apply for the MDC version. */
-.mat-mdc-slide-toggle.mat-checked .mat-slide-toggle-bar {
-  background-color: darkgrey;
-}
+//.mat-mdc-slide-toggle.mat-checked .mat-slide-toggle-bar {
+//  background-color: darkgrey;
+//}
 
 .max-width-100 {
   max-width: 115px !important;

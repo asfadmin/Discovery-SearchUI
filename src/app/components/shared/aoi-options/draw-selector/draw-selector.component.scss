@@ -67,5 +67,31 @@
 .draw-button-wrapper {
 }
 
-.draw-button {
+.draw-toggle {
 }
+
+.draw-toggle-wrapper {
+  margin: 2px 0 0 10px;
+  display: block;
+  transform: scale(0.9);
+}
+
+::ng-deep .theme-light .mat-mdc-slide-toggle.mat-accent {
+  --mdc-switch-selected-focus-state-layer-color: #757575;
+  --mdc-switch-selected-handle-color: #757575;
+  --mdc-switch-selected-hover-state-layer-color: #757575;
+  --mdc-switch-selected-pressed-state-layer-color: #757575;
+  --mdc-switch-selected-focus-handle-color: #236192;
+  --mdc-switch-selected-hover-handle-color: #236192;
+  --mdc-switch-selected-pressed-handle-color: #236192;
+  --mdc-switch-selected-focus-track-color: #e0e0e0;
+  --mdc-switch-selected-hover-track-color: #e0e0e0;
+  --mdc-switch-selected-pressed-track-color: #e0e0e0;
+  --mdc-switch-selected-track-color: #e0e0e0;
+
+  --mdc-switch-unselected-focus-handle-color: #757575;
+  --mdc-switch-unselected-hover-handle-color: #757575;
+  --mdc-switch-unselected-pressed-handle-color: #757575;
+
+}
+

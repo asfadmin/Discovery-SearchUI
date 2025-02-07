@@ -28,8 +28,10 @@
     <div class="menu-button-wrapper">
       <div class="ts-button-label">{{ 'AREA_OF_INTEREST' | translate }}</div>
       <div>
-        <button [matMenuTriggerFor]="drawMenu" class="button-menu-trigger"
-                color="basic" matTooltip="{{ 'AREA_OF_INTEREST' | translate }}" mat-button>
+        <button mat-button
+                [matMenuTriggerFor]="drawMenu"
+                class="button-menu-trigger"
+                color="basic">
           <div class="button-text">
             {{drawMode.toUpperCase() | translate}}
             <span class="mat-select-arrow"></span>
@@ -38,19 +40,28 @@
         <div class="hr-wrapper">
           <hr class="text-underline">
         </div>
+        <div class="draw-toggle-wrapper">
+          <mat-slide-toggle
+            class="draw-toggle"
+            (click)="toggleDrawMode()"
+            [checked]="isDrawing"
+            [disabled]="isDisabled">
+            {{ 'DRAW' | translate | titlecase }}
+          </mat-slide-toggle>
+        </div>
       </div>
     </div>
-    <div class="draw-button-wrapper">
-      <mat-button-toggle
-        (click)="toggleDrawMode()"
-        [value]="interactionTypes.DRAW"
-        class="draw-button"
-        [matTooltip]="isDrawing ? ('STOP_DRAWING'| translate) : ('DRAW_NEW_AREA_OF_INTEREST'| translate)">
-        <mat-icon class="interaction-icon">
-          {{isDrawing ? 'draw' : 'edit'}}
-        </mat-icon>
-      </mat-button-toggle>
-    </div>
+<!--    <div class="draw-button-wrapper">-->
+<!--      <button mat-mini-fab-->
+<!--        (click)="toggleDrawMode()"-->
+<!--        [value]="interactionTypes.DRAW"-->
+<!--        class="draw-button"-->
+<!--        [matTooltip]="isDrawing ? ('STOP_DRAWING'| translate) : ('DRAW_NEW_AREA_OF_INTEREST'| translate)">-->
+<!--        <mat-icon class="interaction-icon">-->
+<!--          {{isDrawing ? 'draw' : 'edit'}}-->
+<!--        </mat-icon>-->
+<!--      </button>-->
+<!--    </div>-->
   </div>
 </ng-template>
 
