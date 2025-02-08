@@ -31,3 +31,10 @@
     @include md-icon-size($asf-ribbon-icon-size);
 }
 
+.fd-icon-button-text {
+    @include themify($themes) {
+        color: themed('dark-primary-text');
+    }
+    @include md-icon-size($asf-ribbon-icon-size);
+}
+
