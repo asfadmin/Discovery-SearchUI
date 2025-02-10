@@ -173,6 +173,23 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
     this.newListInput$.next(text);
   }
 
+  public onCleanListInput(): void {
+    if (!this.searchList) {
+      return
+    }
+
+    const charsToRemove = /[\'\"\[\]\:\n\,\{\}\(\)]/g;
+
+    const cleanList = this.searchList
+      .replace(charsToRemove, '')
+      .split(' ')
+      .filter(listItem => listItem !== '')
+      .join(', ')
+
+    this.searchList = cleanList;
+    this.setNewListInput(cleanList);
+  }
+
   public onNewListSearchMode(mode: models.ListSearchType): void {
     this.store$.dispatch(new filtersStore.SetListSearchType(mode));
   }

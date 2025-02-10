@@ -59,6 +59,10 @@
                   {{ 'FILE' |  translate }}
                 </mat-button-toggle>
               </mat-button-toggle-group>
+              <button mat-flat-button aria-label="Clean" class="clean-input-button"
+                  (click)="onCleanListInput()">
+                Clean Input
+              </button>
             </div>
           </div>
           <div class="input-field-container">
@@ -68,6 +72,7 @@
                         [(ngModel)]="searchList"
                         style="height: 150px;"
                         placeholder="{{ 'LIST_OF' | translate }} {{ mode === types.SCENE ? ( 'SCENE_NAMES' | translate ): ( 'FILE_IDS'|translate ) }}">
+
               </textarea>
             </mat-form-field>
             <div class="drop-file-area file-upload-container"
