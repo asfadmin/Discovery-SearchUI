@@ -499,10 +499,12 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
     .filter(s => s.isDummyProduct)
     .filter(s => this.loadedInProjects.has(s.metadata.job.name) && !this.loadingDummyJobs.has(s.name));
 
-    if (scenesToLoad.length === 0 && scenesOutsideInitialLoad.length === 0) {
+    scenesToLoad = [...scenesToLoad, ...scenesOutsideInitialLoad]
+
+    if (scenesToLoad.length === 0 || scenesToLoad.every(s => this.loadingJobs.hasOwnProperty(s.name))) {
       return;
     }
-    scenesToLoad = [...scenesToLoad, ...scenesOutsideInitialLoad]
+
     scenesToLoad.forEach(
       s => this.loadingJobs[s.name] = s
     )
