@@ -115,11 +115,29 @@
           <mat-label>{{ 'HY_P3_API_URL' | translate }}</mat-label>
           <input matInput
             [(ngModel)]="hyp3BackendUrl"
-            name="backendUrl">
+            (change)="onChangeHyp3Url($event)"
+            name="backendUrl"
+            [matAutocomplete]="auto">
+
+            <mat-autocomplete
+             (optionSelected)="onAutoCompleteChangeHyp3Url($event.option.value)"
+              #auto="matAutocomplete">
+              @for (url of hyp3Urls; track url) {
+                  <mat-option [value]="url">{{ url}}
+                  </mat-option>
+              }
+            </mat-autocomplete>
+
           <button matSuffix mat-icon-button aria-label="Clear" (click)="resetHyp3Url()">
             <mat-icon>refresh</mat-icon>
           </button>
+          @if (hyp3BackendUrl !== hyp3BaseUrl) {
+              <button matSuffix mat-icon-button aria-label="Remove" (click)="removeHyp3Url(hyp3BackendUrl)">
+                <mat-icon>close</mat-icon>
+              </button>
+          }
         </mat-form-field>
+
         @if(!this.env.isProd) {
           <mat-form-field class="default-map">
             <mat-label>Debug Status</mat-label>

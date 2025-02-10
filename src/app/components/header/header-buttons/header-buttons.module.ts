@@ -10,6 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSharedModule } from '@shared';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { DatasetSelectorModule } from '@components/shared/selectors/dataset-selector';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 import { HeaderButtonsComponent } from './header-buttons.component';
 import { PreferencesComponent } from './preferences/preferences.component';
@@ -36,6 +37,7 @@ import { LanguageSelectorModule } from "@components/shared/selectors/language-se
     MatSelectModule,
     DatasetSelectorModule,
     MatFormFieldModule,
+    MatAutocompleteModule,
     SharedModule,
     LanguageSelectorModule,
   ],

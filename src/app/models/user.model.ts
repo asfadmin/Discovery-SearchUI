@@ -17,6 +17,7 @@ export interface UserProfile {
     'SBAS Search': string
   };
   hyp3BackendUrl: string;
+  hyp3Urls: string[];
   theme: string;
   language: string;
 }

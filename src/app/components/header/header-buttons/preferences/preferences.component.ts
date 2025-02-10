@@ -56,6 +56,8 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     'Geographic Search': '',
     'SBAS Search': ''
   };
+  public hyp3Urls = [];
+  public hyp3BaseUrl = this.hyp3.baseUrl;
   public currentTheme = 'light';
   public currentFilterDisplayNames = {};
 
@@ -88,8 +90,12 @@ export class PreferencesComponent implements OnInit, OnDestroy {
           this.selectedFiltersIDs = profile.defaultFilterPresets;
           this.defaultMaxConcurrentDownloads = profile.defaultMaxConcurrentDownloads;
           this.hyp3BackendUrl = profile.hyp3BackendUrl;
+          this.hyp3Urls = profile.hyp3Urls || [];
           this.currentTheme = profile.theme;
           this.defaultLanguage = profile.language;
+
+          this.addHyp3Url(this.hyp3.apiUrl);
+
           if (this.hyp3BackendUrl) {
             this.hyp3.setApiUrl(this.hyp3BackendUrl);
           } else {
@@ -199,9 +205,39 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     this.saveProfile()
   }
 
+  public onChangeHyp3Url(event: Event): void {
+    const url = (event.target as HTMLInputElement).value;
+    this.changeHyp3Url(url);
+  }
+
+  public onAutoCompleteChangeHyp3Url(url: string): void {
+    this.changeHyp3Url(url);
+  }
+
+  public changeHyp3Url(url: string): void {
+    this.hyp3BackendUrl = url;
+    this.hyp3.setApiUrl(url);
+    this.addHyp3Url(this.hyp3BackendUrl);
+    this.saveProfile();
+  }
+
+  public addHyp3Url(url: string): void {
+    const uniqueUrls = new Set(this.hyp3Urls);
+    uniqueUrls.add(url);
+    this.hyp3Urls = [...uniqueUrls];
+  }
+
+  public removeHyp3Url(url: string): void {
+    this.hyp3Urls = this.hyp3Urls.filter(
+      hyp3Url => hyp3Url !== url
+    );
+    this.resetHyp3Url();
+  }
+
   public resetHyp3Url() {
     this.hyp3.setDefaultApiUrl();
     this.hyp3BackendUrl = this.hyp3.apiUrl;
+    this.saveProfile();
   }
 
   public saveProfile(): void {
@@ -212,6 +248,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
       defaultMaxConcurrentDownloads: this.defaultMaxConcurrentDownloads,
       defaultFilterPresets: this.selectedFiltersIDs,
       hyp3BackendUrl: this.hyp3BackendUrl,
+      hyp3Urls: this.hyp3Urls,
       theme: this.currentTheme,
       language: this.defaultLanguage
     });
