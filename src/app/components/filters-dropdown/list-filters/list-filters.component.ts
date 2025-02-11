@@ -178,7 +178,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
       return
     }
 
-    const charsToRemove = /[\'\"\[\]\:\n\,\{\}\(\)]/g;
+    const charsToRemove = /[\'\"\[\]\:\n\,\{\}\(\)\=\.]/g;
 
     const cleanList = this.searchList
       .replace(charsToRemove, '')
