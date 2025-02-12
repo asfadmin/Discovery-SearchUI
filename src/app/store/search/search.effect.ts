@@ -59,6 +59,8 @@ export class SearchEffects {
 
   public clearMapInteractionModeOnSearch = createEffect(() => this.actions$.pipe(
     ofType(SearchActionType.MAKE_SEARCH),
+    withLatestFrom(this.store$.select(getSearchType)),
+    filter(([_, currentType]) => currentType !== SearchType.DISPLACEMENT),
     map(_ => new mapStore.SetMapInteractionMode(models.MapInteractionModeType.NONE))
   ));
 
