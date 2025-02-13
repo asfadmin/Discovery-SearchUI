@@ -30,7 +30,7 @@
            class="bold" matLine>
 
         <app-file-name
-          [name]="(scene.metadata.fileName || scene.name)"
+          [name]="(scene.metadata.fileName || scene.name || scene.metadata.job.job_id)"
           [dataset]="scene.dataset"
           [searchType]="searchType">
         </app-file-name>
@@ -53,9 +53,10 @@
     <div class="date-time" matLine>
       <ng-container *ngIf="scene.metadata.job">
         {{ scene.metadata.job.job_type }}
-        <br *ngIf="breakpoint === breakpoints.MOBILE && searchType === SearchTypes.CUSTOM_PRODUCTS"> -
+        <br *ngIf="breakpoint === breakpoints.MOBILE && searchType === SearchTypes.CUSTOM_PRODUCTS">
       </ng-container>
       <ng-container *ngIf="!scene.isDummyProduct">
+          -
         <ng-container *ngIf="
           breakpoint > breakpoints.MOBILE &&
           searchType !== SearchTypes.BASELINE &&
@@ -79,7 +80,6 @@
           {{ scene.metadata.date| shortDate }}
         </ng-container>
       </ng-container>
-      <span *ngIf="scene.isDummyProduct">Loading...</span>
     </div>
   </div>
 

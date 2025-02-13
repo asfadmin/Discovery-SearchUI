@@ -122,7 +122,7 @@
               </app-scene-metadata>
             </details>
             <div *ngIf="searchType === searchTypes.CUSTOM_PRODUCTS">
-              <div *ngIf="scene.metadata.job.job_parameters.scenes.length > 1">
+              <div *ngIf="scene.metadata.job.job_parameters?.scenes?.length > 1">
                 <hr />
                 <span class="detail-card-header">
                   <b>{{ scene.metadata.job.job_parameters.scenes[1].name }}</b>

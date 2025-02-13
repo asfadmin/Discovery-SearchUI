@@ -1,5 +1,7 @@
-  @if(job.job_parameters.scenes[0].isDummyProduct) {
-    <mat-chip color="primary">Loading...</mat-chip>
+  @if(!!job.job_parameters.scenes) {
+    @if (job.job_parameters.scenes[0].isDummyProduct) {
+      <mat-chip color="primary">Loading...</mat-chip>
+    }
   } @else {
 
     @if(isExpired(job) && !isFileDetails) {

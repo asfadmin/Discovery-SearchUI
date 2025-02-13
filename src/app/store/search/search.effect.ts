@@ -177,6 +177,9 @@ export class SearchEffects {
 
           return names.concat(gNames);
         } else {
+          if (prod.name === '') {
+            return names;
+          }
           return names.push(prod.name);
         }
       }, []);
@@ -456,18 +459,24 @@ export class SearchEffects {
 
   private hyp3JobToProducts(jobs, products) {
     const virtualProducts = jobs
-    .filter(job => products[job.job_parameters.granules[0]])
     .map(job => {
-      const product = products[job.job_parameters.granules[0]];
-      const jobFile = !!job.files ?
-        job.files[0] :
-        { size: -1, url: '', filename: product.name };
+      let product;
 
-      const scene_keys = job.job_parameters.granules;
-      job.job_parameters.scenes = [];
-      for (const scene_key of scene_keys) {
-        job.job_parameters.scenes.push(products[scene_key]);
+      if (job.job_parameters.granules) {
+        product = products[job.job_parameters.granules[0]];
+        const scene_keys = job.job_parameters.granules;
+
+        job.job_parameters.scenes = [];
+        for (const scene_key of scene_keys) {
+          job.job_parameters.scenes.push(products[scene_key]);
+        }
+      } else {
+        product = this.dummyProduct();
       }
+
+      const dummyJobFile = { size: -1, url: '', filename: product.name };
+      const jobFile = !!job.files && !!job.files[0] ? job.files[0] : dummyJobFile;
+
 
       const jobProduct = {
         ...product,

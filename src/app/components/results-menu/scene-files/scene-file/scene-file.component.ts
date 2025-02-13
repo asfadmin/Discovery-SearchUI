@@ -54,7 +54,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
     this.subs.add(
         of(this.product).pipe(
           filter(prod => !!prod.metadata)
-        ).subscribe( prod => {
+        ).subscribe(prod => {
           if (!prod.metadata.job) {
             this.paramsList = [];
           } else {

@@ -89,6 +89,15 @@
     <b>{{ param.name }}:</b> {{ param.val }}
   </div>
 
+  <div *ngIf="product.metadata.job && product.metadata.job.job_id" matListItemLine>
+    <b>{{'JOB_ID' | translate}} </b>
+
+    <app-copy-to-clipboard
+      prompt="{{ 'COPY_JOB_ID' | translate }}"
+      [value]="product.metadata.job.job_id">
+    </app-copy-to-clipboard>
+  </div>
+
   <app-download-file-button [attr.id]="'scene_' + product.id" [product]="product"
     (productDownloaded)="prodDownloaded($event)" [disabled]="isExpired(product.metadata.job)" matListItemMeta>
   </app-download-file-button>
