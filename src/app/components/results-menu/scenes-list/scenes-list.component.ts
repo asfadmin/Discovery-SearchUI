@@ -97,7 +97,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       const flattened: string[] = [];
       for (const job of jobs) {
         for (const product of job.granules) {
-          flattened.push(product.name);
+          flattened.push(product?.name);
         }
       }
 
@@ -508,6 +508,11 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
     scenesToLoad.forEach(
       s => this.loadingJobs[s.id] = s
     )
+    const newNumProducts = this.numberProductsInList + scenesOutsideInitialLoad.length;
+
+    this.numberProductsInList$.next(
+      newNumProducts
+    );
 
     this.store$.dispatch(new searchStore.LoadOnDemandScenesList(Object.values(this.loadingJobs)));
 
