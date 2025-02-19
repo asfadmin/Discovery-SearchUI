@@ -1,30 +1,31 @@
-import { Injectable } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import {Injectable} from '@angular/core';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 
-import { Store, Action } from '@ngrx/store';
+import {Action, Store} from '@ngrx/store';
 import * as moment from 'moment';
-import { filter, map, skip, debounceTime, take, distinctUntilChanged } from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, filter, map, skip, take} from 'rxjs/operators';
 
-import { AppState } from '@store';
+import {AppState} from '@store';
 import * as hyp3Store from '@store/hyp3';
 import * as chartsStore from '@store/charts';
 import * as scenesStore from '@store/scenes';
 import * as mapStore from '@store/map';
 import * as filterStore from '@store/filters';
 import * as uiStore from '@store/ui';
-import { SetSearchType, MakeSearch, setSearchKioskMode } from '@store/search/search.action';
-import { getSearchType } from '@store/search/search.reducer';
+import {MakeSearch, setSearchKioskMode, SetSearchType} from '@store/search/search.action';
+import {getSearchType} from '@store/search/search.reducer';
 
 import * as models from '@models';
+import {MapDrawModeType} from '@models';
 
-import { MapService } from './map/map.service';
-import { WktService } from './wkt.service';
-import { RangeService } from './range.service';
-import { PropertyService } from './property.service';
-import { ThemingService } from './theming.service';
-import { PointHistoryService } from './point-history.service';
+import {MapService} from './map/map.service';
+import {WktService} from './wkt.service';
+import {RangeService} from './range.service';
+import {PropertyService} from './property.service';
+import {ThemingService} from './theming.service';
+import {PointHistoryService} from './point-history.service';
 import WKT from 'ol/format/WKT';
-import { Geometry } from 'ol/geom';
+import {Geometry} from 'ol/geom';
 
 
 @Injectable({
@@ -45,7 +46,7 @@ export class UrlStateService {
 
   public isDefaultSearch$ = this.activatedRoute.queryParams.pipe( map(params => {
     const keys = Object.keys(params)
-    
+
     const DefaultnonGEO = 'searchType' in params && keys.length <= 1;
     const defaultGEO = keys.length === 0;
 
@@ -100,7 +101,7 @@ export class UrlStateService {
       return res;
     }, {});
     this.updateShouldSearch();
-    
+
   }
 
   public load(): void {
@@ -1003,7 +1004,7 @@ export class UrlStateService {
       const format = new WKT()
       let thing = x.split('--')
       const point = format.readFeature(thing[0]) as unknown as Geometry;
-      states.push({ geometry: point, checked: true, seriesNumber: thing[1], wkt: thing[0], name: `Series ${thing[1]}`, linearFit: false })
+      states.push({ geometry: point, checked: true, seriesNumber: thing[1], wkt: thing[0], name: `Series ${thing[1]}`, linearFit: false, drawMode: MapDrawModeType.POINT })
     })
     this.pointHistoryService.addPoints(states)
     return;

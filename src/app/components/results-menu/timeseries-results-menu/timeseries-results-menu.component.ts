@@ -151,7 +151,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
         })
         previous_points?.forEach((point, idx) => {
           let allPointsData = [];
-          this.pointHistoryService.addPoint(point.getGeometry(), idx + 1);
+          this.pointHistoryService.addPoint(point.getGeometry(), idx + 1, point.drawMode);
           this.subs.add(this.netcdfService.getTimeSeries(point.getGeometry(), this.flightDirection).pipe(first()).subscribe( data => {
             if (!!data) {
               allPointsData.push(data);
@@ -169,7 +169,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       if(!!polygon && this.searchType === models.SearchType.DISPLACEMENT) {
         let temp = polygon.getGeometry().clone() as Geometry;
         temp.transform('EPSG:3857', 'EPSG:4326')
-        this.pointHistoryService.addPoint(temp, minSeriesNumber);
+        this.pointHistoryService.addPoint(temp, minSeriesNumber, this.drawService.currentDrawMode);
         this.updateChart();
       }
     }))

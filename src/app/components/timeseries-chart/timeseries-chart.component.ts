@@ -261,6 +261,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       }
     }
     this.data = allPointsData;
+    console.log('refreshing chart:', this.data);
     this.initChart(this.data)
   }
 
@@ -342,6 +343,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
                 'file_name': key,
                 'id': key,
                 'temporal_baseline': result.point[key].temporal_baseline,
+                'drawMode': result.point[key].drawMode,
               })
               this.timeSeriesData.push({
                 'short_wavelength_displacement': result.point[key].short_wavelength_displacement - (this.baseData?.base ?? 0),
@@ -351,6 +353,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
                 'base': result.point[key].short_wavelength_displacement,
                 'id': key + result.point[key].short_wavelength_displacement,
                 'aoi': aoi,
+                'drawMode': result.point[key].drawMode,
               });
 
               if (result.state.checked) {

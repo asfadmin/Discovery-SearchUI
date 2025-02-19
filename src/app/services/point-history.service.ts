@@ -7,6 +7,7 @@ import WKT from 'ol/format/WKT';
 
 import { Geometry } from 'ol/geom';
 import { Subject } from 'rxjs';
+import * as models from '@models';
 
 
 @Injectable({
@@ -36,7 +37,7 @@ export class PointHistoryService {
     })
   }
 
-  public addPoint(point: Geometry, seriesNumber: number) {
+  public addPoint(point: Geometry, seriesNumber: number, drawMode: models.MapDrawModeType) {
     if(this.passDraw) {
       this.passDraw = false
       return
@@ -45,7 +46,7 @@ export class PointHistoryService {
     const wkt = format.writeGeometry(point)
     if (!!!this.history.find(x => x.wkt == wkt)) {
       this.history.push({point, wkt});
-      this.store$.dispatch(addTimeseriesState({item: {geometry: point, checked: true, seriesNumber, wkt: wkt, name: `Series ${seriesNumber}`, linearFit: false}}))
+      this.store$.dispatch(addTimeseriesState({item: {geometry: point, checked: true, seriesNumber, wkt: wkt, name: `Series ${seriesNumber}`, linearFit: false, drawMode: drawMode}}))
       this.history$.next(this.history);
       this.savePoints();
     }
