@@ -91,6 +91,7 @@ export class PointHistoryService {
     let converted = this.history.map((value) => {
       return value.wkt
     })
+    console.log('savePoints() converted', converted)
     localStorage.setItem('timeseries-points', converted.join(';'))
   }
 

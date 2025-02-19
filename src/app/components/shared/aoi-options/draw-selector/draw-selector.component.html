@@ -70,7 +70,7 @@
       (click)="onPointSelected()"
       [value]="types.POINT"
       class="control-button mat-menu-item">
-      <mat-icon class="draw-icon material-symbols-outlined">
+      <mat-icon class="material-icons">
         {{ types.POINT | aoiIcon }}
       </mat-icon>
       {{ 'PLACE_A_POINT' | translate }}
@@ -80,9 +80,9 @@
       (click)="onLineStringSelected()"
       [value]="types.LINESTRING"
       class="control-button mat-menu-item">
-      <span class="material-symbols-outlined">
+      <mat-icon class="material-icons">
         {{ types.LINESTRING | aoiIcon }}
-      </span>
+      </mat-icon>
       {{ 'DRAW_A_LINE' | translate }}
     </button>
 
@@ -90,9 +90,9 @@
       (click)="onPolygonSelected()"
       [value]="types.POLYGON"
       class="control-button mat-menu-item">
-      <span class="material-symbols-outlined">
+      <mat-icon class="material-icons-outlined">
         {{ types.POLYGON | aoiIcon }}
-      </span>
+      </mat-icon>
       {{ 'DRAW_A_POLYGON' | translate }}
     </button>
 
@@ -100,9 +100,9 @@
       (click)="onBoxSelected()"
       [value]="types.BOX"
       class="control-button mat-menu-item">
-      <span class="material-symbols-outlined">
+      <mat-icon class="material-icons">
         {{ types.BOX | aoiIcon }}
-      </span>
+      </mat-icon>
       {{ 'DRAW_A_BOX' | translate }}
     </button>
 
@@ -110,9 +110,9 @@
     (click)="onCircleSelected()"
     [value]="types.CIRCLE"
     class="control-button mat-menu-item">
-    <span class="material-icons-two-tone">
+    <mat-icon class="material-symbols-outlined">
         {{ types.CIRCLE | aoiIcon }}
-    </span>
+    </mat-icon>
     {{ 'DRAW_A_CIRCLE' | translate }}
     </button>
 
