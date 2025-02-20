@@ -18,9 +18,20 @@
             [indeterminate]="partiallyComplete()"
             (change)="toggleAllSeries($event.checked)"
           >
-            <span class="parent-checkbox-label">
-              {{ 'ALL_AOIS' | translate }}
-            </span>
+          <mat-checkbox
+            class="parent-checkbox"
+            [checked]="(allSeriesChecked$ | async)"
+            [indeterminate]="partiallyComplete()"
+            (change)="toggleAllSeries($event.checked)"
+          >
+  <span class="parent-checkbox-label">
+    {{ 'ALL_AOIS' | translate }}
+  </span>
+</mat-checkbox>
+
+<button mat-icon-button (click)="deleteAllPoints()" class="delete-all-btn">
+  <mat-icon color="warn">delete</mat-icon>
+</button>
           </mat-checkbox>
         </span>
         <span class="point-list-ul-section">

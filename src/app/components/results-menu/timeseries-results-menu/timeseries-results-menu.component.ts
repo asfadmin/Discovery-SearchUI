@@ -268,9 +268,18 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public deletePoint(index: number) {
     this.pointHistoryService.removePoint(index);
   }
-
+  public deleteAllPoints(): void {
+   console.log('deleteAllPoints');
+   this.pointHistoryService.clear();
+    //this.chartStates = []; //
+    //this.pointHistoryService.clearPoints();
+    //this.selectedSeries = -1;
+    //this.store$.dispatch(chartStore.setAllTimeseriesChecked({ checked: false }));
+  }
   ngOnDestroy() {
     this.subs.unsubscribe();
     this.pointHistoryService.clearPoints();
   }
 }
+
+
