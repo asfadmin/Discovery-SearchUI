@@ -23,6 +23,7 @@ import * as filtersStore from '@store/filters';
 import * as models from '@models';
 import * as uiStore from '@store/ui';
 import {Store} from '@ngrx/store';
+import {PointHistoryState} from '@services/point-history.service';
 
 export interface Task {
   aoi: string;
@@ -142,12 +143,13 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
 
     let thing: string = localStorage.getItem('timeseries-points')
     if (thing && thing.length > 0) {
-      let previous_points: any[] = thing?.split(';');
-      if (previous_points.length > 0) {
-        // previous_points = previous_points?.map(value => {
+      let previousPoints: PointHistoryState[] = JSON.parse(thing);
+      console.log('previousPoints', previousPoints);
+      if (previousPoints.length > 0) {
+        // previousPoints = previousPoints?.map(value => {
         //   return this.wktService.wktToFeature(value, 'EPSG:4326');
         // })
-        previous_points?.forEach((point, idx) => {
+        previousPoints?.forEach((point, idx) => {
           console.log('point wkt', point.wkt);
           console.log('point drawMode', point.drawMode);
           let allPointsData = [];

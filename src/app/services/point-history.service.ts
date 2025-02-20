@@ -9,13 +9,19 @@ import { Geometry } from 'ol/geom';
 import { Subject } from 'rxjs';
 import * as models from '@models';
 
+export interface PointHistoryState {
+  point: Geometry;
+  wkt: string;
+  drawMode: models.MapDrawModeType;
+}
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class PointHistoryService {
-  private history : {point: Geometry, wkt: string, drawMode: models.MapDrawModeType}[] = [];
-  public history$ = new Subject<{point: Geometry, wkt: string, drawMode: models.MapDrawModeType}[]>();
+  private history : PointHistoryState[] = [];
+  public history$ = new Subject<PointHistoryState[]>();
   public passDraw: boolean = false;
   public selectedPoint: number = 0;
 
@@ -56,6 +62,7 @@ export class PointHistoryService {
     if(states.length <= 0) {
       return
     }
+    console.log('addPoints states:', states);
     for(let state of states) {
       const point = state.geometry as Geometry;
       this.history = [...this.history,{point, wkt: state.wkt, drawMode: state.drawMode} ]
@@ -94,9 +101,7 @@ export class PointHistoryService {
       return { point: value.point, wkt: value.wkt, drawMode: value.drawMode }
     })
     console.log('converted:', converted);
-    localStorage.setItem('timeseries-points', converted.join(';'))
+    localStorage.setItem('timeseries-points', JSON.stringify(converted))
   }
-
-
 
 }
