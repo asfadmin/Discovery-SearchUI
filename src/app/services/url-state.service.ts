@@ -907,7 +907,6 @@ export class UrlStateService {
   };
 
   private loadOnDemandUserId = (userIdStr: string): Action  => {
-    console.log(userIdStr);
     return new hyp3Store.SetOnDemandUserID(userIdStr);
   }
 

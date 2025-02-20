@@ -62,7 +62,6 @@ export class PointHistoryService {
     if(states.length <= 0) {
       return
     }
-    console.log('addPoints states:', states);
     for(let state of states) {
       const point = state.geometry as Geometry;
       this.history = [...this.history,{point, wkt: state.wkt, drawMode: state.drawMode} ]
@@ -95,12 +94,9 @@ export class PointHistoryService {
   }
 
   private savePoints() {
-    console.log('saving points this.history:', this.history);
     let converted = this.history.map((value) => {
-      console.log('saving points this value:', value);
       return { point: value.point, wkt: value.wkt, drawMode: value.drawMode }
     })
-    console.log('converted:', converted);
     localStorage.setItem('timeseries-points', JSON.stringify(converted))
   }
 

@@ -144,14 +144,11 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     let thing: string = localStorage.getItem('timeseries-points')
     if (thing && thing.length > 0) {
       let previousPoints: PointHistoryState[] = JSON.parse(thing);
-      console.log('previousPoints', previousPoints);
       if (previousPoints.length > 0) {
         // previousPoints = previousPoints?.map(value => {
         //   return this.wktService.wktToFeature(value, 'EPSG:4326');
         // })
         previousPoints?.forEach((point, idx) => {
-          console.log('point wkt', point.wkt);
-          console.log('point drawMode', point.drawMode);
           let allPointsData = [];
           let wkt = this.wktService.wktToFeature(point.wkt, 'EPSG:4326');
           this.pointHistoryService.addPoint(wkt.getGeometry(), idx + 1, point.drawMode);

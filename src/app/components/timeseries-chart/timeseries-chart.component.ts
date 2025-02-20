@@ -261,7 +261,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       }
     }
     this.data = allPointsData;
-    console.log('refreshing chart:', this.data);
     this.initChart(this.data)
   }
 

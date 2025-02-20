@@ -183,7 +183,6 @@ export class DrawService {
       this.polygon$.next(e.feature);
       this.store$.dispatch(new DrawNewPolygon());
       this.store$.dispatch(new SetGeocode(''));
-      console.log('drawend: ', e.feature);
     });
 
     this.snap = new Snap({source: this.source});

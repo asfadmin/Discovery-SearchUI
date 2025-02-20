@@ -31,7 +31,8 @@
                   on-mouseover="setActiveWkt(point.wkt)"
                   on-mouseleave="setActiveWkt(null)">
                   @if (point.valid == true) {
-                  <mat-checkbox [checked]="point.checked" (change)="updateSeries($event.checked, $index)" style="display: flex;" disableRipple>
+                  <mat-checkbox [checked]="point.checked" (change)="updateSeries($event.checked, $index)"
+                                style="display: flex;" disableRipple>
                     <mat-icon class="ts-wkt-icon" [style.color]="point.color">
                       {{ point.drawMode | aoiIcon }}
                     </mat-icon>
@@ -49,7 +50,7 @@
                       @else {
                         <mat-spinner diameter="20" class="loading-spinner"></mat-spinner>
                       }
-                      <mat-icon class="ts-wkt-icon" [style.color]="point.color">place</mat-icon>
+                      <mat-icon class="ts-wkt-icon" [style.color]="point.color">{{ point.drawMode | aoiIcon }}</mat-icon>
                       <span class="ts-wkt-label invalid-aoi-text">
                         {{'SERIES' | translate}} {{point.seriesNumber}}
                       </span>
