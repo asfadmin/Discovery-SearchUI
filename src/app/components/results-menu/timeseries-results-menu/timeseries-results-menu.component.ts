@@ -144,14 +144,16 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     if (thing && thing.length > 0) {
       let previous_points: any[] = thing?.split(';');
       if (previous_points.length > 0) {
-        console.log('previous_points', previous_points);
-        previous_points = previous_points?.map(value => {
-          return this.wktService.wktToFeature(value, 'EPSG:4326');
-        })
+        // previous_points = previous_points?.map(value => {
+        //   return this.wktService.wktToFeature(value, 'EPSG:4326');
+        // })
         previous_points?.forEach((point, idx) => {
+          console.log('point wkt', point.wkt);
+          console.log('point drawMode', point.drawMode);
           let allPointsData = [];
-          this.pointHistoryService.addPoint(point.getGeometry(), idx + 1, point.drawMode);
-          this.subs.add(this.netcdfService.getTimeSeries(point.getGeometry(), this.flightDirection).pipe(first()).subscribe( data => {
+          let wkt = this.wktService.wktToFeature(point.wkt, 'EPSG:4326');
+          this.pointHistoryService.addPoint(wkt.getGeometry(), idx + 1, point.drawMode);
+          this.subs.add(this.netcdfService.getTimeSeries(wkt.getGeometry(), this.flightDirection).pipe(first()).subscribe( data => {
             if (!!data) {
               allPointsData.push(data);
             }

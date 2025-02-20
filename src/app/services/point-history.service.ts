@@ -14,8 +14,8 @@ import * as models from '@models';
   providedIn: 'root'
 })
 export class PointHistoryService {
-  private history : {point: Geometry, wkt: string}[] = [];
-  public history$ = new Subject<{point: Geometry, wkt: string}[]>();
+  private history : {point: Geometry, wkt: string, drawMode: models.MapDrawModeType}[] = [];
+  public history$ = new Subject<{point: Geometry, wkt: string, drawMode: models.MapDrawModeType}[]>();
   public passDraw: boolean = false;
   public selectedPoint: number = 0;
 
@@ -45,7 +45,7 @@ export class PointHistoryService {
     const format = new WKT()
     const wkt = format.writeGeometry(point)
     if (!!!this.history.find(x => x.wkt == wkt)) {
-      this.history.push({point, wkt});
+      this.history.push({point, wkt, drawMode});
       this.store$.dispatch(addTimeseriesState({item: {geometry: point, checked: true, seriesNumber, wkt: wkt, name: `Series ${seriesNumber}`, linearFit: false, drawMode: drawMode}}))
       this.history$.next(this.history);
       this.savePoints();
@@ -58,7 +58,7 @@ export class PointHistoryService {
     }
     for(let state of states) {
       const point = state.geometry as Geometry;
-      this.history = [...this.history,{point, wkt: state.wkt} ]
+      this.history = [...this.history,{point, wkt: state.wkt, drawMode: state.drawMode} ]
       this.store$.dispatch(addTimeseriesState({item: state}))
     }
     this.history$.next(this.history);
@@ -88,10 +88,12 @@ export class PointHistoryService {
   }
 
   private savePoints() {
+    console.log('saving points this.history:', this.history);
     let converted = this.history.map((value) => {
-      return value.wkt
+      console.log('saving points this value:', value);
+      return { point: value.point, wkt: value.wkt, drawMode: value.drawMode }
     })
-    console.log('savePoints() converted', converted)
+    console.log('converted:', converted);
     localStorage.setItem('timeseries-points', converted.join(';'))
   }
 
