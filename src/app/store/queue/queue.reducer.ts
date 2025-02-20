@@ -214,7 +214,6 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
             )
           )
         );
-
       return {
         ...state,
         customJobs: queue
@@ -249,15 +248,15 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
 }
 
 const sameGranules = (granules1: CMRProduct[], granules2: CMRProduct[]) => {
-  const ids1 = new Set(granules1.map(granule => granule.id));
-  const ids2 = new Set(granules2.map(granule => granule.id));
+  const ids1 = new Set(granules1.map(granule => granule?.id));
+  const ids2 = new Set(granules2.map(granule => granule?.id));
 
   return eqSet(ids1, ids2);
 };
 
 const sameGranuleNames = (granules1: CMRProduct[], granules2: CMRProduct[]) => {
-  const ids1 = new Set(granules1.map(granule => granule.name));
-  const ids2 = new Set(granules2.map(granule => granule.name));
+  const ids1 = new Set(granules1.map(granule => granule?.name));
+  const ids2 = new Set(granules2.map(granule => granule?.name));
 
   return eqSet(ids1, ids2);
 };

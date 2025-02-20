@@ -97,7 +97,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       const flattened: string[] = [];
       for (const job of jobs) {
         for (const product of job.granules) {
-          flattened.push(product.name);
+          flattened.push(product?.name);
         }
       }
 
@@ -497,15 +497,22 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
     let scenesOutsideInitialLoad = this.scenes
     .slice(this.numberProductsInList)
     .filter(s => s.isDummyProduct)
-    .filter(s => this.loadedInProjects.has(s.metadata.job.name) && !this.loadingDummyJobs.has(s.name));
+    .filter(s => this.loadedInProjects.has(s.metadata.job.name) && !new Set(Object.keys(this.loadingJobs)).has(s.id));
 
-    if (scenesToLoad.length === 0 && scenesOutsideInitialLoad.length === 0) {
+    scenesToLoad = [...scenesToLoad, ...scenesOutsideInitialLoad]
+
+    if (scenesToLoad.length === 0 || scenesToLoad.every(s => this.loadingJobs.hasOwnProperty(s.id))) {
       return;
     }
-    scenesToLoad = [...scenesToLoad, ...scenesOutsideInitialLoad]
+
     scenesToLoad.forEach(
-      s => this.loadingJobs[s.name] = s
+      s => this.loadingJobs[s.id] = s
     )
+    const newNumProducts = this.numberProductsInList + scenesOutsideInitialLoad.length;
+
+    this.numberProductsInList$.next(
+      newNumProducts
+    );
 
     this.store$.dispatch(new searchStore.LoadOnDemandScenesList(Object.values(this.loadingJobs)));
 
@@ -537,7 +544,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
   private removeLoadedScenes(scenes: CMRProduct[]) {
     scenes
       .filter(s => !s.isDummyProduct)
-      .forEach(s => {this.loadingDummyJobs.delete(s.name); delete this.loadingJobs[s.name]})
+      .forEach(s => {this.loadingDummyJobs.delete(s.name); delete this.loadingJobs[s.id]})
   }
 
   ngOnDestroy() {
