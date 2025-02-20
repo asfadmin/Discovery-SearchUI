@@ -41,6 +41,8 @@ export class DrawService {
   public polygon$ = new BehaviorSubject<Feature<Geometry> | null>(null);
   public isDrawing$ = new BehaviorSubject<boolean>(false);
 
+  public currentDrawMode: models.MapDrawModeType;
+
   constructor(private store$: Store<AppState>) {
     this.source = new VectorSource({
       wrapX: models.mapOptions.wrapX
@@ -138,6 +140,7 @@ export class DrawService {
 
   private create(drawMode: models.MapDrawModeType): Draw {
     let draw: Draw;
+    this.currentDrawMode = drawMode;
     this.isDrawing$.next(false);
 
     window.dataLayer = window.dataLayer || [];
@@ -163,7 +166,12 @@ export class DrawService {
       this.isDrawing$.next(true);
       this.clear();
     });
+
     draw.on('drawend', e => {
+      e.feature?.setId(this.currentDrawMode);
+      e.feature?.set('drawMode', this.currentDrawMode);
+      // @ts-ignore
+      // e.feature?.setGeometry(this.currentDrawMode);
       if (e.feature?.getGeometry().getType() === 'Circle') {
         const circle = e.feature.getGeometry() as Circle;
         e.feature.setGeometry(fromCircle(circle));
@@ -171,6 +179,7 @@ export class DrawService {
       this.drawEndCallback(e.feature);
 
       this.isDrawing$.next(false);
+      // e.feature.setGeometryName('andy');
       this.polygon$.next(e.feature);
       this.store$.dispatch(new DrawNewPolygon());
       this.store$.dispatch(new SetGeocode(''));
