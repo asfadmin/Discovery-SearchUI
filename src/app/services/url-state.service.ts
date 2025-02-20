@@ -1003,7 +1003,6 @@ export class UrlStateService {
     seriesState.split('::').forEach(x => {
       const format = new WKT()
       let thing = x.split('--')
-      console.log('loadSeriesState thing:', thing)
       const point = format.readFeature(thing[0]) as unknown as Geometry;
       states.push({ geometry: point, checked: true, seriesNumber: thing[1], wkt: thing[0], name: `Series ${thing[1]}`, linearFit: false, drawMode: thing[2] as MapDrawModeType})
     })

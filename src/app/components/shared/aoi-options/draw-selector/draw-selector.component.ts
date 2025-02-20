@@ -115,4 +115,6 @@ export class DrawSelectorComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
+
+  protected readonly MapDrawModeType = MapDrawModeType;
 }

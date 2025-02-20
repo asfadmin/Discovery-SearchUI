@@ -33,6 +33,9 @@
                 class="button-menu-trigger"
                 color="basic">
           <div class="button-text">
+            <mat-icon class="material-icons-outlined" style="font-size: 16px; vertical-align: -9px;">
+              {{  drawMode | aoiIcon }}
+            </mat-icon>
             {{drawMode.toUpperCase() | translate}}
             <span class="mat-select-arrow"></span>
           </div>
@@ -70,7 +73,7 @@
       (click)="onPointSelected()"
       [value]="types.POINT"
       class="control-button mat-menu-item">
-      <mat-icon class="material-icons">
+      <mat-icon class="material-icons-outlined">
         {{ types.POINT | aoiIcon }}
       </mat-icon>
       {{ 'PLACE_A_POINT' | translate }}
@@ -80,7 +83,7 @@
       (click)="onLineStringSelected()"
       [value]="types.LINESTRING"
       class="control-button mat-menu-item">
-      <mat-icon class="material-icons">
+      <mat-icon class="material-icons-outlined">
         {{ types.LINESTRING | aoiIcon }}
       </mat-icon>
       {{ 'DRAW_A_LINE' | translate }}
