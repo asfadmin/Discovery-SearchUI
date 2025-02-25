@@ -4,7 +4,7 @@
   </span>
 
   <span *ngIf="searchType !== SearchTypes.CUSTOM_PRODUCTS">
-    <span *ngIf="!dataset.includes('Sentinel')">
+    <span *ngIf="!dataset?.includes('Sentinel')">
       {{ name | truncate : sceneNameLen }}
     </span>
 

@@ -105,10 +105,10 @@ export class ProductService {
     }
 
     private getSubproducts(product: models.CMRProduct): models.CMRProduct[] {
-      if (product.metadata.productType === 'BURST') {
+      if (product.metadata?.productType === 'BURST') {
         return [this.burstXMLFromScene(product)]
       }
-      if (!!product.metadata.opera) {
+      if (!!product.metadata?.opera) {
         return this.operaSubproductsFromScene(product)
       }
       return []
