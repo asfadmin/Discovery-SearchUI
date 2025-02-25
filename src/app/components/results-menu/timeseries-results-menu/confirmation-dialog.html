@@ -1,0 +1,9 @@
+<mat-dialog-content>
+  <p>
+    Do you want to delete all series?
+  </p>
+</mat-dialog-content>
+<mat-dialog-actions style="justify-content: flex-end;">
+  <button mat-button mat-dialog-close tabindex="-1">NO</button>
+  <button mat-button (click)="onYesClick()" tabindex="1">YES</button>
+</mat-dialog-actions>

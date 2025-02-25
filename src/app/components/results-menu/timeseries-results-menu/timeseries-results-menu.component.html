@@ -18,22 +18,15 @@
             [indeterminate]="partiallyComplete()"
             (change)="toggleAllSeries($event.checked)"
           >
-          <mat-checkbox
-            class="parent-checkbox"
-            [checked]="(allSeriesChecked$ | async)"
-            [indeterminate]="partiallyComplete()"
-            (change)="toggleAllSeries($event.checked)"
-          >
-  <span class="parent-checkbox-label">
-    {{ 'ALL_AOIS' | translate }}
-  </span>
-</mat-checkbox>
+          <span class="parent-checkbox-label">
+            {{ 'ALL_AOIS' | translate }}
+          </span>
+        </mat-checkbox>
+        </span>
 
-<button mat-icon-button (click)="deleteAllPoints()" class="delete-all-btn">
+<button mat-icon-button (click)="openDialog()" class="delete-all-btn">
   <mat-icon color="warn">delete</mat-icon>
 </button>
-          </mat-checkbox>
-        </span>
         <span class="point-list-ul-section">
           <ul>
             @for (point of chartStates; track point.valid) {

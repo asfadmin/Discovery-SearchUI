@@ -23,6 +23,8 @@ import * as filtersStore from '@store/filters';
 import * as models from '@models';
 import * as uiStore from '@store/ui';
 import {Store} from '@ngrx/store';
+import {MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
+import {MatButton} from '@angular/material/button';
 
 export interface Task {
   aoi: string;
@@ -90,6 +92,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     private drawService: DrawService,
     private netcdfService: NetcdfService,
     private wktService: WktService,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -270,16 +273,45 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   }
   public deleteAllPoints(): void {
    console.log('deleteAllPoints');
+
    this.pointHistoryService.clear();
-    //this.chartStates = []; //
-    //this.pointHistoryService.clearPoints();
-    //this.selectedSeries = -1;
-    //this.store$.dispatch(chartStore.setAllTimeseriesChecked({ checked: false }));
+  }
+
+  public openDialog() {
+    const dialogRef = this.dialog.open(ConfirmationDialog);
+
+    dialogRef.afterClosed().subscribe((deleteAll: boolean) => {
+      if (deleteAll) {
+        this.deleteAllPoints();
+      }
+    });
   }
   ngOnDestroy() {
     this.subs.unsubscribe();
     this.pointHistoryService.clearPoints();
   }
+}
+
+@Component({
+  selector: 'confirmation-dialog',
+  templateUrl: 'confirmation-dialog.html',
+  imports: [
+    MatDialogActions,
+    MatDialogContent,
+    MatButton,
+    MatDialogClose
+  ],
+  standalone: true
+})
+export class ConfirmationDialog {
+
+  constructor(
+    public dialogRef: MatDialogRef<ConfirmationDialog>) { }
+
+  onYesClick(): void {
+    this.dialogRef.close(true);
+  }
+
 }
 
 
