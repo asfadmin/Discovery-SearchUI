@@ -10,6 +10,7 @@ import { HTMLInputValuePipe } from './html-input-value.pipe';
 import { QuakePipe, VolcanoPipe } from './sarviews-event.pipe';
 import { FilterExtensionPipe } from './filter-extension.pipe';
 import { FloatPrecisionPipe } from './float-precision.pipe';
+import { AoiIconPipe } from './aoi-icon.pipe';
 @NgModule({
   declarations: [
     ReadableSizeFromBytesPipe,
@@ -28,7 +29,8 @@ import { FloatPrecisionPipe } from './float-precision.pipe';
     QuakePipe,
     VolcanoPipe,
     FilterExtensionPipe,
-    FloatPrecisionPipe
+    FloatPrecisionPipe,
+    AoiIconPipe
   ],
   imports: [
     CommonModule
@@ -50,7 +52,8 @@ import { FloatPrecisionPipe } from './float-precision.pipe';
     QuakePipe,
     VolcanoPipe,
     FilterExtensionPipe,
-    FloatPrecisionPipe
+    FloatPrecisionPipe,
+    AoiIconPipe
   ]
 })
 export class PipesModule { }

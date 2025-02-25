@@ -78,9 +78,6 @@ export class DrawSelectorComponent implements OnInit, OnDestroy {
     if (this.isDrawing) {
       newMode = MapInteractionModeType.NONE;
     }
-    console.log('newMode', newMode);
-    console.log('isDrawing', this.isDrawing);
-    console.log('this.drawMode', this.drawMode);
     this.onNewInteractionMode(newMode);
   }
 
@@ -115,4 +112,6 @@ export class DrawSelectorComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
+
+  protected readonly MapDrawModeType = MapDrawModeType;
 }

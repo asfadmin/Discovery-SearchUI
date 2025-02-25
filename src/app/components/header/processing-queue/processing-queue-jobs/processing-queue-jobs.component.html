@@ -74,7 +74,7 @@
             </span>
           </div>
           <div *ngIf="job.job_type.name !== 'RTC GAMMA'" style="font-size: 14px;" matListItemLine>
-          {{job.granules[1].name}}
+          {{job.granules[1]?.name}}
           </div>
 
           <div class="button-remove-job" matListItemMeta>

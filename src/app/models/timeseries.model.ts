@@ -1,4 +1,5 @@
 import { Geometry } from "ol/geom"
+import { MapDrawModeType } from '@models/map.model';
 
 export interface timeseriesChartItemState {
     checked: boolean,
@@ -6,6 +7,7 @@ export interface timeseriesChartItemState {
     name: string,
     wkt: string,
     geometry: Geometry,
+    drawMode: MapDrawModeType,
     seriesNumber: number,
     linearFit: boolean,
     valid?: boolean,
@@ -21,6 +23,7 @@ export interface TimeSeriesChartPoint {
     file_name: string,
     temporal_baseline: number
     id: string
+    drawMode: MapDrawModeType
 }
 export interface TimeSeriesData {
     short_wavelength_displacement: number
@@ -28,6 +31,7 @@ export interface TimeSeriesData {
     id: string,
     base: number,
     seriesNumber: number,
+    drawMode: MapDrawModeType,
     color: string,
     aoi: string,
   }
