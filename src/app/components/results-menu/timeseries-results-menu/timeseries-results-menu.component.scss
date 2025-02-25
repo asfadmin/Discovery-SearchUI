@@ -395,3 +395,17 @@ ul {
   margin-left: 8px;
   vertical-align: middle;
 }
+
+.delete-all-btn2 {
+  position: absolute;
+  right: 0px;
+  opacity: 0;
+  top: 11%; // Lo posiciona en el centro vertical del contenedor
+  transform: translateY(-50%); // Lo sube para alinearlo con el checkbox
+  transition: opacity 0.1s ease-in-out;
+  overflow: hidden
+}
+
+.point-list-section:hover .delete-all-btn2 {
+  opacity: 1;
+}
