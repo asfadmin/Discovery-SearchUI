@@ -18,13 +18,12 @@
             [indeterminate]="partiallyComplete()"
             (change)="toggleAllSeries($event.checked)"
           >
-          <span class="parent-checkbox-label">
+          <span class="point-list-section:hover">
             {{ 'ALL_AOIS' | translate }}
           </span>
         </mat-checkbox>
         </span>
-
-        <section class="point-list-section2">
+        <section class="point-list-section:hover delete-all-btn2">
         <button mat-icon-button (click)="openDialog()" class="delete-all-btn2">
           <mat-icon class="ts-trash-can" >delete</mat-icon>
         </button>

@@ -398,15 +398,14 @@ ul {
 }
 
 .delete-all-btn2 {
-  position: absolute;
-  right: 0px;
+  position: relative;
+  right: -1px;
   opacity: 0;
   top: 11%;
   transform: translateY(-50%);
   transition: opacity 0.1s ease-in-out;
-  overflow: hidden
 }
 
-.point-list-section2:hover .delete-all-btn2 {
+.point-list-section:hover .delete-all-btn2 {
   opacity: 1;
 }
