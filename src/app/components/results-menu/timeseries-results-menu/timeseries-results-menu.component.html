@@ -58,7 +58,9 @@
                         {{'SERIES' | translate}} {{point.seriesNumber}}
                       </span>
                     </div>
-                    <button mat-icon-button (click)="deletePoint($index)"><mat-icon class="ts-trash-can" *ngIf="point.seriesNumber === selectedSeries" disableRipple>delete</mat-icon></button>
+                    <button mat-icon-button (click)="deletePoint($index)">
+                      <mat-icon class="ts-trash-can" *ngIf="point.seriesNumber === selectedSeries" disableRipple>delete</mat-icon>
+                    </button>
                   }
               </li>
             }

@@ -343,6 +343,14 @@ span.parent-checkbox-section:hover {
   }
 }
 
+.delete-all-btn2 {
+  visibility: hidden;
+}
+
+span.parent-checkbox-section:hover .delete-all-btn2 {
+  visibility: visible;
+}
+
 .parent-checkbox-label {
   font-weight: bold;
 }
@@ -408,9 +416,7 @@ ul {
   vertical-align: middle;
 }
 
-.delete-all-btn2 {
 
-}
 
 //.point-list-section:hover .delete-all-btn2 {
 .point-list-section .delete-all-btn2 {
