@@ -334,6 +334,7 @@ label {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  overflow: hidden;
 }
 
 span.parent-checkbox-section:hover {
