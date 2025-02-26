@@ -265,6 +265,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         profile => {
           if (profile.hyp3BackendUrl) {
             this.hyp3Service.setApiUrl(profile.hyp3BackendUrl);
+            this.store$.dispatch(new searchStore.ClearSearch());
           }
 
           this.store$.dispatch(new hyp3Store.LoadCosts());
