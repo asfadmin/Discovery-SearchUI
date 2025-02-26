@@ -18,16 +18,12 @@
             [indeterminate]="partiallyComplete()"
             (change)="toggleAllSeries($event.checked)"
           >
-          <span class="point-list-section:hover">
             {{ 'ALL_AOIS' | translate }}
-          </span>
         </mat-checkbox>
-        </span>
-        <section class="point-list-section:hover delete-all-btn2">
         <button mat-icon-button (click)="openDialog()" class="delete-all-btn2">
           <mat-icon class="ts-trash-can" >delete</mat-icon>
         </button>
-        </section>
+        </span>
 
         <span class="point-list-ul-section">
           <ul>
@@ -46,8 +42,9 @@
                       {{'SERIES' | translate}} {{point.seriesNumber}}
                     </span>
                   </mat-checkbox>
-                  <button mat-icon-button (click)="deletePoint($index)" *ngIf="point.seriesNumber === selectedSeries"><mat-icon
-                      class="ts-trash-can" disableRipple>delete</mat-icon></button>
+                  <button mat-icon-button (click)="deletePoint($index)" *ngIf="point.seriesNumber === selectedSeries">
+                    <mat-icon class="ts-trash-can" disableRipple>delete</mat-icon>
+                  </button>
                   } @else {
                     <div class="error-line">
                       @if(point.valid == false) {
