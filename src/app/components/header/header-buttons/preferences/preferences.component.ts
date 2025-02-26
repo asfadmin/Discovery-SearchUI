@@ -215,11 +215,18 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   }
 
   public changeHyp3Url(url: string): void {
+    url = this.stripTrailingSlash(url);
     this.hyp3BackendUrl = url;
     this.hyp3.setApiUrl(url);
     this.addHyp3Url(this.hyp3BackendUrl);
     this.saveProfile();
   }
+
+  private stripTrailingSlash = (url: string) => {
+    return url.endsWith('/') ?
+      url.slice(0, -1) :
+      url;
+  };
 
   public addHyp3Url(url: string): void {
     const uniqueUrls = new Set(this.hyp3Urls);
@@ -248,7 +255,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
       defaultMaxConcurrentDownloads: this.defaultMaxConcurrentDownloads,
       defaultFilterPresets: this.selectedFiltersIDs,
       hyp3BackendUrl: this.hyp3BackendUrl,
-      hyp3Urls: this.hyp3Urls,
+      hyp3Urls: this.hyp3Urls.map(this.stripTrailingSlash),
       theme: this.currentTheme,
       language: this.defaultLanguage
     });
