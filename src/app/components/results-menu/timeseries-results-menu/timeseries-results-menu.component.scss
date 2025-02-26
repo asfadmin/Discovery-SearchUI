@@ -331,6 +331,24 @@ label {
 
 .parent-checkbox-section {
   margin: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+span.parent-checkbox-section:hover {
+  cursor: pointer;
+  @include themify($themes) {
+    background-color: lighten(themed('primary-light'),5%);
+  }
+}
+
+.delete-all-btn2 {
+  visibility: hidden;
+}
+
+span.parent-checkbox-section:hover .delete-all-btn2 {
+  visibility: visible;
 }
 
 .parent-checkbox-label {
@@ -368,6 +386,7 @@ ul {
 .invalid-aoi-text {
 	font-size: 14px;
 }
+
 .ts-highlighted {
   @include themify($themes) {
     background-color: lighten(themed('primary-light'),5%);
@@ -397,16 +416,9 @@ ul {
   vertical-align: middle;
 }
 
-.delete-all-btn2 {
-  position: absolute;
-  right: 0px;
-  opacity: 0;
-  top: 11%;
-  transform: translateY(-50%);
-  transition: opacity 0.1s ease-in-out;
-  overflow: hidden
-}
 
-.point-list-section2:hover .delete-all-btn2 {
+
+//.point-list-section:hover .delete-all-btn2 {
+.point-list-section .delete-all-btn2 {
   opacity: 1;
 }
