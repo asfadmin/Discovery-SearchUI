@@ -39,7 +39,8 @@
                       {{ point.drawMode | aoiIcon }}
                     </mat-icon>
                     <span class="ts-wkt-label">
-                      {{'SERIES' | translate}} {{point.seriesNumber}}
+                      {{point.seriesName}} {{point.seriesNumber}}
+<!--                      {{'SERIES' | translate}} {{point.seriesNumber}}-->
                     </span>
                   </mat-checkbox>
                   <button mat-icon-button (click)="deletePoint($index)" *ngIf="point.seriesNumber === selectedSeries">
@@ -55,7 +56,8 @@
                       }
                       <mat-icon class="ts-wkt-icon" [style.color]="point.color">{{ point.drawMode | aoiIcon }}</mat-icon>
                       <span class="ts-wkt-label invalid-aoi-text">
-                        {{'SERIES' | translate}} {{point.seriesNumber}}
+                          {{point.seriesName}} {{point.seriesNumber}}
+<!--                        {{'SERIES' | translate}} {{point.seriesNumber}}-->
                       </span>
                     </div>
                     <button mat-icon-button (click)="deletePoint($index)">

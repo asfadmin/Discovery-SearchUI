@@ -58,6 +58,7 @@ export const getMinSeriesNumber = createSelector(
     getTimeseriesChartStates,
     (seriesStates) => {
         const taken = new Set(Object.values(seriesStates).map(state => state.seriesNumber))
+        console.log('taken', taken)
 
         let output = 1;
         while (taken.has(output)) {
@@ -66,3 +67,4 @@ export const getMinSeriesNumber = createSelector(
         return output;
     }
 );
+

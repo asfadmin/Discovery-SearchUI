@@ -35,7 +35,8 @@ export const chartsReducer = createReducer(
   }),
   on(chartActions.setTimeseriesStates, (state, { items }) => ({
     ...state, seriesStates: items.reduce((prev: { [key: string]: models.timeseriesChartItemState }, curr) => {
-      prev[curr.wkt] = { checked: true, color: curr.color, seriesNumber: curr.seriesNumber, name: curr.name, wkt: curr.wkt,
+      prev[curr.wkt] = { uuidSeries: curr.uuidSeries, checked: true, color: curr.color,
+        seriesNumber: curr.seriesNumber, seriesName: curr.seriesName, wkt: curr.wkt,
         geometry: curr.geometry, linearFit: curr.linearFit, drawMode: curr.drawMode }
       return prev
     }, {})
