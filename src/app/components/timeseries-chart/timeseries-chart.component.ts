@@ -359,7 +359,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
               });
 
               if (result.state.checked) {
-                const series_key = result.state.seriesNumber.toString()
+                const series_key = result.state.seriesNumber;
                 if (!!!this.exportableData[series_key]) {
                   this.exportableData[series_key] = []
                 }

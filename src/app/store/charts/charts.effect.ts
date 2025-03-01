@@ -9,8 +9,7 @@ import {
 import * as d3 from 'd3';
 @Injectable()
 export class ChartsEffects {
-    private colorPalette = d3.scaleOrdinal()
-    .range(d3.schemeCategory10);
+    private colorPalette = d3.scaleOrdinal().range(d3.schemeCategory10);
 
     updateTimeseriesCache = createEffect(() => this.actions$.pipe(
         ofType(chartActions.removeTimeseriesState),

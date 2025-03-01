@@ -51,6 +51,8 @@ export class PointHistoryService {
       this.passDraw = false
       return
     }
+    console.log('addPoint seriesName:', seriesName);
+    console.log('addPoint seriesNumber:', seriesNumber);
     const uuidSeries = crypto.randomUUID();
     const format = new WKT()
     const wkt = format.writeGeometry(point)
