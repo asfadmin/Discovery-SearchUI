@@ -334,6 +334,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
               let daDate = new Date(result.point[key].secondary_datetime).valueOf();
               if (daDate < this.startDate?.valueOf() || daDate > this.endDate?.valueOf()) { continue; }
               this.dataSource.push({
+                'uuidSeries': result.point[key].uuidSeries,
                 'aoi': aoi,
                 'short_wavelength_displacement': result.point[key].short_wavelength_displacement,
                 'interferometric_correlation': result.point[key].interferometric_correlation,
@@ -345,9 +346,11 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
                 'drawMode': result.point[key].drawMode,
               })
               this.timeSeriesData.push({
+                'uuidSeries': result.point[key].uuidSeries,
                 'short_wavelength_displacement': result.point[key].short_wavelength_displacement - (this.baseData?.base ?? 0),
                 'date': result.point[key].secondary_datetime,
                 'seriesNumber': result.state.seriesNumber,
+                'seriesName': result.state.seriesName,
                 'color': result.state.color,
                 'base': result.point[key].short_wavelength_displacement,
                 'id': key + result.point[key].short_wavelength_displacement,
@@ -356,7 +359,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
               });
 
               if (result.state.checked) {
-                const series_key = result.state.seriesNumber.toString()
+                const series_key = result.state.seriesNumber;
                 if (!!!this.exportableData[series_key]) {
                   this.exportableData[series_key] = []
                 }

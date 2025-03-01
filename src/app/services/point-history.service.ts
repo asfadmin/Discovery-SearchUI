@@ -10,9 +10,12 @@ import { Subject } from 'rxjs';
 import * as models from '@models';
 
 export interface PointHistoryState {
+  uuidSeries: string;
   point: Geometry;
   wkt: string;
   drawMode: models.MapDrawModeType;
+  seriesNumber: number;
+  seriesName: string;
 }
 
 
@@ -43,16 +46,29 @@ export class PointHistoryService {
     })
   }
 
-  public addPoint(point: Geometry, seriesNumber: number, drawMode: models.MapDrawModeType) {
+  public addPoint(point: Geometry, seriesNumber: number, seriesName: string, drawMode: models.MapDrawModeType) {
     if(this.passDraw) {
       this.passDraw = false
       return
     }
+    console.log('addPoint seriesName:', seriesName);
+    console.log('addPoint seriesNumber:', seriesNumber);
+    const uuidSeries = crypto.randomUUID();
     const format = new WKT()
     const wkt = format.writeGeometry(point)
     if (!!!this.history.find(x => x.wkt == wkt)) {
-      this.history.push({point, wkt, drawMode});
-      this.store$.dispatch(addTimeseriesState({item: {geometry: point, checked: true, seriesNumber, wkt: wkt, name: `Series ${seriesNumber}`, linearFit: false, drawMode: drawMode}}))
+      const sName = (seriesName === '' || seriesName === null) ? 'Series' : seriesName;
+      this.history.push({uuidSeries, point, wkt, drawMode, seriesNumber, seriesName: sName});
+      this.store$.dispatch(addTimeseriesState({item: {
+        uuidSeries: uuidSeries,
+        geometry: point,
+        checked: true,
+        seriesNumber: seriesNumber,
+        seriesName: sName,
+        wkt: wkt,
+        linearFit: false,
+        drawMode: drawMode
+      }}))
       this.history$.next(this.history);
       this.savePoints();
     }
@@ -63,8 +79,16 @@ export class PointHistoryService {
       return
     }
     for(let state of states) {
+      const sName = (state.seriesName === '' || state.seriesName === null) ? 'Series' : state.seriesName;
       const point = state.geometry as Geometry;
-      this.history = [...this.history,{point, wkt: state.wkt, drawMode: state.drawMode} ]
+      this.history = [...this.history, {
+        uuidSeries: state.uuidSeries,
+        point: point,
+        wkt: state.wkt,
+        drawMode: state.drawMode,
+        seriesNumber: state.seriesNumber,
+        seriesName: sName,
+      } ]
       this.store$.dispatch(addTimeseriesState({item: state}))
     }
     this.history$.next(this.history);
@@ -78,6 +102,7 @@ export class PointHistoryService {
     this.selectedPoint = -1;
     this.savePoints();
   }
+
   public removePoint(index) {
     // const format = new WKT()
     const wkt = this.history[index].wkt
@@ -85,7 +110,6 @@ export class PointHistoryService {
     this.history$.next(this.history)
     this.store$.dispatch(removeTimeseriesState({wkt}))
     this.savePoints();
-
   }
 
   public clearPoints() {
@@ -95,8 +119,10 @@ export class PointHistoryService {
 
   private savePoints() {
     let converted = this.history.map((value) => {
-      return { point: value.point, wkt: value.wkt, drawMode: value.drawMode }
+      return { uuidSeries: value.uuidSeries, point: value.point, wkt: value.wkt,
+        drawMode: value.drawMode, seriesNumber: value.seriesNumber, seriesName: value.seriesName }
     })
+    console.log('converted', converted);
     localStorage.setItem('timeseries-points', JSON.stringify(converted))
   }
 

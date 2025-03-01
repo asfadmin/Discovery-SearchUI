@@ -151,10 +151,11 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
         // previousPoints = previousPoints?.map(value => {
         //   return this.wktService.wktToFeature(value, 'EPSG:4326');
         // })
-        previousPoints?.forEach((point, idx) => {
+        previousPoints?.forEach((point) => {
           let allPointsData = [];
           let wkt = this.wktService.wktToFeature(point.wkt, 'EPSG:4326');
-          this.pointHistoryService.addPoint(wkt.getGeometry(), idx + 1, point.drawMode);
+        // public addPoint(point: Geometry, seriesNumber: number, seriesName: string, drawMode: models.MapDrawModeType)
+          this.pointHistoryService.addPoint(wkt.getGeometry(), point.seriesNumber, point.seriesName, point.drawMode);
           this.subs.add(this.netcdfService.getTimeSeries(wkt.getGeometry(), this.flightDirection).pipe(first()).subscribe( data => {
             if (!!data) {
               allPointsData.push(data);
@@ -172,7 +173,8 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       if(!!polygon && this.searchType === models.SearchType.DISPLACEMENT) {
         let temp = polygon.getGeometry().clone() as Geometry;
         temp.transform('EPSG:3857', 'EPSG:4326')
-        this.pointHistoryService.addPoint(temp, minSeriesNumber, this.drawService.currentDrawMode);
+        // public addPoint(point: Geometry, seriesNumber: number, seriesName: string, drawMode: models.MapDrawModeType)
+        this.pointHistoryService.addPoint(temp, minSeriesNumber, '', this.drawService.currentDrawMode);
         this.updateChart();
       }
     }))

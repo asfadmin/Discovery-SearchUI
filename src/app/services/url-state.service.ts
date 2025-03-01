@@ -331,7 +331,8 @@ export class UrlStateService {
         name: 'series',
         source: this.store$.select(chartsStore.getTimeseriesChartStates).pipe(
           map(seriesState => {
-            return {'series': Object.values(seriesState).map(x => [x.wkt, x.seriesNumber, x.drawMode].join('--')).join('::')}
+            return {'series': Object.values(seriesState).map(x =>
+                [x.wkt, x.seriesNumber, x.drawMode, x.uuidSeries, x.seriesName].join('--')).join('::')}
           }),
         ),
         loader: this.loadSeriesState
@@ -1003,7 +1004,8 @@ export class UrlStateService {
       const format = new WKT()
       let thing = x.split('--')
       const point = format.readFeature(thing[0]) as unknown as Geometry;
-      states.push({ geometry: point, checked: true, seriesNumber: thing[1], wkt: thing[0], name: `Series ${thing[1]}`, linearFit: false, drawMode: thing[2] as MapDrawModeType})
+      states.push({ uuidSeries: thing[3], geometry: point, checked: true, seriesNumber: thing[1],
+        wkt: thing[0], seriesName: thing[4], linearFit: false, drawMode: thing[2] as MapDrawModeType})
     })
     this.pointHistoryService.addPoints(states)
     return;
