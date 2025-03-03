@@ -31,7 +31,14 @@ export const alos_2 = {
   },
   productTypes: [],
   beamModes: [
-    'WBD', 'WBS'
+     'WBS',
+     'WBD',
+     'WWS',
+     'WWD',
+     'VBS',
+     'VBD',
+     'WD1',
+     'WD2'
   ],
   polarizations: [
     'HH',
