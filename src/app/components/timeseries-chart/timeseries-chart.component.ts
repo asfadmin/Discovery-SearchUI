@@ -525,6 +525,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         })
         // @ts-ignore
         .attr('stroke', function (d: DataReady) { return d.color })
+        // .attr('stroke', 'red')
         .style('opacity', (d: DataReady) => d.opacity)
         .style('stroke-width', 1)
         .style('fill', 'none')
