@@ -78,8 +78,8 @@ export class DocsModalComponent implements OnInit, OnDestroy {
         },
       });
 
-      dialogRef.afterClosed().subscribe(result => {
-        console.log(`Dialog result: ${result}`);
+      dialogRef.afterClosed().subscribe(_result => {
+        // console.log(`Dialog result: ${_result}`);
       });
     } else {
       window.open(this.url, '_blank');

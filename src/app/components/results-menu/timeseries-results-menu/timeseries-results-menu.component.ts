@@ -132,6 +132,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
 
     this.subs.add(this.store$.select(getTimeseriesChartStates).subscribe(chartStates => {
       this.chartStates = Object.values(chartStates);
+      this.chartStates = this.chartStates.sort((a, b) => a.seriesNumber - b.seriesNumber);
     }
     ));
 
@@ -274,8 +275,6 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     this.pointHistoryService.removePoint(index);
   }
   public deleteAllPoints(): void {
-   console.log('deleteAllPoints');
-
    this.pointHistoryService.clear();
   }
 
