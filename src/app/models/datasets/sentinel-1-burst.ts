@@ -14,6 +14,7 @@ export const sentinel_1_bursts = {
     Props.BASELINE_TOOL,
     Props.SUBTYPE,
     Props.PATH,
+    Props.USE_BEAM_MODE
   ],
   apiValue: { dataset: 'SLC-BURST' },
   date: { start: new Date('2014/06/15 03:44:43 UTC') },
