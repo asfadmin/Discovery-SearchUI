@@ -51,8 +51,6 @@ export class PointHistoryService {
       this.passDraw = false
       return
     }
-    console.log('addPoint seriesName:', seriesName);
-    console.log('addPoint seriesNumber:', seriesNumber);
     const uuidSeries = crypto.randomUUID();
     const format = new WKT()
     const wkt = format.writeGeometry(point)
@@ -122,7 +120,6 @@ export class PointHistoryService {
       return { uuidSeries: value.uuidSeries, point: value.point, wkt: value.wkt,
         drawMode: value.drawMode, seriesNumber: value.seriesNumber, seriesName: value.seriesName }
     })
-    console.log('converted', converted);
     localStorage.setItem('timeseries-points', JSON.stringify(converted))
   }
 

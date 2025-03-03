@@ -23,7 +23,6 @@ export class TimeseriesChartZoomComponent {
   @Output() zoomToFitEvent = new EventEmitter<void>();
 
   public zoomIn(): void {
-    console.log('zoomIn');
     this.zoomInEvent.emit();
   }
 

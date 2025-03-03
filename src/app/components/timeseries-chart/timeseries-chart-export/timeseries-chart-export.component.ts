@@ -48,7 +48,5 @@ export class TimeseriesChartExportComponent {
     FileSaver.saveAs(blob,
       `asf-opera-displacement-${this.currentDate()}.csv`
     )
-    // window.open(url);
-    // console.log(output)
   }
 }
