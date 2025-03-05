@@ -12,7 +12,8 @@ export interface timeseriesChartItemState {
     seriesName: string,
     linearFit: boolean,
     valid?: boolean,
-    error?: any
+    error?: any,
+    frames?: {[frame: string]: string}
 }
 
 export interface TimeSeriesChartPoint {

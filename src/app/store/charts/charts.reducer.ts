@@ -93,5 +93,11 @@ export const chartsReducer = createReducer(
     }, {});
     return { ...state, seriesStates }
   }),
+  on(chartActions.setFrames, (state, { wkt, frames }) => {
+    const seriesStates = { ...state.seriesStates };
+    seriesStates[wkt] = { ...seriesStates[wkt], frames };
+
+    return { ...state, seriesStates };
+  }),
   on(chartActions.reset, (_) => initialState)
 );

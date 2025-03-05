@@ -149,21 +149,11 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     if (thing && thing.length > 0) {
       let previousPoints: PointHistoryState[] = JSON.parse(thing);
       if (previousPoints.length > 0) {
-        // previousPoints = previousPoints?.map(value => {
-        //   return this.wktService.wktToFeature(value, 'EPSG:4326');
-        // })
         previousPoints?.forEach((point) => {
-          let allPointsData = [];
           let wkt = this.wktService.wktToFeature(point.wkt, 'EPSG:4326');
-        // public addPoint(point: Geometry, seriesNumber: number, seriesName: string, drawMode: models.MapDrawModeType)
           this.pointHistoryService.addPoint(wkt.getGeometry(), point.seriesNumber, point.seriesName, point.drawMode);
-          this.subs.add(this.netcdfService.getTimeSeries(wkt.getGeometry(), this.flightDirection).pipe(first()).subscribe( data => {
-            if (!!data) {
-              allPointsData.push(data);
-            }
-            this.maxRange = this.temporalRange = this.getMaxRange(allPointsData);
-          }))
         });
+        this.updateChart();
       }
     }
 
@@ -174,7 +164,6 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       if(!!polygon && this.searchType === models.SearchType.DISPLACEMENT) {
         let temp = polygon.getGeometry().clone() as Geometry;
         temp.transform('EPSG:3857', 'EPSG:4326')
-        // public addPoint(point: Geometry, seriesNumber: number, seriesName: string, drawMode: models.MapDrawModeType)
         this.pointHistoryService.addPoint(temp, minSeriesNumber, '', this.drawService.currentDrawMode);
         this.updateChart();
       }
@@ -207,12 +196,18 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public updateChart(): void {
     let allPointsData = [];
     for (const series of this.chartStates) {
-      this.netcdfService.getTimeSeries(series.geometry, this.flightDirection).pipe(first()).subscribe(data => {
-        if(!!data) {
-          allPointsData.push(data);
-        }
-        this.temporalRange = this.getMaxRange(allPointsData);
-    })
+      if (!series.frames) {
+        this.netcdfService.getFrames(series.wkt, this.flightDirection).pipe(first()).subscribe(data => {
+          series.frames = data;
+          this.store$.dispatch(chartStore.setFrames({ 'wkt': series.wkt, 'frames': data }))
+          this.netcdfService.getTimeSeries(series.geometry, this.flightDirection).pipe(first()).subscribe(data => {
+            if (!!data) {
+              allPointsData.push(data);
+            }
+            this.temporalRange = this.getMaxRange(allPointsData);
+          })
+        })
+      }
     }
     this.maxRange = this.getMaxRange(allPointsData);
   }
