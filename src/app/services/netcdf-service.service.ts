@@ -159,7 +159,18 @@ export class NetcdfService {
         }
         ))
     }
+  }
 
+
+  public getFrames(wkt: string, flightDir: FlightDirection) {
+    return this.http.post(`${this.url}frame_intersection`, {
+      "wkt": wkt,
+      "flightDirection": flightDir.toLowerCase()
+    }).pipe(
+      map((response: { [frame: number]: string }) => {
+        return response;
+      })
+    )
   }
 
   // series, longitude, latitude, date (mm/dd/yr), short wavelength displacement, source file

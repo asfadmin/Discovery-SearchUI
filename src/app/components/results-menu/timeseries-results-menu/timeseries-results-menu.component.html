@@ -43,6 +43,11 @@
 <!--                      {{'SERIES' | translate}} {{point.seriesNumber}}-->
                     </span>
                   </mat-checkbox>
+                  <p>
+                    @for(frame of point.frames |keyvalue; track frame.key) {
+                      {{frame.key}}
+                    }
+                  </p>
                   <button mat-icon-button (click)="deletePoint($index)" *ngIf="point.seriesNumber === selectedSeries">
                     <mat-icon class="ts-trash-can" disableRipple>delete</mat-icon>
                   </button>
@@ -60,6 +65,11 @@
 <!--                        {{'SERIES' | translate}} {{point.seriesNumber}}-->
                       </span>
                     </div>
+                    <p>
+                      @for(frame of point.frames |keyvalue; track frame.key) {
+                        {{frame.key}}
+                      }
+                    </p>
                     <button mat-icon-button (click)="deletePoint($index)">
                       <mat-icon class="ts-trash-can" *ngIf="point.seriesNumber === selectedSeries" disableRipple>delete</mat-icon>
                     </button>
