@@ -870,7 +870,7 @@ export class MapService implements OnDestroy {
   }
 
 
-  public setDisplacementLayer(points: { point: Point, seriesNumber: number, color: string }[]) {
+  public setDisplacementLayer(points: { point: Geometry, seriesNumber: number, color: string }[]) {
     if (!!this.displacmentLayer) {
       this.map.removeLayer(this.displacmentLayer);
       this.displacmentLayer = null;

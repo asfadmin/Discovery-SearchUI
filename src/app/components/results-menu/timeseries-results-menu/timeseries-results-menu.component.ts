@@ -151,7 +151,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       if (previousPoints.length > 0) {
         previousPoints?.forEach((point) => {
           let wkt = this.wktService.wktToFeature(point.wkt, 'EPSG:4326');
-          this.pointHistoryService.addPoint(wkt.getGeometry(), point.seriesNumber, point.seriesName, point.drawMode);
+          this.pointHistoryService.addPoint(wkt.getGeometry(), point.seriesNumber, point.seriesName, point.drawMode, point.uuidSeries);
         });
         this.updateChart();
       }
@@ -198,14 +198,16 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     for (const series of this.chartStates) {
       if (!series.frames) {
         this.netcdfService.getFrames(series.wkt, this.flightDirection).pipe(first()).subscribe(data => {
-          series.frames = data;
-          this.store$.dispatch(chartStore.setFrames({ 'wkt': series.wkt, 'frames': data }))
-          this.netcdfService.getTimeSeries(series.geometry, this.flightDirection).pipe(first()).subscribe(data => {
-            if (!!data) {
-              allPointsData.push(data);
-            }
-            this.temporalRange = this.getMaxRange(allPointsData);
-          })
+          // series.frames = data;
+          this.store$.dispatch(chartStore.setFrames({ 'uuid': series.uuidSeries, 'frames': data }))
+          for(let frame_id of Object.keys(data)) {
+            this.netcdfService.getTimeSeries(data[frame_id], this.flightDirection, frame_id, series.uuidSeries).pipe(first()).subscribe(data => {
+              if (!!data) {
+                allPointsData.push(data);
+              }
+              this.temporalRange = this.getMaxRange(allPointsData);
+            })
+          }
         })
       }
     }
@@ -250,8 +252,8 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   }
 
   public updateSeries(checked: boolean, index?: number) {
-    const wkt = this.chartStates[index]?.wkt
-    this.store$.dispatch(chartStore.setTimeseriesChecked({wkt, checked}))
+    const uuid = this.chartStates[index]?.uuidSeries
+    this.store$.dispatch(chartStore.setTimeseriesChecked({uuid, checked}))
   }
 
   public respondToActiveWkt(wkt: string) {

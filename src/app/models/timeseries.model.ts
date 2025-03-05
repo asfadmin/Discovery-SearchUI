@@ -26,7 +26,7 @@ export interface TimeSeriesChartPoint {
     file_name: string,
     temporal_baseline: number
     id: string
-    drawMode: MapDrawModeType
+    drawMode: MapDrawModeType,
 }
 export interface TimeSeriesData {
     uuidSeries: string,
@@ -36,6 +36,7 @@ export interface TimeSeriesData {
     base: number,
     seriesNumber: number,
     seriesName: string,
+    frame: string,
     drawMode: MapDrawModeType,
     color: string,
     aoi: string,
