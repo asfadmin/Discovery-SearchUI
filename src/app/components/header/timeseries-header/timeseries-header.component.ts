@@ -22,7 +22,7 @@ export class TimeseriesHeaderComponent implements OnInit, OnDestroy {
   public breakpoints = models.Breakpoints;
   public isDrawing = false;
   public flightDirections: models.FlightDirection[];
-  public flightAsc = true;
+  public flightDesc = false;
 
   private subs = new SubSink();
 
@@ -33,11 +33,12 @@ export class TimeseriesHeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
+    this.flightDesc = false;
     this.subs.add(
       this.store$.select(filtersStore.getFlightDirections).subscribe(
         flightDirs  => {
           this.flightDirections = flightDirs;
-          this.flightAsc = this.flightDirections.toString() == 'ASCENDING';
+          this.flightDesc = this.flightDirections.toString() == 'DESCENDING';
           console.log('this.flightDirections.toString()', this.flightDirections.toString());
         }
       )
