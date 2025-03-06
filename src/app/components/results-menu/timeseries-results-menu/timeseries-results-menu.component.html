@@ -40,7 +40,7 @@
                     </mat-icon>
                     <span class="ts-wkt-label">
                       <span *ngIf="point.seriesName.toLowerCase().trim() == 'series'; else customSeriesName">
-                        {{'SERIES' | translate}} x {{point.seriesNumber}}
+                        {{'SERIES' | translate}} {{point.seriesNumber}}
                       </span>
                       <ng-template #customSeriesName>
                         {{point.seriesName}} {{point.seriesNumber}}
