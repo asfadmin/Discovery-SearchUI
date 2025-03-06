@@ -1,3 +1,5 @@
+@import "asf-theme";
+
 .baseline-header-layout {
   flex-direction: row;
   box-sizing: border-box;
@@ -62,5 +64,15 @@
   margin-top: 71px;
   color: grey;
   font-size: 14px;
+}
+
+.invert-icon {
+  @include themify($themes) {
+    filter: themed('inverted-image');
+  }
+}
+
+.flip-icon {
+  transform: rotateY(180deg); // Rotate 180 degrees along the y-axis
 }
 

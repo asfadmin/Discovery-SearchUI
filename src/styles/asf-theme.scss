@@ -72,6 +72,8 @@ $themes: (
     light-focused: rgba(white, 0.12),
 
     borders: lightgray,
+    inverted-image: invert(0%),
+
     primary: mat.get-color-from-palette($asf-app-primary),
     accent: mat.get-color-from-palette($asf-app-accent),
     warn: mat.get-color-from-palette($asf-app-warn),
@@ -94,6 +96,7 @@ $themes: (
     dark-focused: rgba(white, 0.12),
 
     borders: lightgray,
+    inverted-image: invert(100%),
 
     primary: mat.get-color-from-palette($asf-app-dark-primary),
     accent: mat.get-color-from-palette($asf-app-accent),
