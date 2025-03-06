@@ -39,15 +39,19 @@
                       {{ point.drawMode | aoiIcon }}
                     </mat-icon>
                     <span class="ts-wkt-label">
-                      {{point.seriesName}} {{point.seriesNumber}}
-<!--                      {{'SERIES' | translate}} {{point.seriesNumber}}-->
+                      <span *ngIf="point.seriesName.toLowerCase().trim() == 'series'; else customSeriesName">
+                        {{'SERIES' | translate}} x {{point.seriesNumber}}
+                      </span>
+                      <ng-template #customSeriesName>
+                        {{point.seriesName}} {{point.seriesNumber}}
+                      </ng-template>
                     </span>
                   </mat-checkbox>
-                  <p>
-                    @for(frame of point.frames |keyvalue; track frame.key) {
-                      {{frame.key}}
-                    }
-                  </p>
+<!--                  <p>-->
+<!--                    @for(frame of point.frames |keyvalue; track frame.key) {-->
+<!--                      {{frame.key}}-->
+<!--                    }-->
+<!--                  </p>-->
                   <button mat-icon-button (click)="deletePoint($index)" *ngIf="point.seriesNumber === selectedSeries">
                     <mat-icon class="ts-trash-can" disableRipple>delete</mat-icon>
                   </button>
@@ -61,15 +65,19 @@
                       }
                       <mat-icon class="ts-wkt-icon" [style.color]="point.color">{{ point.drawMode | aoiIcon }}</mat-icon>
                       <span class="ts-wkt-label invalid-aoi-text">
+                        <span *ngIf="point.seriesName.toLowerCase().trim() == 'series'; else customSeriesName2">
+                          {{'SERIES' | translate}} {{point.seriesNumber}}
+                        </span>
+                        <ng-template #customSeriesName2>
                           {{point.seriesName}} {{point.seriesNumber}}
-<!--                        {{'SERIES' | translate}} {{point.seriesNumber}}-->
+                        </ng-template>
                       </span>
                     </div>
-                    <p>
-                      @for(frame of point.frames |keyvalue; track frame.key) {
-                        {{frame.key}}
-                      }
-                    </p>
+<!--                    <p>-->
+<!--                      @for(frame of point.frames |keyvalue; track frame.key) {-->
+<!--                        {{frame.key}}-->
+<!--                      }-->
+<!--                    </p>-->
                     <button mat-icon-button (click)="deletePoint($index)">
                       <mat-icon class="ts-trash-can" *ngIf="point.seriesNumber === selectedSeries" disableRipple>delete</mat-icon>
                     </button>
