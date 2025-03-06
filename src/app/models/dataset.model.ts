@@ -56,7 +56,9 @@ export type DatasetSubtypes = DatasetSubtype[];
 export const sentinel_1 = fromDatasets.sentinel_1;
 export const sentinel_1_bursts = fromDatasets.sentinel_1_bursts;
 export const opera_s1 = fromDatasets.opera_s1;
+export const opera_disp = fromDatasets.opera_disp;
 export const alos = fromDatasets.alos;
+export const alos_2 = fromDatasets.alos_2;
 export const avnir = fromDatasets.avnir;
 export const sirc = fromDatasets.sirc;
 export const beta = fromDatasets.beta;
@@ -69,6 +71,8 @@ export const airsar = fromDatasets.airsar;
 export const seasat = fromDatasets.seasat;
 
 export const datasetList: Dataset[] = [
+  fromDatasets.alos_2,
+  fromDatasets.opera_disp,
   fromDatasets.sentinel_1,
   fromDatasets.sentinel_1_bursts,
   fromDatasets.opera_s1,

@@ -12,3 +12,5 @@ export * from './sirc';
 export * from './avnir';
 export * from './sentinel-1-burst';
 export * from './opera_s1';
+export * from './alos_2';
+export * from './opera_disp';
