@@ -1,3 +1,5 @@
+@import "asf-theme";
+
 .baseline-header-layout {
   flex-direction: row;
   box-sizing: border-box;
@@ -35,3 +37,42 @@
 .displacement-header-menu {
   height: 70px;
 }
+
+.azimuth-icon {
+  position: absolute;
+  margin-left: 30px;
+  margin-top: 3px;
+}
+
+.azimuth-icon-text {
+  position: absolute;
+  margin-left: 36px;
+  margin-top: 71px;
+  color: grey;
+  font-size: 14px;
+}
+
+.line-of-site-icon {
+  position: absolute;
+  margin-left: 110px;
+  margin-top: 3px;
+}
+
+.line-of-site-icon-text {
+  position: absolute;
+  margin-left: 126px;
+  margin-top: 71px;
+  color: grey;
+  font-size: 14px;
+}
+
+.invert-icon {
+  @include themify($themes) {
+    filter: themed('inverted-image');
+  }
+}
+
+.flip-icon {
+  transform: rotateY(180deg); // Rotate 180 degrees along the y-axis
+}
+

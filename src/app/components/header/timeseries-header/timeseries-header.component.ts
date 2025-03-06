@@ -6,6 +6,7 @@ import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
 import * as mapStore from '@store/map';
+import * as filtersStore from '@store/filters';
 
 import { ScreenSizeService } from '@services';
 import { MapDrawModeType, MapInteractionModeType } from '@models';
@@ -20,15 +21,28 @@ export class TimeseriesHeaderComponent implements OnInit, OnDestroy {
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
   public isDrawing = false;
+  public flightDirections: models.FlightDirection[];
+  public flightAsc = true;
 
   private subs = new SubSink();
 
   constructor(
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
-  ) { }
+  ) {}
 
   ngOnInit() {
+
+    this.subs.add(
+      this.store$.select(filtersStore.getFlightDirections).subscribe(
+        flightDirs  => {
+          this.flightDirections = flightDirs;
+          this.flightAsc = this.flightDirections.toString() == 'ASCENDING';
+          console.log('this.flightDirections.toString()', this.flightDirections.toString());
+        }
+      )
+    );
+
     this.subs.add(
       this.store$.select(mapStore.getMapInteractionMode).subscribe(
         mode => this.isDrawing = mode === MapInteractionModeType.DRAW
