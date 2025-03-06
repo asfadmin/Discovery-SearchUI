@@ -14,6 +14,7 @@ export enum Props {
   BASELINE_TOOL = 'Baseline Tool',
   SUBTYPE = 'Subtype',
   POINTING_ANGLE = 'Pointing Angle',
+  USE_BEAM_MODE = 'Use Beam Mode Filter'
 }
 
 export const apiParamNames = {
