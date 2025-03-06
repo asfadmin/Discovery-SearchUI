@@ -246,13 +246,19 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private refreshChart(chartStates: { [key: string]: models.timeseriesChartItemState }): void {
     const cache = this.netcdfService.getCache(this.flightDirection)
 
-    const allPointsData: { point: {}, state: models.timeseriesChartItemState }[] = Object.keys(chartStates)
+    const validPoints= Object.values(chartStates)
     .filter(
-      wkt => chartStates[wkt].valid
+      value => value.valid
     )
-    .map(
-      wkt => ({ point: cache[wkt], state: chartStates[wkt] })
-    );
+    let allPointsData: { point: {}, state: models.timeseriesChartItemState, frame: string }[] = [];
+    for(let series of validPoints) {
+      for(let frame of Object.keys(series.frames)) {
+        allPointsData.push(
+          { point: cache[series.uuidSeries + frame], state: series , frame: frame}
+        )
+      }
+    }
+
     if(this.baseData) {
       const missingBaseSeries = Object.keys(chartStates).findIndex(
         wkt => {return chartStates[wkt].seriesNumber === this.baseData.seriesNumber});
@@ -310,7 +316,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.updateChart();
   }
 
-  public initChart(data: {point: {}, state: models.timeseriesChartItemState}[]): void {
+  public initChart(data: {point: {}, state: models.timeseriesChartItemState, frame: string}[]): void {
     this.dataSource = []
     this.dataReadyForChart = []
     this.exportableData = {}
@@ -329,6 +335,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
                 aoi = result.point[key];
               }
             }
+            aoi = result.state.wkt;
             this.timeSeriesData = [];
             for (let key of Object.keys(result.point).filter(x => x !== 'mean' && x !== 'aoi')) {
               let daDate = new Date(result.point[key].secondary_datetime).valueOf();
@@ -356,6 +363,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
                 'id': key + result.point[key].short_wavelength_displacement,
                 'aoi': aoi,
                 'drawMode': result.point[key].drawMode,
+                'frame': result.frame
               });
 
               if (result.state.checked) {
@@ -563,7 +571,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         toolTip
           .style('opacity', .9);
         toolTip.html(`<div style="text-align: left">
-        <b>${self.language.translate.instant('SERIES')} ${p.seriesNumber}:</b><br>
+        <b>${self.language.translate.instant('SERIES')} ${p.seriesNumber} (${self.language.translate.instant('FRAME')} ${p.frame}):</b><br>
         ${self.tooltipDateFormat(self.hoveredDate)}<br>
         ${p.short_wavelength_displacement.toFixed(4)} ${self.language.translate.instant('METERS')} <br>
         <em>${self.dotToolTipText}</em></div>`);

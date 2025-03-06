@@ -46,12 +46,12 @@ export class PointHistoryService {
     })
   }
 
-  public addPoint(point: Geometry, seriesNumber: number, seriesName: string, drawMode: models.MapDrawModeType) {
+  public addPoint(point: Geometry, seriesNumber: number, seriesName: string, drawMode: models.MapDrawModeType, id ?: string) {
     if(this.passDraw) {
       this.passDraw = false
       return
     }
-    const uuidSeries = crypto.randomUUID();
+    const uuidSeries = id ?? crypto.randomUUID();
     const format = new WKT()
     const wkt = format.writeGeometry(point)
     if (!!!this.history.find(x => x.wkt == wkt)) {
@@ -86,7 +86,7 @@ export class PointHistoryService {
         drawMode: state.drawMode,
         seriesNumber: state.seriesNumber,
         seriesName: sName,
-      } ]
+      } ];
       this.store$.dispatch(addTimeseriesState({item: state}))
     }
     this.history$.next(this.history);
@@ -103,10 +103,10 @@ export class PointHistoryService {
 
   public removePoint(index) {
     // const format = new WKT()
-    const wkt = this.history[index].wkt
+    const uuid = this.history[index].uuidSeries
     this.history.splice(index,1);
     this.history$.next(this.history)
-    this.store$.dispatch(removeTimeseriesState({wkt}))
+    this.store$.dispatch(removeTimeseriesState({uuid}))
     this.savePoints();
   }
 

@@ -23,19 +23,19 @@ export const chartsReducer = createReducer(
   initialState,
   on(chartActions.showGraphLines, (state) => ({ ...state, showLines: true })),
   on(chartActions.hideGraphLines, (state) => ({ ...state, showLines: false })),
-  on(chartActions.setTimeseriesChecked, (state, { wkt, checked }) => {
+  on(chartActions.setTimeseriesChecked, (state, { uuid, checked }) => {
     // const output = { ...state };
     // if (wkt in output.seriesStates) {
     // output.seriesStates[wkt].checked = checked;
     // }
 
-    const seriesState = { ...state.seriesStates, [wkt]: { ...state.seriesStates[wkt], checked } }
+    const seriesState = { ...state.seriesStates, [uuid]: { ...state.seriesStates[uuid], checked } }
     return { ...state, seriesStates: seriesState }
     // return output;
   }),
   on(chartActions.setTimeseriesStates, (state, { items }) => ({
     ...state, seriesStates: items.reduce((prev: { [key: string]: models.timeseriesChartItemState }, curr) => {
-      prev[curr.wkt] = { uuidSeries: curr.uuidSeries, checked: true, color: curr.color,
+      prev[curr.uuidSeries] = { uuidSeries: curr.uuidSeries, checked: true, color: curr.color,
         seriesNumber: curr.seriesNumber, seriesName: curr.seriesName, wkt: curr.wkt,
         geometry: curr.geometry, linearFit: curr.linearFit, drawMode: curr.drawMode }
       return prev
@@ -46,27 +46,26 @@ export const chartsReducer = createReducer(
     return {...state, seriesStates: {}}
   }),
   on(chartActions.addTimeseriesState, (state, { item }) => {
-
-    const seriesState = { ...state.seriesStates, [item.wkt]: item }
+    const seriesState = { ...state.seriesStates, [item.uuidSeries]: item }
     return { ...state, seriesStates: seriesState }
   }),
   on(chartActions.setAllTimeseriesChecked, (state, { checked }) => {
     const seriesStates = Object.values(state.seriesStates).reduce((prev, curr) => {
-      prev[curr.wkt] = { ...curr, checked }
+      prev[curr.uuidSeries] = { ...curr, checked }
       return prev
     }, {});
     return { ...state, seriesStates }
   }),
   on(chartActions.setChartOutOfDate, (state) => ({ ...state, outOfDate: true })),
   on(chartActions.setChartUpToDate, (state) => ({ ...state, outOfDate: false })),
-  on(chartActions.removeTimeseriesState, (state, { wkt }) => {
+  on(chartActions.removeTimeseriesState, (state, { uuid }) => {
     const seriesStates = { ...state.seriesStates }
-    delete seriesStates[wkt]
+    delete seriesStates[uuid]
     return { ...state, seriesStates }
   }),
-  on(chartActions.setTimeseriesColor, (state, { wkt, color }) => {
+  on(chartActions.setTimeseriesColor, (state, { uuid, color }) => {
     const seriesStates = { ...state.seriesStates };
-    seriesStates[wkt] = { ...seriesStates[wkt], color };
+    seriesStates[uuid] = { ...seriesStates[uuid], color };
 
     return { ...state, seriesStates };
   }),
@@ -82,20 +81,20 @@ export const chartsReducer = createReducer(
   on(chartActions.resetReferenceData, (state) => {
     return {...state, baseReferenceDate: null}
   }),
-  on(chartActions.setTimeseriesValid, (state, {wkt, valid, error}) => {
+  on(chartActions.setTimeseriesValid, (state, {uuid, valid, error}) => {
     const seriesStates = Object.values(state.seriesStates).reduce((prev, curr) => {
-      if (curr.wkt === wkt) {
-        prev[curr.wkt] = {...curr, valid: valid, error: error}
+      if (curr.uuidSeries === uuid) {
+        prev[curr.uuidSeries] = {...curr, valid: valid, error: error}
       } else {
-        prev[curr.wkt] = {...curr}
+        prev[curr.uuidSeries] = {...curr}
       }
       return prev
     }, {});
     return { ...state, seriesStates }
   }),
-  on(chartActions.setFrames, (state, { wkt, frames }) => {
+  on(chartActions.setFrames, (state, { uuid, frames }) => {
     const seriesStates = { ...state.seriesStates };
-    seriesStates[wkt] = { ...seriesStates[wkt], frames };
+    seriesStates[uuid] = { ...seriesStates[uuid], frames };
 
     return { ...state, seriesStates };
   }),

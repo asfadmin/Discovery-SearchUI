@@ -9,7 +9,6 @@ import ImageLayer from 'ol/layer/Image';
 import ImageSource from 'ol/source/Image';
 import Feature from 'ol/Feature';
 import Geometry from 'ol/geom/Geometry';
-import WKT from 'ol/format/WKT';
 import { FlightDirection } from '@models';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -106,41 +105,40 @@ export class NetcdfService {
     )));
 }
 
-  public getTimeSeries(geometry, flightDirection =FlightDirection.ASCENDING): Observable<any> {
+  public getTimeSeries(wkt, flightDirection =FlightDirection.ASCENDING, frame_id: string, seriesId): Observable<any> {
 
-    let format = new WKT();
-    let wktRepresenation = format.writeGeometry(geometry);
-    let index_id = wktRepresenation;
+    let index_id = seriesId + frame_id;
 
     let target_cache = this.getTargetCache(flightDirection)
 
     if (target_cache.hasOwnProperty(index_id)) {
       if(target_cache[index_id]?.error === null || target_cache[index_id]?.error === undefined) {
-        this.store$.dispatch(setTimeseriesValid({wkt: wktRepresenation, valid: true}))
+        this.store$.dispatch(setTimeseriesValid({uuid: seriesId, valid: true}))
         return of(target_cache[index_id])
       } else {
         let errorDetails = target_cache[index_id]?.error?.error.detail ?? 'No details, try again.';
-        this.store$.dispatch(setTimeseriesValid({wkt: wktRepresenation, valid: false, error: errorDetails}))
+        this.store$.dispatch(setTimeseriesValid({uuid: seriesId, valid: false, error: errorDetails}))
         return of()
       }
     } else {
       return this.http.post(`${this.url}${this.timeSeriesEndpoint}`, {
-        "wkt": wktRepresenation,
+        "wkt": wkt,
         "bucket": this.bucket,
         "polarization": "VV",
         "flightDirection": flightDirection,
+        'frame_id': frame_id
       }, { responseType: 'json' }).pipe(
         this.handleRetry,
         catchError(error => {
           let errorDetails = error.error.detail ?? 'No details, try again.';
           this.notificationService.error(errorDetails, 'Timeseries Service Error')
 
-          this.store$.dispatch(setTimeseriesValid({wkt: wktRepresenation, valid: false, error: errorDetails}))
+          this.store$.dispatch(setTimeseriesValid({uuid: seriesId, valid: false, error: errorDetails}))
           return of({error})
         }),
         map(response => {
           if (!!response) {
-          (response as any).aoi = wktRepresenation;
+          (response as any).aoi = wkt;
           }
           target_cache[index_id] = response;
           this.totalKeys.push(index_id);
@@ -150,7 +148,7 @@ export class NetcdfService {
           }
           this.cacheUpdated.next(index_id)
           if(response && !(response as any)?.error) {
-            this.store$.dispatch(setTimeseriesValid({wkt: wktRepresenation, valid: true}))
+            this.store$.dispatch(setTimeseriesValid({uuid: seriesId, valid: true}))
           } else {
             response = null
           }
