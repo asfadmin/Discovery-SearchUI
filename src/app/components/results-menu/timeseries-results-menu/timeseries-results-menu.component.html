@@ -28,69 +28,72 @@
         <span class="point-list-ul-section">
           <ul>
             @for (point of chartStates; track point.valid) {
-              
-              <li [class.ts-highlighted]="point.seriesNumber === selectedSeries"
-                  class="point-list-item"
-                  on-mouseover="setActiveWkt(point.wkt)"
-                  on-mouseleave="setActiveWkt(null)">
-                  @if (point.valid == true) {
-                  <mat-checkbox [checked]="point.checked" (change)="updateSeries($event.checked, $index)"
-                                style="display: flex;" disableRipple>
-                    <mat-icon class="ts-wkt-icon" [style.color]="point.color">
-                      {{ point.drawMode | aoiIcon }}
-                    </mat-icon>
+              @for(frame of point.frames | keyvalue; track frame.key) {
 
-                    <span class="ts-wkt-label">
-                      <ng-container *ngTemplateOutlet="seriesFragment"></ng-container>
-                    </span>
+                <li [class.ts-highlighted]="point.seriesNumber === selectedSeries"
+                    class="point-list-item"
+                    on-mouseover="setActiveWkt(point.wkt)"
+                    on-mouseleave="setActiveWkt(null)">
+                    @if (point.valid == true) {
+                    <mat-checkbox [checked]="point.checked" (change)="updateSeries($event.checked, $index)"
+                                  style="display: flex;" disableRipple>
+                      <mat-icon class="ts-wkt-icon" [style.color]="point.color">
+                        {{ point.drawMode | aoiIcon }}
+                      </mat-icon>
 
-                    @if (getFrameCount(point.frames) > 1) {
-<!--                      <mat-accordion>-->
-<!--                        <mat-expansion-panel hideToggle>-->
-<!--                          <mat-expansion-panel-header>-->
-<!--                            <mat-panel-title> This is the expansion title </mat-panel-title>-->
-<!--                            <mat-panel-description> This is a summary of the content </mat-panel-description>-->
-<!--                          </mat-expansion-panel-header>-->
-                          @for(frame of point.frames | keyvalue; track frame.key) {
-                            <ng-container *ngTemplateOutlet="seriesFragment"></ng-container>
-<!--                            <p>frame: {{frame.key}}</p>-->
-                          }
-<!--                        </mat-expansion-panel>-->
-<!--                      </mat-accordion>-->
-                    }
-
-                  </mat-checkbox>
-                  <button mat-icon-button (click)="deletePoint($index)" *ngIf="point.seriesNumber === selectedSeries">
-                    <mat-icon class="ts-trash-can" disableRipple>delete</mat-icon>
-                  </button>
-                  } @else {
-                    <div class="error-line">
-                      @if(point.valid == false) {
-                        <mat-icon color="warn" class="invalid-aoi-icon" [matTooltip]="point.error">block</mat-icon>
-                      }
-                      @else {
-                        <mat-spinner diameter="20" class="loading-spinner"></mat-spinner>
-                      }
-                      <mat-icon class="ts-wkt-icon" [style.color]="point.color">{{ point.drawMode | aoiIcon }}</mat-icon>
-                      <span class="ts-wkt-label invalid-aoi-text">
+                      <span class="ts-wkt-label">
                         <ng-container *ngTemplateOutlet="seriesFragment"></ng-container>
                       </span>
-                    </div>
-                    <button mat-icon-button (click)="deletePoint($index)">
-                      <mat-icon class="ts-trash-can" *ngIf="point.seriesNumber === selectedSeries" disableRipple>delete</mat-icon>
+
+  <!--                    @if (getFrameCount(point.frames) > 1) {-->
+  <!--                      <mat-accordion>-->
+  <!--                        <mat-expansion-panel hideToggle>-->
+  <!--                          <mat-expansion-panel-header>-->
+  <!--                            <mat-panel-title> This is the expansion title </mat-panel-title>-->
+  <!--                            <mat-panel-description> This is a summary of the content </mat-panel-description>-->
+  <!--                          </mat-expansion-panel-header>-->
+<!--                            @for(frame of point.frames | keyvalue; track frame.key) {-->
+<!--                              <ng-container *ngTemplateOutlet="seriesFragment"></ng-container>-->
+  <!--                            <p>frame: {{frame.key}}</p>-->
+<!--                            }-->
+  <!--                        </mat-expansion-panel>-->
+  <!--                      </mat-accordion>-->
+  <!--                    }-->
+
+                    </mat-checkbox>
+                    <button mat-icon-button (click)="deletePoint($index)" *ngIf="point.seriesNumber === selectedSeries">
+                      <mat-icon class="ts-trash-can" disableRipple>delete</mat-icon>
                     </button>
-                  }
-              </li>
+                    } @else {
+                      <div class="error-line">
+                        @if(point.valid == false) {
+                          <mat-icon color="warn" class="invalid-aoi-icon" [matTooltip]="point.error">block</mat-icon>
+                        }
+                        @else {
+                          <mat-spinner diameter="20" class="loading-spinner"></mat-spinner>
+                        }
+                        <mat-icon class="ts-wkt-icon" [style.color]="point.color">{{ point.drawMode | aoiIcon }}</mat-icon>
+                        <span class="ts-wkt-label invalid-aoi-text">
+                          <ng-container *ngTemplateOutlet="seriesFragment"></ng-container>
+                        </span>
+                      </div>
+                      <button mat-icon-button (click)="deletePoint($index)">
+                        <mat-icon class="ts-trash-can" *ngIf="point.seriesNumber === selectedSeries" disableRipple>delete</mat-icon>
+                      </button>
+                    }
+                </li>
 
-              <ng-template #seriesFragment>
-                <span *ngIf="point.seriesName.toLowerCase().trim() == 'series'; else customSeriesName">
-                  {{'SERIES' | translate}} {{point.seriesNumber}}
-                </span>
-                <ng-template #customSeriesName>
-                  {{point.seriesName}} {{point.seriesNumber}}
+                <ng-template #seriesFragment>
+                  <span *ngIf="point.seriesName.toLowerCase().trim() == 'series'; else customSeriesName">
+                    {{'SERIES' | translate}}
+                    {{point.seriesNumber}}<span *ngIf="getFrameCount(point.frames)>1">.{{frame.key}}</span>
+                  </span>
+                  <ng-template #customSeriesName>
+                    {{point.seriesName}}
+                    {{point.seriesNumber}}<span *ngIf="getFrameCount(point.frames)>1">.{{frame.key}}</span>
+                  </ng-template>
                 </ng-template>
-              </ng-template>
-
+              }
             }
           </ul>
         </span>
