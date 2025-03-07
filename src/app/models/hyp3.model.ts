@@ -104,13 +104,25 @@ export interface Hyp3InSarGammaParameters {
   granules: string[];
 }
 
-export type Hyp3Costs = Hyp3JobCost[]
-export type Hyp3CostsByJobType = {
-  [jobType: string]: Hyp3JobCost;
+export type Hyp3Costs = {
+  [jobType: string]: Hyp3JobCost
 }
 
+export type Hyp3JobCost = Hyp3JobCostFixed | Hyp3JobCostTable;
+export type Hyp3JobCostFixed = { cost: number; }
+export type Hyp3JobCostTable = {
+  cost_parameters: string[];
+  cost_table: Hyp3CostTable
+}
 
-export interface Hyp3JobCost {
+export type Hyp3CostTable = {
+  [parameterValue: string]: number | Hyp3CostTable
+}
+
+// TODO: Remove when hyp3 updates
+export type Hyp3CostsOld = Hyp3JobCostOld[]
+
+export interface Hyp3JobCostOld {
   job_type: string;
   cost_parameter?: number | string;
   cost_table?: any;
