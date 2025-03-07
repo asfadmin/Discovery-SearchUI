@@ -1,26 +1,20 @@
-import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef, computed, signal } from '@angular/core';
-import { distinctUntilChanged, filter, first, map, Observable, Subject, withLatestFrom } from 'rxjs';
-import { ResizeEvent } from 'angular-resizable-element';
+import {Component, computed, ElementRef, Input, OnDestroy, OnInit, signal, ViewChild} from '@angular/core';
+import {distinctUntilChanged, filter, first, map, Observable, Subject, withLatestFrom} from 'rxjs';
+import {ResizeEvent} from 'angular-resizable-element';
 
-import { AppState } from '@store';
+import {AppState} from '@store';
 import * as searchStore from '@store/search';
 import * as chartStore from '@store/charts';
+import {getTimeseriesChartStates} from '@store/charts';
 
-import {
-  DrawService,
-  NetcdfService,
-  PointHistoryService,
-  ScreenSizeService,
-  WktService
-} from '@services';
-import { Breakpoints, SearchType } from '@models';
-
-import { SubSink } from 'subsink';
-
-import { Geometry} from 'ol/geom';
-import { getTimeseriesChartStates } from '@store/charts';
-import * as filtersStore from '@store/filters';
+import {DrawService, NetcdfService, PointHistoryService, ScreenSizeService, WktService} from '@services';
 import * as models from '@models';
+import {Breakpoints, SearchType} from '@models';
+
+import {SubSink} from 'subsink';
+
+import {Geometry} from 'ol/geom';
+import * as filtersStore from '@store/filters';
 import * as uiStore from '@store/ui';
 import {Store} from '@ngrx/store';
 import {MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
@@ -131,8 +125,15 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(this.store$.select(getTimeseriesChartStates).subscribe(chartStates => {
+      let seriesFrameCount = [];
       this.chartStates = Object.values(chartStates);
       this.chartStates = this.chartStates.sort((a, b) => a.seriesNumber - b.seriesNumber);
+      this.chartStates.forEach((series) => {
+        // seriesFrameCount.push(this.getFrameCount(series.frames));
+        seriesFrameCount[series.seriesNumber] = this.getFrameCount(series.frames);
+      });
+      console.log('this.chartStates', this.chartStates);
+      console.log('seriesFrameCount', seriesFrameCount);
     }
     ));
 
@@ -200,19 +201,32 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
         this.netcdfService.getFrames(series.wkt, this.flightDirection).pipe(first()).subscribe(data => {
           // series.frames = data;
           this.store$.dispatch(chartStore.setFrames({ 'uuid': series.uuidSeries, 'frames': data }))
+
           for(let frame_id of Object.keys(data)) {
-            this.netcdfService.getTimeSeries(data[frame_id], this.flightDirection, frame_id, series.uuidSeries).pipe(first()).subscribe(data => {
-              if (!!data) {
-                allPointsData.push(data);
-              }
-              this.temporalRange = this.getMaxRange(allPointsData);
-            })
+            this.netcdfService.getTimeSeries(data[frame_id], this.flightDirection, frame_id, series.uuidSeries)
+              .pipe(first()).subscribe(data => {
+                if (!!data) {
+                  allPointsData.push(data);
+                }
+                this.temporalRange = this.getMaxRange(allPointsData);
+              })
           }
         })
       }
+      console.log('series.frames', series.seriesNumber, allPointsData);
     }
     this.maxRange = this.getMaxRange(allPointsData);
   }
+
+  public getFrameCount(point: any): number {
+    let frameCount = 0;
+    for (let x of Object.keys(point)) {
+      console.log('point', point[x]);
+      frameCount++;
+    }
+    return frameCount;
+  }
+
 
   readonly task = signal<Task>({
     aoi: 'ALL AOIs',

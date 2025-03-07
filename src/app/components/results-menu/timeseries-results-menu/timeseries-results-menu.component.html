@@ -28,6 +28,7 @@
         <span class="point-list-ul-section">
           <ul>
             @for (point of chartStates; track point.valid) {
+              
               <li [class.ts-highlighted]="point.seriesNumber === selectedSeries"
                   class="point-list-item"
                   on-mouseover="setActiveWkt(point.wkt)"
@@ -38,20 +39,27 @@
                     <mat-icon class="ts-wkt-icon" [style.color]="point.color">
                       {{ point.drawMode | aoiIcon }}
                     </mat-icon>
+
                     <span class="ts-wkt-label">
-                      <span *ngIf="point.seriesName.toLowerCase().trim() == 'series'; else customSeriesName">
-                        {{'SERIES' | translate}} {{point.seriesNumber}}
-                      </span>
-                      <ng-template #customSeriesName>
-                        {{point.seriesName}} {{point.seriesNumber}}
-                      </ng-template>
+                      <ng-container *ngTemplateOutlet="seriesFragment"></ng-container>
                     </span>
+
+                    @if (getFrameCount(point.frames) > 1) {
+<!--                      <mat-accordion>-->
+<!--                        <mat-expansion-panel hideToggle>-->
+<!--                          <mat-expansion-panel-header>-->
+<!--                            <mat-panel-title> This is the expansion title </mat-panel-title>-->
+<!--                            <mat-panel-description> This is a summary of the content </mat-panel-description>-->
+<!--                          </mat-expansion-panel-header>-->
+                          @for(frame of point.frames | keyvalue; track frame.key) {
+                            <ng-container *ngTemplateOutlet="seriesFragment"></ng-container>
+<!--                            <p>frame: {{frame.key}}</p>-->
+                          }
+<!--                        </mat-expansion-panel>-->
+<!--                      </mat-accordion>-->
+                    }
+
                   </mat-checkbox>
-<!--                  <p>-->
-<!--                    @for(frame of point.frames |keyvalue; track frame.key) {-->
-<!--                      {{frame.key}}-->
-<!--                    }-->
-<!--                  </p>-->
                   <button mat-icon-button (click)="deletePoint($index)" *ngIf="point.seriesNumber === selectedSeries">
                     <mat-icon class="ts-trash-can" disableRipple>delete</mat-icon>
                   </button>
@@ -65,24 +73,24 @@
                       }
                       <mat-icon class="ts-wkt-icon" [style.color]="point.color">{{ point.drawMode | aoiIcon }}</mat-icon>
                       <span class="ts-wkt-label invalid-aoi-text">
-                        <span *ngIf="point.seriesName.toLowerCase().trim() == 'series'; else customSeriesName2">
-                          {{'SERIES' | translate}} {{point.seriesNumber}}
-                        </span>
-                        <ng-template #customSeriesName2>
-                          {{point.seriesName}} {{point.seriesNumber}}
-                        </ng-template>
+                        <ng-container *ngTemplateOutlet="seriesFragment"></ng-container>
                       </span>
                     </div>
-<!--                    <p>-->
-<!--                      @for(frame of point.frames |keyvalue; track frame.key) {-->
-<!--                        {{frame.key}}-->
-<!--                      }-->
-<!--                    </p>-->
                     <button mat-icon-button (click)="deletePoint($index)">
                       <mat-icon class="ts-trash-can" *ngIf="point.seriesNumber === selectedSeries" disableRipple>delete</mat-icon>
                     </button>
                   }
               </li>
+
+              <ng-template #seriesFragment>
+                <span *ngIf="point.seriesName.toLowerCase().trim() == 'series'; else customSeriesName">
+                  {{'SERIES' | translate}} {{point.seriesNumber}}
+                </span>
+                <ng-template #customSeriesName>
+                  {{point.seriesName}} {{point.seriesNumber}}
+                </ng-template>
+              </ng-template>
+
             }
           </ul>
         </span>
@@ -140,3 +148,4 @@
 	<div class="ts-filter-row">
 	</div>
 </mat-card>
+

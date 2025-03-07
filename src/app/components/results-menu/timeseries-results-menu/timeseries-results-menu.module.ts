@@ -22,33 +22,39 @@ import {
 } from '@components/timeseries-chart/timeseries-chart-temporal-slider/timeseries-chart-temporal-slider.component';
 import {MatCheckbox} from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import {MatAccordion, MatExpansionPanel, MatExpansionPanelDescription, MatExpansionPanelTitle, MatExpansionPanelHeader} from '@angular/material/expansion';
 
 
 @NgModule({
   declarations: [
     TimeseriesResultsMenuComponent
   ],
-    imports: [
-        CommonModule,
-        MatMenuModule,
-        MatIconModule,
-        MatSharedModule,
-        MatButtonToggleModule,
-        FontAwesomeModule,
-        SharedModule,
-        ScenesListModule,
-        ScenesListHeaderModule,
-        SceneMetadataModule,
-        TimeseriesChartModule,
-        ResizableModule,
-        MatRadioModule,
-        PipesModule,
-        MatTabGroup,
-        MatTab,
-        TimeseriesChartTemporalSliderComponent,
-        MatCheckbox,
-        MatProgressSpinnerModule
-    ],
+  imports: [
+    CommonModule,
+    MatMenuModule,
+    MatIconModule,
+    MatSharedModule,
+    MatButtonToggleModule,
+    FontAwesomeModule,
+    SharedModule,
+    ScenesListModule,
+    ScenesListHeaderModule,
+    SceneMetadataModule,
+    TimeseriesChartModule,
+    ResizableModule,
+    MatRadioModule,
+    PipesModule,
+    MatTabGroup,
+    MatTab,
+    TimeseriesChartTemporalSliderComponent,
+    MatCheckbox,
+    MatProgressSpinnerModule,
+    MatAccordion,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    MatExpansionPanelDescription,
+  ],
   exports: [
     TimeseriesResultsMenuComponent
   ]
