@@ -29,7 +29,7 @@
           <ul>
             @for (point of chartStates; track point.valid) {
               @for(frame of point.frames | keyvalue; track frame.key) {
-                <li [class.ts-highlighted]="point.frames[frame.key].uuid === selectedSeries"
+                <li [class.ts-highlighted]="frame.value.uuid === selectedSeries"
                     class="point-list-item"
                     on-mouseenter="setActiveWkt(point.frames[frame.key].uuid)"
                     on-mouseleave="setActiveWkt(null)">
@@ -60,7 +60,7 @@
   <!--                    }-->
 
                     </mat-checkbox>
-                    <button mat-icon-button (click)="deletePoint($index)" *ngIf="point.frames[frame.key].uuid === selectedSeries">
+                    <button mat-icon-button (click)="deletePoint($index)" *ngIf="frame.value.uuid === selectedSeries">
                       <mat-icon class="ts-trash-can" disableRipple>delete</mat-icon>
                     </button>
                     } @else {
@@ -77,7 +77,7 @@
                         </span>
                       </div>
                       <button mat-icon-button (click)="deletePoint($index)">
-                        <mat-icon class="ts-trash-can" *ngIf="point.frames[frame.key].uuid === selectedSeries" disableRipple>delete</mat-icon>
+                        <mat-icon class="ts-trash-can" *ngIf="frame.value.uuid === selectedSeries" disableRipple>delete</mat-icon>
                       </button>
                     }
                 </li>
