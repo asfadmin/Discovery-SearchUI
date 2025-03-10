@@ -1,4 +1,4 @@
-import {Component, computed, ElementRef, Input, OnDestroy, OnInit, signal, ViewChild} from '@angular/core';
+import {Component, computed, ElementRef, Inject, Input, OnDestroy, OnInit, signal, ViewChild} from '@angular/core';
 import {distinctUntilChanged, filter, first, map, Observable, Subject, withLatestFrom} from 'rxjs';
 import {ResizeEvent} from 'angular-resizable-element';
 
@@ -20,6 +20,10 @@ import {Store} from '@ngrx/store';
 import {MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
 import {MatButton} from '@angular/material/button';
 import {PointHistoryState} from '@services/point-history.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {DOCUMENT} from '@angular/common';
+import { AsfLanguageService } from "@services/asf-language.service";
+
 
 export interface Task {
   aoi: string;
@@ -80,6 +84,8 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public dateRange = [];
   public totalPoints = 0;
 
+  private element: HTMLElement;
+
   constructor(
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
@@ -88,9 +94,13 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     private netcdfService: NetcdfService,
     private wktService: WktService,
     private dialog: MatDialog,
+    private snackBar: MatSnackBar,
+    @Inject(DOCUMENT) private document: Document,
+    private language: AsfLanguageService,
   ) { }
 
   ngOnInit(): void {
+    this.element = this.document.getElementById('TSRESULTS');
     this.pointHistoryService.clearPoints();
 
     this.subs.add(
@@ -125,15 +135,19 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(this.store$.select(getTimeseriesChartStates).subscribe(chartStates => {
-      // let seriesFrameCount = [];
       this.chartStates = Object.values(chartStates);
       this.chartStates = this.chartStates.sort((a, b) => a.seriesNumber - b.seriesNumber);
-      // this.chartStates.forEach((series) => {
-      //   // seriesFrameCount.push(this.getFrameCount(series.frames));
-      //   seriesFrameCount[series.seriesNumber] = this.getFrameCount(series.frames);
-      // });
-    }
-    ));
+      if (this.chartStates.length === 0) {
+        this.element.classList.remove('visible');
+        this.element.classList.add('hidden');
+        let msg = this.language.translate.instant('YOUR_KEY');
+        this.snackBar.open(msg);
+      } else {
+        this.element.classList.remove('hidden');
+        this.element.classList.add('visible');
+        this.snackBar.dismiss();
+      }
+    }));
 
     this.subs.add(
       this.temporalRangeValues$.subscribe(
@@ -296,9 +310,12 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       }
     });
   }
+
   ngOnDestroy() {
     this.subs.unsubscribe();
     this.pointHistoryService.clearPoints();
+    this.element.classList.remove('visible');
+    this.element.classList.remove('hidden');
   }
 }
 

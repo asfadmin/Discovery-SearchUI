@@ -1,14 +1,12 @@
-<!-- SCENE LIST -->
 <ng-container *ngIf="breakpoint > breakpoints.MOBILE" xmlns="http://www.w3.org/1999/html">
 
-	<mat-card #listCard class="mp0 ts-column-1" [style.width]="wktListMaxWidth">
+    <mat-card #listCard class="mp0 ts-column-1" [style.width]="wktListMaxWidth">
 		<mat-card-subtitle class="header ts-scene-list-header">
 			<app-scenes-list-header></app-scenes-list-header>
 		</mat-card-subtitle>
 
 		<div class="ts-left-column-results">
 
-    @if(chartStates.length !== 0) {
 
       <section class="point-list-section">
         <span class="parent-checkbox-section">
@@ -97,15 +95,8 @@
           </ul>
         </span>
       </section>
-    }
-    @else {
-      <div class="ts-no-point-selected">
-        {{ 'NO_POINT_SELECTED' | translate }}
-      </div>
-    }
-
-		</div>
-	</mat-card>
+    </div>
+    </mat-card>
 
 </ng-container>
 
