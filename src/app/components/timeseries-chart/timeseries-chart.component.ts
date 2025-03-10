@@ -517,31 +517,31 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .on("touchstart", event => event.preventDefault());
 
     // Add the lines
-    if (this.showLines) {
 
       let line = d3.line<models.TimeSeriesData>()
         .x(function (d) { return self.x(Date.parse(d.date)); })
         .y(function (d) { return self.y(d.short_wavelength_displacement); })
 
-      this.lines = this.svg.append('g')
-        .attr('id', 'linesParent')
-        .selectAll('myLines')
-        .data(this.dataReadyForChart)
-        .enter()
-        .append('path')
-        .attr('clip-path', 'url(#clip)')
-        .attr('d', function (d) { // @ts-ignore
-          return line(d.values)
-        })
-        // @ts-ignore
-        .attr('stroke', function (d: DataReady) { return d.color })
-        // .attr('stroke', 'red')
-        .style('opacity', (d: DataReady) => d.opacity)
-        .style('stroke-width', 1)
-        .style('fill', 'none')
-        .style('shape-rendering', 'geometricprecision')
-    }
-
+    this.lines = this.svg.append('g')
+      .attr('id', 'linesParent')
+      .selectAll('myLines')
+      .data(this.dataReadyForChart)
+      .enter()
+      .append('path')
+      .attr('clip-path', 'url(#clip)')
+      .attr('d', function (d) { // @ts-ignore
+        return line(d.values)
+      })
+      // @ts-ignore
+      .attr('stroke', function (d: DataReady) { return d.color })
+      // .attr('stroke', 'red')
+      .style('opacity', (d: DataReady) => d.opacity)
+      .style('stroke-width', 1)
+      .style('fill', 'none')
+      .style('shape-rendering', 'geometricprecision')
+      if(!this.showLines) {
+        this.lines.style('stroke-width', 0)
+      }
     // add the dots
     this.dots = this.svg.append('g')
       .attr('id', 'dotsParent')
