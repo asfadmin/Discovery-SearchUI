@@ -20,7 +20,7 @@ export interface UIState {
   isOnDemandQueueOpen: boolean;
   helpDialogTopic: string | null;
   currentLanguage: string | null;
-  activeWkt: string | null;
+  activeWkt: {frame: string, uuid: string, wkt?:string} | null;
   banners: Banner[];
 }
 
@@ -220,7 +220,7 @@ export function uiReducer(state = initState, action: UIActions): UIState {
       };
     }
 
-    case UIActionType.SET_ACTIVE_WKT: {
+    case UIActionType.SET_ACTIVE_DETAILS: {
       return {
         ...state,
         activeWkt: action.payload

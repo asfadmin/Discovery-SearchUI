@@ -233,9 +233,11 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     )
 
     this.subs.add(
-      this.store$.select(uiStore.getActiveWkt).pipe(distinctUntilChanged()).subscribe(wkt => {
-        if (wkt)
-          this.highlightSeries(wkt);
+      this.store$.select(uiStore.getActiveWkt).pipe(distinctUntilChanged((prev, current) => {
+        return JSON.stringify(prev) === JSON.stringify(current);
+      })).subscribe(details => {
+        if (details?.uuid)
+          this.highlightSeries(details);
         else
           this.resetHighlight()
       }));
@@ -341,7 +343,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
               let daDate = new Date(result.point[key].secondary_datetime).valueOf();
               if (daDate < this.startDate?.valueOf() || daDate > this.endDate?.valueOf()) { continue; }
               this.dataSource.push({
-                'uuidSeries': result.point[key].uuidSeries,
+                'uuidSeries': result.state.uuidSeries,
                 'aoi': aoi,
                 'short_wavelength_displacement': result.point[key].short_wavelength_displacement,
                 'interferometric_correlation': result.point[key].interferometric_correlation,
@@ -353,7 +355,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
                 'drawMode': result.point[key].drawMode,
               })
               this.timeSeriesData.push({
-                'uuidSeries': result.point[key].uuidSeries,
+                'uuidSeries': result.state.uuidSeries,
                 'short_wavelength_displacement': result.point[key].short_wavelength_displacement - (this.baseData?.base ?? 0),
                 'date': result.point[key].secondary_datetime,
                 'seriesNumber': result.state.seriesNumber,
@@ -576,7 +578,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         ${p.short_wavelength_displacement.toFixed(4)} ${self.language.translate.instant('METERS')} <br>
         <em>${self.dotToolTipText}</em></div>`);
         self.updateTooltip();
-        self.highlightSeries(p.aoi);
+        // self.highlightSeries(p.aoi);
+        self.store$.dispatch(new uiStore.SetActiveDetails({'frame': p.frame, 'uuid': p.uuidSeries, 'wkt': p.aoi}));
       })
       .on('mouseleave', function (_) {
         self.hoveredData = null;
@@ -623,22 +626,20 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.store$.dispatch(chartsStore.setReferenceData({data:reference}))
   }
 
-  private highlightSeries(wkt) {
+  private highlightSeries(details) {
     let colorName: string;
     let dClassName: string;
     this.lines.style('stroke', (d: DataReady) => {
-      if (d.name === wkt) {
+      if (d.values[0]?.uuidSeries === details?.uuid && (!details.frame || details.frame === d.values[0].frame)) {
         dClassName = '.' + d.name.replace(/\W/g, '');
         colorName = d.color;
-        this.store$.dispatch(new uiStore.SetActiveWkt(d.name));
         return colorName;
       }
       return unSelectedColor;
     });
-
     // increase width of selected series
     this.lines.style('stroke-width', (d: DataReady) => {
-      if (d.name === wkt) {
+      if (d.values[0]?.uuidSeries === details?.uuid) {
         return 2;
       }
       return 1;
@@ -646,7 +647,9 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
     // sort the lines so that the selected series is on top
     this.lines.sort(function (a, _b) {
-      if (a.dname === wkt) return 1;
+      if (a.values[0]?.uuidSeries === details?.uuid && (!details.frame || details.frame === a.values[0].frame)) {
+      return 1;
+      }
       else return -1;
     });
 
@@ -654,10 +657,10 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", colorName).attr('r', 6);
     this.svg.selectAll('.dotsChildren').sort(function (a, _b) {
       // @ts-ignore
-      if (a.name === wkt) return 1;
+      if (a.values[0]?.uuidSeries === details?.uuid && (!details.frame || details.frame === a.values[0].frame)) return 1
       else return -1;
     });
-    this.dots.select("text").text(wkt);
+    this.dots.select("text").text(details?.wkt);
 
   }
   private resetHighlight() {
@@ -700,7 +703,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       return d.color;
     });
     lines.style("stroke-width", 1);
-    this.store$.dispatch(new uiStore.SetActiveWkt(null));
+    this.store$.dispatch(new uiStore.SetActiveDetails(null));
   }
 
   private updateChart() {

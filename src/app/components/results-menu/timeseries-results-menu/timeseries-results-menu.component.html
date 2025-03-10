@@ -30,7 +30,7 @@
             @for (point of chartStates; track point.valid) {
               <li [class.ts-highlighted]="point.seriesNumber === selectedSeries"
                   class="point-list-item"
-                  on-mouseover="setActiveWkt(point.wkt)"
+                  on-mouseenter="setActiveWkt(point.uuidSeries)"
                   on-mouseleave="setActiveWkt(null)">
                   @if (point.valid == true) {
                   <mat-checkbox [checked]="point.checked" (change)="updateSeries($event.checked, $index)"

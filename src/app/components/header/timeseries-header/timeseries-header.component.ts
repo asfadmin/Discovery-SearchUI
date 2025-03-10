@@ -39,7 +39,6 @@ export class TimeseriesHeaderComponent implements OnInit, OnDestroy {
         flightDirs  => {
           this.flightDirections = flightDirs;
           this.flightDesc = this.flightDirections.toString() == 'DESCENDING';
-          console.log('this.flightDirections.toString()', this.flightDirections.toString());
         }
       )
     );

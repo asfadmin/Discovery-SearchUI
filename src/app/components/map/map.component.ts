@@ -252,9 +252,9 @@ export class MapComponent implements OnInit, OnDestroy  {
     );
 
     this.subs.add(
-      this.store$.select(uiStore.getActiveWkt).pipe(distinctUntilChanged()).subscribe(wkt => {
-        this.respondToActiveWkt(wkt);
-      }));
+      this.store$.select(uiStore.getActiveWkt).pipe(distinctUntilChanged()).subscribe(details => {
+        this.respondToActiveWkt(details?.uuid);
+    }));
 
     this.subs.add(this.store$.select(getTimeseriesChartStates).subscribe(chartStates => {
         this.chartStates = Object.values(chartStates);
@@ -266,14 +266,15 @@ export class MapComponent implements OnInit, OnDestroy  {
       this.mapService.newSelectedDisplacement$.subscribe(point => {
         let format = new WKT();
         let wktRepresentation  = format.writeGeometry(point);
-
-        let pointIndex = this.pointHistoryService.getHistory().findIndex((thing) => {
+        let uuid = null;
+        this.pointHistoryService.getHistory().findIndex((thing) => {
           if(thing.point === point) {
-            this.store$.dispatch(new uiStore.SetActiveWkt(wktRepresentation));
+            uuid = thing.uuidSeries;
+            this.store$.dispatch(new uiStore.SetActiveDetails({'uuid': thing.uuidSeries, 'frame': null}));
             return true
           }
         })
-        this.pointHistoryService.selectedPoint = pointIndex;
+        this.pointHistoryService.selectedPoint = uuid;
         this.mapService.loadPolygonFrom(wktRepresentation.toString());
       })
     )
@@ -285,14 +286,14 @@ export class MapComponent implements OnInit, OnDestroy  {
     );
   }
 
-  public respondToActiveWkt(wkt: string) {
+  public respondToActiveWkt(uuid: string) {
     this.selectedSeries = null;
     this.chartStates.forEach((item) => {
-      if (item.wkt == wkt) {
+      if (item.uuidSeries == uuid) {
         this.selectedSeries = item;
       }
     });
-    this.pointHistoryService.selectedPoint = this.selectedSeries?.seriesNumber ?? -1;
+    this.pointHistoryService.selectedPoint = this.selectedSeries?.uuidSeries ?? -1;
     this.mapService.displacmentLayer?.changed();
   }
 
