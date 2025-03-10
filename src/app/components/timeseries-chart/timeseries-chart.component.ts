@@ -108,7 +108,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
   public exportableData: { [index:string]: {}[]} = {}
 
-
   // private selectedScene: string;
   @Input() isLoading: boolean = true;
   private showLines = true;
@@ -639,6 +638,9 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     });
     // increase width of selected series
     this.lines.style('stroke-width', (d: DataReady) => {
+      if(!this.showLines) {
+        return 0;
+      }
       if (d.values[0]?.uuidSeries === details?.uuid) {
         return 2;
       }
@@ -670,7 +672,9 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", d.color).attr('r', 5);
       return d.color;
     });
-    this.lines.style("stroke-width", 1);
+    if(this.showLines) {
+      this.lines.style("stroke-width", 1);
+    }
   }
 
   // When the pointer moves, find the closest point, update the interactive tip, and highlight
@@ -702,7 +706,9 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", d.color).attr('r', 5);
       return d.color;
     });
-    lines.style("stroke-width", 1);
+    if(this.showLines) {
+      lines.style("stroke-width", 1);
+    }
     this.store$.dispatch(new uiStore.SetActiveDetails(null));
   }
 
