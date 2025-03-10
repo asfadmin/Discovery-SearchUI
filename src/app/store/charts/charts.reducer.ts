@@ -12,7 +12,7 @@ export interface ChartsState {
 
 
 export const initialState: ChartsState = {
-  showLines: false,
+  showLines: true,
   showLinearFit: false,
   seriesStates: {},
   outOfDate: false,
