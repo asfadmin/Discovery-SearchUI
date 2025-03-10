@@ -73,7 +73,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public temporalRange: models.Range<number> = {start: 0, end: 0};
   public temporalRangeValues$ = new Subject<number[]>();
   public maxRange: models.Range<number> = {start: 0, end: 0};
-  public selectedSeries: number = -1;
+  public selectedSeries: string = null;
 
 
   public totalDisplacement = 0;
@@ -94,11 +94,11 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     this.pointHistoryService.clearPoints();
 
     this.subs.add(
-      this.store$.select(uiStore.getActiveWkt).pipe(distinctUntilChanged()).subscribe(details => {
-        if (!details?.uuid)
+      this.store$.select(uiStore.getActiveUUID).subscribe(uuid => {
+        if (!uuid)
           this.selectedSeries = null;
         else
-          this.respondToActiveWkt(details?.uuid);
+          this.respondToActiveWkt(uuid);
       }));
 
     this.subs.add(
@@ -125,15 +125,13 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(this.store$.select(getTimeseriesChartStates).subscribe(chartStates => {
-      let seriesFrameCount = [];
+      // let seriesFrameCount = [];
       this.chartStates = Object.values(chartStates);
       this.chartStates = this.chartStates.sort((a, b) => a.seriesNumber - b.seriesNumber);
-      this.chartStates.forEach((series) => {
-        // seriesFrameCount.push(this.getFrameCount(series.frames));
-        seriesFrameCount[series.seriesNumber] = this.getFrameCount(series.frames);
-      });
-      console.log('this.chartStates', this.chartStates);
-      console.log('seriesFrameCount', seriesFrameCount);
+      // this.chartStates.forEach((series) => {
+      //   // seriesFrameCount.push(this.getFrameCount(series.frames));
+      //   seriesFrameCount[series.seriesNumber] = this.getFrameCount(series.frames);
+      // });
     }
     ));
 
@@ -200,8 +198,14 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       if (!series.frames) {
         this.netcdfService.getFrames(series.wkt, this.flightDirection).pipe(first()).subscribe(data => {
           // series.frames = data;
-          this.store$.dispatch(chartStore.setFrames({ 'uuid': series.uuidSeries, 'frames': data }))
-
+          let temp = {};
+          Object.keys(data).forEach(frame => {
+            temp[frame] = {
+              'wkt': data[frame],
+              'uuid': crypto.randomUUID()
+            }
+          })
+          this.store$.dispatch(chartStore.setFrames({ 'uuid': series.uuidSeries, 'frames': temp }))
           for(let frame_id of Object.keys(data)) {
             this.netcdfService.getTimeSeries(data[frame_id], this.flightDirection, frame_id, series.uuidSeries)
               .pipe(first()).subscribe(data => {
@@ -213,15 +217,13 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
           }
         })
       }
-      console.log('series.frames', series.seriesNumber, allPointsData);
     }
     this.maxRange = this.getMaxRange(allPointsData);
   }
 
   public getFrameCount(point: any): number {
     let frameCount = 0;
-    for (let x of Object.keys(point)) {
-      console.log('point', point[x]);
+    for (let _x of Object.keys(point)) {
       frameCount++;
     }
     return frameCount;
@@ -271,16 +273,11 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   }
 
   public respondToActiveWkt(uuid: string) {
-    this.chartStates.forEach((item) => {
-      if (item.uuidSeries == uuid) {
-        // TODO: For now leave this but change it over to uuid
-        this.selectedSeries = item.seriesNumber;
-      }
-    });
+    this.selectedSeries = uuid;
   }
 
   public setActiveWkt(uuid: string) {
-    this.store$.dispatch(new uiStore.SetActiveDetails({'uuid': uuid, 'frame': null}));
+    this.store$.dispatch(new uiStore.SetActiveUUID(uuid));
   }
 
   public deletePoint(index: number) {

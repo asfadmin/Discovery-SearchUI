@@ -9,7 +9,7 @@ import ImageLayer from 'ol/layer/Image';
 import ImageSource from 'ol/source/Image';
 import Feature from 'ol/Feature';
 import Geometry from 'ol/geom/Geometry';
-import { FlightDirection } from '@models';
+import { FlightDirection, TimeseriesSubframe } from '@models';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { setTimeseriesValid } from '@store/charts';
@@ -165,7 +165,7 @@ export class NetcdfService {
       "wkt": wkt,
       "flightDirection": flightDir.toLowerCase()
     }).pipe(
-      map((response: { [frame: number]: string }) => {
+      map((response: { [frame: number]: TimeseriesSubframe }) => {
         return response;
       })
     )

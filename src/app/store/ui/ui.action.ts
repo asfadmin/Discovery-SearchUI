@@ -27,7 +27,7 @@ export enum UIActionType {
   SET_ONLY_SCENES_WITH_BROWSE = '[UI] Set Only Scenes With Browse',
   SET_HELP_DIALOG_TOPIC = '[UI] Set Help Dialog Topic',
   SET_CURRENT_LANGUAGE = '[UI] Set Current Language',
-  SET_ACTIVE_DETAILS = '[UI] Set Active Displacement Frame and Wkt',
+  SET_ACTIVE_UUID = '[UI] Set Active Displacement UUID',
   SET_IS_DOWNLOAD_QUEUE_OPEN = '[UI] Is Download Queue Open',
   SET_IS_ON_DEMAND_QUEUE_OPEN = '[UI] Is On Demand Queue Open',
 
@@ -157,10 +157,10 @@ export class SetCurrentLanguage implements Action {
   constructor(public payload: string | null) {}
 }
 
-export class SetActiveDetails implements Action {
-  public readonly type = UIActionType.SET_ACTIVE_DETAILS;
+export class SetActiveUUID implements Action {
+  public readonly type = UIActionType.SET_ACTIVE_UUID;
 
-  constructor(public payload: {frame: string, uuid: string, wkt?: string} | null) {}
+  constructor(public payload: string | null) {}
 }
 
 export class RemoveBanner implements Action {
@@ -202,7 +202,7 @@ export type UIActions =
   | SetOnlyScenesWithBrowse
   | SetHelpDialogTopic
   | SetCurrentLanguage
-  | SetActiveDetails
+  | SetActiveUUID
   | SetIsBrowseDialogOpen
   | SetIsDownloadQueueOpen
   | SetIsOnDemandQueueOpen

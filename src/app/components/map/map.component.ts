@@ -252,8 +252,8 @@ export class MapComponent implements OnInit, OnDestroy  {
     );
 
     this.subs.add(
-      this.store$.select(uiStore.getActiveWkt).pipe(distinctUntilChanged()).subscribe(details => {
-        this.respondToActiveWkt(details?.uuid);
+      this.store$.select(uiStore.getActiveUUID).pipe(distinctUntilChanged()).subscribe(uuid => {
+        this.respondToActiveWkt(uuid);
     }));
 
     this.subs.add(this.store$.select(getTimeseriesChartStates).subscribe(chartStates => {
@@ -270,7 +270,7 @@ export class MapComponent implements OnInit, OnDestroy  {
         this.pointHistoryService.getHistory().findIndex((thing) => {
           if(thing.point === point) {
             uuid = thing.uuidSeries;
-            this.store$.dispatch(new uiStore.SetActiveDetails({'uuid': thing.uuidSeries, 'frame': null}));
+            this.store$.dispatch(new uiStore.SetActiveUUID(thing.uuidSeries));
             return true
           }
         })
