@@ -31,7 +31,7 @@
               @for(frame of point.frames | keyvalue; track frame.key) {
                 <li [class.ts-highlighted]="frame.value.uuid === selectedSeries"
                     class="point-list-item"
-                    on-mouseenter="setActiveWkt(point.frames[frame.key].uuid)"
+                    on-mouseenter="setActiveWkt(frame.value.uuid)"
                     on-mouseleave="setActiveWkt(null)">
                     @if (point.valid == true) {
                     <mat-checkbox [checked]="point.checked" (change)="updateSeries($event.checked, $index)"
