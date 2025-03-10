@@ -198,10 +198,41 @@ export class Hyp3Service {
     return this.http.patch(signupFormURL, body, { withCredentials: true });
   }
 
-  public getCosts$() {
+  public getCosts$(): Observable<models.Hyp3Costs> {
     const costsUrl = `${this.apiUrl}/costs`;
 
-    return this.http.get<models.Hyp3Costs>(costsUrl);
+    return this.http.get<models.Hyp3Costs | models.Hyp3CostsOld>(costsUrl).pipe(
+      map(costsResp => this.formatCosts(costsResp))
+    );
+  }
+
+  public formatCosts(costsResp: models.Hyp3CostsOld | models.Hyp3Costs): models.Hyp3Costs {
+    if (Array.isArray(costsResp)) {
+      // TODO: This is for Hyp3CostsOld support. Remove this after hyp3 is updated.
+      const byType = costsResp.reduce((byJobType, jobCost) => {
+
+          if (!jobCost.cost_table) {
+            byJobType[jobCost.job_type] = jobCost;
+          } else {
+            const byCostTableValue = jobCost.cost_table.reduce((byValue, costTableValue) => {
+              byValue[costTableValue.parameter_value] = costTableValue.cost;
+
+              return byValue;
+            }, {});
+
+            byJobType[jobCost.job_type] = {
+              cost_parameters: [jobCost.cost_parameter],
+              cost_table: byCostTableValue,
+            };
+          }
+
+          return byJobType;
+        }, {});
+
+        return <models.Hyp3Costs>byType;
+    } else {
+      return costsResp;
+    }
   }
 
   public getHyp3ableProducts(products: models.CMRProduct[][]): {byJobType: models.Hyp3ableProductByJobType[]; total: number} {
@@ -338,15 +369,28 @@ export class Hyp3Service {
     return output;
   }
 
-  public calculateCredits(options: models.Hyp3ProcessingOptions, cost: models.Hyp3JobCost) {
-    if (cost?.cost) {
-      const fixedCost = cost;
-      return fixedCost.cost;
+  public calculateCredits(options: models.Hyp3ProcessingOptions, cost: models.Hyp3JobCost): number {
+    if (!cost) {
+      return 1;
     }
 
-    const selectedCostValue = options[cost.cost_parameter];
+    if ('cost' in cost) {
+      const fixedCost = cost;
+      return fixedCost.cost;
+    } else if ('cost_table' in cost){
+      const selectedCostValue = <number>cost.cost_parameters.reduce(
+        (costLookup, parameterKey) => {
+          const lookupValue = options[parameterKey];
 
-    return cost.cost_table[selectedCostValue] || 1;
+          return costLookup[lookupValue];
+        },
+        cost.cost_table
+      );
+
+      return selectedCostValue || 1;
+    } else {
+      return 1;
+    }
   }
 
   private expirationDays(expiration_time: moment.Moment): number {
