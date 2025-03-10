@@ -48,7 +48,6 @@ import { SetGeocode } from '@store/filters';
 import { Extent } from 'ol/extent';
 import { MultiPolygon } from 'ol/geom';
 import GeoJSON from 'ol/format/GeoJSON.js';
-import WKT from 'ol/format/WKT';
 import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
 
@@ -556,24 +555,20 @@ export class MapService implements OnDestroy {
     });
 
     this.timeseriesClick.on('select', e => {
-      let selectedPoint =  e.selected[0].get('point');
-      const format = new WKT();
-      const wkt = format.writeGeometry(selectedPoint);
-      this.store$.dispatch(new uiStore.SetActiveWkt(wkt));
+      let selectedPoint =  e.selected[0].get('uuid');
+      this.store$.dispatch(new uiStore.SetActiveDetails({'uuid': selectedPoint, 'frame': null}));
       e.preventDefault();
     });
 
     this.timeseriesHover.on('select', e => {
-      let selectedPoint =  e.selected[0]?.get('point');
+      let selectedPoint =  e.selected[0]?.get('uuid');
       if(!selectedPoint) {
         // TODO: not sure if we want to keep the point active or unselect it
-        this.store$.dispatch(new uiStore.SetActiveWkt(null));
+        this.store$.dispatch(new uiStore.SetActiveDetails(null));
         e.preventDefault()
         return
       }
-      const format = new WKT();
-      const wkt = format.writeGeometry(selectedPoint);
-      this.store$.dispatch(new uiStore.SetActiveWkt(wkt));
+      this.store$.dispatch(new uiStore.SetActiveDetails({'frame': null, 'uuid': selectedPoint}));
       e.preventDefault();
     });
 
@@ -870,7 +865,7 @@ export class MapService implements OnDestroy {
   }
 
 
-  public setDisplacementLayer(points: { point: Geometry, seriesNumber: number, color: string }[]) {
+  public setDisplacementLayer(points: { point: Geometry, seriesNumber: number, color: string, uuid: string }[]) {
     if (!!this.displacmentLayer) {
       this.map.removeLayer(this.displacmentLayer);
       this.displacmentLayer = null;
@@ -882,8 +877,9 @@ export class MapService implements OnDestroy {
       let temp = dataPoint.point.clone() as Geometry;
       temp.transform('EPSG:4326', 'EPSG:3857')
       let temp_feature = new Feature(temp)
-      temp_feature.set('point', dataPoint.point)
-      temp_feature.set('seriesNumber', dataPoint.seriesNumber)
+      temp_feature.set('point', dataPoint.point);
+      temp_feature.set('uuid', dataPoint.uuid);
+      temp_feature.set('seriesNumber', dataPoint.seriesNumber);
       temp_feature.set('seriesColor', dataPoint.color);
       return temp_feature;
     });
@@ -900,7 +896,7 @@ export class MapService implements OnDestroy {
         return color;
       }
 
-      let selected = (feature.get('seriesNumber') === self.pointHistoryService.selectedPoint);
+      let selected = (feature.get('uuid') === self.pointHistoryService.selectedPoint);
 
       let zoom = self.map.getView().getZoom();
       let font_size = zoom > 8 ? 1.3 * zoom : 0.9 * zoom;

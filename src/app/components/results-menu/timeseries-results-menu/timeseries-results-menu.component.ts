@@ -94,11 +94,11 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     this.pointHistoryService.clearPoints();
 
     this.subs.add(
-      this.store$.select(uiStore.getActiveWkt).pipe(distinctUntilChanged()).subscribe(wkt => {
-        if (!wkt)
+      this.store$.select(uiStore.getActiveWkt).pipe(distinctUntilChanged()).subscribe(details => {
+        if (!details?.uuid)
           this.selectedSeries = null;
         else
-          this.respondToActiveWkt(wkt);
+          this.respondToActiveWkt(details?.uuid);
       }));
 
     this.subs.add(
@@ -270,16 +270,17 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     this.store$.dispatch(chartStore.setTimeseriesChecked({uuid, checked}))
   }
 
-  public respondToActiveWkt(wkt: string) {
+  public respondToActiveWkt(uuid: string) {
     this.chartStates.forEach((item) => {
-      if (item.wkt == wkt) {
+      if (item.uuidSeries == uuid) {
+        // TODO: For now leave this but change it over to uuid
         this.selectedSeries = item.seriesNumber;
       }
     });
   }
 
-  public setActiveWkt(wkt: string) {
-    this.store$.dispatch(new uiStore.SetActiveWkt(wkt));
+  public setActiveWkt(uuid: string) {
+    this.store$.dispatch(new uiStore.SetActiveDetails({'uuid': uuid, 'frame': null}));
   }
 
   public deletePoint(index: number) {

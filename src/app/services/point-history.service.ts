@@ -32,7 +32,7 @@ export class PointHistoryService {
     private store$: Store<AppState>,
   ) { }
 
-  public getHistory(): {point: Geometry, wkt: string}[] {
+  public getHistory(): PointHistoryState[] {
     return this.history;
   }
 
