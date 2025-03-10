@@ -683,6 +683,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   // When the pointer moves, find the closest point, update the interactive tip, and highlight
   // the corresponding line.
   private pointerMoved(event, _lines, dots, points) {
+    return;
     this.dots = dots;
     if (typeof points === 'undefined') { return; }
     if (points == null) { return; }
