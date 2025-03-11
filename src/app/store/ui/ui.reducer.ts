@@ -20,7 +20,7 @@ export interface UIState {
   isOnDemandQueueOpen: boolean;
   helpDialogTopic: string | null;
   currentLanguage: string | null;
-  activeWkt: {frame: string, uuid: string, wkt?:string} | null;
+  activeUUID: string | null;
   banners: Banner[];
 }
 
@@ -39,7 +39,7 @@ export const initState: UIState = {
   isOnDemandQueueOpen: false,
   helpDialogTopic: null,
   currentLanguage: 'en',
-  activeWkt: null,
+  activeUUID: null,
   banners: [],
 };
 
@@ -220,10 +220,10 @@ export function uiReducer(state = initState, action: UIActions): UIState {
       };
     }
 
-    case UIActionType.SET_ACTIVE_DETAILS: {
+    case UIActionType.SET_ACTIVE_UUID: {
       return {
         ...state,
-        activeWkt: action.payload
+        activeUUID: action.payload
       };
     }
 
@@ -317,9 +317,9 @@ export const getCurrentLanguage = createSelector(
   state => state.currentLanguage
 );
 
-export const getActiveWkt = createSelector(
+export const getActiveUUID = createSelector(
   getUIState,
-  state => state.activeWkt
+  state => state.activeUUID
 );
 
 export const getIsDownloadQueueOpen = createSelector(

@@ -49,7 +49,7 @@ export class DisplacementLayersComponent implements OnInit, OnDestroy {
         if (!!this.displacementOverview) {
           this.setDisplacementLayer(this.flightDir, this.displacementOverview)
         } else {
-          this.setDisplacementLayer(this.flightDir, models.DisplacementLayerTypes.DISPLACEMENT);
+          this.setDisplacementLayer(this.flightDir, models.DisplacementLayerTypes.VELOCITY);
         }
         if (this.priorityCheckbox.checked) {
           this.mapService.disablePriority()

@@ -2,7 +2,7 @@ import {Component, ElementRef, Input, OnDestroy, OnInit, QueryList, ViewChild, V
 import * as d3 from 'd3';
 // import * as models from '@models';
 import {
-  debounceTime, distinctUntilChanged, map, Observable, withLatestFrom,
+  debounceTime, map, Observable, withLatestFrom,
   // Subject
 } from 'rxjs';
 
@@ -31,6 +31,7 @@ interface TimeSeriesFit {
 
 interface DataReady {
   name: string,
+  uuid: string,
   values: models.TimeSeriesData[],
   opacity: number,
   color: string,
@@ -218,7 +219,11 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       this.store$.select(filtersStore.getFlightDirections).pipe(
         map(dir => dir[0] ?? this.flightDirection)
       ).subscribe(
-        dir => this.flightDirection = dir
+        dir => {
+          this.flightDirection = dir;
+          this.data = [];
+          this.initChart(this.data)
+        }
       )
     )
 
@@ -232,11 +237,9 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     )
 
     this.subs.add(
-      this.store$.select(uiStore.getActiveWkt).pipe(distinctUntilChanged((prev, current) => {
-        return JSON.stringify(prev) === JSON.stringify(current);
-      })).subscribe(details => {
-        if (details?.uuid)
-          this.highlightSeries(details);
+      this.store$.select(uiStore.getActiveUUID).subscribe(uuid => {
+        if (uuid)
+          this.highlightSeries(uuid);
         else
           this.resetHighlight()
       }));
@@ -249,13 +252,13 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
     const validPoints= Object.values(chartStates)
     .filter(
-      value => value.valid
+      value => value?.frames?.findIndex(frame => frame.valid) > -1
     )
-    let allPointsData: { point: {}, state: models.timeseriesChartItemState, frame: string }[] = [];
+    let allPointsData: { point: {}, state: models.timeseriesChartItemState, frame: string, uuid: string }[] = [];
     for(let series of validPoints) {
-      for(let frame of Object.keys(series.frames)) {
+      for(let frame of series.frames.filter(frame => frame.valid)) {
         allPointsData.push(
-          { point: cache[series.uuidSeries + frame], state: series , frame: frame}
+          { point: cache[frame.uuid], state: series , frame: frame.number, 'uuid': frame.uuid}
         )
       }
     }
@@ -364,7 +367,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
                 'id': key + result.point[key].short_wavelength_displacement,
                 'aoi': aoi,
                 'drawMode': result.point[key].drawMode,
-                'frame': result.frame
+                'frame': result.frame,
+                'uuid': result.state.frames.find(x => x.number === result.frame).uuid
               });
 
               if (result.state.checked) {
@@ -391,9 +395,10 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         })
           this.dataReadyForChart.push({
             name: aoi,
+            'uuid': result.state.frames.find(x => x.number === result.frame).uuid,
             values: this.timeSeriesData,
             color: result.state.color,
-            opacity:  result.state.checked ? 1.0 : 0.2,
+            opacity:  result.state.frames.find(x => x.number === result.frame).checked ? 1.0 : 0.2,
           });
         }
       }
@@ -552,7 +557,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .attr('clip-path', 'url(#clip)')
       .style('fill', (d) : string=>  { return d.color })
       .style('opacity', (d) => d.opacity)
-      .attr('class', (d): string => { return d.name.replace(/\W/g, '') + ' dotsChildren' })
+      .attr('class', (d): string => { return 'u' + d.uuid.replace(/\W/g, '') + ' dotsChildren' })
       .selectAll('circle')
       .data(d => d.values)
       .enter()
@@ -578,7 +583,9 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         <em>${self.dotToolTipText}</em></div>`);
         self.updateTooltip();
         // self.highlightSeries(p.aoi);
-        self.store$.dispatch(new uiStore.SetActiveDetails({'frame': p.frame, 'uuid': p.uuidSeries, 'wkt': p.aoi}));
+
+        // TODO
+        self.store$.dispatch(new uiStore.SetActiveUUID(p.uuid));
       })
       .on('mouseleave', function (_) {
         self.hoveredData = null;
@@ -625,12 +632,12 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.store$.dispatch(chartsStore.setReferenceData({data:reference}))
   }
 
-  private highlightSeries(details) {
+  private highlightSeries(uuid) {
     let colorName: string;
     let dClassName: string;
     this.lines.style('stroke', (d: DataReady) => {
-      if (d.values[0]?.uuidSeries === details?.uuid && (!details.frame || details.frame === d.values[0].frame)) {
-        dClassName = '.' + d.name.replace(/\W/g, '');
+      if (d.uuid=== uuid) {
+        dClassName = '.u' + d.uuid.replace(/\W/g, '');
         colorName = d.color;
         return colorName;
       }
@@ -641,7 +648,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       if(!this.showLines) {
         return 0;
       }
-      if (d.values[0]?.uuidSeries === details?.uuid) {
+      if (d.uuid === uuid) {
         return 2;
       }
       return 1;
@@ -649,7 +656,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
     // sort the lines so that the selected series is on top
     this.lines.sort(function (a, _b) {
-      if (a.values[0]?.uuidSeries === details?.uuid && (!details.frame || details.frame === a.values[0].frame)) {
+      if (a.uuid === uuid) {
       return 1;
       }
       else return -1;
@@ -659,16 +666,16 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", colorName).attr('r', 6);
     this.svg.selectAll('.dotsChildren').sort(function (a, _b) {
       // @ts-ignore
-      if (a.values[0]?.uuidSeries === details?.uuid && (!details.frame || details.frame === a.values[0].frame)) return 1
+      if (a.uuid === uuid) return 1
       else return -1;
     });
-    this.dots.select("text").text(details?.wkt);
+    // this.dots.select("text").text(details?.wkt);
 
   }
   private resetHighlight() {
     let dClassName: string;
     this.lines.style("stroke", (d: DataReady) => {
-      dClassName = '.' + d.name.replace(/\W/g, '');
+      dClassName = '.u' + d.uuid.replace(/\W/g, '');
       this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", d.color).attr('r', 5);
       return d.color;
     });
@@ -680,6 +687,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   // When the pointer moves, find the closest point, update the interactive tip, and highlight
   // the corresponding line.
   private pointerMoved(event, _lines, dots, points) {
+    return;
     this.dots = dots;
     if (typeof points === 'undefined') { return; }
     if (points == null) { return; }
@@ -698,18 +706,18 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   //   dots.attr("display", null);
   // }
   //
-  private pointerLeft(lines, _dots) {
+  private pointerLeft(_lines, _dots) {
     // return
-    let dClassName: string;
-    lines.style("stroke", (d: DataReady) => {
-      dClassName = '.' + d.name.replace(/\W/g, '');
-      this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", d.color).attr('r', 5);
-      return d.color;
-    });
-    if(this.showLines) {
-      lines.style("stroke-width", 1);
-    }
-    this.store$.dispatch(new uiStore.SetActiveDetails(null));
+    // let dClassName: string;
+    // lines.style("stroke", (d: DataReady) => {
+    //   dClassName = 'u' + d.uuid.replace(/\W/g, '');
+    //   this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", d.color).attr('r', 5);
+    //   return d.color;
+    // });
+    // if(this.showLines) {
+    //   lines.style("stroke-width", 1);
+    // }
+    this.store$.dispatch(new uiStore.SetActiveUUID(null));
   }
 
   private updateChart() {

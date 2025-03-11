@@ -24,14 +24,21 @@ export const chartsReducer = createReducer(
   on(chartActions.showGraphLines, (state) => ({ ...state, showLines: true })),
   on(chartActions.hideGraphLines, (state) => ({ ...state, showLines: false })),
   on(chartActions.setTimeseriesChecked, (state, { uuid, checked }) => {
-    // const output = { ...state };
-    // if (wkt in output.seriesStates) {
-    // output.seriesStates[wkt].checked = checked;
-    // }
+    const seriesState = Object.values(state.seriesStates).reduce((prev, curr) => {
+      let index = curr.frames.findIndex(frame => {
+        return frame.uuid === uuid;
+      });
+      if(index > -1) {
+        let frames = [...curr.frames]
+        frames.splice(index, 1, {...curr.frames[index], checked})
+        prev[curr.uuidSeries] = {...curr, frames }
+      } else {
+        prev[curr.uuidSeries] = {...curr}
+      }
+      return prev
+    }, {});
 
-    const seriesState = { ...state.seriesStates, [uuid]: { ...state.seriesStates[uuid], checked } }
     return { ...state, seriesStates: seriesState }
-    // return output;
   }),
   on(chartActions.setTimeseriesStates, (state, { items }) => ({
     ...state, seriesStates: items.reduce((prev: { [key: string]: models.timeseriesChartItemState }, curr) => {
@@ -51,7 +58,8 @@ export const chartsReducer = createReducer(
   }),
   on(chartActions.setAllTimeseriesChecked, (state, { checked }) => {
     const seriesStates = Object.values(state.seriesStates).reduce((prev, curr) => {
-      prev[curr.uuidSeries] = { ...curr, checked }
+      let frames = [...curr.frames].map(frame => ({...frame, checked}))
+      prev[curr.uuidSeries] = { ...curr, checked, frames}
       return prev
     }, {});
     return { ...state, seriesStates }
@@ -83,8 +91,13 @@ export const chartsReducer = createReducer(
   }),
   on(chartActions.setTimeseriesValid, (state, {uuid, valid, error}) => {
     const seriesStates = Object.values(state.seriesStates).reduce((prev, curr) => {
-      if (curr.uuidSeries === uuid) {
-        prev[curr.uuidSeries] = {...curr, valid: valid, error: error}
+      let index = curr.frames.findIndex(frame => {
+        return frame.uuid === uuid;
+      });
+      if(index > -1) {
+        let frames = [...curr.frames]
+        frames.splice(index, 1, {...curr.frames[index], valid: valid, error: error})
+        prev[curr.uuidSeries] = {...curr, frames }
       } else {
         prev[curr.uuidSeries] = {...curr}
       }

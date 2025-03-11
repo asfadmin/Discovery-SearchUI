@@ -13,7 +13,7 @@ export interface timeseriesChartItemState {
     linearFit: boolean,
     valid?: boolean,
     error?: any,
-    frames?: {[frame: string]: string}
+    frames?: TimeseriesSubframe[]
 }
 
 export interface TimeSeriesChartPoint {
@@ -32,7 +32,8 @@ export interface TimeSeriesData {
     uuidSeries: string,
     short_wavelength_displacement: number
     date: string,
-    id: string,
+    id: string, // id of the individual point
+    uuid: string, // id of the series frame
     base: number,
     seriesNumber: number,
     seriesName: string,
@@ -41,3 +42,13 @@ export interface TimeSeriesData {
     color: string,
     aoi: string,
   }
+
+export interface TimeseriesSubframe {
+    number: string,
+    uuid: string,
+    wkt: string,
+    checked: boolean,
+    color: string,
+    valid?: boolean,
+    error?: string,
+}
