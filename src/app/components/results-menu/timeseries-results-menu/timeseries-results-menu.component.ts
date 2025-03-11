@@ -280,8 +280,8 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new uiStore.SetActiveUUID(uuid));
   }
 
-  public deletePoint(index: number) {
-    this.pointHistoryService.removePoint(index);
+  public deletePoint(uuid: string) {
+    this.pointHistoryService.removePoint(uuid);
   }
   public deleteAllPoints(): void {
    this.pointHistoryService.clear();

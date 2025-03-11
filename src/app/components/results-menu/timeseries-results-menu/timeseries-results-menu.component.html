@@ -60,7 +60,7 @@
   <!--                    }-->
 
                     </mat-checkbox>
-                    <button mat-icon-button (click)="deletePoint($index)" *ngIf="frame.value.uuid === selectedSeries">
+                    <button mat-icon-button (click)="deletePoint(point.uuidSeries)" *ngIf="frame.value.uuid === selectedSeries">
                       <mat-icon class="ts-trash-can" disableRipple>delete</mat-icon>
                     </button>
                     } @else {
@@ -76,7 +76,7 @@
                           <ng-container *ngTemplateOutlet="seriesFragment"></ng-container>
                         </span>
                       </div>
-                      <button mat-icon-button (click)="deletePoint($index)">
+                      <button mat-icon-button (click)="deletePoint(point.uuidSeries)">
                         <mat-icon class="ts-trash-can" *ngIf="frame.value.uuid === selectedSeries" disableRipple>delete</mat-icon>
                       </button>
                     }

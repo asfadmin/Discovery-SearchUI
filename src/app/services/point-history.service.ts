@@ -26,7 +26,7 @@ export class PointHistoryService {
   private history : PointHistoryState[] = [];
   public history$ = new Subject<PointHistoryState[]>();
   public passDraw: boolean = false;
-  public selectedPoint: number = 0;
+  public selectedPoint: string = '';
 
   constructor(
     private store$: Store<AppState>,
@@ -97,13 +97,16 @@ export class PointHistoryService {
     this.history = [];
     this.history$.next(this.history);
     this.store$.dispatch(resetTimeseriesStates())
-    this.selectedPoint = -1;
+    this.selectedPoint = '';
     this.savePoints();
   }
 
-  public removePoint(index) {
-    // const format = new WKT()
-    const uuid = this.history[index].uuidSeries
+  public removePoint(uuid) {
+    const index = this.history.findIndex((x) => {
+      return x.uuidSeries === uuid;
+    })
+    uuid = this.history[index].uuidSeries;
+
     this.history.splice(index,1);
     this.history$.next(this.history)
     this.store$.dispatch(removeTimeseriesState({uuid}))
