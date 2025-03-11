@@ -108,7 +108,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       ).subscribe(
         flightDir => {
           this.flightDirection = flightDir;
-          this.updateChart()
+          this.updateChart(true);
         }
       )
     )
@@ -192,10 +192,10 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     window.open(url);
   }
 
-  public updateChart(): void {
+  public updateChart(resetAll=false): void {
     let allPointsData = [];
     for (const series of this.chartStates) {
-      if (!series.frames) {
+      if (!series.frames || resetAll) {
         this.netcdfService.getFrames(series.wkt, this.flightDirection).pipe(first()).subscribe(data => {
           // series.frames = data;
           let temp: models.TimeseriesSubframe[] = [];

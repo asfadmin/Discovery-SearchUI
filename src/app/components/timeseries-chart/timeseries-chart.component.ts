@@ -219,7 +219,11 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       this.store$.select(filtersStore.getFlightDirections).pipe(
         map(dir => dir[0] ?? this.flightDirection)
       ).subscribe(
-        dir => this.flightDirection = dir
+        dir => {
+          this.flightDirection = dir;
+          this.data = [];
+          this.initChart(this.data)
+        }
       )
     )
 
