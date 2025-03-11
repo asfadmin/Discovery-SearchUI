@@ -252,9 +252,9 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     )
     let allPointsData: { point: {}, state: models.timeseriesChartItemState, frame: string, uuid: string }[] = [];
     for(let series of validPoints) {
-      for(let frame of Object.keys(series.frames)) {
+      for(let frame of series.frames) {
         allPointsData.push(
-          { point: cache[series.uuidSeries + frame], state: series , frame: frame, 'uuid': series.frames[frame].uuid}
+          { point: cache[series.uuidSeries + frame.number], state: series , frame: frame.number, 'uuid': frame.uuid}
         )
       }
     }
@@ -364,7 +364,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
                 'aoi': aoi,
                 'drawMode': result.point[key].drawMode,
                 'frame': result.frame,
-                'uuid': result.state.frames[result.frame].uuid
+                'uuid': result.state.frames.find(x => x.number === result.frame).uuid
               });
 
               if (result.state.checked) {
@@ -391,7 +391,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         })
           this.dataReadyForChart.push({
             name: aoi,
-            uuid: result.state.frames[result.frame].uuid,
+            'uuid': result.state.frames.find(x => x.number === result.frame).uuid,
             values: this.timeSeriesData,
             color: result.state.color,
             opacity:  result.state.checked ? 1.0 : 0.2,

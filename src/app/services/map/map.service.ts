@@ -865,7 +865,7 @@ export class MapService implements OnDestroy {
   }
 
 
-  public setDisplacementLayer(points: { seriesNumber: number, color: string, frames: {[frame: string] : models.TimeseriesSubframe}, base_wkt: string, uuid: string}[]) {
+  public setDisplacementLayer(points: { seriesNumber: number, color: string, frames: models.TimeseriesSubframe[], base_wkt: string, uuid: string}[]) {
     if (!!this.displacmentLayer) {
       this.map.removeLayer(this.displacmentLayer);
       this.displacmentLayer = null;
@@ -876,13 +876,14 @@ export class MapService implements OnDestroy {
     let features = []
     points.forEach(dataPoint => {
       if(dataPoint.frames) {
-        for(let frame of Object.values(dataPoint?.frames)) {
-          let temp_feature = this.wktService.wktToFeature(frame.wkt, this.epsg())
+        for(let i = 0; i < dataPoint.frames.length; i++) {
+          let temp_feature = this.wktService.wktToFeature(dataPoint.frames[i].wkt, this.epsg())
 
           temp_feature.set('point', temp_feature.getGeometry()); // use genned one
-          temp_feature.set('uuid', frame.uuid);
+          temp_feature.set('uuid', dataPoint.frames[i].uuid);
           temp_feature.set('seriesColor', dataPoint.color);
-          temp_feature.set('seriesNumber', dataPoint.seriesNumber)
+          temp_feature.set('seriesNumber', dataPoint.seriesNumber);
+          temp_feature.set('index', i+1)
           features.push(temp_feature);
         }
       } else {
@@ -901,7 +902,7 @@ export class MapService implements OnDestroy {
     const stylize = function StyleFunction(feature: Feature) {
 
       const textFunction = function (f: Feature) {
-        let labelContent = f.get('seriesNumber');
+        let labelContent = f.get('index') ? `${f.get('seriesNumber')}.${f.get('index')}` : `${f.get('seriesNumber')}`;
         return labelContent.toString();
       }
 
@@ -944,7 +945,7 @@ export class MapService implements OnDestroy {
           }),
           text: textFunction(feature),
         }),
-        zIndex: (selected) ? 1000 : +feature.get('seriesNumber')
+        zIndex: (selected) ? 1000 : +feature.get('seriesNumber') + +feature.get('index'),
       })
 
       return layerStyle

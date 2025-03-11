@@ -198,12 +198,16 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       if (!series.frames) {
         this.netcdfService.getFrames(series.wkt, this.flightDirection).pipe(first()).subscribe(data => {
           // series.frames = data;
-          let temp = {};
+          let temp = [];
           Object.keys(data).forEach(frame => {
-            temp[frame] = {
+            temp.push({
+              'number': frame,
               'wkt': data[frame],
-              'uuid': crypto.randomUUID()
-            }
+              'uuid': crypto.randomUUID(),
+              'valid': null,
+              'checked': true,
+              'color': '',
+            })
           })
           this.store$.dispatch(chartStore.setFrames({ 'uuid': series.uuidSeries, 'frames': temp }))
           for(let frame_id of Object.keys(data)) {

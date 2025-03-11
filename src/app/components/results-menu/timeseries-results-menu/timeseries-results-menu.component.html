@@ -28,10 +28,10 @@
         <span class="point-list-ul-section">
           <ul>
             @for (point of chartStates; track point.valid) {
-              @for(frame of point.frames | keyvalue; track frame.key) {
-                <li [class.ts-highlighted]="frame.value.uuid === selectedSeries"
+              @for(frame of point.frames; track frame.uuid) {
+                <li [class.ts-highlighted]="frame.uuid === selectedSeries"
                     class="point-list-item"
-                    on-mouseenter="setActiveWkt(frame.value.uuid)"
+                    on-mouseenter="setActiveWkt(frame.uuid)"
                     on-mouseleave="setActiveWkt(null)">
                     @if (point.valid == true) {
                     <mat-checkbox [checked]="point.checked" (change)="updateSeries($event.checked, $index)"
@@ -60,7 +60,7 @@
   <!--                    }-->
 
                     </mat-checkbox>
-                    <button mat-icon-button (click)="deletePoint(point.uuidSeries)" *ngIf="frame.value.uuid === selectedSeries">
+                    <button mat-icon-button (click)="deletePoint(point.uuidSeries)" *ngIf="frame.uuid === selectedSeries">
                       <mat-icon class="ts-trash-can" disableRipple>delete</mat-icon>
                     </button>
                     } @else {
@@ -77,7 +77,7 @@
                         </span>
                       </div>
                       <button mat-icon-button (click)="deletePoint(point.uuidSeries)">
-                        <mat-icon class="ts-trash-can" *ngIf="frame.value.uuid === selectedSeries" disableRipple>delete</mat-icon>
+                        <mat-icon class="ts-trash-can" *ngIf="frame.uuid === selectedSeries" disableRipple>delete</mat-icon>
                       </button>
                     }
                 </li>
@@ -85,11 +85,11 @@
                 <ng-template #seriesFragment>
                   <span *ngIf="point.seriesName.toLowerCase().trim() == 'series'; else customSeriesName">
                     {{'SERIES' | translate}}
-                    {{point.seriesNumber}}<span *ngIf="(point.frames | keyvalue).length>1">.{{frame.key}}</span>
+                    {{point.seriesNumber}}<span *ngIf="(point.frames | keyvalue).length>1">.{{frame.number}}</span>
                   </span>
                   <ng-template #customSeriesName>
                     {{point.seriesName}}
-                    {{point.seriesNumber}}<span *ngIf="(point.frames | keyvalue).length>1">.{{frame.key}}</span>
+                    {{point.seriesNumber}}<span *ngIf="(point.frames | keyvalue).length>1">.{{frame.number}}</span>
                   </ng-template>
                 </ng-template>
               }
