@@ -482,12 +482,12 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           if(Object.keys(chartStates).length === history.length) {
             let data = []
 
-            for (const p of history) {
-              data.push({ point: p.point, seriesNumber: chartStates[p.uuidSeries].seriesNumber, color: chartStates[p.uuidSeries].color, uuid: p.uuidSeries })
+            for(const state of Object.values(chartStates)) {
+              data.push({ seriesNumber: state.seriesNumber, color: state.color, frames: state.frames, base_wkt: state.wkt, uuid: state.uuidSeries })
             }
             this.mapService.setDisplacementLayer(data);
           }
-    
+
         }));
   }
 

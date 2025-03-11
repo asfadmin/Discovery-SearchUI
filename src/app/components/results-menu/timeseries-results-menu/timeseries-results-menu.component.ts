@@ -118,7 +118,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       ).subscribe(
         flightDir => {
           this.flightDirection = flightDir;
-          this.updateChart()
+          this.updateChart(true);
         }
       )
     )
@@ -206,22 +206,26 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     window.open(url);
   }
 
-  public updateChart(): void {
+  public updateChart(resetAll=false): void {
     let allPointsData = [];
     for (const series of this.chartStates) {
-      if (!series.frames) {
+      if (!series.frames || resetAll) {
         this.netcdfService.getFrames(series.wkt, this.flightDirection).pipe(first()).subscribe(data => {
           // series.frames = data;
-          let temp = {};
+          let temp: models.TimeseriesSubframe[] = [];
           Object.keys(data).forEach(frame => {
-            temp[frame] = {
+            temp.push({
+              'number': frame,
               'wkt': data[frame],
-              'uuid': crypto.randomUUID()
-            }
+              'uuid': crypto.randomUUID(),
+              'valid': null,
+              'checked': true,
+              'color': '',
+            })
           })
           this.store$.dispatch(chartStore.setFrames({ 'uuid': series.uuidSeries, 'frames': temp }))
-          for(let frame_id of Object.keys(data)) {
-            this.netcdfService.getTimeSeries(data[frame_id], this.flightDirection, frame_id, series.uuidSeries)
+          for(let frame of temp) {
+            this.netcdfService.getTimeSeries(frame, this.flightDirection)
               .pipe(first()).subscribe(data => {
                 if (!!data) {
                   allPointsData.push(data);
@@ -281,8 +285,8 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     return dateRange;
   }
 
-  public updateSeries(checked: boolean, index?: number) {
-    const uuid = this.chartStates[index]?.uuidSeries
+  public updateSeries(checked: boolean, uuid: string) {
+    // const uuid = this.chartStates[index]?.uuidSeries
     this.store$.dispatch(chartStore.setTimeseriesChecked({uuid, checked}))
   }
 
@@ -294,8 +298,8 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new uiStore.SetActiveUUID(uuid));
   }
 
-  public deletePoint(index: number) {
-    this.pointHistoryService.removePoint(index);
+  public deletePoint(uuid: string) {
+    this.pointHistoryService.removePoint(uuid);
   }
   public deleteAllPoints(): void {
    this.pointHistoryService.clear();

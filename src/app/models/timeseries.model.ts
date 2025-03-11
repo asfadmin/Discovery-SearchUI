@@ -13,7 +13,7 @@ export interface timeseriesChartItemState {
     linearFit: boolean,
     valid?: boolean,
     error?: any,
-    frames?: {[frame: string]: TimeseriesSubframe}
+    frames?: TimeseriesSubframe[]
 }
 
 export interface TimeSeriesChartPoint {
@@ -43,7 +43,12 @@ export interface TimeSeriesData {
     aoi: string,
   }
 
-  export interface TimeseriesSubframe {
+export interface TimeseriesSubframe {
+    number: string,
     uuid: string,
     wkt: string,
-  }
+    checked: boolean,
+    color: string,
+    valid?: boolean,
+    error?: string,
+}

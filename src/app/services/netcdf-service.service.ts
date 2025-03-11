@@ -105,40 +105,40 @@ export class NetcdfService {
     )));
 }
 
-  public getTimeSeries(wkt, flightDirection =FlightDirection.ASCENDING, frame_id: string, seriesId): Observable<any> {
+  public getTimeSeries(frame: TimeseriesSubframe, flightDirection =FlightDirection.ASCENDING): Observable<any> {
 
-    let index_id = seriesId + frame_id;
+    let index_id = frame.uuid;
 
     let target_cache = this.getTargetCache(flightDirection)
 
     if (target_cache.hasOwnProperty(index_id)) {
       if(target_cache[index_id]?.error === null || target_cache[index_id]?.error === undefined) {
-        this.store$.dispatch(setTimeseriesValid({uuid: seriesId, valid: true}))
+        this.store$.dispatch(setTimeseriesValid({uuid: frame.uuid, valid: true}))
         return of(target_cache[index_id])
       } else {
         let errorDetails = target_cache[index_id]?.error?.error.detail ?? 'No details, try again.';
-        this.store$.dispatch(setTimeseriesValid({uuid: seriesId, valid: false, error: errorDetails}))
+        this.store$.dispatch(setTimeseriesValid({uuid: frame.uuid, valid: false, error: errorDetails}))
         return of()
       }
     } else {
       return this.http.post(`${this.url}${this.timeSeriesEndpoint}`, {
-        "wkt": wkt,
+        "wkt": frame.wkt,
         "bucket": this.bucket,
         "polarization": "VV",
         "flightDirection": flightDirection,
-        'frame_id': frame_id
+        'frame_id': frame.number
       }, { responseType: 'json' }).pipe(
         this.handleRetry,
         catchError(error => {
           let errorDetails = error.error.detail ?? 'No details, try again.';
           this.notificationService.error(errorDetails, 'Timeseries Service Error')
 
-          this.store$.dispatch(setTimeseriesValid({uuid: seriesId, valid: false, error: errorDetails}))
+          this.store$.dispatch(setTimeseriesValid({uuid: frame.uuid, valid: false, error: errorDetails}))
           return of({error})
         }),
         map(response => {
           if (!!response) {
-          (response as any).aoi = wkt;
+          (response as any).aoi = frame.wkt;
           }
           target_cache[index_id] = response;
           this.totalKeys.push(index_id);
@@ -148,7 +148,7 @@ export class NetcdfService {
           }
           this.cacheUpdated.next(index_id)
           if(response && !(response as any)?.error) {
-            this.store$.dispatch(setTimeseriesValid({uuid: seriesId, valid: true}))
+            this.store$.dispatch(setTimeseriesValid({uuid: frame.uuid, valid: true}))
           } else {
             response = null
           }

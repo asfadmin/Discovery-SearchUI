@@ -93,6 +93,7 @@ export class MapComponent implements OnInit, OnDestroy  {
 
   private sarviewsEvents: SarviewsEvent[];
   private chartStates: models.timeseriesChartItemState[] = [];
+  //@ts-ignore
   private selectedSeries: any = null;
 
   constructor(
@@ -293,7 +294,7 @@ export class MapComponent implements OnInit, OnDestroy  {
         this.selectedSeries = item;
       }
     });
-    this.pointHistoryService.selectedPoint = this.selectedSeries?.uuidSeries ?? -1;
+    this.pointHistoryService.selectedPoint = uuid ?? ''; //this.selectedSeries?.uuidSeries ?? -1;
     this.mapService.displacmentLayer?.changed();
   }
 

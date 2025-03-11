@@ -865,29 +865,44 @@ export class MapService implements OnDestroy {
   }
 
 
-  public setDisplacementLayer(points: { point: Geometry, seriesNumber: number, color: string, uuid: string }[]) {
+  public setDisplacementLayer(points: { seriesNumber: number, color: string, frames: models.TimeseriesSubframe[], base_wkt: string, uuid: string}[]) {
     if (!!this.displacmentLayer) {
       this.map.removeLayer(this.displacmentLayer);
       this.displacmentLayer = null;
     }
     let self = this;
 
-    let source = new VectorSource();
-    let pointFeatures = points.map(dataPoint => {
-      let temp = dataPoint.point.clone() as Geometry;
-      temp.transform('EPSG:4326', 'EPSG:3857')
-      let temp_feature = new Feature(temp)
-      temp_feature.set('point', dataPoint.point);
-      temp_feature.set('uuid', dataPoint.uuid);
-      temp_feature.set('seriesNumber', dataPoint.seriesNumber);
-      temp_feature.set('seriesColor', dataPoint.color);
-      return temp_feature;
+
+    let features = []
+    points.forEach(dataPoint => {
+      if(dataPoint.frames) {
+        for(let i = 0; i < dataPoint.frames.length; i++) {
+          let temp_feature = this.wktService.wktToFeature(dataPoint.frames[i].wkt, this.epsg())
+
+          temp_feature.set('point', temp_feature.getGeometry()); // use genned one
+          temp_feature.set('uuid', dataPoint.frames[i].uuid);
+          temp_feature.set('seriesColor', dataPoint.color);
+          temp_feature.set('seriesNumber', dataPoint.seriesNumber);
+          temp_feature.set('index', i+1)
+          features.push(temp_feature);
+        }
+      } else {
+        let temp_feature = this.wktService.wktToFeature(dataPoint.base_wkt, this.epsg())
+        temp_feature.set('point', temp_feature.getGeometry());
+        temp_feature.set('uuid', dataPoint.uuid); 
+        temp_feature.set('seriesNumber', dataPoint.seriesNumber);
+        temp_feature.set('seriesColor', dataPoint.color);
+        features.push(temp_feature)
+      }
     });
-    source.addFeatures(pointFeatures);
+
+    let source = new VectorSource({
+      features
+    });
     const stylize = function StyleFunction(feature: Feature) {
 
       const textFunction = function (f: Feature) {
-        let labelContent = f.get('seriesNumber');
+        let labelContent = f.get('index') ? `${f.get('seriesNumber')}.${f.get('index')}` : `${f.get('seriesNumber')}`;
         return labelContent.toString();
       }
 
@@ -930,7 +945,7 @@ export class MapService implements OnDestroy {
           }),
           text: textFunction(feature),
         }),
-        zIndex: (selected) ? 1000 : +feature.get('seriesNumber')
+        zIndex: (selected) ? 1000 : +feature.get('seriesNumber') + +feature.get('index'),
       })
 
       return layerStyle
