@@ -248,13 +248,13 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
     const validPoints= Object.values(chartStates)
     .filter(
-      value => value.valid
+      value => value?.frames?.findIndex(frame => frame.valid) > -1
     )
     let allPointsData: { point: {}, state: models.timeseriesChartItemState, frame: string, uuid: string }[] = [];
     for(let series of validPoints) {
-      for(let frame of series.frames) {
+      for(let frame of series.frames.filter(frame => frame.valid)) {
         allPointsData.push(
-          { point: cache[series.uuidSeries + frame.number], state: series , frame: frame.number, 'uuid': frame.uuid}
+          { point: cache[frame.uuid], state: series , frame: frame.number, 'uuid': frame.uuid}
         )
       }
     }

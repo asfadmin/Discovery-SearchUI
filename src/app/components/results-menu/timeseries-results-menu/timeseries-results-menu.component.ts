@@ -198,7 +198,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       if (!series.frames) {
         this.netcdfService.getFrames(series.wkt, this.flightDirection).pipe(first()).subscribe(data => {
           // series.frames = data;
-          let temp = [];
+          let temp: models.TimeseriesSubframe[] = [];
           Object.keys(data).forEach(frame => {
             temp.push({
               'number': frame,
@@ -210,8 +210,8 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
             })
           })
           this.store$.dispatch(chartStore.setFrames({ 'uuid': series.uuidSeries, 'frames': temp }))
-          for(let frame_id of Object.keys(data)) {
-            this.netcdfService.getTimeSeries(data[frame_id], this.flightDirection, frame_id, series.uuidSeries)
+          for(let frame of temp) {
+            this.netcdfService.getTimeSeries(frame, this.flightDirection)
               .pipe(first()).subscribe(data => {
                 if (!!data) {
                   allPointsData.push(data);

@@ -83,8 +83,13 @@ export const chartsReducer = createReducer(
   }),
   on(chartActions.setTimeseriesValid, (state, {uuid, valid, error}) => {
     const seriesStates = Object.values(state.seriesStates).reduce((prev, curr) => {
-      if (curr.uuidSeries === uuid) {
-        prev[curr.uuidSeries] = {...curr, valid: valid, error: error}
+      let index = curr.frames.findIndex(frame => {
+        return frame.uuid === uuid;
+      });
+      if(index > -1) {
+        let frames = [...curr.frames]
+        frames.splice(index, 1, {...curr.frames[index], valid: valid, error: error})
+        prev[curr.uuidSeries] = {...curr, frames }
       } else {
         prev[curr.uuidSeries] = {...curr}
       }

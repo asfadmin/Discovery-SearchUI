@@ -49,4 +49,6 @@ export interface TimeseriesSubframe {
     wkt: string,
     checked: boolean,
     color: string,
+    valid?: boolean,
+    error?: string,
 }
