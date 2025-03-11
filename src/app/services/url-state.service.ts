@@ -42,7 +42,7 @@ export class UrlStateService {
   }
 
   private kioskMode = false; // for opera displacement
-  private displacementHostNames = [ 'displacement.asf.alaska.edu', 'search-displacement.asf.alaska.edu', 'local.asf.alaska.edu'];
+  private displacementHostNames = [ 'displacement.asf.alaska.edu', 'search-displacement.asf.alaska.edu'];
 
   public isDefaultSearch$ = this.activatedRoute.queryParams.pipe( map(params => {
     const keys = Object.keys(params)
