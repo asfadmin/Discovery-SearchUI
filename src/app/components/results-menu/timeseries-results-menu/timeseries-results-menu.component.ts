@@ -271,8 +271,8 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     return dateRange;
   }
 
-  public updateSeries(checked: boolean, index?: number) {
-    const uuid = this.chartStates[index]?.uuidSeries
+  public updateSeries(checked: boolean, uuid: string) {
+    // const uuid = this.chartStates[index]?.uuidSeries
     this.store$.dispatch(chartStore.setTimeseriesChecked({uuid, checked}))
   }
 

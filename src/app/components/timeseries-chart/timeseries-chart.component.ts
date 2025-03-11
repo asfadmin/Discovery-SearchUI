@@ -398,7 +398,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
             'uuid': result.state.frames.find(x => x.number === result.frame).uuid,
             values: this.timeSeriesData,
             color: result.state.color,
-            opacity:  result.state.checked ? 1.0 : 0.2,
+            opacity:  result.state.frames.find(x => x.number === result.frame).checked ? 1.0 : 0.2,
           });
         }
       }
