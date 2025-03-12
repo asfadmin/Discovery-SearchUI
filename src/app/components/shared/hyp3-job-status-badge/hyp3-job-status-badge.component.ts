@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { EnvironmentService, Hyp3ApiService, NotificationService, ScenesService } from '@services';
+import { EnvironmentService, Hyp3ApiService, NotificationService, ScenesService, Hyp3JobStatusService } from '@services';
 import { Hyp3Job, hyp3JobTypes, QueuedHyp3Job, Hyp3ProcessingOptions } from '@models';
 import { ConfirmationComponent } from '@components/header/processing-queue/confirmation/confirmation.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -30,6 +30,7 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
 
   constructor(
     private hyp3: Hyp3ApiService,
+    private hyp3JobStatus: Hyp3JobStatusService,
     private scenesService: ScenesService,
     private dialog: MatDialog,
     private env: EnvironmentService,
@@ -67,19 +68,19 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
   }
 
   public isExpired(job: Hyp3Job): boolean {
-    return this.hyp3.isExpired(job);
+    return this.hyp3JobStatus.isExpired(job);
   }
 
   public isFailed(job: Hyp3Job): boolean {
-    return this.hyp3.isFailed(job);
+    return this.hyp3JobStatus.isFailed(job);
   }
 
   public isPending(job: Hyp3Job): boolean {
-    return this.hyp3.isPending(job);
+    return this.hyp3JobStatus.isPending(job);
   }
 
   public isRunning(job: Hyp3Job): boolean {
-    return this.hyp3.isRunning(job);
+    return this.hyp3JobStatus.isRunning(job);
   }
 
   private openConfirmationDialog(jobType, jobs) {

@@ -15,7 +15,7 @@ import { faCopy } from '@fortawesome/free-solid-svg-icons';
 
 import {
   MapService, ScenesService, ScreenSizeService, PossibleHyp3JobsService,
-  PairService, Hyp3ApiService, SarviewsEventsService, NotificationService
+  PairService, Hyp3ApiService, Hyp3JobStatusService, SarviewsEventsService, NotificationService
 } from '@services';
 
 import * as models from '@models';
@@ -195,6 +195,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     private pairService: PairService,
     private screenSize: ScreenSizeService,
     private hyp3: Hyp3ApiService,
+    private hyp3JobStatus: Hyp3JobStatusService,
     private clipboard: ClipboardService,
     private notificationService: NotificationService,
     private possibleHyp3JobsService: PossibleHyp3JobsService,
@@ -219,7 +220,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.products$.subscribe(products => {
         this.products = products;
-        this.downloadableProds = this.hyp3.downloadable(products);
+        this.downloadableProds = this.hyp3JobStatus.downloadable(products);
       })
     );
 
@@ -366,7 +367,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
   public queueAllProducts(products: models.CMRProduct[]): void {
     if (this.searchType === models.SearchType.CUSTOM_PRODUCTS) {
-      products = this.hyp3.downloadable(products);
+      products = this.hyp3JobStatus.downloadable(products);
     }
 
     this.store$.dispatch(new queueStore.AddItems(products));

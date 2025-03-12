@@ -10,7 +10,7 @@ import * as queueStore from '@store/queue';
 
 import {
   ScreenSizeService, MapService, ScenesService, PairService,
-  Hyp3ApiService, PossibleHyp3JobsService,
+  Hyp3ApiService, PossibleHyp3JobsService, Hyp3JobStatusService,
 } from '@services';
 
 import { SubSink } from 'subsink';
@@ -68,6 +68,7 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
     private scenesService: ScenesService,
     private pairService: PairService,
     private hyp3: Hyp3ApiService,
+    private hyp3JobStatus: Hyp3JobStatusService,
     private possibleHyp3JobsService: PossibleHyp3JobsService,
   ) { }
 
@@ -79,7 +80,7 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
       ).subscribe(
         ([products, {pairs, custom}]) => {
           this.products = products;
-          this.downloadableProds = this.hyp3.downloadable(products);
+          this.downloadableProds = this.hyp3JobStatus.downloadable(products);
           this.pairs = [ ...pairs, ...custom ];
         }
       )
@@ -131,7 +132,7 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
 
   public queueAllProducts(products: models.CMRProduct[]): void {
     if (this.searchType === models.SearchType.CUSTOM_PRODUCTS) {
-      products = this.hyp3.downloadable(products);
+      products = this.hyp3JobStatus.downloadable(products);
     }
 
     this.store$.dispatch(new queueStore.AddItems(products));

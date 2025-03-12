@@ -22,7 +22,7 @@ export class BaselineSceneControlsComponent implements OnInit {
 
   constructor(
     private screenSize: services.ScreenSizeService,
-    private hyp3: services.Hyp3ApiService,
+    private hyp3JobStatus: services.Hyp3JobStatusService,
   ) { }
 
   ngOnInit(): void {
@@ -40,10 +40,10 @@ export class BaselineSceneControlsComponent implements OnInit {
   }
 
   public isDownloadable(product: models.CMRProduct): boolean {
-    return this.hyp3.isDownloadable(product);
+    return this.hyp3JobStatus.isDownloadable(product.metadata.job);
   }
 
   public isExpired(job: models.Hyp3Job): boolean {
-    return this.hyp3.isExpired(job);
+    return this.hyp3JobStatus.isExpired(job);
   }
 }
