@@ -22,7 +22,7 @@ export class BaselineSceneControlsComponent implements OnInit {
 
   constructor(
     private screenSize: services.ScreenSizeService,
-    private hyp3: services.Hyp3Service,
+    private hyp3: services.Hyp3ApiService,
   ) { }
 
   ngOnInit(): void {

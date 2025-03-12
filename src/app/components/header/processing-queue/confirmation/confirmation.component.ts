@@ -30,7 +30,7 @@ export class ConfirmationComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<ConfirmationComponent>,
-    public hyp3: services.Hyp3Service,
+    public hyp3: services.Hyp3ApiService,
     private store$: Store<AppState>,
     private notificationService: services.NotificationService,
     @Inject(MAT_DIALOG_DATA) public data: models.ConfirmationDialogData

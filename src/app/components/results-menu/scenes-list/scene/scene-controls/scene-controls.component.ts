@@ -21,7 +21,7 @@ export class SceneControlsComponent implements OnInit {
   public SearchTypes = models.SearchType;
 
   constructor(
-    private hyp3: services.Hyp3Service,
+    private hyp3: services.Hyp3ApiService,
   ) { }
 
   ngOnInit(): void {

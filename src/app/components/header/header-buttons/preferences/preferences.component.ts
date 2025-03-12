@@ -9,7 +9,7 @@ import {
   MapLayerTypes, UserAuth, ProductType,
   datasetList, SearchType, SavedFilterPreset, FilterType, Breakpoints
 } from '@models';
-import { Hyp3Service, ThemingService } from '@services';
+import { Hyp3ApiService, ThemingService } from '@services';
 import { SubSink } from 'subsink';
 import { take } from 'rxjs';
 import { TranslateService } from "@ngx-translate/core";
@@ -64,7 +64,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   constructor(
     private dialogRef: MatDialogRef<PreferencesComponent>,
     private store$: Store<AppState>,
-    private hyp3: Hyp3Service,
+    private hyp3: Hyp3ApiService,
     public env: services.EnvironmentService,
     private themeService: ThemingService,
     public translate: TranslateService,

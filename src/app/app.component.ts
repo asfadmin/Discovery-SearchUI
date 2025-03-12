@@ -89,7 +89,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private notificationService: services.NotificationService,
     private sarviewsService: services.SarviewsEventsService,
     private mapService: services.MapService,
-    private hyp3Service: services.Hyp3Service,
+    private hyp3Service: services.Hyp3ApiService,
     private themeService: services.ThemingService,
     public translate: TranslateService,
     public language: services.AsfLanguageService,

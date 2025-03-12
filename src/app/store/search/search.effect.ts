@@ -49,7 +49,7 @@ export class SearchEffects {
     private searchParams$: services.SearchParamsService,
     private asfApiService: services.AsfApiService,
     private productService: services.ProductService,
-    private hyp3Service: services.Hyp3Service,
+    private hyp3Service: services.Hyp3ApiService,
     private sarviewsService: services.SarviewsEventsService,
     private http: HttpClient,
     private notificationService: services.NotificationService,

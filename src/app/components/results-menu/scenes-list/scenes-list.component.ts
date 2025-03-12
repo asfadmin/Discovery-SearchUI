@@ -80,7 +80,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
     private keyboardService: services.KeyboardService,
     private scenesService: services.ScenesService,
     private pairService: services.PairService,
-    private hyp3: services.Hyp3Service,
+    private hyp3: services.Hyp3ApiService,
     private eventMonitoringService: services.SarviewsEventsService,
   ) { }
 

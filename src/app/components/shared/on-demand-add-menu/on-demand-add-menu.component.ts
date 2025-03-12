@@ -13,7 +13,7 @@ import { getMasterName, getScenes } from '@store/scenes';
 import { getSearchType } from '@store/search';
 import { CMRProduct, Hyp3ableByProductType, SearchType } from '@models';
 import { withLatestFrom } from 'rxjs/operators';
-import { EnvironmentService, Hyp3Service } from '@services';
+import { EnvironmentService, Hyp3ApiService } from '@services';
 
 @Component({
   selector: 'app-on-demand-add-menu',
@@ -46,7 +46,7 @@ export class OnDemandAddMenuComponent implements OnInit {
   constructor(
     private store$: Store<AppState>,
     public env: EnvironmentService,
-    public hyp3: Hyp3Service,
+    public hyp3: Hyp3ApiService,
   ) { }
 
   ngOnInit(): void {

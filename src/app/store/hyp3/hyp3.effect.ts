@@ -5,7 +5,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { map, switchMap, delay, catchError } from 'rxjs/operators';
 
-import { Hyp3Service, AsfApiService, NotificationService } from '@services';
+import { Hyp3ApiService, AsfApiService, NotificationService } from '@services';
 import {
   Hyp3ActionType, SetJobs, SuccessfulJobSubmission,
   ErrorJobSubmission, SubmitJob, SetUser, ErrorLoadingUser,
@@ -17,7 +17,7 @@ import { MakeSearch } from '../search/search.action';
 export class Hyp3Effects {
   constructor(
     private actions$: Actions,
-    private hyp3Service: Hyp3Service,
+    private hyp3Service: Hyp3ApiService,
     public asfApiService: AsfApiService,
     private notificationService: NotificationService,
   ) {}

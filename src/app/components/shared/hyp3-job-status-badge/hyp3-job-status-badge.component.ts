@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { EnvironmentService, Hyp3Service, NotificationService, ScenesService } from '@services';
+import { EnvironmentService, Hyp3ApiService, NotificationService, ScenesService } from '@services';
 import { Hyp3Job, hyp3JobTypes, QueuedHyp3Job, Hyp3ProcessingOptions } from '@models';
 import { ConfirmationComponent } from '@components/header/processing-queue/confirmation/confirmation.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -29,7 +29,7 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
   public remaining = 0;
 
   constructor(
-    private hyp3: Hyp3Service,
+    private hyp3: Hyp3ApiService,
     private scenesService: ScenesService,
     private dialog: MatDialog,
     private env: EnvironmentService,

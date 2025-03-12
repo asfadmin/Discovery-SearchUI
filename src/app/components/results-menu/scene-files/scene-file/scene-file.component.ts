@@ -5,7 +5,7 @@ import * as moment from 'moment';
 import * as queueStore from '@store/queue';
 import * as searchStore from '@store/search';
 
-import { EnvironmentService, Hyp3Service, OnDemandService } from '@services';
+import { EnvironmentService, Hyp3ApiService, OnDemandService } from '@services';
 import * as models from '@models';
 import { SubSink } from 'subsink';
 import { of } from 'rxjs';
@@ -44,7 +44,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   constructor(
-      private hyp3: Hyp3Service,
+      private hyp3: Hyp3ApiService,
       private store$: Store<AppState>,
       public env: EnvironmentService,
       private onDemand: OnDemandService,

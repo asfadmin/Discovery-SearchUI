@@ -145,7 +145,7 @@ export const routes = [
     services.UnzipApiService,
     services.ScenesService,
     services.SearchService,
-    services.Hyp3Service,
+    services.Hyp3ApiService,
     services.PairService,
     services.SceneSelectService,
     services.OnDemandService,

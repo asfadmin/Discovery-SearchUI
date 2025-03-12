@@ -64,7 +64,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   constructor(
     private store$: Store<AppState>,
     private screenSize: services.ScreenSizeService,
-    private hyp3: services.Hyp3Service,
+    private hyp3: services.Hyp3ApiService,
   ) {
   }
   ngOnInit() {

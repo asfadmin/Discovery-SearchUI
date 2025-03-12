@@ -15,7 +15,7 @@ import { AppState } from '@store';
 @Injectable({
   providedIn: 'root'
 })
-export class Hyp3Service {
+export class Hyp3ApiService {
   private hyp3ApiUrl = 'https://hyp3-api.asf.alaska.edu';
   private baseHyp3ApiUrl = 'https://hyp3-api.asf.alaska.edu';
 

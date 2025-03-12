@@ -10,7 +10,7 @@ import * as queueStore from '@store/queue';
 
 import {
   ScreenSizeService, MapService, ScenesService, PairService,
-  Hyp3Service, PossibleHyp3JobsService,
+  Hyp3ApiService, PossibleHyp3JobsService,
 } from '@services';
 
 import { SubSink } from 'subsink';
@@ -67,7 +67,7 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
     private mapService: MapService,
     private scenesService: ScenesService,
     private pairService: PairService,
-    private hyp3: Hyp3Service,
+    private hyp3: Hyp3ApiService,
     private possibleHyp3JobsService: PossibleHyp3JobsService,
   ) { }
 

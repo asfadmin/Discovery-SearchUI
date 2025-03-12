@@ -15,7 +15,7 @@ import { faCopy } from '@fortawesome/free-solid-svg-icons';
 
 import {
   MapService, ScenesService, ScreenSizeService, PossibleHyp3JobsService,
-  PairService, Hyp3Service, SarviewsEventsService, NotificationService
+  PairService, Hyp3ApiService, SarviewsEventsService, NotificationService
 } from '@services';
 
 import * as models from '@models';
@@ -194,7 +194,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     private eventMonitoringService: SarviewsEventsService,
     private pairService: PairService,
     private screenSize: ScreenSizeService,
-    private hyp3: Hyp3Service,
+    private hyp3: Hyp3ApiService,
     private clipboard: ClipboardService,
     private notificationService: NotificationService,
     private possibleHyp3JobsService: PossibleHyp3JobsService,
