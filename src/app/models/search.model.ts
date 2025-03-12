@@ -3,7 +3,7 @@ import { ListSearchType } from './filter-types.model';
 import { Range } from './range.model';
 import { FlightDirection } from './cmr-product.model';
 import * as fromDatasets from './dataset.model';
-import { Hyp3JobStatusCode } from './hyp3.model';
+import { Hyp3JobStatusCode } from './hyp3';
 import { SarviewsEventType, SBASOverlap } from '@models';
 // import { SarviewsEventType } from './sarviews-event.model';
 

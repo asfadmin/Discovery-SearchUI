@@ -1,6 +1,6 @@
 import * as moment from 'moment';
 
-import { CMRProduct } from './cmr-product.model';
+import { CMRProduct } from '../cmr-product.model';
 import { Hyp3JobType } from './hyp3-job-type.model';
 
 export interface QueuedHyp3Job {

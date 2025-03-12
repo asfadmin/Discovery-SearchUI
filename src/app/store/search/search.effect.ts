@@ -36,6 +36,7 @@ import { Feature } from 'ol';
 import Geometry from 'ol/geom/Geometry';
 import { FiltersActionType } from '@store/filters';
 import { getIsFiltersMenuOpen, getIsResultsMenuOpen } from '@store/ui';
+
 @Injectable()
 export class SearchEffects {
   private vectorSource = new VectorSource({
