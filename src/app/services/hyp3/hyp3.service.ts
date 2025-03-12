@@ -7,7 +7,7 @@ import * as moment from 'moment';
 import * as models from '@models';
 import * as uiStore from '@store/ui';
 
-import { NotificationService } from './notification.service';
+import { NotificationService } from '../notification.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 

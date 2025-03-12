@@ -561,6 +561,7 @@ export class SearchEffects {
       'search-countries': countries
     });
   }
+
   private logCountries(): void {
     this.searchParams$.getParams.pipe(first()).subscribe(params => {
       if (params.intersectsWith) {
