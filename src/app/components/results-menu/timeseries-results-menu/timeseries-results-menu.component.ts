@@ -20,6 +20,7 @@ import {Store} from '@ngrx/store';
 import {MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
 import {MatButton} from '@angular/material/button';
 import {PointHistoryState} from '@services/point-history.service';
+import {toNumbers} from '@angular/compiler-cli/src/version_helpers';
 
 export interface Task {
   aoi: string;
@@ -125,15 +126,9 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(this.store$.select(getTimeseriesChartStates).subscribe(chartStates => {
-      // let seriesFrameCount = [];
       this.chartStates = Object.values(chartStates);
       this.chartStates = this.chartStates.sort((a, b) => a.seriesNumber - b.seriesNumber);
-      // this.chartStates.forEach((series) => {
-      //   // seriesFrameCount.push(this.getFrameCount(series.frames));
-      //   seriesFrameCount[series.seriesNumber] = this.getFrameCount(series.frames);
-      // });
-    }
-    ));
+    }));
 
     this.subs.add(
       this.temporalRangeValues$.subscribe(
@@ -304,6 +299,8 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     this.subs.unsubscribe();
     this.pointHistoryService.clearPoints();
   }
+
+  protected readonly toNumbers = toNumbers;
 }
 
 @Component({
