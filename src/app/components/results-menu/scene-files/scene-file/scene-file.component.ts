@@ -145,7 +145,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
       });
 
     this.store$.dispatch(new queueStore.AddJob({
-      granules: this.product.metadata.job.job_parameters.scenes,
+      granules: this.product.metadata.job.scenes,
       job_type: job_types[job_type]
     }));
   }

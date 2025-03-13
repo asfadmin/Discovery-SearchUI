@@ -310,7 +310,7 @@ export class Hyp3ApiService {
 
     const temp: models.Hyp3ableByProductType = {
       productType: scene.metadata.job.job_type as any,
-      products: [scene.metadata.job.job_parameters.scenes]
+      products: [scene.metadata.job.scenes]
     };
 
     const byProductType: models.Hyp3ableByProductType[] = [];

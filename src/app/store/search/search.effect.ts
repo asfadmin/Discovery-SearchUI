@@ -169,7 +169,7 @@ export class SearchEffects {
       const products = action.payload;
 
       const granuleNames = products.reduce((names, prod) => {
-        const scenes = prod.metadata.job.job_parameters.scenes;
+        const scenes = prod.metadata.job.scenes;
 
         if (!!scenes) {
           const gNames = scenes
@@ -455,7 +455,7 @@ export class SearchEffects {
     );
   }
 
-  private hyp3JobToProducts(jobs, products) {
+  private hyp3JobToProducts(jobs: models.Hyp3Job[], products: {[granuleId: string]: models.CMRProduct}) {
     const virtualProducts = jobs
     .filter(job => products[job.job_parameters.granules[0]])
     .map(job => {
@@ -465,9 +465,9 @@ export class SearchEffects {
         { size: -1, url: '', filename: product.name };
 
       const scene_keys = job.job_parameters.granules;
-      job.job_parameters.scenes = [];
+      job.scenes = [];
       for (const scene_key of scene_keys) {
-        job.job_parameters.scenes.push(products[scene_key]);
+        job.scenes.push(products[scene_key]);
       }
 
       const jobProduct = {

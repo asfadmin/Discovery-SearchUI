@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 
+import * as models from '@models';
 import * as hyp3Store from '@store/hyp3';
 import * as queueStore from '@store/queue';
 import { catchError, finalize, first } from 'rxjs/operators';
@@ -21,8 +22,8 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
   @Input() job: Hyp3Job;
   @Input() isFileDetails = true;
 
-  private jobs;
-  private costs;
+  private jobs: models.Hyp3Job[];
+  private costs: models.Hyp3Costs;
   private processingOptions: Hyp3ProcessingOptions;
   private projectName = '';
   private validateOnly = false;
@@ -149,8 +150,8 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
     .filter(job => job.name === this.job.name && this.isExpired(job) && !this.isFailed(job))
     .map(job => {
       return ({
-        granules: job.job_parameters.scenes,
-        job_type: job_types[job.job_type],
+        granules: job.scenes,
+        job_type: job_types[job.job_type.id],
       } as QueuedHyp3Job);
     });
 
@@ -164,7 +165,7 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
     const jobType = job_types[job_type];
 
     const job = [{
-      granules: this.job.job_parameters.scenes,
+      granules: this.job.scenes,
       job_type: jobType,
       processingOptions: this.job.job_parameters
     } as QueuedHyp3Job];
@@ -208,7 +209,7 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
       finalize(() => {
         this.store$.dispatch(new hyp3Store.LoadUser());
 
-        let jobText;
+        let jobText: string;
         const submittedJobs = Math.abs(hyp3JobsBatch.length);
         jobText = submittedJobs > 1 ? `${submittedJobs} Jobs` : 'Job';
         if (jobText) {

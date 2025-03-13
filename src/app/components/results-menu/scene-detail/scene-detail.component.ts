@@ -242,7 +242,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
   public productHasSceneBrowses() {
     if (this.searchType === this.searchTypes.CUSTOM_PRODUCTS) {
-      return this.scene.metadata.job.job_parameters.scenes.some(x => !x.browses[0].includes('no-browse'));
+      return this.scene.metadata.job.scenes.some(x => !x.browses[0].includes('no-browse'));
     }
     return false;
   }

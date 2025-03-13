@@ -173,9 +173,9 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
             { size: -1, url: '', filename: product.name };
 
           const scene_keys = job.job_parameters.granules;
-          job.job_parameters.scenes = [];
+          job.scenes = [];
           for (const scene_key of scene_keys) {
-            job.job_parameters.scenes.push(cmrData[scene_key]);
+            job.scenes.push(cmrData[scene_key]);
           }
 
           const combinedProduct: any = {
@@ -524,7 +524,7 @@ export const getSelectedOnDemandProductSceneBrowses = createSelector (
 
     const browses = [];
 
-    const scenesForProduct = selected.metadata.job.job_parameters.scenes;
+    const scenesForProduct = selected.metadata.job.scenes;
     for (const productScene of scenesForProduct) {
       browses.push(productScene.browses[0]);
     }

@@ -20,7 +20,7 @@ import * as services from '@services';
 })
 export class ConfirmationComponent implements OnInit {
   public allJobs: models.QueuedHyp3Job[] = [];
-  public jobTypesWithQueued = [];
+  public jobTypesWithQueued: models.JobTypesWithQueued[] = [];
   public processingOptions: models.Hyp3ProcessingOptions;
   public projectName: string;
   public validateOnly: boolean;
@@ -52,7 +52,7 @@ export class ConfirmationComponent implements OnInit {
     });
   }
 
-  public onToggleJobType(tabQueue): void {
+  public onToggleJobType(tabQueue: models.JobTypesWithQueued): void {
     this.jobTypesWithQueued = this.jobTypesWithQueued.map(
       tab => {
         if (tab.jobType.id === tabQueue.jobType.id) {
@@ -69,14 +69,14 @@ export class ConfirmationComponent implements OnInit {
     );
   }
 
-  public amountSelected(jobTypes): number {
+  public amountSelected(jobTypes: models.JobTypesWithQueued[]): number {
     return jobTypes
       .filter((jobType) => jobType.selected)
       .map(jobType => jobType.jobs.length)
       .reduce((a, b) => a + b, 0);
   }
 
-  public creditsSelected(jobTypes): number {
+  public creditsSelected(jobTypes: models.JobTypesWithQueued[]): number {
     return jobTypes
       .filter((jobType) => jobType.selected)
       .map(jobType => jobType.creditTotal)

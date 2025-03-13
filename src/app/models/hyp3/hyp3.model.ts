@@ -61,6 +61,7 @@ export interface Hyp3Job {
   files: Hyp3ProductFile[];
   job_id: string;
   job_parameters: Hyp3JobParameters;
+  scenes: CMRProduct[];
   job_type: Hyp3JobType;
   request_time: moment.Moment;
   status_code: Hyp3JobStatusCode;
@@ -75,33 +76,48 @@ export interface Hyp3ProductFile {
   url: string;
 }
 
-export interface Hyp3JobParameters {
+export type Hyp3JobParameters =
+  Hyp3AutoriftParameters |
+  Hyp3InsarGammaParameters |
+  Hyp3RtcGammaParameters |
+  Hyp3InsarIsceBurstParameters;
+
+// AUTORIFT, INSAR_GAMMA, RTC_GAMMA, INSAR_ISCE_BURST, ARIA_S1_GUNW
+export type Hyp3AutoriftParameters = {
   granules: string[];
+};
 
-  // for jobs with multiple granules (InSAR and AutoRIFT)
-  scenes?: CMRProduct[];
+export type Hyp3InsarGammaParameters = {
+  granules: string[]
+  include_look_vectors?: boolean;
+  include_los_displacement?: boolean;
+  include_displacement_maps?: boolean;
+  include_inc_map?: boolean;
+  include_dem?: boolean;
+  include_wrapped_phase?: boolean
+  apply_water_mask?: boolean
+  looks?: InSarGammaLooks;
+  phase_filter_parameter?: number;
+}
 
-  // Hyp3RtcGammaParameters
+export type Hyp3RtcGammaParameters = {
+  granules: string[]
+  resolution?: RtcGammaResolution;
+  dem_name?: string;
+  radiometry?: RtcGammaRadiometry;
+  scale?: RtcGammaScale;
+  speckle_filter?: boolean;
   dem_matching?: boolean;
   include_dem?: boolean;
   include_inc_map?: boolean;
   include_scattering_area?: boolean;
-  include_rgb: boolean;
-  radiometry?: RtcGammaRadiometry;
-  resolution?: RtcGammaResolution;
-  scale?: RtcGammaScale;
-  speckle_filter?: boolean;
-
-  // Hyp3InSarGammaParameters
-  include_look_vectors?: boolean;
-  include_los_displacement?: boolean;
-  looks?: InSarGammaLooks;
-
-  dem_name: string;
+  include_rgb?: boolean;
 }
 
-export interface Hyp3InSarGammaParameters {
+export type Hyp3InsarIsceBurstParameters = {
   granules: string[];
+  apply_water_mask?: boolean;
+  looks?: InSarIsceBurstLooks;
 }
 
 export type Hyp3Costs = {
@@ -146,6 +162,12 @@ export enum RtcGammaRadiometry {
 export enum InSarGammaLooks {
   _20x4 = '20x4',
   _10x2 = '10x2'
+}
+
+export enum InSarIsceBurstLooks {
+  _20x4 = '20x4',
+  _10x2 = '10x2',
+  _5x1 = '5x1',
 }
 
 export enum RtcGammaResolution {
