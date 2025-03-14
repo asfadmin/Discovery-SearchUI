@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { EnvironmentService, Hyp3ApiService, NotificationService, ScenesService, Hyp3JobStatusService } from '@services';
+import { EnvironmentService, Hyp3ApiService, NotificationService, ScenesService, Hyp3JobStatusService, Hyp3JobService } from '@services';
 import { Hyp3Job, hyp3JobTypes, QueuedHyp3Job, Hyp3ProcessingOptions } from '@models';
 import { ConfirmationComponent } from '@components/header/processing-queue/confirmation/confirmation.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -32,6 +32,7 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
   constructor(
     private hyp3: Hyp3ApiService,
     private hyp3JobStatus: Hyp3JobStatusService,
+    private hyp3Job: Hyp3JobService,
     private scenesService: ScenesService,
     private dialog: MatDialog,
     private env: EnvironmentService,
@@ -88,7 +89,7 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
     let options: Hyp3ProcessingOptions = this.processingOptions;
 
     jobs.forEach(job => {
-      const jobTypeOptions = {...options[jobType.id]};
+      const jobTypeOptions = { ...options[jobType.id] };
 
       for (const [optionName, optionVal] of Object.entries(job.processingOptions)) {
         if (optionName in this.processingOptions[jobType.id]) {
@@ -147,13 +148,13 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
     const job_types = hyp3JobTypes;
 
     const projectJobs = this.jobs
-    .filter(job => job.name === this.job.name && this.isExpired(job) && !this.isFailed(job))
-    .map(job => {
-      return ({
-        granules: job.scenes,
-        job_type: job_types[job.job_type.id],
-      } as QueuedHyp3Job);
-    });
+      .filter(job => job.name === this.job.name && this.isExpired(job) && !this.isFailed(job))
+      .map(job => {
+        return ({
+          granules: job.scenes,
+          job_type: job_types[job.job_type.id],
+        } as QueuedHyp3Job);
+      });
 
     this.store$.dispatch(new queueStore.AddJobs(projectJobs));
   }
@@ -175,7 +176,7 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
     );
   }
 
-  public onResubmitExpiredJob(jobTypesWithQueued, validateOnly: boolean) {
+  public onResubmitExpiredJob(jobTypesWithQueued: models.JobTypesWithQueued[], validateOnly: boolean) {
     const processOptionKeys = Object.keys(this.job.job_parameters).filter(
       key => key !== 'granules'
     );
@@ -184,13 +185,14 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
     processOptionKeys.forEach(
       key => processingOptions[key] = this.job.job_parameters[key]
     );
+    console.log(processingOptions);
 
-    const hyp3JobsBatch = this.hyp3.formatJobs(jobTypesWithQueued, {
+    const hyp3JobsBatch = this.hyp3Job.formatJobs(jobTypesWithQueued, {
       projectName: this.projectName,
       processingOptions
     });
 
-    this.hyp3.submitJobBatch$({jobs: hyp3JobsBatch, validate_only: validateOnly}).pipe(
+    this.hyp3.submitJobBatch$({ jobs: hyp3JobsBatch, validate_only: validateOnly }).pipe(
       catchError(resp => {
         if (resp.error) {
           if (resp.error.detail === 'No authorization token provided' || resp.error.detail === 'Provided apikey is not valid') {
@@ -198,13 +200,13 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
               timeOut: 5000,
             });
           } else {
-            this.notificationService.error( resp.error.detail, 'Error', {
+            this.notificationService.error(resp.error.detail, 'Error', {
               timeOut: 5000,
             });
           }
         }
 
-        return of({jobs: null});
+        return of({ jobs: null });
       }),
       finalize(() => {
         this.store$.dispatch(new hyp3Store.LoadUser());

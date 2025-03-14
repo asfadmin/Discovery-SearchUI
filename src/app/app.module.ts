@@ -147,6 +147,7 @@ export const routes = [
     services.SearchService,
     services.Hyp3ApiService,
     services.Hyp3JobStatusService,
+    services.Hyp3JobService,
     services.PossibleHyp3JobsService,
     services.OnDemandService,
     services.PairService,
