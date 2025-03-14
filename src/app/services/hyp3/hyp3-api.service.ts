@@ -79,7 +79,7 @@ export class Hyp3ApiService {
   }
 
   public formatJobs(
-    jobTypesWithQueued,
+    jobTypesWithQueued: models.JobTypesWithQueued[],
     options: {processingOptions: any, projectName: string}
   ) {
     const jobOptionNames = {};
@@ -156,7 +156,7 @@ export class Hyp3ApiService {
 
         const { jobs, next } = resp;
 
-        const hyp3Jobs = jobs.map(job => ({
+        const hyp3Jobs = (<models.Hyp3Job[]>jobs).map(job => ({
           ...job,
           expiration_time: moment.utc(job.expiration_time),
           request_time: moment.utc(job.request_time)
@@ -167,7 +167,7 @@ export class Hyp3ApiService {
     );
   }
 
-  public submitJobBatch$(jobBatch) {
+  public submitJobBatch$(jobBatch: object) {
     const submitJobUrl = `${this.apiUrl}/jobs`;
 
     return this.http.post(submitJobUrl, jobBatch, { withCredentials: true });
