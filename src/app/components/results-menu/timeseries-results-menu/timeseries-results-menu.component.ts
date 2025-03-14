@@ -60,6 +60,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   @Input() resize$: Observable<void>;
   public searchType: SearchType;
   public isAddingPoints = false;
+  public mouseOver = false;
 
   public wktListMaxWidth = '225px';
   public listCardMaxWidth = '300px';
@@ -319,12 +320,13 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.subs.unsubscribe();
     this.pointHistoryService.clearPoints();
     this.element.classList.remove('visible');
     this.element.classList.remove('hidden');
   }
+
 }
 
 @Component({
