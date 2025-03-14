@@ -60,6 +60,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   @Input() resize$: Observable<void>;
   public searchType: SearchType;
   public isAddingPoints = false;
+  public mouseOver = false;
 
   public wktListMaxWidth = '225px';
   public listCardMaxWidth = '300px';
@@ -322,6 +323,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     this.element.classList.remove('visible');
     this.element.classList.remove('hidden');
   }
+
 }
 
 @Component({
