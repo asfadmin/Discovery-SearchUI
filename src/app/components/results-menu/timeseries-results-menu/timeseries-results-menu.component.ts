@@ -55,6 +55,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   @Input() resize$: Observable<void>;
   public searchType: SearchType;
   public isAddingPoints = false;
+  public mouseOver = false;
 
   public wktListMaxWidth = '225px';
   public listCardMaxWidth = '300px';
@@ -125,15 +126,9 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(this.store$.select(getTimeseriesChartStates).subscribe(chartStates => {
-      // let seriesFrameCount = [];
       this.chartStates = Object.values(chartStates);
       this.chartStates = this.chartStates.sort((a, b) => a.seriesNumber - b.seriesNumber);
-      // this.chartStates.forEach((series) => {
-      //   // seriesFrameCount.push(this.getFrameCount(series.frames));
-      //   seriesFrameCount[series.seriesNumber] = this.getFrameCount(series.frames);
-      // });
-    }
-    ));
+    }));
 
     this.subs.add(
       this.temporalRangeValues$.subscribe(
@@ -300,10 +295,12 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       }
     });
   }
-  ngOnDestroy() {
+
+  public ngOnDestroy() {
     this.subs.unsubscribe();
     this.pointHistoryService.clearPoints();
   }
+
 }
 
 @Component({

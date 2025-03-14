@@ -77,6 +77,7 @@ export class PointHistoryService {
       return
     }
     for(let state of states) {
+      console.log('state', state);
       const sName = (state.seriesName === '' || state.seriesName === null) ? 'Series' : state.seriesName;
       const point = state.geometry as Geometry;
       this.history = [...this.history, {
