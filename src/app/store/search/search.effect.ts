@@ -50,6 +50,7 @@ export class SearchEffects {
     private asfApiService: services.AsfApiService,
     private productService: services.ProductService,
     private hyp3Service: services.Hyp3ApiService,
+    private hyp3JobService: services.Hyp3JobService,
     private sarviewsService: services.SarviewsEventsService,
     private http: HttpClient,
     private notificationService: services.NotificationService,
@@ -98,15 +99,17 @@ export class SearchEffects {
       if (searchType === SearchType.SARVIEWS_EVENTS) {
         return this.sarviewsEventsQuery$();
       }
-      if (searchType === SearchType.BASELINE || searchType === SearchType.SBAS) {
+      else if (searchType === SearchType.BASELINE || searchType === SearchType.SBAS) {
         return this.asfApiBaselineQuery$();
       }
-      if (searchType === SearchType.CUSTOM_PRODUCTS) {
+      else if (searchType === SearchType.CUSTOM_PRODUCTS) {
         return this.customProductsQuery$();
       }
-      this.logCountries();
+      else {
+        this.logCountries();
 
-      return this.asfApiQuery$;
+        return this.asfApiQuery$;
+      }
     }
     )
   ));
@@ -349,15 +352,6 @@ export class SearchEffects {
           ))
     );
   }
-
-  private getAllGranulesFromJobs(jobs: any) {
-    return jobs.reduce(
-      (granuleNames, job) => {
-        return granuleNames.concat(job.job_parameters.granules);
-      },
-      [])
-  }
-
   private dummyProducts$(granuleNames: string[]) {
     const dummyProducts = granuleNames.map(granuleName => {
       return {
@@ -372,7 +366,7 @@ export class SearchEffects {
   private onDemandGranuleList$(jobsRes, latestScenes) {
     const jobs = jobsRes.hyp3Jobs;
 
-    const granuleNames = this.getAllGranulesFromJobs(jobs);
+    const granuleNames = this.hyp3JobService.getAllGranulesFromJobs(jobs);
     const fakeApiListQuery = this.dummyProducts$(granuleNames);
 
     return fakeApiListQuery.pipe(
@@ -384,7 +378,7 @@ export class SearchEffects {
           }, {});
       }),
       map(dummyProducts => {
-        return this.hyp3JobToProducts(jobs, dummyProducts);
+        return this.hyp3JobService.toCMRProducts(jobs, dummyProducts);
       }),
       withLatestFrom(this.store$.select(getIsCanceled)),
       map(([products, isCanceled]) =>
@@ -454,44 +448,38 @@ export class SearchEffects {
       map(events => new SarviewsEventsResponse({ events }))
     );
   }
-
-  private hyp3JobToProducts(jobs: models.Hyp3Job[], products: {[granuleId: string]: models.CMRProduct}) {
-    const virtualProducts = jobs
-    .filter(job => products[job.job_parameters.granules[0]])
-    .map(job => {
-      const product = products[job.job_parameters.granules[0]];
-      const jobFile = !!job.files ?
-        job.files[0] :
-        { size: -1, url: '', filename: product.name };
-
-      const scene_keys = job.job_parameters.granules;
-      job.scenes = [];
-      for (const scene_key of scene_keys) {
-        job.scenes.push(products[scene_key]);
+  private findCountries(shapeString: string) {
+    const parser = new WKT();
+    const feature = parser.readFeature(shapeString);
+    let countries = [];
+    this.vectorSource.forEachFeature(f => {
+      if (f.getGeometry().intersectsExtent(feature.getGeometry().getExtent())) {
+        countries.push(f);
       }
-
-      const jobProduct = {
-        ...product,
-        browses: job.browse_images ? job.browse_images : ['assets/no-browse.png'],
-        thumbnail: job.thumbnail_images ? job.thumbnail_images[0] : 'assets/no-thumb.png',
-        productTypeDisplay: `${job.job_type}, ${product.metadata.productType} `,
-        downloadUrl: jobFile.url,
-        bytes: jobFile.size,
-        groupId: job.job_id,
-        id: job.job_id,
-        isDummyProduct: true,
-        metadata: {
-          ...product.metadata,
-          fileName: jobFile.filename || '',
-          productType: job.job_type,
-          job
-        },
-      };
-
-      return jobProduct
     });
+    countries = countries.map(c => c.values_.name);
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'search-countries',
+      'search-countries': countries
+    });
+  }
 
-    return virtualProducts;
+  private logCountries(): void {
+    this.searchParams$.getParams.pipe(first()).subscribe(params => {
+      if (params.intersectsWith) {
+        if (this.vectorSource.getFeatures().length > 0) {
+          this.findCountries(params.intersectsWith);
+        } else {
+          this.http.get('/assets/countries.geojson').subscribe(f => {
+            this.vectorSource.addFeatures(
+              this.vectorSource.getFormat().readFeatures(f) as Feature<Geometry>[]
+            );
+            this.findCountries(params.intersectsWith);
+          });
+        }
+      }
+    });
   }
 
   private dummyProduct() {
@@ -545,37 +533,4 @@ export class SearchEffects {
     };
   }
 
-  private findCountries(shapeString: string) {
-    const parser = new WKT();
-    const feature = parser.readFeature(shapeString);
-    let countries = [];
-    this.vectorSource.forEachFeature(f => {
-      if (f.getGeometry().intersectsExtent(feature.getGeometry().getExtent())) {
-        countries.push(f);
-      }
-    });
-    countries = countries.map(c => c.values_.name);
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      'event': 'search-countries',
-      'search-countries': countries
-    });
-  }
-
-  private logCountries(): void {
-    this.searchParams$.getParams.pipe(first()).subscribe(params => {
-      if (params.intersectsWith) {
-        if (this.vectorSource.getFeatures().length > 0) {
-          this.findCountries(params.intersectsWith);
-        } else {
-          this.http.get('/assets/countries.geojson').subscribe(f => {
-            this.vectorSource.addFeatures(
-              this.vectorSource.getFormat().readFeatures(f) as Feature<Geometry>[]
-            );
-            this.findCountries(params.intersectsWith);
-          });
-        }
-      }
-    });
-  }
 }

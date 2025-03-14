@@ -57,4 +57,59 @@ export class Hyp3JobService {
     });
   }
 
+  public getAllGranulesFromJobs(jobs: models.Hyp3Job[]): string[] {
+    return jobs.reduce(
+      (granuleNames, job) => {
+        const jobGranules = this.getAllGranules(job)
+
+        return granuleNames.concat(jobGranules);
+      },
+      []);
+  }
+
+
+  public getAllGranules(job: models.Hyp3Job): string[]  {
+    return job.job_parameters.granules;
+  }
+
+  public toCMRProducts(jobs: models.Hyp3Job[], products: {[granuleId: string]: models.CMRProduct}) {
+    const virtualProducts = jobs
+    .filter(job => {
+        const firstGranule = this.getAllGranules(job)[0];
+        return products[firstGranule];
+    })
+    .map(job => {
+      const jobGranules = this.getAllGranules(job);
+      const product = products[jobGranules[0]];
+
+      const jobFile = !!job.files ?
+        job.files[0] :
+        { size: -1, url: '', filename: product.name };
+
+      job.scenes = jobGranules
+        .map(granuleName => products[granuleName]);
+
+      const jobProduct = {
+        ...product,
+        browses: job.browse_images ? job.browse_images : ['assets/no-browse.png'],
+        thumbnail: job.thumbnail_images ? job.thumbnail_images[0] : 'assets/no-thumb.png',
+        productTypeDisplay: `${job.job_type}, ${product.metadata.productType} `,
+        downloadUrl: jobFile.url,
+        bytes: jobFile.size,
+        groupId: job.job_id,
+        id: job.job_id,
+        isDummyProduct: true,
+        metadata: {
+          ...product.metadata,
+          fileName: jobFile.filename || '',
+          productType: job.job_type,
+          job
+        },
+      };
+
+      return jobProduct
+    });
+
+    return virtualProducts;
+  }
 }
