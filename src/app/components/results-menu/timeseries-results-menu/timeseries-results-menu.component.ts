@@ -23,6 +23,7 @@ import {PointHistoryState} from '@services/point-history.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {DOCUMENT} from '@angular/common';
 import { AsfLanguageService } from "@services/asf-language.service";
+import {SharedModule} from "@shared";
 
 
 export interface Task {
@@ -140,7 +141,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       if (this.chartStates.length === 0) {
         this.element.classList.remove('visible');
         this.element.classList.add('hidden');
-        let msg = this.language.translate.instant('YOUR_KEY');
+        let msg = this.language.translate.instant('PLEASE_SELECT_A_POINT_ON_THE_MAP');
         this.snackBar.open(msg);
       } else {
         this.element.classList.remove('hidden');
@@ -330,7 +331,8 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     MatDialogActions,
     MatDialogContent,
     MatButton,
-    MatDialogClose
+    MatDialogClose,
+    SharedModule
   ],
   standalone: true
 })
