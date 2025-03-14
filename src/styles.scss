@@ -867,3 +867,12 @@ $d-height: 550px;
   //margin-left: 20px;
 }
 
+.ts-snackbar {
+  @include themify($themes) {
+    background-color: themed('primary-light');
+    color: themed('dark-primary-text');
+  }
+  margin-bottom: 150px !important;
+  text-align: center;
+
+}
