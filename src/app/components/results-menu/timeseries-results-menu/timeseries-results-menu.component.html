@@ -18,7 +18,9 @@
           >
             {{ 'ALL_AOIS' | translate }}
         </mat-checkbox>
-          <span matTooltip="DELETE_ALL_SERIES" matTooltipPosition="above">
+          <span matTooltip="{{ 'DELETE_ALL_SERIES' | translate }}"
+                matTooltipPosition="below"
+                matTooltipClass="small-tooltip-yoreley">
         <button mat-icon-button (click)="openDialog()" class="delete-all-btn2">
           <mat-icon class="ts-trash-can" >delete</mat-icon>
         </button>
