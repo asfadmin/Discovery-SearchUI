@@ -221,7 +221,8 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
     }
 
     case QueueActionType.REMOVE_JOBS: {
-      let queue = [...state.customJobs];
+      let queue = [...state.customJobs]
+        .filter(queueJob => 'job_type' in queueJob);
 
       action.payload.forEach(queuedJob => {
         queue = queue.filter(job => {

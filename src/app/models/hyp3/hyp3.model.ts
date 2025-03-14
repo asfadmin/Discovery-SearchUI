@@ -62,7 +62,7 @@ export interface Hyp3Job {
   job_id: string;
   job_parameters: Hyp3JobParameters;
   scenes: CMRProduct[];
-  job_type: Hyp3JobType;
+  job_type: Hyp3JobType | string;
   request_time: moment.Moment;
   status_code: Hyp3JobStatusCode;
   thumbnail_images: string[];
