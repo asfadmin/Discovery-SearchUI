@@ -30,8 +30,13 @@
             @for (point of chartStates; track point.valid) {
               @for(frame of point.frames; track frame.uuid; let count = $count, idx = $index) {
                 <span *ngIf="count > 1 && idx == 0" class="series-summary">
-                  <li class="point-list-item">
+                  <li class="point-list-item"
+                      [class.ts-highlighted]="mouseOver"
+                      (mouseover)="mouseOver=true"
+                      (mouseout)="mouseOver=false">
+                    <span class="ts-wkt-label">
                         <ng-container *ngTemplateOutlet="seriesSummaryItem"></ng-container>
+                    </span>
                   </li>
                 </span>
                 <li [class.ts-highlighted]="frame.uuid === selectedSeries"
@@ -60,7 +65,7 @@
                 </li>
 
                 <ng-template #seriesSummaryItem>
-                    <span style="display: flex;">
+                    <div style="display: flex; margin-left: 40px; align-items: baseline; font-size: 14px;">
                       <mat-icon class="ts-wkt-icon" [style.color]="point.color">
                         {{ point.drawMode | aoiIcon }}
                       </mat-icon>
@@ -68,17 +73,21 @@
                       <span class="ts-wkt-label">
                         <ng-container *ngTemplateOutlet="summaryFragment"></ng-container>
                       </span>
-                    </span>
-                    <button mat-icon-button (click)="deletePoint(point.uuidSeries)" *ngIf="frame.uuid === selectedSeries">
-                      <mat-icon class="ts-trash-can" disableRipple>delete</mat-icon>
-                    </button>
+
+                      <button mat-icon-button (click)="deletePoint(point.uuidSeries)"
+                              style="padding-left: 61px; bottom: -2px;"
+                              [class.visible]="mouseOver"
+                              [class.hidden]="!mouseOver">
+                        <mat-icon class="ts-trash-can" disableRipple>delete</mat-icon>
+                      </button>
+                    </div>
                 </ng-template>
 
                 <ng-template #seriesCheckBoxItem>
                     <mat-checkbox [checked]="frame.checked" (change)="updateSeries($event.checked, frame.uuid)"
                                   style="display: flex;"
                                   disableRipple>
-                      <mat-icon class="ts-wkt-icon" [style.color]="point.color">
+                      <mat-icon class="ts-wkt-icon" [style.color]="point.color" [class.hidden]="count > 1">
                         {{ point.drawMode | aoiIcon }}
                       </mat-icon>
 
@@ -86,7 +95,9 @@
                         <ng-container *ngTemplateOutlet="seriesFragment"></ng-container>
                       </span>
                     </mat-checkbox>
-                    <button mat-icon-button (click)="deletePoint(point.uuidSeries)" *ngIf="frame.uuid === selectedSeries">
+                    <button mat-icon-button (click)="deletePoint(point.uuidSeries)"
+                            *ngIf="frame.uuid === selectedSeries"
+                            [class.hidden]="count > 1">
                       <mat-icon class="ts-trash-can" disableRipple>delete</mat-icon>
                     </button>
                 </ng-template>

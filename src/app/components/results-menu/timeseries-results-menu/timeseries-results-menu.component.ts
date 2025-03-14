@@ -20,7 +20,6 @@ import {Store} from '@ngrx/store';
 import {MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
 import {MatButton} from '@angular/material/button';
 import {PointHistoryState} from '@services/point-history.service';
-import {toNumbers} from '@angular/compiler-cli/src/version_helpers';
 
 export interface Task {
   aoi: string;
@@ -56,6 +55,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   @Input() resize$: Observable<void>;
   public searchType: SearchType;
   public isAddingPoints = false;
+  public mouseOver = false;
 
   public wktListMaxWidth = '225px';
   public listCardMaxWidth = '300px';
@@ -295,12 +295,12 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       }
     });
   }
-  ngOnDestroy() {
+
+  public ngOnDestroy() {
     this.subs.unsubscribe();
     this.pointHistoryService.clearPoints();
   }
 
-  protected readonly toNumbers = toNumbers;
 }
 
 @Component({
