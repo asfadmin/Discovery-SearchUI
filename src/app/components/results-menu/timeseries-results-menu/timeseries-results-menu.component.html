@@ -1,17 +1,17 @@
-<!-- SCENE LIST -->
 <ng-container *ngIf="breakpoint > breakpoints.MOBILE" xmlns="http://www.w3.org/1999/html">
 
-	<mat-card #listCard class="mp0 ts-column-1" [style.width]="wktListMaxWidth">
+    <mat-card #listCard class="mp0 ts-column-1" [style.width]="wktListMaxWidth">
 		<mat-card-subtitle class="header ts-scene-list-header">
 			<app-scenes-list-header></app-scenes-list-header>
 		</mat-card-subtitle>
 
 		<div class="ts-left-column-results">
 
-    @if(chartStates.length !== 0) {
 
       <section class="point-list-section">
-        <span class="parent-checkbox-section">
+        <span class="parent-checkbox-section" matTooltip="{{ 'DELETE_ALL_SERIES' | translate }}"
+              matTooltipPosition="below"
+              matTooltipClass="small-tooltip-yoreley">
           <mat-checkbox
             class="parent-checkbox"
             [checked]="(allSeriesChecked$ | async)"
@@ -19,10 +19,10 @@
             (change)="toggleAllSeries($event.checked)"
           >
             {{ 'ALL_AOIS' | translate }}
-        </mat-checkbox>
-        <button mat-icon-button (click)="openDialog()" class="delete-all-btn2">
-          <mat-icon class="ts-trash-can" >delete</mat-icon>
-        </button>
+          </mat-checkbox>
+          <button mat-icon-button (click)="openDialog()" class="delete-all-btn2">
+            <mat-icon class="ts-trash-can" >delete</mat-icon>
+          </button>
         </span>
 
         <span class="point-list-ul-section">
@@ -127,15 +127,8 @@
           </ul>
         </span>
       </section>
-    }
-    @else {
-      <div class="ts-no-point-selected">
-        {{ 'NO_POINT_SELECTED' | translate }}
-      </div>
-    }
-
-		</div>
-	</mat-card>
+    </div>
+    </mat-card>
 
 </ng-container>
 

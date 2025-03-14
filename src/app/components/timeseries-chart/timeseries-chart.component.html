@@ -56,13 +56,13 @@
 <div #noData
      [class.no-data]="data !== undefined && data.length >= 1">
   <div class="message-container">
-    {{ 'NO_AREA_ON_INTEREST_SPECIFIED' | translate }}<br>
-    {{ 'PLEASE_SELECT_A_POINT_ON_THE_MAP' | translate }}
+    {{ 'WE_ARE_RETRIEVING_YOUR_INFORMATION' | translate }}<br>
+    {{ 'PLEASE_BE_PATIENT' | translate }}
   </div>
 
-  
+
   <div class="icon-container">
-    <mat-icon>place</mat-icon>
+    <mat-icon>downloading</mat-icon>
   </div>
 
 </div>

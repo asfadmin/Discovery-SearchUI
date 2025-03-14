@@ -867,3 +867,23 @@ $d-height: 550px;
   //margin-left: 20px;
 }
 
+.ts-snackbar {
+  @include themify($themes) {
+    background-color: themed('primary-light');
+    color: themed('dark-primary-text');
+  }
+  margin-bottom: 200px !important;
+  text-align: center;
+
+}
+
+.mat-mdc-snack-bar-container.ts-snackbar {
+  @include themify($themes) {
+    background-color: themed('primary-light');
+    color: themed('dark-primary-text');
+  }
+  //--mat-snack-bar-button-color: #fff;
+  //--mdc-snackbar-container-color: #c40202;
+  //--mdc-snackbar-supporting-text-color: themed('primary-light');
+  //--mdc-snackbar-supporting-text-color: yellow;
+}

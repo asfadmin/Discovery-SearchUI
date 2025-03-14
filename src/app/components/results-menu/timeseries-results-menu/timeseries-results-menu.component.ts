@@ -1,4 +1,4 @@
-import {Component, computed, ElementRef, Input, OnDestroy, OnInit, signal, ViewChild} from '@angular/core';
+import {Component, computed, ElementRef, Inject, Input, OnDestroy, OnInit, signal, ViewChild} from '@angular/core';
 import {distinctUntilChanged, filter, first, map, Observable, Subject, withLatestFrom} from 'rxjs';
 import {ResizeEvent} from 'angular-resizable-element';
 
@@ -20,6 +20,11 @@ import {Store} from '@ngrx/store';
 import {MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
 import {MatButton} from '@angular/material/button';
 import {PointHistoryState} from '@services/point-history.service';
+import {MatSnackBar, MatSnackBarConfig} from '@angular/material/snack-bar';
+import {DOCUMENT} from '@angular/common';
+import { AsfLanguageService } from "@services/asf-language.service";
+import {SharedModule} from "@shared";
+
 
 export interface Task {
   aoi: string;
@@ -81,6 +86,9 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public dateRange = [];
   public totalPoints = 0;
 
+  private element: HTMLElement;
+  public snackBarConfig = new MatSnackBarConfig();
+
   constructor(
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
@@ -89,10 +97,16 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     private netcdfService: NetcdfService,
     private wktService: WktService,
     private dialog: MatDialog,
-  ) { }
+    public snackBar: MatSnackBar,
+    @Inject(DOCUMENT) private document: Document,
+    private language: AsfLanguageService,
+  ) {  }
 
   ngOnInit(): void {
+    this.element = this.document.getElementById('TSRESULTS');
     this.pointHistoryService.clearPoints();
+
+    this.snackBarConfig.panelClass = ['ts-snackbar'];
 
     this.subs.add(
       this.store$.select(uiStore.getActiveUUID).subscribe(uuid => {
@@ -128,6 +142,16 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     this.subs.add(this.store$.select(getTimeseriesChartStates).subscribe(chartStates => {
       this.chartStates = Object.values(chartStates);
       this.chartStates = this.chartStates.sort((a, b) => a.seriesNumber - b.seriesNumber);
+      if (this.chartStates.length === 0) {
+        this.element.classList.remove('visible');
+        this.element.classList.add('hidden');
+        let msg = this.language.translate.instant('PLEASE_SELECT_A_POINT_ON_THE_MAP');
+        this.snackBar.open(msg, '', this.snackBarConfig );
+      } else {
+        this.element.classList.remove('hidden');
+        this.element.classList.add('visible');
+        this.snackBar.dismiss();
+      }
     }));
 
     this.subs.add(
@@ -299,6 +323,8 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public ngOnDestroy() {
     this.subs.unsubscribe();
     this.pointHistoryService.clearPoints();
+    this.element.classList.remove('visible');
+    this.element.classList.remove('hidden');
   }
 
 }
@@ -310,7 +336,8 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     MatDialogActions,
     MatDialogContent,
     MatButton,
-    MatDialogClose
+    MatDialogClose,
+    SharedModule
   ],
   standalone: true
 })
