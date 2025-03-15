@@ -155,55 +155,62 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
 
       const products = {...state.products};
 
-      Object.values(products).forEach(jobProduct => {
-        const product  = cmrData[jobProduct.name];
+      try {
+        Object.values(products).forEach(jobProduct => {
+          const product  = cmrData[jobProduct.name];
 
-        if(!!product) {
-          if (!jobProduct.metadata.job) {
-            return;
-          }
-          let job = {
-            ...jobProduct.metadata.job,
-            job_parameters: {
-              ...jobProduct.metadata.job?.job_parameters,
+          if(!!product) {
+            if (!jobProduct.metadata.job) {
+              return;
             }
-          };
-          const jobFile = !!job.files ?
-            job.files[0] :
-            { size: -1, url: '', filename: product.name };
+            let job = {
+              ...jobProduct.metadata.job,
+              job_parameters: {
+                ...jobProduct.metadata.job?.job_parameters,
+              }
+            };
+            const jobFile = job.files?.length > 0 ?
+              job.files[0] :
+              { size: -1, url: '', filename: product.name };
 
-          const scene_keys = job.job_parameters.granules;
-          job.scenes = [];
-          for (const scene_key of scene_keys) {
-            job.scenes.push(cmrData[scene_key]);
+            const scene_keys = job.job_parameters.granules;
+            job.scenes = [];
+            for (const scene_key of scene_keys) {
+              job.scenes.push(cmrData[scene_key]);
+            }
+
+            const combinedProduct: any = {
+              ...product,
+              browses: job.browse_images ? job.browse_images : ['assets/no-browse.png'],
+              thumbnail: job.thumbnail_images ? job.thumbnail_images[0] : 'assets/no-thumb.png',
+              productTypeDisplay: `${job.job_type}, ${product.metadata.productType} `,
+              downloadUrl: jobFile.url,
+              bytes: jobFile.size,
+              groupId: job.job_id,
+              id: job.job_id,
+              isDummyProduct: false,
+              metadata: {
+                ...product.metadata,
+                fileName: jobFile.filename || '',
+                productType: <Hyp3JobType>job.job_type,
+                job
+              },
+            };
+
+            products[combinedProduct.id] = <CMRProduct>combinedProduct;
           }
+        });
 
-          const combinedProduct: any = {
-            ...product,
-            browses: job.browse_images ? job.browse_images : ['assets/no-browse.png'],
-            thumbnail: job.thumbnail_images ? job.thumbnail_images[0] : 'assets/no-thumb.png',
-            productTypeDisplay: `${job.job_type}, ${product.metadata.productType} `,
-            downloadUrl: jobFile.url,
-            bytes: jobFile.size,
-            groupId: job.job_id,
-            id: job.job_id,
-            isDummyProduct: false,
-            metadata: {
-              ...product.metadata,
-              fileName: jobFile.filename || '',
-              productType: <Hyp3JobType>job.job_type,
-              job
-            },
-          };
 
-          products[combinedProduct.id] = <CMRProduct>combinedProduct;
-        }
-      });
+        return {
+          ...state,
+          products
+        };
+      } catch(error: any) {
+        console.log(error);
+        return {...state};
+      }
 
-      return {
-        ...state,
-        products
-      };
     }
 
     case ScenesActionType.SET_SELECTED_SCENE: {
@@ -443,8 +450,8 @@ function arrayEquals(a, b) {
       } else {
         return b.findIndex((b_value) =>
         {
-          return b_value?.id === value?.id && b_value.metadata.date === value.metadata.date
-        }) >= 0
+            return b_value?.id === value?.id && b_value.metadata.date === value.metadata.date
+          }) >= 0
       }
     }
     )

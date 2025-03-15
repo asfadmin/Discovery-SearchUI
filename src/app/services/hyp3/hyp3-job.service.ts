@@ -75,14 +75,14 @@ export class Hyp3JobService {
   public toCMRProducts(jobs: models.Hyp3Job[], products: {[granuleId: string]: models.CMRProduct}) {
     const virtualProducts = jobs
     .filter(job => {
-        const firstGranule = this.getAllGranules(job)[0];
-        return products[firstGranule];
+        const jobGranules = this.getAllGranules(job);
+        return jobGranules && products[jobGranules[0]];
     })
     .map(job => {
       const jobGranules = this.getAllGranules(job);
       const product = products[jobGranules[0]];
 
-      const jobFile = !!job.files ?
+      const jobFile = job.files?.length > 0 ?
         job.files[0] :
         { size: -1, url: '', filename: product.name };
 

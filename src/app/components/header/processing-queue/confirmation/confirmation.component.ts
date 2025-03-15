@@ -31,7 +31,7 @@ export class ConfirmationComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<ConfirmationComponent>,
     public hyp3: services.Hyp3ApiService,
-    public hyp3Job: services.Hyp3JobService,
+    public hyp3JobService: services.Hyp3JobService,
     private store$: Store<AppState>,
     private notificationService: services.NotificationService,
     @Inject(MAT_DIALOG_DATA) public data: models.ConfirmationDialogData
@@ -91,7 +91,7 @@ export class ConfirmationComponent implements OnInit {
   public onSubmitQueue(): void {
     const jobTypesWithQueued = this.jobTypesWithQueued;
 
-    const hyp3JobsBatch = this.hyp3Job.formatJobs(jobTypesWithQueued, {
+    const hyp3JobsBatch = this.hyp3JobService.formatJobs(jobTypesWithQueued, {
       projectName: this.projectName,
       processingOptions: this.processingOptions
     });
@@ -162,7 +162,7 @@ export class ConfirmationComponent implements OnInit {
         }
 
         const successfulJobs = resp.jobs.map(job => ({
-          granules: job.job_parameters.granules.map(g => ({name: g})),
+          granules: this.hyp3JobService.getAllGranules(job).map(g => ({name: g})),
           job_type: models.hyp3JobTypes[job.job_type]
         }));
 

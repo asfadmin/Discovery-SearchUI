@@ -392,7 +392,8 @@ export class SearchEffects {
           new SearchCanceled()
       ),
       catchError(
-        _ => {
+        error => {
+          console.log(error);
           return of(new SearchError(`Error loading search results`));
         }
       ),
