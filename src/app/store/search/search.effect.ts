@@ -456,10 +456,11 @@ export class SearchEffects {
 
   private hyp3JobToProducts(jobs, products) {
     const virtualProducts = jobs
+    .filter(job => job.job_type in models.hyp3JobTypes)
     .filter(job => products[job.job_parameters.granules[0]])
     .map(job => {
       const product = products[job.job_parameters.granules[0]];
-      const jobFile = !!job.files ?
+      const jobFile = job.files?.length > 0 ?
         job.files[0] :
         { size: -1, url: '', filename: product.name };
 
