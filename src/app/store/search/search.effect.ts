@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import * as moment from 'moment';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, Action } from '@ngrx/store';
@@ -74,7 +73,7 @@ export class SearchEffects {
     ofType<SetSearchAmount>(SearchActionType.SET_SEARCH_AMOUNT),
     withLatestFrom(this.store$.select(getSearchType)),
     map(([action, _searchType]) =>
-      (action.payload > 0 ) ? new EnableSearch() : new DisableSearch()
+      (action.payload > 0) ? new EnableSearch() : new DisableSearch()
     )
   ));
 
@@ -82,7 +81,7 @@ export class SearchEffects {
     ofType<ClearScenes>(ScenesActionType.CLEAR),
     withLatestFrom(this.store$.select(getSearchType)),
     switchMap(([_, searchType]) => {
-      if(searchType === SearchType.SARVIEWS_EVENTS) {
+      if (searchType === SearchType.SARVIEWS_EVENTS) {
         return this.sarviewsService.getSarviewsEvents$
       } else {
         return of([])
@@ -143,13 +142,13 @@ export class SearchEffects {
   public searchResponse = createEffect(() => this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
     switchMap(action => {
-      let output : any[] = [
+      let output: any[] = [
         new scenesStore.SetScenes({
           products: action.payload.files,
           searchType: action.payload.searchType
         })
       ];
-      if(action.payload.totalCount) {
+      if (action.payload.totalCount) {
         output.push(new SetSearchAmount(action.payload.totalCount))
       }
       return output
@@ -185,7 +184,7 @@ export class SearchEffects {
         }
       }, []);
 
-      const params = {'granule_list': (<any>granuleNames).join(',')};
+      const params = { 'granule_list': (<any>granuleNames).join(',') };
 
       return this.asfApiService.query(params);
     }),
@@ -274,8 +273,8 @@ export class SearchEffects {
     withLatestFrom(this.store$.select(getAreResultsLoaded)),
     filter(([[[_, searchtype], outOfdate], loaded]) => !outOfdate && searchtype === models.SearchType.DATASET && loaded),
   ).pipe(
-      map(_ => new SetSearchOutOfDate(true))
-    ));
+    map(_ => new SetSearchOutOfDate(true))
+  ));
 
   public setSearchUpToDate = createEffect(() => this.actions$.pipe(
     ofType(SearchActionType.MAKE_SEARCH,
@@ -297,27 +296,27 @@ export class SearchEffects {
       ([params]) => forkJoin(
         this.asfApiService.query<any[]>(params)
       ).pipe(
-          withLatestFrom(combineLatest([
-            this.store$.select(getSearchType),
-            this.store$.select(getIsCanceled)]
-          )),
-          map(([[response], [searchType, isCanceled]]) =>
-            !isCanceled ?
-              new SearchResponse({
-                files: this.productService.fromResponse(response),
-                searchType
-              }) :
-              new SearchCanceled()
-          ),
-          catchError(
-            (err: HttpErrorResponse) => {
-              if (err.status !== 400) {
-                return of(new SearchError(`Unknown Error`));
-              }
-              return EMPTY;
+        withLatestFrom(combineLatest([
+          this.store$.select(getSearchType),
+          this.store$.select(getIsCanceled)]
+        )),
+        map(([[response], [searchType, isCanceled]]) =>
+          !isCanceled ?
+            new SearchResponse({
+              files: this.productService.fromResponse(response),
+              searchType
+            }) :
+            new SearchCanceled()
+        ),
+        catchError(
+          (err: HttpErrorResponse) => {
+            if (err.status !== 400) {
+              return of(new SearchError(`Unknown Error`));
             }
-          ),
-        ))
+            return EMPTY;
+          }
+        ),
+      ))
   );
 
   public asfApiBaselineQuery$(): Observable<Action> {
@@ -352,34 +351,15 @@ export class SearchEffects {
           ))
     );
   }
-  private dummyProducts$(granuleNames: string[]) {
-    const dummyProducts = granuleNames.map(granuleName => {
-      return {
-        ...this.dummyProduct(),
-        name: granuleName
-      };
-    })
 
-    return of(dummyProducts);
-  }
-
-  private onDemandGranuleList$(jobsRes, latestScenes) {
+  private onDemandGranuleList$(
+    jobsRes: { hyp3Jobs: models.Hyp3Job[], next: string },
+    latestScenes: models.CMRProduct[]
+  ) {
     const jobs = jobsRes.hyp3Jobs;
+    const dummyProducts = this.hyp3JobService.toDummyCMRProducts(jobs)
 
-    const granuleNames = this.hyp3JobService.getAllGranulesFromJobs(jobs);
-    const fakeApiListQuery = this.dummyProducts$(granuleNames);
-
-    return fakeApiListQuery.pipe(
-      map(dummyProducts => {
-        return dummyProducts
-          .reduce((prodsByName, p) => {
-            prodsByName[p.name] = p;
-            return prodsByName;
-          }, {});
-      }),
-      map(dummyProducts => {
-        return this.hyp3JobService.toCMRProducts(jobs, dummyProducts);
-      }),
+    return of(dummyProducts).pipe(
       withLatestFrom(this.store$.select(getIsCanceled)),
       map(([products, isCanceled]) =>
         !isCanceled ?
@@ -482,56 +462,4 @@ export class SearchEffects {
       }
     });
   }
-
-  private dummyProduct() {
-    // "2023-11-21T18:03:43+00:00"
-    return {
-      "name": "",
-      "productTypeDisplay": "",
-      "file": "",
-      "id": "",
-      "downloadUrl": "",
-      "bytes": 0,
-      "dataset": "",
-      "browses": [
-        "/assets/no-browse.png"
-      ],
-      "thumbnail": "/assets/no-thumb.png",
-      "groupId": "",
-      "isUnzippedFile": false,
-      "isDummyProduct": true,
-      "metadata": {
-        "date": moment.utc("1970-01-01T00:00:00+00:00"),
-        "stopDate": moment.utc("1970-01-01T00:00:00+00:00"),
-        "polygon": "POLYGON ((0 0, 0 0, 0 0, 0 0, 0 0))",
-        "productType": "",
-        "beamMode": "",
-        "polarization": "",
-        "flightDirection": "",
-        "path": 0,
-        "frame": 0,
-        "absoluteOrbit": [
-          0
-        ],
-        "faradayRotation": 0,
-        "offNadirAngle": 0,
-        "instrument": "",
-        "pointingAngle": null,
-        "missionName": null,
-        "flightLine": null,
-        "stackSize": null,
-        "perpendicular": null,
-        "temporal": null,
-        "canInSAR": true,
-        "job": null,
-        "fileName": null,
-        "burst": null,
-        "opera": null,
-        "pgeVersion": 0,
-        "subproducts": [],
-        "parentID": null
-      }
-    };
-  }
-
 }

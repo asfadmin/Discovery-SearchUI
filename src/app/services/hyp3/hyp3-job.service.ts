@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import * as moment from 'moment';
 
 import * as models from '@models';
 
@@ -9,9 +10,23 @@ export class Hyp3JobService {
 
   constructor() { }
 
+  public getAllGranulesFromJobs(jobs: models.Hyp3Job[]): string[] {
+    return jobs.reduce(
+      (granuleNames, job) => {
+        const jobGranules = this.getAllGranules(job)
+
+        return granuleNames.concat(jobGranules);
+      },
+      []);
+  }
+
+  public getAllGranules(job: models.Hyp3Job): string[] {
+    return job.job_parameters.granules;
+  }
+
   public formatJobs(
     jobTypesWithQueued: models.JobTypesWithQueued[],
-    options: {processingOptions: any, projectName: string}
+    options: { processingOptions: any, projectName: string }
   ) {
     const jobOptionNames = {};
     models.hyp3JobTypesList.forEach(
@@ -57,59 +72,114 @@ export class Hyp3JobService {
     });
   }
 
-  public getAllGranulesFromJobs(jobs: models.Hyp3Job[]): string[] {
-    return jobs.reduce(
-      (granuleNames, job) => {
-        const jobGranules = this.getAllGranules(job)
+  public toDummyCMRProducts(jobs: models.Hyp3Job[]) {
+    const granuleNames = this.getAllGranulesFromJobs(jobs);
 
-        return granuleNames.concat(jobGranules);
-      },
-      []);
-  }
+    const dummyProducts = this.dummyProductsFor(granuleNames)
+      .reduce((prodsByName, p) => {
+        prodsByName[p.name] = p;
+        return prodsByName;
+      }, {});
 
-
-  public getAllGranules(job: models.Hyp3Job): string[]  {
-    return job.job_parameters.granules;
-  }
-
-  public toCMRProducts(jobs: models.Hyp3Job[], products: {[granuleId: string]: models.CMRProduct}) {
     const virtualProducts = jobs
-    .filter(job => {
+      .filter(job => {
+        const firstGranule = this.getAllGranules(job)[0];
+        return dummyProducts[firstGranule];
+      })
+      .map(job => {
         const jobGranules = this.getAllGranules(job);
-        return jobGranules && products[jobGranules[0]];
-    })
-    .map(job => {
-      const jobGranules = this.getAllGranules(job);
-      const product = products[jobGranules[0]];
+        const product = dummyProducts[jobGranules[0]];
 
-      const jobFile = job.files?.length > 0 ?
-        job.files[0] :
-        { size: -1, url: '', filename: product.name };
+        const jobFile = !!job.files ?
+          job.files[0] :
+          { size: -1, url: '', filename: product.name };
 
-      job.scenes = jobGranules
-        .map(granuleName => products[granuleName]);
+        job.scenes = jobGranules
+          .map(granuleName => dummyProducts[granuleName]);
 
-      const jobProduct = {
-        ...product,
-        browses: job.browse_images ? job.browse_images : ['assets/no-browse.png'],
-        thumbnail: job.thumbnail_images ? job.thumbnail_images[0] : 'assets/no-thumb.png',
-        productTypeDisplay: `${job.job_type}, ${product.metadata.productType} `,
-        downloadUrl: jobFile.url,
-        bytes: jobFile.size,
-        groupId: job.job_id,
-        id: job.job_id,
-        isDummyProduct: true,
-        metadata: {
-          ...product.metadata,
-          fileName: jobFile.filename || '',
-          productType: job.job_type,
-          job
-        },
-      };
+        const jobProduct = {
+          ...product,
+          browses: job.browse_images ? job.browse_images : ['assets/no-browse.png'],
+          thumbnail: job.thumbnail_images ? job.thumbnail_images[0] : 'assets/no-thumb.png',
+          productTypeDisplay: `${job.job_type}, ${product.metadata.productType} `,
+          downloadUrl: jobFile.url,
+          bytes: jobFile.size,
+          groupId: job.job_id,
+          id: job.job_id,
+          isDummyProduct: true,
+          metadata: {
+            ...product.metadata,
+            fileName: jobFile.filename || '',
+            productType: job.job_type,
+            job
+          },
+        };
 
-      return jobProduct
-    });
+        return jobProduct
+      });
 
     return virtualProducts;
   }
+
+  private dummyProductsFor(granuleNames: string[]) {
+    const dummyProducts = granuleNames.map(granuleName => {
+      return {
+        ...this.dummyProduct(),
+        name: granuleName
+      };
+    })
+
+    return dummyProducts;
+  }
+
+  private dummyProduct() {
+    return {
+      "name": "",
+      "productTypeDisplay": "",
+      "file": "",
+      "id": "",
+      "downloadUrl": "",
+      "bytes": 0,
+      "dataset": "",
+      "browses": [
+        "/assets/no-browse.png"
+      ],
+      "thumbnail": "/assets/no-thumb.png",
+      "groupId": "",
+      "isUnzippedFile": false,
+      "isDummyProduct": true,
+      "metadata": {
+        "date": moment.utc("1970-01-01T00:00:00+00:00"),
+        "stopDate": moment.utc("1970-01-01T00:00:00+00:00"),
+        "polygon": "POLYGON ((0 0, 0 0, 0 0, 0 0, 0 0))",
+        "productType": "",
+        "beamMode": "",
+        "polarization": "",
+        "flightDirection": "",
+        "path": 0,
+        "frame": 0,
+        "absoluteOrbit": [
+          0
+        ],
+        "faradayRotation": 0,
+        "offNadirAngle": 0,
+        "instrument": "",
+        "pointingAngle": null,
+        "missionName": null,
+        "flightLine": null,
+        "stackSize": null,
+        "perpendicular": null,
+        "temporal": null,
+        "canInSAR": true,
+        "job": null,
+        "fileName": null,
+        "burst": null,
+        "opera": null,
+        "pgeVersion": 0,
+        "subproducts": [],
+        "parentID": null
+      }
+    };
+  }
+
 }
