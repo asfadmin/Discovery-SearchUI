@@ -11,7 +11,7 @@ export class OnDemandService {
 
   public jobParamsToList(metadata) {
     const jobType = models.hyp3JobTypes[metadata.job.job_type];
-    const allOptions = !!jobType ? jobType.options : models.hyp3JobOptionsOrdered;
+    const allOptions = jobType ? jobType.options : models.hyp3JobOptionsOrdered;
 
     return allOptions
       .filter(option => metadata.job.job_parameters[option.apiName])

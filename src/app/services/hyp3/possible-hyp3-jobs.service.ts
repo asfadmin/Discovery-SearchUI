@@ -29,7 +29,7 @@ export class PossibleHyp3JobsService {
     withLatestFrom(this.store$.select(scenesStore.getMasterName)),
     map(
       ([scenes, referenceName]) => {
-        if (!!referenceName) {
+        if (referenceName) {
           const referenceSceneIdx = scenes.findIndex(scene => scene.name === referenceName);
 
           if (referenceSceneIdx !== -1) {

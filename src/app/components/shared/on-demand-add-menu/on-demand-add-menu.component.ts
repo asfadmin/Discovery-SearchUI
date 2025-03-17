@@ -85,7 +85,7 @@ export class OnDemandAddMenuComponent implements OnInit {
         ).subscribe(
         ([scenes, referenceName]) => {
           this.scenes = scenes;
-          if (!!referenceName) {
+          if (referenceName) {
             const referenceSceneIdx = this.scenes.findIndex(scene => scene.name === referenceName);
             if (referenceSceneIdx !== -1) {
               this.referenceScene = this.scenes[referenceSceneIdx];

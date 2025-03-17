@@ -59,7 +59,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public hyp3BaseUrl = this.hyp3.baseUrl;
   public hyp3BackendUrl: string;
 
-  public dataset: String = ''
+  public dataset: string = ''
 
   constructor(
     private store$: Store<AppState>,

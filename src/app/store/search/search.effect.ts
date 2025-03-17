@@ -160,7 +160,7 @@ export class SearchEffects {
     withLatestFrom(this.store$.select(getSearchType)),
     filter(([_, searchType]) => searchType === SearchType.CUSTOM_PRODUCTS),
     switchMap(([action, _]) =>
-      [!!action.payload.next ? new SetNextJobsUrl(action.payload.next) : new SetNextJobsUrl('')]
+      [action.payload.next ? new SetNextJobsUrl(action.payload.next) : new SetNextJobsUrl('')]
     )
   ));
 
@@ -173,7 +173,7 @@ export class SearchEffects {
       const granuleNames = products.reduce((names, prod) => {
         const scenes = prod.metadata.job.scenes;
 
-        if (!!scenes) {
+        if (scenes) {
           const gNames = scenes
             .filter(g => !!g && 'name' in g)
             .map(g => g.name);
@@ -211,7 +211,7 @@ export class SearchEffects {
         products: action.payload.files,
         searchType: action.payload.searchType
       }),
-      !!action.payload.next ? new SetNextJobsUrl(action.payload.next) : new SetNextJobsUrl(''),
+      action.payload.next ? new SetNextJobsUrl(action.payload.next) : new SetNextJobsUrl(''),
     ]
     )
   ));

@@ -513,7 +513,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       && this.searchType !== models.SearchType.CUSTOM_PRODUCTS
       && this.searchType !== models.SearchType.SARVIEWS_EVENTS) {
       const defaultFilterID = profile.defaultFilterPresets[this.searchType];
-      if (!!defaultFilterID) {
+      if (defaultFilterID) {
         this.store$.dispatch(new userStore.LoadFiltersPreset(defaultFilterID));
       }
     }

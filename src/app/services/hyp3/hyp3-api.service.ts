@@ -81,7 +81,7 @@ export class Hyp3ApiService {
   public getJobs$(userID?: string): Observable<{hyp3Jobs: models.Hyp3Job[], next: string}> {
     let getJobsUrl = `${this.apiUrl}/jobs`;
 
-    if (!!userID) {
+    if (userID) {
       getJobsUrl += `?user_id=${userID}`
     }
 
@@ -308,7 +308,7 @@ export class Hyp3ApiService {
     }
   }
 
-  private onHyp3APIUrlError(status_code: Number) {
+  private onHyp3APIUrlError(status_code: number) {
     const error_code = status_code !== 0 ? status_code.toString() : 'Uknown';
     const title = `HyP3 API URL ${error_code} Error`;
     const message = `There was a problem with your preferred HyP3 API URL, click to open preferences.`;

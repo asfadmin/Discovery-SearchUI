@@ -737,7 +737,7 @@ export const getNumberOfSarviewsEvents = createSelector(
 export const getSelectedSarviewsEventProducts = createSelector(
   getScenesState,
   state => {
-    if (!!state.selectedSarviewsEventProducts) {
+    if (state.selectedSarviewsEventProducts) {
       const sorted = state.selectedSarviewsEventProducts.slice();
       return sorted.sort((a, b) => {
         if (a.granules[0].acquisition_date < b.granules[0].acquisition_date) {

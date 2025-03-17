@@ -361,7 +361,7 @@ export class ProcessingQueueComponent implements OnInit {
   }
 
   private selectDefaultJobType(): void {
-    this.selectedJobTypeId = !!this.hyp3JobTypesList[0] ?
+    this.selectedJobTypeId = this.hyp3JobTypesList[0] ?
       this.hyp3JobTypesList[0].id : null;
 
   }

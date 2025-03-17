@@ -378,10 +378,10 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
       this.store$.dispatch(new filtersStore.SetFiltersSimilarTo({product: scene, dataset: this.datasetForProduct.match(scene)}));
 
-      if (!!dateRange.start) {
+      if (dateRange.start) {
         this.store$.dispatch(new filtersStore.SetStartDate(new Date(dateRange.start)));
       }
-      if (!!dateRange.end) {
+      if (dateRange.end) {
         this.store$.dispatch(new filtersStore.SetEndDate(new Date(dateRange.end)));
       }
 
@@ -411,10 +411,10 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
       new scenesStore.SetFilterMaster(sceneName),
     ].forEach(action => this.store$.dispatch(action));
 
-    if (!!dateRange.start) {
+    if (dateRange.start) {
       this.store$.dispatch(new filtersStore.SetStartDate(new Date(dateRange.start)));
     }
-    if (!!dateRange.end) {
+    if (dateRange.end) {
       this.store$.dispatch(new filtersStore.SetEndDate(new Date(dateRange.end)));
     }
 
@@ -469,10 +469,10 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
       new filtersStore.SetSelectedDataset('SENTINEL-1'),
     ].forEach(action => this.store$.dispatch(action));
 
-    if (!!timeFrame.start) {
+    if (timeFrame.start) {
       this.store$.dispatch(new filtersStore.SetStartDate(new Date(timeFrame.start)));
     }
-    if (!!timeFrame.end) {
+    if (timeFrame.end) {
       this.store$.dispatch(new filtersStore.SetEndDate(new Date(timeFrame.end)));
     }
     this.mapService.onSetSarviewsPolygon(event, this.sarviewsEventGeoSearchRadius);
