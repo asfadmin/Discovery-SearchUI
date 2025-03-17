@@ -85,7 +85,6 @@ export class Hyp3JobService {
     const virtualProducts = jobs
       .filter(job => <string>job.job_type in models.hyp3JobTypes)
       .filter(job => {
-
         const firstGranule = this.getAllGranules(job)[0];
         return dummyProducts[firstGranule];
       })
@@ -93,30 +92,10 @@ export class Hyp3JobService {
         const jobGranules = this.getAllGranules(job);
         const product = dummyProducts[jobGranules[0]];
 
-        const jobFile = job.files?.length > 0 ?
-          job.files[0] :
-          { size: -1, url: '', filename: product.name };
-
         job.scenes = jobGranules
           .map(granuleName => dummyProducts[granuleName]);
 
-        const jobProduct = {
-          ...product,
-          browses: job.browse_images ? job.browse_images : ['assets/no-browse.png'],
-          thumbnail: job.thumbnail_images ? job.thumbnail_images[0] : 'assets/no-thumb.png',
-          productTypeDisplay: `${job.job_type}, ${product.metadata.productType} `,
-          downloadUrl: jobFile.url,
-          bytes: jobFile.size,
-          groupId: job.job_id,
-          id: job.job_id,
-          isDummyProduct: true,
-          metadata: {
-            ...product.metadata,
-            fileName: jobFile.filename || '',
-            productType: job.job_type,
-            job
-          },
-        };
+        const jobProduct = this.combineJobAndCmrProduct(job, product);
 
         return jobProduct
       });
@@ -133,6 +112,61 @@ export class Hyp3JobService {
     })
 
     return dummyProducts;
+  }
+
+  public combineWithCmrProduct(oldJobProducts: object, cmrData: object) {
+    const newJobProducts: object = { ...oldJobProducts };
+
+    Object.values(newJobProducts).forEach(jobProduct => {
+      const product = cmrData[jobProduct.name];
+
+      if (!product || !jobProduct.metadata.job) {
+        return;
+      }
+
+      let job = {
+        ...jobProduct.metadata.job,
+        job_parameters: {
+          ...jobProduct.metadata.job?.job_parameters,
+        }
+      };
+
+      const jobGranules = this.getAllGranules(job);
+
+      job.scenes = jobGranules
+        .map(granuleName => cmrData[granuleName]);
+
+      const combinedProduct = this.combineJobAndCmrProduct(job, product);
+
+      newJobProducts[combinedProduct.id] = <models.CMRProduct>combinedProduct;
+    });
+
+    return newJobProducts;
+  }
+
+  private combineJobAndCmrProduct(job: models.Hyp3Job, product: models.CMRProduct) {
+    const jobFile = job.files?.length > 0 ?
+      job.files[0] :
+      { size: -1, url: '', filename: product.name };
+
+    const combinedProduct: any = {
+      ...product,
+      browses: job.browse_images ? job.browse_images : ['assets/no-browse.png'],
+      thumbnail: job.thumbnail_images ? job.thumbnail_images[0] : 'assets/no-thumb.png',
+      productTypeDisplay: `${job.job_type}, ${product.metadata.productType} `,
+      downloadUrl: jobFile.url,
+      bytes: jobFile.size,
+      groupId: job.job_id,
+      id: job.job_id,
+      metadata: {
+        ...product.metadata,
+        fileName: jobFile.filename || '',
+        productType: <models.Hyp3JobType>job.job_type,
+        job
+      },
+    };
+
+    return combinedProduct;
   }
 
   private dummyProduct() {

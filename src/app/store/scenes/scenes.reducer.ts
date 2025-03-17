@@ -2,7 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { ScenesActionType, ScenesActions } from './scenes.action';
 
-import { CMRProduct, UnzippedFolder, ColumnSortDirection, SarviewsEvent, SarviewsProduct, opera_s1, Hyp3JobType } from '@models';
+import { CMRProduct, UnzippedFolder, ColumnSortDirection, SarviewsEvent, SarviewsProduct, opera_s1 } from '@models';
 import { PinnedProduct } from '@services/browse-map.service';
 import { createSelectorFactory, defaultMemoize  } from '@ngrx/store';
 
@@ -148,59 +148,14 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
     }
 
     case ScenesActionType.ADD_CMR_DATA_TO_ON_DEMAND_JOBS: {
-      const cmrData = action.payload.reduce((products, product) => {
-        products[product.name] = product;
-        return products;
-      }, {});
-
+      const combinedProducts = action.payload;
       const products = {...state.products};
 
       try {
-        Object.values(products).forEach(jobProduct => {
-          const product  = cmrData[jobProduct.name];
-
-          if(!!product) {
-            if (!jobProduct.metadata.job) {
-              return;
-            }
-            let job = {
-              ...jobProduct.metadata.job,
-              job_parameters: {
-                ...jobProduct.metadata.job?.job_parameters,
-              }
-            };
-            const jobFile = job.files?.length > 0 ?
-              job.files[0] :
-              { size: -1, url: '', filename: product.name };
-
-            const scene_keys = job.job_parameters.granules;
-            job.scenes = [];
-            for (const scene_key of scene_keys) {
-              job.scenes.push(cmrData[scene_key]);
-            }
-
-            const combinedProduct: any = {
-              ...product,
-              browses: job.browse_images ? job.browse_images : ['assets/no-browse.png'],
-              thumbnail: job.thumbnail_images ? job.thumbnail_images[0] : 'assets/no-thumb.png',
-              productTypeDisplay: `${job.job_type}, ${product.metadata.productType} `,
-              downloadUrl: jobFile.url,
-              bytes: jobFile.size,
-              groupId: job.job_id,
-              id: job.job_id,
-              isDummyProduct: false,
-              metadata: {
-                ...product.metadata,
-                fileName: jobFile.filename || '',
-                productType: <Hyp3JobType>job.job_type,
-                job
-              },
-            };
-
+        Object.values(combinedProducts).forEach(combinedProduct => {
             products[combinedProduct.id] = <CMRProduct>combinedProduct;
           }
-        });
-
+        );
 
         return {
           ...state,

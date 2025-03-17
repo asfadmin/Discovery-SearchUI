@@ -99,6 +99,7 @@ export class SearchEffects {
         return this.sarviewsEventsQuery$();
       }
       else if (searchType === SearchType.BASELINE || searchType === SearchType.SBAS) {
+        this.logCountries();
         return this.asfApiBaselineQuery$();
       }
       else if (searchType === SearchType.CUSTOM_PRODUCTS) {
@@ -106,7 +107,6 @@ export class SearchEffects {
       }
       else {
         this.logCountries();
-
         return this.asfApiQuery$;
       }
     }
@@ -188,14 +188,22 @@ export class SearchEffects {
 
       return this.asfApiService.query(params);
     }),
-    map(results => this.productService.fromResponse(results).
-      filter(product => {
-        return !product.metadata.productType.includes('METADATA');
-      })
-    ),
-    map(results => {
-      return new scenesStore.AddCmrDataToOnDemandScenes(results);
-    })
+    withLatestFrom(this.store$.select(scenesStore.getProducts)),
+    map(([asfApiResp, products]) => {
+      console.log(products);
+
+      const results = this.productService.fromResponse(asfApiResp)
+        .filter(product => !product.metadata.productType.includes('METADATA'))
+
+      const cmrData = results.reduce((products, product) => {
+        products[product.name] = product;
+        return products;
+      }, {});
+
+      const combinedProducts = this.hyp3JobService.combineWithCmrProduct(products, cmrData);
+
+      return new scenesStore.AddCmrDataToOnDemandScenes(<any>combinedProducts);
+    }),
   ));
 
   public hyp3BatchResponse = createEffect(() => this.actions$.pipe(
@@ -320,17 +328,22 @@ export class SearchEffects {
   );
 
   public asfApiBaselineQuery$(): Observable<Action> {
-    this.logCountries();
+
     return this.searchParams$.getParams.pipe(
       switchMap(
-        (params) =>
-          this.asfApiService.query<any[]>(params).pipe(
+        (params) => {
+
+          const apiQuery$ = this.asfApiService.query<any[]>(params).pipe(
+            map(response => this.productService.fromResponse(response))
+          );
+
+          return apiQuery$.pipe(
             withLatestFrom(combineLatest([
               this.store$.select(getSearchType),
               this.store$.select(getIsCanceled)]
             )),
-            map(([response, [searchType, isCanceled]]) => {
-              const files = this.productService.fromResponse(response)
+            map(([files, [searchType, isCanceled]]) => {
+
               return !isCanceled ?
                 new SearchResponse({
                   files,
@@ -348,7 +361,8 @@ export class SearchEffects {
                 return EMPTY;
               }
             ),
-          ))
+          )
+        })
     );
   }
 
@@ -429,6 +443,7 @@ export class SearchEffects {
       map(events => new SarviewsEventsResponse({ events }))
     );
   }
+
   private findCountries(shapeString: string) {
     const parser = new WKT();
     const feature = parser.readFeature(shapeString);
