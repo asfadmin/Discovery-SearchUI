@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { CMRProduct, UnzippedFolder, ColumnSortDirection, SearchType, CMRProductPair, SarviewsEvent, SarviewsProduct } from '@models';
+import { CMRProduct, UnzippedFolder, ColumnSortDirection, SearchType, CMRProductPair, SarviewsEvent, SarviewsProduct, CMRProductsById } from '@models';
 import { PinnedProduct } from '@services/browse-map.service';
 
 export enum ScenesActionType {
@@ -173,7 +173,7 @@ export class SetImageBrowseProducts implements Action {
 export class AddCmrDataToOnDemandScenes implements Action {
   public readonly type = ScenesActionType.ADD_CMR_DATA_TO_ON_DEMAND_JOBS;
 
-  constructor(public payload: CMRProduct[]) {}
+  constructor(public payload: CMRProductsById) {}
 }
 
 export type ScenesActions =

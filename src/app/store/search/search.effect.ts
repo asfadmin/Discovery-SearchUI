@@ -190,8 +190,6 @@ export class SearchEffects {
     }),
     withLatestFrom(this.store$.select(scenesStore.getProducts)),
     map(([asfApiResp, products]) => {
-      console.log(products);
-
       const results = this.productService.fromResponse(asfApiResp)
         .filter(product => !product.metadata.productType.includes('METADATA'))
 
@@ -202,7 +200,7 @@ export class SearchEffects {
 
       const combinedProducts = this.hyp3JobService.combineWithCmrProduct(products, cmrData);
 
-      return new scenesStore.AddCmrDataToOnDemandScenes(<any>combinedProducts);
+      return new scenesStore.AddCmrDataToOnDemandScenes(combinedProducts);
     }),
   ));
 

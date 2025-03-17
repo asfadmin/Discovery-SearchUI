@@ -114,8 +114,8 @@ export class Hyp3JobService {
     return dummyProducts;
   }
 
-  public combineWithCmrProduct(oldJobProducts: object, cmrData: object) {
-    const newJobProducts: object = { ...oldJobProducts };
+  public combineWithCmrProduct(oldJobProducts: models.CMRProductsById, cmrData: models.CMRProductsById): models.CMRProductsById {
+    const newJobProducts: models.CMRProductsById = { ...oldJobProducts };
 
     Object.values(newJobProducts).forEach(jobProduct => {
       const product = cmrData[jobProduct.name];

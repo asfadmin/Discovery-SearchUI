@@ -2,15 +2,13 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { ScenesActionType, ScenesActions } from './scenes.action';
 
-import { CMRProduct, UnzippedFolder, ColumnSortDirection, SarviewsEvent, SarviewsProduct, opera_s1 } from '@models';
+import { CMRProduct, UnzippedFolder, ColumnSortDirection, SarviewsEvent, SarviewsProduct, opera_s1, CMRProductsById } from '@models';
 import { PinnedProduct } from '@services/browse-map.service';
 import { createSelectorFactory, defaultMemoize  } from '@ngrx/store';
 
-interface SceneEntities { [id: string]: CMRProduct; }
-
 export interface ScenesState {
   ids: string[];
-  products: SceneEntities;
+  products: CMRProductsById;
   sarviewsEvents: SarviewsEvent[];
   selectedSarviewsID: string;
   selectedSarviewsProduct: SarviewsProduct;
