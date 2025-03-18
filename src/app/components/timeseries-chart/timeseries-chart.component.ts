@@ -2,7 +2,7 @@ import {Component, ElementRef, Input, OnDestroy, OnInit, QueryList, ViewChild, V
 import * as d3 from 'd3';
 // import * as models from '@models';
 import {
-  debounceTime, map, Observable, withLatestFrom,
+  debounceTime, distinctUntilChanged, map, Observable, withLatestFrom,
   // Subject
 } from 'rxjs';
 
@@ -217,6 +217,9 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.store$.select(filtersStore.getFlightDirections).pipe(
+        distinctUntilChanged((previous, current) => {
+            return JSON.stringify(previous) === JSON.stringify(current);
+        }),
         map(dir => dir[0] ?? this.flightDirection)
       ).subscribe(
         dir => {
@@ -577,7 +580,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         toolTip
           .style('opacity', .9);
         toolTip.html(`<div style="text-align: left">
-        <b>${self.language.translate.instant('SERIES')} ${p.seriesNumber} (${self.language.translate.instant('FRAME')} ${p.frame}):</b><br>
+        <b>${self.language.translate.instant('SERIES')} ${p.seriesNumber}:</b><br>
         ${self.tooltipDateFormat(self.hoveredDate)}<br>
         ${p.short_wavelength_displacement.toFixed(4)} ${self.language.translate.instant('METERS')} <br>
         <em>${self.dotToolTipText}</em></div>`);

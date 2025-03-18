@@ -8,13 +8,17 @@
         <app-draw-selector></app-draw-selector>
         <app-timeseries-chart-flight-direction-toggle></app-timeseries-chart-flight-direction-toggle>
         <span class="azimuth-icon">
-          <img ngSrc="assets/satellite-graphics/sat-2.png"
+          <img *ngIf="!flightDesc" ngSrc="assets/satellite-graphics/sat-2.png"
                class="invert-icon"
-               [class.flip-icon]="flightDesc"
+               alt="Azimuth" height="65" width="auto">
+          <img *ngIf="flightDesc" ngSrc="assets/satellite-graphics/sat-2-desc.png"
+               class="invert-icon"
                alt="Azimuth" height="65" width="auto">
         </span>
         <span class="azimuth-icon-text">
-          Azimuth Angle: 348°
+          {{"AZIMUTH_ANGLE" | translate}}:
+            <span *ngIf="!flightDesc">348°</span>
+            <span *ngIf="flightDesc">193°</span>
         </span>
         <span class="line-of-site-icon">
           <img ngSrc="assets/satellite-graphics/sat-1.png"
@@ -23,7 +27,8 @@
                alt="Line of Site" height="70" width="auto">
         </span>
         <span class="line-of-site-icon-text">
-          Grazing Angle: 29° - 46°
+          {{"GRAZING_ANGLE" | translate}}:
+            29° - 46°
         </span>
       </div>
 
