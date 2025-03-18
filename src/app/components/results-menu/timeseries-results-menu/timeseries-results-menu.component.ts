@@ -79,7 +79,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public temporalRange: models.Range<number> = {start: 0, end: 0};
   public temporalRangeValues$ = new Subject<number[]>();
   public maxRange: models.Range<number> = {start: 0, end: 0};
-  public selectedSeries: string = null;
+  public selectedUUID: string = null;
 
 
   public totalDisplacement = 0;
@@ -111,7 +111,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(uiStore.getActiveUUID).subscribe(uuid => {
         if (!uuid)
-          this.selectedSeries = null;
+          this.selectedUUID = null;
         else
           this.respondToActiveWkt(uuid);
       }));
@@ -215,19 +215,21 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     let allPointsData = [];
     for (const series of this.chartStates) {
       if (!series.frames || resetAll) {
-        this.netcdfService.getFrames(series.wkt, this.flightDirection).pipe(first()).subscribe(data => {
+        // this.netcdfService.getFrames(series.wkt, this.flightDirection).pipe(first()).subscribe(data => {
           // series.frames = data;
           let temp: models.TimeseriesSubframe[] = [];
-          Object.keys(data).forEach(frame => {
-            temp.push({
-              'number': frame,
-              'wkt': data[frame],
-              'uuid': crypto.randomUUID(),
-              'valid': null,
-              'checked': true,
-              'color': '',
-            })
-          })
+        //   [Object.keys(data)[0]].forEach(frame => {
+        temp.push({
+        //   'number': frame,
+        //   'wkt': data[frame],
+            'number': '',
+            'wkt': series.wkt,
+            'uuid': series.uuidSeries, //crypto.randomUUID(), // for now remove the uuid for frames, and use the parent one
+            'valid': null,
+            'checked': true,
+            'color': '',
+        })
+        //   })
           this.store$.dispatch(chartStore.setFrames({ 'uuid': series.uuidSeries, 'frames': temp }))
           for(let frame of temp) {
             this.netcdfService.getTimeSeries(frame, this.flightDirection)
@@ -238,7 +240,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
                 this.temporalRange = this.getMaxRange(allPointsData);
               })
           }
-        })
+        // })
       }
     }
     this.maxRange = this.getMaxRange(allPointsData);
@@ -296,7 +298,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   }
 
   public respondToActiveWkt(uuid: string) {
-    this.selectedSeries = uuid;
+    this.selectedUUID = uuid;
   }
 
   public setActiveWkt(uuid: string) {

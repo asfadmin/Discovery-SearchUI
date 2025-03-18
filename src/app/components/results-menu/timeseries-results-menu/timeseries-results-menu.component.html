@@ -39,7 +39,7 @@
                     </span>
                   </li>
                 </span>
-                <li [class.ts-highlighted]="frame.uuid === selectedSeries"
+                <li [class.ts-highlighted]="frame.uuid === selectedUUID"
                     class="point-list-item"
                     on-mouseenter="setActiveWkt(frame.uuid)"
                     on-mouseleave="setActiveWkt(null)">
@@ -59,7 +59,7 @@
                         </span>
                       </div>
                       <button mat-icon-button (click)="deletePoint(point.uuidSeries)">
-                        <mat-icon class="ts-trash-can" *ngIf="frame.uuid === selectedSeries" disableRipple>delete</mat-icon>
+                        <mat-icon class="ts-trash-can" *ngIf="frame.uuid === selectedUUID" disableRipple>delete</mat-icon>
                       </button>
                     }
                 </li>
@@ -96,7 +96,7 @@
                       </span>
                     </mat-checkbox>
                     <button mat-icon-button (click)="deletePoint(point.uuidSeries)"
-                            *ngIf="frame.uuid === selectedSeries"
+                            *ngIf="frame.uuid === selectedUUID"
                             [class.hidden]="count > 1">
                       <mat-icon class="ts-trash-can" disableRipple>delete</mat-icon>
                     </button>
