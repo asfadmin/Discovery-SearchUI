@@ -1,4 +1,4 @@
-<div class="ts-chart-details" [class.no-data] = "!data || data.length < 1">
+<div class="ts-chart-details" [class.no-data] = "data?.length < 1">
   <div class="ts-best-fit-nav"
        [ngStyle]="{'visibility': isOverflowing() ? 'visible' : 'hidden'}">
     <button mat-flat-button (click)="onButtonClickPlus()" class="ts-best-fit-nav">
@@ -32,7 +32,7 @@
   </div>
 </div>
 
-<div #tsChartWrapper class="chart-wrapper" (resized)="onResized()" [class.no-data] = "!data || data.length < 1">
+<div #tsChartWrapper class="chart-wrapper" (resized)="onResized()" [class.no-data] = "data?.length < 1">
   <div #timeseriesChart id="timeseriesChart" [contextMenuTriggerFor]="menu" [contextMenuTriggerData]="{'tooltipData': hoveredData}">
   </div>
   <app-timeseries-chart-export class="ts-chart-export-button" [timeSeriesData]="exportableData"></app-timeseries-chart-export>
@@ -51,10 +51,10 @@
   </mat-menu>
 </div>
 
-<app-timeseries-chart-temporal-slider [class.no-data] = "!data || data.length < 1"></app-timeseries-chart-temporal-slider>
+<app-timeseries-chart-temporal-slider [class.no-data] = "data?.length < 1"></app-timeseries-chart-temporal-slider>
 
 <div #noData
-     [class.no-data]="data !== undefined && data.length >= 1">
+     [class.no-data]="data?.length > 0">
   <div class="message-container">
     {{ 'WE_ARE_RETRIEVING_YOUR_INFORMATION' | translate }}<br>
     {{ 'PLEASE_BE_PATIENT' | translate }}

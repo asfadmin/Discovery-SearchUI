@@ -126,7 +126,7 @@ export class NetcdfService {
         "bucket": this.bucket,
         "polarization": "VV",
         "flightDirection": flightDirection,
-        'frame_id': frame.number
+        // 'frame_id': frame.number
       }, { responseType: 'json' }).pipe(
         this.handleRetry,
         catchError(error => {
