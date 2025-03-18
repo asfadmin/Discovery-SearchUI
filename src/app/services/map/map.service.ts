@@ -875,7 +875,7 @@ export class MapService implements OnDestroy {
 
     let features = []
     points.forEach(dataPoint => {
-      if(dataPoint.frames.length > 1) {
+      if(dataPoint.frames?.length > 1) {
         for(let i = 0; i < dataPoint.frames.length; i++) {
           let temp_feature = this.wktService.wktToFeature(dataPoint.frames[i].wkt, this.epsg())
 
