@@ -322,11 +322,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     });
   }
 
-<<<<<<< HEAD
-  ngOnDestroy() {
-=======
   public ngOnDestroy() {
->>>>>>> asfadmin/yoreley/DS-5764-loading-disp
     this.subs.unsubscribe();
     this.pointHistoryService.clearPoints();
     this.element.classList.remove('visible');
