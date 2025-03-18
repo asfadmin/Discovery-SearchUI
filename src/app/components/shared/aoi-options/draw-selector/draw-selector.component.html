@@ -54,17 +54,6 @@
         </div>
       </div>
     </div>
-<!--    <div class="draw-button-wrapper">-->
-<!--      <button mat-mini-fab-->
-<!--        (click)="toggleDrawMode()"-->
-<!--        [value]="interactionTypes.DRAW"-->
-<!--        class="draw-button"-->
-<!--        [matTooltip]="isDrawing ? ('STOP_DRAWING'| translate) : ('DRAW_NEW_AREA_OF_INTEREST'| translate)">-->
-<!--        <mat-icon class="interaction-icon">-->
-<!--          {{isDrawing ? 'draw' : 'edit'}}-->
-<!--        </mat-icon>-->
-<!--      </button>-->
-<!--    </div>-->
   </div>
 </ng-template>
 
@@ -89,7 +78,7 @@
       {{ 'DRAW_A_LINE' | translate }}
     </button>
 
-    <button mat-menu-item
+    <button mat-menu-item *ngIf="searchType !== searchTypes.DISPLACEMENT"
       (click)="onPolygonSelected()"
       [value]="types.POLYGON"
       class="control-button mat-menu-item">
@@ -99,7 +88,7 @@
       {{ 'DRAW_A_POLYGON' | translate }}
     </button>
 
-    <button mat-menu-item
+    <button mat-menu-item *ngIf="searchType !== searchTypes.DISPLACEMENT"
       (click)="onBoxSelected()"
       [value]="types.BOX"
       class="control-button mat-menu-item">
@@ -109,7 +98,7 @@
       {{ 'DRAW_A_BOX' | translate }}
     </button>
 
-    <button mat-menu-item
+    <button mat-menu-item *ngIf="searchType !== searchTypes.DISPLACEMENT"
     (click)="onCircleSelected()"
     [value]="types.CIRCLE"
     class="control-button mat-menu-item">
@@ -118,7 +107,6 @@
     </mat-icon>
     {{ 'DRAW_A_CIRCLE' | translate }}
     </button>
-
 
   <button mat-menu-item
     *ngIf="breakpoint !== breakpoints.MOBILE && searchType !== searchTypes.DISPLACEMENT"
