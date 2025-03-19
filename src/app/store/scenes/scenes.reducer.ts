@@ -170,7 +170,7 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
               ...jobProduct.metadata.job?.job_parameters,
             }
           };
-          const jobFile = !!job.files ?
+          const jobFile = job.files?.length > 0 ?
             job.files[0] :
             { size: -1, url: '', filename: product.name };
 
