@@ -327,6 +327,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     this.pointHistoryService.clearPoints();
     this.element.classList.remove('visible');
     this.element.classList.remove('hidden');
+    this.snackBar.dismiss();
   }
 
 }
