@@ -29,6 +29,9 @@ export class ProductService {
             browses = ['/assets/no-browse.png'];
           }
         }
+        if(g.pt == 'DISP-S1') {
+            browses = [browses[0]]; // only show the first browse for displacement for now
+        }
 
         const thumbnail = (g.t ? g.t.replace('{gn}', g.gn) : g.t) || (!browses[0].includes('no-browse') ? browses[0].replace('{gn}', g.gn) : '/assets/no-thumb.png');
         let filename = g.fn.replace('{gn}', g.gn);
@@ -73,7 +76,7 @@ export class ProductService {
 
       path: +g.p,
       frame:  +g.f,
-      absoluteOrbit: Array.isArray(g.o) ? g.o.map(val => +val) : [+g.o],
+      absoluteOrbit: Array.isArray(g.o) ? g.o.map(val => +val) : g.o !== null ? [+g.o] : [],
 
       faradayRotation: +g.fr,
       offNadirAngle: +g.on,

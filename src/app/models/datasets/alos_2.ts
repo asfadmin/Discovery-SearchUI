@@ -2,7 +2,7 @@ import { Props } from '../filters.model';
 
 export const alos_2 = {
   id: 'ALOS-2',
-  name: 'ALOS_2',
+  name: 'ALOS-2',
   subName: '',
   beta: false,
   properties: [
