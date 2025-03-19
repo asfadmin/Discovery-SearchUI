@@ -139,19 +139,17 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       )
     );
 
+    this.subs.add(
+      this.language.translate.onLangChange.subscribe(() => {
+          this.chartStateChanged(this.chartStates);
+        }
+      )
+    );
+
     this.subs.add(this.store$.select(getTimeseriesChartStates).subscribe(chartStates => {
       this.chartStates = Object.values(chartStates);
       this.chartStates = this.chartStates.sort((a, b) => a.seriesNumber - b.seriesNumber);
-      if (this.chartStates.length === 0) {
-        this.element.classList.remove('visible');
-        this.element.classList.add('hidden');
-        let msg = this.language.translate.instant('PLEASE_SELECT_A_POINT_ON_THE_MAP');
-        this.snackBar.open(msg, '', this.snackBarConfig );
-      } else {
-        this.element.classList.remove('hidden');
-        this.element.classList.add('visible');
-        this.snackBar.dismiss();
-      }
+      this.chartStateChanged(this.chartStates);
     }));
 
     this.subs.add(
@@ -186,6 +184,21 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
         this.updateChart();
       }
     }))
+  }
+
+  public chartStateChanged (cStates: any) {
+    console.log('chartStateChanged: ', cStates);
+    if (cStates.length === 0) {
+      this.element.classList.remove('visible');
+      this.element.classList.add('hidden');
+      let msg = this.language.translate.instant('PLEASE_SELECT_A_POINT_ON_THE_MAP');
+      this.snackBar.dismiss();
+      this.snackBar.open(msg, '', this.snackBarConfig );
+    } else {
+      this.element.classList.remove('hidden');
+      this.element.classList.add('visible');
+      this.snackBar.dismiss();
+    }
   }
 
   public onResizeEnd(event: ResizeEvent): void {
