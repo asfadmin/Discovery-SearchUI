@@ -51,6 +51,14 @@ export class ExportService {
                 parameters['relativeOrbit'] = parseFloat(options.relativeOrbit);
                 break;
               }
+              case 'fullburstid': {
+                parameters['fullBurstId'] = options.fullburstid;
+                break;
+              }
+              case 'operaburstid': {
+                parameters['operaBurstId'] = options.operaburstid;
+                break;
+              }
               default: {
                 parameters[key] = options[key];
               }
