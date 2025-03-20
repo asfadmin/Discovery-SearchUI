@@ -82,8 +82,20 @@ export class DisplacementLayersComponent implements OnInit, OnDestroy {
   }
 
 
-  public onToggleCumulativeLayerDisplay(checked: boolean) {
+public onToggleDisplacementLayerDisplay(checked: boolean): void {
     this.cumulativeDisplacementSelectionEnabled = checked;
+    this.displacementOverview = models.DisplacementLayerTypes.DISPLACEMENT;
+    if (checked && this.displacementOverview) {
+      this.setDisplacementLayer(this.flightDir, this.displacementOverview)
+    } else {
+      this.clearDisplacementLayer()
+      this.displacementOverview = null;
+    }
+  }
+
+  public onToggleVelocityLayerDisplay(checked: boolean): void {
+    this.cumulativeDisplacementSelectionEnabled = checked;
+    this.displacementOverview = models.DisplacementLayerTypes.VELOCITY;
     if (checked && this.displacementOverview) {
       this.setDisplacementLayer(this.flightDir, this.displacementOverview)
     } else {

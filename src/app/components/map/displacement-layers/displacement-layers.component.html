@@ -6,17 +6,22 @@
 <!--      </div>-->
 <!--    </mat-checkbox>-->
 
-    <mat-checkbox [value]="DispLayerTypes.DISPLACEMENT" [disabled]="!cumulativeDisplacementSelectionEnabled" [checked]="this.displacementOverview === DispLayerTypes.DISPLACEMENT">
+    <mat-checkbox [value]="DispLayerTypes.DISPLACEMENT"
+                  [checked]="this.displacementOverview === DispLayerTypes.DISPLACEMENT"
+                  (change)="onToggleDisplacementLayerDisplay($event.checked)"
+    >
       <div class="selector-text">
         {{ 'DEFORMATION' | translate}}
       </div>
     </mat-checkbox>
 
-    <mat-checkbox [value]="DispLayerTypes.VELOCITY" [disabled]="!cumulativeDisplacementSelectionEnabled" [checked]="this.displacementOverview === DispLayerTypes.VELOCITY">
-
-      <div class="selector-text" style="margin-top: 4px;">
+    <mat-checkbox [value]="DispLayerTypes.VELOCITY"
+                  [checked]="this.displacementOverview === DispLayerTypes.VELOCITY"
+                  (change)="onToggleVelocityLayerDisplay($event.checked)"
+    >
+      <div class="selector-text">
         {{ 'VELOCITY' | translate}}
-        @if (cumulativeDisplacementSelectionEnabled && this.displacementOverview) {
+        @if (this.displacementOverview === DispLayerTypes.VELOCITY) {
           <app-map-legend
             style="display: inline-block;"
             [min]="this.mapService.displacementRange?.range[0]"
