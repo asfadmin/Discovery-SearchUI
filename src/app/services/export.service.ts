@@ -52,11 +52,11 @@ export class ExportService {
                 break;
               }
               case 'fullburstid': {
-                parameters['fullBurstId'] = options.fullburstid;
+                parameters['fullBurstID'] = options.fullburstid;
                 break;
               }
               case 'operaburstid': {
-                parameters['operaBurstId'] = options.operaburstid;
+                parameters['operaBurstID'] = options.operaburstid;
                 break;
               }
               default: {
