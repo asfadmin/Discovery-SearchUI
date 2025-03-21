@@ -853,6 +853,7 @@ export class MapService implements OnDestroy {
       this.displacementOverview.setExtent(response['extent']);
       //@ts-ignore
       this.displacementOverview.setSource(overview_source);
+      this.displacementOverview.setOpacity(.8);
     })
 
   }
@@ -889,7 +890,7 @@ export class MapService implements OnDestroy {
       } else {
         let temp_feature = this.wktService.wktToFeature(dataPoint.base_wkt, this.epsg())
         temp_feature.set('point', temp_feature.getGeometry());
-        temp_feature.set('uuid', dataPoint.uuid); 
+        temp_feature.set('uuid', dataPoint.uuid);
         temp_feature.set('seriesNumber', dataPoint.seriesNumber);
         temp_feature.set('seriesColor', dataPoint.color);
         features.push(temp_feature)
