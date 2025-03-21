@@ -1,44 +1,25 @@
 <div class="disp-layers--layout position" cdkDrag>
   <div class="layers-selector fx-col">
-<!--    <mat-checkbox (change)="onToggleCumulativeLayerDisplay($event.checked)" [checked]="!!this.displacementOverview">-->
-<!--      <div class="selector-text">-->
-<!--        {{ 'CUMULATIVE_LAYER' | translate}}-->
-<!--      </div>-->
-<!--    </mat-checkbox>-->
-
-<!--    <mat-checkbox [value]="DispLayerTypes.DISPLACEMENT"-->
-<!--                  [checked]="this.displacementOverview === DispLayerTypes.DISPLACEMENT"-->
-<!--                  (change)="onToggleDisplacementLayerDisplay($event.checked)"-->
-<!--    >-->
-<!--      <div class="selector-text">-->
-<!--        {{ 'DEFORMATION' | translate}}-->
-<!--      </div>-->
-<!--    </mat-checkbox>-->
 
     <mat-checkbox [value]="DispLayerTypes.VELOCITY"
                   [checked]="this.displacementOverview === DispLayerTypes.VELOCITY"
                   (change)="onToggleVelocityLayerDisplay($event.checked)"
     >
       <div class="selector-text">
-        {{ 'VELOCITY' | translate}}
-        @if (this.displacementOverview === DispLayerTypes.VELOCITY) {
-          <app-map-legend
-            style="display: inline-block;"
-            [min]="this.mapService.displacementRange?.range[0]"
-            [max]="this.mapService.displacementRange?.range[1]"
-            [units]="this.mapService.displacementRange?.units">
-          </app-map-legend>
-        }
+        {{ 'VELOCITY' | translate}} 2014-2025
       </div>
     </mat-checkbox>
 
-<!--    @if (cumulativeDisplacementSelectionEnabled && this.displacementOverview) {-->
-<!--        <app-map-legend-->
-<!--        [min]="this.mapService.displacementRange?.range[0]"-->
-<!--        [max]="this.mapService.displacementRange?.range[1]"-->
-<!--        [units]="this.mapService.displacementRange?.units">-->
-<!--      </app-map-legend>-->
-<!--    }-->
+    @if (this.displacementOverview === DispLayerTypes.VELOCITY) {
+      <div style="margin-top: -5px;">
+        <app-map-legend
+          style="display: inline-block; margin-top: -5px;"
+          [min]="this.mapService.displacementRange?.range[0]"
+          [max]="this.mapService.displacementRange?.range[1]"
+          [units]="this.mapService.displacementRange?.units">
+        </app-map-legend>
+      </div>
+    }
 
     <mat-checkbox #priorityRollout class="rollout-checkbox"
     (change)="onUpdatePriority($event.checked)"
@@ -50,9 +31,9 @@
 
     @if (priorityEnabled) {
       <div class="priority-legend">
-        <div class="priority-box first-priority"> 1st </div>
-        <div class="priority-box second-priority"> 2nd </div>
-        <div class="priority-box third-priority"> 3rd </div>
+        <div class="priority-box first-priority">1st</div>
+        <div class="priority-box second-priority">2nd</div>
+        <div class="priority-box third-priority">3rd</div>
       </div>
     }
 
