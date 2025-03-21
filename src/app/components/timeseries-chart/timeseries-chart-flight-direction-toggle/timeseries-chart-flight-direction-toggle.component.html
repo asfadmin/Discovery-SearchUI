@@ -2,7 +2,7 @@
   <div class="menu-button-wrapper">
     <div class="ts-button-label">{{ 'FLIGHT_DIRECTION' | translate }}</div>
     <div>
-      <button [matMenuTriggerFor]="flightDirectionMenu" class="button-menu-trigger"
+      <button [matMenuTriggerFor]="flightDirectionMenu"
               color="basic" matTooltip="{{ 'FLIGHT_DIRECTION' | translate }}" mat-button>
         <div class="button-text">
           <mat-icon class="fd-icon-button-text" *ngIf="flightDirection === FlightDirections.ASCENDING">north_west</mat-icon>
@@ -18,7 +18,7 @@
   </div>
 </div>
 
-<mat-menu #flightDirectionMenu="matMenu" id="flightDirectionMenu" class="button-menu-trigger" >
+<mat-menu #flightDirectionMenu="matMenu" id="flightDirectionMenu">
   <button mat-menu-item class="ts-menu-item" (click)="setFlightDirection(FlightDirections.ASCENDING)">
       <mat-icon class="control-icon">north_west</mat-icon>
     {{FlightDirections.ASCENDING | translate}}
