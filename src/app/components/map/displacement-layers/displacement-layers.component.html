@@ -1,4 +1,4 @@
-<div class="disp-layers--layout position">
+<div class="disp-layers--layout position" cdkDrag>
   <div class="layers-selector fx-col">
 <!--    <mat-checkbox (change)="onToggleCumulativeLayerDisplay($event.checked)" [checked]="!!this.displacementOverview">-->
 <!--      <div class="selector-text">-->
@@ -6,14 +6,14 @@
 <!--      </div>-->
 <!--    </mat-checkbox>-->
 
-    <mat-checkbox [value]="DispLayerTypes.DISPLACEMENT"
-                  [checked]="this.displacementOverview === DispLayerTypes.DISPLACEMENT"
-                  (change)="onToggleDisplacementLayerDisplay($event.checked)"
-    >
-      <div class="selector-text">
-        {{ 'DEFORMATION' | translate}}
-      </div>
-    </mat-checkbox>
+<!--    <mat-checkbox [value]="DispLayerTypes.DISPLACEMENT"-->
+<!--                  [checked]="this.displacementOverview === DispLayerTypes.DISPLACEMENT"-->
+<!--                  (change)="onToggleDisplacementLayerDisplay($event.checked)"-->
+<!--    >-->
+<!--      <div class="selector-text">-->
+<!--        {{ 'DEFORMATION' | translate}}-->
+<!--      </div>-->
+<!--    </mat-checkbox>-->
 
     <mat-checkbox [value]="DispLayerTypes.VELOCITY"
                   [checked]="this.displacementOverview === DispLayerTypes.VELOCITY"
@@ -56,16 +56,27 @@
       </div>
     }
 
-    <div class="help-text">
-      {{ 'WHAT_ARE_THESE?' | translate}}
-      <app-docs-modal class="info-icon" url="https://docs.asf.alaska.edu/vertex/displacement/#map-layers">
-      </app-docs-modal>
+<!--    <div class="help-text">-->
+<!--      {{ 'WHAT_ARE_THESE?' | translate}}-->
+<!--      <app-docs-modal class="info-icon" url="https://docs.asf.alaska.edu/vertex/displacement/#map-layers">-->
+<!--      </app-docs-modal>-->
+<!--    </div>-->
+
+    <div class="footer">
+      <div class="footer--text container space-between">
+        <div>
+<!--          {{ 'HELP' | translate}}-->
+          <app-docs-modal class="info-icon"
+                          custStyle="color: #ffffffb3; cursor: pointer; text-decoration: underline;"
+                          text="{{ 'HELP' | translate}}"
+                          url="https://docs.asf.alaska.edu/vertex/displacement/#map-layers"
+          >
+          </app-docs-modal>
+        </div>
+        <div>{{ 'MAP_LAYERS' | translate}}</div>
+      </div>
     </div>
+
   </div>
 
-  <div class="footer">
-    <div class="footer--text">
-      {{ 'MAP_LAYERS' | translate}}
-    </div>
-  </div>
 </div>

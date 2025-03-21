@@ -38,6 +38,7 @@ export interface DialogData {
 export class DocsModalComponent implements OnInit, OnDestroy {
   @Input() url: string;
   @Input() text: string;
+  @Input() custStyle: string;
   @Input() icon: string = 'read_more';
   @Input() description: string;
   @Input() tooltip: string;
