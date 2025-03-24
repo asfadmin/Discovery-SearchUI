@@ -946,7 +946,7 @@ export class MapService implements OnDestroy {
           }),
           text: textFunction(feature),
         }),
-        zIndex: (selected) ? 1000 : +feature.get('seriesNumber') + +feature.get('index'),
+        zIndex: (selected) ? 1000 : feature.get('index') ? +feature.get('seriesNumber') + +feature.get('index') : +feature.get('seriesNumber'),
       })
 
       return layerStyle
