@@ -129,47 +129,48 @@
     </div>
     </mat-card>
 
-</ng-container>
+  <mat-card #chartCard class="mp0 ts-chart-card"
+            [style.width]="chartCardMaxWidth"
+            mwlResizable [enableGhostResize]="true" (resizeEnd)="onResizeEnd($event)">
+    <div mwlResizeHandle [resizeEdges]="{ left: true }" class="chart-draggable-handle ts-resize-handle-filler">
+      <!--		<mat-icon svgIcon="vgrip" class="vgrip-icon"></mat-icon>-->
+    </div>
 
-<mat-card #chartCard class="mp0 ts-chart-card"
-          [style.width]="chartCardMaxWidth"
-	        mwlResizable [enableGhostResize]="true" (resizeEnd)="onResizeEnd($event)">
-	<div mwlResizeHandle [resizeEdges]="{ left: true }" class="chart-draggable-handle ts-resize-handle-filler">
-<!--		<mat-icon svgIcon="vgrip" class="vgrip-icon"></mat-icon>-->
-	</div>
+    <mat-card-subtitle [class.medium-header]="breakpoint <= breakpoints.MEDIUM" class="ts-header">
 
-	<mat-card-subtitle [class.medium-header]="breakpoint <= breakpoints.MEDIUM" class="ts-header">
+      <div class="ts-button-group-filler ts-button-group"></div>
 
-		<div class="ts-button-group-filler ts-button-group"></div>
-
-		<div class="ts-button-group-filler ts-button-group"></div>
-		<div class='ts-button-group' style="visibility: hidden;">
-			<div class="button-group-label">
-				<label>{{ 'FILTERS' | translate }}</label>
-			</div>
-			<div class="toggle-group-wrapper--layout">
-				<mat-button-toggle class="control-mat-button-toggle ts-criteria-button-toggle"
-					(click)="onToggleFiltersMenu()">
+      <div class="ts-button-group-filler ts-button-group"></div>
+      <div class='ts-button-group' style="visibility: hidden;">
+        <div class="button-group-label">
+          <label>{{ 'FILTERS' | translate }}</label>
+        </div>
+        <div class="toggle-group-wrapper--layout">
+          <mat-button-toggle class="control-mat-button-toggle ts-criteria-button-toggle"
+                             (click)="onToggleFiltersMenu()">
           <span class="material-symbols-outlined">
           filter_alt
           </span>
-				</mat-button-toggle>
-			</div>
-		</div>
+          </mat-button-toggle>
+        </div>
+      </div>
 
-	</mat-card-subtitle>
+    </mat-card-subtitle>
 
-<!--	<div class="resize-handle-left" mwlResizeHandle [resizeEdges]="{ left: true }">-->
-<!--	</div>-->
+    <!--	<div class="resize-handle-left" mwlResizeHandle [resizeEdges]="{ left: true }">-->
+    <!--	</div>-->
 
-	<div class="ts-chart-row">
-		<div id="ts-chart-column">
-			<app-timeseries-chart></app-timeseries-chart>
-<!--      <app-timeseries-chart-temporal-slider></app-timeseries-chart-temporal-slider>-->
-		</div>
-	</div>
+    <div class="ts-chart-row">
+      <div id="ts-chart-column">
+        <app-timeseries-chart></app-timeseries-chart>
+        <!--      <app-timeseries-chart-temporal-slider></app-timeseries-chart-temporal-slider>-->
+      </div>
+    </div>
 
-	<div class="ts-filter-row">
-	</div>
-</mat-card>
+    <div class="ts-filter-row">
+    </div>
+  </mat-card>
+
+</ng-container>
+
 
