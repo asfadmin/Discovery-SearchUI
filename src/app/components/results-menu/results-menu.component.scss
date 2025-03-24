@@ -23,6 +23,11 @@
   z-index: 2000;
 }
 
+.mobile-displacement-menu-offset {
+  bottom: 0;
+  z-index: 2000;
+}
+
 .displacement-results {
   min-height: 425px;
 }
@@ -181,6 +186,7 @@
   justify-content: center;
   width: 100%;
   margin-top: 100px;
+  bottom: 0;
 }
 
 .hidden {
