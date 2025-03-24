@@ -1,6 +1,7 @@
 <ng-container *ngIf="isResultsMenuOpen$ | async">
   <div *ngIf="breakpoint$ | async as breakpoint"
-    [class.mobile-menu-offset]="breakpoint === breakpoints.MOBILE"
+    [class.mobile-menu-offset]="breakpoint === breakpoints.MOBILE && searchType !== SearchTypes.DISPLACEMENT"
+    [class.mobile-displacement-menu-offset]="breakpoint === breakpoints.MOBILE && searchType === SearchTypes.DISPLACEMENT"
     [class.desktop-menu-offset]="breakpoint !== breakpoints.MOBILE"
        [class.hidden]="!(isResultsMenuOpen$ | async)"
     class="rectangle-wrapper w100">

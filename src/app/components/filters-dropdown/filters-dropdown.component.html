@@ -66,7 +66,8 @@
       <ng-container *ngIf="selectedSearchType === searchTypes.SARVIEWS_EVENTS">
         <app-sarviews-filters></app-sarviews-filters>
       </ng-container>
-      @if(selectedSearchType === searchTypes.DISPLACEMENT) {
+
+      @if(selectedSearchType === searchTypes.DISPLACEMENT && breakpoint !== breakpoints.FULL) {
         <app-timeseries-filters></app-timeseries-filters>
       }
     </div>
