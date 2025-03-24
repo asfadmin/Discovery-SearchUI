@@ -1,5 +1,4 @@
 <span *ngIf="breakpoint$ | async as breakpoint">
-  <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
     <ng-container *ngIf="searchType !== searchTypes.DISPLACEMENT">
       <mat-button-toggle-group
         [class.invalid-input-animation]="isSearchError"
@@ -191,5 +190,4 @@
       </button>
 
     </mat-menu>
-  </ng-container>
 </span>

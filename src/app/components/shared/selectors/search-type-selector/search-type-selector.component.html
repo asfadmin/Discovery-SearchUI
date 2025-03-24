@@ -21,30 +21,32 @@
 
       <div>
         @for(type of searchTypeSelectors.search; track type.nameKey; let last = $last) {
-          <menu class="menu-item mat-menu-item" mat-menu-item (click)="onSetSearchType(type.searchType)">
-            <div class="menu-item-inner">
-              <div class="fx-80 menu-item-content">
-                <div class="item-title">
-                  {{ type.nameKey | translate }}
-                  <span *ngIf="type.nameKey === 'DISPLACEMENT'" class="badge-new">{{ 'NEW'  | translate | titlecase }}</span>
+          @if (!(type.nameKey === 'DISPLACEMENT' && breakpoint === breakpoints.MOBILE)) {
+            <menu class="menu-item mat-menu-item" mat-menu-item (click)="onSetSearchType(type.searchType)">
+              <div class="menu-item-inner">
+                <div class="fx-80 menu-item-content">
+                  <div class="item-title">
+                    {{ type.nameKey | translate }}
+                    <span *ngIf="type.nameKey === 'DISPLACEMENT'" class="badge-new">{{ 'NEW'  | translate | titlecase }}</span>
+                  </div>
+                  <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
+                    <span *ngFor="let key of type.descriptionKeys">
+                      {{ key | translate }}
+                    </span>
+                    <app-docs-modal url="{{ type.helpUrl}}" class="read-more-icon"></app-docs-modal>
+                  </div>
                 </div>
-                <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
-                  <span *ngFor="let key of type.descriptionKeys">
-                    {{ key | translate }}
+                <div class="fx-20 menu-item-aside">
+                  <span *ngIf="type.iconType === iconTypes.MATERIAL" class="material-icons-outlined menu-item-icon">
+                    {{ type.icon}}
                   </span>
-                  <app-docs-modal url="{{ type.helpUrl}}" class="read-more-icon"></app-docs-modal>
+                  <img *ngIf="type.iconType === iconTypes.IMAGE" src="{{ type.icon }}" class="menu-item-icon">
                 </div>
               </div>
-              <div class="fx-20 menu-item-aside">
-                <span *ngIf="type.iconType === iconTypes.MATERIAL" class="material-icons-outlined menu-item-icon">
-                  {{ type.icon}}
-                </span>
-                <img *ngIf="type.iconType === iconTypes.IMAGE" src="{{ type.icon }}" class="menu-item-icon">
-              </div>
-            </div>
-          </menu>
-          @if(!last) {
-            <hr class="dataset-hr">
+            </menu>
+            @if(!last) {
+              <hr class="dataset-hr">
+            }
           }
         }
         <hr class="dataset-hr">
@@ -82,7 +84,7 @@
                   {{'DERIVED_DATASETS_CONTAIN_A_COLLECTION_OF_DATASETS_AVAILABLE_TO_VIEW_AND_DOWNLOAD'| translate }}
                 </div>
               </div>
-              <div class="fx-20 menu-item-aside">
+              <div class="fx-20 menu-item-aside" style="text-align: right;">
                 <span class="material-icons-outlined menu-item-icon">{{ 'DATASET_LINKED' | translate }}</span>
               </div>
             </div>
