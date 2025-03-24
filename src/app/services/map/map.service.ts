@@ -853,7 +853,7 @@ export class MapService implements OnDestroy {
       this.displacementOverview.setExtent(response['extent']);
       //@ts-ignore
       this.displacementOverview.setSource(overview_source);
-      this.displacementOverview.setOpacity(.6);
+      this.displacementOverview.setOpacity(.8);
     })
 
   }
