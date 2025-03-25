@@ -21,7 +21,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { HelpComponent } from '@components/help/help.component';
 import { getFilterMaster } from '@store/scenes';
 import { SaveSearchDialogComponent } from '@components/shared/save-search-dialog';
-import { CodeExportComponent } from '../code-export/code-export.component';
+import { CodeExportComponent } from '@components/shared/code-export';
 import { ApiLinkDialogComponent } from '../max-results-selector/api-link-dialog/api-link-dialog.component';
 import { ScreenSizeService } from '@services';
 import * as models from '@models';
