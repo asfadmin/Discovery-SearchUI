@@ -853,7 +853,6 @@ export class MapService implements OnDestroy {
       this.displacementOverview.setExtent(response['extent']);
       //@ts-ignore
       this.displacementOverview.setSource(overview_source);
-      this.displacementOverview.setOpacity(.8);
     })
 
   }
@@ -1052,6 +1051,9 @@ export class MapService implements OnDestroy {
   }
   public updateCoherenceOpacity(opacity: number) {
     this.layerService.coherenceLayer?.setOpacity(opacity);
+  }
+  public updateVelocityOpacity(opacity: number) {
+    this.displacementOverview?.setOpacity(opacity);
   }
   public getAoiIntersectionMethod(geometryType: GeometryType) {
     if (geometryType === 'Point') {

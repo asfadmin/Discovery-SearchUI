@@ -187,7 +187,6 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   }
 
   public chartStateChanged (cStates: any) {
-    console.log('chartStateChanged: ', cStates);
     if (cStates.length === 0) {
       this.element.classList.remove('visible');
       this.element.classList.add('hidden');
