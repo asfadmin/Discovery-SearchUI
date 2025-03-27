@@ -2,7 +2,8 @@
     <ng-container *ngIf="searchType !== searchTypes.DISPLACEMENT">
       <mat-button-toggle-group
         [class.invalid-input-animation]="isSearchError"
-        id="dataset-button-toggle-group">
+        id="dataset-button-toggle-group"
+        [hideSingleSelectionIndicator]="true">
         <mat-button-toggle>
           <button
             (click)="onDoSearch()"

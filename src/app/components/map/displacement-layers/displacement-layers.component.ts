@@ -8,6 +8,7 @@ import { AppState } from '@store';
 import { getFlightDirections } from '@store/filters';
 import { distinctUntilChanged, filter, map } from 'rxjs';
 import { MatCheckbox } from '@angular/material/checkbox';
+import { getVelocityOverlayOpacity } from '@store/map';
 
 
 @Component({
@@ -23,13 +24,20 @@ export class DisplacementLayersComponent implements OnInit, OnDestroy {
   public DispLayerTypes = models.DisplacementLayerTypes;
   public priorityEnabled = false;
   private subs = new SubSink();
-
+  private velocityOverlayOpacity: number;
   constructor(
     public mapService: MapService,
     private store$: Store<AppState>,
   ) { }
 
   ngOnInit() {
+    this.subs.add(
+        this.store$.select(getVelocityOverlayOpacity).subscribe(
+        opacity => {
+            this.velocityOverlayOpacity = opacity;
+        }
+        )
+    )
     this.subs.add(
       this.mapService.displacementOverview$.pipe(
         filter(overview => !!overview)
@@ -63,6 +71,7 @@ export class DisplacementLayersComponent implements OnInit, OnDestroy {
         this.priorityEnabled = t !== null;
       })
     )
+
   }
 
   public onUpdatePriority(isChecked: boolean): void {
@@ -106,6 +115,7 @@ public onToggleDisplacementLayerDisplay(checked: boolean): void {
 
   public setDisplacementLayer(direction: models.FlightDirection, type: models.DisplacementLayerTypes) {
     this.mapService.setDisplacementOverview(direction, type);
+    this.mapService.updateVelocityOpacity(this.velocityOverlayOpacity);
   }
 
   public clearDisplacementLayer() {

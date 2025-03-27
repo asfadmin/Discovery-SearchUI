@@ -159,7 +159,11 @@ export class AsfApiService {
     const filteredParams = Object.keys(paramsObj)
       .filter(key => !irrelevant.includes(key))
       .reduce((filtered, key) => {
-        filtered[key] = paramsObj[key];
+        if(key==='processinglevel' && this.prop.isRelevant(Props.USE_PROCESSING_TYPE)) {
+            filtered['processingType'] = paramsObj[key]
+        } else {
+            filtered[key] = paramsObj[key];
+        }
         return filtered;
       }, {});
 
