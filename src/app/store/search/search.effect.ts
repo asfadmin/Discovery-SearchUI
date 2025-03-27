@@ -116,8 +116,29 @@ export class SearchEffects {
   public getNextJobBatch = createEffect(() => this.actions$.pipe(
     ofType<SetNextJobsUrl>(SearchActionType.SET_NEXT_JOBS_URL),
     withLatestFrom(this.store$.select(getScenes)),
-    filter(([action, scenes]) => !!action.payload && scenes !== undefined),
-    switchMap(([action, currentScenes]) => this.nextCustomProduct$(action.payload, currentScenes))
+    filter(([action, scenes]) => !!action.payload && scenes !== undefined && scenes.length < 3000),
+    switchMap(
+      ([action, currentScenes]) => {
+        const next = action.payload;
+
+        return this.hyp3Service.getJobsByUrl$(next).pipe(
+          switchMap(
+            (jobsRes) => {
+              if (jobsRes.hyp3Jobs.length === 0) {
+                return of(new Hyp3BatchResponse({
+                  files: [],
+                  totalCount: 0,
+                  searchType: models.SearchType.CUSTOM_PRODUCTS,
+                  next: ''
+                }));
+              }
+
+              return this.onDemandGranuleList$(jobsRes, currentScenes);
+            }
+          ),
+        );
+      }
+    )
   ));
 
   public cancelSearchWhenFiltersCleared = createEffect(() => this.actions$.pipe(
@@ -413,25 +434,6 @@ export class SearchEffects {
           );
         }
       )
-    );
-  }
-
-  private nextCustomProduct$(next: string, latestScenes: models.CMRProduct[]): Observable<Action> {
-    return this.hyp3Service.getJobsByUrl$(next).pipe(
-      switchMap(
-        (jobsRes) => {
-          if (jobsRes.hyp3Jobs.length === 0) {
-            return of(new Hyp3BatchResponse({
-              files: [],
-              totalCount: 0,
-              searchType: models.SearchType.CUSTOM_PRODUCTS,
-              next: ''
-            }));
-          }
-
-          return this.onDemandGranuleList$(jobsRes, latestScenes);
-        }
-      ),
     );
   }
 
