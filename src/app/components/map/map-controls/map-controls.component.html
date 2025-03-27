@@ -24,7 +24,7 @@
               </div>
               <div class="fx-row">
                 <div>
-                  <mat-button-toggle-group class="fx-empty" name="layerType">
+                  <mat-button-toggle-group class="fx-empty" name="layerType" [hideSingleSelectionIndicator]="true">
                     <mat-button-toggle class="control-mat-button-toggle"
                                        (click)="zoomIn()"
                                        matTooltip="{{ 'ZOOM_IN' | translate }}">
@@ -68,7 +68,8 @@
                 <div class="fx-row-center">
                   <div>
                     <mat-button-toggle-group class="fx-empty" name="layerType"
-                    [disabled]="!(isBrowseOverlayEnabled$ | async)">
+                    [disabled]="!(isBrowseOverlayEnabled$ | async)"
+                    [hideSingleSelectionIndicator]="true">
                       <mat-button-toggle class="control-mat-button-toggle "
                       *ngIf="searchType === searchTypes.SARVIEWS_EVENTS"
                       (click)="onUnpinAll()"

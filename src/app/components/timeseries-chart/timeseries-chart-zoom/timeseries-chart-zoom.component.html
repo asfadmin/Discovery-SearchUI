@@ -1,7 +1,8 @@
 <div class="ts-button-group">
   <div class="fx-row">
     <div>
-      <mat-button-toggle-group class="ts-toggle-group" name="layerType">
+      <mat-button-toggle-group class="ts-toggle-group" name="layerType"
+      [hideSingleSelectionIndicator]="true">
         <mat-button-toggle class="control-mat-button-toggle" (click)="zoomIn()"
                            matTooltip="{{ 'ZOOM_IN' | translate }}">
           <mat-icon class="control-icon">add</mat-icon>
