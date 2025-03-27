@@ -133,11 +133,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.translateChartText();
     this.createSVG();
 
-    this.subs.add(
-      this.store$.select(chartsStore.getIsChartOutOfDate).subscribe(
-
-      )
-    )
 
     this.subs.add(
       this.netcdfService.cacheUpdated.pipe(
@@ -247,6 +242,16 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           this.resetHighlight()
       }));
 
+
+    this.subs.add(
+        this.store$.select(chartsStore.getIsChartOutOfDate).pipe(
+        withLatestFrom(this.store$.select(chartsStore.getTimeseriesChartStates))
+        ).subscribe(
+          ([_outOfDate, chartStates]) => {
+            this.refreshChart(chartStates)
+          }
+        )
+      )
 
   }
 
