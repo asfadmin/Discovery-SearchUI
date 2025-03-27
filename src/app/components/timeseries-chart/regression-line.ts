@@ -1,9 +1,16 @@
 // imported from https://github.com/simple-statistics/simple-statistics
 
-export function linearRegression(data) {
+export interface linearRegressionEquation {
+    slope: number;
+    yIntercept: number;
+    dataLength: number;
+    start: number;
+    end: number;
+}
+
+export function linearRegression(data: number[][], minDate: number, maxDate: number): linearRegressionEquation {
     let m;
     let b;
-
     // Store data length in a local variable to reduce
     // repeated object property lookups
     const dataLength = data.length;
@@ -48,22 +55,25 @@ export function linearRegression(data) {
       m =
         (dataLength * sumXY - sumX * sumY) /
         (dataLength * sumXX - sumX * sumX);
-
+      
       // `b` is the y-intercept of the line.
       b = sumY / dataLength - (m * sumX) / dataLength;
     }
 
     // Return both values as an object.
     return {
-      m: m,
-      b: b
+      slope: m,
+      yIntercept: b,
+      dataLength: dataLength,
+      start: minDate,
+      end: maxDate,
     };
   }
-  export function linearRegressionLine(mb /*: { b: number, m: number }*/) {
+  export function linearRegressionLine(mb: linearRegressionEquation /*: { b: number, m: number }*/) {
     // Return a function that computes a `y` value for each
     // x value it is given, based on the values of `b` and `a`
     // that we just computed.
     return function (x) {
-      return mb.b + mb.m * x;
+      return mb.yIntercept + mb.slope * x;
     };
   }
