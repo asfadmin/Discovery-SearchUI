@@ -3,12 +3,9 @@
 export interface linearRegressionEquation {
     slope: number;
     yIntercept: number;
-    dataLength: number;
-    start: number;
-    end: number;
 }
 
-export function linearRegression(data: number[][], minDate: number, maxDate: number): linearRegressionEquation {
+export function linearRegression(data: number[][]): linearRegressionEquation {
     let m;
     let b;
     // Store data length in a local variable to reduce
@@ -64,9 +61,6 @@ export function linearRegression(data: number[][], minDate: number, maxDate: num
     return {
       slope: m,
       yIntercept: b,
-      dataLength: dataLength,
-      start: minDate,
-      end: maxDate,
     };
   }
   export function linearRegressionLine(mb: linearRegressionEquation /*: { b: number, m: number }*/) {
