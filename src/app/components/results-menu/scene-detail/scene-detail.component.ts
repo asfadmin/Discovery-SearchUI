@@ -485,12 +485,12 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   }
 
   public makeEventListSearch() {
-    const product_ids = this.sarviewsProducts.map(product => product.granules[0].granule_name);
+    const productIds = this.sarviewsProducts.map(product => product.granules[0].granule_name);
 
     [
       new searchStore.SetSearchType(models.SearchType.LIST),
       new searchStore.ClearSearch(),
-      new filtersStore.SetSearchList(product_ids),
+      new filtersStore.SetSearchList(productIds),
     ].forEach(action => this.store$.dispatch(action));
 
     this.store$.dispatch(new searchStore.MakeSearch());

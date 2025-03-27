@@ -82,9 +82,9 @@ export class SearchEffects {
     withLatestFrom(this.store$.select(getSearchType)),
     switchMap(([_, searchType]) => {
       if (searchType === SearchType.SARVIEWS_EVENTS) {
-        return this.sarviewsService.getSarviewsEvents$
+        return this.sarviewsService.getSarviewsEvents$;
       } else {
-        return of([])
+        return of([]);
       }
     }),
     map((events) => new SetSarviewsEvents({ events }))
@@ -97,15 +97,12 @@ export class SearchEffects {
     switchMap(([_, searchType]) => {
       if (searchType === SearchType.SARVIEWS_EVENTS) {
         return this.sarviewsEventsQuery$();
-      }
-      else if (searchType === SearchType.BASELINE || searchType === SearchType.SBAS) {
+      } else if (searchType === SearchType.BASELINE || searchType === SearchType.SBAS) {
         this.logCountries();
         return this.asfApiBaselineQuery$();
-      }
-      else if (searchType === SearchType.CUSTOM_PRODUCTS) {
+      } else if (searchType === SearchType.CUSTOM_PRODUCTS) {
         return this.customProductsQuery$();
-      }
-      else {
+      } else {
         this.logCountries();
         return this.asfApiQuery$;
       }
@@ -163,16 +160,16 @@ export class SearchEffects {
   public searchResponse = createEffect(() => this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
     switchMap(action => {
-      let output: any[] = [
+      const output: any[] = [
         new scenesStore.SetScenes({
           products: action.payload.files,
           searchType: action.payload.searchType
         })
       ];
       if (action.payload.totalCount) {
-        output.push(new SetSearchAmount(action.payload.totalCount))
+        output.push(new SetSearchAmount(action.payload.totalCount));
       }
-      return output
+      return output;
     })
   ));
 
@@ -180,8 +177,13 @@ export class SearchEffects {
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
     withLatestFrom(this.store$.select(getSearchType)),
     filter(([_, searchType]) => searchType === SearchType.CUSTOM_PRODUCTS),
-    switchMap(([action, _]) =>
-      [action.payload.next ? new SetNextJobsUrl(action.payload.next) : new SetNextJobsUrl('')]
+    switchMap(([action, _]) => {
+      if (action.payload.next) {
+        return [new SetNextJobsUrl(action.payload.next)];
+      } else {
+        return [new SetNextJobsUrl('')];
+      }
+    }
     )
   ));
 
@@ -212,7 +214,7 @@ export class SearchEffects {
     withLatestFrom(this.store$.select(scenesStore.getProducts)),
     map(([asfApiResp, products]) => {
       const results = this.productService.fromResponse(asfApiResp)
-        .filter(product => !product.metadata.productType.includes('METADATA'))
+        .filter(product => !product.metadata.productType.includes('METADATA'));
 
       const cmrData = results.reduce((products, product) => {
         products[product.name] = product;
@@ -279,7 +281,7 @@ export class SearchEffects {
       new SetSearchOutOfDate(false)
     ]),
     catchError(
-      _ => of(new SearchError(`Error loading search results`))
+      _ => of(new SearchError('Error loading search results'))
     )
   ));
 
@@ -338,7 +340,7 @@ export class SearchEffects {
         catchError(
           (err: HttpErrorResponse) => {
             if (err.status !== 400) {
-              return of(new SearchError(`Unknown Error`));
+              return of(new SearchError('Unknown Error'));
             }
             return EMPTY;
           }
@@ -369,28 +371,28 @@ export class SearchEffects {
                   totalCount: files.length,
                   searchType
                 }) :
-                new SearchCanceled()
+                new SearchCanceled();
             }
             ),
             catchError(
               (err: HttpErrorResponse) => {
                 if (err.status !== 400) {
-                  return of(new SearchError(`Unknown Error`));
+                  return of(new SearchError('Unknown Error'));
                 }
                 return EMPTY;
               }
             ),
-          )
+          );
         })
     );
   }
 
   private onDemandGranuleList$(
-    jobsRes: { hyp3Jobs: models.Hyp3Job[], next: string },
+    jobsRes: { hyp3Jobs: models.Hyp3Job[]; next: string },
     latestScenes: models.CMRProduct[]
   ) {
     const jobs = jobsRes.hyp3Jobs;
-    const dummyProducts = this.hyp3JobService.toDummyCMRProducts(jobs)
+    const dummyProducts = this.hyp3JobService.toDummyCMRProducts(jobs);
 
     return of(dummyProducts).pipe(
       withLatestFrom(this.store$.select(getIsCanceled)),
@@ -407,7 +409,7 @@ export class SearchEffects {
       catchError(
         error => {
           console.log(error);
-          return of(new SearchError(`Error loading search results`));
+          return of(new SearchError('Error loading search results'));
         }
       ),
     );
@@ -419,7 +421,7 @@ export class SearchEffects {
         params => {
           return this.hyp3Service.getJobs$(params.userID).pipe(
             switchMap(
-              (jobsRes: { hyp3Jobs: models.Hyp3Job[], next: string }) => {
+              (jobsRes: { hyp3Jobs: models.Hyp3Job[]; next: string }) => {
                 if (jobsRes.hyp3Jobs.length === 0) {
                   return of(new SearchResponse({
                     files: [],
