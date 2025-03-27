@@ -7,12 +7,15 @@
     >
       <div class="selector-text">
         {{ 'VELOCITY' | translate}} 2016-2025
-        <div class="material-symbols-outlined displacement-info-icon"
-             matTooltip="Info about <a href='https://www.w3schools.com/'>link</a>the action">
-          help
-        </div>
       </div>
     </mat-checkbox>
+    <div class="velocity-help-icon">
+      <app-docs-modal custStyle="color: #ffffffb3; cursor: pointer; text-decoration: underline;"
+                      text=""
+                      url="https://docs.asf.alaska.edu/vertex/displacement/#cumulative-velocity"
+      >
+      </app-docs-modal>
+    </div>
 
     @if (this.displacementOverview === DispLayerTypes.VELOCITY) {
       <div style="margin-top: -5px;">
@@ -32,6 +35,14 @@
         {{ 'ROLLOUT' | translate}}
       </div>
     </mat-checkbox>
+    <div class="rollout-help-icon">
+      <app-docs-modal custStyle="color: #ffffffb3; cursor: pointer; text-decoration: underline;"
+                      text=""
+                      url="https://docs.asf.alaska.edu/vertex/displacement/#rollout"
+      >
+      </app-docs-modal>
+    </div>
+
 
     @if (priorityEnabled) {
       <div class="priority-legend">
