@@ -105,7 +105,7 @@
                 <mat-menu #opacitySlider="matMenu" class="opacity-slider-mat-menu">
                     @if(this.searchType === searchTypes.DISPLACEMENT){
                         <div class="opacity-slider-title">
-                            {{ 'OPACITY_OF_VELOCITY_OVERLAY' |  translate }}
+                            {{ 'VELOCITY_OVERVIEW_OPACITY' |  translate }}
                           </div>
                           <mat-slider thumbLabel step="0.05" min="0.0" max="1.0"
                                       class="opacity-slider"
@@ -118,7 +118,7 @@
                     }
                     @else {
                   <div class="opacity-slider-title">
-                    {{ 'OPACITY_OF_BROWSE_IMAGES' |  translate }}
+                    {{ 'BROWSE_IMAGE_OPACITY' |  translate }}
                   </div>
                   <mat-slider thumbLabel step="0.05" min="0.0" max="1.0"
                               class="opacity-slider"
