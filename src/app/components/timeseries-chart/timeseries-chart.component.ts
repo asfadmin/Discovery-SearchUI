@@ -606,7 +606,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         for(let linearFitData of this.dataReadyForChart) {
             let minX = Date.parse(linearFitData.values[0].date)
             let maxX = Date.parse(linearFitData.values[linearFitData.values.length - 1].date)
-            let regression = linearRegression(linearFitData.values.map((x,i) => [i, x.short_wavelength_displacement]), minX, maxX);
+            let regression = linearRegression(linearFitData.values.map((x) => [Date.parse(x.date), x.short_wavelength_displacement]), minX, maxX);
           this.bestFitItems.push({
             seriesNumber: linearFitData.values[0].seriesNumber,
             color: linearFitData.values[0].color,
@@ -621,7 +621,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
             .datum([regression.slope, regression.yIntercept, regression.dataLength, regression.start, regression.end])
             .attr("d", (_d) => {
               return line([
-                [regression.start, lineregression(0)], [regression.end, lineregression(_d[2] - 1)]])
+                [this.x.domain()[0].getTime(), lineregression(this.x.domain()[0].getTime())], [this.x.domain()[1].getTime(), lineregression(this.x.domain()[1].getTime())]])
             })
           .attr("stroke", linearFitData.color)
           .style("stroke-width", 1)
@@ -764,7 +764,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         d3.select(this).attr('d', (d) => {
           let lineregression = linearRegressionLine({ slope: d[0], yIntercept: d[1], dataLength: d[2], start: d[3], end: d[4] });
           return line2([
-            [d[3], lineregression(0)], [d[4], lineregression(d[2] - 1)]])
+            [newX.domain()[0].getTime(), lineregression(newX.domain()[0].getTime())], [newX.domain()[1].getTime(), lineregression(newX.domain()[1].getTime())]])
         });
       })
     }
