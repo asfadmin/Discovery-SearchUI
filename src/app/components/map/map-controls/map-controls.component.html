@@ -24,7 +24,7 @@
               </div>
               <div class="fx-row">
                 <div>
-                  <mat-button-toggle-group class="fx-empty" name="layerType">
+                  <mat-button-toggle-group class="fx-empty" name="layerType" [hideSingleSelectionIndicator]="true">
                     <mat-button-toggle class="control-mat-button-toggle"
                                        (click)="zoomIn()"
                                        matTooltip="{{ 'ZOOM_IN' | translate }}">
@@ -68,7 +68,8 @@
                 <div class="fx-row-center">
                   <div>
                     <mat-button-toggle-group class="fx-empty" name="layerType"
-                    [disabled]="!(isBrowseOverlayEnabled$ | async)">
+                    [disabled]="!(isBrowseOverlayEnabled$ | async)"
+                    [hideSingleSelectionIndicator]="true">
                       <mat-button-toggle class="control-mat-button-toggle "
                       *ngIf="searchType === searchTypes.SARVIEWS_EVENTS"
                       (click)="onUnpinAll()"
@@ -91,10 +92,31 @@
                         [disabled]="!(isBrowseOverlayEnabled$ | async)"
                         [matMenuTriggerFor]="opacitySlider"
                         aria-label="Map projection view">
-                  <span class="opacity-button-text">{{ browseOverlayOpacity * 100 | number : '1.0-0' }}%</span>
+                    <span class="opacity-button-text">
+                        @if(this.searchType === searchTypes.DISPLACEMENT) {
+                            {{ velocityOverlayOpacity * 100 | number : '1.0-0' }}%
+                        }
+                        @else {
+                            {{ browseOverlayOpacity * 100 | number : '1.0-0' }}%
+                        }
+                    </span>
                   <span class="fa fa-caret-down bottom-right"></span>
                 </button>
                 <mat-menu #opacitySlider="matMenu" class="opacity-slider-mat-menu">
+                    @if(this.searchType === searchTypes.DISPLACEMENT){
+                        <div class="opacity-slider-title">
+                            {{ 'OPACITY_OF_VELOCITY_OVERLAY' |  translate }}
+                          </div>
+                          <mat-slider thumbLabel step="0.05" min="0.0" max="1.0"
+                                      class="opacity-slider"
+                                      name="layerType"
+                                      (input)="onSetVelocityOpacity($event)"
+                                      (click)="$event.stopPropagation()"
+                                      color="primary"
+                                      [disabled]="!(isBrowseOverlayEnabled$ | async)"><input matSliderThumb value="0.8" />
+                          </mat-slider>
+                    }
+                    @else {
                   <div class="opacity-slider-title">
                     {{ 'OPACITY_OF_BROWSE_IMAGES' |  translate }}
                   </div>
@@ -117,8 +139,9 @@
                               color="primary"
                               [disabled]="!(isCoherenceOverlayEnabled$| async)"><input matSliderThumb value="1" />
                   </mat-slider>
+            }
                 </mat-menu>
-              </div>
+        </div>
             </div>
           </div>
 

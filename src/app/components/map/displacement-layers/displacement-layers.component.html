@@ -1,33 +1,24 @@
-<div class="disp-layers--layout position">
+<div class="disp-layers--layout position" cdkDrag>
   <div class="layers-selector fx-col">
-    <mat-checkbox (change)="onToggleCumulativeLayerDisplay($event.checked)" [checked]="!!this.displacementOverview">
+
+    <mat-checkbox [value]="DispLayerTypes.VELOCITY"
+                  [checked]="this.displacementOverview === DispLayerTypes.VELOCITY"
+                  (change)="onToggleVelocityLayerDisplay($event.checked)"
+    >
       <div class="selector-text">
-        {{ 'CUMULATIVE_LAYER' | translate}}
+        {{ 'VELOCITY' | translate}} 2016-2025
       </div>
     </mat-checkbox>
-    <mat-radio-group #cumulativeLayers (change)="onUpdateLayerType($event.value)"
-      [disabled]="!cumulativeDisplacementSelectionEnabled"
-      style="display: flex; flex-direction: column; margin-left: 10px">
 
-      <mat-radio-button [value]="DispLayerTypes.DISPLACEMENT" [disabled]="!cumulativeDisplacementSelectionEnabled" [checked]="this.displacementOverview === DispLayerTypes.DISPLACEMENT">
-        <div class="selector-text">
-          {{ 'DEFORMATION' | translate}}
-        </div>
-      </mat-radio-button>
-      <mat-radio-button [value]="DispLayerTypes.VELOCITY" [disabled]="!cumulativeDisplacementSelectionEnabled" [checked]="this.displacementOverview === DispLayerTypes.VELOCITY">
-
-        <div class="selector-text">
-          {{ 'VELOCITY' | translate}}
-        </div>
-      </mat-radio-button>
-    </mat-radio-group>
-
-    @if (cumulativeDisplacementSelectionEnabled && this.displacementOverview) {
+    @if (this.displacementOverview === DispLayerTypes.VELOCITY) {
+      <div style="margin-top: -5px;">
         <app-map-legend
-        [min]="this.mapService.displacementRange?.range[0]"
-        [max]="this.mapService.displacementRange?.range[1]"
-        [units]="this.mapService.displacementRange?.units">
-      </app-map-legend>
+          style="display: inline-block; margin-top: -5px;"
+          [min]="this.mapService.displacementRange?.range[0]"
+          [max]="this.mapService.displacementRange?.range[1]"
+          [units]="this.mapService.displacementRange?.units">
+        </app-map-legend>
+      </div>
     }
 
     <mat-checkbox #priorityRollout class="rollout-checkbox"
@@ -40,22 +31,33 @@
 
     @if (priorityEnabled) {
       <div class="priority-legend">
-        <div class="priority-box first-priority"> 1st </div>
-        <div class="priority-box second-priority"> 2nd </div>
-        <div class="priority-box third-priority"> 3rd </div>
+        <div class="priority-box first-priority">1st</div>
+        <div class="priority-box second-priority">2nd</div>
+        <div class="priority-box third-priority">3rd</div>
       </div>
     }
 
-    <div class="help-text">
-      {{ 'WHAT_ARE_THESE?' | translate}}
-      <app-docs-modal class="info-icon" url="https://docs.asf.alaska.edu/vertex/displacement/#map-layers">
-      </app-docs-modal>
+<!--    <div class="help-text">-->
+<!--      {{ 'WHAT_ARE_THESE?' | translate}}-->
+<!--      <app-docs-modal class="info-icon" url="https://docs.asf.alaska.edu/vertex/displacement/#map-layers">-->
+<!--      </app-docs-modal>-->
+<!--    </div>-->
+
+    <div class="footer">
+      <div class="footer--text container space-between">
+        <div>
+<!--          {{ 'HELP' | translate}}-->
+          <app-docs-modal class="info-icon"
+                          custStyle="color: #ffffffb3; cursor: pointer; text-decoration: underline;"
+                          text="{{ 'HELP' | translate}}"
+                          url="https://docs.asf.alaska.edu/vertex/displacement/#map-layers"
+          >
+          </app-docs-modal>
+        </div>
+        <div>{{ 'MAP_LAYERS' | translate}}</div>
+      </div>
     </div>
+
   </div>
 
-  <div class="footer">
-    <div class="footer--text">
-      {{ 'MAP_LAYERS' | translate}}
-    </div>
-  </div>
 </div>

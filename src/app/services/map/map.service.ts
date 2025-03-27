@@ -889,7 +889,7 @@ export class MapService implements OnDestroy {
       } else {
         let temp_feature = this.wktService.wktToFeature(dataPoint.base_wkt, this.epsg())
         temp_feature.set('point', temp_feature.getGeometry());
-        temp_feature.set('uuid', dataPoint.uuid); 
+        temp_feature.set('uuid', dataPoint.uuid);
         temp_feature.set('seriesNumber', dataPoint.seriesNumber);
         temp_feature.set('seriesColor', dataPoint.color);
         features.push(temp_feature)
@@ -945,7 +945,7 @@ export class MapService implements OnDestroy {
           }),
           text: textFunction(feature),
         }),
-        zIndex: (selected) ? 1000 : +feature.get('seriesNumber') + +feature.get('index'),
+        zIndex: (selected) ? 1000 : feature.get('index') ? +feature.get('seriesNumber') + +feature.get('index') : +feature.get('seriesNumber'),
       })
 
       return layerStyle
@@ -1051,6 +1051,9 @@ export class MapService implements OnDestroy {
   }
   public updateCoherenceOpacity(opacity: number) {
     this.layerService.coherenceLayer?.setOpacity(opacity);
+  }
+  public updateVelocityOpacity(opacity: number) {
+    this.displacementOverview?.setOpacity(opacity);
   }
   public getAoiIntersectionMethod(geometryType: GeometryType) {
     if (geometryType === 'Point') {

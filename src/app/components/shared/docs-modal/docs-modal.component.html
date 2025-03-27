@@ -1,5 +1,10 @@
-<ng-container *ngIf="text">
+<ng-container *ngIf="text && !custStyle">
   <a (click)="showDoc()" class="link-pointer text-link">
+    {{ text }}
+  </a>
+</ng-container>
+<ng-container *ngIf="text && custStyle">
+  <a (click)="showDoc()" style="{{custStyle}}">
     {{ text }}
   </a>
 </ng-container>

@@ -21,7 +21,7 @@ import { setTimeseriesValid } from '@store/charts';
 export class NetcdfService {
   private url: string = 'https://d8itg4twhevb5.cloudfront.net/'
 //   private url: string = 'http://127.0.0.1:8080/'
-  private bucket: string = 'asf-cumulus-test-opera-products'
+  private bucket: string = 'asf-cumulus-prod-opera-products'
   private itemsEndpoint: string = 'items/'
   private timeSeriesEndpoint: string = 'timeseries'
   private files: string[] = [""] //, "20221107_20230130.unw.nc", "20221107_20230106.unw.nc", "20221107_20230729.unw.nc", "20221107_20230319.unw.nc", "20221107_20221213.unw.nc", "20221107_20230530.unw.nc", "20221107_20230717.unw.nc", "20221107_20230412.unw.nc", "20221107_20230506.unw.nc", "20221107_20230223.unw.nc", "20221107_20230211.unw.nc", "20221107_20230331.unw.nc", "20221107_20230705.unw.nc"]

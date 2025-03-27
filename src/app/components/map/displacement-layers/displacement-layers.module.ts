@@ -11,6 +11,7 @@ import { DocsModalModule } from '@components/shared/docs-modal';
 
 import { MatSharedModule } from '@shared';
 import { SharedModule } from "@shared";
+import {CdkDrag} from '@angular/cdk/drag-drop';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { SharedModule } from "@shared";
     MatSharedModule,
     SharedModule,
     DocsModalModule,
-    MapLegendComponent
+    MapLegendComponent,
+    CdkDrag
   ],
   declarations: [
     DisplacementLayersComponent

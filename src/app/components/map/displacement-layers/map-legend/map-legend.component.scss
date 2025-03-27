@@ -1,10 +1,12 @@
 @import "asf-theme";
 
 .map-legend {
-  width: -webkit-fill-available;
+  //position: absolute;
+  margin-bottom: 7px;
+  margin-left: 40px;
+  width: 170px;
   height: 20px;
-  margin: 0 4px;
-  padding: 0 4px;
+  padding: 0;
   color: white;
   font-size: 12px;
   background-image: linear-gradient(to right,
@@ -20,7 +22,7 @@
         rgba(89, 0, 8),
   );
   border-radius: 4px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: space-between;
 }
@@ -30,5 +32,6 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-left: 5px;
+  //margin: 0;
+  //width: 100px;
 }
