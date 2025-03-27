@@ -2,7 +2,7 @@
   *ngIf="breakpoint$ | async as breakpoint"
   class="detail-card scrollable"
   [class.scrollable]="isScrollable"
-  [class.detail-card-info-mobile]="breakpoint < breakpoints.FULL"
+  [class.detail-card-info-mobile]="breakpoint < breakpoints.MEDIUM"
 >
   <div *ngIf="sarviewEvent">
     <mat-card-header>
