@@ -25,7 +25,8 @@ export enum Hyp3ActionType {
   SET_DEBUG_STATUS = '[Hyp3] Set debug status',
 
   SET_MAX_HYP3_JOBS = '[Hyp3] Set max hyp3 job',
-  MAX_HYP3_RESULTS_HIT = '[Search] Max on demand results hit',
+  MAX_HYP3_RESULTS_HIT = '[Hyp3] Max on demand results hit',
+  RESET_MAX_HYP3_RESULTS_HIT = '[Hyp3] Reset if max on demand results hit',
   SET_SEARCH_JOB_IDS = '[Hyp3] Set search job ids',
 }
 
@@ -117,6 +118,9 @@ export class MaxHyp3ResultsHit implements Action {
   public readonly type = Hyp3ActionType.MAX_HYP3_RESULTS_HIT;
 }
 
+export class ResetMaxHyp3ResultsHit implements Action {
+  public readonly type = Hyp3ActionType.RESET_MAX_HYP3_RESULTS_HIT;
+}
 
 export type Hyp3Actions =
   | LoadJobs
@@ -136,4 +140,5 @@ export type Hyp3Actions =
   | SetDebugStatus
   | SetMaxHyp3Jobs
   | SetSearchJobIds
-  | MaxHyp3ResultsHit;
+  | MaxHyp3ResultsHit
+  | ResetMaxHyp3ResultsHit;

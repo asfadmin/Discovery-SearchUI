@@ -190,6 +190,13 @@ export function hyp3Reducer(state = initState, action: Hyp3Actions): Hyp3State {
       };
     }
 
+    case Hyp3ActionType.RESET_MAX_HYP3_RESULTS_HIT: {
+      return {
+        ...state,
+        areMoreJobsToLoad: false,
+      };
+    }
+
     default: {
       return state;
     }
