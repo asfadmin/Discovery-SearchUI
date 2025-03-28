@@ -191,7 +191,10 @@ export class UrlStateService {
         this.store$.dispatch(new filterStore.SetMaxResults(profile.maxResults));
       }
 
-      if (profile.theme && profile.theme !== 'System Preferences') {
+    } else {
+      this.store$.dispatch(new scenesStore.SetResultsLoaded(true))
+    }
+    if (profile.theme && profile.theme !== 'System Preferences') {
         this.themeService.setTheme(`theme-${profile.theme}`);
       } else if (profile.theme) {
         this.themeService.theme$.pipe(
@@ -203,9 +206,6 @@ export class UrlStateService {
         );
       } else {
         this.themeService.setTheme('theme-light');
-      }
-    } else {
-      this.store$.dispatch(new scenesStore.SetResultsLoaded(true))
     }
     const action = profile.mapLayer === models.MapLayerTypes.STREET ?
       new mapStore.SetStreetView() :
