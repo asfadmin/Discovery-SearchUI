@@ -15,6 +15,7 @@ import * as scenesStore from '@store/scenes';
 import * as filtersStore from '@store/filters';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
+import * as hyp3Store from '@store/hyp3';
 
 import * as services from '@services';
 
@@ -112,11 +113,20 @@ export class SearchEffects {
 
   public getNextJobBatch = createEffect(() => this.actions$.pipe(
     ofType<SetNextJobsUrl>(SearchActionType.SET_NEXT_JOBS_URL),
-    withLatestFrom(this.store$.select(getScenes)),
-    filter(([action, scenes]) => !!action.payload && scenes !== undefined && scenes.length < 3000),
+    withLatestFrom(combineLatest([
+      this.store$.select(getScenes),
+      this.store$.select(hyp3Store.getMaxHyp3Jobs),
+    ])),
+    filter(([action, [scenes, _]]) => {
+      return !!action.payload && scenes !== undefined;
+    }),
     switchMap(
-      ([action, currentScenes]) => {
+      ([action, [scenes, maxHyp3Jobs]]) => {
         const next = action.payload;
+
+        if (scenes.length > maxHyp3Jobs) {
+          return of(new hyp3Store.MaxHyp3ResultsHit());
+        }
 
         return this.hyp3Service.getJobsByUrl$(next).pipe(
           switchMap(
@@ -130,7 +140,7 @@ export class SearchEffects {
                 }));
               }
 
-              return this.onDemandGranuleList$(jobsRes, currentScenes);
+              return this.onDemandGranuleList$(jobsRes, scenes);
             }
           ),
         );

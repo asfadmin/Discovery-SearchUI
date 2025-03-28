@@ -24,6 +24,9 @@ export enum Hyp3ActionType {
   CLEAR_PROCESSING_OPTIONS = '[Hyp3] Clear Processing Options',
   SET_DEBUG_STATUS = '[Hyp3] Set debug status',
 
+  SET_MAX_HYP3_JOBS = '[Hyp3] Set max hyp3 job',
+  MAX_HYP3_RESULTS_HIT = '[Search] Max on demand results hit',
+  SET_SEARCH_JOB_IDS = '[Hyp3] Set search job ids',
 }
 
 export class LoadJobs implements Action {
@@ -99,6 +102,22 @@ export class ErrorLoadingUser implements Action {
   public readonly type = Hyp3ActionType.ERROR_LOADING_USER;
 }
 
+export class SetMaxHyp3Jobs implements Action {
+  public readonly type = Hyp3ActionType.SET_MAX_HYP3_JOBS;
+
+  constructor(public payload: number) {}
+}
+export class SetSearchJobIds implements Action {
+  public readonly type = Hyp3ActionType.SET_SEARCH_JOB_IDS;
+
+  constructor(public payload: string[]) {}
+}
+
+export class MaxHyp3ResultsHit implements Action {
+  public readonly type = Hyp3ActionType.MAX_HYP3_RESULTS_HIT;
+}
+
+
 export type Hyp3Actions =
   | LoadJobs
   | SetJobs
@@ -114,4 +133,7 @@ export type Hyp3Actions =
   | SubmitJob
   | SuccessfulJobSubmission
   | ErrorJobSubmission
-  | SetDebugStatus;
+  | SetDebugStatus
+  | SetMaxHyp3Jobs
+  | SetSearchJobIds
+  | MaxHyp3ResultsHit;

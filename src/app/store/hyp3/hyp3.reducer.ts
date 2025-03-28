@@ -14,12 +14,15 @@ export interface Hyp3State {
   user: Hyp3User | null;
   isUserLoading: boolean;
   areJobsLoading: boolean;
+  areMoreJobsToLoad: boolean;
   submittingJobName: string | null;
   processingOptions: Hyp3ProcessingOptions;
   projectName: string;
   userId: string;
+  searchJobIds: string[];
   costs: Hyp3Costs;
   debug_status: ApplicationStatus | null;
+  maxHyp3Jobs: number | null;
 }
 
 const initState: Hyp3State = {
@@ -27,23 +30,26 @@ const initState: Hyp3State = {
   user: null,
   isUserLoading: false,
   areJobsLoading: false,
+  areMoreJobsToLoad: false,
   submittingJobName: null,
   processingOptions: hyp3DefaultJobOptions,
   projectName: '',
   debug_status: null,
   userId: '',
+  searchJobIds: [],
+  maxHyp3Jobs: 3000,
   costs: {
-    "AUTORIFT": {
-      "cost": 1,
+    'AUTORIFT': {
+      'cost': 1,
     },
-    "INSAR_GAMMA": {
-      "cost": 1,
+    'INSAR_GAMMA': {
+      'cost': 1,
     },
-    "RTC_GAMMA": {
-      "cost": 1,
+    'RTC_GAMMA': {
+      'cost': 1,
     },
-    "INSAR_ISCE_BURST": {
-      "cost": 1,
+    'INSAR_ISCE_BURST': {
+      'cost': 1,
     }
   }
 };
@@ -162,6 +168,28 @@ export function hyp3Reducer(state = initState, action: Hyp3Actions): Hyp3State {
       };
     }
 
+    case Hyp3ActionType.SET_MAX_HYP3_JOBS: {
+      return {
+        ...state,
+        maxHyp3Jobs: action.payload,
+        areMoreJobsToLoad: false,
+      };
+    }
+
+    case Hyp3ActionType.SET_SEARCH_JOB_IDS: {
+      return {
+        ...state,
+        searchJobIds: action.payload,
+      };
+    }
+
+    case Hyp3ActionType.MAX_HYP3_RESULTS_HIT: {
+      return {
+        ...state,
+        areMoreJobsToLoad: true,
+      };
+    }
+
     default: {
       return state;
     }
@@ -215,4 +243,19 @@ export const getOnDemandUserId = createSelector(
 export const getCosts = createSelector(
   getHyp3State,
   (state: Hyp3State) => state.costs
+);
+
+export const getMaxHyp3Jobs = createSelector(
+  getHyp3State,
+  (state: Hyp3State) => state.maxHyp3Jobs
+);
+
+export const getSearchJobIds = createSelector(
+  getHyp3State,
+  (state: Hyp3State) => state.searchJobIds
+);
+
+export const getAreMoreJobsToLoad = createSelector(
+  getHyp3State,
+  (state: Hyp3State) => state.areMoreJobsToLoad
 );

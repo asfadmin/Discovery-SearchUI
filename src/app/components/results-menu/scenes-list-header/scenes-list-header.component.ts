@@ -1,4 +1,4 @@
-import { Component,  OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { saveAs } from 'file-saver';
 
 import { combineLatest, switchMap } from 'rxjs';
@@ -11,6 +11,7 @@ import * as uiStore from '@store/ui';
 import * as queueStore from '@store/queue';
 import * as searchStore from '@store/search';
 import * as filtersStore from '@store/filters';
+import * as hyp3Store from '@store/hyp3';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 
 import {
@@ -40,7 +41,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     this.scenesService.scenes$]
   ).pipe(
     map(([count, scenes]) => count + scenes?.filter(scene => scene.metadata.productType === 'BURST').length)
-  )
+  );
 
   public currentDatasetID$ = this.store$.select(filtersStore.getSelectedDataset).pipe(map(dataset => dataset.id));
   public numberOfScenes$ = this.store$.select(scenesStore.getNumberOfScenes);
@@ -56,26 +57,26 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public sarviewsEventProducts: SarviewsProduct[] = [];
   public pinnedEventIDs: string[];
 
-  public productsByType$: Observable<{[key:string]: models.CMRProduct[]}> = this.store$.select(scenesStore.getAllProducts).pipe(
+  public productsByType$: Observable<{ [key: string]: models.CMRProduct[] }> = this.store$.select(scenesStore.getAllProducts).pipe(
     map((scenes: []) =>
-    scenes.reduce((prev, curr: models.CMRProduct) => {
-      if(!prev[curr.productTypeDisplay]) {
-        prev[curr.productTypeDisplay] = []
-      }
-      prev[curr.productTypeDisplay].push(curr)
+      scenes.reduce((prev, curr: models.CMRProduct) => {
+        if (!prev[curr.productTypeDisplay]) {
+          prev[curr.productTypeDisplay] = [];
+        }
+        prev[curr.productTypeDisplay].push(curr);
 
-      return prev;
-    }, {})
+        return prev;
+      }, {})
     ),
     tap(products => this.operaProductsByType = products)
-  )
+  );
 
   public productCountByType$ = this.productsByType$.pipe(
     map(products => Object.keys(products).reduceRight((prev: {}, curr: string) => {
       prev[curr] = products[curr].length;
-      return prev
+      return prev;
     }, {}))
-  )
+  );
 
   public numBaselineScenes$ = this.scenesService.scenes$.pipe(
     map(scenes => scenes.length),
@@ -86,7 +87,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   );
 
   private products$ = this.scenesService.products$();
-  private operaProductsByType: {[key:string]: models.CMRProduct[]} = {}
+  private operaProductsByType: { [key: string]: models.CMRProduct[] } = {};
 
   public isBurstStack$ = combineLatest([
     this.products$,
@@ -95,19 +96,19 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   ).pipe(
     map(([scenes, currentSearchType]) => (
       currentSearchType === this.SearchTypes.BASELINE &&
-      scenes?.length > 0 ? scenes[0].metadata.productType === 'BURST': false)
+        scenes?.length > 0 ? scenes[0].metadata.productType === 'BURST' : false)
       || (currentSearchType === this.SearchTypes.SBAS &&
-      scenes?.length > 0 ? scenes[0].metadata.productType === 'BURST': false)
+        scenes?.length > 0 ? scenes[0].metadata.productType === 'BURST' : false)
     )
-  )
+  );
 
   public numPairs$ =
-  this.store$.select(searchStore.getSearchType).pipe(
-    filter(searchType => searchType !== models.SearchType.CUSTOM_PRODUCTS),
-    switchMap(_ => this.pairs$),
-    filter(pairs => !!pairs),
-    map(pairs => pairs.pairs.length + pairs.custom.length),
-  );
+    this.store$.select(searchStore.getSearchType).pipe(
+      filter(searchType => searchType !== models.SearchType.CUSTOM_PRODUCTS),
+      switchMap(_ => this.pairs$),
+      filter(pairs => !!pairs),
+      map(pairs => pairs.pairs.length + pairs.custom.length),
+    );
 
   public sarviewsEventProducts$ = this.eventMonitoringService.filteredEventProducts$();
 
@@ -155,7 +156,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public SBASBurstProductsLength$ = combineLatest([
     this.SBASburstDataProducts$.pipe(map(products => products.length)),
     this.SBASburstMetadataProducts$.pipe(map(products => products.length))]
-  ).pipe(map(([data, metadata]) => data + metadata))
+  ).pipe(map(([data, metadata]) => data + metadata));
 
   public pairs: models.CMRProductPair[];
   public sbasProducts: models.CMRProduct[] = [];
@@ -183,7 +184,8 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public AutoRift = models.hyp3JobTypes.AUTORIFT;
 
   public hyp3able = { total: 0, byJobType: [] };
-  public hyp3ableEventProducts = {total: 0, byJobType: []};
+  public hyp3ableEventProducts = { total: 0, byJobType: [] };
+  public moreHyp3JobsToLoad: boolean;
 
   private selectedEvent: models.SarviewsEvent;
 
@@ -229,7 +231,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
         filter(searchType => searchType !== models.SearchType.CUSTOM_PRODUCTS),
         withLatestFrom(this.pairs$)
       ).subscribe(
-          ([_, {pairs, custom}]) => this.pairs = [...pairs, ...custom])
+        ([_, { pairs, custom }]) => this.pairs = [...pairs, ...custom])
     );
 
     this.subs.add(
@@ -239,14 +241,14 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
         this.store$.select(searchStore.getSearchType),
         this.store$.select(filtersStore.getSelectedDataset)]
       ).pipe(
-          debounceTime(250)
-        ).subscribe(([scenes, productTypes, searchType, selectedDataset]) => {
-          this.canHideRawData =
-            searchType === models.SearchType.DATASET &&
-              scenes.every(scene => scene.dataset === 'Sentinel-1B' || scene.dataset === 'Sentinel-1A') &&
-              productTypes.length <= 0
-              && selectedDataset.id !== models.opera_s1.id;
-        })
+        debounceTime(250)
+      ).subscribe(([scenes, productTypes, searchType, selectedDataset]) => {
+        this.canHideRawData =
+          searchType === models.SearchType.DATASET &&
+          scenes.every(scene => scene.dataset === 'Sentinel-1B' || scene.dataset === 'Sentinel-1A') &&
+          productTypes.length <= 0
+          && selectedDataset.id !== models.opera_s1.id;
+      })
     );
 
     this.subs.add(
@@ -288,6 +290,12 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(queueStore.getQueuedProducts).subscribe(
         products => this.queuedProducts = products
+      )
+    );
+
+    this.subs.add(
+      this.store$.select(hyp3Store.getAreMoreJobsToLoad).subscribe(
+         moreToLoad => this.moreHyp3JobsToLoad = moreToLoad
       )
     );
 
@@ -374,7 +382,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   }
 
   public queueProductsOfType(productType): void {
-    this.queueAllProducts(this.operaProductsByType[productType as string])
+    this.queueAllProducts(this.operaProductsByType[productType as string]);
   }
 
   public queueSBASProducts(products: models.CMRProduct[]): void {
@@ -383,22 +391,22 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
   public onDownloadPairCSV() {
     const pairRows = this.pairs
-    .map(([reference, secondary]) => {
+      .map(([reference, secondary]) => {
 
-      const temporalBaseline = Math.abs(reference.metadata.temporal - secondary.metadata.temporal);
-      const perpendicularBaseline = Math.abs(reference.metadata.perpendicular - secondary.metadata.perpendicular);
+        const temporalBaseline = Math.abs(reference.metadata.temporal - secondary.metadata.temporal);
+        const perpendicularBaseline = Math.abs(reference.metadata.perpendicular - secondary.metadata.perpendicular);
 
-      return (
-        `${reference.name},${reference.downloadUrl},` +
+        return (
+          `${reference.name},${reference.downloadUrl},` +
           `${secondary.name},${secondary.downloadUrl},` +
           `${perpendicularBaseline},${temporalBaseline}`
-      );
-    })
-    .join('\n');
+        );
+      })
+      .join('\n');
 
     const pairsHeader =
-      `Reference, Reference URL, Secondary, Secondary URL, ` +
-        `Pair Perpendicular Baseline (meters), Pair Temporal Baseline (days)`;
+      'Reference, Reference URL, Secondary, Secondary URL, ' +
+      'Pair Perpendicular Baseline (meters), Pair Temporal Baseline (days)';
 
     const pairsCSV = `${pairsHeader}\n${pairRows}`;
 
