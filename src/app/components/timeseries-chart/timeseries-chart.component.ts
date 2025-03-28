@@ -106,6 +106,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   ];
   private linearFitLine: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
   private showLinearFit = false;
+  private OperaDispStartDate = new Date('2016/07/2 00:00:00 UTC').getTime()
+  private millisecondsPerYear = 3.17098e-11
 
   public exportableData: { [index:string]: {}[]} = {}
 
@@ -610,12 +612,15 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           .attr('clip-path', 'url(#clip)')
         for(let linearFitData of this.dataReadyForChart) {
             let regression = linearRegression(linearFitData.values.map((x) => [Date.parse(x.date), x.short_wavelength_displacement]));
+            let lineregression = linearRegressionLine(regression);
+            let yIntercept = lineregression(this.OperaDispStartDate) 
           this.bestFitItems.push({
             seriesNumber: linearFitData.values[0].seriesNumber,
             color: linearFitData.values[0].color,
-            formula: `y = ${regression.slope.toFixed(4)}x ${regression.yIntercept < 0 ? '-' : '+'} ${Math.abs(regression.yIntercept).toFixed(4)}`
+            // Displacement [m] = velocity [m/yr]*time [yr]+intercept [m]
+            formula: `Displacement [m] = ${(regression.slope / self.millisecondsPerYear).toFixed(4)} [m/yr]*time ${yIntercept < 0 ? '-' : '+'} ${Math.abs(yIntercept).toFixed(4)} [m]`
           })
-          let lineregression = linearRegressionLine(regression);
+          
 
           let line = d3.line()
             .x((d) => { return this.x(d[0]) })
