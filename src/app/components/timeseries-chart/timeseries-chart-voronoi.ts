@@ -5,11 +5,12 @@ import { HttpClient } from '@angular/common/http';
 import * as d3 from 'd3';
 
 @Component({
-  selector: 'app-timeseries-chart',
-  templateUrl: './timeseries-chart.component.html',
+  selector: 'app-timeseries-chart-voronoi',
+//   templateUrl: './timeseries-chart.component.html',
+  template: "",
   styleUrl: './timeseries-chart.component.scss'
 })
-export class TimeseriesChartComponent implements OnInit, OnDestroy {
+export class TimeseriesChartVoronoiComponent implements OnInit, OnDestroy {
   @ViewChild('timeseriesChart', {static: true}) timeseriesChart: ElementRef;
   public url: string = '/assets/unemployment.json';
   public unemploymentData: any;

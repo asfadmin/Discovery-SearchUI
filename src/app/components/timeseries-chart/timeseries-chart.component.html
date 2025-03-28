@@ -10,9 +10,9 @@
   <div class="ts-best-fit-formulas">
     <cdk-virtual-scroll-viewport #tsBestFitFormulas
                                  orientation="horizontal"
-                                 itemSize="140"
-                                 minBufferPx="200"
-                                 maxBufferPx="400"
+                                 itemSize="363"
+                                 minBufferPx="364"
+                                 maxBufferPx="1500"
                                  class="ts-best-fit-viewport">
       <div *cdkVirtualFor="let item of bestFitItems" class="ts-best-fit-item">
         <div [style.background-color]="item.color" class="ts-color-swatch">{{item.seriesNumber}}</div>
