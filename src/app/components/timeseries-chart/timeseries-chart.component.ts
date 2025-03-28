@@ -500,23 +500,16 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       });
     this.thing = d3.select<HTMLDivElement, {}>('#timeseriesChart').selectChild()
     this.thing.call(this.zoom)
-
-    this.svg.append('defs').append('SVG:clipPath')
-      .attr('id', 'clip')
-      .append('SVG:rect')
-      .attr('width', this.width)
-      .attr('height', this.height)
-      .attr('x', 0)
-      .attr('y', 0);
-
-    if (this.dataSource.length <= 0) {
-      this.svg.append('rect')
+    if(this.width >= 0) {
+        this.svg.append('defs').append('SVG:clipPath')
+        .attr('id', 'clip')
+        .append('SVG:rect')
         .attr('width', this.width)
         .attr('height', this.height)
         .attr('x', 0)
-        .attr('y', 0)
-        .attr('class', 'loading-rect');
+        .attr('y', 0);
     }
+
 
     this.svg.append('text')
       .attr('transform', `translate(${this.width / 2}, ${this.height + this.margin.bottom - 20})`)

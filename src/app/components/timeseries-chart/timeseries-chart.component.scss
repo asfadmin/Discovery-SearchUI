@@ -83,8 +83,8 @@ $chart-ctrl-top-x: 62px;
   }
 }
 
-::ng-deep .ts-chart-label {
-  @include themify($themes) {
+.ts-chart-label {
+  @include themify_non_host($themes) {
     fill: themed('dark-primary-text');
     overflow-x: visible;
     font-size: 14px;

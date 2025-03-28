@@ -71,6 +71,7 @@
 
 .rollout-checkbox {
   margin: 4px 0;
+  position: relative;
 }
 
 .priority-legend {
@@ -107,4 +108,19 @@
 .third-priority {
   color: white;
   background-color: rgba(0, 64, 103, 0.6);
+}
+
+.velocity-help-icon {
+  position: absolute;
+  margin-top: 9px;
+  margin-left: 180px;
+  font-size: 16px !important;
+}
+
+.rollout-help-icon {
+  position: relative;
+  margin-top: -30px;
+  margin-left: 180px;
+  margin-bottom: 8px;
+  font-size: 16px !important;
 }

@@ -9,6 +9,14 @@
         {{ 'VELOCITY' | translate}} 2016-2025
       </div>
     </mat-checkbox>
+    <div class="velocity-help-icon">
+      <app-docs-modal custStyle="color: #ffffffb3; cursor: pointer; text-decoration: underline;"
+                      text=""
+                      icon="help_outline"
+                      url="https://docs.asf.alaska.edu/vertex/displacement/#cumulative-velocity"
+      >
+      </app-docs-modal>
+    </div>
 
     @if (this.displacementOverview === DispLayerTypes.VELOCITY) {
       <div style="margin-top: -5px;">
@@ -28,6 +36,15 @@
         {{ 'ROLLOUT' | translate}}
       </div>
     </mat-checkbox>
+    <div class="rollout-help-icon">
+      <app-docs-modal custStyle="color: #ffffffb3; cursor: pointer; text-decoration: underline;"
+                      text=""
+                      icon="help_outline"
+                      url="https://docs.asf.alaska.edu/vertex/displacement/#rollout"
+      >
+      </app-docs-modal>
+    </div>
+
 
     @if (priorityEnabled) {
       <div class="priority-legend">
@@ -37,16 +54,9 @@
       </div>
     }
 
-<!--    <div class="help-text">-->
-<!--      {{ 'WHAT_ARE_THESE?' | translate}}-->
-<!--      <app-docs-modal class="info-icon" url="https://docs.asf.alaska.edu/vertex/displacement/#map-layers">-->
-<!--      </app-docs-modal>-->
-<!--    </div>-->
-
     <div class="footer">
       <div class="footer--text container space-between">
         <div>
-<!--          {{ 'HELP' | translate}}-->
           <app-docs-modal class="info-icon"
                           custStyle="color: #ffffffb3; cursor: pointer; text-decoration: underline;"
                           text="{{ 'HELP' | translate}}"
