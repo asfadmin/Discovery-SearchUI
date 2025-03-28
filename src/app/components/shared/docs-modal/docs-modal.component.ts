@@ -39,7 +39,7 @@ export class DocsModalComponent implements OnInit, OnDestroy {
   @Input() url: string;
   @Input() text: string;
   @Input() custStyle: string;
-  @Input() icon: string = 'read_more';
+  @Input() icon: string = 'help_outline';
   @Input() description: string;
   @Input() tooltip: string;
 
