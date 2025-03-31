@@ -113,7 +113,9 @@
                                       (input)="onSetVelocityOpacity($event)"
                                       (click)="$event.stopPropagation()"
                                       color="primary"
-                                      [disabled]="!(isBrowseOverlayEnabled$ | async)"><input matSliderThumb value="0.8" />
+                                      [disabled]="!(isBrowseOverlayEnabled$ | async)">
+<!--                            <input matSliderThumb value="0.8" />-->
+                            <input matSliderThumb [(ngModel)]="velocityOverlayOpacity" />
                           </mat-slider>
                     }
                     @else {
@@ -126,7 +128,8 @@
                               (input)="onSetOpacity($event)"
                               (click)="$event.stopPropagation()"
                               color="primary"
-                              [disabled]="!(isBrowseOverlayEnabled$ | async)"><input matSliderThumb value="1" />
+                              [disabled]="!(isBrowseOverlayEnabled$ | async)">
+                    <input matSliderThumb value="1" />
                   </mat-slider>
                   <div class="opacity-slider-title">
                     {{ 'OPACITY_OF_COHERENCE_LAYER' | translate }}
@@ -137,7 +140,8 @@
                               (input)="onSetCoherenceOpacity($event)"
                               (click)="$event.stopPropagation()"
                               color="primary"
-                              [disabled]="!(isCoherenceOverlayEnabled$| async)"><input matSliderThumb value="1" />
+                              [disabled]="!(isCoherenceOverlayEnabled$| async)">
+                    <input matSliderThumb value="1" />
                   </mat-slider>
             }
                 </mat-menu>

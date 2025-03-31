@@ -1,4 +1,5 @@
-<div class="disp-layers--layout position" cdkDrag>
+<div class="disp-layers--layout position">
+<!--<div class="disp-layers&#45;&#45;layout position" cdkDrag>-->
   <div class="layers-selector fx-col">
 
     <mat-checkbox [value]="DispLayerTypes.VELOCITY"
@@ -26,6 +27,17 @@
           [max]="this.mapService.displacementRange?.range[1]"
           [units]="this.mapService.displacementRange?.units">
         </app-map-legend>
+        <span class="slider-formatting">
+          <mat-slider min="0" max="1" step="0.05"
+                      class="opacity-slider"
+                      name="layerType"
+                      (input)="onSetVelocityOpacity($event)"
+                      (click)="$event.stopPropagation()"
+          >
+            <input matSliderThumb [(ngModel)]="velocityOverlayOpacity" />
+          </mat-slider>
+        </span>
+
       </div>
     }
 

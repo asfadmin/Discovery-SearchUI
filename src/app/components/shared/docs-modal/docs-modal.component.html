@@ -16,9 +16,6 @@
 <ng-container *ngIf="!description && !text">
   <a (click)="showDoc()" class="link-pointer" matTooltip="{{this.tooltip ?? 'OPEN_LINK_TO_DOCUMENTATION' | translate}}">
     <mat-icon class="material-symbols-outlined icon-size">{{ icon }}</mat-icon>
-<!--    <span class="material-symbols-outlined">-->
-<!--      {{ icon }}-->
-<!--    </span>-->
   </a>
 </ng-container>
 

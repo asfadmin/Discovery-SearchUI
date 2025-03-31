@@ -12,6 +12,8 @@ import { DocsModalModule } from '@components/shared/docs-modal';
 import { MatSharedModule } from '@shared';
 import { SharedModule } from "@shared";
 import {CdkDrag} from '@angular/cdk/drag-drop';
+import {MatSlider, MatSliderThumb} from '@angular/material/slider';
+import {FormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -24,7 +26,10 @@ import {CdkDrag} from '@angular/cdk/drag-drop';
     SharedModule,
     DocsModalModule,
     MapLegendComponent,
-    CdkDrag
+    CdkDrag,
+    MatSlider,
+    MatSliderThumb,
+    FormsModule
   ],
   declarations: [
     DisplacementLayersComponent

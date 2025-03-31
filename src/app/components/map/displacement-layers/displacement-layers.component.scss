@@ -124,3 +124,20 @@
   margin-bottom: 8px;
   font-size: 16px !important;
 }
+
+.opacity-slider {
+  width: 170px;
+  margin-left: 40px;
+  margin-top: -37px;
+}
+
+::ng-deep {
+  .slider-formatting {
+    .mdc-slider {
+      --mdc-slider-inactive-track-height: 2px;
+      --mdc-slider-active-track-height: 3px;
+      --mdc-slider-handle-height: 10px;
+      --mdc-slider-handle-width: 10px;
+    }
+  }
+}
