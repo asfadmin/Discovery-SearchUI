@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { timeseriesChartItemState } from '@models';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
-import { addTimeseriesState, removeTimeseriesState, resetTimeseriesStates } from '@store/charts';
+import { addTimeseriesState, removeTimeseriesState, resetTimeseriesStates, setTimeseriesStates } from '@store/charts';
 import WKT from 'ol/format/WKT';
 
 import { Geometry } from 'ol/geom';
@@ -87,9 +87,10 @@ export class PointHistoryService {
         seriesNumber: state.seriesNumber,
         seriesName: sName,
       } ];
-      this.store$.dispatch(addTimeseriesState({item: state}))
+    //   this.store$.dispatch(addTimeseriesState({item: state}))
     }
     this.history$.next(this.history);
+    this.store$.dispatch(setTimeseriesStates({items: states}))
     this.savePoints();
   }
 

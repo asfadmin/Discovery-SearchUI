@@ -147,9 +147,16 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(this.store$.select(getTimeseriesChartStates).subscribe(chartStates => {
-      this.chartStates = Object.values(chartStates);
-      this.chartStates = this.chartStates.sort((a, b) => a.seriesNumber - b.seriesNumber);
-      this.chartStateChanged(this.chartStates);
+        let temp  = this.chartStates.map(x => x.uuidSeries)
+        if (Object.keys(chartStates).every(x => temp.includes(x))) {
+            this.chartStates = Object.values(chartStates);
+            this.chartStates = this.chartStates.sort((a, b) => a.seriesNumber - b.seriesNumber);
+        } else {
+            this.chartStates = Object.values(chartStates);
+            this.chartStates = this.chartStates.sort((a, b) => a.seriesNumber - b.seriesNumber);
+            this.updateChart()
+        }
+        this.chartStateChanged(this.chartStates);
     }));
 
     this.subs.add(
