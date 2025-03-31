@@ -2,10 +2,10 @@ import {
   Component, OnInit, Input, ViewChild, ViewEncapsulation, OnDestroy, AfterContentInit
 } from '@angular/core';
 
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, forkJoin, Observable, of } from 'rxjs';
 import {
   tap, withLatestFrom, filter, map, delay, debounceTime,
-  first, distinctUntilChanged,
+  first, distinctUntilChanged, switchMap, repeat
 } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
@@ -14,6 +14,7 @@ import { AppState } from '@store';
 import * as searchStore from '@store/search';
 import * as scenesStore from '@store/scenes';
 import * as queueStore from '@store/queue';
+import * as hyp3Store from '@store/hyp3';
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
@@ -82,6 +83,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
     private pairService: services.PairService,
     private hyp3: services.Hyp3ApiService,
     private eventMonitoringService: services.SarviewsEventsService,
+    private notificationService: services.NotificationService,
   ) { }
 
   ngOnInit() {
@@ -399,6 +401,47 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
         }
       })
     );
+
+    const pollRunningJobs = combineLatest([
+      this.store$.select(searchStore.getSearchType),
+      scenes$,
+      this.store$.select(hyp3Store.getOnDemandUserId),
+    ]).pipe(
+      debounceTime(50),
+      filter(([searchType, _, __]) => searchType === models.SearchType.CUSTOM_PRODUCTS),
+      switchMap(([_, scenes, hyp3UserId]) => {
+        const inProgressScenes = scenes.filter(scene =>
+          scene.metadata.job.status_code === models.Hyp3JobStatusCode.RUNNING
+        );
+
+        return forkJoin([
+          this.hyp3.getJobs$(hyp3UserId, models.Hyp3JobStatusCode.RUNNING),
+          of({ inProgressScenes, hyp3UserId })
+        ]).pipe(
+          repeat({ delay: 60000 /* one minute */ }),
+          filter(([__, oldRunningJobs]) => oldRunningJobs.hyp3UserId === hyp3UserId),
+          map(([running, oldRunningJobs]) => {
+            return oldRunningJobs.inProgressScenes.length - running.hyp3Jobs.length;
+          })
+        );
+      })
+    );
+
+    this.subs.add(
+      pollRunningJobs.subscribe(
+        (numJobsFinished) => {
+          if (numJobsFinished > 0) {
+            const plural = numJobsFinished > 1 ? 's' : '';
+
+            this.notificationService.info(
+              `${numJobsFinished} HyP3 Job${plural} have finished`,
+              'Refresh to view',
+              { disableTimeOut: true }
+            );
+          }
+        }
+      )
+    );
   }
 
   ngAfterContentInit() {
@@ -448,8 +491,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
           this.scrollTo(idx);
         }
       }
-    )
-    );
+    ));
   }
 
   private scrollTo(idx: number): void {

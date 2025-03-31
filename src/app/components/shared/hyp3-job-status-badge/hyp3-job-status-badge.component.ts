@@ -24,7 +24,7 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
   private costs: models.Hyp3Costs;
   private processingOptions: Hyp3ProcessingOptions;
   private projectName = '';
-  private validateOnly = true;
+  private validateOnly = false;
   public remaining = 0;
 
   constructor(

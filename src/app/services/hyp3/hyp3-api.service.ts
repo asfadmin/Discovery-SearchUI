@@ -78,17 +78,26 @@ export class Hyp3ApiService {
     );
   }
 
-  public getJobs$(userID?: string): Observable<{hyp3Jobs: models.Hyp3Job[], next: string}> {
+  public getJobs$(userID?: string, statusCode?: models.Hyp3JobStatusCode): Observable<{ hyp3Jobs: models.Hyp3Job[]; next: string }> {
     let getJobsUrl = `${this.apiUrl}/jobs`;
 
-    if (userID) {
-      getJobsUrl += `?user_id=${userID}`
+    if (userID !== undefined || statusCode !== undefined) {
+      getJobsUrl += '?';
     }
+
+    if (userID) {
+      getJobsUrl += `user_id=${userID}&`;
+    }
+
+    if (statusCode) {
+      getJobsUrl += `status_code=${statusCode}`;
+    }
+    console.log(getJobsUrl);
 
     return this.getJobsByUrl$(getJobsUrl);
   }
 
-  public getJobsByUrl$(url: string): Observable<{hyp3Jobs: models.Hyp3Job[], next: string}> {
+  public getJobsByUrl$(url: string): Observable<{ hyp3Jobs: models.Hyp3Job[]; next: string }> {
     return this.http.get(url, { withCredentials: true }).pipe(
       catchError((err: HttpErrorResponse) => {
         if (this.apiUrl === this.baseUrl) {
@@ -103,7 +112,7 @@ export class Hyp3ApiService {
       }),
       map((resp: any) => {
         if (!resp.jobs) {
-          return {hyp3Jobs: [], next: ''};
+          return { hyp3Jobs: [], next: '' };
         }
 
         const { jobs, next } = resp;
