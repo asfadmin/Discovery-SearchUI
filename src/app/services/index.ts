@@ -24,7 +24,10 @@ export { SavedSearchService } from './saved-search.service';
 export { UnzipApiService } from './unzip-api.service';
 export { ScenesService } from './scenes.service';
 export { SearchService } from './search.service';
-export { Hyp3ApiService, OnDemandService, PossibleHyp3JobsService, Hyp3JobStatusService, Hyp3JobService } from './hyp3';
+export {
+  Hyp3ApiService, OnDemandService, PossibleHyp3JobsService,
+  Hyp3JobStatusService, Hyp3JobService, Hyp3JobPollingService
+} from './hyp3';
 export { PairService } from './pair.service';
 export { SceneSelectService } from './scene-select.service';
 export { NotificationService } from './notification.service';

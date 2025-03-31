@@ -150,6 +150,7 @@ export const routes = [
     services.Hyp3JobService,
     services.PossibleHyp3JobsService,
     services.OnDemandService,
+    services.Hyp3JobPollingService,
     services.PairService,
     services.SceneSelectService,
     {provide: SAVER, useFactory: getSaver},

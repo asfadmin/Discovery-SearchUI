@@ -2,10 +2,10 @@ import {
   Component, OnInit, Input, ViewChild, ViewEncapsulation, OnDestroy, AfterContentInit
 } from '@angular/core';
 
-import { BehaviorSubject, combineLatest, forkJoin, Observable, of } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import {
   tap, withLatestFrom, filter, map, delay, debounceTime,
-  first, distinctUntilChanged, switchMap, repeat
+  first, distinctUntilChanged,
 } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
@@ -21,6 +21,7 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import * as services from '@services';
 import * as models from '@models';
 import { CMRProduct, QueuedHyp3Job, SarviewsEvent } from '@models';
+import { ActiveToast } from 'ngx-toastr';
 
 const INFINITY = 2e10;
 
@@ -53,6 +54,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
   public selectedEvent: string;
 
   public hyp3ableByScene: { [scene: string]: { byJobType: models.Hyp3ableProductByJobType[]; total: number } } = {};
+  public newHyp3JobNotification: ActiveToast<any> = null;
 
   public offsets = { temporal: 0, perpendicular: 0 };
   public selectedFromList = false;
@@ -82,6 +84,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
     private scenesService: services.ScenesService,
     private pairService: services.PairService,
     private hyp3: services.Hyp3ApiService,
+    private hyp3JobPolling: services.Hyp3JobPollingService,
     private eventMonitoringService: services.SarviewsEventsService,
     private notificationService: services.NotificationService,
   ) { }
@@ -402,43 +405,28 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       })
     );
 
-    const pollRunningJobs = combineLatest([
+    const numFinishedJobs$ = this.hyp3JobPolling.pollHyp3Jobs$(
       this.store$.select(searchStore.getSearchType),
       scenes$,
-      this.store$.select(hyp3Store.getOnDemandUserId),
-    ]).pipe(
-      debounceTime(50),
-      filter(([searchType, _, __]) => searchType === models.SearchType.CUSTOM_PRODUCTS),
-      switchMap(([_, scenes, hyp3UserId]) => {
-        const inProgressScenes = scenes.filter(scene =>
-          scene.metadata.job.status_code === models.Hyp3JobStatusCode.RUNNING
-        );
-
-        return forkJoin([
-          this.hyp3.getJobs$(hyp3UserId, models.Hyp3JobStatusCode.RUNNING),
-          of({ inProgressScenes, hyp3UserId })
-        ]).pipe(
-          repeat({ delay: 60000 /* one minute */ }),
-          filter(([__, oldRunningJobs]) => oldRunningJobs.hyp3UserId === hyp3UserId),
-          map(([running, oldRunningJobs]) => {
-            return oldRunningJobs.inProgressScenes.length - running.hyp3Jobs.length;
-          })
-        );
-      })
+      this.store$.select(hyp3Store.getOnDemandUserId)
     );
 
     this.subs.add(
-      pollRunningJobs.subscribe(
+      numFinishedJobs$.pipe(
+        filter(numFinishedJobs => numFinishedJobs > 0 && this.newHyp3JobNotification === null)
+      ).subscribe(
         (numJobsFinished) => {
-          if (numJobsFinished > 0) {
-            const plural = numJobsFinished > 1 ? 's' : '';
+          const plural = numJobsFinished > 1 ? 's' : '';
 
-            this.notificationService.info(
-              `${numJobsFinished} HyP3 Job${plural} have finished`,
-              'Refresh to view',
-              { disableTimeOut: true }
-            );
-          }
+          this.newHyp3JobNotification = this.notificationService.info(
+            `${numJobsFinished} HyP3 Job${plural} have finished`,
+            'Refresh to view',
+            { disableTimeOut: true }
+          );
+
+          this.subs.add(
+            this.newHyp3JobNotification.onTap.subscribe(() => this.newHyp3JobNotification = null)
+          );
         }
       )
     );
