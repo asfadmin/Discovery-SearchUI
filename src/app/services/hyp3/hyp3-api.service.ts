@@ -25,7 +25,7 @@ export class Hyp3ApiService {
     private http: HttpClient,
     private notifcationService: NotificationService,
     private store$: Store<AppState>,
-  ) {}
+  ) { }
 
   public get apiUrl() {
     return this.hyp3ApiUrl;
@@ -123,7 +123,7 @@ export class Hyp3ApiService {
           request_time: moment.utc(job.request_time)
         }));
 
-        return {hyp3Jobs, next};
+        return { hyp3Jobs, next };
       })
     );
   }
@@ -172,37 +172,37 @@ export class Hyp3ApiService {
       // TODO: This is for Hyp3CostsOld support. Remove this after hyp3 is updated.
       const byType = costsResp.reduce((byJobType, jobCost) => {
 
-          if (!jobCost.cost_table) {
-            byJobType[jobCost.job_type] = jobCost;
-          } else {
-            const byCostTableValue = jobCost.cost_table.reduce((byValue, costTableValue) => {
-              byValue[costTableValue.parameter_value] = costTableValue.cost;
+        if (!jobCost.cost_table) {
+          byJobType[jobCost.job_type] = jobCost;
+        } else {
+          const byCostTableValue = jobCost.cost_table.reduce((byValue, costTableValue) => {
+            byValue[costTableValue.parameter_value] = costTableValue.cost;
 
-              return byValue;
-            }, {});
+            return byValue;
+          }, {});
 
-            byJobType[jobCost.job_type] = {
-              cost_parameters: [jobCost.cost_parameter],
-              cost_table: byCostTableValue,
-            };
-          }
+          byJobType[jobCost.job_type] = {
+            cost_parameters: [jobCost.cost_parameter],
+            cost_table: byCostTableValue,
+          };
+        }
 
-          return byJobType;
-        }, {});
+        return byJobType;
+      }, {});
 
-        return <models.Hyp3Costs>byType;
+      return <models.Hyp3Costs>byType;
     } else {
       return costsResp;
     }
   }
 
-  public getHyp3ableProducts(products: models.CMRProduct[][]): {byJobType: models.Hyp3ableProductByJobType[]; total: number} {
+  public getHyp3ableProducts(products: models.CMRProduct[][]): { byJobType: models.Hyp3ableProductByJobType[]; total: number } {
     const byJobType = models.hyp3JobTypesList.map(jobType => {
       const hyp3ableProducts = products.filter(
         product => this.isHyp3able(product, jobType)
       );
 
-      const byProdType: {[key: string]: models.CMRProduct[][]} = jobType.productTypes.reduce(
+      const byProdType: { [key: string]: models.CMRProduct[][] } = jobType.productTypes.reduce(
         (types, prodType) => {
           prodType.productTypes.forEach(pt => {
             types[pt] = [];
@@ -223,8 +223,8 @@ export class Hyp3ApiService {
       });
 
       const byProductType: models.Hyp3ableByProductType[] = Object.entries(byProdType).map(([productType, prods]) => ({
-          productType, products: <any>prods
-        }));
+        productType, products: <any>prods
+      }));
 
       return {
         jobType,
@@ -235,7 +235,7 @@ export class Hyp3ApiService {
       };
     }).filter(hyp3able => hyp3able.total > 0);
 
-    const total = byJobType.reduce((sum, jobType) => sum + jobType.total , 0);
+    const total = byJobType.reduce((sum, jobType) => sum + jobType.total, 0);
 
     return ({ byJobType, total });
   }
@@ -261,11 +261,11 @@ export class Hyp3ApiService {
     );
   }
 
-  public getExpiredHyp3ableObject(scene: models.CMRProduct): {byJobType: models.Hyp3ableProductByJobType[], total: number} {
+  public getExpiredHyp3ableObject(scene: models.CMRProduct): { byJobType: models.Hyp3ableProductByJobType[]; total: number } {
     const job_types = models.hyp3JobTypes;
     const job_type = Object.keys(job_types).find(id => {
-        return scene.metadata.job.job_type === id as any;
-      });
+      return scene.metadata.job.job_type === id as any;
+    });
 
     const byJobType: models.Hyp3ableProductByJobType[] = [];
 
@@ -288,7 +288,7 @@ export class Hyp3ApiService {
     const output = {
       byJobType,
       total: 1
-    } as {byJobType: models.Hyp3ableProductByJobType[], total: number};
+    } as { byJobType: models.Hyp3ableProductByJobType[]; total: number };
 
     return output;
   }
@@ -301,7 +301,7 @@ export class Hyp3ApiService {
     if ('cost' in cost) {
       const fixedCost = cost;
       return fixedCost.cost;
-    } else if ('cost_table' in cost){
+    } else if ('cost_table' in cost) {
       const selectedCostValue = <number>cost.cost_parameters.reduce(
         (costLookup, parameterKey) => {
           const lookupValue = options[parameterKey];
@@ -320,12 +320,12 @@ export class Hyp3ApiService {
   private onHyp3APIUrlError(status_code: number) {
     const error_code = status_code !== 0 ? status_code.toString() : 'Uknown';
     const title = `HyP3 API URL ${error_code} Error`;
-    const message = `There was a problem with your preferred HyP3 API URL, click to open preferences.`;
+    const message = 'There was a problem with your preferred HyP3 API URL, click to open preferences.';
 
     const toast = this.notifcationService.error(
       message,
       title,
-      {timeOut: 500000, enableHtml: true}
+      { timeOut: 500000, enableHtml: true }
     );
 
     toast.onTap.pipe(first()).subscribe(

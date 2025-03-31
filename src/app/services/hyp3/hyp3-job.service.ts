@@ -13,7 +13,7 @@ export class Hyp3JobService {
   public getAllGranulesFromJobs(jobs: models.Hyp3Job[]): string[] {
     return jobs.reduce(
       (granuleNames, job) => {
-        const jobGranules = this.getAllGranules(job)
+        const jobGranules = this.getAllGranules(job);
 
         return granuleNames.concat(jobGranules);
       },
@@ -26,7 +26,7 @@ export class Hyp3JobService {
 
   public formatJobs(
     jobTypesWithQueued: models.JobTypesWithQueued[],
-    options: { processingOptions: any, projectName: string }
+    options: { processingOptions: any; projectName: string }
   ) {
     const jobOptionNames = {};
     models.hyp3JobTypesList.forEach(
@@ -97,7 +97,7 @@ export class Hyp3JobService {
 
         const jobProduct = this.combineJobAndCmrProduct(job, product);
 
-        return jobProduct
+        return jobProduct;
       });
 
     return virtualProducts;
@@ -109,7 +109,7 @@ export class Hyp3JobService {
         ...this.dummyProduct(),
         name: granuleName
       };
-    })
+    });
 
     return dummyProducts;
   }
@@ -124,7 +124,7 @@ export class Hyp3JobService {
         return;
       }
 
-      let job = {
+      const job = {
         ...jobProduct.metadata.job,
         job_parameters: {
           ...jobProduct.metadata.job?.job_parameters,

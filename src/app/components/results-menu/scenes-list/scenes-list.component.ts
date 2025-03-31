@@ -533,8 +533,8 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
   private addToQueue(scenesToLoad: models.CMRProduct[]) {
     scenesToLoad.forEach(
       s => {
- this.loadingDummyJobs.add(s.name); this.loadedInProjects.add(s.metadata.job.name);
-}
+        this.loadingDummyJobs.add(s.name); this.loadedInProjects.add(s.metadata.job.name);
+      }
     );
 
     const scenesOutsideInitialLoad = this.scenes
@@ -589,8 +589,8 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
     scenes
       .filter(s => !s.isDummyProduct)
       .forEach(s => {
- this.loadingDummyJobs.delete(s.name); delete this.loadingJobs[s.id];
-});
+        this.loadingDummyJobs.delete(s.name); delete this.loadingJobs[s.id];
+      });
   }
 
   ngOnDestroy() {
