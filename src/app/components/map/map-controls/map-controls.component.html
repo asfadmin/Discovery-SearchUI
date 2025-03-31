@@ -82,7 +82,7 @@
             </div>
 
             <!-- Opacity Control -->
-            <div *ngIf="searchType !== searchTypes.BASELINE && searchType !== searchTypes.SBAS"
+            <div *ngIf="searchType !== searchTypes.BASELINE && searchType !== searchTypes.SBAS && searchType !== searchTypes.DISPLACEMENT"
               class="fx-empty group-margin">
               <div class="fx-row-center button-group-label">
                 <label>{{'OPACITY' | translate}}</label>
@@ -93,32 +93,11 @@
                         [matMenuTriggerFor]="opacitySlider"
                         aria-label="Map projection view">
                     <span class="opacity-button-text">
-                        @if(this.searchType === searchTypes.DISPLACEMENT) {
-                            {{ velocityOverlayOpacity * 100 | number : '1.0-0' }}%
-                        }
-                        @else {
-                            {{ browseOverlayOpacity * 100 | number : '1.0-0' }}%
-                        }
+                        {{ browseOverlayOpacity * 100 | number : '1.0-0' }}%
                     </span>
                   <span class="fa fa-caret-down bottom-right"></span>
                 </button>
                 <mat-menu #opacitySlider="matMenu" class="opacity-slider-mat-menu">
-                    @if(this.searchType === searchTypes.DISPLACEMENT){
-                        <div class="opacity-slider-title">
-                            {{ 'VELOCITY_OVERVIEW_OPACITY' |  translate }}
-                          </div>
-                          <mat-slider thumbLabel step="0.05" min="0.0" max="1.0"
-                                      class="opacity-slider"
-                                      name="layerType"
-                                      (input)="onSetVelocityOpacity($event)"
-                                      (click)="$event.stopPropagation()"
-                                      color="primary"
-                                      [disabled]="!(isBrowseOverlayEnabled$ | async)">
-<!--                            <input matSliderThumb value="0.8" />-->
-                            <input matSliderThumb [(ngModel)]="velocityOverlayOpacity" />
-                          </mat-slider>
-                    }
-                    @else {
                   <div class="opacity-slider-title">
                     {{ 'BROWSE_IMAGE_OPACITY' |  translate }}
                   </div>
@@ -143,7 +122,6 @@
                               [disabled]="!(isCoherenceOverlayEnabled$| async)">
                     <input matSliderThumb value="1" />
                   </mat-slider>
-            }
                 </mat-menu>
         </div>
             </div>
