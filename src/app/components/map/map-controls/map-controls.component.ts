@@ -73,6 +73,9 @@ export class MapControlsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+
+    this.store$.dispatch(new mapStore.SetVelocityOverlayOpacity(0.8));
+
     this.subs.add(
       this.store$.select(searchStore.getSearchType).subscribe(
         searchType => this.searchType = searchType
