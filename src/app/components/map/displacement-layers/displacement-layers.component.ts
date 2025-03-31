@@ -33,13 +33,6 @@ export class DisplacementLayersComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    // this.subs.add(
-    //     this.store$.select(getVelocityOverlayOpacity).subscribe(
-    //     opacity => {
-    //         this.velocityOverlayOpacity = opacity;
-    //     }
-    //     )
-    // )
 
     this.subs.add(
       this.store$.select(getVelocityOverlayOpacity).subscribe(

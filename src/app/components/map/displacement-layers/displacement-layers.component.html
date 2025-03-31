@@ -27,14 +27,16 @@
           [max]="this.mapService.displacementRange?.range[1]"
           [units]="this.mapService.displacementRange?.units">
         </app-map-legend>
-        <mat-slider min="0" max="1" step="0.05"
-                    class="opacity-slider"
-                    name="layerType"
-                    (input)="onSetVelocityOpacity($event)"
-                    (click)="$event.stopPropagation()"
-        >
-          <input matSliderThumb [(ngModel)]="velocityOverlayOpacity" />
-        </mat-slider>
+        <span class="slider-formatting">
+          <mat-slider min="0" max="1" step="0.05"
+                      class="opacity-slider"
+                      name="layerType"
+                      (input)="onSetVelocityOpacity($event)"
+                      (click)="$event.stopPropagation()"
+          >
+            <input matSliderThumb [(ngModel)]="velocityOverlayOpacity" />
+          </mat-slider>
+        </span>
 
       </div>
     }
