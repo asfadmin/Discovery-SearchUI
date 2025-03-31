@@ -1,4 +1,5 @@
 @import "asf-theme";
+@import "variables";
 
 .disp-layers--layout {
   height: 100%;
@@ -134,10 +135,11 @@
 ::ng-deep {
   .slider-formatting {
     .mdc-slider {
-      --mdc-slider-inactive-track-height: 2px;
       --mdc-slider-active-track-height: 3px;
+      --mdc-slider-active-track-color: #236192;
       --mdc-slider-handle-height: 10px;
       --mdc-slider-handle-width: 10px;
+      --mdc-slider-handle-color: #dcbd5b;
     }
   }
 }
