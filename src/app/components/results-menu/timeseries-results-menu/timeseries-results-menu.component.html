@@ -9,8 +9,7 @@
 
 
       <section class="point-list-section">
-        <span class="parent-checkbox-section"
-              matTooltipPosition="right">
+        <span class="parent-checkbox-section">
           <mat-checkbox
             class="parent-checkbox"
             [checked]="(allSeriesChecked$ | async)"
@@ -19,7 +18,8 @@
           >
             {{ 'ALL_AOIS' | translate }}
           </mat-checkbox>
-          <button mat-icon-button (click)="openDialog()" class="delete-all-btn2" matTooltip="{{ 'DELETE_ALL_SERIES' | translate }}">
+          <button mat-icon-button (click)="openDialog()" class="delete-all-btn2" matTooltip="{{ 'DELETE_ALL_SERIES' | translate }}" 
+          matTooltipPosition="right">
             <mat-icon class="ts-trash-can" >delete</mat-icon>
           </button>
         </span>
