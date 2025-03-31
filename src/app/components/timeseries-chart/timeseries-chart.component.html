@@ -10,11 +10,10 @@
   <div class="ts-best-fit-formulas">
     <cdk-virtual-scroll-viewport #tsBestFitFormulas
                                  orientation="horizontal"
-                                 itemSize="363"
-                                 minBufferPx="364"
-                                 maxBufferPx="1500"
-                                 class="ts-best-fit-viewport">
-      <div *cdkVirtualFor="let item of bestFitItems" class="ts-best-fit-item">
+                                 class="ts-best-fit-viewport"
+                                 cdkScrollable
+                                 >
+      <div *ngFor="let item of bestFitItems" class="ts-best-fit-item">
         <div [style.background-color]="item.color" class="ts-color-swatch">{{item.seriesNumber}}</div>
         <div style="display: flex; flex-direction: column;">
           <div>{{item.formula}}</div>
@@ -23,7 +22,7 @@
     </cdk-virtual-scroll-viewport>
   </div>
   <div class="ts-best-fit-nav"
-       [ngStyle]="{'visibility': isOverflowing() ? 'visible' : 'hidden'}">
+       [ngStyle]="{'visibility': bestFitItems.length > 5 ? 'visible' : 'hidden'}">
     <button mat-flat-button (click)="onButtonClickMinus()">
     <span class="material-symbols-outlined">
       arrow_back_ios
