@@ -13,6 +13,7 @@ import { MapService, } from './map/map.service';
 import { WktService } from './wkt.service';
 import { PinnedProduct } from './browse-map.service';
 import { PointHistoryService } from './point-history.service';
+import { resetTimeseriesStates } from '@store/charts';
 
 @Injectable({
   providedIn: 'root'
@@ -109,9 +110,11 @@ export class SearchService {
         }
     }
     if(search.searchType === models.SearchType.DISPLACEMENT) {
-      const filters = <models.DisplacementFiltersType>search.filters;
-      const seriesStates = filters.seriesStates;
-       this.pointHistoryService.addPoints(Object.values(seriesStates))
+        const filters = <models.DisplacementFiltersType>search.filters;
+        this.store$.dispatch(resetTimeseriesStates())
+
+        const seriesStates = filters.seriesStates;
+        this.pointHistoryService.addPoints(Object.values(seriesStates))
     }
 
     this.store$.dispatch(new filterStore.SetSavedSearch(search));
