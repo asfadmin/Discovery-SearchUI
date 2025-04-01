@@ -30,32 +30,36 @@ export class ProductService {
             }
           }
 
-          const thumbnail = (g.t ? g.t.replace('{gn}', g.gn) : g.t) || (!browses[0].includes('no-browse') ? browses[0].replace('{gn}', g.gn) : '/assets/no-thumb.png');
-          let filename = g.fn.replace('{gn}', g.gn);
-          if (!filename.includes(g.gn)) {
-            filename = `${g.gn}-${filename}`;
-          }
-          let product = {
-            name: g.gn,
-            productTypeDisplay: g.ptd || g.gn,
-            file: filename,
-            id: g.pid.replace('{gn}', g.gn),
-            downloadUrl: g.du.replaceAll('{gn}', g.gn),
-            bytes: g.s * 1000000,
-            dataset: (g.d === 'STS-59' || g.d === 'STS-68') ? 'SIR-C' : g.d,
-            browses,
-            thumbnail,
-            groupId: g.gid.replace('{gn}', g.gn),
-            isUnzippedFile: false,
-            isDummyProduct: false,
-            metadata: this.getMetadataFrom(g)
-          };
+          if(g.pt == 'DISP-S1') {
+            browses = [browses[0]]; // only show the first browse for displacement for now
+         }
 
-          product.metadata.subproducts = this.getSubproducts(product)
-
-          return product;
+        const thumbnail = (g.t ? g.t.replace('{gn}', g.gn) : g.t) || (!browses[0].includes('no-browse') ? browses[0].replace('{gn}', g.gn) : '/assets/no-thumb.png');
+        let filename = g.fn.replace('{gn}', g.gn);
+        if ( !filename.includes(g.gn)) {
+          filename = `${g.gn}-${filename}`;
         }
-      );
+        let product = {
+          name: g.gn,
+          productTypeDisplay: g.ptd || g.gn,
+          file: filename,
+          id: g.pid.replace('{gn}', g.gn),
+          downloadUrl: g.du.replace('{gn}', g.gn),
+          bytes: g.s * 1000000,
+          dataset: (g.d === 'STS-59' || g.d === 'STS-68') ? 'SIR-C' : g.d,
+          browses,
+          thumbnail,
+          groupId: g.gid.replace('{gn}', g.gn),
+          isUnzippedFile: false,
+          isDummyProduct: false,
+          metadata: this.getMetadataFrom(g)
+        };
+
+        product.metadata.subproducts = this.getSubproducts(product)
+
+        return product;
+        }
+    );
 
     return products;
   }
@@ -72,8 +76,8 @@ export class ProductService {
       flightDirection: <models.FlightDirection>g.fd,
 
       path: +g.p,
-      frame: +g.f,
-      absoluteOrbit: Array.isArray(g.o) ? g.o.map(val => +val) : [+g.o],
+      frame:  +g.f,
+      absoluteOrbit: Array.isArray(g.o) ? g.o.map(val => +val) : g.o !== null ? [+g.o] : [],
 
       faradayRotation: +g.fr,
       offNadirAngle: +g.on,
@@ -96,7 +100,8 @@ export class ProductService {
       pgeVersion: g.pge !== null ? parseFloat(g.pge) : null,
       subproducts: [],
       parentID: null,
-      s3URI: null
+      s3URI: null,
+      ariaVersion: g.ariav ? g.ariav : null
     })
 
   private isNumber = n => !isNaN(n) && isFinite(n);
@@ -108,6 +113,10 @@ export class ProductService {
   private getSubproducts(product: models.CMRProduct): models.CMRProduct[] {
     if (product.metadata.productType === 'BURST') {
       return [this.burstXMLFromScene(product)]
+      if (!!product.metadata?.opera) {
+        return this.operaSubproductsFromScene(product)
+      }
+      return []
     }
     if (!!product.metadata.opera) {
       return this.operaSubproductsFromScene(product);

@@ -72,6 +72,9 @@ export interface CMRProductMetadata {
   subproducts: any[];
   s3URI?: string;
   parentID: string;
+
+  // ARIA S1 GUNW
+  ariaVersion: string | null;
 }
 
 export interface SLCBurstMetadata {

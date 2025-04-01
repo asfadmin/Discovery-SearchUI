@@ -20,6 +20,27 @@ export class UserDataService {
     private notificationService: NotificationService,
   ) { }
 
+  public getUserInfo$<T>(userAuth: UserAuth): Observable<T> {
+    const url =  this.getUserInfoURL(this.baseUrl, userAuth.id);
+    const headers = this.makeAuthHeader(userAuth.token);
+
+    return this.http.get<T>(url, {
+      headers
+    }).pipe(
+      catchError(error => {
+        if(error.status === 404) {
+          return of(null)
+        }
+
+        this.notificationService.error('Trouble loading profile information', 'Error', {
+          timeOut: 5000
+        });
+
+        return of(null);
+      })
+    );
+  }
+
   public getAttribute$<T>(userAuth: UserAuth, attribute: string): Observable<T> {
     const url =  this.makeEndpoint(this.baseUrl, userAuth.id, attribute);
     const headers = this.makeAuthHeader(userAuth.token);
@@ -69,5 +90,8 @@ export class UserDataService {
 
   private getBaseUrlFrom(): string {
     return this.env.currentEnv.user_data;
+  }
+  public getUserInfoURL(baseUrl: string, userId: string): string {
+    return `${baseUrl}/vertex/${userId}/`;
   }
 }

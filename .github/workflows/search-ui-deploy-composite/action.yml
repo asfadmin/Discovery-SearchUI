@@ -1,0 +1,65 @@
+name: Composite search-ui deploy action
+
+inputs:
+  maturity:
+    required: true
+    type: string
+  cdn-id:
+    required: true
+    type: string
+  s3-bucket:
+    required: true
+    type: string
+  aws-account-id:
+    required: true
+    type: string
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Configure AWS credentials from Test account
+      uses: aws-actions/configure-aws-credentials@v3
+      with:
+        role-to-assume: arn:aws:iam::${{ inputs.aws-account-id }}:role/GitHub_Actions_Role_SearchUI_${{ inputs.maturity }}
+        aws-region: us-east-1
+
+    - name: Fetch the caller identity
+      shell: bash
+      run: |
+        aws sts get-caller-identity
+
+    - name: Install dependencies
+      shell: bash
+      run: |
+        cp src/app/services/envs/env-${{ inputs.maturity }}.ts src/app/services/env.ts
+        echo "{\"hash\":\"${{ github.sha }}\"}" > src/assets/commit-hash.json
+        npm install
+
+    - name: Angular Build
+      shell: bash
+      run: |
+        npm run build
+
+    - name: Deploy to AWS
+      shell: bash
+      run: |
+        cd dist/search-ui
+        aws s3 sync . "s3://${{ inputs.s3-bucket }}"
+        aws cloudfront create-invalidation \
+            --distribution-id ${{ inputs.cdn-id }} \
+            --paths \
+                /index.html \
+                /manifest.json \
+                /ngsw.json \
+                /favicon.ico \
+                /assets/i18n/* \
+                /assets/* \
+                /docs/*

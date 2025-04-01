@@ -64,6 +64,7 @@ export const sentinel_1 = fromDatasets.sentinel_1;
 export const sentinel_1_bursts = fromDatasets.sentinel_1_bursts;
 export const opera_s1 = fromDatasets.opera_s1;
 export const alos = fromDatasets.alos;
+export const alos_2 = fromDatasets.alos_2;
 export const avnir = fromDatasets.avnir;
 export const sirc = fromDatasets.sirc;
 export const beta = fromDatasets.beta;
@@ -78,6 +79,7 @@ export const nisar = fromDatasets.nisar;
 
 export const datasetList: Dataset[] = [
   fromDatasets.nisar,
+  fromDatasets.alos_2,
   fromDatasets.sentinel_1,
   fromDatasets.sentinel_1_bursts,
   fromDatasets.opera_s1,

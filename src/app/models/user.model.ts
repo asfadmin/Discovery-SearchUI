@@ -20,6 +20,14 @@ export interface UserProfile {
   theme: string;
   language: string;
 }
+export interface EarthdataUserInfo {
+  first_name: string,
+  last_name: string,
+  email_address: string,
+  country: string,
+  uid: string,
+  organization: string
+}
 
 export interface URSGroup {
   app_uid: string;

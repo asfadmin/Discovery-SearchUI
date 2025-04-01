@@ -2,7 +2,7 @@
 
 @import './styles/asf-theme';
 @import './styles/filter-list';
-@import "prismjs/themes/prism-dark.css";
+@import "prismjs/themes/prism-solarizedlight.css";
 
 $theme-map: null;
 
@@ -474,7 +474,8 @@ ul {
 }
 
 .sbas-column-1 {
-  div.noUi-handle.noUi-handle-lower {
+  div.noUi-handle.noUi-handle-lower,
+  div.noUi-handle.noUi-handle-upper {
     width: 16px;
     right: -5px;
   }

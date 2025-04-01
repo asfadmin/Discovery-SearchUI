@@ -15,6 +15,7 @@ import {
 } from './queue.action';
 import { getDuplicates, getQueuedProducts } from './queue.reducer';
 import * as scenesStore from '@store/scenes';
+import * as hyp3Store from '@store/hyp3';
 
 import * as services from '@services';
 import * as models from '@models';
@@ -143,7 +144,8 @@ export class QueueEffects {
   public addJob = createEffect(() => this.actions$.pipe(
     ofType<AddJob>(QueueActionType.ADD_JOB),
     withLatestFrom(this.store$.select(getDuplicates)),
-    tap(([act, duplicates]) => this.notificationService.demandQueue(true, 1, act.payload.job_type.name, duplicates)),
+    withLatestFrom(this.store$.select(hyp3Store.getHyp3User)),
+    tap(([[act, duplicates], user]) => this.notificationService.demandQueue(true, 1, act.payload.job_type.name, duplicates, user.application_status)),
   ),
     { dispatch: false }
   );
@@ -153,9 +155,10 @@ export class QueueEffects {
     skip(1),
     map(action => action.payload),
     withLatestFrom(this.store$.select(getDuplicates)),
-    map(([jobs, duplicates]) => {
+    withLatestFrom(this.store$.select(hyp3Store.getHyp3User)),
+    map(([[jobs, duplicates], user]) => {
       const jobTypes = Array.from(jobs.reduce((types, job) => types = types.add(job.job_type.name), new Set<string>()));
-      this.notificationService.demandQueue(true, jobs.length, jobTypes.length === 1 ? jobTypes[0] : '', duplicates = duplicates);
+      this.notificationService.demandQueue(true, jobs.length, jobTypes.length === 1 ? jobTypes[0] : '', duplicates = duplicates, user.application_status);
     }),
   ),
     { dispatch: false }

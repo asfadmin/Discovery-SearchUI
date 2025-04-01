@@ -1,8 +1,7 @@
 @import "asf-theme";
 
-.cart-toggle-button {
-  text-decoration: none;
-  @include themify($themes) {
+a {
+    @include themify($themes) {
     color: themed('dark-primary-text');
   }
 }

@@ -71,16 +71,16 @@
 
         <mat-form-field class="default-map">
           <mat-label>{{ 'DEFAULT_MAP_LAYER' | translate }}</mat-label>
-          <mat-select
-            [(ngModel)]="defaultMapLayer"
-            (selectionChange)="onChangeDefaultLayerType($event.value)" name="amount">
-            <mat-option [value]="mapLayerTypes.SATELLITE">
-              {{ mapLayerTypes.SATELLITE | uppercase | translate }}
-            </mat-option>
-            <mat-option [value]="mapLayerTypes.STREET ">
-              {{ mapLayerTypes.STREET | uppercase | translate }}
-            </mat-option>
-          </mat-select>
+           <mat-select
+             [(ngModel)]="defaultMapLayer"
+             (selectionChange)="onChangeDefaultLayerType($event.value)" name="amount">
+             <mat-option [value]="mapLayerTypes.SATELLITE">
+               {{ mapLayerTypes.SATELLITE | uppercase | translate }}
+             </mat-option>
+             <mat-option [value]="mapLayerTypes.STREET ">
+               {{ mapLayerTypes.STREET | uppercase | translate }}
+             </mat-option>
+           </mat-select>
         </mat-form-field>
       </div>
 
@@ -120,6 +120,27 @@
             <mat-icon>refresh</mat-icon>
           </button>
         </mat-form-field>
+        @if(!this.env.isProd) {
+          <mat-form-field class="default-map">
+            <mat-label>Debug Status</mat-label>
+          <mat-select
+               [(ngModel)]="hyp3DebugStatus"
+                (selectionChange)="onDebugStatus($event.value)" name="debugStatus">
+               <mat-option value="NOT_STARTED">
+                NOT_STARTED
+               </mat-option>
+               <mat-option value="PENDING">
+                PENDING
+               </mat-option>
+               <mat-option value="APPROVED">
+                APPROVED
+               </mat-option>
+               <mat-option value="REJECTED">
+                REJECTED
+               </mat-option>
+             </mat-select>
+             </mat-form-field>
+        }
       </div>
 
     </form>

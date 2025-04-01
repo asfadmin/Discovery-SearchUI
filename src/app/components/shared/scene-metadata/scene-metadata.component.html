@@ -56,7 +56,7 @@
     </mat-menu>
   </li>
 
-  <li *ngIf="prop.isRelevant(p.BEAM_MODE, dataset)">
+  <li *ngIf="prop.isRelevant(p.BEAM_MODE, dataset) && scene.metadata.beamMode">
     <span class="v-mid"><b>{{ 'BEAM_MODE' |translate }} </b> • {{ scene.metadata.beamMode }}</span>
     <mat-icon *ngIf="isGeoSearch() && dataset.id !== 'OPERA-S1'"
       [matMenuTriggerFor]="addBeamModeMenu"
@@ -165,7 +165,7 @@
     <b>{{ 'FLIGHT_LINE' | translate }} </b> • {{ scene.metadata.flightLine }}
   </li>
 
-  <li *ngIf="prop.isRelevant(p.ABSOLUTE_ORBIT, dataset)"
+  <li *ngIf="prop.isRelevant(p.ABSOLUTE_ORBIT, dataset) && scene.metadata.absoluteOrbit.length > 0"
     class="detail-item-margin">
     <b>{{'ABSOLUTE_ORBIT' | translate}} </b> • {{ scene.metadata.absoluteOrbit | join: ', ' }}
   </li>
@@ -209,6 +209,10 @@
     <b> {{'AZIMUTH_TIME' | translate }} </b> • {{scene.metadata.burst.azimuthTime | shortDateTime}}
   </li>
 
+
+  <li *ngIf="!!scene.metadata.ariaVersion">
+    <b> {{'ARIA_VERSION' | translate }} </b> • {{scene.metadata.ariaVersion}}
+  </li>
 
   <li *ngIf="dataset.source as source" class="detail-item-margin">
     <a *ngIf="source.url" [href]="source.url" target="_blank"> {{'DATA_COURTESY_OF' | translate}} {{ dataset.source.name }}</a>

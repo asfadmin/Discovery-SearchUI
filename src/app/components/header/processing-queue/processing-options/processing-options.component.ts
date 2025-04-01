@@ -19,7 +19,7 @@ export class ProcessingOptionsComponent implements OnInit {
   public JobTypesList = models.hyp3JobTypesList;
 
   public optionValues = {};
-  public costs: models.Hyp3CostsByJobType;
+  public costs: models.Hyp3Costs;
 
   constructor(
     private store$: Store<AppState>,

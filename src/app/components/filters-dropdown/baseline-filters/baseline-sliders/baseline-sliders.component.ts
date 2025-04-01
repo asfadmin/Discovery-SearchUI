@@ -38,6 +38,7 @@ export class BaselineSlidersComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    // this.store$.dispatch(new filtersStore.ClearPerpendicularRange());
     const perpBaselineSlider = this.makeSlider$(this.perpendicularFilter);
     const perpSlider = perpBaselineSlider.slider;
     const perpValues$ = perpBaselineSlider.values;
@@ -125,7 +126,6 @@ export class BaselineSlidersComponent implements OnInit, OnDestroy {
       ).subscribe(
         range => {
           this.perpSlider.updateOptions({ range });
-
           this.perpSlider.set([
             this.perpRange.start === null ? range.min : null,
             this.perpRange.end === null ? range.max : null
@@ -151,8 +151,8 @@ export class BaselineSlidersComponent implements OnInit, OnDestroy {
       behaviour: 'drag',
       connect: true,
       range: {
-        'min': 0,
-        'max': 100
+        'min': -999,
+        'max': 999
       }
     });
 

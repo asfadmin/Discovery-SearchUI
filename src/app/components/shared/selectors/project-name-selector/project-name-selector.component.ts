@@ -27,6 +27,7 @@ export class ProjectNameSelectorComponent implements OnInit, OnDestroy {
   public projectNames: string[] = [];
   public projectNamesFiltered = [];
   public projectName = '';
+  public filterValue: string | null = null;
   private subs = new SubSink();
   readonly maxProjectNameLength = 100;
 
@@ -66,11 +67,17 @@ export class ProjectNameSelectorComponent implements OnInit, OnDestroy {
       ]).subscribe(([scenes, user]) => {
         if (user) {
           this.projectNames = [ ...user.job_names, ];
-          this.projectNamesFiltered = [ ...user.job_names, ];
+          if (this.filterValue) {
+            this.filterProjectNames();
+          } else {
+            this.projectNamesFiltered = [ ...user.job_names, ];
+          }
         }
 
         const projectNamesSet: Set<string> = scenes
-        .filter(s => !!s.metadata.job.name)
+        .filter(s => {
+            return !!s?.metadata?.job?.name
+        })
         .reduce(
           (names, s) => {
             names.add(s.metadata.job.name);
@@ -114,8 +121,14 @@ export class ProjectNameSelectorComponent implements OnInit, OnDestroy {
     } else {
       filterValue = projectName.toLowerCase();
     }
+
+    this.filterValue = filterValue;
+    this.filterProjectNames();
+  }
+
+  private filterProjectNames() {
     this.projectNamesFiltered = this.projectNames.filter(
-      option => option.toLowerCase().includes(filterValue)
+      option => option.toLowerCase().includes(this.filterValue)
     );
   }
 

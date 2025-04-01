@@ -74,7 +74,7 @@
             </span>
           </div>
           <div *ngIf="job.job_type.name !== 'RTC GAMMA'" style="font-size: 14px;" matListItemLine>
-          {{job.granules[1].name}}
+          {{job.granules[1]?.name}}
           </div>
 
           <div class="button-remove-job" matListItemMeta>
@@ -91,7 +91,7 @@
     <ng-template #emptyQueue>
       <div class="empty-queue">
         <div class="jobs-empty-message">
-          {{ 'YOUR_JOBS_QUEUE_IS_EMPTY' |  translate }}.
+          {{ 'YOUR_JOBS_QUEUE_IS_EMPTY' |  translate }}
         </div>
         <div class="jobs-empty-message-docs-link">
           <a href="https://hyp3-docs.asf.alaska.edu/" target="_blank">

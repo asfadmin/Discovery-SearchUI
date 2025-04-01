@@ -39,9 +39,7 @@ export class PairService {
     ),
     this.store$.select(getCustomPairs),
     this.store$.select(getTemporalRange),
-    this.store$.select(getPerpendicularRange).pipe(
-      map(range => range.start)
-    ),
+    this.store$.select(getPerpendicularRange),
     this.store$.select(getDateRange),
     this.store$.select(getSeason),
     this.store$.select(getSBASOverlapThreshold),
@@ -89,11 +87,11 @@ export class PairService {
     })
   );
 
-  private makePairs(scenes: CMRProduct[], tempThreshold: Range<number>, perpThreshold,
-    dateRange: DateRangeState,
-    season: Range<number>,
-    overlapThreshold: SBASOverlap,
-    aoi: Feature<Geometry>): CMRProductPair[] {
+  private makePairs(scenes: CMRProduct[], tempThreshold: Range<number>, perpRange,
+                    dateRange: DateRangeState,
+                    season: Range<number>,
+                    overlapThreshold: SBASOverlap,
+                    aoi: Feature<Geometry>): CMRProductPair[] {
     const pairs = [];
 
     let startDateExtrema: Date;
@@ -112,8 +110,8 @@ export class PairService {
     }
 
     const bounds = (x: string) => x.replace('POLYGON ', '').replace('((', '').replace('))', '').split(',').slice(0, 4).
-      map(coord => coord.trimStart().split(' ')).
-      map(coordVal => ({ lon: parseFloat(coordVal[0]), lat: parseFloat(coordVal[1]) }));
+    map(coord => coord.trimStart().split(' ')).
+    map(coordVal => ({ lon: parseFloat(coordVal[0]), lat: parseFloat(coordVal[1]) }));
 
     const calcCenter = (coords: { lat: number, lon: number }[]) => {
       const centroid = coords.reduce((acc, curr) => ({ lat: acc.lat + curr.lat, lon: acc.lon + curr.lon }));
@@ -150,7 +148,10 @@ export class PairService {
             continue;
           }
         }
-        if (tempDiff < tempThreshold.start || tempDiff > tempThreshold.end || perpDiff > perpThreshold) {
+        if (tempDiff < tempThreshold.start || tempDiff > tempThreshold.end) {
+          continue;
+        }
+        if (perpDiff < perpRange.start || perpDiff > perpRange.end) {
           continue;
         }
         if (startDateExtrema !== null) {
@@ -173,7 +174,7 @@ export class PairService {
 
           if (
             p1Center.lat > Math.max(p2Bounds[0].lat, p2Bounds[1].lat) ||
-              p1Center.lat < Math.min(p2Bounds[2].lat, p2Bounds[3].lat)
+            p1Center.lat < Math.min(p2Bounds[2].lat, p2Bounds[3].lat)
           ) {
             continue;
           }
@@ -209,16 +210,16 @@ export class PairService {
   }
 
   public findNearestneighbour(reference_scene: CMRProduct,
-    scenes: CMRProduct[],
-    temporalRange: Range<number>,
-    amount: number) {
+                              scenes: CMRProduct[],
+                              temporalRange: Range<number>,
+                              amount: number) {
 
     scenes = this.hyp3able(scenes);
     scenes = scenes.filter(scene =>
       scene.id.includes('SLC')
-        && !scene.id.includes('METADATA')
-        && scene.metadata.temporal != null
-        && scene.id !== reference_scene.id
+      && !scene.id.includes('METADATA')
+      && scene.metadata.temporal != null
+      && scene.id !== reference_scene.id
     );
 
     const totalDays = temporalRange.end - temporalRange.start;
@@ -226,16 +227,16 @@ export class PairService {
 
     const SortedScenes = scenes.sort((a, b) => {
 
-      const AtempDiffNormalized = (a.metadata.temporal - temporalRange.start) / totalDays;
-      const BtempDiffNormalized = (b.metadata.temporal - temporalRange.start) / totalDays;
+        const AtempDiffNormalized = (a.metadata.temporal - temporalRange.start) / totalDays;
+        const BtempDiffNormalized = (b.metadata.temporal - temporalRange.start) / totalDays;
 
-      if (Math.abs(AtempDiffNormalized - ReftempDiffNormalized) < Math.abs(BtempDiffNormalized - ReftempDiffNormalized)) {
-        return -1;
-      } else if (Math.abs(AtempDiffNormalized - ReftempDiffNormalized) === Math.abs(BtempDiffNormalized - ReftempDiffNormalized)) {
-        return 0;
+        if (Math.abs(AtempDiffNormalized - ReftempDiffNormalized) < Math.abs(BtempDiffNormalized - ReftempDiffNormalized)) {
+          return -1;
+        } else if (Math.abs(AtempDiffNormalized - ReftempDiffNormalized) === Math.abs(BtempDiffNormalized - ReftempDiffNormalized)) {
+          return 0;
+        }
+        return 1;
       }
-      return 1;
-    }
     );
 
     return SortedScenes.slice(0, Math.min(amount, SortedScenes.length));
@@ -249,20 +250,20 @@ export class PairService {
     if (season.start < season.end) {
       return (
         season.start <= this.getDayOfYear(P1StartDate)
-          && season.end >= this.getDayOfYear(P1EndDate)
-          && season.start <= this.getDayOfYear(P2StartDate)
-          && season.end >= this.getDayOfYear(P2EndDate)
+        && season.end >= this.getDayOfYear(P1EndDate)
+        && season.start <= this.getDayOfYear(P2StartDate)
+        && season.end >= this.getDayOfYear(P2EndDate)
       );
     } else {
       return !(
         season.start >= this.getDayOfYear(P1StartDate)
-          && season.start >= this.getDayOfYear(P1EndDate)
-          && season.end <= this.getDayOfYear(P1StartDate)
-          && season.end <= this.getDayOfYear(P1EndDate)
-          && season.start >= this.getDayOfYear(P2StartDate)
-          && season.start >= this.getDayOfYear(P2EndDate)
-          && season.end <= this.getDayOfYear(P2StartDate)
-          && season.end <= this.getDayOfYear(P2EndDate)
+        && season.start >= this.getDayOfYear(P1EndDate)
+        && season.end <= this.getDayOfYear(P1StartDate)
+        && season.end <= this.getDayOfYear(P1EndDate)
+        && season.start >= this.getDayOfYear(P2StartDate)
+        && season.start >= this.getDayOfYear(P2EndDate)
+        && season.end <= this.getDayOfYear(P2StartDate)
+        && season.end <= this.getDayOfYear(P2EndDate)
       );
     }
   }

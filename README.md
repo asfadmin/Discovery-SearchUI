@@ -47,6 +47,7 @@ Add the following line via the methods below to set up local.asf.alaska.edu to p
 | Windows | Modify c:\windows\system32\drivers\etc\hosts as Administrator |
 ```
 ng serve --port 4444 --host local.asf.alaska.edu
+ng serve --port 4445 --ssl true --host local.asf.alaska.edu
 ```
 
 ### Setting up HTTPS

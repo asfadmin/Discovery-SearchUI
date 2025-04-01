@@ -18,6 +18,9 @@ export class DatasetForProductService {
       return models.sentinel_1_bursts;
     }
     if(scene.id.startsWith('OPERA')) {
+      if(scene.id.startsWith('OPERA_L3_DISP')) {
+        // return models.opera_disp;
+      }
       return models.opera_s1;
     }
 
@@ -29,6 +32,10 @@ export class DatasetForProductService {
       datasetID.includes(sceneDataset) ||
       sceneDataset.includes(datasetID)
     );
+
+    if(scene.name.startsWith('S1-GUNW')) {
+      return models.datasets['SENTINEL-1 INTERFEROGRAM (BETA)']
+    }
 
     return (
       this.getDatasetMatching(scene, exact) ||

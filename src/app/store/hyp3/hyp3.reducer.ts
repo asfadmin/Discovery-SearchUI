@@ -3,7 +3,8 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { Hyp3ActionType, Hyp3Actions } from './hyp3.action';
 import {
   Hyp3Job, Hyp3User, Hyp3ProcessingOptions,
-  hyp3DefaultJobOptions, Hyp3CostsByJobType
+  hyp3DefaultJobOptions, Hyp3Costs,
+  ApplicationStatus
 } from '@models';
 
 /* State */
@@ -17,7 +18,8 @@ export interface Hyp3State {
   processingOptions: Hyp3ProcessingOptions;
   projectName: string;
   userId: string;
-  costs: Hyp3CostsByJobType;
+  costs: Hyp3Costs;
+  debug_status: ApplicationStatus | null;
 }
 
 const initState: Hyp3State = {
@@ -28,23 +30,20 @@ const initState: Hyp3State = {
   submittingJobName: null,
   processingOptions: hyp3DefaultJobOptions,
   projectName: '',
+  debug_status: null,
   userId: '',
   costs: {
     "AUTORIFT": {
       "cost": 1,
-      "job_type": "AUTORIFT"
     },
     "INSAR_GAMMA": {
       "cost": 1,
-      "job_type": "INSAR_GAMMA"
     },
     "RTC_GAMMA": {
       "cost": 1,
-      "job_type": "RTC_GAMMA"
     },
     "INSAR_ISCE_BURST": {
       "cost": 1,
-      "job_type": "INSAR_ISCE_BURST"
     }
   }
 };
@@ -109,36 +108,29 @@ export function hyp3Reducer(state = initState, action: Hyp3Actions): Hyp3State {
     }
 
     case Hyp3ActionType.SET_COSTS: {
-      const byType = action.payload.reduce((byJobType, job) => {
-
-        if (!job.cost_table) {
-          byJobType[job.job_type] = job;
-        } else {
-          const byCostTableValue = job.cost_table.reduce((byValue, costTableValue) => {
-            byValue[costTableValue.parameter_value] = costTableValue.cost;
-
-            return byValue;
-          }, {});
-
-          byJobType[job.job_type] = {
-            ...job,
-            cost_table: byCostTableValue,
-          };
-        }
-
-        return byJobType;
-      }, {});
-
       return {
         ...state,
-        costs: byType
+        costs: action.payload
       };
     }
 
-    case Hyp3ActionType.SET_USER: {
+    case Hyp3ActionType.SET_DEBUG_STATUS: {
       return {
         ...state,
-        user: action.payload,
+        debug_status: action.payload
+      }
+    }
+
+    case Hyp3ActionType.SET_USER: {
+      let temp_user = {
+        ...action.payload
+      }
+      if(state.debug_status) {
+        temp_user.application_status = state.debug_status
+      }
+      return {
+        ...state,
+        user: temp_user,
         isUserLoading: false
       };
     }

@@ -17,7 +17,7 @@ export const airsar = {
     end: new Date('2004/12/03 23:59:59 UTC')
   },
   frequency: 'L-Band, P-Band, or C-Band',
-  infoUrl: 'https://www.asf.alaska.edu/sar-data/airsar/',
+  infoUrl: 'https://asf.alaska.edu/datasets/daac/airsar/',
   citationUrl: 'https://asf.alaska.edu/data-sets/sar-data-sets/airsar/#airsar_cite',
   source: {
     name: 'NASA/JPL',
