@@ -28,10 +28,14 @@
           [units]="this.mapService.displacementRange?.units">
         </app-map-legend>
         <div class="slider-formatting">
-          <mat-slider min="0" max="1" step="0.05"
+          <mat-slider #velocityOpacitySlider
+                      min="0" max="1" step="0.05"
                       class="opacity-slider"
                       matTooltip="{{ 'VELOCITY_OVERVIEW_OPACITY' |  translate }}"
                       matTooltipPosition="right"
+                      discrete
+                      (change)="onSliderDragEnd($event)"
+                      [displayWith]="formatLabel"
                       (input)="onSetVelocityOpacity($event)"
                       (click)="$event.stopPropagation()"
           >
