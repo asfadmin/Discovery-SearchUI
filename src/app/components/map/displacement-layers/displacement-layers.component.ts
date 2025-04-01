@@ -1,15 +1,16 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { SubSink } from 'subsink';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {SubSink} from 'subsink';
 
-import { MapService } from '@services';
+import {MapService} from '@services';
 import * as models from '@models';
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
-import { getFlightDirections } from '@store/filters';
-import { distinctUntilChanged, filter, map } from 'rxjs';
-import { MatCheckbox } from '@angular/material/checkbox';
-import { getVelocityOverlayOpacity } from '@store/map';
+import {Store} from '@ngrx/store';
+import {AppState} from '@store';
+import {getFlightDirections} from '@store/filters';
+import {distinctUntilChanged, filter, map} from 'rxjs';
+import {MatCheckbox} from '@angular/material/checkbox';
 import * as mapStore from '@store/map';
+import {getVelocityOverlayOpacity} from '@store/map';
+import {MatSlider} from '@angular/material/slider';
 
 
 @Component({
@@ -19,6 +20,7 @@ import * as mapStore from '@store/map';
 })
 export class DisplacementLayersComponent implements OnInit, OnDestroy {
   @ViewChild("priorityRollout", { static: true }) priorityCheckbox: MatCheckbox;
+  @ViewChild("velocityOpacitySlider") _slider: MatSlider;
   public flightDir = models.FlightDirection.ASCENDING;
   public displacementOverview: models.DisplacementLayerTypes | null = null;
   public cumulativeDisplacementSelectionEnabled: boolean = false;
@@ -117,6 +119,14 @@ public onToggleDisplacementLayerDisplay(checked: boolean): void {
 
   public onSetVelocityOpacity(event: any) {
     this.store$.dispatch(new mapStore.SetVelocityOverlayOpacity(+event.target.value));
+  }
+
+  public formatLabel(value: number): string {
+    return (value * 100).toString() + '%';
+  }
+
+  public onSliderDragEnd(_event: any) {
+    _event.target.blur();
   }
 
   public setDisplacementLayer(direction: models.FlightDirection, type: models.DisplacementLayerTypes) {
