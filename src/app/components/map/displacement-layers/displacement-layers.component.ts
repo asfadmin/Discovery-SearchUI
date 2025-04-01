@@ -140,5 +140,6 @@ public onToggleDisplacementLayerDisplay(checked: boolean): void {
 
   ngOnDestroy() {
     this.subs.unsubscribe();
+    this.mapService.clearDisplacementOverview();
   }
 }
