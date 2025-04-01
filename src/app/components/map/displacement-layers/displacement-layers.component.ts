@@ -122,7 +122,7 @@ public onToggleDisplacementLayerDisplay(checked: boolean): void {
   }
 
   public formatLabel(value: number): string {
-    return (value * 100).toString() + '%';
+    return (value * 100).toFixed(0).toString() + '%';
   }
 
   public onSliderDragEnd(_event: any) {
