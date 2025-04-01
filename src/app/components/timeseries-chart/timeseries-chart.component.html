@@ -12,6 +12,7 @@
                                  orientation="horizontal"
                                  class="ts-best-fit-viewport"
                                  cdkScrollable
+                                 itemSize="350"
                                  >
       <div *ngFor="let item of bestFitItems" class="ts-best-fit-item">
         <div [style.background-color]="item.color" class="ts-color-swatch">{{item.seriesNumber}}</div>
