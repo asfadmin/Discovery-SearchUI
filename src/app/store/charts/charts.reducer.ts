@@ -25,7 +25,7 @@ export const chartsReducer = createReducer(
   on(chartActions.hideGraphLines, (state) => ({ ...state, showLines: false })),
   on(chartActions.setTimeseriesChecked, (state, { uuid, checked }) => {
     const seriesState = Object.values(state.seriesStates).reduce((prev, curr) => {
-      let index = curr.frames.findIndex(frame => {
+      let index = curr?.frames?.findIndex(frame => {
         return frame.uuid === uuid;
       });
       if(index > -1) {
@@ -91,7 +91,7 @@ export const chartsReducer = createReducer(
   }),
   on(chartActions.setTimeseriesValid, (state, {uuid, valid, error}) => {
     const seriesStates = Object.values(state.seriesStates).reduce((prev, curr) => {
-      let index = curr.frames.findIndex(frame => {
+      let index = curr?.frames?.findIndex(frame => {
         return frame.uuid === uuid;
       });
       if(index > -1) {

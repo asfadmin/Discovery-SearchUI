@@ -608,8 +608,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
             let lineregression = linearRegressionLine(regression);
             let yIntercept = lineregression(this.OperaDispStartDate) 
           this.bestFitItems.push({
-            seriesNumber: linearFitData.values[0].seriesNumber,
-            color: linearFitData.values[0].color,
+            seriesNumber: linearFitData.values[0]?.seriesNumber,
+            color: linearFitData.values[0]?.color,
             // Displacement [m] = velocity [m/yr]*time [yr]+intercept [m]
             formula: `Displacement [m] = ${(regression.slope / self.millisecondsPerYear).toFixed(4)} [m/yr]*time ${yIntercept < 0 ? '-' : '+'} ${Math.abs(yIntercept).toFixed(4)} [m]`
           })
