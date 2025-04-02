@@ -1,7 +1,7 @@
 import {Directive, ElementRef, HostBinding, HostListener, Inject, InjectionToken, Input, OnDestroy} from '@angular/core';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {catchError, map} from 'rxjs/operators';
-import {HttpClient} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import {of, Subscription} from 'rxjs';
 
 /** Same Origin regular expression */

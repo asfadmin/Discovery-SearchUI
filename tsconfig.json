@@ -11,9 +11,6 @@
     },
     {
       "path": "./src/tsconfig.spec.json"
-    },
-    {
-      "path": "./e2e/tsconfig.e2e.json"
     }
   ],
   "include": [
@@ -21,10 +18,10 @@
   ],
   "compilerOptions": {
     "baseUrl": "./",
-    "outDir": "./dist/search-ui",
+    "outDir": "./dist/search-ui/browser",
     "sourceMap": true,
+    "esModuleInterop": true,
     "declaration": false,
-    "downlevelIteration": true,
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
