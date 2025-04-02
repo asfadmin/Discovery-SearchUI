@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
@@ -12,10 +12,10 @@ import {
 import { Hyp3ApiService, ThemingService } from '@services';
 import { SubSink } from 'subsink';
 import { take } from 'rxjs';
-import { TranslateService } from "@ngx-translate/core";
-import { AsfLanguageService } from "@services/asf-language.service";
-import * as models from "@models";
-import * as services from "@services";
+import { TranslateService } from '@ngx-translate/core';
+import { AsfLanguageService } from '@services/asf-language.service';
+import * as models from '@models';
+import * as services from '@services';
 
 @Component({
   selector: 'app-preferences',
@@ -157,7 +157,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
 
   public onChangeDefaultLanguage(language: string): void {
     this.language.setCurrent(language);
-    this.defaultLanguage = language
+    this.defaultLanguage = language;
     this.saveProfile();
   }
 
@@ -191,17 +191,18 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   }
   public onDebugStatus(status: models.ApplicationStatus) {
     this.hyp3DebugStatus = status;
-    this.store$.dispatch(new hyp3Store.SetDebugStatus(status))
+    this.store$.dispatch(new hyp3Store.SetDebugStatus(status));
   }
 
   public setTheme(themeName: string) {
     this.themeService.setTheme(themeName);
-    this.saveProfile()
+    this.saveProfile();
   }
 
-  public resetHyp3Url() {
-    this.hyp3.setDefaultApiUrl();
+  public onSetHyp3Url(url: string) {
+    this.hyp3.setApiUrl(url);
     this.hyp3BackendUrl = this.hyp3.apiUrl;
+    this.saveProfile();
   }
 
   public saveProfile(): void {

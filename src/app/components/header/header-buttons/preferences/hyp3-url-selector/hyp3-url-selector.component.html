@@ -1,0 +1,10 @@
+<mat-form-field class="default-filters-presets hyp3-url">
+  <mat-label>{{ 'HY_P3_API_URL' | translate }}</mat-label>
+  <input matInput
+    (change)="onNewHyp3Url($event)"
+    [(ngModel)]="hyp3BackendUrl"
+    name="backendUrl">
+  <button matSuffix mat-icon-button aria-label="Clear" (click)="onResetHyp3Url()">
+    <mat-icon>refresh</mat-icon>
+  </button>
+</mat-form-field>

@@ -111,15 +111,12 @@
              [class.section-heading-mobile]="breakpoint <= breakpoints.SMALL">
           {{ 'DEFAULT_ON_DEMAND_PRESETS' | translate }}
         </div>
-        <mat-form-field class="default-filters-presets hyp3-url">
-          <mat-label>{{ 'HY_P3_API_URL' | translate }}</mat-label>
-          <input matInput
-            [(ngModel)]="hyp3BackendUrl"
-            name="backendUrl">
-          <button matSuffix mat-icon-button aria-label="Clear" (click)="resetHyp3Url()">
-            <mat-icon>refresh</mat-icon>
-          </button>
-        </mat-form-field>
+
+        <app-hyp3-url-selector
+          [hyp3BackendUrl]="hyp3BackendUrl"
+          (newHyp3Url)="onSetHyp3Url($event)">
+        </app-hyp3-url-selector>
+
         @if(!this.env.isProd) {
           <mat-form-field class="default-map">
             <mat-label>Debug Status</mat-label>

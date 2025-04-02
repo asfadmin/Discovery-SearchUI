@@ -16,14 +16,16 @@ import { PreferencesComponent } from './preferences/preferences.component';
 import { CustomizeEnvComponent } from './customize-env/customize-env.component';
 import { OnlynumberDirective } from '@directives/onlynumber.directive';
 import { SharedModule } from '@shared';
-import { LanguageSelectorModule } from "@components/shared/selectors/language-selector/language-selector.module";
+import { LanguageSelectorModule } from '@components/shared/selectors/language-selector/language-selector.module';
+import { Hyp3UrlSelectorComponent } from './preferences/hyp3-url-selector/hyp3-url-selector.component';
 
 @NgModule({
   declarations: [
     HeaderButtonsComponent,
     PreferencesComponent,
     CustomizeEnvComponent,
-    OnlynumberDirective
+    OnlynumberDirective,
+    Hyp3UrlSelectorComponent,
   ],
   imports: [
     CommonModule,
@@ -39,6 +41,6 @@ import { LanguageSelectorModule } from "@components/shared/selectors/language-se
     SharedModule,
     LanguageSelectorModule,
   ],
-  exports: [ HeaderButtonsComponent ]
+  exports: [HeaderButtonsComponent]
 })
 export class HeaderButtonsModule { }
