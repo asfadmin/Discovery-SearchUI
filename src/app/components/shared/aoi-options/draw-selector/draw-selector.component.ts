@@ -37,7 +37,6 @@ export class DrawSelectorComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
   ) {
-    this.onPointSelected()
   }
 
   ngOnInit() {
