@@ -43,7 +43,9 @@
           </div>
           <div class="fx-row">
             <div class="scenes-list-button-container">
-              <mat-button-toggle-group name="layerType" class="fx-empty mr-10">
+              <mat-button-toggle-group 
+[hideSingleSelectionIndicator]='true'
+[hideMultipleSelectionIndicator]='true' name="layerType" class="fx-empty mr-10">
                 <mat-button-toggle
                   (click)="onZoomToResults()"
                   class="control-mat-button-toggle clickable noselect"
@@ -63,7 +65,9 @@
           </div>
           <div class="fx-row">
             <div class="scenes-list-button-container">
-              <mat-button-toggle-group name="layerType" class="fx-empty criteria-button-group">
+              <mat-button-toggle-group 
+[hideSingleSelectionIndicator]='true'
+[hideMultipleSelectionIndicator]='true' name="layerType" class="fx-empty criteria-button-group">
                 <mat-button-toggle class="control-mat-button-toggle clickable noselect"
                                    matTooltip="{{ 'ADD_ALL_RESULTS_TO_DOWNLOADS' | translate }}"
                                    [matMenuTriggerFor]="addAllProducts">
@@ -83,7 +87,9 @@
           </div>
           <div class="fx-row-center">
             <div>
-              <mat-button-toggle-group name="layerType" class="fx-empty">
+              <mat-button-toggle-group 
+[hideSingleSelectionIndicator]='true'
+[hideMultipleSelectionIndicator]='true' name="layerType" class="fx-empty">
                 <mat-button-toggle class="control-mat-button-toggle clickable noselect"
                                    [matMenuTriggerFor]="baselineAdd?.addMenu"
                                    [matMenuTriggerData]="{ hyp3able: hyp3able?.byJobType }"
@@ -106,7 +112,9 @@
           </div>
           <div class="fx-row">
             <div class="scenes-list-button-container">
-              <mat-button-toggle-group name="layerType" class="fx-empty mr-10">
+              <mat-button-toggle-group 
+[hideSingleSelectionIndicator]='true'
+[hideMultipleSelectionIndicator]='true' name="layerType" class="fx-empty mr-10">
                 <mat-button-toggle class="control-mat-button-toggle clickable noselect"
                                    matTooltip="{{ 'DOWNLOAD_DATA_METADATA_AS' | translate }}"
                                    [matMenuTriggerFor]="ExportAll">
@@ -219,7 +227,9 @@
     class="header"
   >
     <div class="baseline-header-button-group">
-      <mat-button-toggle-group name="baselineCriteria"
+      <mat-button-toggle-group 
+[hideSingleSelectionIndicator]='true'
+[hideMultipleSelectionIndicator]='true' name="baselineCriteria"
                                class="fx-empty criteria-button-group baseline-criteria-button-toggle-group">
         <mat-button-toggle class="control-mat-button-toggle baseline-criteria-button-toggle"
                            (click)="onToggleFiltersMenu()"
