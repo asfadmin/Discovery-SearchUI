@@ -4,24 +4,61 @@ import { Hyp3ApiService } from '@services';
 @Component({
   selector: 'app-hyp3-url-selector',
   templateUrl: './hyp3-url-selector.component.html',
-  styleUrl: './hyp3-url-selector.component.scss'
+  styleUrls: ['./hyp3-url-selector.component.scss', '../preferences.component.scss']
 })
 export class Hyp3UrlSelectorComponent {
   @Input() hyp3BackendUrl: string;
+  @Input() hyp3SavedUrls: string[];
 
-  @Output() newHyp3Url = new EventEmitter<string>();
+  @Output() newHyp3Url = new EventEmitter<{ backendUrl: string; savedUrls: string[]}>();
 
-  constructor(private hyp3: Hyp3ApiService) {}
+  public baseHyp3Url = this.hyp3.baseUrl;
+
+  constructor(private hyp3: Hyp3ApiService) { }
+
+  updateHyp3Url(url: string) {
+    this.hyp3BackendUrl = this.stripTrailingSlash(url);
+
+    this.addHyp3Url(this.hyp3BackendUrl);
+
+    this.newHyp3Url.emit({
+      backendUrl: this.hyp3BackendUrl,
+      savedUrls: this.hyp3SavedUrls,
+    });
+  }
 
   onResetHyp3Url() {
     this.hyp3.setDefaultApiUrl();
-    this.hyp3BackendUrl = this.hyp3.apiUrl;
 
-    this.newHyp3Url.emit(this.hyp3BackendUrl);
+    this.updateHyp3Url(this.hyp3.apiUrl);
   }
 
   onNewHyp3Url(event: Event) {
     const url = (event.target as HTMLInputElement).value;
-    this.newHyp3Url.emit(url);
+    this.updateHyp3Url(url);
   }
+
+  onAutoCompleteChangeHyp3Url(url: string) {
+    this.updateHyp3Url(url);
+  }
+
+  onRemoveHyp3Url(url: string) {
+    this.hyp3SavedUrls = this.hyp3SavedUrls.filter(
+      hyp3Url => hyp3Url !== url
+    );
+
+    this.onResetHyp3Url();
+  }
+
+  private addHyp3Url(url: string): void {
+    const uniqueUrls = new Set(this.hyp3SavedUrls);
+    uniqueUrls.add(url);
+    this.hyp3SavedUrls = [...uniqueUrls];
+  }
+
+  private stripTrailingSlash = (url: string) => {
+    return url.endsWith('/') ?
+      url.slice(0, -1) :
+      url;
+  };
 }

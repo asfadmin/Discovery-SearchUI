@@ -35,6 +35,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   public defaultMaxConcurrentDownloads: number;
   public defaultProductTypes: ProductType[];
   public hyp3BackendUrl: string;
+  public hyp3SavedUrls: string[];
   public hyp3DebugStatus: string;
   public defaultLanguage: string;
 
@@ -88,12 +89,18 @@ export class PreferencesComponent implements OnInit, OnDestroy {
           this.selectedFiltersIDs = profile.defaultFilterPresets;
           this.defaultMaxConcurrentDownloads = profile.defaultMaxConcurrentDownloads;
           this.hyp3BackendUrl = profile.hyp3BackendUrl;
+          this.hyp3SavedUrls = profile.hyp3SavedUrls;
           this.currentTheme = profile.theme;
           this.defaultLanguage = profile.language;
+
           if (this.hyp3BackendUrl) {
             this.hyp3.setApiUrl(this.hyp3BackendUrl);
           } else {
             this.hyp3BackendUrl = this.hyp3.apiUrl;
+          }
+
+          if (!this.hyp3SavedUrls) {
+            this.hyp3SavedUrls = [this.hyp3BackendUrl];
           }
         }
       )
@@ -199,9 +206,12 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     this.saveProfile();
   }
 
-  public onSetHyp3Url(url: string) {
-    this.hyp3.setApiUrl(url);
+  public onSetHyp3Url(event: { backendUrl: string; savedUrls: string[]}) {
+    this.hyp3.setApiUrl(event.backendUrl);
+
     this.hyp3BackendUrl = this.hyp3.apiUrl;
+    this.hyp3SavedUrls = event.savedUrls;
+
     this.saveProfile();
   }
 
@@ -213,6 +223,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
       defaultMaxConcurrentDownloads: this.defaultMaxConcurrentDownloads,
       defaultFilterPresets: this.selectedFiltersIDs,
       hyp3BackendUrl: this.hyp3BackendUrl,
+      hyp3SavedUrls: this.hyp3SavedUrls,
       theme: this.currentTheme,
       language: this.defaultLanguage
     });

@@ -18,6 +18,7 @@ import { OnlynumberDirective } from '@directives/onlynumber.directive';
 import { SharedModule } from '@shared';
 import { LanguageSelectorModule } from '@components/shared/selectors/language-selector/language-selector.module';
 import { Hyp3UrlSelectorComponent } from './preferences/hyp3-url-selector/hyp3-url-selector.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { Hyp3UrlSelectorComponent } from './preferences/hyp3-url-selector/hyp3-u
     MatFormFieldModule,
     SharedModule,
     LanguageSelectorModule,
+    MatAutocompleteModule,
   ],
   exports: [HeaderButtonsComponent]
 })
