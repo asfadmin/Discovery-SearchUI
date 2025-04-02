@@ -18,7 +18,7 @@
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": {
-              "base": "dist/search-ui/browser"
+              "base": "dist/search-ui"
             },
             "index": "src/index.html",
             "polyfills": [
