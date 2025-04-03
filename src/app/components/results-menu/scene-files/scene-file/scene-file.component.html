@@ -74,11 +74,12 @@
   </div>
 
   @if (product.metadata.job) {
+  <ng-container>
     <div *ngIf="product.metadata.job.name" matListItemLine>
       <b>{{'PROJECT_NAME' | translate}}:</b> {{ product.metadata.job.name }}
     </div>
 
-    <div matListItemLine >
+    <div matListItemLine>
       <b>{{'JOB_SUBMITTED' | translate}}:</b> {{ product.metadata.job.request_time| fullDate }}
     </div>
 
@@ -94,6 +95,7 @@
         [value]="product.metadata.job.job_id">
       </app-copy-to-clipboard>
     </div>
+  </ng-container>
   }
 
   <div *ngFor="let param of paramsList" matListItemLine>
