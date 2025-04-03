@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 
-import { Observable, of, first, catchError, map } from 'rxjs';
+import { Observable, of, first, catchError, map, forkJoin } from 'rxjs';
 import * as moment from 'moment';
 
 import * as models from '@models';
@@ -104,6 +104,21 @@ export class Hyp3ApiService {
     return this.getJobsByUrl$(getJobsUrl);
   }
 
+  public getJobsByIds$(jobIds: string[]) {
+    return forkJoin(
+      jobIds.map(jobId => this.getJobById$(jobId)
+      )
+    ).pipe(
+      map(resps => {
+        const allJobs = resps.reduce((jobs, resp) => {
+          return [...jobs, ...resp.hyp3Jobs]
+        }, []);
+
+        return { hyp3Jobs: allJobs, next: '' };
+      })
+    );
+  }
+
   public getJobsByUrl$(url: string): Observable<{ hyp3Jobs: models.Hyp3Job[]; next: string }> {
     return this.http.get(url, { withCredentials: true }).pipe(
       catchError((err: HttpErrorResponse) => {
@@ -119,7 +134,7 @@ export class Hyp3ApiService {
       }),
       map((resp: any) => {
         if (resp.job_id) {
-          resp = { jobs: [resp], next: ''};
+          resp = { jobs: [resp], next: '' };
         }
 
         if (!resp.jobs) {

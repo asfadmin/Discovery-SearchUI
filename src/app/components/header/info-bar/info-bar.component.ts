@@ -51,6 +51,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public useCalibrationData: boolean = false;
   public groupID: string;
   public userID: string;
+  public jobIds: string[];
 
   private subs = new SubSink();
 
@@ -147,6 +148,10 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       userID => this.userID = userID
     );
 
+    const jobIdsSub = this.store$.select(hyp3Store.getHyp3JobIds).subscribe(
+      jobIds => this.jobIds = jobIds
+    );
+
     [
       startSub, endSub,
       pathSub, frameSub,
@@ -165,7 +170,8 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       operaBurstIDSub,
       useCalibrationDataSub,
       groupIDSub,
-      userIDSub
+      userIDSub,
+      jobIdsSub
     ].forEach(sub => this.subs.add(sub));
 
     this.subs.add(
