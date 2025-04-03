@@ -29,7 +29,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   @Input() validHyp3JobTypes: models.Hyp3JobType[];
   @Input() hasAccessToRestrictedData: boolean;
   @Input() loadingHyp3JobName: string | null;
-  @Input() isSearchableProduct: boolean = false;
+  @Input() isSearchableProduct = false;
 
   @Output() toggle = new EventEmitter<void>();
   @Output() unzip = new EventEmitter<models.CMRProduct>();
