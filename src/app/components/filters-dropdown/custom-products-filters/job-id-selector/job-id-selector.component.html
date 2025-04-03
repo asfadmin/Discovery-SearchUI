@@ -1,1 +1,9 @@
-<p>job-id-selector works!</p>
+<mat-form-field>
+  <input type="text"
+         name="jobIdInput"
+         placeholder="{{ 'JOB_ID_SELECTOR' | translate}}"
+         aria-label="JOB_ID_SELECTOR"
+         matInput
+         (change)="onJobIdChange($event)"
+         [(ngModel)]="jobId">
+</mat-form-field>

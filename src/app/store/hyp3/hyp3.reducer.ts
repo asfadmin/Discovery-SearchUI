@@ -19,6 +19,7 @@ export interface Hyp3State {
   processingOptions: Hyp3ProcessingOptions;
   projectName: string;
   userId: string;
+  jobId: string;
   searchJobIds: string[];
   costs: Hyp3Costs;
   debug_status: ApplicationStatus | null;
@@ -36,6 +37,7 @@ const initState: Hyp3State = {
   projectName: '',
   debug_status: null,
   userId: '',
+  jobId: '',
   searchJobIds: [],
   maxHyp3Jobs: 3000,
   costs: {
@@ -103,6 +105,13 @@ export function hyp3Reducer(state = initState, action: Hyp3Actions): Hyp3State {
       return {
         ...state,
         userId: action.payload
+      };
+    }
+
+    case Hyp3ActionType.SET_HYP3_JOB_ID: {
+      return {
+        ...state,
+        jobId: action.payload
       };
     }
 
@@ -245,6 +254,11 @@ export const getProcessingProjectName = createSelector(
 export const getOnDemandUserId = createSelector(
   getHyp3State,
   (state: Hyp3State) => state.userId
+);
+
+export const getHyp3JobId = createSelector(
+  getHyp3State,
+  (state: Hyp3State) => state.jobId
 );
 
 export const getCosts = createSelector(

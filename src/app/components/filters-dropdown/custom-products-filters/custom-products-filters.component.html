@@ -16,7 +16,10 @@
 
       <app-on-demand-user-selector style="margin-top: 11px;"></app-on-demand-user-selector>
 
-      <app-job-id-selector style="margin-top: 11px;"></app-job-id-selector>
+      <app-job-id-selector
+        [jobId]="hyp3JobId"
+        (newJobId)="onNewHyp3JobId($event)"
+        style="margin-top: 11px;"></app-job-id-selector>
     </div>
   </mat-expansion-panel>
 

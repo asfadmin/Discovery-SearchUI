@@ -3,6 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import * as scenesStore from '@store/scenes';
+import * as hyp3Store from '@store/hyp3';
 
 import { SubSink } from 'subsink';
 import * as models from '@models';
@@ -19,7 +20,7 @@ enum FilterPanel {
   templateUrl: './custom-products-filters.component.html',
   styleUrls: ['./custom-products-filters.component.scss']
 })
-export class CustomProductsFiltersComponent implements OnInit, OnDestroy  {
+export class CustomProductsFiltersComponent implements OnInit, OnDestroy {
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
   public areResultsLoaded: boolean;
@@ -30,6 +31,7 @@ export class CustomProductsFiltersComponent implements OnInit, OnDestroy  {
   panelIsDisabled = true;
   customCollapsedHeight = '30px';
   customExpandedHeight = '30px';
+  hyp3JobId: string;
 
   private subs = new SubSink();
 
@@ -44,6 +46,12 @@ export class CustomProductsFiltersComponent implements OnInit, OnDestroy  {
         areLoaded => this.areResultsLoaded = areLoaded
       )
     );
+
+    this.subs.add(
+      this.store$.select(hyp3Store.getHyp3JobId).subscribe(
+        jobId => this.hyp3JobId = jobId
+      )
+    );
   }
 
   public isSelected(panel: FilterPanel): boolean {
@@ -52,6 +60,10 @@ export class CustomProductsFiltersComponent implements OnInit, OnDestroy  {
 
   public selectPanel(panel: FilterPanel): void {
     this.selectedPanel = panel;
+  }
+
+  public onNewHyp3JobId(jobId: string) {
+    this.store$.dispatch(new hyp3Store.SetHyp3JobID(jobId));
   }
 
   ngOnDestroy() {

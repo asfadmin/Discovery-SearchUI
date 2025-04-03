@@ -14,6 +14,9 @@ import { OnDemandUserSelectorModule} from '@components/shared/selectors/on-deman
 import { JobIdSelectorComponent } from './job-id-selector/job-id-selector.component';
 
 import { SharedModule } from '@shared';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -24,6 +27,9 @@ import { SharedModule } from '@shared';
     CommonModule,
     MatExpansionModule,
     MatSharedModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
     DateSelectorModule,
     SearchTypeSelectorModule,
     ProjectNameSelectorModule,
