@@ -98,6 +98,12 @@ export class Hyp3ApiService {
     return this.getJobsByUrl$(getJobsUrl);
   }
 
+  public getJobById$(jobId: string): Observable<{ hyp3Jobs: models.Hyp3Job[]; next: string }> {
+    const getJobsUrl = `${this.apiUrl}/jobs/${jobId}`;
+
+    return this.getJobsByUrl$(getJobsUrl);
+  }
+
   public getJobsByUrl$(url: string): Observable<{ hyp3Jobs: models.Hyp3Job[]; next: string }> {
     return this.http.get(url, { withCredentials: true }).pipe(
       catchError((err: HttpErrorResponse) => {
@@ -112,6 +118,10 @@ export class Hyp3ApiService {
         return of({});
       }),
       map((resp: any) => {
+        if (resp.job_id) {
+          resp = { jobs: [resp], next: ''};
+        }
+
         if (!resp.jobs) {
           return { hyp3Jobs: [], next: '' };
         }

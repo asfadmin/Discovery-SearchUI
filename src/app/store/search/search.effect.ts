@@ -436,7 +436,15 @@ export class SearchEffects {
     return this.searchParams$.getOnDemandSearchParams.pipe(
       switchMap(
         params => {
-          return this.hyp3Service.getJobs$({ userID: params.userID }).pipe(
+          let hyp3Query: Observable<{ hyp3Jobs: models.Hyp3Job[]; next: string }>;
+
+          if (params.jobId) {
+            hyp3Query = this.hyp3Service.getJobById$(params.jobId);
+          } else {
+            hyp3Query = this.hyp3Service.getJobs$({ userID: params.userID });
+          }
+
+          return hyp3Query.pipe(
             switchMap(
               (jobsRes: { hyp3Jobs: models.Hyp3Job[]; next: string }) => {
                 if (jobsRes.hyp3Jobs.length === 0) {

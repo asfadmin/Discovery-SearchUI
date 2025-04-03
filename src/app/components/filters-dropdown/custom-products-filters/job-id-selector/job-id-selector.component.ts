@@ -17,12 +17,13 @@ export class JobIdSelectorComponent {
     const jobId = this.findJobId(jobIdInput);
 
     if (jobId === null) {
-      this.jobId = '';
       this.notification.info('Invalid Job Id');
+      this.newJobId.emit('');
       return;
+    } else {
+      this.newJobId.emit(jobId);
     }
 
-    this.newJobId.emit(jobId);
   }
 
   private findJobId(inputStr: string) {
