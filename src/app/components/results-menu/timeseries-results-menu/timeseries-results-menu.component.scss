@@ -1,6 +1,6 @@
 @use "@angular/material" as mat;
 
-@import "asf-theme";
+@import url("asf-theme");
 
 .ts-chart-row {
 	display: flex;
@@ -23,6 +23,7 @@
   width: 100%;
   margin-left: 30px;
 }
+
 .ts-criteria-button-toggle-group {
 	flex: 0 1 149px !important;
 	margin-top: 5px;
@@ -274,6 +275,7 @@ label {
 		background: darken(themed('background-white'), 15%);
 	}
 }
+
 .ts-column-2 {
 	margin: 25px;
 }
@@ -292,9 +294,10 @@ label {
   @include themify($themes) {
     color: darken(themed('dark-primary-text'), 25%);
   }
+
   font-size: 18px;
   line-height: 29px;
-  margin: 0 0;
+  margin: 0;
   width: 18px;
 }
 
@@ -318,11 +321,11 @@ label {
 }
 
 :host ::ng-deep .mdc-radio__inner-circle {
-  border-color: #236192 !important; /*change radio button color when selected*/
+  border-color: #236192 !important; /* change radio button color when selected */
 }
 
 :host ::ng-deep .mdc-radio__outer-circle {
-  border-color: #ffcc33 !important; /*change radio button color when selected*/
+  border-color: #fc3 !important; /* change radio button color when selected */
 }
 
 .point-list-section {
@@ -339,6 +342,7 @@ label {
 
 span.parent-checkbox-section:hover {
   cursor: pointer;
+
   @include themify($themes) {
     background-color: lighten(themed('primary-light'),5%);
   }
