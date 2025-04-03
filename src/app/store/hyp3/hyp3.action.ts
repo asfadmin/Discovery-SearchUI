@@ -10,7 +10,7 @@ export enum Hyp3ActionType {
   SET_PROCESSING_PROJECT_NAME = '[Hyp3] Set Processing Project Name',
 
   SET_ON_DEMAND_USER_ID = '[Hyp3] Set On Demand User ID',
-  SET_HYP3_JOB_ID = '[Hyp3] Set Hyp3 Job ID',
+  SET_HYP3_JOB_IDS = '[Hyp3] Set Hyp3 Job IDs',
 
   LOAD_USER = '[Hyp3] Load User',
   SET_USER = '[Hyp3] Set User',
@@ -62,10 +62,10 @@ export class SetOnDemandUserID implements Action {
   constructor(public payload: string) {}
 }
 
-export class SetHyp3JobID implements Action {
-  public readonly type = Hyp3ActionType.SET_HYP3_JOB_ID;
+export class SetHyp3JobIDs implements Action {
+  public readonly type = Hyp3ActionType.SET_HYP3_JOB_IDS;
 
-  constructor(public payload: string) {}
+  constructor(public payload: string[]) {}
 }
 
 export class SubmitJob implements Action {
@@ -141,7 +141,7 @@ export type Hyp3Actions =
   | ClearProcessingOptions
   | SetProcessingProjectName
   | SetOnDemandUserID
-  | SetHyp3JobID
+  | SetHyp3JobIDs
   | SubmitJob
   | SuccessfulJobSubmission
   | ErrorJobSubmission

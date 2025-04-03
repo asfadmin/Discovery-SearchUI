@@ -1,9 +1,9 @@
 <mat-form-field>
   <input type="text"
-         name="jobIdInput"
-         placeholder="{{ 'JOB_ID_SELECTOR' | translate}}"
-         aria-label="JOB_ID_SELECTOR"
+         name="jobIdsInput"
+         placeholder="{{ 'JOB_IDS_SELECTOR' | translate}}"
+         aria-label="JOB_IDS_SELECTOR"
          matInput
-         (change)="onJobIdChange($event)"
-         [(ngModel)]="jobId">
+         (change)="onJobIdsChange($event)"
+         [(ngModel)]="jobIds">
 </mat-form-field>

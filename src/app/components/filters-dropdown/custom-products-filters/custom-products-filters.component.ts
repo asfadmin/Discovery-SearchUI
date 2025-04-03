@@ -31,7 +31,7 @@ export class CustomProductsFiltersComponent implements OnInit, OnDestroy {
   panelIsDisabled = true;
   customCollapsedHeight = '30px';
   customExpandedHeight = '30px';
-  hyp3JobId: string;
+  hyp3JobIds: string[];
 
   private subs = new SubSink();
 
@@ -48,8 +48,8 @@ export class CustomProductsFiltersComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.store$.select(hyp3Store.getHyp3JobId).subscribe(
-        jobId => this.hyp3JobId = jobId
+      this.store$.select(hyp3Store.getHyp3JobIds).subscribe(
+        jobId => this.hyp3JobIds = jobId
       )
     );
   }
@@ -62,8 +62,8 @@ export class CustomProductsFiltersComponent implements OnInit, OnDestroy {
     this.selectedPanel = panel;
   }
 
-  public onNewHyp3JobId(jobId: string) {
-    this.store$.dispatch(new hyp3Store.SetHyp3JobID(jobId));
+  public onNewHyp3JobIds(jobIds: string[]) {
+    this.store$.dispatch(new hyp3Store.SetHyp3JobIDs(jobIds));
   }
 
   ngOnDestroy() {

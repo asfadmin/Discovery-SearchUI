@@ -7,33 +7,32 @@ import { NotificationService } from '@services';
   styleUrl: './job-id-selector.component.scss'
 })
 export class JobIdSelectorComponent {
-  @Input() jobId: string;
-  @Output() newJobId = new EventEmitter<string>;
+  @Input() jobIds: string[];
+  @Output() newJobIds = new EventEmitter<string[]>;
 
   constructor(private notification: NotificationService) {}
 
-  onJobIdChange(event: Event) {
-    const jobIdInput = (event.target as HTMLInputElement).value;
-    const jobId = this.findJobId(jobIdInput);
+  onJobIdsChange(event: Event) {
+    const jobIdsInput = (event.target as HTMLInputElement).value;
+    const jobIds = [...new Set(this.findJobIds(jobIdsInput))];
 
-    if (jobId === null) {
-      this.notification.info('Invalid Job Id');
-      this.newJobId.emit('');
+    if (jobIds.length < 1) {
+      this.notification.info('Invalid Job Ids');
+      this.newJobIds.emit([]);
       return;
     } else {
-      this.newJobId.emit(jobId);
+      this.newJobIds.emit(jobIds);
     }
-
   }
 
-  private findJobId(inputStr: string) {
-    const regex = /[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}/i;
+  private findJobIds(inputStr: string) {
+    const regex = /[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}/g;
     const matches = inputStr.match(regex);
 
     if (matches?.length > 0) {
-      return matches[0];
+      return matches;
     } else {
-      return null;
+      return [];
     }
   }
 }

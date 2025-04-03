@@ -290,14 +290,14 @@ export class SearchParamsService {
   public getOnDemandSearchParams = combineLatest([
     this.store$.select(hyp3Store.getOnDemandUserId),
     this.store$.select(filterStore.getProjectName),
-    this.store$.select(hyp3Store.getHyp3JobId),
+    this.store$.select(hyp3Store.getHyp3JobIds),
 
   ]).pipe(
-    map(([userID, projectName, hyp3JobId]) => {
+    map(([userID, projectName, hyp3JobIds]) => {
       return {
         'userID': userID,
         'name': projectName,
-        'jobId': hyp3JobId,
+        'jobIds': hyp3JobIds,
       };
     })
   );

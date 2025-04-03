@@ -438,8 +438,19 @@ export class SearchEffects {
         params => {
           let hyp3Query: Observable<{ hyp3Jobs: models.Hyp3Job[]; next: string }>;
 
-          if (params.jobId) {
-            hyp3Query = this.hyp3Service.getJobById$(params.jobId);
+          if (params.jobIds?.length > 0) {
+            hyp3Query = forkJoin(
+              params.jobIds.map(jobId => this.hyp3Service.getJobById$(jobId)
+              )
+            ).pipe(
+              map(resps => {
+                const allJobs = resps.reduce((jobs, resp) => {
+                  return [...jobs, ...resp.hyp3Jobs]
+                }, []);
+
+                return { hyp3Jobs: allJobs, next: '' };
+              })
+            );
           } else {
             hyp3Query = this.hyp3Service.getJobs$({ userID: params.userID });
           }
