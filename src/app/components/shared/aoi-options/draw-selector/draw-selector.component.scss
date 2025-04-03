@@ -1,4 +1,5 @@
 @import "asf-theme";
+@import "asf-header-menu-button";
 
 .draw-icon {
   @include md-icon-size($asf-ribbon-icon-size);
@@ -55,9 +56,43 @@
   // border: solid 1px rgb(0 0 0 / 12%);
   text-align: center;
 }
+
 .control-button {
   @include themify($themes) {
     background: themed('background-white');
     color: themed('light-primary-text')
   }
+  padding: 0 16px
 }
+
+.draw-button-wrapper {
+}
+
+.draw-toggle {
+}
+
+.draw-toggle-wrapper {
+  margin: 2px 0 0 8px;
+  display: block;
+  transform: scale(0.9);
+}
+
+::ng-deep .theme-light .mat-mdc-slide-toggle.mat-accent {
+  --mdc-switch-selected-focus-state-layer-color: #757575;
+  --mdc-switch-selected-handle-color: #236192;
+  --mdc-switch-selected-hover-state-layer-color: #757575;
+  --mdc-switch-selected-pressed-state-layer-color: #757575;
+  --mdc-switch-selected-focus-handle-color: #236192;
+  --mdc-switch-selected-hover-handle-color: #236192;
+  --mdc-switch-selected-pressed-handle-color: #236192;
+  --mdc-switch-selected-focus-track-color: #e0e0e0;
+  --mdc-switch-selected-hover-track-color: #e0e0e0;
+  --mdc-switch-selected-pressed-track-color: #e0e0e0;
+  --mdc-switch-selected-track-color: #e0e0e0;
+
+  --mdc-switch-unselected-focus-handle-color: #757575;
+  --mdc-switch-unselected-hover-handle-color: #757575;
+  --mdc-switch-unselected-pressed-handle-color: #757575;
+
+}
+

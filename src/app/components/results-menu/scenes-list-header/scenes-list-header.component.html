@@ -49,9 +49,7 @@
             </div>
             <div class="fx-row">
               <div class="scenes-list-button-container">
-                <mat-button-toggle-group 
-[hideSingleSelectionIndicator]='true'
-[hideMultipleSelectionIndicator]='true' name="fx-empty layerType" class="mr-10">
+                <mat-button-toggle-group name="fx-empty layerType" class="mr-10" [hideSingleSelectionIndicator]="true">
                   <mat-button-toggle (click)="onToggleS1RawData()"
                     class="control-mat-button-toggle clickable noselect"
                     [matTooltip]="showS1RawData ? ('HIDE_RAW_DATA' | translate) : ('SHOW_RAW_DATA' | translate)">
@@ -71,9 +69,7 @@
             </div>
             <div class="fx-row">
               <div class="scenes-list-button-container">
-                <mat-button-toggle-group 
-[hideSingleSelectionIndicator]='true'
-[hideMultipleSelectionIndicator]='true' name="layerType" class="fx-empty mr-10">
+                <mat-button-toggle-group name="layerType" class="fx-empty mr-10" [hideSingleSelectionIndicator]="true">
                   <mat-button-toggle (click)="onToggleExpiredData()"
                     class="control-mat-button-toggle clickable noselect"
                     [matTooltip]="showExpiredData ? 'Hide expired products' : 'Show expired products'">
@@ -87,15 +83,13 @@
             </div>
           </div>
 
-          <div class="fx-empty list-button-group">
+          <div *ngIf="searchType !== SearchTypes.DISPLACEMENT" class="fx-empty list-button-group">
             <div class="fx-row-center button-group-label">
               <label>{{ 'ZOOM' | translate }}</label>
             </div>
             <div class="fx-row">
               <div class="scenes-list-button-container">
-                <mat-button-toggle-group 
-[hideSingleSelectionIndicator]='true'
-[hideMultipleSelectionIndicator]='true' name="layerType" class="fx-empty mr-10">
+                <mat-button-toggle-group name="layerType" class="fx-empty mr-10" [hideSingleSelectionIndicator]="true">
                   <mat-button-toggle (click)="onZoomToResults()"
                     class="control-mat-button-toggle clickable noselect"
                     matTooltip="{{ 'ZOOM_TO_RESULTS' | translate }}">
@@ -108,15 +102,14 @@
             </div>
           </div>
 
-          <div class="fx-empty list-button-group" *ngIf="searchType !== SearchTypes.SARVIEWS_EVENTS">
+          <div class="fx-empty list-button-group"
+               *ngIf="searchType !== SearchTypes.SARVIEWS_EVENTS && searchType !== SearchTypes.DISPLACEMENT ">
             <div class="fx-row-center button-group-label">
               <label>{{ 'QUEUE' |  translate }}</label>
             </div>
             <div class="fx-row">
               <div class="scenes-list-button-container">
-                <mat-button-toggle-group 
-[hideSingleSelectionIndicator]='true'
-[hideMultipleSelectionIndicator]='true' name="layerType" class="fx-empty mr-10 clickable noselect ">
+                <mat-button-toggle-group name="layerType" class="fx-empty mr-10 clickable noselect " [hideSingleSelectionIndicator]="true">
                   <mat-button-toggle class="control-mat-button-toggle"
                     [matMenuTriggerFor]="addAllProducts"
                     matTooltip="{{ 'ADD_ALL_RESULTS_TO_DOWNLOADS' | translate }}">
@@ -135,9 +128,7 @@
             </div>
             <div class="fx-row">
               <div class="scenes-list-button-container">
-                <mat-button-toggle-group 
-[hideSingleSelectionIndicator]='true'
-[hideMultipleSelectionIndicator]='true' name="layerType" class="fx-empty mr-10 clickable noselect ">
+                <mat-button-toggle-group name="layerType" class="fx-empty mr-10 clickable noselect " [hideSingleSelectionIndicator]="true">
                   <mat-button-toggle class="control-mat-button-toggle"
                     [matMenuTriggerFor]="QueueAllSARViewsProducts"
                     matTooltip="{{ 'ADD' | translate | titlecase }} {{(productsHiddenByFilters$ | async) ? ('FILTERED' | translate) : ( 'ALL' | translate ) }} {{ 'PRODUCTS_TO_DOWNLOADS_FROM_SELECTED_EVENT' | translate}}">
@@ -157,9 +148,7 @@
             </div>
             <div class="fx-row">
               <div class="scenes-list-button-container">
-                <mat-button-toggle-group 
-[hideSingleSelectionIndicator]='true'
-[hideMultipleSelectionIndicator]='true' name="layerType" class="fx-empty mr-10">
+                <mat-button-toggle-group name="layerType" class="fx-empty mr-10" [hideSingleSelectionIndicator]="true">
                   <mat-button-toggle class="control-mat-button-toggle clickable noselect"
                     [matMenuTriggerFor]="listAdd.addMenu"
                     [matMenuTriggerData]="{ hyp3able: hyp3able.byJobType }"
@@ -182,9 +171,7 @@
             </div>
             <div class="fx-row">
               <div class="scenes-list-button-container">
-                <mat-button-toggle-group 
-[hideSingleSelectionIndicator]='true'
-[hideMultipleSelectionIndicator]='true' name="layerType" class="fx-empty mr-10">
+                <mat-button-toggle-group name="layerType" class="fx-empty mr-10" [hideSingleSelectionIndicator]="true">
                   <mat-button-toggle class="control-mat-button-toggle clickable noselect"
                     [matMenuTriggerFor]="ExportAll"
                     matTooltip="{{ 'DOWNLOAD_DATA_METADATA_AS' | translate }}">
@@ -203,9 +190,7 @@
             </div>
             <div class="fx-row">
               <div class="scenes-list-button-container">
-                <mat-button-toggle-group 
-[hideSingleSelectionIndicator]='true'
-[hideMultipleSelectionIndicator]='true' name="layerType" class="fx-empty mr-10">
+                <mat-button-toggle-group name="layerType" class="fx-empty mr-10" [hideSingleSelectionIndicator]="true">
                   <mat-button-toggle class="control-mat-button-toggle clickable noselect"
                     [matMenuTriggerFor]="ExportAllSARViewsData"
                     matTooltip="{{ 'DOWNLOAD_DATA_METADATA_AS' | translate }}">
@@ -225,9 +210,7 @@
             </div>
             <div class="fx-row">
               <div class="scenes-list-button-container">
-                <mat-button-toggle-group 
-[hideSingleSelectionIndicator]='true'
-[hideMultipleSelectionIndicator]='true' name="layerType" class="fx-empty mr-10">
+                <mat-button-toggle-group name="layerType" class="fx-empty mr-10" [hideSingleSelectionIndicator]="true">
                   <mat-button-toggle
                     [matMenuTriggerFor]="eventMonitoringOnDemand.addMenu"
                     [matMenuTriggerData]="{ hyp3able: hyp3ableEventProducts.byJobType }"
@@ -265,9 +248,7 @@
             </div>
             <div class="fx-row">
               <div class="scenes-list-button-container">
-                <mat-button-toggle-group 
-[hideSingleSelectionIndicator]='true'
-[hideMultipleSelectionIndicator]='true' name="layerType" class="fx-empty mr-10">
+                <mat-button-toggle-group name="layerType" class="fx-empty mr-10" [hideSingleSelectionIndicator]="true">
                   <mat-button-toggle class="control-mat-button-toggle clickable noselect"
                     [matMenuTriggerFor]="eventMonitoringOptions"
                     [matMenuTriggerData]="{ selected: (selectedEventProducts$ | async)}"
@@ -286,9 +267,7 @@
             </div>
             <div class="fx-row">
               <div class="scenes-list-button-container">
-                <mat-button-toggle-group 
-[hideSingleSelectionIndicator]='true'
-[hideMultipleSelectionIndicator]='true' name="layerType" class="fx-empty mr-10">
+                <mat-button-toggle-group name="layerType" class="fx-empty mr-10" [hideSingleSelectionIndicator]="true">
                   <mat-button-toggle
                     (click)="onDownloadPairCSV()"
                     class="control-mat-button-toggle clickable noselect"
@@ -409,7 +388,7 @@
             {{'SELECTED_EVENT_PRODUCTS' | translate }} ({{pinnedEventIDs.length}} {{ 'FILES' | translate}})
           </button>
         </div>
-</mat-menu>
+      </mat-menu>
 
       <ng-container *ngIf="searchType === SearchTypes.BASELINE">
         <div class="header-row-right" *ngIf="breakpoint > breakpoints.MOBILE">

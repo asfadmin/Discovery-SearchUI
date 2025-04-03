@@ -43,6 +43,7 @@ import {
   MAT_MOMENT_DATE_FORMATS,
   MomentDateAdapter
 } from "@angular/material-moment-adapter";
+import {TimeseriesResultsMenuModule} from '@components/results-menu/timeseries-results-menu/timeseries-results-menu.module';
 
 // info about cookie consent module: https://tinesoft.github.io/ngx-cookieconsent/home
 const cookieConfig: NgcCookieConsentConfig = {
@@ -118,7 +119,8 @@ export const routes = [
     BaselineChartModule,
     HelpModule,
     ToastrModule.forRoot({positionClass: 'inline', preventDuplicates: true}),
-    CodeExportModule
+    CodeExportModule,
+    TimeseriesResultsMenuModule
   ],
   providers: [
     services.AsfApiService,

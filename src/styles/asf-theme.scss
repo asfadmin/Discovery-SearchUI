@@ -75,6 +75,8 @@ $themes: (
     primary: mat.m2-get-color-from-palette($asf-app-primary),
     accent: mat.m2-get-color-from-palette($asf-app-accent),
     warn: mat.m2-get-color-from-palette($asf-app-warn),
+    inverted-image: invert(0%),
+
     err: red,// mat.get-color-from-palette($asf-app-err),
     blue-link: #236192,//mat.get-color-from-palette($asf-app-blue),
     primary-light: lighten(mat.m2-get-color-from-palette($asf-app-primary), 40%),
@@ -94,6 +96,7 @@ $themes: (
     dark-focused: rgba(white, 0.12),
 
     borders: lightgray,
+    inverted-image: invert(100%),
 
     primary: mat.m2-get-color-from-palette($asf-app-dark-primary),
     accent: mat.m2-get-color-from-palette($asf-app-accent),

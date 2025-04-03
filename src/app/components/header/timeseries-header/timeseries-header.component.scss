@@ -1,0 +1,82 @@
+@import "asf-theme";
+
+.baseline-header-layout {
+  flex-direction: row;
+  box-sizing: border-box;
+  display: flex;
+}
+
+.baseline-header-wrapper {
+  flex-direction: row;
+  box-sizing: border-box;
+  display: flex;
+}
+
+.search-button-layout {
+  flex: 0 1 auto;
+  box-sizing: border-box;
+}
+
+.scene-selector {
+  width: 670px;
+}
+
+.medium-scene-selector {
+  width: 405px;
+}
+
+.small-scene-selector {
+  width: 200px;
+}
+
+.flight-direction-toggle {
+  padding-top: 15px;
+  padding-right: 15px;
+}
+
+.displacement-header-menu {
+  height: 70px;
+}
+
+.azimuth-icon {
+  position: absolute;
+  display: inline-block;
+  width: 126px;
+  margin-left: 45px;
+  margin-top: 3px;
+}
+
+.azimuth-icon-text {
+  position: absolute;
+  margin-left: 10px;
+  margin-top: 71px;
+  color: grey;
+  font-size: 12px;
+}
+
+.line-of-site-icon {
+  position: absolute;
+  display: inline-block;
+  width: 156px;
+  margin-left: 185px;
+  margin-top: 3px;
+}
+
+.line-of-site-icon-text {
+  position: absolute;
+  margin-left: 160px;
+  margin-top: 71px;
+  color: grey;
+  font-size: 12px;
+}
+
+.invert-icon {
+  @include themify($themes) {
+    filter: themed('inverted-image');
+  }
+}
+
+.flip-icon {
+  transform: rotateY(180deg); // Rotate 180 degrees along the y-axis
+}
+

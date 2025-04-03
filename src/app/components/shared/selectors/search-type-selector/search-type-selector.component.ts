@@ -44,7 +44,8 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
   public isReadMore = true;
 
-  public searchTypeSelectors: models.SearchTypeSelector[] = [
+  public searchTypeSelectors: {'search':models.SearchTypeSelector[]; 'tools':models.SearchTypeSelector[] } = {
+    'search':[
     {
       searchType: models.SearchType.DATASET,
       nameKey:'GEOGRAPHIC',
@@ -52,14 +53,67 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
       helpUrl:'https://docs.asf.alaska.edu/vertex/manual/#geographic-search-options',
       icon:'travel_explore',
       iconType: models.IconType.MATERIAL,
-    }, {
+    },
+    {
       searchType: models.SearchType.LIST,
       nameKey: 'LIST',
       descriptionKeys:['LIST_SEARCH_ALLOWS_YOU_TO_ENTER_OR_UPLOAD_A_LIST_OF_SCENE_OR_FILE_NAMES'],
       helpUrl:'https://docs.asf.alaska.edu/vertex/manual/#list-search-options',
       icon: 'list',
       iconType: models.IconType.MATERIAL,
-    }, {
+    },
+    {
+      searchType: models.SearchType.SBAS,
+      nameKey:'SBAS',
+      descriptionKeys:[
+        'SBAS_SEARCH_PROVIDES_PERPENDICULAR_AND_TEMPORAL_BASELINE_DATA_AS_WELL_AS_SCENE_PAIRS_FOR_A_CHOSEN',
+        'REFERENCE_SCENE',
+      ],
+      helpUrl:'https://docs.asf.alaska.edu/vertex/manual/#sbas-search-options',
+      icon:'assets/icons/sbas-chart.jpg',
+      iconType: models.IconType.IMAGE,
+    },
+    {
+      searchType: models.SearchType.BASELINE,
+      nameKey:'BASELINE',
+      descriptionKeys:[
+        'BASELINE_SEARCH_PROVIDES_VISUALIZATION_OF_PERPENDICULAR_AND_TEMPORAL_BASELINE_DATA_FOR_A_CHOSEN',
+      ],
+      helpUrl:'https://docs.asf.alaska.edu/vertex/manual/#baseline-search-options',
+      icon:'assets/icons/baseline-chart.jpg',
+      iconType: models.IconType.IMAGE,
+    },
+    {
+      searchType: models.SearchType.DISPLACEMENT,
+      nameKey:'DISPLACEMENT',
+      descriptionKeys:['DISPLACEMENT_DESCRIPTION'],
+      helpUrl:'https://docs.asf.alaska.edu/vertex/manual/#baseline-search-options',
+      icon:'track_changes',
+      iconType: models.IconType.MATERIAL,
+    },
+    {
+    searchType: models.SearchType.SARVIEWS_EVENTS,
+    nameKey:'EVENT',
+    descriptionKeys:['EVENT_SEARCH_HARNESSES_THE_CAPABILITIES_OF_SAR_PROCESSING_TO_MONITOR_NATURAL_DISASTERS'],
+    helpUrl:'https://docs.asf.alaska.edu/vertex/manual/#event-search-options',
+    icon:'volcano',
+    iconType: models.IconType.MATERIAL,
+    },
+    ],
+
+'tools':[
+    {
+      searchType: models.SearchType.DISPLACEMENT,
+      nameKey:'DISPLACEMENT',
+      descriptionKeys:[
+        'BASELINE_SEARCH_PROVIDES_VISUALIZATION_OF_PERPENDICULAR_AND_TEMPORAL_BASELINE_DATA_FOR_A_CHOSEN',
+        'REFERENCE_SCENE',
+      ],
+      helpUrl:'https://docs.asf.alaska.edu/vertex/manual/#baseline-search-options',
+      icon:'zoom',
+      iconType: models.IconType.MATERIAL,
+    },
+    {
       searchType: models.SearchType.BASELINE,
       nameKey:'BASELINE',
       descriptionKeys:[
@@ -79,15 +133,8 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
       helpUrl:'https://docs.asf.alaska.edu/vertex/manual/#sbas-search-options',
       icon:'assets/icons/sbas-chart.jpg',
       iconType: models.IconType.IMAGE,
-    }, {
-      searchType: models.SearchType.SARVIEWS_EVENTS,
-      nameKey:'EVENT',
-      descriptionKeys:['EVENT_SEARCH_HARNESSES_THE_CAPABILITIES_OF_SAR_PROCESSING_TO_MONITOR_NATURAL_DISASTERS'],
-      helpUrl:'https://docs.asf.alaska.edu/vertex/manual/#event-search-options',
-      icon:'volcano',
-      iconType: models.IconType.MATERIAL,
     }
-  ];
+  ]};
 
   constructor(
     public translate: TranslateService,
@@ -162,6 +209,4 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
-
-
 }

@@ -1,0 +1,432 @@
+@use "@angular/material" as mat;
+
+@import "asf-theme";
+
+.ts-chart-row {
+	display: flex;
+	flex-direction: row;
+	height: calc(100%);
+  margin-top: 12px;
+  margin-right: 12px;
+  position: relative;
+}
+
+.ts-chart-card {
+	box-shadow: none;
+	height: 100%;
+	flex: 1 1 auto;
+	box-sizing: border-box;
+}
+
+#ts-chart-column {
+  //flex: 1 1 auto;
+  width: 100%;
+  margin-left: 30px;
+}
+.ts-criteria-button-toggle-group {
+	flex: 0 1 149px !important;
+	margin-top: 5px;
+}
+
+.ts-criteria-button-toggle {
+	background: red;
+	font-size: 14px;
+}
+
+.criteria-button-group {
+	outline: none;
+	width: auto;
+	line-height: 26px !important;
+}
+
+.ts-filter-row {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 137px;
+	margin-top: 10px;
+}
+
+.select-button {
+	padding: 2px 10px;
+}
+
+.ts-column-1 {
+	//flex-basis: 150px;
+	flex-shrink: 0;
+	flex-grow: 0;
+}
+
+.ts-column-2 {
+	flex: 1 1 auto;
+}
+
+.ts-list-card {
+	box-shadow: none !important;
+	box-sizing: border-box;
+  flex: 1 1 0%;
+}
+
+.ts-layer-list {
+   //flex: 1 1 500px;
+  //flex-basis: 650px;
+  //flex-grow: 0;
+}
+
+.ts-layer-list-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.ts-scene-list-header {
+  justify-content: flex-start;
+  align-items: center;
+  flex-basis: 130px;
+  flex-grow: 0;
+  max-height: 30px;
+//   max-width: 130px;
+}
+
+.ts-metadata {
+	@include themify($themes) {
+		border-left: solid 1px themed('primary-light');
+		border-right: solid 2px themed('primary-light');
+	}
+
+	overflow: auto;
+	height: 100%;
+}
+
+.product-name {
+	word-break: break-all;
+}
+
+.chart-resize-handle-left,
+.chart-resize-handle-right {
+	@include themify($themes) {
+		background-color: themed('primary-light');
+	}
+
+	height: 100%;
+}
+
+.mwlResizable {
+	box-sizing: border-box; // required for the enableGhostResize option to work
+}
+
+.chart-draggable-handle {
+	@include themify($themes) {
+		background-color: themed('primary-light');
+		border-color: themed('primary-light');
+		color: themed('primary-light');
+	}
+
+	display: flex;
+	align-items: center;
+	cursor: ew-resize;
+	border-style: solid;
+	border-radius: 5px;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
+.ts-resize-handle-filler {
+	@include themify($themes) {
+		background-color: themed('primary-light');
+	}
+
+	width: 10px;
+	height: 100%;
+}
+
+.vgrip-icon {
+	@include themify($themes) {
+		stroke: themed('dark-primary-text');
+	}
+
+	height: 33px;
+}
+
+.ts-header {
+	@include themify($themes) {
+		background-color: themed('primary-light');
+		color: themed('dark-primary-text')
+	}
+
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	height: 50px;
+	padding-top: 0;
+	padding-bottom: 5px;
+	margin-bottom: 0;
+	font-family: Roboto,
+	sans-serif;
+	font-weight: 400;
+	font-size: 16px;
+	text-align: center;
+	margin-top: -25px;
+	border-left: none;
+}
+
+.control-icon {
+	@include themify($themes) {
+		color: themed('dark-primary-text');
+	}
+
+	margin-top: -4px;
+
+	@include md-icon-size($asf-ribbon-icon-size);
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
+.mat-button-toggle-disabled {
+	.control-icon {
+		@include themify($themes) {
+			color: themed('dark-disabled-text');
+		}
+	}
+}
+
+.ts-ribbon-group {
+	justify-content: center;
+	max-width: fit-content;
+}
+
+.toggle-group-wrapper--layout {
+	flex-direction: row;
+	box-sizing: border-box;
+	display: flex;
+	place-content: stretch center;
+	align-items: stretch;
+}
+
+.ts-button-group {
+	max-width: fit-content;
+	flex: 1 1 0%;
+	box-sizing: border-box;
+}
+
+.ts-button-group-filler {
+	width: 10px;
+	max-width: 10px;
+}
+
+.ts-toggle-group {
+	flex: 1 1 0%;
+	box-sizing: border-box;
+}
+
+.button-group {
+	margin: 0 3px 3px 1px;
+	pointer-events: auto;
+}
+
+.button-group-label {
+	@include themify($themes) {
+		color: themed('dark-primary-text');
+	}
+
+	white-space: nowrap;
+	text-align: center;
+	flex-direction: row;
+	box-sizing: border-box;
+	display: flex;
+	place-content: stretch center;
+	align-items: stretch;
+}
+
+label {
+	font-size: 11px;
+}
+
+.info-icon {
+	margin-left: 10px;
+	margin-top: 4px;
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
+.control-mat-button-toggle {
+	@include themify($themes) {
+		background: themed('background-white') !important;
+	}
+}
+
+.warn-icon {
+	@include themify($themes) {
+		color: darken(themed('dark-primary-text'), 25%);
+	}
+}
+
+.gap-detected-area {
+	position: relative;
+	top: 15%;
+	left: 90%;
+	border-radius: 50%;
+	display: grid;
+	place-items: center;
+	width: 30px;
+
+	@include themify($themes) {
+		background: darken(themed('background-white'), 15%);
+	}
+}
+.ts-column-2 {
+	margin: 25px;
+}
+
+.ts-left-column-results {
+  overflow-x: auto;
+  margin-left: 10px;
+}
+
+.ts-no-point-selected {
+  text-align: center;
+  padding-top: 60px;
+}
+
+.ts-wkt-icon {
+  @include themify($themes) {
+    color: darken(themed('dark-primary-text'), 25%);
+  }
+  font-size: 18px;
+  line-height: 29px;
+  margin: 0 0;
+  width: 18px;
+}
+
+.ts-wkt-label {
+  margin-left: 5px;
+  position: relative;
+  top: -5px;
+}
+
+.ts-trash-can {
+//   margin-bottom: -4px;
+  font-size: 18px;
+}
+
+.ts-add-points {
+  margin: 5px 0 20px 16px;
+}
+
+.ts-wkt-text {
+  vertical-align: super;
+}
+
+:host ::ng-deep .mdc-radio__inner-circle {
+  border-color: #236192 !important; /*change radio button color when selected*/
+}
+
+:host ::ng-deep .mdc-radio__outer-circle {
+  border-color: #ffcc33 !important; /*change radio button color when selected*/
+}
+
+.point-list-section {
+
+}
+
+.parent-checkbox-section {
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+}
+
+span.parent-checkbox-section:hover {
+  cursor: pointer;
+  @include themify($themes) {
+    background-color: lighten(themed('primary-light'),5%);
+  }
+}
+
+.delete-all-btn2 {
+  visibility: hidden;
+}
+
+span.parent-checkbox-section:hover .delete-all-btn2 {
+  visibility: visible;
+}
+
+.parent-checkbox-label {
+  font-weight: bold;
+}
+
+.point-list-ul-section {
+  display: block;
+  margin-left: 0;
+}
+
+ul {
+  list-style-type: none;
+  margin-top: 0;
+}
+
+//::ng-deep .mdc-checkbox {
+//  height: 7px;
+//}
+//
+//::ng-deep .mat-mdc-checkbox .mdc-checkbox__background {
+//  top: 4px
+//}
+
+.ts-buttons {
+  border: none;
+}
+
+.invalid-aoi-icon {
+	display: inline-block;
+	padding-right: 10px;
+	padding-left: 6px;
+}
+
+.invalid-aoi-text {
+	font-size: 14px;
+}
+
+.ts-highlighted {
+  @include themify($themes) {
+    background-color: lighten(themed('primary-light'),5%);
+  }
+
+  .ts-wkt-label {
+    font-weight: bolder;
+  }
+}
+
+.point-list-item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	overflow: hidden;
+	height: 45px;
+}
+
+.loading-spinner {
+	display: inline-block;
+	margin-right: 12px;
+	margin-left: 8px;
+}
+
+.delete-all-btn {
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+
+.point-list-section .delete-all-btn2 {
+  opacity: 1;
+}
+
+.visible {
+  visibility: visible;
+}
+
+.hidden {
+  visibility: hidden;
+}
+

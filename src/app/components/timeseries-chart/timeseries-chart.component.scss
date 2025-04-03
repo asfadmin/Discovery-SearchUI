@@ -1,0 +1,163 @@
+@import "asf-theme";
+
+$chart-ctrl-top: 60px;
+$chart-ctrl-top-x: 62px;
+
+.chart-wrapper {
+  height: calc(100% - 50px);
+  width: 100%;
+  display: flex;
+}
+
+#timeseriesChart {
+  height: 100%;
+  width: 100%;
+}
+
+.ts-chart-details {
+  display: flex;
+  flex-direction: row;
+  margin: 0 25px 0 45px;
+  padding: 5px;
+  font-size: 14px;
+  font-style: italic;
+}
+
+.ts-best-fit-nav {
+  flex: 0 1 auto;
+  width: 40px;
+  min-width: 0;
+  margin-top: -2px;
+}
+
+.ts-best-fit-formulas {
+  flex: 1 1 auto
+}
+
+.ts-best-fit-formulas .ts-best-fit-viewport {
+  height: 35px;
+  width: 100%;
+  border: none;
+}
+
+.ts-best-fit-formulas .ts-best-fit-viewport .cdk-virtual-scroll-content-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.ts-best-fit-item {
+  width: 343px;
+  height: 100%;
+  //writing-mode: vertical-lr;
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.ts-color-swatch {
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
+  text-align: center;
+  color: black;
+  font-weight: bolder;
+}
+
+::ng-deep .cdk-virtual-scrollable {
+  overflow-x: auto;
+  overflow-y: clip;
+  will-change: scroll-position;
+  contain: strict;
+  -webkit-overflow-scrolling: touch;
+}
+::ng-deep .timeseries-base {
+  @include themify($themes) {
+    fill: themed('blue-link');
+  }
+}
+
+::ng-deep .baseline-selected {
+  @include themify($themes) {
+    fill: themed('err');
+  }
+}
+
+.ts-chart-label {
+  @include themify_non_host($themes) {
+    fill: themed('dark-primary-text');
+    overflow-x: visible;
+    font-size: 14px;
+  }
+}
+
+.ts-axis-title {
+  font-size: 15px;
+}
+
+.ts-chart-config-button {
+  position: absolute;
+  top: $chart-ctrl-top-x;
+  right: 65px;
+}
+
+.ts-chart-export-button {
+  position: absolute;
+  top: $chart-ctrl-top-x;
+  right: 210px;
+}
+
+::ng-deep .loading-rect {
+	@include themify($themes) {
+	  fill: lighten(themed('dark-secondary-text'),20%);
+	}
+	fill-opacity: 40%;
+}
+.disp-spinner {
+    position: absolute;
+    display:grid;
+    height: 75%;
+    width: 100%;
+    place-items: center;
+}
+.ts-chart-zoom {
+  position: absolute;
+  top: $chart-ctrl-top;
+  right: 95px;
+}
+:host ::ng-deep .ts-reference-point {
+  fill: red !important;
+}
+
+.message-container{
+  text-align: center;
+  padding-top: 50px;
+  font-size: 18px;
+}
+
+.icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto;
+  padding: 10px;
+  width: auto;
+  height: auto;
+  max-width: 150px;
+  max-height: 150px;
+  border-radius: 10px;
+}
+
+.icon-container mat-icon {
+  font-size: 200px;
+  color: lightgray;
+  width: auto;
+  height: auto;
+  line-height: 1;
+  overflow: visible;
+}
+
+.no-data {
+  display: none;
+
+}

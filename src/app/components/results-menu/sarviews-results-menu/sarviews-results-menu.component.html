@@ -36,9 +36,7 @@
       </div>
 
       <div class="space-filler"></div>
-      <mat-button-toggle-group 
-[hideSingleSelectionIndicator]='true'
-[hideMultipleSelectionIndicator]='true' name="ProductFilters" class="mr-10" style="font-size: 16px;">
+      <mat-button-toggle-group name="ProductFilters" class="mr-10" style="font-size: 16px;" [hideSingleSelectionIndicator]="true">
         <mat-button-toggle
           (click) = "onOpenFiltersPanel()"
           class="control-mat-button-toggle clickable noselect"
