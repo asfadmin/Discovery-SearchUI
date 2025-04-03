@@ -233,9 +233,9 @@ export class SearchEffects {
       const results = this.productService.fromResponse(asfApiResp)
         .filter(product => !product.metadata.productType.includes('METADATA'));
 
-      const cmrData = results.reduce((products, product) => {
-        products[product.name] = product;
-        return products;
+      const cmrData = results.reduce((prods, product) => {
+        prods[product.name] = product;
+        return prods;
       }, {});
 
       const combinedProducts = this.hyp3JobService.combineWithCmrProduct(products, cmrData);

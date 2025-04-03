@@ -92,7 +92,6 @@ export class Hyp3ApiService {
     if (statusCode) {
       getJobsUrl += `status_code=${statusCode}`;
     }
-    console.log(getJobsUrl);
 
     return this.getJobsByUrl$(getJobsUrl);
   }

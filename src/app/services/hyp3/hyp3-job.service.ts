@@ -21,7 +21,16 @@ export class Hyp3JobService {
   }
 
   public getAllGranules(job: models.Hyp3Job): string[] {
-    return job.job_parameters.granules;
+    const params = job.job_parameters;
+
+    if ('granules' in params) {
+      return params.granules;
+    } else if ('reference' in params && 'secondary' in params) {
+      return [...params.reference, ...params.secondary];
+    } else {
+      return [];
+    }
+
   }
 
   public formatJobs(
@@ -73,7 +82,6 @@ export class Hyp3JobService {
   }
 
   public toDummyCMRProducts(jobs: models.Hyp3Job[]) {
-
     const granuleNames = this.getAllGranulesFromJobs(jobs);
 
     const dummyProducts = this.dummyProductsFor(granuleNames)
@@ -83,14 +91,15 @@ export class Hyp3JobService {
       }, {});
 
     const virtualProducts = jobs
-      .filter(job => <string>job.job_type in models.hyp3JobTypes)
-      .filter(job => {
-        const firstGranule = this.getAllGranules(job)[0];
-        return dummyProducts[firstGranule];
-      })
       .map(job => {
         const jobGranules = this.getAllGranules(job);
-        const product = dummyProducts[jobGranules[0]];
+        let product;
+
+        if (jobGranules.length < 1) {
+          product = this.dummyProduct();
+        } else {
+          product = dummyProducts[jobGranules[0]];
+        }
 
         job.scenes = jobGranules
           .map(granuleName => dummyProducts[granuleName]);
@@ -171,50 +180,50 @@ export class Hyp3JobService {
 
   private dummyProduct() {
     return {
-      "name": "",
-      "productTypeDisplay": "",
-      "file": "",
-      "id": "",
-      "downloadUrl": "",
-      "bytes": 0,
-      "dataset": "",
-      "browses": [
-        "/assets/no-browse.png"
+      'name': '',
+      'productTypeDisplay': '',
+      'file': '',
+      'id': '',
+      'downloadUrl': '',
+      'bytes': 0,
+      'dataset': '',
+      'browses': [
+        '/assets/no-browse.png'
       ],
-      "thumbnail": "/assets/no-thumb.png",
-      "groupId": "",
-      "isUnzippedFile": false,
-      "isDummyProduct": true,
-      "metadata": {
-        "date": moment.utc("1970-01-01T00:00:00+00:00"),
-        "stopDate": moment.utc("1970-01-01T00:00:00+00:00"),
-        "polygon": "POLYGON ((0 0, 0 0, 0 0, 0 0, 0 0))",
-        "productType": "",
-        "beamMode": "",
-        "polarization": "",
-        "flightDirection": "",
-        "path": 0,
-        "frame": 0,
-        "absoluteOrbit": [
+      'thumbnail': '/assets/no-thumb.png',
+      'groupId': '',
+      'isUnzippedFile': false,
+      'isDummyProduct': true,
+      'metadata': {
+        'date': moment.utc('1970-01-01T00:00:00+00:00'),
+        'stopDate': moment.utc('1970-01-01T00:00:00+00:00'),
+        'polygon': 'POLYGON ((0 0, 0 0, 0 0, 0 0, 0 0))',
+        'productType': '',
+        'beamMode': '',
+        'polarization': '',
+        'flightDirection': '',
+        'path': 0,
+        'frame': 0,
+        'absoluteOrbit': [
           0
         ],
-        "faradayRotation": 0,
-        "offNadirAngle": 0,
-        "instrument": "",
-        "pointingAngle": null,
-        "missionName": null,
-        "flightLine": null,
-        "stackSize": null,
-        "perpendicular": null,
-        "temporal": null,
-        "canInSAR": true,
-        "job": null,
-        "fileName": null,
-        "burst": null,
-        "opera": null,
-        "pgeVersion": 0,
-        "subproducts": [],
-        "parentID": null
+        'faradayRotation': 0,
+        'offNadirAngle': 0,
+        'instrument': '',
+        'pointingAngle': null,
+        'missionName': null,
+        'flightLine': null,
+        'stackSize': null,
+        'perpendicular': null,
+        'temporal': null,
+        'canInSAR': true,
+        'job': null,
+        'fileName': null,
+        'burst': null,
+        'opera': null,
+        'pgeVersion': 0,
+        'subproducts': [],
+        'parentID': null
       }
     };
   }

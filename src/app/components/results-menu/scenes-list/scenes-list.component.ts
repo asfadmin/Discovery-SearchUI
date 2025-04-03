@@ -521,7 +521,8 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
   private addToQueue(scenesToLoad: models.CMRProduct[]) {
     scenesToLoad.forEach(
       s => {
-        this.loadingDummyJobs.add(s.name); this.loadedInProjects.add(s.metadata.job.name);
+        this.loadingDummyJobs.add(s.name);
+        this.loadedInProjects.add(s.metadata.job.name);
       }
     );
 

@@ -265,6 +265,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         profile => {
           if (profile.hyp3BackendUrl) {
             this.hyp3Service.setApiUrl(profile.hyp3BackendUrl);
+            this.store$.dispatch(new searchStore.ClearSearch());
           }
 
           this.store$.dispatch(new hyp3Store.LoadCosts());
@@ -278,7 +279,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       ofType<userStore.SetProfile>(userStore.UserActionType.SET_PROFILE),
       withLatestFrom(this.urlStateService.isDefaultSearch$),
       filter(([action, isDefaultSearch]) => {
-        const hasCustomDefaults = Object.entries(action.payload.defaultFilterPresets).map(([_, val2]) => val2).filter(val2 =>val2 !== '').length > 0
+        const hasCustomDefaults = Object.entries(action.payload.defaultFilterPresets)
+            .map(([_, val2]) => val2)
+            .filter(val2 => val2 !== '').length > 0;
         return isDefaultSearch && hasCustomDefaults;
       }),
       map(([action, _]) => action.payload.defaultFilterPresets)
