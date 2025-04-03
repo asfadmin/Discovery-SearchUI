@@ -436,7 +436,7 @@ export class SearchEffects {
     return this.searchParams$.getOnDemandSearchParams.pipe(
       switchMap(
         params => {
-          return this.hyp3Service.getJobs$(params.userID).pipe(
+          return this.hyp3Service.getJobs$({ userID: params.userID }).pipe(
             switchMap(
               (jobsRes: { hyp3Jobs: models.Hyp3Job[]; next: string }) => {
                 if (jobsRes.hyp3Jobs.length === 0) {

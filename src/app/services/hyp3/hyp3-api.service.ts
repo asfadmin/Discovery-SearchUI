@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 
 import { Observable, of, first, catchError, map } from 'rxjs';
 import * as moment from 'moment';
@@ -78,20 +78,22 @@ export class Hyp3ApiService {
     );
   }
 
-  public getJobs$(userID?: string, statusCode?: models.Hyp3JobStatusCode): Observable<{ hyp3Jobs: models.Hyp3Job[]; next: string }> {
-    let getJobsUrl = `${this.apiUrl}/jobs`;
+  public getJobs$(params: models.Hyp3SearchParams): Observable<{ hyp3Jobs: models.Hyp3Job[]; next: string }> {
+    let httpParams = new HttpParams();
 
-    if (userID !== undefined || statusCode !== undefined) {
-      getJobsUrl += '?';
+    if (params.userID) {
+      httpParams = httpParams.set('user_id', params.userID);
     }
 
-    if (userID) {
-      getJobsUrl += `user_id=${userID}&`;
+    if (params.statusCode) {
+      httpParams = httpParams.set('status_code', params.statusCode);
     }
 
-    if (statusCode) {
-      getJobsUrl += `status_code=${statusCode}`;
+    if (params.name) {
+      httpParams = httpParams.set('name', params.name);
     }
+
+    const getJobsUrl = `${this.apiUrl}/jobs?${httpParams.toString()}`;
 
     return this.getJobsByUrl$(getJobsUrl);
   }

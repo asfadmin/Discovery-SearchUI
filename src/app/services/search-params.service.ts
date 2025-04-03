@@ -178,7 +178,7 @@ export class SearchParamsService {
     ),
     withLatestFrom(this.store$.select(filterStore.getSelectedDataset)),
     map(([beamModes, dataset]) =>
-      dataset.properties.includes(models.Props.USE_BEAM_MODE)?
+      dataset.properties.includes(models.Props.USE_BEAM_MODE) ?
         ({ beamMode: beamModes }) : ({ beamSwath: beamModes }))
   );
 
@@ -288,14 +288,16 @@ export class SearchParamsService {
   );
 
   public getOnDemandSearchParams = combineLatest([
-      this.store$.select(hyp3Store.getOnDemandUserId)
+    this.store$.select(hyp3Store.getOnDemandUserId),
+    this.store$.select(filterStore.getProjectName),
   ]).pipe(
-    map(([userID]) => {
+    map(([userID, projectName]) => {
       return {
-        'userID': userID
+        'userID': userID,
+        'name': projectName
       };
     })
-  )
+  );
 
   public searchType$() {
     return this.store$.select(getSearchType);

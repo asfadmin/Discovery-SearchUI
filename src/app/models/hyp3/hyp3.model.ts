@@ -76,6 +76,12 @@ export interface Hyp3ProductFile {
   url: string;
 }
 
+export interface Hyp3SearchParams {
+  userID?: string;
+  statusCode?: Hyp3JobStatusCode;
+  name?: string;
+}
+
 export type Hyp3JobParameters =
   Hyp3AutoriftParameters |
   Hyp3InsarGammaParameters |

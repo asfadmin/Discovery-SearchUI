@@ -40,8 +40,12 @@ export class Hyp3JobPollingService {
         console.log('polling for updates', inProgressScenes, hyp3UserId);
 
         return forkJoin([
-          this.hyp3.getJobs$(hyp3UserId, models.Hyp3JobStatusCode.PENDING),
-          this.hyp3.getJobs$(hyp3UserId, models.Hyp3JobStatusCode.RUNNING),
+          this.hyp3.getJobs$({
+            userID: hyp3UserId, statusCode: models.Hyp3JobStatusCode.PENDING
+          }),
+          this.hyp3.getJobs$({
+            userID: hyp3UserId, statusCode: models.Hyp3JobStatusCode.RUNNING
+          }),
           of({ inProgressScenes, hyp3UserId })
         ]).pipe(
           repeat({ delay: this.pollingRepeatTime }),

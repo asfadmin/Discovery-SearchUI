@@ -11,11 +11,15 @@ import { JobStatusSelectorModule } from '@components/shared/selectors/job-status
 import { DateSelectorModule } from '@components/shared/selectors/date-selector';
 import { JobProductNameSelectorModule } from '@components/shared/selectors/job-product-name-selector';
 import { OnDemandUserSelectorModule} from '@components/shared/selectors/on-demand-user-selector';
+import { JobIdSelectorComponent } from './job-id-selector/job-id-selector.component';
 
 import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [CustomProductsFiltersComponent],
+  declarations: [
+    CustomProductsFiltersComponent,
+    JobIdSelectorComponent,
+  ],
   imports: [
     CommonModule,
     MatExpansionModule,
