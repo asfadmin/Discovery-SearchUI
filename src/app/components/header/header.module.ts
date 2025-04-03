@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatInputModule } from '@angular/material/input';
@@ -51,57 +51,51 @@ import { Hyp3UrlModule } from '@components/shared/hyp3-url/hyp3-url.module';
 import { SharedModule } from "@shared";
 import { LanguageSelectorModule } from "@components/shared/selectors/language-selector/language-selector.module";
 
-@NgModule({
-  declarations: [
-    HeaderComponent,
-    InfoBarComponent,
-    DatasetHeaderComponent,
-    ListHeaderComponent,
-    AoiFilterComponent,
-    BaselineHeaderComponent,
-    Hyp3HeaderComponent,
-    SarviewsHeaderComponent,
-  ],
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    FormsModule,
-    MatButtonToggleModule,
-    MatToolbarModule,
-    MatProgressBarModule,
-    MatBadgeModule,
-    MatMenuModule,
-    MatInputModule,
-    MatSelectModule,
-    MatDatepickerModule,
-    MatSharedModule,
-    MatAutocompleteModule,
-    PipesModule,
-    QueueModule,
-    ProcessingQueueModule,
-    SearchTypeSelectorModule,
-    DatasetSelectorModule,
-    DateSelectorModule,
-    AoiOptionsModule,
-    MaxResultsSelectorModule,
-    SearchButtonModule,
-    ClearButtonModule,
-    HeaderButtonsModule,
-    MasterSceneSelectorModule,
-    LogoModule,
-    ProjectNameSelectorModule,
-    JobStatusSelectorModule,
-    JobProductNameSelectorModule,
-    CiSearchModule,
-    SarviewsEventSearchSelectorModule,
-    SarviewsEventTypeSelectorModule,
-    Hyp3UrlModule,
-    SharedModule,
-    LanguageSelectorModule,
-    OnDemandUserSelectorModule,
-  ],
-  exports: [
-    HeaderComponent
-  ],
-})
+@NgModule({ declarations: [
+        HeaderComponent,
+        InfoBarComponent,
+        DatasetHeaderComponent,
+        ListHeaderComponent,
+        AoiFilterComponent,
+        BaselineHeaderComponent,
+        Hyp3HeaderComponent,
+        SarviewsHeaderComponent,
+    ],
+    exports: [
+        HeaderComponent
+    ], imports: [CommonModule,
+        FormsModule,
+        MatButtonToggleModule,
+        MatToolbarModule,
+        MatProgressBarModule,
+        MatBadgeModule,
+        MatMenuModule,
+        MatInputModule,
+        MatSelectModule,
+        MatDatepickerModule,
+        MatSharedModule,
+        MatAutocompleteModule,
+        PipesModule,
+        QueueModule,
+        ProcessingQueueModule,
+        SearchTypeSelectorModule,
+        DatasetSelectorModule,
+        DateSelectorModule,
+        AoiOptionsModule,
+        MaxResultsSelectorModule,
+        SearchButtonModule,
+        ClearButtonModule,
+        HeaderButtonsModule,
+        MasterSceneSelectorModule,
+        LogoModule,
+        ProjectNameSelectorModule,
+        JobStatusSelectorModule,
+        JobProductNameSelectorModule,
+        CiSearchModule,
+        SarviewsEventSearchSelectorModule,
+        SarviewsEventTypeSelectorModule,
+        Hyp3UrlModule,
+        SharedModule,
+        LanguageSelectorModule,
+        OnDemandUserSelectorModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class HeaderModule { }

@@ -7,7 +7,9 @@
       </div>
       <div class="saved-searches__header-actions" >
           <div class="saved-searches__more-menu">
-            <mat-button-toggle-group
+            <mat-button-toggle-group 
+[hideSingleSelectionIndicator]='true'
+[hideMultipleSelectionIndicator]='true'
                (change)="onSidebarTypeChange($event.value)"
                [value]="sidebarType"
                name="SavedSearchType" aria-label="Saved Search Type">

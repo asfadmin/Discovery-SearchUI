@@ -1,4 +1,6 @@
-<mat-button-toggle-group [value]="interaction" class="interaction-toggle-group"
+<mat-button-toggle-group 
+[hideSingleSelectionIndicator]='true'
+[hideMultipleSelectionIndicator]='true' [value]="interaction" class="interaction-toggle-group"
   name="viewSelect" aria-label="Font Style">
 
   <app-draw-selector></app-draw-selector>

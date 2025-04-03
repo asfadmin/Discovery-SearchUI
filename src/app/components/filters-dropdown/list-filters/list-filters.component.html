@@ -44,7 +44,9 @@
             </div>
             <div>
 
-              <mat-button-toggle-group [value]="mode">
+              <mat-button-toggle-group 
+[hideSingleSelectionIndicator]='true'
+[hideMultipleSelectionIndicator]='true' [value]="mode">
                 <mat-button-toggle
                   (click)="onSceneModeSelected()"
                   [value]="types.SCENE"

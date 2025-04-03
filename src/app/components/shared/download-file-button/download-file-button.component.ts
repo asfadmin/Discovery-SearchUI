@@ -20,9 +20,7 @@ import { AppState } from '@store';
 import * as userStore from '@store/user';
 import { SubSink } from 'subsink';
 import { AuthService, NotificationService } from '@services';
-import {
-  HttpClient, HttpEventType,
-} from '@angular/common/http';
+import { HttpClient, HttpEventType } from '@angular/common/http';
 
 @Component({
   selector: 'app-download-file-button',
