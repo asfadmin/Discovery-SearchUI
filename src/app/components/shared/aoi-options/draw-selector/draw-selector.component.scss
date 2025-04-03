@@ -1,17 +1,20 @@
-@import "asf-theme";
-@import "asf-header-menu-button";
+@import url("asf-theme");
+@import url("asf-header-menu-button");
 
 .draw-icon {
   @include md-icon-size($asf-ribbon-icon-size);
+
   @include themify($themes) {
     color: themed('dark-primary-text');
   }
 }
+
 .draw-svg {
   @include themify($themes) {
     fill: themed('dark-primary-text');
   }
 }
+
 .draw-text {
   font-size: 14px;
   line-height: 10px;
@@ -29,8 +32,8 @@
   @include themify($themes) {
     color: themed('primary');
   }
-  position: absolute;
 
+  position: absolute;
   bottom: -8px;
   right: -20px;
   transform: rotate(-45deg);
@@ -42,6 +45,7 @@
     color: themed('light-primary-text')
 
   }
+
   margin: 0;
   padding: 0;
   font-size: 18px !important;
@@ -62,6 +66,7 @@
     background: themed('background-white');
     color: themed('light-primary-text')
   }
+
   padding: 0 16px
 }
 
@@ -89,7 +94,6 @@
   --mdc-switch-selected-hover-track-color: #e0e0e0;
   --mdc-switch-selected-pressed-track-color: #e0e0e0;
   --mdc-switch-selected-track-color: #e0e0e0;
-
   --mdc-switch-unselected-focus-handle-color: #757575;
   --mdc-switch-unselected-hover-handle-color: #757575;
   --mdc-switch-unselected-pressed-handle-color: #757575;
