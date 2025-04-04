@@ -138,7 +138,7 @@ export class SearchEffects {
         return this.hyp3Service.getJobsByUrl$(next).pipe(
           switchMap(
             (jobsRes) => {
-              if (jobsRes.hyp3Jobs.length === 0) {
+              if (jobsRes.hyp3Jobs.length === 0 && jobsRes.next === '') {
                 return of(new Hyp3BatchResponse({
                   files: [],
                   totalCount: 0,
@@ -441,13 +441,13 @@ export class SearchEffects {
           if (params.jobIds?.length > 0) {
             hyp3Query = this.hyp3Service.getJobsByIds$(params.jobIds);
           } else {
-            hyp3Query = this.hyp3Service.getJobs$({ userID: params.userID });
+            hyp3Query = this.hyp3Service.getJobs$({ userID: params.userID, name: params.name });
           }
 
           return hyp3Query.pipe(
             switchMap(
               (jobsRes: { hyp3Jobs: models.Hyp3Job[]; next: string }) => {
-                if (jobsRes.hyp3Jobs.length === 0) {
+                if (jobsRes.hyp3Jobs.length === 0 && jobsRes.next === '') {
                   return of(new SearchResponse({
                     files: [],
                     totalCount: 0,

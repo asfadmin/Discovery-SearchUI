@@ -137,7 +137,7 @@ export class Hyp3ApiService {
           resp = { jobs: [resp], next: '' };
         }
 
-        if (!resp.jobs) {
+        if (!('jobs' in resp)) {
           return { hyp3Jobs: [], next: '' };
         }
 
