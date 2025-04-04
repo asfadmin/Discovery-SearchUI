@@ -26,13 +26,9 @@ export class JobIdSelectorComponent {
   }
 
   private findJobIds(inputStr: string) {
-    const regex = /[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}/g;
-    const matches = inputStr.match(regex);
+    const jobIdRegex = /[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}/g;
+    const matches = inputStr.match(jobIdRegex);
 
-    if (matches?.length > 0) {
-      return matches;
-    } else {
-      return [];
-    }
+    return matches;
   }
 }

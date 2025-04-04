@@ -16,17 +16,6 @@ export class Hyp3UrlSelectorComponent {
 
   constructor(private hyp3: Hyp3ApiService) { }
 
-  updateHyp3Url(url: string) {
-    this.hyp3BackendUrl = this.stripTrailingSlash(url);
-
-    this.addHyp3Url(this.hyp3BackendUrl);
-
-    this.newHyp3Url.emit({
-      backendUrl: this.hyp3BackendUrl,
-      savedUrls: this.hyp3SavedUrls,
-    });
-  }
-
   onResetHyp3Url() {
     this.hyp3.setDefaultApiUrl();
 
@@ -48,6 +37,17 @@ export class Hyp3UrlSelectorComponent {
     );
 
     this.onResetHyp3Url();
+  }
+
+  private updateHyp3Url(url: string) {
+    this.hyp3BackendUrl = this.stripTrailingSlash(url);
+
+    this.addHyp3Url(this.hyp3BackendUrl);
+
+    this.newHyp3Url.emit({
+      backendUrl: this.hyp3BackendUrl,
+      savedUrls: this.hyp3SavedUrls,
+    });
   }
 
   private addHyp3Url(url: string): void {
