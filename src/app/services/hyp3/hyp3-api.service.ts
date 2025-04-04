@@ -160,22 +160,6 @@ export class Hyp3ApiService {
     return this.http.post(submitJobUrl, jobBatch, { withCredentials: true });
   }
 
-  public submitJob$(granuleId: string, name?: string) {
-    const submitJobUrl = `${this.apiUrl}/jobs`;
-
-    const body = {
-      jobs: [{
-        name: name || 'RTC HyP3 job',
-        job_parameters: {
-          granules: [granuleId]
-        },
-        job_type: 'RTC_GAMMA'
-      }]
-    };
-
-    return this.http.post(submitJobUrl, body, { withCredentials: true });
-  }
-
   public submitSignupForm$(form) {
     const signupFormURL = `${this.apiUrl}/user`;
     const body = {

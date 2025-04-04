@@ -18,10 +18,6 @@ export enum Hyp3ActionType {
   LOAD_COSTS = '[Hyp3] Load Costs',
   SET_COSTS = '[Hyp3] Set Costs',
 
-  SUBMIT_JOB = '[Hyp3] Submit Job',
-  SUCCESSFUL_JOB_SUBMISSION = '[Hyp3] Successful Job Submission',
-  ERROR_JOB_SUBMISSION = '[Hyp3] Error Job Submission',
-
   CLEAR_PROCESSING_OPTIONS = '[Hyp3] Clear Processing Options',
   SET_DEBUG_STATUS = '[Hyp3] Set debug status',
 
@@ -66,20 +62,6 @@ export class SetHyp3JobIDs implements Action {
   public readonly type = Hyp3ActionType.SET_HYP3_JOB_IDS;
 
   constructor(public payload: string[]) {}
-}
-
-export class SubmitJob implements Action {
-  public readonly type = Hyp3ActionType.SUBMIT_JOB;
-
-  constructor(public payload: string) {}
-}
-
-export class SuccessfulJobSubmission implements Action {
-  public readonly type = Hyp3ActionType.SUCCESSFUL_JOB_SUBMISSION;
-}
-
-export class ErrorJobSubmission implements Action {
-  public readonly type = Hyp3ActionType.ERROR_JOB_SUBMISSION;
 }
 
 export class LoadUser implements Action {
@@ -142,9 +124,6 @@ export type Hyp3Actions =
   | SetProcessingProjectName
   | SetOnDemandUserID
   | SetHyp3JobIDs
-  | SubmitJob
-  | SuccessfulJobSubmission
-  | ErrorJobSubmission
   | SetDebugStatus
   | SetMaxHyp3Jobs
   | SetSearchJobIds

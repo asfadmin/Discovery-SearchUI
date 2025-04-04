@@ -157,26 +157,6 @@ export function hyp3Reducer(state = initState, action: Hyp3Actions): Hyp3State {
       };
     }
 
-    case Hyp3ActionType.SUBMIT_JOB: {
-      return {
-        ...state,
-        submittingJobName: action.payload,
-      };
-    }
-
-    case Hyp3ActionType.SUCCESSFUL_JOB_SUBMISSION: {
-      return {
-        ...state,
-        submittingJobName: null,
-      }; }
-
-    case Hyp3ActionType.ERROR_JOB_SUBMISSION: {
-      return {
-        ...state,
-        submittingJobName: null,
-      };
-    }
-
     case Hyp3ActionType.SET_MAX_HYP3_JOBS: {
       return {
         ...state,
