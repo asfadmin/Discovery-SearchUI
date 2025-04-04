@@ -25,6 +25,7 @@ export class MapControlsComponent implements OnInit, OnDestroy {
 
   public view$ = this.store$.select(mapStore.getMapView);
   public browseOverlayOpacity$ = this.store$.select(mapStore.getBrowseOverlayOpacity);
+  public velocityOverlayOpacity$ = this.store$.select(mapStore.getVelocityOverlayOpacity);
   public pinnedProducts$ = this.store$.select(sceneStore.getImageBrowseProducts);
 
   public currentBrowseID = '';
@@ -34,6 +35,7 @@ export class MapControlsComponent implements OnInit, OnDestroy {
   public viewTypes = models.MapViewType;
   public mousePos: LonLat;
   public browseOverlayOpacity: number;
+  public velocityOverlayOpacity: number;
   public showToolBar = true;
   public toolBarWidth = 571;
 
@@ -71,6 +73,9 @@ export class MapControlsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+
+    this.store$.dispatch(new mapStore.SetVelocityOverlayOpacity(0.8));
+
     this.subs.add(
       this.store$.select(searchStore.getSearchType).subscribe(
         searchType => this.searchType = searchType
@@ -86,7 +91,11 @@ export class MapControlsComponent implements OnInit, OnDestroy {
         browseOverlayOpacity => this.browseOverlayOpacity = browseOverlayOpacity
       )
     );
-
+    this.subs.add(
+        this.store$.select(mapStore.getVelocityOverlayOpacity).subscribe(
+          velocityOverlayOpacity => this.velocityOverlayOpacity = velocityOverlayOpacity
+        )
+    );
     this.subs.add(
       combineLatest([this.selectedScene$, this.selectedEvent$]).subscribe(
         ([scene, event]) => {
@@ -156,6 +165,10 @@ export class MapControlsComponent implements OnInit, OnDestroy {
 
   public onSetCoherenceOpacity(event: any) {
     this.store$.dispatch(new mapStore.SetCoherenceOverlayOpacity(+event.target.value));
+  }
+
+  public onSetVelocityOpacity(event: any) {
+    this.store$.dispatch(new mapStore.SetVelocityOverlayOpacity(+event.target.value));
   }
 
   public onPinProduct(product_id: string) {

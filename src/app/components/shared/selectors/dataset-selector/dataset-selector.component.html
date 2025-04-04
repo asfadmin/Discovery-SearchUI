@@ -1,6 +1,6 @@
 <div *ngIf="breakpoint$ | async as breakpoint">
   <div class="menu-button-wrapper" [class.mobile-button-wrapper]="breakpoint === breakpoints.MOBILE">
-    <div class="button-label">{{ 'DATASET' | translate }}</div>
+    <mat-label class="button-label">{{ 'DATASET' | translate }}</mat-label>
     <div>
       <button
         [matMenuTriggerFor]="platformMenu"

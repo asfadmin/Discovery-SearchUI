@@ -86,9 +86,7 @@
       </div>
       <div class="fx-row">
         <div>
-          <mat-button-toggle-group 
-[hideSingleSelectionIndicator]='true'
-[hideMultipleSelectionIndicator]='true' class="sbas-toggle-group" name="layerType">
+          <mat-button-toggle-group class="sbas-toggle-group" name="layerType" [hideSingleSelectionIndicator]="true">
             <mat-button-toggle class="control-mat-button-toggle"
               (click)="zoomIn()"
               matTooltip="{{ 'ZOOM_IN' | translate }}">
@@ -119,9 +117,7 @@
       </div>
       <div class="toggle-group-wrapper--layout">
         <div>
-          <mat-button-toggle-group 
-[hideSingleSelectionIndicator]='true'
-[hideMultipleSelectionIndicator]='true' class="sbas-toggle-group sbas-ribbon-group" name="pairControl">
+          <mat-button-toggle-group class="sbas-toggle-group sbas-ribbon-group" name="pairControl" [hideSingleSelectionIndicator]="true">
 
             <mat-button-toggle
               [disabled]="isAddingCustomPoint"
