@@ -25,8 +25,9 @@ export class Hyp3JobService {
 
     if ('granules' in params) {
       return params.granules;
-    } else if ('reference' in params && 'secondary' in params) {
-      return [...params.reference, ...params.secondary];
+    // TODO: INSAR_ISCE_MULTI_BURST and ARIA_S1_GUNW have reference/secondary granules
+    // } else if ('reference' in params && 'secondary' in params) {
+    //   return [...params.reference, ...params.secondary];
     } else {
       return [];
     }

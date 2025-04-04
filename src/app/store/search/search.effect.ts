@@ -72,9 +72,7 @@ export class SearchEffects {
 
   public resetMoreJobsToLoadOnSearch = createEffect(() => this.actions$.pipe(
     ofType(SearchActionType.MAKE_SEARCH),
-    switchMap(_ => [
-      new hyp3Store.ResetMaxHyp3ResultsHit(),
-    ])
+    map(_ => new hyp3Store.ResetMaxHyp3ResultsHit())
   ));
 
   public setCanSearch = createEffect(() => this.actions$.pipe(
