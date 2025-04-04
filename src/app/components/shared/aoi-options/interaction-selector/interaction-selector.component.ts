@@ -7,9 +7,10 @@ import { AppState } from '@store';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 
-import { MapInteractionModeType } from '@models';
+import {MapInteractionModeType, SearchType} from '@models';
 import * as services from '@services';
 import * as models from '@models';
+import * as searchStore from '@store/search';
 
 @Component({
   selector: 'app-interaction-selector',
@@ -20,6 +21,9 @@ export class InteractionSelectorComponent implements OnInit, OnDestroy {
   @ViewChild('clearButton') clearButton: MatButtonToggle;
   public interaction: MapInteractionModeType;
   public types = MapInteractionModeType;
+
+  public searchType: SearchType;
+  public searchTypes = SearchType;
 
   public breakpoints = models.Breakpoints;
   public breakpoint$ = this.screenSize.breakpoint$;
@@ -38,6 +42,13 @@ export class InteractionSelectorComponent implements OnInit, OnDestroy {
         interaction => this.interaction = interaction
       )
     );
+
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        searchType => this.searchType = searchType
+      )
+    );
+
   }
 
   public onNewInteractionMode(mode: MapInteractionModeType): void {

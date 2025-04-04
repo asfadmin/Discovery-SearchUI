@@ -35,3 +35,5 @@ export { SarviewsEventsService } from './sarviews-events.service';
 export { BrowseOverlayService } from './browse-overlay.service';
 export { ThemingService } from './theming.service';
 export { ExportService } from './export.service';
+export { NetcdfService } from './netcdf-service.service';
+export { PointHistoryService } from './point-history.service';

@@ -19,10 +19,10 @@
       <b>{{'PRODUCT_TYPES' | translate }}:</b> {{eventProductTypes}}
     </span>
 
-    <span *ngIf="(breakpoint < breakpoints.FULL) && !!startDate">
+    <span *ngIf="(breakpoint > breakpoints.SMALL) && !!startDate">
       <b>{{ 'START' | translate }}:</b> {{ startDate | shortDate }}
     </span>
-    <span *ngIf="(breakpoint < breakpoints.FULL) && !!endDate">
+    <span *ngIf="(breakpoint > breakpoints.SMALL) && !!endDate">
       <b>{{ 'END' | translate }}:</b> {{ endDate | shortDate }}
     </span>
     <span *ngIf="pathRange.start || pathRange.end">
@@ -55,8 +55,10 @@
     <span *ngIf="mission">
       <b>{{'CAMPAIGN' | translate }}:</b> {{ mission }}
     </span>
-    <span *ngIf="tempRange.start || tempRange.end">
-      <b>{{'TEMPORAL' | translate }}:</b> {{tempRange.start}} <span *ngIf="!!tempRange.end"> {{ 'TO' | translate }} {{tempRange.end}}</span>
+    <span *ngIf="(searchType$ | async) !== searchTypes.DISPLACEMENT">
+      <span *ngIf="tempRange.start || tempRange.end">
+        <b>{{'TEMPORAL' | translate }}:</b> {{tempRange.start}} <span *ngIf="!!tempRange.end"> {{ 'TO' | translate }} {{tempRange.end}}</span>
+      </span>
     </span>
     <span *ngIf="perpRange.start || perpRange.end">
       <b>{{'PERPENDICULAR' | translate}}:</b> {{perpRange.start}} <span *ngIf="!!perpRange.end"> {{ 'TO' | translate }} {{perpRange.end}} </span>

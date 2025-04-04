@@ -16,6 +16,7 @@ import { AoiOptionsModule } from '@components/shared/aoi-options';
 import { AttributionsComponent } from './attributions/attributions.component';
 import { FiltersDropdownModule } from '@components/filters-dropdown';
 import { BannersModule } from './banners';
+import { DisplacementLayersModule } from './displacement-layers';
 
 import { FileUploadModule } from '@components/shared/aoi-options/file-upload';
 import { SharedModule } from "@shared";
@@ -33,6 +34,7 @@ import { SharedModule } from "@shared";
     MapControlsModule,
     FiltersDropdownModule,
     AoiOptionsModule,
+    DisplacementLayersModule,
 
     SearchButtonModule,
     ClearButtonModule,

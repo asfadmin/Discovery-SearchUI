@@ -12,7 +12,8 @@
 [hideMultipleSelectionIndicator]='true'
                (change)="onSidebarTypeChange($event.value)"
                [value]="sidebarType"
-               name="SavedSearchType" aria-label="Saved Search Type">
+               name="SavedSearchType" aria-label="Saved Search Type"
+               [hideSingleSelectionIndicator]="true">
               <mat-button-toggle
                 [value]="SidebarType.SEARCH_HISTORY">{{'HISTORY' | translate }}</mat-button-toggle>
               <mat-button-toggle

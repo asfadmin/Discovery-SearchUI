@@ -102,10 +102,9 @@
     <mat-card  class="h100 w100 mp0 no-box-shadow mobile-detail-menu--layout">
       <mat-card-subtitle class="header">
         <div class="baseline-header-button-group">
-          <mat-button-toggle-group 
-[hideSingleSelectionIndicator]='true'
-[hideMultipleSelectionIndicator]='true' name="baselineCriteria"
-                                   class="criteria-button-group baseline-criteria-button-toggle-group">
+          <mat-button-toggle-group name="baselineCriteria"
+                                   class="criteria-button-group baseline-criteria-button-toggle-group"
+                                   [hideSingleSelectionIndicator]="true">
             <mat-button-toggle class="control-mat-button-toggle baseline-criteria-button-toggle"
                                (click)="onToggleFiltersMenu()"
             >
@@ -122,10 +121,9 @@
     <mat-card  class="h100 w100 mp0 no-box-shadow mobile-detail-menu--layout">
       <mat-card-subtitle class="header">
         <div class="baseline-header-button-group">
-          <mat-button-toggle-group 
-[hideSingleSelectionIndicator]='true'
-[hideMultipleSelectionIndicator]='true' name="SBASCriteria"
-                                   class="criteria-button-group sbas-criteria-button-toggle-group">
+          <mat-button-toggle-group name="SBASCriteria"
+                                   class="criteria-button-group sbas-criteria-button-toggle-group"
+                                   [hideSingleSelectionIndicator]="true">
             <mat-button-toggle class="control-mat-button-toggle sbas-criteria-button-toggle"
                                (click)="onToggleFiltersMenu()"
             >

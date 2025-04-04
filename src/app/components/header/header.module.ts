@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
@@ -37,6 +37,7 @@ import { LogoModule } from '@components/header/logo/logo.module';
 import { HeaderComponent } from './header.component';
 import { InfoBarComponent } from './info-bar/info-bar.component';
 import { DatasetHeaderComponent } from './dataset-header/dataset-header.component';
+import { TimeseriesHeaderComponent } from './timeseries-header/timeseries-header.component';
 import { ListHeaderComponent } from './list-header/list-header.component';
 import { BaselineHeaderComponent } from './baseline-header/baseline-header.component';
 import { SarviewsHeaderComponent } from './sarviews-header/sarviews-header.component';
@@ -50,20 +51,22 @@ import { SarviewsEventTypeSelectorModule } from '@components/shared/selectors/sa
 import { Hyp3UrlModule } from '@components/shared/hyp3-url/hyp3-url.module';
 import { SharedModule } from "@shared";
 import { LanguageSelectorModule } from "@components/shared/selectors/language-selector/language-selector.module";
-
-@NgModule({ declarations: [
-        HeaderComponent,
-        InfoBarComponent,
-        DatasetHeaderComponent,
-        ListHeaderComponent,
-        AoiFilterComponent,
-        BaselineHeaderComponent,
-        Hyp3HeaderComponent,
-        SarviewsHeaderComponent,
-    ],
-    exports: [
-        HeaderComponent
-    ], imports: [CommonModule,
+import { BurstSelectorModule } from '@components/shared/selectors/burst-selector';
+import { TimeseriesChartFlightDirectionToggleComponent} from '@components/timeseries-chart/timeseries-chart-flight-direction-toggle';
+@NgModule({
+  declarations: [
+    HeaderComponent,
+    InfoBarComponent,
+    DatasetHeaderComponent,
+    ListHeaderComponent,
+    AoiFilterComponent,
+    BaselineHeaderComponent,
+    Hyp3HeaderComponent,
+    SarviewsHeaderComponent,
+    TimeseriesHeaderComponent
+  ],
+    imports: [
+        CommonModule,
         FormsModule,
         MatButtonToggleModule,
         MatToolbarModule,
@@ -97,5 +100,14 @@ import { LanguageSelectorModule } from "@components/shared/selectors/language-se
         Hyp3UrlModule,
         SharedModule,
         LanguageSelectorModule,
-        OnDemandUserSelectorModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
+        OnDemandUserSelectorModule,
+        BurstSelectorModule,
+        TimeseriesChartFlightDirectionToggleComponent,
+        NgOptimizedImage
+    ],
+    providers: [provideHttpClient(withInterceptorsFromDi())],
+  exports: [
+    HeaderComponent
+  ],
+})
 export class HeaderModule { }

@@ -1,0 +1,44 @@
+@import "asf-theme";
+@import "deluxe-menu";
+@import "deluxe-menu-2";
+@import "asf-header-menu-button";
+
+.button-label {
+    @include themify($themes) {
+        color: themed("dark-primary-text");
+    }
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 400;
+    padding-right: 10px;
+    text-align: left;
+    transform:
+      translateY(-1.2812em)
+      scale(0.75)
+      perspective(100px);
+}
+
+
+.control-icon {
+    @include themify($themes) {
+        color: themed('dark-primary-text');
+    }
+
+    transform: scale(1.5);
+
+    margin-top: -4px;
+
+    @include md-icon-size($asf-ribbon-icon-size);
+}
+
+.fd-icon-button-text {
+    @include themify($themes) {
+        color: themed('dark-primary-text');
+    }
+    @include md-icon-size($asf-ribbon-icon-size);
+}
+
+.ts-menu-item {
+   padding: 0 16px
+}
+

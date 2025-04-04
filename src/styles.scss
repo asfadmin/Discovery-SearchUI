@@ -234,14 +234,14 @@ ul {
 }
 
 /* TODO(mdc-migration): The following rule targets internal classes of slide-toggle that may no longer apply for the MDC version. */
-.mat-mdc-slide-toggle.mat-checked .mat-slide-toggle-thumb {
-  background-color: $asf-primary;
-}
+//.mat-mdc-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+//  background-color: $asf-primary;
+//}
 
 /* TODO(mdc-migration): The following rule targets internal classes of slide-toggle that may no longer apply for the MDC version. */
-.mat-mdc-slide-toggle.mat-checked .mat-slide-toggle-bar {
-  background-color: darkgrey;
-}
+//.mat-mdc-slide-toggle.mat-checked .mat-slide-toggle-bar {
+//  background-color: darkgrey;
+//}
 
 .max-width-100 {
   max-width: 115px !important;
@@ -492,6 +492,7 @@ ul {
   }
 }
 
+.displacement-slider.noUi-horizontal,
 .sbas-column-2.noUi-horizontal {
   height: 8px;
 
@@ -510,6 +511,10 @@ ul {
   .noUi-value-horizontal {
     font-size: 13px;
     top: 17px;
+  }
+
+  .noUi-tooltip {
+    font-size: 14px;
   }
 }
 
@@ -782,6 +787,18 @@ $d-height: 550px;
   max-width: 25%;
 }
 
+.fx-80 {
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 80%;
+}
+
+.fx-20 {
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 20%;
+}
+
 .fx-row-center {
   flex-direction: row;
   box-sizing: border-box;
@@ -832,4 +849,41 @@ $d-height: 550px;
 
 .breadcrumb-list .mat-mdc-form-field {
   margin-top: -2px;
+}
+
+.ts-best-fit-formulas {
+  .cdk-virtual-scrollable {
+    overflow-y: clip;
+    overflow-x: auto;
+  }
+}
+
+.displacement-header-menu .mat-mdc-button,
+.displacement-header-menu .mdc-button
+{
+  font-size: 16px !important;
+  font-weight: normal !important;
+  //margin-top: 30px;
+  //margin-left: 20px;
+}
+
+.ts-snackbar {
+  @include themify($themes) {
+    background-color: themed('primary-light');
+    color: themed('dark-primary-text');
+  }
+  margin-bottom: 27px !important;
+  text-align: center;
+
+}
+
+.mat-mdc-snack-bar-container.ts-snackbar {
+  @include themify($themes) {
+    background-color: themed('primary-light');
+    color: themed('dark-primary-text');
+  }
+  //--mat-snack-bar-button-color: #fff;
+  //--mdc-snackbar-container-color: #c40202;
+  //--mdc-snackbar-supporting-text-color: themed('primary-light');
+  //--mdc-snackbar-supporting-text-color: yellow;
 }
