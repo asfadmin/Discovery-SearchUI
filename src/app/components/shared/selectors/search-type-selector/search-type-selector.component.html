@@ -1,7 +1,7 @@
 <!--suppress ALL -->
 <div *ngIf="breakpoint$ | async as breakpoint">
   <div class="menu-button-wrapper" [class.mobile-button-wrapper]="breakpoint === breakpoints.MOBILE">
-    <div class="button-label">{{ 'SEARCH_TYPE' | translate }}</div>
+    <mat-label class="button-label">{{ 'SEARCH_TYPE' | translate }}</mat-label>
     <div>
       <button [matMenuTriggerFor]="searchTypeMenu" (onMenuOpen)="onSearchTypeMenuOpen()" class="button-menu-trigger"
         color="basic" matTooltip="{{ searchTranslation[searchType] | translate }}" mat-button>

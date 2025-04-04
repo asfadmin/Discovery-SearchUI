@@ -19,6 +19,9 @@
 // @include mat.all-legacy-component-typographies();
 @include mat.core();
 
+
+mat.$theme-ignore-duplication-warnings: true;
+
 button,
 .mat-expansion-panel,
 .mat-panel,
@@ -146,7 +149,6 @@ $themes: (
   @return map-get($theme-map, $key);
 }
 
-mat.$theme-ignore-duplication-warnings: true;
 
 .theme-light {
   $asf-light-theme: mat.m2-define-light-theme((
