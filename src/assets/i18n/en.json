@@ -39,6 +39,7 @@
   "ALL_TUTORIALS": "All Tutorials",
   "ALLOWS_CONSTRAINING_THE_SEARCH_TO_CERTAIN_ANNUAL": " allows constraining the search to certain annual",
   "ALLOWS_FOR_ADDITIONAL_PARAMETERS_TO_BE_APPLIED_TO_NARROW": " allows for additional parameters to be applied to narrow",
+  "ALOS_2_DESC": "ALOS-2 PALSAR-2 ScanSAR uses an L-Band instrument to acquire wide-beam level 1.1 (SLC) products suitable for interferometric processing with coverage areas revisited every 14 days.",
   "AMOUNT": "Amount",
   "AMPLITUDE": "amplitude",
   "AN_EASY_WAY_TO_REGISTER_FOR_AN_EARTHDATA_ACCOUNT_IS_TO_CLICK_THE_SIGN_IN_ICON": "An easy way to register for an Earthdata account is to click the \"Sign in\" icon",
