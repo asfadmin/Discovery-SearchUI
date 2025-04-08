@@ -177,7 +177,7 @@
                   <mat-button-toggle-group name="layerType" class="fx-empty mr-10" [hideSingleSelectionIndicator]="true">
                     <mat-button-toggle class="control-mat-button-toggle clickable noselect"
                       [matMenuTriggerFor]="OnDemandCodeExport"
-                      matTooltip="{{ 'PYTHON_CODE_EXPORT_TOOLTIP' | translate }}">
+                      matTooltip="{{ 'SDK_PYTHON_CODE_EXPORT_TOOLTIP' | translate }}">
                       <mat-icon class="list-icon">
                         get_app
                       </mat-icon>
@@ -190,7 +190,7 @@
             <mat-menu #OnDemandCodeExport="matMenu">
               <div>
                 <button (click)="onPythonCodeExport()" mat-menu-item>
-                  {{ 'PYTHON_CODE_EXPORT' | translate }}
+                  {{ 'SDK_PYTHON_CODE_EXPORT' | translate }}
                 </button>
               </div>
             </mat-menu>
