@@ -171,7 +171,11 @@
 
     </mat-menu>
     <mat-menu #exportSearchMenu="matMenu">
-      <button mat-menu-item (click)="exportPython()" mat-menu-item matSuffix [disabled]="!(searchType === searchTypes.DATASET || searchType === searchTypes.LIST || searchType === searchTypes.BASELINE)">
+      <button mat-menu-item (click)="exportPython()" mat-menu-item matSuffix [disabled]="
+        !(searchType === searchTypes.DATASET ||
+          searchType === searchTypes.LIST ||
+          searchType === searchTypes.BASELINE ||
+          searchType === searchTypes.CUSTOM_PRODUCTS)">
         {{'EXPORT_PYTHON' | translate }}
       </button>
       <button mat-menu-item (click)="exportAPI()">

@@ -1,6 +1,13 @@
 <mat-dialog-content>
     <div style="display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 15px;">
-      <div class="dialog-header" mat-dialog-title>{{ 'ASF_SEARCH_PYTHON_EXPORT' | translate }}</div>
+      <div class="dialog-header" mat-dialog-title>
+      @if(codeExportType === codeExportTypes.ASF_SEARCH) {
+        {{ 'ASF_SEARCH_PYTHON_EXPORT' | translate }}
+      }
+      @if(codeExportType === codeExportTypes.HYP3_SDK) {
+        {{ 'HYP3_SDK_PYTHON_EXPORT' | translate }}
+      }
+      </div>
       <div>
         <mat-icon (click)="onCloseCodeExport()" class="clickable">
          close
@@ -12,9 +19,16 @@
 
 <mat-dialog-actions style="margin-top: 15px;">
     <button mat-flat-button>
+    @if(codeExportType === codeExportTypes.ASF_SEARCH) {
       <app-docs-modal url="https://docs.asf.alaska.edu/asf_search/basics/"
       text="ASF Search Docs">
       </app-docs-modal>
+    }
+    @if(codeExportType === codeExportTypes.HYP3_SDK) {
+      <app-docs-modal url="https://hyp3-docs.asf.alaska.edu/using/sdk/"
+      text="HyP3 SDK Docs">
+      </app-docs-modal>
+    }
     </button>
     <button (click)="copyToClipboard()" color="primary" mat-flat-button>{{ 'COPY' | translate }}</button>
 </mat-dialog-actions>

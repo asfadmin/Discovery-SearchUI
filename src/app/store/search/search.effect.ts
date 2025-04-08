@@ -49,7 +49,7 @@ export class SearchEffects {
   constructor(
     private actions$: Actions,
     private store$: Store<AppState>,
-    private searchParams$: services.SearchParamsService,
+    private searchParams: services.SearchParamsService,
     private asfApiService: services.AsfApiService,
     private productService: services.ProductService,
     private hyp3Service: services.Hyp3ApiService,
@@ -423,7 +423,7 @@ export class SearchEffects {
     map(_ => new SetSearchType(SearchType.DISPLACEMENT))
   ))
 
-  private asfApiQuery$ = this.searchParams$.getParams.pipe(
+  private asfApiQuery$ = this.searchParams.getParams.pipe(
     debounceTime(100),
     map(params => [params]),
     switchMap(
@@ -455,7 +455,7 @@ export class SearchEffects {
 
   public asfApiBaselineQuery$(): Observable<Action> {
 
-    return this.searchParams$.getParams.pipe(
+    return this.searchParams.getParams.pipe(
       switchMap(
         (params) => {
 
@@ -521,7 +521,7 @@ export class SearchEffects {
   }
 
   private customProductsQuery$(): Observable<Action> {
-    return this.searchParams$.getOnDemandSearchParams.pipe(
+    return this.searchParams.onDemandParams$.pipe(
       switchMap(
         params => {
           let hyp3Query: Observable<{ hyp3Jobs: models.Hyp3Job[]; next: string }>;
@@ -583,7 +583,7 @@ export class SearchEffects {
   }
 
   private logCountries(): void {
-    this.searchParams$.getParams.pipe(first()).subscribe(params => {
+    this.searchParams.getParams.pipe(first()).subscribe(params => {
       if (params.intersectsWith) {
         if (this.vectorSource.getFeatures().length > 0) {
           this.findCountries(params.intersectsWith);

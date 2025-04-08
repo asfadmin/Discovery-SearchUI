@@ -237,6 +237,22 @@ export class SearchParamsService {
     )
   )
 
+  public onDemandParams$ = combineLatest([
+    this.store$.select(hyp3Store.getOnDemandUserId),
+    this.store$.select(filterStore.getProjectName),
+    this.store$.select(hyp3Store.getHyp3JobIds),
+  ]).pipe(
+    map(([userID, projectName, hyp3JobIds]) => {
+      return {
+        'userID': userID,
+        'name': projectName,
+        'jobIds': hyp3JobIds,
+      };
+    })
+  );
+
+
+
 
   public getParams = combineLatest([
     this.store$.select(getSearchType),
@@ -245,8 +261,9 @@ export class SearchParamsService {
     withLatestFrom(this.listParam$),
     withLatestFrom(this.filterSearchParams$),
     withLatestFrom(this.timeseriesParams$),
+    withLatestFrom(this.onDemandParams$),
     map(
-      ([[[[searchType, baselineParams], listParam], filterParams], timeseriesParams]) => {
+      ([[[[[searchType, baselineParams], listParam], filterParams], timeseriesParams], onDemandParams]) => {
         switch (searchType) {
           case models.SearchType.LIST: {
             return listParam;
@@ -261,7 +278,7 @@ export class SearchParamsService {
             return baselineParams;
           }
           case models.SearchType.CUSTOM_PRODUCTS: {
-            return listParam;
+            return onDemandParams;
           }
           case models.SearchType.DISPLACEMENT: {
             return timeseriesParams;
@@ -277,10 +294,11 @@ export class SearchParamsService {
     this.store$.select(getSearchType),
     this.listParam$,
     this.baselineSearchParams$,
-    this.filterSearchParams$]
-  ).pipe(
+    this.filterSearchParams$,
+    this.onDemandParams$,
+  ]).pipe(
     map(
-      ([searchType, listParam, baselineParams, filterParams]) => {
+      ([searchType, listParam, baselineParams, filterParams, onDemandParams]) => {
         switch (searchType) {
           case models.SearchType.LIST: {
             return listParam;
@@ -295,28 +313,13 @@ export class SearchParamsService {
             return baselineParams;
           }
           case models.SearchType.CUSTOM_PRODUCTS: {
-            return listParam;
+            return onDemandParams;
           }
           default: {
             return filterParams;
           }
         }
       }),
-  );
-
-  public getOnDemandSearchParams = combineLatest([
-    this.store$.select(hyp3Store.getOnDemandUserId),
-    this.store$.select(filterStore.getProjectName),
-    this.store$.select(hyp3Store.getHyp3JobIds),
-
-  ]).pipe(
-    map(([userID, projectName, hyp3JobIds]) => {
-      return {
-        'userID': userID,
-        'name': projectName,
-        'jobIds': hyp3JobIds,
-      };
-    })
   );
 
   public searchType$() {
