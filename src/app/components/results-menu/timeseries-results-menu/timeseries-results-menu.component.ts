@@ -47,9 +47,10 @@ export interface PointSeries {
 }
 
 @Component({
-  selector: 'app-timeseries-results-menu',
-  templateUrl: './timeseries-results-menu.component.html',
-  styleUrls: ['./timeseries-results-menu.component.scss',  '../results-menu.component.scss'],
+    selector: 'app-timeseries-results-menu',
+    templateUrl: './timeseries-results-menu.component.html',
+    styleUrls: ['./timeseries-results-menu.component.scss', '../results-menu.component.scss'],
+    standalone: false
 })
 export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
 
@@ -352,16 +353,15 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
 }
 
 @Component({
-  selector: 'confirmation-dialog',
-  templateUrl: 'confirmation-dialog.html',
-  imports: [
-    MatDialogActions,
-    MatDialogContent,
-    MatButton,
-    MatDialogClose,
-    SharedModule
-  ],
-  standalone: true
+    selector: 'confirmation-dialog',
+    templateUrl: 'confirmation-dialog.html',
+    imports: [
+        MatDialogActions,
+        MatDialogContent,
+        MatButton,
+        MatDialogClose,
+        SharedModule
+    ]
 })
 export class ConfirmationDialog {
 

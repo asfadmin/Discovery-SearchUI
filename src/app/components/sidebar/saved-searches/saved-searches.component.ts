@@ -16,9 +16,10 @@ import * as models from '@models';
 import { AsfLanguageService } from "@services/asf-language.service";
 
 @Component({
-  selector: 'app-saved-searches',
-  templateUrl: './saved-searches.component.html',
-  styleUrls: ['./saved-searches.component.scss'],
+    selector: 'app-saved-searches',
+    templateUrl: './saved-searches.component.html',
+    styleUrls: ['./saved-searches.component.scss'],
+    standalone: false
 })
 export class SavedSearchesComponent implements OnInit, OnDestroy {
   @ViewChild('filterInput', { static: true }) filterInput: ElementRef;

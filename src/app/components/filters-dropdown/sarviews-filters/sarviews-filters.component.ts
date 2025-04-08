@@ -16,9 +16,10 @@ enum FilterPanel {
 }
 
 @Component({
-  selector: 'app-sarviews-filters',
-  templateUrl: './sarviews-filters.component.html',
-  styleUrls: ['./sarviews-filters.component.scss']
+    selector: 'app-sarviews-filters',
+    templateUrl: './sarviews-filters.component.html',
+    styleUrls: ['./sarviews-filters.component.scss'],
+    standalone: false
 })
 export class SarviewsFiltersComponent implements OnInit, OnDestroy {
   public breakpoint$ = this.screenSize.breakpoint$;

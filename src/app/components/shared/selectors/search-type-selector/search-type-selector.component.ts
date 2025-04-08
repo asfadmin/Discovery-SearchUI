@@ -20,10 +20,10 @@ declare global {
 }
 
 @Component({
-  selector: 'app-search-type-selector',
-  templateUrl: './search-type-selector.component.html',
-  styleUrls: ['./search-type-selector.component.scss']
-
+    selector: 'app-search-type-selector',
+    templateUrl: './search-type-selector.component.html',
+    styleUrls: ['./search-type-selector.component.scss'],
+    standalone: false
 })
 export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;

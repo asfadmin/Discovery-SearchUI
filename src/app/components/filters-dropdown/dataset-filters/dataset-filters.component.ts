@@ -20,9 +20,10 @@ enum FilterPanel {
 }
 
 @Component({
-  selector: 'app-dataset-filters',
-  templateUrl: './dataset-filters.component.html',
-  styleUrls: ['./dataset-filters.component.scss']
+    selector: 'app-dataset-filters',
+    templateUrl: './dataset-filters.component.html',
+    styleUrls: ['./dataset-filters.component.scss'],
+    standalone: false
 })
 export class DatasetFiltersComponent implements OnInit, OnDestroy {
   @Input() dataset: models.CMRProduct;

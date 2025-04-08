@@ -28,9 +28,10 @@ enum FileErrors {
 }
 
 @Component({
-  selector: 'app-list-filters',
-  templateUrl: './list-filters.component.html',
-  styleUrls: ['./list-filters.component.scss']
+    selector: 'app-list-filters',
+    templateUrl: './list-filters.component.html',
+    styleUrls: ['./list-filters.component.scss'],
+    standalone: false
 })
 export class ListFiltersComponent implements OnInit, OnDestroy {
   public selectedPanel: ListPanel | null = null;

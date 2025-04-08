@@ -8,9 +8,10 @@ import { ScreenSizeService } from '@services';
 import { Breakpoints } from '@models';
 
 @Component({
-  selector: 'app-list-header',
-  templateUrl: './list-header.component.html',
-  styleUrls: ['./list-header.component.css', '../header.component.scss']
+    selector: 'app-list-header',
+    templateUrl: './list-header.component.html',
+    styleUrls: ['./list-header.component.css', '../header.component.scss'],
+    standalone: false
 })
 export class ListHeaderComponent implements OnInit {
   public breakpoint$ = this.screenSize.breakpoint$;

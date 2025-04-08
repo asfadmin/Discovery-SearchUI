@@ -21,9 +21,10 @@ declare global {
 }
 
 @Component({
-  selector: 'app-aoi-options',
-  templateUrl: './aoi-options.component.html',
-  styleUrls: ['./aoi-options.component.scss'],
+    selector: 'app-aoi-options',
+    templateUrl: './aoi-options.component.html',
+    styleUrls: ['./aoi-options.component.scss'],
+    standalone: false
 })
 export class AoiOptionsComponent implements OnInit, OnDestroy {
   @ViewChild('polygonInputForm') public polygonForm: NgForm;

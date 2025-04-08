@@ -12,9 +12,10 @@ import * as services from '@services';
 
 
 @Component({
-  selector: 'app-dataset-header',
-  templateUrl: './dataset-header.component.html',
-  styleUrls: ['./dataset-header.component.scss', '../header.component.scss'],
+    selector: 'app-dataset-header',
+    templateUrl: './dataset-header.component.html',
+    styleUrls: ['./dataset-header.component.scss', '../header.component.scss'],
+    standalone: false
 })
 export class DatasetHeaderComponent implements OnInit, OnDestroy {
   public datasets = models.datasetList;

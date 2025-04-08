@@ -12,9 +12,10 @@ import { MapDrawModeType, MapInteractionModeType, Breakpoints, SearchType } from
 import {ThemePalette} from '@angular/material/core';
 
 @Component({
-  selector: 'app-draw-selector',
-  templateUrl: './draw-selector.component.html',
-  styleUrls: ['./draw-selector.component.scss']
+    selector: 'app-draw-selector',
+    templateUrl: './draw-selector.component.html',
+    styleUrls: ['./draw-selector.component.scss'],
+    standalone: false
 })
 export class DrawSelectorComponent implements OnInit, OnDestroy {
   public drawMode: MapDrawModeType;

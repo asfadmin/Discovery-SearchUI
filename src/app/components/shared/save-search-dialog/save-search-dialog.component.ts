@@ -17,9 +17,10 @@ import * as models from '@models';
 import { AsfLanguageService } from "@services/asf-language.service";
 
 @Component({
-  selector: 'app-save-search-dialog',
-  templateUrl: './save-search-dialog.component.html',
-  styleUrls: ['./save-search-dialog.component.scss']
+    selector: 'app-save-search-dialog',
+    templateUrl: './save-search-dialog.component.html',
+    styleUrls: ['./save-search-dialog.component.scss'],
+    standalone: false
 })
 export class SaveSearchDialogComponent implements OnInit {
   public search: models.Search;

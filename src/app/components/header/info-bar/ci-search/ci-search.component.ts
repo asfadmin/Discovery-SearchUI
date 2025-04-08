@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-ci-search',
-  templateUrl: './ci-search.component.html',
-  styleUrls: ['./ci-search.component.scss']
+    selector: 'app-ci-search',
+    templateUrl: './ci-search.component.html',
+    styleUrls: ['./ci-search.component.scss'],
+    standalone: false
 })
 export class CiSearchComponent implements OnInit {
 

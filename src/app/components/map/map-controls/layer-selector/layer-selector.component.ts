@@ -14,9 +14,10 @@ import { MapService, ScreenSizeService } from '@services';
 import { map } from 'rxjs';
 
 @Component({
-  selector: 'app-layer-selector',
-  templateUrl: './layer-selector.component.html',
-  styleUrls: ['./layer-selector.component.scss']
+    selector: 'app-layer-selector',
+    templateUrl: './layer-selector.component.html',
+    styleUrls: ['./layer-selector.component.scss'],
+    standalone: false
 })
 export class LayerSelectorComponent implements OnInit, OnDestroy {
   public overviewMapVisible$ = this.store$.select(mapStore.getIsOverviewMapOpen);

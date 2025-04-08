@@ -16,9 +16,10 @@ import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 import moment from 'moment';
 
 @Component({
-  selector: 'app-processing-queue-jobs',
-  templateUrl: './processing-queue-jobs.component.html',
-  styleUrls: ['./processing-queue-jobs.component.scss'],
+    selector: 'app-processing-queue-jobs',
+    templateUrl: './processing-queue-jobs.component.html',
+    styleUrls: ['./processing-queue-jobs.component.scss'],
+    standalone: false
 })
 
 export class ProcessingQueueJobsComponent implements OnInit {

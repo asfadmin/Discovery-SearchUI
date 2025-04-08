@@ -23,9 +23,10 @@ enum CardViews {
 }
 
 @Component({
-  selector: 'app-baseline-results-menu',
-  templateUrl: './baseline-results-menu.component.html',
-  styleUrls: ['./baseline-results-menu.component.scss',  '../results-menu.component.scss']
+    selector: 'app-baseline-results-menu',
+    templateUrl: './baseline-results-menu.component.html',
+    styleUrls: ['./baseline-results-menu.component.scss', '../results-menu.component.scss'],
+    standalone: false
 })
 export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
   @Input() resize$: Observable<void>;

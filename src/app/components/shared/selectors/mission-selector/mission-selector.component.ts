@@ -23,9 +23,10 @@ export const _filter = (opt: string[], value: string): string[] => {
 
 
 @Component({
-  selector: 'app-mission-selector',
-  templateUrl: './mission-selector.component.html',
-  styleUrls: ['./mission-selector.component.css']
+    selector: 'app-mission-selector',
+    templateUrl: './mission-selector.component.html',
+    styleUrls: ['./mission-selector.component.css'],
+    standalone: false
 })
 export class MissionSelectorComponent implements OnInit, OnDestroy {
   public missionsByDataset$ = this.store$.select(filtersStore.getMissionsByDataset);

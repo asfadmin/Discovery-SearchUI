@@ -11,9 +11,10 @@ import { distinctUntilChanged, withLatestFrom } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
 @Component({
-  selector: 'app-event-polygon-slider',
-  templateUrl: './event-polygon-slider.component.html',
-  styleUrls: ['./event-polygon-slider.component.scss']
+    selector: 'app-event-polygon-slider',
+    templateUrl: './event-polygon-slider.component.html',
+    styleUrls: ['./event-polygon-slider.component.scss'],
+    standalone: false
 })
 export class EventPolygonSliderComponent implements OnInit, OnDestroy {
   @ViewChild('polygonScale', { static: true }) polygonScaleRef: ElementRef;

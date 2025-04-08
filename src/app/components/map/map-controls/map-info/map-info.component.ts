@@ -4,9 +4,10 @@ import { LonLat } from '@models';
 import * as services from '@services';
 
 @Component({
-  selector: 'app-map-info',
-  templateUrl: './map-info.component.html',
-  styleUrls: ['./map-info.component.scss']
+    selector: 'app-map-info',
+    templateUrl: './map-info.component.html',
+    styleUrls: ['./map-info.component.scss'],
+    standalone: false
 })
 export class MapInfoComponent implements OnInit, AfterViewInit {
   @ViewChild('mapScaleComp', { static: true }) mapScale;

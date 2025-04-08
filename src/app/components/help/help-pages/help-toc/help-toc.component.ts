@@ -10,9 +10,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 
 @Component({
-  selector: 'app-help-toc',
-  templateUrl: './help-toc.component.html',
-  styleUrls: ['./help-toc.component.scss']
+    selector: 'app-help-toc',
+    templateUrl: './help-toc.component.html',
+    styleUrls: ['./help-toc.component.scss'],
+    standalone: false
 })
 export class HelpTocComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;

@@ -10,9 +10,10 @@ import { combineLatest } from 'rxjs';
 
 
 @Component({
-  selector: 'app-product-type-selector',
-  templateUrl: './product-type-selector.component.html',
-  styleUrls: ['./product-type-selector.component.css']
+    selector: 'app-product-type-selector',
+    templateUrl: './product-type-selector.component.html',
+    styleUrls: ['./product-type-selector.component.css'],
+    standalone: false
 })
 export class ProductTypeSelectorComponent implements OnInit, OnDestroy {
   @Input() burstSelected: boolean = false;

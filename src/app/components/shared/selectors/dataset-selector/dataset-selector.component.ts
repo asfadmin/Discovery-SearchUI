@@ -11,9 +11,10 @@ declare global {
 }
 
 @Component({
-  selector: 'app-dataset-selector',
-  templateUrl: './dataset-selector.component.html',
-  styleUrls: ['./dataset-selector.component.scss']
+    selector: 'app-dataset-selector',
+    templateUrl: './dataset-selector.component.html',
+    styleUrls: ['./dataset-selector.component.scss'],
+    standalone: false
 })
 export class DatasetSelectorComponent {
   @Input() datasets: models.Dataset[];

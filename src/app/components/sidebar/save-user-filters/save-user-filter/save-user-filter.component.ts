@@ -7,9 +7,10 @@ import { timer } from 'rxjs';
 import { NotificationService } from '@services';
 
 @Component({
-  selector: 'app-save-user-filter',
-  templateUrl: './save-user-filter.component.html',
-  styleUrls: ['./save-user-filter.component.scss']
+    selector: 'app-save-user-filter',
+    templateUrl: './save-user-filter.component.html',
+    styleUrls: ['./save-user-filter.component.scss'],
+    standalone: false
 })
 export class SaveUserFilterComponent implements OnInit {
   @ViewChild('nameEditInput') nameEditInput: ElementRef;

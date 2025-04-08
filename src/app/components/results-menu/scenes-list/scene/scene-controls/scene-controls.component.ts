@@ -4,9 +4,10 @@ import * as services from '@services';
 import * as models from '@models';
 
 @Component({
-  selector: 'app-scene-controls',
-  templateUrl: './scene-controls.component.html',
-  styleUrls: ['./scene-controls.component.scss']
+    selector: 'app-scene-controls',
+    templateUrl: './scene-controls.component.html',
+    styleUrls: ['./scene-controls.component.scss'],
+    standalone: false
 })
 export class SceneControlsComponent implements OnInit {
   @Input() hyp3ableByJobType: { total: number, byJobType: models.Hyp3ableProductByJobType[]};

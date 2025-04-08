@@ -23,9 +23,10 @@ import { AuthService, NotificationService } from '@services';
 import { HttpClient, HttpEventType } from '@angular/common/http';
 
 @Component({
-  selector: 'app-download-file-button',
-  templateUrl: './download-file-button.component.html',
-  styleUrls: ['./download-file-button.component.scss']
+    selector: 'app-download-file-button',
+    templateUrl: './download-file-button.component.html',
+    styleUrls: ['./download-file-button.component.scss'],
+    standalone: false
 })
 export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   @Input() product: CMRProduct;
