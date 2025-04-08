@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { saveAs } from 'file-saver';
 
 import { combineLatest, switchMap } from 'rxjs';
-import { debounceTime, filter, map, tap, withLatestFrom } from 'rxjs/operators';
+import { debounceTime, filter, map, take, tap, withLatestFrom } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -16,7 +16,8 @@ import { faCopy } from '@fortawesome/free-solid-svg-icons';
 
 import {
   MapService, ScenesService, ScreenSizeService, PossibleHyp3JobsService,
-  PairService, Hyp3ApiService, Hyp3JobStatusService, SarviewsEventsService, NotificationService
+  PairService, Hyp3ApiService, Hyp3JobStatusService, SarviewsEventsService, NotificationService,
+  ExportService
 } from '@services';
 
 import * as models from '@models';
@@ -25,6 +26,8 @@ import { hyp3JobTypes, SarviewsProduct } from '@models';
 import { AddItems, AddJobs } from '@store/queue';
 import { ClipboardService } from 'ngx-clipboard';
 import { Observable } from 'rxjs';
+import { CodeExportComponent, CodeExportType } from '@components/shared/code-export';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-scenes-list-header',
@@ -201,6 +204,8 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     private clipboard: ClipboardService,
     private notificationService: NotificationService,
     private possibleHyp3JobsService: PossibleHyp3JobsService,
+    private exportService: ExportService,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit() {
@@ -513,6 +518,21 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
     this.clipboard.copyFromContent(Array.from(granuleNameListSet).join(','));
     this.notificationService.clipboardCopyIcon('', granuleNameListSet.size);
+  }
+
+  public onPythonCodeExport() {
+    this.exportService.combineSearchOptionsToHyp3SDK$.pipe(take(1)).subscribe(codeStuff => {
+        this.dialog.open(CodeExportComponent, {
+          data: {
+            codeStuff,
+            codeExportType: CodeExportType.HYP3_SDK
+          },
+          width: '550px',
+          height: '500px',
+          maxWidth: '550px',
+          maxHeight: '500px',
+        });
+      })
   }
 
   ngOnDestroy(): void {

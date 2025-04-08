@@ -36,9 +36,11 @@
           {{ numBaselineScenes$ | async }} {{ 'OF'  | translate }} {{ numUnfilteredBaselineScenes$ | async }} {{ 'SCENE' | translate }}{{ (numBaselineScenes$ | async) === 1 ? '' : 's' }}
         </div>
 
-        <div *ngIf="searchType === SearchTypes.CUSTOM_PRODUCTS" class="mr-10">
-          {{ numBaselineScenes$ | async }}{{ moreHyp3JobsToLoad ? '+' : ''}} {{ 'PRODUCT' | translate }}{{ (numBaselineScenes$ | async) === 1 ? '' : 's' }}
-        </div>
+        @if(searchType === SearchTypes.CUSTOM_PRODUCTS) {
+          <div class="mr-10">
+            {{ numBaselineScenes$ | async }}{{ moreHyp3JobsToLoad ? '+' : ''}} {{ 'PRODUCT' | translate }}{{ (numBaselineScenes$ | async) === 1 ? '' : 's' }}
+          </div>
+        }
 
         <div class="space-filler" *ngIf="!(searchType === SearchTypes.SARVIEWS_EVENTS && breakpoint === breakpoints.MOBILE)"></div>
 
@@ -164,6 +166,37 @@
               </div>
             </div>
           </div>
+
+          @if(searchType === SearchTypes.CUSTOM_PRODUCTS) {
+            <div class="fx-empty list-button-group">
+              <div class="fx-row-center button-group-label">
+                <label>  {{ 'EXPORT' |  translate }}</label>
+              </div>
+              <div class="fx-row">
+                <div class="scenes-list-button-container">
+                  <mat-button-toggle-group name="layerType" class="fx-empty mr-10" [hideSingleSelectionIndicator]="true">
+                    <mat-button-toggle class="control-mat-button-toggle clickable noselect"
+                      [matMenuTriggerFor]="OnDemandCodeExport"
+                      matTooltip="{{ 'PYTHON_CODE_EXPORT_TOOLTIP' | translate }}">
+                      <mat-icon class="list-icon">
+                        get_app
+                      </mat-icon>
+                    </mat-button-toggle>
+                  </mat-button-toggle-group>
+                </div>
+              </div>
+            </div>
+
+            <mat-menu #OnDemandCodeExport="matMenu">
+              <div>
+                <button (click)="onPythonCodeExport()" mat-menu-item>
+                  {{ 'PYTHON_CODE_EXPORT' | translate }}
+                </button>
+              </div>
+            </mat-menu>
+          }
+
+
 
           <div *ngIf="searchType === SearchTypes.BASELINE" class="fx-empty list-button-group">
             <div class="fx-row-center button-group-label">
