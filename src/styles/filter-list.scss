@@ -3,7 +3,7 @@
 @import "asf-theme";
 
 // Create a config with the default typography levels.
-$config: mat.define-legacy-typography-config();
+$config: mat.m2-define-legacy-typography-config();
 
 .mat-header-base {
   @include themify_non_host($themes) {
@@ -42,7 +42,7 @@ $config: mat.define-legacy-typography-config();
 
 .mat-expansion-panel-header-title {
   color: white;
-  font-size: mat.font-size($config, subheading-2);
+  font-size: mat.m2-font-size($config, subheading-2);
 }
 
 .mat-expansion-panel-header-description {

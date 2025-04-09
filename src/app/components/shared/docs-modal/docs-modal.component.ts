@@ -38,8 +38,11 @@ export interface DialogData {
 export class DocsModalComponent implements OnInit, OnDestroy {
   @Input() url: string;
   @Input() text: string;
-  @Input() icon: string = 'info';
+  @Input() custStyle: string;
+  @Input() icon: string = 'help_outline';
+  @Input() description: string;
   @Input() tooltip: string;
+
   public docURL: string;
   public safeDocURL: any;
 
@@ -76,8 +79,8 @@ export class DocsModalComponent implements OnInit, OnDestroy {
         },
       });
 
-      dialogRef.afterClosed().subscribe(result => {
-        console.log(`Dialog result: ${result}`);
+      dialogRef.afterClosed().subscribe(_result => {
+        // console.log(`Dialog result: ${_result}`);
       });
     } else {
       window.open(this.url, '_blank');

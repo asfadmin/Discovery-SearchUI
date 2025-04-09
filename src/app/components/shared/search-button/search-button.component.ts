@@ -21,8 +21,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { HelpComponent } from '@components/help/help.component';
 import { getFilterMaster } from '@store/scenes';
 import { SaveSearchDialogComponent } from '@components/shared/save-search-dialog';
-import { CodeExportComponent } from '../code-export/code-export.component';
+import { CodeExportComponent } from '@components/shared/code-export';
 import { ApiLinkDialogComponent } from '../max-results-selector/api-link-dialog/api-link-dialog.component';
+import { ScreenSizeService } from '@services';
+import * as models from '@models';
+
 
 // Declare GTM dataLayer array.
 declare global {
@@ -41,6 +44,9 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   public isMaxResultsLoading$ = this.store$.select(searchStore.getIsMaxResultsLoading);
   public loading$ = this.store$.select(searchStore.getIsLoading);
   public maturity = this.env.maturity;
+  public breakpoint$ = this.screenSize.breakpoint$;
+  public breakpoints = models.Breakpoints;
+
 
   public areResultsOutOfDate$ = this.store$.select(searchStore.getareResultsOutOfDate);
 
@@ -64,6 +70,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private notificationService: services.NotificationService,
     private exportService: services.ExportService,
+    private screenSize: ScreenSizeService,
   ) {
   }
 
@@ -325,4 +332,5 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
+
 }

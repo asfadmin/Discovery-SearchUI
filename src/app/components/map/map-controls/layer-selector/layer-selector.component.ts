@@ -7,7 +7,11 @@ import { AppState } from '@store';
 import * as mapStore from '@store/map';
 
 import * as models from '@models';
+import * as filtersStore from '@store/filters';
+import * as searchStore from '@store/search';
+
 import { MapService, ScreenSizeService } from '@services';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-layer-selector',
@@ -16,6 +20,8 @@ import { MapService, ScreenSizeService } from '@services';
 })
 export class LayerSelectorComponent implements OnInit, OnDestroy {
   public overviewMapVisible$ = this.store$.select(mapStore.getIsOverviewMapOpen);
+  public searchType$ = this.store$.select(searchStore.getSearchType);
+  public searchTypes = models.SearchType;
   public overviewMapVisible = false;
 
   public layerTypes = models.MapLayerTypes;
@@ -35,6 +41,8 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
   private coherenceLayerOpacity: number;
+  private flightDir: models.FlightDirection = models.FlightDirection.ASCENDING;
+  public priorityEnabled = false;
 
 
   private subs = new SubSink();
@@ -82,6 +90,14 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
         }
       )
     )
+
+    this.subs.add(
+      this.store$.select(filtersStore.getFlightDirections).pipe(
+        map(flightDirs => flightDirs[0] ?? models.FlightDirection.ASCENDING)
+      ).subscribe(
+        flightDir => this.flightDir = flightDir
+      )
+    )
   }
 
   public onNewLayerType(layerType: models.MapLayerTypes): void {
@@ -121,6 +137,16 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
     }
 
     this.clearCoherenceLayer();
+  }
+  public togglePriority(): void {
+    if(!this.priorityEnabled) {
+      this.mapService.enablePriority(this.flightDir);
+      this.priorityEnabled = true;
+    }
+    else {
+      this.priorityEnabled = false;
+      this.mapService.disablePriority();
+    }
   }
 
   public onToggleOverviewMap(isOpen: boolean): void {
