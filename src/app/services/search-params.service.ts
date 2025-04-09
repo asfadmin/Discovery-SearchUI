@@ -201,6 +201,13 @@ export class SearchParamsService {
     ),
     map(polarization => ({ polarization })),
   );
+  private sidePolarizations$ = this.store$.select(filterStore.getSidePolarizations).pipe(
+    map(
+      polarizations => Array.from(new Set(polarizations))
+        .join(',')
+    ),
+    map(sidePolarization => ({ sidePolarization })),
+  );
 
   private flightDirections$ = this.store$.select(filterStore.getFlightDirections).pipe(
     map(dirs => dirs.length > 1 ? [] : dirs),
@@ -223,6 +230,7 @@ export class SearchParamsService {
     this.flightDirections$,
     this.beamModes$,
     this.polarizations$,
+    this.sidePolarizations$,
     this.maxResults$,
     this.missionParam$,
     this.burstParams$,
