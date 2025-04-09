@@ -35,8 +35,14 @@ export class PropertyService {
     const [datasetName, possibleValuesStr] = this.hasDatasetId(loadStr) ?
       this.oldFormat(loadStr) :
       this.shortFormat(loadStr);
+    let possibleTypes = [];
 
-    const possibleTypes = (possibleValuesStr || '').split(',');
+    if(datasetPropertyKey.includes('polarization')) {
+        possibleTypes = (possibleValuesStr || '').split(',').map(x => x.replace('-',','));
+    } else {
+        possibleTypes = (possibleValuesStr || '').split(',');
+
+    }
 
     const dataset = models.datasetList
       .filter(d => datasetName === d.id)

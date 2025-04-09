@@ -15,7 +15,7 @@ export const nisar = {
     Props.PATH,
     Props.FRAME,
     Props.SUB_POLARIZATION,
-    Props.JOINT_OBSERVATION,
+    // Props.JOINT_OBSERVATION,
     Props.COVERAGE_ANGLE,
     Props.USE_TRACK,
   ],

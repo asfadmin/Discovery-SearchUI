@@ -449,7 +449,11 @@ export class UrlStateService {
         name: 'polarizations',
         source: this.store$.select(filterStore.getPolarizations).pipe(
           map(
-            pols => this.prop.saveProperties(pols, 'polarizations')
+
+            pols => {
+                const param = pols.map(x=> x.replace(',', '-')).join(',');
+                return { 'polarizations': param };
+            }
           )
         ),
         loader: this.loadPolarizations
@@ -473,7 +477,7 @@ export class UrlStateService {
         source: this.store$.select(filterStore.getSidePolarizations).pipe(
           map(
             pols => {
-                const param = pols.join('-');
+                const param = pols.map(x => x.replace(',','-')).join(',');
                 return { 'sidePolarizations': param };
             }
           )
@@ -750,8 +754,7 @@ export class UrlStateService {
   };
 
   private loadSidePolarizations = (polarizationsStr: string): Action | undefined => {
-    const polarizations = polarizationsStr.split('-');//this.prop.loadProperties(polarizationsStr, 'polarizations');
-    console.log(polarizations)
+    const polarizations = this.prop.loadProperties(polarizationsStr, 'polarizations');
     if (!polarizations) {
       return;
     }
