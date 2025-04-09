@@ -71,7 +71,12 @@
     >
     <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
       <mat-panel-title style="align-items: center;">
-        {{ 'ADDITIONAL_FILTERS' | translate }}
+        @if(selectedDataset !== 'NISAR') {
+            {{ 'ADDITIONAL_FILTERS' | translate }}
+        }
+        @else {
+            {{ 'OBSERVATIONAL_FILTERS' | translate }}
+        }
         <app-docs-modal class="info-icon"
                         url="https://docs.asf.alaska.edu/vertex/manual/#additional-filters">
         </app-docs-modal>
@@ -79,7 +84,12 @@
     </mat-expansion-panel-header>
 
     <div class="selector-card-spacing">
-      <app-other-selector></app-other-selector>
+        @if(selectedDataset !== 'NISAR') {
+            <app-other-selector></app-other-selector>
+        }
+        @else {
+            <app-observation-panel-selector></app-observation-panel-selector>
+        }
     </div>
   </mat-expansion-panel>
 

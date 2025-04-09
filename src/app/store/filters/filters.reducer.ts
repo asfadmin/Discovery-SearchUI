@@ -24,6 +24,7 @@ export interface FiltersState {
   shortNames: models.DatasetShortName;
   beamModes: models.DatasetBeamModes;
   polarizations: models.DatasetPolarizations;
+  sidePolarizations: models.DatasetPolarizations;
   flightDirections: Set<models.FlightDirection>;
   subtypes: models.DatasetSubtypes;
   jobStatuses: models.Hyp3JobStatusCode[];
@@ -95,6 +96,7 @@ export const initState: FiltersState = {
   productTypes: [],
   beamModes: [],
   polarizations: [],
+  sidePolarizations: [],
   subtypes: [],
   flightDirections: new Set<models.FlightDirection>([]),
   jobStatuses: [],
@@ -507,6 +509,23 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         polarizations: [ ...action.payload ]
       };
     }
+    case FiltersActionType.ADD_SIDE_POLARIZATION: {
+        const newPols = Array.from(
+            new Set([...state.sidePolarizations, action.payload])
+        );
+
+        return {
+            ...state,
+            sidePolarizations: [...newPols]
+        };
+    }
+
+    case FiltersActionType.SET_SIDE_POLARIZATIONS: {
+        return {
+            ...state,
+            sidePolarizations: [...action.payload]
+        };
+    }
     case FiltersActionType.SET_SUBTYPES: {
       return {
         ...state,
@@ -899,6 +918,11 @@ export const getBeamModes = createSelector(
 export const getPolarizations = createSelector(
   getFiltersState,
   (state: FiltersState) => state.polarizations
+);
+
+export const getSidePolarizations = createSelector(
+    getFiltersState,
+    (state: FiltersState) => state.sidePolarizations
 );
 
 export const getSubtypes = createSelector(

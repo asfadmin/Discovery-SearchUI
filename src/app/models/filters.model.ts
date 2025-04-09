@@ -14,8 +14,12 @@ export enum Props {
   BASELINE_TOOL = 'Baseline Tool',
   SUBTYPE = 'Subtype',
   POINTING_ANGLE = 'Pointing Angle',
+  COVERAGE_ANGLE = 'Coverage Angle',
+  JOINT_OBSERVATION = 'Joint Observation',
+  SUB_POLARIZATION = 'Sub Polarization',
   USE_BEAM_MODE = 'Use Beam Mode Filter',
-  USE_PROCESSING_TYPE = 'Use Processing Type'
+  USE_PROCESSING_TYPE = 'Use Processing Type',
+  USE_TRACK = 'Use Track for Frame'
 }
 
 export const apiParamNames = {

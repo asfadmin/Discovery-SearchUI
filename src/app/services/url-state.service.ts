@@ -467,7 +467,19 @@ export class UrlStateService {
           map(useCalibrationData => ({useCalibrationData}))
         ),
         loader: this.loadUseCalibrationData
-      }
+      },
+      {
+        name: 'sidePolarizations',
+        source: this.store$.select(filterStore.getSidePolarizations).pipe(
+          map(
+            pols => {
+                const param = pols.join('-');
+                return { 'sidePolarizations': param };
+            }
+          )
+        ),
+        loader: this.loadSidePolarizations
+      },
     ];
   }
 
@@ -737,6 +749,15 @@ export class UrlStateService {
     return new filterStore.SetPolarizations(polarizations);
   };
 
+  private loadSidePolarizations = (polarizationsStr: string): Action | undefined => {
+    const polarizations = polarizationsStr.split('-');//this.prop.loadProperties(polarizationsStr, 'polarizations');
+    console.log(polarizations)
+    if (!polarizations) {
+      return;
+    }
+
+    return new filterStore.SetSidePolarizations(polarizations);
+  };
   private loadSubtypes = (subtypesStr: string): Action | undefined => {
     const subtypes = this.prop.loadProperties(subtypesStr, 'subtypes', v => v.apiValue);
 

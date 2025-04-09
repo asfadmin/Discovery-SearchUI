@@ -42,6 +42,9 @@ export enum FiltersActionType {
   ADD_POLARIZATION = '[Filters-Polarization] Add Polarization',
   SET_POLARIZATIONS = '[Filters-Polarization] Set Dataset Polarizations',
 
+  ADD_SIDE_POLARIZATION = '[Filters-Polarization] Add Side Polarization',
+  SET_SIDE_POLARIZATIONS = '[Filters-Polarization] Set Dataset Side Polarizations',
+
   SET_JOB_STATUSES = '[Filters-Job-Status] Set Job Statuses',
 
   SET_FLIGHT_DIRECTIONS = '[Filters-Flight-Dir] Set Flight Directions',
@@ -285,6 +288,17 @@ export class SetPolarizations implements Action {
 
   constructor(public payload: models.DatasetPolarizations) {}
 }
+export class AddSidePolarization implements Action {
+    public readonly type = FiltersActionType.ADD_SIDE_POLARIZATION;
+
+    constructor(public payload: string) {}
+}
+
+export class SetSidePolarizations implements Action {
+public readonly type = FiltersActionType.SET_SIDE_POLARIZATIONS;
+
+    constructor(public payload: models.DatasetPolarizations) {}
+}
 
 export class SetSubtypes implements Action {
   public readonly type = FiltersActionType.SET_SUBTYPES;
@@ -498,6 +512,8 @@ export type FiltersActions =
   | SetSubtypes
   | AddPolarization
   | SetPolarizations
+  | AddSidePolarization
+  | SetSidePolarizations
   | ClearDatasetFilters
   | ClearListFilters
   | SetMissions
