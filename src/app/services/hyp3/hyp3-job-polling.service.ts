@@ -37,8 +37,6 @@ export class Hyp3JobPollingService {
         inProgress.length > 0
       ),
       switchMap(([_, inProgressScenes, hyp3UserId]) => {
-        console.log('polling for updates', inProgressScenes, hyp3UserId);
-
         return forkJoin([
           this.hyp3.getJobs$({
             userID: hyp3UserId, statusCode: models.Hyp3JobStatusCode.PENDING
