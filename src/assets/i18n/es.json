@@ -39,6 +39,7 @@
   "ALL_TUTORIALS": "Todos Los Tutoriales",
   "ALLOWS_CONSTRAINING_THE_SEARCH_TO_CERTAIN_ANNUAL": "La búsqueda estacional permite restringir la búsqueda a ciertos períodos anuales.",
   "ALLOWS_FOR_ADDITIONAL_PARAMETERS_TO_BE_APPLIED_TO_NARROW": "Filtros adicionales permite aplicar parámetros adicionales para reducir",
+  "ALOS_2_DESC": "ALOS-2 PALSAR-2 ScanSAR utiliza un instrumento de banda L para adquirir productos de nivel 1.1 (SLC) de haz amplio con áreas de cobertura que se revisitan cada 14 días.",
   "AMOUNT": "Cantidad",
   "AMPLITUDE": "amplitud",
   "AN_EASY_WAY_TO_REGISTER_FOR_AN_EARTHDATA_ACCOUNT_IS_TO_CLICK_THE_SIGN_IN_ICON": "Una forma sencilla de registrarse para obtener una cuenta de Earthdata es hacer clic en el icono \"Iniciar sesión\"",
