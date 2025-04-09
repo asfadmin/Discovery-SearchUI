@@ -24,7 +24,7 @@
         (selectionChange)="onNewDatasetPolarizations($event.value)"
         [(ngModel)]="polarizations"
         [disabled]="!prop.isRelevant(p.POLARIZATION)"
-        placeholder="{{ 'POLARIZATION' | translate }} {{ 'MAIN_BAND' | translate }}" multiple>
+        placeholder="{{ 'POLARIZATION' | translate }} {{ 'MAIN' | translate }}" multiple>
         <mat-option *ngFor="let pol of dataset.polarizations" [value]="pol">
           {{pol}}
         </mat-option>
@@ -44,7 +44,7 @@
           (selectionChange)="onNewDatasetSidePolarizations($event.value)"
           [(ngModel)]="sidePolarizations"
           [disabled]="!prop.isRelevant(p.POLARIZATION)"
-          placeholder="{{ 'POLARIZATION' | translate }} {{ 'SIDE_BAND' | translate }}"  multiple>
+          placeholder="{{ 'POLARIZATION' | translate }} {{ 'SIDE' | translate }}"  multiple>
           <mat-option *ngFor="let pol of dataset.polarizations" [value]="pol">
             {{pol}}
           </mat-option>
@@ -115,8 +115,39 @@
         {{ 'NO_SUBTYPES_TO_SELECT' | translate }}
       </mat-hint> -->
     </mat-form-field>
-  
-  
+
+
+    <mat-form-field>
+        <mat-select
+          (selectionChange)="onNewFrameCoverageSelected($event.value)"
+          [(ngModel)]="frameCoverage"
+          placeholder="{{ 'FRAME_COVERAGE' | translate }}"  multiple>
+          <mat-option  value="full">
+            {{'FULL' | translate}}
+          </mat-option>
+          <mat-option  value="partial">
+            {{'PARTIAL' | translate}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    <mat-slide-toggle (change)="onNewJointObservation($event.checked)" [checked]="jointObservation">
+        {{ 'JOINT_OBSERVATION_ONLY' | translate}}
+    </mat-slide-toggle>
+
+    <mat-form-field>
+        <mat-select
+          (selectionChange)="onNewRangeBandwithSelected($event.value)"
+          [(ngModel)]="rangeBandwith"
+          placeholder="{{ 'RANGE_BANDWITH' | translate }}"  multiple>
+          <mat-option  value="L-20+5">
+            (L-Band) 20+5
+          </mat-option>
+          <mat-option  value="L-40+5">
+            (L-Band) 40+5
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     <!-- <app-short-name-selector
     class="short-name-selector"
     (shortNamesChange)="onNewShortNames($event)"

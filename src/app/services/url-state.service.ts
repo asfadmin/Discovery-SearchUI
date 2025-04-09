@@ -484,6 +484,33 @@ export class UrlStateService {
         ),
         loader: this.loadSidePolarizations
       },
+        // frameCoverage: string[];
+    // jointObservation: boolean;
+    // rangeBandwith: string[];
+  
+      {
+        name: 'frameCoverage',
+        source: this.store$.select(filterStore.getFrameCoverage).pipe(
+          map(dirs => dirs.join(',')),
+          map(flightDirs => ({ flightDirs }))
+        ),
+        loader: this.loadFrameCoverage
+      },
+      {
+        name: 'jointObservation',
+        source: this.store$.select(filterStore.getJointObservation).pipe(
+          map(jointObservation => ({ jointObservation }))
+        ),
+        loader: this.loadJointObservation
+      },
+      {
+        name: 'rangeBandwiths',
+        source: this.store$.select(filterStore.getRangeBandwith).pipe(
+          map(bandwiths => bandwiths.join(',')),
+          map(rangeBandwiths => ({ rangeBandwiths }))
+        ),
+        loader: this.loadRangeBandwith
+      },
     ];
   }
 
@@ -914,4 +941,25 @@ export class UrlStateService {
   private loadUseCalibrationData = (usingCalibrationData: string): Action => {
     return new filterStore.setUseCalibrationData(!!usingCalibrationData)
   }
+  private loadFrameCoverage = (coverageStr: string): Action => {
+    const coverage= coverageStr
+    .split(',')
+    // TODO: Add some better checking for this by grabbing from the dataset
+    // .filter(direction => !Object.values(models.FlightDirection).includes(<models.FlightDirection>direction))
+    // .map(direction => <models.FlightDirection>direction);
+
+    return new filterStore.setFrameCoverage(coverage);
+  };
+  private loadRangeBandwith = (bandwithStr: string): Action => {
+    const bandwith= bandwithStr
+    .split(',')
+    // TODO: Add some better checking for this by grabbing from the dataset
+    // .filter(direction => !Object.values(models.FlightDirection).includes(<models.FlightDirection>direction))
+    // .map(direction => <models.FlightDirection>direction);
+
+    return new filterStore.setRangeBandwith(bandwith);
+  };
+  private loadJointObservation = (observationStr: string): Action => {
+    return new filterStore.setJointObservation(observationStr === 'true');
+  };
 }

@@ -22,6 +22,9 @@ export class ObservationPanelSelectorComponent implements OnDestroy, OnInit{
   sidePolarizations: models.DatasetPolarizations;
   subtypes: models.DatasetSubtypes;
   groupID: string;
+  frameCoverage: string[];
+  rangeBandwith: string[];
+  jointObservation: boolean;
 
   public datasetProductTypes$ = this.store$.select(filtersStore.getProductTypes);
   public flightDirections$ = this.store$.select(filtersStore.getFlightDirections);
@@ -31,6 +34,10 @@ export class ObservationPanelSelectorComponent implements OnDestroy, OnInit{
   public selectedDataset$ = this.store$.select(filtersStore.getSelectedDataset);
   public subtypes$ = this.store$.select(filtersStore.getSubtypes);
   public groupID$ = this.store$.select(filtersStore.getGroupID);
+  public frameCoverage$ = this.store$.select(filtersStore.getFrameCoverage);
+  public jointObservation$ = this.store$.select(filtersStore.getJointObservation)
+  public rangeBandwith$ = this.store$.select(filtersStore.getRangeBandwith)
+
 
   public flightDirectionTypes = models.flightDirections;
   public p = models.Props;
@@ -71,6 +78,15 @@ export class ObservationPanelSelectorComponent implements OnDestroy, OnInit{
     this.subs.add(
       this.groupID$.subscribe(groupID => this.groupID = groupID)
     );
+    this.subs.add(
+        this.frameCoverage$.subscribe(frameCoverage => this.frameCoverage = frameCoverage)
+    );
+    this.subs.add(
+        this.jointObservation$.subscribe(jointObservation => this.jointObservation = jointObservation)
+    );
+    this.subs.add(
+        this.rangeBandwith$.subscribe(rangeBandwith => this.rangeBandwith = rangeBandwith)
+    );
   }
 
   public onNewDatasetBeamModes(beamModes: string[]): void {
@@ -103,6 +119,20 @@ export class ObservationPanelSelectorComponent implements OnDestroy, OnInit{
 
   public onNewSubtypeSelected(subtypes): void {
     this.store$.dispatch(new filtersStore.SetSubtypes(subtypes));
+  }
+  public onNewFrameCoverageSelected(coverage): void {
+    // this value needs to be converted to a boolean value since the data is set for
+    // true = full frame
+    // false = partial frame
+    // null = all
+    this.store$.dispatch(new filtersStore.setFrameCoverage(coverage));
+  }
+  public onNewRangeBandwithSelected(bandwith) {
+    this.store$.dispatch(new filtersStore.setRangeBandwith(bandwith))
+  }
+
+  public onNewJointObservation(observation) {
+    this.store$.dispatch(new filtersStore.setJointObservation(observation))
   }
 
   public onNewGroupID(): void {
