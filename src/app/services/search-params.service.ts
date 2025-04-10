@@ -197,16 +197,20 @@ export class SearchParamsService {
   private polarizations$ = this.store$.select(filterStore.getPolarizations).pipe(
     map(
       polarizations => Array.from(new Set(polarizations))
+        .map(x => x.replace(',','+'))
         .join(',')
     ),
-    map(polarization => ({ polarization })),
+    withLatestFrom(this.store$.select(filterStore.getSelectedDataset)),
+    map(([polarizations, dataset]) => dataset.properties.includes(models.Props.USE_BEAM_MODE)?
+    ({ mainbandpolarization: polarizations }) : ({ polarization: polarizations })),
   );
   private sidePolarizations$ = this.store$.select(filterStore.getSidePolarizations).pipe(
     map(
       polarizations => Array.from(new Set(polarizations))
+        .map(x => x.replace(',','+'))
         .join(',')
     ),
-    map(sidePolarization => ({ sidepolarization: sidePolarization })),
+    map(sidePolarization => ({ sidebandpolarization: sidePolarization })),
   );
   private frameCoverage$ = this.store$.select(filterStore.getFrameCoverage).pipe(
     map(
@@ -224,6 +228,15 @@ export class SearchParamsService {
   private jointObservation$ = this.store$.select(filterStore.getJointObservation).pipe(
     map(jointObservation => ({ jointobservation: jointObservation })),
   );
+  private rangeBandwith$ = this.store$.select(filterStore.getRangeBandwith).pipe(
+    map(
+        bandwiths => Array.from(new Set(bandwiths))
+        .join(',')
+    ),
+    map(
+        bandwiths => ({rangebandwidth: bandwiths})
+    )
+  )
   private flightDirections$ = this.store$.select(filterStore.getFlightDirections).pipe(
     map(dirs => dirs.length > 1 ? [] : dirs),
     map(dirs => dirs.join(',')),
@@ -248,6 +261,7 @@ export class SearchParamsService {
     this.sidePolarizations$,
     this.frameCoverage$,
     this.jointObservation$,
+    this.rangeBandwith$,
     this.maxResults$,
     this.missionParam$,
     this.burstParams$,
