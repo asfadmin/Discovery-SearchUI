@@ -851,6 +851,10 @@ $d-height: 550px;
   margin-top: -2px;
 }
 
+.mat-mdc-menu-panel.dataset-selector {
+    overflow: auto;
+}
+
 .ts-best-fit-formulas {
   .cdk-virtual-scrollable {
     overflow-y: clip;
