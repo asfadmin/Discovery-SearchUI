@@ -206,9 +206,24 @@ export class SearchParamsService {
       polarizations => Array.from(new Set(polarizations))
         .join(',')
     ),
-    map(sidePolarization => ({ sidePolarization })),
+    map(sidePolarization => ({ sidepolarization: sidePolarization })),
   );
-
+  private frameCoverage$ = this.store$.select(filterStore.getFrameCoverage).pipe(
+    map(
+      coverages => {
+        let base = Array.from(new Set(coverages))
+        if(base.length > 1) {
+            return ''
+        } else {
+            return base[0]
+        }
+    }
+    ),
+    map(frameCoverage => ({ framecoverage: frameCoverage })),
+  );
+  private jointObservation$ = this.store$.select(filterStore.getJointObservation).pipe(
+    map(jointObservation => ({ jointobservation: jointObservation })),
+  );
   private flightDirections$ = this.store$.select(filterStore.getFlightDirections).pipe(
     map(dirs => dirs.length > 1 ? [] : dirs),
     map(dirs => dirs.join(',')),
@@ -231,6 +246,8 @@ export class SearchParamsService {
     this.beamModes$,
     this.polarizations$,
     this.sidePolarizations$,
+    this.frameCoverage$,
+    this.jointObservation$,
     this.maxResults$,
     this.missionParam$,
     this.burstParams$,

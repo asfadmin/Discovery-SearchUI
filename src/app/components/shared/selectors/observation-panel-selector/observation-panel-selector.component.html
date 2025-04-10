@@ -122,10 +122,10 @@
           (selectionChange)="onNewFrameCoverageSelected($event.value)"
           [(ngModel)]="frameCoverage"
           placeholder="{{ 'FRAME_COVERAGE' | translate }}"  multiple>
-          <mat-option  value="full">
+          <mat-option  value="FULL">
             {{'FULL' | translate}}
           </mat-option>
-          <mat-option  value="partial">
+          <mat-option  value="PARTIAL">
             {{'PARTIAL' | translate}}
           </mat-option>
         </mat-select>
