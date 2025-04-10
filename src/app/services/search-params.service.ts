@@ -201,7 +201,7 @@ export class SearchParamsService {
         .join(',')
     ),
     withLatestFrom(this.store$.select(filterStore.getSelectedDataset)),
-    map(([polarizations, dataset]) => dataset.properties.includes(models.Props.USE_BEAM_MODE)?
+    map(([polarizations, dataset]) => dataset.properties.includes(models.Props.SUB_POLARIZATION)?
     ({ mainbandpolarization: polarizations }) : ({ polarization: polarizations })),
   );
 
