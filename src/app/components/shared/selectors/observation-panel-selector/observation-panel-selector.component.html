@@ -105,12 +105,13 @@
     <mat-form-field>
         <mat-select (selectionChange)="onNewRangeBandwithSelected($event.value)" [(ngModel)]="rangeBandwith"
             placeholder="{{ 'RANGE_BANDWITH' | translate }}" multiple>
-            <mat-option value="20+5">
-                (L-Band) 20+5
-            </mat-option>
-            <mat-option value="40+5">
-                (L-Band) 40+5
-            </mat-option>
+            @for(parent of (dataset.bandwith | keyvalue); track $index) {
+                @for(band of parent.value; track $index) {
+                    <mat-option [value]="band">
+                        ({{parent.key}}) {{band}}
+                    </mat-option>
+                }
+            }
         </mat-select>
     </mat-form-field>
     <!-- <app-short-name-selector

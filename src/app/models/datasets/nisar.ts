@@ -268,12 +268,6 @@ export const nisar = {
 //       apiValue: "NISAR_LSAR_INT_CAL"
 //     },
 //   ],
-  rangeBandwidth: [
-    {
-        name: 'test',
-        apiValue: 'test'
-    }
-  ],
   platformDesc: 'NISAR_DESC',
   platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
 };
