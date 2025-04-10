@@ -1,12 +1,12 @@
 @use "@angular/material" as mat;
 
-@import "asf-theme";
+@use "asf-theme";
 
 // Create a config with the default typography levels.
 $config: mat.m2-define-legacy-typography-config();
 
 .mat-header-base {
-  @include themify_non_host($themes) {
+  @include asf-theme.themify_non_host(asf-theme.$themes) {
     background-color: themed('primary-light');
     color: themed('dark-primary-text');
     border-color: themed('primary');
@@ -32,7 +32,7 @@ $config: mat.m2-define-legacy-typography-config();
   &[aria-disabled="true"] {
 
     @extend .mat-header-base;
-    @include themify_non_host($themes) {
+    @include asf-theme.themify_non_host(asf-theme.$themes) {
       background-color: themed('primary-light');
       color: themed('dark-secondary-text');
       border-color: themed('primary');

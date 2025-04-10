@@ -7,18 +7,20 @@
     color: asf-theme.themed('dark-primary-text');
   }
 }
+
 .mat-icon {
   @include asf-theme.themify(asf-theme.$themes) {
     color: asf-theme.themed('dark-primary-text');
   }
 }
+
 .mat-mdc-button {
   min-width: 10px;
   padding: 0 13px;
 }
+
 .nav-icon-buttons {
   display: flex;
   flex-direction: column;
   height: 100%;
-
 }

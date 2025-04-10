@@ -1,8 +1,10 @@
 /* csslint ignoreAtRules: ["include"] */
 @use "@angular/material" as mat;
 
-@import "variables";
-@import "dark_variables";
+@use "sass:color";
+@use "sass:map";
+@use "variables";
+@use "dark_variables";
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -21,7 +23,8 @@
 @include mat.app-background();
 
 
-mat.$theme-ignore-duplication-warnings: true;
+$mat-theme-ignore-duplication-warnings: true;
+//mat.mat.$theme-ignore-duplication-warnings: true;
 
 button,
 .mat-expansion-panel,
@@ -30,15 +33,15 @@ button,
   border-radius: 0 !important;
   //font-size: 14px;
 }
-$asf-app-primary: mat.m2-define-palette($mat-asf-primary, 700, 400, 900);
-$asf-app-dark-primary: mat.m2-define-palette($mat-dark-asf-primary, 700, 400, 900);
+$asf-app-primary: mat.m2-define-palette(variables.$mat-asf-primary, 700, 400, 900);
+$asf-app-dark-primary: mat.m2-define-palette(dark_variables.$mat-dark-asf-primary, 700, 400, 900);
 
 $asf-app-accent:  mat.m2-define-palette(mat.$m2-grey-palette, 300, 100, 400);
-$asf-app-blue:  mat.m2-define-palette($mat-asf-blue, 700, 400, 900);
+$asf-app-blue:  mat.m2-define-palette(variables.$mat-asf-blue, 700, 400, 900);
 
 // The warn palette is optional (defaults to red).
-$asf-app-warn:    mat.m2-define-palette($mat-asf-yellow, 200, 100, 500);
-$asf-app-err: mat.m2-define-palette($mat-asf-red, 200, 100, 500);
+$asf-app-warn:    mat.m2-define-palette(variables.$mat-asf-yellow, 200, 100, 500);
+$asf-app-err: mat.m2-define-palette(variables.$mat-asf-red, 200, 100, 500);
 // Create the theme object (a Sass map containing all of the palettes).
 
 // Create your Sass color vars (will be available in all the project)
@@ -49,9 +52,9 @@ $asf-blue: mat.m2-get-color-from-palette($asf-app-blue);
 $asf-primary: mat.m2-get-color-from-palette($asf-app-primary);
 $asf-dark-primary: mat.m2-get-color-from-palette($asf-app-dark-primary);
 $asf-accent: mat.m2-get-color-from-palette($asf-app-accent);
-$asf-primary-light: lighten($asf-primary, 40%);
-$asf-primary-dark: darken($asf-primary, 15%);
-$asf-background-white: lighten($asf-primary, 80%);
+$asf-primary-light: color.adjust($asf-primary, $lightness: 40%);
+$asf-primary-dark: color.adjust($asf-primary, $lightness: -15%);
+$asf-background-white: color.adjust($asf-primary, $lightness: 80%);
 
 @mixin md-icon-size($size: 24px) {
   // color: $dark-primary-text;
@@ -62,7 +65,7 @@ $asf-background-white: lighten($asf-primary, 80%);
 
 $themes: (
   light: (
-    background-white: lighten(mat.m2-get-color-from-palette($asf-app-primary), 80%),
+    background-white: color.adjust(mat.m2-get-color-from-palette($asf-app-primary), $lightness: 80%),
 
     dark-primary-text: rgba(black, 0.87),
     dark-secondary-text: rgba(black, 0.54),
@@ -83,8 +86,8 @@ $themes: (
 
     err: red,// mat.get-color-from-palette($asf-app-err),
     blue-link: #236192,//mat.get-color-from-palette($asf-app-blue),
-    primary-light: lighten(mat.m2-get-color-from-palette($asf-app-primary), 40%),
-    primary-dark: darken(mat.m2-get-color-from-palette($asf-app-primary), 15%),
+    primary-light: color.adjust(mat.m2-get-color-from-palette($asf-app-primary), $lightness: 40%),
+    primary-dark: color.adjust(mat.m2-get-color-from-palette($asf-app-primary), $lightness: -15%),
   ),
   dark: (
     light-primary-text: white,
@@ -107,10 +110,10 @@ $themes: (
     warn: mat.m2-get-color-from-palette($asf-app-warn),
     err: #f95e5e,//mat.get-color-from-palette($asf-app-err),
     blue-link: mat.m2-get-color-from-palette($asf-app-warn),
-    primary-light: lighten(mat.m2-get-color-from-palette($asf-app-dark-primary), 5%),
-    primary-dark: darken(mat.m2-get-color-from-palette($asf-app-dark-primary), 15%),
+    primary-light: color.adjust(mat.m2-get-color-from-palette($asf-app-dark-primary), $lightness: 5%),
+    primary-dark: color.adjust(mat.m2-get-color-from-palette($asf-app-dark-primary), $lightness: -15%),
 
-    background-white: darken(mat.m2-get-color-from-palette($asf-app-dark-primary), 5%),
+    background-white: color.adjust(mat.m2-get-color-from-palette($asf-app-dark-primary), $lightness: -5%),
   ),
 );
 
@@ -120,8 +123,8 @@ $themes: (
     :host-context(.theme-#{$theme}) & {
       $theme-map: () !global;
       @each $key, $submap in $map {
-        $value: map-get(map-get($themes, $theme), '#{$key}');
-        $theme-map: map-merge($theme-map, ($key: $value)) !global;
+        $value: map.get(map.get($themes, $theme), '#{$key}');
+        $theme-map: map.merge($theme-map, ($key: $value)) !global;
       }
 
       @content;
@@ -136,8 +139,8 @@ $themes: (
     .theme-#{$theme} & {
       $theme-map: () !global;
       @each $key, $submap in $map {
-        $value: map-get(map-get($themes, $theme), '#{$key}');
-        $theme-map: map-merge($theme-map, ($key: $value)) !global;
+        $value: map.get(map.get($themes, $theme), '#{$key}');
+        $theme-map: map.merge($theme-map, ($key: $value)) !global;
       }
 
       @content;
@@ -147,7 +150,7 @@ $themes: (
 }
 
 @function themed($key) {
-  @return map-get($theme-map, $key);
+  @return map.get($theme-map, $key);
 }
 
 

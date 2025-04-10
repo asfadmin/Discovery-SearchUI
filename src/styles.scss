@@ -1,10 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import './styles/asf-theme';
-@import './styles/filter-list';
+@use "sass:color";
+@use "sass:meta";
+@use 'styles/asf-theme';
+@use 'styles/filter-list';
+@use "variables";
+
 @import "prismjs/themes/prism-solarizedlight.css";
 
-$theme-map: null;
+asf-theme.$theme-map: null;
 
 * {
   font-family: Roboto, sans-serif;
@@ -22,7 +26,7 @@ $theme-map: null;
 }
 
 // regular style toast
-@import 'ngx-toastr/toastr';
+@include meta.load-css('ngx-toastr/toastr');
 
 #toast-container {
   position: relative;
@@ -35,15 +39,15 @@ $theme-map: null;
 // toast style overrides
 .toast.success,
 #toast-container > .toast-success {
-  color: $asf-background-white;
-  background-color: $asf-blue;
+  color: asf-theme.$asf-background-white;
+  background-color: asf-theme.$asf-blue;
   background-image: url("/assets/icons/check_circle_white_48dp.svg");
   box-shadow: none;
 
   .toast-close-button,
   #toast-container > .toast-close-button {
 
-    color: $asf-background-white;
+    color: asf-theme.$asf-background-white;
   }
 
   a {
@@ -53,7 +57,7 @@ $theme-map: null;
 
 .toast-error,
 #toast-container > .toast-error {
-  color: $asf-background-white;
+  color: asf-theme.$asf-background-white;
   background-color: red;
   background-image: url("/assets/icons/error_white_48dp.svg");
   box-shadow: none;
@@ -64,7 +68,7 @@ $theme-map: null;
 
   .toast-close-button,
   #toast-container > .toast-close-button {
-    color: $asf-background-white;
+    color: asf-theme.$asf-background-white;
   }
 
   a {
@@ -76,7 +80,7 @@ $theme-map: null;
 #toast-container > .toast-info {
   background-image: url("/assets/icons/info_black_48dp.svg");
 
-  @include themify_non_host($themes) {
+  @include asf-theme.themify_non_host(asf-theme.$themes) {
     box-shadow: 0 0 12px themed('primary');
 
     background-color: themed('background-white');
@@ -87,7 +91,7 @@ $theme-map: null;
   }
 
   a {
-    @include themify_non_host($themes) {
+    @include asf-theme.themify_non_host(asf-theme.$themes) {
       color: themed('blue-link');
     }
   }
@@ -95,8 +99,8 @@ $theme-map: null;
 
 .toast-warning,
 #toast-container > .toast-warning {
-  color: $asf-primary-dark;
-  background-color: $asf-warn;
+  color: asf-theme.$asf-primary-dark;
+  background-color: asf-theme.$asf-warn;
   background-image: url("/assets/icons/warning_black_48dp.svg") !important;
 
   a {
@@ -106,7 +110,7 @@ $theme-map: null;
 
 .toast-close-button,
 #toast-container > .toast-close-button {
-  @include themify_non_host($themes) {
+  @include asf-theme.themify_non_host(asf-theme.$themes) {
     color: themed('dark-primary-text');
   }
 }
@@ -128,11 +132,11 @@ $theme-map: null;
 
 .toast-message a,
 .toast-message label {
-  color: $asf-primary;
+  color: asf-theme.$asf-primary;
 }
 
 .toast-message a:hover {
-  color: $asf-blue;
+  color: asf-theme.$asf-blue;
   text-decoration: underline;
 }
 
@@ -165,18 +169,18 @@ $theme-map: null;
 }
 
 .primary-text {
-  @include themify_non_host($themes) {
+  @include asf-theme.themify_non_host(asf-theme.$themes) {
     color: themed('dark-primary-text');
   }
 }
 .faint-text {
-  @include themify_non_host($themes) {
+  @include asf-theme.themify_non_host(asf-theme.$themes) {
     color: themed('dark-secondary-text');
   }
 }
 
 .fainter-text {
-  @include themify_non_host($themes) {
+  @include asf-theme.themify_non_host(asf-theme.$themes) {
     color: themed('dark-disabled-text');
   }
 }
@@ -256,7 +260,7 @@ ul {
 }
 
 #dlQueueDialog {
-  @include themify_non_host($themes) {
+  @include asf-theme.themify_non_host(asf-theme.$themes) {
     // background-color: themed('primary-light') !important;
   }
 
@@ -267,7 +271,7 @@ ul {
 }
 
 #processingQueueDialog {
-  @include themify_non_host($themes) {
+  @include asf-theme.themify_non_host(asf-theme.$themes) {
     // background-color: themed('primary-light');
   }
   position: relative;
@@ -279,7 +283,7 @@ ul {
 }
 
 #subscriptionQueueDialog {
-  @include themify_non_host($themes) {
+  @include asf-theme.themify_non_host(asf-theme.$themes) {
     background-color: themed('primary-light');
   }
   position: relative;
@@ -302,7 +306,7 @@ ul {
 /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .ls-card .mat-button-toggle {
-  font-size: $asf-font-size;
+  font-size: variables.$asf-font-size;
   /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
   .mat-button-toggle-label-content,
   .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
@@ -312,7 +316,7 @@ ul {
 
 /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
 .ls-card-content-list .mat-form-field-infix {
-  @include themify_non_host($themes) {
+  @include asf-theme.themify_non_host(asf-theme.$themes) {
     border-color: themed('primary-light');
   }
   width: 100%;
@@ -365,7 +369,7 @@ ul {
 .material-icons.md-24 { font-size: 24px; }
 .material-icons.md-36 { font-size: 36px; }
 .material-icons.md-48 { font-size: 48px; }
-.material-icons.md-asf-ribbon-icon { font-size: $asf-ribbon-icon-size; }
+.material-icons.md-asf-ribbon-icon { font-size: variables.$asf-ribbon-icon-size; }
 
 .no-drag {
   /* https://stackoverflow.com/questions/12906789/preventing-an-image-from-being-draggable-or-selectable-without-using-js */
@@ -382,7 +386,7 @@ ul {
 }
 
 .mat-mdc-dialog-container {
-  @include themify_non_host($themes) {
+  @include asf-theme.themify_non_host(asf-theme.$themes) {
     // background-color: themed('primary-light');
   }
   border-radius: 0 !important;
@@ -393,7 +397,7 @@ ul {
   padding: 0;
 
   .mat-mdc-dialog-container {
-    @include themify_non_host($themes) {
+    @include asf-theme.themify_non_host(asf-theme.$themes) {
       // background-color: themed('primary-light');
     }
     padding-bottom: 0;
@@ -459,7 +463,7 @@ ul {
 }
 
 .slider .noUi-connect {
-  background: $asf-blue;
+  background: asf-theme.$asf-blue;
 }
 
 .slider [disabled] .noUi-connect {
@@ -469,8 +473,8 @@ ul {
 // for the sbas chart
 
 .noUi-handle {
-  background-color: $asf-primary-light;
-  border-color: $asf-primary-dark;
+  background-color: asf-theme.$asf-primary-light;
+  border-color: asf-theme.$asf-primary-dark;
 }
 
 .sbas-column-1 {
@@ -484,7 +488,7 @@ ul {
   .noUi-vertical .noUi-handle::before {
     width: 8px;
     left: 3px;
-    background-color: $asf-primary-dark;
+    background-color: asf-theme.$asf-primary-dark;
   }
 
   .noUi-value-vertical {
@@ -505,7 +509,7 @@ ul {
   .noUi-handle::before {
     height: 8px;
     top: 3px;
-    background-color: $asf-primary-dark;
+    background-color: asf-theme.$asf-primary-dark;
   }
 
   .noUi-value-horizontal {
@@ -543,7 +547,7 @@ ul {
 $d-height: 550px;
 
 #ConfirmProcess {
-  @include themify_non_host($themes) {
+  @include asf-theme.themify_non_host(asf-theme.$themes) {
     background: themed('primary-light') !important;
   }
   resize: none;
@@ -564,7 +568,7 @@ $d-height: 550px;
 
 #dlQueueDialog {
   resize: both;
-  @include themify($themes) {
+  @include asf-theme.themify(asf-theme.$themes) {
     // background-color: themed('primary-light');
   }
   width: 80vw;
@@ -574,7 +578,7 @@ $d-height: 550px;
 }
 
 #processingQueueDialog {
-  @include themify($themes) {
+  @include asf-theme.themify(asf-theme.$themes) {
     // background: themed('primary-light');
   }
   resize: both;
@@ -585,7 +589,7 @@ $d-height: 550px;
 }
 
 #subscriptionQueueDialog {
-  @include themify($themes) {
+  @include asf-theme.themify(asf-theme.$themes) {
     background: themed('primary-light');
   }
 
@@ -598,7 +602,7 @@ $d-height: 550px;
 
 #preferencesDialog {
   .mat-mdc-dialog-content {
-    @include themify($themes) {
+    @include asf-theme.themify(asf-theme.$themes) {
       background-color: themed("background-white");
     }
 
@@ -619,20 +623,20 @@ $d-height: 550px;
 }
 
 .content-block .mat-step-header .mat-step-icon-selected {
-  background-color: $asf-blue !important;
-  @include themify_non_host($themes) {
+  background-color: asf-theme.$asf-blue !important;
+  @include asf-theme.themify_non_host(asf-theme.$themes) {
     color: themed('dark-primary-text');
   }
 }
 /* TODO(mdc-migration): The following rule targets internal classes of menu that may no longer apply for the MDC version. */
 .mat-menu {
-  @include themify_non_host($themes) {
+  @include asf-theme.themify_non_host(asf-theme.$themes) {
     background-color: themed('background-white') !important;
   }
 }
 
 .content-block .mat-step-header .mat-step-icon {
-  @include themify_non_host($themes) {
+  @include asf-theme.themify_non_host(asf-theme.$themes) {
     background-color: themed('primary');
     color: themed('light-primary-text');
   }
@@ -686,53 +690,53 @@ $d-height: 550px;
 .mat-mdc-form-field.mat-focused {
   /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
   .mat-form-field-label {
-    @include themify_non_host($themes) {
+    @include asf-theme.themify_non_host(asf-theme.$themes) {
       color: themed('dark-secondary-text') !important;
     }
   }
 }
 
 .opacity-slider-title {
-  @include themify_non_host($themes) {
+  @include asf-theme.themify_non_host(asf-theme.$themes) {
     color: themed('dark-primary-text');
   }
 }
 .draw-svg {
-  @include themify_non_host($themes) {
+  @include asf-theme.themify_non_host(asf-theme.$themes) {
     fill: themed('dark-secondary-text');
   }
 }
 .view-btn {
-  @include themify_non_host($themes) {
+  @include asf-theme.themify_non_host(asf-theme.$themes) {
     fill: themed('dark-primary-text');
   }
 }
 .critical-baseline {
-  @include themify_non_host($themes) {
-    fill: darken(themed('background-white'), 5%);
+  @include asf-theme.themify_non_host(asf-theme.$themes) {
+    fill: color.adjust(themed('background-white'), $lightness: -5%);
   }
 }
 
 .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle{
-  @include themify_non_host($themes) {
+  @include asf-theme.themify_non_host(asf-theme.$themes) {
   border-color:themed('blue-link') !important;
   }
 }
 
 .mat-radio-button.mat-accent .mat-radio-inner-circle{
-  @include themify_non_host($themes) {
+  @include asf-theme.themify_non_host(asf-theme.$themes) {
   color: themed('blue-link') !important;
   background-color: themed('blue-link') !important;
   }
 }
 
 .md-icon {
-  @include themify_non_host($themes) {
+  @include asf-theme.themify_non_host(asf-theme.$themes) {
     color: themed('dark-primary-text');
   }
 }
 .blue-link {
-  @include themify_non_host($themes) {
+  @include asf-theme.themify_non_host(asf-theme.$themes) {
     color: themed('blue-link') !important;
   }
 }
@@ -740,10 +744,10 @@ $d-height: 550px;
 .ol-custom-scale-line {
   height: 14px;
   width: auto;
-  color: $asf-primary-light;
-  background: $asf-primary-dark;
+  color: asf-theme.$asf-primary-light;
+  background: asf-theme.$asf-primary-dark;
   border-style: solid;
-  border-color: $asf-primary-light;
+  border-color: asf-theme.$asf-primary-light;
   border-width: 0 2px 0 2px;
   text-align: center;
 }
@@ -868,7 +872,7 @@ $d-height: 550px;
 }
 
 .ts-snackbar {
-  @include themify($themes) {
+  @include asf-theme.themify(asf-theme.$themes) {
     background-color: themed('primary-light');
     color: themed('dark-primary-text');
   }
@@ -878,7 +882,7 @@ $d-height: 550px;
 }
 
 .mat-mdc-snack-bar-container.ts-snackbar {
-  @include themify($themes) {
+  @include asf-theme.themify(asf-theme.$themes) {
     background-color: themed('primary-light');
     color: themed('dark-primary-text');
   }
