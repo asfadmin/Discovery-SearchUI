@@ -25,9 +25,11 @@ export class ObservationPanelSelectorComponent implements OnDestroy, OnInit{
   frameCoverage: string[];
   rangeBandwith: string[];
   jointObservation: boolean;
+  instruments: string[];
 
   public datasetProductTypes$ = this.store$.select(filtersStore.getProductTypes);
   public flightDirections$ = this.store$.select(filtersStore.getFlightDirections);
+  public instruments$ = this.store$.select(filtersStore.getInstruments);
   public beamModes$ = this.store$.select(filtersStore.getBeamModes);
   public sidePolarizations$ = this.store$.select(filtersStore.getSidePolarizations);
   public polarizations$ = this.store$.select(filtersStore.getPolarizations);
@@ -87,6 +89,9 @@ export class ObservationPanelSelectorComponent implements OnDestroy, OnInit{
     this.subs.add(
         this.rangeBandwith$.subscribe(rangeBandwith => this.rangeBandwith = rangeBandwith)
     );
+    this.subs.add(
+        this.instruments$.subscribe(instruments => this.instruments = instruments)
+    );
   }
 
   public onNewDatasetBeamModes(beamModes: string[]): void {
@@ -133,6 +138,9 @@ export class ObservationPanelSelectorComponent implements OnDestroy, OnInit{
 
   public onNewJointObservation(observation) {
     this.store$.dispatch(new filtersStore.setJointObservation(observation))
+  }
+  public onNewInstrument(instruments) {
+    this.store$.dispatch(new filtersStore.setIntstrument(instruments))
   }
 
   public onNewGroupID(): void {

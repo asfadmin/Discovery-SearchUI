@@ -18,6 +18,7 @@ export const nisar = {
     // Props.JOINT_OBSERVATION,
     Props.COVERAGE_ANGLE,
     Props.USE_TRACK,
+    Props.INSTRUMENT,
   ],
   apiValue: { dataset: 'NISAR' },
   date: { start: new Date('2024/01/01 03:44:43 UTC') },
@@ -46,6 +47,31 @@ export const nisar = {
     'RH,RV',
     'HH,HV,VV,VH',
     'None'
+  ],
+  bandwith: {
+    'L-Band': [
+        '20+5',
+        '40+5',
+        '77',
+        '5',
+        '5+5'
+    ],
+    'S-Band': [
+        '10',
+        '25',
+        '37',
+        '75'
+    ],
+  },
+  instruments: [
+    {
+            displayName: 'L-Band Sar',
+            apiValue: 'L-SAR',
+    },
+    {
+        displayName: 'S-Band Sar',
+        apiValue: 'S-SAR',
+},
   ],
   subtypes: [
     //     {

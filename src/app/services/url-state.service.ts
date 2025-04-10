@@ -511,6 +511,14 @@ export class UrlStateService {
         ),
         loader: this.loadRangeBandwith
       },
+      {
+        name: 'instruments',
+        source: this.store$.select(filterStore.getInstruments).pipe(
+          map(instruments => instruments.join(',')),
+          map(instruments => ({ instruments }))
+        ),
+        loader: this.loadInstruments
+      },
     ];
   }
 
@@ -958,6 +966,11 @@ export class UrlStateService {
     // .map(direction => <models.FlightDirection>direction);
 
     return new filterStore.setRangeBandwith(bandwith);
+  };
+  private loadInstruments = (instrumentsStr: string): Action => {
+    const instruments= instrumentsStr
+    .split(',')
+    return new filterStore.setIntstrument(instruments);
   };
   private loadJointObservation = (observationStr: string): Action => {
     return new filterStore.setJointObservation(observationStr === 'true');

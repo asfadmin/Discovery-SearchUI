@@ -27,6 +27,7 @@ export interface Dataset {
   calibrationDatasets?: string[];
   calibrationProductTypes?: ProductType[];
   shortNames?: ShortName[]; // For NISAR shortnames
+  instruments?: {displayName: string, apiValue: string}[];
 }
 
 export enum MissionDataset {

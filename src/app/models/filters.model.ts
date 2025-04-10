@@ -13,6 +13,7 @@ export enum Props {
   STACK_SIZE = 'Stack Size',
   BASELINE_TOOL = 'Baseline Tool',
   SUBTYPE = 'Subtype',
+  INSTRUMENT = 'Instrument',
   POINTING_ANGLE = 'Pointing Angle',
   COVERAGE_ANGLE = 'Coverage Angle',
   JOINT_OBSERVATION = 'Joint Observation',
