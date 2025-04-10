@@ -42,6 +42,21 @@
     <span *ngIf="polarizations.length">
       <b>{{'POLARIZATIONS' | translate }}:</b> {{polarizations}}
     </span>
+    <span *ngIf="sidePolarizations.length">
+        <b>{{'SIDE_POLARIZATIONS' | translate }}:</b> {{sidePolarizations}}
+    </span>
+    <span *ngIf="instruments.length">
+        <b>{{'INSTRUMENTS' | translate }}:</b> {{instruments}}
+    </span>
+    <span *ngIf="frameCoverage.length">
+        <b>{{'FRAME_COVERAGE' | translate }}:</b> {{frameCoverage}}
+    </span>
+    <span *ngIf="rangeBandwith.length">
+        <b>{{'RANGE_BANDWITH' | translate }}:</b> {{rangeBandwith}}
+    </span>
+    <span *ngIf="jointObservation">
+        <b>{{'DATA_TYPE' | translate }}:</b> {{'JOINT_OBSERVATION_ONLY' | translate }}
+    </span>
     <span *ngIf="flightDirections.length">
       <b>{{'FLIGHT_DIR' | translate  }}:</b> {{flightDirections}}
     </span>

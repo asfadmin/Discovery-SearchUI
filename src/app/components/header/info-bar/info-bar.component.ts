@@ -52,6 +52,11 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public useCalibrationData: boolean = false;
   public groupID: string;
   public userID: string;
+  public sidePolarizations: models.DatasetPolarizations;
+  public rangeBandwith: string[];
+  public instruments: string[];
+  public frameCoverage: string[];
+  public jointObservation: boolean;
 
   private subs = new SubSink();
 
@@ -106,6 +111,21 @@ export class InfoBarComponent implements OnInit, OnDestroy {
     const polsSub = this.store$.select(filtersStore.getPolarizations).subscribe(
       pols  => this.polarizations = pols
     );
+    const sidePolsSub = this.store$.select(filtersStore.getSidePolarizations).subscribe(
+        sidePols => this.sidePolarizations = sidePols
+    )
+    const instrumentSub = this.store$.select(filtersStore.getInstruments).subscribe(
+        instruments => this.instruments = instruments
+    )
+    const frameCoverageSub = this.store$.select(filtersStore.getFrameCoverage).subscribe(
+        frameCoverage => this.frameCoverage = frameCoverage
+    )
+    const rangeBandwithSub = this.store$.select(filtersStore.getRangeBandwith).subscribe(
+        rangeBandwith => this.rangeBandwith = rangeBandwith
+    )
+    const jointObservationSub = this.store$.select(filtersStore.getJointObservation).subscribe(
+        jointObservation => this.jointObservation = jointObservation
+    )
     const beamModesSub = this.store$.select(filtersStore.getBeamModes).subscribe(
       beamModes => this.beamModes = beamModes
     );
@@ -162,6 +182,11 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       productTypesSub,
       shortNamesSub,
       polsSub,
+      sidePolsSub,
+      instrumentSub,
+      frameCoverageSub,
+      rangeBandwithSub,
+      jointObservationSub,
       beamModesSub,
       flightDirsSub,
       subtypeSub,
