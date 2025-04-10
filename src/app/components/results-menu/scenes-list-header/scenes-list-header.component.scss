@@ -1,6 +1,7 @@
 @use "@angular/material" as mat;
 
 @use "asf-theme";
+$mat-theme-ignore-duplication-warnings: true;
 $config: mat.m2-define-legacy-typography-config();
 
 .mobile-size {

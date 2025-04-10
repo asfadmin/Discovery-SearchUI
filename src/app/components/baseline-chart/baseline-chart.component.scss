@@ -1,5 +1,6 @@
 @use "sass:color";
 @use "asf-theme";
+$mat-theme-ignore-duplication-warnings: true;
 .chart-wrapper {
   height: 100%;
   border-left: lightgrey 1px solid;

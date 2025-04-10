@@ -1,5 +1,6 @@
 @use "sass:color";
 @use "asf-theme";
+$mat-theme-ignore-duplication-warnings: true;
 
 $prod-row-height: 58px;
 $thumb-size: 50px;

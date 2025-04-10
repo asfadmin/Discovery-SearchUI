@@ -1,6 +1,7 @@
 @use "@angular/material" as mat;
 
 @use "asf-theme";
+$mat-theme-ignore-duplication-warnings: true;
 
 // Create a config with the default typography levels.
 $config: mat.m2-define-legacy-typography-config();

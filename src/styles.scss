@@ -2,13 +2,14 @@
 
 @use "sass:color";
 @use "sass:meta";
-@use 'styles/asf-theme';
-@use 'styles/filter-list';
+@use 'asf-theme';
+@use 'filter-list';
 @use "variables";
 
 @import "prismjs/themes/prism-solarizedlight.css";
 
-asf-theme.$theme-map: null;
+$theme-map: null;
+//asf-theme.$theme-map: null;
 
 * {
   font-family: Roboto, sans-serif;
@@ -81,9 +82,9 @@ asf-theme.$theme-map: null;
   background-image: url("/assets/icons/info_black_48dp.svg");
 
   @include asf-theme.themify_non_host(asf-theme.$themes) {
-    box-shadow: 0 0 12px themed('primary');
+    box-shadow: 0 0 12px asf-theme.themed('primary');
 
-    background-color: themed('background-white');
+    background-color: asf-theme.themed('background-white');
     color: themed('dark-primary-text');
     .toast-message {
       color: themed('dark-secondary-text');
@@ -631,7 +632,7 @@ $d-height: 550px;
 /* TODO(mdc-migration): The following rule targets internal classes of menu that may no longer apply for the MDC version. */
 .mat-menu {
   @include asf-theme.themify_non_host(asf-theme.$themes) {
-    background-color: themed('background-white') !important;
+    background-color: asf-theme.themed('background-white') !important;
   }
 }
 

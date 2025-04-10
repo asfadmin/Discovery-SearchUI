@@ -1,4 +1,6 @@
+@use "variables";
 @use "asf-theme";
+$mat-theme-ignore-duplication-warnings: true;
 
 .icon-bar--layout {
   height: 100%;
@@ -72,7 +74,7 @@ label {
 }
 
 .control-icon {
-  @include asf-theme.md-icon-size(asf-theme.$asf-ribbon-icon-size);
+  @include asf-theme.md-icon-size(variables.$asf-ribbon-icon-size);
   @include asf-theme.themify(asf-theme.$themes) {
     color: asf-theme.themed('dark-primary-text');
   }

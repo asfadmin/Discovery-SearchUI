@@ -1,5 +1,6 @@
 @use "asf-theme";
 @use "deluxe-menu";
+$mat-theme-ignore-duplication-warnings: true;
 
 .menu-item {
   display: flex;

@@ -1,6 +1,7 @@
 @use "@angular/material" as mat;
 
 @use "asf-theme";
+$mat-theme-ignore-duplication-warnings: true;
 
 .ts-toggle-group {
   height: 20px !important;

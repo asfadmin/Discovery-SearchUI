@@ -1,5 +1,6 @@
 @use "sass:color";
 @use "asf-theme";
+$mat-theme-ignore-duplication-warnings: true;
 
 $header-height: 67px;
 $footer-height: 60px;

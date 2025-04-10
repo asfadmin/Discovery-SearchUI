@@ -2,6 +2,7 @@
 
 @use "sass:color";
 @use "asf-theme";
+$mat-theme-ignore-duplication-warnings: true;
 
 $config: mat.m2-define-legacy-typography-config();
 

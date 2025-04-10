@@ -1,6 +1,7 @@
 @use "@angular/material" as mat;
 
 @use "asf-theme";
+$mat-theme-ignore-duplication-warnings: true;
 @use "flex-layout-sass/mixin";
 
 .langSelect-div {

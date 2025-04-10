@@ -1,5 +1,6 @@
 @use "sass:color";
 @use "asf-theme";
+$mat-theme-ignore-duplication-warnings: true;
 
 $side-padding-only: 0 15px 0 15px;
 

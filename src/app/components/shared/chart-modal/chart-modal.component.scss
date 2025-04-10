@@ -1,5 +1,6 @@
 @use "@angular/material" as mat;
 @use "asf-theme";
+$mat-theme-ignore-duplication-warnings: true;
 // $config: mat.define-legacy-typography-config();
 
 .mat-button-toggle-button {

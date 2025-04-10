@@ -1,6 +1,8 @@
+@use "asf-theme";
+
 hr {
-  @include themify($themes) {
-    border-top-color: rgba(themed('primary-light'), 0.2);
+  @include asf-theme.themify(asf-theme.$themes) {
+    border-top-color: rgba(asf-theme.themed('primary-light'), 0.2);
   }
   margin-block: 0;
 }
@@ -21,11 +23,11 @@ hr {
 }
 
 .large-icon {
-  @include md-icon-size(30px);
+  @include asf-theme.md-icon-size(30px);
   min-height: 30px;
   margin-right: 0;
-  @include themify($themes) {
-    color: themed('dark-primary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('dark-primary-text');
   }
 }
 
@@ -35,14 +37,14 @@ hr {
   min-width: 60px;
 }
 .mat-mdc-list-item {
-  @include themify($themes) {
-    color: themed('dark-primary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('dark-primary-text');
   }
 }
 .menu-hr {
-  @include themify($themes) {
-    color: themed('dark-primary-text');
-    background-color: themed('primary-dark');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('dark-primary-text');
+    background-color: asf-theme.themed('primary-dark');
   }
   background-image: none;
   border: none;
@@ -59,8 +61,8 @@ hr {
 }
 
 .mat-mdc-menu-item {
-  @include themify($themes) {
-    background-color: themed('background-white') !important;
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('background-white') !important;
   }
   font-weight: 400;
   height: auto;
@@ -82,15 +84,15 @@ hr {
 }
 
 .item-content {
-  @include themify($themes) {
-    color: themed('blue-link') !important;
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('blue-link') !important;
   }
   line-height: 18px;
 }
 
 .item-title {
-  @include themify_non_host($themes) {
-    color: themed('dark-primary-text');
+  @include asf-theme.themify_non_host(asf-theme.$themes) {
+    color: asf-theme.themed('dark-primary-text');
   }
   line-height: 22px;
   font-size: 18px;
@@ -104,16 +106,16 @@ hr {
 }
 
 .menu-item-icon {
-  @include md-icon-size(65px);
+  @include asf-theme.md-icon-size(65px);
 
   margin-right: 0;
-  @include themify_non_host($themes) {
-    color: themed('dark-primary-text');
+  @include asf-theme.themify_non_host(asf-theme.$themes) {
+    color: asf-theme.themed('dark-primary-text');
   }
 }
 
 .dataset-date-range {
-  @include themify_non_host($themes) {
-   color: themed('dark-disabled-text') !important;
+  @include asf-theme.themify_non_host(asf-theme.$themes) {
+   color: asf-theme.themed('dark-disabled-text') !important;
   }
 }

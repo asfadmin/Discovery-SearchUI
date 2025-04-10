@@ -1,4 +1,5 @@
 @use "asf-theme";
+$mat-theme-ignore-duplication-warnings: true;
 
 button {
   height: 36px;
@@ -6,15 +7,15 @@ button {
 }
 
 .mat-mdc-button {
-  @include themify($themes) {
-    color: themed('dark-primary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('dark-primary-text');
   }
   font-size: 16px;
 }
 
 .badge {
-  @include themify($themes) {
-    background: themed('primary-light');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background: asf-theme.themed('primary-light');
   }
   display: inline;
   margin: 5px;

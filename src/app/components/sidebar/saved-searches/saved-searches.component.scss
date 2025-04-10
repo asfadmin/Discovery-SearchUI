@@ -1,4 +1,6 @@
 @use "asf-theme";
+@use 'sass:color';
+$mat-theme-ignore-duplication-warnings: true;
 
 .saved-searches {
   left: 0;
@@ -19,8 +21,8 @@
 .saved-searches__header,
 .saved-searches__footer,
 .saved-searches__footer-mobile {
-  @include themify($themes) {
-    background-color: themed('primary-light');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('primary-light');
   }
 }
 
@@ -31,16 +33,16 @@
 }
 
 .saved-searches__content {
-  @include themify($themes) {
-    background-color: themed('background-white');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('background-white');
   }
   max-height: calc(100vh - 350px);
   overflow-y: auto;
 }
 
 .saved-searches__content-mobile {
-  @include themify($themes) {
-    background-color: themed('background-white');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('background-white');
   }
   max-height: calc(100vh - 350px);
   overflow-y: auto;
@@ -48,14 +50,15 @@
 }
 
 .saved-searches-row:nth-child(odd) {
-  @include themify($themes) {
-    background-color: lighten(themed('primary-light'), 15%) !important;//themed('background-white');
+  @include asf-theme.themify(asf-theme.$themes) {
+    //background-color: lighten(asf-theme.themed('primary-light'), 15%) !important;//themed('background-white');
+    background-color: color.adjust(asf-theme.themed('primary-light'), $lightness: -15%) !important;
   }
 }
 
 .saved-searches__header {
-  @include themify($themes){
-    border-bottom-color: themed('primary');
+  @include asf-theme.themify(asf-theme.$themes){
+    border-bottom-color: asf-theme.themed('primary');
   }
   height: 70px;
   display: flex;
@@ -86,8 +89,8 @@
 }
 
 .saved-searches__subhead {
-  @include themify($themes) {
-    background-color: themed('background-white');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('background-white');
   }
   display: flex;
   flex-direction: row;
@@ -112,9 +115,9 @@
 
 .saved-searches__footer,
 .saved-searches__footer-mobile {
-  @include themify($themes) {
-    background: themed('primary-light');
-    border-top-color: themed('primary');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background: asf-theme.themed('primary-light');
+    border-top-color: asf-theme.themed('primary');
   }
   display: flex;
   flex-direction: row;
@@ -135,16 +138,16 @@
 }
 
 .saved-searches__save-button {
-  @include themify($themes) {
-    color: themed('primary-light');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('primary-light');
   }
   display: flex;
   margin: 6px;
 }
 
 .saved-searches__close-button {
-  @include themify($themes) {
-    color: themed('primary-light');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('primary-light');
   }
   display: flex;
   margin-right: 15px;
@@ -157,8 +160,8 @@
 }
 
 .no-saved-searches {
-  @include themify($themes) {
-    color: themed('primary-light');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('primary-light');
   }
   padding-left: 15px;
 }

@@ -1,6 +1,8 @@
+@use "variables";
 @use "asf-theme";
+$mat-theme-ignore-duplication-warnings: true;
 
 .option-info--spacing {
   margin-left: 5px;
-  color: asf-theme.$dark-secondary-text;
+  color: variables.$dark-secondary-text;
 }

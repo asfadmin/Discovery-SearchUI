@@ -1,4 +1,6 @@
+@use "sass:color";
 @use "asf-theme";
+$mat-theme-ignore-duplication-warnings: true;
 
 .saved-filters {
   left: 0;
@@ -19,8 +21,8 @@
 .saved-filters-presets__header,
 .saved-filters-presets__footer,
 .saved-filters-presets__footer-mobile {
-  @include themify($themes) {
-    background-color: themed('primary-light');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('primary-light');
   }
 }
 
@@ -31,16 +33,16 @@
 }
 
 .saved-filters-presets__content {
-  @include themify($themes) {
-    background-color: themed('background-white');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('background-white');
   }
   max-height: 100%;
   overflow-y: auto;
 }
 
 .saved-filters-presets__content-mobile {
-  @include themify($themes) {
-    background-color: themed('background-white');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('background-white');
   }
   max-height: 100%;
   overflow-y: auto;
@@ -48,14 +50,14 @@
 }
 
 .saved-filters-presets-row:nth-child(even) {
-  @include themify($themes) {
-    background-color: darken(themed('primary-light'), 10%) !important;
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: color.adjust(asf-theme.themed('primary-light'), $lightness: -10%) !important;
   }
 }
 
 .saved-filters-presets__header {
-  @include themify($themes) {
-    border-bottom-color: themed('primary');
+  @include asf-theme.themify(asf-theme.$themes) {
+    border-bottom-color: asf-theme.themed('primary');
   }
 
   height: 70px;
@@ -87,8 +89,8 @@
 }
 
 .saved-filters-presets__subhead {
-  @include themify($themes) {
-    background-color: themed('background-white');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('background-white');
   }
 
   display: flex;
@@ -114,9 +116,9 @@
 
 .saved-filters-presets__footer,
 .saved-filters-presets__footer-mobile {
-  @include themify($themes) {
-    border-top-color: themed('primary');
-    background-color: themed('primary-light');
+  @include asf-theme.themify(asf-theme.$themes) {
+    border-top-color: asf-theme.themed('primary');
+    background-color: asf-theme.themed('primary-light');
   }
 
   display: flex;
@@ -139,16 +141,16 @@
 }
 
 .saved-filters-presets__save-button {
-  @include themify($themes) {
-    color: themed('primary-light');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('primary-light');
   }
 
   display: flex;
 }
 
 .saved-filters-presets__close-button {
-  @include themify($themes) {
-    color: themed('primary-light');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('primary-light');
   }
 
   display: flex;
@@ -161,8 +163,8 @@
 }
 
 .no-saved-searches {
-  @include themify($themes) {
-    color: themed('primary-light');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('primary-light');
   }
 
   padding-left: 15px;

@@ -1,5 +1,6 @@
 @use "sass:color";
 @use "asf-theme";
+$mat-theme-ignore-duplication-warnings: true;
 
 $header-height: 120px;
 $footer-height: 60px;
@@ -15,7 +16,7 @@ $bottom-offset: 10px;
     color: asf-theme.themed('light-primary-text');
   }
 
-  color: asf-theme.$light-primary-text;
+  color: asf-theme.themed('light-primary-text');
   cursor: move;
   text-align: center;
 }

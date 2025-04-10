@@ -1,7 +1,9 @@
+@use "variables";
 @use "@angular/material" as mat;
 
 @use "sass:color";
 @use "asf-theme";
+$mat-theme-ignore-duplication-warnings: true;
 
 $config: mat.m2-define-legacy-typography-config();
 
@@ -153,7 +155,7 @@ $config: mat.m2-define-legacy-typography-config();
   margin-top: -4px;
   transform: rotate(0.4deg);
 
-  @include asf-theme.md-icon-size(asf-theme.$asf-ribbon-icon-size);
+  @include asf-theme.md-icon-size(variables.$asf-ribbon-icon-size);
 }
 
 /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
