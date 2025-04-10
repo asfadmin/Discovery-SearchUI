@@ -1,4 +1,5 @@
-@import "asf-theme";
+@use "sass:color";
+@use "asf-theme";
 
 .ls-example {
   font-style: italic;
@@ -27,9 +28,9 @@
 //}
 
 .drop-file-area {
-  @include themify($themes) {
-    background-color: darken(themed('background-white'), 10%);
-    outline: 2px dashed themed('primary');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: color.adjust(asf-theme.themed('background-white'), $lightness: -10%);
+    outline: 2px dashed asf-theme.themed('primary');
   }
 
   background-image: url('/assets/icons/cloud_upload_black_48dp.svg');
@@ -50,8 +51,8 @@
   font-size: 18px;
   font-weight: bold;
   text-align: center;
-  @include themify($themes) {
-    color: lighten(themed('dark-primary-text'), 20%);
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: color.adjust(asf-theme.themed('dark-primary-text'), $lightness: 20%);
   }
 
   .dd-text-1 {
@@ -86,14 +87,14 @@
 }
 
 .panel-title {
-  @include themify($themes) {
-    color: themed('dark-primary-text') !important;
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('dark-primary-text') !important;
   }
 }
 
 .asf-manual-link {
-  @include themify($themes) {
-    color: themed('dark-secondary-text')
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('dark-secondary-text')
   }
   display: inline-block;
   line-height: 0;

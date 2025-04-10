@@ -1,13 +1,13 @@
-@import "asf-theme";
+@use "asf-theme";
 
 .header-mobile {
   min-height: 36px;
 }
 
 .header {
-  @include themify($themes) {
-    background-color: themed('primary-light');
-    color: themed('dark-primary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('primary-light');
+    color: asf-theme.themed('dark-primary-text');
   }
 
   padding-top: 20px;
@@ -67,16 +67,16 @@
 }
 
 .baseline-criteria-button-toggle {
-  @include themify($themes) {
-    background-color: themed('background-white') !important;
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('background-white') !important;
   }
 
   font-size: 14px;
 }
 
 .sbas-criteria-button-toggle {
-  @include themify($themes) {
-    background-color: themed('background-white') !important;
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('background-white') !important;
   }
 
   font-size: 14px;
@@ -96,8 +96,8 @@
 
 /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .control-mat-button-toggle {
-  @include themify($themes) {
-    background-color: themed('background-white');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('background-white');
   }
 }
 
@@ -111,16 +111,16 @@
 .warn-icon {
   margin-right: 5px;
 
-  @include themify($themes) {
-    color: themed('warn');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('warn');
   }
 }
 
 .gap-detected-area {
   margin-top: -5px;
 
-  @include themify($themes) {
-    color: themed('dark-primary-text') !important;
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('dark-primary-text') !important;
   }
 }
 .baseline-chart {

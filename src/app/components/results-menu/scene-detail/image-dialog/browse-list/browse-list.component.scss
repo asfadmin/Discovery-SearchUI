@@ -1,9 +1,9 @@
-@import "asf-theme";
+@use "asf-theme";
 
 .browse-list {
-  @include themify($themes) {
-    border-top-color: themed('primary-dark');
-    background-color: themed('primary-light');
+  @include asf-theme.themify(asf-theme.$themes) {
+    border-top-color: asf-theme.themed('primary-dark');
+    background-color: asf-theme.themed('primary-light');
   }
   min-height: 140px;
   border-top-style: solid;

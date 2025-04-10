@@ -1,4 +1,5 @@
-@import "asf-theme";
+@use "sass:color";
+@use "asf-theme";
 
 $header-height: 67px;
 $footer-height: 60px;
@@ -8,8 +9,8 @@ $warn-msg-mobile-height: 49px;
 $idk-pad: 21px;
 
 .dl-title-group {
-  @include themify($themes) {
-    color: themed("dark-primary-text");
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed("dark-primary-text");
   }
 
   padding: 0 10px;
@@ -23,8 +24,8 @@ $idk-pad: 21px;
 }
 
 .dl-subtitle {
-  @include themify($themes) {
-    color: themed("dark-secondary-text");
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed("dark-secondary-text");
   }
 
   margin-top: -25px;
@@ -33,10 +34,10 @@ $idk-pad: 21px;
 }
 
 .dl-card-actions {
-  @include themify($themes) {
-    background-color: themed("primary-light");
-    border-top-color: themed("primary-dark");
-    color: themed("dark-primary-text");
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed("primary-light");
+    border-top-color: asf-theme.themed("primary-dark");
+    color: asf-theme.themed("dark-primary-text");
   }
 
   height: 80px;
@@ -58,8 +59,8 @@ $idk-pad: 21px;
   .mat-mdc-button {
     font-size: 16px;
 
-    @include themify($themes) {
-      color: themed("dark-primary-text");
+    @include asf-theme.themify(asf-theme.$themes) {
+      color: asf-theme.themed("dark-primary-text");
     }
   }
 
@@ -74,8 +75,8 @@ $idk-pad: 21px;
   .mat-mdc-button {
     font-size: 16px;
 
-    @include themify($themes) {
-      color: themed("dark-primary-text");
+    @include asf-theme.themify(asf-theme.$themes) {
+      color: asf-theme.themed("dark-primary-text");
     }
   }
 
@@ -93,8 +94,8 @@ $idk-pad: 21px;
   cursor: pointer;
   z-index: 100;
 
-  @include themify($themes) {
-    color: themed("dark-primary-text");
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed("dark-primary-text");
   }
 }
 
@@ -102,8 +103,8 @@ $idk-pad: 21px;
   text-align: center;
   font-size: 20px;
 
-  @include themify($themes) {
-    color: themed("dark-primary-text");
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed("dark-primary-text");
   }
 }
 
@@ -111,9 +112,9 @@ $idk-pad: 21px;
   font-size: 14px;
   padding: 7px;
 
-  @include themify($themes) {
-    background-color: lighten(themed("primary-light"), 10%);
-    color: themed("err");
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: color.adjust(asf-theme.themed("primary-light"), $lightness: 10%);
+    color: asf-theme.themed("err");
   }
 
   width: 100%;
@@ -130,15 +131,15 @@ $idk-pad: 21px;
   a {
     text-decoration: none;
 
-    @include themify($themes) {
-      color: themed("dark-primary-text");
+    @include asf-theme.themify(asf-theme.$themes) {
+      color: asf-theme.themed("dark-primary-text");
     }
   }
 }
 
 .more-link {
-  @include themify($themes) {
-    color: themed("blue-link");
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed("blue-link");
   }
 }
 
@@ -152,8 +153,8 @@ button {
   display: grid;
   font-size: 14px;
 
-  @include themify($themes) {
-    color: themed("light-primary-text");
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed("light-primary-text");
   }
 
   justify-content: center;
@@ -165,8 +166,8 @@ button {
 }
 
 .dl-mat-dialog-content {
-  @include themify($themes) {
-    background-color: themed("background-white");
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed("background-white");
   }
 
   height: calc(100% - #{$header-height} - #{$footer-height} - #{$idk-pad});
@@ -188,8 +189,8 @@ button {
 }
 
 .dl-mat-dialog-actions {
-  @include themify($themes) {
-    background-color: themed("dark-secondary-text");
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed("dark-secondary-text");
   }
 
   position: absolute;
@@ -205,9 +206,9 @@ button {
 [mat-dialog-title] {
   padding: 18px 24px;
 
-  @include themify($themes) {
-    background-color: themed("primary-light");
-    color: themed("dark-primary-text");
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed("primary-light");
+    color: asf-theme.themed("dark-primary-text");
   }
 
   cursor: move;
@@ -224,8 +225,8 @@ button {
   font-size: small;
   font-style: italic;
 
-  @include themify($themes) {
-    color: themed("blue-link");
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed("blue-link");
   }
 
   position: fixed;
@@ -289,8 +290,8 @@ button {
   a {
     text-decoration: underline;
 
-    @include themify($themes) {
-      color: themed("blue-link");
+    @include asf-theme.themify(asf-theme.$themes) {
+      color: asf-theme.themed("blue-link");
     }
   }
 }
@@ -307,8 +308,8 @@ button {
 .clipboard-button {
   margin-right: 15px !important;
   font-size: 16px !important;
-  @include themify($themes) {
-    color: themed("dark-primary-text");
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed("dark-primary-text");
   }
 }
 .download-button {
@@ -317,7 +318,7 @@ button {
 .close-button {
   margin-left:0 !important;
   display: flex !important;
-  @include themify($themes) {
-    color: themed("dark-primary-text");
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed("dark-primary-text");
   }
 }

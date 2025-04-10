@@ -1,4 +1,5 @@
-@import "asf-theme";
+@use "sass:color";
+@use "asf-theme";
 .chart-wrapper {
   height: 100%;
   border-left: lightgrey 1px solid;
@@ -44,55 +45,55 @@ ul {
   }
 }
 ::ng-deep .baseline-label {
-  @include themify($themes) {
-    fill: themed('dark-primary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    fill: asf-theme.themed('dark-primary-text');
   }
 }
 
 
 ::ng-deep .baseline-reference {
-  @include themify($themes) {
-    fill: themed('dark-primary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    fill: asf-theme.themed('dark-primary-text');
   }
 }
 
 ::ng-deep .baseline-download {
-  @include themify($themes) {
-    fill: darken(themed('blue-link'), 20%);
+  @include asf-theme.themify(asf-theme.$themes) {
+    fill: color.adjust(asf-theme.themed('blue-link'), $lightness: -20%);
   }
 }
 ::ng-deep .baseline-selected {
-  @include themify($themes) {
-    fill: themed('err');
+  @include asf-theme.themify(asf-theme.$themes) {
+    fill: asf-theme.themed('err');
   }
 }
 ::ng-deep .baseline-reference {
-  @include themify($themes) {
-    fill: themed('dark-primary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    fill: asf-theme.themed('dark-primary-text');
   }
 }
 ::ng-deep .baseline-base {
-  @include themify($themes) {
-    fill: lighten(themed('dark-primary-text'), 45%);
+  @include asf-theme.themify(asf-theme.$themes) {
+    fill: color.adjust(asf-theme.themed('dark-primary-text'), $lightness: 45%);
   }
 }
 .baseline-box {
-  @include themify($themes) {
-    background: darken(themed('background-white'), 5%);
+  @include asf-theme.themify(asf-theme.$themes) {
+    background: color.adjust(asf-theme.themed('background-white'), $lightness: -5%);
   }
 }
 .reference-box {
-  @include themify($themes) {
-    background: themed('dark-primary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background: asf-theme.themed('dark-primary-text');
   }
 }
 .download-box {
-  @include themify($themes) {
-    background: darken(themed('blue-link'), 20%);
+  @include asf-theme.themify(asf-theme.$themes) {
+    background: color.adjust(asf-theme.themed('blue-link'), $lightness: -20%);
   }
 }
 .selected-box {
-  @include themify($themes) {
-    background: themed('err');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background: asf-theme.themed('err');
   }
 }

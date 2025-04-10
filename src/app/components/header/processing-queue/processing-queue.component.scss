@@ -1,4 +1,5 @@
-@import "asf-theme";
+@use "sass:color";
+@use "asf-theme";
 
 $header-height: 120px;
 $footer-height: 60px;
@@ -10,19 +11,19 @@ $bottom-offset: 10px;
 
 [mat-dialog-title] {
   background: #369; // TODO: check this
-  @include themify($themes) {
-    color: themed('light-primary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('light-primary-text');
   }
 
-  color: $light-primary-text;
+  color: asf-theme.$light-primary-text;
   cursor: move;
   text-align: center;
 }
 
 .processing-queue {
-  @include themify($themes) {
-    color: themed('dark-primary-text');
-    background-color: themed('primary-light');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('dark-primary-text');
+    background-color: asf-theme.themed('primary-light');
   }
 
   min-width: 350px;
@@ -39,10 +40,10 @@ $bottom-offset: 10px;
 }
 
 .pq-card-title-group {
-  @include themify($themes) {
-    color: themed('dark-primary-text');
-    background-color: themed('primary-light');
-    header-bottom-color: themed('primary-dark');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('dark-primary-text');
+    background-color: asf-theme.themed('primary-light');
+    header-bottom-color: asf-theme.themed('primary-dark');
   }
 
   padding: 10px 0 0 0;
@@ -82,8 +83,8 @@ $bottom-offset: 10px;
 }
 
 .list-filter {
-  @include themify($themes) {
-    background-color: themed('background-white');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('background-white');
   }
 
   border-bottom: solid grey 1px;
@@ -115,9 +116,9 @@ $bottom-offset: 10px;
 }
 
 .on-demand-icon {
-  @include md-icon-size(72px);
-  @include themify($themes) {
-    color: themed('dark-primary-text');
+  @include asf-theme.md-icon-size(72px);
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('dark-primary-text');
   }
 }
 
@@ -152,8 +153,8 @@ $bottom-offset: 10px;
 }
 
 .dataset-menu {
-  @include themify($themes) {
-    background-color: adjust-color(themed('primary-light'), $lightness: +7%);
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: color.adjust(asf-theme.themed('primary-light'), $lightness: +7%);
   }
 
   display: block;
@@ -178,9 +179,9 @@ $bottom-offset: 10px;
 }
 
 .error-header {
-  @include themify($themes) {
-    background-color: themed('background-white');
-    border-bottom-color: themed('primary-dark');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('background-white');
+    border-bottom-color: asf-theme.themed('primary-dark');
   }
 
   border-bottom-style: solid;
@@ -192,8 +193,8 @@ $bottom-offset: 10px;
 }
 
 .mobile-tab-selector {
-  @include themify($themes) {
-    border-bottom-color: themed('primary-dark');
+  @include asf-theme.themify(asf-theme.$themes) {
+    border-bottom-color: asf-theme.themed('primary-dark');
   }
 
   border-bottom-style: solid;
@@ -229,8 +230,8 @@ $bottom-offset: 10px;
 
   a {
     text-decoration: underline;
-    @include themify($themes) {
-      color: themed('blue-link');
+    @include asf-theme.themify(asf-theme.$themes) {
+      color: asf-theme.themed('blue-link');
     }
   }
 }
@@ -245,8 +246,8 @@ $bottom-offset: 10px;
 }
 
 .on-demand-subtitle {
-  @include themify($themes) {
-    color: themed('dark-secondary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('dark-secondary-text');
   }
 
   font-style: italic;
@@ -255,8 +256,8 @@ $bottom-offset: 10px;
 }
 
 .mat-mdc-dialog-content {
-  @include themify($themes) {
-    background-color: themed('background-white');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('background-white');
   }
 
   position: absolute;
@@ -327,8 +328,8 @@ $bottom-offset: 10px;
 }
 
 .mat-mdc-dialog-actions {
-  @include themify($themes) {
-    background-color: themed('primary-light');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('primary-light');
   }
 
   position: absolute;
@@ -341,9 +342,9 @@ $bottom-offset: 10px;
 }
 
 .hyp3-footer {
-  @include themify($themes) {
-    background-color: themed('primary-light');
-    border-top-color: themed('primary-dark');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('primary-light');
+    border-top-color: asf-theme.themed('primary-dark');
   }
 
   display: flex;
@@ -369,8 +370,8 @@ $bottom-offset: 10px;
 }
 
 .footer-job-notification {
-  @include themify($themes) {
-    color: themed('dark-primary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('dark-primary-text');
   }
 
   flex: none;
@@ -394,9 +395,9 @@ $bottom-offset: 10px;
 }
 
 .rectangle {
-  @include themify($themes) {
-    color: themed('warn');
-    border-color: themed('warn');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('warn');
+    border-color: asf-theme.themed('warn');
   }
 
   position: relative;
@@ -448,8 +449,8 @@ $bottom-offset: 10px;
 }
 
 .hyp3-url {
-  @include themify($themes) {
-    color: themed('dark-secondary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('dark-secondary-text');
   }
 
   height: 32px;
@@ -467,7 +468,7 @@ $bottom-offset: 10px;
 }
 
 a {
-  @include themify($themes) {
-    color: themed('blue-link')
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('blue-link')
   }
 }

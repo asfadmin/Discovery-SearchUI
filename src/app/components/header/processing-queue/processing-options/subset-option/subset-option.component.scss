@@ -1,8 +1,8 @@
-@import "asf-theme";
+@use "asf-theme";
 
 .subset-option {
-  @include themify($themes) {
-    color: themed('blue-link');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('blue-link');
   }
 }
 

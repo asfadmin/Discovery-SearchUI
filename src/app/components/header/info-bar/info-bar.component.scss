@@ -1,6 +1,6 @@
 @use "@angular/material" as mat;
 
-@import "asf-theme";
+@use "asf-theme";
 
 $config: mat.m2-define-legacy-typography-config();
 
@@ -28,10 +28,10 @@ div span {
 }
 
 .info-bar {
-  @include themify($themes) {
-    color: themed('dark-primary-text');
-    background-color: themed('primary-light');
-    border-top-color: themed('primary');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('dark-primary-text');
+    background-color: asf-theme.themed('primary-light');
+    border-top-color: asf-theme.themed('primary');
   }
   border-top-style: solid;
   border-top-width: 1px;
@@ -55,8 +55,8 @@ div span {
 
 .new-stuff {
   cursor: pointer;
-  @include themify($themes) {
-    color: themed('blue-link');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('blue-link');
   }
   font-weight: bold;
   margin-right: 10px;

@@ -1,11 +1,12 @@
-@import "asf-theme";
+@use "sass:color";
+@use "asf-theme";
 
 :host {
   height: 100%;
 }
 a {
-  @include themify($themes) {
-    color: themed("blue-link") !important;
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed("blue-link") !important;
   }
 
   text-decoration: none;
@@ -15,8 +16,8 @@ a {
   max-width: 100%;
   height: 90%;
 
-  @include themify($themes) {
-    border-left: themed("primary-light") 1px solid;
+  @include asf-theme.themify(asf-theme.$themes) {
+    border-left: asf-theme.themed("primary-light") 1px solid;
   }
 
   overflow-x: hidden !important;
@@ -54,12 +55,12 @@ a {
 .banner {
   height: 30px;
 
-  @include themify($themes) {
-    background: themed("primary-light");
-    color: themed("dark-primary-text");
+  @include asf-theme.themify(asf-theme.$themes) {
+    background: asf-theme.themed("primary-light");
+    color: asf-theme.themed("dark-primary-text");
 
     mat-icon {
-      color: themed("dark-primary-text");
+      color: asf-theme.themed("dark-primary-text");
     }
   }
   margin-left: -16px;
@@ -76,8 +77,8 @@ a {
 }
 
 .not-clickable {
-  @include themify($themes) {
-    color: themed("dark-disabled-text") !important;
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed("dark-disabled-text") !important;
   }
 
   cursor: default;
@@ -161,12 +162,12 @@ a {
   display: flex;
   justify-content: flex-start;
 
-  @include themify($themes) {
-    background: lighten(themed("primary-light"), 8%);
+  @include asf-theme.themify(asf-theme.$themes) {
+    background: color.adjust(asf-theme.themed("primary-light"), $lightness: 8%);
 
     button[disabled="true"] {
-      background-color: themed("primary-light");
-      color: themed("dark-secondary-text");
+      background-color: asf-theme.themed("primary-light");
+      color: asf-theme.themed("dark-secondary-text");
     }
   }
 
@@ -196,17 +197,17 @@ a {
   font-size: 14px;
   font-weight: 500;
 
-  @include themify($themes) {
-    color: lighten(themed("dark-primary-text"), 10%);
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: color.adjust(asf-theme.themed("dark-primary-text"), $lightness: 10%);
   }
 }
 
 .search-button {
   margin-left: 20px;
 
-  @include themify($themes) {
-    background-color: themed("primary");
-    color: themed("light-primary-text");
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed("primary");
+    color: asf-theme.themed("light-primary-text");
   }
 
   border: 1px groove rgb(0 0 0 / 25%) !important;

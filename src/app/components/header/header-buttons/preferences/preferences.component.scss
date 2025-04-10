@@ -1,4 +1,4 @@
-@import "asf-theme";
+@use "asf-theme";
 
 .preferences-group {
   display: flex;
@@ -25,8 +25,8 @@
   flex: 30px;
 
   a {
-    @include themify($themes) {
-      color: themed('blue-link');
+    @include asf-theme.themify(asf-theme.$themes) {
+      color: asf-theme.themed('blue-link');
     }
     text-decoration: none;
   }
@@ -38,8 +38,8 @@
 }
 
 .dialog-header {
-  @include themify($themes) {
-    color: themed('dark-primary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('dark-primary-text');
   }
 
   display: flex;
@@ -49,8 +49,8 @@
 }
 
 .preferences-body {
-  @include themify($themes) {
-    background-color: themed("background-white");
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed("background-white");
   }
   display: flex;
   width: 100%;

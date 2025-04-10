@@ -1,9 +1,9 @@
-@import "asf-theme";
+@use "asf-theme";
 
 .download-file-button {
   text-decoration: none;
-  @include themify($themes) {
-    color: themed('dark-primary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('dark-primary-text');
   }
 }
 

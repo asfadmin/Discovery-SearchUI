@@ -1,5 +1,5 @@
-@import "asf-theme";
-@import "variables";
+@use "asf-theme";
+@use "variables";
 
 .disp-layers--layout {
   height: 100%;
@@ -17,8 +17,8 @@
 }
 
 .layers-selector {
-  @include themify($themes) {
-    background-color: themed('primary-light');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('primary-light');
   }
 
   //padding-bottom: 4px;
@@ -36,8 +36,8 @@
 }
 
 .footer {
-  @include themify($themes) {
-    background-color: themed('primary');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('primary');
   }
 
   margin: 0;
@@ -47,9 +47,9 @@
 }
 
 .footer--text {
-  @include themify($themes) {
-    background-color: themed('primary');
-    color: themed('light-secondary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('primary');
+    color: asf-theme.themed('light-secondary-text');
   }
 
   font-size: 12px;

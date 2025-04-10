@@ -1,6 +1,6 @@
 @use "@angular/material" as mat;
 
-@import "asf-theme";
+@use "asf-theme";
 $config: mat.m2-define-legacy-typography-config();
 
 .mobile-size {
@@ -86,8 +86,8 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .list-button {
-  @include themify($themes) {
-    background-color: themed('background-white');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('background-white');
   }
 
   border: darkgrey 1px solid;
@@ -116,8 +116,8 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .button-group-label {
-  @include themify($themes) {
-    color: themed('dark-secondary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('dark-secondary-text');
   }
   white-space: nowrap;
   text-align: center;
@@ -128,8 +128,8 @@ $config: mat.m2-define-legacy-typography-config();
 
 /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .control-mat-button-toggle {
-  @include themify($themes) {
-    background-color: themed('background-white');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('background-white');
   }
 }
 

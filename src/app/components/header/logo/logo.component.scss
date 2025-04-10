@@ -1,10 +1,10 @@
-@import "asf-theme";
-@import "variables";
+@use "asf-theme";
+@use "variables";
 
 %card-base {
-  @include themify($themes) {
-    background-color: themed('primary');
-    color: themed('dark-primary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('primary');
+    color: asf-theme.themed('dark-primary-text');
   }
   border-radius: 0;
 }
@@ -24,9 +24,9 @@
 }
 
 .logo-card {
-  @include themify($themes) {
-    background-color: themed('primary-light');
-    color: themed('background-white');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('primary-light');
+    color: asf-theme.themed('background-white');
   }
 
   padding: 0 8px 0 0 !important;
@@ -57,16 +57,16 @@
   }
 
   a {
-    color: $asf-warn;
+    color: asf-theme.$asf-warn;
   }
 }
 
 $icon-size: 36px;
 
 .menu-toggle-button {
-  @include themify($themes) {
-    background-color: themed('primary');
-    color: themed('dark-primary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('primary');
+    color: asf-theme.themed('dark-primary-text');
   }
   box-shadow: none !important;
   cursor: pointer;
@@ -81,7 +81,7 @@ $icon-size: 36px;
 }
 
 .toggle-icon {
-  @include md-icon-size($icon-size);
+  @include asf-theme.md-icon-size($icon-size);
 }
 
 .toggle-text {

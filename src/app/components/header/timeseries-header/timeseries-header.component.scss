@@ -1,4 +1,4 @@
-@import "asf-theme";
+@use "asf-theme";
 
 .baseline-header-layout {
   flex-direction: row;
@@ -71,8 +71,8 @@
 }
 
 .invert-icon {
-  @include themify($themes) {
-    filter: themed('inverted-image');
+  @include asf-theme.themify(asf-theme.$themes) {
+    filter: asf-theme.themed('inverted-image');
   }
 }
 

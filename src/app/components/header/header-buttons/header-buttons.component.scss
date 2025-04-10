@@ -1,15 +1,15 @@
-@import "asf-theme";
-@import "deluxe-menu";
+@use "asf-theme";
+@use "deluxe-menu";
 
 .menu-item {
   display: flex;
-  @include themify($themes) {
-    color: themed('dark-primary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('dark-primary-text');
   }
 }
 .mat-icon {
-  @include themify($themes) {
-    color: themed('dark-primary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('dark-primary-text');
   }
 }
 .mat-mdc-button {

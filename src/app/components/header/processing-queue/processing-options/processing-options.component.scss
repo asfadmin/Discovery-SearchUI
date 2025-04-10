@@ -1,8 +1,8 @@
-@import "asf-theme";
+@use "asf-theme";
 
 .processing-options {
-  @include themify($themes) {
-    background-color: themed('background-white');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('background-white');
   }
   margin-top: 10px;
 }

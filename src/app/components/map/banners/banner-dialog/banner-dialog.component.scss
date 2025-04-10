@@ -1,13 +1,13 @@
-@import "asf-theme";
+@use "asf-theme";
 
 [mat-dialog-title] {
   margin: 0;
 }
 
 .banner-title {
-  @include themify_non_host($themes) {
-    color: themed("dark-primary-text");
-    background-color: themed("primary-light");
+  @include asf-theme.themify_non_host(asf-theme.$themes) {
+    color: asf-theme.themed("dark-primary-text");
+    background-color: asf-theme.themed("primary-light");
   }
 
   padding: 10px 0 !important;
@@ -18,12 +18,12 @@
   cursor: move;
   text-align: center;
   font-size: x-large !important;
-  border-bottom: 1px solid $asf-primary-dark;
+  border-bottom: 1px solid asf-theme.$asf-primary-dark;
 }
 
 .banner-content {
-  @include themify_non_host($themes) {
-    background-color: themed("background-white");
+  @include asf-theme.themify_non_host(asf-theme.$themes) {
+    background-color: asf-theme.themed("background-white");
   }
 
   font: inherit;
@@ -31,16 +31,16 @@
 }
 
 .banner-content a {
-  @include themify_non_host($themes) {
-    color: themed("blue-link");
+  @include asf-theme.themify_non_host(asf-theme.$themes) {
+    color: asf-theme.themed("blue-link");
   }
 }
 
 .banner-actions {
-  @include themify_non_host($themes) {
-    color: themed("dark-primary-text");
-    background-color: themed("primary-light");
+  @include asf-theme.themify_non_host(asf-theme.$themes) {
+    color: asf-theme.themed("dark-primary-text");
+    background-color: asf-theme.themed("primary-light");
   }
 
-  border-top: 1px solid $asf-primary-dark;
+  border-top: 1px solid asf-theme.$asf-primary-dark;
 }

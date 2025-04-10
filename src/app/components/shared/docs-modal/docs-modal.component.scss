@@ -1,4 +1,4 @@
-@import "asf-help";
+@use "asf-help";
 
 .link-pointer {
   cursor: pointer;
@@ -12,18 +12,18 @@
 }
 
 .text-link {
-  @include themify($themes) {
-    color: themed('blue-link');
+  @include asf-help.themify(asf-help.$themes) {
+    color: asf-help.themed('blue-link');
   }
   text-decoration: underline;
 
 }
 
 .large-icon {
-  @include md-icon-size(30px);
+  @include asf-help.md-icon-size(30px);
   min-height: 30px;
   margin-right: 0;
-  @include themify($themes) {
-    color: themed('dark-primary-text');
+  @include asf-help.themify(asf-help.$themes) {
+    color: asf-help.themed('dark-primary-text');
   }
 }

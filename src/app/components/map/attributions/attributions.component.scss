@@ -1,6 +1,7 @@
 @use "@angular/material" as mat;
 
-@import "asf-theme";
+@use "sass:color";
+@use "asf-theme";
 
 $config: mat.m2-define-legacy-typography-config();
 
@@ -30,10 +31,10 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .attribute-box {
-  @include themify($themes) {
-    background-color: themed('primary-light');
-    color: themed('dark-primary-text');
-    border-color: themed('primary-light');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('primary-light');
+    color: asf-theme.themed('dark-primary-text');
+    border-color: asf-theme.themed('primary-light');
   }
   border-style: solid;
   border-width: 1px 0 0 1px;
@@ -54,8 +55,8 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 a {
-  @include themify($themes) {
-    color: themed('dark-secondary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('dark-secondary-text');
   }
 
   text-decoration: none;
@@ -69,10 +70,10 @@ a {
 }
 
 .bar-layout {
-  @include themify($themes) {
-    background-color: themed('primary-light');
-    color: themed('dark-secondary-text');
-    border-top: 1px solid themed('primary-dark');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('primary-light');
+    color: asf-theme.themed('dark-secondary-text');
+    border-top: 1px solid asf-theme.themed('primary-dark');
   }
   display: flex;
   flex-direction: row;
@@ -89,10 +90,10 @@ a {
 }
 
 .toggle-button {
-  @include themify($themes) {
-    background-color: themed('primary-light');
-    color: themed('dark-secondary-text');
-    border-bottom-color: lighten(themed('primary-light'),10%);
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('primary-light');
+    color: asf-theme.themed('dark-secondary-text');
+    border-bottom-color: color.adjust(asf-theme.themed('primary-light'),$lightness: 10%);
   }
   pointer-events: auto;
   font-size: 18px;
@@ -103,8 +104,8 @@ a {
 }
 
 .bar {
-  @include themify($themes) {
-    background: themed('primary-light');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background: asf-theme.themed('primary-light');
   }
   position: absolute;
   bottom: 0;

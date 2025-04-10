@@ -1,6 +1,6 @@
 @use "@angular/material" as mat;
 
-@import "asf-theme";
+@use "asf-theme";
 $config: mat.m2-define-legacy-typography-config();
 
 .medium-header {
@@ -56,8 +56,8 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .baseline-criteria-button-toggle {
-  @include themify($themes) {
-    background-color: themed('background-white') !important;
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('background-white') !important;
   }
   font-size: 14px;
 }
@@ -84,8 +84,8 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .list-button {
-  @include themify($themes) {
-    background-color: themed('background-white');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('background-white');
   }
   border: darkgrey 1px solid;
   color: inherit;
@@ -113,8 +113,8 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .button-group-label {
-  @include themify($themes) {
-    color: themed('dark-secondary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('dark-secondary-text');
   }
   white-space: nowrap;
   text-align: center;

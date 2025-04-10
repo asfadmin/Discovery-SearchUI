@@ -1,9 +1,9 @@
-@import "asf-theme";
+@use "asf-theme";
 
 a {
   text-decoration: none;
-  @include themify($themes) {
-    color: themed('blue-link');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('blue-link');
   }
 }
 
@@ -13,7 +13,7 @@ a {
   columns: 2;
 
   .mat-icon {
-    @include md-icon-size(12px);
+    @include asf-theme.md-icon-size(12px);
 
     margin-left: 4px;
   }

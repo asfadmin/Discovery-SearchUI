@@ -1,13 +1,13 @@
 @use "@angular/material" as mat;
 
-@import "asf-theme";
+@use "asf-theme";
 
 // $config: mat.define-legacy-typography-config();
 
 a {
   text-decoration: none;
-  @include themify($themes) {
-    color: themed('blue-link');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('blue-link');
   }
 }
 
@@ -17,9 +17,9 @@ a {
   columns: 2;
 
   .mat-icon {
-    @include md-icon-size(12px);
-    @include themify($themes) {
-      color: themed('dark-primary-text');
+    @include asf-theme.md-icon-size(12px);
+    @include asf-theme.themify(asf-theme.$themes) {
+      color: asf-theme.themed('dark-primary-text');
     }
     margin-left: 4px;
   }

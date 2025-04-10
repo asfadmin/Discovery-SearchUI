@@ -1,9 +1,9 @@
-@import "asf-theme";
+@use "asf-theme";
 
 .view-btn {
-  @include themify($themes) {
+  @include asf-theme.themify(asf-theme.$themes) {
     svg {
-      fill: themed('dark-primary-text');
+      fill: asf-theme.themed('dark-primary-text');
     }
   }
   width: 19px;
@@ -17,9 +17,9 @@
 }
 
 .view-select-button {
-  @include themify($themes) {
-    background: themed('background-white');
-    color: themed('dark-primary-text')
+  @include asf-theme.themify(asf-theme.$themes) {
+    background: asf-theme.themed('background-white');
+    color: asf-theme.themed('dark-primary-text')
   }
   margin: 0;
   font-size: 18px !important;
@@ -43,8 +43,8 @@
 }
 
 .bottom-right {
-  @include themify($themes) {
-    color: themed('primary');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('primary');
   }
   position: absolute;
   bottom: -9px;

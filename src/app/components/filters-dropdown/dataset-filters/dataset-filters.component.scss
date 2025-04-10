@@ -1,4 +1,4 @@
-@import "asf-theme";
+@use "asf-theme";
 .raised-section {
   box-shadow:
     0 8px 10px 1px rgba(0, 0, 0, 0.14),
@@ -16,7 +16,7 @@
 }
 .header {
 
-  @include themify($themes) {
-    background-color: themed('primary-light');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('primary-light');
   }
 }

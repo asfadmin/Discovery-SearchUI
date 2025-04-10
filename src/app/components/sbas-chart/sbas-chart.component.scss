@@ -1,4 +1,4 @@
-@import "asf-theme";
+@use "asf-theme";
 
 .chart-wrapper {
   height: calc(100% - 1px);
@@ -10,7 +10,7 @@
   width: 100%;
 }
 ::ng-deep .sbas-label {
-  @include themify($themes) {
-    fill: themed('dark-primary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    fill: asf-theme.themed('dark-primary-text');
   }
 }

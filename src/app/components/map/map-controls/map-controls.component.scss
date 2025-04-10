@@ -1,4 +1,4 @@
-@import "asf-theme";
+@use "asf-theme";
 
 .icon-bar--layout {
   height: 100%;
@@ -27,8 +27,8 @@
 }
 
 .icon-bar {
-  @include themify($themes) {
-    background-color: themed('primary-light');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('primary-light');
   }
 
   padding: 0;
@@ -40,9 +40,9 @@
 }
 
 .ribbon-info-top {
-  @include themify($themes) {
-    background-color: themed('primary-light');
-    color: themed('primary');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('primary-light');
+    color: asf-theme.themed('primary');
   }
 }
 
@@ -51,9 +51,9 @@ label {
 }
 
 .lat-lon {
-  @include themify($themes) {
-    background-color: themed('primary');
-    color: themed('light-secondary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('primary');
+    color: asf-theme.themed('light-secondary-text');
   }
 
   font-size: 12px;
@@ -72,9 +72,9 @@ label {
 }
 
 .control-icon {
-  @include md-icon-size($asf-ribbon-icon-size);
-  @include themify($themes) {
-    color: themed('dark-primary-text');
+  @include asf-theme.md-icon-size(asf-theme.$asf-ribbon-icon-size);
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('dark-primary-text');
   }
 }
 
@@ -86,14 +86,14 @@ label {
 .button-group-label {
   white-space: nowrap;
   text-align: center;
-  @include themify($themes) {
-    color: themed('dark-secondary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('dark-secondary-text');
   }
 }
 
 .move-handle-div {
-  @include themify($themes) {
-    background-color: themed('primary-light');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('primary-light');
   }
 
   cursor: move;
@@ -101,14 +101,14 @@ label {
 
 /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .control-mat-button-toggle {
-  @include themify($themes) {
-    background: themed('background-white');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background: asf-theme.themed('background-white');
   }
 }
 
 .move-handle {
-  @include themify($themes) {
-    color: themed('primary-dark');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('primary-dark');
   }
 
   margin-top: 16px;
@@ -120,8 +120,8 @@ label {
 }
 
 .move-handle-bottom {
-  @include themify($themes) {
-    background-color: themed('primary');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('primary');
   }
 
   height: 14px;
@@ -137,9 +137,9 @@ label {
 }
 
 .opacity-slider-button {
-  @include themify($themes) {
-    background: themed('background-white');
-    color: themed('dark-primary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background: asf-theme.themed('background-white');
+    color: asf-theme.themed('dark-primary-text');
   }
 
   margin: 0 0 5px;
@@ -154,8 +154,8 @@ label {
 }
 
 .opacity-slider-title {
-  @include themify($themes) {
-    color: themed('primary');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('primary');
   }
 
   text-align: center;
@@ -163,8 +163,8 @@ label {
 }
 
 .bottom-right {
-  @include themify($themes) {
-    color: themed('primary');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('primary');
   }
 
   position: absolute;
@@ -190,8 +190,8 @@ label {
 }
 
 .tool-bar-control {
-  @include themify($themes) {
-    color: themed('dark-secondary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('dark-secondary-text');
   }
 
   cursor: pointer;
@@ -202,8 +202,8 @@ label {
 }
 
 .tool-bar-control-bottom {
-  @include themify($themes) {
-    background-color: themed('primary');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('primary');
   }
 
   width: calc(100% + 10px);

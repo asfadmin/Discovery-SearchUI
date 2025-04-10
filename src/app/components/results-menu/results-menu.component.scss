@@ -1,8 +1,8 @@
-@import "asf-theme";
+@use "asf-theme";
 
 .rectangle-wrapper {
-  @include themify($themes) {
-    background: themed('background-white');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background: asf-theme.themed('background-white');
   }
 
   position: fixed;
@@ -49,9 +49,9 @@
   font-weight: 400;
   font-size: 16px;
   text-align: center;
-  @include themify($themes) {
-    background-color: themed('primary-light');
-    color: themed('dark-primary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('primary-light');
+    color: asf-theme.themed('dark-primary-text');
   }
 
   border-left: none;
@@ -78,8 +78,8 @@
 
 .left-border {
   box-shadow: none !important;
-  @include themify($themes) {
-    border-left: themed('primary-light') 1px solid;
+  @include asf-theme.themify(asf-theme.$themes) {
+    border-left: asf-theme.themed('primary-light') 1px solid;
   }
 }
 
@@ -109,8 +109,8 @@
   height: 25px;
   z-index: 9;
   // background-image: url("/assets/div-handles/hgrip.svg");
-  @include themify($themes) {
-    background-color: themed('primary-light');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('primary-light');
   }
 
   background-position: center;
@@ -121,8 +121,8 @@
 }
 
 .hgrip-icon {
-  @include themify($themes) {
-    stroke: themed('dark-primary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    stroke: asf-theme.themed('dark-primary-text');
   }
 
   width: 33px;
@@ -147,8 +147,8 @@
   justify-content: center;
   width: 100%;
   height: 25px;
-  @include themify($themes) {
-    background-color: themed('primary-light');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('primary-light');
   }
 
   z-index: 9;
@@ -165,8 +165,8 @@
 
   a {
     text-decoration: none;
-    @include themify($themes) {
-      color: themed('dark-primary-text');
+    @include asf-theme.themify(asf-theme.$themes) {
+      color: asf-theme.themed('dark-primary-text');
     }
   }
 }

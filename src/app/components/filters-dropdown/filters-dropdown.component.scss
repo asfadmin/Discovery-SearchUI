@@ -1,4 +1,4 @@
-@import "asf-theme";
+@use "asf-theme";
 
 .hidden {
   display: none;
@@ -30,8 +30,8 @@
 }
 
 .dataset-filters-card {
-  @include themify($themes) {
-    background-color: themed('background-white');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('background-white');
   }
   z-index: 1020;
   display: flex;
@@ -52,9 +52,9 @@
     align-items: center;
     position: sticky;
     top: 0;
-    @include themify($themes) {
-      background-color: themed('primary-light');
-      border-bottom: 1px solid themed('primary-dark');
+    @include asf-theme.themify(asf-theme.$themes) {
+      background-color: asf-theme.themed('primary-light');
+      border-bottom: 1px solid asf-theme.themed('primary-dark');
 
     }
     font-size: 24px;
@@ -94,9 +94,9 @@
     justify-content: flex-end;
     position: sticky;
     bottom: 0;
-    @include themify($themes) {
-      background-color: themed('primary-light');
-      border-top: 1px solid themed('primary-dark');
+    @include asf-theme.themify(asf-theme.$themes) {
+      background-color: asf-theme.themed('primary-light');
+      border-top: 1px solid asf-theme.themed('primary-dark');
 
     }
     z-index: 1020;
@@ -111,14 +111,14 @@
 }
 
 h3 {
-  @include themify($themes) {
-    color: themed('primary')
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('primary')
   }
 }
 
 .info-icon {
-  @include themify($themes) {
-    color: themed('primary')
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('primary')
   }
   padding-left: 5px;
   flex-shrink: 0;

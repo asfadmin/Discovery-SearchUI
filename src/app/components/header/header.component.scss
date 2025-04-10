@@ -1,7 +1,7 @@
 @use "@angular/material" as mat;
 
-@import "asf-theme";
-@import "flex-layout-sass/mixin";
+@use "asf-theme";
+@use "flex-layout-sass/mixin";
 
 .bounds {
   padding: 0 0 0 0 !important;
@@ -12,8 +12,8 @@
 
 $config: mat.m2-define-legacy-typography-config();
 .breadcrumb-list {
-  @include themify($themes) {
-    background-color: themed('background-white');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('background-white');
   }
 }
 
@@ -56,14 +56,14 @@ $config: mat.m2-define-legacy-typography-config();
 .breadcrumb {
   @extend .mat-form-field !optional;
 
-  @include fx-flex(auto);
+  @include mixin.fx-flex(auto);
 
   padding-top: 15px;
   margin-left: 5px;
   margin-right: 5px;
   height: 70px;
-  font-size: $asf-font-size;
-  line-height: $asf-line-height;
+  font-size: asf-theme.$asf-font-size;
+  line-height: asf-theme.$asf-line-height;
 }
 
 .search-controls {
@@ -77,18 +77,18 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .additional-filters {
-  @include themify($themes) {
-    color: themed('primary')
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('primary')
   }
 
   .mat-icon {
-    @include md-icon-size(18px);
+    @include asf-theme.md-icon-size(18px);
   }
 }
 
 .additional-filters-button {
-  @include themify($themes) {
-    color: themed('dark-secondary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('dark-secondary-text');
   }
   margin-left: 0;
   line-height: 12px;
@@ -96,8 +96,8 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .selected {
-  @include themify($themes) {
-    background-color: themed('primary');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('primary');
   }
 }
 
@@ -130,10 +130,10 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .clear-search-icon {
-  @include themify($themes) {
-    color: themed('primary-dark');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('primary-dark');
   }
-  @include md-icon-size(22px);
+  @include asf-theme.md-icon-size(22px);
 
   vertical-align: middle;
 }
@@ -149,8 +149,8 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .mobile-nav-bar {
-  @include themify($themes) {
-    color: themed('primary-light');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('primary-light');
   }
   height: 50px;
   display: flex;
@@ -175,8 +175,8 @@ $config: mat.m2-define-legacy-typography-config();
   border: none;
   width: auto;
   font-size: 11px;
-  @include themify($themes) {
-    color: themed('dark-secondary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('dark-secondary-text');
   }
   background-color: inherit;
 }

@@ -1,10 +1,10 @@
-@import "asf-theme";
+@use "asf-theme";
 
 .interaction-icon {
-  @include md-icon-size($asf-ribbon-icon-size);
+  @include asf-theme.md-icon-size(asf-theme.$asf-ribbon-icon-size);
 
-  @include themify($themes) {
-    color: themed('dark-primary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('dark-primary-text');
   }
 }
 
@@ -13,16 +13,16 @@
 }
 
 .mobile-upload-button {
-  @include themify($themes) {
-    background-color: themed('background-white');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background-color: asf-theme.themed('background-white');
   }
   border-left: 1px #e0e0e0;
 }
 
 /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .control-mat-button-toggle {
-  @include themify($themes) {
-    background: themed('background-white');
-    color: themed('dark-primary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    background: asf-theme.themed('background-white');
+    color: asf-theme.themed('dark-primary-text');
   }
 }
