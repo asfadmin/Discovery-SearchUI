@@ -356,8 +356,10 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           if(action.payload === models.SearchType.DISPLACEMENT) {
             this.mapService.clearDrawLayer();
           }
-
-          this.store$.dispatch(new searchStore.MakeSearch());
+          
+          if(action.payload !== models.SearchType.DATASET) {
+            this.store$.dispatch(new searchStore.MakeSearch());
+          }
         }
       )
     );

@@ -16,8 +16,8 @@
   </div>
 
   <div class="gtm-search-type-selector fx-nogrow">
-    <mat-menu #platformMenu="matMenu" [(ngModel)]="selected" ngDefaultControl>
-          <menu *ngFor="let dataset of datasets; last as isLast" mat-menu-item>
+    <mat-menu #platformMenu="matMenu" [(ngModel)]="selected" ngDefaultControl class="dataset-selector">
+          <menu *ngFor="let dataset of datasets; last as isLast" mat-menu-item  >
             <div class="menu-item mat-menu-item" (click)="onSelectionChange(dataset.id)">
               <div class="menu-item-inner">
                 <div class="dataset--layout menu-item-content">
