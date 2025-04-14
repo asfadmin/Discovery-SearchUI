@@ -227,6 +227,9 @@ export class ProductService {
     xml: 'Metadata XML',
     json: 'Metadata JSON',
     pdf: 'PDF Report',
+    log: 'Log File',
+    qa: 'Report (QA)',
+    bin: 'Bin File'
   }
 
   private nisarSubproductsFromScene(product: models.CMRProduct) {
