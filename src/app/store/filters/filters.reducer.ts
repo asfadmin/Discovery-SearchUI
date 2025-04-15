@@ -55,7 +55,7 @@ export interface FiltersState {
 
   frameCoverage: string[];
   jointObservation: boolean;
-  rangeBandwith: string[];
+  rangeBandwidth: string[];
   instrument: string[];
 
   operaBurstIDs: null | string[];
@@ -141,7 +141,7 @@ export const initState: FiltersState = {
 
   frameCoverage: [],
   jointObservation: false,
-  rangeBandwith: [],
+  rangeBandwidth: [],
   instrument: [],
 
   groupID: null,
@@ -488,6 +488,12 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         beamModes: [ ...state.beamModes, action.payload ]
       };
     }
+    case FiltersActionType.ADD_RANGE_BANDWIDTH: {
+        return {
+            ...state,
+            rangeBandwidth: [...new Set([...state.rangeBandwidth, action.payload])]
+        }
+    }
 
     case FiltersActionType.SET_BEAM_MODES: {
       return {
@@ -820,10 +826,10 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
             jointObservation: action.payload
           }
     }
-    case FiltersActionType.SET_RANGE_BANDWITH: {
+    case FiltersActionType.SET_RANGE_BANDWIDTH: {
         return {
             ...state,
-            rangeBandwith: action.payload
+            rangeBandwidth: action.payload
           }
     }
     case FiltersActionType.SET_INSTRUMENT: {
@@ -1153,9 +1159,9 @@ export const getJointObservation = createSelector(
     (state: FiltersState) => state.jointObservation
 )
 
-export const getRangeBandwith = createSelector(
+export const getRangeBandwidth = createSelector(
     getFiltersState,
-    (state: FiltersState) => state.rangeBandwith
+    (state: FiltersState) => state.rangeBandwidth
 )
 export const getInstruments = createSelector(
     getFiltersState,

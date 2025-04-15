@@ -115,8 +115,20 @@
       <button (click)="setFlightDirection()" mat-menu-item>{{ 'SET_FLIGHT_DIRECTION' | translate }}</button>
     </mat-menu>
   </li>
+  <li *ngIf="prop.isRelevant(p.COVERAGE_ANGLE, dataset)">
+    <span class="v-mid"> <b>{{ 'FRAME_COVERAGE' | translate }} </b> • {{ scene.metadata.nisar.frameCoverage === 'TRUE' ? 'Partial' : 'Full' }} </span>
 
-  <li *ngIf="prop.isRelevant(p.POLARIZATION, dataset)">
+    <mat-icon *ngIf="isGeoSearch()"
+      [matMenuTriggerFor]="setFrameCoverageMenu"
+      class="v-mid clickable">
+        settings
+    </mat-icon>
+
+    <mat-menu #setFrameCoverageMenu="matMenu">
+      <button (click)="setFrameCoverage()" mat-menu-item>{{ 'SET_FRAME_COVERAGE' | translate }}</button>
+    </mat-menu>
+  </li>
+  <li *ngIf="prop.isRelevant(p.POLARIZATION, dataset) && !prop.isRelevant(p.SIDE_POLARIZATION, dataset)">
     <span class="v-mid"> <b>{{ 'POLARIZATION' | translate }} </b> • {{ scene.metadata.polarization }} </span>
 
     <mat-icon *ngIf="isGeoSearch()"
@@ -129,6 +141,47 @@
       <button (click)="addPolarization()" mat-menu-item>{{ 'ADD_POLARIZATION_TO_SEARCH' | translate }}</button>
     </mat-menu>
   </li>
+  <li *ngIf="prop.isRelevant(p.POLARIZATION, dataset) && prop.isRelevant(p.SIDE_POLARIZATION, dataset)">
+    <span class="v-mid"> <b>{{ 'POLARIZATION_MAIN' | translate }} </b> • {{ scene.metadata.nisar.mainBandPolarization }} </span>
+
+    <mat-icon *ngIf="isGeoSearch()"
+      [matMenuTriggerFor]="addMainPolMenu"
+      class="v-mid clickable">
+        settings
+    </mat-icon>
+
+    <mat-menu #addMainPolMenu="matMenu">
+      <button (click)="addPolarization()" mat-menu-item>{{ 'ADD_MAIN_POLARIZATION_TO_SEARCH' | translate }}</button>
+    </mat-menu>
+  </li>
+  <li *ngIf="prop.isRelevant(p.SIDE_POLARIZATION, dataset)">
+    <span class="v-mid"> <b>{{ 'POLARIZATION_SIDE' | translate }} </b> • {{ scene.metadata.nisar.sideBandPolarization }} </span>
+
+    <mat-icon *ngIf="isGeoSearch()"
+      [matMenuTriggerFor]="addSidePolMenu"
+      class="v-mid clickable">
+        settings
+    </mat-icon>
+
+    <mat-menu #addSidePolMenu="matMenu">
+      <button (click)="addSidePolarization()" mat-menu-item>{{ 'ADD_SIDE_POLARIZATION_TO_SEARCH' | translate }}</button>
+    </mat-menu>
+  </li>
+
+  <li *ngIf="prop.isRelevant(p.RANGE_BANDWIDTH, dataset)">
+    <span class="v-mid"> <b>{{ 'RANGE_BANDWIDTH' | translate }} </b> • {{ scene.metadata.nisar.rangeBandwidth }} </span>
+
+    <mat-icon *ngIf="isGeoSearch()"
+      [matMenuTriggerFor]="addPolMenu"
+      class="v-mid clickable">
+        settings
+    </mat-icon>
+
+    <mat-menu #addPolMenu="matMenu">
+      <button (click)="addRangeBandwidth()" mat-menu-item>{{ 'ADD_RANGE_BANDWIDTH_TO_SEARCH' | translate }}</button>
+    </mat-menu>
+  </li>
+
 
   <li *ngIf="prop.isRelevant(p.OFF_NADIR_ANGLE, dataset)"
     class="detail-item-margin">

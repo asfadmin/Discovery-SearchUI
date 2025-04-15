@@ -17,7 +17,8 @@ export enum Props {
   POINTING_ANGLE = 'Pointing Angle',
   COVERAGE_ANGLE = 'Coverage Angle',
   JOINT_OBSERVATION = 'Joint Observation',
-  SUB_POLARIZATION = 'Sub Polarization',
+  SIDE_POLARIZATION = 'Side Polarization',
+  RANGE_BANDWIDTH = 'Range Bandwidth',
   USE_BEAM_MODE = 'Use Beam Mode Filter',
   USE_PROCESSING_TYPE = 'Use Processing Type',
   USE_TRACK = 'Use Track for Frame'

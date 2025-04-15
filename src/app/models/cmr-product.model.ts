@@ -66,7 +66,7 @@ export interface CMRProductMetadata {
   job: Hyp3Job | null;
 
   // versioning
-  pgeVersion: number | null;
+  pgeVersion: string | null;
 
   // BURST XML, OPERA-S1, NISAR
   subproducts: any[];
@@ -97,6 +97,11 @@ export interface OperaS1Metadata {
 export interface NISARMetadata {
   additionalUrls: string[];
   s3Urls: string[];
+  frameCoverage: string,
+  jointObservation: string,
+  sideBandPolarization: string,
+  mainBandPolarization: string,
+  rangeBandwidth: string,
 }
 
 export enum FlightDirection {

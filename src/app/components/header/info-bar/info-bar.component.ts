@@ -53,7 +53,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public groupID: string;
   public userID: string;
   public sidePolarizations: models.DatasetPolarizations;
-  public rangeBandwith: string[];
+  public rangeBandwidth: string[];
   public instruments: string[];
   public frameCoverage: string[];
   public jointObservation: boolean;
@@ -120,8 +120,8 @@ export class InfoBarComponent implements OnInit, OnDestroy {
     const frameCoverageSub = this.store$.select(filtersStore.getFrameCoverage).subscribe(
         frameCoverage => this.frameCoverage = frameCoverage
     )
-    const rangeBandwithSub = this.store$.select(filtersStore.getRangeBandwith).subscribe(
-        rangeBandwith => this.rangeBandwith = rangeBandwith
+    const rangeBandwidthSub = this.store$.select(filtersStore.getRangeBandwidth).subscribe(
+        rangeBandwidth => this.rangeBandwidth = rangeBandwidth
     )
     const jointObservationSub = this.store$.select(filtersStore.getJointObservation).subscribe(
         jointObservation => this.jointObservation = jointObservation
@@ -185,7 +185,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       sidePolsSub,
       instrumentSub,
       frameCoverageSub,
-      rangeBandwithSub,
+      rangeBandwidthSub,
       jointObservationSub,
       beamModesSub,
       flightDirsSub,

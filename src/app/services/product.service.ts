@@ -97,7 +97,7 @@ export class ProductService {
       burst: g.s1b ? g.s1b : null,
       opera: g.s1o ? g.s1o : null,
       nisar: g.nsr ? g.nsr : null,
-      pgeVersion: g.pge !== null ? parseFloat(g.pge) : null,
+      pgeVersion: g.pge !== null ? g.pge : null,
       subproducts: [],
       parentID: null,
       s3URI: null,

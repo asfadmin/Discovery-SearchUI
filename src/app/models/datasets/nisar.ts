@@ -14,7 +14,8 @@ export const nisar = {
     // Props.BASELINE_TOOL,
     Props.PATH,
     Props.FRAME,
-    Props.SUB_POLARIZATION,
+    Props.SIDE_POLARIZATION,
+    Props.RANGE_BANDWIDTH,
     // Props.JOINT_OBSERVATION,
     Props.COVERAGE_ANGLE,
     Props.USE_TRACK,
@@ -48,7 +49,7 @@ export const nisar = {
     'HH,HV,VV,VH',
     'None'
   ],
-  bandwith: {
+  bandwidth: {
     'L-Band': [
         '20+5',
         '40+5',

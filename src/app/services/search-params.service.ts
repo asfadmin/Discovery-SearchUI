@@ -201,7 +201,7 @@ export class SearchParamsService {
         .join(',')
     ),
     withLatestFrom(this.store$.select(filterStore.getSelectedDataset)),
-    map(([polarizations, dataset]) => dataset.properties.includes(models.Props.SUB_POLARIZATION)?
+    map(([polarizations, dataset]) => dataset.properties.includes(models.Props.SIDE_POLARIZATION)?
     ({ mainbandpolarization: polarizations }) : ({ polarization: polarizations })),
   );
 
@@ -232,13 +232,13 @@ export class SearchParamsService {
     map(jointObservation => ({ jointobservation: jointObservation })),
   );
 
-  private rangeBandwith$ = this.store$.select(filterStore.getRangeBandwith).pipe(
+  private rangeBandwidth$ = this.store$.select(filterStore.getRangeBandwidth).pipe(
     map(
-        bandwiths => Array.from(new Set(bandwiths))
+        bandwidths => Array.from(new Set(bandwidths))
         .join(',')
     ),
     map(
-        bandwiths => ({rangebandwidth: bandwiths})
+        bandwidths => ({rangebandwidth: bandwidths})
     )
   )
 
@@ -276,7 +276,7 @@ export class SearchParamsService {
     this.sidePolarizations$,
     this.frameCoverage$,
     this.jointObservation$,
-    this.rangeBandwith$,
+    this.rangeBandwidth$,
     this.instruments$,
     this.maxResults$,
     this.missionParam$,

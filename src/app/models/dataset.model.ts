@@ -28,7 +28,7 @@ export interface Dataset {
   calibrationProductTypes?: ProductType[];
   shortNames?: ShortName[]; // For NISAR shortnames
   instruments?: {displayName: string, apiValue: string}[];
-  bandwith?: {[band: string]: string[]};
+  bandwidth?: {[band: string]: string[]};
 }
 
 export enum MissionDataset {

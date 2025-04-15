@@ -23,7 +23,7 @@ export class ObservationPanelSelectorComponent implements OnDestroy, OnInit{
   subtypes: models.DatasetSubtypes;
   groupID: string;
   frameCoverage: string[];
-  rangeBandwith: string[];
+  rangeBandwidth: string[];
   jointObservation: boolean;
   instruments: string[];
 
@@ -38,7 +38,7 @@ export class ObservationPanelSelectorComponent implements OnDestroy, OnInit{
   public groupID$ = this.store$.select(filtersStore.getGroupID);
   public frameCoverage$ = this.store$.select(filtersStore.getFrameCoverage);
   public jointObservation$ = this.store$.select(filtersStore.getJointObservation)
-  public rangeBandwith$ = this.store$.select(filtersStore.getRangeBandwith)
+  public rangeBandwidth$ = this.store$.select(filtersStore.getRangeBandwidth)
 
 
   public flightDirectionTypes = models.flightDirections;
@@ -87,7 +87,7 @@ export class ObservationPanelSelectorComponent implements OnDestroy, OnInit{
         this.jointObservation$.subscribe(jointObservation => this.jointObservation = jointObservation)
     );
     this.subs.add(
-        this.rangeBandwith$.subscribe(rangeBandwith => this.rangeBandwith = rangeBandwith)
+        this.rangeBandwidth$.subscribe(rangeBandwidth => this.rangeBandwidth = rangeBandwidth)
     );
     this.subs.add(
         this.instruments$.subscribe(instruments => this.instruments = instruments)
@@ -132,8 +132,8 @@ export class ObservationPanelSelectorComponent implements OnDestroy, OnInit{
     // null = all
     this.store$.dispatch(new filtersStore.setFrameCoverage(coverage));
   }
-  public onNewRangeBandwithSelected(bandwith) {
-    this.store$.dispatch(new filtersStore.setRangeBandwith(bandwith))
+  public onNewRangeBandwidthSelected(bandwidth) {
+    this.store$.dispatch(new filtersStore.setRangeBandwidth(bandwidth))
   }
 
   public onNewJointObservation(observation) {

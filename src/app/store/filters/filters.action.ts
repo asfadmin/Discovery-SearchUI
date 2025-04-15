@@ -102,7 +102,8 @@ export enum FiltersActionType {
 
   SET_FRAME_COVERAGE = '[Filters] Set Frame Coverage',
   SET_JOINT_OBSERVATION = '[Filters] Set Joint Observation',
-  SET_RANGE_BANDWITH = '[Filters] Set Range Bandwith',
+  SET_RANGE_BANDWIDTH = '[Filters] Set Range Bandwidth',
+  ADD_RANGE_BANDWIDTH = '[Filters] Add Range Bandwidth',
   SET_INSTRUMENT = '[Filters] Set Instrument',
 }
 
@@ -489,10 +490,15 @@ export class setJointObservation implements Action {
     constructor(public payload: boolean) {}
 }
 
-export class setRangeBandwith implements Action {
-    public readonly type = FiltersActionType.SET_RANGE_BANDWITH;
+export class setRangeBandwidth implements Action {
+    public readonly type = FiltersActionType.SET_RANGE_BANDWIDTH;
 
     constructor(public payload: string[]) {}
+}
+export class addRangeBandwidth implements Action {
+    public readonly type = FiltersActionType.ADD_RANGE_BANDWIDTH;
+
+    constructor(public payload: string) {}
 }
 export class setIntstrument implements Action {
     public readonly type = FiltersActionType.SET_INSTRUMENT;
@@ -568,6 +574,7 @@ export type FiltersActions =
   | setUseCalibrationData
   | setGroupID
   | setFrameCoverage
-  | setRangeBandwith
+  | setRangeBandwidth
+  | addRangeBandwidth
   | setJointObservation
   | setIntstrument;

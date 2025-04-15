@@ -486,7 +486,7 @@ export class UrlStateService {
       },
         // frameCoverage: string[];
     // jointObservation: boolean;
-    // rangeBandwith: string[];
+    // rangeBandwidth: string[];
   
       {
         name: 'frameCoverage',
@@ -504,12 +504,12 @@ export class UrlStateService {
         loader: this.loadJointObservation
       },
       {
-        name: 'rangeBandwiths',
-        source: this.store$.select(filterStore.getRangeBandwith).pipe(
-          map(bandwiths => bandwiths.join(',')),
-          map(rangeBandwiths => ({ rangeBandwiths }))
+        name: 'rangeBandwidths',
+        source: this.store$.select(filterStore.getRangeBandwidth).pipe(
+          map(bandwidths => bandwidths.join(',')),
+          map(rangeBandwidths => ({ rangeBandwidths }))
         ),
-        loader: this.loadRangeBandwith
+        loader: this.loadRangeBandwidth
       },
       {
         name: 'instruments',
@@ -958,14 +958,14 @@ export class UrlStateService {
 
     return new filterStore.setFrameCoverage(coverage);
   };
-  private loadRangeBandwith = (bandwithStr: string): Action => {
-    const bandwith= bandwithStr
+  private loadRangeBandwidth = (bandwidthStr: string): Action => {
+    const bandwidth= bandwidthStr
     .split(',')
     // TODO: Add some better checking for this by grabbing from the dataset
     // .filter(direction => !Object.values(models.FlightDirection).includes(<models.FlightDirection>direction))
     // .map(direction => <models.FlightDirection>direction);
 
-    return new filterStore.setRangeBandwith(bandwith);
+    return new filterStore.setRangeBandwidth(bandwidth);
   };
   private loadInstruments = (instrumentsStr: string): Action => {
     const instruments= instrumentsStr
