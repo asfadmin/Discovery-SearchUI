@@ -40,7 +40,10 @@
       <b>{{'BEAM_MODES'| translate | titlecase }}:</b> {{beamModes}}
     </span>
     <span *ngIf="polarizations.length">
-      <b>{{'POLARIZATIONS' | translate }}:</b> {{polarizations}}
+      <b>
+        @if(dataset !== 'NISAR'){ {{'POLARIZATIONS' | translate }} }
+        @else{ {{'MAIN_POLARIZATIONS' | translate }} }
+        :</b> {{polarizations}}
     </span>
     <span *ngIf="sidePolarizations.length">
         <b>{{'SIDE_POLARIZATIONS' | translate }}:</b> {{sidePolarizations}}
