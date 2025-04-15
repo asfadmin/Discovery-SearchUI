@@ -432,7 +432,13 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         operaBurstIDs: [],
         useCalibrationData: false,
         groupID: null,
-        shortNames: []
+        shortNames: [],
+        frameCoverage: [],
+        sidePolarizations: [],
+        jointObservation: false,
+        instrument: [],
+        rangeBandwidth: []
+
       };
     }
 
