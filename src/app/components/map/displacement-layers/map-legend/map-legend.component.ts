@@ -3,7 +3,8 @@ import { Component, Input } from '@angular/core';
 @Component({
     selector: 'app-map-legend',
     templateUrl: './map-legend.component.html',
-    styleUrl: './map-legend.component.scss'
+    styleUrl: './map-legend.component.scss',
+    standalone: false
 })
 export class MapLegendComponent {
   @Input() min: number;
