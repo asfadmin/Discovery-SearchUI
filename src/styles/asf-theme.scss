@@ -20,7 +20,7 @@
 @include mat.core();
 
 
-mat.$theme-ignore-duplication-warnings: true;
+$theme-ignore-duplication-warnings: true;
 
 button,
 .mat-expansion-panel,

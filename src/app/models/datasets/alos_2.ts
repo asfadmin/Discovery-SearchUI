@@ -23,8 +23,8 @@ export const alos_2 = {
   date: {
     start: new Date('2014/08/01 00:00:00 UTC'),
   },
-  infoUrl: 'https://www.asf.alaska.edu/sar-data-sets/alos-palsar/',
-  citationUrl: 'https://asf.alaska.edu/data-sets/sar-data-sets/alos-palsar/alos-palsar-how-to-cite/',
+  infoUrl: 'https://www.earthdata.nasa.gov/data/catalog/asf-alos2-l1-psr2-1',
+  citationUrl: 'https://www.earthdata.nasa.gov/data/catalog/asf-alos2-l1-psr2-1#toc-citation',
   frequency: 'L-Band',
   source: {
     name: 'JAXA/METI',
