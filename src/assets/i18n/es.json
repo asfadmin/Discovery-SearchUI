@@ -534,6 +534,7 @@
   "NOT_ABLE_TO_SELECT_SIMILAR_SCENES_FROM_THIS_SOURCE": "No es posible seleccionar escenas similares de esta fuente",
   "NOTE_IN_VERTEX_A_SCENE_IS_CONSIDERED_TO_BE_A_PACKAGE_CONTAINING_ALL_FILES_OR_PRODUCTS": "Nota: En Vertex, una escena se considera un paquete que contiene todos los archivos o productos",
   "NOTE_THE_NUMBER_OF_FILES_THAT_ARE_PREDICTED_TO_MATCH_THE_CURRENT_SEARCH_PARAMETERS_IS_DISPLAYED_UNDER_THE_SEARCH_BUTTON_IF_THERE_ARE_NO_PREDICTED_MATCHES_THE_SEARCH_BUTTON_WILL_BE_GREYED_OUT_AND_DISPLAY_NO_RESULTS": "Nota: El número de archivos que se predice coincidan con los parámetros de búsqueda actuales se muestra debajo del botón de BÚSQUEDA. Si no hay coincidencias predichas, el botón de búsqueda se desactivará y mostrará SIN RESULTADOS.",
+  "OBSERVATIONAL_FILTERS": "Filtros Observacionales",
   "OF": "de",
   "OF_THE_BOUNDING_BOX_OR_TO_DELETE_THE_BOUNDING_BOX": "\"Del rectángulo delimitador o para eliminar el rectángulo delimitador.",
   "OF_THESE_ZIPPED_FILES_TO_BE_EXAMINED_AND_INDIVIDUAL_FILES_WITHIN_THE_ZIP_ARCHIVE_TO_BE_ADDED_TO_THE_CART": "de estos archivos comprimidos para ser examinados y archivos individuales dentro del archivo zip para ser agregados al carrito",
