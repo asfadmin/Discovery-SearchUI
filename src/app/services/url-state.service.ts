@@ -484,15 +484,11 @@ export class UrlStateService {
         ),
         loader: this.loadSidePolarizations
       },
-        // frameCoverage: string[];
-    // jointObservation: boolean;
-    // rangeBandwidth: string[];
-  
       {
         name: 'frameCoverage',
         source: this.store$.select(filterStore.getFrameCoverage).pipe(
           map(dirs => dirs.join(',')),
-          map(flightDirs => ({ flightDirs }))
+          map(frameCoverage => ({ frameCoverage }))
         ),
         loader: this.loadFrameCoverage
       },
