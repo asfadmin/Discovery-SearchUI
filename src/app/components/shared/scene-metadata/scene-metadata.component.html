@@ -182,6 +182,10 @@
     </mat-menu>
   </li>
 
+  <li *ngIf="prop.isRelevant(p.RANGE_BANDWIDTH, dataset)">
+    <span class="v-mid"> <b>{{ 'JOINT_OBSERVATION_ONLY' | translate }} </b> • {{ scene.metadata.nisar.jointObservation }} </span>
+  </li>
+
 
   <li *ngIf="prop.isRelevant(p.OFF_NADIR_ANGLE, dataset)"
     class="detail-item-margin">
