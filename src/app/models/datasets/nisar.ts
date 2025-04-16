@@ -41,7 +41,7 @@ export const nisar = {
   ],
   polarizations: [
     'HH',
-    'HV',
+    'VV',
     'HH,HV',
     'VV,VH',
     'LH,LV',
