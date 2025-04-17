@@ -82,10 +82,10 @@ export const nisar = fromDatasets.nisar;
 
 export const datasetList: Dataset[] = [
   fromDatasets.nisar,
-  fromDatasets.alos_2,
   fromDatasets.sentinel_1,
   fromDatasets.sentinel_1_bursts,
   fromDatasets.opera_s1,
+  fromDatasets.alos_2,
   fromDatasets.alos,
   fromDatasets.avnir,
   fromDatasets.sirc,

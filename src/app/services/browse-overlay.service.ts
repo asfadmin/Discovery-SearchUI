@@ -37,27 +37,30 @@ export class BrowseOverlayService {
     ).pipe(
       map(([searchtype, selectedScene, datasetID, selectedEventProducts]) => {
         switch (searchtype) {
-          case models.SearchType.DATASET:
-            return datasetID === 'AVNIR'
-            || datasetID === 'ALOS'
-            || datasetID === 'SENTINEL-1'
-            || datasetID === 'SENTINEL-1 INTERFEROGRAM (BETA)'
-            || datasetID === 'UAVSAR'
-            || datasetID === 'OPERA-S1'
-            || datasetID === 'NISAR';
-          case models.SearchType.SARVIEWS_EVENTS:
-            return selectedEventProducts?.length > 0;
-          case models.SearchType.LIST:
-            return selectedScene?.dataset === 'ALOS'
-            || selectedScene?.dataset === 'Sentinel-1A'
-            || selectedScene?.dataset === 'Sentinel-1B'
-            || selectedScene?.dataset === 'Sentinel-1 Interferogram (BETA)'
-            || selectedScene?.dataset === 'UAVSAR'
-            || selectedScene?.dataset === 'NISAR';
-          case models.SearchType.CUSTOM_PRODUCTS:
-            return true;
-          default:
-            return false;
+            case models.SearchType.DATASET:
+                return datasetID === 'AVNIR'
+                    || datasetID === 'ALOS'
+                    || datasetID === 'SENTINEL-1'
+                    || datasetID === 'SENTINEL-1 INTERFEROGRAM (BETA)'
+                    || datasetID === 'UAVSAR'
+                    || datasetID === 'NISAR'
+                    || datasetID === 'OPERA-S1';
+            case models.SearchType.SARVIEWS_EVENTS:
+                return selectedEventProducts?.length > 0;
+            case models.SearchType.LIST:
+                return selectedScene?.dataset === 'ALOS'
+                    || selectedScene?.dataset === 'Sentinel-1A'
+                    || selectedScene?.dataset === 'Sentinel-1B'
+                    || selectedScene?.dataset === 'Sentinel-1 Interferogram (BETA)'
+                    || selectedScene?.dataset === 'UAVSAR'
+                    || selectedScene?.dataset === 'NISAR'
+                    ;
+            case models.SearchType.CUSTOM_PRODUCTS:
+                return true;
+            case models.SearchType.DISPLACEMENT:
+                return true
+            default:
+                return false;
 
         }
     }),
@@ -141,7 +144,7 @@ export class BrowseOverlayService {
     return output;
   }
 
-  private getPolygonFromFeature(feature: Feature<Geometry>, wkt: string): Polygon {
+  public getPolygonFromFeature(feature: Feature<Geometry>, wkt: string): Polygon {
     const polygon: Polygon = feature.getGeometry() as Polygon;
     this.fixPolygonAntimeridian(feature, wkt);
 

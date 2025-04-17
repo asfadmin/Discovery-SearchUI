@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatInputModule } from '@angular/material/input';
@@ -37,6 +37,7 @@ import { LogoModule } from '@components/header/logo/logo.module';
 import { HeaderComponent } from './header.component';
 import { InfoBarComponent } from './info-bar/info-bar.component';
 import { DatasetHeaderComponent } from './dataset-header/dataset-header.component';
+import { TimeseriesHeaderComponent } from './timeseries-header/timeseries-header.component';
 import { ListHeaderComponent } from './list-header/list-header.component';
 import { BaselineHeaderComponent } from './baseline-header/baseline-header.component';
 import { SarviewsHeaderComponent } from './sarviews-header/sarviews-header.component';
@@ -50,7 +51,8 @@ import { SarviewsEventTypeSelectorModule } from '@components/shared/selectors/sa
 import { Hyp3UrlModule } from '@components/shared/hyp3-url/hyp3-url.module';
 import { SharedModule } from "@shared";
 import { LanguageSelectorModule } from "@components/shared/selectors/language-selector/language-selector.module";
-
+import { BurstSelectorModule } from '@components/shared/selectors/burst-selector';
+import { TimeseriesChartFlightDirectionToggleComponent} from '@components/timeseries-chart/timeseries-chart-flight-direction-toggle';
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -61,45 +63,49 @@ import { LanguageSelectorModule } from "@components/shared/selectors/language-se
     BaselineHeaderComponent,
     Hyp3HeaderComponent,
     SarviewsHeaderComponent,
+    TimeseriesHeaderComponent
   ],
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    FormsModule,
-    MatButtonToggleModule,
-    MatToolbarModule,
-    MatProgressBarModule,
-    MatBadgeModule,
-    MatMenuModule,
-    MatInputModule,
-    MatSelectModule,
-    MatDatepickerModule,
-    MatSharedModule,
-    MatAutocompleteModule,
-    PipesModule,
-    QueueModule,
-    ProcessingQueueModule,
-    SearchTypeSelectorModule,
-    DatasetSelectorModule,
-    DateSelectorModule,
-    AoiOptionsModule,
-    MaxResultsSelectorModule,
-    SearchButtonModule,
-    ClearButtonModule,
-    HeaderButtonsModule,
-    MasterSceneSelectorModule,
-    LogoModule,
-    ProjectNameSelectorModule,
-    JobStatusSelectorModule,
-    JobProductNameSelectorModule,
-    CiSearchModule,
-    SarviewsEventSearchSelectorModule,
-    SarviewsEventTypeSelectorModule,
-    Hyp3UrlModule,
-    SharedModule,
-    LanguageSelectorModule,
-    OnDemandUserSelectorModule,
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatButtonToggleModule,
+        MatToolbarModule,
+        MatProgressBarModule,
+        MatBadgeModule,
+        MatMenuModule,
+        MatInputModule,
+        MatSelectModule,
+        MatDatepickerModule,
+        MatSharedModule,
+        MatAutocompleteModule,
+        PipesModule,
+        QueueModule,
+        ProcessingQueueModule,
+        SearchTypeSelectorModule,
+        DatasetSelectorModule,
+        DateSelectorModule,
+        AoiOptionsModule,
+        MaxResultsSelectorModule,
+        SearchButtonModule,
+        ClearButtonModule,
+        HeaderButtonsModule,
+        MasterSceneSelectorModule,
+        LogoModule,
+        ProjectNameSelectorModule,
+        JobStatusSelectorModule,
+        JobProductNameSelectorModule,
+        CiSearchModule,
+        SarviewsEventSearchSelectorModule,
+        SarviewsEventTypeSelectorModule,
+        Hyp3UrlModule,
+        SharedModule,
+        LanguageSelectorModule,
+        OnDemandUserSelectorModule,
+        BurstSelectorModule,
+        TimeseriesChartFlightDirectionToggleComponent,
+        NgOptimizedImage
+    ],
+    providers: [provideHttpClient(withInterceptorsFromDi())],
   exports: [
     HeaderComponent
   ],

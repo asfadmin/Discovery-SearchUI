@@ -1,7 +1,7 @@
 <div style="display: flex;">
   <div>
     <label style="font-size: 12px;">{{ 'SORT_BY' | translate }}</label>
-<mat-button-toggle-group class="sort-button">
+<mat-button-toggle-group class="sort-button" [hideSingleSelectionIndicator]="true">
   <mat-button-toggle [matMenuTriggerFor]="sortType" style="min-width: 68px !important;">
     <span>
       {{ sortTypeDisplay.toUpperCase() | translate }}
@@ -12,7 +12,7 @@
 
 <div style="margin-left: 5px;">
   <label style="font-size: 12px;">{{'ORDER' | translate}}</label>
-  <mat-button-toggle-group class="sort-button">
+  <mat-button-toggle-group class="sort-button" [hideSingleSelectionIndicator]="true">
     <mat-button-toggle (click)="onSetSortDirection()">
       <mat-icon>
         {{ sortDescending ? "arrow_downward" : "arrow_upward" }}

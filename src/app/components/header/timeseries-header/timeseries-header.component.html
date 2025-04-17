@@ -1,0 +1,41 @@
+<ng-container *ngIf="breakpoint$ | async as breakpoint">
+	<div *ngIf="breakpoint > breakpoints.MOBILE" class="breadcrumb-row baseline-header-layout">
+		<div class="baseline-header-wrapper">
+			<app-search-type-selector *ngIf="!(isKioskMode$ | async)" class="breadcrumb">
+			</app-search-type-selector>
+
+      <div class="displacement-header-menu">
+        <app-draw-selector></app-draw-selector>
+        <app-timeseries-chart-flight-direction-toggle></app-timeseries-chart-flight-direction-toggle>
+        <span class="azimuth-icon">
+          <img *ngIf="!flightDesc" ngSrc="assets/satellite-graphics/sat-2.png"
+               class="invert-icon"
+               alt="Azimuth" height="65" width="auto">
+          <img *ngIf="flightDesc" ngSrc="assets/satellite-graphics/sat-2-desc.png"
+               class="invert-icon"
+               alt="Azimuth" height="65" width="auto">
+        </span>
+        <span class="azimuth-icon-text">
+          {{ "RADAR_LOOK_DIRECTION" | translate }}:
+            <span *ngIf="!flightDesc">78°</span>
+            <span *ngIf="flightDesc">283°</span>
+        </span>
+        <span class="line-of-site-icon">
+          <img ngSrc="assets/satellite-graphics/sat-1.png"
+               class="invert-icon"
+               [class.flip-icon]="flightDesc"
+               alt="Line of Site" height="70" width="auto">
+        </span>
+        <span class="line-of-site-icon-text">
+          {{ "INCIDENCE_ANGLE" | translate }}:
+            29° &ndash; 46°
+        </span>
+      </div>
+
+			<div class="icon-cluster">
+				<app-header-buttons>
+				</app-header-buttons>
+			</div>
+		</div>
+	</div>
+</ng-container>

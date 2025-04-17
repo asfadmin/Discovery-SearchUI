@@ -1,0 +1,70 @@
+<div class="ts-chart-details" [class.no-data] = "data?.length < 1">
+  <div class="ts-best-fit-nav"
+       [ngStyle]="{'visibility': isOverflowing() ? 'visible' : 'hidden'}">
+    <button mat-flat-button (click)="onButtonClickPlus()" class="ts-best-fit-nav">
+    <span class="material-symbols-outlined">
+      arrow_forward_ios
+    </span>
+    </button>
+  </div>
+  <div class="ts-best-fit-formulas">
+    <cdk-virtual-scroll-viewport #tsBestFitFormulas
+                                 orientation="horizontal"
+                                 class="ts-best-fit-viewport"
+                                 cdkScrollable
+                                 itemSize="350"
+                                 >
+      <div *ngFor="let item of bestFitItems" class="ts-best-fit-item">
+        <div [style.background-color]="item.color" class="ts-color-swatch">{{item.seriesNumber}}</div>
+        <div style="display: flex; flex-direction: column;">
+          <div>{{item.formula}}</div>
+        </div>
+      </div>
+    </cdk-virtual-scroll-viewport>
+  </div>
+  <div class="ts-best-fit-nav"
+       [ngStyle]="{'visibility': bestFitItems.length > 5 ? 'visible' : 'hidden'}">
+    <button mat-flat-button (click)="onButtonClickMinus()">
+    <span class="material-symbols-outlined">
+      arrow_back_ios
+    </span>
+    </button>
+  </div>
+</div>
+
+<div #tsChartWrapper class="chart-wrapper" (resized)="onResized()" [class.no-data] = "data?.length < 1">
+  <div #timeseriesChart id="timeseriesChart" [contextMenuTriggerFor]="menu" [contextMenuTriggerData]="{'tooltipData': hoveredData}">
+  </div>
+  <app-timeseries-chart-export class="ts-chart-export-button" [timeSeriesData]="exportableData"></app-timeseries-chart-export>
+  <app-chart-modal class="ts-chart-config-button" (resetReferenceEvent)="resetBasePoint()"></app-chart-modal>
+  <app-timeseries-chart-zoom class="ts-chart-zoom" (zoomInEvent)="onZoomIn()" (zoomOutEvent)="onZoomOut()"
+                             (zoomToFitEvent)="onZoomToFit()"></app-timeseries-chart-zoom>
+  @if(isLoading && this.dataSource.length <= 0){
+    <div class="disp-spinner">
+      <mat-spinner></mat-spinner>
+    </div>
+  }
+  <mat-menu #menu="matMenu">
+    <ng-template matMenuContent let-tooltipData="tooltipData">
+      <button mat-button (click)="setReference(tooltipData)">{{ 'SHIFT_TO_ZERO' | translate }}</button>
+    </ng-template>
+  </mat-menu>
+</div>
+
+<app-timeseries-chart-temporal-slider [class.no-data] = "data?.length < 1"></app-timeseries-chart-temporal-slider>
+
+<div #noData
+     [class.no-data]="data?.length > 0">
+  <div class="message-container">
+    {{ 'WE_ARE_RETRIEVING_YOUR_INFORMATION' | translate }}<br>
+    {{ 'PLEASE_BE_PATIENT' | translate }}
+  </div>
+
+
+  <div class="icon-container">
+    <mat-icon>downloading</mat-icon>
+  </div>
+
+</div>
+
+

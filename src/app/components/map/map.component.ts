@@ -1,35 +1,40 @@
-import {
-  Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, OnDestroy
-} from '@angular/core';
+import {Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 
-import { Store } from '@ngrx/store';
-import { Observable, combineLatest } from 'rxjs';
-import {
-  map, filter, switchMap, tap,
-  withLatestFrom,
-} from 'rxjs/operators';
+import {Store} from '@ngrx/store';
+import {combineLatest, distinctUntilChanged, Observable} from 'rxjs';
+import {filter, map, switchMap, tap, withLatestFrom,} from 'rxjs/operators';
 
-import { Vector as VectorLayer} from 'ol/layer';
-import { Vector as VectorSource } from 'ol/source';
+import {Vector as VectorLayer} from 'ol/layer';
+import {Vector as VectorSource} from 'ol/source';
 import Overlay from 'ol/Overlay';
 import Point from 'ol/geom/Point';
 
 import tippy, {followCursor} from 'tippy.js';
-import { SubSink } from 'subsink';
+import {SubSink} from 'subsink';
 
-import { AppState } from '@store';
+import {AppState} from '@store';
 import * as scenesStore from '@store/scenes';
 import * as searchStore from '@store/search';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 
 import * as models from '@models';
-import { MapService, WktService, ScreenSizeService, ScenesService, SarviewsEventsService } from '@services';
+import {CMRProduct, SarviewsEvent} from '@models';
+import {
+  MapService,
+  PointHistoryService,
+  SarviewsEventsService,
+  ScenesService,
+  ScreenSizeService,
+  WktService
+} from '@services';
 import * as polygonStyle from '@services/map/polygon.style';
-import { CMRProduct, SarviewsEvent } from '@models';
-import { StyleLike } from 'ol/style/Style';
-import { Feature } from 'ol';
+import {StyleLike} from 'ol/style/Style';
+import {Feature} from 'ol';
 import Geometry from 'ol/geom/Geometry';
+import {MatDialog} from '@angular/material/dialog';
+import WKT from 'ol/format/WKT';
+import {getTimeseriesChartStates} from '@store/charts';
 
 enum FullscreenControls {
   MAP = 'Map',
@@ -87,6 +92,9 @@ export class MapComponent implements OnInit, OnDestroy  {
   );
 
   private sarviewsEvents: SarviewsEvent[];
+  private chartStates: models.timeseriesChartItemState[] = [];
+  //@ts-ignore
+  private selectedSeries: any = null;
 
   constructor(
     private store$: Store<AppState>,
@@ -95,22 +103,25 @@ export class MapComponent implements OnInit, OnDestroy  {
     private screenSize: ScreenSizeService,
     private scenesService: ScenesService,
     private eventMonitoringService: SarviewsEventsService,
+    public dialog: MatDialog,
+    private pointHistoryService: PointHistoryService,
   ) {}
 
   ngOnInit(): void {
+
     this.subs.add(
-    this.mapService.selectedSarviewEvent$.pipe(
-      filter(id => !!id)
-    ).subscribe(
-      id => this.selectedSarviewEvent = this.sarviewsEvents?.find(event => event?.event_id === id)
-    ));
+      this.mapService.selectedSarviewEvent$.pipe(
+        filter(id => !!id)
+      ).subscribe(
+        id => this.selectedSarviewEvent = this.sarviewsEvents?.find(event => event?.event_id === id)
+      )
+    );
 
     this.subs.add(
       this.store$.select(scenesStore.getSelectedScene).subscribe(
         scene => this.selectedScene = scene
       )
     );
-
 
     this.subs.add(
       this.screenSize.breakpoint$.subscribe(
@@ -149,7 +160,8 @@ export class MapComponent implements OnInit, OnDestroy  {
         mode => {
           if (mode === models.MapInteractionModeType.NONE) {
             this.mapService.enableInteractions();
-          } else {
+          }
+          else {
             this.mapService.disableInteractions();
           }
         }
@@ -208,6 +220,10 @@ export class MapComponent implements OnInit, OnDestroy  {
             }
           } else if (interactionMode === models.MapInteractionModeType.EDIT) {
             return 'Click and drag on area of interest';
+          } else if (interactionMode === models.MapInteractionModeType.TIMERSERIES) {
+            return 'Click to select a point for time series analysis';
+          } else {
+            return ''
           }
         })
       ).subscribe(
@@ -237,10 +253,49 @@ export class MapComponent implements OnInit, OnDestroy  {
     );
 
     this.subs.add(
+      this.store$.select(uiStore.getActiveUUID).pipe(distinctUntilChanged()).subscribe(uuid => {
+        this.respondToActiveWkt(uuid);
+    }));
+
+    this.subs.add(this.store$.select(getTimeseriesChartStates).subscribe(chartStates => {
+        this.chartStates = Object.values(chartStates);
+      }
+    ));
+
+
+    this.subs.add(
+      this.mapService.newSelectedDisplacement$.subscribe(point => {
+        let format = new WKT();
+        let wktRepresentation  = format.writeGeometry(point);
+        let uuid = null;
+        this.pointHistoryService.getHistory().findIndex((thing) => {
+          if(thing.point === point) {
+            uuid = thing.uuidSeries;
+            this.store$.dispatch(new uiStore.SetActiveUUID(thing.uuidSeries));
+            return true
+          }
+        })
+        this.pointHistoryService.selectedPoint = uuid;
+        this.mapService.loadPolygonFrom(wktRepresentation.toString());
+      })
+    )
+
+    this.subs.add(
       this.store$.select(uiStore.getIsFiltersMenuOpen).subscribe(
         isOpen => this.isFiltersMenuOpen = isOpen
       )
     );
+  }
+
+  public respondToActiveWkt(uuid: string) {
+    this.selectedSeries = null;
+    this.chartStates.forEach((item) => {
+      if (item.uuidSeries == uuid) {
+        this.selectedSeries = item;
+      }
+    });
+    this.pointHistoryService.selectedPoint = uuid ?? ''; //this.selectedSeries?.uuidSeries ?? -1;
+    this.mapService.displacmentLayer?.changed();
   }
 
   public onFileHovered(e): void {
@@ -264,7 +319,6 @@ export class MapComponent implements OnInit, OnDestroy  {
     const newMode = successful ?
     models.MapInteractionModeType.EDIT :
     models.MapInteractionModeType.NONE;
-
     this.onNewInteractionMode(newMode);
   }
 
@@ -313,7 +367,10 @@ export class MapComponent implements OnInit, OnDestroy  {
           )
         ),
       ).subscribe(
-        feature => this.mapService.setSelectedFeature(feature)
+        feature => {
+          if(this.searchType !== this.searchTypes.DISPLACEMENT){
+            this.mapService.setSelectedFeature(feature)
+          }}
       )
     );
 
@@ -367,6 +424,10 @@ export class MapComponent implements OnInit, OnDestroy  {
             const intersectionMethod = this.mapService.getAoiIntersectionMethod(geometryType);
 
             polygonFeatures = features.filter(feature => intersectionMethod(searchPolygon, feature));
+          }
+          if(this.searchType === this.searchTypes.DISPLACEMENT) {
+            let vectorFeature = new Feature();
+            return this.featuresToSource([vectorFeature], polygonStyle.staticAOI)
           }
 
           return this.scenePolygonsLayer(polygonFeatures);
@@ -436,7 +497,7 @@ export class MapComponent implements OnInit, OnDestroy  {
       map(scenes => this.scenesToFeature(scenes, projection)));
   }
 
-  private scenePolygonsLayer(features: Feature<Geometry>[]): VectorLayer<VectorSource> {
+  public scenePolygonsLayer(features: Feature<Geometry>[]): VectorLayer<VectorSource> {
       const vectorLayer = this.featuresToSource(features, polygonStyle.scene);
       vectorLayer.set('selectable', 'true');
       return vectorLayer;

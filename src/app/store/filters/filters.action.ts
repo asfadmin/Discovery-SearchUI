@@ -434,7 +434,8 @@ export class SetDefaultFilters implements Action {
   constructor(public payload: {
     'Baseline Search': string,
     'Geographic Search': string,
-    'SBAS Search': string
+    'SBAS Search': string,
+    'Displacement': string
   }) {}
 }
 

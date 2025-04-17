@@ -5,9 +5,11 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
+import * as searchStore from '@store/search';
 
 import { ScreenSizeService } from '@services';
-import { MapDrawModeType, MapInteractionModeType, Breakpoints } from '@models';
+import { MapDrawModeType, MapInteractionModeType, Breakpoints, SearchType } from '@models';
+import {ThemePalette} from '@angular/material/core';
 
 @Component({
   selector: 'app-draw-selector',
@@ -20,14 +22,31 @@ export class DrawSelectorComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   public breakpoint: Breakpoints;
+  public searchType: SearchType;
+  public searchTypes = SearchType;
   public breakpoints = Breakpoints;
+
+  public interaction: MapInteractionModeType;
+  public interactionTypes = MapInteractionModeType;
+
+  public isDrawing = true;
+  isDisabled = false;
+  color: ThemePalette = 'accent';
 
   constructor(
     private store$: Store<AppState>,
     private screenSize: ScreenSizeService,
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
+
+    this.subs.add(
+      this.store$.select(mapStore.getMapInteractionMode).subscribe(
+        mode => this.isDrawing = mode === MapInteractionModeType.DRAW
+      )
+    );
+
     this.subs.add(
       this.store$.select(mapStore.getMapDrawMode).subscribe(
         drawMode => this.drawMode = drawMode
@@ -39,11 +58,30 @@ export class DrawSelectorComponent implements OnInit, OnDestroy {
         breakpoint => this.breakpoint = breakpoint
       )
     );
+
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        searchType => this.searchType = searchType
+      )
+    );
+
   }
 
   public onNewDrawMode(mode: MapDrawModeType): void {
     this.store$.dispatch(new mapStore.SetMapInteractionMode(MapInteractionModeType.DRAW));
     this.store$.dispatch(new mapStore.SetMapDrawMode(mode));
+  }
+
+  public toggleDrawMode() {
+    let newMode = MapInteractionModeType.DRAW;
+    if (this.isDrawing) {
+      newMode = MapInteractionModeType.NONE;
+    }
+    this.onNewInteractionMode(newMode);
+  }
+
+  public onNewInteractionMode(mode: MapInteractionModeType): void {
+    this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
   }
 
   public onImportSelected() {
@@ -73,4 +111,6 @@ export class DrawSelectorComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
+
+  protected readonly MapDrawModeType = MapDrawModeType;
 }
