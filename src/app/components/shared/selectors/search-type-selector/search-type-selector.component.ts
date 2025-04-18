@@ -87,7 +87,7 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
       searchType: models.SearchType.DISPLACEMENT,
       nameKey:'DISPLACEMENT',
       descriptionKeys:['DISPLACEMENT_DESCRIPTION'],
-      helpUrl:'https://docs.asf.alaska.edu/vertex/manual/#baseline-search-options',
+      helpUrl:'https://docs.asf.alaska.edu/vertex/displacement/',
       icon:'track_changes',
       iconType: models.IconType.MATERIAL,
     },
