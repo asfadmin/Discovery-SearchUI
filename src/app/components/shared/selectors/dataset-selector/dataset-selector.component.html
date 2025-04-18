@@ -44,7 +44,8 @@
                     </app-docs-modal>
                   </mat-card-actions>
                 </div>
-                <div class="dataset-aside--layout menu-item-aside">
+                <div class="dataset-aside--layout menu-item-aside"
+                     [class.increase-right-margin]="breakpoint === breakpoints.MOBILE">
                   <div class="dataset-date-range faint-text">
                     {{ prettyDateRange(dataset.date) }}
                   </div>
