@@ -66,13 +66,13 @@ export const nisar = {
   },
   instruments: [
     {
-            displayName: 'L-Band Sar',
-            apiValue: 'L-SAR',
+        displayName: 'L-Band Sar',
+        apiValue: 'L-SAR',
     },
-    {
-        displayName: 'S-Band Sar',
-        apiValue: 'S-SAR',
-},
+    // {
+    //     displayName: 'S-Band Sar',
+    //     apiValue: 'S-SAR',
+    // },
   ],
   subtypes: [
     //     {
