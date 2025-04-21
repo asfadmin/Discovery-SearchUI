@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 
 import { BehaviorSubject, Subject } from 'rxjs';
-import { map, sampleTime, tap } from 'rxjs/operators';
+import {first, map, sampleTime, tap} from 'rxjs/operators';
+import {SubSink} from 'subsink';
 
 import { Collection, Feature, Map, View } from 'ol';
 import { Layer, Vector as VectorLayer } from 'ol/layer';
-import { Vector as VectorSource } from 'ol/source';
+import { Vector as VectorSource, XYZ } from 'ol/source';
 import * as proj from 'ol/proj';
 import Point from 'ol/geom/Point';
 import { OverviewMap, ScaleLine } from 'ol/control';
@@ -22,16 +23,17 @@ import * as sceneStore from '@store/scenes';
 import { HttpClient } from "@angular/common/http";
 
 import * as polygonStyle from './polygon.style';
+// import * as tileStyle from 'ol/style'
 import * as views from './views';
 import { SarviewsEvent } from '@models';
 import { EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
-import { Icon, Style } from 'ol/style';
+import { Circle as CircleStyle, Fill, Icon, Stroke, Style, Text as olText } from 'ol/style';
 import Geometry from 'ol/geom/Geometry';
 import LayerGroup from 'ol/layer/Group';
 import { PinnedProduct } from '@services/browse-map.service';
-import { BrowseOverlayService } from '@services';
+import {BrowseOverlayService, PointHistoryService} from '@services';
 import { ViewOptions } from 'ol/View';
 import { Type as GeometryType } from 'ol/geom/Geometry';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
@@ -45,21 +47,26 @@ import SimpleGeometry from 'ol/geom/SimpleGeometry';
 import { SetGeocode } from '@store/filters';
 import {Extent, isEmpty} from 'ol/extent';
 import { MultiPolygon } from 'ol/geom';
+import GeoJSON from 'ol/format/GeoJSON.js';
+import * as uiStore from '@store/ui';
+import * as searchStore from '@store/search';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MapService {
+export class MapService implements OnDestroy {
   public isDrawing$ = this.drawService.isDrawing$.pipe(
     tap(isDrawing => this.map.getViewport().style.cursor = isDrawing ? 'crosshair' : 'default')
   );
 
+  private subs = new SubSink();
   private mapView: views.MapView;
   private map: Map;
   private scaleLine: ScaleLine;
 
   private polygonLayer: VectorLayer<VectorSource>;
   private sarviewsEventsLayer: VectorLayer<VectorSource>;
+  public displacmentLayer: VectorLayer<VectorSource>;
   private browseImageLayer: Layer;
 
   private gridLinesVisible: boolean;
@@ -71,10 +78,62 @@ export class MapService {
 
   private localBrowseImageURL: string;
 
+  private displacementOverview: TileLayer = new TileLayer({});
+  public displacementOverview$ = new BehaviorSubject<models.DisplacementLayerTypes | null>(null);
+  private priorityOverview: VectorLayer<VectorSource> = new VectorLayer();
+  public priorityEnabled$ = new BehaviorSubject<models.FlightDirection | null>(null);
+  public searchType: models.SearchType;
+
+  public displacementRange: {
+    range: number[],
+    units: string
+  }
+
+  constructor(
+    private wktService: WktService,
+    private legacyAreaFormat: LegacyAreaFormatService,
+    private drawService: DrawService,
+    private store$: Store<AppState>,
+    private browseOverlayService: BrowseOverlayService,
+    private layerService: LayerService,
+    private http: HttpClient,
+    private pointHistoryService: PointHistoryService
+  ) {
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe(
+        searchType => {
+          this.searchType = searchType;
+        }
+      )
+    );
+  }
+
   private selectClick = new Select({
     condition: click,
     style: polygonStyle.hidden,
-    layers: l => l.get('selectable') || false
+    layers: l => l.get('selectable')
+  });
+
+  private timeseriesClick = new Select({
+    condition: click,
+    style: null,
+    layers: l => {
+      if (l.get('displacement-layer')) {
+        return true;
+      }
+      return false
+    }
+  });
+
+  private timeseriesHover = new Select({
+    condition: pointerMove,
+    style: null,
+    layers: l => {
+      if (l.get('displacement-layer')) {
+        return true;
+      }
+      return false
+    }
   });
 
   private selectHover = new Select({
@@ -123,12 +182,13 @@ export class MapService {
 
   public selectedSarviewEvent$: EventEmitter<string> = new EventEmitter();
   public mapInit$: EventEmitter<Map> = new EventEmitter();
-
+  public timeseriesPixelSelected$ = new EventEmitter();
   public mousePosition$ = this.mousePositionSubject$.pipe(
     sampleTime(100)
   );
 
   public newSelectedScene$ = new Subject<string>();
+  public newSelectedDisplacement$ = new Subject<Point>();
 
   public searchPolygon$ = this.drawService.polygon$.pipe(
     map(
@@ -137,16 +197,6 @@ export class MapService {
         null
     )
   );
-
-  constructor(
-    private wktService: WktService,
-    private legacyAreaFormat: LegacyAreaFormatService,
-    private drawService: DrawService,
-    private store$: Store<AppState>,
-    private browseOverlayService: BrowseOverlayService,
-    private layerService: LayerService,
-    private http: HttpClient
-  ) { }
 
   public epsg(): string {
     return this.mapView.projection.epsg;
@@ -169,6 +219,9 @@ export class MapService {
     this.selectSarviewEventHover.setActive(true);
     this.selectClick.setActive(true);
     this.searchPolygonHover.setActive(true);
+    this.timeseriesClick.setActive(true);
+    this.timeseriesHover.setActive(true);
+
   }
 
   public disableInteractions(): void {
@@ -176,6 +229,8 @@ export class MapService {
     this.selectSarviewEventHover.setActive(false);
     this.selectClick.setActive(false);
     this.searchPolygonHover.setActive(false);
+    this.timeseriesClick.setActive(false);
+    this.timeseriesHover.setActive(false);
   }
 
   private zoom(amount: number): void {
@@ -189,7 +244,6 @@ export class MapService {
     if (this.legacyAreaFormat.isValid(polygon)) {
       polygon = this.legacyAreaFormat.toWkt(polygon);
     }
-
     return this.loadWKT(polygon);
   }
 
@@ -201,7 +255,6 @@ export class MapService {
         polygon,
         this.epsg()
       );
-
       this.setDrawFeature(features);
     } catch (e) {
       didLoad = false;
@@ -209,7 +262,6 @@ export class MapService {
 
     return didLoad;
   }
-
 
   public setLayer(layer: VectorLayer<VectorSource>): void {
     if (!!this.polygonLayer) {
@@ -227,6 +279,10 @@ export class MapService {
 
     this.sarviewsEventsLayer = layer;
     this.map.addLayer(layer);
+  }
+
+  public addLayer(layer: Layer) {
+    this.map.addLayer(layer)
   }
 
   public sarviewsEventsToFeatures(events: SarviewsEvent[], projection: string): Feature<Geometry>[] {
@@ -283,7 +339,14 @@ export class MapService {
   }
 
   public setDrawStyle(style: models.DrawPolygonStyle): void {
-    this.drawService.setDrawStyle(style);
+    if (this.searchType == 'Displacement') {
+      this.drawService.setDrawStyle(models.DrawPolygonStyle.VALID_DISPLACEMENT);
+      this.drawService.getLayer().setVisible(false);
+    }else {
+      this.drawService.setDrawStyle(style);
+      this.drawService.getLayer().setVisible(true);
+
+    }
   }
 
   public setDrawFeature(feature): void {
@@ -426,11 +489,9 @@ export class MapService {
     this.setDrawFeature(features);
   }
 
-
   public onMapReady(m: Map) {
     this.mapInit$.next(m);
   }
-
 
   public zoomToExtent(extent: Extent): void {
     this.map
@@ -472,6 +533,8 @@ export class MapService {
         this.selectedLayer,
         this.mapView?.gridlines,
         this.pinnedProducts,
+        this.priorityOverview,
+        this.displacementOverview
       ],
       target: 'map',
       view: this.mapView.view,
@@ -480,12 +543,35 @@ export class MapService {
     });
 
     newMap.addInteraction(this.selectClick);
+    newMap.addInteraction(this.timeseriesClick);
+    newMap.addInteraction(this.timeseriesHover);
     newMap.addInteraction(this.selectHover);
     newMap.addInteraction(this.selectSarviewEventHover);
     this.selectClick.on('select', e => {
+      // netcdf-layer
+      // if (this.drawService.in)
+      this.timeseriesPixelSelected$.emit(null)
       e.target.getFeatures().forEach(
         feature => this.newSelectedScene$.next(feature.get('filename'))
       );
+    });
+
+    this.timeseriesClick.on('select', e => {
+      let selectedPoint =  e.selected[0].get('uuid');
+      this.store$.dispatch(new uiStore.SetActiveUUID(selectedPoint));
+      e.preventDefault();
+    });
+
+    this.timeseriesHover.on('select', e => {
+      let selectedPoint =  e.selected[0]?.get('uuid');
+      if(!selectedPoint) {
+        // TODO: not sure if we want to keep the point active or unselect it
+        this.store$.dispatch(new uiStore.SetActiveUUID(null));
+        e.preventDefault()
+        return
+      }
+      this.store$.dispatch(new uiStore.SetActiveUUID(selectedPoint));
+      e.preventDefault();
     });
 
     this.selectHover.on('select', e => {
@@ -531,6 +617,7 @@ export class MapService {
     this.drawService.getLayer().setZIndex(100);
     this.focusLayer.setZIndex(99);
     this.selectedLayer.setZIndex(98);
+
 
     newMap.on('moveend', e => {
       const currentMap = e.map;
@@ -662,7 +749,7 @@ export class MapService {
       this.map.removeLayer(this.browseImageLayer);
     }
     if (!url.endsWith('.tif')) {
-      if(url.includes('OPERA')) {
+      if (url.includes('OPERA')) {
         this.trimImage(url).then((imageBlob: Blob) => {
           let url = URL.createObjectURL(imageBlob);
           URL.revokeObjectURL(this.localBrowseImageURL)
@@ -704,6 +791,178 @@ export class MapService {
     this.hasCoherenceLayer$.next(months);
   }
 
+  public setDisplacementOverview(direction: models.FlightDirection, type: models.DisplacementLayerTypes) {
+    const apiDirValues = {
+      [models.FlightDirection.ASCENDING]: 'ASC',
+      [models.FlightDirection.DESCENDING]: 'DESC'
+    }
+    const apiDispValues = {
+      [models.DisplacementLayerTypes.DISPLACEMENT]: 'DISP',
+      [models.DisplacementLayerTypes.VELOCITY]: 'VEL'
+    }
+    const dir = apiDirValues[direction];
+    const layerType = apiDispValues[type];
+
+    let base_url = `https://d3g9emy65n853h.cloudfront.net/main/${dir.toLowerCase()}/${layerType.toLowerCase()}`;
+    this.displacementOverview$.next(type);
+
+    this.http.get(`${base_url}/extent.json`).pipe(
+      first()
+    ).subscribe((response: any) => {
+      if (this.displacementOverview) {
+        this.displacementOverview.setSource(null);
+      }
+
+      const overview_source = new XYZ({
+        'url': `${base_url}/{z}/{x}/{y}.png`,
+        wrapX: models.mapOptions.wrapX,
+        tileSize: [256, 256],
+        maxZoom: 12,
+        interpolate: false
+      });
+      this.displacementRange = response.scale_range;
+
+      // Eventually let users define this part somehow
+      let defined_stops: (number | number[])[][] = [
+        // [Stop, Color[R,G,B]]
+        [1.0, [0, 18, 97]],
+        [29.0, [3, 62, 125]],
+        [58.0, [30, 111, 157]],
+        [86.0, [113, 168, 196]],
+        [114.0, [201, 221, 231]],
+        [143.0, [234, 206, 189]],
+        [171.0, [211, 151, 116]],
+        [199.0, [190, 101, 51]],
+        [228.0, [139, 39, 6]],
+        [256.0, [89, 0, 8]],
+      ];
+
+      let parsed_color_stops = defined_stops.flat().map(x => {
+        if(Array.isArray(x)) {
+          return ['color', ...x, ['band', 4]]
+        } else {
+          return x
+        }
+      })
+      this.displacementOverview.setStyle({
+        color: [
+          'interpolate',
+          ['linear'],
+          ['*', ['band', 1], 255],
+          ...parsed_color_stops
+        ]
+      })
+      this.displacementOverview.setExtent(response['extent']);
+      //@ts-ignore
+      this.displacementOverview.setSource(overview_source);
+    })
+
+  }
+  public clearDisplacementOverview() {
+    this.displacementOverview.setSource(null);
+    this.displacementOverview$.next(null);
+  }
+  public setDisplacementType(type) {
+    this.displacementOverview$.next(type)
+  }
+
+
+  public setDisplacementLayer(points: { seriesNumber: number, color: string, frames: models.TimeseriesSubframe[], base_wkt: string, uuid: string}[]) {
+    if (!!this.displacmentLayer) {
+      this.map.removeLayer(this.displacmentLayer);
+      this.displacmentLayer = null;
+    }
+    let self = this;
+
+
+    let features = []
+    points.forEach(dataPoint => {
+      if(dataPoint.frames?.length > 1) {
+        for(let i = 0; i < dataPoint.frames.length; i++) {
+          let temp_feature = this.wktService.wktToFeature(dataPoint.frames[i].wkt, this.epsg())
+
+          temp_feature.set('point', temp_feature.getGeometry()); // use genned one
+          temp_feature.set('uuid', dataPoint.frames[i].uuid);
+          temp_feature.set('seriesColor', dataPoint.color);
+          temp_feature.set('seriesNumber', dataPoint.seriesNumber);
+          temp_feature.set('index', i+1)
+          features.push(temp_feature);
+        }
+      } else {
+        let temp_feature = this.wktService.wktToFeature(dataPoint.base_wkt, this.epsg())
+        temp_feature.set('point', temp_feature.getGeometry());
+        temp_feature.set('uuid', dataPoint.uuid);
+        temp_feature.set('seriesNumber', dataPoint.seriesNumber);
+        temp_feature.set('seriesColor', dataPoint.color);
+        features.push(temp_feature)
+      }
+    });
+
+    let source = new VectorSource({
+      features
+    });
+    const stylize = function StyleFunction(feature: Feature) {
+
+      const textFunction = function (f: Feature) {
+        let labelContent = f.get('index') ? `${f.get('seriesNumber')}.${f.get('index')}` : `${f.get('seriesNumber')}`;
+        return labelContent.toString();
+      }
+
+      const textColorFunction = function (f: Feature) {
+        let color: string = f.get('seriesColor') ?? "#000000";
+        return color;
+      }
+
+      let selected = (feature.get('uuid') === self.pointHistoryService.selectedPoint);
+
+      let zoom = self.map.getView().getZoom();
+      let font_size = zoom > 8 ? 1.3 * zoom : 0.9 * zoom;
+      if(feature.getGeometry().getType() === 'Point') {
+        font_size = 13;
+      }
+      let layerStyle = new Style({
+        image: new CircleStyle({
+          stroke: new Stroke({
+            color: (selected) ? 'red' : '#ffcc33',
+            width: (selected) ? 3 : 2,
+          }),
+          radius: (selected) ? 12 : 10,
+          fill: new Fill({
+            color: textColorFunction(feature),
+          }),
+        }),
+        fill: new Fill({
+          color: textColorFunction(feature),
+        }),
+        stroke: new Stroke({
+          color: (selected) ? 'red' : '#ffcc33',
+          width: (selected) ? 3 : 2
+        }),
+        text: new olText({
+          // font: (selected) ? 'bold 16px sans-serif' : '13px sans-serif',
+          font: (selected) ? `bold ${font_size + 1}px sans-serif` : `${font_size}px sans-serif`,
+
+          fill: new Fill({
+            color: '#000000',
+          }),
+          text: textFunction(feature),
+        }),
+        zIndex: (selected) ? 1000 : feature.get('index') ? +feature.get('seriesNumber') + +feature.get('index') : +feature.get('seriesNumber'),
+      })
+
+      return layerStyle
+    }
+
+    this.displacmentLayer = new VectorLayer({
+      source: source,
+      style: stylize
+    });
+
+    this.displacmentLayer.set('displacement-layer', 'true');
+
+    this.map.addLayer(this.displacmentLayer);
+  }
+
   public clearCoherence(): void {
     if (!this.layerService.coherenceLayer) {
       return;
@@ -712,6 +971,54 @@ export class MapService {
     this.map.removeLayer(this.layerService.coherenceLayer);
     this.layerService.coherenceLayer = null;
     this.hasCoherenceLayer$.next(null);
+  }
+
+  public enablePriority(flight_dir: models.FlightDirection): void {
+    const source = new VectorSource({
+      url: `/assets/priority_rollout_${flight_dir}.geojson`,
+      format: new GeoJSON({})
+    },
+    )
+    this.priorityEnabled$.next(flight_dir);
+
+    const colorTable = [
+      'rgba(174, 174, 174, 0.6)',
+      'rgba(127, 206, 255, 0.8)',
+      'rgba(45, 128, 179, 0.7)',
+      'rgba(0, 64, 103, 0.6)',
+    ]
+    this.priorityOverview.setSource(source);
+    this.priorityOverview.setStyle(function (feature, _resolution) {
+      const test = feature.getProperties();
+      const priority = +test['priority'];
+      let color = '#FF0000';
+      if (priority === 1) {
+        color = colorTable[1];
+      } else if (priority === 2) {
+        color = colorTable[2];
+      } else if (priority === 3) {
+        color = colorTable[3];
+      } else {
+        color = colorTable[0]
+      }
+      return new Style({
+        fill: new Fill({
+          color: color
+        }),
+        stroke: new Stroke({
+          color: 'black',
+        })
+      });
+    })
+  }
+
+  public disablePriority(): void {
+    this.priorityOverview.setSource(null);
+    this.priorityEnabled$.next(null);
+  }
+
+  public isPriorityEnabled(): boolean {
+    return !!this.priorityEnabled$.value
   }
 
   public createBrowseRasterCanvas(scenes: models.CMRProduct[]) {
@@ -735,6 +1042,10 @@ export class MapService {
       this.map.removeLayer(this.browseImageLayer);
     }
   }
+  public clearTimeseriesOverlay() {
+    this.map.removeLayer(this.displacmentLayer);
+    this.displacmentLayer = null;
+  }
 
   public updateBrowseOpacity(opacity: number) {
     this.browseImageLayer?.setOpacity(opacity);
@@ -742,6 +1053,9 @@ export class MapService {
   }
   public updateCoherenceOpacity(opacity: number) {
     this.layerService.coherenceLayer?.setOpacity(opacity);
+  }
+  public updateVelocityOpacity(opacity: number) {
+    this.displacementOverview?.setOpacity(opacity);
   }
   public getAoiIntersectionMethod(geometryType: GeometryType) {
     if (geometryType === 'Point') {
@@ -806,6 +1120,10 @@ export class MapService {
         ],
       }
     );
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
 }

@@ -1,9 +1,10 @@
 <div class="icon-bar--layout position">
-  <div class="fx-row icon-bar">
-    <div class="fx-col">
+  <!-- TODO: For some reason displacement styles are making the toolbar extend too far, this works for now -->
+  <div class="fx-row icon-bar" [ngClass]="{'toolbar-collpased': !showToolBar && searchType === searchTypes.DISPLACEMENT}">
+    <div class="fx-col" *ngIf="showToolBar == true">
       <div class="fx-row">
 
-        <div *ngIf="showToolBar == true" class="fx-col visible-toggle">
+        <div  class="fx-col visible-toggle">
           <div class="fx-row icon-bar tool-bar-common">
 
             <div class="fx-empty group-margin" *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS">
@@ -23,7 +24,7 @@
               </div>
               <div class="fx-row">
                 <div>
-                  <mat-button-toggle-group class="fx-empty" name="layerType">
+                  <mat-button-toggle-group class="fx-empty" name="layerType" [hideSingleSelectionIndicator]="true">
                     <mat-button-toggle class="control-mat-button-toggle"
                                        (click)="zoomIn()"
                                        matTooltip="{{ 'ZOOM_IN' | translate }}">
@@ -67,7 +68,8 @@
                 <div class="fx-row-center">
                   <div>
                     <mat-button-toggle-group class="fx-empty" name="layerType"
-                    [disabled]="!(isBrowseOverlayEnabled$ | async)">
+                    [disabled]="!(isBrowseOverlayEnabled$ | async)"
+                    [hideSingleSelectionIndicator]="true">
                       <mat-button-toggle class="control-mat-button-toggle "
                       *ngIf="searchType === searchTypes.SARVIEWS_EVENTS"
                       (click)="onUnpinAll()"
@@ -80,7 +82,7 @@
             </div>
 
             <!-- Opacity Control -->
-            <div *ngIf="searchType !== searchTypes.BASELINE && searchType !== searchTypes.SBAS"
+            <div *ngIf="searchType !== searchTypes.BASELINE && searchType !== searchTypes.SBAS && searchType !== searchTypes.DISPLACEMENT"
               class="fx-empty group-margin">
               <div class="fx-row-center button-group-label">
                 <label>{{'OPACITY' | translate}}</label>
@@ -90,7 +92,9 @@
                         [disabled]="!(isBrowseOverlayEnabled$ | async)"
                         [matMenuTriggerFor]="opacitySlider"
                         aria-label="Map projection view">
-                  <span class="opacity-button-text">{{ browseOverlayOpacity * 100 | number : '1.0-0' }}%</span>
+                    <span class="opacity-button-text">
+                        {{ browseOverlayOpacity * 100 | number : '1.0-0' }}%
+                    </span>
                   <span class="fa fa-caret-down bottom-right"></span>
                 </button>
                 <mat-menu #opacitySlider="matMenu" class="opacity-slider-mat-menu">
@@ -103,7 +107,8 @@
                               (input)="onSetOpacity($event)"
                               (click)="$event.stopPropagation()"
                               color="primary"
-                              [disabled]="!(isBrowseOverlayEnabled$ | async)"><input matSliderThumb value="1" />
+                              [disabled]="!(isBrowseOverlayEnabled$ | async)">
+                    <input matSliderThumb value="1" />
                   </mat-slider>
                   <div class="opacity-slider-title">
                     {{ 'OPACITY_OF_COHERENCE_LAYER' | translate }}
@@ -114,10 +119,11 @@
                               (input)="onSetCoherenceOpacity($event)"
                               (click)="$event.stopPropagation()"
                               color="primary"
-                              [disabled]="!(isCoherenceOverlayEnabled$| async)"><input matSliderThumb value="1" />
+                              [disabled]="!(isCoherenceOverlayEnabled$| async)">
+                    <input matSliderThumb value="1" />
                   </mat-slider>
                 </mat-menu>
-              </div>
+        </div>
             </div>
           </div>
 

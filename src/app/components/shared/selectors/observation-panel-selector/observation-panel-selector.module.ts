@@ -15,6 +15,7 @@ import { SharedModule } from "@shared";
 import { MatInputModule } from '@angular/material/input';
 import { OperaCalibrationDataSelectorModule } from '../opera-calibration-data-selector';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { PipesModule } from '@pipes';
 
 @NgModule({
   declarations: [ ObservationPanelSelectorComponent ],
@@ -30,7 +31,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     BurstSelectorModule,
     SharedModule,
     MatInputModule,
-    OperaCalibrationDataSelectorModule
+    OperaCalibrationDataSelectorModule,
+    PipesModule
   ],
   exports: [ ObservationPanelSelectorComponent ],
 })

@@ -13,6 +13,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MapControlsComponent } from './map-controls.component';
 import { MapInfoComponent } from './map-info/map-info.component';
 import { SharedModule } from "@shared";
+import {FormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { SharedModule } from "@shared";
     ViewSelectorModule,
     LayerSelectorModule,
     GridlinesSelectorModule,
-    SharedModule
+    SharedModule,
+    FormsModule
   ],
   declarations: [
     MapControlsComponent,

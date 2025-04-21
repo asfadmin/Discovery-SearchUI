@@ -9,7 +9,7 @@
                type="number"
                (input)="onValueChanged($event, inputTypes.PATH_START)"
                [(ngModel)]="pathStart"
-               name="pathStart" placeholder="{{'PATH_START'| translate}}">
+               name="pathStart" placeholder="{{ prop.isRelevant(p.USE_TRACK) ? ('TRACK_START' | translate) :  ('PATH_START' | translate)}}">
       </mat-form-field>
 
       <mat-form-field style="width: 140px;"*ngIf="prop.isRelevant(p.PATH)" class="range-form-input"
@@ -19,7 +19,7 @@
                type="number"
                (input)="onValueChanged($event, inputTypes.PATH_END)"
                [(ngModel)]="pathEnd"
-               name="pathEnd" placeholder="{{'PATH_END' | translate }}">
+               name="pathEnd" placeholder="{{ prop.isRelevant(p.USE_TRACK) ? ('TRACK_END' | translate) :  ('PATH_END' | translate) }}">
       </mat-form-field>
     </div>
 
@@ -31,7 +31,7 @@
                type="number"
                (input)="onValueChanged($event, inputTypes.FRAME_START)"
                [(ngModel)]="frameStart"
-               name="frameStart" placeholder="{{ 'FRAME_START' | translate }}">
+               name="frameStart" placeholder="{{ 'FRAME_START' | translate}}">
       </mat-form-field>
 
       <mat-form-field style="width: 140px;" *ngIf="prop.isRelevant(p.FRAME)" class="range-form-input"

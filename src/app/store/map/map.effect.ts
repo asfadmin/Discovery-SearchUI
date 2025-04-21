@@ -52,6 +52,21 @@ export class MapEffects {
     tap(action => this.mapService.updateCoherenceOpacity(action.payload))
   ), {dispatch: false})
 
+  public onSetVelocityOpacity = createEffect( () => this.actions$.pipe(
+    ofType<SetCoherenceOverlayOpacity>(MapActionType.SET_VELOCITY_OVERLAY_OPACITY),
+    tap(action => this.mapService.updateVelocityOpacity(action.payload))
+  ), {dispatch: false})
+
+  public onSearchTypeChanged2 = createEffect( () => this.actions$.pipe(
+    ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE),
+    withLatestFrom(this.store$.select(getSearchType)),
+    tap(([action, search_type]) => {
+      if(search_type === SearchType.DISPLACEMENT && action.payload !== SearchType.DISPLACEMENT) {
+        this.mapService.clearTimeseriesOverlay();
+      }
+    })
+  ), {dispatch: false})
+  
   public onSetSelectedScene = createEffect(() => this.actions$.pipe(
     ofType<SetSelectedScene>(ScenesActionType.SET_SELECTED_SCENE),
     map(action => action.payload),

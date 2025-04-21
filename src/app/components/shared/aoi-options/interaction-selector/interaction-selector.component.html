@@ -1,15 +1,16 @@
 <mat-button-toggle-group [value]="interaction" class="interaction-toggle-group"
-  name="viewSelect" aria-label="Font Style">
+  name="viewSelect" aria-label="Font Style" [hideSingleSelectionIndicator]="true">
 
   <app-draw-selector></app-draw-selector>
 
-  <mat-button-toggle
+    <mat-button-toggle
     (click)="onEditSelected()"
     [value]="types.EDIT"
     class="control-mat-button-toggle"
     [matTooltip]="interaction === types.EDIT ? ('STOP_EDITING' | translate) : ('EDIT_CURRENT_AREA_OF_INTEREST' | translate)">
     <mat-icon class="interaction-icon">edit</mat-icon>
   </mat-button-toggle>
+
 
   <mat-button-toggle
     (click)="onDrawSelected()"
@@ -18,6 +19,7 @@
     [matTooltip]="interaction === types.DRAW ? ('STOP_DRAWING'| translate) : ('DRAW_NEW_AREA_OF_INTEREST'| translate)">
     <mat-icon class="interaction-icon">draw</mat-icon>
   </mat-button-toggle>
+
 
   <mat-button-toggle
     (click)="onClearSelected()"

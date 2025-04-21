@@ -1,0 +1,12 @@
+<div class="toggle-group-wrapper--layout">
+  <button mat-mini-fab [matMenuTriggerFor]="menu" type="button"
+  class="control-mat-button-toggle ts-criteria-button-toggle"
+      matTooltip="{{ 'EXPORT' | translate }}">
+      <mat-icon class="settings-icon">download</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <div class="chart-config-menu-panel">
+        <button mat-button (click)="onExportCSV()">{{'EXPORT' | translate}} CSV</button>
+      </div>
+    </mat-menu>
+</div>

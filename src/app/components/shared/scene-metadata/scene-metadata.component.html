@@ -70,9 +70,9 @@
   </li>
 
   <li *ngIf="prop.isRelevant(p.PATH, dataset)">
-    <span class="v-mid"><b>{{ 'PATH' | translate }}</b> • {{ scene.metadata.path }}</span>
+    <span class="v-mid"><b>{{ prop.isRelevant(p.USE_TRACK, dataset) ? ('TRACK' |  translate) : ('PATH' |  translate)  }}</b> • {{ scene.metadata.path }}</span>
     <mat-icon *ngIf="isGeoSearch()"
-      [matMenuTriggerFor]="addPathMenu"
+      [matMenuTriggerFor]="prop.isRelevant(p.USE_TRACK, dataset) ? addTrackMenu : addPathMenu"
       class="v-mid clickable">
         settings
     </mat-icon>
@@ -82,13 +82,18 @@
       <button (click)="setPathEnd()" mat-menu-item>{{'SET_AS_PATH_END' | translate }}</button>
       <button (click)="setPathStart(); setPathEnd();" mat-menu-item>{{ 'SET_AS_BOTH' | translate }}</button>
     </mat-menu>
+    <mat-menu #addTrackMenu="matMenu">
+        <button (click)="setPathStart()" mat-menu-item>{{ 'SET_AS_TRACK_START' | translate }}</button>
+        <button (click)="setPathEnd()" mat-menu-item>{{'SET_AS_TRACK_END' | translate }}</button>
+        <button (click)="setPathStart(); setPathEnd();" mat-menu-item>{{ 'SET_AS_BOTH' | translate }}</button>
+    </mat-menu>
   </li>
 
   <li *ngIf="prop.isRelevant(p.FRAME, dataset)">
-    <span class="v-mid"> <b>{{ 'FRAME' |  translate }} </b> • {{ scene.metadata.frame }} </span>
+    <span class="v-mid"> <b>{{ 'FRAME' | translate }} </b> • {{ scene.metadata.frame }} </span>
 
     <mat-icon *ngIf="isGeoSearch()"
-      [matMenuTriggerFor]="addFrameMenu"
+      [matMenuTriggerFor]=" addFrameMenu"
       class="v-mid clickable">
         settings
     </mat-icon>

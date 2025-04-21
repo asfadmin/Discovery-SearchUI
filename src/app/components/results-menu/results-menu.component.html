@@ -1,12 +1,14 @@
 <ng-container *ngIf="isResultsMenuOpen$ | async">
   <div *ngIf="breakpoint$ | async as breakpoint"
-    [class.mobile-menu-offset]="breakpoint === breakpoints.MOBILE"
+    [class.mobile-menu-offset]="breakpoint === breakpoints.MOBILE && searchType !== SearchTypes.DISPLACEMENT"
+    [class.mobile-displacement-menu-offset]="breakpoint === breakpoints.MOBILE && searchType === SearchTypes.DISPLACEMENT"
     [class.desktop-menu-offset]="breakpoint !== breakpoints.MOBILE"
+       [class.hidden]="!(isResultsMenuOpen$ | async)"
     class="rectangle-wrapper w100">
     <div
       id="result-div"
       class="w100"
-
+      [class.displacement-results]="searchType === SearchTypes.DISPLACEMENT"
       [ngClass]="{'mobile-size': breakpoint === breakpoints.MOBILE}"
       [style.height.px]="menuHeightPx"
       mwlResizable
@@ -38,11 +40,17 @@
               *ngIf="
               searchType !== SearchTypes.BASELINE &&
               searchType !== SearchTypes.SBAS &&
-              searchType !== SearchTypes.SARVIEWS_EVENTS
+              searchType !== SearchTypes.SARVIEWS_EVENTS &&
+              searchType !== SearchTypes.DISPLACEMENT
               "
               [class.small-size]="breakpoint === breakpoints.SMALL"
               [resize$]="resize$">
             </app-desktop-results-menu>
+
+            <app-timeseries-results-menu class="w100 h100 results-menu--layout"
+               [resize$]="resize$"
+               *ngIf="searchType === SearchTypes.DISPLACEMENT">
+            </app-timeseries-results-menu>
 
             <app-sarviews-results-menu class="w100 h100 results-menu--layout"
               *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS"
@@ -64,9 +72,16 @@
           </ng-container>
 
           <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
-            <app-mobile-results-menu class="w100 h100 mobile-size"
-              [resize$]="resize$">
-            </app-mobile-results-menu>
+            <ng-container *ngIf="searchType === SearchTypes.DISPLACEMENT">
+              <div class="mobile-displacement-search">
+                {{ 'NO_MOBILE_DISPLACEMENT_SEARCH' | translate }}
+              </div>
+            </ng-container>
+            <ng-container *ngIf="searchType !== SearchTypes.DISPLACEMENT">
+              <app-mobile-results-menu class="w100 h100 mobile-size"
+                [resize$]="resize$">
+              </app-mobile-results-menu>
+            </ng-container>
           </ng-container>
         </div>
 

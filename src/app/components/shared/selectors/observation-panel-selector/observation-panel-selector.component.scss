@@ -1,8 +1,15 @@
 mat-form-field {
     margin-right: 10px;
     margin-bottom: 10px;
-  }
-  
-  .short-name-selector {
+}
+
+.short-name-selector {
     width: 100%;
-  }
+}
+.polarization-subheader {
+    position: absolute;
+    top: -11%;
+    left: 19%;
+    font-size: 14px;
+    font-weight: 400;
+}
