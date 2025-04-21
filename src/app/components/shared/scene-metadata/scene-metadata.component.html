@@ -85,10 +85,10 @@
   </li>
 
   <li *ngIf="prop.isRelevant(p.FRAME, dataset)">
-    <span class="v-mid"> <b>{{ 'FRAME' |  translate }} </b> • {{ scene.metadata.frame }} </span>
+    <span class="v-mid"> <b>{{ prop.isRelevant(p.USE_TRACK, dataset) ? ('TRACK' |  translate) : ('FRAME' |  translate)  }} </b> • {{ scene.metadata.frame }} </span>
 
     <mat-icon *ngIf="isGeoSearch()"
-      [matMenuTriggerFor]="addFrameMenu"
+      [matMenuTriggerFor]=" prop.isRelevant(p.USE_TRACK, dataset) ? addTrackMenu : addFrameMenu"
       class="v-mid clickable">
         settings
     </mat-icon>
@@ -98,6 +98,11 @@
       <button (click)="setFrameEnd()" mat-menu-item>{{ 'SET_AS_FRAME_END' | translate }}</button>
       <button (click)="setFrameStart(); setFrameEnd();" mat-menu-item>{{ 'SET_AS_BOTH' | translate }}</button>
     </mat-menu>
+    <mat-menu #addTrackMenu="matMenu">
+        <button (click)="setFrameStart()" mat-menu-item>{{ 'SET_AS_TRACK_START' | translate }}</button>
+        <button (click)="setFrameEnd()" mat-menu-item>{{ 'SET_AS_TRACK_END' | translate }}</button>
+        <button (click)="setFrameStart(); setFrameEnd();" mat-menu-item>{{ 'SET_AS_BOTH' | translate }}</button>
+      </mat-menu>
   </li>
 
   <li *ngIf="prop.isRelevant(p.FLIGHT_DIRECTION, dataset)">

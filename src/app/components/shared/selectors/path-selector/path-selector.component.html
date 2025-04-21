@@ -31,7 +31,7 @@
                type="number"
                (input)="onValueChanged($event, inputTypes.FRAME_START)"
                [(ngModel)]="frameStart"
-               name="frameStart" placeholder="{{ 'FRAME_START' | translate }}">
+               name="frameStart" placeholder="{{prop.isRelevant(p.USE_TRACK) ? ('TRACK_START' | translate) :  ('FRAME_START' | translate) }}">
       </mat-form-field>
 
       <mat-form-field style="width: 140px;" *ngIf="prop.isRelevant(p.FRAME)" class="range-form-input"
@@ -41,7 +41,7 @@
                type="number"
                (input)="onValueChanged($event, inputTypes.FRAME_END)"
                [(ngModel)]="frameEnd"
-               name="frameEnd" placeholder="{{ 'FRAME_END' | translate }}">
+               name="frameEnd" placeholder="{{prop.isRelevant(p.USE_TRACK) ? ('TRACK_END' | translate) :  ('FRAME_END' | translate) }}">
       </mat-form-field>
     </div>
 
