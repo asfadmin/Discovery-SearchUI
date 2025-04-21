@@ -10,7 +10,7 @@ import * as userStore from '@store/user';
 
 import * as models from '@models';
 
-import { ScreenSizeService } from '@services';
+import { EnvironmentService, ScreenSizeService } from '@services';
 import { AnalyticsEvent, Breakpoints, derivedDatasets } from '@models';
 import { TranslateService } from "@ngx-translate/core";
 
@@ -139,7 +139,8 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   constructor(
     public translate: TranslateService,
     private store$: Store<AppState>,
-    private screenSize: ScreenSizeService
+    private screenSize: ScreenSizeService,
+    public env: EnvironmentService,
   ) {}
 
   ngOnInit() {

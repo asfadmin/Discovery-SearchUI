@@ -21,7 +21,7 @@
 
       <div>
         @for(type of searchTypeSelectors.search; track type.nameKey; let last = $last) {
-          @if (!(type.nameKey === 'DISPLACEMENT' && breakpoint === breakpoints.MOBILE)) {
+          @if (!(type.nameKey === 'DISPLACEMENT' && (breakpoint === breakpoints.MOBILE || this.env.isProd))) {
             <menu class="menu-item mat-menu-item" mat-menu-item (click)="onSetSearchType(type.searchType)">
               <div class="menu-item-inner">
                 <div class="fx-80 menu-item-content">
