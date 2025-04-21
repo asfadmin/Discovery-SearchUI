@@ -13,7 +13,7 @@ export interface Dataset {
   productTypes: ProductType[];
   beamModes: string[];
   polarizations: string[];
-  sub_polarizations?: string[];
+  sidepolarizations?: string[];
   subtypes: DatasetSubtype[];
   frequency: string;
   source: {

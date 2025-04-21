@@ -40,14 +40,23 @@ export const nisar = {
     // 'IW', 'EW'
   ],
   polarizations: [
-    'HH',
-    'VV',
-    'HH,HV',
-    'VV,VH',
-    'LH,LV',
-    'RH,RV',
-    'HH,HV,VV,VH',
-    'None'
+    "HH",
+    "HH,HV",
+    "HH,VV",
+    "HH,HV,VV,VH",
+    "VV",
+    "VV,VH",
+    "RH,RV",
+    "LH,LV"
+  ],
+  sidepolarizations: [
+    "HH",
+    "HH,HV",
+    "HH,HV,VV,VH",
+    "VV",
+    "VV,VH",
+    "RH,RV",
+    "LH,LV"
   ],
   bandwidth: {
     'L-Band': [
@@ -57,12 +66,12 @@ export const nisar = {
         '5',
         '5+5'
     ],
-    'S-Band': [
-        '10',
-        '25',
-        '37',
-        '75'
-    ],
+    // 'S-Band': [
+    //     '10',
+    //     '25',
+    //     '37',
+    //     '75'
+    // ],
   },
   instruments: [
     {

@@ -19,9 +19,9 @@
 
     <mat-form-field>
         <mat-select (selectionChange)="onNewDatasetSidePolarizations($event.value)" [(ngModel)]="sidePolarizations"
-            [disabled]="!prop.isRelevant(p.POLARIZATION)"
+            [disabled]="!prop.isRelevant(p.SIDE_POLARIZATION)"
             placeholder="{{ 'POLARIZATION' | translate }} {{ 'SIDE' | translate }}" multiple>
-            <mat-option *ngFor="let pol of dataset.polarizations" [value]="pol">
+            <mat-option *ngFor="let pol of dataset.sidepolarizations" [value]="pol">
                 {{pol}}
             </mat-option>
         </mat-select>
