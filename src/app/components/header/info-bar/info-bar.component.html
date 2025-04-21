@@ -22,12 +22,11 @@
       <b>{{ 'END' | translate }}:</b> {{ endDate | shortDate }}
     </span>
     <span *ngIf="pathRange.start || pathRange.end">
-      <b>{{'PATH' | translate }}:</b> {{pathRange.start}} - {{pathRange.end}}
+      <b> @if(dataset === 'NISAR'){ {{ 'TRACK' | translate }}}
+        @else{ {{ 'PATH'| translate }} }:</b> {{pathRange.start}} - {{pathRange.end}}
     </span>
     <span *ngIf="frameRange.start || frameRange.end">
-      <b>
-        @if(dataset === 'NISAR'){ {{ 'TRACK' | translate }}}
-        @else{ {{ 'FRAME'| translate }} }:</b> {{frameRange.start}} - {{frameRange.end}}
+      <b>{{ 'FRAME'| translate }}:</b> {{frameRange.start}} - {{frameRange.end}}
     </span>
     <span *ngIf="season.start || season.end">
       <b>{{ 'SEASON' | translate}}:</b> {{season.start}} - {{season.end}}
