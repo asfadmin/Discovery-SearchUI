@@ -290,11 +290,11 @@ export class Hyp3Service {
         const types = new Set(productType.productTypes);
         const pols = new Set(productType.polarizations);
         const beamModes = new Set(productType.beamModes);
-
         return products.every(product =>
           types.has(product.metadata.productType) &&
           pols.has(product.metadata.polarization) &&
-          beamModes.has(product.metadata.beamMode)
+          beamModes.has(product.metadata.beamMode) &&
+          product.dataset !== 'Sentinel-1C'
         );
       })
     );
