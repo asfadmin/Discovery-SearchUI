@@ -110,7 +110,11 @@ $theme-map: null;
     color: themed('dark-primary-text');
   }
 }
-
+.mat-mdc-progress-spinner circle {
+  @include themify_non_host($themes) {
+    stroke: themed('dark-primary-text');
+  }
+}
 #toast-container > .pinkToast.toast-info {
   position: relative;
   overflow: hidden;
