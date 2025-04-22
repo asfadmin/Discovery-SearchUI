@@ -43,3 +43,7 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+.date-item input::placeholder {
+  font-size: 13px;
+}
