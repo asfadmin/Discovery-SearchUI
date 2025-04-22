@@ -26,6 +26,7 @@ import { MaxResultsSelectorModule } from '@components/shared/max-results-selecto
 import { SearchButtonModule } from '@components/shared/search-button';
 import { ClearButtonModule } from '@components/shared/clear-button';
 import { PipesModule } from '@pipes';
+
 import { SearchTypeSelectorModule } from '@components/shared/selectors/search-type-selector';
 import { ProjectNameSelectorModule } from '@components/shared/selectors/project-name-selector';
 import { JobStatusSelectorModule } from '@components/shared/selectors/job-status-selector';
