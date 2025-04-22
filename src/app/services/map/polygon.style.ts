@@ -11,8 +11,29 @@ export const valid = new Style({
   image: new CircleStyle({
     radius: 7,
     fill: new Fill({
-      color: '#ffcc33'
-    })
+      color: '#ffcc33',
+    }),
+  })
+});
+
+export const validDisplacement = new Style({
+  fill: new Fill({
+    color: 'rgba(255, 255, 255, 0.2)'
+  }),
+  stroke: new Stroke({
+    color: '#236192',
+    width: 2
+  }),
+  image: new CircleStyle({
+    stroke: new Stroke({
+      color: '#ffcc33',
+      width: 2
+    }),
+    radius: 10,
+    fill: new Fill({
+      // color: '#236192',
+      color: 'rgba(0,0,0,0.25)',
+    }),
   })
 });
 
@@ -31,6 +52,14 @@ export const scene = new Style({
       radius: 5
     }),
     stroke,
+    fill,
+  });
+
+  export const staticAOI = new Style({
+    stroke: new Stroke({
+      color: '#ff5555',
+      width: 4
+    }),
     fill,
   });
 

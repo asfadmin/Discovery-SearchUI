@@ -60,10 +60,12 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
 
   private subs = new SubSink();
 
-  private productPageSize = 1000; // TODO: previously 250, breaks when adding project to queue with products not loaded in (temp workaround bumping up the default load)
+  private productPageSize = 250;
   private numberProductsInList$ = new BehaviorSubject(INFINITY);
   public numberProductsInList: number;
   private loadingDummyJobs = new Set<string>();
+  private loadingJobs = {};
+  private loadedInProjects = new Set<string>();
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
@@ -95,7 +97,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       const flattened: string[] = [];
       for (const job of jobs) {
         for (const product of job.granules) {
-          flattened.push(product.name);
+          flattened.push(product?.name);
         }
       }
 
@@ -486,40 +488,63 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
     }
   }
 
-  public onLoadMoreCustomProducts() {
-    const oldNumProducts = this.numberProductsInList;
-    const newNumProducts = this.numberProductsInList + this.productPageSize;
+  private addToQueue(scenesToLoad: models.CMRProduct[]) {
 
-    const scenesToLoad = this.scenes.slice(oldNumProducts, newNumProducts);
+    scenesToLoad.forEach(
+      s => {this.loadingDummyJobs.add(s.name); this.loadedInProjects.add(s.metadata.job.name);}
+    );
+
+    let scenesOutsideInitialLoad = this.scenes
+    .slice(this.numberProductsInList)
+    .filter(s => s.isDummyProduct)
+    .filter(s => this.loadedInProjects.has(s.metadata.job.name) && !new Set(Object.keys(this.loadingJobs)).has(s.id));
+
+    scenesToLoad = [...scenesToLoad, ...scenesOutsideInitialLoad]
+
+    if (scenesToLoad.length === 0 || scenesToLoad.every(s => this.loadingJobs.hasOwnProperty(s.id))) {
+      return;
+    }
+
+    scenesToLoad.forEach(
+      s => this.loadingJobs[s.id] = s
+    )
+    const newNumProducts = this.numberProductsInList + scenesOutsideInitialLoad.length;
 
     this.numberProductsInList$.next(
       newNumProducts
     );
 
-    this.store$.dispatch(new searchStore.LoadOnDemandScenesList(scenesToLoad));
+    this.store$.dispatch(new searchStore.LoadOnDemandScenesList(Object.values(this.loadingJobs)));
+
   }
 
-  private loadDummyProducts(scenes: CMRProduct[]) {
+  public onLoadMoreCustomProducts() {
+    const oldNumProducts = this.numberProductsInList;
+    const newNumProducts = this.numberProductsInList + this.productPageSize;
 
-    const scenesToLoad = scenes
+    const scenesToLoad = this.scenes.slice(oldNumProducts, newNumProducts)
+    .filter(s => s.isDummyProduct)
+    .filter(s => !this.loadingDummyJobs.has(s.name));
+
+    this.addToQueue(scenesToLoad);
+
+    this.numberProductsInList$.next(
+      newNumProducts
+    );
+  }
+  private loadDummyProducts(scenes: CMRProduct[]) {
+    let scenesToLoad = scenes
     .slice(0, this.numberProductsInList)
     .filter(s => s.isDummyProduct)
     .filter(s => !this.loadingDummyJobs.has(s.name));
 
-    if (scenesToLoad.length === 0) {
-      return;
-    }
-
-    scenesToLoad.forEach(
-      s => this.loadingDummyJobs.add(s.name)
-    );
-    this.store$.dispatch(new searchStore.LoadOnDemandScenesList(scenesToLoad));
+    this.addToQueue(scenesToLoad);
   }
 
   private removeLoadedScenes(scenes: CMRProduct[]) {
     scenes
       .filter(s => !s.isDummyProduct)
-      .forEach(s => this.loadingDummyJobs.delete(s.name))
+      .forEach(s => {this.loadingDummyJobs.delete(s.name); delete this.loadingJobs[s.id]})
   }
 
   ngOnDestroy() {

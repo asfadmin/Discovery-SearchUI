@@ -18,6 +18,9 @@ export class DatasetForProductService {
       return models.sentinel_1_bursts;
     }
     if(scene.id.startsWith('OPERA')) {
+      if(scene.id.startsWith('OPERA_L3_DISP')) {
+        // return models.opera_disp;
+      }
       return models.opera_s1;
     }
 

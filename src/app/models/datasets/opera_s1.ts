@@ -35,7 +35,12 @@ export const opera_s1 = {
     }, {
         apiValue: 'CSLC-STATIC',
         displayName: 'L2 Co-registered Single Look Complex Static Layer (CSLC-STATIC)'
-    }
+    },
+    // hide this until OPERA-DISP launches
+    // {
+    //   apiValue: 'DISP-S1',
+    //   displayName: 'Opera Displacement (DISP-S1)',
+    // }
   ],
   beamModes: [
     'IW', 'EW'
