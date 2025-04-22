@@ -311,6 +311,8 @@ export class SearchEffects {
       ];
       if (action.payload === models.SearchType.DISPLACEMENT) {
         output.push(new mapStore.SetMapDrawMode(models.MapDrawModeType.POINT))
+      } else {
+        output.push(new mapStore.SetMapDrawMode(models.MapDrawModeType.BOX))
       }
       return output;
     })

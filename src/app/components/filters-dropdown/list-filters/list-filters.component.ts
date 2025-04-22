@@ -125,7 +125,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
           filtersStore.FiltersActionType.RESTORE_FILTERS
         ),
         withLatestFrom(this.store$.select(filtersStore.getSearchList).pipe(map(list => list.join('\n')))),
-      )]).subscribe(([[_, listStr]]) => {console.log(listStr);this.searchList = listStr}
+      )]).subscribe(([[_, listStr]]) => this.searchList = listStr
       )
     );
 
