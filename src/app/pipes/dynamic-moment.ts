@@ -4,7 +4,8 @@ import moment from "moment";
 import { BehaviorSubject } from "rxjs";
 
 @Pipe({
-  name: 'dynamicMoment'
+    name: 'dynamicMoment',
+    standalone: false
 })
 export class MomentPipe implements PipeTransform {
   /**

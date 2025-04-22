@@ -14,9 +14,10 @@ import * as models from '@models';
 import * as services from '@services';
 
 @Component({
-  selector: 'app-confirmation',
-  templateUrl: './confirmation.component.html',
-  styleUrls: ['./confirmation.component.scss']
+    selector: 'app-confirmation',
+    templateUrl: './confirmation.component.html',
+    styleUrls: ['./confirmation.component.scss'],
+    standalone: false
 })
 export class ConfirmationComponent implements OnInit {
   public allJobs: models.QueuedHyp3Job[] = [];

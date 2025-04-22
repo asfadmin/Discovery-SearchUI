@@ -9,9 +9,10 @@ import { SubSink } from 'subsink';
 import * as models from '@models';
 
 @Component({
-  selector: 'app-pair',
-  templateUrl: './pair.component.html',
-  styleUrls: ['./pair.component.scss']
+    selector: 'app-pair',
+    templateUrl: './pair.component.html',
+    styleUrls: ['./pair.component.scss'],
+    standalone: false
 })
 export class PairComponent implements OnInit, OnDestroy {
   @Input() pair;

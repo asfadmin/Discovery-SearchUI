@@ -5,9 +5,10 @@ import * as models from '@models';
 
 
 @Component({
-  selector: 'app-baseline-scene-controls',
-  templateUrl: './baseline-scene-controls.component.html',
-  styleUrls: ['./baseline-scene-controls.component.scss']
+    selector: 'app-baseline-scene-controls',
+    templateUrl: './baseline-scene-controls.component.html',
+    styleUrls: ['./baseline-scene-controls.component.scss'],
+    standalone: false
 })
 export class BaselineSceneControlsComponent implements OnInit {
   @Input() scene: models.CMRProduct;

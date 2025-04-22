@@ -11,9 +11,10 @@ import * as models from '@models';
 
 
 @Component({
-  selector: 'app-desktop-results-menu',
-  templateUrl: './desktop-results-menu.component.html',
-  styleUrls: ['./desktop-results-menu.component.css', '../results-menu.component.scss']
+    selector: 'app-desktop-results-menu',
+    templateUrl: './desktop-results-menu.component.html',
+    styleUrls: ['./desktop-results-menu.component.css', '../results-menu.component.scss'],
+    standalone: false
 })
 export class DesktopResultsMenuComponent implements OnInit, OnDestroy {
   @Input() resize$: Observable<void>;

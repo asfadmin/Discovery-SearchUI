@@ -6,9 +6,10 @@ import * as filtersStore from '@store/filters';
 import { SBASOverlap } from '@models';
 
 @Component({
-  selector: 'app-sbas-overlap-selector',
-  templateUrl: './sbas-overlap-selector.component.html',
-  styleUrls: ['./sbas-overlap-selector.component.scss']
+    selector: 'app-sbas-overlap-selector',
+    templateUrl: './sbas-overlap-selector.component.html',
+    styleUrls: ['./sbas-overlap-selector.component.scss'],
+    standalone: false
 })
 export class SbasOverlapSelectorComponent implements OnInit {
 

@@ -11,9 +11,10 @@ import { PropertyService } from '@services';
 
 
 @Component({
-  selector: 'app-scene-metadata',
-  templateUrl: './scene-metadata.component.html',
-  styleUrls: ['./scene-metadata.component.scss']
+    selector: 'app-scene-metadata',
+    templateUrl: './scene-metadata.component.html',
+    styleUrls: ['./scene-metadata.component.scss'],
+    standalone: false
 })
 export class SceneMetadataComponent implements OnInit, OnDestroy {
   @Input() scene: models.CMRProduct;

@@ -10,9 +10,10 @@ import * as scenesStore from '@store/scenes';
 import { Breakpoints, asfWebsite } from '@models';
 
 @Component({
-  selector: 'app-attributions',
-  templateUrl: './attributions.component.html',
-  styleUrls: ['./attributions.component.scss'],
+    selector: 'app-attributions',
+    templateUrl: './attributions.component.html',
+    styleUrls: ['./attributions.component.scss'],
+    standalone: false
 })
 export class AttributionsComponent {
   @Input() breakpoint: Breakpoints;

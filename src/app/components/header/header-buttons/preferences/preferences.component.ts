@@ -18,9 +18,10 @@ import * as models from "@models";
 import * as services from "@services";
 
 @Component({
-  selector: 'app-preferences',
-  templateUrl: './preferences.component.html',
-  styleUrls: ['./preferences.component.scss']
+    selector: 'app-preferences',
+    templateUrl: './preferences.component.html',
+    styleUrls: ['./preferences.component.scss'],
+    standalone: false
 })
 export class PreferencesComponent implements OnInit, OnDestroy {
   @Output() selectedChange = new EventEmitter<string>();

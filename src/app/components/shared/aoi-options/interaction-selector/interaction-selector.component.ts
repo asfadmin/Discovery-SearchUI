@@ -13,9 +13,10 @@ import * as models from '@models';
 import * as searchStore from '@store/search';
 
 @Component({
-  selector: 'app-interaction-selector',
-  templateUrl: './interaction-selector.component.html',
-  styleUrls: ['./interaction-selector.component.scss']
+    selector: 'app-interaction-selector',
+    templateUrl: './interaction-selector.component.html',
+    styleUrls: ['./interaction-selector.component.scss'],
+    standalone: false
 })
 export class InteractionSelectorComponent implements OnInit, OnDestroy {
   @ViewChild('clearButton') clearButton: MatButtonToggle;

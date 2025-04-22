@@ -28,10 +28,11 @@ declare global {
 }
 
 @Component({
-  selector: 'app-header-buttons',
-  templateUrl: './header-buttons.component.html',
-  styleUrls: ['./header-buttons.component.scss'],
-  animations: []
+    selector: 'app-header-buttons',
+    templateUrl: './header-buttons.component.html',
+    styleUrls: ['./header-buttons.component.scss'],
+    animations: [],
+    standalone: false
 })
 export class HeaderButtonsComponent implements OnInit, OnDestroy {
   anio: number = new Date().getFullYear();

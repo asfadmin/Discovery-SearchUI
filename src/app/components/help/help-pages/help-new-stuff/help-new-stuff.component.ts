@@ -5,9 +5,10 @@ import * as services from '@services';
 
 
 @Component({
-  selector: 'app-help-new-stuff',
-  templateUrl: './help-new-stuff.component.html',
-  styleUrls: ['./help-new-stuff.component.scss']
+    selector: 'app-help-new-stuff',
+    templateUrl: './help-new-stuff.component.html',
+    styleUrls: ['./help-new-stuff.component.scss'],
+    standalone: false
 })
 export class HelpNewStuffComponent {
 

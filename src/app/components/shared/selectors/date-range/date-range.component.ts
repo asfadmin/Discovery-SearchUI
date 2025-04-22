@@ -13,9 +13,10 @@ import * as uiStore from '@store/ui';
 import * as models from '@models';
 
 @Component({
-  selector: 'app-date-range',
-  templateUrl: './date-range.component.html',
-  styleUrls: ['./date-range.component.scss'],
+    selector: 'app-date-range',
+    templateUrl: './date-range.component.html',
+    styleUrls: ['./date-range.component.scss'],
+    standalone: false
 })
 export class DateRangeComponent implements OnInit, OnDestroy {
   public dateRangeForm = new UntypedFormGroup({

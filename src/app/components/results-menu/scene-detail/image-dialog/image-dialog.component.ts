@@ -23,10 +23,11 @@ import { ClipboardService } from 'ngx-clipboard';
 import { PinnedProduct } from '@services/browse-map.service';
 
 @Component({
-  selector: 'app-image-dialog',
-  templateUrl: './image-dialog.component.html',
-  styleUrls: ['./image-dialog.component.scss'],
-  providers: [ BrowseMapService ]
+    selector: 'app-image-dialog',
+    templateUrl: './image-dialog.component.html',
+    styleUrls: ['./image-dialog.component.scss'],
+    providers: [BrowseMapService],
+    standalone: false
 })
 export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   public scene$ = this.store$.select(scenesStore.getSelectedScene);

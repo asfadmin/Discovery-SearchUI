@@ -11,10 +11,11 @@ import * as models from '@models';
 import { AsfLanguageService } from "@services/asf-language.service";
 
 @Component({
-  selector: 'app-saved-search',
-  templateUrl: './saved-search.component.html',
-  styleUrls: ['./saved-search.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-saved-search',
+    templateUrl: './saved-search.component.html',
+    styleUrls: ['./saved-search.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SavedSearchComponent implements OnInit {
   @ViewChild('nameEditInput') nameEditInput: ElementRef;

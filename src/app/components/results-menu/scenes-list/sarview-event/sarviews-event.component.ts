@@ -10,9 +10,10 @@ import { AppState } from '@store';
 import moment from 'moment';
 
 @Component({
-  selector: 'app-sarviews-event',
-  templateUrl: './sarviews-event.component.html',
-  styleUrls: ['./sarviews-event.component.scss']
+    selector: 'app-sarviews-event',
+    templateUrl: './sarviews-event.component.html',
+    styleUrls: ['./sarviews-event.component.scss'],
+    standalone: false
 })
 export class SarviewsEventComponent implements OnInit {
   @Input() event: SarviewsEvent;

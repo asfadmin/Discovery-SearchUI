@@ -9,9 +9,10 @@ import * as hyp3Store from '@store/hyp3';
 import { ValidationError } from 'xml2js';
 
 @Component({
-  selector: 'app-processing-signup',
-  templateUrl: './processing-signup.component.html',
-  styleUrl: './processing-signup.component.scss'
+    selector: 'app-processing-signup',
+    templateUrl: './processing-signup.component.html',
+    styleUrl: './processing-signup.component.scss',
+    standalone: false
 })
 export class ProcessingSignupComponent implements OnInit {
   public signupForm = this.formBuilder.group({

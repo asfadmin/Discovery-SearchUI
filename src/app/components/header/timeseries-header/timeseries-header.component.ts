@@ -13,9 +13,10 @@ import { MapDrawModeType, MapInteractionModeType } from '@models';
 import * as models from '@models';
 
 @Component({
-  selector: 'app-timeseries-header',
-  templateUrl: './timeseries-header.component.html',
-  styleUrls: ['./timeseries-header.component.scss',  '../header.component.scss']
+    selector: 'app-timeseries-header',
+    templateUrl: './timeseries-header.component.html',
+    styleUrls: ['./timeseries-header.component.scss', '../header.component.scss'],
+    standalone: false
 })
 export class TimeseriesHeaderComponent implements OnInit, OnDestroy {
   public breakpoint$ = this.screenSize.breakpoint$;

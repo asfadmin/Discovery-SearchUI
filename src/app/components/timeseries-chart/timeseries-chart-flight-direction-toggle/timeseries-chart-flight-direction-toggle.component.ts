@@ -20,11 +20,10 @@ import {NgIf} from '@angular/common';
 
 
 @Component({
-  selector: 'app-timeseries-chart-flight-direction-toggle',
-  standalone: true,
-  imports: [TranslateModule, MatButtonModule, MatIconModule, MatButtonToggleModule, MatInputModule, DocsModalModule, FormsModule, MatMenu, MatMenuItem, MatTooltip, MatMenuTrigger, NgIf],
-  templateUrl: './timeseries-chart-flight-direction-toggle.component.html',
-  styleUrl: './timeseries-chart-flight-direction-toggle.component.scss'
+    selector: 'app-timeseries-chart-flight-direction-toggle',
+    imports: [TranslateModule, MatButtonModule, MatIconModule, MatButtonToggleModule, MatInputModule, DocsModalModule, FormsModule, MatMenu, MatMenuItem, MatTooltip, MatMenuTrigger, NgIf],
+    templateUrl: './timeseries-chart-flight-direction-toggle.component.html',
+    styleUrl: './timeseries-chart-flight-direction-toggle.component.scss'
 })
 export class TimeseriesChartFlightDirectionToggleComponent implements OnInit {
   private subs = new SubSink()

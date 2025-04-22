@@ -17,9 +17,10 @@ export interface BaselineSlider {
 }
 
 @Component({
-  selector: 'app-baseline-sliders',
-  templateUrl: './baseline-sliders.component.html',
-  styleUrls: ['./baseline-sliders.component.scss']
+    selector: 'app-baseline-sliders',
+    templateUrl: './baseline-sliders.component.html',
+    styleUrls: ['./baseline-sliders.component.scss'],
+    standalone: false
 })
 export class BaselineSlidersComponent implements OnInit, OnDestroy {
   @ViewChild('temporalFilter', { static: true }) temporalFilter: ElementRef;

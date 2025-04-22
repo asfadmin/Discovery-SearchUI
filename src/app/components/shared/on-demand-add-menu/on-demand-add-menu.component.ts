@@ -16,9 +16,10 @@ import { withLatestFrom } from 'rxjs/operators';
 import { EnvironmentService, Hyp3Service } from '@services';
 
 @Component({
-  selector: 'app-on-demand-add-menu',
-  templateUrl: './on-demand-add-menu.component.html',
-  styleUrls: ['./on-demand-add-menu.component.scss']
+    selector: 'app-on-demand-add-menu',
+    templateUrl: './on-demand-add-menu.component.html',
+    styleUrls: ['./on-demand-add-menu.component.scss'],
+    standalone: false
 })
 export class OnDemandAddMenuComponent implements OnInit {
   @Input() hyp3ableProducts: models.Hyp3ableProductByJobType;

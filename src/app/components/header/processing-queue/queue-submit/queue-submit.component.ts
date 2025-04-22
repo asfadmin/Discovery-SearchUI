@@ -8,9 +8,10 @@ import { SearchType } from '@models';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 
 @Component({
-  selector: 'app-queue-submit',
-  templateUrl: './queue-submit.component.html',
-  styleUrls: ['./queue-submit.component.scss']
+    selector: 'app-queue-submit',
+    templateUrl: './queue-submit.component.html',
+    styleUrls: ['./queue-submit.component.scss'],
+    standalone: false
 })
 export class QueueSubmitComponent implements OnInit {
 

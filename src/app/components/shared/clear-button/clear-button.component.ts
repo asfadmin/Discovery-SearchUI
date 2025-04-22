@@ -5,9 +5,10 @@ import { AppState } from '@store';
 import * as searchStore from '@store/search';
 
 @Component({
-  selector: 'app-clear-button',
-  templateUrl: './clear-button.component.html',
-  styleUrls: ['./clear-button.component.css']
+    selector: 'app-clear-button',
+    templateUrl: './clear-button.component.html',
+    styleUrls: ['./clear-button.component.css'],
+    standalone: false
 })
 export class ClearButtonComponent {
 

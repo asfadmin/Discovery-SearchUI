@@ -13,9 +13,10 @@ import { catchError, finalize, first } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 @Component({
-  selector: 'app-hyp3-job-status-badge',
-  templateUrl: './hyp3-job-status-badge.component.html',
-  styleUrls: ['./hyp3-job-status-badge.component.scss']
+    selector: 'app-hyp3-job-status-badge',
+    templateUrl: './hyp3-job-status-badge.component.html',
+    styleUrls: ['./hyp3-job-status-badge.component.scss'],
+    standalone: false
 })
 export class Hyp3JobStatusBadgeComponent implements OnInit {
   @Input() job: Hyp3Job;

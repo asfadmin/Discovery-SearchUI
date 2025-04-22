@@ -8,9 +8,10 @@ import * as queueStore from '@store/queue';
 import * as models from '@models';
 
 @Component({
-  selector: 'app-processing-options',
-  templateUrl: './processing-options.component.html',
-  styleUrls: ['./processing-options.component.scss']
+    selector: 'app-processing-options',
+    templateUrl: './processing-options.component.html',
+    styleUrls: ['./processing-options.component.scss'],
+    standalone: false
 })
 export class ProcessingOptionsComponent implements OnInit {
   @Input() selectedJobType: models.Hyp3JobType;

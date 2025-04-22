@@ -12,9 +12,10 @@ import { SubSink } from 'subsink';
 import * as services from '@services';
 
 @Component({
-  selector: 'app-sarviews-header',
-  templateUrl: './sarviews-header.component.html',
-  styleUrls: ['./sarviews-header.component.scss', '../header.component.scss']
+    selector: 'app-sarviews-header',
+    templateUrl: './sarviews-header.component.html',
+    styleUrls: ['./sarviews-header.component.scss', '../header.component.scss'],
+    standalone: false
 })
 export class SarviewsHeaderComponent implements OnInit {
   public datasets = models.datasetList;

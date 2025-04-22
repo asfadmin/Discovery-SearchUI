@@ -8,9 +8,10 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { SearchType } from '@models';
 @Component({
-  selector: 'app-full-burst-selector',
-  templateUrl: './full-burst-selector.component.html',
-  styleUrls: ['./full-burst-selector.component.scss', '../burst-selector.component.scss']
+    selector: 'app-full-burst-selector',
+    templateUrl: './full-burst-selector.component.html',
+    styleUrls: ['./full-burst-selector.component.scss', '../burst-selector.component.scss'],
+    standalone: false
 })
 export class FullBurstSelectorComponent implements OnInit, OnDestroy {
   public fullBurstIDs: string[] = []

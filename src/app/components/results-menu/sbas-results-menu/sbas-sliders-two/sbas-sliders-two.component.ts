@@ -17,9 +17,10 @@ import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } 
 declare var wNumb: any;
 
 @Component({
-  selector: 'app-sbas-sliders-two',
-  templateUrl: './sbas-sliders-two.component.html',
-  styleUrls: ['./sbas-sliders-two.component.scss']
+    selector: 'app-sbas-sliders-two',
+    templateUrl: './sbas-sliders-two.component.html',
+    styleUrls: ['./sbas-sliders-two.component.scss'],
+    standalone: false
 })
 export class SbasSlidersTwoComponent implements OnInit, OnDestroy {
   @ViewChild('temporalFilter2', { static: true }) temporalFilter: ElementRef;

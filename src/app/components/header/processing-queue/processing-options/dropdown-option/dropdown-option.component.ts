@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'app-dropdown-option',
-  templateUrl: './dropdown-option.component.html',
-  styleUrls: ['./dropdown-option.component.scss']
+    selector: 'app-dropdown-option',
+    templateUrl: './dropdown-option.component.html',
+    styleUrls: ['./dropdown-option.component.scss'],
+    standalone: false
 })
 export class DropdownOptionComponent implements OnInit {
   @Input() value: string;

@@ -2,7 +2,8 @@ import { MatMenuPanel, MatMenuTrigger } from '@angular/material/menu';
 import { Directive, ElementRef, HostListener, Input, OnInit } from '@angular/core';
 
 @Directive({
-  selector: '[contextMenuTriggerFor]',
+    selector: '[contextMenuTriggerFor]',
+    standalone: false
 })
 export class ContextMenuTriggerDirective extends MatMenuTrigger implements OnInit {
   private readonly anchorElement = document.createElement('div');

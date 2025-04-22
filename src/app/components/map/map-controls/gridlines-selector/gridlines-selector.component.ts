@@ -5,9 +5,10 @@ import * as mapStore from '@store/map';
 import { SubSink } from 'subsink';
 
 @Component({
-  selector: 'app-gridlines-selector',
-  templateUrl: './gridlines-selector.component.html',
-  styleUrls: ['./gridlines-selector.component.scss']
+    selector: 'app-gridlines-selector',
+    templateUrl: './gridlines-selector.component.html',
+    styleUrls: ['./gridlines-selector.component.scss'],
+    standalone: false
 })
 export class GridlinesSelectorComponent implements OnInit, OnDestroy {
   public areGridlinesActive$ = this.store$.select(mapStore.getAreGridlinesActive);

@@ -24,9 +24,10 @@ export enum ChartDatasets {
 }
 
 @Component({
-  selector: 'app-sbas-chart',
-  templateUrl: './sbas-chart.component.html',
-  styleUrls: ['./sbas-chart.component.scss']
+    selector: 'app-sbas-chart',
+    templateUrl: './sbas-chart.component.html',
+    styleUrls: ['./sbas-chart.component.scss'],
+    standalone: false
 })
 export class SBASChartComponent implements OnInit, OnDestroy {
   @Input() zoomIn$: Observable<void>;

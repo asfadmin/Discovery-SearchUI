@@ -14,21 +14,20 @@ import {
   NetcdfService
 } from '@services';
 @Component({
-  selector: 'app-timeseries-chart-export',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatDialogModule,
-    MatIconModule,
-    MatIconModule,
-    MatButtonModule,
-    MatMenuModule,
-    MatButtonToggleModule,
-    MatTooltipModule,
-    TranslateModule
-  ],
-  templateUrl: './timeseries-chart-export.component.html',
-  styleUrl: './timeseries-chart-export.component.scss'
+    selector: 'app-timeseries-chart-export',
+    imports: [
+        CommonModule,
+        MatDialogModule,
+        MatIconModule,
+        MatIconModule,
+        MatButtonModule,
+        MatMenuModule,
+        MatButtonToggleModule,
+        MatTooltipModule,
+        TranslateModule
+    ],
+    templateUrl: './timeseries-chart-export.component.html',
+    styleUrl: './timeseries-chart-export.component.scss'
 })
 export class TimeseriesChartExportComponent {
   constructor(private netcdfService: NetcdfService) { }

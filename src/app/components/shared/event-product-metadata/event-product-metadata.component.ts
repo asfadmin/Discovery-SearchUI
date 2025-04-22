@@ -19,9 +19,10 @@ enum Polarizations {
 }
 
 @Component({
-  selector: 'app-event-product-metadata',
-  templateUrl: './event-product-metadata.component.html',
-  styleUrls: ['./event-product-metadata.component.scss']
+    selector: 'app-event-product-metadata',
+    templateUrl: './event-product-metadata.component.html',
+    styleUrls: ['./event-product-metadata.component.scss'],
+    standalone: false
 })
 export class EventProductMetadataComponent implements OnInit {
   @Input() set product(value: models.SarviewsProduct) {

@@ -19,9 +19,10 @@ enum FilterPanel {
 }
 
 @Component({
-  selector: 'app-sbas-filters',
-  templateUrl: './sbas-filters.component.html',
-  styleUrls: ['./sbas-filters.component.scss']
+    selector: 'app-sbas-filters',
+    templateUrl: './sbas-filters.component.html',
+    styleUrls: ['./sbas-filters.component.scss'],
+    standalone: false
 })
 export class SbasFiltersComponent implements OnInit, OnDestroy {
   public breakpoint$ = this.screenSize.breakpoint$;

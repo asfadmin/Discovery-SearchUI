@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'app-checkbox-option',
-  templateUrl: './checkbox-option.component.html',
-  styleUrls: ['./checkbox-option.component.scss']
+    selector: 'app-checkbox-option',
+    templateUrl: './checkbox-option.component.html',
+    styleUrls: ['./checkbox-option.component.scss'],
+    standalone: false
 })
 export class CheckboxOptionComponent implements OnInit {
   @Input() value: boolean;

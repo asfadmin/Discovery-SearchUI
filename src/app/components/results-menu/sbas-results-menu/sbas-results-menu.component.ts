@@ -20,9 +20,10 @@ enum CardViews {
 }
 
 @Component({
-  selector: 'app-sbas-results-menu',
-  templateUrl: './sbas-results-menu.component.html',
-  styleUrls: ['./sbas-results-menu.component.scss',  '../results-menu.component.scss']
+    selector: 'app-sbas-results-menu',
+    templateUrl: './sbas-results-menu.component.html',
+    styleUrls: ['./sbas-results-menu.component.scss', '../results-menu.component.scss'],
+    standalone: false
 })
 export class SBASResultsMenuComponent implements OnInit, OnDestroy {
 

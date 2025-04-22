@@ -26,9 +26,10 @@ import { ClipboardService } from 'ngx-clipboard';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-scenes-list-header',
-  templateUrl: './scenes-list-header.component.html',
-  styleUrls: ['./scenes-list-header.component.scss']
+    selector: 'app-scenes-list-header',
+    templateUrl: './scenes-list-header.component.html',
+    styleUrls: ['./scenes-list-header.component.scss'],
+    standalone: false
 })
 export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public copyIcon = faCopy;

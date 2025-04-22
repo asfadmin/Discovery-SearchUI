@@ -6,9 +6,10 @@ import moment from 'moment';
 import * as filtersStore from '@store/filters';
 
 @Component({
-  selector: 'app-event-metadata',
-  templateUrl: './event-metadata.component.html',
-  styleUrls: ['./event-metadata.component.scss']
+    selector: 'app-event-metadata',
+    templateUrl: './event-metadata.component.html',
+    styleUrls: ['./event-metadata.component.scss'],
+    standalone: false
 })
 export class EventMetadataComponent implements OnInit {
   @Input() event: models.SarviewsEvent;

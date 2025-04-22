@@ -18,9 +18,10 @@ enum FilterPanel {
   OVERLAP = 'Overlap'
 }
 @Component({
-  selector: 'app-timeseries-filters',
-  templateUrl: './timeseries-filters.component.html',
-  styleUrl: './timeseries-filters.component.scss'
+    selector: 'app-timeseries-filters',
+    templateUrl: './timeseries-filters.component.html',
+    styleUrl: './timeseries-filters.component.scss',
+    standalone: false
 })
 export class TimeseriesFiltersComponent implements OnDestroy, OnInit {
   public breakpoint$ = this.screenSize.breakpoint$;

@@ -2,8 +2,9 @@ import {Pipe, PipeTransform} from '@angular/core';
 import { MapDrawModeType } from '@models';
 
 @Pipe({
-  name: 'aoiIcon',
-  pure: false
+    name: 'aoiIcon',
+    pure: false,
+    standalone: false
 })
 
 

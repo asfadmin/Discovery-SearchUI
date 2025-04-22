@@ -17,9 +17,10 @@ import { filter, map, startWith, tap } from 'rxjs/operators';
 import { ToggleBrowseOverlay} from '@store/map';
 
 @Component({
-  selector: 'app-map-controls',
-  templateUrl: './map-controls.component.html',
-  styleUrls: ['./map-controls.component.scss']
+    selector: 'app-map-controls',
+    templateUrl: './map-controls.component.html',
+    styleUrls: ['./map-controls.component.scss'],
+    standalone: false
 })
 export class MapControlsComponent implements OnInit, OnDestroy {
 

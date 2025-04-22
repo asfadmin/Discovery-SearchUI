@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'app-subset-option',
-  templateUrl: './subset-option.component.html',
-  styleUrls: ['./subset-option.component.scss']
+    selector: 'app-subset-option',
+    templateUrl: './subset-option.component.html',
+    styleUrls: ['./subset-option.component.scss'],
+    standalone: false
 })
 export class SubsetOptionComponent implements OnInit {
   @Input() optionName: string;
