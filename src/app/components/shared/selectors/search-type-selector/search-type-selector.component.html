@@ -21,7 +21,7 @@
 
       <div>
         @for(type of searchTypeSelectors.search; track type.nameKey; let last = $last) {
-          @if (!(type.nameKey === 'DISPLACEMENT' && breakpoint === breakpoints.MOBILE)) {
+          @if (!(type.nameKey === 'DISPLACEMENT' && (breakpoint === breakpoints.MOBILE || this.env.isProd))) {
             <menu class="menu-item mat-menu-item" mat-menu-item (click)="onSetSearchType(type.searchType)">
               <div class="menu-item-inner">
                 <div class="fx-80 menu-item-content">
@@ -62,9 +62,12 @@
               </div>
               <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
                 {{'ON_DEMAND_SEARCH_ALLOWS_YOU_TO_VIEW_YOUR_SUBMITTED_ON_DEMAND_JOBS' | translate}}
-                <app-docs-modal class="read-more-icon"
-                                url="https://docs.asf.alaska.edu/vertex/manual/#on-demand-products-search-options">
-                </app-docs-modal>
+<!--                {{'AND_DOWNLOAD_THEM' | translate}}-->
+                <span class="enable-search-type-on-demand">
+                  <app-docs-modal class="read-more-icon"
+                                  url="https://docs.asf.alaska.edu/vertex/manual/#on-demand-products-search-options">
+                  </app-docs-modal>
+                </span>
               </div>
             </div>
             <div class="fx-20 menu-item-aside">

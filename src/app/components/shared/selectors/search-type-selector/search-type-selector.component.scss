@@ -42,7 +42,7 @@
 }
 
 .menu-item-content {
-  min-width: 400px;
+  //min-width: 400px;
 }
 
 .menu-item-aside {
@@ -200,10 +200,22 @@
   }
 
   /* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
-  mat-card-actions {
+  mat-card-actions,
+  .enable-search-type-on-demand {
     pointer-events: auto;
-    opacity: 1 !important;
   }
+}
+
+::ng-deep .enable-search-type-on-demand .icon-size {
+  opacity: 1;
+  color: black !important;
+  font-weight: bold !important;
+}
+
+.enable-search-type-on-demand .icon-size {
+  opacity: 1;
+  color: black;
+  font-weight: bold;
 }
 
 .login-prompt {
@@ -213,6 +225,7 @@
 .login-hidden {
   display: none;
 }
+
 
 .read-more-icon {
   position: relative;
