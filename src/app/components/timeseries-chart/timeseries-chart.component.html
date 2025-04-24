@@ -33,7 +33,7 @@
 </div>
 
 <div #tsChartWrapper class="chart-wrapper" (resized)="onResized()" [class.no-data] = "data?.length < 1">
-  <div #timeseriesChart id="timeseriesChart" [contextMenuTriggerFor]="menu" [contextMenuTriggerData]="{'tooltipData': hoveredData}">
+  <div #timeseriesChart id="timeseriesChart" [contextMenuTriggerFor]="menu" [contextMenuTriggerData]="{'tooltipData': hoveredData, 'valid': !hoveredData.is_masked}">
   </div>
   <app-timeseries-chart-export class="ts-chart-export-button" [timeSeriesData]="exportableData"></app-timeseries-chart-export>
   <app-chart-modal class="ts-chart-config-button" (resetReferenceEvent)="resetBasePoint()"></app-chart-modal>

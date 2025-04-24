@@ -362,7 +362,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
                 'temporal_coherence': result.point[key].temporal_coherence,
                 'date': result.point[key].secondary_datetime,
                 'file_name': key,
-                'is_valid': result.point[key].is_masked,
+                'is_masked': result.point[key].is_masked,
                 'id': key,
                 'temporal_baseline': result.point[key].temporal_baseline,
                 'drawMode': result.point[key].drawMode,
@@ -376,7 +376,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
                 'color': result.state.color,
                 'base': result.point[key].short_wavelength_displacement,
                 'id': key + result.point[key].short_wavelength_displacement,
-                'is_valid': result.point[key].is_masked,
+                'is_masked': result.point[key].is_masked,
                 'aoi': aoi,
                 'drawMode': result.point[key].drawMode,
                 'frame': result.frame,
@@ -575,7 +575,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         if (this.baseData && this.baseData.id === d.id) {
           return 'ts-reference-point';
         }
-        if(d.is_valid) {
+        if(d.is_masked) {
           return 'ts-invalid-point';
         }
       })
@@ -586,11 +586,19 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         toolTip.interrupt();
         toolTip
           .style('opacity', .9);
+        if(p.is_masked) {
+          toolTip.html(`<div style="text-align: left">
+          <b>${self.language.translate.instant('SERIES')} ${p.seriesNumber}:</b><br>
+          ${self.tooltipDateFormat(self.hoveredDate)}<br>
+          ${self.language.translate.instant('NO_VALID_DATA_FOR_POINT')}<br>
+          `);
+        } else {
         toolTip.html(`<div style="text-align: left">
         <b>${self.language.translate.instant('SERIES')} ${p.seriesNumber}:</b><br>
         ${self.tooltipDateFormat(self.hoveredDate)}<br>
         ${p.short_wavelength_displacement.toFixed(4)} ${self.language.translate.instant('METERS')} <br>
         <em>${self.dotToolTipText}</em></div>`);
+        }
         self.updateTooltip();
         // self.highlightSeries(p.aoi);
 
