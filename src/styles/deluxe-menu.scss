@@ -1,8 +1,10 @@
 @use "asf-theme";
+@use "sass:color";
 
 hr {
   @include asf-theme.themify(asf-theme.$themes) {
-    border-top-color: rgba(asf-theme.themed('primary-light'), 0.2);
+    $color: asf-theme.themed('primary-light');
+    border-top-color: rgba($color, 0.2);
   }
   margin-block: 0;
 }

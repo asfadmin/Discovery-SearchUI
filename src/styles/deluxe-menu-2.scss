@@ -1,16 +1,18 @@
+@use 'asf-theme';
+
 $light-grey: rgb(0 0 0 / 60%);
 .description-layout {
   display: flex;
 }
 
 .menu-item-icon {
-  @include md-icon-size(100px);
+  @include asf-theme.md-icon-size(100px);
 
   font-size: 24px !important;
   height: 47px !important;
   margin-right: 0;
-  @include themify($themes) {
-    color: themed('dark-primary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('dark-primary-text');
   }
 }
 
@@ -61,7 +63,7 @@ $light-grey: rgb(0 0 0 / 60%);
 }
 
 .option-description {
-  text-wrap: normal;
+  text-wrap: auto;
 }
 
 .matOption {

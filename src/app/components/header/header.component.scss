@@ -1,4 +1,5 @@
 @use "@angular/material" as mat;
+@use "variables";
 
 @use "asf-theme";
 $mat-theme-ignore-duplication-warnings: true;
@@ -63,8 +64,8 @@ $config: mat.m2-define-legacy-typography-config();
   margin-left: 5px;
   margin-right: 5px;
   height: 70px;
-  font-size: asf-theme.$asf-font-size;
-  line-height: asf-theme.$asf-line-height;
+  font-size: variables.$asf-font-size;
+  line-height: variables.$asf-line-height;
 }
 
 .search-controls {

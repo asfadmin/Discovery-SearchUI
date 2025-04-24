@@ -1,9 +1,11 @@
 @use "asf-theme";
+@use "sass:color";
 $mat-theme-ignore-duplication-warnings: true;
 
 ::ng-deep .circumference {
   @include themify($themes) {
-    stroke: lighten(themed('primary'), 40%);
+    stroke: color.adjust(themed('primary'), $lightness: 40%);
+    //stroke: lighten(themed('primary'), 40%);
   }
   fill: none;
   stroke-width: 10px;

@@ -21,8 +21,9 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .ts-criteria-button-toggle {
-    @include themify($themes) {
-        background-color: asf-theme.themed('background-white') !important;
+    @include asf-theme.themify($themes) {
+      $color: asf-theme.themed('background-white');
+      background-color: $color !important;
     }
     font-size: 14px;
 }

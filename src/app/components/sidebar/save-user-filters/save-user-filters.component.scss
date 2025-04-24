@@ -51,7 +51,8 @@ $mat-theme-ignore-duplication-warnings: true;
 
 .saved-filters-presets-row:nth-child(even) {
   @include asf-theme.themify(asf-theme.$themes) {
-    background-color: color.adjust(asf-theme.themed('primary-light'), $lightness: -10%) !important;
+    $color: asf-theme.themed('primary-light');
+    background-color: color.adjust($color, $lightness: -10%) !important;
   }
 }
 

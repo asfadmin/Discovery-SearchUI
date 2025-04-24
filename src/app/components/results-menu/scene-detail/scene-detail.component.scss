@@ -18,7 +18,8 @@ a {
   height: 90%;
 
   @include asf-theme.themify(asf-theme.$themes) {
-    border-left: asf-theme.themed("primary-light") 1px solid;
+    $color: asf-theme.themed('primary-light');
+    border-left: $color 1px solid;
   }
 
   overflow-x: hidden !important;

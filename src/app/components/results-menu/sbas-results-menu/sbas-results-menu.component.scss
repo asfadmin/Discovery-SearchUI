@@ -227,13 +227,15 @@ label {
 /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .control-mat-button-toggle {
   @include asf-theme.themify(asf-theme.$themes) {
-    background: asf-theme.themed('background-white') !important;
+    $color: asf-theme.themed('background-white');
+    background: $color !important;
   }
 }
 
 .warn-icon {
   @include asf-theme.themify(asf-theme.$themes) {
-    color: color.adjust(asf-theme.themed('dark-primary-text'), $lightness: -25%);
+    $color: asf-theme.themed('dark-primary-text');
+    color: color.adjust($color, $lightness: -25%);
   }
 }
 .gap-detected-area {

@@ -1,8 +1,8 @@
-@import 'asf-theme';
+@use 'asf-theme';
 
 $side-padding-px: 15px;
 $side-padding-only: 0 $side-padding-px 0 $side-padding-px;
-$header-color: $asf-blue;
+$header-color: asf-theme.$asf-blue;
 $border-color: lightgray;
 $border-style: 1px solid $border-color;
 $img-border-style: 1px solid black;
@@ -16,7 +16,8 @@ $img-border-style: 1px solid black;
 
 .help-top-section {
   @include themify($themes) {
-    background-color: lighten(themed('primary-light'),15%) !important;
+    $color: asf-theme.themed('primary-light');
+    background-color: lighten($color,15%) !important;
   }
   // background-color: $top-background-color;
   padding: 0 $side-padding-px 25px $side-padding-px;

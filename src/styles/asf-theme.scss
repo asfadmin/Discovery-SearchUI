@@ -20,6 +20,7 @@
 //  you can delete this line and instead use:
 //    `@include mat.legacy-typography-hierarchy(mat.define-legacy-typography-config());`
 // @include mat.all-legacy-component-typographies();
+
 @include mat.elevation-classes();
 @include mat.app-background();
 
@@ -124,8 +125,8 @@ $themes: (
     :host-context(.theme-#{$theme}) & {
       $theme-map: () !global;
       @each $key, $submap in $map {
-        $value: map.get(map.get($themes, $theme), '#{$key}');
-        $theme-map: map.merge($theme-map, ($key: $value)) !global;
+        $value: map-get(map-get($themes, $theme), '#{$key}');
+        $theme-map: map-merge($theme-map, ($key: $value)) !global;
       }
 
       @content;
@@ -133,6 +134,23 @@ $themes: (
     }
   }
 }
+
+//@mixin themify($themes: $themes) {
+//  @each $theme, $map in $themes {
+//    $default-theme: map-get($themes, default);
+//    :host-context(.theme-#{$theme}) & {
+//      @each $key, $submap in $map {
+//        $key-exists: map-has-key($map, $key);
+//        //$value: map.get(map.get($themes, $theme), '#{$key}');
+//        $value: map-get(if($key-exists, map.get($themes, $theme), $default-theme), $key);
+//        $theme-map: map.merge($theme-map, ($key: $value)) !global;
+//      }
+//
+//      @content;
+//      $theme-map: () !global;
+//    }
+//  }
+//}
 
 @mixin themify_non_host($themes: $themes) {
   @each $theme, $map in $themes {
@@ -151,6 +169,7 @@ $themes: (
 }
 
 @function themed($key) {
+  $theme-map: () !global;
   @return map.get($theme-map, $key);
 }
 
