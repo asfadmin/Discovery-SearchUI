@@ -577,12 +577,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   private updateMaxSearchResults(): void {
     const checkAmount = this.searchParams$.getlatestParams.pipe(
       distinctUntilChanged((previous, current) => {
-        for (let key of Object.keys(previous)) {
-          if (previous[key] !== current[key]) {
-            return false;
-          }
-        }
-        return true
+        return JSON.stringify(previous) === JSON.stringify(current);
       }),
       debounceTime(200),
       filter(_ => this.searchType !== SearchType.SARVIEWS_EVENTS
