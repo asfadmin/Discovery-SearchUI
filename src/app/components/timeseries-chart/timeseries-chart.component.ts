@@ -680,8 +680,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       else return -1;
     });
 
-    this.svg.selectAll('circle').style("fill", unSelectedColor).attr('r', 5);
-    this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", colorName).attr('r', 6);
+    this.svg.selectAll('circle').style("fill", unSelectedColor).style("stroke", unSelectedColor).attr('r', 5);
+    this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", colorName).style("stroke", colorName).attr('r', 6);
     this.svg.selectAll('.dotsChildren').sort(function (a, _b) {
       // @ts-ignore
       if (a.uuid === uuid) return 1
@@ -694,7 +694,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     let dClassName: string;
     this.lines.style("stroke", (d: DataReady) => {
       dClassName = '.u' + d.uuid.replace(/\W/g, '');
-      this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", d.color).attr('r', 5);
+      this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", d.color).style('stroke', d.color).attr('r', 5);
       return d.color;
     });
     if(this.showLines) {
