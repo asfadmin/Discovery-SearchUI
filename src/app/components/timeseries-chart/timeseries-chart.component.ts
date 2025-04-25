@@ -362,6 +362,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
                 'temporal_coherence': result.point[key].temporal_coherence,
                 'date': result.point[key].secondary_datetime,
                 'file_name': key,
+                'is_masked': result.point[key].is_masked,
                 'id': key,
                 'temporal_baseline': result.point[key].temporal_baseline,
                 'drawMode': result.point[key].drawMode,
@@ -375,6 +376,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
                 'color': result.state.color,
                 'base': result.point[key].short_wavelength_displacement,
                 'id': key + result.point[key].short_wavelength_displacement,
+                'is_masked': result.point[key].is_masked,
                 'aoi': aoi,
                 'drawMode': result.point[key].drawMode,
                 'frame': result.frame,
@@ -559,6 +561,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .append('g')
       .attr('clip-path', 'url(#clip)')
       .style('fill', (d) : string=>  { return d.color })
+      .style('stroke', (d) : string=>  { return d.color })
+      .style('stroke-width', 0)
       .style('opacity', (d) => d.opacity)
       .attr('class', (d): string => { return 'u' + d.uuid.replace(/\W/g, '') + ' dotsChildren' })
       .selectAll('circle')
@@ -569,7 +573,10 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .attr('cy', (d) => this.y(d.short_wavelength_displacement))
       .attr('class', (d): string => {
         if (this.baseData && this.baseData.id === d.id) {
-          return 'ts-reference-point'
+          return 'ts-reference-point';
+        }
+        if(d.is_masked) {
+          return 'ts-invalid-point';
         }
       })
       .on('mouseover', function (_event: any, p: models.TimeSeriesData) {
@@ -579,11 +586,19 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         toolTip.interrupt();
         toolTip
           .style('opacity', .9);
+        if(p.is_masked) {
+          toolTip.html(`<div style="text-align: left">
+          <b>${self.language.translate.instant('SERIES')} ${p.seriesNumber}:</b><br>
+          ${self.tooltipDateFormat(self.hoveredDate)}<br>
+          ${self.language.translate.instant('NO_VALID_DATA_FOR_POINT')}<br>
+          `);
+        } else {
         toolTip.html(`<div style="text-align: left">
         <b>${self.language.translate.instant('SERIES')} ${p.seriesNumber}:</b><br>
         ${self.tooltipDateFormat(self.hoveredDate)}<br>
         ${p.short_wavelength_displacement.toFixed(4)} ${self.language.translate.instant('METERS')} <br>
         <em>${self.dotToolTipText}</em></div>`);
+        }
         self.updateTooltip();
         // self.highlightSeries(p.aoi);
 
@@ -673,8 +688,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       else return -1;
     });
 
-    this.svg.selectAll('circle').style("fill", unSelectedColor).attr('r', 5);
-    this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", colorName).attr('r', 6);
+    this.svg.selectAll('circle').style("fill", unSelectedColor).style("stroke", unSelectedColor).attr('r', 5);
+    this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", colorName).style("stroke", colorName).attr('r', 6);
     this.svg.selectAll('.dotsChildren').sort(function (a, _b) {
       // @ts-ignore
       if (a.uuid === uuid) return 1
@@ -687,7 +702,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     let dClassName: string;
     this.lines.style("stroke", (d: DataReady) => {
       dClassName = '.u' + d.uuid.replace(/\W/g, '');
-      this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", d.color).attr('r', 5);
+      this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", d.color).style('stroke', d.color).attr('r', 5);
       return d.color;
     });
     if(this.showLines) {

@@ -256,6 +256,16 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
                 if (!!data) {
                   allPointsData.push(data);
                 }
+                // temporarily set the frame here since we're not grabbing it beforehand like before
+                this.store$.dispatch(chartStore.setFrames({ 'uuid': series.uuidSeries, 'frames': [{
+                      'number': Object.keys(data)[0].split('_')[4].slice(1), // OPERA_L3_DISP-S1_IW_F20698_VV_20160708T005153Z_20160801T005155Z_v1.0_20250412T230329Z.nc
+                      'wkt': series.wkt,
+                      'uuid': series.uuidSeries,
+                      'valid': true,
+                      'checked': true,
+                      'color': '',
+                  }] }))
+
                 this.temporalRange = this.getMaxRange(allPointsData);
               })
           }
