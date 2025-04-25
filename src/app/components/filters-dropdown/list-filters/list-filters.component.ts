@@ -109,6 +109,14 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
+        this.actions$.pipe(
+            ofType(
+                searchStore.SearchActionType.CLEAR_SEARCH
+            )
+        ).subscribe(_ => this.searchList = '')
+    )
+
+    this.subs.add(
       combineLatest([
       this.actions$.pipe(
         ofType(

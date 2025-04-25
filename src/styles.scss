@@ -110,7 +110,11 @@ $theme-map: null;
     color: themed('dark-primary-text');
   }
 }
-
+.mat-mdc-progress-spinner circle {
+  @include themify_non_host($themes) {
+    stroke: themed('dark-primary-text');
+  }
+}
 #toast-container > .pinkToast.toast-info {
   position: relative;
   overflow: hidden;
@@ -851,6 +855,10 @@ $d-height: 550px;
   margin-top: -2px;
 }
 
+.mat-mdc-menu-panel.dataset-selector {
+    overflow: auto;
+}
+
 .ts-best-fit-formulas {
   .cdk-virtual-scrollable {
     overflow-y: clip;
@@ -886,4 +894,14 @@ $d-height: 550px;
   //--mdc-snackbar-container-color: #c40202;
   //--mdc-snackbar-supporting-text-color: themed('primary-light');
   //--mdc-snackbar-supporting-text-color: yellow;
+}
+
+
+.ts-reference-point {
+  fill: red !important;
+}
+.ts-invalid-point {
+  fill: rgb(0,0,0,0) !important;
+  stroke-dasharray: 2;
+  stroke-width: 1;
 }

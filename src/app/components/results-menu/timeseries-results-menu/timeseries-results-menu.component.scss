@@ -434,3 +434,8 @@ ul {
   visibility: hidden;
 }
 
+.series-label {
+	@include themify($themes) {
+		color: lighten(themed('dark-primary-text'), 20%);
+	}
+}

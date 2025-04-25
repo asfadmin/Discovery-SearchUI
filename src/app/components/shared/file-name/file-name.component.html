@@ -8,7 +8,7 @@
       {{ name | truncate : sceneNameLen }}
     </span>
 
-    <span *ngIf="dataset === 'Sentinel-1B' || dataset === 'Sentinel-1A'">
+    <span *ngIf="dataset === 'Sentinel-1B' || dataset === 'Sentinel-1A' || dataset === 'Sentinel-1C'">
       {{ name | truncate : sceneNameLen - 4 }} {{ name.substr(name.length - 4) }}
     </span>
     <span *ngIf="dataset === 'Sentinel-1 Interferogram (BETA)'">

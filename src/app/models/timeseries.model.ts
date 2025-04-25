@@ -23,6 +23,7 @@ export interface TimeSeriesChartPoint {
     interferometric_correlation: number
     temporal_coherence: number
     date: string
+    is_masked: boolean
     file_name: string,
     temporal_baseline: number
     id: string
@@ -35,6 +36,7 @@ export interface TimeSeriesData {
     id: string, // id of the individual point
     uuid: string, // id of the series frame
     base: number,
+    is_masked: boolean,
     seriesNumber: number,
     seriesName: string,
     frame: string,
