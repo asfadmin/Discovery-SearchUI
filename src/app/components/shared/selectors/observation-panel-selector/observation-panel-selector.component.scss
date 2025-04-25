@@ -6,10 +6,24 @@ mat-form-field {
 .short-name-selector {
     width: 100%;
 }
+
 .polarization-subheader {
     position: absolute;
     top: -11%;
     left: 19%;
     font-size: 14px;
     font-weight: 400;
+}
+
+.observation-panel {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.extra-wide {
+  flex-basis: 50%;
+}
+
+.flight-direction-field {
+  min-width: 230px;
 }

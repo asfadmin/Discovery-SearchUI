@@ -1,4 +1,4 @@
-<div>
+<div class="observation-panel">
     <mat-form-field>
         <mat-select (selectionChange)="onNewDatasetPolarizations($event.value)" [(ngModel)]="polarizations"
             [disabled]="!prop.isRelevant(p.POLARIZATION)"
@@ -41,7 +41,7 @@
 
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field class="flight-direction-field">
         <mat-select (selectionChange)="onNewFlightDirectionsSelected($event.value)" [(ngModel)]="flightDirections"
             [disabled]="!prop.isRelevant(p.FLIGHT_DIRECTION)" placeholder="{{ 'DIRECTION' | translate }}" multiple>
             <mat-option *ngFor="let direction of flightDirectionTypes" [value]="direction">
@@ -108,7 +108,7 @@
         {{ 'JOINT_OBSERVATION_ONLY' | translate}}
     </mat-slide-toggle>
 
-    <mat-form-field>
+    <mat-form-field class="extra-wide">
         <mat-select (selectionChange)="onNewRangeBandwidthSelected($event.value)" [(ngModel)]="rangeBandwidth"
             placeholder="{{ 'RANGE_BANDWIDTH' | translate }}" multiple>
             @for(parent of (dataset.bandwidth | keyvalue); track $index) {

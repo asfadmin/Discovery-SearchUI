@@ -12,9 +12,7 @@
 
 .flex-container {
   display: flex;
-  flex-direction: row;
-  //justify-content: space-between;
-  flex-wrap: wrap;
+  flex-flow: row wrap;
 }
 
 .flex-item {
@@ -44,6 +42,6 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
-.date-item input::placeholder {
-  font-size: 13px;
+.extra-wide {
+  flex-basis: 33%;
 }
