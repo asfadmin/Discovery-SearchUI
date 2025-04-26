@@ -1,3 +1,4 @@
+@use "sass:color";
 @use "asf-theme";
 $mat-theme-ignore-duplication-warnings: true;
 
@@ -73,20 +74,20 @@ $chart-ctrl-top-x: 62px;
   -webkit-overflow-scrolling: touch;
 }
 ::ng-deep .timeseries-base {
-  @include themify($themes) {
-    fill: themed('blue-link');
+  @include asf-theme.themify(asf-theme.$themes) {
+    fill: asf-theme.themed('blue-link');
   }
 }
 
 ::ng-deep .baseline-selected {
-  @include themify($themes) {
-    fill: themed('err');
+  @include asf-theme.themify(asf-theme.$themes) {
+    fill: asf-theme.themed('err');
   }
 }
 
 .ts-chart-label {
-  @include themify_non_host($themes) {
-    fill: themed('dark-primary-text');
+  @include asf-theme.themify_non_host(asf-theme.$themes) {
+    fill: asf-theme.themed('dark-primary-text');
     overflow-x: visible;
     font-size: 14px;
   }
@@ -109,8 +110,10 @@ $chart-ctrl-top-x: 62px;
 }
 
 ::ng-deep .loading-rect {
-	@include themify($themes) {
-	  fill: lighten(themed('dark-secondary-text'),20%);
+	@include asf-theme.themify(asf-theme.$themes) {
+    $color: asf-theme.themed('dark-secondary-text');
+    $color2: color.adjust($color, $lightness: 20%);
+	  fill: $color2;
 	}
 	fill-opacity: 40%;
 }

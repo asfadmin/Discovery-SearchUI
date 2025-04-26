@@ -60,7 +60,9 @@ ul {
 
 ::ng-deep .baseline-download {
   @include asf-theme.themify(asf-theme.$themes) {
-    fill: color.adjust(asf-theme.themed('blue-link'), $lightness: -20%);
+    $color: asf-theme.themed('blue-link');
+    $color2: color.adjust($color, $lightness: -20%);
+    fill: $color2;
   }
 }
 ::ng-deep .baseline-selected {

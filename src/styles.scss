@@ -6,7 +6,7 @@
 @use 'filter-list';
 @use "variables";
 
-@import "prismjs/themes/prism-solarizedlight.css";
+@use "prismjs/themes/prism-solarizedlight.css";
 
 $theme-map: null;
 //asf-theme.$theme-map: null;
@@ -714,7 +714,9 @@ $d-height: 550px;
 }
 .critical-baseline {
   @include asf-theme.themify_non_host(asf-theme.$themes) {
-    fill: color.adjust(themed('background-white'), $lightness: -5%);
+    $bkColor: themed('background-white');
+    $color2: color.adjust($bkColor, $lightness: -5%);
+    fill: $color2;
   }
 }
 

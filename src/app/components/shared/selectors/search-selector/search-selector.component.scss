@@ -28,7 +28,7 @@ $mat-theme-ignore-duplication-warnings: true;
   }
 
   .mat-icon {
-    @include md-icon-size(30px);
+    @include asf-theme.md-icon-size(30px);
 
     padding-top: 10px;
     padding-left: 20px;
@@ -50,8 +50,8 @@ $mat-theme-ignore-duplication-warnings: true;
   }
 
   h2 {
-    @include themify($themes) {
-      color: themed('primary');
+    @include asf-theme.themify(asf-theme.$themes) {
+      color: asf-theme.themed('primary');
     }
     margin-bottom: 5px;
     text-shadow: 0 2px 2px rgba(0, 0, 0, 0.15);

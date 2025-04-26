@@ -1,6 +1,5 @@
-@use "@angular/material" as mat;
-
 @use "sass:color";
+@use "@angular/material" as mat;
 @use "asf-theme";
 $mat-theme-ignore-duplication-warnings: true;
 
@@ -25,13 +24,15 @@ $config: mat.m2-define-legacy-typography-config();
 a {
   text-decoration: none;
   @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('blue-link');
+    $color: asf-theme.themed('blue-link');
+    color: $color;
   }
 }
 
 .browse-dialog {
   @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('primary-light');
+    $color: asf-theme.themed('primary-light');
+    background-color: $color;
   }
 
   overflow: hidden;
@@ -57,7 +58,8 @@ a {
 
   .browse-list {
     @include asf-theme.themify(asf-theme.$themes) {
-      background-color: asf-theme.themed('primary-light');
+      $color: asf-theme.themed('primary-light');
+      background-color: $color;
     }
 
     min-height: 140px;
@@ -65,9 +67,12 @@ a {
 
   .scene-detail--wrapper {
     @include asf-theme.themify(asf-theme.$themes) {
-      background-color: asf-theme.themed('primary-light');
-      border-left-color: asf-theme.themed('primary-dark');
-      color: asf-theme.themed('dark-primary-text');
+      $bkColor: asf-theme.themed('primary-light');
+      $bdColor: asf-theme.themed('primary-dark');
+      $color: asf-theme.themed('dark-primary-text');
+      background-color: $bkColor;
+      border-left-color: $bdColor;
+      color: $color;
     }
 
     min-width: 200px;
@@ -86,8 +91,9 @@ a {
 
 .dialog-header--layout {
   @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('dark-primary-text');
-    border-bottom-color: asf-theme.themed('dark-primary-text');
+    $color: asf-theme.themed('dark-primary-text');
+    color: $color;
+    border-bottom-color: $color;
   }
 
   border-bottom-style: solid;
@@ -133,7 +139,8 @@ a {
 
 .browse-drag-handle {
   @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('dark-primary-text');
+    $color: asf-theme.themed('dark-primary-text');
+    color: $color;
   }
 
   cursor: move;
@@ -142,7 +149,8 @@ a {
 
 .close-button {
   @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('dark-primary-text');
+    $color: asf-theme.themed('dark-primary-text');
+    color: $color;
   }
 
   vertical-align: top !important;
@@ -226,7 +234,9 @@ a {
 
 .file-button-download {
   @include asf-theme.themify(asf-theme.$themes) {
-    background-color: color.adjust(asf-theme.themed('primary-light'), $lightness: 10%);
+    $color: asf-theme.themed('primary-light');
+    $color2: color.adjust($color, $lightness: 10%);
+    background-color: $color2;
   }
 
   margin-bottom: 5px;
@@ -240,7 +250,8 @@ a {
 
 .footer {
   @include asf-theme.themify(asf-theme.$themes) {
-    border-top: 1px solid asf-theme.themed('primary-dark');
+    $color: asf-theme.themed('primary-dark');
+    border-top: 1px solid $color;
   }
 
   flex-shrink: 0;

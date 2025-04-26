@@ -18,7 +18,9 @@ $mat-theme-ignore-duplication-warnings: true;
 
 .code-block {
   @include asf-theme.themify(asf-theme.$themes) {
-    background: color.adjust(asf-theme.themed('background-white'), $lightness: -10%);
+    $bkColor: asf-theme.themed('background-white');
+    $color: color.adjust($bkColor, $lightness: -10%);
+    background: $color;
   }
   padding: 10px;
   max-height: 300px;

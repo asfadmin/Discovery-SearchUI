@@ -1,10 +1,11 @@
-@use "asf-theme";
 @use "sass:color";
+@use "variables";
+@use "asf-theme";
 $mat-theme-ignore-duplication-warnings: true;
 
 ::ng-deep .circumference {
-  @include themify($themes) {
-    stroke: color.adjust(themed('primary'), $lightness: 40%);
+  @include asf-theme.themify(asf-theme.$themes) {
+    stroke: color.adjust(asf-theme.themed('primary'), $lightness: 40%);
     //stroke: lighten(themed('primary'), 40%);
   }
   fill: none;
@@ -12,8 +13,8 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 ::ng-deep .range {
-  @include themify($themes) {
-    stroke: themed('primary');
+  @include asf-theme.themify(asf-theme.$themes) {
+    stroke: asf-theme.themed('primary');
   }
   fill: none;
   stroke-width: 10px;
@@ -24,14 +25,16 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 ::ng-deep .dot circle {
-  @include themify($themes) {
-    fill: themed('primary');
+  @include asf-theme.themify(asf-theme.$themes) {
+    fill: asf-theme.themed('primary');
   }
 }
 
 ::ng-deep .dot circle.dragging {
-  fill: darken($asf-blue, 10%) !important;
-  stroke: darken($asf-blue, 10%);
+  $color: asf-theme.themed('asf-blue');
+  $color2: color.adjust($color, $lightness: -10%);
+  fill: $color2 !important;
+  stroke: $color2;
 }
 
 figure {
@@ -42,15 +45,17 @@ figure {
 }
 
 ::ng-deep .notch {
-  @include themify($themes) {
-    stroke: lighten(themed('primary'), 40%);
+  @include asf-theme.themify(asf-theme.$themes) {
+    $color: asf-theme.themed('primary');
+    $color2: color.adjust($color, $lightness: 40%);
+    stroke: $color2;
   }
   stroke-width: 1px;
 }
 
 ::ng-deep .selected {
-  @include themify($themes) {
-    stroke: themed('primary');
+  @include asf-theme.themify(asf-theme.$themes) {
+    stroke: asf-theme.themed('primary');
   }
 }
 

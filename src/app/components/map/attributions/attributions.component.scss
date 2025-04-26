@@ -1,6 +1,5 @@
-@use "@angular/material" as mat;
-
 @use "sass:color";
+@use "@angular/material" as mat;
 @use "asf-theme";
 $mat-theme-ignore-duplication-warnings: true;
 
@@ -94,7 +93,9 @@ a {
   @include asf-theme.themify(asf-theme.$themes) {
     background-color: asf-theme.themed('primary-light');
     color: asf-theme.themed('dark-secondary-text');
-    border-bottom-color: color.adjust(asf-theme.themed('primary-light'),$lightness: 10%);
+    $color: asf-theme.themed('primary-light');
+    $color2: color.adjust($color, $lightness: 10%);
+    border-bottom-color: $color2;
   }
   pointer-events: auto;
   font-size: 18px;

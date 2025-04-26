@@ -21,7 +21,9 @@ $thumb-size: 50px;
 
 .dem-warning {
   @include asf-theme.themify(asf-theme.$themes) {
-    background-color: color.adjust(asf-theme.themed("primary-light"), $lightness: 10%);
+    $color: asf-theme.themed("primary-light");
+    $color2: color.adjust($color, $lightness: 10%);
+    background-color: $color2;
     color: asf-theme.themed("err");
   }
 
@@ -34,7 +36,8 @@ $thumb-size: 50px;
 
 .more-link {
   @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed("blue-link");
+    $color: asf-theme.themed("blue-link");
+    color: $color;
   }
 }
 
@@ -47,8 +50,10 @@ $thumb-size: 50px;
 
 .map-button-toggle {
   @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed("primary") !important;
-    color: asf-theme.themed("light-primary-text") !important;
+    $color: asf-theme.themed("primary");
+    background-color: $color !important;
+    $color2: asf-theme.themed("light-primary-text");
+    color: $color2 !important;
   }
 
   padding-right: 40px;
@@ -157,6 +162,7 @@ mat-expansion-panel-header {
 }
 
 .mat-header-base {
+  $color: asf-theme.themed("background-white");
   background-color: asf-theme.$asf-background-white !important;
   border-color: asf-theme.$asf-background-white !important;
   border-style: none;

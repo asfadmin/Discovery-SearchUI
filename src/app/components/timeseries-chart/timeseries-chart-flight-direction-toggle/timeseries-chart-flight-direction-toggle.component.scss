@@ -1,3 +1,5 @@
+@use "sass:color";
+@use "variables";
 @use "asf-theme";
 $mat-theme-ignore-duplication-warnings: true;
 @use "deluxe-menu";
@@ -5,8 +7,9 @@ $mat-theme-ignore-duplication-warnings: true;
 @use "asf-header-menu-button";
 
 .button-label {
-    @include themify($themes) {
-        color: themed("dark-primary-text");
+    @include asf-theme.themify(asf-theme.$themes) {
+      $color: asf-theme.themed("dark-primary-text");
+      color: $color;
     }
     cursor: pointer;
     font-size: 14px;
@@ -21,22 +24,24 @@ $mat-theme-ignore-duplication-warnings: true;
 
 
 .control-icon {
-    @include themify($themes) {
-        color: themed('dark-primary-text');
+    @include asf-theme.themify(asf-theme.$themes) {
+      $color: asf-theme.themed("dark-primary-text");
+      color: $color;
     }
 
     transform: scale(1.5);
 
     margin-top: -4px;
 
-    @include md-icon-size($asf-ribbon-icon-size);
+    @include asf-theme.md-icon-size(variables.$asf-ribbon-icon-size);
 }
 
 .fd-icon-button-text {
-    @include themify($themes) {
-        color: themed('dark-primary-text');
+    @include asf-theme.themify(asf-theme.$themes) {
+      $color: asf-theme.themed("dark-primary-text");
+      color: $color;
     }
-    @include md-icon-size($asf-ribbon-icon-size);
+    @include asf-theme.md-icon-size(variables.$asf-ribbon-icon-size);
 }
 
 .ts-menu-item {

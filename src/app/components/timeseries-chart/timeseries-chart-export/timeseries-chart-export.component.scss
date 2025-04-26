@@ -21,7 +21,7 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .ts-criteria-button-toggle {
-    @include asf-theme.themify($themes) {
+    @include asf-theme.themify(asf-theme.$themes) {
       $color: asf-theme.themed('background-white');
       background-color: $color !important;
     }
@@ -37,7 +37,7 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .settings-icon {
-  @include themify($themes) {
+  @include asf-theme.themify(asf-theme.$themes) {
     color: asf-theme.themed('dark-primary-text') !important;
   }
   font-size: 16px !important;

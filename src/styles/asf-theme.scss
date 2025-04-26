@@ -1,11 +1,13 @@
+@use "sass:color";
+@use "sass:map";
+
 @use "variables";
 @use "dark_variables";
 
 /* csslint ignoreAtRules: ["include"] */
 @use "@angular/material" as mat;
 
-@use "sass:color";
-@use "sass:map";
+
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -24,6 +26,7 @@
 @include mat.elevation-classes();
 @include mat.app-background();
 
+$theme-map: ();
 
 $mat-theme-ignore-duplication-warnings: true;
 //mat.mat.$theme-ignore-duplication-warnings: true;
@@ -123,34 +126,17 @@ $themes: (
   @each $theme, $map in $themes {
 
     :host-context(.theme-#{$theme}) & {
-      $theme-map: () !global;
+      $theme-map: ();
       @each $key, $submap in $map {
         $value: map-get(map-get($themes, $theme), '#{$key}');
         $theme-map: map-merge($theme-map, ($key: $value)) !global;
       }
 
       @content;
-      $theme-map: null !global;
+      $theme-map: () !global;
     }
   }
 }
-
-//@mixin themify($themes: $themes) {
-//  @each $theme, $map in $themes {
-//    $default-theme: map-get($themes, default);
-//    :host-context(.theme-#{$theme}) & {
-//      @each $key, $submap in $map {
-//        $key-exists: map-has-key($map, $key);
-//        //$value: map.get(map.get($themes, $theme), '#{$key}');
-//        $value: map-get(if($key-exists, map.get($themes, $theme), $default-theme), $key);
-//        $theme-map: map.merge($theme-map, ($key: $value)) !global;
-//      }
-//
-//      @content;
-//      $theme-map: () !global;
-//    }
-//  }
-//}
 
 @mixin themify_non_host($themes: $themes) {
   @each $theme, $map in $themes {

@@ -1,10 +1,11 @@
-@use "asf-theme";
 @use "sass:color";
+@use "asf-theme";
 
 hr {
   @include asf-theme.themify(asf-theme.$themes) {
     $color: asf-theme.themed('primary-light');
-    border-top-color: rgba($color, 0.2);
+    $color2: color.adjust($color, $alpha: 0.2);
+    border-top-color: $color2;
   }
   margin-block: 0;
 }
@@ -29,7 +30,8 @@ hr {
   min-height: 30px;
   margin-right: 0;
   @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('dark-primary-text');
+    $color: asf-theme.themed('dark-primary-text');
+    color: $color;
   }
 }
 
@@ -40,7 +42,8 @@ hr {
 }
 .mat-mdc-list-item {
   @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('dark-primary-text');
+    $color: asf-theme.themed('dark-primary-text');
+    color: $color;
   }
 }
 .menu-hr {
@@ -64,7 +67,8 @@ hr {
 
 .mat-mdc-menu-item {
   @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('background-white') !important;
+    $color: asf-theme.themed('background-white');
+    background-color: $color !important;
   }
   font-weight: 400;
   height: auto;
@@ -87,14 +91,16 @@ hr {
 
 .item-content {
   @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('blue-link') !important;
+    $color: asf-theme.themed('blue-link');
+    color: $color !important;
   }
   line-height: 18px;
 }
 
 .item-title {
   @include asf-theme.themify_non_host(asf-theme.$themes) {
-    color: asf-theme.themed('dark-primary-text');
+    $color: asf-theme.themed('dark-primary-text');
+    color: $color;
   }
   line-height: 22px;
   font-size: 18px;
@@ -112,12 +118,14 @@ hr {
 
   margin-right: 0;
   @include asf-theme.themify_non_host(asf-theme.$themes) {
-    color: asf-theme.themed('dark-primary-text');
+    $color: asf-theme.themed('dark-primary-text');
+    color: $color;
   }
 }
 
 .dataset-date-range {
   @include asf-theme.themify_non_host(asf-theme.$themes) {
-   color: asf-theme.themed('dark-disabled-text') !important;
+    $color: asf-theme.themed('dark-disabled-text');
+   color: $color !important;
   }
 }

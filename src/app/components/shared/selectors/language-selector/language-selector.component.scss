@@ -15,8 +15,8 @@ $mat-theme-ignore-duplication-warnings: true;
   border: none;
   width: auto;
   font-size: 11px;
-  @include themify($themes) {
-    color: themed('dark-secondary-text');
+  @include asf-theme.themify(asf-theme.$themes) {
+    color: asf-theme.themed('dark-secondary-text');
   }
   background-color: inherit;
 }

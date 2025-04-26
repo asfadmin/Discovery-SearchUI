@@ -261,7 +261,9 @@ label {
 
 .warn-icon {
 	@include asf-theme.themify(asf-theme.$themes) {
-		color: color.adjust(asf-theme.themed('dark-primary-text'), $lightness: -25%);
+    $color: asf-theme.themed('dark-primary-text');
+    $color2: color.adjust($color, $lightness: -25%);
+		color: $color2;
 	}
 }
 
@@ -275,7 +277,9 @@ label {
 	width: 30px;
 
 	@include asf-theme.themify(asf-theme.$themes) {
-		background: color.adjust(asf-theme.themed('background-white'), $lightness: -15%);
+    $bkColor: asf-theme.themed('background-white');
+    $bkColor2: color.adjust($bkColor, $lightness: -15%);
+		background: $bkColor2;
 	}
 }
 

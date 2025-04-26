@@ -30,8 +30,11 @@ $mat-theme-ignore-duplication-warnings: true;
 
 .drop-file-area {
   @include asf-theme.themify(asf-theme.$themes) {
-    background-color: color.adjust(asf-theme.themed('background-white'), $lightness: -10%);
-    outline: 2px dashed asf-theme.themed('primary');
+    $color: asf-theme.themed('background-white');
+    $color2: color.adjust($color, $lightness: -10%);
+    background-color: $color2;
+    $color3: asf-theme.themed('primary');
+    outline: 2px dashed $color3;
   }
 
   background-image: url('/assets/icons/cloud_upload_black_48dp.svg');
@@ -50,7 +53,9 @@ $mat-theme-ignore-duplication-warnings: true;
   font-weight: bold;
   text-align: center;
   @include asf-theme.themify(asf-theme.$themes) {
-    color: color.adjust(asf-theme.themed('dark-primary-text'), $lightness: 20%);
+    $color: asf-theme.themed('dark-primary-text');
+    $color2: color.adjust($color, $lightness: 20%);
+    color: $color2;
   }
 
   .dd-text-1 {
@@ -77,8 +82,9 @@ $mat-theme-ignore-duplication-warnings: true;
 
 .is-file-error {
   @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('warn');
-    outline-color: asf-theme.themed('warn');
+    $color: asf-theme.themed('warn');
+    color: $color;
+    outline-color: $color;
   }
   animation: shake 0.82s;
   transform: translate3d(0, 0, 0);

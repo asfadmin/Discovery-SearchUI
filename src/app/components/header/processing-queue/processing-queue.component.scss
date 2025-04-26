@@ -155,7 +155,9 @@ $bottom-offset: 10px;
 
 .dataset-menu {
   @include asf-theme.themify(asf-theme.$themes) {
-    background-color: color.adjust(asf-theme.themed('primary-light'), $lightness: +7%);
+    $color: asf-theme.themed('primary-light');
+    $color2: color.adjust($color, $lightness: +7%);
+    background-color: $color2;
   }
 
   display: block;
@@ -181,8 +183,10 @@ $bottom-offset: 10px;
 
 .error-header {
   @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('background-white');
-    border-bottom-color: asf-theme.themed('primary-dark');
+    $bkColor: asf-theme.themed('background-white');
+    $bbColor: asf-theme.themed('primary-dark');
+    background-color: $bkColor;
+    border-bottom-color: $bbColor;
   }
 
   border-bottom-style: solid;
@@ -195,7 +199,8 @@ $bottom-offset: 10px;
 
 .mobile-tab-selector {
   @include asf-theme.themify(asf-theme.$themes) {
-    border-bottom-color: asf-theme.themed('primary-dark');
+    $bbColor: asf-theme.themed('primary-dark');
+    border-bottom-color: $bbColor;
   }
 
   border-bottom-style: solid;
@@ -232,7 +237,8 @@ $bottom-offset: 10px;
   a {
     text-decoration: underline;
     @include asf-theme.themify(asf-theme.$themes) {
-      color: asf-theme.themed('blue-link');
+      $color: asf-theme.themed('blue-link');
+      color: $color;
     }
   }
 }
@@ -248,7 +254,8 @@ $bottom-offset: 10px;
 
 .on-demand-subtitle {
   @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('dark-secondary-text');
+    $color: asf-theme.themed('dark-secondary-text');
+    color: $color;
   }
 
   font-style: italic;
@@ -258,7 +265,8 @@ $bottom-offset: 10px;
 
 .mat-mdc-dialog-content {
   @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('background-white');
+    $bkColor: asf-theme.themed('background-white');
+    background-color: $bkColor;
   }
 
   position: absolute;
@@ -330,7 +338,8 @@ $bottom-offset: 10px;
 
 .mat-mdc-dialog-actions {
   @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('primary-light');
+    $bkColor: asf-theme.themed('primary-light');
+    background-color: $bkColor;
   }
 
   position: absolute;
@@ -344,8 +353,10 @@ $bottom-offset: 10px;
 
 .hyp3-footer {
   @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('primary-light');
-    border-top-color: asf-theme.themed('primary-dark');
+    $bkColor: asf-theme.themed('primary-light');
+    $btColor: asf-theme.themed('primary-dark');
+    background-color: $bkColor;
+    border-top-color: $btColor;
   }
 
   display: flex;
@@ -372,7 +383,8 @@ $bottom-offset: 10px;
 
 .footer-job-notification {
   @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('dark-primary-text');
+    $color: asf-theme.themed('dark-primary-text');
+    color: $color;
   }
 
   flex: none;
@@ -397,8 +409,9 @@ $bottom-offset: 10px;
 
 .rectangle {
   @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('warn');
-    border-color: asf-theme.themed('warn');
+    $color: asf-theme.themed('warn');
+    color: $color;
+    border-color: $color;
   }
 
   position: relative;
@@ -451,7 +464,8 @@ $bottom-offset: 10px;
 
 .hyp3-url {
   @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('dark-secondary-text');
+    $color: asf-theme.themed('dark-secondary-text');
+    color: $color;
   }
 
   height: 32px;
@@ -470,6 +484,7 @@ $bottom-offset: 10px;
 
 a {
   @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('blue-link')
+    $color: asf-theme.themed('blue-link');
+    color: $color;
   }
 }
