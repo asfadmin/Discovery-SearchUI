@@ -619,7 +619,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           .attr('id', 'linesParent2')
           .attr('clip-path', 'url(#clip)')
         for(let linearFitData of this.dataReadyForChart) {
-            let regression = linearRegression(linearFitData.values.map((x) => [Date.parse(x.date), x.short_wavelength_displacement]));
+            let regression = linearRegression(linearFitData.values.filter((x) => !x.is_masked).map((x) => [Date.parse(x.date), x.short_wavelength_displacement]));
             let lineregression = linearRegressionLine(regression);
             let yIntercept = lineregression(this.OperaDispStartDate) 
           this.bestFitItems.push({
