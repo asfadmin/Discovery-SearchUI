@@ -1,6 +1,7 @@
 @use "sass:color";
 @use "asf-theme";
 $mat-theme-ignore-duplication-warnings: true;
+$theme-map: null;
 
 .dialog-header {
   font-weight: bold;

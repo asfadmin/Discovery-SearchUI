@@ -1,5 +1,6 @@
 @use "sass:color";
 @use "asf-theme";
+$theme-map: null;
 $mat-theme-ignore-duplication-warnings: true;
 
 .saved-filters {

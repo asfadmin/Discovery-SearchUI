@@ -1,5 +1,6 @@
 @use "sass:color";
 @use "asf-theme";
+$theme-map: null;
 
 hr {
   @include asf-theme.themify(asf-theme.$themes) {

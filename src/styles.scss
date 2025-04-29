@@ -5,10 +5,11 @@
 @use 'asf-theme';
 @use 'filter-list';
 @use "variables";
+$theme-map: null;
 
 @use "prismjs/themes/prism-solarizedlight.css";
 
-$theme-map: null;
+$theme-map: ();
 //asf-theme.$theme-map: null;
 
 * {

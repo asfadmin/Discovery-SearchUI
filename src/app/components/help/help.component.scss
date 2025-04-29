@@ -16,6 +16,9 @@ main {
   overflow-y: auto;
   overflow-x: hidden;
   @include asf-theme.themify(asf-theme.$themes) {
+    @debug "----------------------";
+    @debug "asf-theme.$themes: #{asf-theme.$themes}";
+    @debug "asf-theme.themed('primary-light') : #{asf-theme.themed('primary-light')}";
     $color: asf-theme.themed('primary-light');
     $color2: color.adjust($color, $lightness: 15%);
     background-color: $color2;

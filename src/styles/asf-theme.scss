@@ -6,6 +6,8 @@
 
 /* csslint ignoreAtRules: ["include"] */
 @use "@angular/material" as mat;
+$theme-map: ();
+
 
 
 // Plus imports for other components in your app.
@@ -26,10 +28,7 @@
 @include mat.elevation-classes();
 @include mat.app-background();
 
-$theme-map: ();
-
 $mat-theme-ignore-duplication-warnings: true;
-//mat.mat.$theme-ignore-duplication-warnings: true;
 
 button,
 .mat-expansion-panel,
@@ -38,6 +37,7 @@ button,
   border-radius: 0 !important;
   //font-size: 14px;
 }
+
 $asf-app-primary: mat.m2-define-palette(variables.$mat-asf-primary, 700, 400, 900);
 $asf-app-dark-primary: mat.m2-define-palette(dark_variables.$mat-dark-asf-primary, 700, 400, 900);
 
@@ -122,12 +122,21 @@ $themes: (
   ),
 );
 
-@mixin themify($themes: $themes) {
-  @each $theme, $map in $themes {
 
+@mixin themify($themes: $themes) {
+
+  @each $theme, $map in $themes {
+    @debug "------------------";
+    //@debug "$themes: #{$themes}";
+    @debug "$theme: #{$theme}";
+    @debug "$map: #{$map}";
     :host-context(.theme-#{$theme}) & {
-      $theme-map: ();
+
       @each $key, $submap in $map {
+        @debug "------------------";
+        @debug "$key: #{key}";
+        @debug "$submap: #{submap}";
+        @debug "$map: #{map}";
         $value: map-get(map-get($themes, $theme), '#{$key}');
         $theme-map: map-merge($theme-map, ($key: $value)) !global;
       }

@@ -1,6 +1,7 @@
 @use "sass:color";
 @use "variables";
 @use "asf-theme";
+$theme-map: null;
 $mat-theme-ignore-duplication-warnings: true;
 
 ::ng-deep .circumference {
