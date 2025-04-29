@@ -4,10 +4,8 @@
             [disabled]="!prop.isRelevant(p.POLARIZATION)"
             placeholder="{{ 'POLARIZATION' | translate }} {{ 'MAIN' | translate }}" multiple>
             <mat-option *ngFor="let pol of dataset.polarizations" [value]="pol">
-                <div class="polarization-subheader">
-                    {{pol | polarizationCount | translate}}
-                </div>
-                {{pol}}
+              <span class="polarization-type">{{pol}}</span>
+              <span class="polarization-count"> {{pol | polarizationCount}}</span>
             </mat-option>
         </mat-select>
         <mat-hint *ngIf="prop.isRelevant(p.POLARIZATION)" align="start">
@@ -25,10 +23,8 @@
             [disabled]="!prop.isRelevant(p.SIDE_POLARIZATION)"
             placeholder="{{ 'POLARIZATION' | translate }} {{ 'SIDE' | translate }}" multiple>
             <mat-option *ngFor="let pol of dataset.sidepolarizations" [value]="pol">
-                <div class="polarization-subheader">
-                    {{pol | polarizationCount}}
-                </div>
-                {{pol}}
+                <span class="polarization-type">{{pol}}</span>
+                <span class="polarization-count"> {{pol | polarizationCount}}</span>
             </mat-option>
         </mat-select>
         <mat-hint *ngIf="prop.isRelevant(p.POLARIZATION)" align="start">
