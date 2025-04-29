@@ -5,7 +5,7 @@
             placeholder="{{ 'POLARIZATION' | translate }} {{ 'MAIN' | translate }}" multiple>
             <mat-option *ngFor="let pol of dataset.polarizations" [value]="pol">
               <span class="polarization-type">{{pol}}</span>
-              <span class="polarization-count"> {{pol | polarizationCount}}</span>
+              <span class="polarization-count">&nbsp;&nbsp;{{pol | polarizationCount}}</span>
             </mat-option>
         </mat-select>
         <mat-hint *ngIf="prop.isRelevant(p.POLARIZATION)" align="start">
@@ -24,7 +24,7 @@
             placeholder="{{ 'POLARIZATION' | translate }} {{ 'SIDE' | translate }}" multiple>
             <mat-option *ngFor="let pol of dataset.sidepolarizations" [value]="pol">
                 <span class="polarization-type">{{pol}}</span>
-                <span class="polarization-count"> {{pol | polarizationCount}}</span>
+                <span class="polarization-count">&nbsp;&nbsp;{{pol | polarizationCount}}</span>
             </mat-option>
         </mat-select>
         <mat-hint *ngIf="prop.isRelevant(p.POLARIZATION)" align="start">
