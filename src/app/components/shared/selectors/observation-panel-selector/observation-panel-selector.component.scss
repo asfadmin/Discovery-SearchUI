@@ -1,3 +1,6 @@
+@use 'sass:color';
+@use 'variables';
+
 mat-form-field {
     margin-right: 10px;
     margin-bottom: 10px;
@@ -6,10 +9,8 @@ mat-form-field {
 .short-name-selector {
     width: 100%;
 }
-.polarization-subheader {
-    position: absolute;
-    top: -11%;
-    left: 19%;
-    font-size: 14px;
-    font-weight: 400;
+
+.polarization-count {
+  font-size: small;
+  color: variables.$uaf-primary-blue;
 }
