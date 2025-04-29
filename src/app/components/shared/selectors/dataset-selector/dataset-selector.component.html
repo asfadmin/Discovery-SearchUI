@@ -16,8 +16,8 @@
   </div>
 
   <div class="gtm-search-type-selector fx-nogrow">
-    <mat-menu #platformMenu="matMenu" [(ngModel)]="selected" ngDefaultControl>
-          <menu *ngFor="let dataset of datasets; last as isLast" mat-menu-item>
+    <mat-menu #platformMenu="matMenu" [(ngModel)]="selected" ngDefaultControl class="dataset-selector">
+          <menu *ngFor="let dataset of datasets; last as isLast" mat-menu-item  >
             <div class="menu-item mat-menu-item" (click)="onSelectionChange(dataset.id)">
               <div class="menu-item-inner">
                 <div class="dataset--layout menu-item-content">
@@ -32,7 +32,9 @@
                         <div *ngIf="dataset.subName" class="dataset__subName faint-text">{{ dataset.subName }}</div>
                       </span>
                   </div>
-                  <div class="item-content" [ngClass]="{'limitTextHeight': isReadMore}">
+                  <div class="item-content"
+                       [ngClass]="{'limitTextHeight': isReadMore}"
+                       [class.smaller-font]="breakpoint === breakpoints.MOBILE">
                     {{ dataset.platformDesc | translate }}
                   </div>
                   <mat-card-actions (click)="onOpenDocs($event, dataset.id)">
@@ -42,7 +44,8 @@
                     </app-docs-modal>
                   </mat-card-actions>
                 </div>
-                <div class="dataset-aside--layout menu-item-aside">
+                <div class="dataset-aside--layout menu-item-aside"
+                     [class.increase-right-margin]="breakpoint === breakpoints.MOBILE">
                   <div class="dataset-date-range faint-text">
                     {{ prettyDateRange(dataset.date) }}
                   </div>

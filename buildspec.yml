@@ -18,8 +18,8 @@ phases:
       - ng build --configuration production
   post_build:
     commands:
-      - cd dist/${APPLICATION}
+      - cd dist/${APPLICATION}/browser
       - aws s3 sync . "s3://${S3_BUCKET}"
-      - cd ../..
+      - cd ../../..
       - chmod +x ./invalidate-cf.sh
       - . ./invalidate-cf.sh ${CDN_ID}
