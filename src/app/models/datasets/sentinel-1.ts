@@ -96,13 +96,19 @@ export const sentinel_1 = {
     'Dual VH',
     'Dual VV',
   ],
-  subtypes: [{
-    displayName: 'Sentinel-1A',
-    apiValue: 'SA',
-  }, {
-    displayName: 'Sentinel-1B',
-    apiValue: 'SB',
-  }],
+    subtypes: [
+        {
+            displayName: 'Sentinel-1A',
+            apiValue: 'SA',
+        },
+        {
+            displayName: 'Sentinel-1B',
+            apiValue: 'SB',
+        },
+        {
+            displayName: 'Sentinel-1C',
+            apiValue: 'SC',
+        }],
   platformDesc: 'SENTINEL_DESC',
   platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
 };
