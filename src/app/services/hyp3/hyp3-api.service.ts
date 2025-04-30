@@ -223,6 +223,17 @@ export class Hyp3ApiService {
 
       hyp3ableProducts.forEach(product => {
         const prodType = product[0].metadata.productType;
+
+        if (models.OperaRtcJobType.id === jobType.id) {
+          product = product.map(p => {
+            if (this.isCrossPolBurst(p)) {
+              return this.makeCoPolBurst(p);
+            } else {
+              return p;
+            }
+          })
+        }
+
         byProdType[prodType].push(product?.sort((a, b) => {
           if (a.metadata.date < b.metadata.date) {
             return -1;
@@ -232,9 +243,10 @@ export class Hyp3ApiService {
         }));
       });
 
-      const byProductType: models.Hyp3ableByProductType[] = Object.entries(byProdType).map(([productType, prods]) => ({
-        productType, products: <any>prods
-      }));
+      const byProductType: models.Hyp3ableByProductType[] = Object.entries(byProdType)
+        .map(([productType, prods]) => {
+          return ({ productType, products: <any>prods });
+        });
 
       return {
         jobType,
@@ -250,6 +262,31 @@ export class Hyp3ApiService {
     return ({ byJobType, total });
   }
 
+  private isCrossPolBurst(product: models.CMRProduct) {
+    return product.metadata.polarization === 'HV' ||
+      product.metadata.polarization === 'VH';
+  }
+
+  private makeCoPolBurst(product: models.CMRProduct) {
+    const crossPol = product.metadata.polarization;
+    const polarization = crossPol === 'VH' ? 'VV' : 'HH';
+
+    const name = product.name.replace(`_${crossPol}_`, `_${polarization}_`);
+    const file = product.file.replace(`_${crossPol}_`, `_${polarization}_`);
+    const id = product.id.replace(`_${crossPol}_`, `_${polarization}_`);
+    const downloadUrl = product.downloadUrl.replace(`/${crossPol}/`, `/${polarization}/`);
+
+    const coPolProduct = {
+      ...product,
+      name, file, id, downloadUrl,
+      metadata: {
+        ...product.metadata, polarization
+      },
+    };
+
+    return coPolProduct;
+  }
+
   public getValidJobTypes(product: models.CMRProduct[]): models.Hyp3JobType[] {
     return models.hyp3JobTypesList.filter(jobType => this.isHyp3able(product, jobType));
   }
@@ -261,14 +298,34 @@ export class Hyp3ApiService {
         const types = new Set(productType.productTypes);
         const pols = new Set(productType.polarizations);
         const beamModes = new Set(productType.beamModes);
-        return products.every(product =>
-          types.has(product.metadata.productType) &&
-          pols.has(product.metadata.polarization) &&
-          beamModes.has(product.metadata.beamMode) &&
-          product.dataset !== 'Sentinel-1C'
+        return products.every(product => {
+
+          return types.has(product.metadata.productType) &&
+            pols.has(product.metadata.polarization) &&
+            beamModes.has(product.metadata.beamMode) && (
+              'dateRange' in productType &&
+              this.withinDateRange(product.metadata.date.toDate(), productType.dateRange)
+            ) &&
+            product.dataset !== 'Sentinel-1C'
+        }
         );
       })
     );
+  }
+
+  public withinDateRange(check: Date, dateRange: models.DateRange) {
+    const { start, end } = dateRange;
+    let isAfterStart = true;
+    let isBeforeEnd = true;
+
+    if (start !== null) {
+      isAfterStart = check.getTime() >= start.getTime();
+    }
+    if (end !== null) {
+      isBeforeEnd = check.getTime() <= end.getTime();
+    }
+
+    return isAfterStart && isBeforeEnd;
   }
 
   public getExpiredHyp3ableObject(scene: models.CMRProduct): { byJobType: models.Hyp3ableProductByJobType[]; total: number } {

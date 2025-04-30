@@ -17,6 +17,7 @@ export interface Hyp3JobProductType {
   productTypes: string[];
   beamModes: string[];
   polarizations: string[];
+  dateRange?: Range<Date | null>;
 }
 
 export interface Hyp3JobOption {

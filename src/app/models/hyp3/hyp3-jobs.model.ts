@@ -278,11 +278,37 @@ export const AutoRift: Hyp3JobType = {
   options: []
 };
 
+export const OperaRtcJobType: Hyp3JobType = {
+  id: 'OPERA_RTC',
+  name: 'OPERA RTC',
+  // TODO: Update docs url to hyp3 docs
+  infoUrl: '',
+  description: 'OPERA_RTC_DESC',
+  numProducts: 1,
+  productTypes: [{
+    dataset: sentinel_1_bursts,
+    productTypes: [
+      'BURST',
+    ],
+    beamModes: ['IW'],
+    polarizations: [
+      'VV', 'HH', 'HV', 'VH'
+    ],
+    // TODO: Figure out these date ranges
+    dateRange: {
+      start: new Date('2016/07/2 00:00:00 UTC'),
+      end: new Date('2022/01/1 00:00:00 UTC')
+    },
+  }],
+  options: []
+}
+
 export const hyp3JobTypes = {
   RTC_GAMMA: RtcGammaJobType,
   INSAR_GAMMA: InsarGammaJobType,
   INSAR_ISCE_BURST: InsarIsceBurstJobType,
-  AUTORIFT: AutoRift
+  AUTORIFT: AutoRift,
+  OPERA_RTC: OperaRtcJobType
 };
 
 export const hyp3JobTypesList = Object.values(hyp3JobTypes);
