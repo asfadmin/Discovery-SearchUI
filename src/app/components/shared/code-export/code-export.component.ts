@@ -6,13 +6,22 @@ import { SaveSearchDialogComponent } from '../save-search-dialog';
 
 import Prism from 'prismjs';
 
+export enum CodeExportType {
+  ASF_SEARCH,
+  HYP3_SDK
+}
+
 @Component({
   selector: 'app-code-export',
   templateUrl: './code-export.component.html',
   styleUrls: ['./code-export.component.scss']
 })
 export class CodeExportComponent implements OnInit {
-  public codeStuff;
+  public codeStuff: string;
+
+  public codeExportTypes = CodeExportType;
+  public codeExportType: CodeExportType;
+
   @ViewChild('codeblock', { static: false }) divHello: ElementRef;
 
   constructor(
@@ -24,6 +33,7 @@ export class CodeExportComponent implements OnInit {
 
   ngOnInit(): void {
     this.codeStuff = this.data.codeStuff;
+    this.codeExportType = this.data.codeExportType;
   }
   ngAfterViewInit(): void {
     const grammar = Prism.languages['python'];

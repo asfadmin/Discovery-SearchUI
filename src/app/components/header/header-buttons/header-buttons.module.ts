@@ -16,6 +16,8 @@ import { PreferencesComponent } from './preferences/preferences.component';
 import { CustomizeEnvComponent } from './customize-env/customize-env.component';
 import { OnlynumberDirective } from '@directives/onlynumber.directive';
 import { SharedModule } from '@shared';
+import { Hyp3UrlSelectorComponent } from './preferences/hyp3-url-selector/hyp3-url-selector.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { LanguageSelectorModule } from "@components/shared/selectors/language-selector/language-selector.module";
 import {DocsModalModule} from '@components/shared/docs-modal';
 import {SearchButtonModule} from '@components/shared/search-button';
@@ -25,7 +27,8 @@ import {SearchButtonModule} from '@components/shared/search-button';
     HeaderButtonsComponent,
     PreferencesComponent,
     CustomizeEnvComponent,
-    OnlynumberDirective
+    OnlynumberDirective,
+    Hyp3UrlSelectorComponent,
   ],
     imports: [
         CommonModule,
@@ -42,6 +45,7 @@ import {SearchButtonModule} from '@components/shared/search-button';
         LanguageSelectorModule,
         DocsModalModule,
         SearchButtonModule,
+        MatAutocompleteModule,
     ],
   exports: [ HeaderButtonsComponent ]
 })

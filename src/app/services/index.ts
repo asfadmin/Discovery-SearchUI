@@ -24,15 +24,16 @@ export { SavedSearchService } from './saved-search.service';
 export { UnzipApiService } from './unzip-api.service';
 export { ScenesService } from './scenes.service';
 export { SearchService } from './search.service';
-export { Hyp3Service } from './hyp3.service';
+export {
+  Hyp3ApiService, OnDemandService, PossibleHyp3JobsService,
+  Hyp3JobStatusService, Hyp3JobService, Hyp3JobPollingService
+} from './hyp3';
 export { PairService } from './pair.service';
 export { SceneSelectService } from './scene-select.service';
 export { NotificationService } from './notification.service';
-export { OnDemandService } from './on-demand.service';
 export { SarviewsEventsService } from './sarviews-events.service';
 export { BrowseOverlayService } from './browse-overlay.service';
 export { ThemingService } from './theming.service';
 export { ExportService } from './export.service';
-export { PossibleHyp3JobsService } from './possible-hyp3-jobs.service';
 export { NetcdfService } from './netcdf-service.service';
 export { PointHistoryService } from './point-history.service';

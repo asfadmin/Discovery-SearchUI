@@ -6,7 +6,7 @@
       "jasmine",
       "node"
     ],
-    "lib": ["dom", "es2020"]
+    "lib": ["dom", "es2021"]
   },
   "files": [
     "test.ts",

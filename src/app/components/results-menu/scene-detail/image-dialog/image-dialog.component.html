@@ -153,19 +153,19 @@
           <div
             class="on-demand-scene-names"
             *ngIf="
-            (scene$ | async).metadata?.job?.job_parameters.scenes?.length > 1
+            (scene$ | async).metadata?.job?.scenes?.length > 1
             "
           >
             <ul>
               <li>
                 <b>{{ 'Secondary:' | translate }} </b>
                 {{
-                  (scene$ | async).metadata?.job?.job_parameters.scenes[1].name
+                  (scene$ | async).metadata?.job?.scenes[1].name
                 }}
               </li>
             </ul>
             <app-scene-metadata
-              [scene]="(scene$ | async).metadata?.job?.job_parameters.scenes[1]"
+              [scene]="(scene$ | async).metadata?.job?.scenes[1]"
               [dataset]="dataset"
               [searchType]="searchType$ | async"
               [offsets]="masterOffsets$ | async"

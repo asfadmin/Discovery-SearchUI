@@ -76,7 +76,7 @@ export class ProjectNameSelectorComponent implements OnInit, OnDestroy {
 
         const projectNamesSet: Set<string> = scenes
         .filter(s => {
-            return !!s?.metadata?.job?.name
+            return !!s?.metadata?.job?.name;
         })
         .reduce(
           (names, s) => {

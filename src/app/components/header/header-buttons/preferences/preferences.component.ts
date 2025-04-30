@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
@@ -9,13 +9,13 @@ import {
   MapLayerTypes, UserAuth, ProductType,
   datasetList, SearchType, SavedFilterPreset, FilterType, Breakpoints
 } from '@models';
-import { Hyp3Service, ThemingService } from '@services';
+import { Hyp3ApiService, ThemingService } from '@services';
 import { SubSink } from 'subsink';
 import { take } from 'rxjs';
-import { TranslateService } from "@ngx-translate/core";
-import { AsfLanguageService } from "@services/asf-language.service";
-import * as models from "@models";
-import * as services from "@services";
+import { TranslateService } from '@ngx-translate/core';
+import { AsfLanguageService } from '@services/asf-language.service';
+import * as models from '@models';
+import * as services from '@services';
 
 @Component({
   selector: 'app-preferences',
@@ -35,6 +35,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   public defaultMaxConcurrentDownloads: number;
   public defaultProductTypes: ProductType[];
   public hyp3BackendUrl: string;
+  public hyp3SavedUrls: string[];
   public hyp3DebugStatus: string;
   public defaultLanguage: string;
 
@@ -65,7 +66,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   constructor(
     private dialogRef: MatDialogRef<PreferencesComponent>,
     private store$: Store<AppState>,
-    private hyp3: Hyp3Service,
+    private hyp3: Hyp3ApiService,
     public env: services.EnvironmentService,
     private themeService: ThemingService,
     public translate: TranslateService,
@@ -89,12 +90,18 @@ export class PreferencesComponent implements OnInit, OnDestroy {
           this.selectedFiltersIDs = profile.defaultFilterPresets;
           this.defaultMaxConcurrentDownloads = profile.defaultMaxConcurrentDownloads;
           this.hyp3BackendUrl = profile.hyp3BackendUrl;
+          this.hyp3SavedUrls = profile.hyp3SavedUrls;
           this.currentTheme = profile.theme;
           this.defaultLanguage = profile.language;
+
           if (this.hyp3BackendUrl) {
             this.hyp3.setApiUrl(this.hyp3BackendUrl);
           } else {
             this.hyp3BackendUrl = this.hyp3.apiUrl;
+          }
+
+          if (!this.hyp3SavedUrls) {
+            this.hyp3SavedUrls = [this.hyp3BackendUrl];
           }
         }
       )
@@ -158,7 +165,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
 
   public onChangeDefaultLanguage(language: string): void {
     this.language.setCurrent(language);
-    this.defaultLanguage = language
+    this.defaultLanguage = language;
     this.saveProfile();
   }
 
@@ -192,17 +199,21 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   }
   public onDebugStatus(status: models.ApplicationStatus) {
     this.hyp3DebugStatus = status;
-    this.store$.dispatch(new hyp3Store.SetDebugStatus(status))
+    this.store$.dispatch(new hyp3Store.SetDebugStatus(status));
   }
 
   public setTheme(themeName: string) {
     this.themeService.setTheme(themeName);
-    this.saveProfile()
+    this.saveProfile();
   }
 
-  public resetHyp3Url() {
-    this.hyp3.setDefaultApiUrl();
+  public onSetHyp3Url(event: { backendUrl: string; savedUrls: string[]}) {
+    this.hyp3.setApiUrl(event.backendUrl);
+
     this.hyp3BackendUrl = this.hyp3.apiUrl;
+    this.hyp3SavedUrls = event.savedUrls;
+
+    this.saveProfile();
   }
 
   public saveProfile(): void {
@@ -213,6 +224,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
       defaultMaxConcurrentDownloads: this.defaultMaxConcurrentDownloads,
       defaultFilterPresets: this.selectedFiltersIDs,
       hyp3BackendUrl: this.hyp3BackendUrl,
+      hyp3SavedUrls: this.hyp3SavedUrls,
       theme: this.currentTheme,
       language: this.defaultLanguage
     });

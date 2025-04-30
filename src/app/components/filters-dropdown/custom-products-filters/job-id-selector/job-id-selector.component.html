@@ -1,0 +1,14 @@
+<mat-form-field class="job-id-selector">
+  <textarea type="text"
+    name="jobIdsInput"
+    matInput
+    cdkTextareaAutosize
+    #autosize="cdkTextareaAutosize"
+    cdkAutosizeMinRows="1"
+    cdkAutosizeMaxRows="10"
+    placeholder="{{ 'JOB_IDS_SELECTOR' | translate}}"
+    aria-label="JOB_IDS_SELECTOR"
+    (change)="onJobIdsChange($event)"
+    [(ngModel)]="jobIds">
+  </textarea>
+</mat-form-field>
