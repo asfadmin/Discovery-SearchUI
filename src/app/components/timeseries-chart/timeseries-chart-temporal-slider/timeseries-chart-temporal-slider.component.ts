@@ -38,7 +38,7 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit, OnDestroy
   public endDate$ = this.store$.select(filtersStore.getEndDate);
   public startDate: Date = new Date();
   public endDate: Date = new Date();
-  private userChangedRange: boolean = false;
+  // private userChangedRange: boolean = false;
 
   constructor(
     private store$: Store<AppState>,
@@ -52,10 +52,10 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit, OnDestroy
 
     this.subs.add(
       this.store$.select(filtersStore.getTemporalRange).pipe(withLatestFrom(this.store$.select(filtersStore.getDateRange))).subscribe(
-        ([temp,dateRange]) => {
+        ([temp,_dateRange]) => {
           if (!temp.start || !temp.end || Number.isNaN(temp.start.valueOf()) || Number.isNaN(temp.end.valueOf())) { return; }
           this.maxRange = {start: temp.start.valueOf(), end: temp.end.valueOf()};
-          if (this.lastMaxRange.start !== this.maxRange.start || this.lastMaxRange.end !== this.maxRange.end) {
+          if (this.lastMaxRange.start > this.maxRange.start || this.lastMaxRange.end < this.maxRange.end) {
             this.lastMaxRange.start = this.maxRange.start;
             this.lastMaxRange.end = this.maxRange.end;
             this.sliderRef.nativeElement.noUiSlider.updateOptions({
@@ -64,11 +64,16 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit, OnDestroy
                 'max': this.maxRange.end
               }
             });
-            if (!this.userChangedRange) {
-              this.sliderRef.nativeElement.noUiSlider.updateOptions({
-                start: [dateRange.start ?? this.maxRange.start, dateRange.end ?? this.maxRange.end],
-              });
-            }
+
+            const action = new filtersStore.SetStartDate(new Date(this.maxRange.start));
+            this.store$.dispatch(action);
+            const action2 = new filtersStore.SetEndDate(new Date(this.maxRange.end));
+            this.store$.dispatch(action2);
+
+            // if (!this.userChangedRange) {
+            this.sliderRef.nativeElement.noUiSlider.updateOptions({
+              start: [this.maxRange.start, this.maxRange.end],
+            });
             this.renderer.setStyle(this.sliderRef.nativeElement, 'visibility', 'visible');
           }
         }
@@ -86,7 +91,7 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit, OnDestroy
           this.sliderRef.nativeElement.noUiSlider.updateOptions({
             start: [this.selectedRange.start, this.selectedRange.end]
           });
-          this.userChangedRange = true;
+          // this.userChangedRange = true;
           const action = new filtersStore.SetStartDate(new Date(start));
           this.store$.dispatch(action);
           const action2 = new filtersStore.SetEndDate(new Date(end));

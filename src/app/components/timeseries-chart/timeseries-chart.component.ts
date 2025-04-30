@@ -353,7 +353,10 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
             this.timeSeriesData = [];
             for (let key of Object.keys(result.point).filter(x => x !== 'mean' && x !== 'aoi')) {
               let daDate = new Date(result.point[key].secondary_datetime).valueOf();
-              if (daDate < this.startDate?.valueOf() || daDate > this.endDate?.valueOf()) { continue; }
+              if (daDate < this.startDate?.valueOf() || daDate > this.endDate?.valueOf()) {
+                // console.log("New Date Range Needed?:", daDate )
+                continue;
+              }
               this.dataSource.push({
                 'uuidSeries': result.state.uuidSeries,
                 'aoi': aoi,
@@ -624,14 +627,14 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
             let yIntercept = lineregression(this.OperaDispStartDate)
             let formula = isNaN(regression.slope) ? 'Linear fit not available'
             : `Displacement [m] = ${(regression.slope / self.millisecondsPerYear).toFixed(4)} [m/yr]*time ${yIntercept < 0 ? '-' : '+'} ${Math.abs(yIntercept).toFixed(4)} [m]`
-            
+
           this.bestFitItems.push({
             seriesNumber: linearFitData.values[0]?.seriesNumber,
             color: linearFitData.values[0]?.color,
             // Displacement [m] = velocity [m/yr]*time [yr]+intercept [m]
             formula
           })
-          
+
 
           let line = d3.line()
             .x((d) => { return this.x(d[0]) })
