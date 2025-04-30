@@ -622,16 +622,16 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
             let regression = linearRegression(linearFitData.values.filter((x) => !x.is_masked).map((x) => [Date.parse(x.date), x.short_wavelength_displacement]));
             let lineregression = linearRegressionLine(regression);
             let yIntercept = lineregression(this.OperaDispStartDate)
-            let formula = isNaN(regression.slope) ? 'Linear fit not available'
+            let formula = isNaN(regression.slope) ? this.language.translate.instant('LINEAR_FIT_NOT_AVAILABLE')
             : `Displacement [m] = ${(regression.slope / self.millisecondsPerYear).toFixed(4)} [m/yr]*time ${yIntercept < 0 ? '-' : '+'} ${Math.abs(yIntercept).toFixed(4)} [m]`
-            
+
           this.bestFitItems.push({
             seriesNumber: linearFitData.values[0]?.seriesNumber,
             color: linearFitData.values[0]?.color,
             // Displacement [m] = velocity [m/yr]*time [yr]+intercept [m]
             formula
           })
-          
+
 
           let line = d3.line()
             .x((d) => { return this.x(d[0]) })
