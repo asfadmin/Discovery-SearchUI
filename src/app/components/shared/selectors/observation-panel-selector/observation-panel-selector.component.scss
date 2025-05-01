@@ -15,3 +15,16 @@ mat-form-field {
   font-style: italic;
   color: variables.$uaf-primary-blue;
 }
+
+.observation-panel {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.extra-wide {
+  flex-basis: 30%;
+}
+
+.flight-direction-field {
+  min-width: 230px;
+}
