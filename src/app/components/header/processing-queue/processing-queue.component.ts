@@ -78,7 +78,7 @@ export class ProcessingQueueComponent implements OnInit {
     public authService: services.AuthService,
     public env: services.EnvironmentService,
     public dialog: MatDialog,
-    public hyp3: services.Hyp3Service,
+    public hyp3: services.Hyp3ApiService,
     private dialogRef: MatDialogRef<ProcessingQueueComponent>,
     private store$: Store<AppState>,
     private screenSize: services.ScreenSizeService,
@@ -361,7 +361,7 @@ export class ProcessingQueueComponent implements OnInit {
   }
 
   private selectDefaultJobType(): void {
-    this.selectedJobTypeId = !!this.hyp3JobTypesList[0] ?
+    this.selectedJobTypeId = this.hyp3JobTypesList[0] ?
       this.hyp3JobTypesList[0].id : null;
 
   }

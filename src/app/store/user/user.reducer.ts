@@ -32,6 +32,7 @@ export const initState: UserState = {
       'Displacement': ''
     },
     hyp3BackendUrl: '',
+    hyp3SavedUrls: [],
     theme: 'light',
     language: ''
   },

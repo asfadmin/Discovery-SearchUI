@@ -12,22 +12,23 @@ export interface UserProfile {
   maxResults: number;
   defaultMaxConcurrentDownloads: number;
   defaultFilterPresets: {
-    'Baseline Search': string,
-    'Geographic Search': string,
-    'SBAS Search': string,
-    'Displacement': string
+    'Baseline Search': string;
+    'Geographic Search': string;
+    'SBAS Search': string;
+    'Displacement': string;
   };
   hyp3BackendUrl: string;
+  hyp3SavedUrls: string[];
   theme: string;
   language: string;
 }
 export interface EarthdataUserInfo {
-  first_name: string,
-  last_name: string,
-  email_address: string,
-  country: string,
-  uid: string,
-  organization: string
+  first_name: string;
+  last_name: string;
+  email_address: string;
+  country: string;
+  uid: string;
+  organization: string;
 }
 
 export interface URSGroup {
