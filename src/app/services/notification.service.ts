@@ -17,7 +17,7 @@ export class NotificationService {
   constructor(
     private toastr: ToastrService,
     private store$: Store<AppState>,
-    ) {}
+  ) { }
 
   // Custom toastr config example, toastClass styling in styles.scss
   private toastOptions: Partial<IndividualConfig> = {
@@ -25,15 +25,15 @@ export class NotificationService {
     // toastComponent: ToastrMessageComponent
   };
 
-  public demandQueue(added: boolean = true, count: number = 0, job_type: string, duplicates = 0, application_status='') {
+  public demandQueue(added: boolean = true, count: number = 0, job_type: string, duplicates = 0, application_status = '') {
     let headerText: string;
     let infoText = '';
     const action = added ? 'added to' : 'removed from';
     count -= duplicates;
     if (count <= 0) {
-      if (duplicates > 1 ) {
+      if (duplicates > 1) {
         this.error('All jobs submitted were duplicates', 'Duplicates Jobs');
-       } else {
+      } else {
         this.error('Job submitted was a duplicate', 'Duplicate Job');
       }
       return;
@@ -51,14 +51,14 @@ export class NotificationService {
 
       this.info(infoText, `Job ${action} queue`);
     }
-    if(application_status === 'NOT_STARTED' && !this.shownSignupMessage) {
+    if (application_status === 'NOT_STARTED' && !this.shownSignupMessage) {
       this.shownSignupMessage = true;
       this.error('Click here to open registration form', 'Not registered with On Demand service', {
         disableTimeOut: true,
         closeButton: true
-      }).onTap.subscribe(()=> {
-        this.store$.dispatch(new uiStore.SetIsOnDemandQueueOpen(true))
-      })
+      }).onTap.subscribe(() => {
+        this.store$.dispatch(new uiStore.SetIsOnDemandQueueOpen(true));
+      });
     }
   }
 
@@ -130,16 +130,16 @@ export class NotificationService {
 
   public listImportFailed(fileExtension: string) {
     const title = `${fileExtension} List Import Failed`;
-    const message = `Click to open documentation on accepted file formatting`;
+    const message = 'Click to open documentation on accepted file formatting';
     const errorToast = this.error(message, title);
-    errorToast.onTap.pipe(take(1)).subscribe(_ => window.open(`https://docs.asf.alaska.edu/vertex/manual/#list-search-file-import`));
+    errorToast.onTap.pipe(take(1)).subscribe(_ => window.open('https://docs.asf.alaska.edu/vertex/manual/#list-search-file-import'));
   }
 
   public info(message: string, title = '', options: Partial<IndividualConfig> = {}): ActiveToast<any> {
-    return this.toastr.info(message, title, {...options, ...this.toastOptions});
+    return this.toastr.info(message, title, { ...options, ...this.toastOptions });
   }
 
   public error(message: string, title = '', options: Partial<IndividualConfig> = {}): ActiveToast<any> {
-    return this.toastr.warning(message, title, {...options, ...this.toastOptions});
+    return this.toastr.warning(message, title, { ...options, ...this.toastOptions });
   }
 }

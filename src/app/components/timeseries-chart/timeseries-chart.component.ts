@@ -353,7 +353,10 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
             this.timeSeriesData = [];
             for (let key of Object.keys(result.point).filter(x => x !== 'mean' && x !== 'aoi')) {
               let daDate = new Date(result.point[key].secondary_datetime).valueOf();
-              if (daDate < this.startDate?.valueOf() || daDate > this.endDate?.valueOf()) { continue; }
+              if (daDate < this.startDate?.valueOf() || daDate > this.endDate?.valueOf()) {
+                // console.log("New Date Range Needed?:", daDate )
+                continue;
+              }
               this.dataSource.push({
                 'uuidSeries': result.state.uuidSeries,
                 'aoi': aoi,

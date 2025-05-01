@@ -1,4 +1,4 @@
-import { sentinel_1, sentinel_1_bursts } from './dataset.model';
+import { sentinel_1, sentinel_1_bursts } from '../dataset.model';
 import { Hyp3JobType, JobOptionType } from './hyp3-job-type.model';
 
 export const RtcGammaJobType: Hyp3JobType = {

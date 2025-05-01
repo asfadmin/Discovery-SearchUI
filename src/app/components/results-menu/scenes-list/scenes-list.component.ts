@@ -14,12 +14,14 @@ import { AppState } from '@store';
 import * as searchStore from '@store/search';
 import * as scenesStore from '@store/scenes';
 import * as queueStore from '@store/queue';
+import * as hyp3Store from '@store/hyp3';
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 import * as services from '@services';
 import * as models from '@models';
 import { CMRProduct, QueuedHyp3Job, SarviewsEvent } from '@models';
+import { ActiveToast } from 'ngx-toastr';
 
 const INFINITY = 2e10;
 
@@ -51,7 +53,8 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
   public selected: string;
   public selectedEvent: string;
 
-  public hyp3ableByScene: { [scene: string]: { byJobType: models.Hyp3ableProductByJobType[], total: number } } = {};
+  public hyp3ableByScene: { [scene: string]: { byJobType: models.Hyp3ableProductByJobType[]; total: number } } = {};
+  public newHyp3JobNotification: ActiveToast<any> = null;
 
   public offsets = { temporal: 0, perpendicular: 0 };
   public selectedFromList = false;
@@ -80,8 +83,10 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
     private keyboardService: services.KeyboardService,
     private scenesService: services.ScenesService,
     private pairService: services.PairService,
-    private hyp3: services.Hyp3Service,
+    private hyp3: services.Hyp3ApiService,
+    private hyp3JobPolling: services.Hyp3JobPollingService,
     private eventMonitoringService: services.SarviewsEventsService,
+    private notificationService: services.NotificationService,
   ) { }
 
   ngOnInit() {
@@ -169,14 +174,14 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
           return Math.max(0, sceneIdx - 1);
         })
       ).subscribe(
-          idx => {
-            if (!this.selectedFromList) {
-              this.scrollTo(idx);
-            }
-
-            this.selectedFromList = false;
+        idx => {
+          if (!this.selectedFromList) {
+            this.scrollTo(idx);
           }
-        )
+
+          this.selectedFromList = false;
+        }
+      )
     );
 
     this.subs.add(
@@ -190,29 +195,29 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
           return Math.max(0, sceneIdx - 1);
         })
       ).subscribe(
-          idx => {
-            if (!this.selectedFromList) {
-              this.scrollTo(idx);
-            }
-
-            this.selectedFromList = false;
+        idx => {
+          if (!this.selectedFromList) {
+            this.scrollTo(idx);
           }
-        )
+
+          this.selectedFromList = false;
+        }
+      )
     );
 
     this.subs.add(
       this.eventMonitoringService.filteredSarviewsEvents$().pipe(
         filter(_ => this.searchType === this.SearchTypes.SARVIEWS_EVENTS),
       ).subscribe(
-          events => {
-            this.sarviewsEvents = events;
+        events => {
+          this.sarviewsEvents = events;
 
-            const eventIds = events.map(event => event.event_id);
-            if (!eventIds.includes(this.selectedEvent) && eventIds.length > 0 && !!this.selectedEvent) {
-              this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(eventIds[0]));
-            }
+          const eventIds = events.map(event => event.event_id);
+          if (!eventIds.includes(this.selectedEvent) && eventIds.length > 0 && !!this.selectedEvent) {
+            this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(eventIds[0]));
           }
-        )
+        }
+      )
     );
 
     this.subs.add(
@@ -255,36 +260,36 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
     this.store$.select(scenesStore.getAllSceneProducts).pipe(
       withLatestFrom(baselineReference$)
     ).subscribe(
-        ([searchScenes, baselineReference]) => {
-          this.hyp3ableByScene = {};
+      ([searchScenes, baselineReference]) => {
+        this.hyp3ableByScene = {};
 
-          Object.entries(searchScenes).forEach(([groupId, products]) => {
-            const possibleJobs = [];
-            (<any[]>products).forEach(product => {
+        Object.entries(searchScenes).forEach(([groupId, products]) => {
+          const possibleJobs = [];
+          (<any[]>products).forEach(product => {
 
-              possibleJobs.push([product]);
+            possibleJobs.push([product]);
 
-              if (!!baselineReference && baselineReference.id !== product.id) {
-                possibleJobs.push([baselineReference, product]);
-              }
-            });
-
-            const hyp3able = this.hyp3.getHyp3ableProducts(possibleJobs);
-
-            this.hyp3ableByScene[groupId] = hyp3able;
+            if (!!baselineReference && baselineReference.id !== product.id) {
+              possibleJobs.push([baselineReference, product]);
+            }
           });
-        }
-      );
+
+          const hyp3able = this.hyp3.getHyp3ableProducts(possibleJobs);
+
+          this.hyp3ableByScene[groupId] = hyp3able;
+        });
+      }
+    );
 
     const queueScenes$ = combineLatest([
       this.store$.select(queueStore.getQueuedProducts),
-      this.store$.select(scenesStore.getAllSceneProducts),]
+      this.store$.select(scenesStore.getAllSceneProducts), ]
     ).pipe(
       debounceTime(0),
       map(([queueProducts, searchScenes]) => {
 
         const queuedProductGroups: { [id: string]: string[] } = queueProducts.reduce((total, product) => {
-          const groupCriteria = this.getGroupCriteria(product)
+          const groupCriteria = this.getGroupCriteria(product);
           const scene = total[groupCriteria] || [];
 
           total[groupCriteria] = [...scene, product.id];
@@ -336,8 +341,8 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       this.store$.select(searchStore.getIsLoading).pipe(
         filter(_ => !!this.scroll)
       ).subscribe(
-          _ => this.scroll.scrollToOffset(0)
-        )
+        _ => this.scroll.scrollToOffset(0)
+      )
     );
 
     this.subs.add(
@@ -353,52 +358,78 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
           return Math.max(0, sceneIdx - 1);
         })
       ).subscribe(
-          idx => {
-            if (!this.selectedFromList) {
-              this.scrollTo(idx);
-            }
-
-            this.selectedFromList = false;
+        idx => {
+          if (!this.selectedFromList) {
+            this.scrollTo(idx);
           }
-        )
+
+          this.selectedFromList = false;
+        }
+      )
     );
 
     this.subs.add(
-        combineLatest([
-          this.scenesService.scenes$,
-          this.store$.select(scenesStore.getSelectedScene)
-        ]).pipe(
-          debounceTime(50),
-        ).subscribe(([scenes, selectedScene]: any) => {
-          if(scenes && selectedScene) {
-            if(scenes.slice(0, this.numberProductsInList).findIndex((value) => {
-              return value.id === selectedScene.id;
-            }) === -1) {
-              this.selectedFromList = false;
-              this.store$.dispatch(new scenesStore.SetSelectedScene(null))
-            }
-          }
-        })
-      )
-
-      this.subs.add(
-        combineLatest([
-          this.pairService.pairs$,
-          this.store$.select(scenesStore.getSelectedPair)
-        ]).pipe(
-          debounceTime(50)
-        ).subscribe(([pairs, selectedPair]: any) => {
-          if(!pairs.pairs || !selectedPair){
-            return
-          }
-          if([...pairs.pairs, ...pairs.custom].findIndex((value) => {
-            return value[0].id === selectedPair[0].id && value[1].id === selectedPair[1].id
+      combineLatest([
+        this.scenesService.scenes$,
+        this.store$.select(scenesStore.getSelectedScene)
+      ]).pipe(
+        debounceTime(50),
+      ).subscribe(([scenes, selectedScene]: any) => {
+        if (scenes && selectedScene) {
+          if (scenes.slice(0, this.numberProductsInList).findIndex((value) => {
+            return value.id === selectedScene.id;
           }) === -1) {
             this.selectedFromList = false;
-            this.store$.dispatch(new scenesStore.SetSelectedPair(null))
+            this.store$.dispatch(new scenesStore.SetSelectedScene(null));
           }
-        })
+        }
+      })
+    );
+
+    this.subs.add(
+      combineLatest([
+        this.pairService.pairs$,
+        this.store$.select(scenesStore.getSelectedPair)
+      ]).pipe(
+        debounceTime(50)
+      ).subscribe(([pairs, selectedPair]: any) => {
+        if (!pairs.pairs || !selectedPair) {
+          return;
+        }
+        if ([...pairs.pairs, ...pairs.custom].findIndex((value) => {
+          return value[0].id === selectedPair[0].id && value[1].id === selectedPair[1].id;
+        }) === -1) {
+          this.selectedFromList = false;
+          this.store$.dispatch(new scenesStore.SetSelectedPair(null));
+        }
+      })
+    );
+
+    const numFinishedJobs$ = this.hyp3JobPolling.pollHyp3Jobs$(
+      this.store$.select(searchStore.getSearchType),
+      scenes$,
+      this.store$.select(hyp3Store.getOnDemandUserId)
+    );
+
+    this.subs.add(
+      numFinishedJobs$.pipe(
+        filter(numFinishedJobs => numFinishedJobs > 0 && this.newHyp3JobNotification === null)
+      ).subscribe(
+        (numJobsFinished) => {
+          const plural = numJobsFinished > 1 ? 's' : '';
+
+          this.newHyp3JobNotification = this.notificationService.info(
+            `${numJobsFinished} HyP3 Job${plural} have finished`,
+            'Refresh to view',
+            { disableTimeOut: true }
+          );
+
+          this.subs.add(
+            this.newHyp3JobNotification.onTap.subscribe(() => this.newHyp3JobNotification = null)
+          );
+        }
       )
+    );
   }
 
   ngAfterContentInit() {
@@ -421,12 +452,12 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
         return Math.max(0, sceneIdx - 1);
       })
     ).subscribe(
-        idx => {
-          if (!this.selectedFromList) {
-            this.scrollTo(idx);
-          }
+      idx => {
+        if (!this.selectedFromList) {
+          this.scrollTo(idx);
         }
-      ));
+      }
+    ));
 
     this.subs.add(this.pairs$.pipe(
       filter(loaded => !!loaded),
@@ -443,13 +474,12 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
         return Math.max(0, sceneIdx - 1);
       })
     ).subscribe(
-        idx => {
-          if (!this.selectedFromList) {
-            this.scrollTo(idx);
-          }
+      idx => {
+        if (!this.selectedFromList) {
+          this.scrollTo(idx);
         }
-      )
-    );
+      }
+    ));
   }
 
   private scrollTo(idx: number): void {
@@ -477,11 +507,11 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
   public getGroupCriteria(scene: CMRProduct): string {
     const ungrouped_product_types = [
       ...models.opera_s1.productTypes,
-      {apiValue: 'BURST'},
-      {apiValue: 'BURST_XML'}
-    ].map(m => m.apiValue)
+      { apiValue: 'BURST' },
+      { apiValue: 'BURST_XML' }
+    ].map(m => m.apiValue);
 
-    if(ungrouped_product_types.includes(scene.metadata.productType)) {
+    if (ungrouped_product_types.includes(scene.metadata.productType)) {
       return scene.metadata.parentID || scene.id;
     } else {
       return scene.groupId;
@@ -489,17 +519,19 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
   }
 
   private addToQueue(scenesToLoad: models.CMRProduct[]) {
-
     scenesToLoad.forEach(
-      s => {this.loadingDummyJobs.add(s.name); this.loadedInProjects.add(s.metadata.job.name);}
+      s => {
+        this.loadingDummyJobs.add(s.name);
+        this.loadedInProjects.add(s.metadata.job.name);
+      }
     );
 
-    let scenesOutsideInitialLoad = this.scenes
-    .slice(this.numberProductsInList)
-    .filter(s => s.isDummyProduct)
-    .filter(s => this.loadedInProjects.has(s.metadata.job.name) && !new Set(Object.keys(this.loadingJobs)).has(s.id));
+    const scenesOutsideInitialLoad = this.scenes
+      .slice(this.numberProductsInList)
+      .filter(s => s.isDummyProduct)
+      .filter(s => this.loadedInProjects.has(s.metadata.job.name) && !new Set(Object.keys(this.loadingJobs)).has(s.id));
 
-    scenesToLoad = [...scenesToLoad, ...scenesOutsideInitialLoad]
+    scenesToLoad = [...scenesToLoad, ...scenesOutsideInitialLoad];
 
     if (scenesToLoad.length === 0 || scenesToLoad.every(s => this.loadingJobs.hasOwnProperty(s.id))) {
       return;
@@ -507,7 +539,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
 
     scenesToLoad.forEach(
       s => this.loadingJobs[s.id] = s
-    )
+    );
     const newNumProducts = this.numberProductsInList + scenesOutsideInitialLoad.length;
 
     this.numberProductsInList$.next(
@@ -523,8 +555,8 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
     const newNumProducts = this.numberProductsInList + this.productPageSize;
 
     const scenesToLoad = this.scenes.slice(oldNumProducts, newNumProducts)
-    .filter(s => s.isDummyProduct)
-    .filter(s => !this.loadingDummyJobs.has(s.name));
+      .filter(s => s.isDummyProduct)
+      .filter(s => !this.loadingDummyJobs.has(s.name));
 
     this.addToQueue(scenesToLoad);
 
@@ -532,11 +564,12 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       newNumProducts
     );
   }
+
   private loadDummyProducts(scenes: CMRProduct[]) {
-    let scenesToLoad = scenes
-    .slice(0, this.numberProductsInList)
-    .filter(s => s.isDummyProduct)
-    .filter(s => !this.loadingDummyJobs.has(s.name));
+    const scenesToLoad = scenes
+      .slice(0, this.numberProductsInList)
+      .filter(s => s.isDummyProduct)
+      .filter(s => !this.loadingDummyJobs.has(s.name));
 
     this.addToQueue(scenesToLoad);
   }
@@ -544,7 +577,9 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
   private removeLoadedScenes(scenes: CMRProduct[]) {
     scenes
       .filter(s => !s.isDummyProduct)
-      .forEach(s => {this.loadingDummyJobs.delete(s.name); delete this.loadingJobs[s.id]})
+      .forEach(s => {
+        this.loadingDummyJobs.delete(s.name); delete this.loadingJobs[s.id];
+      });
   }
 
   ngOnDestroy() {

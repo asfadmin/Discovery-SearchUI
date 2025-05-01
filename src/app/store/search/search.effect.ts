@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import * as moment from 'moment';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, Action } from '@ngrx/store';
@@ -18,6 +17,7 @@ import * as scenesStore from '@store/scenes';
 import * as filtersStore from '@store/filters';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
+import * as hyp3Store from '@store/hyp3';
 import moment2 from 'moment';
 
 import * as services from '@services';
@@ -39,6 +39,7 @@ import { Feature } from 'ol';
 import Geometry from 'ol/geom/Geometry';
 import { FiltersActionType } from '@store/filters';
 import { getIsFiltersMenuOpen, getIsResultsMenuOpen } from '@store/ui';
+
 @Injectable()
 export class SearchEffects {
   private vectorSource = new VectorSource({
@@ -48,10 +49,11 @@ export class SearchEffects {
   constructor(
     private actions$: Actions,
     private store$: Store<AppState>,
-    private searchParams$: services.SearchParamsService,
+    private searchParams: services.SearchParamsService,
     private asfApiService: services.AsfApiService,
     private productService: services.ProductService,
-    private hyp3Service: services.Hyp3Service,
+    private hyp3Service: services.Hyp3ApiService,
+    private hyp3JobService: services.Hyp3JobService,
     private sarviewsService: services.SarviewsEventsService,
     private http: HttpClient,
     private notificationService: services.NotificationService,
@@ -73,11 +75,16 @@ export class SearchEffects {
     ])
   ));
 
+  public resetMoreJobsToLoadOnSearch = createEffect(() => this.actions$.pipe(
+    ofType(SearchActionType.MAKE_SEARCH),
+    map(_ => new hyp3Store.ResetMaxHyp3ResultsHit())
+  ));
+
   public setCanSearch = createEffect(() => this.actions$.pipe(
     ofType<SetSearchAmount>(SearchActionType.SET_SEARCH_AMOUNT),
     withLatestFrom(this.store$.select(getSearchType)),
     map(([action, _searchType]) =>
-      (action.payload > 0 ) ? new EnableSearch() : new DisableSearch()
+      (action.payload > 0) ? new EnableSearch() : new DisableSearch()
     )
   ));
 
@@ -85,10 +92,10 @@ export class SearchEffects {
     ofType<ClearScenes>(ScenesActionType.CLEAR),
     withLatestFrom(this.store$.select(getSearchType)),
     switchMap(([_, searchType]) => {
-      if(searchType === SearchType.SARVIEWS_EVENTS) {
-        return this.sarviewsService.getSarviewsEvents$
+      if (searchType === SearchType.SARVIEWS_EVENTS) {
+        return this.sarviewsService.getSarviewsEvents$;
       } else {
-        return of([])
+        return of([]);
       }
     }),
     map((events) => new SetSarviewsEvents({ events }))
@@ -101,12 +108,14 @@ export class SearchEffects {
     switchMap(([_, searchType]) => {
       if (searchType === SearchType.SARVIEWS_EVENTS) {
         return this.sarviewsEventsQuery$();
-      }
-      if (searchType === SearchType.BASELINE || searchType === SearchType.SBAS) {
+      } else if (searchType === SearchType.BASELINE || searchType === SearchType.SBAS) {
+        this.logCountries();
         return this.asfApiBaselineQuery$();
-      }
-      if (searchType === SearchType.CUSTOM_PRODUCTS) {
+      } else if (searchType === SearchType.CUSTOM_PRODUCTS) {
         return this.customProductsQuery$();
+      } else {
+        this.logCountries();
+        return this.asfApiQuery$;
       }
       if (searchType === SearchType.DISPLACEMENT) {
         return this.timeseriesQuery$();
@@ -122,9 +131,39 @@ export class SearchEffects {
 
   public getNextJobBatch = createEffect(() => this.actions$.pipe(
     ofType<SetNextJobsUrl>(SearchActionType.SET_NEXT_JOBS_URL),
-    withLatestFrom(this.store$.select(getScenes)),
-    filter(([action, scenes]) => !!action.payload && scenes !== undefined),
-    switchMap(([action, currentScenes]) => this.nextCustomProduct$(action.payload, currentScenes))
+    withLatestFrom(combineLatest([
+      this.store$.select(getScenes),
+      this.store$.select(hyp3Store.getMaxHyp3Jobs),
+    ])),
+    filter(([action, [scenes, _]]) => {
+      return !!action.payload && scenes !== undefined;
+    }),
+    switchMap(
+      ([action, [scenes, maxHyp3Jobs]]) => {
+        const next = action.payload;
+
+        if (scenes.length > maxHyp3Jobs) {
+          return of(new hyp3Store.MaxHyp3ResultsHit());
+        }
+
+        return this.hyp3Service.getJobsByUrl$(next).pipe(
+          switchMap(
+            (jobsRes) => {
+              if (jobsRes.hyp3Jobs.length === 0 && jobsRes.next === '') {
+                return of(new Hyp3BatchResponse({
+                  files: [],
+                  totalCount: 0,
+                  searchType: models.SearchType.CUSTOM_PRODUCTS,
+                  next: ''
+                }));
+              }
+
+              return this.onDemandGranuleList$(jobsRes, scenes);
+            }
+          ),
+        );
+      }
+    )
   ));
 
   public cancelSearchWhenFiltersCleared = createEffect(() => this.actions$.pipe(
@@ -149,16 +188,16 @@ export class SearchEffects {
   public searchResponse = createEffect(() => this.actions$.pipe(
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
     switchMap(action => {
-      let output : any[] = [
+      const output: any[] = [
         new scenesStore.SetScenes({
           products: action.payload.files,
           searchType: action.payload.searchType
         })
       ];
-      if(action.payload.totalCount) {
-        output.push(new SetSearchAmount(action.payload.totalCount))
+      if (action.payload.totalCount) {
+        output.push(new SetSearchAmount(action.payload.totalCount));
       }
-      return output
+      return output;
     })
   ));
 
@@ -166,8 +205,13 @@ export class SearchEffects {
     ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
     withLatestFrom(this.store$.select(getSearchType)),
     filter(([_, searchType]) => searchType === SearchType.CUSTOM_PRODUCTS),
-    switchMap(([action, _]) =>
-      [!!action.payload.next ? new SetNextJobsUrl(action.payload.next) : new SetNextJobsUrl('')]
+    switchMap(([action, _]) => {
+      if (action.payload.next) {
+        return [new SetNextJobsUrl(action.payload.next)];
+      } else {
+        return [new SetNextJobsUrl('')];
+      }
+    }
     )
   ));
 
@@ -178,9 +222,9 @@ export class SearchEffects {
       const products = action.payload;
 
       const granuleNames = products.reduce((names, prod) => {
-        const scenes = prod.metadata.job.job_parameters.scenes;
+        const scenes = prod.metadata.job.scenes;
 
-        if (!!scenes) {
+        if (scenes) {
           const gNames = scenes
             .filter(g => !!g && 'name' in g)
             .map(g => g.name);
@@ -191,18 +235,24 @@ export class SearchEffects {
         }
       }, []);
 
-      const params = {'granule_list': (<any>granuleNames).join(',')};
+      const params = { 'granule_list': (<any>granuleNames).join(',') };
 
       return this.asfApiService.query(params);
     }),
-    map(results => this.productService.fromResponse(results).
-      filter(product => {
-        return !product.metadata.productType.includes('METADATA');
-      })
-    ),
-    map(results => {
-      return new scenesStore.AddCmrDataToOnDemandScenes(results);
-    })
+    withLatestFrom(this.store$.select(scenesStore.getProducts)),
+    map(([asfApiResp, products]) => {
+      const results = this.productService.fromResponse(asfApiResp)
+        .filter(product => !product.metadata.productType.includes('METADATA'));
+
+      const cmrData = results.reduce((prods, product) => {
+        prods[product.name] = product;
+        return prods;
+      }, {});
+
+      const combinedProducts = this.hyp3JobService.combineWithCmrProduct(products, cmrData);
+
+      return new scenesStore.AddCmrDataToOnDemandScenes(combinedProducts);
+    }),
   ));
 
   public hyp3BatchResponse = createEffect(() => this.actions$.pipe(
@@ -212,7 +262,7 @@ export class SearchEffects {
         products: action.payload.files,
         searchType: action.payload.searchType
       }),
-      !!action.payload.next ? new SetNextJobsUrl(action.payload.next) : new SetNextJobsUrl(''),
+      action.payload.next ? new SetNextJobsUrl(action.payload.next) : new SetNextJobsUrl(''),
     ]
     )
   ));
@@ -332,7 +382,7 @@ export class SearchEffects {
       new SetSearchOutOfDate(false)
     ]),
     catchError(
-      _ => of(new SearchError(`Error loading search results`))
+      _ => of(new SearchError('Error loading search results'))
     )
   ));
 
@@ -353,8 +403,8 @@ export class SearchEffects {
     withLatestFrom(this.store$.select(getAreResultsLoaded)),
     filter(([[[_, searchtype], outOfdate], loaded]) => !outOfdate && searchtype === models.SearchType.DATASET && loaded),
   ).pipe(
-      map(_ => new SetSearchOutOfDate(true))
-    ));
+    map(_ => new SetSearchOutOfDate(true))
+  ));
 
   public setSearchUpToDate = createEffect(() => this.actions$.pipe(
     ofType(SearchActionType.MAKE_SEARCH,
@@ -374,105 +424,84 @@ export class SearchEffects {
     filter(action => action.payload),
     map(_ => new SetSearchType(SearchType.DISPLACEMENT))
   ))
-  private asfApiQuery$ = this.searchParams$.getParams.pipe(
+
+  private asfApiQuery$ = this.searchParams.getParams.pipe(
     debounceTime(100),
     map(params => [params]),
     switchMap(
       ([params]) => forkJoin(
         this.asfApiService.query<any[]>(params)
       ).pipe(
-          withLatestFrom(combineLatest([
-            this.store$.select(getSearchType),
-            this.store$.select(getIsCanceled)]
-          )),
-          map(([[response], [searchType, isCanceled]]) =>
-            !isCanceled ?
-              new SearchResponse({
-                files: this.productService.fromResponse(response),
-                searchType
-              }) :
-              new SearchCanceled()
-          ),
-          catchError(
-            (err: HttpErrorResponse) => {
-              if (err.status !== 400) {
-                return of(new SearchError(`Unknown Error`));
-              }
-              return EMPTY;
+        withLatestFrom(combineLatest([
+          this.store$.select(getSearchType),
+          this.store$.select(getIsCanceled)]
+        )),
+        map(([[response], [searchType, isCanceled]]) =>
+          !isCanceled ?
+            new SearchResponse({
+              files: this.productService.fromResponse(response),
+              searchType
+            }) :
+            new SearchCanceled()
+        ),
+        catchError(
+          (err: HttpErrorResponse) => {
+            if (err.status !== 400) {
+              return of(new SearchError('Unknown Error'));
             }
-          ),
-        ))
+            return EMPTY;
+          }
+        ),
+      ))
   );
 
   public asfApiBaselineQuery$(): Observable<Action> {
-    this.logCountries();
-    return this.searchParams$.getParams.pipe(
+
+    return this.searchParams.getParams.pipe(
       switchMap(
-        (params) =>
-          this.asfApiService.query<any[]>(params).pipe(
+        (params) => {
+
+          const apiQuery$ = this.asfApiService.query<any[]>(params).pipe(
+            map(response => this.productService.fromResponse(response))
+          );
+
+          return apiQuery$.pipe(
             withLatestFrom(combineLatest([
               this.store$.select(getSearchType),
               this.store$.select(getIsCanceled)]
             )),
-            map(([response, [searchType, isCanceled]]) => {
-              const files = this.productService.fromResponse(response)
+            map(([files, [searchType, isCanceled]]) => {
+
               return !isCanceled ?
                 new SearchResponse({
                   files,
                   totalCount: files.length,
                   searchType
                 }) :
-                new SearchCanceled()
+                new SearchCanceled();
             }
             ),
             catchError(
               (err: HttpErrorResponse) => {
                 if (err.status !== 400) {
-                  return of(new SearchError(`Unknown Error`));
+                  return of(new SearchError('Unknown Error'));
                 }
                 return EMPTY;
               }
             ),
-          ))
+          );
+        })
     );
   }
 
-  private getAllGranulesFromJobs(jobs: any) {
-    return jobs.reduce(
-      (granuleNames, job) => {
-        return granuleNames.concat(job.job_parameters.granules);
-      },
-      [])
-  }
-
-  private dummyProducts$(granuleNames: string[]) {
-    const dummyProducts = granuleNames.map(granuleName => {
-      return {
-        ...this.dummyProduct(),
-        name: granuleName
-      };
-    })
-
-    return of(dummyProducts);
-  }
-
-  private onDemandGranuleList$(jobsRes, latestScenes) {
+  private onDemandGranuleList$(
+    jobsRes: { hyp3Jobs: models.Hyp3Job[]; next: string },
+    latestScenes: models.CMRProduct[]
+  ) {
     const jobs = jobsRes.hyp3Jobs;
+    const dummyProducts = this.hyp3JobService.toDummyCMRProducts(jobs);
 
-    const granuleNames = this.getAllGranulesFromJobs(jobs);
-    const fakeApiListQuery = this.dummyProducts$(granuleNames);
-
-    return fakeApiListQuery.pipe(
-      map(dummyProducts => {
-        return dummyProducts
-          .reduce((prodsByName, p) => {
-            prodsByName[p.name] = p;
-            return prodsByName;
-          }, {});
-      }),
-      map(dummyProducts => {
-        return this.hyp3JobToProducts(jobs, dummyProducts);
-      }),
+    return of(dummyProducts).pipe(
       withLatestFrom(this.store$.select(getIsCanceled)),
       map(([products, isCanceled]) =>
         !isCanceled ?
@@ -485,21 +514,30 @@ export class SearchEffects {
           new SearchCanceled()
       ),
       catchError(
-        _ => {
-          return of(new SearchError(`Error loading search results`));
+        error => {
+          console.log(error);
+          return of(new SearchError('Error loading search results'));
         }
       ),
     );
   }
 
   private customProductsQuery$(): Observable<Action> {
-    return this.searchParams$.getOnDemandSearchParams.pipe(
+    return this.searchParams.onDemandParams$.pipe(
       switchMap(
         params => {
-          return this.hyp3Service.getJobs$(params.userID).pipe(
+          let hyp3Query: Observable<{ hyp3Jobs: models.Hyp3Job[]; next: string }>;
+
+          if (params.jobIds?.length > 0) {
+            hyp3Query = this.hyp3Service.getJobsByIds$(params.jobIds);
+          } else {
+            hyp3Query = this.hyp3Service.getJobs$({ userID: params.userID, name: params.name });
+          }
+
+          return hyp3Query.pipe(
             switchMap(
-              (jobsRes: { hyp3Jobs: models.Hyp3Job[], next: string }) => {
-                if (jobsRes.hyp3Jobs.length === 0) {
+              (jobsRes: { hyp3Jobs: models.Hyp3Job[]; next: string }) => {
+                if (jobsRes.hyp3Jobs.length === 0 && jobsRes.next === '') {
                   return of(new SearchResponse({
                     files: [],
                     totalCount: 0,
@@ -517,25 +555,6 @@ export class SearchEffects {
   }
 
 
-  private nextCustomProduct$(next: string, latestScenes: models.CMRProduct[]): Observable<Action> {
-    return this.hyp3Service.getJobsByUrl$(next).pipe(
-      switchMap(
-        (jobsRes) => {
-          if (jobsRes.hyp3Jobs.length === 0) {
-            return of(new Hyp3BatchResponse({
-              files: [],
-              totalCount: 0,
-              searchType: models.SearchType.CUSTOM_PRODUCTS,
-              next: ''
-            }));
-          }
-
-          return this.onDemandGranuleList$(jobsRes, latestScenes);
-        }
-      ),
-    );
-  }
-
   private sarviewsEventsQuery$() {
     return this.sarviewsService.getSarviewsEvents$.pipe(
       filter(events => !!events),
@@ -546,97 +565,6 @@ export class SearchEffects {
   private timeseriesQuery$() {
     return of(new TimeseriesSearchResponse({
     }))
-  }
-
-  private hyp3JobToProducts(jobs, products) {
-    const virtualProducts = jobs
-    .filter(job => job.job_type in models.hyp3JobTypes)
-    .filter(job => products[job.job_parameters.granules[0]])
-    .map(job => {
-      const product = products[job.job_parameters.granules[0]];
-      const jobFile = job.files?.length > 0 ?
-        job.files[0] :
-        { size: -1, url: '', filename: product.name };
-
-      const scene_keys = job.job_parameters.granules;
-      job.job_parameters.scenes = [];
-      for (const scene_key of scene_keys) {
-        job.job_parameters.scenes.push(products[scene_key]);
-      }
-
-      const jobProduct = {
-        ...product,
-        browses: job.browse_images ? job.browse_images : ['assets/no-browse.png'],
-        thumbnail: job.thumbnail_images ? job.thumbnail_images[0] : 'assets/no-thumb.png',
-        productTypeDisplay: `${job.job_type}, ${product.metadata.productType} `,
-        downloadUrl: jobFile.url,
-        bytes: jobFile.size,
-        groupId: job.job_id,
-        id: job.job_id,
-        isDummyProduct: true,
-        metadata: {
-          ...product.metadata,
-          fileName: jobFile.filename || '',
-          productType: job.job_type,
-          job
-        },
-      };
-
-      return jobProduct
-    });
-
-    return virtualProducts;
-  }
-
-  private dummyProduct() {
-    // "2023-11-21T18:03:43+00:00"
-    return {
-      "name": "",
-      "productTypeDisplay": "",
-      "file": "",
-      "id": "",
-      "downloadUrl": "",
-      "bytes": 0,
-      "dataset": "",
-      "browses": [
-        "/assets/no-browse.png"
-      ],
-      "thumbnail": "/assets/no-thumb.png",
-      "groupId": "",
-      "isUnzippedFile": false,
-      "isDummyProduct": true,
-      "metadata": {
-        "date": moment.utc("1970-01-01T00:00:00+00:00"),
-        "stopDate": moment.utc("1970-01-01T00:00:00+00:00"),
-        "polygon": "POLYGON ((0 0, 0 0, 0 0, 0 0, 0 0))",
-        "productType": "",
-        "beamMode": "",
-        "polarization": "",
-        "flightDirection": "",
-        "path": 0,
-        "frame": 0,
-        "absoluteOrbit": [
-          0
-        ],
-        "faradayRotation": 0,
-        "offNadirAngle": 0,
-        "instrument": "",
-        "pointingAngle": null,
-        "missionName": null,
-        "flightLine": null,
-        "stackSize": null,
-        "perpendicular": null,
-        "temporal": null,
-        "canInSAR": true,
-        "job": null,
-        "fileName": null,
-        "burst": null,
-        "opera": null,
-        "pgeVersion": 0,
-        "subproducts": [],
-        "parentID": null
-      }
-    };
   }
 
   private findCountries(shapeString: string) {
@@ -655,8 +583,9 @@ export class SearchEffects {
       'search-countries': countries
     });
   }
+
   private logCountries(): void {
-    this.searchParams$.getParams.pipe(first()).subscribe(params => {
+    this.searchParams.getParams.pipe(first()).subscribe(params => {
       if (params.intersectsWith) {
         if (this.vectorSource.getFeatures().length > 0) {
           this.findCountries(params.intersectsWith);

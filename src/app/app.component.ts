@@ -69,7 +69,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   public interactionTypes = models.MapInteractionModeType;
   public searchType: models.SearchType;
   public kioskMode = false;
-  
+
   private helpTopic: string | null;
 
   private subs = new SubSink();
@@ -92,7 +92,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private notificationService: services.NotificationService,
     private sarviewsService: services.SarviewsEventsService,
     private mapService: services.MapService,
-    private hyp3Service: services.Hyp3Service,
+    private hyp3Service: services.Hyp3ApiService,
     private themeService: services.ThemingService,
     private drawService: services.DrawService,
     public translate: TranslateService,
@@ -102,7 +102,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private pointHistoryService: services.PointHistoryService,
     @Inject(MAT_DATE_LOCALE) public _locale: string,
   ) { }
-  
+
   @HostListener('window:keydown.control./', ['$event'])
   handleKeyDown(_event: KeyboardEvent) {
     console.log('Toggling kiosk mode. Use "ctrl+/" to re-toggle')
@@ -277,8 +277,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subs.add(
       this.store$.select(userStore.getUserProfile).subscribe(
         profile => {
-          if (profile.hyp3BackendUrl) {
+          if (profile.hyp3BackendUrl && profile.hyp3BackendUrl !== this.hyp3Service.baseUrl) {
             this.hyp3Service.setApiUrl(profile.hyp3BackendUrl);
+            this.store$.dispatch(new searchStore.ClearSearch());
           }
 
           this.store$.dispatch(new hyp3Store.LoadCosts());
@@ -506,6 +507,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   public onClearSearch(): void {
     this.pointHistoryService.clear();
     this.store$.dispatch(new scenesStore.ClearScenes());
+    this.store$.dispatch(new hyp3Store.SetHyp3JobIDs([]));
     this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(''));
     this.mapService.clearDrawLayer();
     this.store$.dispatch(new uiStore.CloseResultsMenu());
@@ -568,7 +570,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       && this.searchType !== models.SearchType.CUSTOM_PRODUCTS
       && this.searchType !== models.SearchType.SARVIEWS_EVENTS) {
       const defaultFilterID = profile.defaultFilterPresets[this.searchType];
-      if (!!defaultFilterID) {
+      if (defaultFilterID) {
         this.store$.dispatch(new userStore.LoadFiltersPreset(defaultFilterID));
       }
     }

@@ -20,7 +20,7 @@ import * as services from '@services';
 })
 export class ConfirmationComponent implements OnInit {
   public allJobs: models.QueuedHyp3Job[] = [];
-  public jobTypesWithQueued = [];
+  public jobTypesWithQueued: models.JobTypesWithQueued[] = [];
   public processingOptions: models.Hyp3ProcessingOptions;
   public projectName: string;
   public validateOnly: boolean;
@@ -30,7 +30,8 @@ export class ConfirmationComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<ConfirmationComponent>,
-    public hyp3: services.Hyp3Service,
+    public hyp3: services.Hyp3ApiService,
+    public hyp3JobService: services.Hyp3JobService,
     private store$: Store<AppState>,
     private notificationService: services.NotificationService,
     @Inject(MAT_DIALOG_DATA) public data: models.ConfirmationDialogData
@@ -52,7 +53,7 @@ export class ConfirmationComponent implements OnInit {
     });
   }
 
-  public onToggleJobType(tabQueue): void {
+  public onToggleJobType(tabQueue: models.JobTypesWithQueued): void {
     this.jobTypesWithQueued = this.jobTypesWithQueued.map(
       tab => {
         if (tab.jobType.id === tabQueue.jobType.id) {
@@ -69,14 +70,14 @@ export class ConfirmationComponent implements OnInit {
     );
   }
 
-  public amountSelected(jobTypes): number {
+  public amountSelected(jobTypes: models.JobTypesWithQueued[]): number {
     return jobTypes
       .filter((jobType) => jobType.selected)
       .map(jobType => jobType.jobs.length)
       .reduce((a, b) => a + b, 0);
   }
 
-  public creditsSelected(jobTypes): number {
+  public creditsSelected(jobTypes: models.JobTypesWithQueued[]): number {
     return jobTypes
       .filter((jobType) => jobType.selected)
       .map(jobType => jobType.creditTotal)
@@ -90,7 +91,7 @@ export class ConfirmationComponent implements OnInit {
   public onSubmitQueue(): void {
     const jobTypesWithQueued = this.jobTypesWithQueued;
 
-    const hyp3JobsBatch = this.hyp3.formatJobs(jobTypesWithQueued, {
+    const hyp3JobsBatch = this.hyp3JobService.formatJobs(jobTypesWithQueued, {
       projectName: this.projectName,
       processingOptions: this.processingOptions
     });
@@ -161,7 +162,7 @@ export class ConfirmationComponent implements OnInit {
         }
 
         const successfulJobs = resp.jobs.map(job => ({
-          granules: job.job_parameters.granules.map(g => ({name: g})),
+          granules: this.hyp3JobService.getAllGranules(job).map(g => ({name: g})),
           job_type: models.hyp3JobTypes[job.job_type]
         }));
 

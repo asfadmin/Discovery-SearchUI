@@ -11,15 +11,25 @@ import { JobStatusSelectorModule } from '@components/shared/selectors/job-status
 import { DateSelectorModule } from '@components/shared/selectors/date-selector';
 import { JobProductNameSelectorModule } from '@components/shared/selectors/job-product-name-selector';
 import { OnDemandUserSelectorModule} from '@components/shared/selectors/on-demand-user-selector';
+import { JobIdSelectorComponent } from './job-id-selector/job-id-selector.component';
 
 import { SharedModule } from '@shared';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [CustomProductsFiltersComponent],
+  declarations: [
+    CustomProductsFiltersComponent,
+    JobIdSelectorComponent,
+  ],
   imports: [
     CommonModule,
     MatExpansionModule,
     MatSharedModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
     DateSelectorModule,
     SearchTypeSelectorModule,
     ProjectNameSelectorModule,

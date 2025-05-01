@@ -5,7 +5,7 @@ import * as moment from 'moment';
 import * as queueStore from '@store/queue';
 import * as searchStore from '@store/search';
 
-import { EnvironmentService, Hyp3Service, OnDemandService } from '@services';
+import { EnvironmentService, Hyp3JobStatusService, OnDemandService } from '@services';
 import * as models from '@models';
 import { SubSink } from 'subsink';
 import { of } from 'rxjs';
@@ -29,7 +29,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   @Input() validHyp3JobTypes: models.Hyp3JobType[];
   @Input() hasAccessToRestrictedData: boolean;
   @Input() loadingHyp3JobName: string | null;
-  @Input() isSearchableProduct: boolean = false;
+  @Input() isSearchableProduct = false;
 
   @Output() toggle = new EventEmitter<void>();
   @Output() unzip = new EventEmitter<models.CMRProduct>();
@@ -44,7 +44,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   constructor(
-      private hyp3: Hyp3Service,
+      private hyp3JobStatus: Hyp3JobStatusService,
       private store$: Store<AppState>,
       public env: EnvironmentService,
       private onDemand: OnDemandService,
@@ -128,7 +128,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   }
 
   public isDownloadable(product: models.CMRProduct): boolean {
-    return this.hyp3.isDownloadable(product);
+    return this.hyp3JobStatus.isDownloadable(product.metadata.job);
   }
 
   public addJobToProcessingQueue(jobType: models.Hyp3JobType): void {
@@ -145,7 +145,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
       });
 
     this.store$.dispatch(new queueStore.AddJob({
-      granules: this.product.metadata.job.job_parameters.scenes,
+      granules: this.product.metadata.job.scenes,
       job_type: job_types[job_type]
     }));
   }
@@ -165,7 +165,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
 
   public isExpired(job: models.Hyp3Job): boolean {
     if (job) {
-      return this.hyp3.isExpired(job);
+      return this.hyp3JobStatus.isExpired(job);
     }
     return false;
   }
