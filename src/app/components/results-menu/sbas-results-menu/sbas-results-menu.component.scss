@@ -210,6 +210,12 @@ $config: mat.m2-define-legacy-typography-config();
   display: flex;
   place-content: stretch center;
   align-items: stretch;
+  margin-bottom: 4px;
+  margin-top: -1px;
+}
+
+.sbas-menu-button {
+  margin-top:-7px;
 }
 
 label {
@@ -244,4 +250,9 @@ label {
   @include themify($themes) {
     background: darken(themed('background-white'), 15%);
   }
+}
+
+.sbas-hdr-ctrl {
+  margin-top: -7px;
+  margin-bottom: 7px;
 }
