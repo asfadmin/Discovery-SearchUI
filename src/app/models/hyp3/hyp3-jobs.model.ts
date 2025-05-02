@@ -296,7 +296,7 @@ export const OperaRtcS1JobType: Hyp3JobType = {
     ],
     dateRange: {
       // Disallow IPF version < 002.70 according to the dates given at https://sar-mpc.eu/processor/ipf/
-      start: new Date('2016/04/13 00:00:00 UTC'),
+      start: new Date('2016/04/14 00:00:00 UTC'),
       // Opera RTC forward processing start date
       end: new Date('2022/01/1 00:00:00 UTC')
     },
