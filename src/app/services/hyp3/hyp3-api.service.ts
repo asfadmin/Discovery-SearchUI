@@ -224,7 +224,7 @@ export class Hyp3ApiService {
       hyp3ableProducts.forEach(product => {
         const prodType = product[0].metadata.productType;
 
-        if (models.OperaRtcJobType.id === jobType.id) {
+        if (models.OperaRtcS1JobType.id === jobType.id) {
           product = product.map(p => {
             if (this.isCrossPolBurst(p)) {
               return this.makeCoPolBurst(p);

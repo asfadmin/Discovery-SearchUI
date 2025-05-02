@@ -278,12 +278,12 @@ export const AutoRift: Hyp3JobType = {
   options: []
 };
 
-export const OperaRtcJobType: Hyp3JobType = {
-  id: 'OPERA_RTC',
-  name: 'OPERA RTC',
+export const OperaRtcS1JobType: Hyp3JobType = {
+  id: 'OPERA_RTC_S1',
+  name: 'OPERA RTC S1',
   // TODO: Update docs url to hyp3 docs
   infoUrl: '',
-  description: 'OPERA_RTC_DESC',
+  description: 'OPERA_RTC_S1_DESC',
   numProducts: 1,
   productTypes: [{
     dataset: sentinel_1_bursts,
@@ -294,9 +294,10 @@ export const OperaRtcJobType: Hyp3JobType = {
     polarizations: [
       'VV', 'HH', 'HV', 'VH'
     ],
-    // TODO: Figure out these date ranges
     dateRange: {
-      start: new Date('2016/07/2 00:00:00 UTC'),
+      // Disallow IPF version < 002.70 according to the dates given at https://sar-mpc.eu/processor/ipf/
+      start: new Date('2016/04/13 00:00:00 UTC'),
+      // Opera RTC forward processing start date
       end: new Date('2022/01/1 00:00:00 UTC')
     },
   }],
@@ -308,7 +309,7 @@ export const hyp3JobTypes = {
   INSAR_GAMMA: InsarGammaJobType,
   INSAR_ISCE_BURST: InsarIsceBurstJobType,
   AUTORIFT: AutoRift,
-  OPERA_RTC: OperaRtcJobType
+  OPERA_RTC_S1: OperaRtcS1JobType
 };
 
 export const hyp3JobTypesList = Object.values(hyp3JobTypes);
