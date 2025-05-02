@@ -852,6 +852,7 @@
   "TEMPORAL": "Temporal",
   "TEMPORAL_CRITERIA": "Criterios Temporales:",
   "TEST": "Prueba",
+  "TEST_1_1": "PRUEBA 1.1",
   "THAT_ARE_RELATED_TO_A_SPECIFIC_LOCATION_AND_TIME": "que están relacionados con un lugar y tiempo específico.",
   "THE_BASELINE_TOOL_BUTTON_OPENS_THE_ASF_BASELINE_TOOL_WHICH_IS_USED_FOR_THE_CREATION_OF_IN_SAR_STACKS": "El botón 'Herramienta de línea base' abre la Herramienta de línea base ASF, que se utiliza para la creación de pilas InSAR.",
   "THE_CART_CHANGES_APPEARANCE_WHEN_THIS_IS_DONE": "El carrito cambia de apariencia cuando se hace esto.",
