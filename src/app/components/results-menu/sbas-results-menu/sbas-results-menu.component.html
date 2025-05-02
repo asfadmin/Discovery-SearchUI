@@ -85,7 +85,7 @@
         <label>{{ 'ZOOM' | translate }}</label>
       </div>
       <div class="fx-row">
-        <div>
+        <div class="sbas-hdr-ctrl">
           <mat-button-toggle-group class="sbas-toggle-group" name="layerType" [hideSingleSelectionIndicator]="true">
             <mat-button-toggle class="control-mat-button-toggle"
               (click)="zoomIn()"
@@ -116,7 +116,7 @@
         <label>{{ 'CUSTOM_PAIR' | translate }}</label>
       </div>
       <div class="toggle-group-wrapper--layout">
-        <div>
+        <div class="sbas-hdr-ctrl">
           <mat-button-toggle-group class="sbas-toggle-group sbas-ribbon-group" name="pairControl" [hideSingleSelectionIndicator]="true">
 
             <mat-button-toggle
@@ -158,7 +158,7 @@
       <div class="button-group-label">
         <label>{{ 'FILTERS' | translate }}</label>
       </div>
-      <div class="toggle-group-wrapper--layout">
+      <div class="toggle-group-wrapper--layout sbas-menu-button">
         <mat-button-toggle class="control-mat-button-toggle sbas-criteria-button-toggle"
           (click)="onToggleFiltersMenu()"
         >
