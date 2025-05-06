@@ -303,7 +303,6 @@ export class Hyp3ApiService {
           return types.has(product.metadata.productType) &&
             pols.has(product.metadata.polarization) &&
             beamModes.has(product.metadata.beamMode) && (
-              'dateRange' in productType &&
               this.withinDateRange(product.metadata.date.toDate(), productType.dateRange)
             ) &&
             product.dataset !== 'Sentinel-1C'
@@ -313,7 +312,11 @@ export class Hyp3ApiService {
     );
   }
 
-  public withinDateRange(check: Date, dateRange: models.DateRange) {
+  public withinDateRange(check: Date, dateRange: models.DateRange | null) {
+    if (!dateRange) {
+      return true;
+    }
+
     const { start, end } = dateRange;
     let isAfterStart = true;
     let isBeforeEnd = true;

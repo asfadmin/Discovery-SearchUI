@@ -183,24 +183,34 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
 
     case QueueActionType.ADD_JOBS: {
       const jobs = [...state.customJobs];
-      const new_jobs = [...action.payload];
-      let _duplicates = 0;
-      const jobsToQueue = new_jobs.filter(new_job =>
-        !jobs.some(old_job => {
-          const result = old_job.job_type === new_job.job_type &&
-          sameGranules(old_job.granules, new_job.granules);
-          if (result) {
-            _duplicates += 1;
-          }
-          return result;
+      const jobsToAdd = [...action.payload];
+      let duplicates = 0;
+
+      const makeJobId = (job: QueuedHyp3Job) => {
+        const granuleIds = job.granules.map(g => g.id).join('-');
+        return `${job.job_type.id}--${granuleIds}`
+      }
+
+      const uniqueJobs = new Set(jobs.map(makeJobId));
+
+      const jobsToQueue = jobsToAdd.filter(jobToAdd => {
+        const jobId = makeJobId(jobToAdd);
+
+        const isDuplicate = uniqueJobs.has(jobId);
+
+        if (isDuplicate) {
+          duplicates += 1;
+        } else {
+          uniqueJobs.add(jobId);
         }
-        )
-      );
+
+        return !isDuplicate;
+      });
 
       return {
         ...state,
         customJobs: [...jobs, ...jobsToQueue],
-        duplicates: _duplicates
+        duplicates: duplicates
       };
     }
 
