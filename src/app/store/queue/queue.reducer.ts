@@ -187,7 +187,7 @@ export function queueReducer(state = initState, action: QueueActions): QueueStat
       let duplicates = 0;
 
       const makeJobId = (job: QueuedHyp3Job) => {
-        const granuleIds = job.granules.map(g => g.id).join('-');
+        const granuleIds = job.granules.map(g => g?.id).join('-');
         return `${job.job_type.id}--${granuleIds}`
       }
 
