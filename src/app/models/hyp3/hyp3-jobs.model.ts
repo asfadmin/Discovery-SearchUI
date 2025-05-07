@@ -281,8 +281,7 @@ export const AutoRift: Hyp3JobType = {
 export const OperaRtcS1JobType: Hyp3JobType = {
   id: 'OPERA_RTC_S1',
   name: 'OPERA RTC S1',
-  // TODO: Update docs url to hyp3 docs
-  infoUrl: '',
+  infoUrl: 'https://hyp3-docs.asf.alaska.edu/guides/opera_rtc_product_guide/',
   description: 'OPERA_RTC_S1_DESC',
   numProducts: 1,
   productTypes: [{
