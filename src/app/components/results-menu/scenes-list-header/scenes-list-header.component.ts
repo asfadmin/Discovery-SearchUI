@@ -250,7 +250,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
       ).subscribe(([scenes, productTypes, searchType, selectedDataset]) => {
         this.canHideRawData =
           searchType === models.SearchType.DATASET &&
-          scenes.every(scene => scene.dataset === 'Sentinel-1B' || scene.dataset === 'Sentinel-1A') &&
+          scenes.every(scene => scene.dataset === 'Sentinel-1C' || scene.dataset === 'Sentinel-1B' || scene.dataset === 'Sentinel-1A') &&
           productTypes.length <= 0
           && selectedDataset.id !== models.opera_s1.id;
       })
