@@ -75,7 +75,7 @@
         <mat-select (selectionChange)="onNewInstrument($event.value)" [(ngModel)]="instruments"
             [disabled]="!prop.isRelevant(p.INSTRUMENT)" placeholder="{{ 'INSTRUMENT' | translate }}" multiple>
             <mat-option *ngFor="let instrument of dataset.instruments" [value]="instrument.apiValue">
-                {{instrument.displayName.toUpperCase()}}
+                {{instrument.displayName}}
             </mat-option>
         </mat-select>
 
