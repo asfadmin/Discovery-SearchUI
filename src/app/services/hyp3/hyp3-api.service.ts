@@ -298,14 +298,15 @@ export class Hyp3ApiService {
         const types = new Set(productType.productTypes);
         const pols = new Set(productType.polarizations);
         const beamModes = new Set(productType.beamModes);
-        return products.every(product => {
 
-          return types.has(product.metadata.productType) &&
+        return products.every(product => {
+          return (
+            types.has(product.metadata.productType) &&
             pols.has(product.metadata.polarization) &&
-            beamModes.has(product.metadata.beamMode) && (
-              this.withinDateRange(product.metadata.date.toDate(), productType.dateRange)
-            ) &&
+            beamModes.has(product.metadata.beamMode) &&
+            this.withinDateRange(product.metadata.date.toDate(), productType.dateRange) &&
             product.dataset !== 'Sentinel-1C'
+          );
         }
         );
       })

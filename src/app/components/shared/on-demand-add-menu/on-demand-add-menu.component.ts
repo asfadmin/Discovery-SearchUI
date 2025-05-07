@@ -96,9 +96,9 @@ export class OnDemandAddMenuComponent implements OnInit {
     );
   }
 
-  public queueAllOnDemand(products: models.CMRProduct[][], job_type: models.Hyp3JobType): void {
-    const jobs: models.QueuedHyp3Job[] = products.map(product => ({
-      granules: [...product].sort((a, b) => {
+  public queueAllOnDemand(productsGroups: models.CMRProduct[][], job_type: models.Hyp3JobType): void {
+    const jobs: models.QueuedHyp3Job[] = productsGroups.map(products => ({
+      granules: [...products].sort((a, b) => {
         if (a.metadata.date < b.metadata.date) {
           return -1;
         }
