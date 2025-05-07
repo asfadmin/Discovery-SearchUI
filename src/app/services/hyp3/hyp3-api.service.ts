@@ -264,8 +264,7 @@ export class Hyp3ApiService {
         return products.every(product =>
           types.has(product.metadata.productType) &&
           pols.has(product.metadata.polarization) &&
-          beamModes.has(product.metadata.beamMode) &&
-          product.dataset !== 'Sentinel-1C'
+          beamModes.has(product.metadata.beamMode)
         );
       })
     );
