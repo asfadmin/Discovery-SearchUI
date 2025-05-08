@@ -509,7 +509,7 @@
   "NEW_DATE_GET_TIME_EVENT_GTM_JS_VAR_F_D_GET_ELEMENTS_BY_TAG_NAME_S": "nueva Fecha().getTime(),evento:'gtm.js'});var f=d.getElementsByTagName(s)[0],",
   "NEW_END_DATE": "Nueva fecha de finalización",
   "NEXT": "Siguiente",
-  "NISAR_DESC ": "NISAR proporciona datos SAR de banda L y S para medir los ecosistemas cambiantes, las superficies dinámicas y las masas de hielo de la Tierra con una regularidad de 12 días en pasadas ascendentes y descendentes.",
+  "NISAR_DESC": "NISAR proporciona datos SAR de banda L y S para medir los ecosistemas cambiantes, las superficies dinámicas y las masas de hielo de la Tierra con una regularidad de 12 días en pasadas ascendentes y descendentes.",
   "NO OVERLAP THRESHOLD": "Sin Umbral de Superposición",
   "NO_AREA_ON_INTEREST_SPECIFIED": "No se especifica el área de interés.",
   "NO_BEAM_MODES_TO_SELECT": "No hay modos de haz para seleccionar",
