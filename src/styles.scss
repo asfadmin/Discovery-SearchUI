@@ -422,7 +422,8 @@ ul {
 }
 
 .mat-mdc-select-panel {
-  max-width: 340px !important;
+  max-width: fit-content !important;
+  //max-width: 340px !important;
   max-height: 364px !important;
 }
 
