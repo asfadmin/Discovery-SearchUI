@@ -57,6 +57,8 @@ export interface FiltersState {
   jointObservation: boolean;
   rangeBandwidth: string[];
   instrument: string[];
+  scienceProduct: string[];
+  productionConfig: string[];
 
   operaBurstIDs: null | string[];
   useCalibrationData: boolean; // used to toggle OPERA-S1 Calval (calibration) datasets
@@ -143,6 +145,8 @@ export const initState: FiltersState = {
   jointObservation: false,
   rangeBandwidth: [],
   instrument: [],
+  scienceProduct: [],
+  productionConfig: [],
 
   groupID: null,
   shortNames: []
@@ -849,6 +853,18 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
             instrument: action.payload
           }
     }
+    case FiltersActionType.SET_SCIENCE_PRODUCT: {
+      return {
+        ...state,
+        scienceProduct: action.payload
+      }
+    }
+    case FiltersActionType.SET_PRODUCTION_CONFIG: {
+      return {
+        ...state,
+        productionConfig: action.payload
+      }
+    }
     default: {
       return state;
     }
@@ -1177,4 +1193,12 @@ export const getRangeBandwidth = createSelector(
 export const getInstruments = createSelector(
     getFiltersState,
     (state: FiltersState) => state.instrument
+)
+export const getScienceProduct = createSelector(
+    getFiltersState,
+    (state: FiltersState) => state.scienceProduct
+)
+export const getProductionConfig = createSelector(
+    getFiltersState,
+    (state: FiltersState) => state.productionConfig
 )

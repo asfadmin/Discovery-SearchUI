@@ -1,9 +1,13 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {SharedModule} from '@shared';
+import { SubSink } from 'subsink';
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+import * as filtersStore from '@store/filters';
 
 interface sciProd {
   value: string;
@@ -23,8 +27,8 @@ interface sciProdGroup {
   styleUrl: './product-science-selector.component.scss',
   imports: [MatFormFieldModule, MatSelectModule, FormsModule, ReactiveFormsModule, MatInputModule, SharedModule],
 })
-export class ProductScienceSelectorComponent {
-  sciProdControl = new FormControl('');
+export class ProductScienceSelectorComponent implements OnInit, OnDestroy {
+  sciProdControl: FormControl<string[]> = new FormControl([]);
   sciProdGroups: sciProdGroup[] = [
     {
       name: 'Level-0',
@@ -60,4 +64,19 @@ export class ProductScienceSelectorComponent {
       ],
     },
   ];
+  private subs: SubSink = new SubSink();
+
+  public constructor(private store$: Store<AppState>) {}
+
+  public ngOnInit(): void {
+    this.subs.add(this.store$.select(filtersStore.getScienceProduct).subscribe(value => {
+      this.sciProdControl.setValue(value);
+    }))
+  }
+  public onSciProductSelect(value) {
+    this.store$.dispatch(new filtersStore.setScienceProduct(value));
+  }
+  public ngOnDestroy(): void {
+    this.subs.unsubscribe()
+  }
 }

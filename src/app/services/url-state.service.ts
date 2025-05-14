@@ -643,6 +643,22 @@ export class UrlStateService {
         ),
         loader: this.loadInstruments
       },
+      {
+        name: 'sciProducts',
+        source: this.store$.select(filterStore.getScienceProduct).pipe(
+          map(sciProducts => sciProducts.join(',')),
+          map(sciProducts => ({ sciProducts }))
+        ),
+        loader: this.loadSciProducts
+      },
+      {
+        name: 'production',
+        source: this.store$.select(filterStore.getProductionConfig).pipe(
+          map(prodConfig => prodConfig.join(',')),
+          map(prodConfig => ({ prodConfig }))
+        ),
+        loader: this.loadProduction
+      },
     ];
   }
 
@@ -1096,6 +1112,16 @@ export class UrlStateService {
     const instruments= instrumentsStr
     .split(',')
     return new filterStore.setIntstrument(instruments);
+  };
+   private loadSciProducts = (sciProductsStr: string): Action => {
+    const sciProducts= sciProductsStr
+    .split(',')
+    return new filterStore.setScienceProduct(sciProducts);
+  };
+   private loadProduction = (productionStr: string): Action => {
+    const production= productionStr
+    .split(',')
+    return new filterStore.setProductionConfig(production);
   };
   private loadJointObservation = (observationStr: string): Action => {
     return new filterStore.setJointObservation(observationStr === 'true');

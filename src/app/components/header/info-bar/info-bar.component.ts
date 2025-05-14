@@ -57,7 +57,8 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public instruments: string[];
   public frameCoverage: string[];
   public jointObservation: boolean;
-
+  public scienceProducts: string[];
+  public productionConfig: string[];
   private subs = new SubSink();
 
   public hyp3Default = this.hyp3.isDefaultApi();
@@ -173,6 +174,13 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       userID => this.userID = userID
     );
 
+    const scienceProductsSub = this.store$.select(filtersStore.getScienceProduct).subscribe(
+      scienceProducts => this.scienceProducts = scienceProducts
+    );
+
+    const productionConfigSub = this.store$.select(filtersStore.getProductionConfig).subscribe(
+      productionConfig => this.productionConfig = productionConfig
+    );
     [
       startSub, endSub,
       pathSub, frameSub,
@@ -197,7 +205,9 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       operaBurstIDSub,
       useCalibrationDataSub,
       groupIDSub,
-      userIDSub
+      userIDSub,
+      productionConfigSub,
+      scienceProductsSub
     ].forEach(sub => this.subs.add(sub));
 
     this.subs.add(

@@ -105,6 +105,9 @@ export enum FiltersActionType {
   SET_RANGE_BANDWIDTH = '[Filters] Set Range Bandwidth',
   ADD_RANGE_BANDWIDTH = '[Filters] Add Range Bandwidth',
   SET_INSTRUMENT = '[Filters] Set Instrument',
+  SET_SCIENCE_PRODUCT = '[Filters] Set Science Product',
+  SET_PRODUCTION_CONFIG = '[Filters] Set Production Config',
+  
 }
 
 export class SetSelectedDataset implements Action {
@@ -506,6 +509,18 @@ export class setIntstrument implements Action {
 
     constructor(public payload: string[]) {}
 }
+export class setScienceProduct implements Action {
+    public readonly type = FiltersActionType.SET_SCIENCE_PRODUCT;
+
+    constructor(public payload: string[]) {}
+}
+
+export class setProductionConfig implements Action {
+    public readonly type = FiltersActionType.SET_PRODUCTION_CONFIG;
+
+    constructor(public payload: string[]) {}
+}
+
 
 export type FiltersActions =
   | SetSelectedDataset
@@ -578,4 +593,6 @@ export type FiltersActions =
   | setRangeBandwidth
   | addRangeBandwidth
   | setJointObservation
-  | setIntstrument;
+  | setIntstrument
+  | setScienceProduct
+  | setProductionConfig;
