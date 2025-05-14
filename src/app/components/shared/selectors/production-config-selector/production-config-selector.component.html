@@ -1,1 +1,11 @@
-<p>production-config-selector works!</p>
+<!--<h4>{{ 'PRODUCTION_CONFIGURATION' | translate }}</h4>-->
+<mat-form-field>
+  <mat-label>{{ 'PRODUCTION_CONFIGURATION' | translate }}</mat-label>
+  <mat-select [formControl]="prodConfigControl" class="sci-prod-select">
+    <mat-option>-- None --</mat-option>
+    @for (prodConfig of prodConfigs; track prodConfig) {
+        <mat-option [value]="prodConfig.value">{{prodConfig.viewValue}}</mat-option>
+    }
+    </mat-select>
+  <mat-hint>{{ prodConfigControl.value }}</mat-hint>
+</mat-form-field>

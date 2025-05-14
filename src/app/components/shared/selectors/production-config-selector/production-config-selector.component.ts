@@ -1,12 +1,29 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {SharedModule} from '@shared';
+
+interface prodConfig {
+  value: string;
+  viewValue: string;
+}
 
 @Component({
   selector: 'app-production-config-selector',
   standalone: true,
-  imports: [],
   templateUrl: './production-config-selector.component.html',
-  styleUrl: './production-config-selector.component.scss'
+  styleUrl: './production-config-selector.component.scss',
+  imports: [MatFormFieldModule, MatSelectModule, FormsModule, ReactiveFormsModule, MatInputModule, SharedModule],
 })
-export class ProductionConfigSelectorComponent {
 
+export class ProductionConfigSelectorComponent {
+  prodConfigControl = new FormControl('');
+
+  prodConfigs: prodConfig[] = [
+    {value: 'Production', viewValue: 'Production'},
+    {value: 'Urgent Response', viewValue: 'Urgent Response'},
+    {value: 'Science On-Demand', viewValue: 'Science On-Demand'},
+  ];
 }
