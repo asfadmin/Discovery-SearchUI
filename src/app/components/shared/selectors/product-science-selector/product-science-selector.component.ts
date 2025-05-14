@@ -1,12 +1,63 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {SharedModule} from '@shared';
+
+interface sciProd {
+  value: string;
+  viewValue: string;
+}
+
+interface sciProdGroup {
+  disabled?: boolean;
+  name: string;
+  sciProd: sciProd[];
+}
 
 @Component({
   selector: 'app-product-science-selector',
   standalone: true,
-  imports: [],
   templateUrl: './product-science-selector.component.html',
-  styleUrl: './product-science-selector.component.scss'
+  styleUrl: './product-science-selector.component.scss',
+  imports: [MatFormFieldModule, MatSelectModule, FormsModule, ReactiveFormsModule, MatInputModule, SharedModule],
 })
 export class ProductScienceSelectorComponent {
-
+  sciProdControl = new FormControl('');
+  sciProdGroups: sciProdGroup[] = [
+    {
+      name: 'Level-0',
+      sciProd: [
+        {value: 'LEVEL-0-L0B', viewValue: 'L0B (Radar Raw Signal Data)'},
+      ],
+    },
+    {
+      name: 'Level-1',
+      disabled: false,
+      sciProd: [
+        {value: 'LEVEL-1-RSLC', viewValue: 'RSLC (Range-Doppler Single Look Complex)'},
+        {value: 'LEVEL-1-RIFG', viewValue: 'RIFG (Range-Doppler Wrapped Interferogram)'},
+        {value: 'LEVEL-1-RUNW', viewValue: 'RUNW (Range-Doppler Unwrapped Interferogram)'},
+        {value: 'LEVEL-1-ROFF', viewValue: 'ROFF (Range-Doppler Pixel Offsets)'},
+      ],
+    },
+    {
+      name: 'Level-2',
+      disabled: false,
+      sciProd: [
+        {value: 'LEVEL-2-GSLC', viewValue: 'GSLC (Geocoded Single Look Complex)'},
+        {value: 'LEVEL-2-GCOV', viewValue: 'GCOV (Geocoded Polarimetric Covariance)'},
+        {value: 'LEVEL-2-GUNW', viewValue: 'GUNW (Geocoded Unwrapped Interferogram)'},
+        {value: 'LEVEL-2-GOFF', viewValue: 'GOFF (Geocoded Pixel Offsets)'},
+      ],
+    },
+    {
+      name: 'Level-3',
+      disabled: false,
+      sciProd: [
+        {value: 'LEVEL-3-SME2', viewValue: 'SME2 (Soil Moisture EASE-Grid 2.0)'},
+      ],
+    },
+  ];
 }

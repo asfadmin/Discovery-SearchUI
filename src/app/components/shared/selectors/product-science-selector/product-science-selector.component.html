@@ -1,1 +1,16 @@
-<p>product-science-selector works!</p>
+<!--<h4>{{ 'SCIENCE_PRODUCT' | translate }}</h4>-->
+<mat-form-field>
+  <mat-label>{{ 'SCIENCE_PRODUCT' | translate }}</mat-label>
+  <mat-select [formControl]="sciProdControl" class="sci-prod-select">
+    <mat-option>-- None --</mat-option>
+    @for (group of sciProdGroups; track group) {
+      <mat-optgroup [label]="group.name"
+                    [disabled]="group.disabled">
+        @for (sciProd of group.sciProd; track sciProd) {
+          <mat-option [value]="sciProd.value">{{sciProd.viewValue}}</mat-option>
+        }
+      </mat-optgroup>
+    }
+  </mat-select>
+  <mat-hint>{{ sciProdControl.value }}</mat-hint>
+</mat-form-field>
