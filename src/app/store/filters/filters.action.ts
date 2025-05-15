@@ -518,7 +518,7 @@ export class setScienceProduct implements Action {
 export class setProductionConfig implements Action {
     public readonly type = FiltersActionType.SET_PRODUCTION_CONFIG;
 
-    constructor(public payload: string[]) {}
+    constructor(public payload: string) {}
 }
 
 

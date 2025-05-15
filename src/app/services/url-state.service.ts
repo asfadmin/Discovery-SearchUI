@@ -652,9 +652,8 @@ export class UrlStateService {
         loader: this.loadSciProducts
       },
       {
-        name: 'production',
+        name: 'prodConfig',
         source: this.store$.select(filterStore.getProductionConfig).pipe(
-          map(prodConfig => prodConfig.join(',')),
           map(prodConfig => ({ prodConfig }))
         ),
         loader: this.loadProduction
@@ -1119,9 +1118,8 @@ export class UrlStateService {
     return new filterStore.setScienceProduct(sciProducts);
   };
    private loadProduction = (productionStr: string): Action => {
-    const production= productionStr
-    .split(',')
-    return new filterStore.setProductionConfig(production);
+
+    return new filterStore.setProductionConfig(productionStr);
   };
   private loadJointObservation = (observationStr: string): Action => {
     return new filterStore.setJointObservation(observationStr === 'true');

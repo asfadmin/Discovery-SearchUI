@@ -64,8 +64,8 @@
     <span *ngIf="scienceProducts.length">
         <b>{{'SCIENCE_PRODUCT' | translate }}:</b> {{scienceProducts | join : ', '}}
     </span>
-    <span *ngIf="productionConfig.length">
-        <b>{{'PRODUCTION_CONFIG' | translate }}:</b> {{productionConfig | join : ', '}}
+    <span *ngIf="productionConfig">
+        <b>{{'PRODUCTION_CONFIG' | translate }}:</b> {{productionConfig}}
     </span>
     <span *ngIf="flightDirections.length">
       <b>{{'FLIGHT_DIR' | translate  }}:</b> {{flightDirections}}

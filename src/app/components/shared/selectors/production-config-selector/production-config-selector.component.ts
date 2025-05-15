@@ -4,6 +4,10 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {SharedModule} from '@shared';
+import { SubSink } from 'subsink';
+import { AppState } from '@store';
+import { Store } from '@ngrx/store';
+import * as filtersStore from '@store/filters';
 
 interface prodConfig {
   value: string;
@@ -26,4 +30,19 @@ export class ProductionConfigSelectorComponent {
     {value: 'Urgent Response', viewValue: 'Urgent Response'},
     {value: 'Science On-Demand', viewValue: 'Science On-Demand'},
   ];
+  private subs: SubSink = new SubSink();
+
+  public constructor(private store$: Store<AppState>) {}
+
+  public ngOnInit(): void {
+    this.subs.add(this.store$.select(filtersStore.getProductionConfig).subscribe(value => {
+      this.prodConfigControl.setValue(value);
+    }))
+  }
+  public onProductionConfigSelect(value) {
+    this.store$.dispatch(new filtersStore.setProductionConfig(value));
+  }
+  public ngOnDestroy(): void {
+    this.subs.unsubscribe()
+  }
 }

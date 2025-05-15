@@ -58,7 +58,7 @@ export interface FiltersState {
   rangeBandwidth: string[];
   instrument: string[];
   scienceProduct: string[];
-  productionConfig: string[];
+  productionConfig: string;
 
   operaBurstIDs: null | string[];
   useCalibrationData: boolean; // used to toggle OPERA-S1 Calval (calibration) datasets
@@ -146,7 +146,7 @@ export const initState: FiltersState = {
   rangeBandwidth: [],
   instrument: [],
   scienceProduct: [],
-  productionConfig: [],
+  productionConfig: null,
 
   groupID: null,
   shortNames: []
