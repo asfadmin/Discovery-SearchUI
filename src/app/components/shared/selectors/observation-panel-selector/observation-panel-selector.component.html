@@ -1,8 +1,13 @@
 <div  class="observation-panel">
-    <mat-form-field>
-        <mat-select (selectionChange)="onNewDatasetPolarizations($event.value)" [(ngModel)]="polarizations"
-            [disabled]="!prop.isRelevant(p.POLARIZATION)"
-            placeholder="{{ 'POLARIZATION' | translate }} {{ 'MAIN' | translate }}" multiple>
+    <mat-form-field class="polarization-select-container">
+        <mat-select (selectionChange)="onNewDatasetPolarizations($event.value)"
+                    [(ngModel)]="polarizations"
+                    [disabled]="!prop.isRelevant(p.POLARIZATION)"
+                    [placeholder]="dataset?.id === 'NISAR'
+                    ? ('MAIN_BAND_FREQ_A_POLARIZATION' | translate)
+                    : (('POLARIZATION' | translate) + ' ' + ('MAIN' | translate))"
+                    multiple
+        >
             <mat-option *ngFor="let pol of dataset.polarizations" [value]="pol">
               <span class="polarization-type">{{pol}}</span>
               <span class="polarization-count">&nbsp;&nbsp;{{pol | polarizationCount}}</span>
@@ -15,13 +20,13 @@
         <mat-hint *ngIf="!prop.isRelevant(p.POLARIZATION)" align="start">
             {{ 'NO_POLARIZATIONS_TO_SELECT' | translate }}
         </mat-hint>
-
     </mat-form-field>
 
-    <mat-form-field>
-        <mat-select (selectionChange)="onNewDatasetSidePolarizations($event.value)" [(ngModel)]="sidePolarizations"
-            [disabled]="!prop.isRelevant(p.SIDE_POLARIZATION)"
-            placeholder="{{ 'POLARIZATION' | translate }} {{ 'SIDE' | translate }}" multiple>
+
+    <mat-form-field class="polarization-select-container">
+        <mat-select [placeholder]="dataset?.id === 'NISAR'
+            ? ('SIDE_BAND_FREQ_B_POLARIZATION' | translate)
+            : (('POLARIZATION' | translate) + ' ' + ('SIDE' | translate))" >
             <mat-option *ngFor="let pol of dataset.sidepolarizations" [value]="pol">
                 <span class="polarization-type">{{pol}}</span>
                 <span class="polarization-count">&nbsp;&nbsp;{{pol | polarizationCount}}</span>
