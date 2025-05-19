@@ -7,16 +7,16 @@ button {
 }
 
 .mat-mdc-button {
-  @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('dark-primary-text');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  color: asf-theme.themed('dark-primary-text');
+  //}
   font-size: 16px;
 }
 
 .badge {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background: asf-theme.themed('primary-light');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background: asf-theme.themed('primary-light');
+  //}
   display: inline;
   margin: 5px;
   padding: 5px;

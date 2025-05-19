@@ -17,7 +17,7 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 .header {
 
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('primary-light');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: asf-theme.themed('primary-light');
+  //}
 }

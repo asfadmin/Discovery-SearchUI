@@ -17,11 +17,11 @@ $img-border-style: 1px solid black;
 }
 
 .help-top-section {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('primary-light');
-    $color2: color.adjust($color, $lightness: 15%);
-    background-color: $color2 !important;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('primary-light');
+  //  $color2: color.adjust($color, $lightness: 15%);
+  //  background-color: $color2 !important;
+  //}
   // background-color: $top-background-color;
   padding: 0 $side-padding-px 25px $side-padding-px;
   margin: 0;
@@ -37,10 +37,10 @@ $img-border-style: 1px solid black;
   h2,
   h3,
   h4 {
-    @include asf-theme.themify(asf-theme.$themes) {
-      $color: asf-theme.themed('light-primary-text');
-      color: $color;
-    }
+    //@include asf-theme.themify(asf-theme.$themes) {
+    //  $color: asf-theme.themed('light-primary-text');
+    //  color: $color;
+    //}
   }
 }
 
@@ -77,10 +77,10 @@ $img-border-style: 1px solid black;
 }
 
 .help-text-row {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('dark-primary-text');
-    color: $color;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('dark-primary-text');
+  //  color: $color;
+  //}
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -95,10 +95,10 @@ $img-border-style: 1px solid black;
   flex: 7 0 0;
 
   .material-icons {
-    @include asf-theme.themify(asf-theme.$themes) {
-      $color: asf-theme.themed('primary-light');
-      color: $color;
-    }
+    //@include asf-theme.themify(asf-theme.$themes) {
+    //  $color: asf-theme.themed('primary-light');
+    //  color: $color;
+    //}
     font-size: 53px;
     width: 54px;
     height: 53px;
@@ -124,10 +124,10 @@ $img-border-style: 1px solid black;
 }
 
 .help-step {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('blue-link');
-    color: $color;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('blue-link');
+  //  color: $color;
+  //}
   //color: $header-color;
   font-weight: bold;
   font-size: larger;

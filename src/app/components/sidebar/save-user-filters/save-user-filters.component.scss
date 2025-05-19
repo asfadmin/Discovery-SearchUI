@@ -22,10 +22,10 @@ $mat-theme-ignore-duplication-warnings: true;
 .saved-filters-presets__header,
 .saved-filters-presets__footer,
 .saved-filters-presets__footer-mobile {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('primary-light');
-    background-color: $color;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('primary-light');
+  //  background-color: $color;
+  //}
 }
 
 .saved-filters-presets__content,
@@ -35,37 +35,37 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .saved-filters-presets__content {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $bkColor: asf-theme.themed('background-white');
-    background-color: $bkColor;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $bkColor: asf-theme.themed('background-white');
+  //  background-color: $bkColor;
+  //}
   max-height: 100%;
   overflow-y: auto;
 }
 
 .saved-filters-presets__content-mobile {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $bkColor: asf-theme.themed('background-white');
-    background-color: $bkColor;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $bkColor: asf-theme.themed('background-white');
+  //  background-color: $bkColor;
+  //}
   max-height: 100%;
   overflow-y: auto;
   width: 100%;
 }
 
 .saved-filters-presets-row:nth-child(even) {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('primary-light');
-    $color2: color.adjust($color, $lightness: -10%);
-    background-color: $color2 !important;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('primary-light');
+  //  $color2: color.adjust($color, $lightness: -10%);
+  //  background-color: $color2 !important;
+  //}
 }
 
 .saved-filters-presets__header {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('primary');
-    border-bottom-color: $color;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('primary');
+  //  border-bottom-color: $color;
+  //}
 
   height: 70px;
   display: flex;
@@ -96,10 +96,10 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .saved-filters-presets__subhead {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('background-white');
-    background-color: $color;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('background-white');
+  //  background-color: $color;
+  //}
 
   display: flex;
   flex-direction: row;
@@ -124,12 +124,12 @@ $mat-theme-ignore-duplication-warnings: true;
 
 .saved-filters-presets__footer,
 .saved-filters-presets__footer-mobile {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('primary');
-    border-top-color: $color;
-    $color2: asf-theme.themed('primary-light');
-    background-color: $color2;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('primary');
+  //  border-top-color: $color;
+  //  $color2: asf-theme.themed('primary-light');
+  //  background-color: $color2;
+  //}
 
   display: flex;
   flex-direction: row;
@@ -151,19 +151,19 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .saved-filters-presets__save-button {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('primary-light');
-    color: $color;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('primary-light');
+  //  color: $color;
+  //}
 
   display: flex;
 }
 
 .saved-filters-presets__close-button {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('primary-light');
-    color: $color;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('primary-light');
+  //  color: $color;
+  //}
 
   display: flex;
   margin-right: 15px;
@@ -175,10 +175,10 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .no-saved-searches {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('primary-light');
-    color: $color;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('primary-light');
+  //  color: $color;
+  //}
 
   padding-left: 15px;
 }

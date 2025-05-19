@@ -5,18 +5,18 @@ $theme-map: null;
 $mat-theme-ignore-duplication-warnings: true;
 
 ::ng-deep .circumference {
-  @include asf-theme.themify(asf-theme.$themes) {
-    stroke: color.adjust(asf-theme.themed('primary'), $lightness: 40%);
-    //stroke: lighten(themed('primary'), 40%);
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  stroke: color.adjust(asf-theme.themed('primary'), $lightness: 40%);
+  //  //stroke: lighten(themed('primary'), 40%);
+  //}
   fill: none;
   stroke-width: 10px;
 }
 
 ::ng-deep .range {
-  @include asf-theme.themify(asf-theme.$themes) {
-    stroke: asf-theme.themed('primary');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  stroke: asf-theme.themed('primary');
+  //}
   fill: none;
   stroke-width: 10px;
 }
@@ -26,16 +26,16 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 ::ng-deep .dot circle {
-  @include asf-theme.themify(asf-theme.$themes) {
-    fill: asf-theme.themed('primary');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  fill: asf-theme.themed('primary');
+  //}
 }
 
 ::ng-deep .dot circle.dragging {
-  $color: asf-theme.themed('asf-blue');
-  $color2: color.adjust($color, $lightness: -10%);
-  fill: $color2 !important;
-  stroke: $color2;
+  //$color: $uaf-primary-blue;
+  //$color2: color.adjust($color, $lightness: -10%);
+  //fill: $color2 !important;
+  //stroke: $color2;
 }
 
 figure {
@@ -46,18 +46,18 @@ figure {
 }
 
 ::ng-deep .notch {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('primary');
-    $color2: color.adjust($color, $lightness: 40%);
-    stroke: $color2;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('primary');
+  //  $color2: color.adjust($color, $lightness: 40%);
+  //  stroke: $color2;
+  //}
   stroke-width: 1px;
 }
 
 ::ng-deep .selected {
-  @include asf-theme.themify(asf-theme.$themes) {
-    stroke: asf-theme.themed('primary');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  stroke: asf-theme.themed('primary');
+  //}
 }
 
 .container {

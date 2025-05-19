@@ -7,10 +7,10 @@ $mat-theme-ignore-duplication-warnings: true;
 @use "asf-header-menu-button";
 
 .button-label {
-    @include asf-theme.themify(asf-theme.$themes) {
-      $color: asf-theme.themed("dark-primary-text");
-      color: $color;
-    }
+    //@include asf-theme.themify(asf-theme.$themes) {
+    //  $color: asf-theme.themed("dark-primary-text");
+    //  color: $color;
+    //}
     cursor: pointer;
     font-size: 14px;
     font-weight: 400;
@@ -24,10 +24,10 @@ $mat-theme-ignore-duplication-warnings: true;
 
 
 .control-icon {
-    @include asf-theme.themify(asf-theme.$themes) {
-      $color: asf-theme.themed("dark-primary-text");
-      color: $color;
-    }
+    //@include asf-theme.themify(asf-theme.$themes) {
+    //  $color: asf-theme.themed("dark-primary-text");
+    //  color: $color;
+    //}
 
     transform: scale(1.5);
 
@@ -37,10 +37,10 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .fd-icon-button-text {
-    @include asf-theme.themify(asf-theme.$themes) {
-      $color: asf-theme.themed("dark-primary-text");
-      color: $color;
-    }
+    //@include asf-theme.themify(asf-theme.$themes) {
+    //  $color: asf-theme.themed("dark-primary-text");
+    //  color: $color;
+    //}
     @include asf-theme.md-icon-size(variables.$asf-ribbon-icon-size);
 }
 

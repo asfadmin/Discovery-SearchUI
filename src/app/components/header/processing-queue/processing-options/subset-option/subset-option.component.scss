@@ -2,9 +2,9 @@
 $mat-theme-ignore-duplication-warnings: true;
 
 .subset-option {
-  @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('blue-link');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  color: asf-theme.themed('blue-link');
+  //}
 }
 
 button {

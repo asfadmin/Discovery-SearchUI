@@ -94,10 +94,10 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .ts-metadata {
-	@include asf-theme.themify(asf-theme.$themes) {
-		border-left: solid 1px asf-theme.themed('primary-light');
-		border-right: solid 2px asf-theme.themed('primary-light');
-	}
+	//@include asf-theme.themify(asf-theme.$themes) {
+	//	border-left: solid 1px asf-theme.themed('primary-light');
+	//	border-right: solid 2px asf-theme.themed('primary-light');
+	//}
 
 	overflow: auto;
 	height: 100%;
@@ -109,9 +109,9 @@ $mat-theme-ignore-duplication-warnings: true;
 
 .chart-resize-handle-left,
 .chart-resize-handle-right {
-	@include asf-theme.themify(asf-theme.$themes) {
-		background-color: asf-theme.themed('primary-light');
-	}
+	//@include asf-theme.themify(asf-theme.$themes) {
+	//	background-color: asf-theme.themed('primary-light');
+	//}
 
 	height: 100%;
 }
@@ -121,11 +121,11 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .chart-draggable-handle {
-	@include asf-theme.themify(asf-theme.$themes) {
-		background-color: asf-theme.themed('primary-light');
-		border-color: asf-theme.themed('primary-light');
-		color: asf-theme.themed('primary-light');
-	}
+	//@include asf-theme.themify(asf-theme.$themes) {
+	//	background-color: asf-theme.themed('primary-light');
+	//	border-color: asf-theme.themed('primary-light');
+	//	color: asf-theme.themed('primary-light');
+	//}
 
 	display: flex;
 	align-items: center;
@@ -138,27 +138,27 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .ts-resize-handle-filler {
-	@include asf-theme.themify(asf-theme.$themes) {
-		background-color: asf-theme.themed('primary-light');
-	}
+	//@include asf-theme.themify(asf-theme.$themes) {
+	//	background-color: asf-theme.themed('primary-light');
+	//}
 
 	width: 10px;
 	height: 100%;
 }
 
 .vgrip-icon {
-	@include asf-theme.themify(asf-theme.$themes) {
-		stroke: asf-theme.themed('dark-primary-text');
-	}
+	//@include asf-theme.themify(asf-theme.$themes) {
+	//	stroke: asf-theme.themed('dark-primary-text');
+	//}
 
 	height: 33px;
 }
 
 .ts-header {
-	@include asf-theme.themify(asf-theme.$themes) {
-		background-color: asf-theme.themed('primary-light');
-		color: asf-theme.themed('dark-primary-text')
-	}
+	//@include asf-theme.themify(asf-theme.$themes) {
+	//	background-color: asf-theme.themed('primary-light');
+	//	color: asf-theme.themed('dark-primary-text')
+	//}
 
 	display: flex;
 	flex-direction: row;
@@ -177,9 +177,9 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .control-icon {
-	@include asf-theme.themify(asf-theme.$themes) {
-		color: asf-theme.themed('dark-primary-text');
-	}
+	//@include asf-theme.themify(asf-theme.$themes) {
+	//	color: asf-theme.themed('dark-primary-text');
+	//}
 
 	margin-top: -4px;
 
@@ -189,9 +189,9 @@ $mat-theme-ignore-duplication-warnings: true;
 /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .mat-button-toggle-disabled {
 	.control-icon {
-		@include asf-theme.themify(asf-theme.$themes) {
-			color: asf-theme.themed('dark-disabled-text');
-		}
+		//@include asf-theme.themify(asf-theme.$themes) {
+		//	color: asf-theme.themed('dark-disabled-text');
+		//}
 	}
 }
 
@@ -230,9 +230,9 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .button-group-label {
-	@include asf-theme.themify(asf-theme.$themes) {
-		color: asf-theme.themed('dark-primary-text');
-	}
+	//@include asf-theme.themify(asf-theme.$themes) {
+	//	color: asf-theme.themed('dark-primary-text');
+	//}
 
 	white-space: nowrap;
 	text-align: center;
@@ -254,17 +254,17 @@ label {
 
 /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .control-mat-button-toggle {
-	@include asf-theme.themify(asf-theme.$themes) {
-		background: asf-theme.themed('background-white') !important;
-	}
+	//@include asf-theme.themify(asf-theme.$themes) {
+	//	background: asf-theme.themed('background-white') !important;
+	//}
 }
 
 .warn-icon {
-	@include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('dark-primary-text');
-    $color2: color.adjust($color, $lightness: -25%);
-		color: $color2;
-	}
+	//@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('dark-primary-text');
+  //  $color2: color.adjust($color, $lightness: -25%);
+	//	color: $color2;
+	//}
 }
 
 .gap-detected-area {
@@ -276,11 +276,11 @@ label {
 	place-items: center;
 	width: 30px;
 
-	@include asf-theme.themify(asf-theme.$themes) {
-    $bkColor: asf-theme.themed('background-white');
-    $bkColor2: color.adjust($bkColor, $lightness: -15%);
-		background: $bkColor2;
-	}
+	//@include asf-theme.themify(asf-theme.$themes) {
+  //  $bkColor: asf-theme.themed('background-white');
+  //  $bkColor2: color.adjust($bkColor, $lightness: -15%);
+	//	background: $bkColor2;
+	//}
 }
 
 .ts-column-2 {
@@ -298,9 +298,9 @@ label {
 }
 
 .ts-wkt-icon {
-  @include asf-theme.themify(asf-theme.$themes) {
-    color: color.adjust(asf-theme.themed('dark-primary-text'), $lightness: -25%);
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  color: color.adjust(asf-theme.themed('dark-primary-text'), $lightness: -25%);
+  //}
 
   font-size: 18px;
   line-height: 29px;
@@ -350,9 +350,9 @@ label {
 span.parent-checkbox-section:hover {
   cursor: pointer;
 
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: color.adjust(asf-theme.themed('primary-light'),$lightness: 5%);
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: color.adjust(asf-theme.themed('primary-light'),$lightness: 5%);
+  //}
 }
 
 .delete-all-btn2 {
@@ -400,9 +400,9 @@ ul {
 }
 
 .ts-highlighted {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: color.adjust(asf-theme.themed('primary-light'),$lightness: 5%);
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: color.adjust(asf-theme.themed('primary-light'),$lightness: 5%);
+  //}
 
   .ts-wkt-label {
     font-weight: bolder;

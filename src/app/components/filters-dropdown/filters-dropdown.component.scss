@@ -31,9 +31,9 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .dataset-filters-card {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('background-white');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: asf-theme.themed('background-white');
+  //}
   z-index: 1020;
   display: flex;
   height: -webkit-fill-available;
@@ -53,11 +53,11 @@ $mat-theme-ignore-duplication-warnings: true;
     align-items: center;
     position: sticky;
     top: 0;
-    @include asf-theme.themify(asf-theme.$themes) {
-      background-color: asf-theme.themed('primary-light');
-      border-bottom: 1px solid asf-theme.themed('primary-dark');
-
-    }
+    //@include asf-theme.themify(asf-theme.$themes) {
+    //  background-color: asf-theme.themed('primary-light');
+    //  border-bottom: 1px solid asf-theme.themed('primary-dark');
+    //
+    //}
     font-size: 24px;
     padding: 15px;
     z-index: 1020;
@@ -95,11 +95,11 @@ $mat-theme-ignore-duplication-warnings: true;
     justify-content: flex-end;
     position: sticky;
     bottom: 0;
-    @include asf-theme.themify(asf-theme.$themes) {
-      background-color: asf-theme.themed('primary-light');
-      border-top: 1px solid asf-theme.themed('primary-dark');
-
-    }
+    //@include asf-theme.themify(asf-theme.$themes) {
+    //  background-color: asf-theme.themed('primary-light');
+    //  border-top: 1px solid asf-theme.themed('primary-dark');
+    //
+    //}
     z-index: 1020;
     padding: 10px;
     min-height: 30px;
@@ -112,15 +112,15 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 h3 {
-  @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('primary')
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  color: asf-theme.themed('primary')
+  //}
 }
 
 .info-icon {
-  @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('primary')
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  color: asf-theme.themed('primary')
+  //}
   padding-left: 5px;
   flex-shrink: 0;
   margin-top: 6px;

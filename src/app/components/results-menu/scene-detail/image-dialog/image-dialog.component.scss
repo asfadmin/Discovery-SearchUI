@@ -24,17 +24,17 @@ $config: mat.m2-define-legacy-typography-config();
 
 a {
   text-decoration: none;
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('blue-link');
-    color: $color;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('blue-link');
+  //  color: $color;
+  //}
 }
 
 .browse-dialog {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('primary-light');
-    background-color: $color;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('primary-light');
+  //  background-color: $color;
+  //}
 
   overflow: hidden;
   height: 100%;
@@ -58,23 +58,23 @@ a {
   }
 
   .browse-list {
-    @include asf-theme.themify(asf-theme.$themes) {
-      $color: asf-theme.themed('primary-light');
-      background-color: $color;
-    }
+    //@include asf-theme.themify(asf-theme.$themes) {
+    //  $color: asf-theme.themed('primary-light');
+    //  background-color: $color;
+    //}
 
     min-height: 140px;
   }
 
   .scene-detail--wrapper {
-    @include asf-theme.themify(asf-theme.$themes) {
-      $bkColor: asf-theme.themed('primary-light');
-      $bdColor: asf-theme.themed('primary-dark');
-      $color: asf-theme.themed('dark-primary-text');
-      background-color: $bkColor;
-      border-left-color: $bdColor;
-      color: $color;
-    }
+    //@include asf-theme.themify(asf-theme.$themes) {
+    //  $bkColor: asf-theme.themed('primary-light');
+    //  $bdColor: asf-theme.themed('primary-dark');
+    //  $color: asf-theme.themed('dark-primary-text');
+    //  background-color: $bkColor;
+    //  border-left-color: $bdColor;
+    //  color: $color;
+    //}
 
     min-width: 200px;
     border-left-style: solid;
@@ -91,11 +91,11 @@ a {
 }
 
 .dialog-header--layout {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('dark-primary-text');
-    color: $color;
-    border-bottom-color: $color;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('dark-primary-text');
+  //  color: $color;
+  //  border-bottom-color: $color;
+  //}
 
   border-bottom-style: solid;
   border-bottom-width: 1px;
@@ -139,20 +139,20 @@ a {
 }
 
 .browse-drag-handle {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('dark-primary-text');
-    color: $color;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('dark-primary-text');
+  //  color: $color;
+  //}
 
   cursor: move;
   height: 24px;
 }
 
 .close-button {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('dark-primary-text');
-    color: $color;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('dark-primary-text');
+  //  color: $color;
+  //}
 
   vertical-align: top !important;
   margin-bottom: 5px;
@@ -234,11 +234,11 @@ a {
 }
 
 .file-button-download {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('primary-light');
-    $color2: color.adjust($color, $lightness: 10%);
-    background-color: $color2;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('primary-light');
+  //  $color2: color.adjust($color, $lightness: 10%);
+  //  background-color: $color2;
+  //}
 
   margin-bottom: 5px;
 }
@@ -250,10 +250,10 @@ a {
 }
 
 .footer {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('primary-dark');
-    border-top: 1px solid $color;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('primary-dark');
+  //  border-top: 1px solid $color;
+  //}
 
   flex-shrink: 0;
   display: flex;

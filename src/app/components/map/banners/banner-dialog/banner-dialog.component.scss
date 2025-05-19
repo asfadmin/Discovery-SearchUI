@@ -6,10 +6,10 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .banner-title {
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-    color: asf-theme.themed("dark-primary-text");
-    background-color: asf-theme.themed("primary-light");
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //  color: asf-theme.themed("dark-primary-text");
+  //  background-color: asf-theme.themed("primary-light");
+  //}
 
   padding: 10px 0 !important;
   display: flex;
@@ -23,25 +23,25 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .banner-content {
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-    background-color: asf-theme.themed("background-white");
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //  background-color: asf-theme.themed("background-white");
+  //}
 
   font: inherit;
   padding-top: 20px !important;
 }
 
 .banner-content a {
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-    color: asf-theme.themed("blue-link");
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //  color: asf-theme.themed("blue-link");
+  //}
 }
 
 .banner-actions {
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-    color: asf-theme.themed("dark-primary-text");
-    background-color: asf-theme.themed("primary-light");
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //  color: asf-theme.themed("dark-primary-text");
+  //  background-color: asf-theme.themed("primary-light");
+  //}
 
   border-top: 1px solid asf-theme.$asf-primary-dark;
 }

@@ -3,9 +3,9 @@ $mat-theme-ignore-duplication-warnings: true;
 
 a {
   text-decoration: none;
-  @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('blue-link');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  color: asf-theme.themed('blue-link');
+  //}
 }
 
 .scene-metadata {

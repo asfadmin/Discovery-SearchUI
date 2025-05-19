@@ -4,15 +4,15 @@ $mat-theme-ignore-duplication-warnings: true;
 
 .menu-item {
   display: flex;
-  @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('dark-primary-text');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  color: asf-theme.themed('dark-primary-text');
+  //}
 }
 
 .mat-icon {
-  @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('dark-primary-text');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  color: asf-theme.themed('dark-primary-text');
+  //}
 }
 
 .mat-mdc-button {

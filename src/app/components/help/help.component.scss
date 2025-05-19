@@ -15,21 +15,21 @@ main {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  @include asf-theme.themify(asf-theme.$themes) {
-    @debug "----------------------";
-    @debug "asf-theme.$themes: #{asf-theme.$themes}";
-    @debug "asf-theme.themed('primary-light') : #{asf-theme.themed('primary-light')}";
-    $color: asf-theme.themed('primary-light');
-    $color2: color.adjust($color, $lightness: 15%);
-    background-color: $color2;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  @debug "----------------------";
+  //  @debug "asf-theme.$themes: #{asf-theme.$themes}";
+  //  @debug "asf-theme.themed('primary-light') : #{asf-theme.themed('primary-light')}";
+  //  $color: asf-theme.themed('primary-light');
+  //  $color2: color.adjust($color, $lightness: 15%);
+  //  background-color: $color2;
+  //}
 }
 
 footer {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('primary-light');
-    background-color: $color;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('primary-light');
+  //  background-color: $color;
+  //}
 }
 
 section {
@@ -39,12 +39,12 @@ section {
 }
 
 .help-header {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('primary-light');
-    background-color: $color;
-    $color2: asf-theme.themed('dark-primary-text');
-    color: $color2;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('primary-light');
+  //  background-color: $color;
+  //  $color2: asf-theme.themed('dark-primary-text');
+  //  color: $color2;
+  //}
   display: flex;
   flex-direction: row;
   padding: $side-padding-only;
@@ -57,11 +57,11 @@ section {
 }
 
 .help-menu {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('primary-light');
-    $color2: color.adjust($color, $lightness: 15%);
-    background-color: $color2;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('primary-light');
+  //  $color2: color.adjust($color, $lightness: 15%);
+  //  background-color: $color2;
+  //}
   display: flex;
   flex-direction: row;
   padding-left: 15px;

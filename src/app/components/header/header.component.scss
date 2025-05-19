@@ -14,9 +14,9 @@ $mat-theme-ignore-duplication-warnings: true;
 
 $config: mat.m2-define-legacy-typography-config();
 .breadcrumb-list {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('background-white');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: asf-theme.themed('background-white');
+  //}
 }
 
 .header-buttons-input {
@@ -79,9 +79,9 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .additional-filters {
-  @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('primary')
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  color: asf-theme.themed('primary')
+  //}
 
   .mat-icon {
     @include asf-theme.md-icon-size(18px);
@@ -89,18 +89,18 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .additional-filters-button {
-  @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('dark-secondary-text');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  color: asf-theme.themed('dark-secondary-text');
+  //}
   margin-left: 0;
   line-height: 12px;
   margin-top: 18px;
 }
 
 .selected {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('primary');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: asf-theme.themed('primary');
+  //}
 }
 
 .justify-right {
@@ -132,9 +132,9 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .clear-search-icon {
-  @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('primary-dark');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  color: asf-theme.themed('primary-dark');
+  //}
   @include asf-theme.md-icon-size(22px);
 
   vertical-align: middle;
@@ -151,9 +151,9 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .mobile-nav-bar {
-  @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('primary-light');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  color: asf-theme.themed('primary-light');
+  //}
   height: 50px;
   display: flex;
   align-items: center;
@@ -177,8 +177,8 @@ $config: mat.m2-define-legacy-typography-config();
   border: none;
   width: auto;
   font-size: 11px;
-  @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('dark-secondary-text');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  color: asf-theme.themed('dark-secondary-text');
+  //}
   background-color: inherit;
 }

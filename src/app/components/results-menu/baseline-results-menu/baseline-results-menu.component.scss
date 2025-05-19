@@ -57,9 +57,9 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .baseline-criteria-button-toggle {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('background-white') !important;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: asf-theme.themed('background-white') !important;
+  //}
   font-size: 14px;
 }
 
@@ -85,9 +85,9 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .list-button {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('background-white');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: asf-theme.themed('background-white');
+  //}
   border: darkgrey 1px solid;
   color: inherit;
   padding: 0 0 0 5px;
@@ -114,9 +114,9 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .button-group-label {
-  @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('dark-secondary-text');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  color: asf-theme.themed('dark-secondary-text');
+  //}
   white-space: nowrap;
   text-align: center;
   font-size: 12px;

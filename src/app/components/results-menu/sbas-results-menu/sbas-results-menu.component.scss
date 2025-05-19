@@ -67,10 +67,10 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .sbas-metadata {
-  @include asf-theme.themify(asf-theme.$themes) {
-    border-left: solid 1px asf-theme.themed('primary-light');
-    border-right: solid 2px asf-theme.themed('primary-light');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  border-left: solid 1px asf-theme.themed('primary-light');
+  //  border-right: solid 2px asf-theme.themed('primary-light');
+  //}
 
   overflow: auto;
   height: 100%;
@@ -82,9 +82,9 @@ $config: mat.m2-define-legacy-typography-config();
 
 .chart-resize-handle-left,
 .chart-resize-handle-right {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('primary-light');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: asf-theme.themed('primary-light');
+  //}
 
   height: 100%;
 }
@@ -94,11 +94,11 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .chart-draggable-handle {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('primary-light');
-    border-color: asf-theme.themed('primary-light');
-    color: asf-theme.themed('primary-light');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: asf-theme.themed('primary-light');
+  //  border-color: asf-theme.themed('primary-light');
+  //  color: asf-theme.themed('primary-light');
+  //}
 
   display: flex;
   align-items: center;
@@ -111,27 +111,27 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .sbas-resize-handle-filler {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('primary-light');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: asf-theme.themed('primary-light');
+  //}
 
   width: 10px;
   height: 100%;
 }
 
 .vgrip-icon {
-  @include asf-theme.themify(asf-theme.$themes) {
-    stroke: asf-theme.themed('dark-primary-text');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  stroke: asf-theme.themed('dark-primary-text');
+  //}
 
   height: 33px;
 }
 
 .sbas-header {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('primary-light');
-    color: asf-theme.themed('dark-primary-text')
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: asf-theme.themed('primary-light');
+  //  color: asf-theme.themed('dark-primary-text')
+  //}
 
   display: flex;
   flex-direction: row;
@@ -148,9 +148,9 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .control-icon {
-  @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('dark-primary-text');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  color: asf-theme.themed('dark-primary-text');
+  //}
 
   margin-top: -4px;
   transform: rotate(0.4deg);
@@ -161,9 +161,9 @@ $config: mat.m2-define-legacy-typography-config();
 /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .mat-button-toggle-disabled {
   .control-icon {
-    @include asf-theme.themify(asf-theme.$themes) {
-      color: asf-theme.themed('dark-disabled-text');
-    }
+    //@include asf-theme.themify(asf-theme.$themes) {
+    //  color: asf-theme.themed('dark-disabled-text');
+    //}
   }
 }
 
@@ -202,9 +202,9 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .button-group-label {
-  @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('dark-primary-text');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  color: asf-theme.themed('dark-primary-text');
+  //}
 
   white-space: nowrap;
   text-align: center;
@@ -226,17 +226,17 @@ label {
 
 /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .control-mat-button-toggle {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('background-white');
-    background: $color !important;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('background-white');
+  //  background: $color !important;
+  //}
 }
 
 .warn-icon {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('dark-primary-text');
-    color: color.adjust($color, $lightness: -25%);
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('dark-primary-text');
+  //  color: color.adjust($color, $lightness: -25%);
+  //}
 }
 .gap-detected-area {
   position: relative;
@@ -246,7 +246,7 @@ label {
   display: grid;
   place-items: center;
   width: 30px;
-  @include asf-theme.themify(asf-theme.$themes) {
-    background: color.adjust(asf-theme.themed('background-white'), $lightness: -15%);
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background: color.adjust(asf-theme.themed('background-white'), $lightness: -15%);
+  //}
 }

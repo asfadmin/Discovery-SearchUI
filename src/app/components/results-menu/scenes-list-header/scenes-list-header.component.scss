@@ -87,9 +87,9 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .list-button {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('background-white');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: asf-theme.themed('background-white');
+  //}
 
   border: darkgrey 1px solid;
   color: inherit;
@@ -117,9 +117,9 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .button-group-label {
-  @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('dark-secondary-text');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  color: asf-theme.themed('dark-secondary-text');
+  //}
   white-space: nowrap;
   text-align: center;
   font-size: 12px;
@@ -129,9 +129,9 @@ $config: mat.m2-define-legacy-typography-config();
 
 /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .control-mat-button-toggle {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('background-white');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: asf-theme.themed('background-white');
+  //}
 }
 
 .space-filler {

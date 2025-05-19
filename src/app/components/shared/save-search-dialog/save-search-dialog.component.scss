@@ -6,9 +6,9 @@ $footer-height: 60px;
 $bottom-offset: 10px;
 
 .mat-mdc-dialog-content {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('background-white');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: asf-theme.themed('background-white');
+  //}
   display: block;
   height: 350px;
   overflow-y: auto;

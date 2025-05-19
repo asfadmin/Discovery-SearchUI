@@ -15,9 +15,9 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-  @include asf-help.themify(asf-help.$themes) {
-    color: asf-help.themed('primary');
-  }
+  //@include asf-help.themify(asf-help.$themes) {
+  //  color: asf-help.themed('primary');
+  //}
   h1,
   h2,
   h3,
@@ -35,9 +35,9 @@
     font-size: 53px;
     width: 54px;
     height: 53px;
-    @include asf-help.themify(asf-help.$themes) {
-      color: asf-help.themed('dark-secondary-text');
-    }
+    //@include asf-help.themify(asf-help.$themes) {
+    //  color: asf-help.themed('dark-secondary-text');
+    //}
   }
 }
 
@@ -80,9 +80,9 @@
   flex: none;
 
   h3 {
-    @include asf-help.themify(asf-help.$themes) {
-      color: asf-help.themed('primary');
-    }
+    //@include asf-help.themify(asf-help.$themes) {
+    //  color: asf-help.themed('primary');
+    //}
   }
 
   li {
@@ -95,9 +95,9 @@
 }
 
 .help-table-header {
-  @include asf-help.themify(asf-help.$themes) {
-    color: asf-help.themed('primary');
-  }
+  //@include asf-help.themify(asf-help.$themes) {
+  //  color: asf-help.themed('primary');
+  //}
   font-size: 1.17em;
   margin-block-start: 1em;
   margin-block-end: 1em;
@@ -112,9 +112,9 @@
   height: 20px !important;
 
   a {
-    @include asf-help.themify(asf-help.$themes) {
-      color: asf-help.themed('blue-link');
-    }
+    //@include asf-help.themify(asf-help.$themes) {
+    //  color: asf-help.themed('blue-link');
+    //}
   }
 }
 

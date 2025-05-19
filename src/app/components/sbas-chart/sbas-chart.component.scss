@@ -11,7 +11,7 @@ $mat-theme-ignore-duplication-warnings: true;
   width: 100%;
 }
 ::ng-deep .sbas-label {
-  @include asf-theme.themify(asf-theme.$themes) {
-    fill: asf-theme.themed('dark-primary-text');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  fill: asf-theme.themed('dark-primary-text');
+  //}
 }

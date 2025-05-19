@@ -2,10 +2,10 @@
 $mat-theme-ignore-duplication-warnings: true;
 
 .banner-card {
-  @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed("dark-primary-text");
-    background-color: asf-theme.themed("primary-light");
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  color: asf-theme.themed("dark-primary-text");
+  //  background-color: asf-theme.themed("primary-light");
+  //}
 
   pointer-events: auto;
   padding-top: 5px;

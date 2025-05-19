@@ -2,9 +2,9 @@
 $mat-theme-ignore-duplication-warnings: true;
 
 .processing-options {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('background-white');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: asf-theme.themed('background-white');
+  //}
   margin-top: 10px;
 }
 

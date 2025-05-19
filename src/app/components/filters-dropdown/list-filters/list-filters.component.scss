@@ -14,13 +14,13 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .drop-file-area {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('background-white');
-    $color2: color.adjust($color, $lightness: -10%);
-    $color3: asf-theme.themed('primary');
-    background-color: $color2;
-    outline: 2px dashed $color3;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('background-white');
+  //  $color2: color.adjust($color, $lightness: -10%);
+  //  $color3: asf-theme.themed('primary');
+  //  background-color: $color2;
+  //  outline: 2px dashed $color3;
+  //}
 
   background-image: url('/assets/icons/cloud_upload_black_48dp.svg');
   background-size: 35%;
@@ -40,11 +40,11 @@ $mat-theme-ignore-duplication-warnings: true;
   font-size: 18px;
   font-weight: bold;
   text-align: center;
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('dark-primary-text');
-    $color2: color.adjust($color, $lightness: 20%);
-    color: $color2;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('dark-primary-text');
+  //  $color2: color.adjust($color, $lightness: 20%);
+  //  color: $color2;
+  //}
 
   .dd-text-1 {
     margin-top: 20px;
@@ -78,17 +78,17 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .panel-title {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('dark-primary-text');
-    color: $color !important;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('dark-primary-text');
+  //  color: $color !important;
+  //}
 }
 
 .asf-manual-link {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('dark-secondary-text');
-    color: $color;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('dark-secondary-text');
+  //  color: $color;
+  //}
   display: inline-block;
   line-height: 0;
 

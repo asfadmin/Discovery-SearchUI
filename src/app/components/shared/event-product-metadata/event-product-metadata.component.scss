@@ -7,10 +7,10 @@ $config: mat.m2-define-legacy-typography-config();
 
 a {
   text-decoration: none;
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('blue-link');
-    color: $color;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('blue-link');
+  //  color: $color;
+  //}
 }
 
 .scene-metadata {

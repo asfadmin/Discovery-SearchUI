@@ -14,10 +14,10 @@
 }
 
 .text-link {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('blue-link');
-    color: $color;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('blue-link');
+  //  color: $color;
+  //}
   text-decoration: underline;
 
 }
@@ -26,8 +26,8 @@
   @include asf-theme.md-icon-size(30px);
   min-height: 30px;
   margin-right: 0;
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('dark-primary-text');
-    color: $color;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('dark-primary-text');
+  //  color: $color;
+  //}
 }

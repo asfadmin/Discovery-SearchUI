@@ -72,9 +72,9 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .invert-icon {
-  @include asf-theme.themify(asf-theme.$themes) {
-    filter: asf-theme.themed('inverted-image');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  filter: asf-theme.themed('inverted-image');
+  //}
 }
 
 .flip-icon {

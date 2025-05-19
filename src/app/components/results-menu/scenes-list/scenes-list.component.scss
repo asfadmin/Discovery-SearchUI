@@ -15,9 +15,9 @@
 }
 
 .selected .ml-2 {
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-    color: asf-theme.themed('err');
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //  color: asf-theme.themed('err');
+  //}
 }
 
 .image-flex {

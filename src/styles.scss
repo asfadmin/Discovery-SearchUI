@@ -82,20 +82,20 @@ $theme-map: ();
 #toast-container > .toast-info {
   background-image: url("/assets/icons/info_black_48dp.svg");
 
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-    box-shadow: 0 0 12px asf-theme.themed('primary');
-
-    background-color: asf-theme.themed('background-white');
-    color: themed('dark-primary-text');
-    .toast-message {
-      color: themed('dark-secondary-text');
-    }
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //  box-shadow: 0 0 12px asf-theme.themed('primary');
+  //
+  //  background-color: asf-theme.themed('background-white');
+  //  color: themed('dark-primary-text');
+  //  .toast-message {
+  //    color: themed('dark-secondary-text');
+  //  }
+  //}
 
   a {
-    @include asf-theme.themify_non_host(asf-theme.$themes) {
-      color: themed('blue-link');
-    }
+    //@include asf-theme.themify_non_host(asf-theme.$themes) {
+    //  color: themed('blue-link');
+    //}
   }
 }
 
@@ -112,9 +112,9 @@ $theme-map: ();
 
 .toast-close-button,
 #toast-container > .toast-close-button {
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-    color: themed('dark-primary-text');
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //  color: themed('dark-primary-text');
+  //}
 }
 
 #toast-container > .pinkToast.toast-info {
@@ -171,20 +171,20 @@ $theme-map: ();
 }
 
 .primary-text {
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-    color: themed('dark-primary-text');
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //  color: themed('dark-primary-text');
+  //}
 }
 .faint-text {
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-    color: themed('dark-secondary-text');
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //  color: themed('dark-secondary-text');
+  //}
 }
 
 .fainter-text {
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-    color: themed('dark-disabled-text');
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //  color: themed('dark-disabled-text');
+  //}
 }
 
 .v-mid {
@@ -262,9 +262,9 @@ ul {
 }
 
 #dlQueueDialog {
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-    // background-color: themed('primary-light') !important;
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //  // background-color: themed('primary-light') !important;
+  //}
 
   position: relative;
   margin: 0;
@@ -273,9 +273,9 @@ ul {
 }
 
 #processingQueueDialog {
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-    // background-color: themed('primary-light');
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //  // background-color: themed('primary-light');
+  //}
   position: relative;
   margin: 0;
   padding: 0
@@ -285,9 +285,9 @@ ul {
 }
 
 #subscriptionQueueDialog {
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-    background-color: themed('primary-light');
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //  background-color: themed('primary-light');
+  //}
   position: relative;
   margin: 0;
   padding: 0 10px 10px 0 !important;
@@ -318,9 +318,9 @@ ul {
 
 /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
 .ls-card-content-list .mat-form-field-infix {
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-    border-color: themed('primary-light');
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //  border-color: themed('primary-light');
+  //}
   width: 100%;
   border-style: solid;
   border-width: 1px;
@@ -388,9 +388,9 @@ ul {
 }
 
 .mat-mdc-dialog-container {
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-    // background-color: themed('primary-light');
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //  // background-color: themed('primary-light');
+  //}
   border-radius: 0 !important;
 }
 
@@ -399,9 +399,9 @@ ul {
   padding: 0;
 
   .mat-mdc-dialog-container {
-    @include asf-theme.themify_non_host(asf-theme.$themes) {
-      // background-color: themed('primary-light');
-    }
+    //@include asf-theme.themify_non_host(asf-theme.$themes) {
+    //  // background-color: themed('primary-light');
+    //}
     padding-bottom: 0;
     padding-top: 11px;
     padding-left: 12px;
@@ -549,9 +549,9 @@ ul {
 $d-height: 550px;
 
 #ConfirmProcess {
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-    background: themed('primary-light') !important;
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //  background: themed('primary-light') !important;
+  //}
   resize: none;
   overflow: hidden;
   //width: $d-width !important;
@@ -570,9 +570,9 @@ $d-height: 550px;
 
 #dlQueueDialog {
   resize: both;
-  @include asf-theme.themify(asf-theme.$themes) {
-    // background-color: themed('primary-light');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  // background-color: themed('primary-light');
+  //}
   width: 80vw;
   height: 86vh;
   min-width: 350px;
@@ -580,9 +580,9 @@ $d-height: 550px;
 }
 
 #processingQueueDialog {
-  @include asf-theme.themify(asf-theme.$themes) {
-    // background: themed('primary-light');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  // background: themed('primary-light');
+  //}
   resize: both;
   width: 80vw;
   height: 86vh;
@@ -591,9 +591,9 @@ $d-height: 550px;
 }
 
 #subscriptionQueueDialog {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background: themed('primary-light');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background: themed('primary-light');
+  //}
 
   resize: both;
   width: 80vw;
@@ -604,9 +604,9 @@ $d-height: 550px;
 
 #preferencesDialog {
   .mat-mdc-dialog-content {
-    @include asf-theme.themify(asf-theme.$themes) {
-      background-color: themed("background-white");
-    }
+    //@include asf-theme.themify(asf-theme.$themes) {
+    //  background-color: themed("background-white");
+    //}
 
     padding: 0;
   }
@@ -626,22 +626,22 @@ $d-height: 550px;
 
 .content-block .mat-step-header .mat-step-icon-selected {
   background-color: asf-theme.$asf-blue !important;
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-    color: themed('dark-primary-text');
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //  color: themed('dark-primary-text');
+  //}
 }
 /* TODO(mdc-migration): The following rule targets internal classes of menu that may no longer apply for the MDC version. */
 .mat-menu {
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-    background-color: asf-theme.themed('background-white') !important;
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //  background-color: asf-theme.themed('background-white') !important;
+  //}
 }
 
 .content-block .mat-step-header .mat-step-icon {
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-    background-color: themed('primary');
-    color: themed('light-primary-text');
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //  background-color: themed('primary');
+  //  color: themed('light-primary-text');
+  //}
 }
 
 .content-block .mat-step-label-selected {
@@ -691,58 +691,58 @@ $d-height: 550px;
 
 .mat-mdc-form-field.mat-focused {
   /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
-  .mat-form-field-label {
-    @include asf-theme.themify_non_host(asf-theme.$themes) {
-      color: themed('dark-secondary-text') !important;
-    }
-  }
+  //.mat-form-field-label {
+  //  @include asf-theme.themify_non_host(asf-theme.$themes) {
+  //    color: themed('dark-secondary-text') !important;
+  //  }
+  //}
 }
 
 .opacity-slider-title {
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-    color: themed('dark-primary-text');
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //  color: themed('dark-primary-text');
+  //}
 }
 .draw-svg {
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-    fill: themed('dark-secondary-text');
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //  fill: themed('dark-secondary-text');
+  //}
 }
 .view-btn {
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-    fill: themed('dark-primary-text');
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //  fill: themed('dark-primary-text');
+  //}
 }
 .critical-baseline {
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-    $bkColor: themed('background-white');
-    $color2: color.adjust($bkColor, $lightness: -5%);
-    fill: $color2;
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //  $bkColor: themed('background-white');
+  //  $color2: color.adjust($bkColor, $lightness: -5%);
+  //  fill: $color2;
+  //}
 }
 
 .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle{
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-  border-color:themed('blue-link') !important;
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //border-color:themed('blue-link') !important;
+  //}
 }
 
 .mat-radio-button.mat-accent .mat-radio-inner-circle{
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-  color: themed('blue-link') !important;
-  background-color: themed('blue-link') !important;
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //color: themed('blue-link') !important;
+  //background-color: themed('blue-link') !important;
+  //}
 }
 
 .md-icon {
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-    color: themed('dark-primary-text');
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //  color: themed('dark-primary-text');
+  //}
 }
 .blue-link {
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-    color: themed('blue-link') !important;
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //  color: themed('blue-link') !important;
+  //}
 }
 
 .ol-custom-scale-line {
@@ -876,20 +876,20 @@ $d-height: 550px;
 }
 
 .ts-snackbar {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: themed('primary-light');
-    color: themed('dark-primary-text');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: themed('primary-light');
+  //  color: themed('dark-primary-text');
+  //}
   margin-bottom: 27px !important;
   text-align: center;
 
 }
 
 .mat-mdc-snack-bar-container.ts-snackbar {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: themed('primary-light');
-    color: themed('dark-primary-text');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: themed('primary-light');
+  //  color: themed('dark-primary-text');
+  //}
   //--mat-snack-bar-button-color: #fff;
   //--mdc-snackbar-container-color: #c40202;
   //--mdc-snackbar-supporting-text-color: themed('primary-light');

@@ -3,11 +3,11 @@
 $theme-map: null;
 
 hr {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('primary-light');
-    $color2: color.adjust($color, $alpha: 0.2);
-    border-top-color: $color2;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('primary-light');
+  //  $color2: color.adjust($color, $alpha: 0.2);
+  //  border-top-color: $color2;
+  //}
   margin-block: 0;
 }
 
@@ -30,10 +30,10 @@ hr {
   @include asf-theme.md-icon-size(30px);
   min-height: 30px;
   margin-right: 0;
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('dark-primary-text');
-    color: $color;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('dark-primary-text');
+  //  color: $color;
+  //}
 }
 
 .mat-mdc-icon-button {
@@ -42,16 +42,16 @@ hr {
   min-width: 60px;
 }
 .mat-mdc-list-item {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('dark-primary-text');
-    color: $color;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('dark-primary-text');
+  //  color: $color;
+  //}
 }
 .menu-hr {
-  @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('dark-primary-text');
-    background-color: asf-theme.themed('primary-dark');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  color: asf-theme.themed('dark-primary-text');
+  //  background-color: asf-theme.themed('primary-dark');
+  //}
   background-image: none;
   border: none;
   height: 1px;
@@ -67,10 +67,10 @@ hr {
 }
 
 .mat-mdc-menu-item {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('background-white');
-    background-color: $color !important;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('background-white');
+  //  background-color: $color !important;
+  //}
   font-weight: 400;
   height: auto;
 }
@@ -91,18 +91,18 @@ hr {
 }
 
 .item-content {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('blue-link');
-    color: $color !important;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('blue-link');
+  //  color: $color !important;
+  //}
   line-height: 18px;
 }
 
 .item-title {
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-    $color: asf-theme.themed('dark-primary-text');
-    color: $color;
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //  $color: asf-theme.themed('dark-primary-text');
+  //  color: $color;
+  //}
   line-height: 22px;
   font-size: 18px;
   margin-bottom: 12px;
@@ -118,15 +118,15 @@ hr {
   @include asf-theme.md-icon-size(65px);
 
   margin-right: 0;
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-    $color: asf-theme.themed('dark-primary-text');
-    color: $color;
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //  $color: asf-theme.themed('dark-primary-text');
+  //  color: $color;
+  //}
 }
 
 .dataset-date-range {
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-    $color: asf-theme.themed('dark-disabled-text');
-   color: $color !important;
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //  $color: asf-theme.themed('dark-disabled-text');
+  // color: $color !important;
+  //}
 }

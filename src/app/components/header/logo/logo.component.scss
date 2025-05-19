@@ -3,10 +3,10 @@ $mat-theme-ignore-duplication-warnings: true;
 @use "variables";
 
 %card-base {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('primary');
-    color: asf-theme.themed('dark-primary-text');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: asf-theme.themed('primary');
+  //  color: asf-theme.themed('dark-primary-text');
+  //}
   border-radius: 0;
 }
 
@@ -25,10 +25,10 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .logo-card {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('primary-light');
-    color: asf-theme.themed('background-white');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: asf-theme.themed('primary-light');
+  //  color: asf-theme.themed('background-white');
+  //}
 
   padding: 0 8px 0 0 !important;
   flex: 1 1 0%;
@@ -65,10 +65,10 @@ $mat-theme-ignore-duplication-warnings: true;
 $icon-size: 36px;
 
 .menu-toggle-button {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('primary');
-    color: asf-theme.themed('dark-primary-text');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: asf-theme.themed('primary');
+  //  color: asf-theme.themed('dark-primary-text');
+  //}
   box-shadow: none !important;
   cursor: pointer;
   border: none;

@@ -4,9 +4,9 @@ $mat-theme-ignore-duplication-warnings: true;
 
 .arrow-button-toggle {
   padding-top: 6px;
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('primary') !important;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: asf-theme.themed('primary') !important;
+  //}
 }
 .search-button {
   height: 36px !important;

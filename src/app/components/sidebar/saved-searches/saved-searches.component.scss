@@ -23,9 +23,9 @@ $mat-theme-ignore-duplication-warnings: true;
 .saved-searches__header,
 .saved-searches__footer,
 .saved-searches__footer-mobile {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('primary-light');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: asf-theme.themed('primary-light');
+  //}
 }
 
 .saved-searches__content,
@@ -35,36 +35,36 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .saved-searches__content {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('background-white');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: asf-theme.themed('background-white');
+  //}
   max-height: calc(100vh - 350px);
   overflow-y: auto;
 }
 
 .saved-searches__content-mobile {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('background-white');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: asf-theme.themed('background-white');
+  //}
   max-height: calc(100vh - 350px);
   overflow-y: auto;
   width: 100%;
 }
 
 .saved-searches-row:nth-child(odd) {
-  @include asf-theme.themify(asf-theme.$themes) {
-    //background-color: lighten(asf-theme.themed('primary-light'), 15%) !important;//themed('background-white');
-    $color: asf-theme.themed('primary-light');
-    $color2: color.adjust($color, $lightness: -15%);
-    background-color: $color2 !important;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  //background-color: lighten(asf-theme.themed('primary-light'), 15%) !important;//themed('background-white');
+  //  $color: asf-theme.themed('primary-light');
+  //  $color2: color.adjust($color, $lightness: -15%);
+  //  background-color: $color2 !important;
+  //}
 }
 
 .saved-searches__header {
-  @include asf-theme.themify(asf-theme.$themes){
-    $color: asf-theme.themed('primary');
-    border-bottom-color: $color;
-  }
+  //@include asf-theme.themify(asf-theme.$themes){
+  //  $color: asf-theme.themed('primary');
+  //  border-bottom-color: $color;
+  //}
   height: 70px;
   display: flex;
   flex-direction: row;
@@ -94,10 +94,10 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .saved-searches__subhead {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('background-white');
-    background-color: $color;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('background-white');
+  //  background-color: $color;
+  //}
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -121,12 +121,12 @@ $mat-theme-ignore-duplication-warnings: true;
 
 .saved-searches__footer,
 .saved-searches__footer-mobile {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('primary-light');
-    background: $color;
-    $color2: asf-theme.themed('primary');
-    border-top-color: $color2;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('primary-light');
+  //  background: $color;
+  //  $color2: asf-theme.themed('primary');
+  //  border-top-color: $color2;
+  //}
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -146,19 +146,19 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .saved-searches__save-button {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('primary-light');
-    color: $color;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('primary-light');
+  //  color: $color;
+  //}
   display: flex;
   margin: 6px;
 }
 
 .saved-searches__close-button {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('primary-light');
-    color: $color;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('primary-light');
+  //  color: $color;
+  //}
   display: flex;
   margin-right: 15px;
   height: fit-content;
@@ -170,9 +170,9 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .no-saved-searches {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('primary-light');
-    color: $color;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('primary-light');
+  //  color: $color;
+  //}
   padding-left: 15px;
 }

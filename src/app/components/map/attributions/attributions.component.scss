@@ -31,11 +31,11 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .attribute-box {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('primary-light');
-    color: asf-theme.themed('dark-primary-text');
-    border-color: asf-theme.themed('primary-light');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: asf-theme.themed('primary-light');
+  //  color: asf-theme.themed('dark-primary-text');
+  //  border-color: asf-theme.themed('primary-light');
+  //}
   border-style: solid;
   border-width: 1px 0 0 1px;
   font-weight: 400;
@@ -55,9 +55,9 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 a {
-  @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('dark-secondary-text');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  color: asf-theme.themed('dark-secondary-text');
+  //}
 
   text-decoration: none;
 }
@@ -70,11 +70,11 @@ a {
 }
 
 .bar-layout {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('primary-light');
-    color: asf-theme.themed('dark-secondary-text');
-    border-top: 1px solid asf-theme.themed('primary-dark');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: asf-theme.themed('primary-light');
+  //  color: asf-theme.themed('dark-secondary-text');
+  //  border-top: 1px solid asf-theme.themed('primary-dark');
+  //}
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
@@ -90,13 +90,13 @@ a {
 }
 
 .toggle-button {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('primary-light');
-    color: asf-theme.themed('dark-secondary-text');
-    $color: asf-theme.themed('primary-light');
-    $color2: color.adjust($color, $lightness: 10%);
-    border-bottom-color: $color2;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: asf-theme.themed('primary-light');
+  //  color: asf-theme.themed('dark-secondary-text');
+  //  $color: asf-theme.themed('primary-light');
+  //  $color2: color.adjust($color, $lightness: 10%);
+  //  border-bottom-color: $color2;
+  //}
   pointer-events: auto;
   font-size: 18px;
   font-family: Roboto, sans-serif;
@@ -106,9 +106,9 @@ a {
 }
 
 .bar {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background: asf-theme.themed('primary-light');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background: asf-theme.themed('primary-light');
+  //}
   position: absolute;
   bottom: 0;
   height: 24px;

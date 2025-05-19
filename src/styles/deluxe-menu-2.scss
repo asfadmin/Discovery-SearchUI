@@ -11,9 +11,9 @@ $light-grey: rgb(0 0 0 / 60%);
   font-size: 24px !important;
   height: 47px !important;
   margin-right: 0;
-  @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('dark-primary-text');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  color: asf-theme.themed('dark-primary-text');
+  //}
 }
 
 .dataset-hr {
@@ -41,9 +41,9 @@ $light-grey: rgb(0 0 0 / 60%);
 }
 
 .mat-mdc-button {
-  @include themify_non_host($themes) {
-    color: themed('blue');
-  }
+  //@include themify_non_host($themes) {
+  //  color: themed('blue');
+  //}
   font-weight: 400;
   font-style: italic;
   // color: $asf-blue;
@@ -72,9 +72,9 @@ $light-grey: rgb(0 0 0 / 60%);
 
 .button-label {
   // color: rgb(0 0 0 / 60%);
-  @include themify($themes) {
-    color: themed('dark-secondary-text');
-  }
+  //@include themify($themes) {
+  //  color: themed('dark-secondary-text');
+  //}
   font-size: 14px;
   font-weight: 400;
   transform:
@@ -91,9 +91,9 @@ $light-grey: rgb(0 0 0 / 60%);
 .button-text {
   font-size: 16px;
   font-weight: 400;
-  @include themify($themes) {
-    color: themed('dark-primary-text');
-  }
+  //@include themify($themes) {
+  //  color: themed('dark-primary-text');
+  //}
   text-align: left;
   font-style: normal;
   padding: 0;
@@ -113,10 +113,10 @@ $light-grey: rgb(0 0 0 / 60%);
 .text-underline {
   border: none;
   height: 1px;
-  @include themify($themes) {
-    color: themed('dark-secondary-text');
-    background-color: themed('dark-secondary-text');
-  }
+  //@include themify($themes) {
+  //  color: themed('dark-secondary-text');
+  //  background-color: themed('dark-secondary-text');
+  //}
 }
 
 /* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version. */
@@ -188,9 +188,9 @@ $light-grey: rgb(0 0 0 / 60%);
 }
 
 .dataset-date-range {
-  @include themify($themes) {
-    color: themed('dark-disabled-text') !important;
-  }
+  //@include themify($themes) {
+  //  color: themed('dark-disabled-text') !important;
+  //}
   font-weight: bold;
   line-height: 30px;
   font-size: 14px;
@@ -199,12 +199,12 @@ $light-grey: rgb(0 0 0 / 60%);
 }
 
 .dataset-source {
-  @include themify_non_host($themes) {
-    color: themed('blue-link');
-    a {
-      color: themed('blue-link');
-    }
-  }
+  //@include themify_non_host($themes) {
+  //  color: themed('blue-link');
+  //  a {
+  //    color: themed('blue-link');
+  //  }
+  //}
   padding-top: 22px;
   font-size: 12px;
 }

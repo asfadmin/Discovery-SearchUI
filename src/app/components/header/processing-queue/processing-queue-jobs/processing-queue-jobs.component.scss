@@ -32,9 +32,9 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .sort-options {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('background-white');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: asf-theme.themed('background-white');
+  //}
   flex-direction: row;
   display: flex;
   flex-wrap: wrap;
@@ -75,9 +75,9 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .jobs-empty-message {
-  @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('dark-primary-text');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  color: asf-theme.themed('dark-primary-text');
+  //}
   text-align: center;
   font-size: 20px;
   margin: 0 auto;
@@ -100,9 +100,9 @@ $mat-theme-ignore-duplication-warnings: true;
 
 .jobs-empty-message-docs-link,
 .jobs-empty-message-docs-link a {
-  @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('blue-link');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  color: asf-theme.themed('blue-link');
+  //}
   display: block;
   text-align: center;
   font-size: 14px;
@@ -111,8 +111,8 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .pair-expansion-panel-header {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('background-white') !important;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: asf-theme.themed('background-white') !important;
+  //}
   border-style: none !important;
 }

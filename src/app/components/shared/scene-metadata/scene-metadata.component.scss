@@ -7,9 +7,9 @@ $mat-theme-ignore-duplication-warnings: true;
 
 a {
   text-decoration: none;
-  @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('blue-link');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  color: asf-theme.themed('blue-link');
+  //}
 }
 
 .scene-metadata {
@@ -19,9 +19,9 @@ a {
 
   .mat-icon {
     @include asf-theme.md-icon-size(12px);
-    @include asf-theme.themify(asf-theme.$themes) {
-      color: asf-theme.themed('dark-primary-text');
-    }
+    //@include asf-theme.themify(asf-theme.$themes) {
+    //  color: asf-theme.themed('dark-primary-text');
+    //}
     margin-left: 4px;
   }
 }

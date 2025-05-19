@@ -46,57 +46,57 @@ ul {
   }
 }
 ::ng-deep .baseline-label {
-  @include asf-theme.themify(asf-theme.$themes) {
-    fill: asf-theme.themed('dark-primary-text');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  fill: asf-theme.themed('dark-primary-text');
+  //}
 }
 
 
 ::ng-deep .baseline-reference {
-  @include asf-theme.themify(asf-theme.$themes) {
-    fill: asf-theme.themed('dark-primary-text');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  fill: asf-theme.themed('dark-primary-text');
+  //}
 }
 
 ::ng-deep .baseline-download {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed('blue-link');
-    $color2: color.adjust($color, $lightness: -20%);
-    fill: $color2;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed('blue-link');
+  //  $color2: color.adjust($color, $lightness: -20%);
+  //  fill: $color2;
+  //}
 }
 ::ng-deep .baseline-selected {
-  @include asf-theme.themify(asf-theme.$themes) {
-    fill: asf-theme.themed('err');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  fill: asf-theme.themed('err');
+  //}
 }
 ::ng-deep .baseline-reference {
-  @include asf-theme.themify(asf-theme.$themes) {
-    fill: asf-theme.themed('dark-primary-text');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  fill: asf-theme.themed('dark-primary-text');
+  //}
 }
 ::ng-deep .baseline-base {
-  @include asf-theme.themify(asf-theme.$themes) {
-    fill: color.adjust(asf-theme.themed('dark-primary-text'), $lightness: 45%);
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  fill: color.adjust(asf-theme.themed('dark-primary-text'), $lightness: 45%);
+  //}
 }
 .baseline-box {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background: color.adjust(asf-theme.themed('background-white'), $lightness: -5%);
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background: color.adjust(asf-theme.themed('background-white'), $lightness: -5%);
+  //}
 }
 .reference-box {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background: asf-theme.themed('dark-primary-text');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background: asf-theme.themed('dark-primary-text');
+  //}
 }
 .download-box {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background: color.adjust(asf-theme.themed('blue-link'), $lightness: -20%);
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background: color.adjust(asf-theme.themed('blue-link'), $lightness: -20%);
+  //}
 }
 .selected-box {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background: asf-theme.themed('err');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background: asf-theme.themed('err');
+  //}
 }

@@ -11,9 +11,9 @@ $config: mat.m2-define-legacy-typography-config();
 
 .new-stuff {
   cursor: pointer;
-  @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('blue-link');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  color: asf-theme.themed('blue-link');
+  //}
   font-weight: bold;
   margin-right: 10px;
 }

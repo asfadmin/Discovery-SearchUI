@@ -29,11 +29,11 @@ div span {
 }
 
 .info-bar {
-  @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('dark-primary-text');
-    background-color: asf-theme.themed('primary-light');
-    border-top-color: asf-theme.themed('primary');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  color: asf-theme.themed('dark-primary-text');
+  //  background-color: asf-theme.themed('primary-light');
+  //  border-top-color: asf-theme.themed('primary');
+  //}
   border-top-style: solid;
   border-top-width: 1px;
   line-height: 30px;
@@ -56,9 +56,9 @@ div span {
 
 .new-stuff {
   cursor: pointer;
-  @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('blue-link');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  color: asf-theme.themed('blue-link');
+  //}
   font-weight: bold;
   margin-right: 10px;
 }

@@ -9,13 +9,13 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .menu-item-icon {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed("dark-primary-text");
-    color: $color;
-    font-size: 50px !important;
-    height: 50px !important;
-    width: 50px !important;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed("dark-primary-text");
+  //  color: $color;
+  //  font-size: 50px !important;
+  //  height: 50px !important;
+  //  width: 50px !important;
+  //}
 
   @include asf-theme.md-icon-size(50px);
 
@@ -65,10 +65,10 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .mat-mdc-button {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed("blue-link");
-    color: $color;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed("blue-link");
+  //  color: $color;
+  //}
 
   font-weight: 400;
   font-style: italic;
@@ -96,10 +96,10 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .button-label {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed("dark-secondary-text");
-    color: $color;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed("dark-secondary-text");
+  //  color: $color;
+  //}
 
   font-size: 14px;
   font-weight: 400;
@@ -115,10 +115,10 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .button-text {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $color: asf-theme.themed("dark-primary-text");
-    color: $color;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $color: asf-theme.themed("dark-primary-text");
+  //  color: $color;
+  //}
 
   font-size: 16px;
   font-weight: 400;
@@ -177,10 +177,10 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .blue-link {
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-    $color: asf-theme.themed("blue-link");
-    color: $color;
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //  $color: asf-theme.themed("blue-link");
+  //  color: $color;
+  //}
   // color: $uaf-primary-blue;
 }
 

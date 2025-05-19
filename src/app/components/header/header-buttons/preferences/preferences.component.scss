@@ -26,9 +26,9 @@ $mat-theme-ignore-duplication-warnings: true;
   flex: 30px;
 
   a {
-    @include asf-theme.themify(asf-theme.$themes) {
-      color: asf-theme.themed('blue-link');
-    }
+    //@include asf-theme.themify(asf-theme.$themes) {
+    //  color: asf-theme.themed('blue-link');
+    //}
     text-decoration: none;
   }
 }
@@ -39,9 +39,9 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .dialog-header {
-  @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('dark-primary-text');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  color: asf-theme.themed('dark-primary-text');
+  //}
 
   display: flex;
   flex-direction: row;
@@ -50,9 +50,9 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .preferences-body {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed("background-white");
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: asf-theme.themed("background-white");
+  //}
   display: flex;
   width: 100%;
   padding-top: 15px;

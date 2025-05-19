@@ -2,9 +2,9 @@
 $mat-theme-ignore-duplication-warnings: true;
 
 .rectangle-wrapper {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background: asf-theme.themed('background-white');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background: asf-theme.themed('background-white');
+  //}
 
   position: fixed;
 }
@@ -50,10 +50,10 @@ $mat-theme-ignore-duplication-warnings: true;
   font-weight: 400;
   font-size: 16px;
   text-align: center;
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('primary-light');
-    color: asf-theme.themed('dark-primary-text');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: asf-theme.themed('primary-light');
+  //  color: asf-theme.themed('dark-primary-text');
+  //}
 
   border-left: none;
 }
@@ -79,9 +79,9 @@ $mat-theme-ignore-duplication-warnings: true;
 
 .left-border {
   box-shadow: none !important;
-  @include asf-theme.themify(asf-theme.$themes) {
-    border-left: asf-theme.themed('primary-light') 1px solid;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  border-left: asf-theme.themed('primary-light') 1px solid;
+  //}
 }
 
 .no-box-shadow {
@@ -110,9 +110,9 @@ $mat-theme-ignore-duplication-warnings: true;
   height: 25px;
   z-index: 9;
   // background-image: url("/assets/div-handles/hgrip.svg");
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('primary-light');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: asf-theme.themed('primary-light');
+  //}
 
   background-position: center;
   background-repeat: no-repeat;
@@ -122,9 +122,9 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .hgrip-icon {
-  @include asf-theme.themify(asf-theme.$themes) {
-    stroke: asf-theme.themed('dark-primary-text');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  stroke: asf-theme.themed('dark-primary-text');
+  //}
 
   width: 33px;
 }
@@ -148,9 +148,9 @@ $mat-theme-ignore-duplication-warnings: true;
   justify-content: center;
   width: 100%;
   height: 25px;
-  @include asf-theme.themify(asf-theme.$themes) {
-    background-color: asf-theme.themed('primary-light');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background-color: asf-theme.themed('primary-light');
+  //}
 
   z-index: 9;
 }
@@ -166,9 +166,9 @@ $mat-theme-ignore-duplication-warnings: true;
 
   a {
     text-decoration: none;
-    @include asf-theme.themify(asf-theme.$themes) {
-      color: asf-theme.themed('dark-primary-text');
-    }
+    //@include asf-theme.themify(asf-theme.$themes) {
+    //  color: asf-theme.themed('dark-primary-text');
+    //}
   }
 }
 

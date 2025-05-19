@@ -1,9 +1,9 @@
 @use "asf-theme";
 $mat-theme-ignore-duplication-warnings: true;
 .container {
-  @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed("dark-primary-text");
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  color: asf-theme.themed("dark-primary-text");
+  //}
 }
 .data-list b {
   width: 120px;

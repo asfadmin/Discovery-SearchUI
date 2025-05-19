@@ -2,10 +2,10 @@
 $mat-theme-ignore-duplication-warnings: true;
 
 .layer-select-button {
-  @include asf-theme.themify(asf-theme.$themes) {
-    background: asf-theme.themed('background-white');
-    color: asf-theme.themed('dark-primary-text');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  background: asf-theme.themed('background-white');
+  //  color: asf-theme.themed('dark-primary-text');
+  //}
   margin: 0;
   padding: 0 0 0 3px;
   font-size: 18px !important;
@@ -33,9 +33,9 @@ $mat-theme-ignore-duplication-warnings: true;
 }
 
 .bottom-right {
-  @include asf-theme.themify(asf-theme.$themes) {
-    color: asf-theme.themed('primary');
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  color: asf-theme.themed('primary');
+  //}
   position: absolute;
   bottom: -13px;
   right: -19px;

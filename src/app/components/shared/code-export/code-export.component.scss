@@ -18,11 +18,11 @@ $theme-map: null;
 }
 
 .code-block {
-  @include asf-theme.themify(asf-theme.$themes) {
-    $bkColor: asf-theme.themed('background-white');
-    $color: color.adjust($bkColor, $lightness: -10%);
-    background: $color;
-  }
+  //@include asf-theme.themify(asf-theme.$themes) {
+  //  $bkColor: asf-theme.themed('background-white');
+  //  $color: color.adjust($bkColor, $lightness: -10%);
+  //  background: $color;
+  //}
   padding: 10px;
   max-height: 300px;
   overflow: auto;

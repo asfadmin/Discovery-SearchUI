@@ -7,11 +7,11 @@ $mat-theme-ignore-duplication-warnings: true;
 $config: mat.m2-define-legacy-typography-config();
 
 .mat-header-base {
-  @include asf-theme.themify_non_host(asf-theme.$themes) {
-    background-color: themed('primary-light');
-    color: themed('dark-primary-text');
-    border-color: themed('primary');
-  }
+  //@include asf-theme.themify_non_host(asf-theme.$themes) {
+  //  background-color: themed('primary-light');
+  //  color: themed('dark-primary-text');
+  //  border-color: themed('primary');
+  //}
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   border-left-width: 0;
@@ -33,11 +33,11 @@ $config: mat.m2-define-legacy-typography-config();
   &[aria-disabled="true"] {
 
     @extend .mat-header-base;
-    @include asf-theme.themify_non_host(asf-theme.$themes) {
-      background-color: themed('primary-light');
-      color: themed('dark-secondary-text');
-      border-color: themed('primary');
-    }
+    //@include asf-theme.themify_non_host(asf-theme.$themes) {
+    //  background-color: themed('primary-light');
+    //  color: themed('dark-secondary-text');
+    //  border-color: themed('primary');
+    //}
   }
 }
 
