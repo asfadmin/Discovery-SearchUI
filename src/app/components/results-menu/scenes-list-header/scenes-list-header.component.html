@@ -305,11 +305,10 @@
             </button>
 
             <button mat-menu-item
-            *ngIf="searchType === SearchTypes.DATASET && ((currentDatasetID$ | async) === 'OPERA-S1'|| (currentDatasetID$ | async) === 'NISAR')"
-            [matMenuTriggerFor]="addAllProductsOfType"
-            [matMenuTriggerData]="{productData: (productCountByType$ | async)}"
-            >
-            {{ 'ADD_BY_PRODUCT_TYPE' | translate }}
+                    *ngIf="searchType === SearchTypes.DATASET && ((currentDatasetID$ | async) === 'OPERA-S1'|| (currentDatasetID$ | async) === 'NISAR')"
+                    [matMenuTriggerFor]="addAllProductsOfType"
+                    [matMenuTriggerData]="{productData: (productCountByType$ | async)}">
+              {{ (currentDatasetID$ | async) === 'NISAR' ? ('ADD_BY_FILE_TYPE' | translate) : ('ADD_BY_PRODUCT_TYPE' | translate) }}
           </button>
           </mat-menu>
 
