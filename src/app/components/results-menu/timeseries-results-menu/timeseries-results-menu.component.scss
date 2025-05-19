@@ -439,3 +439,19 @@ ul {
 		color: lighten(themed('dark-primary-text'), 20%);
 	}
 }
+
+.data-credit {
+  position: relative;
+  text-align: right;
+  margin-top: -4px;
+  font-size: 12px;
+  font-style: italic;
+  color: $asf-blue;
+
+  a {
+    cursor: pointer;
+    text-decoration: none;
+    color: $asf-blue;
+
+  }
+}

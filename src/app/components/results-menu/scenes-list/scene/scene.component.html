@@ -26,11 +26,11 @@
     >
     <div class="div-flex-column">
       <div class="div-flex"
-           [title]="scene.metadata.fileName || scene.name"
+           [title]="scene.metadata.fileName || scene.name || scene.metadata.job.job_id"
            class="bold" matLine>
 
         <app-file-name
-          [name]="(scene.metadata.fileName || scene.name)"
+          [name]="(scene.metadata.fileName || scene.name || scene.metadata.job.job_id)"
           [dataset]="scene.dataset"
           [searchType]="searchType">
         </app-file-name>
@@ -39,7 +39,7 @@
           <app-copy-to-clipboard
             *ngIf="hovered; else notHovered"
             prompt="{{ 'COPY_SCENE_NAME' | translate }}"
-            [value]="scene.metadata.fileName || scene.name">
+            [value]="scene.metadata.fileName || scene.name || scene.metadata.job.job_id">
           </app-copy-to-clipboard>
 
           <ng-template #notHovered>
@@ -51,11 +51,13 @@
     </div>
 
     <div class="date-time" matLine>
-      <ng-container *ngIf="scene.metadata.job">
+      @if(scene.metadata.job) {
         {{ scene.metadata.job.job_type }}
-        <br *ngIf="breakpoint === breakpoints.MOBILE && searchType === SearchTypes.CUSTOM_PRODUCTS"> -
-      </ng-container>
-      <ng-container *ngIf="!scene.isDummyProduct">
+        <br *ngIf="breakpoint === breakpoints.MOBILE && searchType === SearchTypes.CUSTOM_PRODUCTS">
+         -
+      }
+
+      @if(!scene.isDummyProduct) {
         <ng-container *ngIf="
           breakpoint > breakpoints.MOBILE &&
           searchType !== SearchTypes.BASELINE &&
@@ -78,7 +80,7 @@
           matTooltip="{{'SCENE_START_TIME' | translate}}">
           {{ scene.metadata.date| shortDate }}
         </ng-container>
-      </ng-container>
+      }
       <span *ngIf="scene.isDummyProduct">Loading...</span>
     </div>
   </div>

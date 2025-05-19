@@ -82,10 +82,9 @@ export class ProcessingOptionsComponent implements OnInit {
   }
 
   public getCostTable(costs, jobType, option) {
-
     const jobTypeCost = costs[jobType.id];
 
-    if (jobTypeCost.cost_table && option.apiName === jobTypeCost.cost_parameter) {
+    if (jobTypeCost.cost_parameters && jobTypeCost.cost_parameters.includes(option.apiName)) {
       return jobTypeCost.cost_table;
     } else {
       return null;

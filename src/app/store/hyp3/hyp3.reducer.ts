@@ -14,12 +14,16 @@ export interface Hyp3State {
   user: Hyp3User | null;
   isUserLoading: boolean;
   areJobsLoading: boolean;
+  areMoreJobsToLoad: boolean;
   submittingJobName: string | null;
   processingOptions: Hyp3ProcessingOptions;
   projectName: string;
   userId: string;
+  jobIds: string[];
+  searchJobIds: string[];
   costs: Hyp3Costs;
   debug_status: ApplicationStatus | null;
+  maxHyp3Jobs: number | null;
 }
 
 const initState: Hyp3State = {
@@ -27,23 +31,27 @@ const initState: Hyp3State = {
   user: null,
   isUserLoading: false,
   areJobsLoading: false,
+  areMoreJobsToLoad: false,
   submittingJobName: null,
   processingOptions: hyp3DefaultJobOptions,
   projectName: '',
   debug_status: null,
   userId: '',
+  jobIds: [],
+  searchJobIds: [],
+  maxHyp3Jobs: 3000,
   costs: {
-    "AUTORIFT": {
-      "cost": 1,
+    'AUTORIFT': {
+      'cost': 1,
     },
-    "INSAR_GAMMA": {
-      "cost": 1,
+    'INSAR_GAMMA': {
+      'cost': 1,
     },
-    "RTC_GAMMA": {
-      "cost": 1,
+    'RTC_GAMMA': {
+      'cost': 1,
     },
-    "INSAR_ISCE_BURST": {
-      "cost": 1,
+    'INSAR_ISCE_BURST': {
+      'cost': 1,
     }
   }
 };
@@ -89,7 +97,8 @@ export function hyp3Reducer(state = initState, action: Hyp3Actions): Hyp3State {
     case Hyp3ActionType.SET_PROCESSING_PROJECT_NAME: {
       return {
         ...state,
-        projectName: action.payload
+        projectName: action.payload,
+        areMoreJobsToLoad: false,
       };
     }
 
@@ -97,6 +106,13 @@ export function hyp3Reducer(state = initState, action: Hyp3Actions): Hyp3State {
       return {
         ...state,
         userId: action.payload
+      };
+    }
+
+    case Hyp3ActionType.SET_HYP3_JOB_IDS: {
+      return {
+        ...state,
+        jobIds: action.payload
       };
     }
 
@@ -142,23 +158,32 @@ export function hyp3Reducer(state = initState, action: Hyp3Actions): Hyp3State {
       };
     }
 
-    case Hyp3ActionType.SUBMIT_JOB: {
+    case Hyp3ActionType.SET_MAX_HYP3_JOBS: {
       return {
         ...state,
-        submittingJobName: action.payload,
+        maxHyp3Jobs: action.payload,
+        areMoreJobsToLoad: false,
       };
     }
 
-    case Hyp3ActionType.SUCCESSFUL_JOB_SUBMISSION: {
+    case Hyp3ActionType.SET_SEARCH_JOB_IDS: {
       return {
         ...state,
-        submittingJobName: null,
-      }; }
+        searchJobIds: action.payload,
+      };
+    }
 
-    case Hyp3ActionType.ERROR_JOB_SUBMISSION: {
+    case Hyp3ActionType.MAX_HYP3_RESULTS_HIT: {
       return {
         ...state,
-        submittingJobName: null,
+        areMoreJobsToLoad: true,
+      };
+    }
+
+    case Hyp3ActionType.RESET_MAX_HYP3_RESULTS_HIT: {
+      return {
+        ...state,
+        areMoreJobsToLoad: false,
       };
     }
 
@@ -212,7 +237,27 @@ export const getOnDemandUserId = createSelector(
   (state: Hyp3State) => state.userId
 );
 
+export const getHyp3JobIds = createSelector(
+  getHyp3State,
+  (state: Hyp3State) => state.jobIds
+);
+
 export const getCosts = createSelector(
   getHyp3State,
   (state: Hyp3State) => state.costs
+);
+
+export const getMaxHyp3Jobs = createSelector(
+  getHyp3State,
+  (state: Hyp3State) => state.maxHyp3Jobs
+);
+
+export const getSearchJobIds = createSelector(
+  getHyp3State,
+  (state: Hyp3State) => state.searchJobIds
+);
+
+export const getAreMoreJobsToLoad = createSelector(
+  getHyp3State,
+  (state: Hyp3State) => state.areMoreJobsToLoad
 );

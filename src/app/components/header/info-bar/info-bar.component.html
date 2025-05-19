@@ -8,6 +8,10 @@
         <span *ngIf="!!userID">
           <b>{{ 'USER_ID_INFO_BAR' | translate }}:</b> {{ userID }}
         </span>
+
+        <span *ngIf="jobIds?.length">
+          <b>{{ 'HYP3_JOB_IDS_INFO_BAR' | translate }}:</b> {{ jobIds.length }}
+        </span>
       </span>
     </span>
 

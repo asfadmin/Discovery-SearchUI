@@ -163,7 +163,7 @@
       "skipTests": true
     },
     "@schematics/angular:service": {
-      "skipTests": true
+      "skipTests": false
     },
     "@angular-eslint/schematics:application": {
       "setParserOptionsProject": true
