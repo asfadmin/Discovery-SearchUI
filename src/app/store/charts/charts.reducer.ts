@@ -107,8 +107,9 @@ export const chartsReducer = createReducer(
   }),
   on(chartActions.setFrames, (state, { uuid, frames }) => {
     const seriesStates = { ...state.seriesStates };
-    seriesStates[uuid] = { ...seriesStates[uuid], frames };
-
+    if(seriesStates.hasOwnProperty(uuid)) {
+      seriesStates[uuid] = { ...seriesStates[uuid], frames };
+    }
     return { ...state, seriesStates };
   }),
   on(chartActions.reset, (_) => initialState)
