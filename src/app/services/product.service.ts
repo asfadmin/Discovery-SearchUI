@@ -282,6 +282,9 @@ export class ProductService {
       if (p.includes('QA_')) {
         productTypeDisplay += (' (QA)')
       }
+      if(productTypeDisplay === 'Log File') {
+        continue;
+      }
 
 
 
