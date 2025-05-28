@@ -66,7 +66,7 @@ export class MapEffects {
       }
     })
   ), {dispatch: false})
-  
+
   public onSetSelectedScene = createEffect(() => this.actions$.pipe(
     ofType<SetSelectedScene>(ScenesActionType.SET_SELECTED_SCENE),
     map(action => action.payload),
@@ -97,6 +97,7 @@ export class MapEffects {
         return product.dataset === 'ALOS'
         || product.dataset === 'Sentinel-1A'
         || product.dataset === 'Sentinel-1B'
+        || product.dataset === 'Sentinel-1C'
         || product.dataset === 'Sentinel-1 Interferogram (BETA)'
         || product.dataset === 'UAVSAR';
       } else if (searchType === SearchType.CUSTOM_PRODUCTS) {

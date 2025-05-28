@@ -104,7 +104,7 @@ export class ScenesService {
           return scenes;
         }
 
-        if (!scenes.every(scene => scene.dataset === 'Sentinel-1B' || scene.dataset === 'Sentinel-1A')) {
+        if (!scenes.every(scene => scene.dataset === 'Sentinel-1C' || scene.dataset === 'Sentinel-1B' || scene.dataset === 'Sentinel-1A')) {
           return scenes;
         }
 
