@@ -24,9 +24,13 @@
 
 
     <mat-form-field class="polarization-select-container">
-        <mat-select [placeholder]="dataset?.id === 'NISAR'
+        <mat-select
+            (selectionChange)="onNewDatasetSidePolarizations($event.value)"
+            [(ngModel)]="sidePolarizations"
+            [placeholder]="dataset?.id === 'NISAR'
             ? ('SIDE_BAND_FREQ_B_POLARIZATION' | translate)
-            : (('POLARIZATION' | translate) + ' ' + ('SIDE' | translate))" >
+            : (('POLARIZATION' | translate) + ' ' + ('SIDE' | translate))"
+            multiple >
             <mat-option *ngFor="let pol of dataset.sidepolarizations" [value]="pol">
                 <span class="polarization-type">{{pol}}</span>
                 <span class="polarization-count">&nbsp;&nbsp;{{pol | polarizationCount}}</span>
