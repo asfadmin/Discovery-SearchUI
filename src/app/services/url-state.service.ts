@@ -579,7 +579,7 @@ export class UrlStateService {
           map(
 
             pols => {
-                const param = pols.map(x=> x.replace(',', '-')).join(',');
+                const param = pols.map(x=> x.replaceAll(',', '-')).join(',');
                 return { 'polarizations': param };
             }
           )
@@ -605,7 +605,7 @@ export class UrlStateService {
         source: this.store$.select(filterStore.getSidePolarizations).pipe(
           map(
             pols => {
-                const param = pols.map(x => x.replace(',','-')).join(',');
+                const param = pols.map(x => x.replaceAll(',','-')).join(',');
                 return { 'sidePolarizations': param };
             }
           )
