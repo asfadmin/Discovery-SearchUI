@@ -197,7 +197,7 @@ export class SearchParamsService {
   private polarizations$ = this.store$.select(filterStore.getPolarizations).pipe(
     map(
       polarizations => Array.from(new Set(polarizations))
-        .map(x => x.replace(',','+'))
+        .map(x => x.replaceAll(',','+'))
         .join(',')
     ),
     withLatestFrom(this.store$.select(filterStore.getSelectedDataset)),
@@ -208,7 +208,7 @@ export class SearchParamsService {
   private sidePolarizations$ = this.store$.select(filterStore.getSidePolarizations).pipe(
     map(
       polarizations => Array.from(new Set(polarizations))
-        .map(x => x.replace(',','+'))
+        .map(x => x.replaceAll(',','+'))
         .join(',')
     ),
     map(sidePolarization => ({ sidebandpolarization: sidePolarization })),
