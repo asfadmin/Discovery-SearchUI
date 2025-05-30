@@ -205,6 +205,11 @@ export class SearchParamsService {
     ({ mainbandpolarization: polarizations }) : ({ polarization: polarizations })),
   );
 
+  private productionConfig$ = this.store$.select(filterStore.getProductionConfig).pipe(
+    map((config) => ({ productionconfiguration: config })
+  )
+  );
+
   private sidePolarizations$ = this.store$.select(filterStore.getSidePolarizations).pipe(
     map(
       polarizations => Array.from(new Set(polarizations))
@@ -274,6 +279,7 @@ export class SearchParamsService {
     this.beamModes$,
     this.polarizations$,
     this.sidePolarizations$,
+    this.productionConfig$,
     this.frameCoverage$,
     this.jointObservation$,
     this.rangeBandwidth$,
