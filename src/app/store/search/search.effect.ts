@@ -113,14 +113,9 @@ export class SearchEffects {
         return this.asfApiBaselineQuery$();
       } else if (searchType === SearchType.CUSTOM_PRODUCTS) {
         return this.customProductsQuery$();
-      } else {
-        this.logCountries();
-        return this.asfApiQuery$;
-      }
-      if (searchType === SearchType.DISPLACEMENT) {
+      } else if (searchType === SearchType.DISPLACEMENT) {
         return this.timeseriesQuery$();
       }
-
 
       this.logCountries();
 
@@ -422,7 +417,7 @@ export class SearchEffects {
   public OnSetKioskMode = createEffect(() => this.actions$.pipe(
     ofType<setSearchKioskMode>(SearchActionType.SET_SEARCH_KIOSK_MODE),
     filter(action => action.payload),
-    map(_ => new SetSearchType(SearchType.DISPLACEMENT))
+    switchMap(_ => [new SetSearchType(SearchType.DISPLACEMENT), new uiStore.OpenResultsMenu()])
   ))
 
   private asfApiQuery$ = this.searchParams.getParams.pipe(
