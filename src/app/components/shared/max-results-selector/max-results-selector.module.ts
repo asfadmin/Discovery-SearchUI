@@ -15,6 +15,7 @@ import { MaxResultsSelectorComponent } from './max-results-selector.component';
 import { ApiLinkDialogComponent } from './api-link-dialog/api-link-dialog.component';
 import { ClipboardModule } from 'ngx-clipboard';
 import { SharedModule } from '@shared';
+import { DocsModalModule } from '@components/shared/docs-modal';
 
 
 @NgModule({
@@ -29,8 +30,9 @@ import { SharedModule } from '@shared';
     MatSharedModule,
     MatDialogModule,
     ClipboardModule,
-    SharedModule
-  ],
+    SharedModule,
+    DocsModalModule
+],
   exports: [ MaxResultsSelectorComponent ],
 })
 export class MaxResultsSelectorModule {

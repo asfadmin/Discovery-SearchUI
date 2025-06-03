@@ -28,7 +28,7 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
 
   public burstXMLFileCount: number = 0;
 
-  public possibleMaxResults = [250, 1000, 5000];
+  public possibleMaxResults = [250, 1000];
   private subs = new SubSink();
 
   constructor(
