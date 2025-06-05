@@ -4,7 +4,7 @@
   <mat-select [formControl]="prodConfigControl" class="sci-prod-select" (selectionChange)="onProductionConfigSelect($event.value)">
     <mat-option>-- None --</mat-option>
     @for (prodConfig of prodConfigs; track prodConfig) {
-        <mat-option [value]="prodConfig.value">{{prodConfig.viewValue}}</mat-option>
+        <mat-option [value]="prodConfig.value">{{prodConfig.viewValue | translate }}</mat-option>
     }
     </mat-select>
   <mat-hint>{{ prodConfigControl.value }}</mat-hint>
