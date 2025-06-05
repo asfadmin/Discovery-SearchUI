@@ -40,6 +40,11 @@
             <app-max-results-selector></app-max-results-selector>
           </div>
         </div>
+        @if(prop.isRelevant(p.FRAME_ORDERING)) {
+          <mat-slide-toggle (change)="test($event.checked)">
+            test
+          </mat-slide-toggle>
+        }
       </div>
 
       <div class="icon-cluster">
