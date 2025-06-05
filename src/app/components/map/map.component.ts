@@ -198,6 +198,12 @@ export class MapComponent implements OnInit, OnDestroy  {
     );
 
     this.subs.add(
+      this.store$.select(uiStore.getIsFrameSelectionEnabled).subscribe(enabled => {
+        console.log(enabled)
+      })
+    )
+
+    this.subs.add(
       combineLatest([
         this.mapService.isDrawing$,
         this.drawMode$,

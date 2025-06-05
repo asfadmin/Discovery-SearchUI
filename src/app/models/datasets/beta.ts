@@ -13,6 +13,7 @@ export const beta = {
     Props.POLARIZATION,
     Props.MISSION_NAME,
     Props.ABSOLUTE_ORBIT,
+    Props.FRAME_ORDERING,
   ],
   apiValue: { dataset: 'ARIA S1 GUNW' },
   date: { start: new Date(2014, 3, 25) },
@@ -50,4 +51,8 @@ export const beta = {
   subtypes: [],
   platformDesc: 'SENTINEL_1_INTERFEROGRAM_BETA_DESC',
   platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
+  frameMap: {
+    'ascending': 'https://d3g9emy65n853h.cloudfront.net/ARIA_S1_GUNW/ascending.geojson',
+    'descending': 'https://d3g9emy65n853h.cloudfront.net/ARIA_S1_GUNW/descending.geojson',
+  }
 };
