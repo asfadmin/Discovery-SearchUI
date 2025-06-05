@@ -26,9 +26,9 @@ export class ProductionConfigSelectorComponent {
   prodConfigControl = new FormControl('');
 
   prodConfigs: prodConfig[] = [
-    {value: 'Production', viewValue: 'Production'},
-    {value: 'Urgent Response', viewValue: 'Urgent Response'},
-    {value: 'Science On-Demand', viewValue: 'Science On-Demand'},
+    {value: 'PR', viewValue: 'Production'},
+    {value: 'UR', viewValue: 'Urgent Response'},
+    {value: 'OD', viewValue: 'Science On-Demand'},
   ];
   private subs: SubSink = new SubSink();
 

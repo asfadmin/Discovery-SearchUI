@@ -38,7 +38,7 @@ export class PropertyService {
     let possibleTypes = [];
 
     if(datasetPropertyKey.includes('polarization')) {
-        possibleTypes = (possibleValuesStr || '').split(',').map(x => x.replace('-',','));
+        possibleTypes = (possibleValuesStr || '').split(',').map(x => x.replaceAll('-',','));
     } else {
         possibleTypes = (possibleValuesStr || '').split(',');
 

@@ -43,7 +43,7 @@ export const nisar = {
     "HH",
     "HH,HV",
     "HH,VV",
-    "HH,HV,VV,VH",
+    "HH,HV,VH,VV",
     "VV",
     "VV,VH",
     "RH,RV",
@@ -52,7 +52,8 @@ export const nisar = {
   sidepolarizations: [
     "HH",
     "HH,HV",
-    "HH,HV,VV,VH",
+    "HH,HV,VH,VV",
+    // "HH,HV,VV,VH",
     "VV",
     "VV,VH",
     "RH,RV",
