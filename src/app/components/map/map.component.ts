@@ -211,6 +211,7 @@ export class MapComponent implements OnInit, OnDestroy  {
         }
         else if(enabled) {
           this.mapService.setFrameSelectionActive(true, dataset.frameMap.ascending);
+          this.store$.dispatch(new mapStore.SetMapInteractionMode(models.MapInteractionModeType.NONE)); // disable so we can actually pick a frame
         }
         else if(!enabled) {
           this.mapService.setFrameSelectionActive(false);

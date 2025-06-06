@@ -12,7 +12,7 @@ import Point from 'ol/geom/Point';
 import { OverviewMap, ScaleLine } from 'ol/control';
 
 import { click, pointerMove } from 'ol/events/condition';
-import Select from 'ol/interaction/Select';
+import Select, { SelectEvent } from 'ol/interaction/Select';
 
 import { WktService } from '../wkt.service';
 import { DrawService } from './draw.service';
@@ -111,7 +111,14 @@ export class MapService implements OnDestroy {
 
   private selectClick = new Select({
     condition: click,
-    style: polygonStyle.hidden,
+    style: function(feature) {
+      if(feature.get('dir')){ // only frame overlay has this defined
+        return polygonStyle.selected
+      }
+      else {
+        return polygonStyle.hidden
+      }
+    },
     layers: l => l.get('selectable')
   });
 
@@ -366,7 +373,15 @@ export class MapService implements OnDestroy {
 
   public setFrameSelectionActive(active: boolean, url ?: string) {
     if(!active) {
-      this.frameSelectionOverlay.setSource(null);
+      this.frameSelectionOverlay?.setSource(null);
+      this.selectClick?.getFeatures().clear();
+      this.polygonLayer?.setVisible(true) // disable the polygons of scenes
+      this.browseImageLayer?.setVisible(true)
+      this.selectedLayer?.setVisible(true)
+      if(this.selectedSource.getFeatures()[0]?.get('dir')) {
+        this.selectedSource.clear();
+      }
+
       return
     }
     const source = new VectorSource({
@@ -383,6 +398,13 @@ export class MapService implements OnDestroy {
           color: 'black',
         })
       })})
+    this.frameSelectionOverlay.set('selectable', 'true');
+    this.frameSelectionOverlay.set('frameOverlay', 'true');
+
+    this.polygonLayer.setVisible(false) // disable the polygons of scenes
+    this.browseImageLayer.setVisible(false)
+    this.selectedLayer.setVisible(false)
+
   }
 
   public setDrawMode(mode: models.MapDrawModeType): void {
@@ -393,6 +415,8 @@ export class MapService implements OnDestroy {
     this.drawService.clear();
     this.clearFocusedScene();
     this.clearSelectedScene();
+    this.frameSelectionOverlay.setSource(null);
+
   }
 
   public setOverviewMap(open: boolean) {
@@ -535,7 +559,18 @@ export class MapService implements OnDestroy {
       this.onMapReady(this.map);
     });
   }
-
+  private handleSelect(e: SelectEvent) {
+      // only do this for the frame selector
+      if(e.target.getFeatures().getArray()[0]?.get('dir')) {
+        this.selectedSource.clear();
+        this.selectedSource.addFeature(e.selected[0]) // handle multiple things here.
+        console.log(`Path selected: ${e.target.getFeatures().getArray()[0].get('path')}`)
+      } else {
+        e.target.getFeatures().forEach(
+          feature => this.newSelectedScene$.next(feature.get('filename'))
+        );
+      }
+  }
   private createNewMap(overlay): Map {
     this.overviewMap = new OverviewMap({
       layers: [this.mapView.layer],
@@ -570,12 +605,7 @@ export class MapService implements OnDestroy {
     newMap.addInteraction(this.selectHover);
     newMap.addInteraction(this.selectSarviewEventHover);
     this.selectClick.on('select', e => {
-      // netcdf-layer
-      // if (this.drawService.in)
-      this.timeseriesPixelSelected$.emit(null)
-      e.target.getFeatures().forEach(
-        feature => this.newSelectedScene$.next(feature.get('filename'))
-      );
+      this.handleSelect(e);
     });
 
     this.timeseriesClick.on('select', e => {
