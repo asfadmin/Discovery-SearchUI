@@ -67,6 +67,7 @@ export class MapService implements OnDestroy {
   private polygonLayer: VectorLayer<VectorSource>;
   private sarviewsEventsLayer: VectorLayer<VectorSource>;
   public displacmentLayer: VectorLayer<VectorSource>;
+  public frameSelectionOverlay: VectorLayer<VectorSource> = new VectorLayer();
   private browseImageLayer: Layer;
 
   private gridLinesVisible: boolean;
@@ -152,6 +153,7 @@ export class MapService implements OnDestroy {
     style: null,
     layers: l => l?.get('selectable_events') || false,
   });
+
 
   private selectedSource = new VectorSource({
     wrapX: models.mapOptions.wrapX
@@ -362,6 +364,27 @@ export class MapService implements OnDestroy {
     this.map = this.updatedMap();
   }
 
+  public setFrameSelectionActive(active: boolean, url ?: string) {
+    if(!active) {
+      this.frameSelectionOverlay.setSource(null);
+      return
+    }
+    const source = new VectorSource({
+      url,
+      format: new GeoJSON({})
+    })
+    this.frameSelectionOverlay.setSource(source);
+    this.frameSelectionOverlay.setStyle(function (_feature, _resolution) {
+      return new Style({
+        fill: new Fill({
+          color: '#FFFFFF33',
+        }),
+        stroke: new Stroke({
+          color: 'black',
+        })
+      })})
+  }
+
   public setDrawMode(mode: models.MapDrawModeType): void {
     this.drawService.setDrawMode(this.map, mode);
   }
@@ -532,7 +555,8 @@ export class MapService implements OnDestroy {
         this.mapView?.gridlines,
         this.pinnedProducts,
         this.priorityOverview,
-        this.displacementOverview
+        this.displacementOverview,
+        this.frameSelectionOverlay,
       ],
       target: 'map',
       view: this.mapView.view,

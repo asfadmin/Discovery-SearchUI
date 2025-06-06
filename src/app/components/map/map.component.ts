@@ -17,6 +17,7 @@ import * as scenesStore from '@store/scenes';
 import * as searchStore from '@store/search';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
+import * as filtersStore from '@store/filters';
 
 import * as models from '@models';
 import {CMRProduct, SarviewsEvent} from '@models';
@@ -198,8 +199,22 @@ export class MapComponent implements OnInit, OnDestroy  {
     );
 
     this.subs.add(
-      this.store$.select(uiStore.getIsFrameSelectionEnabled).subscribe(enabled => {
-        console.log(enabled)
+      combineLatest([
+        this.store$.select(uiStore.getIsFrameSelectionEnabled),
+        this.store$.select(filtersStore.getSelectedDataset),
+        this.store$.select(filtersStore.getFlightDirections)
+      ]).subscribe(([enabled, dataset]) => {
+        if(enabled && !dataset.properties.find((a) => a === models.Props.FRAME_ORDERING)) {
+          // this dataset doesn't support frame ordering, disable
+          this.store$.dispatch(new uiStore.SetFrameSelection(false))
+          this.mapService.setFrameSelectionActive(false);
+        }
+        else if(enabled) {
+          this.mapService.setFrameSelectionActive(true, dataset.frameMap.ascending);
+        }
+        else if(!enabled) {
+          this.mapService.setFrameSelectionActive(false);
+        }
       })
     )
 
