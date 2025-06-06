@@ -17,7 +17,7 @@ export class ProductService {
             if (g.b.length > 0) {
               browses = g.b.map(
                 (b: any): string => {
-                  return (b.replace('{gn}', g.gn));
+                  return (b.replaceAll('{gn}', g.gn));
                 });
             } else {
               browses = ['/assets/no-browse.png'];
@@ -34,8 +34,8 @@ export class ProductService {
             browses = [browses[0]]; // only show the first browse for displacement for now
          }
 
-        const thumbnail = (g.t ? g.t.replace('{gn}', g.gn) : g.t) || (!browses[0].includes('no-browse') ? browses[0].replace('{gn}', g.gn) : '/assets/no-thumb.png');
-        let filename = g.fn.replace('{gn}', g.gn);
+        const thumbnail = (g.t ? g.t.replaceAll('{gn}', g.gn) : g.t) || (!browses[0].includes('no-browse') ? browses[0].replaceAll('{gn}', g.gn) : '/assets/no-thumb.png');
+        let filename = g.fn.replaceAll('{gn}', g.gn);
         if ( !filename.includes(g.gn)) {
           filename = `${g.gn}-${filename}`;
         }
@@ -43,13 +43,13 @@ export class ProductService {
           name: g.gn,
           productTypeDisplay: g.ptd || g.gn,
           file: filename,
-          id: g.pid.replace('{gn}', g.gn),
-          downloadUrl: g.du.replace('{gn}', g.gn),
+          id: g.pid.replaceAll('{gn}', g.gn),
+          downloadUrl: g.du.replaceAll('{gn}', g.gn),
           bytes: g.s * 1000000,
           dataset: (g.d === 'STS-59' || g.d === 'STS-68') ? 'SIR-C' : g.d,
           browses,
           thumbnail,
-          groupId: g.gid.replace('{gn}', g.gn),
+          groupId: g.gid.replaceAll('{gn}', g.gn),
           isUnzippedFile: false,
           isDummyProduct: false,
           metadata: this.getMetadataFrom(g)
