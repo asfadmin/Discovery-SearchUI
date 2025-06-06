@@ -441,7 +441,9 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         sidePolarizations: [],
         jointObservation: false,
         instrument: [],
-        rangeBandwidth: []
+        rangeBandwidth: [],
+        scienceProduct: [],
+        productionConfig: null,
 
       };
     }
