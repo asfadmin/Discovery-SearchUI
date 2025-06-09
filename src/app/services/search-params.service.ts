@@ -266,6 +266,11 @@ export class SearchParamsService {
   private maxResults$ = this.store$.select(filterStore.getMaxSearchResults).pipe(
     map(maxResults => ({ maxResults }))
   );
+
+  private sciProducts$ = this.store$.select(filterStore.getScienceProduct).pipe(
+    map(sciProducts => ({processingLevel: sciProducts.join(',')}))
+  )
+
   private filterSearchParams$ = combineLatest([
     this.searchPolygon$,
     this.selectedDataset$,
@@ -289,6 +294,7 @@ export class SearchParamsService {
     this.burstParams$,
     this.operaBurstParams$,
     // this.operaCalibrationParam$,
+    this.sciProducts$,
     this.groupID$]
   ).pipe(
     map((params: any[]) => params
