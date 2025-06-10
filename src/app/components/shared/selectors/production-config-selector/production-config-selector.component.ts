@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
@@ -22,26 +22,33 @@ interface prodConfig {
   imports: [MatFormFieldModule, MatSelectModule, FormsModule, ReactiveFormsModule, MatInputModule, SharedModule],
 })
 
-export class ProductionConfigSelectorComponent {
+export class ProductionConfigSelectorComponent implements OnInit, OnDestroy {
   prodConfigControl = new FormControl('');
+  public selectedConfig: string[] = ['PR']; // Default selected config
 
   prodConfigs: prodConfig[] = [
     {value: 'PR', viewValue: 'PRODUCTION'},
     {value: 'UR', viewValue: 'URGENT_RESPONSE'},
     {value: 'OD', viewValue: 'CUSTOM_VALIDATION'},
   ];
+
+
   private subs: SubSink = new SubSink();
 
   public constructor(private store$: Store<AppState>) {}
 
   public ngOnInit(): void {
+    this.onProductionConfigSelect(this.selectedConfig);
+
     this.subs.add(this.store$.select(filtersStore.getProductionConfig).subscribe(value => {
       this.prodConfigControl.setValue(value);
     }))
   }
+
   public onProductionConfigSelect(value) {
     this.store$.dispatch(new filtersStore.setProductionConfig(value));
   }
+
   public ngOnDestroy(): void {
     this.subs.unsubscribe()
   }
