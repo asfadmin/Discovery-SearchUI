@@ -1,11 +1,15 @@
-<!--<h4>{{ 'PRODUCTION_CONFIGURATION' | translate }}</h4>-->
-<mat-form-field>
+<mat-form-field appearance="fill">
   <mat-label>{{ 'PRODUCTION_CONFIGURATION' | translate }}</mat-label>
-  <mat-select [formControl]="prodConfigControl" class="sci-prod-select" (selectionChange)="onProductionConfigSelect($event.value)">
-    <mat-option>-- None --</mat-option>
+  <mat-select [formControl]="prodConfigControl" multiple
+              [(ngModel)]="selectedConfig"
+              class="sci-prod-select"
+              (selectionChange)="onProductionConfigSelect($event.value)">
     @for (prodConfig of prodConfigs; track prodConfig) {
         <mat-option [value]="prodConfig.value">{{prodConfig.viewValue | translate }}</mat-option>
     }
-    </mat-select>
+  </mat-select>
   <mat-hint>{{ prodConfigControl.value }}</mat-hint>
 </mat-form-field>
+
+
+
