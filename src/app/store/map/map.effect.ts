@@ -83,7 +83,7 @@ export class MapEffects {
       || dataset?.id === 'UAVSAR'
       || dataset?.id === 'OPERA-S1';
     }
-    return searchType !== SearchType.BASELINE && searchType !== SearchType.SBAS;
+    return searchType !== SearchType.BASELINE && searchType !== SearchType.SBAS && searchType !== SearchType.DISPLACEMENT;
   }),
     map(([[selectedSceneID, _], __]) => selectedSceneID),
     filter(sceneID => !!sceneID),
