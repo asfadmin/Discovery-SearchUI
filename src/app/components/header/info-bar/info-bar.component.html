@@ -61,12 +61,14 @@
     <span *ngIf="jointObservation">
         <b>{{'DATA_TYPE' | translate }}:</b> {{'JOINT_OBSERVATION_ONLY' | translate }}
     </span>
-    <span *ngIf="scienceProducts.length">
-        <b>{{'SCIENCE_PRODUCT' | translate }}:</b> {{scienceProducts | join : ', '}}
-    </span>
-    <span *ngIf="productionConfig">
-        <b>{{'PRODUCTION_CONFIGURATION' | translate }}:</b> {{productionConfig}}
-    </span>
+    @if(dataset == 'NISAR') {
+      <span *ngIf="scienceProducts.length">
+          <b>{{'SCIENCE_PRODUCT' | translate }}:</b> {{scienceProducts | join : ', '}}
+      </span>
+      <span *ngIf="productionConfig.length">
+          <b>{{'PRODUCTION_CONFIGURATION' | translate }}:</b> {{productionConfig}}
+      </span>
+    }
     <span *ngIf="flightDirections.length">
       <b>{{'FLIGHT_DIR' | translate  }}:</b> {{flightDirections}}
     </span>
