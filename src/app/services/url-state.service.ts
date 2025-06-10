@@ -267,7 +267,6 @@ export class UrlStateService {
     ];
   }
 
-
   private eventMonitorParameters(): models.UrlParameter[] {
     return [{
       name: 'eventID',
@@ -654,6 +653,7 @@ export class UrlStateService {
       {
         name: 'prodConfig',
         source: this.store$.select(filterStore.getProductionConfig).pipe(
+          map(configs => configs.join(',')),
           map(prodConfig => ({ prodConfig }))
         ),
         loader: this.loadProduction
@@ -1118,8 +1118,9 @@ export class UrlStateService {
     return new filterStore.setScienceProduct(sciProducts);
   };
    private loadProduction = (productionStr: string): Action => {
-
-    return new filterStore.setProductionConfig(productionStr);
+     const loadProducts = productionStr
+       .split(',')
+    return new filterStore.setProductionConfig(loadProducts);
   };
   private loadJointObservation = (observationStr: string): Action => {
     return new filterStore.setJointObservation(observationStr === 'true');

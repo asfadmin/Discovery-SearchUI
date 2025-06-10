@@ -23,7 +23,7 @@ interface prodConfig {
 })
 
 export class ProductionConfigSelectorComponent implements OnInit, OnDestroy {
-  prodConfigControl = new FormControl('');
+  prodConfigControl = new FormControl(['']);
   public selectedConfig: string[] = ['PR']; // Default selected config
 
   prodConfigs: prodConfig[] = [

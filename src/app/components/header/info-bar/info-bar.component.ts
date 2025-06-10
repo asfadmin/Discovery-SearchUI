@@ -58,7 +58,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public frameCoverage: string[];
   public jointObservation: boolean;
   public scienceProducts: string[];
-  public productionConfig: string;
+  public productionConfig: string[];
   private subs = new SubSink();
 
   public hyp3Default = this.hyp3.isDefaultApi();
