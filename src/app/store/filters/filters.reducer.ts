@@ -97,6 +97,7 @@ export const initState: FiltersState = {
     start: null,
     end: null
   },
+
   shouldOmitSearchPolygon: false,
   listSearchMode: models.ListSearchType.SCENE,
   searchList: [],
@@ -146,7 +147,7 @@ export const initState: FiltersState = {
   rangeBandwidth: [],
   instrument: [],
   scienceProduct: [],
-  productionConfig: [],
+  productionConfig: ['PR'],
 
   groupID: null,
   shortNames: []
