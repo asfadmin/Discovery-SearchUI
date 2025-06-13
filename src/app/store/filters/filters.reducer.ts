@@ -147,7 +147,7 @@ export const initState: FiltersState = {
   rangeBandwidth: [],
   instrument: [],
   scienceProduct: [],
-  productionConfig: ['PR'],
+  productionConfig: [],
 
   groupID: null,
   shortNames: []

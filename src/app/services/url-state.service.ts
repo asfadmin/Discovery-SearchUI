@@ -43,10 +43,19 @@ export class UrlStateService {
 
   private kioskMode = false; // for opera displacement
   private displacementHostNames = [ 'displacement.asf.alaska.edu', 'displacement-test.asf.alaska.edu'];
+  public isNISARSearch$ = false; // default to false, will be set to true if NISAR search is detected
 
   public isDefaultSearch$ = this.activatedRoute.queryParams.pipe( map(params => {
     const keys = Object.keys(params)
 
+    const hasDataset = 'dataset' in params;
+    console.log('hasDataset:', hasDataset);
+    if (hasDataset) {
+      this.isNISARSearch$ = (params.dataset === 'NISAR')
+    } else {
+      this.isNISARSearch$ = false;
+    }
+    console.log('isNISARSearch:', this.isNISARSearch$);
     const DefaultnonGEO = 'searchType' in params && keys.length <= 1;
     const defaultGEO = keys.length === 0;
 
@@ -100,6 +109,10 @@ export class UrlStateService {
 
       return res;
     }, {});
+
+    console.log('this.urlParamNames:', this.urlParamNames);
+    console.log('this.urlParams', this.urlParams);
+
     this.updateShouldSearch();
 
   }
@@ -131,9 +144,12 @@ export class UrlStateService {
 
     const paramsWithValues = Object.keys(params)
       .filter(key => params[key] !== '' && params[key] !== this.defaultbooleanParams?.[key])
+      .filter(key => ((key !== 'prodConfig' && params['dataset'] !== 'NISAR') || params['dataset'] === 'NISAR'))
       .reduce((res, key) => (res[key] = params[key], res), {});
 
-      this.params = paramsWithValues;
+    this.params = paramsWithValues;
+
+    console.log('updateRouteWithParams:', this.params);
 
     this.router.navigate(['.'], {
       queryParams: this.params,
@@ -653,7 +669,7 @@ export class UrlStateService {
       {
         name: 'prodConfig',
         source: this.store$.select(filterStore.getProductionConfig).pipe(
-          map(configs => configs.join(',')),
+          map(prodConfig => prodConfig.join(',')),
           map(prodConfig => ({ prodConfig }))
         ),
         loader: this.loadProduction
@@ -1119,7 +1135,10 @@ export class UrlStateService {
   };
    private loadProduction = (productionStr: string): Action => {
      const loadProducts = productionStr
-       .split(',')
+       .split(',');
+     if (loadProducts.length === 0) {
+
+     }
     return new filterStore.setProductionConfig(loadProducts);
   };
   private loadJointObservation = (observationStr: string): Action => {
