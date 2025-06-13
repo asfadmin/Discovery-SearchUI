@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { WktService } from '@services';
-import { Extent } from 'ol/extent';
+import { applyTransform, Extent } from 'ol/extent';
 import Feature from 'ol/Feature';
+import KML from 'ol/format/KML';
 import Geometry from 'ol/geom/Geometry';
 import Polygon from 'ol/geom/Polygon';
 import ImageLayer from 'ol/layer/Image';
 import Static from 'ol/source/ImageStatic';
-
+// import * as olExtent from 'ol/extent';
 import { Coordinate } from 'ol/coordinate';
 import MultiPolygon from 'ol/geom/MultiPolygon';
 import { PinnedProduct } from './browse-map.service';
@@ -23,7 +24,15 @@ import { AppState } from '@store';
 import GeoTIFFSource from 'ol/source/GeoTIFF';
 import TileLayer from 'ol/layer/WebGLTile.js';
 import ImageSource from 'ol/source/Image';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
+// import { Overlay } from 'ol';
+import { Icon, Style } from 'ol/style';
+import { ImageStatic } from 'ol/source';
+import { getTransform, Projection } from 'ol/proj';
 
+// import { HttpClient } from '@angular/common/http';
+// import { CustomProjection } from './map/views';
 @Injectable({
   providedIn: 'root'
 })
@@ -66,8 +75,11 @@ export class BrowseOverlayService {
     }),
   );
 
-  constructor(private wktService: WktService,
-    private store$: Store<AppState>) { }
+  constructor(
+    private wktService: WktService,
+    private store$: Store<AppState>,
+    // private http: HttpClient,
+) { }
 
   private createImageSource(url: string, extent: Extent) {
     return new Static({
@@ -184,6 +196,140 @@ export class BrowseOverlayService {
       (geom as Polygon).setCoordinates([this.wktService.fixAntimeridianCoordinates(polygonCoordinates)]);
     }
   }
+
+  public getKMLLayer(product: models.CMRProduct, png_url: string, wkt: string, className: string = 'ol-layer', _layer_id: string = '') {
+    function _substitute_url(url: string) {
+        console.log(url)
+        // https://openlayers.org/en/v7.5.2/apidoc/module-ol_format_KML-KML.html
+        // For `iconUrlFunction`, kmls are formatted without url of image
+        return png_url
+        // return null
+
+    }
+
+
+    const feature = this.wktService.wktToFeature(wkt, 'EPSG:4326');
+    const feature2 = this.wktService.wktToFeature(wkt, 'EPSG:3857');
+    
+    const polygon = this.getPolygonFromFeature(feature, wkt);
+    const polygon2 = this.getPolygonFromFeature(feature2, wkt);
+
+//     let proj = new CustomProjection(
+//     'EPSG:27700',
+//   '+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 ' +
+//     '+x_0=400000 +y_0=-100000 +ellps=airy ' +
+//     '+towgs84=446.448,-125.157,542.06,0.15,0.247,0.842,-20.489 ' +
+//     '+units=m +no_defs',
+//         polygon.getExtent()
+//     )
+    // return Imagelayer;
+    let proj = new Projection({code: 'EPSG:4326', 'metersPerUnit': 5, "axisOrientation": 'nwu', })
+    
+    // let l = polygon.getArea()
+    // left
+    // bottom
+    // right
+    // top
+
+    let fromLonLat = getTransform(proj, 'EPSG:3857');
+    let extent = polygon.getExtent()
+    // olExtent.getlef
+    // let flatcoords = polygon.getCoordinates()[0]
+
+    console.log(extent)
+    console.log(polygon.getCoordinates())
+    // let simped = polygon.getSimplifiedGeometry(0.01).getCoordinates()[0]
+    // simped.pop()
+    // extent[2] = extent[2] - 5/2  
+
+    let img = new ImageLayer({
+        // source: static_image_source,
+        extent: polygon2.getExtent(),
+        
+    })
+    
+    let coords = polygon.getCoordinates()[0]
+    let ext = applyTransform([...coords[1], ...coords[3]], fromLonLat, undefined    )
+    let static_image_source = new ImageStatic({
+        url: png_url,
+        projection: 'EPSG: 4326',
+        // imageExtent: img.getExtent(),
+        imageExtent: ext
+        // imageExtent: extent.map(f => f),
+        // imageExtent: olExtent.boundingExtent(
+        //     polygon.getCoordinates()[0].reverse()
+        // ),
+        // imageSize: [2018, 1845]
+    })
+    
+
+    
+    img.setSource(static_image_source)
+    return img;
+    const iconStyle = new Style({
+    image: new Icon({
+        // anchor: [0.5, 46],
+        anchorXUnits: 'pixels',
+        anchorYUnits: 'pixels',
+        src: png_url,
+        scale: 200
+    }),
+
+    });
+
+    feature.setStyle(iconStyle)
+    let source = new VectorSource({
+        wrapX: models.mapOptions.wrapX,
+        features: [feature]
+        });
+    const vecLayer = new VectorLayer({
+        "extent": polygon.getExtent(),
+        source,
+        "zIndex": 0,
+        opacity: 1.0,
+        className,
+        // style: iconStyle
+    })
+    // vecLayer.setStyle(iconStyle)
+    return vecLayer
+    // function loader_function(extent, resolution, projection, success, failure) {
+    //     const proj = projection.getCode();
+        
+    //     const url = 'https://ahocevar.com/geoserver/wfs?service=WFS&' +
+    //     'version=1.1.0&request=GetFeature&typename=osm:water_areas&' +
+    //     'outputFormat=application/json&srsname=' + proj + '&' +
+    //     'bbox=' + extent.join(',') + ',' + proj;
+        
+    //     const xhr = new XMLHttpRequest();
+    //     xhr.open('GET', url);
+    //     const onError = function() {
+    //     vectorSource.removeLoadedExtent(extent);
+    //     failure();
+    //     }
+    //     xhr.onerror = onError;
+    //     xhr.onload = function() {
+    //     if (xhr.status == 200) {
+    //     const features = vectorSource.getFormat().readFeatures(xhr.responseText);
+    //     vectorSource.addFeatures(features);
+    //     success(features);
+    //     } else {
+    //     onError();
+    //     }
+    //     }
+    //     xhr.send();
+    // }
+    let kml = product.metadata.nisar.additionalUrls.find(https_url => https_url.endsWith('.kml'))
+
+    let vector = new VectorLayer({
+      source: new VectorSource({
+        url: kml,
+        // loader: loader_function,
+        format: new KML({iconUrlFunction: _substitute_url}),
+      }),
+    });
+    return vector;
+  }
+
 
   public setPinnedProducts(pinnedProducts: {[product_id in string]: PinnedProduct}, productLayerGroup: LayerGroup) {
 

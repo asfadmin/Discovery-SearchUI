@@ -744,7 +744,7 @@ export class MapService implements OnDestroy {
 
   }
 
-  public setSelectedBrowse(url: string, wkt: string) {
+  public setSelectedBrowse(url: string, wkt: string, _scene: models.CMRProduct = null) {
     if (!!this.browseImageLayer) {
       this.map.removeLayer(this.browseImageLayer);
     }
@@ -759,7 +759,12 @@ export class MapService implements OnDestroy {
           this.browseImageLayer = this.browseOverlayService.createImageLayer(url, wkt, 'ol-layer', 'current-overlay');
           this.map.addLayer(this.browseImageLayer);
         })
-      } else {
+      } 
+    //   else if(url.toLowerCase().includes('nisar')) {
+    //     this.browseImageLayer = this.browseOverlayService.getKMLLayer(scene, url, wkt, 'ol-layer', 'current-overlay');
+    //     this.map.addLayer(this.browseImageLayer);
+    //   } 
+      else {
         this.browseImageLayer = this.browseOverlayService.createNormalImageLayer(url, wkt, 'ol-layer', 'current-overlay');
         this.map.addLayer(this.browseImageLayer);
       }
