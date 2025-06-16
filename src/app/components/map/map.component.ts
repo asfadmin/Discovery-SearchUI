@@ -201,9 +201,10 @@ export class MapComponent implements OnInit, OnDestroy  {
     this.subs.add(
       combineLatest([
         this.store$.select(uiStore.getIsFrameSelectionEnabled),
-        this.store$.select(filtersStore.getSelectedDataset),
+        this.store$.select(filtersStore.getSelectedDatasetId),
         this.store$.select(filtersStore.getFlightDirections)
-      ]).subscribe(([enabled, dataset]) => {
+      ]).subscribe(([enabled, datasetId, _directions]) => {
+        let dataset = models.datasets[datasetId];
         if(enabled && !dataset.properties.find((a) => a === models.Props.FRAME_ORDERING)) {
           // this dataset doesn't support frame ordering, disable
           this.store$.dispatch(new uiStore.SetFrameSelection(false))
@@ -215,6 +216,17 @@ export class MapComponent implements OnInit, OnDestroy  {
         }
         else if(!enabled) {
           this.mapService.setFrameSelectionActive(false);
+        }
+      })
+    )
+
+    this.subs.add(
+      combineLatest([
+        this.store$.select(uiStore.getIsFrameSelectionEnabled),
+        this.store$.select(filtersStore.getPathRange), // TODO: change this out for frame when the geojson gets updated?
+      ]).subscribe(([enabled, path]) => {
+        if(enabled) {
+          this.mapService.filterFrameOverlay(path)
         }
       })
     )

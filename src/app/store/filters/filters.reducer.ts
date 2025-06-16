@@ -1,8 +1,9 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { createFeatureSelector, createSelector} from '@ngrx/store';
 
 import { FiltersActionType, FiltersActions } from './filters.action';
 import * as models from '@models';
 import { EventProductSort, EventProductSortDirection, EventProductSortType, hyp3JobTypes, SBASOverlap } from '@models';
+import {  createSimpleArraySelector } from '../selectors';
 
 
 export interface FiltersState {
@@ -779,6 +780,8 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
   }
 }
 
+
+
 export const getFiltersState = createFeatureSelector<FiltersState>('filters');
 
 export const getDateRange = createSelector(
@@ -896,9 +899,9 @@ export const getSubtypes = createSelector(
   (state: FiltersState) => state.subtypes
 );
 
-export const getFlightDirections = createSelector(
+export const getFlightDirections = createSimpleArraySelector(
   getFiltersState,
-  (state: FiltersState) => Array.from(state.flightDirections)
+  (state: FiltersState): models.FlightDirection[] => [...state.flightDirections]
 );
 
 export const getMissionsByDataset = createSelector(

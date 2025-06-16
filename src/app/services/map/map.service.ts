@@ -402,8 +402,16 @@ export class MapService implements OnDestroy {
     this.frameSelectionOverlay.set('frameOverlay', 'true');
 
     this.polygonLayer.setVisible(false) // disable the polygons of scenes
-    this.browseImageLayer.setVisible(false)
+    this.browseImageLayer?.setVisible(false)
     this.selectedLayer.setVisible(false)
+
+    }
+  public filterFrameOverlay(frame: models.Range<number | null>) {
+    this.frameSelectionOverlay?.getSource()?.getFeatures().forEach(a => {
+      if(a.get('path') !== frame.start) {
+        a.setStyle(new Style({}));
+      }
+    })
 
   }
 
