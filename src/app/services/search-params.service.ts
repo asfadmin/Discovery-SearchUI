@@ -206,7 +206,7 @@ export class SearchParamsService {
   );
 
   private productionConfig$ = this.store$.select(filterStore.getProductionConfig).pipe(
-    map((config) => ({ productionconfiguration: config })
+    map((config) => ({ productionconfiguration: config.join(',') })
   )
   );
 
