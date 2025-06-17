@@ -50,6 +50,7 @@ import { MultiPolygon } from 'ol/geom';
 import GeoJSON from 'ol/format/GeoJSON.js';
 import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
+import VectorImageLayer from 'ol/layer/VectorImage';
 
 @Injectable({
   providedIn: 'root'
@@ -67,7 +68,7 @@ export class MapService implements OnDestroy {
   private polygonLayer: VectorLayer<VectorSource>;
   private sarviewsEventsLayer: VectorLayer<VectorSource>;
   public displacmentLayer: VectorLayer<VectorSource>;
-  public frameSelectionOverlay: VectorLayer<VectorSource> = new VectorLayer();
+  public frameSelectionOverlay: VectorImageLayer<VectorSource> = new VectorImageLayer();
   private browseImageLayer: Layer;
 
   private gridLinesVisible: boolean;
