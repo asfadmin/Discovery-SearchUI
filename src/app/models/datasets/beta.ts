@@ -9,6 +9,7 @@ export const beta = {
     Props.DATE,
     Props.BEAM_MODE,
     Props.PATH,
+    Props.FRAME,
     Props.FLIGHT_DIRECTION,
     Props.POLARIZATION,
     Props.MISSION_NAME,
