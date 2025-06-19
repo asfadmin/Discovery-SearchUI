@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { WktService } from '@services';
-import { applyTransform, Extent } from 'ol/extent';
+import { Extent, getCenter } from 'ol/extent';
 import Feature from 'ol/Feature';
-import KML from 'ol/format/KML';
 import Geometry from 'ol/geom/Geometry';
 import Polygon from 'ol/geom/Polygon';
 import ImageLayer from 'ol/layer/Image';
 import Static from 'ol/source/ImageStatic';
 // import * as olExtent from 'ol/extent';
-import { Coordinate } from 'ol/coordinate';
+import { Coordinate, rotate } from 'ol/coordinate';
 import MultiPolygon from 'ol/geom/MultiPolygon';
 import { PinnedProduct } from './browse-map.service';
 import LayerGroup from 'ol/layer/Group';
@@ -27,9 +26,9 @@ import ImageSource from 'ol/source/Image';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 // import { Overlay } from 'ol';
-import { Icon, Style } from 'ol/style';
-import { ImageStatic } from 'ol/source';
-import { getTransform, Projection } from 'ol/proj';
+import { Icon, Stroke, Style } from 'ol/style';
+import { Point } from 'ol/geom';
+import { Projection, addCoordinateTransforms, addProjection, get as getProjection, transform} from 'ol/proj';
 
 // import { HttpClient } from '@angular/common/http';
 // import { CustomProjection } from './map/views';
@@ -197,23 +196,75 @@ export class BrowseOverlayService {
     }
   }
 
-  public getKMLLayer(product: models.CMRProduct, png_url: string, wkt: string, className: string = 'ol-layer', _layer_id: string = '') {
-    function _substitute_url(url: string) {
-        console.log(url)
-        // https://openlayers.org/en/v7.5.2/apidoc/module-ol_format_KML-KML.html
-        // For `iconUrlFunction`, kmls are formatted without url of image
-        return png_url
-        // return null
+  public getKMLLayer(_product: models.CMRProduct, _png_url: string, wkt: string, className: string = 'ol-layer', _layer_id: string = '') {
+    // function _substitute_url(url: string) {
+    //     console.log(url)
+    //     // https://openlayers.org/en/v7.5.2/apidoc/module-ol_format_KML-KML.html
+    //     // For `iconUrlFunction`, kmls are formatted without url of image
+    //     return png_url
+    //     // return null
 
-    }
+    // }
 
 
-    const feature = this.wktService.wktToFeature(wkt, 'EPSG:4326');
-    const feature2 = this.wktService.wktToFeature(wkt, 'EPSG:3857');
+    // const feature = this.wktService.wktToFeature(wkt, 'EPSG:4326');
+    const feature = this.wktService.wktToFeature(wkt, 'EPSG:3857');
     
-    const polygon = this.getPolygonFromFeature(feature, wkt);
-    const polygon2 = this.getPolygonFromFeature(feature2, wkt);
+    // const polygon = this.getPolygonFromFeature(feature, wkt);
+    // const polygon2 = this.getPolygonFromFeature(feature2, wkt);
+    // let anchor = this.getPolygonFromFeature(feature, wkt).getCoordinates()[0][0]
+    const iconStyle = new Style({
+    image: new Icon({
+        anchorXUnits: 'pixels',
+        anchorYUnits: 'pixels',
+        
+        // src: 'https://avatars.githubusercontent.com/u/1342004?s=48&v=4',
+        src: _png_url,
+        scale: 0.05,
+        // 'anchorOrigin': 'bottom-left',
+        
+    }),
 
+    });
+
+
+    const lineStyle = new Style({
+        "stroke": new Stroke({
+            "color": "#00FF00",
+            "width": 10
+        })
+    })
+    feature.setStyle(
+        (_feature)  => {
+        var stringCoords = this.getPolygonFromFeature(feature, wkt).getCoordinates()[0];
+        var coords = stringCoords.slice(-2);
+        if (coords[1][0] == coords[0][0] && coords[1][1] == coords[0][1] && stringCoords.length > 2) {
+            // useful for drawing
+            coords = stringCoords.slice(-3, -1);
+        }
+        // iconStyle.getImage().set
+        iconStyle.setGeometry(new Point(stringCoords[1]));
+        // iconStyle.getImage().setDisplacement(coords[0])
+        iconStyle.getImage().setRotation(
+            Math.atan2(coords[1][0] - coords[0][0], coords[1][1] - coords[0][1])
+            );
+        
+        return [lineStyle, iconStyle];
+        }
+    )
+    let source = new VectorSource({
+        wrapX: models.mapOptions.wrapX,
+        features: [feature]
+        });
+    const vecLayer = new VectorLayer({
+        // "extent": polygon.getExtent(),
+        source,
+        "zIndex": 0,
+        opacity: 1.0,
+        className,
+        // style: iconStyle
+    })
+    return vecLayer
 //     let proj = new CustomProjection(
 //     'EPSG:27700',
 //   '+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 ' +
@@ -223,111 +274,129 @@ export class BrowseOverlayService {
 //         polygon.getExtent()
 //     )
     // return Imagelayer;
-    let proj = new Projection({code: 'EPSG:4326', 'metersPerUnit': 5, "axisOrientation": 'nwu', })
+    // let proj = new Projection({code: 'EPSG:4326', 'metersPerUnit': 5, "axisOrientation": 'nwu', })
     
-    // let l = polygon.getArea()
-    // left
-    // bottom
-    // right
-    // top
+    // // let l = polygon.getArea()
+    // // left
+    // // bottom
+    // // right
+    // // top
 
-    let fromLonLat = getTransform(proj, 'EPSG:3857');
-    let extent = polygon.getExtent()
-    // olExtent.getlef
-    // let flatcoords = polygon.getCoordinates()[0]
+    // let fromLonLat = getTransform(proj, 'EPSG:3857');
+    // let extent = polygon.getExtent()
+    // // olExtent.getlef
+    // // let flatcoords = polygon.getCoordinates()[0]
 
-    console.log(extent)
-    console.log(polygon.getCoordinates())
-    // let simped = polygon.getSimplifiedGeometry(0.01).getCoordinates()[0]
-    // simped.pop()
-    // extent[2] = extent[2] - 5/2  
+    // console.log(extent)
+    // console.log(polygon.getCoordinates())
+    // // let simped = polygon.getSimplifiedGeometry(0.01).getCoordinates()[0]
+    // // simped.pop()
+    // // extent[2] = extent[2] - 5/2  
 
+    let polygon = this.getPolygonFromFeature(feature, wkt)
     let img = new ImageLayer({
         // source: static_image_source,
-        extent: polygon2.getExtent(),
+        extent: polygon.getExtent(),
         
     })
-    
-    let coords = polygon.getCoordinates()[0]
-    let ext = applyTransform([...coords[1], ...coords[3]], fromLonLat, undefined    )
-    let static_image_source = new ImageStatic({
-        url: png_url,
-        projection: 'EPSG: 4326',
+    let rotateProjection = (projection, angle, extent) => {
+    function rotateCoordinate(coordinate, angle, anchor) {
+        var coord = rotate(
+        [coordinate[0] - anchor[0], coordinate[1] - anchor[1]],
+        angle
+        );
+        return [coord[0] + anchor[0], coord[1] + anchor[1]];
+    }
+
+    function rotateTransform(coordinate) {
+        return rotateCoordinate(coordinate, angle, getCenter(extent));
+    }
+
+    function normalTransform(coordinate) {
+        return rotateCoordinate(coordinate, -angle, getCenter(extent));
+    }
+
+    var normalProjection = getProjection(projection);
+
+    var rotatedProjection = new Projection({
+        code:
+        normalProjection.getCode() +
+        ":" +
+        angle.toString() +
+        ":" +
+        extent.toString(),
+        units: normalProjection.getUnits(),
+        extent: extent
+    });
+    addProjection(rotatedProjection);
+
+    addCoordinateTransforms(
+        "EPSG:4326",
+        rotatedProjection,
+        function(coordinate) {
+        return rotateTransform(transform(coordinate, "EPSG:4326", projection));
+        },
+        function(coordinate) {
+        return transform(normalTransform(coordinate), projection, "EPSG:4326");
+        }
+    );
+
+    addCoordinateTransforms(
+        "EPSG:3857",
+        rotatedProjection,
+        function(coordinate) {
+        return rotateTransform(transform(coordinate, "EPSG:3857", projection));
+        },
+        function(coordinate) {
+        return transform(normalTransform(coordinate), projection, "EPSG:3857");
+        }
+    );
+
+    // also set up transforms with any projections defined using proj4
+    // if (typeof proj4 !== "undefined") {
+    //     var projCodes = Object.keys(proj4.defs);
+    //     projCodes.forEach(function(code) {
+    //     var proj4Projection = getProjection(code);
+    //     if (!getTransform(proj4Projection, rotatedProjection)) {
+    //         addCoordinateTransforms(
+    //         proj4Projection,
+    //         rotatedProjection,
+    //         function(coordinate) {
+    //             return rotateTransform(
+    //             transform(coordinate, proj4Projection, projection)
+    //             );
+    //         },
+    //         function(coordinate) {
+    //             return transform(
+    //             normalTransform(coordinate),
+    //             projection,
+    //             proj4Projection
+    //             );
+    //         }
+    //         );
+    //     }
+    //     });
+    // }
+
+    return rotatedProjection;
+    }
+    // let coords = polygon.getCoordinates()[0]
+    // let ext = applyTransform([...coords[1], ...coords[3]], fromLonLat, undefined    )
+    let static_image_source = new Static({
+        url: _png_url,
+        projection: rotateProjection("EPSG:27700", Math.PI / 4, img.getExtent()),
         // imageExtent: img.getExtent(),
-        imageExtent: ext
+        // imageExtent: ext,
         // imageExtent: extent.map(f => f),
         // imageExtent: olExtent.boundingExtent(
         //     polygon.getCoordinates()[0].reverse()
         // ),
         // imageSize: [2018, 1845]
     })
-    
-
-    
     img.setSource(static_image_source)
-    return img;
-    const iconStyle = new Style({
-    image: new Icon({
-        // anchor: [0.5, 46],
-        anchorXUnits: 'pixels',
-        anchorYUnits: 'pixels',
-        src: png_url,
-        scale: 200
-    }),
-
-    });
-
-    feature.setStyle(iconStyle)
-    let source = new VectorSource({
-        wrapX: models.mapOptions.wrapX,
-        features: [feature]
-        });
-    const vecLayer = new VectorLayer({
-        "extent": polygon.getExtent(),
-        source,
-        "zIndex": 0,
-        opacity: 1.0,
-        className,
-        // style: iconStyle
-    })
-    // vecLayer.setStyle(iconStyle)
-    return vecLayer
-    // function loader_function(extent, resolution, projection, success, failure) {
-    //     const proj = projection.getCode();
-        
-    //     const url = 'https://ahocevar.com/geoserver/wfs?service=WFS&' +
-    //     'version=1.1.0&request=GetFeature&typename=osm:water_areas&' +
-    //     'outputFormat=application/json&srsname=' + proj + '&' +
-    //     'bbox=' + extent.join(',') + ',' + proj;
-        
-    //     const xhr = new XMLHttpRequest();
-    //     xhr.open('GET', url);
-    //     const onError = function() {
-    //     vectorSource.removeLoadedExtent(extent);
-    //     failure();
-    //     }
-    //     xhr.onerror = onError;
-    //     xhr.onload = function() {
-    //     if (xhr.status == 200) {
-    //     const features = vectorSource.getFormat().readFeatures(xhr.responseText);
-    //     vectorSource.addFeatures(features);
-    //     success(features);
-    //     } else {
-    //     onError();
-    //     }
-    //     }
-    //     xhr.send();
-    // }
-    let kml = product.metadata.nisar.additionalUrls.find(https_url => https_url.endsWith('.kml'))
-
-    let vector = new VectorLayer({
-      source: new VectorSource({
-        url: kml,
-        // loader: loader_function,
-        format: new KML({iconUrlFunction: _substitute_url}),
-      }),
-    });
-    return vector;
+    return img
+    // img.getSource().getImage()
+    // static_image_source.getImage()
   }
 
 

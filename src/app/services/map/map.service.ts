@@ -761,7 +761,7 @@ export class MapService implements OnDestroy {
         })
       } 
     //   else if(url.toLowerCase().includes('nisar')) {
-    //     this.browseImageLayer = this.browseOverlayService.getKMLLayer(scene, url, wkt, 'ol-layer', 'current-overlay');
+    //     this.browseImageLayer = this.browseOverlayService.getKMLLayer(_scene, url, wkt, 'ol-layer', 'current-overlay');
     //     this.map.addLayer(this.browseImageLayer);
     //   } 
       else {
