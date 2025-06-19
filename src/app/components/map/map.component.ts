@@ -202,8 +202,9 @@ export class MapComponent implements OnInit, OnDestroy  {
       combineLatest([
         this.store$.select(uiStore.getIsFrameSelectionEnabled),
         this.store$.select(filtersStore.getSelectedDatasetId),
-        this.store$.select(filtersStore.getFlightDirections)
-      ]).subscribe(([enabled, datasetId, _directions]) => {
+        this.store$.select(filtersStore.getFlightDirections),
+        this.store$.select(filtersStore.getPathRange) // TODO: Change this to frame later
+      ]).subscribe(([enabled, datasetId, directions, frameRange]) => {
         let dataset = models.datasets[datasetId];
         if(enabled && !dataset.properties.find((a) => a === models.Props.FRAME_ORDERING)) {
           // this dataset doesn't support frame ordering, disable
@@ -211,7 +212,7 @@ export class MapComponent implements OnInit, OnDestroy  {
           this.mapService.setFrameSelectionActive(false);
         }
         else if(enabled) {
-          this.mapService.setFrameSelectionActive(true, dataset.frameMap.ascending);
+          this.mapService.setFrameSelectionActive(true, dataset.frameMap[directions[0]?.toLowerCase() ?? 'ascending'], frameRange);
           this.store$.dispatch(new mapStore.SetMapInteractionMode(models.MapInteractionModeType.NONE)); // disable so we can actually pick a frame
         }
         else if(!enabled) {

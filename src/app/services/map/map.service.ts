@@ -372,7 +372,7 @@ export class MapService implements OnDestroy {
     this.map = this.updatedMap();
   }
 
-  public setFrameSelectionActive(active: boolean, url ?: string) {
+  public setFrameSelectionActive(active: boolean, url ?: string, frameRange?: models.Range<number | null>) {
     if(!active) {
       this.frameSelectionOverlay?.setSource(null);
       this.selectClick?.getFeatures().clear();
@@ -406,11 +406,28 @@ export class MapService implements OnDestroy {
     this.browseImageLayer?.setVisible(false)
     this.selectedLayer.setVisible(false)
 
+    source.on('featuresloadend', () => {
+      if(this.frameSelectionOverlay.getSourceState() === 'ready') {
+        this.filterFrameOverlay(frameRange);
+      }
+    })
     }
   public filterFrameOverlay(frame: models.Range<number | null>) {
+    if(frame.start === null) {
+      return;
+    }
     this.frameSelectionOverlay?.getSource()?.getFeatures().forEach(a => {
-      if(a.get('path') !== frame.start) {
+      // TODO: For now this is just a test of filtering path
+      if(+a.get('path') !== frame.start) {
         a.setStyle(new Style({}));
+      } else {
+        a.setStyle(new Style({
+        fill: new Fill({
+          color: '#FFFFFF33',
+        }),
+        stroke: new Stroke({
+          color: 'black',
+        })}));
       }
     })
 
