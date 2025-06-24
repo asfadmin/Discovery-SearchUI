@@ -316,7 +316,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
 
   public exportPython(): void {
     if (this.searchType !== SearchType.CUSTOM_PRODUCTS) {
-      this.exportService.convertSearchOptionsToAsfSearch.pipe(take(1)).subscribe(
+      this.exportService.convertSearchAPIQueryToAsfSearch.pipe(take(1)).subscribe(
         (data) => {
           this.dialog.open(CodeExportComponent, {
             data: {
