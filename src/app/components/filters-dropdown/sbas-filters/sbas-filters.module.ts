@@ -13,7 +13,8 @@ import { ResultsMenuModule } from '@components/results-menu';
 import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
 import { DocsModalModule } from '@components/shared/docs-modal';
 import { SharedModule } from "@shared";
-
+import { BaselineFrameReferenceToggleComponent } from '@components/shared/selectors/baseline-frame-reference-toggle';
+import { DatasetSelectorModule } from '@components/shared/selectors/dataset-selector';
 
 @NgModule({
   declarations: [SbasFiltersComponent],
@@ -29,7 +30,9 @@ import { SharedModule } from "@shared";
         ResultsMenuModule,
         CopyToClipboardModule,
         DocsModalModule,
-        SharedModule
+        SharedModule,
+        DatasetSelectorModule,
+        BaselineFrameReferenceToggleComponent,
     ],
   exports: [
     SbasFiltersComponent
