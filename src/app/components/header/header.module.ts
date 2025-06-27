@@ -53,6 +53,9 @@ import { SharedModule } from "@shared";
 import { LanguageSelectorModule } from "@components/shared/selectors/language-selector/language-selector.module";
 import { BurstSelectorModule } from '@components/shared/selectors/burst-selector';
 import { TimeseriesChartFlightDirectionToggleComponent} from '@components/timeseries-chart/timeseries-chart-flight-direction-toggle';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import {DocsModalModule} from '@components/shared/docs-modal';
+
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -103,7 +106,9 @@ import { TimeseriesChartFlightDirectionToggleComponent} from '@components/timese
         OnDemandUserSelectorModule,
         BurstSelectorModule,
         TimeseriesChartFlightDirectionToggleComponent,
-        NgOptimizedImage
+        NgOptimizedImage,
+        MatSlideToggle,
+        DocsModalModule
     ],
     providers: [provideHttpClient(withInterceptorsFromDi())],
   exports: [

@@ -40,6 +40,14 @@
             <app-max-results-selector></app-max-results-selector>
           </div>
         </div>
+        @if(prop.isRelevant(p.FRAME_ORDERING)) {
+          <mat-slide-toggle (change)="test($event.checked)" class="on-demand-toggle">
+            On Demand Mode
+        <app-docs-modal class="info-icon"
+                        url="https://docs.asf.alaska.edu/vertex/manual/#area-of-interest-options">
+        </app-docs-modal>
+          </mat-slide-toggle>
+        }
       </div>
 
       <div class="icon-cluster">

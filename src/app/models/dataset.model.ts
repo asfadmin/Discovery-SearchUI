@@ -25,6 +25,10 @@ export interface Dataset {
 
   calibrationDatasets?: string[];
   calibrationProductTypes?: ProductType[];
+  frameMap?: {
+    ascending: string,
+    descending: string
+  }
 }
 
 export enum MissionDataset {
