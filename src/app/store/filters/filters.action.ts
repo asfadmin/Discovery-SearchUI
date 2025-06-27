@@ -94,7 +94,8 @@ export enum FiltersActionType {
 
   SET_OPERA_BURST_ID = '[Filters] Set Full OPERA S1 Burst IDs',
   SET_INCLUDE_CALIBRATION_DATA = '[Filters] Set use calbiration data in OPERA-S1 search',
-  SET_GROUP_ID = '[Filters] Set Sentinel-1 Group ID'
+  SET_GROUP_ID = '[Filters] Set Sentinel-1 Group ID',
+  SET_USER_FRAME_FOR_BASELINE = '[Filters] Set if frame(s) used for baseline/sbas searches as reference scene'
 }
 
 export class SetSelectedDataset implements Action {
@@ -455,6 +456,11 @@ export class setGroupID implements Action {
   constructor(public payload: string) {}
 }
 
+export class SetUseFrameForBaseline implements Action {
+    public readonly type = FiltersActionType.SET_USER_FRAME_FOR_BASELINE;
+
+    constructor(public payload: boolean) {}
+}
 
 
 export type FiltersActions =
@@ -520,4 +526,5 @@ export type FiltersActions =
   | setFullBurst
   | setOperaBurstID
   | setUseCalibrationData
-  | setGroupID;
+  | setGroupID
+  | SetUseFrameForBaseline;

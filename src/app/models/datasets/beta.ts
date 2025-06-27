@@ -14,6 +14,7 @@ export const beta = {
     Props.MISSION_NAME,
     Props.ABSOLUTE_ORBIT,
     Props.FRAME_ORDERING,
+    Props.BASELINE_TOOL,
   ],
   apiValue: { dataset: 'ARIA S1 GUNW' },
   date: { start: new Date(2014, 3, 25) },

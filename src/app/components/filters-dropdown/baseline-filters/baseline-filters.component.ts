@@ -3,10 +3,12 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import * as scenesStore from '@store/scenes';
+import * as filtersStore from '@store/filters';
 
 import { SubSink } from 'subsink';
 import * as models from '@models';
 import { ScreenSizeService } from '@services';
+import { beta } from '@models/datasets';
 
 enum FilterPanel {
   MASTER = 'Master',
@@ -24,6 +26,12 @@ export class BaselineFiltersComponent implements OnInit, OnDestroy {
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
   public areResultsLoaded: boolean;
+
+
+  public datasets = [beta];
+  public selectedDataset = 'SENTINEL-1 INTERFEROGRAM (BETA)'
+  public masterScene: string;
+  public shouldUseFramesForReference: boolean = false;
 
   selectedPanel: FilterPanel | null = null;
   panels = FilterPanel;
@@ -45,12 +53,20 @@ export class BaselineFiltersComponent implements OnInit, OnDestroy {
         areLoaded => this.areResultsLoaded = areLoaded
       )
     );
+    this.subs.add(
+    this.store$.select(filtersStore.getShouldUseFramesForReference).subscribe(
+        shouldUseFrames => this.shouldUseFramesForReference = shouldUseFrames
+    )
+    );
   }
 
   public isSelected(panel: FilterPanel): boolean {
     return this.selectedPanel === panel;
   }
 
+public onDatasetChange(dataset: string): void {
+    this.store$.dispatch(new filtersStore.SetSelectedDataset(dataset));
+  }
   public selectPanel(panel: FilterPanel): void {
     this.selectedPanel = panel;
   }
