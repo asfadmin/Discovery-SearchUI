@@ -201,20 +201,33 @@ export class MapComponent implements OnInit, OnDestroy  {
     this.subs.add(
       combineLatest([
         this.store$.select(uiStore.getIsFrameSelectionEnabled),
-        this.store$.select(filtersStore.getSelectedDataset),
-        this.store$.select(filtersStore.getFlightDirections)
-      ]).subscribe(([enabled, dataset]) => {
+        this.store$.select(filtersStore.getSelectedDatasetId),
+        this.store$.select(filtersStore.getFlightDirections),
+        this.store$.select(filtersStore.getPathRange) // TODO: Change this to frame later
+      ]).subscribe(([enabled, datasetId, directions, frameRange]) => {
+        let dataset = models.datasets[datasetId];
         if(enabled && !dataset.properties.find((a) => a === models.Props.FRAME_ORDERING)) {
           // this dataset doesn't support frame ordering, disable
           this.store$.dispatch(new uiStore.SetFrameSelection(false))
           this.mapService.setFrameSelectionActive(false);
         }
         else if(enabled) {
-          this.mapService.setFrameSelectionActive(true, dataset.frameMap.ascending);
+          this.mapService.setFrameSelectionActive(true, dataset.frameMap[directions[0]?.toLowerCase() ?? 'ascending'], frameRange);
           this.store$.dispatch(new mapStore.SetMapInteractionMode(models.MapInteractionModeType.NONE)); // disable so we can actually pick a frame
         }
         else if(!enabled) {
           this.mapService.setFrameSelectionActive(false);
+        }
+      })
+    )
+
+    this.subs.add(
+      combineLatest([
+        this.store$.select(uiStore.getIsFrameSelectionEnabled),
+        this.store$.select(filtersStore.getPathRange), // TODO: change this out for frame when the geojson gets updated?
+      ]).subscribe(([enabled, path]) => {
+        if(enabled) {
+          this.mapService.filterFrameOverlay(path)
         }
       })
     )

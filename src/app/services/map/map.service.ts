@@ -50,6 +50,7 @@ import { MultiPolygon } from 'ol/geom';
 import GeoJSON from 'ol/format/GeoJSON.js';
 import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
+import VectorImageLayer from 'ol/layer/VectorImage';
 
 @Injectable({
   providedIn: 'root'
@@ -67,7 +68,7 @@ export class MapService implements OnDestroy {
   private polygonLayer: VectorLayer<VectorSource>;
   private sarviewsEventsLayer: VectorLayer<VectorSource>;
   public displacmentLayer: VectorLayer<VectorSource>;
-  public frameSelectionOverlay: VectorLayer<VectorSource> = new VectorLayer();
+  public frameSelectionOverlay: VectorImageLayer<VectorSource> = new VectorImageLayer();
   private browseImageLayer: Layer;
 
   private gridLinesVisible: boolean;
@@ -371,7 +372,7 @@ export class MapService implements OnDestroy {
     this.map = this.updatedMap();
   }
 
-  public setFrameSelectionActive(active: boolean, url ?: string) {
+  public setFrameSelectionActive(active: boolean, url ?: string, frameRange?: models.Range<number | null>) {
     if(!active) {
       this.frameSelectionOverlay?.setSource(null);
       this.selectClick?.getFeatures().clear();
@@ -402,8 +403,33 @@ export class MapService implements OnDestroy {
     this.frameSelectionOverlay.set('frameOverlay', 'true');
 
     this.polygonLayer.setVisible(false) // disable the polygons of scenes
-    this.browseImageLayer.setVisible(false)
+    this.browseImageLayer?.setVisible(false)
     this.selectedLayer.setVisible(false)
+
+    source.on('featuresloadend', () => {
+      if(this.frameSelectionOverlay.getSourceState() === 'ready') {
+        this.filterFrameOverlay(frameRange);
+      }
+    })
+    }
+  public filterFrameOverlay(frame: models.Range<number | null>) {
+    if(frame.start === null) {
+      return;
+    }
+    this.frameSelectionOverlay?.getSource()?.getFeatures().forEach(a => {
+      // TODO: For now this is just a test of filtering path
+      if(+a.get('path') !== frame.start) {
+        a.setStyle(new Style({}));
+      } else {
+        a.setStyle(new Style({
+        fill: new Fill({
+          color: '#FFFFFF33',
+        }),
+        stroke: new Stroke({
+          color: 'black',
+        })}));
+      }
+    })
 
   }
 
