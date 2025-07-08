@@ -121,7 +121,7 @@
     </mat-menu>
   </li>
   <li *ngIf="prop.isRelevant(p.COVERAGE_ANGLE, dataset)">
-    <span class="v-mid"> <b>{{ 'FRAME_COVERAGE' | translate }} </b> • {{ scene.metadata.nisar.frameCoverage === 'TRUE' ? 'Full' : 'Partial' }} </span>
+    <span class="v-mid"> <b>{{ 'FRAME_COVERAGE' | translate }} </b> • {{ scene.metadata.nisar.frameCoverage}} </span>
 
     <mat-icon *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="setFrameCoverageMenu"

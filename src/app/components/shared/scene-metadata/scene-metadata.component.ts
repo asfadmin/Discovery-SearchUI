@@ -90,7 +90,7 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
     this.store$.dispatch(action);
   }
   public setFrameCoverage(): void {
-    const action = new filtersStore.setFrameCoverage([this.scene.metadata.nisar.frameCoverage == 'TRUE' ? 'FULL' : 'PARTIAL']);
+    const action = new filtersStore.setFrameCoverage([this.scene.metadata.nisar.frameCoverage]);
     this.store$.dispatch(action);
   }
 

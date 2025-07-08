@@ -100,10 +100,10 @@
     <mat-form-field>
         <mat-select (selectionChange)="onNewFrameCoverageSelected($event.value)" [(ngModel)]="frameCoverage"
             placeholder="{{ 'FRAME_COVERAGE' | translate }}" multiple>
-            <mat-option value="FULL">
+            <mat-option value="Full">
                 {{'FULL' | translate}}
             </mat-option>
-            <mat-option value="PARTIAL">
+            <mat-option value="Partial">
                 {{'PARTIAL' | translate}}
             </mat-option>
         </mat-select>

@@ -126,10 +126,6 @@ export class ObservationPanelSelectorComponent implements OnDestroy, OnInit{
     this.store$.dispatch(new filtersStore.SetSubtypes(subtypes));
   }
   public onNewFrameCoverageSelected(coverage): void {
-    // this value needs to be converted to a boolean value since the data is set for
-    // true = full frame
-    // false = partial frame
-    // null = all
     this.store$.dispatch(new filtersStore.setFrameCoverage(coverage));
   }
   public onNewRangeBandwidthSelected(bandwidth) {
