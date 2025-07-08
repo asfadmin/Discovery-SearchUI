@@ -17,7 +17,7 @@ export class ProductService {
           if (g.b.length > 0) {
             browses = g.b.map(
               (b: any): string => {
-                return (b.replace('{gn}', g.gn));
+                return (b.replaceAll('{gn}', g.gn));
             });
           } else {
             browses = ['/assets/no-browse.png'];
@@ -33,22 +33,22 @@ export class ProductService {
             browses = [browses[0]]; // only show the first browse for displacement for now
         }
 
-        const thumbnail = (g.t ? g.t.replace('{gn}', g.gn) : g.t) || (!browses[0].includes('no-browse') ? browses[0].replace('{gn}', g.gn) : '/assets/no-thumb.png');
-        let filename = g.fn.replace('{gn}', g.gn);
+        const thumbnail = (g.t ? g.t.replaceAll('{gn}', g.gn) : g.t) || (!browses[0].includes('no-browse') ? browses[0].replaceAll('{gn}', g.gn) : '/assets/no-thumb.png');
+        let filename = g.fn.replaceAll('{gn}', g.gn);
         if ( !filename.includes(g.gn)) {
           filename = `${g.gn}-${filename}`;
         }
         let product = {
           name: g.gn,
-          productTypeDisplay: g.ptd || g.gn,
+          productTypeDisplay: g.ptd ?? g.gn,
           file: filename,
-          id: g.pid.replace('{gn}', g.gn),
-          downloadUrl: g.du.replace('{gn}', g.gn),
+          id: g.pid.replaceAll('{gn}', g.gn),
+          downloadUrl: g.du.replaceAll('{gn}', g.gn),
           bytes: g.s * 1000000,
           dataset: (g.d === 'STS-59' || g.d === 'STS-68') ? 'SIR-C' : g.d,
           browses,
           thumbnail,
-          groupId: g.gid.replace('{gn}', g.gn),
+          groupId: g.gid.replaceAll('{gn}', g.gn),
           isUnzippedFile: false,
           isDummyProduct: false,
           metadata: this.getMetadataFrom(g)
@@ -121,9 +121,9 @@ export class ProductService {
     private burstXMLFromScene(product: models.CMRProduct) {
       let p =  {
         ...product,
-        downloadUrl: product.downloadUrl.replace('tiff', 'xml'),
+        downloadUrl: product.downloadUrl.replaceAll('tiff', 'xml'),
         productTypeDisplay: 'XML Metadata (BURST)',
-        file: product.file.replace('tiff', 'xml'),
+        file: product.file.replaceAll('tiff', 'xml'),
         id: product.id + '-XML',
         bytes: 0,
         metadata: {
@@ -143,6 +143,7 @@ export class ProductService {
       vv: 'VV GeoTIFF',
       vh: 'VH GeoTIFF',
       mask: 'Mask GeoTIFF',
+	  nc: 'Netcdf File',
       h5: 'HDF5',
       xml: 'Metadata XML',
       rtc_anf_gamma0_to_sigma0: 'RTC Gamma to Sigma GeoTIFF',
@@ -153,58 +154,71 @@ export class ProductService {
     }
 
     private operaSubproductsFromScene(product: models.CMRProduct) {
-      if (!!product.metadata.opera?.validityStartDate) {
-        product.metadata.opera.validityStartDate = this.fromCMRDate(
-        (product.metadata.opera?.validityStartDate as unknown) as string)
-      }
-      let products = []
+		if (!!product.metadata.opera?.validityStartDate) {
+			product.metadata.opera.validityStartDate = this.fromCMRDate(
+				(product.metadata.opera?.validityStartDate as unknown) as string)
+		}
+		let products = []
+		let regex = /(_v[0-9]\.[0-9]){1}(\.(\w*)|(_(\w*(_*))*.))*/
+		let file_suffix = ''
 
-      let reg = product.downloadUrl.split(/(_v[0-9]\.[0-9]){1}(\.(\w*)|(_(\w*(_*))*.))*/);
-      let file_suffix = !!reg[3] ? reg[3] : reg[5]
-      product.productTypeDisplay = this.operaProductTypeDisplays[file_suffix.toLowerCase()]
+		if (product.metadata.productType === 'DISP-S1') {
+			file_suffix = 'nc'
+		} else {
+			let reg = product.downloadUrl.split(regex);
+			file_suffix = !!reg[3] ? reg[3] : reg[5]
+		}
 
-      const thumbnail_index = product.browses.findIndex(url => url.toLowerCase().includes('thumbnail'))
-      if (thumbnail_index !== -1) {
-        product.thumbnail = product.browses.splice(thumbnail_index, 1)[0];
-      }
-      product.browses = product.browses.filter(url => !url.includes('low-res'));
+		product.productTypeDisplay = this.operaProductTypeDisplays[file_suffix?.toLowerCase()] ?? "Download"
+
+		const thumbnail_index = product.browses.findIndex(url => url.toLowerCase().includes('thumbnail'))
+		if (thumbnail_index !== -1) {
+			product.thumbnail = product.browses.splice(thumbnail_index, 1)[0];
+		}
+		product.browses = product.browses.filter(url => !url.includes('low-res'));
 
 
-      for (const p of product.metadata.opera.additionalUrls.filter(url => url !== product.downloadUrl)) {
-        reg = p.split(/(_v[0-9]\.[0-9]){1}(\.(\w*)|(_(\w*(_*))*.))*/);
-        file_suffix = !!reg[3] ? reg[3] : reg[5]
-        const productTypeDisplay = this.operaProductTypeDisplays[file_suffix.toLowerCase()];
+		for (const p of product.metadata.opera.additionalUrls.filter(url => url !== product.downloadUrl)) {
+			let reg = p.split(/(_v[0-9]\.[0-9]){1}(\.(\w*)|(_(\w*(_*))*.))*/);
+			file_suffix = !!reg[3] ? reg[3] : reg[5]
+			let productTypeDisplay = this.operaProductTypeDisplays[file_suffix?.toLowerCase()];
+			if (product.metadata.productType === 'DISP-S1' && productTypeDisplay == null) {
+				if(p.includes('short_wavelength')) {
+					productTypeDisplay = 'Frame(Short Wavelength) Zarr Store'
+				} else {
+					productTypeDisplay = 'Product Zarr Store';
+				}
+			}
+			const fileID = p.split('/').slice(-1)[0]
 
-        const fileID = p.split('/').slice(-1)[0]
+			let subproduct = {
+				...product,
+				downloadUrl: p,
+				productTypeDisplay: productTypeDisplay || p,
+				file: fileID,
+				id: product.id + '-' + file_suffix,
+				bytes: 0,
+				browses: [],
+				thumbnail: null,
+				metadata: {
+					...product.metadata,
+					productType: product.metadata.productType,
+					parentID: product.id,
+					subproducts: []
+				},
+			} as models.CMRProduct;
 
-        let subproduct =  {
-          ...product,
-          downloadUrl: p,
-          productTypeDisplay: productTypeDisplay || p,
-          file: fileID,
-          id: product.id + '-' + file_suffix,
-          bytes: 0,
-          browses: [],
-          thumbnail: null,
-          metadata: {
-            ...product.metadata,
-            productType: product.metadata.productType,
-            parentID: product.id,
-            subproducts: []
-          },
-        } as models.CMRProduct;
+			products.push(subproduct)
+		}
 
-          products.push(subproduct)
-      }
+		return products.sort((a, b) => {
+			if (['hh', 'vv', 'vh', 'hv'].includes(a.productTypeDisplay.slice(0, 2).toLowerCase())) {
+				return -1;
+			} else if (['hh', 'vv', 'vh', 'hv'].includes(b.productTypeDisplay.slice(0, 2).toLowerCase()))
+				return 1;
 
-      return products.sort((a, b) => {
-        if(['hh', 'vv', 'vh', 'hv'].includes(a.productTypeDisplay.slice(0, 2).toLowerCase())) {
-          return -1;
-        } else if(['hh', 'vv', 'vh', 'hv'].includes(b.productTypeDisplay.slice(0, 2).toLowerCase()))
-        return 1;
-
-        return a.productTypeDisplay < b.productTypeDisplay ? -1 : 1
-      }
-      )
+			return a.productTypeDisplay < b.productTypeDisplay ? -1 : 1
+		}
+		)
     }
 }
