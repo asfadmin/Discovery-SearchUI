@@ -323,10 +323,10 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
               codeStuff: data,
               codeExportType: CodeExportType.ASF_SEARCH
             },
-            width: '550px',
-            height: '500px',
-            maxWidth: '550px',
-            maxHeight: '500px',
+            width: '80vh',
+            height: '80vh',
+            maxWidth: '800px',
+            maxHeight: '800px',
           });
         });
     } else {
@@ -336,10 +336,10 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
             codeStuff,
             codeExportType: CodeExportType.HYP3_SDK
           },
-          width: '550px',
-          height: '500px',
-          maxWidth: '550px',
-          maxHeight: '500px',
+          width: '80vh',
+          height: '80vh',
+          maxWidth: '800px',
+          maxHeight: '800px',
         });
       })
     }

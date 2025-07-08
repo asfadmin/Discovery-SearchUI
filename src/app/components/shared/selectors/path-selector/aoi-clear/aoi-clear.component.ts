@@ -14,7 +14,7 @@ import { SearchType } from '@models';
 @Component({
   selector: 'app-aoi-clear',
   templateUrl: './aoi-clear.component.html',
-  styleUrls: ['./aoi-clear.component.css']
+  styleUrls: ['./aoi-clear.component.scss']
 })
 export class AoiClearComponent implements OnInit, OnDestroy {
   public searchTypes = SearchType;

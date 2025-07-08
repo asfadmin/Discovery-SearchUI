@@ -46,12 +46,14 @@
     </div>
 
     <div class="flex-item">
-      <button mat-button mat-stroked-button
+      <button mat-stroked-button
               class="clear-button"
               (click)="onClear()" mat-button>
-        {{ 'CLEAR' | translate }}
+        {{ 'CLEAR' | translate }} {{ 'PATH' | translate }}/{{ 'FRAME' | translate }}
       </button>
-      <app-aoi-clear></app-aoi-clear>
+      <div class="clear-button">
+        <app-aoi-clear></app-aoi-clear>
+      </div>
     </div>
     </div>
   </form>
