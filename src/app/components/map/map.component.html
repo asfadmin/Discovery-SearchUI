@@ -2,6 +2,23 @@
   id="map" class="map w100 h100" #map>
 </div>
 
+<div #AriaPopup class="ol-popup" style='        position: absolute;
+        background-color: white;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid #cccccc;
+        bottom: 12px;
+        left: -50px;
+        min-width: 200px;
+    '
+    >
+  <button mat-button (click)='buildOnDemandStack(SelectedOnDemandFrameID)'>
+    <mat-icon>show_chart</mat-icon>
+    <span>Build SBAS SLC Stack</span>
+  </button>
+</div>
+
 <div class="map-header">
   <div class="header-controls fx-row"
        [class.map-control-margin]="(areResultsLoaded$ | async) && breakpoint === breakpoints.MOBILE">

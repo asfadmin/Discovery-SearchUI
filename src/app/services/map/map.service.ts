@@ -4,7 +4,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import {first, map, sampleTime, tap} from 'rxjs/operators';
 import {SubSink} from 'subsink';
 
-import { Collection, Feature, Map, View } from 'ol';
+import { Collection, Feature, Map, Overlay, View } from 'ol';
 import { Layer, Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource, XYZ } from 'ol/source';
 import * as proj from 'ol/proj';
@@ -59,7 +59,7 @@ export class MapService implements OnDestroy {
   public isDrawing$ = this.drawService.isDrawing$.pipe(
     tap(isDrawing => this.map.getViewport().style.cursor = isDrawing ? 'crosshair' : 'default')
   );
-
+  public focusedAriaFrame$ = new Subject<number>();
   private subs = new SubSink();
   private mapView: views.MapView;
   private map: Map;
@@ -184,6 +184,8 @@ export class MapService implements OnDestroy {
   private mousePositionSubject$ = new BehaviorSubject<models.LonLat>({
     lon: 0, lat: 0
   });
+
+  private projectedPosition
 
   public zoom$ = new Subject<number>();
   public center$ = new Subject<models.LonLat>();
@@ -574,6 +576,26 @@ export class MapService implements OnDestroy {
       });
   }
 
+  public setAriaPopupOverlay(container: HTMLElement, _lonLat) {
+    if (!!container) {
+    const OnDemandMapPopupMenuOverlay = new Overlay({
+    element: container,
+    'position': this.projectedPosition,
+    'id': 'customOnDemandMenu',
+    autoPan: {
+        animation: {
+        duration: 250,
+        },
+    },
+    });
+
+    this.map.addOverlay(OnDemandMapPopupMenuOverlay)
+    } else {
+        this.map.removeOverlay(this.map.getOverlayById('customOnDemandMenu'))
+    }
+  }
+
+
   private setMap(mapView: views.MapView, overlay): void {
     this.mapView = mapView;
 
@@ -590,7 +612,10 @@ export class MapService implements OnDestroy {
       if(e.target.getFeatures().getArray()[0]?.get('dir')) {
         this.selectedSource.clear();
         this.selectedSource.addFeature(e.selected[0]) // handle multiple things here.
-        console.log(`Path selected: ${e.target.getFeatures().getArray()[0].get('path')}`)
+        let feat = e.target.getFeatures().getArray()[0]
+        const id = feat.get('id')
+        console.log(`Id selected: ${id}`)
+        this.focusedAriaFrame$.next(id);
       } else {
         e.target.getFeatures().forEach(
           feature => this.newSelectedScene$.next(feature.get('filename'))
@@ -665,6 +690,7 @@ export class MapService implements OnDestroy {
     newMap.on('pointermove', e => {
       const [lon, lat] = proj.toLonLat(e.coordinate, this.epsg());
       this.mousePositionSubject$.next({ lon, lat });
+      this.projectedPosition = e.coordinate;
     });
 
     newMap.on('movestart', () => {
