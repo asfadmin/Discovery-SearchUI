@@ -1,13 +1,9 @@
-<mat-dialog-content>
-  <div style="display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 15px;">
-    <div class="dialog-header" mat-dialog-title>{{ 'API_URL_DOWNLOAD_SEARCH_RESULTS' | translate }}</div>
-    <div>
-      <mat-icon (click)="onCloseDownloadQueue()" class="clickable">
-        close
-      </mat-icon>
-    </div>
-  </div>
+<h2 mat-dialog-title class="dialog-title">
+  {{ 'API_URL_DOWNLOAD_SEARCH_RESULTS' | translate }}
+</h2>
 
+
+<mat-dialog-content>
   <div style="margin-bottom: 10px;">
     {{ 'USE_AN_ASF_SEARCH_API_QUERY_TO_DOWNLOAD_MORE_RESULTS_MANUALLY' | translate }}
   </div>
@@ -50,9 +46,14 @@
   </form>
 </mat-dialog-content>
 
-<mat-dialog-actions style="margin-top: 15px;">
-  <a [href]="asfWebsite.api_get_data" target="_blank" mat-flat-button>{{ 'API_DOCS' | translate }}</a>
-  <a [href]="apiLink" target="_blank" color="primary" mat-flat-button>
-    {{ 'DOWNLOAD_RESULTS' | translate }}
-  </a>
+<mat-dialog-actions class="flex-container">
+  <div class="flex-item">
+    <a [href]="asfWebsite.api_get_data" target="_blank" mat-button>{{ 'API_DOCS' | translate }}</a>
+  </div>
+  <div class="flex-item">
+    <button mat-button mat-dialog-close>{{ 'CANCEL' | translate }}</button>
+    <a [href]="apiLink" target="_blank" color="primary" mat-flat-button>
+      {{ 'DOWNLOAD_RESULTS' | translate }}
+    </a>
+  </div>
 </mat-dialog-actions>
