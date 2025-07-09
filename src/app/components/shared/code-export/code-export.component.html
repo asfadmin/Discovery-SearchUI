@@ -13,21 +13,18 @@
 
 <mat-dialog-actions class="flex-container">
     <div class="flex-item">
-      <button mat-button>
         @if(codeExportType === codeExportTypes.ASF_SEARCH) {
-          <app-docs-modal url="https://docs.asf.alaska.edu/asf_search/basics/"
-          text="ASF Search Docs">
+          <app-docs-modal url="https://docs.asf.alaska.edu/asf_search/basics/" text="ASF_SEARCH_DOCS">
           </app-docs-modal>
         }
         @if(codeExportType === codeExportTypes.HYP3_SDK) {
           <app-docs-modal url="https://hyp3-docs.asf.alaska.edu/using/sdk/"
-          text="HyP3 SDK Docs">
+          text="HYP3_SDK_DOCS">
           </app-docs-modal>
         }
-      </button>
     </div>
     <div class="flex-item">
-      <button mat-button mat-dialog-close>Cancel</button>
+      <button mat-button mat-dialog-close>{{'CANCEL' | translate}}</button>
       <button mat-flat-button [mat-dialog-close]="true" cdkFocusInitial (click)="copyToClipboard()" color="primary">
         {{ 'COPY' | translate }}
       </button>
