@@ -48,7 +48,7 @@
 
 <mat-dialog-actions class="flex-container">
   <div class="flex-item">
-    <a [href]="asfWebsite.api_get_data" target="_blank" mat-button>{{ 'API_DOCS' | translate }}</a>
+    <app-docs-modal url="https://docs.asf.alaska.edu/api/basics/" text="API_DOCS"></app-docs-modal>
   </div>
   <div class="flex-item">
     <button mat-button mat-dialog-close>{{ 'CANCEL' | translate }}</button>
