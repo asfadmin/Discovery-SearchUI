@@ -448,6 +448,7 @@
   "JOBS_NOW": "jobs now",
   "JOBS_PER_MONTH": "jobs per month",
   "JOINT_OBSERVATION_ONLY": "Joint Observation Only",
+  "JOINT_OBSERVATION_ONLY_TOOLTIP": "Toggle on for simultaneous L- and S-band acquisitions",
   "JUN_JUL_AUG": "Jun, Jul, Aug",
   "KML": "kml",
   "LANGUAGE": "Language",
