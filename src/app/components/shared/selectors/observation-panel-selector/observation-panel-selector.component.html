@@ -109,25 +109,29 @@
         </mat-select>
     </mat-form-field>
 
-    <mat-slide-toggle (change)="onNewJointObservation($event.checked)" [checked]="jointObservation">
-        {{ 'JOINT_OBSERVATION_ONLY' | translate}}
+    <mat-form-field class="half-width">
+          <mat-select (selectionChange)="onNewRangeBandwidthSelected($event.value)" [(ngModel)]="rangeBandwidth"
+              placeholder="{{ 'RANGE_BANDWIDTH' | translate }}" multiple>
+              @for(parent of (dataset.bandwidth | keyvalue); track $index) {
+                  @for(band of parent.value; track $index) {
+                      <mat-option [value]="band">
+                          ({{parent.key}}) {{band}}
+                      </mat-option>
+                  }
+              }
+          </mat-select>
+      </mat-form-field>
+
+    <mat-slide-toggle class="joint-observation-toggle"
+                      (change)="onNewJointObservation($event.checked)" [checked]="jointObservation"
+                      [matTooltip]="'JOINT_OBSERVATION_ONLY_TOOLTIP' | translate" matTooltipPosition="right">
+      {{ 'JOINT_OBSERVATION_ONLY' | translate}}
     </mat-slide-toggle>
 
-  <mat-form-field class="extra-wide">
-        <mat-select (selectionChange)="onNewRangeBandwidthSelected($event.value)" [(ngModel)]="rangeBandwidth"
-            placeholder="{{ 'RANGE_BANDWIDTH' | translate }}" multiple>
-            @for(parent of (dataset.bandwidth | keyvalue); track $index) {
-                @for(band of parent.value; track $index) {
-                    <mat-option [value]="band">
-                        ({{parent.key}}) {{band}}
-                    </mat-option>
-                }
-            }
-        </mat-select>
-    </mat-form-field>
-    <!-- <app-short-name-selector
-    class="short-name-selector"
-    (shortNamesChange)="onNewShortNames($event)"
-     *ngIf="dataset.id === 'NISAR'"></app-short-name-selector> -->
+
+  <!-- <app-short-name-selector
+  class="short-name-selector"
+  (shortNamesChange)="onNewShortNames($event)"
+   *ngIf="dataset.id === 'NISAR'"></app-short-name-selector> -->
     <!-- <app-opera-calibration-data-selector *ngIf="dataset.id === 'OPERA-S1'"></app-opera-calibration-data-selector> -->
 </div>
