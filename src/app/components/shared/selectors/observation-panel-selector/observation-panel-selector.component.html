@@ -107,6 +107,14 @@
                 {{'PARTIAL' | translate}}
             </mat-option>
         </mat-select>
+
+        <mat-hint *ngIf="prop.isRelevant(p.FRAME)" align="start">
+          {{ frameCoverage?.length || 0 }}/2
+          {{ 'FRAMES_SELECTED' | translate }}
+        </mat-hint>
+        <mat-hint *ngIf="!prop.isRelevant(p.FRAME)" align="start">
+          {{ 'NO_FRAMES_TO_SELECT' | translate }}
+        </mat-hint>
     </mat-form-field>
 
     <mat-form-field class="half-width">
@@ -120,6 +128,14 @@
                   }
               }
           </mat-select>
+
+          <mat-hint *ngIf="prop.isRelevant(p.RANGE_BANDWIDTH)" align="start">
+            {{ rangeBandwidth?.length || 0 }}/{{ dataset.bandwidth.length }}
+            {{ 'RANGE_BANDWITH_SELECTED' | translate }}
+          </mat-hint>
+          <mat-hint *ngIf="!prop.isRelevant(p.RANGE_BANDWIDTH)" align="start">
+            {{ 'NO_BANDWITH_TO_SELECT' | translate }}
+          </mat-hint>
       </mat-form-field>
 
     <mat-slide-toggle class="joint-observation-toggle"
