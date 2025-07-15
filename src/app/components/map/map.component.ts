@@ -84,7 +84,8 @@ export class MapComponent implements OnInit, OnDestroy  {
 
   public selectedScene: CMRProduct;
   public selectedSarviewEvent: SarviewsEvent;
-  public SelectedOnDemandFrameID: number = null;
+  public SelectedOnDemandFrameID: Feature = null;
+  public OnDemandFrames: {frameID: String, feature: Feature<Geometry>}[] = []
   private subs = new SubSink();
   private gridlinesActive$ = this.store$.select(mapStore.getAreGridlinesActive);
   private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
@@ -109,28 +110,34 @@ export class MapComponent implements OnInit, OnDestroy  {
     private pointHistoryService: PointHistoryService,
   ) {}
 
-  public buildOnDemandStack(id: number) {
+  public buildOnDemandStack() {
+        // let id = feature.get('id')
         this.store$.dispatch(new uiStore.SetFrameSelection(false))
         this.store$.dispatch(new searchStore.ClearSearch())
         this.store$.dispatch(new searchStore.SetSearchType(models.SearchType.SBAS))
         this.store$.dispatch(new filtersStore.SetUseFrameForBaseline(true))
-        this.store$.dispatch(new sceneStore.SetFilterMaster(id.toString()))
+        this.store$.dispatch(new sceneStore.SetFilterMaster(this.OnDemandFrames[0].frameID.toString()))
         this.store$.dispatch(new filtersStore.SetSelectedDataset(models.beta.id))
         this.store$.dispatch(new searchStore.MakeSearch())
 
+        this.mapService.setOnDemandSBASFrame(this.OnDemandFrames[0].feature)
         this.mapService.setAriaPopupOverlay(null, null)
   }
   ngOnInit(): void {
     this.mapService.focusedAriaFrame$
     .pipe(
-        filter(frameId => !!frameId),
-        withLatestFrom(this.mapService.mousePosition$)
+        filter(frame => !!frame),
+        withLatestFrom(this.mapService.mousePosition$),
+        withLatestFrom(this.store$.select(searchStore.getSearchType)),
+        filter(([[_, __], searchType]) => searchType !== models.SearchType.SBAS)
     )
     .subscribe(
-        ([frameId, lonLat]) => {
-            this.SelectedOnDemandFrameID = frameId;
+        ([[frame, lonLat,], _]) => {
+            this.OnDemandFrames = [{frameID: frame.get('id'), feature: frame}]
+            this.mapService.setOnDemandSBASFrame(this.OnDemandFrames[0].feature)
+            // this.zZg1 = frameId.get('id');
             this.mapService.setAriaPopupOverlay(this.ariaPopup.nativeElement, lonLat)
-            // this.ariaPopup.nativeElement
+            // this.ariaPopup.nativeElement 
         }
     )
     this.subs.add(

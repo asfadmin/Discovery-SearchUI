@@ -5,6 +5,23 @@
   background-color: #1a1e27;
 }
 
+.on-demand-popup-menu {
+    position: absolute;
+    background-color: white;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #cccccc;
+    bottom: 12px;
+    left: -50px;
+    min-width: 200px;
+}
+
+.hidden {
+    z-index: -9999;
+    opacity: 0.0;
+}
+
 .map-header {
   position: relative;
   top: 12px;

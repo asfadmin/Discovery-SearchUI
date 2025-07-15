@@ -59,7 +59,7 @@ export class MapService implements OnDestroy {
   public isDrawing$ = this.drawService.isDrawing$.pipe(
     tap(isDrawing => this.map.getViewport().style.cursor = isDrawing ? 'crosshair' : 'default')
   );
-  public focusedAriaFrame$ = new Subject<number>();
+  public focusedAriaFrame$ = new Subject<Feature>();
   private subs = new SubSink();
   private mapView: views.MapView;
   private map: Map;
@@ -69,6 +69,14 @@ export class MapService implements OnDestroy {
   private sarviewsEventsLayer: VectorLayer<VectorSource>;
   public displacmentLayer: VectorLayer<VectorSource>;
   public frameSelectionOverlay: VectorImageLayer<VectorSource> = new VectorImageLayer();
+  public selectedOnDemandFrameOverlays: VectorLayer<VectorSource> = new VectorLayer({style: 
+    new Style( {
+            zIndex: 100000,
+              stroke: new Stroke({
+            color:'#ff5555',
+            width:6,
+            })})
+  });
   private browseImageLayer: Layer;
 
   private gridLinesVisible: boolean;
@@ -376,7 +384,8 @@ export class MapService implements OnDestroy {
 
   public setFrameSelectionActive(active: boolean, url ?: string, frameRange?: models.Range<number | null>) {
     if(!active) {
-      this.frameSelectionOverlay?.setSource(null);
+    //   this.frameSelectionOverlay?.setSource(null);
+      this.frameSelectionOverlay.setVisible(false)
       this.selectClick?.getFeatures().clear();
       this.polygonLayer?.setVisible(true) // disable the polygons of scenes
       this.browseImageLayer?.setVisible(true)
@@ -387,9 +396,12 @@ export class MapService implements OnDestroy {
 
       return
     }
+
+    this.frameSelectionOverlay.setVisible(true)
     const source = new VectorSource({
       url,
-      format: new GeoJSON({})
+    // url: './assets/ascending.geojson',
+      format: new GeoJSON({}),
     })
     this.frameSelectionOverlay.setSource(source);
     this.frameSelectionOverlay.setStyle(function (_feature, _resolution) {
@@ -443,7 +455,7 @@ export class MapService implements OnDestroy {
     this.drawService.clear();
     this.clearFocusedScene();
     this.clearSelectedScene();
-    this.frameSelectionOverlay.setSource(null);
+    // this.frameSelectionOverlay.setSource(null);
 
   }
 
@@ -592,6 +604,7 @@ export class MapService implements OnDestroy {
     this.map.addOverlay(OnDemandMapPopupMenuOverlay)
     } else {
         this.map.removeOverlay(this.map.getOverlayById('customOnDemandMenu'))
+        // this.map.addLayer(this.selectedOnDemandFrameOverlays)
     }
   }
 
@@ -615,12 +628,34 @@ export class MapService implements OnDestroy {
         let feat = e.target.getFeatures().getArray()[0]
         const id = feat.get('id')
         console.log(`Id selected: ${id}`)
-        this.focusedAriaFrame$.next(id);
+        this.focusedAriaFrame$.next(feat);
       } else {
         e.target.getFeatures().forEach(
           feature => this.newSelectedScene$.next(feature.get('filename'))
         );
       }
+  }
+
+  public setOnDemandSBASFrame(feature: Feature<Geometry>) {
+    this.selectedOnDemandFrameOverlays.setSource(
+        new VectorSource({
+            'features': [feature.clone()]
+        })
+    )
+    // this.frameSelectionOverlay.setStyle(
+    //     (feat) => {
+    //         if (feat.get('id') === id) {
+    //             return new Style( {
+    //         zIndex: 100000,
+    //           stroke: new Stroke({
+    //         color:'green',
+    //         width:4,
+    //         })})
+    //         } else {
+    //             return new Style({'stroke': new Stroke({'color': '#00000000'})})
+    //         }
+    //     }
+    // )
   }
   private createNewMap(overlay): Map {
     this.overviewMap = new OverviewMap({
@@ -643,6 +678,7 @@ export class MapService implements OnDestroy {
         this.priorityOverview,
         this.displacementOverview,
         this.frameSelectionOverlay,
+        this.selectedOnDemandFrameOverlays,
       ],
       target: 'map',
       view: this.mapView.view,
