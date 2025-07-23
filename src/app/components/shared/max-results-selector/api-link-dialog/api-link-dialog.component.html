@@ -47,10 +47,10 @@
 </mat-dialog-content>
 
 <mat-dialog-actions class="flex-container">
-  <div class="flex-item">
+  <div class="flex-item" style="margin-bottom: 15px;">
     <app-docs-modal url="https://docs.asf.alaska.edu/api/basics/" text="API_DOCS"></app-docs-modal>
   </div>
-  <div class="flex-item">
+  <div class="flex-item" style="margin-bottom: 15px;">
     <button mat-button mat-dialog-close>{{ 'CANCEL' | translate }}</button>
     <a [href]="apiLink" target="_blank" color="primary" mat-flat-button>
       {{ 'DOWNLOAD_RESULTS' | translate }}
