@@ -347,7 +347,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
 
   public exportAPI(): void {
     this.dialog.open(ApiLinkDialogComponent, {
-      minWidth: '350px',
+      minWidth: '425px',
     });
   }
 
