@@ -1,6 +1,6 @@
 div.cdk-overlay-pane:has(>.sci-prod-select) {
   min-width: fit-content !important;
-  width: fit-content !important;
+  //width: fit-content !important;
 }
 
 .sci-prod-form-field {
@@ -13,16 +13,18 @@ div.cdk-overlay-pane:has(>.sci-prod-select) {
 
 .sci-prod-filter-flex-container {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .sci-prod-filter-flex-item {
-  flex: 0 1 420px;
+  flex: 0 1 auto;
 }
 
-//::ng-deep .mat-mdc-select-panel {
-//  min-width: 420px !important;
-//  width: 840px !important;
-//}
+::ng-deep .mat-mdc-select-panel {
+  //min-width: 420px !important;
+  //width: 840px !important;
+  //max-height: 100% !important;
+}
 
 .sci-prod-optgroup {
   font-weight: bold;
