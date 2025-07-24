@@ -3,7 +3,27 @@ div.cdk-overlay-pane:has(>.sci-prod-select) {
   width: fit-content !important;
 }
 
-.sci-prod-select-container {
-  width: 49%;
+.sci-prod-form-field {
+  width: 50%;
   margin-right: 17px;
+}
+
+.sci-prod-select {
+}
+
+.sci-prod-filter-flex-container {
+  display: flex;
+}
+
+.sci-prod-filter-flex-item {
+  flex: 0 1 420px;
+}
+
+//::ng-deep .mat-mdc-select-panel {
+//  min-width: 420px !important;
+//  width: 840px !important;
+//}
+
+.sci-prod-optgroup {
+  font-weight: bold;
 }
