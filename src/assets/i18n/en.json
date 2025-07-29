@@ -342,6 +342,7 @@
   "FRAME": "Frame",
   "FRAME_COVERAGE": "Frame Coverage",
   "FRAME_END": "Frame End",
+  "FRAME_ORDER_FILTERS": "Frame Order Filters",
   "FRAME_START": "Frame Start",
   "FRAMES_SELECTED": "frames selected",
   "FREQUENCY": "Frequency",

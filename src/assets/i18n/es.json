@@ -342,6 +342,7 @@
   "FRAME": "Marco",
   "FRAME_COVERAGE": "Cobertura del Marco",
   "FRAME_END": "Fin del Marco",
+  "FRAME_ORDER_FILTERS": "Filtros de Orden de Marcos",
   "FRAME_START": "Inicio del Marco",
   "FRAMES_SELECTED": "marcos seleccionados",
   "FREQUENCY": "Frecuencia",
