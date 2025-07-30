@@ -38,7 +38,12 @@ export class SearchParamsService {
   );
 
   private baselineSearchParams$ = this.store$.select(scenesStore.getFilterMaster).pipe(
-    map(reference => ({ reference }))
+    withLatestFrom(this.store$.select(filterStore.getShouldUseFramesForReference)),
+    withLatestFrom(this.store$.select(filterStore.getSelectedDataset)),
+    map(([[reference, shouldUseFrameForReference], dataset]) => 
+        shouldUseFrameForReference 
+        ? ({ reference, ...dataset.apiValue }) 
+        : ({ reference }))
   );
 
   private missionParam$ = this.store$.select(filterStore.getSelectedMission).pipe(

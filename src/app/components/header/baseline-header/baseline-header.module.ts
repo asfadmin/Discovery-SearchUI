@@ -2,15 +2,17 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import {BaselineHeaderComponent} from "./baseline-header.component";
-import { SharedModule } from "../../../shared";
-
+import { MatSharedModule, SharedModule } from "../../../shared";
+// import { BaselineFrameReferenceToggleComponent } from '@components/shared/selectors/baseline-frame-reference-toggle';
 @NgModule({
   declarations: [
     BaselineHeaderComponent,
   ],
   imports: [
     CommonModule,
-    SharedModule
+    SharedModule,
+    MatSharedModule,
+    // BaselineFrameReferenceToggleComponent
   ],
   exports: [
     BaselineHeaderComponent

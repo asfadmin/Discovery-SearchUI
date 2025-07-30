@@ -38,7 +38,7 @@ export const opera_s1 = {
     },
     {
       apiValue: 'DISP-S1',
-      displayName: 'Opera Displacement (DISP-S1)',
+      displayName: 'L3 Surface Displacement (DISP-S1)',
     }
   ],
   beamModes: [

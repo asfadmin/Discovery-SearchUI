@@ -56,6 +56,8 @@ export interface FiltersState {
   useCalibrationData: boolean; // used to toggle OPERA-S1 Calval (calibration) datasets
 
   groupID: null | string;
+
+  useFramesForReference: boolean;
 }
 
 
@@ -131,7 +133,9 @@ export const initState: FiltersState = {
   operaBurstIDs: [],
   useCalibrationData: false,
 
-  groupID: null
+  groupID: null,
+
+  useFramesForReference: false,
 };
 
 
@@ -774,6 +778,12 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         groupID: action.payload
       }
     }
+    case FiltersActionType.SET_USER_FRAME_FOR_BASELINE: {
+        return {
+            ...state,
+            useFramesForReference: action.payload
+        }
+    }
     default: {
       return state;
     }
@@ -1074,4 +1084,9 @@ export const getUseCalibrationData = createSelector(
 export const getGroupID = createSelector(
   getFiltersState,
   (state: FiltersState) => state.groupID
+)
+
+export const getShouldUseFramesForReference = createSelector(
+    getFiltersState,
+    (state: FiltersState) => state.useFramesForReference
 )

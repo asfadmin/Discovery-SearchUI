@@ -29,6 +29,21 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
 
+    <div class="breadcrumb" style='display: flex; align-items: center; margin-top: 15px;'>
+        <app-baseline-frame-reference-toggle></app-baseline-frame-reference-toggle>
+        </div>
+        @if (shouldUseFramesForReference) {
+        <div class="breadcrumb dataset-selector--layout">
+        
+        <app-dataset-selector
+        class="w100"
+        [(selected)]="selectedDataset"
+        (selectedChange)="onDatasetChange($event)"
+        [datasets]="datasets"
+        ></app-dataset-selector>
+        
+        </div>
+        }
     <div class="w100" style="display: flex; margin-top: 25px;">
       <app-master-scene-selector class="w100"></app-master-scene-selector>
 

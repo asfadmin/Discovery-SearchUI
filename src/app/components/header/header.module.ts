@@ -56,6 +56,7 @@ import { TimeseriesChartFlightDirectionToggleComponent} from '@components/timese
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import {DocsModalModule} from '@components/shared/docs-modal';
 
+import { BaselineFrameReferenceToggleComponent } from '@components/shared/selectors/baseline-frame-reference-toggle';
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -108,7 +109,9 @@ import {DocsModalModule} from '@components/shared/docs-modal';
         TimeseriesChartFlightDirectionToggleComponent,
         NgOptimizedImage,
         MatSlideToggle,
-        DocsModalModule
+        DocsModalModule,
+        BaselineFrameReferenceToggleComponent,
+        NgOptimizedImage
     ],
     providers: [provideHttpClient(withInterceptorsFromDi())],
   exports: [
