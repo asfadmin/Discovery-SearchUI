@@ -70,7 +70,13 @@
   </li>
 
   <li *ngIf="prop.isRelevant(p.PATH, dataset)">
-    <span class="v-mid"><b>{{ 'PATH' | translate }}</b> • {{ scene.metadata.path }}</span>
+    <span class="v-mid"><b>
+        @if (selectedDatasetIsNISARFormat) {
+          {{ 'TRACK' | translate }}
+        } @else {
+          {{ 'PATH' | translate }}
+        }
+    </b> • {{ scene.metadata.path }}</span>
     <mat-icon *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addPathMenu"
       class="v-mid clickable">
