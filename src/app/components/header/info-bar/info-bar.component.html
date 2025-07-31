@@ -31,7 +31,8 @@
           {{ 'TRACK' | translate }}
         } @else {
           {{ 'PATH' | translate }}
-        }      :</b> {{pathRange.start}} - {{pathRange.end}}
+        }
+      :</b> {{pathRange.start}} - {{pathRange.end}}
     </span>
     <span *ngIf="frameRange.start || frameRange.end">
       <b>{{ 'FRAME'| translate }}:</b> {{frameRange.start}} - {{frameRange.end}}
