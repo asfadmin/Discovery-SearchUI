@@ -52,6 +52,9 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public groupID: string;
   public userID: string;
   public jobIds: string[];
+  public selectedDataset: string;
+  public selectedDatasetIsNISARFormat: boolean = false;
+
 
   private subs = new SubSink();
 
@@ -69,6 +72,18 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   ) {
   }
   ngOnInit() {
+    this.subs.add(
+      this.store$.select(filtersStore.getSelectedDatasetId).subscribe(
+        selected => {
+          this.selectedDataset = selected
+          if (this.selectedDataset === 'SENTINEL-1 INTERFEROGRAM (BETA)') {
+            this.selectedDatasetIsNISARFormat = true;
+          } else {
+            this.selectedDatasetIsNISARFormat = false;
+          }
+        }
+      )
+    );
     const startSub = this.store$.select(filtersStore.getStartDate).subscribe(
       start => this.startDate = start
     );
