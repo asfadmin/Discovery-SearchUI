@@ -130,7 +130,7 @@
           </mat-select>
 
           <mat-hint *ngIf="prop.isRelevant(p.RANGE_BANDWIDTH)" align="start">
-            {{ rangeBandwidth?.length || 0 }}/{{ dataset.bandwidth.length }}
+            {{ rangeBandwidth?.length || 0 }}/{{ totalBandwithCount }}
             {{ 'RANGE_BANDWITH_SELECTED' | translate }}
           </mat-hint>
           <mat-hint *ngIf="!prop.isRelevant(p.RANGE_BANDWIDTH)" align="start">

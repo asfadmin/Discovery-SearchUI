@@ -39,7 +39,7 @@ export class ObservationPanelSelectorComponent implements OnDestroy, OnInit{
   public frameCoverage$ = this.store$.select(filtersStore.getFrameCoverage);
   public jointObservation$ = this.store$.select(filtersStore.getJointObservation)
   public rangeBandwidth$ = this.store$.select(filtersStore.getRangeBandwidth)
-
+  public totalBandwithCount = 0;
 
   public flightDirectionTypes = models.flightDirections;
   public p = models.Props;
@@ -54,8 +54,11 @@ export class ObservationPanelSelectorComponent implements OnDestroy, OnInit{
     this.subs.add(
       this.selectedDataset$.pipe(
         tap(
-          dataset => this.flightDirectionTypes = dataset.id === models.avnir.id ?
+          dataset => {this.flightDirectionTypes = dataset.id === models.avnir.id ?
             models.justDescending : models.flightDirections
+          
+            this.totalBandwithCount = Object.values(dataset.bandwidth).reduce((a,v) => a + v.length,0)
+          }
         )
       ).subscribe(dataset => this.dataset = dataset)
     );
