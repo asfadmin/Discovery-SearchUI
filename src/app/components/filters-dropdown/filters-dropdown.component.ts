@@ -46,6 +46,7 @@ export class FiltersDropdownComponent implements OnInit, OnDestroy {
   private areFiltersChanged;
 
   public subs = new SubSink();
+  public frameSelectionEnabled$ = this.store$.select(uiStore.getIsFrameSelectionEnabled)
 
   constructor(
     private store$: Store<AppState>,

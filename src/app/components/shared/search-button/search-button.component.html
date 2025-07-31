@@ -9,7 +9,7 @@
         <mat-button-toggle>
           <button
             (click)="onDoSearch()"
-            [disabled]="!(canSearch$ | async) && !(isMaxResultsLoading$ | async)"
+            [disabled]="!(canSearch$ | async) && !(isMaxResultsLoading$ | async) || (isFrameSelectionEnabled$ | async)"
             mat-flat-button color="primary"
             class="search-button">
             {{

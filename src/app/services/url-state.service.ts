@@ -602,6 +602,13 @@ export class UrlStateService {
         map(useCalibrationData => ({ useCalibrationData }))
       ),
       loader: this.loadUseCalibrationData
+    },
+    {
+      name: 'useFrameForBaseline',
+      source: this.store$.select(filterStore.getShouldUseFramesForReference).pipe(
+        map(useFrameForBaseline => ({ useFrameForBaseline }))
+      ),
+      loader: this.loadUseFrameForBaseline
     }
     ];
   }
@@ -1008,6 +1015,10 @@ export class UrlStateService {
 
   private loadUseCalibrationData = (usingCalibrationData: string): Action => {
     return new filterStore.setUseCalibrationData(!!usingCalibrationData)
+  }
+
+  private loadUseFrameForBaseline = (usingseFrameForBaseline: string): Action => {
+    return new filterStore.SetUseFrameForBaseline(!!usingseFrameForBaseline)
   }
 
   private loadSeriesState = (seriesState)=> {

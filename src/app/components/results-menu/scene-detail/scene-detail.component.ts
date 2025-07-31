@@ -260,6 +260,8 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     }
     if (!this.selectedProducts || this.dataset.id !== models.sentinel_1.id) {
       return true;
+    } else if (this.dataset.id == models.beta.id) {
+        return true;
     } else {
       return this.selectedProducts
         .map(product => product.metadata.productType)
@@ -402,15 +404,25 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   }
   public makeBaselineSearch(): void {
     const sceneName = this.baselineSceneName();
+    const frame = this.scene.metadata.frame;
     const dateRange = this.dateRange;
 
     [
       new searchStore.SetSearchType(models.SearchType.BASELINE),
       new searchStore.ClearSearch(),
       new userStore.LoadFiltersPreset(this.defaultBaselineFiltersID),
-      new scenesStore.SetFilterMaster(sceneName),
     ].forEach(action => this.store$.dispatch(action));
 
+    if (sceneName.startsWith('S1-GUNW')) {
+        this.store$.dispatch(new scenesStore.SetFilterMaster(frame.toString()))
+        this.store$.dispatch(new filtersStore.SetUseFrameForBaseline(true));
+        this.store$.dispatch(new filtersStore.SetSelectedDataset(models.beta.id))
+        // this.store$.dispatch(new scenesStore.setdata)
+    } else {
+        this.store$.dispatch(new filtersStore.SetUseFrameForBaseline(false));
+        this.store$.dispatch(new scenesStore.SetFilterMaster(sceneName))
+        this.store$.dispatch(new filtersStore.SetSelectedDataset(null))
+    }
     if (dateRange.start) {
       this.store$.dispatch(new filtersStore.SetStartDate(new Date(dateRange.start)));
     }

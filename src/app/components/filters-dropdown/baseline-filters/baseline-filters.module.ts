@@ -11,7 +11,8 @@ import { SearchTypeSelectorModule } from '@components/shared/selectors/search-ty
 import { BaselineSlidersModule } from './baseline-sliders';
 import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
 import {DocsModalModule} from '@components/shared/docs-modal';
-
+import { BaselineFrameReferenceToggleComponent } from '@components/shared/selectors/baseline-frame-reference-toggle';
+import { DatasetSelectorModule } from '@components/shared/selectors/dataset-selector';
 @NgModule({
   declarations: [BaselineFiltersComponent],
     imports: [
@@ -25,10 +26,12 @@ import {DocsModalModule} from '@components/shared/docs-modal';
         BaselineSlidersModule,
         CopyToClipboardModule,
         DocsModalModule,
-        SharedModule
+        SharedModule,
+        BaselineFrameReferenceToggleComponent,
+        DatasetSelectorModule,
     ],
   exports: [
-    BaselineFiltersComponent
+    BaselineFiltersComponent,
   ]
 })
 export class BaselineFiltersModule { }
