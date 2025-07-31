@@ -84,8 +84,20 @@
     </mat-icon>
 
     <mat-menu #addPathMenu="matMenu">
-      <button (click)="setPathStart()" mat-menu-item>{{ 'SET_AS_PATH_START' | translate }}</button>
-      <button (click)="setPathEnd()" mat-menu-item>{{'SET_AS_PATH_END' | translate }}</button>
+      <button (click)="setPathStart()" mat-menu-item>
+        @if (selectedDatasetIsNISARFormat) {
+          {{ 'SET_AS_TRACK_START' | translate }}
+        } @else {
+          {{ 'SET_AS_PATH_START' | translate }}
+        }
+      </button>
+      <button (click)="setPathEnd()" mat-menu-item>
+        @if (selectedDatasetIsNISARFormat) {
+          {{ 'SET_AS_TRACK_END' | translate }}
+        } @else {
+          {{ 'SET_AS_PATH_END' | translate }}
+        }
+      </button>
       <button (click)="setPathStart(); setPathEnd();" mat-menu-item>{{ 'SET_AS_BOTH' | translate }}</button>
     </mat-menu>
   </li>
