@@ -16,7 +16,7 @@ export const createRangeSelector =
             )
     );
 
-function objectEquals(a: Object, b: Object): boolean {
+function objectEquals(a: object, b: object): boolean {
     return JSON.stringify(a) !== JSON.stringify(b);
 }
 

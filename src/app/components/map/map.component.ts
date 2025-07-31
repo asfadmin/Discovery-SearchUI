@@ -85,7 +85,7 @@ export class MapComponent implements OnInit, OnDestroy  {
   public selectedScene: CMRProduct;
   public selectedSarviewEvent: SarviewsEvent;
   public SelectedOnDemandFrameID: Feature = null;
-  public OnDemandFrames: {frameID: String, feature: Feature<Geometry>}[] = []
+  public OnDemandFrames: {frameID: string, feature: Feature<Geometry>}[] = []
   private subs = new SubSink();
   private gridlinesActive$ = this.store$.select(mapStore.getAreGridlinesActive);
   private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
@@ -233,7 +233,7 @@ export class MapComponent implements OnInit, OnDestroy  {
         this.store$.select(uiStore.getIsFrameSelectionEnabled),
         this.store$.select(filtersStore.getSelectedDatasetId),
         this.store$.select(filtersStore.getFlightDirections),
-        this.store$.select(filtersStore.getPathRange) // TODO: Change this to frame later
+        this.store$.select(filtersStore.getPathRange)
       ]).subscribe(([enabled, datasetId, directions, frameRange]) => {
         let dataset = models.datasets[datasetId];
         if(enabled && !dataset.properties.find((a) => a === models.Props.FRAME_ORDERING)) {
@@ -254,7 +254,7 @@ export class MapComponent implements OnInit, OnDestroy  {
     this.subs.add(
       combineLatest([
         this.store$.select(uiStore.getIsFrameSelectionEnabled),
-        this.store$.select(filtersStore.getPathRange), // TODO: change this out for frame when the geojson gets updated?
+        this.store$.select(filtersStore.getPathRange),
       ]).subscribe(([enabled, path]) => {
         if(enabled) {
           this.mapService.filterFrameOverlay(path)

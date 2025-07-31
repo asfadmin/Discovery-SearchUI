@@ -431,7 +431,6 @@ export class MapService implements OnDestroy {
       return;
     }
     this.frameSelectionOverlay?.getSource()?.getFeatures().forEach(a => {
-      // TODO: For now this is just a test of filtering path
       if(+a.get('path') !== frame.start) {
         a.setStyle(new Style({}));
       } else {
@@ -704,7 +703,6 @@ export class MapService implements OnDestroy {
     this.timeseriesHover.on('select', e => {
       let selectedPoint =  e.selected[0]?.get('uuid');
       if(!selectedPoint) {
-        // TODO: not sure if we want to keep the point active or unselect it
         this.store$.dispatch(new uiStore.SetActiveUUID(null));
         e.preventDefault()
         return
