@@ -42,6 +42,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   public searchTypes = SearchType;
   public canSearch$ = this.store$.select(searchStore.getCanSearch);
   public isMaxResultsLoading$ = this.store$.select(searchStore.getIsMaxResultsLoading);
+  public isFrameSelectionEnabled$ = this.store$.select(uiStore.getIsFrameSelectionEnabled);
   public loading$ = this.store$.select(searchStore.getIsLoading);
   public maturity = this.env.maturity;
   public breakpoint$ = this.screenSize.breakpoint$;

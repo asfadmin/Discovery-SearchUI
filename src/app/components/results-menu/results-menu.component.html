@@ -3,7 +3,7 @@
     [class.mobile-menu-offset]="breakpoint === breakpoints.MOBILE && searchType !== SearchTypes.DISPLACEMENT"
     [class.mobile-displacement-menu-offset]="breakpoint === breakpoints.MOBILE && searchType === SearchTypes.DISPLACEMENT"
     [class.desktop-menu-offset]="breakpoint !== breakpoints.MOBILE"
-       [class.hidden]="!(isResultsMenuOpen$ | async)"
+    [class.hidden]="!(isResultsMenuOpen$ | async) || (isFrameSelectionEnabled$ | async)"
     class="rectangle-wrapper w100">
     <div
       id="result-div"
