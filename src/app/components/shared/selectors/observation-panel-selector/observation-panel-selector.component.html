@@ -107,27 +107,47 @@
                 {{'PARTIAL' | translate}}
             </mat-option>
         </mat-select>
+
+        <mat-hint *ngIf="prop.isRelevant(p.FRAME)" align="start">
+          {{ frameCoverage?.length || 0 }}/2
+          {{ 'FRAMES_SELECTED' | translate }}
+        </mat-hint>
+        <mat-hint *ngIf="!prop.isRelevant(p.FRAME)" align="start">
+          {{ 'NO_FRAMES_TO_SELECT' | translate }}
+        </mat-hint>
     </mat-form-field>
 
-    <mat-slide-toggle (change)="onNewJointObservation($event.checked)" [checked]="jointObservation">
-        {{ 'JOINT_OBSERVATION_ONLY' | translate}}
+    <mat-form-field class="half-width">
+          <mat-select (selectionChange)="onNewRangeBandwidthSelected($event.value)" [(ngModel)]="rangeBandwidth"
+              placeholder="{{ 'RANGE_BANDWIDTH' | translate }}" multiple>
+              @for(parent of (dataset.bandwidth | keyvalue); track $index) {
+                  @for(band of parent.value; track $index) {
+                      <mat-option [value]="band">
+                          ({{parent.key}}) {{band}}
+                      </mat-option>
+                  }
+              }
+          </mat-select>
+
+          <mat-hint *ngIf="prop.isRelevant(p.RANGE_BANDWIDTH)" align="start">
+            {{ rangeBandwidth?.length || 0 }}/{{ totalBandwithCount }}
+            {{ 'RANGE_BANDWITH_SELECTED' | translate }}
+          </mat-hint>
+          <mat-hint *ngIf="!prop.isRelevant(p.RANGE_BANDWIDTH)" align="start">
+            {{ 'NO_BANDWITH_TO_SELECT' | translate }}
+          </mat-hint>
+      </mat-form-field>
+
+    <mat-slide-toggle class="joint-observation-toggle"
+                      (change)="onNewJointObservation($event.checked)" [checked]="jointObservation"
+                      [matTooltip]="'JOINT_OBSERVATION_ONLY_TOOLTIP' | translate" matTooltipPosition="right">
+      {{ 'JOINT_OBSERVATION_ONLY' | translate}}
     </mat-slide-toggle>
 
-  <mat-form-field class="extra-wide">
-        <mat-select (selectionChange)="onNewRangeBandwidthSelected($event.value)" [(ngModel)]="rangeBandwidth"
-            placeholder="{{ 'RANGE_BANDWIDTH' | translate }}" multiple>
-            @for(parent of (dataset.bandwidth | keyvalue); track $index) {
-                @for(band of parent.value; track $index) {
-                    <mat-option [value]="band">
-                        ({{parent.key}}) {{band}}
-                    </mat-option>
-                }
-            }
-        </mat-select>
-    </mat-form-field>
-    <!-- <app-short-name-selector
-    class="short-name-selector"
-    (shortNamesChange)="onNewShortNames($event)"
-     *ngIf="dataset.id === 'NISAR'"></app-short-name-selector> -->
+
+  <!-- <app-short-name-selector
+  class="short-name-selector"
+  (shortNamesChange)="onNewShortNames($event)"
+   *ngIf="dataset.id === 'NISAR'"></app-short-name-selector> -->
     <!-- <app-opera-calibration-data-selector *ngIf="dataset.id === 'OPERA-S1'"></app-opera-calibration-data-selector> -->
 </div>
