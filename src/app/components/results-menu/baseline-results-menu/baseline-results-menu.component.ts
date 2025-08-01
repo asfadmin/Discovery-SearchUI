@@ -57,6 +57,7 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
   public RTC = models.hyp3JobTypes.RTC_GAMMA;
   public InSAR = models.hyp3JobTypes.INSAR_GAMMA;
   public AutoRift = models.hyp3JobTypes.AUTORIFT;
+  public AriaS1Gunw = models.hyp3JobTypes.ARIA_S1_GUNW;
   public ApiFormat = models.AsfApiOutputFormat;
 
   public hyp3able: { total: number, byJobType: models.Hyp3ableProductByJobType[]};
