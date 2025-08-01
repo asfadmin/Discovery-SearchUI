@@ -18,7 +18,7 @@ export const sentinel_1_bursts = {
   ],
   apiValue: { dataset: 'SLC-BURST' },
   date: { start: new Date('2014/06/15 03:44:43 UTC') },
-  infoUrl: 'https://sentinels.copernicus.eu/web/sentinel/user-guides/sentinel-1-sar/acquisition-modes/interferometric-wide-swath',
+  infoUrl: 'https://sentiwiki.copernicus.eu/web/s1-mission#S1-Mission-Interferometric-Wide-Swath',
   citationUrl: 'https://asf.alaska.edu/data-sets/sar-data-sets/sentinel-1/sentinel-1-how-to-cite/',
   frequency: 'C-Band',
   source: {
