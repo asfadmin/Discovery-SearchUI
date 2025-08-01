@@ -61,6 +61,8 @@ export const nisar = {
   ],
   bandwidth: {
     'L-Band': [
+        '20',
+        '40',
         '20+5',
         '40+5',
         '77',
