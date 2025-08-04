@@ -15,7 +15,8 @@ export enum Props {
   SUBTYPE = 'Subtype',
   POINTING_ANGLE = 'Pointing Angle',
   USE_BEAM_MODE = 'Use Beam Mode Filter',
-  USE_PROCESSING_TYPE = 'Use Processing Type'
+  USE_PROCESSING_TYPE = 'Use Processing Type',
+  FRAME_ORDERING = 'Allow ordering frames via SBAS tooling'
 }
 
 export const apiParamNames = {

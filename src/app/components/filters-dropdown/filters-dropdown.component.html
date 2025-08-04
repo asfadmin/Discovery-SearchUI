@@ -43,8 +43,13 @@
     <div class="filters-list"
           [class.filters-list-mobile]="breakpoint === breakpoints.MOBILE">
       <ng-container *ngIf="selectedSearchType === searchTypes.DATASET">
-        <app-dataset-filters [dataset]="(dataset$ | async)">
-        </app-dataset-filters>
+        @if(frameSelectionEnabled$ | async) {
+          <app-frame-order-filters></app-frame-order-filters>
+        }
+        @else {
+          <app-dataset-filters [dataset]="(dataset$ | async)">
+          </app-dataset-filters>
+        }
       </ng-container>
 
       <ng-container *ngIf="selectedSearchType === searchTypes.LIST">

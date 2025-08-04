@@ -4,7 +4,7 @@ import { ScenesActionType, ScenesActions } from './scenes.action';
 
 import { CMRProduct, UnzippedFolder, ColumnSortDirection, SarviewsEvent, SarviewsProduct, opera_s1, CMRProductsById } from '@models';
 import { PinnedProduct } from '@services/browse-map.service';
-import { createSelectorFactory, defaultMemoize  } from '@ngrx/store';
+import { createSceneArraySelector } from '@store/selectors';
 
 export interface ScenesState {
   ids: string[];
@@ -395,34 +395,9 @@ export const allScenesWithBrowse = (scenes: {[id: string]: string[]}, products) 
   return withBrowses;
 };
 
-function arrayEquals(a, b) {
 
-  return Array.isArray(a) &&
-    Array.isArray(b) &&
-    a.length === b.length &&
-    a.every((value, index) => {
-      if(Array.isArray(value) && Array.isArray(b[index])) {
-        return arrayEquals(value, b[index])
-      } else {
-        return b.findIndex((b_value) =>
-        {
-            return b_value?.id === value?.id && b_value.metadata.date === value.metadata.date
-          }) >= 0
-      }
-    }
-    )
-}
-export const createArraySelector =
-createSelectorFactory(
-  (projectionFn) =>
-    defaultMemoize(
-      projectionFn,
-      arrayEquals,
-      arrayEquals
-    )
-);
 
-export const getScenes = createArraySelector(
+export const getScenes = createSceneArraySelector(
   getScenesState,
   (state: ScenesState) => allScenesFrom(state.scenes, state.products)
 );
@@ -682,7 +657,7 @@ export const getCustomPairIds = createSelector(
   state => state.customPairIds
 );
 
-export const getCustomPairs = createArraySelector(
+export const getCustomPairs = createSceneArraySelector(
   getScenesState,
   state => state.customPairIds.map(
     pairIds => pairIds.map(id => state.products[id])
