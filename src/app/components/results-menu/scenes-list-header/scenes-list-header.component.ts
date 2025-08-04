@@ -69,7 +69,13 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
       return prev;
     }, {})
     ),
-    tap(products => this.operaProductsByType = products)
+    tap(products => {this.operaProductsByType = products; console.log(products)})
+  )
+
+  public totalVirtualProducts$ = this.store$.select(scenesStore.getAllProducts).pipe(
+    map((scenes, ) => {
+      return scenes.filter(x=> x?.virtual ?? false).length
+    })
   )
 
   public productCountByType$ = this.productsByType$.pipe(

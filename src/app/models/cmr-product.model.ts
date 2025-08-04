@@ -17,6 +17,7 @@ export interface CMRProduct {
   groupId: string;
   isUnzippedFile: boolean;
   isDummyProduct: boolean;
+  virtual?:boolean;
 
   metadata: CMRProductMetadata;
 }

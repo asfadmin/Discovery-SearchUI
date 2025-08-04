@@ -202,6 +202,7 @@ export class ProductService {
           parentID: product.id,
           subproducts: []
         },
+        virtual: true,
       } as models.CMRProduct;
 
       products.push(subproduct)
@@ -306,7 +307,7 @@ export class ProductService {
           subproducts: [],
           s3URI: s3Url
         },
-
+        virtual: true,
       } as models.CMRProduct;
       
       products.push(subproduct)

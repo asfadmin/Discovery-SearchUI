@@ -12,9 +12,10 @@
           {{ numberOfScenes$ | async }} {{ 'SCENE' | translate }}{{ (numberOfScenes$ | async) === 1 ? '' : 's' }}
           <span *ngIf="breakpoint > breakpoints.MOBILE" style="font-size: small;">
             <br>
-              ({{ numberOfProducts$ | async }} {{ 'OF' | translate}}
+              @let virtualCount = (totalVirtualProducts$ | async);
+              {{ (numberOfProducts$ | async) - virtualCount }} @if(virtualCount > 0) {({{virtualCount}} {{'ADDITIONAL' | translate}})} {{ 'OF' | translate}}
               {{ formatNumber(totalResultCount$ | async) }}
-              {{ 'FILE' | translate }}{{ (numberOfProducts$ | async) === 1 ? '' : 's' }})
+              {{ 'FILE' | translate }}{{ (numberOfProducts$ | async) === 1 ? '' : 's' }}
           </span>
         </div>
 
