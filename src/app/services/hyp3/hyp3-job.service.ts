@@ -62,13 +62,33 @@ export class Hyp3JobService {
       .reduce((acc, val) => acc.concat(val), []);
 
     return jobs.map(job => {
-      const jobOptions: any = {
+        let jobOptions;
+        if (job.job_type.id === 'ARIA_S1_GUNW') {
+        let swap = job.granules[0].metadata.date > job.granules[1].metadata.date
+        let g1 = ((job.granules[0].metadata.date as unknown) as string).slice(0,10)
+        let g2 = ((job.granules[1].metadata.date as unknown) as string).slice(0,10)
+        let ref = swap ? g1 : g2;
+        let sec = swap ? g2 : g1;
+        ((job.granules[1].metadata.date as unknown) as string).slice(0,10)
+        jobOptions = {
+            job_type: job.job_type.id,
+            job_parameters: {
+            reference_date: ref,
+            secondary_date: sec,
+            frame_id: Number.parseInt(job.reference_id)
+            // ...ops[job.job_type.id],
+            // granules: job.granules.map(granule => granule.name),
+            }
+        };
+        } else {
+      jobOptions = {
         job_type: job.job_type.id,
         job_parameters: {
           ...ops[job.job_type.id],
           granules: job.granules.map(granule => granule.name),
         }
       };
+    }
 
       if (options.projectName !== '') {
         jobOptions.name = options.projectName;
