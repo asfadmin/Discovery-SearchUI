@@ -23,7 +23,7 @@ export const alos = {
     start: new Date('2006/05/16 03:36:51 UTC'),
     end: new Date('2011/04/21 20:23:36 UTC')
   },
-  infoUrl: 'https://www.asf.alaska.edu/sar-data-sets/alos-palsar/',
+  infoUrl: 'https://www.earthdata.nasa.gov/data/instruments/palsar',
   citationUrl: 'https://asf.alaska.edu/data-sets/sar-data-sets/alos-palsar/alos-palsar-how-to-cite/',
   frequency: 'L-Band',
   source: {
