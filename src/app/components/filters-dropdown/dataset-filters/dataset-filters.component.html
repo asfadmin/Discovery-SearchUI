@@ -74,7 +74,7 @@
         <mat-panel-title style="align-items: center;">
           {{ 'PRODUCT_FILTERS' |  translate }}
           <app-docs-modal class="info-icon"
-                          url="https://docs.asf.alaska.edu/vertex/manual/#additional-filters">
+                          url="https://docs.asf.alaska.edu/vertex/manual/#product-filters">
           </app-docs-modal>
 
         </mat-panel-title>
@@ -95,13 +95,17 @@
       <mat-panel-title style="align-items: center;">
         @if(selectedDataset !== 'NISAR') {
             {{ 'ADDITIONAL_FILTERS' | translate }}
+            <app-docs-modal class="info-icon"
+                            url="https://docs.asf.alaska.edu/vertex/manual/#additional-filters">
+            </app-docs-modal>
         }
         @else {
             {{ 'OBSERVATIONAL_FILTERS' | translate }}
+            <app-docs-modal class="info-icon"
+                            url="https://docs.asf.alaska.edu/vertex/manual/#observational-filters">
+            </app-docs-modal>
         }
-        <app-docs-modal class="info-icon"
-                        url="https://docs.asf.alaska.edu/vertex/manual/#additional-filters">
-        </app-docs-modal>
+
       </mat-panel-title>
     </mat-expansion-panel-header>
 
