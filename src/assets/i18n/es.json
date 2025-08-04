@@ -653,6 +653,7 @@
   "PRODUCTION": "Producción",
   "PRODUCTION_CONFIGURATION": "Configuración de Producción",
   "PRODUCTION_CONFIGURATION_FILTER": "Filtro de Configuración de Producción",
+  "PRODUCTION_CONFIGURATION_TOOLTIP": "Canalización de procesamiento utilizada para generar este gránulo",
   "PRODUCTS_IN_YOUR_QUEUE_MAY_REQUIRE_A_RESTRICTED_DATASET_AGREEMENT": "Los productos en su lista pueden requerir un acuerdo de conjunto de datos restringido.",
   "PRODUCTS_TO_DOWNLOADS_FROM_SELECTED_EVENT": "los productos a las descargas del evento seleccionado",
   "PROFILE": "Perfil",
