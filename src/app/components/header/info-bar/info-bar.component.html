@@ -8,6 +8,10 @@
         <span *ngIf="!!userID">
           <b>{{ 'USER_ID_INFO_BAR' | translate }}:</b> {{ userID }}
         </span>
+
+        <span *ngIf="jobIds?.length">
+          <b>{{ 'HYP3_JOB_IDS_INFO_BAR' | translate }}:</b> {{ jobIds.length }}
+        </span>
       </span>
     </span>
 
@@ -22,8 +26,13 @@
       <b>{{ 'END' | translate }}:</b> {{ endDate | shortDate }}
     </span>
     <span *ngIf="pathRange.start || pathRange.end">
-      <b> @if(dataset === 'NISAR'){ {{ 'TRACK' | translate }}}
-        @else{ {{ 'PATH'| translate }} }:</b> {{pathRange.start}} - {{pathRange.end}}
+      <b>
+        @if (selectedDatasetIsNISARFormat) {
+          {{ 'TRACK' | translate }}
+        } @else {
+          {{ 'PATH' | translate }}
+        }
+      :</b> {{pathRange.start}} - {{pathRange.end}}
     </span>
     <span *ngIf="frameRange.start || frameRange.end">
       <b>{{ 'FRAME'| translate }}:</b> {{frameRange.start}} - {{frameRange.end}}

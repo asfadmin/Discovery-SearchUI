@@ -22,6 +22,7 @@ export interface UIState {
   currentLanguage: string | null;
   activeUUID: string | null;
   banners: Banner[];
+  frameSelectionEnabled: boolean;
 }
 
 export const initState: UIState = {
@@ -41,6 +42,7 @@ export const initState: UIState = {
   currentLanguage: 'en',
   activeUUID: null,
   banners: [],
+  frameSelectionEnabled: false,
 };
 
 export function uiReducer(state = initState, action: UIActions): UIState {
@@ -227,6 +229,13 @@ export function uiReducer(state = initState, action: UIActions): UIState {
       };
     }
 
+    case UIActionType.SET_FRAME_SELECTION: {
+      return {
+        ...state,
+        frameSelectionEnabled: action.payload
+      }
+    }
+
     case UIActionType.ADD_BANNERS: {
       const banners = [
         ...state.banners, ...action.payload
@@ -336,3 +345,8 @@ export const getIsPreferenceMenuOpen = createSelector(
   getUIState,
   state => state.isPreferenceMenuOpen
 );
+
+export const getIsFrameSelectionEnabled = createSelector(
+  getUIState,
+  (state: UIState) => state.frameSelectionEnabled
+)

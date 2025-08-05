@@ -41,7 +41,12 @@ export class SearchParamsService {
   );
 
   private baselineSearchParams$ = this.store$.select(scenesStore.getFilterMaster).pipe(
-    map(reference => ({ reference }))
+    withLatestFrom(this.store$.select(filterStore.getShouldUseFramesForReference)),
+    withLatestFrom(this.store$.select(filterStore.getSelectedDataset)),
+    map(([[reference, shouldUseFrameForReference], dataset]) => 
+        shouldUseFrameForReference 
+        ? ({ reference, ...dataset.apiValue }) 
+        : ({ reference }))
   );
 
   private missionParam$ = this.store$.select(filterStore.getSelectedMission).pipe(
@@ -190,7 +195,7 @@ export class SearchParamsService {
     ),
     withLatestFrom(this.store$.select(filterStore.getSelectedDataset)),
     map(([beamModes, dataset]) =>
-      dataset.properties.includes(models.Props.USE_BEAM_MODE)?
+      dataset.properties.includes(models.Props.USE_BEAM_MODE) ?
         ({ beamMode: beamModes }) : ({ beamSwath: beamModes }))
   );
 
@@ -317,6 +322,22 @@ export class SearchParamsService {
     )
   )
 
+  public onDemandParams$ = combineLatest([
+    this.store$.select(hyp3Store.getOnDemandUserId),
+    this.store$.select(filterStore.getProjectName),
+    this.store$.select(hyp3Store.getHyp3JobIds),
+  ]).pipe(
+    map(([userID, projectName, hyp3JobIds]) => {
+      return {
+        'userID': userID,
+        'name': projectName,
+        'jobIds': hyp3JobIds,
+      };
+    })
+  );
+
+
+
 
   public getParams = combineLatest([
     this.store$.select(getSearchType),
@@ -326,8 +347,9 @@ export class SearchParamsService {
     withLatestFrom(this.listParam$),
     withLatestFrom(this.filterSearchParams$),
     withLatestFrom(this.timeseriesParams$),
+    withLatestFrom(this.onDemandParams$),
     map(
-      ([[[[searchType, baselineParams, cmr_token], listParam], filterParams], timeseriesParams]) => {
+      ([[[[[searchType, baselineParams, cmr_token], listParam], filterParams], timeseriesParams], onDemandParams]) => {
         switch (searchType) {
           case models.SearchType.LIST: {
             return {cmr_token, ...listParam};
@@ -342,7 +364,7 @@ export class SearchParamsService {
             return {cmr_token, ...baselineParams};
           }
           case models.SearchType.CUSTOM_PRODUCTS: {
-            return {cmr_token, ...listParam};
+            return onDemandParams;
           }
           case models.SearchType.DISPLACEMENT: {
             return timeseriesParams;
@@ -359,11 +381,11 @@ export class SearchParamsService {
     this.listParam$,
     this.baselineSearchParams$,
     this.filterSearchParams$,
-    this.store$.select(userStore.getUserEDLToken)
-  ]
-  ).pipe(
+    this.store$.select(userStore.getUserEDLToken),
+    this.onDemandParams$,
+  ]).pipe(
     map(
-      ([searchType, listParam, baselineParams, filterParams, cmr_token]) => {
+      ([searchType, listParam, baselineParams, filterParams, cmr_token, onDemandParams]) => {
         switch (searchType) {
           case models.SearchType.LIST: {
             return {cmr_token, ...listParam};
@@ -378,7 +400,7 @@ export class SearchParamsService {
             return {cmr_token, ...baselineParams};
           }
           case models.SearchType.CUSTOM_PRODUCTS: {
-            return {cmr_token, ...listParam};
+            return onDemandParams;
           }
           default: {
             return {cmr_token, ...filterParams};
@@ -386,16 +408,6 @@ export class SearchParamsService {
         }
       }),
   );
-
-  public getOnDemandSearchParams = combineLatest([
-      this.store$.select(hyp3Store.getOnDemandUserId)
-  ]).pipe(
-    map(([userID]) => {
-      return {
-        'userID': userID
-      };
-    })
-  )
 
   public searchType$() {
     return this.store$.select(getSearchType);

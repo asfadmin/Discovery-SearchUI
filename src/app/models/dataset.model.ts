@@ -29,6 +29,10 @@ export interface Dataset {
   shortNames?: ShortName[]; // For NISAR shortnames
   instruments?: {displayName: string, apiValue: string}[];
   bandwidth?: {[band: string]: string[]};
+  frameMap?: {
+    ascending: string,
+    descending: string
+  }
 }
 
 export enum MissionDataset {

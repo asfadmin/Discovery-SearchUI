@@ -1,8 +1,9 @@
 import * as moment from 'moment';
 
-import { Hyp3Job } from './hyp3.model';
+import { Hyp3Job } from './hyp3';
 
 export type CMRProductPair = CMRProduct[];
+export type CMRProductsById = {[productId: string]: CMRProduct}
 
 export interface CMRProduct {
   name: string;

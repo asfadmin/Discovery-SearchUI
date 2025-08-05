@@ -1,4 +1,4 @@
-import { sentinel_1, sentinel_1_bursts } from './dataset.model';
+import { sentinel_1, sentinel_1_bursts } from '../dataset.model';
 import { Hyp3JobType, JobOptionType } from './hyp3-job-type.model';
 
 export const RtcGammaJobType: Hyp3JobType = {
@@ -278,11 +278,31 @@ export const AutoRift: Hyp3JobType = {
   options: []
 };
 
+export const AriaS1GunwJobType = {
+  id: 'ARIA_S1_GUNW',
+  name: 'ARIA_S1_GUNW',
+  infoUrl: 'https://hyp3-docs.asf.alaska.edu/products/#autorift',
+  description: 'ARIAS1GUNW_JOB_TYPE_DESC',
+  numProducts: 2,
+  productTypes: [{
+    dataset: sentinel_1,
+    productTypes: [
+      'SLC'
+    ],
+    beamModes: ['IW'],
+    polarizations: [
+      'VV+VH', 'HH+HV', 'VV', 'HH',
+    ]
+  }],
+  options: []
+}
+
 export const hyp3JobTypes = {
   RTC_GAMMA: RtcGammaJobType,
   INSAR_GAMMA: InsarGammaJobType,
   INSAR_ISCE_BURST: InsarIsceBurstJobType,
-  AUTORIFT: AutoRift
+  AUTORIFT: AutoRift,
+  ARIA_S1_GUNW: AriaS1GunwJobType,
 };
 
 export const hyp3JobTypesList = Object.values(hyp3JobTypes);

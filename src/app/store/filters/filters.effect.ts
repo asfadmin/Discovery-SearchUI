@@ -15,6 +15,7 @@ import { Store } from '@ngrx/store';
 
 import { getSearchType } from '@store/search';
 import { LoadFiltersPreset } from '@store/user';
+import { ResetMaxHyp3ResultsHit } from '@store/hyp3';
 import { SearchType } from '@models';
 
 @Injectable()
@@ -50,6 +51,11 @@ export class FiltersEffects {
     map(([defaultFilters, searchtype]) => defaultFilters[searchtype]),
     filter(targetFilterID => targetFilterID === '' || !!targetFilterID),
     map(targetFilterID => new LoadFiltersPreset(targetFilterID))
-    )
-    );
+    ));
+
+  public resetMoreHyp3JobsToLoad = createEffect(() => this.actions$.pipe(
+    ofType<filtersAction.SetProjectName>(filtersAction.FiltersActionType.SET_PROJECT_NAME),
+    map(_ => new ResetMaxHyp3ResultsHit())
+  ))
+
 }

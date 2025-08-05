@@ -12,7 +12,7 @@ import * as userStore from '@store/user';
 import * as hyp3Store from '@store/hyp3';
 import * as uiStore from '@store/ui';
 
-import { AsfApiService, Hyp3Service, NotificationService, ProductService, SarviewsEventsService } from '@services';
+import { AsfApiService, Hyp3ApiService, NotificationService, ProductService, SarviewsEventsService } from '@services';
 import * as models from '@models';
 import { CMRProductMetadata, hyp3JobTypes, SarviewProductGranule, SarviewsProduct } from '@models';
 import { ClipboardService } from 'ngx-clipboard';
@@ -105,7 +105,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
 
   constructor(
     private store$: Store<AppState>,
-    private hyp3: Hyp3Service,
+    private hyp3: Hyp3ApiService,
     private clipboard: ClipboardService,
     private notificationService: NotificationService,
     private eventMonitoringService: SarviewsEventsService,

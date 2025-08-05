@@ -9,17 +9,23 @@
                type="number"
                (input)="onValueChanged($event, inputTypes.PATH_START)"
                [(ngModel)]="pathStart"
-               name="pathStart" placeholder="{{ prop.isRelevant(p.USE_TRACK) ? ('TRACK_START' | translate) :  ('PATH_START' | translate)}}">
+               name="pathStart"
+               [placeholder]="
+                 selectedDatasetIsNISARFormat || prop.isRelevant(p.USE_TRACK) ?
+                 ('TRACK_START' | translate) : ('PATH_START' | translate)">
       </mat-form-field>
 
-      <mat-form-field style="width: 150px;"*ngIf="prop.isRelevant(p.PATH)" class="range-form-input"
+      <mat-form-field style="width: 160px;"*ngIf="prop.isRelevant(p.PATH)" class="range-form-input"
                       class="date-item"
                       [class.invalid-input-animation]="typeHasError(inputTypes.PATH_END)">
         <input matInput
                type="number"
                (input)="onValueChanged($event, inputTypes.PATH_END)"
                [(ngModel)]="pathEnd"
-               name="pathEnd" placeholder="{{ prop.isRelevant(p.USE_TRACK) ? ('TRACK_END' | translate) :  ('PATH_END' | translate) }}">
+               name="pathEnd"
+               [placeholder]="
+                 selectedDatasetIsNISARFormat || prop.isRelevant(p.USE_TRACK) ?
+                 ('TRACK_END' | translate) : ('PATH_END' | translate)">
       </mat-form-field>
     </div>
 
@@ -46,12 +52,19 @@
     </div>
 
     <div class="flex-item">
-      <button mat-button mat-stroked-button
+      <button mat-stroked-button
               class="clear-button"
               (click)="onClear()" mat-button>
         {{ 'CLEAR' | translate }}
+        @if (selectedDatasetIsNISARFormat) {
+          {{ 'TRACK' | translate }}
+        } @else {
+          {{ 'PATH' | translate }} / {{ 'FRAME' | translate }}
+        }
       </button>
-      <app-aoi-clear></app-aoi-clear>
+      <div class="clear-button">
+        <app-aoi-clear></app-aoi-clear>
+      </div>
     </div>
     </div>
   </form>

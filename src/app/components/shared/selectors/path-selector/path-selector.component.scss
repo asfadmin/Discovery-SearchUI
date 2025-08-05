@@ -1,3 +1,5 @@
+@import "asf-theme";
+
 .number-input--size {
   width: 40%;
 }
@@ -26,6 +28,7 @@
 .clear-button {
   margin-top: 7px;
   margin-left: 10px;
+  font-weight: 400;
 }
 
 // Hides input field up/down arrows

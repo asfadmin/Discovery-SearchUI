@@ -5,12 +5,13 @@ import { AppState } from '@store';
 import * as queueStore from '@store/queue';
 import * as scenesStore from '@store/scenes';
 import * as uiStore from '@store/ui';
-
+import * as filtersStore from '@store/filters';
 import { ScreenSizeService } from '@services';
 import { Breakpoints } from '@models';
 import { SubSink } from 'subsink';
 import * as searchStore from '@store/search';
 import * as models from '@models';
+
 
 @Component({
   selector: 'app-baseline-header',
@@ -30,7 +31,12 @@ export class BaselineHeaderComponent implements OnInit {
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = models.SearchType;
 
+  public datasets = [models.beta];
+  public selectedDataset = 'SENTINEL-1 INTERFEROGRAM (BETA)'
+  
   private subs = new SubSink();
+
+public shouldUseFramesForReference: boolean = false;
 
   constructor(
     private store$: Store<AppState>,
@@ -43,10 +49,19 @@ export class BaselineHeaderComponent implements OnInit {
         areLoaded => this.areResultsLoaded = areLoaded
       )
     );
+        this.subs.add(
+        this.store$.select(filtersStore.getShouldUseFramesForReference).subscribe(
+            shouldUseFrames => this.shouldUseFramesForReference = shouldUseFrames
+        )
+    )
   }
 
   public onToggleFiltersMenu(): void {
     this.store$.dispatch(new uiStore.OpenFiltersMenu());
+  }
+
+  public onDatasetChange(dataset: string): void {
+    this.store$.dispatch(new filtersStore.SetSelectedDataset(dataset));
   }
 
   public onOpenDownloadQueue(): void {

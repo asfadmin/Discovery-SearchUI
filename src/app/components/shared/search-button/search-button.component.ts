@@ -21,7 +21,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { HelpComponent } from '@components/help/help.component';
 import { getFilterMaster } from '@store/scenes';
 import { SaveSearchDialogComponent } from '@components/shared/save-search-dialog';
-import { CodeExportComponent } from '@components/shared/code-export';
+import { CodeExportComponent, CodeExportType } from '@components/shared/code-export';
 import { ApiLinkDialogComponent } from '../max-results-selector/api-link-dialog/api-link-dialog.component';
 import { ScreenSizeService } from '@services';
 import * as models from '@models';
@@ -42,6 +42,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   public searchTypes = SearchType;
   public canSearch$ = this.store$.select(searchStore.getCanSearch);
   public isMaxResultsLoading$ = this.store$.select(searchStore.getIsMaxResultsLoading);
+  public isFrameSelectionEnabled$ = this.store$.select(uiStore.getIsFrameSelectionEnabled);
   public loading$ = this.store$.select(searchStore.getIsLoading);
   public maturity = this.env.maturity;
   public breakpoint$ = this.screenSize.breakpoint$;
@@ -116,27 +117,27 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
       combineLatest([
         this.store$.select(getFilterMaster),
         this.store$.select(uiStore.getIsFiltersMenuOpen)]).subscribe(([latestFilter, isOpen]) => {
-      if (isOpen && this.searchType === this.searchTypes.BASELINE || this.searchType === this.searchTypes.SBAS) {
-          this.latestReferenceScene = latestFilter;
-          if (this.stackReferenceScene == null || '') {
-            this.stackReferenceScene = latestFilter;
+          if (isOpen && this.searchType === this.searchTypes.BASELINE || this.searchType === this.searchTypes.SBAS) {
+            this.latestReferenceScene = latestFilter;
+            if (this.stackReferenceScene == null || '') {
+              this.stackReferenceScene = latestFilter;
+            }
           }
-      }
-      this.isFiltersOpen = isOpen;
-      }
-      )
+          this.isFiltersOpen = isOpen;
+        }
+        )
     );
 
     this.handleSearchErrors();
   }
 
   public onDoSearch(): void {
-    if (((this.searchType === this.searchTypes.SBAS || this.searchType === this.searchTypes.BASELINE ) && this.isFiltersOpen &&
+    if (((this.searchType === this.searchTypes.SBAS || this.searchType === this.searchTypes.BASELINE) && this.isFiltersOpen &&
       (this.stackReferenceScene !== this.latestReferenceScene || !this.resultsMenuOpen)) ||
-    ((this.stackReferenceScene !== this.latestReferenceScene || !this.isFiltersOpen) &&
+      ((this.stackReferenceScene !== this.latestReferenceScene || !this.isFiltersOpen) &&
         (this.searchType === this.searchTypes.SBAS || this.searchType === this.searchTypes.BASELINE)) ||
-        (this.searchType !== this.searchTypes.SBAS && this.searchType !== this.searchTypes.BASELINE)
-      ) {
+      (this.searchType !== this.searchTypes.SBAS && this.searchType !== this.searchTypes.BASELINE)
+    ) {
 
       this.store$.dispatch(new searchStore.MakeSearch());
 
@@ -313,22 +314,44 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     this.maturity = maturity;
     this.env.setMaturity(maturity);
   }
+
   public exportPython(): void {
-    this.exportService.convertSearchOptionsToAsfSearch.pipe(take(1)).subscribe(
-      (data) => {
-        this.dialog.open(CodeExportComponent, {
-          data: { codeStuff: data },
-          width: '550px',
-          height: '500px',
-          maxWidth: '550px',
-          maxHeight: '500px',
+    if (this.searchType !== SearchType.CUSTOM_PRODUCTS) {
+      this.exportService.convertSearchAPIQueryToAsfSearch.pipe(take(1)).subscribe(
+        (data) => {
+          this.dialog.open(CodeExportComponent, {
+            data: {
+              codeStuff: data,
+              codeExportType: CodeExportType.ASF_SEARCH
+            },
+            width: '80vh',
+            height: '80vh',
+            maxWidth: '800px',
+            maxHeight: '800px',
+          });
         });
-      });
+    } else {
+      this.exportService.combineSearchOptionsToHyp3SDK$.pipe(take(1)).subscribe(codeStuff => {
+        this.dialog.open(CodeExportComponent, {
+          data: {
+            codeStuff,
+            codeExportType: CodeExportType.HYP3_SDK
+          },
+          width: '80vh',
+          height: '80vh',
+          maxWidth: '800px',
+          maxHeight: '800px',
+        });
+      })
+    }
   }
 
   public exportAPI(): void {
-    this.dialog.open(ApiLinkDialogComponent);
+    this.dialog.open(ApiLinkDialogComponent, {
+      minWidth: '400px',
+    });
   }
+
   ngOnDestroy() {
     this.subs.unsubscribe();
   }

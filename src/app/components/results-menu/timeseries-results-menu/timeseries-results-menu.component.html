@@ -18,7 +18,7 @@
           >
             {{ 'ALL_AOIS' | translate }}
           </mat-checkbox>
-          <button mat-icon-button (click)="openDialog()" class="delete-all-btn2" matTooltip="{{ 'DELETE_ALL_SERIES' | translate }}" 
+          <button mat-icon-button (click)="openDialog()" class="delete-all-btn2" matTooltip="{{ 'DELETE_ALL_SERIES' | translate }}"
           matTooltipPosition="right">
             <mat-icon class="ts-trash-can" >delete</mat-icon>
           </button>
@@ -26,7 +26,7 @@
 
         <span class="point-list-ul-section">
           <ul>
-            @for (point of chartStates; track point.valid) {
+            @for (point of chartStates; track point.uuidSeries) {
               @for(frame of point.frames; track frame.uuid; let count = $count, idx = $index) {
                 <span *ngIf="count > 1 && idx == 0" class="series-summary">
                   <li class="point-list-item"
@@ -113,8 +113,9 @@
 
                 <ng-template #seriesFragment>
                   <span *ngIf="point.seriesName.toLowerCase().trim() == 'series'; else customSeriesName">
-                    {{'SERIES' | translate}}
-                    {{point.seriesNumber}}<span *ngIf="(point.frames | keyvalue).length>1">.{{idx+1}}</span>
+                    {{'SERIES' | translate}} {{point.seriesNumber}}
+                    <div *ngIf="point.frames[0].number !== ''"  class="series-label">{{'FRAME' | translate}}: {{point.frames[0].number}}</div>
+                    <span *ngIf="(point.frames | keyvalue).length>1">.{{idx+1}}</span>
                   </span>
                   <ng-template #customSeriesName>
                     {{point.seriesName}}
@@ -162,6 +163,11 @@
 
     <div class="ts-chart-row">
       <div id="ts-chart-column">
+        <div class="data-credit">
+          <a href="https://www.jpl.nasa.gov/go/opera/products/disp-product-suite/" target="_blank">{{ 'DATA_COURTESY_OF' | translate }}&nbsp;OPERA</a> |
+          <a href="https://creativecommons.org/publicdomain/zero/1.0/legalcode" target="_blank">&nbsp;{{ 'LICENSE' | translate }}</a> |
+          <a href="https://www.earthdata.nasa.gov/data/catalog/asf-opera-l3-disp-s1-v1-1" target="_blank">&nbsp;{{ 'DISP_DOI' | translate }}</a>
+        </div>
         <app-timeseries-chart></app-timeseries-chart>
         <!--      <app-timeseries-chart-temporal-slider></app-timeseries-chart-temporal-slider>-->
       </div>

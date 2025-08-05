@@ -10,7 +10,7 @@ import * as queueStore from '@store/queue';
 
 import {
   ScreenSizeService, MapService, ScenesService, PairService,
-  Hyp3Service, PossibleHyp3JobsService,
+  Hyp3ApiService, PossibleHyp3JobsService, Hyp3JobStatusService,
 } from '@services';
 
 import { SubSink } from 'subsink';
@@ -57,6 +57,7 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
   public RTC = models.hyp3JobTypes.RTC_GAMMA;
   public InSAR = models.hyp3JobTypes.INSAR_GAMMA;
   public AutoRift = models.hyp3JobTypes.AUTORIFT;
+  public AriaS1Gunw = models.hyp3JobTypes.ARIA_S1_GUNW;
   public ApiFormat = models.AsfApiOutputFormat;
 
   public hyp3able: { total: number, byJobType: models.Hyp3ableProductByJobType[]};
@@ -67,7 +68,8 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
     private mapService: MapService,
     private scenesService: ScenesService,
     private pairService: PairService,
-    private hyp3: Hyp3Service,
+    private hyp3: Hyp3ApiService,
+    private hyp3JobStatus: Hyp3JobStatusService,
     private possibleHyp3JobsService: PossibleHyp3JobsService,
   ) { }
 
@@ -79,7 +81,7 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
       ).subscribe(
         ([products, {pairs, custom}]) => {
           this.products = products;
-          this.downloadableProds = this.hyp3.downloadable(products);
+          this.downloadableProds = this.hyp3JobStatus.downloadable(products);
           this.pairs = [ ...pairs, ...custom ];
         }
       )
@@ -131,7 +133,7 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
 
   public queueAllProducts(products: models.CMRProduct[]): void {
     if (this.searchType === models.SearchType.CUSTOM_PRODUCTS) {
-      products = this.hyp3.downloadable(products);
+      products = this.hyp3JobStatus.downloadable(products);
     }
 
     this.store$.dispatch(new queueStore.AddItems(products));

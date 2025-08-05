@@ -59,6 +59,11 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public jointObservation: boolean;
   public scienceProducts: string[];
   public productionConfig: string[];
+  public jobIds: string[];
+  public selectedDataset: string;
+  public selectedDatasetIsNISARFormat: boolean = false;
+
+
   private subs = new SubSink();
 
   public hyp3Default = this.hyp3.isDefaultApi();
@@ -66,15 +71,27 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public hyp3BaseUrl = this.hyp3.baseUrl;
   public hyp3BackendUrl: string;
 
-  public dataset: String = ''
+  public dataset: string = ''
 
   constructor(
     private store$: Store<AppState>,
     private screenSize: services.ScreenSizeService,
-    private hyp3: services.Hyp3Service,
+    private hyp3: services.Hyp3ApiService,
   ) {
   }
   ngOnInit() {
+    this.subs.add(
+      this.store$.select(filtersStore.getSelectedDatasetId).subscribe(
+        selected => {
+          this.selectedDataset = selected
+          if (this.selectedDataset === 'SENTINEL-1 INTERFEROGRAM (BETA)') {
+            this.selectedDatasetIsNISARFormat = true;
+          } else {
+            this.selectedDatasetIsNISARFormat = false;
+          }
+        }
+      )
+    );
     const startSub = this.store$.select(filtersStore.getStartDate).subscribe(
       start => this.startDate = start
     );
@@ -174,6 +191,10 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       userID => this.userID = userID
     );
 
+    const jobIdsSub = this.store$.select(hyp3Store.getHyp3JobIds).subscribe(
+      jobIds => this.jobIds = jobIds
+    );
+
     const scienceProductsSub = this.store$.select(filtersStore.getScienceProduct).subscribe(
       scienceProducts => this.scienceProducts = scienceProducts
     );
@@ -207,7 +228,8 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       groupIDSub,
       userIDSub,
       productionConfigSub,
-      scienceProductsSub
+      scienceProductsSub,
+      jobIdsSub
     ].forEach(sub => this.subs.add(sub));
 
     this.subs.add(

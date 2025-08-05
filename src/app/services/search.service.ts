@@ -38,6 +38,7 @@ export class SearchService {
       new filterStore.ClearPerpendicularRange(),
       new filterStore.ClearTemporalRange(),
       new filterStore.ClearSeason(),
+      new filterStore.SetUseFrameForBaseline(false)
     ];
 
     actions.forEach(

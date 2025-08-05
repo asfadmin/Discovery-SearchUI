@@ -108,6 +108,8 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
 
     this.snackBarConfig.panelClass = ['ts-snackbar'];
 
+    this.displaySackBar();
+
     this.subs.add(
       this.store$.select(uiStore.getActiveUUID).subscribe(uuid => {
         if (!uuid)
@@ -197,14 +199,18 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     if (cStates.length === 0) {
       this.element.classList.remove('visible');
       this.element.classList.add('hidden');
-      let msg = this.language.translate.instant('PLEASE_SELECT_A_POINT_ON_THE_MAP');
-      this.snackBar.dismiss();
-      this.snackBar.open(msg, '', this.snackBarConfig );
+      this.displaySackBar();
     } else {
       this.element.classList.remove('hidden');
       this.element.classList.add('visible');
       this.snackBar.dismiss();
     }
+  }
+
+  public displaySackBar() {
+    let msg = this.language.translate.instant('PLEASE_SELECT_A_POINT_ON_THE_MAP');
+    this.snackBar.dismiss();
+    this.snackBar.open(msg, '', this.snackBarConfig );
   }
 
   public onResizeEnd(event: ResizeEvent): void {
@@ -256,6 +262,16 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
                 if (!!data) {
                   allPointsData.push(data);
                 }
+                // temporarily set the frame here since we're not grabbing it beforehand like before
+                this.store$.dispatch(chartStore.setFrames({ 'uuid': series.uuidSeries, 'frames': [{
+                      'number': Object.keys(data)[0].split('_')[4].slice(1), // OPERA_L3_DISP-S1_IW_F20698_VV_20160708T005153Z_20160801T005155Z_v1.0_20250412T230329Z.nc
+                      'wkt': series.wkt,
+                      'uuid': series.uuidSeries,
+                      'valid': true,
+                      'checked': true,
+                      'color': '',
+                  }] }))
+
                 this.temporalRange = this.getMaxRange(allPointsData);
               })
           }

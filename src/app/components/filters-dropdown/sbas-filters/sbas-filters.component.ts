@@ -3,6 +3,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import * as scenesStore from '@store/scenes';
+import * as filtersStore from '@store/filters';
 
 import { SubSink } from 'subsink';
 import * as models from '@models';
@@ -27,7 +28,11 @@ export class SbasFiltersComponent implements OnInit, OnDestroy {
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
   public areResultsLoaded: boolean;
+  public shouldUseFramesForReference: boolean = false;
 
+  public datasets = [models.beta];
+  public selectedDataset = 'SENTINEL-1 INTERFEROGRAM (BETA)'
+  
   selectedPanel: FilterPanel | null = null;
   panels = FilterPanel;
   defaultPanelOpenState = true;
@@ -48,6 +53,12 @@ export class SbasFiltersComponent implements OnInit, OnDestroy {
         areLoaded => this.areResultsLoaded = areLoaded
       )
     );
+
+    this.subs.add(
+        this.store$.select(filtersStore.getShouldUseFramesForReference).subscribe(
+            shouldUseFrames => this.shouldUseFramesForReference = shouldUseFrames
+        )
+    )
   }
 
   public isSelected(panel: FilterPanel): boolean {
@@ -60,6 +71,10 @@ export class SbasFiltersComponent implements OnInit, OnDestroy {
 
   public onOpenHelp(url: string): void {
     window.open(url);
+  }
+
+  public onDatasetChange(dataset: string): void {
+    this.store$.dispatch(new filtersStore.SetSelectedDataset(dataset));
   }
 
   ngOnDestroy() {

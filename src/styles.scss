@@ -900,3 +900,13 @@ $d-height: 550px;
   //--mdc-snackbar-supporting-text-color: themed('primary-light');
   //--mdc-snackbar-supporting-text-color: yellow;
 }
+
+
+.ts-reference-point {
+  fill: red !important;
+}
+.ts-invalid-point {
+  fill: rgb(0,0,0,0) !important;
+  stroke-dasharray: 2;
+  stroke-width: 1;
+}

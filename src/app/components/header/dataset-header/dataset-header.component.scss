@@ -4,6 +4,20 @@
   display: none;
 }
 
+::ng-deep .on-demand-toggle {
+display: flex;
+justify-content: center;
+flex-direction: column;
+margin-top: 10px;
+
+    .mdc-form-field.mat-internal-form-field {
+        flex-direction: column-reverse !important;
+        display: flex !important;
+        align-items: flex-start !important;
+        gap: 5px !important;
+    }
+}
+
 .dataset-selector--layout {
   flex: 1 1 130px !important;
   box-sizing: border-box !important;

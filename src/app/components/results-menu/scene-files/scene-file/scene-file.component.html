@@ -20,7 +20,8 @@
   </ng-container>
 
   <div [class.clickable]="!product.metadata.job" matListItemTitle>
-    <b *ngIf="(searchType$ | async) !== searchTypes.CUSTOM_PRODUCTS; else customProductsDisplay">
+    @if ((searchType$ | async) !== searchTypes.CUSTOM_PRODUCTS) {
+    <b>
       <span *ngIf="product.productTypeDisplay.length > 40">{{ product.productTypeDisplay | truncate : 36 }}{{ product.productTypeDisplay | truncate : -4 : '' }}
       </span>
       <span *ngIf="product.productTypeDisplay.length <= 40">{{ product.productTypeDisplay }}
@@ -29,8 +30,7 @@
         {{ expirationBadge(product.metadata.job.expiration_time) }}
       </span>
     </b>
-
-    <ng-template #customProductsDisplay>
+    } @else {
       <span *ngIf="product.productTypeDisplay.length > 40">
         <b style="font-size: 14px;">{{ 'TYPE' | translate }}:</b>
         {{ product.productTypeDisplay | truncate : 36 }}{{ product.productTypeDisplay | truncate : -4 : '' }}
@@ -42,7 +42,7 @@
       <span *ngIf="product.metadata.job && product.metadata.job.expiration_time">
         {{ expirationBadge(product.metadata.job.expiration_time) }}
       </span>
-    </ng-template>
+    }
 
 
 
@@ -89,17 +89,30 @@
       }}</span>
   </div>
 
-  <div *ngIf="product.metadata.job && product.metadata.job.name" matListItemLine>
-    <b>{{'PROJECT_NAME' | translate}}:</b> {{ product.metadata.job.name }}
-  </div>
+  @if (product.metadata.job) {
+  <ng-container>
+    <div *ngIf="product.metadata.job.name" matListItemLine>
+      <b>{{'PROJECT_NAME' | translate}}:</b> {{ product.metadata.job.name }}
+    </div>
 
-  <div *ngIf="product.metadata.job" matListItemLine >
-    <b>{{'JOB_SUBMITTED' | translate}}:</b> {{ product.metadata.job.request_time| fullDate }}
-  </div>
+    <div matListItemLine>
+      <b>{{'JOB_SUBMITTED' | translate}}:</b> {{ product.metadata.job.request_time| fullDate }}
+    </div>
 
-  <div *ngIf="product.metadata.job && product.metadata.job.credit_cost" matListItemLine>
-    <b>{{'CREDIT_COST' | translate}}:</b> {{ product.metadata.job.credit_cost }}
-  </div>
+    <div *ngIf="product.metadata.job.credit_cost" matListItemLine>
+      <b>{{'CREDIT_COST' | translate}}:</b> {{ product.metadata.job.credit_cost }}
+    </div>
+
+    <div *ngIf="product.metadata.job.job_id" matListItemLine>
+      <b>{{'JOB_ID' | translate}} </b>
+
+      <app-copy-to-clipboard
+        prompt="{{ 'COPY_JOB_ID' | translate }}"
+        [value]="product.metadata.job.job_id">
+      </app-copy-to-clipboard>
+    </div>
+  </ng-container>
+  }
 
   <div *ngFor="let param of paramsList" matListItemLine>
     <b>{{ param.name }}:</b> {{ param.val }}
@@ -115,6 +128,7 @@
 
   <app-hyp3-job-status-badge *ngIf="!isDownloadable(product)" [job]="product.metadata.job" matListItemMeta>
   </app-hyp3-job-status-badge>
+
   <ng-container *ngIf="(searchType$ | async) === searchTypes.CUSTOM_PRODUCTS" style="margin-right: 10px;" matListItemMeta>
     <button *ngIf="isExpired(product.metadata.job)" [matMenuTriggerFor]="expiredJobs" mat-icon-button matListItemMeta>
       <mat-icon class="clickable" matTooltip="{{ 'ADD_TO_ON_DEMAND_QUEUE' | translate }}" svgIcon="hyp3">

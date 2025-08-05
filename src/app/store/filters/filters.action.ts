@@ -108,6 +108,7 @@ export enum FiltersActionType {
   SET_SCIENCE_PRODUCT = '[Filters] Set Science Product',
   SET_PRODUCTION_CONFIG = '[Filters] Set Production Config',
 
+  SET_USER_FRAME_FOR_BASELINE = '[Filters] Set if frame(s) used for baseline/sbas searches as reference scene'
 }
 
 export class SetSelectedDataset implements Action {
@@ -521,6 +522,12 @@ export class setProductionConfig implements Action {
   constructor(public payload: string[]) {}
 }
 
+export class SetUseFrameForBaseline implements Action {
+    public readonly type = FiltersActionType.SET_USER_FRAME_FOR_BASELINE;
+
+    constructor(public payload: boolean) {}
+}
+
 
 export type FiltersActions =
   | SetSelectedDataset
@@ -595,4 +602,5 @@ export type FiltersActions =
   | setJointObservation
   | setIntstrument
   | setScienceProduct
-  | setProductionConfig;
+  | setProductionConfig
+  | SetUseFrameForBaseline;

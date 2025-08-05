@@ -52,5 +52,8 @@
     (click)="onNewMaxResults(amount)" mat-menu-item>
       <span>{{ formatNumber(amount) }} {{ 'FILES' | translate }}</span>
   </button>
+  <button mat-menu-item >
+    <app-docs-modal url="https://docs.asf.alaska.edu/api/changelog/#unlimited-results-sets-deprecation-notice" text="More..."></app-docs-modal>
+  </button>
 
 </mat-menu>

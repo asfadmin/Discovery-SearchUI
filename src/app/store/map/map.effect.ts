@@ -66,7 +66,7 @@ export class MapEffects {
       }
     })
   ), {dispatch: false})
-  
+
   public onSetSelectedScene = createEffect(() => this.actions$.pipe(
     ofType<SetSelectedScene>(ScenesActionType.SET_SELECTED_SCENE),
     map(action => action.payload),
@@ -84,7 +84,7 @@ export class MapEffects {
       || dataset?.id === 'OPERA-S1'
       || dataset?.id === 'NISAR';
     }
-    return searchType !== SearchType.BASELINE && searchType !== SearchType.SBAS;
+    return searchType !== SearchType.BASELINE && searchType !== SearchType.SBAS && searchType !== SearchType.DISPLACEMENT;
   }),
     map(([[selectedSceneID, _], __]) => selectedSceneID),
     filter(sceneID => !!sceneID),
@@ -98,6 +98,7 @@ export class MapEffects {
         return product.dataset === 'ALOS'
         || product.dataset === 'Sentinel-1A'
         || product.dataset === 'Sentinel-1B'
+        || product.dataset === 'Sentinel-1C'
         || product.dataset === 'Sentinel-1 Interferogram (BETA)'
         || product.dataset === 'UAVSAR'
         || product.dataset === 'NISAR';

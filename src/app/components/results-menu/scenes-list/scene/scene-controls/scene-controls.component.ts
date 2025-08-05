@@ -21,7 +21,8 @@ export class SceneControlsComponent implements OnInit {
   public SearchTypes = models.SearchType;
 
   constructor(
-    private hyp3: services.Hyp3Service,
+    private hyp3: services.Hyp3ApiService,
+    private hyp3JobStatus: services.Hyp3JobStatusService,
   ) { }
 
   ngOnInit(): void {
@@ -36,11 +37,11 @@ export class SceneControlsComponent implements OnInit {
   }
 
   public isExpired(job: models.Hyp3Job): boolean {
-    return this.hyp3.isExpired(job);
+    return this.hyp3JobStatus.isExpired(job);
   }
 
   public isDownloadable(product: models.CMRProduct): boolean {
-    return this.hyp3.isDownloadable(product);
+    return this.hyp3JobStatus.isDownloadable(product.metadata.job);
   }
 
   public getExpiredHyp3ableObject(): {byJobType: models.Hyp3ableProductByJobType[], total: number} {

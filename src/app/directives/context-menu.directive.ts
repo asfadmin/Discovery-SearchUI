@@ -39,6 +39,9 @@ export class ContextMenuTriggerDirective extends MatMenuTrigger implements OnIni
     if(!this.menuData.tooltipData) {
         return
     }
+    if(!this.menuData.valid) {
+      return
+    }
     document.body.appendChild(this.anchorElement);
     super.openMenu();
   }

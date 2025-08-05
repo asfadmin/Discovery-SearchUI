@@ -1,8 +1,9 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { createFeatureSelector, createSelector} from '@ngrx/store';
 
 import { FiltersActionType, FiltersActions } from './filters.action';
 import * as models from '@models';
 import { EventProductSort, EventProductSortDirection, EventProductSortType, hyp3JobTypes, SBASOverlap } from '@models';
+import {  createSimpleArraySelector } from '../selectors';
 
 
 export interface FiltersState {
@@ -65,6 +66,8 @@ export interface FiltersState {
 
 
   groupID: null | string;
+
+  useFramesForReference: boolean;
 }
 
 
@@ -149,7 +152,9 @@ export const initState: FiltersState = {
   productionConfig: [],
 
   groupID: null,
-  shortNames: []
+  shortNames: [],
+
+  useFramesForReference: false,
 };
 
 
@@ -867,11 +872,19 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         productionConfig: action.payload
       }
     }
+    case FiltersActionType.SET_USER_FRAME_FOR_BASELINE: {
+        return {
+            ...state,
+            useFramesForReference: action.payload
+        }
+    }
     default: {
       return state;
     }
   }
 }
+
+
 
 export const getFiltersState = createFeatureSelector<FiltersState>('filters');
 
@@ -1000,9 +1013,9 @@ export const getSubtypes = createSelector(
   (state: FiltersState) => state.subtypes
 );
 
-export const getFlightDirections = createSelector(
+export const getFlightDirections = createSimpleArraySelector(
   getFiltersState,
-  (state: FiltersState) => Array.from(state.flightDirections)
+  (state: FiltersState): models.FlightDirection[] => [...state.flightDirections]
 );
 
 export const getMissionsByDataset = createSelector(
@@ -1203,4 +1216,8 @@ export const getScienceProduct = createSelector(
 export const getProductionConfig = createSelector(
     getFiltersState,
     (state: FiltersState) => state.productionConfig
+)
+export const getShouldUseFramesForReference = createSelector(
+    getFiltersState,
+    (state: FiltersState) => state.useFramesForReference
 )

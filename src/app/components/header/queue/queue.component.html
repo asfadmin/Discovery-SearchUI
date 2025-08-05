@@ -66,7 +66,7 @@
             <span *ngIf="breakpoint !== breakpoints.MOBILE">{{ fileName| truncate: 50 }}</span>
             <span *ngIf="breakpoint === breakpoints.MOBILE">{{ fileName | truncate: 10 }}</span>
             <ng-container *ngIf="fileName.length > (breakpoint !== breakpoints.MOBILE ? 50 : 10)">
-              <span *ngIf="product.dataset === 'Sentinel-1B' || product.dataset === 'Sentinel-1A'"
+              <span *ngIf="product.dataset === 'Sentinel-1C' || product.dataset === 'Sentinel-1B' || product.dataset === 'Sentinel-1A'"
               >{{ fileName.substr(fileName.length - 4) }}</span>
               <span *ngIf="product.dataset === 'Sentinel-1 Interferogram (BETA)'"
               >{{ fileName.substr(fileName.length - 11) }}</span>
@@ -78,9 +78,9 @@
           </span>
         </div>
         <div matListItemLine [ngClass]="{
-          'dl-list-item-mobile' : breakpoint === breakpoints.MOBILE, 
+          'dl-list-item-mobile' : breakpoint === breakpoints.MOBILE,
           'product-display-mobile' : breakpoint === breakpoints.MOBILE,
-          'product-display' : breakpoint !== breakpoints.MOBILE 
+          'product-display' : breakpoint !== breakpoints.MOBILE
         }">
           {{ product.productTypeDisplay }}
         </div>

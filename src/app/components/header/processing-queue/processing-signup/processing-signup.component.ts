@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Hyp3Service, NotificationService, UserDataService } from '@services';
+import { Hyp3ApiService, NotificationService, UserDataService } from '@services';
 import { EarthdataUserInfo, Hyp3User, ApplicationStatus } from '@models';
 
 import * as userStore from '@store/user';
@@ -38,7 +38,7 @@ export class ProcessingSignupComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserDataService,
-    private hyp3Service: Hyp3Service,
+    private hyp3Service: Hyp3ApiService,
     private notificationService: NotificationService,
     private store$: Store,
   ) { }

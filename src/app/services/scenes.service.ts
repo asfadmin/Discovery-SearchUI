@@ -104,7 +104,7 @@ export class ScenesService {
           return scenes;
         }
 
-        if (!scenes.every(scene => scene.dataset === 'Sentinel-1B' || scene.dataset === 'Sentinel-1A')) {
+        if (!scenes.every(scene => scene.dataset === 'Sentinel-1C' || scene.dataset === 'Sentinel-1B' || scene.dataset === 'Sentinel-1A')) {
           return scenes;
         }
 
@@ -126,8 +126,8 @@ export class ScenesService {
     return combineLatest([
       scenes$,
       this.store$.select(getProjectName),
-      this.store$.select(getSearchType),]
-    ).pipe(
+      this.store$.select(getSearchType),
+    ]).pipe(
       map(([scenes, projectName, searchType]) => {
         if (searchType !== SearchType.CUSTOM_PRODUCTS) {
           return scenes;
@@ -154,8 +154,8 @@ export class ScenesService {
     return combineLatest([
       scenes$,
       this.store$.select(getJobStatuses),
-      this.store$.select(getSearchType),]
-    ).pipe(
+      this.store$.select(getSearchType),
+    ]).pipe(
       map(([scenes, jobStatuses, searchType]) => {
         if (searchType !== SearchType.CUSTOM_PRODUCTS) {
           return scenes;
