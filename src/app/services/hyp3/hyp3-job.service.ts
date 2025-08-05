@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as moment from 'moment';
+import moment from 'moment';
 
 import * as models from '@models';
 
@@ -64,12 +64,11 @@ export class Hyp3JobService {
     return jobs.map(job => {
         let jobOptions;
         if (job.job_type.id === 'ARIA_S1_GUNW') {
-        let swap = job.granules[0].metadata.date > job.granules[1].metadata.date
-        let g1 = ((job.granules[0].metadata.date as unknown) as string).slice(0,10)
-        let g2 = ((job.granules[1].metadata.date as unknown) as string).slice(0,10)
+        let g1 = moment.isMoment(job.granules[0].metadata.date) ? job.granules[0].metadata.date.format('YYYY-MM-DD') : moment(job.granules[0].metadata.date).format('YYYY-MM-DD')
+        let g2 = moment.isMoment(job.granules[1].metadata.date) ? job.granules[1].metadata.date.format('YYYY-MM-DD') : moment(job.granules[1].metadata.date).format('YYYY-MM-DD')
+        let swap = g1 > g2
         let ref = swap ? g1 : g2;
         let sec = swap ? g2 : g1;
-        ((job.granules[1].metadata.date as unknown) as string).slice(0,10)
         jobOptions = {
             job_type: job.job_type.id,
             job_parameters: {
