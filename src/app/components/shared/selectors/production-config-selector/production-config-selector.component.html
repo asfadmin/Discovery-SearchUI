@@ -1,4 +1,5 @@
-<mat-form-field appearance="fill">
+<mat-form-field appearance="fill"
+                matTooltip="{{'PRODUCTION_CONFIGURATION_TOOLTIP' | translate}}">
   <mat-label>{{ 'PRODUCTION_CONFIGURATION' | translate }}</mat-label>
   <mat-select [formControl]="prodConfigControl" multiple
               [(ngModel)]="selectedConfig"

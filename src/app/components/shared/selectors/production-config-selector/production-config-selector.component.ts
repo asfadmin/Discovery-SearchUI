@@ -8,6 +8,7 @@ import { SubSink } from 'subsink';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import * as filtersStore from '@store/filters';
+import {MatTooltip} from '@angular/material/tooltip';
 
 interface prodConfig {
   value: string;
@@ -19,7 +20,7 @@ interface prodConfig {
   standalone: true,
   templateUrl: './production-config-selector.component.html',
   styleUrl: './production-config-selector.component.scss',
-  imports: [MatFormFieldModule, MatSelectModule, FormsModule, ReactiveFormsModule, MatInputModule, SharedModule],
+  imports: [MatFormFieldModule, MatSelectModule, FormsModule, ReactiveFormsModule, MatInputModule, SharedModule, MatTooltip],
 })
 
 export class ProductionConfigSelectorComponent implements OnInit, OnDestroy {
