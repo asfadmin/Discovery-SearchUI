@@ -114,9 +114,12 @@ export class Hyp3JobService {
       .map(job => {
         const jobGranules = this.getAllGranules(job);
         let product;
-
         if (jobGranules.length < 1) {
           product = this.dummyProduct();
+          if (job.job_type === 'ARIA_S1_GUNW') {
+            product['isDummyProduct'] = false
+            product['metadata']['date'] = moment(job.job_parameters['reference_date'])
+          }
         } else {
           product = dummyProducts[jobGranules[0]];
         }
