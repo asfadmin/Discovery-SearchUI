@@ -211,7 +211,9 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subs.add(
       this.pairProducts$.subscribe(
-        products => this.sbasProducts = products
+        products => {
+          this.sbasProducts = products;
+        }
       )
     );
 
@@ -234,9 +236,14 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(searchStore.getSearchType).pipe(
         filter(searchType => searchType !== models.SearchType.CUSTOM_PRODUCTS),
+        switchMap(_ => this.pairs$),
+        filter(pairs => !!pairs),
+        map(pairs => pairs.pairs.length + pairs.custom.length),
         withLatestFrom(this.pairs$)
       ).subscribe(
-        ([_, { pairs, custom }]) => this.pairs = [...pairs, ...custom])
+        ([_, { pairs, custom }]) => {
+          this.pairs = [...pairs, ...custom];
+        })
     );
 
     this.subs.add(
@@ -264,7 +271,9 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.store$.select(searchStore.getSearchType).subscribe(
-        searchType => this.searchType = searchType
+        searchType => {
+          this.searchType = searchType;
+        }
       )
     );
 
