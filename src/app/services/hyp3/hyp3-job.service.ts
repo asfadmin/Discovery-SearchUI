@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as moment from 'moment';
+import moment from 'moment';
 
 import * as models from '@models';
 
@@ -62,13 +62,32 @@ export class Hyp3JobService {
       .reduce((acc, val) => acc.concat(val), []);
 
     return jobs.map(job => {
-      const jobOptions: any = {
+        let jobOptions;
+        if (job.job_type.id === 'ARIA_S1_GUNW') {
+        let g1 = moment.isMoment(job.granules[0].metadata.date) ? job.granules[0].metadata.date.format('YYYY-MM-DD') : moment(job.granules[0].metadata.date).format('YYYY-MM-DD')
+        let g2 = moment.isMoment(job.granules[1].metadata.date) ? job.granules[1].metadata.date.format('YYYY-MM-DD') : moment(job.granules[1].metadata.date).format('YYYY-MM-DD')
+        let swap = g1 > g2
+        let ref = swap ? g1 : g2;
+        let sec = swap ? g2 : g1;
+        jobOptions = {
+            job_type: job.job_type.id,
+            job_parameters: {
+            reference_date: ref,
+            secondary_date: sec,
+            frame_id: Number.parseInt(job.reference_id)
+            // ...ops[job.job_type.id],
+            // granules: job.granules.map(granule => granule.name),
+            }
+        };
+        } else {
+      jobOptions = {
         job_type: job.job_type.id,
         job_parameters: {
           ...ops[job.job_type.id],
           granules: job.granules.map(granule => granule.name),
         }
       };
+    }
 
       if (options.projectName !== '') {
         jobOptions.name = options.projectName;
@@ -95,9 +114,12 @@ export class Hyp3JobService {
       .map(job => {
         const jobGranules = this.getAllGranules(job);
         let product;
-
         if (jobGranules.length < 1) {
           product = this.dummyProduct();
+          if (job.job_type === 'ARIA_S1_GUNW') {
+            product['isDummyProduct'] = false
+            product['metadata']['date'] = moment(job.job_parameters['reference_date'])
+          }
         } else {
           product = dummyProducts[jobGranules[0]];
         }
