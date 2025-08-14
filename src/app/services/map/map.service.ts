@@ -395,7 +395,7 @@ export class MapService implements OnDestroy {
         this.selectedSource.clear();
       }
       this.setAriaPopupOverlay(null, null);
-
+      this.selectedOnDemandFrameOverlays?.getSource().clear();
       return
     }
 
@@ -625,10 +625,10 @@ export class MapService implements OnDestroy {
     // only do this for the frame selector
     if (e.target.getFeatures().getArray()[0]?.get('dir')) {
       this.selectedSource.clear();
-      this.selectedSource.addFeature(e.selected[0]) // handle multiple things here.
-      let feat = e.target.getFeatures().getArray()[0]
-      const id = feat.get('id')
-      console.log(`Id selected: ${id}`)
+      this.selectedSource.addFeature(e.selected[0]); // handle multiple things here.
+      let feat = e.target.getFeatures().getArray()[0];
+      const id = feat.get('id');
+      console.log(`Id selected: ${id}`);
       this.focusedAriaFrame$.next(feat);
     } else {
       e.target.getFeatures().forEach(
