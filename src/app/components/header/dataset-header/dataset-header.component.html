@@ -41,7 +41,7 @@
           </div>
         </div>
         @if(prop.isRelevant(p.FRAME_ORDERING)) {
-          <mat-slide-toggle (change)="test($event.checked)" class="on-demand-toggle">
+          <mat-slide-toggle (change)="test($event.checked)" [checked]="(frameSelectionEnabled$ | async)"class="on-demand-toggle">
             On Demand Mode
         <app-docs-modal class="info-icon"
                         url="https://docs.asf.alaska.edu/vertex/manual/#area-of-interest-options">

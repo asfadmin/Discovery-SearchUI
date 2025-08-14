@@ -119,6 +119,10 @@ export class Hyp3JobService {
           if (job.job_type === 'ARIA_S1_GUNW') {
             product['isDummyProduct'] = false
             product['metadata']['date'] = moment(job.job_parameters['reference_date'])
+
+            let product2 = this.dummyProduct();
+            product2['isDummyProduct'] = false
+            product2['metadata']['date'] = moment(job.job_parameters['secondeary_date'])
           }
         } else {
           product = dummyProducts[jobGranules[0]];
