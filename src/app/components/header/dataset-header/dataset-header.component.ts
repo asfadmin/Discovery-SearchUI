@@ -20,6 +20,7 @@ export class DatasetHeaderComponent implements OnInit, OnDestroy {
   public datasets = models.datasetList;
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
   public breakpoint$ = this.screenSize.breakpoint$;
+  public frameSelectionEnabled$ = this.store$.select(uiStore.getIsFrameSelectionEnabled);
   public breakpoints = models.Breakpoints;
   private subs = new SubSink();
 
