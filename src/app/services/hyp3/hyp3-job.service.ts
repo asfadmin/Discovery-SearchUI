@@ -64,21 +64,28 @@ export class Hyp3JobService {
     return jobs.map(job => {
         let jobOptions;
         if (job.job_type.id === 'ARIA_S1_GUNW') {
-        let g1 = moment.isMoment(job.granules[0].metadata.date) ? job.granules[0].metadata.date.format('YYYY-MM-DD') : moment(job.granules[0].metadata.date).format('YYYY-MM-DD')
-        let g2 = moment.isMoment(job.granules[1].metadata.date) ? job.granules[1].metadata.date.format('YYYY-MM-DD') : moment(job.granules[1].metadata.date).format('YYYY-MM-DD')
-        let swap = g1 > g2
-        let ref = swap ? g1 : g2;
-        let sec = swap ? g2 : g1;
-        jobOptions = {
-            job_type: job.job_type.id,
-            job_parameters: {
-            reference_date: ref,
-            secondary_date: sec,
-            frame_id: Number.parseInt(job.reference_id)
-            // ...ops[job.job_type.id],
-            // granules: job.granules.map(granule => granule.name),
+            let job_parameters = {}
+            if (job.granules.length > 0) {
+                let g1 = moment.isMoment(job.granules[0].metadata.date) ? job.granules[0].metadata.date.format('YYYY-MM-DD') : moment(job.granules[0].metadata.date).format('YYYY-MM-DD')
+                let g2 = moment.isMoment(job.granules[1].metadata.date) ? job.granules[1].metadata.date.format('YYYY-MM-DD') : moment(job.granules[1].metadata.date).format('YYYY-MM-DD')
+                let swap = g1 > g2
+                let ref = swap ? g1 : g2;
+                let sec = swap ? g2 : g1;
+                job_parameters = {
+                reference_date: ref,
+                secondary_date: sec,
+                frame_id: Number.parseInt(job.reference_id)
+                }
+            } else {
+                job_parameters = {
+                ...(job as any)?.processingOptions
+                }
             }
-        };
+            jobOptions = {
+                job_type: job.job_type.id,
+                job_parameters
+
+            };
         } else {
       jobOptions = {
         job_type: job.job_type.id,
