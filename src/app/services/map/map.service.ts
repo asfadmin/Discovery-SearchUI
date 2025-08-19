@@ -395,7 +395,7 @@ export class MapService implements OnDestroy {
         this.selectedSource.clear();
       }
       this.setAriaPopupOverlay(null, null);
-      this.selectedOnDemandFrameOverlays?.getSource().clear();
+      this.selectedOnDemandFrameOverlays?.getSource()?.clear();
       return
     }
 
