@@ -54,7 +54,9 @@ import { LanguageSelectorModule } from "@components/shared/selectors/language-se
 import { BurstSelectorModule } from '@components/shared/selectors/burst-selector';
 import { TimeseriesChartFlightDirectionToggleComponent} from '@components/timeseries-chart/timeseries-chart-flight-direction-toggle';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
-import {DocsModalModule} from '@components/shared/docs-modal';
+import { DocsModalModule } from '@components/shared/docs-modal';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 
 import { BaselineFrameReferenceToggleComponent } from '@components/shared/selectors/baseline-frame-reference-toggle';
 
@@ -113,7 +115,8 @@ import { BaselineFrameReferenceToggleComponent } from '@components/shared/select
     DocsModalModule,
     BaselineFrameReferenceToggleComponent,
     NgOptimizedImage,
-  ],
+    MatTooltipModule,
+],
     providers: [provideHttpClient(withInterceptorsFromDi())],
   exports: [
     HeaderComponent
