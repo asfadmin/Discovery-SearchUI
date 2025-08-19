@@ -6,13 +6,30 @@
         class="breadcrumb">
       </app-search-type-selector>
 
-      <app-dataset-selector
-         [(selected)]="selectedDataset"
-         (selectedChange)="onDatasetChange($event)"
-         [datasets]="datasets"
-         (click)="closeAOIOptions()"
-         class="breadcrumb dataset-selector--layout">
-      </app-dataset-selector>
+<!--      <div class="dataset-header-wrapper">-->
+        <app-dataset-selector
+          [(selected)]="selectedDataset"
+          (selectedChange)="onDatasetChange($event)"
+          [datasets]="datasets"
+          (click)="closeAOIOptions()"
+          class="breadcrumb dataset-selector--layout">
+        </app-dataset-selector>
+        @if(prop.isRelevant(p.FRAME_ORDERING)) {
+          <div class="on-demand-mode-toggle-wrapper">
+            <mat-slide-toggle (change)="test($event.checked)" [checked]="(frameSelectionEnabled$ | async)">
+              On Demand
+              <app-docs-modal class="info-icon"
+                              url="https://docs.asf.alaska.edu/vertex/manual/#area-of-interest-options">
+              </app-docs-modal>
+            </mat-slide-toggle>
+            <div class="download-frame-map" *ngIf="frameSelectionEnabled$ | async" matTooltip="Download Frame Map">
+              <a (click)="frameMapService.downloadFrameMap(selectedDataset)">
+                <mat-icon >download</mat-icon>
+              </a>
+            </div>
+          </div>
+        }
+<!--      </div>-->
 
       <app-aoi-filter class="breadcrumb"
                       [ngClass]="{'noshow' : breakpoint === breakpoints.SMALL}">
@@ -40,14 +57,6 @@
             <app-max-results-selector></app-max-results-selector>
           </div>
         </div>
-        @if(prop.isRelevant(p.FRAME_ORDERING)) {
-          <mat-slide-toggle (change)="test($event.checked)" [checked]="(frameSelectionEnabled$ | async)"class="on-demand-toggle">
-            On Demand Mode
-        <app-docs-modal class="info-icon"
-                        url="https://docs.asf.alaska.edu/vertex/manual/#area-of-interest-options">
-        </app-docs-modal>
-          </mat-slide-toggle>
-        }
       </div>
 
       <div class="icon-cluster">

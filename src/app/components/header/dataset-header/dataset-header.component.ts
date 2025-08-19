@@ -31,13 +31,17 @@ export class DatasetHeaderComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private screenSize: services.ScreenSizeService,
     public prop: services.PropertyService,
-    
+    public frameMapService: services.FrameMapService,
+
   ) { }
 
   ngOnInit() {
     this.subs.add(
       this.store$.select(filterStore.getSelectedDatasetId).subscribe(
-        selected => this.selectedDataset = selected
+        selected => {
+          this.selectedDataset = selected;
+          console.log('Selected dataset:', this.selectedDataset);
+        }
       )
     );
   }
