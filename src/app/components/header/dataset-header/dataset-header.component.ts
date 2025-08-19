@@ -31,7 +31,8 @@ export class DatasetHeaderComponent implements OnInit, OnDestroy {
     private store$: Store<AppState>,
     private screenSize: services.ScreenSizeService,
     public prop: services.PropertyService,
-    
+    public frameMapService: services.FrameMapService,
+
   ) { }
 
   ngOnInit() {
