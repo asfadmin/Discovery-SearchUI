@@ -40,6 +40,11 @@ export class ProductService {
         if ( !filename.includes(g.gn)) {
           filename = `${g.gn}-${filename}`;
         }
+        if(g.d === 'NISAR' && g.nsr.sizeMB) {
+          // NISAR uses SizeInBytes instead of Size so doesn't populate the right field in the API.
+          // the new property also auto converts to the right scale already
+          g.s = (g.nsr.sizeMB[filename]?.bytes ?? 0) / 1000000;
+        }
         let product = {
           name: g.gn,
           productTypeDisplay: g.ptd ?? g.gn,
@@ -311,7 +316,7 @@ export class ProductService {
         productTypeDisplay: productTypeDisplay || p,
         file: fileID,
         id: product.id + '-' + file_extension,
-        bytes: 0,
+        bytes: product.metadata.nisar?.sizeMB?.[fileID]?.bytes ?? 0,
         browses,
         thumbnail: null,
         metadata: {
@@ -323,7 +328,6 @@ export class ProductService {
         },
         virtual: true,
       } as models.CMRProduct;
-      
       products.push(subproduct)
     }
 

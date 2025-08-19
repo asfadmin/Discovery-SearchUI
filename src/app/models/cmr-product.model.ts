@@ -104,6 +104,7 @@ export interface NISARMetadata {
   sideBandPolarization: string,
   mainBandPolarization: string,
   rangeBandwidth: string,
+  sizeMB?: {[key: string]: {bytes: number, format: string}}
 }
 
 export enum FlightDirection {
