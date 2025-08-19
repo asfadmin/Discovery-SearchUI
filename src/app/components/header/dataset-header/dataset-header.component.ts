@@ -38,7 +38,10 @@ export class DatasetHeaderComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subs.add(
       this.store$.select(filterStore.getSelectedDatasetId).subscribe(
-        selected => this.selectedDataset = selected
+        selected => {
+          this.selectedDataset = selected;
+          console.log('Selected dataset:', this.selectedDataset);
+        }
       )
     );
   }
