@@ -252,6 +252,7 @@
   "DOWNLOAD_ALL_FILES_IN_QUEUE": "Descargar todos los archivos en lista",
   "DOWNLOAD_DATA_METADATA_AS": "Descargar datos/metadatos como",
   "DOWNLOAD_FILE": "Descargar archivo",
+  "DOWNLOAD_FRAME_MAP_TOOLTIP": "Descargar mapa de marcos",
   "DOWNLOAD_PAIR_CSV": "Descargar Pares CSV ",
   "DOWNLOAD_PYTHON_SCRIPT_PY": "Descargar secuencia de comandos de Python (.py)",
   "DOWNLOAD_PYTHON_SCRIPT_PY_OPTION_OR_METADATA_METALINK_FILE_OPTION": "Descargue la opción Python Script (.py) o la opción de archivo Metadata (metalink).",
