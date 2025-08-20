@@ -23,6 +23,7 @@ margin-top: 10px;
   box-sizing: border-box !important;
   max-width: 130px !important;
   min-width: 130px !important;
+  position: relative;
 }
 
 $width: 330px;
@@ -35,4 +36,24 @@ $width: 330px;
 }
 .more-horiz {
   margin-left: 0 !important;
+}
+
+.on-demand-mode-toggle-wrapper {
+  cursor: pointer;
+  transform: scale(.8);
+  position: absolute;
+  top: 68px;
+  left: 310px;
+}
+
+.dataset-header-wrapper {
+  display: block;
+  position: relative;
+}
+
+.download-frame-map {
+  position: absolute;
+  top: 1px;
+  right: -25px;
+  z-index: 10;
 }

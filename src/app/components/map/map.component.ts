@@ -233,19 +233,20 @@ export class MapComponent implements OnInit, OnDestroy  {
         this.store$.select(uiStore.getIsFrameSelectionEnabled),
         this.store$.select(filtersStore.getSelectedDatasetId),
         this.store$.select(filtersStore.getFlightDirections),
-        this.store$.select(filtersStore.getPathRange)
-      ]).subscribe(([enabled, datasetId, directions, frameRange]) => {
+        this.store$.select(filtersStore.getPathRange),
+        this.store$.select(searchStore.getSearchType),
+      ]).subscribe(([enabled, datasetId, directions, frameRange, searchType]) => {
         let dataset = models.datasets[datasetId];
         if(enabled && !dataset.properties.find((a) => a === models.Props.FRAME_ORDERING)) {
           // this dataset doesn't support frame ordering, disable
           this.store$.dispatch(new uiStore.SetFrameSelection(false))
           this.mapService.setFrameSelectionActive(false);
         }
-        else if(enabled) {
+        else if(enabled && searchType == this.searchTypes.DATASET) {
           this.mapService.setFrameSelectionActive(true, dataset.frameMap[directions[0]?.toLowerCase() ?? 'ascending'], frameRange);
           this.store$.dispatch(new mapStore.SetMapInteractionMode(models.MapInteractionModeType.NONE)); // disable so we can actually pick a frame
         }
-        else if(!enabled) {
+        else {
           this.mapService.setFrameSelectionActive(false);
         }
       })

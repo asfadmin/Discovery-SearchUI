@@ -6,6 +6,7 @@ import { Hyp3JobType } from './hyp3-job-type.model';
 export interface QueuedHyp3Job {
   granules: CMRProduct[];
   job_type: Hyp3JobType;
+  reference_id?: string;
 }
 
 export interface JobTypesWithQueued {
@@ -136,8 +137,8 @@ export interface Hyp3InsarIsceMultiBurstParameters {
 }
 
 export interface Hyp3AriaS1GunwParameters {
-  reference: string[];
-  secondary: string[];
+  reference: string;
+  secondary: string;
   frame_id: number;
 }
 

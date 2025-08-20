@@ -14,6 +14,7 @@ import { getSearchType } from '@store/search';
 import { CMRProduct, Hyp3ableByProductType, SearchType } from '@models';
 import { withLatestFrom } from 'rxjs/operators';
 import { EnvironmentService, Hyp3ApiService } from '@services';
+import { getSelectedDataset, getShouldUseFramesForReference } from '@store/filters';
 
 @Component({
   selector: 'app-on-demand-add-menu',
@@ -30,6 +31,7 @@ export class OnDemandAddMenuComponent implements OnInit {
   public isLoggedIn = false;
 
   public referenceScene: CMRProduct;
+
   private scenes: CMRProduct[];
   public costs;
   public options;
@@ -39,6 +41,8 @@ export class OnDemandAddMenuComponent implements OnInit {
   public InSAR = models.hyp3JobTypes.INSAR_GAMMA;
   public AutoRift = models.hyp3JobTypes.AUTORIFT;
 
+  public isFrameBased: boolean = false; 
+  private referenceID: string;
   public userStatus;
 
   private subs = new SubSink();
@@ -50,6 +54,9 @@ export class OnDemandAddMenuComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.subs.add(this.store$.select(getShouldUseFramesForReference).subscribe(
+        isFrameBased => this.isFrameBased = isFrameBased
+    ))
     this.subs.add(
       this.store$.select(getSearchType).subscribe(
         searchtype => this.searchType = searchtype
@@ -80,12 +87,19 @@ export class OnDemandAddMenuComponent implements OnInit {
     )
 
     this.subs.add(
+        this.store$.select(getMasterName).subscribe(
+            sceneName => this.referenceID = sceneName
+        )
+    )
+    this.subs.add(
       this.store$.select(getScenes).pipe(
-        withLatestFrom(this.store$.select(getMasterName))
+        withLatestFrom(this.store$.select(getMasterName)),
+        withLatestFrom(this.store$.select(getSelectedDataset))
         ).subscribe(
-        ([scenes, referenceName]) => {
+        ([[scenes, referenceName], dataset]) => {
           this.scenes = scenes;
-          if (referenceName) {
+          this.referenceID = referenceName;
+          if (referenceName && dataset.id !== "SENTINEL-1 INTERFEROGRAM (BETA)") {
             const referenceSceneIdx = this.scenes.findIndex(scene => scene.name === referenceName);
             if (referenceSceneIdx !== -1) {
               this.referenceScene = this.scenes[referenceSceneIdx];
@@ -96,7 +110,7 @@ export class OnDemandAddMenuComponent implements OnInit {
     );
   }
 
-  public queueAllOnDemand(products: models.CMRProduct[][], job_type: models.Hyp3JobType): void {
+  public queueAllOnDemand(products: models.CMRProduct[][], job_type: models.Hyp3JobType, isFrameBased: boolean = false): void {
     const jobs: models.QueuedHyp3Job[] = products.map(product => ({
       granules: [...product].sort((a, b) => {
         if (a.metadata.date < b.metadata.date) {
@@ -104,7 +118,8 @@ export class OnDemandAddMenuComponent implements OnInit {
         }
         return 1;
       }),
-      job_type
+      job_type,
+      reference_id: isFrameBased ? this.referenceID : null
     }));
 
     this.store$.dispatch(new queueStore.AddJobs(jobs));
@@ -141,7 +156,7 @@ export class OnDemandAddMenuComponent implements OnInit {
           }
           return 1;
         }),
-        job_type
+        job_type,
       } as models.QueuedHyp3Job;
     });
 
