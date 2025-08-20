@@ -23,6 +23,7 @@ import { SearchSelectorModule } from '@components/shared/selectors/search-select
 
 import {DocsModalModule} from '@components/shared/docs-modal';
 import { SharedModule } from '@shared';
+import { FrameOrderFiltersComponent } from './frame-order-filters';
 
 @NgModule({
   imports: [
@@ -47,6 +48,7 @@ import { SharedModule } from '@shared';
 
     SearchSelectorModule,
     DocsModalModule,
+    FrameOrderFiltersComponent,
   ],
   declarations: [
     FiltersDropdownComponent,

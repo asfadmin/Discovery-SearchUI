@@ -108,6 +108,8 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
 
     this.snackBarConfig.panelClass = ['ts-snackbar'];
 
+    this.displaySackBar();
+
     this.subs.add(
       this.store$.select(uiStore.getActiveUUID).subscribe(uuid => {
         if (!uuid)
@@ -197,14 +199,18 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     if (cStates.length === 0) {
       this.element.classList.remove('visible');
       this.element.classList.add('hidden');
-      let msg = this.language.translate.instant('PLEASE_SELECT_A_POINT_ON_THE_MAP');
-      this.snackBar.dismiss();
-      this.snackBar.open(msg, '', this.snackBarConfig );
+      this.displaySackBar();
     } else {
       this.element.classList.remove('hidden');
       this.element.classList.add('visible');
       this.snackBar.dismiss();
     }
+  }
+
+  public displaySackBar() {
+    let msg = this.language.translate.instant('PLEASE_SELECT_A_POINT_ON_THE_MAP');
+    this.snackBar.dismiss();
+    this.snackBar.open(msg, '', this.snackBarConfig );
   }
 
   public onResizeEnd(event: ResizeEvent): void {

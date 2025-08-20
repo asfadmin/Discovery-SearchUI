@@ -20,20 +20,27 @@ export class DatasetHeaderComponent implements OnInit, OnDestroy {
   public datasets = models.datasetList;
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
   public breakpoint$ = this.screenSize.breakpoint$;
+  public frameSelectionEnabled$ = this.store$.select(uiStore.getIsFrameSelectionEnabled);
   public breakpoints = models.Breakpoints;
   private subs = new SubSink();
 
   public selectedDataset: string;
+  public p = models.Props;
 
   constructor(
     private store$: Store<AppState>,
     private screenSize: services.ScreenSizeService,
+    public prop: services.PropertyService,
+    public frameMapService: services.FrameMapService,
+
   ) { }
 
   ngOnInit() {
     this.subs.add(
       this.store$.select(filterStore.getSelectedDatasetId).subscribe(
-        selected => this.selectedDataset = selected
+        selected => {
+          this.selectedDataset = selected;
+        }
       )
     );
   }
@@ -49,6 +56,9 @@ export class DatasetHeaderComponent implements OnInit, OnDestroy {
 
   public onDatasetChange(dataset: string): void {
     this.store$.dispatch(new filterStore.SetSelectedDataset(dataset));
+  }
+  public test(value: boolean): void {
+    this.store$.dispatch(new uiStore.SetFrameSelection(value))
   }
 
   ngOnDestroy() {

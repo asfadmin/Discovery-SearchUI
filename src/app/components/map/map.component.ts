@@ -17,7 +17,8 @@ import * as scenesStore from '@store/scenes';
 import * as searchStore from '@store/search';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
-
+import * as filtersStore from '@store/filters';
+import * as sceneStore from '@store/scenes';
 import * as models from '@models';
 import {CMRProduct, SarviewsEvent} from '@models';
 import {
@@ -52,12 +53,13 @@ export class MapComponent implements OnInit, OnDestroy  {
   @ViewChild('overlay', { static: true }) overlayRef: ElementRef;
   @ViewChild('map', { static: true }) mapRef: ElementRef;
   @ViewChild('browsetooltip', {static: false}) browseDisclaimer: ElementRef;
+  @ViewChild('AriaPopup', {static: false}) ariaPopup: ElementRef<HTMLDivElement>;
 
   public drawMode$ = this.store$.select(mapStore.getMapDrawMode);
   public interactionMode$ = this.store$.select(mapStore.getMapInteractionMode);
   public mousePosition$ = this.mapService.mousePosition$;
   public isFiltersMenuOpen: boolean;
-
+  
   public banners$ = this.store$.select(uiStore.getBanners);
 
   public view$ = this.store$.select(mapStore.getMapView);
@@ -82,7 +84,8 @@ export class MapComponent implements OnInit, OnDestroy  {
 
   public selectedScene: CMRProduct;
   public selectedSarviewEvent: SarviewsEvent;
-
+  public SelectedOnDemandFrameID: Feature = null;
+  public OnDemandFrames: {frameID: string, feature: Feature<Geometry>}[] = []
   private subs = new SubSink();
   private gridlinesActive$ = this.store$.select(mapStore.getAreGridlinesActive);
   private isMapInitialized$ = this.store$.select(mapStore.getIsMapInitialization);
@@ -107,8 +110,36 @@ export class MapComponent implements OnInit, OnDestroy  {
     private pointHistoryService: PointHistoryService,
   ) {}
 
-  ngOnInit(): void {
+  public buildOnDemandStack() {
+        // let id = feature.get('id')
+        this.store$.dispatch(new uiStore.SetFrameSelection(false))
+        this.store$.dispatch(new searchStore.ClearSearch())
+        this.store$.dispatch(new searchStore.SetSearchType(models.SearchType.SBAS))
+        this.store$.dispatch(new filtersStore.SetUseFrameForBaseline(true))
+        this.store$.dispatch(new sceneStore.SetFilterMaster(this.OnDemandFrames[0].frameID.toString()))
+        this.store$.dispatch(new filtersStore.SetSelectedDataset(models.beta.id))
+        this.store$.dispatch(new searchStore.MakeSearch())
 
+        this.mapService.setOnDemandSBASFrame(this.OnDemandFrames[0].feature)
+        this.mapService.setAriaPopupOverlay(null, null)
+  }
+  ngOnInit(): void {
+    this.mapService.focusedAriaFrame$
+    .pipe(
+        filter(frame => !!frame),
+        withLatestFrom(this.mapService.mousePosition$),
+        withLatestFrom(this.store$.select(searchStore.getSearchType)),
+        filter(([[_, __], searchType]) => searchType !== models.SearchType.SBAS)
+    )
+    .subscribe(
+        ([[frame, lonLat,], _]) => {
+            this.OnDemandFrames = [{frameID: frame.get('id'), feature: frame}]
+            this.mapService.setOnDemandSBASFrame(this.OnDemandFrames[0].feature)
+            // this.zZg1 = frameId.get('id');
+            this.mapService.setAriaPopupOverlay(this.ariaPopup.nativeElement, lonLat)
+            // this.ariaPopup.nativeElement 
+        }
+    )
     this.subs.add(
       this.mapService.selectedSarviewEvent$.pipe(
         filter(id => !!id)
@@ -196,6 +227,41 @@ export class MapComponent implements OnInit, OnDestroy  {
         active => this.mapService.setGridLinesActive(active)
       )
     );
+
+    this.subs.add(
+      combineLatest([
+        this.store$.select(uiStore.getIsFrameSelectionEnabled),
+        this.store$.select(filtersStore.getSelectedDatasetId),
+        this.store$.select(filtersStore.getFlightDirections),
+        this.store$.select(filtersStore.getPathRange),
+        this.store$.select(searchStore.getSearchType),
+      ]).subscribe(([enabled, datasetId, directions, frameRange, searchType]) => {
+        let dataset = models.datasets[datasetId];
+        if(enabled && !dataset.properties.find((a) => a === models.Props.FRAME_ORDERING)) {
+          // this dataset doesn't support frame ordering, disable
+          this.store$.dispatch(new uiStore.SetFrameSelection(false))
+          this.mapService.setFrameSelectionActive(false);
+        }
+        else if(enabled && searchType == this.searchTypes.DATASET) {
+          this.mapService.setFrameSelectionActive(true, dataset.frameMap[directions[0]?.toLowerCase() ?? 'ascending'], frameRange);
+          this.store$.dispatch(new mapStore.SetMapInteractionMode(models.MapInteractionModeType.NONE)); // disable so we can actually pick a frame
+        }
+        else {
+          this.mapService.setFrameSelectionActive(false);
+        }
+      })
+    )
+
+    this.subs.add(
+      combineLatest([
+        this.store$.select(uiStore.getIsFrameSelectionEnabled),
+        this.store$.select(filtersStore.getPathRange),
+      ]).subscribe(([enabled, path]) => {
+        if(enabled) {
+          this.mapService.filterFrameOverlay(path)
+        }
+      })
+    )
 
     this.subs.add(
       combineLatest([

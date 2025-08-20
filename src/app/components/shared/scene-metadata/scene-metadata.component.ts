@@ -22,6 +22,9 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
   @Input() offsets = { temporal: 0, perpendicular: 0 };
 
   public p = models.Props;
+  public selectedDataset: string;
+  public selectedDatasetIsNISARFormat: boolean = false;
+
 
   private subs = new SubSink();
 
@@ -31,6 +34,18 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.subs.add(
+      this.store$.select(filtersStore.getSelectedDatasetId).subscribe(
+        selected => {
+          this.selectedDataset = selected
+          if (this.selectedDataset === 'SENTINEL-1 INTERFEROGRAM (BETA)') {
+            this.selectedDatasetIsNISARFormat = true;
+          } else {
+            this.selectedDatasetIsNISARFormat = false;
+          }
+        }
+      )
+    );
   }
 
   public isGeoSearch(): boolean {
