@@ -253,6 +253,7 @@
   "DOWNLOAD_ALL_FILES_IN_QUEUE": "Download all files in queue",
   "DOWNLOAD_DATA_METADATA_AS": "Download data/metadata as ",
   "DOWNLOAD_FILE": "Download file",
+  "DOWNLOAD_FRAME_MAP_TOOLTIP": "Download Frame Map",
   "DOWNLOAD_PAIR_CSV": "Download Pair CSV",
   "DOWNLOAD_PYTHON_SCRIPT_PY": "Download Python Script (.py)",
   "DOWNLOAD_PYTHON_SCRIPT_PY_OPTION_OR_METADATA_METALINK_FILE_OPTION": "Download Python Script (.py) option or Metadata (metalink) file option.",
