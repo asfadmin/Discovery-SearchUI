@@ -9,7 +9,6 @@ export class FrameMapService {
   constructor() { }
 
   public downloadFrameMap(id: string): void {
-    console.log('Downloading frame map for', id);
     this.datasets.forEach((dataset) => {dataset.id === id ? this.downloadFileFromUrl(dataset.frameMap.ascending, dataset.name) : null;});
   }
 
