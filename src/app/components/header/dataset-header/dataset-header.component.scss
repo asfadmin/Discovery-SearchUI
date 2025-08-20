@@ -24,6 +24,7 @@ margin-top: 10px;
   max-width: 130px !important;
   min-width: 130px !important;
   position: relative;
+  top:-4px
 }
 
 $width: 330px;
@@ -42,18 +43,19 @@ $width: 330px;
   cursor: pointer;
   transform: scale(.8);
   position: absolute;
-  top: 68px;
-  left: 310px;
+  top: 70px;
+  left: -18px;
+  width: 200px;
 }
 
 .dataset-header-wrapper {
-  display: block;
   position: relative;
+  height: 0;
 }
 
 .download-frame-map {
   position: absolute;
   top: 1px;
-  right: -25px;
+  left: 137px;
   z-index: 10;
 }

@@ -6,7 +6,7 @@
         class="breadcrumb">
       </app-search-type-selector>
 
-<!--      <div class="dataset-header-wrapper">-->
+      <div class="dataset-header-wrapper">
         <app-dataset-selector
           [(selected)]="selectedDataset"
           (selectedChange)="onDatasetChange($event)"
@@ -29,7 +29,7 @@
             </div>
           </div>
         }
-<!--      </div>-->
+      </div>
 
       <app-aoi-filter class="breadcrumb"
                       [ngClass]="{'noshow' : breakpoint === breakpoints.SMALL}">
