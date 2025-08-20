@@ -22,7 +22,7 @@
                               url="https://docs.asf.alaska.edu/vertex/manual/#area-of-interest-options">
               </app-docs-modal>
             </mat-slide-toggle>
-            <div class="download-frame-map" *ngIf="frameSelectionEnabled$ | async" matTooltip="Download Frame Map">
+            <div class="download-frame-map" *ngIf="frameSelectionEnabled$ | async" matTooltip="{{'DOWNLOAD_FRAME_MAP_TOOLTIP' | translate}}">
               <a (click)="frameMapService.downloadFrameMap(selectedDataset)">
                 <mat-icon >download</mat-icon>
               </a>
