@@ -83,6 +83,21 @@ export interface GeographicFiltersType {
   fullBurstIDs: string[];
   operaBurstIDs: string[];
   useCalibrationData: boolean,
+  // shortNames: state.shortNames,
+  // sciProducts: state.scienceProduct,
+  // productConfig: state.productionConfig,
+  // sidePolarizations : state.sidePolarizations,
+  // frameCoverage: state.frameCoverage,
+  // jointObservation: state.jointObservation,
+  shortNames: fromDatasets.DatasetShortName;
+  scienceProduct: string[];
+  productionConfig: string[];
+  sidePolarizations: fromDatasets.DatasetPolarizations;
+  frameCoverage: string[];
+  jointObservation: boolean;
+  rangeBandwidth: string[];
+  instrument: string[];
+  groupID: null | string;
 }
 
 export interface SarviewsFiltersType {

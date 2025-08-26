@@ -703,6 +703,15 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           fullBurstIDs: filters.fullBurstIDs,
           operaBurstIDs: filters.operaBurstIDs,
           useCalibrationData: filters.useCalibrationData,
+          shortNames: filters.shortNames,
+          scienceProduct: filters.scienceProduct,
+          productionConfig: filters.productionConfig,
+          sidePolarizations: filters.sidePolarizations,
+          frameCoverage: filters.frameCoverage,
+          jointObservation: filters.jointObservation,
+          rangeBandwidth: filters.rangeBandwidth,
+          instrument: filters.instrument,
+          groupID: filters.groupID
         };
       }
     }
@@ -1064,7 +1073,15 @@ export const getGeographicSearch = createSelector(
     fullBurstIDs: state.fullBurstIDs,
     operaBurstIDs: state.operaBurstIDs,
     useCalibrationData: state.useCalibrationData,
-    shortNames: state.shortNames
+    shortNames: state.shortNames,
+    scienceProduct: state.scienceProduct,
+    productionConfig: state.productionConfig,
+    sidePolarizations: state.sidePolarizations,
+    frameCoverage: state.frameCoverage,
+    jointObservation: state.jointObservation,
+    rangeBandwidth: state.rangeBandwidth,
+    instrument: state.instrument,
+    groupID: state.groupID,
   })
 );
 
