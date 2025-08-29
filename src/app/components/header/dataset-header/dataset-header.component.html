@@ -19,7 +19,7 @@
             <mat-slide-toggle (change)="test($event.checked)" [checked]="(frameSelectionEnabled$ | async)">
               On Demand
               <app-docs-modal class="info-icon"
-                              url="https://docs.asf.alaska.edu/vertex/manual/#area-of-interest-options">
+                              url="https://hyp3-docs.asf.alaska.edu/guides/gunw_product_guide/">
               </app-docs-modal>
             </mat-slide-toggle>
             <div class="download-frame-map" *ngIf="frameSelectionEnabled$ | async" matTooltip="{{'DOWNLOAD_FRAME_MAP_TOOLTIP' | translate}}">
