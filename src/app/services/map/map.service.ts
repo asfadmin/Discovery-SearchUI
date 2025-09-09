@@ -286,11 +286,14 @@ export class MapService implements OnDestroy {
   }
 
   public setLayer(layer: VectorLayer<VectorSource>): void {
+    let previousVisible = true;
     if (!!this.polygonLayer) {
+      previousVisible = this.polygonLayer.isVisible();
       this.map.removeLayer(this.polygonLayer);
     }
 
     this.polygonLayer = layer;
+    this.polygonLayer.setVisible(previousVisible);
     this.map.addLayer(this.polygonLayer);
   }
 
