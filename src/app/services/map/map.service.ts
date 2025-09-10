@@ -939,14 +939,14 @@ export class MapService implements OnDestroy {
       [models.FlightDirection.ASCENDING]: 'ASC',
       [models.FlightDirection.DESCENDING]: 'DESC'
     }
-    const apiDispValues = {
-      [models.DisplacementLayerTypes.DISPLACEMENT]: 'DISP',
-      [models.DisplacementLayerTypes.VELOCITY]: 'VEL'
-    }
-    const dir = apiDirValues[direction];
-    const layerType = apiDispValues[type];
 
-    let base_url = `https://d3g9emy65n853h.cloudfront.net/main/${dir.toLowerCase()}/${layerType.toLowerCase()}`;
+    const dir = apiDirValues[direction];
+    let base_url = '';
+    if(dir === models.FlightDirection.ASCENDING) {
+      base_url = 'https://d1riv60tezqha9.cloudfront.net/bc2c758a-2954-4d01-afe9-ce59c54bcb9c/tms';
+    } else {
+      base_url = 'https://d1riv60tezqha9.cloudfront.net/0a8591dc-860e-45b1-9774-f834861cffcc/tms';
+    }
     this.displacementOverview$.next(type);
 
     this.http.get(`${base_url}/extent.json`).pipe(
