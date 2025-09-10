@@ -61,12 +61,14 @@
         }
         @else {
           <div matListItemTitle class="granule-name">
-             Frame {{ job.reference_id }}: {{ job.granules[0].metadata.date | shortDate }} - {{ job.granules[1].metadata.date | shortDate}}
+             {{ job.granules[0].metadata.date | shortDate }} - {{ job.granules[1].metadata.date | shortDate}}
           </div>    
         }
+
+        <!-- @if implicitly wraps everything with <span> -->
         <div *ngIf="job.job_type.name === 'ARIA_S1_GUNW'" matListItemLine>
             <b>
-                {{ job.job_type.name }}
+                Frame {{ job.reference_id }}
             </b>
             <span> ({{costPerJob}}
               <span [ngPlural]="costPerJob * jobsDisplay.length">
