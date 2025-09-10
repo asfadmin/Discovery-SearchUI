@@ -18,7 +18,6 @@
   <ng-container matListItemIcon>
     <mat-icon mat-icon-button disabled></mat-icon>
   </ng-container>
-
   <div [class.clickable]="!product.metadata.job" matListItemTitle>
     @if ((searchType$ | async) !== searchTypes.CUSTOM_PRODUCTS) {
     <b>
