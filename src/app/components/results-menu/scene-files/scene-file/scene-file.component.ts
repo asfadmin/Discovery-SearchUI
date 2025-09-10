@@ -164,7 +164,9 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   }
 
   public isExpired(job: models.Hyp3Job): boolean {
+    console.log('checking if job is expired', job);
     if (job) {
+      console.log('isExpired result:', this.hyp3JobStatus.isExpired(job));
       return this.hyp3JobStatus.isExpired(job);
     }
     return false;
