@@ -114,8 +114,10 @@
           <div class="w100">
             @if(scene.metadata.job?.job_type === 'ARIA_S1_GUNW' && scene.file === '') {
               <p>{{'JOB_INGEST_PROCESSING' | translate}}</p>
-
-              <a>{{'ARIA_INGEST_DOCS' | translate}}</a>
+              <app-docs-modal
+                 url="https://hyp3-docs.asf.alaska.edu/guides/gunw_product_guide/#accessing-products-in-the-archive"
+                      text="{{'ARIA_INGEST_DOCS' | translate}}">
+              </app-docs-modal>
             }
             @else {
               <details open (open)="onSetDetailsOpen($event)">
