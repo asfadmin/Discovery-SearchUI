@@ -54,10 +54,30 @@
                matBadgeOverlap="false"
                matListAvatar>
 
+        @if(job.job_type.name !== 'ARIA_S1_GUNW') {
           <div matListItemTitle class="granule-name">
             {{ job.granules[0].name }}
           </div>
+        }
+        @else {
+          <div matListItemTitle class="granule-name">
+             {{ job.granules[0].metadata.date | shortDate }} - {{ job.granules[1].metadata.date | shortDate}}
+          </div>    
+        }
 
+        <!-- @if implicitly wraps everything with <span> -->
+        <div *ngIf="job.job_type.name === 'ARIA_S1_GUNW'" matListItemLine>
+            <b>
+                Frame {{ job.reference_id }}
+            </b>
+            <span> ({{costPerJob}}
+              <span [ngPlural]="costPerJob * jobsDisplay.length">
+            <ng-template ngPluralCase="=1">{{ 'CREDIT' | uppercase | translate }}</ng-template>
+            <ng-template ngPluralCase="other">{{ 'CREDITS' | uppercase | translate }}</ng-template>
+              </span>)
+            </span>
+          </div>
+        
           <div *ngIf="job.job_type.name === 'RTC GAMMA'" matListItemLine>
             <b>
               {{ job.job_type.name }}
@@ -73,7 +93,7 @@
               </span>)
             </span>
           </div>
-          <div *ngIf="job.job_type.name !== 'RTC GAMMA'" style="font-size: 14px;" matListItemLine>
+          <div *ngIf="!['ARIA_S1_GUNW', 'RTC GAMMA'].includes(job.job_type.name)" style="font-size: 14px;" matListItemLine>
           {{job.granules[1]?.name}}
           </div>
 

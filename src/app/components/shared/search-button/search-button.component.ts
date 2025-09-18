@@ -54,12 +54,12 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   public isLoggedIn = false;
   public searchError$ = new Subject<void>();
   public isSearchError = false;
+  public isFiltersOpen = false;
 
   private subs = new SubSink();
 
   private stackReferenceScene: string;
   private latestReferenceScene: string;
-  private isFiltersOpen = false;
   private resultsMenuOpen = false;
 
   constructor(

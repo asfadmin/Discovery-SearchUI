@@ -218,13 +218,14 @@ export class SearchEffects {
 
       const granuleNames = products.reduce((names, prod) => {
         const scenes = prod.metadata.job.scenes;
-
         if (scenes) {
           const gNames = scenes
             .filter(g => !!g && 'name' in g)
             .map(g => g.name);
 
           return names.concat(gNames);
+        } else if(prod.metadata.job.job_type === 'ARIA_S1_GUNW') {
+          return names.concat(prod.metadata.job.files[0]?.filename.slice(0,-3));
         } else {
           return names.push(prod.name);
         }
@@ -237,7 +238,7 @@ export class SearchEffects {
     withLatestFrom(this.store$.select(scenesStore.getProducts)),
     map(([asfApiResp, products]) => {
       const results = this.productService.fromResponse(asfApiResp)
-        .filter(product => !product.metadata.productType.includes('METADATA'));
+        .filter(product => !product.metadata.productType?.includes('METADATA'));
 
       const cmrData = results.reduce((prods, product) => {
         prods[product.name] = product;

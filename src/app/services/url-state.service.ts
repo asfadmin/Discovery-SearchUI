@@ -107,10 +107,11 @@ export class UrlStateService {
   public load(): void {
     if (this.kioskMode) {
       this.store$.dispatch(new SetSearchType(models.SearchType.DISPLACEMENT))
+      this.loadStateFrom({}); // init search for displacement and other search type params
     }
-    this.loadStateFrom({}); // init search for displacement and other search type params
     this.activatedRoute.queryParams.pipe(
       skip(1),
+      debounceTime(300),
       take(1),
     ).subscribe(
       params => this.loadStateFrom(params)
