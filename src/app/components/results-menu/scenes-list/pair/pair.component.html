@@ -21,6 +21,16 @@
       >
     </mat-icon>
 
+    <mat-icon
+      *ngIf="hyp3able.total < 1"
+      class="noselect list-icon"
+      style="margin-left: 10px; opacity: 0.5;"
+      matTooltip="Only co-polarized burst pairs can be processed"
+      svgIcon="hyp3"
+      matListItemMeta
+      >
+    </mat-icon>
+
     <app-on-demand-add-menu #pairAdd>
     </app-on-demand-add-menu>
 </button>
