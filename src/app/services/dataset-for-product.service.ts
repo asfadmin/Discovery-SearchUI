@@ -33,7 +33,7 @@ export class DatasetForProductService {
       sceneDataset.includes(datasetID)
     );
 
-    if(scene.name.startsWith('S1-GUNW')) {
+    if(scene?.name?.startsWith('S1-GUNW')) {
       return models.datasets['SENTINEL-1 INTERFEROGRAM (BETA)']
     }
 

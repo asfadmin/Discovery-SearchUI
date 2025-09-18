@@ -413,7 +413,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
       new userStore.LoadFiltersPreset(this.defaultBaselineFiltersID),
     ].forEach(action => this.store$.dispatch(action));
 
-    if (sceneName.startsWith('S1-GUNW')) {
+    if (sceneName?.startsWith('S1-GUNW')) {
         this.store$.dispatch(new scenesStore.SetFilterMaster(frame.toString()))
         this.store$.dispatch(new filtersStore.SetUseFrameForBaseline(true));
         this.store$.dispatch(new filtersStore.SetSelectedDataset(models.beta.id))

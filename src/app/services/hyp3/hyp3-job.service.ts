@@ -22,12 +22,10 @@ export class Hyp3JobService {
 
   public getAllGranules(job: models.Hyp3Job): string[] {
     const params = job.job_parameters;
-
     if ('granules' in params) {
       return params.granules;
-    // TODO: INSAR_ISCE_MULTI_BURST and ARIA_S1_GUNW have reference/secondary granules
-    // } else if ('reference' in params && 'secondary' in params) {
-    //   return [...params.reference, ...params.secondary];
+    } else if(job.job_type === 'ARIA_S1_GUNW') {
+      return [job.files?.[0]?.filename.slice(0,-3)]
     } else {
       return [];
     }
@@ -123,7 +121,8 @@ export class Hyp3JobService {
         let product;
         if (jobGranules.length < 1) {
           product = this.dummyProduct();
-          if (job.job_type === 'ARIA_S1_GUNW') {
+          // use dummy products as products for in progress aria scenes
+          if (job.job_type === 'ARIA_S1_GUNW' && job.status_code !== 'SUCCEEDED') {
             product['isDummyProduct'] = false
             product['metadata']['date'] = moment(job.job_parameters['reference_date'])
 
@@ -158,6 +157,8 @@ export class Hyp3JobService {
   }
 
   public combineWithCmrProduct(oldJobProducts: models.CMRProductsById, cmrData: models.CMRProductsById): models.CMRProductsById {
+    console.log(oldJobProducts);
+    console.log(cmrData);
     const newJobProducts: models.CMRProductsById = { ...oldJobProducts };
 
     Object.values(newJobProducts).forEach(jobProduct => {
