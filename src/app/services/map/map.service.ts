@@ -787,6 +787,7 @@ export class MapService implements OnDestroy {
       this.overviewMap.getOverviewMap().setView(new View(overviewMapViewOptions));
       this.overviewMap.getOverviewMap().getView().setZoom(3);
       this.overviewMap.getOverviewMap().getLayers().setAt(0, this.mapView.layer);
+      this.frameSelectionOverlay.getSource()?.refresh();
     }
 
     const layers = this.map.getLayers().getArray();
