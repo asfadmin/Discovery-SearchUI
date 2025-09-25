@@ -262,6 +262,14 @@ export class MapComponent implements OnInit, OnDestroy  {
         }
       })
     )
+    this.subs.add(
+        combineLatest([
+        this.store$.select(filtersStore.getShouldUseFramesForReference)
+        ]).subscribe(([shouldUseFramesForReference]) => {
+          // TODO: load in frame map instead of grabbing previous frame map feature
+            this.mapService.sbasFrameMode(!shouldUseFramesForReference);
+      })
+    )
 
     this.subs.add(
       combineLatest([

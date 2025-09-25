@@ -611,7 +611,10 @@ export class MapService implements OnDestroy {
       // this.map.addLayer(this.selectedOnDemandFrameOverlays)
     }
   }
-
+  public sbasFrameMode(enabled) {
+    this.polygonLayer.setVisible(enabled);
+    this.selectedLayer.setVisible(enabled);
+  }
 
   private setMap(mapView: views.MapView, overlay): void {
     this.mapView = mapView;
