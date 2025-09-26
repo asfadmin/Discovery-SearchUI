@@ -302,7 +302,7 @@ export class ProductService {
       if (p.includes('QA_')) {
         productTypeDisplay += (' (QA)')
       }
-      if(productTypeDisplay === 'Log File') {
+      if(['Log File', 'Metadata JSON'].includes(productTypeDisplay)) {
         continue;
       }
 
