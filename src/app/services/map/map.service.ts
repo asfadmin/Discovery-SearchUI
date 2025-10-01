@@ -631,7 +631,7 @@ export class MapService implements OnDestroy {
     this.polygonLayer.setVisible(enabled);
     this.selectedLayer.setVisible(enabled);
     if(!enabled) {
-      this.setFrameSelectionActive(true, dataset.frameMap.ascending, {start: +frame, end: +frame});
+      this.setFrameSelectionActive(true, dataset?.frameMap?.ascending, {start: +frame, end: +frame});
     } else {
       this.setFrameSelectionActive(false);
     }
