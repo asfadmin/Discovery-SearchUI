@@ -38,7 +38,7 @@ We welcome contributions! Please follow these guidelines so your PRs integrate s
    - Install [`mkcert`](https://github.com/FiloSottile/mkcert)
    - Serve with HTTPS:
      ```bash
-     npx ng serve --host=local.asf.alaska.edu --ssl true        --ssl-cert <cert-path> --ssl-key <key-path>
+     npx ng serve --host=local.asf.alaska.edu --ssl true --ssl-cert <cert-path> --ssl-key <key-path>
      ```
 
 ---
