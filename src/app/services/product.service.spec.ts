@@ -31,4 +31,12 @@ describe('ProductService', () => {
     expect(service.urlToProductType(datapool)).toBe('number_of_looks');
     expect(service.urlToProductType(cumulus)).toBe('number_of_looks');
   })
+  it('should parse xml cumulus link', () => {
+    let url = 'https://cumulus.asf.earthdatacloud.nasa.gov/OPERA/OPERA_L4_TROPO-ZENITH_V1/OPERA_L4_TROPO-ZENITH_20251003T180000Z_20251006T000715Z_HRES_v1.0/OPERA_L4_TROPO-ZENITH_20251003T180000Z_20251006T000715Z_HRES_v1.0.iso.xml';
+    expect(service.urlToProductType(url)).toBe('xml');
+  })
+  it('should parse netcdf cumulus link', () => {
+    let url = 'https://cumulus.asf.earthdatacloud.nasa.gov/OPERA/OPERA_L4_TROPO-ZENITH_V1/OPERA_L4_TROPO-ZENITH_20251003T180000Z_20251006T000715Z_HRES_v1.0/OPERA_L4_TROPO-ZENITH_20251003T180000Z_20251006T000715Z_HRES_v1.0.nc';
+    expect(service.urlToProductType(url)).toBe('nc');
+  })
 });

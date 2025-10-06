@@ -165,7 +165,7 @@ export class ProductService {
       vv: 'VV GeoTIFF',
       vh: 'VH GeoTIFF',
       mask: 'Mask GeoTIFF',
-	    nc: 'Netcdf File',
+      nc: 'Netcdf File',
       h5: 'HDF5',
       xml: 'Metadata XML',
       rtc_anf_gamma0_to_sigma0: 'RTC Gamma to Sigma GeoTIFF',
@@ -184,7 +184,7 @@ export class ProductService {
 
     let file_suffix = ''
 
-		if (product.metadata.productType === 'DISP-S1') {
+		if (['DISP-S1', 'TROPO-ZENITH'].includes(product.metadata.productType) ) {
 			file_suffix = 'nc'
 		} else {
       file_suffix = this.urlToProductType(product.downloadUrl);
