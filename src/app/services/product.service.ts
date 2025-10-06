@@ -162,7 +162,7 @@ export class ProductService {
 		let regex = /(_v[0-9]\.[0-9]){1}(\.(\w*)|(_(\w*(_*))*.))*/
 		let file_suffix = ''
 
-		if (product.metadata.productType === 'DISP-S1') {
+		if (['DISP-S1', 'TROPO-ZENITH'].includes(product.metadata.productType) ) {
 			file_suffix = 'nc'
 		} else {
 			let reg = product.downloadUrl.split(regex);
@@ -180,7 +180,7 @@ export class ProductService {
 
 		for (const p of product.metadata.opera.additionalUrls.filter(url => url !== product.downloadUrl)) {
 			let reg = p.split(/(_v[0-9]\.[0-9]){1}(\.(\w*)|(_(\w*(_*))*.))*/);
-			file_suffix = !!reg[3] ? reg[3] : reg[5]
+			file_suffix = !!reg[3] ? reg[3] : !!reg[5] ? reg[5] : reg[10]
 			let productTypeDisplay = this.operaProductTypeDisplays[file_suffix?.toLowerCase()];
 			if (product.metadata.productType === 'DISP-S1' && productTypeDisplay == null) {
 				if(p.includes('short_wavelength')) {
