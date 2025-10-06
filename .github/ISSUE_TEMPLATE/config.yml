@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
   - name: Ask Questions
-  - url: https://github.com/asfadmin/Discovery-SearchUI/discussions
-  - about: Feel free to ask and answer questions in GitHub's Discussions
+    url: https://github.com/asfadmin/Discovery-SearchUI/discussions
+    about: Feel free to ask and answer questions in GitHub's Discussions
   - name: Wiki / Troubleshooting
     url: https://github.com/asfadmin/Discovery-SearchUI/wiki
     about: Check the Wiki for docs and guides.
