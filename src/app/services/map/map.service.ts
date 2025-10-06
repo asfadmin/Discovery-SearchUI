@@ -1020,7 +1020,7 @@ export class MapService implements OnDestroy {
           ...parsed_color_stops
         ]
       })
-      this.displacementOverview.setExtent(response['extent']);
+
       //@ts-ignore
       this.displacementOverview.setSource(overview_source);
     })
