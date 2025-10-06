@@ -1,8 +1,11 @@
+blank_issues_enabled: false
 contact_links:
   - name: Ask Questions
-    url: https://github.com/asfadmin/Discovery-SearchUI/discussions
-    about: Feel free to ask and answer questions in GitHub's Discussions
-
-  - name: Gitter Chat
+  - url: https://github.com/asfadmin/Discovery-SearchUI/discussions
+  - about: Feel free to ask and answer questions in GitHub's Discussions
+  - name: Wiki / Troubleshooting
+    url: https://github.com/asfadmin/Discovery-SearchUI/wiki
+    about: Check the Wiki for docs and guides.
+  - name: Community Chat (Gitter)
     url: https://gitter.im/ASFDiscovery/Vertex
     about: Come chat with the Vertex community
