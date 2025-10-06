@@ -1,4 +1,3 @@
-
 # Contributing to Discovery-SearchUI
 
 We welcome contributions! Please adhere to these guidelines to ensure seamless
@@ -6,6 +5,7 @@ integration of your PRs. It is advisable to contact the Discovery team prior to
 commencing your development efforts. We are committed to providing comprehensive
 assistance. You may reach us by initiating an issue on this repository or
 writing an email to [UAF-asf-discovery@alaska.edu](mailto:UAF-asf-discovery@alaska.edu).
+
 ---
 ## Branch & PR Target
 
