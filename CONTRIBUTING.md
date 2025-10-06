@@ -17,7 +17,7 @@ writing an email to [UAF-asf-discovery@alaska.edu](mailto:UAF-asf-discovery@alas
 ## Local Setup
 
 This is a quick outline for local setup. For detailed instructions, see the
-[README](README.mdhttps://github.com/asfadmin/Discovery-SearchUI?tab=readme-ov-file#development-server).
+[README](https://github.com/asfadmin/Discovery-SearchUI?tab=readme-ov-file#development-server).
 
 1. Fork & clone:
    ```bash
@@ -46,7 +46,7 @@ This is a quick outline for local setup. For detailed instructions, see the
      npx ng serve --host=local.asf.alaska.edu --ssl true --ssl-cert <cert-path> --ssl-key <key-path>
      ```
      For detailed instructions, see the
-     [README](README.mdhttps://github.com/asfadmin/Discovery-SearchUI?tab=readme-ov-file#development-server).
+     [README](https://github.com/asfadmin/Discovery-SearchUI?tab=readme-ov-file#development-server).
 
 ---
 
