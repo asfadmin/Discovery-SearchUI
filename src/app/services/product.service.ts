@@ -117,7 +117,29 @@ export class ProductService {
       return []
     }
 
+    public urlToProductType(url) {
+  		let regex = /(_v[0-9]\.[0-9]){1}(\.(\w*)|(_(\w*(_*))*.))*/;
 
+      if(url) {
+        if(url.startsWith('https://cumulus')) {
+          let file = url.split('/').pop().split('.');
+
+          let file_extension = file.pop();
+
+          // Grabs the part of the file after version number to see if it matches a predefined product type
+          let file_type  = file.join('.').split(/[0-9]\.[0-9]_/).pop();
+
+          if(!this.operaProductTypeDisplays.hasOwnProperty(file_type?.toLowerCase())) {
+            return file_extension;
+          }
+          return file_type;
+        }
+        let reg = url.split(regex);
+        return !!reg[3] ? reg[3] : reg[5];
+      } else {
+        return 'null';
+      }
+    }
     private burstXMLFromScene(product: models.CMRProduct) {
       let p =  {
         ...product,
@@ -159,14 +181,13 @@ export class ProductService {
 				(product.metadata.opera?.validityStartDate as unknown) as string)
 		}
 		let products = []
-		let regex = /(_v[0-9]\.[0-9]){1}(\.(\w*)|(_(\w*(_*))*.))*/
-		let file_suffix = ''
+
+    let file_suffix = ''
 
 		if (['DISP-S1', 'TROPO-ZENITH'].includes(product.metadata.productType) ) {
 			file_suffix = 'nc'
 		} else {
-			let reg = product.downloadUrl.split(regex);
-			file_suffix = !!reg[3] ? reg[3] : reg[5]
+      file_suffix = this.urlToProductType(product.downloadUrl);
 		}
 
 		product.productTypeDisplay = this.operaProductTypeDisplays[file_suffix?.toLowerCase()] ?? "Download"
@@ -179,8 +200,9 @@ export class ProductService {
 
 
 		for (const p of product.metadata.opera.additionalUrls.filter(url => url !== product.downloadUrl)) {
-			let reg = p.split(/(_v[0-9]\.[0-9]){1}(\.(\w*)|(_(\w*(_*))*.))*/);
-			file_suffix = !!reg[3] ? reg[3] : !!reg[5] ? reg[5] : reg[10]
+        
+      file_suffix = this.urlToProductType(p);
+
 			let productTypeDisplay = this.operaProductTypeDisplays[file_suffix?.toLowerCase()];
 			if (product.metadata.productType === 'DISP-S1' && productTypeDisplay == null) {
 				if(p.includes('short_wavelength')) {

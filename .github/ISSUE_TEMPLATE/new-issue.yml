@@ -1,0 +1,128 @@
+name: Discovery SearchUI Issue
+description: Report a bug or request an enhancement for ASF's Discovery SearchUI.
+title: "[Type]: <short summary>"
+# (Optional) Add default labels like 'triage' if you use them:
+# labels: ["triage"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for filing an issue! Please search existing issues first and provide enough detail for us to reproduce or understand the request.
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: Issue type
+      description: What kind of issue is this?
+      options:
+        - Bug
+        - Feature request
+        - Documentation
+        - Performance
+        - UI/UX
+        - Build/CI
+    validations:
+      required: true
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Environment
+      description: Where did you observe this?
+      options:
+        - Dev (https://search-dev.asf.alaska.edu)
+        - Test (https://search-test.asf.alaska.edu)
+        - Prod (https://search.asf.alaska.edu)
+        - Local
+    validations:
+      required: true
+
+  - type: input
+    id: page_url
+    attributes:
+      label: Page URL or route
+      description: Link or route where the issue occurs (if applicable).
+      placeholder: e.g., https://search-test.asf.alaska.edu/#/...
+    validations:
+      required: false
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser & version
+      placeholder: "e.g., Chrome 128, Firefox 130, Safari 17"
+    validations:
+      required: false
+
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      placeholder: "e.g., macOS 14.6, Windows 11, Ubuntu 22.04"
+    validations:
+      required: false
+
+  - type: input
+    id: version
+    attributes:
+      label: App version / commit SHA (if known)
+      placeholder: "e.g., commit hash or build tag"
+    validations:
+      required: false
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Numbered, minimal steps to reproduce the issue.
+      placeholder: |
+        1. Go to …
+        2. Click …
+        3. Observe …
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      placeholder: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What actually happened? Include screenshots or screen recordings if helpful (drag & drop to attach).
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Console / network logs
+      description: Paste relevant errors or network responses. Remove secrets or tokens.
+      render: bash
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Any other details (related issues/PRs, suspected cause, proposed solution, datasets affected, etc.).
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-submission checks
+      options:
+        - label: I searched existing issues and didn’t find a duplicate.
+          required: true
+        - label: I reviewed the repository’s CONTRIBUTING guide.
+        - label: I can reproduce this in a fresh browser session (no extensions, cleared cache).
+        - label: I have included screenshots/logs or a minimal repro where possible.
