@@ -1,10 +1,12 @@
 
 # Contributing to Discovery-SearchUI
 
-We welcome contributions! Please follow these guidelines so your PRs integrate smoothly.
-
+We welcome contributions! Please adhere to these guidelines to ensure seamless
+integration of your PRs. It is advisable to contact the Discovery team prior to
+commencing your development efforts. We are committed to providing comprehensive
+assistance. You may reach us by initiating an issue on this repository or
+writing an email to [UAF-asf-discovery@alaska.edu](mailto:UAF-asf-discovery@alaska.edu).
 ---
-
 ## Branch & PR Target
 
 - The base branch is **`test`** (default branch).
@@ -13,6 +15,9 @@ We welcome contributions! Please follow these guidelines so your PRs integrate s
 ---
 
 ## Local Setup
+
+This is a quick outline for local setup. For detailed instructions, see the
+[README](README.mdhttps://github.com/asfadmin/Discovery-SearchUI?tab=readme-ov-file#development-server).
 
 1. Fork & clone:
    ```bash
@@ -40,6 +45,8 @@ We welcome contributions! Please follow these guidelines so your PRs integrate s
      ```bash
      npx ng serve --host=local.asf.alaska.edu --ssl true --ssl-cert <cert-path> --ssl-key <key-path>
      ```
+     For detailed instructions, see the
+     [README](README.mdhttps://github.com/asfadmin/Discovery-SearchUI?tab=readme-ov-file#development-server).
 
 ---
 
@@ -74,7 +81,7 @@ All must pass.
 
 ## Commit Style
 
-Use descriptive commit messages. Conventional Commit style is preferred:
+Use descriptive commit messages. [Conventional Commit](https://www.conventionalcommits.org/en/v1.0.0/) style is preferred:
 
 - `feat(download-queue): add cancel button`
 - `fix(map): correct tile layer attribution`
