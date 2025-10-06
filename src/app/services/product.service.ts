@@ -165,7 +165,7 @@ export class ProductService {
       vv: 'VV GeoTIFF',
       vh: 'VH GeoTIFF',
       mask: 'Mask GeoTIFF',
-	  nc: 'Netcdf File',
+      nc: 'Netcdf File',
       h5: 'HDF5',
       xml: 'Metadata XML',
       rtc_anf_gamma0_to_sigma0: 'RTC Gamma to Sigma GeoTIFF',
