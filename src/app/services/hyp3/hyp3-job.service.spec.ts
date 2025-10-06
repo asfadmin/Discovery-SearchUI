@@ -19,11 +19,11 @@ describe('Hyp3JobService', () => {
     expect(dummyProducts.length === 1).toBeTruthy();
   });
 
-  it('aria s1 jobs should be skipped', () => {
+  it('aria s1 jobs should not be skipped', () => {
     const jobs = [<any>testJobs.ariaS1Job];
 
     const dummyProducts = hyp3JobService.toDummyCMRProducts(jobs);
 
-    expect(dummyProducts.length === 0).toBeTruthy();
+    expect(dummyProducts.length !== 0).toBeTruthy();
   });
 });
