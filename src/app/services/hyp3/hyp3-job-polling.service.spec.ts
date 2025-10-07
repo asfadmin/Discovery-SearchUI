@@ -5,10 +5,10 @@ import { Hyp3ApiService } from '.';
 import { BehaviorSubject, of } from 'rxjs';
 
 import * as models from '@models';
-import { TestScheduler } from 'rxjs/testing';
+// import { TestScheduler } from 'rxjs/testing';
 
 describe('Hyp3JobPollingService', () => {
-  let testScheduler: TestScheduler;
+  // let _testScheduler: TestScheduler;
   let service: Hyp3JobPollingService;
   let hyp3Spy: jasmine.SpyObj<Hyp3ApiService>;
 
@@ -26,9 +26,9 @@ describe('Hyp3JobPollingService', () => {
     hyp3Spy = TestBed.inject(Hyp3ApiService) as jasmine.SpyObj<Hyp3ApiService>;
 
     // Still need to figure out how to test observables
-    testScheduler = new TestScheduler((actual, expected) => {
-      return expect(actual).toEqual(expected);
-    });
+    // _testScheduler = new TestScheduler((actual, expected) => {
+    //   return expect(actual).toEqual(expected);
+    // });
   });
 
   it('should be created', () => {

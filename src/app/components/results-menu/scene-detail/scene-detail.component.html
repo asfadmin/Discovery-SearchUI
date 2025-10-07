@@ -57,7 +57,7 @@
     <ng-container *ngIf="scene">
       <mat-card-header>
         <mat-card-title class="detail-card-header">
-          <span>{{ scene.metadata.productType === 'BURST' ? scene.id : scene.name }}</span>
+          <span>{{ scene.metadata.productType === 'BURST' || scene.metadata.job?.job_type === 'ARIA_S1_GUNW' ? scene.id : scene.name }}</span>
 
           <app-copy-to-clipboard
             [value]="scene.name"
@@ -112,15 +112,24 @@
       <mat-card-content class="content scene-detail--wrapper no-padding">
         <div class="w100 scene-detail--layout">
           <div class="w100">
-            <details open (open)="onSetDetailsOpen($event)">
-              <summary class="clickable"></summary>
-              <app-scene-metadata
-                [scene]="scene"
-                [dataset]="dataset"
-                [searchType]="searchType"
-                [offsets]="masterOffsets$ | async">
-              </app-scene-metadata>
+            @if(scene.metadata.job?.job_type === 'ARIA_S1_GUNW' && scene.file === '') {
+              <p>{{'JOB_INGEST_PROCESSING' | translate}}</p>
+              <app-docs-modal
+                 url="https://hyp3-docs.asf.alaska.edu/guides/gunw_product_guide/#accessing-products-in-the-archive"
+                      text="{{'ARIA_INGEST_DOCS' | translate}}">
+              </app-docs-modal>
+            }
+            @else {
+              <details open (open)="onSetDetailsOpen($event)">
+                <summary class="clickable"></summary>
+                <app-scene-metadata
+                  [scene]="scene"
+                  [dataset]="dataset"
+                  [searchType]="searchType"
+                  [offsets]="masterOffsets$ | async">
+                </app-scene-metadata>
             </details>
+            }
             <div *ngIf="searchType === searchTypes.CUSTOM_PRODUCTS">
               <div *ngIf="scene.metadata.job.scenes.length > 1">
                 <hr />
@@ -141,6 +150,25 @@
                 >
                 </app-scene-metadata>
               </div>
+              <!-- <div *ngIf="scene.metadata.job.scenes.length > 1">
+                <hr />
+                <span class="detail-card-header">
+                  <b>{{ scene.metadata.job.scenes[1].name }}</b>
+                  (<i>{{ 'SECONDARY_SCENE' | translate }}</i>)
+                </span>
+                <app-copy-to-clipboard
+                  [value]="scene.metadata.job.scenes[1].name"
+                  prompt="{{'COPY_SECONDARY_SCENE_NAME' | translate}}"
+                  class="clipboard-icon"
+                ></app-copy-to-clipboard>
+                <app-scene-metadata
+                  [scene]="scene.metadata.job.scenes[1]"
+                  [dataset]="dataset"
+                  [searchType]="searchType"
+                  [offsets]="masterOffsets$ | async"
+                >
+                </app-scene-metadata>
+              </div> -->
             </div>
           </div>
           <div class="browse-container w100" *ngIf="sceneHasBrowse()">

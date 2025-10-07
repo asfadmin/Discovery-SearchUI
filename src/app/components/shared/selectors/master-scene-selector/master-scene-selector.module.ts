@@ -6,6 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { MatSharedModule } from '@shared';
 import { MasterSceneSelectorComponent } from './master-scene-selector.component';
 import { SharedModule } from '@shared';
+import { DatasetSelectorModule } from '../dataset-selector';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 
 @NgModule({
@@ -15,7 +17,9 @@ import { SharedModule } from '@shared';
     FormsModule,
     MatInputModule,
     MatSharedModule,
-    SharedModule
+    SharedModule,
+    DatasetSelectorModule,
+    MatSlideToggleModule
   ],
   exports: [
     MasterSceneSelectorComponent

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as moment from 'moment';
+import moment from 'moment';
 
 import * as models from '@models';
 
@@ -22,12 +22,10 @@ export class Hyp3JobService {
 
   public getAllGranules(job: models.Hyp3Job): string[] {
     const params = job.job_parameters;
-
     if ('granules' in params) {
       return params.granules;
-    // TODO: INSAR_ISCE_MULTI_BURST and ARIA_S1_GUNW have reference/secondary granules
-    // } else if ('reference' in params && 'secondary' in params) {
-    //   return [...params.reference, ...params.secondary];
+    } else if(job.job_type === 'ARIA_S1_GUNW') {
+      return [job.files?.[0]?.filename.slice(0,-3)]
     } else {
       return [];
     }
@@ -62,13 +60,39 @@ export class Hyp3JobService {
       .reduce((acc, val) => acc.concat(val), []);
 
     return jobs.map(job => {
-      const jobOptions: any = {
+        let jobOptions;
+        if (job.job_type.id === 'ARIA_S1_GUNW') {
+            let job_parameters = {}
+            if (job.granules.length > 0) {
+                let g1 = moment.isMoment(job.granules[0].metadata.date) ? job.granules[0].metadata.date.format('YYYY-MM-DD') : moment(job.granules[0].metadata.date).format('YYYY-MM-DD')
+                let g2 = moment.isMoment(job.granules[1].metadata.date) ? job.granules[1].metadata.date.format('YYYY-MM-DD') : moment(job.granules[1].metadata.date).format('YYYY-MM-DD')
+                let swap = g1 > g2
+                let ref = swap ? g1 : g2;
+                let sec = swap ? g2 : g1;
+                job_parameters = {
+                reference_date: ref,
+                secondary_date: sec,
+                frame_id: Number.parseInt(job.reference_id)
+                }
+            } else {
+                job_parameters = {
+                ...(job as any)?.processingOptions
+                }
+            }
+            jobOptions = {
+                job_type: job.job_type.id,
+                job_parameters
+
+            };
+        } else {
+      jobOptions = {
         job_type: job.job_type.id,
         job_parameters: {
           ...ops[job.job_type.id],
           granules: job.granules.map(granule => granule.name),
         }
       };
+    }
 
       if (options.projectName !== '') {
         jobOptions.name = options.projectName;
@@ -95,9 +119,17 @@ export class Hyp3JobService {
       .map(job => {
         const jobGranules = this.getAllGranules(job);
         let product;
-
         if (jobGranules.length < 1) {
           product = this.dummyProduct();
+          // use dummy products as products for in progress aria scenes
+          if (job.job_type === 'ARIA_S1_GUNW' && job.status_code !== 'SUCCEEDED') {
+            product['isDummyProduct'] = false
+            product['metadata']['date'] = moment(job.job_parameters['reference_date'])
+
+            let product2 = this.dummyProduct();
+            product2['isDummyProduct'] = false
+            product2['metadata']['date'] = moment(job.job_parameters['secondeary_date'])
+          }
         } else {
           product = dummyProducts[jobGranules[0]];
         }
@@ -125,6 +157,8 @@ export class Hyp3JobService {
   }
 
   public combineWithCmrProduct(oldJobProducts: models.CMRProductsById, cmrData: models.CMRProductsById): models.CMRProductsById {
+    console.log(oldJobProducts);
+    console.log(cmrData);
     const newJobProducts: models.CMRProductsById = { ...oldJobProducts };
 
     Object.values(newJobProducts).forEach(jobProduct => {

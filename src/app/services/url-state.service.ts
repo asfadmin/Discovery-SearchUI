@@ -107,10 +107,11 @@ export class UrlStateService {
   public load(): void {
     if (this.kioskMode) {
       this.store$.dispatch(new SetSearchType(models.SearchType.DISPLACEMENT))
+      this.loadStateFrom({}); // init search for displacement and other search type params
     }
-    this.loadStateFrom({}); // init search for displacement and other search type params
     this.activatedRoute.queryParams.pipe(
       skip(1),
+      debounceTime(300),
       take(1),
     ).subscribe(
       params => this.loadStateFrom(params)
@@ -602,6 +603,13 @@ export class UrlStateService {
         map(useCalibrationData => ({ useCalibrationData }))
       ),
       loader: this.loadUseCalibrationData
+    },
+    {
+      name: 'useFrameForBaseline',
+      source: this.store$.select(filterStore.getShouldUseFramesForReference).pipe(
+        map(useFrameForBaseline => ({ useFrameForBaseline }))
+      ),
+      loader: this.loadUseFrameForBaseline
     }
     ];
   }
@@ -1008,6 +1016,10 @@ export class UrlStateService {
 
   private loadUseCalibrationData = (usingCalibrationData: string): Action => {
     return new filterStore.setUseCalibrationData(!!usingCalibrationData)
+  }
+
+  private loadUseFrameForBaseline = (usingseFrameForBaseline: string): Action => {
+    return new filterStore.SetUseFrameForBaseline(!!usingseFrameForBaseline)
   }
 
   private loadSeriesState = (seriesState)=> {

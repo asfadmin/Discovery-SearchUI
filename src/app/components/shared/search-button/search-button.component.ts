@@ -42,6 +42,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   public searchTypes = SearchType;
   public canSearch$ = this.store$.select(searchStore.getCanSearch);
   public isMaxResultsLoading$ = this.store$.select(searchStore.getIsMaxResultsLoading);
+  public isFrameSelectionEnabled$ = this.store$.select(uiStore.getIsFrameSelectionEnabled);
   public loading$ = this.store$.select(searchStore.getIsLoading);
   public maturity = this.env.maturity;
   public breakpoint$ = this.screenSize.breakpoint$;
@@ -53,12 +54,12 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   public isLoggedIn = false;
   public searchError$ = new Subject<void>();
   public isSearchError = false;
+  public isFiltersOpen = false;
 
   private subs = new SubSink();
 
   private stackReferenceScene: string;
   private latestReferenceScene: string;
-  private isFiltersOpen = false;
   private resultsMenuOpen = false;
 
   constructor(
@@ -323,10 +324,10 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
               codeStuff: data,
               codeExportType: CodeExportType.ASF_SEARCH
             },
-            width: '550px',
-            height: '500px',
-            maxWidth: '550px',
-            maxHeight: '500px',
+            width: '80vh',
+            height: '80vh',
+            maxWidth: '800px',
+            maxHeight: '800px',
           });
         });
     } else {
@@ -336,17 +337,19 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
             codeStuff,
             codeExportType: CodeExportType.HYP3_SDK
           },
-          width: '550px',
-          height: '500px',
-          maxWidth: '550px',
-          maxHeight: '500px',
+          width: '80vh',
+          height: '80vh',
+          maxWidth: '800px',
+          maxHeight: '800px',
         });
       })
     }
   }
 
   public exportAPI(): void {
-    this.dialog.open(ApiLinkDialogComponent);
+    this.dialog.open(ApiLinkDialogComponent, {
+      minWidth: '400px',
+    });
   }
 
   ngOnDestroy() {

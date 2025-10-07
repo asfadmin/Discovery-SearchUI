@@ -16,6 +16,15 @@
           class="icon-margin mobile-svg"
           svgIcon="hyp3">
         </mat-icon>
+        <mat-icon
+          *ngIf="hyp3ableByJobType.total < 1"
+          class="noselect list-icon"
+          style="margin-left: 10px; opacity: 0.5;"
+          matTooltip="{{'ONLY_CO-POLARIZED_BURSTS' | translate}}"
+          svgIcon="hyp3"
+          matListItemMeta
+        >
+        </mat-icon>
         <mat-icon *ngIf="isDownloadable(scene)"
           (click)="onToggle()"
           class="icon-margin"

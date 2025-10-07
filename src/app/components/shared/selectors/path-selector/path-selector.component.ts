@@ -35,6 +35,8 @@ export class PathSelectorComponent implements OnInit, OnDestroy {
   public pathEnd: number | null;
   public frameStart: number | null;
   public frameEnd: number | null;
+  public selectedDataset: string;
+  public selectedDatasetIsNISARFormat: boolean = false;
 
   private get pathStartControl() {
     return this.pathForm.form
@@ -67,6 +69,19 @@ export class PathSelectorComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.handlePathFrameErrors();
+
+    this.subs.add(
+      this.store$.select(filtersStore.getSelectedDatasetId).subscribe(
+        selected => {
+          this.selectedDataset = selected
+          if (this.selectedDataset === 'SENTINEL-1 INTERFEROGRAM (BETA)') {
+            this.selectedDatasetIsNISARFormat = true;
+          } else {
+            this.selectedDatasetIsNISARFormat = false;
+          }
+        }
+      )
+    );
 
     this.subs.add(
       this.store$.select(filtersStore.getPathRange).subscribe(

@@ -220,7 +220,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
           this.burstSubscription.unsubscribe();
           return false;
         } else {
-          
+
         if(!this.downloadService.hasDownloadedBursts && !handle) {
           this.downloadService.hasDownloadedBursts = true;
           this.notificationService.info('You may need to enable popups on this site due to needing to extract the burst before downloading.', 'Burst Extraction');

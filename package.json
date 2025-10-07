@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start_local_asf": "ng serve --port 4447 --ssl true --host local.asf.alaska.edu",
     "build": "ng build --configuration production",
     "test": "ng test",
     "lint": "eslint -c .eslintrc.js --ext .ts src"
@@ -99,6 +100,7 @@
     "@types/jasmine": "^3.6.11",
     "@types/jasminewd2": "^2.0.8",
     "@types/node": "^12.20.12",
+    "@types/puppeteer": "^5.4.7",
     "@typescript-eslint/eslint-plugin": "^5.59.2",
     "@typescript-eslint/parser": "^5.59.2",
     "esbuild": "0.20.0",
@@ -116,6 +118,7 @@
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
     "nyc": "^15.1.0",
+    "puppeteer": "^24.23.0",
     "stylelint": "^13.13.1",
     "stylelint-config-standard": "^19.0.0",
     "ts-node": "^8.10.2"

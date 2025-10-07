@@ -142,3 +142,14 @@ export const hover = new Style({
     })
   })
 });
+
+export const selected = new Style({
+  fill: new Fill({
+    color: 'rgba(255, 255, 255, 0.2)'
+  }),
+  stroke: new Stroke({
+    color: '#ffcc33',
+    width: 4
+  }),
+  zIndex: 10
+});

@@ -17,6 +17,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSliderModule } from '@angular/material/slider';
 import { EventPolygonSliderModule } from './event-polygon-slider';
 import { SharedModule } from '@shared';
+import { DocsModalModule } from '@components/shared/docs-modal';
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import { SharedModule } from '@shared';
         MatButtonToggleModule,
         MatSliderModule,
         EventPolygonSliderModule,
+        DocsModalModule,
         SharedModule
     ],
   exports: [SceneDetailComponent],
