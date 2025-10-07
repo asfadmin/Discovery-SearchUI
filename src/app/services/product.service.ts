@@ -239,16 +239,16 @@ export class ProductService {
 
 
   private nisarProductTypeDisplays = {
-    yaml: 'YAML',
-    kml: 'KML',
-    png: 'PNG Browse',
-    csv: 'Metadata CSV',
+    yaml: 'Runconfig YAML',
+    kml: 'Footprint KML',
+    png: 'Browse Image PNG',
+    csv: 'QA Summary CSV',
     h5: 'HDF5',
-    xml: 'Metadata XML',
+    xml: 'ISO Metadata XML',
     json: 'Metadata JSON',
-    pdf: 'PDF Report',
+    pdf: 'QA Report PDF',
     log: 'Log File',
-    qa: 'Report (QA)',
+    qa: 'QA Statistics HDF5',
     bin: 'Bin File',
   }
 
@@ -256,9 +256,8 @@ export class ProductService {
     let products = []
     let temp = product.downloadUrl.split('.')
     let file_extension = temp[temp.length - 1]
-    // let reg = product.downloadUrl.split(/(_v[0-9]\.[0-9]){1}(\.(\w*)|(_(\w*(_*))*.))*/);
-    // let file_suffix = !!reg[3] ? reg[3] : reg[5]
-    product.productTypeDisplay = this.nisarProductTypeDisplays[file_extension.toLowerCase()] ? this.nisarProductTypeDisplays[file_extension.toLowerCase()] : 'Missing Display'
+    const productLevel = product.file.split('_')[1];
+    product.productTypeDisplay = `${productLevel} ${product.metadata.productType} HDF5`
     if (product.productTypeDisplay === 'Missing Display') {
       if (file_extension.includes('vc')) {
         product.productTypeDisplay = file_extension.toUpperCase();
@@ -296,12 +295,13 @@ export class ProductService {
           console.log(`Missing product type display for file extension "${file_extension}"`);
         }
       }
-      if (productTypeDisplay === 'PNG Browse') {
+      if (productTypeDisplay === 'Browse PNG') {
         browses.push(p)
       }
-      if (p.includes('QA_')) {
-        productTypeDisplay += (' (QA)')
+      if (p.endsWith('.h5') && p.includes('QA_')) {
+        productTypeDisplay = this.nisarProductTypeDisplays.qa;
       }
+
       if(['Log File', 'Metadata JSON'].includes(productTypeDisplay)) {
         continue;
       }
@@ -310,6 +310,7 @@ export class ProductService {
 
       const fileID = p.split('/').slice(-1)[0]
       const s3Url = s3UrlsByProductID[fileID] ?? null
+    
       let subproduct = {
         ...product,
         downloadUrl: p,
