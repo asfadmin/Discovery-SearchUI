@@ -241,7 +241,7 @@ export class ProductService {
   private nisarProductTypeDisplays = {
     yaml: 'YAML',
     kml: 'KML',
-    png: 'Browse PNG',
+    png: 'PNG Browse',
     csv: 'Metadata CSV',
     h5: 'HDF5',
     xml: 'Metadata XML',
@@ -249,7 +249,7 @@ export class ProductService {
     pdf: 'PDF Report',
     log: 'Log File',
     qa: 'Report (QA)',
-    bin: 'Bin File'
+    bin: 'Bin File',
   }
 
   private nisarSubproductsFromScene(product: models.CMRProduct) {
@@ -285,7 +285,7 @@ export class ProductService {
     product.metadata.s3URI = s3UrlsByProductID[product.file] ?? null;
 
     let browses = []
-    for (const p of product.metadata.nisar.additionalUrls.filter(url => url !== product.downloadUrl)) {
+    for (const p of [...product.metadata.nisar.additionalUrls.filter(url => url !== product.downloadUrl), ...product.browses]) {
       temp = p.split('.')
       file_extension = temp[temp.length - 1]
       let productTypeDisplay = this.nisarProductTypeDisplays[file_extension.toLowerCase()] ?? 'Missing Display';
@@ -296,7 +296,7 @@ export class ProductService {
           console.log(`Missing product type display for file extension "${file_extension}"`);
         }
       }
-      if (productTypeDisplay === 'Browse PNG') {
+      if (productTypeDisplay === 'PNG Browse') {
         browses.push(p)
       }
       if (p.includes('QA_')) {
