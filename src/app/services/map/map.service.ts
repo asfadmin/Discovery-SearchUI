@@ -387,7 +387,7 @@ export class MapService implements OnDestroy {
     this.map = this.updatedMap();
   }
 
-  public setFrameSelectionActive(active: boolean, url?: string, frameRange?: models.Range<number | null>) {
+  public setFrameSelectionActive(active: boolean, url?: string, frameRange?: models.Range<number | null>, pathRange?: models.Range<number | null>) {
     if (!active) {
       this.frameSelectionOverlay.setVisible(false);
       this.selectClick?.getFeatures().clear();
@@ -427,18 +427,32 @@ export class MapService implements OnDestroy {
 
     source.on('featuresloadend', () => {
       if (this.frameSelectionOverlay.getSourceState() === 'ready') {
-        this.filterFrameOverlay(frameRange);
+        this.filterFrameOverlay(frameRange, pathRange);
       }
     })
   }
-  public filterFrameOverlay(frame: models.Range<number | null>) {
-    if (frame.start === null) {
-      return;
+
+  public isWithinRange(value, range: models.Range<number | null>) {
+    if(range === null || range == undefined) {
+      return true;
     }
-    this.frameSelectionOverlay?.getSource()?.getFeatures().forEach(a => {
-      if (+a.get('path') !== frame.start) {
-        a.setStyle(new Style({}));
+    if(range?.start !== null ) {
+      if(range?.end !== null) {
+        return value >= range?.start && value <= range?.end;
       } else {
+        return value >= range?.start;
+      }
+    } else if(range?.end !== null) {
+      return value <= range.end;
+    }
+    return true;
+  }
+  public filterFrameOverlay(frameRange: models.Range<number | null>, pathRange: models.Range<number | null>) {
+    this.frameSelectionOverlay?.getSource()?.getFeatures().forEach(a => {
+      let frame = +a.get('id');
+      let path = +a.get('path');
+
+      if (this.isWithinRange(frame, frameRange) && this.isWithinRange(path, pathRange)) {
         a.setStyle(new Style({
           fill: new Fill({
             color: '#FFFFFF33',
@@ -447,6 +461,8 @@ export class MapService implements OnDestroy {
             color: 'black',
           })
         }));
+      } else {
+        a.setStyle(new Style({}));
       }
     })
 
@@ -611,7 +627,15 @@ export class MapService implements OnDestroy {
       // this.map.addLayer(this.selectedOnDemandFrameOverlays)
     }
   }
-
+  public sbasFrameMode(enabled: boolean, frame: string, dataset: models.Dataset) {
+    this.polygonLayer.setVisible(enabled);
+    this.selectedLayer.setVisible(enabled);
+    if(!enabled) {
+      this.setFrameSelectionActive(true, dataset?.frameMap?.ascending, {start: +frame, end: +frame});
+    } else {
+      this.setFrameSelectionActive(false);
+    }
+  }
 
   private setMap(mapView: views.MapView, overlay): void {
     this.mapView = mapView;
@@ -787,6 +811,7 @@ export class MapService implements OnDestroy {
       this.overviewMap.getOverviewMap().setView(new View(overviewMapViewOptions));
       this.overviewMap.getOverviewMap().getView().setZoom(3);
       this.overviewMap.getOverviewMap().getLayers().setAt(0, this.mapView.layer);
+      this.frameSelectionOverlay.getSource()?.refresh();
     }
 
     const layers = this.map.getLayers().getArray();
@@ -995,7 +1020,7 @@ export class MapService implements OnDestroy {
           ...parsed_color_stops
         ]
       })
-      this.displacementOverview.setExtent(response['extent']);
+
       //@ts-ignore
       this.displacementOverview.setSource(overview_source);
     })

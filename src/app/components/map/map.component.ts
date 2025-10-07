@@ -120,7 +120,6 @@ export class MapComponent implements OnInit, OnDestroy  {
         this.store$.dispatch(new filtersStore.SetSelectedDataset(models.beta.id))
         this.store$.dispatch(new searchStore.MakeSearch())
 
-        this.mapService.setOnDemandSBASFrame(this.OnDemandFrames[0].feature)
         this.mapService.setAriaPopupOverlay(null, null)
   }
   ngOnInit(): void {
@@ -233,9 +232,10 @@ export class MapComponent implements OnInit, OnDestroy  {
         this.store$.select(uiStore.getIsFrameSelectionEnabled),
         this.store$.select(filtersStore.getSelectedDatasetId),
         this.store$.select(filtersStore.getFlightDirections),
+        this.store$.select(filtersStore.getFrameRange),
         this.store$.select(filtersStore.getPathRange),
         this.store$.select(searchStore.getSearchType),
-      ]).subscribe(([enabled, datasetId, directions, frameRange, searchType]) => {
+      ]).subscribe(([enabled, datasetId, directions, frameRange, pathRange, searchType]) => {
         let dataset = models.datasets[datasetId];
         if(enabled && !dataset.properties.find((a) => a === models.Props.FRAME_ORDERING)) {
           // this dataset doesn't support frame ordering, disable
@@ -243,7 +243,7 @@ export class MapComponent implements OnInit, OnDestroy  {
           this.mapService.setFrameSelectionActive(false);
         }
         else if(enabled && searchType == this.searchTypes.DATASET) {
-          this.mapService.setFrameSelectionActive(true, dataset.frameMap[directions[0]?.toLowerCase() ?? 'ascending'], frameRange);
+          this.mapService.setFrameSelectionActive(true, dataset.frameMap[directions[0]?.toLowerCase() ?? 'ascending'], frameRange, pathRange);
           this.store$.dispatch(new mapStore.SetMapInteractionMode(models.MapInteractionModeType.NONE)); // disable so we can actually pick a frame
         }
         else {
@@ -256,10 +256,21 @@ export class MapComponent implements OnInit, OnDestroy  {
       combineLatest([
         this.store$.select(uiStore.getIsFrameSelectionEnabled),
         this.store$.select(filtersStore.getPathRange),
-      ]).subscribe(([enabled, path]) => {
+        this.store$.select(filtersStore.getFrameRange),
+      ]).subscribe(([enabled, path, frame]) => {
         if(enabled) {
-          this.mapService.filterFrameOverlay(path)
+          this.mapService.filterFrameOverlay(path, frame)
         }
+      })
+    )
+    this.subs.add(
+        combineLatest([
+        this.store$.select(filtersStore.getShouldUseFramesForReference),
+        this.store$.select(sceneStore.getFilterMaster), // frame id for things
+        this.store$.select(filtersStore.getSelectedDataset)
+        ]).subscribe(([shouldUseFramesForReference, filterMaster, dataset]) => {
+          // TODO: load in frame map instead of grabbing previous frame map feature
+            this.mapService.sbasFrameMode(!shouldUseFramesForReference, filterMaster, dataset);
       })
     )
 
