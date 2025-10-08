@@ -20,7 +20,7 @@
     </div>
 
     @if (this.displacementOverview === DispLayerTypes.VELOCITY) {
-      <div style="margin-top: -5px; height: 25px;" >
+      <div style="margin-top: -5px; height: 25px; margin-bottom: 5px;" >
         <app-map-legend
           style="display: inline-block; margin-top: -5px;"
           [min]="this.mapService.displacementRange?.range[0]"
@@ -43,31 +43,6 @@
           </mat-slider>
         </div>
 
-      </div>
-    }
-
-    <mat-checkbox #priorityRollout class="rollout-checkbox"
-    (change)="onUpdatePriority($event.checked)"
-    [checked]="priorityEnabled">
-      <div class="selector-text">
-        {{ 'ROLLOUT' | translate}}
-      </div>
-    </mat-checkbox>
-    <div class="rollout-help-icon">
-      <app-docs-modal custStyle="color: #ffffffb3; cursor: pointer; text-decoration: underline;"
-                      text=""
-                      icon="help_outline"
-                      url="https://docs.asf.alaska.edu/vertex/displacement/#rollout"
-      >
-      </app-docs-modal>
-    </div>
-
-
-    @if (priorityEnabled) {
-      <div class="priority-legend">
-        <div class="priority-box first-priority">1st</div>
-        <div class="priority-box second-priority">2nd</div>
-        <div class="priority-box third-priority">3rd</div>
       </div>
     }
 

@@ -25,7 +25,6 @@ export class DisplacementLayersComponent implements OnInit, OnDestroy {
   public displacementOverview: models.DisplacementLayerTypes | null = null;
   public cumulativeDisplacementSelectionEnabled: boolean = false;
   public DispLayerTypes = models.DisplacementLayerTypes;
-  public priorityEnabled = false;
   private subs = new SubSink();
   public velocityOverlayOpacity: number;
 
@@ -63,28 +62,10 @@ export class DisplacementLayersComponent implements OnInit, OnDestroy {
         } else {
           this.setDisplacementLayer(this.flightDir, models.DisplacementLayerTypes.VELOCITY);
         }
-        if (this.priorityCheckbox.checked) {
-          this.mapService.disablePriority()
-          this.onUpdatePriority(this.priorityCheckbox.checked)
-        }
       }
       )
     )
-    this.subs.add(
-      this.mapService.priorityEnabled$.subscribe(t => {
-        this.priorityEnabled = t !== null;
-      })
-    )
 
-  }
-
-  public onUpdatePriority(isChecked: boolean): void {
-    if (isChecked) {
-      this.mapService.enablePriority(this.flightDir);
-    }
-    else {
-      this.mapService.disablePriority();
-    }
   }
 
   public onUpdateLayerType(layerType: models.DisplacementLayerTypes): void {
@@ -141,6 +122,5 @@ public onToggleDisplacementLayerDisplay(checked: boolean): void {
   ngOnDestroy() {
     this.subs.unsubscribe();
     this.mapService.clearDisplacementOverview();
-    this.mapService.disablePriority();
   }
 }
