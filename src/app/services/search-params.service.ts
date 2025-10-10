@@ -18,6 +18,8 @@ import { RangeService } from './range.service';
 import * as models from '@models';
 import { DrawService } from './map/draw.service';
 import { Polygon } from 'ol/geom';
+import * as userStore from '@store/user';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -26,7 +28,8 @@ export class SearchParamsService {
     private store$: Store<AppState>,
     private mapService: MapService,
     private rangeService: RangeService,
-    private drawService: DrawService
+    private drawService: DrawService,
+    // private authService: AuthService
   ) { }
 
 
@@ -176,6 +179,15 @@ export class SearchParamsService {
     map(types => ({ processinglevel: types }))
   );
 
+  private shortNames$ = this.store$.select(filterStore.getShortNames).pipe(
+    map(types => types.map(type => type.apiValue)),
+    map(
+      shortNames => Array.from(new Set(shortNames))
+        .join(',')
+    ),
+    map(shortNames => ({ shortname: shortNames }))
+  );
+
   private beamModes$ = this.store$.select(filterStore.getBeamModes).pipe(
     map(
       types => Array.from(new Set(types))
@@ -190,10 +202,65 @@ export class SearchParamsService {
   private polarizations$ = this.store$.select(filterStore.getPolarizations).pipe(
     map(
       polarizations => Array.from(new Set(polarizations))
+        .map(x => x.replaceAll(',','+'))
         .join(',')
     ),
-    map(polarization => ({ polarization })),
+    withLatestFrom(this.store$.select(filterStore.getSelectedDataset)),
+    map(([polarizations, dataset]) => dataset.properties.includes(models.Props.SIDE_POLARIZATION)?
+    ({ mainbandpolarization: polarizations }) : ({ polarization: polarizations })),
   );
+
+  private productionConfig$ = this.store$.select(filterStore.getProductionConfig).pipe(
+    map((config) => ({ productionconfiguration: config.join(',') })
+  )
+  );
+
+  private sidePolarizations$ = this.store$.select(filterStore.getSidePolarizations).pipe(
+    map(
+      polarizations => Array.from(new Set(polarizations))
+        .map(x => x.replaceAll(',','+'))
+        .join(',')
+    ),
+    map(sidePolarization => ({ sidebandpolarization: sidePolarization })),
+  );
+
+  private frameCoverage$ = this.store$.select(filterStore.getFrameCoverage).pipe(
+    map(
+      coverages => {
+        let base = Array.from(new Set(coverages))
+        if(base.length > 1) {
+            return ''
+        } else {
+            return base[0]
+        }
+    }
+    ),
+    map(frameCoverage => ({ framecoverage: frameCoverage })),
+  );
+
+  private jointObservation$ = this.store$.select(filterStore.getJointObservation).pipe(
+    map(jointObservation => ({ jointobservation: jointObservation })),
+  );
+
+  private rangeBandwidth$ = this.store$.select(filterStore.getRangeBandwidth).pipe(
+    map(
+        bandwidths => Array.from(new Set(bandwidths))
+        .join(',')
+    ),
+    map(
+        bandwidths => ({rangebandwidth: bandwidths})
+    )
+  )
+
+  private instruments$ = this.store$.select(filterStore.getInstruments).pipe(
+    map(
+        instruments => Array.from(new Set(instruments))
+        .join(',')
+    ),
+    map(
+        instruments => ({instrument: instruments})
+    )
+  )
 
   private flightDirections$ = this.store$.select(filterStore.getFlightDirections).pipe(
     map(dirs => dirs.length > 1 ? [] : dirs),
@@ -204,6 +271,11 @@ export class SearchParamsService {
   private maxResults$ = this.store$.select(filterStore.getMaxSearchResults).pipe(
     map(maxResults => ({ maxResults }))
   );
+
+  private sciProducts$ = this.store$.select(filterStore.getScienceProduct).pipe(
+    map(sciProducts => ({processingLevel: sciProducts.join(',')}))
+  )
+
   private filterSearchParams$ = combineLatest([
     this.searchPolygon$,
     this.selectedDataset$,
@@ -212,14 +284,22 @@ export class SearchParamsService {
     this.pathRange$,
     this.frameRange$,
     this.productType$,
+    this.shortNames$,
     this.flightDirections$,
     this.beamModes$,
     this.polarizations$,
+    this.sidePolarizations$,
+    this.productionConfig$,
+    this.frameCoverage$,
+    this.jointObservation$,
+    this.rangeBandwidth$,
+    this.instruments$,
     this.maxResults$,
     this.missionParam$,
     this.burstParams$,
     this.operaBurstParams$,
     // this.operaCalibrationParam$,
+    this.sciProducts$,
     this.groupID$]
   ).pipe(
     map((params: any[]) => params
@@ -261,26 +341,27 @@ export class SearchParamsService {
 
   public getParams = combineLatest([
     this.store$.select(getSearchType),
-    this.baselineSearchParams$]
+    this.baselineSearchParams$,
+    this.store$.select(userStore.getUserEDLToken)]
   ).pipe(
     withLatestFrom(this.listParam$),
     withLatestFrom(this.filterSearchParams$),
     withLatestFrom(this.timeseriesParams$),
     withLatestFrom(this.onDemandParams$),
     map(
-      ([[[[[searchType, baselineParams], listParam], filterParams], timeseriesParams], onDemandParams]) => {
+      ([[[[[searchType, baselineParams, cmr_token], listParam], filterParams], timeseriesParams], onDemandParams]) => {
         switch (searchType) {
           case models.SearchType.LIST: {
-            return listParam;
+            return {cmr_token, ...listParam};
           }
           case models.SearchType.DATASET: {
-            return filterParams;
+            return {cmr_token, ...filterParams};
           }
           case models.SearchType.BASELINE: {
-            return baselineParams;
+            return {cmr_token, ...baselineParams};
           }
           case models.SearchType.SBAS: {
-            return baselineParams;
+            return {cmr_token, ...baselineParams};
           }
           case models.SearchType.CUSTOM_PRODUCTS: {
             return onDemandParams;
@@ -289,7 +370,7 @@ export class SearchParamsService {
             return timeseriesParams;
           }
           default: {
-            return filterParams;
+            return {cmr_token, ...filterParams};
           }
         }
       }),
@@ -300,28 +381,29 @@ export class SearchParamsService {
     this.listParam$,
     this.baselineSearchParams$,
     this.filterSearchParams$,
+    this.store$.select(userStore.getUserEDLToken),
     this.onDemandParams$,
   ]).pipe(
     map(
-      ([searchType, listParam, baselineParams, filterParams, onDemandParams]) => {
+      ([searchType, listParam, baselineParams, filterParams, cmr_token, onDemandParams]) => {
         switch (searchType) {
           case models.SearchType.LIST: {
-            return listParam;
+            return {cmr_token, ...listParam};
           }
           case models.SearchType.DATASET: {
-            return filterParams;
+            return {cmr_token, ...filterParams};
           }
           case models.SearchType.BASELINE: {
-            return baselineParams;
+            return {cmr_token, ...baselineParams};
           }
           case models.SearchType.SBAS: {
-            return baselineParams;
+            return {cmr_token, ...baselineParams};
           }
           case models.SearchType.CUSTOM_PRODUCTS: {
             return onDemandParams;
           }
           default: {
-            return filterParams;
+            return {cmr_token, ...filterParams};
           }
         }
       }),

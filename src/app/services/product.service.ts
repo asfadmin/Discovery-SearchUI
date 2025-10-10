@@ -9,9 +9,9 @@ import * as models from '@models';
 export class ProductService {
   public fromResponse = (resp: any): models.CMRProduct[] => {
     const products = (resp.results || [])
-    .map(
-      (g: any): models.CMRProduct => {
-        let browses: string[] = [];
+      .map(
+        (g: any): models.CMRProduct => {
+          let browses: string[] = [];
 
         if (Array.isArray(g.b)) {
           if (g.b.length > 0) {
@@ -20,23 +20,26 @@ export class ProductService {
                 return (b.replaceAll('{gn}', g.gn));
             });
           } else {
-            browses = ['/assets/no-browse.png'];
-          }
-        } else {
-          if (g.b) {
-            browses = [g.b];
-          } else {
-            browses = ['/assets/no-browse.png'];
-          }
+              browses = ['/assets/no-browse.png'];
+            }
         }
-        if(g.pt == 'DISP-S1') {
-            browses = [browses[0]]; // only show the first browse for displacement for now
-        }
+        else {
+            if (g.b) {
+              browses = [g.b];
+            } else {
+              browses = ['/assets/no-browse.png'];
+            }
+          }
 
         const thumbnail = (g.t ? g.t.replaceAll('{gn}', g.gn) : g.t) || (!browses[0].includes('no-browse') ? browses[0].replaceAll('{gn}', g.gn) : '/assets/no-thumb.png');
         let filename = g.fn.replaceAll('{gn}', g.gn);
         if ( !filename.includes(g.gn)) {
           filename = `${g.gn}-${filename}`;
+        }
+        if(g.d === 'NISAR' && g.nsr.sizeMB) {
+          // NISAR uses SizeInBytes instead of Size so doesn't populate the right field in the API.
+          // the new property also auto converts to the right scale already
+          g.s = (g.nsr.sizeMB[filename]?.bytes ?? 0) / 1000000;
         }
         let product = {
           name: g.gn,
@@ -57,7 +60,7 @@ export class ProductService {
         product.metadata.subproducts = this.getSubproducts(product)
 
         return product;
-      }
+        }
     );
 
     return products;
@@ -65,14 +68,14 @@ export class ProductService {
 
   private getMetadataFrom =
     (g: any): models.CMRProductMetadata => ({
-      date:  this.fromCMRDate(g.st),
-      stopDate:  this.fromCMRDate(g.stp),
+      date: this.fromCMRDate(g.st),
+      stopDate: this.fromCMRDate(g.stp),
       polygon: g.wu,
 
       productType: g.pt,
       beamMode: g.bm,
       polarization: g.po,
-      flightDirection: <models.FlightDirection>g.fd,
+      flightDirection: g.fd as models.FlightDirection,
 
       path: +g.p,
       frame:  +g.f,
@@ -95,9 +98,11 @@ export class ProductService {
       fileName: null,
       burst: g.s1b ? g.s1b : null,
       opera: g.s1o ? g.s1o : null,
-      pgeVersion: g.pge !== null ? parseFloat(g.pge) : null,
+      nisar: g.nsr ? g.nsr : null,
+      pgeVersion: g.pge !== null ? g.pge : null,
       subproducts: [],
       parentID: null,
+      s3URI: null,
       ariaVersion: g.ariav ? g.ariav : null
     })
 
@@ -111,37 +116,40 @@ export class ProductService {
       if (product.metadata?.productType === 'BURST') {
         return [this.burstXMLFromScene(product)]
       }
-      if (!!product.metadata?.opera) {
+      if (product.metadata?.opera) {
         return this.operaSubproductsFromScene(product)
+      }
+      if (product.dataset === 'NISAR') {
+        return this.nisarSubproductsFromScene(product);
       }
       return []
     }
 
     public urlToProductType(url) {
-  		let regex = /(_v[0-9]\.[0-9]){1}(\.(\w*)|(_(\w*(_*))*.))*/;
+  		const regex = /(_v[0-9]\.[0-9]){1}(\.(\w*)|(_(\w*(_*))*.))*/;
 
       if(url) {
         if(url.startsWith('https://cumulus')) {
-          let file = url.split('/').pop().split('.');
+          const file = url.split('/').pop().split('.');
 
-          let file_extension = file.pop();
+          const file_extension = file.pop();
 
           // Grabs the part of the file after version number to see if it matches a predefined product type
-          let file_type  = file.join('.').split(/[0-9]\.[0-9]_/).pop();
+          const file_type  = file.join('.').split(/[0-9]\.[0-9]_/).pop();
 
           if(!this.operaProductTypeDisplays.hasOwnProperty(file_type?.toLowerCase())) {
             return file_extension;
           }
           return file_type;
         }
-        let reg = url.split(regex);
-        return !!reg[3] ? reg[3] : reg[5];
+        const reg = url.split(regex);
+        return reg[3] ? reg[3] : reg[5];
       } else {
         return 'null';
       }
     }
-    private burstXMLFromScene(product: models.CMRProduct) {
-      let p =  {
+  private burstXMLFromScene(product: models.CMRProduct) {
+      const p =  {
         ...product,
         downloadUrl: product.downloadUrl.replaceAll('tiff', 'xml'),
         productTypeDisplay: 'XML Metadata (BURST)',
@@ -159,13 +167,15 @@ export class ProductService {
       return p;
     }
 
+
+
     private operaProductTypeDisplays = {
       hh: 'HH GeoTIFF',
       hv: 'HV GeoTIFF',
       vv: 'VV GeoTIFF',
       vh: 'VH GeoTIFF',
       mask: 'Mask GeoTIFF',
-      nc: 'Netcdf File',
+	    nc: 'Netcdf File',
       h5: 'HDF5',
       xml: 'Metadata XML',
       rtc_anf_gamma0_to_sigma0: 'RTC Gamma to Sigma GeoTIFF',
@@ -176,15 +186,15 @@ export class ProductService {
     }
 
     private operaSubproductsFromScene(product: models.CMRProduct) {
-		if (!!product.metadata.opera?.validityStartDate) {
+		if (product.metadata.opera?.validityStartDate) {
 			product.metadata.opera.validityStartDate = this.fromCMRDate(
 				(product.metadata.opera?.validityStartDate as unknown) as string)
 		}
-		let products = []
+		const products = []
 
     let file_suffix = ''
 
-		if (['DISP-S1', 'TROPO-ZENITH'].includes(product.metadata.productType) ) {
+		if (product.metadata.productType === 'DISP-S1') {
 			file_suffix = 'nc'
 		} else {
       file_suffix = this.urlToProductType(product.downloadUrl);
@@ -213,7 +223,7 @@ export class ProductService {
 			}
 			const fileID = p.split('/').slice(-1)[0]
 
-			let subproduct = {
+			const subproduct = {
 				...product,
 				downloadUrl: p,
 				productTypeDisplay: productTypeDisplay || p,
@@ -241,6 +251,112 @@ export class ProductService {
 
 			return a.productTypeDisplay < b.productTypeDisplay ? -1 : 1
 		}
-		)
+		)}
+
+
+  private nisarProductTypeDisplays = {
+    yaml: 'Runconfig YAML',
+    kml: 'Footprint KML',
+    png: 'Browse Image PNG',
+    csv: 'QA Summary CSV',
+    h5: 'HDF5',
+    xml: 'ISO Metadata XML',
+    json: 'Metadata JSON',
+    pdf: 'QA Report PDF',
+    log: 'Log File',
+    qa: 'QA Statistics HDF5',
+    bin: 'Bin File',
+  }
+
+  private nisarSubproductsFromScene(product: models.CMRProduct) {
+    let products = []
+    let temp = product.downloadUrl.split('.')
+    let file_extension = temp[temp.length - 1]
+    const productLevel = product.file.split('_')[1];
+    product.productTypeDisplay = `${productLevel} ${product.metadata.productType} HDF5`
+    if (product.productTypeDisplay === 'Missing Display') {
+      if (file_extension.includes('vc')) {
+        product.productTypeDisplay = file_extension.toUpperCase();
+      } else {
+        console.log(`Missing product type display for file extension "${file_extension}"`);
+      }
     }
+    const thumbnail_index = product.browses.findIndex(url => url.toLowerCase().includes('thumbnail'))
+    if (thumbnail_index !== -1) {
+      product.thumbnail = product.browses.splice(thumbnail_index, 1)[0];
+    }
+    product.browses = product.browses.filter(url => !url.includes('low-res'));
+
+
+    const s3UrlsByProductID = product.metadata.nisar.s3Urls.reduce((prev, curr) => {
+      const subproductFileID = curr.split('/').at(-1);
+
+      prev[subproductFileID] = curr;
+
+      return prev;
+    }, {})
+
+
+    product.metadata.s3URI = s3UrlsByProductID[product.file] ?? null;
+
+    let browses = []
+    for (const p of [...product.metadata.nisar.additionalUrls.filter(url => url !== product.downloadUrl), ...product.browses]) {
+      temp = p.split('.')
+      file_extension = temp[temp.length - 1]
+      let productTypeDisplay = this.nisarProductTypeDisplays[file_extension.toLowerCase()] ?? 'Missing Display';
+      if (productTypeDisplay === 'Missing Display') {
+        if (file_extension.includes('vc')) {
+          productTypeDisplay = file_extension.toUpperCase();
+        } else {
+          console.log(`Missing product type display for file extension "${file_extension}"`);
+        }
+      }
+      if (productTypeDisplay === 'Browse PNG') {
+        browses.push(p)
+      }
+      if (p.endsWith('.h5') && p.includes('QA_')) {
+        productTypeDisplay = this.nisarProductTypeDisplays.qa;
+      }
+
+      if(['Log File', 'Metadata JSON'].includes(productTypeDisplay)) {
+        continue;
+      }
+
+
+
+      const fileID = p.split('/').slice(-1)[0]
+      const s3Url = s3UrlsByProductID[fileID] ?? null
+    
+      let subproduct = {
+        ...product,
+        downloadUrl: p,
+        productTypeDisplay: productTypeDisplay || p,
+        file: fileID,
+        id: product.id + '-' + file_extension,
+        bytes: product.metadata.nisar?.sizeMB?.[fileID]?.bytes ?? 0,
+        browses,
+        thumbnail: null,
+        metadata: {
+          ...product.metadata,
+          productType: product.metadata.productType,
+          parentID: product.id,
+          subproducts: [],
+          s3URI: s3Url
+        },
+        virtual: true,
+      } as models.CMRProduct;
+      products.push(subproduct)
+    }
+
+    return products.sort((a, b) => {
+      if (a.productTypeDisplay.includes('Metadata') || a.productTypeDisplay.includes('QA')) {
+        return 1;
+      } else if (b.productTypeDisplay.includes('Metadata') || b.productTypeDisplay.includes('QA')) {
+        return -1;
+      }
+
+      return a.productTypeDisplay < b.productTypeDisplay ? -1 : 1
+    }
+    )
+  }
 }

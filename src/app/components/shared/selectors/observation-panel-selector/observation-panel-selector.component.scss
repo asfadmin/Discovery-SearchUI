@@ -1,0 +1,44 @@
+@use 'sass:color';
+@use 'variables';
+
+mat-form-field {
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.short-name-selector {
+    width: 100%;
+}
+
+.polarization-count {
+  font-size: small;
+  font-style: italic;
+  color: variables.$uaf-primary-blue;
+}
+
+.observation-panel {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.extra-wide {
+  flex-basis: 30%;
+  margin-left: 12px;
+}
+
+.half-width {
+  flex-basis: 48%;
+}
+
+.flight-direction-field {
+  min-width: 230px;
+}
+
+.polarization-select-container {
+  flex-basis: 48%;
+}
+
+.joint-observation-toggle {
+  margin: 16px 0 0 35px
+}
+

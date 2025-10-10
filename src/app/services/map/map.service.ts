@@ -45,7 +45,7 @@ import TileLayer from 'ol/layer/WebGLTile.js';
 
 import SimpleGeometry from 'ol/geom/SimpleGeometry';
 import { SetGeocode } from '@store/filters';
-import { Extent } from 'ol/extent';
+import {Extent, isEmpty} from 'ol/extent';
 import { MultiPolygon } from 'ol/geom';
 import GeoJSON from 'ol/format/GeoJSON.js';
 import * as uiStore from '@store/ui';
@@ -542,8 +542,10 @@ export class MapService implements OnDestroy {
     const extent = this.polygonLayer
       .getSource()
       .getExtent();
-
-    this.zoomToExtent(extent);
+    
+      if(!isEmpty(extent)) {
+        this.zoomToExtent(extent);
+      }
   }
 
   public zoomToScene(scene: models.CMRProduct): void {
@@ -912,7 +914,7 @@ export class MapService implements OnDestroy {
 
   }
 
-  public setSelectedBrowse(url: string, wkt: string) {
+  public setSelectedBrowse(url: string, wkt: string, _scene: models.CMRProduct = null) {
     if (!!this.browseImageLayer) {
       this.map.removeLayer(this.browseImageLayer);
     }
@@ -927,7 +929,12 @@ export class MapService implements OnDestroy {
           this.browseImageLayer = this.browseOverlayService.createImageLayer(url, wkt, 'ol-layer', 'current-overlay');
           this.map.addLayer(this.browseImageLayer);
         })
-      } else {
+      } 
+    //   else if(url.toLowerCase().includes('nisar')) {
+    //     this.browseImageLayer = this.browseOverlayService.getKMLLayer(_scene, url, wkt, 'ol-layer', 'current-overlay');
+    //     this.map.addLayer(this.browseImageLayer);
+    //   } 
+      else {
         this.browseImageLayer = this.browseOverlayService.createNormalImageLayer(url, wkt, 'ol-layer', 'current-overlay');
         this.map.addLayer(this.browseImageLayer);
       }

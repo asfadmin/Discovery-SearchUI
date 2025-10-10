@@ -137,8 +137,8 @@ export interface Hyp3InsarIsceMultiBurstParameters {
 }
 
 export interface Hyp3AriaS1GunwParameters {
-  reference: string;
-  secondary: string;
+  reference: string[];
+  secondary: string[];
   frame_id: number;
 }
 

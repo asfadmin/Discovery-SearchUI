@@ -39,7 +39,7 @@ import { Feature } from 'ol';
 import Geometry from 'ol/geom/Geometry';
 import { FiltersActionType } from '@store/filters';
 import { getIsFiltersMenuOpen, getIsResultsMenuOpen } from '@store/ui';
-
+import * as searchStore from '@store/search';
 @Injectable()
 export class SearchEffects {
   private vectorSource = new VectorSource({
@@ -87,6 +87,40 @@ export class SearchEffects {
       (action.payload > 0) ? new EnableSearch() : new DisableSearch()
     )
   ));
+
+  public onUpdateMaturity = createEffect(() => this.actions$.pipe(
+    ofType<SetSearchAmount>(SearchActionType.SET_SEARCH_OUT_OF_DATE),
+    withLatestFrom(this.searchParams.getlatestParams),
+    map(([_, y]) => y),
+    debounceTime(200),
+    withLatestFrom(this.store$.select(getSearchType)),
+    filter(([_, searchType]) => searchType !== SearchType.SARVIEWS_EVENTS
+      && searchType !== SearchType.CUSTOM_PRODUCTS
+      && searchType !== SearchType.BASELINE
+      && searchType !== SearchType.SBAS),
+    map(([params, _]) => ({ ...params, output: 'COUNT' })),
+    tap(_ =>
+      this.store$.dispatch(new searchStore.SearchAmountLoading())
+    ),
+    switchMap(params => {
+      return this.asfApiService.query<any[]>(params).pipe(
+        catchError(resp => {
+          const { error } = resp;
+          if (!resp.ok || error && error.includes('VALIDATION_ERROR')) {
+            return of(0);
+          }
+
+          return of(-1);
+        })
+      );
+    }
+    ),
+    map(searchAmount => {
+      const amount = +<number>searchAmount;
+
+      this.store$.dispatch(new searchStore.SetSearchAmount(amount));
+    })
+  ), { dispatch: false });
 
   public setEventSearchProductsOnClear = createEffect(() => this.actions$.pipe(
     ofType<ClearScenes>(ScenesActionType.CLEAR),
@@ -323,6 +357,7 @@ export class SearchEffects {
               job:null,
               pgeVersion:  null,
               subproducts: [],
+              nisar: null,
               parentID: "",
               ariaVersion:  null,
             }

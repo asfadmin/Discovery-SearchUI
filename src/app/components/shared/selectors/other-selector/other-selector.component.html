@@ -102,5 +102,10 @@
     </mat-hint> -->
   </mat-form-field>
 
+
+  <app-short-name-selector
+  class="short-name-selector"
+  (shortNamesChange)="onNewShortNames($event)"
+   *ngIf="dataset.id === 'NISAR'"></app-short-name-selector>
   <!-- <app-opera-calibration-data-selector *ngIf="dataset.id === 'OPERA-S1'"></app-opera-calibration-data-selector> -->
 </div>

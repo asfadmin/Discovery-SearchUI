@@ -74,6 +74,15 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     tap(products => this.operaProductsByType = products)
   );
 
+  public numOfScenesWithPolygon$  = this.scenesService.scenes$.pipe(map(scenes => scenes.filter(scene => !!scene.metadata.polygon).length))
+
+
+  public totalVirtualProducts$ = this.store$.select(scenesStore.getAllProducts).pipe(
+    map((scenes, ) => {
+      return scenes.filter(x=> x?.virtual ?? false).length
+    })
+  );
+
   public productCountByType$ = this.productsByType$.pipe(
     map(products => Object.keys(products).reduceRight((prev: {}, curr: string) => {
       prev[curr] = products[curr].length;
