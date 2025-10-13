@@ -263,7 +263,7 @@
       <mat-icon>api</mat-icon>
       {{ 'ASF_SEARCH_API' | translate }}
     </div>
-    <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
+    <div *ngIf="(breakpoint$ | async) !== breakpoints.MOBILE" class="menu-item">
       <div class="menu-item-content">
         <div class="item-title">{{ 'FIND_SAR_DATA_USING_ASF_API' | translate }}</div>
         <div class="item-content">

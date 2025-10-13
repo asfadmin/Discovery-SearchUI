@@ -38,6 +38,7 @@ export class FileDownloadDirective implements OnDestroy {
   @Input() appFileDownload: string;
 
   // Intercepts the href
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('href') set source(href: string) {
 
     // Revokes the previous URL object, if any

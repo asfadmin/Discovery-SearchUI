@@ -238,6 +238,7 @@ export class UserEffects {
             break;
           case SearchType.DISPLACEMENT:
             actions = this.setTimeseriesFilters(targetFilter.filters as TimeseriesFiltersType);
+            break;
           default:
             break;
         }

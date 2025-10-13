@@ -306,7 +306,9 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
         filereader.onload = _ => {
           const res = filereader.result as string;
           const parser = new xml2js.Parser({ explicitArray: false });
-          const observable = from (parser.parseStringPromise(res).catch(__ => {}));
+          const observable = from (parser.parseStringPromise(res).catch(__ => {
+            // Do nothing
+          }));
 
           observable.pipe(first()).subscribe(result => {
               const placemarks: [] = result?.['kml']?.['Document']?.['Placemark'] ?? null;
@@ -338,7 +340,9 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
       filereader.onload = _ => {
         const res = filereader.result as string;
         const parser = new xml2js.Parser({ explicitArray: false });
-        const observable = from (parser.parseStringPromise(res).catch(__ => {}));
+        const observable = from (parser.parseStringPromise(res).catch(__ => {
+          // Do nothing
+        }));
 
         observable.pipe(first()).subscribe(result => {
             const files: [] = result?.['metalink']?.['files']?.['file'];

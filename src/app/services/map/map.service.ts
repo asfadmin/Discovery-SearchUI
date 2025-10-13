@@ -278,7 +278,7 @@ export class MapService implements OnDestroy {
         this.epsg()
       );
       this.setDrawFeature(features);
-    } catch (e) {
+    } catch (_e) {
       didLoad = false;
     }
 
@@ -318,8 +318,7 @@ export class MapService implements OnDestroy {
         const feature = this.wktService.wktToFeature(wkt, projection);
         feature.set('filename', sarviewEvent.description);
 
-        let point: Point;
-        point = new Point([sarviewEvent.point.lat, sarviewEvent.point.lon]);
+        const point: Point = new Point([sarviewEvent.point.lat, sarviewEvent.point.lon]);
 
         feature.set('eventPoint', point);
         feature.setGeometryName('eventPoint');
@@ -850,17 +849,16 @@ export class MapService implements OnDestroy {
       base_image.onload = () => {
 
         ctx.drawImage(base_image, 0, 0)
-        let copy = document.createElement('canvas').getContext('2d'),
+        const copy = document.createElement('canvas').getContext('2d'),
           pixels = ctx.getImageData(0, 0, c.width, c.height),
           l = pixels.data.length,
-          i,
           bound = {
             top: null,
             left: null,
             right: null,
             bottom: null
-          },
-          x, y;
+          };
+        let  i, x, y;
 
         // Iterate over every pixel to find the highest
         // and where it ends on every axis ()
@@ -1028,7 +1026,6 @@ export class MapService implements OnDestroy {
         ]
       })
 
-      //@ts-ignore
       this.displacementOverview.setSource(overview_source);
     })
 

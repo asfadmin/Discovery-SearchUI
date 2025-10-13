@@ -200,8 +200,8 @@ export class QueueComponent implements OnInit, OnDestroy {
     }
 
     let length = 1;
-    for ( let i = 0; i < str.length; ++i ) {
-      if ( str[i] === '\n') {
+    for(const char of str) {
+      if(char === '\n') {
         length++;
       }
     }

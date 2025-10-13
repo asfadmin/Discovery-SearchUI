@@ -69,28 +69,28 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
 
   public json_data = '';
-  private svg?: d3.Selection<SVGElement, {}, HTMLDivElement, any>;
+  private svg?: d3.Selection<SVGElement, object, HTMLDivElement, any>;
   public dataSource: models.TimeSeriesChartPoint[] = [];
   public dataReadyForChart: DataReady[] = [];
   public timeSeriesData: models.TimeSeriesData[] = [];
   public averageData = {};
   public displayedColumns: string[] = ['position', 'short_wavelength_displacement', 'interferometric_correlation', 'temporal_coherence']
   private currentTransform: d3.ZoomTransform;
-  private zoom: d3.ZoomBehavior<SVGElement, {}>;
-  private clipContainer: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
+  private zoom: d3.ZoomBehavior<SVGElement, object>;
+  private clipContainer: d3.Selection<SVGGElement, object, HTMLDivElement, any>;
 
   private width = 640;
   private height = 400;
 
   private x: d3.ScaleTime<number, number, never>;
   private y: d3.ScaleLinear<number, number, never>;
-  public xAxis: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
-  private yAxis: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
-  private dots: d3.Selection<SVGCircleElement, models.TimeSeriesData, SVGGElement, {}>;
-  private lineGraph: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
+  public xAxis: d3.Selection<SVGGElement, object, HTMLDivElement, any>;
+  private yAxis: d3.Selection<SVGGElement, object, HTMLDivElement, any>;
+  private dots: d3.Selection<SVGCircleElement, models.TimeSeriesData, SVGGElement, object>;
+  private lineGraph: d3.Selection<SVGGElement, object, HTMLDivElement, any>;
   private toolTip: d3.Selection<HTMLDivElement, unknown, HTMLElement, any>
   public margin = { top: 10, right: 30, bottom: 60, left: 95 };
-  private thing: d3.Selection<SVGGElement, {}, HTMLElement, any>
+  private thing: d3.Selection<SVGGElement, object, HTMLElement, any>
   private hoveredElement;
   public hoveredData;
   public hoveredDate;
@@ -108,12 +108,12 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   public bestFitItems: TimeSeriesFit[] = [
 
   ];
-  private linearFitLine: d3.Selection<SVGGElement, {}, HTMLDivElement, any>;
+  private linearFitLine: d3.Selection<SVGGElement, object, HTMLDivElement, any>;
   private showLinearFit = false;
   private OperaDispStartDate = new Date('2016/07/2 00:00:00 UTC').getTime()
   private millisecondsPerYear = 3.17098e-11
 
-  public exportableData: Record<string, {}[]> = {}
+  public exportableData: Record<string, object[]> = {}
 
   // private selectedScene: string;
   @Input() isLoading = true;
@@ -261,7 +261,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     .filter(
       value => value?.frames?.findIndex(frame => frame.valid) > -1
     )
-    const allPointsData: { point: {}, state: models.timeseriesChartItemState, frame: string, uuid: string }[] = [];
+    const allPointsData: { point: object, state: models.timeseriesChartItemState, frame: string, uuid: string }[] = [];
     for(const series of validPoints) {
       for(const frame of series.frames.filter(frame => frame.valid)) {
         allPointsData.push(
@@ -327,7 +327,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.updateChart();
   }
 
-  public initChart(data: {point: {}, state: models.timeseriesChartItemState, frame: string}[]): void {
+  public initChart(data: {point: object, state: models.timeseriesChartItemState, frame: string}[]): void {
     this.dataSource = []
     this.dataReadyForChart = []
     this.exportableData = {}
@@ -494,13 +494,13 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     //                                           Math.round((this.y(d.short_wavelength_displacement) + Number.EPSILON) * 10000) / 10000,
     //                                           d.aoi]);
 
-    this.zoom = d3.zoom<SVGElement, {}>()
+    this.zoom = d3.zoom<SVGElement, object>()
       .extent([[0, 0], [this.width, this.height]])
       .on('zoom', (eve: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
         this.currentTransform = eve.transform;
         this.updateChart();
       });
-    this.thing = d3.select<HTMLDivElement, {}>('#timeseriesChart').selectChild()
+    this.thing = d3.select<HTMLDivElement, object>('#timeseriesChart').selectChild()
     this.thing.call(this.zoom)
     if(this.width >= 0) {
         this.svg.append('defs').append('SVG:clipPath')
@@ -538,10 +538,9 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .enter()
       .append('path')
       .attr('clip-path', 'url(#clip)')
-      .attr('d', function (d) { // @ts-ignore
+      .attr('d', function (d) { 
         return line(d.values)
       })
-      // @ts-ignore
       .attr('stroke', function (d: DataReady) { return d.color })
       // .attr('stroke', 'red')
       .style('opacity', (d: DataReady) => d.opacity)
@@ -694,7 +693,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.svg.selectAll('circle').style("fill", unSelectedColor).style("stroke", unSelectedColor).attr('r', 5);
     this.svg.selectAll(dClassName + ' ' + 'circle').style("fill", colorName).style("stroke", colorName).attr('r', 6);
     this.svg.selectAll('.dotsChildren').sort(function (a, _b) {
-      // @ts-ignore
+      // @ts-expect-error Types are weird
       if (a.uuid === uuid) return 1
       else return -1;
     });
@@ -775,7 +774,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .y(function (d) { return newY(d.short_wavelength_displacement); })
 
     this.lines
-      .attr("d", function (d) { // @ts-ignore
+      .attr("d", function (d) {
         return line(d.values)
       })
       .style('opacity', (d: DataReady) => d.opacity)
@@ -826,7 +825,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .attr('width', this.width + this.margin.left + this.margin.right)
       .attr('height', this.height + this.margin.top + this.margin.bottom)
       .append('g')
-      .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
+      .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`) as d3.Selection<SVGElement, object, HTMLDivElement, any>;
 
     this.drawChart();
   }

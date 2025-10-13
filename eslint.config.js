@@ -14,14 +14,6 @@ module.exports = tseslint.config(
     ],
     processor: angular.processInlineTemplates,
     rules: {
-      "@angular-eslint/directive-selector": [
-        "error",
-        {
-          type: "attribute",
-          prefix: "app",
-          style: "camelCase",
-        },
-      ],
       "@angular-eslint/component-selector": [
         "error",
         {
@@ -41,18 +33,12 @@ module.exports = tseslint.config(
       // ---------
       // re-enable these at some point
       // ---------
-      "@typescript-eslint/no-explicit-any": [
-        "off",
-      ],
-      "no-prototype-builtins": [
-        "off"
-      ],
-      "@typescript-eslint/no-this-alias": [
-        "off"
-      ],
-      "no-useless-escape": [
-        "off"
-      ],
+      "@typescript-eslint/no-explicit-any": "off",
+      "no-prototype-builtins": "off",
+      "@typescript-eslint/no-this-alias": "off",
+      "no-useless-escape": "off",
+      "@angular-eslint/no-output-on-prefix": "off",
+      "@angular-eslint/no-output-native": "off",
     },
   },
   {
@@ -65,11 +51,8 @@ module.exports = tseslint.config(
       // ---------
       // re-enable these at some point
       // ---------
-      "@angular-eslint/template/click-events-have-key-events":
-        "off"
-      ,
-      "@angular-eslint/template/interactive-supports-focus":
-        "off",
+      "@angular-eslint/template/click-events-have-key-events": "off",
+      "@angular-eslint/template/interactive-supports-focus": "off",
       "@angular-eslint/template/alt-text": "off",
       "@angular-eslint/template/no-negated-async": "off",
       "@angular-eslint/template/mouse-events-have-key-events": "off",

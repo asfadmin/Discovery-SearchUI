@@ -135,8 +135,9 @@ export class FileContentsComponent implements OnInit, OnDestroy {
     return this.queuedProductIds.has(nodeId);
   }
 
-  public prodDownloaded( product ) {
-    product = product;
+  public prodDownloaded( _product ) {
+    // product = product;
+    // not sure why this was reassigning itself locally like this
   }
 
   ngOnDestroy() {

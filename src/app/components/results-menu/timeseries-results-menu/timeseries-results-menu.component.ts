@@ -366,7 +366,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
 }
 
 @Component({
-  selector: 'confirmation-dialog',
+  selector: 'app-confirmation-dialog',
   templateUrl: 'confirmation-dialog.html',
   imports: [
     MatDialogActions,

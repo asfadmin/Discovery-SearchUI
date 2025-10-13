@@ -170,6 +170,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   }
 
   public prodDownloaded( _product ) {
+    // Do nothing
   }
 
   public onSearchProduct() {

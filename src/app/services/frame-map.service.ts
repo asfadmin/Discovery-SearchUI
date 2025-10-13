@@ -8,7 +8,11 @@ export class FrameMapService {
   public datasets = [beta];
 
   public downloadFrameMap(id: string): void {
-    this.datasets.forEach((dataset) => {dataset.id === id ? this.downloadFileFromUrl(dataset.frameMap.ascending, dataset.name) : null;});
+    this.datasets.forEach((dataset) => {
+      if(dataset.id === id) {
+        this.downloadFileFromUrl(dataset.frameMap.ascending, dataset.name)
+      }
+    });
   }
 
   /**

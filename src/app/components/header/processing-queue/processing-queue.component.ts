@@ -175,7 +175,7 @@ export class ProcessingQueueComponent implements OnInit {
     );
 
     if (!this.isUserLoggedIn && !this.isUserLoading) {
-      if (!this.errorHeaderRef === undefined) {
+      if (this.errorHeaderRef !== undefined) {
         this.errorHeaderHeight = this.errorHeaderRef.nativeElement.offsetHeight;
       } else {
         this.errorHeaderHeight = 0;

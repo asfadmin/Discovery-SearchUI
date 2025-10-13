@@ -84,6 +84,7 @@ export class BrowseMapService {
       this.map.addLayer(this.pinnedProducts);
 
       this.map.on('singleclick', e => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         this.map.forEachFeatureAtPixel(e.pixel, (_, l, __) => {
           this.pinnedProducts.getLayers().remove(l);
           this.pinnedProducts.getLayers().push(l);
