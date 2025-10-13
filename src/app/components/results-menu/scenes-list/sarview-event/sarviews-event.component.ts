@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { SarviewsEvent, SarviewsQuakeEvent, SarviewsVolcanicEvent } from '@models';
 
 import * as models from '@models';
@@ -14,7 +14,7 @@ import moment from 'moment';
   templateUrl: './sarviews-event.component.html',
   styleUrls: ['./sarviews-event.component.scss']
 })
-export class SarviewsEventComponent implements OnInit {
+export class SarviewsEventComponent {
   private mapService = inject(MapService);
   private store$ = inject<Store<AppState>>(Store);
   private screenSize = inject(ScreenSizeService);
@@ -27,8 +27,6 @@ export class SarviewsEventComponent implements OnInit {
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
 
-  ngOnInit(): void {
-  }
 
   public onSetFocused() {
     this.hovered = true;

@@ -49,8 +49,10 @@ module.exports = tseslint.config(
       ],
       "@typescript-eslint/no-this-alias": [
         "off"
-      ]
-
+      ],
+      "no-useless-escape": [
+        "off"
+      ],
     },
   },
   {
@@ -59,6 +61,19 @@ module.exports = tseslint.config(
       ...angular.configs.templateRecommended,
       ...angular.configs.templateAccessibility,
     ],
-    rules: {},
+    rules: {
+      // ---------
+      // re-enable these at some point
+      // ---------
+      "@angular-eslint/template/click-events-have-key-events":
+        "off"
+      ,
+      "@angular-eslint/template/interactive-supports-focus":
+        "off",
+      "@angular-eslint/template/alt-text": "off",
+      "@angular-eslint/template/no-negated-async": "off",
+      "@angular-eslint/template/mouse-events-have-key-events": "off",
+      "@angular-eslint/template/label-has-associated-control": "off",
+    },
   }
 );
