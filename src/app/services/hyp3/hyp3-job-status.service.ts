@@ -8,7 +8,6 @@ import * as models from '@models';
   providedIn: 'root'
 })
 export class Hyp3JobStatusService {
-  constructor() { }
 
   public downloadable(products: models.CMRProduct[]): models.CMRProduct[] {
     return products.filter(product => this.isDownloadable(product.metadata.job));

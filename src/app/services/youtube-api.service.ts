@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-// @ts-ignore
 export class YoutubeApiService {
   http = inject(HttpClient);
 

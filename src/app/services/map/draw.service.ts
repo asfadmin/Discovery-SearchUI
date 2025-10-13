@@ -172,8 +172,6 @@ export class DrawService {
     draw.on('drawend', e => {
       e.feature?.setId(this.currentDrawMode);
       e.feature?.set('drawMode', this.currentDrawMode);
-      // @ts-ignore
-      // e.feature?.setGeometry(this.currentDrawMode);
       if (e.feature?.getGeometry().getType() === 'Circle') {
         const circle = e.feature.getGeometry() as Circle;
         e.feature.setGeometry(fromCircle(circle));

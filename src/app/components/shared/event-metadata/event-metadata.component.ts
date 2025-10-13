@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import * as models from '@models';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -10,15 +10,13 @@ import * as filtersStore from '@store/filters';
   templateUrl: './event-metadata.component.html',
   styleUrls: ['./event-metadata.component.scss']
 })
-export class EventMetadataComponent implements OnInit {
+export class EventMetadataComponent {
   private store$ = inject<Store<AppState>>(Store);
 
   @Input() event: models.SarviewsEvent;
   @Input() eventType: models.SarviewsEventType;
   public eventTypes = models.SarviewsEventType;
 
-  ngOnInit(): void {
-  }
 
   public onSetStartDate(date: Date) {
     const startOf = moment(date).startOf('day');

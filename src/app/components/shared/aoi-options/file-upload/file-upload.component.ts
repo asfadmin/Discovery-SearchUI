@@ -32,6 +32,7 @@ export class FileUploadComponent implements OnInit, OnDestroy {
   }
 
   public openDialog(): void {
+    // Do nothing
   }
 
   ngOnDestroy() {

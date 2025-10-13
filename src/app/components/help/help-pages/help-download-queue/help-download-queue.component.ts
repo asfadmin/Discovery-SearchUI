@@ -1,15 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-help-download-queue',
   templateUrl: './help-download-queue.component.html',
   styleUrls: ['./help-download-queue.component.scss']
 })
-export class HelpDownloadQueueComponent implements OnInit {
+export class HelpDownloadQueueComponent {
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

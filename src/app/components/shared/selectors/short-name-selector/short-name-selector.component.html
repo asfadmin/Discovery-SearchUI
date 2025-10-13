@@ -3,7 +3,7 @@
         class="short-name-dropdown"
       [(value)]="shortNamesList"
       (selectionChange)="onNewShortNames($event)"
-      [disabled]="selectableShortNames.length == 0"
+      [disabled]="selectableShortNames.length === 0"
       panelClass="short-name-selector"
       placeholder="{{ 'SHORT_NAME' | translate }}" multiple>
         <mat-option

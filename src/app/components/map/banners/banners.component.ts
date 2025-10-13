@@ -127,12 +127,7 @@ export class BannerCreateDirective implements OnInit {
   templateUrl: './banners.component.html',
   styleUrls: ['./banners.component.scss'],
 })
-export class BannersComponent implements OnInit {
+export class BannersComponent {
   @Input() banners: Banner[];
 
-  constructor() {
-  }
-
-  ngOnInit(): void {
-  }
 }

@@ -6,7 +6,6 @@ import { beta } from '@models';
 })
 export class FrameMapService {
   public datasets = [beta];
-  constructor() { }
 
   public downloadFrameMap(id: string): void {
     this.datasets.forEach((dataset) => {dataset.id === id ? this.downloadFileFromUrl(dataset.frameMap.ascending, dataset.name) : null;});

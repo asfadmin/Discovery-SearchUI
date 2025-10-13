@@ -20,7 +20,7 @@
 <!---->
 <!--SBAS Chart Filters for MOBILE devices-->
 <!---->
-<div [hidden]="breakpoint != breakpoints.MOBILE">
+<div [hidden]="breakpoint !== breakpoints.MOBILE">
   <div class="sbas-slider-two-wrapper-mobile">
     <mat-form-field appearance="fill" [color]="colorControl.value" [style.width.px]=125>
       <mat-label>Meters</mat-label>

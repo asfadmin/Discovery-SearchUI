@@ -157,7 +157,7 @@ export class QueueEffects {
     withLatestFrom(this.store$.select(hyp3Store.getHyp3User)),
     map(([[jobs, duplicates], user]) => {
       const jobTypes = Array.from(jobs.reduce((types, job) => types = types.add(job.job_type.name), new Set<string>()));
-      this.notificationService.demandQueue(true, jobs.length, jobTypes.length === 1 ? jobTypes[0] : '', duplicates = duplicates, user.application_status);
+      this.notificationService.demandQueue(true, jobs.length, jobTypes.length === 1 ? jobTypes[0] : '', duplicates, user.application_status);
     }),
   ),
     { dispatch: false }

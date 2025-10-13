@@ -1,15 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-help-unzipping',
   templateUrl: './help-unzipping.component.html',
   styleUrls: ['./help-unzipping.component.scss']
 })
-export class HelpUnzippingComponent implements OnInit {
+export class HelpUnzippingComponent {
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

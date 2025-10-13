@@ -75,7 +75,9 @@ export class HelpTocComponent implements OnInit {
           }
         },
           error => console.log(error),
-          () => {}
+          () => {
+            // Do nothing
+          }
         );
     }
   }

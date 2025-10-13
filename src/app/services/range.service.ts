@@ -6,8 +6,6 @@ import { Range } from '@models';
 })
 export class RangeService {
 
-  constructor() { }
-
   public toString<T>(range: Range<T>): string {
     const [start, end] = [ range.start || '', range.end || '' ];
 

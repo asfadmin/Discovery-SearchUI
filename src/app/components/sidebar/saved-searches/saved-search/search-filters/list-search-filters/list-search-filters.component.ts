@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 import { ListFiltersType } from '@models';
 
@@ -8,13 +8,9 @@ import { ListFiltersType } from '@models';
   styleUrls: ['./list-search-filters.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ListSearchFiltersComponent implements OnInit {
+export class ListSearchFiltersComponent {
   @Input() filters: ListFiltersType;
 
-  constructor() { }
-
-  ngOnInit() {
-  }
 
   public formatList(list: string[]): string {
     return list.join(', ');

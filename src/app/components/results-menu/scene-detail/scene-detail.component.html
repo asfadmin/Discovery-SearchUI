@@ -377,7 +377,7 @@
       (click)="moreLikeThis()"
       class="mini-toggle-button search-button">
       <span *ngIf="breakpoint === breakpoints.MOBILE">{{ 'MORE' | translate }}</span>
-      <span *ngIf="breakpoint != breakpoints.MOBILE">{{searchType !== searchTypes.SARVIEWS_EVENTS ? dataset?.id === 'OPERA-S1' ? ('SOURCE_DATA' | translate) : ('MORE_LIKE_THIS' | translate ) : ('GEOGRAPHIC' | translate )}}</span>
+      <span *ngIf="breakpoint !== breakpoints.MOBILE">{{searchType !== searchTypes.SARVIEWS_EVENTS ? dataset?.id === 'OPERA-S1' ? ('SOURCE_DATA' | translate) : ('MORE_LIKE_THIS' | translate ) : ('GEOGRAPHIC' | translate )}}</span>
     </button>
 
   </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -12,14 +12,12 @@ import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bott
   templateUrl: './queue-submit.component.html',
   styleUrls: ['./queue-submit.component.scss']
 })
-export class QueueSubmitComponent implements OnInit {
+export class QueueSubmitComponent {
   data = inject(MAT_BOTTOM_SHEET_DATA);
   private store$ = inject<Store<AppState>>(Store);
   private _bottomSheetRef = inject<MatBottomSheetRef<QueueSubmitComponent>>(MatBottomSheetRef);
 
 
-  ngOnInit(): void {
-  }
 
   viewCustomProducts(event: MouseEvent): void {
     this.store$.dispatch(new searchStore.SetSearchType(SearchType.CUSTOM_PRODUCTS));

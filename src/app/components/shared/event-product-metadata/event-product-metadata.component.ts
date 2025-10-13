@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import * as models from '@models';
 
 interface IEventProductMetadata {
@@ -23,7 +23,7 @@ enum Polarizations {
   templateUrl: './event-product-metadata.component.html',
   styleUrls: ['./event-product-metadata.component.scss']
 })
-export class EventProductMetadataComponent implements OnInit {
+export class EventProductMetadataComponent {
   @Input() set product(value: models.SarviewsProduct) {
     this.scenesMetadata = value.granules.reduce((prev, curr) => [...prev, {
       scene_name: curr.granule_name,
@@ -40,11 +40,6 @@ export class EventProductMetadataComponent implements OnInit {
  public scenesMetadata: IEventProductMetadata[] = [];
 
 
-  constructor() { }
-
-  ngOnInit(): void {
-
-  }
 
   private getBeamMode(sceneName: string): string {
     return sceneName.split('_')[1];

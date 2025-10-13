@@ -1,18 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-ci-search',
   templateUrl: './ci-search.component.html',
   styleUrls: ['./ci-search.component.scss']
 })
-export class CiSearchComponent implements OnInit {
+export class CiSearchComponent {
 
   constructor() {
     this.showSearch();
   }
 
-  ngOnInit(): void {
-  }
 
   public showSearch() {
     const id = 'b8df7ea0-38a5-11eb-9b20-0242ac130002';

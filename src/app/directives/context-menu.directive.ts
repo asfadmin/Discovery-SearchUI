@@ -32,7 +32,7 @@ export class ContextMenuTriggerDirective extends MatMenuTrigger implements OnIni
   }
 
   public override _handleClick() {
-
+    // Do nothing
   }
 
   public override openMenu() {

@@ -34,7 +34,7 @@ export class TimeseriesChartExportComponent {
   private netcdfService = inject(NetcdfService);
 
 
-  @Input() timeSeriesData: Record<string, {}[]> = {}
+  @Input() timeSeriesData: Record<string, object[]> = {}
 
 
   private currentDate(): string {

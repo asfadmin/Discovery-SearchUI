@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -13,15 +13,13 @@ import * as services from '@services';
   templateUrl: './hyp3-header.component.html',
   styleUrls: ['./hyp3-header.component.scss', '../header.component.scss']
 })
-export class Hyp3HeaderComponent implements OnInit {
+export class Hyp3HeaderComponent {
   private store$ = inject<Store<AppState>>(Store);
   private screenSize = inject(services.ScreenSizeService);
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
 
-  ngOnInit(): void {
-  }
 
   public onToggleFiltersMenu(): void {
     this.store$.dispatch(new uiStore.OpenFiltersMenu());

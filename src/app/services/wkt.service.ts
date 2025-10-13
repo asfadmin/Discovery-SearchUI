@@ -14,7 +14,6 @@ export class WktService {
   private format = new WKT();
   private sceneProjection = 'EPSG:4326';
 
-  constructor() { }
 
   public wktToFeature(wkt: string, epsg: string) {
     return this.format.readFeature(wkt, {

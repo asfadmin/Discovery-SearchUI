@@ -98,7 +98,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   );
 
   public productCountByType$ = this.productsByType$.pipe(
-    map(products => Object.keys(products).reduceRight((prev: {}, curr: string) => {
+    map(products => Object.keys(products).reduceRight((prev: object, curr: string) => {
       prev[curr] = products[curr].length;
       return prev;
     }, {}))

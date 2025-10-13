@@ -42,11 +42,11 @@
                     class="point-list-item"
                     on-mouseenter="setActiveWkt(frame.uuid)"
                     on-mouseleave="setActiveWkt(null)">
-                    @if (frame.valid == true) {
+                    @if (frame.valid === true) {
                       <ng-container *ngTemplateOutlet="seriesCheckBoxItem"></ng-container>
                     } @else {
                       <div class="error-line">
-                        @if(frame.valid == false) {
+                        @if(frame.valid === false) {
                           <mat-icon color="warn" class="invalid-aoi-icon" [matTooltip]="point.error">block</mat-icon>
                         }
                         @else {

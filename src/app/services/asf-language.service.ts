@@ -26,7 +26,6 @@ export class AsfLanguageService {
   private titleService = inject(Title);
 
 
-  // @ts-ignore
   public languageNamesInEnglish = new Intl.DisplayNames(['en'], { type: 'language' });
   public browserLang: string;
   private defaultProfileLanguage: string;

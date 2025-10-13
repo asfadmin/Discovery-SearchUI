@@ -15,7 +15,6 @@ export class RangeOptionComponent  implements OnInit{
 
   @Output() valueChange = new EventEmitter<number>();
 
-  constructor() {}
 
   ngOnInit(): void {
     this.value = this.default;

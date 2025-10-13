@@ -84,7 +84,8 @@ export class AuthService {
               event : 'login'
             });
           }
-        } catch (e) {
+        } catch (_e) {
+          // Do nothing
         }
 
         return user;
@@ -146,7 +147,7 @@ export class AuthService {
         user['urs-groups'],
         token
       );
-    } catch (error) {
+    } catch (_error) {
       return this.nullUser();
     }
   }

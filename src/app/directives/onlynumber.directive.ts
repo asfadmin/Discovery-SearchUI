@@ -29,7 +29,6 @@ export class OnlynumberDirective {
   }
 
   @HostListener('keydown', ['$event'])
-  // @ts-ignore
   onKeyDown(e: KeyboardEvent) {
     if (
       this.navigationKeys.indexOf(e.key) > -1 || // Allow: navigation keys: backspace, delete, arrows etc.
@@ -55,7 +54,6 @@ export class OnlynumberDirective {
   }
 
   @HostListener('paste', ['$event'])
-    // @ts-ignore
     onPaste(event: ClipboardEvent) {
     event.preventDefault();
     const pastedInput: string = event.clipboardData
@@ -65,7 +63,6 @@ export class OnlynumberDirective {
   }
 
   @HostListener('drop', ['$event'])
-  // @ts-ignore
   onDrop(event: DragEvent) {
     event.preventDefault();
     const textData = event.dataTransfer.getData('text').replace(/\D/g, '');

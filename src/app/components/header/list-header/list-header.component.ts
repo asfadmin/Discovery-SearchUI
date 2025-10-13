@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -12,15 +12,13 @@ import { Breakpoints } from '@models';
   templateUrl: './list-header.component.html',
   styleUrls: ['./list-header.component.css', '../header.component.scss']
 })
-export class ListHeaderComponent implements OnInit {
+export class ListHeaderComponent {
   private store$ = inject<Store<AppState>>(Store);
   private screenSize = inject(ScreenSizeService);
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = Breakpoints;
 
-  ngOnInit() {
-  }
 
   public onToggleFiltersMenu(): void {
     this.store$.dispatch(new uiStore.OpenFiltersMenu());

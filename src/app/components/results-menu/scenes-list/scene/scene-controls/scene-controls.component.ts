@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 
 import * as services from '@services';
 import * as models from '@models';
@@ -8,7 +8,7 @@ import * as models from '@models';
   templateUrl: './scene-controls.component.html',
   styleUrls: ['./scene-controls.component.scss']
 })
-export class SceneControlsComponent implements OnInit {
+export class SceneControlsComponent {
   private hyp3 = inject(services.Hyp3ApiService);
   private hyp3JobStatus = inject(services.Hyp3JobStatusService);
 
@@ -23,8 +23,6 @@ export class SceneControlsComponent implements OnInit {
 
   public SearchTypes = models.SearchType;
 
-  ngOnInit(): void {
-  }
 
   public onZoomTo(): void {
     this.onZoomToScene.emit();

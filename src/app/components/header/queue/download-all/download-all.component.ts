@@ -11,7 +11,6 @@ export class DownloadAllComponent implements OnInit {
   @Input() disabled = false;
   public isDownloadSupported = false;
 
-  constructor() { }
 
   ngOnInit(): void {
     this.isDownloadSupported = new UAParser().getBrowser().name === 'Chrome';

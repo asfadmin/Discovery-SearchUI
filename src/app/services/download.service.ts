@@ -53,7 +53,7 @@ export class DownloadService {
   async getDirectory( getNew= false): Promise<any> {
     return new Promise(resolve => {
       if (!this.dir || getNew) {
-      /* @ts-ignore:disable-next-line */
+      //@ts-expect-error Use in development browser functionality
         window.showDirectoryPicker().then(dir => {
           this.dir = dir;
           dir.requestPermission({ mode: 'readwrite' }).then(() => {
@@ -67,7 +67,7 @@ export class DownloadService {
   }
   async getFileHandle(filename: string): Promise<any> {
     return new Promise(resolve => {
-      /* @ts-ignore:disable-next-line */
+      //@ts-expect-error Use in development browser functionality
       window.showSaveFilePicker({
         suggestedName: filename
       }).then(file => {

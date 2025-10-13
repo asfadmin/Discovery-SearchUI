@@ -244,7 +244,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
     this.ngxCsvParser.parse(file, { header: true, delimiter: ',' })
     .pipe(
       first(),
-      map((output: {}[]) => ({
+      map((output: object[]) => ({
           result: output,
           granules_key: Object.keys(output[0]).find(key => key.toLowerCase().includes('granule'))
         })

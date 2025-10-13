@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import * as models from '@models';
 
@@ -7,14 +7,10 @@ import * as models from '@models';
   templateUrl: './search-filters.component.html',
   styleUrls: ['./search-filters.component.scss']
 })
-export class SearchFiltersComponent implements OnInit {
+export class SearchFiltersComponent {
   @Input() search: models.Search;
 
   public SearchType = models.SearchType;
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

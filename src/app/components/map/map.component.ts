@@ -105,7 +105,7 @@ export class MapComponent implements OnInit, OnDestroy  {
 
   private sarviewsEvents: SarviewsEvent[];
   private chartStates: models.timeseriesChartItemState[] = [];
-  //@ts-ignore
+  //@ts-expect-error Variable used later
   private selectedSeries: any = null;
 
   public buildOnDemandStack() {
@@ -646,7 +646,9 @@ export class MapComponent implements OnInit, OnDestroy  {
   private setMapWith(viewType: models.MapViewType, layerType: models.MapLayerTypes): void {
     this.mapService.setMapView(viewType, layerType, this.overlay);
 
-    this.mapService.setOverlayUpdate(_ => { });
+    this.mapService.setOverlayUpdate(_ => {
+      // Do nothing
+     });
   }
 
   public showOverlay(): void {

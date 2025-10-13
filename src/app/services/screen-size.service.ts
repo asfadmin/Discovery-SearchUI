@@ -40,5 +40,4 @@ export class ScreenSizeService {
     })
   );
 
-  constructor() { }
 }

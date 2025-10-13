@@ -44,7 +44,6 @@ export class EventPolygonSliderComponent implements OnInit, OnDestroy {
   }
 
   private makePolygonSlider$(filterRef: ElementRef) {
-    // @ts-ignore
     const slider = noUiSlider.create(filterRef.nativeElement, {
       orientation: 'horizontal',
       direction: 'ltr',

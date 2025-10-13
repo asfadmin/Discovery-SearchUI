@@ -133,7 +133,7 @@
     </div>
 
     <div #contentBottomArea class="content-bottom-area" [style.height.px]="contentBottomAreaHeight"
-      [class.content-bottom-area-mobile]="breakpoint == breakpoints.MOBILE">
+      [class.content-bottom-area-mobile]="breakpoint === breakpoints.MOBILE">
       <div class="bottom-item">
 
         <!-- PRODUCT LIST AREA STARTS HERE -->
@@ -197,11 +197,11 @@
   </mat-progress-bar>
 
   <div class="w100 hyp3-footer" [ngStyle]="{
-    'justify-content': breakpoint == breakpoints.MOBILE ? 'inherit' : 'center'
+    'justify-content': breakpoint === breakpoints.MOBILE ? 'inherit' : 'center'
   }">
     <div class="footer-clear">
       <button *ngIf="previousQueue === null" [matMenuTriggerFor]="clearJobQueue"
-        [class.mini-button]="breakpoint == breakpoints.MOBILE" mat-button>
+        [class.mini-button]="breakpoint === breakpoints.MOBILE" mat-button>
         <mat-icon>delete</mat-icon>
         <span>{{ 'CLEAR' | translate }}</span>
       </button>
@@ -218,7 +218,7 @@
         </div>
       </mat-menu>
 
-      <button *ngIf="previousQueue !== null" [class.mini-button]="breakpoint == breakpoints.MOBILE"
+      <button *ngIf="previousQueue !== null" [class.mini-button]="breakpoint === breakpoints.MOBILE"
         (click)="onRestoreJobQueue()" mat-flat-button color="primary" class="footer-clear-button">
         <span>{{ 'RESTORE' | translate }}</span>
       </button>
@@ -286,7 +286,7 @@
       </div>
     </div>
 
-    <div class="footer-submit" [class.footer-submit-mobile]="breakpoint == breakpoints.MOBILE">
+    <div class="footer-submit" [class.footer-submit-mobile]="breakpoint === breakpoints.MOBILE">
       <mat-slide-toggle *ngIf="env.maturity !== 'prod' && breakpoint !== breakpoints.MOBILE" style="margin-right: 16px;"
         (change)="onValidateOnlyToggle($event.checked)" [(ngModel)]="validateOnly">
         {{ 'VALIDATE_ONLY' | translate }}
@@ -301,7 +301,7 @@
            userStatus === 'NOT_STARTED' ||
            userStatus === 'PENDING' ||
            userStatus === 'REJECTED'
-         )" [class.mini-button]="breakpoint == breakpoints.MOBILE" mat-flat-button color="primary"
+         )" [class.mini-button]="breakpoint === breakpoints.MOBILE" mat-flat-button color="primary"
         class="footer-submit-button">
         <span *ngIf="!isQueueSubmitProcessing">
           {{ 'SUBMIT' | translate }} {{ allJobs.length }} {{ 'JOB' | translate }}<span

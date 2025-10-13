@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy  } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy  } from '@angular/core';
 
 import { GeographicFiltersType, ProductType } from '@models';
 
@@ -8,13 +8,9 @@ import { GeographicFiltersType, ProductType } from '@models';
   styleUrls: ['./geographic-search-filters.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GeographicSearchFiltersComponent implements OnInit {
+export class GeographicSearchFiltersComponent {
   @Input() filters: GeographicFiltersType;
 
-  constructor() { }
-
-  ngOnInit() {
-  }
 
   public formatTypesList(fileTypes: ProductType[]): string {
     return fileTypes

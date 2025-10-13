@@ -171,13 +171,13 @@ export class NetcdfService {
   // series, longitude, latitude, date (mm/dd/yr), short wavelength displacement, source file
   // series 1, 1.0, 2.0,  05/14/2020, 0.500, granule1.nc
   // ...
-  public toCSV(seriesData: Record<string, {}[]>): string {
+  public toCSV(seriesData: Record<string, object[]>): string {
     let output = `${this.csvHeaders}\n`
     const sortedSeriesKeys = Object.keys(seriesData).sort((s1, s2) => s1 < s2 ? -1 : 1)
     for (const seriesNumber of sortedSeriesKeys) {
 
       for (const timestep of seriesData[seriesNumber]) {
-        if (timestep !== 'aoi') {
+        if (typeof(timestep) === 'string' && timestep !== 'aoi') {
           let dateDisplay = ''
           if (timestep !== 'mean') {
             

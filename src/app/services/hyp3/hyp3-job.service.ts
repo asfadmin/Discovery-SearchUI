@@ -8,7 +8,6 @@ import * as models from '@models';
 })
 export class Hyp3JobService {
 
-  constructor() { }
 
   public getAllGranulesFromJobs(jobs: models.Hyp3Job[]): string[] {
     return jobs.reduce(

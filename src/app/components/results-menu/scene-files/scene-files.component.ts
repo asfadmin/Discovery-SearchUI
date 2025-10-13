@@ -54,7 +54,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   public selectedProducts: string[];
   public sarviewsProducts: models.SarviewsProduct[];
   public queuedProductIds: string[];
-  public hyp3ableByProduct: {};
+  public hyp3ableByProduct: object;
 
   public queuedProductIds$ = this.store$.select(queueStore.getQueuedProductIds).pipe(
       map(names => new Set(names))

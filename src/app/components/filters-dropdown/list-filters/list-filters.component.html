@@ -72,13 +72,13 @@
             </mat-form-field>
             <div class="drop-file-area file-upload-container"
                  [class.drop-file-area-scenes]=" mode === types.SCENE "
-                 [class.drop-file-area-files]=" mode != types.SCENE ">
+                 [class.drop-file-area-files]=" mode !== types.SCENE ">
               <div class="dd-text">
                 <div class="dd-text-1">{{ 'DRAG_AND_DROP' | translate }}</div>
                 <div class="dd-bottom-text">
                   <div>{{ 'FILES_HERE' | translate }}</div>
                   <div *ngIf="mode === types.SCENE" class="dd-text-2">(csv, geojson, metalink, kml)</div>
-                  <div *ngIf="mode != types.SCENE" class="dd-text-2">(csv, geojson)</div>
+                  <div *ngIf="mode !== types.SCENE" class="dd-text-2">(csv, geojson)</div>
                 </div>
               </div>
 
@@ -100,7 +100,7 @@
             </div>
             <div>
               <span>
-                {{ 'FILE_IMPORT_SUPPORTED' | translate }} (csv, geojson{{ mode == types.SCENE ? ", metalink, kml" : ""}})
+                {{ 'FILE_IMPORT_SUPPORTED' | translate }} (csv, geojson{{ mode === types.SCENE ? ", metalink, kml" : ""}})
               </span>
             </div>
           </div>

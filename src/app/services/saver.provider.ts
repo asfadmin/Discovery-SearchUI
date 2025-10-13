@@ -1,6 +1,6 @@
 import { InjectionToken } from '@angular/core';
 
-// @ts-ignore
+// @ts-expect-error Import here
 import streamSaver from 'streamsaver';
 
 export type Saver = (blob: Blob, url: string, filename?: string, window?: any) => Promise<any>;

@@ -201,7 +201,7 @@
       <mat-icon>video_library</mat-icon>
       {{ 'VIDEO_TUTORIALS' | translate }}
     </div>
-    <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
+    <div *ngIf="(breakpoint$ | async) !== breakpoints.MOBILE" class="menu-item">
       <div class="menu-item-content">
         <div class="item-title">{{ 'WATCH_OUR_TUTORIALS' | translate }}</div>
         <div class="item-content">
@@ -221,7 +221,7 @@
       <mat-icon>menu_book</mat-icon>
       {{ 'VERTEX_USER_GUIDE' | translate }}
     </div>
-    <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
+    <div *ngIf="(breakpoint$ | async) !== breakpoints.MOBILE" class="menu-item">
       <div class="menu-item-content">
         <div class="item-title">{{ 'READ_OUR_USER_GUIDE' | translate }}</div>
         <div class="item-content">
@@ -242,7 +242,7 @@
       <mat-icon>book</mat-icon>
       {{ 'HY_P3_USER_GUIDE' | translate | titlecase }}
     </div>
-    <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
+    <div *ngIf="(breakpoint$ | async) !== breakpoints.MOBILE" class="menu-item">
       <div class="menu-item-content">
         <div class="item-title">{{ 'READ_OUR_ON_DEMAND_GUIDE' | translate }}</div>
         <div class="item-content">
@@ -285,7 +285,7 @@
       <mat-icon>language</mat-icon>
       {{ 'ASF_WEBSITE' | translate }}
     </div>
-    <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
+    <div *ngIf="(breakpoint$ | async) !== breakpoints.MOBILE" class="menu-item">
       <div class="menu-item-content">
         <div class="item-title">{{ 'LEARN_MORE_ABOUT_ASF_AND_SAR' | translate }}</div>
         <div class="item-content">
@@ -305,7 +305,7 @@
       <mat-icon>language</mat-icon>
       {{ 'DEVELOPER' | translate }}
     </div>
-    <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
+    <div *ngIf="(breakpoint$ | async) !== breakpoints.MOBILE" class="menu-item">
       <div class="menu-item-content">
         <div class="item-title">{{ 'STATISTICS_AND_GITHUB_REPOSITORY' | translate }}</div>
         <div class="item-content">

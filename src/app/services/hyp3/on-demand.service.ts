@@ -7,7 +7,6 @@ import * as models from '@models';
 })
 export class OnDemandService {
 
-  constructor() { }
 
   public jobParamsToList(metadata: models.CMRProductMetadata) {
     const jobType = models.hyp3JobTypes[(metadata.job.job_type as string)];

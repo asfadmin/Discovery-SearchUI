@@ -2,7 +2,7 @@ import '@formatjs/intl-displaynames/polyfill'
 import '@formatjs/intl-displaynames/locale-data/en'
 import '@formatjs/intl-displaynames/locale-data/es'
 
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
@@ -16,7 +16,7 @@ import { TranslateService } from "@ngx-translate/core";
   styleUrls: ['./header.component.scss'],
 
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
   private store$ = inject<Store<AppState>>(Store);
   private screenSize = inject(services.ScreenSizeService);
   translate = inject(TranslateService);
@@ -29,8 +29,6 @@ export class HeaderComponent implements OnInit {
   public breakpoints = models.Breakpoints;
   public languageNamesInEnglish = new Intl.DisplayNames(['en'], { type: 'language' });
 
-  ngOnInit() {
-  }
 
   public languageName( langName : string ) {
     return this.languageNamesInEnglish.of( langName );

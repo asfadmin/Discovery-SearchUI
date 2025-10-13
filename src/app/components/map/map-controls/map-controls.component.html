@@ -1,7 +1,7 @@
 <div class="icon-bar--layout position">
   <!-- TODO: For some reason displacement styles are making the toolbar extend too far, this works for now -->
   <div class="fx-row icon-bar" [ngClass]="{'toolbar-collpased': !showToolBar && searchType === searchTypes.DISPLACEMENT}">
-    <div class="fx-col" *ngIf="showToolBar == true">
+    <div class="fx-col" *ngIf="showToolBar === true">
       <div class="fx-row">
 
         <div  class="fx-col visible-toggle">
@@ -136,8 +136,8 @@
     </div>
     <div class="tool-bar-control"
          (click)="changeState()">
-      <div *ngIf="showToolBar == true"><mat-icon>arrow_circle_left</mat-icon></div>
-      <div *ngIf="showToolBar == false"><mat-icon>arrow_circle_right</mat-icon></div>
+      <div *ngIf="showToolBar === true"><mat-icon>arrow_circle_left</mat-icon></div>
+      <div *ngIf="showToolBar === false"><mat-icon>arrow_circle_right</mat-icon></div>
       <div class="tool-bar-control-bottom visible-toggle"></div>
     </div>
   </div>

@@ -7,7 +7,6 @@ import * as models from '@models';
 })
 export class DatasetForProductService {
 
-  constructor() { }
 
   public match(scene: models.CMRProduct) : models.Dataset {
     if (scene.dataset === 'ALOS') {

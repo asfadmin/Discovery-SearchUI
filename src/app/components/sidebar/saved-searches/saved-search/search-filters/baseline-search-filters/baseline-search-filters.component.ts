@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 import { BaselineFiltersType } from '@models';
 
@@ -8,11 +8,7 @@ import { BaselineFiltersType } from '@models';
   styleUrls: ['./baseline-search-filters.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BaselineSearchFiltersComponent implements OnInit {
+export class BaselineSearchFiltersComponent {
   @Input() filters: BaselineFiltersType;
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 }

@@ -17,8 +17,6 @@ export class LayerService {
 
   public coherenceLayer: ImageLayer<ImageWMS>;
 
-  constructor() { }
-
   private gibsWMS(months: string): ImageWMS {
     return new ImageWMS({
       url: `https://gis.earthdata.nasa.gov/image/services/GSSICB/GSSICB_12_day_Median_VV_Coherence_${months}/ImageServer/WMSServer`,

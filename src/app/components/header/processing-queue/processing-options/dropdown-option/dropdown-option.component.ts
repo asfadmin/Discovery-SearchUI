@@ -1,11 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-dropdown-option',
   templateUrl: './dropdown-option.component.html',
   styleUrls: ['./dropdown-option.component.scss']
 })
-export class DropdownOptionComponent implements OnInit {
+export class DropdownOptionComponent {
   @Input() value: string;
   @Input() optionName: string;
   @Input() optionInfo: string;
@@ -15,10 +15,6 @@ export class DropdownOptionComponent implements OnInit {
 
   @Output() valueChange = new EventEmitter<string>();
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 
   public onValueChange(toggleValue: string): void {
     this.value = toggleValue;

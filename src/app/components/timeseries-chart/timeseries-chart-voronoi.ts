@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 
@@ -10,7 +10,7 @@ import * as d3 from 'd3';
   template: "",
   styleUrl: './timeseries-chart.component.scss'
 })
-export class TimeseriesChartVoronoiComponent implements OnInit, OnDestroy {
+export class TimeseriesChartVoronoiComponent implements OnInit {
   private http = inject(HttpClient);
 
   @ViewChild('timeseriesChart', {static: true}) timeseriesChart: ElementRef;
@@ -172,7 +172,4 @@ export class TimeseriesChartVoronoiComponent implements OnInit, OnDestroy {
 
   }
 
-  ngOnDestroy() {
-    // this.subs.unsubscribe();
-  }
 }

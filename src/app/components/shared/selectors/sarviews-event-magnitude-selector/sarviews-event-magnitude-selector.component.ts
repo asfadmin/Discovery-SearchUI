@@ -105,7 +105,6 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
   }
 
   private makeMagnitudeSlider$(filterRef: ElementRef): {magSlider: noUiSlider.API, magnitudeValues$: Observable<number[]>} {
-    // @ts-ignore
     this.slider = noUiSlider.create(filterRef.nativeElement, {
       orientation: 'horizontal',
       direction: 'ltr',

@@ -360,19 +360,16 @@ export class SetProductNameFilter implements Action {
 export class RestoreFilters implements Action {
   public readonly type = FiltersActionType.RESTORE_FILTERS;
 
-  constructor() {}
 }
 
 export class StoreCurrentFilters implements Action {
   public readonly type = FiltersActionType.STORE_CURRENT_FILTERS;
 
-  constructor() {}
 }
 
 export class Toggle50PercentOverlap implements Action {
   public readonly type = FiltersActionType.TOGGLE_50_PERCENT_OVERLAP;
 
-  constructor() {}
 }
 
 export class SetSBASOverlapThreshold implements Action {
@@ -452,13 +449,11 @@ export class SetGeocode implements Action {
 export class ClearEventFilters implements Action {
   public readonly type = FiltersActionType.CLEAR_EVENT_FILTERS;
 
-  constructor() {}
 }
 
 export class ClearHyp3ProductTypes implements Action {
   public readonly type = FiltersActionType.CLEAR_HYP3_PRODUCT_TYPES;
 
-  constructor() {}
 }
 
 export class setFullBurst implements Action {
