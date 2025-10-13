@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import * as models from '@models';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -11,11 +11,11 @@ import * as filtersStore from '@store/filters';
   styleUrls: ['./event-metadata.component.scss']
 })
 export class EventMetadataComponent implements OnInit {
+  private store$ = inject<Store<AppState>>(Store);
+
   @Input() event: models.SarviewsEvent;
   @Input() eventType: models.SarviewsEventType;
   public eventTypes = models.SarviewsEventType;
-
-  constructor(private store$: Store<AppState>) { }
 
   ngOnInit(): void {
   }

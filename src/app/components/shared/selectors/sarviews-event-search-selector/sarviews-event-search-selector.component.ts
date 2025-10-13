@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Store } from '@ngrx/store';
@@ -17,6 +17,10 @@ import { SubSink } from 'subsink';
   styleUrls: ['./sarviews-event-search-selector.component.scss']
 })
 export class SarviewsEventSearchSelectorComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private eventService = inject(SarviewsEventsService);
+  private notificationService = inject(NotificationService);
+
   @ViewChild('eventsQueryForm') public eventsQueryForm: NgForm;
 
   public filteredEvents$ = combineLatest([
@@ -31,10 +35,6 @@ export class SarviewsEventSearchSelectorComponent implements OnInit, OnDestroy {
   public eventQuery = '';
 
   private subs = new SubSink();
-
-  constructor(private store$: Store<AppState>,
-              private eventService: SarviewsEventsService,
-              private notificationService: NotificationService) { }
 
   ngOnInit(): void {
     this.subs.add(

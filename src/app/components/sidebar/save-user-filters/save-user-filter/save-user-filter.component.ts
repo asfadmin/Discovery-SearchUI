@@ -1,4 +1,4 @@
-import { Component, EventEmitter, ElementRef, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, ElementRef, Input, OnInit, Output, ViewChild, inject } from '@angular/core';
 import * as models from '@models';
 import * as userStore from '@store/user';
 import { Store } from '@ngrx/store';
@@ -12,6 +12,9 @@ import { NotificationService } from '@services';
   styleUrls: ['./save-user-filter.component.scss']
 })
 export class SaveUserFilterComponent implements OnInit {
+  private store$ = inject<Store<AppState>>(Store);
+  private notificationService = inject(NotificationService);
+
   @ViewChild('nameEditInput') nameEditInput: ElementRef;
 
   @Input() filterPreset: models.SavedFilterPreset;
@@ -24,10 +27,6 @@ export class SaveUserFilterComponent implements OnInit {
   public isEditingName = false;
   public editName: string;
   public lockedFocus = false;
-  constructor(
-    private store$: Store<AppState>,
-    private notificationService: NotificationService
-  ) { }
 
   ngOnInit() {
     if (this.isNew) {

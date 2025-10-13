@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, inject } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
@@ -16,6 +16,10 @@ import * as models from '@models';
   styleUrls: ['./desktop-results-menu.component.css', '../results-menu.component.scss']
 })
 export class DesktopResultsMenuComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+  private scenesService = inject(ScenesService);
+
   @Input() resize$: Observable<void>;
 
   public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
@@ -26,12 +30,6 @@ export class DesktopResultsMenuComponent implements OnInit, OnDestroy {
   public sarviewsEvents$ = this.store$.select(scenesStore.getSarviewsEvents);
 
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-    private scenesService: ScenesService,
-  ) { }
 
   ngOnInit() {
     this.subs.add(

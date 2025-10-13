@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import * as models from '@models';
 import * as services from '@services';
@@ -10,11 +10,9 @@ import * as services from '@services';
   styleUrls: ['./help-new-stuff.component.scss']
 })
 export class HelpNewStuffComponent {
+  private screenSize = inject(services.ScreenSizeService);
+
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
-
-  constructor(
-    private screenSize: services.ScreenSizeService,
-  ) { }
 }

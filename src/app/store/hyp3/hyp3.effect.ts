@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
@@ -14,11 +14,10 @@ import { MakeSearch } from '../search/search.action';
 
 @Injectable()
 export class Hyp3Effects {
-  constructor(
-    private actions$: Actions,
-    private hyp3Service: Hyp3ApiService,
-    public asfApiService: AsfApiService,
-  ) {}
+  private actions$ = inject(Actions);
+  private hyp3Service = inject(Hyp3ApiService);
+  asfApiService = inject(AsfApiService);
+
 
   public onSetJobs = createEffect(() => this.actions$.pipe(
     ofType<SetJobs>(Hyp3ActionType.SET_JOBS),

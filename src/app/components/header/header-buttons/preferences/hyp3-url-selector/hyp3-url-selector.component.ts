@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, Input } from '@angular/core';
+import { Component, EventEmitter, Output, Input, inject } from '@angular/core';
 import { Hyp3ApiService } from '@services';
 
 @Component({
@@ -7,14 +7,14 @@ import { Hyp3ApiService } from '@services';
   styleUrls: ['./hyp3-url-selector.component.scss', '../preferences.component.scss']
 })
 export class Hyp3UrlSelectorComponent {
+  private hyp3 = inject(Hyp3ApiService);
+
   @Input() hyp3BackendUrl: string;
   @Input() hyp3SavedUrls: string[];
 
   @Output() newHyp3Url = new EventEmitter<{ backendUrl: string; savedUrls: string[]}>();
 
   public baseHyp3Url = this.hyp3.baseUrl;
-
-  constructor(private hyp3: Hyp3ApiService) { }
 
   onResetHyp3Url() {
     this.hyp3.setDefaultApiUrl();

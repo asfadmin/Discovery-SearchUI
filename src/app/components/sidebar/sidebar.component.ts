@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
@@ -13,14 +13,12 @@ import * as models from '@models';
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+
   public sidebar: models.SidebarType;
   public SidebarType = models.SidebarType;
 
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-  ) { }
 
   ngOnInit(): void {
     this.subs.add(

@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, OnDestroy, inject } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { of } from 'rxjs';
@@ -15,6 +15,9 @@ import { CopyIcons } from '@models';
   styleUrls: ['./copy-to-clipboard.component.css']
 })
 export class CopyToClipboardComponent implements OnDestroy {
+  private clipboardService = inject(ClipboardService);
+  private notificationService = inject(NotificationService);
+
   @Input() value: string;
   @Input({required: false}) submenu: [string, string][] = [];
   @Input() prompt = 'Copy to clipboard';
@@ -24,11 +27,6 @@ export class CopyToClipboardComponent implements OnDestroy {
   @ViewChild('copyTooltip', { static: true }) copyTooltip: ElementRef;
 
   private subs = new SubSink();
-
-  constructor(
-    private clipboardService: ClipboardService,
-    private notificationService: NotificationService
-    ) { }
 
   public onCopyIconClicked(e: Event): void {
     this.clipboardService.copyFromContent(this.value);

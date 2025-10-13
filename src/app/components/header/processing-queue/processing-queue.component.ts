@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { ConfirmationComponent } from './confirmation/confirmation.component';
@@ -29,6 +29,14 @@ enum ProcessingQueueTab {
   styleUrls: ['./processing-queue.component.scss']
 })
 export class ProcessingQueueComponent implements OnInit {
+  authService = inject(services.AuthService);
+  env = inject(services.EnvironmentService);
+  dialog = inject(MatDialog);
+  hyp3 = inject(services.Hyp3ApiService);
+  private dialogRef = inject<MatDialogRef<ProcessingQueueComponent>>(MatDialogRef);
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(services.ScreenSizeService);
+
   readonly ApplicationStatus = ApplicationStatus;
 
   @ViewChild('contentArea') contentAreaRef: ElementRef;
@@ -74,16 +82,6 @@ export class ProcessingQueueComponent implements OnInit {
   public userStatus = '';
   public isSignupSelected = false;
 
-  constructor(
-    public authService: services.AuthService,
-    public env: services.EnvironmentService,
-    public dialog: MatDialog,
-    public hyp3: services.Hyp3ApiService,
-    private dialogRef: MatDialogRef<ProcessingQueueComponent>,
-    private store$: Store<AppState>,
-    private screenSize: services.ScreenSizeService,
-  ) { }
-
   ngOnInit(): void {
     this.store$.dispatch(new hyp3Store.LoadUser());
 
@@ -105,7 +103,7 @@ export class ProcessingQueueComponent implements OnInit {
           return types;
         }, {}));
 
-      this.hyp3JobTypesList = <any>jobTypes;
+      this.hyp3JobTypesList = jobTypes as any;
 
       if (!this.selectedJobTypeId) {
         this.selectDefaultJobType();

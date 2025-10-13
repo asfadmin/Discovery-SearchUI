@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -71,7 +71,9 @@ import { SharedModule } from '@shared';
     ]
 })
 export class ProcessingQueueModule {
-  constructor(library: FaIconLibrary) {
+  constructor() {
+    const library = inject(FaIconLibrary);
+
     library.addIconPacks(fas);
     library.addIcons(faSpinner);
   }

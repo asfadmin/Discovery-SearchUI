@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, inject } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 
@@ -29,6 +29,15 @@ import { PinnedProduct } from '@services/browse-map.service';
   providers: [ BrowseMapService ]
 })
 export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  dialogRef = inject<MatDialogRef<ImageDialogComponent>>(MatDialogRef);
+  private browseMap = inject(BrowseMapService);
+  private datasetForProduct = inject(DatasetForProductService);
+  private screenSize = inject(services.ScreenSizeService);
+  private clipboard = inject(ClipboardService);
+  private notificationService = inject(services.NotificationService);
+  private sarviewsService = inject(SarviewsEventsService);
+
   public scene$ = this.store$.select(scenesStore.getSelectedScene);
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
   public sarviewsEventProducts$ = this.sarviewsService.filteredEventProducts$();
@@ -58,17 +67,6 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private image: HTMLImageElement = new Image();
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-    public dialogRef: MatDialogRef<ImageDialogComponent>,
-    private browseMap: BrowseMapService,
-    private datasetForProduct: DatasetForProductService,
-    private screenSize: services.ScreenSizeService,
-    private clipboard: ClipboardService,
-    private notificationService: services.NotificationService,
-    private sarviewsService: SarviewsEventsService,
-  ) { }
 
   ngOnInit() {
     this.subs.add(
@@ -127,7 +125,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         delay(100),
       ).subscribe(
         product => {
-          if (!!product) {
+          if (product) {
             this.onNewSarviewsBrowseSelected(product);
           }
         }
@@ -238,7 +236,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     const jobType = models.hyp3JobTypes[metadata.job.job_type];
-    const options = !!jobType ? jobType.options : models.hyp3JobOptionsOrdered;
+    const options = jobType ? jobType.options : models.hyp3JobOptionsOrdered;
 
     return options
       .filter(option => metadata.job.job_parameters[option.apiName])
@@ -317,7 +315,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
         prev[key] = output;
         return prev;
-      }, {} as {[product_id in string]: PinnedProduct}
+      }, {} as Record<string, PinnedProduct>
     );
 
     this.store$.dispatch(new scenesStore.SetImageBrowseProducts(pinned));

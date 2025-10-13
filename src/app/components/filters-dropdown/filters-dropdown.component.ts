@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, Input} from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, inject } from '@angular/core';
 
 import {
   trigger, state, style, animate, transition
@@ -33,6 +33,11 @@ import { SBASOverlap } from '@models';
   ],
 })
 export class FiltersDropdownComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+  private notificationService = inject(NotificationService);
+  private environmentService = inject(EnvironmentService);
+
   @Input() dataset$: Observable<models.CMRProduct>;
   public isFiltersMenuOpen$ = this.store$.select(uiStore.getIsFiltersMenuOpen);
 
@@ -47,13 +52,6 @@ export class FiltersDropdownComponent implements OnInit, OnDestroy {
 
   public subs = new SubSink();
   public frameSelectionEnabled$ = this.store$.select(uiStore.getIsFrameSelectionEnabled)
-
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-    private notificationService: NotificationService,
-    private environmentService: EnvironmentService,
-  ) {}
 
   ngOnInit() {
     this.subs.add(

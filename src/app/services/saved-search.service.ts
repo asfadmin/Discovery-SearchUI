@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { combineLatest, Observable } from 'rxjs';
@@ -23,11 +23,11 @@ import { getSarviewsMagnitudeRange } from '@store/filters';
   providedIn: 'root'
 })
 export class SavedSearchService {
+  private store$ = inject<Store<AppState>>(Store);
+  private mapService = inject(MapService);
 
-  constructor(
-    private store$: Store<AppState>,
-    private mapService: MapService,
-  ) {
+
+  constructor() {
     this.currentSearch$.subscribe(
       current => this.currentSearch = current
     );
@@ -183,7 +183,7 @@ export class SavedSearchService {
 
   public updateSearchWithCurrentFilters(id: string): void {
     const action = new UpdateSearchWithFilters({
-      id, filters: <models.GeographicFiltersType>this.currentSearch
+      id, filters: this.currentSearch as models.GeographicFiltersType
     });
 
     this.store$.dispatch(action);
@@ -238,7 +238,7 @@ export class SavedSearchService {
     });
   }
 
-  private addIfHasValue(acc, key: string, val): Object {
+  private addIfHasValue(acc, key: string, val): object {
     if (!val) {
       return acc;
     }

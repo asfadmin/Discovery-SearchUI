@@ -30,7 +30,7 @@ export interface FiltersState {
   subtypes: models.DatasetSubtypes;
   jobStatuses: models.Hyp3JobStatusCode[];
 
-  missions: {[dataset: string]: string[]};
+  missions: Record<string, string[]>;
   selectedMission: null | string;
 
   maxResults: number;
@@ -605,7 +605,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
     case FiltersActionType.SET_SAVED_SEARCH: {
       const search = action.payload;
       if (search.searchType === models.SearchType.LIST) {
-        const filters = <models.ListFiltersType>search.filters;
+        const filters = search.filters as models.ListFiltersType;
 
         return {
           ...state,
@@ -613,7 +613,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           searchList: filters.list
         };
       } else if (search.searchType === models.SearchType.BASELINE) {
-        const filters = <models.BaselineFiltersType>search.filters;
+        const filters = search.filters as models.BaselineFiltersType;
 
         return {
           ...state,
@@ -622,7 +622,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           perpendicularRange: filters.perpendicularRange,
         };
       } else if (search.searchType === models.SearchType.SBAS) {
-        const filters = <models.SbasFiltersType>search.filters;
+        const filters = search.filters as models.SbasFiltersType;
 
         return {
           ...state,
@@ -631,7 +631,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           perpendicularRange: filters.perpendicular,
         };
       } else if (search.searchType === models.SearchType.CUSTOM_PRODUCTS) {
-          const filters = <models.CustomProductFiltersType>search.filters;
+          const filters = search.filters as models.CustomProductFiltersType;
 
           return {
             ... state,
@@ -641,7 +641,7 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
             productFilterName: filters.productFilterName
           };
       } else if (search.searchType === models.SearchType.SARVIEWS_EVENTS) {
-        const filters = <models.SarviewsFiltersType>search.filters;
+        const filters = search.filters as models.SarviewsFiltersType;
 
         return {
           ... state,
@@ -659,12 +659,12 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         // savable searches better
         return {...state};
       } else if(search.searchType === models.SearchType.DISPLACEMENT) {
-        const filters = <models.DisplacementFiltersType>search.filters;
+        const filters = search.filters as models.DisplacementFiltersType;
 
         return {...state, flightDirections: new Set(filters.flightDirections), dateRange: filters.dateRange};
       }
       else {
-        const filters = <models.GeographicFiltersType>search.filters;
+        const filters = search.filters as models.GeographicFiltersType;
 
         const dataset = models.datasetList.filter(
           d => d.id === filters.selectedDataset

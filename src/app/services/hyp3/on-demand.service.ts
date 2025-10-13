@@ -10,8 +10,8 @@ export class OnDemandService {
   constructor() { }
 
   public jobParamsToList(metadata: models.CMRProductMetadata) {
-    const jobType = models.hyp3JobTypes[<string>metadata.job.job_type];
-    const allOptions = !!jobType ? jobType.options : models.hyp3JobOptionsOrdered;
+    const jobType = models.hyp3JobTypes[(metadata.job.job_type as string)];
+    const allOptions = jobType ? jobType.options : models.hyp3JobOptionsOrdered;
 
     const addedOptions = new Set(['granules', 'scenes']);
 

@@ -1,4 +1,4 @@
-import {Directive, ElementRef, HostBinding, HostListener, Inject, InjectionToken, Input, OnDestroy} from '@angular/core';
+import { Directive, ElementRef, HostBinding, HostListener, InjectionToken, Input, OnDestroy, inject } from '@angular/core';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {catchError, map} from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
@@ -17,6 +17,11 @@ export const SAMEORIGIN = new InjectionToken<RegExp>('asf.sameorigin.regex', { f
   exportAs: 'fileDownload'
 })
 export class FileDownloadDirective implements OnDestroy {
+  private sameOrigin = inject<RegExp>(SAMEORIGIN);
+  private http = inject(HttpClient);
+  private ref = inject<ElementRef<HTMLAnchorElement>>(ElementRef);
+  private sanitizer = inject(DomSanitizer);
+
 
   /** True if something went wrong attempting to download the resource */
   public error = false;
@@ -27,13 +32,6 @@ export class FileDownloadDirective implements OnDestroy {
   private sub: Subscription;
   private blob: string;
   private href: string;
-
-  constructor(
-    @Inject(SAMEORIGIN) private sameOrigin: RegExp,
-    private http: HttpClient,
-    private ref: ElementRef<HTMLAnchorElement>,
-    private sanitizer: DomSanitizer
-  ) {}
 
   // Turns the 'download' attribute into an input
   @HostBinding('attr.appFileDownload')

@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter, ViewChild} from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, inject } from '@angular/core';
 
 import * as models from '@models';
 import { ScreenSizeService } from '@services';
@@ -16,6 +16,8 @@ declare global {
   styleUrls: ['./dataset-selector.component.scss']
 })
 export class DatasetSelectorComponent {
+  private screenSize = inject(ScreenSizeService);
+
   @Input() datasets: models.Dataset[];
   @Input() selected: string;
   @Output() selectedChange = new EventEmitter<string>();
@@ -24,11 +26,6 @@ export class DatasetSelectorComponent {
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
   public isReadMore = true;
-
-  constructor(
-    private screenSize: ScreenSizeService,
-    
-  ) {}
 
   public onSelectionChange(dataset: string): void {
     window.dataLayer = window.dataLayer || [];

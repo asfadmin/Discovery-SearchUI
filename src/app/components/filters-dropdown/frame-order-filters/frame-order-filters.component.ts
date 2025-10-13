@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, inject } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -69,7 +69,11 @@ enum FilterPanel {
   templateUrl: './frame-order-filters.component.html',
   styleUrl: './frame-order-filters.component.scss'
 })
-export class FrameOrderFiltersComponent {
+export class FrameOrderFiltersComponent implements OnInit, OnDestroy {
+  prop = inject(PropertyService);
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   @Input() dataset: models.CMRProduct;
   @Input() selectedPanel: FilterPanel | null = null;
 
@@ -91,12 +95,6 @@ export class FrameOrderFiltersComponent {
   public flightDirectionTypes = models.flightDirections;
 
   private subs = new SubSink();
-
-  constructor(
-    public prop: PropertyService,
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-  ) {}
 
   ngOnInit() {
     this.subs.add(

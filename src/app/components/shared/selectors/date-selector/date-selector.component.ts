@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, Input, inject } from '@angular/core';
 import moment from 'moment';
 
 import { combineLatest } from 'rxjs';
@@ -20,6 +20,10 @@ import { DateExtremaService } from '@services';
   styleUrls: ['./date-selector.component.scss']
 })
 export class DateSelectorComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private actions$ = inject(ActionsSubject);
+  private dateExtremaService = inject(DateExtremaService);
+
   @ViewChild('dateRange', { static: true }) public dateRange;
   @Input() public extendEndDateBy: number;
 
@@ -67,12 +71,6 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
   public endDate: Date = new Date();
 
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-    private actions$: ActionsSubject,
-    private dateExtremaService: DateExtremaService
-  ) { }
 
   ngOnInit() {
 

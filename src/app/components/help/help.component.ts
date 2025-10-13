@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 
 import { Store } from '@ngrx/store';
@@ -11,12 +11,10 @@ import * as uiStore from '@store/ui';
   styleUrls: ['./help.component.scss']
 })
 export class HelpComponent implements OnInit {
-  public topic: string;
+  private dialogRef = inject<MatDialogRef<HelpComponent>>(MatDialogRef);
+  private store$ = inject<Store<AppState>>(Store);
 
-  constructor(
-    private dialogRef: MatDialogRef<HelpComponent>,
-    private store$: Store<AppState>,
-  ) { }
+  public topic: string;
 
   ngOnInit(): void {
     this.store$.select(uiStore.getHelpDialogTopic).subscribe(

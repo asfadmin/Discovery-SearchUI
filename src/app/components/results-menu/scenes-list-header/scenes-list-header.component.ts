@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { saveAs } from 'file-saver';
 
 import { combineLatest, switchMap } from 'rxjs';
@@ -35,6 +35,20 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./scenes-list-header.component.scss']
 })
 export class ScenesListHeaderComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private mapService = inject(MapService);
+  private scenesService = inject(ScenesService);
+  private eventMonitoringService = inject(SarviewsEventsService);
+  private pairService = inject(PairService);
+  private screenSize = inject(ScreenSizeService);
+  private hyp3 = inject(Hyp3ApiService);
+  private hyp3JobStatus = inject(Hyp3JobStatusService);
+  private clipboard = inject(ClipboardService);
+  private notificationService = inject(NotificationService);
+  private possibleHyp3JobsService = inject(PossibleHyp3JobsService);
+  private exportService = inject(ExportService);
+  private dialog = inject(MatDialog);
+
   public copyIcon = faCopy;
   public pairs$ = this.pairService.pairs$;
   private pairProducts$ = this.pairService.productsFromPairs$;
@@ -60,7 +74,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public sarviewsEventProducts: SarviewsProduct[] = [];
   public pinnedEventIDs: string[];
 
-  public productsByType$: Observable<{ [key: string]: models.CMRProduct[] }> = this.store$.select(scenesStore.getAllProducts).pipe(
+  public productsByType$: Observable<Record<string, models.CMRProduct[]>> = this.store$.select(scenesStore.getAllProducts).pipe(
     map((scenes: []) =>
       scenes.reduce((prev, curr: models.CMRProduct) => {
         if (!prev[curr.productTypeDisplay]) {
@@ -99,7 +113,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   );
 
   private products$ = this.scenesService.products$();
-  private operaProductsByType: { [key: string]: models.CMRProduct[] } = {};
+  private operaProductsByType: Record<string, models.CMRProduct[]> = {};
 
   public isBurstStack$ = combineLatest([
     this.products$,
@@ -200,22 +214,6 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public moreHyp3JobsToLoad: boolean;
 
   private selectedEvent: models.SarviewsEvent;
-
-  constructor(
-    private store$: Store<AppState>,
-    private mapService: MapService,
-    private scenesService: ScenesService,
-    private eventMonitoringService: SarviewsEventsService,
-    private pairService: PairService,
-    private screenSize: ScreenSizeService,
-    private hyp3: Hyp3ApiService,
-    private hyp3JobStatus: Hyp3JobStatusService,
-    private clipboard: ClipboardService,
-    private notificationService: NotificationService,
-    private possibleHyp3JobsService: PossibleHyp3JobsService,
-    private exportService: ExportService,
-    private dialog: MatDialog,
-  ) { }
 
   ngOnInit() {
     this.subs.add(

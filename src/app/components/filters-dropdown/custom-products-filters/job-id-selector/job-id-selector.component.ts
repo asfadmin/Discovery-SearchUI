@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { NotificationService } from '@services';
 
 @Component({
@@ -7,10 +7,10 @@ import { NotificationService } from '@services';
   styleUrl: './job-id-selector.component.scss'
 })
 export class JobIdSelectorComponent {
+  private notification = inject(NotificationService);
+
   @Input() jobIds: string[];
   @Output() newJobIds = new EventEmitter<string[]>;
-
-  constructor(private notification: NotificationService) {}
 
   onJobIdsChange(event: Event) {
     const jobIdsInput = (event.target as HTMLInputElement).value;

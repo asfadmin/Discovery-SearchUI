@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import * as models from '@models';
 
 import { Store } from '@ngrx/store';
@@ -16,7 +16,10 @@ import * as services from '@services';
   templateUrl: './sarviews-header.component.html',
   styleUrls: ['./sarviews-header.component.scss', '../header.component.scss']
 })
-export class SarviewsHeaderComponent implements OnInit {
+export class SarviewsHeaderComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(services.ScreenSizeService);
+
   public datasets = models.datasetList;
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
   public breakpoint$ = this.screenSize.breakpoint$;
@@ -24,11 +27,6 @@ export class SarviewsHeaderComponent implements OnInit {
   private subs = new SubSink();
 
   public selectedDataset: string;
-
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: services.ScreenSizeService,
-  ) { }
 
   ngOnInit() {
     this.subs.add(

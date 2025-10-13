@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -18,11 +18,10 @@ import { BaselineFiltersType, GeographicFiltersType, SbasFiltersType, Timeseries
 
 @Injectable()
 export class UserEffects {
-  constructor(
-    private actions$: Actions,
-    private store$: Store<AppState>,
-    private userDataService: UserDataService,
-  ) {}
+  private actions$ = inject(Actions);
+  private store$ = inject<Store<AppState>>(Store);
+  private userDataService = inject(UserDataService);
+
 
   public saveUserProfile = createEffect(() => this.actions$.pipe(
     ofType<userActions.SaveProfile>(userActions.UserActionType.SAVE_PROFILE),
@@ -49,7 +48,7 @@ export class UserEffects {
       (resp) => {
         const defaultProfile = {...userReducer.initState.profile};
 
-        let profile = this.isValidProfile(resp) ? (<models.UserProfile>resp) : defaultProfile;
+        let profile = this.isValidProfile(resp) ? (resp as models.UserProfile) : defaultProfile;
 
         if (!profile.defaultFilterPresets) {
           profile = this.addDefaultFiltersToProfile(profile);
@@ -58,7 +57,7 @@ export class UserEffects {
         return profile
       }
     ),
-    map(profile => new userActions.SetProfile(<models.UserProfile>profile))
+    map(profile => new userActions.SetProfile((profile as models.UserProfile)))
   ));
 
   private addDefaultFiltersToProfile(profile: models.UserProfile): models.UserProfile {
@@ -123,7 +122,7 @@ export class UserEffects {
         this.userDataService.getAttribute$(userAuth, 'History')
     ),
     filter(resp => this.isSuccessfulResponse(resp)),
-    map(searchHistory => new userActions.SetSearchHistory(<models.Search[]>searchHistory))
+    map(searchHistory => new userActions.SetSearchHistory((searchHistory as models.Search[])))
   ));
 
   public loadSearchHistoryOnLogin = createEffect(() => this.actions$.pipe(
@@ -134,7 +133,7 @@ export class UserEffects {
         this.userDataService.getAttribute$(userAuth, 'History')
     ),
     filter(resp => this.isSuccessfulResponse(resp)),
-    map(searchHistory => new userActions.SetSearchHistory(<models.Search[]>searchHistory))
+    map(searchHistory => new userActions.SetSearchHistory((searchHistory as models.Search[])))
   ));
 
   public loadSavedSearchesOnLogin = createEffect(() => this.actions$.pipe(
@@ -145,7 +144,7 @@ export class UserEffects {
     ),
     filter(resp => this.isSuccessfulResponse(resp)),
     map(searches => this.datesToDateObjectFor(searches) as models.Search[]),
-    map(searches => new userActions.SetSearches(<models.Search[]>searches))
+    map(searches => new userActions.SetSearches((searches as models.Search[])))
   ));
 
   public loadSavedFiltersOnLogin = createEffect(() => this.actions$.pipe(
@@ -156,7 +155,7 @@ export class UserEffects {
     ),
     filter(resp => this.isSuccessfulResponse(resp)),
     map(filters => this.datesToDateObjectFor(filters) as models.SavedFilterPreset[]),
-    map(Filterpresets => new userActions.SetFilters(<models.SavedFilterPreset[]>Filterpresets))
+    map(Filterpresets => new userActions.SetFilters((Filterpresets as models.SavedFilterPreset[])))
   ));
 
   public loadHyp3UserOnLogin = createEffect(() => this.actions$.pipe(
@@ -175,7 +174,7 @@ export class UserEffects {
     ),
     filter(resp => this.isSuccessfulResponse(resp)),
     map(searches => this.datesToDateObjectFor(searches) as models.Search[]),
-    map(searches => new userActions.SetSearches(<models.Search[]>searches))
+    map(searches => new userActions.SetSearches((searches as models.Search[])))
   ));
 
   public loadSavedFiltersPresets = createEffect(() => this.actions$.pipe(
@@ -187,7 +186,7 @@ export class UserEffects {
     ),
     filter(resp => this.isSuccessfulResponse(resp)),
     map(filtersPresets => this.datesToDateObjectFor(filtersPresets) as models.SavedFilterPreset[]),
-    map(filtersPresets => new userActions.SetFilters(<models.SavedFilterPreset[]>filtersPresets))
+    map(filtersPresets => new userActions.SetFilters((filtersPresets as models.SavedFilterPreset[])))
   ));
 
   public loadSavedFiltersOfSearchType = createEffect(() => this.actions$.pipe(
@@ -220,7 +219,7 @@ export class UserEffects {
 
       let actions = [];
 
-      if (!!targetFilter) {
+      if (targetFilter) {
         this.store$.dispatch(new filterStore.ClearDatasetFilters());
         this.store$.dispatch(new filterStore.ClearPerpendicularRange());
         this.store$.dispatch(new filterStore.ClearTemporalRange());

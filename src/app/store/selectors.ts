@@ -31,7 +31,7 @@ export const createObjectSelector =
     );
 
 function setEquals(a: Set<any> | any, b: Set<any> | any): boolean {
-    let output =  a instanceof Set && b instanceof Set && a.size === b.size &&
+    const output =  a instanceof Set && b instanceof Set && a.size === b.size &&
       [...a].every(value => b.has(value));
     return output;
 }
@@ -47,13 +47,13 @@ export const createSetSelector =
     );
 
 
-function simpleArrayEquals(a: Array<any>, b: Array<any>): boolean {
+function simpleArrayEquals(a: any[], b: any[]): boolean {
     if(!(a instanceof Array && b instanceof Array)) return false;
     if (a === b) return true;
     if (a == null || b == null) return false;
     if (a.length !== b.length) return false;
 
-    for (var i = 0; i < a.length; ++i) {
+    for (let i = 0; i < a.length; ++i) {
         if (a[i] !== b[i]) return false;
     }
     return true;

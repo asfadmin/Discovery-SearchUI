@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { GeographicFiltersType, SearchType } from '@models';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -15,6 +15,9 @@ import { ScreenSizeService } from '@services';
   styleUrls: ['./save-user-filters.component.scss']
 })
 export class SaveUserFiltersComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   // private saveFilterOn = false;
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
@@ -34,11 +37,6 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
   public newSearchId = '';
 
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-  ) {}
 
   ngOnInit(): void {
     this.subs.add(

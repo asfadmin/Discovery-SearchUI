@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BrowseOverlayService, NotificationService, WktService } from '@services';
 import { Observable, Subject, catchError, delay, first, map, of, retryWhen, scan, tap } from 'rxjs';
@@ -19,11 +19,17 @@ import { setTimeseriesValid } from '@store/charts';
   providedIn: 'root'
 })
 export class NetcdfService {
-  private url: string = 'https://d8itg4twhevb5.cloudfront.net/'
+  private http = inject(HttpClient);
+  private browseOverlayService = inject(BrowseOverlayService);
+  private notificationService = inject(NotificationService);
+  private store$ = inject<Store<AppState>>(Store);
+  private wktService = inject(WktService);
+
+  private url = 'https://d8itg4twhevb5.cloudfront.net/'
 //   private url: string = 'http://127.0.0.1:8080/'
-  private bucket: string = 'asf-cumulus-prod-opera-products'
-  private itemsEndpoint: string = 'items/'
-  private timeSeriesEndpoint: string = 'timeseries'
+  private bucket = 'asf-cumulus-prod-opera-products'
+  private itemsEndpoint = 'items/'
+  private timeSeriesEndpoint = 'timeseries'
   private files: string[] = [""] //, "20221107_20230130.unw.nc", "20221107_20230106.unw.nc", "20221107_20230729.unw.nc", "20221107_20230319.unw.nc", "20221107_20221213.unw.nc", "20221107_20230530.unw.nc", "20221107_20230717.unw.nc", "20221107_20230412.unw.nc", "20221107_20230506.unw.nc", "20221107_20230223.unw.nc", "20221107_20230211.unw.nc", "20221107_20230331.unw.nc", "20221107_20230705.unw.nc"]
   public layers: { feature: Feature<Geometry>, browse: ImageLayer<ImageSource> }[] = []
   // private data = []
@@ -33,15 +39,6 @@ export class NetcdfService {
   private totalKeys = [];
   private maxCacheSize = 10;
   private csvHeaders = 'name, geometry, date (mm/dd/yr), short wavelength displacement, source file'
-
-  constructor(
-    private http: HttpClient,
-    private browseOverlayService: BrowseOverlayService,
-    private notificationService: NotificationService,
-    private store$: Store<AppState>,
-    private wktService: WktService,
-  ) {
-  }
 
   public cacheUpdated = new Subject<string>();
   private getTargetCache(flightDir: FlightDirection) {
@@ -61,8 +58,8 @@ export class NetcdfService {
   }
 
   public get_layers(): Observable<{ feature: Feature<Geometry>, browse: ImageLayer<ImageSource> }>[] {
-    let output: Observable<{ feature: Feature<Geometry>, browse: ImageLayer<ImageSource> }>[] = []
-    for (let file of this.files) {
+    const output: Observable<{ feature: Feature<Geometry>, browse: ImageLayer<ImageSource> }>[] = []
+    for (const file of this.files) {
       output.push(
         // this.http.get(`${this.url}${this.itemsEndpoint}${file}/wkt`, {
         //   withCredentials: false,
@@ -107,16 +104,16 @@ export class NetcdfService {
 
   public getTimeSeries(frame: TimeseriesSubframe, flightDirection =FlightDirection.ASCENDING): Observable<any> {
 
-    let index_id = frame.uuid;
+    const index_id = frame.uuid;
 
-    let target_cache = this.getTargetCache(flightDirection)
+    const target_cache = this.getTargetCache(flightDirection)
 
     if (target_cache.hasOwnProperty(index_id)) {
       if(target_cache[index_id]?.error === null || target_cache[index_id]?.error === undefined) {
         this.store$.dispatch(setTimeseriesValid({uuid: frame.uuid, valid: true}))
         return of(target_cache[index_id])
       } else {
-        let errorDetails = target_cache[index_id]?.error?.error.detail ?? 'No details, try again.';
+        const errorDetails = target_cache[index_id]?.error?.error.detail ?? 'No details, try again.';
         this.store$.dispatch(setTimeseriesValid({uuid: frame.uuid, valid: false, error: errorDetails}))
         return of()
       }
@@ -130,20 +127,20 @@ export class NetcdfService {
       }, { responseType: 'json' }).pipe(
         this.handleRetry,
         catchError(error => {
-          let errorDetails = error.error.detail ?? 'No details, try again.';
+          const errorDetails = error.error.detail ?? 'No details, try again.';
           this.notificationService.error(errorDetails, 'Timeseries Service Error')
 
           this.store$.dispatch(setTimeseriesValid({uuid: frame.uuid, valid: false, error: errorDetails}))
           return of({error})
         }),
         map(response => {
-          if (!!response) {
+          if (response) {
           (response as any).aoi = frame.wkt;
           }
           target_cache[index_id] = response;
           this.totalKeys.push(index_id);
           if (this.totalKeys.length > this.maxCacheSize) {
-            let deleted = this.totalKeys.splice(0);
+            const deleted = this.totalKeys.splice(0);
             delete target_cache[deleted[0]];
           }
           this.cacheUpdated.next(index_id)
@@ -165,7 +162,7 @@ export class NetcdfService {
       "wkt": wkt,
       "flightDirection": flightDir.toLowerCase()
     }).pipe(
-      map((response: { [frame: number]: TimeseriesSubframe }) => {
+      map((response: Record<number, TimeseriesSubframe>) => {
         return response;
       })
     )
@@ -174,7 +171,7 @@ export class NetcdfService {
   // series, longitude, latitude, date (mm/dd/yr), short wavelength displacement, source file
   // series 1, 1.0, 2.0,  05/14/2020, 0.500, granule1.nc
   // ...
-  public toCSV(seriesData: { [index:string]: {}[]}): string {
+  public toCSV(seriesData: Record<string, {}[]>): string {
     let output = `${this.csvHeaders}\n`
     const sortedSeriesKeys = Object.keys(seriesData).sort((s1, s2) => s1 < s2 ? -1 : 1)
     for (const seriesNumber of sortedSeriesKeys) {
@@ -186,12 +183,12 @@ export class NetcdfService {
             
             const d = new Date(timestep['date'])
 
-            let month = d.getUTCMonth() + 1
+            const month = d.getUTCMonth() + 1
             let monthDisplay = month.toString()
             if (month < 10) {
               monthDisplay = `0${monthDisplay}`
             }
-            let day = d.getUTCDate()
+            const day = d.getUTCDate()
             let dayDisplay = day.toString()
             if (day < 10) {
               dayDisplay = `0${dayDisplay}`

@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, EventEmitter, OnDestroy, inject } from '@angular/core';
 import { debounceTime, filter, map } from 'rxjs';
 import { SubSink } from 'subsink';
 
@@ -11,11 +11,11 @@ import { AppState } from '@store';
   styleUrls: ['./opera-burst-id-selector.component.scss']
 })
 export class OperaBurstIdSelectorComponent implements OnInit, OnDestroy {
-  public operaBurstIDs: string[] = []
-  private IDsInputUpdated: EventEmitter<string> = new EventEmitter();
-  private subs: SubSink = new SubSink();
+  private store$ = inject<Store<AppState>>(Store);
 
-  constructor(private store$: Store<AppState>) { }
+  public operaBurstIDs: string[] = []
+  private IDsInputUpdated = new EventEmitter<string>();
+  private subs: SubSink = new SubSink();
 
   ngOnInit(): void {
     this.subs.add(

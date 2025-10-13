@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, inject } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -19,6 +19,9 @@ import * as models from '@models';
   styleUrls: ['./baseline-header.component.css',  '../header.component.scss']
 })
 export class BaselineHeaderComponent implements OnInit {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   @Output() public openQueue = new EventEmitter<void>();
 
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
@@ -36,12 +39,7 @@ export class BaselineHeaderComponent implements OnInit {
   
   private subs = new SubSink();
 
-public shouldUseFramesForReference: boolean = false;
-
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-  ) { }
+public shouldUseFramesForReference = false;
 
   ngOnInit(): void {
     this.subs.add(

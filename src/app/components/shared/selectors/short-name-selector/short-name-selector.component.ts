@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, OnDestroy, inject } from '@angular/core';
 import * as models from '@models';
 import * as filtersStore from '@store/filters';
 import { Store } from '@ngrx/store';
@@ -12,15 +12,14 @@ import { MatSelectChange } from '@angular/material/select';
   styleUrl: './short-name-selector.component.scss'
 })
 export class ShortNameSelectorComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+
   @Output() shortNamesChange = new EventEmitter<models.DatasetShortName>();
   public dataset: models.Dataset;
   public shortNamesList: string[] = [];
   public selectableShortNames: models.ShortName[] = []
 
   private dataset$ = this.store$.select(filtersStore.getSelectedDataset);
-
-
-  constructor(private store$: Store<AppState>) { }
 
   private subs = new SubSink();
 
@@ -51,7 +50,7 @@ export class ShortNameSelectorComponent implements OnInit, OnDestroy {
 
   public emitShortNames(shortNameAPIValues: string[]): void {
     const shortNames = this.dataset?.shortNames ?? []
-    let output = shortNameAPIValues.map(shortName => shortNames.find(datasetType => datasetType.apiValue === shortName))
+    const output = shortNameAPIValues.map(shortName => shortNames.find(datasetType => datasetType.apiValue === shortName))
     this.shortNamesChange.emit(output);
   }
 }

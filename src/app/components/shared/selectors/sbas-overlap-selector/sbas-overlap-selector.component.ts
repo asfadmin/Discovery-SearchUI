@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { SubSink } from 'subsink';
@@ -11,6 +11,8 @@ import { SBASOverlap } from '@models';
   styleUrls: ['./sbas-overlap-selector.component.scss']
 })
 export class SbasOverlapSelectorComponent implements OnInit {
+  private store$ = inject<Store<AppState>>(Store);
+
 
   public fiftyPercentOverlapToggled = false;
   public SBASOverlapThreshold: SBASOverlap = SBASOverlap.ALL;
@@ -18,8 +20,6 @@ export class SbasOverlapSelectorComponent implements OnInit {
   private subs = new SubSink();
 
   public overlapTypes = Object.keys(SBASOverlap);
-
-  constructor(private store$: Store<AppState>) { }
 
   ngOnInit(): void {
     this.subs.add(

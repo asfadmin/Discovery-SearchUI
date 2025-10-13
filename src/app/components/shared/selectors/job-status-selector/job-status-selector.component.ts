@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { Hyp3JobStatusCode } from '@models';
 
 import { Store } from '@ngrx/store';
@@ -14,13 +14,11 @@ import { SubSink } from 'subsink';
 })
 
 export class JobStatusSelectorComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+
   public selectedJobStatuses: Hyp3JobStatusCode[] = [];
   public jobStatuses = Object.keys(Hyp3JobStatusCode);
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-  ) { }
 
   ngOnInit(): void {
     this.subs.add(

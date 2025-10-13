@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
@@ -17,6 +17,9 @@ import {ThemePalette} from '@angular/material/core';
   styleUrls: ['./draw-selector.component.scss']
 })
 export class DrawSelectorComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   public drawMode: MapDrawModeType;
   public types = MapDrawModeType;
   private subs = new SubSink();
@@ -32,12 +35,6 @@ export class DrawSelectorComponent implements OnInit, OnDestroy {
   public isDrawing = true;
   isDisabled = false;
   color: ThemePalette = 'accent';
-
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-  ) {
-  }
 
   ngOnInit() {
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { combineLatest, first, map, switchMap } from 'rxjs';
@@ -11,12 +11,10 @@ import { AsfApiService } from './asf-api.service';
   providedIn: 'root'
 })
 export class ExportService {
+  private searchParamsService = inject(SearchParamsService);
+  private store$ = inject<Store<AppState>>(Store);
+  private apiService = inject(AsfApiService);
 
-  constructor(
-    private searchParamsService: SearchParamsService,
-    private store$: Store<AppState>,
-    private apiService: AsfApiService,
-  ) { }
 
   public convertSearchAPIQueryToAsfSearch = this.searchParamsService.getParams.pipe(
     map(params => ({...params, 'output': 'python'})),
@@ -58,7 +56,7 @@ batches = [hyp3.get_job_by_id(jobId) for jobIds]
   }
 
   private hyp3FindJobsSearch(params) {
-    let findJobParams = [];
+    const findJobParams = [];
 
     if (params.name) {
       findJobParams.push(`name='${params.name}'`)

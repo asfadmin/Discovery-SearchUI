@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy  } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, inject } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
@@ -26,6 +26,10 @@ enum FilterPanel {
   styleUrls: ['./dataset-filters.component.scss']
 })
 export class DatasetFiltersComponent implements OnInit, OnDestroy {
+  prop = inject(PropertyService);
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   @Input() dataset: models.CMRProduct;
   @Input() selectedPanel: FilterPanel | null = null;
 
@@ -45,13 +49,6 @@ export class DatasetFiltersComponent implements OnInit, OnDestroy {
 
 
   private subs = new SubSink();
-
-  constructor(
-    public prop: PropertyService,
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-    // public translate: TranslateService,
-  ) {}
 
   ngOnInit() {
     this.subs.add(

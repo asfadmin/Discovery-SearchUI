@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, inject } from '@angular/core';
 
 import * as models from '@models';
 import * as hyp3Store from '@store/hyp3';
@@ -22,10 +22,14 @@ import moment from 'moment';
 })
 
 export class ProcessingQueueJobsComponent implements OnInit {
+  private store$ = inject<Store<AppState>>(Store);
+  private savedSearchService = inject(services.SavedSearchService);
+  private dialogRef = inject<MatDialogRef<ProcessingQueueComponent>>(MatDialogRef);
+
   @Input() areJobsLoading: boolean;
   @Input() costPerJob: number;
 
-  @Input('jobs') set jobs(val: models.QueuedHyp3Job[]) { this.jobs$.next(val); }
+  @Input() set jobs(val: models.QueuedHyp3Job[]) { this.jobs$.next(val); }
   private jobs$ = new BehaviorSubject<models.QueuedHyp3Job[]>([]);
   private sortChange$ = new BehaviorSubject<void>(null);
 
@@ -50,12 +54,6 @@ export class ProcessingQueueJobsComponent implements OnInit {
   public jobsDisplay: QueuedHyp3Job[] = [];
 
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-    private savedSearchService: services.SavedSearchService,
-    private dialogRef: MatDialogRef<ProcessingQueueComponent>,
-  ) { }
 
   ngOnInit(): void {
     this.subs.add(

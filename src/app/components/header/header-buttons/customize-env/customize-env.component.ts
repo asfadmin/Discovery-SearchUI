@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 
 import { EnvironmentService, NotificationService } from '@services';
 
@@ -8,12 +8,10 @@ import { EnvironmentService, NotificationService } from '@services';
   styleUrls: ['./customize-env.component.scss', '../preferences/preferences.component.scss']
 })
 export class CustomizeEnvComponent implements OnInit {
-  public envStr: string;
+  private env = inject(EnvironmentService);
+  private notificationService = inject(NotificationService);
 
-  constructor(
-    private env: EnvironmentService,
-    private notificationService: NotificationService,
-  ) { }
+  public envStr: string;
 
   ngOnInit() {
     this.envStr = JSON.stringify(this.env.envs, null, 2);

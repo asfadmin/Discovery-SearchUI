@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 
 import { map, tap } from 'rxjs/operators';
 import { SubSink } from 'subsink';
@@ -17,6 +17,10 @@ import { SearchType } from '@models';
   styleUrls: ['./aoi-clear.component.scss']
 })
 export class AoiClearComponent implements OnInit, OnDestroy {
+  private mapService = inject(MapService);
+  private wktService = inject(WktService);
+  private store$ = inject<Store<AppState>>(Store);
+
   public searchTypes = SearchType;
   public searchType$ = this.store$.select(getSearchType);
 
@@ -25,12 +29,6 @@ export class AoiClearComponent implements OnInit, OnDestroy {
   public anyPathFrameValues = false;
 
   private subs = new SubSink();
-
-  constructor(
-    private mapService: MapService,
-    private wktService: WktService,
-    private store$: Store<AppState>
-  ) { }
 
   ngOnInit() {
     this.subs.add(

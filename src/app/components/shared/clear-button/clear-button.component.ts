@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -10,10 +10,8 @@ import * as searchStore from '@store/search';
   styleUrls: ['./clear-button.component.css']
 })
 export class ClearButtonComponent {
+  private store$ = inject<Store<AppState>>(Store);
 
-  constructor(
-    private store$: Store<AppState>,
-  ) { }
 
   public onClearSearch(): void {
     this.store$.dispatch(new searchStore.ClearSearch());

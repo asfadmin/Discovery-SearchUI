@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { Store } from '@ngrx/store';
@@ -19,6 +19,13 @@ import * as services from '@services';
   styleUrls: ['./confirmation.component.scss']
 })
 export class ConfirmationComponent implements OnInit {
+  dialogRef = inject<MatDialogRef<ConfirmationComponent>>(MatDialogRef);
+  hyp3 = inject(services.Hyp3ApiService);
+  hyp3JobService = inject(services.Hyp3JobService);
+  private store$ = inject<Store<AppState>>(Store);
+  private notificationService = inject(services.NotificationService);
+  data = inject<models.ConfirmationDialogData>(MAT_DIALOG_DATA);
+
   public allJobs: models.QueuedHyp3Job[] = [];
   public jobTypesWithQueued: models.JobTypesWithQueued[] = [];
   public processingOptions: models.Hyp3ProcessingOptions;
@@ -27,15 +34,6 @@ export class ConfirmationComponent implements OnInit {
 
   public isQueueSubmitProcessing = false;
   public progress = null;
-
-  constructor(
-    public dialogRef: MatDialogRef<ConfirmationComponent>,
-    public hyp3: services.Hyp3ApiService,
-    public hyp3JobService: services.Hyp3JobService,
-    private store$: Store<AppState>,
-    private notificationService: services.NotificationService,
-    @Inject(MAT_DIALOG_DATA) public data: models.ConfirmationDialogData
-  ) { }
 
   ngOnInit(): void {
     this.jobTypesWithQueued = this.data.jobTypesWithQueued;

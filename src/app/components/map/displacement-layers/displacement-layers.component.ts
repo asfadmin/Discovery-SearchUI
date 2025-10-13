@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import {SubSink} from 'subsink';
 
 import {MapService} from '@services';
@@ -19,19 +19,17 @@ import {MatSlider} from '@angular/material/slider';
   styleUrl: './displacement-layers.component.scss'
 })
 export class DisplacementLayersComponent implements OnInit, OnDestroy {
+  mapService = inject(MapService);
+  private store$ = inject<Store<AppState>>(Store);
+
   @ViewChild("priorityRollout", { static: true }) priorityCheckbox: MatCheckbox;
   @ViewChild("velocityOpacitySlider") _slider: MatSlider;
   public flightDir = models.FlightDirection.ASCENDING;
   public displacementOverview: models.DisplacementLayerTypes | null = null;
-  public cumulativeDisplacementSelectionEnabled: boolean = false;
+  public cumulativeDisplacementSelectionEnabled = false;
   public DispLayerTypes = models.DisplacementLayerTypes;
   private subs = new SubSink();
   public velocityOverlayOpacity: number;
-
-  constructor(
-    public mapService: MapService,
-    private store$: Store<AppState>,
-  ) { }
 
   ngOnInit() {
 
@@ -57,7 +55,7 @@ export class DisplacementLayersComponent implements OnInit, OnDestroy {
         distinctUntilChanged(),
       ).subscribe(flightDir => {
         this.flightDir = flightDir;
-        if (!!this.displacementOverview) {
+        if (this.displacementOverview) {
           this.setDisplacementLayer(this.flightDir, this.displacementOverview)
         } else {
           this.setDisplacementLayer(this.flightDir, models.DisplacementLayerTypes.VELOCITY);

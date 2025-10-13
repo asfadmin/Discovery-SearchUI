@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, inject } from '@angular/core';
 
 import { Observable, combineLatest } from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -28,6 +28,15 @@ enum CardViews {
   styleUrls: ['./baseline-results-menu.component.scss',  '../results-menu.component.scss']
 })
 export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+  private mapService = inject(MapService);
+  private scenesService = inject(ScenesService);
+  private pairService = inject(PairService);
+  private hyp3 = inject(Hyp3ApiService);
+  private hyp3JobStatus = inject(Hyp3JobStatusService);
+  private possibleHyp3JobsService = inject(PossibleHyp3JobsService);
+
   @Input() resize$: Observable<void>;
 
   public numBaselineScenes$ = this.scenesService.scenes$.pipe(
@@ -61,17 +70,6 @@ export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
   public ApiFormat = models.AsfApiOutputFormat;
 
   public hyp3able: { total: number, byJobType: models.Hyp3ableProductByJobType[]};
-
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-    private mapService: MapService,
-    private scenesService: ScenesService,
-    private pairService: PairService,
-    private hyp3: Hyp3ApiService,
-    private hyp3JobStatus: Hyp3JobStatusService,
-    private possibleHyp3JobsService: PossibleHyp3JobsService,
-  ) { }
 
   ngOnInit(): void {
     this.subs.add(

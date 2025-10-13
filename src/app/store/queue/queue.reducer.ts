@@ -3,13 +3,9 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { QueueActionType, QueueActions } from './queue.action';
 import { CMRProduct, QueuedHyp3Job, DownloadStatus } from '@models';
 
-export interface ProductMap {
-  [id: string]: CMRProduct;
-}
+export type ProductMap = Record<string, CMRProduct>;
 
-export interface DownloadMap {
-  [id: string]: DownloadStatus;
-}
+export type DownloadMap = Record<string, DownloadStatus>;
 export interface QueueState {
   products: ProductMap;
   ids: string[];
@@ -333,7 +329,7 @@ export const getQueuedJobTypes = createSelector(
         return jobTypes;
       }, {});
 
-    return (<any>Object.values(jobTypeDict));
+    return (Object.values(jobTypeDict) as any);
   }
 );
 

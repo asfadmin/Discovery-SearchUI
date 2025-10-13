@@ -1,9 +1,9 @@
-import { Component, ElementRef, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, Output, ViewChild, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { MapService } from '@services';
 import { AppState } from '@store';
 import { getSelectedSarviewsEvent } from '@store/scenes';
-declare var wNumb: any;
+declare let wNumb: any;
 
 import * as noUiSlider from 'nouislider';
 import { Observable, Subject } from 'rxjs';
@@ -16,15 +16,14 @@ import { SubSink } from 'subsink';
   styleUrls: ['./event-polygon-slider.component.scss']
 })
 export class EventPolygonSliderComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private mapService = inject(MapService);
+
   @ViewChild('polygonScale', { static: true }) polygonScaleRef: ElementRef;
   @Output() polygonScale$ = new Subject<number>();
   // @Output() polygonScale: EventEmitter<number> = new EventEmitter();
 
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-    private mapService: MapService) { }
 
   ngOnInit(): void {
     const polygonSlider = this.makePolygonSlider$(this.polygonScaleRef);

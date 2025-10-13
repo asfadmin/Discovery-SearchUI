@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { ActiveToast, IndividualConfig, ToastrService } from 'ngx-toastr';
 
@@ -11,13 +11,11 @@ import { take } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class NotificationService {
+  private toastr = inject(ToastrService);
+  private store$ = inject<Store<AppState>>(Store);
+
 
   private shownSignupMessage = false;
-
-  constructor(
-    private toastr: ToastrService,
-    private store$: Store<AppState>,
-  ) { }
 
   // Custom toastr config example, toastClass styling in styles.scss
   private toastOptions: Partial<IndividualConfig> = {
@@ -25,7 +23,7 @@ export class NotificationService {
     // toastComponent: ToastrMessageComponent
   };
 
-  public demandQueue(added: boolean = true, count: number = 0, job_type: string, duplicates = 0, application_status = '') {
+  public demandQueue(added = true, count = 0, job_type: string, duplicates = 0, application_status = '') {
     let headerText: string;
     let infoText = '';
     const action = added ? 'added to' : 'removed from';
@@ -62,7 +60,7 @@ export class NotificationService {
     }
   }
 
-  public downloadQueue(added: boolean = true, count: number = 0) {
+  public downloadQueue(added = true, count = 0) {
     let headerText: string;
     let infoText = '';
     const action = added ? 'added to' : 'removed from';
@@ -117,7 +115,7 @@ export class NotificationService {
   }
 
   public linkCopyIcon(prompt: string, count: number) {
-    let contentType = prompt.includes('S3') ? 'S3 Url' : 'Download Url';
+    const contentType = prompt.includes('S3') ? 'S3 Url' : 'Download Url';
 
     let headerText: string;
     let infoText: string;

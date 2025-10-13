@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { ListSearchType } from '@models';
 
 import { NgxCsvParser } from 'ngx-csv-parser';
@@ -33,10 +33,16 @@ enum FileErrors {
   styleUrls: ['./list-filters.component.scss']
 })
 export class ListFiltersComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(services.ScreenSizeService);
+  private actions$ = inject(ActionsSubject);
+  private notificationService = inject(services.NotificationService);
+  private ngxCsvParser = inject(NgxCsvParser);
+
   public selectedPanel: ListPanel | null = null;
   public types = ListSearchType;
   public panels = ListPanel;
-  public files: Set<File> = new Set();
+  public files = new Set<File>();
 
   public fileError$ = new Subject<{fileName: string, fileError: FileErrors}>();
 
@@ -66,14 +72,6 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
       'ALPSRP111041130'
     ].join(', ')
   };
-
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: services.ScreenSizeService,
-    private actions$: ActionsSubject,
-    private notificationService: services.NotificationService,
-    private ngxCsvParser: NgxCsvParser,
-  ) {}
 
   ngOnInit() {
 
@@ -246,7 +244,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
     this.ngxCsvParser.parse(file, { header: true, delimiter: ',' })
     .pipe(
       first(),
-      map((output: Array<{}>) => ({
+      map((output: {}[]) => ({
           result: output,
           granules_key: Object.keys(output[0]).find(key => key.toLowerCase().includes('granule'))
         })

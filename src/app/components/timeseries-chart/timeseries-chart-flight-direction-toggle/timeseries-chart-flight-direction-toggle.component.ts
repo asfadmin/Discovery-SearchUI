@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { SubSink } from 'subsink';
@@ -26,18 +26,16 @@ import {NgIf} from '@angular/common';
   templateUrl: './timeseries-chart-flight-direction-toggle.component.html',
   styleUrl: './timeseries-chart-flight-direction-toggle.component.scss'
 })
-export class TimeseriesChartFlightDirectionToggleComponent implements OnInit {
+export class TimeseriesChartFlightDirectionToggleComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   private subs = new SubSink()
   public flightDirection: models.FlightDirection = models.FlightDirection.ASCENDING;
   public FlightDirections = models.FlightDirection;
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = Breakpoints;
-
-  constructor(private store$: Store<AppState>,
-    private screenSize: ScreenSizeService) {
-
-  }
 
   ngOnInit(): void {
     this.subs.add(
@@ -56,7 +54,7 @@ export class TimeseriesChartFlightDirectionToggleComponent implements OnInit {
   }
 
   public setFlightDirection(dir: models.FlightDirection): void {
-    const action = new filtersStore.SetFlightDirections([<models.FlightDirection>dir]);
+    const action = new filtersStore.SetFlightDirections([(dir as models.FlightDirection)]);
     this.store$.dispatch(action);
   }
 

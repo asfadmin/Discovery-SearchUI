@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -15,6 +15,9 @@ import { MatSort } from '@angular/material/sort';
   styleUrls: ['./help-toc.component.scss']
 })
 export class HelpTocComponent implements OnInit {
+  private store$ = inject<Store<AppState>>(Store);
+  private YoutubeApiService$ = inject(YoutubeApiService);
+
   @ViewChild(MatSort) sort: MatSort;
 
   public topic: string;
@@ -28,12 +31,6 @@ export class HelpTocComponent implements OnInit {
   public contentSearchResult: YoutubeVideoContentDetails;
 
   public displayedColumns: string[] = ['description'];
-  // public displayedColumns: string[] = ['title', 'description', 'length'];
-
-  constructor(
-    private store$: Store<AppState>,
-    private YoutubeApiService$: YoutubeApiService,
-  ) { }
 
   ngOnInit(): void {
 

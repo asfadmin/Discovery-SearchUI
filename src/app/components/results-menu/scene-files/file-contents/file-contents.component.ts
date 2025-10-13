@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { SubSink } from 'subsink';
@@ -27,6 +27,9 @@ interface ExampleFlatNode {
   styleUrls: ['./file-contents.component.scss']
 })
 export class FileContentsComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   public product: CMRProduct;
 
   sceneNameLen: number;
@@ -52,11 +55,6 @@ export class FileContentsComponent implements OnInit, OnDestroy {
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
   public queuedProductIds: Set<string>;
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-  ) { }
 
   ngOnInit(): void {
     this.subs.add(

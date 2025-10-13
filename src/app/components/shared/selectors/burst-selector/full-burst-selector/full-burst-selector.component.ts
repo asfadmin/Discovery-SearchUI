@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, EventEmitter, OnDestroy, inject } from '@angular/core';
 import { debounceTime, filter, map } from 'rxjs';
 import { SubSink } from 'subsink';
 import * as searchStore from '@store/search';
@@ -13,13 +13,14 @@ import { SearchType } from '@models';
   styleUrls: ['./full-burst-selector.component.scss', '../burst-selector.component.scss']
 })
 export class FullBurstSelectorComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+
   public fullBurstIDs: string[] = []
-  private IDsInputUpdated: EventEmitter<string> = new EventEmitter();
+  private IDsInputUpdated = new EventEmitter<string>();
   private subs: SubSink = new SubSink();
 
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = SearchType;
-  constructor(private store$: Store<AppState>) { }
 
   ngOnInit(): void {
     this.subs.add(

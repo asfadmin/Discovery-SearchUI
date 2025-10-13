@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, Input, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter, ViewChild, OnDestroy, inject } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 import { Subject } from 'rxjs';
@@ -26,6 +26,10 @@ declare global {
   styleUrls: ['./aoi-options.component.scss'],
 })
 export class AoiOptionsComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private mapService = inject(MapService);
+  private screenSize = inject(ScreenSizeService);
+
   @ViewChild('polygonInputForm') public polygonForm: NgForm;
 
   @Input() showHeader = true;
@@ -48,12 +52,6 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
   public aoiErrors$ = new Subject<void>();
   public isAOIError = false;
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-    private mapService: MapService,
-    private screenSize: ScreenSizeService,
-  ) {}
 
   ngOnInit() {
 

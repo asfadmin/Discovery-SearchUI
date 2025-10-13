@@ -1,5 +1,5 @@
 // Perpendicular baseline slider component
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, inject } from '@angular/core';
 
 import * as noUiSlider from 'nouislider';
 import { Subject } from 'rxjs';
@@ -11,7 +11,7 @@ import * as filtersStore from '@store/filters';
 
 import { SubSink } from 'subsink';
 import * as models from '@models';
-declare var wNumb: any;
+declare let wNumb: any;
 
 @Component({
   selector: 'app-sbas-sliders',
@@ -19,6 +19,8 @@ declare var wNumb: any;
   styleUrls: ['./sbas-sliders.component.scss']
 })
 export class SbasSlidersComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+
   @ViewChild('perpendicularFilter', { static: true }) perpendicularFilter: ElementRef;
 
   // public temporalAutoTicks = false;
@@ -32,10 +34,6 @@ export class SbasSlidersComponent implements OnInit, OnDestroy {
   // private firstLoad = true;
   private lastRange: models.Range<number> = { start: 0, end: 800 };
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-  ) { }
 
   ngOnInit(): void {
     const baselineSlider = this.makeBaselineSlider$(this.perpendicularFilter);

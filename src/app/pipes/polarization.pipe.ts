@@ -5,8 +5,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class PolarizationCountPipe implements PipeTransform {
     transform(input: string): string {
-        let count = (input.match(/,/g)||[]).length;
-        let bands = {
+        const count = (input.match(/,/g)||[]).length;
+        const bands = {
             0: 'Single-Pol',
             1: 'Dual-Pol',
             3: 'Quad-Pol'

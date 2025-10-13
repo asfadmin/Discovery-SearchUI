@@ -6,7 +6,7 @@ import '@formatjs/intl-displaynames/locale-data/es'
 import { TranslateService } from "@ngx-translate/core";
 import { CookieService } from "ngx-cookie-service";
 import * as moment from 'moment';
-import { Injectable } from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import { DateAdapter } from "@angular/material/core";
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
@@ -19,6 +19,12 @@ const defaultLanguage = 'en';
   providedIn: 'root'
 })
 export class AsfLanguageService {
+  translate = inject(TranslateService);
+  private cookieService = inject(CookieService);
+  private dateAdapter = inject<DateAdapter<Date>>(DateAdapter);
+  private store$ = inject<Store<AppState>>(Store);
+  private titleService = inject(Title);
+
 
   // @ts-ignore
   public languageNamesInEnglish = new Intl.DisplayNames(['en'], { type: 'language' });
@@ -43,13 +49,7 @@ export class AsfLanguageService {
   private subs = new SubSink();
 
 
-  constructor(
-    public translate: TranslateService,
-    private cookieService: CookieService,
-    private dateAdapter: DateAdapter<Date>,
-    private store$: Store<AppState>,
-    private titleService: Title,
-  ) {
+  constructor() {
     this.browserLang = this.translate.getBrowserLang();
     this.initialize();
   }
@@ -104,7 +104,7 @@ export class AsfLanguageService {
     // Else, set a language cookie to the current language
     const cookieExists: boolean = this.cookieService.check(this.languageCookie);
     if (cookieExists) {
-      let cookieLanguage = this.cookieService.get(this.languageCookie);
+      const cookieLanguage = this.cookieService.get(this.languageCookie);
       if (cookieLanguage.match(this.matchLanguagesRegex)) {
         currentLanguage = cookieLanguage;
       }

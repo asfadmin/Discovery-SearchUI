@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -11,9 +11,11 @@ import * as models from '@models';
   providedIn: 'root'
 })
 export class PropertyService {
+  private store$ = inject<Store<AppState>>(Store);
+
   private dataset: models.Dataset;
 
-  constructor(private store$: Store<AppState>) {
+  constructor() {
     this.store$.select(filtersStore.getSelectedDataset).subscribe(
       p => this.dataset = p
     );

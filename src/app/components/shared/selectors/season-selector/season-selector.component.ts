@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 
 import { combineLatest, Subject } from 'rxjs';
 import { debounceTime, tap } from 'rxjs/operators';
@@ -16,6 +16,8 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
   styleUrls: ['./season-selector.component.scss']
 })
 export class SeasonSelectorComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+
   public isSeasonalSearch = false;
 
   public start: number;
@@ -23,7 +25,6 @@ export class SeasonSelectorComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
   private endDate$ = new Subject<number>();
   private startDate$ = new Subject<number>();
-  constructor(private store$: Store<AppState>) { }
 
   ngOnInit() {
     const seasonStart$ = this.store$.select(filtersStore.getSeasonStart);

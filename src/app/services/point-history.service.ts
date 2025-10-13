@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { timeseriesChartItemState } from '@models';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -23,14 +23,12 @@ export interface PointHistoryState {
   providedIn: 'root'
 })
 export class PointHistoryService {
+  private store$ = inject<Store<AppState>>(Store);
+
   private history : PointHistoryState[] = [];
   public history$ = new Subject<PointHistoryState[]>();
-  public passDraw: boolean = false;
-  public selectedPoint: string = '';
-
-  constructor(
-    private store$: Store<AppState>,
-  ) { }
+  public passDraw = false;
+  public selectedPoint = '';
 
   public getHistory(): PointHistoryState[] {
     return this.history;
@@ -54,7 +52,7 @@ export class PointHistoryService {
     const uuidSeries = id ?? crypto.randomUUID();
     const format = new WKT()
     const wkt = format.writeGeometry(point)
-    if (!!!this.history.find(x => x.wkt == wkt)) {
+    if (!this.history.find(x => x.wkt == wkt)) {
       const sName = (seriesName === '' || seriesName === null) ? 'Series' : seriesName;
       this.history.push({uuidSeries, point, wkt, drawMode, seriesNumber, seriesName: sName});
       this.store$.dispatch(addTimeseriesState({item: {
@@ -76,7 +74,7 @@ export class PointHistoryService {
     if(states.length <= 0) {
       return
     }
-    for(let state of states) {
+    for(const state of states) {
       const sName = (state.seriesName === '' || state.seriesName === null) ? 'Series' : state.seriesName;
       const point = state.geometry as Geometry;
       this.history = [...this.history, {
@@ -120,7 +118,7 @@ export class PointHistoryService {
   }
 
   private savePoints() {
-    let converted = this.history.map((value) => {
+    const converted = this.history.map((value) => {
       return { uuidSeries: value.uuidSeries, point: value.point, wkt: value.wkt,
         drawMode: value.drawMode, seriesNumber: value.seriesNumber, seriesName: value.seriesName }
     })

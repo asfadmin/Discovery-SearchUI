@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -12,13 +12,13 @@ import { SubSink } from 'subsink';
   styleUrls: ['./sarviews-event-active-selector.component.scss']
 })
 export class SarviewsEventActiveSelectorComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+
 
   public sarviewsEventFilterToggle$ = this.store$.select(filtersStore.getSarviewsEventActiveFilter);
   public filterToggleValue: boolean;
 
   public subs = new SubSink();
-
-  constructor(private store$: Store<AppState>) { }
 
   ngOnInit(): void {
     this.subs.add(

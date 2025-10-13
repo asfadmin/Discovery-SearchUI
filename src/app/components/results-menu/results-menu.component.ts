@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy, inject } from '@angular/core';
 import { ResizeEvent } from 'angular-resizable-element';
 import { SubSink } from 'subsink';
 
@@ -20,6 +20,9 @@ import * as models from '@models';
   styleUrls: ['./results-menu.component.scss'],
 })
 export class ResultsMenuComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   public isResultsMenuOpen$ = this.store$.select(uiStore.getIsResultsMenuOpen);
   public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
   public products: models.CMRProduct[];
@@ -48,11 +51,6 @@ export class ResultsMenuComponent implements OnInit, OnDestroy {
   public SearchTypes = models.SearchType;
 
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-  ) { }
 
   ngOnInit() {
     this.menuHeightPx = this.defaultMenuHeight();

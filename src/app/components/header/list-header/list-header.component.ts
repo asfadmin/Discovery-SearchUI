@@ -1,4 +1,4 @@
-import { Component, OnInit, } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -13,13 +13,11 @@ import { Breakpoints } from '@models';
   styleUrls: ['./list-header.component.css', '../header.component.scss']
 })
 export class ListHeaderComponent implements OnInit {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = Breakpoints;
-
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService
-  ) { }
 
   ngOnInit() {
   }

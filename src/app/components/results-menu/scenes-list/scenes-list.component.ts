@@ -1,6 +1,4 @@
-import {
-  Component, OnInit, Input, ViewChild, ViewEncapsulation, OnDestroy, AfterContentInit
-} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ViewEncapsulation, OnDestroy, AfterContentInit, inject } from '@angular/core';
 
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import {
@@ -32,6 +30,17 @@ const INFINITY = 2e10;
   encapsulation: ViewEncapsulation.None
 })
 export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit {
+  private store$ = inject<Store<AppState>>(Store);
+  private mapService = inject(services.MapService);
+  private screenSize = inject(services.ScreenSizeService);
+  private keyboardService = inject(services.KeyboardService);
+  private scenesService = inject(services.ScenesService);
+  private pairService = inject(services.PairService);
+  private hyp3 = inject(services.Hyp3ApiService);
+  private hyp3JobPolling = inject(services.Hyp3JobPollingService);
+  private eventMonitoringService = inject(services.SarviewsEventsService);
+  private notificationService = inject(services.NotificationService);
+
   @ViewChild(CdkVirtualScrollViewport, { static: true }) scroll: CdkVirtualScrollViewport;
   @Input() resize$: Observable<void>;
   private pairs$ = this.pairService.pairs$;
@@ -46,14 +55,14 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
   }[];
   public sarviewsEvents: SarviewsEvent[];
 
-  public numberOfQueue: { [scene: string]: number };
-  public allQueued: { [scene: string]: boolean };
+  public numberOfQueue: Record<string, number>;
+  public allQueued: Record<string, boolean>;
   public allJobNames: string[];
   public queuedJobs: QueuedHyp3Job[];
   public selected: string;
   public selectedEvent: string;
 
-  public hyp3ableByScene: { [scene: string]: { byJobType: models.Hyp3ableProductByJobType[]; total: number } } = {};
+  public hyp3ableByScene: Record<string, { byJobType: models.Hyp3ableProductByJobType[]; total: number }> = {};
   public newHyp3JobNotification: ActiveToast<any> = null;
 
   public offsets = { temporal: 0, perpendicular: 0 };
@@ -75,19 +84,6 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
 
   public searchType: models.SearchType;
   public SearchTypes = models.SearchType;
-
-  constructor(
-    private store$: Store<AppState>,
-    private mapService: services.MapService,
-    private screenSize: services.ScreenSizeService,
-    private keyboardService: services.KeyboardService,
-    private scenesService: services.ScenesService,
-    private pairService: services.PairService,
-    private hyp3: services.Hyp3ApiService,
-    private hyp3JobPolling: services.Hyp3JobPollingService,
-    private eventMonitoringService: services.SarviewsEventsService,
-    private notificationService: services.NotificationService,
-  ) { }
 
   ngOnInit() {
     this.keyboardService.init();
@@ -265,7 +261,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
 
         Object.entries(searchScenes).forEach(([groupId, products]) => {
           const possibleJobs = [];
-          (<any[]>products).forEach(product => {
+          (products as any[]).forEach(product => {
 
             possibleJobs.push([product]);
 
@@ -288,7 +284,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
       debounceTime(0),
       map(([queueProducts, searchScenes]) => {
 
-        const queuedProductGroups: { [id: string]: string[] } = queueProducts.reduce((total, product) => {
+        const queuedProductGroups: Record<string, string[]> = queueProducts.reduce((total, product) => {
           const groupCriteria = this.getGroupCriteria(product);
           const scene = total[groupCriteria] || [];
 
@@ -301,7 +297,7 @@ export class ScenesListComponent implements OnInit, OnDestroy, AfterContentInit 
         Object.entries(searchScenes).map(([sceneName, products]) => {
           numberOfQueuedProducts[sceneName] = [
             (queuedProductGroups[sceneName] || []).length,
-            (<any[]>products).length
+            (products as any[]).length
           ];
         });
 

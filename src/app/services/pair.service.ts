@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { Observable, combineLatest } from 'rxjs';
 import { map, distinctUntilChanged, shareReplay, debounceTime } from 'rxjs/operators';
@@ -24,12 +24,10 @@ import Geometry from 'ol/geom/Geometry';
   providedIn: 'root'
 })
 export class PairService {
+  private store$ = inject<Store<AppState>>(Store);
+  private mapService = inject(MapService);
+  private wktService = inject(WktService);
 
-  constructor(
-    private store$: Store<AppState>,
-    private mapService: MapService,
-    private wktService: WktService
-  ) { }
 
   public pairs$: Observable<{ custom: CMRProductPair[], pairs: CMRProductPair[] }> = combineLatest([
     this.store$.select(getScenes).pipe(
@@ -44,7 +42,7 @@ export class PairService {
     this.store$.select(getSeason),
     this.store$.select(getSBASOverlapThreshold),
     this.mapService.searchPolygon$.pipe(
-      map(wkt => !!wkt ? this.wktService.wktToFeature(wkt, this.mapService.epsg()) : null)
+      map(wkt => wkt ? this.wktService.wktToFeature(wkt, this.mapService.epsg()) : null)
     ),
     this.store$.select(getSearchType),
   ]).pipe(
@@ -96,15 +94,15 @@ export class PairService {
 
     let startDateExtrema: Date;
     let endDateExtrema: Date;
-    if (!!dateRange.start) {
+    if (dateRange.start) {
       startDateExtrema = new Date(dateRange.start.toISOString());
     }
-    if (!!dateRange.end) {
+    if (dateRange.end) {
       endDateExtrema = new Date(dateRange.end.toISOString());
     }
     let intersectionMethod: any;
 
-    if (!!aoi) {
+    if (aoi) {
       const geometryType = aoi.getGeometry().getType();
       intersectionMethod = this.mapService.getAoiIntersectionMethod(geometryType);
     }
@@ -121,7 +119,7 @@ export class PairService {
     };
     scenes.forEach((root, index) => {
 
-      if (!!aoi) {
+      if (aoi) {
         const rootPolygon = this.wktService.wktToFeature(root.metadata.polygon, this.mapService.epsg());
         if (!intersectionMethod(aoi, rootPolygon)) {
           return;
@@ -281,13 +279,13 @@ export class PairService {
     return scenes.sort(sortFunc);
   }
 
-  public isGraphDisconnected(pairs: any[], numScenes: Number) {
+  public isGraphDisconnected(pairs: any[], numScenes: number) {
     if (pairs.length === 0) {
       return false
     }
-    let graph_model = {}
-    let points = new Set()
-    for (let pair of pairs) {
+    const graph_model = {}
+    const points = new Set()
+    for (const pair of pairs) {
 
       if (graph_model.hasOwnProperty(pair[0].id)) {
         graph_model[pair[0].id].add(pair[1].id)
@@ -312,12 +310,12 @@ export class PairService {
     }
 
 
-    let to_check = []
-    let checked: Set<String> = new Set()
+    const to_check = []
+    const checked = new Set<string>()
     to_check.push(points.values().next().value)
 
     while (to_check.length > 0) {
-      let current = to_check.pop()
+      const current = to_check.pop()
       if (!checked.has(current)) {
 
         checked.add(current)

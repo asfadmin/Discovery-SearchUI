@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, inject } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -14,6 +14,8 @@ import * as models from '@models';
   styleUrls: ['./pair.component.scss']
 })
 export class PairComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+
   @Input() pair;
   @Input() hyp3able;
 
@@ -22,10 +24,6 @@ export class PairComponent implements OnInit, OnDestroy {
 
   public selectedPair: string[];
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-  ) { }
 
   ngOnInit(): void {
     this.subs.add(

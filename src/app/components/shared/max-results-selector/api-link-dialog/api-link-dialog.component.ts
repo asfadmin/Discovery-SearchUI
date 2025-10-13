@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { ClipboardService } from 'ngx-clipboard';
 
 import { BehaviorSubject, combineLatest } from 'rxjs';
@@ -15,6 +15,12 @@ import { asfWebsite } from '@models';
   styleUrls: ['./api-link-dialog.component.scss']
 })
 export class ApiLinkDialogComponent implements OnInit, OnDestroy {
+  private asfApiService = inject(services.AsfApiService);
+  private searchParams = inject(services.SearchParamsService);
+  private clipboard = inject(ClipboardService);
+  private dialogRef = inject<MatDialogRef<ApiLinkDialogComponent>>(MatDialogRef);
+  private notificationService = inject(services.NotificationService);
+
   public amount$ = new BehaviorSubject<number>(5000);
   public format$ = new BehaviorSubject<string>('CSV');
   public asfWebsite = asfWebsite;
@@ -44,14 +50,6 @@ export class ApiLinkDialogComponent implements OnInit, OnDestroy {
       viewValue: 'GEOJSON File'
     },
   ];
-
-  constructor(
-    private asfApiService: services.AsfApiService,
-    private searchParams: services.SearchParamsService,
-    private clipboard: ClipboardService,
-    private dialogRef: MatDialogRef<ApiLinkDialogComponent>,
-    private notificationService: services.NotificationService,
-  ) { }
 
   ngOnInit() {
     this.subs.add(

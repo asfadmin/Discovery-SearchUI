@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Observable, of, combineLatest } from 'rxjs';
@@ -12,11 +12,9 @@ import { BannerApiResponse } from '@models';
   providedIn: 'root'
 })
 export class BannerApiService {
-  constructor(
-    // private notificationService: NotificationService,
-    private env: EnvironmentService,
-    private http: HttpClient
-  ) { }
+  private env = inject(EnvironmentService);
+  private http = inject(HttpClient);
+
 
   public load(): Observable<BannerApiResponse> {
     const calendars = ['error', 'outages', 'news'];
@@ -42,12 +40,12 @@ export class BannerApiService {
 
     return this.http.get<any[]>(url).pipe(
           map(banners => ({
-            banners: <any[]>banners.map(banner => ({
+            banners: banners.map(banner => ({
               id: banner.id,
               text: banner.text,
               name: banner.name,
               type: calendar
-            })),
+            })) as any[],
             systime: ''
           }),
             catchError(_ => {

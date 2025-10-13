@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { TranslateService } from "@ngx-translate/core";
 
 @Component({
@@ -7,10 +7,8 @@ import { TranslateService } from "@ngx-translate/core";
   styleUrls: ['./help-geo-search.component.scss']
 })
 export class HelpGeoSearchComponent implements OnInit {
+  translate = inject(TranslateService);
 
-  constructor(
-    public translate: TranslateService,
-  ) { }
 
   ngOnInit(): void {
   }

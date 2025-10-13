@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, inject } from '@angular/core';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 
 import * as services from '@services';
@@ -10,6 +10,10 @@ import * as models from '@models';
   styleUrls: ['./scene.component.scss']
 })
 export class SceneComponent implements OnInit {
+  env = inject(services.EnvironmentService);
+  private screenSize = inject(services.ScreenSizeService);
+  private mapService = inject(services.MapService);
+
   @Input() scene: models.CMRProduct;
   @Input() searchType: models.SearchType;
 
@@ -30,12 +34,6 @@ export class SceneComponent implements OnInit {
 
   public copyIcon = faCopy;
   public SearchTypes = models.SearchType;
-
-  constructor(
-    public env: services.EnvironmentService,
-    private screenSize: services.ScreenSizeService,
-    private mapService: services.MapService,
-  ) { }
 
   ngOnInit(): void {
     this.screenSize.breakpoint$.subscribe(

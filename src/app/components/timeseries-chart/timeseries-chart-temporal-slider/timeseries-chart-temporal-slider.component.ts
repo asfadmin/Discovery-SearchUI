@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild, Renderer2} from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild, Renderer2, inject } from '@angular/core';
 import * as noUiSlider from 'nouislider';
 import {PipsMode} from 'nouislider';
 import {Store} from '@ngrx/store';
@@ -25,6 +25,9 @@ import {debounceTime, distinctUntilChanged, withLatestFrom} from 'rxjs/operators
   styleUrls: ['./timeseries-chart-temporal-slider.component.scss']
 })
 export class TimeseriesChartTemporalSliderComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private renderer = inject(Renderer2);
+
   @ViewChild('ts_slider', { static: true }) sliderRef: ElementRef;
 
   private subs = new SubSink();
@@ -38,12 +41,6 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit, OnDestroy
   public endDate$ = this.store$.select(filtersStore.getEndDate);
   public startDate: Date = new Date();
   public endDate: Date = new Date();
-  // private userChangedRange: boolean = false;
-
-  constructor(
-    private store$: Store<AppState>,
-    private renderer: Renderer2
-  ){}
 
   ngOnInit() {
 
@@ -108,7 +105,7 @@ export class TimeseriesChartTemporalSliderComponent implements OnInit, OnDestroy
 
   // Create a string representation of the date.
   public formatDate(date: any) :string {
-    let fDateStr = date.toLocaleDateString()
+    const fDateStr = date.toLocaleDateString()
     return ( fDateStr );
   }
 

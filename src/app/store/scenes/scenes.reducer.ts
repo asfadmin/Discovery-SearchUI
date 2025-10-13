@@ -16,9 +16,9 @@ export interface ScenesState {
   customPairIds: string[][];
   selectedPair: string[] | null;
   areResultsLoaded: boolean;
-  scenes: {[id: string]: string[]};
+  scenes: Record<string, string[]>;
   timeseriesResults: any;
-  unzipped: {[id: string]: UnzippedFolder[]};
+  unzipped: Record<string, UnzippedFolder[]>;
   openUnzippedProduct: string | null;
   productUnzipLoading: string | null;
   selected: string | null;
@@ -31,7 +31,7 @@ export interface ScenesState {
   perpendicularSort: ColumnSortDirection;
   temporalSort: ColumnSortDirection;
 
-  pinnedProductBrowses: {[product_id in string]: PinnedProduct};
+  pinnedProductBrowses: Record<string, PinnedProduct>;
 }
 
 export const initState: ScenesState = {
@@ -66,7 +66,7 @@ export const initState: ScenesState = {
 export function scenesReducer(state = initState, action: ScenesActions): ScenesState {
   switch (action.type) {
     case ScenesActionType.SET_SCENES: {
-      let subproducts: CMRProduct[] = [];
+      const subproducts: CMRProduct[] = [];
 
       let searchResults = action.payload.products.map(p =>
         p.metadata.productType === 'BURST' ? ({
@@ -80,9 +80,9 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
         {apiValue: 'BURST_XML'}
       ].map(m => m.apiValue)
 
-      for (let product of searchResults) {
+      for (const product of searchResults) {
         if(product.metadata.subproducts.length > 0) {
-          for (let subproduct of product.metadata.subproducts) {
+          for (const subproduct of product.metadata.subproducts) {
             subproducts.push(subproduct)
           }
         }
@@ -103,8 +103,8 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
         return total;
       }, {});
 
-      let productGroups: {[id: string]: string[]} = {};
-      let scenes: {[id: string]: string[]} = {};
+      let productGroups: Record<string, string[]> = {};
+      const scenes: Record<string, string[]> = {};
 
       productGroups = searchResults.reduce((total, product) => {
         let groupCriteria = product.groupId;
@@ -126,7 +126,7 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
       }, {});
 
       for (const [groupId, productNames] of Object.entries(productGroups)) {
-        (<string[]>productNames).sort(
+        (productNames as string[]).sort(
           (a, b) => products[a].bytes - products[b].bytes
         ).reverse();
 
@@ -153,7 +153,7 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
 
       try {
         Object.values(combinedProducts).forEach(combinedProduct => {
-            products[combinedProduct.id] = <CMRProduct>combinedProduct;
+            products[combinedProduct.id] = combinedProduct as CMRProduct;
           }
         );
 
@@ -366,7 +366,7 @@ export function scenesReducer(state = initState, action: ScenesActions): ScenesS
 
 export const getScenesState = createFeatureSelector<ScenesState>('scenes');
 
-export const allScenesFrom = (scenes: {[id: string]: string[]}, products) => {
+export const allScenesFrom = (scenes: Record<string, string[]>, products) => {
   return Object.values(scenes)
     .map(group => {
 
@@ -387,7 +387,7 @@ const hasNoBrowse = (product) => {
   );
 };
 
-export const allScenesWithBrowse = (scenes: {[id: string]: string[]}, products) => {
+export const allScenesWithBrowse = (scenes: Record<string, string[]>, products) => {
   const withBrowses = allScenesFrom(scenes, products).filter(
     scene => scene.browses.filter(browse => !browse.includes('no-browse')).length > 0
   );
@@ -733,13 +733,13 @@ export const getSelectedSarviewsEventProducts = createSelector(
 export const getImageBrowseProducts = createSelector(
   getScenesState,
   state => {
-    const output: {[product_id in string]: PinnedProduct} = Object.keys(state.pinnedProductBrowses).reduce(
+    const output: Record<string, PinnedProduct> = Object.keys(state.pinnedProductBrowses).reduce(
       (out, product_id) => {
         const temp = out;
         temp[product_id] = {... state.pinnedProductBrowses[product_id]};
         return temp;
       }
-      , {} as {[product_id in string]: PinnedProduct});
+      , {} as Record<string, PinnedProduct>);
 
     return output;
   }

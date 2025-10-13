@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, inject } from '@angular/core';
 
 import * as services from '@services';
 import * as models from '@models';
@@ -10,6 +10,9 @@ import * as models from '@models';
   styleUrls: ['./baseline-scene-controls.component.scss']
 })
 export class BaselineSceneControlsComponent implements OnInit {
+  private screenSize = inject(services.ScreenSizeService);
+  private hyp3JobStatus = inject(services.Hyp3JobStatusService);
+
   @Input() scene: models.CMRProduct;
   @Input() offsets: {temporal: number, perpendicular: number} = {temporal: 0, perpendicular: null};
   @Input() hyp3ableByJobType: { total: number, byJobType: models.Hyp3ableProductByJobType[]};
@@ -19,11 +22,6 @@ export class BaselineSceneControlsComponent implements OnInit {
 
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
-
-  constructor(
-    private screenSize: services.ScreenSizeService,
-    private hyp3JobStatus: services.Hyp3JobStatusService,
-  ) { }
 
   ngOnInit(): void {
     this.screenSize.breakpoint$.subscribe(

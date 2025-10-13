@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, inject } from '@angular/core';
 
 import * as moment from 'moment';
 
@@ -21,6 +21,11 @@ import * as filterStore from '@store/filters';
   styleUrls: ['./scene-file.component.scss']
 })
 export class SceneFileComponent implements OnInit, OnDestroy {
+  private hyp3JobStatus = inject(Hyp3JobStatusService);
+  private store$ = inject<Store<AppState>>(Store);
+  env = inject(EnvironmentService);
+  private onDemand = inject(OnDemandService);
+
   @Input() product: models.CMRProduct;
   @Input() isQueued: boolean;
   @Input() isUnzipLoading: boolean;
@@ -43,13 +48,6 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   public copyIcons = models.CopyIcons;
   
   private subs = new SubSink();
-
-  constructor(
-      private hyp3JobStatus: Hyp3JobStatusService,
-      private store$: Store<AppState>,
-      public env: EnvironmentService,
-      private onDemand: OnDemandService,
-    ) {}
 
   ngOnInit() {
     this.subs.add(

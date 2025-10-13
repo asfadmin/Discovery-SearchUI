@@ -142,9 +142,7 @@ export interface Hyp3AriaS1GunwParameters {
   frame_id: number;
 }
 
-export interface Hyp3Costs {
-  [jobType: string]: Hyp3JobCost;
-};
+export type Hyp3Costs = Record<string, Hyp3JobCost>;;
 
 export type Hyp3JobCost = Hyp3JobCostFixed | Hyp3JobCostTable;
 export interface Hyp3JobCostFixed { cost: number };
@@ -172,9 +170,7 @@ export interface Hyp3CostTableValue {
   cost: number;
 }
 
-export interface Hyp3ProcessingOptions {
-  [key: string]: any;
-}
+export type Hyp3ProcessingOptions = Record<string, any>;
 
 export enum RtcGammaRadiometry {
   GAMMA0 = 'gamma0',

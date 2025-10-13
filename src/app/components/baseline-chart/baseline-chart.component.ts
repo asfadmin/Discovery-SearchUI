@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, inject } from '@angular/core';
 
 import { combineLatest } from 'rxjs';
 import { map, tap, filter, } from 'rxjs/operators';
@@ -37,6 +37,11 @@ interface Point {
   styleUrls: ['./baseline-chart.component.scss']
 })
 export class BaselineChartComponent implements OnInit, OnDestroy {
+  translate = inject(TranslateService);
+  private store$ = inject<Store<AppState>>(Store);
+  private scenesService = inject(ScenesService);
+  private screenSize = inject(services.ScreenSizeService);
+
   @ViewChild('baselineChart', { static: true }) baselineChart: ElementRef;
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
@@ -69,13 +74,6 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
 
   private hoveredElement;
   private clipContainer;
-  constructor(
-    public translate: TranslateService,
-    private store$: Store<AppState>,
-    private scenesService: ScenesService,
-    private screenSize: services.ScreenSizeService,
-
-  ) { }
 
   ngOnInit(): void {
     this.createSVG();
@@ -113,7 +111,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
           this.setDataset(ChartDatasets.MAX_CRITICAL, maxDataset);
           if (this.isFirstLoad) {
             this.updateScales(extrema);
-            let height =  this.y(this.data[ChartDatasets.MIN_CRITICAL][0].y) - this.y(this.data[ChartDatasets.MAX_CRITICAL][1].y)
+            const height =  this.y(this.data[ChartDatasets.MIN_CRITICAL][0].y) - this.y(this.data[ChartDatasets.MAX_CRITICAL][1].y)
 
             this.criticalBoxContainer
               .attr('x', this.x(this.data[ChartDatasets.MIN_CRITICAL][0].x))
@@ -243,7 +241,7 @@ export class BaselineChartComponent implements OnInit, OnDestroy {
     this.dotsContainer.selectAll('circle').data(this.data[ChartDatasets.PRODUCTS]).join('circle')
       .attr('cx', d => newX(d.x))
       .attr('cy', d => newY(d.y));
-      let height = newY(this.data[ChartDatasets.MIN_CRITICAL][0].y) - newY(this.data[ChartDatasets.MAX_CRITICAL][1].y)
+      const height = newY(this.data[ChartDatasets.MIN_CRITICAL][0].y) - newY(this.data[ChartDatasets.MAX_CRITICAL][1].y)
     this.criticalBoxContainer.attr('x', newX(this.data[ChartDatasets.MIN_CRITICAL][0].x))
       .attr('y', newY(this.data[ChartDatasets.MAX_CRITICAL][1].y))
       .attr('width', newX(this.data[ChartDatasets.MAX_CRITICAL][1].x) - newX(this.data[ChartDatasets.MIN_CRITICAL][0].x))

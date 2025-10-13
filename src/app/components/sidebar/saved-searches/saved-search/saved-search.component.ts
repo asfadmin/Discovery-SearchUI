@@ -1,7 +1,4 @@
-import {
-  Component, OnInit, Input, Output, EventEmitter,
-  ViewChild, ElementRef, ChangeDetectionStrategy
-} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, ChangeDetectionStrategy, inject } from '@angular/core';
 
 import { timer } from 'rxjs';
 import * as moment from 'moment';
@@ -17,6 +14,8 @@ import { AsfLanguageService } from "@services/asf-language.service";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SavedSearchComponent implements OnInit {
+  private language = inject(AsfLanguageService);
+
   @ViewChild('nameEditInput') nameEditInput: ElementRef;
 
   @Input() search: models.Search;
@@ -36,11 +35,6 @@ export class SavedSearchComponent implements OnInit {
   public SearchType = models.SearchType;
   public isEditingName = false;
   public editName = '';
-
-  constructor(
-    private language: AsfLanguageService,
-  ) {
-  }
   ngOnInit() {
     if (this.isNew) {
       this.onEditName();
@@ -125,7 +119,7 @@ export class SavedSearchComponent implements OnInit {
   public formatName(searchName: string): string {
     if (this.isSavedSearch) {
       const noName = this.language.translate.instant('NO_NAME');
-      return !!searchName ? searchName : noName;
+      return searchName ? searchName : noName;
     } else {
       const date = this.formatIfDate(new Date(+searchName));
       return `(${date})`;

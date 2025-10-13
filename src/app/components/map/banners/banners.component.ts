@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Directive } from '@angular/core';
+import { Component, OnInit, Input, Directive, inject } from '@angular/core';
 import { ActiveToast, ToastrService } from 'ngx-toastr';
 import { Banner } from '@models';
 import { MatDialog } from '@angular/material/dialog';
@@ -10,6 +10,9 @@ export interface DialogData {
 
 @Directive({selector: '[bannerCreate]'})
 export class BannerCreateDirective implements OnInit {
+  private toastr = inject(ToastrService);
+  dialog = inject(MatDialog);
+
   @Input() bannerCreate: Banner;
   private closedBannersKey = 'closed-banners-key';
 
@@ -23,11 +26,6 @@ export class BannerCreateDirective implements OnInit {
     disableTimeOut: true,
     tapToDismiss: false,
   };
-
-  constructor(
-    private toastr: ToastrService,
-    public dialog: MatDialog,
-  ) {}
 
   ngOnInit(): void {
     const id: string = this.bannerCreate.id;
@@ -109,7 +107,7 @@ export class BannerCreateDirective implements OnInit {
       );
   }
 
-  private loadClosedBannerIds(): {[id: string]: boolean} {
+  private loadClosedBannerIds(): Record<string, boolean> {
     const closedBannersStr = localStorage.getItem(this.closedBannersKey);
 
     if (closedBannersStr) {
@@ -119,7 +117,7 @@ export class BannerCreateDirective implements OnInit {
     }
   }
 
-  private saveClosedBannerIds(closed: {[id: string]: boolean}): void {
+  private saveClosedBannerIds(closed: Record<string, boolean>): void {
     localStorage.setItem(this.closedBannersKey, JSON.stringify(closed));
   }
 }

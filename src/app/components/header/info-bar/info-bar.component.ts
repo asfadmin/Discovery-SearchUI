@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
@@ -23,6 +23,10 @@ declare global {
   styleUrls: ['./info-bar.component.scss'],
 })
 export class InfoBarComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(services.ScreenSizeService);
+  private hyp3 = inject(services.Hyp3ApiService);
+
   public searchType: models.SearchType = models.SearchType.DATASET;
   public searchTypes = models.SearchType;
   public searchType$ = this.store$.select(searchStore.getSearchType);
@@ -49,7 +53,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public tempRange: models.Range<number | null>;
   public fullBurstIDs: string[] = [];
   public operaBurstIDs: string[] = [];
-  public useCalibrationData: boolean = false;
+  public useCalibrationData = false;
   public groupID: string;
   public userID: string;
   public sidePolarizations: models.DatasetPolarizations;
@@ -61,7 +65,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public productionConfig: string[];
   public jobIds: string[];
   public selectedDataset: string;
-  public selectedDatasetIsNISARFormat: boolean = false;
+  public selectedDatasetIsNISARFormat = false;
 
 
   private subs = new SubSink();
@@ -71,14 +75,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public hyp3BaseUrl = this.hyp3.baseUrl;
   public hyp3BackendUrl: string;
 
-  public dataset: string = ''
-
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: services.ScreenSizeService,
-    private hyp3: services.Hyp3ApiService,
-  ) {
-  }
+  public dataset = ''
   ngOnInit() {
     this.subs.add(
       this.store$.select(filtersStore.getSelectedDatasetId).subscribe(

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
 
@@ -17,6 +17,11 @@ import * as services from '@services';
   styleUrls: ['./dataset-header.component.scss', '../header.component.scss'],
 })
 export class DatasetHeaderComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(services.ScreenSizeService);
+  prop = inject(services.PropertyService);
+  frameMapService = inject(services.FrameMapService);
+
   public datasets = models.datasetList;
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
   public breakpoint$ = this.screenSize.breakpoint$;
@@ -26,14 +31,6 @@ export class DatasetHeaderComponent implements OnInit, OnDestroy {
 
   public selectedDataset: string;
   public p = models.Props;
-
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: services.ScreenSizeService,
-    public prop: services.PropertyService,
-    public frameMapService: services.FrameMapService,
-
-  ) { }
 
   ngOnInit() {
     this.subs.add(

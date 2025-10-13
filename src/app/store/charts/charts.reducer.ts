@@ -5,7 +5,7 @@ import * as models from '@models';
 export interface ChartsState {
   showLines: boolean;
   showLinearFit: boolean;
-  seriesStates: { [key: string]: models.timeseriesChartItemState };
+  seriesStates: Record<string, models.timeseriesChartItemState>;
   outOfDate: boolean;
   baseReferenceDate: models.TimeSeriesData;
 }
@@ -25,11 +25,11 @@ export const chartsReducer = createReducer(
   on(chartActions.hideGraphLines, (state) => ({ ...state, showLines: false })),
   on(chartActions.setTimeseriesChecked, (state, { uuid, checked }) => {
     const seriesState = Object.values(state.seriesStates).reduce((prev, curr) => {
-      let index = curr?.frames?.findIndex(frame => {
+      const index = curr?.frames?.findIndex(frame => {
         return frame.uuid === uuid;
       });
       if(index > -1) {
-        let frames = [...curr.frames]
+        const frames = [...curr.frames]
         frames.splice(index, 1, {...curr.frames[index], checked})
         prev[curr.uuidSeries] = {...curr, frames }
       } else {
@@ -41,7 +41,7 @@ export const chartsReducer = createReducer(
     return { ...state, seriesStates: seriesState }
   }),
   on(chartActions.setTimeseriesStates, (state, { items }) => ({
-    ...state, seriesStates: items.reduce((prev: { [key: string]: models.timeseriesChartItemState }, curr) => {
+    ...state, seriesStates: items.reduce((prev: Record<string, models.timeseriesChartItemState>, curr) => {
       prev[curr.uuidSeries] = { uuidSeries: curr.uuidSeries, checked: true, color: curr.color,
         seriesNumber: curr.seriesNumber, seriesName: curr.seriesName, wkt: curr.wkt,
         geometry: curr.geometry, linearFit: curr.linearFit, drawMode: curr.drawMode }
@@ -58,7 +58,7 @@ export const chartsReducer = createReducer(
   }),
   on(chartActions.setAllTimeseriesChecked, (state, { checked }) => {
     const seriesStates = Object.values(state.seriesStates).reduce((prev, curr) => {
-      let frames = [...curr.frames].map(frame => ({...frame, checked}))
+      const frames = [...curr.frames].map(frame => ({...frame, checked}))
       prev[curr.uuidSeries] = { ...curr, checked, frames}
       return prev
     }, {});
@@ -91,11 +91,11 @@ export const chartsReducer = createReducer(
   }),
   on(chartActions.setTimeseriesValid, (state, {uuid, valid, error}) => {
     const seriesStates = Object.values(state.seriesStates).reduce((prev, curr) => {
-      let index = curr?.frames?.findIndex(frame => {
+      const index = curr?.frames?.findIndex(frame => {
         return frame.uuid === uuid;
       });
       if(index > -1) {
-        let frames = [...curr.frames]
+        const frames = [...curr.frames]
         frames.splice(index, 1, {...curr.frames[index], valid: valid, error: error})
         prev[curr.uuidSeries] = {...curr, frames }
       } else {

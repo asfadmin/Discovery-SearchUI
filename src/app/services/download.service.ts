@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError} from 'rxjs';
 import { SAVER, Saver } from '@services/saver.provider';
@@ -15,13 +15,12 @@ import { AppState } from '@store';
 
 @Injectable({ providedIn: 'root' })
 export class DownloadService {
+  private http = inject(HttpClient);
+  private save = inject<Saver>(SAVER);
+  private notificationService = inject(NotificationService);
+  private store$ = inject<Store<AppState>>(Store);
+
   public dir;
-  constructor(
-    private http: HttpClient,
-    @Inject(SAVER) private save: Saver,
-    private notificationService: NotificationService,
-    private store$: Store<AppState>
-  ) { }
   public hasDownloadedBursts = false;
 
   classicResp: Observable<DownloadStatus>;

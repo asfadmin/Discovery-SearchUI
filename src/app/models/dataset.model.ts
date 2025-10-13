@@ -6,7 +6,7 @@ export interface Dataset {
   name: string;
   subName: string;
   beta: boolean;
-  apiValue: {[paramName: string]: string};
+  apiValue: Record<string, string>;
   date: DateRange;
   infoUrl: string;
   citationUrl: string;
@@ -28,7 +28,7 @@ export interface Dataset {
   calibrationProductTypes?: ProductType[];
   shortNames?: ShortName[]; // For NISAR shortnames
   instruments?: {displayName: string, apiValue: string}[];
-  bandwidth?: {[band: string]: string[]};
+  bandwidth?: Record<string, string[]>;
   frameMap?: {
     ascending: string,
     descending: string
@@ -105,13 +105,13 @@ export const datasetList: Dataset[] = [
 
 export const datasetIds = datasetList.map(dataset => dataset.id);
 
-export const datasets: {[datasetID: string]: Dataset} = datasetList.reduce(
+export const datasets: Record<string, Dataset> = datasetList.reduce(
   (datasetsObj, dataset) => {
     datasetsObj[dataset.id] = dataset;
 
     return datasetsObj;
   },
-  {} as {[datasetID: string]: Dataset}
+  {} as Record<string, Dataset>
 );
 
 export const flightDirections = [

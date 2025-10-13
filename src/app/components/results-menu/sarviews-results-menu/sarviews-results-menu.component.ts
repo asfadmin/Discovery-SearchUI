@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, inject } from '@angular/core';
 
 import { combineLatest, Observable } from 'rxjs';
 
@@ -17,6 +17,10 @@ import { OpenFiltersMenu } from '@store/ui';
   styleUrls: ['./sarviews-results-menu.component.scss', '../results-menu.component.scss']
 })
 export class SarviewsResultsMenuComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+  private eventMonitoringService = inject(SarviewsEventsService);
+
   @Input() resize$: Observable<void>;
 
   public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
@@ -30,12 +34,6 @@ export class SarviewsResultsMenuComponent implements OnInit, OnDestroy {
   public sarviewsEvents$ = this.eventMonitoringService.filteredSarviewsEvents$();
 
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-    private eventMonitoringService: SarviewsEventsService,
-  ) { }
 
   ngOnInit() {
     this.subs.add(

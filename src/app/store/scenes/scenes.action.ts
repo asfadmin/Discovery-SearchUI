@@ -168,7 +168,7 @@ export class SetSarviewsEventProducts implements Action {
 export class SetImageBrowseProducts implements Action {
   public readonly type = ScenesActionType.SET_IMAGE_BROWSE_PRODUCTS;
 
-  constructor(public payload: {[product_id in string]: PinnedProduct}) {}
+  constructor(public payload: Record<string, PinnedProduct>) {}
 }
 
 export class AddCmrDataToOnDemandScenes implements Action {

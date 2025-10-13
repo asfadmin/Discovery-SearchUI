@@ -64,11 +64,11 @@ export class Hyp3JobService {
         if (job.job_type.id === 'ARIA_S1_GUNW') {
             let job_parameters = {}
             if (job.granules.length > 0) {
-                let g1 = moment.isMoment(job.granules[0].metadata.date) ? job.granules[0].metadata.date.format('YYYY-MM-DD') : moment(job.granules[0].metadata.date).format('YYYY-MM-DD')
-                let g2 = moment.isMoment(job.granules[1].metadata.date) ? job.granules[1].metadata.date.format('YYYY-MM-DD') : moment(job.granules[1].metadata.date).format('YYYY-MM-DD')
-                let swap = g1 > g2
-                let ref = swap ? g1 : g2;
-                let sec = swap ? g2 : g1;
+                const g1 = moment.isMoment(job.granules[0].metadata.date) ? job.granules[0].metadata.date.format('YYYY-MM-DD') : moment(job.granules[0].metadata.date).format('YYYY-MM-DD')
+                const g2 = moment.isMoment(job.granules[1].metadata.date) ? job.granules[1].metadata.date.format('YYYY-MM-DD') : moment(job.granules[1].metadata.date).format('YYYY-MM-DD')
+                const swap = g1 > g2
+                const ref = swap ? g1 : g2;
+                const sec = swap ? g2 : g1;
                 job_parameters = {
                 reference_date: ref,
                 secondary_date: sec,
@@ -126,7 +126,7 @@ export class Hyp3JobService {
             product['isDummyProduct'] = false
             product['metadata']['date'] = moment(job.job_parameters['reference_date'])
 
-            let product2 = this.dummyProduct();
+            const product2 = this.dummyProduct();
             product2['isDummyProduct'] = false
             product2['metadata']['date'] = moment(job.job_parameters['secondeary_date'])
           }
@@ -180,7 +180,7 @@ export class Hyp3JobService {
 
       const combinedProduct = this.combineJobAndCmrProduct(job, product);
 
-      newJobProducts[combinedProduct.id] = <models.CMRProduct>combinedProduct;
+      newJobProducts[combinedProduct.id] = combinedProduct as models.CMRProduct;
     });
 
     return newJobProducts;
@@ -203,7 +203,7 @@ export class Hyp3JobService {
       metadata: {
         ...product.metadata,
         fileName: jobFile.filename || '',
-        productType: <models.Hyp3JobType>job.job_type,
+        productType: job.job_type as models.Hyp3JobType,
         job
       },
     };

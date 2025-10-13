@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, inject } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 import { Subject } from 'rxjs';
@@ -25,6 +25,9 @@ enum PathFormInputType {
   styleUrls: ['./path-selector.component.scss']
 })
 export class PathSelectorComponent implements OnInit, OnDestroy {
+  prop = inject(PropertyService);
+  private store$ = inject<Store<AppState>>(Store);
+
   @ViewChild('pathForm', { static: true }) public pathForm: NgForm;
 
   private inputErrors$ = new Subject<PathFormInputType>();
@@ -37,7 +40,7 @@ export class PathSelectorComponent implements OnInit, OnDestroy {
   public frameEnd: number | null;
   public selectedDataset: string | null = '';
   
-  public selectedDatasetIsNISARFormat: boolean = false;
+  public selectedDatasetIsNISARFormat = false;
 
   private get pathStartControl() {
     return this.pathForm.form
@@ -62,11 +65,6 @@ export class PathSelectorComponent implements OnInit, OnDestroy {
   public p = Props;
   public shouldOmitSearchPolygon$ = this.store$.select(filtersStore.getShouldOmitSearchPolygon);
   private subs = new SubSink();
-
-  constructor(
-    public prop: PropertyService,
-    private store$: Store<AppState>
-  ) { }
 
   ngOnInit() {
     this.handlePathFrameErrors();

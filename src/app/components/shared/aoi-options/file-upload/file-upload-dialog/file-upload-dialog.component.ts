@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, inject } from '@angular/core';
 
 import { Subject, of } from 'rxjs';
 import { delay, tap, catchError } from 'rxjs/operators';
@@ -24,9 +24,16 @@ enum FileErrors {
   styleUrls: ['./file-upload-dialog.component.scss']
 })
 export class FileUploadDialogComponent implements OnInit, OnDestroy {
+  private mapService = inject(MapService);
+  private asfApiService = inject(AsfApiService);
+  private notificationService = inject(NotificationService);
+  private wktService = inject(WktService);
+  private screenSize = inject(ScreenSizeService);
+  private store$ = inject<Store<AppState>>(Store);
+
   @ViewChild('file', { static: true }) file;
 
-  public files: Set<File> = new Set();
+  public files = new Set<File>();
   public canBeClosed = true;
   public uploading = false;
 
@@ -36,15 +43,6 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
 
   public breakpoints = models.Breakpoints;
   public breakpoint$ = this.screenSize.breakpoint$;
-
-  constructor(
-    private mapService: MapService,
-    private asfApiService: AsfApiService,
-    private notificationService: NotificationService,
-    private wktService: WktService,
-    private screenSize: ScreenSizeService,
-    private store$: Store<AppState>
-  ) {}
 
   public ngOnInit(): void {
     this.subs.add(
@@ -97,7 +95,7 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
   }
 
   public onFilesAdded(): void {
-    const files: { [key: string]: File } = this.file.nativeElement.files;
+    const files: Record<string, File> = this.file.nativeElement.files;
 
     for (const key in files) {
       if (!isNaN(parseInt(key, 10))) {

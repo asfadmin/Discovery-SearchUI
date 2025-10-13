@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { MapService, WktService } from '@services';
 import { debounceTime, Subject, switchMap } from 'rxjs';
 import { Vector as VectorSource } from 'ol/source';
@@ -19,6 +19,11 @@ import * as models from '@models';
   styleUrls: ['./geocode-selector.component.scss']
 })
 export class GeocodeSelectorComponent implements OnInit, OnDestroy {
+  private http = inject(HttpClient);
+  private wkt = inject(WktService);
+  private store$ = inject<Store<AppState>>(Store);
+  private mapService = inject(MapService);
+
   @Output() geocodeWkt = new EventEmitter();
   public options = [];
   public search_key = '';
@@ -27,12 +32,6 @@ export class GeocodeSelectorComponent implements OnInit, OnDestroy {
   private vectorSource: VectorSource;
 
   private subs = new SubSink();
-
-  constructor(private http: HttpClient,
-    private wkt: WktService,
-    private store$: Store<AppState>,
-    private mapService: MapService
-  ) { }
 
   ngOnInit(): void {
     this.subs.add(
@@ -79,12 +78,12 @@ export class GeocodeSelectorComponent implements OnInit, OnDestroy {
 
   public onSelect(option) {
     this.search_key = option.name;
-    let feature: Feature = this.vectorSource.getFeatures().find(feat => feat.getId() === option.id);
+    const feature: Feature = this.vectorSource.getFeatures().find(feat => feat.getId() === option.id);
 
-    let zoomExtent = transformExtent(feature.getGeometry().getExtent(), 'EPSG:4326', this.mapService.epsg());
+    const zoomExtent = transformExtent(feature.getGeometry().getExtent(), 'EPSG:4326', this.mapService.epsg());
     this.mapService.zoomToExtent(zoomExtent);
 
-    let wktFeature = this.wkt.featureToWkt(feature, 'EPSG:4326');
+    const wktFeature = this.wkt.featureToWkt(feature, 'EPSG:4326');
     this.geocodeWkt.emit({ wkt: wktFeature, geocode: option.name });
   }
 

@@ -102,7 +102,7 @@
                 </ng-template>
 
                 <ng-template #summaryFragment>
-                  <span *ngIf="point.seriesName.toLowerCase().trim() == 'series'; else customSeriesName">
+                  <span *ngIf="point.seriesName.toLowerCase().trim() === 'series'; else customSeriesName">
                     {{'SERIES' | translate}}
                   </span>
                   <ng-template #customSeriesName>
@@ -112,7 +112,7 @@
                 </ng-template>
 
                 <ng-template #seriesFragment>
-                  <span *ngIf="point.seriesName.toLowerCase().trim() == 'series'; else customSeriesName">
+                  <span *ngIf="point.seriesName.toLowerCase().trim() === 'series'; else customSeriesName">
                     {{'SERIES' | translate}} {{point.seriesNumber}}
                     <div *ngIf="point.frames[0].number !== ''"  class="series-label">{{'FRAME' | translate}}: {{point.frames[0].number}}</div>
                     <span *ngIf="(point.frames | keyvalue).length>1">.{{idx+1}}</span>

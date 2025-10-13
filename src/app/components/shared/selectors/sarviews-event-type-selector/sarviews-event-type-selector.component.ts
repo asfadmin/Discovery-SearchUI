@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { SarviewsEventType } from '@models';
@@ -13,8 +13,8 @@ import { SubSink } from 'subsink';
   styleUrls: ['./sarviews-event-type-selector.component.scss']
 })
 export class SarviewsEventTypeSelectorComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
 
-  constructor(private store$: Store<AppState>) { }
 
   public currentEventTypes$ = this.store$.select(filterStore.getSarviewsEventTypes);
   public eventTypes = [SarviewsEventType.QUAKE, SarviewsEventType.VOLCANO];

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { interval, Subject, Observable, of } from 'rxjs';
@@ -18,13 +18,13 @@ import { NotificationService } from './notification.service';
   providedIn: 'root'
 })
 export class AuthService {
+  private env = inject(EnvironmentService);
+  private http = inject(HttpClient);
+  private notificationService = inject(NotificationService);
+  private store$ = inject<Store<AppState>>(Store);
+
   private bc: BroadcastChannel;
-  constructor(
-    private env: EnvironmentService,
-    private http: HttpClient,
-    private notificationService: NotificationService,
-    private store$: Store<AppState>,
-  ) {
+  constructor() {
     if (typeof BroadcastChannel !== 'undefined') {
       this.bc = new BroadcastChannel('asf-vertex');
       this.bc.onmessage = (_event: MessageEvent) => {

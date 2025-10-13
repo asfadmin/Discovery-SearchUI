@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, inject } from '@angular/core';
 import { Subject } from 'rxjs';
 import { tap, delay, map } from 'rxjs/operators';
 import moment from 'moment';
@@ -18,6 +18,11 @@ import * as models from '@models';
   styleUrls: ['./date-range.component.scss'],
 })
 export class DateRangeComponent implements OnInit, OnDestroy {
+  private notificationService = inject(NotificationService);
+  private dateAdapter = inject<DateAdapter<any>>(DateAdapter);
+  private screenSize = inject(ScreenSizeService);
+  private store$ = inject<Store<AppState>>(Store);
+
   public dateRangeForm = new UntypedFormGroup({
     StartDateControl: new UntypedFormControl(),
     EndDateControl: new UntypedFormControl()
@@ -42,13 +47,6 @@ export class DateRangeComponent implements OnInit, OnDestroy {
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
 
-  constructor(
-    private notificationService: NotificationService,
-    private dateAdapter: DateAdapter<any>,
-    private screenSize: ScreenSizeService,
-    private store$: Store<AppState>,
-  ) {}
-
   ngOnInit(): void {
 
     this.subs.add(
@@ -70,7 +68,7 @@ export class DateRangeComponent implements OnInit, OnDestroy {
         StartDateControl: this.startDate
       });
     }
-    if (!!this.endDate) {
+    if (this.endDate) {
       this.dateRangeForm.patchValue({
         EndDateControl: this.endDate
       });

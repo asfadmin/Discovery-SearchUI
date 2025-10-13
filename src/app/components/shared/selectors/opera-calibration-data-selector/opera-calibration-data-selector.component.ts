@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { SubSink } from 'subsink';
@@ -11,11 +11,9 @@ import { MatRadioChange } from '@angular/material/radio';
   styleUrls: ['./opera-calibration-data-selector.component.scss']
 })
 export class OperaCalibrationDataSelectorComponent implements OnInit, OnDestroy{
-  public useCalibrationData = false;
+  private store$ = inject<Store<AppState>>(Store);
 
-  constructor(
-    private store$: Store<AppState>,
-  ) {}
+  public useCalibrationData = false;
 
   private subs = new SubSink();
 

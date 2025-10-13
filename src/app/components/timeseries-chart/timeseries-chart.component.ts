@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren, ViewEncapsulation} from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren, ViewEncapsulation, inject } from '@angular/core';
 import * as d3 from 'd3';
 // import * as models from '@models';
 import {
@@ -46,6 +46,10 @@ const unSelectedColor = '#9F9F9F9F';
   encapsulation: ViewEncapsulation.None,
 })
 export class TimeseriesChartComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private language = inject(AsfLanguageService);
+  private netcdfService = inject(NetcdfService);
+
   // @ViewChild(CdkVirtualScrollViewport) scroll: CdkVirtualScrollViewport;
   scrollIndex = 1;
   @ViewChildren(CdkVirtualScrollViewport)
@@ -64,7 +68,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   // public viewPorts: QueryList<CdkVirtualScrollViewport>;
 
 
-  public json_data: string = '';
+  public json_data = '';
   private svg?: d3.Selection<SVGElement, {}, HTMLDivElement, any>;
   public dataSource: models.TimeSeriesChartPoint[] = [];
   public dataReadyForChart: DataReady[] = [];
@@ -109,10 +113,10 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private OperaDispStartDate = new Date('2016/07/2 00:00:00 UTC').getTime()
   private millisecondsPerYear = 3.17098e-11
 
-  public exportableData: { [index:string]: {}[]} = {}
+  public exportableData: Record<string, {}[]> = {}
 
   // private selectedScene: string;
-  @Input() isLoading: boolean = true;
+  @Input() isLoading = true;
   private showLines = true;
   private xAxisTitle = '';
   private yAxisTitle1 = '';
@@ -122,13 +126,6 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
   // private allGroup: string[];
   private baseData: models.TimeSeriesData;
-
-  constructor(
-    private store$: Store<AppState>,
-    private language: AsfLanguageService,
-    private netcdfService: NetcdfService
-
-  ) { }
 
   public ngOnInit(): void {
 
@@ -257,16 +254,16 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
   }
 
-  private refreshChart(chartStates: { [key: string]: models.timeseriesChartItemState }): void {
+  private refreshChart(chartStates: Record<string, models.timeseriesChartItemState>): void {
     const cache = this.netcdfService.getCache(this.flightDirection)
 
     const validPoints= Object.values(chartStates)
     .filter(
       value => value?.frames?.findIndex(frame => frame.valid) > -1
     )
-    let allPointsData: { point: {}, state: models.timeseriesChartItemState, frame: string, uuid: string }[] = [];
-    for(let series of validPoints) {
-      for(let frame of series.frames.filter(frame => frame.valid)) {
+    const allPointsData: { point: {}, state: models.timeseriesChartItemState, frame: string, uuid: string }[] = [];
+    for(const series of validPoints) {
+      for(const frame of series.frames.filter(frame => frame.valid)) {
         allPointsData.push(
           { point: cache[frame.uuid], state: series , frame: frame.number, 'uuid': frame.uuid}
         )
@@ -335,13 +332,13 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
     this.dataReadyForChart = []
     this.exportableData = {}
     if (data?.[Symbol.iterator]) {
-      let aoi: string = '';
-        for (let result of data) {
+      let aoi = '';
+        for (const result of data) {
           aoi = '';
           // pre-process data, remove test v_2 files from results
           // won't be necessary in production
-          if (!!result.point)  {
-            for (let key of Object.keys(result.point)) {
+          if (result.point)  {
+            for (const key of Object.keys(result.point)) {
               if (key.startsWith('v_2_')) {
                 delete result.point[key];
               }
@@ -351,8 +348,8 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
             }
             aoi = result.state.wkt;
             this.timeSeriesData = [];
-            for (let key of Object.keys(result.point).filter(x => x !== 'mean' && x !== 'aoi')) {
-              let daDate = new Date(result.point[key].secondary_datetime).valueOf();
+            for (const key of Object.keys(result.point).filter(x => x !== 'mean' && x !== 'aoi')) {
+              const daDate = new Date(result.point[key].secondary_datetime).valueOf();
               if (daDate < this.startDate?.valueOf() || daDate > this.endDate?.valueOf()) {
                 // console.log("New Date Range Needed?:", daDate )
                 continue;
@@ -388,7 +385,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
               if (result.state.checked) {
                 const series_key = result.state.seriesNumber;
-                if (!!!this.exportableData[series_key]) {
+                if (!this.exportableData[series_key]) {
                   this.exportableData[series_key] = []
                 }
                 const slice = {
@@ -530,7 +527,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
 
     // Add the lines
 
-      let line = d3.line<models.TimeSeriesData>()
+      const line = d3.line<models.TimeSeriesData>()
         .x(function (d) { return self.x(Date.parse(d.date)); })
         .y(function (d) { return self.y(d.short_wavelength_displacement); })
 
@@ -621,11 +618,11 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
         this.linearFitLine = this.svg.append('g')
           .attr('id', 'linesParent2')
           .attr('clip-path', 'url(#clip)')
-        for(let linearFitData of this.dataReadyForChart) {
-            let regression = linearRegression(linearFitData.values.filter((x) => !x.is_masked).map((x) => [Date.parse(x.date), x.short_wavelength_displacement]));
-            let lineregression = linearRegressionLine(regression);
-            let yIntercept = lineregression(this.OperaDispStartDate)
-            let formula = isNaN(regression.slope) ? this.language.translate.instant('LINEAR_FIT_NOT_AVAILABLE')
+        for(const linearFitData of this.dataReadyForChart) {
+            const regression = linearRegression(linearFitData.values.filter((x) => !x.is_masked).map((x) => [Date.parse(x.date), x.short_wavelength_displacement]));
+            const lineregression = linearRegressionLine(regression);
+            const yIntercept = lineregression(this.OperaDispStartDate)
+            const formula = isNaN(regression.slope) ? this.language.translate.instant('LINEAR_FIT_NOT_AVAILABLE')
             : `Displacement [m] = ${(regression.slope / self.millisecondsPerYear).toFixed(4)} [m/yr]*time ${yIntercept < 0 ? '-' : '+'} ${Math.abs(yIntercept).toFixed(4)} [m]`
 
           this.bestFitItems.push({
@@ -636,7 +633,7 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
           })
 
 
-          let line = d3.line()
+          const line = d3.line()
             .x((d) => { return this.x(d[0]) })
             .y((d) => { return this.y(d[1]) });
           this.linearFitLine.append("path")
@@ -784,12 +781,12 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
       .style('opacity', (d: DataReady) => d.opacity)
 
     if(this.linearFitLine && this.showLinearFit) {
-      let line2 = d3.line()
+      const line2 = d3.line()
       .x( (d) => { return newX(d[0]) })
       .y( (d) =>  { return newY(d[1]) });
       this.linearFitLine.selectChildren().each(function () {
         d3.select(this).attr('d', (d) => {
-          let lineregression = linearRegressionLine({ slope: d[0], yIntercept: d[1] });
+          const lineregression = linearRegressionLine({ slope: d[0], yIntercept: d[1] });
           const xDomain = newX.domain()
           const startX = xDomain[0].getTime()
           const startY = lineregression(startX)

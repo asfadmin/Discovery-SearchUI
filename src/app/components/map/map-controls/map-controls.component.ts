@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { SubSink } from 'subsink';
 import { Store } from '@ngrx/store';
 
@@ -22,6 +22,11 @@ import { ToggleBrowseOverlay} from '@store/map';
   styleUrls: ['./map-controls.component.scss']
 })
 export class MapControlsComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private mapService = inject(services.MapService);
+  private browseOverlayService = inject(services.BrowseOverlayService);
+  private eventMonitoringService = inject(services.SarviewsEventsService);
+
 
   public view$ = this.store$.select(mapStore.getMapView);
   public browseOverlayOpacity$ = this.store$.select(mapStore.getBrowseOverlayOpacity);
@@ -65,13 +70,6 @@ export class MapControlsComponent implements OnInit, OnDestroy {
     map(([overlayEnabled, multipleBrowses]) => overlayEnabled && multipleBrowses)
   );
 
-  constructor(
-    private store$: Store<AppState>,
-    private mapService: services.MapService,
-    private browseOverlayService: services.BrowseOverlayService,
-    private eventMonitoringService: services.SarviewsEventsService,
-  ) { }
-
   ngOnInit() {
 
     this.store$.dispatch(new mapStore.SetVelocityOverlayOpacity(0.8));
@@ -100,11 +98,11 @@ export class MapControlsComponent implements OnInit, OnDestroy {
       combineLatest([this.selectedScene$, this.selectedEvent$]).subscribe(
         ([scene, event]) => {
           if (this.searchType === SearchType.SARVIEWS_EVENTS) {
-            if (!!event) {
+            if (event) {
               this.currentBrowseID = event.product_id;
             }
            } else {
-             if (!!scene) {
+             if (scene) {
               this.currentBrowseID = scene.id;
              }
             }
@@ -195,7 +193,7 @@ export class MapControlsComponent implements OnInit, OnDestroy {
     }
 
     this.browseIndex = newIndex;
-    let [url, wkt] = this.searchType === SearchType.SARVIEWS_EVENTS
+    const [url, wkt] = this.searchType === SearchType.SARVIEWS_EVENTS
     ? [this.selectedEventProducts[this.browseIndex].files.browse_url, this.selectedEventProducts[this.browseIndex].files.browse_url]
     : [this.selectedScene.browses[this.browseIndex], this.selectedScene.metadata.polygon];
 

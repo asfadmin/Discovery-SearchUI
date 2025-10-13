@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { EventProductSortDirection, EventProductSortType } from '@models';
 import { Store } from '@ngrx/store';
 
@@ -12,6 +12,8 @@ import { SubSink } from 'subsink';
   styleUrls: ['./event-product-sort-selector.component.scss']
 })
 export class EventProductSortSelectorComponent implements OnInit {
+  private store$ = inject<Store<AppState>>(Store);
+
 
   private subs = new SubSink();
 
@@ -22,8 +24,6 @@ export class EventProductSortSelectorComponent implements OnInit {
   public sortTypes = Object.values(EventProductSortType);
   public sortDirections = Object.values(EventProductSortDirection);
   public sortDescending = true;
-
-  constructor(private store$: Store<AppState>) { }
 
   ngOnInit(): void {
     this.subs.add(

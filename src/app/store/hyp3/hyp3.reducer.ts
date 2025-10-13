@@ -138,7 +138,7 @@ export function hyp3Reducer(state = initState, action: Hyp3Actions): Hyp3State {
     }
 
     case Hyp3ActionType.SET_USER: {
-      let temp_user = {
+      const temp_user = {
         ...action.payload
       }
       if(state.debug_status) {

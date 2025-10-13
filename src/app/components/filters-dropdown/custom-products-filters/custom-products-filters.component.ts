@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
@@ -21,6 +21,9 @@ enum FilterPanel {
   styleUrls: ['./custom-products-filters.component.scss']
 })
 export class CustomProductsFiltersComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
   public areResultsLoaded: boolean;
@@ -34,11 +37,6 @@ export class CustomProductsFiltersComponent implements OnInit, OnDestroy {
   hyp3JobIds: string[];
 
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService
-  ) { }
 
   ngOnInit(): void {
     this.subs.add(

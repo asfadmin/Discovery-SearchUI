@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { of } from 'rxjs';
 import { filter, map, switchMap, catchError } from 'rxjs/operators';
@@ -14,15 +14,13 @@ import { NotificationService } from './notification.service';
   providedIn: 'root'
 })
 export class PolygonValidationService {
-  private polygons: Set<string> = new Set([]);
-  private isUpdatedFromRepair = false;
+  private mapService = inject(MapService);
+  private asfApiService = inject(AsfApiService);
+  private wktService = inject(WktService);
+  private notificationService = inject(NotificationService);
 
-  constructor(
-    private mapService: MapService,
-    private asfApiService: AsfApiService,
-    private wktService: WktService,
-    private notificationService: NotificationService,
-  ) { }
+  private polygons = new Set<string>([]);
+  private isUpdatedFromRepair = false;
 
   public validate(): void {
     this.mapService.searchPolygon$.pipe(

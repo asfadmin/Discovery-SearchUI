@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef, inject } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { ResizeEvent } from 'angular-resizable-element';
 
@@ -25,6 +25,10 @@ enum CardViews {
   styleUrls: ['./sbas-results-menu.component.scss',  '../results-menu.component.scss']
 })
 export class SBASResultsMenuComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+  datasetForProduct = inject(DatasetForProductService);
+
 
   @ViewChild('listCard', {read: ElementRef}) listCardView: ElementRef;
   @ViewChild('chartCard', {read: ElementRef}) chartCardView: ElementRef;
@@ -52,11 +56,6 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
   public zoomToFitChart$ =  new Subject<void>();
 
   public isDisconnected = false;
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-    public datasetForProduct: DatasetForProductService,
-  ) { }
 
   ngOnInit(): void {
     this.subs.add(

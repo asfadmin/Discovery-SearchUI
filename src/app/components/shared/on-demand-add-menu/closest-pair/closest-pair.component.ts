@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { SubSink } from 'subsink';
 import * as models from '@models';
 import { Store } from '@ngrx/store';
@@ -14,6 +14,9 @@ import { getTemporalRange } from '@store/filters';
   styleUrls: ['./closest-pair.component.scss']
 })
 export class ClosestPairComponent implements OnInit {
+  private store$ = inject<Store<AppState>>(Store);
+  private pairService = inject(PairService);
+
 
   public scenes: CMRProduct[] = [];
   public points = 1;
@@ -25,9 +28,6 @@ export class ClosestPairComponent implements OnInit {
   public AutoRift = models.hyp3JobTypes.AUTORIFT;
 
   private subs = new SubSink();
-
-  constructor(private store$: Store<AppState>,
-    private pairService: PairService, ) { }
 
   ngOnInit(): void {
     this.subs.add(

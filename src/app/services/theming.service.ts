@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class ThemingService {
-  public theme$: BehaviorSubject<string> = new BehaviorSubject('light');
+  public theme$ = new BehaviorSubject<string>('light');
 
   constructor() {
     const darkModeOn =
@@ -25,7 +25,7 @@ export class ThemingService {
   }
 
   public setTheme(themeName: string): void {
-    let body = document.getElementsByTagName("body")[0];
+    const body = document.getElementsByTagName("body")[0];
     // removes all classes from body, probably not best for later on
     body.removeAttribute('class');
     body.classList.add(themeName);

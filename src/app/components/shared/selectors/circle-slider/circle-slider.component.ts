@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, inject } from '@angular/core';
 import * as d3 from 'd3';
 import * as models from '@models';
 import { ScreenSizeService } from '@services';
@@ -9,6 +9,8 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./circle-slider.component.scss']
 })
 export class CircleSliderComponent implements OnInit, OnChanges, OnDestroy {
+  private screenSize = inject(ScreenSizeService);
+
 
 
   @Input() maxValue = 365;
@@ -39,10 +41,6 @@ export class CircleSliderComponent implements OnInit, OnChanges, OnDestroy {
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
-
-  constructor(
-    private screenSize: ScreenSizeService,
-  ) { }
 
   ngOnInit(): void {
     this.startAngle = this.getAngle(this.startValue);

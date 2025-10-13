@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
@@ -23,6 +23,9 @@ enum FilterPanel {
   styleUrl: './timeseries-filters.component.scss'
 })
 export class TimeseriesFiltersComponent implements OnDestroy, OnInit {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
   public areResultsLoaded: boolean;
@@ -35,11 +38,6 @@ export class TimeseriesFiltersComponent implements OnDestroy, OnInit {
   customExpandedHeight = '30px';
 
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-  ) { }
 
   ngOnInit(): void {
     this.subs.add(

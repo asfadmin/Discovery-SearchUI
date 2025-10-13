@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, OnDestroy, inject } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { SubSink } from 'subsink';
 
@@ -18,6 +18,10 @@ import { ScenesService } from '@services';
   styleUrls: ['./project-name-selector.component.scss']
 })
 export class ProjectNameSelectorComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private scenesService = inject(ScenesService);
+  private notificationService = inject(NotificationService);
+
   @ViewChild('projectNameForm') public projectNameForm: NgForm;
   @Input() processName = false;
 
@@ -30,12 +34,6 @@ export class ProjectNameSelectorComponent implements OnInit, OnDestroy {
   public filterValue: string | null = null;
   private subs = new SubSink();
   readonly maxProjectNameLength = 100;
-
-  constructor(
-    private store$: Store<AppState>,
-    private scenesService: ScenesService,
-    private notificationService: NotificationService,
-    ) { }
 
   ngOnInit(): void {
     this.handleNameErrors();

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Hyp3ApiService, NotificationService, UserDataService } from '@services';
@@ -14,6 +14,12 @@ import { ValidationError } from 'xml2js';
   styleUrl: './processing-signup.component.scss'
 })
 export class ProcessingSignupComponent implements OnInit {
+  private formBuilder = inject(FormBuilder);
+  private userService = inject(UserDataService);
+  private hyp3Service = inject(Hyp3ApiService);
+  private notificationService = inject(NotificationService);
+  private store$ = inject(Store);
+
   public signupForm = this.formBuilder.group({
     infoConfirmation: [false, Validators.requiredTrue],
     useCase: ['', Validators.required],
@@ -34,14 +40,6 @@ export class ProcessingSignupComponent implements OnInit {
 
   public submitButtonTooltip = 'Must confirm user information as well as write use case.';
   public accessCodeErrorMessage = '';
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private userService: UserDataService,
-    private hyp3Service: Hyp3ApiService,
-    private notificationService: NotificationService,
-    private store$: Store,
-  ) { }
 
   ngOnInit(): void {
     this.store$.select(userStore.getUserAuth).subscribe(userAuth => {

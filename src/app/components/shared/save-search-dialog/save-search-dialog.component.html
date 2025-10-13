@@ -5,7 +5,7 @@
     <form #saveSearchName="ngForm">
       <mat-form-field [class.invalid-input-animation]="isNameError" hintLabel="Max 20 {{ 'CHARACTERS' | translate }}">
         <input type="text"
-               autofocus
+              
                #saveNameInput="ngModel" ngModel
                name="searchNameInput"
                placeholder="{{ (saveTypeName | uppercase | translate) + ' ' + ( 'NAME' | translate) }}"

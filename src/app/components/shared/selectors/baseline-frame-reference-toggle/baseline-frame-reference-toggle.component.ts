@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { SharedModule } from "@shared";
 import { beta } from '@models';
 import * as filtersStore from '@store/filters';
@@ -21,12 +21,12 @@ import { FormsModule } from '@angular/forms';
     styleUrl: './baseline-frame-reference-toggle.component.scss'
 })
 export class BaselineFrameReferenceToggleComponent implements OnInit {
+    private store$ = inject<Store<AppState>>(Store);
+
 
     public datasets = [beta];
     public selectedDataset = 'SENTINEL-1 INTERFEROGRAM (BETA)'
-    public shouldUseFramesForReference: boolean = false;
-
-    constructor(private store$: Store<AppState>) { }
+    public shouldUseFramesForReference = false;
 
     ngOnInit(): void {
         this.store$.select(filtersStore.getShouldUseFramesForReference).subscribe(

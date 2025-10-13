@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -16,6 +16,10 @@ import { PairService, ScenesService } from '@services';
   styleUrls: ['./max-results-selector.component.scss']
 })
 export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private pairService = inject(PairService);
+  private sceneService = inject(ScenesService);
+
   public maxResults: number;
   public numberOfScenes: number;
   public isMaxResultsLoading: boolean;
@@ -26,16 +30,10 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
   public searchTypes = models.SearchType;
   public sbasProducts: models.CMRProduct[];
 
-  public burstXMLFileCount: number = 0;
+  public burstXMLFileCount = 0;
 
   public possibleMaxResults = [250, 1000];
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-    private pairService: PairService,
-    private sceneService: ScenesService,
-  ) {}
 
   ngOnInit() {
     this.subs.add(

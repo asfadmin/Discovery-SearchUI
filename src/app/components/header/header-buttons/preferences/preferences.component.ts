@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
@@ -23,6 +23,15 @@ import * as services from '@services';
   styleUrls: ['./preferences.component.scss']
 })
 export class PreferencesComponent implements OnInit, OnDestroy {
+  private dialogRef = inject<MatDialogRef<PreferencesComponent>>(MatDialogRef);
+  private store$ = inject<Store<AppState>>(Store);
+  private hyp3 = inject(Hyp3ApiService);
+  env = inject(services.EnvironmentService);
+  private themeService = inject(ThemingService);
+  translate = inject(TranslateService);
+  language = inject(AsfLanguageService);
+  private screenSize = inject(services.ScreenSizeService);
+
   @Output() selectedChange = new EventEmitter<string>();
 
   public breakpoint: models.Breakpoints;
@@ -62,17 +71,6 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   public currentFilterDisplayNames = {};
 
   private subs = new SubSink();
-
-  constructor(
-    private dialogRef: MatDialogRef<PreferencesComponent>,
-    private store$: Store<AppState>,
-    private hyp3: Hyp3ApiService,
-    public env: services.EnvironmentService,
-    private themeService: ThemingService,
-    public translate: TranslateService,
-    public language: AsfLanguageService,
-    private screenSize: services.ScreenSizeService,
-  ) { }
 
   ngOnInit() {
 

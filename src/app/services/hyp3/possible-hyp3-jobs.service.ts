@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { combineLatest, of } from 'rxjs';
 import { map, switchMap, withLatestFrom } from 'rxjs/operators';
@@ -18,6 +18,10 @@ import {
   providedIn: 'root'
 })
 export class PossibleHyp3JobsService {
+  private store$ = inject<Store<AppState>>(Store);
+  private scenesService = inject(ScenesService);
+  private pairService = inject(PairService);
+
   private products$ = this.scenesService.products$();
   public pairs$ = this.pairService.pairs$;
 
@@ -94,10 +98,4 @@ export class PossibleHyp3JobsService {
       }
     })
   );
-
-  constructor(
-    private store$: Store<AppState>,
-    private scenesService: ScenesService,
-    private pairService: PairService,
-  ) { }
 }

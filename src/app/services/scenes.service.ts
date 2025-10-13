@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { Observable, combineLatest } from 'rxjs';
 import {  map } from 'rxjs/operators';
@@ -28,10 +28,9 @@ import { NotificationService } from './notification.service';
   providedIn: 'root'
 })
 export class ScenesService {
-  constructor(
-    private store$: Store<AppState>,
-    private notificationService: NotificationService,
-  ) { }
+  private store$ = inject<Store<AppState>>(Store);
+  private notificationService = inject(NotificationService);
+
 
   public products$(): Observable<CMRProduct[]> {
     return (
@@ -170,7 +169,7 @@ export class ScenesService {
         return scenes
           .filter(scene => {
             const job = scene.metadata.job;
-            if(!!job) {
+            if(job) {
               const statusCode = job.status_code;
               return statuses.has(statusCode)
             }

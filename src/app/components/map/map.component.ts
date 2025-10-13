@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild, inject } from '@angular/core';
 
 import {Store} from '@ngrx/store';
 import {combineLatest, distinctUntilChanged, Observable} from 'rxjs';
@@ -49,6 +49,15 @@ enum FullscreenControls {
   styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements OnInit, OnDestroy  {
+  private store$ = inject<Store<AppState>>(Store);
+  private mapService = inject(MapService);
+  private wktService = inject(WktService);
+  private screenSize = inject(ScreenSizeService);
+  private scenesService = inject(ScenesService);
+  private eventMonitoringService = inject(SarviewsEventsService);
+  dialog = inject(MatDialog);
+  private pointHistoryService = inject(PointHistoryService);
+
   @Output() loadUrlState = new EventEmitter<void>();
   @ViewChild('overlay', { static: true }) overlayRef: ElementRef;
   @ViewChild('map', { static: true }) mapRef: ElementRef;
@@ -98,17 +107,6 @@ export class MapComponent implements OnInit, OnDestroy  {
   private chartStates: models.timeseriesChartItemState[] = [];
   //@ts-ignore
   private selectedSeries: any = null;
-
-  constructor(
-    private store$: Store<AppState>,
-    private mapService: MapService,
-    private wktService: WktService,
-    private screenSize: ScreenSizeService,
-    private scenesService: ScenesService,
-    private eventMonitoringService: SarviewsEventsService,
-    public dialog: MatDialog,
-    private pointHistoryService: PointHistoryService,
-  ) {}
 
   public buildOnDemandStack() {
         // let id = feature.get('id')
@@ -199,14 +197,14 @@ export class MapComponent implements OnInit, OnDestroy  {
       )
     );
 
-    this.tooltip = (<any[]>tippy('#map', {
+    this.tooltip = (tippy('#map', {
       content: 'Click to start drawing',
       offset: '15, 0',
       hideOnClick: false,
       placement: 'bottom-end',
       followCursor: true,
       plugins: [followCursor]
-    })).pop();
+    }) as any[]).pop();
 
     this.overlay = new Overlay({
       element: this.overlayRef.nativeElement,
@@ -237,7 +235,7 @@ export class MapComponent implements OnInit, OnDestroy  {
         this.store$.select(filtersStore.getPathRange),
         this.store$.select(searchStore.getSearchType),
       ]).subscribe(([enabled, datasetId, directions, frameRange, pathRange, searchType]) => {
-        let dataset = models.datasets[datasetId];
+        const dataset = models.datasets[datasetId];
         if(enabled && !dataset.properties.find((a) => a === models.Props.FRAME_ORDERING)) {
           // this dataset doesn't support frame ordering, disable
           this.store$.dispatch(new uiStore.SetFrameSelection(false))
@@ -343,8 +341,8 @@ export class MapComponent implements OnInit, OnDestroy  {
 
     this.subs.add(
       this.mapService.newSelectedDisplacement$.subscribe(point => {
-        let format = new WKT();
-        let wktRepresentation  = format.writeGeometry(point);
+        const format = new WKT();
+        const wktRepresentation  = format.writeGeometry(point);
         let uuid = null;
         this.pointHistoryService.getHistory().findIndex((thing) => {
           if(thing.point === point) {
@@ -426,7 +424,7 @@ export class MapComponent implements OnInit, OnDestroy  {
         map(([view, _]) => view)
       ).subscribe(
         ([view, layerType]) => {
-          this.setMapWith(<models.MapViewType>view, <models.MapLayerTypes>layerType);
+          this.setMapWith((view as models.MapViewType), (layerType as models.MapLayerTypes));
           this.loadUrlState.emit();
           this.store$.dispatch(new mapStore.MapInitialized());
         }
@@ -486,12 +484,12 @@ export class MapComponent implements OnInit, OnDestroy  {
     this.subs.add(
       scenesLayerAfterInitialization$.pipe(
         tap(([view, mapLayerType]) =>
-          this.setMapWith(<models.MapViewType>view, <models.MapLayerTypes>mapLayerType)
+          this.setMapWith((view as models.MapViewType), (mapLayerType as models.MapLayerTypes))
         ),
         switchMap(_ =>
           combineLatest([
             this.mapService.searchPolygon$.pipe(
-              map(wkt => !!wkt ? this.wktService.wktToFeature(wkt, this.mapService.epsg()) : null)),
+              map(wkt => wkt ? this.wktService.wktToFeature(wkt, this.mapService.epsg()) : null)),
           this.scenesToFeatures(this.mapService.epsg()),
           ])
         ),
@@ -504,7 +502,7 @@ export class MapComponent implements OnInit, OnDestroy  {
             polygonFeatures = features.filter(feature => intersectionMethod(searchPolygon, feature));
           }
           if(this.searchType === this.searchTypes.DISPLACEMENT) {
-            let vectorFeature = new Feature();
+            const vectorFeature = new Feature();
             return this.featuresToSource([vectorFeature], polygonStyle.staticAOI)
           }
 
@@ -531,7 +529,7 @@ export class MapComponent implements OnInit, OnDestroy  {
     );
 
     return selectedAfterInitialization$.pipe(
-      tap(scene => !!scene ? this.mapService.clearSelectedScene() : null),
+      tap(scene => scene ? this.mapService.clearSelectedScene() : null),
       filter(g => g !== null),
     );
   }

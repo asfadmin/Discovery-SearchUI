@@ -3,7 +3,7 @@ import * as moment from 'moment';
 import { Hyp3Job } from './hyp3';
 
 export type CMRProductPair = CMRProduct[];
-export type CMRProductsById = {[productId: string]: CMRProduct}
+export type CMRProductsById = Record<string, CMRProduct>;
 
 export interface CMRProduct {
   name: string;
@@ -104,7 +104,7 @@ export interface NISARMetadata {
   sideBandPolarization: string,
   mainBandPolarization: string,
   rangeBandwidth: string,
-  sizeMB?: {[key: string]: {bytes: number, format: string}}
+  sizeMB?: Record<string, {bytes: number, format: string}>
 }
 
 export enum FlightDirection {

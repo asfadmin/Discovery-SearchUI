@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
@@ -9,10 +9,9 @@ import { EnvironmentService } from './environment.service';
   providedIn: 'root'
 })
 export class UnzipApiService {
-  constructor(
-    private env: EnvironmentService,
-    private http: HttpClient
-  ) { }
+  private env = inject(EnvironmentService);
+  private http = inject(HttpClient);
+
 
   public get apiUrl() {
     return this.env.currentEnv.unzip;

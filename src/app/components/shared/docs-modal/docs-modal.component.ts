@@ -18,7 +18,7 @@
 //      url="https://docs.asf.alaska.edu/vertex/manual/#date-filters">
 //    </app-docs-modal>
 
-import { Component, Input, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, inject } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { TranslateService } from "@ngx-translate/core";
@@ -36,10 +36,14 @@ export interface DialogData {
   styleUrls: ['./docs-modal.component.scss']
 })
 export class DocsModalComponent implements OnInit, OnDestroy {
+  dialog = inject(MatDialog);
+  translate = inject(TranslateService);
+  private _sanitizer = inject(DomSanitizer);
+
   @Input() url: string;
   @Input() text: string;
   @Input() custStyle: string;
-  @Input() icon: string = 'help_outline';
+  @Input() icon = 'help_outline';
   @Input() description: string;
   @Input() tooltip: string;
 
@@ -47,11 +51,6 @@ export class DocsModalComponent implements OnInit, OnDestroy {
   public safeDocURL: any;
 
   public subs = new SubSink();
-
-  constructor(public dialog: MatDialog,
-              public translate: TranslateService,
-              private _sanitizer: DomSanitizer) {
-  }
 
   ngOnInit(): void {
     this.updateLink();
@@ -62,7 +61,7 @@ export class DocsModalComponent implements OnInit, OnDestroy {
 
   private updateLink(): void {
     this.docURL = (this.url) ? this.url : 'https://docs.asf.alaska.edu';
-    let tempURL = this.docsLanguageAdjust(this.docURL);
+    const tempURL = this.docsLanguageAdjust(this.docURL);
     this.safeDocURL = this._sanitizer.bypassSecurityTrustResourceUrl(tempURL);
   }
 
@@ -93,7 +92,7 @@ export class DocsModalComponent implements OnInit, OnDestroy {
   }
 
   public docsLanguageAdjust(url: string): string {
-    let langCode = this.translate.currentLang;
+    const langCode = this.translate.currentLang;
     if (langCode === 'es') {
       url = this.insertLangCode(url, langCode);
     }
@@ -101,7 +100,7 @@ export class DocsModalComponent implements OnInit, OnDestroy {
   }
 
   public insertLangCode(url: string, langCode: string): string {
-    let newUrl = url.replace('.edu/', '.edu/' + langCode + '/');
+    const newUrl = url.replace('.edu/', '.edu/' + langCode + '/');
     return newUrl;
   }
 
@@ -117,7 +116,8 @@ export class DocsModalComponent implements OnInit, OnDestroy {
   styleUrls: ['docs-modal-iframe.scss']
 })
 export class DocsModalIframeComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+  data = inject<DialogData>(MAT_DIALOG_DATA);
+
   public openDoc() {
     window.open(this.data.rawUrl, '_blank');
   }

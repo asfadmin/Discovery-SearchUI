@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 
 import { Observable, of, first, catchError, map, forkJoin } from 'rxjs';
@@ -16,16 +16,14 @@ import { AppState } from '@store';
   providedIn: 'root'
 })
 export class Hyp3ApiService {
+  private http = inject(HttpClient);
+  private notifcationService = inject(NotificationService);
+  private store$ = inject<Store<AppState>>(Store);
+
   private hyp3ApiUrl = 'https://hyp3-api.asf.alaska.edu';
   private baseHyp3ApiUrl = 'https://hyp3-api.asf.alaska.edu';
 
   private costs: models.Hyp3Costs;
-
-  constructor(
-    private http: HttpClient,
-    private notifcationService: NotificationService,
-    private store$: Store<AppState>,
-  ) { }
 
   public get apiUrl() {
     return this.hyp3ApiUrl;
@@ -143,7 +141,7 @@ export class Hyp3ApiService {
 
         const { jobs, next } = resp;
 
-        const hyp3Jobs = (<models.Hyp3Job[]>jobs).map(job => ({
+        const hyp3Jobs = (jobs as models.Hyp3Job[]).map(job => ({
           ...job,
           expiration_time: moment.utc(job.expiration_time),
           request_time: moment.utc(job.request_time)
@@ -200,7 +198,7 @@ export class Hyp3ApiService {
         return byJobType;
       }, {});
 
-      return <models.Hyp3Costs>byType;
+      return byType as models.Hyp3Costs;
     } else {
       return costsResp;
     }
@@ -212,7 +210,7 @@ export class Hyp3ApiService {
         product => this.isHyp3able(product, jobType)
       );
 
-      const byProdType: { [key: string]: models.CMRProduct[][] } = jobType.productTypes.reduce(
+      const byProdType: Record<string, models.CMRProduct[][]> = jobType.productTypes.reduce(
         (types, prodType) => {
           prodType.productTypes.forEach(pt => {
             types[pt] = [];
@@ -233,14 +231,14 @@ export class Hyp3ApiService {
       });
 
       const byProductType: models.Hyp3ableByProductType[] = Object.entries(byProdType).map(([productType, prods]) => ({
-        productType, products: <any>prods
+        productType, products: prods as any
       }));
 
       return {
         jobType,
         byProductType,
         total: Object.values(byProdType).reduce(
-          (sum, prods) => sum + (<any>prods).length, 0
+          (sum, prods) => sum + (prods as any).length, 0
         )
       };
     }).filter(hyp3able => hyp3able.total > 0);
@@ -311,14 +309,14 @@ export class Hyp3ApiService {
       const fixedCost = cost;
       return fixedCost.cost;
     } else if ('cost_table' in cost) {
-      const selectedCostValue = <number>cost.cost_parameters.reduce(
+      const selectedCostValue = cost.cost_parameters.reduce(
         (costLookup, parameterKey) => {
           const lookupValue = options[parameterKey];
 
           return costLookup[lookupValue];
         },
         cost.cost_table
-      );
+      ) as number;
 
       return selectedCostValue || 1;
     } else {

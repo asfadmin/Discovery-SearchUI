@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
@@ -25,10 +25,13 @@ enum FilterPanel {
   styleUrls: ['./sbas-filters.component.scss']
 })
 export class SbasFiltersComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
   public areResultsLoaded: boolean;
-  public shouldUseFramesForReference: boolean = false;
+  public shouldUseFramesForReference = false;
 
   public datasets = [models.beta];
   public selectedDataset = 'SENTINEL-1 INTERFEROGRAM (BETA)'
@@ -41,11 +44,6 @@ export class SbasFiltersComponent implements OnInit, OnDestroy {
   customExpandedHeight = '30px';
 
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-  ) { }
 
   ngOnInit(): void {
     this.subs.add(

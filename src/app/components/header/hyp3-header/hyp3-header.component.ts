@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -14,13 +14,11 @@ import * as services from '@services';
   styleUrls: ['./hyp3-header.component.scss', '../header.component.scss']
 })
 export class Hyp3HeaderComponent implements OnInit {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(services.ScreenSizeService);
+
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
-
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: services.ScreenSizeService,
-  ) { }
 
   ngOnInit(): void {
   }

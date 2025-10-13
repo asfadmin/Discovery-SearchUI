@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, Inject, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, HostListener, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -48,6 +48,33 @@ import { MAT_MOMENT_DATE_FORMATS } from "@angular/material-moment-adapter";
   ]
 })
 export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
+  private store$ = inject<Store<AppState>>(Store);
+  private actions$ = inject(ActionsSubject);
+  private urlStateService = inject(services.UrlStateService);
+  private searchParams$ = inject(services.SearchParamsService);
+  private polygonValidationService = inject(services.PolygonValidationService);
+  private asfSearchApi = inject(services.AsfApiService);
+  private authService = inject(services.AuthService);
+  private screenSize = inject(services.ScreenSizeService);
+  private searchService = inject(services.SearchService);
+  private savedSearchService = inject(services.SavedSearchService);
+  private ccService = inject(NgcCookieConsentService);
+  private matIconRegistry = inject(MatIconRegistry);
+  private domSanitizer = inject(DomSanitizer);
+  private dialog = inject(MatDialog);
+  private notificationService = inject(services.NotificationService);
+  private sarviewsService = inject(services.SarviewsEventsService);
+  private mapService = inject(services.MapService);
+  private hyp3Service = inject(services.Hyp3ApiService);
+  private themeService = inject(services.ThemingService);
+  private drawService = inject(services.DrawService);
+  translate = inject(TranslateService);
+  language = inject(services.AsfLanguageService);
+  _adapter = inject<DateAdapter<any>>(DateAdapter);
+  private titleService = inject(Title);
+  private pointHistoryService = inject(services.PointHistoryService);
+  _locale = inject(MAT_DATE_LOCALE);
+
   @ViewChild('sidenav', { static: true }) sidenav: MatSidenav;
 
   private queueStateKey = 'asf-queue-state-v1';
@@ -73,35 +100,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   private helpTopic: string | null;
 
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-    private actions$: ActionsSubject,
-    private urlStateService: services.UrlStateService,
-    private searchParams$: services.SearchParamsService,
-    private polygonValidationService: services.PolygonValidationService,
-    private asfSearchApi: services.AsfApiService,
-    private authService: services.AuthService,
-    private screenSize: services.ScreenSizeService,
-    private searchService: services.SearchService,
-    private savedSearchService: services.SavedSearchService,
-    private ccService: NgcCookieConsentService,
-    private matIconRegistry: MatIconRegistry,
-    private domSanitizer: DomSanitizer,
-    private dialog: MatDialog,
-    private notificationService: services.NotificationService,
-    private sarviewsService: services.SarviewsEventsService,
-    private mapService: services.MapService,
-    private hyp3Service: services.Hyp3ApiService,
-    private themeService: services.ThemingService,
-    private drawService: services.DrawService,
-    public translate: TranslateService,
-    public language: services.AsfLanguageService,
-    public _adapter: DateAdapter<any>,
-    private titleService: Title,
-    private pointHistoryService: services.PointHistoryService,
-    @Inject(MAT_DATE_LOCALE) public _locale: string,
-  ) { }
 
   @HostListener('window:keydown.control./', ['$event'])
   handleKeyDown(_event: KeyboardEvent) {
@@ -483,7 +481,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           withLatestFrom(this.pointHistoryService.history$)
         ).subscribe(([chartStates, history]) => {
           if(Object.keys(chartStates).length === history.length) {
-            let data = []
+            const data = []
 
             for(const state of Object.values(chartStates)) {
               data.push({ seriesNumber: state.seriesNumber, color: state.color, frames: state.frames, base_wkt: state.wkt, uuid: state.uuidSeries })
@@ -610,7 +608,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.subs.add(
       checkAmount.subscribe(searchAmount => {
-        const amount = +<number>searchAmount;
+        const amount = +(searchAmount as number);
 
         if (amount < 0) {
           this.setErrorBanner();
@@ -635,7 +633,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subs.add(
       this.asfSearchApi.health().pipe(
         map(health => {
-          // eslint-disable-next-line @typescript-eslint/naming-convention
+           
           const { ASFSearchAPI, CMRSearchAPI } = health;
 
           return 'error' in CMRSearchAPI || !ASFSearchAPI['ok?'];

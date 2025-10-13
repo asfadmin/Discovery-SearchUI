@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 import { map, filter, tap, withLatestFrom, distinctUntilChanged } from 'rxjs/operators';
@@ -28,6 +28,16 @@ import { Observable } from 'rxjs';
   providers: [ DatasetForProductService ]
 })
 export class SceneDetailComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+  dialog = inject(MatDialog);
+  authService = inject(AuthService);
+  prop = inject(PropertyService);
+  private datasetForProduct = inject(DatasetForProductService);
+  private sarviewsService = inject(SarviewsEventsService);
+  private mapService = inject(MapService);
+  private browseOverlayService = inject(BrowseOverlayService);
+
   @Input() isScrollable = true;
 
   public scene: models.CMRProduct;
@@ -75,18 +85,6 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   );
 
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-    public dialog: MatDialog,
-    public authService: AuthService,
-    public prop: PropertyService,
-    private datasetForProduct: DatasetForProductService,
-    private sarviewsService: SarviewsEventsService,
-    private mapService: MapService,
-    private browseOverlayService: BrowseOverlayService
-  ) {}
 
   ngOnInit() {
     this.subs.add(
@@ -317,7 +315,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     }
 
     this.browseIndex = newIndex;
-    let [url, wkt] = this.searchType === this.searchTypes.SARVIEWS_EVENTS
+    const [url, wkt] = this.searchType === this.searchTypes.SARVIEWS_EVENTS
       ? [this.selectedEventProducts[this.browseIndex].files.browse_url, this.selectedEventProducts[this.browseIndex]?.granules[0].wkt]
       : [this.scene.browses[this.browseIndex], this.scene.metadata.polygon];
 
@@ -355,7 +353,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
         prev[key] = output;
         return prev;
-      }, {} as {[product_id in string]: PinnedProduct}
+      }, {} as Record<string, PinnedProduct>
     );
 
     this.store$.dispatch(new scenesStore.SetImageBrowseProducts(pinned));
@@ -445,10 +443,10 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
       new scenesStore.SetFilterMaster(sceneName),
     ].forEach(action => this.store$.dispatch(action));
 
-    if (!!dateRange.start) {
+    if (dateRange.start) {
       this.store$.dispatch(new filtersStore.SetStartDate(new Date(dateRange.start)));
     }
-    if (!!dateRange.end) {
+    if (dateRange.end) {
       this.store$.dispatch(new filtersStore.SetEndDate(new Date(dateRange.end)));
     }
 

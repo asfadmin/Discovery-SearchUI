@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
@@ -24,6 +24,8 @@ interface prodConfig {
 })
 
 export class ProductionConfigSelectorComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+
   prodConfigControl = new FormControl(['']);
   public selectedConfig: string[] = ['PR']; // Default selected config
 
@@ -35,8 +37,6 @@ export class ProductionConfigSelectorComponent implements OnInit, OnDestroy {
 
 
   private subs: SubSink = new SubSink();
-
-  public constructor(private store$: Store<AppState>) {}
 
   public ngOnInit(): void {
     this.onProductionConfigSelect(this.selectedConfig);

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
 import * as models from '@models';
 import { Store } from '@ngrx/store';
@@ -12,12 +12,12 @@ import { SubSink } from 'subsink';
   styleUrls: ['./hyp3-job-type-selector.component.scss']
 })
 export class Hyp3JobTypeSelectorComponent implements OnInit {
+  store$ = inject<Store<AppState>>(Store);
+
   public hyp3JobTypes = Object.keys(models.hyp3JobTypes);
   public selected: string[] = [];
 
   public subs = new SubSink();
-
-  constructor(public store$: Store<AppState>) { }
 
   ngOnInit(): void {
     this.subs.add(

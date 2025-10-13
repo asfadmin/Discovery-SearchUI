@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -31,9 +31,10 @@ import {
   styleUrl: './timeseries-chart-export.component.scss'
 })
 export class TimeseriesChartExportComponent {
-  constructor(private netcdfService: NetcdfService) { }
+  private netcdfService = inject(NetcdfService);
 
-  @Input() timeSeriesData: { [index: string]: {}[] } = {}
+
+  @Input() timeSeriesData: Record<string, {}[]> = {}
 
 
   private currentDate(): string {

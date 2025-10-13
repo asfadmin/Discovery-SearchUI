@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewEncapsulation, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewEncapsulation, ViewChild, OnDestroy, inject } from '@angular/core';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { SubSink } from 'subsink';
 
@@ -22,6 +22,10 @@ import { PinnedProduct } from '@services/browse-map.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private scenesService = inject(ScenesService);
+  private eventMonitoringService = inject(SarviewsEventsService);
+
   @ViewChild(CdkVirtualScrollViewport) scroll: CdkVirtualScrollViewport;
 
   public scenesSorted$ = this.scenesService.sortScenes$(
@@ -41,16 +45,10 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
   public searchtype;
   public searchTypes = models.SearchType;
 
-  public productBrowseStates: {[product_id in string]: PinnedProduct} = {};
+  public productBrowseStates: Record<string, PinnedProduct> = {};
 
   private selectedFromList = false;
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-    private scenesService: ScenesService,
-    private eventMonitoringService: SarviewsEventsService
-  ) { }
 
   ngOnInit() {
     this.subs.add(
@@ -72,7 +70,7 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.subs.add(
       this.store$.select(scenesStore.getSelectedSarviewsProduct).subscribe(
-        product => this.selectedProductId = !!product ? product.product_id : null
+        product => this.selectedProductId = product ? product.product_id : null
       )
     );
 
@@ -131,8 +129,8 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public onPinProduct(product_id: string) {
-    const temp: {[id in string]: PinnedProduct} = JSON.parse(JSON.stringify(this.productBrowseStates));
-    if (!!temp[product_id]) {
+    const temp: Record<string, PinnedProduct> = JSON.parse(JSON.stringify(this.productBrowseStates));
+    if (temp[product_id]) {
       delete temp[product_id];
     } else {
 

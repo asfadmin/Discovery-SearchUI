@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { of } from 'rxjs';
 import { map, switchMap, catchError, distinctUntilChanged, filter, withLatestFrom, debounceTime } from 'rxjs/operators';
@@ -20,14 +20,13 @@ import { getSearchType } from '@store/search';
 
 @Injectable()
 export class ScenesEffects {
-  constructor(
-    private actions$: Actions,
-    private unzipApi: UnzipApiService,
-    private notificationService: NotificationService,
-    private sarviewsService: SarviewsEventsService,
-    private store$: Store<AppState>,
-    private sceneService: ScenesService
-  ) { }
+  private actions$ = inject(Actions);
+  private unzipApi = inject(UnzipApiService);
+  private notificationService = inject(NotificationService);
+  private sarviewsService = inject(SarviewsEventsService);
+  private store$ = inject<Store<AppState>>(Store);
+  private sceneService = inject(ScenesService);
+
 
   public loadUnzippedProductFiles = createEffect(() => this.actions$.pipe(
     ofType<LoadUnzippedProduct>(ScenesActionType.LOAD_UNZIPPED_PRODUCT),
@@ -64,7 +63,7 @@ export class ScenesEffects {
     }
     ),
     filter(event => !!event.products),
-    map(processedEvent => new SetSarviewsEventProducts(!!processedEvent.products ? processedEvent.products : []))
+    map(processedEvent => new SetSarviewsEventProducts(processedEvent.products ? processedEvent.products : []))
   ));
 
   public setSelectedSceneOnLoad = createEffect(() => this.actions$.pipe(
@@ -92,17 +91,17 @@ export class ScenesEffects {
           }
         });
       }
-      const productGroups: { [id: string]: string[] } = action.products.reduce((total, product) => {
+      const productGroups: Record<string, string[]> = action.products.reduce((total, product) => {
         const scene = total[product.groupId] || [];
 
         total[product.groupId] = [...scene, product.id];
         return total;
       }, {});
 
-      const scenes: { [id: string]: string[] } = {};
+      const scenes: Record<string, string[]> = {};
       for (const [groupId, productNames] of Object.entries(productGroups)) {
 
-        (<string[]>productNames).sort(
+        (productNames as string[]).sort(
           (a, b) => products[a].bytes - products[b].bytes
         ).reverse();
 

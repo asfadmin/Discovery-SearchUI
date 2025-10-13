@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { Observable, combineLatest } from 'rxjs';
@@ -15,11 +15,10 @@ import { PropertyService } from './property.service';
   providedIn: 'root'
 })
 export class AsfApiService {
-  constructor(
-    private env: EnvironmentService,
-    private prop: PropertyService,
-    private http: HttpClient
-  ) {}
+  private env = inject(EnvironmentService);
+  private prop = inject(PropertyService);
+  private http = inject(HttpClient);
+
 
   public get apiUrl() {
     return this.env.currentEnv.api;
@@ -30,7 +29,7 @@ export class AsfApiService {
   }
 
   public collections() {
-    let collections: String[] = []
+    let collections: string[] = []
 
     // In case we wanted to limit searched collections further, limit it based on envionment
     // let provider = this.environmentService.currentEnv.cmr_provider
@@ -48,7 +47,7 @@ export class AsfApiService {
     return collections;
   }
 
-  public query<T>(stateParamsObj: {[paramName: string]: string | number | null}): Observable<T> {
+  public query<T>(stateParamsObj: Record<string, string | number | null>): Observable<T> {
     const useProdApi = +stateParamsObj['maxResults'] >= 5000;
 
     if (!this.env.isProd) {
@@ -135,7 +134,7 @@ export class AsfApiService {
     return Object.entries(paramsObj)
       .filter(([_, val]) => !!val)
       .reduce(
-        (queryParams, [param, val]) => queryParams.set(param, <string>val),
+        (queryParams, [param, val]) => queryParams.set(param, (val as string)),
         new HttpParams()
       );
   }
@@ -150,10 +149,10 @@ export class AsfApiService {
     return formData;
   }
 
-  private onlyRelevantParams(paramsObj): {[id: string]: string | null} {
+  private onlyRelevantParams(paramsObj): Record<string, string | null> {
     const irrelevant = Object.entries(apiParamNames)
       .filter(
-        ([property, _]) => !this.prop.isRelevant(<Props>property)
+        ([property, _]) => !this.prop.isRelevant((property as Props))
       )
       .map(([_, apiName]) => apiName);
 

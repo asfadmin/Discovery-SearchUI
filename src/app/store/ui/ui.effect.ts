@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of, first } from 'rxjs';
@@ -18,13 +18,11 @@ import { MatDialog } from '@angular/material/dialog';
 
 @Injectable()
 export class UIEffects {
+  private bannerApi = inject(BannerApiService);
+  private actions$ = inject(Actions);
+  private store$ = inject<Store<AppState>>(Store);
+  private dialog = inject(MatDialog);
 
-  constructor(
-    private bannerApi: BannerApiService,
-    private actions$: Actions,
-    private store$: Store<AppState>,
-    private dialog: MatDialog
-  ) {}
 
   loadBanners = createEffect(() => this.actions$.pipe(
     ofType<uiActions.LoadBanners>(uiActions.UIActionType.LOAD_BANNERS),

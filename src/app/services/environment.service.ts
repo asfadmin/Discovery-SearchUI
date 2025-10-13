@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { env } from './env';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -31,13 +31,15 @@ export interface Environment {
   providedIn: 'root'
 })
 export class EnvironmentService {
+  private $store = inject<Store<AppState>>(Store);
+
   private maturityKey = 'search-api-maturity';
 
   public envs: Environments;
   public maturity: string;
   public isProd: boolean;
 
-  constructor(private $store: Store<AppState>) {
+  constructor() {
     this.isProd = env.defaultEnv === 'prod';
     this.envs = this.loadEnvs();
 
@@ -72,7 +74,7 @@ export class EnvironmentService {
   }
 
   public setEnvs(envs: any): void {
-    this.envs = <Environments>envs;
+    this.envs = envs as Environments;
     this.$store.dispatch(new SetSearchOutOfDate(true));
   }
 
@@ -84,14 +86,14 @@ export class EnvironmentService {
         return this.loadFromEnvFile();
       }
 
-      return <Environments>customEnv;
+      return customEnv as Environments;
     } catch {
       return this.loadFromEnvFile();
     }
   }
 
   private loadFromEnvFile(): Environments {
-    return <Environments>env;
+    return env as Environments;
   }
 
   public resetToDefault(): void {

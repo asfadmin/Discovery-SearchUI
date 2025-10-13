@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
@@ -11,12 +11,10 @@ import * as hyp3Store from '@store/hyp3';
   styleUrls: ['./on-demand-user-selector.component.scss']
 })
 export class OnDemandUserSelectorComponent implements OnInit, OnDestroy {
-  public onDemandUserName: string = '';
-  private subs = new SubSink();
+  private store$ = inject<Store<AppState>>(Store);
 
-  constructor(
-    private store$: Store<AppState>,
-    ) { }
+  public onDemandUserName = '';
+  private subs = new SubSink();
 
   ngOnInit(): void {
       this.subs.add(

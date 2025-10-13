@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, inject } from '@angular/core';
 
 import * as services from '@services';
 import * as models from '@models';
@@ -9,6 +9,9 @@ import * as models from '@models';
   styleUrls: ['./scene-controls.component.scss']
 })
 export class SceneControlsComponent implements OnInit {
+  private hyp3 = inject(services.Hyp3ApiService);
+  private hyp3JobStatus = inject(services.Hyp3JobStatusService);
+
   @Input() hyp3ableByJobType: { total: number, byJobType: models.Hyp3ableProductByJobType[]};
   @Input() scene: models.CMRProduct;
   @Input() isQueued: boolean;
@@ -19,11 +22,6 @@ export class SceneControlsComponent implements OnInit {
   @Output() onToggleScene = new EventEmitter();
 
   public SearchTypes = models.SearchType;
-
-  constructor(
-    private hyp3: services.Hyp3ApiService,
-    private hyp3JobStatus: services.Hyp3JobStatusService,
-  ) { }
 
   ngOnInit(): void {
   }

@@ -1,4 +1,4 @@
-import {Component, computed, ElementRef, Inject, Input, OnDestroy, OnInit, signal, ViewChild} from '@angular/core';
+import { Component, computed, ElementRef, Input, OnDestroy, OnInit, signal, ViewChild, inject } from '@angular/core';
 import {distinctUntilChanged, filter, first, map, Observable, Subject, withLatestFrom} from 'rxjs';
 import {ResizeEvent} from 'angular-resizable-element';
 
@@ -52,6 +52,17 @@ export interface PointSeries {
   styleUrls: ['./timeseries-results-menu.component.scss',  '../results-menu.component.scss'],
 })
 export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+  pointHistoryService = inject(PointHistoryService);
+  private drawService = inject(DrawService);
+  private netcdfService = inject(NetcdfService);
+  private wktService = inject(WktService);
+  private dialog = inject(MatDialog);
+  snackBar = inject(MatSnackBar);
+  private document = inject<Document>(DOCUMENT);
+  private language = inject(AsfLanguageService);
+
 
   @ViewChild('listCard', {read: ElementRef}) listCardView: ElementRef;
   @ViewChild('chartCard', {read: ElementRef}) chartCardView: ElementRef;
@@ -88,19 +99,6 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
 
   private element: HTMLElement;
   public snackBarConfig = new MatSnackBarConfig();
-
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-    public pointHistoryService: PointHistoryService,
-    private drawService: DrawService,
-    private netcdfService: NetcdfService,
-    private wktService: WktService,
-    private dialog: MatDialog,
-    public snackBar: MatSnackBar,
-    @Inject(DOCUMENT) private document: Document,
-    private language: AsfLanguageService,
-  ) {  }
 
   ngOnInit(): void {
     this.element = this.document.getElementById('TSRESULTS');
@@ -149,7 +147,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(this.store$.select(getTimeseriesChartStates).subscribe(chartStates => {
-        let temp  = this.chartStates.map(x => x.uuidSeries)
+        const temp  = this.chartStates.map(x => x.uuidSeries)
         if (Object.keys(chartStates).every(x => temp.includes(x))) {
             this.chartStates = Object.values(chartStates);
             this.chartStates = this.chartStates.sort((a, b) => a.seriesNumber - b.seriesNumber);
@@ -170,12 +168,12 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       )
     );
 
-    let thing: string = localStorage.getItem('timeseries-points')
+    const thing: string = localStorage.getItem('timeseries-points')
     if (thing && thing.length > 0) {
-      let previousPoints: PointHistoryState[] = JSON.parse(thing);
+      const previousPoints: PointHistoryState[] = JSON.parse(thing);
       if (previousPoints.length > 0) {
         previousPoints?.forEach((point) => {
-          let wkt = this.wktService.wktToFeature(point.wkt, 'EPSG:4326');
+          const wkt = this.wktService.wktToFeature(point.wkt, 'EPSG:4326');
           this.pointHistoryService.addPoint(wkt.getGeometry(), point.seriesNumber, point.seriesName, point.drawMode, point.uuidSeries);
         });
         this.updateChart();
@@ -187,7 +185,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
       withLatestFrom(this.store$.select(chartStore.getMinSeriesNumber))
     ).subscribe(([polygon, minSeriesNumber]) => {
       if(!!polygon && this.searchType === models.SearchType.DISPLACEMENT) {
-        let temp = polygon.getGeometry().clone() as Geometry;
+        const temp = polygon.getGeometry().clone() as Geometry;
         temp.transform('EPSG:3857', 'EPSG:4326')
         this.pointHistoryService.addPoint(temp, minSeriesNumber, '', this.drawService.currentDrawMode);
         this.updateChart();
@@ -208,7 +206,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   }
 
   public displaySackBar() {
-    let msg = this.language.translate.instant('PLEASE_SELECT_A_POINT_ON_THE_MAP');
+    const msg = this.language.translate.instant('PLEASE_SELECT_A_POINT_ON_THE_MAP');
     this.snackBar.dismiss();
     this.snackBar.open(msg, '', this.snackBarConfig );
   }
@@ -237,12 +235,12 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   }
 
   public updateChart(resetAll=false): void {
-    let allPointsData = [];
+    const allPointsData = [];
     for (const series of this.chartStates) {
       if (!series.frames || resetAll) {
         // this.netcdfService.getFrames(series.wkt, this.flightDirection).pipe(first()).subscribe(data => {
           // series.frames = data;
-          let temp: models.TimeseriesSubframe[] = [];
+          const temp: models.TimeseriesSubframe[] = [];
         //   [Object.keys(data)[0]].forEach(frame => {
         temp.push({
         //   'number': frame,
@@ -256,10 +254,10 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
         })
         //   })
           this.store$.dispatch(chartStore.setFrames({ 'uuid': series.uuidSeries, 'frames': temp }))
-          for(let frame of temp) {
+          for(const frame of temp) {
             this.netcdfService.getTimeSeries(frame, this.flightDirection)
               .pipe(first()).subscribe(data => {
-                if (!!data) {
+                if (data) {
                   allPointsData.push(data);
                 }
                 // temporarily set the frame here since we're not grabbing it beforehand like before
@@ -283,7 +281,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
 
   public getFrameCount(point: any): number {
     let frameCount = 0;
-    for (let _x of Object.keys(point)) {
+    for (const _x of Object.keys(point)) {
       frameCount++;
     }
     return frameCount;
@@ -311,9 +309,9 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   public getMaxRange(allSeries: PointSeries[]) {
     let minDate = null;
     let maxDate = null;
-    for (let points of allSeries) {
-      for (let key of Object.keys(points).filter(x => x !== 'mean' && x !== 'aoi')) {
-        let date = new Date(points[key].secondary_datetime);
+    for (const points of allSeries) {
+      for (const key of Object.keys(points).filter(x => x !== 'mean' && x !== 'aoi')) {
+        const date = new Date(points[key].secondary_datetime);
         if (minDate === null || date < minDate) {
           minDate = date;
         }
@@ -322,7 +320,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
         }
       }
     }
-    let dateRange: models.Range<any> = {start: minDate, end: maxDate};
+    const dateRange: models.Range<any> = {start: minDate, end: maxDate};
     this.temporalRangeValues$.next([dateRange.start, dateRange.end]);
     return dateRange;
   }
@@ -380,9 +378,8 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   standalone: true
 })
 export class ConfirmationDialog {
+  dialogRef = inject<MatDialogRef<ConfirmationDialog>>(MatDialogRef);
 
-  constructor(
-    public dialogRef: MatDialogRef<ConfirmationDialog>) { }
 
   onYesClick(): void {
     this.dialogRef.close(true);

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {  SearchType } from '@models';
 
 
@@ -20,11 +20,11 @@ import { ClearBrowseOverlays, SetCoherenceOverlayOpacity } from './map.action';
 import { getIsUserLoggedIn } from '@store/user';
 @Injectable()
 export class MapEffects {
+  private actions$ = inject(Actions);
+  private mapService = inject(MapService);
+  private eventMonitoringService = inject(SarviewsEventsService);
+  private store$ = inject<Store<AppState>>(Store);
 
-  public constructor(private actions$: Actions,
-    private mapService: MapService,
-    private eventMonitoringService: SarviewsEventsService,
-    private store$: Store<AppState>) {}
 
   public clearPinnedProducts = createEffect((() => this.actions$.pipe(
     ofType(SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE,
@@ -125,7 +125,7 @@ export class MapEffects {
           }
       }
       if (selectedProduct.browses[0] !== '/assets/no-browse.png') {
-        let url = selectedProduct.browses[0]
+        const url = selectedProduct.browses[0]
 
         // for OPERA-S1 geotiffs
         // TODO: Wait for https://github.com/openlayers/openlayers/pull/15402
@@ -179,8 +179,8 @@ export class MapEffects {
     ),
     withLatestFrom(this.store$.select(getImageBrowseProducts)),
     map(([pin, pinnedProducts]) => {
-      const temp: {[product_id in string]: PinnedProduct} = JSON.parse(JSON.stringify(pinnedProducts));
-      if (!!pinnedProducts[pin.selectedProductId]) {
+      const temp: Record<string, PinnedProduct> = JSON.parse(JSON.stringify(pinnedProducts));
+      if (pinnedProducts[pin.selectedProductId]) {
         delete temp[pin.selectedProductId];
       } else {
         temp[pin.selectedProductId] = pin.product;
@@ -217,7 +217,7 @@ export class MapEffects {
       products => products.reduce((prev, curr) => {
         prev[curr.selectedProductId] = curr.product;
         return prev;
-      }, {} as {[product_id in string]: PinnedProduct})
+      }, {} as Record<string, PinnedProduct>)
     ),
     tap(products => this.store$.dispatch(new SetImageBrowseProducts(products)))
   ),  {dispatch: false});

@@ -1,4 +1,4 @@
-import { NgModule, Directive, ElementRef, EventEmitter, NgZone, OnDestroy, OnInit, Output } from '@angular/core';
+import { NgModule, Directive, ElementRef, EventEmitter, NgZone, OnDestroy, OnInit, Output, inject } from '@angular/core';
 
 
 export class ResizedEvent {
@@ -18,16 +18,16 @@ export class ResizedEvent {
   selector: '[resized]'
 })
 export class ResizedDirective implements OnInit, OnDestroy {
+  private readonly element = inject(ElementRef);
+  private readonly zone = inject(NgZone);
+
   private observer: ResizeObserver;
   private oldRect?: DOMRectReadOnly;
 
   @Output()
   public readonly resized;
 
-  public constructor(
-    private readonly element: ElementRef,
-    private readonly zone: NgZone
-  )
+  public constructor()
 {
     this.resized = new EventEmitter<ResizedEvent>();
     this.observer = new ResizeObserver(entries => this.zone.run(() => this.observe(entries)));

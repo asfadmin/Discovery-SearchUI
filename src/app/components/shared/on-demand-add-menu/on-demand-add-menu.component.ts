@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import { MatMenu } from '@angular/material/menu';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -22,6 +22,10 @@ import { getSelectedDataset, getShouldUseFramesForReference } from '@store/filte
   styleUrls: ['./on-demand-add-menu.component.scss']
 })
 export class OnDemandAddMenuComponent implements OnInit {
+  private store$ = inject<Store<AppState>>(Store);
+  env = inject(EnvironmentService);
+  hyp3 = inject(Hyp3ApiService);
+
   @Input() hyp3ableProducts: models.Hyp3ableProductByJobType;
   @Input() isExpired = false;
   @Input() expiredJobs: models.Hyp3Job;
@@ -41,17 +45,11 @@ export class OnDemandAddMenuComponent implements OnInit {
   public InSAR = models.hyp3JobTypes.INSAR_GAMMA;
   public AutoRift = models.hyp3JobTypes.AUTORIFT;
 
-  public isFrameBased: boolean = false; 
+  public isFrameBased = false; 
   private referenceID: string;
   public userStatus;
 
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-    public env: EnvironmentService,
-    public hyp3: Hyp3ApiService,
-  ) { }
 
   ngOnInit(): void {
     this.subs.add(this.store$.select(getShouldUseFramesForReference).subscribe(
@@ -110,7 +108,7 @@ export class OnDemandAddMenuComponent implements OnInit {
     );
   }
 
-  public queueAllOnDemand(products: models.CMRProduct[][], job_type: models.Hyp3JobType, isFrameBased: boolean = false): void {
+  public queueAllOnDemand(products: models.CMRProduct[][], job_type: models.Hyp3JobType, isFrameBased = false): void {
     const jobs: models.QueuedHyp3Job[] = products.map(product => ({
       granules: [...product].sort((a, b) => {
         if (a.metadata.date < b.metadata.date) {

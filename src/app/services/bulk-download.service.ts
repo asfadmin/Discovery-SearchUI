@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
@@ -10,10 +10,9 @@ import { CMRProduct, SarviewsProduct } from '@models';
   providedIn: 'root'
 })
 export class BulkDownloadService {
-  constructor(
-    private http: HttpClient,
-    private env: EnvironmentService,
-  ) {}
+  private http = inject(HttpClient);
+  private env = inject(EnvironmentService);
+
 
   private get url(): string {
     return this.env.currentEnv.bulk_download;

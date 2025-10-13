@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, inject } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -13,6 +13,8 @@ import * as models from '@models';
   styleUrls: ['./processing-options.component.scss']
 })
 export class ProcessingOptionsComponent implements OnInit {
+  private store$ = inject<Store<AppState>>(Store);
+
   @Input() selectedJobType: models.Hyp3JobType;
 
   public jobs: models.QueuedHyp3Job[];
@@ -20,10 +22,6 @@ export class ProcessingOptionsComponent implements OnInit {
 
   public optionValues = {};
   public costs: models.Hyp3Costs;
-
-  constructor(
-    private store$: Store<AppState>,
-  ) { }
 
   ngOnInit() {
     this.store$.select(queueStore.getQueuedJobs).subscribe(

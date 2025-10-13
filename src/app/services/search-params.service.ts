@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import * as moment from 'moment';
@@ -24,13 +24,11 @@ import * as userStore from '@store/user';
   providedIn: 'root'
 })
 export class SearchParamsService {
-  constructor(
-    private store$: Store<AppState>,
-    private mapService: MapService,
-    private rangeService: RangeService,
-    private drawService: DrawService,
-    // private authService: AuthService
-  ) { }
+  private store$ = inject<Store<AppState>>(Store);
+  private mapService = inject(MapService);
+  private rangeService = inject(RangeService);
+  private drawService = inject(DrawService);
+
 
 
   private listParam$ = this.store$.select(filterStore.getSearchList).pipe(
@@ -93,7 +91,7 @@ export class SearchParamsService {
 
       const geom = feature?.getGeometry()
       if (geom instanceof Polygon) {
-        let points = (geom as Polygon).getCoordinates()
+        const points = (geom as Polygon).getCoordinates()
         if (points && points[0].length === 5) {
           const clonedFeature = feature.clone();
           const clonedProperties = JSON.parse(JSON.stringify(feature.getProperties()));
@@ -148,7 +146,7 @@ export class SearchParamsService {
   private dateRange$ = this.store$.select(filterStore.getDateRange).pipe(
     map(range => {
       return [range.start, range.end]
-        .map(date => !!date ? moment.utc(date).format() : date);
+        .map(date => date ? moment.utc(date).format() : date);
     }),
     map(([start, end]) => ({ start, end })),
   );
@@ -227,7 +225,7 @@ export class SearchParamsService {
   private frameCoverage$ = this.store$.select(filterStore.getFrameCoverage).pipe(
     map(
       coverages => {
-        let base = Array.from(new Set(coverages))
+        const base = Array.from(new Set(coverages))
         if(base.length > 1) {
             return ''
         } else {

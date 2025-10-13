@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -12,13 +12,11 @@ import { NotificationService } from './notification.service';
   providedIn: 'root'
 })
 export class UserDataService {
-  private baseUrl = this.getBaseUrlFrom();
+  private env = inject(EnvironmentService);
+  private http = inject(HttpClient);
+  private notificationService = inject(NotificationService);
 
-  constructor(
-    private env: EnvironmentService,
-    private http: HttpClient,
-    private notificationService: NotificationService,
-  ) { }
+  private baseUrl = this.getBaseUrlFrom();
 
   public getUserInfo$<T>(userAuth: UserAuth): Observable<T> {
     const url =  this.getUserInfoURL(this.baseUrl, userAuth.id);

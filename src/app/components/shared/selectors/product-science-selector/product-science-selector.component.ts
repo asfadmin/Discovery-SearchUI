@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
@@ -28,7 +28,9 @@ interface sciProdGroup {
   imports: [MatFormFieldModule, MatSelectModule, FormsModule, ReactiveFormsModule, MatInputModule, SharedModule],
 })
 export class ProductScienceSelectorComponent implements OnInit, OnDestroy {
-  sciProdControl: FormControl<string[]> = new FormControl([]);
+  private store$ = inject<Store<AppState>>(Store);
+
+  sciProdControl = new FormControl<string[]>([]);
   sciProdGroups: sciProdGroup[] = [
 
     {
@@ -70,8 +72,6 @@ export class ProductScienceSelectorComponent implements OnInit, OnDestroy {
 
   ];
   private subs: SubSink = new SubSink();
-
-  public constructor(private store$: Store<AppState>) {}
 
   public ngOnInit(): void {
     this.subs.add(this.store$.select(filtersStore.getScienceProduct).subscribe(value => {

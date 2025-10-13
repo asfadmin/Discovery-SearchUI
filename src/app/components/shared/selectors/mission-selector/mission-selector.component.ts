@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 import { startWith, map, tap } from 'rxjs/operators';
@@ -28,13 +28,16 @@ export const _filter = (opt: string[], value: string): string[] => {
   styleUrls: ['./mission-selector.component.css']
 })
 export class MissionSelectorComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private fb = inject(UntypedFormBuilder);
+
   public missionsByDataset$ = this.store$.select(filtersStore.getMissionsByDataset);
   public missionDatasets$ = this.missionsByDataset$.pipe(
     map(missions => Object.keys(missions))
   );
   public dataset$ = this.store$.select(filtersStore.getSelectedDataset);
 
-  public missionsByDataset: {[dataset: string]: string[]};
+  public missionsByDataset: Record<string, string[]>;
   public missionDatasets: string[];
   public selectedMission: string | null;
 
@@ -50,11 +53,6 @@ export class MissionSelectorComponent implements OnInit, OnDestroy {
   stateForm: UntypedFormGroup = this.fb.group({
     missionFilter: '',
   });
-
-  constructor(
-    private store$: Store<AppState>,
-    private fb: UntypedFormBuilder
-  ) {}
 
   ngOnInit() {
     this.subs.add(

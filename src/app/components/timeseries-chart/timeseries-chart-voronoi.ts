@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 
@@ -11,15 +11,13 @@ import * as d3 from 'd3';
   styleUrl: './timeseries-chart.component.scss'
 })
 export class TimeseriesChartVoronoiComponent implements OnInit, OnDestroy {
+  private http = inject(HttpClient);
+
   @ViewChild('timeseriesChart', {static: true}) timeseriesChart: ElementRef;
-  public url: string = '/assets/unemployment.json';
+  public url = '/assets/unemployment.json';
   public unemploymentData: any;
   public svg?: d3.Selection<SVGElement, {}, HTMLDivElement, any>;
   public showVoronoi = false;
-
-
-  constructor(private http: HttpClient) {
-  }
 
   public ngOnInit(): void {
     this.http.get(this.url).subscribe(res => {

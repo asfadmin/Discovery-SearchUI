@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, inject } from '@angular/core';
 
 import { Hyp3ApiService, ScenesService, Hyp3JobStatusService } from '@services';
 import { Hyp3Job, hyp3JobTypes, QueuedHyp3Job, Hyp3ProcessingOptions } from '@models';
@@ -17,6 +17,12 @@ import * as queueStore from '@store/queue';
   styleUrls: ['./hyp3-job-status-badge.component.scss']
 })
 export class Hyp3JobStatusBadgeComponent implements OnInit {
+  private hyp3 = inject(Hyp3ApiService);
+  private hyp3JobStatus = inject(Hyp3JobStatusService);
+  private scenesService = inject(ScenesService);
+  private dialog = inject(MatDialog);
+  private store$ = inject<Store<AppState>>(Store);
+
   @Input() job: Hyp3Job;
   @Input() isFileDetails = true;
 
@@ -26,14 +32,6 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
   private projectName = '';
   private validateOnly = false;
   public remaining = 0;
-
-  constructor(
-    private hyp3: Hyp3ApiService,
-    private hyp3JobStatus: Hyp3JobStatusService,
-    private scenesService: ScenesService,
-    private dialog: MatDialog,
-    private store$: Store<AppState>
-  ) { }
 
   ngOnInit(): void {
     this.store$.select(hyp3Store.getProcessingProjectName).subscribe(
@@ -82,7 +80,7 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
   }
 
   public onReviewExpiredJob() {
-    const jobType = models.hyp3JobTypes[<string>this.job.job_type];
+    const jobType = models.hyp3JobTypes[(this.job.job_type as string)];
 
     const job = {
       granules: this.job.scenes,
@@ -103,7 +101,7 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
       .map(job => {
         return ({
           granules: job.scenes,
-          job_type: job_types[<string>job.job_type],
+          job_type: job_types[(job.job_type as string)],
         } as QueuedHyp3Job);
       });
 

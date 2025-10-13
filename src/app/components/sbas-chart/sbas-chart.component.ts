@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, inject } from '@angular/core';
 
 import {  Observable, combineLatest } from 'rxjs';
 import {  distinctUntilChanged, map, tap,  } from 'rxjs/operators';
@@ -29,6 +29,10 @@ export enum ChartDatasets {
   styleUrls: ['./sbas-chart.component.scss']
 })
 export class SBASChartComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private scenesService = inject(ScenesService);
+  private pairService = inject(PairService);
+
   @Input() zoomIn$: Observable<void>;
   @Input() zoomOut$: Observable<void>;
   @Input() zoomToFit$: Observable<void>;
@@ -65,12 +69,6 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   public isDisconnected = false;
-
-  constructor(
-    private store$: Store<AppState>,
-    private scenesService: ScenesService,
-    private pairService: PairService,
-  ) { }
 
   ngOnInit(): void {
     const scenes$ = this.scenesService.scenes$;
@@ -447,7 +445,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (!!this.queuedProduct) {
+    if (this.queuedProduct) {
       if (this.queuedProduct.id === product.id) {
         return;
       }

@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 
 import {Action, Store} from '@ngrx/store';
@@ -32,9 +32,19 @@ import {Geometry} from 'ol/geom';
   providedIn: 'root'
 })
 export class UrlStateService {
+  private store$ = inject<Store<AppState>>(Store);
+  private activatedRoute = inject(ActivatedRoute);
+  private mapService = inject(MapService);
+  private wktService = inject(WktService);
+  private rangeService = inject(RangeService);
+  private router = inject(Router);
+  private prop = inject(PropertyService);
+  private themeService = inject(ThemingService);
+  private pointHistoryService = inject(PointHistoryService);
+
   private urlParamNames: string[] = [];
-  private urlParams: {[id: string]: models.UrlParameter};
-  private loadLocations: {[paramName: string]: models.LoadTypes} = {};
+  private urlParams: Record<string, models.UrlParameter>;
+  private loadLocations: Record<string, models.LoadTypes> = {};
   private params = {};
   private shouldDoSearch = false;
   private defaultbooleanParams = {
@@ -54,17 +64,7 @@ export class UrlStateService {
   })
   );
 
-  constructor(
-    private store$: Store<AppState>,
-    private activatedRoute: ActivatedRoute,
-    private mapService: MapService,
-    private wktService: WktService,
-    private rangeService: RangeService,
-    private router: Router,
-    private prop: PropertyService,
-    private themeService: ThemingService,
-    private pointHistoryService: PointHistoryService
-  ) {
+  constructor() {
 
     this.kioskMode = this.displacementHostNames.includes(window.location.hostname);
     let params = [];
@@ -144,7 +144,7 @@ export class UrlStateService {
   private loadStateFrom(params: Params): void {
     this.params = { ...this.params, ...params };
 
-    const urlParamLoaders: { [id: string]: (string) => Action | Action[] | undefined } = this.urlParamNames.reduce(
+    const urlParamLoaders: Record<string, (string) => Action | Action[] | undefined> = this.urlParamNames.reduce(
       (loaders, paramName) => {
         const param = this.urlParams[paramName];
         loaders[param.name] = param.loader;
@@ -452,7 +452,7 @@ export class UrlStateService {
     }, {
       name: 'granule',
       source: this.store$.select(scenesStore.getSelectedScene).pipe(
-        map(scene => ({ granule: !!scene ? scene.id : null }))
+        map(scene => ({ granule: scene ? scene.id : null }))
       ),
       loader: this.loadSelectedScene
     }, {
@@ -805,19 +805,19 @@ export class UrlStateService {
   }
 
   private loadSearchType = (searchType: string): Action | undefined => {
-    if (!Object.values(models.SearchType).includes(<models.SearchType>searchType)) {
+    if (!Object.values(models.SearchType).includes((searchType as models.SearchType))) {
       return;
     }
 
-    return new SetSearchType(<models.SearchType>searchType);
+    return new SetSearchType((searchType as models.SearchType));
   };
 
   private loadMapView = (view: string): Action | undefined => {
-    if (!Object.values(models.MapViewType).includes(<models.MapViewType>view)) {
+    if (!Object.values(models.MapViewType).includes((view as models.MapViewType))) {
       return;
     }
 
-    return new mapStore.SetMapView(<models.MapViewType>view);
+    return new mapStore.SetMapView((view as models.MapViewType));
   };
 
   private loadMapZoom = (zoomStr: string): undefined => {
@@ -946,11 +946,11 @@ export class UrlStateService {
       mode = models.ListSearchType.SCENE;
     }
 
-    if (!Object.values(models.ListSearchType).includes(<models.ListSearchType>mode)) {
+    if (!Object.values(models.ListSearchType).includes((mode as models.ListSearchType))) {
       return;
     }
 
-    return new filterStore.SetListSearchType(<models.ListSearchType>mode);
+    return new filterStore.SetListSearchType((mode as models.ListSearchType));
   };
 
   private loadProductTypes = (typesStr: string): Action | undefined => {
@@ -1022,8 +1022,8 @@ export class UrlStateService {
   private loadFlightDirections = (dirsStr: string): Action => {
     const directions: models.FlightDirection[] = dirsStr
     .split(',')
-    .filter(direction => !Object.values(models.FlightDirection).includes(<models.FlightDirection>this.capitalizeFirstLetter(direction.toLowerCase())))
-    .map(direction => <models.FlightDirection>direction);
+    .filter(direction => !Object.values(models.FlightDirection).includes((this.capitalizeFirstLetter(direction.toLowerCase()) as models.FlightDirection)))
+    .map(direction => (direction as models.FlightDirection));
     return new filterStore.SetFlightDirections(directions);
   };
 
@@ -1120,7 +1120,7 @@ export class UrlStateService {
     const eventTypes: models.SarviewsEventType[] = eventTypesStr
       .split(',')
       .filter(direction => !Object.values(models.SarviewsEventType).includes(models.SarviewsEventType[direction]))
-      .map(direction => <models.SarviewsEventType>direction);
+      .map(direction => (direction as models.SarviewsEventType));
 
     return new filterStore.SetSarviewsEventTypes(eventTypes);
   };
@@ -1210,10 +1210,10 @@ export class UrlStateService {
   }
 
   private loadSeriesState = (seriesState)=> {
-    let states: models.timeseriesChartItemState[] = [];
+    const states: models.timeseriesChartItemState[] = [];
     seriesState.split('::').forEach(x => {
       const format = new WKT()
-      let thing = x.split('--')
+      const thing = x.split('--')
       const point = format.readFeature(thing[0]) as unknown as Geometry;
       states.push({ uuidSeries: thing[3], geometry: point, checked: true, seriesNumber: thing[1],
         wkt: thing[0], seriesName: thing[4], linearFit: false, drawMode: thing[2] as MapDrawModeType})
@@ -1242,8 +1242,8 @@ export class UrlStateService {
     return;
   }
   private loadDispReferencePoint = (referencePoint) => {
-    let fixedString = decodeURIComponent(referencePoint)//referencePoint.slice(1,referencePoint.length-1).replace('\"','"')
-    let pointObject = JSON.parse(fixedString)
+    const fixedString = decodeURIComponent(referencePoint)//referencePoint.slice(1,referencePoint.length-1).replace('\"','"')
+    const pointObject = JSON.parse(fixedString)
     this.store$.dispatch(chartsStore.setReferenceData({data: pointObject}))
     return;
   }

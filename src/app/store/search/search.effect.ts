@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, Action } from '@ngrx/store';
@@ -42,22 +42,20 @@ import { getIsFiltersMenuOpen, getIsResultsMenuOpen } from '@store/ui';
 import * as searchStore from '@store/search';
 @Injectable()
 export class SearchEffects {
+  private actions$ = inject(Actions);
+  private store$ = inject<Store<AppState>>(Store);
+  private searchParams = inject(services.SearchParamsService);
+  private asfApiService = inject(services.AsfApiService);
+  private productService = inject(services.ProductService);
+  private hyp3Service = inject(services.Hyp3ApiService);
+  private hyp3JobService = inject(services.Hyp3JobService);
+  private sarviewsService = inject(services.SarviewsEventsService);
+  private http = inject(HttpClient);
+  private notificationService = inject(services.NotificationService);
+
   private vectorSource = new VectorSource({
     format: new GeoJSON(),
   });
-
-  constructor(
-    private actions$: Actions,
-    private store$: Store<AppState>,
-    private searchParams: services.SearchParamsService,
-    private asfApiService: services.AsfApiService,
-    private productService: services.ProductService,
-    private hyp3Service: services.Hyp3ApiService,
-    private hyp3JobService: services.Hyp3JobService,
-    private sarviewsService: services.SarviewsEventsService,
-    private http: HttpClient,
-    private notificationService: services.NotificationService,
-  ) { }
 
   public clearMapInteractionModeOnSearch = createEffect(() => this.actions$.pipe(
     ofType(SearchActionType.MAKE_SEARCH),
@@ -116,7 +114,7 @@ export class SearchEffects {
     }
     ),
     map(searchAmount => {
-      const amount = +<number>searchAmount;
+      const amount = +(searchAmount as number);
 
       this.store$.dispatch(new searchStore.SetSearchAmount(amount));
     })
@@ -265,7 +263,7 @@ export class SearchEffects {
         }
       }, []);
 
-      const params = { 'granule_list': (<any>granuleNames).join(',') };
+      const params = { 'granule_list': (granuleNames as any).join(',') };
 
       return this.asfApiService.query(params);
     }),
@@ -387,7 +385,7 @@ export class SearchEffects {
     ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE),
     filter(action => action.payload === models.SearchType.DATASET || action.payload === models.SearchType.DISPLACEMENT),
     switchMap((action) => {
-      let output : any[] = [
+      const output : any[] = [
         new mapStore.SetMapInteractionMode(models.MapInteractionModeType.DRAW)
       ];
       if (action.payload === models.SearchType.DISPLACEMENT) {

@@ -325,7 +325,7 @@ export class SetSearchList implements Action {
 export class SetMissions implements Action {
   public readonly type = FiltersActionType.SET_MISSIONS;
 
-  constructor(public payload: {[dataset: string]: string[]}) {}
+  constructor(public payload: Record<string, string[]>) {}
 }
 
 export class SelectMission implements Action {

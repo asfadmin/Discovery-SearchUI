@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, inject } from '@angular/core';
 
 import * as models from '@models';
 import * as filtersStore from '@store/filters';
@@ -15,7 +15,9 @@ import { combineLatest } from 'rxjs';
   styleUrls: ['./product-type-selector.component.css']
 })
 export class ProductTypeSelectorComponent implements OnInit, OnDestroy {
-  @Input() burstSelected: boolean = false;
+  private store$ = inject<Store<AppState>>(Store);
+
+  @Input() burstSelected = false;
   @Output() typesChange = new EventEmitter<models.DatasetProductTypes>();
   public dataset: models.Dataset;
   public productTypesList: string[] = [];
@@ -24,9 +26,6 @@ export class ProductTypeSelectorComponent implements OnInit, OnDestroy {
   private datasetProductTypes$ = this.store$.select(filtersStore.getProductTypes);
   private useCalibrationData$ = this.store$.select(filtersStore.getUseCalibrationData);
   private dataset$ = this.store$.select(filtersStore.getSelectedDataset);
-  
-  
-  constructor(private store$: Store<AppState>) { }
 
   private subs = new SubSink();
   

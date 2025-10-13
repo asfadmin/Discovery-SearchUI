@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 
 import { map } from 'rxjs/operators';
 
@@ -15,6 +15,8 @@ import { Breakpoints, asfWebsite } from '@models';
   styleUrls: ['./attributions.component.scss'],
 })
 export class AttributionsComponent {
+  private store$ = inject<Store<AppState>>(Store);
+
   @Input() breakpoint: Breakpoints;
 
   anio: number = new Date().getFullYear();
@@ -25,10 +27,6 @@ export class AttributionsComponent {
   );
   public breakpoints = Breakpoints;
   public asfWebsite = asfWebsite;
-
-  constructor(
-    private store$: Store<AppState>,
-  ) {}
 
   public onToggleMenu(): void {
     this.store$.dispatch(new uiStore.ToggleResultsMenu());

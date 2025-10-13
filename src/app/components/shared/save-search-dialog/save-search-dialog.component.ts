@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {v1 as uuid} from 'uuid';
 
@@ -22,6 +22,13 @@ import { AsfLanguageService } from "@services/asf-language.service";
   styleUrls: ['./save-search-dialog.component.scss']
 })
 export class SaveSearchDialogComponent implements OnInit {
+  dialogRef = inject<MatDialogRef<SaveSearchDialogComponent>>(MatDialogRef);
+  data = inject(MAT_DIALOG_DATA);
+  private store$ = inject<Store<AppState>>(Store);
+  private savedSearchService = inject(SavedSearchService);
+  private notificationService = inject(NotificationService);
+  language = inject(AsfLanguageService);
+
   public search: models.Search;
   public searchTranslation = models.SearchTypeTranslation;
 
@@ -33,15 +40,6 @@ export class SaveSearchDialogComponent implements OnInit {
 
   public saveType: models.SidebarType;
   public saveTypeName: string;
-
-  constructor(
-    public dialogRef: MatDialogRef<SaveSearchDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data,
-    private store$: Store<AppState>,
-    private savedSearchService: SavedSearchService,
-    private notificationService: NotificationService,
-    public language: AsfLanguageService,
-  ) { }
 
   ngOnInit(): void {
     this.saveType = this.data.saveType;
@@ -136,7 +134,7 @@ export class SaveSearchDialogComponent implements OnInit {
     const maxLen = 10000;
 
     if (search.searchType === models.SearchType.DATASET) {
-      const filters = <models.GeographicFiltersType>search.filters;
+      const filters = search.filters as models.GeographicFiltersType;
       const len = filters.polygon !== null ? filters.polygon.length : 0;
 
       if (len > maxLen) {
@@ -144,7 +142,7 @@ export class SaveSearchDialogComponent implements OnInit {
         return false;
       }
     } else if (search.searchType === models.SearchType.LIST) {
-      const filters = <models.ListFiltersType>search.filters;
+      const filters = search.filters as models.ListFiltersType;
       const len = filters.list.join(',').length;
 
       if (len > maxLen) {

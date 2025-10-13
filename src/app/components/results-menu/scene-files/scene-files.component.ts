@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, AfterContentInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterContentInit, Input, ViewChild, inject } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { combineLatest, of } from 'rxjs';
@@ -33,6 +33,16 @@ import * as filterStore from '@store/filters';
   styleUrls: ['./scene-files.component.scss']
 })
 export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit {
+  private store$ = inject<Store<AppState>>(Store);
+  private hyp3 = inject(Hyp3ApiService);
+  private clipboard = inject(ClipboardService);
+  private notificationService = inject(NotificationService);
+  private eventMonitoringService = inject(SarviewsEventsService);
+  dialog = inject(MatDialog);
+  private screenSize = inject(ScreenSizeService);
+  private asfApiService = inject(AsfApiService);
+  private productService = inject(ProductService);
+
   @ViewChild(CdkVirtualScrollViewport, {static: false}) scrollPort: CdkVirtualScrollViewport;
   @Input() isScrollable = true;
 
@@ -40,7 +50,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
   public breakpoints = models.Breakpoints;
   public copyIcon = faCopy;
   public products: models.CMRProduct[];
-  public productsByProductType: {[processing_type: string]: SarviewsProduct[]} = {};
+  public productsByProductType: Record<string, SarviewsProduct[]> = {};
   public selectedProducts: string[];
   public sarviewsProducts: models.SarviewsProduct[];
   public queuedProductIds: string[];
@@ -70,7 +80,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     withLatestFrom(this.sarviewsEventProductTypes$),
     filter(([_, processing_types]) => !!processing_types),
     map(([eventProducts, processing_types]) => {
-      const productsByProductType: {[processing_type: string]: SarviewsProduct[]} = {};
+      const productsByProductType: Record<string, SarviewsProduct[]> = {};
       processing_types.forEach(t => productsByProductType[t] = []);
       eventProducts.forEach(prod => productsByProductType[prod.job_type].push(prod));
       return productsByProductType;
@@ -83,13 +93,13 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
 
   public unzippedLoading: string;
   public loadingHyp3JobName: string | null;
-  public validJobTypesByProduct: {[productId: string]: models.Hyp3JobType[]} = {};
+  public validJobTypesByProduct: Record<string, models.Hyp3JobType[]> = {};
 
   public showUnzippedProductScreen: boolean;
   public openUnzippedProduct: models.CMRProduct;
   public beforeWithUnzip: models.CMRProduct[] = [];
   public afterUnzip: models.CMRProduct[] = [];
-  public unzippedProducts: {[id: string]: models.UnzippedFolder[]};
+  public unzippedProducts: Record<string, models.UnzippedFolder[]>;
   public isUserLoggedIn: boolean;
   public hasAccessToRestrictedData: boolean;
   public showDemWarning: boolean;
@@ -102,18 +112,6 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
     withLatestFrom(this.sarviewsEventProducts$),
     map(([product, products]) => products.findIndex(prod => prod.product_id === product.product_id))
   );
-
-  constructor(
-    private store$: Store<AppState>,
-    private hyp3: Hyp3ApiService,
-    private clipboard: ClipboardService,
-    private notificationService: NotificationService,
-    private eventMonitoringService: SarviewsEventsService,
-    public dialog: MatDialog,
-    private screenSize: ScreenSizeService,
-    private asfApiService: AsfApiService,
-    private productService: ProductService
-  ) { }
 
   ngOnInit() {
     this.subs.add(
@@ -317,7 +315,7 @@ export class SceneFilesComponent implements OnInit, OnDestroy, AfterContentInit 
 
         prev[key] = output;
         return prev;
-      }, {} as {[product_id in string]: PinnedProduct}
+      }, {} as Record<string, PinnedProduct>
     );
 
     this.store$.dispatch(new scenesStore.SetImageBrowseProducts(pinned));

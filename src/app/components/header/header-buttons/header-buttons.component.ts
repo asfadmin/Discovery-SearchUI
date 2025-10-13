@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { SubSink } from 'subsink';
 import { saveAs } from 'file-saver';
 
@@ -34,6 +34,14 @@ declare global {
   animations: []
 })
 export class HeaderButtonsComponent implements OnInit, OnDestroy {
+  authService = inject(AuthService);
+  env = inject(EnvironmentService);
+  private http = inject(HttpClient);
+  asfApiService = inject(AsfApiService);
+  private screenSize = inject(ScreenSizeService);
+  private store$ = inject<Store<AppState>>(Store);
+  language = inject(AsfLanguageService);
+
   anio: number = new Date().getFullYear();
   public asfWebsite = asfWebsite;
 
@@ -58,16 +66,6 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   public searchTypes = SearchType;
 
   public commitUrl = '';
-
-  constructor(
-    public authService: AuthService,
-    public env: EnvironmentService,
-    private http: HttpClient,
-    public asfApiService: AsfApiService,
-    private screenSize: ScreenSizeService,
-    private store$: Store<AppState>,
-    public language: AsfLanguageService,
-  ) {}
 
   ngOnInit() {
     this.subs.add(

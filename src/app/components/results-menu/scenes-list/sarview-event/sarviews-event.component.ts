@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { SarviewsEvent, SarviewsQuakeEvent, SarviewsVolcanicEvent } from '@models';
 
 import * as models from '@models';
@@ -15,6 +15,10 @@ import moment from 'moment';
   styleUrls: ['./sarviews-event.component.scss']
 })
 export class SarviewsEventComponent implements OnInit {
+  private mapService = inject(MapService);
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   @Input() event: SarviewsEvent;
   @Input() selected: boolean;
 
@@ -22,12 +26,6 @@ export class SarviewsEventComponent implements OnInit {
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
-
-  constructor(
-    private mapService: MapService,
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-  ) { }
 
   ngOnInit(): void {
   }
@@ -58,7 +56,7 @@ export class SarviewsEventComponent implements OnInit {
   public isActive(): boolean {
     const currentDate = moment(new Date()).startOf('day').toDate();
 
-    if (!!this.event.processing_timeframe.end) {
+    if (this.event.processing_timeframe.end) {
       return currentDate <= moment(this.event.processing_timeframe.end).endOf('day').toDate();
     }
 

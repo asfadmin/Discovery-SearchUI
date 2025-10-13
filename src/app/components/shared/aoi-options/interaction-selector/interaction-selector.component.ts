@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, inject } from '@angular/core';
 import { MatButtonToggle } from '@angular/material/button-toggle';
 import { SubSink } from 'subsink';
 
@@ -18,6 +18,10 @@ import * as searchStore from '@store/search';
   styleUrls: ['./interaction-selector.component.scss']
 })
 export class InteractionSelectorComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private mapService = inject(services.MapService);
+  private screenSize = inject(services.ScreenSizeService);
+
   @ViewChild('clearButton') clearButton: MatButtonToggle;
   public interaction: MapInteractionModeType;
   public types = MapInteractionModeType;
@@ -29,12 +33,6 @@ export class InteractionSelectorComponent implements OnInit, OnDestroy {
   public breakpoint$ = this.screenSize.breakpoint$;
 
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-    private mapService: services.MapService,
-    private screenSize: services.ScreenSizeService
-  ) {}
 
   ngOnInit() {
     this.subs.add(

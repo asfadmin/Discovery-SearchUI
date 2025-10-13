@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
@@ -23,6 +23,9 @@ enum FilterPanel {
   styleUrls: ['./baseline-filters.component.scss']
 })
 export class BaselineFiltersComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
   public areResultsLoaded: boolean;
@@ -31,7 +34,7 @@ export class BaselineFiltersComponent implements OnInit, OnDestroy {
   public datasets = [beta];
   public selectedDataset = 'SENTINEL-1 INTERFEROGRAM (BETA)'
   public masterScene: string;
-  public shouldUseFramesForReference: boolean = false;
+  public shouldUseFramesForReference = false;
 
   selectedPanel: FilterPanel | null = null;
   panels = FilterPanel;
@@ -41,11 +44,6 @@ export class BaselineFiltersComponent implements OnInit, OnDestroy {
   customExpandedHeight = '30px';
 
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService
-  ) { }
 
   ngOnInit() {
     this.subs.add(

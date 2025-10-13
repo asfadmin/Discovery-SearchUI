@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
@@ -18,6 +18,9 @@ import * as models from '@models';
   styleUrls: ['./timeseries-header.component.scss',  '../header.component.scss']
 })
 export class TimeseriesHeaderComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
   public isDrawing = false;
@@ -25,11 +28,6 @@ export class TimeseriesHeaderComponent implements OnInit, OnDestroy {
   public flightDesc = false;
 
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-  ) {}
 
   ngOnInit() {
 

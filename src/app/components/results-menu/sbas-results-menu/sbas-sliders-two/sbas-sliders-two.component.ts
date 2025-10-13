@@ -1,5 +1,5 @@
 // Days Slider
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, inject } from '@angular/core';
 
 import * as noUiSlider from 'nouislider';
 import { Subject,  fromEvent, Observable} from 'rxjs';
@@ -14,7 +14,7 @@ import { ScreenSizeService } from '@services';
 import * as models from '@models';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 
-declare var wNumb: any;
+declare let wNumb: any;
 
 @Component({
   selector: 'app-sbas-sliders-two',
@@ -22,6 +22,9 @@ declare var wNumb: any;
   styleUrls: ['./sbas-sliders-two.component.scss']
 })
 export class SbasSlidersTwoComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   @ViewChild('temporalFilter2', { static: true }) temporalFilter: ElementRef;
   @ViewChild('meterInputField', { static: true }) meterFilter: ElementRef;
 
@@ -53,11 +56,9 @@ export class SbasSlidersTwoComponent implements OnInit, OnDestroy {
   meterDistanceControl: UntypedFormControl;
   daysControl: UntypedFormControl;
 
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-    fb: UntypedFormBuilder
-  ) {
+  constructor() {
+    const fb = inject(UntypedFormBuilder);
+
     this.meterDistanceControl = new UntypedFormControl(this.perpendicular, Validators.min(-999));
     this.daysControl = new UntypedFormControl(this.daysRange, Validators.min(0));
 

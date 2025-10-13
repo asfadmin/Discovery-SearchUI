@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 
 import { ScreenSizeService } from '@services';
 import { Breakpoints } from '@models';
@@ -9,17 +9,15 @@ import { Breakpoints } from '@models';
   styleUrls: ['./logo.component.scss']
 })
 export class LogoComponent implements OnInit {
+  private screenSize = inject(ScreenSizeService);
+
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = Breakpoints;
-
-  constructor(
-    private screenSize: ScreenSizeService
-  ) {}
 
   ngOnInit(): void {
   }
 
   onResetSearch() {
-    window.location = <any>'/';
+    window.location = '/' as any;
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, inject } from '@angular/core';
 
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
@@ -24,6 +24,9 @@ enum MobileViews {
   styleUrls: ['./mobile-results-menu.component.scss', '../results-menu.component.scss']
 })
 export class MobileResultsMenuComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  datasetForProduct = inject(DatasetForProductService);
+
   @Input() resize$: Observable<void>;
 
   public isDisconnected = false;
@@ -40,11 +43,6 @@ export class MobileResultsMenuComponent implements OnInit, OnDestroy {
   public SearchTypes = SearchType;
 
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-    public datasetForProduct: DatasetForProductService,
-  ) { }
 
   ngOnInit(): void {
     this.subs.add(

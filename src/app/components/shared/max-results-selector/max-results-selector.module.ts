@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -36,7 +36,9 @@ import { DocsModalModule } from '@components/shared/docs-modal';
   exports: [ MaxResultsSelectorComponent ],
 })
 export class MaxResultsSelectorModule {
-  constructor(library: FaIconLibrary) {
+  constructor() {
+    const library = inject(FaIconLibrary);
+
     library.addIconPacks(fas);
     library.addIcons(faSpinner);
   }

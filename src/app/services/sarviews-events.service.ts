@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { combineLatest, Observable, of } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Range } from '@models';
@@ -20,13 +20,15 @@ import * as filtersStore from '@store/filters';
   providedIn: 'root'
 })
 export class SarviewsEventsService {
+  private http = inject(HttpClient);
+  private wktService = inject(WktService);
+  private mapService = inject(MapService);
+  private store$ = inject<Store<AppState>>(Store);
+
   private eventsUrl = `https://gm3385dq6j.execute-api.us-west-2.amazonaws.com/events`;
   private Moment = extendMoment(moment as any);
 
-  constructor(private http: HttpClient,
-    private wktService: WktService,
-    private mapService: MapService,
-    private store$: Store<AppState>) {
+  constructor() {
       extendMoment(moment as any);
    }
 
@@ -40,7 +42,7 @@ export class SarviewsEventsService {
         event => {
           return {
             ...event,
-            processing_timeframe: !!event.processing_timeframe ? this.getDates(event) : null,
+            processing_timeframe: event.processing_timeframe ? this.getDates(event) : null,
             point: this.getEventPoint(event.wkt),
           } as models.SarviewsEvent;
         }
@@ -61,7 +63,7 @@ export class SarviewsEventsService {
       map((event: models.SarviewsProcessedEvent) => {
         return {
           ...event,
-          processing_timeframe: !!event.processing_timeframe ? this.getDates(event) : null
+          processing_timeframe: event.processing_timeframe ? this.getDates(event) : null
         };
       })
       );
@@ -102,10 +104,10 @@ export class SarviewsEventsService {
     if (!eventDates) {
       return event.processing_timeframe;
     }
-    if (!!eventDates.start) {
+    if (eventDates.start) {
       eventDates.start = new Date(eventDates.start);
     }
-    if (!!eventDates.end) {
+    if (eventDates.end) {
       eventDates.end = new Date(eventDates.end);
     }
 
@@ -253,13 +255,13 @@ export class SarviewsEventsService {
     ).pipe(
       map(([products, dateRange]) => products.filter(prod => {
         const date = new Date(prod.granules[0].acquisition_date);
-        if (!!dateRange.start) {
+        if (dateRange.start) {
           if (date < dateRange.start) {
             return false;
           }
         }
 
-        if (!!dateRange.end) {
+        if (dateRange.end) {
           if (date > dateRange.end) {
             return false;
           }
@@ -369,13 +371,13 @@ export class SarviewsEventsService {
     );
   }
 
-  public areEventProductsFiltered$(): Observable<Boolean> {
+  public areEventProductsFiltered$(): Observable<boolean> {
     return combineLatest([
       this.filteredEventProducts$(),
       this.store$.select(getSelectedSarviewsEventProducts)]
       ).pipe(
         map(([filtered, unfiltered]) => {
-          if (!!unfiltered) {
+          if (unfiltered) {
             return !(filtered?.length === unfiltered.length);
           }
           return false;
@@ -481,7 +483,7 @@ export class SarviewsEventsService {
           const currentDate = new Date();
 
           return events.filter( event => {
-            if (!!event.processing_timeframe.end) {
+            if (event.processing_timeframe.end) {
               if (currentDate <= event.processing_timeframe.end) {
                 return true;
               }
@@ -509,9 +511,9 @@ export class SarviewsEventsService {
 
             return events.filter(event => {
               if (event.event_type.toLowerCase() === 'quake') {
-                const magEvent = <models.SarviewsQuakeEvent>event;
-                const start = !!magRange.start ? magRange.start : 0;
-                const end = !!magRange.end ? magRange.end : 10;
+                const magEvent = event as models.SarviewsQuakeEvent;
+                const start = magRange.start ? magRange.start : 0;
+                const end = magRange.end ? magRange.end : 10;
 
                 return magEvent.magnitude <= end && magEvent.magnitude >= start;
               }

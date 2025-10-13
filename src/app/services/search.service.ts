@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -19,13 +19,11 @@ import { resetTimeseriesStates } from '@store/charts';
   providedIn: 'root'
 })
 export class SearchService {
+  private store$ = inject<Store<AppState>>(Store);
+  private mapService = inject(MapService);
+  private wktService = inject(WktService);
+  private pointHistoryService = inject(PointHistoryService);
 
-  constructor(
-    private store$: Store<AppState>,
-    private mapService: MapService,
-    private wktService: WktService,
-    private pointHistoryService: PointHistoryService,
-  ) { }
 
   public clear(searchType: models.SearchType): void {
     this.mapService.clearDrawLayer();
@@ -83,22 +81,22 @@ export class SearchService {
       this.loadSearchPolygon(search);
     }
     if (search.searchType === models.SearchType.BASELINE) {
-      const filters = <models.BaselineFiltersType>search.filters;
+      const filters = search.filters as models.BaselineFiltersType;
       this.store$.dispatch(new scenesStore.SetFilterMaster(filters.filterMaster));
     }
     if (search.searchType === models.SearchType.SBAS) {
-      const filters = <models.SbasFiltersType>search.filters;
+      const filters = search.filters as models.SbasFiltersType;
       this.store$.dispatch(new scenesStore.SetFilterMaster(filters.reference));
       if (filters.customPairIds) {
         this.store$.dispatch(new scenesStore.AddCustomPairs(filters.customPairIds));
       }
     }
     if (search.searchType === models.SearchType.SARVIEWS_EVENTS) {
-      const filters = <models.SarviewsFiltersType>search.filters;
+      const filters = search.filters as models.SarviewsFiltersType;
       const pinnedProductIds = filters.pinnedProductIDs;
       this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(filters.selectedEventID));
 
-        if (!!pinnedProductIds) {
+        if (pinnedProductIds) {
           this.store$.dispatch(new scenesStore.SetImageBrowseProducts(pinnedProductIds.reduce(
             (prev, curr) => {
               prev[curr] = {
@@ -106,12 +104,12 @@ export class SearchService {
                 wkt: ''
               };
               return prev;
-            }, {} as {[product_id in string]: PinnedProduct})
+            }, {} as Record<string, PinnedProduct>)
           ));
         }
     }
     if(search.searchType === models.SearchType.DISPLACEMENT) {
-        const filters = <models.DisplacementFiltersType>search.filters;
+        const filters = search.filters as models.DisplacementFiltersType;
         this.store$.dispatch(resetTimeseriesStates())
 
         const seriesStates = filters.seriesStates;
@@ -122,7 +120,7 @@ export class SearchService {
   }
 
   private loadSearchPolygon(search: models.Search): void {
-    const polygon = (<models.GeographicFiltersType>search.filters).polygon;
+    const polygon = (search.filters as models.GeographicFiltersType).polygon;
 
     if (polygon === null) {
       this.mapService.clearDrawLayer();

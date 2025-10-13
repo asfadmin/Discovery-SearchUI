@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
@@ -17,6 +17,10 @@ import { MapService, ScreenSizeService } from '@services';
   styleUrls: ['./layer-selector.component.scss']
 })
 export class LayerSelectorComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private mapService = inject(MapService);
+  private screenSize = inject(ScreenSizeService);
+
   public overviewMapVisible$ = this.store$.select(mapStore.getIsOverviewMapOpen);
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = models.SearchType;
@@ -43,12 +47,6 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
 
 
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-    private mapService: MapService,
-    private screenSize: ScreenSizeService,
-  ) { }
 
   ngOnInit() {
     this.subs.add(

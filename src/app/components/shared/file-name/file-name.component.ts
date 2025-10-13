@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, inject } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { map } from 'rxjs/operators';
@@ -12,6 +12,8 @@ import { SearchType } from '@models';
   styleUrls: ['./file-name.component.scss']
 })
 export class FileNameComponent implements OnInit, OnDestroy {
+  private screenSize = inject(ScreenSizeService);
+
   @Input() name: string;
   @Input() dataset: string;
   @Input() searchType: SearchType;
@@ -20,8 +22,6 @@ export class FileNameComponent implements OnInit, OnDestroy {
   public SearchTypes = SearchType;
   public sceneNameLen: number;
   private subs = new SubSink();
-
-  constructor(private screenSize: ScreenSizeService) { }
 
   ngOnInit(): void {
     this.subs.add(

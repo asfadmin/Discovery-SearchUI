@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { WktService } from '@services';
 import { Extent, getCenter } from 'ol/extent';
 import Feature from 'ol/Feature';
@@ -36,6 +36,9 @@ import { Projection, addCoordinateTransforms, addProjection, get as getProjectio
   providedIn: 'root'
 })
 export class BrowseOverlayService {
+  private wktService = inject(WktService);
+  private store$ = inject<Store<AppState>>(Store);
+
 
   public isBrowseOverlayEnabled$: Observable<boolean> = combineLatest([
     this.store$.select(searchStore.getSearchType),
@@ -75,12 +78,6 @@ export class BrowseOverlayService {
     }),
   );
 
-  constructor(
-    private wktService: WktService,
-    private store$: Store<AppState>,
-    // private http: HttpClient,
-) { }
-
   private createImageSource(url: string, extent: Extent) {
     return new Static({
          url,
@@ -100,7 +97,7 @@ export class BrowseOverlayService {
        });
   }
 
-  public createNormalImageLayer(url: string, wkt: string, className: string = 'ol-layer', layer_id: string = '') {
+  public createNormalImageLayer(url: string, wkt: string, className = 'ol-layer', layer_id = '') {
     const feature = this.wktService.wktToFeature(wkt, 'EPSG:3857');
     const polygon = this.getPolygonFromFeature(feature, wkt);
 
@@ -121,7 +118,7 @@ export class BrowseOverlayService {
     return output;
   }
 
-  public createGeotiffLayer(blob: Blob, _wkt: string, className: string = 'ol-layer', layer_id: string = '') {
+  public createGeotiffLayer(blob: Blob, _wkt: string, className = 'ol-layer', layer_id = '') {
 
     const source = this.createGeotiffSource(blob);
 
@@ -163,7 +160,7 @@ export class BrowseOverlayService {
     return polygon;
   }
 
-  public createImageLayer(url: string, wkt: string, className: string = 'ol-layer', layer_id: string = '') {
+  public createImageLayer(url: string, wkt: string, className = 'ol-layer', layer_id = '') {
     const feature = this.wktService.wktToFeature(wkt, 'EPSG:3857');
     const polygon = this.getPolygonFromFeature(feature, wkt);
 
@@ -197,7 +194,7 @@ export class BrowseOverlayService {
     }
   }
 
-  public getKMLLayer(_product: models.CMRProduct, _png_url: string, wkt: string, className: string = 'ol-layer', _layer_id: string = '') {
+  public getKMLLayer(_product: models.CMRProduct, _png_url: string, wkt: string, className = 'ol-layer', _layer_id = '') {
     // function _substitute_url(url: string) {
     //     console.log(url)
     //     // https://openlayers.org/en/v7.5.2/apidoc/module-ol_format_KML-KML.html
@@ -237,8 +234,8 @@ export class BrowseOverlayService {
     })
     feature.setStyle(
         (_feature)  => {
-        var stringCoords = this.getPolygonFromFeature(feature, wkt).getCoordinates()[0];
-        var coords = stringCoords.slice(-2);
+        const stringCoords = this.getPolygonFromFeature(feature, wkt).getCoordinates()[0];
+        let coords = stringCoords.slice(-2);
         if (coords[1][0] == coords[0][0] && coords[1][1] == coords[0][1] && stringCoords.length > 2) {
             // useful for drawing
             coords = stringCoords.slice(-3, -1);
@@ -253,7 +250,7 @@ export class BrowseOverlayService {
         return [lineStyle, iconStyle];
         }
     )
-    let source = new VectorSource({
+    const source = new VectorSource({
         wrapX: models.mapOptions.wrapX,
         features: [feature]
         });
@@ -294,15 +291,15 @@ export class BrowseOverlayService {
     // // simped.pop()
     // // extent[2] = extent[2] - 5/2  
 
-    let polygon = this.getPolygonFromFeature(feature, wkt)
-    let img = new ImageLayer({
+    const polygon = this.getPolygonFromFeature(feature, wkt)
+    const img = new ImageLayer({
         // source: static_image_source,
         extent: polygon.getExtent(),
         
     })
-    let rotateProjection = (projection, angle, extent) => {
+    const rotateProjection = (projection, angle, extent) => {
     function rotateCoordinate(coordinate, angle, anchor) {
-        var coord = rotate(
+        const coord = rotate(
         [coordinate[0] - anchor[0], coordinate[1] - anchor[1]],
         angle
         );
@@ -317,9 +314,9 @@ export class BrowseOverlayService {
         return rotateCoordinate(coordinate, -angle, getCenter(extent));
     }
 
-    var normalProjection = getProjection(projection);
+    const normalProjection = getProjection(projection);
 
-    var rotatedProjection = new Projection({
+    const rotatedProjection = new Projection({
         code:
         normalProjection.getCode() +
         ":" +
@@ -383,7 +380,7 @@ export class BrowseOverlayService {
     }
     // let coords = polygon.getCoordinates()[0]
     // let ext = applyTransform([...coords[1], ...coords[3]], fromLonLat, undefined    )
-    let static_image_source = new Static({
+    const static_image_source = new Static({
         url: _png_url,
         projection: rotateProjection("EPSG:27700", Math.PI / 4, img.getExtent()),
         // imageExtent: img.getExtent(),
@@ -401,7 +398,7 @@ export class BrowseOverlayService {
   }
 
 
-  public setPinnedProducts(pinnedProducts: {[product_id in string]: PinnedProduct}, productLayerGroup: LayerGroup) {
+  public setPinnedProducts(pinnedProducts: Record<string, PinnedProduct>, productLayerGroup: LayerGroup) {
 
     const pinnedProductIds = Object.keys(pinnedProducts);
     const currentPinnedProductsIds: string[] = productLayerGroup.getLayersArray().map(layer => layer.get('layer_id'));
@@ -415,7 +412,7 @@ export class BrowseOverlayService {
     }
   }
 
-  private pinProducts(layersToAdd: string[], pinnedProductStates: {[product_id in string]: PinnedProduct}, productLayerGroup: LayerGroup) {
+  private pinProducts(layersToAdd: string[], pinnedProductStates: Record<string, PinnedProduct>, productLayerGroup: LayerGroup) {
     const newLayers = layersToAdd.map(layer_id => this.createNormalImageLayer(
       pinnedProductStates[layer_id].url,
       pinnedProductStates[layer_id].wkt,
@@ -429,7 +426,7 @@ export class BrowseOverlayService {
   private unpinProducts(layersToRemove: string[], productLayerGroup: LayerGroup) {
     layersToRemove.forEach(product_id => {
       const found = productLayerGroup.getLayersArray().find(layer => layer.get('layer_id') === product_id);
-      if (!!found) {
+      if (found) {
       productLayerGroup.getLayers().remove(found);
       }
     });

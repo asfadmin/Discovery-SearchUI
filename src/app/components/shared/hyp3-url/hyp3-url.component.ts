@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import * as userStore from '@store/user';
 import {SubSink} from 'subsink';
 import * as services from '@services';
@@ -11,15 +11,13 @@ import { AppState } from '@store';
   styleUrls: ['./hyp3-url.component.scss']
 })
 export class Hyp3UrlComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private hyp3 = inject(services.Hyp3ApiService);
+
 
   private subs = new SubSink();
   public hyp3BaseUrl = this.hyp3.baseUrl;
   public hyp3BackendUrl: string;
-
-  constructor(
-    private store$: Store<AppState>,
-    private hyp3: services.Hyp3ApiService,
-  ) { }
 
   ngOnInit(): void {
     this.subs.add(

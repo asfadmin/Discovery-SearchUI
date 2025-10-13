@@ -1,9 +1,11 @@
-import { Directive, ElementRef, HostListener } from '@angular/core';
+import { Directive, ElementRef, HostListener, inject } from '@angular/core';
 
 @Directive({
   selector: '[appOnlynumber]'
 })
 export class OnlynumberDirective {
+  el = inject(ElementRef);
+
 
   private navigationKeys = [
     'Backspace',
@@ -20,7 +22,9 @@ export class OnlynumberDirective {
     'Paste'
   ];
   inputElement: HTMLElement;
-  constructor(public el: ElementRef) {
+  constructor() {
+    const el = this.el;
+
     this.inputElement = el.nativeElement;
   }
 

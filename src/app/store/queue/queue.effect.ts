@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -21,20 +21,19 @@ import * as services from '@services';
 import * as models from '@models';
 
 export interface MetadataDownload {
-  params: {[id: string]: string | null};
+  params: Record<string, string | null>;
   format: models.AsfApiOutputFormat;
 }
 
 @Injectable()
 export class QueueEffects {
-  constructor(
-    private actions$: Actions,
-    private store$: Store<AppState>,
-    private asfApiService: services.AsfApiService,
-    private searchParamsService: services.SearchParamsService,
-    private bulkDownloadService: services.BulkDownloadService,
-    private notificationService: services.NotificationService,
-  ) {}
+  private actions$ = inject(Actions);
+  private store$ = inject<Store<AppState>>(Store);
+  private asfApiService = inject(services.AsfApiService);
+  private searchParamsService = inject(services.SearchParamsService);
+  private bulkDownloadService = inject(services.BulkDownloadService);
+  private notificationService = inject(services.NotificationService);
+
 
   public makeDownloadScript = createEffect(() => this.actions$.pipe(
     ofType(QueueActionType.MAKE_DOWNLOAD_SCRIPT),

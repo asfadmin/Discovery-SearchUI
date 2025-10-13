@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, inject } from '@angular/core';
 
 import { BehaviorSubject, Subject } from 'rxjs';
 import { first, map, sampleTime, tap } from 'rxjs/operators';
@@ -56,6 +56,15 @@ import VectorImageLayer from 'ol/layer/VectorImage';
   providedIn: 'root'
 })
 export class MapService implements OnDestroy {
+  private wktService = inject(WktService);
+  private legacyAreaFormat = inject(LegacyAreaFormatService);
+  private drawService = inject(DrawService);
+  private store$ = inject<Store<AppState>>(Store);
+  private browseOverlayService = inject(BrowseOverlayService);
+  private layerService = inject(LayerService);
+  private http = inject(HttpClient);
+  private pointHistoryService = inject(PointHistoryService);
+
   public isDrawing$ = this.drawService.isDrawing$.pipe(
     tap(isDrawing => this.map.getViewport().style.cursor = isDrawing ? 'crosshair' : 'default')
   );
@@ -68,8 +77,8 @@ export class MapService implements OnDestroy {
   private polygonLayer: VectorLayer<VectorSource>;
   private sarviewsEventsLayer: VectorLayer<VectorSource>;
   public displacmentLayer: VectorLayer<VectorSource>;
-  public frameSelectionOverlay: VectorImageLayer<VectorSource> = new VectorImageLayer();
-  public selectedOnDemandFrameOverlays: VectorLayer<VectorSource> = new VectorLayer({
+  public frameSelectionOverlay = new VectorImageLayer<VectorSource>();
+  public selectedOnDemandFrameOverlays = new VectorLayer<VectorSource>({
     style:
       new Style({
         zIndex: 100000,
@@ -82,7 +91,7 @@ export class MapService implements OnDestroy {
   private browseImageLayer: Layer;
 
   private gridLinesVisible: boolean;
-  private sarviewsFeaturesByID: { [id: string]: Feature } = {};
+  private sarviewsFeaturesByID: Record<string, Feature> = {};
   private pinnedCollection: Collection<Layer> = new Collection<Layer>([], { unique: true });
   private pinnedProducts: LayerGroup = new LayerGroup({ layers: this.pinnedCollection });
 
@@ -92,7 +101,7 @@ export class MapService implements OnDestroy {
 
   private displacementOverview: TileLayer = new TileLayer({});
   public displacementOverview$ = new BehaviorSubject<models.DisplacementLayerTypes | null>(null);
-  private priorityOverview: VectorLayer<VectorSource> = new VectorLayer();
+  private priorityOverview = new VectorLayer<VectorSource>();
   public priorityEnabled$ = new BehaviorSubject<models.FlightDirection | null>(null);
   public searchType: models.SearchType;
 
@@ -101,16 +110,7 @@ export class MapService implements OnDestroy {
     units: string
   }
 
-  constructor(
-    private wktService: WktService,
-    private legacyAreaFormat: LegacyAreaFormatService,
-    private drawService: DrawService,
-    private store$: Store<AppState>,
-    private browseOverlayService: BrowseOverlayService,
-    private layerService: LayerService,
-    private http: HttpClient,
-    private pointHistoryService: PointHistoryService
-  ) {
+  constructor() {
     this.subs.add(
       this.store$.select(searchStore.getSearchType).subscribe(
         searchType => {
@@ -202,8 +202,8 @@ export class MapService implements OnDestroy {
   public epsg$ = new Subject<string>();
   public hasCoherenceLayer$ = new BehaviorSubject<string>(null);
 
-  public selectedSarviewEvent$: EventEmitter<string> = new EventEmitter();
-  public mapInit$: EventEmitter<Map> = new EventEmitter();
+  public selectedSarviewEvent$ = new EventEmitter<string>();
+  public mapInit$ = new EventEmitter<Map>();
   public timeseriesPixelSelected$ = new EventEmitter();
   public mousePosition$ = this.mousePositionSubject$.pipe(
     sampleTime(100)
@@ -287,7 +287,7 @@ export class MapService implements OnDestroy {
 
   public setLayer(layer: VectorLayer<VectorSource>): void {
     let previousVisible = true;
-    if (!!this.polygonLayer) {
+    if (this.polygonLayer) {
       previousVisible = this.polygonLayer.isVisible();
       this.map.removeLayer(this.polygonLayer);
     }
@@ -298,7 +298,7 @@ export class MapService implements OnDestroy {
   }
 
   public setEventsLayer(layer: VectorLayer<VectorSource>): void {
-    if (!!this.sarviewsEventsLayer) {
+    if (this.sarviewsEventsLayer) {
       this.map.removeLayer(this.sarviewsEventsLayer);
     }
 
@@ -328,7 +328,7 @@ export class MapService implements OnDestroy {
         if (sarviewEvent.event_type !== 'flood') {
           let active = false;
           let iconName = sarviewEvent.event_type === 'quake' ? 'Earthquake_inactive.svg' : 'Volcano_inactive.svg';
-          if (!!sarviewEvent.processing_timeframe.end) {
+          if (sarviewEvent.processing_timeframe.end) {
             if (currentDate <= new Date(sarviewEvent.processing_timeframe.end)) {
               active = true;
               iconName = iconName.replace('_inactive', '');
@@ -449,8 +449,8 @@ export class MapService implements OnDestroy {
   }
   public filterFrameOverlay(frameRange: models.Range<number | null>, pathRange: models.Range<number | null>) {
     this.frameSelectionOverlay?.getSource()?.getFeatures().forEach(a => {
-      let frame = +a.get('id');
-      let path = +a.get('path');
+      const frame = +a.get('id');
+      const path = +a.get('path');
 
       if (this.isWithinRange(frame, frameRange) && this.isWithinRange(path, pathRange)) {
         a.setStyle(new Style({
@@ -612,7 +612,7 @@ export class MapService implements OnDestroy {
   }
 
   public setAriaPopupOverlay(container: HTMLElement, _lonLat) {
-    if (!!container) {
+    if (container) {
       const OnDemandMapPopupMenuOverlay = new Overlay({
         element: container,
         'position': this.projectedPosition,
@@ -655,7 +655,7 @@ export class MapService implements OnDestroy {
     if (e.target.getFeatures().getArray()[0]?.get('dir')) {
       this.selectedSource.clear();
       this.selectedSource.addFeature(e.selected[0]); // handle multiple things here.
-      let feat = e.target.getFeatures().getArray()[0];
+      const feat = e.target.getFeatures().getArray()[0];
       const id = feat.get('id');
       console.log(`Id selected: ${id}`);
       this.focusedAriaFrame$.next(feat);
@@ -726,13 +726,13 @@ export class MapService implements OnDestroy {
     });
 
     this.timeseriesClick.on('select', e => {
-      let selectedPoint = e.selected[0].get('uuid');
+      const selectedPoint = e.selected[0].get('uuid');
       this.store$.dispatch(new uiStore.SetActiveUUID(selectedPoint));
       e.preventDefault();
     });
 
     this.timeseriesHover.on('select', e => {
-      let selectedPoint = e.selected[0]?.get('uuid');
+      const selectedPoint = e.selected[0]?.get('uuid');
       if (!selectedPoint) {
         this.store$.dispatch(new uiStore.SetActiveUUID(null));
         e.preventDefault()
@@ -772,7 +772,7 @@ export class MapService implements OnDestroy {
           evnt.pixel,
           (feature) => {
             const sarview_id: string = feature.get('sarviews_id');
-            if (!!sarview_id) {
+            if (sarview_id) {
               this.selectedSarviewEvent$.next(sarview_id);
               this.store$.dispatch(new sceneStore.SetSelectedSarviewsEvent(sarview_id));
             }
@@ -838,12 +838,12 @@ export class MapService implements OnDestroy {
 
   private trimImage(imageURL) {
     return new Promise((resolve, _reject) => {
-      let c = document.createElement('canvas')
+      const c = document.createElement('canvas')
       c.width = 5000
       c.height = 5000
-      let ctx = c.getContext('2d')
+      const ctx = c.getContext('2d')
 
-      let base_image = new Image()
+      const base_image = new Image()
       base_image.crossOrigin = 'Anonymous';
 
       base_image.src = imageURL
@@ -894,7 +894,7 @@ export class MapService implements OnDestroy {
         }
 
         // Calculate the height and width of the content
-        let trimHeight = bound.bottom - bound.top,
+        const trimHeight = bound.bottom - bound.top,
           trimWidth = bound.right - bound.left,
           trimmed = ctx.getImageData(bound.left, bound.top, trimWidth, trimHeight);
 
@@ -915,13 +915,13 @@ export class MapService implements OnDestroy {
   }
 
   public setSelectedBrowse(url: string, wkt: string, _scene: models.CMRProduct = null) {
-    if (!!this.browseImageLayer) {
+    if (this.browseImageLayer) {
       this.map.removeLayer(this.browseImageLayer);
     }
     if (!url.endsWith('.tif')) {
       if (url.includes('OPERA')) {
         this.trimImage(url).then((imageBlob: Blob) => {
-          let url = URL.createObjectURL(imageBlob);
+          const url = URL.createObjectURL(imageBlob);
           URL.revokeObjectURL(this.localBrowseImageURL)
           this.localBrowseImageURL = url;
 
@@ -945,7 +945,7 @@ export class MapService implements OnDestroy {
         responseType: 'blob'
       }).subscribe((response: any) => {
         this.browseImageLayer = this.browseOverlayService.createGeotiffLayer(response.body, wkt, 'ol-layer', 'current-overlay');
-        let s: any = this.browseImageLayer.getSource().getView()!
+        const s: any = this.browseImageLayer.getSource().getView()!
         s.then((thing: any) => {
           this.map?.getView().fit(thing.extent)
         })
@@ -955,7 +955,7 @@ export class MapService implements OnDestroy {
   }
 
   public setCoherenceLayer(months: string): void {
-    if (!!this.layerService.coherenceLayer) {
+    if (this.layerService.coherenceLayer) {
       this.map.removeLayer(this.layerService.coherenceLayer);
       this.layerService.coherenceLayer = null;
     }
@@ -978,7 +978,7 @@ export class MapService implements OnDestroy {
     const dir = apiDirValues[direction];
     const layerType = apiDispValues[type];
 
-    let base_url = `https://d3g9emy65n853h.cloudfront.net/main/${dir.toLowerCase()}/${layerType.toLowerCase()}`;
+    const base_url = `https://d3g9emy65n853h.cloudfront.net/main/${dir.toLowerCase()}/${layerType.toLowerCase()}`;
     this.displacementOverview$.next(type);
 
     this.http.get(`${base_url}/extent.json`).pipe(
@@ -998,7 +998,7 @@ export class MapService implements OnDestroy {
       this.displacementRange = response.scale_range;
 
       // Eventually let users define this part somehow
-      let defined_stops: (number | number[])[][] = [
+      const defined_stops: (number | number[])[][] = [
         // [Stop, Color[R,G,B]]
         [1.0, [0, 18, 97]],
         [29.0, [3, 62, 125]],
@@ -1012,7 +1012,7 @@ export class MapService implements OnDestroy {
         [256.0, [89, 0, 8]],
       ];
 
-      let parsed_color_stops = defined_stops.flat().map(x => {
+      const parsed_color_stops = defined_stops.flat().map(x => {
         if (Array.isArray(x)) {
           return ['color', ...x, ['band', 4]]
         } else {
@@ -1043,18 +1043,18 @@ export class MapService implements OnDestroy {
 
 
   public setDisplacementLayer(points: { seriesNumber: number, color: string, frames: models.TimeseriesSubframe[], base_wkt: string, uuid: string }[]) {
-    if (!!this.displacmentLayer) {
+    if (this.displacmentLayer) {
       this.map.removeLayer(this.displacmentLayer);
       this.displacmentLayer = null;
     }
-    let self = this;
+    const self = this;
 
 
-    let features = []
+    const features = []
     points.forEach(dataPoint => {
       if (dataPoint.frames?.length > 1) {
         for (let i = 0; i < dataPoint.frames.length; i++) {
-          let temp_feature = this.wktService.wktToFeature(dataPoint.frames[i].wkt, this.epsg())
+          const temp_feature = this.wktService.wktToFeature(dataPoint.frames[i].wkt, this.epsg())
 
           temp_feature.set('point', temp_feature.getGeometry()); // use genned one
           temp_feature.set('uuid', dataPoint.frames[i].uuid);
@@ -1064,7 +1064,7 @@ export class MapService implements OnDestroy {
           features.push(temp_feature);
         }
       } else {
-        let temp_feature = this.wktService.wktToFeature(dataPoint.base_wkt, this.epsg())
+        const temp_feature = this.wktService.wktToFeature(dataPoint.base_wkt, this.epsg())
         temp_feature.set('point', temp_feature.getGeometry());
         temp_feature.set('uuid', dataPoint.uuid);
         temp_feature.set('seriesNumber', dataPoint.seriesNumber);
@@ -1073,29 +1073,29 @@ export class MapService implements OnDestroy {
       }
     });
 
-    let source = new VectorSource({
+    const source = new VectorSource({
       features
     });
     const stylize = function StyleFunction(feature: Feature) {
 
       const textFunction = function (f: Feature) {
-        let labelContent = f.get('index') ? `${f.get('seriesNumber')}.${f.get('index')}` : `${f.get('seriesNumber')}`;
+        const labelContent = f.get('index') ? `${f.get('seriesNumber')}.${f.get('index')}` : `${f.get('seriesNumber')}`;
         return labelContent.toString();
       }
 
       const textColorFunction = function (f: Feature) {
-        let color: string = f.get('seriesColor') ?? "#000000";
+        const color: string = f.get('seriesColor') ?? "#000000";
         return color;
       }
 
-      let selected = (feature.get('uuid') === self.pointHistoryService.selectedPoint);
+      const selected = (feature.get('uuid') === self.pointHistoryService.selectedPoint);
 
-      let zoom = self.map.getView().getZoom();
+      const zoom = self.map.getView().getZoom();
       let font_size = zoom > 8 ? 1.3 * zoom : 0.9 * zoom;
       if (feature.getGeometry().getType() === 'Point') {
         font_size = 13;
       }
-      let layerStyle = new Style({
+      const layerStyle = new Style({
         image: new CircleStyle({
           stroke: new Stroke({
             color: (selected) ? 'red' : '#ffcc33',
@@ -1159,13 +1159,13 @@ export class MapService implements OnDestroy {
     });
   }
 
-  public setPinnedProducts(pinnedProductStates: { [product_id in string]: PinnedProduct }) {
+  public setPinnedProducts(pinnedProductStates: Record<string, PinnedProduct>) {
     this.browseOverlayService.setPinnedProducts(pinnedProductStates, this.pinnedProducts);
   }
 
   public clearBrowseOverlays() {
     this.pinnedProducts.getLayers().clear();
-    if (!!this.browseImageLayer) {
+    if (this.browseImageLayer) {
       this.map.removeLayer(this.browseImageLayer);
     }
   }

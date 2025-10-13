@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, AfterViewInit, inject } from '@angular/core';
 
 import { LonLat } from '@models';
 import * as services from '@services';
@@ -9,12 +9,10 @@ import * as services from '@services';
   styleUrls: ['./map-info.component.scss']
 })
 export class MapInfoComponent implements OnInit, AfterViewInit {
+  private mapService = inject(services.MapService);
+
   @ViewChild('mapScaleComp', { static: true }) mapScale;
   @Input() public mousePos: LonLat;
-
-  constructor(
-    private mapService: services.MapService,
-  ) { }
 
   ngOnInit(): void {
   }

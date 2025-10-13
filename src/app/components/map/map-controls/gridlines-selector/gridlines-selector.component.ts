@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
@@ -10,12 +10,12 @@ import { SubSink } from 'subsink';
   styleUrls: ['./gridlines-selector.component.scss']
 })
 export class GridlinesSelectorComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+
   public areGridlinesActive$ = this.store$.select(mapStore.getAreGridlinesActive);
   public active = false;
 
   public subs = new SubSink();
-
-  constructor(private store$: Store<AppState>) { }
 
   ngOnInit(): void {
     this.subs.add(

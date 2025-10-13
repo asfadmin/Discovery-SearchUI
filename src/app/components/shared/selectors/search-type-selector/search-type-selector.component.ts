@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, ViewChild, Input, ElementRef} from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, Input, ElementRef, inject } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import {MatMenu, MatMenuTrigger} from '@angular/material/menu';
@@ -26,6 +26,11 @@ declare global {
 
 })
 export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
+  translate = inject(TranslateService);
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+  env = inject(EnvironmentService);
+
   @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
   @ViewChild(MatMenu) searchMenu: MatMenu;
   @ViewChild('firstItem') firstItem: ElementRef;
@@ -135,13 +140,6 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
       iconType: models.IconType.IMAGE,
     }
   ]};
-
-  constructor(
-    public translate: TranslateService,
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-    public env: EnvironmentService,
-  ) {}
 
   ngOnInit() {
     this.subs.add(

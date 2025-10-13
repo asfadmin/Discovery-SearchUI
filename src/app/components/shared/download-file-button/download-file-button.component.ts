@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit, inject } from '@angular/core';
 import { DownloadService } from '@services/download.service';
 import { CMRProduct, DownloadStatus } from '@models';
 import { UAParser } from 'ua-parser-js';
@@ -28,6 +28,12 @@ import { HttpClient, HttpEventType } from '@angular/common/http';
   styleUrls: ['./download-file-button.component.scss']
 })
 export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
+  private downloadService = inject(DownloadService);
+  private store$ = inject<Store<AppState>>(Store);
+  private authService = inject(AuthService);
+  private http = inject(HttpClient);
+  private notificationService = inject(NotificationService);
+
   @Input() product: CMRProduct;
   @Input() href: string;
   @Input() disabled: boolean;
@@ -44,14 +50,6 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   public burstSubscription: Subscription;
   public isUserLoggedIn: boolean;
   private subs = new SubSink();
-
-  constructor(
-    private downloadService: DownloadService,
-    private store$: Store<AppState>,
-    private authService: AuthService,
-    private http: HttpClient,
-    private notificationService: NotificationService
-  ) { }
 
   ngOnInit(): void {
     if (typeof this.href !== 'undefined') {
@@ -95,7 +93,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     this.store$.dispatch(new queueStore.RemoveDownloadProduct(this.dFile));
     this.dFile = null;
   }
-  public getHandle(dir: boolean = false) {
+  public getHandle(dir = false) {
     return new Promise(resolve => {
       if (dir) {
         this.downloadService.getDirectory().then((handle) => {
@@ -128,7 +126,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     );
   }
 
-  public downloadFile(dir: boolean = false) {
+  public downloadFile(dir = false) {
     const isBurstProduct = !!['BURST', 'BURST_XML'].find(t => t === this.product.metadata.productType);
     if (!this.isUserLoggedIn && isBurstProduct) {
       this.onAccountButtonClicked();
@@ -187,7 +185,7 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     };
     this.store$.dispatch(new queueStore.DownloadProduct(initStatus));
 
-    if (!!['BURST', 'BURST_XML'].find(t => t === this.product.metadata.productType)) {
+    if (['BURST', 'BURST_XML'].find(t => t === this.product.metadata.productType)) {
       this.burstFunctionality(product, handle);
     }
     else {

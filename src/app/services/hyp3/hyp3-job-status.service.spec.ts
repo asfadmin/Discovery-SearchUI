@@ -8,29 +8,29 @@ import { Hyp3JobStatusService } from './hyp3-job-status.service';
 describe('Hyp3JobStatusService', () => {
   let service: Hyp3JobStatusService;
 
-  const expired = <models.Hyp3Job>{
+  const expired = {
     status_code: models.Hyp3JobStatusCode.SUCCEEDED,
     expiration_time: moment.utc().subtract(2, 'days')
-  };
-  const notExpired = <models.Hyp3Job>{
+  } as models.Hyp3Job;
+  const notExpired = {
     status_code: models.Hyp3JobStatusCode.SUCCEEDED,
     expiration_time: moment.utc().add(2, 'days')
-  };
+  } as models.Hyp3Job;
 
-  const failed = <models.Hyp3Job>{
+  const failed = {
     status_code: models.Hyp3JobStatusCode.FAILED,
-  };
+  } as models.Hyp3Job;
 
-  const succeded = <models.Hyp3Job>{
+  const succeded = {
     status_code: models.Hyp3JobStatusCode.SUCCEEDED,
-  };
-  const pending = <models.Hyp3Job>{
+  } as models.Hyp3Job;
+  const pending = {
     status_code: models.Hyp3JobStatusCode.PENDING,
-  };
+  } as models.Hyp3Job;
 
-  const running = <models.Hyp3Job>{
+  const running = {
     status_code: models.Hyp3JobStatusCode.RUNNING,
-  };
+  } as models.Hyp3Job;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
@@ -41,7 +41,7 @@ describe('Hyp3JobStatusService', () => {
     expect(service.downloadable([]).length === 0).toBeTruthy();
 
     const products = [notExpired, failed, pending, running, expired].map(
-      p => <models.CMRProduct>{metadata: { job: p }}
+      p => ({metadata: { job: p }} as models.CMRProduct)
     );
 
     expect(service.downloadable(products).length === 1).toBeTruthy();

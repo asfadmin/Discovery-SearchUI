@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { CustomizeEnvComponent } from '@components/header/header-buttons/customize-env/customize-env.component';
@@ -38,6 +38,16 @@ declare global {
   styleUrls: ['./search-button.component.scss']
 })
 export class SearchButtonComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private actions$ = inject(ActionsSubject);
+  env = inject(services.EnvironmentService);
+  private savedSearchService = inject(services.SavedSearchService);
+  clipboard = inject(ClipboardService);
+  private dialog = inject(MatDialog);
+  private notificationService = inject(services.NotificationService);
+  private exportService = inject(services.ExportService);
+  private screenSize = inject(ScreenSizeService);
+
   public searchType: SearchType;
   public searchTypes = SearchType;
   public canSearch$ = this.store$.select(searchStore.getCanSearch);
@@ -61,19 +71,6 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   private stackReferenceScene: string;
   private latestReferenceScene: string;
   private resultsMenuOpen = false;
-
-  constructor(
-    private store$: Store<AppState>,
-    private actions$: ActionsSubject,
-    public env: services.EnvironmentService,
-    private savedSearchService: services.SavedSearchService,
-    public clipboard: ClipboardService,
-    private dialog: MatDialog,
-    private notificationService: services.NotificationService,
-    private exportService: services.ExportService,
-    private screenSize: ScreenSizeService,
-  ) {
-  }
 
   ngOnInit() {
     this.subs.add(

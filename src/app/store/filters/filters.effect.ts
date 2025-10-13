@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
@@ -20,12 +20,10 @@ import { SearchType } from '@models';
 
 @Injectable()
 export class FiltersEffects {
+  private actions$ = inject(Actions);
+  private store$ = inject<Store<AppState>>(Store);
+  private mapService = inject(MapService);
 
-  constructor(
-    private actions$: Actions,
-    private store$: Store<AppState>,
-    private mapService: MapService,
-  ) {}
 
    setPolygonStyleWhenOmittingSearchPolygon$: Observable<void> = createEffect(() => this.actions$.pipe(
     ofType<filtersAction.OmitSearchPolygon>(filtersAction.FiltersActionType.OMIT_SEARCH_POLYGON),

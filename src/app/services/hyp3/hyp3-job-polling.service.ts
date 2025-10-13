@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import {
   Observable, combineLatest, debounceTime, filter,
@@ -12,9 +12,9 @@ import * as models from '@models';
   providedIn: 'root'
 })
 export class Hyp3JobPollingService {
-  pollingRepeatTime = 60000; // one minute
+  private hyp3 = inject(Hyp3ApiService);
 
-  constructor(private hyp3: Hyp3ApiService) { }
+  pollingRepeatTime = 60000;
 
   public pollHyp3Jobs$(
     searchType$: Observable<models.SearchType>,

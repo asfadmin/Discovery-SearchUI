@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, EventEmitter, inject } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import * as filtersStore from '@store/filters';
@@ -19,6 +19,10 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
   animations: menuAnimation,
 })
 export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private scenesService = inject(ScenesService);
+  private screenSize = inject(ScreenSizeService);
+
   @Input() headerView: boolean;
 
   public productNameFilter = '';
@@ -32,12 +36,6 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
   public breakpoints = Breakpoints;
   public breakpoint: Breakpoints;
   public screenWidth: number;
-
-  constructor(
-    private store$: Store<AppState>,
-    private scenesService: ScenesService,
-    private screenSize: ScreenSizeService,
-  ) { }
 
   ngOnInit(): void {
     this.subs.add(

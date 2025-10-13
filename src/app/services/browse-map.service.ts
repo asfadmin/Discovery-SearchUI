@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { Map } from 'ol';
 import View from 'ol/View.js';
@@ -29,15 +29,15 @@ export interface PinnedProduct {
   providedIn: 'root'
 })
 export class BrowseMapService {
+  private wktService = inject(WktService);
+  private browseOverlayService = inject(BrowseOverlayService);
+
   private map: Map;
   private browseLayer: Layer;
   private view: View;
   private pinnedProducts: LayerGroup;
 
-  public constructor(private wktService: WktService,
-    private browseOverlayService: BrowseOverlayService) {}
-
-  public setMapBrowse(browse: string, wkt: string = ''): void {
+  public setMapBrowse(browse: string, wkt = ''): void {
     const feature = this.wktService.wktToFeature(wkt, 'EPSG:3857');
     const polygon: Polygon = feature.getGeometry() as Polygon;
 
@@ -107,7 +107,7 @@ export class BrowseMapService {
     this.browseLayer.setOpacity(opacity);
   }
 
-  public setPinnedProducts(pinnedProductStates: {[product_id in string]: PinnedProduct}) {
+  public setPinnedProducts(pinnedProductStates: Record<string, PinnedProduct>) {
     this.browseOverlayService.setPinnedProducts(pinnedProductStates, this.pinnedProducts);
   }
 

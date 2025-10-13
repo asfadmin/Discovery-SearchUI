@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { fromEvent, combineLatest } from 'rxjs';
 import { filter, map, withLatestFrom } from 'rxjs/operators';
@@ -15,11 +15,10 @@ import { SceneSelectService } from './scene-select.service';
   providedIn: 'root'
 })
 export class KeyboardService {
-  constructor(
-    private store$: Store<AppState>,
-    private sceneSelect: SceneSelectService,
-    private scenesService: ScenesService,
-  ) { }
+  private store$ = inject<Store<AppState>>(Store);
+  private sceneSelect = inject(SceneSelectService);
+  private scenesService = inject(ScenesService);
+
 
   init() {
     const scenesSorted$ = this.scenesService.sortScenes$(
@@ -39,7 +38,7 @@ export class KeyboardService {
         ])
       ),
     ).subscribe(([e, [ scenes, scenesWithBrowses, selected, onlyScenesWithBrowse, isBrowseDialogOpen ]]) => {
-      const { key } = <KeyboardEvent>e;
+      const { key } = e as KeyboardEvent;
       const withBrowse = isBrowseDialogOpen && onlyScenesWithBrowse;
       const sceneList = withBrowse ? scenesWithBrowses : scenes;
 

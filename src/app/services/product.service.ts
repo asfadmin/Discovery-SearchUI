@@ -41,7 +41,7 @@ export class ProductService {
           // the new property also auto converts to the right scale already
           g.s = (g.nsr.sizeMB[filename]?.bytes ?? 0) / 1000000;
         }
-        let product = {
+        const product = {
           name: g.gn,
           productTypeDisplay: g.ptd ?? g.gn,
           file: filename,
@@ -269,7 +269,7 @@ export class ProductService {
   }
 
   private nisarSubproductsFromScene(product: models.CMRProduct) {
-    let products = []
+    const products = []
     let temp = product.downloadUrl.split('.')
     let file_extension = temp[temp.length - 1]
     const productLevel = product.file.split('_')[1];
@@ -299,7 +299,7 @@ export class ProductService {
 
     product.metadata.s3URI = s3UrlsByProductID[product.file] ?? null;
 
-    let browses = []
+    const browses = []
     for (const p of [...product.metadata.nisar.additionalUrls.filter(url => url !== product.downloadUrl), ...product.browses]) {
       temp = p.split('.')
       file_extension = temp[temp.length - 1]
@@ -327,7 +327,7 @@ export class ProductService {
       const fileID = p.split('/').slice(-1)[0]
       const s3Url = s3UrlsByProductID[fileID] ?? null
     
-      let subproduct = {
+      const subproduct = {
         ...product,
         downloadUrl: p,
         productTypeDisplay: productTypeDisplay || p,

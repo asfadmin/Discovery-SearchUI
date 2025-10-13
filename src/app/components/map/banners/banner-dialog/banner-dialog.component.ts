@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
 import { DialogData } from '@components/map/banners';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
@@ -9,10 +9,9 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   encapsulation: ViewEncapsulation.None,
 })
 export class BannerDialogComponent implements OnInit {
-  htmlContent: string;
+  data = inject<DialogData>(MAT_DIALOG_DATA);
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: DialogData ) { }
+  htmlContent: string;
 
   ngOnInit(): void {
   }

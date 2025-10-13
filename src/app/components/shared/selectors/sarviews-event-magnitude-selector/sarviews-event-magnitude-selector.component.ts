@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { SubSink } from 'subsink';
@@ -6,7 +6,7 @@ import { SubSink } from 'subsink';
 import * as models from '@models';
 import * as filterStore from '@store/filters';
 
-declare var wNumb: any;
+declare let wNumb: any;
 
 import * as noUiSlider from 'nouislider';
 import { Observable, Subject } from 'rxjs';
@@ -20,6 +20,9 @@ import { Breakpoints, SarviewsEventType } from '@models';
   styleUrls: ['./sarviews-event-magnitude-selector.component.scss']
 })
 export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   @ViewChild('magnitudeFilter', { static: true }) magnitudeFilter: ElementRef;
   public magnitudeRange: models.Range<number> = {start: 0, end: 10};
   public slider: noUiSlider.API;
@@ -37,10 +40,6 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
     map(eventTypes => {
       return eventTypes.length === 0 || eventTypes.includes(SarviewsEventType.QUAKE); }),
   );
-
-  constructor(private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-    ) { }
 
   ngOnInit(): void {
     this.subs.add(

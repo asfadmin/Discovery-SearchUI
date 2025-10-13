@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, inject } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
@@ -16,6 +16,9 @@ import { PropertyService } from '@services';
   styleUrls: ['./scene-metadata.component.scss']
 })
 export class SceneMetadataComponent implements OnInit, OnDestroy {
+  prop = inject(PropertyService);
+  private store$ = inject<Store<AppState>>(Store);
+
   @Input() scene: models.CMRProduct;
   @Input() dataset: models.Dataset;
   @Input() searchType: models.SearchType;
@@ -23,15 +26,10 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
 
   public p = models.Props;
   public selectedDataset: string;
-  public selectedDatasetIsNISARFormat: boolean = false;
+  public selectedDatasetIsNISARFormat = false;
 
 
   private subs = new SubSink();
-
-  constructor(
-    public prop: PropertyService,
-    private store$: Store<AppState>,
-  ) { }
 
   ngOnInit() {
     this.subs.add(
@@ -101,7 +99,7 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
 
     const capitalized = this.capitalizeFirstLetter(dir);
 
-    const action = new filtersStore.SetFlightDirections([<models.FlightDirection>capitalized]);
+    const action = new filtersStore.SetFlightDirections([(capitalized as models.FlightDirection)]);
     this.store$.dispatch(action);
   }
   public setFrameCoverage(): void {

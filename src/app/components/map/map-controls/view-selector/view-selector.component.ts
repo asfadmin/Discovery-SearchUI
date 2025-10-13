@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
@@ -18,13 +18,11 @@ declare global {
   styleUrls: ['./view-selector.component.scss']
 })
 export class ViewSelectorComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+
   public view: MapViewType;
   public types = MapViewType;
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-  ) {}
 
   ngOnInit() {
     this.subs.add(

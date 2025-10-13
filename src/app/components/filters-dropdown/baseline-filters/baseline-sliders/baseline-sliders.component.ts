@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, inject } from '@angular/core';
 import noUiSlider from 'nouislider';
 
 import { Observable, Subject } from 'rxjs';
@@ -22,6 +22,8 @@ export interface BaselineSlider {
   styleUrls: ['./baseline-sliders.component.scss']
 })
 export class BaselineSlidersComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+
   @ViewChild('temporalFilter', { static: true }) temporalFilter: ElementRef;
   @ViewChild('perpendicularFilter', { static: true }) perpendicularFilter: ElementRef;
 
@@ -32,10 +34,6 @@ export class BaselineSlidersComponent implements OnInit, OnDestroy {
   public tempSlider;
 
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-  ) { }
 
   ngOnInit(): void {
     // this.store$.dispatch(new filtersStore.ClearPerpendicularRange());

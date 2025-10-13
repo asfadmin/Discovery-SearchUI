@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, QueryList, ViewChildren, inject } from '@angular/core';
 
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { ClipboardService } from 'ngx-clipboard';
@@ -30,6 +30,13 @@ export interface selectedItems {
   styleUrls: ['./queue.component.scss']
 })
 export class QueueComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private clipboardService = inject(ClipboardService);
+  private dialogRef = inject<MatDialogRef<QueueComponent>>(MatDialogRef);
+  private screenSize = inject(ScreenSizeService);
+  private notificationService = inject(NotificationService);
+  private downloadService = inject(DownloadService);
+
 
   @Input() appQueueComponentModel: string;
 
@@ -93,15 +100,6 @@ export class QueueComponent implements OnInit, OnDestroy {
   )
 
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-    private clipboardService: ClipboardService,
-    private dialogRef: MatDialogRef<QueueComponent>,
-    private screenSize: ScreenSizeService,
-    private notificationService: NotificationService,
-    private downloadService: DownloadService
-  ) {}
 
   ngOnInit() {
     this.subs.add(
@@ -185,7 +183,7 @@ export class QueueComponent implements OnInit, OnDestroy {
 
   }
 
-  public onCopyQueueURLs(products: CMRProduct[], useS3Urls: boolean = false): void {
+  public onCopyQueueURLs(products: CMRProduct[], useS3Urls = false): void {
     const productListStr = products
       .filter(product => !product.isUnzippedFile)
       .map(product => useS3Urls ? product.metadata?.s3URI ?? null : product.downloadUrl)

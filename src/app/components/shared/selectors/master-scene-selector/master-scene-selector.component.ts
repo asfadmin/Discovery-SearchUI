@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
@@ -15,15 +15,15 @@ import { beta } from '@models';
   styleUrls: ['./master-scene-selector.component.css']
 })
 export class MasterSceneSelectorComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+
   public searchType$ = this.store$.select(getSearchType);
   public datasets = [beta];
   public selectedDataset = 'SENTINEL-1 INTERFEROGRAM (BETA)'
   public SearchTypes = SearchType;
   public masterScene: string;
-  public shouldUseFramesForReference: boolean = false;
+  public shouldUseFramesForReference = false;
   private subs = new SubSink();
-
-  constructor(private store$: Store<AppState>) { }
 
   ngOnInit(): void {
     this.subs.add(

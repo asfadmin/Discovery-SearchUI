@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, inject } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ClipboardService } from 'ngx-clipboard';
 import { SubSink } from 'subsink';
@@ -24,6 +24,11 @@ import { SetGeocode } from '@store/filters';
   animations: menuAnimation,
 })
 export class AoiFilterComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private mapService = inject(services.MapService);
+  private clipboard = inject(ClipboardService);
+  private notificationService = inject(services.NotificationService);
+
   @ViewChild('polygonForm') public polygonForm: NgForm;
 
   public aoiErrors$ = new Subject<void>();
@@ -37,13 +42,6 @@ export class AoiFilterComponent implements OnInit, OnDestroy {
 
   public polygon: string;
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-    private mapService: services.MapService,
-    private clipboard: ClipboardService,
-    private notificationService: services.NotificationService
-  ) { }
 
   ngOnInit() {
     this.subs.add(

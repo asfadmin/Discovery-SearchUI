@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { tap } from 'rxjs/operators';
@@ -15,6 +15,9 @@ import * as models from '@models';
   styleUrls: ['./other-selector.component.scss']
 })
 export class OtherSelectorComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  prop = inject(PropertyService);
+
   dataset: models.Dataset;
   productTypes: models.DatasetProductTypes;
   flightDirections: models.FlightDirection[];
@@ -34,11 +37,6 @@ export class OtherSelectorComponent implements OnInit, OnDestroy {
   public flightDirectionTypes = models.flightDirections;
   public p = models.Props;
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-    public prop: PropertyService,
-  ) { }
 
   ngOnInit() {
     this.subs.add(

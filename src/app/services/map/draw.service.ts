@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs';
 
@@ -28,6 +28,8 @@ declare global {
   providedIn: 'root'
 })
 export class DrawService {
+  private store$ = inject<Store<AppState>>(Store);
+
   private source: VectorSource;
   private layer: VectorLayer<VectorSource>;
 
@@ -43,7 +45,7 @@ export class DrawService {
 
   public currentDrawMode: models.MapDrawModeType;
 
-  constructor(private store$: Store<AppState>) {
+  constructor() {
     this.source = new VectorSource({
       wrapX: models.mapOptions.wrapX
     });

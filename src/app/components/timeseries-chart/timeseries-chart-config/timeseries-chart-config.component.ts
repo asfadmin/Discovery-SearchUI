@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnDestroy, OnInit, Output, EventEmitter, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
@@ -19,11 +19,12 @@ import { SharedModule } from "@shared";
 
 
 export class TimeseriesChartConfigComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+
   private subs = new SubSink()
-  public showLines: boolean = true
+  public showLines = true
   public showLinearFit = false;
   @Output() public resetReferenceEvent = new EventEmitter();
-  constructor(private store$: Store<AppState>) { }
 
 
   public onToggleLines(event: MatCheckboxChange) {

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { SubSink } from 'subsink';
@@ -21,6 +21,13 @@ import { AsfLanguageService } from "@services/asf-language.service";
   styleUrls: ['./saved-searches.component.scss'],
 })
 export class SavedSearchesComponent implements OnInit, OnDestroy {
+  private dialog = inject(MatDialog);
+  private store$ = inject<Store<AppState>>(Store);
+  private savedSearchService = inject(SavedSearchService);
+  private screenSize = inject(ScreenSizeService);
+  private searchService = inject(SearchService);
+  private language = inject(AsfLanguageService);
+
   @ViewChild('filterInput', { static: true }) filterInput: ElementRef;
 
   public searchType$ = this.store$.select(searchStore.getSearchType);
@@ -49,15 +56,6 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
   public newSearchId: string;
 
   private subs = new SubSink();
-
-  constructor(
-    private dialog: MatDialog,
-    private store$: Store<AppState>,
-    private savedSearchService: SavedSearchService,
-    private screenSize: ScreenSizeService,
-    private searchService: SearchService,
-    private language: AsfLanguageService,
-  ) { }
 
   ngOnInit() {
     this.savedSearchService.loadSearches();

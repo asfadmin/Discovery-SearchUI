@@ -27,7 +27,7 @@ export class DateExtremaService {
       endDate$]
     ).pipe(
       map(([selected, userEnd]) => {
-        if (!!userEnd) {
+        if (userEnd) {
           return userEnd;
         }
 
@@ -40,7 +40,7 @@ export class DateExtremaService {
       startDate$]
     ).pipe(
       map(([selected, userStart]) => {
-        if (!!userStart) {
+        if (userStart) {
           return userStart;
         }
 
@@ -79,7 +79,7 @@ export class DateExtremaService {
       endDate$]
     ).pipe(
       map(([sceneMax, userEnd]) => {
-        if (!!userEnd) {
+        if (userEnd) {
           return userEnd;
         }
 
@@ -92,7 +92,7 @@ export class DateExtremaService {
       startDate$]
     ).pipe(
       map(([sceneMin, userStart]) => {
-        if (!!userStart) {
+        if (userStart) {
           return userStart;
         }
 

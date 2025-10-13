@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnDestroy, OnInit, Output, EventEmitter, inject } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon'
 import { MatButtonModule } from '@angular/material/button'
@@ -28,15 +28,13 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 })
 
 export class ChartModalComponent implements OnInit, OnDestroy {
+  dialog = inject(MatDialog);
+  private $store = inject<Store<AppState>>(Store);
+
   private subs = new SubSink()
   public searchType: SearchType;
   public SearchTypes = SearchType;
   @Output() public resetReferenceEvent = new EventEmitter();
-
-  constructor(public dialog: MatDialog,
-    private $store: Store<AppState>,
-  ) {
-  }
 
   ngOnInit(): void {
     this.subs.add(this.$store.select(getSearchType).subscribe(
