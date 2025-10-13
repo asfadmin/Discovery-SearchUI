@@ -6,22 +6,17 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSharedModule } from '@shared';
 
 import { ShortNameSelectorComponent } from './short-name-selector.component';
-import { SharedModule } from "@shared";
+import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [
-    ShortNameSelectorComponent
-  ],
+  declarations: [ShortNameSelectorComponent],
   imports: [
     CommonModule,
     FormsModule,
     MatSelectModule,
     MatSharedModule,
-    SharedModule
-
+    SharedModule,
   ],
-  exports: [
-    ShortNameSelectorComponent
-  ]
+  exports: [ShortNameSelectorComponent],
 })
-export class ShortNameSelectorModule { }
+export class ShortNameSelectorModule {}

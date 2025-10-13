@@ -9,11 +9,13 @@ import { ScenesService, ScreenSizeService } from '@services';
 import { SubSink } from 'subsink';
 import * as models from '@models';
 
-
 @Component({
   selector: 'app-desktop-results-menu',
   templateUrl: './desktop-results-menu.component.html',
-  styleUrls: ['./desktop-results-menu.component.css', '../results-menu.component.scss']
+  styleUrls: [
+    './desktop-results-menu.component.css',
+    '../results-menu.component.scss',
+  ],
 })
 export class DesktopResultsMenuComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
@@ -22,7 +24,9 @@ export class DesktopResultsMenuComponent implements OnInit, OnDestroy {
 
   @Input() resize$: Observable<void>;
 
-  public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
+  public selectedProducts$ = this.store$.select(
+    scenesStore.getSelectedSceneProducts,
+  );
   public scenesLength;
   public sarviewsEventsLength;
   public breakpoint: models.Breakpoints;
@@ -34,18 +38,18 @@ export class DesktopResultsMenuComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subs.add(
       this.screenSize.breakpoint$.subscribe(
-        breakpoint => this.breakpoint = breakpoint
-      )
+        (breakpoint) => (this.breakpoint = breakpoint),
+      ),
     );
     this.subs.add(
       this.scenesService.scenes$.subscribe(
-        scenes => this.scenesLength = scenes.length
-      )
+        (scenes) => (this.scenesLength = scenes.length),
+      ),
     );
     this.subs.add(
       this.sarviewsEvents$.subscribe(
-        events => this.sarviewsEventsLength = events.length
-      )
+        (events) => (this.sarviewsEventsLength = events.length),
+      ),
     );
   }
 

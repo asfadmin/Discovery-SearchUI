@@ -14,7 +14,7 @@ import { SubSink } from 'subsink';
 @Component({
   selector: 'app-sarviews-event-search-selector',
   templateUrl: './sarviews-event-search-selector.component.html',
-  styleUrls: ['./sarviews-event-search-selector.component.scss']
+  styleUrls: ['./sarviews-event-search-selector.component.scss'],
 })
 export class SarviewsEventSearchSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
@@ -25,11 +25,15 @@ export class SarviewsEventSearchSelectorComponent implements OnInit, OnDestroy {
 
   public filteredEvents$ = combineLatest([
     this.eventService.filteredSarviewsEvents$(),
-    this.eventService.filterSarviewsEventsByName$(this.store$.select(getSarviewsEvents))
+    this.eventService.filterSarviewsEventsByName$(
+      this.store$.select(getSarviewsEvents),
+    ),
   ]).pipe(
-    map(([filteredEvents, allEvents]) => ({filteredEvents, allEvents})),
+    map(([filteredEvents, allEvents]) => ({ filteredEvents, allEvents })),
     withLatestFrom(this.store$.select(getIsResultsMenuOpen)),
-    map(([events, resultsOpen]) => resultsOpen ? events.filteredEvents : events.allEvents)
+    map(([events, resultsOpen]) =>
+      resultsOpen ? events.filteredEvents : events.allEvents,
+    ),
   );
 
   public eventQuery = '';
@@ -38,9 +42,9 @@ export class SarviewsEventSearchSelectorComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(filterStore.getSarviewsEventNameFilter).subscribe(
-        nameFilter => this.eventQuery = nameFilter
-      )
+      this.store$
+        .select(filterStore.getSarviewsEventNameFilter)
+        .subscribe((nameFilter) => (this.eventQuery = nameFilter)),
     );
   }
 
@@ -50,7 +54,9 @@ export class SarviewsEventSearchSelectorComponent implements OnInit, OnDestroy {
 
   public onMatAutoCompleteSelect(event: MatAutocompleteSelectedEvent) {
     const eventDescription = event.option.value;
-    this.store$.dispatch(new filterStore.SetSarviewsEventNameFilter(eventDescription));
+    this.store$.dispatch(
+      new filterStore.SetSarviewsEventNameFilter(eventDescription),
+    );
   }
 
   public onSearchQueryChange(event: Event): void {

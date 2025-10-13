@@ -7,7 +7,6 @@ import { MatSharedModule } from '@shared';
 import { SceneMetadataComponent } from './scene-metadata.component';
 import { SharedModule } from '@shared';
 
-
 @NgModule({
   declarations: [SceneMetadataComponent],
   imports: [
@@ -15,8 +14,8 @@ import { SharedModule } from '@shared';
     MatSharedModule,
     PipesModule,
     MatMenuModule,
-    SharedModule
+    SharedModule,
   ],
-  exports: [ SceneMetadataComponent ]
+  exports: [SceneMetadataComponent],
 })
-export class SceneMetadataModule { }
+export class SceneMetadataModule {}

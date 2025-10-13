@@ -3,14 +3,12 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-ci-search',
   templateUrl: './ci-search.component.html',
-  styleUrls: ['./ci-search.component.scss']
+  styleUrls: ['./ci-search.component.scss'],
 })
 export class CiSearchComponent {
-
   constructor() {
     this.showSearch();
   }
-
 
   public showSearch() {
     const id = 'b8df7ea0-38a5-11eb-9b20-0242ac130002';
@@ -21,5 +19,4 @@ export class CiSearchComponent {
     const s = document.getElementsByTagName('script')[0];
     s.parentNode.insertBefore(ci_search, s);
   }
-
 }

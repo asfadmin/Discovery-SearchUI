@@ -14,13 +14,13 @@ enum FilterPanel {
   MASTER = 'Master',
   DATE = 'Date',
   BASELINE = 'Baseline',
-  SEARCH = 'Search'
+  SEARCH = 'Search',
 }
 
 @Component({
   selector: 'app-baseline-filters',
   templateUrl: './baseline-filters.component.html',
-  styleUrls: ['./baseline-filters.component.scss']
+  styleUrls: ['./baseline-filters.component.scss'],
 })
 export class BaselineFiltersComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
@@ -30,9 +30,8 @@ export class BaselineFiltersComponent implements OnInit, OnDestroy {
   public breakpoints = models.Breakpoints;
   public areResultsLoaded: boolean;
 
-
   public datasets = [beta];
-  public selectedDataset = 'SENTINEL-1 INTERFEROGRAM (BETA)'
+  public selectedDataset = 'SENTINEL-1 INTERFEROGRAM (BETA)';
   public masterScene: string;
   public shouldUseFramesForReference = false;
 
@@ -47,14 +46,17 @@ export class BaselineFiltersComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subs.add(
-      this.store$.select(scenesStore.getAreResultsLoaded).subscribe(
-        areLoaded => this.areResultsLoaded = areLoaded
-      )
+      this.store$
+        .select(scenesStore.getAreResultsLoaded)
+        .subscribe((areLoaded) => (this.areResultsLoaded = areLoaded)),
     );
     this.subs.add(
-    this.store$.select(filtersStore.getShouldUseFramesForReference).subscribe(
-        shouldUseFrames => this.shouldUseFramesForReference = shouldUseFrames
-    )
+      this.store$
+        .select(filtersStore.getShouldUseFramesForReference)
+        .subscribe(
+          (shouldUseFrames) =>
+            (this.shouldUseFramesForReference = shouldUseFrames),
+        ),
     );
   }
 
@@ -62,7 +64,7 @@ export class BaselineFiltersComponent implements OnInit, OnDestroy {
     return this.selectedPanel === panel;
   }
 
-public onDatasetChange(dataset: string): void {
+  public onDatasetChange(dataset: string): void {
     this.store$.dispatch(new filtersStore.SetSelectedDataset(dataset));
   }
   public selectPanel(panel: FilterPanel): void {

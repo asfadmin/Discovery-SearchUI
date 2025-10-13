@@ -19,23 +19,27 @@ import { AsyncPipe } from '@angular/common';
     MatOptionModule,
     MatFormFieldModule,
     SharedModule,
-    AsyncPipe
+    AsyncPipe,
   ],
   templateUrl: './flight-direction-selector.component.html',
-  styleUrl: './flight-direction-selector.component.scss'
+  styleUrl: './flight-direction-selector.component.scss',
 })
 export class FlightDirectionSelectorComponent {
   prop = inject(PropertyService);
   private store$ = inject<Store<AppState>>(Store);
 
   @Input() multiple = true;
-  public flightDirections$ = this.store$.select(filtersStore.getFlightDirections);
+  public flightDirections$ = this.store$.select(
+    filtersStore.getFlightDirections,
+  );
 
-  public flightDirections = []
+  public flightDirections = [];
   public flightDirectionTypes = models.flightDirections;
   public p = models.Props;
 
-  public onNewFlightDirectionsSelected(directions: models.FlightDirection[]): void {
+  public onNewFlightDirectionsSelected(
+    directions: models.FlightDirection[],
+  ): void {
     this.store$.dispatch(new filtersStore.SetFlightDirections(directions));
   }
 }

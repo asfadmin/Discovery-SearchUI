@@ -9,7 +9,7 @@ import { SubSink } from 'subsink';
 @Component({
   selector: 'app-hyp3-job-type-selector',
   templateUrl: './hyp3-job-type-selector.component.html',
-  styleUrls: ['./hyp3-job-type-selector.component.scss']
+  styleUrls: ['./hyp3-job-type-selector.component.scss'],
 })
 export class Hyp3JobTypeSelectorComponent implements OnInit {
   store$ = inject<Store<AppState>>(Store);
@@ -21,14 +21,17 @@ export class Hyp3JobTypeSelectorComponent implements OnInit {
 
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(getHyp3ProductTypes).subscribe(
-        selected => this.selected = selected.map(prodType => prodType.id)
-      )
+      this.store$
+        .select(getHyp3ProductTypes)
+        .subscribe(
+          (selected) =>
+            (this.selected = selected.map((prodType) => prodType.id)),
+        ),
     );
   }
 
   onSelect(selectionChange: MatSelectChange) {
-      this.store$.dispatch(new SetHyp3ProductTypes(selectionChange.value));
+    this.store$.dispatch(new SetHyp3ProductTypes(selectionChange.value));
     // }
   }
 }

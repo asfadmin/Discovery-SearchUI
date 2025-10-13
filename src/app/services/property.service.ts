@@ -6,9 +6,8 @@ import * as filtersStore from '@store/filters';
 
 import * as models from '@models';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PropertyService {
   private store$ = inject<Store<AppState>>(Store);
@@ -16,9 +15,9 @@ export class PropertyService {
   private dataset: models.Dataset;
 
   constructor() {
-    this.store$.select(filtersStore.getSelectedDataset).subscribe(
-      p => this.dataset = p
-    );
+    this.store$
+      .select(filtersStore.getSelectedDataset)
+      .subscribe((p) => (this.dataset = p));
   }
 
   public isRelevant(prop: models.Props, dataset?: models.Dataset): boolean {
@@ -27,27 +26,32 @@ export class PropertyService {
     return currentDataset.properties.includes(prop);
   }
 
-  public saveProperties(props, paramName: string, keyFunc = v => v) {
+  public saveProperties(props, paramName: string, keyFunc = (v) => v) {
     const param = props.map(keyFunc).join(',');
 
     return { [paramName]: param };
   }
 
-  public loadProperties(loadStr: string, datasetPropertyKey: string, keyFunc = v => v): any[] {
-    const [datasetName, possibleValuesStr] = this.hasDatasetId(loadStr) ?
-      this.oldFormat(loadStr) :
-      this.shortFormat(loadStr);
+  public loadProperties(
+    loadStr: string,
+    datasetPropertyKey: string,
+    keyFunc = (v) => v,
+  ): any[] {
+    const [datasetName, possibleValuesStr] = this.hasDatasetId(loadStr)
+      ? this.oldFormat(loadStr)
+      : this.shortFormat(loadStr);
     let possibleTypes = [];
 
-    if(datasetPropertyKey.includes('polarization')) {
-        possibleTypes = (possibleValuesStr || '').split(',').map(x => x.replaceAll('-',','));
+    if (datasetPropertyKey.includes('polarization')) {
+      possibleTypes = (possibleValuesStr || '')
+        .split(',')
+        .map((x) => x.replaceAll('-', ','));
     } else {
-        possibleTypes = (possibleValuesStr || '').split(',');
-
+      possibleTypes = (possibleValuesStr || '').split(',');
     }
 
     const dataset = models.datasetList
-      .filter(d => datasetName === d.id)
+      .filter((d) => datasetName === d.id)
       .pop();
 
     if (!dataset) {
@@ -56,10 +60,9 @@ export class PropertyService {
 
     const datasetValues = dataset[datasetPropertyKey];
 
-    const validValuesFromUrl =
-      datasetValues.filter(
-        value => possibleTypes.includes(keyFunc(value))
-      );
+    const validValuesFromUrl = datasetValues.filter((value) =>
+      possibleTypes.includes(keyFunc(value)),
+    );
 
     return Array.from(validValuesFromUrl);
   }

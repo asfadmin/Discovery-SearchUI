@@ -1,6 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import {  SearchType } from '@models';
-
+import { SearchType } from '@models';
 
 import * as models from '@models';
 
@@ -8,11 +7,39 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { MapService, SarviewsEventsService } from '@services';
 import { AppState } from '@store';
-import { getAreResultsLoaded, getImageBrowseProducts, getPinnedEventBrowseIDs, getProducts, getSelectedScene } from '@store/scenes';
-import { ScenesActionType, SetImageBrowseProducts, SetSelectedScene } from '@store/scenes/scenes.action';
-import { getareResultsOutOfDate, getSearchType, SearchActionType, SetSearchOutOfDate, SetSearchType } from '@store/search';
-import { filter, first, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
-import { MapActionType, SetBrowseOverlayOpacity, SetBrowseOverlays, ToggleBrowseOverlay } from '.';
+import {
+  getAreResultsLoaded,
+  getImageBrowseProducts,
+  getPinnedEventBrowseIDs,
+  getProducts,
+  getSelectedScene,
+} from '@store/scenes';
+import {
+  ScenesActionType,
+  SetImageBrowseProducts,
+  SetSelectedScene,
+} from '@store/scenes/scenes.action';
+import {
+  getareResultsOutOfDate,
+  getSearchType,
+  SearchActionType,
+  SetSearchOutOfDate,
+  SetSearchType,
+} from '@store/search';
+import {
+  filter,
+  first,
+  map,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
+import {
+  MapActionType,
+  SetBrowseOverlayOpacity,
+  SetBrowseOverlays,
+  ToggleBrowseOverlay,
+} from '.';
 import { PinnedProduct } from '@services/browse-map.service';
 import { getSelectedDataset } from '@store/filters';
 import { getIsFiltersMenuOpen, getIsResultsMenuOpen } from '@store/ui';
@@ -25,230 +52,317 @@ export class MapEffects {
   private eventMonitoringService = inject(SarviewsEventsService);
   private store$ = inject<Store<AppState>>(Store);
 
+  public clearPinnedProducts = createEffect(() =>
+    this.actions$.pipe(
+      ofType(
+        SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE,
+        SearchActionType.MAKE_SEARCH,
+        MapActionType.CLEAR_BROWSE_OVERLAYS,
+        ScenesActionType.SET_SELECTED_SARVIEWS_EVENT,
+      ),
+      tap((_) => this.mapService.clearBrowseOverlays()),
+      map((_) => new SetImageBrowseProducts({})),
+    ),
+  );
 
-  public clearPinnedProducts = createEffect((() => this.actions$.pipe(
-    ofType(SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE,
-      SearchActionType.MAKE_SEARCH,
-      MapActionType.CLEAR_BROWSE_OVERLAYS,
-      ScenesActionType.SET_SELECTED_SARVIEWS_EVENT),
-    tap(_ => this.mapService.clearBrowseOverlays()),
-    map(_ => new SetImageBrowseProducts({}))
-  )));
+  public setSearchOverlays = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType<SetImageBrowseProducts>(
+          ScenesActionType.SET_IMAGE_BROWSE_PRODUCTS,
+        ),
+        withLatestFrom(this.store$.select(getSearchType)),
+        filter(
+          ([_, searchtype]) => searchtype === models.SearchType.SARVIEWS_EVENTS,
+        ),
+        tap(([action, _]) => this.mapService.setPinnedProducts(action.payload)),
+      ),
+    { dispatch: false },
+  );
 
-  public setSearchOverlays = createEffect(() => this.actions$.pipe(
-    ofType<SetImageBrowseProducts>(ScenesActionType.SET_IMAGE_BROWSE_PRODUCTS),
-    withLatestFrom(this.store$.select(getSearchType)),
-    filter(([_, searchtype]) => searchtype === models.SearchType.SARVIEWS_EVENTS),
-    tap(([action, _]) => this.mapService.setPinnedProducts(action.payload)),
-  ), {dispatch: false});
+  public onSetBrowseOpacity = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType<SetBrowseOverlayOpacity>(
+          MapActionType.SET_BROWSE_OVERLAY_OPACITY,
+        ),
+        tap((action) => this.mapService.updateBrowseOpacity(action.payload)),
+      ),
+    { dispatch: false },
+  );
 
-  public onSetBrowseOpacity = createEffect( () => this.actions$.pipe(
-    ofType<SetBrowseOverlayOpacity>(MapActionType.SET_BROWSE_OVERLAY_OPACITY),
-    tap(action => this.mapService.updateBrowseOpacity(action.payload))
-  ), {dispatch: false});
+  public onSetCoherenceOpacity = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType<SetCoherenceOverlayOpacity>(
+          MapActionType.SET_COHERENCE_OVERLAY_OPACITY,
+        ),
+        tap((action) => this.mapService.updateCoherenceOpacity(action.payload)),
+      ),
+    { dispatch: false },
+  );
 
-  public onSetCoherenceOpacity = createEffect( () => this.actions$.pipe(
-    ofType<SetCoherenceOverlayOpacity>(MapActionType.SET_COHERENCE_OVERLAY_OPACITY),
-    tap(action => this.mapService.updateCoherenceOpacity(action.payload))
-  ), {dispatch: false})
+  public onSetVelocityOpacity = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType<SetCoherenceOverlayOpacity>(
+          MapActionType.SET_VELOCITY_OVERLAY_OPACITY,
+        ),
+        tap((action) => this.mapService.updateVelocityOpacity(action.payload)),
+      ),
+    { dispatch: false },
+  );
 
-  public onSetVelocityOpacity = createEffect( () => this.actions$.pipe(
-    ofType<SetCoherenceOverlayOpacity>(MapActionType.SET_VELOCITY_OVERLAY_OPACITY),
-    tap(action => this.mapService.updateVelocityOpacity(action.payload))
-  ), {dispatch: false})
-
-  public onSearchTypeChanged2 = createEffect( () => this.actions$.pipe(
-    ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE),
-    withLatestFrom(this.store$.select(getSearchType)),
-    tap(([action, search_type]) => {
-      if(search_type === SearchType.DISPLACEMENT && action.payload !== SearchType.DISPLACEMENT) {
-        this.mapService.clearTimeseriesOverlay();
-      }
-    })
-  ), {dispatch: false})
-
-  public onSetSelectedScene = createEffect(() => this.actions$.pipe(
-    ofType<SetSelectedScene>(ScenesActionType.SET_SELECTED_SCENE),
-    map(action => action.payload),
-    withLatestFrom(this.store$.select(getSearchType)),
-    filter(([_, searchtype]) => searchtype !== models.SearchType.SARVIEWS_EVENTS),
-    // map(([selected_scene, _]) => selected_scene),
-    withLatestFrom(this.store$.select(getSelectedDataset)),
-    filter(([[_, searchType], dataset]) => {
-    if (searchType === SearchType.DATASET) {
-      return dataset?.id === 'AVNIR'
-      || dataset?.id === 'ALOS'
-      || dataset?.id === 'SENTINEL-1'
-      || dataset?.id === 'SENTINEL-1 INTERFEROGRAM (BETA)'
-      || dataset?.id === 'UAVSAR'
-      || dataset?.id === 'OPERA-S1'
-      || dataset?.id === 'NISAR';
-    }
-    return searchType !== SearchType.BASELINE && searchType !== SearchType.SBAS && searchType !== SearchType.DISPLACEMENT;
-  }),
-    map(([[selectedSceneID, _], __]) => selectedSceneID),
-    filter(sceneID => !!sceneID),
-    withLatestFrom(this.store$.select(getProducts)),
-    filter(([selected, products]) => !!selected && !!products),
-    filter(([selected, products]) => products[selected]?.browses.length > 0),
-    map(([selected, products]) => products[selected]),
-    withLatestFrom(this.store$.select(getSearchType)),
-    filter(([product, searchType]) => {
-      if (searchType === SearchType.LIST) {
-        return product.dataset === 'ALOS'
-        || product.dataset === 'Sentinel-1A'
-        || product.dataset === 'Sentinel-1B'
-        || product.dataset === 'Sentinel-1C'
-        || product.dataset === 'Sentinel-1 Interferogram (BETA)'
-        || product.dataset === 'UAVSAR'
-        || product.dataset === 'NISAR';
-      } else if (searchType === SearchType.CUSTOM_PRODUCTS) {
-        const failed = product.metadata.job?.status_code === models.Hyp3JobStatusCode.FAILED;
-        const running = product.metadata.job?.status_code === models.Hyp3JobStatusCode.RUNNING;
-
-        if (failed || running) {
-          this.store$.dispatch(new ClearBrowseOverlays());
-        }
-
-        return !failed && !running;
-      }
-      return true;
-    }),
-    map(([product, _]) => product),
-    filter(product => product.browses.length > 0),
-    withLatestFrom(this.store$.select(getIsUserLoggedIn)),
-    tap(([selectedProduct, _loggedIn]) => {
-      if (selectedProduct.dataset === 'ALOS') {
-        if (selectedProduct.metadata.productType !== 'RTC_LOW_RES'
-          && selectedProduct.metadata.productType !== 'RTC_HI_RES') {
-            return;
+  public onSearchTypeChanged2 = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE),
+        withLatestFrom(this.store$.select(getSearchType)),
+        tap(([action, search_type]) => {
+          if (
+            search_type === SearchType.DISPLACEMENT &&
+            action.payload !== SearchType.DISPLACEMENT
+          ) {
+            this.mapService.clearTimeseriesOverlay();
           }
-      }
-      if (selectedProduct.browses[0] !== '/assets/no-browse.png') {
-        const url = selectedProduct.browses[0]
+        }),
+      ),
+    { dispatch: false },
+  );
 
-        // for OPERA-S1 geotiffs
-        // TODO: Wait for https://github.com/openlayers/openlayers/pull/15402
-        // if (loggedIn && selectedProduct.id.startsWith('OPERA') && selectedProduct.downloadUrl.endsWith('.tif')) {
-        //   url = selectedProduct.downloadUrl
-        // }
+  public onSetSelectedScene = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType<SetSelectedScene>(ScenesActionType.SET_SELECTED_SCENE),
+        map((action) => action.payload),
+        withLatestFrom(this.store$.select(getSearchType)),
+        filter(
+          ([_, searchtype]) => searchtype !== models.SearchType.SARVIEWS_EVENTS,
+        ),
+        // map(([selected_scene, _]) => selected_scene),
+        withLatestFrom(this.store$.select(getSelectedDataset)),
+        filter(([[_, searchType], dataset]) => {
+          if (searchType === SearchType.DATASET) {
+            return (
+              dataset?.id === 'AVNIR' ||
+              dataset?.id === 'ALOS' ||
+              dataset?.id === 'SENTINEL-1' ||
+              dataset?.id === 'SENTINEL-1 INTERFEROGRAM (BETA)' ||
+              dataset?.id === 'UAVSAR' ||
+              dataset?.id === 'OPERA-S1' ||
+              dataset?.id === 'NISAR'
+            );
+          }
+          return (
+            searchType !== SearchType.BASELINE &&
+            searchType !== SearchType.SBAS &&
+            searchType !== SearchType.DISPLACEMENT
+          );
+        }),
+        map(([[selectedSceneID, _], __]) => selectedSceneID),
+        filter((sceneID) => !!sceneID),
+        withLatestFrom(this.store$.select(getProducts)),
+        filter(([selected, products]) => !!selected && !!products),
+        filter(
+          ([selected, products]) => products[selected]?.browses.length > 0,
+        ),
+        map(([selected, products]) => products[selected]),
+        withLatestFrom(this.store$.select(getSearchType)),
+        filter(([product, searchType]) => {
+          if (searchType === SearchType.LIST) {
+            return (
+              product.dataset === 'ALOS' ||
+              product.dataset === 'Sentinel-1A' ||
+              product.dataset === 'Sentinel-1B' ||
+              product.dataset === 'Sentinel-1C' ||
+              product.dataset === 'Sentinel-1 Interferogram (BETA)' ||
+              product.dataset === 'UAVSAR' ||
+              product.dataset === 'NISAR'
+            );
+          } else if (searchType === SearchType.CUSTOM_PRODUCTS) {
+            const failed =
+              product.metadata.job?.status_code ===
+              models.Hyp3JobStatusCode.FAILED;
+            const running =
+              product.metadata.job?.status_code ===
+              models.Hyp3JobStatusCode.RUNNING;
 
-        this.mapService.setSelectedBrowse(url, selectedProduct.metadata.polygon);
-      }
-    }),
-  ), {dispatch: false});
+            if (failed || running) {
+              this.store$.dispatch(new ClearBrowseOverlays());
+            }
 
-  public pinEventProductOnSelection = createEffect(() => this.actions$.pipe(
-    ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE),
-    filter(action => action.payload === SearchType.SARVIEWS_EVENTS),
-    withLatestFrom(this.store$.select(getPinnedEventBrowseIDs)),
-    map(([_, browseIDs]) => browseIDs),
-    withLatestFrom(this.eventMonitoringService.filteredEventProducts$()),
-    map(([pinned, eventProducts]) => {
-      const pinnedProducts = {};
-      eventProducts.filter(prod => pinned.includes(prod.product_id)
-      ).forEach(prod => pinnedProducts[prod.product_id] = {
-        url: prod.files.browse_url,
-        wkt: prod.granules[0].wkt,
-      });
+            return !failed && !running;
+          }
+          return true;
+        }),
+        map(([product, _]) => product),
+        filter((product) => product.browses.length > 0),
+        withLatestFrom(this.store$.select(getIsUserLoggedIn)),
+        tap(([selectedProduct, _loggedIn]) => {
+          if (selectedProduct.dataset === 'ALOS') {
+            if (
+              selectedProduct.metadata.productType !== 'RTC_LOW_RES' &&
+              selectedProduct.metadata.productType !== 'RTC_HI_RES'
+            ) {
+              return;
+            }
+          }
+          if (selectedProduct.browses[0] !== '/assets/no-browse.png') {
+            const url = selectedProduct.browses[0];
 
-      return pinnedProducts;
-    }),
-    map(products => new SetImageBrowseProducts(products))
-    ));
+            // for OPERA-S1 geotiffs
+            // TODO: Wait for https://github.com/openlayers/openlayers/pull/15402
+            // if (loggedIn && selectedProduct.id.startsWith('OPERA') && selectedProduct.downloadUrl.endsWith('.tif')) {
+            //   url = selectedProduct.downloadUrl
+            // }
 
-  public onPinSelectedEventProduct = createEffect(() => this.actions$.pipe(
-    ofType<ToggleBrowseOverlay>(MapActionType.TOGGLE_BROWSE_OVERLAY),
-    map(action => action.payload),
-    withLatestFrom(this.store$.select(getSearchType)),
-    withLatestFrom(this.eventMonitoringService.filteredEventProducts$()),
-    withLatestFrom(this.store$.select( getSelectedScene)),
-    map(([[[selectedProductId, searchType], products], scene]) => {
+            this.mapService.setSelectedBrowse(
+              url,
+              selectedProduct.metadata.polygon,
+            );
+          }
+        }),
+      ),
+    { dispatch: false },
+  );
+
+  public pinEventProductOnSelection = createEffect(() =>
+    this.actions$.pipe(
+      ofType<SetSearchType>(SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE),
+      filter((action) => action.payload === SearchType.SARVIEWS_EVENTS),
+      withLatestFrom(this.store$.select(getPinnedEventBrowseIDs)),
+      map(([_, browseIDs]) => browseIDs),
+      withLatestFrom(this.eventMonitoringService.filteredEventProducts$()),
+      map(([pinned, eventProducts]) => {
+        const pinnedProducts = {};
+        eventProducts
+          .filter((prod) => pinned.includes(prod.product_id))
+          .forEach(
+            (prod) =>
+              (pinnedProducts[prod.product_id] = {
+                url: prod.files.browse_url,
+                wkt: prod.granules[0].wkt,
+              }),
+          );
+
+        return pinnedProducts;
+      }),
+      map((products) => new SetImageBrowseProducts(products)),
+    ),
+  );
+
+  public onPinSelectedEventProduct = createEffect(() =>
+    this.actions$.pipe(
+      ofType<ToggleBrowseOverlay>(MapActionType.TOGGLE_BROWSE_OVERLAY),
+      map((action) => action.payload),
+      withLatestFrom(this.store$.select(getSearchType)),
+      withLatestFrom(this.eventMonitoringService.filteredEventProducts$()),
+      withLatestFrom(this.store$.select(getSelectedScene)),
+      map(([[[selectedProductId, searchType], products], scene]) => {
         if (searchType === models.SearchType.SARVIEWS_EVENTS) {
-          const targetProduct = products.find(prod => prod.product_id === selectedProductId);
+          const targetProduct = products.find(
+            (prod) => prod.product_id === selectedProductId,
+          );
           const url = targetProduct?.files.browse_url;
           const wkt = targetProduct?.granules[0].wkt;
 
-          return { selectedProductId, product: {url, wkt} as PinnedProduct};
+          return { selectedProductId, product: { url, wkt } as PinnedProduct };
         } else {
           const url = scene?.browses[0];
           const wkt = scene?.metadata.polygon;
-          return { selectedProductId, product: {url, wkt} as PinnedProduct};
+          return { selectedProductId, product: { url, wkt } as PinnedProduct };
         }
-      }
-    ),
-    withLatestFrom(this.store$.select(getImageBrowseProducts)),
-    map(([pin, pinnedProducts]) => {
-      const temp: Record<string, PinnedProduct> = JSON.parse(JSON.stringify(pinnedProducts));
-      if (pinnedProducts[pin.selectedProductId]) {
-        delete temp[pin.selectedProductId];
-      } else {
-        temp[pin.selectedProductId] = pin.product;
-      }
-
-      return temp;
-    }),
-    map(pinnedProducts => new SetImageBrowseProducts(pinnedProducts))
-  ));
-
-  public LoadBrowseOverlaysOnLoad = createEffect(() => this.actions$.pipe(
-    ofType<SetBrowseOverlays>(MapActionType.SET_BROWSE_OVERLAYS),
-    map(action => action.payload),
-    first(),
-    switchMap(browseIds => this.eventMonitoringService.filteredEventProducts$().pipe(filter(
-      products => products.length > 0
-    ),
-    map(products => ({browseIds, products})))),
-    first(),
-    filter(val => val.products.length > 0),
-    map((data) => {
-      const selectedProductIds = data.browseIds;
-      const products = data.products;
-
-      return selectedProductIds.map(selectedProductId => {
-        const targetProduct = products.find(prod => prod.product_id === selectedProductId);
-        const url = targetProduct?.files.browse_url;
-        const wkt = targetProduct?.granules[0].wkt;
-
-      return { selectedProductId, product: {url, wkt} as PinnedProduct};
-      });
-    }),
-    map(
-      products => products.reduce((prev, curr) => {
-        prev[curr.selectedProductId] = curr.product;
-        return prev;
-      }, {} as Record<string, PinnedProduct>)
-    ),
-    tap(products => this.store$.dispatch(new SetImageBrowseProducts(products)))
-  ),  {dispatch: false});
-
-  public OnDrawNewPolygon = createEffect(() => this.actions$.pipe(
-    ofType(MapActionType.DRAW_NEW_POLYGON),
-    withLatestFrom(
-      this.store$.select(getareResultsOutOfDate),
-      this.store$.select(getSearchType),
-      this.store$.select(getIsFiltersMenuOpen),
-      this.store$.select(getIsResultsMenuOpen),
-      (_, outOfDate, searchType, filtersOpen, resultsOpen) => ({
-        outOfDate,
-        searchType,
-        filtersOpen,
-        resultsOpen
-      })),
-    filter(
-      ({outOfDate}) => !outOfDate
-    ),
-    filter(({searchType}) => searchType === models.SearchType.DATASET),
-    map(({filtersOpen, resultsOpen}) =>
-      !filtersOpen
-      && resultsOpen
-    ),
-    withLatestFrom(this.store$.select(getAreResultsLoaded)),
-    tap(([loaded, _]) => {
-        if(loaded) {
-          return this.store$.dispatch(new SetSearchOutOfDate(true));
+      }),
+      withLatestFrom(this.store$.select(getImageBrowseProducts)),
+      map(([pin, pinnedProducts]) => {
+        const temp: Record<string, PinnedProduct> = JSON.parse(
+          JSON.stringify(pinnedProducts),
+        );
+        if (pinnedProducts[pin.selectedProductId]) {
+          delete temp[pin.selectedProductId];
+        } else {
+          temp[pin.selectedProductId] = pin.product;
         }
-      })
-  ), {dispatch: false});
+
+        return temp;
+      }),
+      map((pinnedProducts) => new SetImageBrowseProducts(pinnedProducts)),
+    ),
+  );
+
+  public LoadBrowseOverlaysOnLoad = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType<SetBrowseOverlays>(MapActionType.SET_BROWSE_OVERLAYS),
+        map((action) => action.payload),
+        first(),
+        switchMap((browseIds) =>
+          this.eventMonitoringService.filteredEventProducts$().pipe(
+            filter((products) => products.length > 0),
+            map((products) => ({ browseIds, products })),
+          ),
+        ),
+        first(),
+        filter((val) => val.products.length > 0),
+        map((data) => {
+          const selectedProductIds = data.browseIds;
+          const products = data.products;
+
+          return selectedProductIds.map((selectedProductId) => {
+            const targetProduct = products.find(
+              (prod) => prod.product_id === selectedProductId,
+            );
+            const url = targetProduct?.files.browse_url;
+            const wkt = targetProduct?.granules[0].wkt;
+
+            return {
+              selectedProductId,
+              product: { url, wkt } as PinnedProduct,
+            };
+          });
+        }),
+        map((products) =>
+          products.reduce(
+            (prev, curr) => {
+              prev[curr.selectedProductId] = curr.product;
+              return prev;
+            },
+            {} as Record<string, PinnedProduct>,
+          ),
+        ),
+        tap((products) =>
+          this.store$.dispatch(new SetImageBrowseProducts(products)),
+        ),
+      ),
+    { dispatch: false },
+  );
+
+  public OnDrawNewPolygon = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(MapActionType.DRAW_NEW_POLYGON),
+        withLatestFrom(
+          this.store$.select(getareResultsOutOfDate),
+          this.store$.select(getSearchType),
+          this.store$.select(getIsFiltersMenuOpen),
+          this.store$.select(getIsResultsMenuOpen),
+          (_, outOfDate, searchType, filtersOpen, resultsOpen) => ({
+            outOfDate,
+            searchType,
+            filtersOpen,
+            resultsOpen,
+          }),
+        ),
+        filter(({ outOfDate }) => !outOfDate),
+        filter(({ searchType }) => searchType === models.SearchType.DATASET),
+        map(({ filtersOpen, resultsOpen }) => !filtersOpen && resultsOpen),
+        withLatestFrom(this.store$.select(getAreResultsLoaded)),
+        tap(([loaded, _]) => {
+          if (loaded) {
+            return this.store$.dispatch(new SetSearchOutOfDate(true));
+          }
+        }),
+      ),
+    { dispatch: false },
+  );
 }
-

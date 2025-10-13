@@ -16,13 +16,13 @@ enum PathFormInputType {
   PATH_START = 'Path Start',
   PATH_END = 'Path End',
   FRAME_START = 'Frame Start',
-  FRAME_END = 'Frame End'
+  FRAME_END = 'Frame End',
 }
 
 @Component({
   selector: 'app-path-selector',
   templateUrl: './path-selector.component.html',
-  styleUrls: ['./path-selector.component.scss']
+  styleUrls: ['./path-selector.component.scss'],
 })
 export class PathSelectorComponent implements OnInit, OnDestroy {
   prop = inject(PropertyService);
@@ -32,80 +32,72 @@ export class PathSelectorComponent implements OnInit, OnDestroy {
 
   private inputErrors$ = new Subject<PathFormInputType>();
   private currentError: PathFormInputType | null = null;
-  
+
   public inputTypes = PathFormInputType;
   public pathStart: number | null;
   public pathEnd: number | null;
   public frameStart: number | null;
   public frameEnd: number | null;
   public selectedDataset: string | null = '';
-  
+
   public selectedDatasetIsNISARFormat = false;
 
   private get pathStartControl() {
-    return this.pathForm.form
-      .controls['pathStart'];
+    return this.pathForm.form.controls['pathStart'];
   }
 
   private get pathEndControl() {
-    return this.pathForm.form
-      .controls['pathEnd'];
+    return this.pathForm.form.controls['pathEnd'];
   }
 
   private get frameStartControl() {
-    return this.pathForm.form
-      .controls['frameStart'];
+    return this.pathForm.form.controls['frameStart'];
   }
 
   private get frameEndControl() {
-    return this.pathForm.form
-      .controls['frameEnd'];
+    return this.pathForm.form.controls['frameEnd'];
   }
 
   public p = Props;
-  public shouldOmitSearchPolygon$ = this.store$.select(filtersStore.getShouldOmitSearchPolygon);
+  public shouldOmitSearchPolygon$ = this.store$.select(
+    filtersStore.getShouldOmitSearchPolygon,
+  );
   private subs = new SubSink();
 
   ngOnInit() {
     this.handlePathFrameErrors();
 
     this.subs.add(
-      this.store$.select(filtersStore.getSelectedDatasetId).subscribe(
-        selected => {
-          this.selectedDataset = selected
+      this.store$
+        .select(filtersStore.getSelectedDatasetId)
+        .subscribe((selected) => {
+          this.selectedDataset = selected;
           if (this.selectedDataset === 'SENTINEL-1 INTERFEROGRAM (BETA)') {
             this.selectedDatasetIsNISARFormat = true;
           } else {
             this.selectedDatasetIsNISARFormat = false;
           }
-        }
-      )
+        }),
     );
 
     this.subs.add(
-      this.store$.select(filtersStore.getPathRange).subscribe(
-        range => {
-          this.pathStart = range.start;
-          this.pathEnd = range.end;
-        }
-      )
+      this.store$.select(filtersStore.getPathRange).subscribe((range) => {
+        this.pathStart = range.start;
+        this.pathEnd = range.end;
+      }),
     );
     this.subs.add(
-      this.store$.select(filtersStore.getFrameRange).subscribe(
-        range => {
-          this.frameStart = range.start;
-          this.frameEnd = range.end;
-        }
-      )
+      this.store$.select(filtersStore.getFrameRange).subscribe((range) => {
+        this.frameStart = range.start;
+        this.frameEnd = range.end;
+      }),
     );
   }
 
   public numberOnly(event): boolean {
-    const charCode = (event.which) ?
-      event.which :
-      event.keyCode;
+    const charCode = event.which ? event.which : event.keyCode;
 
-    return (charCode > 31 && (charCode < 48 || charCode > 57));
+    return charCode > 31 && (charCode < 48 || charCode > 57);
   }
 
   public onValueChanged(event: Event, inputType: PathFormInputType): void {
@@ -121,7 +113,10 @@ export class PathSelectorComponent implements OnInit, OnDestroy {
     this.store$.dispatch(action);
   }
 
-  private getActionFor(inputType: PathFormInputType, val: number | null): Action {
+  private getActionFor(
+    inputType: PathFormInputType,
+    val: number | null,
+  ): Action {
     const ActionType = {
       [PathFormInputType.PATH_START]: filtersStore.SetPathStart,
       [PathFormInputType.PATH_END]: filtersStore.SetPathEnd,
@@ -137,9 +132,9 @@ export class PathSelectorComponent implements OnInit, OnDestroy {
   }
 
   public onNewOmitPolygon(e): void {
-    const action = e.checked ?
-      new filtersStore.OmitSearchPolygon() :
-      new filtersStore.UseSearchPolygon();
+    const action = e.checked
+      ? new filtersStore.OmitSearchPolygon()
+      : new filtersStore.UseSearchPolygon();
 
     this.store$.dispatch(action);
   }
@@ -155,20 +150,20 @@ export class PathSelectorComponent implements OnInit, OnDestroy {
 
   private handlePathFrameErrors(): void {
     this.subs.add(
-      this.inputErrors$.pipe(
-        tap(inputType => this.currentError = inputType),
-        map(
-          inputType => this.getInput(inputType)
-        ),
-        tap(control => {
-          control.reset();
-          control.setErrors({'incorrect': true});
+      this.inputErrors$
+        .pipe(
+          tap((inputType) => (this.currentError = inputType)),
+          map((inputType) => this.getInput(inputType)),
+          tap((control) => {
+            control.reset();
+            control.setErrors({ incorrect: true });
+          }),
+          delay(820),
+        )
+        .subscribe((control) => {
+          this.currentError = null;
+          control.setErrors(null);
         }),
-        delay(820),
-      ).subscribe(control => {
-        this.currentError = null;
-        control.setErrors(null);
-      })
     );
   }
 

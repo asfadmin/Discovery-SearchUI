@@ -1,4 +1,12 @@
-import { Component, ElementRef, OnDestroy, OnInit, Output, ViewChild, inject } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { MapService } from '@services';
 import { AppState } from '@store';
@@ -13,7 +21,7 @@ import { SubSink } from 'subsink';
 @Component({
   selector: 'app-event-polygon-slider',
   templateUrl: './event-polygon-slider.component.html',
-  styleUrls: ['./event-polygon-slider.component.scss']
+  styleUrls: ['./event-polygon-slider.component.scss'],
 })
 export class EventPolygonSliderComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
@@ -31,11 +39,11 @@ export class EventPolygonSliderComponent implements OnInit, OnDestroy {
     const sliderScale$: Observable<number> = polygonSlider.scaleValues$;
 
     this.subs.add(
-      sliderScale$.pipe(
-        withLatestFrom(this.store$.select(getSelectedSarviewsEvent))
-      ).subscribe(
-        ([scale, selectedEvent]) => this.mapService.onSetSarviewsPolygon(selectedEvent, scale)
-      )
+      sliderScale$
+        .pipe(withLatestFrom(this.store$.select(getSelectedSarviewsEvent)))
+        .subscribe(([scale, selectedEvent]) =>
+          this.mapService.onSetSarviewsPolygon(selectedEvent, scale),
+        ),
     );
   }
 
@@ -53,8 +61,8 @@ export class EventPolygonSliderComponent implements OnInit, OnDestroy {
       // step: 0.1,
       connect: 'lower',
       range: {
-        'min': 0.1,
-        'max': 4
+        min: 0.1,
+        max: 4,
       },
       pips: {
         mode: noUiSlider.PipsMode.Positions,
@@ -63,8 +71,8 @@ export class EventPolygonSliderComponent implements OnInit, OnDestroy {
         stepped: true,
         format: wNumb({
           decimals: 1,
-        })
-      }
+        }),
+      },
     });
 
     slider.on('update', (value, _) => {
@@ -77,9 +85,8 @@ export class EventPolygonSliderComponent implements OnInit, OnDestroy {
       slider,
       scaleValues$: this.polygonScale$.asObservable().pipe(
         // debounceTime(500),
-        distinctUntilChanged()
-      )
+        distinctUntilChanged(),
+      ),
     };
   }
-
 }

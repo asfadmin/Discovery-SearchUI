@@ -1,4 +1,4 @@
-import {  Graticule as GraticuleLayer } from 'ol/layer';
+import { Graticule as GraticuleLayer } from 'ol/layer';
 import { View } from 'ol';
 import * as proj from 'ol/proj';
 import * as customProj4 from 'ol/proj/proj4';
@@ -12,7 +12,7 @@ export class MapView {
     public projection: Projection,
     public view: View,
     public layer: TileLayer,
-    public gridlines?: GraticuleLayer
+    public gridlines?: GraticuleLayer,
   ) {}
 }
 
@@ -21,7 +21,7 @@ export class Projection {
 }
 
 export class CustomProjection extends Projection {
-  constructor( epsg: string, projection: string, extent: Extent) {
+  constructor(epsg: string, projection: string, extent: Extent) {
     super(epsg);
 
     proj4.defs(this.epsg, projection);

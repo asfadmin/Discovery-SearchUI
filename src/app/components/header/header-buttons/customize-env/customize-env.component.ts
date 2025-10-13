@@ -5,7 +5,10 @@ import { EnvironmentService, NotificationService } from '@services';
 @Component({
   selector: 'app-customize-env',
   templateUrl: './customize-env.component.html',
-  styleUrls: ['./customize-env.component.scss', '../preferences/preferences.component.scss']
+  styleUrls: [
+    './customize-env.component.scss',
+    '../preferences/preferences.component.scss',
+  ],
 })
 export class CustomizeEnvComponent implements OnInit {
   private env = inject(EnvironmentService);
@@ -22,18 +25,26 @@ export class CustomizeEnvComponent implements OnInit {
       const customEnv = JSON.parse(this.envStr);
 
       if (customEnv.defaultEnv !== 'test') {
-        this.notificationService.error(`defaultEnv must be set to 'test'`, 'Error', {
-          timeOut: 5000
-        });
+        this.notificationService.error(
+          `defaultEnv must be set to 'test'`,
+          'Error',
+          {
+            timeOut: 5000,
+          },
+        );
         return;
       }
 
       localStorage.setItem('customEnv-1', this.envStr);
       this.env.setEnvs(customEnv);
     } catch {
-      this.notificationService.error(`JSON parse error while setting env`, 'Error', {
-        timeOut: 5000
-      });
+      this.notificationService.error(
+        `JSON parse error while setting env`,
+        'Error',
+        {
+          timeOut: 5000,
+        },
+      );
       return;
     }
   }

@@ -8,7 +8,7 @@ import * as hyp3Store from '@store/hyp3';
 @Component({
   selector: 'app-on-demand-user-selector',
   templateUrl: './on-demand-user-selector.component.html',
-  styleUrls: ['./on-demand-user-selector.component.scss']
+  styleUrls: ['./on-demand-user-selector.component.scss'],
 })
 export class OnDemandUserSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
@@ -17,11 +17,11 @@ export class OnDemandUserSelectorComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   ngOnInit(): void {
-      this.subs.add(
-        this.store$.select(hyp3Store.getOnDemandUserId).subscribe(name => {
-          this.onDemandUserName = name;
-        })
-      );
+    this.subs.add(
+      this.store$.select(hyp3Store.getOnDemandUserId).subscribe((name) => {
+        this.onDemandUserName = name;
+      }),
+    );
   }
 
   public onOnDemandUserChange(event: Event) {

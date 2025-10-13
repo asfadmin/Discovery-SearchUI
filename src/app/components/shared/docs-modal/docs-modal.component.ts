@@ -21,9 +21,8 @@
 import { Component, Input, OnInit, OnDestroy, inject } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
-import { TranslateService } from "@ngx-translate/core";
+import { TranslateService } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
-
 
 export interface DialogData {
   rawUrl: string;
@@ -33,7 +32,7 @@ export interface DialogData {
 @Component({
   selector: 'app-docs-modal',
   templateUrl: './docs-modal.component.html',
-  styleUrls: ['./docs-modal.component.scss']
+  styleUrls: ['./docs-modal.component.scss'],
 })
 export class DocsModalComponent implements OnInit, OnDestroy {
   dialog = inject(MatDialog);
@@ -54,13 +53,15 @@ export class DocsModalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.updateLink();
-    this.subs.add(this.translate.onLangChange.subscribe(_currentLanguage => {
-      this.updateLink();
-    }));
+    this.subs.add(
+      this.translate.onLangChange.subscribe((_currentLanguage) => {
+        this.updateLink();
+      }),
+    );
   }
 
   private updateLink(): void {
-    this.docURL = (this.url) ? this.url : 'https://docs.asf.alaska.edu';
+    this.docURL = this.url ? this.url : 'https://docs.asf.alaska.edu';
     const tempURL = this.docsLanguageAdjust(this.docURL);
     this.safeDocURL = this._sanitizer.bypassSecurityTrustResourceUrl(tempURL);
   }
@@ -78,7 +79,7 @@ export class DocsModalComponent implements OnInit, OnDestroy {
         },
       });
 
-      dialogRef.afterClosed().subscribe(_result => {
+      dialogRef.afterClosed().subscribe((_result) => {
         // console.log(`Dialog result: ${_result}`);
       });
     } else {
@@ -87,7 +88,7 @@ export class DocsModalComponent implements OnInit, OnDestroy {
   }
 
   public isAsfUrl(url: string): boolean {
-    const domain = (new URL(url)).hostname.replace('www.', '');
+    const domain = new URL(url).hostname.replace('www.', '');
     return domain.includes('asf.alaska.edu');
   }
 
@@ -107,13 +108,12 @@ export class DocsModalComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
-
 }
 
 @Component({
   selector: 'app-docs-modal-iframe',
   templateUrl: 'docs-modal-iframe.html',
-  styleUrls: ['docs-modal-iframe.scss']
+  styleUrls: ['docs-modal-iframe.scss'],
 })
 export class DocsModalIframeComponent {
   data = inject<DialogData>(MAT_DIALOG_DATA);

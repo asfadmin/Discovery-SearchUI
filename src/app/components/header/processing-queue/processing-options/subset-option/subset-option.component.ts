@@ -3,7 +3,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-subset-option',
   templateUrl: './subset-option.component.html',
-  styleUrls: ['./subset-option.component.scss']
+  styleUrls: ['./subset-option.component.scss'],
 })
 export class SubsetOptionComponent {
   @Input() optionName: string;
@@ -11,9 +11,7 @@ export class SubsetOptionComponent {
 
   @Output() setSubset = new EventEmitter<void>();
 
-
   public onSubsetChange(): void {
     this.setSubset.emit();
   }
-
 }

@@ -11,14 +11,14 @@ import { ShortNameSelectorModule } from '@components/shared/selectors/short-name
 
 import { ObservationPanelSelectorComponent } from './observation-panel-selector.component';
 import { BurstSelectorModule } from '../burst-selector';
-import { SharedModule } from "@shared";
+import { SharedModule } from '@shared';
 import { MatInputModule } from '@angular/material/input';
 import { OperaCalibrationDataSelectorModule } from '../opera-calibration-data-selector';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { PipesModule } from '@pipes';
 
 @NgModule({
-  declarations: [ ObservationPanelSelectorComponent ],
+  declarations: [ObservationPanelSelectorComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -32,8 +32,8 @@ import { PipesModule } from '@pipes';
     SharedModule,
     MatInputModule,
     OperaCalibrationDataSelectorModule,
-    PipesModule
+    PipesModule,
   ],
-  exports: [ ObservationPanelSelectorComponent ],
+  exports: [ObservationPanelSelectorComponent],
 })
-export class ObservationPanelSelectorModule { }
+export class ObservationPanelSelectorModule {}

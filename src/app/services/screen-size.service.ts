@@ -11,19 +11,19 @@ export interface ScreenSize {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ScreenSizeService {
   public size$: Observable<ScreenSize> = fromEvent(window, 'resize').pipe(
     startWith({
       width: window.innerWidth,
-      height: window.innerHeight
+      height: window.innerHeight,
     }),
-     map(_ => ({
-       width: document.documentElement.clientWidth,
-       height: document.documentElement.clientHeight
-     })),
-     debounceTime(100),
+    map((_) => ({
+      width: document.documentElement.clientWidth,
+      height: document.documentElement.clientHeight,
+    })),
+    debounceTime(100),
   );
 
   public breakpoint$ = this.size$.pipe(
@@ -37,7 +37,6 @@ export class ScreenSizeService {
       } else {
         return models.Breakpoints.MOBILE;
       }
-    })
+    }),
   );
-
 }

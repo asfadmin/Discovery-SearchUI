@@ -7,17 +7,9 @@ import { ResizedEventModule } from '@directives/resized.directive';
 
 import { SBASChartComponent } from './sbas-chart.component';
 
-
-
 @NgModule({
   declarations: [SBASChartComponent],
-  imports: [
-    CommonModule,
-    MatSharedModule,
-    ResizedEventModule
-  ],
-  exports: [
-    SBASChartComponent,
-  ]
+  imports: [CommonModule, MatSharedModule, ResizedEventModule],
+  exports: [SBASChartComponent],
 })
-export class SBASChartModule { }
+export class SBASChartModule {}

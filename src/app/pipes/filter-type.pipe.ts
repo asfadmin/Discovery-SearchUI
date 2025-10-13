@@ -1,54 +1,62 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { BaselineFiltersType, FilterType, GeographicFiltersType, ListFiltersType, SbasFiltersType, TimeseriesFiltersType, DisplacementFiltersType } from '@models';
+import {
+  BaselineFiltersType,
+  FilterType,
+  GeographicFiltersType,
+  ListFiltersType,
+  SbasFiltersType,
+  TimeseriesFiltersType,
+  DisplacementFiltersType,
+} from '@models';
 
 @Pipe({
-    name: 'baselineFilter'
+  name: 'baselineFilter',
 })
 export class BaselineFilterPipe implements PipeTransform {
-    transform(input: FilterType): BaselineFiltersType {
-        return input as BaselineFiltersType;
-    }
+  transform(input: FilterType): BaselineFiltersType {
+    return input as BaselineFiltersType;
+  }
 }
 
 @Pipe({
-  name: 'SBASFilter'
+  name: 'SBASFilter',
 })
 export class SBASFilterPipe implements PipeTransform {
   transform(input: FilterType): SbasFiltersType {
-      return input as SbasFiltersType;
+    return input as SbasFiltersType;
   }
 }
 
 @Pipe({
-  name: 'TimeseriesFilter'
+  name: 'TimeseriesFilter',
 })
 export class TimeseriesFilterPipe implements PipeTransform {
   transform(input: FilterType): TimeseriesFiltersType {
-      return input as TimeseriesFiltersType;
+    return input as TimeseriesFiltersType;
   }
 }
 @Pipe({
-  name: 'geographicFilter'
+  name: 'geographicFilter',
 })
 export class GeographicFilterPipe implements PipeTransform {
   transform(input: FilterType): GeographicFiltersType {
-      return input as GeographicFiltersType;
+    return input as GeographicFiltersType;
   }
 }
 
 @Pipe({
-  name: 'listFilter'
+  name: 'listFilter',
 })
 export class ListFilterPipe implements PipeTransform {
   transform(input: FilterType): ListFiltersType {
-      return input as ListFiltersType;
+    return input as ListFiltersType;
   }
 }
 @Pipe({
-  name: 'displacementFilter'
+  name: 'displacementFilter',
 })
 export class DisplacementFilterPipe implements PipeTransform {
   transform(input: FilterType): DisplacementFiltersType {
-      return input as DisplacementFiltersType;
+    return input as DisplacementFiltersType;
   }
 }

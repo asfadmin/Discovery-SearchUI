@@ -6,12 +6,11 @@ import { Observable } from 'rxjs';
 import { EnvironmentService } from './environment.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UnzipApiService {
   private env = inject(EnvironmentService);
   private http = inject(HttpClient);
-
 
   public get apiUrl() {
     return this.env.currentEnv.unzip;

@@ -8,11 +8,10 @@ import { SBASOverlap } from '@models';
 @Component({
   selector: 'app-sbas-overlap-selector',
   templateUrl: './sbas-overlap-selector.component.html',
-  styleUrls: ['./sbas-overlap-selector.component.scss']
+  styleUrls: ['./sbas-overlap-selector.component.scss'],
 })
 export class SbasOverlapSelectorComponent implements OnInit {
   private store$ = inject<Store<AppState>>(Store);
-
 
   public fiftyPercentOverlapToggled = false;
   public SBASOverlapThreshold: SBASOverlap = SBASOverlap.ALL;
@@ -23,14 +22,16 @@ export class SbasOverlapSelectorComponent implements OnInit {
 
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(filtersStore.getSBASOverlapToggle).subscribe(
-        toggledOn => this.fiftyPercentOverlapToggled = toggledOn
-      )
+      this.store$
+        .select(filtersStore.getSBASOverlapToggle)
+        .subscribe(
+          (toggledOn) => (this.fiftyPercentOverlapToggled = toggledOn),
+        ),
     );
     this.subs.add(
-      this.store$.select(filtersStore.getSBASOverlapThreshold).subscribe(
-        threshold => this.SBASOverlapThreshold = threshold
-      )
+      this.store$
+        .select(filtersStore.getSBASOverlapThreshold)
+        .subscribe((threshold) => (this.SBASOverlapThreshold = threshold)),
     );
   }
 

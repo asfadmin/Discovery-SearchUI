@@ -10,11 +10,11 @@ describe('Hyp3JobStatusService', () => {
 
   const expired = {
     status_code: models.Hyp3JobStatusCode.SUCCEEDED,
-    expiration_time: moment.utc().subtract(2, 'days')
+    expiration_time: moment.utc().subtract(2, 'days'),
   } as models.Hyp3Job;
   const notExpired = {
     status_code: models.Hyp3JobStatusCode.SUCCEEDED,
-    expiration_time: moment.utc().add(2, 'days')
+    expiration_time: moment.utc().add(2, 'days'),
   } as models.Hyp3Job;
 
   const failed = {
@@ -41,7 +41,7 @@ describe('Hyp3JobStatusService', () => {
     expect(service.downloadable([]).length === 0).toBeTruthy();
 
     const products = [notExpired, failed, pending, running, expired].map(
-      p => ({metadata: { job: p }} as models.CMRProduct)
+      (p) => ({ metadata: { job: p } }) as models.CMRProduct,
     );
 
     expect(service.downloadable(products).length === 1).toBeTruthy();

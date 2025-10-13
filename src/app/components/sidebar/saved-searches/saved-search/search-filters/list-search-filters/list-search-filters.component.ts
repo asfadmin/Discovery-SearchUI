@@ -6,11 +6,10 @@ import { ListFiltersType } from '@models';
   selector: 'app-list-search-filters',
   templateUrl: './list-search-filters.component.html',
   styleUrls: ['./list-search-filters.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListSearchFiltersComponent {
   @Input() filters: ListFiltersType;
-
 
   public formatList(list: string[]): string {
     return list.join(', ');

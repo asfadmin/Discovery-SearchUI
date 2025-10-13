@@ -4,22 +4,17 @@ import { EventMetadataComponent } from './event-metadata.component';
 import { PipesModule } from '@pipes';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
-import { SharedModule} from "@shared";
+import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [
-    EventMetadataComponent
-  ],
+  declarations: [EventMetadataComponent],
   imports: [
     CommonModule,
     PipesModule,
     MatMenuModule,
     MatIconModule,
-    SharedModule
-
+    SharedModule,
   ],
-  exports: [
-    EventMetadataComponent
-  ]
+  exports: [EventMetadataComponent],
 })
-export class EventMetadataModule { }
+export class EventMetadataModule {}

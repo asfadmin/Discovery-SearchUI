@@ -1,27 +1,31 @@
-<div style="display: flex; flex-direction: column;">
-      @if(!!filters.flightDirections[0]) {
-            <div>
-                  <b>{{ 'FLIGHT_DIR' | translate }}: </b> {{ filters.flightDirections[0] }}
-            </div>
-      }
-      @if(!!filters.seriesStates) {
-            <div>
-                  <b>{{ 'SERIES' | translate }}: </b>
-                  <ul style="padding-left: 5px; margin: 5px;">
-                  @for(item of (filters.seriesStates | keyvalue); track item.key) {
-                        <li><b>{{item.value.seriesName}}</b>: {{item.value.wkt}}</li>
-                  }
-                  </ul>
-            </div>
-      }
-      @if(filters.dateRange && filters.dateRange.start) {
-            <div>
-                  <b>{{ 'START' | translate}}:</b> {{ filters.dateRange.start | shortDate }}
-            </div>
-      }
-      @if(filters.dateRange && filters.dateRange.end) {
-            <div>
-                  <b>{{'END' | translate}}:</b> {{ filters.dateRange.end | shortDate }}
-            </div>
-      }
+<div style="display: flex; flex-direction: column">
+  @if (!!filters.flightDirections[0]) {
+    <div>
+      <b>{{ 'FLIGHT_DIR' | translate }}: </b> {{ filters.flightDirections[0] }}
+    </div>
+  }
+  @if (!!filters.seriesStates) {
+    <div>
+      <b>{{ 'SERIES' | translate }}: </b>
+      <ul style="padding-left: 5px; margin: 5px">
+        @for (item of filters.seriesStates | keyvalue; track item.key) {
+          <li>
+            <b>{{ item.value.seriesName }}</b
+            >: {{ item.value.wkt }}
+          </li>
+        }
+      </ul>
+    </div>
+  }
+  @if (filters.dateRange && filters.dateRange.start) {
+    <div>
+      <b>{{ 'START' | translate }}:</b>
+      {{ filters.dateRange.start | shortDate }}
+    </div>
+  }
+  @if (filters.dateRange && filters.dateRange.end) {
+    <div>
+      <b>{{ 'END' | translate }}:</b> {{ filters.dateRange.end | shortDate }}
+    </div>
+  }
 </div>

@@ -1,14 +1,22 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  OnDestroy,
+  inject,
+} from '@angular/core';
 import { Subject } from 'rxjs';
 import { tap, delay, map } from 'rxjs/operators';
 import moment from 'moment';
 import { SubSink } from 'subsink';
-import { UntypedFormGroup, UntypedFormControl  } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { DateAdapter } from '@angular/material/core';
 import { NotificationService, ScreenSizeService } from '@services';
-import {Store} from "@ngrx/store";
-import {AppState} from "@store";
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 import * as models from '@models';
 
@@ -25,7 +33,7 @@ export class DateRangeComponent implements OnInit, OnDestroy {
 
   public dateRangeForm = new UntypedFormGroup({
     StartDateControl: new UntypedFormControl(),
-    EndDateControl: new UntypedFormControl()
+    EndDateControl: new UntypedFormControl(),
   });
 
   @Input() minDate: Date;
@@ -48,17 +56,16 @@ export class DateRangeComponent implements OnInit, OnDestroy {
   public breakpoints = models.Breakpoints;
 
   ngOnInit(): void {
-
     this.subs.add(
-      this.store$.select(uiStore.getCurrentLanguage).subscribe(
-        currentLanguage => {
+      this.store$
+        .select(uiStore.getCurrentLanguage)
+        .subscribe((currentLanguage) => {
           this.setCalLang(currentLanguage);
-        }
-      )
+        }),
     );
 
     this.screenSize.breakpoint$.subscribe(
-      breakpoint => this.breakpoint = breakpoint
+      (breakpoint) => (this.breakpoint = breakpoint),
     );
 
     this.dateAdapter.setLocale(moment.locale());
@@ -66,12 +73,12 @@ export class DateRangeComponent implements OnInit, OnDestroy {
     // eslint-disable-next-line no-constant-binary-expression
     if (!!this.startDate && this.startDate !== new Date(undefined)) {
       this.dateRangeForm.patchValue({
-        StartDateControl: this.startDate
+        StartDateControl: this.startDate,
       });
     }
     if (this.endDate) {
       this.dateRangeForm.patchValue({
-        EndDateControl: this.endDate
+        EndDateControl: this.endDate,
       });
     }
 
@@ -94,7 +101,7 @@ export class DateRangeComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const momentDate = moment(new Date(e.value)).set({h: 0});
+    const momentDate = moment(new Date(e.value)).set({ h: 0 });
     const date = this.toJSDate(momentDate);
     this.newStart.emit(date);
   }
@@ -119,17 +126,17 @@ export class DateRangeComponent implements OnInit, OnDestroy {
   }
 
   private get startControl() {
-    return this.dateRangeForm
-      .controls['StartDateControl'] as UntypedFormControl;
+    return this.dateRangeForm.controls[
+      'StartDateControl'
+    ] as UntypedFormControl;
   }
 
   private get endControl() {
-    return this.dateRangeForm
-      .controls['EndDateControl'] as UntypedFormControl;
+    return this.dateRangeForm.controls['EndDateControl'] as UntypedFormControl;
   }
 
   private endDateFormat(date: Date) {
-    const endDate = moment(new Date(date)).set({h: 23, m: 59, s: 59});
+    const endDate = moment(new Date(date)).set({ h: 23, m: 59, s: 59 });
     return this.toJSDate(endDate);
   }
 
@@ -139,56 +146,63 @@ export class DateRangeComponent implements OnInit, OnDestroy {
 
   private handleDateErrors(): void {
     this.subs.add(
-      this.startDateErrors$.pipe(
-        tap(_ => {
-          this.isStartError = true;
-          this.onSetError(this.startControl);
-          this.startDateError.emit();
+      this.startDateErrors$
+        .pipe(
+          tap((_) => {
+            this.isStartError = true;
+            this.onSetError(this.startControl);
+            this.startDateError.emit();
+          }),
+          delay(820),
+        )
+        .subscribe((_) => {
+          this.isStartError = false;
+          this.startControl.setErrors(null);
         }),
-        delay(820),
-      ).subscribe(_ => {
-        this.isStartError = false;
-        this.startControl.setErrors(null);
-      })
     );
 
     this.subs.add(
-      this.endDateErrors$.pipe(
-        tap(_ => {
-          this.isEndError = true;
-          this.onSetError(this.endControl);
-          this.endDateError.emit();
+      this.endDateErrors$
+        .pipe(
+          tap((_) => {
+            this.isEndError = true;
+            this.onSetError(this.endControl);
+            this.endDateError.emit();
+          }),
+          delay(820),
+        )
+        .subscribe((_) => {
+          this.isEndError = false;
+          this.endControl.setErrors(null);
         }),
-        delay(820),
-      ).subscribe(_ => {
-        this.isEndError = false;
-        this.endControl.setErrors(null);
-      })
     );
 
     this.subs.add(
-      this.invalidDateError$.pipe(
-        map(control => ({
-          name: Object.keys(this.dateRangeForm.controls).find(
-            key => this.dateRangeForm.controls[key] === control),
-          control
-        })),
-        tap(({name, control}) => {
-          this.notificationService.error('', 'Not a valid date');
+      this.invalidDateError$
+        .pipe(
+          map((control) => ({
+            name: Object.keys(this.dateRangeForm.controls).find(
+              (key) => this.dateRangeForm.controls[key] === control,
+            ),
+            control,
+          })),
+          tap(({ name, control }) => {
+            this.notificationService.error('', 'Not a valid date');
+            this.onSetErrorState(name, false);
+            this.onSetError(control);
+          }),
+          delay(820),
+        )
+        .subscribe(({ name, control }) => {
           this.onSetErrorState(name, false);
-          this.onSetError(control);
+          control.setErrors(null);
         }),
-        delay(820),
-      ).subscribe(({name, control}) => {
-        this.onSetErrorState(name, false);
-        control.setErrors(null);
-      })
     );
   }
 
   private onSetError(control: UntypedFormControl) {
     control.reset();
-    control.setErrors({'incorrect': true, });
+    control.setErrors({ incorrect: true });
   }
 
   private onSetErrorState(controlName: string, value: boolean) {

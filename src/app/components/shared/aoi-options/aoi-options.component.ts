@@ -1,4 +1,13 @@
-import { Component, OnInit, Output, Input, EventEmitter, ViewChild, OnDestroy, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Output,
+  Input,
+  EventEmitter,
+  ViewChild,
+  OnDestroy,
+  inject,
+} from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 import { Subject } from 'rxjs';
@@ -17,7 +26,9 @@ import { SetGeocode } from '@store/filters';
 
 // Declare GTM dataLayer array.
 declare global {
-  interface Window { dataLayer: any[]; }
+  interface Window {
+    dataLayer: any[];
+  }
 }
 
 @Component({
@@ -54,37 +65,39 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   ngOnInit() {
-
     this.subs.add(
-      this.mapService.searchPolygon$.subscribe(
-        polygon => {
-          this.polygon = polygon;
-          window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({
-            'event': 'input-search-polygon',
-            'input-search-polygon': this.polygon
-          });
-
-        }
-      )
+      this.mapService.searchPolygon$.subscribe((polygon) => {
+        this.polygon = polygon;
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: 'input-search-polygon',
+          'input-search-polygon': this.polygon,
+        });
+      }),
     );
 
     this.subs.add(
       this.screenSize.breakpoint$.subscribe(
-        breakpoint => this.breakpoint = breakpoint
-      )
+        (breakpoint) => (this.breakpoint = breakpoint),
+      ),
     );
 
     this.subs.add(
-      this.searchType$.subscribe( searchtype => this.searchtype = searchtype)
+      this.searchType$.subscribe(
+        (searchtype) => (this.searchtype = searchtype),
+      ),
     );
 
     this.subs.add(
-      this.store$.select(getIsFiltersMenuOpen).subscribe(isOpen => this.isFiltersMenuOpen = isOpen)
+      this.store$
+        .select(getIsFiltersMenuOpen)
+        .subscribe((isOpen) => (this.isFiltersMenuOpen = isOpen)),
     );
 
     this.subs.add(
-      this.store$.select(getIsResultsMenuOpen).subscribe(isOpen => this.isResultsMenuOpen = isOpen)
+      this.store$
+        .select(getIsResultsMenuOpen)
+        .subscribe((isOpen) => (this.isResultsMenuOpen = isOpen)),
     );
 
     this.handleAOIErrors();
@@ -98,27 +111,45 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
     const polygon = (event.target as HTMLInputElement).value;
     const didLoad = this.mapService.loadPolygonFrom(polygon);
 
-    if (!didLoad || (this.searchtype === SearchType.DISPLACEMENT && !(polygon.toLowerCase().includes('point')))) {
+    if (
+      !didLoad ||
+      (this.searchtype === SearchType.DISPLACEMENT &&
+        !polygon.toLowerCase().includes('point'))
+    ) {
       this.aoiErrors$.next();
     } else {
-      if (this.searchtype === SearchType.DATASET && this.isResultsMenuOpen && !this.isFiltersMenuOpen) {
+      if (
+        this.searchtype === SearchType.DATASET &&
+        this.isResultsMenuOpen &&
+        !this.isFiltersMenuOpen
+      ) {
         this.store$.dispatch(new SetSearchOutOfDate(true));
       }
     }
   }
-  public onInputGeocodePolygon(event: {wkt: string, geocode: string}): void {
+  public onInputGeocodePolygon(event: { wkt: string; geocode: string }): void {
     const didLoad = this.mapService.loadPolygonFrom(event.wkt);
     this.store$.dispatch(new SetGeocode(event.geocode));
-    if (!didLoad || (this.searchtype === SearchType.DISPLACEMENT && !(event.wkt.toLowerCase().includes('point')))) {
+    if (
+      !didLoad ||
+      (this.searchtype === SearchType.DISPLACEMENT &&
+        !event.wkt.toLowerCase().includes('point'))
+    ) {
       this.aoiErrors$.next();
     } else {
-      if (this.searchtype === SearchType.DATASET && this.isResultsMenuOpen && !this.isFiltersMenuOpen) {
+      if (
+        this.searchtype === SearchType.DATASET &&
+        this.isResultsMenuOpen &&
+        !this.isFiltersMenuOpen
+      ) {
         this.store$.dispatch(new SetSearchOutOfDate(true));
       }
     }
   }
   public onFileUpload(): void {
-    const action = new mapStore.SetMapInteractionMode(MapInteractionModeType.UPLOAD);
+    const action = new mapStore.SetMapInteractionMode(
+      MapInteractionModeType.UPLOAD,
+    );
     this.store$.dispatch(action);
   }
 
@@ -137,27 +168,29 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
   }
 
   public onOpenHelp(): void {
-    window.open('https://docs.asf.alaska.edu/vertex/manual/#area-of-interest-options');
+    window.open(
+      'https://docs.asf.alaska.edu/vertex/manual/#area-of-interest-options',
+    );
   }
 
   private handleAOIErrors(): void {
     this.subs.add(
-      this.aoiErrors$.pipe(
-        tap(_ => {
-          this.isAOIError = true;
-          this.mapService.clearDrawLayer();
-          this.polygonForm.reset();
-          this.polygonForm.form
-            .controls['searchPolygonLarge']
-            .setErrors({'incorrect': true});
+      this.aoiErrors$
+        .pipe(
+          tap((_) => {
+            this.isAOIError = true;
+            this.mapService.clearDrawLayer();
+            this.polygonForm.reset();
+            this.polygonForm.form.controls['searchPolygonLarge'].setErrors({
+              incorrect: true,
+            });
+          }),
+          delay(820),
+        )
+        .subscribe((_) => {
+          this.isAOIError = false;
+          this.polygonForm.form.controls['searchPolygonLarge'].setErrors(null);
         }),
-        delay(820),
-      ).subscribe(_ => {
-        this.isAOIError = false;
-        this.polygonForm.form
-          .controls['searchPolygonLarge']
-          .setErrors(null);
-      })
     );
   }
 

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ThemingService {
   public theme$ = new BehaviorSubject<string>('light');
@@ -10,22 +10,22 @@ export class ThemingService {
   constructor() {
     const darkModeOn =
       window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches;
+      window.matchMedia('(prefers-color-scheme: dark)').matches;
 
     // If dark mode is enabled then directly switch to the dark-theme
-    if(darkModeOn){
-      this.theme$.next("dark");
+    if (darkModeOn) {
+      this.theme$.next('dark');
     }
 
     // Watch for changes of the preference
-    window.matchMedia("(prefers-color-scheme: dark)").addListener(e => {
+    window.matchMedia('(prefers-color-scheme: dark)').addListener((e) => {
       const turnOn = e.matches;
-      this.theme$.next(turnOn ? "dark" : "light");
+      this.theme$.next(turnOn ? 'dark' : 'light');
     });
   }
 
   public setTheme(themeName: string): void {
-    const body = document.getElementsByTagName("body")[0];
+    const body = document.getElementsByTagName('body')[0];
     // removes all classes from body, probably not best for later on
     body.removeAttribute('class');
     body.classList.add(themeName);

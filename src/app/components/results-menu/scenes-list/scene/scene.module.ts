@@ -34,10 +34,8 @@ import { SharedModule } from '@shared';
     FileNameModule,
     OnDemandAddMenuModule,
     Hyp3JobStatusBadgeModule,
-    SharedModule
+    SharedModule,
   ],
-  exports: [
-    SceneComponent
-  ]
+  exports: [SceneComponent],
 })
-export class SceneModule { }
+export class SceneModule {}

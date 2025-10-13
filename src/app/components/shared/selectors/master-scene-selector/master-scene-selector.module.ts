@@ -9,7 +9,6 @@ import { SharedModule } from '@shared';
 import { DatasetSelectorModule } from '../dataset-selector';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
-
 @NgModule({
   declarations: [MasterSceneSelectorComponent],
   imports: [
@@ -19,10 +18,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatSharedModule,
     SharedModule,
     DatasetSelectorModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
   ],
-  exports: [
-    MasterSceneSelectorComponent
-  ]
+  exports: [MasterSceneSelectorComponent],
 })
-export class MasterSceneSelectorModule { }
+export class MasterSceneSelectorModule {}

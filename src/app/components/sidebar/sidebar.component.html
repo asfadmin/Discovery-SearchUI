@@ -1,7 +1,10 @@
 <div (keydown.escape)="onCloseSidebar()">
-  <app-saved-searches *ngIf="
-    sidebar === SidebarType.SAVED_SEARCHES ||
-    sidebar === SidebarType.SEARCH_HISTORY">
+  <app-saved-searches
+    *ngIf="
+      sidebar === SidebarType.SAVED_SEARCHES ||
+      sidebar === SidebarType.SEARCH_HISTORY
+    "
+  >
   </app-saved-searches>
 
   <app-save-user-filters *ngIf="sidebar === SidebarType.USER_FILTERS">

@@ -1,29 +1,28 @@
 import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
-import {SubSink} from 'subsink';
+import { SubSink } from 'subsink';
 
-import {MapService} from '@services';
+import { MapService } from '@services';
 import * as models from '@models';
-import {Store} from '@ngrx/store';
-import {AppState} from '@store';
-import {getFlightDirections} from '@store/filters';
-import {distinctUntilChanged, filter, map} from 'rxjs';
-import {MatCheckbox} from '@angular/material/checkbox';
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+import { getFlightDirections } from '@store/filters';
+import { distinctUntilChanged, filter, map } from 'rxjs';
+import { MatCheckbox } from '@angular/material/checkbox';
 import * as mapStore from '@store/map';
-import {getVelocityOverlayOpacity} from '@store/map';
-import {MatSlider} from '@angular/material/slider';
-
+import { getVelocityOverlayOpacity } from '@store/map';
+import { MatSlider } from '@angular/material/slider';
 
 @Component({
   selector: 'app-displacement-layers',
   templateUrl: './displacement-layers.component.html',
-  styleUrl: './displacement-layers.component.scss'
+  styleUrl: './displacement-layers.component.scss',
 })
 export class DisplacementLayersComponent implements OnInit, OnDestroy {
   mapService = inject(MapService);
   private store$ = inject<Store<AppState>>(Store);
 
-  @ViewChild("priorityRollout", { static: true }) priorityCheckbox: MatCheckbox;
-  @ViewChild("velocityOpacitySlider") _slider: MatSlider;
+  @ViewChild('priorityRollout', { static: true }) priorityCheckbox: MatCheckbox;
+  @ViewChild('velocityOpacitySlider') _slider: MatSlider;
   public flightDir = models.FlightDirection.ASCENDING;
   public displacementOverview: models.DisplacementLayerTypes | null = null;
   public cumulativeDisplacementSelectionEnabled = false;
@@ -32,38 +31,47 @@ export class DisplacementLayersComponent implements OnInit, OnDestroy {
   public velocityOverlayOpacity: number;
 
   ngOnInit() {
-
     this.subs.add(
-      this.store$.select(getVelocityOverlayOpacity).subscribe(
-        velocityOverlayOpacity => this.velocityOverlayOpacity = velocityOverlayOpacity
-      )
+      this.store$
+        .select(getVelocityOverlayOpacity)
+        .subscribe(
+          (velocityOverlayOpacity) =>
+            (this.velocityOverlayOpacity = velocityOverlayOpacity),
+        ),
     );
 
     this.subs.add(
-      this.mapService.displacementOverview$.pipe(
-        filter(overview => !!overview)
-      ).subscribe(
-        t => {
+      this.mapService.displacementOverview$
+        .pipe(filter((overview) => !!overview))
+        .subscribe((t) => {
           this.displacementOverview = t;
-          this.cumulativeDisplacementSelectionEnabled = true
-        }
-      )
+          this.cumulativeDisplacementSelectionEnabled = true;
+        }),
     );
     this.subs.add(
-      this.store$.select(getFlightDirections).pipe(
-        map(flightDirs => flightDirs[0] ?? models.FlightDirection.ASCENDING),
-        distinctUntilChanged(),
-      ).subscribe(flightDir => {
-        this.flightDir = flightDir;
-        if (this.displacementOverview) {
-          this.setDisplacementLayer(this.flightDir, this.displacementOverview)
-        } else {
-          this.setDisplacementLayer(this.flightDir, models.DisplacementLayerTypes.VELOCITY);
-        }
-      }
-      )
-    )
-
+      this.store$
+        .select(getFlightDirections)
+        .pipe(
+          map(
+            (flightDirs) => flightDirs[0] ?? models.FlightDirection.ASCENDING,
+          ),
+          distinctUntilChanged(),
+        )
+        .subscribe((flightDir) => {
+          this.flightDir = flightDir;
+          if (this.displacementOverview) {
+            this.setDisplacementLayer(
+              this.flightDir,
+              this.displacementOverview,
+            );
+          } else {
+            this.setDisplacementLayer(
+              this.flightDir,
+              models.DisplacementLayerTypes.VELOCITY,
+            );
+          }
+        }),
+    );
   }
 
   public onUpdateLayerType(layerType: models.DisplacementLayerTypes): void {
@@ -73,14 +81,13 @@ export class DisplacementLayersComponent implements OnInit, OnDestroy {
     }
   }
 
-
-public onToggleDisplacementLayerDisplay(checked: boolean): void {
+  public onToggleDisplacementLayerDisplay(checked: boolean): void {
     this.cumulativeDisplacementSelectionEnabled = checked;
     this.displacementOverview = models.DisplacementLayerTypes.DISPLACEMENT;
     if (checked && this.displacementOverview) {
-      this.setDisplacementLayer(this.flightDir, this.displacementOverview)
+      this.setDisplacementLayer(this.flightDir, this.displacementOverview);
     } else {
-      this.clearDisplacementLayer()
+      this.clearDisplacementLayer();
       this.displacementOverview = null;
     }
   }
@@ -89,15 +96,17 @@ public onToggleDisplacementLayerDisplay(checked: boolean): void {
     this.cumulativeDisplacementSelectionEnabled = checked;
     this.displacementOverview = models.DisplacementLayerTypes.VELOCITY;
     if (checked && this.displacementOverview) {
-      this.setDisplacementLayer(this.flightDir, this.displacementOverview)
+      this.setDisplacementLayer(this.flightDir, this.displacementOverview);
     } else {
-      this.clearDisplacementLayer()
+      this.clearDisplacementLayer();
       this.displacementOverview = null;
     }
   }
 
   public onSetVelocityOpacity(event: any) {
-    this.store$.dispatch(new mapStore.SetVelocityOverlayOpacity(+event.target.value));
+    this.store$.dispatch(
+      new mapStore.SetVelocityOverlayOpacity(+event.target.value),
+    );
   }
 
   public formatLabel(value: number): string {
@@ -108,7 +117,10 @@ public onToggleDisplacementLayerDisplay(checked: boolean): void {
     _event.target.blur();
   }
 
-  public setDisplacementLayer(direction: models.FlightDirection, type: models.DisplacementLayerTypes) {
+  public setDisplacementLayer(
+    direction: models.FlightDirection,
+    type: models.DisplacementLayerTypes,
+  ) {
     this.mapService.setDisplacementOverview(direction, type);
     this.mapService.updateVelocityOpacity(this.velocityOverlayOpacity);
   }

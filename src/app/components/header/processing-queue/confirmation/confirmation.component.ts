@@ -16,7 +16,7 @@ import * as services from '@services';
 @Component({
   selector: 'app-confirmation',
   templateUrl: './confirmation.component.html',
-  styleUrls: ['./confirmation.component.scss']
+  styleUrls: ['./confirmation.component.scss'],
 })
 export class ConfirmationComponent implements OnInit {
   dialogRef = inject<MatDialogRef<ConfirmationComponent>>(MatDialogRef);
@@ -46,39 +46,37 @@ export class ConfirmationComponent implements OnInit {
     }, []);
     this.store$.dispatch(new hyp3Store.SetProcessingProjectName(null));
 
-    this.store$.select(hyp3Store.getProcessingProjectName).subscribe(name => {
+    this.store$.select(hyp3Store.getProcessingProjectName).subscribe((name) => {
       this.projectName = name;
     });
   }
 
   public onToggleJobType(tabQueue: models.JobTypesWithQueued): void {
-    this.jobTypesWithQueued = this.jobTypesWithQueued.map(
-      tab => {
-        if (tab.jobType.id === tabQueue.jobType.id) {
-          return {
-            jobType: tab.jobType,
-            selected: !tab.selected,
-            jobs: tab.jobs,
-            creditTotal: tab.creditTotal,
-          };
-        } else {
-          return tab;
-        }
+    this.jobTypesWithQueued = this.jobTypesWithQueued.map((tab) => {
+      if (tab.jobType.id === tabQueue.jobType.id) {
+        return {
+          jobType: tab.jobType,
+          selected: !tab.selected,
+          jobs: tab.jobs,
+          creditTotal: tab.creditTotal,
+        };
+      } else {
+        return tab;
       }
-    );
+    });
   }
 
   public amountSelected(jobTypes: models.JobTypesWithQueued[]): number {
     return jobTypes
       .filter((jobType) => jobType.selected)
-      .map(jobType => jobType.jobs.length)
+      .map((jobType) => jobType.jobs.length)
       .reduce((a, b) => a + b, 0);
   }
 
   public creditsSelected(jobTypes: models.JobTypesWithQueued[]): number {
     return jobTypes
       .filter((jobType) => jobType.selected)
-      .map(jobType => jobType.creditTotal)
+      .map((jobType) => jobType.creditTotal)
       .reduce((a, b) => a + b, 0);
   }
 
@@ -91,7 +89,7 @@ export class ConfirmationComponent implements OnInit {
 
     const hyp3JobsBatch = this.hyp3JobService.formatJobs(jobTypesWithQueued, {
       projectName: this.projectName,
-      processingOptions: this.processingOptions
+      processingOptions: this.processingOptions,
     });
 
     const batchSize = 20;
@@ -102,71 +100,89 @@ export class ConfirmationComponent implements OnInit {
     this.isQueueSubmitProcessing = true;
     this.progress = null;
 
-    from(hyp3JobRequestBatches).pipe(
-      concatMap(batch => this.hyp3.submitJobBatch$({ jobs: batch, validate_only: this.validateOnly }).pipe(
-        catchError(resp => {
-          if (resp.error) {
-            if (resp.error.detail === 'No authorization token provided' || resp.error.detail === 'Provided apikey is not valid') {
-              this.notificationService.error('Your authorization has expired. Please sign in again.', 'Error', {
-                timeOut: 0,
-                extendedTimeOut: 0,
-                closeButton: true,
-            });
-            } else {
-              this.notificationService.error( resp.error.detail, 'Error', {
-                timeOut: 0,
-                extendedTimeOut: 0,
-                closeButton: true,
-              });
-            }
+    from(hyp3JobRequestBatches)
+      .pipe(
+        concatMap((batch) =>
+          this.hyp3
+            .submitJobBatch$({ jobs: batch, validate_only: this.validateOnly })
+            .pipe(
+              catchError((resp) => {
+                if (resp.error) {
+                  if (
+                    resp.error.detail === 'No authorization token provided' ||
+                    resp.error.detail === 'Provided apikey is not valid'
+                  ) {
+                    this.notificationService.error(
+                      'Your authorization has expired. Please sign in again.',
+                      'Error',
+                      {
+                        timeOut: 0,
+                        extendedTimeOut: 0,
+                        closeButton: true,
+                      },
+                    );
+                  } else {
+                    this.notificationService.error(resp.error.detail, 'Error', {
+                      timeOut: 0,
+                      extendedTimeOut: 0,
+                      closeButton: true,
+                    });
+                  }
+                }
+
+                return of({ jobs: null });
+              }),
+            ),
+        ),
+        tap((_) => {
+          current += 1;
+          this.progress = Math.floor((current / total) * 100);
+        }),
+        finalize(() => {
+          this.progress = null;
+          this.isQueueSubmitProcessing = false;
+
+          this.store$.dispatch(new hyp3Store.LoadUser());
+          let numJobsSubmitted: number;
+
+          if (this.allJobs.length !== hyp3JobsBatch.length) {
+            numJobsSubmitted = Math.abs(
+              hyp3JobsBatch.length - this.allJobs.length,
+            );
+          } else {
+            numJobsSubmitted = hyp3JobsBatch.length;
           }
 
-          return of({jobs: null});
+          const jobText =
+            numJobsSubmitted > 1 ? `${numJobsSubmitted} Jobs` : 'Job';
+
+          this.notificationService
+            .info(`Click to view Submitted Products.`, `${jobText} Submitted`, {
+              closeButton: true,
+              disableTimeOut: true,
+            })
+            .onTap.subscribe(() => {
+              const searchType = models.SearchType.CUSTOM_PRODUCTS;
+              this.store$.dispatch(new searchStore.SetSearchType(searchType));
+            });
+
+          this.dialogRef.close(this.jobTypesWithQueued);
         }),
-      )),
-      tap(_ => {
-        current += 1;
-        this.progress = Math.floor((current / total) * 100);
-      }),
-      finalize(() => {
-        this.progress = null;
-        this.isQueueSubmitProcessing = false;
-
-        this.store$.dispatch(new hyp3Store.LoadUser());
-        let numJobsSubmitted: number
-
-        if (this.allJobs.length !== hyp3JobsBatch.length) {
-          numJobsSubmitted = Math.abs(hyp3JobsBatch.length - this.allJobs.length);
-        } else {
-          numJobsSubmitted = hyp3JobsBatch.length;
-        }
-
-        const jobText = numJobsSubmitted > 1 ? `${numJobsSubmitted} Jobs` : 'Job';
-
-        this.notificationService.info(`Click to view Submitted Products.`, `${jobText} Submitted`, {
-          closeButton: true,
-          disableTimeOut: true,
-        }).onTap.subscribe(() => {
-          const searchType = models.SearchType.CUSTOM_PRODUCTS;
-          this.store$.dispatch(new searchStore.SetSearchType(searchType));
-        });
-
-        this.dialogRef.close(this.jobTypesWithQueued);
-      }),
-    ).subscribe(
-      (resp: any) => {
+      )
+      .subscribe((resp: any) => {
         if (resp.jobs === null) {
           return;
         }
 
-        const successfulJobs = resp.jobs.map(job => ({
-          granules: this.hyp3JobService.getAllGranules(job).map(g => ({name: g})),
-          job_type: models.hyp3JobTypes[job.job_type]
+        const successfulJobs = resp.jobs.map((job) => ({
+          granules: this.hyp3JobService
+            .getAllGranules(job)
+            .map((g) => ({ name: g })),
+          job_type: models.hyp3JobTypes[job.job_type],
         }));
 
         this.store$.dispatch(new queueStore.RemoveJobs(successfulJobs));
-      }
-    );
+      });
   }
 
   private chunk(arr, chunkSize) {

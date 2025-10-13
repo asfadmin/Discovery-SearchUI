@@ -8,7 +8,7 @@ import * as filtersStore from '@store/filters';
 @Component({
   selector: 'app-event-metadata',
   templateUrl: './event-metadata.component.html',
-  styleUrls: ['./event-metadata.component.scss']
+  styleUrls: ['./event-metadata.component.scss'],
 })
 export class EventMetadataComponent {
   private store$ = inject<Store<AppState>>(Store);
@@ -16,7 +16,6 @@ export class EventMetadataComponent {
   @Input() event: models.SarviewsEvent;
   @Input() eventType: models.SarviewsEventType;
   public eventTypes = models.SarviewsEventType;
-
 
   public onSetStartDate(date: Date) {
     const startOf = moment(date).startOf('day');
@@ -29,10 +28,14 @@ export class EventMetadataComponent {
   }
 
   public onSetStartMagnitude(startMagnitude: number) {
-    this.store$.dispatch(new filtersStore.SetSarviewsMagnitudeStart(startMagnitude));
+    this.store$.dispatch(
+      new filtersStore.SetSarviewsMagnitudeStart(startMagnitude),
+    );
   }
 
   public onSetEndMagnitude(endMagnitude: number) {
-    this.store$.dispatch(new filtersStore.SetSarviewsMagnitudeEnd(endMagnitude));
+    this.store$.dispatch(
+      new filtersStore.SetSarviewsMagnitudeEnd(endMagnitude),
+    );
   }
 }

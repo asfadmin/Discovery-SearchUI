@@ -1,11 +1,23 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, inject } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  OnInit,
+  OnDestroy,
+  inject,
+} from '@angular/core';
 
 import * as moment from 'moment';
 
 import * as queueStore from '@store/queue';
 import * as searchStore from '@store/search';
 
-import { EnvironmentService, Hyp3JobStatusService, OnDemandService } from '@services';
+import {
+  EnvironmentService,
+  Hyp3JobStatusService,
+  OnDemandService,
+} from '@services';
 import * as models from '@models';
 import { SubSink } from 'subsink';
 import { of } from 'rxjs';
@@ -18,7 +30,7 @@ import * as filterStore from '@store/filters';
 @Component({
   selector: 'app-scene-file',
   templateUrl: './scene-file.component.html',
-  styleUrls: ['./scene-file.component.scss']
+  styleUrls: ['./scene-file.component.scss'],
 })
 export class SceneFileComponent implements OnInit, OnDestroy {
   private hyp3JobStatus = inject(Hyp3JobStatusService);
@@ -46,23 +58,21 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   public isHovered = false;
   public paramsList = [];
   public copyIcons = models.CopyIcons;
-  
+
   private subs = new SubSink();
 
   ngOnInit() {
     this.subs.add(
-        of(this.product).pipe(
-          filter(prod => !!prod.metadata)
-        ).subscribe( prod => {
+      of(this.product)
+        .pipe(filter((prod) => !!prod.metadata))
+        .subscribe((prod) => {
           if (!prod.metadata.job) {
             this.paramsList = [];
           } else {
             this.paramsList = this.onDemand.jobParamsToList(prod.metadata);
           }
-        }
-      )
+        }),
     );
-
   }
 
   public onToggleQueueProduct(): void {
@@ -82,16 +92,11 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   }
 
   public isUnzipDisabled(isLoggedIn: boolean, hasAccess: boolean): boolean {
-    return (
-      !isLoggedIn ||
-      (this.isRestrictedDataset() && !hasAccess)
-    );
+    return !isLoggedIn || (this.isRestrictedDataset() && !hasAccess);
   }
 
   private isRestrictedDataset(): boolean {
-    return (
-      this.product.dataset.includes('JERS-1')
-    );
+    return this.product.dataset.includes('JERS-1');
   }
 
   public unzipTooltip(isLoggedIn: boolean, hasAccess: boolean): string {
@@ -110,10 +115,8 @@ export class SceneFileComponent implements OnInit, OnDestroy {
     const dataset = product.dataset.toLowerCase();
 
     return (
-      (
-        !dataset.includes('sentinel') ||
-        dataset === 'sentinel-1 interferogram (beta)'
-      ) &&
+      (!dataset.includes('sentinel') ||
+        dataset === 'sentinel-1 interferogram (beta)') &&
       product.downloadUrl.endsWith('.zip')
     );
   }
@@ -132,21 +135,23 @@ export class SceneFileComponent implements OnInit, OnDestroy {
 
   public addJobToProcessingQueue(jobType: models.Hyp3JobType): void {
     this.queueHyp3Job.emit({
-      granules: [ this.product ],
-      job_type: jobType
+      granules: [this.product],
+      job_type: jobType,
     });
   }
 
   public queueExpiredHyp3Job() {
     const job_types = models.hyp3JobTypes;
-    const job_type = Object.keys(job_types).find(id => {
-        return this.product.metadata.job.job_type === id as any;
-      });
+    const job_type = Object.keys(job_types).find((id) => {
+      return this.product.metadata.job.job_type === (id as any);
+    });
 
-    this.store$.dispatch(new queueStore.AddJob({
-      granules: this.product.metadata.job.scenes,
-      job_type: job_types[job_type]
-    }));
+    this.store$.dispatch(
+      new queueStore.AddJob({
+        granules: this.product.metadata.job.scenes,
+        job_type: job_types[job_type],
+      }),
+    );
   }
 
   private expirationDays(expiration_time: moment.Moment): number {
@@ -169,14 +174,18 @@ export class SceneFileComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  public prodDownloaded( _product ) {
+  public prodDownloaded(_product) {
     // Do nothing
   }
 
   public onSearchProduct() {
-    if(['RTC-STATIC', 'CSLC-STATIC'].includes(this.product.metadata.productType)) {
+    if (
+      ['RTC-STATIC', 'CSLC-STATIC'].includes(this.product.metadata.productType)
+    ) {
       const processinglevel = this.product.metadata.productType;
-      const productType = models.opera_s1.productTypes.find(product => product.apiValue == processinglevel);
+      const productType = models.opera_s1.productTypes.find(
+        (product) => product.apiValue == processinglevel,
+      );
       const operaburstid = this.product.metadata?.opera?.operaBurstID;
 
       [
@@ -185,15 +194,12 @@ export class SceneFileComponent implements OnInit, OnDestroy {
         new filterStore.SetSelectedDataset(models.opera_s1.apiValue.dataset),
         new filterStore.SetProductTypes([productType]),
         new filterStore.setOperaBurstID([operaburstid]),
-        new searchStore.MakeSearch()
-      ].forEach(
-        action => this.store$.dispatch(action)
-      )
-  }
+        new searchStore.MakeSearch(),
+      ].forEach((action) => this.store$.dispatch(action));
+    }
   }
 
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
-
 }

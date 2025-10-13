@@ -22,9 +22,9 @@ export class AttributionsComponent {
   anio: number = new Date().getFullYear();
 
   public isResultsMenuOpen$ = this.store$.select(uiStore.getIsResultsMenuOpen);
-  public areNoScenes$ = this.store$.select(scenesStore.getScenes).pipe(
-    map(scenes => scenes.length === 0)
-  );
+  public areNoScenes$ = this.store$
+    .select(scenesStore.getScenes)
+    .pipe(map((scenes) => scenes.length === 0));
   public breakpoints = Breakpoints;
   public asfWebsite = asfWebsite;
 

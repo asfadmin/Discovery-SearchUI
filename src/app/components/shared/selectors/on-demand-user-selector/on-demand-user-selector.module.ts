@@ -1,19 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TranslateModule } from "@ngx-translate/core";
+import { TranslateModule } from '@ngx-translate/core';
 import { MatInputModule } from '@angular/material/input';
 
 import { MatSharedModule } from '@shared';
 
 import { OnDemandUserSelectorComponent } from './on-demand-user-selector.component';
 
-
-
 @NgModule({
-  declarations: [
-    OnDemandUserSelectorComponent
-  ],
+  declarations: [OnDemandUserSelectorComponent],
   imports: [
     CommonModule,
     MatSharedModule,
@@ -21,8 +17,6 @@ import { OnDemandUserSelectorComponent } from './on-demand-user-selector.compone
     FormsModule,
     TranslateModule,
   ],
-  exports: [
-    OnDemandUserSelectorComponent
-  ]
+  exports: [OnDemandUserSelectorComponent],
 })
-export class OnDemandUserSelectorModule { }
+export class OnDemandUserSelectorModule {}

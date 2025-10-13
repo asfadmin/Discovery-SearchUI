@@ -1,7 +1,15 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Input,
+  Output,
+  EventEmitter,
+  inject,
+} from '@angular/core';
 
-import {  Observable, combineLatest } from 'rxjs';
-import {  distinctUntilChanged, map, tap,  } from 'rxjs/operators';
+import { Observable, combineLatest } from 'rxjs';
+import { distinctUntilChanged, map, tap } from 'rxjs/operators';
 
 import * as d3 from 'd3';
 import { Store } from '@ngrx/store';
@@ -20,13 +28,13 @@ export enum ChartDatasets {
   WITHIN_BASELINE = 3,
   PRODUCTS = 4,
   MIN_CRITICAL = 5,
-  MAX_CRITICAL = 6
+  MAX_CRITICAL = 6,
 }
 
 @Component({
   selector: 'app-sbas-chart',
   templateUrl: './sbas-chart.component.html',
-  styleUrls: ['./sbas-chart.component.scss']
+  styleUrls: ['./sbas-chart.component.scss'],
 })
 export class SBASChartComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
@@ -48,8 +56,18 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   private xAxis;
   private yAxis;
   private currentTransform;
-  private chart: d3.Selection<SVGGElement, CMRProductPair[], HTMLElement, CMRProductPair[]>;
-  private scatter: d3.Selection<SVGGElement, CMRProductPair[], HTMLElement, CMRProductPair[]>;
+  private chart: d3.Selection<
+    SVGGElement,
+    CMRProductPair[],
+    HTMLElement,
+    CMRProductPair[]
+  >;
+  private scatter: d3.Selection<
+    SVGGElement,
+    CMRProductPair[],
+    HTMLElement,
+    CMRProductPair[]
+  >;
   private line: d3.Line<CMRProduct>;
   private pairs = [];
   private customPairs = [];
@@ -73,65 +91,71 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const scenes$ = this.scenesService.scenes$;
 
-    this.store$.select(scenesStore.getSelectedPair).pipe(
-      map(pair => !!pair?.[0] && !!pair?.[1] ? pair : null)
-    ).subscribe(
-      selected => {
+    this.store$
+      .select(scenesStore.getSelectedPair)
+      .pipe(map((pair) => (!!pair?.[0] && !!pair?.[1] ? pair : null)))
+      .subscribe((selected) => {
         this.selectedPair = selected;
-      }
-    );
+      });
 
     this.subs.add(
-      this.store$.select(uiStore.getIsAddingCustomPoint).pipe(
-        tap(_ => this.queuedProduct = null),
-      ).subscribe(
-        isAddingCustomPair => this.isAddingCustomPair = isAddingCustomPair
-      )
+      this.store$
+        .select(uiStore.getIsAddingCustomPoint)
+        .pipe(tap((_) => (this.queuedProduct = null)))
+        .subscribe(
+          (isAddingCustomPair) =>
+            (this.isAddingCustomPair = isAddingCustomPair),
+        ),
     );
 
     this.subs.add(
       combineLatest([
         scenes$.pipe(distinctUntilChanged()),
-        this.pairs$
+        this.pairs$,
       ]).subscribe(([scenes, pairs]) => {
         this.scenes = scenes;
         this.pairs = pairs.pairs;
         this.customPairs = pairs.custom;
         // this.selectedPair = null;
-        this.isDisconnected = this.pairService.isGraphDisconnected([...this.pairs, ...this.customPairs], this.scenes.length);
+        this.isDisconnected = this.pairService.isGraphDisconnected(
+          [...this.pairs, ...this.customPairs],
+          this.scenes.length,
+        );
         this.isGraphDisconnected.emit(this.isDisconnected);
         let thisPair = null;
         if (this.selectedPair) {
-          thisPair = this.selectedPair.map(product => product.id);
+          thisPair = this.selectedPair.map((product) => product.id);
         }
         this.selectedPair = null;
         if (thisPair && this.pairs) {
-          this.pairs.forEach( (pair) => {
-              if (pair[0].id === thisPair[0] && pair[1].id === thisPair[1]) {
-                this.selectedPair = pair;
-              }
-            })
+          this.pairs.forEach((pair) => {
+            if (pair[0].id === thisPair[0] && pair[1].id === thisPair[1]) {
+              this.selectedPair = pair;
+            }
+          });
         }
         if (this.selectedPair === null && Array.isArray(this.pairs)) {
           if (this.pairs.length > 0) {
             const firstPair = this.pairs[0];
             this.store$.dispatch(
-              new scenesStore.SetSelectedPair(firstPair.map(product => product.id))
+              new scenesStore.SetSelectedPair(
+                firstPair.map((product) => product.id),
+              ),
             );
           }
         }
 
         this.makeSbasChart();
-      })
+      }),
     );
 
-    this.zoomOut$.subscribe(_ => {
-      this.scatter.transition().call(this.zoom.scaleBy, .5);
+    this.zoomOut$.subscribe((_) => {
+      this.scatter.transition().call(this.zoom.scaleBy, 0.5);
     });
-    this.zoomIn$.subscribe(_ => {
+    this.zoomIn$.subscribe((_) => {
       this.scatter.transition().call(this.zoom.scaleBy, 2);
     });
-    this.zoomToFit$.subscribe(_ => {
+    this.zoomToFit$.subscribe((_) => {
       this.zoomToFit(0);
     });
   }
@@ -152,89 +176,100 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     const elem = document.getElementById('sbas-chart-column');
     this.heightValue = elem.offsetHeight;
     const sbasChart = document.getElementById('sbasChart');
-    this.sbasChartHeightValue = sbasChart.offsetHeight - (this.margin.bottom + this.margin.top) ;
+    this.sbasChartHeightValue =
+      sbasChart.offsetHeight - (this.margin.bottom + this.margin.top);
     this.widthValue = sbasChart.offsetWidth;
 
-    this.chart = d3.select<d3.BaseType, CMRProductPair[]>('#sbasChart')
+    this.chart = d3
+      .select<d3.BaseType, CMRProductPair[]>('#sbasChart')
       .append('svg')
-        .attr('width', this.widthValue)
-        .attr('height', this.heightValue)
+      .attr('width', this.widthValue)
+      .attr('height', this.heightValue)
       .append('g')
-        .attr('transform',
-              `translate(${this.margin.left},${this.margin.top})`);
+      .attr('transform', `translate(${this.margin.left},${this.margin.top})`);
 
-    const tooltip = d3.select('body').append('div')
+    const tooltip = d3
+      .select('body')
+      .append('div')
       .attr('class', 'tooltip')
       .style('opacity', 0);
     this.tooltip = tooltip;
-    this.chart.append('text')
+    this.chart
+      .append('text')
       .attr('class', 'x sbas-label')
       .attr('text-anchor', 'end')
-      .attr('x', (this.widthValue / 2) - 15)
-      .attr('y', this.heightValue - (this.margin.top))
+      .attr('x', this.widthValue / 2 - 15)
+      .attr('y', this.heightValue - this.margin.top)
       .text('Date');
 
-    this.chart.append('text')
+    this.chart
+      .append('text')
       .attr('class', 'y sbas-label')
       .attr('text-anchor', 'end')
       .attr('y', -this.margin.left)
-      .attr('x', -((this.heightValue - (this.margin.top)) / 2) + 60)
+      .attr('x', -((this.heightValue - this.margin.top) / 2) + 60)
       .attr('dy', '.75em')
       .attr('transform', 'rotate(-90)')
       .text('Perp. Baseline');
 
     const xExtent = d3.extent(
-      this.scenes.map(
-        s => s.metadata.date.valueOf()
-      )
+      this.scenes.map((s) => s.metadata.date.valueOf()),
     );
 
-    this.x = d3.scaleUtc()
+    this.x = d3
+      .scaleUtc()
       .domain(xExtent)
-      .range([ 0, this.widthValue  * 3 ]);
+      .range([0, this.widthValue * 3]);
 
-    this.xAxis = this.chart.append('g')
+    this.xAxis = this.chart
+      .append('g')
       .attr('transform', `translate(0, ${this.sbasChartHeightValue})`)
       .attr('class', 'y axis-grid')
       .call(
-        d3.axisBottom(this.x)
-          .tickSize(-(this.heightValue - (this.margin.bottom + this.margin.top)))
+        d3
+          .axisBottom(this.x)
+          .tickSize(
+            -(this.heightValue - (this.margin.bottom + this.margin.top)),
+          ),
       );
 
-    const yExtent = d3.extent(
-      this.scenes.map(
-        s => s.metadata.perpendicular)
-    );
+    const yExtent = d3.extent(this.scenes.map((s) => s.metadata.perpendicular));
 
-    this.y = d3.scaleLinear()
+    this.y = d3
+      .scaleLinear()
       .domain(yExtent)
       .range([this.heightValue - (this.margin.bottom + this.margin.top), 0]);
 
-    this.yAxis = this.chart.append('g')
+    this.yAxis = this.chart
+      .append('g')
       .attr('class', 'x axis-grid')
-      .call(
-        d3.axisLeft(this.y)
-          .tickSize(-this.widthValue)
-      );
+      .call(d3.axisLeft(this.y).tickSize(-this.widthValue));
 
-    this.scatter = this.chart.append('g')
-      .attr('clip-path', 'url(#clip)');
+    this.scatter = this.chart.append('g').attr('clip-path', 'url(#clip)');
 
-    this.zoom = d3.zoom()
-      .scaleExtent([.2, 10])
-      .extent([[0, 0], [this.widthValue, this.heightValue]])
+    this.zoom = d3
+      .zoom()
+      .scaleExtent([0.2, 10])
+      .extent([
+        [0, 0],
+        [this.widthValue, this.heightValue],
+      ])
       .on('zoom', (eve: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
-         this.currentTransform = eve.transform;
+        this.currentTransform = eve.transform;
 
         this.updateChart();
       });
 
     // Add brushing
     d3.brushX()
-      .extent( [ [0, 0], [this.widthValue, this.heightValue] ] )
+      .extent([
+        [0, 0],
+        [this.widthValue, this.heightValue],
+      ])
       .on('end', this.updateChart);
 
-    this.scatter.append('rect')
+    this.scatter
+      .append('rect')
       .attr('width', this.widthValue)
       .attr('height', this.heightValue - (this.margin.bottom + this.margin.top))
       .attr('cursor', 'pointer')
@@ -247,96 +282,101 @@ export class SBASChartComponent implements OnInit, OnDestroy {
 
     this.scatter.call(this.zoom);
 
-    this.line = d3.line<CMRProduct>()
+    this.line = d3
+      .line<CMRProduct>()
       .x((product: CMRProduct) => this.x(product?.metadata.date.valueOf() ?? 0))
-      .y((product: CMRProduct) => this.y(product?.metadata.perpendicular.valueOf() ?? 0));
+      .y((product: CMRProduct) =>
+        this.y(product?.metadata.perpendicular.valueOf() ?? 0),
+      );
 
-    const lines = this.scatter.append('g')
+    const lines = this.scatter
+      .append('g')
       .attr('fill', 'none')
       .attr('stroke-linejoin', 'round')
       .attr('stroke-linecap', 'round')
-    .selectAll('path');
+      .selectAll('path');
 
     const self = this;
     const addPairAttributes = (ps) => {
-      ps
-        .attr('class', 'base-line')
+      ps.attr('class', 'base-line')
         .attr('stroke', 'steelblue')
         .attr('stroke-width', 3)
         .attr('cursor', 'pointer')
-        .attr('d', pair => this.line(pair))
-        .on('mouseover', function(_) {
+        .attr('d', (pair) => this.line(pair))
+        .on('mouseover', function (_) {
           self.setHovered(d3.select(this));
         })
-        .on('mouseleave', function(_) {
+        .on('mouseleave', function (_) {
           self.clearHovered();
         })
         .on('click', (_event, pair) => {
           this.store$.dispatch(
-            new scenesStore.SetSelectedPair(pair.map(product => product.id))
+            new scenesStore.SetSelectedPair(pair.map((product) => product.id)),
           );
           this.setSelected(pair);
         });
     };
-    if(this.scenes.length > 0) {
+    if (this.scenes.length > 0) {
       this.scatter.selectAll('.selected-line').remove();
       addPairAttributes(
-        lines
-          .data(this.pairs)
-          .join('path')
-            .style('mix-blend-mode', 'multiply')
+        lines.data(this.pairs).join('path').style('mix-blend-mode', 'multiply'),
       );
       addPairAttributes(
         lines
           .data(this.customPairs)
           .join('path')
-            .style('stroke-dasharray', ' 5,5')
+          .style('stroke-dasharray', ' 5,5'),
       );
-
     }
-    this.scatter.append('g')
+    this.scatter
+      .append('g')
       .selectAll('circle')
       .data(this.scenes)
       .enter()
       .append('circle')
-        .attr('cx', (d: CMRProduct) => this.x(d.metadata.date.valueOf()) )
-        .attr('cy', (d: CMRProduct) => this.y(d.metadata.perpendicular.valueOf()) )
-        .on('click', function(_event, p) {
-          self.toggleDrawing(p, d3.select(this));
-        })
-        .on('mouseover', function(_event: any, p: any) {
-          if (self.isAddingCustomPair) {
-            self.setHoveredProduct(d3.select(this));
-          }
-          self.hoveredElement = this;
-          const date = p.metadata.date.toDate();
-          tooltip.interrupt();
-          tooltip
-            .style('opacity', .9);
-          tooltip.html(`${self.tooltipDateFormat(date)}, ${p.metadata.perpendicular} meters`);
-          self.updateTooltip();
-        })
-        .on('mouseleave', function(_) {
-          if (self.isAddingCustomPair) {
-            self.clearHoveredProduct();
-          }
-          tooltip.transition()
-            .duration(500)
-            .style('opacity', 0);
-        })
-        .attr('r', 7)
-        .attr('cursor', 'pointer')
-        .style('fill', 'light grey')
-        .style('opacity', 0.7);
+      .attr('cx', (d: CMRProduct) => this.x(d.metadata.date.valueOf()))
+      .attr('cy', (d: CMRProduct) => this.y(d.metadata.perpendicular.valueOf()))
+      .on('click', function (_event, p) {
+        self.toggleDrawing(p, d3.select(this));
+      })
+      .on('mouseover', function (_event: any, p: any) {
+        if (self.isAddingCustomPair) {
+          self.setHoveredProduct(d3.select(this));
+        }
+        self.hoveredElement = this;
+        const date = p.metadata.date.toDate();
+        tooltip.interrupt();
+        tooltip.style('opacity', 0.9);
+        tooltip.html(
+          `${self.tooltipDateFormat(date)}, ${p.metadata.perpendicular} meters`,
+        );
+        self.updateTooltip();
+      })
+      .on('mouseleave', function (_) {
+        if (self.isAddingCustomPair) {
+          self.clearHoveredProduct();
+        }
+        tooltip.transition().duration(500).style('opacity', 0);
+      })
+      .attr('r', 7)
+      .attr('cursor', 'pointer')
+      .style('fill', 'light grey')
+      .style('opacity', 0.7);
 
-    if (this.selectedPair !== null && this.selectedPair[0] !== null && this.selectedPair[1] !== null) {
+    if (
+      this.selectedPair !== null &&
+      this.selectedPair[0] !== null &&
+      this.selectedPair[1] !== null
+    ) {
       this.setSelected(this.selectedPair);
     } else {
       this.scatter.select('.selected-line').remove();
     }
 
     // Add a clipPath: everything out of this area won't be drawn.
-    this.chart.append('defs').append('SVG:clipPath')
+    this.chart
+      .append('defs')
+      .append('SVG:clipPath')
       .attr('id', 'clip')
       .append('SVG:rect')
       .attr('width', this.widthValue)
@@ -349,7 +389,6 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     } else {
       this.zoomToFit();
     }
-
   }
 
   private updateChart() {
@@ -357,27 +396,31 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     const newY = this.currentTransform.rescaleY(this.y);
 
     this.xAxis.call(
-      d3.axisBottom(newX)
-        .tickSize(-(this.heightValue - (this.margin.bottom + this.margin.top)))
+      d3
+        .axisBottom(newX)
+        .tickSize(-(this.heightValue - (this.margin.bottom + this.margin.top))),
     );
-    this.yAxis.call(
-      d3.axisLeft(newY)
-          .tickSize(-this.widthValue)
-    );
+    this.yAxis.call(d3.axisLeft(newY).tickSize(-this.widthValue));
 
     this.scatter
       .selectAll('circle')
-        .attr('cx', (d: CMRProduct) => newX(d.metadata.date.valueOf()) )
-        .attr('cy', (d: CMRProduct) => newY(d.metadata.perpendicular) );
+      .attr('cx', (d: CMRProduct) => newX(d.metadata.date.valueOf()))
+      .attr('cy', (d: CMRProduct) => newY(d.metadata.perpendicular));
 
-    this.line = d3.line<CMRProduct>()
-        .x((product: CMRProduct) => newX(product?.metadata.date.valueOf()) ?? 0)
-        .y((product: CMRProduct) => newY(product?.metadata.perpendicular) ?? 0);
+    this.line = d3
+      .line<CMRProduct>()
+      .x((product: CMRProduct) => newX(product?.metadata.date.valueOf()) ?? 0)
+      .y((product: CMRProduct) => newY(product?.metadata.perpendicular) ?? 0);
 
-    this.scatter.selectAll('.base-line')
+    this.scatter
+      .selectAll('.base-line')
       .attr('d', (pair: CMRProductPair) => this.line(pair));
 
-    if (this.selectedPair !== null && this.selectedPair[0] !== null && this.selectedPair[1] !== null) {
+    if (
+      this.selectedPair !== null &&
+      this.selectedPair[0] !== null &&
+      this.selectedPair[1] !== null
+    ) {
       this.setSelected(this.selectedPair);
     }
     if (this.hoveredElement) {
@@ -387,23 +430,21 @@ export class SBASChartComponent implements OnInit, OnDestroy {
 
   private setHoveredProduct(newHovered): void {
     if (this.hoveredCircle) {
-      this.hoveredCircle
-        .attr('fill', 'black');
+      this.hoveredCircle.attr('fill', 'black');
     }
-    newHovered
-      .attr('fill', 'orange');
+    newHovered.attr('fill', 'orange');
 
     this.hoveredCircle = newHovered;
   }
   private updateTooltip() {
     const bounding = this.hoveredElement.getBoundingClientRect();
     const a = bounding.x > document.body.clientWidth - 200;
-    this.tooltip.style('left', `${bounding.x + (a ? -150 : 20)}px`)
-    .style('top', `${bounding.y - 10}px`);
+    this.tooltip
+      .style('left', `${bounding.x + (a ? -150 : 20)}px`)
+      .style('top', `${bounding.y - 10}px`);
   }
   private clearHoveredProduct(): void {
-    this.hoveredCircle
-      .attr('fill', 'black');
+    this.hoveredCircle.attr('fill', 'black');
   }
 
   private setHovered(newHovered) {
@@ -432,13 +473,14 @@ export class SBASChartComponent implements OnInit, OnDestroy {
   public setSelected = (pair) => {
     this.selectedPair = pair;
     this.scatter.selectAll('.selected-line').remove();
-    this.scatter.append('path')
+    this.scatter
+      .append('path')
       .attr('class', 'selected-line')
       .attr('stroke', 'red')
       .attr('stroke-width', 5)
       .attr('cursor', 'pointer')
-      .attr('d', _ => this.line(pair));
-  }
+      .attr('d', (_) => this.line(pair));
+  };
 
   private toggleDrawing(product, queuedCircle) {
     if (!this.isAddingCustomPair) {
@@ -475,7 +517,7 @@ export class SBASChartComponent implements OnInit, OnDestroy {
     }
 
     this.store$.dispatch(
-      new scenesStore.AddCustomPair([ this.queuedProduct.id, product.id ])
+      new scenesStore.AddCustomPair([this.queuedProduct.id, product.id]),
     );
     this.queuedProduct = null;
   }
@@ -490,9 +532,14 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       height = bounds.height;
     const midX = bounds.x + width / 2,
       midY = bounds.y + height / 2;
-    if (width === 0 || height === 0) { return; } // nothing to fit
+    if (width === 0 || height === 0) {
+      return;
+    } // nothing to fit
     const scale = 0.85 / Math.max(width / fullWidth, height / fullHeight);
-    const translate = [fullWidth / 2 - scale * midX, fullHeight / 2 - scale * midY];
+    const translate = [
+      fullWidth / 2 - scale * midX,
+      fullHeight / 2 - scale * midY,
+    ];
     const transform = d3.zoomIdentity
       .translate(translate[0], translate[1])
       .scale(scale);
@@ -501,7 +548,6 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       .transition()
       .duration(transitionDuration || 0) // milliseconds
       .call(this.zoom.transform, transform);
-
   }
 
   private tooltipDateFormat(date) {
@@ -513,7 +559,11 @@ export class SBASChartComponent implements OnInit, OnDestroy {
       return a.map(format).join(s);
     }
 
-    const dateFormat = [{month: 'short'}, {day: 'numeric'},  {year: 'numeric'}];
+    const dateFormat = [
+      { month: 'short' },
+      { day: 'numeric' },
+      { year: 'numeric' },
+    ];
     return join(date, dateFormat, ' ');
   }
 

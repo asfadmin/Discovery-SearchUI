@@ -1,8 +1,19 @@
 <!-- SCENE LIST -->
 <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
-  <mat-card  #listCard class="mp0 sbas-list-card"
-    [style.width]="listCardMaxWidth">
-    <mat-card-subtitle style="display: flex; flex-direction: row; justify-content: center; align-items: center;" class="header">
+  <mat-card
+    #listCard
+    class="mp0 sbas-list-card"
+    [style.width]="listCardMaxWidth"
+  >
+    <mat-card-subtitle
+      style="
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+      "
+      class="header"
+    >
       <app-scenes-list-header></app-scenes-list-header>
     </mat-card-subtitle>
 
@@ -10,51 +21,77 @@
       <app-scenes-list [resize$]="resize$"></app-scenes-list>
     </div>
 
-    <div *ngIf="view === Views.DETAIL" style="max-width: 100%;" class="w100 h100 scrollable">
+    <div
+      *ngIf="view === Views.DETAIL"
+      style="max-width: 100%"
+      class="w100 h100 scrollable"
+    >
       <div *ngIf="pair">
         <div *ngFor="let product of pair">
           <span class="product-name">{{ product.name }}</span>
 
-          <br>
+          <br />
 
           <app-scene-metadata
             [scene]="product"
             [dataset]="datasetForProduct.match(product)"
-            [searchType]="searchType">
+            [searchType]="searchType"
+          >
           </app-scene-metadata>
-          <hr>
+          <hr />
         </div>
       </div>
     </div>
   </mat-card>
 
   <mat-card class="mp0 sbas-list-card" [style.width]="listCardMaxWidth">
-    <mat-card-subtitle style="display: flex; flex-direction: row; justify-content: center; align-items: flex-start;" class="header">
+    <mat-card-subtitle
+      style="
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+      "
+      class="header"
+    >
     </mat-card-subtitle>
     <div class="sbas-metadata scrollable">
-      <div *ngIf="!!pair" style="margin: 5px; padding-bottom: 36px;">
+      <div *ngIf="!!pair" style="margin: 5px; padding-bottom: 36px">
         <div *ngFor="let product of pair">
-          <div style="margin-bottom: 4px;">
+          <div style="margin-bottom: 4px">
             <b class="product-name">{{ product.name }}</b>
           </div>
 
-          <div *ngIf="datasetForProduct.match(product) as dataset" style="margin-bottom: 12px;">
-            <a [href]="dataset.infoUrl" target="_blank" matTooltip="Dataset" class="faint-text">
+          <div
+            *ngIf="datasetForProduct.match(product) as dataset"
+            style="margin-bottom: 12px"
+          >
+            <a
+              [href]="dataset.infoUrl"
+              target="_blank"
+              matTooltip="Dataset"
+              class="faint-text"
+            >
               {{ dataset.name }}
-            </a> •
+            </a>
+            •
             <span matTooltip="Frequency">{{ dataset.frequency }}</span>
           </div>
 
           <app-scene-metadata
             [scene]="product"
             [dataset]="datasetForProduct.match(product)"
-            [searchType]="searchType">
+            [searchType]="searchType"
+          >
           </app-scene-metadata>
-          <hr>
+          <hr />
         </div>
       </div>
-      <div *ngIf="!pair" style="margin: 5px; padding-bottom: 36px;">
-        <div class="faint-text w100 h100" style="text-align: center; padding-top: 10px;">
+      <div *ngIf="!pair" style="margin: 5px; padding-bottom: 36px">
+        <div
+          class="faint-text w100 h100"
+          style="text-align: center; padding-top: 10px"
+        >
           {{ 'NO_PAIR_SELECTED' | translate }}
         </div>
       </div>
@@ -62,46 +99,58 @@
   </mat-card>
 </ng-container>
 
-<mat-card  #chartCard
+<mat-card
+  #chartCard
   class="mp0 sbas-chart-card"
   [style.max-width]="chartCardMaxWidth"
-  style="box-shadow: none;"
+  style="box-shadow: none"
   mwlResizable
   [enableGhostResize]="true"
-  (resizeEnd)="onResizeEnd($event)">
+  (resizeEnd)="onResizeEnd($event)"
+>
   <div
     mwlResizeHandle
     [resizeEdges]="{ left: true }"
-    class="chart-draggable-handle sbas-resize-handle-filler">
+    class="chart-draggable-handle sbas-resize-handle-filler"
+  >
     <mat-icon svgIcon="vgrip" class="vgrip-icon"></mat-icon>
-
   </div>
   <mat-card-subtitle
     [class.medium-header]="breakpoint <= breakpoints.MEDIUM"
-    class="sbas-header">
-
+    class="sbas-header"
+  >
     <div class="sbas-button-group">
       <div class="button-group-label">
         <label>{{ 'ZOOM' | translate }}</label>
       </div>
       <div class="fx-row">
         <div class="sbas-hdr-ctrl">
-          <mat-button-toggle-group class="sbas-toggle-group" name="layerType" [hideSingleSelectionIndicator]="true">
-            <mat-button-toggle class="control-mat-button-toggle"
+          <mat-button-toggle-group
+            class="sbas-toggle-group"
+            name="layerType"
+            [hideSingleSelectionIndicator]="true"
+          >
+            <mat-button-toggle
+              class="control-mat-button-toggle"
               (click)="zoomIn()"
-              matTooltip="{{ 'ZOOM_IN' | translate }}">
+              matTooltip="{{ 'ZOOM_IN' | translate }}"
+            >
               <mat-icon class="control-icon">add</mat-icon>
             </mat-button-toggle>
 
-            <mat-button-toggle class="control-mat-button-toggle"
+            <mat-button-toggle
+              class="control-mat-button-toggle"
               (click)="zoomToFit()"
-              matTooltip="{{ 'ZOOM_TO_FIT' | translate }}">
+              matTooltip="{{ 'ZOOM_TO_FIT' | translate }}"
+            >
               <mat-icon class="control-icon">aspect_ratio</mat-icon>
             </mat-button-toggle>
 
-            <mat-button-toggle class="control-mat-button-toggle"
+            <mat-button-toggle
+              class="control-mat-button-toggle"
               (click)="zoomOut()"
-              matTooltip="{{ 'ZOOM_OUT' | translate }}">
+              matTooltip="{{ 'ZOOM_OUT' | translate }}"
+            >
               <mat-icon class="control-icon">remove</mat-icon>
             </mat-button-toggle>
           </mat-button-toggle-group>
@@ -117,14 +166,18 @@
       </div>
       <div class="toggle-group-wrapper--layout">
         <div class="sbas-hdr-ctrl">
-          <mat-button-toggle-group class="sbas-toggle-group sbas-ribbon-group" name="pairControl" [hideSingleSelectionIndicator]="true">
-
+          <mat-button-toggle-group
+            class="sbas-toggle-group sbas-ribbon-group"
+            name="pairControl"
+            [hideSingleSelectionIndicator]="true"
+          >
             <mat-button-toggle
               [disabled]="isAddingCustomPoint"
               value="add"
               class="control-mat-button-toggle"
               (click)="startAddingCustomPoint()"
-              matTooltip="{{ 'START_ADDING_CUSTOM_PAIR' | translate }}">
+              matTooltip="{{ 'START_ADDING_CUSTOM_PAIR' | translate }}"
+            >
               <mat-icon class="control-icon">add_circle</mat-icon>
             </mat-button-toggle>
 
@@ -147,33 +200,33 @@
             >
               <mat-icon class="control-icon">remove_circle</mat-icon>
             </mat-button-toggle>
-
           </mat-button-toggle-group>
         </div>
       </div>
     </div>
 
     <div class="sbas-button-group-filler sbas-button-group"></div>
-    <div class='sbas-button-group'>
+    <div class="sbas-button-group">
       <div class="button-group-label">
         <label>{{ 'FILTERS' | translate }}</label>
       </div>
       <div class="toggle-group-wrapper--layout sbas-menu-button">
-        <mat-button-toggle class="control-mat-button-toggle sbas-criteria-button-toggle"
+        <mat-button-toggle
+          class="control-mat-button-toggle sbas-criteria-button-toggle"
           (click)="onToggleFiltersMenu()"
         >
-          {{ 'SBAS_FILTERS' | translate }}<mat-icon class="more-horiz">more_horiz</mat-icon>
+          {{ 'SBAS_FILTERS' | translate
+          }}<mat-icon class="more-horiz">more_horiz</mat-icon>
         </mat-button-toggle>
       </div>
     </div>
-
   </mat-card-subtitle>
 
   <div
     class="resize-handle-left"
     mwlResizeHandle
-    [resizeEdges]="{ left: true }">
-  </div>
+    [resizeEdges]="{ left: true }"
+  ></div>
 
   <div class="sbas-chart-row">
     <div class="sbas-column-1">
@@ -182,13 +235,19 @@
 
     <div id="sbas-chart-column" class="sbas-column-2">
       <div class="gap-detected-area" *ngIf="this.isDisconnected">
-        <app-docs-modal class="warn-icon" icon="warning" url="https://docs.asf.alaska.edu/vertex/sbas/#gaps-detected-warning-message" tooltip="GAPS_DETECTED"></app-docs-modal>
+        <app-docs-modal
+          class="warn-icon"
+          icon="warning"
+          url="https://docs.asf.alaska.edu/vertex/sbas/#gaps-detected-warning-message"
+          tooltip="GAPS_DETECTED"
+        ></app-docs-modal>
       </div>
       <app-sbas-chart
         [zoomIn$]="zoomInChart$"
         [zoomToFit$]="zoomToFitChart$"
         [zoomOut$]="zoomOutChart$"
-        (isGraphDisconnected)="isGraphDisconnected($event)">
+        (isGraphDisconnected)="isGraphDisconnected($event)"
+      >
       </app-sbas-chart>
     </div>
   </div>

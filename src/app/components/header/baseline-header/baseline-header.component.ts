@@ -12,11 +12,10 @@ import { SubSink } from 'subsink';
 import * as searchStore from '@store/search';
 import * as models from '@models';
 
-
 @Component({
   selector: 'app-baseline-header',
   templateUrl: './baseline-header.component.html',
-  styleUrls: ['./baseline-header.component.css',  '../header.component.scss']
+  styleUrls: ['./baseline-header.component.css', '../header.component.scss'],
 })
 export class BaselineHeaderComponent implements OnInit {
   private store$ = inject<Store<AppState>>(Store);
@@ -29,29 +28,34 @@ export class BaselineHeaderComponent implements OnInit {
   public breakpoints = Breakpoints;
   public areResultsLoaded: boolean;
 
-  public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
+  public selectedProducts$ = this.store$.select(
+    scenesStore.getSelectedSceneProducts,
+  );
 
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = models.SearchType;
 
   public datasets = [models.beta];
-  public selectedDataset = 'SENTINEL-1 INTERFEROGRAM (BETA)'
-  
+  public selectedDataset = 'SENTINEL-1 INTERFEROGRAM (BETA)';
+
   private subs = new SubSink();
 
-public shouldUseFramesForReference = false;
+  public shouldUseFramesForReference = false;
 
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(scenesStore.getAreResultsLoaded).subscribe(
-        areLoaded => this.areResultsLoaded = areLoaded
-      )
+      this.store$
+        .select(scenesStore.getAreResultsLoaded)
+        .subscribe((areLoaded) => (this.areResultsLoaded = areLoaded)),
     );
-        this.subs.add(
-        this.store$.select(filtersStore.getShouldUseFramesForReference).subscribe(
-            shouldUseFrames => this.shouldUseFramesForReference = shouldUseFrames
-        )
-    )
+    this.subs.add(
+      this.store$
+        .select(filtersStore.getShouldUseFramesForReference)
+        .subscribe(
+          (shouldUseFrames) =>
+            (this.shouldUseFramesForReference = shouldUseFrames),
+        ),
+    );
   }
 
   public onToggleFiltersMenu(): void {

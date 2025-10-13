@@ -12,13 +12,14 @@ import { asfWebsite } from '@models';
 @Component({
   selector: 'app-api-link-dialog',
   templateUrl: './api-link-dialog.component.html',
-  styleUrls: ['./api-link-dialog.component.scss']
+  styleUrls: ['./api-link-dialog.component.scss'],
 })
 export class ApiLinkDialogComponent implements OnInit, OnDestroy {
   private asfApiService = inject(services.AsfApiService);
   private searchParams = inject(services.SearchParamsService);
   private clipboard = inject(ClipboardService);
-  private dialogRef = inject<MatDialogRef<ApiLinkDialogComponent>>(MatDialogRef);
+  private dialogRef =
+    inject<MatDialogRef<ApiLinkDialogComponent>>(MatDialogRef);
   private notificationService = inject(services.NotificationService);
 
   public amount$ = new BehaviorSubject<number>(5000);
@@ -30,50 +31,57 @@ export class ApiLinkDialogComponent implements OnInit, OnDestroy {
   public apiLink: string;
   private subs = new SubSink();
 
-  public formats = [{
+  public formats = [
+    {
       value: 'CSV',
-      viewValue: 'CSV File'
-    }, {
+      viewValue: 'CSV File',
+    },
+    {
       value: 'JSON',
-      viewValue: 'JSON File'
-    }, {
+      viewValue: 'JSON File',
+    },
+    {
       value: 'KML',
-      viewValue: 'KML File'
-    }, {
+      viewValue: 'KML File',
+    },
+    {
       value: 'METALINK',
-      viewValue: 'METALINK File'
-    }, {
+      viewValue: 'METALINK File',
+    },
+    {
       value: 'DOWNLOAD',
-      viewValue: 'Bulk Download Script'
-    }, {
+      viewValue: 'Bulk Download Script',
+    },
+    {
       value: 'GEOJSON',
-      viewValue: 'GEOJSON File'
+      viewValue: 'GEOJSON File',
     },
   ];
 
   ngOnInit() {
     this.subs.add(
-      combineLatest([
-        this.amount$,
-        this.format$]
-      ).pipe(
-        tap(([amount, format]) => {
-          this.amount = amount;
-          this.format = format;
-        }),
-        filter(([amount, format]) => !!amount && !!format),
-        withLatestFrom(this.searchParams.getParams),
-        map(([[format, amount], params]) => {
-          return {
-            ...params,
-            output: amount,
-            maxResults: format
-          };
-        }),
-        map(params => this.asfApiService.queryUrlFrom(params, {
-          apiUrl: 'https://api.daac.asf.alaska.edu'
-        }))
-      ).subscribe(apiLink => this.apiLink = apiLink)
+      combineLatest([this.amount$, this.format$])
+        .pipe(
+          tap(([amount, format]) => {
+            this.amount = amount;
+            this.format = format;
+          }),
+          filter(([amount, format]) => !!amount && !!format),
+          withLatestFrom(this.searchParams.getParams),
+          map(([[format, amount], params]) => {
+            return {
+              ...params,
+              output: amount,
+              maxResults: format,
+            };
+          }),
+          map((params) =>
+            this.asfApiService.queryUrlFrom(params, {
+              apiUrl: 'https://api.daac.asf.alaska.edu',
+            }),
+          ),
+        )
+        .subscribe((apiLink) => (this.apiLink = apiLink)),
     );
   }
 

@@ -3,18 +3,17 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-dropdown-option',
   templateUrl: './dropdown-option.component.html',
-  styleUrls: ['./dropdown-option.component.scss']
+  styleUrls: ['./dropdown-option.component.scss'],
 })
 export class DropdownOptionComponent {
   @Input() value: string;
   @Input() optionName: string;
   @Input() optionInfo: string;
-  @Input() options: { apiValue: string | number; name: string; }[];
+  @Input() options: { apiValue: string | number; name: string }[];
 
   @Input() costsTable: any = null;
 
   @Output() valueChange = new EventEmitter<string>();
-
 
   public onValueChange(toggleValue: string): void {
     this.value = toggleValue;

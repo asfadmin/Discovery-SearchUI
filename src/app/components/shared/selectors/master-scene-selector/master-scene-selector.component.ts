@@ -12,14 +12,14 @@ import { beta } from '@models';
 @Component({
   selector: 'app-master-scene-selector',
   templateUrl: './master-scene-selector.component.html',
-  styleUrls: ['./master-scene-selector.component.css']
+  styleUrls: ['./master-scene-selector.component.css'],
 })
 export class MasterSceneSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
 
   public searchType$ = this.store$.select(getSearchType);
   public datasets = [beta];
-  public selectedDataset = 'SENTINEL-1 INTERFEROGRAM (BETA)'
+  public selectedDataset = 'SENTINEL-1 INTERFEROGRAM (BETA)';
   public SearchTypes = SearchType;
   public masterScene: string;
   public shouldUseFramesForReference = false;
@@ -27,24 +27,31 @@ export class MasterSceneSelectorComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(scenesStore.getFilterMaster).subscribe(
-        master => this.masterScene = master
-      )
+      this.store$
+        .select(scenesStore.getFilterMaster)
+        .subscribe((master) => (this.masterScene = master)),
     );
 
     this.subs.add(
-        this.store$.select(filtersStore.getShouldUseFramesForReference).subscribe(
-            shouldUseFrames => this.shouldUseFramesForReference = shouldUseFrames
-        )
-    )
+      this.store$
+        .select(filtersStore.getShouldUseFramesForReference)
+        .subscribe(
+          (shouldUseFrames) =>
+            (this.shouldUseFramesForReference = shouldUseFrames),
+        ),
+    );
   }
 
   public onMasterSceneChanged(event: Event): void {
-    this.store$.dispatch(new scenesStore.SetFilterMaster((event.target as HTMLInputElement).value));
+    this.store$.dispatch(
+      new scenesStore.SetFilterMaster((event.target as HTMLInputElement).value),
+    );
   }
 
   public onFrameModeToggled() {
-    this.store$.dispatch(new filtersStore.SetUseFrameForBaseline(this.shouldUseFramesForReference))
+    this.store$.dispatch(
+      new filtersStore.SetUseFrameForBaseline(this.shouldUseFramesForReference),
+    );
   }
 
   ngOnDestroy() {

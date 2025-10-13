@@ -1,4 +1,13 @@
-import { Component, EventEmitter, ElementRef, Input, OnInit, Output, ViewChild, inject } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  ElementRef,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import * as models from '@models';
 import * as userStore from '@store/user';
 import { Store } from '@ngrx/store';
@@ -9,7 +18,7 @@ import { NotificationService } from '@services';
 @Component({
   selector: 'app-save-user-filter',
   templateUrl: './save-user-filter.component.html',
-  styleUrls: ['./save-user-filter.component.scss']
+  styleUrls: ['./save-user-filter.component.scss'],
 })
 export class SaveUserFilterComponent implements OnInit {
   private store$ = inject<Store<AppState>>(Store);
@@ -41,14 +50,16 @@ export class SaveUserFilterComponent implements OnInit {
   public loadPreset() {
     this.store$.dispatch(new userStore.LoadFiltersPreset(this.filterPreset.id));
 
-    const fromName = this.filterPreset.name ? `from '${this.filterPreset.name}'` : ``;
-    this.notificationService.info(
-      `Applied filters ${fromName}`
-    );
+    const fromName = this.filterPreset.name
+      ? `from '${this.filterPreset.name}'`
+      : ``;
+    this.notificationService.info(`Applied filters ${fromName}`);
   }
 
   public onDeletePreset() {
-    this.store$.dispatch(new userStore.DeleteFiltersPreset(this.filterPreset.id));
+    this.store$.dispatch(
+      new userStore.DeleteFiltersPreset(this.filterPreset.id),
+    );
     this.store$.dispatch(new userStore.SaveFilters());
   }
 
@@ -57,7 +68,12 @@ export class SaveUserFilterComponent implements OnInit {
     this.isEditingName = false;
     this.editName = '';
 
-    this.store$.dispatch(new userStore.UpdateFilterPresetName({newName, presetID: this.filterPreset.id }));
+    this.store$.dispatch(
+      new userStore.UpdateFilterPresetName({
+        newName,
+        presetID: this.filterPreset.id,
+      }),
+    );
     this.store$.dispatch(new userStore.SaveFilters());
 
     this.updateName.emit(this.filterPreset.id);
@@ -65,11 +81,9 @@ export class SaveUserFilterComponent implements OnInit {
 
   public onEditName() {
     this.isEditingName = true;
-    this.editName = this.filterPreset.name === '(No title)' ?
-      '' : this.filterPreset.name;
+    this.editName =
+      this.filterPreset.name === '(No title)' ? '' : this.filterPreset.name;
 
-    timer(20).subscribe(
-      _ => this.nameEditInput.nativeElement.focus()
-    );
+    timer(20).subscribe((_) => this.nameEditInput.nativeElement.focus());
   }
 }

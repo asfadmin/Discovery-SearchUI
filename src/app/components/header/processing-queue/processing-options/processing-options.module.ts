@@ -17,8 +17,6 @@ import { SubsetOptionComponent } from './subset-option/subset-option.component';
 import { SharedModule } from '@shared';
 import { RangeOptionComponent } from './range-option/range-option.component';
 
-
-
 @NgModule({
   declarations: [
     ProcessingOptionsComponent,
@@ -26,7 +24,7 @@ import { RangeOptionComponent } from './range-option/range-option.component';
     DropdownOptionComponent,
     CheckboxOptionComponent,
     SubsetOptionComponent,
-    RangeOptionComponent
+    RangeOptionComponent,
   ],
   imports: [
     CommonModule,
@@ -37,10 +35,8 @@ import { RangeOptionComponent } from './range-option/range-option.component';
     MatSharedModule,
     MatSlideToggleModule,
     ProjectNameSelectorModule,
-    SharedModule
+    SharedModule,
   ],
-  exports: [
-    ProcessingOptionsComponent
-  ]
+  exports: [ProcessingOptionsComponent],
 })
-export class ProcessingOptionsModule { }
+export class ProcessingOptionsModule {}

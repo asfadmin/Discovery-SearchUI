@@ -6,23 +6,17 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSharedModule } from '@shared';
 
 import { ProductTypeSelectorComponent } from './product-type-selector.component';
-import { SharedModule } from "@shared";
-
+import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [
-    ProductTypeSelectorComponent
-  ],
+  declarations: [ProductTypeSelectorComponent],
   imports: [
     CommonModule,
     FormsModule,
     MatSelectModule,
     MatSharedModule,
-    SharedModule
-
+    SharedModule,
   ],
-  exports: [
-    ProductTypeSelectorComponent
-  ]
+  exports: [ProductTypeSelectorComponent],
 })
-export class ProductTypeSelectorModule { }
+export class ProductTypeSelectorModule {}

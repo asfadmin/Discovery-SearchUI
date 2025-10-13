@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LegacyAreaFormatService {
-
   public isValid(numberList: string): boolean {
     const numbers = this.parseNumberList(numberList);
 
@@ -17,9 +16,8 @@ export class LegacyAreaFormatService {
     const pairs = this.pairPoints(numbers);
 
     const points = pairs
-    .reduce(
-      (wktPoints, [lon, lat]) => wktPoints + `${lon} ${lat},`, ''
-    ).slice(0, -1);
+      .reduce((wktPoints, [lon, lat]) => wktPoints + `${lon} ${lat},`, '')
+      .slice(0, -1);
 
     return `POLYGON((${points}))`;
   }
@@ -28,8 +26,8 @@ export class LegacyAreaFormatService {
     return polygon
       .replace(/\s/g, '')
       .split(',')
-      .map(num => +num)
-      .filter(num => !isNaN(num));
+      .map((num) => +num)
+      .filter((num) => !isNaN(num));
   }
 
   private pairPoints(numbers): number[][] {

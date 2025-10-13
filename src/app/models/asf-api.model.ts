@@ -8,15 +8,14 @@ export interface PolygonErrorResponse {
 
 export enum AsfApiOutputFormat {
   CSV = 'CSV',
-  JSON = 'JSON' ,
+  JSON = 'JSON',
   KML = 'KML',
   METALINK = 'METALINK',
   COUNT = 'COUNT',
   DOWNLOAD = 'DOWNLOAD',
   GEOJSON = 'GEOJSON',
-  JSONLITE = 'JSONLITE'
+  JSONLITE = 'JSONLITE',
 }
-
 
 export interface PolygonError {
   type: PolygonErrorTypes;

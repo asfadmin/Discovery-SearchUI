@@ -1,6 +1,15 @@
 import { Action } from '@ngrx/store';
 
-import { CMRProduct, UnzippedFolder, ColumnSortDirection, SearchType, CMRProductPair, SarviewsEvent, SarviewsProduct, CMRProductsById } from '@models';
+import {
+  CMRProduct,
+  UnzippedFolder,
+  ColumnSortDirection,
+  SearchType,
+  CMRProductPair,
+  SarviewsEvent,
+  SarviewsProduct,
+  CMRProductsById,
+} from '@models';
 import { PinnedProduct } from '@services/browse-map.service';
 
 export enum ScenesActionType {
@@ -35,19 +44,21 @@ export enum ScenesActionType {
 
   ADD_CUSTOM_PAIR = '[Scenes] Add Custom Pair',
   ADD_CUSTOM_PAIRS = '[Scenes] Add Custom Pairs',
-  REMOVE_CUSTOM_PAIR = '[Scenes] Remove Custom Pair'
+  REMOVE_CUSTOM_PAIR = '[Scenes] Remove Custom Pair',
 }
 
 export class SetScenes implements Action {
   public readonly type = ScenesActionType.SET_SCENES;
 
-  constructor(public payload: {products: CMRProduct[], searchType: SearchType} ) {}
+  constructor(
+    public payload: { products: CMRProduct[]; searchType: SearchType },
+  ) {}
 }
 
 export class SetSarviewsEvents implements Action {
   public readonly type = ScenesActionType.SET_SARVIEWS_EVENTS;
 
-  constructor(public payload: {events: SarviewsEvent[]}) {}
+  constructor(public payload: { events: SarviewsEvent[] }) {}
 }
 
 export class SetSelectedSarviewsEvent implements Action {
@@ -110,7 +121,9 @@ export class CloseZipContents implements Action {
 export class AddUnzippedProduct implements Action {
   public readonly type = ScenesActionType.ADD_UNZIPPED_PRODUCT;
 
-  constructor(public payload: { product: CMRProduct, unzipped: UnzippedFolder[] }) {}
+  constructor(
+    public payload: { product: CMRProduct; unzipped: UnzippedFolder[] },
+  ) {}
 }
 
 export class SetMaster implements Action {

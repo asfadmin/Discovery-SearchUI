@@ -20,7 +20,7 @@ import { DocsModalModule } from '@components/shared/docs-modal';
 import { BurstSelectorModule } from '@components/shared/selectors/burst-selector';
 import { OperaS1SelectorModule } from '@components/shared/selectors/opera-s1-selector';
 
-import { SharedModule } from "@shared";
+import { SharedModule } from '@shared';
 
 import { SubSink } from 'subsink';
 
@@ -39,7 +39,7 @@ enum FilterPanel {
   CAMPAIGN = 'Campaign',
   PATH = 'Path',
   AOI = 'Aoi',
-  SEARCH = 'Search'
+  SEARCH = 'Search',
 }
 
 @Component({
@@ -67,7 +67,7 @@ enum FilterPanel {
     SharedModule,
   ],
   templateUrl: './frame-order-filters.component.html',
-  styleUrl: './frame-order-filters.component.scss'
+  styleUrl: './frame-order-filters.component.scss',
 })
 export class FrameOrderFiltersComponent implements OnInit, OnDestroy {
   prop = inject(PropertyService);
@@ -91,16 +91,15 @@ export class FrameOrderFiltersComponent implements OnInit, OnDestroy {
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
 
-
   public flightDirectionTypes = models.flightDirections;
 
   private subs = new SubSink();
 
   ngOnInit() {
     this.subs.add(
-      this.store$.select(filtersStore.getSelectedDatasetId).subscribe(
-        selected => this.selectedDataset = selected
-      )
+      this.store$
+        .select(filtersStore.getSelectedDatasetId)
+        .subscribe((selected) => (this.selectedDataset = selected)),
     );
   }
 

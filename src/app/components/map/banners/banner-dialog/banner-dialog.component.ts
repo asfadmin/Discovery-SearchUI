@@ -12,5 +12,4 @@ export class BannerDialogComponent {
   data = inject<DialogData>(MAT_DIALOG_DATA);
 
   htmlContent: string;
-
 }

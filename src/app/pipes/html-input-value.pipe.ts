@@ -1,10 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'htmlInputValue'
+  name: 'htmlInputValue',
 })
 export class HTMLInputValuePipe implements PipeTransform {
-    transform(input: Event): string {
-        return (input.target as HTMLInputElement).value;
-    }
+  transform(input: Event): string {
+    return (input.target as HTMLInputElement).value;
+  }
 }

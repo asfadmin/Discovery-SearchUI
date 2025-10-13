@@ -8,7 +8,7 @@ export interface DialogData {
   title: string;
 }
 
-@Directive({selector: '[bannerCreate]'})
+@Directive({ selector: '[bannerCreate]' })
 export class BannerCreateDirective implements OnInit {
   private toastr = inject(ToastrService);
   dialog = inject(MatDialog);
@@ -45,13 +45,12 @@ export class BannerCreateDirective implements OnInit {
 
     const lines = this.bannerCreate.text.split('<br>');
 
-    this.msgOverflow = (this.bannerCreate.text.length > this.maxMsgLength);
+    this.msgOverflow = this.bannerCreate.text.length > this.maxMsgLength;
 
-    const oneLiner = (
+    const oneLiner =
       lines.length > 2 &&
       lines[1].trim().length === 0 &&
-      lines[1].length <= this.maxMsgLength
-    );
+      lines[1].length <= this.maxMsgLength;
 
     if (oneLiner) {
       msg = `${lines[0].trim()}${this.moreMsg}`;
@@ -80,7 +79,7 @@ export class BannerCreateDirective implements OnInit {
       }
     }
 
-    toast.onHidden.subscribe(_ => {
+    toast.onHidden.subscribe((_) => {
       const closedBanners = this.loadClosedBannerIds();
 
       closedBanners[this.bannerCreate.id] = true;
@@ -88,23 +87,22 @@ export class BannerCreateDirective implements OnInit {
       this.saveClosedBannerIds(closedBanners);
     });
 
-    toast.onTap.subscribe(_x => {
+    toast.onTap.subscribe((_x) => {
       if (this.msgOverflow || oneLiner) {
         const dialogRef = this.dialog.open(BannerDialogComponent, {
-          data: {title: title},
+          data: { title: title },
           panelClass: 'banner-dialog',
           maxWidth: '80vw',
         });
-        dialogRef.componentInstance.htmlContent = this.openLinksInNewTab(this.bannerCreate.text);
+        dialogRef.componentInstance.htmlContent = this.openLinksInNewTab(
+          this.bannerCreate.text,
+        );
       }
     });
   }
 
   private openLinksInNewTab(bannerHtml: string): string {
-      return bannerHtml.replace(
-        '<a href=',
-        '<a target="_blank" href='
-      );
+    return bannerHtml.replace('<a href=', '<a target="_blank" href=');
   }
 
   private loadClosedBannerIds(): Record<string, boolean> {
@@ -129,5 +127,4 @@ export class BannerCreateDirective implements OnInit {
 })
 export class BannersComponent {
   @Input() banners: Banner[];
-
 }

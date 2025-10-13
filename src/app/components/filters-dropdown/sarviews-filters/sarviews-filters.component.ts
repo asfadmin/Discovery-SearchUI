@@ -18,7 +18,7 @@ enum FilterPanel {
 @Component({
   selector: 'app-sarviews-filters',
   templateUrl: './sarviews-filters.component.html',
-  styleUrls: ['./sarviews-filters.component.scss']
+  styleUrls: ['./sarviews-filters.component.scss'],
 })
 export class SarviewsFiltersComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
@@ -27,7 +27,6 @@ export class SarviewsFiltersComponent implements OnInit, OnDestroy {
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
   public areResultsLoaded: boolean;
-
 
   selectedPanel: FilterPanel | null = null;
   panels = FilterPanel;
@@ -40,12 +39,11 @@ export class SarviewsFiltersComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(scenesStore.getAreResultsLoaded).subscribe(
-        areLoaded => this.areResultsLoaded = areLoaded
-      )
+      this.store$
+        .select(scenesStore.getAreResultsLoaded)
+        .subscribe((areLoaded) => (this.areResultsLoaded = areLoaded)),
     );
   }
-
 
   public isSelected(panel: FilterPanel): boolean {
     return this.selectedPanel === panel;

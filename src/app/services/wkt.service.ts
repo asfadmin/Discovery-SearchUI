@@ -2,23 +2,22 @@ import { Injectable } from '@angular/core';
 import { Coordinate } from 'ol/coordinate';
 import Feature from 'ol/Feature';
 
-import { WKT }  from 'ol/format';
+import { WKT } from 'ol/format';
 import Geometry from 'ol/geom/Geometry';
-import {Polygon, MultiPolygon } from 'ol/geom';
+import { Polygon, MultiPolygon } from 'ol/geom';
 import { fromLonLat, toLonLat } from 'ol/proj';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class WktService {
   private format = new WKT();
   private sceneProjection = 'EPSG:4326';
 
-
   public wktToFeature(wkt: string, epsg: string) {
     return this.format.readFeature(wkt, {
       dataProjection: this.sceneProjection,
-      featureProjection: epsg
+      featureProjection: epsg,
     });
   }
 
@@ -27,21 +26,30 @@ export class WktService {
     let polygonCoordinates: Coordinate[];
     const geom = feature.getGeometry();
     if (isMultiPolygon) {
-      polygonCoordinates = (geom as MultiPolygon).getPolygon(0).getCoordinates()[0];
-      (geom as MultiPolygon).setCoordinates([[this.fixAntimeridianCoordinates(polygonCoordinates)]]);
+      polygonCoordinates = (geom as MultiPolygon)
+        .getPolygon(0)
+        .getCoordinates()[0];
+      (geom as MultiPolygon).setCoordinates([
+        [this.fixAntimeridianCoordinates(polygonCoordinates)],
+      ]);
     } else {
       polygonCoordinates = (geom as Polygon).getCoordinates()[0];
-      (geom as Polygon).setCoordinates([this.fixAntimeridianCoordinates(polygonCoordinates)]);
+      (geom as Polygon).setCoordinates([
+        this.fixAntimeridianCoordinates(polygonCoordinates),
+      ]);
     }
   }
 
   public fixAntimeridianCoordinates(coordinates: Coordinate[]) {
-    const lons = coordinates.map(coordinate => toLonLat(coordinate)[0]);
+    const lons = coordinates.map((coordinate) => toLonLat(coordinate)[0]);
     let new_coords = coordinates;
     if (Math.max(...lons) - Math.min(...lons) > 180) {
-      new_coords = coordinates.map(coordinate => toLonLat(coordinate))
-      .map(coordinate => coordinate[0] > 0 ? coordinate : [coordinate[0] + 360, coordinate[1]])
-      .map(coordinate => fromLonLat(coordinate));
+      new_coords = coordinates
+        .map((coordinate) => toLonLat(coordinate))
+        .map((coordinate) =>
+          coordinate[0] > 0 ? coordinate : [coordinate[0] + 360, coordinate[1]],
+        )
+        .map((coordinate) => fromLonLat(coordinate));
     }
 
     return new_coords;
@@ -53,7 +61,7 @@ export class WktService {
     return this.format.writeGeometry(geometry, {
       dataProjection: this.sceneProjection,
       featureProjection: epsg,
-      decimals: 4
+      decimals: 4,
     });
   }
 }

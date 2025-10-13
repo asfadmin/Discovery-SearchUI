@@ -4,7 +4,10 @@ import { Hyp3ApiService } from '@services';
 @Component({
   selector: 'app-hyp3-url-selector',
   templateUrl: './hyp3-url-selector.component.html',
-  styleUrls: ['./hyp3-url-selector.component.scss', '../preferences.component.scss']
+  styleUrls: [
+    './hyp3-url-selector.component.scss',
+    '../preferences.component.scss',
+  ],
 })
 export class Hyp3UrlSelectorComponent {
   private hyp3 = inject(Hyp3ApiService);
@@ -12,7 +15,10 @@ export class Hyp3UrlSelectorComponent {
   @Input() hyp3BackendUrl: string;
   @Input() hyp3SavedUrls: string[];
 
-  @Output() newHyp3Url = new EventEmitter<{ backendUrl: string; savedUrls: string[]}>();
+  @Output() newHyp3Url = new EventEmitter<{
+    backendUrl: string;
+    savedUrls: string[];
+  }>();
 
   public baseHyp3Url = this.hyp3.baseUrl;
 
@@ -33,7 +39,7 @@ export class Hyp3UrlSelectorComponent {
 
   onRemoveHyp3Url(url: string) {
     this.hyp3SavedUrls = this.hyp3SavedUrls.filter(
-      hyp3Url => hyp3Url !== url
+      (hyp3Url) => hyp3Url !== url,
     );
 
     this.onResetHyp3Url();
@@ -57,8 +63,6 @@ export class Hyp3UrlSelectorComponent {
   }
 
   private stripTrailingSlash = (url: string) => {
-    return url.endsWith('/') ?
-      url.slice(0, -1) :
-      url;
+    return url.endsWith('/') ? url.slice(0, -1) : url;
   };
 }

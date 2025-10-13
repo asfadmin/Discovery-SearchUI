@@ -6,8 +6,7 @@ import { MatSharedModule } from '@shared';
 import { MatSelectModule } from '@angular/material/select';
 
 import { JobStatusSelectorComponent } from './job-status-selector.component';
-import { SharedModule } from "@shared";
-
+import { SharedModule } from '@shared';
 
 @NgModule({
   declarations: [JobStatusSelectorComponent],
@@ -16,10 +15,8 @@ import { SharedModule } from "@shared";
     FormsModule,
     MatSharedModule,
     MatSelectModule,
-    SharedModule
+    SharedModule,
   ],
-  exports: [
-    JobStatusSelectorComponent
-  ]
+  exports: [JobStatusSelectorComponent],
 })
-export class JobStatusSelectorModule { }
+export class JobStatusSelectorModule {}

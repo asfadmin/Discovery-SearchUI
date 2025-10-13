@@ -17,13 +17,13 @@ enum FilterPanel {
   CAMPAIGN = 'Campaign',
   PATH = 'Path',
   AOI = 'Aoi',
-  SEARCH = 'Search'
+  SEARCH = 'Search',
 }
 
 @Component({
   selector: 'app-dataset-filters',
   templateUrl: './dataset-filters.component.html',
-  styleUrls: ['./dataset-filters.component.scss']
+  styleUrls: ['./dataset-filters.component.scss'],
 })
 export class DatasetFiltersComponent implements OnInit, OnDestroy {
   prop = inject(PropertyService);
@@ -46,15 +46,13 @@ export class DatasetFiltersComponent implements OnInit, OnDestroy {
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
 
-
-
   private subs = new SubSink();
 
   ngOnInit() {
     this.subs.add(
-      this.store$.select(filtersStore.getSelectedDatasetId).subscribe(
-        selected => this.selectedDataset = selected
-      )
+      this.store$
+        .select(filtersStore.getSelectedDatasetId)
+        .subscribe((selected) => (this.selectedDataset = selected)),
     );
   }
 

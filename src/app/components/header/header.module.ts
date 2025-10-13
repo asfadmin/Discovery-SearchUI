@@ -1,7 +1,10 @@
 import { NgModule } from '@angular/core';
-import {CommonModule, NgOptimizedImage} from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatInputModule } from '@angular/material/input';
@@ -31,7 +34,7 @@ import { ProjectNameSelectorModule } from '@components/shared/selectors/project-
 import { JobStatusSelectorModule } from '@components/shared/selectors/job-status-selector';
 import { JobProductNameSelectorModule } from '@components/shared/selectors/job-product-name-selector';
 import { SarviewsEventSearchSelectorModule } from '@components/shared/selectors/sarviews-event-search-selector';
-import { OnDemandUserSelectorModule} from '@components/shared/selectors/on-demand-user-selector';
+import { OnDemandUserSelectorModule } from '@components/shared/selectors/on-demand-user-selector';
 import { LogoModule } from '@components/header/logo/logo.module';
 
 import { HeaderComponent } from './header.component';
@@ -49,10 +52,10 @@ import { MasterSceneSelectorModule } from '@components/shared/selectors/master-s
 import { CiSearchModule } from './info-bar/ci-search/ci-search.module';
 import { SarviewsEventTypeSelectorModule } from '@components/shared/selectors/sarviews-event-type-selector';
 import { Hyp3UrlModule } from '@components/shared/hyp3-url/hyp3-url.module';
-import { SharedModule } from "@shared";
-import { LanguageSelectorModule } from "@components/shared/selectors/language-selector/language-selector.module";
+import { SharedModule } from '@shared';
+import { LanguageSelectorModule } from '@components/shared/selectors/language-selector/language-selector.module';
 import { BurstSelectorModule } from '@components/shared/selectors/burst-selector';
-import { TimeseriesChartFlightDirectionToggleComponent} from '@components/timeseries-chart/timeseries-chart-flight-direction-toggle';
+import { TimeseriesChartFlightDirectionToggleComponent } from '@components/timeseries-chart/timeseries-chart-flight-direction-toggle';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { DocsModalModule } from '@components/shared/docs-modal';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -68,7 +71,7 @@ import { BaselineFrameReferenceToggleComponent } from '@components/shared/select
     BaselineHeaderComponent,
     Hyp3HeaderComponent,
     SarviewsHeaderComponent,
-    TimeseriesHeaderComponent
+    TimeseriesHeaderComponent,
   ],
   imports: [
     CommonModule,
@@ -114,10 +117,8 @@ import { BaselineFrameReferenceToggleComponent } from '@components/shared/select
     BaselineFrameReferenceToggleComponent,
     NgOptimizedImage,
     MatTooltipModule,
-    ],
-    providers: [provideHttpClient(withInterceptorsFromDi())],
-  exports: [
-    HeaderComponent
   ],
+  providers: [provideHttpClient(withInterceptorsFromDi())],
+  exports: [HeaderComponent],
 })
-export class HeaderModule { }
+export class HeaderModule {}

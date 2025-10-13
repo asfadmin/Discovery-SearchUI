@@ -19,7 +19,7 @@ export enum MapActionType {
   SET_COHERENCE_OVERLAY_OPACITY = '[Map] Set Coherence layer opacity',
   CLEAR_BROWSE_OVERLAYS = '[Map] Clear All Browse Overlays On Map',
   DRAW_NEW_POLYGON = '[Map] Set has user drawn new polygon',
-  TOGGLE_OVERVIEW_MAP = '[Map] Toggle Overview Map'
+  TOGGLE_OVERVIEW_MAP = '[Map] Toggle Overview Map',
 }
 
 export class SetStreetView implements Action {
@@ -71,10 +71,10 @@ export class SetCoherenceOverlayOpacity implements Action {
 }
 
 export class SetVelocityOverlayOpacity implements Action {
-    public readonly type = MapActionType.SET_VELOCITY_OVERLAY_OPACITY;
-  
-    constructor(public payload: number) {}
-  }
+  public readonly type = MapActionType.SET_VELOCITY_OVERLAY_OPACITY;
+
+  constructor(public payload: number) {}
+}
 
 export class ToggleBrowseOverlay implements Action {
   public readonly type = MapActionType.TOGGLE_BROWSE_OVERLAY;
@@ -101,7 +101,6 @@ export class ToggleOverviewMap implements Action {
 
   constructor(public payload: boolean) {}
 }
-
 
 export type MapActions =
   | SetMapView

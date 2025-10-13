@@ -7,19 +7,21 @@ import { SubSink } from 'subsink';
 @Component({
   selector: 'app-gridlines-selector',
   templateUrl: './gridlines-selector.component.html',
-  styleUrls: ['./gridlines-selector.component.scss']
+  styleUrls: ['./gridlines-selector.component.scss'],
 })
 export class GridlinesSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
 
-  public areGridlinesActive$ = this.store$.select(mapStore.getAreGridlinesActive);
+  public areGridlinesActive$ = this.store$.select(
+    mapStore.getAreGridlinesActive,
+  );
   public active = false;
 
   public subs = new SubSink();
 
   ngOnInit(): void {
     this.subs.add(
-      this.areGridlinesActive$.subscribe(active => this.active = active)
+      this.areGridlinesActive$.subscribe((active) => (this.active = active)),
     );
   }
 

@@ -1,117 +1,145 @@
 <mat-accordion multi>
   <mat-expansion-panel
     *ngIf="(breakpoint$ | async) === breakpoints.MOBILE"
-    [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+    [expanded]="defaultPanelOpenState"
+    [disabled]="panelIsDisabled"
     (click)="selectPanel(panels.SEARCH)"
-    [class.raised-section]="isSelected(panels.SEARCH)">
-
-    <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
+    [class.raised-section]="isSelected(panels.SEARCH)"
+  >
+    <mat-expansion-panel-header
+      [collapsedHeight]="customCollapsedHeight"
+      [expandedHeight]="customExpandedHeight"
+    >
       <mat-panel-title>
         {{ 'SEARCH_OPTIONS' | translate }}
       </mat-panel-title>
     </mat-expansion-panel-header>
 
-    <div style="display: flex; margin-top: 25px;">
-      <app-search-type-selector style="margin-right: 10px;">
+    <div style="display: flex; margin-top: 25px">
+      <app-search-type-selector style="margin-right: 10px">
       </app-search-type-selector>
     </div>
   </mat-expansion-panel>
 
   <mat-expansion-panel
     *ngIf="(breakpoint$ | async) === breakpoints.MOBILE || !areResultsLoaded"
-    [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+    [expanded]="defaultPanelOpenState"
+    [disabled]="panelIsDisabled"
     (click)="selectPanel(panels.MASTER)"
-    [class.raised-section]="isSelected(panels.MASTER)">
-
-    <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
+    [class.raised-section]="isSelected(panels.MASTER)"
+  >
+    <mat-expansion-panel-header
+      [collapsedHeight]="customCollapsedHeight"
+      [expandedHeight]="customExpandedHeight"
+    >
       <mat-panel-title>
-        {{ panels.MASTER | uppercase | translate}}
+        {{ panels.MASTER | uppercase | translate }}
       </mat-panel-title>
     </mat-expansion-panel-header>
 
-    <div class="breadcrumb" style='display: flex; align-items: center; margin-top: 15px;'>
-        <app-baseline-frame-reference-toggle></app-baseline-frame-reference-toggle>
-        </div>
-        @if (shouldUseFramesForReference) {
-        <div class="breadcrumb dataset-selector--layout">
-        
+    <div
+      class="breadcrumb"
+      style="display: flex; align-items: center; margin-top: 15px"
+    >
+      <app-baseline-frame-reference-toggle></app-baseline-frame-reference-toggle>
+    </div>
+    @if (shouldUseFramesForReference) {
+      <div class="breadcrumb dataset-selector--layout">
         <app-dataset-selector
-        class="w100"
-        [(selected)]="selectedDataset"
-        (selectedChange)="onDatasetChange($event)"
-        [datasets]="datasets"
+          class="w100"
+          [(selected)]="selectedDataset"
+          (selectedChange)="onDatasetChange($event)"
+          [datasets]="datasets"
         ></app-dataset-selector>
-        
-        </div>
-        }
-    <div class="w100" style="display: flex; margin-top: 25px;">
+      </div>
+    }
+    <div class="w100" style="display: flex; margin-top: 25px">
       <app-master-scene-selector class="w100"></app-master-scene-selector>
-
     </div>
     <div class="sbas-example">
-      {{ 'EXAMPLE' | translate }}: S1B_IW_SLC__1SDV_20210704T135937_20210704T140004_027645_034CB0_4B2C
+      {{ 'EXAMPLE' | translate }}:
+      S1B_IW_SLC__1SDV_20210704T135937_20210704T140004_027645_034CB0_4B2C
       <app-copy-to-clipboard
-      value="S1B_IW_SLC__1SDV_20210704T135937_20210704T140004_027645_034CB0_4B2C"
-      prompt="{{ 'COPY_NAME' | translate }}"
-      style="margin: 0 3px;"
-      class="clipboard-icon">
-    </app-copy-to-clipboard>
+        value="S1B_IW_SLC__1SDV_20210704T135937_20210704T140004_027645_034CB0_4B2C"
+        prompt="{{ 'COPY_NAME' | translate }}"
+        style="margin: 0 3px"
+        class="clipboard-icon"
+      >
+      </app-copy-to-clipboard>
     </div>
     <div>
-      <app-docs-modal url="https://docs.asf.alaska.edu/vertex/sbas/"
-                      text="{{'WHAT_IS_SBAS' | translate}}?">
+      <app-docs-modal
+        url="https://docs.asf.alaska.edu/vertex/sbas/"
+        text="{{ 'WHAT_IS_SBAS' | translate }}?"
+      >
       </app-docs-modal>
     </div>
   </mat-expansion-panel>
 
-  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+  <mat-expansion-panel
+    [expanded]="defaultPanelOpenState"
+    [disabled]="panelIsDisabled"
     (click)="selectPanel(panels.DATE)"
     *ngIf="areResultsLoaded"
-    [class.raised-section]="isSelected(panels.DATE)">
-    <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
-      <mat-panel-title style="align-items: center;">
+    [class.raised-section]="isSelected(panels.DATE)"
+  >
+    <mat-expansion-panel-header
+      [collapsedHeight]="customCollapsedHeight"
+      [expandedHeight]="customExpandedHeight"
+    >
+      <mat-panel-title style="align-items: center">
         {{ 'DATE_FILTERS' | translate }}
-        <app-docs-modal class="info-icon"
-                        url="https://docs.asf.alaska.edu/vertex/sbas/#sbas-criteria">
+        <app-docs-modal
+          class="info-icon"
+          url="https://docs.asf.alaska.edu/vertex/sbas/#sbas-criteria"
+        >
         </app-docs-modal>
       </mat-panel-title>
     </mat-expansion-panel-header>
 
-    <div style="margin-top: 20px;">
+    <div style="margin-top: 20px">
       <app-date-selector></app-date-selector>
       <app-season-selector></app-season-selector>
     </div>
   </mat-expansion-panel>
 
-<!--  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"-->
-<!--  (click)="selectPanel(panels.SEASON)"-->
-<!--  *ngIf="areResultsLoaded"-->
-<!--  [class.raised-section]="isSelected(panels.SEASON)">-->
-<!--  <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">-->
-<!--    <mat-panel-title>-->
-<!--      Season Filters-->
-<!--    </mat-panel-title>-->
-<!--  </mat-expansion-panel-header>-->
+  <!--  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"-->
+  <!--  (click)="selectPanel(panels.SEASON)"-->
+  <!--  *ngIf="areResultsLoaded"-->
+  <!--  [class.raised-section]="isSelected(panels.SEASON)">-->
+  <!--  <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">-->
+  <!--    <mat-panel-title>-->
+  <!--      Season Filters-->
+  <!--    </mat-panel-title>-->
+  <!--  </mat-expansion-panel-header>-->
 
-<!--  <div style="margin-top: 20px;">-->
-<!--    <app-season-selector></app-season-selector>-->
-<!--  </div>-->
-<!--  </mat-expansion-panel>-->
+  <!--  <div style="margin-top: 20px;">-->
+  <!--    <app-season-selector></app-season-selector>-->
+  <!--  </div>-->
+  <!--  </mat-expansion-panel>-->
 
-  <mat-expansion-panel [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
-  (click)="selectPanel(panels.OVERLAP)"
-  *ngIf="areResultsLoaded"
-  [class.raised-section]="isSelected(panels.OVERLAP)">
-  <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
-    <mat-panel-title>
-      {{ 'LATITUDINAL_OVERLAP_FILTER' |  translate }}
-      <app-docs-modal class="info-icon"
-                      url="https://docs.asf.alaska.edu/vertex/sbas/#sbas-criteria">
-      </app-docs-modal>
-    </mat-panel-title>
-  </mat-expansion-panel-header>
-  <div style="margin-top: 20px;">
-    <app-sbas-overlap-selector></app-sbas-overlap-selector>
-  </div>
+  <mat-expansion-panel
+    [expanded]="defaultPanelOpenState"
+    [disabled]="panelIsDisabled"
+    (click)="selectPanel(panels.OVERLAP)"
+    *ngIf="areResultsLoaded"
+    [class.raised-section]="isSelected(panels.OVERLAP)"
+  >
+    <mat-expansion-panel-header
+      [collapsedHeight]="customCollapsedHeight"
+      [expandedHeight]="customExpandedHeight"
+    >
+      <mat-panel-title>
+        {{ 'LATITUDINAL_OVERLAP_FILTER' | translate }}
+        <app-docs-modal
+          class="info-icon"
+          url="https://docs.asf.alaska.edu/vertex/sbas/#sbas-criteria"
+        >
+        </app-docs-modal>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div style="margin-top: 20px">
+      <app-sbas-overlap-selector></app-sbas-overlap-selector>
+    </div>
   </mat-expansion-panel>
 </mat-accordion>

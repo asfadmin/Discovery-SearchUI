@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SharedModule } from "@shared";
+import { SharedModule } from '@shared';
 
 import { BurstSelectorComponent } from './burst-selector.component';
 
@@ -11,10 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSharedModule } from '@shared';
 import { FullBurstSelectorComponent } from './full-burst-selector/full-burst-selector.component';
 @NgModule({
-  declarations: [
-    BurstSelectorComponent,
-    FullBurstSelectorComponent
-  ],
+  declarations: [BurstSelectorComponent, FullBurstSelectorComponent],
   imports: [
     CommonModule,
     MatFormFieldModule,
@@ -22,10 +19,8 @@ import { FullBurstSelectorComponent } from './full-burst-selector/full-burst-sel
     MatInputModule,
     FormsModule,
     MatSharedModule,
-    SharedModule
+    SharedModule,
   ],
-  exports: [
-    BurstSelectorComponent
-  ]
+  exports: [BurstSelectorComponent],
 })
-export class BurstSelectorModule { }
+export class BurstSelectorModule {}

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatExpansionModule } from '@angular/material/expansion';
 
-import {MatSharedModule, SharedModule} from '@shared';
+import { MatSharedModule, SharedModule } from '@shared';
 import { SeasonSelectorModule } from '@components/shared/selectors/season-selector';
 import { DateSelectorModule } from '@components/shared/selectors/date-selector';
 import { BaselineFiltersComponent } from './baseline-filters.component';
@@ -10,28 +10,26 @@ import { MasterSceneSelectorModule } from '@components/shared/selectors/master-s
 import { SearchTypeSelectorModule } from '@components/shared/selectors/search-type-selector';
 import { BaselineSlidersModule } from './baseline-sliders';
 import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
-import {DocsModalModule} from '@components/shared/docs-modal';
+import { DocsModalModule } from '@components/shared/docs-modal';
 import { BaselineFrameReferenceToggleComponent } from '@components/shared/selectors/baseline-frame-reference-toggle';
 import { DatasetSelectorModule } from '@components/shared/selectors/dataset-selector';
 @NgModule({
   declarations: [BaselineFiltersComponent],
-    imports: [
-        CommonModule,
-        MatExpansionModule,
-        MatSharedModule,
-        SeasonSelectorModule,
-        MasterSceneSelectorModule,
-        DateSelectorModule,
-        SearchTypeSelectorModule,
-        BaselineSlidersModule,
-        CopyToClipboardModule,
-        DocsModalModule,
-        SharedModule,
-        BaselineFrameReferenceToggleComponent,
-        DatasetSelectorModule,
-    ],
-  exports: [
-    BaselineFiltersComponent,
-  ]
+  imports: [
+    CommonModule,
+    MatExpansionModule,
+    MatSharedModule,
+    SeasonSelectorModule,
+    MasterSceneSelectorModule,
+    DateSelectorModule,
+    SearchTypeSelectorModule,
+    BaselineSlidersModule,
+    CopyToClipboardModule,
+    DocsModalModule,
+    SharedModule,
+    BaselineFrameReferenceToggleComponent,
+    DatasetSelectorModule,
+  ],
+  exports: [BaselineFiltersComponent],
 })
-export class BaselineFiltersModule { }
+export class BaselineFiltersModule {}

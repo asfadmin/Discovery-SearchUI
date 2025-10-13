@@ -1,14 +1,14 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatInputModule} from '@angular/material/input';
-import {MatSelectModule} from '@angular/material/select';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {SharedModule} from '@shared';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { SharedModule } from '@shared';
 import { SubSink } from 'subsink';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import * as filtersStore from '@store/filters';
-import {MatTooltip} from '@angular/material/tooltip';
+import { MatTooltip } from '@angular/material/tooltip';
 
 interface prodConfig {
   value: string;
@@ -20,9 +20,16 @@ interface prodConfig {
   standalone: true,
   templateUrl: './production-config-selector.component.html',
   styleUrl: './production-config-selector.component.scss',
-  imports: [MatFormFieldModule, MatSelectModule, FormsModule, ReactiveFormsModule, MatInputModule, SharedModule, MatTooltip],
+  imports: [
+    MatFormFieldModule,
+    MatSelectModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    SharedModule,
+    MatTooltip,
+  ],
 })
-
 export class ProductionConfigSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
 
@@ -30,20 +37,23 @@ export class ProductionConfigSelectorComponent implements OnInit, OnDestroy {
   public selectedConfig: string[] = ['PR']; // Default selected config
 
   prodConfigs: prodConfig[] = [
-    {value: 'PR', viewValue: 'PRODUCTION'},
-    {value: 'UR', viewValue: 'URGENT_RESPONSE'},
-    {value: 'OD', viewValue: 'CUSTOM_VALIDATION'},
+    { value: 'PR', viewValue: 'PRODUCTION' },
+    { value: 'UR', viewValue: 'URGENT_RESPONSE' },
+    { value: 'OD', viewValue: 'CUSTOM_VALIDATION' },
   ];
-
 
   private subs: SubSink = new SubSink();
 
   public ngOnInit(): void {
     this.onProductionConfigSelect(this.selectedConfig);
 
-    this.subs.add(this.store$.select(filtersStore.getProductionConfig).subscribe(value => {
-      this.prodConfigControl.setValue(value);
-    }))
+    this.subs.add(
+      this.store$
+        .select(filtersStore.getProductionConfig)
+        .subscribe((value) => {
+          this.prodConfigControl.setValue(value);
+        }),
+    );
   }
 
   public onProductionConfigSelect(value) {
@@ -51,6 +61,6 @@ export class ProductionConfigSelectorComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.subs.unsubscribe()
+    this.subs.unsubscribe();
   }
 }

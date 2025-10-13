@@ -6,9 +6,8 @@ import { BaselineFiltersType } from '@models';
   selector: 'app-baseline-search-filters',
   templateUrl: './baseline-search-filters.component.html',
   styleUrls: ['./baseline-search-filters.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BaselineSearchFiltersComponent {
   @Input() filters: BaselineFiltersType;
-
 }

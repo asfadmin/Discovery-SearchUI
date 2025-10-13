@@ -5,12 +5,10 @@ import * as models from '@models';
 @Component({
   selector: 'app-search-filters',
   templateUrl: './search-filters.component.html',
-  styleUrls: ['./search-filters.component.scss']
+  styleUrls: ['./search-filters.component.scss'],
 })
 export class SearchFiltersComponent {
   @Input() search: models.Search;
 
   public SearchType = models.SearchType;
-
-
 }

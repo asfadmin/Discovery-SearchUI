@@ -26,9 +26,8 @@ export interface Environment {
   cmr_provider?: string;
 }
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EnvironmentService {
   private $store = inject<Store<AppState>>(Store);
@@ -46,9 +45,9 @@ export class EnvironmentService {
     if (!this.isProd) {
       const localMaturity = localStorage.getItem(this.maturityKey);
 
-      this.maturity = !(localMaturity === 'test' || localMaturity === 'prod') ?
-        this.envs.defaultEnv :
-        localMaturity;
+      this.maturity = !(localMaturity === 'test' || localMaturity === 'prod')
+        ? this.envs.defaultEnv
+        : localMaturity;
     } else {
       this.maturity = this.envs.defaultEnv;
     }
@@ -61,7 +60,6 @@ export class EnvironmentService {
       return this.loadFromEnvFile();
     }
   }
-
 
   get currentEnv(): Environment {
     return this.envs[this.maturity] as Environment;

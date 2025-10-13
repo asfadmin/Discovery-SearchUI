@@ -3,7 +3,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-checkbox-option',
   templateUrl: './checkbox-option.component.html',
-  styleUrls: ['./checkbox-option.component.scss']
+  styleUrls: ['./checkbox-option.component.scss'],
 })
 export class CheckboxOptionComponent {
   @Input() value: boolean;
@@ -11,7 +11,6 @@ export class CheckboxOptionComponent {
   @Input() optionInfo: string;
 
   @Output() valueChange = new EventEmitter<boolean>();
-
 
   public onValueChange(toggleValue: boolean): void {
     this.value = toggleValue;

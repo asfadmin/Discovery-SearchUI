@@ -1,4 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  inject,
+} from '@angular/core';
 
 import * as models from '@models';
 import * as hyp3Store from '@store/hyp3';
@@ -10,7 +17,7 @@ import * as services from '@services';
 import * as userStore from '@store/user';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ProcessingQueueComponent } from '@components/header/processing-queue';
-import {SubSink} from 'subsink';
+import { SubSink } from 'subsink';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 import moment from 'moment';
@@ -20,36 +27,48 @@ import moment from 'moment';
   templateUrl: './processing-queue-jobs.component.html',
   styleUrls: ['./processing-queue-jobs.component.scss'],
 })
-
 export class ProcessingQueueJobsComponent implements OnInit {
   private store$ = inject<Store<AppState>>(Store);
   private savedSearchService = inject(services.SavedSearchService);
-  private dialogRef = inject<MatDialogRef<ProcessingQueueComponent>>(MatDialogRef);
+  private dialogRef =
+    inject<MatDialogRef<ProcessingQueueComponent>>(MatDialogRef);
 
   @Input() areJobsLoading: boolean;
   @Input() costPerJob: number;
 
-  @Input() set jobs(val: models.QueuedHyp3Job[]) { this.jobs$.next(val); }
+  @Input() set jobs(val: models.QueuedHyp3Job[]) {
+    this.jobs$.next(val);
+  }
   private jobs$ = new BehaviorSubject<models.QueuedHyp3Job[]>([]);
   private sortChange$ = new BehaviorSubject<void>(null);
 
   // change detection keeps updating the view when it shouldn't causing flickering.
   // this observable ensures we only update the dispalyed processing queue list when the values actually change
   // or when the user changes the sorting order.
-  jobsfiltered$ = combineLatest([this.jobs$.pipe(distinctUntilChanged()), this.sortChange$]).pipe(
+  jobsfiltered$ = combineLatest([
+    this.jobs$.pipe(distinctUntilChanged()),
+    this.sortChange$,
+  ]).pipe(
     map(([jobs, _]) => jobs),
-    filter(jobs => !!jobs),
-    map(jobs => this.sortJobQueue(jobs)));
+    filter((jobs) => !!jobs),
+    map((jobs) => this.sortJobQueue(jobs)),
+  );
 
   @Output() removeJob = new EventEmitter<models.QueuedHyp3Job>();
 
   public projectName = '';
   public isLoggedIn: boolean;
 
-  public sortTypes = Object.keys(ProcessingQueueJobsSortType).map(key => ProcessingQueueJobsSortType[key]);
-  public sortOrders = Object.keys(ProcessingQueueJobsSortOrder).map(key => ProcessingQueueJobsSortOrder[key]);
-  public sortOrder: ProcessingQueueJobsSortOrder = ProcessingQueueJobsSortOrder.LATEST;
-  public sortType: ProcessingQueueJobsSortType = ProcessingQueueJobsSortType.ACQUISITION;
+  public sortTypes = Object.keys(ProcessingQueueJobsSortType).map(
+    (key) => ProcessingQueueJobsSortType[key],
+  );
+  public sortOrders = Object.keys(ProcessingQueueJobsSortOrder).map(
+    (key) => ProcessingQueueJobsSortOrder[key],
+  );
+  public sortOrder: ProcessingQueueJobsSortOrder =
+    ProcessingQueueJobsSortOrder.LATEST;
+  public sortType: ProcessingQueueJobsSortType =
+    ProcessingQueueJobsSortType.ACQUISITION;
 
   public jobsDisplay: QueuedHyp3Job[] = [];
 
@@ -57,15 +76,13 @@ export class ProcessingQueueJobsComponent implements OnInit {
 
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(userStore.getIsUserLoggedIn).subscribe(
-        isLoggedIn => this.isLoggedIn = isLoggedIn
-      )
+      this.store$
+        .select(userStore.getIsUserLoggedIn)
+        .subscribe((isLoggedIn) => (this.isLoggedIn = isLoggedIn)),
     );
 
     this.subs.add(
-      this.jobsfiltered$.subscribe(
-        jobs => this.jobsDisplay = jobs
-      )
+      this.jobsfiltered$.subscribe((jobs) => (this.jobsDisplay = jobs)),
     );
   }
 
@@ -82,7 +99,9 @@ export class ProcessingQueueJobsComponent implements OnInit {
   }
 
   public viewCustomProducts(event: MouseEvent): void {
-    this.store$.dispatch(new searchStore.SetSearchType(SearchType.CUSTOM_PRODUCTS));
+    this.store$.dispatch(
+      new searchStore.SetSearchType(SearchType.CUSTOM_PRODUCTS),
+    );
     this.store$.dispatch(new searchStore.ClearSearch());
 
     this.store$.dispatch(new searchStore.MakeSearch());
@@ -103,13 +122,19 @@ export class ProcessingQueueJobsComponent implements OnInit {
     let output = [].concat(jobs);
     if (this.sortType === ProcessingQueueJobsSortType.ACQUISITION) {
       output = output.sort((a, b) => {
-        if (moment(a.granules[0].metadata.date) < moment(b.granules[0].metadata.date)) {
+        if (
+          moment(a.granules[0].metadata.date) <
+          moment(b.granules[0].metadata.date)
+        ) {
           return -1;
-        } else if (moment(a.granules[0].metadata.date) > moment(b.granules[0].metadata.date)) {
+        } else if (
+          moment(a.granules[0].metadata.date) >
+          moment(b.granules[0].metadata.date)
+        ) {
           return 1;
         }
         return 0;
-        });
+      });
     }
 
     if (this.sortOrder === ProcessingQueueJobsSortOrder.LATEST) {
@@ -118,12 +143,11 @@ export class ProcessingQueueJobsComponent implements OnInit {
 
     return output;
   }
-
 }
 
 export enum ProcessingQueueJobsSortOrder {
-  OLDEST =  'Oldest',
-  LATEST = 'Latest'
+  OLDEST = 'Oldest',
+  LATEST = 'Latest',
 }
 export enum ProcessingQueueJobsSortType {
   ACQUISITION = 'Start Date',

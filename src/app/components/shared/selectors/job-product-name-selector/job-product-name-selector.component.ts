@@ -1,4 +1,11 @@
-import { Component, OnInit, OnDestroy, Input, EventEmitter, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Input,
+  EventEmitter,
+  inject,
+} from '@angular/core';
 import { SubSink } from 'subsink';
 
 import * as filtersStore from '@store/filters';
@@ -27,7 +34,7 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
 
   public productNameFilter = '';
   private subs = new SubSink();
-  public filteredOptions: EventEmitter<string[]> = new EventEmitter<string[]>()
+  public filteredOptions: EventEmitter<string[]> = new EventEmitter<string[]>();
   public unfilteredScenes: string[];
 
   public isJobFilterOptionsOpen = false;
@@ -39,62 +46,72 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(filtersStore.getProductNameFilter).subscribe(
-        productNameFilter => this.productNameFilter = productNameFilter
-      )
+      this.store$
+        .select(filtersStore.getProductNameFilter)
+        .subscribe(
+          (productNameFilter) => (this.productNameFilter = productNameFilter),
+        ),
     );
 
     this.subs.add(
       this.screenSize.size$.subscribe(
-        screenSize => this.screenWidth = screenSize.width
-      )
+        (screenSize) => (this.screenWidth = screenSize.width),
+      ),
     );
 
     this.subs.add(
-      this.screenSize.breakpoint$.subscribe(
-        val => this.breakpoint = val
-      )
+      this.screenSize.breakpoint$.subscribe((val) => (this.breakpoint = val)),
     );
 
     const fileNames = this.scenesService.scenes$.pipe(
-      map(scenes => scenes
-        .map(
-            scene => {
-              const filename = scene.metadata.fileName || '';
-              return filename.toLowerCase().split('.')[0];
-        })
-      )
+      map((scenes) =>
+        scenes.map((scene) => {
+          const filename = scene.metadata.fileName || '';
+          return filename.toLowerCase().split('.')[0];
+        }),
+      ),
     );
 
     this.subs.add(
       this.store$.select(getScenes).subscribe(
-        res => this.unfilteredScenes = Array.from(
-          new Set(
-            res
-              .map(scene => {
+        (res) =>
+          (this.unfilteredScenes = Array.from(
+            new Set(
+              res.map((scene) => {
                 const filename = scene.metadata.fileName || '';
                 return filename.toLowerCase().split('.')[0];
-              })
-          )
-        )
-      )
+              }),
+            ),
+          )),
+      ),
     );
 
     this.subs.add(
-      combineLatest([this.myControl.valueChanges.pipe(
-        debounceTime(200)
-      ), fileNames]).pipe(
-        map(([_, filteredRes]) => filteredRes)
-      ).subscribe(res => {
+      combineLatest([
+        this.myControl.valueChanges.pipe(debounceTime(200)),
+        fileNames,
+      ])
+        .pipe(map(([_, filteredRes]) => filteredRes))
+        .subscribe((res) => {
           if (this.productNameFilter != null) {
-            const temp = this.productNameFilter.replace(/\s+/g, '').endsWith(',')
-              ? this.unfilteredScenes.filter(scene => !res.includes(scene)) : res;
-            this.filteredOptions.emit(Array.from(new Set(temp.filter(file => this.autoSuggestion(file.toLowerCase())))));
+            const temp = this.productNameFilter
+              .replace(/\s+/g, '')
+              .endsWith(',')
+              ? this.unfilteredScenes.filter((scene) => !res.includes(scene))
+              : res;
+            this.filteredOptions.emit(
+              Array.from(
+                new Set(
+                  temp.filter((file) =>
+                    this.autoSuggestion(file.toLowerCase()),
+                  ),
+                ),
+              ),
+            );
           } else {
             this.filteredOptions.emit(this.unfilteredScenes);
           }
-        }
-      )
+        }),
     );
   }
 
@@ -116,18 +133,18 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
     let output = '';
 
     if (this.productNameFilter != null) {
-    if (this.productNameFilter.split(',').length > 1) {
-      if (this.productNameFilter.replace(/\s+/g, '').endsWith(',')) {
-        output = this.productNameFilter + suggestion;
+      if (this.productNameFilter.split(',').length > 1) {
+        if (this.productNameFilter.replace(/\s+/g, '').endsWith(',')) {
+          output = this.productNameFilter + suggestion;
+        } else {
+          const fields = this.productNameFilter.split(',');
+          fields[fields.length - 1] = suggestion;
+          output = fields.join(', ');
+        }
       } else {
-        const fields = this.productNameFilter.split(',');
-        fields[fields.length - 1] = suggestion;
-        output = fields.join(', ');
+        output = suggestion;
       }
-    } else {
-      output = suggestion;
     }
-  }
     return output;
   }
 
@@ -136,7 +153,9 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
       return suggestion;
     }
     if (this.productNameFilter.split(',').length > 1) {
-      const filenames = this.productNameFilter.replace(/\s+/g, '').toLowerCase();
+      const filenames = this.productNameFilter
+        .replace(/\s+/g, '')
+        .toLowerCase();
       if (filenames.endsWith(',')) {
         return filenames.includes(suggestion) ? '' : suggestion;
       } else {
@@ -151,22 +170,38 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
   public autoSuggestionDisplay(suggestion: string) {
     const lastEntry = this.latestInput();
     if (lastEntry === '') {
-      return (suggestion.slice(0, 15) + ' ... ' + suggestion.slice(suggestion.length - 4)).toUpperCase();
+      return (
+        suggestion.slice(0, 15) +
+        ' ... ' +
+        suggestion.slice(suggestion.length - 4)
+      ).toUpperCase();
     }
     const idx = suggestion.indexOf(lastEntry);
 
-    let bolded = idx !== -1 ? suggestion.slice(idx, idx + lastEntry.length) : '';
+    let bolded =
+      idx !== -1 ? suggestion.slice(idx, idx + lastEntry.length) : '';
     bolded = '<strong><em>' + bolded + '</em></strong>';
 
-    bolded = (idx < 15 ? suggestion.slice(0, Math.min(15, Math.max(idx, 0))) : '')
-    + (idx >= 15 ? suggestion.slice(0, 15) +  ' ... ' : '')
-    + (suggestion.length - 4 < idx ? suggestion.slice(suggestion.length - 4, idx) : '')
-    + bolded
-    + (idx < 15 && idx >= 0 ? suggestion.slice(idx + lastEntry.length, 15)
-    + ( suggestion.length - 4 <= idx ? ' ... ' : '') : '')
-    + (suggestion.length - 4 < idx ? suggestion.slice(idx + lastEntry.length) : '')
-    + (suggestion.length - 4 > idx ? ' ... ' + suggestion.slice(suggestion.length - 4) : '')
-    + (suggestion.length - 4 === idx ? suggestion.slice(suggestion.length - 4 + lastEntry.length) : '');
+    bolded =
+      (idx < 15 ? suggestion.slice(0, Math.min(15, Math.max(idx, 0))) : '') +
+      (idx >= 15 ? suggestion.slice(0, 15) + ' ... ' : '') +
+      (suggestion.length - 4 < idx
+        ? suggestion.slice(suggestion.length - 4, idx)
+        : '') +
+      bolded +
+      (idx < 15 && idx >= 0
+        ? suggestion.slice(idx + lastEntry.length, 15) +
+          (suggestion.length - 4 <= idx ? ' ... ' : '')
+        : '') +
+      (suggestion.length - 4 < idx
+        ? suggestion.slice(idx + lastEntry.length)
+        : '') +
+      (suggestion.length - 4 > idx
+        ? ' ... ' + suggestion.slice(suggestion.length - 4)
+        : '') +
+      (suggestion.length - 4 === idx
+        ? suggestion.slice(suggestion.length - 4 + lastEntry.length)
+        : '');
 
     return bolded.toUpperCase();
   }
@@ -191,5 +226,4 @@ export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
-
 }

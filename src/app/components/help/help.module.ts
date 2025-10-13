@@ -24,10 +24,10 @@ import { HelpUnzippingComponent } from '@components/help/help-pages/help-unzippi
 import { HelpDownloadQueueComponent } from './help-pages/help-download-queue/help-download-queue.component';
 import { HelpExportOptionsComponent } from './help-pages/help-export-options/help-export-options.component';
 import { HelpOnDemandComponent } from './help-pages/help-on-demand/help-on-demand.component';
-import {MatInputModule} from '@angular/material/input';
-import {DocsModalModule} from '@components/shared/docs-modal';
+import { MatInputModule } from '@angular/material/input';
+import { DocsModalModule } from '@components/shared/docs-modal';
 
-import { TranslateModule } from "@ngx-translate/core";
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -49,18 +49,15 @@ import { TranslateModule } from "@ngx-translate/core";
     HelpExportOptionsComponent,
     HelpOnDemandComponent,
   ],
-    imports: [
-        CommonModule,
-        MatSharedModule,
-        MatTableModule,
-        MatSortModule,
-        MatInputModule,
-        DocsModalModule,
-        TranslateModule,
-
-    ],
-  exports: [
-    HelpComponent
-  ]
+  imports: [
+    CommonModule,
+    MatSharedModule,
+    MatTableModule,
+    MatSortModule,
+    MatInputModule,
+    DocsModalModule,
+    TranslateModule,
+  ],
+  exports: [HelpComponent],
 })
-export class HelpModule { }
+export class HelpModule {}

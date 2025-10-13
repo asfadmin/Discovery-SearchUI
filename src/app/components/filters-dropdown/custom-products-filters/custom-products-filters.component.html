@@ -1,62 +1,83 @@
 <mat-accordion multi>
   <mat-expansion-panel
-    [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+    [expanded]="defaultPanelOpenState"
+    [disabled]="panelIsDisabled"
     (click)="selectPanel(panels.SEARCH)"
-    [class.raised-section]="isSelected(panels.SEARCH)">
-
-    <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
+    [class.raised-section]="isSelected(panels.SEARCH)"
+  >
+    <mat-expansion-panel-header
+      [collapsedHeight]="customCollapsedHeight"
+      [expandedHeight]="customExpandedHeight"
+    >
       <mat-panel-title>
-        {{ panels.SEARCH | translate}}
+        {{ panels.SEARCH | translate }}
       </mat-panel-title>
     </mat-expansion-panel-header>
 
-    <div style="display: flex; margin-top: 25px;">
-      <app-search-type-selector style="margin-right: 25px;">
+    <div style="display: flex; margin-top: 25px">
+      <app-search-type-selector style="margin-right: 25px">
       </app-search-type-selector>
 
-      <app-on-demand-user-selector style="margin-top: 11px;"></app-on-demand-user-selector>
+      <app-on-demand-user-selector
+        style="margin-top: 11px"
+      ></app-on-demand-user-selector>
 
       <app-job-id-selector
         [jobIds]="hyp3JobIds"
         (newJobIds)="onNewHyp3JobIds($event)"
-        style="margin-top: 11px;"></app-job-id-selector>
+        style="margin-top: 11px"
+      ></app-job-id-selector>
     </div>
   </mat-expansion-panel>
 
   <mat-expansion-panel
-    [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+    [expanded]="defaultPanelOpenState"
+    [disabled]="panelIsDisabled"
     (click)="selectPanel(panels.DATE_FILTER)"
-    [class.raised-section]="isSelected(panels.DATE_FILTER)">
-
-    <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
+    [class.raised-section]="isSelected(panels.DATE_FILTER)"
+  >
+    <mat-expansion-panel-header
+      [collapsedHeight]="customCollapsedHeight"
+      [expandedHeight]="customExpandedHeight"
+    >
       <mat-panel-title>
         {{ 'DATE_FILTERS' | translate }}
       </mat-panel-title>
     </mat-expansion-panel-header>
 
-    <div style="margin-top: 20px;">
+    <div style="margin-top: 20px">
       <app-date-selector></app-date-selector>
     </div>
   </mat-expansion-panel>
 
   <mat-expansion-panel
-    [expanded]="defaultPanelOpenState" [disabled]="panelIsDisabled"
+    [expanded]="defaultPanelOpenState"
+    [disabled]="panelIsDisabled"
     (click)="selectPanel(panels.PROJECT_NAME)"
-    [class.raised-section]="isSelected(panels.PROJECT_NAME)">
-
-    <mat-expansion-panel-header [collapsedHeight]="customCollapsedHeight" [expandedHeight]="customExpandedHeight">
+    [class.raised-section]="isSelected(panels.PROJECT_NAME)"
+  >
+    <mat-expansion-panel-header
+      [collapsedHeight]="customCollapsedHeight"
+      [expandedHeight]="customExpandedHeight"
+    >
       <mat-panel-title>
         {{ 'JOB_FILTERS' | translate }}
       </mat-panel-title>
     </mat-expansion-panel-header>
 
-    <div class="w100" style="display: flex; flex-wrap: wrap; margin-top: 25px;">
-      <div class="w100" style="display: flex; flex-wrap: wrap; margin-top: 25px;">
-      <app-project-name-selector style="margin-right: 25px;"></app-project-name-selector>
-      <app-job-status-selector></app-job-status-selector>
+    <div class="w100" style="display: flex; flex-wrap: wrap; margin-top: 25px">
+      <div
+        class="w100"
+        style="display: flex; flex-wrap: wrap; margin-top: 25px"
+      >
+        <app-project-name-selector
+          style="margin-right: 25px"
+        ></app-project-name-selector>
+        <app-job-status-selector></app-job-status-selector>
+      </div>
+      <app-job-product-name-selector
+        [headerView]="false"
+      ></app-job-product-name-selector>
     </div>
-      <app-job-product-name-selector [headerView]="false"></app-job-product-name-selector>
-    </div>
-
   </mat-expansion-panel>
 </mat-accordion>

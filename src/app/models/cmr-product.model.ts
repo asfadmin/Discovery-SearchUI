@@ -18,7 +18,7 @@ export interface CMRProduct {
   groupId: string;
   isUnzippedFile: boolean;
   isDummyProduct: boolean;
-  virtual?:boolean;
+  virtual?: boolean;
 
   metadata: CMRProductMetadata;
 }
@@ -99,12 +99,12 @@ export interface OperaS1Metadata {
 export interface NISARMetadata {
   additionalUrls: string[];
   s3Urls: string[];
-  frameCoverage: string,
-  jointObservation: string,
-  sideBandPolarization: string,
-  mainBandPolarization: string,
-  rangeBandwidth: string,
-  sizeMB?: Record<string, {bytes: number, format: string}>
+  frameCoverage: string;
+  jointObservation: string;
+  sideBandPolarization: string;
+  mainBandPolarization: string;
+  rangeBandwidth: string;
+  sizeMB?: Record<string, { bytes: number; format: string }>;
 }
 
 export enum FlightDirection {

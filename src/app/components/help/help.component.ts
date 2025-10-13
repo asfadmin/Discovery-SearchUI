@@ -8,7 +8,7 @@ import * as uiStore from '@store/ui';
 @Component({
   selector: 'app-help',
   templateUrl: './help.component.html',
-  styleUrls: ['./help.component.scss']
+  styleUrls: ['./help.component.scss'],
 })
 export class HelpComponent implements OnInit {
   private dialogRef = inject<MatDialogRef<HelpComponent>>(MatDialogRef);
@@ -17,9 +17,9 @@ export class HelpComponent implements OnInit {
   public topic: string;
 
   ngOnInit(): void {
-    this.store$.select(uiStore.getHelpDialogTopic).subscribe(
-      topic => this.topic = topic
-    );
+    this.store$
+      .select(uiStore.getHelpDialogTopic)
+      .subscribe((topic) => (this.topic = topic));
   }
 
   public setHelpTopic(topic: string): void {

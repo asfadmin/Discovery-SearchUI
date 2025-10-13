@@ -10,7 +10,7 @@ import { Breakpoints } from '@models';
 @Component({
   selector: 'app-list-header',
   templateUrl: './list-header.component.html',
-  styleUrls: ['./list-header.component.css', '../header.component.scss']
+  styleUrls: ['./list-header.component.css', '../header.component.scss'],
 })
 export class ListHeaderComponent {
   private store$ = inject<Store<AppState>>(Store);
@@ -18,7 +18,6 @@ export class ListHeaderComponent {
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = Breakpoints;
-
 
   public onToggleFiltersMenu(): void {
     this.store$.dispatch(new uiStore.OpenFiltersMenu());

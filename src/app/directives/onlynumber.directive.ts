@@ -1,11 +1,10 @@
 import { Directive, ElementRef, HostListener, inject } from '@angular/core';
 
 @Directive({
-  selector: '[appOnlynumber]'
+  selector: '[appOnlynumber]',
 })
 export class OnlynumberDirective {
   el = inject(ElementRef);
-
 
   private navigationKeys = [
     'Backspace',
@@ -19,7 +18,7 @@ export class OnlynumberDirective {
     'ArrowRight',
     'Clear',
     'Copy',
-    'Paste'
+    'Paste',
   ];
   inputElement: HTMLElement;
   constructor() {
@@ -46,7 +45,7 @@ export class OnlynumberDirective {
     }
     // Ensure that it is a number and stop the keypress
     if (
-      (e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) &&
+      (e.shiftKey || e.keyCode < 48 || e.keyCode > 57) &&
       (e.keyCode < 96 || e.keyCode > 105)
     ) {
       e.preventDefault();
@@ -54,7 +53,7 @@ export class OnlynumberDirective {
   }
 
   @HostListener('paste', ['$event'])
-    onPaste(event: ClipboardEvent) {
+  onPaste(event: ClipboardEvent) {
     event.preventDefault();
     const pastedInput: string = event.clipboardData
       .getData('text/plain')
@@ -69,6 +68,4 @@ export class OnlynumberDirective {
     this.inputElement.focus();
     document.execCommand('insertText', false, textData);
   }
-
-
 }

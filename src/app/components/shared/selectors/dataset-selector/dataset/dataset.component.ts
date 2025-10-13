@@ -7,7 +7,7 @@ import { Dataset, DateRange } from '@models';
 @Component({
   selector: 'app-dataset',
   templateUrl: './dataset.component.html',
-  styleUrls: ['./dataset.component.scss']
+  styleUrls: ['./dataset.component.scss'],
 })
 export class DatasetComponent {
   @Input() dataset: Dataset;
@@ -23,11 +23,11 @@ export class DatasetComponent {
     const { start, end } = dateRange;
 
     const startYear = start.getFullYear();
-    const endYear = (!end) ? 'Present' : end.getFullYear();
+    const endYear = !end ? 'Present' : end.getFullYear();
 
-    return startYear === endYear ?
-      `${startYear}`.trim() :
-      `${startYear} to ${endYear}`.trim();
+    return startYear === endYear
+      ? `${startYear}`.trim()
+      : `${startYear} to ${endYear}`.trim();
   }
 
   public onInfoClicked(e: Event): void {

@@ -3,9 +3,6 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-help-baseline-search',
   templateUrl: './help-baseline-search.component.html',
-  styleUrls: ['./help-baseline-search.component.scss']
+  styleUrls: ['./help-baseline-search.component.scss'],
 })
-export class HelpBaselineSearchComponent {
-
-
-}
+export class HelpBaselineSearchComponent {}

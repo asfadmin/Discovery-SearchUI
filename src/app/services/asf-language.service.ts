@@ -1,22 +1,21 @@
-import '@formatjs/intl-displaynames/polyfill'
-import '@formatjs/intl-displaynames/locale-data/en'
-import '@formatjs/intl-displaynames/locale-data/es'
+import '@formatjs/intl-displaynames/polyfill';
+import '@formatjs/intl-displaynames/locale-data/en';
+import '@formatjs/intl-displaynames/locale-data/es';
 
-
-import { TranslateService } from "@ngx-translate/core";
-import { CookieService } from "ngx-cookie-service";
+import { TranslateService } from '@ngx-translate/core';
+import { CookieService } from 'ngx-cookie-service';
 import * as moment from 'moment';
-import { Injectable, inject } from "@angular/core";
-import { DateAdapter } from "@angular/material/core";
+import { Injectable, inject } from '@angular/core';
+import { DateAdapter } from '@angular/material/core';
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
-import { Store } from "@ngrx/store";
-import {SubSink} from "subsink";
-import {Title} from "@angular/platform-browser";
+import { Store } from '@ngrx/store';
+import { SubSink } from 'subsink';
+import { Title } from '@angular/platform-browser';
 const defaultLanguage = 'en';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AsfLanguageService {
   translate = inject(TranslateService);
@@ -25,28 +24,28 @@ export class AsfLanguageService {
   private store$ = inject<Store<AppState>>(Store);
   private titleService = inject(Title);
 
-
-  public languageNamesInEnglish = new Intl.DisplayNames(['en'], { type: 'language' });
+  public languageNamesInEnglish = new Intl.DisplayNames(['en'], {
+    type: 'language',
+  });
   public browserLang: string;
   private defaultProfileLanguage: string;
   public languageCookie = 'Language';
   public cookieOptions = {
-    path: '/'
+    path: '/',
   };
   private matchLanguagesRegex = /en|es/;
-  private listLanguagesRegex = [ 'en', 'es' ];
+  private listLanguagesRegex = ['en', 'es'];
 
   public languageName = {
-    'de' : 'Deutsch',
-    'en' : 'English',
-    'es' : 'Español' ,
-    'fr' : 'Français',
-    'pt' : 'Português',
-    'zh' : '中文 (Chinese)',
-  }
+    de: 'Deutsch',
+    en: 'English',
+    es: 'Español',
+    fr: 'Français',
+    pt: 'Português',
+    zh: '中文 (Chinese)',
+  };
 
   private subs = new SubSink();
-
 
   constructor() {
     this.browserLang = this.translate.getBrowserLang();
@@ -61,21 +60,21 @@ export class AsfLanguageService {
     this.store$.dispatch(new uiStore.SetCurrentLanguage(language));
   }
 
-  public getName( langName? : string ) {
+  public getName(langName?: string) {
     if (!langName) {
       if (this.translate.currentLang) {
-        return  this.languageName[this.translate.currentLang];
+        return this.languageName[this.translate.currentLang];
       } else {
         moment.locale(defaultLanguage);
-        this.translate.use(defaultLanguage)
+        this.translate.use(defaultLanguage);
         return this.languageName[defaultLanguage];
       }
     }
     return this.languageName[langName];
   }
 
-  public getEnglishName( langName : string ) {
-    return this.languageNamesInEnglish.of( langName );
+  public getEnglishName(langName: string) {
+    return this.languageNamesInEnglish.of(langName);
   }
 
   public setCurrent(language: string): void {
@@ -84,17 +83,20 @@ export class AsfLanguageService {
     this.translate.use(language);
     this.dateAdapter.setLocale(language);
     this.setCurrentLanguage(language);
-    this.subs.add(this.translate.get('ASF_DATA_SEARCH_TITLE').subscribe(title => {
-      this.titleService.setTitle(title);
-    }));
-
+    this.subs.add(
+      this.translate.get('ASF_DATA_SEARCH_TITLE').subscribe((title) => {
+        this.titleService.setTitle(title);
+      }),
+    );
   }
 
   public initialize(): void {
     this.translate.addLangs(this.listLanguagesRegex);
     this.translate.setDefaultLang(defaultLanguage);
     // If the browser reports a language we support and if so use it as the current language
-    let currentLanguage = this.browserLang.match(this.matchLanguagesRegex) ? this.browserLang : defaultLanguage;
+    let currentLanguage = this.browserLang.match(this.matchLanguagesRegex)
+      ? this.browserLang
+      : defaultLanguage;
     // If the user has a profile and established a language preference then set the current language to it
     if (this.defaultProfileLanguage !== undefined) {
       currentLanguage = this.defaultProfileLanguage;

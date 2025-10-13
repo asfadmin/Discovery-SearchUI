@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy  } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 import { GeographicFiltersType, ProductType } from '@models';
 
@@ -6,16 +6,13 @@ import { GeographicFiltersType, ProductType } from '@models';
   selector: 'app-geographic-search-filters',
   templateUrl: './geographic-search-filters.component.html',
   styleUrls: ['./geographic-search-filters.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GeographicSearchFiltersComponent {
   @Input() filters: GeographicFiltersType;
 
-
   public formatTypesList(fileTypes: ProductType[]): string {
-    return fileTypes
-      .map(subtype => subtype.apiValue)
-      .join(', ');
+    return fileTypes.map((subtype) => subtype.apiValue).join(', ');
   }
 
   public noFilters(filters: GeographicFiltersType): boolean {

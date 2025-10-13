@@ -1,30 +1,50 @@
-<div style="display: inline-flex; margin-top: 16px; margin-left: 5px;">
+<div style="display: inline-flex; margin-top: 16px; margin-left: 5px">
   <div class="menu-button-wrapper">
     <div class="ts-button-label">{{ 'FLIGHT_DIRECTION' | translate }}</div>
     <div>
-      <button [matMenuTriggerFor]="flightDirectionMenu"
-              color="basic" matTooltip="{{ 'FLIGHT_DIRECTION' | translate }}" mat-button>
+      <button
+        [matMenuTriggerFor]="flightDirectionMenu"
+        color="basic"
+        matTooltip="{{ 'FLIGHT_DIRECTION' | translate }}"
+        mat-button
+      >
         <div class="button-text">
-          <mat-icon class="fd-icon-button-text" *ngIf="flightDirection === FlightDirections.ASCENDING">north_west</mat-icon>
-          <mat-icon class="fd-icon-button-text" *ngIf="flightDirection === FlightDirections.DESCENDING">south_west</mat-icon>
-          {{flightDirection.toString() | translate}}
+          <mat-icon
+            class="fd-icon-button-text"
+            *ngIf="flightDirection === FlightDirections.ASCENDING"
+            >north_west</mat-icon
+          >
+          <mat-icon
+            class="fd-icon-button-text"
+            *ngIf="flightDirection === FlightDirections.DESCENDING"
+            >south_west</mat-icon
+          >
+          {{ flightDirection.toString() | translate }}
           <span class="mat-select-arrow"></span>
         </div>
       </button>
       <div class="hr-wrapper">
-        <hr class="text-underline">
+        <hr class="text-underline" />
       </div>
     </div>
   </div>
 </div>
 
 <mat-menu #flightDirectionMenu="matMenu" id="flightDirectionMenu">
-  <button mat-menu-item class="ts-menu-item" (click)="setFlightDirection(FlightDirections.ASCENDING)">
-      <mat-icon class="control-icon">north_west</mat-icon>
-    {{FlightDirections.ASCENDING | translate}}
+  <button
+    mat-menu-item
+    class="ts-menu-item"
+    (click)="setFlightDirection(FlightDirections.ASCENDING)"
+  >
+    <mat-icon class="control-icon">north_west</mat-icon>
+    {{ FlightDirections.ASCENDING | translate }}
   </button>
-  <button mat-menu-item class="ts-menu-item" (click)="setFlightDirection(FlightDirections.DESCENDING)">
+  <button
+    mat-menu-item
+    class="ts-menu-item"
+    (click)="setFlightDirection(FlightDirections.DESCENDING)"
+  >
     <mat-icon class="control-icon">south_west</mat-icon>
-    {{FlightDirections.DESCENDING | translate}}
+    {{ FlightDirections.DESCENDING | translate }}
   </button>
 </mat-menu>

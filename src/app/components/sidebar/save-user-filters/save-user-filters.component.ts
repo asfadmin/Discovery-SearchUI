@@ -12,7 +12,7 @@ import { ScreenSizeService } from '@services';
 @Component({
   selector: 'app-save-user-filters',
   templateUrl: './save-user-filters.component.html',
-  styleUrls: ['./save-user-filters.component.scss']
+  styleUrls: ['./save-user-filters.component.scss'],
 })
 export class SaveUserFiltersComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
@@ -41,57 +41,67 @@ export class SaveUserFiltersComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subs.add(
       this.screenSize.breakpoint$.subscribe(
-        breakpoint => this.breakpoint = breakpoint
-      )
+        (breakpoint) => (this.breakpoint = breakpoint),
+      ),
     );
 
     this.subs.add(
-      this.store$.select(userStore.getSavedFilters).pipe(
-        map(presets => presets.map(preset =>
-          preset.searchType === this.SearchType.DATASET ?
-            ({ ...preset,
-                filters: {
-                  ... preset.filters,
-                  flightDirections: Array.from((preset.filters as GeographicFiltersType).flightDirections)
-                }
-            })
-            : preset
-          )
+      this.store$
+        .select(userStore.getSavedFilters)
+        .pipe(
+          map((presets) =>
+            presets.map((preset) =>
+              preset.searchType === this.SearchType.DATASET
+                ? {
+                    ...preset,
+                    filters: {
+                      ...preset.filters,
+                      flightDirections: Array.from(
+                        (preset.filters as GeographicFiltersType)
+                          .flightDirections,
+                      ),
+                    },
+                  }
+                : preset,
+            ),
+          ),
         )
-      ).subscribe ( userFilters => {
+        .subscribe((userFilters) => {
           this.userFilters = userFilters;
           const output = this.filterBySearchType(this.userFilters);
           this.displayedFilter = output.reverse();
-        })
+        }),
     );
 
     this.subs.add(
-      this.store$.select(searchStore.getSearchType).subscribe(searchtype => {
+      this.store$.select(searchStore.getSearchType).subscribe((searchtype) => {
         this.currentSearchType = searchtype;
         const output = this.filterBySearchType(this.userFilters);
         this.displayedFilter = output.reverse();
-      })
+      }),
     );
 
     this.subs.add(
-      this.searchType$.subscribe(searchType => {
+      this.searchType$.subscribe((searchType) => {
         this.searchType = searchType;
-      })
+      }),
     );
   }
 
   public filterBySearchType(filters: models.SavedFilterPreset[]) {
-    let output = filters.filter(preset => preset.searchType === this.currentSearchType);
+    let output = filters.filter(
+      (preset) => preset.searchType === this.currentSearchType,
+    );
     if (this.searchType === SearchType.DATASET) {
-      output = output.map(preset => (
-          { ...preset,
-            filters: {
-              ... preset.filters,
-              flightDirections: Array.from((preset.filters as GeographicFiltersType).flightDirections)
-            }
-          }
-        )
-      );
+      output = output.map((preset) => ({
+        ...preset,
+        filters: {
+          ...preset.filters,
+          flightDirections: Array.from(
+            (preset.filters as GeographicFiltersType).flightDirections,
+          ),
+        },
+      }));
     }
     return output;
   }

@@ -7,11 +7,10 @@ import * as searchStore from '@store/search';
 @Component({
   selector: 'app-clear-button',
   templateUrl: './clear-button.component.html',
-  styleUrls: ['./clear-button.component.css']
+  styleUrls: ['./clear-button.component.css'],
 })
 export class ClearButtonComponent {
   private store$ = inject<Store<AppState>>(Store);
-
 
   public onClearSearch(): void {
     this.store$.dispatch(new searchStore.ClearSearch());

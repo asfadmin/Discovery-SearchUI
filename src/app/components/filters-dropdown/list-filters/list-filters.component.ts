@@ -5,7 +5,15 @@ import { NgxCsvParser } from 'ngx-csv-parser';
 import { NgxCSVParserError } from 'ngx-csv-parser';
 import * as xml2js from 'xml2js';
 import { combineLatest, from, Subject } from 'rxjs';
-import { map, debounceTime, withLatestFrom, first, tap, delay, filter } from 'rxjs/operators';
+import {
+  map,
+  debounceTime,
+  withLatestFrom,
+  first,
+  tap,
+  delay,
+  filter,
+} from 'rxjs/operators';
 import { SubSink } from 'subsink';
 
 import { ActionsSubject, Store } from '@ngrx/store';
@@ -19,18 +27,18 @@ import { ofType } from '@ngrx/effects';
 
 enum ListPanel {
   SEARCH = 'search',
-  LIST = 'list'
+  LIST = 'list',
 }
 
 enum FileErrors {
   TOO_LARGE = 'Too large',
-  INVALID_TYPE = 'Invalid Type'
+  INVALID_TYPE = 'Invalid Type',
 }
 
 @Component({
   selector: 'app-list-filters',
   templateUrl: './list-filters.component.html',
-  styleUrls: ['./list-filters.component.scss']
+  styleUrls: ['./list-filters.component.scss'],
 })
 export class ListFiltersComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
@@ -44,7 +52,10 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
   public panels = ListPanel;
   public files = new Set<File>();
 
-  public fileError$ = new Subject<{fileName: string, fileError: FileErrors}>();
+  public fileError$ = new Subject<{
+    fileName: string;
+    fileError: FileErrors;
+  }>();
 
   defaultPanelOpenState = true;
   panelIsDisabled = true;
@@ -64,93 +75,91 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
     [this.types.PRODUCT]: [
       'S1B_IW_GRDH_1SDV_20161124T032008_20161124T032033_003095_005430_9906-GRD_HD',
       'S1-GUNW-D-R-087-tops-20190301_20190223-161540-20645N_18637N-PP-7a85-v2_0_1-unwrappedPhase',
-      'ALPSRP111041130-RTC_HI_RES'
+      'ALPSRP111041130-RTC_HI_RES',
     ].join(', '),
     [this.types.SCENE]: [
       'S1B_IW_GRDH_1SDV_20161124T032008_20161124T032033_003095_005430_9906',
       'S1-GUNW-D-R-087-tops-20190301_20190223-161540-20645N_18637N-PP-7a85-v2_0_1',
-      'ALPSRP111041130'
-    ].join(', ')
+      'ALPSRP111041130',
+    ].join(', '),
   };
 
   ngOnInit() {
-
     this.subs.add(
-      this.fileError$.pipe(
-        tap(
-          (file_error) => {
+      this.fileError$
+        .pipe(
+          tap((file_error) => {
             if (file_error.fileError === FileErrors.INVALID_TYPE) {
               this.notificationService.error(
                 `Invalid File Type for file ${file_error.fileName}`,
                 'File Error',
-                { timeOut: 5000 }
+                { timeOut: 5000 },
               );
             } else if (file_error.fileError === FileErrors.TOO_LARGE) {
               this.notificationService.error(
                 `File is too large (over 10MB) for file ${file_error.fileName}`,
                 'File Error',
-                { timeOut: 5000 }
+                { timeOut: 5000 },
               );
             }
-          }
-        ),
-        delay(820)
-      ).subscribe(
-        _ => _
-      )
-
-
+          }),
+          delay(820),
+        )
+        .subscribe((_) => _),
     );
 
     this.subs.add(
-      this.listSearchMode$.subscribe(mode => this.listSearchMode = mode)
+      this.listSearchMode$.subscribe((mode) => (this.listSearchMode = mode)),
     );
 
     this.subs.add(
-        this.actions$.pipe(
-            ofType(
-                searchStore.SearchActionType.CLEAR_SEARCH
-            )
-        ).subscribe(_ => this.searchList = '')
-    )
+      this.actions$
+        .pipe(ofType(searchStore.SearchActionType.CLEAR_SEARCH))
+        .subscribe((_) => (this.searchList = '')),
+    );
 
     this.subs.add(
       combineLatest([
-      this.actions$.pipe(
-        ofType(
-          searchStore.SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE,
-          searchStore.SearchActionType.MAKE_SEARCH,
-          filtersStore.FiltersActionType.RESTORE_FILTERS
+        this.actions$.pipe(
+          ofType(
+            searchStore.SearchActionType.SET_SEARCH_TYPE_AFTER_SAVE,
+            searchStore.SearchActionType.MAKE_SEARCH,
+            filtersStore.FiltersActionType.RESTORE_FILTERS,
+          ),
+          withLatestFrom(
+            this.store$
+              .select(filtersStore.getSearchList)
+              .pipe(map((list) => list.join('\n'))),
+          ),
         ),
-        withLatestFrom(this.store$.select(filtersStore.getSearchList).pipe(map(list => list.join('\n')))),
-      )]).subscribe(([[_, listStr]]) => this.searchList = listStr
-      )
+      ]).subscribe(([[_, listStr]]) => (this.searchList = listStr)),
     );
 
     this.subs.add(
-      this.newListInput$.asObservable().pipe(
-        debounceTime(750),
-        withLatestFrom(this.listSearchMode$)
-      ).subscribe(([text, searchMode]) => {
-        const scenes = text
-          .split(/[\s\n,\t]+/)
-          .filter(v => v);
+      this.newListInput$
+        .asObservable()
+        .pipe(debounceTime(750), withLatestFrom(this.listSearchMode$))
+        .subscribe(([text, searchMode]) => {
+          const scenes = text.split(/[\s\n,\t]+/).filter((v) => v);
 
-        const unique = Array.from(new Set(scenes));
+          const unique = Array.from(new Set(scenes));
 
-        if (scenes.length > unique.length) {
-          const duplicates = scenes.length - unique.length;
-          const mode = searchMode === this.types.PRODUCT ?
-            'file' : 'scene';
-          const plural = duplicates === 1 ? '' : 's';
+          if (scenes.length > unique.length) {
+            const duplicates = scenes.length - unique.length;
+            const mode = searchMode === this.types.PRODUCT ? 'file' : 'scene';
+            const plural = duplicates === 1 ? '' : 's';
 
-          this.notificationService.info(`Removed ${duplicates} duplicate ${mode}${plural} from search list`, 'Search', {
-            timeOut: 5000
-          });
-        }
+            this.notificationService.info(
+              `Removed ${duplicates} duplicate ${mode}${plural} from search list`,
+              'Search',
+              {
+                timeOut: 5000,
+              },
+            );
+          }
 
-        this.store$.dispatch(new filtersStore.SetSearchList(unique));
-      })
+          this.store$.dispatch(new filtersStore.SetSearchList(unique));
+        }),
     );
   }
 
@@ -195,7 +204,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
       const size_limit = 10e6;
 
       if (file.size > size_limit) {
-        this.fileError$.next({fileName, fileError: FileErrors.TOO_LARGE});
+        this.fileError$.next({ fileName, fileError: FileErrors.TOO_LARGE });
         continue;
       }
 
@@ -219,7 +228,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
             break;
         }
       } else {
-        this.fileError$.next({fileName, fileError: FileErrors.INVALID_TYPE});
+        this.fileError$.next({ fileName, fileError: FileErrors.INVALID_TYPE });
       }
     }
 
@@ -231,9 +240,7 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
 
     const fileExtension = this.getFileType(fileName);
 
-    return validFileTypes.some(
-      ext => ext === fileExtension
-    );
+    return validFileTypes.some((ext) => ext === fileExtension);
   }
 
   private getFileType(fileName: string): string {
@@ -241,61 +248,71 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
   }
 
   private parseCSV(file) {
-    this.ngxCsvParser.parse(file, { header: true, delimiter: ',' })
-    .pipe(
-      first(),
-      map((output: object[]) => ({
+    this.ngxCsvParser
+      .parse(file, { header: true, delimiter: ',' })
+      .pipe(
+        first(),
+        map((output: object[]) => ({
           result: output,
-          granules_key: Object.keys(output[0]).find(key => key.toLowerCase().includes('granule'))
-        })
-      ),
-      tap(res => {
-        if (res.granules_key === undefined) {
-          this.notificationService.listImportFailed('csv');
-        }
-      }),
-      filter(result => !!result.granules_key),
-      ).subscribe(({result, granules_key}) => {
-      const granules: string[] = result
-        .filter(entry => entry.hasOwnProperty(granules_key))
-        .map(entry => {
-          let processingType = '';
-
-          if (this.listSearchMode === ListSearchType.PRODUCT) {
-            const processLevel = '-' + entry?.['Processing Level']?.replace('-', '_');
-            if (processLevel !== '-') {
-              processingType = processLevel;
-            }
+          granules_key: Object.keys(output[0]).find((key) =>
+            key.toLowerCase().includes('granule'),
+          ),
+        })),
+        tap((res) => {
+          if (res.granules_key === undefined) {
+            this.notificationService.listImportFailed('csv');
           }
+        }),
+        filter((result) => !!result.granules_key),
+      )
+      .subscribe(
+        ({ result, granules_key }) => {
+          const granules: string[] = result
+            .filter((entry) => entry.hasOwnProperty(granules_key))
+            .map((entry) => {
+              let processingType = '';
 
-          return entry[granules_key] + processingType;
-        });
+              if (this.listSearchMode === ListSearchType.PRODUCT) {
+                const processLevel =
+                  '-' + entry?.['Processing Level']?.replace('-', '_');
+                if (processLevel !== '-') {
+                  processingType = processLevel;
+                }
+              }
 
-      this.updateSearchList(granules);
-    }, (_: NgxCSVParserError) => {
-      this.notificationService.listImportFailed('CSV');
-    });
+              return entry[granules_key] + processingType;
+            });
+
+          this.updateSearchList(granules);
+        },
+        (_: NgxCSVParserError) => {
+          this.notificationService.listImportFailed('CSV');
+        },
+      );
   }
 
   private parseGeoJSON(file) {
     const filereader = new FileReader();
-      filereader.onload = _ => {
-        const res = filereader.result as string;
-        const featuresCollection: GeoJSON.FeatureCollection = JSON.parse(res);
-        if (!featuresCollection) {
-          this.notificationService.listImportFailed('GeoJSON');
-          return;
-        }
-        const features = featuresCollection.features;
+    filereader.onload = (_) => {
+      const res = filereader.result as string;
+      const featuresCollection: GeoJSON.FeatureCollection = JSON.parse(res);
+      if (!featuresCollection) {
+        this.notificationService.listImportFailed('GeoJSON');
+        return;
+      }
+      const features = featuresCollection.features;
 
-        const typeKey = this.listSearchMode === ListSearchType.PRODUCT ? 'fileID' : 'sceneName';
-        const granules = features?.map(feature => feature?.properties?.[typeKey]);
-        if (!granules) {
-          this.notificationService.listImportFailed('GeoJSON');
-          return;
-        }
+      const typeKey =
+        this.listSearchMode === ListSearchType.PRODUCT ? 'fileID' : 'sceneName';
+      const granules = features?.map(
+        (feature) => feature?.properties?.[typeKey],
+      );
+      if (!granules) {
+        this.notificationService.listImportFailed('GeoJSON');
+        return;
+      }
 
-        this.updateSearchList(granules);
+      this.updateSearchList(granules);
     };
     filereader.readAsText(file);
   }
@@ -303,32 +320,35 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
   private parseKML(file) {
     if (this.listSearchMode === ListSearchType.SCENE) {
       const filereader = new FileReader();
-        filereader.onload = _ => {
-          const res = filereader.result as string;
-          const parser = new xml2js.Parser({ explicitArray: false });
-          const observable = from (parser.parseStringPromise(res).catch(__ => {
+      filereader.onload = (_) => {
+        const res = filereader.result as string;
+        const parser = new xml2js.Parser({ explicitArray: false });
+        const observable = from(
+          parser.parseStringPromise(res).catch((__) => {
             // Do nothing
-          }));
+          }),
+        );
 
-          observable.pipe(first()).subscribe(result => {
-              const placemarks: [] = result?.['kml']?.['Document']?.['Placemark'] ?? null;
+        observable.pipe(first()).subscribe((result) => {
+          const placemarks: [] =
+            result?.['kml']?.['Document']?.['Placemark'] ?? null;
 
-              if (!placemarks) {
-                this.notificationService.listImportFailed('KML');
-                return;
-              }
+          if (!placemarks) {
+            this.notificationService.listImportFailed('KML');
+            return;
+          }
 
-              const granules: string[] = placemarks.map(placemark => {
-                  return placemark?.['name'];
-                });
+          const granules: string[] = placemarks.map((placemark) => {
+            return placemark?.['name'];
+          });
 
-              if (!granules) {
-                this.notificationService.listImportFailed('KML');
-                return;
-              }
+          if (!granules) {
+            this.notificationService.listImportFailed('KML');
+            return;
+          }
 
-              this.updateSearchList(granules);
-            });
+          this.updateSearchList(granules);
+        });
       };
       filereader.readAsText(file);
     }
@@ -336,31 +356,35 @@ export class ListFiltersComponent implements OnInit, OnDestroy {
 
   private parseMetalink(file) {
     if (this.listSearchMode === ListSearchType.SCENE) {
-    const filereader = new FileReader();
-      filereader.onload = _ => {
+      const filereader = new FileReader();
+      filereader.onload = (_) => {
         const res = filereader.result as string;
         const parser = new xml2js.Parser({ explicitArray: false });
-        const observable = from (parser.parseStringPromise(res).catch(__ => {
-          // Do nothing
-        }));
+        const observable = from(
+          parser.parseStringPromise(res).catch((__) => {
+            // Do nothing
+          }),
+        );
 
-        observable.pipe(first()).subscribe(result => {
-            const files: [] = result?.['metalink']?.['files']?.['file'];
-            if (!files) {
-              this.notificationService.listImportFailed('Metalink');
-              return;
-            }
-            const fileNames = files.map(fileMeta => (fileMeta?.['$']?.['name'] as string)?.split('.')?.shift());
+        observable.pipe(first()).subscribe((result) => {
+          const files: [] = result?.['metalink']?.['files']?.['file'];
+          if (!files) {
+            this.notificationService.listImportFailed('Metalink');
+            return;
+          }
+          const fileNames = files.map((fileMeta) =>
+            (fileMeta?.['$']?.['name'] as string)?.split('.')?.shift(),
+          );
 
-            if (!fileNames) {
-              this.notificationService.listImportFailed('Metalink');
-              return;
-            }
-            this.updateSearchList(fileNames);
-          });
-    };
-    filereader.readAsText(file);
-  }
+          if (!fileNames) {
+            this.notificationService.listImportFailed('Metalink');
+            return;
+          }
+          this.updateSearchList(fileNames);
+        });
+      };
+      filereader.readAsText(file);
+    }
   }
 
   private updateSearchList(granules: string[]) {

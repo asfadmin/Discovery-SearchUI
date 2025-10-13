@@ -1,10 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'readableSizeFromBytes'
+  name: 'readableSizeFromBytes',
 })
 export class ReadableSizeFromBytesPipe implements PipeTransform {
-
   transform(bytes: string | number): string {
     return this.getReadableSize(+bytes);
   }
@@ -21,9 +20,10 @@ export class ReadableSizeFromBytesPipe implements PipeTransform {
 
     const unit = sizes[i];
 
-    const numUnits = unit !== 'B' 
-    ? String((bytes / Math.pow(k, i)).toFixed(decimals)) 
-    : String(bytes / Math.pow(k, i));
+    const numUnits =
+      unit !== 'B'
+        ? String((bytes / Math.pow(k, i)).toFixed(decimals))
+        : String(bytes / Math.pow(k, i));
 
     return `${numUnits} ${unit}`;
   }

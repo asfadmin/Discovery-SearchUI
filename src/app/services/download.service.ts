@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, throwError} from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { SAVER, Saver } from '@services/saver.provider';
 import { DownloadStatus } from '@models/download.model';
 
@@ -25,36 +25,51 @@ export class DownloadService {
 
   classicResp: Observable<DownloadStatus>;
 
-  download(url: string, filename: string, product: CMRProduct, id, handle?): Observable<DownloadStatus> {
-
+  download(
+    url: string,
+    filename: string,
+    product: CMRProduct,
+    id,
+    handle?,
+  ): Observable<DownloadStatus> {
     const resp = this.http.get(url, {
-      withCredentials: !(new URL(url).host.startsWith('hyp3')),
+      withCredentials: !new URL(url).host.startsWith('hyp3'),
       reportProgress: true,
       observe: 'events',
       responseType: 'blob',
     });
     handle = handle ?? this.dir;
-    return resp.pipe(this.download$(filename, id, product, (blob) => this.save(blob, url, filename, handle))).pipe(
-      catchError(err => {
-        if(product.dataset === 'JERS-1') {
-          this.notificationService.error('This file may need you to sign a restricted dataset agreement',
-          'Issue Downloading', {
-          });
-        } else {
-          this.notificationService.error('This file will appear in your default downloads folder and not the location you selected',
-          'Issue Downloading', {
-          });
-        }
-        return throwError(err);
-      }),
-    );
+    return resp
+      .pipe(
+        this.download$(filename, id, product, (blob) =>
+          this.save(blob, url, filename, handle),
+        ),
+      )
+      .pipe(
+        catchError((err) => {
+          if (product.dataset === 'JERS-1') {
+            this.notificationService.error(
+              'This file may need you to sign a restricted dataset agreement',
+              'Issue Downloading',
+              {},
+            );
+          } else {
+            this.notificationService.error(
+              'This file will appear in your default downloads folder and not the location you selected',
+              'Issue Downloading',
+              {},
+            );
+          }
+          return throwError(err);
+        }),
+      );
   }
-  
-  async getDirectory( getNew= false): Promise<any> {
-    return new Promise(resolve => {
+
+  async getDirectory(getNew = false): Promise<any> {
+    return new Promise((resolve) => {
       if (!this.dir || getNew) {
-      //@ts-expect-error Use in development browser functionality
-        window.showDirectoryPicker().then(dir => {
+        //@ts-expect-error Use in development browser functionality
+        window.showDirectoryPicker().then((dir) => {
           this.dir = dir;
           dir.requestPermission({ mode: 'readwrite' }).then(() => {
             resolve(this.dir);
@@ -66,27 +81,30 @@ export class DownloadService {
     });
   }
   async getFileHandle(filename: string): Promise<any> {
-    return new Promise(resolve => {
-      //@ts-expect-error Use in development browser functionality
-      window.showSaveFilePicker({
-        suggestedName: filename
-      }).then(file => {
-        resolve(file);
-      });
+    return new Promise((resolve) => {
+      window
+        //@ts-expect-error Use in development browser functionality
+        .showSaveFilePicker({
+          suggestedName: filename,
+        })
+        .then((file) => {
+          resolve(file);
+        });
     });
   }
   private download$(
     filename: string,
     id: string,
     product: CMRProduct,
-    saver?: (b: Blob) => Promise<any>): (source: Observable<HttpEvent<Blob>>) => Observable<DownloadStatus> {
-
+    saver?: (b: Blob) => Promise<any>,
+  ): (source: Observable<HttpEvent<Blob>>) => Observable<DownloadStatus> {
     return (source: Observable<HttpEvent<Blob>>) =>
       source.pipe(
         scan(
           (file: DownloadStatus, event: HttpEvent<Blob>): DownloadStatus => {
             switch (event.type) {
-              case (HttpEventType.DownloadProgress || HttpEventType.UploadProgress): {
+              case HttpEventType.DownloadProgress ||
+                HttpEventType.UploadProgress: {
                 return {
                   progress: event.total
                     ? Math.round((100 * event.loaded) / event.total)
@@ -97,7 +115,7 @@ export class DownloadService {
                   product: product,
                 };
               }
-              case (HttpEventType.ResponseHeader): {
+              case HttpEventType.ResponseHeader: {
                 const eventURL = new URL(event.url).pathname;
                 const newID = eventURL.substring(eventURL.lastIndexOf('/') + 1);
                 return {
@@ -106,21 +124,24 @@ export class DownloadService {
                   filename: newID,
                   id: id,
                   product: product,
-
                 };
               }
-              case (HttpEventType.Response): {
-                saver(event.body).then(fileResponse => {
+              case HttpEventType.Response: {
+                saver(event.body).then((fileResponse) => {
                   if (fileResponse.status === 'error') {
-                    this.notificationService.error('There was an error downloading the file. Make sure that you allowed your browser to access the right files');
+                    this.notificationService.error(
+                      'There was an error downloading the file. Make sure that you allowed your browser to access the right files',
+                    );
                   }
-                  this.store$.dispatch(new queueStore.DownloadProduct({
-                    progress: 100,
-                    state: 'DONE',
-                    filename: filename,
-                    id: id,
-                    product: product,
-                  }));
+                  this.store$.dispatch(
+                    new queueStore.DownloadProduct({
+                      progress: 100,
+                      state: 'DONE',
+                      filename: filename,
+                      id: id,
+                      product: product,
+                    }),
+                  );
                 });
                 return {
                   progress: 100,
@@ -129,21 +150,24 @@ export class DownloadService {
                   id: id,
                   product: product,
                 };
-
               }
               default: {
                 return file;
               }
             }
           },
-          { state: 'PENDING', progress: 0, filename: '', id: '', product: null }
+          {
+            state: 'PENDING',
+            progress: 0,
+            filename: '',
+            id: '',
+            product: null,
+          },
         ),
-        distinctUntilChanged((a, b) => a.state === b.state
-          && a.progress === b.progress
-          && a.id === b.id
-        )
+        distinctUntilChanged(
+          (a, b) =>
+            a.state === b.state && a.progress === b.progress && a.id === b.id,
+        ),
       );
   }
-
 }
-

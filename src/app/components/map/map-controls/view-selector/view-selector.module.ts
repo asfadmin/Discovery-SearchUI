@@ -6,22 +6,17 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSharedModule } from '@shared';
 
 import { ViewSelectorComponent } from './view-selector.component';
-import { SharedModule } from "@shared";
-
+import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [
-    ViewSelectorComponent,
-  ],
+  declarations: [ViewSelectorComponent],
   imports: [
     CommonModule,
     MatButtonToggleModule,
     MatSharedModule,
     MatMenuModule,
-    SharedModule
+    SharedModule,
   ],
-  exports: [
-    ViewSelectorComponent
-  ]
+  exports: [ViewSelectorComponent],
 })
-export class ViewSelectorModule { }
+export class ViewSelectorModule {}

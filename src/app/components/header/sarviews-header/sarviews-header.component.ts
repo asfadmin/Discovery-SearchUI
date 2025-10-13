@@ -14,7 +14,7 @@ import * as services from '@services';
 @Component({
   selector: 'app-sarviews-header',
   templateUrl: './sarviews-header.component.html',
-  styleUrls: ['./sarviews-header.component.scss', '../header.component.scss']
+  styleUrls: ['./sarviews-header.component.scss', '../header.component.scss'],
 })
 export class SarviewsHeaderComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
@@ -30,9 +30,9 @@ export class SarviewsHeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subs.add(
-      this.store$.select(filterStore.getSelectedDatasetId).subscribe(
-        selected => this.selectedDataset = selected
-      )
+      this.store$
+        .select(filterStore.getSelectedDatasetId)
+        .subscribe((selected) => (this.selectedDataset = selected)),
     );
   }
 

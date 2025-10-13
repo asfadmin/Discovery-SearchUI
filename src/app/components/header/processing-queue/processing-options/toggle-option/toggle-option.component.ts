@@ -3,7 +3,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-toggle-option',
   templateUrl: './toggle-option.component.html',
-  styleUrls: ['./toggle-option.component.scss']
+  styleUrls: ['./toggle-option.component.scss'],
 })
 export class ToggleOptionComponent {
   @Input() value: boolean;
@@ -11,7 +11,6 @@ export class ToggleOptionComponent {
   @Input() optionInfo: string;
 
   @Output() valueChange = new EventEmitter<boolean>();
-
 
   public onValueChange(toggleValue: boolean): void {
     this.value = toggleValue;

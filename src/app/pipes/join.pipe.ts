@@ -1,10 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'join'
+  name: 'join',
 })
 export class JoinPipe implements PipeTransform {
-    transform(input: any[], delimiter = ''): string {
-        return input.join(delimiter);
-    }
+  transform(input: any[], delimiter = ''): string {
+    return input.join(delimiter);
+  }
 }

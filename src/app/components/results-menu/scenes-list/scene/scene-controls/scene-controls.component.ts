@@ -6,13 +6,16 @@ import * as models from '@models';
 @Component({
   selector: 'app-scene-controls',
   templateUrl: './scene-controls.component.html',
-  styleUrls: ['./scene-controls.component.scss']
+  styleUrls: ['./scene-controls.component.scss'],
 })
 export class SceneControlsComponent {
   private hyp3 = inject(services.Hyp3ApiService);
   private hyp3JobStatus = inject(services.Hyp3JobStatusService);
 
-  @Input() hyp3ableByJobType: { total: number, byJobType: models.Hyp3ableProductByJobType[]};
+  @Input() hyp3ableByJobType: {
+    total: number;
+    byJobType: models.Hyp3ableProductByJobType[];
+  };
   @Input() scene: models.CMRProduct;
   @Input() isQueued: boolean;
   @Input() numQueued: number;
@@ -22,7 +25,6 @@ export class SceneControlsComponent {
   @Output() onToggleScene = new EventEmitter();
 
   public SearchTypes = models.SearchType;
-
 
   public onZoomTo(): void {
     this.onZoomToScene.emit();
@@ -40,7 +42,10 @@ export class SceneControlsComponent {
     return this.hyp3JobStatus.isDownloadable(product.metadata.job);
   }
 
-  public getExpiredHyp3ableObject(): {byJobType: models.Hyp3ableProductByJobType[], total: number} {
+  public getExpiredHyp3ableObject(): {
+    byJobType: models.Hyp3ableProductByJobType[];
+    total: number;
+  } {
     return this.hyp3.getExpiredHyp3ableObject(this.scene);
   }
 }

@@ -10,7 +10,7 @@ import * as models from '@models';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss']
+  styleUrls: ['./sidebar.component.scss'],
 })
 export class SidebarComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
@@ -22,11 +22,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(uiStore.getSidebar).subscribe(
-        sidebar => {
-          this.sidebar = sidebar;
-        }
-      )
+      this.store$.select(uiStore.getSidebar).subscribe((sidebar) => {
+        this.sidebar = sidebar;
+      }),
     );
   }
 

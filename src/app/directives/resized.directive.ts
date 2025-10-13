@@ -1,21 +1,32 @@
-import { NgModule, Directive, ElementRef, EventEmitter, NgZone, OnDestroy, OnInit, Output, inject } from '@angular/core';
-
+import {
+  NgModule,
+  Directive,
+  ElementRef,
+  EventEmitter,
+  NgZone,
+  OnDestroy,
+  OnInit,
+  Output,
+  inject,
+} from '@angular/core';
 
 export class ResizedEvent {
-    public newRect: DOMRectReadOnly;
-    public oldRect?: DOMRectReadOnly;
-    public isFirst: boolean;
+  public newRect: DOMRectReadOnly;
+  public oldRect?: DOMRectReadOnly;
+  public isFirst: boolean;
 
-    public constructor(newRect: DOMRectReadOnly, oldRect: DOMRectReadOnly | undefined) {
-        this.newRect = newRect;
-        this.oldRect = oldRect;
-        this.isFirst = oldRect == null;
-    }
+  public constructor(
+    newRect: DOMRectReadOnly,
+    oldRect: DOMRectReadOnly | undefined,
+  ) {
+    this.newRect = newRect;
+    this.oldRect = oldRect;
+    this.isFirst = oldRect == null;
+  }
 }
 
-
 @Directive({
-  selector: '[resized]'
+  selector: '[resized]',
 })
 export class ResizedDirective implements OnInit, OnDestroy {
   private readonly element = inject(ElementRef);
@@ -27,14 +38,15 @@ export class ResizedDirective implements OnInit, OnDestroy {
   @Output()
   public readonly resized;
 
-  public constructor()
-{
+  public constructor() {
     this.resized = new EventEmitter<ResizedEvent>();
-    this.observer = new ResizeObserver(entries => this.zone.run(() => this.observe(entries)));
+    this.observer = new ResizeObserver((entries) =>
+      this.zone.run(() => this.observe(entries)),
+    );
   }
 
   public ngOnInit(): void {
-    this.observer.observe(this.element.nativeElement)
+    this.observer.observe(this.element.nativeElement);
   }
 
   public ngOnDestroy(): void {
@@ -50,13 +62,8 @@ export class ResizedDirective implements OnInit, OnDestroy {
 }
 
 @NgModule({
-  declarations: [
-    ResizedDirective
-  ],
-  imports: [
-  ],
-  exports: [
-    ResizedDirective
-  ]
+  declarations: [ResizedDirective],
+  imports: [],
+  exports: [ResizedDirective],
 })
 export class ResizedEventModule {}

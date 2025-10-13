@@ -1,5 +1,12 @@
 // Perpendicular baseline slider component
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  OnDestroy,
+  inject,
+} from '@angular/core';
 
 import * as noUiSlider from 'nouislider';
 import { Subject } from 'rxjs';
@@ -16,12 +23,13 @@ declare let wNumb: any;
 @Component({
   selector: 'app-sbas-sliders',
   templateUrl: './sbas-sliders.component.html',
-  styleUrls: ['./sbas-sliders.component.scss']
+  styleUrls: ['./sbas-sliders.component.scss'],
 })
 export class SbasSlidersComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
 
-  @ViewChild('perpendicularFilter', { static: true }) perpendicularFilter: ElementRef;
+  @ViewChild('perpendicularFilter', { static: true })
+  perpendicularFilter: ElementRef;
 
   // public temporalAutoTicks = false;
   // public temporalShowTicks = true;
@@ -41,27 +49,25 @@ export class SbasSlidersComponent implements OnInit, OnDestroy {
     this.perpendicularSlider = baselineSlider.slider;
 
     this.subs.add(
-      baselineSlider.values$.subscribe(
-        ([start, end]) => {
-          if (start === this.perpRange.start && end === this.perpRange.end) {
-            return;
-          }
-          const action = new filtersStore.SetPerpendicularRange({ start, end });
-          this.store$.dispatch(action);
+      baselineSlider.values$.subscribe(([start, end]) => {
+        if (start === this.perpRange.start && end === this.perpRange.end) {
+          return;
         }
-      )
+        const action = new filtersStore.SetPerpendicularRange({ start, end });
+        this.store$.dispatch(action);
+      }),
     );
 
     this.subs.add(
-      this.store$.select(filtersStore.getPerpendicularRange).subscribe(
-        perp => {
+      this.store$
+        .select(filtersStore.getPerpendicularRange)
+        .subscribe((perp) => {
           this.perpRange = perp;
           if (this.lastRange !== this.perpRange) {
             this.lastRange = this.perpRange;
             this.perpendicularSlider.set([perp.start, perp.end]);
           }
-        }
-      )
+        }),
     );
   }
 
@@ -84,32 +90,34 @@ export class SbasSlidersComponent implements OnInit, OnDestroy {
       connect: true,
       step: 1,
       range: {
-        'min': 0,
-        'max': 800
+        min: 0,
+        max: 800,
       },
       pips: {
         mode: noUiSlider.PipsMode.Positions,
-        values: [0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750],
+        values: [
+          0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650,
+          700, 750,
+        ],
         density: 4,
         stepped: true,
         format: wNumb({
           decimals: 0,
-          suffix: ' m'
-        })
-      }
+          suffix: ' m',
+        }),
+      },
     });
 
     slider.on('update', (values, _) => {
-      values$.next(values.map(v => +v));
+      values$.next(values.map((v) => +v));
     });
 
     return {
       slider,
-      values$: values$.asObservable().pipe(
-        debounceTime(500),
-        distinctUntilChanged()
-      )
-      };
+      values$: values$
+        .asObservable()
+        .pipe(debounceTime(500), distinctUntilChanged()),
+    };
   }
 
   ngOnDestroy() {

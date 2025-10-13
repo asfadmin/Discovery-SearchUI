@@ -1,4 +1,11 @@
-import { Component, OnInit, ViewChild, OnDestroy, Input, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  OnDestroy,
+  Input,
+  inject,
+} from '@angular/core';
 import moment from 'moment';
 
 import { combineLatest } from 'rxjs';
@@ -17,7 +24,7 @@ import { DateExtremaService } from '@services';
 @Component({
   selector: 'app-date-selector',
   templateUrl: './date-selector.component.html',
-  styleUrls: ['./date-selector.component.scss']
+  styleUrls: ['./date-selector.component.scss'],
 })
 export class DateSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
@@ -31,7 +38,9 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
 
   private currentDate = new Date();
   private searchType: SearchType;
-  private selectedDataset$ = this.store$.select(filtersStore.getSelectedDataset);
+  private selectedDataset$ = this.store$.select(
+    filtersStore.getSelectedDataset,
+  );
   public searchType$ = this.store$.select(searchStore.getSearchType);
 
   public maxDate$ = this.selectedDataset$.pipe(
@@ -40,10 +49,9 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
       if (searchType === SearchType.SARVIEWS_EVENTS) {
         return this.extrema?.end.max;
       }
-        return dataset.date.end;
-      }
-    ),
-    map(endDate => {
+      return dataset.date.end;
+    }),
+    map((endDate) => {
       const date = endDate <= this.currentDate ? endDate : this.currentDate;
 
       if (this.extendEndDateBy && !!date) {
@@ -52,18 +60,17 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
       }
 
       return date;
-    })
-    );
+    }),
+  );
 
   public minDate$ = this.selectedDataset$.pipe(
     withLatestFrom(this.store$.select(searchStore.getSearchType)),
     map(([dataset, searchType]) => {
-        if (searchType === SearchType.SARVIEWS_EVENTS) {
-          return this.extrema?.start.min;
-        }
-        return dataset.date.start;
+      if (searchType === SearchType.SARVIEWS_EVENTS) {
+        return this.extrema?.start.min;
       }
-    )
+      return dataset.date.start;
+    }),
   );
   public startDate$ = this.store$.select(filtersStore.getStartDate);
   public endDate$ = this.store$.select(filtersStore.getEndDate);
@@ -73,26 +80,31 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   ngOnInit() {
-
     this.subs.add(
-      this.actions$.pipe(
-        filter(action => action.type === filtersStore.FiltersActionType.CLEAR_DATASET_FILTERS)
-      ).subscribe(_ => this.dateRange.reset())
+      this.actions$
+        .pipe(
+          filter(
+            (action) =>
+              action.type ===
+              filtersStore.FiltersActionType.CLEAR_DATASET_FILTERS,
+          ),
+        )
+        .subscribe((_) => this.dateRange.reset()),
     );
 
     const dateExtrema$ = this.dateExtremaService.getExtrema$(
-        this.store$.select(filtersStore.getSelectedDataset),
-        this.startDate$,
-        this.endDate$,
-      );
+      this.store$.select(filtersStore.getSelectedDataset),
+      this.startDate$,
+      this.endDate$,
+    );
     const baselineDateExtrema$ = this.dateExtremaService.getBaselineExtrema$(
-        this.store$.select(scenesStore.getScenes),
-        this.startDate$,
-        this.endDate$,
+      this.store$.select(scenesStore.getScenes),
+      this.startDate$,
+      this.endDate$,
     );
 
     const sarviewsDateExtrema$ = this.dateExtremaService.getSarviewsExtrema$(
-      this.store$.select(scenesStore.getSarviewsEvents)
+      this.store$.select(scenesStore.getSarviewsEvents),
     );
 
     this.subs.add(
@@ -101,73 +113,74 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
         dateExtrema$,
         baselineDateExtrema$,
         sarviewsDateExtrema$,
-      ]
-      ).subscribe(([searchType, extrema, baselineExtrema, sarviewsExtrema]) => {
-        if (searchType === SearchType.DATASET) {
-          this.extrema = extrema;
-        } else if (searchType === SearchType.CUSTOM_PRODUCTS) {
-          this.extrema = {
-            start: {
-              min: null,
-              max: null
-            },
-            end: {
-              min: null,
-              max: null
-            }
-          };
-         } else if (searchType === SearchType.SARVIEWS_EVENTS) {
-           this.extrema = {
-             start: {
-               min: sarviewsExtrema.start,
-               max: null
-             },
-             end: {
-               min: null,
-               max: sarviewsExtrema.end
-             }
-           };
-         } else {
-          this.extrema = baselineExtrema;
-        }
+      ]).subscribe(
+        ([searchType, extrema, baselineExtrema, sarviewsExtrema]) => {
+          if (searchType === SearchType.DATASET) {
+            this.extrema = extrema;
+          } else if (searchType === SearchType.CUSTOM_PRODUCTS) {
+            this.extrema = {
+              start: {
+                min: null,
+                max: null,
+              },
+              end: {
+                min: null,
+                max: null,
+              },
+            };
+          } else if (searchType === SearchType.SARVIEWS_EVENTS) {
+            this.extrema = {
+              start: {
+                min: sarviewsExtrema.start,
+                max: null,
+              },
+              end: {
+                min: null,
+                max: sarviewsExtrema.end,
+              },
+            };
+          } else {
+            this.extrema = baselineExtrema;
+          }
 
-        if (this.extendEndDateBy && extrema.end.max !== null) {
-          const endMax = extrema.end.max;
-          const d = new Date(endMax.valueOf());
-          d.setDate(d.getDate() + this.extendEndDateBy);
+          if (this.extendEndDateBy && extrema.end.max !== null) {
+            const endMax = extrema.end.max;
+            const d = new Date(endMax.valueOf());
+            d.setDate(d.getDate() + this.extendEndDateBy);
 
-          extrema.end.max = d ;
-        }
-      })
+            extrema.end.max = d;
+          }
+        },
+      ),
     );
 
     this.subs.add(
-      this.startDate$.subscribe(
-        start => {
-          this.startDate = start;
-          if (this.endDate < this.startDate && !!this.endDate) {
-            const endOfDay = this.endDateFormat(this.startDate);
-            this.store$.dispatch(new filtersStore.SetEndDate(endOfDay));
-          }
+      this.startDate$.subscribe((start) => {
+        this.startDate = start;
+        if (this.endDate < this.startDate && !!this.endDate) {
+          const endOfDay = this.endDateFormat(this.startDate);
+          this.store$.dispatch(new filtersStore.SetEndDate(endOfDay));
         }
-      )
+      }),
     );
 
     this.subs.add(
-      this.endDate$.subscribe(
-        end => {
-          this.endDate = end;
-          if (this.startDate > this.endDate && !!this.startDate && !!this.endDate) {
-            this.store$.dispatch(new filtersStore.SetStartDate(this.endDate));
-          }
+      this.endDate$.subscribe((end) => {
+        this.endDate = end;
+        if (
+          this.startDate > this.endDate &&
+          !!this.startDate &&
+          !!this.endDate
+        ) {
+          this.store$.dispatch(new filtersStore.SetStartDate(this.endDate));
         }
-      )
+      }),
     );
 
     this.subs.add(
       this.searchType$.subscribe(
-        searchType => this.searchType = searchType
-      )
+        (searchType) => (this.searchType = searchType),
+      ),
     );
   }
 
@@ -188,7 +201,7 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
     if (this.searchType === SearchType.SARVIEWS_EVENTS) {
       this.onStartDateChange(new Date(2015, 1));
     } else {
-      this.onStartDateChange(null)
+      this.onStartDateChange(null);
     }
   }
 
@@ -196,7 +209,7 @@ export class DateSelectorComponent implements OnInit, OnDestroy {
     if (this.searchType === SearchType.SARVIEWS_EVENTS) {
       this.onEndDateChange(moment(new Date()).endOf('day').date);
     } else {
-      this.onEndDateChange(null)
+      this.onEndDateChange(null);
     }
   }
 

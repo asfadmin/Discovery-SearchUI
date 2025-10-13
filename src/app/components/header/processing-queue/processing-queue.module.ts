@@ -2,7 +2,10 @@ import { NgModule, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import {
+  FontAwesomeModule,
+  FaIconLibrary,
+} from '@fortawesome/angular-fontawesome';
 import { faSpinner, fas } from '@fortawesome/free-solid-svg-icons';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 
@@ -29,11 +32,9 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ProjectNameSelectorModule } from '@components/shared/selectors/project-name-selector';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { ResizedEventModule } from '@directives/resized.directive';
-import {DocsModalModule} from '@components/shared/docs-modal';
-import {Hyp3UrlModule} from '@components/shared/hyp3-url/hyp3-url.module';
+import { DocsModalModule } from '@components/shared/docs-modal';
+import { Hyp3UrlModule } from '@components/shared/hyp3-url/hyp3-url.module';
 import { SharedModule } from '@shared';
-
-
 
 @NgModule({
   declarations: [
@@ -41,34 +42,34 @@ import { SharedModule } from '@shared';
     QueueSubmitComponent,
     ConfirmationComponent,
   ],
-    imports: [
-        CommonModule,
-        FormsModule,
-        FontAwesomeModule,
-        MatSharedModule,
-        MatInputModule,
-        MatChipsModule,
-        MatSelectModule,
-        MatSlideToggleModule,
-        MatProgressSpinnerModule,
-        MatProgressBarModule,
-        MatBottomSheetModule,
-        PipesModule,
-        ProjectNameSelectorModule,
-        ProcessingQueueJobsModule,
-        ProcessingOptionsModule,
-        ProcessingSignupModule,
-        MatDialogModule,
-        ResizableModule,
-        ResizedEventModule,
-        DragDropModule,
-        MatTabsModule,
-        MatMenuModule,
-        ScrollingModule,
-        DocsModalModule,
-        Hyp3UrlModule,
-        SharedModule
-    ]
+  imports: [
+    CommonModule,
+    FormsModule,
+    FontAwesomeModule,
+    MatSharedModule,
+    MatInputModule,
+    MatChipsModule,
+    MatSelectModule,
+    MatSlideToggleModule,
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
+    MatBottomSheetModule,
+    PipesModule,
+    ProjectNameSelectorModule,
+    ProcessingQueueJobsModule,
+    ProcessingOptionsModule,
+    ProcessingSignupModule,
+    MatDialogModule,
+    ResizableModule,
+    ResizedEventModule,
+    DragDropModule,
+    MatTabsModule,
+    MatMenuModule,
+    ScrollingModule,
+    DocsModalModule,
+    Hyp3UrlModule,
+    SharedModule,
+  ],
 })
 export class ProcessingQueueModule {
   constructor() {

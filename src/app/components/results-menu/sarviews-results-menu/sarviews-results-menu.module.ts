@@ -13,13 +13,10 @@ import { EventProductSortSelectorModule } from '@components/shared/event-product
 
 import { SarviewsResultsMenuComponent } from './sarviews-results-menu.component';
 
-import { SharedModule } from "@shared";
-
+import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [
-    SarviewsResultsMenuComponent
-  ],
+  declarations: [SarviewsResultsMenuComponent],
   imports: [
     CommonModule,
     MatSharedModule,
@@ -32,8 +29,6 @@ import { SharedModule } from "@shared";
 
     EventProductSortSelectorModule,
   ],
-  exports: [
-    SarviewsResultsMenuComponent
-  ]
+  exports: [SarviewsResultsMenuComponent],
 })
-export class SarviewsResultsMenuModule { }
+export class SarviewsResultsMenuModule {}

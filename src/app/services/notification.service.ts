@@ -8,12 +8,11 @@ import { Store } from '@ngrx/store';
 import { take } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NotificationService {
   private toastr = inject(ToastrService);
   private store$ = inject<Store<AppState>>(Store);
-
 
   private shownSignupMessage = false;
 
@@ -23,7 +22,13 @@ export class NotificationService {
     // toastComponent: ToastrMessageComponent
   };
 
-  public demandQueue(added = true, count = 0, job_type: string, duplicates = 0, application_status = '') {
+  public demandQueue(
+    added = true,
+    count = 0,
+    job_type: string,
+    duplicates = 0,
+    application_status = '',
+  ) {
     let headerText: string;
     let infoText = '';
     const action = added ? 'added to' : 'removed from';
@@ -51,10 +56,14 @@ export class NotificationService {
     }
     if (application_status === 'NOT_STARTED' && !this.shownSignupMessage) {
       this.shownSignupMessage = true;
-      this.error('Click here to open registration form', 'Not registered with On Demand service', {
-        disableTimeOut: true,
-        closeButton: true
-      }).onTap.subscribe(() => {
+      this.error(
+        'Click here to open registration form',
+        'Not registered with On Demand service',
+        {
+          disableTimeOut: true,
+          closeButton: true,
+        },
+      ).onTap.subscribe(() => {
         this.store$.dispatch(new uiStore.SetIsOnDemandQueueOpen(true));
       });
     }
@@ -87,10 +96,7 @@ export class NotificationService {
     const contentType = isFileIDs ? 'File ID' : 'URL';
     const s = lineCount > 1 ? 's' : '';
 
-    this.info(
-      `${lineCount} ${contentType}${s} Copied`,
-      'Clipboard Updated'
-    );
+    this.info(`${lineCount} ${contentType}${s} Copied`, 'Clipboard Updated');
   }
 
   public clipboardCopyIcon(prompt: string, count: number) {
@@ -141,21 +147,43 @@ export class NotificationService {
     const message = 'Click to show raw results';
 
     const toast = this.info(message, title);
-    toast.onTap.pipe(take(1)).subscribe(_ => this.store$.dispatch(new uiStore.ShowS1RawData()));
+    toast.onTap
+      .pipe(take(1))
+      .subscribe((_) => this.store$.dispatch(new uiStore.ShowS1RawData()));
   }
 
   public listImportFailed(fileExtension: string) {
     const title = `${fileExtension} List Import Failed`;
     const message = 'Click to open documentation on accepted file formatting';
     const errorToast = this.error(message, title);
-    errorToast.onTap.pipe(take(1)).subscribe(_ => window.open('https://docs.asf.alaska.edu/vertex/manual/#list-search-file-import'));
+    errorToast.onTap
+      .pipe(take(1))
+      .subscribe((_) =>
+        window.open(
+          'https://docs.asf.alaska.edu/vertex/manual/#list-search-file-import',
+        ),
+      );
   }
 
-  public info(message: string, title = '', options: Partial<IndividualConfig> = {}): ActiveToast<any> {
-    return this.toastr.info(message, title, { ...options, ...this.toastOptions });
+  public info(
+    message: string,
+    title = '',
+    options: Partial<IndividualConfig> = {},
+  ): ActiveToast<any> {
+    return this.toastr.info(message, title, {
+      ...options,
+      ...this.toastOptions,
+    });
   }
 
-  public error(message: string, title = '', options: Partial<IndividualConfig> = {}): ActiveToast<any> {
-    return this.toastr.warning(message, title, { ...options, ...this.toastOptions });
+  public error(
+    message: string,
+    title = '',
+    options: Partial<IndividualConfig> = {},
+  ): ActiveToast<any> {
+    return this.toastr.warning(message, title, {
+      ...options,
+      ...this.toastOptions,
+    });
   }
 }

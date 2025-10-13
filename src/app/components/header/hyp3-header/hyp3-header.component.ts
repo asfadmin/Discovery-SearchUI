@@ -11,7 +11,7 @@ import * as services from '@services';
 @Component({
   selector: 'app-hyp3-header',
   templateUrl: './hyp3-header.component.html',
-  styleUrls: ['./hyp3-header.component.scss', '../header.component.scss']
+  styleUrls: ['./hyp3-header.component.scss', '../header.component.scss'],
 })
 export class Hyp3HeaderComponent {
   private store$ = inject<Store<AppState>>(Store);
@@ -19,7 +19,6 @@ export class Hyp3HeaderComponent {
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
-
 
   public onToggleFiltersMenu(): void {
     this.store$.dispatch(new uiStore.OpenFiltersMenu());

@@ -1,9 +1,7 @@
-<div *ngIf="(breakpoint$ | async) as breakpoint" class="breadcrumb-row fx-row">
+<div *ngIf="breakpoint$ | async as breakpoint" class="breadcrumb-row fx-row">
   <ng-container *ngIf="breakpoint !== breakpoints.MOBILE">
     <div class="fx-row">
-      <app-search-type-selector
-        (click)="closeAOIOptions()"
-        class="breadcrumb">
+      <app-search-type-selector (click)="closeAOIOptions()" class="breadcrumb">
       </app-search-type-selector>
     </div>
 
@@ -11,24 +9,33 @@
       <div class="fx-row">
         <div
           *ngIf="breakpoint === breakpoints.FULL"
-          class="breadcrumb medium-selector--layout">
+          class="breadcrumb medium-selector--layout"
+        >
           <app-sarviews-event-search-selector></app-sarviews-event-search-selector>
         </div>
         <div
           *ngIf="breakpoint === breakpoints.FULL"
-          class="breadcrumb medium-selector--layout">
+          class="breadcrumb medium-selector--layout"
+        >
           <app-sarviews-event-type-selector></app-sarviews-event-type-selector>
         </div>
         <div
           *ngIf="breakpoint === breakpoints.FULL"
-          class="breadcrumb large-selector--layout">
+          class="breadcrumb large-selector--layout"
+        >
           <app-date-selector></app-date-selector>
         </div>
 
         <div class="breadcrumb">
-          <button (click)="onToggleFiltersMenu()"
-            mat-button class="additional-filters-button fx-col">
-            {{ 'FILTERS' | translate }} <br> <mat-icon iconPositionEnd style="margin-left: 0;">more_horiz</mat-icon>
+          <button
+            (click)="onToggleFiltersMenu()"
+            mat-button
+            class="additional-filters-button fx-col"
+          >
+            {{ 'FILTERS' | translate }} <br />
+            <mat-icon iconPositionEnd style="margin-left: 0"
+              >more_horiz</mat-icon
+            >
           </button>
         </div>
 
@@ -38,8 +45,7 @@
       </div>
 
       <div class="icon-cluster">
-        <app-header-buttons>
-        </app-header-buttons>
+        <app-header-buttons> </app-header-buttons>
       </div>
     </div>
   </ng-container>
@@ -48,14 +54,14 @@
     <div class="mobile-nav-bar">
       <button
         (click)="onToggleFiltersMenu()"
-        style="margin-left: 5px;"
-        mat-flat-button>
-        {{  'FILTERS'  | translate }}
+        style="margin-left: 5px"
+        mat-flat-button
+      >
+        {{ 'FILTERS' | translate }}
       </button>
 
       <div class="mobile-icon-cluster">
-        <app-header-buttons>
-        </app-header-buttons>
+        <app-header-buttons> </app-header-buttons>
       </div>
     </div>
   </ng-container>

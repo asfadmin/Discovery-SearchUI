@@ -1,7 +1,11 @@
 import { Component, OnInit, OnDestroy, Input, inject } from '@angular/core';
 
 import {
-  trigger, state, style, animate, transition
+  trigger,
+  state,
+  style,
+  animate,
+  transition,
 } from '@angular/animations';
 
 import { Store } from '@ngrx/store';
@@ -11,7 +15,11 @@ import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
 import * as filterStore from '@store/filters';
 
-import { EnvironmentService, NotificationService, ScreenSizeService } from '@services';
+import {
+  EnvironmentService,
+  NotificationService,
+  ScreenSizeService,
+} from '@services';
 import { SubSink } from 'subsink';
 import * as models from '@models';
 import { Observable } from 'rxjs';
@@ -24,12 +32,11 @@ import { SBASOverlap } from '@models';
   styleUrls: ['./filters-dropdown.component.scss'],
   animations: [
     trigger('isOpen', [
-      state('true', style({transform: 'translateY(0%)'})),
-      state('false', style({transform: 'translateY(-10000%)'})
-      ),
+      state('true', style({ transform: 'translateY(0%)' })),
+      state('false', style({ transform: 'translateY(-10000%)' })),
       transition('true => false', animate('50ms ease-out')),
-      transition('false => true', animate('50ms ease-in'))
-    ])
+      transition('false => true', animate('50ms ease-in')),
+    ]),
   ],
 })
 export class FiltersDropdownComponent implements OnInit, OnDestroy {
@@ -51,32 +58,42 @@ export class FiltersDropdownComponent implements OnInit, OnDestroy {
   private areFiltersChanged;
 
   public subs = new SubSink();
-  public frameSelectionEnabled$ = this.store$.select(uiStore.getIsFrameSelectionEnabled)
+  public frameSelectionEnabled$ = this.store$.select(
+    uiStore.getIsFrameSelectionEnabled,
+  );
 
   ngOnInit() {
     this.subs.add(
       this.screenSize.breakpoint$.subscribe(
-        breakpoint => this.breakpoint = breakpoint
-      )
+        (breakpoint) => (this.breakpoint = breakpoint),
+      ),
     );
     this.subs.add(
       this.searchType$.subscribe(
-        searchType => this.searchType = searchType
-      )
+        (searchType) => (this.searchType = searchType),
+      ),
     );
     this.subs.add(
-      this.store$.select(areFiltersChanged).subscribe(
-        filtersChanged => this.areFiltersChanged = filtersChanged
-      )
+      this.store$
+        .select(areFiltersChanged)
+        .subscribe(
+          (filtersChanged) => (this.areFiltersChanged = filtersChanged),
+        ),
     );
 
     if (this.environmentService.maturity === 'prod') {
-      this.store$.dispatch(new filterStore.SetSBASOverlapThreshold(SBASOverlap.ALL));
+      this.store$.dispatch(
+        new filterStore.SetSBASOverlapThreshold(SBASOverlap.ALL),
+      );
     }
   }
 
   public closePanel(): void {
-    if (this.searchType !== this.searchTypes.SBAS && this.searchType !== this.searchTypes.BASELINE && this.areFiltersChanged) {
+    if (
+      this.searchType !== this.searchTypes.SBAS &&
+      this.searchType !== this.searchTypes.BASELINE &&
+      this.areFiltersChanged
+    ) {
       this.notificationService.closeFiltersPanel();
     }
     this.store$.dispatch(new uiStore.CloseFiltersMenu());

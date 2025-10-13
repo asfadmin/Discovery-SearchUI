@@ -10,7 +10,6 @@ import * as filterStore from '@store/filters';
 import * as models from '@models';
 import * as services from '@services';
 
-
 @Component({
   selector: 'app-dataset-header',
   templateUrl: './dataset-header.component.html',
@@ -25,7 +24,9 @@ export class DatasetHeaderComponent implements OnInit, OnDestroy {
   public datasets = models.datasetList;
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
   public breakpoint$ = this.screenSize.breakpoint$;
-  public frameSelectionEnabled$ = this.store$.select(uiStore.getIsFrameSelectionEnabled);
+  public frameSelectionEnabled$ = this.store$.select(
+    uiStore.getIsFrameSelectionEnabled,
+  );
   public breakpoints = models.Breakpoints;
   private subs = new SubSink();
 
@@ -34,11 +35,11 @@ export class DatasetHeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subs.add(
-      this.store$.select(filterStore.getSelectedDatasetId).subscribe(
-        selected => {
+      this.store$
+        .select(filterStore.getSelectedDatasetId)
+        .subscribe((selected) => {
           this.selectedDataset = selected;
-        }
-      )
+        }),
     );
   }
 
@@ -55,7 +56,7 @@ export class DatasetHeaderComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new filterStore.SetSelectedDataset(dataset));
   }
   public test(value: boolean): void {
-    this.store$.dispatch(new uiStore.SetFrameSelection(value))
+    this.store$.dispatch(new uiStore.SetFrameSelection(value));
   }
 
   ngOnDestroy() {

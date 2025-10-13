@@ -3,7 +3,10 @@ import { CommonModule } from '@angular/common';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatMenuModule } from '@angular/material/menu';
 
-import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import {
+  FontAwesomeModule,
+  FaIconLibrary,
+} from '@fortawesome/angular-fontawesome';
 import { faSpinner, fas } from '@fortawesome/free-solid-svg-icons';
 import { MatSharedModule } from '@shared';
 import { Hyp3JobStatusBadgeModule } from '@components/shared/hyp3-job-status-badge';
@@ -13,29 +16,26 @@ import { TruncateModule } from '@yellowspot/ng-truncate';
 import { PipesModule } from '@pipes';
 
 import { SceneFileComponent } from './scene-file.component';
-import {DownloadFileButtonModule} from '@components/shared/download-file-button/download-file-button.module';
-import {SharedModule} from "@shared";
-
+import { DownloadFileButtonModule } from '@components/shared/download-file-button/download-file-button.module';
+import { SharedModule } from '@shared';
 
 @NgModule({
   declarations: [SceneFileComponent],
-    imports: [
-        CommonModule,
-        FontAwesomeModule,
-        MatSharedModule,
-        MatMenuModule,
-        MatChipsModule,
-        CopyToClipboardModule,
-        Hyp3JobStatusBadgeModule,
-        CartToggleModule,
-        TruncateModule,
-        PipesModule,
-        DownloadFileButtonModule,
-        SharedModule,
-    ],
-  exports: [
-    SceneFileComponent
-  ]
+  imports: [
+    CommonModule,
+    FontAwesomeModule,
+    MatSharedModule,
+    MatMenuModule,
+    MatChipsModule,
+    CopyToClipboardModule,
+    Hyp3JobStatusBadgeModule,
+    CartToggleModule,
+    TruncateModule,
+    PipesModule,
+    DownloadFileButtonModule,
+    SharedModule,
+  ],
+  exports: [SceneFileComponent],
 })
 export class SceneFileModule {
   constructor() {

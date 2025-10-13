@@ -1,24 +1,38 @@
-<div (dragover)="onFileHovered($event)"
-  id="map" class="map w100 h100" #map>
-</div>
+<div
+  (dragover)="onFileHovered($event)"
+  id="map"
+  class="map w100 h100"
+  #map
+></div>
 
-<div #AriaPopup class="ol-popup" [class.on-demand-popup-menu]="this.OnDemandFrames.length>0" [class.hidden]="this.OnDemandFrames.length===0">
-  <button mat-button (click)='buildOnDemandStack()'>
+<div
+  #AriaPopup
+  class="ol-popup"
+  [class.on-demand-popup-menu]="this.OnDemandFrames.length > 0"
+  [class.hidden]="this.OnDemandFrames.length === 0"
+>
+  <button mat-button (click)="buildOnDemandStack()">
     <mat-icon>show_chart</mat-icon>
     <span>Build SBAS SLC Stack</span>
   </button>
 </div>
 
 <div class="map-header">
-  <div class="header-controls fx-row"
-       [class.map-control-margin]="(areResultsLoaded$ | async) && breakpoint === breakpoints.MOBILE">
-
+  <div
+    class="header-controls fx-row"
+    [class.map-control-margin]="
+      (areResultsLoaded$ | async) && breakpoint === breakpoints.MOBILE
+    "
+  >
     <div *ngIf="breakpoint > breakpoints.MOBILE" class="fx-col">
       <div class="map-controls">
         <app-map-controls></app-map-controls>
       </div>
 
-      @if (searchType === searchTypes.DISPLACEMENT && breakpoint > breakpoints.MOBILE) {
+      @if (
+        searchType === searchTypes.DISPLACEMENT &&
+        breakpoint > breakpoints.MOBILE
+      ) {
         <div class="disp-layers">
           <app-displacement-layers></app-displacement-layers>
         </div>
@@ -27,17 +41,22 @@
 
     <div class="fx-row banner-row">
       <div class="fx-col">
-        <app-banners
-          [banners]="banners$ | async">
-        </app-banners>
+        <app-banners [banners]="banners$ | async"> </app-banners>
       </div>
     </div>
 
-    <div *ngIf="breakpoint === breakpoints.MOBILE"
+    <div
+      *ngIf="breakpoint === breakpoints.MOBILE"
       [class.after-load]="isResultsMenuOpen"
       [class.before-load]="!isResultsMenuOpen"
-      class="mobile-map-controls">
-      <button (click)="openMapControl()" style="margin: 4px;" color="white" mat-fab>
+      class="mobile-map-controls"
+    >
+      <button
+        (click)="openMapControl()"
+        style="margin: 4px"
+        color="white"
+        mat-fab
+      >
         <mat-icon>layers</mat-icon>
       </button>
     </div>
@@ -46,54 +65,62 @@
       <div
         *ngIf="fullscreenControl !== fc.NONE"
         (click)="closeMobileFullscreenControls()"
-        class="mobile-controls-background">
-      </div>
+        class="mobile-controls-background"
+      ></div>
 
       <div
         *ngIf="fullscreenControl === fc.MAP"
-        class="mobile-map-controls-full">
+        class="mobile-map-controls-full"
+      >
         <div class="mobile-control-group">
           <app-interaction-selector></app-interaction-selector>
         </div>
 
-          <div class="mobile-control-group">
-            <app-view-selector style="margin-right: 5px;" *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS">
-            </app-view-selector>
+        <div class="mobile-control-group">
+          <app-view-selector
+            style="margin-right: 5px"
+            *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS"
+          >
+          </app-view-selector>
 
-            <app-layer-selector *ngIf="(view$ | async) === viewTypes.EQUATORIAL">
-            </app-layer-selector>
-          </div>
+          <app-layer-selector *ngIf="(view$ | async) === viewTypes.EQUATORIAL">
+          </app-layer-selector>
+        </div>
       </div>
     </ng-container>
   </div>
 </div>
 
-<img *ngIf="breakpoint > breakpoints.MOBILE"
-  src="/assets/NASA_logo.svg" class="meatball">
+<img
+  *ngIf="breakpoint > breakpoints.MOBILE"
+  src="/assets/NASA_logo.svg"
+  class="meatball"
+/>
 
 <app-filters-dropdown></app-filters-dropdown>
 
-<app-file-upload *ngIf="searchType === searchTypes.DATASET"
+<app-file-upload
+  *ngIf="searchType === searchTypes.DATASET"
   (dialogClose)="onFileUploadDialogClosed($event)"
   (newSearchPolygon)="onNewSearchPolygon($event)"
-  [interaction$]="interactionMode$">
+  [interaction$]="interactionMode$"
+>
 </app-file-upload>
 
-<app-attributions [breakpoint]="breakpoint">
-</app-attributions>
+<app-attributions [breakpoint]="breakpoint"> </app-attributions>
 
 <div
   (mouseenter)="enterDrawPopup()"
   (mouseleave)="leaveDrawPopup()"
-  id="popup" class="ol-popup" #overlay>
-</div>
+  id="popup"
+  class="ol-popup"
+  #overlay
+></div>
 
-<div #browsetooltip style="width: 100px; height: 100px;">
-{{ 'TOOLTIP' |  translate }}
+<div #browsetooltip style="width: 100px; height: 100px">
+  {{ 'TOOLTIP' | translate }}
 </div>
 
 <span #overviewMapIcon>
-<mat-icon>
-  map
-</mat-icon>
+  <mat-icon> map </mat-icon>
 </span>

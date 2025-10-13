@@ -9,13 +9,14 @@ import { SubSink } from 'subsink';
 @Component({
   selector: 'app-sarviews-event-active-selector',
   templateUrl: './sarviews-event-active-selector.component.html',
-  styleUrls: ['./sarviews-event-active-selector.component.scss']
+  styleUrls: ['./sarviews-event-active-selector.component.scss'],
 })
 export class SarviewsEventActiveSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
 
-
-  public sarviewsEventFilterToggle$ = this.store$.select(filtersStore.getSarviewsEventActiveFilter);
+  public sarviewsEventFilterToggle$ = this.store$.select(
+    filtersStore.getSarviewsEventActiveFilter,
+  );
   public filterToggleValue: boolean;
 
   public subs = new SubSink();
@@ -23,8 +24,8 @@ export class SarviewsEventActiveSelectorComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subs.add(
       this.sarviewsEventFilterToggle$.subscribe(
-        val => this.filterToggleValue = val
-      )
+        (val) => (this.filterToggleValue = val),
+      ),
     );
   }
 
@@ -33,6 +34,8 @@ export class SarviewsEventActiveSelectorComponent implements OnInit, OnDestroy {
   }
 
   public voidOnToggle(val: MatSlideToggleChange) {
-    this.store$.dispatch(new filtersStore.SetSarviewsEventActiveFilter(val.checked));
+    this.store$.dispatch(
+      new filtersStore.SetSarviewsEventActiveFilter(val.checked),
+    );
   }
 }

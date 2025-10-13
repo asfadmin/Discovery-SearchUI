@@ -2,15 +2,15 @@ import { Injectable } from '@angular/core';
 import { beta } from '@models';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FrameMapService {
   public datasets = [beta];
 
   public downloadFrameMap(id: string): void {
     this.datasets.forEach((dataset) => {
-      if(dataset.id === id) {
-        this.downloadFileFromUrl(dataset.frameMap.ascending, dataset.name)
+      if (dataset.id === id) {
+        this.downloadFileFromUrl(dataset.frameMap.ascending, dataset.name);
       }
     });
   }
@@ -43,6 +43,4 @@ export class FrameMapService {
       console.error('Error downloading file:', error);
     }
   }
-
-
 }

@@ -1,4 +1,12 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  OnDestroy,
+  inject,
+} from '@angular/core';
 
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -11,7 +19,7 @@ import { MapInteractionModeType } from '@models';
 @Component({
   selector: 'app-file-upload',
   templateUrl: './file-upload.component.html',
-  styleUrls: ['./file-upload.component.css']
+  styleUrls: ['./file-upload.component.css'],
 })
 export class FileUploadComponent implements OnInit, OnDestroy {
   dialog = inject(MatDialog);
@@ -25,9 +33,13 @@ export class FileUploadComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.subs.add(
-      this.interaction$.pipe(
-        filter(interaction => interaction === MapInteractionModeType.UPLOAD)
-      ).subscribe(_ => this.openDialog())
+      this.interaction$
+        .pipe(
+          filter(
+            (interaction) => interaction === MapInteractionModeType.UPLOAD,
+          ),
+        )
+        .subscribe((_) => this.openDialog()),
     );
   }
 
@@ -39,4 +51,3 @@ export class FileUploadComponent implements OnInit, OnDestroy {
     this.subs.unsubscribe();
   }
 }
-

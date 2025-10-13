@@ -9,11 +9,10 @@ import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
-
 @Component({
   selector: 'app-season-selector',
   templateUrl: './season-selector.component.html',
-  styleUrls: ['./season-selector.component.scss']
+  styleUrls: ['./season-selector.component.scss'],
 })
 export class SeasonSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
@@ -31,34 +30,28 @@ export class SeasonSelectorComponent implements OnInit, OnDestroy {
     const seasonEnd$ = this.store$.select(filtersStore.getSeasonEnd);
 
     this.subs.add(
-      combineLatest(seasonStart$, seasonEnd$).pipe(
-        tap(([start, end]) => {
-          this.start = start;
-          this.end = end;
-        })
-      ).subscribe(
-        ([start, end]) => this.isSeasonalSearch = !!(start || end)
-      )
+      combineLatest(seasonStart$, seasonEnd$)
+        .pipe(
+          tap(([start, end]) => {
+            this.start = start;
+            this.end = end;
+          }),
+        )
+        .subscribe(
+          ([start, end]) => (this.isSeasonalSearch = !!(start || end)),
+        ),
     );
     this.subs.add(
-      this.startDate$.pipe(
-        debounceTime(500)
-      ).subscribe(
-        (startDate) => {
-          const action = new filtersStore.SetSeasonStart(startDate);
-          this.store$.dispatch(action);
-        }
-      )
+      this.startDate$.pipe(debounceTime(500)).subscribe((startDate) => {
+        const action = new filtersStore.SetSeasonStart(startDate);
+        this.store$.dispatch(action);
+      }),
     );
     this.subs.add(
-      this.endDate$.pipe(
-        debounceTime(500)
-      ).subscribe(
-        (endDate) => {
-          const action = new filtersStore.SetSeasonEnd(endDate);
-          this.store$.dispatch(action);
-        }
-      )
+      this.endDate$.pipe(debounceTime(500)).subscribe((endDate) => {
+        const action = new filtersStore.SetSeasonEnd(endDate);
+        this.store$.dispatch(action);
+      }),
     );
   }
 
@@ -91,7 +84,7 @@ export class SeasonSelectorComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new filtersStore.SetSeasonEnd(temp));
   }
   public change(which: string, amount: number) {
-    let value = (which === 'start') ? this.start : this.end;
+    let value = which === 'start' ? this.start : this.end;
     value += amount;
     value = value < 1 ? 365 + value : value;
     value = value > 365 ? value % 365 : value;

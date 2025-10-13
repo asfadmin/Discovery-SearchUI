@@ -3,9 +3,6 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-help-more-like-this',
   templateUrl: './help-more-like-this.component.html',
-  styleUrls: ['./help-more-like-this.component.scss']
+  styleUrls: ['./help-more-like-this.component.scss'],
 })
-export class HelpMoreLikeThisComponent {
-
-
-}
+export class HelpMoreLikeThisComponent {}

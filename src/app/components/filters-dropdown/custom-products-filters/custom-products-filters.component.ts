@@ -18,7 +18,7 @@ enum FilterPanel {
 @Component({
   selector: 'app-custom-products-filters',
   templateUrl: './custom-products-filters.component.html',
-  styleUrls: ['./custom-products-filters.component.scss']
+  styleUrls: ['./custom-products-filters.component.scss'],
 })
 export class CustomProductsFiltersComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
@@ -40,15 +40,15 @@ export class CustomProductsFiltersComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(scenesStore.getAreResultsLoaded).subscribe(
-        areLoaded => this.areResultsLoaded = areLoaded
-      )
+      this.store$
+        .select(scenesStore.getAreResultsLoaded)
+        .subscribe((areLoaded) => (this.areResultsLoaded = areLoaded)),
     );
 
     this.subs.add(
-      this.store$.select(hyp3Store.getHyp3JobIds).subscribe(
-        jobId => this.hyp3JobIds = jobId
-      )
+      this.store$
+        .select(hyp3Store.getHyp3JobIds)
+        .subscribe((jobId) => (this.hyp3JobIds = jobId)),
     );
   }
 

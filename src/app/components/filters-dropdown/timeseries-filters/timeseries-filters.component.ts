@@ -15,12 +15,12 @@ enum FilterPanel {
   FILTER2 = 'Temporal Filter',
   DATE = 'Date',
   SEASON = 'Season',
-  OVERLAP = 'Overlap'
+  OVERLAP = 'Overlap',
 }
 @Component({
   selector: 'app-timeseries-filters',
   templateUrl: './timeseries-filters.component.html',
-  styleUrl: './timeseries-filters.component.scss'
+  styleUrl: './timeseries-filters.component.scss',
 })
 export class TimeseriesFiltersComponent implements OnDestroy, OnInit {
   private store$ = inject<Store<AppState>>(Store);
@@ -41,9 +41,9 @@ export class TimeseriesFiltersComponent implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(scenesStore.getAreResultsLoaded).subscribe(
-        areLoaded => this.areResultsLoaded = areLoaded
-      )
+      this.store$
+        .select(scenesStore.getAreResultsLoaded)
+        .subscribe((areLoaded) => (this.areResultsLoaded = areLoaded)),
     );
   }
 

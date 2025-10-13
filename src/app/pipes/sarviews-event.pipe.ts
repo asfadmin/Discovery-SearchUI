@@ -1,21 +1,25 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { SarviewsEvent, SarviewsQuakeEvent, SarviewsVolcanicEvent } from '@models';
+import {
+  SarviewsEvent,
+  SarviewsQuakeEvent,
+  SarviewsVolcanicEvent,
+} from '@models';
 
 @Pipe({
-    name: 'quakeEvent'
+  name: 'quakeEvent',
 })
 export class QuakePipe implements PipeTransform {
-    transform(input: SarviewsEvent): SarviewsQuakeEvent {
-        return input as SarviewsQuakeEvent;
-    }
+  transform(input: SarviewsEvent): SarviewsQuakeEvent {
+    return input as SarviewsQuakeEvent;
+  }
 }
 
 @Pipe({
-  name: 'volcanicEvent'
+  name: 'volcanicEvent',
 })
 export class VolcanoPipe implements PipeTransform {
   transform(input: SarviewsEvent): SarviewsVolcanicEvent {
-      return input as SarviewsVolcanicEvent;
+    return input as SarviewsVolcanicEvent;
   }
 }
 
