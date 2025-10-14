@@ -353,13 +353,6 @@ export class UrlStateService {
         loader: this.loadDispOverview
       },
       {
-        name: 'isPriorityEnabled',
-        source: this.mapService.priorityEnabled$.pipe(
-          map(isPriorityEnabled => ({isPriorityEnabled})),
-        ),
-        loader: this.loadDispPriority
-      },
-      {
         name: 'isShowLinesEnabled',
         source: this.store$.select(chartsStore.getShowLines).pipe(
           map(isShowLinesEnabled => ({isShowLinesEnabled})),
@@ -1036,12 +1029,6 @@ export class UrlStateService {
   }
   private loadDispOverview = (dispOverview) => {
     this.mapService.setDisplacementType(dispOverview);
-    return;
-  }
-  private loadDispPriority = (isDispPriorityEnabled) => {
-    if(isDispPriorityEnabled) {
-      this.mapService.enablePriority(isDispPriorityEnabled);
-    }
     return;
   }
   private loadDispShowLines = (isShowLinesEnabled) => {

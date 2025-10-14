@@ -1141,54 +1141,6 @@ export class MapService implements OnDestroy {
     this.hasCoherenceLayer$.next(null);
   }
 
-  public enablePriority(flight_dir: models.FlightDirection): void {
-    const source = new VectorSource({
-      url: `/assets/priority_rollout_${flight_dir}.geojson`,
-      format: new GeoJSON({})
-    },
-    )
-    this.priorityEnabled$.next(flight_dir);
-
-    const colorTable = [
-      'rgba(174, 174, 174, 0.6)',
-      'rgba(127, 206, 255, 0.8)',
-      'rgba(45, 128, 179, 0.7)',
-      'rgba(0, 64, 103, 0.6)',
-    ]
-    this.priorityOverview.setSource(source);
-    this.priorityOverview.setStyle(function (feature, _resolution) {
-      const test = feature.getProperties();
-      const priority = +test['priority'];
-      let color = '#FF0000';
-      if (priority === 1) {
-        color = colorTable[1];
-      } else if (priority === 2) {
-        color = colorTable[2];
-      } else if (priority === 3) {
-        color = colorTable[3];
-      } else {
-        color = colorTable[0]
-      }
-      return new Style({
-        fill: new Fill({
-          color: color
-        }),
-        stroke: new Stroke({
-          color: 'black',
-        })
-      });
-    })
-  }
-
-  public disablePriority(): void {
-    this.priorityOverview.setSource(null);
-    this.priorityEnabled$.next(null);
-  }
-
-  public isPriorityEnabled(): boolean {
-    return !!this.priorityEnabled$.value
-  }
-
   public createBrowseRasterCanvas(scenes: models.CMRProduct[]) {
     const scenesWithBrowse = scenes.filter(scene => scene.browses?.length > 0).slice(0, 10);
 
