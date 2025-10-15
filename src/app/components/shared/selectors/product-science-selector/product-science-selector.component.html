@@ -1,0 +1,38 @@
+<!--<h4>{{ 'SCIENCE_PRODUCT' | translate }}</h4>-->
+<mat-form-field class="sci-prod-form-field">
+  <mat-label>{{ 'SCIENCE_PRODUCT' | translate }}</mat-label>
+  <mat-select [formControl]="sciProdControl" class="sci-prod-select" (selectionChange)="onSciProductSelect($event.value)" multiple>
+    <div class="sci-prod-filter-flex-container">
+
+      <div class="sci-prod-filter-flex-item">
+        @for (group of sciProdGroups; track group) {
+          @if (group.name === 'Level-3' || group.name === 'Level-2') {
+            <mat-optgroup [label]="group.name"
+                          [disabled]="group.disabled"
+                          class="sci-prod-optgroup">
+              @for (sciProd of group.sciProd; track sciProd) {
+                <mat-option [value]="sciProd.value">{{sciProd.viewValue}}</mat-option>
+              }
+            </mat-optgroup>
+          }
+        }
+      </div>
+
+      <div class="sci-prod-filter-flex-item">
+        @for (group of sciProdGroups; track group) {
+          @if (group.name === 'Level-1' || group.name === 'Level-0') {
+            <mat-optgroup [label]="group.name"
+                          [disabled]="group.disabled"
+                          class="sci-prod-optgroup">
+              @for (sciProd of group.sciProd; track sciProd) {
+                <mat-option [value]="sciProd.value">{{sciProd.viewValue}}</mat-option>
+              }
+            </mat-optgroup>
+          }
+        }
+      </div>
+
+    </div>
+  </mat-select>
+  <mat-hint>{{ sciProdControl.value }}</mat-hint>
+</mat-form-field>

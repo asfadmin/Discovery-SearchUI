@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import { env } from './env';
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+import { SetSearchOutOfDate } from '@store/search';
 
 export interface Environments {
   prod: Environment;
@@ -34,7 +37,7 @@ export class EnvironmentService {
   public maturity: string;
   public isProd: boolean;
 
-  constructor() {
+  constructor(private $store: Store<AppState>) {
     this.isProd = env.defaultEnv === 'prod';
     this.envs = this.loadEnvs();
 
@@ -65,10 +68,12 @@ export class EnvironmentService {
   public setMaturity(maturity: string): void {
     this.maturity = maturity;
     localStorage.setItem(this.maturityKey, this.maturity);
+    this.$store.dispatch(new SetSearchOutOfDate(true));
   }
 
   public setEnvs(envs: any): void {
     this.envs = <Environments>envs;
+    this.$store.dispatch(new SetSearchOutOfDate(true));
   }
 
   private loadWithCustom(): Environments {
@@ -91,5 +96,6 @@ export class EnvironmentService {
 
   public resetToDefault(): void {
     this.envs = this.loadFromEnvFile();
+    this.$store.dispatch(new SetSearchOutOfDate(true));
   }
 }

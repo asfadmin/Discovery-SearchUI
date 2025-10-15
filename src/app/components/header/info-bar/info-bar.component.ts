@@ -39,6 +39,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public listSearchMode: models.ListSearchType;
   public searchList: string[];
   public productTypes: string;
+  public shortNames: string;
   public beamModes: models.DatasetBeamModes;
   public polarizations: models.DatasetPolarizations;
   public flightDirections: models.FlightDirection[];
@@ -51,6 +52,13 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public useCalibrationData: boolean = false;
   public groupID: string;
   public userID: string;
+  public sidePolarizations: models.DatasetPolarizations;
+  public rangeBandwidth: string[];
+  public instruments: string[];
+  public frameCoverage: string[];
+  public jointObservation: boolean;
+  public scienceProducts: string[];
+  public productionConfig: string[];
   public jobIds: string[];
   public selectedDataset: string;
   public selectedDatasetIsNISARFormat: boolean = false;
@@ -113,9 +121,29 @@ export class InfoBarComponent implements OnInit, OnDestroy {
         .map(subtype => subtype.apiValue)
         .join(',')
     );
+    const shortNamesSub = this.store$.select(filtersStore.getShortNames).subscribe(
+      shortNames => this.shortNames = shortNames
+        .map(subtype => subtype.apiValue)
+        .join(',')
+    );
     const polsSub = this.store$.select(filtersStore.getPolarizations).subscribe(
       pols  => this.polarizations = pols
     );
+    const sidePolsSub = this.store$.select(filtersStore.getSidePolarizations).subscribe(
+        sidePols => this.sidePolarizations = sidePols
+    )
+    const instrumentSub = this.store$.select(filtersStore.getInstruments).subscribe(
+        instruments => this.instruments = instruments
+    )
+    const frameCoverageSub = this.store$.select(filtersStore.getFrameCoverage).subscribe(
+        frameCoverage => this.frameCoverage = frameCoverage
+    )
+    const rangeBandwidthSub = this.store$.select(filtersStore.getRangeBandwidth).subscribe(
+        rangeBandwidth => this.rangeBandwidth = rangeBandwidth
+    )
+    const jointObservationSub = this.store$.select(filtersStore.getJointObservation).subscribe(
+        jointObservation => this.jointObservation = jointObservation
+    )
     const beamModesSub = this.store$.select(filtersStore.getBeamModes).subscribe(
       beamModes => this.beamModes = beamModes
     );
@@ -167,6 +195,13 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       jobIds => this.jobIds = jobIds
     );
 
+    const scienceProductsSub = this.store$.select(filtersStore.getScienceProduct).subscribe(
+      scienceProducts => this.scienceProducts = scienceProducts
+    );
+
+    const productionConfigSub = this.store$.select(filtersStore.getProductionConfig).subscribe(
+      productionConfig => this.productionConfig = productionConfig
+    );
     [
       startSub, endSub,
       pathSub, frameSub,
@@ -174,7 +209,13 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       omitSub,
       listSearchModeSub, searchListSub,
       productTypesSub,
+      shortNamesSub,
       polsSub,
+      sidePolsSub,
+      instrumentSub,
+      frameCoverageSub,
+      rangeBandwidthSub,
+      jointObservationSub,
       beamModesSub,
       flightDirsSub,
       subtypeSub,
@@ -186,6 +227,8 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       useCalibrationDataSub,
       groupIDSub,
       userIDSub,
+      productionConfigSub,
+      scienceProductsSub,
       jobIdsSub
     ].forEach(sub => this.subs.add(sub));
 

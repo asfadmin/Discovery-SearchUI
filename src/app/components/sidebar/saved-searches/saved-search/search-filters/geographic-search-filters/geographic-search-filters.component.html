@@ -41,14 +41,47 @@
   <div *ngIf="filters.selectedMission">
     <b>{{ 'CAMPAIGN' | translate}}:</b> {{ filters.selectedMission }}
   </div>
-  <div *ngIf="filters.fullBurstIDs">
+  <div *ngIf="filters.fullBurstIDs.length">
     <b>{{ 'FULL_BURST_ID' | translate}}:</b> {{ filters.fullBurstIDs }}
   </div>
-  <div *ngIf="filters.operaBurstIDs">
+  <div *ngIf="filters.operaBurstIDs.length">
     <b>{{ 'OPERA_BURST_ID' | translate}}:</b> {{ filters.operaBurstIDs }}
   </div>
   <div *ngIf="filters.useCalibrationData">
     <b>{{ 'DATA_TYPE' | translate}}:</b> {{'CALIBRATION' | translate}}
+  </div>
+  <div *ngIf="!!filters.shortNames.length">
+    <b> {{ 'SHORT_NAMES' | translate }}:</b> {{ filters.shortNames }}
+  </div>
+  <div *ngIf="filters.scienceProduct.length">
+      <b>{{'SCIENCE_PRODUCT' | translate }}:</b> {{filters.scienceProduct | join : ', '}}
+  </div>
+  <div *ngIf="filters.productionConfig.length">
+      <b>{{'PRODUCTION_CONFIGURATION' | translate }}:</b> {{filters.productionConfig}}
+  </div>
+  <div *ngIf="filters.sidePolarizations.length">
+        <b>{{'SIDE_POLARIZATIONS' | translate }}:</b> {{filters.sidePolarizations}}
+  </div>
+  <div *ngIf="filters.frameCoverage.length">
+        <b>{{'FRAME_COVERAGE' | translate }}:</b> {{filters.frameCoverage}}
+  </div>
+  <div *ngIf="filters.rangeBandwidth.length">
+        <b>{{'RANGE_BANDWIDTH' | translate }}:</b> {{filters.rangeBandwidth}}
+  </div>
+  <div *ngIf="!!filters.groupID">
+    <b> {{ 'GROUP_ID_INFO_BAR' | translate }}:</b> {{ filters.groupID }}
+  </div>
+  <div *ngIf="filters.instrument.length">
+      <b>{{'INSTRUMENTS' | translate }}:</b> {{filters.instrument}}
+  </div>
+  <div *ngIf="filters.frameCoverage.length">
+      <b>{{'FRAME_COVERAGE' | translate }}:</b> {{filters.frameCoverage}}
+  </div>
+  <div *ngIf="filters.rangeBandwidth.length">
+      <b>{{'RANGE_BANDWIDTH' | translate }}:</b> {{filters.rangeBandwidth}}
+  </div>
+  <div *ngIf="filters.jointObservation">
+      <b>{{'DATA_TYPE' | translate }}:</b> {{'JOINT_OBSERVATION_ONLY' | translate }}
   </div>
 </div>
 

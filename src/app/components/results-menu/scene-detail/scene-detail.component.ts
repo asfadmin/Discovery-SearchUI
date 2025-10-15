@@ -66,7 +66,8 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public isBrowseOverlayEnabled$: Observable<boolean> = this.browseOverlayService.isBrowseOverlayEnabled$;
 
   public isBrowseOverlayEnabled = false;
-
+  public copyIcons = models.CopyIcons;
+  
   private selectedSarviewsProductIndex$ = this.store$.select(scenesStore.getSelectedSarviewsProduct).pipe(
     filter(product => !!product),
     withLatestFrom(this.selectedSarviewsEventProducts$),

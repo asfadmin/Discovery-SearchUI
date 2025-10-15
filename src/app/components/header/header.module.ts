@@ -57,9 +57,7 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { DocsModalModule } from '@components/shared/docs-modal';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-
 import { BaselineFrameReferenceToggleComponent } from '@components/shared/selectors/baseline-frame-reference-toggle';
-
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -116,7 +114,7 @@ import { BaselineFrameReferenceToggleComponent } from '@components/shared/select
     BaselineFrameReferenceToggleComponent,
     NgOptimizedImage,
     MatTooltipModule,
-],
+    ],
     providers: [provideHttpClient(withInterceptorsFromDi())],
   exports: [
     HeaderComponent

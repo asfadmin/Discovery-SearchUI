@@ -11,6 +11,7 @@ import { QuakePipe, VolcanoPipe } from './sarviews-event.pipe';
 import { FilterExtensionPipe } from './filter-extension.pipe';
 import { FloatPrecisionPipe } from './float-precision.pipe';
 import { AoiIconPipe } from './aoi-icon.pipe';
+import { PolarizationCountPipe } from './polarization.pipe';
 @NgModule({
   declarations: [
     ReadableSizeFromBytesPipe,
@@ -30,7 +31,8 @@ import { AoiIconPipe } from './aoi-icon.pipe';
     VolcanoPipe,
     FilterExtensionPipe,
     FloatPrecisionPipe,
-    AoiIconPipe
+    AoiIconPipe,
+    PolarizationCountPipe
   ],
   imports: [
     CommonModule
@@ -53,7 +55,8 @@ import { AoiIconPipe } from './aoi-icon.pipe';
     VolcanoPipe,
     FilterExtensionPipe,
     FloatPrecisionPipe,
-    AoiIconPipe
+    AoiIconPipe,
+    PolarizationCountPipe
   ]
 })
 export class PipesModule { }

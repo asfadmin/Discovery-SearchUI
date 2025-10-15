@@ -12,9 +12,10 @@
           {{ numberOfScenes$ | async }} {{ 'SCENE' | translate }}{{ (numberOfScenes$ | async) === 1 ? '' : 's' }}
           <span *ngIf="breakpoint > breakpoints.MOBILE" style="font-size: small;">
             <br>
-              ({{ numberOfProducts$ | async }} {{ 'OF' | translate}}
+              @let virtualCount = (totalVirtualProducts$ | async);
+              {{ (numberOfProducts$ | async) - virtualCount }} @if(virtualCount > 0) {({{virtualCount}} {{'ADDITIONAL' | translate}})} {{ 'OF' | translate}}
               {{ formatNumber(totalResultCount$ | async) }}
-              {{ 'FILE' | translate }}{{ (numberOfProducts$ | async) === 1 ? '' : 's' }})
+              {{ 'FILE' | translate }}{{ (numberOfProducts$ | async) === 1 ? '' : 's' }}
           </span>
         </div>
 
@@ -92,7 +93,7 @@
             <div class="fx-row">
               <div class="scenes-list-button-container">
                 <mat-button-toggle-group name="layerType" class="fx-empty mr-10" [hideSingleSelectionIndicator]="true">
-                  <mat-button-toggle (click)="onZoomToResults()"
+                  <mat-button-toggle [disabled]="((numOfScenesWithPolygon$ | async) === 0 && searchType !== SearchTypes.SARVIEWS_EVENTS)"  (click)="onZoomToResults()"
                     class="control-mat-button-toggle clickable noselect"
                     matTooltip="{{ 'ZOOM_TO_RESULTS' | translate }}">
                     <mat-icon class="list-icon">
@@ -338,11 +339,10 @@
             </button>
 
             <button mat-menu-item
-            *ngIf="searchType === SearchTypes.DATASET && (currentDatasetID$ | async) === 'OPERA-S1'"
-            [matMenuTriggerFor]="addAllProductsOfType"
-            [matMenuTriggerData]="{productData: (productCountByType$ | async)}"
-            >
-            {{ 'ADD_BY_PRODUCT_TYPE' | translate }}
+                    *ngIf="searchType === SearchTypes.DATASET && ((currentDatasetID$ | async) === 'OPERA-S1'|| (currentDatasetID$ | async) === 'NISAR')"
+                    [matMenuTriggerFor]="addAllProductsOfType"
+                    [matMenuTriggerData]="{productData: (productCountByType$ | async)}">
+              {{ (currentDatasetID$ | async) === 'NISAR' ? ('ADD_BY_FILE_TYPE' | translate) : ('ADD_BY_PRODUCT_TYPE' | translate) }}
           </button>
           </mat-menu>
 

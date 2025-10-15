@@ -43,7 +43,7 @@ export const opera_s1 = {
     {
       apiValue: 'TROPO-ZENITH',
       displayName: 'L4 Troposphere Zenith Radar Delays (TROPO-ZENITH)',
-    }
+    },
   ],
   beamModes: [
     'IW', 'EW'

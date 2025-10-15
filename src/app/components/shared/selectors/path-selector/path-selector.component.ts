@@ -29,13 +29,14 @@ export class PathSelectorComponent implements OnInit, OnDestroy {
 
   private inputErrors$ = new Subject<PathFormInputType>();
   private currentError: PathFormInputType | null = null;
-
+  
   public inputTypes = PathFormInputType;
   public pathStart: number | null;
   public pathEnd: number | null;
   public frameStart: number | null;
   public frameEnd: number | null;
-  public selectedDataset: string;
+  public selectedDataset: string | null = '';
+  
   public selectedDatasetIsNISARFormat: boolean = false;
 
   private get pathStartControl() {

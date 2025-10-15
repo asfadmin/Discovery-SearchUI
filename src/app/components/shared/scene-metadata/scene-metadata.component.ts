@@ -104,14 +104,31 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
     const action = new filtersStore.SetFlightDirections([<models.FlightDirection>capitalized]);
     this.store$.dispatch(action);
   }
+  public setFrameCoverage(): void {
+    const action = new filtersStore.setFrameCoverage([this.scene.metadata.nisar.frameCoverage]);
+    this.store$.dispatch(action);
+  }
 
   public addPolarization(): void {
     const action = new filtersStore.AddPolarization(this.scene.metadata.polarization);
     this.store$.dispatch(action);
   }
+  public addMainPolarization(): void {
+    const action = new filtersStore.AddPolarization(this.scene.metadata.nisar.mainBandPolarization);
+    this.store$.dispatch(action);
+  }
+  public addSidePolarization(): void {
+    const action = new filtersStore.AddSidePolarization(this.scene.metadata.nisar.sideBandPolarization);
+    this.store$.dispatch(action);
+  }
 
   public addMission(): void {
     const action = new filtersStore.SelectMission(this.scene.metadata.missionName);
+    this.store$.dispatch(action);
+  }
+
+  public addRangeBandwidth(): void {
+    const action = new filtersStore.addRangeBandwidth(this.scene.metadata.nisar.rangeBandwidth);
     this.store$.dispatch(action);
   }
 
