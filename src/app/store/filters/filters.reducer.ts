@@ -22,8 +22,10 @@ export interface FiltersState {
   searchList: string[];
 
   productTypes: models.DatasetProductTypes;
+  shortNames: models.DatasetShortName;
   beamModes: models.DatasetBeamModes;
   polarizations: models.DatasetPolarizations;
+  sidePolarizations: models.DatasetPolarizations;
   flightDirections: Set<models.FlightDirection>;
   subtypes: models.DatasetSubtypes;
   jobStatuses: models.Hyp3JobStatusCode[];
@@ -52,8 +54,16 @@ export interface FiltersState {
 
   fullBurstIDs: null | string[];
 
+  frameCoverage: string[];
+  jointObservation: boolean;
+  rangeBandwidth: string[];
+  instrument: string[];
+  scienceProduct: string[];
+  productionConfig: string[];
+
   operaBurstIDs: null | string[];
   useCalibrationData: boolean; // used to toggle OPERA-S1 Calval (calibration) datasets
+
 
   groupID: null | string;
 
@@ -65,7 +75,7 @@ export type DateRangeState = models.Range<null | Date>;
 
 
 export const initState: FiltersState = {
-  selectedDatasetId: 'SENTINEL-1',
+  selectedDatasetId: 'NISAR',
   dateRange: {
     start: null,
     end: null
@@ -97,6 +107,7 @@ export const initState: FiltersState = {
   productTypes: [],
   beamModes: [],
   polarizations: [],
+  sidePolarizations: [],
   subtypes: [],
   flightDirections: new Set<models.FlightDirection>([]),
   jobStatuses: [],
@@ -133,7 +144,15 @@ export const initState: FiltersState = {
   operaBurstIDs: [],
   useCalibrationData: false,
 
+  frameCoverage: [],
+  jointObservation: false,
+  rangeBandwidth: [],
+  instrument: [],
+  scienceProduct: [],
+  productionConfig: [],
+
   groupID: null,
+  shortNames: [],
 
   useFramesForReference: false,
 };
@@ -421,7 +440,16 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         fullBurstIDs: [],
         operaBurstIDs: [],
         useCalibrationData: false,
-        groupID: null
+        groupID: null,
+        shortNames: [],
+        frameCoverage: [],
+        sidePolarizations: [],
+        jointObservation: false,
+        instrument: [],
+        rangeBandwidth: [],
+        scienceProduct: [],
+        productionConfig: [],
+
       };
     }
 
@@ -464,11 +492,24 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
       };
     }
 
+    case FiltersActionType.SET_SHORT_NAMES: {
+      return {
+        ...state,
+        shortNames: [ ...action.payload ]
+      };
+    }
+
     case FiltersActionType.ADD_BEAM_MODE: {
       return {
         ...state,
         beamModes: [ ...state.beamModes, action.payload ]
       };
+    }
+    case FiltersActionType.ADD_RANGE_BANDWIDTH: {
+        return {
+            ...state,
+            rangeBandwidth: [...new Set([...state.rangeBandwidth, action.payload])]
+        }
     }
 
     case FiltersActionType.SET_BEAM_MODES: {
@@ -501,6 +542,23 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         ...state,
         polarizations: [ ...action.payload ]
       };
+    }
+    case FiltersActionType.ADD_SIDE_POLARIZATION: {
+        const newPols = Array.from(
+            new Set([...state.sidePolarizations, action.payload])
+        );
+
+        return {
+            ...state,
+            sidePolarizations: [...newPols]
+        };
+    }
+
+    case FiltersActionType.SET_SIDE_POLARIZATIONS: {
+        return {
+            ...state,
+            sidePolarizations: [...action.payload]
+        };
     }
     case FiltersActionType.SET_SUBTYPES: {
       return {
@@ -645,6 +703,15 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
           fullBurstIDs: filters.fullBurstIDs,
           operaBurstIDs: filters.operaBurstIDs,
           useCalibrationData: filters.useCalibrationData,
+          shortNames: filters.shortNames,
+          scienceProduct: filters.scienceProduct,
+          productionConfig: filters.productionConfig,
+          sidePolarizations: filters.sidePolarizations,
+          frameCoverage: filters.frameCoverage,
+          jointObservation: filters.jointObservation,
+          rangeBandwidth: filters.rangeBandwidth,
+          instrument: filters.instrument,
+          groupID: filters.groupID
         };
       }
     }
@@ -778,6 +845,42 @@ export function filtersReducer(state = initState, action: FiltersActions): Filte
         groupID: action.payload
       }
     }
+    case FiltersActionType.SET_FRAME_COVERAGE: {
+        return {
+            ...state,
+            frameCoverage: action.payload
+        }
+    }
+    case FiltersActionType.SET_JOINT_OBSERVATION: {
+        return {
+            ...state,
+            jointObservation: action.payload
+          }
+    }
+    case FiltersActionType.SET_RANGE_BANDWIDTH: {
+        return {
+            ...state,
+            rangeBandwidth: action.payload
+          }
+    }
+    case FiltersActionType.SET_INSTRUMENT: {
+        return {
+            ...state,
+            instrument: action.payload
+          }
+    }
+    case FiltersActionType.SET_SCIENCE_PRODUCT: {
+      return {
+        ...state,
+        scienceProduct: action.payload
+      }
+    }
+    case FiltersActionType.SET_PRODUCTION_CONFIG: {
+      return {
+        ...state,
+        productionConfig: action.payload
+      }
+    }
     case FiltersActionType.SET_USER_FRAME_FOR_BASELINE: {
         return {
             ...state,
@@ -894,6 +997,11 @@ export const getProductTypes = createSelector(
   (state: FiltersState) => state.productTypes
 );
 
+export const getShortNames = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.shortNames
+);
+
 export const getBeamModes = createSelector(
   getFiltersState,
   (state: FiltersState) => state.beamModes
@@ -902,6 +1010,11 @@ export const getBeamModes = createSelector(
 export const getPolarizations = createSelector(
   getFiltersState,
   (state: FiltersState) => state.polarizations
+);
+
+export const getSidePolarizations = createSelector(
+    getFiltersState,
+    (state: FiltersState) => state.sidePolarizations
 );
 
 export const getSubtypes = createSelector(
@@ -959,7 +1072,16 @@ export const getGeographicSearch = createSelector(
     selectedMission: state.selectedMission,
     fullBurstIDs: state.fullBurstIDs,
     operaBurstIDs: state.operaBurstIDs,
-    useCalibrationData: state.useCalibrationData
+    useCalibrationData: state.useCalibrationData,
+    shortNames: state.shortNames,
+    scienceProduct: state.scienceProduct,
+    productionConfig: state.productionConfig,
+    sidePolarizations: state.sidePolarizations,
+    frameCoverage: state.frameCoverage,
+    jointObservation: state.jointObservation,
+    rangeBandwidth: state.rangeBandwidth,
+    instrument: state.instrument,
+    groupID: state.groupID,
   })
 );
 
@@ -1086,6 +1208,32 @@ export const getGroupID = createSelector(
   (state: FiltersState) => state.groupID
 )
 
+export const getFrameCoverage = createSelector(
+    getFiltersState,
+    (state: FiltersState) => state.frameCoverage
+)
+
+export const getJointObservation = createSelector(
+    getFiltersState,
+    (state: FiltersState) => state.jointObservation
+)
+
+export const getRangeBandwidth = createSelector(
+    getFiltersState,
+    (state: FiltersState) => state.rangeBandwidth
+)
+export const getInstruments = createSelector(
+    getFiltersState,
+    (state: FiltersState) => state.instrument
+)
+export const getScienceProduct = createSelector(
+    getFiltersState,
+    (state: FiltersState) => state.scienceProduct
+)
+export const getProductionConfig = createSelector(
+    getFiltersState,
+    (state: FiltersState) => state.productionConfig
+)
 export const getShouldUseFramesForReference = createSelector(
     getFiltersState,
     (state: FiltersState) => state.useFramesForReference

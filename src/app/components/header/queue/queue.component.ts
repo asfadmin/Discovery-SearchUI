@@ -48,6 +48,7 @@ export class QueueComponent implements OnInit, OnDestroy {
 
   public previousQueue: any[] | null = null;
   public areAnyProducts = false;
+  public areAnyS3Products = false;
 
   public style: object = {};
   public dlWidth = 1000;
@@ -87,6 +88,9 @@ export class QueueComponent implements OnInit, OnDestroy {
       0
     ))
   );
+  public numberOfS3Products$ = this.products$.pipe(
+    map(products => products.filter(product => !!product.metadata.s3URI).length)
+  )
 
   private subs = new SubSink();
 
@@ -181,10 +185,11 @@ export class QueueComponent implements OnInit, OnDestroy {
 
   }
 
-  public onCopyQueueURLs(products: CMRProduct[]): void {
+  public onCopyQueueURLs(products: CMRProduct[], useS3Urls: boolean = false): void {
     const productListStr = products
       .filter(product => !product.isUnzippedFile)
-      .map(product => product.downloadUrl)
+      .map(product => useS3Urls ? product.metadata?.s3URI ?? null : product.downloadUrl)
+      .filter(url => !!url)
       .join('\n');
     this.clipboardService.copyFromContent(productListStr);
     const lines = this.lineCount(productListStr);

@@ -2,6 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { UserActionType, UserActions } from './user.action';
 import * as models from '@models';
+import jwt_decode from 'jwt-decode';
 /* State */
 
 export interface UserState {
@@ -21,7 +22,7 @@ export const initState: UserState = {
     groups: []
   },
   profile: {
-    defaultDataset: 'SENTINEL-1',
+    defaultDataset: 'NISAR',
     mapLayer: models.MapLayerTypes.SATELLITE,
     maxResults: 250,
     defaultMaxConcurrentDownloads: 3,
@@ -249,6 +250,17 @@ export const getUserProfile = createSelector(
 export const getIsUserLoggedIn = createSelector(
   getUserState,
   (state: UserState) => !!state.auth.id
+);
+
+export const getUserEDLToken = createSelector(
+  getUserState,
+  (state: UserState) => {
+    if (state.auth.token) {
+      const decoded = jwt_decode(state.auth.token)
+      return decoded['urs-access-token'] ?? null
+    }
+    return null;
+  }
 );
 
 export const getSavedSearches = createSelector(

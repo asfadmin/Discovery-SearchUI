@@ -62,9 +62,10 @@ export class AsfApiService {
 
       if (this.env.currentEnv.cmr_token) {
         stateParamsObj['cmr_token'] = this.env.currentEnv.cmr_token;
+      } else if (this.env.currentEnv.api_maturity !== 'prod') {
+        delete stateParamsObj['cmr_token'];
       }
     }
-
     const params = this.queryParamsFrom(stateParamsObj);
 
     const queryParamsStr = params.toString()

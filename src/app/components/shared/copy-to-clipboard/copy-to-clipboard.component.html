@@ -1,7 +1,24 @@
 <fa-icon
+  *ngIf="submenu.length === 0"
   (click)="onCopyIconClicked($event)"
   class="clickable"
   [matTooltip]="prompt"
   matTooltipPosition="left"
   [icon]="copyIcon">
 </fa-icon>
+
+<fa-icon *ngIf="submenu.length > 0"
+  (click)="$event.stopPropagation()"
+[matMenuTriggerFor]="promptMenu"
+class="clickable"
+matTooltipPosition="left"
+[icon]="copyIcon">
+</fa-icon>
+
+<mat-menu #promptMenu>
+<button mat-menu-item *ngFor="let item of submenu"
+(click)="onCopyFromMenu(item[0], item[1])"
+>
+  {{item[0]}}
+</button>
+</mat-menu>

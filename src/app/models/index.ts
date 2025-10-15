@@ -26,5 +26,6 @@ export * from './download.model';
 export * from './event-product-sort.model';
 export * from './asf-website.model';
 export * from './mapbox.model';
+export * from './copy-icon.model';
 export * from './timeseries.model';
 export * from './layers.model';

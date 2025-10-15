@@ -275,7 +275,6 @@ export class UrlStateService {
     }];
   }
 
-
   private eventMonitorParameters(): models.UrlParameter[] {
     return [{
       name: 'eventID',
@@ -564,46 +563,175 @@ export class UrlStateService {
         map(
           types => this.prop.saveProperties(types, 'productTypes', v => v.apiValue)
         ),
-      ),
+        ),
       loader: this.loadProductTypes
     }, {
-      name: 'beamModes',
-      source: this.store$.select(filterStore.getBeamModes).pipe(
-        map(
-          beamModes => this.prop.saveProperties(beamModes, 'beamModes')
-        )
-      ),
-      loader: this.loadBeamModes
-    }, {
-      name: 'polarizations',
-      source: this.store$.select(filterStore.getPolarizations).pipe(
-        map(
-          pols => this.prop.saveProperties(pols, 'polarizations')
-        )
-      ),
-      loader: this.loadPolarizations
-    }, {
-      name: 'flightDirs',
-      source: this.store$.select(filterStore.getFlightDirections).pipe(
-        map(dirs => dirs.join(',')),
-        map(flightDirs => ({ flightDirs }))
-      ),
-      loader: this.loadFlightDirections
-    },
-    {
-      name: 'useCalibrationData',
-      source: this.store$.select(filterStore.getUseCalibrationData).pipe(
-        map(useCalibrationData => ({ useCalibrationData }))
-      ),
-      loader: this.loadUseCalibrationData
-    },
-    {
-      name: 'useFrameForBaseline',
-      source: this.store$.select(filterStore.getShouldUseFramesForReference).pipe(
-        map(useFrameForBaseline => ({ useFrameForBaseline }))
-      ),
-      loader: this.loadUseFrameForBaseline
-    }
+        name: 'start',
+        source: this.store$.select(filterStore.getStartDate).pipe(
+          map(start => ({ start: start === null ? '' : moment.utc( start ).format() }))
+        ),
+        loader: this.loadStartDate
+      }, {
+        name: 'end',
+        source: this.store$.select(filterStore.getEndDate).pipe(
+          map(end => ({ end: end === null ? '' : moment.utc( end ).format() }))
+        ),
+        loader: this.loadEndDate
+      }, {
+        name: 'seasonStart',
+        source: this.store$.select(filterStore.getSeasonStart).pipe(
+          map(seasonStart  => ({ seasonStart }))
+        ),
+        loader: this.loadSeasonStart
+      }, {
+        name: 'seasonEnd',
+        source: this.store$.select(filterStore.getSeasonEnd).pipe(
+          map(seasonEnd => ({ seasonEnd }))
+        ),
+        loader: this.loadSeasonEnd
+      }, {
+        name: 'path',
+        source: this.store$.select(filterStore.getPathRange).pipe(
+          map(range => this.rangeService.toString(range)),
+          map(path => ({ path }))
+        ),
+        loader: this.loadPathRange
+      }, {
+        name: 'frame',
+        source: this.store$.select(filterStore.getFrameRange).pipe(
+          map(range => this.rangeService.toString(range)),
+          map(frame => ({ frame }))
+        ),
+        loader: this.loadFrameRange
+      }, {
+        name: 'perp',
+        source: this.store$.select(filterStore.getPerpendicularRange).pipe(
+          map(range => this.rangeService.toStringWithNegatives(range)),
+          map(perp => ({ perp }))
+        ),
+        loader: this.loadPerpendicularRange
+      }, {
+        name: 'temporal',
+        source: this.store$.select(filterStore.getTemporalRange).pipe(
+          map(range => this.rangeService.toStringWithNegatives(range)),
+          map(temporal => ({ temporal }))
+        ),
+        loader: this.loadTemporalRange
+      }, {
+        name: 'listSearchType',
+        source: this.store$.select(filterStore.getListSearchMode).pipe(
+          map(mode => ({ listSearchType: mode }))
+        ),
+        loader: this.loadListSearchType
+      }, {
+        name: 'productTypes',
+        source: this.store$.select(filterStore.getProductTypes).pipe(
+          map(
+            types => this.prop.saveProperties(types, 'productTypes', v => v.apiValue)
+          ),
+        ),
+        loader: this.loadProductTypes
+      }, {
+        name: 'beamModes',
+        source: this.store$.select(filterStore.getBeamModes).pipe(
+          map(
+            beamModes => this.prop.saveProperties(beamModes, 'beamModes')
+          )
+        ),
+        loader: this.loadBeamModes
+      }, {
+        name: 'polarizations',
+        source: this.store$.select(filterStore.getPolarizations).pipe(
+          map(
+
+            pols => {
+                const param = pols.map(x=> x.replaceAll(',', '-')).join(',');
+                return { 'polarizations': param };
+            }
+          )
+        ),
+        loader: this.loadPolarizations
+      }, {
+        name: 'flightDirs',
+        source: this.store$.select(filterStore.getFlightDirections).pipe(
+          map(dirs => dirs.join(',')),
+          map(flightDirs => ({ flightDirs }))
+        ),
+        loader: this.loadFlightDirections
+      },
+      {
+        name: 'useCalibrationData',
+        source: this.store$.select(filterStore.getUseCalibrationData).pipe(
+          map(useCalibrationData => ({useCalibrationData}))
+        ),
+        loader: this.loadUseCalibrationData
+      },
+      {
+        name: 'sidePolarizations',
+        source: this.store$.select(filterStore.getSidePolarizations).pipe(
+          map(
+            pols => {
+                const param = pols.map(x => x.replaceAll(',','-')).join(',');
+                return { 'sidePolarizations': param };
+            }
+          )
+        ),
+        loader: this.loadSidePolarizations
+      },
+      {
+        name: 'frameCoverage',
+        source: this.store$.select(filterStore.getFrameCoverage).pipe(
+          map(dirs => dirs.join(',')),
+          map(frameCoverage => ({ frameCoverage }))
+        ),
+        loader: this.loadFrameCoverage
+      },
+      {
+        name: 'jointObservation',
+        source: this.store$.select(filterStore.getJointObservation).pipe(
+          map(jointObservation => ({ jointObservation }))
+        ),
+        loader: this.loadJointObservation
+      },
+      {
+        name: 'rangeBandwidths',
+        source: this.store$.select(filterStore.getRangeBandwidth).pipe(
+          map(bandwidths => bandwidths.join(',')),
+          map(rangeBandwidths => ({ rangeBandwidths }))
+        ),
+        loader: this.loadRangeBandwidth
+      },
+      {
+        name: 'instruments',
+        source: this.store$.select(filterStore.getInstruments).pipe(
+          map(instruments => instruments.join(',')),
+          map(instruments => ({ instruments }))
+        ),
+        loader: this.loadInstruments
+      },
+      {
+        name: 'sciProducts',
+        source: this.store$.select(filterStore.getScienceProduct).pipe(
+          map(sciProducts => sciProducts.join(',')),
+          map(sciProducts => ({ sciProducts }))
+        ),
+        loader: this.loadSciProducts
+      },
+      {
+        name: 'prodConfig',
+        source: this.store$.select(filterStore.getProductionConfig).pipe(
+          map(configs => configs.join(',')),
+          map(prodConfig => ({ prodConfig }))
+        ),
+        loader: this.loadProduction
+      },
+      {
+        name: 'useFrameForBaseline',
+        source: this.store$.select(filterStore.getShouldUseFramesForReference).pipe(
+          map(useFrameForBaseline => ({ useFrameForBaseline }))
+        ),
+        loader: this.loadUseFrameForBaseline
+      }
     ];
   }
 
@@ -665,7 +793,15 @@ export class UrlStateService {
         )),
       loader: this.loadGroupId
     },
-    ];
+    {
+      name: 'shortNames',
+      source: this.store$.select(filterStore.getShortNames).pipe(
+        map(shortNames => ({'shortNames': shortNames.map(name => name.apiValue).join(',')}))
+      ),
+      loader: this.loadShortNames
+
+    }
+  ];
   }
 
   private loadSearchType = (searchType: string): Action | undefined => {
@@ -831,6 +967,20 @@ export class UrlStateService {
     return new filterStore.SetProductTypes(productTypes);
   };
 
+  private loadShortNames  = (shortNameStr: string): Action | undefined => {
+    const shortNames: models.DatasetShortName = this.prop.loadProperties(
+      shortNameStr,
+      'shortNames',
+      (v: models.ShortName) => v.apiValue
+    );
+
+    if (!shortNames) {
+      return;
+    }
+
+    return new filterStore.setShortNames(shortNames);
+  };
+
   private loadBeamModes = (modesStr: string): Action | undefined => {
     const beamModes = this.prop.loadProperties(modesStr, 'beamModes');
 
@@ -851,6 +1001,14 @@ export class UrlStateService {
     return new filterStore.SetPolarizations(polarizations);
   };
 
+  private loadSidePolarizations = (polarizationsStr: string): Action | undefined => {
+    const polarizations = this.prop.loadProperties(polarizationsStr, 'polarizations');
+    if (!polarizations) {
+      return;
+    }
+
+    return new filterStore.SetSidePolarizations(polarizations);
+  };
   private loadSubtypes = (subtypesStr: string): Action | undefined => {
     const subtypes = this.prop.loadProperties(subtypesStr, 'subtypes', v => v.apiValue);
 
@@ -1010,6 +1168,42 @@ export class UrlStateService {
   private loadUseCalibrationData = (usingCalibrationData: string): Action => {
     return new filterStore.setUseCalibrationData(!!usingCalibrationData)
   }
+  private loadFrameCoverage = (coverageStr: string): Action => {
+    const coverage= coverageStr
+    .split(',')
+    // TODO: Add some better checking for this by grabbing from the dataset
+    // .filter(direction => !Object.values(models.FlightDirection).includes(<models.FlightDirection>direction))
+    // .map(direction => <models.FlightDirection>direction);
+
+    return new filterStore.setFrameCoverage(coverage);
+  };
+  private loadRangeBandwidth = (bandwidthStr: string): Action => {
+    const bandwidth= bandwidthStr
+    .split(',')
+    // TODO: Add some better checking for this by grabbing from the dataset
+    // .filter(direction => !Object.values(models.FlightDirection).includes(<models.FlightDirection>direction))
+    // .map(direction => <models.FlightDirection>direction);
+
+    return new filterStore.setRangeBandwidth(bandwidth);
+  };
+  private loadInstruments = (instrumentsStr: string): Action => {
+    const instruments= instrumentsStr
+    .split(',')
+    return new filterStore.setIntstrument(instruments);
+  };
+   private loadSciProducts = (sciProductsStr: string): Action => {
+    const sciProducts= sciProductsStr
+    .split(',')
+    return new filterStore.setScienceProduct(sciProducts);
+  };
+   private loadProduction = (productionStr: string): Action => {
+     const loadProducts = productionStr
+       .split(',')
+    return new filterStore.setProductionConfig(loadProducts);
+  };
+  private loadJointObservation = (observationStr: string): Action => {
+    return new filterStore.setJointObservation(observationStr === 'true');
+  };
 
   private loadUseFrameForBaseline = (usingseFrameForBaseline: string): Action => {
     return new filterStore.SetUseFrameForBaseline(!!usingseFrameForBaseline)
