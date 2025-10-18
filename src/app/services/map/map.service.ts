@@ -45,7 +45,7 @@ import TileLayer from 'ol/layer/WebGLTile.js';
 
 import SimpleGeometry from 'ol/geom/SimpleGeometry';
 import { SetGeocode } from '@store/filters';
-import { Extent } from 'ol/extent';
+import {Extent, isEmpty} from 'ol/extent';
 import { MultiPolygon } from 'ol/geom';
 import GeoJSON from 'ol/format/GeoJSON.js';
 import * as uiStore from '@store/ui';
@@ -387,7 +387,7 @@ export class MapService implements OnDestroy {
     this.map = this.updatedMap();
   }
 
-  public setFrameSelectionActive(active: boolean, url?: string, frameRange?: models.Range<number | null>) {
+  public setFrameSelectionActive(active: boolean, url?: string, frameRange?: models.Range<number | null>, pathRange?: models.Range<number | null>) {
     if (!active) {
       this.frameSelectionOverlay.setVisible(false);
       this.selectClick?.getFeatures().clear();
@@ -427,18 +427,32 @@ export class MapService implements OnDestroy {
 
     source.on('featuresloadend', () => {
       if (this.frameSelectionOverlay.getSourceState() === 'ready') {
-        this.filterFrameOverlay(frameRange);
+        this.filterFrameOverlay(frameRange, pathRange);
       }
     })
   }
-  public filterFrameOverlay(frame: models.Range<number | null>) {
-    if (frame.start === null) {
-      return;
+
+  public isWithinRange(value, range: models.Range<number | null>) {
+    if(range === null || range == undefined) {
+      return true;
     }
-    this.frameSelectionOverlay?.getSource()?.getFeatures().forEach(a => {
-      if (+a.get('path') !== frame.start) {
-        a.setStyle(new Style({}));
+    if(range?.start !== null ) {
+      if(range?.end !== null) {
+        return value >= range?.start && value <= range?.end;
       } else {
+        return value >= range?.start;
+      }
+    } else if(range?.end !== null) {
+      return value <= range.end;
+    }
+    return true;
+  }
+  public filterFrameOverlay(frameRange: models.Range<number | null>, pathRange: models.Range<number | null>) {
+    this.frameSelectionOverlay?.getSource()?.getFeatures().forEach(a => {
+      let frame = +a.get('id');
+      let path = +a.get('path');
+
+      if (this.isWithinRange(frame, frameRange) && this.isWithinRange(path, pathRange)) {
         a.setStyle(new Style({
           fill: new Fill({
             color: '#FFFFFF33',
@@ -447,6 +461,8 @@ export class MapService implements OnDestroy {
             color: 'black',
           })
         }));
+      } else {
+        a.setStyle(new Style({}));
       }
     })
 
@@ -526,8 +542,10 @@ export class MapService implements OnDestroy {
     const extent = this.polygonLayer
       .getSource()
       .getExtent();
-
-    this.zoomToExtent(extent);
+    
+      if(!isEmpty(extent)) {
+        this.zoomToExtent(extent);
+      }
   }
 
   public zoomToScene(scene: models.CMRProduct): void {
@@ -611,9 +629,14 @@ export class MapService implements OnDestroy {
       // this.map.addLayer(this.selectedOnDemandFrameOverlays)
     }
   }
-  public sbasFrameMode(enabled) {
+  public sbasFrameMode(enabled: boolean, frame: string, dataset: models.Dataset) {
     this.polygonLayer.setVisible(enabled);
     this.selectedLayer.setVisible(enabled);
+    if(!enabled) {
+      this.setFrameSelectionActive(true, dataset?.frameMap?.ascending, {start: +frame, end: +frame});
+    } else {
+      this.setFrameSelectionActive(false);
+    }
   }
 
   private setMap(mapView: views.MapView, overlay): void {
@@ -891,7 +914,7 @@ export class MapService implements OnDestroy {
 
   }
 
-  public setSelectedBrowse(url: string, wkt: string) {
+  public setSelectedBrowse(url: string, wkt: string, _scene: models.CMRProduct = null) {
     if (!!this.browseImageLayer) {
       this.map.removeLayer(this.browseImageLayer);
     }
@@ -906,7 +929,12 @@ export class MapService implements OnDestroy {
           this.browseImageLayer = this.browseOverlayService.createImageLayer(url, wkt, 'ol-layer', 'current-overlay');
           this.map.addLayer(this.browseImageLayer);
         })
-      } else {
+      } 
+    //   else if(url.toLowerCase().includes('nisar')) {
+    //     this.browseImageLayer = this.browseOverlayService.getKMLLayer(_scene, url, wkt, 'ol-layer', 'current-overlay');
+    //     this.map.addLayer(this.browseImageLayer);
+    //   } 
+      else {
         this.browseImageLayer = this.browseOverlayService.createNormalImageLayer(url, wkt, 'ol-layer', 'current-overlay');
         this.map.addLayer(this.browseImageLayer);
       }
@@ -999,7 +1027,7 @@ export class MapService implements OnDestroy {
           ...parsed_color_stops
         ]
       })
-      this.displacementOverview.setExtent(response['extent']);
+
       //@ts-ignore
       this.displacementOverview.setSource(overview_source);
     })
@@ -1118,54 +1146,6 @@ export class MapService implements OnDestroy {
     this.map.removeLayer(this.layerService.coherenceLayer);
     this.layerService.coherenceLayer = null;
     this.hasCoherenceLayer$.next(null);
-  }
-
-  public enablePriority(flight_dir: models.FlightDirection): void {
-    const source = new VectorSource({
-      url: `/assets/priority_rollout_${flight_dir}.geojson`,
-      format: new GeoJSON({})
-    },
-    )
-    this.priorityEnabled$.next(flight_dir);
-
-    const colorTable = [
-      'rgba(174, 174, 174, 0.6)',
-      'rgba(127, 206, 255, 0.8)',
-      'rgba(45, 128, 179, 0.7)',
-      'rgba(0, 64, 103, 0.6)',
-    ]
-    this.priorityOverview.setSource(source);
-    this.priorityOverview.setStyle(function (feature, _resolution) {
-      const test = feature.getProperties();
-      const priority = +test['priority'];
-      let color = '#FF0000';
-      if (priority === 1) {
-        color = colorTable[1];
-      } else if (priority === 2) {
-        color = colorTable[2];
-      } else if (priority === 3) {
-        color = colorTable[3];
-      } else {
-        color = colorTable[0]
-      }
-      return new Style({
-        fill: new Fill({
-          color: color
-        }),
-        stroke: new Stroke({
-          color: 'black',
-        })
-      });
-    })
-  }
-
-  public disablePriority(): void {
-    this.priorityOverview.setSource(null);
-    this.priorityEnabled$.next(null);
-  }
-
-  public isPriorityEnabled(): boolean {
-    return !!this.priorityEnabled$.value
   }
 
   public createBrowseRasterCanvas(scenes: models.CMRProduct[]) {

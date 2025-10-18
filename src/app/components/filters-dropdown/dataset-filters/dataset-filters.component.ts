@@ -3,7 +3,7 @@ import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
 
-import { AppState } from '@store';
+import { AppState } from '@store/app.reducer';
 import * as filtersStore from '@store/filters';
 
 import * as models from '@models';
@@ -12,6 +12,7 @@ import { PropertyService, ScreenSizeService } from '@services';
 
 enum FilterPanel {
   DATE = 'Date',
+  PRODUCT = 'Product',
   ADDITIONAL = 'Additional',
   CAMPAIGN = 'Campaign',
   PATH = 'Path',

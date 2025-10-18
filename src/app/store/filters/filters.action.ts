@@ -42,6 +42,9 @@ export enum FiltersActionType {
   ADD_POLARIZATION = '[Filters-Polarization] Add Polarization',
   SET_POLARIZATIONS = '[Filters-Polarization] Set Dataset Polarizations',
 
+  ADD_SIDE_POLARIZATION = '[Filters-Polarization] Add Side Polarization',
+  SET_SIDE_POLARIZATIONS = '[Filters-Polarization] Set Dataset Side Polarizations',
+
   SET_JOB_STATUSES = '[Filters-Job-Status] Set Job Statuses',
 
   SET_FLIGHT_DIRECTIONS = '[Filters-Flight-Dir] Set Flight Directions',
@@ -95,6 +98,16 @@ export enum FiltersActionType {
   SET_OPERA_BURST_ID = '[Filters] Set Full OPERA S1 Burst IDs',
   SET_INCLUDE_CALIBRATION_DATA = '[Filters] Set use calbiration data in OPERA-S1 search',
   SET_GROUP_ID = '[Filters] Set Sentinel-1 Group ID',
+  SET_SHORT_NAMES = '[Filters] Set Short Names',
+
+  SET_FRAME_COVERAGE = '[Filters] Set Frame Coverage',
+  SET_JOINT_OBSERVATION = '[Filters] Set Joint Observation',
+  SET_RANGE_BANDWIDTH = '[Filters] Set Range Bandwidth',
+  ADD_RANGE_BANDWIDTH = '[Filters] Add Range Bandwidth',
+  SET_INSTRUMENT = '[Filters] Set Instrument',
+  SET_SCIENCE_PRODUCT = '[Filters] Set Science Product',
+  SET_PRODUCTION_CONFIG = '[Filters] Set Production Config',
+
   SET_USER_FRAME_FOR_BASELINE = '[Filters] Set if frame(s) used for baseline/sbas searches as reference scene'
 }
 
@@ -232,6 +245,11 @@ export class SetProductTypes implements Action {
   constructor(public payload: models.DatasetProductTypes) {}
 }
 
+export class setShortNames implements Action {
+  public readonly type = FiltersActionType.SET_SHORT_NAMES;
+
+  constructor(public payload: models.DatasetShortName) {}
+}
 export class SetListSearchType implements Action {
   public readonly type = FiltersActionType.SET_LIST_SEARCH_TYPE;
 
@@ -279,6 +297,17 @@ export class SetPolarizations implements Action {
   public readonly type = FiltersActionType.SET_POLARIZATIONS;
 
   constructor(public payload: models.DatasetPolarizations) {}
+}
+export class AddSidePolarization implements Action {
+    public readonly type = FiltersActionType.ADD_SIDE_POLARIZATION;
+
+    constructor(public payload: string) {}
+}
+
+export class SetSidePolarizations implements Action {
+public readonly type = FiltersActionType.SET_SIDE_POLARIZATIONS;
+
+    constructor(public payload: models.DatasetPolarizations) {}
 }
 
 export class SetSubtypes implements Action {
@@ -455,6 +484,43 @@ export class setGroupID implements Action {
 
   constructor(public payload: string) {}
 }
+export class setFrameCoverage implements Action {
+    public readonly type = FiltersActionType.SET_FRAME_COVERAGE;
+
+    constructor(public payload: string[]) {}
+}
+export class setJointObservation implements Action {
+    public readonly type = FiltersActionType.SET_JOINT_OBSERVATION;
+
+    constructor(public payload: boolean) {}
+}
+
+export class setRangeBandwidth implements Action {
+    public readonly type = FiltersActionType.SET_RANGE_BANDWIDTH;
+
+    constructor(public payload: string[]) {}
+}
+export class addRangeBandwidth implements Action {
+    public readonly type = FiltersActionType.ADD_RANGE_BANDWIDTH;
+
+    constructor(public payload: string) {}
+}
+export class setIntstrument implements Action {
+    public readonly type = FiltersActionType.SET_INSTRUMENT;
+
+    constructor(public payload: string[]) {}
+}
+export class setScienceProduct implements Action {
+    public readonly type = FiltersActionType.SET_SCIENCE_PRODUCT;
+
+    constructor(public payload: string[]) {}
+}
+
+export class setProductionConfig implements Action {
+    public readonly type = FiltersActionType.SET_PRODUCTION_CONFIG;
+
+  constructor(public payload: string[]) {}
+}
 
 export class SetUseFrameForBaseline implements Action {
     public readonly type = FiltersActionType.SET_USER_FRAME_FOR_BASELINE;
@@ -489,6 +555,7 @@ export type FiltersActions =
   | SetFiltersSimilarTo
   | ClearFrameRange
   | SetProductTypes
+  | setShortNames
   | SetListSearchType
   | SetSearchList
   | SetFlightDirections
@@ -498,6 +565,8 @@ export type FiltersActions =
   | SetSubtypes
   | AddPolarization
   | SetPolarizations
+  | AddSidePolarization
+  | SetSidePolarizations
   | ClearDatasetFilters
   | ClearListFilters
   | SetMissions
@@ -527,4 +596,11 @@ export type FiltersActions =
   | setOperaBurstID
   | setUseCalibrationData
   | setGroupID
+  | setFrameCoverage
+  | setRangeBandwidth
+  | addRangeBandwidth
+  | setJointObservation
+  | setIntstrument
+  | setScienceProduct
+  | setProductionConfig
   | SetUseFrameForBaseline;

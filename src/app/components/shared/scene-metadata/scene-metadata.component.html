@@ -71,14 +71,14 @@
 
   <li *ngIf="prop.isRelevant(p.PATH, dataset)">
     <span class="v-mid"><b>
-        @if (selectedDatasetIsNISARFormat) {
+        @if (selectedDatasetIsNISARFormat || prop.isRelevant(p.USE_TRACK, dataset)) {
           {{ 'TRACK' | translate }}
         } @else {
           {{ 'PATH' | translate }}
         }
     </b> • {{ scene.metadata.path }}</span>
     <mat-icon *ngIf="isGeoSearch()"
-      [matMenuTriggerFor]="addPathMenu"
+      [matMenuTriggerFor]="prop.isRelevant(p.USE_TRACK, dataset) ? addTrackMenu : addPathMenu"
       class="v-mid clickable">
         settings
     </mat-icon>
@@ -100,13 +100,18 @@
       </button>
       <button (click)="setPathStart(); setPathEnd();" mat-menu-item>{{ 'SET_AS_BOTH' | translate }}</button>
     </mat-menu>
+    <mat-menu #addTrackMenu="matMenu">
+        <button (click)="setPathStart()" mat-menu-item>{{ 'SET_AS_TRACK_START' | translate }}</button>
+        <button (click)="setPathEnd()" mat-menu-item>{{'SET_AS_TRACK_END' | translate }}</button>
+        <button (click)="setPathStart(); setPathEnd();" mat-menu-item>{{ 'SET_AS_BOTH' | translate }}</button>
+    </mat-menu>
   </li>
 
   <li *ngIf="prop.isRelevant(p.FRAME, dataset)">
-    <span class="v-mid"> <b>{{ 'FRAME' |  translate }} </b> • {{ scene.metadata.frame }} </span>
+    <span class="v-mid"> <b>{{ 'FRAME' | translate }} </b> • {{ scene.metadata.frame }} </span>
 
     <mat-icon *ngIf="isGeoSearch()"
-      [matMenuTriggerFor]="addFrameMenu"
+      [matMenuTriggerFor]=" addFrameMenu"
       class="v-mid clickable">
         settings
     </mat-icon>
@@ -118,7 +123,7 @@
     </mat-menu>
   </li>
 
-  <li *ngIf="prop.isRelevant(p.FLIGHT_DIRECTION, dataset)">
+  <li *ngIf="prop.isRelevant(p.FLIGHT_DIRECTION, dataset) && scene.metadata.flightDirection">
     <span class="v-mid"> <b>{{ 'FLIGHT_DIRECTION' | translate }} </b> •
       {{ scene.metadata.flightDirection | uppercase }}
 <!--      {{ scene.metadata.flightDirection | uppercase | translate }}-->
@@ -133,8 +138,21 @@
       <button (click)="setFlightDirection()" mat-menu-item>{{ 'SET_FLIGHT_DIRECTION' | translate }}</button>
     </mat-menu>
   </li>
+  <li *ngIf="prop.isRelevant(p.COVERAGE_ANGLE, dataset)">
+    <span class="v-mid"> <b>{{ 'FRAME_COVERAGE' | translate }} </b> • {{ scene.metadata.nisar.frameCoverage}} </span>
 
-  <li *ngIf="prop.isRelevant(p.POLARIZATION, dataset)">
+  <li *ngIf="prop.isRelevant(p.POLARIZATION, dataset) && scene.metadata.polarization">
+    <mat-icon *ngIf="isGeoSearch()"
+      [matMenuTriggerFor]="setFrameCoverageMenu"
+      class="v-mid clickable">
+        settings
+    </mat-icon>
+
+    <mat-menu #setFrameCoverageMenu="matMenu">
+      <button (click)="setFrameCoverage()" mat-menu-item>{{ 'SET_FRAME_COVERAGE' | translate }}</button>
+    </mat-menu>
+  </li>
+  <li *ngIf="prop.isRelevant(p.POLARIZATION, dataset) && !prop.isRelevant(p.SIDE_POLARIZATION, dataset)">
     <span class="v-mid"> <b>{{ 'POLARIZATION' | translate }} </b> • {{ scene.metadata.polarization }} </span>
 
     <mat-icon *ngIf="isGeoSearch()"
@@ -147,6 +165,51 @@
       <button (click)="addPolarization()" mat-menu-item>{{ 'ADD_POLARIZATION_TO_SEARCH' | translate }}</button>
     </mat-menu>
   </li>
+  <li *ngIf="prop.isRelevant(p.POLARIZATION, dataset) && prop.isRelevant(p.SIDE_POLARIZATION, dataset)">
+    <span class="v-mid"> <b>{{ 'POLARIZATION_MAIN' | translate }} </b> • {{ scene.metadata.nisar.mainBandPolarization }} </span>
+
+    <mat-icon *ngIf="isGeoSearch()"
+      [matMenuTriggerFor]="addMainPolMenu"
+      class="v-mid clickable">
+        settings
+    </mat-icon>
+
+    <mat-menu #addMainPolMenu="matMenu">
+      <button (click)="addPolarization()" mat-menu-item>{{ 'ADD_MAIN_POLARIZATION_TO_SEARCH' | translate }}</button>
+    </mat-menu>
+  </li>
+  <li *ngIf="prop.isRelevant(p.SIDE_POLARIZATION, dataset)">
+    <span class="v-mid"> <b>{{ 'POLARIZATION_SIDE' | translate }} </b> • {{ scene.metadata.nisar.sideBandPolarization }} </span>
+
+    <mat-icon *ngIf="isGeoSearch()"
+      [matMenuTriggerFor]="addSidePolMenu"
+      class="v-mid clickable">
+        settings
+    </mat-icon>
+
+    <mat-menu #addSidePolMenu="matMenu">
+      <button (click)="addSidePolarization()" mat-menu-item>{{ 'ADD_SIDE_POLARIZATION_TO_SEARCH' | translate }}</button>
+    </mat-menu>
+  </li>
+
+  <li *ngIf="prop.isRelevant(p.RANGE_BANDWIDTH, dataset)">
+    <span class="v-mid"> <b>{{ 'RANGE_BANDWIDTH' | translate }} </b> • {{ scene.metadata.nisar.rangeBandwidth }} </span>
+
+    <mat-icon *ngIf="isGeoSearch()"
+      [matMenuTriggerFor]="addPolMenu"
+      class="v-mid clickable">
+        settings
+    </mat-icon>
+
+    <mat-menu #addPolMenu="matMenu">
+      <button (click)="addRangeBandwidth()" mat-menu-item>{{ 'ADD_RANGE_BANDWIDTH_TO_SEARCH' | translate }}</button>
+    </mat-menu>
+  </li>
+
+  <li *ngIf="prop.isRelevant(p.RANGE_BANDWIDTH, dataset)">
+    <span class="v-mid"> <b>{{ 'JOINT_OBSERVATION_ONLY' | translate }} </b> • {{ scene.metadata.nisar.jointObservation }} </span>
+  </li>
+
 
   <li *ngIf="prop.isRelevant(p.OFF_NADIR_ANGLE, dataset)"
     class="detail-item-margin">
@@ -183,7 +246,7 @@
     <b>{{ 'FLIGHT_LINE' | translate }} </b> • {{ scene.metadata.flightLine }}
   </li>
 
-  <li *ngIf="prop.isRelevant(p.ABSOLUTE_ORBIT, dataset) && scene.metadata.absoluteOrbit.length > 0"
+  <li *ngIf="prop.isRelevant(p.ABSOLUTE_ORBIT, dataset) && scene.metadata.absoluteOrbit.length > 0 && scene?.metadata?.productType !== 'TROPO-ZENITH'"
     class="detail-item-margin">
     <b>{{'ABSOLUTE_ORBIT' | translate}} </b> • {{ scene.metadata.absoluteOrbit | join: ', ' }}
   </li>
@@ -196,7 +259,7 @@
     <b> {{ 'PGE_VERSION' | translate }} </b> • {{ scene.metadata.pgeVersion }}
   </li>
 
-  <li *ngIf="!!scene.metadata.opera">
+  <li *ngIf="!!scene.metadata.opera && scene.metadata.productType !== 'TROPO-ZENITH'">
     <b> {{'OPERA_BURST_ID' | translate }} </b> • {{scene.metadata.opera.operaBurstID}}
     <mat-icon *ngIf="isGeoSearch()" [matMenuTriggerFor]="addOperaBurstMenu" class="v-mid clickable">
       settings

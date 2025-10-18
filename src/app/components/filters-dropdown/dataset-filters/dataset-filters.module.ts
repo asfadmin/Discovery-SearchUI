@@ -19,8 +19,13 @@ import { AoiOptionsModule } from '@components/shared/aoi-options';
 import { DocsModalModule } from '@components/shared/docs-modal';
 import { BurstSelectorModule } from '@components/shared/selectors/burst-selector';
 import { OperaS1SelectorModule } from '@components/shared/selectors/opera-s1-selector';
+import { ObservationPanelSelectorModule } from '@components/shared/selectors/observation-panel-selector';
 // import { TranslateModule } from "@ngx-translate/core";
 import { SharedModule } from "@shared";
+import {ProductScienceSelectorComponent} from '@components/shared/selectors/product-science-selector/product-science-selector.component';
+import {
+  ProductionConfigSelectorComponent
+} from '@components/shared/selectors/production-config-selector/production-config-selector.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +34,6 @@ import { SharedModule } from "@shared";
   imports: [
     CommonModule,
     FormsModule,
-
     MatSelectModule,
     MatExpansionModule,
     MatSharedModule,
@@ -46,6 +50,9 @@ import { SharedModule } from "@shared";
     OperaS1SelectorModule,
     SharedModule,
     // TranslateModule
+    ObservationPanelSelectorModule,
+    ProductScienceSelectorComponent,
+    ProductionConfigSelectorComponent,
   ],
   exports: [
     DatasetFiltersComponent,

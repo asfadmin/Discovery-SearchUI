@@ -11,7 +11,7 @@
                [(ngModel)]="pathStart"
                name="pathStart"
                [placeholder]="
-                 selectedDatasetIsNISARFormat ?
+                 selectedDatasetIsNISARFormat || prop.isRelevant(p.USE_TRACK) ?
                  ('TRACK_START' | translate) : ('PATH_START' | translate)">
       </mat-form-field>
 
@@ -24,7 +24,7 @@
                [(ngModel)]="pathEnd"
                name="pathEnd"
                [placeholder]="
-                 selectedDatasetIsNISARFormat ?
+                 selectedDatasetIsNISARFormat || prop.isRelevant(p.USE_TRACK) ?
                  ('TRACK_END' | translate) : ('PATH_END' | translate)">
       </mat-form-field>
     </div>
@@ -37,10 +37,10 @@
                type="number"
                (input)="onValueChanged($event, inputTypes.FRAME_START)"
                [(ngModel)]="frameStart"
-               name="frameStart" placeholder="{{ 'FRAME_START' | translate }}">
+               name="frameStart" placeholder="{{ 'FRAME_START' | translate}}">
       </mat-form-field>
 
-      <mat-form-field style="width: 140px;" *ngIf="prop.isRelevant(p.FRAME)" class="range-form-input"
+      <mat-form-field style="width: 150px;" *ngIf="prop.isRelevant(p.FRAME)" class="range-form-input"
                       class="date-item"
                       [class.invalid-input-animation]="typeHasError(inputTypes.FRAME_END)">
         <input matInput

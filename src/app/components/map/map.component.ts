@@ -233,9 +233,10 @@ export class MapComponent implements OnInit, OnDestroy  {
         this.store$.select(uiStore.getIsFrameSelectionEnabled),
         this.store$.select(filtersStore.getSelectedDatasetId),
         this.store$.select(filtersStore.getFlightDirections),
+        this.store$.select(filtersStore.getFrameRange),
         this.store$.select(filtersStore.getPathRange),
         this.store$.select(searchStore.getSearchType),
-      ]).subscribe(([enabled, datasetId, directions, frameRange, searchType]) => {
+      ]).subscribe(([enabled, datasetId, directions, frameRange, pathRange, searchType]) => {
         let dataset = models.datasets[datasetId];
         if(enabled && !dataset.properties.find((a) => a === models.Props.FRAME_ORDERING)) {
           // this dataset doesn't support frame ordering, disable
@@ -243,7 +244,7 @@ export class MapComponent implements OnInit, OnDestroy  {
           this.mapService.setFrameSelectionActive(false);
         }
         else if(enabled && searchType == this.searchTypes.DATASET) {
-          this.mapService.setFrameSelectionActive(true, dataset.frameMap[directions[0]?.toLowerCase() ?? 'ascending'], frameRange);
+          this.mapService.setFrameSelectionActive(true, dataset.frameMap[directions[0]?.toLowerCase() ?? 'ascending'], frameRange, pathRange);
           this.store$.dispatch(new mapStore.SetMapInteractionMode(models.MapInteractionModeType.NONE)); // disable so we can actually pick a frame
         }
         else {
@@ -256,18 +257,21 @@ export class MapComponent implements OnInit, OnDestroy  {
       combineLatest([
         this.store$.select(uiStore.getIsFrameSelectionEnabled),
         this.store$.select(filtersStore.getPathRange),
-      ]).subscribe(([enabled, path]) => {
+        this.store$.select(filtersStore.getFrameRange),
+      ]).subscribe(([enabled, path, frame]) => {
         if(enabled) {
-          this.mapService.filterFrameOverlay(path)
+          this.mapService.filterFrameOverlay(path, frame)
         }
       })
     )
     this.subs.add(
         combineLatest([
-        this.store$.select(filtersStore.getShouldUseFramesForReference)
-        ]).subscribe(([shouldUseFramesForReference]) => {
+        this.store$.select(filtersStore.getShouldUseFramesForReference),
+        this.store$.select(sceneStore.getFilterMaster), // frame id for things
+        this.store$.select(filtersStore.getSelectedDataset)
+        ]).subscribe(([shouldUseFramesForReference, filterMaster, dataset]) => {
           // TODO: load in frame map instead of grabbing previous frame map feature
-            this.mapService.sbasFrameMode(!shouldUseFramesForReference);
+            this.mapService.sbasFrameMode(!shouldUseFramesForReference, filterMaster, dataset);
       })
     )
 
@@ -433,6 +437,7 @@ export class MapComponent implements OnInit, OnDestroy  {
 
     this.subs.add(
       this.selectedToLayer$(selectedScene$).pipe(
+        filter((scene: models.CMRProduct) => !!scene.metadata.polygon),
         map(
           (scene: models.CMRProduct) => this.wktService.wktToFeature(
             scene.metadata.polygon,
@@ -566,7 +571,7 @@ export class MapComponent implements OnInit, OnDestroy  {
 
   private scenesToFeatures(projection: string): Observable<Feature<Geometry>[]> {
     return this.scenesService.scenes$.pipe(
-      map(scenes => scenes.filter(scene => scene.id !== this.selectedScene?.id)),
+      map(scenes => scenes.filter(scene => scene.id !== this.selectedScene?.id && !!scene.metadata.polygon)),
       map(scenes => this.scenesToFeature(scenes, projection)));
   }
 
@@ -587,7 +592,7 @@ export class MapComponent implements OnInit, OnDestroy  {
   }
 
   private scenesToFeature(scenes: models.CMRProduct[], projection: string) {
-    const features = scenes
+    const features = scenes.filter(scene => !!scene.metadata.polygon)
       .map(g => {
         const wkt = g.metadata.polygon;
         const feature = this.wktService.wktToFeature(wkt, projection);

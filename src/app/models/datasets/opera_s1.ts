@@ -39,7 +39,11 @@ export const opera_s1 = {
     {
       apiValue: 'DISP-S1',
       displayName: 'L3 Surface Displacement (DISP-S1)',
-    }
+    },
+    {
+      apiValue: 'TROPO-ZENITH',
+      displayName: 'L4 Troposphere Zenith Radar Delays (TROPO-ZENITH)',
+    },
   ],
   beamModes: [
     'IW', 'EW'
