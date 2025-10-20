@@ -1,4 +1,5 @@
 # SearchUI
+[![es](https://img.shields.io/badge/lang-es-red.svg)](./README.ESP.md)
 [![
 CodeFactor](https://www.codefactor.io/repository/github/asfadmin/discovery-searchui/badge?s=fe1df8c7275093962e0c42abffa97803a397c825)](https://www.codefactor.io/repository/github/asfadmin/discovery-searchui) <img src="https://api.ghostinspector.com/v1/suites/5d408f00f1eea0544564fb2a/status-badge" title="Search UI Suite Status">
 

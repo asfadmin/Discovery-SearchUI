@@ -201,7 +201,7 @@ export class ProductService {
 
     let file_suffix = '';
 
-    if (product.metadata.productType === 'DISP-S1') {
+    if (['DISP-S1', 'TROPO-ZENITH'].includes(product.metadata.productType)) {
       file_suffix = 'nc';
     } else {
       file_suffix = this.urlToProductType(product.downloadUrl);
