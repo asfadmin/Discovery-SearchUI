@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 
 import { map, tap } from 'rxjs/operators';
 import { SubSink } from 'subsink';
@@ -14,9 +14,13 @@ import { SearchType } from '@models';
 @Component({
   selector: 'app-aoi-clear',
   templateUrl: './aoi-clear.component.html',
-  styleUrls: ['./aoi-clear.component.scss']
+  styleUrls: ['./aoi-clear.component.scss'],
 })
 export class AoiClearComponent implements OnInit, OnDestroy {
+  private mapService = inject(MapService);
+  private wktService = inject(WktService);
+  private store$ = inject<Store<AppState>>(Store);
+
   public searchTypes = SearchType;
   public searchType$ = this.store$.select(getSearchType);
 
@@ -26,33 +30,37 @@ export class AoiClearComponent implements OnInit, OnDestroy {
 
   private subs = new SubSink();
 
-  constructor(
-    private mapService: MapService,
-    private wktService: WktService,
-    private store$: Store<AppState>
-  ) { }
-
   ngOnInit() {
     this.subs.add(
-      this.mapService.searchPolygon$.pipe(
-        tap(polygon => {
-          if (polygon) {
-            this.savedPolygon = null;
-          }
-        })
-      ).subscribe(
-        polygon => this.polygon = polygon
-      )
+      this.mapService.searchPolygon$
+        .pipe(
+          tap((polygon) => {
+            if (polygon) {
+              this.savedPolygon = null;
+            }
+          }),
+        )
+        .subscribe((polygon) => (this.polygon = polygon)),
     );
 
     this.subs.add(
-      this.store$.select(filtersStore.getPathFrameRanges).pipe(
-        map(({frameRange, pathRange}) =>
-          !!(frameRange.start || frameRange.end || pathRange.start || pathRange.end)
+      this.store$
+        .select(filtersStore.getPathFrameRanges)
+        .pipe(
+          map(
+            ({ frameRange, pathRange }) =>
+              !!(
+                frameRange.start ||
+                frameRange.end ||
+                pathRange.start ||
+                pathRange.end
+              ),
+          ),
         )
-      ).subscribe(
-        anyPathFrameValues => this.anyPathFrameValues = anyPathFrameValues
-      )
+        .subscribe(
+          (anyPathFrameValues) =>
+            (this.anyPathFrameValues = anyPathFrameValues),
+        ),
     );
   }
 
@@ -64,7 +72,7 @@ export class AoiClearComponent implements OnInit, OnDestroy {
   public undoPolygonClear(): void {
     const features = this.wktService.wktToFeature(
       this.savedPolygon,
-      this.mapService.epsg()
+      this.mapService.epsg(),
     );
 
     this.mapService.setDrawFeature(features);

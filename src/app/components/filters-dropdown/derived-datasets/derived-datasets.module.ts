@@ -9,18 +9,14 @@ import { DerivedDatasetsComponent } from './derived-datasets.component';
 import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [
-    DerivedDatasetsComponent
-  ],
+  declarations: [DerivedDatasetsComponent],
   imports: [
     CommonModule,
     MatSharedModule,
     MatExpansionModule,
     MatMenuModule,
-    SharedModule
+    SharedModule,
   ],
-  exports: [
-    DerivedDatasetsComponent
-  ]
+  exports: [DerivedDatasetsComponent],
 })
-export class DerivedDatasetsModule { }
+export class DerivedDatasetsModule {}

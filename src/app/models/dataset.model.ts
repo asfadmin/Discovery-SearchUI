@@ -6,7 +6,7 @@ export interface Dataset {
   name: string;
   subName: string;
   beta: boolean;
-  apiValue: {[paramName: string]: string};
+  apiValue: Record<string, string>;
   date: DateRange;
   infoUrl: string;
   citationUrl: string;
@@ -27,12 +27,12 @@ export interface Dataset {
   calibrationDatasets?: string[];
   calibrationProductTypes?: ProductType[];
   shortNames?: ShortName[]; // For NISAR shortnames
-  instruments?: {displayName: string, apiValue: string}[];
-  bandwidth?: {[band: string]: string[]};
+  instruments?: { displayName: string; apiValue: string }[];
+  bandwidth?: Record<string, string[]>;
   frameMap?: {
-    ascending: string,
-    descending: string
-  }
+    ascending: string;
+    descending: string;
+  };
 }
 
 export enum MissionDataset {
@@ -103,22 +103,17 @@ export const datasetList: Dataset[] = [
   fromDatasets.seasat,
 ];
 
-export const datasetIds = datasetList.map(dataset => dataset.id);
+export const datasetIds = datasetList.map((dataset) => dataset.id);
 
-export const datasets: {[datasetID: string]: Dataset} = datasetList.reduce(
+export const datasets: Record<string, Dataset> = datasetList.reduce(
   (datasetsObj, dataset) => {
     datasetsObj[dataset.id] = dataset;
 
     return datasetsObj;
   },
-  {} as {[datasetID: string]: Dataset}
+  {} as Record<string, Dataset>,
 );
 
-export const flightDirections = [
-  'Ascending',
-  'Descending'
-];
+export const flightDirections = ['Ascending', 'Descending'];
 
-export const justDescending = [
-  'Descending'
-];
+export const justDescending = ['Descending'];

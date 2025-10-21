@@ -11,28 +11,25 @@ import { SearchTypeSelectorModule } from '@components/shared/selectors/search-ty
 import { ResultsMenuModule } from '@components/results-menu';
 import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
 import { DocsModalModule } from '@components/shared/docs-modal';
-import { SharedModule } from "@shared";
+import { SharedModule } from '@shared';
 import { TimeseriesFiltersComponent } from './timeseries-filters.component';
-
 
 @NgModule({
   declarations: [TimeseriesFiltersComponent],
-    imports: [
-        CommonModule,
-        MatExpansionModule,
-        MatSharedModule,
-        SeasonSelectorModule,
-        SbasOverlapSelectorModule,
-        DateSelectorModule,
-        MasterSceneSelectorModule,
-        SearchTypeSelectorModule,
-        ResultsMenuModule,
-        CopyToClipboardModule,
-        DocsModalModule,
-        SharedModule
-    ],
-  exports: [
-    TimeseriesFiltersComponent
-  ]
+  imports: [
+    CommonModule,
+    MatExpansionModule,
+    MatSharedModule,
+    SeasonSelectorModule,
+    SbasOverlapSelectorModule,
+    DateSelectorModule,
+    MasterSceneSelectorModule,
+    SearchTypeSelectorModule,
+    ResultsMenuModule,
+    CopyToClipboardModule,
+    DocsModalModule,
+    SharedModule,
+  ],
+  exports: [TimeseriesFiltersComponent],
 })
-export class TimeseriesFiltersModule { }
+export class TimeseriesFiltersModule {}

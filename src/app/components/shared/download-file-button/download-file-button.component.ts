@@ -1,9 +1,18 @@
-import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  OnInit,
+  AfterViewInit,
+  inject,
+} from '@angular/core';
 import { DownloadService } from '@services/download.service';
 import { CMRProduct, DownloadStatus } from '@models';
 import { UAParser } from 'ua-parser-js';
 import {
-  Observable, Subscription,
+  Observable,
+  Subscription,
   catchError,
   concatMap,
   filter,
@@ -25,16 +34,23 @@ import { HttpClient, HttpEventType } from '@angular/common/http';
 @Component({
   selector: 'app-download-file-button',
   templateUrl: './download-file-button.component.html',
-  styleUrls: ['./download-file-button.component.scss']
+  styleUrls: ['./download-file-button.component.scss'],
 })
 export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
+  private downloadService = inject(DownloadService);
+  private store$ = inject<Store<AppState>>(Store);
+  private authService = inject(AuthService);
+  private http = inject(HttpClient);
+  private notificationService = inject(NotificationService);
+
   @Input() product: CMRProduct;
   @Input() href: string;
   @Input() disabled: boolean;
   @Input() useNewDownload: boolean;
   @Output()
   productDownloaded: EventEmitter<CMRProduct> = new EventEmitter<CMRProduct>();
-  @Output() downloadCancelled: EventEmitter<CMRProduct> = new EventEmitter<CMRProduct>();
+  @Output() downloadCancelled: EventEmitter<CMRProduct> =
+    new EventEmitter<CMRProduct>();
   public dFile: DownloadStatus;
   public url: string;
   public fileName: string = null;
@@ -45,14 +61,6 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   public isUserLoggedIn: boolean;
   private subs = new SubSink();
 
-  constructor(
-    private downloadService: DownloadService,
-    private store$: Store<AppState>,
-    private authService: AuthService,
-    private http: HttpClient,
-    private notificationService: NotificationService
-  ) { }
-
   ngOnInit(): void {
     if (typeof this.href !== 'undefined') {
       this.url = this.href;
@@ -62,14 +70,20 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     } else {
       this.url = this.product.downloadUrl;
       this.fileName = this.product.metadata.fileName ?? this.product.file;
-      if (this.product.productTypeDisplay.endsWith('GeoTIFF') && !this.fileName.endsWith('tif')) {
+      if (
+        this.product.productTypeDisplay.endsWith('GeoTIFF') &&
+        !this.fileName.endsWith('tif')
+      ) {
         this.fileName += '.tif';
       }
     }
     this.subs.add(
-      this.store$.select(queueStore.getDownloads).subscribe(
-        queueDownloads => {
-          if (queueDownloads.hasOwnProperty(this.product?.id ?? this.fileName)) {
+      this.store$
+        .select(queueStore.getDownloads)
+        .subscribe((queueDownloads) => {
+          if (
+            queueDownloads.hasOwnProperty(this.product?.id ?? this.fileName)
+          ) {
             this.dFile = queueDownloads[this.product?.id ?? this.fileName];
           } else {
             this.dFile = null;
@@ -77,16 +91,15 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
               this.downloadSubscription.unsubscribe();
             }
           }
-        }
-      )
+        }),
     );
   }
 
   ngAfterViewInit() {
     this.subs.add(
-      this.store$.select(userStore.getIsUserLoggedIn).subscribe(
-        isLoggedIn => this.isUserLoggedIn = isLoggedIn
-      )
+      this.store$
+        .select(userStore.getIsUserLoggedIn)
+        .subscribe((isLoggedIn) => (this.isUserLoggedIn = isLoggedIn)),
     );
   }
   public cancelDownload() {
@@ -95,46 +108,51 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     this.store$.dispatch(new queueStore.RemoveDownloadProduct(this.dFile));
     this.dFile = null;
   }
-  public getHandle(dir: boolean = false) {
-    return new Promise(resolve => {
+  public getHandle(dir = false) {
+    return new Promise((resolve) => {
       if (dir) {
         this.downloadService.getDirectory().then((handle) => {
           resolve(handle);
         });
       } else {
-        this.downloadService.getFileHandle(this.fileName).then(handle => {
+        this.downloadService.getFileHandle(this.fileName).then((handle) => {
           resolve(handle);
         });
       }
     });
-
   }
 
   private onAccountButtonClicked() {
     this.subs.add(
-      this.authService.login$().pipe(
-        first(),
-        filter(user => !!user)
-      ).subscribe(
-        user => {
+      this.authService
+        .login$()
+        .pipe(
+          first(),
+          filter((user) => !!user),
+        )
+        .subscribe((user) => {
           this.store$.dispatch(new userStore.Login(user));
           window.dataLayer = window.dataLayer || [];
           window.dataLayer.push({
-            'event': 'account-button-clicked',
-            'account-button-clicked': user
+            event: 'account-button-clicked',
+            'account-button-clicked': user,
           });
-        }
-      )
+        }),
     );
   }
 
-  public downloadFile(dir: boolean = false) {
-    const isBurstProduct = !!['BURST', 'BURST_XML'].find(t => t === this.product.metadata.productType);
+  public downloadFile(dir = false) {
+    const isBurstProduct = !!['BURST', 'BURST_XML'].find(
+      (t) => t === this.product.metadata.productType,
+    );
     if (!this.isUserLoggedIn && isBurstProduct) {
       this.onAccountButtonClicked();
       return;
     }
-    if (this.dFile?.state === 'PENDING' || this.dFile?.state === 'IN_PROGRESS') {
+    if (
+      this.dFile?.state === 'PENDING' ||
+      this.dFile?.state === 'IN_PROGRESS'
+    ) {
       this.cancelDownload();
       this.downloadCancelled.emit(this.product);
       return;
@@ -142,37 +160,34 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     if (!this.useNewDownload) {
       if (isBurstProduct) {
         this.burstFunctionality(this.product);
-      }
-      else {
+      } else {
         this.classicDownload(this.url);
       }
       return;
     }
-
 
     const userAgent = new UAParser().getResult();
 
     if (userAgent.browser.name !== 'Chrome') {
       if (isBurstProduct) {
         this.burstFunctionality(this.product);
-      }
-      else {
+      } else {
         this.classicDownload(this.url);
       }
       return;
     }
 
     if (!this.isUserLoggedIn) {
-      this.getHandle(dir).then(handle => {
+      this.getHandle(dir).then((handle) => {
         this.subs.add(
-          this.authService.login$().subscribe(
-            user => {
-              this.store$.dispatch(new userStore.Login(user));
-              this.downloadFunctionality(this.product, handle);
-            }));
+          this.authService.login$().subscribe((user) => {
+            this.store$.dispatch(new userStore.Login(user));
+            this.downloadFunctionality(this.product, handle);
+          }),
+        );
       });
     } else {
-      this.getHandle(dir).then(handle => {
+      this.getHandle(dir).then((handle) => {
         this.downloadFunctionality(this.product, handle);
       });
     }
@@ -187,10 +202,13 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     };
     this.store$.dispatch(new queueStore.DownloadProduct(initStatus));
 
-    if (!!['BURST', 'BURST_XML'].find(t => t === this.product.metadata.productType)) {
+    if (
+      ['BURST', 'BURST_XML'].find(
+        (t) => t === this.product.metadata.productType,
+      )
+    ) {
       this.burstFunctionality(product, handle);
-    }
-    else {
+    } else {
       this.startDownload(product, handle);
     }
   }
@@ -204,57 +222,73 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     };
     this.store$.dispatch(new queueStore.DownloadProduct(initStatus));
 
-    this.burstSubscription = interval(2000).pipe(
-      concatMap(() => this.http.get(this.url, {
-        withCredentials: true,
-        observe: 'events',
-        reportProgress: true,
-      })),
-      takeWhile((res: any) => {
-        if (this.isBurstDone(res, this.product)) {
-          if (handle) {
-            this.startDownload(product, handle);
+    this.burstSubscription = interval(2000)
+      .pipe(
+        concatMap(() =>
+          this.http.get(this.url, {
+            withCredentials: true,
+            observe: 'events',
+            reportProgress: true,
+          }),
+        ),
+        takeWhile((res: any) => {
+          if (this.isBurstDone(res, this.product)) {
+            if (handle) {
+              this.startDownload(product, handle);
+            } else {
+              this.classicDownload(this.url);
+            }
+            this.burstSubscription.unsubscribe();
+            return false;
           } else {
-            this.classicDownload(this.url);
+            if (!this.downloadService.hasDownloadedBursts && !handle) {
+              this.downloadService.hasDownloadedBursts = true;
+              this.notificationService.info(
+                'You may need to enable popups on this site due to needing to extract the burst before downloading.',
+                'Burst Extraction',
+              );
+            }
           }
-          this.burstSubscription.unsubscribe();
-          return false;
-        } else {
-
-        if(!this.downloadService.hasDownloadedBursts && !handle) {
-          this.downloadService.hasDownloadedBursts = true;
-          this.notificationService.info('You may need to enable popups on this site due to needing to extract the burst before downloading.', 'Burst Extraction');
-        }
-        }
-        return true;
-      }),
-      catchError(err => {
-        console.log(err)
-        return err;
-      })
-    ).subscribe()
+          return true;
+        }),
+        catchError((err) => {
+          console.log(err);
+          return err;
+        }),
+      )
+      .subscribe();
   }
   private isBurstDone(resp, _product): boolean {
-    if (resp.type === HttpEventType.DownloadProgress || resp.type === HttpEventType.DownloadProgress) {
+    if (
+      resp.type === HttpEventType.DownloadProgress ||
+      resp.type === HttpEventType.DownloadProgress
+    ) {
       return resp.loaded > 1000;
     }
     return false;
   }
   private startDownload(product: CMRProduct, handle: any) {
-    this.observable$ = this.downloadService.download(this.url, this.fileName, this?.product, product?.id ?? this.fileName, handle);
-    this.downloadSubscription = this.observable$.subscribe(
-      {
-        next: resp => {
-          if (!this.processSubscription(resp, product, true)) {
-            this.downloadSubscription.unsubscribe();
-            this.downloadSubscription = this.observable$.subscribe(response => this.processSubscription(response, product, false));
-          }
-        },
-        error: () => {
-          this.dFile = undefined;
-          this.classicDownload(this.url);
+    this.observable$ = this.downloadService.download(
+      this.url,
+      this.fileName,
+      this?.product,
+      product?.id ?? this.fileName,
+      handle,
+    );
+    this.downloadSubscription = this.observable$.subscribe({
+      next: (resp) => {
+        if (!this.processSubscription(resp, product, true)) {
+          this.downloadSubscription.unsubscribe();
+          this.downloadSubscription = this.observable$.subscribe((response) =>
+            this.processSubscription(response, product, false),
+          );
         }
-      });
+      },
+      error: () => {
+        this.dFile = undefined;
+        this.classicDownload(this.url);
+      },
+    });
   }
 
   private processSubscription(resp, product, headerOnly) {
@@ -278,7 +312,6 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     this.downloadFile();
   }
   async classicDownload(url) {
-
     const link = document.createElement('a');
     link.style.display = 'none';
     link.href = url;
@@ -288,7 +321,10 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
 
     // It needs to be added to the DOM so it can be clicked
     document.body.appendChild(link);
-    if (this.product.metadata.productType === 'BURST' || this.product.metadata.productType === 'BURST_XML') {
+    if (
+      this.product.metadata.productType === 'BURST' ||
+      this.product.metadata.productType === 'BURST_XML'
+    ) {
       window.location.href = url;
     } else {
       link.click();
@@ -305,11 +341,12 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
       state: 'DONE',
       id: this.product.id,
       filename: this.fileName,
-      product: this.product
+      product: this.product,
     };
     this.store$.dispatch(new queueStore.DownloadProduct(this.dFile));
-
   }
 }
 
-function timer(ms) { return new Promise(res => setTimeout(res, ms)); }
+function timer(ms) {
+  return new Promise((res) => setTimeout(res, ms));
+}

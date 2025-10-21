@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CodeExportComponent } from './code-export.component';
 
-
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,9 +15,7 @@ import 'prismjs/components/prism-python';
 import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [
-    CodeExportComponent
-  ],
+  declarations: [CodeExportComponent],
   imports: [
     CommonModule,
     MatDialogModule,
@@ -28,10 +25,8 @@ import { SharedModule } from '@shared';
     MatIconModule,
     MatMenuModule,
     DocsModalModule,
-    SharedModule
+    SharedModule,
   ],
-  exports: [
-    CodeExportComponent
-  ]
+  exports: [CodeExportComponent],
 })
-export class CodeExportModule { }
+export class CodeExportModule {}

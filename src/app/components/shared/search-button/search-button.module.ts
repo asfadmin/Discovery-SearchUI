@@ -7,12 +7,10 @@ import { MatSharedModule } from '@shared';
 import { SearchButtonComponent } from './search-button.component';
 import { SaveSearchDialogModule } from '@components/shared/save-search-dialog';
 // import { CodeExportModule } from '@components/shared/code-export'
-import { SharedModule } from "@shared";
+import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [
-    SearchButtonComponent
-  ],
+  declarations: [SearchButtonComponent],
   imports: [
     CommonModule,
     MatSharedModule,
@@ -22,8 +20,6 @@ import { SharedModule } from "@shared";
     SharedModule,
     // CodeExportModule
   ],
-  exports: [
-    SearchButtonComponent
-  ]
+  exports: [SearchButtonComponent],
 })
-export class SearchButtonModule { }
+export class SearchButtonModule {}

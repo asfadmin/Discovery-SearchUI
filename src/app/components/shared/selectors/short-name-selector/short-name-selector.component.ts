@@ -1,4 +1,11 @@
-import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  OnDestroy,
+  inject,
+} from '@angular/core';
 import * as models from '@models';
 import * as filtersStore from '@store/filters';
 import { Store } from '@ngrx/store';
@@ -9,35 +16,35 @@ import { MatSelectChange } from '@angular/material/select';
 @Component({
   selector: 'app-short-name-selector',
   templateUrl: './short-name-selector.component.html',
-  styleUrl: './short-name-selector.component.scss'
+  styleUrl: './short-name-selector.component.scss',
 })
 export class ShortNameSelectorComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+
   @Output() shortNamesChange = new EventEmitter<models.DatasetShortName>();
   public dataset: models.Dataset;
   public shortNamesList: string[] = [];
-  public selectableShortNames: models.ShortName[] = []
+  public selectableShortNames: models.ShortName[] = [];
 
   private dataset$ = this.store$.select(filtersStore.getSelectedDataset);
-
-
-  constructor(private store$: Store<AppState>) { }
 
   private subs = new SubSink();
 
   ngOnInit(): void {
     this.subs.add(
-      this.dataset$.subscribe(
-        dataset => {
-          this.dataset = dataset
-          this.selectableShortNames = dataset?.shortNames ?? []
-        }
-      )
-    )
+      this.dataset$.subscribe((dataset) => {
+        this.dataset = dataset;
+        this.selectableShortNames = dataset?.shortNames ?? [];
+      }),
+    );
     this.subs.add(
-      this.store$.select(filtersStore.getShortNames).subscribe(
-        shortNamesList => this.shortNamesList = shortNamesList.map(val => val.apiValue)
-      )
-    )
+      this.store$
+        .select(filtersStore.getShortNames)
+        .subscribe(
+          (shortNamesList) =>
+            (this.shortNamesList = shortNamesList.map((val) => val.apiValue)),
+        ),
+    );
   }
 
   ngOnDestroy(): void {
@@ -45,16 +52,15 @@ export class ShortNameSelectorComponent implements OnInit, OnDestroy {
   }
 
   public onNewShortNames(event: MatSelectChange): void {
-    const shortNameAPIValues = (event.value as string[]);
+    const shortNameAPIValues = event.value as string[];
     this.emitShortNames(shortNameAPIValues);
   }
 
   public emitShortNames(shortNameAPIValues: string[]): void {
-    const shortNames = this.dataset?.shortNames ?? []
-    let output = shortNameAPIValues.map(shortName => shortNames.find(datasetType => datasetType.apiValue === shortName))
+    const shortNames = this.dataset?.shortNames ?? [];
+    const output = shortNameAPIValues.map((shortName) =>
+      shortNames.find((datasetType) => datasetType.apiValue === shortName),
+    );
     this.shortNamesChange.emit(output);
   }
 }
-
-
-

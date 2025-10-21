@@ -11,19 +11,21 @@ export interface DerivedDataset {
 
 const pictureFolder = 'assets/derived-datasets';
 
-export const derivedDatasets: DerivedDataset[] = [{
-  name: 'GLOBAL_SEASONAL_SENTINEL',
-  info: 'INFO_GLOBAL_SEASONAL_SENTINEL',
-  description: `
+export const derivedDatasets: DerivedDataset[] = [
+  {
+    name: 'GLOBAL_SEASONAL_SENTINEL',
+    info: 'INFO_GLOBAL_SEASONAL_SENTINEL',
+    description: `
   'DESCRIP_GLOBAL_SEASONAL_SENTINEL'
   `,
-  info_url: `${asfWebsite.home}/datasets/derived/global-seasonal-sentinel-1-interferometric-coherence-and-backscatter-dataset/`,
-  download_url: `${asfWebsite.home}/datasets/derived/global-seasonal-sentinel-1-interferometric-coherence-and-backscatter-dataset/`,
-  picture: `${pictureFolder}/global_winter.jpg`,
-}, {
-  name: 'GISMO',
-  info: 'INFO_GISMO',
-  description: `
+    info_url: `${asfWebsite.home}/datasets/derived/global-seasonal-sentinel-1-interferometric-coherence-and-backscatter-dataset/`,
+    download_url: `${asfWebsite.home}/datasets/derived/global-seasonal-sentinel-1-interferometric-coherence-and-backscatter-dataset/`,
+    picture: `${pictureFolder}/global_winter.jpg`,
+  },
+  {
+    name: 'GISMO',
+    info: 'INFO_GISMO',
+    description: `
     The Global Ice-Sheet Mapping Observatory (GISMO) spaceborne radar
     system was part of the NASA Instrument Incubator Project (IIP).
     GISMO had a specific focus in measuring the surface topography of
@@ -34,43 +36,48 @@ export const derivedDatasets: DerivedDataset[] = [{
     up to 5 km of ice. The GISMO project documented flight lines over the
     Greenland ice sheet in 2006, 2007, and 2008.
   `,
-  info_url: `${asfWebsite.home}/sar-data-sets/global-ice-sheet-mapping-orbiter-gismo`,
-  download_url: `${asfWebsite.home}/data-sets/derived-data-sets/gismo/gismo-data-products`,
-  picture: `${pictureFolder}/gismo.gif`,
-}, {
-  name: 'GLACIER_SPEED',
-  info: 'INFO_GLACIER_SPEED',
-  description: `
+    info_url: `${asfWebsite.home}/sar-data-sets/global-ice-sheet-mapping-orbiter-gismo`,
+    download_url: `${asfWebsite.home}/data-sets/derived-data-sets/gismo/gismo-data-products`,
+    picture: `${pictureFolder}/gismo.gif`,
+  },
+  {
+    name: 'GLACIER_SPEED',
+    info: 'INFO_GLACIER_SPEED',
+    description: `
 This dataset was produced by Evan Burgess and colleagues at the University of Utah and the University of Alaska Fairbanks using ALOS PALSAR data. It reveals complex patterns of glacier flow throughout Alaska. The speed data are available for download in formats designed both for scientists and educators. Surface velocities are available for 47,880 km^2 of glacier ice, which includes almost all of the state’s major glaciers. Detailed information on its production is available in Burgess et al., Nature Communications, 2013 (https://www.nature.com/articles/ncomms3146).
   `,
-  info_url: `${asfWebsite.home}/sar-data-sets/glacier-speed`,
-  download_url: `${asfWebsite.home}/data-sets/derived-data-sets/glacier-speed/glacier-speed-download-data`,
-  picture: `${pictureFolder}/glacier_speed.jpg`,
-},{
-  name: 'RADARSAT_1',
-  info: 'INFO_RADARSAT',
-  description: `
+    info_url: `${asfWebsite.home}/sar-data-sets/glacier-speed`,
+    download_url: `${asfWebsite.home}/data-sets/derived-data-sets/glacier-speed/glacier-speed-download-data`,
+    picture: `${pictureFolder}/glacier_speed.jpg`,
+  },
+  {
+    name: 'RADARSAT_1',
+    info: 'INFO_RADARSAT',
+    description: `
 The RADARSAT-1 Antarctic Mapping Project (RAMP) was composed of two main missions, the first Antarctic Mapping Mission (AMM-1) and the Modified Antarctic Mapping Mission (MAMM). AMM-1 started on September 9, 1997 and was completed on October 20, 1997. Its goals were to acquire a complete map of Antarctica and better understand the relationships between the southernmost continent’s environmental elements. MAMM started on September 3, 2000 and was completed on November 17, 2000. It planned to remap Antarctica and measure ice velocity data using interferometric analysis and data from AMM-1.
   `,
-  info_url: `${asfWebsite.home}/sar-data-sets/radarsat-antarctic-mapping-project-ramp`,
-  download_url: `${asfWebsite.home}/data-sets/derived-data-sets/ramp/ramp-get-ramp-data`,
-  picture: `${pictureFolder}/ramp.png`,
-}, {
-  name: 'SEA_ICE_MEASURES',
-  info: 'INFO_SEA_ICE_MEASURES',
-  description: `
+    info_url: `${asfWebsite.home}/sar-data-sets/radarsat-antarctic-mapping-project-ramp`,
+    download_url: `${asfWebsite.home}/data-sets/derived-data-sets/ramp/ramp-get-ramp-data`,
+    picture: `${pictureFolder}/ramp.png`,
+  },
+  {
+    name: 'SEA_ICE_MEASURES',
+    info: 'INFO_SEA_ICE_MEASURES',
+    description: `
 Sea-ice imagery and data products are supported under NASA’s Making Earth System data records for Use in Research Environments (MEaSUREs) program. Arctic and Southern Ocean imagery, data, and data products are available at no cost to approved users from the ASF DAAC. These include over 11 years of RADARSAT-1 three-day radar snapshots of Arctic and Southern Ocean sea ice, and original SAR images. RADARSAT-1 data have been processed to construct a near decadal record of small-scale ice motion of the Arctic and Southern Oceans, a record of ice motion of the northern Bering Sea, and monthly high-resolution image mosaics of the Arctic Ocean.
   `,
-  info_url: `${asfWebsite.home}/sar-data-sets/sea-ice-measures`,
-  download_url: `${asfWebsite.home}/data-sets/derived-data-sets/seaice-measures/sea-ice-measures-data-products/`,
-  picture: `${pictureFolder}/sea_ice_measures.jpeg`,
-}, {
-  name: 'WETLANDS_MEASURES',
-  info: 'INFO_WETLANDS_MEASURES',
-  description: `
+    info_url: `${asfWebsite.home}/sar-data-sets/sea-ice-measures`,
+    download_url: `${asfWebsite.home}/data-sets/derived-data-sets/seaice-measures/sea-ice-measures-data-products/`,
+    picture: `${pictureFolder}/sea_ice_measures.jpeg`,
+  },
+  {
+    name: 'WETLANDS_MEASURES',
+    info: 'INFO_WETLANDS_MEASURES',
+    description: `
 The inundated wetlands Earth System Data Record (ESDR) consists of two primary components. First, fine-resolution maps of wetland extent, vegetation type, and seasonal inundation dynamics, derived from Synthetic Aperture Radar (SAR) for regional and continental-scale areas covering crucial wetlands systems. Second, global coarse-resolution time series mappings of inundated area fraction at ~25 km resolution derived from multiple satellite remote sensing observations including passive and active microwave sensors and optical data sets optimized for inundation detection. These datasets are provided on a bi-monthly basis for 1992-1999 and daily for 2000 onward. Annual summary products and a daily near real time (NRT) dataset with 2-3 day latency are also provided.
   `,
-  info_url: `${asfWebsite.home}/sar-data-sets/wetlands-measures`,
-  download_url: `${asfWebsite.home}/data-sets/derived-data-sets/wetlands-measures/wetlands-measures-product-downloads/`,
-  picture: `${pictureFolder}/wetlands_measures.gif`,
-}];
+    info_url: `${asfWebsite.home}/sar-data-sets/wetlands-measures`,
+    download_url: `${asfWebsite.home}/data-sets/derived-data-sets/wetlands-measures/wetlands-measures-product-downloads/`,
+    picture: `${pictureFolder}/wetlands_measures.gif`,
+  },
+];

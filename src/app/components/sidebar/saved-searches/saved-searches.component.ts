@@ -1,4 +1,11 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  OnDestroy,
+  inject,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { SubSink } from 'subsink';
@@ -9,11 +16,15 @@ import * as userStore from '@store/user';
 import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
 
-import { SavedSearchService, ScreenSizeService, SearchService } from '@services';
+import {
+  SavedSearchService,
+  ScreenSizeService,
+  SearchService,
+} from '@services';
 import { SaveSearchDialogComponent } from '@components/shared/save-search-dialog';
 import * as models from '@models';
 
-import { AsfLanguageService } from "@services/asf-language.service";
+import { AsfLanguageService } from '@services/asf-language.service';
 
 @Component({
   selector: 'app-saved-searches',
@@ -21,6 +32,13 @@ import { AsfLanguageService } from "@services/asf-language.service";
   styleUrls: ['./saved-searches.component.scss'],
 })
 export class SavedSearchesComponent implements OnInit, OnDestroy {
+  private dialog = inject(MatDialog);
+  private store$ = inject<Store<AppState>>(Store);
+  private savedSearchService = inject(SavedSearchService);
+  private screenSize = inject(ScreenSizeService);
+  private searchService = inject(SearchService);
+  private language = inject(AsfLanguageService);
+
   @ViewChild('filterInput', { static: true }) filterInput: ElementRef;
 
   public searchType$ = this.store$.select(searchStore.getSearchType);
@@ -31,11 +49,11 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
   public SidebarType = models.SidebarType;
 
   public searches$ = this.sidebarType$.pipe(
-    switchMap(savedSearchType =>
-      (savedSearchType === models.SidebarType.SAVED_SEARCHES) ?
-        this.store$.select(userStore.getSavedSearches) :
-        this.store$.select(userStore.getSearchHistory)
-    )
+    switchMap((savedSearchType) =>
+      savedSearchType === models.SidebarType.SAVED_SEARCHES
+        ? this.store$.select(userStore.getSavedSearches)
+        : this.store$.select(userStore.getSearchHistory),
+    ),
   );
   public lockedFocus = false;
 
@@ -50,37 +68,26 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
 
   private subs = new SubSink();
 
-  constructor(
-    private dialog: MatDialog,
-    private store$: Store<AppState>,
-    private savedSearchService: SavedSearchService,
-    private screenSize: ScreenSizeService,
-    private searchService: SearchService,
-    private language: AsfLanguageService,
-  ) { }
-
   ngOnInit() {
     this.savedSearchService.loadSearches();
 
     this.subs.add(
       this.screenSize.breakpoint$.subscribe(
-        breakpoint => this.breakpoint = breakpoint
-      )
+        (breakpoint) => (this.breakpoint = breakpoint),
+      ),
     );
 
     this.subs.add(
       this.sidebarType$.subscribe(
-        sidebarType => this.sidebarType = sidebarType
-      )
+        (sidebarType) => (this.sidebarType = sidebarType),
+      ),
     );
 
     this.subs.add(
-      this.searches$.subscribe(
-        searches => {
-          this.filterTokens = this.savedSearchService.filterTokensFrom(searches);
-          this.updateFilter();
-        }
-      )
+      this.searches$.subscribe((searches) => {
+        this.filterTokens = this.savedSearchService.filterTokensFrom(searches);
+        this.updateFilter();
+      }),
     );
   }
 
@@ -95,7 +102,7 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
       height: '500px',
       maxWidth: '550px',
       maxHeight: '500px',
-      data: { saveType: models.SidebarType.SAVED_SEARCHES }
+      data: { saveType: models.SidebarType.SAVED_SEARCHES },
     });
   }
 
@@ -113,20 +120,18 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
     this.filteredSearches = new Set();
     const filterStr = this.searchFilter.toLocaleLowerCase();
 
-    this.filterTokens.forEach(
-      search => {
-        if (search.token.includes(filterStr)) {
-          this.filteredSearches.add(search.id);
-        }
+    this.filterTokens.forEach((search) => {
+      if (search.token.includes(filterStr)) {
+        this.filteredSearches.add(search.id);
       }
-    );
+    });
   }
 
   public unfocusFilter(): void {
     this.filterInput.nativeElement.blur();
   }
 
-  public updateSearchName(update: {id: string, name: string}): void {
+  public updateSearchName(update: { id: string; name: string }): void {
     if (update.name === '') {
       const noName = this.language.translate.instant('NO_NAME');
       update.name = noName;
@@ -149,8 +154,7 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
   }
 
   public onExpandSearch(searchId: string): void {
-    this.expandedSearchId = this.expandedSearchId === searchId ?
-    '' : searchId;
+    this.expandedSearchId = this.expandedSearchId === searchId ? '' : searchId;
   }
 
   public onUnlockFocus(): void {

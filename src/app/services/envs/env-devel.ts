@@ -20,5 +20,5 @@ export const env = {
     unzip: 'https://unzip.asf.alaska.edu',
     bulk_download: 'https://bulk-download.asf.alaska.edu',
   },
-  defaultEnv: 'test'
+  defaultEnv: 'test',
 };

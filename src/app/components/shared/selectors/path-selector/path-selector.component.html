@@ -1,60 +1,90 @@
-  <form #pathForm="ngForm">
-    <div class="flex-container">
-
+<form #pathForm="ngForm">
+  <div class="flex-container">
     <div class="flex-item">
-      <mat-form-field style="width: 160px;"*ngIf="prop.isRelevant(p.PATH)"
-                      class="date-item"
-                      [class.invalid-input-animation]="typeHasError(inputTypes.PATH_START)">
-        <input matInput
-               type="number"
-               (input)="onValueChanged($event, inputTypes.PATH_START)"
-               [(ngModel)]="pathStart"
-               name="pathStart"
-               [placeholder]="
-                 selectedDatasetIsNISARFormat || prop.isRelevant(p.USE_TRACK) ?
-                 ('TRACK_START' | translate) : ('PATH_START' | translate)">
+      <mat-form-field
+        style="width: 160px"
+        *ngIf="prop.isRelevant(p.PATH)"
+        class="date-item"
+        [class.invalid-input-animation]="typeHasError(inputTypes.PATH_START)"
+      >
+        <input
+          matInput
+          type="number"
+          (input)="onValueChanged($event, inputTypes.PATH_START)"
+          [(ngModel)]="pathStart"
+          name="pathStart"
+          [placeholder]="
+            selectedDatasetIsNISARFormat || prop.isRelevant(p.USE_TRACK)
+              ? ('TRACK_START' | translate)
+              : ('PATH_START' | translate)
+          "
+        />
       </mat-form-field>
 
-      <mat-form-field style="width: 160px;"*ngIf="prop.isRelevant(p.PATH)" class="range-form-input"
-                      class="date-item"
-                      [class.invalid-input-animation]="typeHasError(inputTypes.PATH_END)">
-        <input matInput
-               type="number"
-               (input)="onValueChanged($event, inputTypes.PATH_END)"
-               [(ngModel)]="pathEnd"
-               name="pathEnd"
-               [placeholder]="
-                 selectedDatasetIsNISARFormat || prop.isRelevant(p.USE_TRACK) ?
-                 ('TRACK_END' | translate) : ('PATH_END' | translate)">
+      <mat-form-field
+        style="width: 160px"
+        *ngIf="prop.isRelevant(p.PATH)"
+        class="range-form-input"
+        class="date-item"
+        [class.invalid-input-animation]="typeHasError(inputTypes.PATH_END)"
+      >
+        <input
+          matInput
+          type="number"
+          (input)="onValueChanged($event, inputTypes.PATH_END)"
+          [(ngModel)]="pathEnd"
+          name="pathEnd"
+          [placeholder]="
+            selectedDatasetIsNISARFormat || prop.isRelevant(p.USE_TRACK)
+              ? ('TRACK_END' | translate)
+              : ('PATH_END' | translate)
+          "
+        />
       </mat-form-field>
     </div>
 
     <div class="flex-item">
-      <mat-form-field style="width: 150px;"*ngIf="prop.isRelevant(p.FRAME)"
-                      class="date-item"
-                      [class.invalid-input-animation]="typeHasError(inputTypes.FRAME_START)">
-        <input matInput
-               type="number"
-               (input)="onValueChanged($event, inputTypes.FRAME_START)"
-               [(ngModel)]="frameStart"
-               name="frameStart" placeholder="{{ 'FRAME_START' | translate}}">
+      <mat-form-field
+        style="width: 150px"
+        *ngIf="prop.isRelevant(p.FRAME)"
+        class="date-item"
+        [class.invalid-input-animation]="typeHasError(inputTypes.FRAME_START)"
+      >
+        <input
+          matInput
+          type="number"
+          (input)="onValueChanged($event, inputTypes.FRAME_START)"
+          [(ngModel)]="frameStart"
+          name="frameStart"
+          placeholder="{{ 'FRAME_START' | translate }}"
+        />
       </mat-form-field>
 
-      <mat-form-field style="width: 150px;" *ngIf="prop.isRelevant(p.FRAME)" class="range-form-input"
-                      class="date-item"
-                      [class.invalid-input-animation]="typeHasError(inputTypes.FRAME_END)">
-        <input matInput
-               type="number"
-               (input)="onValueChanged($event, inputTypes.FRAME_END)"
-               [(ngModel)]="frameEnd"
-               name="frameEnd" placeholder="{{ 'FRAME_END' | translate }}">
+      <mat-form-field
+        style="width: 150px"
+        *ngIf="prop.isRelevant(p.FRAME)"
+        class="range-form-input"
+        class="date-item"
+        [class.invalid-input-animation]="typeHasError(inputTypes.FRAME_END)"
+      >
+        <input
+          matInput
+          type="number"
+          (input)="onValueChanged($event, inputTypes.FRAME_END)"
+          [(ngModel)]="frameEnd"
+          name="frameEnd"
+          placeholder="{{ 'FRAME_END' | translate }}"
+        />
       </mat-form-field>
     </div>
 
     <div class="flex-item">
-      <button mat-stroked-button
-              class="clear-button"
-              (click)="onClear()" mat-button>
+      <button
+        mat-stroked-button
+        class="clear-button"
+        (click)="onClear()"
+        mat-button
+      >
         {{ 'CLEAR' | translate }}
         @if (selectedDatasetIsNISARFormat) {
           {{ 'TRACK' | translate }}
@@ -66,6 +96,5 @@
         <app-aoi-clear></app-aoi-clear>
       </div>
     </div>
-    </div>
-  </form>
-
+  </div>
+</form>

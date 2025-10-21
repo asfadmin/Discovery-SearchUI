@@ -4,7 +4,11 @@ import { Range } from './range.model';
 import { FlightDirection } from './cmr-product.model';
 import * as fromDatasets from './dataset.model';
 import { Hyp3JobStatusCode } from './hyp3';
-import { SarviewsEventType, SBASOverlap, timeseriesChartItemState } from '@models';
+import {
+  SarviewsEventType,
+  SBASOverlap,
+  timeseriesChartItemState,
+} from '@models';
 
 export interface Search {
   searchType: SearchType;
@@ -14,14 +18,14 @@ export interface Search {
 }
 
 export type FilterType =
-  ListFiltersType |
-  GeographicFiltersType |
-  BaselineFiltersType |
-  CustomProductFiltersType |
-  SbasFiltersType |
-  TimeseriesFiltersType |
-  SarviewsFiltersType |
-  DisplacementFiltersType;
+  | ListFiltersType
+  | GeographicFiltersType
+  | BaselineFiltersType
+  | CustomProductFiltersType
+  | SbasFiltersType
+  | TimeseriesFiltersType
+  | SarviewsFiltersType
+  | DisplacementFiltersType;
 
 export interface ListFiltersType {
   listType: ListSearchType;
@@ -82,7 +86,7 @@ export interface GeographicFiltersType {
 
   fullBurstIDs: string[];
   operaBurstIDs: string[];
-  useCalibrationData: boolean,
+  useCalibrationData: boolean;
   // shortNames: state.shortNames,
   // sciProducts: state.scienceProduct,
   // productConfig: state.productionConfig,
@@ -116,7 +120,7 @@ export interface SarviewsFiltersType {
 }
 
 export interface DisplacementFiltersType {
-  seriesStates: { [key: string]: timeseriesChartItemState }
+  seriesStates: Record<string, timeseriesChartItemState>;
   flightDirections: FlightDirection[];
   dateRange: Range<null | Date>;
 }

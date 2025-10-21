@@ -19,8 +19,8 @@ import { SharedModule } from '@shared';
     MatSharedModule,
     MatInputModule,
     FormsModule,
-    SharedModule
+    SharedModule,
   ],
-  exports: [ OnDemandAddMenuComponent ]
+  exports: [OnDemandAddMenuComponent],
 })
-export class OnDemandAddMenuModule { }
+export class OnDemandAddMenuModule {}

@@ -1,6 +1,12 @@
 import { Action } from '@ngrx/store';
 
-import { Hyp3Job, Hyp3User, Hyp3ProcessingOptions, Hyp3Costs, ApplicationStatus } from '@models';
+import {
+  Hyp3Job,
+  Hyp3User,
+  Hyp3ProcessingOptions,
+  Hyp3Costs,
+  ApplicationStatus,
+} from '@models';
 
 export enum Hyp3ActionType {
   LOAD_JOBS = '[Hyp3] Load Jobs',
@@ -40,7 +46,9 @@ export class SetJobs implements Action {
 export class SetProcessingOptions implements Action {
   public readonly type = Hyp3ActionType.SET_PROCESSING_OPTIONS;
 
-  constructor(public payload: {jobTypeId: string; options: Hyp3ProcessingOptions}) {}
+  constructor(
+    public payload: { jobTypeId: string; options: Hyp3ProcessingOptions },
+  ) {}
 }
 
 export class ClearProcessingOptions implements Action {

@@ -7,7 +7,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { MatSharedModule } from '@shared';
 import { TimeseriesResultsMenuComponent } from './timeseries-results-menu.component';
-import { SharedModule } from "@shared";
+import { SharedModule } from '@shared';
 import { MatIconModule } from '@angular/material/icon';
 import { ScenesListModule } from '../scenes-list';
 import { ScenesListHeaderModule } from '../scenes-list-header';
@@ -16,19 +16,20 @@ import { TimeseriesChartModule } from '@components/timeseries-chart/timeseries-c
 import { ResizableModule } from 'angular-resizable-element';
 import { MatRadioModule } from '@angular/material/radio';
 import { PipesModule } from '@pipes';
-import {MatTab, MatTabGroup} from '@angular/material/tabs';
-import {
-    TimeseriesChartTemporalSliderComponent
-} from '@components/timeseries-chart/timeseries-chart-temporal-slider/timeseries-chart-temporal-slider.component';
-import {MatCheckbox} from '@angular/material/checkbox';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { TimeseriesChartTemporalSliderComponent } from '@components/timeseries-chart/timeseries-chart-temporal-slider/timeseries-chart-temporal-slider.component';
+import { MatCheckbox } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import {MatAccordion, MatExpansionPanel, MatExpansionPanelDescription, MatExpansionPanelTitle, MatExpansionPanelHeader} from '@angular/material/expansion';
-
+import {
+  MatAccordion,
+  MatExpansionPanel,
+  MatExpansionPanelDescription,
+  MatExpansionPanelTitle,
+  MatExpansionPanelHeader,
+} from '@angular/material/expansion';
 
 @NgModule({
-  declarations: [
-    TimeseriesResultsMenuComponent
-  ],
+  declarations: [TimeseriesResultsMenuComponent],
   imports: [
     CommonModule,
     MatMenuModule,
@@ -55,8 +56,6 @@ import {MatAccordion, MatExpansionPanel, MatExpansionPanelDescription, MatExpans
     MatExpansionPanelTitle,
     MatExpansionPanelDescription,
   ],
-  exports: [
-    TimeseriesResultsMenuComponent
-  ]
+  exports: [TimeseriesResultsMenuComponent],
 })
-export class TimeseriesResultsMenuModule { }
+export class TimeseriesResultsMenuModule {}

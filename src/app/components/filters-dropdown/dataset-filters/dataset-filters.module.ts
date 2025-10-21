@@ -21,16 +21,12 @@ import { BurstSelectorModule } from '@components/shared/selectors/burst-selector
 import { OperaS1SelectorModule } from '@components/shared/selectors/opera-s1-selector';
 import { ObservationPanelSelectorModule } from '@components/shared/selectors/observation-panel-selector';
 // import { TranslateModule } from "@ngx-translate/core";
-import { SharedModule } from "@shared";
-import {ProductScienceSelectorComponent} from '@components/shared/selectors/product-science-selector/product-science-selector.component';
-import {
-  ProductionConfigSelectorComponent
-} from '@components/shared/selectors/production-config-selector/production-config-selector.component';
+import { SharedModule } from '@shared';
+import { ProductScienceSelectorComponent } from '@components/shared/selectors/product-science-selector/product-science-selector.component';
+import { ProductionConfigSelectorComponent } from '@components/shared/selectors/production-config-selector/production-config-selector.component';
 
 @NgModule({
-  declarations: [
-    DatasetFiltersComponent,
-  ],
+  declarations: [DatasetFiltersComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -54,8 +50,6 @@ import {
     ProductScienceSelectorComponent,
     ProductionConfigSelectorComponent,
   ],
-  exports: [
-    DatasetFiltersComponent,
-  ],
+  exports: [DatasetFiltersComponent],
 })
-export class DatasetFiltersModule { }
+export class DatasetFiltersModule {}

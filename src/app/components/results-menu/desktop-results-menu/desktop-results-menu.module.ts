@@ -9,11 +9,10 @@ import { ScenesListModule } from '../scenes-list';
 import { ScenesListHeaderModule } from '../scenes-list-header';
 
 import { DesktopResultsMenuComponent } from './desktop-results-menu.component';
-import { SharedModule } from "@shared";
-
+import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [ DesktopResultsMenuComponent ],
+  declarations: [DesktopResultsMenuComponent],
   imports: [
     CommonModule,
     MatSharedModule,
@@ -22,10 +21,8 @@ import { SharedModule } from "@shared";
     SceneDetailModule,
     ScenesListModule,
     ScenesListHeaderModule,
-    SharedModule
+    SharedModule,
   ],
-  exports: [
-    DesktopResultsMenuComponent
-  ]
+  exports: [DesktopResultsMenuComponent],
 })
-export class DesktopResultsMenuModule { }
+export class DesktopResultsMenuModule {}

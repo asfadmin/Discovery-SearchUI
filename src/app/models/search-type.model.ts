@@ -10,19 +10,19 @@ export enum SearchType {
 }
 
 export const SearchTypeTranslation = {
-  'Geographic Search' : 'GEOGRAPHIC_SEARCH',
-  'List Search' : 'LIST_SEARCH',
-  'Baseline Search' : 'BASELINE_SEARCH',
-  'Displacement' : 'DISPLACEMENT',
-  'SBAS Search' : 'SBAS_SEARCH',
-  'On Demand' : 'ON_DEMAND',
-  'Event Search' : 'EVENT_SEARCH',
-  'Derived Datasets' : 'DERIVED_DATASETS'
-}
+  'Geographic Search': 'GEOGRAPHIC_SEARCH',
+  'List Search': 'LIST_SEARCH',
+  'Baseline Search': 'BASELINE_SEARCH',
+  Displacement: 'DISPLACEMENT',
+  'SBAS Search': 'SBAS_SEARCH',
+  'On Demand': 'ON_DEMAND',
+  'Event Search': 'EVENT_SEARCH',
+  'Derived Datasets': 'DERIVED_DATASETS',
+};
 
 export enum IconType {
   MATERIAL = 'MATERIAL',
-  IMAGE = 'IMAGE'
+  IMAGE = 'IMAGE',
 }
 
 export interface SearchTypeSelector {

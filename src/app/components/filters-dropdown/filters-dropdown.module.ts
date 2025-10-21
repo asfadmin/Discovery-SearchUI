@@ -21,7 +21,7 @@ import { CustomProductsFiltersModule } from './custom-products-filters';
 import { SarviewsFiltersModule } from './sarviews-filters';
 import { SearchSelectorModule } from '@components/shared/selectors/search-selector';
 
-import {DocsModalModule} from '@components/shared/docs-modal';
+import { DocsModalModule } from '@components/shared/docs-modal';
 import { SharedModule } from '@shared';
 import { FrameOrderFiltersComponent } from './frame-order-filters';
 
@@ -50,11 +50,7 @@ import { FrameOrderFiltersComponent } from './frame-order-filters';
     DocsModalModule,
     FrameOrderFiltersComponent,
   ],
-  declarations: [
-    FiltersDropdownComponent,
-  ],
-  exports: [
-    FiltersDropdownComponent
-  ]
+  declarations: [FiltersDropdownComponent],
+  exports: [FiltersDropdownComponent],
 })
-export class FiltersDropdownModule { }
+export class FiltersDropdownModule {}

@@ -2,15 +2,18 @@
   <mat-select
     [(value)]="productTypesList"
     (selectionChange)="onNewProductTypes($event)"
-    [disabled]="selectableProductTypes.length < 1  || burstSelected"
+    [disabled]="selectableProductTypes.length < 1 || burstSelected"
     panelClass="product-type-selector"
-    placeholder="{{ 'FILE_TYPE' | translate }}" multiple>
-      <mat-option
-        *ngFor="let type of selectableProductTypes"
-        [value]="type.apiValue"
-        [matTooltip]="type.displayName">
-          {{type.displayName}}
-      </mat-option>
+    placeholder="{{ 'FILE_TYPE' | translate }}"
+    multiple
+  >
+    <mat-option
+      *ngFor="let type of selectableProductTypes"
+      [value]="type.apiValue"
+      [matTooltip]="type.displayName"
+    >
+      {{ type.displayName }}
+    </mat-option>
   </mat-select>
 
   <mat-hint *ngIf="selectableProductTypes.length >= 1" align="start">

@@ -12,13 +12,10 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSharedModule } from '@shared/mat-shared.module';
 import { FileUploadComponent } from './file-upload.component';
 import { FileUploadDialogComponent } from './file-upload-dialog';
-import { SharedModule } from "@shared";
+import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [
-    FileUploadComponent,
-    FileUploadDialogComponent
-  ],
+  declarations: [FileUploadComponent, FileUploadDialogComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -34,9 +31,6 @@ import { SharedModule } from "@shared";
 
     MatSharedModule,
   ],
-  exports: [
-    FileUploadComponent,
-    FileUploadDialogComponent
-  ]
+  exports: [FileUploadComponent, FileUploadDialogComponent],
 })
-export class FileUploadModule { }
+export class FileUploadModule {}

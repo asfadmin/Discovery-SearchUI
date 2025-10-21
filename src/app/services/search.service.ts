@@ -1,31 +1,32 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
-import { MakeSearch, ClearSearch, SetSearchType } from '@store/search/search.action';
+import {
+  MakeSearch,
+  ClearSearch,
+  SetSearchType,
+} from '@store/search/search.action';
 import * as filterStore from '@store/filters';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
 
 import * as models from '@models';
-import { MapService, } from './map/map.service';
+import { MapService } from './map/map.service';
 import { WktService } from './wkt.service';
 import { PinnedProduct } from './browse-map.service';
 import { PointHistoryService } from './point-history.service';
 import { resetTimeseriesStates } from '@store/charts';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SearchService {
-
-  constructor(
-    private store$: Store<AppState>,
-    private mapService: MapService,
-    private wktService: WktService,
-    private pointHistoryService: PointHistoryService,
-  ) { }
+  private store$ = inject<Store<AppState>>(Store);
+  private mapService = inject(MapService);
+  private wktService = inject(WktService);
+  private pointHistoryService = inject(PointHistoryService);
 
   public clear(searchType: models.SearchType): void {
     this.mapService.clearDrawLayer();
@@ -38,12 +39,10 @@ export class SearchService {
       new filterStore.ClearPerpendicularRange(),
       new filterStore.ClearTemporalRange(),
       new filterStore.ClearSeason(),
-      new filterStore.SetUseFrameForBaseline(false)
+      new filterStore.SetUseFrameForBaseline(false),
     ];
 
-    actions.forEach(
-      action => this.store$.dispatch(action)
-    );
+    actions.forEach((action) => this.store$.dispatch(action));
 
     if (searchType === models.SearchType.CUSTOM_PRODUCTS) {
       this.store$.dispatch(new filterStore.SetProjectName(''));
@@ -56,15 +55,14 @@ export class SearchService {
       this.store$.dispatch(new filterStore.SetSarviewsEventNameFilter(''));
       this.store$.dispatch(new filterStore.SetSarviewsEventTypes([]));
       this.store$.dispatch(new filterStore.SetSarviewsEventActiveFilter(false));
-      this.store$.dispatch(new filterStore.SetSarviewsMagnitudeRange(
-        {
+      this.store$.dispatch(
+        new filterStore.SetSarviewsMagnitudeRange({
           start: null,
-          end: null
-        }
-      ));
+          end: null,
+        }),
+      );
       this.store$.dispatch(new filterStore.ClearSarviewsMagnitudeRange());
       this.store$.dispatch(new filterStore.ClearHyp3ProductTypes());
-
     }
   }
 
@@ -83,53 +81,64 @@ export class SearchService {
       this.loadSearchPolygon(search);
     }
     if (search.searchType === models.SearchType.BASELINE) {
-      const filters = <models.BaselineFiltersType>search.filters;
-      this.store$.dispatch(new scenesStore.SetFilterMaster(filters.filterMaster));
+      const filters = search.filters as models.BaselineFiltersType;
+      this.store$.dispatch(
+        new scenesStore.SetFilterMaster(filters.filterMaster),
+      );
     }
     if (search.searchType === models.SearchType.SBAS) {
-      const filters = <models.SbasFiltersType>search.filters;
+      const filters = search.filters as models.SbasFiltersType;
       this.store$.dispatch(new scenesStore.SetFilterMaster(filters.reference));
       if (filters.customPairIds) {
-        this.store$.dispatch(new scenesStore.AddCustomPairs(filters.customPairIds));
+        this.store$.dispatch(
+          new scenesStore.AddCustomPairs(filters.customPairIds),
+        );
       }
     }
     if (search.searchType === models.SearchType.SARVIEWS_EVENTS) {
-      const filters = <models.SarviewsFiltersType>search.filters;
+      const filters = search.filters as models.SarviewsFiltersType;
       const pinnedProductIds = filters.pinnedProductIDs;
-      this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(filters.selectedEventID));
+      this.store$.dispatch(
+        new scenesStore.SetSelectedSarviewsEvent(filters.selectedEventID),
+      );
 
-        if (!!pinnedProductIds) {
-          this.store$.dispatch(new scenesStore.SetImageBrowseProducts(pinnedProductIds.reduce(
-            (prev, curr) => {
-              prev[curr] = {
-                url: '',
-                wkt: ''
-              };
-              return prev;
-            }, {} as {[product_id in string]: PinnedProduct})
-          ));
-        }
+      if (pinnedProductIds) {
+        this.store$.dispatch(
+          new scenesStore.SetImageBrowseProducts(
+            pinnedProductIds.reduce(
+              (prev, curr) => {
+                prev[curr] = {
+                  url: '',
+                  wkt: '',
+                };
+                return prev;
+              },
+              {} as Record<string, PinnedProduct>,
+            ),
+          ),
+        );
+      }
     }
-    if(search.searchType === models.SearchType.DISPLACEMENT) {
-        const filters = <models.DisplacementFiltersType>search.filters;
-        this.store$.dispatch(resetTimeseriesStates())
+    if (search.searchType === models.SearchType.DISPLACEMENT) {
+      const filters = search.filters as models.DisplacementFiltersType;
+      this.store$.dispatch(resetTimeseriesStates());
 
-        const seriesStates = filters.seriesStates;
-        this.pointHistoryService.addPoints(Object.values(seriesStates))
+      const seriesStates = filters.seriesStates;
+      this.pointHistoryService.addPoints(Object.values(seriesStates));
     }
 
     this.store$.dispatch(new filterStore.SetSavedSearch(search));
   }
 
   private loadSearchPolygon(search: models.Search): void {
-    const polygon = (<models.GeographicFiltersType>search.filters).polygon;
+    const polygon = (search.filters as models.GeographicFiltersType).polygon;
 
     if (polygon === null) {
       this.mapService.clearDrawLayer();
     } else {
-      const features =  this.wktService.wktToFeature(
+      const features = this.wktService.wktToFeature(
         polygon,
-        this.mapService.epsg()
+        this.mapService.epsg(),
       );
 
       this.mapService.setDrawFeature(features);

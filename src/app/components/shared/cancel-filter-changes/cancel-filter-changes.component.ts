@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { SearchType } from '@models';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -9,23 +9,21 @@ import { SubSink } from 'subsink';
 @Component({
   selector: 'app-cancel-filter-changes',
   templateUrl: './cancel-filter-changes.component.html',
-  styleUrls: ['./cancel-filter-changes.component.scss']
+  styleUrls: ['./cancel-filter-changes.component.scss'],
 })
 export class CancelFilterChangesComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
 
   private searchType$ = this.store$.select(searchStore.getSearchType);
   private searchType: SearchType;
   private subs = new SubSink();
 
-  constructor(private store$: Store<AppState>) {
-   }
-
   ngOnInit(): void {
     this.subs.add(
-        this.searchType$.subscribe(
-          currentSearchType => this.searchType = currentSearchType
-        )
-      );
+      this.searchType$.subscribe(
+        (currentSearchType) => (this.searchType = currentSearchType),
+      ),
+    );
   }
 
   ngOnDestroy(): void {
@@ -41,5 +39,4 @@ export class CancelFilterChangesComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new filtersStore.StoreCurrentFilters());
     this.store$.dispatch(new uiStore.CloseFiltersMenu());
   }
-
 }

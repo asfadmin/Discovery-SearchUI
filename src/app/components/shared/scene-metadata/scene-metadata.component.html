@@ -4,83 +4,146 @@
   </li>
 
   <li *ngIf="scene.metadata.perpendicular !== null">
-    <span class="v-mid"><b>{{ 'PERPENDICULAR' | translate }}</b> • {{ scene.metadata.perpendicular + offsets.perpendicular }}</span>
+    <span class="v-mid"
+      ><b>{{ 'PERPENDICULAR' | translate }}</b> •
+      {{ scene.metadata.perpendicular + offsets.perpendicular }}</span
+    >
   </li>
 
   <li *ngIf="scene.metadata.temporal !== null">
-    <span class="v-mid"><b>{{ 'TEMPORAL' | translate }}</b> • {{ scene.metadata.temporal + offsets.temporal }}</span>
+    <span class="v-mid"
+      ><b>{{ 'TEMPORAL' | translate }}</b> •
+      {{ scene.metadata.temporal + offsets.temporal }}</span
+    >
   </li>
 
-  <li *ngIf="prop.isRelevant(p.DATE, dataset) && !scene.metadata?.opera?.validityStartDate">
-    <span class="v-mid"><b>{{ 'START_TIME' | translate }}</b> • {{ scene.metadata.date | shortDateTime }}</span>
-    <mat-icon *ngIf="isGeoSearch()"
+  <li
+    *ngIf="
+      prop.isRelevant(p.DATE, dataset) &&
+      !scene.metadata?.opera?.validityStartDate
+    "
+  >
+    <span class="v-mid"
+      ><b>{{ 'START_TIME' | translate }}</b> •
+      {{ scene.metadata.date | shortDateTime }}</span
+    >
+    <mat-icon
+      *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addSceneDateMenu"
-      class="v-mid clickable">
-        settings
+      class="v-mid clickable"
+    >
+      settings
     </mat-icon>
 
     <mat-menu #addSceneDateMenu="matMenu">
-      <button (click)="setStartDate(scene.metadata.date)" mat-menu-item>{{ 'SET_AS_START_DATE' | translate }}</button>
-      <button (click)="setEndDate(scene.metadata.date)" mat-menu-item>{{ 'SET_AS_END_DATE' | translate }}</button>
+      <button (click)="setStartDate(scene.metadata.date)" mat-menu-item>
+        {{ 'SET_AS_START_DATE' | translate }}
+      </button>
+      <button (click)="setEndDate(scene.metadata.date)" mat-menu-item>
+        {{ 'SET_AS_END_DATE' | translate }}
+      </button>
     </mat-menu>
   </li>
 
-  <li *ngIf="prop.isRelevant(p.DATE, dataset) && !scene.metadata?.opera?.validityStartDate">
-    <span class="v-mid"><b>{{ 'STOP_TIME' | translate }}</b> • {{ scene.metadata.stopDate | shortDateTime }}</span>
-    <mat-icon *ngIf="isGeoSearch()"
+  <li
+    *ngIf="
+      prop.isRelevant(p.DATE, dataset) &&
+      !scene.metadata?.opera?.validityStartDate
+    "
+  >
+    <span class="v-mid"
+      ><b>{{ 'STOP_TIME' | translate }}</b> •
+      {{ scene.metadata.stopDate | shortDateTime }}</span
+    >
+    <mat-icon
+      *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addSceneStopDateMenu"
-      class="v-mid clickable">
-        settings
+      class="v-mid clickable"
+    >
+      settings
     </mat-icon>
 
     <mat-menu #addSceneStopDateMenu="matMenu">
-      <button (click)="setStartDate(scene.metadata.stopDate)" mat-menu-item>{{ 'SET_AS_START_DATE' | translate }}</button>
-      <button (click)="setEndDate(scene.metadata.stopDate)" mat-menu-item>{{ 'SET_AS_END_DATE' | translate }}</button>
+      <button (click)="setStartDate(scene.metadata.stopDate)" mat-menu-item>
+        {{ 'SET_AS_START_DATE' | translate }}
+      </button>
+      <button (click)="setEndDate(scene.metadata.stopDate)" mat-menu-item>
+        {{ 'SET_AS_END_DATE' | translate }}
+      </button>
     </mat-menu>
   </li>
 
   <li *ngIf="!!scene.metadata?.opera?.validityStartDate">
     <span class="v-mid">
-      <b>{{ 'Validity Start Date' }}</b> • {{ scene.metadata.opera.validityStartDate | shortDateTime }}
+      <b>{{ 'Validity Start Date' }}</b> •
+      {{ scene.metadata.opera.validityStartDate | shortDateTime }}
     </span>
 
-    <mat-icon *ngIf="isGeoSearch()"
+    <mat-icon
+      *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addSceneStopDateMenu"
-      class="v-mid clickable">
-        settings
+      class="v-mid clickable"
+    >
+      settings
     </mat-icon>
 
     <mat-menu #addSceneStopDateMenu="matMenu">
-      <button (click)="setStartDate(scene.metadata.opera.validityStartDate)" mat-menu-item>{{ 'SET_AS_START_DATE' | translate }}</button>
-      <button (click)="setEndDate(scene.metadata.opera.validityStartDate)" mat-menu-item>{{ 'SET_AS_END_DATE' | translate }}</button>
+      <button
+        (click)="setStartDate(scene.metadata.opera.validityStartDate)"
+        mat-menu-item
+      >
+        {{ 'SET_AS_START_DATE' | translate }}
+      </button>
+      <button
+        (click)="setEndDate(scene.metadata.opera.validityStartDate)"
+        mat-menu-item
+      >
+        {{ 'SET_AS_END_DATE' | translate }}
+      </button>
     </mat-menu>
   </li>
 
   <li *ngIf="prop.isRelevant(p.BEAM_MODE, dataset) && scene.metadata.beamMode">
-    <span class="v-mid"><b>{{ 'BEAM_MODE' |translate }} </b> • {{ scene.metadata.beamMode }}</span>
-    <mat-icon *ngIf="isGeoSearch() && dataset.id !== 'OPERA-S1'"
+    <span class="v-mid"
+      ><b>{{ 'BEAM_MODE' | translate }} </b> •
+      {{ scene.metadata.beamMode }}</span
+    >
+    <mat-icon
+      *ngIf="isGeoSearch() && dataset.id !== 'OPERA-S1'"
       [matMenuTriggerFor]="addBeamModeMenu"
-      class="v-mid clickable">
-        settings
+      class="v-mid clickable"
+    >
+      settings
     </mat-icon>
 
     <mat-menu #addBeamModeMenu="matMenu">
-      <button (click)="setBeamMode()" mat-menu-item>{{ 'ADD_BEAM_MODE_TO_SEARCH' | translate }}</button>
+      <button (click)="setBeamMode()" mat-menu-item>
+        {{ 'ADD_BEAM_MODE_TO_SEARCH' | translate }}
+      </button>
     </mat-menu>
   </li>
 
   <li *ngIf="prop.isRelevant(p.PATH, dataset)">
-    <span class="v-mid"><b>
-        @if (selectedDatasetIsNISARFormat || prop.isRelevant(p.USE_TRACK, dataset)) {
+    <span class="v-mid"
+      ><b>
+        @if (
+          selectedDatasetIsNISARFormat || prop.isRelevant(p.USE_TRACK, dataset)
+        ) {
           {{ 'TRACK' | translate }}
         } @else {
           {{ 'PATH' | translate }}
         }
-    </b> • {{ scene.metadata.path }}</span>
-    <mat-icon *ngIf="isGeoSearch()"
-      [matMenuTriggerFor]="prop.isRelevant(p.USE_TRACK, dataset) ? addTrackMenu : addPathMenu"
-      class="v-mid clickable">
-        settings
+      </b>
+      • {{ scene.metadata.path }}</span
+    >
+    <mat-icon
+      *ngIf="isGeoSearch()"
+      [matMenuTriggerFor]="
+        prop.isRelevant(p.USE_TRACK, dataset) ? addTrackMenu : addPathMenu
+      "
+      class="v-mid clickable"
+    >
+      settings
     </mat-icon>
 
     <mat-menu #addPathMenu="matMenu">
@@ -98,157 +161,267 @@
           {{ 'SET_AS_PATH_END' | translate }}
         }
       </button>
-      <button (click)="setPathStart(); setPathEnd();" mat-menu-item>{{ 'SET_AS_BOTH' | translate }}</button>
+      <button (click)="setPathStart(); setPathEnd()" mat-menu-item>
+        {{ 'SET_AS_BOTH' | translate }}
+      </button>
     </mat-menu>
     <mat-menu #addTrackMenu="matMenu">
-        <button (click)="setPathStart()" mat-menu-item>{{ 'SET_AS_TRACK_START' | translate }}</button>
-        <button (click)="setPathEnd()" mat-menu-item>{{'SET_AS_TRACK_END' | translate }}</button>
-        <button (click)="setPathStart(); setPathEnd();" mat-menu-item>{{ 'SET_AS_BOTH' | translate }}</button>
+      <button (click)="setPathStart()" mat-menu-item>
+        {{ 'SET_AS_TRACK_START' | translate }}
+      </button>
+      <button (click)="setPathEnd()" mat-menu-item>
+        {{ 'SET_AS_TRACK_END' | translate }}
+      </button>
+      <button (click)="setPathStart(); setPathEnd()" mat-menu-item>
+        {{ 'SET_AS_BOTH' | translate }}
+      </button>
     </mat-menu>
   </li>
 
   <li *ngIf="prop.isRelevant(p.FRAME, dataset)">
-    <span class="v-mid"> <b>{{ 'FRAME' | translate }} </b> • {{ scene.metadata.frame }} </span>
+    <span class="v-mid">
+      <b>{{ 'FRAME' | translate }} </b> • {{ scene.metadata.frame }}
+    </span>
 
-    <mat-icon *ngIf="isGeoSearch()"
-      [matMenuTriggerFor]=" addFrameMenu"
-      class="v-mid clickable">
-        settings
+    <mat-icon
+      *ngIf="isGeoSearch()"
+      [matMenuTriggerFor]="addFrameMenu"
+      class="v-mid clickable"
+    >
+      settings
     </mat-icon>
 
     <mat-menu #addFrameMenu="matMenu">
-      <button (click)="setFrameStart()" mat-menu-item>{{ 'SET_AS_FRAME_START' | translate }}</button>
-      <button (click)="setFrameEnd()" mat-menu-item>{{ 'SET_AS_FRAME_END' | translate }}</button>
-      <button (click)="setFrameStart(); setFrameEnd();" mat-menu-item>{{ 'SET_AS_BOTH' | translate }}</button>
+      <button (click)="setFrameStart()" mat-menu-item>
+        {{ 'SET_AS_FRAME_START' | translate }}
+      </button>
+      <button (click)="setFrameEnd()" mat-menu-item>
+        {{ 'SET_AS_FRAME_END' | translate }}
+      </button>
+      <button (click)="setFrameStart(); setFrameEnd()" mat-menu-item>
+        {{ 'SET_AS_BOTH' | translate }}
+      </button>
     </mat-menu>
   </li>
 
-  <li *ngIf="prop.isRelevant(p.FLIGHT_DIRECTION, dataset) && scene.metadata.flightDirection">
-    <span class="v-mid"> <b>{{ 'FLIGHT_DIRECTION' | translate }} </b> •
+  <li
+    *ngIf="
+      prop.isRelevant(p.FLIGHT_DIRECTION, dataset) &&
+      scene.metadata.flightDirection
+    "
+  >
+    <span class="v-mid">
+      <b>{{ 'FLIGHT_DIRECTION' | translate }} </b> •
       {{ scene.metadata.flightDirection | uppercase }}
-<!--      {{ scene.metadata.flightDirection | uppercase | translate }}-->
+      <!--      {{ scene.metadata.flightDirection | uppercase | translate }}-->
     </span>
-    <mat-icon *ngIf="isGeoSearch()"
+    <mat-icon
+      *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addFlightDirectionMenu"
-      class="v-mid clickable">
-        settings
+      class="v-mid clickable"
+    >
+      settings
     </mat-icon>
 
     <mat-menu #addFlightDirectionMenu="matMenu">
-      <button (click)="setFlightDirection()" mat-menu-item>{{ 'SET_FLIGHT_DIRECTION' | translate }}</button>
+      <button (click)="setFlightDirection()" mat-menu-item>
+        {{ 'SET_FLIGHT_DIRECTION' | translate }}
+      </button>
     </mat-menu>
   </li>
   <li *ngIf="prop.isRelevant(p.COVERAGE_ANGLE, dataset)">
-    <span class="v-mid"> <b>{{ 'FRAME_COVERAGE' | translate }} </b> • {{ scene.metadata.nisar.frameCoverage}} </span>
+    <span class="v-mid">
+      <b>{{ 'FRAME_COVERAGE' | translate }} </b> •
+      {{ scene.metadata.nisar.frameCoverage }}
+    </span>
+  </li>
 
-  <li *ngIf="prop.isRelevant(p.POLARIZATION, dataset) && scene.metadata.polarization">
-    <mat-icon *ngIf="isGeoSearch()"
+  <li
+    *ngIf="
+      prop.isRelevant(p.POLARIZATION, dataset) && scene.metadata.polarization
+    "
+  >
+    <mat-icon
+      *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="setFrameCoverageMenu"
-      class="v-mid clickable">
-        settings
+      class="v-mid clickable"
+    >
+      settings
     </mat-icon>
 
     <mat-menu #setFrameCoverageMenu="matMenu">
-      <button (click)="setFrameCoverage()" mat-menu-item>{{ 'SET_FRAME_COVERAGE' | translate }}</button>
+      <button (click)="setFrameCoverage()" mat-menu-item>
+        {{ 'SET_FRAME_COVERAGE' | translate }}
+      </button>
     </mat-menu>
   </li>
-  <li *ngIf="prop.isRelevant(p.POLARIZATION, dataset) && !prop.isRelevant(p.SIDE_POLARIZATION, dataset)">
-    <span class="v-mid"> <b>{{ 'POLARIZATION' | translate }} </b> • {{ scene.metadata.polarization }} </span>
+  <li
+    *ngIf="
+      prop.isRelevant(p.POLARIZATION, dataset) &&
+      !prop.isRelevant(p.SIDE_POLARIZATION, dataset)
+    "
+  >
+    <span class="v-mid">
+      <b>{{ 'POLARIZATION' | translate }} </b> •
+      {{ scene.metadata.polarization }}
+    </span>
 
-    <mat-icon *ngIf="isGeoSearch()"
+    <mat-icon
+      *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addPolMenu"
-      class="v-mid clickable">
-        settings
+      class="v-mid clickable"
+    >
+      settings
     </mat-icon>
 
     <mat-menu #addPolMenu="matMenu">
-      <button (click)="addPolarization()" mat-menu-item>{{ 'ADD_POLARIZATION_TO_SEARCH' | translate }}</button>
+      <button (click)="addPolarization()" mat-menu-item>
+        {{ 'ADD_POLARIZATION_TO_SEARCH' | translate }}
+      </button>
     </mat-menu>
   </li>
-  <li *ngIf="prop.isRelevant(p.POLARIZATION, dataset) && prop.isRelevant(p.SIDE_POLARIZATION, dataset)">
-    <span class="v-mid"> <b>{{ 'POLARIZATION_MAIN' | translate }} </b> • {{ scene.metadata.nisar.mainBandPolarization }} </span>
+  <li
+    *ngIf="
+      prop.isRelevant(p.POLARIZATION, dataset) &&
+      prop.isRelevant(p.SIDE_POLARIZATION, dataset)
+    "
+  >
+    <span class="v-mid">
+      <b>{{ 'POLARIZATION_MAIN' | translate }} </b> •
+      {{ scene.metadata.nisar.mainBandPolarization }}
+    </span>
 
-    <mat-icon *ngIf="isGeoSearch()"
+    <mat-icon
+      *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addMainPolMenu"
-      class="v-mid clickable">
-        settings
+      class="v-mid clickable"
+    >
+      settings
     </mat-icon>
 
     <mat-menu #addMainPolMenu="matMenu">
-      <button (click)="addPolarization()" mat-menu-item>{{ 'ADD_MAIN_POLARIZATION_TO_SEARCH' | translate }}</button>
+      <button (click)="addPolarization()" mat-menu-item>
+        {{ 'ADD_MAIN_POLARIZATION_TO_SEARCH' | translate }}
+      </button>
     </mat-menu>
   </li>
   <li *ngIf="prop.isRelevant(p.SIDE_POLARIZATION, dataset)">
-    <span class="v-mid"> <b>{{ 'POLARIZATION_SIDE' | translate }} </b> • {{ scene.metadata.nisar.sideBandPolarization }} </span>
+    <span class="v-mid">
+      <b>{{ 'POLARIZATION_SIDE' | translate }} </b> •
+      {{ scene.metadata.nisar.sideBandPolarization }}
+    </span>
 
-    <mat-icon *ngIf="isGeoSearch()"
+    <mat-icon
+      *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addSidePolMenu"
-      class="v-mid clickable">
-        settings
+      class="v-mid clickable"
+    >
+      settings
     </mat-icon>
 
     <mat-menu #addSidePolMenu="matMenu">
-      <button (click)="addSidePolarization()" mat-menu-item>{{ 'ADD_SIDE_POLARIZATION_TO_SEARCH' | translate }}</button>
+      <button (click)="addSidePolarization()" mat-menu-item>
+        {{ 'ADD_SIDE_POLARIZATION_TO_SEARCH' | translate }}
+      </button>
     </mat-menu>
   </li>
 
   <li *ngIf="prop.isRelevant(p.RANGE_BANDWIDTH, dataset)">
-    <span class="v-mid"> <b>{{ 'RANGE_BANDWIDTH' | translate }} </b> • {{ scene.metadata.nisar.rangeBandwidth }} </span>
+    <span class="v-mid">
+      <b>{{ 'RANGE_BANDWIDTH' | translate }} </b> •
+      {{ scene.metadata.nisar.rangeBandwidth }}
+    </span>
 
-    <mat-icon *ngIf="isGeoSearch()"
+    <mat-icon
+      *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addPolMenu"
-      class="v-mid clickable">
-        settings
+      class="v-mid clickable"
+    >
+      settings
     </mat-icon>
 
     <mat-menu #addPolMenu="matMenu">
-      <button (click)="addRangeBandwidth()" mat-menu-item>{{ 'ADD_RANGE_BANDWIDTH_TO_SEARCH' | translate }}</button>
+      <button (click)="addRangeBandwidth()" mat-menu-item>
+        {{ 'ADD_RANGE_BANDWIDTH_TO_SEARCH' | translate }}
+      </button>
     </mat-menu>
   </li>
 
   <li *ngIf="prop.isRelevant(p.RANGE_BANDWIDTH, dataset)">
-    <span class="v-mid"> <b>{{ 'JOINT_OBSERVATION_ONLY' | translate }} </b> • {{ scene.metadata.nisar.jointObservation }} </span>
+    <span class="v-mid">
+      <b>{{ 'JOINT_OBSERVATION_ONLY' | translate }} </b> •
+      {{ scene.metadata.nisar.jointObservation }}
+    </span>
   </li>
 
-
-  <li *ngIf="prop.isRelevant(p.OFF_NADIR_ANGLE, dataset)"
-    class="detail-item-margin">
-    <b>{{'OFF_NADIR_ANGLE' | translate}} </b> • {{ scene.metadata.offNadirAngle }}
+  <li
+    *ngIf="prop.isRelevant(p.OFF_NADIR_ANGLE, dataset)"
+    class="detail-item-margin"
+  >
+    <b>{{ 'OFF_NADIR_ANGLE' | translate }} </b> •
+    {{ scene.metadata.offNadirAngle }}
   </li>
 
-  <li *ngIf="prop.isRelevant(p.POINTING_ANGLE, dataset)"
-    class="detail-item-margin">
-    <b>{{'POINTING_ANGLE' | translate}} </b> • {{ scene.metadata.pointingAngle }}
+  <li
+    *ngIf="prop.isRelevant(p.POINTING_ANGLE, dataset)"
+    class="detail-item-margin"
+  >
+    <b>{{ 'POINTING_ANGLE' | translate }} </b> •
+    {{ scene.metadata.pointingAngle }}
   </li>
 
-  <li *ngIf="prop.isRelevant(p.FARADAY_ROTATION, dataset) && scene.metadata.faradayRotation !== 0"
-    class="detail-item-margin">
-    <b>{{'FARADAY_ROTATION' | translate}} </b> • {{ scene.metadata.faradayRotation }}
+  <li
+    *ngIf="
+      prop.isRelevant(p.FARADAY_ROTATION, dataset) &&
+      scene.metadata.faradayRotation !== 0
+    "
+    class="detail-item-margin"
+  >
+    <b>{{ 'FARADAY_ROTATION' | translate }} </b> •
+    {{ scene.metadata.faradayRotation }}
   </li>
 
-  <li *ngIf="prop.isRelevant(p.MISSION_NAME, dataset)"
-    class="detail-item-margin">
-    <span class="v-mid"> <b>{{'CAMPAIGN_NAME' | translate}} </b> • {{ scene.metadata.missionName }} </span>
+  <li
+    *ngIf="prop.isRelevant(p.MISSION_NAME, dataset)"
+    class="detail-item-margin"
+  >
+    <span class="v-mid">
+      <b>{{ 'CAMPAIGN_NAME' | translate }} </b> •
+      {{ scene.metadata.missionName }}
+    </span>
 
-    <mat-icon *ngIf="isGeoSearch()"
+    <mat-icon
+      *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="addMissionMenu"
-      class="v-mid clickable">
-        settings
+      class="v-mid clickable"
+    >
+      settings
     </mat-icon>
 
     <mat-menu #addMissionMenu="matMenu">
-      <button (click)="addMission()" mat-menu-item>{{ 'SET_CAMPAIGN_NAME' | translate }}</button>
+      <button (click)="addMission()" mat-menu-item>
+        {{ 'SET_CAMPAIGN_NAME' | translate }}
+      </button>
     </mat-menu>
   </li>
 
-  <li *ngIf="prop.isRelevant(p.FLIGHT_LINE, dataset)"
-    class="detail-item-margin">
+  <li
+    *ngIf="prop.isRelevant(p.FLIGHT_LINE, dataset)"
+    class="detail-item-margin"
+  >
     <b>{{ 'FLIGHT_LINE' | translate }} </b> • {{ scene.metadata.flightLine }}
   </li>
 
-  <li *ngIf="prop.isRelevant(p.ABSOLUTE_ORBIT, dataset) && scene.metadata.absoluteOrbit.length > 0 && scene?.metadata?.productType !== 'TROPO-ZENITH'"
-    class="detail-item-margin">
-    <b>{{'ABSOLUTE_ORBIT' | translate}} </b> • {{ scene.metadata.absoluteOrbit | join: ', ' }}
+  <li
+    *ngIf="
+      prop.isRelevant(p.ABSOLUTE_ORBIT, dataset) &&
+      scene.metadata.absoluteOrbit.length > 0 &&
+      scene?.metadata?.productType !== 'TROPO-ZENITH'
+    "
+    class="detail-item-margin"
+  >
+    <b>{{ 'ABSOLUTE_ORBIT' | translate }} </b> •
+    {{ scene.metadata.absoluteOrbit | join: ', ' }}
   </li>
 
   <li *ngIf="hasValue(scene.metadata.stackSize)" class="detail-item-margin">
@@ -259,57 +432,87 @@
     <b> {{ 'PGE_VERSION' | translate }} </b> • {{ scene.metadata.pgeVersion }}
   </li>
 
-  <li *ngIf="!!scene.metadata.opera && scene.metadata.productType !== 'TROPO-ZENITH'">
-    <b> {{'OPERA_BURST_ID' | translate }} </b> • {{scene.metadata.opera.operaBurstID}}
-    <mat-icon *ngIf="isGeoSearch()" [matMenuTriggerFor]="addOperaBurstMenu" class="v-mid clickable">
+  <li
+    *ngIf="
+      !!scene.metadata.opera && scene.metadata.productType !== 'TROPO-ZENITH'
+    "
+  >
+    <b> {{ 'OPERA_BURST_ID' | translate }} </b> •
+    {{ scene.metadata.opera.operaBurstID }}
+    <mat-icon
+      *ngIf="isGeoSearch()"
+      [matMenuTriggerFor]="addOperaBurstMenu"
+      class="v-mid clickable"
+    >
       settings
     </mat-icon>
 
     <mat-menu #addOperaBurstMenu="matMenu">
-      <button (click)="setOperaBurst()" mat-menu-item>Add OPERA burst ID to search</button>
+      <button (click)="setOperaBurst()" mat-menu-item>
+        Add OPERA burst ID to search
+      </button>
     </mat-menu>
   </li>
 
-
   <li *ngIf="!!scene.metadata.burst">
-    <b> {{'BURST_ID_FULL' | translate }} </b> • {{scene.metadata.burst.fullBurstID}}
-    <mat-icon *ngIf="isGeoSearch()" [matMenuTriggerFor]="addFullBurstMenu" class="v-mid clickable">
+    <b> {{ 'BURST_ID_FULL' | translate }} </b> •
+    {{ scene.metadata.burst.fullBurstID }}
+    <mat-icon
+      *ngIf="isGeoSearch()"
+      [matMenuTriggerFor]="addFullBurstMenu"
+      class="v-mid clickable"
+    >
       settings
     </mat-icon>
 
     <mat-menu #addFullBurstMenu="matMenu">
-      <button (click)="setFullBurst()" mat-menu-item>Add full burst id to search</button>
+      <button (click)="setFullBurst()" mat-menu-item>
+        Add full burst id to search
+      </button>
     </mat-menu>
   </li>
 
   <li *ngIf="!!scene.metadata.burst">
-    <b> {{'BURST_INDEX' | translate }} </b> • {{scene.metadata.burst.burstIndex}}
+    <b> {{ 'BURST_INDEX' | translate }} </b> •
+    {{ scene.metadata.burst.burstIndex }}
   </li>
 
   <li *ngIf="!!scene.metadata.burst">
-    <b> {{'AZIMUTH_TIME' | translate }} </b> • {{scene.metadata.burst.azimuthTime | shortDateTime}}
+    <b> {{ 'AZIMUTH_TIME' | translate }} </b> •
+    {{ scene.metadata.burst.azimuthTime | shortDateTime }}
   </li>
 
-
   <li *ngIf="!!scene.metadata.ariaVersion">
-    <b> {{'ARIA_VERSION' | translate }} </b> • {{scene.metadata.ariaVersion}}
+    <b> {{ 'ARIA_VERSION' | translate }} </b> • {{ scene.metadata.ariaVersion }}
   </li>
 
   <li *ngIf="dataset.source as source" class="detail-item-margin">
-    <a *ngIf="source.url" [href]="source.url" target="_blank"> {{'DATA_COURTESY_OF' | translate}} {{ dataset.source.name }}</a>
-    <span *ngIf="!source.url" class="faint-text"> {{'DATA_COURTESY_OF' | translate}} {{ dataset.source.name }}</span>
+    <a *ngIf="source.url" [href]="source.url" target="_blank">
+      {{ 'DATA_COURTESY_OF' | translate }} {{ dataset.source.name }}</a
+    >
+    <span *ngIf="!source.url" class="faint-text">
+      {{ 'DATA_COURTESY_OF' | translate }} {{ dataset.source.name }}</span
+    >
   </li>
   <li *ngIf="dataset.citationUrl as citation" class="detail-item-margin">
-    <a *ngIf="citation" [href]="citation"
-       target="_blank"
-       matTooltip="{{'HOW_TO_CITE_USING_THIS_DATA' | translate}}">{{ 'CITATION' | translate }}</a>
+    <a
+      *ngIf="citation"
+      [href]="citation"
+      target="_blank"
+      matTooltip="{{ 'HOW_TO_CITE_USING_THIS_DATA' | translate }}"
+      >{{ 'CITATION' | translate }}</a
+    >
   </li>
-<mat-menu #addSceneDateMenu="matMenu">
-  <ng-template matMenuContent let-date="eventDate">
-    <button (click)="setStartDate(date)" mat-menu-item>{{ 'SET_AS_START_DATE' | translate }}</button>
-    <button (click)="setEndDate(date)" mat-menu-item>{{ 'SET_AS_END_DATE' | translate }}</button>
-  </ng-template>
-</mat-menu>
+  <mat-menu #addSceneDateMenu="matMenu">
+    <ng-template matMenuContent let-date="eventDate">
+      <button (click)="setStartDate(date)" mat-menu-item>
+        {{ 'SET_AS_START_DATE' | translate }}
+      </button>
+      <button (click)="setEndDate(date)" mat-menu-item>
+        {{ 'SET_AS_END_DATE' | translate }}
+      </button>
+    </ng-template>
+  </mat-menu>
 </ul>
 
 <!-- <div *ngIf="!!scene.metadata.burst">

@@ -14,8 +14,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     FontAwesomeModule,
     ClipboardModule,
     MatSharedModule,
-    MatMenuModule
+    MatMenuModule,
   ],
-  exports: [CopyToClipboardComponent]
+  exports: [CopyToClipboardComponent],
 })
-export class CopyToClipboardModule { }
+export class CopyToClipboardModule {}

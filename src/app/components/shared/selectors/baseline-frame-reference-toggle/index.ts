@@ -1,1 +1,1 @@
-export * from './baseline-frame-reference-toggle.component'
+export * from './baseline-frame-reference-toggle.component';

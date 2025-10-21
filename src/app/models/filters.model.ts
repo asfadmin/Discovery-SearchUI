@@ -22,7 +22,7 @@ export enum Props {
   USE_BEAM_MODE = 'Use Beam Mode Filter',
   USE_PROCESSING_TYPE = 'Use Processing Type',
   USE_TRACK = 'Use Track for Path',
-  FRAME_ORDERING = 'Allow ordering frames via SBAS tooling'
+  FRAME_ORDERING = 'Allow ordering frames via SBAS tooling',
 }
 
 export const apiParamNames = {

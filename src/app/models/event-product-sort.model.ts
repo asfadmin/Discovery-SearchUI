@@ -4,12 +4,12 @@ export interface EventProductSort {
 }
 
 export enum EventProductSortType {
-    PATH = 'path',
-    FRAME = 'frame',
-    DATE = 'date'
+  PATH = 'path',
+  FRAME = 'frame',
+  DATE = 'date',
 }
 
 export enum EventProductSortDirection {
   ASCENDING = 'ascending',
-  DESCENDING = 'descending'
+  DESCENDING = 'descending',
 }

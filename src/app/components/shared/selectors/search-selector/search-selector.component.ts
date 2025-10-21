@@ -5,7 +5,7 @@ import * as models from '@models';
 @Component({
   selector: 'app-search-selector',
   templateUrl: './search-selector.component.html',
-  styleUrls: ['./search-selector.component.scss']
+  styleUrls: ['./search-selector.component.scss'],
 })
 export class SearchSelectorComponent {
   @Input() selectedSearchType: models.SearchType;

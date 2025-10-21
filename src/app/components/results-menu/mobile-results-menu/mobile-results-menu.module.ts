@@ -14,14 +14,11 @@ import { ScenesListModule } from '../scenes-list';
 import { ScenesListHeaderModule } from '../scenes-list-header';
 
 import { MobileResultsMenuComponent } from './mobile-results-menu.component';
-import { SharedModule } from "@shared";
+import { SharedModule } from '@shared';
 import { DocsModalModule } from '@components/shared/docs-modal';
 
-
 @NgModule({
-  declarations: [
-    MobileResultsMenuComponent
-  ],
+  declarations: [MobileResultsMenuComponent],
   imports: [
     CommonModule,
     MatSharedModule,
@@ -36,10 +33,8 @@ import { DocsModalModule } from '@components/shared/docs-modal';
     SceneDetailModule,
     ScenesListModule,
     ScenesListHeaderModule,
-    DocsModalModule
+    DocsModalModule,
   ],
-  exports: [
-    MobileResultsMenuComponent
-  ]
+  exports: [MobileResultsMenuComponent],
 })
-export class MobileResultsMenuModule { }
+export class MobileResultsMenuModule {}

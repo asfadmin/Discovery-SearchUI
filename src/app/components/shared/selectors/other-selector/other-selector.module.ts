@@ -11,12 +11,12 @@ import { ShortNameSelectorModule } from '@components/shared/selectors/short-name
 
 import { OtherSelectorComponent } from './other-selector.component';
 import { BurstSelectorModule } from '../burst-selector';
-import { SharedModule } from "@shared";
+import { SharedModule } from '@shared';
 import { MatInputModule } from '@angular/material/input';
 import { OperaCalibrationDataSelectorModule } from '../opera-calibration-data-selector';
 
 @NgModule({
-  declarations: [ OtherSelectorComponent ],
+  declarations: [OtherSelectorComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -28,8 +28,8 @@ import { OperaCalibrationDataSelectorModule } from '../opera-calibration-data-se
     BurstSelectorModule,
     SharedModule,
     MatInputModule,
-    OperaCalibrationDataSelectorModule
+    OperaCalibrationDataSelectorModule,
   ],
-  exports: [ OtherSelectorComponent ],
+  exports: [OtherSelectorComponent],
 })
-export class OtherSelectorModule { }
+export class OtherSelectorModule {}

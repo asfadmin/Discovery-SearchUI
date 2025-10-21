@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy  } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, inject } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
@@ -17,15 +17,19 @@ enum FilterPanel {
   CAMPAIGN = 'Campaign',
   PATH = 'Path',
   AOI = 'Aoi',
-  SEARCH = 'Search'
+  SEARCH = 'Search',
 }
 
 @Component({
   selector: 'app-dataset-filters',
   templateUrl: './dataset-filters.component.html',
-  styleUrls: ['./dataset-filters.component.scss']
+  styleUrls: ['./dataset-filters.component.scss'],
 })
 export class DatasetFiltersComponent implements OnInit, OnDestroy {
+  prop = inject(PropertyService);
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   @Input() dataset: models.CMRProduct;
   @Input() selectedPanel: FilterPanel | null = null;
 
@@ -42,22 +46,13 @@ export class DatasetFiltersComponent implements OnInit, OnDestroy {
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
 
-
-
   private subs = new SubSink();
-
-  constructor(
-    public prop: PropertyService,
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-    // public translate: TranslateService,
-  ) {}
 
   ngOnInit() {
     this.subs.add(
-      this.store$.select(filtersStore.getSelectedDatasetId).subscribe(
-        selected => this.selectedDataset = selected
-      )
+      this.store$
+        .select(filtersStore.getSelectedDatasetId)
+        .subscribe((selected) => (this.selectedDataset = selected)),
     );
   }
 

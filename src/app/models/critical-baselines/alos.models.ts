@@ -17,7 +17,7 @@ const fbdBaselines = {
   47.8: 12518,
   49: 13369,
   50: 14136,
-  50.8: 14791
+  50.8: 14791,
 };
 
 const fbsBaseline = {
@@ -38,7 +38,7 @@ const fbsBaseline = {
   47.8: 25036,
   49: 26738,
   50: 28272,
-  50.8: 29583
+  50.8: 29583,
 };
 
 const quadrature = {
@@ -53,7 +53,7 @@ const quadrature = {
   23.1: 3536,
   24.2: 3757,
   25.2: 3965,
-  26.2: 4181
+  26.2: 4181,
 };
 
 export const alos = {

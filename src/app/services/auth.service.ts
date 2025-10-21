@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { interval, Subject, Observable, of } from 'rxjs';
@@ -13,18 +13,17 @@ import * as userStore from '@store/user';
 import * as models from '@models';
 import { NotificationService } from './notification.service';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
+  private env = inject(EnvironmentService);
+  private http = inject(HttpClient);
+  private notificationService = inject(NotificationService);
+  private store$ = inject<Store<AppState>>(Store);
+
   private bc: BroadcastChannel;
-  constructor(
-    private env: EnvironmentService,
-    private http: HttpClient,
-    private notificationService: NotificationService,
-    private store$: Store<AppState>,
-  ) {
+  constructor() {
     if (typeof BroadcastChannel !== 'undefined') {
       this.bc = new BroadcastChannel('asf-vertex');
       this.bc.onmessage = (_event: MessageEvent) => {
@@ -62,14 +61,14 @@ export class AuthService {
     const loginWindow = window.open(
       url,
       'SAR Search: URS Earth Data Authorization',
-      'scrollbars=yes, width=600, height= 600'
+      'scrollbars=yes, width=600, height= 600',
     );
 
     const loginWindowClosed = new Subject<void>();
 
     return interval(500).pipe(
       takeUntil(loginWindowClosed),
-      map(_ => {
+      map((_) => {
         let user = null;
 
         if (loginWindow.closed) {
@@ -81,44 +80,47 @@ export class AuthService {
             loginWindow.close();
             user = this.getUser();
             this.bc.postMessage({
-              event : 'login'
+              event: 'login',
             });
           }
-        } catch (e) {
+        } catch (_e) {
+          // Do nothing
         }
 
         return user;
       }),
-      catchError(_ => {
+      catchError((_) => {
         this.notificationService.error('Trouble logging in', 'Error', {
           timeOut: 5000,
         });
         loginWindowClosed.next();
         return of(null);
       }),
-      filter(user => !!user),
-      take(1)
+      filter((user) => !!user),
+      take(1),
     );
   }
 
-  public logout$(): Observable<models.UserAuth>  {
-    return this.http.get(
-      `${this.authUrl}/loginservice/logout`, {
+  public logout$(): Observable<models.UserAuth> {
+    return this.http
+      .get(`${this.authUrl}/loginservice/logout`, {
         responseType: 'text',
-        withCredentials: true
-      }).pipe(
-        map(_ => {
-        this.bc.postMessage({
-          event : 'logout'
-        });
-        return this.getUser(); }),
-        catchError(_ => {
+        withCredentials: true,
+      })
+      .pipe(
+        map((_) => {
+          this.bc.postMessage({
+            event: 'logout',
+          });
+          return this.getUser();
+        }),
+        catchError((_) => {
           this.notificationService.error('Trouble logging out', 'Error', {
             timeOut: 5000,
           });
           return of(this.getUser());
         }),
-        take(1)
+        take(1),
       );
   }
 
@@ -136,22 +138,28 @@ export class AuthService {
         return this.nullUser();
       }
 
-      setTimeout(() => {
-        this.store$.dispatch(new userStore.Logout());
-        this.notificationService.info('Session Expired', 'Please login again');
-      }, user.exp * 1000 - Date.now());
-
-      return this.makeUser(
-        user['urs-user-id'],
-        user['urs-groups'],
-        token
+      setTimeout(
+        () => {
+          this.store$.dispatch(new userStore.Logout());
+          this.notificationService.info(
+            'Session Expired',
+            'Please login again',
+          );
+        },
+        user.exp * 1000 - Date.now(),
       );
-    } catch (error) {
+
+      return this.makeUser(user['urs-user-id'], user['urs-groups'], token);
+    } catch (_error) {
       return this.nullUser();
     }
   }
 
-  private makeUser(id: string, groups: models.URSGroup[], token: string): models.UserAuth {
+  private makeUser(
+    id: string,
+    groups: models.URSGroup[],
+    token: string,
+  ): models.UserAuth {
     return { id, token, groups };
   }
 
@@ -164,11 +172,10 @@ export class AuthService {
   }
 
   private loadCookies() {
-    return document.cookie.split(';')
-      .map(s => s.trim().split('='))
-      .map(([name, val]) => ({[name]: val}))
-      .reduce(
-        (allCookies, cookie) => ({ ...allCookies, ...cookie })
-        );
-      }
+    return document.cookie
+      .split(';')
+      .map((s) => s.trim().split('='))
+      .map(([name, val]) => ({ [name]: val }))
+      .reduce((allCookies, cookie) => ({ ...allCookies, ...cookie }));
+  }
 }

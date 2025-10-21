@@ -4,22 +4,17 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { SarviewsEventTypeSelectorComponent } from './sarviews-event-type-selector.component';
-import { SharedModule } from "@shared";
-
+import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [
-    SarviewsEventTypeSelectorComponent
-  ],
+  declarations: [SarviewsEventTypeSelectorComponent],
   imports: [
     CommonModule,
     MatSelectModule,
     MatFormFieldModule,
     FormsModule,
-    SharedModule
+    SharedModule,
   ],
-  exports: [
-    SarviewsEventTypeSelectorComponent
-  ]
+  exports: [SarviewsEventTypeSelectorComponent],
 })
-export class SarviewsEventTypeSelectorModule { }
+export class SarviewsEventTypeSelectorModule {}

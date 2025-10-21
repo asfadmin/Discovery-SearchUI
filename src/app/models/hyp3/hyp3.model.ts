@@ -84,12 +84,12 @@ export interface Hyp3SearchParams {
 }
 
 export type Hyp3JobParameters =
-  Hyp3AutoriftParameters |
-  Hyp3InsarGammaParameters |
-  Hyp3RtcGammaParameters |
-  Hyp3InsarIsceBurstParameters |
-  Hyp3InsarIsceMultiBurstParameters |
-  Hyp3AriaS1GunwParameters;
+  | Hyp3AutoriftParameters
+  | Hyp3InsarGammaParameters
+  | Hyp3RtcGammaParameters
+  | Hyp3InsarIsceBurstParameters
+  | Hyp3InsarIsceMultiBurstParameters
+  | Hyp3AriaS1GunwParameters;
 
 // AUTORIFT, INSAR_GAMMA, RTC_GAMMA, INSAR_ISCE_BURST, ARIA_S1_GUNW
 export interface Hyp3AutoriftParameters {
@@ -107,7 +107,7 @@ export interface Hyp3InsarGammaParameters {
   apply_water_mask?: boolean;
   looks?: InSarGammaLooks;
   phase_filter_parameter?: number;
-};
+}
 
 export interface Hyp3RtcGammaParameters {
   granules: string[];
@@ -121,13 +121,13 @@ export interface Hyp3RtcGammaParameters {
   include_inc_map?: boolean;
   include_scattering_area?: boolean;
   include_rgb?: boolean;
-};
+}
 
 export interface Hyp3InsarIsceBurstParameters {
   granules: string[];
   apply_water_mask?: boolean;
   looks?: InSarIsceBurstLooks;
-};
+}
 
 export interface Hyp3InsarIsceMultiBurstParameters {
   reference: string[];
@@ -142,20 +142,20 @@ export interface Hyp3AriaS1GunwParameters {
   frame_id: number;
 }
 
-export interface Hyp3Costs {
-  [jobType: string]: Hyp3JobCost;
-};
+export type Hyp3Costs = Record<string, Hyp3JobCost>;
 
 export type Hyp3JobCost = Hyp3JobCostFixed | Hyp3JobCostTable;
-export interface Hyp3JobCostFixed { cost: number };
+export interface Hyp3JobCostFixed {
+  cost: number;
+}
 export interface Hyp3JobCostTable {
   cost_parameters: string[];
   cost_table: Hyp3CostTable;
-};
+}
 
 export interface Hyp3CostTable {
   [parameterValue: string]: number | Hyp3CostTable;
-};
+}
 
 // TODO: Remove when hyp3 updates
 export type Hyp3CostsOld = Hyp3JobCostOld[];
@@ -172,18 +172,16 @@ export interface Hyp3CostTableValue {
   cost: number;
 }
 
-export interface Hyp3ProcessingOptions {
-  [key: string]: any;
-}
+export type Hyp3ProcessingOptions = Record<string, any>;
 
 export enum RtcGammaRadiometry {
   GAMMA0 = 'gamma0',
-  SIGMA0 = 'sigma0'
+  SIGMA0 = 'sigma0',
 }
 
 export enum InSarGammaLooks {
   _20x4 = '20x4',
-  _10x2 = '10x2'
+  _10x2 = '10x2',
 }
 
 export enum InSarIsceBurstLooks {
@@ -195,27 +193,107 @@ export enum InSarIsceBurstLooks {
 export enum RtcGammaResolution {
   THIRTY = '30',
   TWENTY = '20',
-  TEN = '10'
+  TEN = '10',
 }
 
 export enum RtcGammaScale {
   POWER = 'power',
   AMPLITUDE = 'amplitude',
-  DECIBEL = 'decibel'
+  DECIBEL = 'decibel',
 }
 
 export enum Hyp3JobStatusCode {
   PENDING = 'PENDING',
   RUNNING = 'RUNNING',
   SUCCEEDED = 'SUCCEEDED',
-  FAILED = 'FAILED'
+  FAILED = 'FAILED',
 }
 export enum ApplicationStatus {
   NOT_STARTED = 'NOT_STARTED',
   PENDING = 'PENDING',
   APPROVED = 'APPROVED',
-  REJECTED = 'REJECTED'
+  REJECTED = 'REJECTED',
 }
-export const on_demand_prod_collections = ['C1214471197-ASF', 'C1214470533-ASF', 'C1214471521-ASF', 'C1214472978-ASF', 'C1214470682-ASF', 'C1214472994-ASF', 'C1214470488-ASF', 'C1327985697-ASF', 'C1327985645-ASF', 'C1327985660-ASF', 'C1327985644-ASF', 'C1327985571-ASF', 'C1327985740-ASF', 'C1327985661-ASF', 'C1661710578-ASF', 'C1661710581-ASF', 'C1661710583-ASF', 'C1661710590-ASF', 'C1661710593-ASF', 'C1661710596-ASF', 'C1661710597-ASF', 'C1661710604-ASF', 'C1214335471-ASF', 'C1214336154-ASF', 'C1214337770-ASF', 'C1214354144-ASF', 'C1214354235-ASF'];
-export const on_demand_test_collections = ['C1212200781-ASF', 'C1212201032-ASF', 'C1212209035-ASF', 'C1212158327-ASF', 'C1212158318-ASF', 'C1205428742-ASF', 'C1216244597-ASF', 'C1216244589-ASF', 'C1216244594-ASF', 'C1216244588-ASF', 'C1216244586-ASF', 'C1216244600-ASF', 'C1216244348-ASF', 'C1226557819-ASF', 'C1226557809-ASF', 'C1226557808-ASF', 'C1226557812-ASF', 'C1226557813-ASF', 'C1226557814-ASF', 'C1226557815-ASF', 'C1226557818-ASF', 'C1206132445-ASF', 'C1212005594-ASF', 'C1207188317-ASF', 'C1210546638-ASF', 'C1206122195-ASF'];
-export const on_demand_test_collections_asfdev = ['C1245830954-ASFDEV', 'C1245830954-ASFDEV', 'C1234413228-ASFDEV', 'C1234413229-ASFDEV', 'C1234413230-ASFDEV', 'C1234413239-ASFDEV', 'C1234413240-ASFDEV', 'C1234413241-ASFDEV', 'C1234413245-ASFDEV', 'C1234413246-ASFDEV', 'C1234413247-ASFDEV', 'C1234413248-ASFDEV', 'C1234413257-ASFDEV', 'C1234413258-ASFDEV', 'C1234413259-ASFDEV', 'C1234413263-ASFDEV', 'C1234413264-ASFDEV', 'C1234413265-ASFDEV', 'C1234413266-ASFDEV', 'C1234413269-ASFDEV', 'C1234413270-ASFDEV', 'C1234413271-ASFDEV', 'C1234413272-ASFDEV', 'C1234413275-ASFDEV'];
+export const on_demand_prod_collections = [
+  'C1214471197-ASF',
+  'C1214470533-ASF',
+  'C1214471521-ASF',
+  'C1214472978-ASF',
+  'C1214470682-ASF',
+  'C1214472994-ASF',
+  'C1214470488-ASF',
+  'C1327985697-ASF',
+  'C1327985645-ASF',
+  'C1327985660-ASF',
+  'C1327985644-ASF',
+  'C1327985571-ASF',
+  'C1327985740-ASF',
+  'C1327985661-ASF',
+  'C1661710578-ASF',
+  'C1661710581-ASF',
+  'C1661710583-ASF',
+  'C1661710590-ASF',
+  'C1661710593-ASF',
+  'C1661710596-ASF',
+  'C1661710597-ASF',
+  'C1661710604-ASF',
+  'C1214335471-ASF',
+  'C1214336154-ASF',
+  'C1214337770-ASF',
+  'C1214354144-ASF',
+  'C1214354235-ASF',
+];
+export const on_demand_test_collections = [
+  'C1212200781-ASF',
+  'C1212201032-ASF',
+  'C1212209035-ASF',
+  'C1212158327-ASF',
+  'C1212158318-ASF',
+  'C1205428742-ASF',
+  'C1216244597-ASF',
+  'C1216244589-ASF',
+  'C1216244594-ASF',
+  'C1216244588-ASF',
+  'C1216244586-ASF',
+  'C1216244600-ASF',
+  'C1216244348-ASF',
+  'C1226557819-ASF',
+  'C1226557809-ASF',
+  'C1226557808-ASF',
+  'C1226557812-ASF',
+  'C1226557813-ASF',
+  'C1226557814-ASF',
+  'C1226557815-ASF',
+  'C1226557818-ASF',
+  'C1206132445-ASF',
+  'C1212005594-ASF',
+  'C1207188317-ASF',
+  'C1210546638-ASF',
+  'C1206122195-ASF',
+];
+export const on_demand_test_collections_asfdev = [
+  'C1245830954-ASFDEV',
+  'C1245830954-ASFDEV',
+  'C1234413228-ASFDEV',
+  'C1234413229-ASFDEV',
+  'C1234413230-ASFDEV',
+  'C1234413239-ASFDEV',
+  'C1234413240-ASFDEV',
+  'C1234413241-ASFDEV',
+  'C1234413245-ASFDEV',
+  'C1234413246-ASFDEV',
+  'C1234413247-ASFDEV',
+  'C1234413248-ASFDEV',
+  'C1234413257-ASFDEV',
+  'C1234413258-ASFDEV',
+  'C1234413259-ASFDEV',
+  'C1234413263-ASFDEV',
+  'C1234413264-ASFDEV',
+  'C1234413265-ASFDEV',
+  'C1234413266-ASFDEV',
+  'C1234413269-ASFDEV',
+  'C1234413270-ASFDEV',
+  'C1234413271-ASFDEV',
+  'C1234413272-ASFDEV',
+  'C1234413275-ASFDEV',
+];

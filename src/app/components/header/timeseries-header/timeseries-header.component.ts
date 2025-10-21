@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
@@ -15,9 +15,12 @@ import * as models from '@models';
 @Component({
   selector: 'app-timeseries-header',
   templateUrl: './timeseries-header.component.html',
-  styleUrls: ['./timeseries-header.component.scss',  '../header.component.scss']
+  styleUrls: ['./timeseries-header.component.scss', '../header.component.scss'],
 })
 export class TimeseriesHeaderComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
   public isDrawing = false;
@@ -26,40 +29,38 @@ export class TimeseriesHeaderComponent implements OnInit, OnDestroy {
 
   private subs = new SubSink();
 
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-  ) {}
-
   ngOnInit() {
-
     this.flightDesc = false;
     this.subs.add(
-      this.store$.select(filtersStore.getFlightDirections).subscribe(
-        flightDirs  => {
+      this.store$
+        .select(filtersStore.getFlightDirections)
+        .subscribe((flightDirs) => {
           this.flightDirections = flightDirs;
           this.flightDesc = this.flightDirections.toString() == 'DESCENDING';
-        }
-      )
+        }),
     );
 
     this.subs.add(
-      this.store$.select(mapStore.getMapInteractionMode).subscribe(
-        mode => this.isDrawing = mode === MapInteractionModeType.DRAW
-      )
+      this.store$
+        .select(mapStore.getMapInteractionMode)
+        .subscribe(
+          (mode) => (this.isDrawing = mode === MapInteractionModeType.DRAW),
+        ),
     );
-
   }
 
   public onAddPointsMode(): void {
-    this.store$.dispatch(new mapStore.SetMapInteractionMode(MapInteractionModeType.DRAW));
+    this.store$.dispatch(
+      new mapStore.SetMapInteractionMode(MapInteractionModeType.DRAW),
+    );
     this.store$.dispatch(new mapStore.SetMapDrawMode(MapDrawModeType.POINT));
   }
 
   public onStopAddPoints(): void {
-    this.store$.dispatch(new mapStore.SetMapInteractionMode(MapInteractionModeType.NONE));
+    this.store$.dispatch(
+      new mapStore.SetMapInteractionMode(MapInteractionModeType.NONE),
+    );
   }
-
 
   public onToggleFiltersMenu(): void {
     this.store$.dispatch(new uiStore.OpenFiltersMenu());

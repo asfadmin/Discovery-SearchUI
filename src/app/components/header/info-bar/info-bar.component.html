@@ -1,6 +1,4 @@
-<div *ngIf="breakpoint$ | async as breakpoint"
-     class="info-bar">
-
+<div *ngIf="breakpoint$ | async as breakpoint" class="info-bar">
   <div class="first-info">
     <span *ngIf="(searchType$ | async) === searchTypes.CUSTOM_PRODUCTS">
       <app-hyp3-url></app-hyp3-url>
@@ -15,14 +13,19 @@
       </span>
     </span>
 
-    <span *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS && !!eventProductTypes">
-      <b>{{'PRODUCT_TYPES' | translate }}:</b> {{eventProductTypes}}
+    <span
+      *ngIf="
+        (searchType$ | async) === searchTypes.SARVIEWS_EVENTS &&
+        !!eventProductTypes
+      "
+    >
+      <b>{{ 'PRODUCT_TYPES' | translate }}:</b> {{ eventProductTypes }}
     </span>
 
-    <span *ngIf="(breakpoint > breakpoints.SMALL) && !!startDate">
+    <span *ngIf="breakpoint > breakpoints.SMALL && !!startDate">
       <b>{{ 'START' | translate }}:</b> {{ startDate | shortDate }}
     </span>
-    <span *ngIf="(breakpoint > breakpoints.SMALL) && !!endDate">
+    <span *ngIf="breakpoint > breakpoints.SMALL && !!endDate">
       <b>{{ 'END' | translate }}:</b> {{ endDate | shortDate }}
     </span>
     <span *ngIf="pathRange.start || pathRange.end">
@@ -32,82 +35,110 @@
         } @else {
           {{ 'PATH' | translate }}
         }
-      :</b> {{pathRange.start}} - {{pathRange.end}}
+        :</b
+      >
+      {{ pathRange.start }} - {{ pathRange.end }}
     </span>
     <span *ngIf="frameRange.start || frameRange.end">
-      <b>{{ 'FRAME'| translate }}:</b> {{frameRange.start}} - {{frameRange.end}}
+      <b>{{ 'FRAME' | translate }}:</b> {{ frameRange.start }} -
+      {{ frameRange.end }}
     </span>
     <span *ngIf="season.start || season.end">
-      <b>{{ 'SEASON' | translate}}:</b> {{season.start}} - {{season.end}}
+      <b>{{ 'SEASON' | translate }}:</b> {{ season.start }} - {{ season.end }}
     </span>
     <span *ngIf="shouldOmitSearchPolygon">
-      <b>{{ 'OMIT_GEO' | translate }}:</b> {{ shouldOmitSearchPolygon ? 'Yes' : 'No' }}
+      <b>{{ 'OMIT_GEO' | translate }}:</b>
+      {{ shouldOmitSearchPolygon ? 'Yes' : 'No' }}
     </span>
     <span *ngIf="productTypes">
       <b>{{ 'FILE_TYPES' | translate }}:</b> {{ productTypes }}
     </span>
     <span *ngIf="beamModes.length">
-      <b>{{'BEAM_MODES'| translate | titlecase }}:</b> {{beamModes}}
+      <b>{{ 'BEAM_MODES' | translate | titlecase }}:</b> {{ beamModes }}
     </span>
     <span *ngIf="polarizations.length">
       <b>
-        @if(dataset !== 'NISAR'){ {{'POLARIZATIONS' | translate }} }
-        @else{ {{'MAIN_POLARIZATIONS' | translate }} }
-        :</b> {{polarizations}}
+        @if (dataset !== 'NISAR') {
+          {{ 'POLARIZATIONS' | translate }}
+        } @else {
+          {{ 'MAIN_POLARIZATIONS' | translate }}
+        }
+        :</b
+      >
+      {{ polarizations }}
     </span>
     <span *ngIf="sidePolarizations.length">
-        <b>{{'SIDE_POLARIZATIONS' | translate }}:</b> {{sidePolarizations}}
+      <b>{{ 'SIDE_POLARIZATIONS' | translate }}:</b> {{ sidePolarizations }}
     </span>
     <span *ngIf="instruments.length">
-        <b>{{'INSTRUMENTS' | translate }}:</b> {{instruments}}
+      <b>{{ 'INSTRUMENTS' | translate }}:</b> {{ instruments }}
     </span>
     <span *ngIf="frameCoverage.length">
-        <b>{{'FRAME_COVERAGE' | translate }}:</b> {{frameCoverage}}
+      <b>{{ 'FRAME_COVERAGE' | translate }}:</b> {{ frameCoverage }}
     </span>
     <span *ngIf="rangeBandwidth.length">
-        <b>{{'RANGE_BANDWIDTH' | translate }}:</b> {{rangeBandwidth}}
+      <b>{{ 'RANGE_BANDWIDTH' | translate }}:</b> {{ rangeBandwidth }}
     </span>
     <span *ngIf="jointObservation">
-        <b>{{'DATA_TYPE' | translate }}:</b> {{'JOINT_OBSERVATION_ONLY' | translate }}
+      <b>{{ 'DATA_TYPE' | translate }}:</b>
+      {{ 'JOINT_OBSERVATION_ONLY' | translate }}
     </span>
-    @if(dataset == 'NISAR') {
+    @if (dataset === 'NISAR') {
       <span *ngIf="scienceProducts.length">
-          <b>{{'SCIENCE_PRODUCT' | translate }}:</b> {{scienceProducts | join : ', '}}
+        <b>{{ 'SCIENCE_PRODUCT' | translate }}:</b>
+        {{ scienceProducts | join: ', ' }}
       </span>
       <span *ngIf="productionConfig.length">
-          <b>{{'PRODUCTION_CONFIGURATION' | translate }}:</b> {{productionConfig}}
+        <b>{{ 'PRODUCTION_CONFIGURATION' | translate }}:</b>
+        {{ productionConfig }}
       </span>
     }
     <span *ngIf="flightDirections.length">
-      <b>{{'FLIGHT_DIR' | translate  }}:</b> {{flightDirections}}
+      <b>{{ 'FLIGHT_DIR' | translate }}:</b> {{ flightDirections }}
     </span>
     <span *ngIf="subtypes">
       <b>{{ 'DATASET' | translate }}:</b> {{ subtypes }}
     </span>
     <span *ngIf="mission">
-      <b>{{'CAMPAIGN' | translate }}:</b> {{ mission }}
+      <b>{{ 'CAMPAIGN' | translate }}:</b> {{ mission }}
     </span>
     <span *ngIf="(searchType$ | async) !== searchTypes.DISPLACEMENT">
       <span *ngIf="tempRange.start || tempRange.end">
-        <b>{{'TEMPORAL' | translate }}:</b> {{tempRange.start}} <span *ngIf="!!tempRange.end"> {{ 'TO' | translate }} {{tempRange.end}}</span>
+        <b>{{ 'TEMPORAL' | translate }}:</b> {{ tempRange.start }}
+        <span *ngIf="!!tempRange.end">
+          {{ 'TO' | translate }} {{ tempRange.end }}</span
+        >
       </span>
     </span>
     <span *ngIf="perpRange.start || perpRange.end">
-      <b>{{'PERPENDICULAR' | translate}}:</b> {{perpRange.start}} <span *ngIf="!!perpRange.end"> {{ 'TO' | translate }} {{perpRange.end}} </span>
+      <b>{{ 'PERPENDICULAR' | translate }}:</b> {{ perpRange.start }}
+      <span *ngIf="!!perpRange.end">
+        {{ 'TO' | translate }} {{ perpRange.end }}
+      </span>
     </span>
     <span>
       <span *ngIf="fullBurstIDs?.length > 0">
-        <b>{{'FULL_BURST_ID' | translate}}:</b> {{fullBurstIDs.length <= 4 ? fullBurstIDs.join(', ') : fullBurstIDs.length + ' IDs'}}
+        <b>{{ 'FULL_BURST_ID' | translate }}:</b>
+        {{
+          fullBurstIDs.length <= 4
+            ? fullBurstIDs.join(', ')
+            : fullBurstIDs.length + ' IDs'
+        }}
       </span>
     </span>
     <span>
       <span *ngIf="operaBurstIDs?.length > 0">
-        <b>{{'OPERA_BURST_ID' | translate}}:</b> {{operaBurstIDs.length <= 4 ? operaBurstIDs.join(', ') : operaBurstIDs.length + ' IDs'}}
+        <b>{{ 'OPERA_BURST_ID' | translate }}:</b>
+        {{
+          operaBurstIDs.length <= 4
+            ? operaBurstIDs.join(', ')
+            : operaBurstIDs.length + ' IDs'
+        }}
       </span>
     </span>
     <span>
       <span *ngIf="useCalibrationData">
-        <b>{{'DATA_TYPE' | translate}}:</b> {{'CALIBRATION' | translate}}
+        <b>{{ 'DATA_TYPE' | translate }}:</b> {{ 'CALIBRATION' | translate }}
       </span>
     </span>
     <span>
@@ -124,3 +155,4 @@
   <div class="last-info">
     <app-ci-search></app-ci-search>
   </div>
+</div>

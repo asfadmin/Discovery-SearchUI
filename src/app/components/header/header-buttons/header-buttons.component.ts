@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { SubSink } from 'subsink';
 import { saveAs } from 'file-saver';
 
@@ -11,29 +11,51 @@ import * as userStore from '@store/user';
 import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
 
-import { AsfLanguageService } from "@services/asf-language.service";
+import { AsfLanguageService } from '@services/asf-language.service';
 
-import { AuthService, AsfApiService, EnvironmentService, ScreenSizeService } from '@services';
 import {
-  CMRProduct, Breakpoints, UserAuth, SidebarType,
-  QueuedHyp3Job, SearchType, AnalyticsEvent,
-  asfWebsite, derivedDatasets, datasetList
+  AuthService,
+  AsfApiService,
+  EnvironmentService,
+  ScreenSizeService,
+} from '@services';
+import {
+  CMRProduct,
+  Breakpoints,
+  UserAuth,
+  SidebarType,
+  QueuedHyp3Job,
+  SearchType,
+  AnalyticsEvent,
+  asfWebsite,
+  derivedDatasets,
+  datasetList,
 } from '@models';
 
 import { ThemePalette } from '@angular/material/core';
 
 // Declare GTM dataLayer array.
 declare global {
-  interface Window { dataLayer: any[]; }
+  interface Window {
+    dataLayer: any[];
+  }
 }
 
 @Component({
   selector: 'app-header-buttons',
   templateUrl: './header-buttons.component.html',
   styleUrls: ['./header-buttons.component.scss'],
-  animations: []
+  animations: [],
 })
 export class HeaderButtonsComponent implements OnInit, OnDestroy {
+  authService = inject(AuthService);
+  env = inject(EnvironmentService);
+  private http = inject(HttpClient);
+  asfApiService = inject(AsfApiService);
+  private screenSize = inject(ScreenSizeService);
+  private store$ = inject<Store<AppState>>(Store);
+  language = inject(AsfLanguageService);
+
   anio: number = new Date().getFullYear();
   public asfWebsite = asfWebsite;
 
@@ -59,59 +81,43 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
 
   public commitUrl = '';
 
-  constructor(
-    public authService: AuthService,
-    public env: EnvironmentService,
-    private http: HttpClient,
-    public asfApiService: AsfApiService,
-    private screenSize: ScreenSizeService,
-    private store$: Store<AppState>,
-    public language: AsfLanguageService,
-  ) {}
-
   ngOnInit() {
     this.subs.add(
-      this.store$.select(userStore.getUserAuth).subscribe(
-        user => this.userAuth = user
-      )
+      this.store$
+        .select(userStore.getUserAuth)
+        .subscribe((user) => (this.userAuth = user)),
     );
 
     this.subs.add(
-      this.store$.select(queueStore.getQueuedProducts).subscribe(
-        products => {
-          this.queuedProducts = products;
-          if ( this.lastQProdCount !== products.length ) {
-            this.lastQProdCount = products.length;
-            this.qProdState = !this.qProdState;
-          }
+      this.store$.select(queueStore.getQueuedProducts).subscribe((products) => {
+        this.queuedProducts = products;
+        if (this.lastQProdCount !== products.length) {
+          this.lastQProdCount = products.length;
+          this.qProdState = !this.qProdState;
         }
-      )
+      }),
     );
 
     this.subs.add(
-      this.http.get('assets/commit-hash.json').subscribe(
-        (commitData: any) => {
-          this.commitUrl = `https://github.com/asfadmin/Discovery-SearchUI/tree/${commitData.hash}`;
+      this.http.get('assets/commit-hash.json').subscribe((commitData: any) => {
+        this.commitUrl = `https://github.com/asfadmin/Discovery-SearchUI/tree/${commitData.hash}`;
+      }),
+    );
+
+    this.subs.add(
+      this.store$.select(queueStore.getQueuedJobs).subscribe((jobs) => {
+        this.queuedCustomProducts = jobs;
+        if (this.lastOnDemandCount !== jobs.length) {
+          this.lastOnDemandCount = jobs.length;
+          this.qOnDemandState = !this.qOnDemandState;
         }
-      )
+      }),
     );
 
     this.subs.add(
-      this.store$.select(queueStore.getQueuedJobs).subscribe(
-        jobs => {
-          this.queuedCustomProducts = jobs;
-          if (this.lastOnDemandCount !== jobs.length) {
-            this.lastOnDemandCount = jobs.length;
-            this.qOnDemandState = !this.qOnDemandState;
-          }
-        }
-      )
-    );
-
-    this.subs.add(
-      this.store$.select(userStore.getIsUserLoggedIn).subscribe(
-        isLoggedIn => this.isLoggedIn = isLoggedIn
-      )
+      this.store$
+        .select(userStore.getIsUserLoggedIn)
+        .subscribe((isLoggedIn) => (this.isLoggedIn = isLoggedIn)),
     );
   }
 
@@ -124,40 +130,36 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
 
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-      'event': 'search-type-selected',
-      'search-type': searchType
+      event: 'search-type-selected',
+      'search-type': searchType,
     });
     this.store$.dispatch(new searchStore.SetSearchType(searchType));
   }
 
   public onAccountButtonClicked() {
     this.subs.add(
-      this.authService.login$().subscribe(
-        user => {
-          this.store$.dispatch(new userStore.Login(user));
-          window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({
-            'event': 'account-button-clicked',
-            'account-button-clicked': user
-          });
-        }
-      )
+      this.authService.login$().subscribe((user) => {
+        this.store$.dispatch(new userStore.Login(user));
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: 'account-button-clicked',
+          'account-button-clicked': user,
+        });
+      }),
     );
   }
 
   public onLogout(): void {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-      'event': 'logout',
-      'logout': this.userAuth
+      event: 'logout',
+      logout: this.userAuth,
     });
 
     this.subs.add(
-      this.authService.logout$().subscribe(
-        _ => {
-          this.store$.dispatch(new userStore.Logout());
-        }
-      )
+      this.authService.logout$().subscribe((_) => {
+        this.store$.dispatch(new userStore.Logout());
+      }),
     );
   }
 
@@ -173,7 +175,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     const url = 'https://docs.asf.alaska.edu/vertex/manual/';
     const analyticsEvent = {
       name: 'open-user-guide',
-      value: url
+      value: url,
     };
 
     this.openNewWindow(url, analyticsEvent);
@@ -182,17 +184,18 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     const url = 'https://hyp3-docs.asf.alaska.edu/';
     const analyticsEvent = {
       name: 'open-user-guide',
-      value: url
+      value: url,
     };
 
     this.openNewWindow(url, analyticsEvent);
   }
 
   public onOpenWhatsNew(): void {
-    const url = 'https://docs.google.com/document/d/e/2PACX-1vSqQxPT8nhDQfbCLS8gBZ9SqSEeJy8BdSCiYVlBOXwsFwJ6_ct7pjtOqbXHo0Q3wzinzvO8bGWtHj0H/pub';
+    const url =
+      'https://docs.google.com/document/d/e/2PACX-1vSqQxPT8nhDQfbCLS8gBZ9SqSEeJy8BdSCiYVlBOXwsFwJ6_ct7pjtOqbXHo0Q3wzinzvO8bGWtHj0H/pub';
     const analyticsEvent = {
       name: 'open-whats-new',
-      value: url
+      value: url,
     };
 
     this.openNewWindow(url, analyticsEvent);
@@ -202,7 +205,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     const url = this.asfWebsite.home;
     const analyticsEvent = {
       name: 'open-asf-web-site',
-      value: url
+      value: url,
     };
 
     this.openNewWindow(url, analyticsEvent);
@@ -212,7 +215,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     const url = 'https://hyp3-docs.asf.alaska.edu/';
     const analyticsEvent = {
       name: 'open-hyp3-docs',
-      value: url
+      value: url,
     };
 
     this.openNewWindow(url, analyticsEvent);
@@ -222,7 +225,7 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     const url = `https://docs.asf.alaska.edu/api/basics/`;
     const analyticsEvent = {
       name: 'open-api-web-site',
-      value: url
+      value: url,
     };
 
     this.openNewWindow(url, analyticsEvent);
@@ -231,8 +234,8 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   public onOpenSavedSearches(): void {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-      'event': 'open-saved-searches',
-      'open-saved-searches': true
+      event: 'open-saved-searches',
+      'open-saved-searches': true,
     });
 
     this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.SAVED_SEARCHES));
@@ -241,8 +244,8 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   public onOpenSavedFilters(): void {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-      'event': 'open-saved-filters',
-      'open-saved-filters': true
+      event: 'open-saved-filters',
+      'open-saved-filters': true,
     });
 
     this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.USER_FILTERS));
@@ -251,8 +254,8 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   public onOpenSearchHistory() {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-      'event': 'open-search-history',
-      'open-search-history': true
+      event: 'open-search-history',
+      'open-search-history': true,
     });
 
     this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.SEARCH_HISTORY));
@@ -265,20 +268,18 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   public listWebsiteLinks() {
     const links = new Set<string>();
 
-    Object.values(asfWebsite).forEach(
-      link => links.add(link)
-    );
-    datasetList.forEach(dataset => {
+    Object.values(asfWebsite).forEach((link) => links.add(link));
+    datasetList.forEach((dataset) => {
       links.add(dataset.infoUrl);
       links.add(dataset.citationUrl);
     });
-    derivedDatasets.forEach(dataset => {
+    derivedDatasets.forEach((dataset) => {
       links.add(dataset.info_url);
       links.add(dataset.download_url);
     });
 
     const linkRows = Array.from(links)
-      .filter(link => link.includes('asf.alaska.edu'))
+      .filter((link) => link.includes('asf.alaska.edu'))
       .join('\n');
 
     const pairsCSV = `ASF Website Links\n${linkRows}`;
@@ -292,8 +293,8 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   private openNewWindow(url, analyticsEvent: AnalyticsEvent): void {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-      'event': analyticsEvent.name,
-      'open-derived-dataset': analyticsEvent.value
+      event: analyticsEvent.name,
+      'open-derived-dataset': analyticsEvent.value,
     });
 
     window.open(url, '_blank');

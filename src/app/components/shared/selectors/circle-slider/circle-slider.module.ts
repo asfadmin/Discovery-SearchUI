@@ -12,13 +12,10 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSharedModule } from '@shared';
-import { SharedModule } from "@shared";
-
+import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [
-    CircleSliderComponent
-  ],
+  declarations: [CircleSliderComponent],
   imports: [
     MatSharedModule,
     CommonModule,
@@ -31,10 +28,8 @@ import { SharedModule } from "@shared";
     MatSliderModule,
     MatIconModule,
     MatButtonModule,
-    SharedModule
+    SharedModule,
   ],
-  exports: [
-    CircleSliderComponent
-  ]
+  exports: [CircleSliderComponent],
 })
-export class CircleSliderModule { }
+export class CircleSliderModule {}

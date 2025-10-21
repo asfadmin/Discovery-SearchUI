@@ -8,7 +8,7 @@ import { SceneFilesComponent } from './scene-files.component';
 import { SceneFileModule } from './scene-file';
 import { FileContentsModule } from './file-contents';
 import { MatExpansionModule } from '@angular/material/expansion';
-import {FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
@@ -18,7 +18,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { OnDemandAddMenuModule } from '@components/shared/on-demand-add-menu';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DownloadFileButtonModule } from '@components/shared/download-file-button/download-file-button.module';
-import { SharedModule } from "@shared";
+import { SharedModule } from '@shared';
 
 @NgModule({
   declarations: [SceneFilesComponent],
@@ -42,8 +42,6 @@ import { SharedModule } from "@shared";
     DownloadFileButtonModule,
     SharedModule,
   ],
-  exports: [
-    SceneFilesComponent
-  ]
+  exports: [SceneFilesComponent],
 })
-export class SceneFilesModule { }
+export class SceneFilesModule {}

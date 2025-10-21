@@ -7,11 +7,7 @@ import { LogoComponent } from './logo.component';
 
 @NgModule({
   declarations: [LogoComponent],
-  imports: [
-    CommonModule,
-    MatRippleModule,
-    MatSharedModule,
-  ],
-  exports: [LogoComponent]
+  imports: [CommonModule, MatRippleModule, MatSharedModule],
+  exports: [LogoComponent],
 })
-export class LogoModule { }
+export class LogoModule {}

@@ -1,15 +1,18 @@
-<div
-  *ngIf="breakpoint$ | async as breakpoint"
-  class="bounds">
-  <div class="breadcrumb-list fx-row header--layout"
-    [class.mobile-nav-bar]="breakpoint === breakpoints.MOBILE">
+<div *ngIf="breakpoint$ | async as breakpoint" class="bounds">
+  <div
+    class="breadcrumb-list fx-row header--layout"
+    [class.mobile-nav-bar]="breakpoint === breakpoints.MOBILE"
+  >
     <div class="fx-row">
       <div class="header-logo--layout">
         <app-logo></app-logo>
       </div>
     </div>
 
-    <div *ngIf="searchType$ | async as searchType" class="header-buttons-input fx-col header-inner--layout">
+    <div
+      *ngIf="searchType$ | async as searchType"
+      class="header-buttons-input fx-col header-inner--layout"
+    >
       <app-dataset-header *ngIf="searchType === searchTypes.DATASET">
       </app-dataset-header>
 
@@ -34,5 +37,9 @@
       <app-info-bar *ngIf="breakpoint !== breakpoints.MOBILE"></app-info-bar>
     </div>
   </div>
-  <mat-progress-bar *ngIf="isLoading" style="width: 100%;" mode="indeterminate"></mat-progress-bar>
+  <mat-progress-bar
+    *ngIf="isLoading"
+    style="width: 100%"
+    mode="indeterminate"
+  ></mat-progress-bar>
 </div>

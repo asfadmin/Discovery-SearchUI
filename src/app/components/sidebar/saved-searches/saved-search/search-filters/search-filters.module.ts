@@ -17,19 +17,15 @@ import { SharedModule } from '@shared';
     ListSearchFiltersComponent,
     BaselineSearchFiltersComponent,
     SbasSearchFiltersComponent,
-    DisplacementFiltersComponent
+    DisplacementFiltersComponent,
   ],
-  imports: [
-    CommonModule,
-    PipesModule,
-    SharedModule,
-  ],
+  imports: [CommonModule, PipesModule, SharedModule],
   exports: [
     SearchFiltersComponent,
     GeographicSearchFiltersComponent,
     ListSearchFiltersComponent,
     BaselineSearchFiltersComponent,
-    SbasSearchFiltersComponent
-  ]
+    SbasSearchFiltersComponent,
+  ],
 })
-export class SearchFiltersModule { }
+export class SearchFiltersModule {}

@@ -1,4 +1,12 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Input,
+  Output,
+  EventEmitter,
+  inject,
+} from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -11,9 +19,11 @@ import * as models from '@models';
 @Component({
   selector: 'app-pair',
   templateUrl: './pair.component.html',
-  styleUrls: ['./pair.component.scss']
+  styleUrls: ['./pair.component.scss'],
 })
 export class PairComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+
   @Input() pair;
   @Input() hyp3able;
 
@@ -23,21 +33,17 @@ export class PairComponent implements OnInit, OnDestroy {
   public selectedPair: string[];
   private subs = new SubSink();
 
-  constructor(
-    private store$: Store<AppState>,
-  ) { }
-
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(scenesStore.getSelectedPairIds).subscribe(
-        pair => this.selectedPair = pair
-      )
+      this.store$
+        .select(scenesStore.getSelectedPairIds)
+        .subscribe((pair) => (this.selectedPair = pair)),
     );
   }
 
   public onPairSelected(pair): void {
     // const action = new scenesStore.SetSelectedPair(pair.map(p => p.id));
-    this.togglePair.emit(pair.map(p => p.id));
+    this.togglePair.emit(pair.map((p) => p.id));
     // this.store$.dispatch(action);
   }
 
@@ -50,7 +56,9 @@ export class PairComponent implements OnInit, OnDestroy {
   }
 
   public pairPerpBaseline(pair: models.CMRProductPair) {
-    return Math.abs(pair[0].metadata.perpendicular - pair[1].metadata.perpendicular);
+    return Math.abs(
+      pair[0].metadata.perpendicular - pair[1].metadata.perpendicular,
+    );
   }
 
   public pairTempBaseline(pair: models.CMRProductPair) {

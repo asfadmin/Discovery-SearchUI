@@ -1,20 +1,24 @@
-<mat-sidenav-container class="container tophat-offset" (backdropClick)="onCloseSidebar()">
+<mat-sidenav-container
+  class="container tophat-offset"
+  (backdropClick)="onCloseSidebar()"
+>
   <mat-sidenav
-    [ngClass]="{'app-sidenav-mobile': breakpoint <= breakpoints.SMALL,
-                'app-sidenav': breakpoint > breakpoints.SMALL}" #sidenav>
+    [ngClass]="{
+      'app-sidenav-mobile': breakpoint <= breakpoints.SMALL,
+      'app-sidenav': breakpoint > breakpoints.SMALL,
+    }"
+    #sidenav
+  >
     <app-sidebar></app-sidebar>
   </mat-sidenav>
 
   <mat-sidenav-content>
     <div>
-      <app-header [isLoading]="isLoading$ | async">
-      </app-header>
+      <app-header [isLoading]="isLoading$ | async"> </app-header>
 
-      <app-map (loadUrlState)="onLoadUrlState()">
-      </app-map>
+      <app-map (loadUrlState)="onLoadUrlState()"> </app-map>
 
-      <app-results-menu id="TSRESULTS">
-      </app-results-menu>
+      <app-results-menu id="TSRESULTS"> </app-results-menu>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

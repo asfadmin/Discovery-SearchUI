@@ -1,15 +1,18 @@
 <form
-[formGroup]="dateRangeForm"
+  [formGroup]="dateRangeForm"
   (keydown.enter)="$event.preventDefault()"
   class="date-selector"
-  [ngClass]="{'stack-vertically': breakpoint === breakpoints.MOBILE}">
+  [ngClass]="{ 'stack-vertically': breakpoint === breakpoints.MOBILE }"
+>
   <mat-form-field
     [class.invalid-input-animation]="isStartError"
     class="date-input-field"
-    [ngClass]="{'full-width': breakpoint === breakpoints.MOBILE}">
-    <mat-label>{{ 'START_DATE' |  translate }}</mat-label>
+    [ngClass]="{ 'full-width': breakpoint === breakpoints.MOBILE }"
+  >
+    <mat-label>{{ 'START_DATE' | translate }}</mat-label>
 
-    <input matInput
+    <input
+      matInput
       name="startInput"
       formControlName="StartDateControl"
       [value]="startDate"
@@ -18,17 +21,27 @@
       [max]="maxDate"
       [matDatepicker]="startDatePicker"
       class="clickable"
-    >
-    <mat-hint>{{getDateFormatString()}}</mat-hint>
-    <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
-    <mat-datepicker touchUi="true" [startView]="!!startDate ? 'month' : 'multi-year'" #startDatePicker></mat-datepicker>
+    />
+    <mat-hint>{{ getDateFormatString() }}</mat-hint>
+    <mat-datepicker-toggle
+      matSuffix
+      [for]="startDatePicker"
+    ></mat-datepicker-toggle>
+    <mat-datepicker
+      touchUi="true"
+      [startView]="!!startDate ? 'month' : 'multi-year'"
+      #startDatePicker
+    ></mat-datepicker>
   </mat-form-field>
 
-  <mat-form-field class="date-input-field"
-    [ngClass]="{'full-width': breakpoint === breakpoints.MOBILE}"
-    [class.invalid-input-animation]="isEndError">
+  <mat-form-field
+    class="date-input-field"
+    [ngClass]="{ 'full-width': breakpoint === breakpoints.MOBILE }"
+    [class.invalid-input-animation]="isEndError"
+  >
     <mat-label>{{ 'END_DATE' | translate }}</mat-label>
-    <input matInput
+    <input
+      matInput
       name="endInput"
       formControlName="EndDateControl"
       [value]="endDate"
@@ -36,9 +49,16 @@
       [min]="minDate"
       [max]="maxDate"
       [matDatepicker]="endDatePicker"
-    >
-    <mat-hint>{{getDateFormatString()}}</mat-hint>
-    <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
-    <mat-datepicker touchUi="true" [startView]="!!endDate ? 'month' : 'multi-year'" #endDatePicker></mat-datepicker>
+    />
+    <mat-hint>{{ getDateFormatString() }}</mat-hint>
+    <mat-datepicker-toggle
+      matSuffix
+      [for]="endDatePicker"
+    ></mat-datepicker-toggle>
+    <mat-datepicker
+      touchUi="true"
+      [startView]="!!endDate ? 'month' : 'multi-year'"
+      #endDatePicker
+    ></mat-datepicker>
   </mat-form-field>
 </form>

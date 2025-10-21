@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
@@ -8,15 +8,23 @@ import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
 
 import { ScreenSizeService } from '@services';
-import { MapDrawModeType, MapInteractionModeType, Breakpoints, SearchType } from '@models';
-import {ThemePalette} from '@angular/material/core';
+import {
+  MapDrawModeType,
+  MapInteractionModeType,
+  Breakpoints,
+  SearchType,
+} from '@models';
+import { ThemePalette } from '@angular/material/core';
 
 @Component({
   selector: 'app-draw-selector',
   templateUrl: './draw-selector.component.html',
-  styleUrls: ['./draw-selector.component.scss']
+  styleUrls: ['./draw-selector.component.scss'],
 })
 export class DrawSelectorComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   public drawMode: MapDrawModeType;
   public types = MapDrawModeType;
   private subs = new SubSink();
@@ -33,42 +41,38 @@ export class DrawSelectorComponent implements OnInit, OnDestroy {
   isDisabled = false;
   color: ThemePalette = 'accent';
 
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-  ) {
-  }
-
   ngOnInit() {
-
     this.subs.add(
-      this.store$.select(mapStore.getMapInteractionMode).subscribe(
-        mode => this.isDrawing = mode === MapInteractionModeType.DRAW
-      )
+      this.store$
+        .select(mapStore.getMapInteractionMode)
+        .subscribe(
+          (mode) => (this.isDrawing = mode === MapInteractionModeType.DRAW),
+        ),
     );
 
     this.subs.add(
-      this.store$.select(mapStore.getMapDrawMode).subscribe(
-        drawMode => this.drawMode = drawMode
-      )
+      this.store$
+        .select(mapStore.getMapDrawMode)
+        .subscribe((drawMode) => (this.drawMode = drawMode)),
     );
 
     this.subs.add(
       this.screenSize.breakpoint$.subscribe(
-        breakpoint => this.breakpoint = breakpoint
-      )
+        (breakpoint) => (this.breakpoint = breakpoint),
+      ),
     );
 
     this.subs.add(
-      this.store$.select(searchStore.getSearchType).subscribe(
-        searchType => this.searchType = searchType
-      )
+      this.store$
+        .select(searchStore.getSearchType)
+        .subscribe((searchType) => (this.searchType = searchType)),
     );
-
   }
 
   public onNewDrawMode(mode: MapDrawModeType): void {
-    this.store$.dispatch(new mapStore.SetMapInteractionMode(MapInteractionModeType.DRAW));
+    this.store$.dispatch(
+      new mapStore.SetMapInteractionMode(MapInteractionModeType.DRAW),
+    );
     this.store$.dispatch(new mapStore.SetMapDrawMode(mode));
   }
 
@@ -89,20 +93,16 @@ export class DrawSelectorComponent implements OnInit, OnDestroy {
     this.store$.dispatch(action);
   }
 
-  public onPolygonSelected =
-    () => this.selectMode(MapDrawModeType.POLYGON)
+  public onPolygonSelected = () => this.selectMode(MapDrawModeType.POLYGON);
 
-  public onLineStringSelected =
-    () => this.selectMode(MapDrawModeType.LINESTRING)
+  public onLineStringSelected = () =>
+    this.selectMode(MapDrawModeType.LINESTRING);
 
-  public onPointSelected =
-    () => this.selectMode(MapDrawModeType.POINT)
+  public onPointSelected = () => this.selectMode(MapDrawModeType.POINT);
 
-  public onBoxSelected =
-    () => this.selectMode(MapDrawModeType.BOX)
+  public onBoxSelected = () => this.selectMode(MapDrawModeType.BOX);
 
-  public onCircleSelected =
-    () => this.selectMode(MapDrawModeType.CIRCLE)
+  public onCircleSelected = () => this.selectMode(MapDrawModeType.CIRCLE);
 
   private selectMode(mode): void {
     this.onNewDrawMode(mode);

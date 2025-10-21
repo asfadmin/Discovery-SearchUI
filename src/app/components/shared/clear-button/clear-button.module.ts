@@ -3,19 +3,11 @@ import { CommonModule } from '@angular/common';
 
 import { MatSharedModule } from '@shared';
 import { ClearButtonComponent } from './clear-button.component';
-import { SharedModule } from "@shared";
+import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [
-    ClearButtonComponent
-  ],
-  imports: [
-    CommonModule,
-    MatSharedModule,
-    SharedModule
-  ],
-  exports: [
-    ClearButtonComponent
-  ]
+  declarations: [ClearButtonComponent],
+  imports: [CommonModule, MatSharedModule, SharedModule],
+  exports: [ClearButtonComponent],
 })
-export class ClearButtonModule { }
+export class ClearButtonModule {}

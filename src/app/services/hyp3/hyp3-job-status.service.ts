@@ -5,24 +5,22 @@ import * as moment from 'moment';
 import * as models from '@models';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class Hyp3JobStatusService {
-  constructor() { }
-
   public downloadable(products: models.CMRProduct[]): models.CMRProduct[] {
-    return products.filter(product => this.isDownloadable(product.metadata.job));
+    return products.filter((product) =>
+      this.isDownloadable(product.metadata.job),
+    );
   }
 
   public isDownloadable(job: models.Hyp3Job): boolean {
     return (
       !job ||
-      (
-        !this.isPending(job) &&
+      (!this.isPending(job) &&
         !this.isFailed(job) &&
         !this.isRunning(job) &&
-        !this.isExpired(job)
-      )
+        !this.isExpired(job))
     );
   }
 
@@ -31,8 +29,10 @@ export class Hyp3JobStatusService {
       return false;
     }
 
-    return job.status_code === models.Hyp3JobStatusCode.SUCCEEDED &&
-      this.expirationDays(job.expiration_time) <= 0;
+    return (
+      job.status_code === models.Hyp3JobStatusCode.SUCCEEDED &&
+      this.expirationDays(job.expiration_time) <= 0
+    );
   }
 
   public isFailed(job: models.Hyp3Job): boolean {
