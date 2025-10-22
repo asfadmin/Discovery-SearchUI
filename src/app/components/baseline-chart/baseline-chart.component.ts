@@ -38,9 +38,10 @@ interface Point {
 }
 
 @Component({
-  selector: 'app-baseline-chart',
-  templateUrl: './baseline-chart.component.html',
-  styleUrls: ['./baseline-chart.component.scss'],
+    selector: 'app-baseline-chart',
+    templateUrl: './baseline-chart.component.html',
+    styleUrls: ['./baseline-chart.component.scss'],
+    standalone: false
 })
 export class BaselineChartComponent implements OnInit, OnDestroy {
   translate = inject(TranslateService);

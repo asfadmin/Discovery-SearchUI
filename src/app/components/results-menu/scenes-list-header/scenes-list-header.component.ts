@@ -47,9 +47,10 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-scenes-list-header',
-  templateUrl: './scenes-list-header.component.html',
-  styleUrls: ['./scenes-list-header.component.scss'],
+    selector: 'app-scenes-list-header',
+    templateUrl: './scenes-list-header.component.html',
+    styleUrls: ['./scenes-list-header.component.scss'],
+    standalone: false
 })
 export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

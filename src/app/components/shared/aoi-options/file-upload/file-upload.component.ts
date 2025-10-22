@@ -17,9 +17,10 @@ import { SubSink } from 'subsink';
 import { MapInteractionModeType } from '@models';
 
 @Component({
-  selector: 'app-file-upload',
-  templateUrl: './file-upload.component.html',
-  styleUrls: ['./file-upload.component.css'],
+    selector: 'app-file-upload',
+    templateUrl: './file-upload.component.html',
+    styleUrls: ['./file-upload.component.css'],
+    standalone: false
 })
 export class FileUploadComponent implements OnInit, OnDestroy {
   dialog = inject(MatDialog);

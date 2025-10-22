@@ -19,11 +19,10 @@ import * as chartsStore from '@store/charts';
 import { SharedModule } from '@shared';
 
 @Component({
-  selector: 'app-timeseries-chart-config',
-  standalone: true,
-  imports: [MatIconModule, MatButtonModule, MatCheckboxModule, SharedModule],
-  templateUrl: './timeseries-chart-config.component.html',
-  styleUrl: './timeseries-chart-config.component.scss',
+    selector: 'app-timeseries-chart-config',
+    imports: [MatIconModule, MatButtonModule, MatCheckboxModule, SharedModule],
+    templateUrl: './timeseries-chart-config.component.html',
+    styleUrl: './timeseries-chart-config.component.scss'
 })
 export class TimeseriesChartConfigComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

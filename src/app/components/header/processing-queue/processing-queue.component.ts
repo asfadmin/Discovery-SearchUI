@@ -30,9 +30,10 @@ enum ProcessingQueueTab {
 }
 
 @Component({
-  selector: 'app-processing-queue',
-  templateUrl: './processing-queue.component.html',
-  styleUrls: ['./processing-queue.component.scss'],
+    selector: 'app-processing-queue',
+    templateUrl: './processing-queue.component.html',
+    styleUrls: ['./processing-queue.component.scss'],
+    standalone: false
 })
 export class ProcessingQueueComponent implements OnInit {
   authService = inject(services.AuthService);

@@ -4,9 +4,10 @@ import { ScreenSizeService } from '@services';
 import { Breakpoints } from '@models';
 
 @Component({
-  selector: 'app-logo',
-  templateUrl: './logo.component.html',
-  styleUrls: ['./logo.component.scss'],
+    selector: 'app-logo',
+    templateUrl: './logo.component.html',
+    styleUrls: ['./logo.component.scss'],
+    standalone: false
 })
 export class LogoComponent {
   private screenSize = inject(ScreenSizeService);

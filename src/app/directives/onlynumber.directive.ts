@@ -1,7 +1,8 @@
 import { Directive, ElementRef, HostListener, inject } from '@angular/core';
 
 @Directive({
-  selector: '[appOnlynumber]',
+    selector: '[appOnlynumber]',
+    standalone: false
 })
 export class OnlynumberDirective {
   el = inject(ElementRef);

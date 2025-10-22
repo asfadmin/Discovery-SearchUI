@@ -20,10 +20,11 @@ import { Breakpoints, menuAnimation } from '@models';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
-  selector: 'app-job-product-name-selector',
-  templateUrl: './job-product-name-selector.component.html',
-  styleUrls: ['./job-product-name-selector.component.scss'],
-  animations: menuAnimation,
+    selector: 'app-job-product-name-selector',
+    templateUrl: './job-product-name-selector.component.html',
+    styleUrls: ['./job-product-name-selector.component.scss'],
+    animations: menuAnimation,
+    standalone: false
 })
 export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

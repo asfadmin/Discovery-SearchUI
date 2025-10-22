@@ -3,12 +3,13 @@ import { Component, OnInit, inject } from '@angular/core';
 import { EnvironmentService, NotificationService } from '@services';
 
 @Component({
-  selector: 'app-customize-env',
-  templateUrl: './customize-env.component.html',
-  styleUrls: [
-    './customize-env.component.scss',
-    '../preferences/preferences.component.scss',
-  ],
+    selector: 'app-customize-env',
+    templateUrl: './customize-env.component.html',
+    styleUrls: [
+        './customize-env.component.scss',
+        '../preferences/preferences.component.scss',
+    ],
+    standalone: false
 })
 export class CustomizeEnvComponent implements OnInit {
   private env = inject(EnvironmentService);

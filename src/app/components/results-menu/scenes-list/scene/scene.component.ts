@@ -12,9 +12,10 @@ import * as services from '@services';
 import * as models from '@models';
 
 @Component({
-  selector: 'app-scene',
-  templateUrl: './scene.component.html',
-  styleUrls: ['./scene.component.scss'],
+    selector: 'app-scene',
+    templateUrl: './scene.component.html',
+    styleUrls: ['./scene.component.scss'],
+    standalone: false
 })
 export class SceneComponent implements OnInit {
   env = inject(services.EnvironmentService);

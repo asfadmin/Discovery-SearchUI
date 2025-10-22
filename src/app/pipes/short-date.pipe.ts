@@ -3,8 +3,9 @@ import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 
 @Pipe({
-  name: 'fullDate',
-  pure: false,
+    name: 'fullDate',
+    pure: false,
+    standalone: false
 })
 export class FullDatePipe implements PipeTransform {
   private translateService = inject(TranslateService);
@@ -17,8 +18,9 @@ export class FullDatePipe implements PipeTransform {
 }
 
 @Pipe({
-  name: 'shortDate',
-  pure: false,
+    name: 'shortDate',
+    pure: false,
+    standalone: false
 })
 export class ShortDatePipe implements PipeTransform {
   private translateService = inject(TranslateService);
@@ -31,8 +33,9 @@ export class ShortDatePipe implements PipeTransform {
 }
 
 @Pipe({
-  name: 'shortDateTime',
-  pure: false,
+    name: 'shortDateTime',
+    pure: false,
+    standalone: false
 })
 export class ShortDateTimePipe implements PipeTransform {
   private translateService = inject(TranslateService);
@@ -45,8 +48,9 @@ export class ShortDateTimePipe implements PipeTransform {
 }
 
 @Pipe({
-  name: 'shortDateSeason',
-  pure: false,
+    name: 'shortDateSeason',
+    pure: false,
+    standalone: false
 })
 export class ShortDateSeasonPipe implements PipeTransform {
   private translateService = inject(TranslateService);

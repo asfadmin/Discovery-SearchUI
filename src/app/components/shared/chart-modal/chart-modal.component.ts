@@ -19,19 +19,18 @@ import { CommonModule } from '@angular/common';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 @Component({
-  selector: 'app-chart-modal',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatDialogModule,
-    MatIconModule,
-    MatButtonModule,
-    TimeseriesChartConfigComponent,
-    MatMenuModule,
-    MatButtonToggleModule,
-  ],
-  templateUrl: './chart-modal.component.html',
-  styleUrl: './chart-modal.component.scss',
+    selector: 'app-chart-modal',
+    imports: [
+        CommonModule,
+        MatDialogModule,
+        MatIconModule,
+        MatButtonModule,
+        TimeseriesChartConfigComponent,
+        MatMenuModule,
+        MatButtonToggleModule,
+    ],
+    templateUrl: './chart-modal.component.html',
+    styleUrl: './chart-modal.component.scss'
 })
 export class ChartModalComponent implements OnInit, OnDestroy {
   dialog = inject(MatDialog);

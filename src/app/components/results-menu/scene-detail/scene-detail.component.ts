@@ -33,10 +33,11 @@ import { PinnedProduct } from '@services/browse-map.service';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-scene-detail',
-  templateUrl: './scene-detail.component.html',
-  styleUrls: ['./scene-detail.component.scss'],
-  providers: [DatasetForProductService],
+    selector: 'app-scene-detail',
+    templateUrl: './scene-detail.component.html',
+    styleUrls: ['./scene-detail.component.scss'],
+    providers: [DatasetForProductService],
+    standalone: false
 })
 export class SceneDetailComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

@@ -10,9 +10,10 @@ import * as services from '@services';
 import { asfWebsite } from '@models';
 
 @Component({
-  selector: 'app-api-link-dialog',
-  templateUrl: './api-link-dialog.component.html',
-  styleUrls: ['./api-link-dialog.component.scss'],
+    selector: 'app-api-link-dialog',
+    templateUrl: './api-link-dialog.component.html',
+    styleUrls: ['./api-link-dialog.component.scss'],
+    standalone: false
 })
 export class ApiLinkDialogComponent implements OnInit, OnDestroy {
   private asfApiService = inject(services.AsfApiService);

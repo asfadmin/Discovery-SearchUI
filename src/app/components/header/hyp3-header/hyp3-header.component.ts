@@ -9,9 +9,10 @@ import * as models from '@models';
 import * as services from '@services';
 
 @Component({
-  selector: 'app-hyp3-header',
-  templateUrl: './hyp3-header.component.html',
-  styleUrls: ['./hyp3-header.component.scss', '../header.component.scss'],
+    selector: 'app-hyp3-header',
+    templateUrl: './hyp3-header.component.html',
+    styleUrls: ['./hyp3-header.component.scss', '../header.component.scss'],
+    standalone: false
 })
 export class Hyp3HeaderComponent {
   private store$ = inject<Store<AppState>>(Store);

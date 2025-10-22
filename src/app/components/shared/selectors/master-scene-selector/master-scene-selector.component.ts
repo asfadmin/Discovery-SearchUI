@@ -10,9 +10,10 @@ import { getSearchType } from '@store/search';
 import { SearchType } from '@models';
 import { beta } from '@models';
 @Component({
-  selector: 'app-master-scene-selector',
-  templateUrl: './master-scene-selector.component.html',
-  styleUrls: ['./master-scene-selector.component.css'],
+    selector: 'app-master-scene-selector',
+    templateUrl: './master-scene-selector.component.html',
+    styleUrls: ['./master-scene-selector.component.css'],
+    standalone: false
 })
 export class MasterSceneSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

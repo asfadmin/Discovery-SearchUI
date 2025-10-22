@@ -8,17 +8,16 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-timeseries-chart-zoom',
-  standalone: true,
-  imports: [
-    MatButtonToggle,
-    MatButtonToggleGroup,
-    MatIcon,
-    MatTooltip,
-    TranslateModule,
-  ],
-  templateUrl: './timeseries-chart-zoom.component.html',
-  styleUrl: './timeseries-chart-zoom.component.scss',
+    selector: 'app-timeseries-chart-zoom',
+    imports: [
+        MatButtonToggle,
+        MatButtonToggleGroup,
+        MatIcon,
+        MatTooltip,
+        TranslateModule,
+    ],
+    templateUrl: './timeseries-chart-zoom.component.html',
+    styleUrl: './timeseries-chart-zoom.component.scss'
 })
 export class TimeseriesChartZoomComponent {
   @Output() zoomInEvent = new EventEmitter<void>();

@@ -2,9 +2,10 @@ import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { NotificationService } from '@services';
 
 @Component({
-  selector: 'app-job-id-selector',
-  templateUrl: './job-id-selector.component.html',
-  styleUrl: './job-id-selector.component.scss',
+    selector: 'app-job-id-selector',
+    templateUrl: './job-id-selector.component.html',
+    styleUrl: './job-id-selector.component.scss',
+    standalone: false
 })
 export class JobIdSelectorComponent {
   private notification = inject(NotificationService);

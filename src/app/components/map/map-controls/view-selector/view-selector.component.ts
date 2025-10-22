@@ -15,9 +15,10 @@ declare global {
 }
 
 @Component({
-  selector: 'app-view-selector',
-  templateUrl: './view-selector.component.html',
-  styleUrls: ['./view-selector.component.scss'],
+    selector: 'app-view-selector',
+    templateUrl: './view-selector.component.html',
+    styleUrls: ['./view-selector.component.scss'],
+    standalone: false
 })
 export class ViewSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

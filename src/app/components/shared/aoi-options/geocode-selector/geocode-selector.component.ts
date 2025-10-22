@@ -21,9 +21,10 @@ import { Feature } from 'ol';
 import * as models from '@models';
 
 @Component({
-  selector: 'app-geocode-selector',
-  templateUrl: './geocode-selector.component.html',
-  styleUrls: ['./geocode-selector.component.scss'],
+    selector: 'app-geocode-selector',
+    templateUrl: './geocode-selector.component.html',
+    styleUrls: ['./geocode-selector.component.scss'],
+    standalone: false
 })
 export class GeocodeSelectorComponent implements OnInit, OnDestroy {
   private http = inject(HttpClient);

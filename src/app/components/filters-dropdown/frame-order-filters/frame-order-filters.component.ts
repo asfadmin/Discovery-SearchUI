@@ -43,31 +43,29 @@ enum FilterPanel {
 }
 
 @Component({
-  selector: 'app-frame-order-filters',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-
-    FlightDirectionSelectorComponent,
-    MatSelectModule,
-    MatExpansionModule,
-    MatSharedModule,
-    DocsModalModule,
-    MissionSelectorModule,
-    PathSelectorModule,
-    OtherSelectorModule,
-    SeasonSelectorModule,
-    DateSelectorModule,
-    DatasetSelectorModule,
-    AoiOptionsModule,
-    SearchTypeSelectorModule,
-    BurstSelectorModule,
-    OperaS1SelectorModule,
-    SharedModule,
-  ],
-  templateUrl: './frame-order-filters.component.html',
-  styleUrl: './frame-order-filters.component.scss',
+    selector: 'app-frame-order-filters',
+    imports: [
+        CommonModule,
+        FormsModule,
+        FlightDirectionSelectorComponent,
+        MatSelectModule,
+        MatExpansionModule,
+        MatSharedModule,
+        DocsModalModule,
+        MissionSelectorModule,
+        PathSelectorModule,
+        OtherSelectorModule,
+        SeasonSelectorModule,
+        DateSelectorModule,
+        DatasetSelectorModule,
+        AoiOptionsModule,
+        SearchTypeSelectorModule,
+        BurstSelectorModule,
+        OperaS1SelectorModule,
+        SharedModule,
+    ],
+    templateUrl: './frame-order-filters.component.html',
+    styleUrl: './frame-order-filters.component.scss'
 })
 export class FrameOrderFiltersComponent implements OnInit, OnDestroy {
   prop = inject(PropertyService);

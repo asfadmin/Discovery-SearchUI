@@ -20,9 +20,10 @@ import {
 } from '@store/filters';
 
 @Component({
-  selector: 'app-on-demand-add-menu',
-  templateUrl: './on-demand-add-menu.component.html',
-  styleUrls: ['./on-demand-add-menu.component.scss'],
+    selector: 'app-on-demand-add-menu',
+    templateUrl: './on-demand-add-menu.component.html',
+    styleUrls: ['./on-demand-add-menu.component.scss'],
+    standalone: false
 })
 export class OnDemandAddMenuComponent implements OnInit {
   private store$ = inject<Store<AppState>>(Store);

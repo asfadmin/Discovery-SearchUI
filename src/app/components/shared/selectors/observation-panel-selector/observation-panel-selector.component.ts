@@ -9,9 +9,10 @@ import { PropertyService } from '@services';
 import { SubSink } from 'subsink';
 import * as models from '@models';
 @Component({
-  selector: 'app-observation-panel-selector',
-  templateUrl: './observation-panel-selector.component.html',
-  styleUrl: './observation-panel-selector.component.scss',
+    selector: 'app-observation-panel-selector',
+    templateUrl: './observation-panel-selector.component.html',
+    styleUrl: './observation-panel-selector.component.scss',
+    standalone: false
 })
 export class ObservationPanelSelectorComponent implements OnDestroy, OnInit {
   private store$ = inject<Store<AppState>>(Store);

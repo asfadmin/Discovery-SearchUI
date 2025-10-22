@@ -2,12 +2,13 @@ import { Component, EventEmitter, Output, Input, inject } from '@angular/core';
 import { Hyp3ApiService } from '@services';
 
 @Component({
-  selector: 'app-hyp3-url-selector',
-  templateUrl: './hyp3-url-selector.component.html',
-  styleUrls: [
-    './hyp3-url-selector.component.scss',
-    '../preferences.component.scss',
-  ],
+    selector: 'app-hyp3-url-selector',
+    templateUrl: './hyp3-url-selector.component.html',
+    styleUrls: [
+        './hyp3-url-selector.component.scss',
+        '../preferences.component.scss',
+    ],
+    standalone: false
 })
 export class Hyp3UrlSelectorComponent {
   private hyp3 = inject(Hyp3ApiService);

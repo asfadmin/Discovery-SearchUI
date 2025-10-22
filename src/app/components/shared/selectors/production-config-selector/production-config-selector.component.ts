@@ -16,19 +16,18 @@ interface prodConfig {
 }
 
 @Component({
-  selector: 'app-production-config-selector',
-  standalone: true,
-  templateUrl: './production-config-selector.component.html',
-  styleUrl: './production-config-selector.component.scss',
-  imports: [
-    MatFormFieldModule,
-    MatSelectModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    SharedModule,
-    MatTooltip,
-  ],
+    selector: 'app-production-config-selector',
+    templateUrl: './production-config-selector.component.html',
+    styleUrl: './production-config-selector.component.scss',
+    imports: [
+        MatFormFieldModule,
+        MatSelectModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        SharedModule,
+        MatTooltip,
+    ]
 })
 export class ProductionConfigSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

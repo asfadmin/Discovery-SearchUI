@@ -28,9 +28,10 @@ import { SearchType } from '@models';
 import * as filterStore from '@store/filters';
 
 @Component({
-  selector: 'app-scene-file',
-  templateUrl: './scene-file.component.html',
-  styleUrls: ['./scene-file.component.scss'],
+    selector: 'app-scene-file',
+    templateUrl: './scene-file.component.html',
+    styleUrls: ['./scene-file.component.scss'],
+    standalone: false
 })
 export class SceneFileComponent implements OnInit, OnDestroy {
   private hyp3JobStatus = inject(Hyp3JobStatusService);

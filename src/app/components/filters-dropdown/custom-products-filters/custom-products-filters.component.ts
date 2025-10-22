@@ -16,9 +16,10 @@ enum FilterPanel {
 }
 
 @Component({
-  selector: 'app-custom-products-filters',
-  templateUrl: './custom-products-filters.component.html',
-  styleUrls: ['./custom-products-filters.component.scss'],
+    selector: 'app-custom-products-filters',
+    templateUrl: './custom-products-filters.component.html',
+    styleUrls: ['./custom-products-filters.component.scss'],
+    standalone: false
 })
 export class CustomProductsFiltersComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

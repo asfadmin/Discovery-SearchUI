@@ -7,9 +7,10 @@ import * as filtersStore from '@store/filters';
 import { SubSink } from 'subsink';
 
 @Component({
-  selector: 'app-sarviews-event-active-selector',
-  templateUrl: './sarviews-event-active-selector.component.html',
-  styleUrls: ['./sarviews-event-active-selector.component.scss'],
+    selector: 'app-sarviews-event-active-selector',
+    templateUrl: './sarviews-event-active-selector.component.html',
+    styleUrls: ['./sarviews-event-active-selector.component.scss'],
+    standalone: false
 })
 export class SarviewsEventActiveSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

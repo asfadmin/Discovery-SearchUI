@@ -39,10 +39,11 @@ import { ActiveToast } from 'ngx-toastr';
 const INFINITY = 2e10;
 
 @Component({
-  selector: 'app-scenes-list',
-  templateUrl: './scenes-list.component.html',
-  styleUrls: ['./scenes-list.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+    selector: 'app-scenes-list',
+    templateUrl: './scenes-list.component.html',
+    styleUrls: ['./scenes-list.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class ScenesListComponent
   implements OnInit, OnDestroy, AfterContentInit

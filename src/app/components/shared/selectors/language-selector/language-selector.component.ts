@@ -7,9 +7,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { AsfLanguageService } from '@services/asf-language.service';
 
 @Component({
-  selector: 'app-language-selector',
-  templateUrl: './language-selector.component.html',
-  styleUrls: ['./language-selector.component.scss'],
+    selector: 'app-language-selector',
+    templateUrl: './language-selector.component.html',
+    styleUrls: ['./language-selector.component.scss'],
+    standalone: false
 })
 export class LanguageSelectorComponent implements OnInit {
   translate = inject(TranslateService);

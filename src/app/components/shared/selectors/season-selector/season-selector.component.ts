@@ -10,9 +10,10 @@ import * as filtersStore from '@store/filters';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
-  selector: 'app-season-selector',
-  templateUrl: './season-selector.component.html',
-  styleUrls: ['./season-selector.component.scss'],
+    selector: 'app-season-selector',
+    templateUrl: './season-selector.component.html',
+    styleUrls: ['./season-selector.component.scss'],
+    standalone: false
 })
 export class SeasonSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

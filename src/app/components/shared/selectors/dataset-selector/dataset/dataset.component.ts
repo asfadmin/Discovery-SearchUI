@@ -5,9 +5,10 @@ import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { Dataset, DateRange } from '@models';
 
 @Component({
-  selector: 'app-dataset',
-  templateUrl: './dataset.component.html',
-  styleUrls: ['./dataset.component.scss'],
+    selector: 'app-dataset',
+    templateUrl: './dataset.component.html',
+    styleUrls: ['./dataset.component.scss'],
+    standalone: false
 })
 export class DatasetComponent {
   @Input() dataset: Dataset;
