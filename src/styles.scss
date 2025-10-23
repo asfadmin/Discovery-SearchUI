@@ -1,8 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
 
+@use "@angular/material" as mat;
 @import './styles/asf-theme';
 @import './styles/filter-list';
 @import "prismjs/themes/prism-solarizedlight.css";
+
+// Apply Angular Material theme styles ONCE here in the global stylesheet
+// Include base theme styles (typography and density) once
+@include mat.all-component-typographies($asf-light-theme);
+@include mat.all-component-densities($asf-light-theme);
+
+// Apply color themes separately for light and dark modes
+.theme-light {
+  @include mat.all-component-colors($asf-light-theme);
+}
+
+.theme-dark {
+  @include mat.all-component-colors($asf-dark-theme);
+}
 
 $theme-map: null;
 

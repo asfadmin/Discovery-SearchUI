@@ -1,4 +1,4 @@
-@import "asf-theme";
+@import "asf-theme-variables";
 
 ::ng-deep .circumference {
   @include themify($themes) {
