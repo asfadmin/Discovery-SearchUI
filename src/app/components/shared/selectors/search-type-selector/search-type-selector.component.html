@@ -8,7 +8,7 @@
     <div>
       <button
         [matMenuTriggerFor]="searchTypeMenu"
-        (onMenuOpen)="onSearchTypeMenuOpen()"
+        (menuOpened)="onSearchTypeMenuOpen()"
         class="button-menu-trigger"
         color="basic"
         matTooltip="{{ searchTranslation[searchType] | translate }}"
@@ -143,7 +143,6 @@
           mat-menu-item
           class="menu-item mat-menu-item"
           [matMenuTriggerFor]="derivedDatasetMenu"
-          mat-menu-item
         >
           <div class="menu-item-inner">
             <div class="fx-80 menu-item-content">
