@@ -13,9 +13,18 @@ $theme-map: null;
 
 .cdk-overlay-container {
   position: absolute;
-  z-index: unset;
+  z-index: 2000;
 
   .cdk-overlay-connected-position-bounding-box {
+    z-index: 2000;
+  }
+
+  // Fix for Angular Material 19 menu positioning
+  .cdk-overlay-pane {
+    z-index: 2000;
+  }
+
+  .mat-mdc-menu-panel {
     z-index: 2000;
   }
 
@@ -862,6 +871,11 @@ $d-height: 550px;
 
 .mat-mdc-menu-panel.dataset-selector {
     overflow: auto;
+}
+
+.mat-mdc-menu-panel.search-type-menu {
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 .ts-best-fit-formulas {
