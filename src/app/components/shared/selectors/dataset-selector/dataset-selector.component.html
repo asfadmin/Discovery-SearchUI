@@ -23,11 +23,9 @@
   <div class="gtm-search-type-selector fx-nogrow">
     <mat-menu
       #platformMenu="matMenu"
-      [(ngModel)]="selected"
-      ngDefaultControl
       class="dataset-selector"
     >
-      <menu *ngFor="let dataset of datasets; last as isLast" mat-menu-item>
+      <button *ngFor="let dataset of datasets; last as isLast" mat-menu-item>
         <div
           class="menu-item mat-menu-item"
           (click)="onSelectionChange(dataset.id)"
@@ -94,7 +92,7 @@
           </div>
         </div>
         <hr *ngIf="!isLast" class="dataset-hr" />
-      </menu>
+      </button>
     </mat-menu>
   </div>
 </div>

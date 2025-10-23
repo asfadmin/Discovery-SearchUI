@@ -247,7 +247,7 @@
 </mat-menu>
 
 <mat-menu #helpMenu="matMenu">
-  <div mat-menu-item matSuffix (click)="onOpenHelp('toc')">
+  <button mat-menu-item matSuffix (click)="onOpenHelp('toc')">
     <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
       <mat-icon>video_library</mat-icon>
       {{ 'VIDEO_TUTORIALS' | translate }}
@@ -266,11 +266,11 @@
         <mat-icon class="menu-item-icon">video_library</mat-icon>
       </div>
     </div>
-  </div>
+  </button>
 
   <hr />
 
-  <div mat-menu-item matSuffix (click)="onOpenUserGuide()">
+  <button mat-menu-item matSuffix (click)="onOpenUserGuide()">
     <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
       <mat-icon>menu_book</mat-icon>
       {{ 'VERTEX_USER_GUIDE' | translate }}
@@ -290,11 +290,11 @@
         <mat-icon class="menu-item-icon">menu_book</mat-icon>
       </div>
     </div>
-  </div>
+  </button>
 
   <hr />
 
-  <div mat-menu-item matSuffix (click)="onOpenHyP3Guide()">
+  <button mat-menu-item matSuffix (click)="onOpenHyP3Guide()">
     <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
       <mat-icon>book</mat-icon>
       {{ 'HY_P3_USER_GUIDE' | translate | titlecase }}
@@ -316,11 +316,11 @@
         <mat-icon class="menu-item-icon" svgIcon="hyp3"></mat-icon>
       </div>
     </div>
-  </div>
+  </button>
 
   <hr />
 
-  <div mat-menu-item matSuffix (click)="onOpenAPIWebSite()">
+  <button mat-menu-item matSuffix (click)="onOpenAPIWebSite()">
     <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
       <mat-icon>api</mat-icon>
       {{ 'ASF_SEARCH_API' | translate }}
@@ -346,11 +346,11 @@
         <mat-icon class="menu-item-icon">api</mat-icon>
       </div>
     </div>
-  </div>
+  </button>
 
   <hr />
 
-  <div mat-menu-item (click)="onOpenASFWebSite()">
+  <button mat-menu-item (click)="onOpenASFWebSite()">
     <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
       <mat-icon>language</mat-icon>
       {{ 'ASF_WEBSITE' | translate }}
@@ -371,11 +371,11 @@
         <mat-icon class="menu-item-icon">language</mat-icon>
       </div>
     </div>
-  </div>
+  </button>
 
   <hr />
 
-  <div mat-menu-item [matMenuTriggerFor]="developerMenu">
+  <button mat-menu-item [matMenuTriggerFor]="developerMenu">
     <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
       <mat-icon>language</mat-icon>
       {{ 'DEVELOPER' | translate }}
@@ -393,7 +393,7 @@
         <mat-icon class="menu-item-icon">developer_mode</mat-icon>
       </div>
     </div>
-  </div>
+  </button>
 
   <ng-container *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
     <hr class="menu-hr" />
@@ -448,9 +448,9 @@
 </mat-menu>
 
 <mat-menu #languageMenu="matMenu">
-  <div *ngFor="let lang of language.translate.getLangs()">
+  <ng-container *ngFor="let lang of language.translate.getLangs()">
     <button mat-menu-item (click)="language.setCurrent(lang)">
       {{ language.getName(lang) }}
     </button>
-  </div>
+  </ng-container>
 </mat-menu>
