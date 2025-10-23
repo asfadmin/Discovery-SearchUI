@@ -180,6 +180,19 @@ export function filtersReducer(
         subtypes: [],
         fullBurstIDs: [],
         operaBurstIDs: [],
+
+        frameCoverage: [],
+        jointObservation: null,
+        rangeBandwidth: [],
+        instrument: [],
+        scienceProduct: [],
+        productionConfig: [],
+        sidePolarizations: [],
+        flightDirections: new Set<models.FlightDirection>([]),
+
+
+        groupID: null,
+        shortNames: [],
         useCalibrationData: false,
         selectedMission: null,
       };
