@@ -261,15 +261,29 @@ ul {
   padding-left: 0;
 }
 
-/* TODO(mdc-migration): The following rule targets internal classes of slide-toggle that may no longer apply for the MDC version. */
-//.mat-mdc-slide-toggle.mat-checked .mat-slide-toggle-thumb {
-//  background-color: $asf-primary;
-//}
+// Angular Material 20 MDC slide-toggle styles
+.mat-mdc-slide-toggle.mat-mdc-slide-toggle-checked .mdc-switch__handle::after {
+  background-color: $asf-primary;
+}
 
-/* TODO(mdc-migration): The following rule targets internal classes of slide-toggle that may no longer apply for the MDC version. */
-//.mat-mdc-slide-toggle.mat-checked .mat-slide-toggle-bar {
-//  background-color: darkgrey;
-//}
+.mat-mdc-slide-toggle.mat-mdc-slide-toggle-checked .mdc-switch__track::after {
+  background-color: darkgrey;
+}
+
+// Ensure slide toggle handle (thumb) is circular
+.mdc-switch__handle::after {
+  border-radius: 50% !important;
+}
+
+// Remove white square background from handle
+.mdc-switch__handle::before {
+  background: transparent !important;
+}
+
+// Ensure the track is rounded
+.mdc-switch__track {
+  border-radius: 14px !important;
+}
 
 .max-width-100 {
   max-width: 115px !important;
@@ -947,5 +961,16 @@ $d-height: 550px;
 
 .mat-badge-small .mat-badge-content {
  width: 80% !important;
+}
+
+// Fix for Angular Material 20 MDC sliders to ensure thumbs are circular
+.mdc-slider__thumb-knob {
+  border-radius: 50% !important;
+}
+
+// Ensure the slider track end caps are rounded
+.mdc-slider__track--active_fill,
+.mdc-slider__track--inactive {
+  border-radius: 2px !important;
 }
 
