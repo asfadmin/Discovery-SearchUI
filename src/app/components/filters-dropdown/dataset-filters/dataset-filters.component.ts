@@ -21,10 +21,10 @@ enum FilterPanel {
 }
 
 @Component({
-    selector: 'app-dataset-filters',
-    templateUrl: './dataset-filters.component.html',
-    styleUrls: ['./dataset-filters.component.scss'],
-    standalone: false
+  selector: 'app-dataset-filters',
+  templateUrl: './dataset-filters.component.html',
+  styleUrls: ['./dataset-filters.component.scss'],
+  standalone: false,
 })
 export class DatasetFiltersComponent implements OnInit, OnDestroy {
   prop = inject(PropertyService);

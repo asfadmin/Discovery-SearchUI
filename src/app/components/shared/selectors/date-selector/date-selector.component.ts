@@ -22,10 +22,10 @@ import { DateRangeExtrema, SearchType } from '@models';
 import { DateExtremaService } from '@services';
 
 @Component({
-    selector: 'app-date-selector',
-    templateUrl: './date-selector.component.html',
-    styleUrls: ['./date-selector.component.scss'],
-    standalone: false
+  selector: 'app-date-selector',
+  templateUrl: './date-selector.component.html',
+  styleUrls: ['./date-selector.component.scss'],
+  standalone: false,
 })
 export class DateSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

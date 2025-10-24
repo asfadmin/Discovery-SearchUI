@@ -9,10 +9,10 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'app-baseline-frame-reference-toggle',
-    imports: [CommonModule, SharedModule, MatSlideToggleModule, FormsModule],
-    templateUrl: './baseline-frame-reference-toggle.component.html',
-    styleUrl: './baseline-frame-reference-toggle.component.scss'
+  selector: 'app-baseline-frame-reference-toggle',
+  imports: [CommonModule, SharedModule, MatSlideToggleModule, FormsModule],
+  templateUrl: './baseline-frame-reference-toggle.component.html',
+  styleUrl: './baseline-frame-reference-toggle.component.scss',
 })
 export class BaselineFrameReferenceToggleComponent implements OnInit {
   private store$ = inject<Store<AppState>>(Store);

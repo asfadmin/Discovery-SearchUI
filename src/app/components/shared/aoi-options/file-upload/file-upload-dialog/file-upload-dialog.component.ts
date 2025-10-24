@@ -25,10 +25,10 @@ enum FileErrors {
 }
 
 @Component({
-    selector: 'app-file-upload-dialog',
-    templateUrl: 'file-upload-dialog.component.html',
-    styleUrls: ['./file-upload-dialog.component.scss'],
-    standalone: false
+  selector: 'app-file-upload-dialog',
+  templateUrl: 'file-upload-dialog.component.html',
+  styleUrls: ['./file-upload-dialog.component.scss'],
+  standalone: false,
 })
 export class FileUploadDialogComponent implements OnInit, OnDestroy {
   private mapService = inject(MapService);

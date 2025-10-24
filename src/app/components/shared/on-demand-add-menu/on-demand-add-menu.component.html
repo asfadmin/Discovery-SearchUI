@@ -1,6 +1,10 @@
 <mat-menu #addMenu>
   <ng-template matMenuContent let-hyp3able="hyp3able">
-    <button *ngIf="userStatus === 'NOT_STARTED'" mat-menu-item (click)="onOpenSignup()">
+    <button
+      *ngIf="userStatus === 'NOT_STARTED'"
+      mat-menu-item
+      (click)="onOpenSignup()"
+    >
       Register Hyp3 Account
     </button>
     <ng-container *ngFor="let productsByJobType of hyp3able" [matTooltip]="">

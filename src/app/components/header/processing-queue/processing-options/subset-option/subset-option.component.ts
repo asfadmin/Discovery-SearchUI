@@ -1,10 +1,10 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-    selector: 'app-subset-option',
-    templateUrl: './subset-option.component.html',
-    styleUrls: ['./subset-option.component.scss'],
-    standalone: false
+  selector: 'app-subset-option',
+  templateUrl: './subset-option.component.html',
+  styleUrls: ['./subset-option.component.scss'],
+  standalone: false,
 })
 export class SubsetOptionComponent {
   @Input() optionName: string;

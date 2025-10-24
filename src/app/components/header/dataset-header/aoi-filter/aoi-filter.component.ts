@@ -18,11 +18,11 @@ import { DrawNewPolygon } from '@store/map';
 import { SetGeocode } from '@store/filters';
 
 @Component({
-    selector: 'app-aoi-filter',
-    templateUrl: './aoi-filter.component.html',
-    styleUrls: ['./aoi-filter.component.scss', '../../header.component.scss'],
-    animations: menuAnimation,
-    standalone: false
+  selector: 'app-aoi-filter',
+  templateUrl: './aoi-filter.component.html',
+  styleUrls: ['./aoi-filter.component.scss', '../../header.component.scss'],
+  animations: menuAnimation,
+  standalone: false,
 })
 export class AoiFilterComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

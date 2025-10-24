@@ -21,17 +21,17 @@ interface sciProdGroup {
 }
 
 @Component({
-    selector: 'app-product-science-selector',
-    templateUrl: './product-science-selector.component.html',
-    styleUrl: './product-science-selector.component.scss',
-    imports: [
-        MatFormFieldModule,
-        MatSelectModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatInputModule,
-        SharedModule,
-    ]
+  selector: 'app-product-science-selector',
+  templateUrl: './product-science-selector.component.html',
+  styleUrl: './product-science-selector.component.scss',
+  imports: [
+    MatFormFieldModule,
+    MatSelectModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    SharedModule,
+  ],
 })
 export class ProductScienceSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

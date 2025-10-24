@@ -3,11 +3,11 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { GeographicFiltersType, ProductType } from '@models';
 
 @Component({
-    selector: 'app-geographic-search-filters',
-    templateUrl: './geographic-search-filters.component.html',
-    styleUrls: ['./geographic-search-filters.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'app-geographic-search-filters',
+  templateUrl: './geographic-search-filters.component.html',
+  styleUrls: ['./geographic-search-filters.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class GeographicSearchFiltersComponent {
   @Input() filters: GeographicFiltersType;

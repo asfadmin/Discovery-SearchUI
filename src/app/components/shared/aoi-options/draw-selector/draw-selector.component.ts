@@ -17,10 +17,10 @@ import {
 import { ThemePalette } from '@angular/material/core';
 
 @Component({
-    selector: 'app-draw-selector',
-    templateUrl: './draw-selector.component.html',
-    styleUrls: ['./draw-selector.component.scss'],
-    standalone: false
+  selector: 'app-draw-selector',
+  templateUrl: './draw-selector.component.html',
+  styleUrls: ['./draw-selector.component.scss'],
+  standalone: false,
 })
 export class DrawSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

@@ -6,10 +6,10 @@ import * as filterStore from '@store/filters';
 import { MatRadioChange } from '@angular/material/radio';
 
 @Component({
-    selector: 'app-opera-calibration-data-selector',
-    templateUrl: './opera-calibration-data-selector.component.html',
-    styleUrls: ['./opera-calibration-data-selector.component.scss'],
-    standalone: false
+  selector: 'app-opera-calibration-data-selector',
+  templateUrl: './opera-calibration-data-selector.component.html',
+  styleUrls: ['./opera-calibration-data-selector.component.scss'],
+  standalone: false,
 })
 export class OperaCalibrationDataSelectorComponent
   implements OnInit, OnDestroy

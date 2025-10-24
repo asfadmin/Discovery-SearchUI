@@ -30,10 +30,10 @@ declare global {
 }
 
 @Component({
-    selector: 'app-search-type-selector',
-    templateUrl: './search-type-selector.component.html',
-    styleUrls: ['./search-type-selector.component.scss'],
-    standalone: false
+  selector: 'app-search-type-selector',
+  templateUrl: './search-type-selector.component.html',
+  styleUrls: ['./search-type-selector.component.scss'],
+  standalone: false,
 })
 export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   translate = inject(TranslateService);
@@ -222,7 +222,7 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   }
 
   public onSearchTypeMenuOpen() {
-    console.log("onSearchTypeMenuOpen - menu opened");
+    console.log('onSearchTypeMenuOpen - menu opened');
   }
 
   ngOnDestroy() {

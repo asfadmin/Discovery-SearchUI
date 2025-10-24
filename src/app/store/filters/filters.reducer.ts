@@ -190,7 +190,6 @@ export function filtersReducer(
         sidePolarizations: [],
         flightDirections: new Set<models.FlightDirection>([]),
 
-
         groupID: null,
         shortNames: [],
         useCalibrationData: false,

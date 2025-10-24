@@ -8,8 +8,8 @@ import {
 } from '@angular/core';
 
 @Directive({
-    selector: '[contextMenuTriggerFor]',
-    standalone: false
+  selector: '[contextMenuTriggerFor]',
+  standalone: false,
 })
 export class ContextMenuTriggerDirective
   extends MatMenuTrigger

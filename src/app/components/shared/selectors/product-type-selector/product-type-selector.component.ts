@@ -17,10 +17,10 @@ import { MatSelectChange } from '@angular/material/select';
 import { combineLatest } from 'rxjs';
 
 @Component({
-    selector: 'app-product-type-selector',
-    templateUrl: './product-type-selector.component.html',
-    styleUrls: ['./product-type-selector.component.css'],
-    standalone: false
+  selector: 'app-product-type-selector',
+  templateUrl: './product-type-selector.component.html',
+  styleUrls: ['./product-type-selector.component.css'],
+  standalone: false,
 })
 export class ProductTypeSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

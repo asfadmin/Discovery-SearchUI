@@ -12,16 +12,16 @@ import { PropertyService } from '@services';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'app-flight-direction-selector',
-    imports: [
-        MatSelectModule,
-        MatOptionModule,
-        MatFormFieldModule,
-        SharedModule,
-        AsyncPipe,
-    ],
-    templateUrl: './flight-direction-selector.component.html',
-    styleUrl: './flight-direction-selector.component.scss'
+  selector: 'app-flight-direction-selector',
+  imports: [
+    MatSelectModule,
+    MatOptionModule,
+    MatFormFieldModule,
+    SharedModule,
+    AsyncPipe,
+  ],
+  templateUrl: './flight-direction-selector.component.html',
+  styleUrl: './flight-direction-selector.component.scss',
 })
 export class FlightDirectionSelectorComponent {
   prop = inject(PropertyService);

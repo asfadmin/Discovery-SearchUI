@@ -6,10 +6,10 @@ import moment from 'moment';
 import * as filtersStore from '@store/filters';
 
 @Component({
-    selector: 'app-event-metadata',
-    templateUrl: './event-metadata.component.html',
-    styleUrls: ['./event-metadata.component.scss'],
-    standalone: false
+  selector: 'app-event-metadata',
+  templateUrl: './event-metadata.component.html',
+  styleUrls: ['./event-metadata.component.scss'],
+  standalone: false,
 })
 export class EventMetadataComponent {
   private store$ = inject<Store<AppState>>(Store);

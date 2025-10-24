@@ -19,10 +19,10 @@ export enum CodeExportType {
 }
 
 @Component({
-    selector: 'app-code-export',
-    templateUrl: './code-export.component.html',
-    styleUrls: ['./code-export.component.scss'],
-    standalone: false
+  selector: 'app-code-export',
+  templateUrl: './code-export.component.html',
+  styleUrls: ['./code-export.component.scss'],
+  standalone: false,
 })
 export class CodeExportComponent implements OnInit, AfterViewInit {
   dialogRef = inject<MatDialogRef<SaveSearchDialogComponent>>(MatDialogRef);

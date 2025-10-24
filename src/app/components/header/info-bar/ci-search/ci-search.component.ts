@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 
 @Component({
-    selector: 'app-ci-search',
-    templateUrl: './ci-search.component.html',
-    styleUrls: ['./ci-search.component.scss'],
-    standalone: false
+  selector: 'app-ci-search',
+  templateUrl: './ci-search.component.html',
+  styleUrls: ['./ci-search.component.scss'],
+  standalone: false,
 })
 export class CiSearchComponent {
   constructor() {

@@ -11,10 +11,10 @@ import * as services from '@services';
 import * as models from '@models';
 
 @Component({
-    selector: 'app-baseline-scene-controls',
-    templateUrl: './baseline-scene-controls.component.html',
-    styleUrls: ['./baseline-scene-controls.component.scss'],
-    standalone: false
+  selector: 'app-baseline-scene-controls',
+  templateUrl: './baseline-scene-controls.component.html',
+  styleUrls: ['./baseline-scene-controls.component.scss'],
+  standalone: false,
 })
 export class BaselineSceneControlsComponent implements OnInit {
   private screenSize = inject(services.ScreenSizeService);

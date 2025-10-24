@@ -5,10 +5,10 @@ import * as mapStore from '@store/map';
 import { SubSink } from 'subsink';
 
 @Component({
-    selector: 'app-gridlines-selector',
-    templateUrl: './gridlines-selector.component.html',
-    styleUrls: ['./gridlines-selector.component.scss'],
-    standalone: false
+  selector: 'app-gridlines-selector',
+  templateUrl: './gridlines-selector.component.html',
+  styleUrls: ['./gridlines-selector.component.scss'],
+  standalone: false,
 })
 export class GridlinesSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

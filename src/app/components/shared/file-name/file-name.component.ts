@@ -7,10 +7,10 @@ import { ScreenSizeService } from '@services';
 import { SearchType } from '@models';
 
 @Component({
-    selector: 'app-file-name',
-    templateUrl: './file-name.component.html',
-    styleUrls: ['./file-name.component.scss'],
-    standalone: false
+  selector: 'app-file-name',
+  templateUrl: './file-name.component.html',
+  styleUrls: ['./file-name.component.scss'],
+  standalone: false,
 })
 export class FileNameComponent implements OnInit, OnDestroy {
   private screenSize = inject(ScreenSizeService);

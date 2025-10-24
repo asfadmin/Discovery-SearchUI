@@ -36,10 +36,10 @@ enum FileErrors {
 }
 
 @Component({
-    selector: 'app-list-filters',
-    templateUrl: './list-filters.component.html',
-    styleUrls: ['./list-filters.component.scss'],
-    standalone: false
+  selector: 'app-list-filters',
+  templateUrl: './list-filters.component.html',
+  styleUrls: ['./list-filters.component.scss'],
+  standalone: false,
 })
 export class ListFiltersComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

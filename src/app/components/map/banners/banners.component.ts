@@ -9,8 +9,8 @@ export interface DialogData {
 }
 
 @Directive({
-    selector: '[bannerCreate]',
-    standalone: false
+  selector: '[bannerCreate]',
+  standalone: false,
 })
 export class BannerCreateDirective implements OnInit {
   private toastr = inject(ToastrService);
@@ -124,10 +124,10 @@ export class BannerCreateDirective implements OnInit {
 }
 
 @Component({
-    selector: 'app-banners',
-    templateUrl: './banners.component.html',
-    styleUrls: ['./banners.component.scss'],
-    standalone: false
+  selector: 'app-banners',
+  templateUrl: './banners.component.html',
+  styleUrls: ['./banners.component.scss'],
+  standalone: false,
 })
 export class BannersComponent {
   @Input() banners: Banner[];

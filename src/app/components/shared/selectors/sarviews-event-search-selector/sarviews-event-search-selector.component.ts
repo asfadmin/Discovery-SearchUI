@@ -12,10 +12,10 @@ import { combineLatest } from 'rxjs';
 import { map, withLatestFrom } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 @Component({
-    selector: 'app-sarviews-event-search-selector',
-    templateUrl: './sarviews-event-search-selector.component.html',
-    styleUrls: ['./sarviews-event-search-selector.component.scss'],
-    standalone: false
+  selector: 'app-sarviews-event-search-selector',
+  templateUrl: './sarviews-event-search-selector.component.html',
+  styleUrls: ['./sarviews-event-search-selector.component.scss'],
+  standalone: false,
 })
 export class SarviewsEventSearchSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

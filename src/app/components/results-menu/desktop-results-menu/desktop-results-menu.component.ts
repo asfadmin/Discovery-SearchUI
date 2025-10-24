@@ -10,13 +10,13 @@ import { SubSink } from 'subsink';
 import * as models from '@models';
 
 @Component({
-    selector: 'app-desktop-results-menu',
-    templateUrl: './desktop-results-menu.component.html',
-    styleUrls: [
-        './desktop-results-menu.component.css',
-        '../results-menu.component.scss',
-    ],
-    standalone: false
+  selector: 'app-desktop-results-menu',
+  templateUrl: './desktop-results-menu.component.html',
+  styleUrls: [
+    './desktop-results-menu.component.css',
+    '../results-menu.component.scss',
+  ],
+  standalone: false,
 })
 export class DesktopResultsMenuComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

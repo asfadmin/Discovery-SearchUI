@@ -10,10 +10,10 @@ import {
 import { SubSink } from 'subsink';
 
 @Component({
-    selector: 'app-event-product-sort-selector',
-    templateUrl: './event-product-sort-selector.component.html',
-    styleUrls: ['./event-product-sort-selector.component.scss'],
-    standalone: false
+  selector: 'app-event-product-sort-selector',
+  templateUrl: './event-product-sort-selector.component.html',
+  styleUrls: ['./event-product-sort-selector.component.scss'],
+  standalone: false,
 })
 export class EventProductSortSelectorComponent implements OnInit {
   private store$ = inject<Store<AppState>>(Store);

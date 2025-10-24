@@ -7,10 +7,10 @@ import { getHyp3ProductTypes, SetHyp3ProductTypes } from '@store/filters';
 import { SubSink } from 'subsink';
 
 @Component({
-    selector: 'app-hyp3-job-type-selector',
-    templateUrl: './hyp3-job-type-selector.component.html',
-    styleUrls: ['./hyp3-job-type-selector.component.scss'],
-    standalone: false
+  selector: 'app-hyp3-job-type-selector',
+  templateUrl: './hyp3-job-type-selector.component.html',
+  styleUrls: ['./hyp3-job-type-selector.component.scss'],
+  standalone: false,
 })
 export class Hyp3JobTypeSelectorComponent implements OnInit {
   store$ = inject<Store<AppState>>(Store);

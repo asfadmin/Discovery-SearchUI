@@ -21,10 +21,7 @@
   </div>
 
   <div class="gtm-search-type-selector fx-nogrow">
-    <mat-menu
-      #platformMenu="matMenu"
-      class="dataset-selector"
-    >
+    <mat-menu #platformMenu="matMenu" class="dataset-selector">
       <button *ngFor="let dataset of datasets; last as isLast" mat-menu-item>
         <div
           class="menu-item mat-menu-item"

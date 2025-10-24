@@ -34,10 +34,10 @@ import {
 declare let wNumb: any;
 
 @Component({
-    selector: 'app-sbas-sliders-two',
-    templateUrl: './sbas-sliders-two.component.html',
-    styleUrls: ['./sbas-sliders-two.component.scss'],
-    standalone: false
+  selector: 'app-sbas-sliders-two',
+  templateUrl: './sbas-sliders-two.component.html',
+  styleUrls: ['./sbas-sliders-two.component.scss'],
+  standalone: false,
 })
 export class SbasSlidersTwoComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

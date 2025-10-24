@@ -11,10 +11,10 @@ import { SubSink } from 'subsink';
 import { PairService, ScenesService } from '@services';
 
 @Component({
-    selector: 'app-max-results-selector',
-    templateUrl: './max-results-selector.component.html',
-    styleUrls: ['./max-results-selector.component.scss'],
-    standalone: false
+  selector: 'app-max-results-selector',
+  templateUrl: './max-results-selector.component.html',
+  styleUrls: ['./max-results-selector.component.scss'],
+  standalone: false,
 })
 export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

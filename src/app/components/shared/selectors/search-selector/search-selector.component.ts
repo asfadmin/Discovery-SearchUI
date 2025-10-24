@@ -3,10 +3,10 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import * as models from '@models';
 
 @Component({
-    selector: 'app-search-selector',
-    templateUrl: './search-selector.component.html',
-    styleUrls: ['./search-selector.component.scss'],
-    standalone: false
+  selector: 'app-search-selector',
+  templateUrl: './search-selector.component.html',
+  styleUrls: ['./search-selector.component.scss'],
+  standalone: false,
 })
 export class SearchSelectorComponent {
   @Input() selectedSearchType: models.SearchType;

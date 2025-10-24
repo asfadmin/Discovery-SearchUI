@@ -26,50 +26,59 @@
 
   <div class="gtm-search-type-selector fx-nogrow">
     <mat-menu #searchTypeMenu="matMenu" class="search-type-menu">
-      <ng-container *ngFor="let type of searchTypeSelectors.search; let last = last">
-        <ng-container *ngIf="!(type.nameKey === 'DISPLACEMENT' && breakpoint === breakpoints.MOBILE)">
+      <ng-container
+        *ngFor="let type of searchTypeSelectors.search; let last = last"
+      >
+        <ng-container
+          *ngIf="
+            !(
+              type.nameKey === 'DISPLACEMENT' &&
+              breakpoint === breakpoints.MOBILE
+            )
+          "
+        >
           <button
             class="menu-item"
             mat-menu-item
             (click)="onSetSearchType(type.searchType)"
           >
-          <div class="menu-item-inner">
-            <div class="fx-80 menu-item-content">
-              <div class="item-title">
-                {{ type.nameKey | translate }}
-                <span
-                  *ngIf="type.nameKey === 'DISPLACEMENT'"
-                  class="badge-new"
-                  >{{ 'NEW' | translate | titlecase }}</span
+            <div class="menu-item-inner">
+              <div class="fx-80 menu-item-content">
+                <div class="item-title">
+                  {{ type.nameKey | translate }}
+                  <span
+                    *ngIf="type.nameKey === 'DISPLACEMENT'"
+                    class="badge-new"
+                    >{{ 'NEW' | translate | titlecase }}</span
+                  >
+                </div>
+                <div
+                  class="item-content"
+                  [ngClass]="{ limitTextHeight: isReadMore }"
                 >
+                  <span *ngFor="let key of type.descriptionKeys">
+                    {{ key | translate }}
+                  </span>
+                  <app-docs-modal
+                    url="{{ type.helpUrl }}"
+                    class="read-more-icon"
+                  ></app-docs-modal>
+                </div>
               </div>
-              <div
-                class="item-content"
-                [ngClass]="{ limitTextHeight: isReadMore }"
-              >
-                <span *ngFor="let key of type.descriptionKeys">
-                  {{ key | translate }}
+              <div class="fx-20 menu-item-aside">
+                <span
+                  *ngIf="type.iconType === iconTypes.MATERIAL"
+                  class="material-icons-outlined menu-item-icon"
+                >
+                  {{ type.icon }}
                 </span>
-                <app-docs-modal
-                  url="{{ type.helpUrl }}"
-                  class="read-more-icon"
-                ></app-docs-modal>
+                <img
+                  *ngIf="type.iconType === iconTypes.IMAGE"
+                  src="{{ type.icon }}"
+                  class="menu-item-icon"
+                />
               </div>
             </div>
-            <div class="fx-20 menu-item-aside">
-              <span
-                *ngIf="type.iconType === iconTypes.MATERIAL"
-                class="material-icons-outlined menu-item-icon"
-              >
-                {{ type.icon }}
-              </span>
-              <img
-                *ngIf="type.iconType === iconTypes.IMAGE"
-                src="{{ type.icon }}"
-                class="menu-item-icon"
-              />
-            </div>
-          </div>
           </button>
           <hr *ngIf="!last" class="dataset-hr" />
         </ng-container>

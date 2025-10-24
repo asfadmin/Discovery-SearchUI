@@ -33,10 +33,10 @@ export interface selectedItems {
 }
 
 @Component({
-    selector: 'app-queue',
-    templateUrl: './queue.component.html',
-    styleUrls: ['./queue.component.scss'],
-    standalone: false
+  selector: 'app-queue',
+  templateUrl: './queue.component.html',
+  styleUrls: ['./queue.component.scss'],
+  standalone: false,
 })
 export class QueueComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

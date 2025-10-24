@@ -28,13 +28,13 @@ enum CardViews {
 }
 
 @Component({
-    selector: 'app-sbas-results-menu',
-    templateUrl: './sbas-results-menu.component.html',
-    styleUrls: [
-        './sbas-results-menu.component.scss',
-        '../results-menu.component.scss',
-    ],
-    standalone: false
+  selector: 'app-sbas-results-menu',
+  templateUrl: './sbas-results-menu.component.html',
+  styleUrls: [
+    './sbas-results-menu.component.scss',
+    '../results-menu.component.scss',
+  ],
+  standalone: false,
 })
 export class SBASResultsMenuComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

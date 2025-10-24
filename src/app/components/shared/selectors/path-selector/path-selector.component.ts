@@ -20,10 +20,10 @@ enum PathFormInputType {
 }
 
 @Component({
-    selector: 'app-path-selector',
-    templateUrl: './path-selector.component.html',
-    styleUrls: ['./path-selector.component.scss'],
-    standalone: false
+  selector: 'app-path-selector',
+  templateUrl: './path-selector.component.html',
+  styleUrls: ['./path-selector.component.scss'],
+  standalone: false,
 })
 export class PathSelectorComponent implements OnInit, OnDestroy {
   prop = inject(PropertyService);

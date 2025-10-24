@@ -8,7 +8,7 @@ import {
   signal,
   ViewChild,
   inject,
-  DOCUMENT
+  DOCUMENT,
 } from '@angular/core';
 import {
   distinctUntilChanged,
@@ -77,13 +77,13 @@ export interface PointSeries {
 }
 
 @Component({
-    selector: 'app-timeseries-results-menu',
-    templateUrl: './timeseries-results-menu.component.html',
-    styleUrls: [
-        './timeseries-results-menu.component.scss',
-        '../results-menu.component.scss',
-    ],
-    standalone: false
+  selector: 'app-timeseries-results-menu',
+  templateUrl: './timeseries-results-menu.component.html',
+  styleUrls: [
+    './timeseries-results-menu.component.scss',
+    '../results-menu.component.scss',
+  ],
+  standalone: false,
 })
 export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
@@ -442,15 +442,15 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
 }
 
 @Component({
-    selector: 'app-confirmation-dialog',
-    templateUrl: 'confirmation-dialog.html',
-    imports: [
-        MatDialogActions,
-        MatDialogContent,
-        MatButton,
-        MatDialogClose,
-        SharedModule,
-    ]
+  selector: 'app-confirmation-dialog',
+  templateUrl: 'confirmation-dialog.html',
+  imports: [
+    MatDialogActions,
+    MatDialogContent,
+    MatButton,
+    MatDialogClose,
+    SharedModule,
+  ],
 })
 export class ConfirmationDialog {
   dialogRef = inject<MatDialogRef<ConfirmationDialog>>(MatDialogRef);

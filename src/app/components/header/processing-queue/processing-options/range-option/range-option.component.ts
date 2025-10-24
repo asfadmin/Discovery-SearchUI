@@ -2,10 +2,10 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Range } from '@models';
 
 @Component({
-    selector: 'app-range-option',
-    templateUrl: './range-option.component.html',
-    styleUrls: ['./range-option.component.scss'],
-    standalone: false
+  selector: 'app-range-option',
+  templateUrl: './range-option.component.html',
+  styleUrls: ['./range-option.component.scss'],
+  standalone: false,
 })
 export class RangeOptionComponent implements OnInit {
   @Input() value: number;

@@ -6,10 +6,10 @@ import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 
 @Component({
-    selector: 'app-help',
-    templateUrl: './help.component.html',
-    styleUrls: ['./help.component.scss'],
-    standalone: false
+  selector: 'app-help',
+  templateUrl: './help.component.html',
+  styleUrls: ['./help.component.scss'],
+  standalone: false,
 })
 export class HelpComponent implements OnInit {
   private dialogRef = inject<MatDialogRef<HelpComponent>>(MatDialogRef);

@@ -4,10 +4,10 @@ import * as services from '@services';
 import * as models from '@models';
 
 @Component({
-    selector: 'app-scene-controls',
-    templateUrl: './scene-controls.component.html',
-    styleUrls: ['./scene-controls.component.scss'],
-    standalone: false
+  selector: 'app-scene-controls',
+  templateUrl: './scene-controls.component.html',
+  styleUrls: ['./scene-controls.component.scss'],
+  standalone: false,
 })
 export class SceneControlsComponent {
   private hyp3 = inject(services.Hyp3ApiService);

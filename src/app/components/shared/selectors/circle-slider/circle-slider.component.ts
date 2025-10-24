@@ -14,10 +14,10 @@ import * as models from '@models';
 import { ScreenSizeService } from '@services';
 import { Subscription } from 'rxjs';
 @Component({
-    selector: 'app-circle-slider',
-    templateUrl: './circle-slider.component.html',
-    styleUrls: ['./circle-slider.component.scss'],
-    standalone: false
+  selector: 'app-circle-slider',
+  templateUrl: './circle-slider.component.html',
+  styleUrls: ['./circle-slider.component.scss'],
+  standalone: false,
 })
 export class CircleSliderComponent implements OnInit, OnChanges, OnDestroy {
   private screenSize = inject(ScreenSizeService);

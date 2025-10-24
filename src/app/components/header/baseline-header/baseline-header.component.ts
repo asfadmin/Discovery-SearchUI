@@ -13,10 +13,10 @@ import * as searchStore from '@store/search';
 import * as models from '@models';
 
 @Component({
-    selector: 'app-baseline-header',
-    templateUrl: './baseline-header.component.html',
-    styleUrls: ['./baseline-header.component.css', '../header.component.scss'],
-    standalone: false
+  selector: 'app-baseline-header',
+  templateUrl: './baseline-header.component.html',
+  styleUrls: ['./baseline-header.component.css', '../header.component.scss'],
+  standalone: false,
 })
 export class BaselineHeaderComponent implements OnInit {
   private store$ = inject<Store<AppState>>(Store);

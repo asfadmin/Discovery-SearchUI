@@ -1,8 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'readableSizeFromBytes',
-    standalone: false
+  name: 'readableSizeFromBytes',
+  standalone: false,
 })
 export class ReadableSizeFromBytesPipe implements PipeTransform {
   transform(bytes: string | number): string {

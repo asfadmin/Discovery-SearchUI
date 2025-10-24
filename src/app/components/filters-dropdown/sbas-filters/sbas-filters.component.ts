@@ -20,10 +20,10 @@ enum FilterPanel {
 }
 
 @Component({
-    selector: 'app-sbas-filters',
-    templateUrl: './sbas-filters.component.html',
-    styleUrls: ['./sbas-filters.component.scss'],
-    standalone: false
+  selector: 'app-sbas-filters',
+  templateUrl: './sbas-filters.component.html',
+  styleUrls: ['./sbas-filters.component.scss'],
+  standalone: false,
 })
 export class SbasFiltersComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

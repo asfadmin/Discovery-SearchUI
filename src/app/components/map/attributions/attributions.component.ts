@@ -10,10 +10,10 @@ import * as scenesStore from '@store/scenes';
 import { Breakpoints, asfWebsite } from '@models';
 
 @Component({
-    selector: 'app-attributions',
-    templateUrl: './attributions.component.html',
-    styleUrls: ['./attributions.component.scss'],
-    standalone: false
+  selector: 'app-attributions',
+  templateUrl: './attributions.component.html',
+  styleUrls: ['./attributions.component.scss'],
+  standalone: false,
 })
 export class AttributionsComponent {
   private store$ = inject<Store<AppState>>(Store);

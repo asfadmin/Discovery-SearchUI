@@ -19,13 +19,13 @@ enum MobileViews {
 }
 
 @Component({
-    selector: 'app-mobile-results-menu',
-    templateUrl: './mobile-results-menu.component.html',
-    styleUrls: [
-        './mobile-results-menu.component.scss',
-        '../results-menu.component.scss',
-    ],
-    standalone: false
+  selector: 'app-mobile-results-menu',
+  templateUrl: './mobile-results-menu.component.html',
+  styleUrls: [
+    './mobile-results-menu.component.scss',
+    '../results-menu.component.scss',
+  ],
+  standalone: false,
 })
 export class MobileResultsMenuComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

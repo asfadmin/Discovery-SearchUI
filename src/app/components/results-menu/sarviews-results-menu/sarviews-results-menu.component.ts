@@ -12,13 +12,13 @@ import { map } from 'rxjs/operators';
 import { OpenFiltersMenu } from '@store/ui';
 
 @Component({
-    selector: 'app-sarviews-results-menu',
-    templateUrl: './sarviews-results-menu.component.html',
-    styleUrls: [
-        './sarviews-results-menu.component.scss',
-        '../results-menu.component.scss',
-    ],
-    standalone: false
+  selector: 'app-sarviews-results-menu',
+  templateUrl: './sarviews-results-menu.component.html',
+  styleUrls: [
+    './sarviews-results-menu.component.scss',
+    '../results-menu.component.scss',
+  ],
+  standalone: false,
 })
 export class SarviewsResultsMenuComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

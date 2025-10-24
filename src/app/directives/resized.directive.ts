@@ -26,8 +26,8 @@ export class ResizedEvent {
 }
 
 @Directive({
-    selector: '[resized]',
-    standalone: false
+  selector: '[resized]',
+  standalone: false,
 })
 export class ResizedDirective implements OnInit, OnDestroy {
   private readonly element = inject(ElementRef);

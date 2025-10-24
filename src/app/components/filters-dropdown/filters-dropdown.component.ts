@@ -27,18 +27,18 @@ import { areFiltersChanged } from '@store/filters';
 import { SBASOverlap } from '@models';
 
 @Component({
-    selector: 'app-filters-dropdown',
-    templateUrl: './filters-dropdown.component.html',
-    styleUrls: ['./filters-dropdown.component.scss'],
-    animations: [
-        trigger('isOpen', [
-            state('true', style({ transform: 'translateY(0%)' })),
-            state('false', style({ transform: 'translateY(-10000%)' })),
-            transition('true => false', animate('50ms ease-out')),
-            transition('false => true', animate('50ms ease-in')),
-        ]),
-    ],
-    standalone: false
+  selector: 'app-filters-dropdown',
+  templateUrl: './filters-dropdown.component.html',
+  styleUrls: ['./filters-dropdown.component.scss'],
+  animations: [
+    trigger('isOpen', [
+      state('true', style({ transform: 'translateY(0%)' })),
+      state('false', style({ transform: 'translateY(-10000%)' })),
+      transition('true => false', animate('50ms ease-out')),
+      transition('false => true', animate('50ms ease-in')),
+    ]),
+  ],
+  standalone: false,
 })
 export class FiltersDropdownComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

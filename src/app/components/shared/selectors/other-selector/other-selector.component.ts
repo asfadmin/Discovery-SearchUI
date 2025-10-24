@@ -10,10 +10,10 @@ import { SubSink } from 'subsink';
 import * as models from '@models';
 
 @Component({
-    selector: 'app-other-selector',
-    templateUrl: './other-selector.component.html',
-    styleUrls: ['./other-selector.component.scss'],
-    standalone: false
+  selector: 'app-other-selector',
+  templateUrl: './other-selector.component.html',
+  styleUrls: ['./other-selector.component.scss'],
+  standalone: false,
 })
 export class OtherSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

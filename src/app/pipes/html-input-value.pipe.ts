@@ -1,8 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'htmlInputValue',
-    standalone: false
+  name: 'htmlInputValue',
+  standalone: false,
 })
 export class HTMLInputValuePipe implements PipeTransform {
   transform(input: Event): string {

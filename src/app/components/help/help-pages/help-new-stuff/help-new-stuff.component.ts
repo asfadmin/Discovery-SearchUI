@@ -4,10 +4,10 @@ import * as models from '@models';
 import * as services from '@services';
 
 @Component({
-    selector: 'app-help-new-stuff',
-    templateUrl: './help-new-stuff.component.html',
-    styleUrls: ['./help-new-stuff.component.scss'],
-    standalone: false
+  selector: 'app-help-new-stuff',
+  templateUrl: './help-new-stuff.component.html',
+  styleUrls: ['./help-new-stuff.component.scss'],
+  standalone: false,
 })
 export class HelpNewStuffComponent {
   private screenSize = inject(services.ScreenSizeService);

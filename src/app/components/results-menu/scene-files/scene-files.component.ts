@@ -56,10 +56,10 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import * as filterStore from '@store/filters';
 
 @Component({
-    selector: 'app-scene-files',
-    templateUrl: './scene-files.component.html',
-    styleUrls: ['./scene-files.component.scss'],
-    standalone: false
+  selector: 'app-scene-files',
+  templateUrl: './scene-files.component.html',
+  styleUrls: ['./scene-files.component.scss'],
+  standalone: false,
 })
 export class SceneFilesComponent
   implements OnInit, OnDestroy, AfterContentInit
