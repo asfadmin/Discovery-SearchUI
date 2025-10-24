@@ -95,6 +95,134 @@ Use BabelEdit to add, change, and delete key/value pairs.
 ## Testing
 Testing run via [Ghost Inspector](https://ghostinspector.com/).
 
+## Architecture
+
+### State Management (NgRx)
+
+The application uses NgRx for centralized state management with a clear domain-based structure:
+
+**Store Structure** (`src/app/store/`):
+- `scenes` - Satellite scene data and search results
+- `map` - Map state, layers, and viewport
+- `filters` - Search filters and parameters
+- `ui` - UI state (sidebar, modals, themes)
+- `search` - Search queries and history
+- `queue` - Download queue management
+- `user` - User authentication and preferences
+- `hyp3` - HyP3 on-demand processing jobs
+- `charts` - Chart data and configurations
+
+Each domain has:
+- `*.action.ts` - NgRx actions
+- `*.reducer.ts` - State reducers
+- `*.effects.ts` - Side effects (API calls, routing)
+- `*.selectors.ts` - State selectors
+
+### Module Organization
+
+The app uses feature modules organized by domain:
+
+**Core Components** (`src/app/components/`):
+- `header/` - Main navigation, search controls, queue management
+- `sidebar/` - Filters panel and search refinement
+- `map/` - OpenLayers-based map with drawing tools
+- `results-menu/` - Search results display and management
+- `baseline-chart/` - Baseline visualization for InSAR
+- `timeseries-chart/` - Time series data visualization
+- `help/` - Help documentation and tutorials
+- `shared/` - Reusable components across features
+
+**Services** (`src/app/services/`):
+Key architectural services:
+- `asf-api.service.ts` - Backend API integration (CMR search)
+- `map.service.ts` - Map interactions and state
+- `search.service.ts` - Search execution and results
+- `hyp3-*.service.ts` - HyP3 on-demand processing services
+- `url-state.service.ts` - Deep linking and state persistence
+- `environment.service.ts` - Environment configuration management
+
+### Path Aliases
+
+TypeScript path aliases are configured in `tsconfig.json`:
+```typescript
+@components/* → src/app/components/*
+@services/* → src/app/services/*
+@store/* → src/app/store/*
+@models/* → src/app/models/*
+@pipes/* → src/app/pipes/*
+@directives/* → src/app/directives/*
+@shared/* → src/app/shared/*
+@environments/* → src/environments/*
+```
+
+Always use these aliases instead of relative imports.
+
+### Internationalization
+
+The app uses `ngx-translate` for multilingual support:
+- Translation files: `assets/i18n/{lang}.json` (e.g., `en.json`, `es.json`)
+- BabelEdit project: `assets/i18n/vertex.babel`
+- All user-facing text must use the translate pipe: `{{ 'KEY' | translate }}`
+- Edit translations using BabelEdit, not manually
+
+### Styling
+
+- SCSS preprocessor with shared styles in `src/styles/`
+- Angular Material theming with modern Sass module system (@use/@forward)
+- Component styles use `.scss` files
+- Custom theme variables in `src/styles/asf-theme-variables.scss`
+- Modern Sass functions: Use `color.adjust()` instead of `lighten()`/`darken()`
+
+**Important:** The project has been fully migrated to modern Sass (@use/@forward). Do not use deprecated @import syntax or color functions.
+
+## Key Dependencies
+
+- **Angular 20** - Framework
+- **Angular Material 20** - UI components
+- **NgRx 20** - State management
+- **OpenLayers (ol)** - Map rendering
+- **ngx-translate** - Internationalization
+- **RxJS** - Reactive programming
+- **Moment.js** - Date handling
+- **D3** - Data visualization
+- **TypeScript 5.9** - Language
+
+## Development Notes
+
+### HTTPS and Domain Setup
+Many features (authentication, cookies) require:
+1. Custom domain: `local.asf.alaska.edu` in hosts file
+2. SSL certificates via mkcert
+3. Running with `--ssl true` and cert/key paths
+
+### Component Selector Prefix
+All components must use `app-` prefix (enforced by ESLint).
+
+### Unused Variables
+Use `_` prefix for intentionally unused parameters (e.g., `_event`, `_index`) to avoid linting errors.
+
+### Code Style
+- Single quotes for strings (enforced by Prettier)
+- ESLint + Prettier configured for automatic formatting
+- Some rules temporarily disabled (see `eslint.config.js` comments)
+
+### Node.js Built-in Polyfills
+Angular 20's esbuild-based builder requires explicit polyfills for Node.js built-in modules. The `buffer` polyfill has been added to `src/polyfills.ts`. If other Node.js modules are needed, add them similarly.
+
+## Deployments
+
+- **Test:** https://search-test.asf.alaska.edu/
+- **Prod:** https://search.asf.alaska.edu/
+- **Personal:** Developers can deploy branches named `{name}/{topic}` automatically
+
+## Environment Configuration
+
+Environments are in `src/environments/`:
+- `environment.ts` - Development
+- `environment.prod.ts` - Production
+
+Build uses file replacement to swap environments during production builds.
+
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
