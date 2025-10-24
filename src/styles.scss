@@ -1,8 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 
 @use "@angular/material" as mat;
-@import './styles/asf-theme';
-@import './styles/filter-list';
+@use './styles/asf-theme' as *;
+@use './styles/filter-list';
+@use 'ngx-toastr/toastr';
 @import "prismjs/themes/prism-solarizedlight.css";
 
 // Apply Angular Material theme styles ONCE here in the global stylesheet
@@ -46,7 +47,6 @@ $theme-map: null;
 }
 
 // regular style toast
-@import 'ngx-toastr/toastr';
 
 #toast-container {
   position: relative;

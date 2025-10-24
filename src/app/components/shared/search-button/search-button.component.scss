@@ -1,5 +1,5 @@
-@import "asf-theme-variables";
-@import "../../header/header-buttons/header-buttons.component.scss";
+@use "asf-theme-variables" as *;
+@use "../../header/header-buttons/header-buttons.component.scss" as *;
 
 .arrow-button-toggle {
   padding-top: 6px;

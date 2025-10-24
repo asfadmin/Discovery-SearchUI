@@ -1,4 +1,4 @@
-@import "asf-theme-variables";
+@use "asf-theme-variables" as *;
 
 .layer-select-button {
   @include themify($themes) {

@@ -1,4 +1,4 @@
-@import "asf-theme-variables";
+@use "asf-theme-variables" as *;
 
 .banner-card {
   @include themify($themes) {

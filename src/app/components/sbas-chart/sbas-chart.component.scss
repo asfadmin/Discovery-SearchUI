@@ -1,4 +1,4 @@
-@import "asf-theme-variables";
+@use "asf-theme-variables" as *;
 
 .chart-wrapper {
   height: calc(100% - 1px);

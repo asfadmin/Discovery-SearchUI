@@ -1,4 +1,5 @@
-@import 'asf-theme-variables';
+@use 'asf-theme-variables' as *;
+@forward 'asf-theme-variables';
 
 $side-padding-px: 15px;
 $side-padding-only: 0 $side-padding-px 0 $side-padding-px;

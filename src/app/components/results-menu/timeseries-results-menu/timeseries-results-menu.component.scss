@@ -1,6 +1,6 @@
 @use "@angular/material" as mat;
 
-@import "asf-theme-variables";
+@use "asf-theme-variables" as *;
 
 .ts-chart-row {
 	display: flex;

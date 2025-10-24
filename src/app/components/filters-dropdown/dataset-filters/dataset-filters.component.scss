@@ -1,4 +1,4 @@
-@import "asf-theme-variables";
+@use "asf-theme-variables" as *;
 .raised-section {
   box-shadow:
     0 8px 10px 1px rgba(0, 0, 0, 0.14),

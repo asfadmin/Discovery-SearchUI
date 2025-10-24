@@ -1,4 +1,4 @@
-@import "asf-theme-variables";
+@use "asf-theme-variables" as *;
 
 .view-btn {
   @include themify($themes) {

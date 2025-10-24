@@ -1,7 +1,7 @@
 @use "@angular/material" as mat;
 
-@import "asf-theme-variables";
-@import "flex-layout-sass/mixin";
+@use "asf-theme-variables" as *;
+@use "flex-layout-sass/mixin" as *;
 
 .bounds {
   padding: 0 0 0 0 !important;

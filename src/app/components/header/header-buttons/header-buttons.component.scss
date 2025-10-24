@@ -1,5 +1,5 @@
-@import "asf-theme-variables";
-@import "deluxe-menu";
+@use "asf-theme-variables" as *;
+@use "deluxe-menu" as *;
 
 .menu-item {
   display: flex;
