@@ -8,6 +8,7 @@ import {
   signal,
   ViewChild,
   inject,
+  DOCUMENT
 } from '@angular/core';
 import {
   distinctUntilChanged,
@@ -51,7 +52,7 @@ import {
 import { MatButton } from '@angular/material/button';
 import { PointHistoryState } from '@services/point-history.service';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-import { DOCUMENT } from '@angular/common';
+
 import { AsfLanguageService } from '@services/asf-language.service';
 import { SharedModule } from '@shared';
 
