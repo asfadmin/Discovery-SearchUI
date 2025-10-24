@@ -65,9 +65,14 @@
               "prismjs",
               "ua-parser-js",
               "@formatjs/intl-displaynames/polyfill",
+              "@formatjs/intl-displaynames/locale-data/en",
+              "@formatjs/intl-displaynames/locale-data/es",
               "webfont-matcher/lib/fonts/google.js",
               "mapbox-to-css-font",
-              "polygon-clipping"
+              "polygon-clipping",
+              "lerc",
+              "xml-utils",
+              "earcut"
             ],
             "extractLicenses": false,
             "sourceMap": true,
