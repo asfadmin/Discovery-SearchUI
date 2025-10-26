@@ -111,6 +111,7 @@ The application uses NgRx for centralized state management with a clear domain-b
 - `user` - User authentication and preferences
 - `hyp3` - HyP3 on-demand processing jobs
 - `charts` - Chart data and configurations
+- `templates` - Saved search templates
 
 Each domain has:
 - `*.action.ts` - NgRx actions
@@ -124,10 +125,12 @@ The app uses feature modules organized by domain:
 
 **Core Components** (`src/app/components/`):
 - `header/` - Main navigation, search controls, queue management
-- `sidebar/` - Filters panel and search refinement
+- `sidebar/` - Filters panel container
+- `filters-dropdown/` - Individual filter components
 - `map/` - OpenLayers-based map with drawing tools
 - `results-menu/` - Search results display and management
 - `baseline-chart/` - Baseline visualization for InSAR
+- `sbas-chart/` - SBAS (Small Baseline Subset) visualization
 - `timeseries-chart/` - Time series data visualization
 - `help/` - Help documentation and tutorials
 - `shared/` - Reusable components across features
@@ -153,6 +156,7 @@ TypeScript path aliases are configured in `tsconfig.json`:
 @directives/* → src/app/directives/*
 @shared/* → src/app/shared/*
 @environments/* → src/environments/*
+@testing/* → src/app/testing/*
 ```
 
 Always use these aliases instead of relative imports.
