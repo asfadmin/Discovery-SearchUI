@@ -1,0 +1,143 @@
+name: Composite Vertex Multi-Tenant Deploy Action
+
+description: |
+  Builds and deploys Vertex application with tenant-specific configuration.
+  Supports both Vertex and Vertex+ tenants across devel, test, and prod environments.
+
+inputs:
+  tenant:
+    description: 'Tenant identifier (vertex or vertex-plus)'
+    required: true
+    type: string
+  environment:
+    description: 'Environment (devel, test, or prod)'
+    required: true
+    type: string
+  cdn-id:
+    description: 'CloudFront distribution ID'
+    required: true
+    type: string
+  s3-bucket:
+    description: 'S3 bucket name for deployment'
+    required: true
+    type: string
+  aws-account-id:
+    description: 'AWS account ID for IAM role'
+    required: true
+    type: string
+
+runs:
+  using: "composite"
+  steps:
+    - name: Validate inputs
+      shell: bash
+      run: |
+        if [[ ! "${{ inputs.tenant }}" =~ ^(vertex|vertex-plus)$ ]]; then
+          echo "Error: tenant must be 'vertex' or 'vertex-plus'"
+          exit 1
+        fi
+        if [[ ! "${{ inputs.environment }}" =~ ^(devel|test|prod)$ ]]; then
+          echo "Error: environment must be 'devel', 'test', or 'prod'"
+          exit 1
+        fi
+        echo "✅ Building ${{ inputs.tenant }} for ${{ inputs.environment }} environment"
+
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 24
+        cache: 'npm'
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: arn:aws:iam::${{ inputs.aws-account-id }}:role/GitHub_Actions_Role_Vertex_${{ inputs.tenant }}_${{ inputs.environment }}
+        aws-region: us-east-1
+
+    - name: Verify AWS credentials
+      shell: bash
+      run: |
+        echo "📋 AWS Caller Identity:"
+        aws sts get-caller-identity
+
+    - name: Install dependencies
+      shell: bash
+      run: |
+        echo "📦 Installing npm dependencies..."
+        echo "{\"hash\":\"${{ github.sha }}\"}" > src/assets/commit-hash.json
+        npm ci
+
+    - name: Build Angular application
+      shell: bash
+      run: |
+        echo "🔨 Building ${{ inputs.tenant }} (${{ inputs.environment }})..."
+        BUILD_CONFIG="${{ inputs.environment }}-${{ inputs.tenant }}"
+        echo "Using build configuration: $BUILD_CONFIG"
+        npm run build:${{ inputs.environment }}:${{ inputs.tenant }}
+
+    - name: Verify build output
+      shell: bash
+      run: |
+        if [ ! -d "dist/search-ui/browser" ]; then
+          echo "❌ Error: Build output directory not found"
+          exit 1
+        fi
+        echo "✅ Build successful"
+        echo "📊 Build output size:"
+        du -sh dist/search-ui/browser
+
+    - name: Deploy to S3
+      shell: bash
+      run: |
+        echo "☁️  Deploying to S3: ${{ inputs.s3-bucket }}"
+        cd dist/search-ui/browser
+        aws s3 sync . "s3://${{ inputs.s3-bucket }}" \
+          --delete \
+          --cache-control "public, max-age=31536000, immutable" \
+          --exclude "index.html" \
+          --exclude "manifest.json" \
+          --exclude "ngsw.json"
+
+        # Upload cache-busting files with no-cache
+        aws s3 cp index.html "s3://${{ inputs.s3-bucket }}/index.html" \
+          --cache-control "no-cache, no-store, must-revalidate" \
+          --content-type "text/html"
+
+        if [ -f "manifest.json" ]; then
+          aws s3 cp manifest.json "s3://${{ inputs.s3-bucket }}/manifest.json" \
+            --cache-control "no-cache"
+        fi
+
+        if [ -f "ngsw.json" ]; then
+          aws s3 cp ngsw.json "s3://${{ inputs.s3-bucket }}/ngsw.json" \
+            --cache-control "no-cache"
+        fi
+
+    - name: Invalidate CloudFront cache
+      shell: bash
+      run: |
+        echo "🔄 Invalidating CloudFront distribution: ${{ inputs.cdn-id }}"
+        aws cloudfront create-invalidation \
+          --distribution-id ${{ inputs.cdn-id }} \
+          --paths \
+            /index.html \
+            /manifest.json \
+            /ngsw.json \
+            /favicon.ico \
+            /assets/i18n/* \
+            /assets/* \
+            /docs/* \
+            "/*"
+
+    - name: Deployment summary
+      shell: bash
+      run: |
+        echo "✅ Deployment complete!"
+        echo "📦 Tenant: ${{ inputs.tenant }}"
+        echo "🌍 Environment: ${{ inputs.environment }}"
+        echo "☁️  S3 Bucket: ${{ inputs.s3-bucket }}"
+        echo "🔗 CDN: ${{ inputs.cdn-id }}"
+        echo "📝 Commit: ${{ github.sha }}"

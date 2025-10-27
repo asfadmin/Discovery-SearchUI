@@ -1,24 +1,7 @@
-export const env = {
-  prod: {
-    api: 'https://api.daac.asf.alaska.edu',
-    auth: 'https://auth.asf.alaska.edu',
-    urs: 'https://urs.earthdata.nasa.gov',
-    urs_client_id: 'BO_n7nTIlMljdvU6kRRB3g',
-    banner: 'https://banners.asf.alaska.edu',
-    user_data: 'https://appdata.asf.alaska.edu',
-    unzip: 'https://unzip.asf.alaska.edu',
-    bulk_download: 'https://bulk-download.asf.alaska.edu',
-  },
-  test: {
-    api: 'https://api-test.asf.alaska.edu',
-    api_maturity: 'prod',
-    auth: 'https://auth.asf.alaska.edu',
-    urs: 'https://urs.earthdata.nasa.gov',
-    urs_client_id: 'BO_n7nTIlMljdvU6kRRB3g',
-    banner: 'https://banners.asf.alaska.edu',
-    user_data: 'https://cgdjuem3wc.execute-api.us-east-1.amazonaws.com/prod/',
-    unzip: 'https://unzip.asf.alaska.edu',
-    bulk_download: 'https://bulk-download.asf.alaska.edu',
-  },
-  defaultEnv: 'test',
-};
+// Import vertex tenant configuration as the default
+// This file will be replaced by build configurations for different tenants
+import { env as vertexEnv } from './envs/env-vertex';
+
+// Export the vertex configuration as default
+// File replacement in angular.json will swap this for vertex-plus builds
+export const env = vertexEnv;

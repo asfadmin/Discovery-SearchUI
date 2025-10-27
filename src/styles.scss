@@ -1,6 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 
 @use "@angular/material" as mat;
+
+// Import design tokens and brand configuration
+@use './styles/tokens';
+@use './styles/brand';
+
 @use './styles/asf-theme' as *;
 @use './styles/filter-list';
 @use 'ngx-toastr/toastr';

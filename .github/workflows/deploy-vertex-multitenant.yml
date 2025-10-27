@@ -1,0 +1,118 @@
+name: Deploy Vertex Multi-Tenant
+
+on:
+  push:
+    branches:
+      - main          # Deploy prod for both tenants
+      - test          # Deploy test for both tenants
+      - 'vertex/**'   # Deploy vertex-specific branches
+      - 'vertex-plus/**'  # Deploy vertex-plus-specific branches
+  workflow_dispatch:
+    inputs:
+      tenant:
+        description: 'Tenant to deploy (vertex, vertex-plus, or both)'
+        required: true
+        type: choice
+        options:
+          - both
+          - vertex
+          - vertex-plus
+        default: 'both'
+      environment:
+        description: 'Environment to deploy'
+        required: true
+        type: choice
+        options:
+          - devel
+          - test
+          - prod
+        default: 'test'
+
+jobs:
+  # Determine which tenants and environments to deploy based on branch or manual input
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Determine deployment matrix
+        id: set-matrix
+        run: |
+          # Manual workflow dispatch
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            TENANT="${{ github.event.inputs.tenant }}"
+            ENV="${{ github.event.inputs.environment }}"
+
+            if [ "$TENANT" == "both" ]; then
+              echo "matrix={\"include\":[{\"tenant\":\"vertex\",\"env\":\"$ENV\"},{\"tenant\":\"vertex-plus\",\"env\":\"$ENV\"}]}" >> $GITHUB_OUTPUT
+            else
+              echo "matrix={\"include\":[{\"tenant\":\"$TENANT\",\"env\":\"$ENV\"}]}" >> $GITHUB_OUTPUT
+            fi
+            exit 0
+          fi
+
+          # Automatic branch-based deployment
+          BRANCH="${{ github.ref_name }}"
+
+          case "$BRANCH" in
+            main)
+              # Deploy both tenants to production
+              echo "matrix={\"include\":[{\"tenant\":\"vertex\",\"env\":\"prod\"},{\"tenant\":\"vertex-plus\",\"env\":\"prod\"}]}" >> $GITHUB_OUTPUT
+              ;;
+            test)
+              # Deploy both tenants to test
+              echo "matrix={\"include\":[{\"tenant\":\"vertex\",\"env\":\"test\"},{\"tenant\":\"vertex-plus\",\"env\":\"test\"}]}" >> $GITHUB_OUTPUT
+              ;;
+            vertex/*)
+              # Deploy only vertex tenant to devel
+              echo "matrix={\"include\":[{\"tenant\":\"vertex\",\"env\":\"devel\"}]}" >> $GITHUB_OUTPUT
+              ;;
+            vertex-plus/*)
+              # Deploy only vertex-plus tenant to devel
+              echo "matrix={\"include\":[{\"tenant\":\"vertex-plus\",\"env\":\"devel\"}]}" >> $GITHUB_OUTPUT
+              ;;
+            *)
+              # No deployment for other branches
+              echo "matrix={\"include\":[]}" >> $GITHUB_OUTPUT
+              ;;
+          esac
+
+  # Build and deploy each tenant/environment combination
+  deploy:
+    needs: setup
+    if: needs.setup.outputs.matrix != '{"include":[]}'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJson(needs.setup.outputs.matrix) }}
+      fail-fast: false
+    environment: ${{ matrix.env }}-${{ matrix.tenant }}
+    permissions:
+      id-token: write
+      contents: read
+
+    name: Deploy ${{ matrix.tenant }} to ${{ matrix.env }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy using composite action
+        uses: ./.github/workflows/vertex-deploy-composite
+        with:
+          tenant: ${{ matrix.tenant }}
+          environment: ${{ matrix.env }}
+          cdn-id: ${{ vars.CDN_ID }}
+          s3-bucket: ${{ vars.S3_BUCKET }}
+          aws-account-id: ${{ secrets.AWS_ACCOUNT_ID }}
+
+      - name: Deployment notification
+        if: success()
+        run: |
+          echo "🎉 Successfully deployed ${{ matrix.tenant }} to ${{ matrix.env }}!"
+          echo "🔗 Deployment URL: ${{ vars.DEPLOYMENT_URL }}"
+
+      - name: Failure notification
+        if: failure()
+        run: |
+          echo "❌ Failed to deploy ${{ matrix.tenant }} to ${{ matrix.env }}"
+          exit 1

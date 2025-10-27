@@ -29,3 +29,5 @@ export * from './mapbox.model';
 export * from './copy-icon.model';
 export * from './timeseries.model';
 export * from './layers.model';
+export * from './feature-flags.enum';
+export * from './tenant-config.interface';

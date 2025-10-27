@@ -13,6 +13,7 @@ export { RangeService } from './range.service';
 export { PolygonValidationService } from './polygon-validation.service';
 export { AuthService } from './auth.service';
 export { EnvironmentService } from './environment.service';
+export { FeatureFlagService } from './feature-flag.service';
 export { PropertyService } from './property.service';
 export { LegacyAreaFormatService } from './legacy-area-format.service';
 export { BannerApiService } from './banner-api.service';

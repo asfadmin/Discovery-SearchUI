@@ -5,6 +5,7 @@ import {
   AfterViewInit,
   ViewChild,
   HostListener,
+  HostBinding,
   inject,
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
@@ -93,12 +94,21 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   private hyp3Service = inject(services.Hyp3ApiService);
   private themeService = inject(services.ThemingService);
   private drawService = inject(services.DrawService);
+  private envService = inject(services.EnvironmentService);
   translate = inject(TranslateService);
   language = inject(services.AsfLanguageService);
   _adapter = inject<DateAdapter<any>>(DateAdapter);
   private titleService = inject(Title);
   private pointHistoryService = inject(services.PointHistoryService);
   _locale = inject(MAT_DATE_LOCALE);
+
+  /**
+   * Apply tenant-specific CSS class to root component
+   * This enables tenant-specific styling via CSS class selectors
+   */
+  @HostBinding('class') get tenantClass() {
+    return `tenant-${this.envService.currentTenant}`;
+  }
 
   @ViewChild('sidenav', { static: true }) sidenav: MatSidenav;
 

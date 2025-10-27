@@ -1,0 +1,123 @@
+/**
+ * Vertex+ (HyP3+) Brand Overrides
+ *
+ * This file contains brand-specific design token overrides for the
+ * Vertex+ deployment (vertex-plus.asf.alaska.edu).
+ *
+ * Vertex+ uses a distinct color scheme to differentiate it from
+ * standard Vertex while maintaining professional ASF branding.
+ */
+
+/**
+ * Vertex+ Branding
+ * Uses a teal/cyan color scheme to distinguish from standard Vertex
+ */
+:root {
+  // Primary Brand Colors (Deep Teal/Cyan for Enterprise feel)
+  --brand-primary: #00796b;
+  --brand-primary-light: #48a999;
+  --brand-primary-dark: #004d40;
+  --brand-accent: #b0bec5;
+
+  // Secondary Brand Colors (Amber accent for contrast)
+  --brand-secondary: #ffa726;
+  --brand-secondary-light: #ffb74d;
+  --brand-secondary-dark: #f57c00;
+
+  // Logo & Branding Assets
+  --brand-logo-url: url('/assets/brands/vertex-plus/logo.svg');
+  --brand-favicon-url: url('/assets/brands/vertex-plus/favicon.ico');
+
+  // Additional brand-specific colors
+  --brand-highlight: #00897b;
+  --brand-link: #00796b;
+  --brand-link-hover: #004d40;
+
+  // Vertex+ specific accent color for "Plus" badge
+  --brand-plus-badge: #ffa726;
+  --brand-plus-badge-text: #ffffff;
+}
+
+/**
+ * Dark Theme Brand Overrides for Vertex+
+ */
+.theme-dark {
+  --brand-primary: #48a999;
+  --brand-primary-light: #80cbc4;
+  --brand-primary-dark: #00796b;
+  --brand-link: #48a999;
+  --brand-link-hover: #80cbc4;
+
+  // Plus badge in dark mode
+  --brand-plus-badge: #ffb74d;
+  --brand-plus-badge-text: #000000;
+}
+
+/**
+ * Brand-specific Component Overrides
+ * Use these classes to apply tenant-specific styling
+ */
+
+.tenant-vertex-plus {
+  // Header branding
+  .app-header {
+    background-color: var(--brand-primary);
+  }
+
+  // Links
+  a {
+    color: var(--brand-link);
+
+    &:hover {
+      color: var(--brand-link-hover);
+    }
+  }
+
+  // Buttons with brand color
+  .mat-mdc-raised-button.mat-primary {
+    background-color: var(--brand-primary);
+  }
+
+  // Beta/Plus badge styling
+  .beta-badge,
+  .plus-badge {
+    background-color: var(--brand-plus-badge);
+    color: var(--brand-plus-badge-text);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+/**
+ * Vertex+ Specific UI Elements
+ */
+
+// HyP3+ branding on processing components
+.hyp3-plus-branding {
+  .processing-title::after {
+    content: '+';
+    display: inline-block;
+    margin-left: 4px;
+    color: var(--brand-plus-badge);
+    font-weight: 700;
+    font-size: 1.2em;
+  }
+}
+
+// Advanced processing features indicator
+.advanced-feature-indicator {
+  border-left: 3px solid var(--brand-plus-badge);
+  padding-left: var(--spacing-sm);
+  background-color: color-mix(in srgb, var(--brand-plus-badge) 10%, transparent);
+}
+
+/**
+ * SCSS Variables for Build-Time Usage
+ */
+$vertex-plus-primary: #00796b;
+$vertex-plus-accent: #ffa726;
+$vertex-plus-warn: #f44336;

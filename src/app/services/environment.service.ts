@@ -3,12 +3,14 @@ import { env } from './env';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { SetSearchOutOfDate } from '@store/search';
+import { TenantConfig } from '@models';
 
 export interface Environments {
   prod: Environment;
   test: Environment;
-  [key: string]: Environment | string;
+  [key: string]: Environment | string | TenantConfig;
   defaultEnv: string;
+  tenant?: TenantConfig;
 }
 
 export interface Environment {
@@ -18,7 +20,7 @@ export interface Environment {
   api_maturity?: string;
   urs_client_id: string;
   unzip: string;
-  datapool: string;
+  datapool?: string;
   banner: string;
   user_data: string;
   bulk_download: string;
@@ -97,5 +99,37 @@ export class EnvironmentService {
   public resetToDefault(): void {
     this.envs = this.loadFromEnvFile();
     this.$store.dispatch(new SetSearchOutOfDate(true));
+  }
+
+  /**
+   * Get the tenant configuration for the current deployment
+   */
+  get tenantConfig(): TenantConfig | undefined {
+    return this.envs.tenant;
+  }
+
+  /**
+   * Get the current tenant identifier
+   */
+  get currentTenant(): string {
+    return this.tenantConfig?.tenant ?? 'vertex';
+  }
+
+  /**
+   * Check if the current tenant is Vertex+ (HyP3+)
+   */
+  get isVertexPlus(): boolean {
+    return this.currentTenant === 'vertex-plus';
+  }
+
+  /**
+   * Get branding configuration for the current tenant
+   */
+  get branding() {
+    return this.tenantConfig?.branding ?? {
+      appName: 'Vertex',
+      orgName: 'Alaska Satellite Facility',
+      supportEmail: 'uso@asf.alaska.edu',
+    };
   }
 }

@@ -7,7 +7,22 @@
     "start_local_asf": "ng serve --port 4447 --ssl true --host local.asf.alaska.edu",
     "build": "ng build --configuration production",
     "test": "ng test",
-    "lint": "eslint -c eslint.config.js  src"
+    "lint": "eslint -c eslint.config.js  src",
+    "build:devel:vertex": "ng build --configuration devel-vertex",
+    "build:test:vertex": "ng build --configuration test-vertex",
+    "build:prod:vertex": "ng build --configuration prod-vertex",
+    "build:devel:vertex-plus": "ng build --configuration devel-vertex-plus",
+    "build:test:vertex-plus": "ng build --configuration test-vertex-plus",
+    "build:prod:vertex-plus": "ng build --configuration prod-vertex-plus",
+    "serve:devel:vertex": "ng serve --configuration devel-vertex",
+    "serve:test:vertex": "ng serve --configuration test-vertex",
+    "serve:prod:vertex": "ng serve --configuration prod-vertex",
+    "serve:devel:vertex-plus": "ng serve --configuration devel-vertex-plus",
+    "serve:test:vertex-plus": "ng serve --configuration test-vertex-plus",
+    "serve:prod:vertex-plus": "ng serve --configuration prod-vertex-plus",
+    "build:all:vertex": "npm run build:devel:vertex && npm run build:test:vertex && npm run build:prod:vertex",
+    "build:all:vertex-plus": "npm run build:devel:vertex-plus && npm run build:test:vertex-plus && npm run build:prod:vertex-plus",
+    "build:all": "npm run build:all:vertex && npm run build:all:vertex-plus"
   },
   "private": true,
   "dependencies": {

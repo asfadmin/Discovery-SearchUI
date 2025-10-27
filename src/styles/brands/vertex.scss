@@ -1,0 +1,78 @@
+/**
+ * Vertex Brand Overrides
+ *
+ * This file contains brand-specific design token overrides for the
+ * standard Vertex deployment (search.asf.alaska.edu).
+ *
+ * These overrides are applied on top of the base tokens defined in tokens.scss
+ */
+
+/**
+ * Standard Vertex Branding
+ * Uses the traditional ASF blue color scheme
+ */
+:root {
+  // Primary Brand Colors (ASF Blue)
+  --brand-primary: #236192;
+  --brand-primary-light: #5a8bb8;
+  --brand-primary-dark: #134266;
+  --brand-accent: #bdbdbd;
+
+  // Secondary Brand Colors (Yellow accent)
+  --brand-secondary: #fdd835;
+  --brand-secondary-light: #ffeb3b;
+  --brand-secondary-dark: #f9a825;
+
+  // Logo & Branding Assets
+  --brand-logo-url: url('/assets/brands/vertex/logo.svg');
+  --brand-favicon-url: url('/assets/brands/vertex/favicon.ico');
+
+  // Additional brand-specific colors
+  --brand-highlight: #236192;
+  --brand-link: #236192;
+  --brand-link-hover: #134266;
+}
+
+/**
+ * Dark Theme Brand Overrides for Vertex
+ */
+.theme-dark {
+  --brand-primary: #5a8bb8;
+  --brand-primary-light: #8bb4d0;
+  --brand-primary-dark: #236192;
+  --brand-link: #5a8bb8;
+  --brand-link-hover: #8bb4d0;
+}
+
+/**
+ * Brand-specific Component Overrides
+ * Use these classes to apply tenant-specific styling
+ */
+
+.tenant-vertex {
+  // Header branding
+  .app-header {
+    background-color: var(--brand-primary);
+  }
+
+  // Links
+  a {
+    color: var(--brand-link);
+
+    &:hover {
+      color: var(--brand-link-hover);
+    }
+  }
+
+  // Buttons with brand color
+  .mat-mdc-raised-button.mat-primary {
+    background-color: var(--brand-primary);
+  }
+}
+
+/**
+ * SCSS Variables for Build-Time Usage
+ */
+$vertex-primary: #236192;
+$vertex-accent: #fdd835;
+$vertex-warn: #f44336;

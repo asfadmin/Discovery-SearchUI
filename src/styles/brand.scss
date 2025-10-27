@@ -1,0 +1,13 @@
+/**
+ * Brand Configuration
+ *
+ * This file imports both brand stylesheets so they are available at runtime.
+ * The appropriate brand styles are activated by applying a tenant class
+ * (tenant-vertex or tenant-vertex-plus) to the root element.
+ *
+ * This approach allows runtime tenant switching without build-time file replacement.
+ */
+
+// Import both brand stylesheets
+@use 'brands/vertex';
+@use 'brands/vertex-plus';

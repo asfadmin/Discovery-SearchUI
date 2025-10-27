@@ -98,6 +98,84 @@
               "sourceMap": true,
               "optimization": false,
               "extractLicenses": false
+            },
+            "devel-vertex": {
+              "fileReplacements": [
+                {
+                  "replace": "src/app/services/env.ts",
+                  "with": "src/app/services/envs/env-vertex.ts"
+                }
+              ],
+              "optimization": false,
+              "outputHashing": "none",
+              "sourceMap": true,
+              "namedChunks": true,
+              "extractLicenses": false
+            },
+            "test-vertex": {
+              "fileReplacements": [
+                {
+                  "replace": "src/app/services/env.ts",
+                  "with": "src/app/services/envs/env-vertex.ts"
+                }
+              ],
+              "optimization": false,
+              "outputHashing": "none",
+              "sourceMap": true,
+              "namedChunks": true,
+              "extractLicenses": false
+            },
+            "prod-vertex": {
+              "fileReplacements": [
+                {
+                  "replace": "src/app/services/env.ts",
+                  "with": "src/app/services/envs/env-vertex.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true
+            },
+            "devel-vertex-plus": {
+              "fileReplacements": [
+                {
+                  "replace": "src/app/services/env.ts",
+                  "with": "src/app/services/envs/env-vertex-plus.ts"
+                }
+              ],
+              "optimization": false,
+              "outputHashing": "none",
+              "sourceMap": true,
+              "namedChunks": true,
+              "extractLicenses": false
+            },
+            "test-vertex-plus": {
+              "fileReplacements": [
+                {
+                  "replace": "src/app/services/env.ts",
+                  "with": "src/app/services/envs/env-vertex-plus.ts"
+                }
+              ],
+              "optimization": false,
+              "outputHashing": "none",
+              "sourceMap": true,
+              "namedChunks": true,
+              "extractLicenses": false
+            },
+            "prod-vertex-plus": {
+              "fileReplacements": [
+                {
+                  "replace": "src/app/services/env.ts",
+                  "with": "src/app/services/envs/env-vertex-plus.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true
             }
           },
           "defaultConfiguration": "production"
@@ -113,6 +191,24 @@
             },
             "local": {
               "buildTarget": "search-ui:build:local"
+            },
+            "devel-vertex": {
+              "buildTarget": "search-ui:build:devel-vertex"
+            },
+            "test-vertex": {
+              "buildTarget": "search-ui:build:test-vertex"
+            },
+            "prod-vertex": {
+              "buildTarget": "search-ui:build:prod-vertex"
+            },
+            "devel-vertex-plus": {
+              "buildTarget": "search-ui:build:devel-vertex-plus"
+            },
+            "test-vertex-plus": {
+              "buildTarget": "search-ui:build:test-vertex-plus"
+            },
+            "prod-vertex-plus": {
+              "buildTarget": "search-ui:build:prod-vertex-plus"
             }
           }
         },

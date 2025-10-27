@@ -1,0 +1,28 @@
+name: Deploy Vertex (Test)
+
+on:
+  push:
+    branches:
+      - test
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: test-vertex
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy Vertex to Test
+        uses: ./.github/workflows/vertex-deploy-composite
+        with:
+          tenant: vertex
+          environment: test
+          cdn-id: ${{ vars.CDN_ID_VERTEX_TEST }}
+          s3-bucket: ${{ vars.S3_BUCKET_VERTEX_TEST }}
+          aws-account-id: ${{ secrets.AWS_ACCOUNT_ID }}
