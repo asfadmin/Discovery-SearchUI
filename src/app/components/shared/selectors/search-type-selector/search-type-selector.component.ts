@@ -222,7 +222,6 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   }
 
   public onSearchTypeMenuOpen() {
-    console.log('onSearchTypeMenuOpen - menu opened');
   }
 
   ngOnDestroy() {
