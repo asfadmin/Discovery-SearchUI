@@ -221,8 +221,7 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
     event.stopPropagation();
   }
 
-  public onSearchTypeMenuOpen() {
-  }
+  public onSearchTypeMenuOpen() {}
 
   ngOnDestroy() {
     this.subs.unsubscribe();
