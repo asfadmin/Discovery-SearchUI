@@ -638,8 +638,18 @@ export function filtersReducer(
         return {
           ...state,
           dateRange: filters.dateRange,
-          temporalRange: filters.temporalRange,
-          perpendicularRange: filters.perpendicularRange,
+          temporalRange: filters.temporalRange || {
+            start: null,
+            end: null,
+          },
+          perpendicularRange: filters.perpendicularRange || {
+            start: null,
+            end: null,
+          },
+          season: filters.season || {
+            start: null,
+            end: null,
+          },
         };
       } else if (search.searchType === models.SearchType.SBAS) {
         const filters = search.filters as models.SbasFiltersType;
@@ -647,18 +657,25 @@ export function filtersReducer(
         return {
           ...state,
           dateRange: filters.dateRange,
-          temporalRange: {
-            start: filters.temporalRange.start,
-            end: filters.temporalRange.end,
+          temporalRange: filters.temporalRange || {
+            start: null,
+            end: null,
           },
-          perpendicularRange: filters.perpendicular,
+          perpendicularRange: filters.perpendicular || {
+            start: null,
+            end: null,
+          },
+          season: filters.season || {
+            start: null,
+            end: null,
+          },
         };
       } else if (search.searchType === models.SearchType.CUSTOM_PRODUCTS) {
         const filters = search.filters as models.CustomProductFiltersType;
 
         return {
           ...state,
-          jobStatuses: filters.jobStatuses,
+          jobStatuses: filters.jobStatuses || [],
           dateRange: filters.dateRange,
           projectName: filters.projectName,
           productFilterName: filters.productFilterName,
@@ -669,13 +686,22 @@ export function filtersReducer(
         return {
           ...state,
           dateRange: filters.dateRange,
-          sarviewsEventTypes: filters.sarviewsEventTypes,
+          sarviewsEventTypes: filters.sarviewsEventTypes || [],
           sarviewsEventNameFilter: filters.sarviewsEventNameFilter,
           sarviewsEventActiveOnly: filters.activeOnly,
-          sarviewsMagnitudeRange: filters.magnitude,
-          hyp3ProductTypes: filters.hyp3ProductTypes,
-          pathRange: filters.pathRange,
-          frameRange: filters.frameRange,
+          sarviewsMagnitudeRange: filters.magnitude || {
+            start: null,
+            end: null,
+          },
+          hyp3ProductTypes: filters.hyp3ProductTypes || [],
+          pathRange: filters.pathRange || {
+            start: null,
+            end: null,
+          },
+          frameRange: filters.frameRange || {
+            start: null,
+            end: null,
+          },
         };
       } else if (search.searchType === models.SearchType.DERIVED_DATASETS) {
         // TODO: Don't make geosearch default case or handle no
@@ -686,7 +712,7 @@ export function filtersReducer(
 
         return {
           ...state,
-          flightDirections: new Set(filters.flightDirections),
+          flightDirections: new Set(filters.flightDirections || []),
           dateRange: filters.dateRange,
         };
       } else {
@@ -696,14 +722,16 @@ export function filtersReducer(
           (d) => d.id === filters.selectedDataset,
         )[0];
 
-        const filterSubtypes = new Set(filters.subtypes.map((t) => t.apiValue));
+        const filterSubtypes = new Set(
+          (filters.subtypes || []).map((t) => t.apiValue),
+        );
 
         const subtypes = dataset.subtypes.filter((subtype) =>
           filterSubtypes.has(subtype.apiValue),
         );
 
         const filterProductTypes = new Set(
-          filters.productTypes.map((t) => t.apiValue),
+          (filters.productTypes || []).map((t) => t.apiValue),
         );
 
         const productTypes = dataset.productTypes.filter((productType) =>
@@ -715,26 +743,35 @@ export function filtersReducer(
           selectedDatasetId: filters.selectedDataset,
           maxResults: filters.maxResults,
           dateRange: filters.dateRange,
-          pathRange: filters.pathRange,
-          frameRange: filters.frameRange,
-          season: filters.season,
+          pathRange: filters.pathRange || {
+            start: null,
+            end: null,
+          },
+          frameRange: filters.frameRange || {
+            start: null,
+            end: null,
+          },
+          season: filters.season || {
+            start: null,
+            end: null,
+          },
           productTypes,
-          beamModes: filters.beamModes,
-          polarizations: filters.polarizations,
-          flightDirections: new Set(filters.flightDirections),
+          beamModes: filters.beamModes || [],
+          polarizations: filters.polarizations || [],
+          flightDirections: new Set(filters.flightDirections || []),
           subtypes,
           selectedMission: filters.selectedMission,
-          fullBurstIDs: filters.fullBurstIDs,
-          operaBurstIDs: filters.operaBurstIDs,
+          fullBurstIDs: filters.fullBurstIDs || [],
+          operaBurstIDs: filters.operaBurstIDs || [],
           useCalibrationData: filters.useCalibrationData,
-          shortNames: filters.shortNames,
-          scienceProduct: filters.scienceProduct,
-          productionConfig: filters.productionConfig,
-          sidePolarizations: filters.sidePolarizations,
-          frameCoverage: filters.frameCoverage,
+          shortNames: filters.shortNames || [],
+          scienceProduct: filters.scienceProduct || [],
+          productionConfig: filters.productionConfig || [],
+          sidePolarizations: filters.sidePolarizations || [],
+          frameCoverage: filters.frameCoverage || [],
           jointObservation: filters.jointObservation,
-          rangeBandwidth: filters.rangeBandwidth,
-          instrument: filters.instrument,
+          rangeBandwidth: filters.rangeBandwidth || [],
+          instrument: filters.instrument || [],
           groupID: filters.groupID,
         };
       }

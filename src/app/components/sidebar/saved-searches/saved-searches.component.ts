@@ -151,6 +151,7 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
   }
 
   public onSetSearch(search: models.Search): void {
+    this.store$.dispatch(new uiStore.CloseSidebar());
     this.searchService.load(search);
   }
 
