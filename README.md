@@ -8,12 +8,27 @@ CodeFactor](https://www.codefactor.io/repository/github/asfadmin/discovery-searc
  ASF's Angular search web application
 
 ## Deployments
-| Maturity | Deployment |
-| --- | --- |
-| Test | https://search-test.asf.alaska.edu/ |
-| Prod | https://search.asf.alaska.edu/ |
 
-### Personal Deployment (deployment.py)
+### Vertex (Standard)
+| Environment | Deployment |
+| --- | --- |
+| Development | https://vertex-devel.asf.alaska.edu/ |
+| Test | https://vertex-test.asf.alaska.edu/ <br> https://search-test.asf.alaska.edu/ |
+| Production | https://search.asf.alaska.edu/ |
+
+### Vertex+ (HyP3+)
+| Environment | Deployment |
+| --- | --- |
+| Development | https://vertex-plus-devel.asf.alaska.edu/ |
+| Test | https://vertex-plus-test.asf.alaska.edu/ |
+| Production | https://vertex-plus.asf.alaska.edu/ |
+
+### Branch-Based Deployments
+- **`main` branch** → Both tenants to production
+- **`test` branch** → Both tenants to test
+- **`vertex/*` branches** → Vertex to development
+- **`vertex-plus/*` branches** → Vertex+ to development
+- **Personal branches** (`{name}/{topic}`) → Automatic development deployments
 
 ASF Developers have their own personal deployments that build automatically from any branch with the matching identifier with their name `{name}/{topic}`
 
@@ -70,6 +85,35 @@ Run `npm install --save package_name` to install a package.
 ## Build
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+
+### Multi-Tenant Builds
+
+The application supports builds for two tenants: **Vertex** (Standard) and **Vertex+** (HyP3+).
+
+**Vertex Builds:**
+```bash
+npm run build:devel:vertex      # Development
+npm run build:test:vertex       # Test
+npm run build:prod:vertex       # Production (default)
+```
+
+**Vertex+ Builds:**
+```bash
+npm run build:devel:vertex-plus # Development
+npm run build:test:vertex-plus  # Test
+npm run build:prod:vertex-plus  # Production
+```
+
+**Build All Configurations:**
+```bash
+npm run build:all               # Builds all 6 variants (2 tenants × 3 environments)
+```
+
+**Local Testing:**
+```bash
+npm run serve:test:vertex       # Test Vertex configuration locally
+npm run serve:test:vertex-plus  # Test Vertex+ configuration locally
+```
 
 ## Translating Text
 The package [ngx-translate](http://www.ngx-translate.com/) is use enable multilingual support. Any text a user can view on the UI, excluding possibly
@@ -179,6 +223,129 @@ The app uses `ngx-translate` for multilingual support:
 
 **Important:** The project has been fully migrated to modern Sass (@use/@forward). Do not use deprecated @import syntax or color functions.
 
+## Multi-Tenant Architecture
+
+The application supports **multi-tenant deployments** from a single codebase, powering both **Vertex** (Standard) and **Vertex+** (HyP3+) with distinct feature sets and branding.
+
+### Architecture Overview
+
+**Single Codebase + Runtime Configuration + Feature Flags:**
+- Type-safe feature flag system (17 flags)
+- Tenant-specific configurations
+- Build-time tenant selection (6 configurations: 2 tenants × 3 environments)
+- Separate deployments per tenant
+- Automated CI/CD pipeline
+
+### Feature Flags System
+
+The application uses a comprehensive feature flag system to control functionality across tenants:
+
+**HyP3+ Features:**
+- `SHOW_HYP3_PLUS_BRANDING` - Show Vertex+ branding and UI elements
+- `ENABLE_ENTERPRISE_API` - Use enterprise HyP3 endpoints
+- `SHOW_ADVANCED_PROCESSING` - Display advanced processing options
+
+**Search Features:**
+- `ENABLE_EVENT_SEARCH` - SARViews event-based search
+- `ENABLE_DISPLACEMENT_SEARCH` - Displacement search
+- `ENABLE_SBAS_SEARCH` - SBAS (Small Baseline Subset) search
+- `ENABLE_BASELINE_SEARCH` - Baseline search
+- `ENABLE_TIMESERIES_SEARCH` - Timeseries search
+- `ENABLE_DERIVED_DATASETS` - Derived datasets access
+
+**UI Features:**
+- `SHOW_BETA_BANNER` - Display beta/preview banner
+- `ENABLE_NEW_MAP_TOOLS` - Enable new map tools
+- `SHOW_EXPORT_OPTIONS` - Export functionality
+- `SHOW_DOWNLOAD_QUEUE` - Download queue management
+
+**API Features:**
+- `USE_DAAC_HYP3` - Use DAAC HyP3 vs Enterprise HyP3
+- `ENABLE_BULK_DOWNLOAD` - Bulk download capabilities
+- `ENABLE_CMR_SEARCH` - CMR integration
+- `ENABLE_ADVANCED_FILTERS` - Advanced filter options
+
+### Using Feature Flags
+
+**In TypeScript:**
+```typescript
+import { FeatureFlagService } from '@services';
+import { FeatureFlag } from '@models';
+
+constructor(private featureFlags: FeatureFlagService) {}
+
+// Check single flag
+if (this.featureFlags.isEnabled(FeatureFlag.SHOW_HYP3_PLUS_BRANDING)) {
+  // Vertex+ specific code
+}
+
+// Check multiple flags
+if (this.featureFlags.areAllEnabled(FeatureFlag.ENABLE_ENTERPRISE_API, FeatureFlag.SHOW_ADVANCED_PROCESSING)) {
+  // Code requiring both flags
+}
+```
+
+**In Templates:**
+```html
+<!-- Conditional rendering -->
+<div *appFeatureFlag="FeatureFlag.SHOW_HYP3_PLUS_BRANDING">
+  <app-vertex-plus-feature></app-vertex-plus-feature>
+</div>
+
+<!-- With else template -->
+<div *appFeatureFlag="FeatureFlag.SHOW_ADVANCED_PROCESSING; else basicProcessing">
+  <app-advanced-processing></app-advanced-processing>
+</div>
+<ng-template #basicProcessing>
+  <app-basic-processing></app-basic-processing>
+</ng-template>
+```
+
+**In Routes:**
+```typescript
+import { featureFlagGuard } from '@guards';
+import { FeatureFlag } from '@models';
+
+const routes: Routes = [
+  {
+    path: 'advanced',
+    component: AdvancedComponent,
+    canActivate: [featureFlagGuard(FeatureFlag.SHOW_ADVANCED_PROCESSING)]
+  }
+];
+```
+
+### Branding System
+
+The application uses CSS custom properties for tenant-specific branding:
+
+- **Vertex (Standard)** - ASF Blue branding (`src/styles/brands/vertex.scss`)
+- **Vertex+ (HyP3+)** - Teal branding (`src/styles/brands/vertex-plus.scss`)
+
+The app automatically applies `.tenant-vertex` or `.tenant-vertex-plus` class to the root element based on the active tenant configuration.
+
+### Key Files
+
+**Feature Flag System:**
+- `src/app/models/feature-flags.enum.ts` - Feature flag enum definitions
+- `src/app/services/feature-flag.service.ts` - Feature flag checking service
+- `src/app/guards/feature-flag.guard.ts` - Functional route guard
+- `src/app/directives/feature-flag.directive.ts` - Structural directive for templates
+
+**Tenant Configurations:**
+- `src/app/models/tenant-config.interface.ts` - TypeScript interfaces for tenant config
+- `src/app/services/envs/env-vertex.ts` - Vertex tenant configuration with feature flags
+- `src/app/services/envs/env-vertex-plus.ts` - Vertex+ tenant configuration with feature flags
+- `src/app/services/environment.service.ts` - Environment configuration management
+
+### Documentation
+
+For comprehensive implementation details, see:
+- `MULTI_TENANT_IMPLEMENTATION_SUMMARY.md` - Complete overview of implementation
+- `FEATURE_FLAGS_GUIDE.md` - Detailed feature flag usage patterns and examples
+- `ON_DEMAND_TO_HYP3_PLUS_MIGRATION.md` - Migration guide for "On Demand" → "HyP3+" renaming
+- `CICD_SETUP_GUIDE.md` - CI/CD pipeline configuration and AWS setup
+
 ## Key Dependencies
 
 - **Angular 20** - Framework
@@ -213,19 +380,18 @@ Use `_` prefix for intentionally unused parameters (e.g., `_event`, `_index`) to
 ### Node.js Built-in Polyfills
 Angular 20's esbuild-based builder requires explicit polyfills for Node.js built-in modules. The `buffer` polyfill has been added to `src/polyfills.ts`. If other Node.js modules are needed, add them similarly.
 
-## Deployments
-
-- **Test:** https://search-test.asf.alaska.edu/
-- **Prod:** https://search.asf.alaska.edu/
-- **Personal:** Developers can deploy branches named `{name}/{topic}` automatically
-
 ## Environment Configuration
 
-Environments are in `src/environments/`:
+**Standard environments** in `src/environments/`:
 - `environment.ts` - Development
 - `environment.prod.ts` - Production
 
-Build uses file replacement to swap environments during production builds.
+**Tenant-specific configurations** in `src/app/services/envs/`:
+- `env.ts` - Default environment configuration (file replaced at build time)
+- `env-vertex.ts` - Vertex tenant configuration with feature flags
+- `env-vertex-plus.ts` - Vertex+ tenant configuration with feature flags
+
+Build system uses file replacement to swap both standard environments and tenant configurations at build time based on the selected build configuration (e.g., `build:prod:vertex` uses `env-vertex.ts`, `build:prod:vertex-plus` uses `env-vertex-plus.ts`).
 
 ## Further help
 
