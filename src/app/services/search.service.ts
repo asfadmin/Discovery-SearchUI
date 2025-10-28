@@ -72,8 +72,8 @@ export class SearchService {
 
     this.loadSearch(search);
 
-    this.store$.dispatch(new uiStore.CloseSidebar());
     this.store$.dispatch(new MakeSearch());
+    this.store$.dispatch(new uiStore.CloseSidebar());
   }
 
   public loadSearch(search: models.Search) {
