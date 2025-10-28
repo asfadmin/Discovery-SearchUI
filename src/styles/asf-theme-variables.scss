@@ -1,6 +1,3 @@
-/* This file contains only theme variables and mixins WITHOUT the actual theme application */
-/* Import this file in component SCSS files instead of asf-theme.scss */
-
 @use "@angular/material" as mat;
 @use "sass:color";
 @use "sass:map";
@@ -41,16 +38,16 @@ $asf-background-white: lighten($asf-primary, 80%);
 $themes: (
   light: (
     background-white: lighten(mat.m2-get-color-from-palette($asf-app-primary), 80%),
-    dark-primary-text: rgba(0,0,0,0.87),
-    dark-secondary-text: rgba(0,0,0,0.54),
-    dark-disabled-text: rgba(0,0,0,0.38),
-    dark-dividers: rgba(0,0,0,0.12),
-    dark-focused: rgba(0,0,0,0.12),
+    dark-primary-text: rgb(0 0 0 / 0.87),
+    dark-secondary-text: rgb(0 0 0 / 0.54),
+    dark-disabled-text: rgb(0 0 0 / 0.38),
+    dark-dividers: rgb(0 0 0 / 0.12),
+    dark-focused: rgb(0 0 0 / 0.12),
     light-primary-text: white,
-    light-secondary-text: rgba(255,255,255, 0.7),
-    light-disabled-text: rgba(255,255,255, 0.5),
-    light-dividers: rgba(255,255,255, 0.12),
-    light-focused: rgba(255,255,255, 0.12),
+    light-secondary-text: rgb(255 255 255 / 0.7),
+    light-disabled-text: rgb(255 255 255 / 0.5),
+    light-dividers: rgb(255 255 255 / 0.12),
+    light-focused: rgb(255 255 255 / 0.12),
     borders: lightgray,
     primary: mat.m2-get-color-from-palette($asf-app-primary),
     accent: mat.m2-get-color-from-palette($asf-app-accent),
@@ -63,15 +60,15 @@ $themes: (
   ),
   dark: (
     light-primary-text: white,
-    light-secondary-text: rgba(255,255,255, 0.54),
-    light-disabled-text: rgba(255,255,255, 0.38),
-    light-dividers: rgba(255,255,255, 0.12),
-    light-focused: rgba(255,255,255, 0.12),
-    dark-primary-text: rgb(183, 183, 183),
-    dark-secondary-text: rgba(183, 183, 183, 0.7),
-    dark-disabled-text: rgba(183, 183, 183, 0.5),
-    dark-dividers: rgba(255,255,255, 0.12),
-    dark-focused: rgba(255,255,255, 0.12),
+    light-secondary-text: rgb(255 255 255 / 0.54),
+    light-disabled-text: rgb(255 255 255 / 0.38),
+    light-dividers: rgb(255 255 255 / 0.12),
+    light-focused: rgb(255 255 255 / 0.12),
+    dark-primary-text: rgb(183 183 183),
+    dark-secondary-text: rgb(183 183 183 / 0.7),
+    dark-disabled-text: rgb(183 183 183 / 0.5),
+    dark-dividers: rgb(255 255 255 / 0.12),
+    dark-focused: rgb(255 255 255 / 0.12),
     borders: lightgray,
     inverted-image: invert(100%),
     primary: mat.m2-get-color-from-palette($asf-app-dark-primary),
