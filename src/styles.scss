@@ -974,3 +974,105 @@ $d-height: 550px;
   border-radius: 2px !important;
 }
 
+// Fix for icons turning black on hover in result-div button toggles
+// The mat-icon-no-color class prevents color inheritance, so we need to override it
+// Since SVG uses fill="currentColor", we need to set the color property
+
+// Target mat-button-toggle-appearance-standard specifically
+.control-mat-button-toggle.mat-button-toggle-appearance-standard:hover .mat-icon,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-focused .mat-icon,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-icon,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard:hover .list-icon,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-focused .list-icon,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-mouse-focused .list-icon,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard:hover .mat-icon-no-color,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-focused .mat-icon-no-color,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-icon-no-color,
+.mat-button-toggle-appearance-standard:hover .mat-icon,
+.mat-button-toggle-appearance-standard.cdk-focused .mat-icon,
+.mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-icon,
+.mat-button-toggle-appearance-standard:hover .list-icon,
+.mat-button-toggle-appearance-standard.cdk-focused .list-icon,
+.mat-button-toggle-appearance-standard.cdk-mouse-focused .list-icon,
+.mat-button-toggle-appearance-standard:hover .mat-icon-no-color,
+.mat-button-toggle-appearance-standard.cdk-focused .mat-icon-no-color,
+.mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-icon-no-color {
+  @include themify_non_host($themes) {
+    color: themed('dark-primary-text') !important;
+  }
+}
+
+// Also target within result-div
+#result-div .mat-button-toggle-appearance-standard:hover .mat-icon-no-color,
+#result-div .mat-button-toggle-appearance-standard.cdk-focused .mat-icon-no-color,
+#result-div .mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-icon-no-color,
+#result-div .mat-button-toggle-appearance-standard:hover .list-icon,
+#result-div .mat-button-toggle-appearance-standard.cdk-focused .list-icon,
+#result-div .mat-button-toggle-appearance-standard.cdk-mouse-focused .list-icon {
+  @include themify_non_host($themes) {
+    color: themed('dark-primary-text') !important;
+  }
+}
+
+// Also target the scenes-list-buttons layout specifically
+.scenes-list-buttons--layout .mat-button-toggle-appearance-standard:hover .mat-icon-no-color,
+.scenes-list-buttons--layout .mat-button-toggle-appearance-standard.cdk-focused .mat-icon-no-color,
+.scenes-list-buttons--layout .mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-icon-no-color,
+.scenes-list-buttons--layout .mat-button-toggle-appearance-standard:hover .list-icon,
+.scenes-list-buttons--layout .mat-button-toggle-appearance-standard.cdk-focused .list-icon,
+.scenes-list-buttons--layout .mat-button-toggle-appearance-standard.cdk-mouse-focused .list-icon {
+  @include themify_non_host($themes) {
+    color: themed('dark-primary-text') !important;
+  }
+}
+
+// Broader fallback for all mat-button-toggles
+.mat-button-toggle:hover .mat-icon-no-color,
+.mat-button-toggle.cdk-focused .mat-icon-no-color,
+.mat-button-toggle.cdk-mouse-focused .mat-icon-no-color,
+.mat-button-toggle:hover .list-icon,
+.mat-button-toggle.cdk-focused .list-icon,
+.mat-button-toggle.cdk-mouse-focused .list-icon {
+  @include themify_non_host($themes) {
+    color: themed('dark-primary-text') !important;
+  }
+}
+
+// Fix button background turning black/white on hover
+// Override button backgrounds to maintain themed colors
+.control-mat-button-toggle.mat-button-toggle-appearance-standard:hover,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-focused,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-mouse-focused,
+.mat-button-toggle-appearance-standard:hover,
+.mat-button-toggle-appearance-standard.cdk-focused,
+.mat-button-toggle-appearance-standard.cdk-mouse-focused {
+  @include themify_non_host($themes) {
+    background-color: themed('background-white') !important;
+  }
+}
+
+// Make internal button elements transparent
+.mat-button-toggle-appearance-standard:hover .mat-button-toggle-button,
+.mat-button-toggle-appearance-standard.cdk-focused .mat-button-toggle-button,
+.mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-button-toggle-button,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard:hover .mat-button-toggle-button,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-focused .mat-button-toggle-button,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-button-toggle-button {
+  background-color: transparent !important;
+}
+
+// Target the focus overlay and make it transparent
+.mat-button-toggle-appearance-standard .mat-button-toggle-focus-overlay,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard .mat-button-toggle-focus-overlay {
+  background-color: transparent !important;
+  opacity: 0 !important;
+}
+
+// Hide ripple effects on button toggles
+.mat-button-toggle-appearance-standard .mat-button-toggle-ripple,
+.mat-button-toggle-appearance-standard .mat-ripple,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard .mat-button-toggle-ripple,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard .mat-ripple {
+  display: none !important;
+}
+
