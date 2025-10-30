@@ -123,7 +123,7 @@ export class UrlStateService {
       this.store$.dispatch(new SetSearchType(models.SearchType.DISPLACEMENT));
     }
     this.activatedRoute.queryParams
-      .pipe(skip(1), debounceTime(300), take(1))
+      .pipe(debounceTime(300), take(1))
       .subscribe((params) => this.loadStateFrom(params));
 
     this.urlParamNames.forEach((paramName) =>
