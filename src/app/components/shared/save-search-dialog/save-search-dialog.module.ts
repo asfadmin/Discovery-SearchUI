@@ -8,13 +8,10 @@ import { MatSharedModule } from '@shared';
 
 import { SaveSearchDialogComponent } from './save-search-dialog.component';
 import { SearchFiltersModule } from '@components/sidebar/saved-searches/saved-search/search-filters';
-import { SharedModule } from "@shared";
-
+import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [
-    SaveSearchDialogComponent
-  ],
+  declarations: [SaveSearchDialogComponent],
   imports: [
     CommonModule,
     MatDialogModule,
@@ -22,10 +19,8 @@ import { SharedModule } from "@shared";
     FormsModule,
     MatSharedModule,
     SearchFiltersModule,
-    SharedModule
+    SharedModule,
   ],
-  exports: [
-    SaveSearchDialogComponent
-  ]
+  exports: [SaveSearchDialogComponent],
 })
-export class SaveSearchDialogModule { }
+export class SaveSearchDialogModule {}

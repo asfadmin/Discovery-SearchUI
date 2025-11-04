@@ -1,15 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-help-login',
   templateUrl: './help-login.component.html',
-  styleUrls: ['./help-login.component.scss']
+  styleUrls: ['./help-login.component.scss'],
 })
-export class HelpLoginComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-}
+export class HelpLoginComponent {}

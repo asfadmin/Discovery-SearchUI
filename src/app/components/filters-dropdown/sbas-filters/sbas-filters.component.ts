@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
@@ -16,23 +16,26 @@ enum FilterPanel {
   FILTER2 = 'Temporal Filter',
   DATE = 'Date',
   SEASON = 'Season',
-  OVERLAP = 'Overlap'
+  OVERLAP = 'Overlap',
 }
 
 @Component({
   selector: 'app-sbas-filters',
   templateUrl: './sbas-filters.component.html',
-  styleUrls: ['./sbas-filters.component.scss']
+  styleUrls: ['./sbas-filters.component.scss'],
 })
 export class SbasFiltersComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
   public areResultsLoaded: boolean;
-  public shouldUseFramesForReference: boolean = false;
+  public shouldUseFramesForReference = false;
 
   public datasets = [models.beta];
-  public selectedDataset = 'SENTINEL-1 INTERFEROGRAM (BETA)'
-  
+  public selectedDataset = 'SENTINEL-1 INTERFEROGRAM (BETA)';
+
   selectedPanel: FilterPanel | null = null;
   panels = FilterPanel;
   defaultPanelOpenState = true;
@@ -42,23 +45,21 @@ export class SbasFiltersComponent implements OnInit, OnDestroy {
 
   private subs = new SubSink();
 
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-  ) { }
-
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(scenesStore.getAreResultsLoaded).subscribe(
-        areLoaded => this.areResultsLoaded = areLoaded
-      )
+      this.store$
+        .select(scenesStore.getAreResultsLoaded)
+        .subscribe((areLoaded) => (this.areResultsLoaded = areLoaded)),
     );
 
     this.subs.add(
-        this.store$.select(filtersStore.getShouldUseFramesForReference).subscribe(
-            shouldUseFrames => this.shouldUseFramesForReference = shouldUseFrames
-        )
-    )
+      this.store$
+        .select(filtersStore.getShouldUseFramesForReference)
+        .subscribe(
+          (shouldUseFrames) =>
+            (this.shouldUseFramesForReference = shouldUseFrames),
+        ),
+    );
   }
 
   public isSelected(panel: FilterPanel): boolean {
@@ -80,5 +81,4 @@ export class SbasFiltersComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
-
 }

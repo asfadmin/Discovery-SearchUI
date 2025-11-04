@@ -129,13 +129,13 @@ export class SetIsBrowseDialogOpen implements Action {
 }
 
 export class SetIsDownloadQueueOpen implements Action {
-  public readonly type = UIActionType.SET_IS_DOWNLOAD_QUEUE_OPEN ;
+  public readonly type = UIActionType.SET_IS_DOWNLOAD_QUEUE_OPEN;
 
   constructor(public payload: boolean) {}
 }
 
 export class SetIsOnDemandQueueOpen implements Action {
-  public readonly type = UIActionType.SET_IS_ON_DEMAND_QUEUE_OPEN ;
+  public readonly type = UIActionType.SET_IS_ON_DEMAND_QUEUE_OPEN;
 
   constructor(public payload: boolean) {}
 }
@@ -217,4 +217,3 @@ export type UIActions =
   | LoadBanners
   | RemoveBanner
   | AddBanners;
-

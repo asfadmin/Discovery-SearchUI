@@ -4,19 +4,27 @@
   </a>
 </ng-container>
 <ng-container *ngIf="text && custStyle">
-  <a (click)="showDoc()" style="{{custStyle}}">
+  <a (click)="showDoc()" style="{{ custStyle }}">
     {{ text | translate }}
   </a>
 </ng-container>
 <ng-container *ngIf="description">
-  <a (click)="showDoc()" class="link-pointer" [matTooltip]="this.tooltip ?? ('DATASET_INFO' | translate)">
-    <mat-icon class="material-symbols-outlined large-icon">description</mat-icon>
+  <a
+    (click)="showDoc()"
+    class="link-pointer"
+    [matTooltip]="this.tooltip ?? ('DATASET_INFO' | translate)"
+  >
+    <mat-icon class="material-symbols-outlined large-icon"
+      >description</mat-icon
+    >
   </a>
 </ng-container>
 <ng-container *ngIf="!description && !text">
-  <a (click)="showDoc()" class="link-pointer" matTooltip="{{this.tooltip ?? 'OPEN_LINK_TO_DOCUMENTATION' | translate}}">
+  <a
+    (click)="showDoc()"
+    class="link-pointer"
+    matTooltip="{{ this.tooltip ?? 'OPEN_LINK_TO_DOCUMENTATION' | translate }}"
+  >
     <mat-icon class="material-symbols-outlined icon-size">{{ icon }}</mat-icon>
   </a>
 </ng-container>
-
-

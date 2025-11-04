@@ -11,7 +11,6 @@ import { UserState, userReducer } from './user';
 import { Hyp3State, hyp3Reducer } from './hyp3';
 import { chartsReducer, ChartsState } from './charts';
 
-
 export interface AppState {
   scenes: ScenesState;
   map: MapState;
@@ -33,9 +32,9 @@ export const reducers: ActionReducerMap<AppState> = {
   queue: queueReducer,
   user: userReducer,
   hyp3: hyp3Reducer,
-  charts: chartsReducer
+  charts: chartsReducer,
 };
 
-export const metaReducers: MetaReducer<AppState>[] =
-  !environment.production ?
-  [] : [];
+export const metaReducers: MetaReducer<AppState>[] = !environment.production
+  ? []
+  : [];

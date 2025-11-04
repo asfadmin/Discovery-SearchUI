@@ -19,33 +19,35 @@ export const beta = {
   ],
   apiValue: { dataset: 'ARIA S1 GUNW' },
   date: { start: new Date(2014, 3, 25) },
-  infoUrl: 'https://asf.alaska.edu/data-sets/derived-data-sets/sentinel-1-interferograms/',
-  citationUrl: 'https://asf.alaska.edu/data-sets/derived-data-sets/sentinel-1-interferograms/#citation',
+  infoUrl:
+    'https://asf.alaska.edu/data-sets/derived-data-sets/sentinel-1-interferograms/',
+  citationUrl:
+    'https://asf.alaska.edu/data-sets/derived-data-sets/sentinel-1-interferograms/#citation',
   frequency: 'C-Band',
   source: {
     name: 'ARIA-JPL',
-    url: 'https://aria.jpl.nasa.gov/'
+    url: 'https://aria.jpl.nasa.gov/',
   },
   productTypes: [
     {
       apiValue: 'GUNW_STD',
-      displayName: 'Standard Product, NetCDF'
+      displayName: 'Standard Product, NetCDF',
     },
     {
       apiValue: 'GUNW_AMP',
-      displayName: 'Amplitude, GeoTIFF'
+      displayName: 'Amplitude, GeoTIFF',
     },
     {
       apiValue: 'GUNW_CON',
-      displayName: 'Connected Components, GeoTIFF'
+      displayName: 'Connected Components, GeoTIFF',
     },
     {
       apiValue: 'GUNW_COH',
-      displayName: 'Coherence, GeoTIFF'
+      displayName: 'Coherence, GeoTIFF',
     },
     {
       apiValue: 'GUNW_UNW',
-      displayName: 'Unwrapped Phase, GeoTIFF'
+      displayName: 'Unwrapped Phase, GeoTIFF',
     },
   ],
   beamModes: ['slc'],
@@ -54,7 +56,9 @@ export const beta = {
   platformDesc: 'SENTINEL_1_INTERFEROGRAM_BETA_DESC',
   platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
   frameMap: {
-    'ascending': 'https://d3g9emy65n853h.cloudfront.net/ARIA_S1_GUNW/ascending.geojson',
-    'descending': 'https://d3g9emy65n853h.cloudfront.net/ARIA_S1_GUNW/descending.geojson',
-  }
+    ascending:
+      'https://d3g9emy65n853h.cloudfront.net/ARIA_S1_GUNW/ascending.geojson',
+    descending:
+      'https://d3g9emy65n853h.cloudfront.net/ARIA_S1_GUNW/descending.geojson',
+  },
 };

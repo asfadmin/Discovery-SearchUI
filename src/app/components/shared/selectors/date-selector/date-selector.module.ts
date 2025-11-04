@@ -9,7 +9,10 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSliderModule } from '@angular/material/slider';
 import { DateRangeModule } from '../date-range/date-range.module';
 
-import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MatMomentDateModule } from '@angular/material-moment-adapter';
+import {
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+  MatMomentDateModule,
+} from '@angular/material-moment-adapter';
 
 import { MatSharedModule } from '@shared';
 import { DateSelectorComponent } from './date-selector.component';
@@ -30,8 +33,8 @@ import { DateSelectorComponent } from './date-selector.component';
     MatSharedModule,
   ],
   providers: [
-    { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
+    { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
   ],
-  exports: [ DateSelectorComponent ],
+  exports: [DateSelectorComponent],
 })
-export class DateSelectorModule { }
+export class DateSelectorModule {}

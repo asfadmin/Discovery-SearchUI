@@ -1,11 +1,17 @@
-import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, inject } from '@angular/core';
 
 import { Subject, of } from 'rxjs';
 import { delay, tap, catchError } from 'rxjs/operators';
 
 import { SubSink } from 'subsink';
 
-import { AsfApiService, NotificationService, MapService, WktService, ScreenSizeService } from '@services';
+import {
+  AsfApiService,
+  NotificationService,
+  MapService,
+  WktService,
+  ScreenSizeService,
+} from '@services';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -15,18 +21,25 @@ import * as models from '@models';
 
 enum FileErrors {
   TOO_LARGE = 'Too large',
-  INVALID_TYPE = 'Invalid Type'
+  INVALID_TYPE = 'Invalid Type',
 }
 
 @Component({
   selector: 'app-file-upload-dialog',
   templateUrl: 'file-upload-dialog.component.html',
-  styleUrls: ['./file-upload-dialog.component.scss']
+  styleUrls: ['./file-upload-dialog.component.scss'],
 })
 export class FileUploadDialogComponent implements OnInit, OnDestroy {
+  private mapService = inject(MapService);
+  private asfApiService = inject(AsfApiService);
+  private notificationService = inject(NotificationService);
+  private wktService = inject(WktService);
+  private screenSize = inject(ScreenSizeService);
+  private store$ = inject<Store<AppState>>(Store);
+
   @ViewChild('file', { static: true }) file;
 
-  public files: Set<File> = new Set();
+  public files = new Set<File>();
   public canBeClosed = true;
   public uploading = false;
 
@@ -37,33 +50,30 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
   public breakpoints = models.Breakpoints;
   public breakpoint$ = this.screenSize.breakpoint$;
 
-  constructor(
-    private mapService: MapService,
-    private asfApiService: AsfApiService,
-    private notificationService: NotificationService,
-    private wktService: WktService,
-    private screenSize: ScreenSizeService,
-    private store$: Store<AppState>
-  ) {}
-
   public ngOnInit(): void {
     this.subs.add(
-      this.fileError$.pipe(
-        tap(_ => this.isFileError = true),
-        tap(
-          error => {
+      this.fileError$
+        .pipe(
+          tap((_) => (this.isFileError = true)),
+          tap((error) => {
             if (error === FileErrors.INVALID_TYPE) {
-              this.notificationService.error( `Invalid File Type`, 'File Error', { timeOut: 5000 });
+              this.notificationService.error(
+                `Invalid File Type`,
+                'File Error',
+                { timeOut: 5000 },
+              );
             } else if (error === FileErrors.TOO_LARGE) {
-              this.notificationService.error( `File is too large (over 10MB)`, 'File Error', { timeOut: 5000 });
+              this.notificationService.error(
+                `File is too large (over 10MB)`,
+                'File Error',
+                { timeOut: 5000 },
+              );
             }
-          }
-        ),
-        delay(820),
-        tap(_ => this.isFileError = false),
-      ).subscribe(
-        _ => _
-      )
+          }),
+          delay(820),
+          tap((_) => (this.isFileError = false)),
+        )
+        .subscribe((_) => _),
     );
   }
 
@@ -97,7 +107,7 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
   }
 
   public onFilesAdded(): void {
-    const files: { [key: string]: File } = this.file.nativeElement.files;
+    const files: Record<string, File> = this.file.nativeElement.files;
 
     for (const key in files) {
       if (!isNaN(parseInt(key, 10))) {
@@ -118,34 +128,45 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
     this.uploading = true;
 
     this.subs.add(
-      this.asfApiService.upload(this.files).pipe(
-        catchError((error: HttpErrorResponse) => {
-          if (error.status !== 0) {
-            return of({ errors: [{ report: 'Error loading files', type: 'Error'}]});
-          } else {
-            return of({ errors: [{ report: 'File upload timeout', type: 'Error'}]});
-          }
-      })
-      ).subscribe(
-        resp => {
-          this.reset();
+      this.asfApiService
+        .upload(this.files)
+        .pipe(
+          catchError((error: HttpErrorResponse) => {
+            if (error.status !== 0) {
+              return of({
+                errors: [{ report: 'Error loading files', type: 'Error' }],
+              });
+            } else {
+              return of({
+                errors: [{ report: 'File upload timeout', type: 'Error' }],
+              });
+            }
+          }),
+        )
+        .subscribe(
+          (resp) => {
+            this.reset();
 
-          if (resp.wkt) {
-            // set wkt (resp.wkt.unwrapped)
-            this.setAOI(resp.wkt.unwrapped);
-            this.zoomToAOI(resp.wkt.unwrapped);
-            this.store$.dispatch(new DrawNewPolygon());
-          } else if (resp.errors && resp.errors.length > 0) {
-            const { report, type } = resp.errors[0];
-            this.notificationService.error(report, type, { timeOut: 5000 });
+            if (resp.wkt) {
+              // set wkt (resp.wkt.unwrapped)
+              this.setAOI(resp.wkt.unwrapped);
+              this.zoomToAOI(resp.wkt.unwrapped);
+              this.store$.dispatch(new DrawNewPolygon());
+            } else if (resp.errors && resp.errors.length > 0) {
+              const { report, type } = resp.errors[0];
+              this.notificationService.error(report, type, { timeOut: 5000 });
+              // return
+            }
+          },
+          (_) => {
+            this.notificationService.error(
+              'Error loading geospatial file',
+              'File Error',
+              { timeOut: 3000 },
+            );
             // return
-          }
-        },
-        _ => {
-          this.notificationService.error('Error loading geospatial file',  'File Error', { timeOut: 3000 });
-          // return
-        }
-      )
+          },
+        ),
     );
 
     this.canBeClosed = false;
@@ -177,7 +198,11 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
 
     if (this.isValidFileType(fileName)) {
       this.files.add(file);
-      this.notificationService.info(`Importing '${file.name}'...`, 'AOI Import', { timeOut: 5000 });
+      this.notificationService.info(
+        `Importing '${file.name}'...`,
+        'AOI Import',
+        { timeOut: 5000 },
+      );
     } else {
       this.fileError$.next(FileErrors.INVALID_TYPE);
     }
@@ -188,9 +213,7 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
 
     const fileExtension = this.getFileType(fileName);
 
-    return validFileTypes.some(
-      ext => ext === fileExtension
-    );
+    return validFileTypes.some((ext) => ext === fileExtension);
   }
 
   private getFileType(fileName: string): string {

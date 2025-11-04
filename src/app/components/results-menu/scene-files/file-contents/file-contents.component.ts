@@ -1,6 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+import {
+  MatTreeFlatDataSource,
+  MatTreeFlattener,
+} from '@angular/material/tree';
 import { SubSink } from 'subsink';
 
 import { combineLatest } from 'rxjs';
@@ -24,14 +27,18 @@ interface ExampleFlatNode {
 @Component({
   selector: 'app-file-contents',
   templateUrl: './file-contents.component.html',
-  styleUrls: ['./file-contents.component.scss']
+  styleUrls: ['./file-contents.component.scss'],
 })
 export class FileContentsComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   public product: CMRProduct;
 
   sceneNameLen: number;
   treeControl = new FlatTreeControl<ExampleFlatNode>(
-    node => node.level, node => node.expandable
+    (node) => node.level,
+    (node) => node.expandable,
   );
 
   treeFlattener = new MatTreeFlattener(
@@ -41,59 +48,54 @@ export class FileContentsComponent implements OnInit, OnDestroy {
         name: node.name,
         level: level,
         url: node.url,
-        size: node.size
+        size: node.size,
       };
     },
-    node => node.level,
-    node => node.expandable,
-    node => node.contents
+    (node) => node.level,
+    (node) => node.expandable,
+    (node) => node.contents,
   );
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
   public queuedProductIds: Set<string>;
   private subs = new SubSink();
 
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-  ) { }
-
   ngOnInit(): void {
     this.subs.add(
       combineLatest([
         this.store$.select(scenesStore.getUnzippedProducts),
-        this.store$.select(scenesStore.getOpenUnzippedProduct)]
-      ).pipe(
-        tap(([_, product]) => this.product = product),
-        map(([unzipped, product]) => unzipped[product ? product.id : null]),
-        filter(unzipped => !!unzipped),
-      ).subscribe(
-        unzipped => this.dataSource.data = unzipped
-      )
+        this.store$.select(scenesStore.getOpenUnzippedProduct),
+      ])
+        .pipe(
+          tap(([_, product]) => (this.product = product)),
+          map(([unzipped, product]) => unzipped[product ? product.id : null]),
+          filter((unzipped) => !!unzipped),
+        )
+        .subscribe((unzipped) => (this.dataSource.data = unzipped)),
     );
 
     this.subs.add(
-      this.store$.select(queueStore.getQueuedProductIds).pipe(
-        map(names => new Set(names))
-      ).subscribe(
-        ids => this.queuedProductIds = ids
-      )
+      this.store$
+        .select(queueStore.getQueuedProductIds)
+        .pipe(map((names) => new Set(names)))
+        .subscribe((ids) => (this.queuedProductIds = ids)),
     );
 
     this.subs.add(
-      this.screenSize.size$.pipe(
-        map(size => {
-          if (size.width > 1775) {
-            return 32;
-          } else if (size.width > 1350) {
-            return 20;
-          } else {
-            return 10;
-          }
-        }),
-      ).subscribe(len => this.sceneNameLen = len)
+      this.screenSize.size$
+        .pipe(
+          map((size) => {
+            if (size.width > 1775) {
+              return 32;
+            } else if (size.width > 1350) {
+              return 20;
+            } else {
+              return 10;
+            }
+          }),
+        )
+        .subscribe((len) => (this.sceneNameLen = len)),
     );
-
   }
 
   hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
@@ -101,8 +103,7 @@ export class FileContentsComponent implements OnInit, OnDestroy {
   public extension(filename: string): string {
     const fileExtension = filename.split('.').pop();
 
-    return !fileExtension ?
-      '' : `(${fileExtension})`;
+    return !fileExtension ? '' : `(${fileExtension})`;
   }
 
   public onToggleQueueProduct(node: ExampleFlatNode): void {
@@ -123,7 +124,7 @@ export class FileContentsComponent implements OnInit, OnDestroy {
       name: node.name,
       productTypeDisplay,
       isUnzippedFile: true,
-      metadata: { ...this.product.metadata }
+      metadata: { ...this.product.metadata },
     };
   }
 
@@ -132,13 +133,14 @@ export class FileContentsComponent implements OnInit, OnDestroy {
   }
 
   public isQueued(node: ExampleFlatNode): boolean {
-    const nodeId = this. makeUnzippedId(node, this.product);
+    const nodeId = this.makeUnzippedId(node, this.product);
 
     return this.queuedProductIds.has(nodeId);
   }
 
-  public prodDownloaded( product ) {
-    product = product;
+  public prodDownloaded(_product) {
+    // product = product;
+    // not sure why this was reassigning itself locally like this
   }
 
   ngOnDestroy() {

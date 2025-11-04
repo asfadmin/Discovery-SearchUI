@@ -12,30 +12,28 @@ import { SearchTypeSelectorModule } from '@components/shared/selectors/search-ty
 import { ResultsMenuModule } from '@components/results-menu';
 import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
 import { DocsModalModule } from '@components/shared/docs-modal';
-import { SharedModule } from "@shared";
+import { SharedModule } from '@shared';
 import { BaselineFrameReferenceToggleComponent } from '@components/shared/selectors/baseline-frame-reference-toggle';
 import { DatasetSelectorModule } from '@components/shared/selectors/dataset-selector';
 
 @NgModule({
   declarations: [SbasFiltersComponent],
-    imports: [
-        CommonModule,
-        MatExpansionModule,
-        MatSharedModule,
-        SeasonSelectorModule,
-        SbasOverlapSelectorModule,
-        DateSelectorModule,
-        MasterSceneSelectorModule,
-        SearchTypeSelectorModule,
-        ResultsMenuModule,
-        CopyToClipboardModule,
-        DocsModalModule,
-        SharedModule,
-        DatasetSelectorModule,
-        BaselineFrameReferenceToggleComponent,
-    ],
-  exports: [
-    SbasFiltersComponent
-  ]
+  imports: [
+    CommonModule,
+    MatExpansionModule,
+    MatSharedModule,
+    SeasonSelectorModule,
+    SbasOverlapSelectorModule,
+    DateSelectorModule,
+    MasterSceneSelectorModule,
+    SearchTypeSelectorModule,
+    ResultsMenuModule,
+    CopyToClipboardModule,
+    DocsModalModule,
+    SharedModule,
+    DatasetSelectorModule,
+    BaselineFrameReferenceToggleComponent,
+  ],
+  exports: [SbasFiltersComponent],
 })
-export class SbasFiltersModule { }
+export class SbasFiltersModule {}

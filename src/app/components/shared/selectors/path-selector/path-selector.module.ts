@@ -9,7 +9,7 @@ import { MatSharedModule } from '@shared';
 
 import { PathSelectorComponent } from './path-selector.component';
 import { AoiClearComponent } from './aoi-clear/aoi-clear.component';
-import { SharedModule } from "@shared";
+import { SharedModule } from '@shared';
 
 @NgModule({
   declarations: [PathSelectorComponent, AoiClearComponent],
@@ -20,8 +20,8 @@ import { SharedModule } from "@shared";
     MatSlideToggleModule,
     MatFormFieldModule,
     MatInputModule,
-    SharedModule
+    SharedModule,
   ],
   exports: [PathSelectorComponent],
 })
-export class PathSelectorModule { }
+export class PathSelectorModule {}

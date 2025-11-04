@@ -1,4 +1,10 @@
-import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  OnInit,
+  OnDestroy,
+  inject,
+} from '@angular/core';
 import { ResizeEvent } from 'angular-resizable-element';
 import { SubSink } from 'subsink';
 
@@ -20,22 +26,31 @@ import * as models from '@models';
   styleUrls: ['./results-menu.component.scss'],
 })
 export class ResultsMenuComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   public isResultsMenuOpen$ = this.store$.select(uiStore.getIsResultsMenuOpen);
-  public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
+  public selectedProducts$ = this.store$.select(
+    scenesStore.getSelectedSceneProducts,
+  );
   public products: models.CMRProduct[];
 
   public menuHeightPx: number;
 
-  public areNoScenes$ = this.store$.select(scenesStore.getScenes).pipe(
-    map(scenes => scenes.length === 0)
-  );
+  public areNoScenes$ = this.store$
+    .select(scenesStore.getScenes)
+    .pipe(map((scenes) => scenes.length === 0));
 
-  public noSarviewsEvents$ = this.store$.select(scenesStore.getSarviewsEvents).pipe(
-    filter(events => events !== undefined && events !== null),
-    map(events => events.length === 0)
-  );
+  public noSarviewsEvents$ = this.store$
+    .select(scenesStore.getSarviewsEvents)
+    .pipe(
+      filter((events) => events !== undefined && events !== null),
+      map((events) => events.length === 0),
+    );
 
-  public isFrameSelectionEnabled$ = this.store$.select(uiStore.getIsFrameSelectionEnabled);
+  public isFrameSelectionEnabled$ = this.store$.select(
+    uiStore.getIsFrameSelectionEnabled,
+  );
 
   public imageViewerOpen$ = this.store$.select(uiStore.getIsBrowseDialogOpen);
 
@@ -49,32 +64,27 @@ export class ResultsMenuComponent implements OnInit, OnDestroy {
 
   private subs = new SubSink();
 
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-  ) { }
-
   ngOnInit() {
     this.menuHeightPx = this.defaultMenuHeight();
 
     this.subs.add(
-      this.store$.select(scenesStore.getAllProducts).subscribe(
-        products => {
-          this.products = products;
-        }
-      )
+      this.store$.select(scenesStore.getAllProducts).subscribe((products) => {
+        this.products = products;
+      }),
     );
 
     this.subs.add(
-      this.store$.select(searchStore.getSearchType).subscribe(
-        searchType => this.searchType = searchType
-      )
+      this.store$
+        .select(searchStore.getSearchType)
+        .subscribe((searchType) => (this.searchType = searchType)),
     );
 
     this.subs.add(
-      this.store$.select(scenesStore.getShowUnzippedProduct).subscribe(
-        showUnzippedProduct => this.isUnzipOpen = showUnzippedProduct
-      )
+      this.store$
+        .select(scenesStore.getShowUnzippedProduct)
+        .subscribe(
+          (showUnzippedProduct) => (this.isUnzipOpen = showUnzippedProduct),
+        ),
     );
   }
 
@@ -91,7 +101,7 @@ export class ResultsMenuComponent implements OnInit, OnDestroy {
   }
 
   private defaultMenuHeight(): number {
-    return document.documentElement.clientHeight * 0.40;
+    return document.documentElement.clientHeight * 0.4;
   }
 
   public validate(event: ResizeEvent): boolean {
@@ -99,7 +109,8 @@ export class ResultsMenuComponent implements OnInit, OnDestroy {
     const { width, height } = event.rectangle;
 
     return !(
-      width && height &&
+      width &&
+      height &&
       (width < MIN_DIMENSIONS_PX || height < MIN_DIMENSIONS_PX)
     );
   }

@@ -8,15 +8,20 @@
 <!--  </select>-->
 <!--</div>-->
 
-<button mat-mini-fab extended class="lang-fab-button" [matMenuTriggerFor]="languageMenu">
+<button
+  mat-mini-fab
+  extended
+  class="lang-fab-button"
+  [matMenuTriggerFor]="languageMenu"
+>
   <mat-icon>translate</mat-icon>
-  <div class="icon-text">{{language.getName()}}</div>
+  <div class="icon-text">{{ language.getName() }}</div>
 </button>
 
 <mat-menu #languageMenu="matMenu">
   <div *ngFor="let lang of language.translate.getLangs()">
     <button mat-menu-item (click)="language.setCurrent(lang)">
-      {{language.getName(lang)}}
+      {{ language.getName(lang) }}
     </button>
   </div>
 </mat-menu>

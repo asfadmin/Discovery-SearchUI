@@ -15,9 +15,7 @@ import { ResultsMenuComponent } from './results-menu.component';
 import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [
-    ResultsMenuComponent,
-  ],
+  declarations: [ResultsMenuComponent],
   imports: [
     CommonModule,
     MatSharedModule,
@@ -30,8 +28,6 @@ import { SharedModule } from '@shared';
     MobileResultsMenuModule,
     TimeseriesResultsMenuModule,
   ],
-  exports: [
-    ResultsMenuComponent,
-  ],
+  exports: [ResultsMenuComponent],
 })
-export class ResultsMenuModule { }
+export class ResultsMenuModule {}

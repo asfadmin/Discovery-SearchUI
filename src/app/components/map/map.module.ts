@@ -19,7 +19,7 @@ import { BannersModule } from './banners';
 import { DisplacementLayersModule } from './displacement-layers';
 
 import { FileUploadModule } from '@components/shared/aoi-options/file-upload';
-import { SharedModule } from "@shared";
+import { SharedModule } from '@shared';
 
 @NgModule({
   imports: [
@@ -41,12 +41,9 @@ import { SharedModule } from "@shared";
     MaxResultsSelectorModule,
     BannersModule,
     FileUploadModule,
-    SharedModule
+    SharedModule,
   ],
-  declarations: [
-    MapComponent,
-    AttributionsComponent,
-  ],
-  exports: [ MapComponent ]
+  declarations: [MapComponent, AttributionsComponent],
+  exports: [MapComponent],
 })
-export class MapModule { }
+export class MapModule {}

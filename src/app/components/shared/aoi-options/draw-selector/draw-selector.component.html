@@ -1,54 +1,80 @@
-<button mat-stroked-button *ngIf="searchType != searchTypes.DISPLACEMENT; else displacementAOI"
-        class="shape-select-button"
-        [matMenuTriggerFor]="drawMenu"
-        aria-label="Map projection view">
-  <ng-template [ngIf]="drawMode == types.POINT" class="shape-select-icon antarctic">
+<button
+  mat-stroked-button
+  *ngIf="searchType !== searchTypes.DISPLACEMENT; else displacementAOI"
+  class="shape-select-button"
+  [matMenuTriggerFor]="drawMenu"
+  aria-label="Map projection view"
+>
+  <ng-template
+    [ngIf]="drawMode === types.POINT"
+    class="shape-select-icon antarctic"
+  >
     <mat-icon class="draw-icon">place</mat-icon>
   </ng-template>
-  <ng-template [ngIf]="drawMode == types.LINESTRING" class="shape-select-icon equatorial">
+  <ng-template
+    [ngIf]="drawMode === types.LINESTRING"
+    class="shape-select-icon equatorial"
+  >
     <mat-icon class="draw-icon">timeline</mat-icon>
   </ng-template>
-  <ng-template [ngIf]="drawMode == types.POLYGON" class="shape-select-icon arctic">
-    <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24">
-      <path class="draw-svg"
-            d="M2,2V8H4.28L5.57,16H4V22H10V20.06L15,20.05V22H21V16H19.17L20,9H22V3H16V6.53L14.8,8H9.59L8,5.82V2M4,4H6V6H4M18,5H20V7H18M6.31,8H7.11L9,10.59V14H15V10.91L16.57,9H18L17.16,16H15V18.06H10V16H7.6M11,10H13V12H11M6,18H8V20H6M17,18H19V20H17" />
+  <ng-template
+    [ngIf]="drawMode === types.POLYGON"
+    class="shape-select-icon arctic"
+  >
+    <svg style="width: 18px; height: 18px" viewBox="0 0 24 24">
+      <path
+        class="draw-svg"
+        d="M2,2V8H4.28L5.57,16H4V22H10V20.06L15,20.05V22H21V16H19.17L20,9H22V3H16V6.53L14.8,8H9.59L8,5.82V2M4,4H6V6H4M18,5H20V7H18M6.31,8H7.11L9,10.59V14H15V10.91L16.57,9H18L17.16,16H15V18.06H10V16H7.6M11,10H13V12H11M6,18H8V20H6M17,18H19V20H17"
+      />
     </svg>
   </ng-template>
-  <ng-template [ngIf]="drawMode == types.BOX" class="shape-select-icon equatorial">
+  <ng-template
+    [ngIf]="drawMode === types.BOX"
+    class="shape-select-icon equatorial"
+  >
     <mat-icon class="draw-icon">format_shapes</mat-icon>
   </ng-template>
-  <ng-template [ngIf]="drawMode == types.CIRCLE" class="shape-select-icon equatorial">
+  <ng-template
+    [ngIf]="drawMode === types.CIRCLE"
+    class="shape-select-icon equatorial"
+  >
     <mat-icon class="draw-icon">radio_button_unchecked</mat-icon>
   </ng-template>
   <span class="fa fa-caret-down bottom-right"></span>
 </button>
 
 <ng-template #displacementAOI>
-  <div class = menu-component-wrapper>
+  <div class="menu-component-wrapper">
     <div class="menu-button-wrapper">
       <div class="ts-button-label">{{ 'AREA_OF_INTEREST' | translate }}</div>
       <div>
-        <button mat-button
-                [matMenuTriggerFor]="drawMenu"
-                class="button-menu-trigger"
-                color="basic">
+        <button
+          mat-button
+          [matMenuTriggerFor]="drawMenu"
+          class="button-menu-trigger"
+          color="basic"
+        >
           <div class="button-text">
-            <mat-icon class="material-icons-outlined" style="font-size: 16px; vertical-align: -9px;">
-              {{  drawMode | aoiIcon }}
+            <mat-icon
+              class="material-icons-outlined"
+              style="font-size: 16px; vertical-align: -9px"
+            >
+              {{ drawMode | aoiIcon }}
             </mat-icon>
-            {{drawMode.toUpperCase() | translate}}
+            {{ drawMode.toUpperCase() | translate }}
             <span class="mat-select-arrow"></span>
           </div>
         </button>
         <div class="hr-wrapper">
-          <hr class="text-underline">
+          <hr class="text-underline" />
         </div>
         <div class="draw-toggle-wrapper">
           <mat-slide-toggle
             class="draw-toggle"
             (click)="toggleDrawMode()"
             [checked]="isDrawing"
-            [disabled]="isDisabled">
+            [disabled]="isDisabled"
+          >
             {{ 'DRAW' | translate | titlecase }}
           </mat-slide-toggle>
         </div>
@@ -58,63 +84,81 @@
 </ng-template>
 
 <mat-menu #drawMenu="matMenu">
-    <button mat-menu-item
-      (click)="onPointSelected()"
-      [value]="types.POINT"
-      class="control-button mat-menu-item">
-      <mat-icon class="material-icons-outlined">
-        {{ types.POINT | aoiIcon }}
-      </mat-icon>
-      {{ 'PLACE_A_POINT' | translate }}
-    </button>
+  <button
+    mat-menu-item
+    (click)="onPointSelected()"
+    [value]="types.POINT"
+    class="control-button mat-menu-item"
+  >
+    <mat-icon class="material-icons-outlined">
+      {{ types.POINT | aoiIcon }}
+    </mat-icon>
+    {{ 'PLACE_A_POINT' | translate }}
+  </button>
 
-      <button mat-menu-item *ngIf="searchType !== searchTypes.DISPLACEMENT"
-      (click)="onLineStringSelected()"
-      [value]="types.LINESTRING"
-      class="control-button mat-menu-item">
-      <mat-icon class="material-icons-outlined">
-        {{ types.LINESTRING | aoiIcon }}
-      </mat-icon>
-      {{ 'DRAW_A_LINE' | translate }}
-    </button>
+  <button
+    mat-menu-item
+    *ngIf="searchType !== searchTypes.DISPLACEMENT"
+    (click)="onLineStringSelected()"
+    [value]="types.LINESTRING"
+    class="control-button mat-menu-item"
+  >
+    <mat-icon class="material-icons-outlined">
+      {{ types.LINESTRING | aoiIcon }}
+    </mat-icon>
+    {{ 'DRAW_A_LINE' | translate }}
+  </button>
 
-    <button mat-menu-item *ngIf="searchType !== searchTypes.DISPLACEMENT"
-      (click)="onPolygonSelected()"
-      [value]="types.POLYGON"
-      class="control-button mat-menu-item">
-      <mat-icon class="material-icons-outlined">
-        {{ types.POLYGON | aoiIcon }}
-      </mat-icon>
-      {{ 'DRAW_A_POLYGON' | translate }}
-    </button>
+  <button
+    mat-menu-item
+    *ngIf="searchType !== searchTypes.DISPLACEMENT"
+    (click)="onPolygonSelected()"
+    [value]="types.POLYGON"
+    class="control-button mat-menu-item"
+  >
+    <mat-icon class="material-icons-outlined">
+      {{ types.POLYGON | aoiIcon }}
+    </mat-icon>
+    {{ 'DRAW_A_POLYGON' | translate }}
+  </button>
 
-    <button mat-menu-item *ngIf="searchType !== searchTypes.DISPLACEMENT"
-      (click)="onBoxSelected()"
-      [value]="types.BOX"
-      class="control-button mat-menu-item">
-      <mat-icon class="material-icons">
-        {{ types.BOX | aoiIcon }}
-      </mat-icon>
-      {{ 'DRAW_A_BOX' | translate }}
-    </button>
+  <button
+    mat-menu-item
+    *ngIf="searchType !== searchTypes.DISPLACEMENT"
+    (click)="onBoxSelected()"
+    [value]="types.BOX"
+    class="control-button mat-menu-item"
+  >
+    <mat-icon class="material-icons">
+      {{ types.BOX | aoiIcon }}
+    </mat-icon>
+    {{ 'DRAW_A_BOX' | translate }}
+  </button>
 
-    <button mat-menu-item *ngIf="searchType !== searchTypes.DISPLACEMENT"
+  <button
+    mat-menu-item
+    *ngIf="searchType !== searchTypes.DISPLACEMENT"
     (click)="onCircleSelected()"
     [value]="types.CIRCLE"
-    class="control-button mat-menu-item">
+    class="control-button mat-menu-item"
+  >
     <mat-icon class="material-symbols-outlined">
-        {{ types.CIRCLE | aoiIcon }}
+      {{ types.CIRCLE | aoiIcon }}
     </mat-icon>
     {{ 'DRAW_A_CIRCLE' | translate }}
-    </button>
+  </button>
 
-  <button mat-menu-item
-    *ngIf="breakpoint !== breakpoints.MOBILE && searchType !== searchTypes.DISPLACEMENT"
+  <button
+    mat-menu-item
+    *ngIf="
+      breakpoint !== breakpoints.MOBILE &&
+      searchType !== searchTypes.DISPLACEMENT
+    "
     (click)="onImportSelected()"
     [disabled]="breakpoint <= breakpoints.SMALL"
-    class="control-mat-button-toggle">
+    class="control-mat-button-toggle"
+  >
     <mat-icon class="interaction-icon">upload</mat-icon>
-    {{'UPLOAD_GEOSPATIAL_FILE' | translate}}
-
+    {{ 'UPLOAD_GEOSPATIAL_FILE' | translate }}
   </button>
 </mat-menu>

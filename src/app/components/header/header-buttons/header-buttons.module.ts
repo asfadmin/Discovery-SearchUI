@@ -18,9 +18,9 @@ import { OnlynumberDirective } from '@directives/onlynumber.directive';
 import { SharedModule } from '@shared';
 import { Hyp3UrlSelectorComponent } from './preferences/hyp3-url-selector/hyp3-url-selector.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { LanguageSelectorModule } from "@components/shared/selectors/language-selector/language-selector.module";
-import {DocsModalModule} from '@components/shared/docs-modal';
-import {SearchButtonModule} from '@components/shared/search-button';
+import { LanguageSelectorModule } from '@components/shared/selectors/language-selector/language-selector.module';
+import { DocsModalModule } from '@components/shared/docs-modal';
+import { SearchButtonModule } from '@components/shared/search-button';
 
 @NgModule({
   declarations: [
@@ -30,23 +30,23 @@ import {SearchButtonModule} from '@components/shared/search-button';
     OnlynumberDirective,
     Hyp3UrlSelectorComponent,
   ],
-    imports: [
-        CommonModule,
-        FormsModule,
-        MatBadgeModule,
-        MatMenuModule,
-        MatInputModule,
-        MatDialogModule,
-        MatSharedModule,
-        MatSelectModule,
-        DatasetSelectorModule,
-        MatFormFieldModule,
-        SharedModule,
-        LanguageSelectorModule,
-        DocsModalModule,
-        SearchButtonModule,
-        MatAutocompleteModule,
-    ],
-  exports: [ HeaderButtonsComponent ]
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatBadgeModule,
+    MatMenuModule,
+    MatInputModule,
+    MatDialogModule,
+    MatSharedModule,
+    MatSelectModule,
+    DatasetSelectorModule,
+    MatFormFieldModule,
+    SharedModule,
+    LanguageSelectorModule,
+    DocsModalModule,
+    SearchButtonModule,
+    MatAutocompleteModule,
+  ],
+  exports: [HeaderButtonsComponent],
 })
-export class HeaderButtonsModule { }
+export class HeaderButtonsModule {}

@@ -1,36 +1,45 @@
-<button class="button-flex-row pair-row" mat-list-item
+<button
+  class="button-flex-row pair-row"
+  mat-list-item
   (click)="onPairSelected(pair)"
   (mouseenter)="onSetHovered()"
-  (mouseleave) ="onClearHovered()"
-  [class.selected]="selectedPair ? pair[0].id + pair[1].id === selectedPair[0] + selectedPair[1] : false"
-  [class.hovered]="hovered">
-    <span matListItemTitle>{{ pair[0].metadata.date | shortDate }} to {{ pair[1].metadata.date | shortDate }}</span>
+  (mouseleave)="onClearHovered()"
+  [class.selected]="
+    selectedPair
+      ? pair[0].id + pair[1].id === selectedPair[0] + selectedPair[1]
+      : false
+  "
+  [class.hovered]="hovered"
+>
+  <span matListItemTitle
+    >{{ pair[0].metadata.date | shortDate }} to
+    {{ pair[1].metadata.date | shortDate }}</span
+  >
 
-    <div class="date" matListItemMeta>{{ pairPerpBaseline(pair)}}m</div>
-    <div class="date" matListItemMeta>{{ pairTempBaseline(pair)}}d</div>
+  <div class="date" matListItemMeta>{{ pairPerpBaseline(pair) }}m</div>
+  <div class="date" matListItemMeta>{{ pairTempBaseline(pair) }}d</div>
 
-    <mat-icon
-      *ngIf="hyp3able.total > 0"
-      class="clickable noselect list-icon"
-      style="margin-left: 10px;"
-      matTooltip="{{'ADD_PAIR_TO_ON_DEMAND_QUEUE' | translate}}"
-      [matMenuTriggerFor]="pairAdd.addMenu"
-      [matMenuTriggerData]="{ hyp3able: hyp3able.byJobType }"
-      svgIcon="hyp3"
-      matListItemMeta
-      >
-    </mat-icon>
+  <mat-icon
+    *ngIf="hyp3able.total > 0"
+    class="clickable noselect list-icon"
+    style="margin-left: 10px"
+    matTooltip="{{ 'ADD_PAIR_TO_ON_DEMAND_QUEUE' | translate }}"
+    [matMenuTriggerFor]="pairAdd.addMenu"
+    [matMenuTriggerData]="{ hyp3able: hyp3able.byJobType }"
+    svgIcon="hyp3"
+    matListItemMeta
+  >
+  </mat-icon>
 
-    <mat-icon
-      *ngIf="hyp3able.total < 1"
-      class="noselect list-icon"
-      style="margin-left: 10px; opacity: 0.5;"
-      matTooltip="{{'ONLY_CO-POLARIZED_BURSTS' | translate}}"
-      svgIcon="hyp3"
-      matListItemMeta
-      >
-    </mat-icon>
+  <mat-icon
+    *ngIf="hyp3able.total < 1"
+    class="noselect list-icon"
+    style="margin-left: 10px; opacity: 0.5"
+    matTooltip="{{ 'ONLY_CO-POLARIZED_BURSTS' | translate }}"
+    svgIcon="hyp3"
+    matListItemMeta
+  >
+  </mat-icon>
 
-    <app-on-demand-add-menu #pairAdd>
-    </app-on-demand-add-menu>
+  <app-on-demand-add-menu #pairAdd> </app-on-demand-add-menu>
 </button>

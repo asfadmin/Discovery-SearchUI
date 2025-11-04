@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, inject } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -10,9 +10,11 @@ import * as models from '@models';
 @Component({
   selector: 'app-processing-options',
   templateUrl: './processing-options.component.html',
-  styleUrls: ['./processing-options.component.scss']
+  styleUrls: ['./processing-options.component.scss'],
 })
 export class ProcessingOptionsComponent implements OnInit {
+  private store$ = inject<Store<AppState>>(Store);
+
   @Input() selectedJobType: models.Hyp3JobType;
 
   public jobs: models.QueuedHyp3Job[];
@@ -21,46 +23,36 @@ export class ProcessingOptionsComponent implements OnInit {
   public optionValues = {};
   public costs: models.Hyp3Costs;
 
-  constructor(
-    private store$: Store<AppState>,
-  ) { }
-
   ngOnInit() {
-    this.store$.select(queueStore.getQueuedJobs).subscribe(
-      jobs => {
-        this.jobs = jobs
-      }
-    );
+    this.store$.select(queueStore.getQueuedJobs).subscribe((jobs) => {
+      this.jobs = jobs;
+    });
 
-    this.store$.select(hyp3Store.getProcessingOptions).subscribe(
-      options => {
-        this.optionValues = options;
-      }
-    );
+    this.store$.select(hyp3Store.getProcessingOptions).subscribe((options) => {
+      this.optionValues = options;
+    });
 
-    this.store$.select(hyp3Store.getCosts).subscribe(
-      costs => {
-        this.costs = costs;
-      }
-    );
+    this.store$.select(hyp3Store.getCosts).subscribe((costs) => {
+      this.costs = costs;
+    });
   }
 
   public hasJobType(jobType: models.Hyp3JobType): boolean {
-    return this.jobs.some(
-      job => job.job_type.id === jobType.id
-    );
+    return this.jobs.some((job) => job.job_type.id === jobType.id);
   }
 
   public onSetOptionValue(apiName: string, value: any) {
     const newOptions = {
       ...this.optionValues[this.selectedJobType.id],
-      [apiName]: value
+      [apiName]: value,
     };
 
-    this.store$.dispatch(new hyp3Store.SetProcessingOptions({
-      jobTypeId: this.selectedJobType.id,
-      options: newOptions
-    }));
+    this.store$.dispatch(
+      new hyp3Store.SetProcessingOptions({
+        jobTypeId: this.selectedJobType.id,
+        options: newOptions,
+      }),
+    );
   }
 
   public onSetSubset(options): void {
@@ -72,19 +64,24 @@ export class ProcessingOptionsComponent implements OnInit {
 
     const newOptions = {
       ...this.optionValues[this.selectedJobType.id],
-      ...optionSubset
-    }
+      ...optionSubset,
+    };
 
-    this.store$.dispatch(new hyp3Store.SetProcessingOptions({
-      jobTypeId: this.selectedJobType.id,
-      options: newOptions
-    }));
+    this.store$.dispatch(
+      new hyp3Store.SetProcessingOptions({
+        jobTypeId: this.selectedJobType.id,
+        options: newOptions,
+      }),
+    );
   }
 
   public getCostTable(costs, jobType, option) {
     const jobTypeCost = costs[jobType.id];
 
-    if (jobTypeCost.cost_parameters && jobTypeCost.cost_parameters.includes(option.apiName)) {
+    if (
+      jobTypeCost.cost_parameters &&
+      jobTypeCost.cost_parameters.includes(option.apiName)
+    ) {
       return jobTypeCost.cost_table;
     } else {
       return null;

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
@@ -14,10 +14,16 @@ import { MapService, ScreenSizeService } from '@services';
 @Component({
   selector: 'app-layer-selector',
   templateUrl: './layer-selector.component.html',
-  styleUrls: ['./layer-selector.component.scss']
+  styleUrls: ['./layer-selector.component.scss'],
 })
 export class LayerSelectorComponent implements OnInit, OnDestroy {
-  public overviewMapVisible$ = this.store$.select(mapStore.getIsOverviewMapOpen);
+  private store$ = inject<Store<AppState>>(Store);
+  private mapService = inject(MapService);
+  private screenSize = inject(ScreenSizeService);
+
+  public overviewMapVisible$ = this.store$.select(
+    mapStore.getIsOverviewMapOpen,
+  );
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = models.SearchType;
   public overviewMapVisible = false;
@@ -25,15 +31,12 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
   public layerTypes = models.MapLayerTypes;
   public layerType: models.MapLayerTypes;
 
-  public areGridlinesActive$ = this.store$.select(mapStore.getAreGridlinesActive);
+  public areGridlinesActive$ = this.store$.select(
+    mapStore.getAreGridlinesActive,
+  );
   public gridActive = false;
   public coherenceLayerMonths: string | null;
-  public months = [
-    'DEC_JAN_FEB',
-    'MAR_APR_MAY',
-    'JUN_JUL_AUG',
-    'SEP_OCT_NOV',
-  ]
+  public months = ['DEC_JAN_FEB', 'MAR_APR_MAY', 'JUN_JUL_AUG', 'SEP_OCT_NOV'];
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoint: models.Breakpoints;
@@ -41,63 +44,53 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
   private coherenceLayerOpacity: number;
   public priorityEnabled = false;
 
-
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-    private mapService: MapService,
-    private screenSize: ScreenSizeService,
-  ) { }
 
   ngOnInit() {
     this.subs.add(
-      this.store$.select(mapStore.getMapLayerType).subscribe(
-        layerType => this.layerType = layerType
-      )
+      this.store$
+        .select(mapStore.getMapLayerType)
+        .subscribe((layerType) => (this.layerType = layerType)),
     );
 
     this.subs.add(
       this.overviewMapVisible$.subscribe(
-        isOpen => this.overviewMapVisible = isOpen
-      )
+        (isOpen) => (this.overviewMapVisible = isOpen),
+      ),
     );
 
     this.subs.add(
-      this.areGridlinesActive$.subscribe(gridActive => {
+      this.areGridlinesActive$.subscribe((gridActive) => {
         this.gridActive = gridActive;
-      })
+      }),
     );
 
     this.subs.add(
-      this.mapService.hasCoherenceLayer$.subscribe(
-        months => {
-          this.coherenceLayerMonths = months;
-        }
-      )
+      this.mapService.hasCoherenceLayer$.subscribe((months) => {
+        this.coherenceLayerMonths = months;
+      }),
     );
 
+    this.subs.add(this.breakpoint$.subscribe((bp) => (this.breakpoint = bp)));
     this.subs.add(
-      this.breakpoint$.subscribe(bp => this.breakpoint = bp)
-    );
-    this.subs.add(
-      this.store$.select(mapStore.getCoherenceOverlayOpacity).subscribe(
-        opacity => {
+      this.store$
+        .select(mapStore.getCoherenceOverlayOpacity)
+        .subscribe((opacity) => {
           this.coherenceLayerOpacity = opacity;
-        }
-      )
-    )
+        }),
+    );
   }
 
   public onNewLayerType(layerType: models.MapLayerTypes): void {
-    const action = layerType === models.MapLayerTypes.STREET ?
-      new mapStore.SetStreetView() :
-      new mapStore.SetSatelliteView();
+    const action =
+      layerType === models.MapLayerTypes.STREET
+        ? new mapStore.SetStreetView()
+        : new mapStore.SetSatelliteView();
 
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-      'event': 'new-layer-type',
-      'new-layer-type': action.type
+      event: 'new-layer-type',
+      'new-layer-type': action.type,
     });
 
     this.store$.dispatch(action);

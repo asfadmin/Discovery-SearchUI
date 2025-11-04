@@ -5,12 +5,10 @@ import { MatMenuModule } from '@angular/material/menu';
 
 import { MatSharedModule } from '@shared';
 import { CancelFilterChangesComponent } from './cancel-filter-changes.component';
-import { SharedModule } from "@shared";
+import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [
-    CancelFilterChangesComponent
-  ],
+  declarations: [CancelFilterChangesComponent],
   imports: [
     CommonModule,
     MatSharedModule,
@@ -18,8 +16,6 @@ import { SharedModule } from "@shared";
     MatMenuModule,
     SharedModule,
   ],
-  exports: [
-    CancelFilterChangesComponent
-  ]
+  exports: [CancelFilterChangesComponent],
 })
-export class CancelFilterChangesModule { }
+export class CancelFilterChangesModule {}

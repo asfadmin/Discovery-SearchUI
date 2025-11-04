@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
@@ -15,14 +15,17 @@ enum FilterPanel {
   FILTER2 = 'Temporal Filter',
   DATE = 'Date',
   SEASON = 'Season',
-  OVERLAP = 'Overlap'
+  OVERLAP = 'Overlap',
 }
 @Component({
   selector: 'app-timeseries-filters',
   templateUrl: './timeseries-filters.component.html',
-  styleUrl: './timeseries-filters.component.scss'
+  styleUrl: './timeseries-filters.component.scss',
 })
 export class TimeseriesFiltersComponent implements OnDestroy, OnInit {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
   public areResultsLoaded: boolean;
@@ -36,16 +39,11 @@ export class TimeseriesFiltersComponent implements OnDestroy, OnInit {
 
   private subs = new SubSink();
 
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-  ) { }
-
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(scenesStore.getAreResultsLoaded).subscribe(
-        areLoaded => this.areResultsLoaded = areLoaded
-      )
+      this.store$
+        .select(scenesStore.getAreResultsLoaded)
+        .subscribe((areLoaded) => (this.areResultsLoaded = areLoaded)),
     );
   }
 

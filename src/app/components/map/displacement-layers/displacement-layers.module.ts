@@ -10,11 +10,10 @@ import { MapLegendComponent } from './map-legend/map-legend.component';
 import { DocsModalModule } from '@components/shared/docs-modal';
 
 import { MatSharedModule } from '@shared';
-import { SharedModule } from "@shared";
-import {CdkDrag} from '@angular/cdk/drag-drop';
-import {MatSlider, MatSliderThumb} from '@angular/material/slider';
-import {FormsModule} from '@angular/forms';
-
+import { SharedModule } from '@shared';
+import { CdkDrag } from '@angular/cdk/drag-drop';
+import { MatSlider, MatSliderThumb } from '@angular/material/slider';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -29,13 +28,9 @@ import {FormsModule} from '@angular/forms';
     CdkDrag,
     MatSlider,
     MatSliderThumb,
-    FormsModule
+    FormsModule,
   ],
-  declarations: [
-    DisplacementLayersComponent
-  ],
-  exports: [
-    DisplacementLayersComponent
-  ]
+  declarations: [DisplacementLayersComponent],
+  exports: [DisplacementLayersComponent],
 })
-export class DisplacementLayersModule { }
+export class DisplacementLayersModule {}

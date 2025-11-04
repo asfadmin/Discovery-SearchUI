@@ -15,10 +15,7 @@ import { SearchFiltersModule } from './saved-search/search-filters';
 import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [
-    SavedSearchesComponent,
-    SavedSearchComponent,
-  ],
+  declarations: [SavedSearchesComponent, SavedSearchComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -29,10 +26,8 @@ import { SharedModule } from '@shared';
     MatSharedModule,
     PipesModule,
     SearchFiltersModule,
-    SharedModule
+    SharedModule,
   ],
-  exports: [
-    SavedSearchesComponent,
-  ]
+  exports: [SavedSearchesComponent],
 })
-export class SavedSearchesModule { }
+export class SavedSearchesModule {}

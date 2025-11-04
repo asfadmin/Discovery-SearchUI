@@ -5,23 +5,18 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
-import { SharedModule } from "@shared";
-
+import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [
-    DownloadFileButtonComponent
-  ],
-  exports: [
-    DownloadFileButtonComponent
-  ],
+  declarations: [DownloadFileButtonComponent],
+  exports: [DownloadFileButtonComponent],
   imports: [
     CommonModule,
     MatButtonModule,
     MatTooltipModule,
     MatProgressSpinnerModule,
     MatIconModule,
-    SharedModule
-  ]
+    SharedModule,
+  ],
 })
-export class DownloadFileButtonModule { }
+export class DownloadFileButtonModule {}

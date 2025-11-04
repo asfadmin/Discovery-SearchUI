@@ -1,39 +1,44 @@
-<input (change)="onFilesAdded()"
-  class="hidden" type="file" #file/>
+<input (change)="onFilesAdded()" class="hidden" type="file" #file />
 
 <div
   *ngIf="(breakpoint$ | async) > breakpoints.MOBILE; else mobileUploadButton"
   (drop)="onFileDrop($event)"
-  class="container file-upload--layout">
-
+  class="container file-upload--layout"
+>
   <div class="fx-col">
     <div class="fx-empty">
-      <div class="file-upload-target--layout" [class.is-file-error]="isFileError"
-        [class.drop-text-box]="canBeClosed">
-
+      <div
+        class="file-upload-target--layout"
+        [class.is-file-error]="isFileError"
+        [class.drop-text-box]="canBeClosed"
+      >
         <div *ngIf="canBeClosed" class="drop-file-area">
-
           <div class="dd-text">
             <div class="dd-text-1">{{ 'DRAG_AND_DROP' | translate }}</div>
-            <div class="dd-text-2">{{ 'GEOSPATIAL_FILES_HERE' | translate }}</div>
+            <div class="dd-text-2">
+              {{ 'GEOSPATIAL_FILES_HERE' | translate }}
+            </div>
             <div class="dd-text-3">{{ 'FILES_OPC' | translate }}</div>
           </div>
 
           <div class="import-button">
-            <button mat-raised-button color="primary"
+            <button
+              mat-raised-button
+              color="primary"
               (click)="addFiles()"
-              [disabled]="uploading">
-              {{'IMPORT_FILE' | translate}}
+              [disabled]="uploading"
+            >
+              {{ 'IMPORT_FILE' | translate }}
             </button>
           </div>
-<!--          <div class="actions">-->
-<!--            <button (click)="addFiles()"-->
-<!--              [disabled]="uploading"-->
-<!--              style="margin-right: 10px; margin-bottom: 10px;"-->
-<!--              color="primary" class="add-files-btn" mat-raised-button>-->
-<!--              {{'IMPORT_FILE' | translate}}-->
-<!--            </button>-->
-<!--          </div>-->
+          <!--          <div class="actions">-->
+          <!--            <button (click)="addFiles()"-->
+          <!--              [disabled]="uploading"-->
+          <!--              style="margin-right: 10px; margin-bottom: 10px;"-->
+          <!--              color="primary" class="add-files-btn" mat-raised-button>-->
+          <!--              {{'IMPORT_FILE' | translate}}-->
+          <!--            </button>-->
+          <!--          </div>-->
         </div>
 
         <div class="loading-box" *ngIf="!canBeClosed">
@@ -41,24 +46,26 @@
             {{ 'LOADING_FILES' | translate }}
           </div>
           <div>
-            <mat-progress-spinner diameter="40" class="loading-spinner" color="primary" mode="indeterminate">
+            <mat-progress-spinner
+              diameter="40"
+              class="loading-spinner"
+              color="primary"
+              mode="indeterminate"
+            >
             </mat-progress-spinner>
           </div>
         </div>
       </div>
     </div>
-
-
   </div>
 </div>
 <ng-template #mobileUploadButton>
-<mat-button-toggle
-matTooltip="{{'UPLOAD_AOI_VIA_FILE' | translate}}"
-class="control-mat-button-toggle mobile-upload-button"
-[disabled]="uploading"
-(click)="addFiles()">
-        <mat-icon>
-          file_upload
-        </mat-icon>
-</mat-button-toggle>
+  <mat-button-toggle
+    matTooltip="{{ 'UPLOAD_AOI_VIA_FILE' | translate }}"
+    class="control-mat-button-toggle mobile-upload-button"
+    [disabled]="uploading"
+    (click)="addFiles()"
+  >
+    <mat-icon> file_upload </mat-icon>
+  </mat-button-toggle>
 </ng-template>

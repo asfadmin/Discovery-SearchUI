@@ -9,17 +9,14 @@ import { ScenesListModule } from '../scenes-list';
 import { SceneFilesModule } from '../scene-files';
 import { ScenesListHeaderModule } from '../scenes-list-header/scenes-list-header.module';
 
-import { EventProductSortSelectorModule } from '@components/shared/event-product-sort-selector/event-product-sort-selector.module';
+import { EventProductSortSelectorModule } from '@components/shared/event-product-sort-selector';
 
 import { SarviewsResultsMenuComponent } from './sarviews-results-menu.component';
 
-import { SharedModule } from "@shared";
-
+import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [
-    SarviewsResultsMenuComponent
-  ],
+  declarations: [SarviewsResultsMenuComponent],
   imports: [
     CommonModule,
     MatSharedModule,
@@ -32,8 +29,6 @@ import { SharedModule } from "@shared";
 
     EventProductSortSelectorModule,
   ],
-  exports: [
-    SarviewsResultsMenuComponent
-  ]
+  exports: [SarviewsResultsMenuComponent],
 })
-export class SarviewsResultsMenuModule { }
+export class SarviewsResultsMenuModule {}

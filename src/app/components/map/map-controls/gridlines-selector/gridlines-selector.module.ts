@@ -5,22 +5,17 @@ import { MatSharedModule } from '@shared';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { GridlinesSelectorComponent } from './gridlines-selector.component';
-import { SharedModule } from "@shared";
-
+import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [
-    GridlinesSelectorComponent
-  ],
+  declarations: [GridlinesSelectorComponent],
   imports: [
     CommonModule,
     MatCheckboxModule,
     MatSharedModule,
     MatButtonToggleModule,
-    SharedModule
+    SharedModule,
   ],
-  exports: [
-    GridlinesSelectorComponent
-  ]
+  exports: [GridlinesSelectorComponent],
 })
-export class GridlinesSelectorModule { }
+export class GridlinesSelectorModule {}

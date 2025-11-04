@@ -15,36 +15,33 @@ import { InteractionSelectorComponent } from './interaction-selector';
 import { SharedModule } from '@shared';
 import { GeocodeSelectorComponent } from './geocode-selector/geocode-selector.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import {MatSlideToggle} from '@angular/material/slide-toggle';
-import {PipesModule} from '@pipes';
-
-
-
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { PipesModule } from '@pipes';
 
 @NgModule({
   declarations: [
     AoiOptionsComponent,
     DrawSelectorComponent,
     InteractionSelectorComponent,
-    GeocodeSelectorComponent
+    GeocodeSelectorComponent,
   ],
-    imports: [
-        CommonModule,
-        MatButtonToggleModule,
-        FormsModule,
-        MatInputModule,
-        MatMenuModule,
-        MatSharedModule,
-        FileUploadModule,
-        SharedModule,
-        MatAutocompleteModule,
-        MatSlideToggle,
-        PipesModule
-    ],
+  imports: [
+    CommonModule,
+    MatButtonToggleModule,
+    FormsModule,
+    MatInputModule,
+    MatMenuModule,
+    MatSharedModule,
+    FileUploadModule,
+    SharedModule,
+    MatAutocompleteModule,
+    MatSlideToggle,
+    PipesModule,
+  ],
   exports: [
     AoiOptionsComponent,
     DrawSelectorComponent,
-    InteractionSelectorComponent
-  ]
+    InteractionSelectorComponent,
+  ],
 })
-export class AoiOptionsModule { }
+export class AoiOptionsModule {}

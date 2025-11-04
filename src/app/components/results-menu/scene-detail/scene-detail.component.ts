@@ -1,7 +1,13 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
-import { map, filter, tap, withLatestFrom, distinctUntilChanged } from 'rxjs/operators';
+import {
+  map,
+  filter,
+  tap,
+  withLatestFrom,
+  distinctUntilChanged,
+} from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -12,9 +18,14 @@ import * as uiStore from '@store/ui';
 import * as userStore from '@store/user';
 
 import * as models from '@models';
-import { AuthService, BrowseOverlayService, MapService, PropertyService,
-   SarviewsEventsService,
-  ScreenSizeService } from '@services';
+import {
+  AuthService,
+  BrowseOverlayService,
+  MapService,
+  PropertyService,
+  SarviewsEventsService,
+  ScreenSizeService,
+} from '@services';
 import { ImageDialogComponent } from './image-dialog';
 
 import { DatasetForProductService } from '@services';
@@ -25,9 +36,19 @@ import { Observable } from 'rxjs';
   selector: 'app-scene-detail',
   templateUrl: './scene-detail.component.html',
   styleUrls: ['./scene-detail.component.scss'],
-  providers: [ DatasetForProductService ]
+  providers: [DatasetForProductService],
 })
 export class SceneDetailComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+  dialog = inject(MatDialog);
+  authService = inject(AuthService);
+  prop = inject(PropertyService);
+  private datasetForProduct = inject(DatasetForProductService);
+  private sarviewsService = inject(SarviewsEventsService);
+  private mapService = inject(MapService);
+  private browseOverlayService = inject(BrowseOverlayService);
+
   @Input() isScrollable = true;
 
   public scene: models.CMRProduct;
@@ -36,8 +57,11 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public isActiveSarviewEvent = false;
 
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
-  public jobBrowses$ = this.store$.select(scenesStore.getSelectedOnDemandProductSceneBrowses);
-  public selectedSarviewsEventProducts$ = this.sarviewsService.filteredEventProducts$();
+  public jobBrowses$ = this.store$.select(
+    scenesStore.getSelectedOnDemandProductSceneBrowses,
+  );
+  public selectedSarviewsEventProducts$ =
+    this.sarviewsService.filteredEventProducts$();
 
   public dataset: models.Dataset;
   public searchType: models.SearchType;
@@ -60,162 +84,167 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
   private defaultBaselineFiltersID = '';
   private defaultSBASFiltersID = '';
-  private dateRange: {start: Date | null, end: Date | null};
+  private dateRange: { start: Date | null; end: Date | null };
 
   public sarviewsProducts: models.SarviewsProduct[] = [];
-  public isBrowseOverlayEnabled$: Observable<boolean> = this.browseOverlayService.isBrowseOverlayEnabled$;
+  public isBrowseOverlayEnabled$: Observable<boolean> =
+    this.browseOverlayService.isBrowseOverlayEnabled$;
 
   public isBrowseOverlayEnabled = false;
+  public copyIcons = models.CopyIcons;
 
-  private selectedSarviewsProductIndex$ = this.store$.select(scenesStore.getSelectedSarviewsProduct).pipe(
-    filter(product => !!product),
-    withLatestFrom(this.selectedSarviewsEventProducts$),
-    map(([product, products]) => products.findIndex(prod => prod.product_id === product.product_id))
-  );
+  private selectedSarviewsProductIndex$ = this.store$
+    .select(scenesStore.getSelectedSarviewsProduct)
+    .pipe(
+      filter((product) => !!product),
+      withLatestFrom(this.selectedSarviewsEventProducts$),
+      map(([product, products]) =>
+        products.findIndex((prod) => prod.product_id === product.product_id),
+      ),
+    );
 
   private subs = new SubSink();
-
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-    public dialog: MatDialog,
-    public authService: AuthService,
-    public prop: PropertyService,
-    private datasetForProduct: DatasetForProductService,
-    private sarviewsService: SarviewsEventsService,
-    private mapService: MapService,
-    private browseOverlayService: BrowseOverlayService
-  ) {}
 
   ngOnInit() {
     this.subs.add(
       this.isBrowseOverlayEnabled$.subscribe(
-        enabled => this.isBrowseOverlayEnabled = enabled
-      )
+        (enabled) => (this.isBrowseOverlayEnabled = enabled),
+      ),
     );
 
     this.subs.add(
-      this.store$.select(userStore.getIsUserLoggedIn).subscribe(
-        isLoggedIn => this.isLoggedIn = isLoggedIn
-      )
+      this.store$
+        .select(userStore.getIsUserLoggedIn)
+        .subscribe((isLoggedIn) => (this.isLoggedIn = isLoggedIn)),
     );
 
     this.subs.add(
-      this.store$.select(scenesStore.getPinnedEventBrowseIDs).subscribe(
-        ids => this.eventSelectedProductIds = ids
-      )
+      this.store$
+        .select(scenesStore.getPinnedEventBrowseIDs)
+        .subscribe((ids) => (this.eventSelectedProductIds = ids)),
     );
 
     this.subs.add(
-      this.store$.select(filtersStore.getDateRange).subscribe(
-        r => this.dateRange = r
-      )
+      this.store$
+        .select(filtersStore.getDateRange)
+        .subscribe((r) => (this.dateRange = r)),
     );
 
     this.subs.add(
-      this.screenSize.size$.pipe(
-        map(size => size.width > 1750 ? 32 : 16),
-      ).subscribe(len => this.sceneLen = len)
+      this.screenSize.size$
+        .pipe(map((size) => (size.width > 1750 ? 32 : 16)))
+        .subscribe((len) => (this.sceneLen = len)),
     );
 
     const scene$ = this.store$.select(scenesStore.getSelectedScene).pipe(
       distinctUntilChanged(),
-      tap(_ => this.isImageLoading = true)
+      tap((_) => (this.isImageLoading = true)),
     );
 
-    const sarviewsEvent$ = this.store$.select(scenesStore.getSelectedSarviewsEvent).pipe(
-      tap(_ => this.browseIndex = 0),
-      filter(selectedEvent => !!selectedEvent));
-
+    const sarviewsEvent$ = this.store$
+      .select(scenesStore.getSelectedSarviewsEvent)
+      .pipe(
+        tap((_) => (this.browseIndex = 0)),
+        filter((selectedEvent) => !!selectedEvent),
+      );
 
     this.subs.add(
-      sarviewsEvent$.subscribe(event => {
-          this.sarviewEvent = event;
-          if (event.processing_timeframe) {
-            if (event.processing_timeframe.end?.getDay() === new Date().getDay() || !event.processing_timeframe.end) {
-              this.isActiveSarviewEvent = true;
-            } else {
-              this.isActiveSarviewEvent = false;
-            }
+      sarviewsEvent$.subscribe((event) => {
+        this.sarviewEvent = event;
+        if (event.processing_timeframe) {
+          if (
+            event.processing_timeframe.end?.getDay() === new Date().getDay() ||
+            !event.processing_timeframe.end
+          ) {
+            this.isActiveSarviewEvent = true;
+          } else {
+            this.isActiveSarviewEvent = false;
           }
-          this.mapService.onSetSarviewsPolygon(event, this.sarviewsEventGeoSearchRadius);
-          }
+        }
+        this.mapService.onSetSarviewsPolygon(
+          event,
+          this.sarviewsEventGeoSearchRadius,
+        );
+      }),
+    );
+    this.subs.add(
+      scene$
+        .pipe(
+          tap((scene) => (this.scene = scene)),
+          filter((scene) => !!scene),
+          map((scene) => this.datasetForProduct.match(scene)),
+          tap((dataset) => (this.dataset = dataset)),
         )
-    );
-    this.subs.add(
-      scene$.pipe(
-        tap(scene => this.scene = scene),
-        filter(scene => !!scene),
-        map(scene => this.datasetForProduct.match(scene)),
-        tap(dataset => this.dataset = dataset),
-      ).subscribe(_ => this.updateHasBaseline())
+        .subscribe((_) => this.updateHasBaseline()),
     );
 
     this.subs.add(
-      this.store$.select(scenesStore.getSelectedSceneProducts).pipe(
-        tap(products => this.selectedProducts = products),
-      ).subscribe(_ => {
-        this.updateHasBaseline();
-        this.browseIndex = 0;
-      })
+      this.store$
+        .select(scenesStore.getSelectedSceneProducts)
+        .pipe(tap((products) => (this.selectedProducts = products)))
+        .subscribe((_) => {
+          this.updateHasBaseline();
+          this.browseIndex = 0;
+        }),
     );
 
     this.subs.add(
       this.selectedSarviewsEventProducts$
-      .pipe(filter(eventProducts => !!eventProducts))
-      .subscribe(
-          selectedEventProducts => this.selectedEventProducts = selectedEventProducts
+        .pipe(filter((eventProducts) => !!eventProducts))
+        .subscribe(
+          (selectedEventProducts) =>
+            (this.selectedEventProducts = selectedEventProducts),
+        ),
+    );
+
+    this.subs.add(
+      this.store$
+        .select(searchStore.getSearchType)
+        .subscribe((searchType) => (this.searchType = searchType)),
+    );
+
+    this.subs.add(
+      this.store$
+        .select(userStore.getUserProfile)
+        .pipe(
+          filter((profile) => !!profile),
+          map((profile) => profile.defaultFilterPresets),
+          filter((defaultFilterPresets) => !!defaultFilterPresets),
         )
-    );
-
-    this.subs.add(
-      this.store$.select(searchStore.getSearchType).subscribe(
-        searchType => this.searchType = searchType
-      )
-    );
-
-    this.subs.add(
-      this.store$.select(userStore.getUserProfile).pipe(
-        filter(profile => !!profile),
-        map(profile => profile.defaultFilterPresets),
-        filter(defaultFilterPresets => !!defaultFilterPresets),
-        ).subscribe(
-        profile => {
+        .subscribe((profile) => {
           this.defaultBaselineFiltersID = profile['Baseline Search'];
           this.defaultSBASFiltersID = profile['SBAS Search'];
-        }
-      )
+        }),
     );
 
     this.subs.add(
       this.selectedSarviewsEventProducts$.subscribe(
-        browses => this.sarviewsProducts = browses
-      )
+        (browses) => (this.sarviewsProducts = browses),
+      ),
     );
 
     this.subs.add(
-      this.selectedSarviewsProductIndex$.subscribe(
-        idx => this.onUpdateBrowseIndex(idx)
-      )
+      this.selectedSarviewsProductIndex$.subscribe((idx) =>
+        this.onUpdateBrowseIndex(idx),
+      ),
     );
-
   }
 
   public updateHasBaseline(): void {
-    this.hasBaseline = (
+    this.hasBaseline =
       this.prop.isRelevant(this.p.BASELINE_TOOL, this.dataset) &&
       !!this.selectedProducts &&
       this.sceneCanInSAR() &&
-      this.hasBaselineProductType()
-    );
+      this.hasBaselineProductType();
   }
 
   public sceneCanInSAR(): boolean {
-    return this.dataset.id === models.sentinel_1.id ||
+    return (
+      this.dataset.id === models.sentinel_1.id ||
       this.selectedProducts
-        .map(product => product.metadata.canInSAR)
-        .some(canInSAR => !!canInSAR);
-    ;
+        .map((product) => product.metadata.canInSAR)
+        .some((canInSAR) => !!canInSAR)
+    );
   }
 
   public baselineSceneName(): string {
@@ -225,7 +254,9 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
 
     if (this.dataset.id === models.sentinel_1.id) {
       return this.selectedProducts.filter(
-        product => product.metadata.productType === 'SLC' || product.metadata.productType === 'BURST'
+        (product) =>
+          product.metadata.productType === 'SLC' ||
+          product.metadata.productType === 'BURST',
       )[0].name;
     } else {
       return this.scene.name;
@@ -235,14 +266,16 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public sceneHasBrowse() {
     return (
       !!this.scene.browses &&
-        this.scene.browses.length > 0 &&
-        !this.scene?.browses[0].includes('no-browse')
+      this.scene.browses.length > 0 &&
+      !this.scene?.browses[0].includes('no-browse')
     );
   }
 
   public productHasSceneBrowses() {
     if (this.searchType === this.searchTypes.CUSTOM_PRODUCTS) {
-      return this.scene.metadata.job.scenes.some(x => !x.browses[0].includes('no-browse'));
+      return this.scene.metadata.job.scenes.some(
+        (x) => !x.browses[0].includes('no-browse'),
+      );
     }
     return false;
   }
@@ -261,18 +294,25 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     if (!this.selectedProducts || this.dataset.id !== models.sentinel_1.id) {
       return true;
     } else if (this.dataset.id == models.beta.id) {
-        return true;
+      return true;
     } else {
-      return this.selectedProducts
-        .map(product => product.metadata.productType)
-        .filter(productType => productType === 'SLC' || productType === 'BURST')
-        .length > 0;
+      return (
+        this.selectedProducts
+          .map((product) => product.metadata.productType)
+          .filter(
+            (productType) => productType === 'SLC' || productType === 'BURST',
+          ).length > 0
+      );
     }
   }
 
   public onOpenImage(): void {
     if (this.searchType === models.SearchType.SARVIEWS_EVENTS) {
-      this.store$.dispatch(new scenesStore.SetSelectedSarviewProduct(this.sarviewsProducts[this.browseIndex]));
+      this.store$.dispatch(
+        new scenesStore.SetSelectedSarviewProduct(
+          this.sarviewsProducts[this.browseIndex],
+        ),
+      );
     } else if (!this.sceneHasBrowse()) {
       return;
     }
@@ -284,13 +324,15 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
       maxWidth: '99%',
       height: '99%',
       maxHeight: '99%',
-      panelClass: 'image-dialog'
+      panelClass: 'image-dialog',
     });
 
     this.subs.add(
-      dialogRef.afterClosed().subscribe(
-        _ => this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(false))
-      )
+      dialogRef
+        .afterClosed()
+        .subscribe((_) =>
+          this.store$.dispatch(new uiStore.SetIsBrowseDialogOpen(false)),
+        ),
     );
   }
 
@@ -316,9 +358,13 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     }
 
     this.browseIndex = newIndex;
-    let [url, wkt] = this.searchType === this.searchTypes.SARVIEWS_EVENTS
-      ? [this.selectedEventProducts[this.browseIndex].files.browse_url, this.selectedEventProducts[this.browseIndex]?.granules[0].wkt]
-      : [this.scene.browses[this.browseIndex], this.scene.metadata.polygon];
+    const [url, wkt] =
+      this.searchType === this.searchTypes.SARVIEWS_EVENTS
+        ? [
+            this.selectedEventProducts[this.browseIndex].files.browse_url,
+            this.selectedEventProducts[this.browseIndex]?.granules[0].wkt,
+          ]
+        : [this.scene.browses[this.browseIndex], this.scene.metadata.polygon];
 
     // for OPERA-S1 geotiffs
     // if(this.scene?.id.startsWith('OPERA')) {
@@ -333,11 +379,14 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const currentProductId = this.selectedEventProducts[this.browseIndex].product_id;
+    const currentProductId =
+      this.selectedEventProducts[this.browseIndex].product_id;
     const isPinned = this.eventSelectedProductIds.includes(currentProductId);
 
     if (isPinned) {
-      this.eventSelectedProductIds = this.eventSelectedProductIds.filter(productId => productId !== currentProductId);
+      this.eventSelectedProductIds = this.eventSelectedProductIds.filter(
+        (productId) => productId !== currentProductId,
+      );
     } else {
       this.eventSelectedProductIds.push(currentProductId);
     }
@@ -348,13 +397,16 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     const pinned = selectedProducts.reduce(
       (prev, key) => {
         const output = {} as PinnedProduct;
-        const sarviewsProduct = this.sarviewsProducts.find(prod => prod.product_id === key);
+        const sarviewsProduct = this.sarviewsProducts.find(
+          (prod) => prod.product_id === key,
+        );
         output.url = sarviewsProduct.files.browse_url;
         output.wkt = sarviewsProduct.granules[0].wkt;
 
         prev[key] = output;
         return prev;
-      }, {} as {[product_id in string]: PinnedProduct}
+      },
+      {} as Record<string, PinnedProduct>,
     );
 
     this.store$.dispatch(new scenesStore.SetImageBrowseProducts(pinned));
@@ -369,36 +421,53 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
       this.makeSarviewsEventGeoSearch();
     } else {
       const scene = this.scene;
-      const shouldClear = this.searchType !== models.SearchType.DATASET || this.dataset.id === 'OPERA-S1';
+      const shouldClear =
+        this.searchType !== models.SearchType.DATASET ||
+        this.dataset.id === 'OPERA-S1';
       const dateRange = this.dateRange;
 
-      this.store$.dispatch(new searchStore.SetSearchType(models.SearchType.DATASET));
+      this.store$.dispatch(
+        new searchStore.SetSearchType(models.SearchType.DATASET),
+      );
 
       if (shouldClear) {
         this.store$.dispatch(new searchStore.ClearSearch());
       }
 
-      this.store$.dispatch(new filtersStore.SetFiltersSimilarTo({product: scene, dataset: this.datasetForProduct.match(scene)}));
+      this.store$.dispatch(
+        new filtersStore.SetFiltersSimilarTo({
+          product: scene,
+          dataset: this.datasetForProduct.match(scene),
+        }),
+      );
 
       if (dateRange.start) {
-        this.store$.dispatch(new filtersStore.SetStartDate(new Date(dateRange.start)));
+        this.store$.dispatch(
+          new filtersStore.SetStartDate(new Date(dateRange.start)),
+        );
       }
       if (dateRange.end) {
-        this.store$.dispatch(new filtersStore.SetEndDate(new Date(dateRange.end)));
+        this.store$.dispatch(
+          new filtersStore.SetEndDate(new Date(dateRange.end)),
+        );
       }
 
       this.store$.dispatch(new searchStore.MakeSearch());
     }
   }
 
-  public staticLayer(){
+  public staticLayer() {
     const operaBurstID = this.scene.metadata.opera.operaBurstID;
     const sensorDate = new Date(this.scene.metadata.date.toDate());
-    const staticType = this.scene.metadata.productType + '-STATIC'
+    const staticType = this.scene.metadata.productType + '-STATIC';
     this.store$.dispatch(new searchStore.ClearSearch());
-    this.store$.dispatch(new filtersStore.SetSelectedDataset('OPERA-S1'))
+    this.store$.dispatch(new filtersStore.SetSelectedDataset('OPERA-S1'));
     this.store$.dispatch(new filtersStore.setOperaBurstID([operaBurstID]));
-    this.store$.dispatch(new filtersStore.SetProductTypes([models.opera_s1.productTypes.find(t => t.apiValue === staticType)]));
+    this.store$.dispatch(
+      new filtersStore.SetProductTypes([
+        models.opera_s1.productTypes.find((t) => t.apiValue === staticType),
+      ]),
+    );
     this.store$.dispatch(new filtersStore.SetEndDate(sensorDate));
     this.store$.dispatch(new searchStore.MakeSearch());
   }
@@ -411,23 +480,27 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
       new searchStore.SetSearchType(models.SearchType.BASELINE),
       new searchStore.ClearSearch(),
       new userStore.LoadFiltersPreset(this.defaultBaselineFiltersID),
-    ].forEach(action => this.store$.dispatch(action));
+    ].forEach((action) => this.store$.dispatch(action));
 
     if (sceneName?.startsWith('S1-GUNW')) {
-        this.store$.dispatch(new scenesStore.SetFilterMaster(frame.toString()))
-        this.store$.dispatch(new filtersStore.SetUseFrameForBaseline(true));
-        this.store$.dispatch(new filtersStore.SetSelectedDataset(models.beta.id))
-        // this.store$.dispatch(new scenesStore.setdata)
+      this.store$.dispatch(new scenesStore.SetFilterMaster(frame.toString()));
+      this.store$.dispatch(new filtersStore.SetUseFrameForBaseline(true));
+      this.store$.dispatch(new filtersStore.SetSelectedDataset(models.beta.id));
+      // this.store$.dispatch(new scenesStore.setdata)
     } else {
-        this.store$.dispatch(new filtersStore.SetUseFrameForBaseline(false));
-        this.store$.dispatch(new scenesStore.SetFilterMaster(sceneName))
-        this.store$.dispatch(new filtersStore.SetSelectedDataset(null))
+      this.store$.dispatch(new filtersStore.SetUseFrameForBaseline(false));
+      this.store$.dispatch(new scenesStore.SetFilterMaster(sceneName));
+      this.store$.dispatch(new filtersStore.SetSelectedDataset(null));
     }
     if (dateRange.start) {
-      this.store$.dispatch(new filtersStore.SetStartDate(new Date(dateRange.start)));
+      this.store$.dispatch(
+        new filtersStore.SetStartDate(new Date(dateRange.start)),
+      );
     }
     if (dateRange.end) {
-      this.store$.dispatch(new filtersStore.SetEndDate(new Date(dateRange.end)));
+      this.store$.dispatch(
+        new filtersStore.SetEndDate(new Date(dateRange.end)),
+      );
     }
 
     this.store$.dispatch(new searchStore.MakeSearch());
@@ -442,13 +515,17 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
       new searchStore.ClearSearch(),
       new userStore.LoadFiltersPreset(this.defaultSBASFiltersID),
       new scenesStore.SetFilterMaster(sceneName),
-    ].forEach(action => this.store$.dispatch(action));
+    ].forEach((action) => this.store$.dispatch(action));
 
-    if (!!dateRange.start) {
-      this.store$.dispatch(new filtersStore.SetStartDate(new Date(dateRange.start)));
+    if (dateRange.start) {
+      this.store$.dispatch(
+        new filtersStore.SetStartDate(new Date(dateRange.start)),
+      );
     }
-    if (!!dateRange.end) {
-      this.store$.dispatch(new filtersStore.SetEndDate(new Date(dateRange.end)));
+    if (dateRange.end) {
+      this.store$.dispatch(
+        new filtersStore.SetEndDate(new Date(dateRange.end)),
+      );
     }
 
     this.store$.dispatch(new searchStore.MakeSearch());
@@ -459,9 +536,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   }
 
   public isRestrictedDataset(): boolean {
-    return (
-      this.scene.dataset.includes('JERS-1')
-    );
+    return this.scene.dataset.includes('JERS-1');
   }
 
   public getEventID() {
@@ -469,7 +544,8 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
       return (this.sarviewEvent as models.SarviewsQuakeEvent).usgs_event_id;
     }
 
-    return (this.sarviewEvent as models.SarviewsVolcanicEvent).smithsonian_event_id;
+    return (this.sarviewEvent as models.SarviewsVolcanicEvent)
+      .smithsonian_event_id;
   }
 
   public makeSarviewsEventGeoSearch() {
@@ -479,15 +555,22 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
       new searchStore.SetSearchType(models.SearchType.DATASET),
       new searchStore.ClearSearch(),
       new filtersStore.SetSelectedDataset('SENTINEL-1'),
-    ].forEach(action => this.store$.dispatch(action));
+    ].forEach((action) => this.store$.dispatch(action));
 
     if (timeFrame.start) {
-      this.store$.dispatch(new filtersStore.SetStartDate(new Date(timeFrame.start)));
+      this.store$.dispatch(
+        new filtersStore.SetStartDate(new Date(timeFrame.start)),
+      );
     }
     if (timeFrame.end) {
-      this.store$.dispatch(new filtersStore.SetEndDate(new Date(timeFrame.end)));
+      this.store$.dispatch(
+        new filtersStore.SetEndDate(new Date(timeFrame.end)),
+      );
     }
-    this.mapService.onSetSarviewsPolygon(event, this.sarviewsEventGeoSearchRadius);
+    this.mapService.onSetSarviewsPolygon(
+      event,
+      this.sarviewsEventGeoSearchRadius,
+    );
 
     this.store$.dispatch(new searchStore.MakeSearch());
   }
@@ -497,20 +580,23 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   }
 
   public makeEventListSearch() {
-    const productIds = this.sarviewsProducts.map(product => product.granules[0].granule_name);
+    const productIds = this.sarviewsProducts.map(
+      (product) => product.granules[0].granule_name,
+    );
 
     [
       new searchStore.SetSearchType(models.SearchType.LIST),
       new searchStore.ClearSearch(),
       new filtersStore.SetSearchList(productIds),
-    ].forEach(action => this.store$.dispatch(action));
+    ].forEach((action) => this.store$.dispatch(action));
 
     this.store$.dispatch(new searchStore.MakeSearch());
   }
 
   private getBrowseCount() {
     return this.searchType === this.searchTypes.SARVIEWS_EVENTS
-      ? this.selectedEventProducts.length : this.scene.browses.length;
+      ? this.selectedEventProducts.length
+      : this.scene.browses.length;
   }
 
   ngOnDestroy() {

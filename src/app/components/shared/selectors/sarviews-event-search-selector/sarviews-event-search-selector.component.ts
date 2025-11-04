@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Store } from '@ngrx/store';
@@ -14,33 +14,37 @@ import { SubSink } from 'subsink';
 @Component({
   selector: 'app-sarviews-event-search-selector',
   templateUrl: './sarviews-event-search-selector.component.html',
-  styleUrls: ['./sarviews-event-search-selector.component.scss']
+  styleUrls: ['./sarviews-event-search-selector.component.scss'],
 })
 export class SarviewsEventSearchSelectorComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private eventService = inject(SarviewsEventsService);
+  private notificationService = inject(NotificationService);
+
   @ViewChild('eventsQueryForm') public eventsQueryForm: NgForm;
 
   public filteredEvents$ = combineLatest([
     this.eventService.filteredSarviewsEvents$(),
-    this.eventService.filterSarviewsEventsByName$(this.store$.select(getSarviewsEvents))
+    this.eventService.filterSarviewsEventsByName$(
+      this.store$.select(getSarviewsEvents),
+    ),
   ]).pipe(
-    map(([filteredEvents, allEvents]) => ({filteredEvents, allEvents})),
+    map(([filteredEvents, allEvents]) => ({ filteredEvents, allEvents })),
     withLatestFrom(this.store$.select(getIsResultsMenuOpen)),
-    map(([events, resultsOpen]) => resultsOpen ? events.filteredEvents : events.allEvents)
+    map(([events, resultsOpen]) =>
+      resultsOpen ? events.filteredEvents : events.allEvents,
+    ),
   );
 
   public eventQuery = '';
 
   private subs = new SubSink();
 
-  constructor(private store$: Store<AppState>,
-              private eventService: SarviewsEventsService,
-              private notificationService: NotificationService) { }
-
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(filterStore.getSarviewsEventNameFilter).subscribe(
-        nameFilter => this.eventQuery = nameFilter
-      )
+      this.store$
+        .select(filterStore.getSarviewsEventNameFilter)
+        .subscribe((nameFilter) => (this.eventQuery = nameFilter)),
     );
   }
 
@@ -50,7 +54,9 @@ export class SarviewsEventSearchSelectorComponent implements OnInit, OnDestroy {
 
   public onMatAutoCompleteSelect(event: MatAutocompleteSelectedEvent) {
     const eventDescription = event.option.value;
-    this.store$.dispatch(new filterStore.SetSarviewsEventNameFilter(eventDescription));
+    this.store$.dispatch(
+      new filterStore.SetSarviewsEventNameFilter(eventDescription),
+    );
   }
 
   public onSearchQueryChange(event: Event): void {

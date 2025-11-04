@@ -22,41 +22,35 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import {DownloadFileButtonModule} from '@components/shared/download-file-button/download-file-button.module';
+import { DownloadFileButtonModule } from '@components/shared/download-file-button/download-file-button.module';
 import { DownloadAllModule } from '@components/header/queue/download-all/download-all.module';
-import {DocsModalModule} from '@components/shared/docs-modal';
+import { DocsModalModule } from '@components/shared/docs-modal';
 import { SharedModule } from '@shared';
 
-
 @NgModule({
-  declarations: [
-    QueueComponent,
-    FileDownloadDirective
+  declarations: [QueueComponent, FileDownloadDirective],
+  imports: [
+    CommonModule,
+    MatMenuModule,
+    ScrollingModule,
+    TruncateModule,
+    ClipboardModule,
+    DownloadFileButtonModule,
+    FontAwesomeModule,
+    CopyToClipboardModule,
+    MatSharedModule,
+    PipesModule,
+    ResizableModule,
+    DragDropModule,
+    MatDialogModule,
+    ResizedEventModule,
+    MatProgressBarModule,
+    MatCheckboxModule,
+    MatProgressSpinnerModule,
+    DownloadAllModule,
+    DocsModalModule,
+    SharedModule,
   ],
-    imports: [
-        CommonModule,
-        MatMenuModule,
-        ScrollingModule,
-        TruncateModule,
-        ClipboardModule,
-        DownloadFileButtonModule,
-        FontAwesomeModule,
-        CopyToClipboardModule,
-        MatSharedModule,
-        PipesModule,
-        ResizableModule,
-        DragDropModule,
-        MatDialogModule,
-        ResizedEventModule,
-        MatProgressBarModule,
-        MatCheckboxModule,
-        MatProgressSpinnerModule,
-        DownloadAllModule,
-        DocsModalModule,
-        SharedModule
-    ],
-  exports: [
-    QueueComponent
-  ]
+  exports: [QueueComponent],
 })
-export class QueueModule { }
+export class QueueModule {}

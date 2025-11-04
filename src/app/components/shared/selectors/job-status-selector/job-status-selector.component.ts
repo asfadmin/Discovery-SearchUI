@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { Hyp3JobStatusCode } from '@models';
 
 import { Store } from '@ngrx/store';
@@ -10,25 +10,20 @@ import { SubSink } from 'subsink';
 @Component({
   selector: 'app-job-status-selector',
   templateUrl: './job-status-selector.component.html',
-  styleUrls: ['./job-status-selector.component.scss']
+  styleUrls: ['./job-status-selector.component.scss'],
 })
-
 export class JobStatusSelectorComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+
   public selectedJobStatuses: Hyp3JobStatusCode[] = [];
   public jobStatuses = Object.keys(Hyp3JobStatusCode);
   private subs = new SubSink();
 
-  constructor(
-    private store$: Store<AppState>,
-  ) { }
-
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(filtersStore.getJobStatuses).subscribe(
-        selected => {
-          this.selectedJobStatuses = selected;
-        }
-      )
+      this.store$.select(filtersStore.getJobStatuses).subscribe((selected) => {
+        this.selectedJobStatuses = selected;
+      }),
     );
   }
 
@@ -40,8 +35,8 @@ export class JobStatusSelectorComponent implements OnInit, OnDestroy {
     if (forceLower) {
       str = str.toLowerCase();
     }
-    return str.replace(/^\w/, chr => chr.toUpperCase());
-  }
+    return str.replace(/^\w/, (chr) => chr.toUpperCase());
+  };
 
   ngOnDestroy() {
     this.subs.unsubscribe();

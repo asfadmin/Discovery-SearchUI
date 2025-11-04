@@ -1,7 +1,7 @@
 <mat-slide-toggle
   (change)="onToggleSeasonalOptions($event)"
   [(ngModel)]="isSeasonalSearch"
-  style="margin: 10px 0;"
+  style="margin: 10px 0"
 >
   {{ 'SEASONAL_SEARCH' | translate }}
 </mat-slide-toggle>
@@ -21,16 +21,24 @@
       <b>{{ 'SEASON_START_DAY' | translate }} </b>
       <div class="buttons">
         <div *ngIf="start" class="date">{{ this.start | shortDateSeason }}</div>
-        <button (click)="change('start', -1)" mat-raised-button color="accent">-1</button>
-        <button (click)="change('start', 1)" mat-raised-button color="accent">+1</button>
+        <button (click)="change('start', -1)" mat-raised-button color="accent">
+          -1
+        </button>
+        <button (click)="change('start', 1)" mat-raised-button color="accent">
+          +1
+        </button>
       </div>
     </div>
     <div>
       <b>{{ 'SEASON_END_DAY' | translate }} </b>
       <div class="buttons">
         <div *ngIf="end" class="date">{{ end | shortDateSeason }}</div>
-        <button (click)="change('end', -1)" mat-raised-button color="accent">-1</button>
-        <button (click)="change('end', 1)" mat-raised-button color="accent">+1</button>
+        <button (click)="change('end', -1)" mat-raised-button color="accent">
+          -1
+        </button>
+        <button (click)="change('end', 1)" mat-raised-button color="accent">
+          +1
+        </button>
       </div>
     </div>
   </div>

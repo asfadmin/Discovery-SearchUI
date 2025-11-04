@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { SubSink } from 'subsink';
 import * as models from '@models';
 import { Store } from '@ngrx/store';
@@ -11,9 +11,11 @@ import { getTemporalRange } from '@store/filters';
 @Component({
   selector: 'app-closest-pair',
   templateUrl: './closest-pair.component.html',
-  styleUrls: ['./closest-pair.component.scss']
+  styleUrls: ['./closest-pair.component.scss'],
 })
 export class ClosestPairComponent implements OnInit {
+  private store$ = inject<Store<AppState>>(Store);
+  private pairService = inject(PairService);
 
   public scenes: CMRProduct[] = [];
   public points = 1;
@@ -26,33 +28,33 @@ export class ClosestPairComponent implements OnInit {
 
   private subs = new SubSink();
 
-  constructor(private store$: Store<AppState>,
-    private pairService: PairService, ) { }
-
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(getScenes).subscribe(
-        scenes => this.scenes = scenes
-      )
+      this.store$
+        .select(getScenes)
+        .subscribe((scenes) => (this.scenes = scenes)),
     );
     this.subs.add(
-      this.store$.select(getMasterName).subscribe(
-        refSceneName => {
-            this.referenceSceneIdx = this.scenes.findIndex(scene => scene.name === refSceneName);
-            this.referenceScene = this.scenes[this.referenceSceneIdx];
-        }
-      )
+      this.store$.select(getMasterName).subscribe((refSceneName) => {
+        this.referenceSceneIdx = this.scenes.findIndex(
+          (scene) => scene.name === refSceneName,
+        );
+        this.referenceScene = this.scenes[this.referenceSceneIdx];
+      }),
     );
     this.subs.add(
-      this.store$.select(getTemporalRange).subscribe( range => this.temporalRange = range)
+      this.store$
+        .select(getTemporalRange)
+        .subscribe((range) => (this.temporalRange = range)),
     );
   }
 
   public queueClosestPair(job_type: models.Hyp3JobType): void {
-    const closestProduct = this.pairService.findNearestneighbour(this.referenceScene,
-      this.scenes.filter(scene => this.referenceScene.id !== scene.id),
+    const closestProduct = this.pairService.findNearestneighbour(
+      this.referenceScene,
+      this.scenes.filter((scene) => this.referenceScene.id !== scene.id),
       this.temporalRange,
-      this.points
+      this.points,
     );
 
     const closestProductList = [];
@@ -63,10 +65,13 @@ export class ClosestPairComponent implements OnInit {
     this.queueAllOnDemand(closestProductList, job_type);
   }
 
-  public queueAllOnDemand(products: models.CMRProduct[][], job_type: models.Hyp3JobType): void {
-    const jobs: models.QueuedHyp3Job[] = products.map(product => ({
+  public queueAllOnDemand(
+    products: models.CMRProduct[][],
+    job_type: models.Hyp3JobType,
+  ): void {
+    const jobs: models.QueuedHyp3Job[] = products.map((product) => ({
       granules: product,
-      job_type
+      job_type,
     }));
 
     this.store$.dispatch(new queueStore.AddJobs(jobs));
@@ -76,5 +81,4 @@ export class ClosestPairComponent implements OnInit {
     const val = (event.target as HTMLInputElement).valueAsNumber;
     this.points = Math.min(val, this.scenes.length - 2);
   }
-
 }

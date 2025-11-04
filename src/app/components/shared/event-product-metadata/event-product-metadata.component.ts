@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import * as models from '@models';
 
 interface IEventProductMetadata {
@@ -12,39 +12,37 @@ interface IEventProductMetadata {
 }
 
 enum Polarizations {
-   'SH' = 'HH',
-   'SV' = 'VV',
-   'DH' = 'HH+HV',
-   'DV' = 'VV+VH'
+  'SH' = 'HH',
+  'SV' = 'VV',
+  'DH' = 'HH+HV',
+  'DV' = 'VV+VH',
 }
 
 @Component({
   selector: 'app-event-product-metadata',
   templateUrl: './event-product-metadata.component.html',
-  styleUrls: ['./event-product-metadata.component.scss']
+  styleUrls: ['./event-product-metadata.component.scss'],
 })
-export class EventProductMetadataComponent implements OnInit {
+export class EventProductMetadataComponent {
   @Input() set product(value: models.SarviewsProduct) {
-    this.scenesMetadata = value.granules.reduce((prev, curr) => [...prev, {
-      scene_name: curr.granule_name,
-      beamMode: this.getBeamMode(curr.granule_name),
-      polarization: this.getPolarization(curr.granule_name),
-      absolute_orbit: this.getOrbit(curr.granule_name),
-      acquisition_date: curr.acquisition_date,
-      path: curr.path,
-      frame: curr.frame
-
-    }], [] as IEventProductMetadata[]);
+    this.scenesMetadata = value.granules.reduce(
+      (prev, curr) => [
+        ...prev,
+        {
+          scene_name: curr.granule_name,
+          beamMode: this.getBeamMode(curr.granule_name),
+          polarization: this.getPolarization(curr.granule_name),
+          absolute_orbit: this.getOrbit(curr.granule_name),
+          acquisition_date: curr.acquisition_date,
+          path: curr.path,
+          frame: curr.frame,
+        },
+      ],
+      [] as IEventProductMetadata[],
+    );
   }
 
- public scenesMetadata: IEventProductMetadata[] = [];
-
-
-  constructor() { }
-
-  ngOnInit(): void {
-
-  }
+  public scenesMetadata: IEventProductMetadata[] = [];
 
   private getBeamMode(sceneName: string): string {
     return sceneName.split('_')[1];

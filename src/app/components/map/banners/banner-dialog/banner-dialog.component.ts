@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, inject } from '@angular/core';
 import { DialogData } from '@components/map/banners';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
@@ -8,12 +8,8 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./banner-dialog.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class BannerDialogComponent implements OnInit {
+export class BannerDialogComponent {
+  data = inject<DialogData>(MAT_DIALOG_DATA);
+
   htmlContent: string;
-
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: DialogData ) { }
-
-  ngOnInit(): void {
-  }
 }

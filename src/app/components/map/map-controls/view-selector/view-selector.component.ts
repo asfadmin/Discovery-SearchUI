@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
@@ -9,46 +9,43 @@ import { MapViewType } from '@models';
 
 // Declare GTM dataLayer array.
 declare global {
-  interface Window { dataLayer: any[]; }
+  interface Window {
+    dataLayer: any[];
+  }
 }
 
 @Component({
   selector: 'app-view-selector',
   templateUrl: './view-selector.component.html',
-  styleUrls: ['./view-selector.component.scss']
+  styleUrls: ['./view-selector.component.scss'],
 })
 export class ViewSelectorComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+
   public view: MapViewType;
   public types = MapViewType;
   private subs = new SubSink();
 
-  constructor(
-    private store$: Store<AppState>,
-  ) {}
-
   ngOnInit() {
     this.subs.add(
-      this.store$.select(mapStore.getMapView).subscribe(
-        view => {
-          this.view = view;
-          window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({
-            'event': 'map-view',
-            'map-view': this.view
-          });
-        }
-      )
+      this.store$.select(mapStore.getMapView).subscribe((view) => {
+        this.view = view;
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: 'map-view',
+          'map-view': this.view,
+        });
+      }),
     );
   }
 
-  public onArcticSelected =
-    () => this.onNewProjection(MapViewType.ARCTIC)
+  public onArcticSelected = () => this.onNewProjection(MapViewType.ARCTIC);
 
-  public onEquatorialSelected =
-    () => this.onNewProjection(MapViewType.EQUATORIAL)
+  public onEquatorialSelected = () =>
+    this.onNewProjection(MapViewType.EQUATORIAL);
 
-  public onAntarcticSelected =
-    () => this.onNewProjection(MapViewType.ANTARCTIC)
+  public onAntarcticSelected = () =>
+    this.onNewProjection(MapViewType.ANTARCTIC);
 
   public onNewProjection(view: MapViewType): void {
     this.store$.dispatch(new mapStore.SetMapView(view));

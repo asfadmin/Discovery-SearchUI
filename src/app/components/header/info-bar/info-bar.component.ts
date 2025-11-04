@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
@@ -14,7 +14,9 @@ import * as userStore from '@store/user';
 
 // Declare GTM dataLayer array.
 declare global {
-  interface Window { dataLayer: any[]; }
+  interface Window {
+    dataLayer: any[];
+  }
 }
 
 @Component({
@@ -23,6 +25,10 @@ declare global {
   styleUrls: ['./info-bar.component.scss'],
 })
 export class InfoBarComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(services.ScreenSizeService);
+  private hyp3 = inject(services.Hyp3ApiService);
+
   public searchType: models.SearchType = models.SearchType.DATASET;
   public searchTypes = models.SearchType;
   public searchType$ = this.store$.select(searchStore.getSearchType);
@@ -39,6 +45,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public listSearchMode: models.ListSearchType;
   public searchList: string[];
   public productTypes: string;
+  public shortNames: string;
   public beamModes: models.DatasetBeamModes;
   public polarizations: models.DatasetPolarizations;
   public flightDirections: models.FlightDirection[];
@@ -48,13 +55,19 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public tempRange: models.Range<number | null>;
   public fullBurstIDs: string[] = [];
   public operaBurstIDs: string[] = [];
-  public useCalibrationData: boolean = false;
+  public useCalibrationData = false;
   public groupID: string;
   public userID: string;
+  public sidePolarizations: models.DatasetPolarizations;
+  public rangeBandwidth: string[];
+  public instruments: string[];
+  public frameCoverage: string[];
+  public jointObservation: boolean;
+  public scienceProducts: string[];
+  public productionConfig: string[];
   public jobIds: string[];
   public selectedDataset: string;
-  public selectedDatasetIsNISARFormat: boolean = false;
-
+  public selectedDatasetIsNISARFormat = false;
 
   private subs = new SubSink();
 
@@ -63,156 +76,212 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public hyp3BaseUrl = this.hyp3.baseUrl;
   public hyp3BackendUrl: string;
 
-  public dataset: string = ''
-
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: services.ScreenSizeService,
-    private hyp3: services.Hyp3ApiService,
-  ) {
-  }
+  public dataset = '';
   ngOnInit() {
     this.subs.add(
-      this.store$.select(filtersStore.getSelectedDatasetId).subscribe(
-        selected => {
-          this.selectedDataset = selected
+      this.store$
+        .select(filtersStore.getSelectedDatasetId)
+        .subscribe((selected) => {
+          this.selectedDataset = selected;
           if (this.selectedDataset === 'SENTINEL-1 INTERFEROGRAM (BETA)') {
             this.selectedDatasetIsNISARFormat = true;
           } else {
             this.selectedDatasetIsNISARFormat = false;
           }
-        }
-      )
+        }),
     );
-    const startSub = this.store$.select(filtersStore.getStartDate).subscribe(
-      start => this.startDate = start
-    );
-    const endSub = this.store$.select(filtersStore.getEndDate).subscribe(
-      end => this.endDate = end
-    );
-    const pathSub = this.store$.select(filtersStore.getPathRange).subscribe(
-      pathRange => this.pathRange = pathRange
-    );
-    const frameSub = this.store$.select(filtersStore.getFrameRange).subscribe(
-      frameRange => this.frameRange = frameRange
-    );
-    const seasonSub = this.store$.select(filtersStore.getSeason).subscribe(
-      season => this.season = season
-    );
-    const omitSub = this.store$.select(filtersStore.getShouldOmitSearchPolygon).subscribe(
-      shouldOmit  => this.shouldOmitSearchPolygon = shouldOmit
-    );
-    const listSearchModeSub = this.store$.select(filtersStore.getListSearchMode).subscribe(
-      listSearchMode  => this.listSearchMode = listSearchMode
-    );
-    const searchListSub = this.store$.select(filtersStore.getSearchList).subscribe(
-      searchList  => this.searchList = searchList
-    );
-    const productTypesSub = this.store$.select(filtersStore.getProductTypes).subscribe(
-      productTypes => this.productTypes = productTypes
-        .map(subtype => subtype.apiValue)
-        .join(',')
-    );
-    const polsSub = this.store$.select(filtersStore.getPolarizations).subscribe(
-      pols  => this.polarizations = pols
-    );
-    const beamModesSub = this.store$.select(filtersStore.getBeamModes).subscribe(
-      beamModes => this.beamModes = beamModes
-    );
-    const flightDirsSub = this.store$.select(filtersStore.getFlightDirections).subscribe(
-      flightDirs  => this.flightDirections = flightDirs
-    );
-    const subtypeSub = this.store$.select(filtersStore.getSubtypes).subscribe(
-      subtypes => this.subtypes = subtypes
-        .map(subtype => subtype.apiValue)
-        .join(',')
-    );
-    const missionSub = this.store$.select(filtersStore.getSelectedMission).subscribe(
-      mission => this.mission = mission
-    );
-    const perpSub = this.store$.select(filtersStore.getPerpendicularRange).subscribe(
-      range => this.perpRange = range
-    );
-    const tempSub = this.store$.select(filtersStore.getTemporalRange).subscribe(
-      range => this.tempRange = range
-    );
+    const startSub = this.store$
+      .select(filtersStore.getStartDate)
+      .subscribe((start) => (this.startDate = start));
+    const endSub = this.store$
+      .select(filtersStore.getEndDate)
+      .subscribe((end) => (this.endDate = end));
+    const pathSub = this.store$
+      .select(filtersStore.getPathRange)
+      .subscribe((pathRange) => (this.pathRange = pathRange));
+    const frameSub = this.store$
+      .select(filtersStore.getFrameRange)
+      .subscribe((frameRange) => (this.frameRange = frameRange));
+    const seasonSub = this.store$
+      .select(filtersStore.getSeason)
+      .subscribe((season) => (this.season = season));
+    const omitSub = this.store$
+      .select(filtersStore.getShouldOmitSearchPolygon)
+      .subscribe((shouldOmit) => (this.shouldOmitSearchPolygon = shouldOmit));
+    const listSearchModeSub = this.store$
+      .select(filtersStore.getListSearchMode)
+      .subscribe((listSearchMode) => (this.listSearchMode = listSearchMode));
+    const searchListSub = this.store$
+      .select(filtersStore.getSearchList)
+      .subscribe((searchList) => (this.searchList = searchList));
+    const productTypesSub = this.store$
+      .select(filtersStore.getProductTypes)
+      .subscribe(
+        (productTypes) =>
+          (this.productTypes = productTypes
+            .map((subtype) => subtype.apiValue)
+            .join(',')),
+      );
+    const shortNamesSub = this.store$
+      .select(filtersStore.getShortNames)
+      .subscribe(
+        (shortNames) =>
+          (this.shortNames = shortNames
+            .map((subtype) => subtype.apiValue)
+            .join(',')),
+      );
+    const polsSub = this.store$
+      .select(filtersStore.getPolarizations)
+      .subscribe(
+        (pols) =>
+          (this.polarizations = pols.map((x) => x.replaceAll(',', '+'))),
+      );
+    const sidePolsSub = this.store$
+      .select(filtersStore.getSidePolarizations)
+      .subscribe(
+        (sidePols) =>
+          (this.sidePolarizations = sidePols.map((x) =>
+            x.replaceAll(',', '+'),
+          )),
+      );
+    const instrumentSub = this.store$
+      .select(filtersStore.getInstruments)
+      .subscribe((instruments) => (this.instruments = instruments));
+    const frameCoverageSub = this.store$
+      .select(filtersStore.getFrameCoverage)
+      .subscribe((frameCoverage) => (this.frameCoverage = frameCoverage));
+    const rangeBandwidthSub = this.store$
+      .select(filtersStore.getRangeBandwidth)
+      .subscribe((rangeBandwidth) => (this.rangeBandwidth = rangeBandwidth));
+    const jointObservationSub = this.store$
+      .select(filtersStore.getJointObservation)
+      .subscribe(
+        (jointObservation) => (this.jointObservation = jointObservation),
+      );
+    const beamModesSub = this.store$
+      .select(filtersStore.getBeamModes)
+      .subscribe((beamModes) => (this.beamModes = beamModes));
+    const flightDirsSub = this.store$
+      .select(filtersStore.getFlightDirections)
+      .subscribe((flightDirs) => (this.flightDirections = flightDirs));
+    const subtypeSub = this.store$
+      .select(filtersStore.getSubtypes)
+      .subscribe(
+        (subtypes) =>
+          (this.subtypes = subtypes
+            .map((subtype) => subtype.apiValue)
+            .join(',')),
+      );
+    const missionSub = this.store$
+      .select(filtersStore.getSelectedMission)
+      .subscribe((mission) => (this.mission = mission));
+    const perpSub = this.store$
+      .select(filtersStore.getPerpendicularRange)
+      .subscribe((range) => (this.perpRange = range));
+    const tempSub = this.store$
+      .select(filtersStore.getTemporalRange)
+      .subscribe((range) => (this.tempRange = range));
 
-    const eventProductType = this.store$.select(filtersStore.getHyp3ProductTypes).subscribe(
-      productTypes => this.eventProductTypes = productTypes
-        .map(productType => productType.id)
-        .join(', ')
-    );
+    const eventProductType = this.store$
+      .select(filtersStore.getHyp3ProductTypes)
+      .subscribe(
+        (productTypes) =>
+          (this.eventProductTypes = productTypes
+            .map((productType) => productType.id)
+            .join(', ')),
+      );
 
-    const fullBurstIDSub = this.store$.select(filtersStore.getFullBurstIDs).subscribe(
-      burstIDs => this.fullBurstIDs = burstIDs
-    );
+    const fullBurstIDSub = this.store$
+      .select(filtersStore.getFullBurstIDs)
+      .subscribe((burstIDs) => (this.fullBurstIDs = burstIDs));
 
-    const operaBurstIDSub = this.store$.select(filtersStore.getOperaBurstIDs).subscribe(
-      burstIDs => this.operaBurstIDs = burstIDs
-    );
+    const operaBurstIDSub = this.store$
+      .select(filtersStore.getOperaBurstIDs)
+      .subscribe((burstIDs) => (this.operaBurstIDs = burstIDs));
 
-    const useCalibrationDataSub = this.store$.select(filtersStore.getUseCalibrationData).subscribe(
-      useCalibrationData => this.useCalibrationData = useCalibrationData
-    );
+    const useCalibrationDataSub = this.store$
+      .select(filtersStore.getUseCalibrationData)
+      .subscribe(
+        (useCalibrationData) => (this.useCalibrationData = useCalibrationData),
+      );
 
-    const groupIDSub = this.store$.select(filtersStore.getGroupID).subscribe(
-      groupID => this.groupID = groupID
-    );
+    const groupIDSub = this.store$
+      .select(filtersStore.getGroupID)
+      .subscribe((groupID) => (this.groupID = groupID));
 
-    const userIDSub = this.store$.select(hyp3Store.getOnDemandUserId).subscribe(
-      userID => this.userID = userID
-    );
+    const userIDSub = this.store$
+      .select(hyp3Store.getOnDemandUserId)
+      .subscribe((userID) => (this.userID = userID));
 
-    const jobIdsSub = this.store$.select(hyp3Store.getHyp3JobIds).subscribe(
-      jobIds => this.jobIds = jobIds
-    );
+    const jobIdsSub = this.store$
+      .select(hyp3Store.getHyp3JobIds)
+      .subscribe((jobIds) => (this.jobIds = jobIds));
 
+    const scienceProductsSub = this.store$
+      .select(filtersStore.getScienceProduct)
+      .subscribe((scienceProducts) => (this.scienceProducts = scienceProducts));
+
+    const productionConfigSub = this.store$
+      .select(filtersStore.getProductionConfig)
+      .subscribe(
+        (productionConfig) => (this.productionConfig = productionConfig),
+      );
     [
-      startSub, endSub,
-      pathSub, frameSub,
+      startSub,
+      endSub,
+      pathSub,
+      frameSub,
       seasonSub,
       omitSub,
-      listSearchModeSub, searchListSub,
+      listSearchModeSub,
+      searchListSub,
       productTypesSub,
+      shortNamesSub,
       polsSub,
+      sidePolsSub,
+      instrumentSub,
+      frameCoverageSub,
+      rangeBandwidthSub,
+      jointObservationSub,
       beamModesSub,
       flightDirsSub,
       subtypeSub,
       missionSub,
-      tempSub, perpSub,
+      tempSub,
+      perpSub,
       eventProductType,
       fullBurstIDSub,
       operaBurstIDSub,
       useCalibrationDataSub,
       groupIDSub,
       userIDSub,
-      jobIdsSub
-    ].forEach(sub => this.subs.add(sub));
+      productionConfigSub,
+      scienceProductsSub,
+      jobIdsSub,
+    ].forEach((sub) => this.subs.add(sub));
 
     this.subs.add(
-      this.store$.select(searchStore.getSearchType).subscribe(
-        searchType => this.searchType = searchType
-      )
+      this.store$
+        .select(searchStore.getSearchType)
+        .subscribe((searchType) => (this.searchType = searchType)),
     );
 
     this.subs.add(
-      this.store$.select(userStore.getUserProfile).subscribe(
-        profile => {
-          this.hyp3BackendUrl = profile.hyp3BackendUrl;
-          if (this.hyp3BackendUrl) {
-            this.hyp3.setApiUrl(this.hyp3BackendUrl);
-          } else {
-            this.hyp3BackendUrl = this.hyp3.apiUrl;
-          }
+      this.store$.select(userStore.getUserProfile).subscribe((profile) => {
+        this.hyp3BackendUrl = profile.hyp3BackendUrl;
+        if (this.hyp3BackendUrl) {
+          this.hyp3.setApiUrl(this.hyp3BackendUrl);
+        } else {
+          this.hyp3BackendUrl = this.hyp3.apiUrl;
         }
-      )
+      }),
     );
 
     this.subs.add(
-      this.store$.select(filtersStore.getSelectedDataset).subscribe(
-        dataset => this.dataset = dataset.id
-      )
-    )
+      this.store$
+        .select(filtersStore.getSelectedDataset)
+        .subscribe((dataset) => (this.dataset = dataset.id)),
+    );
   }
 
   ngOnDestroy() {

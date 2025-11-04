@@ -1,125 +1,211 @@
-<ng-container *ngIf="breakpoint > breakpoints.MOBILE" xmlns="http://www.w3.org/1999/html">
+<ng-container
+  *ngIf="breakpoint > breakpoints.MOBILE"
+  xmlns="http://www.w3.org/1999/html"
+>
+  <mat-card #listCard class="mp0 ts-column-1" [style.width]="wktListMaxWidth">
+    <mat-card-subtitle class="header ts-scene-list-header">
+      <app-scenes-list-header></app-scenes-list-header>
+    </mat-card-subtitle>
 
-    <mat-card #listCard class="mp0 ts-column-1" [style.width]="wktListMaxWidth">
-		<mat-card-subtitle class="header ts-scene-list-header">
-			<app-scenes-list-header></app-scenes-list-header>
-		</mat-card-subtitle>
-
-		<div class="ts-left-column-results">
-
-
+    <div class="ts-left-column-results">
       <section class="point-list-section">
         <span class="parent-checkbox-section">
           <mat-checkbox
             class="parent-checkbox"
-            [checked]="(allSeriesChecked$ | async)"
+            [checked]="allSeriesChecked$ | async"
             [indeterminate]="partiallyComplete()"
             (change)="toggleAllSeries($event.checked)"
           >
             {{ 'ALL_AOIS' | translate }}
           </mat-checkbox>
-          <button mat-icon-button (click)="openDialog()" class="delete-all-btn2" matTooltip="{{ 'DELETE_ALL_SERIES' | translate }}"
-          matTooltipPosition="right">
-            <mat-icon class="ts-trash-can" >delete</mat-icon>
+          <button
+            mat-icon-button
+            (click)="openDialog()"
+            class="delete-all-btn2"
+            matTooltip="{{ 'DELETE_ALL_SERIES' | translate }}"
+            matTooltipPosition="right"
+          >
+            <mat-icon class="ts-trash-can">delete</mat-icon>
           </button>
         </span>
 
         <span class="point-list-ul-section">
           <ul>
             @for (point of chartStates; track point.uuidSeries) {
-              @for(frame of point.frames; track frame.uuid; let count = $count, idx = $index) {
-                <span *ngIf="count > 1 && idx == 0" class="series-summary">
-                  <li class="point-list-item"
-                      [class.ts-highlighted]="mouseOver"
-                      (mouseover)="mouseOver=true"
-                      (mouseout)="mouseOver=false">
+              @for (
+                frame of point.frames;
+                track frame.uuid;
+                let count = $count, idx = $index
+              ) {
+                <span *ngIf="count > 1 && idx === 0" class="series-summary">
+                  <li
+                    class="point-list-item"
+                    [class.ts-highlighted]="mouseOver"
+                    (mouseover)="mouseOver = true"
+                    (mouseout)="mouseOver = false"
+                  >
                     <span class="ts-wkt-label">
-                        <ng-container *ngTemplateOutlet="seriesSummaryItem"></ng-container>
+                      <ng-container
+                        *ngTemplateOutlet="seriesSummaryItem"
+                      ></ng-container>
                     </span>
                   </li>
                 </span>
-                <li [class.ts-highlighted]="frame.uuid === selectedUUID"
-                    class="point-list-item"
-                    on-mouseenter="setActiveWkt(frame.uuid)"
-                    on-mouseleave="setActiveWkt(null)">
-                    @if (frame.valid == true) {
-                      <ng-container *ngTemplateOutlet="seriesCheckBoxItem"></ng-container>
-                    } @else {
-                      <div class="error-line">
-                        @if(frame.valid == false) {
-                          <mat-icon color="warn" class="invalid-aoi-icon" [matTooltip]="point.error">block</mat-icon>
-                        }
-                        @else {
-                          <mat-spinner diameter="20" class="loading-spinner"></mat-spinner>
-                        }
-                        <mat-icon class="ts-wkt-icon" [style.color]="point.color">{{ point.drawMode | aoiIcon }}</mat-icon>
-                        <span class="ts-wkt-label invalid-aoi-text">
-                          <ng-container *ngTemplateOutlet="seriesFragment"></ng-container>
-                        </span>
-                      </div>
-                      <button mat-icon-button (click)="deletePoint(point.uuidSeries)">
-                        <mat-icon class="ts-trash-can" *ngIf="frame.uuid === selectedUUID" disableRipple>delete</mat-icon>
-                      </button>
-                    }
+                <li
+                  [class.ts-highlighted]="frame.uuid === selectedUUID"
+                  class="point-list-item"
+                  on-mouseenter="setActiveWkt(frame.uuid)"
+                  on-mouseleave="setActiveWkt(null)"
+                >
+                  @if (frame.valid === true) {
+                    <ng-container
+                      *ngTemplateOutlet="seriesCheckBoxItem"
+                    ></ng-container>
+                  } @else {
+                    <div class="error-line">
+                      @if (frame.valid === false) {
+                        <mat-icon
+                          color="warn"
+                          class="invalid-aoi-icon"
+                          [matTooltip]="point.error"
+                          >block</mat-icon
+                        >
+                      } @else {
+                        <mat-spinner
+                          diameter="20"
+                          class="loading-spinner"
+                        ></mat-spinner>
+                      }
+                      <mat-icon
+                        class="ts-wkt-icon"
+                        [style.color]="point.color"
+                        >{{ point.drawMode | aoiIcon }}</mat-icon
+                      >
+                      <span class="ts-wkt-label invalid-aoi-text">
+                        <ng-container
+                          *ngTemplateOutlet="seriesFragment"
+                        ></ng-container>
+                      </span>
+                    </div>
+                    <button
+                      mat-icon-button
+                      (click)="deletePoint(point.uuidSeries)"
+                    >
+                      <mat-icon
+                        class="ts-trash-can"
+                        *ngIf="frame.uuid === selectedUUID"
+                        disableRipple
+                        >delete</mat-icon
+                      >
+                    </button>
+                  }
                 </li>
 
                 <ng-template #seriesSummaryItem>
-                    <div style="display: flex; margin-left: 40px; align-items: baseline; font-size: 14px;">
-                      <mat-icon class="ts-wkt-icon" [style.color]="point.color">
-                        {{ point.drawMode | aoiIcon }}
-                      </mat-icon>
+                  <div
+                    style="
+                      display: flex;
+                      margin-left: 40px;
+                      align-items: baseline;
+                      font-size: 14px;
+                    "
+                  >
+                    <mat-icon class="ts-wkt-icon" [style.color]="point.color">
+                      {{ point.drawMode | aoiIcon }}
+                    </mat-icon>
 
-                      <span class="ts-wkt-label">
-                        <ng-container *ngTemplateOutlet="summaryFragment"></ng-container>
-                      </span>
+                    <span class="ts-wkt-label">
+                      <ng-container
+                        *ngTemplateOutlet="summaryFragment"
+                      ></ng-container>
+                    </span>
 
-                      <button mat-icon-button (click)="deletePoint(point.uuidSeries)"
-                              style="padding-left: 61px; bottom: -2px;"
-                              [class.visible]="mouseOver"
-                              [class.hidden]="!mouseOver">
-                        <mat-icon class="ts-trash-can" disableRipple>delete</mat-icon>
-                      </button>
-                    </div>
+                    <button
+                      mat-icon-button
+                      (click)="deletePoint(point.uuidSeries)"
+                      style="padding-left: 61px; bottom: -2px"
+                      [class.visible]="mouseOver"
+                      [class.hidden]="!mouseOver"
+                    >
+                      <mat-icon class="ts-trash-can" disableRipple
+                        >delete</mat-icon
+                      >
+                    </button>
+                  </div>
                 </ng-template>
 
                 <ng-template #seriesCheckBoxItem>
-                    <mat-checkbox [checked]="frame.checked" (change)="updateSeries($event.checked, frame.uuid)"
-                                  style="display: flex;"
-                                  disableRipple>
-                      <mat-icon class="ts-wkt-icon" [style.color]="point.color" [class.hidden]="count > 1">
-                        {{ point.drawMode | aoiIcon }}
-                      </mat-icon>
+                  <mat-checkbox
+                    [checked]="frame.checked"
+                    (change)="updateSeries($event.checked, frame.uuid)"
+                    style="display: flex"
+                    disableRipple
+                  >
+                    <mat-icon
+                      class="ts-wkt-icon"
+                      [style.color]="point.color"
+                      [class.hidden]="count > 1"
+                    >
+                      {{ point.drawMode | aoiIcon }}
+                    </mat-icon>
 
-                      <span class="ts-wkt-label">
-                        <ng-container *ngTemplateOutlet="seriesFragment"></ng-container>
-                      </span>
-                    </mat-checkbox>
-                    <button mat-icon-button (click)="deletePoint(point.uuidSeries)"
-                            *ngIf="frame.uuid === selectedUUID"
-                            [class.hidden]="count > 1">
-                      <mat-icon class="ts-trash-can" disableRipple>delete</mat-icon>
-                    </button>
+                    <span class="ts-wkt-label">
+                      <ng-container
+                        *ngTemplateOutlet="seriesFragment"
+                      ></ng-container>
+                    </span>
+                  </mat-checkbox>
+                  <button
+                    mat-icon-button
+                    (click)="deletePoint(point.uuidSeries)"
+                    *ngIf="frame.uuid === selectedUUID"
+                    [class.hidden]="count > 1"
+                  >
+                    <mat-icon class="ts-trash-can" disableRipple
+                      >delete</mat-icon
+                    >
+                  </button>
                 </ng-template>
 
                 <ng-template #summaryFragment>
-                  <span *ngIf="point.seriesName.toLowerCase().trim() == 'series'; else customSeriesName">
-                    {{'SERIES' | translate}}
+                  <span
+                    *ngIf="
+                      point.seriesName.toLowerCase().trim() === 'series';
+                      else customSeriesName
+                    "
+                  >
+                    {{ 'SERIES' | translate }}
                   </span>
                   <ng-template #customSeriesName>
-                    {{point.seriesName}}
+                    {{ point.seriesName }}
                   </ng-template>
-                  {{point.seriesNumber}}
+                  {{ point.seriesNumber }}
                 </ng-template>
 
                 <ng-template #seriesFragment>
-                  <span *ngIf="point.seriesName.toLowerCase().trim() == 'series'; else customSeriesName">
-                    {{'SERIES' | translate}} {{point.seriesNumber}}
-                    <div *ngIf="point.frames[0].number !== ''"  class="series-label">{{'FRAME' | translate}}: {{point.frames[0].number}}</div>
-                    <span *ngIf="(point.frames | keyvalue).length>1">.{{idx+1}}</span>
+                  <span
+                    *ngIf="
+                      point.seriesName.toLowerCase().trim() === 'series';
+                      else customSeriesName
+                    "
+                  >
+                    {{ 'SERIES' | translate }} {{ point.seriesNumber }}
+                    <div
+                      *ngIf="point.frames[0].number !== ''"
+                      class="series-label"
+                    >
+                      {{ 'FRAME' | translate }}: {{ point.frames[0].number }}
+                    </div>
+                    <span *ngIf="(point.frames | keyvalue).length > 1"
+                      >.{{ idx + 1 }}</span
+                    >
                   </span>
                   <ng-template #customSeriesName>
-                    {{point.seriesName}}
-                    {{point.seriesNumber}}<span *ngIf="(point.frames | keyvalue).length>1">.{{idx+1}}</span>
+                    {{ point.seriesName }}
+                    {{ point.seriesNumber
+                    }}<span *ngIf="(point.frames | keyvalue).length > 1"
+                      >.{{ idx + 1 }}</span
+                    >
                   </ng-template>
                 </ng-template>
               }
@@ -128,34 +214,44 @@
         </span>
       </section>
     </div>
-    </mat-card>
+  </mat-card>
 
-  <mat-card #chartCard class="mp0 ts-chart-card"
-            [style.width]="chartCardMaxWidth"
-            mwlResizable [enableGhostResize]="true" (resizeEnd)="onResizeEnd($event)">
-    <div mwlResizeHandle [resizeEdges]="{ left: true }" class="chart-draggable-handle ts-resize-handle-filler">
+  <mat-card
+    #chartCard
+    class="mp0 ts-chart-card"
+    [style.width]="chartCardMaxWidth"
+    mwlResizable
+    [enableGhostResize]="true"
+    (resizeEnd)="onResizeEnd($event)"
+  >
+    <div
+      mwlResizeHandle
+      [resizeEdges]="{ left: true }"
+      class="chart-draggable-handle ts-resize-handle-filler"
+    >
       <!--		<mat-icon svgIcon="vgrip" class="vgrip-icon"></mat-icon>-->
     </div>
 
-    <mat-card-subtitle [class.medium-header]="breakpoint <= breakpoints.MEDIUM" class="ts-header">
-
+    <mat-card-subtitle
+      [class.medium-header]="breakpoint <= breakpoints.MEDIUM"
+      class="ts-header"
+    >
       <div class="ts-button-group-filler ts-button-group"></div>
 
       <div class="ts-button-group-filler ts-button-group"></div>
-      <div class='ts-button-group' style="visibility: hidden;">
+      <div class="ts-button-group" style="visibility: hidden">
         <div class="button-group-label">
           <label>{{ 'FILTERS' | translate }}</label>
         </div>
         <div class="toggle-group-wrapper--layout">
-          <mat-button-toggle class="control-mat-button-toggle ts-criteria-button-toggle"
-                             (click)="onToggleFiltersMenu()">
-          <span class="material-symbols-outlined">
-          filter_alt
-          </span>
+          <mat-button-toggle
+            class="control-mat-button-toggle ts-criteria-button-toggle"
+            (click)="onToggleFiltersMenu()"
+          >
+            <span class="material-symbols-outlined"> filter_alt </span>
           </mat-button-toggle>
         </div>
       </div>
-
     </mat-card-subtitle>
 
     <!--	<div class="resize-handle-left" mwlResizeHandle [resizeEdges]="{ left: true }">-->
@@ -164,19 +260,29 @@
     <div class="ts-chart-row">
       <div id="ts-chart-column">
         <div class="data-credit">
-          <a href="https://www.jpl.nasa.gov/go/opera/products/disp-product-suite/" target="_blank">{{ 'DATA_COURTESY_OF' | translate }}&nbsp;OPERA</a> |
-          <a href="https://creativecommons.org/publicdomain/zero/1.0/legalcode" target="_blank">&nbsp;{{ 'LICENSE' | translate }}</a> |
-          <a href="https://www.earthdata.nasa.gov/data/catalog/asf-opera-l3-disp-s1-v1-1" target="_blank">&nbsp;{{ 'DISP_DOI' | translate }}</a>
+          <a
+            href="https://www.jpl.nasa.gov/go/opera/products/disp-product-suite/"
+            target="_blank"
+            >{{ 'DATA_COURTESY_OF' | translate }}&nbsp;OPERA</a
+          >
+          |
+          <a
+            href="https://creativecommons.org/publicdomain/zero/1.0/legalcode"
+            target="_blank"
+            >&nbsp;{{ 'LICENSE' | translate }}</a
+          >
+          |
+          <a
+            href="https://www.earthdata.nasa.gov/data/catalog/asf-opera-l3-disp-s1-v1-1"
+            target="_blank"
+            >&nbsp;{{ 'DISP_DOI' | translate }}</a
+          >
         </div>
         <app-timeseries-chart></app-timeseries-chart>
         <!--      <app-timeseries-chart-temporal-slider></app-timeseries-chart-temporal-slider>-->
       </div>
     </div>
 
-    <div class="ts-filter-row">
-    </div>
+    <div class="ts-filter-row"></div>
   </mat-card>
-
 </ng-container>
-
-

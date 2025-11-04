@@ -15,10 +15,7 @@ import { SaveUserFilterComponent } from './save-user-filter/save-user-filter.com
 import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [
-    SaveUserFiltersComponent,
-    SaveUserFilterComponent
-  ],
+  declarations: [SaveUserFiltersComponent, SaveUserFilterComponent],
   imports: [
     CommonModule,
     MatSharedModule,
@@ -30,10 +27,8 @@ import { SharedModule } from '@shared';
     MatDialogModule,
     MatExpansionModule,
     SearchFiltersModule,
-    SharedModule
+    SharedModule,
   ],
-  exports: [
-    SaveUserFiltersComponent
-  ]
+  exports: [SaveUserFiltersComponent],
 })
-export class SaveUserFiltersModule { }
+export class SaveUserFiltersModule {}

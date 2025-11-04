@@ -4,19 +4,9 @@ import { EventProductMetadataComponent } from './event-product-metadata.componen
 import { PipesModule } from '@pipes';
 import { SharedModule } from '@shared';
 
-
-
 @NgModule({
-  declarations: [
-    EventProductMetadataComponent
-  ],
-  imports: [
-    CommonModule,
-    PipesModule,
-    SharedModule
-  ],
-  exports: [
-    EventProductMetadataComponent
-  ]
+  declarations: [EventProductMetadataComponent],
+  imports: [CommonModule, PipesModule, SharedModule],
+  exports: [EventProductMetadataComponent],
 })
-export class EventProductMetadataModule { }
+export class EventProductMetadataModule {}

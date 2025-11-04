@@ -1,15 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-help-search-results',
   templateUrl: './help-search-results.component.html',
-  styleUrls: ['./help-search-results.component.scss']
+  styleUrls: ['./help-search-results.component.scss'],
 })
-export class HelpSearchResultsComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-}
+export class HelpSearchResultsComponent {}

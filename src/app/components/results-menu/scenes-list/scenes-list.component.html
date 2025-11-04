@@ -1,15 +1,21 @@
-<mat-action-list class="h100 mp0" style="padding: 0;"
-[ngClass]="{
-  'list-view': (breakpoint$ | async) >= breakpoints.MEDIUM,
-  'baseline-list-view-medium':
+<mat-action-list
+  class="h100 mp0"
+  style="padding: 0"
+  [ngClass]="{
+    'list-view': (breakpoint$ | async) >= breakpoints.MEDIUM,
+    'baseline-list-view-medium':
       (breakpoint$ | async) > breakpoints.SMALL &&
       (breakpoint$ | async) <= breakpoints.MEDIUM &&
       searchType === SearchTypes.BASELINE,
-  'baseline-list-view-small':
-    (breakpoint$ | async) === breakpoints.SMALL &&
-    searchType === SearchTypes.BASELINE
-}">
-  <cdk-virtual-scroll-viewport class="list-viewport h100" [itemSize]="searchType === SearchTypes.SBAS ? 48 : 58">
+    'baseline-list-view-small':
+      (breakpoint$ | async) === breakpoints.SMALL &&
+      searchType === SearchTypes.BASELINE,
+  }"
+>
+  <cdk-virtual-scroll-viewport
+    class="list-viewport h100"
+    [itemSize]="searchType === SearchTypes.SBAS ? 48 : 58"
+  >
     <ng-container *ngIf="breakpoint$ | async as breakpoint">
       <ng-container
         *ngIf="
@@ -18,9 +24,11 @@
           searchType === SearchTypes.LIST ||
           searchType === SearchTypes.CUSTOM_PRODUCTS ||
           searchType === SearchTypes.DISPLACEMENT
-          "
-          >
-        <div *cdkVirtualFor="let scene of scenes | slice:0:numberProductsInList">
+        "
+      >
+        <div
+          *cdkVirtualFor="let scene of scenes | slice: 0 : numberProductsInList"
+        >
           <app-scene
             (click)="onSceneSelected(scene.id)"
             (toggleScene)="onToggleScene(getGroupCriteria(scene))"
@@ -28,28 +36,35 @@
             [offsets]="offsets"
             [searchType]="searchType"
             [isQueued]="allQueued[getGroupCriteria(scene)]"
-            [hyp3ableByJobType]="hyp3ableByScene[scene.groupId] || hyp3ableByScene[scene.name]"
+            [hyp3ableByJobType]="
+              hyp3ableByScene[scene.groupId] || hyp3ableByScene[scene.name]
+            "
             [jobQueued]="allJobNames.includes(scene.name)"
             [numQueued]="numberOfQueue[scene.groupId]"
-            [isSelected]="scene.id === selected">
+            [isSelected]="scene.id === selected"
+          >
           </app-scene>
         </div>
 
-        <button *ngIf="searchType === SearchTypes.CUSTOM_PRODUCTS && numberProductsInList < scenes?.length"
+        <button
+          *ngIf="
+            searchType === SearchTypes.CUSTOM_PRODUCTS &&
+            numberProductsInList < scenes?.length
+          "
           (click)="onLoadMoreCustomProducts()"
           class="center-button"
-          mat-list-item>
-          <button mat-stroked-button>
-            Load more products
-          </button>
+          mat-list-item
+        >
+          <button mat-stroked-button>Load more products</button>
         </button>
       </ng-container>
 
       <ng-container *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS">
         <ng-container *cdkVirtualFor="let event of sarviewsEvents">
           <app-sarviews-event
-            [event]=event
-            [selected]="event.event_id === selectedEvent">
+            [event]="event"
+            [selected]="event.event_id === selectedEvent"
+          >
           </app-sarviews-event>
         </ng-container>
       </ng-container>
@@ -59,7 +74,8 @@
           <app-pair
             (togglePair)="onPairSelected($event)"
             [pair]="pair.pair"
-            [hyp3able]="pair.hyp3able">
+            [hyp3able]="pair.hyp3able"
+          >
           </app-pair>
         </ng-container>
       </ng-container>
