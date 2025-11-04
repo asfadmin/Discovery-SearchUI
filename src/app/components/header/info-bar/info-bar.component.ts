@@ -132,10 +132,18 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       );
     const polsSub = this.store$
       .select(filtersStore.getPolarizations)
-      .subscribe((pols) => (this.polarizations = pols));
+      .subscribe(
+        (pols) =>
+          (this.polarizations = pols.map((x) => x.replaceAll(',', '+'))),
+      );
     const sidePolsSub = this.store$
       .select(filtersStore.getSidePolarizations)
-      .subscribe((sidePols) => (this.sidePolarizations = sidePols));
+      .subscribe(
+        (sidePols) =>
+          (this.sidePolarizations = sidePols.map((x) =>
+            x.replaceAll(',', '+'),
+          )),
+      );
     const instrumentSub = this.store$
       .select(filtersStore.getInstruments)
       .subscribe((instruments) => (this.instruments = instruments));
