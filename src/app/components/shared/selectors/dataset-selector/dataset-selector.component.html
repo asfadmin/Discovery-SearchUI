@@ -47,6 +47,9 @@
                     <mat-icon class="hyp3-icon" svgIcon="hyp3"></mat-icon>
                   </span>
                   <span *ngIf="dataset.beta"><em> (beta) </em></span>
+                  <span *ngIf="dataset.id === 'NISAR'" class="disclaimer">
+                    <em> (coming soon!) </em>
+                  </span>
                   <div
                     *ngIf="dataset.subName"
                     class="dataset__subName faint-text"
