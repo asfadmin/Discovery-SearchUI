@@ -33,6 +33,7 @@ import * as models from './models';
 import { SearchType } from './models';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from "@angular/material/core";
 import { MAT_MOMENT_DATE_FORMATS } from "@angular/material-moment-adapter";
+import { NisarNoticeDialogComponent } from './components/shared/nisar-notice-dialog/nisar-notice-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -492,6 +493,14 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           }
 
         }));
+
+        if (!localStorage.getItem("nisar-banner")) {
+          this.dialog.open(NisarNoticeDialogComponent, {
+            height: "400px",
+            width: "600px",
+            disableClose: true,
+          });
+        }
   }
 
   public ngAfterViewInit(): void {

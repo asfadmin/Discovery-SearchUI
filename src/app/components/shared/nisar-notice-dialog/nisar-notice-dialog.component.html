@@ -1,0 +1,43 @@
+<div class="nisar-title-group">
+  <h1 mat-dialog-title>NISAR Product Access Update</h1>
+</div>
+<mat-dialog-content>
+  <p>
+    Hello, we appreciate all of the support and feedback we have recieved while
+    working on NISAR. We are moving NISAR development into our main production
+    workflows, and will no longer be updating or maintaining this version of our
+    search interface. For future updates please see
+  </p>
+
+  <ul>
+    <li>
+      Our production interface:
+      <a href="https://search.asf.alaska.edu/#/?dataset=NISAR"
+        >search.asf.alaska.edu</a
+      >
+    </li>
+    <li>
+      Our test interface:
+      <a href="https://search-test.asf.alaska.edu/#/?dataset=NISAR"
+        >search-test.asf.alaska.edu
+      </a>
+    </li>
+  </ul>
+</mat-dialog-content>
+<mat-dialog-actions class="nisar-card-actions">
+  @let timeElapsed = total$ | async;
+  <button
+    mat-raised-button
+    mat-dialog-close
+    (click)="closeDialog()"
+    [disabled]="timeElapsed < totalTime"
+  >
+    Close
+    @if (timeElapsed < totalTime) {
+      <span class="countdown">({{ totalTime - timeElapsed }})</span>
+    }
+  </button>
+  <div class="close-message">
+    After closing, this message will not appear again
+  </div>
+</mat-dialog-actions>

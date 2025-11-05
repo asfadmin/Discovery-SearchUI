@@ -1,0 +1,77 @@
+@import "asf-theme";
+
+$header-height: 67px;
+$footer-height: 60px;
+$bottom-offset: 10px;
+$warn-msg-height: 27px;
+$warn-msg-mobile-height: 49px;
+$idk-pad: 21px;
+
+.nisar-title-group {
+  @include themify($themes) {
+    color: themed("dark-primary-text");
+  }
+}
+
+.nisar-card-actions {
+  @include themify($themes) {
+    background-color: themed("primary-light");
+    border-top-color: themed("primary-dark");
+    color: themed("dark-primary-text");
+  }
+
+  height: 80px;
+  padding: 20px 20px 0;
+  padding-top: 0;
+  border-top-style: solid;
+  border-top-width: 1px;
+
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.close-message {
+  font-style: italic;
+  font-size: 14px;
+  margin-left: 15px;
+  @include themify($themes) {
+    color: themed("dark-secondary-text");
+  }
+}
+button {
+  height: 36px;
+  font-weight: 500;
+}
+
+.buttons {
+  grid-template-columns: auto auto;
+  display: grid;
+  font-size: 14px;
+
+  @include themify($themes) {
+    color: themed("light-primary-text");
+  }
+
+  justify-content: center;
+  margin: 10px;
+}
+
+.mdc-dialog__title::before {
+  display: none;
+}
+[mat-dialog-title] {
+  padding: 18px 24px;
+
+  @include themify($themes) {
+    background-color: themed("primary-light");
+    color: themed("dark-primary-text");
+  }
+
+  text-align: left;
+  // height: $header-height;
+}
+a {
+    @include themify($themes) {
+        color: themed('blue-link');
+    }
+}
