@@ -4,121 +4,74 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-ASF's Discovery SearchUI - An Angular-based web application for searching and discovering satellite imagery data from Alaska Satellite Facility. The application provides advanced search capabilities, map-based visualization, and on-demand processing through the HyP3 service.
+ASF's Discovery SearchUI - Angular 20 web application for searching satellite imagery from Alaska Satellite Facility with map visualization and on-demand HyP3 processing.
 
-## Common Development Commands
+## Common Commands
 
-### Development Server
 ```bash
-# Standard local development
-ng serve
+# Development
+ng serve                                                       # http://localhost:4200
+ng serve --port 4447 --ssl true --host local.asf.alaska.edu   # With HTTPS
+npm run start_local_asf                                        # Alias for above
 
-# Development with local ASF domain (required for some services)
-ng serve --port 4447 --ssl true --host local.asf.alaska.edu
+# Build
+ng build                                                       # Development build
+ng build --configuration production                            # Production build
+npm run build                                                  # Alias for production
 
-# Or use the npm script
-npm run start_local_asf
+# Test
+ng test                                                        # Interactive with watch
+ng test --include='**/my-file.spec.ts'                         # Single file
+npm test -- --browsers=ChromeHeadless --watch=false            # Headless CI
+
+# Lint
+npm run lint                                                   # Lint all files
+eslint -c eslint.config.js src/path/to/file.ts                 # Lint specific file
+
+# Generate
+ng generate component component-name                           # Component (.scss, no tests)
+ng generate service service-name                               # Service (with tests)
+ng generate directive|pipe|guard|interface|enum|module name
 ```
 
-**Note:** Some services require HTTPS with a custom domain. Add `127.0.0.1 local.asf.alaska.edu` to your hosts file and set up SSL certificates using mkcert (see README.md for details).
-
-### Building
-```bash
-# Production build
-ng build --configuration production
-
-# Or use npm script
-npm run build
-```
-
-Build artifacts are stored in `dist/` directory.
-
-### Testing
-```bash
-# Run tests (interactive with Karma)
-ng test
-
-# Run tests headless (for CI)
-npm test -- --browsers=ChromeHeadless --watch=false --code-coverage=false
-```
-
-The project uses Jasmine for unit tests with Karma as the test runner. Test files use `.spec.ts` extension.
-
-### Linting
-```bash
-# Run ESLint
-npm run lint
-
-# Lint specific files
-eslint -c eslint.config.js src/path/to/file.ts
-```
-
-The project uses ESLint with Prettier integration. Linting rules are in `eslint.config.js` with custom configurations for TypeScript and HTML templates.
-
-### Code Generation
-```bash
-# Generate component (default generates with .scss and skips tests)
-ng generate component component-name
-
-# Generate service (generates with tests)
-ng generate service service-name
-
-# Other generators
-ng generate directive|pipe|guard|interface|enum|module
-```
+**Note:** Authentication/cookies require HTTPS + custom domain. Add `127.0.0.1 local.asf.alaska.edu` to hosts file and use mkcert for SSL (see README.md).
 
 ## Architecture
 
-### State Management (NgRx)
+### NgRx Store (`src/app/store/`)
+Domain-based structure. Each domain has `*.action.ts`, `*.reducer.ts`, `*.effects.ts`, `*.selectors.ts`:
+- `scenes` - Scene data/search results
+- `map` - Map state/layers/viewport
+- `filters` - Search filters
+- `ui` - UI state (sidebar/modals/themes)
+- `search` - Queries/history
+- `queue` - Download queue
+- `user` - Auth/preferences
+- `hyp3` - On-demand jobs
+- `charts` - Chart data
+- `templates` - Saved searches
 
-The application uses NgRx for centralized state management with a clear domain-based structure:
+**Pattern:** Components dispatch actions → Effects handle side effects (API calls) → Reducers update state → Selectors derive data → Components subscribe to selectors via async pipe.
 
-**Store Structure** (`src/app/store/`):
-- `scenes` - Satellite scene data and search results
-- `map` - Map state, layers, and viewport
-- `filters` - Search filters and parameters
-- `ui` - UI state (sidebar, modals, themes)
-- `search` - Search queries and history
-- `queue` - Download queue management
-- `user` - User authentication and preferences
-- `hyp3` - HyP3 on-demand processing jobs
-- `charts` - Chart data and configurations
-- `templates` - Saved search templates
+### Components (`src/app/components/`)
+- `header/` - Navigation, search controls, queue
+- `sidebar/` - Filters panel
+- `filters-dropdown/` - Filter components
+- `map/` - OpenLayers map with drawing
+- `results-menu/` - Results display
+- `baseline-chart/`, `sbas-chart/`, `timeseries-chart/` - Visualizations
+- `shared/` - Reusable components
 
-Each domain has:
-- `*.action.ts` - NgRx actions
-- `*.reducer.ts` - State reducers
-- `*.effects.ts` - Side effects (API calls, routing)
-- `*.selectors.ts` - State selectors
+### Key Services (`src/app/services/`)
+- `asf-api.service.ts` - CMR search API
+- `map.service.ts` - Map interactions
+- `search.service.ts` - Search execution
+- `hyp3-*.service.ts` - On-demand processing
+- `url-state.service.ts` - Deep linking
+- `environment.service.ts` - Config management
 
-### Module Organization
-
-The app uses feature modules organized by domain:
-
-**Core Components** (`src/app/components/`):
-- `header/` - Main navigation, search controls, queue management
-- `sidebar/` - Filters panel container
-- `filters-dropdown/` - Individual filter components
-- `map/` - OpenLayers-based map with drawing tools
-- `results-menu/` - Search results display and management
-- `baseline-chart/` - Baseline visualization for InSAR
-- `sbas-chart/` - SBAS (Small Baseline Subset) visualization
-- `timeseries-chart/` - Time series data visualization
-- `help/` - Help documentation and tutorials
-- `shared/` - Reusable components across features
-
-**Services** (`src/app/services/`):
-Key architectural services:
-- `asf-api.service.ts` - Backend API integration (CMR search)
-- `map.service.ts` - Map interactions and state
-- `search.service.ts` - Search execution and results
-- `hyp3-*.service.ts` - HyP3 on-demand processing services
-- `url-state.service.ts` - Deep linking and state persistence
-- `environment.service.ts` - Environment configuration management
-
-### Path Aliases
-
-TypeScript path aliases are configured in `tsconfig.json`:
+### Path Aliases (`tsconfig.json`)
+Always use these instead of relative imports:
 ```typescript
 @components/* → src/app/components/*
 @services/* → src/app/services/*
@@ -131,70 +84,42 @@ TypeScript path aliases are configured in `tsconfig.json`:
 @testing/* → src/app/testing/*
 ```
 
-Always use these aliases instead of relative imports.
-
 ### Internationalization
-
-The app uses `ngx-translate` for multilingual support:
-- Translation files: `assets/i18n/{lang}.json` (e.g., `en.json`, `es.json`)
-- BabelEdit project: `assets/i18n/vertex.babel`
-- All user-facing text must use the translate pipe: `{{ 'KEY' | translate }}`
-- Edit translations using BabelEdit, not manually
+- Uses `ngx-translate` with translation files in `assets/i18n/{lang}.json`
+- Edit translations via BabelEdit (`assets/i18n/vertex.babel`) only
+- All user-facing text: `{{ 'KEY' | translate }}`
 
 ### Styling
+- SCSS with modern Sass (@use/@forward, no @import)
+- Angular Material theming
+- Shared styles in `src/styles/`
+- Use `color.adjust()` not deprecated `lighten()`/`darken()`
 
-- SCSS preprocessor with shared styles in `src/styles/`
-- Angular Material theming with modern Sass module system (@use/@forward)
-- Component styles use `.scss` files
-- Custom theme variables in `src/styles/asf-theme-variables.scss`
-- Modern Sass functions: Use `color.adjust()` instead of `lighten()`/`darken()`
-
-**Important:** The project has been fully migrated to modern Sass (@use/@forward). Do not use deprecated @import syntax or color functions.
+### Templates
+- **Modern Control Flow:** Use `@if`, `@for`, `@else` syntax (Angular 17+)
+- Do NOT use deprecated `*ngIf`, `*ngFor`, `*ngSwitch` directives
+- All templates migrated to modern syntax as of 2025-11
+- `@for` requires `track` expression: `@for (item of items; track item.id)`
+- Loop variables: `$index`, `$first`, `$last`, `$even`, `$odd`
 
 ## Key Dependencies
 
-- **Angular 20** - Framework
-- **Angular Material 20** - UI components
-- **NgRx 20** - State management
-- **OpenLayers (ol)** - Map rendering
-- **ngx-translate** - Internationalization
-- **RxJS** - Reactive programming
-- **Moment.js** - Date handling
-- **D3** - Data visualization
-- **TypeScript 5.9** - Language
+Angular 20, Angular Material 20, NgRx 20, OpenLayers, ngx-translate, RxJS, Moment.js, D3, TypeScript 5.9
 
 ## Development Notes
 
-### HTTPS and Domain Setup
-Many features (authentication, cookies) require:
-1. Custom domain: `local.asf.alaska.edu` in hosts file
-2. SSL certificates via mkcert
-3. Running with `--ssl true` and cert/key paths
-
-### Component Selector Prefix
-All components must use `app-` prefix (enforced by ESLint).
-
-### Unused Variables
-Use `_` prefix for intentionally unused parameters (e.g., `_event`, `_index`) to avoid linting errors.
-
-### Code Style
-- Single quotes for strings (enforced by Prettier)
-- ESLint + Prettier configured for automatic formatting
-- Some rules temporarily disabled (see `eslint.config.js` comments)
-
-### Node.js Built-in Polyfills
-Angular 20's esbuild-based builder requires explicit polyfills for Node.js built-in modules. The `buffer` polyfill has been added to `src/polyfills.ts`. If other Node.js modules are needed, add them similarly.
+- **Component prefix:** `app-` (enforced by ESLint)
+- **Unused params:** Prefix with `_` (e.g., `_event`, `_index`)
+- **Code style:** Single quotes, ESLint + Prettier
+- **Polyfills:** Angular 20 esbuild requires explicit Node.js polyfills in `src/polyfills.ts`
+- **Build output:** Production builds go to `dist/search-ui/`
 
 ## Deployments
 
-- **Test:** https://search-test.asf.alaska.edu/
 - **Prod:** https://search.asf.alaska.edu/
-- **Personal:** Developers can deploy branches named `{name}/{topic}` automatically
+- **Test:** https://search-test.asf.alaska.edu/
+- **Personal:** Auto-deploys from branches named `{name}/{topic}`
 
-## Environment Configuration
+## Environments
 
-Environments are in `src/environments/`:
-- `environment.ts` - Development
-- `environment.prod.ts` - Production
-
-Build uses file replacement to swap environments during production builds.
+`src/environments/` - File replacement during build swaps `environment.ts` (dev) with `environment.prod.ts` (prod).
