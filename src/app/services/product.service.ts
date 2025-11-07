@@ -105,6 +105,9 @@ export class ProductService {
     subproducts: [],
     parentID: null,
     s3URI: null,
+    s3Urls: g.s3u || [],
+    additionalUrls: g.adu || [],
+    fileSizes: isNaN(g.bytes) ? g.s : null,
     ariaVersion: g.ariav ? g.ariav : null,
   });
 
@@ -122,6 +125,9 @@ export class ProductService {
     }
     if (product.dataset === 'NISAR') {
       return this.nisarSubproductsFromScene(product);
+    }
+    if (product.dataset === 'SEASAT 1') {
+        return this.seasatSubproductsFromScene(product);
     }
     return [];
   }
@@ -288,6 +294,112 @@ export class ProductService {
     qa: 'QA Statistics HDF5',
     bin: 'Bin File',
   };
+
+private seasatProductTypeDisplays = {
+    in: 'Metadata IN',
+    tif: 'Level One GeoTIFF Product',
+    xml: 'Metadata xml',
+    kml: 'Metadata kml',
+    qc_report: 'QC Report',
+    jpg: 'Browse Image JPG'
+  };
+private seasatSubproductsFromScene(product: models.CMRProduct) {
+ const products = [];
+    let temp = product.downloadUrl.split('.');
+    let file_extension = temp[temp.length - 1];
+    product.productTypeDisplay = `Level One HDF5 Image`;
+    let fileID = product.downloadUrl.split('/').slice(-1)[0];
+    product.bytes = product.metadata.fileSizes[fileID].bytes
+    const thumbnail_index = product.browses.findIndex((url) =>
+      url.toLowerCase().includes('thumbnail'),
+    );
+    if (thumbnail_index !== -1) {
+      product.thumbnail = product.browses.splice(thumbnail_index, 1)[0];
+    }
+    product.browses = product.browses.filter((url) => !url.includes('low-res'));
+
+    const s3UrlsByProductID = product.metadata.s3Urls.reduce(
+      (prev, curr) => {
+        const subproductFileID = curr.split('/').at(-1);
+
+        prev[subproductFileID] = curr;
+
+        return prev;
+      },
+      {},
+    );
+
+    product.metadata.s3URI = s3UrlsByProductID[product.file] ?? null;
+
+    const browses = [];
+    for (const p of [
+      ...product.metadata.additionalUrls.filter(
+        (url) => url !== product.downloadUrl,
+      ),
+      ...product.browses,
+    ]) {
+      temp = p.split('.');
+      file_extension = temp[temp.length - 1];
+      let productTypeDisplay =
+        this.seasatProductTypeDisplays[file_extension.toLowerCase()] ??
+        'Missing Display';
+      if (productTypeDisplay === 'Missing Display') {
+        if (file_extension.includes('vc')) {
+          productTypeDisplay = file_extension.toUpperCase();
+        } else {
+          console.log(
+            `Missing product type display for file extension "${file_extension}"`,
+          );
+        }
+      }
+      if (productTypeDisplay === 'Browse PNG') {
+        browses.push(p);
+      }
+
+      if (['Log File', 'Metadata JSON'].includes(productTypeDisplay)) {
+        continue;
+      }
+
+      const fileID = p.split('/').slice(-1)[0];
+      const s3Url = s3UrlsByProductID[fileID] ?? null;
+
+      const subproduct = {
+        ...product,
+        downloadUrl: p,
+        productTypeDisplay: productTypeDisplay || p,
+        file: fileID,
+        id: product.id + '-' + file_extension,
+        bytes: product.metadata.fileSizes[fileID]?.bytes ?? 0,
+        browses,
+        thumbnail: null,
+        metadata: {
+          ...product.metadata,
+          productType: product.metadata.productType,
+          parentID: product.id,
+          subproducts: [],
+          s3URI: s3Url,
+        },
+        virtual: true,
+      } as models.CMRProduct;
+      products.push(subproduct);
+    }
+
+    return products.sort((a, b) => {
+      if (
+        a.productTypeDisplay.includes('Metadata') ||
+        a.productTypeDisplay.includes('QA')
+      ) {
+        return 1;
+      } else if (
+        b.productTypeDisplay.includes('Metadata') ||
+        b.productTypeDisplay.includes('QA')
+      ) {
+        return -1;
+      }
+
+      return a.productTypeDisplay < b.productTypeDisplay ? -1 : 1;
+    });
+  }
 
   private nisarSubproductsFromScene(product: models.CMRProduct) {
     const products = [];
