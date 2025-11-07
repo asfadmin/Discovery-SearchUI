@@ -1,11 +1,17 @@
 <div>
-  <div *ngIf="filters.listType">
-    <b>{{ 'LIST_TYPE' | translate }}</b> {{ filters.listType }}
-  </div>
-
-  <div *ngIf="filters.listType" class="list">
-    <div *ngFor="let item of filters.list">
-      {{ item }}
+  @if (filters.listType) {
+    <div>
+      <b>{{ 'LIST_TYPE' | translate }}</b> {{ filters.listType }}
     </div>
-  </div>
+  }
+
+  @if (filters.listType) {
+    <div class="list">
+      @for (item of filters.list; track $index) {
+        <div>
+          {{ item }}
+        </div>
+      }
+    </div>
+  }
 </div>

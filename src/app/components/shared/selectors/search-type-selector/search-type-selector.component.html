@@ -1,5 +1,5 @@
 <!--suppress ALL -->
-<div *ngIf="breakpoint$ | async as breakpoint">
+@if (breakpoint$ | async; as breakpoint) {
   <div
     class="menu-button-wrapper"
     [class.mobile-button-wrapper]="breakpoint === breakpoints.MOBILE"
@@ -26,17 +26,16 @@
 
   <div class="gtm-search-type-selector fx-nogrow">
     <mat-menu #searchTypeMenu="matMenu" class="search-type-menu">
-      <ng-container
-        *ngFor="let type of searchTypeSelectors.search; let last = last"
-      >
-        <ng-container
-          *ngIf="
-            !(
-              type.nameKey === 'DISPLACEMENT' &&
-              breakpoint === breakpoints.MOBILE
-            )
-          "
-        >
+      @for (
+        type of searchTypeSelectors.search;
+        track type.searchType;
+        let last = $last
+      ) {
+        @if (
+          !(
+            type.nameKey === 'DISPLACEMENT' && breakpoint === breakpoints.MOBILE
+          )
+        ) {
           <button
             class="menu-item"
             mat-menu-item
@@ -46,19 +45,19 @@
               <div class="fx-80 menu-item-content">
                 <div class="item-title">
                   {{ type.nameKey | translate }}
-                  <span
-                    *ngIf="type.nameKey === 'DISPLACEMENT'"
-                    class="badge-new"
-                    >{{ 'NEW' | translate | titlecase }}</span
-                  >
+                  @if (type.nameKey === 'DISPLACEMENT') {
+                    <span class="badge-new">{{
+                      'NEW' | translate | titlecase
+                    }}</span>
+                  }
                 </div>
                 <div
                   class="item-content"
                   [ngClass]="{ limitTextHeight: isReadMore }"
                 >
-                  <span *ngFor="let key of type.descriptionKeys">
-                    {{ key | translate }}
-                  </span>
+                  @for (key of type.descriptionKeys; track key) {
+                    <span>{{ key | translate }}</span>
+                  }
                   <app-docs-modal
                     url="{{ type.helpUrl }}"
                     class="read-more-icon"
@@ -66,23 +65,22 @@
                 </div>
               </div>
               <div class="fx-20 menu-item-aside">
-                <span
-                  *ngIf="type.iconType === iconTypes.MATERIAL"
-                  class="material-icons-outlined menu-item-icon"
-                >
-                  {{ type.icon }}
-                </span>
-                <img
-                  *ngIf="type.iconType === iconTypes.IMAGE"
-                  src="{{ type.icon }}"
-                  class="menu-item-icon"
-                />
+                @if (type.iconType === iconTypes.MATERIAL) {
+                  <span class="material-icons-outlined menu-item-icon">
+                    {{ type.icon }}
+                  </span>
+                }
+                @if (type.iconType === iconTypes.IMAGE) {
+                  <img src="{{ type.icon }}" class="menu-item-icon" />
+                }
               </div>
             </div>
           </button>
-          <hr *ngIf="!last" class="dataset-hr" />
-        </ng-container>
-      </ng-container>
+          @if (!last) {
+            <hr class="dataset-hr" />
+          }
+        }
+      }
       <hr class="dataset-hr" />
       <button
         class="menu-item"
@@ -159,60 +157,65 @@
     </mat-menu>
 
     <mat-menu #derivedDatasetMenu="matMenu" class="search-type-menu">
-      <button
-        mat-menu-item
-        matSuffix
-        *ngFor="let dataset of datasets; last as isLast"
-        (click)="
-          onOpenDerivedDataset(dataset.info_url, dataset.name);
-          $event.stopPropagation()
-        "
-      >
-        <div class="menu-item">
-          <div class="menu-item-inner">
-            <div class="fx-80 menu-item-content">
-              <div
-                class="item-title"
-                (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)"
-              >
-                {{ dataset.name | translate }}
-              </div>
-              <div
-                class="item-content"
-                [ngClass]="{ limitTextHeight: isReadMore }"
-              >
-                {{ dataset.info | translate }}
-              </div>
-              <mat-card-actions>
-                <button
-                  class="blue-link"
+      @for (dataset of datasets; track dataset.name; let isLast = $last) {
+        <button
+          mat-menu-item
+          matSuffix
+          (click)="
+            onOpenDerivedDataset(dataset.info_url, dataset.name);
+            $event.stopPropagation()
+          "
+        >
+          <div class="menu-item">
+            <div class="menu-item-inner">
+              <div class="fx-80 menu-item-content">
+                <div
+                  class="item-title"
                   (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)"
-                  mat-button
                 >
-                  {{ 'MORE_INFO' | translate }}
-                </button>
-                <button
-                  class="blue-link"
-                  (click)="
-                    onOpenDerivedDataset(dataset.download_url, dataset.name)
-                  "
-                  mat-button
+                  {{ dataset.name | translate }}
+                </div>
+                <div
+                  class="item-content"
+                  [ngClass]="{ limitTextHeight: isReadMore }"
                 >
-                  {{ 'DOWNLOAD' | translate }}
-                </button>
-              </mat-card-actions>
-            </div>
-            <div class="fx-80 menu-item-aside">
-              <img
-                [src]="dataset.picture"
-                (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)"
-                class="menu-item-icon"
-              />
+                  {{ dataset.info | translate }}
+                </div>
+                <mat-card-actions>
+                  <button
+                    class="blue-link"
+                    (click)="
+                      onOpenDerivedDataset(dataset.info_url, dataset.name)
+                    "
+                    mat-button
+                  >
+                    {{ 'MORE_INFO' | translate }}
+                  </button>
+                  <button
+                    class="blue-link"
+                    (click)="
+                      onOpenDerivedDataset(dataset.download_url, dataset.name)
+                    "
+                    mat-button
+                  >
+                    {{ 'DOWNLOAD' | translate }}
+                  </button>
+                </mat-card-actions>
+              </div>
+              <div class="fx-80 menu-item-aside">
+                <img
+                  [src]="dataset.picture"
+                  (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)"
+                  class="menu-item-icon"
+                />
+              </div>
             </div>
           </div>
-        </div>
-        <hr *ngIf="!isLast" class="dataset-hr" />
-      </button>
+          @if (!isLast) {
+            <hr class="dataset-hr" />
+          }
+        </button>
+      }
     </mat-menu>
   </div>
-</div>
+}

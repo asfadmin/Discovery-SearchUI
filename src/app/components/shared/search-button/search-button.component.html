@@ -1,279 +1,285 @@
-<span *ngIf="breakpoint$ | async as breakpoint">
-  <ng-container *ngIf="searchType !== searchTypes.DISPLACEMENT">
-    <mat-button-toggle-group
-      [hideSingleSelectionIndicator]="true"
-      [hideMultipleSelectionIndicator]="true"
-      [class.invalid-input-animation]="isSearchError"
-      id="dataset-button-toggle-group"
-      [hideSingleSelectionIndicator]="true"
-    >
-      <mat-button-toggle>
-        <button
-          (click)="onDoSearch()"
-          [disabled]="
-            (!(canSearch$ | async) && !(isMaxResultsLoading$ | async)) ||
-            ((isFrameSelectionEnabled$ | async) &&
-              searchType === searchTypes.DATASET &&
-              !isFiltersOpen)
-          "
-          mat-flat-button
-          color="primary"
-          class="search-button"
+@if (breakpoint$ | async; as breakpoint) {
+  <span>
+    @if (searchType !== searchTypes.DISPLACEMENT) {
+      <mat-button-toggle-group
+        [hideSingleSelectionIndicator]="true"
+        [hideMultipleSelectionIndicator]="true"
+        [class.invalid-input-animation]="isSearchError"
+        id="dataset-button-toggle-group"
+        [hideSingleSelectionIndicator]="true"
+      >
+        <mat-button-toggle>
+          <button
+            (click)="onDoSearch()"
+            [disabled]="
+              (!(canSearch$ | async) && !(isMaxResultsLoading$ | async)) ||
+              ((isFrameSelectionEnabled$ | async) &&
+                searchType === searchTypes.DATASET &&
+                !isFiltersOpen)
+            "
+            mat-flat-button
+            color="primary"
+            class="search-button"
+          >
+            {{
+              (loading$ | async)
+                ? ('LOADING' | translate | uppercase)
+                : !(canSearch$ | async) && !(isMaxResultsLoading$ | async)
+                  ? ('NO_RESULTS' | translate | uppercase)
+                  : (areResultsOutOfDate$ | async)
+                    ? ('UPDATE' | translate)
+                    : ('SEARCH' | translate | uppercase)
+            }}
+          </button>
+        </mat-button-toggle>
+        <mat-button-toggle
+          [matMenuTriggerFor]="searchActionDropdown"
+          class="arrow-button-toggle"
         >
-          {{
-            (loading$ | async)
-              ? ('LOADING' | translate | uppercase)
-              : !(canSearch$ | async) && !(isMaxResultsLoading$ | async)
-                ? ('NO_RESULTS' | translate | uppercase)
-                : (areResultsOutOfDate$ | async)
-                  ? ('UPDATE' | translate)
-                  : ('SEARCH' | translate | uppercase)
-          }}
-        </button>
-      </mat-button-toggle>
-      <mat-button-toggle
-        [matMenuTriggerFor]="searchActionDropdown"
-        class="arrow-button-toggle"
-      >
-        <mat-icon [ngStyle]="{ color: '#ddd' }">arrow_drop_down</mat-icon>
-      </mat-button-toggle>
-    </mat-button-toggle-group>
-  </ng-container>
+          <mat-icon [ngStyle]="{ color: '#ddd' }">arrow_drop_down</mat-icon>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    }
 
-  <ng-container *ngIf="searchType === searchTypes.DISPLACEMENT">
-    <span class="displacement-header-menu">
-      <button
-        [matMenuTriggerFor]="searchActionDropdown"
-        matTooltip="{{ 'SHARE_SAVE_INFORMATION' | translate }}"
-        class="spacing nav-icon-buttons"
-        color="basic"
-        mat-button
-      >
-        <mat-icon class="large-icon">share</mat-icon>
-        <div class="text-under faint-text" style="font-size: 14px !important">
-          {{ 'SHARE_SAVE' | translate }}
-        </div>
-      </button>
-    </span>
-  </ng-container>
-
-  <mat-menu #searchActionDropdown="matMenu">
-    <ng-container *ngIf="searchType !== searchTypes.DISPLACEMENT">
-      <button mat-menu-item (click)="onClearSearch()">
-        {{ 'CLEAR_SEARCH' | translate }}
-      </button>
-      <mat-divider></mat-divider>
-    </ng-container>
-
-    <span
-      [matTooltipDisabled]="isLoggedIn"
-      matTooltip="{{ 'SIGN_IN_TO_SEE_YOUR_SAVED_SEARCHES' | translate }}"
-      matTooltipPosition="after"
-    >
-      <button mat-menu-item [matMenuTriggerFor]="savedSearchesMenu">
-        {{ 'SAVED_SEARCHES' | translate }}
-      </button>
-    </span>
-
-    <ng-container *ngIf="searchType !== searchTypes.DISPLACEMENT">
-      <span
-        [matTooltipDisabled]="
-          isLoggedIn &&
-          searchType !== searchTypes.LIST &&
-          searchType !== searchTypes.CUSTOM_PRODUCTS
-        "
-        matTooltip="{{
-          isLoggedIn &&
-          (searchType === searchTypes.LIST ||
-            searchType === searchTypes.CUSTOM_PRODUCTS)
-            ? ('SAVED_FILTERS_ARE_NOT_AVAILABLE_FOR_SEARCH_TYPE' | translate)
-            : ('SIGN_IN_TO_SEE_YOUR_SAVED_FILTERS' | translate)
-        }}"
-        matTooltipPosition="after"
-      >
+    @if (searchType === searchTypes.DISPLACEMENT) {
+      <span class="displacement-header-menu">
         <button
-          [disabled]="
-            searchType === searchTypes.LIST ||
-            searchType === searchTypes.CUSTOM_PRODUCTS
-          "
-          mat-menu-item
-          [matMenuTriggerFor]="savedFiltersMenu"
+          [matMenuTriggerFor]="searchActionDropdown"
+          matTooltip="{{ 'SHARE_SAVE_INFORMATION' | translate }}"
+          class="spacing nav-icon-buttons"
+          color="basic"
+          mat-button
         >
-          {{ 'SAVED_FILTERS' | translate }}
+          <mat-icon class="large-icon">share</mat-icon>
+          <div class="text-under faint-text" style="font-size: 14px !important">
+            {{ 'SHARE_SAVE' | translate }}
+          </div>
         </button>
       </span>
-      <mat-divider></mat-divider>
-    </ng-container>
+    }
 
-    <button mat-menu-item [matMenuTriggerFor]="shareSearchMenu">
-      {{ 'SHARE_SEARCH' | translate }}
-    </button>
+    <mat-menu #searchActionDropdown="matMenu">
+      @if (searchType !== searchTypes.DISPLACEMENT) {
+        <button mat-menu-item (click)="onClearSearch()">
+          {{ 'CLEAR_SEARCH' | translate }}
+        </button>
+        <mat-divider></mat-divider>
+      }
 
-    <ng-container *ngIf="searchType !== searchTypes.DISPLACEMENT">
       <span
-        matTooltip="{{ 'GET_HELP_ON_HOW_TO_USER_VERTEX' | translate }}"
+        [matTooltipDisabled]="isLoggedIn"
+        matTooltip="{{ 'SIGN_IN_TO_SEE_YOUR_SAVED_SEARCHES' | translate }}"
         matTooltipPosition="after"
       >
-        <button mat-menu-item (click)="onOpenHelp('toc')">
-          {{ 'HELP_AND_TUTORIALS' | translate }}
+        <button mat-menu-item [matMenuTriggerFor]="savedSearchesMenu">
+          {{ 'SAVED_SEARCHES' | translate }}
         </button>
       </span>
-      <button mat-menu-item [matMenuTriggerFor]="exportSearchMenu">
-        {{ 'EXPORT' | translate }}
+
+      @if (searchType !== searchTypes.DISPLACEMENT) {
+        <span
+          [matTooltipDisabled]="
+            isLoggedIn &&
+            searchType !== searchTypes.LIST &&
+            searchType !== searchTypes.CUSTOM_PRODUCTS
+          "
+          matTooltip="{{
+            isLoggedIn &&
+            (searchType === searchTypes.LIST ||
+              searchType === searchTypes.CUSTOM_PRODUCTS)
+              ? ('SAVED_FILTERS_ARE_NOT_AVAILABLE_FOR_SEARCH_TYPE' | translate)
+              : ('SIGN_IN_TO_SEE_YOUR_SAVED_FILTERS' | translate)
+          }}"
+          matTooltipPosition="after"
+        >
+          <button
+            [disabled]="
+              searchType === searchTypes.LIST ||
+              searchType === searchTypes.CUSTOM_PRODUCTS
+            "
+            mat-menu-item
+            [matMenuTriggerFor]="savedFiltersMenu"
+          >
+            {{ 'SAVED_FILTERS' | translate }}
+          </button>
+        </span>
+        <mat-divider></mat-divider>
+      }
+
+      <button mat-menu-item [matMenuTriggerFor]="shareSearchMenu">
+        {{ 'SHARE_SEARCH' | translate }}
       </button>
-    </ng-container>
 
-    <button
-      *ngIf="isDevMode()"
-      mat-menu-item
-      [matMenuTriggerFor]="apiMaturity"
-      matSuffix
-    >
-      <mat-icon>swap_horizontal_circle</mat-icon>
-      {{ 'MATURITY' | translate }}
-    </button>
-  </mat-menu>
+      @if (searchType !== searchTypes.DISPLACEMENT) {
+        <span
+          matTooltip="{{ 'GET_HELP_ON_HOW_TO_USER_VERTEX' | translate }}"
+          matTooltipPosition="after"
+        >
+          <button mat-menu-item (click)="onOpenHelp('toc')">
+            {{ 'HELP_AND_TUTORIALS' | translate }}
+          </button>
+        </span>
+        <button mat-menu-item [matMenuTriggerFor]="exportSearchMenu">
+          {{ 'EXPORT' | translate }}
+        </button>
+      }
 
-  <mat-menu #savedFiltersMenu="matMenu">
-    <span
-      matTooltip="{{ 'SIGN_IN_TO_SAVE_YOUR_FILTERS' | translate }}"
-      [matTooltipDisabled]="isLoggedIn"
-      matTooltipPosition="after"
-    >
-      <button
-        *ngIf="
+      @if (isDevMode()) {
+        <button mat-menu-item [matMenuTriggerFor]="apiMaturity" matSuffix>
+          <mat-icon>swap_horizontal_circle</mat-icon>
+          {{ 'MATURITY' | translate }}
+        </button>
+      }
+    </mat-menu>
+
+    <mat-menu #savedFiltersMenu="matMenu">
+      <span
+        matTooltip="{{ 'SIGN_IN_TO_SAVE_YOUR_FILTERS' | translate }}"
+        [matTooltipDisabled]="isLoggedIn"
+        matTooltipPosition="after"
+      >
+        @if (
           searchType !== searchTypes.CUSTOM_PRODUCTS &&
           searchType !== searchTypes.LIST &&
           searchType !== searchTypes.DISPLACEMENT
-        "
-        mat-menu-item
-        [disabled]="!isLoggedIn"
-        (click)="saveCurrentFilters()"
-      >
-        {{ 'SAVE_FILTERS' | translate }}
-      </button>
-    </span>
+        ) {
+          <button
+            mat-menu-item
+            [disabled]="!isLoggedIn"
+            (click)="saveCurrentFilters()"
+          >
+            {{ 'SAVE_FILTERS' | translate }}
+          </button>
+        }
+      </span>
 
-    <span
-      [matTooltipDisabled]="isLoggedIn"
-      matTooltip="{{ 'SIGN_IN_TO_SEE_YOUR_SAVED_FILTERS' | translate }}"
-      matTooltipPosition="after"
-    >
-      <button
-        *ngIf="
+      <span
+        [matTooltipDisabled]="isLoggedIn"
+        matTooltip="{{ 'SIGN_IN_TO_SEE_YOUR_SAVED_FILTERS' | translate }}"
+        matTooltipPosition="after"
+      >
+        @if (
           searchType !== searchTypes.CUSTOM_PRODUCTS &&
           searchType !== searchTypes.LIST &&
           searchType !== searchTypes.DISPLACEMENT
-        "
-        (click)="onOpenSavedFilters()"
-        mat-menu-item
-        [disabled]="!isLoggedIn"
-      >
-        {{ 'VIEW_FILTERS' | translate }}
+        ) {
+          <button
+            (click)="onOpenSavedFilters()"
+            mat-menu-item
+            [disabled]="!isLoggedIn"
+          >
+            {{ 'VIEW_FILTERS' | translate }}
+          </button>
+        }
+      </span>
+    </mat-menu>
+
+    <mat-menu #shareSearchMenu="matMenu">
+      <button (click)="onCopy()" mat-menu-item matSuffix>
+        <mat-icon>link</mat-icon>
+        {{ 'COPY_SEARCH_LINK' | translate }}
       </button>
-    </span>
-  </mat-menu>
 
-  <mat-menu #shareSearchMenu="matMenu">
-    <button (click)="onCopy()" mat-menu-item matSuffix>
-      <mat-icon>link</mat-icon>
-      {{ 'COPY_SEARCH_LINK' | translate }}
-    </button>
-
-    <a
-      (click)="onShareWithEmail()"
-      href="mailto:?subject=&body=:%20"
-      target="_blank"
-      title="Send email"
-      mat-menu-item
-      matSuffix
-    >
-      <mat-icon>email</mat-icon>
-      {{ 'SHARE_WITH_EMAIL' | translate }}
-    </a>
-  </mat-menu>
-
-  <mat-menu #savedSearchesMenu="matMenu">
-    <span
-      matTooltip="{{ 'SIGN_IN_TO_SAVE_YOUR_SEARCH' | translate }}"
-      [matTooltipDisabled]="isLoggedIn"
-      matTooltipPosition="after"
-    >
-      <button
-        *ngIf="searchType !== searchTypes.CUSTOM_PRODUCTS"
-        mat-menu-item
-        [disabled]="!isLoggedIn"
-        (click)="saveCurrentSearch()"
-      >
-        {{ 'SAVE_SEARCH' | translate }}
-      </button>
-    </span>
-
-    <span
-      [matTooltipDisabled]="isLoggedIn"
-      matTooltip="{{ 'SIGN_IN_TO_SEE_YOUR_SAVED_SEARCHES' | translate }}"
-      matTooltipPosition="after"
-    >
-      <button
-        mat-menu-item
-        [disabled]="!isLoggedIn"
-        (click)="onOpenSavedSearches()"
-      >
-        {{ 'VIEW_SEARCHES' | translate }}
-      </button>
-    </span>
-
-    <span
-      [matTooltipDisabled]="isLoggedIn"
-      matTooltip="{{ 'SIGN_IN_TO_SEE_YOUR_SEARCH_HISTORY' | translate }}"
-      matTooltipPosition="after"
-    >
-      <button
-        mat-menu-item
-        [disabled]="!isLoggedIn"
-        (click)="onOpenSearchHistory()"
-      >
-        {{ 'SEARCH_HISTORY' | translate }}...
-      </button>
-    </span>
-  </mat-menu>
-  <mat-menu #exportSearchMenu="matMenu">
-    <button
-      mat-menu-item
-      (click)="exportPython()"
-      mat-menu-item
-      matSuffix
-      [disabled]="
-        !(
-          searchType === searchTypes.DATASET ||
-          searchType === searchTypes.LIST ||
-          searchType === searchTypes.BASELINE ||
-          searchType === searchTypes.CUSTOM_PRODUCTS
-        )
-      "
-    >
-      {{ 'EXPORT_PYTHON' | translate }}
-    </button>
-    <button mat-menu-item (click)="exportAPI()">
-      {{ 'EXPORT_API' | translate }}
-    </button>
-  </mat-menu>
-  <mat-menu #apiMaturity="matMenu">
-    <ng-container *ngFor="let button_maturity of this.env.envs | keyvalue">
-      <button
-        [class.selected]="maturity === button_maturity.key"
-        *ngIf="button_maturity.key !== 'defaultEnv'"
-        (click)="onMaturitySelect(button_maturity.key)"
+      <a
+        (click)="onShareWithEmail()"
+        href="mailto:?subject=&body=:%20"
+        target="_blank"
+        title="Send email"
         mat-menu-item
         matSuffix
       >
-        <span>{{ button_maturity.key | titlecase }}</span>
-      </button>
-    </ng-container>
-    <button (click)="onOpenCustomizeEnv()" mat-menu-item matSuffix>
-      <span>
-        {{ 'CUSTOMIZE_ENVIRONMENTS' | translate }}
+        <mat-icon>email</mat-icon>
+        {{ 'SHARE_WITH_EMAIL' | translate }}
+      </a>
+    </mat-menu>
+
+    <mat-menu #savedSearchesMenu="matMenu">
+      <span
+        matTooltip="{{ 'SIGN_IN_TO_SAVE_YOUR_SEARCH' | translate }}"
+        [matTooltipDisabled]="isLoggedIn"
+        matTooltipPosition="after"
+      >
+        @if (searchType !== searchTypes.CUSTOM_PRODUCTS) {
+          <button
+            mat-menu-item
+            [disabled]="!isLoggedIn"
+            (click)="saveCurrentSearch()"
+          >
+            {{ 'SAVE_SEARCH' | translate }}
+          </button>
+        }
       </span>
-    </button>
-  </mat-menu>
-</span>
+
+      <span
+        [matTooltipDisabled]="isLoggedIn"
+        matTooltip="{{ 'SIGN_IN_TO_SEE_YOUR_SAVED_SEARCHES' | translate }}"
+        matTooltipPosition="after"
+      >
+        <button
+          mat-menu-item
+          [disabled]="!isLoggedIn"
+          (click)="onOpenSavedSearches()"
+        >
+          {{ 'VIEW_SEARCHES' | translate }}
+        </button>
+      </span>
+
+      <span
+        [matTooltipDisabled]="isLoggedIn"
+        matTooltip="{{ 'SIGN_IN_TO_SEE_YOUR_SEARCH_HISTORY' | translate }}"
+        matTooltipPosition="after"
+      >
+        <button
+          mat-menu-item
+          [disabled]="!isLoggedIn"
+          (click)="onOpenSearchHistory()"
+        >
+          {{ 'SEARCH_HISTORY' | translate }}...
+        </button>
+      </span>
+    </mat-menu>
+    <mat-menu #exportSearchMenu="matMenu">
+      <button
+        mat-menu-item
+        (click)="exportPython()"
+        mat-menu-item
+        matSuffix
+        [disabled]="
+          !(
+            searchType === searchTypes.DATASET ||
+            searchType === searchTypes.LIST ||
+            searchType === searchTypes.BASELINE ||
+            searchType === searchTypes.CUSTOM_PRODUCTS
+          )
+        "
+      >
+        {{ 'EXPORT_PYTHON' | translate }}
+      </button>
+      <button mat-menu-item (click)="exportAPI()">
+        {{ 'EXPORT_API' | translate }}
+      </button>
+    </mat-menu>
+    <mat-menu #apiMaturity="matMenu">
+      @for (
+        button_maturity of this.env.envs | keyvalue;
+        track button_maturity.key
+      ) {
+        @if (button_maturity.key !== 'defaultEnv') {
+          <button
+            [class.selected]="maturity === button_maturity.key"
+            (click)="onMaturitySelect(button_maturity.key)"
+            mat-menu-item
+            matSuffix
+          >
+            <span>{{ button_maturity.key | titlecase }}</span>
+          </button>
+        }
+      }
+      <button (click)="onOpenCustomizeEnv()" mat-menu-item matSuffix>
+        <span>
+          {{ 'CUSTOMIZE_ENVIRONMENTS' | translate }}
+        </span>
+      </button>
+    </mat-menu>
+  </span>
+}

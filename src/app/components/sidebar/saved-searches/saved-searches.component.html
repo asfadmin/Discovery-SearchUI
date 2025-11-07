@@ -6,12 +6,12 @@
 >
   <div class="saved-searches__header">
     <div class="saved-searches__header-title">
-      <span *ngIf="sidebarType === SidebarType.SAVED_SEARCHES">{{
-        'SAVED_SEARCHES' | translate
-      }}</span>
-      <span *ngIf="sidebarType === SidebarType.SEARCH_HISTORY">{{
-        'SEARCH_HISTORY' | translate
-      }}</span>
+      @if (sidebarType === SidebarType.SAVED_SEARCHES) {
+        <span>{{ 'SAVED_SEARCHES' | translate }}</span>
+      }
+      @if (sidebarType === SidebarType.SEARCH_HISTORY) {
+        <span>{{ 'SEARCH_HISTORY' | translate }}</span>
+      }
     </div>
     <div class="saved-searches__header-actions">
       <div class="saved-searches__more-menu">
@@ -58,58 +58,60 @@
     </div>
 
     <div class="saved-searches__save-button">
-      <button
-        *ngIf="
-          sidebarType === SidebarType.SAVED_SEARCHES &&
-          (searchType$ | async) !== SearchType.CUSTOM_PRODUCTS
-        "
-        (click)="saveCurrentSearch()"
-        mat-raised-button
-        color="accent"
-      >
-        {{ 'SAVE_CURRENT_SEARCH' | translate }}
-      </button>
+      @if (
+        sidebarType === SidebarType.SAVED_SEARCHES &&
+        (searchType$ | async) !== SearchType.CUSTOM_PRODUCTS
+      ) {
+        <button (click)="saveCurrentSearch()" mat-raised-button color="accent">
+          {{ 'SAVE_CURRENT_SEARCH' | translate }}
+        </button>
+      }
     </div>
   </div>
 
   <div class="content-wrapper">
-    <div
-      *ngIf="searchType$ | async as searchType"
-      [ngClass]="{
-        'saved-searches__content-mobile': breakpoint <= breakpoints.SMALL,
-        'saved-searches__content': breakpoint > breakpoints.SMALL,
-      }"
-    >
-      <div *ngIf="(searches$ | async).length > 0; else noSavedSearchBlock">
-        <div
-          *ngFor="let search of searches$ | async"
-          class="saved-searches-row"
-        >
-          <div *ngIf="filteredSearches.has(search.id)">
-            <app-saved-search
-              [search]="search"
-              [searchType]="searchType"
-              [isExpanded]="search.id === expandedSearchId"
-              [isNew]="search.id === newSearchId"
-              [isSavedSearch]="sidebarType === SidebarType.SAVED_SEARCHES"
-              [lockedFocus]="lockedFocus"
-              (unlockFocus)="onUnlockFocus()"
-              (expand)="onExpandSearch($event)"
-              (updateFilters)="updateSearchFilters($event)"
-              (updateName)="updateSearchName($event)"
-              (deleteSearch)="deleteSearch($event)"
-              (setSearch)="onSetSearch($event)"
-            >
-            </app-saved-search>
+    @if (searchType$ | async; as searchType) {
+      <div
+        [ngClass]="{
+          'saved-searches__content-mobile': breakpoint <= breakpoints.SMALL,
+          'saved-searches__content': breakpoint > breakpoints.SMALL,
+        }"
+      >
+        @if ((searches$ | async).length > 0) {
+          <div>
+            @for (search of searches$ | async; track search.id) {
+              <div class="saved-searches-row">
+                @if (filteredSearches.has(search.id)) {
+                  <div>
+                    <app-saved-search
+                      [search]="search"
+                      [searchType]="searchType"
+                      [isExpanded]="search.id === expandedSearchId"
+                      [isNew]="search.id === newSearchId"
+                      [isSavedSearch]="
+                        sidebarType === SidebarType.SAVED_SEARCHES
+                      "
+                      [lockedFocus]="lockedFocus"
+                      (unlockFocus)="onUnlockFocus()"
+                      (expand)="onExpandSearch($event)"
+                      (updateFilters)="updateSearchFilters($event)"
+                      (updateName)="updateSearchName($event)"
+                      (deleteSearch)="deleteSearch($event)"
+                      (setSearch)="onSetSearch($event)"
+                    >
+                    </app-saved-search>
+                  </div>
+                }
+              </div>
+            }
           </div>
-        </div>
+        } @else {
+          <div class="no-saved-searches">
+            <h2>{{ 'YOU_HAVE_NO_SAVED_SEARCHES' | translate }}</h2>
+          </div>
+        }
       </div>
-      <ng-template #noSavedSearchBlock>
-        <div class="no-saved-searches">
-          <h2>{{ 'YOU_HAVE_NO_SAVED_SEARCHES' | translate }}</h2>
-        </div>
-      </ng-template>
-    </div>
+    }
   </div>
 
   <div

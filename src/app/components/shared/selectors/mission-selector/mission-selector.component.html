@@ -9,7 +9,7 @@
   </mat-form-field>
 </form>
 
-<ng-container *ngIf="!!selectedMission">
+@if (!!selectedMission) {
   <div class="selected" style="padding-top: 12px">
     <div style="display: flex; justify-content: space-between">
       <div>
@@ -31,7 +31,7 @@
     </div>
     <mat-divider style="margin-top: 12px" [inset]="true"></mat-divider>
   </div>
-</ng-container>
+}
 
 <cdk-virtual-scroll-viewport
   style="height: 250px"
@@ -40,10 +40,12 @@
   itemSize="48"
 >
   <mat-nav-list role="list">
-    <div *cdkVirtualFor="let mission of filteredMissions">
-      <a (click)="setMission(mission)" mat-list-item role="listitem">
-        {{ mission }}
-      </a>
-    </div>
+    @for (mission of filteredMissions; track mission) {
+      <div>
+        <a (click)="setMission(mission)" mat-list-item role="listitem">
+          {{ mission }}
+        </a>
+      </div>
+    }
   </mat-nav-list>
 </cdk-virtual-scroll-viewport>

@@ -4,16 +4,15 @@
   [matMenuTriggerFor]="layerMenu"
   aria-label="Map projection view"
 >
-  <ng-template
-    [ngIf]="layerType === layerTypes.SATELLITE"
-    [ngIfElse]="STREET_VIEW"
-    class="layer-btn layer-select-icon arctic"
-  >
-    <mat-icon class="control-icon">terrain</mat-icon>
-  </ng-template>
-  <ng-template #STREET_VIEW class="layer-btn layer-select-icon equatorial">
-    <mat-icon class="control-icon">directions_car</mat-icon>
-  </ng-template>
+  @if (layerType === layerTypes.SATELLITE) {
+    <mat-icon class="control-icon layer-btn layer-select-icon arctic"
+      >terrain</mat-icon
+    >
+  } @else {
+    <mat-icon class="control-icon layer-btn layer-select-icon equatorial"
+      >directions_car</mat-icon
+    >
+  }
   <span class="fa fa-caret-down bottom-right"></span>
 </button>
 
@@ -54,38 +53,40 @@
     {{ 'OVERVIEW_MAP' | translate }}
   </button>
 
-  <button
-    *ngIf="(searchType$ | async) !== searchTypes.DISPLACEMENT"
-    mat-menu-item
-    class="control-mat-checkbox-toggle"
-    (click)="onClickCoherenceMenu()"
-    [matMenuTriggerFor]="coherenceLayers"
-  >
-    <mat-checkbox
-      class="checkbox"
-      [disabled]="true"
-      [checked]="coherenceLayerMonths"
+  @if ((searchType$ | async) !== searchTypes.DISPLACEMENT) {
+    <button
+      mat-menu-item
+      class="control-mat-checkbox-toggle"
+      (click)="onClickCoherenceMenu()"
+      [matMenuTriggerFor]="coherenceLayers"
     >
-    </mat-checkbox>
-    {{ 'COHERENCE_LAYER' | translate }}
-
-    <mat-menu #coherenceLayers="matMenu">
-      <button
-        *ngFor="let layer of months"
-        (click)="onToggleCoherenceLayer(layer)"
-        class="control-mat-checkbox-toggle"
-        mat-menu-item
+      <mat-checkbox
+        class="checkbox"
+        [disabled]="true"
+        [checked]="coherenceLayerMonths"
       >
-        <mat-radio-button
-          [disabled]="true"
-          [checked]="coherenceLayerMonths === layer"
-        >
-        </mat-radio-button>
+      </mat-checkbox>
+      {{ 'COHERENCE_LAYER' | translate }}
 
-        {{ layer | translate }}
-      </button>
-    </mat-menu>
-  </button>
+      <mat-menu #coherenceLayers="matMenu">
+        @for (layer of months; track layer) {
+          <button
+            (click)="onToggleCoherenceLayer(layer)"
+            class="control-mat-checkbox-toggle"
+            mat-menu-item
+          >
+            <mat-radio-button
+              [disabled]="true"
+              [checked]="coherenceLayerMonths === layer"
+            >
+            </mat-radio-button>
+
+            {{ layer | translate }}
+          </button>
+        }
+      </mat-menu>
+    </button>
+  }
   <button
     mat-menu-item
     class="control-mat-checkbox-toggle"

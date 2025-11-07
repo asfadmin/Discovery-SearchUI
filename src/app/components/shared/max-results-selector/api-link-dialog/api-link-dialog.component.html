@@ -29,9 +29,11 @@
         (selectionChange)="onFormatChange($event.value)"
         name="format"
       >
-        <mat-option *ngFor="let format of formats" [value]="format.value">
-          {{ format.viewValue }}
-        </mat-option>
+        @for (format of formats; track format.value) {
+          <mat-option [value]="format.value">
+            {{ format.viewValue }}
+          </mat-option>
+        }
       </mat-select>
     </mat-form-field>
 
@@ -49,15 +51,16 @@
       >
       </textarea>
 
-      <mat-icon
-        *ngIf="!!apiLink"
-        (click)="onCopyLink()"
-        matTooltip="{{ 'COPY_TO_CLIPBOARD' | translate }}"
-        class="clickable copy-icon"
-        matSuffix
-      >
-        file_copy
-      </mat-icon>
+      @if (!!apiLink) {
+        <mat-icon
+          (click)="onCopyLink()"
+          matTooltip="{{ 'COPY_TO_CLIPBOARD' | translate }}"
+          class="clickable copy-icon"
+          matSuffix
+        >
+          file_copy
+        </mat-icon>
+      }
     </mat-form-field>
   </form>
 </mat-dialog-content>

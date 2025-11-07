@@ -1,99 +1,106 @@
-<div *ngIf="breakpoint$ | async as breakpoint" class="breadcrumb-row fx-row">
-  <ng-container *ngIf="breakpoint !== breakpoints.MOBILE">
-    <div class="fx-row">
-      <app-search-type-selector (click)="closeAOIOptions()" class="breadcrumb">
-      </app-search-type-selector>
-
-      <div class="dataset-header-wrapper">
-        <app-dataset-selector
-          [(selected)]="selectedDataset"
-          (selectedChange)="onDatasetChange($event)"
-          [datasets]="datasets"
+@if (breakpoint$ | async; as breakpoint) {
+  <div class="breadcrumb-row fx-row">
+    @if (breakpoint !== breakpoints.MOBILE) {
+      <div class="fx-row">
+        <app-search-type-selector
           (click)="closeAOIOptions()"
-          class="breadcrumb dataset-selector--layout"
+          class="breadcrumb"
         >
-        </app-dataset-selector>
-        @if (prop.isRelevant(p.FRAME_ORDERING)) {
-          <div class="on-demand-mode-toggle-wrapper">
-            <mat-slide-toggle
-              (change)="test($event.checked)"
-              [checked]="frameSelectionEnabled$ | async"
-            >
-              On Demand
-              <app-docs-modal
-                class="info-icon"
-                url="https://hyp3-docs.asf.alaska.edu/guides/gunw_product_guide/"
+        </app-search-type-selector>
+
+        <div class="dataset-header-wrapper">
+          <app-dataset-selector
+            [(selected)]="selectedDataset"
+            (selectedChange)="onDatasetChange($event)"
+            [datasets]="datasets"
+            (click)="closeAOIOptions()"
+            class="breadcrumb dataset-selector--layout"
+          >
+          </app-dataset-selector>
+          @if (prop.isRelevant(p.FRAME_ORDERING)) {
+            <div class="on-demand-mode-toggle-wrapper">
+              <mat-slide-toggle
+                (change)="test($event.checked)"
+                [checked]="frameSelectionEnabled$ | async"
               >
-              </app-docs-modal>
-            </mat-slide-toggle>
-            <div
-              class="download-frame-map"
-              *ngIf="frameSelectionEnabled$ | async"
-              matTooltip="{{ 'DOWNLOAD_FRAME_MAP_TOOLTIP' | translate }}"
+                On Demand
+                <app-docs-modal
+                  class="info-icon"
+                  url="https://hyp3-docs.asf.alaska.edu/guides/gunw_product_guide/"
+                >
+                </app-docs-modal>
+              </mat-slide-toggle>
+              @if (frameSelectionEnabled$ | async) {
+                <div
+                  class="download-frame-map"
+                  matTooltip="{{ 'DOWNLOAD_FRAME_MAP_TOOLTIP' | translate }}"
+                >
+                  <a
+                    (click)="frameMapService.downloadFrameMap(selectedDataset)"
+                  >
+                    <mat-icon>download</mat-icon>
+                  </a>
+                </div>
+              }
+            </div>
+          }
+        </div>
+
+        <app-aoi-filter
+          class="breadcrumb"
+          [ngClass]="{ noshow: breakpoint === breakpoints.SMALL }"
+        >
+        </app-aoi-filter>
+      </div>
+
+      <div>
+        <div class="fx-row">
+          @if (breakpoint === breakpoints.FULL) {
+            <div class="breadcrumb date-selector--layout">
+              <app-date-selector></app-date-selector>
+            </div>
+          }
+
+          <div class="breadcrumb fx-row-center" style="align-items: center">
+            <button
+              (click)="onToggleFiltersMenu()"
+              mat-button
+              extended
+              class="additional-filters-button fx-col"
             >
-              <a (click)="frameMapService.downloadFrameMap(selectedDataset)">
-                <mat-icon>download</mat-icon>
-              </a>
+              {{ 'FILTERS' | translate }} <br />
+              <mat-icon iconPositionEnd class="more-horiz">more_horiz</mat-icon>
+            </button>
+          </div>
+
+          <div class="breadcrumb search-controls">
+            <app-search-button></app-search-button>
+            <div class="max-results">
+              <app-max-results-selector></app-max-results-selector>
             </div>
           </div>
-        }
+        </div>
+
+        <div class="icon-cluster">
+          <app-header-buttons> </app-header-buttons>
+        </div>
       </div>
+    }
 
-      <app-aoi-filter
-        class="breadcrumb"
-        [ngClass]="{ noshow: breakpoint === breakpoints.SMALL }"
-      >
-      </app-aoi-filter>
-    </div>
-
-    <div>
-      <div class="fx-row">
-        <div
-          *ngIf="breakpoint === breakpoints.FULL"
-          class="breadcrumb date-selector--layout"
+    @if (breakpoint === breakpoints.MOBILE) {
+      <div class="mobile-nav-bar">
+        <button
+          (click)="onToggleFiltersMenu()"
+          style="margin-left: 5px"
+          mat-flat-button
         >
-          <app-date-selector></app-date-selector>
-        </div>
+          {{ 'FILTERS' | translate }}
+        </button>
 
-        <div class="breadcrumb fx-row-center" style="align-items: center">
-          <button
-            (click)="onToggleFiltersMenu()"
-            mat-button
-            extended
-            class="additional-filters-button fx-col"
-          >
-            {{ 'FILTERS' | translate }} <br />
-            <mat-icon iconPositionEnd class="more-horiz">more_horiz</mat-icon>
-          </button>
-        </div>
-
-        <div class="breadcrumb search-controls">
-          <app-search-button></app-search-button>
-          <div class="max-results">
-            <app-max-results-selector></app-max-results-selector>
-          </div>
+        <div class="mobile-icon-cluster">
+          <app-header-buttons> </app-header-buttons>
         </div>
       </div>
-
-      <div class="icon-cluster">
-        <app-header-buttons> </app-header-buttons>
-      </div>
-    </div>
-  </ng-container>
-
-  <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
-    <div class="mobile-nav-bar">
-      <button
-        (click)="onToggleFiltersMenu()"
-        style="margin-left: 5px"
-        mat-flat-button
-      >
-        {{ 'FILTERS' | translate }}
-      </button>
-
-      <div class="mobile-icon-cluster">
-        <app-header-buttons> </app-header-buttons>
-      </div>
-    </div>
-  </ng-container>
-</div>
+    }
+  </div>
+}

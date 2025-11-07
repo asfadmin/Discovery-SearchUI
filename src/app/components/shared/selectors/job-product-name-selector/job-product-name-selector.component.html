@@ -6,83 +6,8 @@
     "
   >
     <mat-label>{{ 'PRODUCT_SOURCE_SCENE' | translate }}</mat-label>
-    <div *ngIf="!headerView">
-      <textarea
-        *ngIf="!headerView"
-        matInput
-        placeholder="S1A..."
-        (input)="onFilterProductName($event)"
-        [value]="productNameFilter"
-        [matAutocomplete]="jobNameSelector"
-        [formControl]="myControl"
-        [rows]="5"
-      >
-      </textarea>
-      <button
-        *ngIf="breakpoint <= breakpoints.MOBILE"
-        class="options-clear-button"
-        (click)="onClearFilter()"
-        mat-flat-button
-        matTooltip="Clear Product Name Filter"
-      >
-        <strong>{{ 'CLEAR' | translate }}</strong>
-      </button>
-    </div>
-    <input
-      *ngIf="headerView"
-      matInput
-      placeholder="S1A..."
-      (input)="onFilterProductName($event)"
-      [value]="productNameFilter"
-      [formControl]="myControl"
-      [matAutocomplete]="jobNameSelector"
-    />
-    <mat-icon
-      *ngIf="headerView"
-      (click)="toggleJobFilterOptions()"
-      matTooltip="{{ 'MORE_OPTIONS' | translate }}"
-      style="vertical-align: middle"
-      matSuffix
-    >
-      {{ isJobFilterOptionsOpen ? 'arrow_drop_up' : 'arrow_drop_down' }}
-    </mat-icon>
-  </mat-form-field>
-
-  <mat-autocomplete
-    [panelWidth]="isJobFilterOptionsOpen ? 500 : 300"
-    (optionSelected)="onSuggestionSelected($event)"
-    #jobNameSelector="matAutocomplete"
-  >
-    <mat-option
-      *ngFor="let fileName of filteredOptions | async"
-      [value]="autoCompleteEntry(fileName)"
-    >
-      <div [matTooltip]="fileName">
-        <span [innerHtml]="autoSuggestionDisplay(fileName)"></span>
-      </div>
-    </mat-option>
-  </mat-autocomplete>
-</form>
-
-<form>
-  <mat-card
-    [@fadeTransition]
-    *ngIf="isJobFilterOptionsOpen"
-    class="breadcrumb-filter"
-  >
-    <mat-card-header style="display: block">
-      <strong>{{ 'OPTIONS' | translate }}</strong>
-      <button
-        class="options-clear-button"
-        (click)="onCloseOptions()"
-        matTooltip="{{ 'HIDE_OPTIONS' | translate }}"
-        mat-icon-button
-      >
-        <mat-icon>clear</mat-icon>
-      </button>
-    </mat-card-header>
-    <mat-card-content>
-      <mat-form-field style="width: 100%">
+    @if (!headerView) {
+      <div>
         <textarea
           matInput
           placeholder="S1A..."
@@ -91,16 +16,92 @@
           [matAutocomplete]="jobNameSelector"
           [formControl]="myControl"
           [rows]="5"
-        ></textarea>
-      </mat-form-field>
-      <button
-        class="options-clear-button"
-        (click)="onClearFilter()"
-        mat-flat-button
-        matTooltip="{{ 'CLEAR_PRODUCT_NAME_FILTER' | translate }}"
+        >
+        </textarea>
+        @if (breakpoint <= breakpoints.MOBILE) {
+          <button
+            class="options-clear-button"
+            (click)="onClearFilter()"
+            mat-flat-button
+            matTooltip="Clear Product Name Filter"
+          >
+            <strong>{{ 'CLEAR' | translate }}</strong>
+          </button>
+        }
+      </div>
+    }
+    @if (headerView) {
+      <input
+        matInput
+        placeholder="S1A..."
+        (input)="onFilterProductName($event)"
+        [value]="productNameFilter"
+        [formControl]="myControl"
+        [matAutocomplete]="jobNameSelector"
+      />
+    }
+    @if (headerView) {
+      <mat-icon
+        (click)="toggleJobFilterOptions()"
+        matTooltip="{{ 'MORE_OPTIONS' | translate }}"
+        style="vertical-align: middle"
+        matSuffix
       >
-        <strong>{{ 'CLEAR' | translate }}</strong>
-      </button>
-    </mat-card-content>
-  </mat-card>
+        {{ isJobFilterOptionsOpen ? 'arrow_drop_up' : 'arrow_drop_down' }}
+      </mat-icon>
+    }
+  </mat-form-field>
+
+  <mat-autocomplete
+    [panelWidth]="isJobFilterOptionsOpen ? 500 : 300"
+    (optionSelected)="onSuggestionSelected($event)"
+    #jobNameSelector="matAutocomplete"
+  >
+    @for (fileName of filteredOptions | async; track fileName) {
+      <mat-option [value]="autoCompleteEntry(fileName)">
+        <div [matTooltip]="fileName">
+          <span [innerHtml]="autoSuggestionDisplay(fileName)"></span>
+        </div>
+      </mat-option>
+    }
+  </mat-autocomplete>
+</form>
+
+<form>
+  @if (isJobFilterOptionsOpen) {
+    <mat-card [@fadeTransition] class="breadcrumb-filter">
+      <mat-card-header style="display: block">
+        <strong>{{ 'OPTIONS' | translate }}</strong>
+        <button
+          class="options-clear-button"
+          (click)="onCloseOptions()"
+          matTooltip="{{ 'HIDE_OPTIONS' | translate }}"
+          mat-icon-button
+        >
+          <mat-icon>clear</mat-icon>
+        </button>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-form-field style="width: 100%">
+          <textarea
+            matInput
+            placeholder="S1A..."
+            (input)="onFilterProductName($event)"
+            [value]="productNameFilter"
+            [matAutocomplete]="jobNameSelector"
+            [formControl]="myControl"
+            [rows]="5"
+          ></textarea>
+        </mat-form-field>
+        <button
+          class="options-clear-button"
+          (click)="onClearFilter()"
+          mat-flat-button
+          matTooltip="{{ 'CLEAR_PRODUCT_NAME_FILTER' | translate }}"
+        >
+          <strong>{{ 'CLEAR' | translate }}</strong>
+        </button>
+      </mat-card-content>
+    </mat-card>
+  }
 </form>

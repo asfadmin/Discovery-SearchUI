@@ -1,4 +1,4 @@
-<div *ngIf="breakpoint$ | async as breakpoint">
+@if (breakpoint$ | async; as breakpoint) {
   <button
     [matMenuTriggerFor]="derivedDatasetMenu"
     class="spacing nav-icon-buttons"
@@ -12,48 +12,50 @@
   </button>
 
   <mat-menu #derivedDatasetMenu="matMenu">
-    <div
-      mat-menu-item
-      matSuffix
-      *ngFor="let dataset of datasets"
-      (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)"
-    >
-      <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
-        <mat-icon>video_library</mat-icon>
-        {{ dataset.name }}
-      </div>
+    @for (dataset of datasets; track dataset.name) {
       <div
-        *ngIf="(breakpoint$ | async) !== breakpoints.MOBILE"
-        class="menu-item"
+        mat-menu-item
+        matSuffix
+        (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)"
       >
-        <div fxFlex="" class="menu-item-content">
-          <div class="item-title">{{ dataset.name }}</div>
-          <div class="item-content">
-            {{ dataset.description | translate }}
+        @if ((breakpoint$ | async) === breakpoints.MOBILE) {
+          <div>
+            <mat-icon>video_library</mat-icon>
+            {{ dataset.name }}
           </div>
-        </div>
-        <div fxFlex="" class="menu-item-aside">
-          <img [src]="dataset.picture" class="menu-item-icon" />
-        </div>
+        }
+        @if ((breakpoint$ | async) !== breakpoints.MOBILE) {
+          <div class="menu-item">
+            <div fxFlex="" class="menu-item-content">
+              <div class="item-title">{{ dataset.name }}</div>
+              <div class="item-content">
+                {{ dataset.description | translate }}
+              </div>
+            </div>
+            <div fxFlex="" class="menu-item-aside">
+              <img [src]="dataset.picture" class="menu-item-icon" />
+            </div>
+          </div>
+        }
+        <!--      <mat-divider inset></mat-divider>-->
+        <mat-card-actions>
+          <button
+            (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)"
+            mat-button
+            class="link-button"
+          >
+            {{ 'MORE_INFO' | translate }}
+          </button>
+          <button
+            (click)="onOpenDerivedDataset(dataset.download_url, dataset.name)"
+            mat-button
+            class="link-button"
+          >
+            {{ 'DOWNLOAD' | translate }}
+          </button>
+        </mat-card-actions>
+        <hr class="dataset-hr" />
       </div>
-      <!--      <mat-divider inset></mat-divider>-->
-      <mat-card-actions>
-        <button
-          (click)="onOpenDerivedDataset(dataset.info_url, dataset.name)"
-          mat-button
-          class="link-button"
-        >
-          {{ 'MORE_INFO' | translate }}
-        </button>
-        <button
-          (click)="onOpenDerivedDataset(dataset.download_url, dataset.name)"
-          mat-button
-          class="link-button"
-        >
-          {{ 'DOWNLOAD' | translate }}
-        </button>
-      </mat-card-actions>
-      <hr class="dataset-hr" />
-    </div>
+    }
   </mat-menu>
-</div>
+}

@@ -11,20 +11,26 @@
       "
       multiple
     >
-      <mat-option *ngFor="let pol of dataset.polarizations" [value]="pol">
-        <span class="polarization-type">{{ pol }}</span>
-        <span class="polarization-count"
-          >&nbsp;&nbsp;{{ pol | polarizationCount }}</span
-        >
-      </mat-option>
+      @for (pol of dataset.polarizations; track pol) {
+        <mat-option [value]="pol">
+          <span class="polarization-type">{{ pol }}</span>
+          <span class="polarization-count"
+            >&nbsp;&nbsp;{{ pol | polarizationCount }}</span
+          >
+        </mat-option>
+      }
     </mat-select>
-    <mat-hint *ngIf="prop.isRelevant(p.POLARIZATION)" align="start">
-      {{ polarizations?.length || 0 }}/{{ dataset.polarizations.length }}
-      {{ 'POLARIZATIONS_SELECTED' | translate }}
-    </mat-hint>
-    <mat-hint *ngIf="!prop.isRelevant(p.POLARIZATION)" align="start">
-      {{ 'NO_POLARIZATIONS_TO_SELECT' | translate }}
-    </mat-hint>
+    @if (prop.isRelevant(p.POLARIZATION)) {
+      <mat-hint align="start">
+        {{ polarizations?.length || 0 }}/{{ dataset.polarizations.length }}
+        {{ 'POLARIZATIONS_SELECTED' | translate }}
+      </mat-hint>
+    }
+    @if (!prop.isRelevant(p.POLARIZATION)) {
+      <mat-hint align="start">
+        {{ 'NO_POLARIZATIONS_TO_SELECT' | translate }}
+      </mat-hint>
+    }
   </mat-form-field>
 
   <mat-form-field class="polarization-select-container">
@@ -38,20 +44,26 @@
       "
       multiple
     >
-      <mat-option *ngFor="let pol of dataset.sidepolarizations" [value]="pol">
-        <span class="polarization-type">{{ pol }}</span>
-        <span class="polarization-count"
-          >&nbsp;&nbsp;{{ pol | polarizationCount }}</span
-        >
-      </mat-option>
+      @for (pol of dataset.sidepolarizations; track pol) {
+        <mat-option [value]="pol">
+          <span class="polarization-type">{{ pol }}</span>
+          <span class="polarization-count"
+            >&nbsp;&nbsp;{{ pol | polarizationCount }}</span
+          >
+        </mat-option>
+      }
     </mat-select>
-    <mat-hint *ngIf="prop.isRelevant(p.POLARIZATION)" align="start">
-      {{ sidePolarizations?.length || 0 }}/{{ dataset.polarizations.length }}
-      {{ 'POLARIZATIONS_SELECTED' | translate }}
-    </mat-hint>
-    <mat-hint *ngIf="!prop.isRelevant(p.POLARIZATION)" align="start">
-      {{ 'NO_POLARIZATIONS_TO_SELECT' | translate }}
-    </mat-hint>
+    @if (prop.isRelevant(p.POLARIZATION)) {
+      <mat-hint align="start">
+        {{ sidePolarizations?.length || 0 }}/{{ dataset.polarizations.length }}
+        {{ 'POLARIZATIONS_SELECTED' | translate }}
+      </mat-hint>
+    }
+    @if (!prop.isRelevant(p.POLARIZATION)) {
+      <mat-hint align="start">
+        {{ 'NO_POLARIZATIONS_TO_SELECT' | translate }}
+      </mat-hint>
+    }
   </mat-form-field>
 
   <mat-form-field class="flight-direction-field">
@@ -62,44 +74,55 @@
       placeholder="{{ 'DIRECTION' | translate }}"
       multiple
     >
-      <mat-option
-        *ngFor="let direction of flightDirectionTypes"
-        [value]="direction"
+      @for (direction of flightDirectionTypes; track direction) {
+        <mat-option [value]="direction">
+          {{ direction.toUpperCase() | translate }}
+        </mat-option>
+      }
+    </mat-select>
+
+    @if (prop.isRelevant(p.FLIGHT_DIRECTION)) {
+      <mat-hint align="start">
+        {{ flightDirections?.length || 0 }}/{{ flightDirectionTypes.length }}
+        {{ 'FLIGHT_DIRECTIONS_SELECTED' | translate }}
+      </mat-hint>
+    }
+    @if (!prop.isRelevant(p.FLIGHT_DIRECTION)) {
+      <mat-hint align="start">
+        {{ 'NO_FLIGHT_DIRECTIONS_TO_SELECT' | translate }}
+      </mat-hint>
+    }
+  </mat-form-field>
+
+  @if (prop.isRelevant(p.SUBTYPE)) {
+    <mat-form-field>
+      <mat-select
+        (selectionChange)="onNewSubtypeSelected($event.value)"
+        [(ngModel)]="subtypes"
+        [disabled]="!prop.isRelevant(p.SUBTYPE)"
+        placeholder="{{ 'SUBTYPE' | translate }}"
+        multiple
       >
-        {{ direction.toUpperCase() | translate }}
-      </mat-option>
-    </mat-select>
+        @for (subtype of dataset.subtypes; track subtype) {
+          <mat-option [value]="subtype">
+            {{ subtype.apiValue }}
+          </mat-option>
+        }
+      </mat-select>
 
-    <mat-hint *ngIf="prop.isRelevant(p.FLIGHT_DIRECTION)" align="start">
-      {{ flightDirections?.length || 0 }}/{{ flightDirectionTypes.length }}
-      {{ 'FLIGHT_DIRECTIONS_SELECTED' | translate }}
-    </mat-hint>
-    <mat-hint *ngIf="!prop.isRelevant(p.FLIGHT_DIRECTION)" align="start">
-      {{ 'NO_FLIGHT_DIRECTIONS_TO_SELECT' | translate }}
-    </mat-hint>
-  </mat-form-field>
-
-  <mat-form-field *ngIf="prop.isRelevant(p.SUBTYPE)">
-    <mat-select
-      (selectionChange)="onNewSubtypeSelected($event.value)"
-      [(ngModel)]="subtypes"
-      [disabled]="!prop.isRelevant(p.SUBTYPE)"
-      placeholder="{{ 'SUBTYPE' | translate }}"
-      multiple
-    >
-      <mat-option *ngFor="let subtype of dataset.subtypes" [value]="subtype">
-        {{ subtype.apiValue }}
-      </mat-option>
-    </mat-select>
-
-    <mat-hint *ngIf="prop.isRelevant(p.SUBTYPE)" align="start">
-      {{ subtypes?.length || 0 }}/{{ dataset.subtypes?.length }}
-      {{ 'SUBTYPES_SELECTED' | translate }}
-    </mat-hint>
-    <mat-hint *ngIf="!prop.isRelevant(p.SUBTYPE)" align="start">
-      {{ 'NO_SUBTYPES_TO_SELECT' | translate }}
-    </mat-hint>
-  </mat-form-field>
+      @if (prop.isRelevant(p.SUBTYPE)) {
+        <mat-hint align="start">
+          {{ subtypes?.length || 0 }}/{{ dataset.subtypes?.length }}
+          {{ 'SUBTYPES_SELECTED' | translate }}
+        </mat-hint>
+      }
+      @if (!prop.isRelevant(p.SUBTYPE)) {
+        <mat-hint align="start">
+          {{ 'NO_SUBTYPES_TO_SELECT' | translate }}
+        </mat-hint>
+      }
+    </mat-form-field>
+  }
 
   <mat-form-field>
     <mat-select
@@ -109,21 +132,24 @@
       placeholder="{{ 'INSTRUMENT' | translate }}"
       multiple
     >
-      <mat-option
-        *ngFor="let instrument of dataset.instruments"
-        [value]="instrument.apiValue"
-      >
-        {{ instrument.displayName }}
-      </mat-option>
+      @for (instrument of dataset.instruments; track instrument.apiValue) {
+        <mat-option [value]="instrument.apiValue">
+          {{ instrument.displayName }}
+        </mat-option>
+      }
     </mat-select>
 
-    <mat-hint *ngIf="prop.isRelevant(p.INSTRUMENT)" align="start">
-      {{ instruments?.length || 0 }}/{{ dataset.instruments.length }}
-      {{ 'INSTRUMENTS_SELECTED' | translate }}
-    </mat-hint>
-    <mat-hint *ngIf="!prop.isRelevant(p.INSTRUMENT)" align="start">
-      {{ 'NO_INSTRUMENTS_TO_SELECT' | translate }}
-    </mat-hint>
+    @if (prop.isRelevant(p.INSTRUMENT)) {
+      <mat-hint align="start">
+        {{ instruments?.length || 0 }}/{{ dataset.instruments.length }}
+        {{ 'INSTRUMENTS_SELECTED' | translate }}
+      </mat-hint>
+    }
+    @if (!prop.isRelevant(p.INSTRUMENT)) {
+      <mat-hint align="start">
+        {{ 'NO_INSTRUMENTS_TO_SELECT' | translate }}
+      </mat-hint>
+    }
   </mat-form-field>
 
   <mat-form-field>
@@ -141,13 +167,17 @@
       </mat-option>
     </mat-select>
 
-    <mat-hint *ngIf="prop.isRelevant(p.FRAME)" align="start">
-      {{ frameCoverage?.length || 0 }}/2
-      {{ 'FRAMES_SELECTED' | translate }}
-    </mat-hint>
-    <mat-hint *ngIf="!prop.isRelevant(p.FRAME)" align="start">
-      {{ 'NO_FRAMES_TO_SELECT' | translate }}
-    </mat-hint>
+    @if (prop.isRelevant(p.FRAME)) {
+      <mat-hint align="start">
+        {{ frameCoverage?.length || 0 }}/2
+        {{ 'FRAMES_SELECTED' | translate }}
+      </mat-hint>
+    }
+    @if (!prop.isRelevant(p.FRAME)) {
+      <mat-hint align="start">
+        {{ 'NO_FRAMES_TO_SELECT' | translate }}
+      </mat-hint>
+    }
   </mat-form-field>
 
   <mat-form-field class="half-width">
@@ -166,13 +196,17 @@
       }
     </mat-select>
 
-    <mat-hint *ngIf="prop.isRelevant(p.RANGE_BANDWIDTH)" align="start">
-      {{ rangeBandwidth?.length || 0 }}/{{ totalBandwithCount }}
-      {{ 'RANGE_BANDWITH_SELECTED' | translate }}
-    </mat-hint>
-    <mat-hint *ngIf="!prop.isRelevant(p.RANGE_BANDWIDTH)" align="start">
-      {{ 'NO_BANDWITH_TO_SELECT' | translate }}
-    </mat-hint>
+    @if (prop.isRelevant(p.RANGE_BANDWIDTH)) {
+      <mat-hint align="start">
+        {{ rangeBandwidth?.length || 0 }}/{{ totalBandwithCount }}
+        {{ 'RANGE_BANDWITH_SELECTED' | translate }}
+      </mat-hint>
+    }
+    @if (!prop.isRelevant(p.RANGE_BANDWIDTH)) {
+      <mat-hint align="start">
+        {{ 'NO_BANDWITH_TO_SELECT' | translate }}
+      </mat-hint>
+    }
   </mat-form-field>
 
   <mat-slide-toggle

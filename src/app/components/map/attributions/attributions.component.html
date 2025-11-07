@@ -1,42 +1,42 @@
-<ng-container>
-  <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
-    <a href="http://mapbox.com/about/maps" class="mapbox-logo" target="_blank"
-      >Mapbox</a
+@if (breakpoint > breakpoints.MOBILE) {
+  <a href="http://mapbox.com/about/maps" class="mapbox-logo" target="_blank"
+    >Mapbox</a
+  >
+
+  <div class="position-right attribute-box">
+    © {{ anio }} ASF
+    <span class="text-spacing">|</span>
+    <a [href]="asfWebsite.contact" target="_blank">{{
+      'CONTACT' | translate
+    }}</a>
+    <span class="text-spacing">|</span>
+    <a href="https://www.alaska.edu/nondiscrimination" target="_blank">{{
+      'NON_DISCRIMINATION' | translate
+    }}</a>
+    <span class="text-spacing">|</span>
+    <a href="https://www.mapbox.com/about/maps/" target="_blank">© Mapbox</a>
+    <span class="text-spacing">|</span>
+    <a href="https://www.openstreetmap.org/copyright" target="_blank"
+      >© OpenStreetMap contributors</a
     >
+    <span class="text-spacing">|</span>
+    <a href="https://www.mapbox.com/map-feedback/" target="_blank"
+      ><strong>Improve this map</strong></a
+    >
+  </div>
+  <div class="position-right--filler attribute-box">&nbsp;</div>
+}
 
-    <div class="position-right attribute-box">
-      © {{ anio }} ASF
-      <span class="text-spacing">|</span>
-      <a [href]="asfWebsite.contact" target="_blank">{{
-        'CONTACT' | translate
-      }}</a>
-      <span class="text-spacing">|</span>
-      <a href="https://www.alaska.edu/nondiscrimination" target="_blank">{{
-        'NON_DISCRIMINATION' | translate
-      }}</a>
-      <span class="text-spacing">|</span>
-      <a href="https://www.mapbox.com/about/maps/" target="_blank">© Mapbox</a>
-      <span class="text-spacing">|</span>
-      <a href="https://www.openstreetmap.org/copyright" target="_blank"
-        >© OpenStreetMap contributors</a
-      >
-      <span class="text-spacing">|</span>
-      <a href="https://www.mapbox.com/map-feedback/" target="_blank"
-        ><strong>Improve this map</strong></a
-      >
+@if (breakpoint === breakpoints.MOBILE) {
+  <div class="bottom-search-bar">
+    <div class="bar-layout">
+      <app-max-results-selector
+        style="margin-right: 10px; align-self: center"
+      ></app-max-results-selector>
+      <app-search-button></app-search-button>
     </div>
-    <div class="position-right--filler attribute-box">&nbsp;</div>
-  </ng-container>
-
-  <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
-    <div class="bottom-search-bar">
-      <div class="bar-layout">
-        <app-max-results-selector
-          style="margin-right: 10px; align-self: center"
-        ></app-max-results-selector>
-        <app-search-button></app-search-button>
-      </div>
-    </div>
-  </ng-container>
-  <div *ngIf="breakpoint === breakpoints.SMALL" class="bar"></div>
-</ng-container>
+  </div>
+}
+@if (breakpoint === breakpoints.SMALL) {
+  <div class="bar"></div>
+}

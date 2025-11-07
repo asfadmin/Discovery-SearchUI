@@ -13,201 +13,207 @@
       mat-button
     >
       {{ 'SCENE_DETAIL' | translate }}
-      <ng-container
-        *ngIf="
-          searchType !== SearchTypes.BASELINE && searchType !== SearchTypes.SBAS
-        "
-      >
+      @if (
+        searchType !== SearchTypes.BASELINE && searchType !== SearchTypes.SBAS
+      ) {
         {{ 'AND_FILES' | translate }}
-      </ng-container>
+      }
     </button>
-    <button
-      *ngIf="searchType === SearchTypes.BASELINE"
-      (click)="onSelectChart()"
-      [class.selected]="view === Views.CHART"
-      mat-button
-    >
-      {{ 'CHART' | translate }}
-    </button>
-    <button
-      *ngIf="searchType === SearchTypes.SBAS"
-      (click)="onSelectSBASChart()"
-      [class.selected]="view === Views.SBAS"
-      mat-button
-    >
-      {{ 'SBAS_CHART' | translate }}
-    </button>
+    @if (searchType === SearchTypes.BASELINE) {
+      <button
+        (click)="onSelectChart()"
+        [class.selected]="view === Views.CHART"
+        mat-button
+      >
+        {{ 'CHART' | translate }}
+      </button>
+    }
+    @if (searchType === SearchTypes.SBAS) {
+      <button
+        (click)="onSelectSBASChart()"
+        [class.selected]="view === Views.SBAS"
+        mat-button
+      >
+        {{ 'SBAS_CHART' | translate }}
+      </button>
+    }
   </div>
 
   <!-- SCENE LIST -->
-  <div *ngIf="view === Views.LIST" class="h100 w100">
-    <mat-card class="mp0 mobile-scene-list--layout">
-      <mat-card-subtitle class="header">
-        <app-scenes-list-header></app-scenes-list-header>
-      </mat-card-subtitle>
+  @if (view === Views.LIST) {
+    <div class="h100 w100">
+      <mat-card class="mp0 mobile-scene-list--layout">
+        <mat-card-subtitle class="header">
+          <app-scenes-list-header></app-scenes-list-header>
+        </mat-card-subtitle>
 
-      <div class="app-scene-list">
-        <app-scenes-list [resize$]="resize$"></app-scenes-list>
-      </div>
-    </mat-card>
-  </div>
+        <div class="app-scene-list">
+          <app-scenes-list [resize$]="resize$"></app-scenes-list>
+        </div>
+      </mat-card>
+    </div>
+  }
 
   <!-- SCENE DETAIL -->
-  <div *ngIf="view === Views.DETAIL" class="h100 w100">
-    <mat-card class="h100 w100 mp0 no-box-shadow mobile-detail-menu--layout">
-      <mat-card-subtitle class="header mobile">
-        {{ 'SCENE_DETAIL' | translate }}
-        <ng-container
-          *ngIf="
+  @if (view === Views.DETAIL) {
+    <div class="h100 w100">
+      <mat-card class="h100 w100 mp0 no-box-shadow mobile-detail-menu--layout">
+        <mat-card-subtitle class="header mobile">
+          {{ 'SCENE_DETAIL' | translate }}
+          @if (
             searchType !== SearchTypes.BASELINE &&
             searchType !== SearchTypes.SBAS
-          "
-        >
-          /
-          <span
-            *ngIf="
-              selectedProducts$ | async as products;
-              else defaultProductsHeader
-            "
-          >
-            {{ products.length || '' }} {{ 'FILE' | translate
-            }}{{ (products || []).length === 1 ? '' : 's' }}
-          </span>
-          <ng-template #defaultProductsHeader>{{
-            'FILES' | translate
-          }}</ng-template>
-        </ng-container>
-      </mat-card-subtitle>
+          ) {
+            /
+            @if (selectedProducts$ | async; as products) {
+              <span>
+                {{ products.length || '' }} {{ 'FILE' | translate
+                }}{{ (products || []).length === 1 ? '' : 's' }}
+              </span>
+            } @else {
+              {{ 'FILES' | translate }}
+            }
+          }
+        </mat-card-subtitle>
 
-      <div class="app-scene-list scroll-y scroll-x">
-        <ng-container *ngIf="searchType !== SearchTypes.SBAS; else sbasDetails">
-          <app-scene-detail [isScrollable]="false"></app-scene-detail>
-        </ng-container>
+        <div class="app-scene-list scroll-y scroll-x">
+          @if (searchType !== SearchTypes.SBAS) {
+            <app-scene-detail [isScrollable]="false"></app-scene-detail>
+          } @else {
+            <!--        For displaying both products within a pair in SBAS only-->
+            <div style="overflow: auto; height: 100%" class="scrollable">
+              @if (pair) {
+                <div style="margin: 5px; padding-bottom: 36px">
+                  @for (product of pair; track product.id) {
+                    <div>
+                      <div style="margin-bottom: 4px">
+                        <b class="product-name">{{ product.name }}</b>
+                      </div>
 
-        <!--        For displaying both products within a pair in SBAS only-->
-        <ng-template #sbasDetails>
-          <div style="overflow: auto; height: 100%" class="scrollable">
-            <div *ngIf="pair" style="margin: 5px; padding-bottom: 36px">
-              <div *ngFor="let product of pair">
-                <div style="margin-bottom: 4px">
-                  <b class="product-name">{{ product.name }}</b>
+                      @if (datasetForProduct.match(product); as dataset) {
+                        <div style="margin-bottom: 12px">
+                          <a
+                            [href]="dataset.infoUrl"
+                            target="_blank"
+                            matTooltip="{{ 'DATASET' | translate }}"
+                            class="faint-text"
+                          >
+                            {{ dataset.name | translate }}
+                          </a>
+                          •
+                          <span matTooltip="Frequency">{{
+                            dataset.frequency
+                          }}</span>
+                        </div>
+                      }
+
+                      <app-scene-metadata
+                        [scene]="product"
+                        [dataset]="datasetForProduct.match(product)"
+                        [searchType]="searchType"
+                      >
+                      </app-scene-metadata>
+                      <hr />
+                    </div>
+                  }
                 </div>
-
-                <div
-                  *ngIf="datasetForProduct.match(product) as dataset"
-                  style="margin-bottom: 12px"
-                >
-                  <a
-                    [href]="dataset.infoUrl"
-                    target="_blank"
-                    matTooltip="{{ 'DATASET' | translate }}"
-                    class="faint-text"
+              }
+              @if (!pair) {
+                <div style="margin: 5px; padding-bottom: 36px">
+                  <div
+                    class="faint-text w100 h100"
+                    style="text-align: center; padding-top: 10px"
                   >
-                    {{ dataset.name | translate }}
-                  </a>
-                  •
-                  <span matTooltip="Frequency">{{ dataset.frequency }}</span>
+                    {{ 'NO_PAIR_SELECTED' | translate }}
+                  </div>
                 </div>
-
-                <app-scene-metadata
-                  [scene]="product"
-                  [dataset]="datasetForProduct.match(product)"
-                  [searchType]="searchType"
-                >
-                </app-scene-metadata>
-                <hr />
-              </div>
+              }
             </div>
-            <div *ngIf="!pair" style="margin: 5px; padding-bottom: 36px">
-              <div
-                class="faint-text w100 h100"
-                style="text-align: center; padding-top: 10px"
-              >
-                {{ 'NO_PAIR_SELECTED' | translate }}
-              </div>
-            </div>
-          </div>
-        </ng-template>
+          }
 
-        <ng-container
-          *ngIf="
+          @if (
             searchType !== SearchTypes.BASELINE &&
             searchType !== SearchTypes.SBAS
-          "
-        >
-          <hr />
-          <app-scene-files></app-scene-files>
-        </ng-container>
-      </div>
-    </mat-card>
-  </div>
-
-  <div *ngIf="view === Views.CHART" class="h100 w100">
-    <mat-card class="h100 w100 mp0 no-box-shadow mobile-detail-menu--layout">
-      <mat-card-subtitle class="header">
-        <div class="baseline-header-button-group">
-          <mat-button-toggle-group
-            name="baselineCriteria"
-            class="criteria-button-group baseline-criteria-button-toggle-group"
-            [hideSingleSelectionIndicator]="true"
-          >
-            <mat-button-toggle
-              class="control-mat-button-toggle baseline-criteria-button-toggle"
-              (click)="onToggleFiltersMenu()"
-            >
-              {{ 'BASELINE_CRITERIA' | translate
-              }}<mat-icon class="more-horiz">more_horiz</mat-icon>
-            </mat-button-toggle>
-          </mat-button-toggle-group>
+          ) {
+            <hr />
+            <app-scene-files></app-scene-files>
+          }
         </div>
-      </mat-card-subtitle>
-      <app-baseline-chart class="baseline-chart"></app-baseline-chart>
-    </mat-card>
-  </div>
+      </mat-card>
+    </div>
+  }
 
-  <div *ngIf="view === Views.SBAS" class="h100 w100">
-    <mat-card class="h100 w100 mp0 no-box-shadow mobile-detail-menu--layout">
-      <mat-card-subtitle class="header">
-        <div class="baseline-header-button-group">
-          <mat-button-toggle-group
-            name="SBASCriteria"
-            class="criteria-button-group sbas-criteria-button-toggle-group"
-            [hideSingleSelectionIndicator]="true"
-          >
-            <mat-button-toggle
-              class="control-mat-button-toggle sbas-criteria-button-toggle"
-              (click)="onToggleFiltersMenu()"
+  @if (view === Views.CHART) {
+    <div class="h100 w100">
+      <mat-card class="h100 w100 mp0 no-box-shadow mobile-detail-menu--layout">
+        <mat-card-subtitle class="header">
+          <div class="baseline-header-button-group">
+            <mat-button-toggle-group
+              name="baselineCriteria"
+              class="criteria-button-group baseline-criteria-button-toggle-group"
+              [hideSingleSelectionIndicator]="true"
             >
-              {{ 'SBAS_FILTERS' | translate
-              }}<mat-icon class="more-horiz">more_horiz</mat-icon>
-            </mat-button-toggle>
-          </mat-button-toggle-group>
-          <div
-            class="sbas-button-group gap-detected-area"
-            *ngIf="this.isDisconnected"
-            style="display: flex; place-items: center"
-          >
-            <mat-icon class="warn-icon" fontSet="material-icons-outlined"
-              >error_outline</mat-icon
+              <mat-button-toggle
+                class="control-mat-button-toggle baseline-criteria-button-toggle"
+                (click)="onToggleFiltersMenu()"
+              >
+                {{ 'BASELINE_CRITERIA' | translate
+                }}<mat-icon class="more-horiz">more_horiz</mat-icon>
+              </mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+        </mat-card-subtitle>
+        <app-baseline-chart class="baseline-chart"></app-baseline-chart>
+      </mat-card>
+    </div>
+  }
+
+  @if (view === Views.SBAS) {
+    <div class="h100 w100">
+      <mat-card class="h100 w100 mp0 no-box-shadow mobile-detail-menu--layout">
+        <mat-card-subtitle class="header">
+          <div class="baseline-header-button-group">
+            <mat-button-toggle-group
+              name="SBASCriteria"
+              class="criteria-button-group sbas-criteria-button-toggle-group"
+              [hideSingleSelectionIndicator]="true"
             >
-            <app-docs-modal
-              text="{{ 'GAPS_DETECTED' | translate }}"
-              url="https://docs.asf.alaska.edu/vertex/sbas/#gaps-detected-warning-message"
-            ></app-docs-modal>
+              <mat-button-toggle
+                class="control-mat-button-toggle sbas-criteria-button-toggle"
+                (click)="onToggleFiltersMenu()"
+              >
+                {{ 'SBAS_FILTERS' | translate
+                }}<mat-icon class="more-horiz">more_horiz</mat-icon>
+              </mat-button-toggle>
+            </mat-button-toggle-group>
+            @if (this.isDisconnected) {
+              <div
+                class="sbas-button-group gap-detected-area"
+                style="display: flex; place-items: center"
+              >
+                <mat-icon class="warn-icon" fontSet="material-icons-outlined"
+                  >error_outline</mat-icon
+                >
+                <app-docs-modal
+                  text="{{ 'GAPS_DETECTED' | translate }}"
+                  url="https://docs.asf.alaska.edu/vertex/sbas/#gaps-detected-warning-message"
+                ></app-docs-modal>
+              </div>
+            }
+          </div>
+        </mat-card-subtitle>
+        <div class="sbas-chart-row">
+          <div id="sbas-chart-column" class="sbas-column-2">
+            <app-sbas-chart
+              (isGraphDisconnected)="isGraphDisconnected($event)"
+            ></app-sbas-chart>
           </div>
         </div>
-      </mat-card-subtitle>
-      <div class="sbas-chart-row">
-        <div id="sbas-chart-column" class="sbas-column-2">
-          <app-sbas-chart
-            (isGraphDisconnected)="isGraphDisconnected($event)"
-          ></app-sbas-chart>
-        </div>
-      </div>
 
-      <div class="sbas-filter-row">
-        <app-sbas-sliders-two></app-sbas-sliders-two>
-      </div>
-    </mat-card>
-  </div>
+        <div class="sbas-filter-row">
+          <app-sbas-sliders-two></app-sbas-sliders-two>
+        </div>
+      </mat-card>
+    </div>
+  }
 </div>

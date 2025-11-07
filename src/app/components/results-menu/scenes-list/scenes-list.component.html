@@ -16,16 +16,14 @@
     class="list-viewport h100"
     [itemSize]="searchType === SearchTypes.SBAS ? 48 : 58"
   >
-    <ng-container *ngIf="breakpoint$ | async as breakpoint">
-      <ng-container
-        *ngIf="
-          searchType === SearchTypes.DATASET ||
-          searchType === SearchTypes.BASELINE ||
-          searchType === SearchTypes.LIST ||
-          searchType === SearchTypes.CUSTOM_PRODUCTS ||
-          searchType === SearchTypes.DISPLACEMENT
-        "
-      >
+    @if (breakpoint$ | async; as breakpoint) {
+      @if (
+        searchType === SearchTypes.DATASET ||
+        searchType === SearchTypes.BASELINE ||
+        searchType === SearchTypes.LIST ||
+        searchType === SearchTypes.CUSTOM_PRODUCTS ||
+        searchType === SearchTypes.DISPLACEMENT
+      ) {
         <div
           *cdkVirtualFor="let scene of scenes | slice: 0 : numberProductsInList"
         >
@@ -46,39 +44,40 @@
           </app-scene>
         </div>
 
-        <button
-          *ngIf="
-            searchType === SearchTypes.CUSTOM_PRODUCTS &&
-            numberProductsInList < scenes?.length
-          "
-          (click)="onLoadMoreCustomProducts()"
-          class="center-button"
-          mat-list-item
-        >
-          <button mat-stroked-button>Load more products</button>
-        </button>
-      </ng-container>
+        @if (
+          searchType === SearchTypes.CUSTOM_PRODUCTS &&
+          numberProductsInList < scenes?.length
+        ) {
+          <button
+            (click)="onLoadMoreCustomProducts()"
+            class="center-button"
+            mat-list-item
+          >
+            <button mat-stroked-button>Load more products</button>
+          </button>
+        }
+      }
 
-      <ng-container *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS">
-        <ng-container *cdkVirtualFor="let event of sarviewsEvents">
+      @if (searchType === SearchTypes.SARVIEWS_EVENTS) {
+        <div *cdkVirtualFor="let event of sarviewsEvents">
           <app-sarviews-event
             [event]="event"
             [selected]="event.event_id === selectedEvent"
           >
           </app-sarviews-event>
-        </ng-container>
-      </ng-container>
+        </div>
+      }
 
-      <ng-container *ngIf="searchType === SearchTypes.SBAS">
-        <ng-container *cdkVirtualFor="let pair of pairs">
+      @if (searchType === SearchTypes.SBAS) {
+        <div *cdkVirtualFor="let pair of pairs">
           <app-pair
             (togglePair)="onPairSelected($event)"
             [pair]="pair.pair"
             [hyp3able]="pair.hyp3able"
           >
           </app-pair>
-        </ng-container>
-      </ng-container>
-    </ng-container>
+        </div>
+      }
+    }
   </cdk-virtual-scroll-viewport>
 </mat-action-list>

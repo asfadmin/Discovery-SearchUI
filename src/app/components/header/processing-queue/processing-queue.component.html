@@ -20,7 +20,7 @@
         </mat-icon>
       </div>
 
-      <ng-container *ngIf="breakpoint !== breakpoints.MOBILE">
+      @if (breakpoint !== breakpoints.MOBILE) {
         <div class="branding-block">
           <div (click)="onOpenPreferences()" class="hyp3-url clickable">
             <app-hyp3-url></app-hyp3-url>
@@ -32,9 +32,9 @@
             {{ 'POWERED_BY_HY_P3' | translate }}
           </div>
         </div>
-      </ng-container>
+      }
 
-      <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
+      @if (breakpoint === breakpoints.MOBILE) {
         <div class="branding-block">
           <div
             (click)="onOpenPreferences()"
@@ -43,7 +43,7 @@
             <app-hyp3-url></app-hyp3-url>
           </div>
         </div>
-      </ng-container>
+      }
     </div>
 
     <div
@@ -75,7 +75,7 @@
       </div>
     </div>
 
-    <ng-container *ngIf="breakpoint !== breakpoints.MOBILE">
+    @if (breakpoint !== breakpoints.MOBILE) {
       @if (
         userStatus === 'NOT_STARTED' ||
         userStatus === 'PENDING' ||
@@ -90,7 +90,7 @@
           User Signup
         </button>
       }
-      <ng-container *ngFor="let hyp3Job of jobTypesWithQueued">
+      @for (hyp3Job of jobTypesWithQueued; track hyp3Job.jobType.id) {
         <button
           mat-flat-button
           class="job-type--button"
@@ -109,16 +109,14 @@
             }}</ng-template> </span
           >)
         </button>
-      </ng-container>
-    </ng-container>
+      }
+    }
 
-    <ng-container
-      *ngIf="
-        breakpoint === breakpoints.MOBILE &&
-        !!jobTypesWithQueued &&
-        jobTypesWithQueued.length > 0
-      "
-    >
+    @if (
+      breakpoint === breakpoints.MOBILE &&
+      !!jobTypesWithQueued &&
+      jobTypesWithQueued.length > 0
+    ) {
       <button
         mat-flat-button
         [color]="'primary'"
@@ -150,15 +148,15 @@
       </button>
 
       <mat-menu #TabMenu="matMenu" class="tab-menu">
-        <ng-container *ngFor="let hyp3Job of jobTypesWithQueued">
+        @for (hyp3Job of jobTypesWithQueued; track hyp3Job.jobType.id) {
           <button mat-menu-item (click)="onSetSelectedJobType(hyp3Job.jobType)">
             <div>
               {{ hyp3Job.jobType.name }}
             </div>
           </button>
-        </ng-container>
+        }
       </mat-menu>
-    </ng-container>
+    }
   </div>
 
   <div
@@ -178,44 +176,45 @@
 >
   @if (!this.isSignupSelected) {
     <div class="content-block">
-      <div
-        #errorHeader
-        *ngIf="!isUserLoggedIn && !isUserLoading"
-        class="w100 error-header"
-      >
-        <div style="padding-left: 10px">
-          <b>{{ 'SIGN_IN_TO_PROCESS_DATA' | translate }}</b>
+      @if (!isUserLoggedIn && !isUserLoading) {
+        <div #errorHeader class="w100 error-header">
+          <div style="padding-left: 10px">
+            <b>{{ 'SIGN_IN_TO_PROCESS_DATA' | translate }}</b>
+          </div>
+          <div>
+            <button
+              (click)="onAccountButtonClicked()"
+              color="primary"
+              mat-flat-button
+            >
+              {{ 'SIGN_IN' | translate }}
+              <mat-icon>account_circle</mat-icon>
+            </button>
+          </div>
         </div>
-        <div>
-          <button
-            (click)="onAccountButtonClicked()"
-            color="primary"
-            mat-flat-button
-          >
-            {{ 'SIGN_IN' | translate }}
-            <mat-icon>account_circle</mat-icon>
-          </button>
-        </div>
-      </div>
+      }
 
       <div #contentTopArea class="content-top-area">
         <div class="jobs-detail">
-          <div *ngIf="selectedJobTypeId" style="margin-right: 10px">
-            <p style="text-wrap: balance">
-              {{ hyp3JobTypes[selectedJobTypeId].description | translate }}
-              <a
-                target="_blank"
-                [href]="hyp3JobTypes[selectedJobTypeId].infoUrl"
-                >[MORE]</a
-              >
-            </p>
-          </div>
+          @if (selectedJobTypeId) {
+            <div style="margin-right: 10px">
+              <p style="text-wrap: balance">
+                {{ hyp3JobTypes[selectedJobTypeId].description | translate }}
+                <a
+                  target="_blank"
+                  [href]="hyp3JobTypes[selectedJobTypeId].infoUrl"
+                  >[MORE]</a
+                >
+              </p>
+            </div>
+          }
 
-          <app-processing-options
-            *ngIf="selectedJobTypeId"
-            [selectedJobType]="hyp3JobTypes[selectedJobTypeId]"
-          >
-          </app-processing-options>
+          @if (selectedJobTypeId) {
+            <app-processing-options
+              [selectedJobType]="hyp3JobTypes[selectedJobTypeId]"
+            >
+            </app-processing-options>
+          }
         </div>
       </div>
 
@@ -229,62 +228,59 @@
           <!-- PRODUCT LIST AREA STARTS HERE -->
           <div class="mat-dialog-content-2">
             <div class="jobs-dialog">
-              <div
-                *ngIf="
-                  isUserLoggedIn &&
-                  !isUnlimitedUser &&
-                  !isUserLoading &&
-                  allJobs.length > remaining
-                "
-                class="w100 error-header"
-              >
-                <div style="padding-left: 10px">
-                  <b>{{ 'TOO_MANY_JOBS_IN_QUEUE' | translate }} </b>
+              @if (
+                isUserLoggedIn &&
+                !isUnlimitedUser &&
+                !isUserLoading &&
+                allJobs.length > remaining
+              ) {
+                <div class="w100 error-header">
+                  <div style="padding-left: 10px">
+                    <b>{{ 'TOO_MANY_JOBS_IN_QUEUE' | translate }} </b>
+                  </div>
+                  <div style="padding: 7px 10px">
+                    <b
+                      >({{ allJobs.length - remaining }} extra job{{
+                        allJobs.length - remaining === 1 ? '' : 's'
+                      }})</b
+                    >
+                  </div>
                 </div>
-                <div style="padding: 7px 10px">
-                  <b
-                    >({{ allJobs.length - remaining }} extra job{{
-                      allJobs.length - remaining === 1 ? '' : 's'
-                    }})</b
-                  >
-                </div>
-              </div>
+              }
 
-              <div
-                *ngIf="
-                  isUserLoggedIn &&
-                  !isUnlimitedUser &&
-                  !isUserLoading &&
-                  remaining === 0
-                "
-                class="w100 error-header"
-              >
-                <div style="padding-left: 10px">
-                  <b>{{ 'NO_CREDITS_LEFT_THIS_MONTH' | translate }}</b>
+              @if (
+                isUserLoggedIn &&
+                !isUnlimitedUser &&
+                !isUserLoading &&
+                remaining === 0
+              ) {
+                <div class="w100 error-header">
+                  <div style="padding-left: 10px">
+                    <b>{{ 'NO_CREDITS_LEFT_THIS_MONTH' | translate }}</b>
+                  </div>
+                  <div>
+                    <button (click)="onCloseDialog()" mat-flat-button>
+                      <mat-icon></mat-icon>
+                    </button>
+                  </div>
                 </div>
-                <div>
-                  <button (click)="onCloseDialog()" mat-flat-button>
-                    <mat-icon></mat-icon>
-                  </button>
-                </div>
-              </div>
+              }
 
-              <div
-                *ngIf="breakpoint !== breakpoints.MOBILE"
-                class="jobs-display--desktop"
-              >
-                <div class="jobs-list-panel">
-                  <app-processing-queue-jobs
-                    [jobs]="jobs"
-                    [costPerJob]="costPerJobByType[selectedJobTypeId]"
-                    [areJobsLoading]="areJobsLoading"
-                    (removeJob)="onRemoveJob($event)"
-                  >
-                  </app-processing-queue-jobs>
+              @if (breakpoint !== breakpoints.MOBILE) {
+                <div class="jobs-display--desktop">
+                  <div class="jobs-list-panel">
+                    <app-processing-queue-jobs
+                      [jobs]="jobs"
+                      [costPerJob]="costPerJobByType[selectedJobTypeId]"
+                      [areJobsLoading]="areJobsLoading"
+                      (removeJob)="onRemoveJob($event)"
+                    >
+                    </app-processing-queue-jobs>
+                  </div>
                 </div>
-              </div>
+              }
 
-              <div *ngIf="breakpoint === breakpoints.MOBILE">
+              @if (breakpoint === breakpoints.MOBILE) {
                 <div class="jobs-display--mobile">
                   <app-processing-queue-jobs
                     [jobs]="jobs"
@@ -294,7 +290,7 @@
                   >
                   </app-processing-queue-jobs>
                 </div>
-              </div>
+              }
             </div>
           </div>
         </div>
@@ -321,12 +317,13 @@
 </mat-dialog-content>
 
 <mat-dialog-actions class="mat-dialog-actions">
-  <mat-progress-bar
-    *ngIf="isQueueSubmitProcessing"
-    [mode]="progress === null ? 'query' : 'determinate'"
-    [value]="progress"
-  >
-  </mat-progress-bar>
+  @if (isQueueSubmitProcessing) {
+    <mat-progress-bar
+      [mode]="progress === null ? 'query' : 'determinate'"
+      [value]="progress"
+    >
+    </mat-progress-bar>
+  }
 
   <div
     class="w100 hyp3-footer"
@@ -336,44 +333,44 @@
     }"
   >
     <div class="footer-clear">
-      <button
-        *ngIf="previousQueue === null"
-        [matMenuTriggerFor]="clearJobQueue"
-        [class.mini-button]="breakpoint === breakpoints.MOBILE"
-        mat-button
-      >
-        <mat-icon>delete</mat-icon>
-        <span>{{ 'CLEAR' | translate }}</span>
-      </button>
-
-      <mat-menu #clearJobQueue>
+      @if (previousQueue === null) {
         <button
-          *ngIf="previousQueue === null"
-          (click)="onClearJobQueue()"
+          [matMenuTriggerFor]="clearJobQueue"
+          [class.mini-button]="breakpoint === breakpoints.MOBILE"
           mat-button
         >
-          <span>{{ 'CLEAR_ALL_PROCESSING_TYPES' | translate }}</span>
+          <mat-icon>delete</mat-icon>
+          <span>{{ 'CLEAR' | translate }}</span>
         </button>
+      }
 
-        <div *ngFor="let hyp3Job of jobTypesWithQueued">
+      <mat-menu #clearJobQueue>
+        @if (previousQueue === null) {
+          <button (click)="onClearJobQueue()" mat-button>
+            <span>{{ 'CLEAR_ALL_PROCESSING_TYPES' | translate }}</span>
+          </button>
+        }
+
+        @for (hyp3Job of jobTypesWithQueued; track hyp3Job.jobType.id) {
           <button (click)="onClearSingleJobQueue(hyp3Job.jobType)" mat-button>
             {{ 'CLEAR' | translate }} {{ hyp3Job.jobType.name }} ({{
               hyp3Job.jobs.length
             }})
           </button>
-        </div>
+        }
       </mat-menu>
 
-      <button
-        *ngIf="previousQueue !== null"
-        [class.mini-button]="breakpoint === breakpoints.MOBILE"
-        (click)="onRestoreJobQueue()"
-        mat-flat-button
-        color="primary"
-        class="footer-clear-button"
-      >
-        <span>{{ 'RESTORE' | translate }}</span>
-      </button>
+      @if (previousQueue !== null) {
+        <button
+          [class.mini-button]="breakpoint === breakpoints.MOBILE"
+          (click)="onRestoreJobQueue()"
+          mat-flat-button
+          color="primary"
+          class="footer-clear-button"
+        >
+          <span>{{ 'RESTORE' | translate }}</span>
+        </button>
+      }
     </div>
 
     <div class="footer-job-notification">
@@ -403,69 +400,82 @@
           </a>
         }
         @default {
-          <div *ngIf="isUserLoggedIn && !isUserLoading && user !== ''">
-            <span>
-              <span *ngIf="!isUnlimitedUser; else unlimitedText">
-                {{ remaining | number }}
+          @if (isUserLoggedIn && !isUserLoading && user !== '') {
+            <div>
+              <span>
+                @if (!isUnlimitedUser) {
+                  <span>{{ remaining | number }}</span>
+                } @else {
+                  <span>Unlimited</span>
+                }
               </span>
-              <ng-template #unlimitedText>Unlimited</ng-template>
-            </span>
 
-            <span
-              *ngIf="breakpoint === breakpoints.MOBILE"
-              class="footer-mini-text"
-            >
-              <br />
-              <a
-                href="https://hyp3-docs.asf.alaska.edu/using/credits"
-                target="_blank"
-                >{{ 'CREDIT_MAX' | translate }}</a
-              >
-            </span>
-            <span *ngIf="breakpoint !== breakpoints.MOBILE">
-              <a
-                href="https://hyp3-docs.asf.alaska.edu/using/credits"
-                target="_blank"
-              >
-                <span *ngIf="hyp3.isDefaultApi()">
-                  {{ 'CREDITS_LEFT_THIS_MONTH' | translate }}
+              @if (breakpoint === breakpoints.MOBILE) {
+                <span class="footer-mini-text">
+                  <br />
+                  <a
+                    href="https://hyp3-docs.asf.alaska.edu/using/credits"
+                    target="_blank"
+                    >{{ 'CREDIT_MAX' | translate }}</a
+                  >
                 </span>
-                <span *ngIf="!hyp3.isDefaultApi()">
-                  {{ 'CREDITS_LEFT' | translate }}
+              }
+              @if (breakpoint !== breakpoints.MOBILE) {
+                <span>
+                  <a
+                    href="https://hyp3-docs.asf.alaska.edu/using/credits"
+                    target="_blank"
+                  >
+                    @if (hyp3.isDefaultApi()) {
+                      <span>{{ 'CREDITS_LEFT_THIS_MONTH' | translate }}</span>
+                    }
+                    @if (!hyp3.isDefaultApi()) {
+                      <span>{{ 'CREDITS_LEFT' | translate }}</span>
+                    }
+                  </a>
                 </span>
-              </a>
-            </span>
-          </div>
+              }
+            </div>
+          }
 
-          <div *ngIf="isUserLoggedIn && isUserLoading">
-            <b>{{ 'LOADING' | translate }}...</b>
-          </div>
+          @if (isUserLoggedIn && isUserLoading) {
+            <div>
+              <b>{{ 'LOADING' | translate }}...</b>
+            </div>
+          }
         }
       }
 
-      <div *ngIf="!isUserLoggedIn">
-        <span *ngIf="breakpoint === breakpoints.MOBILE">
-          <b>N/A</b> - {{ 'LOGIN_TO_VIEW' | translate }}
-        </span>
-        <span *ngIf="breakpoint !== breakpoints.MOBILE">
-          <b>N/A</b> -
-          {{ 'LOGIN_TO_VIEW_NUMBER_OF_CREDITS_LEFT_THIS_MONTH' | translate }}
-        </span>
-      </div>
+      @if (!isUserLoggedIn) {
+        <div>
+          @if (breakpoint === breakpoints.MOBILE) {
+            <span> <b>N/A</b> - {{ 'LOGIN_TO_VIEW' | translate }} </span>
+          }
+          @if (breakpoint !== breakpoints.MOBILE) {
+            <span>
+              <b>N/A</b> -
+              {{
+                'LOGIN_TO_VIEW_NUMBER_OF_CREDITS_LEFT_THIS_MONTH' | translate
+              }}
+            </span>
+          }
+        </div>
+      }
     </div>
 
     <div
       class="footer-submit"
       [class.footer-submit-mobile]="breakpoint === breakpoints.MOBILE"
     >
-      <mat-slide-toggle
-        *ngIf="env.maturity !== 'prod' && breakpoint !== breakpoints.MOBILE"
-        style="margin-right: 16px"
-        (change)="onValidateOnlyToggle($event.checked)"
-        [(ngModel)]="validateOnly"
-      >
-        {{ 'VALIDATE_ONLY' | translate }}
-      </mat-slide-toggle>
+      @if (env.maturity !== 'prod' && breakpoint !== breakpoints.MOBILE) {
+        <mat-slide-toggle
+          style="margin-right: 16px"
+          (change)="onValidateOnlyToggle($event.checked)"
+          [(ngModel)]="validateOnly"
+        >
+          {{ 'VALIDATE_ONLY' | translate }}
+        </mat-slide-toggle>
+      }
 
       <button
         (click)="onReviewQueue()"
@@ -484,22 +494,28 @@
         color="primary"
         class="footer-submit-button"
       >
-        <span *ngIf="!isQueueSubmitProcessing">
-          {{ 'SUBMIT' | translate }} {{ allJobs.length }} {{ 'JOB' | translate
-          }}<span *ngIf="allJobs.length > 1">s</span> ({{ totalCreditCost }}
-          <span [ngPlural]="totalCreditCost">
-            <ng-template ngPluralCase="=1">{{
-              'CREDIT' | translate
-            }}</ng-template>
-            <ng-template ngPluralCase="other">{{
-              'CREDITS' | translate
-            }}</ng-template> </span
-          >)
-        </span>
+        @if (!isQueueSubmitProcessing) {
+          <span>
+            {{ 'SUBMIT' | translate }} {{ allJobs.length }}
+            {{ 'JOB' | translate }}
+            @if (allJobs.length > 1) {
+              <span>s</span>
+            }
+            ({{ totalCreditCost }}
+            <span [ngPlural]="totalCreditCost">
+              <ng-template ngPluralCase="=1">{{
+                'CREDIT' | translate
+              }}</ng-template>
+              <ng-template ngPluralCase="other">{{
+                'CREDITS' | translate
+              }}</ng-template> </span
+            >)
+          </span>
+        }
 
-        <span *ngIf="isQueueSubmitProcessing">
-          {{ 'LOADING' | translate }}...
-        </span>
+        @if (isQueueSubmitProcessing) {
+          <span> {{ 'LOADING' | translate }}... </span>
+        }
       </button>
     </div>
   </div>

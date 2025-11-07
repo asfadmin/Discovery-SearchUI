@@ -1,5 +1,5 @@
 <!-- SCENE LIST -->
-<ng-container *ngIf="breakpoint > breakpoints.MOBILE">
+@if (breakpoint > breakpoints.MOBILE) {
   <mat-card
     #listCard
     class="mp0 sbas-list-card"
@@ -17,31 +17,35 @@
       <app-scenes-list-header></app-scenes-list-header>
     </mat-card-subtitle>
 
-    <div *ngIf="view === Views.LIST" class="app-scene-list">
-      <app-scenes-list [resize$]="resize$"></app-scenes-list>
-    </div>
-
-    <div
-      *ngIf="view === Views.DETAIL"
-      style="max-width: 100%"
-      class="w100 h100 scrollable"
-    >
-      <div *ngIf="pair">
-        <div *ngFor="let product of pair">
-          <span class="product-name">{{ product.name }}</span>
-
-          <br />
-
-          <app-scene-metadata
-            [scene]="product"
-            [dataset]="datasetForProduct.match(product)"
-            [searchType]="searchType"
-          >
-          </app-scene-metadata>
-          <hr />
-        </div>
+    @if (view === Views.LIST) {
+      <div class="app-scene-list">
+        <app-scenes-list [resize$]="resize$"></app-scenes-list>
       </div>
-    </div>
+    }
+
+    @if (view === Views.DETAIL) {
+      <div style="max-width: 100%" class="w100 h100 scrollable">
+        @if (pair) {
+          <div>
+            @for (product of pair; track product.id) {
+              <div>
+                <span class="product-name">{{ product.name }}</span>
+
+                <br />
+
+                <app-scene-metadata
+                  [scene]="product"
+                  [dataset]="datasetForProduct.match(product)"
+                  [searchType]="searchType"
+                >
+                </app-scene-metadata>
+                <hr />
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
   </mat-card>
 
   <mat-card class="mp0 sbas-list-card" [style.width]="listCardMaxWidth">
@@ -56,48 +60,53 @@
     >
     </mat-card-subtitle>
     <div class="sbas-metadata scrollable">
-      <div *ngIf="!!pair" style="margin: 5px; padding-bottom: 36px">
-        <div *ngFor="let product of pair">
-          <div style="margin-bottom: 4px">
-            <b class="product-name">{{ product.name }}</b>
-          </div>
+      @if (!!pair) {
+        <div style="margin: 5px; padding-bottom: 36px">
+          @for (product of pair; track product.id) {
+            <div>
+              <div style="margin-bottom: 4px">
+                <b class="product-name">{{ product.name }}</b>
+              </div>
 
+              @if (datasetForProduct.match(product); as dataset) {
+                <div style="margin-bottom: 12px">
+                  <a
+                    [href]="dataset.infoUrl"
+                    target="_blank"
+                    matTooltip="Dataset"
+                    class="faint-text"
+                  >
+                    {{ dataset.name }}
+                  </a>
+                  •
+                  <span matTooltip="Frequency">{{ dataset.frequency }}</span>
+                </div>
+              }
+
+              <app-scene-metadata
+                [scene]="product"
+                [dataset]="datasetForProduct.match(product)"
+                [searchType]="searchType"
+              >
+              </app-scene-metadata>
+              <hr />
+            </div>
+          }
+        </div>
+      }
+      @if (!pair) {
+        <div style="margin: 5px; padding-bottom: 36px">
           <div
-            *ngIf="datasetForProduct.match(product) as dataset"
-            style="margin-bottom: 12px"
+            class="faint-text w100 h100"
+            style="text-align: center; padding-top: 10px"
           >
-            <a
-              [href]="dataset.infoUrl"
-              target="_blank"
-              matTooltip="Dataset"
-              class="faint-text"
-            >
-              {{ dataset.name }}
-            </a>
-            •
-            <span matTooltip="Frequency">{{ dataset.frequency }}</span>
+            {{ 'NO_PAIR_SELECTED' | translate }}
           </div>
-
-          <app-scene-metadata
-            [scene]="product"
-            [dataset]="datasetForProduct.match(product)"
-            [searchType]="searchType"
-          >
-          </app-scene-metadata>
-          <hr />
         </div>
-      </div>
-      <div *ngIf="!pair" style="margin: 5px; padding-bottom: 36px">
-        <div
-          class="faint-text w100 h100"
-          style="text-align: center; padding-top: 10px"
-        >
-          {{ 'NO_PAIR_SELECTED' | translate }}
-        </div>
-      </div>
+      }
     </div>
   </mat-card>
-</ng-container>
+}
 
 <mat-card
   #chartCard
@@ -234,14 +243,16 @@
     </div>
 
     <div id="sbas-chart-column" class="sbas-column-2">
-      <div class="gap-detected-area" *ngIf="this.isDisconnected">
-        <app-docs-modal
-          class="warn-icon"
-          icon="warning"
-          url="https://docs.asf.alaska.edu/vertex/sbas/#gaps-detected-warning-message"
-          tooltip="GAPS_DETECTED"
-        ></app-docs-modal>
-      </div>
+      @if (this.isDisconnected) {
+        <div class="gap-detected-area">
+          <app-docs-modal
+            class="warn-icon"
+            icon="warning"
+            url="https://docs.asf.alaska.edu/vertex/sbas/#gaps-detected-warning-message"
+            tooltip="GAPS_DETECTED"
+          ></app-docs-modal>
+        </div>
+      }
       <app-sbas-chart
         [zoomIn$]="zoomInChart$"
         [zoomToFit$]="zoomToFitChart$"

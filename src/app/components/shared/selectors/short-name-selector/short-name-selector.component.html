@@ -8,17 +8,17 @@
     placeholder="{{ 'SHORT_NAME' | translate }}"
     multiple
   >
-    <mat-option
-      *ngFor="let type of selectableShortNames"
-      [value]="type.apiValue"
-      [matTooltip]="type.apiValue"
-    >
-      {{ type.displayName }}
-    </mat-option>
+    @for (type of selectableShortNames; track type.apiValue) {
+      <mat-option [value]="type.apiValue" [matTooltip]="type.apiValue">
+        {{ type.displayName }}
+      </mat-option>
+    }
   </mat-select>
 
-  <mat-hint *ngIf="selectableShortNames.length >= 1" align="start">
-    {{ shortNamesList?.length || 0 }}/{{ selectableShortNames.length }}
-    {{ 'SHORT_NAMES_SELECTED' | translate }}
-  </mat-hint>
+  @if (selectableShortNames.length >= 1) {
+    <mat-hint align="start">
+      {{ shortNamesList?.length || 0 }}/{{ selectableShortNames.length }}
+      {{ 'SHORT_NAMES_SELECTED' | translate }}
+    </mat-hint>
+  }
 </mat-form-field>
