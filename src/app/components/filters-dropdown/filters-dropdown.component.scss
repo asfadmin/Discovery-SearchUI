@@ -1,4 +1,5 @@
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 
 .hidden {
   display: none;
@@ -18,7 +19,7 @@
   //max-height: calc(100vh - 32px);
   max-height: 100vh;
   overflow: hidden;
-  z-index: 2020;
+  z-index: 2020; // Custom z-index for filters overlay
 }
 
 .no-pointer {
@@ -30,19 +31,14 @@
 }
 
 .dataset-filters-card {
-  @include themify($themes) {
-    background-color: themed('background-white');
-  }
-  z-index: 1020;
+  background-color: var(--asf-surface);
+  z-index: z-index(sticky);
   display: flex;
   height: -webkit-fill-available;
   overflow: hidden;
   flex-direction: column;
   flex-wrap: nowrap;
-  box-shadow:
-    0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px rgba(0, 0, 0, 0.12),
-    0 5px 5px -3px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--shadow-lg);
 
   .header {
     flex-shrink: 0;
@@ -52,14 +48,11 @@
     align-items: center;
     position: sticky;
     top: 0;
-    @include themify($themes) {
-      background-color: themed('primary-light');
-      border-bottom: 1px solid themed('primary-dark');
-
-    }
-    font-size: 24px;
-    padding: 15px;
-    z-index: 1020;
+    background-color: var(--asf-primary-light);
+    border-bottom: 1px solid var(--asf-borders);
+    font-size: font-size(xxl);
+    padding: spacing(md);
+    z-index: z-index(sticky);
   }
 
   .header-title {
@@ -71,7 +64,7 @@
   }
 
   .save-search-btn {
-    margin-left: 5px;
+    margin-left: spacing(sm);
   }
 
   .filters-list {
@@ -79,7 +72,7 @@
     overflow: auto;
     min-height: 4em;
     max-height: calc(100vh - 170px);
-    padding: 10px;
+    padding: spacing(2);
 
   }
 
@@ -94,13 +87,10 @@
     justify-content: flex-end;
     position: sticky;
     bottom: 0;
-    @include themify($themes) {
-      background-color: themed('primary-light');
-      border-top: 1px solid themed('primary-dark');
-
-    }
-    z-index: 1020;
-    padding: 10px;
+    background-color: var(--asf-primary-light);
+    border-top: 1px solid var(--asf-borders);
+    z-index: z-index(sticky);
+    padding: spacing(2);
     min-height: 30px;
 
   }
@@ -111,16 +101,12 @@
 }
 
 h3 {
-  @include themify($themes) {
-    color: themed('primary')
-  }
+  color: var(--asf-primary);
 }
 
 .info-icon {
-  @include themify($themes) {
-    color: themed('primary')
-  }
-  padding-left: 5px;
+  color: var(--asf-primary);
+  padding-left: spacing(sm);
   flex-shrink: 0;
-  margin-top: 6px;
+  margin-top: spacing(sm);
 }

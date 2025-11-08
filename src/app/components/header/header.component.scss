@@ -1,6 +1,7 @@
 @use "@angular/material" as mat;
 
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 @use "flex-layout-sass/mixin" as *;
 
 .bounds {
@@ -12,14 +13,12 @@
 
 $config: mat.m2-define-legacy-typography-config();
 .breadcrumb-list {
-  @include themify($themes) {
-    background-color: themed('background-white');
-  }
+  background-color: var(--asf-background-white);
 }
 
 .header-buttons-input {
   margin-top: 0;
-  margin-bottom: 5px;
+  margin-bottom: spacing(1);
 }
 
 .header--layout {
@@ -50,7 +49,7 @@ $config: mat.m2-define-legacy-typography-config();
   top: 100px;
   z-index: 2;
   margin: 0;
-  padding: 3px 16px 25px;
+  padding: spacing(1) spacing(md) spacing(lg);
 }
 
 .breadcrumb {
@@ -58,9 +57,9 @@ $config: mat.m2-define-legacy-typography-config();
 
   @include fx-flex(auto);
 
-  padding-top: 15px;
-  margin-left: 5px;
-  margin-right: 5px;
+  padding-top: spacing(md);
+  margin-left: spacing(sm);
+  margin-right: spacing(sm);
   height: 70px;
   font-size: $asf-font-size;
   line-height: $asf-line-height;
@@ -71,15 +70,13 @@ $config: mat.m2-define-legacy-typography-config();
 
 .max-results {
   text-align: left;
-  font-size: 14px;
+  font-size: font-size(sm);
   margin-top: -5px;
   line-height: 28px;
 }
 
 .additional-filters {
-  @include themify($themes) {
-    color: themed('primary')
-  }
+  color: var(--asf-primary);
 
   .mat-icon {
     @include md-icon-size(18px);
@@ -87,18 +84,14 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .additional-filters-button {
-  @include themify($themes) {
-    color: themed('dark-secondary-text');
-  }
+  color: var(--asf-dark-secondary-text);
   margin-left: 0;
-  line-height: 12px;
-  margin-top: 18px;
+  line-height: spacing(3);
+  margin-top: spacing(md);
 }
 
 .selected {
-  @include themify($themes) {
-    background-color: themed('primary');
-  }
+  background-color: var(--asf-primary);
 }
 
 .justify-right {
@@ -115,24 +108,22 @@ $config: mat.m2-define-legacy-typography-config();
 }
 
 .copy-icon {
-  font-size: 16px;
-  margin-left: 10px;
+  font-size: font-size(base);
+  margin-left: spacing(2);
   padding: 0;
 }
 
 .additional-aoi-toggle {
-  margin-left: 3px;
+  margin-left: spacing(1);
   padding: 0;
 }
 
 .search-dialog-button {
-  margin-top: 10px;
+  margin-top: spacing(2);
 }
 
 .clear-search-icon {
-  @include themify($themes) {
-    color: themed('primary-dark');
-  }
+  color: var(--asf-primary-dark);
   @include md-icon-size(22px);
 
   vertical-align: middle;
@@ -144,14 +135,12 @@ $config: mat.m2-define-legacy-typography-config();
 
 .icon-cluster {
   position: absolute;
-  top: 25px;
-  right: 10px;
+  top: spacing(lg);
+  right: spacing(2);
 }
 
 .mobile-nav-bar {
-  @include themify($themes) {
-    color: themed('primary-light');
-  }
+  color: var(--asf-primary-light);
   height: 50px;
   display: flex;
   align-items: center;
@@ -160,23 +149,21 @@ $config: mat.m2-define-legacy-typography-config();
 
 .mobile-icon-cluster {
   position: absolute;
-  top: 15px;
-  right: 5px;
+  top: spacing(md);
+  right: spacing(1);
 }
 
 .langSelect-div {
   display: inline-block;
   position:absolute;
   top: -3px;
-  right: 25px;
+  right: spacing(lg);
 }
 
 .langSelect-select {
   border: none;
   width: auto;
-  font-size: 11px;
-  @include themify($themes) {
-    color: themed('dark-secondary-text');
-  }
+  font-size: font-size(xs);
+  color: var(--asf-dark-secondary-text);
   background-color: inherit;
 }

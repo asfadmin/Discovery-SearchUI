@@ -1,11 +1,10 @@
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 @use "../../header/header-buttons/header-buttons.component.scss" as *;
 
 .arrow-button-toggle {
-  padding-top: 6px;
-  @include themify($themes) {
-    background-color: themed('primary') !important;
-  }
+  padding-top: spacing(sm);
+  background-color: var(--asf-primary) !important;
 }
 .search-button {
   height: 36px !important;
