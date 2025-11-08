@@ -1,5 +1,9 @@
 @use "asf-theme-variables" as *;
 
+// General menu styles for list-based menus and menu items
+// NOTE: This file has some overlap with deluxe-menu-2.scss (button-based menus)
+// TODO: Consolidate these files to eliminate duplication
+
 hr {
   @include themify($themes) {
     border-top-color: rgba(themed('primary-light'), 0.2);
@@ -9,7 +13,7 @@ hr {
 
 .spacing {
   margin-left: 0;
-  line-height: inherit !important;
+  line-height: inherit;
   vertical-align: middle;
 }
 
@@ -60,9 +64,10 @@ hr {
   max-width: 600px;
 }
 
-.mat-mdc-menu-item {
+// Increased specificity to avoid !important
+.mat-mdc-menu-panel .mat-mdc-menu-item {
   @include themify($themes) {
-    background-color: themed('background-white') !important;
+    background-color: themed('background-white');
   }
   font-weight: 400;
   height: auto;
@@ -73,7 +78,6 @@ hr {
 }
 
 .menu-item {
-  //display: flex !important;
   flex-flow: row;
   margin: 10px;
 }
@@ -85,7 +89,7 @@ hr {
 
 .item-content {
   @include themify($themes) {
-    color: themed('blue-link') !important;
+    color: themed('blue-link');
   }
   line-height: 18px;
 }
@@ -116,6 +120,6 @@ hr {
 
 .dataset-date-range {
   @include themify_non_host($themes) {
-   color: themed('dark-disabled-text') !important;
+   color: themed('dark-disabled-text');
   }
 }

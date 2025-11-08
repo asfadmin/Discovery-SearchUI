@@ -19,7 +19,6 @@ $img-border-style: 1px solid black;
   @include themify($themes) {
     background-color: lighten(themed('primary-light'),15%) !important;
   }
-  // background-color: $top-background-color;
   padding: 0 $side-padding-px 25px $side-padding-px;
   margin: 0;
 }
@@ -58,7 +57,6 @@ $img-border-style: 1px solid black;
 }
 
 .videoWrapper iframe {
-  //position: absolute;
   border: $img-border-style;
 }
 
@@ -121,7 +119,6 @@ $img-border-style: 1px solid black;
   @include themify($themes) {
     color: themed('blue-link');
   }
-  //color: $header-color;
   font-weight: bold;
   font-size: larger;
 }

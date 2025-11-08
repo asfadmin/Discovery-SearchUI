@@ -1,15 +1,17 @@
 @use "asf-theme-variables" as *;
 
+// Button-based menu styles and form controls
+// NOTE: This file has some overlap with deluxe-menu.scss (list-based menus)
+// TODO: Consolidate these files to eliminate duplication
+
 $light-grey: rgb(0 0 0 / 60%);
 .description-layout {
   display: flex;
 }
 
 .menu-item-icon {
-  @include md-icon-size(100px);
-
-  font-size: 24px !important;
-  height: 47px !important;
+  // Use md-icon-size mixin for consistent sizing instead of !important
+  @include md-icon-size(47px);
   margin-right: 0;
   @include themify($themes) {
     color: themed('dark-primary-text');
@@ -46,7 +48,6 @@ $light-grey: rgb(0 0 0 / 60%);
   }
   font-weight: 400;
   font-style: italic;
-  // color: $asf-blue;
 }
 
 .limitTextHeight {
@@ -66,12 +67,12 @@ $light-grey: rgb(0 0 0 / 60%);
   text-wrap: normal;
 }
 
-.matOption {
-  height: auto !important;
+// Increased specificity to override Material's fixed option height
+.mat-mdc-option.matOption {
+  height: auto;
 }
 
 .button-label {
-  // color: rgb(0 0 0 / 60%);
   @include themify($themes) {
     color: themed('dark-secondary-text');
   }
@@ -149,17 +150,6 @@ $light-grey: rgb(0 0 0 / 60%);
   line-height: 30px;
 }
 
-
-.mobile-button-wrapper {
-  //transform: scale(0.82);
-  //margin-top: -6px;
-}
-
-/* TODO(mdc-migration): The following rule targets internal classes of menu that may no longer apply for the MDC version. */
-::ng-deep.mat-menu-submenu-icon {
-  // visibility: hidden;
-}
-
 .disable-search-type {
   pointer-events: none;
   opacity: 0.5;
@@ -167,10 +157,6 @@ $light-grey: rgb(0 0 0 / 60%);
 
 ::ng-deep.dataset__subName {
   line-height: 12px;
-}
-
-.dataset-list {
-
 }
 
 .dataset-item {
@@ -187,16 +173,7 @@ $light-grey: rgb(0 0 0 / 60%);
   text-align: right;
 }
 
-.dataset-date-range {
-  @include themify($themes) {
-    color: themed('dark-disabled-text') !important;
-  }
-  font-weight: bold;
-  line-height: 30px;
-  font-size: 14px;
-  margin: 0;
-  padding: 0;
-}
+// NOTE: .dataset-date-range is defined in deluxe-menu.scss to avoid duplication
 
 .dataset-source {
   @include themify_non_host($themes) {
