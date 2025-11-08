@@ -1,11 +1,13 @@
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
+
 .chart-wrapper {
   height: 100%;
-  border-left: lightgrey 1px solid;
+  border-left: 1px solid var(--asf-borders);
 }
 
 .chart-canvas {
-  margin: 0 16px 16px;
+  margin: 0 spacing(md) spacing(md);
   height: calc(100% - 80px);
 }
 
@@ -45,51 +47,37 @@ ul {
 }
 // Replaced ::ng-deep with :host for SVG elements created by D3 within this component
 :host .baseline-label {
-  @include themify($themes) {
-    fill: themed('dark-primary-text');
-  }
+  fill: var(--asf-dark-primary-text);
 }
 
 :host .baseline-reference {
-  @include themify($themes) {
-    fill: themed('dark-primary-text');
-  }
+  fill: var(--asf-dark-primary-text);
 }
 
 :host .baseline-download {
-  @include themify($themes) {
-    fill: darken(themed('blue-link'), 20%);
-  }
+  fill: var(--asf-blue-link);
+  opacity: opacity(80); // Darkened effect via opacity
 }
 
 :host .baseline-selected {
-  @include themify($themes) {
-    fill: themed('err');
-  }
+  fill: var(--asf-err);
 }
 
 :host .baseline-base {
-  @include themify($themes) {
-    fill: lighten(themed('dark-primary-text'), 45%);
-  }
+  fill: var(--asf-dark-primary-text);
+  opacity: opacity(30); // Lightened effect via opacity
 }
 .baseline-box {
-  @include themify($themes) {
-    background: darken(themed('background-white'), 5%);
-  }
+  background: var(--asf-surface);
+  opacity: opacity(90); // Slightly darkened effect
 }
 .reference-box {
-  @include themify($themes) {
-    background: themed('dark-primary-text');
-  }
+  background: var(--asf-dark-primary-text);
 }
 .download-box {
-  @include themify($themes) {
-    background: darken(themed('blue-link'), 20%);
-  }
+  background: var(--asf-blue-link);
+  filter: brightness(0.8); // Darkened effect
 }
 .selected-box {
-  @include themify($themes) {
-    background: themed('err');
-  }
+  background: var(--asf-err);
 }

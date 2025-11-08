@@ -1,18 +1,19 @@
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 
 .map {
   position: fixed;
-  background-color: #1a1e27;
+  background-color: #1a1e27; // Dark map background - specific to satellite imagery viewing
 }
 
 .on-demand-popup-menu {
     position: absolute;
-    background-color: white;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-    padding: 15px;
-    border-radius: 10px;
-    border: 1px solid #cccccc;
-    bottom: 12px;
+    background-color: var(--asf-surface);
+    box-shadow: var(--shadow-sm);
+    padding: spacing(md);
+    border-radius: spacing(2);
+    border: 1px solid var(--asf-borders);
+    bottom: spacing(3);
     left: -50px;
     min-width: 200px;
 }
@@ -24,18 +25,18 @@
 
 .map-header {
   position: relative;
-  top: 12px;
+  top: spacing(3);
   width: 100vw;
   pointer-events: none;
 }
 
 .additional-filters {
   position: relative;
-  top: 15px;
+  top: spacing(md);
 }
 
 .banner-row {
-  padding-right: 10px;
+  padding-right: spacing(2);
 }
 
 .map-controls {
@@ -43,7 +44,7 @@
 }
 
 .disp-layers {
-  margin-top: 10px;
+  margin-top: spacing(2);
 }
 
 .map-control-margin {
@@ -64,7 +65,7 @@
 .map-buttons {
   pointer-events: none;
   margin-left: 0;
-  margin-right: 20px;
+  margin-right: spacing(5);
 }
 
 button {
@@ -73,9 +74,8 @@ button {
 
 .ol-popup {
   position: absolute;
-  filter: drop-shadow(0 1px 4px rgb(0 0 0 / 20%));
-  filter: drop-shadow(0 1px 4px rgb(0 0 0 / 20%));
-  bottom: 12px;
+  filter: drop-shadow(var(--shadow-sm));
+  bottom: spacing(3);
   left: -50px;
 }
 
@@ -83,7 +83,7 @@ button {
   position: fixed;
   pointer-events: none;
   bottom: 30px;
-  right: 10px;
+  right: spacing(2);
 }
 
 .mobile-map-controls {
@@ -132,7 +132,7 @@ button {
 
 .mobile-control-group {
   display: flex;
-  margin: 10px auto;
+  margin: spacing(2) auto;
   zoom: 160%;
   pointer-events: auto;
 }

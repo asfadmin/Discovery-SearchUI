@@ -1,4 +1,5 @@
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 
 $chart-ctrl-top: 68px;
 $chart-ctrl-top-x: 70px;
@@ -17,9 +18,9 @@ $chart-ctrl-top-x: 70px;
 .ts-chart-details {
   display: flex;
   flex-direction: row;
-  margin: 0 25px 0 45px;
-  padding: 5px;
-  font-size: 14px;
+  margin: 0 spacing(lg) 0 45px;
+  padding: spacing(sm);
+  font-size: font-size(sm);
   font-style: italic;
 }
 
@@ -51,14 +52,14 @@ $chart-ctrl-top-x: 70px;
   //writing-mode: vertical-lr;
   display: flex;
   align-items: center;
-  margin-left: 10px;
-  margin-right: 10px;
+  margin-left: spacing(2);
+  margin-right: spacing(2);
 }
 
 .ts-color-swatch {
-  width: 15px;
-  height: 15px;
-  margin-right: 5px;
+  width: spacing(md);
+  height: spacing(md);
+  margin-right: spacing(sm);
   text-align: center;
   color: black;
   font-weight: bolder;
@@ -74,27 +75,21 @@ $chart-ctrl-top-x: 70px;
 }
 
 :host .timeseries-base {
-  @include themify($themes) {
-    fill: themed('blue-link');
-  }
+  fill: var(--asf-blue-link);
 }
 
 :host .baseline-selected {
-  @include themify($themes) {
-    fill: themed('err');
-  }
+  fill: var(--asf-err);
 }
 
 .ts-chart-label {
-  @include themify_non_host($themes) {
-    fill: themed('dark-primary-text');
-    overflow-x: visible;
-    font-size: 14px;
-  }
+  fill: var(--asf-dark-primary-text);
+  overflow-x: visible;
+  font-size: font-size(sm);
 }
 
 .ts-axis-title {
-  font-size: 15px;
+  font-size: font-size(base);
 }
 
 .ts-chart-config-button {
@@ -110,10 +105,8 @@ $chart-ctrl-top-x: 70px;
 }
 
 :host .loading-rect {
-	@include themify($themes) {
-	  fill: lighten(themed('dark-secondary-text'),20%);
-	}
-	fill-opacity: 40%;
+	fill: var(--asf-dark-secondary-text);
+	fill-opacity: opacity(40);
 }
 .disp-spinner {
     position: absolute;
@@ -135,25 +128,25 @@ $chart-ctrl-top-x: 70px;
 .message-container{
   text-align: center;
   padding-top: 50px;
-  font-size: 18px;
+  font-size: font-size(lg);
 }
 
 .icon-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 20px auto;
-  padding: 10px;
+  margin: spacing(5) auto;
+  padding: spacing(2);
   width: auto;
   height: auto;
   max-width: 150px;
   max-height: 150px;
-  border-radius: 10px;
+  border-radius: spacing(2);
 }
 
 .icon-container mat-icon {
   font-size: 200px;
-  color: lightgray;
+  color: var(--asf-borders);
   width: auto;
   height: auto;
   line-height: 1;
