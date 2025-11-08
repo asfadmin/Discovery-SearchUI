@@ -79,7 +79,8 @@
   margin: 16px 16px 0 16px;
 }
 
-::ng-deep .mat-mdc-menu-panel {
+// Global styles don't need ::ng-deep
+.mat-mdc-menu-panel {
   overflow: hidden;
   min-width: 130px;
 }

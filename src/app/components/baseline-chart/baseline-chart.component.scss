@@ -43,35 +43,32 @@ ul {
     font-size: 0.6em;
   }
 }
-::ng-deep .baseline-label {
+// Replaced ::ng-deep with :host for SVG elements created by D3 within this component
+:host .baseline-label {
   @include themify($themes) {
     fill: themed('dark-primary-text');
   }
 }
 
-
-::ng-deep .baseline-reference {
+:host .baseline-reference {
   @include themify($themes) {
     fill: themed('dark-primary-text');
   }
 }
 
-::ng-deep .baseline-download {
+:host .baseline-download {
   @include themify($themes) {
     fill: darken(themed('blue-link'), 20%);
   }
 }
-::ng-deep .baseline-selected {
+
+:host .baseline-selected {
   @include themify($themes) {
     fill: themed('err');
   }
 }
-::ng-deep .baseline-reference {
-  @include themify($themes) {
-    fill: themed('dark-primary-text');
-  }
-}
-::ng-deep .baseline-base {
+
+:host .baseline-base {
   @include themify($themes) {
     fill: lighten(themed('dark-primary-text'), 45%);
   }

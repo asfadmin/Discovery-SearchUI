@@ -1,0 +1,197 @@
+// Design Tokens
+// Centralized design values for consistency across the application
+// Use these tokens instead of hard-coded values
+
+@use "sass:map";
+
+// ============================================================================
+// SPACING TOKENS
+// ============================================================================
+$spacing-tokens: (
+  // Base unit: 4px
+  0: 0,
+  1: 4px,    // xs
+  2: 8px,    // sm
+  3: 12px,
+  4: 16px,   // md (base)
+  5: 20px,
+  6: 24px,   // lg
+  8: 32px,
+  10: 40px,
+  12: 48px,
+  16: 64px,
+);
+
+// Semantic spacing aliases
+$spacing: (
+  none: map.get($spacing-tokens, 0),
+  xs: map.get($spacing-tokens, 1),
+  sm: map.get($spacing-tokens, 2),
+  md: map.get($spacing-tokens, 4),
+  lg: map.get($spacing-tokens, 6),
+  xl: map.get($spacing-tokens, 8),
+  xxl: map.get($spacing-tokens, 12),
+);
+
+// ============================================================================
+// TYPOGRAPHY TOKENS
+// ============================================================================
+$font-size: (
+  xs: 12px,
+  sm: 14px,
+  base: 16px,
+  lg: 18px,
+  xl: 20px,
+  xxl: 24px,
+  title: 30px,
+);
+
+$font-weight: (
+  light: 300,
+  normal: 400,
+  medium: 500,
+  semibold: 600,
+  bold: 700,
+);
+
+$line-height: (
+  tight: 1.2,
+  normal: 1.5,
+  relaxed: 1.8,
+);
+
+// ============================================================================
+// BORDER TOKENS
+// ============================================================================
+$border-width: (
+  none: 0,
+  thin: 1px,
+  medium: 2px,
+  thick: 4px,
+);
+
+$border-radius: (
+  none: 0,
+  sm: 2px,
+  md: 4px,
+  lg: 8px,
+  full: 9999px,
+);
+
+// ============================================================================
+// SHADOW TOKENS (Elevation)
+// ============================================================================
+$shadow: (
+  none: none,
+  sm: 0 1px 2px 0 rgb(0 0 0 / 0.05),
+  md: 0 4px 6px -1px rgb(0 0 0 / 0.1),
+  lg: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+  xl: 0 20px 25px -5px rgb(0 0 0 / 0.1),
+);
+
+// ============================================================================
+// OPACITY TOKENS
+// ============================================================================
+$opacity: (
+  0: 0,
+  10: 0.1,
+  20: 0.2,
+  30: 0.3,
+  40: 0.4,
+  50: 0.5,
+  60: 0.6,
+  70: 0.7,
+  80: 0.8,
+  90: 0.9,
+  100: 1,
+);
+
+// ============================================================================
+// Z-INDEX TOKENS
+// ============================================================================
+$z-index: (
+  base: 0,
+  dropdown: 1000,
+  sticky: 1020,
+  fixed: 1030,
+  modal-backdrop: 1040,
+  modal: 1050,
+  popover: 1060,
+  tooltip: 1070,
+);
+
+// ============================================================================
+// TRANSITION TOKENS
+// ============================================================================
+$transition-duration: (
+  fast: 150ms,
+  base: 250ms,
+  slow: 350ms,
+);
+
+$transition-timing: (
+  linear: linear,
+  ease: ease,
+  ease-in: ease-in,
+  ease-out: ease-out,
+  ease-in-out: ease-in-out,
+);
+
+// ============================================================================
+// HELPER FUNCTIONS
+// ============================================================================
+
+/// Get a spacing token value
+/// @param {String} $key - Token key (xs, sm, md, lg, xl, xxl, or number)
+/// @return {Number} Spacing value in px
+@function spacing($key) {
+  @if map.has-key($spacing, $key) {
+    @return map.get($spacing, $key);
+  }
+  @if map.has-key($spacing-tokens, $key) {
+    @return map.get($spacing-tokens, $key);
+  }
+  @error "Unknown spacing key: #{$key}";
+}
+
+/// Get a font size token value
+/// @param {String} $key - Token key (xs, sm, base, lg, xl, xxl, title)
+/// @return {Number} Font size value
+@function font-size($key) {
+  @if map.has-key($font-size, $key) {
+    @return map.get($font-size, $key);
+  }
+  @error "Unknown font-size key: #{$key}";
+}
+
+/// Get a font weight token value
+/// @param {String} $key - Token key (light, normal, medium, semibold, bold)
+/// @return {Number} Font weight value
+@function font-weight($key) {
+  @if map.has-key($font-weight, $key) {
+    @return map.get($font-weight, $key);
+  }
+  @error "Unknown font-weight key: #{$key}";
+}
+
+/// Get an opacity token value
+/// @param {Number} $key - Token key (0-100)
+/// @return {Number} Opacity value
+@function opacity($key) {
+  @if map.has-key($opacity, $key) {
+    @return map.get($opacity, $key);
+  }
+  @error "Unknown opacity key: #{$key}";
+}
+
+/// Get a z-index token value
+/// @param {String} $key - Token key (base, dropdown, sticky, etc.)
+/// @return {Number} Z-index value
+@function z-index($key) {
+  @if map.has-key($z-index, $key) {
+    @return map.get($z-index, $key);
+  }
+  @error "Unknown z-index key: #{$key}";
+}
+
+// Note: Functions and variables are automatically available when this file is imported

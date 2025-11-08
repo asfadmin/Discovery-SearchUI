@@ -76,8 +76,8 @@ $light-grey: rgb(0 0 0 / 60%);
   @include themify($themes) {
     color: themed('dark-secondary-text');
   }
-  font-size: 14px;
-  font-weight: 400;
+  font-size: font-size(sm); // Using design token
+  font-weight: font-weight(normal); // Using design token
   transform:
     translateY(-1.2812em)
     scale(0.75)
@@ -90,8 +90,8 @@ $light-grey: rgb(0 0 0 / 60%);
 }
 
 .button-text {
-  font-size: 16px;
-  font-weight: 400;
+  font-size: font-size(base); // Using design token
+  font-weight: font-weight(normal); // Using design token
   @include themify($themes) {
     color: themed('dark-primary-text');
   }
@@ -133,14 +133,14 @@ $light-grey: rgb(0 0 0 / 60%);
 
 .info-text {
   font-style: italic;
-  font-size: 14px;
+  font-size: font-size(sm); // Using design token
   line-height: 30px;
-  margin: 5px 0 15px;
+  margin: spacing(1) 0 spacing(4);  // Using design tokens
 }
 
 .item-title {
-  font-weight: bold;
-  margin-bottom: 5px;
+  font-weight: font-weight(bold); // Using design token
+  margin-bottom: spacing(1); // Using design token
 }
 
 .mobile-search-item {
@@ -155,16 +155,17 @@ $light-grey: rgb(0 0 0 / 60%);
   opacity: 0.5;
 }
 
-::ng-deep.dataset__subName {
+// Global styles don't need ::ng-deep
+.dataset__subName {
   line-height: 12px;
 }
 
 .dataset-item {
-  margin: 16px;
+  margin: spacing(4); // Using design token
 }
 
 .dataset-light-text {
-  font-size: 12px;
+  font-size: font-size(xs); // Using design token
   font-style: normal;
 }
 
@@ -183,7 +184,7 @@ $light-grey: rgb(0 0 0 / 60%);
     }
   }
   padding-top: 22px;
-  font-size: 12px;
+  font-size: font-size(xs); // Using design token
 }
 
 .hyp3-icon {

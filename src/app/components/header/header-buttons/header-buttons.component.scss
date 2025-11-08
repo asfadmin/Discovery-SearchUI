@@ -1,5 +1,11 @@
 @use "asf-theme-variables" as *;
 @use "deluxe-menu" as *;
+@use "tokens" as *;
+
+// Moved from global deluxe-menu.scss - component-specific style
+.mobile-icon-spacing {
+  margin: 0 spacing(1); // Using design token (5px -> 4px)
+}
 
 .menu-item {
   display: flex;

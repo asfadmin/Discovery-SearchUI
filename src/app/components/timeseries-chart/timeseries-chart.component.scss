@@ -64,20 +64,22 @@ $chart-ctrl-top-x: 70px;
   font-weight: bolder;
 }
 
-::ng-deep .cdk-virtual-scrollable {
+// Replaced ::ng-deep with :host for Angular CDK and D3 elements within component
+:host .cdk-virtual-scrollable {
   overflow-x: auto;
   overflow-y: clip;
   will-change: scroll-position;
   contain: strict;
   -webkit-overflow-scrolling: touch;
 }
-::ng-deep .timeseries-base {
+
+:host .timeseries-base {
   @include themify($themes) {
     fill: themed('blue-link');
   }
 }
 
-::ng-deep .baseline-selected {
+:host .baseline-selected {
   @include themify($themes) {
     fill: themed('err');
   }
@@ -107,7 +109,7 @@ $chart-ctrl-top-x: 70px;
   right: 210px;
 }
 
-::ng-deep .loading-rect {
+:host .loading-rect {
 	@include themify($themes) {
 	  fill: lighten(themed('dark-secondary-text'),20%);
 	}
@@ -125,7 +127,8 @@ $chart-ctrl-top-x: 70px;
   top: $chart-ctrl-top;
   right: 95px;
 }
-:host ::ng-deep .ts-reference-point {
+// Simplified - removed ::ng-deep, increased specificity, kept !important for SVG fill override
+:host .ts-reference-point {
   fill: red !important;
 }
 

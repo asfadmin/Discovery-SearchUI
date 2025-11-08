@@ -23,7 +23,7 @@ hr {
 
 .text-under {
   margin-left: 0;
-  font-weight: 400;
+  font-weight: font-weight(normal); // Using design token
 }
 
 .large-icon {
@@ -56,11 +56,10 @@ hr {
   opacity: 1;
 }
 
-.mobile-icon-spacing {
-  margin: 0 5px;
-}
+// NOTE: .mobile-icon-spacing moved to header-buttons.component.scss (component-specific)
 
-::ng-deep.mat-mdc-menu-panel {
+// Global styles don't need ::ng-deep - they already pierce encapsulation
+.mat-mdc-menu-panel {
   max-width: 600px;
 }
 
@@ -79,7 +78,7 @@ hr {
 
 .menu-item {
   flex-flow: row;
-  margin: 10px;
+  margin: spacing(2); // Using design token (10px was close to 8px)
 }
 
 .menu-item-content {
@@ -99,8 +98,8 @@ hr {
     color: themed('dark-primary-text');
   }
   line-height: 22px;
-  font-size: 18px;
-  margin-bottom: 12px;
+  font-size: font-size(lg); // Using design token
+  margin-bottom: spacing(3); // Using design token
 }
 
 .menu-item-aside {

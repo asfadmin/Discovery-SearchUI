@@ -6,11 +6,13 @@
 @forward "variables";
 @forward "dark_variables";
 @forward "color-utils";
+@forward "tokens";
 
 // Import to use in this file
 @use "variables" as *;
 @use "dark_variables" as *;
 @use "color-utils" as *;
+@use "tokens" as *;
 
 @mixin md-icon-size($size: 24px) {
   font-size: $size !important;
