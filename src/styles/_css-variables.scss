@@ -1,0 +1,79 @@
+// CSS Custom Properties for Runtime Theme Switching
+// These variables can be changed dynamically via JavaScript without recompiling styles
+
+@use "sass:map";
+@use "asf-theme-variables" as *;
+
+// Generate CSS custom properties from theme map
+@mixin generate-theme-variables($theme-map, $prefix: 'asf') {
+  @each $key, $value in $theme-map {
+    --#{$prefix}-#{$key}: #{$value};
+  }
+}
+
+// Apply light theme CSS variables
+:root,
+.theme-light {
+  // Color variables
+  @include generate-theme-variables(map.get($themes, 'light'));
+
+  // Additional semantic variables
+  --asf-surface: var(--asf-background-white);
+  --asf-on-surface: var(--asf-dark-primary-text);
+  --asf-on-primary: var(--asf-light-primary-text);
+}
+
+// Apply dark theme CSS variables
+.theme-dark {
+  @include generate-theme-variables(map.get($themes, 'dark'));
+
+  // Additional semantic variables
+  --asf-surface: var(--asf-background-white);
+  --asf-on-surface: var(--asf-light-primary-text);
+  --asf-on-primary: var(--asf-dark-primary-text);
+}
+
+// Helper function to use CSS variables with fallback
+@function theme-var($name, $fallback: null) {
+  @if $fallback {
+    @return var(--asf-#{$name}, #{$fallback});
+  } @else {
+    @return var(--asf-#{$name});
+  }
+}
+
+// Convenience variables for common use cases
+:root {
+  // Spacing (from tokens)
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+
+  // Border radius
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+
+  // Transitions
+  --transition-fast: 150ms;
+  --transition-base: 250ms;
+  --transition-slow: 350ms;
+
+  // Shadows
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+
+  // Z-index layers
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-modal: 1050;
+  --z-tooltip: 1070;
+}
+
+// Example usage in components:
+// color: var(--asf-primary);
+// background: var(--asf-background-white);
+// color: var(--asf-dark-primary-text);

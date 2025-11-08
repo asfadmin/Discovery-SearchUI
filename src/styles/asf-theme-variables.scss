@@ -20,6 +20,8 @@
   width: $size !important;
 }
 
+// Using M2 compatibility API (still supported in Angular 20)
+// Full M3 migration requires different approach - reserved for future work
 $asf-app-primary: mat.m2-define-palette($mat-asf-primary, 700, 400, 900);
 $asf-app-dark-primary: mat.m2-define-palette($mat-dark-asf-primary, 700, 400, 900);
 $asf-app-accent:  mat.m2-define-palette(mat.$m2-grey-palette, 300, 100, 400);

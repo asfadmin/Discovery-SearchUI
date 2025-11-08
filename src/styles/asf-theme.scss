@@ -1,9 +1,11 @@
 /* csslint ignoreAtRules: ["include"] */
 @use "@angular/material" as mat;
 @use "asf-theme-variables" as theme-vars;
+@use "css-variables" as *;
 
 // Re-export everything from theme variables for backward compatibility
 @forward "asf-theme-variables";
+@forward "css-variables";
 
 // Import with wildcard to use variables directly
 @use "asf-theme-variables" as *;
@@ -23,7 +25,7 @@ button,
   border-radius: 0 !important;
 }
 
-// Define light theme
+// Define light theme (using M2 compatibility API)
 $asf-light-theme: mat.m2-define-light-theme((
   color: (
     primary: $asf-app-primary,
@@ -33,7 +35,7 @@ $asf-light-theme: mat.m2-define-light-theme((
   density: -1,
 ));
 
-// Define dark theme
+// Define dark theme (using M2 compatibility API)
 $asf-dark-theme: mat.m2-define-dark-theme((
   color: (
     primary: $asf-app-dark-primary,
