@@ -146,35 +146,37 @@
   </div>
 
   @if (product.metadata.job) {
-    @if (product.metadata.job.name) {
+    <ng-container>
+      @if (product.metadata.job.name) {
+        <div matListItemLine>
+          <b>{{ 'PROJECT_NAME' | translate }}:</b> {{ product.metadata.job.name }}
+        </div>
+      }
+
       <div matListItemLine>
-        <b>{{ 'PROJECT_NAME' | translate }}:</b> {{ product.metadata.job.name }}
+        <b>{{ 'JOB_SUBMITTED' | translate }}:</b>
+        {{ product.metadata.job.request_time | fullDate }}
       </div>
-    }
 
-    <div matListItemLine>
-      <b>{{ 'JOB_SUBMITTED' | translate }}:</b>
-      {{ product.metadata.job.request_time | fullDate }}
-    </div>
+      @if (product.metadata.job.credit_cost) {
+        <div matListItemLine>
+          <b>{{ 'CREDIT_COST' | translate }}:</b>
+          {{ product.metadata.job.credit_cost }}
+        </div>
+      }
 
-    @if (product.metadata.job.credit_cost) {
-      <div matListItemLine>
-        <b>{{ 'CREDIT_COST' | translate }}:</b>
-        {{ product.metadata.job.credit_cost }}
-      </div>
-    }
+      @if (product.metadata.job.job_id) {
+        <div matListItemLine>
+          <b>{{ 'JOB_ID' | translate }} </b>
 
-    @if (product.metadata.job.job_id) {
-      <div matListItemLine>
-        <b>{{ 'JOB_ID' | translate }} </b>
-
-        <app-copy-to-clipboard
-          prompt="{{ 'COPY_JOB_ID' | translate }}"
-          [value]="product.metadata.job.job_id"
-        >
-        </app-copy-to-clipboard>
-      </div>
-    }
+          <app-copy-to-clipboard
+            prompt="{{ 'COPY_JOB_ID' | translate }}"
+            [value]="product.metadata.job.job_id"
+          >
+          </app-copy-to-clipboard>
+        </div>
+      }
+    </ng-container>
   }
 
   @for (param of paramsList; track param) {
