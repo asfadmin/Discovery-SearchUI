@@ -17,16 +17,18 @@ npm run start_local_asf                                        # Alias for above
 # Build
 ng build                                                       # Development build
 ng build --configuration production                            # Production build
-npm run build                                                  # Alias for production
+ng build --configuration local                                 # Local build (unoptimized, source maps)
+npm run build                                                  # Alias for production build
 
 # Test
-ng test                                                        # Interactive with watch
-ng test --include='**/my-file.spec.ts'                         # Single file
-npm test -- --browsers=ChromeHeadless --watch=false            # Headless CI
+ng test                                                        # Interactive with watch (ChromeHeadless default)
+ng test --include='**/my-file.spec.ts'                         # Single file pattern
+npm test -- --browsers=ChromeHeadless --watch=false            # Headless CI mode
 
 # Lint
-npm run lint                                                   # Lint all files
+npm run lint                                                   # ESLint all files
 eslint -c eslint.config.js src/path/to/file.ts                 # Lint specific file
+eslint -c eslint.config.js src/**/*.html                       # Lint templates
 
 # Generate
 ng generate component component-name                           # Component (.scss, no tests)
@@ -52,6 +54,22 @@ Domain-based structure. Each domain has `*.action.ts`, `*.reducer.ts`, `*.effect
 - `templates` - Saved searches
 
 **Pattern:** Components dispatch actions → Effects handle side effects (API calls) → Reducers update state → Selectors derive data → Components subscribe to selectors via async pipe.
+
+**Example:**
+```typescript
+// Component dispatches action
+this.store.dispatch(searchActions.executeSearch({ params }));
+
+// Component selects data from store
+this.results$ = this.store.select(getSearchResults);
+
+// Template consumes via async pipe
+@if (results$ | async; as results) {
+  @for (result of results; track result.id) {
+    <div>{{ result.name }}</div>
+  }
+}
+```
 
 ### Components (`src/app/components/`)
 - `header/` - Navigation, search controls, queue
@@ -91,9 +109,11 @@ Always use these instead of relative imports:
 
 ### Styling
 - SCSS with modern Sass (@use/@forward, no @import)
-- Angular Material theming
+- Angular Material theming with M2 compatibility API
 - Shared styles in `src/styles/`
+- Design tokens in `_tokens.scss`, CSS variables in `_css-variables.scss`
 - Use `color.adjust()` not deprecated `lighten()`/`darken()`
+- See `THEMING.md` for comprehensive styling guide and best practices
 
 ### Templates
 - **Modern Control Flow:** Use `@if`, `@for`, `@else` syntax (Angular 17+)
