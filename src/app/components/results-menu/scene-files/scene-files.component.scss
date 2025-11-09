@@ -19,8 +19,7 @@ $thumb-size: 50px;
 }
 
 .dem-warning {
-  background-color: var(--asf-primary-light);
-  filter: brightness(1.1); // Lighten effect
+  background-color: var(--asf-primary-light-10);
   color: var(--asf-err);
   font-size: font-size(sm);
   padding-left: spacing(xl);

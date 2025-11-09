@@ -229,8 +229,7 @@ label {
 }
 
 .warn-icon {
-	color: var(--asf-dark-primary-text);
-	filter: brightness(0.75); // Darken effect
+	color: var(--asf-dark-primary-text-dark-25);
 }
 
 .gap-detected-area {
@@ -241,8 +240,7 @@ label {
 	display: grid;
 	place-items: center;
 	width: 30px;
-	background: var(--asf-surface);
-	filter: brightness(0.85); // Darken effect
+	background: var(--asf-surface-dark-15);
 }
 
 .ts-column-2 {
@@ -260,8 +258,7 @@ label {
 }
 
 .ts-wkt-icon {
-  color: var(--asf-dark-primary-text);
-  filter: brightness(0.75); // Darken effect
+  color: var(--asf-dark-primary-text-dark-25);
   font-size: 18px;
   line-height: 29px;
   margin: 0;
@@ -304,8 +301,7 @@ label {
 
 span.parent-checkbox-section:hover {
   cursor: pointer;
-  background-color: var(--asf-primary-light);
-  filter: brightness(1.05); // Lighten effect
+  background-color: var(--asf-primary-light-5);
 }
 
 .delete-all-btn2 {
@@ -353,8 +349,7 @@ ul {
 }
 
 .ts-highlighted {
-  background-color: var(--asf-primary-light);
-  filter: brightness(1.05); // Lighten effect
+  background-color: var(--asf-primary-light-5);
 
   .ts-wkt-label {
     font-weight: bolder;
@@ -394,8 +389,7 @@ ul {
 }
 
 .series-label {
-	color: var(--asf-dark-primary-text);
-	filter: brightness(1.2); // Lighten effect
+	color: var(--asf-dark-primary-text-light-20);
 }
 
 .data-credit {

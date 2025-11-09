@@ -2,8 +2,7 @@
 @use "tokens" as *;
 
 :host .circumference {
-  stroke: var(--asf-primary);
-  filter: brightness(1.4); // Lighten effect
+  stroke: var(--asf-primary-light-40);
   fill: none;
   stroke-width: spacing(2);
 }
@@ -36,8 +35,7 @@ figure {
 }
 
 :host .notch {
-  stroke: var(--asf-primary);
-  filter: brightness(1.4); // Lighten effect
+  stroke: var(--asf-primary-light-40);
   stroke-width: 1px;
 }
 

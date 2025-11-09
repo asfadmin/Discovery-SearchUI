@@ -207,8 +207,7 @@ label {
 }
 
 .warn-icon {
-  color: var(--asf-dark-primary-text);
-  filter: brightness(0.75); // Darken effect
+  color: var(--asf-dark-primary-text-dark-25);
 }
 .gap-detected-area {
   position: relative;
@@ -218,8 +217,7 @@ label {
   display: grid;
   place-items: center;
   width: 30px;
-  background: var(--asf-surface);
-  filter: brightness(0.85); // Darken effect
+  background: var(--asf-surface-dark-15);
 }
 
 .sbas-hdr-ctrl {

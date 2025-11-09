@@ -13,8 +13,7 @@
 }
 
 .drop-file-area {
-  background-color: var(--asf-surface);
-  filter: brightness(0.9); // Darken effect
+  background-color: var(--asf-surface-dark-10);
   outline: 2px dashed var(--asf-primary);
   background-image: url('/assets/icons/cloud_upload_black_48dp.svg');
   background-size: 35%;
@@ -34,8 +33,7 @@
   font-size: font-size(lg);
   font-weight: bold;
   text-align: center;
-  color: var(--asf-dark-primary-text);
-  filter: brightness(1.2); // Lighten effect
+  color: var(--asf-dark-primary-text-light-20);
 
   .dd-text-1 {
     margin-top: spacing(lg);

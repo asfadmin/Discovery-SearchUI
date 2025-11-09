@@ -2,8 +2,7 @@
 @use "tokens" as *;
 
 .dialog-title {
-  background: var(--asf-surface);
-  filter: brightness(0.9); // Darken effect
+  background: var(--asf-surface-dark-10);
   margin-bottom: spacing(2);
 }
 
@@ -12,8 +11,7 @@
   flex-direction: row;
   justify-content: space-between;
   padding: spacing(md) spacing(xl) 0 spacing(xl);
-  background: var(--asf-surface);
-  filter: brightness(0.9); // Darken effect
+  background: var(--asf-surface-dark-10);
 }
 
 .flex-item {

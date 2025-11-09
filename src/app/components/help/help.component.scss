@@ -12,8 +12,7 @@ $side-padding-only: 0 spacing(md) 0 spacing(md);
 main {
   @include scrollable(y);
   flex: 1;
-  background-color: var(--asf-primary-light);
-  filter: brightness(1.15); // Lighten effect
+  background-color: var(--asf-primary-light-15);
 }
 
 footer {
@@ -40,8 +39,7 @@ section {
 }
 
 .help-menu {
-  background-color: var(--asf-primary-light);
-  filter: brightness(1.15); // Lighten effect
+  background-color: var(--asf-primary-light-15);
   display: flex;
   flex-direction: row;
   padding-left: spacing(md);

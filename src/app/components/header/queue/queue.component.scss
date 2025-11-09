@@ -90,8 +90,7 @@ $idk-pad: 21px;
 .dem-warning {
   font-size: 14px;
   padding: spacing(xs);
-  background-color: var(--asf-primary-light);
-  filter: brightness(1.1); // Lighten effect
+  background-color: var(--asf-primary-light-10);
   color: var(--asf-err);
   width: 100%;
 }

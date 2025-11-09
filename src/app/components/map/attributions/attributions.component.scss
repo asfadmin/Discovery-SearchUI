@@ -85,8 +85,7 @@ a {
 .toggle-button {
   background-color: var(--asf-primary-light);
   color: var(--asf-dark-secondary-text);
-  border-bottom-color: var(--asf-primary-light);
-  filter: brightness(1.1); // Lighten effect on border
+  border-bottom-color: var(--asf-primary-light-10);
   pointer-events: auto;
   font-size: 18px;
   font-family: Roboto, sans-serif;

@@ -75,8 +75,7 @@ ul {
   background: var(--asf-dark-primary-text);
 }
 .download-box {
-  background: var(--asf-blue-link);
-  filter: brightness(0.8); // Darkened effect
+  background: var(--asf-blue-link-dark-20);
 }
 .selected-box {
   background: var(--asf-err);

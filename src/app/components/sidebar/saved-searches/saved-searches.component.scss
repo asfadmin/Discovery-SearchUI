@@ -43,8 +43,7 @@
 }
 
 .saved-searches-row:nth-child(odd) {
-  background-color: var(--asf-primary-light) !important;
-  filter: brightness(1.15); // Lighten effect
+  background-color: var(--asf-primary-light-15) !important;
 }
 
 .saved-searches__header {

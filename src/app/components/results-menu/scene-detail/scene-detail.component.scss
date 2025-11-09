@@ -146,8 +146,7 @@ a {
   position: sticky;
   display: flex;
   justify-content: flex-start;
-  background: var(--asf-primary-light);
-  filter: brightness(1.08); // Lighten effect
+  background: var(--asf-primary-light-8);
   align-items: center;
   height: 40px;
   bottom: 0;
@@ -174,8 +173,7 @@ a {
   margin-left: spacing(lg);
   font-size: font-size(sm);
   font-weight: 500;
-  color: var(--asf-dark-primary-text);
-  filter: brightness(1.1); // Lighten effect
+  color: var(--asf-dark-primary-text-light-10);
 }
 
 .search-button {
