@@ -1,3 +1,4 @@
+@use "sass:map";
 @use "asf-theme-variables" as *;
 
 // General menu styles for list-based menus and menu items
@@ -5,8 +6,8 @@
 // TODO: Consolidate these files to eliminate duplication
 
 hr {
-  @include themify($themes) {
-    border-top-color: rgba(themed('primary-light'), 0.2);
+  @include themify($themes) using ($theme) {
+    border-top-color: rgba(map.get($theme, 'primary-light'), 0.2);
   }
   margin-block: 0;
 }
@@ -30,8 +31,8 @@ hr {
   @include md-icon-size(30px);
   min-height: 30px;
   margin-right: 0;
-  @include themify($themes) {
-    color: themed('dark-primary-text');
+  @include themify($themes) using ($theme) {
+    color: map.get($theme, 'dark-primary-text');
   }
 }
 
@@ -41,14 +42,14 @@ hr {
   min-width: 60px;
 }
 .mat-mdc-list-item {
-  @include themify($themes) {
-    color: themed('dark-primary-text');
+  @include themify($themes) using ($theme) {
+    color: map.get($theme, 'dark-primary-text');
   }
 }
 .menu-hr {
-  @include themify($themes) {
-    color: themed('dark-primary-text');
-    background-color: themed('primary-dark');
+  @include themify($themes) using ($theme) {
+    color: map.get($theme, 'dark-primary-text');
+    background-color: map.get($theme, 'primary-dark');
   }
   background-image: none;
   border: none;
@@ -65,8 +66,8 @@ hr {
 
 // Increased specificity to avoid !important
 .mat-mdc-menu-panel .mat-mdc-menu-item {
-  @include themify($themes) {
-    background-color: themed('background-white');
+  @include themify($themes) using ($theme) {
+    background-color: map.get($theme, 'background-white');
   }
   font-weight: 400;
   height: auto;
@@ -87,15 +88,15 @@ hr {
 }
 
 .item-content {
-  @include themify($themes) {
-    color: themed('blue-link');
+  @include themify($themes) using ($theme) {
+    color: map.get($theme, 'blue-link');
   }
   line-height: 18px;
 }
 
 .item-title {
-  @include themify_non_host($themes) {
-    color: themed('dark-primary-text');
+  @include themify_non_host($themes) using ($theme) {
+    color: map.get($theme, 'dark-primary-text');
   }
   line-height: 22px;
   font-size: font-size(lg); // Using design token
@@ -112,13 +113,13 @@ hr {
   @include md-icon-size(65px);
 
   margin-right: 0;
-  @include themify_non_host($themes) {
-    color: themed('dark-primary-text');
+  @include themify_non_host($themes) using ($theme) {
+    color: map.get($theme, 'dark-primary-text');
   }
 }
 
 .dataset-date-range {
-  @include themify_non_host($themes) {
-   color: themed('dark-disabled-text');
+  @include themify_non_host($themes) using ($theme) {
+   color: map.get($theme, 'dark-disabled-text');
   }
 }

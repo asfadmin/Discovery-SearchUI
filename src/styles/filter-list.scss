@@ -1,4 +1,5 @@
 @use "@angular/material" as mat;
+@use "sass:map";
 @use "asf-theme-variables" as *;
 
 // Create a config with the default typography levels.
@@ -13,10 +14,10 @@ $config: mat.m2-define-legacy-typography-config();
   border-bottom-width: 0.5px;
   border-style: solid;
 
-  @include themify_non_host($themes) {
-    background-color: themed('primary-light');
-    color: themed('dark-primary-text');
-    border-color: themed('primary');
+  @include themify_non_host($themes) using ($theme) {
+    background-color: map.get($theme, 'primary-light');
+    color: map.get($theme, 'dark-primary-text');
+    border-color: map.get($theme, 'primary');
   }
 }
 
@@ -32,10 +33,10 @@ $config: mat.m2-define-legacy-typography-config();
   &[aria-disabled="true"] {
 
     @extend .mat-header-base;
-    @include themify_non_host($themes) {
-      background-color: themed('primary-light');
-      color: themed('dark-secondary-text');
-      border-color: themed('primary');
+    @include themify_non_host($themes) using ($theme) {
+      background-color: map.get($theme, 'primary-light');
+      color: map.get($theme, 'dark-secondary-text');
+      border-color: map.get($theme, 'primary');
     }
   }
 }

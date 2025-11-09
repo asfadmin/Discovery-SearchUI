@@ -86,34 +86,46 @@ $themes: (
   ),
 );
 
+// Modern approach: Use CSS custom properties instead of Sass variables for runtime theming
+// This mixin is kept for backward compatibility but should be migrated to CSS variables
+// See THEMING.md for migration guide
+
 @mixin themify($themes: $themes) {
-  @each $theme, $map in $themes {
-    :host-context(.theme-#{$theme}) & {
-      $theme-map: () !global;
-      @each $key, $submap in $map {
-        $value: map.get(map.get($themes, $theme), '#{$key}');
-        $theme-map: map.merge($theme-map, ($key: $value)) !global;
-      }
-      @content;
-      $theme-map: null !global;
+  @each $theme-name, $theme-map in $themes {
+    :host-context(.theme-#{$theme-name}) & {
+      // Directly output theme values using map.get
+      // No global state needed - theme map is in local scope
+      @content($theme-map);
     }
   }
 }
 
 @mixin themify_non_host($themes: $themes) {
-  @each $theme, $map in $themes {
-    .theme-#{$theme} & {
-      $theme-map: () !global;
-      @each $key, $submap in $map {
-        $value: map.get(map.get($themes, $theme), '#{$key}');
-        $theme-map: map.merge($theme-map, ($key: $value)) !global;
-      }
-      @content;
-      $theme-map: null !global;
+  @each $theme-name, $theme-map in $themes {
+    .theme-#{$theme-name} & {
+      // Directly output theme values using map.get
+      // No global state needed - theme map is in local scope
+      @content($theme-map);
     }
   }
 }
 
-@function themed($key) {
+// Helper function to get theme value from map
+// Usage: color: _get-theme-value($theme, 'primary');
+@function _get-theme-value($theme-map, $key) {
   @return map.get($theme-map, $key);
+}
+
+// Legacy function for backward compatibility
+// NOTE: This requires the old !global pattern, which is deprecated
+// Prefer using CSS custom properties (var(--asf-*)) instead
+// Or use the new themify mixin with @content($theme-map)
+@function themed($key, $theme-map: null) {
+  @if $theme-map {
+    @return map.get($theme-map, $key);
+  } @else {
+    @error 'themed() function requires $theme-map parameter when not using !global. ' +
+           'Migrate to CSS custom properties (see THEMING.md) or use: ' +
+           '@include themify($themes) using ($theme) { color: map.get($theme, "primary"); }';
+  }
 }

@@ -1,3 +1,4 @@
+@use 'sass:map';
 @use 'asf-theme-variables' as *;
 @forward 'asf-theme-variables';
 
@@ -16,8 +17,8 @@ $img-border-style: 1px solid black;
 }
 
 .help-top-section {
-  @include themify($themes) {
-    background-color: lighten(themed('primary-light'),15%) !important;
+  @include themify($themes) using ($theme) {
+    background-color: lighten(map.get($theme, 'primary-light'),15%) !important;
   }
   padding: 0 $side-padding-px 25px $side-padding-px;
   margin: 0;
@@ -33,8 +34,8 @@ $img-border-style: 1px solid black;
   h2,
   h3,
   h4 {
-    @include themify($themes) {
-      color: themed('light-primary-text');
+    @include themify($themes) using ($theme) {
+      color: map.get($theme, 'light-primary-text');
     }
   }
 }
@@ -71,8 +72,8 @@ $img-border-style: 1px solid black;
 }
 
 .help-text-row {
-  @include themify($themes) {
-    color: themed('dark-primary-text');
+  @include themify($themes) using ($theme) {
+    color: map.get($theme, 'dark-primary-text');
   }
   display: flex;
   flex-direction: row;
@@ -88,8 +89,8 @@ $img-border-style: 1px solid black;
   flex: 7 0 0;
 
   .material-icons {
-    @include themify($themes) {
-      color: themed('primary-light');
+    @include themify($themes) using ($theme) {
+      color: map.get($theme, 'primary-light');
     }
     font-size: 53px;
     width: 54px;
@@ -116,8 +117,8 @@ $img-border-style: 1px solid black;
 }
 
 .help-step {
-  @include themify($themes) {
-    color: themed('blue-link');
+  @include themify($themes) using ($theme) {
+    color: map.get($theme, 'blue-link');
   }
   font-weight: bold;
   font-size: larger;

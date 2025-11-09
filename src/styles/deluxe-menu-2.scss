@@ -1,3 +1,4 @@
+@use "sass:map";
 @use "asf-theme-variables" as *;
 
 // Button-based menu styles and form controls
@@ -13,8 +14,8 @@ $light-grey: rgb(0 0 0 / 60%);
   // Use md-icon-size mixin for consistent sizing instead of !important
   @include md-icon-size(47px);
   margin-right: 0;
-  @include themify($themes) {
-    color: themed('dark-primary-text');
+  @include themify($themes) using ($theme) {
+    color: map.get($theme, 'dark-primary-text');
   }
 }
 
@@ -43,8 +44,8 @@ $light-grey: rgb(0 0 0 / 60%);
 }
 
 .mat-mdc-button {
-  @include themify_non_host($themes) {
-    color: themed('blue');
+  @include themify_non_host($themes) using ($theme) {
+    color: map.get($theme, 'blue');
   }
   font-weight: 400;
   font-style: italic;
@@ -73,8 +74,8 @@ $light-grey: rgb(0 0 0 / 60%);
 }
 
 .button-label {
-  @include themify($themes) {
-    color: themed('dark-secondary-text');
+  @include themify($themes) using ($theme) {
+    color: map.get($theme, 'dark-secondary-text');
   }
   font-size: font-size(sm); // Using design token
   font-weight: font-weight(normal); // Using design token
@@ -92,8 +93,8 @@ $light-grey: rgb(0 0 0 / 60%);
 .button-text {
   font-size: font-size(base); // Using design token
   font-weight: font-weight(normal); // Using design token
-  @include themify($themes) {
-    color: themed('dark-primary-text');
+  @include themify($themes) using ($theme) {
+    color: map.get($theme, 'dark-primary-text');
   }
   text-align: left;
   font-style: normal;
@@ -114,9 +115,9 @@ $light-grey: rgb(0 0 0 / 60%);
 .text-underline {
   border: none;
   height: 1px;
-  @include themify($themes) {
-    color: themed('dark-secondary-text');
-    background-color: themed('dark-secondary-text');
+  @include themify($themes) using ($theme) {
+    color: map.get($theme, 'dark-secondary-text');
+    background-color: map.get($theme, 'dark-secondary-text');
   }
 }
 
@@ -177,10 +178,10 @@ $light-grey: rgb(0 0 0 / 60%);
 // NOTE: .dataset-date-range is defined in deluxe-menu.scss to avoid duplication
 
 .dataset-source {
-  @include themify_non_host($themes) {
-    color: themed('blue-link');
+  @include themify_non_host($themes) using ($theme) {
+    color: map.get($theme, 'blue-link');
     a {
-      color: themed('blue-link');
+      color: map.get($theme, 'blue-link');
     }
   }
   padding-top: 22px;
