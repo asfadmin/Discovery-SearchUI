@@ -1,17 +1,19 @@
+@use "tokens" as *;
+
 .baseline-slider {
   line-height: 42px;
   font-weight: normal;
-  margin-left: 16px;
-  margin-right: 16px;
-  margin-bottom: 15px;
+  margin-left: spacing(md);
+  margin-right: spacing(md);
+  margin-bottom: spacing(md);
 }
 
 .perpendicular-slider {
-  margin-top: 10px;
+  margin-top: spacing(2);
 }
 
 .temporal-slider {
-  padding-bottom: 16px;
+  padding-bottom: spacing(md);
 }
 
 .baseline-label {

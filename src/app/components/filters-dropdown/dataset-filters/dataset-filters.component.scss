@@ -1,22 +1,19 @@
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
+
 .raised-section {
-  box-shadow:
-    0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px rgba(0, 0, 0, 0.12),
-    0 5px 10px -3px rgba(0, 0, 0, 0.4) !important;
+  box-shadow: var(--shadow-lg) !important;
 }
 
 .selector-card-spacing {
-  margin-top: 20px;
+  margin-top: spacing(lg);
 }
 
 .info-icon {
-  margin-left: 10px;
-  margin-top: 4px;
+  margin-left: spacing(2);
+  margin-top: spacing(xs);
 }
-.header {
 
-  @include themify($themes) {
-    background-color: themed('primary-light');
-  }
+.header {
+  background-color: var(--asf-primary-light);
 }

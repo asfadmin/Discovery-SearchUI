@@ -1,4 +1,5 @@
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 
 .ls-example {
   font-style: italic;
@@ -8,30 +9,13 @@
 
 .file-upload-container {
   width: 30%;
-  margin-bottom: 20px;
+  margin-bottom: spacing(lg);
 }
 
-//.drop-file-area {
-//
-//  @include themify($themes) {
-//    background-color: darken(themed('background-white'), 10%);
-//    outline: 2px dashed themed('primary');
-//  }
-//  background-size: contain;
-//  background-repeat: no-repeat;
-//  background-position: center;
-//  width: 350px;
-//  height: 180px;
-//  display: inline-block;
-//  outline-offset: -8px;
-//}
-
 .drop-file-area {
-  @include themify($themes) {
-    background-color: darken(themed('background-white'), 10%);
-    outline: 2px dashed themed('primary');
-  }
-
+  background-color: var(--asf-surface);
+  filter: brightness(0.9); // Darken effect
+  outline: 2px dashed var(--asf-primary);
   background-image: url('/assets/icons/cloud_upload_black_48dp.svg');
   background-size: 35%;
   background-repeat: no-repeat;
@@ -47,22 +31,21 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  font-size: 18px;
+  font-size: font-size(lg);
   font-weight: bold;
   text-align: center;
-  @include themify($themes) {
-    color: lighten(themed('dark-primary-text'), 20%);
-  }
+  color: var(--asf-dark-primary-text);
+  filter: brightness(1.2); // Lighten effect
 
   .dd-text-1 {
-    margin-top: 20px;
-    font-size: 18px;
+    margin-top: spacing(lg);
+    font-size: font-size(lg);
   }
 
   .dd-bottom-text {
-    margin-bottom: 10px;
+    margin-bottom: spacing(2);
     .dd-text-2 {
-      font-size: 12px;
+      font-size: font-size(xs);
     }
   }
 }
@@ -77,7 +60,7 @@
 
 .file-list-container {
   width: 70%;
-  margin-right: 15px;
+  margin-right: spacing(md);
 }
 
 .input-field-container {
@@ -86,21 +69,17 @@
 }
 
 .panel-title {
-  @include themify($themes) {
-    color: themed('dark-primary-text') !important;
-  }
+  color: var(--asf-dark-primary-text) !important;
 }
 
 .asf-manual-link {
-  @include themify($themes) {
-    color: themed('dark-secondary-text')
-  }
+  color: var(--asf-dark-secondary-text);
   display: inline-block;
   line-height: 0;
 
-  ::ng-deep.material-icons {
-    font-size: 16px !important;
-    margin-left: 5px;
-    margin-top: 8px;
+  :host .material-icons {
+    font-size: font-size(base) !important;
+    margin-left: spacing(sm);
+    margin-top: spacing(1);
   }
 }
