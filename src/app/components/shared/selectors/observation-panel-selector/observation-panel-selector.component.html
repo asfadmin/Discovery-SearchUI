@@ -11,6 +11,9 @@
       "
       multiple
     >
+      <mat-select-trigger>
+        {{polarizations | join: ' '}}
+      </mat-select-trigger>
       @for (pol of dataset.polarizations; track pol) {
         <mat-option [value]="pol">
           <span class="polarization-type">{{ pol }}</span>

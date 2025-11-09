@@ -133,6 +133,8 @@
             {{ productionConfig }}
           </span>
         }
+    </span>
+      {{ polarizations | join: ', ' }}
       }
       @if (flightDirections.length) {
         <span>
