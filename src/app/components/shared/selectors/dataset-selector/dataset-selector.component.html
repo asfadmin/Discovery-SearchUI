@@ -39,7 +39,7 @@
                         dataset.id === 'SENTINEL-1 BURSTS'
                       ) {
                         <span
-                          matTooltip="Available for On Demand Processing (HyP3)"
+                          [matTooltip]="'HYP3_AVAILABLE' | translate"
                         >
                           <mat-icon class="hyp3-icon" svgIcon="hyp3"></mat-icon>
                         </span>

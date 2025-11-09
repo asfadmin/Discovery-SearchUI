@@ -73,13 +73,13 @@
                   <a
                     [href]="dataset.infoUrl"
                     target="_blank"
-                    matTooltip="Dataset"
+                    [matTooltip]="'DATASET' | translate"
                     class="faint-text"
                   >
                     {{ dataset.name }}
                   </a>
                   •
-                  <span matTooltip="Frequency">{{ dataset.frequency }}</span>
+                  <span [matTooltip]="'FREQUENCY' | translate">{{ dataset.frequency }}</span>
                 </div>
               }
 

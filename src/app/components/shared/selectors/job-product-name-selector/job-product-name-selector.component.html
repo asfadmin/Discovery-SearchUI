@@ -23,7 +23,7 @@
             class="options-clear-button"
             (click)="onClearFilter()"
             mat-flat-button
-            matTooltip="Clear Product Name Filter"
+            [matTooltip]="'CLEAR_PRODUCT_NAME_FILTER' | translate"
           >
             <strong>{{ 'CLEAR' | translate }}</strong>
           </button>
