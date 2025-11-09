@@ -330,18 +330,18 @@ Fade-in animation.
 
 ### Before and After: Map Control Button
 
-**Before:**
+**Before (with anti-patterns):**
 ```scss
 .layer-select-button {
   background: var(--asf-surface);
   color: var(--asf-dark-primary-text);
   margin: 0;
   padding: 0 0 0 3px;
-  font-size: 18px !important;
-  height: 27px !important;
-  width: 18px !important;
-  min-width: 53px !important;
-  border-radius: 4px !important;
+  font-size: 18px !important;  // ❌ Avoid !important
+  height: 27px !important;     // ❌ Avoid !important
+  width: 18px !important;      // ❌ Avoid !important
+  min-width: 53px !important;  // ❌ Avoid !important
+  border-radius: 4px !important; // ❌ Avoid !important
   border: solid 1px rgb(0 0 0 / 12%);
   text-align: center;
   display: flex;
@@ -350,8 +350,9 @@ Fade-in animation.
 }
 ```
 
-**After:**
+**After (with mixin):**
 ```scss
+// Mixin provides higher specificity naturally - no !important needed
 .layer-select-button {
   @include map-control-button;
   // Component-specific overrides
@@ -360,7 +361,11 @@ Fade-in animation.
 }
 ```
 
-**Lines saved:** 11 → 5 (55% reduction)
+**Benefits:**
+- **Lines saved:** 11 → 5 (55% reduction)
+- **No `!important`:** Mixin provides proper specificity
+- **Consistency:** Same styling across all map controls
+- **Maintainability:** Update mixin once, affects all buttons
 
 ### Before and After: Scrollable Container
 
@@ -392,15 +397,18 @@ Fade-in animation.
 3. **Reduced Bundle Size:** Less duplicated CSS in final bundle
 4. **Better DX:** Descriptive names make code more readable
 5. **Easier Testing:** Standardized patterns easier to test
+6. **Eliminates `!important`:** Mixins provide proper specificity without hacks
+7. **Theme-Aware:** Mixins use CSS variables for automatic theme switching
 
 ---
 
-## Current Usage Statistics
+## Current Usage Statistics (Updated 2025-11)
 
 **Total mixins created:** 21
 **Components refactored:** 10
 **Lines of code reduced:** ~150+
-**Build size:** Maintained at 8.39 MB (no regression)
+**`!important` declarations eliminated:** Multiple (part of broader theming cleanup)
+**Build size:** Maintained at 8.40 MB (no regression)
 
 ### Files Using Mixins:
 
@@ -469,6 +477,63 @@ When you identify a pattern repeated 3+ times, consider adding it to `_component
 - Test across browsers
 
 ---
+
+## Related Documentation
+
+- **[Theming Guide](../THEMING.md)** - Comprehensive theming system documentation
+- **[Component Mixins Source](../src/styles/_component-mixins.scss)** - Full mixin implementation details
+- **[CSS Variables](../src/styles/_css-variables.scss)** - Available theme variables
+- **[Design Tokens](../src/styles/_tokens.scss)** - Spacing, typography, and design tokens
+
+## Theming Integration
+
+Component mixins are designed to work seamlessly with the theming system:
+
+**Using mixins with theme variables:**
+```scss
+@use 'component-mixins' as *;
+
+.custom-button {
+  @include map-control-button;
+  // Add theme-aware customizations
+  background: var(--asf-primary-light);
+  color: var(--asf-dark-primary-text);
+}
+```
+
+**Combining mixins:**
+```scss
+.card {
+  @include panel(md);
+  @include scrollable(y);
+  max-height: 400px;
+}
+```
+
+**Why mixins avoid `!important`:**
+
+Component mixins are included directly in your component's SCSS file, which means:
+1. They become part of the component's encapsulated styles
+2. Angular adds unique attribute selectors (e.g., `[_nghost-ng-c123]`)
+3. This naturally increases specificity beyond global/Material styles
+4. No `!important` needed - proper CSS cascade handles it
+
+**Example of natural specificity:**
+```scss
+// Your component SCSS
+.button {
+  @include map-control-button;  // Generates ~10 properties
+}
+
+// Compiles to (simplified):
+.button[_nghost-ng-c123] {
+  background: var(--asf-surface);
+  height: 27px;
+  // ... other properties with component-specific specificity
+}
+```
+
+This approach is superior to using `:host` prefix or `!important` because the mixin properties become part of the component's natural cascade.
 
 ## Questions or Issues?
 
