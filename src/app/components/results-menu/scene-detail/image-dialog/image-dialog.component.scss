@@ -1,6 +1,7 @@
 @use "@angular/material" as mat;
 
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 
 $config: mat.m2-define-legacy-typography-config();
 
@@ -22,16 +23,11 @@ $config: mat.m2-define-legacy-typography-config();
 
 a {
   text-decoration: none;
-  @include themify($themes) {
-    color: themed('blue-link');
-  }
+  color: var(--asf-blue-link);
 }
 
 .browse-dialog {
-  @include themify($themes) {
-    background-color: themed('primary-light');
-  }
-
+  background-color: var(--asf-primary-light);
   overflow: hidden;
   height: 100%;
 
@@ -54,20 +50,14 @@ a {
   }
 
   .browse-list {
-    @include themify($themes) {
-      background-color: themed('primary-light');
-    }
-
+    background-color: var(--asf-primary-light);
     min-height: 140px;
   }
 
   .scene-detail--wrapper {
-    @include themify($themes) {
-      background-color: themed('primary-light');
-      border-left-color: themed('primary-dark');
-      color: themed('dark-primary-text');
-    }
-
+    background-color: var(--asf-primary-light);
+    border-left-color: var(--asf-primary-dark);
+    color: var(--asf-dark-primary-text);
     min-width: 200px;
     border-left-style: solid;
     border-left-width: 1px;
@@ -77,17 +67,14 @@ a {
     max-width: 25%;
 
     .scene-detail {
-      margin: 0 10px;
+      margin: 0 spacing(sm);
     }
   }
 }
 
 .dialog-header--layout {
-  @include themify($themes) {
-    color: themed('dark-primary-text');
-    border-bottom-color: themed('dark-primary-text');
-  }
-
+  color: var(--asf-dark-primary-text);
+  border-bottom-color: var(--asf-dark-primary-text);
   border-bottom-style: solid;
   border-bottom-width: 1px;
   min-height: 60px;
@@ -126,25 +113,19 @@ a {
 }
 
 .btn-group button {
-  margin-bottom: 10px;
+  margin-bottom: spacing(sm);
 }
 
 .browse-drag-handle {
-  @include themify($themes) {
-    color: themed('dark-primary-text');
-  }
-
+  color: var(--asf-dark-primary-text);
   cursor: move;
   height: 24px;
 }
 
 .close-button {
-  @include themify($themes) {
-    color: themed('dark-primary-text');
-  }
-
+  color: var(--asf-dark-primary-text);
   vertical-align: top !important;
-  margin-bottom: 5px;
+  margin-bottom: spacing(xs);
 }
 
 .file-list {
@@ -219,15 +200,13 @@ a {
 .download-icon {
   height: 12px !important;
   width: 12px !important;
-  margin-right: 15px;
+  margin-right: spacing(md);
 }
 
 .file-button-download {
-  @include themify($themes) {
-    background-color: lighten(themed('primary-light'), 10%);
-  }
-
-  margin-bottom: 5px;
+  background-color: var(--asf-primary-light);
+  filter: brightness(1.1); // Lighten effect
+  margin-bottom: spacing(xs);
 }
 
 .on-demand-scene-names {
@@ -237,10 +216,7 @@ a {
 }
 
 .footer {
-  @include themify($themes) {
-    border-top: 1px solid themed('primary-dark');
-  }
-
+  border-top: 1px solid var(--asf-primary-dark);
   flex-shrink: 0;
   display: flex;
   flex-direction: row;
@@ -248,6 +224,6 @@ a {
   position: sticky;
   bottom: 0;
   z-index: 1020;
-  padding: 10px;
+  padding: spacing(sm);
   padding-top: 13.5px;
 }

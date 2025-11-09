@@ -1,6 +1,7 @@
 @use "@angular/material" as mat;
 
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 
 $config: mat.m2-define-legacy-typography-config();
 
@@ -10,9 +11,7 @@ $config: mat.m2-define-legacy-typography-config();
 
 .new-stuff {
   cursor: pointer;
-  @include themify($themes) {
-    color: themed('blue-link');
-  }
+  color: var(--asf-blue-link);
   font-weight: bold;
-  margin-right: 10px;
+  margin-right: spacing(sm);
 }

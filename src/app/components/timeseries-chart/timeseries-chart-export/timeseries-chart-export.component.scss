@@ -1,5 +1,6 @@
 @use "@angular/material" as mat;
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 // $config: mat.define-legacy-typography-config();
 
 .mat-button-toggle-button {
@@ -16,13 +17,11 @@
 
 .ts-criteria-button-toggle-group {
     flex: 0 1 149px !important;
-    margin-top: 5px;
+    margin-top: spacing(xs);
 }
 
 .ts-criteria-button-toggle {
-    @include themify($themes) {
-        background-color: themed('background-white') !important;
-    }
+    background-color: var(--asf-surface) !important;
     font-size: 14px;
 }
 
@@ -30,14 +29,12 @@
   width: 25px;
   height: 20px;
   text-align: center;
-  padding-top: 8px;
+  padding-top: spacing(sm);
   border-radius: 4px !important;
 }
 
 .settings-icon {
-  @include themify($themes) {
-    color: themed('dark-primary-text') !important;
-  }
+  color: var(--asf-dark-primary-text) !important;
   font-size: 16px !important;
   margin-left: 0;
 }
@@ -51,6 +48,6 @@
 }
 
 .chart-config-menu-panel {
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: spacing(md);
+    padding-right: spacing(md);
 }

@@ -1,11 +1,10 @@
 @use "asf-theme-variables" as *;
 @use "variables" as *;
+@use "tokens" as *;
 
 %card-base {
-  @include themify($themes) {
-    background-color: themed('primary');
-    color: themed('dark-primary-text');
-  }
+  background-color: var(--asf-primary);
+  color: var(--asf-dark-primary-text);
   border-radius: 0;
 }
 
@@ -20,16 +19,13 @@
 }
 
 .sec1 {
-  margin-right: 9px;
+  margin-right: spacing(sm);
 }
 
 .logo-card {
-  @include themify($themes) {
-    background-color: themed('primary-light');
-    color: themed('background-white');
-  }
-
-  padding: 0 8px 0 0 !important;
+  background-color: var(--asf-primary-light);
+  color: var(--asf-surface);
+  padding: 0 spacing(sm) 0 0 !important;
   flex: 1 1 0%;
   box-sizing: border-box;
 
@@ -46,11 +42,11 @@
     line-height: 15px;
     font-weight: 400;
     letter-spacing: 0.1em;
-    margin-bottom: 10px;
+    margin-bottom: spacing(sm);
   }
 
   p {
-    margin-top: -10px;
+    margin-top: -#{spacing(sm)};
     font-size: 12px;
     font-style: italic;
     letter-spacing: 0.02em;
@@ -64,10 +60,8 @@
 $icon-size: 36px;
 
 .menu-toggle-button {
-  @include themify($themes) {
-    background-color: themed('primary');
-    color: themed('dark-primary-text');
-  }
+  background-color: var(--asf-primary);
+  color: var(--asf-dark-primary-text);
   box-shadow: none !important;
   cursor: pointer;
   border: none;
@@ -77,7 +71,7 @@ $icon-size: 36px;
   border-right-style: solid;
   border-right-width: 1px;
   margin-top: 19px;
-  margin-left: 8px;
+  margin-left: spacing(sm);
 }
 
 .toggle-icon {
@@ -109,17 +103,17 @@ $icon-size: 36px;
 .asf-logo {
   width: 113px;
   margin-top: 13px;
-  margin-left: 7px;
+  margin-left: spacing(xs);
 }
 
 .asf-logo-mobile {
   height: 35px;
-  margin: 5px;
+  margin: spacing(xs);
 }
 
 .branding-block {
   padding-top: 0;
-  margin-left: 10px;
+  margin-left: spacing(sm);
   flex: 1 1 130px;
   box-sizing: border-box;
   max-width: 130px;

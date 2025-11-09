@@ -1,10 +1,9 @@
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 
 .browse-list {
-  @include themify($themes) {
-    border-top-color: themed('primary-dark');
-    background-color: themed('primary-light');
-  }
+  border-top-color: var(--asf-primary-dark);
+  background-color: var(--asf-primary-light);
   min-height: 140px;
   border-top-style: solid;
   border-top-width: 1px;
@@ -28,7 +27,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-  margin-top: 15px;
+  margin-top: spacing(md);
 }
 
 .browse-image {
@@ -42,5 +41,5 @@
 .browse-image--date {
   height: 18px;
   font-size: small;
-  margin-bottom: 5px;
+  margin-bottom: spacing(xs);
 }

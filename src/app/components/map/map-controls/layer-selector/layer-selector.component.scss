@@ -1,10 +1,9 @@
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 
 .layer-select-button {
-  @include themify($themes) {
-    background: themed('background-white');
-    color: themed('dark-primary-text');
-  }
+  background: var(--asf-surface);
+  color: var(--asf-dark-primary-text);
   margin: 0;
   padding: 0 0 0 3px;
   font-size: 18px !important;
@@ -32,9 +31,7 @@
 }
 
 .bottom-right {
-  @include themify($themes) {
-    color: themed('primary');
-  }
+  color: var(--asf-primary);
   position: absolute;
   bottom: -13px;
   right: -19px;
@@ -44,6 +41,6 @@
 
 .checkbox {
   margin-left: 2px;
-  margin-right: 22px;
+  margin-right: spacing(md);
   cursor: pointer;
 }

@@ -1,4 +1,5 @@
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 
 .saved-searches {
   left: 0;
@@ -19,9 +20,7 @@
 .saved-searches__header,
 .saved-searches__footer,
 .saved-searches__footer-mobile {
-  @include themify($themes) {
-    background-color: themed('primary-light');
-  }
+  background-color: var(--asf-primary-light);
 }
 
 .saved-searches__content,
@@ -31,46 +30,39 @@
 }
 
 .saved-searches__content {
-  @include themify($themes) {
-    background-color: themed('background-white');
-  }
+  background-color: var(--asf-surface);
   max-height: calc(100vh - 350px);
   overflow-y: auto;
 }
 
 .saved-searches__content-mobile {
-  @include themify($themes) {
-    background-color: themed('background-white');
-  }
+  background-color: var(--asf-surface);
   max-height: calc(100vh - 350px);
   overflow-y: auto;
   width: 100%;
 }
 
 .saved-searches-row:nth-child(odd) {
-  @include themify($themes) {
-    background-color: lighten(themed('primary-light'), 15%) !important;//themed('background-white');
-  }
+  background-color: var(--asf-primary-light) !important;
+  filter: brightness(1.15); // Lighten effect
 }
 
 .saved-searches__header {
-  @include themify($themes){
-    border-bottom-color: themed('primary');
-  }
+  border-bottom-color: var(--asf-primary);
   height: 70px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   padding-top: 0;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: spacing(md);
+  padding-right: spacing(md);
   border-bottom-style: solid;
   border-bottom-width: 1px;
 }
 
 .saved-searches__header-title {
-  font-size: 24px;
+  font-size: font-size(xl);
   display: flex;
   flex-grow: 1;
   flex-shrink: 1;
@@ -81,21 +73,19 @@
 .saved-searches__header-actions {
   display: flex;
   justify-content: space-between;
-  padding-top: 15px;
+  padding-top: spacing(md);
   height: 100%;
 }
 
 .saved-searches__subhead {
-  @include themify($themes) {
-    background-color: themed('background-white');
-  }
+  background-color: var(--asf-surface);
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding-top: 15px;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-top: spacing(md);
+  padding-left: spacing(md);
+  padding-right: spacing(md);
 }
 
 .saved-searches__filter-form {
@@ -107,15 +97,13 @@
 }
 
 .saved-searches__more-menu {
-  padding-left: 15px;
+  padding-left: spacing(md);
 }
 
 .saved-searches__footer,
 .saved-searches__footer-mobile {
-  @include themify($themes) {
-    background: themed('primary-light');
-    border-top-color: themed('primary');
-  }
+  background: var(--asf-primary-light);
+  border-top-color: var(--asf-primary);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -135,19 +123,15 @@
 }
 
 .saved-searches__save-button {
-  @include themify($themes) {
-    color: themed('primary-light');
-  }
+  color: var(--asf-primary-light);
   display: flex;
-  margin: 6px;
+  margin: spacing(sm);
 }
 
 .saved-searches__close-button {
-  @include themify($themes) {
-    color: themed('primary-light');
-  }
+  color: var(--asf-primary-light);
   display: flex;
-  margin-right: 15px;
+  margin-right: spacing(md);
   height: fit-content;
 }
 
@@ -157,8 +141,6 @@
 }
 
 .no-saved-searches {
-  @include themify($themes) {
-    color: themed('primary-light');
-  }
-  padding-left: 15px;
+  color: var(--asf-primary-light);
+  padding-left: spacing(md);
 }

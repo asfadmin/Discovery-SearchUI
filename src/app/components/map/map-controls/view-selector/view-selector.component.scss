@@ -1,10 +1,9 @@
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 
 .view-btn {
-  @include themify($themes) {
-    svg {
-      fill: themed('dark-primary-text');
-    }
+  svg {
+    fill: var(--asf-dark-primary-text);
   }
   width: 19px;
   height: 19px;
@@ -17,10 +16,8 @@
 }
 
 .view-select-button {
-  @include themify($themes) {
-    background: themed('background-white');
-    color: themed('dark-primary-text')
-  }
+  background: var(--asf-surface);
+  color: var(--asf-dark-primary-text);
   margin: 0;
   font-size: 18px !important;
   height: 27px !important;
@@ -43,9 +40,7 @@
 }
 
 .bottom-right {
-  @include themify($themes) {
-    color: themed('primary');
-  }
+  color: var(--asf-primary);
   position: absolute;
   bottom: -9px;
   right: -21px;

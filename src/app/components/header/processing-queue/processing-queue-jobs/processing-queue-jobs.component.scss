@@ -1,7 +1,8 @@
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 
 .clipboard-icon {
-  margin: 0 10px;
+  margin: 0 spacing(sm);
 }
 
 .mat-mdc-list-base {
@@ -27,22 +28,20 @@
 
 .flex-field {
   flex: 1 0 auto;
-  margin-left: 25px;
+  margin-left: spacing(lg);
 }
 
 .sort-options {
-  @include themify($themes) {
-    background-color: themed('background-white');
-  }
+  background-color: var(--asf-surface);
   flex-direction: row;
   display: flex;
   flex-wrap: wrap;
-  margin-top: 25px;
+  margin-top: spacing(lg);
 }
 
 .jobs-overview {
   margin: auto;
-  padding: 25px;
+  padding: spacing(lg);
 }
 
 .mat-mdc-list-base .mat-mdc-list-item,
@@ -55,7 +54,7 @@
 }
 
 .button-remove-job {
-  margin-left: 10px;
+  margin-left: spacing(sm);
   margin-top: -22px;
 }
 
@@ -74,9 +73,7 @@
 }
 
 .jobs-empty-message {
-  @include themify($themes) {
-    color: themed('dark-primary-text');
-  }
+  color: var(--asf-dark-primary-text);
   text-align: center;
   font-size: 20px;
   margin: 0 auto;
@@ -99,19 +96,15 @@
 
 .jobs-empty-message-docs-link,
 .jobs-empty-message-docs-link a {
-  @include themify($themes) {
-    color: themed('blue-link');
-  }
+  color: var(--asf-blue-link);
   display: block;
   text-align: center;
   font-size: 14px;
-  padding-top: 10px;
+  padding-top: spacing(sm);
   margin: 0 auto;
 }
 
 .pair-expansion-panel-header {
-  @include themify($themes) {
-    background-color: themed('background-white') !important;
-  }
+  background-color: var(--asf-surface) !important;
   border-style: none !important;
 }

@@ -1,20 +1,18 @@
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 
 .banner-card {
-  @include themify($themes) {
-    color: themed("dark-primary-text");
-    background-color: themed("primary-light");
-  }
-
+  color: var(--asf-dark-primary-text);
+  background-color: var(--asf-primary-light);
   pointer-events: auto;
-  padding-top: 5px;
+  padding-top: spacing(xs);
   padding-bottom: 9px;
   border-color: $asf-primary-dark;
   border-width: 2px;
   border-style: solid;
   //color: darken($asf-accent, 50%);
   margin-left: 0;
-  margin-bottom: 5px;
+  margin-bottom: spacing(xs);
   line-height: 1.4;
   padding-right: 0;
 }

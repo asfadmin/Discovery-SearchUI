@@ -1,8 +1,7 @@
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 .container {
-  @include themify($themes) {
-    color: themed("dark-primary-text");
-  }
+  color: var(--asf-dark-primary-text);
 }
 .data-list b {
   width: 120px;
@@ -36,5 +35,5 @@
   display: flex;
   flex-direction: column;
   max-width: 47%;
-  margin: 15px;
+  margin: spacing(md);
 }

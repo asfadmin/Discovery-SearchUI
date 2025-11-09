@@ -1,9 +1,8 @@
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 
 .subset-option {
-  @include themify($themes) {
-    color: themed('blue-link');
-  }
+  color: var(--asf-blue-link);
 }
 
 button {

@@ -1,16 +1,14 @@
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 
 .header-mobile {
   min-height: 36px;
 }
 
 .header {
-  @include themify($themes) {
-    background-color: themed('primary-light');
-    color: themed('dark-primary-text');
-  }
-
-  padding-top: 20px;
+  background-color: var(--asf-primary-light);
+  color: var(--asf-dark-primary-text);
+  padding-top: spacing(md);
   height: 30px;
   margin-bottom: 0;
   font-family: Roboto, sans-serif;
@@ -44,7 +42,7 @@
   flex-direction: column;
   width: 100%;
   height: 137px;
-  margin-top: 10px;
+  margin-top: spacing(sm);
 }
 
 .sbas-column-1 {
@@ -53,32 +51,26 @@
 
 .sbas-column-2 {
   flex: 1 1 auto;
-  margin-left: 10px;
+  margin-left: spacing(sm);
 }
 
 .baseline-criteria-button-toggle-group {
   flex: 0 1 190px !important;
-  margin-top: -5px;
+  margin-top: -#{spacing(xs)};
 }
 
 .sbas-criteria-button-toggle-group {
   flex: 0 1 120px !important;
-  margin-top: -5px;
+  margin-top: -#{spacing(xs)};
 }
 
 .baseline-criteria-button-toggle {
-  @include themify($themes) {
-    background-color: themed('background-white') !important;
-  }
-
+  background-color: var(--asf-surface) !important;
   font-size: 14px;
 }
 
 .sbas-criteria-button-toggle {
-  @include themify($themes) {
-    background-color: themed('background-white') !important;
-  }
-
+  background-color: var(--asf-surface) !important;
   font-size: 14px;
 }
 
@@ -96,9 +88,7 @@
 
 /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .control-mat-button-toggle {
-  @include themify($themes) {
-    background-color: themed('background-white');
-  }
+  background-color: var(--asf-surface);
 }
 
 .more-horiz {
@@ -109,19 +99,13 @@
 }
 
 .warn-icon {
-  margin-right: 5px;
-
-  @include themify($themes) {
-    color: themed('warn');
-  }
+  margin-right: spacing(xs);
+  color: var(--asf-warn);
 }
 
 .gap-detected-area {
-  margin-top: -5px;
-
-  @include themify($themes) {
-    color: themed('dark-primary-text') !important;
-  }
+  margin-top: -#{spacing(xs)};
+  color: var(--asf-dark-primary-text) !important;
 }
 .baseline-chart {
   height: 100%;

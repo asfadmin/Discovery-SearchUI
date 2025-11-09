@@ -1,4 +1,5 @@
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 
 .saved-filters {
   left: 0;
@@ -19,9 +20,7 @@
 .saved-filters-presets__header,
 .saved-filters-presets__footer,
 .saved-filters-presets__footer-mobile {
-  @include themify($themes) {
-    background-color: themed('primary-light');
-  }
+  background-color: var(--asf-primary-light);
 }
 
 .saved-filters-presets__content,
@@ -31,47 +30,39 @@
 }
 
 .saved-filters-presets__content {
-  @include themify($themes) {
-    background-color: themed('background-white');
-  }
+  background-color: var(--asf-surface);
   max-height: 100%;
   overflow-y: auto;
 }
 
 .saved-filters-presets__content-mobile {
-  @include themify($themes) {
-    background-color: themed('background-white');
-  }
+  background-color: var(--asf-surface);
   max-height: 100%;
   overflow-y: auto;
   width: 100%;
 }
 
 .saved-filters-presets-row:nth-child(even) {
-  @include themify($themes) {
-    background-color: darken(themed('primary-light'), 10%) !important;
-  }
+  background-color: var(--asf-primary-light) !important;
+  filter: brightness(0.9); // Darken effect
 }
 
 .saved-filters-presets__header {
-  @include themify($themes) {
-    border-bottom-color: themed('primary');
-  }
-
+  border-bottom-color: var(--asf-primary);
   height: 70px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   padding-top: 0;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: spacing(md);
+  padding-right: spacing(md);
   border-bottom-style: solid;
   border-bottom-width: 1px;
 }
 
 .saved-filters-presets__header-title {
-  font-size: 24px;
+  font-size: font-size(xl);
   display: flex;
   flex-grow: 1;
   flex-shrink: 1;
@@ -82,22 +73,19 @@
 .saved-filters-presets__header-actions {
   display: flex;
   justify-content: space-between;
-  padding-top: 15px;
+  padding-top: spacing(md);
   height: 100%;
 }
 
 .saved-filters-presets__subhead {
-  @include themify($themes) {
-    background-color: themed('background-white');
-  }
-
+  background-color: var(--asf-surface);
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding-top: 15px;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-top: spacing(md);
+  padding-left: spacing(md);
+  padding-right: spacing(md);
 }
 
 .saved-filters-presets__filter-form {
@@ -109,16 +97,13 @@
 }
 
 .saved-filters-presets__more-menu {
-  padding-left: 15px;
+  padding-left: spacing(md);
 }
 
 .saved-filters-presets__footer,
 .saved-filters-presets__footer-mobile {
-  @include themify($themes) {
-    border-top-color: themed('primary');
-    background-color: themed('primary-light');
-  }
-
+  background: var(--asf-primary-light);
+  border-top-color: var(--asf-primary);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -139,20 +124,14 @@
 }
 
 .saved-filters-presets__save-button {
-  @include themify($themes) {
-    color: themed('primary-light');
-  }
-
+  color: var(--asf-primary-light);
   display: flex;
 }
 
 .saved-filters-presets__close-button {
-  @include themify($themes) {
-    color: themed('primary-light');
-  }
-
+  color: var(--asf-primary-light);
   display: flex;
-  margin-right: 15px;
+  margin-right: spacing(md);
   height: fit-content;
 }
 
@@ -161,11 +140,8 @@
 }
 
 .no-saved-searches {
-  @include themify($themes) {
-    color: themed('primary-light');
-  }
-
-  padding-left: 15px;
+  color: var(--asf-primary-light);
+  padding-left: spacing(md);
 }
 
 .header-view {
@@ -186,8 +162,8 @@
 
 .filter-apply-button {
   width: 25%;
-  margin-right: 25px;
-  margin-top: 10px;
+  margin-right: spacing(lg);
+  margin-top: spacing(sm);
 }
 
 .saved-filter {
@@ -195,7 +171,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 7px 10px;
+  padding: spacing(xs) spacing(sm);
   margin: 0;
 }
 
@@ -203,11 +179,11 @@
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  padding: 5px;
+  padding: spacing(xs);
 }
 
 .expand-arrow {
-  margin-right: 20px;
+  margin-right: spacing(md);
   margin-top: -2px;
 }
 

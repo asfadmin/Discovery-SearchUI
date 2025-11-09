@@ -1,10 +1,11 @@
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 
 .preferences-group {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: spacing(sm);
 }
 
 .action-controls {
@@ -16,18 +17,16 @@
 }
 
 .preferences-form--layout {
-  padding: 0 25px;
+  padding: 0 spacing(lg);
   width: 100%;
 }
 
 .feedback-link {
-  margin-right: 10px;
+  margin-right: spacing(sm);
   flex: 30px;
 
   a {
-    @include themify($themes) {
-      color: themed('blue-link');
-    }
+    color: var(--asf-blue-link);
     text-decoration: none;
   }
 }
@@ -38,10 +37,7 @@
 }
 
 .dialog-header {
-  @include themify($themes) {
-    color: themed('dark-primary-text');
-  }
-
+  color: var(--asf-dark-primary-text);
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -49,12 +45,10 @@
 }
 
 .preferences-body {
-  @include themify($themes) {
-    background-color: themed("background-white");
-  }
+  background-color: var(--asf-surface);
   display: flex;
   width: 100%;
-  padding-top: 15px;
+  padding-top: spacing(md);
 }
 
 .default-dataset,

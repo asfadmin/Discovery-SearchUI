@@ -1,6 +1,7 @@
 @use "@angular/material" as mat;
 
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 
 .ts-chart-row {
 	display: flex;
@@ -26,7 +27,7 @@
 
 .ts-criteria-button-toggle-group {
 	flex: 0 1 149px !important;
-	margin-top: 5px;
+	margin-top: spacing(xs);
 }
 
 .ts-criteria-button-toggle {
@@ -45,11 +46,11 @@
 	flex-direction: column;
 	width: 100%;
 	height: 137px;
-	margin-top: 10px;
+	margin-top: spacing(sm);
 }
 
 .select-button {
-	padding: 2px 10px;
+	padding: 2px spacing(sm);
 }
 
 .ts-column-1 {
@@ -91,11 +92,8 @@
 }
 
 .ts-metadata {
-	@include themify($themes) {
-		border-left: solid 1px themed('primary-light');
-		border-right: solid 2px themed('primary-light');
-	}
-
+	border-left: solid 1px var(--asf-primary-light);
+	border-right: solid 2px var(--asf-primary-light);
 	overflow: auto;
 	height: 100%;
 }
@@ -106,10 +104,7 @@
 
 .chart-resize-handle-left,
 .chart-resize-handle-right {
-	@include themify($themes) {
-		background-color: themed('primary-light');
-	}
-
+	background-color: var(--asf-primary-light);
 	height: 100%;
 }
 
@@ -118,12 +113,9 @@
 }
 
 .chart-draggable-handle {
-	@include themify($themes) {
-		background-color: themed('primary-light');
-		border-color: themed('primary-light');
-		color: themed('primary-light');
-	}
-
+	background-color: var(--asf-primary-light);
+	border-color: var(--asf-primary-light);
+	color: var(--asf-primary-light);
 	display: flex;
 	align-items: center;
 	cursor: ew-resize;
@@ -135,34 +127,25 @@
 }
 
 .ts-resize-handle-filler {
-	@include themify($themes) {
-		background-color: themed('primary-light');
-	}
-
-	width: 10px;
+	background-color: var(--asf-primary-light);
+	width: spacing(sm);
 	height: 100%;
 }
 
 .vgrip-icon {
-	@include themify($themes) {
-		stroke: themed('dark-primary-text');
-	}
-
+	stroke: var(--asf-dark-primary-text);
 	height: 33px;
 }
 
 .ts-header {
-	@include themify($themes) {
-		background-color: themed('primary-light');
-		color: themed('dark-primary-text')
-	}
-
+	background-color: var(--asf-primary-light);
+	color: var(--asf-dark-primary-text);
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
 	height: 50px;
 	padding-top: 0;
-	padding-bottom: 5px;
+	padding-bottom: spacing(xs);
 	margin-bottom: 0;
 	font-family: Roboto,
 	sans-serif;
@@ -174,21 +157,15 @@
 }
 
 .control-icon {
-	@include themify($themes) {
-		color: themed('dark-primary-text');
-	}
-
+	color: var(--asf-dark-primary-text);
 	margin-top: -4px;
-
 	@include md-icon-size($asf-ribbon-icon-size);
 }
 
 /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .mat-button-toggle-disabled {
 	.control-icon {
-		@include themify($themes) {
-			color: themed('dark-disabled-text');
-		}
+		color: var(--asf-dark-disabled-text);
 	}
 }
 
@@ -227,10 +204,7 @@
 }
 
 .button-group-label {
-	@include themify($themes) {
-		color: themed('dark-primary-text');
-	}
-
+	color: var(--asf-dark-primary-text);
 	white-space: nowrap;
 	text-align: center;
 	flex-direction: row;
@@ -245,21 +219,18 @@ label {
 }
 
 .info-icon {
-	margin-left: 10px;
+	margin-left: spacing(sm);
 	margin-top: 4px;
 }
 
 /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .control-mat-button-toggle {
-	@include themify($themes) {
-		background: themed('background-white') !important;
-	}
+	background: var(--asf-surface) !important;
 }
 
 .warn-icon {
-	@include themify($themes) {
-		color: darken(themed('dark-primary-text'), 25%);
-	}
+	color: var(--asf-dark-primary-text);
+	filter: brightness(0.75); // Darken effect
 }
 
 .gap-detected-area {
@@ -270,10 +241,8 @@ label {
 	display: grid;
 	place-items: center;
 	width: 30px;
-
-	@include themify($themes) {
-		background: darken(themed('background-white'), 15%);
-	}
+	background: var(--asf-surface);
+	filter: brightness(0.85); // Darken effect
 }
 
 .ts-column-2 {
@@ -282,7 +251,7 @@ label {
 
 .ts-left-column-results {
   overflow-x: auto;
-  margin-left: 10px;
+  margin-left: spacing(sm);
 }
 
 .ts-no-point-selected {
@@ -291,10 +260,8 @@ label {
 }
 
 .ts-wkt-icon {
-  @include themify($themes) {
-    color: darken(themed('dark-primary-text'), 25%);
-  }
-
+  color: var(--asf-dark-primary-text);
+  filter: brightness(0.75); // Darken effect
   font-size: 18px;
   line-height: 29px;
   margin: 0;
@@ -302,9 +269,9 @@ label {
 }
 
 .ts-wkt-label {
-  margin-left: 5px;
+  margin-left: spacing(xs);
   position: relative;
-  top: -5px;
+  top: -#{spacing(xs)};
 }
 
 .ts-trash-can {
@@ -313,7 +280,7 @@ label {
 }
 
 .ts-add-points {
-  margin: 5px 0 20px 16px;
+  margin: spacing(xs) 0 spacing(md) 16px;
 }
 
 .ts-wkt-text {
@@ -342,10 +309,8 @@ label {
 
 span.parent-checkbox-section:hover {
   cursor: pointer;
-
-  @include themify($themes) {
-    background-color: lighten(themed('primary-light'),5%);
-  }
+  background-color: var(--asf-primary-light);
+  filter: brightness(1.05); // Lighten effect
 }
 
 .delete-all-btn2 {
@@ -384,7 +349,7 @@ ul {
 
 .invalid-aoi-icon {
 	display: inline-block;
-	padding-right: 10px;
+	padding-right: spacing(sm);
 	padding-left: 6px;
 }
 
@@ -393,9 +358,8 @@ ul {
 }
 
 .ts-highlighted {
-  @include themify($themes) {
-    background-color: lighten(themed('primary-light'),5%);
-  }
+  background-color: var(--asf-primary-light);
+  filter: brightness(1.05); // Lighten effect
 
   .ts-wkt-label {
     font-weight: bolder;
@@ -413,11 +377,11 @@ ul {
 .loading-spinner {
 	display: inline-block;
 	margin-right: 12px;
-	margin-left: 8px;
+	margin-left: spacing(sm);
 }
 
 .delete-all-btn {
-  margin-left: 8px;
+  margin-left: spacing(sm);
   vertical-align: middle;
 }
 
@@ -435,9 +399,8 @@ ul {
 }
 
 .series-label {
-	@include themify($themes) {
-		color: lighten(themed('dark-primary-text'), 20%);
-	}
+	color: var(--asf-dark-primary-text);
+	filter: brightness(1.2); // Lighten effect
 }
 
 .data-credit {

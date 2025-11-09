@@ -1,6 +1,7 @@
 @use "@angular/material" as mat;
 
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 
 $config: mat.m2-define-legacy-typography-config();
 
@@ -16,30 +17,28 @@ div span {
 
 .first-info {
   flex: 0 1 65%;
-  padding-left: 5px;
+  padding-left: spacing(xs);
   height: 32px;
 }
 
 .last-info {
   text-align: right;
-  margin-right: 25px;
+  margin-right: spacing(lg);
   flex: 1 1 0%;
   box-sizing: border-box;
 }
 
 .info-bar {
-  @include themify($themes) {
-    color: themed('dark-primary-text');
-    background-color: themed('primary-light');
-    border-top-color: themed('primary');
-  }
+  color: var(--asf-dark-primary-text);
+  background-color: var(--asf-primary-light);
+  border-top-color: var(--asf-primary);
   border-top-style: solid;
   border-top-width: 1px;
   line-height: 30px;
   font-size: 14px;
   padding-right: 150px;
-  margin-top: 25px;
-  margin-bottom: -5px;
+  margin-top: spacing(lg);
+  margin-bottom: -#{spacing(xs)};
   height: 100%;
   min-height: 100%;
   min-width: 100%;
@@ -55,11 +54,9 @@ div span {
 
 .new-stuff {
   cursor: pointer;
-  @include themify($themes) {
-    color: themed('blue-link');
-  }
+  color: var(--asf-blue-link);
   font-weight: bold;
-  margin-right: 10px;
+  margin-right: spacing(sm);
 }
 
 .sarviews {

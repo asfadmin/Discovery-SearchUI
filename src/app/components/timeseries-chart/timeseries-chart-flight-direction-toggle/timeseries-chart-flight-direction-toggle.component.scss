@@ -1,16 +1,15 @@
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 @use "deluxe-menu" as *;
 @use "deluxe-menu-2" as *;
 @use "asf-header-menu-button" as *;
 
 .button-label {
-    @include themify($themes) {
-        color: themed("dark-primary-text");
-    }
+    color: var(--asf-dark-primary-text);
     cursor: pointer;
     font-size: 14px;
     font-weight: 400;
-    padding-right: 10px;
+    padding-right: spacing(sm);
     text-align: left;
     transform:
       translateY(-1.2812em)
@@ -20,21 +19,14 @@
 
 
 .control-icon {
-    @include themify($themes) {
-        color: themed('dark-primary-text');
-    }
-
+    color: var(--asf-dark-primary-text);
     transform: scale(1.5);
-
     margin-top: -4px;
-
     @include md-icon-size($asf-ribbon-icon-size);
 }
 
 .fd-icon-button-text {
-    @include themify($themes) {
-        color: themed('dark-primary-text');
-    }
+    color: var(--asf-dark-primary-text);
     @include md-icon-size($asf-ribbon-icon-size);
 }
 

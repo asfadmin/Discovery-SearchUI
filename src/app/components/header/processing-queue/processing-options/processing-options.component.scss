@@ -1,15 +1,14 @@
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 
 .processing-options {
-  @include themify($themes) {
-    background-color: themed('background-white');
-  }
-  margin-top: 10px;
+  background-color: var(--asf-surface);
+  margin-top: spacing(sm);
 }
 
 .no-processing-options {
   color: #c9cac4; // TODO: check this
-  padding-left: 15px;
+  padding-left: spacing(md);
 }
 
 .flex-field {
@@ -19,7 +18,7 @@
 }
 
 .margin-right {
-  margin-right: 20px;
+  margin-right: spacing(md);
   display: inline-block;
 }
 
@@ -42,31 +41,31 @@
 }
 
 .toggle-options {
-  //margin-right: 20px;
+  //margin-right: spacing(md);
 }
 
 .toggle-list,
 .checkbox-list {
-  margin-left: 10px;
+  margin-left: spacing(sm);
 }
 
 .dropdown-option--description {
   margin-top: 0;
-  margin-bottom: 20px;
+  margin-bottom: spacing(md);
 }
 
 .options-header {
   flex: 1 0 100%;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: spacing(sm);
 }
 
 .option-info--spacing {
-  margin-left: 5px;
+  margin-left: spacing(xs);
   color: lightgray;
 }
 
 .option-header {
   font-weight: bold;
-  margin: 5px 0 10px;
+  margin: spacing(xs) 0 spacing(sm);
 }

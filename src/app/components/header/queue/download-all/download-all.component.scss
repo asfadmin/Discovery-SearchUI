@@ -1,4 +1,5 @@
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 
 button {
   height: 36px;
@@ -6,18 +7,14 @@ button {
 }
 
 .mat-mdc-button {
-  @include themify($themes) {
-    color: themed('dark-primary-text');
-  }
+  color: var(--asf-dark-primary-text);
   font-size: 16px;
 }
 
 .badge {
-  @include themify($themes) {
-    background: themed('primary-light');
-  }
+  background: var(--asf-primary-light);
   display: inline;
-  margin: 5px;
-  padding: 5px;
+  margin: spacing(xs);
+  padding: spacing(xs);
   border-radius: 50px;
 }

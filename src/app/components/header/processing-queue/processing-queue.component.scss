@@ -1,30 +1,24 @@
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 
 $header-height: 120px;
 $footer-height: 60px;
-$bottom-offset: 10px;
+$bottom-offset: spacing(sm);
 
-::ng-deep .tab-menu .mat-mdc-menu-content {
+:host .tab-menu .mat-mdc-menu-content {
   width: 160px !important;
 }
 
 [mat-dialog-title] {
   background: #369; // TODO: check this
-  @include themify($themes) {
-    color: themed('light-primary-text');
-  }
-
-  color: $light-primary-text;
+  color: var(--asf-light-primary-text);
   cursor: move;
   text-align: center;
 }
 
 .processing-queue {
-  @include themify($themes) {
-    color: themed('dark-primary-text');
-    background-color: themed('primary-light');
-  }
-
+  color: var(--asf-dark-primary-text);
+  background-color: var(--asf-primary-light);
   min-width: 350px;
   height: 100%;
   min-height: 500px;
@@ -39,13 +33,10 @@ $bottom-offset: 10px;
 }
 
 .pq-card-title-group {
-  @include themify($themes) {
-    color: themed('dark-primary-text');
-    background-color: themed('primary-light');
-    header-bottom-color: themed('primary-dark');
-  }
-
-  padding: 10px 0 0 0;
+  color: var(--asf-dark-primary-text);
+  background-color: var(--asf-primary-light);
+  header-bottom-color: var(--asf-primary-dark);
+  padding: spacing(sm) 0 0 0;
   border-bottom-style: solid;
   border-bottom-width: 1px;
   width: 100%;
@@ -82,10 +73,7 @@ $bottom-offset: 10px;
 }
 
 .list-filter {
-  @include themify($themes) {
-    background-color: themed('background-white');
-  }
-
+  background-color: var(--asf-surface);
   border-bottom: solid grey 1px;
   height: 60px;
 }
@@ -103,7 +91,7 @@ $bottom-offset: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-left: 20px;
+  padding-left: spacing(md);
   font-size: 28px;
 }
 
@@ -111,14 +99,12 @@ $bottom-offset: 10px;
   display: inline-block;
   vertical-align: middle;
   margin-left: 0;
-  margin-bottom: -5px;
+  margin-bottom: -#{spacing(xs)};
 }
 
 .on-demand-icon {
   @include md-icon-size(72px);
-  @include themify($themes) {
-    color: themed('dark-primary-text');
-  }
+  color: var(--asf-dark-primary-text);
 }
 
 .on-demand-text {
@@ -142,20 +128,18 @@ $bottom-offset: 10px;
 .project-name {
   display: inline-block;
   font-size: 14px;
-  margin-top: 10px;
-  margin-left: 20px;
+  margin-top: spacing(sm);
+  margin-left: spacing(md);
 }
 
 .project-name-mobile {
   transform: scale(0.75);
-  margin-left: 4px;
+  margin-left: spacing(2);
 }
 
 .dataset-menu {
-  @include themify($themes) {
-    background-color: adjust-color(themed('primary-light'), $lightness: +7%);
-  }
-
+  background-color: var(--asf-primary-light);
+  filter: brightness(1.07); // Lighten effect
   display: block;
   position: absolute;
   top: 84px;
@@ -169,7 +153,7 @@ $bottom-offset: 10px;
 
 .processing-type-text {
   font-size: 16px;
-  margin: 0 10px;
+  margin: 0 spacing(sm);
 }
 
 .processing-type-count {
@@ -178,11 +162,8 @@ $bottom-offset: 10px;
 }
 
 .error-header {
-  @include themify($themes) {
-    background-color: themed('background-white');
-    border-bottom-color: themed('primary-dark');
-  }
-
+  background-color: var(--asf-surface);
+  border-bottom-color: var(--asf-primary-dark);
   border-bottom-style: solid;
   border-bottom-width: 1px;
   z-index: 10;
@@ -192,10 +173,7 @@ $bottom-offset: 10px;
 }
 
 .mobile-tab-selector {
-  @include themify($themes) {
-    border-bottom-color: themed('primary-dark');
-  }
-
+  border-bottom-color: var(--asf-primary-dark);
   border-bottom-style: solid;
   border-bottom-width: 1px;
 }
@@ -204,7 +182,7 @@ $bottom-offset: 10px;
   display: flex;
   justify-content: flex-end;
   margin-top: -42px;
-  margin-right: 20px;
+  margin-right: spacing(md);
 }
 
 .doc-feedback-div-mobile {
@@ -214,7 +192,7 @@ $bottom-offset: 10px;
 .docs-div {
   cursor: pointer;
   flex: 0 1 auto;
-  margin-right: 20px;
+  margin-right: spacing(md);
   margin-top: 2px;
 }
 
@@ -229,9 +207,7 @@ $bottom-offset: 10px;
 
   a {
     text-decoration: underline;
-    @include themify($themes) {
-      color: themed('blue-link');
-    }
+    color: var(--asf-blue-link);
   }
 }
 
@@ -245,20 +221,14 @@ $bottom-offset: 10px;
 }
 
 .on-demand-subtitle {
-  @include themify($themes) {
-    color: themed('dark-secondary-text');
-  }
-
+  color: var(--asf-dark-secondary-text);
   font-style: italic;
   font-size: 14px;
   line-height: 12px;
 }
 
 .mat-mdc-dialog-content {
-  @include themify($themes) {
-    background-color: themed('background-white');
-  }
-
+  background-color: var(--asf-surface);
   position: absolute;
   display: block;
   top: $header-height;
@@ -292,14 +262,14 @@ $bottom-offset: 10px;
 .content-message-area {
   flex: 1 0 100%;
   width: 100%;
-  margin-left: 10px;
+  margin-left: spacing(sm);
 }
 
 .content-top-area {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  padding: 0 0 8px 15px;
+  padding: 0 0 spacing(sm) spacing(md);
   border-bottom: solid 2px grey;
   height: 100%;
 }
@@ -327,10 +297,7 @@ $bottom-offset: 10px;
 }
 
 .mat-mdc-dialog-actions {
-  @include themify($themes) {
-    background-color: themed('primary-light');
-  }
-
+  background-color: var(--asf-primary-light);
   position: absolute;
   display: flex;
   width: 100%;
@@ -341,11 +308,8 @@ $bottom-offset: 10px;
 }
 
 .hyp3-footer {
-  @include themify($themes) {
-    background-color: themed('primary-light');
-    border-top-color: themed('primary-dark');
-  }
-
+  background-color: var(--asf-primary-light);
+  border-top-color: var(--asf-primary-dark);
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -361,7 +325,7 @@ $bottom-offset: 10px;
 
 .footer-submit {
   flex: none;
-  margin: 12px 10px 12px 0;
+  margin: 12px spacing(sm) 12px 0;
 }
 
 .footer-submit-mobile {
@@ -369,13 +333,10 @@ $bottom-offset: 10px;
 }
 
 .footer-job-notification {
-  @include themify($themes) {
-    color: themed('dark-primary-text');
-  }
-
+  color: var(--asf-dark-primary-text);
   flex: none;
-  margin-right: 10px;
-  margin-left: 10px;
+  margin-right: spacing(sm);
+  margin-left: spacing(sm);
   align-self: center;
   font-size: 14px;
 }
@@ -394,11 +355,8 @@ $bottom-offset: 10px;
 }
 
 .rectangle {
-  @include themify($themes) {
-    color: themed('warn');
-    border-color: themed('warn');
-  }
-
+  color: var(--asf-warn);
+  border-color: var(--asf-warn);
   position: relative;
   display: flex;
   align-items: center;
@@ -444,14 +402,11 @@ $bottom-offset: 10px;
 }
 
 .job-type--button {
-  margin-right: 5px;
+  margin-right: spacing(xs);
 }
 
 .hyp3-url {
-  @include themify($themes) {
-    color: themed('dark-secondary-text');
-  }
-
+  color: var(--asf-dark-secondary-text);
   height: 32px;
   font-size: 12px;
   margin: -4px 0 6px 0;
@@ -467,7 +422,5 @@ $bottom-offset: 10px;
 }
 
 a {
-  @include themify($themes) {
-    color: themed('blue-link')
-  }
+  color: var(--asf-blue-link);
 }

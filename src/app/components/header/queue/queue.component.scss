@@ -1,18 +1,16 @@
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 
 $header-height: 67px;
 $footer-height: 60px;
-$bottom-offset: 10px;
+$bottom-offset: spacing(sm);
 $warn-msg-height: 27px;
 $warn-msg-mobile-height: 49px;
 $idk-pad: 21px;
 
 .dl-title-group {
-  @include themify($themes) {
-    color: themed("dark-primary-text");
-  }
-
-  padding: 0 10px;
+  color: var(--asf-dark-primary-text);
+  padding: 0 spacing(sm);
   margin-left: -23px;
   margin-right: -24px;
   margin-top: -44px;
@@ -23,24 +21,18 @@ $idk-pad: 21px;
 }
 
 .dl-subtitle {
-  @include themify($themes) {
-    color: themed("dark-secondary-text");
-  }
-
+  color: var(--asf-dark-secondary-text);
   margin-top: -25px;
   font-style: italic;
   font-size: 16px;
 }
 
 .dl-card-actions {
-  @include themify($themes) {
-    background-color: themed("primary-light");
-    border-top-color: themed("primary-dark");
-    color: themed("dark-primary-text");
-  }
-
+  background-color: var(--asf-primary-light);
+  border-top-color: var(--asf-primary-dark);
+  color: var(--asf-dark-primary-text);
   height: 80px;
-  padding: 20px 20px 0;
+  padding: spacing(md) spacing(md) 0;
   padding-top: 0;
   border-top-style: solid;
   border-top-width: 1px;
@@ -57,10 +49,7 @@ $idk-pad: 21px;
 
   .mat-mdc-button {
     font-size: 16px;
-
-    @include themify($themes) {
-      color: themed("dark-primary-text");
-    }
+    color: var(--asf-dark-primary-text);
   }
 
   flex: 1 1 100%;
@@ -73,10 +62,7 @@ $idk-pad: 21px;
 
   .mat-mdc-button {
     font-size: 16px;
-
-    @include themify($themes) {
-      color: themed("dark-primary-text");
-    }
+    color: var(--asf-dark-primary-text);
   }
 
   flex: 1 1 100%;
@@ -92,30 +78,21 @@ $idk-pad: 21px;
   float: right;
   cursor: pointer;
   z-index: 100;
-
-  @include themify($themes) {
-    color: themed("dark-primary-text");
-  }
+  color: var(--asf-dark-primary-text);
 }
 
 .dl-empty-message {
   text-align: center;
   font-size: 20px;
-
-  @include themify($themes) {
-    color: themed("dark-primary-text");
-  }
+  color: var(--asf-dark-primary-text);
 }
 
 .dem-warning {
   font-size: 14px;
-  padding: 7px;
-
-  @include themify($themes) {
-    background-color: lighten(themed("primary-light"), 10%);
-    color: themed("err");
-  }
-
+  padding: spacing(xs);
+  background-color: var(--asf-primary-light);
+  filter: brightness(1.1); // Lighten effect
+  color: var(--asf-err);
   width: 100%;
 }
 
@@ -129,17 +106,12 @@ $idk-pad: 21px;
 
   a {
     text-decoration: none;
-
-    @include themify($themes) {
-      color: themed("dark-primary-text");
-    }
+    color: var(--asf-dark-primary-text);
   }
 }
 
 .more-link {
-  @include themify($themes) {
-    color: themed("blue-link");
-  }
+  color: var(--asf-blue-link);
 }
 
 button {
@@ -151,24 +123,17 @@ button {
   grid-template-columns: auto auto;
   display: grid;
   font-size: 14px;
-
-  @include themify($themes) {
-    color: themed("light-primary-text");
-  }
-
+  color: var(--asf-light-primary-text);
   justify-content: center;
-  margin: 10px;
+  margin: spacing(sm);
 }
 
 .button-clipboard-mobile {
-  padding: 0 0 0 5px !important;
+  padding: 0 0 0 spacing(xs) !important;
 }
 
 .dl-mat-dialog-content {
-  @include themify($themes) {
-    background-color: themed("background-white");
-  }
-
+  background-color: var(--asf-surface);
   height: calc(100% - #{$header-height} - #{$footer-height} - #{$idk-pad});
   max-height: calc(100% - #{$header-height} - #{$footer-height} - #{$idk-pad});
   padding: 0;
@@ -188,10 +153,7 @@ button {
 }
 
 .dl-mat-dialog-actions {
-  @include themify($themes) {
-    background-color: themed("dark-secondary-text");
-  }
-
+  background-color: var(--asf-dark-secondary-text);
   position: absolute;
   display: flex;
   width: 100%;
@@ -204,12 +166,8 @@ button {
 }
 [mat-dialog-title] {
   padding: 18px 24px;
-
-  @include themify($themes) {
-    background-color: themed("primary-light");
-    color: themed("dark-primary-text");
-  }
-
+  background-color: var(--asf-primary-light);
+  color: var(--asf-dark-primary-text);
   cursor: move;
   text-align: left;
   // height: $header-height;
@@ -223,11 +181,7 @@ button {
 .on-demand-warning {
   font-size: small;
   font-style: italic;
-
-  @include themify($themes) {
-    color: themed("blue-link");
-  }
-
+  color: var(--asf-blue-link);
   position: fixed;
   margin-top: -18px;
 }
@@ -237,34 +191,34 @@ button {
   margin-top: 23px;
   height: 2px;
   width: calc(100% - 43px);
-  opacity: 0.3;
+  opacity: opacity(30);
 }
 
 .item-checkbox {
-  margin-right: 15px;
+  margin-right: spacing(md);
 }
 
 .item-second-line {
-  margin-left: 20px;
+  margin-left: spacing(md);
 }
 
 .item-summary-checkbox {
-  margin-left: 7px;
+  margin-left: spacing(xs);
   margin-right: 17px;
 }
 
 .global-progress {
   position: absolute;
   bottom: 0;
-  width: calc(100% + 10px);
-  left: -10px;
+  width: calc(100% + spacing(sm));
+  left: -#{spacing(sm)};
 }
 
 .doc-feedback-div {
   display: flex;
   justify-content: flex-end;
   margin-top: -42px;
-  margin-right: 20px;
+  margin-right: spacing(md);
 }
 
 .header-link-mobile {
@@ -274,7 +228,7 @@ button {
 .docs-div {
   cursor: pointer;
   flex: 0 1 auto;
-  margin-right: 20px;
+  margin-right: spacing(md);
   margin-top: 2px;
 }
 
@@ -288,10 +242,7 @@ button {
 
   a {
     text-decoration: underline;
-
-    @include themify($themes) {
-      color: themed("blue-link");
-    }
+    color: var(--asf-blue-link);
   }
 }
 
@@ -305,11 +256,9 @@ button {
   margin-left: 16px;
 }
 .clipboard-button {
-  margin-right: 15px !important;
+  margin-right: spacing(md) !important;
   font-size: 16px !important;
-  @include themify($themes) {
-    color: themed("dark-primary-text");
-  }
+  color: var(--asf-dark-primary-text);
 }
 .download-button {
   margin: 0 !important;
@@ -317,7 +266,5 @@ button {
 .close-button {
   margin-left:0 !important;
   display: flex !important;
-  @include themify($themes) {
-    color: themed("dark-primary-text");
-  }
+  color: var(--asf-dark-primary-text);
 }

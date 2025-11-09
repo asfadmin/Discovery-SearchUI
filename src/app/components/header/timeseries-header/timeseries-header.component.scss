@@ -1,4 +1,5 @@
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 
 .baseline-header-layout {
   flex-direction: row;
@@ -30,8 +31,8 @@
 }
 
 .flight-direction-toggle {
-  padding-top: 15px;
-  padding-right: 15px;
+  padding-top: spacing(md);
+  padding-right: spacing(md);
 }
 
 .displacement-header-menu {
@@ -48,7 +49,7 @@
 
 .azimuth-icon-text {
   position: absolute;
-  margin-left: 10px;
+  margin-left: spacing(sm);
   margin-top: 71px;
   color: grey;
   font-size: 12px;
@@ -71,9 +72,7 @@
 }
 
 .invert-icon {
-  @include themify($themes) {
-    filter: themed('inverted-image');
-  }
+  filter: var(--inverted-image);
 }
 
 .flip-icon {

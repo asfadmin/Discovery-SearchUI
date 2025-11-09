@@ -1,5 +1,6 @@
 @use "asf-theme-variables" as *;
 @use "variables" as *;
+@use "tokens" as *;
 
 .disp-layers--layout {
   height: 100%;
@@ -17,10 +18,7 @@
 }
 
 .layers-selector {
-  @include themify($themes) {
-    background-color: themed('primary-light');
-  }
-
+  background-color: var(--asf-primary-light);
   //padding-bottom: 4px;
   //padding-right: 10px;
   pointer-events: auto;
@@ -36,10 +34,7 @@
 }
 
 .footer {
-  @include themify($themes) {
-    background-color: themed('primary');
-  }
-
+  background-color: var(--asf-primary);
   margin: 0;
   padding: 0;
   height: 16px;
@@ -47,11 +42,8 @@
 }
 
 .footer--text {
-  @include themify($themes) {
-    background-color: themed('primary');
-    color: themed('light-secondary-text');
-  }
-
+  background-color: var(--asf-primary);
+  color: var(--asf-light-secondary-text);
   font-size: 12px;
   margin-top: 0;
   //text-align: end;
