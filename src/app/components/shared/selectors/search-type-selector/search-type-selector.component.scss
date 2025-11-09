@@ -1,21 +1,18 @@
 @use "asf-theme-variables" as *;
 @use "deluxe-menu" as *;
 @use "deluxe-menu-2" as *;
+@use "tokens" as *;
 
 .description-layout {
   display: flex;
 }
 
 .menu-item-icon {
-  @include themify($themes) {
-    color: themed("dark-primary-text");
-    font-size: 50px !important;
-    height: 50px !important;
-    width: 50px !important;
-  }
-
+  color: var(--asf-dark-primary-text);
+  font-size: 50px !important;
+  height: 50px !important;
+  width: 50px !important;
   @include md-icon-size(50px);
-
   margin-right: 0;
 }
 
@@ -37,8 +34,8 @@
 }
 
 .menu-item-inner {
-  width: calc(100% - 20px) !important;
-  margin: 5px 5px 15px 15px;
+  width: calc(100% - spacing(lg)) !important;
+  margin: spacing(sm) spacing(sm) spacing(md) spacing(md);
 }
 
 .menu-item-content {
@@ -62,10 +59,7 @@
 }
 
 .mat-mdc-button {
-  @include themify($themes) {
-    color: themed("blue-link");
-  }
-
+  color: var(--asf-blue-link);
   font-weight: 400;
   font-style: italic;
 }
@@ -92,11 +86,8 @@
 }
 
 .button-label {
-  @include themify($themes) {
-    color: themed("dark-secondary-text");
-  }
-
-  font-size: 14px;
+  color: var(--asf-dark-secondary-text);
+  font-size: font-size(sm);
   font-weight: 400;
   transform:
     translateY(-1.2812em)
@@ -110,11 +101,8 @@
 }
 
 .button-text {
-  @include themify($themes) {
-    color: themed("dark-primary-text");
-  }
-
-  font-size: 16px;
+  color: var(--asf-dark-primary-text);
+  font-size: font-size(base);
   font-weight: 400;
   text-align: left;
   font-style: normal;
@@ -143,16 +131,16 @@
 .mat-select-arrow {
   width: 0;
   height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 5px solid;
-  margin: 0 4px 3px 10px;
+  border-left: spacing(sm) solid transparent;
+  border-right: spacing(sm) solid transparent;
+  border-top: spacing(sm) solid;
+  margin: 0 spacing(xs) spacing(xs) spacing(2);
   display: inline-flex;
 }
 
 .info-text {
   font-style: italic;
-  font-size: 14px;
+  font-size: font-size(sm);
 }
 
 .mat-mdc-card-actions {
@@ -165,16 +153,13 @@
 
 .mobile-search-item {
   margin: 0;
-  padding: 3px 10px;
+  padding: spacing(xs) spacing(2);
   height: 40px;
   line-height: 30px;
 }
 
 .blue-link {
-  @include themify_non_host($themes) {
-    color: themed("blue-link");
-  }
-  // color: $uaf-primary-blue;
+  color: var(--asf-blue-link);
 }
 
 .mobile-button-wrapper {
@@ -206,14 +191,14 @@
   }
 }
 
-::ng-deep .enable-search-type-on-demand .icon-size {
-  opacity: 1;
+:host .enable-search-type-on-demand .icon-size {
+  opacity: opacity(100);
   color: black !important;
   font-weight: bold !important;
 }
 
 .enable-search-type-on-demand .icon-size {
-  opacity: 1;
+  opacity: opacity(100);
   color: black;
   font-weight: bold;
 }
@@ -229,19 +214,19 @@
 
 .read-more-icon {
   position: relative;
-  top: 3px;
+  top: spacing(xs);
 }
 
 .badge-new {
   color: #236192;
   font-style: italic;
-  font-size: 15px;
-  padding: 3px 8px;
-  border-radius: 12px;
+  font-size: 15px; // Specific badge size between sm and base
+  padding: spacing(xs) spacing(1);
+  border-radius: spacing(3);
   font-weight: bold;
   animation: fadeInUp 1.5s ease-out forwards;
   position: absolute;
-  margin-left: 3px;
+  margin-left: spacing(xs);
   margin-top: -2px;
   text-shadow: 0.3px 0.3px 1.5px rgba(35, 97, 146, 0.2);
   filter: brightness(1.05);

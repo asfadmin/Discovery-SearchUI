@@ -1,11 +1,12 @@
+@use "tokens" as *;
+
 div.cdk-overlay-pane:has(>.sci-prod-select) {
   min-width: fit-content !important;
-  //width: fit-content !important;
 }
 
 .sci-prod-form-field {
   width: 50%;
-  margin-right: 17px;
+  margin-right: spacing(lg);
 }
 
 .sci-prod-select {
@@ -20,10 +21,8 @@ div.cdk-overlay-pane:has(>.sci-prod-select) {
   flex: 0 1 auto;
 }
 
-::ng-deep .mat-mdc-select-panel {
-  //min-width: 420px !important;
-  //width: 840px !important;
-  //max-height: 100% !important;
+:host .mat-mdc-select-panel {
+  // Panel sizing handled by Material
 }
 
 .sci-prod-optgroup {

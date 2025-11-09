@@ -2,21 +2,20 @@
 
 @use "asf-theme-variables" as *;
 @use "flex-layout-sass/mixin" as *;
+@use "tokens" as *;
 
 .langSelect-div {
   display: inline-block;
   position:absolute;
   top: -3px;
-  right: 25px;
+  right: spacing(xl);
 }
 
 .langSelect-select {
   border: none;
   width: auto;
   font-size: 11px;
-  @include themify($themes) {
-    color: themed('dark-secondary-text');
-  }
+  color: var(--asf-dark-secondary-text);
   background-color: inherit;
 }
 
@@ -24,21 +23,20 @@
   display: inline-block;
   position: absolute;
   top: -12px;
-  right: 15px;
+  right: spacing(md);
   width: auto;
   height: 34px;
-  padding: 5px;
-  font-size: 12px;
+  padding: spacing(sm);
+  font-size: font-size(xs);
 
   .mat-icon {
-    font-size: 14px;
-    padding: 4px 0 0 0;
+    font-size: font-size(sm);
+    padding: spacing(xs) 0 0 0;
   }
 
   .icon-text {
     display: inline-block;
     margin-top: -7px;
-    padding-right: 5px;
+    padding-right: spacing(sm);
   }
-
 }

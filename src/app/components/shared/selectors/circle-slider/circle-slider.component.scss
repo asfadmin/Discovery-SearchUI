@@ -1,34 +1,31 @@
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 
-::ng-deep .circumference {
-  @include themify($themes) {
-    stroke: lighten(themed('primary'), 40%);
-  }
+:host .circumference {
+  stroke: var(--asf-primary);
+  filter: brightness(1.4); // Lighten effect
   fill: none;
-  stroke-width: 10px;
+  stroke-width: spacing(2);
 }
 
-::ng-deep .range {
-  @include themify($themes) {
-    stroke: themed('primary');
-  }
+:host .range {
+  stroke: var(--asf-primary);
   fill: none;
-  stroke-width: 10px;
+  stroke-width: spacing(2);
 }
 
-::ng-deep .dot circle:hover {
+:host .dot circle:hover {
   cursor: pointer;
 }
 
-::ng-deep .dot circle {
-  @include themify($themes) {
-    fill: themed('primary');
-  }
+:host .dot circle {
+  fill: var(--asf-primary);
 }
 
-::ng-deep .dot circle.dragging {
-  fill: darken($asf-blue, 10%) !important;
-  stroke: darken($asf-blue, 10%);
+:host .dot circle.dragging {
+  fill: $asf-blue !important;
+  stroke: $asf-blue;
+  filter: brightness(0.9); // Darken effect
 }
 
 figure {
@@ -38,17 +35,14 @@ figure {
   grid-column: 1;
 }
 
-::ng-deep .notch {
-  @include themify($themes) {
-    stroke: lighten(themed('primary'), 40%);
-  }
+:host .notch {
+  stroke: var(--asf-primary);
+  filter: brightness(1.4); // Lighten effect
   stroke-width: 1px;
 }
 
-::ng-deep .selected {
-  @include themify($themes) {
-    stroke: themed('primary');
-  }
+:host .selected {
+  stroke: var(--asf-primary);
 }
 
 .container {

@@ -1,21 +1,19 @@
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 
 .dialog-title {
-  @include themify($themes) {
-    background: darken(themed('background-white'), 10%);
-  }
-  margin-bottom: 9px;
+  background: var(--asf-surface);
+  filter: brightness(0.9); // Darken effect
+  margin-bottom: spacing(2);
 }
 
 .flex-container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 15px 24px 0 24px;
-  @include themify($themes) {
-    background: darken(themed('background-white'), 10%);
-  }
-
+  padding: spacing(md) spacing(xl) 0 spacing(xl);
+  background: var(--asf-surface);
+  filter: brightness(0.9); // Darken effect
 }
 
 .flex-item {

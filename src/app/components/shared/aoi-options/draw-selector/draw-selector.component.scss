@@ -1,23 +1,19 @@
 @use "asf-theme-variables" as *;
 @use "asf-header-menu-button" as *;
+@use "tokens" as *;
 
 .draw-icon {
   @include md-icon-size($asf-ribbon-icon-size);
-
-  @include themify($themes) {
-    color: themed('dark-primary-text');
-  }
+  color: var(--asf-dark-primary-text);
 }
 
 .draw-svg {
-  @include themify($themes) {
-    fill: themed('dark-primary-text');
-  }
+  fill: var(--asf-dark-primary-text);
 }
 
 .draw-text {
-  font-size: 14px;
-  line-height: 10px;
+  font-size: font-size(sm);
+  line-height: spacing(2);
 }
 
 .shape-select-icon {
@@ -25,49 +21,38 @@
 }
 
 .view-menu-icon {
-  transform: translateY(6px);
+  transform: translateY(spacing(sm));
 }
 
 .bottom-right {
-  @include themify($themes) {
-    color: themed('primary');
-  }
-
+  color: var(--asf-primary);
   position: absolute;
   bottom: -8px;
-  right: -20px;
+  right: -spacing(lg);
   transform: rotate(-45deg);
 }
 
 .shape-select-button {
-  @include themify($themes) {
-    background: themed('background-white');
-    color: themed('light-primary-text')
-
-  }
-
+  background: var(--asf-surface);
+  color: var(--asf-light-primary-text);
   margin: 0;
   padding: 0;
-  font-size: 18px !important;
-  line-height: 16px;
+  font-size: font-size(lg) !important;
+  line-height: spacing(md);
   height: 27px !important;
-  width: 18px !important;
+  width: spacing(lg) !important;
   min-width: 53px !important;
-  border-radius: 4px !important;
+  border-radius: spacing(xs) !important;
   display: flex;
   align-items: center;
   justify-content: center;
-  // border: solid 1px rgb(0 0 0 / 12%);
   text-align: center;
 }
 
 .control-button {
-  @include themify($themes) {
-    background: themed('background-white');
-    color: themed('light-primary-text')
-  }
-
-  padding: 0 16px
+  background: var(--asf-surface);
+  color: var(--asf-light-primary-text);
+  padding: 0 spacing(md);
 }
 
 .draw-button-wrapper {
@@ -77,12 +62,12 @@
 }
 
 .draw-toggle-wrapper {
-  margin: 2px 0 0 8px;
+  margin: 2px 0 0 spacing(1);
   display: block;
   transform: scale(0.9);
 }
 
-::ng-deep .theme-light .mat-mdc-slide-toggle.mat-accent {
+:host .theme-light .mat-mdc-slide-toggle.mat-accent {
   --mat-slide-toggle-selected-focus-state-layer-color: #757575;
   --mat-slide-toggle-selected-handle-color: #236192;
   --mat-slide-toggle-selected-hover-state-layer-color: #757575;
@@ -97,6 +82,5 @@
   --mat-slide-toggle-unselected-focus-handle-color: #757575;
   --mat-slide-toggle-unselected-hover-handle-color: #757575;
   --mat-slide-toggle-unselected-pressed-handle-color: #757575;
-
 }
 

@@ -1,7 +1,5 @@
 @use "asf-theme-variables" as *;
 
 a {
-    @include themify($themes) {
-    color: themed('dark-primary-text');
-  }
+  color: var(--asf-dark-primary-text);
 }

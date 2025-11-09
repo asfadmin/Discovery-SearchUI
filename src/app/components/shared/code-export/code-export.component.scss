@@ -1,14 +1,15 @@
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 
 .dialog-header {
   font-weight: bold;
   font-size: 30px;
-  margin-bottom: 13px;
+  margin-bottom: spacing(3);
 }
 
 .close-x {
   position: absolute;
-  top: 15px;
+  top: spacing(md);
   right: 35px;
   text-align: right;
   cursor: pointer;
@@ -17,18 +18,16 @@
 .code-block {
   margin: 0;
   overflow: scroll;
-  border-radius: 10px;
+  border-radius: spacing(2);
 }
 
 .flex-container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 16px 24px;
-  @include themify($themes) {
-    background: darken(themed('background-white'), 10%);
-  }
-
+  padding: spacing(md) spacing(xl);
+  background: var(--asf-surface);
+  filter: brightness(0.9); // Darken effect
 }
 
 .flex-item {
@@ -36,9 +35,8 @@
 }
 
 .code-export-title {
-  @include themify($themes) {
-    background: darken(themed('background-white'), 10%);
-  }
-  margin-bottom: 9px;
+  background: var(--asf-surface);
+  filter: brightness(0.9); // Darken effect
+  margin-bottom: spacing(2);
 }
 

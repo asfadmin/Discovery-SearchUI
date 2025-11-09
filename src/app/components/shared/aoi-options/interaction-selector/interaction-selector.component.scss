@@ -2,10 +2,7 @@
 
 .interaction-icon {
   @include md-icon-size($asf-ribbon-icon-size);
-
-  @include themify($themes) {
-    color: themed('dark-primary-text');
-  }
+  color: var(--asf-dark-primary-text);
 }
 
 .interaction-toggle-group {
@@ -13,16 +10,12 @@
 }
 
 .mobile-upload-button {
-  @include themify($themes) {
-    background-color: themed('background-white');
-  }
+  background-color: var(--asf-surface);
   border-left: 1px #e0e0e0;
 }
 
 /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .control-mat-button-toggle {
-  @include themify($themes) {
-    background: themed('background-white');
-    color: themed('dark-primary-text');
-  }
+  background: var(--asf-surface);
+  color: var(--asf-dark-primary-text);
 }

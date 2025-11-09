@@ -1,10 +1,9 @@
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 
 .download-file-button {
   text-decoration: none;
-  @include themify($themes) {
-    color: themed('dark-primary-text');
-  }
+  color: var(--asf-dark-primary-text);
 }
 
 .progress-spinner {
@@ -24,8 +23,8 @@
   position: absolute;
   left: 7px;
   text-align: center;
-  width: 25px;
-  top: 10px;
+  width: spacing(xl);
+  top: spacing(2);
 }
 
 /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */

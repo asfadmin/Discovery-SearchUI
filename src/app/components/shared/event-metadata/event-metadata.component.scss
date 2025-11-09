@@ -1,20 +1,18 @@
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 
 a {
   text-decoration: none;
-  @include themify($themes) {
-    color: themed('blue-link');
-  }
+  color: var(--asf-blue-link);
 }
 
 .scene-metadata {
-  font-size: 12px;
-  margin-top: 5px;
+  font-size: font-size(xs);
+  margin-top: spacing(sm);
   columns: 2;
 
   .mat-icon {
     @include md-icon-size(12px);
-
-    margin-left: 4px;
+    margin-left: spacing(xs);
   }
 }

@@ -1,26 +1,21 @@
 @use "@angular/material" as mat;
 
 @use "asf-theme-variables" as *;
-
-// $config: mat.define-legacy-typography-config();
+@use "tokens" as *;
 
 a {
   text-decoration: none;
-  @include themify($themes) {
-    color: themed('blue-link');
-  }
+  color: var(--asf-blue-link);
 }
 
 .scene-metadata {
-  font-size: 12px;
-  margin-top: 5px;
+  font-size: font-size(xs);
+  margin-top: spacing(sm);
   columns: 2;
 
   .mat-icon {
     @include md-icon-size(12px);
-    @include themify($themes) {
-      color: themed('dark-primary-text');
-    }
-    margin-left: 4px;
+    color: var(--asf-dark-primary-text);
+    margin-left: spacing(xs);
   }
 }
