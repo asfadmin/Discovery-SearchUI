@@ -63,12 +63,15 @@ export class AsfApiService {
       if (this.env.currentEnv.cmr_provider) {
         stateParamsObj['cmr_provider'] = this.env.currentEnv.cmr_provider;
       }
-
-      if (this.env.currentEnv.cmr_token) {
-        stateParamsObj['cmr_token'] = this.env.currentEnv.cmr_token;
-      } else if (this.env.currentEnv.api_maturity !== 'prod') {
-        delete stateParamsObj['cmr_token'];
-      }
+    }
+    if (this.env.currentEnv.cmr_token) {
+      stateParamsObj['cmr_token'] = this.env.currentEnv.cmr_token;
+    }
+    if (
+      this.env.currentEnv.api_maturity !== 'prod' &&
+      this.env.currentEnv.api_maturity
+    ) {
+      delete stateParamsObj['cmr_token'];
     }
     const params = this.queryParamsFrom(stateParamsObj);
 
