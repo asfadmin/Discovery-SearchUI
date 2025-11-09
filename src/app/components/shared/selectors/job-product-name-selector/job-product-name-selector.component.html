@@ -10,7 +10,7 @@
       <div>
         <textarea
           matInput
-          placeholder="S1A..."
+          [placeholder]="'PRODUCT_NAME_PLACEHOLDER' | translate"
           (input)="onFilterProductName($event)"
           [value]="productNameFilter"
           [matAutocomplete]="jobNameSelector"
@@ -33,7 +33,7 @@
     @if (headerView) {
       <input
         matInput
-        placeholder="S1A..."
+        [placeholder]="'PRODUCT_NAME_PLACEHOLDER' | translate"
         (input)="onFilterProductName($event)"
         [value]="productNameFilter"
         [formControl]="myControl"
@@ -85,7 +85,7 @@
         <mat-form-field style="width: 100%">
           <textarea
             matInput
-            placeholder="S1A..."
+            [placeholder]="'PRODUCT_NAME_PLACEHOLDER' | translate"
             (input)="onFilterProductName($event)"
             [value]="productNameFilter"
             [matAutocomplete]="jobNameSelector"

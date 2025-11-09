@@ -792,6 +792,7 @@
   "UPLOAD_AOI_VIA_FILE": "AOI per Datei hochladen",
   "UPLOAD_GEOSPATIAL_FILE": "Geodatendatei hochladen",
   "UR_LS": "URLs (URLs)",
+  "USE_CASE_PLACEHOLDER": "Ex. I am a...",
   "USE_AN_ASF_SEARCH_API_QUERY_TO_DOWNLOAD_MORE_RESULTS_MANUALLY": "Verwenden Sie eine ASF-Such-API-Abfrage, um weitere Ergebnisse manuell herunterzuladen.",
   "USE_THE_AREA_OF_INTEREST_BUTTONS_TO_TOGGLE_DRAWING_ON_THE_MAP_ON_AND_OFF_TO_EDIT_THE_SHAPE": "Verwenden Sie die Schaltflächen \"Interessenbereich\", um die Zeichnung auf der Karte ein- und auszuschalten und die Form zu bearbeiten",
   "USE_THE_MAP_PROJECTION_BUTTONS_IN_THE_MAP_TOOLBAR_TO_TOGGLE_BETWEEN_THE_ARCTIC_EQUATORIAL": "Verwenden Sie die Schaltflächen \"Kartenprojektion\" in der Kartensymbolleiste, um zwischen Arktis, Äquatorial,",

@@ -85,7 +85,7 @@
       <mat-label>How do you want to use our service?</mat-label>
       <textarea
         matInput
-        placeholder="Ex. I am a..."
+        [placeholder]="'USE_CASE_PLACEHOLDER' | translate"
         style="height: 150px"
         formControlName="useCase"
       ></textarea>
