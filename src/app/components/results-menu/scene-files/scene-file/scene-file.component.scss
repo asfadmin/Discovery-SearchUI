@@ -1,7 +1,9 @@
+@use "tokens" as *;
+
 .icon-margin {
-  margin-left: 5px;
+  margin-left: spacing(sm);
   span {
-    margin: 0 5px;
+    margin: 0 spacing(sm);
 }
 }
 
@@ -10,7 +12,7 @@
 }
 
 .file-sub-line {
-  font-size: 14px !important;
+  font-size: font-size(sm) !important;
 }
 
 .mdc-list-item--with-trailing-meta .mdc-list-item__end {
@@ -26,5 +28,5 @@
   display: flex !important;
   align-items: center;
   justify-content: center;
-  margin-top: 1px;
+  margin-top: 1px; // Micro-adjustment for icon alignment
 }

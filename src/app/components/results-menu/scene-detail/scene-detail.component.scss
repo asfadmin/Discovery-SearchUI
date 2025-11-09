@@ -1,24 +1,18 @@
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 
 :host {
   height: 100%;
 }
 a {
-  @include themify($themes) {
-    color: themed("blue-link") !important;
-  }
-
+  color: var(--asf-blue-link) !important;
   text-decoration: none;
 }
 
 .detail-card {
   max-width: 100%;
   height: 90%;
-
-  @include themify($themes) {
-    border-left: themed("primary-light") 1px solid;
-  }
-
+  border-left: 1px solid var(--asf-primary-light);
   overflow-x: hidden !important;
 }
 .detail-card-info-mobile {
@@ -30,17 +24,17 @@ a {
 
 .detail-card-header {
   word-break: break-all;
-  padding-top: 5px;
-  line-height: 20px;
+  padding-top: spacing(sm);
+  line-height: spacing(5);
 }
 
 .detail-card-info {
-  margin-left: 16px;
-  margin-right: 16px;
+  margin-left: spacing(md);
+  margin-right: spacing(md);
 }
 
 .clipboard-icon {
-  margin: 0 10px;
+  margin: 0 spacing(2);
 }
 
 .fit-to-container {
@@ -53,33 +47,23 @@ a {
 
 .banner {
   height: 30px;
-
-  @include themify($themes) {
-    background: themed("primary-light");
-    color: themed("dark-primary-text");
-
-    mat-icon {
-      color: themed("dark-primary-text");
-    }
-  }
+  background: var(--asf-primary-light);
+  color: var(--asf-dark-primary-text);
   margin-left: -16px;
-
   width: calc(100% + 32px);
   //box-shadow: #00000038 0 7px 18px;
 
   mat-icon {
-    margin-top: 4px;
-    margin-right: 5px;
-    margin-left: 5px;
-    font-size: 20px;
+    color: var(--asf-dark-primary-text);
+    margin-top: spacing(1);
+    margin-right: spacing(sm);
+    margin-left: spacing(sm);
+    font-size: spacing(5);
   }
 }
 
 .not-clickable {
-  @include themify($themes) {
-    color: themed("dark-disabled-text") !important;
-  }
-
+  color: var(--asf-dark-disabled-text) !important;
   cursor: default;
 }
 
@@ -87,7 +71,7 @@ a {
   display: inherit;
   align-items: center;
   margin-right: 5%;
-  font-size: 12px;
+  font-size: font-size(xs);
 
   .navigation-icon {
     margin-right: 0;
@@ -104,11 +88,11 @@ a {
 }
 
 .content {
-  margin: 0 16px 16px;
+  margin: 0 spacing(md) spacing(md);
 }
 
 .detail-item-margin {
-  margin-top: 5px;
+  margin-top: spacing(sm);
 }
 
 .w40 {
@@ -125,26 +109,26 @@ a {
 }
 
 .accessing-text {
-  font-size: 12px;
+  font-size: font-size(xs);
 }
 
 .subtitle {
-  margin-bottom: 8px !important;
+  margin-bottom: spacing(sm) !important;
 }
 
 .mat-mdc-card-header .mat-mdc-card-title {
-  font-size: 16px;
+  font-size: font-size(base);
 }
 
 .mini-toggle-button {
-  font-size: 12px;
-  line-height: 24px !important;
+  font-size: font-size(xs);
+  line-height: spacing(lg) !important;
 }
 
 /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .mini-toggle-button .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
-  line-height: 24px !important;
-  padding: 0 12px;
+  line-height: spacing(lg) !important;
+  padding: 0 spacing(3);
 }
 
 .menu-override {
@@ -160,16 +144,8 @@ a {
   position: sticky;
   display: flex;
   justify-content: flex-start;
-
-  @include themify($themes) {
-    background: lighten(themed("primary-light"), 8%);
-
-    button[disabled="true"] {
-      background-color: themed("primary-light");
-      color: themed("dark-secondary-text");
-    }
-  }
-
+  background: var(--asf-primary-light);
+  filter: brightness(1.08); // Lighten effect
   align-items: center;
   height: 40px;
   bottom: 0;
@@ -179,6 +155,8 @@ a {
   }
 
   button[disabled="true"] {
+    background-color: var(--asf-primary-light);
+    color: var(--asf-dark-secondary-text);
     cursor: default;
   }
 }
@@ -186,31 +164,24 @@ a {
 .sarivews-radius-display {
   display: flex;
   width: 75%;
-  margin-top: 15px;
-  margin-left: 15px;
-  // margin-left: 15px;
+  margin-top: spacing(md);
+  margin-left: spacing(md);
 }
 
 .search-button-label {
-  margin-left: 20px;
-  font-size: 14px;
+  margin-left: spacing(lg);
+  font-size: font-size(sm);
   font-weight: 500;
-
-  @include themify($themes) {
-    color: lighten(themed("dark-primary-text"), 10%);
-  }
+  color: var(--asf-dark-primary-text);
+  filter: brightness(1.1); // Lighten effect
 }
 
 .search-button {
-  margin-left: 20px;
-
-  @include themify($themes) {
-    background-color: themed("primary");
-    color: themed("light-primary-text");
-  }
-
+  margin-left: spacing(lg);
+  background-color: var(--asf-primary);
+  color: var(--asf-light-primary-text);
   border: 1px groove rgb(0 0 0 / 25%) !important;
-  border-radius: 4px !important;
+  border-radius: spacing(xs) !important;
 }
 
 .scene-detail--wrapper {

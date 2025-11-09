@@ -1,4 +1,5 @@
 @use 'asf-theme-variables' as *;
+@use 'tokens' as *;
 
 .list-viewport {
   overflow-y: auto;
@@ -15,14 +16,12 @@
 }
 
 .selected .ml-2 {
-  @include themify_non_host($themes) {
-    color: themed('err');
-  }
+  color: var(--asf-err);
 }
 
 .image-flex {
   flex: 0 1 40px;
-  margin-right: 10px;
+  margin-right: spacing(2);
 }
 
 .div-flex {
@@ -30,7 +29,7 @@
 }
 
 .mobile-size .div-flex {
-  font-size: 14px;
+  font-size: font-size(sm);
 }
 
 .metric-flex-field {
@@ -46,7 +45,7 @@
 }
 
 .cart-flex-field {
-  margin-left: 5px;
+  margin-left: spacing(sm);
   flex: 1 0 auto;
   float: left;
   text-align: left;
@@ -63,14 +62,14 @@
 }
 
 .date-time {
-  font-size: 14px !important;
+  font-size: font-size(sm) !important;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .mobile-size .mat-mdc-list-base .mat-mdc-list-item {
-  font-size: 14px;
+  font-size: font-size(sm);
 }
 
 .list-view {
