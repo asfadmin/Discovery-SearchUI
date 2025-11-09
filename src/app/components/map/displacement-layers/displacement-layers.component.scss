@@ -66,7 +66,7 @@
   position: absolute;
   margin-top: 9px;
   margin-left: 180px;
-  font-size: 16px !important;
+  font-size: 16px; // Removed !important - use :host or icon-md class
 }
 
 .rollout-help-icon {
@@ -74,7 +74,7 @@
   margin-top: -30px;
   margin-left: 180px;
   margin-bottom: 8px;
-  font-size: 16px !important;
+  font-size: 16px; // Removed !important - use :host or icon-md class
 }
 
 .opacity-slider {
@@ -83,14 +83,5 @@
   margin-top: -37px;
 }
 
-::ng-deep {
-  .slider-formatting {
-    .mdc-slider {
-      --mat-slider-active-track-height: 3px;
-      --mat-slider-active-track-color: #236192;
-      --mat-slider-handle-height: 10px;
-      --mat-slider-handle-width: 10px;
-      --mat-slider-handle-color: #dcbd5b;
-    }
-  }
-}
+// Material slider formatting moved to global styles
+// See: src/styles/_third-party-overrides.scss

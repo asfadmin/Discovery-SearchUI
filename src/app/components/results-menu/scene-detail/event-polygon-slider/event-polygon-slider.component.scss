@@ -18,10 +18,8 @@
   height: 12px;
 }
 
-::ng-deep.noUi-pips-horizontal {
-  margin-top: 5px;
-  height: 12px;
-}
+// NoUISlider styles moved to global styles
+// See: src/styles/_third-party-overrides.scss
 
 div.noUi-handle.noUi-handle-lower {
   width: 16px !important;

@@ -1,8 +1,6 @@
 
-/* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version. */
-::ng-deep .mat-list-item-content {
-  justify-content: space-between;
-}
+// Material list item styles moved to global styles
+// See: src/styles/_third-party-overrides.scss
 
 .event-list-thumbnail {
   width: 26px;

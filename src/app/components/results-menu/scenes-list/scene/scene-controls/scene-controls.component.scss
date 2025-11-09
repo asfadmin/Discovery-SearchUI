@@ -17,8 +17,7 @@
   margin-left: 10px;
 }
 
-::ng-deep .mat-mdc-standard-chip {
-  padding: 7px 0 !important;
-}
+// Material chip styles moved to global styles
+// See: src/styles/_third-party-overrides.scss
 
 

@@ -1,0 +1,139 @@
+// Third-Party Library Style Overrides
+// Global styles for external libraries (OpenLayers, Material, etc.)
+// These styles need to be global as they target elements outside Angular's component scope
+
+// ============================================================================
+// OPENLAYERS OVERRIDES
+// ============================================================================
+
+// Overview Map Control
+.ol-overviewmap {
+  top: 0.5em;
+  right: 0.5em;
+  bottom: auto;
+  left: auto;
+}
+
+.map .ol-custom-overviewmap,
+.map .ol-custom-overviewmap.ol-uncollapsible {
+  right: 0;
+  top: 0;
+}
+
+.map .ol-custom-overviewmap:not(.ol-collapsed) {
+  border: 1px solid black;
+  background: rgb(255 255 255 / 80%);
+}
+
+.map .ol-custom-overviewmap .ol-overviewmap-map {
+  border: none;
+  width: 300px;
+}
+
+.map .ol-overviewmap.ol-custom-overviewmap.ol-unselectable.ol-control button {
+  visibility: hidden;
+}
+
+.map .ol-overviewmap.ol-custom-overviewmap.ol-unselectable.ol-control {
+  background: rgb(0 0 0 / 0%);
+}
+
+.map .ol-custom-overviewmap .ol-overviewmap-box {
+  border: 2px solid red;
+  cursor: grab;
+}
+
+.map .ol-custom-overviewmap:not(.ol-collapsed) button {
+  bottom: auto;
+  left: auto;
+  right: 2px;
+  top: 2px;
+}
+
+// ============================================================================
+// NOUISLIDER OVERRIDES
+// ============================================================================
+
+.noUi-pips-horizontal {
+  margin-top: 5px;
+  height: 12px;
+}
+
+// ============================================================================
+// ANGULAR MATERIAL OVERRIDES
+// ============================================================================
+
+// Material Menu
+.opacity-slider-mat-menu {
+  padding: 15px 20px 0;
+}
+
+// Material Slider
+.mat-mdc-slider.mat-slider-horizontal {
+  height: 28px;
+}
+
+.mat-mdc-slider.mat-slider-horizontal .mat-slider-wrapper {
+  top: 50%;
+}
+
+// Material List
+.mat-list-item-content {
+  justify-content: space-between;
+}
+
+// Material Chip
+.mat-mdc-standard-chip {
+  padding: 7px 0;
+}
+
+// Material Button Toggle
+.mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+  padding: 0 5px;
+}
+
+// On-Demand Toggle (Dataset Header)
+.on-demand-toggle {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 10px;
+
+  .mdc-form-field.mat-internal-form-field {
+    flex-direction: column-reverse;
+    display: flex;
+    align-items: flex-start;
+    gap: 5px;
+  }
+}
+
+// ============================================================================
+// MATERIAL RADIO BUTTONS (TIMESERIES)
+// ============================================================================
+
+// Custom radio button colors for timeseries component
+app-timeseries-results-menu {
+  .mdc-radio__inner-circle {
+    border-color: #236192;
+  }
+
+  .mdc-radio__outer-circle {
+    border-color: #fc3;
+  }
+}
+
+// ============================================================================
+// MATERIAL SLIDER (DISPLACEMENT LAYERS)
+// ============================================================================
+
+app-displacement-layers {
+  .slider-formatting {
+    .mdc-slider {
+      --mat-slider-active-track-height: 3px;
+      --mat-slider-active-track-color: #236192;
+      --mat-slider-handle-height: 10px;
+      --mat-slider-handle-width: 10px;
+      --mat-slider-handle-color: #dcbd5b;
+    }
+  }
+}

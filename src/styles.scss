@@ -3,6 +3,8 @@
 @use "@angular/material" as mat;
 @use './styles/asf-theme' as *;
 @use './styles/filter-list';
+@use './styles/third-party-overrides';
+@use './styles/material-density-overrides';
 @use 'ngx-toastr/toastr';
 @import "prismjs/themes/prism-solarizedlight.css";
 

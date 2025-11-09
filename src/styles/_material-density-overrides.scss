@@ -1,0 +1,123 @@
+// Angular Material Density & Typography Overrides
+// Use Material's official theming APIs instead of !important hacks
+
+@use "@angular/material" as mat;
+@use "sass:map";
+
+// ============================================================================
+// CUSTOM TYPOGRAPHY CONFIG
+// ============================================================================
+
+// Define custom typography to eliminate font-size !important usage
+$custom-typography: mat.m2-define-typography-config(
+  $font-family: 'Roboto, sans-serif',
+  $headline-1: mat.m2-define-typography-level(96px, 96px, 300),
+  $headline-2: mat.m2-define-typography-level(60px, 60px, 300),
+  $headline-3: mat.m2-define-typography-level(48px, 50px, 400),
+  $headline-4: mat.m2-define-typography-level(34px, 40px, 400),
+  $headline-5: mat.m2-define-typography-level(24px, 32px, 400),
+  $headline-6: mat.m2-define-typography-level(20px, 32px, 500),
+  $subtitle-1: mat.m2-define-typography-level(16px, 28px, 400),
+  $subtitle-2: mat.m2-define-typography-level(14px, 24px, 500),
+  $body-1: mat.m2-define-typography-level(16px, 24px, 400),
+  $body-2: mat.m2-define-typography-level(14px, 20px, 400),
+  $caption: mat.m2-define-typography-level(12px, 20px, 400),
+  $button: mat.m2-define-typography-level(16px, 26px, 500),  // Default button text
+  $overline: mat.m2-define-typography-level(12px, 32px, 500),
+);
+
+// ============================================================================
+// BUTTON CUSTOMIZATION
+// ============================================================================
+
+// Custom button configurations to eliminate !important on buttons
+.mat-mdc-button,
+.mat-mdc-raised-button,
+.mat-mdc-flat-button,
+.mat-mdc-stroked-button {
+  // Use natural specificity instead of !important
+  &.button-compact {
+    height: 36px;
+    line-height: 26px;
+    font-size: 16px;
+  }
+
+  &.button-small {
+    height: 27px;
+    min-width: 53px;
+    font-size: 14px;
+  }
+}
+
+// ============================================================================
+// FORM FIELD DENSITY
+// ============================================================================
+
+// Reduce form field density globally
+.mat-mdc-form-field {
+  &.form-field-dense {
+    @include mat.form-field-density(-2);
+  }
+}
+
+// ============================================================================
+// CHIP CUSTOMIZATION
+// ============================================================================
+
+.mat-mdc-chip {
+  &.chip-compact {
+    padding: 7px 0;
+    height: 18px;
+  }
+}
+
+// ============================================================================
+// TOGGLE CUSTOMIZATION
+// ============================================================================
+
+.mat-button-toggle-group {
+  &.toggle-compact {
+    .mat-button-toggle-label-content {
+      padding: 0 5px;
+      line-height: 26px;
+    }
+  }
+}
+
+// ============================================================================
+// CARD CUSTOMIZATION
+// ============================================================================
+
+.mat-mdc-card {
+  &.card-flat {
+    box-shadow: none;
+  }
+
+  &.card-elevated {
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+// ============================================================================
+// ICON SIZING
+// ============================================================================
+
+.mat-icon {
+  &.icon-sm {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+
+  &.icon-md {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  &.icon-lg {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+  }
+}

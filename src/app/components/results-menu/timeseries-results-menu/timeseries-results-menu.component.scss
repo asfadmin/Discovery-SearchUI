@@ -287,13 +287,8 @@ label {
   vertical-align: super;
 }
 
-:host ::ng-deep .mdc-radio__inner-circle {
-  border-color: #236192 !important; /* change radio button color when selected */
-}
-
-:host ::ng-deep .mdc-radio__outer-circle {
-  border-color: #fc3 !important; /* change radio button color when selected */
-}
+// Material radio button colors moved to global styles
+// See: src/styles/_third-party-overrides.scss
 
 .point-list-section {
 

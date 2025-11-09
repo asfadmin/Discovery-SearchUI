@@ -137,48 +137,5 @@ button {
   pointer-events: auto;
 }
 
-::ng-deep.ol-overviewmap {
-  top: 0.5em;
-  right: 0.5em;
-  left: inherit !important;
-  bottom: inherit !important;
-}
-
-::ng-deep.map .ol-custom-overviewmap,
-::ng-deep.map .ol-custom-overviewmap.ol-uncollapsible {
-  right: 0;
-  top: 0;
-}
-
-::ng-deep.map .ol-custom-overviewmap:not(.ol-collapsed) {
-  border: 1px solid black;
-}
-
-::ng-deep.map .ol-custom-overviewmap .ol-overviewmap-map {
-  border: none;
-  width: 300px;
-}
-
-::ng-deep.map .ol-overviewmap.ol-custom-overviewmap.ol-unselectable.ol-control button {
-  visibility: hidden !important;
-}
-
-::ng-deep.map .ol-overviewmap.ol-custom-overviewmap.ol-unselectable.ol-control {
-  background: rgb(0 0 0 / 0%);
-}
-
-::ng-deep.map .ol-custom-overviewmap:not(.ol-collapsed) {
-  background: rgb(255 255 255 / 80%) !important;
-}
-
-::ng-deep.map .ol-custom-overviewmap .ol-overviewmap-box {
-  border: 2px solid red;
-  cursor: grab;
-}
-
-::ng-deep.map .ol-custom-overviewmap:not(.ol-collapsed) button {
-  bottom: auto;
-  left: auto;
-  right: 1px;
-  top: 1px;
-}
+// OpenLayers overview map styles moved to global styles
+// See: src/styles/_third-party-overrides.scss

@@ -121,6 +121,8 @@ $icon-size: 36px;
   min-width: 130px;
 }
 
-.mat-mdc-card {
-  box-shadow: none !important;
+// Use utility class 'card-flat' on element instead of !important
+// Or increase specificity:
+:host .mat-mdc-card {
+  box-shadow: none;
 }
