@@ -1,23 +1,22 @@
 @use "asf-help" as *;
+@use "tokens" as *;
 
 .help-video {
   height: 300px;
   background-size: contain;
-  margin-bottom: 18px;
+  margin-bottom: spacing(lg);
 }
 
 .help-toc-title-block {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: spacing(lg);
+  margin-bottom: spacing(lg);
 }
 
 .help-toc-all-title {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  @include themify($themes) {
-    color: themed('primary');
-  }
+  color: var(--asf-primary);
   h1,
   h2,
   h3,
@@ -35,9 +34,7 @@
     font-size: 53px;
     width: 54px;
     height: 53px;
-    @include themify($themes) {
-      color: themed('dark-secondary-text');
-    }
+    color: var(--asf-dark-secondary-text);
   }
 }
 
@@ -51,19 +48,19 @@
 }
 
 .mat-mdc-card {
-  padding: 16px 16px 0;
+  padding: spacing(md) spacing(md) 0;
   height: 75px;
 }
 
 /* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
 .mat-card-step {
   display: flex;
-  margin: 0 3px;
+  margin: 0 spacing(xs);
   cursor: pointer;
 }
 
 .mat-mdc-card-title {
-  margin-bottom: 8px;
+  margin-bottom: spacing(1);
 }
 
 .mat-mdc-card-subtitle {
@@ -80,9 +77,7 @@
   flex: none;
 
   h3 {
-    @include themify($themes) {
-      color: themed('primary');
-    }
+    color: var(--asf-primary);
   }
 
   li {
@@ -95,26 +90,20 @@
 }
 
 .help-table-header {
-  @include themify($themes) {
-    color: themed('primary');
-  }
+  color: var(--asf-primary);
   font-size: 1.17em;
   margin-block-start: 1em;
   margin-block-end: 1em;
   margin-inline-start: 0;
   margin-inline-end: 0;
   font-weight: bold;
-
-  // color: #65665c;
 }
 
 .help-table-row {
-  height: 20px !important;
+  height: spacing(lg) !important;
 
   a {
-    @include themify($themes) {
-      color: themed('blue-link');
-    }
+    color: var(--asf-blue-link);
   }
 }
 

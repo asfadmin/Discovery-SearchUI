@@ -1,6 +1,7 @@
 @use "asf-theme-variables" as *;
+@use "tokens" as *;
 
-$side-padding-only: 0 15px 0 15px;
+$side-padding-only: 0 spacing(md) 0 spacing(md);
 
 .help-dialog-wrapper {
   display: flex;
@@ -12,15 +13,12 @@ main {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  @include themify($themes) {
-    background-color: lighten(themed('primary-light'),15%);
-  }
+  background-color: var(--asf-primary-light);
+  filter: brightness(1.15); // Lighten effect
 }
 
 footer {
-  @include themify($themes) {
-    background-color: themed('primary-light');
-  }
+  background-color: var(--asf-primary-light);
 }
 
 section {
@@ -30,10 +28,8 @@ section {
 }
 
 .help-header {
-  @include themify($themes) {
-    background-color: themed('primary-light');
-    color: themed('dark-primary-text');
-  }
+  background-color: var(--asf-primary-light);
+  color: var(--asf-dark-primary-text);
   display: flex;
   flex-direction: row;
   padding: $side-padding-only;
@@ -46,15 +42,14 @@ section {
 }
 
 .help-menu {
-  @include themify($themes) {
-    background-color: lighten(themed('primary-light'),15%);
-  }
+  background-color: var(--asf-primary-light);
+  filter: brightness(1.15); // Lighten effect
   display: flex;
   flex-direction: row;
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-left: spacing(md);
+  padding-right: spacing(md);
+  padding-top: spacing(sm);
+  padding-bottom: spacing(sm);
 }
 
 .help-action-controls {
@@ -62,6 +57,6 @@ section {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  padding: 10px 15px 10px 15px;
+  padding: spacing(2) spacing(md) spacing(2) spacing(md);
 }
 
