@@ -38,14 +38,15 @@ $thumb-size: 50px;
   margin-left: spacing(sm);
 }
 
-.map-button-toggle {
-  background-color: var(--asf-primary) !important;
-  color: var(--asf-light-primary-text) !important;
+// Increased specificity for Material button override
+:host .map-button-toggle {
+  background-color: var(--asf-primary);
+  color: var(--asf-light-primary-text);
   padding-right: 40px; // Specific padding for button layout
   font-size: font-size(xs);
-  line-height: spacing(xl) !important;
-  border: 1px groove rgb(0 0 0 / 25%) !important;
-  border-radius: spacing(xs) !important;
+  line-height: spacing(xl);
+  border: 1px groove rgb(0 0 0 / 25%);
+  border-radius: spacing(xs);
 }
 
 .position-in-header {
@@ -118,9 +119,10 @@ $thumb-size: 50px;
   height: 100%;
 }
 
-.prod-list-option {
-  margin-right: 0 !important;
-  height: $prod-row-height !important;
+// Increased specificity for Material list option override
+:host .prod-list-option {
+  margin-right: 0;
+  height: $prod-row-height;
 }
 
 .prod-thumb {
@@ -129,8 +131,9 @@ $thumb-size: 50px;
   margin-right: spacing(lg);
 }
 
-.no-scroll {
-  overflow: visible !important;
+// Increased specificity for overflow override
+:host .no-scroll {
+  overflow: visible;
 }
 
 mat-expansion-panel-header {
@@ -146,8 +149,9 @@ mat-expansion-panel-header {
   }
 }
 
-.mat-header-base {
-  background-color: var(--asf-surface) !important;
-  border-color: var(--asf-surface) !important;
+// Increased specificity for Material header override
+:host .mat-header-base {
+  background-color: var(--asf-surface);
+  border-color: var(--asf-surface);
   border-style: none;
 }

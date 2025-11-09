@@ -5,10 +5,11 @@
   cursor: pointer;
 }
 
-.icon-size {
+// Increased specificity for icon sizing
+:host .icon-size {
   font-size: inherit;
-  height: spacing(md) !important;
-  line-height: spacing(md) !important;
+  height: spacing(md);
+  line-height: spacing(md);
   opacity: opacity(60);
 }
 

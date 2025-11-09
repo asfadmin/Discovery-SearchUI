@@ -127,8 +127,9 @@ button {
   margin: spacing(sm);
 }
 
-.button-clipboard-mobile {
-  padding: 0 0 0 spacing(xs) !important;
+// Increased specificity for Material button padding
+:host .button-clipboard-mobile {
+  padding: 0 0 0 spacing(xs);
 }
 
 .dl-mat-dialog-content {
@@ -172,9 +173,10 @@ button {
   // height: $header-height;
 }
 
-.mat-mdc-list-base .mat-mdc-list-item .mat-list-item-content,
-.mat-list-base .mat-list-option .mat-list-item-content {
-  padding: 0 !important;
+// Increased specificity for Material list padding override
+:host .mat-mdc-list-base .mat-mdc-list-item .mat-list-item-content,
+:host .mat-list-base .mat-list-option .mat-list-item-content {
+  padding: 0;
 }
 
 .on-demand-warning {
@@ -220,8 +222,9 @@ button {
   margin-right: spacing(md);
 }
 
-.header-link-mobile {
-  font-size: 12px !important;
+// Increased specificity for mobile font size
+:host .header-link-mobile {
+  font-size: 12px;
 }
 
 .docs-div {
@@ -254,16 +257,17 @@ button {
   margin-top: 3px;
   margin-left: 16px;
 }
-.clipboard-button {
-  margin-right: spacing(md) !important;
-  font-size: 16px !important;
+// Increased specificity for Material button overrides
+:host .clipboard-button {
+  margin-right: spacing(md);
+  font-size: 16px;
   color: var(--asf-dark-primary-text);
 }
-.download-button {
-  margin: 0 !important;
+:host .download-button {
+  margin: 0;
 }
-.close-button {
-  margin-left:0 !important;
-  display: flex !important;
+:host .close-button {
+  margin-left:0;
+  display: flex;
   color: var(--asf-dark-primary-text);
 }

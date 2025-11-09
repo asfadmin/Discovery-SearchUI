@@ -5,16 +5,18 @@
 :host {
   height: 100%;
 }
-a {
-  color: var(--asf-blue-link) !important;
+// Increased specificity for link color
+:host a {
+  color: var(--asf-blue-link);
   text-decoration: none;
 }
 
-.detail-card {
+// Increased specificity for overflow override
+:host .detail-card {
   max-width: 100%;
   height: 90%;
   border-left: 1px solid var(--asf-primary-light);
-  overflow-x: hidden !important;
+  overflow-x: hidden;
 }
 .detail-card-info-mobile {
   height: auto;
@@ -64,8 +66,9 @@ a {
   }
 }
 
-.not-clickable {
-  color: var(--asf-dark-disabled-text) !important;
+// Increased specificity for disabled state
+:host .not-clickable {
+  color: var(--asf-dark-disabled-text);
   cursor: default;
 }
 
@@ -114,30 +117,33 @@ a {
   font-size: font-size(xs);
 }
 
-.subtitle {
-  margin-bottom: spacing(sm) !important;
+// Increased specificity for Material subtitle override
+:host .subtitle {
+  margin-bottom: spacing(sm);
 }
 
 .mat-mdc-card-header .mat-mdc-card-title {
   font-size: font-size(base);
 }
 
-.mini-toggle-button {
+// Increased specificity for Material button toggle override
+:host .mini-toggle-button {
   font-size: font-size(xs);
-  line-height: spacing(lg) !important;
+  line-height: spacing(lg);
 }
 
 /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
-.mini-toggle-button .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
-  line-height: spacing(lg) !important;
+:host .mini-toggle-button .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+  line-height: spacing(lg);
   padding: 0 spacing(3);
 }
 
-.menu-override {
-  justify-content: space-around !important;
+// Increased specificity for flexbox override
+:host .menu-override {
+  justify-content: space-around;
 
   .search-button {
-    margin-left: 0 !important;
+    margin-left: 0;
   }
 }
 
@@ -176,12 +182,13 @@ a {
   color: var(--asf-dark-primary-text-light-10);
 }
 
-.search-button {
+// Increased specificity for Material button override
+:host .search-button {
   margin-left: spacing(lg);
   background-color: var(--asf-primary);
   color: var(--asf-light-primary-text);
-  border: 1px groove rgb(0 0 0 / 25%) !important;
-  border-radius: spacing(xs) !important;
+  border: 1px groove rgb(0 0 0 / 25%);
+  border-radius: spacing(xs);
 }
 
 .scene-detail--wrapper {

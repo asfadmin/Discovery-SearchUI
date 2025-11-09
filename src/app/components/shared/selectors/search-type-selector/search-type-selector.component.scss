@@ -7,11 +7,9 @@
   display: flex;
 }
 
+// md-icon-size mixin handles font-size, height, width
 .menu-item-icon {
   color: var(--asf-dark-primary-text);
-  font-size: 50px !important;
-  height: 50px !important;
-  width: 50px !important;
   @include md-icon-size(50px);
   margin-right: 0;
 }
@@ -33,8 +31,9 @@
   display: flex;
 }
 
-.menu-item-inner {
-  width: calc(100% - spacing(lg)) !important;
+// Increased specificity for width override
+:host .menu-item-inner {
+  width: calc(100% - spacing(lg));
   margin: spacing(sm) spacing(sm) spacing(md) spacing(md);
 }
 
@@ -81,8 +80,9 @@
   text-wrap: normal;
 }
 
-.matOption {
-  height: auto !important;
+// Increased specificity for Material option height
+:host .matOption {
+  height: auto;
 }
 
 .button-label {
@@ -168,10 +168,11 @@
 
 }
 
+// Already using :host for specificity - no !important needed
 :host {
   .mobile-button-wrapper {
-    transform: none !important;
-    margin-top: 0 !important;
+    transform: none;
+    margin-top: 0;
     min-width: 112px;
   }
 }
@@ -191,10 +192,11 @@
   }
 }
 
+// Already using :host for specificity - no !important needed
 :host .enable-search-type-on-demand .icon-size {
   opacity: opacity(100);
-  color: black !important;
-  font-weight: bold !important;
+  color: black;
+  font-weight: bold;
 }
 
 .enable-search-type-on-demand .icon-size {

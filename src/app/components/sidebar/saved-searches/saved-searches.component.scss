@@ -42,8 +42,9 @@
   width: 100%;
 }
 
-.saved-searches-row:nth-child(odd) {
-  background-color: var(--asf-primary-light-15) !important;
+// Increased specificity for zebra striping
+:host .saved-searches-row:nth-child(odd) {
+  background-color: var(--asf-primary-light-15);
 }
 
 .saved-searches__header {

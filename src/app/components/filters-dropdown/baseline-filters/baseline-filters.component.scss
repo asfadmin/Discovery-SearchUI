@@ -1,7 +1,8 @@
 @use "tokens" as *;
 
-.raised-section {
-  box-shadow: var(--shadow-lg) !important;
+// Increased specificity for Material card shadow override
+:host .raised-section {
+  box-shadow: var(--shadow-lg);
 }
 
 .bl-example {

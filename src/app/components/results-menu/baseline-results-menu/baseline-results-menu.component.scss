@@ -51,13 +51,15 @@ $config: mat.m2-define-legacy-typography-config();
   cursor: pointer;
 }
 
-.baseline-criteria-button-toggle-group {
-  flex: 0 1 auto !important;
+// Increased specificity for Material button toggle group
+:host .baseline-criteria-button-toggle-group {
+  flex: 0 1 auto;
   margin-top: -5px;
 }
 
-.baseline-criteria-button-toggle {
-  background-color: var(--asf-surface) !important;
+// Increased specificity for Material button toggle background
+:host .baseline-criteria-button-toggle {
+  background-color: var(--asf-surface);
   font-size: 14px;
 }
 
@@ -72,8 +74,9 @@ $config: mat.m2-define-legacy-typography-config();
   display: inline;
 }
 
-.more-horiz {
-  font-size: 16px !important;
+// Increased specificity for icon sizing
+:host .more-horiz {
+  font-size: 16px;
   margin-bottom: -11px;
   margin-left: 0;
 }
@@ -96,17 +99,19 @@ $config: mat.m2-define-legacy-typography-config();
   text-align: center;
 }
 
-.list-icon {
+// Increased specificity for Material icon sizing
+:host .list-icon {
   margin-top: -2px;
-  font-size: 18px !important;
-  height: 18px !important;
-  width: 18px !important;
+  font-size: 18px;
+  height: 18px;
+  width: 18px;
 }
 
-.list-button-group {
+// Increased specificity for line-height override
+:host .list-button-group {
   max-width: fit-content;
   margin-top: -11px;
-  line-height: 16px !important;
+  line-height: 16px;
 }
 
 .button-group-label {

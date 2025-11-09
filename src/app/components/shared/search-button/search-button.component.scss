@@ -2,13 +2,14 @@
 @use "tokens" as *;
 @use "../../header/header-buttons/header-buttons.component.scss" as *;
 
-.arrow-button-toggle {
+// Increased specificity for Material button overrides
+:host .arrow-button-toggle {
   padding-top: spacing(sm);
-  background-color: var(--asf-primary) !important;
+  background-color: var(--asf-primary);
 }
-.search-button {
-  height: 36px !important;
-  border-radius: 0 !important;
+:host .search-button {
+  height: 36px;
+  border-radius: 0;
 }
 
 

@@ -4,16 +4,18 @@
 @use "tokens" as *;
 $config: mat.m2-define-legacy-typography-config();
 
-.mobile-size {
-  margin-left: spacing(sm) !important;
+// Increased specificity - no !important needed
+:host .mobile-size {
+  margin-left: spacing(sm);
 }
 
 .mobile-event {
   margin-top: -8px;
 }
 
-.files-header .mobile-size {
-  font-size: font-size(xs) !important;
+// Increased specificity with :host
+:host .files-header .mobile-size {
+  font-size: font-size(xs);
   font-weight: bold;
   padding-top: spacing(sm);
 }
@@ -43,8 +45,9 @@ $config: mat.m2-define-legacy-typography-config();
   margin-left: 0;
 }
 
-.header-row-left .mobile-size {
-  font-size: font-size(xs) !important;
+// Increased specificity with :host
+:host .header-row-left .mobile-size {
+  font-size: font-size(xs);
 }
 
 .header-row-right {
@@ -100,12 +103,13 @@ $config: mat.m2-define-legacy-typography-config();
   text-align: center;
 }
 
-.list-icon {
+// Increased specificity for Material icon overrides
+:host .list-icon {
   margin-top: -2px;
-  font-size: font-size(lg) !important;
-  height: 18px !important;
-  width: 18px !important;
-  color: var(--asf-dark-primary-text) !important;
+  font-size: font-size(lg);
+  height: 18px;
+  width: 18px;
+  color: var(--asf-dark-primary-text);
 }
 
 // Override icon colors on all hover/focus states
@@ -122,15 +126,17 @@ $config: mat.m2-define-legacy-typography-config();
 .mat-button-toggle-appearance-standard.cdk-focused .mat-icon,
 .mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-icon,
 .mat-button-toggle:hover .list-icon,
-.mat-button-toggle.cdk-focused .list-icon,
-.mat-button-toggle.cdk-mouse-focused .list-icon {
-  color: var(--asf-dark-primary-text) !important;
+// Increased specificity with :host for focus states
+:host .mat-button-toggle.cdk-focused .list-icon,
+:host .mat-button-toggle.cdk-mouse-focused .list-icon {
+  color: var(--asf-dark-primary-text);
 }
 
-.list-button-group {
+// Increased specificity for line-height
+:host .list-button-group {
   max-width: fit-content;
   margin-top: -20px;
-  line-height: 26px !important;
+  line-height: 26px;
 }
 
 .button-group-label {
@@ -149,27 +155,28 @@ $config: mat.m2-define-legacy-typography-config();
 
 // Override button background on hover/focus to prevent dark overlay
 .control-mat-button-toggle.mat-button-toggle-appearance-standard:hover,
-.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-focused,
-.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-mouse-focused {
-  background-color: var(--asf-surface) !important;
+// Increased specificity for Material button toggle focus states
+:host .control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-focused,
+:host .control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-mouse-focused {
+  background-color: var(--asf-surface);
 }
 
-// Make the button's internal overlay transparent on hover
-.control-mat-button-toggle.mat-button-toggle-appearance-standard:hover .mat-button-toggle-button,
-.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-focused .mat-button-toggle-button,
-.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-button-toggle-button {
-  background-color: transparent !important;
+// Make the button's internal overlay transparent on hover - increased specificity
+:host .control-mat-button-toggle.mat-button-toggle-appearance-standard:hover .mat-button-toggle-button,
+:host .control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-focused .mat-button-toggle-button,
+:host .control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-button-toggle-button {
+  background-color: transparent;
 }
 
-// Target the focus overlay specifically
-.control-mat-button-toggle.mat-button-toggle-appearance-standard .mat-button-toggle-focus-overlay {
-  background-color: transparent !important;
+// Target the focus overlay specifically - increased specificity
+:host .control-mat-button-toggle.mat-button-toggle-appearance-standard .mat-button-toggle-focus-overlay {
+  background-color: transparent;
 }
 
-// Also target the ripple element
-.control-mat-button-toggle.mat-button-toggle-appearance-standard .mat-button-toggle-ripple,
-.control-mat-button-toggle.mat-button-toggle-appearance-standard .mat-ripple {
-  display: none !important;
+// Also target the ripple element - increased specificity
+:host .control-mat-button-toggle.mat-button-toggle-appearance-standard .mat-button-toggle-ripple,
+:host .control-mat-button-toggle.mat-button-toggle-appearance-standard .mat-ripple {
+  display: none;
 }
 
 .space-filler {
