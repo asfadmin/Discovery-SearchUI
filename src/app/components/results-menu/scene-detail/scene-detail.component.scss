@@ -1,5 +1,6 @@
 @use "asf-theme-variables" as *;
 @use "tokens" as *;
+@use "component-mixins" as *;
 
 :host {
   height: 100%;
@@ -19,7 +20,7 @@ a {
   height: auto;
 }
 .scrollable {
-  overflow: auto;
+  @include scrollable(both);
 }
 
 .detail-card-header {
@@ -42,7 +43,8 @@ a {
 }
 
 .browse-img {
-  cursor: zoom-in;
+  @include clickable;
+  cursor: zoom-in; // Override default pointer
 }
 
 .banner {

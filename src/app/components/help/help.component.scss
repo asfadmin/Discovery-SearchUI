@@ -1,18 +1,17 @@
 @use "asf-theme-variables" as *;
 @use "tokens" as *;
+@use "component-mixins" as *;
 
 $side-padding-only: 0 spacing(md) 0 spacing(md);
 
 .help-dialog-wrapper {
-  display: flex;
-  flex-direction: column;
+  @include flex-center(column);
   height: 100%;
 }
 
 main {
+  @include scrollable(y);
   flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
   background-color: var(--asf-primary-light);
   filter: brightness(1.15); // Lighten effect
 }
@@ -22,16 +21,15 @@ footer {
 }
 
 section {
+  @include scrollable(both);
   height: 100%; /* takes the visible area of the "main" div */
-  overflow: auto; /* recommended */
   border-bottom: 1px solid;
 }
 
 .help-header {
+  @include flex-between;
   background-color: var(--asf-primary-light);
   color: var(--asf-dark-primary-text);
-  display: flex;
-  flex-direction: row;
   padding: $side-padding-only;
   margin: 0;
 

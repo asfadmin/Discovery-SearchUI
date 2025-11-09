@@ -1,6 +1,7 @@
 @use "asf-theme-variables" as *;
 @use "variables" as *;
 @use "tokens" as *;
+@use "component-mixins" as *;
 
 %card-base {
   background-color: var(--asf-primary);
@@ -60,10 +61,10 @@
 $icon-size: 36px;
 
 .menu-toggle-button {
+  @include clickable;
   background-color: var(--asf-primary);
   color: var(--asf-dark-primary-text);
   box-shadow: none !important;
-  cursor: pointer;
   border: none;
   text-align: center;
   vertical-align: center;

@@ -1,0 +1,251 @@
+// Component Mixins
+// Reusable mixins for common component patterns
+// Import with: @use 'component-mixins' as *;
+
+@use 'tokens' as *;
+
+// ============================================================================
+// LAYOUT MIXINS
+// ============================================================================
+
+/// Flex container with centered content
+/// @param {String} $direction - Flex direction (row, column)
+@mixin flex-center($direction: row) {
+  display: flex;
+  flex-direction: $direction;
+  align-items: center;
+  justify-content: center;
+}
+
+/// Flex container with space-between layout
+/// @param {String} $direction - Flex direction (row, column)
+@mixin flex-between($direction: row) {
+  display: flex;
+  flex-direction: $direction;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/// Scrollable container
+/// @param {String} $axis - Scroll axis (y, x, both)
+@mixin scrollable($axis: y) {
+  @if $axis == y {
+    overflow-y: auto;
+    overflow-x: hidden;
+  } @else if $axis == x {
+    overflow-x: auto;
+    overflow-y: hidden;
+  } @else {
+    overflow: auto;
+  }
+  -webkit-overflow-scrolling: touch; // Smooth scrolling on iOS
+}
+
+/// Full-width full-height container
+@mixin full-size {
+  width: 100%;
+  height: 100%;
+}
+
+// ============================================================================
+// BUTTON MIXINS
+// ============================================================================
+
+/// Standard map control button styling
+/// Used across map controls (layer selector, view selector, etc.)
+@mixin map-control-button {
+  background: var(--asf-surface);
+  color: var(--asf-dark-primary-text);
+  margin: 0;
+  height: 27px;
+  min-width: 53px;
+  font-size: 18px;
+  border-radius: spacing(xs);
+  border: solid 1px rgb(0 0 0 / 12%);
+  text-align: center;
+  @include flex-center;
+}
+
+/// Icon button with consistent sizing
+/// @param {Number} $size - Icon size (default: 24px)
+@mixin icon-button($size: 24px) {
+  width: $size;
+  height: $size;
+  min-width: $size;
+  padding: 0;
+  @include flex-center;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+/// Clickable element with pointer cursor
+@mixin clickable {
+  cursor: pointer;
+  user-select: none;
+}
+
+// ============================================================================
+// POSITIONING MIXINS
+// ============================================================================
+
+/// Absolute positioned badge/indicator (bottom-right corner)
+/// @param {Number} $bottom - Bottom offset (default: -9px)
+/// @param {Number} $right - Right offset (default: -9px)
+/// @param {Number} $rotation - Rotation angle (default: -45deg)
+@mixin corner-badge($bottom: -9px, $right: -9px, $rotation: -45deg) {
+  color: var(--asf-primary);
+  position: absolute;
+  bottom: $bottom;
+  right: $right;
+  transform: rotate($rotation);
+}
+
+/// Absolute centering (requires parent with position: relative)
+@mixin absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+// ============================================================================
+// TEXT MIXINS
+// ============================================================================
+
+/// Truncate text with ellipsis
+@mixin text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/// Multi-line text truncation
+/// @param {Number} $lines - Number of lines to show
+@mixin text-clamp($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// ============================================================================
+// CARD/PANEL MIXINS
+// ============================================================================
+
+/// Standard panel/card styling
+/// @param {String} $padding - Padding size key (xs, sm, md, lg)
+@mixin panel($padding: md) {
+  background-color: var(--asf-surface);
+  color: var(--asf-on-surface);
+  border-radius: spacing(xs);
+  padding: spacing($padding);
+}
+
+/// Panel with border
+/// @param {String} $padding - Padding size key
+@mixin panel-bordered($padding: md) {
+  @include panel($padding);
+  border: 1px solid var(--asf-primary-light);
+}
+
+// ============================================================================
+// FORM MIXINS
+// ============================================================================
+
+/// Reset input/button default styling
+@mixin reset-button {
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+/// Focus outline styling
+@mixin focus-outline {
+  outline: 2px solid var(--asf-primary);
+  outline-offset: 2px;
+}
+
+// ============================================================================
+// VISIBILITY MIXINS
+// ============================================================================
+
+/// Visually hide element but keep accessible for screen readers
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/// Hide element completely
+@mixin hidden {
+  display: none;
+}
+
+// ============================================================================
+// RESPONSIVE MIXINS
+// ============================================================================
+
+/// Media query for mobile devices
+@mixin mobile {
+  @media (max-width: 767px) {
+    @content;
+  }
+}
+
+/// Media query for tablet devices
+@mixin tablet {
+  @media (min-width: 768px) and (max-width: 1023px) {
+    @content;
+  }
+}
+
+/// Media query for desktop devices
+@mixin desktop {
+  @media (min-width: 1024px) {
+    @content;
+  }
+}
+
+// ============================================================================
+// ANIMATION MIXINS
+// ============================================================================
+
+/// Smooth transition
+/// @param {String} $property - CSS property to transition (default: all)
+/// @param {String} $duration - Duration key (fast, base, slow)
+@mixin transition($property: all, $duration: base) {
+  transition: $property
+    map-get($transition-duration, $duration)
+    map-get($transition-timing, ease-out);
+}
+
+/// Fade-in animation
+@mixin fade-in {
+  animation: fade-in 150ms ease-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

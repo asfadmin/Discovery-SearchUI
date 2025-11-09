@@ -1,17 +1,11 @@
 @use "@angular/material" as mat;
 @use "asf-theme-variables" as *;
 @use "tokens" as *;
+@use "component-mixins" as *;
 
 .mat-button-toggle-button {
-    border: 0;
-    background: none;
-    color: inherit;
-    padding: 0;
-    margin: 0;
-    font: inherit;
-    outline: none;
+    @include reset-button;
     width: 100%;
-    cursor: pointer;
 }
 
 .ts-criteria-button-toggle-group {

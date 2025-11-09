@@ -1,21 +1,12 @@
 @use "asf-theme-variables" as *;
 @use "tokens" as *;
+@use "component-mixins" as *;
 
 .layer-select-button {
-  background: var(--asf-surface);
-  color: var(--asf-dark-primary-text);
-  margin: 0;
+  @include map-control-button;
+  // Component-specific overrides
   padding: 0 0 0 3px;
-  font-size: 18px !important;
-  height: 27px !important;
-  width: 18px !important;
-  min-width: 53px !important;
-  border-radius: 4px !important;
-  border: solid 1px rgb(0 0 0 / 12%);
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 18px;
   span {
     height: 26px;
   }
@@ -31,16 +22,12 @@
 }
 
 .bottom-right {
-  color: var(--asf-primary);
-  position: absolute;
-  bottom: -13px;
-  right: -19px;
-  transform: rotate(-45deg);
+  @include corner-badge(-13px, -19px);
 }
 
 
 .checkbox {
+  @include clickable;
   margin-left: 2px;
   margin-right: spacing(md);
-  cursor: pointer;
 }

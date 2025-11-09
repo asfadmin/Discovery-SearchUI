@@ -1,5 +1,6 @@
 @use "asf-theme-variables" as *;
 @use "tokens" as *;
+@use "component-mixins" as *;
 
 .icon-bar--layout {
   height: 100%;
@@ -115,17 +116,13 @@ label {
 }
 
 .opacity-slider-button {
+  @include map-control-button;
+  // Component-specific overrides
   background: var(--asf-background-white);
-  color: var(--asf-dark-primary-text);
   margin: 0 0 5px;
   padding: 0 0 0 3px;
-  font-size: 14px !important;
-  height: 27px !important;
-  width: 18px !important;
-  min-width: 53px !important;
-  border-radius: 4px !important;
-  border: solid 1px rgb(0 0 0 / 12%);
-  text-align: center;
+  font-size: 14px;
+  width: 18px;
 }
 
 .opacity-slider-title {
@@ -159,8 +156,8 @@ label {
 }
 
 .tool-bar-control {
+  @include clickable;
   color: var(--asf-dark-secondary-text);
-  cursor: pointer;
   display: block;
   width: 30px;
   padding: 14px 0;

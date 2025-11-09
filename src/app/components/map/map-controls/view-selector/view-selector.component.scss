@@ -1,14 +1,14 @@
 @use "asf-theme-variables" as *;
 @use "tokens" as *;
+@use "component-mixins" as *;
 
 .view-btn {
+  @include icon-button(19px);
+  margin-right: 0;
+  margin-left: 0;
   svg {
     fill: var(--asf-dark-primary-text);
   }
-  width: 19px;
-  height: 19px;
-  margin-right: 0;
-  margin-left: 0;
 }
 
 .view-button-group {
@@ -16,17 +16,10 @@
 }
 
 .view-select-button {
-  background: var(--asf-surface);
-  color: var(--asf-dark-primary-text);
-  margin: 0;
-  font-size: 18px !important;
-  height: 27px !important;
-  width: 18px !important;
-  min-width: 53px !important;
-  border-radius: 4px !important;
-  border: solid 1px rgb(0 0 0 / 12%);
-  text-align: center;
-  display: grid;
+  @include map-control-button;
+  // Component-specific overrides
+  width: 18px;
+  display: grid; // Override flex-center for grid layout
   place-content: center;
   line-height: 19px;
 }
@@ -40,9 +33,5 @@
 }
 
 .bottom-right {
-  color: var(--asf-primary);
-  position: absolute;
-  bottom: -9px;
-  right: -21px;
-  transform: rotate(-45deg);
+  @include corner-badge(-9px, -21px);
 }
