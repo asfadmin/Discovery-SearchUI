@@ -378,6 +378,13 @@ ul {
 //  top: 4px
 //}
 
+// Fix for black circle appearing around checkbox
+::ng-deep .mat-mdc-checkbox .mdc-checkbox__ripple,
+::ng-deep .mat-mdc-checkbox .mat-mdc-checkbox-ripple,
+::ng-deep .mat-mdc-checkbox .mat-ripple-element {
+  display: none !important;
+}
+
 .ts-buttons {
   border: none;
 }
