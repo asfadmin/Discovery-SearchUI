@@ -8,7 +8,11 @@ import {
   inject,
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { MatSidenav } from '@angular/material/sidenav';
+import {
+  MatSidenav,
+  MatSidenavContainer,
+  MatSidenavContent,
+} from '@angular/material/sidenav';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer, Title } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
@@ -57,6 +61,11 @@ import {
   NativeDateAdapter,
 } from '@angular/material/core';
 import { MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
+import { NgClass, AsyncPipe } from '@angular/common';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { HeaderComponent } from './components/header/header.component';
+import { MapComponent } from './components/map/map.component';
+import { ResultsMenuComponent } from './components/results-menu/results-menu.component';
 
 @Component({
   selector: 'app-root',
@@ -70,7 +79,17 @@ import { MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
     { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
     { provide: MAT_DATE_LOCALE, useValue: 'en' },
   ],
-  standalone: false,
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    NgClass,
+    SidebarComponent,
+    MatSidenavContent,
+    HeaderComponent,
+    MapComponent,
+    ResultsMenuComponent,
+    AsyncPipe,
+  ],
 })
 export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   private store$ = inject<Store<AppState>>(Store);

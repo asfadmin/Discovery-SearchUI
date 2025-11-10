@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { MatSharedModule } from '@shared';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 import { SceneDetailModule } from '../scene-detail';
@@ -16,18 +15,16 @@ import { SarviewsResultsMenuComponent } from './sarviews-results-menu.component'
 import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [SarviewsResultsMenuComponent],
   imports: [
     CommonModule,
-    MatSharedModule,
     MatButtonToggleModule,
     SharedModule,
     SceneFilesModule,
     SceneDetailModule,
     ScenesListModule,
     ScenesListHeaderModule,
-
     EventProductSortSelectorModule,
+    SarviewsResultsMenuComponent,
   ],
   exports: [SarviewsResultsMenuComponent],
 })

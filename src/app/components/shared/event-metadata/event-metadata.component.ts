@@ -4,12 +4,32 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import moment from 'moment';
 import * as filtersStore from '@store/filters';
+import { MatIcon } from '@angular/material/icon';
+import {
+  MatMenuTrigger,
+  MatMenu,
+  MatMenuContent,
+  MatMenuItem,
+} from '@angular/material/menu';
+import { ShortDateTimePipe } from '../../../pipes/short-date.pipe';
+import { QuakePipe, VolcanoPipe } from '../../../pipes/sarviews-event.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-event-metadata',
   templateUrl: './event-metadata.component.html',
   styleUrls: ['./event-metadata.component.scss'],
-  standalone: false,
+  imports: [
+    MatIcon,
+    MatMenuTrigger,
+    MatMenu,
+    MatMenuContent,
+    MatMenuItem,
+    ShortDateTimePipe,
+    QuakePipe,
+    VolcanoPipe,
+    TranslateModule,
+  ],
 })
 export class EventMetadataComponent {
   private store$ = inject<Store<AppState>>(Store);

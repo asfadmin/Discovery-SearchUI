@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatSharedModule } from '@shared';
+
 import { ViewSelectorModule } from './view-selector';
 import { AoiOptionsModule } from '@components/shared/aoi-options';
 import { LayerSelectorModule } from './layer-selector';
@@ -20,7 +20,6 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     MatButtonToggleModule,
     MatMenuModule,
-    MatSharedModule,
     MatSliderModule,
     AoiOptionsModule,
     ViewSelectorModule,
@@ -28,8 +27,9 @@ import { FormsModule } from '@angular/forms';
     GridlinesSelectorModule,
     SharedModule,
     FormsModule,
+    MapControlsComponent,
+    MapInfoComponent,
   ],
-  declarations: [MapControlsComponent, MapInfoComponent],
   exports: [MapControlsComponent],
 })
 export class MapControlsModule {}

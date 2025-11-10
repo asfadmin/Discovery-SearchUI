@@ -1,5 +1,10 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { Store } from '@ngrx/store';
 import {
   Hyp3ApiService,
@@ -11,12 +16,53 @@ import { EarthdataUserInfo, Hyp3User, ApplicationStatus } from '@models';
 import * as userStore from '@store/user';
 import * as hyp3Store from '@store/hyp3';
 import { ValidationError } from 'xml2js';
+import { MatCheckbox } from '@angular/material/checkbox';
+import {
+  MatAccordion,
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle,
+} from '@angular/material/expansion';
+import {
+  MatList,
+  MatListItem,
+  MatListItemTitle,
+  MatListItemLine,
+} from '@angular/material/list';
+import {
+  MatFormField,
+  MatLabel,
+  MatInput,
+  MatError,
+} from '@angular/material/input';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatButton } from '@angular/material/button';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-processing-signup',
   templateUrl: './processing-signup.component.html',
   styleUrl: './processing-signup.component.scss',
-  standalone: false,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatCheckbox,
+    MatAccordion,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    MatList,
+    MatListItem,
+    MatListItemTitle,
+    MatListItemLine,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatError,
+    MatTooltip,
+    MatButton,
+    TranslateModule,
+  ],
 })
 export class ProcessingSignupComponent implements OnInit {
   private formBuilder = inject(FormBuilder);

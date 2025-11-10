@@ -2,12 +2,14 @@ import { Component, inject } from '@angular/core';
 
 import { ScreenSizeService } from '@services';
 import { Breakpoints } from '@models';
+import { MatCard } from '@angular/material/card';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-logo',
   templateUrl: './logo.component.html',
   styleUrls: ['./logo.component.scss'],
-  standalone: false,
+  imports: [MatCard, AsyncPipe],
 })
 export class LogoComponent {
   private screenSize = inject(ScreenSizeService);

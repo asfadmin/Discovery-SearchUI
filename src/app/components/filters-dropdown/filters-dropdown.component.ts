@@ -25,6 +25,20 @@ import * as models from '@models';
 import { Observable } from 'rxjs';
 import { areFiltersChanged } from '@store/filters';
 import { SBASOverlap } from '@models';
+import { DocsModalComponent } from '../shared/docs-modal/docs-modal.component';
+import { FrameOrderFiltersComponent } from './frame-order-filters/frame-order-filters.component';
+import { DatasetFiltersComponent } from './dataset-filters/dataset-filters.component';
+import { ListFiltersComponent } from './list-filters/list-filters.component';
+import { BaselineFiltersComponent } from './baseline-filters/baseline-filters.component';
+import { SbasFiltersComponent } from './sbas-filters/sbas-filters.component';
+import { CustomProductsFiltersComponent } from './custom-products-filters/custom-products-filters.component';
+import { SarviewsFiltersComponent } from './sarviews-filters/sarviews-filters.component';
+import { TimeseriesFiltersComponent } from './timeseries-filters/timeseries-filters.component';
+import { MaxResultsSelectorComponent } from '../shared/max-results-selector/max-results-selector.component';
+import { CancelFilterChangesComponent } from '../shared/cancel-filter-changes/cancel-filter-changes.component';
+import { SearchButtonComponent } from '../shared/search-button/search-button.component';
+import { AsyncPipe } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-filters-dropdown',
@@ -38,7 +52,22 @@ import { SBASOverlap } from '@models';
       transition('false => true', animate('50ms ease-in')),
     ]),
   ],
-  standalone: false,
+  imports: [
+    DocsModalComponent,
+    FrameOrderFiltersComponent,
+    DatasetFiltersComponent,
+    ListFiltersComponent,
+    BaselineFiltersComponent,
+    SbasFiltersComponent,
+    CustomProductsFiltersComponent,
+    SarviewsFiltersComponent,
+    TimeseriesFiltersComponent,
+    MaxResultsSelectorComponent,
+    CancelFilterChangesComponent,
+    SearchButtonComponent,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class FiltersDropdownComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

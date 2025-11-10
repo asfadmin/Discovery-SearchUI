@@ -5,7 +5,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { SarviewsEventSearchSelectorModule } from '@components/shared/selectors/sarviews-event-search-selector';
 import { SarviewsEventTypeSelectorModule } from '@components/shared/selectors/sarviews-event-type-selector';
 import { SarviewsEventActiveSelectorModule } from '@components/shared/selectors/sarviews-event-active-selector';
-import { SarviewsEventMagnitudeSelectorModule } from '@components/shared/selectors/sarviews-event-magnitude-selector';
+
 import { DateSelectorModule } from '@components/shared/selectors/date-selector';
 import { MatIconModule } from '@angular/material/icon';
 import { SearchTypeSelectorModule } from '@components/shared/selectors/search-type-selector';
@@ -15,14 +15,12 @@ import { DocsModalModule } from '@components/shared/docs-modal';
 import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [SarviewsFiltersComponent],
   imports: [
     CommonModule,
     MatExpansionModule,
     SarviewsEventSearchSelectorModule,
     SarviewsEventTypeSelectorModule,
     SarviewsEventActiveSelectorModule,
-    SarviewsEventMagnitudeSelectorModule,
     DateSelectorModule,
     MatIconModule,
     SearchTypeSelectorModule,
@@ -30,6 +28,7 @@ import { SharedModule } from '@shared';
     Hyp3JobTypeSelectorModule,
     DocsModalModule,
     SharedModule,
+    SarviewsFiltersComponent,
   ],
   exports: [SarviewsFiltersComponent],
 })

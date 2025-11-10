@@ -8,6 +8,13 @@ import * as scenesStore from '@store/scenes';
 import { ScenesService, ScreenSizeService } from '@services';
 import { SubSink } from 'subsink';
 import * as models from '@models';
+import { MatCard, MatCardSubtitle } from '@angular/material/card';
+import { NgClass, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { ScenesListHeaderComponent } from '../scenes-list-header/scenes-list-header.component';
+import { ScenesListComponent } from '../scenes-list/scenes-list.component';
+import { SceneDetailComponent } from '../scene-detail/scene-detail.component';
+import { SceneFilesComponent } from '../scene-files/scene-files.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-desktop-results-menu',
@@ -16,7 +23,18 @@ import * as models from '@models';
     './desktop-results-menu.component.css',
     '../results-menu.component.scss',
   ],
-  standalone: false,
+  imports: [
+    MatCard,
+    NgClass,
+    MatCardSubtitle,
+    ScenesListHeaderComponent,
+    ScenesListComponent,
+    SceneDetailComponent,
+    SceneFilesComponent,
+    AsyncPipe,
+    TitleCasePipe,
+    TranslateModule,
+  ],
 })
 export class DesktopResultsMenuComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

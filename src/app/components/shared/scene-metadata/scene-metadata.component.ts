@@ -8,12 +8,35 @@ import * as filtersStore from '@store/filters';
 
 import * as models from '@models';
 import { PropertyService } from '@services';
+import { MatIcon } from '@angular/material/icon';
+import {
+  MatMenuTrigger,
+  MatMenu,
+  MatMenuItem,
+  MatMenuContent,
+} from '@angular/material/menu';
+import { MatTooltip } from '@angular/material/tooltip';
+import { UpperCasePipe } from '@angular/common';
+import { ShortDateTimePipe } from '../../../pipes/short-date.pipe';
+import { JoinPipe } from '../../../pipes/join.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-scene-metadata',
   templateUrl: './scene-metadata.component.html',
   styleUrls: ['./scene-metadata.component.scss'],
-  standalone: false,
+  imports: [
+    MatIcon,
+    MatMenuTrigger,
+    MatMenu,
+    MatMenuItem,
+    MatTooltip,
+    MatMenuContent,
+    UpperCasePipe,
+    ShortDateTimePipe,
+    JoinPipe,
+    TranslateModule,
+  ],
 })
 export class SceneMetadataComponent implements OnInit, OnDestroy {
   prop = inject(PropertyService);

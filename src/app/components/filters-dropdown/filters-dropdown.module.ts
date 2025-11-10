@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatSharedModule } from '@shared';
 
 import { SearchButtonModule } from '@components/shared/search-button';
 import { CancelFilterChangesModule } from '@components/shared/cancel-filter-changes';
@@ -29,10 +28,7 @@ import { FrameOrderFiltersComponent } from './frame-order-filters';
   imports: [
     CommonModule,
     RouterModule,
-
     MatTabsModule,
-    MatSharedModule,
-
     ListFiltersModule,
     DatasetFiltersModule,
     BaselineFiltersModule,
@@ -45,12 +41,11 @@ import { FrameOrderFiltersComponent } from './frame-order-filters';
     ClearButtonModule,
     MaxResultsSelectorModule,
     SharedModule,
-
     SearchSelectorModule,
     DocsModalModule,
     FrameOrderFiltersComponent,
+    FiltersDropdownComponent,
   ],
-  declarations: [FiltersDropdownComponent],
   exports: [FiltersDropdownComponent],
 })
 export class FiltersDropdownModule {}

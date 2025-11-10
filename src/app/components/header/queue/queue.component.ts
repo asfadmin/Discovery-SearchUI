@@ -18,13 +18,43 @@ import * as queueStore from '@store/queue';
 
 import { NotificationService, ScreenSizeService } from '@services';
 import { CMRProduct, AsfApiOutputFormat, Breakpoints } from '@models';
-import { MatDialogRef } from '@angular/material/dialog';
+import {
+  MatDialogRef,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+} from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 import { ResizedEvent } from '@directives/resized.directive';
 import * as userStore from '@store/user';
 import { DownloadFileButtonComponent } from '@components/shared/download-file-button/download-file-button.component';
 import UAParser from 'ua-parser-js';
 import { DownloadService } from '@services/download.service';
+import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { ResizedDirective } from '../../../directives/resized.directive';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { DocsModalComponent } from '../../shared/docs-modal/docs-modal.component';
+import { MatIcon } from '@angular/material/icon';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import {
+  MatList,
+  MatListItem,
+  MatListItemTitle,
+  MatListItemLine,
+  MatListItemMeta,
+} from '@angular/material/list';
+import { NgClass, AsyncPipe } from '@angular/common';
+import { CopyToClipboardComponent } from '../../shared/copy-to-clipboard/copy-to-clipboard.component';
+import { DownloadFileButtonComponent as DownloadFileButtonComponent_1 } from '../../shared/download-file-button/download-file-button.component';
+import { MatIconButton, MatButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { DownloadAllComponent } from './download-all/download-all.component';
+import { TruncateModule } from '@yellowspot/ng-truncate';
+import { ReadableSizeFromBytesPipe } from '../../../pipes/readable-size-from-bytes.pipe';
+import { FilterExtensionPipe } from '../../../pipes/filter-extension.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 // import { DownloadService } from '@services/download.service';
 
 export interface selectedItems {
@@ -36,7 +66,39 @@ export interface selectedItems {
   selector: 'app-queue',
   templateUrl: './queue.component.html',
   styleUrls: ['./queue.component.scss'],
-  standalone: false,
+  imports: [
+    MatDialogTitle,
+    CdkDrag,
+    CdkDragHandle,
+    ResizedDirective,
+    MatProgressBar,
+    DocsModalComponent,
+    MatIcon,
+    CdkScrollable,
+    MatDialogContent,
+    MatList,
+    MatListItem,
+    MatListItemTitle,
+    NgClass,
+    MatListItemLine,
+    CopyToClipboardComponent,
+    MatListItemMeta,
+    DownloadFileButtonComponent_1,
+    MatIconButton,
+    MatTooltip,
+    MatDialogActions,
+    MatButton,
+    FontAwesomeModule,
+    MatMenuTrigger,
+    MatMenu,
+    MatMenuItem,
+    DownloadAllComponent,
+    AsyncPipe,
+    TruncateModule,
+    ReadableSizeFromBytesPipe,
+    FilterExtensionPipe,
+    TranslateModule,
+  ],
 })
 export class QueueComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

@@ -26,12 +26,55 @@ import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import { SearchType } from '@models';
 import * as filterStore from '@store/filters';
+import {
+  MatListItem,
+  MatListItemIcon,
+  MatListItemTitle,
+  MatListItemMeta,
+  MatListItemLine,
+} from '@angular/material/list';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { CopyToClipboardComponent } from '../../../shared/copy-to-clipboard/copy-to-clipboard.component';
+import { MatIconButton } from '@angular/material/button';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { DownloadFileButtonComponent } from '../../../shared/download-file-button/download-file-button.component';
+import { CartToggleComponent } from '../../../shared/cart-toggle/cart-toggle.component';
+import { Hyp3JobStatusBadgeComponent } from '../../../shared/hyp3-job-status-badge/hyp3-job-status-badge.component';
+import { AsyncPipe } from '@angular/common';
+import { TruncateModule } from '@yellowspot/ng-truncate';
+import { ReadableSizeFromBytesPipe } from '../../../../pipes/readable-size-from-bytes.pipe';
+import { FullDatePipe } from '../../../../pipes/short-date.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-scene-file',
   templateUrl: './scene-file.component.html',
   styleUrls: ['./scene-file.component.scss'],
-  standalone: false,
+  imports: [
+    MatListItem,
+    MatListItemIcon,
+    MatIcon,
+    MatTooltip,
+    FontAwesomeModule,
+    MatListItemTitle,
+    CopyToClipboardComponent,
+    MatIconButton,
+    MatListItemMeta,
+    MatMenuTrigger,
+    MatMenu,
+    MatMenuItem,
+    MatListItemLine,
+    DownloadFileButtonComponent,
+    CartToggleComponent,
+    Hyp3JobStatusBadgeComponent,
+    AsyncPipe,
+    TruncateModule,
+    ReadableSizeFromBytesPipe,
+    FullDatePipe,
+    TranslateModule,
+  ],
 })
 export class SceneFileComponent implements OnInit, OnDestroy {
   private hyp3JobStatus = inject(Hyp3JobStatusService);

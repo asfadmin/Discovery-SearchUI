@@ -3,6 +3,11 @@ import { FlatTreeControl } from '@angular/cdk/tree';
 import {
   MatTreeFlatDataSource,
   MatTreeFlattener,
+  MatTree,
+  MatTreeNodeDef,
+  MatTreeNode,
+  MatTreeNodePadding,
+  MatTreeNodeToggle,
 } from '@angular/material/tree';
 import { SubSink } from 'subsink';
 
@@ -15,6 +20,12 @@ import * as queueStore from '@store/queue';
 
 import { ScreenSizeService } from '@services';
 import { UnzippedFolder, CMRProduct } from '@models';
+import { FileNameComponent } from '../../../shared/file-name/file-name.component';
+import { DownloadFileButtonComponent } from '../../../shared/download-file-button/download-file-button.component';
+import { CartToggleComponent } from '../../../shared/cart-toggle/cart-toggle.component';
+import { MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { ReadableSizeFromBytesPipe } from '../../../../pipes/readable-size-from-bytes.pipe';
 
 interface ExampleFlatNode {
   expandable: boolean;
@@ -28,7 +39,19 @@ interface ExampleFlatNode {
   selector: 'app-file-contents',
   templateUrl: './file-contents.component.html',
   styleUrls: ['./file-contents.component.scss'],
-  standalone: false,
+  imports: [
+    MatTree,
+    MatTreeNodeDef,
+    MatTreeNode,
+    MatTreeNodePadding,
+    FileNameComponent,
+    DownloadFileButtonComponent,
+    CartToggleComponent,
+    MatIconButton,
+    MatTreeNodeToggle,
+    MatIcon,
+    ReadableSizeFromBytesPipe,
+  ],
 })
 export class FileContentsComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

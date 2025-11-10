@@ -15,12 +15,45 @@ import { combineLatest, Observable } from 'rxjs';
 
 import { filter, map, startWith, tap } from 'rxjs/operators';
 import { ToggleBrowseOverlay } from '@store/map';
+import { NgClass, AsyncPipe, DecimalPipe } from '@angular/common';
+import { ViewSelectorComponent } from './view-selector/view-selector.component';
+import {
+  MatButtonToggleGroup,
+  MatButtonToggle,
+} from '@angular/material/button-toggle';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { LayerSelectorComponent } from './layer-selector/layer-selector.component';
+import { InteractionSelectorComponent } from '../../shared/aoi-options/interaction-selector/interaction-selector.component';
+import { MatButton } from '@angular/material/button';
+import { MatMenuTrigger, MatMenu } from '@angular/material/menu';
+import { MatSlider, MatSliderThumb } from '@angular/material/slider';
+import { MapInfoComponent } from './map-info/map-info.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-map-controls',
   templateUrl: './map-controls.component.html',
   styleUrls: ['./map-controls.component.scss'],
-  standalone: false,
+  imports: [
+    NgClass,
+    ViewSelectorComponent,
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    MatTooltip,
+    MatIcon,
+    LayerSelectorComponent,
+    InteractionSelectorComponent,
+    MatButton,
+    MatMenuTrigger,
+    MatMenu,
+    MatSlider,
+    MatSliderThumb,
+    MapInfoComponent,
+    AsyncPipe,
+    DecimalPipe,
+    TranslateModule,
+  ],
 })
 export class MapControlsComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

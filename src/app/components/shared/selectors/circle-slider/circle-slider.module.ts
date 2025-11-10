@@ -11,13 +11,11 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSharedModule } from '@shared';
+
 import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [CircleSliderComponent],
   imports: [
-    MatSharedModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -29,6 +27,7 @@ import { SharedModule } from '@shared';
     MatIconModule,
     MatButtonModule,
     SharedModule,
+    CircleSliderComponent,
   ],
   exports: [CircleSliderComponent],
 })

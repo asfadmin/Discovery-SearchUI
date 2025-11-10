@@ -7,13 +7,13 @@ import { FormsModule } from '@angular/forms';
 import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [SarviewsEventActiveSelectorComponent],
   imports: [
     CommonModule,
     MatButtonModule,
     MatSlideToggleModule,
     FormsModule,
     SharedModule,
+    SarviewsEventActiveSelectorComponent,
   ],
   exports: [SarviewsEventActiveSelectorComponent],
 })

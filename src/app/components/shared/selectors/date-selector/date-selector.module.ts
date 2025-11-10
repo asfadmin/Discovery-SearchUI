@@ -14,11 +14,9 @@ import {
   MatMomentDateModule,
 } from '@angular/material-moment-adapter';
 
-import { MatSharedModule } from '@shared';
 import { DateSelectorComponent } from './date-selector.component';
 
 @NgModule({
-  declarations: [DateSelectorComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -29,8 +27,7 @@ import { DateSelectorComponent } from './date-selector.component';
     MatInputModule,
     MatSliderModule,
     DateRangeModule,
-
-    MatSharedModule,
+    DateSelectorComponent,
   ],
   providers: [
     { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },

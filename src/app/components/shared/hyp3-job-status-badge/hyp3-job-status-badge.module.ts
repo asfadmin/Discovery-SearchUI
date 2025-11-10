@@ -9,7 +9,6 @@ import { Hyp3JobStatusBadgeComponent } from './hyp3-job-status-badge.component';
 import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [Hyp3JobStatusBadgeComponent],
   imports: [
     CommonModule,
     MatChipsModule,
@@ -17,6 +16,7 @@ import { SharedModule } from '@shared';
     MatMenuModule,
     MatButtonModule,
     SharedModule,
+    Hyp3JobStatusBadgeComponent,
   ],
   exports: [Hyp3JobStatusBadgeComponent],
 })

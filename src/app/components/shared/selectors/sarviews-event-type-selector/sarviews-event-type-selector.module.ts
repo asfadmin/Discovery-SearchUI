@@ -7,13 +7,13 @@ import { SarviewsEventTypeSelectorComponent } from './sarviews-event-type-select
 import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [SarviewsEventTypeSelectorComponent],
   imports: [
     CommonModule,
     MatSelectModule,
     MatFormFieldModule,
     FormsModule,
     SharedModule,
+    SarviewsEventTypeSelectorComponent,
   ],
   exports: [SarviewsEventTypeSelectorComponent],
 })

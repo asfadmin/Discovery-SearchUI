@@ -40,13 +40,65 @@ import {
 } from '@models';
 import { ClipboardService } from 'ngx-clipboard';
 import { PinnedProduct } from '@services/browse-map.service';
+import { NgClass, AsyncPipe } from '@angular/common';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIconButton, MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatCardSmImage } from '@angular/material/card';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { SceneMetadataComponent } from '../../../shared/scene-metadata/scene-metadata.component';
+import { MatActionList, MatListItem } from '@angular/material/list';
+import {
+  MatMenuTrigger,
+  MatMenu,
+  MatMenuItem,
+  MatMenuContent,
+} from '@angular/material/menu';
+import { DownloadFileButtonComponent } from '../../../shared/download-file-button/download-file-button.component';
+import { EventMetadataComponent } from '../../../shared/event-metadata/event-metadata.component';
+import { EventProductMetadataComponent } from '../../../shared/event-product-metadata/event-product-metadata.component';
+import { BrowseListComponent } from './browse-list/browse-list.component';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { ReadableSizeFromBytesPipe } from '../../../../pipes/readable-size-from-bytes.pipe';
+import {
+  ShortDatePipe,
+  ShortDateTimePipe,
+  FullDatePipe,
+} from '../../../../pipes/short-date.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-image-dialog',
   templateUrl: './image-dialog.component.html',
   styleUrls: ['./image-dialog.component.scss'],
   providers: [BrowseMapService],
-  standalone: false,
+  imports: [
+    NgClass,
+    MatTooltip,
+    MatIconButton,
+    MatIcon,
+    MatCardSmImage,
+    MatProgressSpinner,
+    SceneMetadataComponent,
+    MatActionList,
+    MatListItem,
+    MatMenuTrigger,
+    MatMenu,
+    DownloadFileButtonComponent,
+    MatMenuItem,
+    EventMetadataComponent,
+    EventProductMetadataComponent,
+    MatMenuContent,
+    BrowseListComponent,
+    MatCheckbox,
+    MatButton,
+    AsyncPipe,
+    ReadableSizeFromBytesPipe,
+    ShortDatePipe,
+    ShortDateTimePipe,
+    FullDatePipe,
+    TranslateModule,
+  ],
 })
 export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

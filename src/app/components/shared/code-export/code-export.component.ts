@@ -6,12 +6,23 @@ import {
   AfterViewInit,
   inject,
 } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+  MatDialogClose,
+} from '@angular/material/dialog';
 import { NotificationService } from '@services';
 import { ClipboardService } from 'ngx-clipboard';
 import { SaveSearchDialogComponent } from '../save-search-dialog';
 
 import Prism from 'prismjs';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { DocsModalComponent } from '../docs-modal/docs-modal.component';
+import { MatButton } from '@angular/material/button';
+import { TranslateModule } from '@ngx-translate/core';
 
 export enum CodeExportType {
   ASF_SEARCH,
@@ -22,7 +33,16 @@ export enum CodeExportType {
   selector: 'app-code-export',
   templateUrl: './code-export.component.html',
   styleUrls: ['./code-export.component.scss'],
-  standalone: false,
+  imports: [
+    MatDialogTitle,
+    CdkScrollable,
+    MatDialogContent,
+    MatDialogActions,
+    DocsModalComponent,
+    MatButton,
+    MatDialogClose,
+    TranslateModule,
+  ],
 })
 export class CodeExportComponent implements OnInit, AfterViewInit {
   dialogRef = inject<MatDialogRef<SaveSearchDialogComponent>>(MatDialogRef);

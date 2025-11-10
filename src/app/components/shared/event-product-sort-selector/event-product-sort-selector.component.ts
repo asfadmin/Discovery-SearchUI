@@ -8,12 +8,27 @@ import {
   SetEventProductSorting,
 } from '@store/filters';
 import { SubSink } from 'subsink';
+import {
+  MatButtonToggleGroup,
+  MatButtonToggle,
+} from '@angular/material/button-toggle';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatIcon } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-event-product-sort-selector',
   templateUrl: './event-product-sort-selector.component.html',
   styleUrls: ['./event-product-sort-selector.component.scss'],
-  standalone: false,
+  imports: [
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    MatMenuTrigger,
+    MatIcon,
+    MatMenu,
+    MatMenuItem,
+    TranslateModule,
+  ],
 })
 export class EventProductSortSelectorComponent implements OnInit {
   private store$ = inject<Store<AppState>>(Store);

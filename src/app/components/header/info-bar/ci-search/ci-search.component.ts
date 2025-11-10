@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 @Component({
   selector: 'app-ci-search',
   templateUrl: './ci-search.component.html',
   styleUrls: ['./ci-search.component.scss'],
-  standalone: false,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class CiSearchComponent {
   constructor() {

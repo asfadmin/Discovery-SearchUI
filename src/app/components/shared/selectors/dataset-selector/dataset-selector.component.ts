@@ -9,8 +9,16 @@ import {
 
 import * as models from '@models';
 import { ScreenSizeService } from '@services';
-import { MatMenuTrigger } from '@angular/material/menu';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { DateRange } from '@models';
+import { MatLabel } from '@angular/material/input';
+import { MatButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { NgClass, AsyncPipe } from '@angular/common';
+import { MatCardActions } from '@angular/material/card';
+import { DocsModalComponent } from '../../docs-modal/docs-modal.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -23,7 +31,20 @@ declare global {
   selector: 'app-dataset-selector',
   templateUrl: './dataset-selector.component.html',
   styleUrls: ['./dataset-selector.component.scss'],
-  standalone: false,
+  imports: [
+    MatLabel,
+    MatButton,
+    MatMenuTrigger,
+    MatMenu,
+    MatMenuItem,
+    MatTooltip,
+    MatIcon,
+    NgClass,
+    MatCardActions,
+    DocsModalComponent,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class DatasetSelectorComponent {
   private screenSize = inject(ScreenSizeService);

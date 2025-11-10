@@ -1,5 +1,10 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 
 import { startWith, map, tap } from 'rxjs/operators';
 import { SubSink } from 'subsink';
@@ -9,6 +14,15 @@ import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 
 import * as models from '@models';
+import { MatFormField, MatInput } from '@angular/material/input';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatDivider, MatNavList, MatListItem } from '@angular/material/list';
+import {
+  CdkVirtualScrollViewport,
+  CdkFixedSizeVirtualScroll,
+} from '@angular/cdk/scrolling';
+import { TranslateModule } from '@ngx-translate/core';
 
 export interface StateGroup {
   letter: string;
@@ -25,7 +39,20 @@ export const _filter = (opt: string[], value: string): string[] => {
   selector: 'app-mission-selector',
   templateUrl: './mission-selector.component.html',
   styleUrls: ['./mission-selector.component.css'],
-  standalone: false,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormField,
+    MatInput,
+    MatIcon,
+    MatTooltip,
+    MatDivider,
+    CdkVirtualScrollViewport,
+    CdkFixedSizeVirtualScroll,
+    MatNavList,
+    MatListItem,
+    TranslateModule,
+  ],
 })
 export class MissionSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

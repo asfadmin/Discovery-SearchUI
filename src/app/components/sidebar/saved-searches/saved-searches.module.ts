@@ -2,12 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { PipesModule } from '@pipes';
 import { MatListModule } from '@angular/material/list';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatSharedModule } from '@shared';
 
 import { SavedSearchesComponent } from './saved-searches.component';
 import { SavedSearchComponent } from './saved-search/saved-search.component';
@@ -15,7 +13,6 @@ import { SearchFiltersModule } from './saved-search/search-filters';
 import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [SavedSearchesComponent, SavedSearchComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -23,10 +20,10 @@ import { SharedModule } from '@shared';
     MatListModule,
     MatDialogModule,
     MatButtonToggleModule,
-    MatSharedModule,
-    PipesModule,
     SearchFiltersModule,
     SharedModule,
+    SavedSearchesComponent,
+    SavedSearchComponent,
   ],
   exports: [SavedSearchesComponent],
 })

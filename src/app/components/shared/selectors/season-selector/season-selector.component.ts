@@ -7,13 +7,28 @@ import { SubSink } from 'subsink';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import {
+  MatSlideToggleChange,
+  MatSlideToggle,
+} from '@angular/material/slide-toggle';
+import { FormsModule } from '@angular/forms';
+import { CircleSliderComponent } from '../circle-slider/circle-slider.component';
+import { MatButton } from '@angular/material/button';
+import { ShortDateSeasonPipe } from '../../../../pipes/short-date.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-season-selector',
   templateUrl: './season-selector.component.html',
   styleUrls: ['./season-selector.component.scss'],
-  standalone: false,
+  imports: [
+    MatSlideToggle,
+    FormsModule,
+    CircleSliderComponent,
+    MatButton,
+    ShortDateSeasonPipe,
+    TranslateModule,
+  ],
 })
 export class SeasonSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

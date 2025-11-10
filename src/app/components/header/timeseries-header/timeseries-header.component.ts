@@ -11,12 +11,26 @@ import * as filtersStore from '@store/filters';
 import { ScreenSizeService } from '@services';
 import { MapDrawModeType, MapInteractionModeType } from '@models';
 import * as models from '@models';
+import { SearchTypeSelectorComponent } from '../../shared/selectors/search-type-selector/search-type-selector.component';
+import { DrawSelectorComponent } from '../../shared/aoi-options/draw-selector/draw-selector.component';
+import { TimeseriesChartFlightDirectionToggleComponent } from '../../timeseries-chart/timeseries-chart-flight-direction-toggle/timeseries-chart-flight-direction-toggle.component';
+import { NgOptimizedImage, AsyncPipe } from '@angular/common';
+import { HeaderButtonsComponent } from '../header-buttons/header-buttons.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-timeseries-header',
   templateUrl: './timeseries-header.component.html',
   styleUrls: ['./timeseries-header.component.scss', '../header.component.scss'],
-  standalone: false,
+  imports: [
+    SearchTypeSelectorComponent,
+    DrawSelectorComponent,
+    TimeseriesChartFlightDirectionToggleComponent,
+    NgOptimizedImage,
+    HeaderButtonsComponent,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class TimeseriesHeaderComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

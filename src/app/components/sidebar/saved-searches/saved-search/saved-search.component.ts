@@ -16,13 +16,37 @@ import * as moment from 'moment';
 import * as models from '@models';
 
 import { AsfLanguageService } from '@services/asf-language.service';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+import { FormsModule } from '@angular/forms';
+import { MatFormField, MatInput } from '@angular/material/input';
+import { MatButton } from '@angular/material/button';
+import { SearchFiltersComponent } from './search-filters/search-filters.component';
+import { UpperCasePipe } from '@angular/common';
+import {
+  GeographicFilterPipe,
+  ListFilterPipe,
+} from '../../../../pipes/filter-type.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-saved-search',
   templateUrl: './saved-search.component.html',
   styleUrls: ['./saved-search.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: false,
+  imports: [
+    MatIcon,
+    MatTooltip,
+    FormsModule,
+    MatFormField,
+    MatInput,
+    MatButton,
+    SearchFiltersComponent,
+    UpperCasePipe,
+    GeographicFilterPipe,
+    ListFilterPipe,
+    TranslateModule,
+  ],
 })
 export class SavedSearchComponent implements OnInit {
   private language = inject(AsfLanguageService);

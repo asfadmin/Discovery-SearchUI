@@ -19,12 +19,29 @@ import { Store } from '@ngrx/store';
 import { getGeocodeArea } from '@store/filters';
 import { Feature } from 'ol';
 import * as models from '@models';
+import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
+import {
+  MatAutocompleteTrigger,
+  MatAutocomplete,
+} from '@angular/material/autocomplete';
+import { FormsModule } from '@angular/forms';
+import { MatOption } from '@angular/material/select';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-geocode-selector',
   templateUrl: './geocode-selector.component.html',
   styleUrls: ['./geocode-selector.component.scss'],
-  standalone: false,
+  imports: [
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatAutocompleteTrigger,
+    FormsModule,
+    MatAutocomplete,
+    MatOption,
+    TranslateModule,
+  ],
 })
 export class GeocodeSelectorComponent implements OnInit, OnDestroy {
   private http = inject(HttpClient);

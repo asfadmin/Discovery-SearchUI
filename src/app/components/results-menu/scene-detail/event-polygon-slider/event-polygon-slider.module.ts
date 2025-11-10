@@ -4,8 +4,7 @@ import { EventPolygonSliderComponent } from './event-polygon-slider.component';
 import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [EventPolygonSliderComponent],
-  imports: [CommonModule, SharedModule],
+  imports: [CommonModule, SharedModule, EventPolygonSliderComponent],
   exports: [EventPolygonSliderComponent],
 })
 export class EventPolygonSliderModule {}

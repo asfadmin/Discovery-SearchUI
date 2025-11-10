@@ -6,7 +6,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatSharedModule } from '@shared';
 
 import { ProjectNameSelectorModule } from '@components/shared/selectors/project-name-selector';
 import { ProcessingOptionsComponent } from './processing-options.component';
@@ -18,24 +17,21 @@ import { SharedModule } from '@shared';
 import { RangeOptionComponent } from './range-option/range-option.component';
 
 @NgModule({
-  declarations: [
-    ProcessingOptionsComponent,
-    ToggleOptionComponent,
-    DropdownOptionComponent,
-    CheckboxOptionComponent,
-    SubsetOptionComponent,
-    RangeOptionComponent,
-  ],
   imports: [
     CommonModule,
     FormsModule,
     MatInputModule,
     MatSelectModule,
     MatCheckboxModule,
-    MatSharedModule,
     MatSlideToggleModule,
     ProjectNameSelectorModule,
     SharedModule,
+    ProcessingOptionsComponent,
+    ToggleOptionComponent,
+    DropdownOptionComponent,
+    CheckboxOptionComponent,
+    SubsetOptionComponent,
+    RangeOptionComponent,
   ],
   exports: [ProcessingOptionsComponent],
 })

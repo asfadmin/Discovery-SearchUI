@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { MatSharedModule } from '@shared';
-
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 
@@ -30,7 +28,13 @@ import { DocsModalModule } from '@components/shared/docs-modal';
 import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [
+  imports: [
+    CommonModule,
+    MatTableModule,
+    MatSortModule,
+    MatInputModule,
+    DocsModalModule,
+    TranslateModule,
     HelpComponent,
     HelpBaselineSearchComponent,
     HelpSbasSearchComponent,
@@ -48,15 +52,6 @@ import { TranslateModule } from '@ngx-translate/core';
     HelpDownloadQueueComponent,
     HelpExportOptionsComponent,
     HelpOnDemandComponent,
-  ],
-  imports: [
-    CommonModule,
-    MatSharedModule,
-    MatTableModule,
-    MatSortModule,
-    MatInputModule,
-    DocsModalModule,
-    TranslateModule,
   ],
   exports: [HelpComponent],
 })

@@ -6,23 +6,18 @@ import { ProcessingQueueJobsComponent } from './processing-queue-jobs.component'
 import { FormsModule } from '@angular/forms';
 
 import { MatChipsModule } from '@angular/material/chips';
-import { MatSharedModule } from '@shared';
-import { PipesModule } from '@pipes';
-import { CopyToClipboardModule } from './../../../shared/copy-to-clipboard/copy-to-clipboard.module';
+
 import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [ProcessingQueueJobsComponent],
   imports: [
     CommonModule,
-    PipesModule,
-    MatSharedModule,
     MatSelectModule,
     MatChipsModule,
     MatExpansionModule,
-    CopyToClipboardModule,
     FormsModule,
     SharedModule,
+    ProcessingQueueJobsComponent,
   ],
   exports: [ProcessingQueueJobsComponent],
 })

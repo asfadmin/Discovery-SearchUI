@@ -9,11 +9,14 @@ import * as filtersStore from '@store/filters';
 import { getSearchType } from '@store/search';
 import { SearchType } from '@models';
 import { beta } from '@models';
+import { FormsModule } from '@angular/forms';
+import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
+import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-master-scene-selector',
   templateUrl: './master-scene-selector.component.html',
   styleUrls: ['./master-scene-selector.component.css'],
-  standalone: false,
+  imports: [FormsModule, MatFormField, MatLabel, MatInput, TranslateModule],
 })
 export class MasterSceneSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

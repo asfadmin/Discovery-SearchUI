@@ -9,23 +9,21 @@ import { MatMenuModule } from '@angular/material/menu';
 
 import { DocsModalModule } from '../docs-modal';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatSharedModule } from '@shared';
 
 import 'prismjs/components/prism-python';
 import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [CodeExportComponent],
   imports: [
     CommonModule,
     MatDialogModule,
-    MatSharedModule,
     MatSelectModule,
     MatButtonToggleModule,
     MatIconModule,
     MatMenuModule,
     DocsModalModule,
     SharedModule,
+    CodeExportComponent,
   ],
   exports: [CodeExportComponent],
 })

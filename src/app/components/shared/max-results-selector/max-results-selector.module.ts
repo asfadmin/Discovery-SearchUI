@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSharedModule } from '@shared';
+
 import { MatDialogModule } from '@angular/material/dialog';
 
 import {
@@ -21,7 +21,6 @@ import { SharedModule } from '@shared';
 import { DocsModalModule } from '@components/shared/docs-modal';
 
 @NgModule({
-  declarations: [MaxResultsSelectorComponent, ApiLinkDialogComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -29,11 +28,12 @@ import { DocsModalModule } from '@components/shared/docs-modal';
     MatMenuModule,
     MatInputModule,
     MatSelectModule,
-    MatSharedModule,
     MatDialogModule,
     ClipboardModule,
     SharedModule,
     DocsModalModule,
+    MaxResultsSelectorComponent,
+    ApiLinkDialogComponent,
   ],
   exports: [MaxResultsSelectorComponent],
 })

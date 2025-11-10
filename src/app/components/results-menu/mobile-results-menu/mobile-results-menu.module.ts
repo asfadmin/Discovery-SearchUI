@@ -2,11 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatSharedModule } from '@shared';
 
 import { SbasResultsMenuModule } from '../sbas-results-menu/sbas-results-menu.module';
-import { SBASChartModule } from '@components/sbas-chart/sbas-chart.module';
-import { BaselineChartModule } from '@components/baseline-chart/baseline-chart.module';
+
 import { SceneMetadataModule } from '@components/shared/scene-metadata';
 import { SceneFilesModule } from '../scene-files';
 import { SceneDetailModule } from '../scene-detail';
@@ -18,15 +16,10 @@ import { SharedModule } from '@shared';
 import { DocsModalModule } from '@components/shared/docs-modal';
 
 @NgModule({
-  declarations: [MobileResultsMenuComponent],
   imports: [
     CommonModule,
-    MatSharedModule,
     MatButtonToggleModule,
-
     SharedModule,
-    SBASChartModule,
-    BaselineChartModule,
     SbasResultsMenuModule,
     SceneFilesModule,
     SceneMetadataModule,
@@ -34,6 +27,7 @@ import { DocsModalModule } from '@components/shared/docs-modal';
     ScenesListModule,
     ScenesListHeaderModule,
     DocsModalModule,
+    MobileResultsMenuComponent,
   ],
   exports: [MobileResultsMenuComponent],
 })

@@ -14,12 +14,40 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { timer } from 'rxjs';
 import { NotificationService } from '@services';
+import { MatIcon } from '@angular/material/icon';
+import { FormsModule } from '@angular/forms';
+import { MatFormField, MatInput } from '@angular/material/input';
+import { MatButton } from '@angular/material/button';
+import { GeographicSearchFiltersComponent } from '../../saved-searches/saved-search/search-filters/geographic-search-filters/geographic-search-filters.component';
+import { BaselineSearchFiltersComponent } from '../../saved-searches/saved-search/search-filters/baseline-search-filters/baseline-search-filters.component';
+import { SbasSearchFiltersComponent } from '../../saved-searches/saved-search/search-filters/sbas-search-filters/sbas-search-filters.component';
+import { UpperCasePipe } from '@angular/common';
+import {
+  BaselineFilterPipe,
+  SBASFilterPipe,
+  GeographicFilterPipe,
+} from '../../../../pipes/filter-type.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-save-user-filter',
   templateUrl: './save-user-filter.component.html',
   styleUrls: ['./save-user-filter.component.scss'],
-  standalone: false,
+  imports: [
+    MatIcon,
+    FormsModule,
+    MatFormField,
+    MatInput,
+    MatButton,
+    GeographicSearchFiltersComponent,
+    BaselineSearchFiltersComponent,
+    SbasSearchFiltersComponent,
+    UpperCasePipe,
+    BaselineFilterPipe,
+    SBASFilterPipe,
+    GeographicFilterPipe,
+    TranslateModule,
+  ],
 })
 export class SaveUserFilterComponent implements OnInit {
   private store$ = inject<Store<AppState>>(Store);

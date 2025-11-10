@@ -6,8 +6,13 @@ import { MatMenuModule } from '@angular/material/menu';
 import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [DownloadAllComponent],
   exports: [DownloadAllComponent],
-  imports: [CommonModule, MatTooltipModule, MatMenuModule, SharedModule],
+  imports: [
+    CommonModule,
+    MatTooltipModule,
+    MatMenuModule,
+    SharedModule,
+    DownloadAllComponent,
+  ],
 })
 export class DownloadAllModule {}

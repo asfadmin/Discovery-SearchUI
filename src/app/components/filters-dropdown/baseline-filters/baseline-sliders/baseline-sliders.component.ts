@@ -23,6 +23,7 @@ import * as scenesStore from '@store/scenes';
 import { SubSink } from 'subsink';
 
 import * as models from '@models';
+import { TranslateModule } from '@ngx-translate/core';
 
 export interface BaselineSlider {
   slider: any;
@@ -33,7 +34,7 @@ export interface BaselineSlider {
   selector: 'app-baseline-sliders',
   templateUrl: './baseline-sliders.component.html',
   styleUrls: ['./baseline-sliders.component.scss'],
-  standalone: false,
+  imports: [TranslateModule],
 })
 export class BaselineSlidersComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
