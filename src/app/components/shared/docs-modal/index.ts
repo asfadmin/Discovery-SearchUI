@@ -1,1 +1,1 @@
-export * from './docs-modal.module';
+export * from './docs-modal.component';
