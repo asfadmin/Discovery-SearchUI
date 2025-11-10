@@ -1,13 +1,10 @@
-@use "sass:map";
 @use "asf-theme-variables" as *;
 @use "deluxe-menu";
 @use "deluxe-menu-2";
 
 /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 .control-mat-button-toggle {
-  @include themify($themes) using ($theme) {
-    background-color: map.get($theme, 'background-white');
-  }
+  background-color: var(--asf-background-white);
 }
 
 .button-display-container {
@@ -21,10 +18,7 @@
 }
 
 .ts-button-label {
-  @include themify($themes) using ($theme) {
-    color: map.get($theme, "dark-secondary-text");
-  }
-
+  color: var(--asf-dark-secondary-text);
   font-size: 14px;
   font-weight: 400;
   transform:
@@ -36,10 +30,7 @@
 }
 
 .button-text {
-  @include themify($themes) using ($theme) {
-    color: map.get($theme, "dark-primary-text");
-  }
-
+  color: var(--asf-dark-primary-text);
   font-size: 16px;
   font-weight: 400;
   text-align: left;

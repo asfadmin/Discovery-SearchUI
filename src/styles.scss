@@ -1,7 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 
 @use "@angular/material" as mat;
-@use "sass:map";
 @use './styles/asf-theme' as *;
 @use './styles/filter-list';
 @use './styles/third-party-overrides';
@@ -102,21 +101,16 @@ $theme-map: null;
 .toast-info,
 #toast-container > .toast-info {
   background-image: url("/assets/icons/info_black_48dp.svg");
+  box-shadow: 0 0 12px var(--asf-primary);
+  background-color: var(--asf-background-white);
+  color: var(--asf-dark-primary-text);
 
-  @include themify_non_host($themes) using ($theme) {
-    box-shadow: 0 0 12px map.get($theme, 'primary');
-
-    background-color: map.get($theme, 'background-white');
-    color: map.get($theme, 'dark-primary-text');
-    .toast-message {
-      color: map.get($theme, 'dark-secondary-text');
-    }
+  .toast-message {
+    color: var(--asf-dark-secondary-text);
   }
 
   a {
-    @include themify_non_host($themes) using ($theme) {
-      color: map.get($theme, 'blue-link');
-    }
+    color: var(--asf-blue-link);
   }
 }
 
@@ -133,14 +127,10 @@ $theme-map: null;
 
 .toast-close-button,
 #toast-container > .toast-close-button {
-  @include themify_non_host($themes) using ($theme) {
-    color: map.get($theme, 'dark-primary-text');
-  }
+  color: var(--asf-dark-primary-text);
 }
 .mat-mdc-progress-spinner circle {
-  @include themify_non_host($themes) using ($theme) {
-    stroke: map.get($theme, 'dark-primary-text');
-  }
+  stroke: var(--asf-dark-primary-text);
 }
 #toast-container > .pinkToast.toast-info {
   position: relative;
@@ -196,20 +186,14 @@ $theme-map: null;
 }
 
 .primary-text {
-  @include themify_non_host($themes) using ($theme) {
-    color: map.get($theme, 'dark-primary-text');
-  }
+  color: var(--asf-dark-primary-text);
 }
 .faint-text {
-  @include themify_non_host($themes) using ($theme) {
-    color: map.get($theme, 'dark-secondary-text');
-  }
+  color: var(--asf-dark-secondary-text);
 }
 
 .fainter-text {
-  @include themify_non_host($themes) using ($theme) {
-    color: map.get($theme, 'dark-disabled-text');
-  }
+  color: var(--asf-dark-disabled-text);
 }
 
 .v-mid {
@@ -301,10 +285,7 @@ ul {
 }
 
 #dlQueueDialog {
-  @include themify_non_host($themes) using ($theme) {
-    // background-color: map.get($theme, 'primary-light') !important;
-  }
-
+  // background-color: var(--asf-primary-light) !important;
   position: relative;
   margin: 0;
   padding: 0;
@@ -312,9 +293,7 @@ ul {
 }
 
 #processingQueueDialog {
-  @include themify_non_host($themes) using ($theme) {
-    // background-color: map.get($theme, 'primary-light');
-  }
+  // background-color: var(--asf-primary-light);
   position: relative;
   margin: 0;
   padding: 0
@@ -324,9 +303,7 @@ ul {
 }
 
 #subscriptionQueueDialog {
-  @include themify_non_host($themes) using ($theme) {
-    background-color: map.get($theme, 'primary-light');
-  }
+  background-color: var(--asf-primary-light);
   position: relative;
   margin: 0;
   padding: 0 10px 10px 0 !important;
@@ -357,9 +334,7 @@ ul {
 
 /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
 .ls-card-content-list .mat-form-field-infix {
-  @include themify_non_host($themes) using ($theme) {
-    border-color: map.get($theme, 'primary-light');
-  }
+  border-color: var(--asf-primary-light);
   width: 100%;
   border-style: solid;
   border-width: 1px;
@@ -427,9 +402,7 @@ ul {
 }
 
 .mat-mdc-dialog-container {
-  @include themify_non_host($themes) using ($theme) {
-    // background-color: map.get($theme, 'primary-light');
-  }
+  // background-color: var(--asf-primary-light);
   border-radius: 0 !important;
 }
 
@@ -438,9 +411,7 @@ ul {
   padding: 0;
 
   .mat-mdc-dialog-container {
-    @include themify_non_host($themes) using ($theme) {
-      // background-color: map.get($theme, 'primary-light');
-    }
+    // background-color: var(--asf-primary-light);
     padding-bottom: 0;
     padding-top: 11px;
     padding-left: 12px;
@@ -589,9 +560,7 @@ ul {
 $d-height: 550px;
 
 #ConfirmProcess {
-  @include themify_non_host($themes) using ($theme) {
-    background: map.get($theme, 'primary-light') !important;
-  }
+  background: var(--asf-primary-light) !important;
   resize: none;
   overflow: hidden;
   //width: $d-width !important;
@@ -610,9 +579,7 @@ $d-height: 550px;
 
 #dlQueueDialog {
   resize: both;
-  @include themify($themes) using ($theme) {
-    // background-color: map.get($theme, 'primary-light');
-  }
+  // background-color: var(--asf-primary-light);
   width: 80vw;
   height: 86vh;
   min-width: 350px;
@@ -620,9 +587,7 @@ $d-height: 550px;
 }
 
 #processingQueueDialog {
-  @include themify($themes) using ($theme) {
-    // background: map.get($theme, 'primary-light');
-  }
+  // background: var(--asf-primary-light);
   resize: both;
   width: 80vw;
   height: 86vh;
@@ -631,9 +596,7 @@ $d-height: 550px;
 }
 
 #subscriptionQueueDialog {
-  @include themify($themes) using ($theme) {
-    background: map.get($theme, 'primary-light');
-  }
+  background: var(--asf-primary-light);
 
   resize: both;
   width: 80vw;
@@ -644,9 +607,7 @@ $d-height: 550px;
 
 #preferencesDialog {
   .mat-mdc-dialog-content {
-    @include themify($themes) using ($theme) {
-      background-color: map.get($theme, "background-white");
-    }
+    background-color: var(--asf-background-white);
 
     padding: 0;
   }
@@ -666,22 +627,16 @@ $d-height: 550px;
 
 .content-block .mat-step-header .mat-step-icon-selected {
   background-color: $asf-blue !important;
-  @include themify_non_host($themes) using ($theme) {
-    color: map.get($theme, 'dark-primary-text');
-  }
+  color: var(--asf-dark-primary-text);
 }
 /* TODO(mdc-migration): The following rule targets internal classes of menu that may no longer apply for the MDC version. */
 .mat-menu {
-  @include themify_non_host($themes) using ($theme) {
-    background-color: map.get($theme, 'background-white') !important;
-  }
+  background-color: var(--asf-background-white) !important;
 }
 
 .content-block .mat-step-header .mat-step-icon {
-  @include themify_non_host($themes) using ($theme) {
-    background-color: map.get($theme, 'primary');
-    color: map.get($theme, 'light-primary-text');
-  }
+  background-color: var(--asf-primary);
+  color: var(--asf-light-primary-text);
 }
 
 .content-block .mat-step-label-selected {
@@ -732,55 +687,37 @@ $d-height: 550px;
 .mat-mdc-form-field.mat-focused {
   /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
   .mat-form-field-label {
-    @include themify_non_host($themes) using ($theme) {
-      color: map.get($theme, 'dark-secondary-text') !important;
-    }
+    color: var(--asf-dark-secondary-text) !important;
   }
 }
 
 .opacity-slider-title {
-  @include themify_non_host($themes) using ($theme) {
-    color: map.get($theme, 'dark-primary-text');
-  }
+  color: var(--asf-dark-primary-text);
 }
 .draw-svg {
-  @include themify_non_host($themes) using ($theme) {
-    fill: map.get($theme, 'dark-secondary-text');
-  }
+  fill: var(--asf-dark-secondary-text);
 }
 .view-btn {
-  @include themify_non_host($themes) using ($theme) {
-    fill: map.get($theme, 'dark-primary-text');
-  }
+  fill: var(--asf-dark-primary-text);
 }
 .critical-baseline {
-  @include themify_non_host($themes) using ($theme) {
-    fill: darken(map.get($theme, 'background-white'), 5%);
-  }
+  fill: color-mix(in srgb, var(--asf-background-white), black 5%);
 }
 
 .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle{
-  @include themify_non_host($themes) using ($theme) {
-  border-color:map.get($theme, 'blue-link') !important;
-  }
+  border-color: var(--asf-blue-link) !important;
 }
 
 .mat-radio-button.mat-accent .mat-radio-inner-circle{
-  @include themify_non_host($themes) using ($theme) {
-  color: map.get($theme, 'blue-link') !important;
-  background-color: map.get($theme, 'blue-link') !important;
-  }
+  color: var(--asf-blue-link) !important;
+  background-color: var(--asf-blue-link) !important;
 }
 
 .md-icon {
-  @include themify_non_host($themes) using ($theme) {
-    color: map.get($theme, 'dark-primary-text');
-  }
+  color: var(--asf-dark-primary-text);
 }
 .blue-link {
-  @include themify_non_host($themes) using ($theme) {
-    color: map.get($theme, 'blue-link') !important;
-  }
+  color: var(--asf-blue-link) !important;
 }
 
 .ol-custom-scale-line {
@@ -927,23 +864,19 @@ $d-height: 550px;
 }
 
 .ts-snackbar {
-  @include themify($themes) using ($theme) {
-    background-color: map.get($theme, 'primary-light');
-    color: map.get($theme, 'dark-primary-text');
-  }
+  background-color: var(--asf-primary-light);
+  color: var(--asf-dark-primary-text);
   margin-bottom: 27px !important;
   text-align: center;
 
 }
 
 .mat-mdc-snack-bar-container.ts-snackbar {
-  @include themify($themes) using ($theme) {
-    background-color: map.get($theme, 'primary-light');
-    color: map.get($theme, 'dark-primary-text');
-  }
+  background-color: var(--asf-primary-light);
+  color: var(--asf-dark-primary-text);
   //--mat-snack-bar-button-color: #fff;
   //--mat-snackbar-container-color: #c40202;
-  //--mat-snackbar-supporting-text-color: map.get($theme, 'primary-light');
+  //--mat-snackbar-supporting-text-color: var(--asf-primary-light);
   //--mat-snackbar-supporting-text-color: yellow;
 }
 
@@ -1000,9 +933,7 @@ $d-height: 550px;
 .mat-button-toggle-appearance-standard:hover .mat-icon-no-color,
 .mat-button-toggle-appearance-standard.cdk-focused .mat-icon-no-color,
 .mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-icon-no-color {
-  @include themify_non_host($themes) using ($theme) {
-    color: map.get($theme, 'dark-primary-text') !important;
-  }
+  color: var(--asf-dark-primary-text) !important;
 }
 
 // Also target within result-div
@@ -1012,9 +943,7 @@ $d-height: 550px;
 #result-div .mat-button-toggle-appearance-standard:hover .list-icon,
 #result-div .mat-button-toggle-appearance-standard.cdk-focused .list-icon,
 #result-div .mat-button-toggle-appearance-standard.cdk-mouse-focused .list-icon {
-  @include themify_non_host($themes) using ($theme) {
-    color: map.get($theme, 'dark-primary-text') !important;
-  }
+  color: var(--asf-dark-primary-text) !important;
 }
 
 // Also target the scenes-list-buttons layout specifically
@@ -1024,9 +953,7 @@ $d-height: 550px;
 .scenes-list-buttons--layout .mat-button-toggle-appearance-standard:hover .list-icon,
 .scenes-list-buttons--layout .mat-button-toggle-appearance-standard.cdk-focused .list-icon,
 .scenes-list-buttons--layout .mat-button-toggle-appearance-standard.cdk-mouse-focused .list-icon {
-  @include themify_non_host($themes) using ($theme) {
-    color: map.get($theme, 'dark-primary-text') !important;
-  }
+  color: var(--asf-dark-primary-text) !important;
 }
 
 // Broader fallback for all mat-button-toggles
@@ -1036,9 +963,7 @@ $d-height: 550px;
 .mat-button-toggle:hover .list-icon,
 .mat-button-toggle.cdk-focused .list-icon,
 .mat-button-toggle.cdk-mouse-focused .list-icon {
-  @include themify_non_host($themes) using ($theme) {
-    color: map.get($theme, 'dark-primary-text') !important;
-  }
+  color: var(--asf-dark-primary-text) !important;
 }
 
 // Fix button background turning black/white on hover
@@ -1049,9 +974,7 @@ $d-height: 550px;
 .mat-button-toggle-appearance-standard:hover,
 .mat-button-toggle-appearance-standard.cdk-focused,
 .mat-button-toggle-appearance-standard.cdk-mouse-focused {
-  @include themify_non_host($themes) using ($theme) {
-    background-color: map.get($theme, 'background-white') !important;
-  }
+  background-color: var(--asf-background-white) !important;
 }
 
 // Make internal button elements transparent

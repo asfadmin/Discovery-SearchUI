@@ -1,4 +1,3 @@
-@use "sass:map";
 @use "asf-theme-variables" as *;
 
 // Button-based menu styles and form controls
@@ -14,9 +13,7 @@ $light-grey: rgb(0 0 0 / 60%);
   // Use md-icon-size mixin for consistent sizing instead of !important
   @include md-icon-size(47px);
   margin-right: 0;
-  @include themify($themes) using ($theme) {
-    color: map.get($theme, 'dark-primary-text');
-  }
+  color: var(--asf-dark-primary-text);
 }
 
 .dataset-hr {
@@ -44,9 +41,7 @@ $light-grey: rgb(0 0 0 / 60%);
 }
 
 .mat-mdc-button {
-  @include themify_non_host($themes) using ($theme) {
-    color: map.get($theme, 'blue');
-  }
+  color: var(--asf-blue-link);
   font-weight: 400;
   font-style: italic;
 }
@@ -74,9 +69,7 @@ $light-grey: rgb(0 0 0 / 60%);
 }
 
 .button-label {
-  @include themify($themes) using ($theme) {
-    color: map.get($theme, 'dark-secondary-text');
-  }
+  color: var(--asf-dark-secondary-text);
   font-size: font-size(sm); // Using design token
   font-weight: font-weight(normal); // Using design token
   transform:
@@ -93,9 +86,7 @@ $light-grey: rgb(0 0 0 / 60%);
 .button-text {
   font-size: font-size(base); // Using design token
   font-weight: font-weight(normal); // Using design token
-  @include themify($themes) using ($theme) {
-    color: map.get($theme, 'dark-primary-text');
-  }
+  color: var(--asf-dark-primary-text);
   text-align: left;
   font-style: normal;
   padding: 0;
@@ -115,10 +106,8 @@ $light-grey: rgb(0 0 0 / 60%);
 .text-underline {
   border: none;
   height: 1px;
-  @include themify($themes) using ($theme) {
-    color: map.get($theme, 'dark-secondary-text');
-    background-color: map.get($theme, 'dark-secondary-text');
-  }
+  color: var(--asf-dark-secondary-text);
+  background-color: var(--asf-dark-secondary-text);
 }
 
 /* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version. */
@@ -178,11 +167,9 @@ $light-grey: rgb(0 0 0 / 60%);
 // NOTE: .dataset-date-range is defined in deluxe-menu.scss to avoid duplication
 
 .dataset-source {
-  @include themify_non_host($themes) using ($theme) {
-    color: map.get($theme, 'blue-link');
-    a {
-      color: map.get($theme, 'blue-link');
-    }
+  color: var(--asf-blue-link);
+  a {
+    color: var(--asf-blue-link);
   }
   padding-top: 22px;
   font-size: font-size(xs); // Using design token
