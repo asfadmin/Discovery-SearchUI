@@ -188,7 +188,7 @@
   margin: -1px;
   padding: 0;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
   white-space: nowrap;
   border-width: 0;
 }
@@ -204,21 +204,21 @@
 
 /// Media query for mobile devices
 @mixin mobile {
-  @media (max-width: 767px) {
+  @media (width <= 767px) {
     @content;
   }
 }
 
 /// Media query for tablet devices
 @mixin tablet {
-  @media (min-width: 768px) and (max-width: 1023px) {
+  @media (768px <= width <= 1023px) {
     @content;
   }
 }
 
 /// Media query for desktop devices
 @mixin desktop {
-  @media (min-width: 1024px) {
+  @media (width >= 1024px) {
     @content;
   }
 }
