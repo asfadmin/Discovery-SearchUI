@@ -413,6 +413,34 @@ src/styles/
 - **`_tokens.scss`** - Design system tokens for spacing, typography, opacity, etc.
 - **`asf-theme-variables.scss`** - Now only contains SCSS variables for Material theme configuration (legacy themify mixins removed)
 
+### Core Theme Files:
+- asf-theme.scss - Main Angular Material theme
+- asf-theme-variables.scss - Central theme variables (imported by 70+ components)
+- _variables.scss - Light theme colors
+- _dark_variables.scss - Dark theme colors
+- _css-variables.scss - CSS custom properties for runtime theme switching
+- _color-utils.scss - Modern Sass color utilities
+
+### Design System:
+- _tokens.scss - Design tokens (spacing, typography, etc.) - imported by 70+ components
+- _component-mixins.scss - Reusable mixins - used by 8 components
+
+### Global Styles:
+- filter-list.scss - Filter list styles
+- _third-party-overrides.scss - OpenLayers, nouislider, Material overrides
+- _material-density-overrides.scss - Material density customizations
+
+### Component-Specific:
+- deluxe-menu.scss - List-based menu styles - used by 3 components
+- deluxe-menu-2.scss - Button-based menu styles - used by 3 components
+- asf-header-menu-button.scss - Header menu wrapper - used by 2 components
+- asf-help.scss - Help page styles - used by 13 help components
+
+### Note:
+- deluxe-menu.scss and deluxe-menu-2.scss have acknowledged overlap (TODO comments suggest consolidation) but both are actively used and shouldn't be removed without refactoring.
+
+
+
 ## Migration Guide
 
 ### From Hard-coded Values to Tokens
