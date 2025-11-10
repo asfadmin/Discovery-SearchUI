@@ -40,18 +40,18 @@ function equatorialView(url: string): MapView {
     font: '16px Roboto,sans-serif',
     textBaseline: 'bottom',
     stroke: new Stroke({
-      color: 'rgba(255,255,255,1)',
+      color: 'rgb(255 255 255 / 1)',
       width: 3,
     }),
   });
 
   const strokeStyle = url.includes('streets')
     ? new Stroke({
-        color: 'rgba(0, 0, 0,0.5)',
+        color: 'rgb(0 0 0 / 0.5)',
         width: 1.5,
       })
     : new Stroke({
-        color: 'rgba(255,255,255,0.5)',
+        color: 'rgb(255 255 255 / 0.5)',
         width: 1.5,
       });
 

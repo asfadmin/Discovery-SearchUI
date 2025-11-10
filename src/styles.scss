@@ -202,7 +202,7 @@ $theme-map: null;
 
 .active-btn {
 
-  background-color: rgba(0, 0, 0, 0.07);
+  background-color: rgb(0 0 0 / 0.07);
 }
 
 .clickable {
@@ -398,7 +398,7 @@ ul {
 }
 
 .selected {
-  background-color: rgba(0, 0, 0, 0.09) !important;
+  background-color: rgb(0 0 0 / 0.09) !important;
 }
 
 .mat-mdc-dialog-container {

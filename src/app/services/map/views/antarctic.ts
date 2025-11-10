@@ -49,7 +49,7 @@ export function antarctic(): MapView {
 
   const graticule = new GraticuleLayer({
     strokeStyle: new Stroke({
-      color: 'rgba(255,120,0,0.9)',
+      color: 'rgb(255 120 0 / 0.9)',
       width: 2,
       lineDash: [0.5, 4],
     }),

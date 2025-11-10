@@ -2,7 +2,7 @@ import { Circle as CircleStyle, Fill, Stroke, Style, Text } from 'ol/style.js';
 
 export const valid = new Style({
   fill: new Fill({
-    color: 'rgba(255, 255, 255, 0.2)',
+    color: 'rgb(255 255 255 / 0.2)',
   }),
   stroke: new Stroke({
     color: '#ffcc33',
@@ -18,7 +18,7 @@ export const valid = new Style({
 
 export const validDisplacement = new Style({
   fill: new Fill({
-    color: 'rgba(255, 255, 255, 0.2)',
+    color: 'rgb(255 255 255 / 0.2)',
   }),
   stroke: new Stroke({
     color: '#236192',
@@ -32,13 +32,13 @@ export const validDisplacement = new Style({
     radius: 10,
     fill: new Fill({
       // color: '#236192',
-      color: 'rgba(0,0,0,0.25)',
+      color: 'rgb(0 0 0 / 0.25)',
     }),
   }),
 });
 
 const fill = new Fill({
-  color: 'rgba(255,255,255,0.0)',
+  color: 'rgb(255 255 255 / 0)',
 });
 const stroke = new Stroke({
   color: '#3399CC',
@@ -70,7 +70,7 @@ export const icon = new Style({
 
 export const omitted = new Style({
   fill: new Fill({
-    color: 'rgba(255, 255, 255, 0.2)',
+    color: 'rgb(255 255 255 / 0.2)',
   }),
   stroke: new Stroke({
     color: '#aaaaaa',
@@ -89,10 +89,10 @@ export const invalid = new Style({
     text: 'Approximate Placement Only',
     scale: 2,
     stroke: new Stroke({
-      color: 'rgba(0, 0, 0, 1.0)',
+      color: 'rgb(0 0 0 / 1)',
     }),
     fill: new Fill({
-      color: 'rgba(255, 255, 255, 1.0)',
+      color: 'rgb(255 255 255 / 1)',
     }),
     placement: 'line',
     textBaseline: 'bottom',
@@ -113,39 +113,39 @@ export const invalid = new Style({
 
 export const hidden = new Style({
   fill: new Fill({
-    color: 'rgba(255, 255, 255, 0.0)',
+    color: 'rgb(255 255 255 / 0)',
   }),
   stroke: new Stroke({
-    color: 'rgba(255, 255, 255, 0.0)',
+    color: 'rgb(255 255 255 / 0)',
     width: 4,
   }),
   image: new CircleStyle({
     radius: 7,
     fill: new Fill({
-      color: 'rgba(255, 255, 255, 0.0)',
+      color: 'rgb(255 255 255 / 0)',
     }),
   }),
 });
 
 export const hover = new Style({
   fill: new Fill({
-    color: 'rgba(255, 255, 255, 0.2)',
+    color: 'rgb(255 255 255 / 0.2)',
   }),
   stroke: new Stroke({
-    color: 'rgba(255, 255, 255, 0.2)',
+    color: 'rgb(255 255 255 / 0.2)',
     width: 4,
   }),
   image: new CircleStyle({
     radius: 7,
     fill: new Fill({
-      color: 'rgba(255, 255, 255, 0.4)',
+      color: 'rgb(255 255 255 / 0.4)',
     }),
   }),
 });
 
 export const selected = new Style({
   fill: new Fill({
-    color: 'rgba(255, 255, 255, 0.2)',
+    color: 'rgb(255 255 255 / 0.2)',
   }),
   stroke: new Stroke({
     color: '#ffcc33',
