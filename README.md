@@ -163,7 +163,6 @@ Always use these aliases instead of relative imports.
 The app uses `ngx-translate` for multilingual support:
 - Translation files: `assets/i18n/{lang}.json` (e.g., `en.json`, `es.json`)
 - All user-facing text must use the translate pipe: `{{ 'KEY' | translate }}`
-- Edit translations using BabelEdit, not manually
 
 ### Styling
 
