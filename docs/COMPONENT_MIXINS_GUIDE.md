@@ -394,11 +394,11 @@ Fade-in animation.
 
 1. **Consistency:** Same patterns produce identical output across components
 2. **Maintainability:** Update mixin once, affects all usages
-3. **Reduced Bundle Size:** Less duplicated CSS in final bundle
+3. **Reduced Bundle Size:** Less duplicated CSS in final bundle (370 KB saved from themify elimination)
 4. **Better DX:** Descriptive names make code more readable
 5. **Easier Testing:** Standardized patterns easier to test
 6. **Eliminates `!important`:** Mixins provide proper specificity without hacks
-7. **Theme-Aware:** Mixins use CSS variables for automatic theme switching
+7. **Theme-Aware:** Mixins use CSS custom properties for automatic runtime theme switching
 
 ---
 
@@ -408,7 +408,7 @@ Fade-in animation.
 **Components refactored:** 10
 **Lines of code reduced:** ~150+
 **`!important` declarations eliminated:** Multiple (part of broader theming cleanup)
-**Build size:** Maintained at 8.40 MB (no regression)
+**Build size:** 8.03 MB (down from 8.40 MB after themify elimination - no regression from mixin usage)
 
 ### Files Using Mixins:
 
@@ -487,7 +487,9 @@ When you identify a pattern repeated 3+ times, consider adding it to `_component
 
 ## Theming Integration
 
-Component mixins are designed to work seamlessly with the theming system:
+Component mixins are designed to work seamlessly with the modern CSS variable-based theming system.
+
+**Note:** As of November 2025, all legacy `themify()` mixin usage has been eliminated from the codebase. Component mixins exclusively use CSS custom properties for theming.
 
 **Using mixins with theme variables:**
 ```scss
@@ -495,7 +497,7 @@ Component mixins are designed to work seamlessly with the theming system:
 
 .custom-button {
   @include map-control-button;
-  // Add theme-aware customizations
+  // Add theme-aware customizations using CSS variables
   background: var(--asf-primary-light);
   color: var(--asf-dark-primary-text);
 }

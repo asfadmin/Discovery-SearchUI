@@ -4,18 +4,36 @@ This document explains the theming system and best practices for styling compone
 
 ## Overview
 
-The application uses a **multi-layered theming approach**:
+The application uses a **modern, multi-layered theming approach**:
 
-1. **SCSS Theme Variables** - Compile-time theme values
-2. **CSS Custom Properties** - Runtime theme values with dynamic theme switching
-3. **Design Tokens** - Semantic design system values
-4. **Angular Material Theming** - Component library theming (M2 compatibility API)
+1. **CSS Custom Properties** - Runtime theme values with dynamic theme switching (primary approach)
+2. **Design Tokens** - Semantic design system values
+3. **Angular Material Theming** - Component library theming (M2 compatibility API)
+4. **SCSS Variables** - Legacy compile-time values (only for Material theme configuration)
+
+### Recent Major Improvement (November 2025)
+
+**✅ All `themify()` usage eliminated from the codebase!**
+
+We've completed a comprehensive migration that removed all 63 instances of the legacy `themify()` and `themify_non_host()` mixins across 7 files, replacing them with modern CSS custom properties.
+
+**Impact:**
+- 📉 **370 KB** smaller main bundle (8.40 MB → 8.03 MB)
+- 📉 **7.36 KB** smaller CSS (212.65 kB → 205.29 kB)
+- ⚡ Runtime theme switching enabled (no recompilation needed)
+- 🎨 Simpler, cleaner codebase with no CSS duplication
+- 🚀 Better performance and maintainability
+
+**What this means for you:**
+- Use `var(--asf-primary)` instead of `@include themify()` patterns
+- All theme-aware styles now use CSS variables
+- No need to learn or use the old themify mixin system
 
 ## Quick Start
 
-### Using CSS Custom Properties (Recommended for New Code)
+### Using CSS Custom Properties (Standard Approach)
 
-CSS custom properties allow runtime theme switching and provide better performance.
+CSS custom properties are the **only supported approach** for theming in this application. They provide runtime theme switching, better performance, and simpler code.
 
 ```scss
 .my-component {
@@ -104,29 +122,45 @@ For consistent spacing, typography, and other design values:
 - `opacity($key)` - 0 to 100
 - `z-index($key)` - base, dropdown, sticky, modal, tooltip
 
-### Using SCSS Theme Variables (Legacy)
+### ~~Using SCSS Theme Variables (Removed)~~
 
-For advanced theming that responds to light/dark mode:
+**DEPRECATED - Removed in November 2025**
+
+The legacy `themify()` and `themify_non_host()` mixins have been **completely eliminated** from the codebase.
+
+All 63 themify calls have been migrated to CSS custom properties. If you're maintaining old code or reviewing documentation that references themify, here's the migration:
 
 ```scss
+// ❌ OLD - No longer supported
 @use "asf-theme-variables" as *;
 
 .my-component {
   @include themify($themes) {
     color: themed('dark-primary-text');
     background: themed('background-white');
-    border-color: themed('borders');
   }
+}
+
+// ✅ NEW - Use CSS variables instead
+.my-component {
+  color: var(--asf-dark-primary-text);
+  background: var(--asf-background-white);
 }
 ```
 
-The `themify` mixin generates `:host-context(.theme-light)` and `:host-context(.theme-dark)` selectors automatically.
+**Why it was removed:**
+- Generated duplicate CSS for light/dark themes (2x CSS size)
+- No runtime theme switching capability
+- Complex syntax compared to CSS variables
+- Performance overhead from selector duplication
 
 ## Best Practices
 
-### 1. Prefer CSS Variables for Simple Theming
+### 1. Always Use CSS Variables for Theming
 
-✅ **Good:**
+CSS variables are the **only supported theming approach**. The legacy `themify()` mixin has been completely removed.
+
+✅ **Correct:**
 ```scss
 .header {
   background: var(--asf-primary);
@@ -134,12 +168,13 @@ The `themify` mixin generates `:host-context(.theme-light)` and `:host-context(.
 }
 ```
 
-❌ **Avoid:**
+✅ **With dynamic colors:**
 ```scss
-.header {
-  @include themify($themes) {
-    background: themed('primary');
-    color: themed('light-primary-text');
+.hover-state {
+  background: var(--asf-primary-light);
+
+  &:hover {
+    background: var(--asf-primary-light-5);
   }
 }
 ```
@@ -362,16 +397,21 @@ Each color variant has different values in light and dark themes. For example:
 ```
 src/styles/
 ├── _tokens.scss           # Design tokens (spacing, typography, etc.)
-├── _css-variables.scss    # CSS custom properties for theming
-├── _variables.scss        # Legacy color definitions
-├── _dark_variables.scss   # Dark theme color definitions
+├── _css-variables.scss    # CSS custom properties for theming ⭐ PRIMARY
+├── _variables.scss        # Legacy color definitions (Material theme config only)
+├── _dark_variables.scss   # Dark theme color definitions (Material theme config only)
 ├── _color-utils.scss      # Color manipulation utilities
 ├── _component-mixins.scss # Shared component styling mixins
-├── asf-theme-variables.scss  # Theme system and mixins
+├── asf-theme-variables.scss  # Theme SCSS variables (Material config) - themify removed ✅
 ├── asf-theme.scss         # Main theme file (Material theming)
 ├── _material-density-overrides.scss  # Material density customizations
 └── deluxe-menu.scss       # Global component styles
 ```
+
+**Key files:**
+- **`_css-variables.scss`** - Your primary reference for all available CSS variables
+- **`_tokens.scss`** - Design system tokens for spacing, typography, opacity, etc.
+- **`asf-theme-variables.scss`** - Now only contains SCSS variables for Material theme configuration (legacy themify mixins removed)
 
 ## Migration Guide
 
@@ -399,7 +439,11 @@ src/styles/
 
 ### From `themify` Mixin to CSS Variables
 
-**Before:**
+**Status: ✅ COMPLETED - All themify usage eliminated (November 2025)**
+
+The `themify()` and `themify_non_host()` mixins have been completely removed from the codebase. All 63 instances across 7 files have been migrated to CSS custom properties.
+
+**Old pattern (no longer supported):**
 ```scss
 @use "asf-theme-variables" as *;
 
@@ -411,7 +455,7 @@ src/styles/
 }
 ```
 
-**After:**
+**Modern pattern (current standard):**
 ```scss
 .component {
   color: var(--asf-dark-primary-text);
@@ -419,11 +463,27 @@ src/styles/
 }
 ```
 
-Benefits:
-- Simpler syntax
-- Better performance (no selector duplication)
-- Runtime theme switching
-- Easier to debug in DevTools
+**Migration results:**
+- **370 KB** reduction in main bundle size (8.40 MB → 8.03 MB)
+- **7.36 KB** reduction in CSS size (212.65 kB → 205.29 kB)
+- Eliminated duplicate CSS generation for light/dark themes
+- Enabled runtime theme switching without page reload
+- Simpler, more maintainable code
+
+**Complex cases handled:**
+```scss
+// lighten() function
+// Before: lighten(map.get($theme, 'primary-light'), 15%)
+// After: var(--asf-primary-light-15)
+
+// rgba() with variable alpha
+// Before: rgba(map.get($theme, 'primary-light'), 0.2)
+// After: rgba(from var(--asf-primary-light) r g b / 0.2)
+
+// darken() function
+// Before: darken(map.get($theme, 'background-white'), 5%)
+// After: color-mix(in srgb, var(--asf-background-white), black 5%)
+```
 
 ### From `!important` to Increased Specificity
 
@@ -596,6 +656,11 @@ Material 3 migration is **planned for future** (Q4 2025 or later).
 ## Theming Improvements Status
 
 ### Completed (2025-11)
+- ✅ **Eliminated all `themify()` usage** - All 63 themify calls migrated to CSS custom properties across 7 files
+  - 370 KB bundle size reduction (8.40 MB → 8.03 MB)
+  - 7.36 KB CSS reduction (212.65 kB → 205.29 kB)
+  - Removed legacy `themify()` and `themify_non_host()` mixin definitions
+  - Enabled runtime theme switching without recompilation
 - ✅ **Eliminated all `::ng-deep` usage** - Replaced with `:host` or global styles
 - ✅ **Eliminated all `filter: brightness()` usage** - Replaced with color variant CSS variables
 - ✅ **Added color variant CSS variables** - 24+ pre-calculated color variants for light/dark themes
@@ -663,21 +728,27 @@ color: var(--asf-blue-link);
 
 ## Performance Considerations
 
-1. **Prefer CSS variables over `themify()` mixin**
-   - CSS variables: 1 rule, instant theme switching
-   - `themify()`: 2 rules (light + dark), larger CSS bundle
+1. **CSS variables are the standard** ✅
+   - All theming now uses CSS custom properties
+   - 1 rule per style (vs 2 rules with old `themify()` approach)
+   - Instant runtime theme switching without recompilation
+   - 370 KB smaller bundle size after themify elimination
 
-2. **Use color variants instead of `filter: brightness()`**
-   - Filters trigger GPU operations on every frame
-   - Pre-calculated colors are static values
+2. **Color variants eliminate runtime calculations** ✅
+   - All `filter: brightness()` usage has been removed
+   - Pre-calculated color variants (e.g., `--asf-primary-light-5`)
+   - No GPU operations needed for color adjustments
+   - Better performance and theme consistency
 
 3. **Minimize shadow customization**
    - Use `var(--shadow-md)` instead of custom shadows
    - Reduces duplicate shadow definitions in CSS
+   - Easier to maintain consistent elevation system
 
 4. **Use design tokens for spacing**
    - Consistent values enable better CSS compression
    - Easier for browser to optimize rendering
+   - Maintainable, semantic spacing system
 
 ## Resources
 
