@@ -87,10 +87,7 @@ Here is an example:
 ```
 You can see both text in the Tool Tip and the button text itself are both run through the 'translate' pipe: `{{ 'HELP_AND_INFORMATION' | translate }}`.
 The translate pipe will translate the key e.g. 'HELP_AND_INFORMATION' and replace it with the value from the current language json file
-in use, e.g. 'assets/i18n/en.json'. Add key/value pairs to the json files using [BabelEdit](https://www.codeandweb.com/babeledit).
-
-The 'assets/i18n/vertex.babel' file is the project file to open with BabelEdit to access all json translation files.
-Use BabelEdit to add, change, and delete key/value pairs.
+in use, e.g. 'assets/i18n/en.json'. 
 
 ## Testing
 Testing run via [Ghost Inspector](https://ghostinspector.com/).
@@ -165,7 +162,6 @@ Always use these aliases instead of relative imports.
 
 The app uses `ngx-translate` for multilingual support:
 - Translation files: `assets/i18n/{lang}.json` (e.g., `en.json`, `es.json`)
-- BabelEdit project: `assets/i18n/vertex.babel`
 - All user-facing text must use the translate pipe: `{{ 'KEY' | translate }}`
 - Edit translations using BabelEdit, not manually
 
