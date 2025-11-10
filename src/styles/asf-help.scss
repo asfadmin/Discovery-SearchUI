@@ -1,4 +1,3 @@
-@use 'sass:map';
 @use 'asf-theme-variables' as *;
 @forward 'asf-theme-variables';
 
@@ -17,9 +16,7 @@ $img-border-style: 1px solid black;
 }
 
 .help-top-section {
-  @include themify($themes) using ($theme) {
-    background-color: lighten(map.get($theme, 'primary-light'),15%) !important;
-  }
+  background-color: var(--asf-primary-light-15) !important;
   padding: 0 $side-padding-px 25px $side-padding-px;
   margin: 0;
 }
@@ -34,9 +31,7 @@ $img-border-style: 1px solid black;
   h2,
   h3,
   h4 {
-    @include themify($themes) using ($theme) {
-      color: map.get($theme, 'light-primary-text');
-    }
+    color: var(--asf-light-primary-text);
   }
 }
 
@@ -72,9 +67,7 @@ $img-border-style: 1px solid black;
 }
 
 .help-text-row {
-  @include themify($themes) using ($theme) {
-    color: map.get($theme, 'dark-primary-text');
-  }
+  color: var(--asf-dark-primary-text);
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -89,9 +82,7 @@ $img-border-style: 1px solid black;
   flex: 7 0 0;
 
   .material-icons {
-    @include themify($themes) using ($theme) {
-      color: map.get($theme, 'primary-light');
-    }
+    color: var(--asf-primary-light);
     font-size: 53px;
     width: 54px;
     height: 53px;
@@ -117,9 +108,7 @@ $img-border-style: 1px solid black;
 }
 
 .help-step {
-  @include themify($themes) using ($theme) {
-    color: map.get($theme, 'blue-link');
-  }
+  color: var(--asf-blue-link);
   font-weight: bold;
   font-size: larger;
 }
