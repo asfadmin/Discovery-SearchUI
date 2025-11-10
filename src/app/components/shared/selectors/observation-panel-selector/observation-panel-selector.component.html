@@ -11,6 +11,9 @@
       "
       multiple
     >
+      <mat-select-trigger>
+        {{ polarizations | join: '  ' }}
+      </mat-select-trigger>
       <mat-option *ngFor="let pol of dataset.polarizations" [value]="pol">
         <span class="polarization-type">{{ pol }}</span>
         <span class="polarization-count"
@@ -38,6 +41,9 @@
       "
       multiple
     >
+      <mat-select-trigger>
+        {{ sidePolarizations | join: '  ' }}
+      </mat-select-trigger>
       <mat-option *ngFor="let pol of dataset.sidepolarizations" [value]="pol">
         <span class="polarization-type">{{ pol }}</span>
         <span class="polarization-count"

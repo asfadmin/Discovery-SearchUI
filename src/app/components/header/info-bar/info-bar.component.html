@@ -65,10 +65,11 @@
         }
         :</b
       >
-      {{ polarizations }}
+      {{ polarizations | join: ', ' }}
     </span>
     <span *ngIf="sidePolarizations.length">
-      <b>{{ 'SIDE_POLARIZATIONS' | translate }}:</b> {{ sidePolarizations }}
+      <b>{{ 'SIDE_POLARIZATIONS' | translate }}:</b>
+      {{ sidePolarizations | join: ', ' }}
     </span>
     <span *ngIf="instruments.length">
       <b>{{ 'INSTRUMENTS' | translate }}:</b> {{ instruments }}
