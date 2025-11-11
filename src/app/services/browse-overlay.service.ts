@@ -116,7 +116,8 @@ export class BrowseOverlayService {
     const feature = this.wktService.wktToFeature(wkt, 'EPSG:3857');
     const polygon = this.getPolygonFromFeature(feature, wkt);
 
-    if (url.split('/').pop().startsWith('NISAR_L1')) {
+    let isNisarL1Browse = url.split('/').pop().startsWith('NISAR_L1')
+    if (isNisarL1Browse) {
         url = this.nisarL1ToL2BrowseImage(url)
     }
 
