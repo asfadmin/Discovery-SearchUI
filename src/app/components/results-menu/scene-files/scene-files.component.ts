@@ -534,7 +534,7 @@ export class SceneFilesComponent
               return of([])
           }
           
-          const queryParams = this.getNisarL2EquivalentParams(scene.id, scene.metadata.productType)
+          const queryParams = this.getNisarL2Params(scene.id, scene.metadata.productType)
 
           return this.asfApiService.query<any>(queryParams).pipe(
             map((products) =>
@@ -549,7 +549,7 @@ export class SceneFilesComponent
       }),
     );
 
-  public getNisarL2EquivalentParams(productID: string, productType: string) {
+  public getNisarL2Params(productID: string, productType: string) {
     return {
     granule_list: productID.replaceAll(productType, L1L2BrowseCollectionMapping[productType].productType).replaceAll('L1', 'L2')
     };
