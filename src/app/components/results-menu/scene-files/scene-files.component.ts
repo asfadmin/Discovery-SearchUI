@@ -54,6 +54,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ScreenSizeService } from '@services';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import * as filterStore from '@store/filters';
+import { L1L2BrowseCollectionMapping } from '@models/datasets/nisar';
 
 @Component({
   selector: 'app-scene-files',
@@ -488,7 +489,7 @@ export class SceneFilesComponent
     return toCMRProduct;
   }
 
-  public StaticLayerProduct$ = this.store$
+  public dynamicallySearchedProduct$ = this.store$
     .select(scenesStore.getSelectedScene)
     .pipe(
       debounceTime(100),
@@ -524,6 +525,28 @@ export class SceneFilesComponent
                   product.metadata.opera.additionalUrls.find((url) =>
                     url.endsWith('local_incidence_angle.tif'),
                   );
+                return product;
+              }),
+            ),
+          );
+        }else if(!!scene && scene.id?.startsWith('NISAR_L1')) {
+          if (!Object.keys(L1L2BrowseCollectionMapping).includes(scene.metadata.productType)) {
+              return of([])
+          }
+          
+          const productType = scene.metadata.productType
+          const queryParams = {
+            granule_list: scene.id.replaceAll(productType, L1L2BrowseCollectionMapping[productType].productType).replaceAll('L1', 'L2')
+          };
+          return this.asfApiService.query<any>(queryParams).pipe(
+            map((products) =>
+              products?.results?.length > 0
+                ? this.productService.fromResponse(products).slice(0, 1)
+                : [],
+            ),
+            tap((products) =>
+              products.map((product) => {
+                product.productTypeDisplay = `L2 ${product.metadata.productType} HDF5`;
                 return product;
               }),
             ),

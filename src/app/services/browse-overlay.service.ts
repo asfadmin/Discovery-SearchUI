@@ -35,6 +35,7 @@ import {
   get as getProjection,
   transform,
 } from 'ol/proj';
+import { L1L2BrowseCollectionMapping } from '@models/datasets/nisar';
 
 // import { HttpClient } from '@angular/common/http';
 // import { CustomProjection } from './map/views';
@@ -141,19 +142,13 @@ export class BrowseOverlayService {
         return url
     }
 
-    const L1L2BrowseCollectionMapping = {
-        NISAR_L1_RSLC: {collection: 'NISAR_L2_GSLC', productType: 'GSLC'},
-        NISAR_L1_RUNW: {collection: 'NISAR_L2_GUNW', productType: 'GUNW'},
-        NISAR_L1_ROFF: {collection: 'NISAR_L2_GOFF', productType: 'GOFF'}
-    };
-
     const fileName = url.split('/').pop();
     const metadata = fileName.split('_');
     const productType = metadata[3];
     const productionConfiguration = metadata[1]
     const shortName = `NISAR_${productionConfiguration}_${productType}`;
     
-    const outputUrl = url.replaceAll(shortName, L1L2BrowseCollectionMapping[shortName].collection).replaceAll(productType, L1L2BrowseCollectionMapping[shortName].productType).replaceAll('L1', 'L2');
+    const outputUrl = url.replaceAll(shortName, L1L2BrowseCollectionMapping[productType].collection).replaceAll(productType, L1L2BrowseCollectionMapping[productType].productType).replaceAll('L1', 'L2');
     return outputUrl
   }
 
