@@ -534,22 +534,14 @@ export class SceneFilesComponent
               return of([])
           }
           
-          const productType = scene.metadata.productType
-          const queryParams = {
-            granule_list: scene.id.replaceAll(productType, L1L2BrowseCollectionMapping[productType].productType).replaceAll('L1', 'L2')
-          };
+          const queryParams = this.getNisarL2EquivalentParams(scene.id, scene.metadata.productType)
+
           return this.asfApiService.query<any>(queryParams).pipe(
             map((products) =>
               products?.results?.length > 0
                 ? this.productService.fromResponse(products).slice(0, 1)
                 : [],
-            ),
-            tap((products) =>
-              products.map((product) => {
-                product.productTypeDisplay = `L2 ${product.metadata.productType} HDF5`;
-                return product;
-              }),
-            ),
+            )
           );
         } else {
           return of([]);
@@ -557,6 +549,11 @@ export class SceneFilesComponent
       }),
     );
 
+  public getNisarL2EquivalentParams(productID: string, productType: string) {
+    return {
+    granule_list: productID.replaceAll(productType, L1L2BrowseCollectionMapping[productType].productType).replaceAll('L1', 'L2')
+    };
+  }
   public getProductSceneCount(products: SarviewsProduct[]) {
     const outputList = products.reduce((prev, product) => {
       const temp = product.granules.map((granule) => granule.granule_name);
