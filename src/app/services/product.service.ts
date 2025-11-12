@@ -298,10 +298,10 @@ export class ProductService {
 private seasatProductTypeDisplays = {
     in: 'Metadata IN',
     tif: 'Level One GeoTIFF Product',
-    xml: 'Metadata xml',
-    kml: 'Metadata kml',
+    xml: 'ISO Metadata XML',
+    kml: 'Metadata KML',
     qc_report: 'QC Report',
-    jpg: 'Browse Image JPG'
+    jpg: 'Browse Image JPEG'
   };
 private seasatSubproductsFromScene(product: models.CMRProduct) {
  const products = [];
@@ -356,7 +356,7 @@ private seasatSubproductsFromScene(product: models.CMRProduct) {
         browses.push(p);
       }
 
-      if (['Log File', 'Metadata JSON'].includes(productTypeDisplay)) {
+      if (['Metadata IN'].includes(productTypeDisplay)) {
         continue;
       }
 
