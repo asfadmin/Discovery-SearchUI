@@ -962,8 +962,9 @@ export class MapService implements OnDestroy {
   public setSelectedBrowse(
     url: string,
     wkt: string,
-    _scene: models.CMRProduct = null,
+    scene: models.CMRProduct = null,
   ) {
+    this.setLayerText('Approximate Placement Only') 
     if (this.browseImageLayer) {
       this.map.removeLayer(this.browseImageLayer);
     }
@@ -984,11 +985,12 @@ export class MapService implements OnDestroy {
           this.map.addLayer(this.browseImageLayer);
         });
       }
-      //   else if(url.toLowerCase().includes('nisar')) {
-      //     this.browseImageLayer = this.browseOverlayService.getKMLLayer(_scene, url, wkt, 'ol-layer', 'current-overlay');
-      //     this.map.addLayer(this.browseImageLayer);
-      //   }
       else {
+        if (scene.dataset === 'NISAR') {
+            if (scene.id.startsWith('NISAR_L1') && url !== '/assets/no-browse.png') {
+                this.setLayerText('Level 2 Equivalent Browse Displayed')
+            }
+        }
         this.browseImageLayer =
           this.browseOverlayService.createNormalImageLayer(
             url,
@@ -1303,6 +1305,12 @@ export class MapService implements OnDestroy {
       units: 'metric',
     });
     this.map.addControl(this.scaleLine);
+  }
+
+  public setLayerText(text: string): void {
+    let style = this.selectedLayer.getStyle() as Style
+    let olText = style.getText()
+    olText.setText(text)
   }
 
   private getPointIntersection(

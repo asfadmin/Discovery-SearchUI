@@ -372,7 +372,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     //   url = this.scene.downloadUrl;
     // }
 
-    this.mapService.setSelectedBrowse(url, wkt);
+    this.mapService.setSelectedBrowse(url, wkt, this.scene);
   }
 
   public onToggleSarviewsProductPin() {

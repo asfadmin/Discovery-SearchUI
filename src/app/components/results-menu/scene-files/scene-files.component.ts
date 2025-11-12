@@ -54,6 +54,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ScreenSizeService } from '@services';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import * as filterStore from '@store/filters';
+import { L1L2BrowseCollectionMapping } from '@models/datasets/nisar';
 
 @Component({
   selector: 'app-scene-files',
@@ -489,7 +490,7 @@ export class SceneFilesComponent
     return toCMRProduct;
   }
 
-  public StaticLayerProduct$ = this.store$
+  public dynamicallySearchedProduct$ = this.store$
     .select(scenesStore.getSelectedScene)
     .pipe(
       debounceTime(100),
@@ -529,12 +530,31 @@ export class SceneFilesComponent
               }),
             ),
           );
+        }else if(!!scene && scene.id?.startsWith('NISAR_L1')) {
+          if (!Object.keys(L1L2BrowseCollectionMapping).includes(scene.metadata.productType)) {
+              return of([])
+          }
+          
+          const queryParams = this.getNisarL2Params(scene.id, scene.metadata.productType)
+
+          return this.asfApiService.query<any>(queryParams).pipe(
+            map((products) =>
+              products?.results?.length > 0
+                ? this.productService.fromResponse(products).slice(0, 1)
+                : [],
+            )
+          );
         } else {
           return of([]);
         }
       }),
     );
 
+  public getNisarL2Params(productID: string, productType: string) {
+    return {
+    granule_list: productID.replaceAll(productType, L1L2BrowseCollectionMapping[productType].productType).replaceAll('L1', 'L2')
+    };
+  }
   public getProductSceneCount(products: SarviewsProduct[]) {
     const outputList = products.reduce((prev, product) => {
       const temp = product.granules.map((granule) => granule.granule_name);
