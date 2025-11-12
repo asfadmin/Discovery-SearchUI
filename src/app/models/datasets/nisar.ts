@@ -276,3 +276,9 @@ export const nisar = {
   platformDesc: 'NISAR_DESC',
   platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
 };
+
+export const L1L2BrowseCollectionMapping = {
+    RSLC: {collection: 'NISAR_L2_GSLC', productType: 'GSLC'},
+    RUNW: {collection: 'NISAR_L2_GUNW', productType: 'GUNW'},
+    ROFF: {collection: 'NISAR_L2_GOFF', productType: 'GOFF'}
+};
