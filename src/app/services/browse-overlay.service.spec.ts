@@ -36,9 +36,8 @@ describe('BrowseOverlayService', () => {
     expect(service.nisarL1ToL2BrowseImage(L1ProductUrl)).toBe(L2ProductUrl)
   });
 
-      it('should not modify NISAR L1 browse images `/assets/no-browse.png`', () => {
-    const L1ProductUrl = '/assets/no-browse.png'
-    const L2ProductUrl = '/assets/no-browse.png'
-    expect(service.nisarL1ToL2BrowseImage(L1ProductUrl)).toBe(L2ProductUrl)
+    it('should not modify NISAR L1 browse images `/assets/no-browse.png`', () => {
+    const noBrowse = '/assets/no-browse.png'
+    expect(service.nisarL1ToL2BrowseImage(noBrowse)).toBe(noBrowse)
   });
 });
