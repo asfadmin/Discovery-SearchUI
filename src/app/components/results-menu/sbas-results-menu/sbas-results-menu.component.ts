@@ -34,6 +34,7 @@ enum CardViews {
     './sbas-results-menu.component.scss',
     '../results-menu.component.scss',
   ],
+  standalone: false,
 })
 export class SBASResultsMenuComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

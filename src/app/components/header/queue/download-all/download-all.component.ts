@@ -5,6 +5,7 @@ import { UAParser } from 'ua-parser-js';
   selector: 'app-download-all',
   templateUrl: './download-all.component.html',
   styleUrls: ['./download-all.component.scss'],
+  standalone: false,
 })
 export class DownloadAllComponent implements OnInit {
   @Output() dlAllEvent = new EventEmitter();

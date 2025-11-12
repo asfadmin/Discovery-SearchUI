@@ -8,6 +8,7 @@ import { SubSink } from 'subsink';
   selector: 'app-gridlines-selector',
   templateUrl: './gridlines-selector.component.html',
   styleUrls: ['./gridlines-selector.component.scss'],
+  standalone: false,
 })
 export class GridlinesSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

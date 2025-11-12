@@ -20,6 +20,7 @@ import * as models from '@models';
   selector: 'app-pair',
   templateUrl: './pair.component.html',
   styleUrls: ['./pair.component.scss'],
+  standalone: false,
 })
 export class PairComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

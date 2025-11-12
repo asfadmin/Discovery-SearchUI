@@ -1,7 +1,7 @@
-@import "asf-theme";
-@import "deluxe-menu";
-@import "deluxe-menu-2";
-@import "asf-header-menu-button";
+@use "asf-theme-variables" as *;
+@use "deluxe-menu" as *;
+@use "deluxe-menu-2" as *;
+@use "asf-header-menu-button" as *;
 
 .button-label {
     @include themify($themes) {

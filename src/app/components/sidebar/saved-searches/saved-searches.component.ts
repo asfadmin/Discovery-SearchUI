@@ -30,6 +30,7 @@ import { AsfLanguageService } from '@services/asf-language.service';
   selector: 'app-saved-searches',
   templateUrl: './saved-searches.component.html',
   styleUrls: ['./saved-searches.component.scss'],
+  standalone: false,
 })
 export class SavedSearchesComponent implements OnInit, OnDestroy {
   private dialog = inject(MatDialog);
@@ -150,6 +151,7 @@ export class SavedSearchesComponent implements OnInit, OnDestroy {
   }
 
   public onSetSearch(search: models.Search): void {
+    this.store$.dispatch(new uiStore.CloseSidebar());
     this.searchService.load(search);
   }
 

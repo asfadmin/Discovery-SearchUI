@@ -13,6 +13,7 @@ import { SubSink } from 'subsink';
   selector: 'app-event-product-sort-selector',
   templateUrl: './event-product-sort-selector.component.html',
   styleUrls: ['./event-product-sort-selector.component.scss'],
+  standalone: false,
 })
 export class EventProductSortSelectorComponent implements OnInit {
   private store$ = inject<Store<AppState>>(Store);

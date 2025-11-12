@@ -70,6 +70,7 @@ import { MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
     { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
     { provide: MAT_DATE_LOCALE, useValue: 'en' },
   ],
+  standalone: false,
 })
 export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   private store$ = inject<Store<AppState>>(Store);

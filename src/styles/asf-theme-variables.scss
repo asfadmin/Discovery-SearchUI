@@ -1,0 +1,115 @@
+@use "@angular/material" as mat;
+@use "sass:color";
+@use "sass:map";
+
+// Forward all the base variable files
+@forward "variables";
+@forward "dark_variables";
+@forward "color-utils";
+
+// Import to use in this file
+@use "variables" as *;
+@use "dark_variables" as *;
+@use "color-utils" as *;
+
+@mixin md-icon-size($size: 24px) {
+  font-size: $size !important;
+  height: $size !important;
+  width: $size !important;
+}
+
+$asf-app-primary: mat.m2-define-palette($mat-asf-primary, 700, 400, 900);
+$asf-app-dark-primary: mat.m2-define-palette($mat-dark-asf-primary, 700, 400, 900);
+$asf-app-accent:  mat.m2-define-palette(mat.$m2-grey-palette, 300, 100, 400);
+$asf-app-blue:  mat.m2-define-palette($mat-asf-blue, 700, 400, 900);
+$asf-app-warn:    mat.m2-define-palette($mat-asf-yellow, 200, 100, 500);
+$asf-app-err: mat.m2-define-palette($mat-asf-red, 200, 100, 500);
+
+$asf-warn: mat.m2-get-color-from-palette($asf-app-warn);
+$asf-err: mat.m2-get-color-from-palette($asf-app-err);
+$asf-blue: mat.m2-get-color-from-palette($asf-app-blue);
+$asf-primary: mat.m2-get-color-from-palette($asf-app-primary);
+$asf-dark-primary: mat.m2-get-color-from-palette($asf-app-dark-primary);
+$asf-accent: mat.m2-get-color-from-palette($asf-app-accent);
+$asf-primary-light: lighten($asf-primary, 40%);
+$asf-primary-dark: darken($asf-primary, 15%);
+$asf-background-white: lighten($asf-primary, 80%);
+
+$themes: (
+  light: (
+    background-white: lighten(mat.m2-get-color-from-palette($asf-app-primary), 80%),
+    dark-primary-text: rgb(0 0 0 / 0.87),
+    dark-secondary-text: rgb(0 0 0 / 0.54),
+    dark-disabled-text: rgb(0 0 0 / 0.38),
+    dark-dividers: rgb(0 0 0 / 0.12),
+    dark-focused: rgb(0 0 0 / 0.12),
+    light-primary-text: white,
+    light-secondary-text: rgb(255 255 255 / 0.7),
+    light-disabled-text: rgb(255 255 255 / 0.5),
+    light-dividers: rgb(255 255 255 / 0.12),
+    light-focused: rgb(255 255 255 / 0.12),
+    borders: lightgray,
+    primary: mat.m2-get-color-from-palette($asf-app-primary),
+    accent: mat.m2-get-color-from-palette($asf-app-accent),
+    warn: mat.m2-get-color-from-palette($asf-app-warn),
+    inverted-image: invert(0%),
+    err: red,
+    blue-link: #236192,
+    primary-light: lighten(mat.m2-get-color-from-palette($asf-app-primary), 40%),
+    primary-dark: darken(mat.m2-get-color-from-palette($asf-app-primary), 15%),
+  ),
+  dark: (
+    light-primary-text: white,
+    light-secondary-text: rgb(255 255 255 / 0.54),
+    light-disabled-text: rgb(255 255 255 / 0.38),
+    light-dividers: rgb(255 255 255 / 0.12),
+    light-focused: rgb(255 255 255 / 0.12),
+    dark-primary-text: rgb(183 183 183),
+    dark-secondary-text: rgb(183 183 183 / 0.7),
+    dark-disabled-text: rgb(183 183 183 / 0.5),
+    dark-dividers: rgb(255 255 255 / 0.12),
+    dark-focused: rgb(255 255 255 / 0.12),
+    borders: lightgray,
+    inverted-image: invert(100%),
+    primary: mat.m2-get-color-from-palette($asf-app-dark-primary),
+    accent: mat.m2-get-color-from-palette($asf-app-accent),
+    warn: mat.m2-get-color-from-palette($asf-app-warn),
+    err: #f95e5e,
+    blue-link: mat.m2-get-color-from-palette($asf-app-warn),
+    primary-light: lighten(mat.m2-get-color-from-palette($asf-app-dark-primary), 5%),
+    primary-dark: darken(mat.m2-get-color-from-palette($asf-app-dark-primary), 15%),
+    background-white: darken(mat.m2-get-color-from-palette($asf-app-dark-primary), 5%),
+  ),
+);
+
+@mixin themify($themes: $themes) {
+  @each $theme, $map in $themes {
+    :host-context(.theme-#{$theme}) & {
+      $theme-map: () !global;
+      @each $key, $submap in $map {
+        $value: map.get(map.get($themes, $theme), '#{$key}');
+        $theme-map: map.merge($theme-map, ($key: $value)) !global;
+      }
+      @content;
+      $theme-map: null !global;
+    }
+  }
+}
+
+@mixin themify_non_host($themes: $themes) {
+  @each $theme, $map in $themes {
+    .theme-#{$theme} & {
+      $theme-map: () !global;
+      @each $key, $submap in $map {
+        $value: map.get(map.get($themes, $theme), '#{$key}');
+        $theme-map: map.merge($theme-map, ($key: $value)) !global;
+      }
+      @content;
+      $theme-map: null !global;
+    }
+  }
+}
+
+@function themed($key) {
+  @return map.get($theme-map, $key);
+}

@@ -1,6 +1,6 @@
-@import "asf-theme";
-@import "deluxe-menu";
-@import "deluxe-menu-2";
+@use "asf-theme-variables" as *;
+@use "deluxe-menu" as *;
+@use "deluxe-menu-2" as *;
 
 .description-layout {
   display: flex;

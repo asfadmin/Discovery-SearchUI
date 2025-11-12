@@ -21,6 +21,7 @@ enum FilterPanel {
   selector: 'app-baseline-filters',
   templateUrl: './baseline-filters.component.html',
   styleUrls: ['./baseline-filters.component.scss'],
+  standalone: false,
 })
 export class BaselineFiltersComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

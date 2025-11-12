@@ -16,6 +16,7 @@ import * as models from '@models';
   selector: 'app-baseline-header',
   templateUrl: './baseline-header.component.html',
   styleUrls: ['./baseline-header.component.css', '../header.component.scss'],
+  standalone: false,
 })
 export class BaselineHeaderComponent implements OnInit {
   private store$ = inject<Store<AppState>>(Store);

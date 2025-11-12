@@ -13,6 +13,7 @@ import { PropertyService } from '@services';
   selector: 'app-scene-metadata',
   templateUrl: './scene-metadata.component.html',
   styleUrls: ['./scene-metadata.component.scss'],
+  standalone: false,
 })
 export class SceneMetadataComponent implements OnInit, OnDestroy {
   prop = inject(PropertyService);

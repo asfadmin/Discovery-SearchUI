@@ -5,6 +5,7 @@ import { Range } from '@models';
   selector: 'app-range-option',
   templateUrl: './range-option.component.html',
   styleUrls: ['./range-option.component.scss'],
+  standalone: false,
 })
 export class RangeOptionComponent implements OnInit {
   @Input() value: number;

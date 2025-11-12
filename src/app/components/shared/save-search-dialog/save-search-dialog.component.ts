@@ -20,6 +20,7 @@ import { AsfLanguageService } from '@services/asf-language.service';
   selector: 'app-save-search-dialog',
   templateUrl: './save-search-dialog.component.html',
   styleUrls: ['./save-search-dialog.component.scss'],
+  standalone: false,
 })
 export class SaveSearchDialogComponent implements OnInit {
   dialogRef = inject<MatDialogRef<SaveSearchDialogComponent>>(MatDialogRef);

@@ -38,6 +38,7 @@ import { SBASOverlap } from '@models';
       transition('false => true', animate('50ms ease-in')),
     ]),
   ],
+  standalone: false,
 })
 export class FiltersDropdownComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

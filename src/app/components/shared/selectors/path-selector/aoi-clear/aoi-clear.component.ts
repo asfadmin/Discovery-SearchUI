@@ -15,6 +15,7 @@ import { SearchType } from '@models';
   selector: 'app-aoi-clear',
   templateUrl: './aoi-clear.component.html',
   styleUrls: ['./aoi-clear.component.scss'],
+  standalone: false,
 })
 export class AoiClearComponent implements OnInit, OnDestroy {
   private mapService = inject(MapService);

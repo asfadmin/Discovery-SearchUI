@@ -20,6 +20,7 @@ import { SearchType } from '@models';
     './full-burst-selector.component.scss',
     '../burst-selector.component.scss',
   ],
+  standalone: false,
 })
 export class FullBurstSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

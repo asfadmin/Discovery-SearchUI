@@ -55,12 +55,24 @@ export class DateExtremaService {
     endDate$: Observable<Date | null>,
   ) {
     const sceneMin$ = scenes$.pipe(
-      map((scenes) => moment.min(scenes.map((scene) => scene.metadata.date))),
+      map((scenes) => {
+        if (!scenes || scenes.length === 0) {
+          // Use a very early date (before any SAR missions) as fallback
+          return moment.utc('2000-01-01');
+        }
+        return moment.min(scenes.map((scene) => scene.metadata.date));
+      }),
       map((sceneMin) => moment.utc(sceneMin).toDate()),
     );
 
     const sceneMax$ = scenes$.pipe(
-      map((scenes) => moment.max(scenes.map((scene) => scene.metadata.date))),
+      map((scenes) => {
+        if (!scenes || scenes.length === 0) {
+          // Use current date as fallback
+          return moment.utc();
+        }
+        return moment.max(scenes.map((scene) => scene.metadata.date));
+      }),
       map((sceneMax) => moment.utc(sceneMax).toDate()),
     );
 

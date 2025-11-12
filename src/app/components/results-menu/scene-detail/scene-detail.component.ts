@@ -37,6 +37,7 @@ import { Observable } from 'rxjs';
   templateUrl: './scene-detail.component.html',
   styleUrls: ['./scene-detail.component.scss'],
   providers: [DatasetForProductService],
+  standalone: false,
 })
 export class SceneDetailComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
@@ -371,7 +372,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     //   url = this.scene.downloadUrl;
     // }
 
-    this.mapService.setSelectedBrowse(url, wkt);
+    this.mapService.setSelectedBrowse(url, wkt, this.scene);
   }
 
   public onToggleSarviewsProductPin() {

@@ -8,6 +8,7 @@ import { Dataset, DateRange } from '@models';
   selector: 'app-dataset',
   templateUrl: './dataset.component.html',
   styleUrls: ['./dataset.component.scss'],
+  standalone: false,
 })
 export class DatasetComponent {
   @Input() dataset: Dataset;

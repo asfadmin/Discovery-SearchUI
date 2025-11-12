@@ -22,7 +22,6 @@ interface sciProdGroup {
 
 @Component({
   selector: 'app-product-science-selector',
-  standalone: true,
   templateUrl: './product-science-selector.component.html',
   styleUrl: './product-science-selector.component.scss',
   imports: [

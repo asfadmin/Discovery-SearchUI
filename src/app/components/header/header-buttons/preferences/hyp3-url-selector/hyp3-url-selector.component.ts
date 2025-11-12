@@ -8,6 +8,7 @@ import { Hyp3ApiService } from '@services';
     './hyp3-url-selector.component.scss',
     '../preferences.component.scss',
   ],
+  standalone: false,
 })
 export class Hyp3UrlSelectorComponent {
   private hyp3 = inject(Hyp3ApiService);

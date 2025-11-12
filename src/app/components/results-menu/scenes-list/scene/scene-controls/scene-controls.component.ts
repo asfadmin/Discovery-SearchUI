@@ -7,6 +7,7 @@ import * as models from '@models';
   selector: 'app-scene-controls',
   templateUrl: './scene-controls.component.html',
   styleUrls: ['./scene-controls.component.scss'],
+  standalone: false,
 })
 export class SceneControlsComponent {
   private hyp3 = inject(services.Hyp3ApiService);

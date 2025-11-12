@@ -8,6 +8,7 @@ import {
   signal,
   ViewChild,
   inject,
+  DOCUMENT,
 } from '@angular/core';
 import {
   distinctUntilChanged,
@@ -51,7 +52,7 @@ import {
 import { MatButton } from '@angular/material/button';
 import { PointHistoryState } from '@services/point-history.service';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-import { DOCUMENT } from '@angular/common';
+
 import { AsfLanguageService } from '@services/asf-language.service';
 import { SharedModule } from '@shared';
 
@@ -82,6 +83,7 @@ export interface PointSeries {
     './timeseries-results-menu.component.scss',
     '../results-menu.component.scss',
   ],
+  standalone: false,
 })
 export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
@@ -449,7 +451,6 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     MatDialogClose,
     SharedModule,
   ],
-  standalone: true,
 })
 export class ConfirmationDialog {
   dialogRef = inject<MatDialogRef<ConfirmationDialog>>(MatDialogRef);

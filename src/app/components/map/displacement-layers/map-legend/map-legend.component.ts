@@ -1,10 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { MatSlider, MatSliderThumb } from '@angular/material/slider';
 
 @Component({
   selector: 'app-map-legend',
-  standalone: true,
-  imports: [MatSlider, MatSliderThumb],
   templateUrl: './map-legend.component.html',
   styleUrl: './map-legend.component.scss',
 })

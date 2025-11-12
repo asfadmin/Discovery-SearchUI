@@ -9,6 +9,7 @@ import * as hyp3Store from '@store/hyp3';
   selector: 'app-on-demand-user-selector',
   templateUrl: './on-demand-user-selector.component.html',
   styleUrls: ['./on-demand-user-selector.component.scss'],
+  standalone: false,
 })
 export class OnDemandUserSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

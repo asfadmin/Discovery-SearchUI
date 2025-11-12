@@ -63,3 +63,7 @@ import 'zone.js'; // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
+
+// Polyfill for Node.js built-in modules required by some dependencies
+import { Buffer } from 'buffer';
+(window as any).Buffer = Buffer;

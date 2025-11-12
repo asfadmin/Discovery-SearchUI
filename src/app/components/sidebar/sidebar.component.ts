@@ -11,6 +11,7 @@ import * as models from '@models';
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
+  standalone: false,
 })
 export class SidebarComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

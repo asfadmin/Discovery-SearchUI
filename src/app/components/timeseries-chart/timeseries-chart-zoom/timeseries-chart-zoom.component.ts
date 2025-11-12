@@ -9,7 +9,6 @@ import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-timeseries-chart-zoom',
-  standalone: true,
   imports: [
     MatButtonToggle,
     MatButtonToggleGroup,

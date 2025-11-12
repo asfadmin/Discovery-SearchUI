@@ -24,6 +24,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
   templateUrl: './job-product-name-selector.component.html',
   styleUrls: ['./job-product-name-selector.component.scss'],
   animations: menuAnimation,
+  standalone: false,
 })
 export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

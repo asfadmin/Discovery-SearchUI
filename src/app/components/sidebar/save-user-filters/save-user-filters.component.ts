@@ -13,6 +13,7 @@ import { ScreenSizeService } from '@services';
   selector: 'app-save-user-filters',
   templateUrl: './save-user-filters.component.html',
   styleUrls: ['./save-user-filters.component.scss'],
+  standalone: false,
 })
 export class SaveUserFiltersComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

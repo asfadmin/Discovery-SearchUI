@@ -11,6 +11,7 @@ import { SubSink } from 'subsink';
   selector: 'app-job-status-selector',
   templateUrl: './job-status-selector.component.html',
   styleUrls: ['./job-status-selector.component.scss'],
+  standalone: false,
 })
 export class JobStatusSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

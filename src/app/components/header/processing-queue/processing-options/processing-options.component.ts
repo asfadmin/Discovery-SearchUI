@@ -11,6 +11,7 @@ import * as models from '@models';
   selector: 'app-processing-options',
   templateUrl: './processing-options.component.html',
   styleUrls: ['./processing-options.component.scss'],
+  standalone: false,
 })
 export class ProcessingOptionsComponent implements OnInit {
   private store$ = inject<Store<AppState>>(Store);

@@ -25,6 +25,7 @@ import { DateExtremaService } from '@services';
   selector: 'app-date-selector',
   templateUrl: './date-selector.component.html',
   styleUrls: ['./date-selector.component.scss'],
+  standalone: false,
 })
 export class DateSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

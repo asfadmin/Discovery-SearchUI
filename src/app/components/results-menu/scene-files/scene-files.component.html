@@ -27,7 +27,7 @@
     >
     </app-scene-file>
     <app-scene-file
-      *ngFor="let product of StaticLayerProduct$ | async"
+      *ngFor="let product of dynamicallySearchedProduct$ | async"
       (toggle)="onToggleQueueProduct(product)"
       (unzip)="onOpenUnzipProduct($event)"
       (queueHyp3Job)="onQueueHyp3Job($event)"

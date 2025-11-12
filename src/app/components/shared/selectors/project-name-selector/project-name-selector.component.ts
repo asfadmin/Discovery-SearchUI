@@ -23,6 +23,7 @@ import { ScenesService } from '@services';
   selector: 'app-project-name-selector',
   templateUrl: './project-name-selector.component.html',
   styleUrls: ['./project-name-selector.component.scss'],
+  standalone: false,
 })
 export class ProjectNameSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

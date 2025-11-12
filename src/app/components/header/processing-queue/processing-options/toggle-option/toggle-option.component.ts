@@ -4,6 +4,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   selector: 'app-toggle-option',
   templateUrl: './toggle-option.component.html',
   styleUrls: ['./toggle-option.component.scss'],
+  standalone: false,
 })
 export class ToggleOptionComponent {
   @Input() value: boolean;

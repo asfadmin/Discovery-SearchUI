@@ -24,6 +24,7 @@ export const SAMEORIGIN = new InjectionToken<RegExp>('asf.sameorigin.regex', {
 @Directive({
   selector: 'a[appFileDownload]',
   exportAs: 'fileDownload',
+  standalone: false,
 })
 export class FileDownloadDirective implements OnDestroy {
   private sameOrigin = inject<RegExp>(SAMEORIGIN);

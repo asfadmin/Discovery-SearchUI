@@ -4,5 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-opera-s1-selector',
   templateUrl: './opera-s1-selector.component.html',
   styleUrls: ['./opera-s1-selector.component.scss'],
+  standalone: false,
 })
 export class OperaS1SelectorComponent {}

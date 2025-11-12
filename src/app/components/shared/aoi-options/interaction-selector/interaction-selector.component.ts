@@ -16,6 +16,7 @@ import * as searchStore from '@store/search';
   selector: 'app-interaction-selector',
   templateUrl: './interaction-selector.component.html',
   styleUrls: ['./interaction-selector.component.scss'],
+  standalone: false,
 })
 export class InteractionSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

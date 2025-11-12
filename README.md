@@ -5,7 +5,7 @@ CodeFactor](https://www.codefactor.io/repository/github/asfadmin/discovery-searc
 
 [![Join the chat at https://gitter.im/ASFDiscovery/Vertex](https://badges.gitter.im/ASFDiscovery/Vertex.svg)](https://gitter.im/ASFDiscovery/Vertex?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
- ASF's Angular search web application
+ASF's Angular search web application
 
 ## Deployments
 | Maturity | Deployment |
@@ -34,7 +34,7 @@ After angular is installed, run `ng serve` for a dev server. Navigate to `http:/
 
 ### Custom Domain
 
-In order to get certain services to work, it's necessary to set up a .asf.alaska.edu domain pointing to your local server in your host file. This process varies on the OS you are using. 
+In order to get certain services to work, it's necessary to set up a .asf.alaska.edu domain pointing to your local server in your host file. This process varies on the OS you are using.
 
 Add the following line via the methods below to set up local.asf.alaska.edu to point towards your local development server.
 ```

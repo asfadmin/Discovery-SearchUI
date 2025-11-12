@@ -1,11 +1,13 @@
 <mat-menu #addMenu>
   <ng-template matMenuContent let-hyp3able="hyp3able">
-    @if (userStatus === 'NOT_STARTED') {
-      <button mat-menu-item (click)="onOpenSignup()">
-        Register Hyp3 Account
-      </button>
-    }
-    <div *ngFor="let productsByJobType of hyp3able" [matTooltip]="">
+    <button
+      *ngIf="userStatus === 'NOT_STARTED'"
+      mat-menu-item
+      (click)="onOpenSignup()"
+    >
+      Register Hyp3 Account
+    </button>
+    <ng-container *ngFor="let productsByJobType of hyp3able" [matTooltip]="">
       <button
         [disabled]="productsByJobType.total === 0"
         [matMenuTriggerFor]="addAllByProductType"
@@ -22,13 +24,13 @@
           info
         </mat-icon>
       </button>
-    </div>
+    </ng-container>
   </ng-template>
 </mat-menu>
 
 <mat-menu #addAllByProductType>
   <ng-template matMenuContent let-byJobType="productsByJobType">
-    <div *ngFor="let prodType of byJobType.byProductType">
+    <ng-container *ngFor="let prodType of byJobType.byProductType">
       <button
         *ngIf="prodType.products.length !== 0"
         (click)="
@@ -61,6 +63,6 @@
           }}</ng-template> </span
         >)
       </button>
-    </div>
+    </ng-container>
   </ng-template>
 </mat-menu>
