@@ -236,7 +236,7 @@ export class MapControlsComponent implements OnInit, OnDestroy {
     //   url = this.selectedScene.downloadUrl;
     // }
 
-    this.mapService.setSelectedBrowse(url, wkt);
+    this.mapService.setSelectedBrowse(url, wkt, this.selectedScene);
   }
 
   private getBrowseCount() {
