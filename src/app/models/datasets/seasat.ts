@@ -25,7 +25,7 @@ export const seasat = {
     name: 'NASA',
     url: 'https://www.nasa.gov/',
   },
-  infoUrl: 'https://asf.alaska.edu/datasets/daac/seasat/',
+  infoUrl: 'https://www.earthdata.nasa.gov/data/catalog/asf-seasat-l1-sar-1',
   citationUrl:
     'https://asf.alaska.edu/data-sets/sar-data-sets/seasat/seasat-how-to-cite/',
   productTypes: [
