@@ -13,6 +13,7 @@ export const seasat = {
     Props.FLIGHT_DIRECTION,
     Props.POLARIZATION,
     Props.ABSOLUTE_ORBIT,
+    Props.USE_BEAM_MODE,
   ],
   apiValue: { dataset: 'SEASAT' },
   date: {
@@ -28,14 +29,6 @@ export const seasat = {
   citationUrl:
     'https://asf.alaska.edu/data-sets/sar-data-sets/seasat/seasat-how-to-cite/',
   productTypes: [
-    {
-      apiValue: 'GEOTIFF',
-      displayName: 'Level One GeoTIFF product',
-    },
-    {
-      apiValue: 'L1',
-      displayName: 'Level One HDF5 Image',
-    },
   ],
   beamModes: ['STD'],
   polarizations: ['HH'],
