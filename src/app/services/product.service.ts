@@ -132,7 +132,7 @@ export class ProductService {
     return [];
   }
 
-  public urlToProductType(url) {
+  public urlToProductType(url: string, productTypeDisplay: {[index: string]: string}) {
     const regex = /(_v[0-9]\.[0-9]){1}(\.(\w*)|(_(\w*(_*))*.))*/;
 
     if (url) {
@@ -148,7 +148,7 @@ export class ProductService {
           .pop();
 
         if (
-          !this.operaProductTypeDisplays.hasOwnProperty(
+          !productTypeDisplay.hasOwnProperty(
             file_type?.toLowerCase(),
           )
         ) {
@@ -181,7 +181,7 @@ export class ProductService {
     return p;
   }
 
-  private operaProductTypeDisplays = {
+  public operaProductTypeDisplays = {
     hh: 'HH GeoTIFF',
     hv: 'HV GeoTIFF',
     vv: 'VV GeoTIFF',
@@ -210,7 +210,7 @@ export class ProductService {
     if (['DISP-S1', 'TROPO-ZENITH'].includes(product.metadata.productType)) {
       file_suffix = 'nc';
     } else {
-      file_suffix = this.urlToProductType(product.downloadUrl);
+      file_suffix = this.urlToProductType(product.downloadUrl, this.operaProductTypeDisplays);
     }
 
     product.productTypeDisplay =
@@ -227,7 +227,7 @@ export class ProductService {
     for (const p of product.metadata.opera.additionalUrls.filter(
       (url) => url !== product.downloadUrl,
     )) {
-      file_suffix = this.urlToProductType(p);
+      file_suffix = this.urlToProductType(p, this.operaProductTypeDisplays);
 
       let productTypeDisplay =
         this.operaProductTypeDisplays[file_suffix?.toLowerCase()];
@@ -295,7 +295,8 @@ export class ProductService {
     bin: 'Bin File',
   };
 
-private seasatProductTypeDisplays = {
+public seasatProductTypeDisplays = {
+    h5: 'Level One HDF5 Image',
     in: 'Metadata IN',
     tif: 'Level One GeoTIFF Product',
     xml: 'ISO Metadata XML',
@@ -304,10 +305,9 @@ private seasatProductTypeDisplays = {
     jpg: 'Browse Image JPEG'
   };
 private seasatSubproductsFromScene(product: models.CMRProduct) {
- const products = [];
-    let temp = product.downloadUrl.split('.');
-    let file_extension = temp[temp.length - 1];
-    product.productTypeDisplay = `Level One HDF5 Image`;
+    const products = [];
+    let file_extension = this.urlToProductType(product.downloadUrl, this.seasatProductTypeDisplays)
+    product.productTypeDisplay = this.seasatProductTypeDisplays[file_extension];
     let fileID = product.downloadUrl.split('/').slice(-1)[0];
     product.bytes = product.metadata.fileSizes[fileID].bytes
     const thumbnail_index = product.browses.findIndex((url) =>
@@ -338,22 +338,15 @@ private seasatSubproductsFromScene(product: models.CMRProduct) {
       ),
       ...product.browses,
     ]) {
-      temp = p.split('.');
-      file_extension = temp[temp.length - 1];
+      file_extension = this.urlToProductType(p, this.seasatProductTypeDisplays)
+
       let productTypeDisplay =
         this.seasatProductTypeDisplays[file_extension.toLowerCase()] ??
         'Missing Display';
       if (productTypeDisplay === 'Missing Display') {
-        if (file_extension.includes('vc')) {
-          productTypeDisplay = file_extension.toUpperCase();
-        } else {
-          console.log(
-            `Missing product type display for file extension "${file_extension}"`,
-          );
-        }
-      }
-      if (productTypeDisplay === 'Browse PNG') {
-        browses.push(p);
+        console.log(
+        `Missing product type display for file extension "${file_extension}"`,
+        );
       }
 
       if (['Metadata IN'].includes(productTypeDisplay)) {
