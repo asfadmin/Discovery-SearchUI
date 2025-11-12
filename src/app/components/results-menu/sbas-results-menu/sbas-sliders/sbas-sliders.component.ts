@@ -24,6 +24,7 @@ declare let wNumb: any;
   selector: 'app-sbas-sliders',
   templateUrl: './sbas-sliders.component.html',
   styleUrls: ['./sbas-sliders.component.scss'],
+  standalone: false,
 })
 export class SbasSlidersComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

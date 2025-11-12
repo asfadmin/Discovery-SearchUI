@@ -4,5 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-help-on-demand',
   templateUrl: './help-on-demand.component.html',
   styleUrls: ['./help-on-demand.component.scss'],
+  standalone: false,
 })
 export class HelpOnDemandComponent {}

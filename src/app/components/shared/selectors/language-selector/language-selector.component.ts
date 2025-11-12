@@ -10,6 +10,7 @@ import { AsfLanguageService } from '@services/asf-language.service';
   selector: 'app-language-selector',
   templateUrl: './language-selector.component.html',
   styleUrls: ['./language-selector.component.scss'],
+  standalone: false,
 })
 export class LanguageSelectorComponent implements OnInit {
   translate = inject(TranslateService);

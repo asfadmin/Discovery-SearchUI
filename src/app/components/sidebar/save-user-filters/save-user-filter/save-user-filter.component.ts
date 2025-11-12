@@ -19,6 +19,7 @@ import { NotificationService } from '@services';
   selector: 'app-save-user-filter',
   templateUrl: './save-user-filter.component.html',
   styleUrls: ['./save-user-filter.component.scss'],
+  standalone: false,
 })
 export class SaveUserFilterComponent implements OnInit {
   private store$ = inject<Store<AppState>>(Store);

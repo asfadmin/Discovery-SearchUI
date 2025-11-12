@@ -15,6 +15,7 @@ import { AppState } from '@store';
   selector: 'app-opera-burst-id-selector',
   templateUrl: './opera-burst-id-selector.component.html',
   styleUrls: ['./opera-burst-id-selector.component.scss'],
+  standalone: false,
 })
 export class OperaBurstIdSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

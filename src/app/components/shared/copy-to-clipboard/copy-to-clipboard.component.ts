@@ -20,6 +20,7 @@ import { CopyIcons } from '@models';
   selector: 'app-copy-to-clipboard',
   templateUrl: './copy-to-clipboard.component.html',
   styleUrls: ['./copy-to-clipboard.component.css'],
+  standalone: false,
 })
 export class CopyToClipboardComponent implements OnDestroy {
   private clipboardService = inject(ClipboardService);

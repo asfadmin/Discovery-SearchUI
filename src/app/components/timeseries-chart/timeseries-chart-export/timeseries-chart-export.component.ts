@@ -13,7 +13,6 @@ import moment from 'moment';
 import { NetcdfService } from '@services';
 @Component({
   selector: 'app-timeseries-chart-export',
-  standalone: true,
   imports: [
     CommonModule,
     MatDialogModule,

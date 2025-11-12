@@ -7,6 +7,7 @@ import { GeographicFiltersType, ProductType } from '@models';
   templateUrl: './geographic-search-filters.component.html',
   styleUrls: ['./geographic-search-filters.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class GeographicSearchFiltersComponent {
   @Input() filters: GeographicFiltersType;

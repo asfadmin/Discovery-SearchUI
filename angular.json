@@ -65,9 +65,14 @@
               "prismjs",
               "ua-parser-js",
               "@formatjs/intl-displaynames/polyfill",
+              "@formatjs/intl-displaynames/locale-data/en",
+              "@formatjs/intl-displaynames/locale-data/es",
               "webfont-matcher/lib/fonts/google.js",
               "mapbox-to-css-font",
-              "polygon-clipping"
+              "polygon-clipping",
+              "lerc",
+              "xml-utils",
+              "earcut"
             ],
             "extractLicenses": false,
             "sourceMap": true,
@@ -161,25 +166,41 @@
   "schematics": {
     "@schematics/angular:component": {
       "style": "scss",
-      "skipTests": true
+      "skipTests": true,
+      "type": "component"
     },
     "@schematics/angular:class": {
       "skipTests": true
     },
     "@schematics/angular:directive": {
-      "skipTests": true
+      "skipTests": true,
+      "type": "directive"
     },
     "@schematics/angular:pipe": {
-      "skipTests": true
+      "skipTests": true,
+      "typeSeparator": "."
     },
     "@schematics/angular:service": {
-      "skipTests": false
+      "skipTests": false,
+      "type": "service"
     },
     "@angular-eslint/schematics:application": {
       "setParserOptionsProject": true
     },
     "@angular-eslint/schematics:library": {
       "setParserOptionsProject": true
+    },
+    "@schematics/angular:guard": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:interceptor": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:module": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:resolver": {
+      "typeSeparator": "."
     }
   }
 }

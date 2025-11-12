@@ -17,6 +17,7 @@ import * as services from '@services';
   selector: 'app-confirmation',
   templateUrl: './confirmation.component.html',
   styleUrls: ['./confirmation.component.scss'],
+  standalone: false,
 })
 export class ConfirmationComponent implements OnInit {
   dialogRef = inject<MatDialogRef<ConfirmationComponent>>(MatDialogRef);

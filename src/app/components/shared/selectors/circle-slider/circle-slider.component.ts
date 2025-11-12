@@ -17,6 +17,7 @@ import { Subscription } from 'rxjs';
   selector: 'app-circle-slider',
   templateUrl: './circle-slider.component.html',
   styleUrls: ['./circle-slider.component.scss'],
+  standalone: false,
 })
 export class CircleSliderComponent implements OnInit, OnChanges, OnDestroy {
   private screenSize = inject(ScreenSizeService);

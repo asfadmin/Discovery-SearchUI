@@ -60,6 +60,7 @@ import { L1L2BrowseCollectionMapping } from '@models/datasets/nisar';
   selector: 'app-scene-files',
   templateUrl: './scene-files.component.html',
   styleUrls: ['./scene-files.component.scss'],
+  standalone: false,
 })
 export class SceneFilesComponent
   implements OnInit, OnDestroy, AfterContentInit

@@ -5,6 +5,7 @@ import { SbasFiltersType } from '@models';
   selector: 'app-sbas-search-filters',
   templateUrl: './sbas-search-filters.component.html',
   styleUrls: ['./sbas-search-filters.component.scss'],
+  standalone: false,
 })
 export class SbasSearchFiltersComponent {
   @Input() filters: SbasFiltersType;

@@ -8,6 +8,7 @@ import * as searchStore from '@store/search';
   selector: 'app-clear-button',
   templateUrl: './clear-button.component.html',
   styleUrls: ['./clear-button.component.css'],
+  standalone: false,
 })
 export class ClearButtonComponent {
   private store$ = inject<Store<AppState>>(Store);

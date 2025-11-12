@@ -13,6 +13,7 @@ import { beta } from '@models';
   selector: 'app-master-scene-selector',
   templateUrl: './master-scene-selector.component.html',
   styleUrls: ['./master-scene-selector.component.css'],
+  standalone: false,
 })
 export class MasterSceneSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

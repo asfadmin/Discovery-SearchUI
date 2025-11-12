@@ -5,6 +5,7 @@ import { DisplacementFiltersType } from '@models';
   selector: 'app-displacement-filters',
   templateUrl: './displacement-filters.component.html',
   styleUrl: './displacement-filters.component.scss',
+  standalone: false,
 })
 export class DisplacementFiltersComponent {
   @Input() filters: DisplacementFiltersType;

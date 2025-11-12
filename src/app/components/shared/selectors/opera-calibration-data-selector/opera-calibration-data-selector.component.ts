@@ -9,6 +9,7 @@ import { MatRadioChange } from '@angular/material/radio';
   selector: 'app-opera-calibration-data-selector',
   templateUrl: './opera-calibration-data-selector.component.html',
   styleUrls: ['./opera-calibration-data-selector.component.scss'],
+  standalone: false,
 })
 export class OperaCalibrationDataSelectorComponent
   implements OnInit, OnDestroy

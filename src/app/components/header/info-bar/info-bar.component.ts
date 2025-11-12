@@ -23,6 +23,7 @@ declare global {
   selector: 'app-info-bar',
   templateUrl: './info-bar.component.html',
   styleUrls: ['./info-bar.component.scss'],
+  standalone: false,
 })
 export class InfoBarComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

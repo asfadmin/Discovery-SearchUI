@@ -20,6 +20,7 @@ import * as queueStore from '@store/queue';
   selector: 'app-hyp3-job-status-badge',
   templateUrl: './hyp3-job-status-badge.component.html',
   styleUrls: ['./hyp3-job-status-badge.component.scss'],
+  standalone: false,
 })
 export class Hyp3JobStatusBadgeComponent implements OnInit {
   private hyp3 = inject(Hyp3ApiService);

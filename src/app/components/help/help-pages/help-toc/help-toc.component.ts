@@ -16,6 +16,7 @@ import { MatSort } from '@angular/material/sort';
   selector: 'app-help-toc',
   templateUrl: './help-toc.component.html',
   styleUrls: ['./help-toc.component.scss'],
+  standalone: false,
 })
 export class HelpTocComponent implements OnInit {
   private store$ = inject<Store<AppState>>(Store);

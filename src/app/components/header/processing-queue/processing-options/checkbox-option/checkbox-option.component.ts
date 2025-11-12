@@ -4,6 +4,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   selector: 'app-checkbox-option',
   templateUrl: './checkbox-option.component.html',
   styleUrls: ['./checkbox-option.component.scss'],
+  standalone: false,
 })
 export class CheckboxOptionComponent {
   @Input() value: boolean;

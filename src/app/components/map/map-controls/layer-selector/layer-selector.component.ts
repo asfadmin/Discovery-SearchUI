@@ -15,6 +15,7 @@ import { MapService, ScreenSizeService } from '@services';
   selector: 'app-layer-selector',
   templateUrl: './layer-selector.component.html',
   styleUrls: ['./layer-selector.component.scss'],
+  standalone: false,
 })
 export class LayerSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

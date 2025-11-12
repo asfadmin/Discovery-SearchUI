@@ -16,6 +16,7 @@ import * as models from '@models';
     './desktop-results-menu.component.css',
     '../results-menu.component.scss',
   ],
+  standalone: false,
 })
 export class DesktopResultsMenuComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

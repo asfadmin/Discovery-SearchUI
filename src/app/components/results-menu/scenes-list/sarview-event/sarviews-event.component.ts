@@ -17,6 +17,7 @@ import moment from 'moment';
   selector: 'app-sarviews-event',
   templateUrl: './sarviews-event.component.html',
   styleUrls: ['./sarviews-event.component.scss'],
+  standalone: false,
 })
 export class SarviewsEventComponent {
   private mapService = inject(MapService);

@@ -40,6 +40,7 @@ declare global {
   selector: 'app-search-button',
   templateUrl: './search-button.component.html',
   styleUrls: ['./search-button.component.scss'],
+  standalone: false,
 })
 export class SearchButtonComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

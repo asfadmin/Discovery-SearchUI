@@ -13,6 +13,7 @@ import { asfWebsite } from '@models';
   selector: 'app-api-link-dialog',
   templateUrl: './api-link-dialog.component.html',
   styleUrls: ['./api-link-dialog.component.scss'],
+  standalone: false,
 })
 export class ApiLinkDialogComponent implements OnInit, OnDestroy {
   private asfApiService = inject(services.AsfApiService);

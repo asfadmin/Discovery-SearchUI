@@ -28,6 +28,7 @@ interface ExampleFlatNode {
   selector: 'app-file-contents',
   templateUrl: './file-contents.component.html',
   styleUrls: ['./file-contents.component.scss'],
+  standalone: false,
 })
 export class FileContentsComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

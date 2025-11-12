@@ -17,7 +17,6 @@ interface prodConfig {
 
 @Component({
   selector: 'app-production-config-selector',
-  standalone: true,
   templateUrl: './production-config-selector.component.html',
   styleUrl: './production-config-selector.component.scss',
   imports: [

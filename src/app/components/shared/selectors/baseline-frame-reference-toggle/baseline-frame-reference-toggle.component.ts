@@ -10,7 +10,6 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-baseline-frame-reference-toggle',
-  standalone: true,
   imports: [CommonModule, SharedModule, MatSlideToggleModule, FormsModule],
   templateUrl: './baseline-frame-reference-toggle.component.html',
   styleUrl: './baseline-frame-reference-toggle.component.scss',

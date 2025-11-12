@@ -5,6 +5,7 @@ import { NotificationService } from '@services';
   selector: 'app-job-id-selector',
   templateUrl: './job-id-selector.component.html',
   styleUrl: './job-id-selector.component.scss',
+  standalone: false,
 })
 export class JobIdSelectorComponent {
   private notification = inject(NotificationService);

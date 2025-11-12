@@ -33,6 +33,7 @@ declare global {
   selector: 'app-search-type-selector',
   templateUrl: './search-type-selector.component.html',
   styleUrls: ['./search-type-selector.component.scss'],
+  standalone: false,
 })
 export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   translate = inject(TranslateService);
@@ -220,14 +221,7 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
     event.stopPropagation();
   }
 
-  public onSearchTypeMenuOpen() {
-    const panelId = this.searchMenu.panelId;
-    document.getElementById(panelId).focus();
-    setTimeout(() => {
-      this.searchMenu.focusFirstItem();
-      this.searchMenu.resetActiveItem();
-    }, 10);
-  }
+  public onSearchTypeMenuOpen() {}
 
   ngOnDestroy() {
     this.subs.unsubscribe();

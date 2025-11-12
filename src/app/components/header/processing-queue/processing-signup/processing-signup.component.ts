@@ -16,6 +16,7 @@ import { ValidationError } from 'xml2js';
   selector: 'app-processing-signup',
   templateUrl: './processing-signup.component.html',
   styleUrl: './processing-signup.component.scss',
+  standalone: false,
 })
 export class ProcessingSignupComponent implements OnInit {
   private formBuilder = inject(FormBuilder);

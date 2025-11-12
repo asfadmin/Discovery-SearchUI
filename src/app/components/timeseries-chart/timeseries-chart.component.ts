@@ -58,6 +58,7 @@ const unSelectedColor = '#9F9F9F9F';
   templateUrl: './timeseries-chart.component.html',
   styleUrl: './timeseries-chart.component.scss',
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

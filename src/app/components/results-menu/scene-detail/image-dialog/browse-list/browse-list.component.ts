@@ -35,6 +35,7 @@ import { PinnedProduct } from '@services/browse-map.service';
   templateUrl: './browse-list.component.html',
   styleUrls: ['./browse-list.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

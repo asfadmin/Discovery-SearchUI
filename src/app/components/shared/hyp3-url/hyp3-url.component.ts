@@ -9,6 +9,7 @@ import { AppState } from '@store';
   selector: 'app-hyp3-url',
   templateUrl: './hyp3-url.component.html',
   styleUrls: ['./hyp3-url.component.scss'],
+  standalone: false,
 })
 export class Hyp3UrlComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

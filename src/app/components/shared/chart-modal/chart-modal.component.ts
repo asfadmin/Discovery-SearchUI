@@ -20,7 +20,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 @Component({
   selector: 'app-chart-modal',
-  standalone: true,
   imports: [
     CommonModule,
     MatDialogModule,

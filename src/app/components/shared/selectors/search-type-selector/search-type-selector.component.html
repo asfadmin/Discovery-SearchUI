@@ -8,7 +8,6 @@
     <div>
       <button
         [matMenuTriggerFor]="searchTypeMenu"
-        (onMenuOpen)="onSearchTypeMenuOpen()"
         class="button-menu-trigger"
         color="basic"
         matTooltip="{{ searchTranslation[searchType] | translate }}"
@@ -26,152 +25,141 @@
   </div>
 
   <div class="gtm-search-type-selector fx-nogrow">
-    <mat-menu
-      #searchTypeMenu="matMenu"
-      [(ngModel)]="searchType"
-      name="searchType"
-      id="searchMenu"
-      ngDefaultControl
-    >
-      <div>
-        @for (
-          type of searchTypeSelectors.search;
-          track type.nameKey;
-          let last = $last
-        ) {
-          @if (
+    <mat-menu #searchTypeMenu="matMenu" class="search-type-menu">
+      <ng-container
+        *ngFor="let type of searchTypeSelectors.search; let last = last"
+      >
+        <ng-container
+          *ngIf="
             !(
               type.nameKey === 'DISPLACEMENT' &&
               breakpoint === breakpoints.MOBILE
             )
-          ) {
-            <menu
-              class="menu-item mat-menu-item"
-              mat-menu-item
-              (click)="onSetSearchType(type.searchType)"
-            >
-              <div class="menu-item-inner">
-                <div class="fx-80 menu-item-content">
-                  <div class="item-title">
-                    {{ type.nameKey | translate }}
-                    <span
-                      *ngIf="type.nameKey === 'DISPLACEMENT'"
-                      class="badge-new"
-                      >{{ 'NEW' | translate | titlecase }}</span
-                    >
-                  </div>
-                  <div
-                    class="item-content"
-                    [ngClass]="{ limitTextHeight: isReadMore }"
-                  >
-                    <span *ngFor="let key of type.descriptionKeys">
-                      {{ key | translate }}
-                    </span>
-                    <app-docs-modal
-                      url="{{ type.helpUrl }}"
-                      class="read-more-icon"
-                    ></app-docs-modal>
-                  </div>
-                </div>
-                <div class="fx-20 menu-item-aside">
+          "
+        >
+          <button
+            class="menu-item"
+            mat-menu-item
+            (click)="onSetSearchType(type.searchType)"
+          >
+            <div class="menu-item-inner">
+              <div class="fx-80 menu-item-content">
+                <div class="item-title">
+                  {{ type.nameKey | translate }}
                   <span
-                    *ngIf="type.iconType === iconTypes.MATERIAL"
-                    class="material-icons-outlined menu-item-icon"
+                    *ngIf="type.nameKey === 'DISPLACEMENT'"
+                    class="badge-new"
+                    >{{ 'NEW' | translate | titlecase }}</span
                   >
-                    {{ type.icon }}
+                </div>
+                <div
+                  class="item-content"
+                  [ngClass]="{ limitTextHeight: isReadMore }"
+                >
+                  <span *ngFor="let key of type.descriptionKeys">
+                    {{ key | translate }}
                   </span>
-                  <img
-                    *ngIf="type.iconType === iconTypes.IMAGE"
-                    src="{{ type.icon }}"
-                    class="menu-item-icon"
-                  />
+                  <app-docs-modal
+                    url="{{ type.helpUrl }}"
+                    class="read-more-icon"
+                  ></app-docs-modal>
                 </div>
               </div>
-            </menu>
-            @if (!last) {
-              <hr class="dataset-hr" />
-            }
-          }
-        }
-        <hr class="dataset-hr" />
-        <menu
-          class="menu-item mat-menu-item"
-          mat-menu-item
-          (click)="onSetSearchType(searchTypes.CUSTOM_PRODUCTS)"
-          [ngClass]="{ 'disable-search-type-on-demand': !isLoggedIn }"
-        >
-          <div class="menu-item-inner">
-            <div class="fx-80 menu-item-content">
-              <div class="item-title">
-                {{ 'ON_DEMAND_PRODUCTS' | translate }}
+              <div class="fx-20 menu-item-aside">
                 <span
-                  class="login-prompt"
-                  [ngClass]="{ 'login-hidden': isLoggedIn }"
+                  *ngIf="type.iconType === iconTypes.MATERIAL"
+                  class="material-icons-outlined menu-item-icon"
                 >
-                  {{ 'SIGN_IN_TO_ACCESS' | translate }}
+                  {{ type.icon }}
                 </span>
-              </div>
-              <div
-                class="item-content"
-                [ngClass]="{ limitTextHeight: isReadMore }"
-              >
-                {{
-                  'ON_DEMAND_SEARCH_ALLOWS_YOU_TO_VIEW_YOUR_SUBMITTED_ON_DEMAND_JOBS'
-                    | translate
-                }}
-                <!--                {{'AND_DOWNLOAD_THEM' | translate}}-->
-                <span class="enable-search-type-on-demand">
-                  <app-docs-modal
-                    class="read-more-icon"
-                    url="https://docs.asf.alaska.edu/vertex/manual/#on-demand-products-search-options"
-                  >
-                  </app-docs-modal>
-                </span>
+                <img
+                  *ngIf="type.iconType === iconTypes.IMAGE"
+                  src="{{ type.icon }}"
+                  class="menu-item-icon"
+                />
               </div>
             </div>
-            <div class="fx-20 menu-item-aside">
-              <img
-                src="assets/asf-logos/HyP3-graphic-only.png"
-                class="menu-item-icon"
-              />
+          </button>
+          <hr *ngIf="!last" class="dataset-hr" />
+        </ng-container>
+      </ng-container>
+      <hr class="dataset-hr" />
+      <button
+        class="menu-item"
+        mat-menu-item
+        (click)="onSetSearchType(searchTypes.CUSTOM_PRODUCTS)"
+        [ngClass]="{ 'disable-search-type-on-demand': !isLoggedIn }"
+      >
+        <div class="menu-item-inner">
+          <div class="fx-80 menu-item-content">
+            <div class="item-title">
+              {{ 'ON_DEMAND_PRODUCTS' | translate }}
+              <span
+                class="login-prompt"
+                [ngClass]="{ 'login-hidden': isLoggedIn }"
+              >
+                {{ 'SIGN_IN_TO_ACCESS' | translate }}
+              </span>
+            </div>
+            <div
+              class="item-content"
+              [ngClass]="{ limitTextHeight: isReadMore }"
+            >
+              {{
+                'ON_DEMAND_SEARCH_ALLOWS_YOU_TO_VIEW_YOUR_SUBMITTED_ON_DEMAND_JOBS'
+                  | translate
+              }}
+              <!--                {{'AND_DOWNLOAD_THEM' | translate}}-->
+              <span class="enable-search-type-on-demand">
+                <app-docs-modal
+                  class="read-more-icon"
+                  url="https://docs.asf.alaska.edu/vertex/manual/#on-demand-products-search-options"
+                >
+                </app-docs-modal>
+              </span>
             </div>
           </div>
-        </menu>
+          <div class="fx-20 menu-item-aside">
+            <img
+              src="assets/asf-logos/HyP3-graphic-only.png"
+              class="menu-item-icon"
+            />
+          </div>
+        </div>
+      </button>
 
-        <hr class="dataset-hr" />
-        <menu
-          mat-menu-item
-          class="menu-item mat-menu-item"
-          [matMenuTriggerFor]="derivedDatasetMenu"
-          mat-menu-item
-        >
-          <div class="menu-item-inner">
-            <div class="fx-80 menu-item-content">
-              <div class="item-title">
-                {{ 'DERIVED_DATASETS' | translate }}
-              </div>
-              <div
-                class="item-content"
-                [ngClass]="{ limitTextHeight: isReadMore }"
-              >
-                {{
-                  'DERIVED_DATASETS_CONTAIN_A_COLLECTION_OF_DATASETS_AVAILABLE_TO_VIEW_AND_DOWNLOAD'
-                    | translate
-                }}
-              </div>
+      <hr class="dataset-hr" />
+      <button
+        mat-menu-item
+        class="menu-item"
+        [matMenuTriggerFor]="derivedDatasetMenu"
+      >
+        <div class="menu-item-inner">
+          <div class="fx-80 menu-item-content">
+            <div class="item-title">
+              {{ 'DERIVED_DATASETS' | translate }}
             </div>
-            <div class="fx-20 menu-item-aside" style="text-align: right">
-              <span class="material-icons-outlined menu-item-icon">{{
-                'DATASET_LINKED' | translate
-              }}</span>
+            <div
+              class="item-content"
+              [ngClass]="{ limitTextHeight: isReadMore }"
+            >
+              {{
+                'DERIVED_DATASETS_CONTAIN_A_COLLECTION_OF_DATASETS_AVAILABLE_TO_VIEW_AND_DOWNLOAD'
+                  | translate
+              }}
             </div>
           </div>
-        </menu>
-      </div>
+          <div class="fx-20 menu-item-aside" style="text-align: right">
+            <span class="material-icons-outlined menu-item-icon">{{
+              'DATASET_LINKED' | translate
+            }}</span>
+          </div>
+        </div>
+      </button>
     </mat-menu>
 
-    <mat-menu #derivedDatasetMenu="matMenu">
-      <menu
+    <mat-menu #derivedDatasetMenu="matMenu" class="search-type-menu">
+      <button
         mat-menu-item
         matSuffix
         *ngFor="let dataset of datasets; last as isLast"
@@ -224,7 +212,7 @@
           </div>
         </div>
         <hr *ngIf="!isLast" class="dataset-hr" />
-      </menu>
+      </button>
     </mat-menu>
   </div>
 </div>

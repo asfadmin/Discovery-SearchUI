@@ -252,9 +252,15 @@ export class NetcdfService {
     );
     for (const seriesNumber of sortedSeriesKeys) {
       for (const timestep of seriesData[seriesNumber]) {
-        if (typeof timestep === 'string' && timestep !== 'aoi') {
+        // Skip string markers like 'aoi' or 'mean'
+        if (typeof timestep === 'string') {
+          continue;
+        }
+
+        if (typeof timestep === 'object' && timestep !== null) {
           let dateDisplay = '';
-          if (timestep !== 'mean') {
+          // Format date if it exists
+          if (timestep['date']) {
             const d = new Date(timestep['date']);
 
             const month = d.getUTCMonth() + 1;

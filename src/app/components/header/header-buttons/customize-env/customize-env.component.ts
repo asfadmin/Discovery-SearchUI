@@ -9,6 +9,7 @@ import { EnvironmentService, NotificationService } from '@services';
     './customize-env.component.scss',
     '../preferences/preferences.component.scss',
   ],
+  standalone: false,
 })
 export class CustomizeEnvComponent implements OnInit {
   private env = inject(EnvironmentService);

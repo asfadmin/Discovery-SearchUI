@@ -1,5 +1,5 @@
-@import "asf-theme";
-@import "asf-header-menu-button";
+@use "asf-theme-variables" as *;
+@use "asf-header-menu-button" as *;
 
 .draw-icon {
   @include md-icon-size($asf-ribbon-icon-size);
@@ -77,26 +77,26 @@
 }
 
 .draw-toggle-wrapper {
-  margin: 2px 0 0 8px;
+  margin: -2px 0 0 3px;
   display: block;
-  transform: scale(0.9);
+  transform: scale(0.6);
 }
 
 ::ng-deep .theme-light .mat-mdc-slide-toggle.mat-accent {
-  --mdc-switch-selected-focus-state-layer-color: #757575;
-  --mdc-switch-selected-handle-color: #236192;
-  --mdc-switch-selected-hover-state-layer-color: #757575;
-  --mdc-switch-selected-pressed-state-layer-color: #757575;
-  --mdc-switch-selected-focus-handle-color: #236192;
-  --mdc-switch-selected-hover-handle-color: #236192;
-  --mdc-switch-selected-pressed-handle-color: #236192;
-  --mdc-switch-selected-focus-track-color: #e0e0e0;
-  --mdc-switch-selected-hover-track-color: #e0e0e0;
-  --mdc-switch-selected-pressed-track-color: #e0e0e0;
-  --mdc-switch-selected-track-color: #e0e0e0;
-  --mdc-switch-unselected-focus-handle-color: #757575;
-  --mdc-switch-unselected-hover-handle-color: #757575;
-  --mdc-switch-unselected-pressed-handle-color: #757575;
+  --mat-slide-toggle-selected-focus-state-layer-color: #757575;
+  --mat-slide-toggle-selected-handle-color: #236192;
+  --mat-slide-toggle-selected-hover-state-layer-color: #757575;
+  --mat-slide-toggle-selected-pressed-state-layer-color: #757575;
+  --mat-slide-toggle-selected-focus-handle-color: #236192;
+  --mat-slide-toggle-selected-hover-handle-color: #236192;
+  --mat-slide-toggle-selected-pressed-handle-color: #236192;
+  --mat-slide-toggle-selected-focus-track-color: #e0e0e0;
+  --mat-slide-toggle-selected-hover-track-color: #e0e0e0;
+  --mat-slide-toggle-selected-pressed-track-color: #e0e0e0;
+  --mat-slide-toggle-selected-track-color: #e0e0e0;
+  --mat-slide-toggle-unselected-focus-handle-color: #757575;
+  --mat-slide-toggle-unselected-hover-handle-color: #757575;
+  --mat-slide-toggle-unselected-pressed-handle-color: #757575;
 
 }
 

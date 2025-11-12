@@ -46,6 +46,7 @@ declare global {
   templateUrl: './header-buttons.component.html',
   styleUrls: ['./header-buttons.component.scss'],
   animations: [],
+  standalone: false,
 })
 export class HeaderButtonsComponent implements OnInit, OnDestroy {
   authService = inject(AuthService);

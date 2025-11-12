@@ -25,6 +25,7 @@ export const _filter = (opt: string[], value: string): string[] => {
   selector: 'app-mission-selector',
   templateUrl: './mission-selector.component.html',
   styleUrls: ['./mission-selector.component.css'],
+  standalone: false,
 })
 export class MissionSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-ci-search',
   templateUrl: './ci-search.component.html',
   styleUrls: ['./ci-search.component.scss'],
+  standalone: false,
 })
 export class CiSearchComponent {
   constructor() {
