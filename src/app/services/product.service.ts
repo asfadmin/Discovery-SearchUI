@@ -198,6 +198,7 @@ export class ProductService {
   };
 
   private operaSubproductsFromScene(product: models.CMRProduct) {
+    product.metadata.s3URI = product.metadata.opera.s3Urls[0]
     if (product.metadata.opera?.validityStartDate) {
       product.metadata.opera.validityStartDate = this.fromCMRDate(
         product.metadata.opera?.validityStartDate as unknown as string,
@@ -222,6 +223,14 @@ export class ProductService {
     if (thumbnail_index !== -1) {
       product.thumbnail = product.browses.splice(thumbnail_index, 1)[0];
     }
+
+    const s3Index = product.metadata.opera.s3Urls.findIndex((uri) =>
+        uri.toLowerCase().endsWith(file_suffix)
+    )
+
+    if(s3Index !== -1) {
+        product.metadata.s3URI = product.metadata.opera.s3Urls[s3Index];
+    }
     product.browses = product.browses.filter((url) => !url.includes('low-res'));
 
     for (const p of product.metadata.opera.additionalUrls.filter(
@@ -243,23 +252,12 @@ export class ProductService {
       }
       const fileID = p.split('/').slice(-1)[0];
 
-      const subproduct = {
-        ...product,
-        downloadUrl: p,
-        productTypeDisplay: productTypeDisplay || p,
-        file: fileID,
-        id: product.id + '-' + file_suffix,
-        bytes: 0,
-        browses: [],
-        thumbnail: null,
-        metadata: {
-          ...product.metadata,
-          productType: product.metadata.productType,
-          parentID: product.id,
-          subproducts: [],
-        },
-      } as models.CMRProduct;
-
+      let s3Uri = null;
+      let s3uriIndex = product.metadata.opera.s3Urls.findIndex(x => x.split('/').slice(-1)[0] === fileID)
+      if (s3uriIndex !== -1) {
+        s3Uri = product.metadata.opera.s3Urls[s3uriIndex]
+      }
+      const subproduct =this.createSubproductForScene(product, p, s3Uri, file_suffix, productTypeDisplay, 0, [])
       products.push(subproduct);
     }
 
@@ -355,25 +353,9 @@ private seasatSubproductsFromScene(product: models.CMRProduct) {
 
       const fileID = p.split('/').slice(-1)[0];
       const s3Url = s3UrlsByProductID[fileID] ?? null;
+      const fileSize = product.metadata.fileSizes[fileID]?.bytes ?? 0
+      const subproduct = this.createSubproductForScene(product, p, s3Url, file_extension, productTypeDisplay, fileSize, browses)
 
-      const subproduct = {
-        ...product,
-        downloadUrl: p,
-        productTypeDisplay: productTypeDisplay || p,
-        file: fileID,
-        id: product.id + '-' + file_extension,
-        bytes: product.metadata.fileSizes[fileID]?.bytes ?? 0,
-        browses,
-        thumbnail: null,
-        metadata: {
-          ...product.metadata,
-          productType: product.metadata.productType,
-          parentID: product.id,
-          subproducts: [],
-          s3URI: s3Url,
-        },
-        virtual: true,
-      } as models.CMRProduct;
       products.push(subproduct);
     }
 
@@ -393,6 +375,28 @@ private seasatSubproductsFromScene(product: models.CMRProduct) {
       return a.productTypeDisplay < b.productTypeDisplay ? -1 : 1;
     });
   }
+
+  private createSubproductForScene(scene: models.CMRProduct, url: string, s3uri: string, fileExtension: string, productTypeDisplay: string | null, fileSize: number, browses: string[]) {
+    const fileID = url.split('/').slice(-1)[0];
+    return {
+        ...scene,
+        downloadUrl: url,
+        productTypeDisplay: productTypeDisplay || url,
+        file: fileID,
+        id: scene.id + '-' + fileExtension,
+        bytes: fileSize,
+        browses,
+        thumbnail: null,
+        metadata: {
+          ...scene.metadata,
+          productType: scene.metadata.productType,
+          parentID: scene.id,
+          subproducts: [],
+          s3URI: s3uri,
+        },
+        virtual: true,
+      } as models.CMRProduct;
+    } 
 
   private nisarSubproductsFromScene(product: models.CMRProduct) {
     const products = [];
@@ -464,25 +468,9 @@ private seasatSubproductsFromScene(product: models.CMRProduct) {
 
       const fileID = p.split('/').slice(-1)[0];
       const s3Url = s3UrlsByProductID[fileID] ?? null;
+      const fileSize = product.metadata.nisar?.sizeMB?.[fileID]?.bytes ?? 0
+      const subproduct = this.createSubproductForScene(product, p, s3Url, file_extension, productTypeDisplay, fileSize, browses)
 
-      const subproduct = {
-        ...product,
-        downloadUrl: p,
-        productTypeDisplay: productTypeDisplay || p,
-        file: fileID,
-        id: product.id + '-' + file_extension,
-        bytes: product.metadata.nisar?.sizeMB?.[fileID]?.bytes ?? 0,
-        browses,
-        thumbnail: null,
-        metadata: {
-          ...product.metadata,
-          productType: product.metadata.productType,
-          parentID: product.id,
-          subproducts: [],
-          s3URI: s3Url,
-        },
-        virtual: true,
-      } as models.CMRProduct;
       products.push(subproduct);
     }
 
