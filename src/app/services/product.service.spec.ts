@@ -46,4 +46,14 @@ describe('ProductService', () => {
       'https://cumulus.asf.earthdatacloud.nasa.gov/OPERA/OPERA_L4_TROPO-ZENITH_V1/OPERA_L4_TROPO-ZENITH_20251003T180000Z_20251006T000715Z_HRES_v1.0/OPERA_L4_TROPO-ZENITH_20251003T180000Z_20251006T000715Z_HRES_v1.0.nc';
     expect(service.urlToProductType(url, service.operaProductTypeDisplays)).toBe('nc');
   });
+  it('should parse seasat hdf5 link', () => {
+    const url =
+      'https://cumulus.asf.earthdatacloud.nasa.gov/SEASAT/SS_01502_STD_F2536/SS_01502_STD_F2536.h5';
+    expect(service.urlToProductType(url, service.seasatProductTypeDisplays)).toBe('h5');
+  });
+  it('should parse seasat geotiff s3 link', () => {
+    const url =
+      'https://cumulus.asf.earhtdatacloud.nasa.gov/SEASAT/SS_01502_STD_F2536/SS_01502_STD_F2536.tif';
+    expect(service.urlToProductType(url, service.seasatProductTypeDisplays)).toBe('tif');
+  });
 });
