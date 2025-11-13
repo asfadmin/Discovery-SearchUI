@@ -72,10 +72,7 @@ export interface CMRProductMetadata {
 
   // BURST XML, OPERA-S1, NISAR
   subproducts: any[];
-  additionalUrls?: string[] | null;
   s3URI?: string;
-  s3Urls?: string[] | null;
-  fileSizes?: {} | null;
   parentID: string;
 
   // ARIA S1 GUNW
@@ -96,7 +93,6 @@ export interface SLCBurstMetadata {
 export interface OperaS1Metadata {
   operaBurstID: string;
   additionalUrls: string[];
-  s3Urls: string[];
   validityStartDate?: moment.Moment | null;
 }
 

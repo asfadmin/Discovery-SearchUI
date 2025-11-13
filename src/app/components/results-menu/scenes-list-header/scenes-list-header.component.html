@@ -563,28 +563,24 @@
               }}{{ downloadableProds.length === 1 ? '' : 's' }}
             </button>
 
-            @let currentDatasetID = currentDatasetID$ | async;
-            @if ( searchType === SearchTypes.DATASET
-                && (
-                    currentDatasetID === 'OPERA-S1'
-                    || currentDatasetID === 'NISAR'
-                    || currentDatasetID === 'SEASAT'
-                    )
-                ) {
             <button
               mat-menu-item
+              *ngIf="
+                searchType === SearchTypes.DATASET &&
+                ((currentDatasetID$ | async) === 'OPERA-S1' ||
+                  (currentDatasetID$ | async) === 'NISAR')
+              "
               [matMenuTriggerFor]="addAllProductsOfType"
               [matMenuTriggerData]="{
                 productData: (productCountByType$ | async),
               }"
             >
               {{
-                currentDatasetID === 'NISAR'
+                (currentDatasetID$ | async) === 'NISAR'
                   ? ('ADD_BY_FILE_TYPE' | translate)
                   : ('ADD_BY_PRODUCT_TYPE' | translate)
               }}
             </button>
-        }
           </mat-menu>
 
           <mat-menu #addAllProductsOfType>

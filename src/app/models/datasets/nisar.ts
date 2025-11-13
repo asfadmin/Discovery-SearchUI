@@ -275,20 +275,6 @@ export const nisar = {
   //   ],
   platformDesc: 'NISAR_DESC',
   platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
-
-  productTypeDisplays: {
-    yaml: 'Runconfig YAML',
-    kml: 'Footprint KML',
-    png: 'Browse Image PNG',
-    csv: 'QA Summary CSV',
-    h5: 'HDF5',
-    xml: 'ISO Metadata XML',
-    json: 'Metadata JSON',
-    pdf: 'QA Report PDF',
-    log: 'Log File',
-    qa: 'QA Statistics HDF5',
-    bin: 'Bin File',
-  }
 };
 
 export const L1L2BrowseCollectionMapping = {

@@ -105,9 +105,6 @@ export class ProductService {
     subproducts: [],
     parentID: null,
     s3URI: null,
-    s3Urls: g.s3u || [],
-    additionalUrls: g.adu || [],
-    fileSizes: isNaN(g.bytes) ? g.s : null,
     ariaVersion: g.ariav ? g.ariav : null,
   });
 
@@ -126,13 +123,10 @@ export class ProductService {
     if (product.dataset === 'NISAR') {
       return this.nisarSubproductsFromScene(product);
     }
-    if (product.dataset === 'SEASAT 1') {
-        return this.seasatSubproductsFromScene(product);
-    }
     return [];
   }
 
-  public urlToProductType(url: string, productTypeDisplay: {[index: string]: string}) {
+  public urlToProductType(url) {
     const regex = /(_v[0-9]\.[0-9]){1}(\.(\w*)|(_(\w*(_*))*.))*/;
 
     if (url) {
@@ -148,7 +142,7 @@ export class ProductService {
           .pop();
 
         if (
-          !productTypeDisplay.hasOwnProperty(
+          !this.operaProductTypeDisplays.hasOwnProperty(
             file_type?.toLowerCase(),
           )
         ) {
@@ -181,8 +175,23 @@ export class ProductService {
     return p;
   }
 
+  private operaProductTypeDisplays = {
+    hh: 'HH GeoTIFF',
+    hv: 'HV GeoTIFF',
+    vv: 'VV GeoTIFF',
+    vh: 'VH GeoTIFF',
+    mask: 'Mask GeoTIFF',
+    nc: 'Netcdf File',
+    h5: 'HDF5',
+    xml: 'Metadata XML',
+    rtc_anf_gamma0_to_sigma0: 'RTC Gamma to Sigma GeoTIFF',
+    number_of_looks: '# of Looks GeoTIFF',
+    incidence_angle: 'Incidence Angle GeoTIFF',
+    rtc_anf_gamma0_to_beta0: 'RTC Gamm to Beta GeoTIFF',
+    local_incidence_angle: 'Local Incidence Angle GeoTIFF',
+  };
+
   private operaSubproductsFromScene(product: models.CMRProduct) {
-    product.metadata.s3URI = product.metadata.opera.s3Urls[0]
     if (product.metadata.opera?.validityStartDate) {
       product.metadata.opera.validityStartDate = this.fromCMRDate(
         product.metadata.opera?.validityStartDate as unknown as string,
@@ -195,11 +204,11 @@ export class ProductService {
     if (['DISP-S1', 'TROPO-ZENITH'].includes(product.metadata.productType)) {
       file_suffix = 'nc';
     } else {
-      file_suffix = this.urlToProductType(product.downloadUrl, models.opera_s1.productTypeDisplays);
+      file_suffix = this.urlToProductType(product.downloadUrl);
     }
 
     product.productTypeDisplay =
-      models.opera_s1.productTypeDisplays[file_suffix?.toLowerCase()] ?? 'Download';
+      this.operaProductTypeDisplays[file_suffix?.toLowerCase()] ?? 'Download';
 
     const thumbnail_index = product.browses.findIndex((url) =>
       url.toLowerCase().includes('thumbnail'),
@@ -207,23 +216,15 @@ export class ProductService {
     if (thumbnail_index !== -1) {
       product.thumbnail = product.browses.splice(thumbnail_index, 1)[0];
     }
-
-    const s3Index = product.metadata.opera.s3Urls.findIndex((uri) =>
-        uri.toLowerCase().endsWith(file_suffix)
-    )
-
-    if(s3Index !== -1) {
-        product.metadata.s3URI = product.metadata.opera.s3Urls[s3Index];
-    }
     product.browses = product.browses.filter((url) => !url.includes('low-res'));
 
     for (const p of product.metadata.opera.additionalUrls.filter(
       (url) => url !== product.downloadUrl,
     )) {
-      file_suffix = this.urlToProductType(p, models.opera_s1.productTypeDisplays);
+      file_suffix = this.urlToProductType(p);
 
       let productTypeDisplay =
-        models.opera_s1.productTypeDisplays[file_suffix?.toLowerCase()];
+        this.operaProductTypeDisplays[file_suffix?.toLowerCase()];
       if (
         product.metadata.productType === 'DISP-S1' &&
         productTypeDisplay == null
@@ -236,12 +237,23 @@ export class ProductService {
       }
       const fileID = p.split('/').slice(-1)[0];
 
-      let s3Uri = null;
-      let s3uriIndex = product.metadata.opera.s3Urls.findIndex(x => x.split('/').slice(-1)[0] === fileID)
-      if (s3uriIndex !== -1) {
-        s3Uri = product.metadata.opera.s3Urls[s3uriIndex]
-      }
-      const subproduct =this.createSubproductForScene(product, p, s3Uri, file_suffix, productTypeDisplay, 0, [])
+      const subproduct = {
+        ...product,
+        downloadUrl: p,
+        productTypeDisplay: productTypeDisplay || p,
+        file: fileID,
+        id: product.id + '-' + file_suffix,
+        bytes: 0,
+        browses: [],
+        thumbnail: null,
+        metadata: {
+          ...product.metadata,
+          productType: product.metadata.productType,
+          parentID: product.id,
+          subproducts: [],
+        },
+      } as models.CMRProduct;
+
       products.push(subproduct);
     }
 
@@ -263,101 +275,19 @@ export class ProductService {
     });
   }
 
-private seasatSubproductsFromScene(product: models.CMRProduct) {
-    const products = [];
-    let file_extension = this.urlToProductType(product.downloadUrl, models.seasat.productTypeDisplays)
-    product.productTypeDisplay = models.seasat.productTypeDisplays[file_extension];
-    let fileID = product.downloadUrl.split('/').slice(-1)[0];
-    product.bytes = product.metadata.fileSizes[fileID].bytes
-    const thumbnail_index = product.browses.findIndex((url) =>
-      url.toLowerCase().includes('thumbnail'),
-    );
-    if (thumbnail_index !== -1) {
-      product.thumbnail = product.browses.splice(thumbnail_index, 1)[0];
-    }
-    product.browses = product.browses.filter((url) => !url.includes('low-res'));
-
-    const s3UrlsByProductID = product.metadata.s3Urls.reduce(
-      (prev, curr) => {
-        const subproductFileID = curr.split('/').at(-1);
-
-        prev[subproductFileID] = curr;
-
-        return prev;
-      },
-      {},
-    );
-
-    product.metadata.s3URI = s3UrlsByProductID[product.file] ?? null;
-
-    const browses = [];
-    for (const p of [
-      ...product.metadata.additionalUrls.filter(
-        (url) => url !== product.downloadUrl,
-      ),
-      ...product.browses,
-    ]) {
-      file_extension = this.urlToProductType(p, models.seasat.productTypeDisplays)
-
-      let productTypeDisplay =
-        models.seasat.productTypeDisplays[file_extension.toLowerCase()] ??
-        'Missing Display';
-      if (productTypeDisplay === 'Missing Display') {
-        console.log(
-        `Missing product type display for file extension "${file_extension}"`,
-        );
-      }
-
-      if (['Metadata IN'].includes(productTypeDisplay)) {
-        continue;
-      }
-
-      const fileID = p.split('/').slice(-1)[0];
-      const s3Url = s3UrlsByProductID[fileID] ?? null;
-      const fileSize = product.metadata.fileSizes[fileID]?.bytes ?? 0
-      const subproduct = this.createSubproductForScene(product, p, s3Url, file_extension, productTypeDisplay, fileSize, browses)
-
-      products.push(subproduct);
-    }
-
-    return products.sort((a, b) => {
-      if (
-        a.productTypeDisplay.includes('Metadata') ||
-        a.productTypeDisplay.includes('QA')
-      ) {
-        return 1;
-      } else if (
-        b.productTypeDisplay.includes('Metadata') ||
-        b.productTypeDisplay.includes('QA')
-      ) {
-        return -1;
-      }
-
-      return a.productTypeDisplay < b.productTypeDisplay ? -1 : 1;
-    });
-  }
-
-  private createSubproductForScene(scene: models.CMRProduct, url: string, s3uri: string, fileExtension: string, productTypeDisplay: string | null, fileSize: number, browses: string[]) {
-    const fileID = url.split('/').slice(-1)[0];
-    return {
-        ...scene,
-        downloadUrl: url,
-        productTypeDisplay: productTypeDisplay || url,
-        file: fileID,
-        id: scene.id + '-' + fileExtension,
-        bytes: fileSize,
-        browses,
-        thumbnail: null,
-        metadata: {
-          ...scene.metadata,
-          productType: scene.metadata.productType,
-          parentID: scene.id,
-          subproducts: [],
-          s3URI: s3uri,
-        },
-        virtual: true,
-      } as models.CMRProduct;
-    } 
+  private nisarProductTypeDisplays = {
+    yaml: 'Runconfig YAML',
+    kml: 'Footprint KML',
+    png: 'Browse Image PNG',
+    csv: 'QA Summary CSV',
+    h5: 'HDF5',
+    xml: 'ISO Metadata XML',
+    json: 'Metadata JSON',
+    pdf: 'QA Report PDF',
+    log: 'Log File',
+    qa: 'QA Statistics HDF5',
+    bin: 'Bin File',
+  };
 
   private nisarSubproductsFromScene(product: models.CMRProduct) {
     const products = [];
@@ -405,7 +335,7 @@ private seasatSubproductsFromScene(product: models.CMRProduct) {
       temp = p.split('.');
       file_extension = temp[temp.length - 1];
       let productTypeDisplay =
-        models.nisar.productTypeDisplays[file_extension.toLowerCase()] ??
+        this.nisarProductTypeDisplays[file_extension.toLowerCase()] ??
         'Missing Display';
       if (productTypeDisplay === 'Missing Display') {
         if (file_extension.includes('vc')) {
@@ -416,13 +346,11 @@ private seasatSubproductsFromScene(product: models.CMRProduct) {
           );
         }
       }
-      if (productTypeDisplay === 'Browse Image PNG') {
-        if (p === '/assets/no-browse.png') {
-          continue
-        }
+      if (productTypeDisplay === 'Browse PNG') {
+        browses.push(p);
       }
       if (p.endsWith('.h5') && p.includes('QA_')) {
-        productTypeDisplay = models.nisar.productTypeDisplays.qa;
+        productTypeDisplay = this.nisarProductTypeDisplays.qa;
       }
 
       if (['Log File', 'Metadata JSON'].includes(productTypeDisplay)) {
@@ -431,9 +359,25 @@ private seasatSubproductsFromScene(product: models.CMRProduct) {
 
       const fileID = p.split('/').slice(-1)[0];
       const s3Url = s3UrlsByProductID[fileID] ?? null;
-      const fileSize = product.metadata.nisar?.sizeMB?.[fileID]?.bytes ?? 0
-      const subproduct = this.createSubproductForScene(product, p, s3Url, file_extension, productTypeDisplay, fileSize, browses)
 
+      const subproduct = {
+        ...product,
+        downloadUrl: p,
+        productTypeDisplay: productTypeDisplay || p,
+        file: fileID,
+        id: product.id + '-' + file_extension,
+        bytes: product.metadata.nisar?.sizeMB?.[fileID]?.bytes ?? 0,
+        browses,
+        thumbnail: null,
+        metadata: {
+          ...product.metadata,
+          productType: product.metadata.productType,
+          parentID: product.id,
+          subproducts: [],
+          s3URI: s3Url,
+        },
+        virtual: true,
+      } as models.CMRProduct;
       products.push(subproduct);
     }
 
