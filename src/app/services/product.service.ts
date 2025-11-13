@@ -181,22 +181,6 @@ export class ProductService {
     return p;
   }
 
-  public operaProductTypeDisplays = {
-    hh: 'HH GeoTIFF',
-    hv: 'HV GeoTIFF',
-    vv: 'VV GeoTIFF',
-    vh: 'VH GeoTIFF',
-    mask: 'Mask GeoTIFF',
-    nc: 'Netcdf File',
-    h5: 'HDF5',
-    xml: 'Metadata XML',
-    rtc_anf_gamma0_to_sigma0: 'RTC Gamma to Sigma GeoTIFF',
-    number_of_looks: '# of Looks GeoTIFF',
-    incidence_angle: 'Incidence Angle GeoTIFF',
-    rtc_anf_gamma0_to_beta0: 'RTC Gamm to Beta GeoTIFF',
-    local_incidence_angle: 'Local Incidence Angle GeoTIFF',
-  };
-
   private operaSubproductsFromScene(product: models.CMRProduct) {
     product.metadata.s3URI = product.metadata.opera.s3Urls[0]
     if (product.metadata.opera?.validityStartDate) {
@@ -211,11 +195,11 @@ export class ProductService {
     if (['DISP-S1', 'TROPO-ZENITH'].includes(product.metadata.productType)) {
       file_suffix = 'nc';
     } else {
-      file_suffix = this.urlToProductType(product.downloadUrl, this.operaProductTypeDisplays);
+      file_suffix = this.urlToProductType(product.downloadUrl, models.opera_s1.productTypeDisplays);
     }
 
     product.productTypeDisplay =
-      this.operaProductTypeDisplays[file_suffix?.toLowerCase()] ?? 'Download';
+      models.opera_s1.productTypeDisplays[file_suffix?.toLowerCase()] ?? 'Download';
 
     const thumbnail_index = product.browses.findIndex((url) =>
       url.toLowerCase().includes('thumbnail'),
@@ -236,10 +220,10 @@ export class ProductService {
     for (const p of product.metadata.opera.additionalUrls.filter(
       (url) => url !== product.downloadUrl,
     )) {
-      file_suffix = this.urlToProductType(p, this.operaProductTypeDisplays);
+      file_suffix = this.urlToProductType(p, models.opera_s1.productTypeDisplays);
 
       let productTypeDisplay =
-        this.operaProductTypeDisplays[file_suffix?.toLowerCase()];
+        models.opera_s1.productTypeDisplays[file_suffix?.toLowerCase()];
       if (
         product.metadata.productType === 'DISP-S1' &&
         productTypeDisplay == null
@@ -279,33 +263,10 @@ export class ProductService {
     });
   }
 
-  private nisarProductTypeDisplays = {
-    yaml: 'Runconfig YAML',
-    kml: 'Footprint KML',
-    png: 'Browse Image PNG',
-    csv: 'QA Summary CSV',
-    h5: 'HDF5',
-    xml: 'ISO Metadata XML',
-    json: 'Metadata JSON',
-    pdf: 'QA Report PDF',
-    log: 'Log File',
-    qa: 'QA Statistics HDF5',
-    bin: 'Bin File',
-  };
-
-public seasatProductTypeDisplays = {
-    h5: 'Level One HDF5 Image',
-    in: 'Metadata IN',
-    tif: 'Level One GeoTIFF Product',
-    xml: 'ISO Metadata XML',
-    kml: 'Metadata KML',
-    qc_report: 'QC Report',
-    jpg: 'Browse Image JPEG'
-  };
 private seasatSubproductsFromScene(product: models.CMRProduct) {
     const products = [];
-    let file_extension = this.urlToProductType(product.downloadUrl, this.seasatProductTypeDisplays)
-    product.productTypeDisplay = this.seasatProductTypeDisplays[file_extension];
+    let file_extension = this.urlToProductType(product.downloadUrl, models.seasat.productTypeDisplays)
+    product.productTypeDisplay = models.seasat.productTypeDisplays[file_extension];
     let fileID = product.downloadUrl.split('/').slice(-1)[0];
     product.bytes = product.metadata.fileSizes[fileID].bytes
     const thumbnail_index = product.browses.findIndex((url) =>
@@ -336,10 +297,10 @@ private seasatSubproductsFromScene(product: models.CMRProduct) {
       ),
       ...product.browses,
     ]) {
-      file_extension = this.urlToProductType(p, this.seasatProductTypeDisplays)
+      file_extension = this.urlToProductType(p, models.seasat.productTypeDisplays)
 
       let productTypeDisplay =
-        this.seasatProductTypeDisplays[file_extension.toLowerCase()] ??
+        models.seasat.productTypeDisplays[file_extension.toLowerCase()] ??
         'Missing Display';
       if (productTypeDisplay === 'Missing Display') {
         console.log(
@@ -444,7 +405,7 @@ private seasatSubproductsFromScene(product: models.CMRProduct) {
       temp = p.split('.');
       file_extension = temp[temp.length - 1];
       let productTypeDisplay =
-        this.nisarProductTypeDisplays[file_extension.toLowerCase()] ??
+        models.nisar.productTypeDisplays[file_extension.toLowerCase()] ??
         'Missing Display';
       if (productTypeDisplay === 'Missing Display') {
         if (file_extension.includes('vc')) {
@@ -461,7 +422,7 @@ private seasatSubproductsFromScene(product: models.CMRProduct) {
         }
       }
       if (p.endsWith('.h5') && p.includes('QA_')) {
-        productTypeDisplay = this.nisarProductTypeDisplays.qa;
+        productTypeDisplay = models.nisar.productTypeDisplays.qa;
       }
 
       if (['Log File', 'Metadata JSON'].includes(productTypeDisplay)) {
