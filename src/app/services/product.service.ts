@@ -455,8 +455,10 @@ private seasatSubproductsFromScene(product: models.CMRProduct) {
           );
         }
       }
-      if (productTypeDisplay === 'Browse PNG') {
-        browses.push(p);
+      if (productTypeDisplay === 'Browse Image PNG') {
+        if (p === '/assets/no-browse.png') {
+          continue
+        }
       }
       if (p.endsWith('.h5') && p.includes('QA_')) {
         productTypeDisplay = this.nisarProductTypeDisplays.qa;
