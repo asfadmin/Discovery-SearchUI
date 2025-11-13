@@ -96,6 +96,7 @@ export interface SLCBurstMetadata {
 export interface OperaS1Metadata {
   operaBurstID: string;
   additionalUrls: string[];
+  s3Urls: string[];
   validityStartDate?: moment.Moment | null;
 }
 
