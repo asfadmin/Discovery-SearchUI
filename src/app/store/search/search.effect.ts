@@ -439,6 +439,8 @@ export class SearchEffects {
                   nisar: null,
                   parentID: '',
                   ariaVersion: null,
+                  collectionID: null,
+                  collectionName: null,
                 },
               },
             ],

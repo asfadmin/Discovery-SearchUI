@@ -23,6 +23,7 @@ export interface Dataset {
   properties: Props[];
   platformDesc: string;
   platformIcon: string;
+  collectionMap?: DatasetCollectionMap;
 
   calibrationDatasets?: string[];
   calibrationProductTypes?: ProductType[];
@@ -61,6 +62,8 @@ export interface DatasetSubtype {
   displayName: string;
   apiValue: string;
 }
+
+export type DatasetCollectionMap = Record<string, string>;
 
 export type DatasetProductTypes = ProductType[];
 export type DatasetShortName = ShortName[];

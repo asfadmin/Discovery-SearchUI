@@ -37,6 +37,9 @@ export interface CMRProductMetadata {
   frame: number;
   absoluteOrbit: number[];
 
+  collectionName: string;
+  collectionID: string;
+
   stackSize: number;
   // ALOS PALSAR
   faradayRotation: number | null;
