@@ -60,9 +60,11 @@ export class SeasonSelectorComponent implements OnInit, OnDestroy {
     if (!event.checked) {
       this.store$.dispatch(new filtersStore.ClearSeason());
     } else {
-      // Dispatch a single action to update both start and end to batch state updates
-      this.store$.dispatch(new filtersStore.SetSeasonRange({ start: 1, end: 180 }));
-    }
+      // Batch dispatch to reduce lag from multiple state updates
+      setTimeout(() => {
+        this.store$.dispatch(new filtersStore.SetSeasonStart(1));
+        this.store$.dispatch(new filtersStore.SetSeasonEnd(180));
+      }, 0);    }
   }
 
   public onSeasonStartChange(dayOfYear: number): void {
