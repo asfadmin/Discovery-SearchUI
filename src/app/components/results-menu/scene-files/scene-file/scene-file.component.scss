@@ -27,4 +27,12 @@
   align-items: center;
   justify-content: center;
   margin-top: 1px;
+
+  mat-icon {
+    opacity: 1 !important; // Ensure icon is not faded
+  }
+
+  &:not([disabled]) mat-icon {
+    opacity: 1 !important;
+  }
 }

@@ -6,6 +6,15 @@
   @include themify($themes) {
     background-color: themed('primary') !important;
   }
+
+  // Fix arrow color on hover
+  mat-icon {
+    color: #ddd !important;
+  }
+
+  &:hover mat-icon {
+    color: #ddd !important;
+  }
 }
 .search-button {
   height: 36px !important;

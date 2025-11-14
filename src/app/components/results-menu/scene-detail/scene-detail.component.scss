@@ -160,6 +160,7 @@ a {
   position: sticky;
   display: flex;
   justify-content: flex-start;
+  flex-wrap: nowrap; // Prevent wrapping
 
   @include themify($themes) {
     background: lighten(themed("primary-light"), 8%);
@@ -173,6 +174,10 @@ a {
   align-items: center;
   height: 40px;
   bottom: 0;
+
+  button {
+    flex: 0 0 auto !important; // Prevent buttons from growing
+  }
 
   button:enabled {
     cursor: pointer;
@@ -203,6 +208,10 @@ a {
 
 .search-button {
   margin-left: 20px;
+  width: auto !important; // Prevent expansion
+  flex: 0 0 auto !important; // Don't grow or shrink
+  min-width: 80px; // Set minimum width
+  max-width: fit-content; // Don't exceed content width
 
   @include themify($themes) {
     background-color: themed("primary");
