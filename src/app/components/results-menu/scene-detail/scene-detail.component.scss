@@ -209,7 +209,6 @@ a {
 .search-button {
   margin-left: 20px;
   width: auto !important; // Prevent expansion
-  flex: 0 0 auto !important; // Don't grow or shrink
   min-width: 80px; // Set minimum width
   max-width: fit-content; // Don't exceed content width
 
