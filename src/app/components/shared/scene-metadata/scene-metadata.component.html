@@ -232,7 +232,7 @@
   <li *ngIf="prop.isRelevant(p.COVERAGE_ANGLE, dataset)">
     <span class="v-mid">
       <b>{{ 'FRAME_COVERAGE' | translate }} </b> •
-      {{ scene.metadata.nisar.frameCoverage }}
+      {{ scene.metadata.nisar?.frameCoverage }}
     </span>
   </li>
 
@@ -288,7 +288,7 @@
   >
     <span class="v-mid">
       <b>{{ 'POLARIZATION_MAIN' | translate }} </b> •
-      {{ scene.metadata.nisar.mainBandPolarization }}
+      {{ scene.metadata.nisar?.mainBandPolarization }}
     </span>
 
     <mat-icon
@@ -308,7 +308,7 @@
   <li *ngIf="prop.isRelevant(p.SIDE_POLARIZATION, dataset)">
     <span class="v-mid">
       <b>{{ 'POLARIZATION_SIDE' | translate }} </b> •
-      {{ scene.metadata.nisar.sideBandPolarization }}
+      {{ scene.metadata.nisar?.sideBandPolarization }}
     </span>
 
     <mat-icon
@@ -329,7 +329,7 @@
   <li *ngIf="prop.isRelevant(p.RANGE_BANDWIDTH, dataset)">
     <span class="v-mid">
       <b>{{ 'RANGE_BANDWIDTH' | translate }} </b> •
-      {{ scene.metadata.nisar.rangeBandwidth }}
+      {{ scene.metadata.nisar?.rangeBandwidth }}
     </span>
 
     <mat-icon
@@ -350,7 +350,7 @@
   <li *ngIf="prop.isRelevant(p.RANGE_BANDWIDTH, dataset)">
     <span class="v-mid">
       <b>{{ 'JOINT_OBSERVATION_ONLY' | translate }} </b> •
-      {{ scene.metadata.nisar.jointObservation }}
+      {{ scene.metadata.nisar?.jointObservation }}
     </span>
   </li>
 
