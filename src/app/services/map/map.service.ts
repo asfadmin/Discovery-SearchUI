@@ -964,7 +964,7 @@ export class MapService implements OnDestroy {
     wkt: string,
     scene: models.CMRProduct = null,
   ) {
-    this.setLayerText('Approximate Placement Only') 
+    this.setLayerText('Approximate Placement Only');
     if (this.browseImageLayer) {
       this.map.removeLayer(this.browseImageLayer);
     }
@@ -984,12 +984,14 @@ export class MapService implements OnDestroy {
           );
           this.map.addLayer(this.browseImageLayer);
         });
-      }
-      else {
+      } else {
         if (scene.dataset === 'NISAR') {
-            if (scene.id.startsWith('NISAR_L1') && url !== '/assets/no-browse.png') {
-                this.setLayerText('Level 2 Equivalent Browse Displayed')
-            }
+          if (
+            scene.id.startsWith('NISAR_L1') &&
+            url !== '/assets/no-browse.png'
+          ) {
+            this.setLayerText('Level 2 Equivalent Browse Displayed');
+          }
         }
         this.browseImageLayer =
           this.browseOverlayService.createNormalImageLayer(
@@ -1308,9 +1310,9 @@ export class MapService implements OnDestroy {
   }
 
   public setLayerText(text: string): void {
-    let style = this.selectedLayer.getStyle() as Style
-    let olText = style.getText()
-    olText.setText(text)
+    const style = this.selectedLayer.getStyle() as Style;
+    const olText = style.getText();
+    olText.setText(text);
   }
 
   private getPointIntersection(

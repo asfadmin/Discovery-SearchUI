@@ -136,7 +136,7 @@ export class ProductService {
 
   public urlToProductType(
     url: string,
-    productTypeDisplay: { [index: string]: string },
+    productTypeDisplay: Record<string, string>,
   ) {
     const regex = /(_v[0-9]\.[0-9]){1}(\.(\w*)|(_(\w*(_*))*.))*/;
 
@@ -245,7 +245,7 @@ export class ProductService {
       const fileID = p.split('/').slice(-1)[0];
 
       let s3Uri = null;
-      let s3uriIndex = product.metadata.opera.s3Urls.findIndex(
+      const s3uriIndex = product.metadata.opera.s3Urls.findIndex(
         (x) => x.split('/').slice(-1)[0] === fileID,
       );
       if (s3uriIndex !== -1) {
@@ -289,7 +289,7 @@ export class ProductService {
     );
     product.productTypeDisplay =
       models.seasat.productTypeDisplays[file_extension];
-    let fileID = product.downloadUrl.split('/').slice(-1)[0];
+    const fileID = product.downloadUrl.split('/').slice(-1)[0];
     product.bytes = product.metadata.fileSizes[fileID].bytes;
     const thumbnail_index = product.browses.findIndex((url) =>
       url.toLowerCase().includes('thumbnail'),
@@ -321,7 +321,7 @@ export class ProductService {
         models.seasat.productTypeDisplays,
       );
 
-      let productTypeDisplay =
+      const productTypeDisplay =
         models.seasat.productTypeDisplays[file_extension.toLowerCase()] ??
         'Missing Display';
       if (productTypeDisplay === 'Missing Display') {

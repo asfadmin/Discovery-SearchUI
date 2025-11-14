@@ -34,7 +34,7 @@ export interface Dataset {
     ascending: string;
     descending: string;
   };
-  productTypeDisplays?: {[index: string]: string};
+  productTypeDisplays?: Record<string, string>;
 }
 
 export enum MissionDataset {
