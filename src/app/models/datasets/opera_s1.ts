@@ -80,5 +80,5 @@ export const opera_s1 = {
     incidence_angle: 'Incidence Angle GeoTIFF',
     rtc_anf_gamma0_to_beta0: 'RTC Gamm to Beta GeoTIFF',
     local_incidence_angle: 'Local Incidence Angle GeoTIFF',
-  }
+  },
 };
