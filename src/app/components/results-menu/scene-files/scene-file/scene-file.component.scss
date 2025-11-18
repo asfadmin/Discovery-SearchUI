@@ -1,3 +1,5 @@
+@use "asf-theme-variables" as *;
+
 .icon-margin {
   margin-left: 5px;
   span {
@@ -27,4 +29,8 @@
   align-items: center;
   justify-content: center;
   margin-top: 1px;
+
+  @include themify($themes) {
+    color: themed('light-black');
+  }
 }

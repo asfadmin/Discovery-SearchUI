@@ -93,11 +93,12 @@
     [matMenuTriggerFor]="customJobTypes"
     mat-icon-button
     matListItemMeta
-    class="hype-icon-button mat-icon-button"
+    class="hype-icon-button"
   >
     <mat-icon
       *ngIf="loadingHyp3JobName !== product.name"
       svgIcon="hyp3"
+      class="hype-icon-button"
       matTooltip="{{ 'ADD_TO_ON_DEMAND_QUEUE' | translate }}"
     >
     </mat-icon>
