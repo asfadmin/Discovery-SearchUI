@@ -17,6 +17,7 @@ import { MatSelectChange } from '@angular/material/select';
   selector: 'app-short-name-selector',
   templateUrl: './short-name-selector.component.html',
   styleUrl: './short-name-selector.component.scss',
+  standalone: false,
 })
 export class ShortNameSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

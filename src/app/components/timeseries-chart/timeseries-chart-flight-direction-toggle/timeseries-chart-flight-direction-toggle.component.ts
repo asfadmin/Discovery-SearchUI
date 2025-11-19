@@ -20,7 +20,6 @@ import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-timeseries-chart-flight-direction-toggle',
-  standalone: true,
   imports: [
     TranslateModule,
     MatButtonModule,

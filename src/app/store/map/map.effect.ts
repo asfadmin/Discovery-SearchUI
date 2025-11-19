@@ -219,7 +219,7 @@ export class MapEffects {
             this.mapService.setSelectedBrowse(
               url,
               selectedProduct.metadata.polygon,
-              selectedProduct
+              selectedProduct,
             );
           }
         }),

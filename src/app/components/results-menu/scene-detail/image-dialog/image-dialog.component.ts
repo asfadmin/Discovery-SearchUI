@@ -46,6 +46,7 @@ import { PinnedProduct } from '@services/browse-map.service';
   templateUrl: './image-dialog.component.html',
   styleUrls: ['./image-dialog.component.scss'],
   providers: [BrowseMapService],
+  standalone: false,
 })
 export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

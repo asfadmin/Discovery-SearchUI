@@ -44,11 +44,9 @@ enum FilterPanel {
 
 @Component({
   selector: 'app-frame-order-filters',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,
-
     FlightDirectionSelectorComponent,
     MatSelectModule,
     MatExpansionModule,

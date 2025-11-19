@@ -7,6 +7,7 @@ import { ListFiltersType } from '@models';
   templateUrl: './list-search-filters.component.html',
   styleUrls: ['./list-search-filters.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ListSearchFiltersComponent {
   @Input() filters: ListFiltersType;

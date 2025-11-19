@@ -24,6 +24,7 @@ import * as models from '@models';
   selector: 'app-date-range',
   templateUrl: './date-range.component.html',
   styleUrls: ['./date-range.component.scss'],
+  standalone: false,
 })
 export class DateRangeComponent implements OnInit, OnDestroy {
   private notificationService = inject(NotificationService);

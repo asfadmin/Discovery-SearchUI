@@ -33,6 +33,7 @@ export interface DialogData {
   selector: 'app-docs-modal',
   templateUrl: './docs-modal.component.html',
   styleUrls: ['./docs-modal.component.scss'],
+  standalone: false,
 })
 export class DocsModalComponent implements OnInit, OnDestroy {
   dialog = inject(MatDialog);
@@ -114,6 +115,7 @@ export class DocsModalComponent implements OnInit, OnDestroy {
   selector: 'app-docs-modal-iframe',
   templateUrl: 'docs-modal-iframe.html',
   styleUrls: ['docs-modal-iframe.scss'],
+  standalone: false,
 })
 export class DocsModalIframeComponent {
   data = inject<DialogData>(MAT_DIALOG_DATA);

@@ -13,6 +13,7 @@ import { PropertyService } from '@services';
   selector: 'app-scene-metadata',
   templateUrl: './scene-metadata.component.html',
   styleUrls: ['./scene-metadata.component.scss'],
+  standalone: false,
 })
 export class SceneMetadataComponent implements OnInit, OnDestroy {
   prop = inject(PropertyService);
@@ -103,7 +104,7 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
   }
   public setFrameCoverage(): void {
     const action = new filtersStore.setFrameCoverage([
-      this.scene.metadata.nisar.frameCoverage,
+      this.scene.metadata.nisar?.frameCoverage,
     ]);
     this.store$.dispatch(action);
   }
@@ -116,13 +117,13 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
   }
   public addMainPolarization(): void {
     const action = new filtersStore.AddPolarization(
-      this.scene.metadata.nisar.mainBandPolarization,
+      this.scene.metadata.nisar?.mainBandPolarization,
     );
     this.store$.dispatch(action);
   }
   public addSidePolarization(): void {
     const action = new filtersStore.AddSidePolarization(
-      this.scene.metadata.nisar.sideBandPolarization,
+      this.scene.metadata.nisar?.sideBandPolarization,
     );
     this.store$.dispatch(action);
   }
@@ -136,7 +137,7 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
 
   public addRangeBandwidth(): void {
     const action = new filtersStore.addRangeBandwidth(
-      this.scene.metadata.nisar.rangeBandwidth,
+      this.scene.metadata.nisar?.rangeBandwidth,
     );
     this.store$.dispatch(action);
   }

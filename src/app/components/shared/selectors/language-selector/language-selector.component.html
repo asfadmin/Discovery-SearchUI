@@ -19,9 +19,9 @@
 </button>
 
 <mat-menu #languageMenu="matMenu">
-  <div *ngFor="let lang of language.translate.getLangs()">
+  <ng-container *ngFor="let lang of language.translate.getLangs()">
     <button mat-menu-item (click)="language.setCurrent(lang)">
       {{ language.getName(lang) }}
     </button>
-  </div>
+  </ng-container>
 </mat-menu>

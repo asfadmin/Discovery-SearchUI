@@ -232,7 +232,7 @@
   <li *ngIf="prop.isRelevant(p.COVERAGE_ANGLE, dataset)">
     <span class="v-mid">
       <b>{{ 'FRAME_COVERAGE' | translate }} </b> •
-      {{ scene.metadata.nisar.frameCoverage }}
+      {{ scene.metadata.nisar?.frameCoverage }}
     </span>
   </li>
 
@@ -288,7 +288,7 @@
   >
     <span class="v-mid">
       <b>{{ 'POLARIZATION_MAIN' | translate }} </b> •
-      {{ scene.metadata.nisar.mainBandPolarization }}
+      {{ scene.metadata.nisar?.mainBandPolarization }}
     </span>
 
     <mat-icon
@@ -308,7 +308,7 @@
   <li *ngIf="prop.isRelevant(p.SIDE_POLARIZATION, dataset)">
     <span class="v-mid">
       <b>{{ 'POLARIZATION_SIDE' | translate }} </b> •
-      {{ scene.metadata.nisar.sideBandPolarization }}
+      {{ scene.metadata.nisar?.sideBandPolarization }}
     </span>
 
     <mat-icon
@@ -329,7 +329,7 @@
   <li *ngIf="prop.isRelevant(p.RANGE_BANDWIDTH, dataset)">
     <span class="v-mid">
       <b>{{ 'RANGE_BANDWIDTH' | translate }} </b> •
-      {{ scene.metadata.nisar.rangeBandwidth }}
+      {{ scene.metadata.nisar?.rangeBandwidth }}
     </span>
 
     <mat-icon
@@ -350,7 +350,7 @@
   <li *ngIf="prop.isRelevant(p.RANGE_BANDWIDTH, dataset)">
     <span class="v-mid">
       <b>{{ 'JOINT_OBSERVATION_ONLY' | translate }} </b> •
-      {{ scene.metadata.nisar.jointObservation }}
+      {{ scene.metadata.nisar?.jointObservation }}
     </span>
   </li>
 
@@ -494,15 +494,24 @@
       {{ 'DATA_COURTESY_OF' | translate }} {{ dataset.source.name }}</span
     >
   </li>
-  <li *ngIf="dataset.citationUrl as citation" class="detail-item-margin">
-    <a
-      *ngIf="citation"
-      [href]="citation"
-      target="_blank"
-      matTooltip="{{ 'HOW_TO_CITE_USING_THIS_DATA' | translate }}"
-      >{{ 'CITATION' | translate }}</a
-    >
-  </li>
+  @let collectionName = scene.metadata?.collectionName;
+  @let collectionMapped = dataset?.collectionMap?.[collectionName];
+  @let citation = collectionMapped ?? dataset.citationUrl;
+  @if (citation) {
+    <li class="detail-item-margin">
+      <a
+        [href]="citation"
+        target="_blank"
+        matTooltip="{{ 'HOW_TO_CITE_USING_THIS_DATA' | translate }}"
+      >
+        @if (collectionMapped) {
+          {{ collectionName }}
+        }
+        {{ 'CITATION' | translate }}</a
+      >
+    </li>
+  }
+
   <mat-menu #addSceneDateMenu="matMenu">
     <ng-template matMenuContent let-date="eventDate">
       <button (click)="setStartDate(date)" mat-menu-item>

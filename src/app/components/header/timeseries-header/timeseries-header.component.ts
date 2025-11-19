@@ -16,6 +16,7 @@ import * as models from '@models';
   selector: 'app-timeseries-header',
   templateUrl: './timeseries-header.component.html',
   styleUrls: ['./timeseries-header.component.scss', '../header.component.scss'],
+  standalone: false,
 })
 export class TimeseriesHeaderComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

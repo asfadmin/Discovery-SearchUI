@@ -12,6 +12,7 @@ import { getTemporalRange } from '@store/filters';
   selector: 'app-closest-pair',
   templateUrl: './closest-pair.component.html',
   styleUrls: ['./closest-pair.component.scss'],
+  standalone: false,
 })
 export class ClosestPairComponent implements OnInit {
   private store$ = inject<Store<AppState>>(Store);

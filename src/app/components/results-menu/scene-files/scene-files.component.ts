@@ -60,6 +60,7 @@ import { L1L2BrowseCollectionMapping } from '@models/datasets/nisar';
   selector: 'app-scene-files',
   templateUrl: './scene-files.component.html',
   styleUrls: ['./scene-files.component.scss'],
+  standalone: false,
 })
 export class SceneFilesComponent
   implements OnInit, OnDestroy, AfterContentInit
@@ -529,20 +530,29 @@ export class SceneFilesComponent
               }),
             ),
           );
-        }else if(!!scene && scene.id?.startsWith('NISAR_L1')) {
-          if (!Object.keys(L1L2BrowseCollectionMapping).includes(scene.metadata.productType)) {
-              return of([])
-          }
-          
-          const queryParams = this.getNisarL2Params(scene.id, scene.metadata.productType)
-
-          return this.asfApiService.query<any>(queryParams).pipe(
-            map((products) =>
-              products?.results?.length > 0
-                ? this.productService.fromResponse(products).slice(0, 1)
-                : [],
+        } else if (!!scene && scene.id?.startsWith('NISAR_L1')) {
+          if (
+            !Object.keys(L1L2BrowseCollectionMapping).includes(
+              scene.metadata.productType,
             )
+          ) {
+            return of([]);
+          }
+
+          const queryParams = this.getNisarL2Params(
+            scene.id,
+            scene.metadata.productType,
           );
+
+          return this.asfApiService
+            .query<any>(queryParams)
+            .pipe(
+              map((products) =>
+                products?.results?.length > 0
+                  ? this.productService.fromResponse(products).slice(0, 1)
+                  : [],
+              ),
+            );
         } else {
           return of([]);
         }
@@ -551,7 +561,12 @@ export class SceneFilesComponent
 
   public getNisarL2Params(productID: string, productType: string) {
     return {
-    granule_list: productID.replaceAll(productType, L1L2BrowseCollectionMapping[productType].productType).replaceAll('L1', 'L2')
+      granule_list: productID
+        .replaceAll(
+          productType,
+          L1L2BrowseCollectionMapping[productType].productType,
+        )
+        .replaceAll('L1', 'L2'),
     };
   }
   public getProductSceneCount(products: SarviewsProduct[]) {

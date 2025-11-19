@@ -13,6 +13,7 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
   selector: 'app-season-selector',
   templateUrl: './season-selector.component.html',
   styleUrls: ['./season-selector.component.scss'],
+  standalone: false,
 })
 export class SeasonSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
@@ -59,9 +60,11 @@ export class SeasonSelectorComponent implements OnInit, OnDestroy {
     if (!event.checked) {
       this.store$.dispatch(new filtersStore.ClearSeason());
     } else {
-      this.store$.dispatch(new filtersStore.SetSeasonStart(1));
-      this.store$.dispatch(new filtersStore.SetSeasonEnd(180));
-    }
+      // Batch dispatch to reduce lag from multiple state updates
+      setTimeout(() => {
+        this.store$.dispatch(new filtersStore.SetSeasonStart(1));
+        this.store$.dispatch(new filtersStore.SetSeasonEnd(180));
+      }, 0);    }
   }
 
   public onSeasonStartChange(dayOfYear: number): void {

@@ -13,7 +13,6 @@ import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-flight-direction-selector',
-  standalone: true,
   imports: [
     MatSelectModule,
     MatOptionModule,

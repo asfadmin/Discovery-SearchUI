@@ -24,6 +24,7 @@ import * as models from '@models';
   selector: 'app-results-menu',
   templateUrl: './results-menu.component.html',
   styleUrls: ['./results-menu.component.scss'],
+  standalone: false,
 })
 export class ResultsMenuComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

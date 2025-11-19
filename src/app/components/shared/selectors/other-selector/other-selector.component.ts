@@ -13,6 +13,7 @@ import * as models from '@models';
   selector: 'app-other-selector',
   templateUrl: './other-selector.component.html',
   styleUrls: ['./other-selector.component.scss'],
+  standalone: false,
 })
 export class OtherSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

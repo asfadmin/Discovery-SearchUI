@@ -28,8 +28,7 @@ export const seasat = {
   infoUrl: 'https://www.earthdata.nasa.gov/data/catalog/asf-seasat-l1-sar-1',
   citationUrl:
     'https://asf.alaska.edu/data-sets/sar-data-sets/seasat/seasat-how-to-cite/',
-  productTypes: [
-  ],
+  productTypes: [],
   beamModes: ['STD'],
   polarizations: ['HH'],
   subtypes: [],
@@ -42,6 +41,6 @@ export const seasat = {
     xml: 'ISO Metadata XML',
     kml: 'Metadata KML',
     qc_report: 'QC Report',
-    jpg: 'Browse Image JPEG'
-  }
+    jpg: 'Browse Image JPEG',
+  },
 };

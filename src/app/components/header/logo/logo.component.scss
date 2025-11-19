@@ -1,5 +1,5 @@
-@import "asf-theme";
-@import "variables";
+@use "asf-theme-variables" as *;
+@use "variables" as *;
 
 %card-base {
   @include themify($themes) {

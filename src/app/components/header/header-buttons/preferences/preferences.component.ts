@@ -34,6 +34,7 @@ import * as services from '@services';
   selector: 'app-preferences',
   templateUrl: './preferences.component.html',
   styleUrls: ['./preferences.component.scss'],
+  standalone: false,
 })
 export class PreferencesComponent implements OnInit, OnDestroy {
   private dialogRef = inject<MatDialogRef<PreferencesComponent>>(MatDialogRef);

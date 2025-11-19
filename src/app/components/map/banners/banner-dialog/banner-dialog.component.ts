@@ -7,6 +7,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   templateUrl: './banner-dialog.component.html',
   styleUrls: ['./banner-dialog.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class BannerDialogComponent {
   data = inject<DialogData>(MAT_DIALOG_DATA);

@@ -10,6 +10,7 @@ import { SubSink } from 'subsink';
   selector: 'app-cancel-filter-changes',
   templateUrl: './cancel-filter-changes.component.html',
   styleUrls: ['./cancel-filter-changes.component.scss'],
+  standalone: false,
 })
 export class CancelFilterChangesComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

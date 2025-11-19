@@ -19,6 +19,7 @@ enum FilterPanel {
   selector: 'app-sarviews-filters',
   templateUrl: './sarviews-filters.component.html',
   styleUrls: ['./sarviews-filters.component.scss'],
+  standalone: false,
 })
 export class SarviewsFiltersComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

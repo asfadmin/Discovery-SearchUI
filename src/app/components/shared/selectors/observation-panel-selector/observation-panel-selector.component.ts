@@ -12,6 +12,7 @@ import * as models from '@models';
   selector: 'app-observation-panel-selector',
   templateUrl: './observation-panel-selector.component.html',
   styleUrl: './observation-panel-selector.component.scss',
+  standalone: false,
 })
 export class ObservationPanelSelectorComponent implements OnDestroy, OnInit {
   private store$ = inject<Store<AppState>>(Store);

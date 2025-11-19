@@ -11,6 +11,7 @@ import { Breakpoints } from '@models';
   selector: 'app-list-header',
   templateUrl: './list-header.component.html',
   styleUrls: ['./list-header.component.css', '../header.component.scss'],
+  standalone: false,
 })
 export class ListHeaderComponent {
   private store$ = inject<Store<AppState>>(Store);

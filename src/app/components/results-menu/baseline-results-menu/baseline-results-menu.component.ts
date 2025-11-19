@@ -34,6 +34,7 @@ enum CardViews {
     './baseline-results-menu.component.scss',
     '../results-menu.component.scss',
   ],
+  standalone: false,
 })
 export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

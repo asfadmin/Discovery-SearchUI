@@ -15,6 +15,7 @@ import { SubSink } from 'subsink';
   selector: 'app-sarviews-event-search-selector',
   templateUrl: './sarviews-event-search-selector.component.html',
   styleUrls: ['./sarviews-event-search-selector.component.scss'],
+  standalone: false,
 })
 export class SarviewsEventSearchSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

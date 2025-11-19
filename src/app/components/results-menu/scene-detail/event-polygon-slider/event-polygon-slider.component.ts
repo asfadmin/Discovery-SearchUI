@@ -22,6 +22,7 @@ import { SubSink } from 'subsink';
   selector: 'app-event-polygon-slider',
   templateUrl: './event-polygon-slider.component.html',
   styleUrls: ['./event-polygon-slider.component.scss'],
+  standalone: false,
 })
 export class EventPolygonSliderComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

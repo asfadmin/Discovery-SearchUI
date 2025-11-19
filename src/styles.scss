@@ -1,8 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import './styles/asf-theme';
-@import './styles/filter-list';
+@use "@angular/material" as mat;
+@use './styles/asf-theme' as *;
+@use './styles/filter-list';
+@use 'ngx-toastr/toastr';
 @import "prismjs/themes/prism-solarizedlight.css";
+
+// Apply Angular Material theme styles ONCE here in the global stylesheet
+// Include base theme styles (typography and density) once
+@include mat.all-component-typographies($asf-light-theme);
+@include mat.all-component-densities($asf-light-theme);
+
+// Apply color themes separately for light and dark modes
+.theme-light {
+  @include mat.all-component-colors($asf-light-theme);
+}
+
+.theme-dark {
+  @include mat.all-component-colors($asf-dark-theme);
+}
 
 $theme-map: null;
 
@@ -13,23 +29,31 @@ $theme-map: null;
 
 .cdk-overlay-container {
   position: absolute;
-  z-index: unset;
+  z-index: 2000;
 
   .cdk-overlay-connected-position-bounding-box {
+    z-index: 2000;
+  }
+
+  // Fix for Angular Material 19 menu positioning
+  .cdk-overlay-pane {
+    z-index: 2000;
+  }
+
+  .mat-mdc-menu-panel {
     z-index: 2000;
   }
 
 }
 
 // regular style toast
-@import 'ngx-toastr/toastr';
 
 #toast-container {
   position: relative;
   top: 140px;
   right: 10px;
   float: right;
-  z-index: 1099;
+  z-index: 9999; // Higher than dialog overlay (2000) to appear above download queue
 }
 
 // toast style overrides
@@ -237,15 +261,29 @@ ul {
   padding-left: 0;
 }
 
-/* TODO(mdc-migration): The following rule targets internal classes of slide-toggle that may no longer apply for the MDC version. */
-//.mat-mdc-slide-toggle.mat-checked .mat-slide-toggle-thumb {
-//  background-color: $asf-primary;
-//}
+// Angular Material 20 MDC slide-toggle styles
+.mat-mdc-slide-toggle.mat-mdc-slide-toggle-checked .mdc-switch__handle::after {
+  background-color: $asf-primary;
+}
 
-/* TODO(mdc-migration): The following rule targets internal classes of slide-toggle that may no longer apply for the MDC version. */
-//.mat-mdc-slide-toggle.mat-checked .mat-slide-toggle-bar {
-//  background-color: darkgrey;
-//}
+.mat-mdc-slide-toggle.mat-mdc-slide-toggle-checked .mdc-switch__track::after {
+  background-color: darkgrey;
+}
+
+// Ensure slide toggle handle (thumb) is circular
+.mdc-switch__handle::after {
+  border-radius: 50% !important;
+}
+
+// Remove white square background from handle
+.mdc-switch__handle::before {
+  background: transparent !important;
+}
+
+// Ensure the track is rounded
+.mdc-switch__track {
+  border-radius: 14px !important;
+}
 
 .max-width-100 {
   max-width: 115px !important;
@@ -864,6 +902,11 @@ $d-height: 550px;
     overflow: auto;
 }
 
+.mat-mdc-menu-panel.search-type-menu {
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
 .ts-best-fit-formulas {
   .cdk-virtual-scrollable {
     overflow-y: clip;
@@ -896,9 +939,9 @@ $d-height: 550px;
     color: themed('dark-primary-text');
   }
   //--mat-snack-bar-button-color: #fff;
-  //--mdc-snackbar-container-color: #c40202;
-  //--mdc-snackbar-supporting-text-color: themed('primary-light');
-  //--mdc-snackbar-supporting-text-color: yellow;
+  //--mat-snackbar-container-color: #c40202;
+  //--mat-snackbar-supporting-text-color: themed('primary-light');
+  //--mat-snackbar-supporting-text-color: yellow;
 }
 
 
@@ -910,3 +953,126 @@ $d-height: 550px;
   stroke-dasharray: 2;
   stroke-width: 1;
 }
+
+// Fix for Angular Material 20 MDC badges to ensure they remain circular
+.mat-badge-content {
+  border-radius: 30% !important;
+}
+
+.mat-badge-small .mat-badge-content {
+ width: 80% !important;
+}
+
+// Fix for Angular Material 20 MDC sliders to ensure thumbs are circular
+.mdc-slider__thumb-knob {
+  border-radius: 50% !important;
+}
+
+// Ensure the slider track end caps are rounded
+.mdc-slider__track--active_fill,
+.mdc-slider__track--inactive {
+  border-radius: 2px !important;
+}
+
+// Fix for icons turning black on hover in result-div button toggles
+// The mat-icon-no-color class prevents color inheritance, so we need to override it
+// Since SVG uses fill="currentColor", we need to set the color property
+
+// Target mat-button-toggle-appearance-standard specifically
+.control-mat-button-toggle.mat-button-toggle-appearance-standard:hover .mat-icon,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-focused .mat-icon,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-icon,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard:hover .list-icon,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-focused .list-icon,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-mouse-focused .list-icon,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard:hover .mat-icon-no-color,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-focused .mat-icon-no-color,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-icon-no-color,
+.mat-button-toggle-appearance-standard:hover .mat-icon,
+.mat-button-toggle-appearance-standard.cdk-focused .mat-icon,
+.mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-icon,
+.mat-button-toggle-appearance-standard:hover .list-icon,
+.mat-button-toggle-appearance-standard.cdk-focused .list-icon,
+.mat-button-toggle-appearance-standard.cdk-mouse-focused .list-icon,
+.mat-button-toggle-appearance-standard:hover .mat-icon-no-color,
+.mat-button-toggle-appearance-standard.cdk-focused .mat-icon-no-color,
+.mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-icon-no-color {
+  @include themify_non_host($themes) {
+    color: themed('dark-primary-text') !important;
+  }
+}
+
+// Also target within result-div
+#result-div .mat-button-toggle-appearance-standard:hover .mat-icon-no-color,
+#result-div .mat-button-toggle-appearance-standard.cdk-focused .mat-icon-no-color,
+#result-div .mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-icon-no-color,
+#result-div .mat-button-toggle-appearance-standard:hover .list-icon,
+#result-div .mat-button-toggle-appearance-standard.cdk-focused .list-icon,
+#result-div .mat-button-toggle-appearance-standard.cdk-mouse-focused .list-icon {
+  @include themify_non_host($themes) {
+    color: themed('dark-primary-text') !important;
+  }
+}
+
+// Also target the scenes-list-buttons layout specifically
+.scenes-list-buttons--layout .mat-button-toggle-appearance-standard:hover .mat-icon-no-color,
+.scenes-list-buttons--layout .mat-button-toggle-appearance-standard.cdk-focused .mat-icon-no-color,
+.scenes-list-buttons--layout .mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-icon-no-color,
+.scenes-list-buttons--layout .mat-button-toggle-appearance-standard:hover .list-icon,
+.scenes-list-buttons--layout .mat-button-toggle-appearance-standard.cdk-focused .list-icon,
+.scenes-list-buttons--layout .mat-button-toggle-appearance-standard.cdk-mouse-focused .list-icon {
+  @include themify_non_host($themes) {
+    color: themed('dark-primary-text') !important;
+  }
+}
+
+// Broader fallback for all mat-button-toggles
+.mat-button-toggle:hover .mat-icon-no-color,
+.mat-button-toggle.cdk-focused .mat-icon-no-color,
+.mat-button-toggle.cdk-mouse-focused .mat-icon-no-color,
+.mat-button-toggle:hover .list-icon,
+.mat-button-toggle.cdk-focused .list-icon,
+.mat-button-toggle.cdk-mouse-focused .list-icon {
+  @include themify_non_host($themes) {
+    color: themed('dark-primary-text') !important;
+  }
+}
+
+// Fix button background turning black/white on hover
+// Override button backgrounds to maintain themed colors
+.control-mat-button-toggle.mat-button-toggle-appearance-standard:hover,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-focused,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-mouse-focused,
+.mat-button-toggle-appearance-standard:hover,
+.mat-button-toggle-appearance-standard.cdk-focused,
+.mat-button-toggle-appearance-standard.cdk-mouse-focused {
+  @include themify_non_host($themes) {
+    background-color: themed('background-white') !important;
+  }
+}
+
+// Make internal button elements transparent
+.mat-button-toggle-appearance-standard:hover .mat-button-toggle-button,
+.mat-button-toggle-appearance-standard.cdk-focused .mat-button-toggle-button,
+.mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-button-toggle-button,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard:hover .mat-button-toggle-button,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-focused .mat-button-toggle-button,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-button-toggle-button {
+  background-color: transparent !important;
+}
+
+// Target the focus overlay and make it transparent
+.mat-button-toggle-appearance-standard .mat-button-toggle-focus-overlay,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard .mat-button-toggle-focus-overlay {
+  background-color: transparent !important;
+  opacity: 0 !important;
+}
+
+// Hide ripple effects on button toggles
+.mat-button-toggle-appearance-standard .mat-button-toggle-ripple,
+.mat-button-toggle-appearance-standard .mat-ripple,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard .mat-button-toggle-ripple,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard .mat-ripple {
+  display: none !important;
+}
+

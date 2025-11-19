@@ -20,6 +20,7 @@ import { ToggleBrowseOverlay } from '@store/map';
   selector: 'app-map-controls',
   templateUrl: './map-controls.component.html',
   styleUrls: ['./map-controls.component.scss'],
+  standalone: false,
 })
 export class MapControlsComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

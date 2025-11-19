@@ -43,6 +43,7 @@ const INFINITY = 2e10;
   templateUrl: './scenes-list.component.html',
   styleUrls: ['./scenes-list.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class ScenesListComponent
   implements OnInit, OnDestroy, AfterContentInit

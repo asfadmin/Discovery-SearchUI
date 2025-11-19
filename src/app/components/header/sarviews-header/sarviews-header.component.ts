@@ -15,6 +15,7 @@ import * as services from '@services';
   selector: 'app-sarviews-header',
   templateUrl: './sarviews-header.component.html',
   styleUrls: ['./sarviews-header.component.scss', '../header.component.scss'],
+  standalone: false,
 })
 export class SarviewsHeaderComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

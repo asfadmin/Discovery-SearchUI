@@ -18,6 +18,7 @@ import { OpenFiltersMenu } from '@store/ui';
     './sarviews-results-menu.component.scss',
     '../results-menu.component.scss',
   ],
+  standalone: false,
 })
 export class SarviewsResultsMenuComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

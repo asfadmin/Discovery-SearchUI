@@ -35,6 +35,7 @@ export enum ChartDatasets {
   selector: 'app-sbas-chart',
   templateUrl: './sbas-chart.component.html',
   styleUrls: ['./sbas-chart.component.scss'],
+  standalone: false,
 })
 export class SBASChartComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

@@ -35,6 +35,7 @@ import { HttpClient, HttpEventType } from '@angular/common/http';
   selector: 'app-download-file-button',
   templateUrl: './download-file-button.component.html',
   styleUrls: ['./download-file-button.component.scss'],
+  standalone: false,
 })
 export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   private downloadService = inject(DownloadService);

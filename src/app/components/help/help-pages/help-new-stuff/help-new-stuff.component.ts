@@ -7,6 +7,7 @@ import * as services from '@services';
   selector: 'app-help-new-stuff',
   templateUrl: './help-new-stuff.component.html',
   styleUrls: ['./help-new-stuff.component.scss'],
+  standalone: false,
 })
 export class HelpNewStuffComponent {
   private screenSize = inject(services.ScreenSizeService);

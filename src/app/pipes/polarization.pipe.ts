@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'polarizationCount',
+  standalone: false,
 })
 export class PolarizationCountPipe implements PipeTransform {
   transform(input: string): string {

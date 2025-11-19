@@ -16,6 +16,7 @@ import { MatSlider } from '@angular/material/slider';
   selector: 'app-displacement-layers',
   templateUrl: './displacement-layers.component.html',
   styleUrl: './displacement-layers.component.scss',
+  standalone: false,
 })
 export class DisplacementLayersComponent implements OnInit, OnDestroy {
   mapService = inject(MapService);

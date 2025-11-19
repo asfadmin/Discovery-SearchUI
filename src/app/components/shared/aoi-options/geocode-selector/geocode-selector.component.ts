@@ -24,6 +24,7 @@ import * as models from '@models';
   selector: 'app-geocode-selector',
   templateUrl: './geocode-selector.component.html',
   styleUrls: ['./geocode-selector.component.scss'],
+  standalone: false,
 })
 export class GeocodeSelectorComponent implements OnInit, OnDestroy {
   private http = inject(HttpClient);

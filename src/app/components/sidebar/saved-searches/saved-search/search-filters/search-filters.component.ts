@@ -6,6 +6,7 @@ import * as models from '@models';
   selector: 'app-search-filters',
   templateUrl: './search-filters.component.html',
   styleUrls: ['./search-filters.component.scss'],
+  standalone: false,
 })
 export class SearchFiltersComponent {
   @Input() search: models.Search;

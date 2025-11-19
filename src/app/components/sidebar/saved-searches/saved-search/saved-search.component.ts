@@ -22,6 +22,7 @@ import { AsfLanguageService } from '@services/asf-language.service';
   templateUrl: './saved-search.component.html',
   styleUrls: ['./saved-search.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class SavedSearchComponent implements OnInit {
   private language = inject(AsfLanguageService);

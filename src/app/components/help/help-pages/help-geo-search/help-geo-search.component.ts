@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
   selector: 'app-help-geo-search',
   templateUrl: './help-geo-search.component.html',
   styleUrls: ['./help-geo-search.component.scss'],
+  standalone: false,
 })
 export class HelpGeoSearchComponent {
   translate = inject(TranslateService);

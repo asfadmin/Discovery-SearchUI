@@ -11,6 +11,7 @@ import { SubSink } from 'subsink';
   selector: 'app-sarviews-event-type-selector',
   templateUrl: './sarviews-event-type-selector.component.html',
   styleUrls: ['./sarviews-event-type-selector.component.scss'],
+  standalone: false,
 })
 export class SarviewsEventTypeSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
