@@ -33,18 +33,15 @@
   <!-- FILE LIST -->
   <mat-card class="h100 mp0 no-left-border file-list--layout">
     <mat-card-subtitle class="header">
-      <span
-        *ngIf="
-          selectedProducts$ | async as products;
-          else defaultProductsHeader
-        "
-      >
-        {{ products.length || '' }} {{ 'FILE' | translate
-        }}{{ (products || []).length === 1 ? '' : 's' }}
+      @let products = selectedProducts$ | async;
+      <span>
+        @if (products) {
+          {{ products.length || '' }} {{ 'FILE' | translate
+          }}{{ (products || []).length === 1 ? '' : 's' }}
+        } @else {
+          {{ 'FILES' | translate }}
+        }
       </span>
-      <ng-template #defaultProductsHeader>{{
-        'FILES' | translate
-      }}</ng-template>
     </mat-card-subtitle>
 
     <div class="app-scene-list left-border scroll-y">
@@ -57,18 +54,15 @@
   <mat-card class="mp0 no-box-shadow scene-info--small-layout">
     <mat-card-subtitle class="header">
       {{ 'SCENE_DETAIL' | translate }} /
-      <span
-        *ngIf="
-          selectedProducts$ | async as products;
-          else defaultProductsHeader
-        "
-      >
-        {{ products.length || '' }} {{ 'FILE' | translate
-        }}{{ (products || []).length === 1 ? '' : 's' }}
+      @let products = selectedProducts$ | async;
+      <span>
+        @if (products) {
+          {{ products.length || '' }} {{ 'FILE' | translate
+          }}{{ (products || []).length === 1 ? '' : 's' }}
+        } @else {
+          {{ 'FILES' | translate }}
+        }
       </span>
-      <ng-template #defaultProductsHeader>{{
-        'FILES' | translate
-      }}</ng-template>
     </mat-card-subtitle>
 
     <div class="app-scene-list scroll-y scroll-x">

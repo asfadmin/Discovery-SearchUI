@@ -255,14 +255,13 @@
           >
             <fa-icon style="margin-left: 5px" [icon]="copyIcon"></fa-icon>
             &nbsp;
-            <span
-              *ngIf="
-                breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin;
-                else mobileCopyURLs
-              "
-              >{{ 'COPY_URLS' | translate }}</span
-            >
-            <ng-template #mobileCopyURLs>URLs</ng-template>
+            <span>
+              @if (breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin) {
+                {{ 'COPY_URLS' | translate }}
+              } @else {
+                URLs
+              }
+            </span>
           </button>
 
           <button
@@ -279,14 +278,13 @@
           >
             <fa-icon style="margin-left: 5px" [icon]="copyIcon"></fa-icon>
             &nbsp;
-            <span
-              *ngIf="
-                breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin;
-                else mobileCopyURLs
-              "
-              >{{ 'COPY_URLS' | translate }}</span
-            >
-            <ng-template #mobileCopyURLs>URLs</ng-template>
+            <span>
+              @if (breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin) {
+                {{ 'COPY_URLS' | translate }}
+              } @else {
+                URLs
+              }
+            </span>
           </button>
           <mat-menu #urlTypeMenu>
             <button mat-menu-item (click)="onCopyQueueURLs(products)">

@@ -168,45 +168,37 @@
                 </ng-template>
 
                 <ng-template #summaryFragment>
-                  <span
-                    *ngIf="
-                      point.seriesName.toLowerCase().trim() === 'series';
-                      else customSeriesName
-                    "
-                  >
-                    {{ 'SERIES' | translate }}
+                  <span>
+                    @if (point.seriesName.toLowerCase().trim() === 'series') {
+                      {{ 'SERIES' | translate }}
+                    } @else {
+                      {{ point.seriesName }}
+                    }
                   </span>
-                  <ng-template #customSeriesName>
-                    {{ point.seriesName }}
-                  </ng-template>
                   {{ point.seriesNumber }}
                 </ng-template>
 
                 <ng-template #seriesFragment>
-                  <span
-                    *ngIf="
-                      point.seriesName.toLowerCase().trim() === 'series';
-                      else customSeriesName
-                    "
-                  >
-                    {{ 'SERIES' | translate }} {{ point.seriesNumber }}
-                    <div
-                      *ngIf="point.frames[0].number !== ''"
-                      class="series-label"
-                    >
-                      {{ 'FRAME' | translate }}: {{ point.frames[0].number }}
-                    </div>
-                    <span *ngIf="(point.frames | keyvalue).length > 1"
-                      >.{{ idx + 1 }}</span
-                    >
+                  <span>
+                    @if (point.seriesName.toLowerCase().trim() === 'series') {
+                      {{ 'SERIES' | translate }} {{ point.seriesNumber }}
+                      <div
+                        *ngIf="point.frames[0].number !== ''"
+                        class="series-label"
+                      >
+                        {{ 'FRAME' | translate }}: {{ point.frames[0].number }}
+                      </div>
+                      <span *ngIf="(point.frames | keyvalue).length > 1"
+                        >.{{ idx + 1 }}</span
+                      >
+                    } @else {
+                      {{ point.seriesName }}
+                      {{ point.seriesNumber
+                      }}<span *ngIf="(point.frames | keyvalue).length > 1"
+                        >.{{ idx + 1 }}</span
+                      >
+                    }
                   </span>
-                  <ng-template #customSeriesName>
-                    {{ point.seriesName }}
-                    {{ point.seriesNumber
-                    }}<span *ngIf="(point.frames | keyvalue).length > 1"
-                      >.{{ idx + 1 }}</span
-                    >
-                  </ng-template>
                 </ng-template>
               }
             }
