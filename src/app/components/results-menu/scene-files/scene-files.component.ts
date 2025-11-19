@@ -47,20 +47,58 @@ import { ClipboardService } from 'ngx-clipboard';
 import moment from 'moment';
 
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
-import { MatSelectionListChange } from '@angular/material/list';
+import {
+  MatSelectionListChange,
+  MatList,
+  MatSelectionList,
+  MatListOption,
+} from '@angular/material/list';
 import { PinnedProduct } from '@services/browse-map.service';
 import { ImageDialogComponent } from '../scene-detail/image-dialog';
 import { MatDialog } from '@angular/material/dialog';
 import { ScreenSizeService } from '@services';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import {
+  CdkVirtualScrollViewport,
+  CdkFixedSizeVirtualScroll,
+  CdkVirtualForOf,
+} from '@angular/cdk/scrolling';
 import * as filterStore from '@store/filters';
 import { L1L2BrowseCollectionMapping } from '@models/datasets/nisar';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { SceneFileComponent } from './scene-file/scene-file.component';
+import { MatIconButton } from '@angular/material/button';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { MatIcon } from '@angular/material/icon';
+import { DownloadFileButtonComponent } from '../../shared/download-file-button/download-file-button.component';
+import { OnDemandAddMenuComponent } from '../../shared/on-demand-add-menu/on-demand-add-menu.component';
+import { FileContentsComponent } from './file-contents/file-contents.component';
+import { ReadableSizeFromBytesPipe } from '../../../pipes/readable-size-from-bytes.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-scene-files',
   templateUrl: './scene-files.component.html',
   styleUrls: ['./scene-files.component.scss'],
-  standalone: false,
+  imports: [
+    NgIf,
+    MatList,
+    NgFor,
+    SceneFileComponent,
+    CdkVirtualScrollViewport,
+    CdkFixedSizeVirtualScroll,
+    MatSelectionList,
+    CdkVirtualForOf,
+    MatListOption,
+    MatIconButton,
+    MatMenuTrigger,
+    MatIcon,
+    DownloadFileButtonComponent,
+    OnDemandAddMenuComponent,
+    FileContentsComponent,
+    AsyncPipe,
+    ReadableSizeFromBytesPipe,
+    TranslateModule,
+  ],
 })
 export class SceneFilesComponent
   implements OnInit, OnDestroy, AfterContentInit

@@ -33,6 +33,16 @@ import {
 } from '@models';
 
 import { ThemePalette } from '@angular/material/core';
+import { NgIf, NgFor, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { MatButton } from '@angular/material/button';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { MatBadge } from '@angular/material/badge';
+import { SearchButtonComponent } from '../../shared/search-button/search-button.component';
+import { DocsModalComponent } from '../../shared/docs-modal/docs-modal.component';
+import { MatSuffix } from '@angular/material/input';
+import { TranslateModule } from '@ngx-translate/core';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -46,7 +56,23 @@ declare global {
   templateUrl: './header-buttons.component.html',
   styleUrls: ['./header-buttons.component.scss'],
   animations: [],
-  standalone: false,
+  imports: [
+    NgIf,
+    MatButton,
+    MatMenuTrigger,
+    MatTooltip,
+    MatIcon,
+    MatBadge,
+    MatMenu,
+    MatMenuItem,
+    SearchButtonComponent,
+    DocsModalComponent,
+    MatSuffix,
+    NgFor,
+    AsyncPipe,
+    TitleCasePipe,
+    TranslateModule,
+  ],
 })
 export class HeaderButtonsComponent implements OnInit, OnDestroy {
   authService = inject(AuthService);

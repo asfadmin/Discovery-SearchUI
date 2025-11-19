@@ -28,6 +28,25 @@ import {
 import { ApiLinkDialogComponent } from '../max-results-selector/api-link-dialog/api-link-dialog.component';
 import { ScreenSizeService } from '@services';
 import * as models from '@models';
+import {
+  NgIf,
+  NgStyle,
+  NgFor,
+  AsyncPipe,
+  UpperCasePipe,
+  TitleCasePipe,
+  KeyValuePipe,
+} from '@angular/common';
+import {
+  MatButtonToggleGroup,
+  MatButtonToggle,
+} from '@angular/material/button-toggle';
+import { MatButton } from '@angular/material/button';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatDivider } from '@angular/material/list';
+import { TranslateModule } from '@ngx-translate/core';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -40,7 +59,25 @@ declare global {
   selector: 'app-search-button',
   templateUrl: './search-button.component.html',
   styleUrls: ['./search-button.component.scss'],
-  standalone: false,
+  imports: [
+    NgIf,
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    MatButton,
+    MatMenuTrigger,
+    MatIcon,
+    NgStyle,
+    MatTooltip,
+    MatMenu,
+    MatMenuItem,
+    MatDivider,
+    NgFor,
+    AsyncPipe,
+    UpperCasePipe,
+    TitleCasePipe,
+    KeyValuePipe,
+    TranslateModule,
+  ],
 })
 export class SearchButtonComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

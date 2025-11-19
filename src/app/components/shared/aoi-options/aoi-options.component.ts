@@ -8,7 +8,7 @@ import {
   OnDestroy,
   inject,
 } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormsModule } from '@angular/forms';
 
 import { Subject } from 'rxjs';
 import { tap, delay } from 'rxjs/operators';
@@ -23,6 +23,20 @@ import { SubSink } from 'subsink';
 import { getSearchType, SetSearchOutOfDate } from '@store/search';
 import { getIsFiltersMenuOpen, getIsResultsMenuOpen } from '@store/ui';
 import { SetGeocode } from '@store/filters';
+import { NgIf } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { MatIconButton, MatButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import {
+  MatFormField,
+  MatLabel,
+  MatInput,
+  MatSuffix,
+} from '@angular/material/input';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { GeocodeSelectorComponent } from './geocode-selector/geocode-selector.component';
+import { FileUploadDialogComponent } from './file-upload/file-upload-dialog/file-upload-dialog.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -35,7 +49,22 @@ declare global {
   selector: 'app-aoi-options',
   templateUrl: './aoi-options.component.html',
   styleUrls: ['./aoi-options.component.scss'],
-  standalone: false,
+  imports: [
+    NgIf,
+    MatIcon,
+    MatIconButton,
+    MatTooltip,
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    CdkTextareaAutosize,
+    MatInput,
+    MatButton,
+    MatSuffix,
+    GeocodeSelectorComponent,
+    FileUploadDialogComponent,
+    TranslateModule,
+  ],
 })
 export class AoiOptionsComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

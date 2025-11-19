@@ -10,6 +10,25 @@ import { DatasetForProductService } from '@services';
 import { SubSink } from 'subsink';
 
 import { CMRProductPair, SearchType } from '@models';
+import { MatButton } from '@angular/material/button';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { MatCard, MatCardSubtitle } from '@angular/material/card';
+import { ScenesListHeaderComponent } from '../scenes-list-header/scenes-list-header.component';
+import { ScenesListComponent } from '../scenes-list/scenes-list.component';
+import { SceneDetailComponent } from '../scene-detail/scene-detail.component';
+import { MatTooltip } from '@angular/material/tooltip';
+import { SceneMetadataComponent } from '../../shared/scene-metadata/scene-metadata.component';
+import { SceneFilesComponent } from '../scene-files/scene-files.component';
+import {
+  MatButtonToggleGroup,
+  MatButtonToggle,
+} from '@angular/material/button-toggle';
+import { MatIcon } from '@angular/material/icon';
+import { BaselineChartComponent } from '../../baseline-chart/baseline-chart.component';
+import { DocsModalComponent } from '../../shared/docs-modal/docs-modal.component';
+import { SBASChartComponent } from '../../sbas-chart/sbas-chart.component';
+import { SbasSlidersTwoComponent } from '../sbas-results-menu/sbas-sliders-two/sbas-sliders-two.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 enum MobileViews {
   LIST = 0,
@@ -25,7 +44,28 @@ enum MobileViews {
     './mobile-results-menu.component.scss',
     '../results-menu.component.scss',
   ],
-  standalone: false,
+  imports: [
+    MatButton,
+    NgIf,
+    MatCard,
+    MatCardSubtitle,
+    ScenesListHeaderComponent,
+    ScenesListComponent,
+    SceneDetailComponent,
+    NgFor,
+    MatTooltip,
+    SceneMetadataComponent,
+    SceneFilesComponent,
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    MatIcon,
+    BaselineChartComponent,
+    DocsModalComponent,
+    SBASChartComponent,
+    SbasSlidersTwoComponent,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class MobileResultsMenuComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

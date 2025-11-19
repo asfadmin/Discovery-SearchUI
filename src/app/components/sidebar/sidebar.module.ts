@@ -7,8 +7,12 @@ import { SaveUserFiltersModule } from './save-user-filters';
 import { SidebarComponent } from './sidebar.component';
 
 @NgModule({
-  declarations: [SidebarComponent],
-  imports: [CommonModule, SavedSearchesModule, SaveUserFiltersModule],
+  imports: [
+    CommonModule,
+    SavedSearchesModule,
+    SaveUserFiltersModule,
+    SidebarComponent,
+  ],
   exports: [SidebarComponent],
 })
 export class SidebarModule {}

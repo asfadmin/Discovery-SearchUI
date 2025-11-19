@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSharedModule } from '@shared';
 
 import { PathSelectorModule } from '@components/shared/selectors/path-selector';
 import { OtherSelectorModule } from '@components/shared/selectors/other-selector';
@@ -26,13 +25,11 @@ import { ProductScienceSelectorComponent } from '@components/shared/selectors/pr
 import { ProductionConfigSelectorComponent } from '@components/shared/selectors/production-config-selector/production-config-selector.component';
 
 @NgModule({
-  declarations: [DatasetFiltersComponent],
   imports: [
     CommonModule,
     FormsModule,
     MatSelectModule,
     MatExpansionModule,
-    MatSharedModule,
     DocsModalModule,
     MissionSelectorModule,
     PathSelectorModule,
@@ -49,6 +46,7 @@ import { ProductionConfigSelectorComponent } from '@components/shared/selectors/
     ObservationPanelSelectorModule,
     ProductScienceSelectorComponent,
     ProductionConfigSelectorComponent,
+    DatasetFiltersComponent,
   ],
   exports: [DatasetFiltersComponent],
 })

@@ -1,9 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({
-  name: 'polarizationCount',
-  standalone: false,
-})
+@Pipe({ name: 'polarizationCount' })
 export class PolarizationCountPipe implements PipeTransform {
   transform(input: string): string {
     const count = (input.match(/,/g) || []).length;

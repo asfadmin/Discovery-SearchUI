@@ -45,12 +45,53 @@ import {
   CodeExportType,
 } from '@components/shared/code-export';
 import { MatDialog } from '@angular/material/dialog';
+import {
+  NgIf,
+  NgClass,
+  NgFor,
+  AsyncPipe,
+  TitleCasePipe,
+  KeyValuePipe,
+} from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+import {
+  MatButtonToggleGroup,
+  MatButtonToggle,
+} from '@angular/material/button-toggle';
+import {
+  MatMenuTrigger,
+  MatMenu,
+  MatMenuItem,
+  MatMenuContent,
+} from '@angular/material/menu';
+import { OnDemandAddMenuComponent } from '../../shared/on-demand-add-menu/on-demand-add-menu.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-scenes-list-header',
   templateUrl: './scenes-list-header.component.html',
   styleUrls: ['./scenes-list-header.component.scss'],
-  standalone: false,
+  imports: [
+    NgIf,
+    NgClass,
+    MatIcon,
+    MatTooltip,
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    MatMenuTrigger,
+    OnDemandAddMenuComponent,
+    MatMenu,
+    MatMenuItem,
+    MatMenuContent,
+    NgFor,
+    FontAwesomeModule,
+    AsyncPipe,
+    TitleCasePipe,
+    KeyValuePipe,
+    TranslateModule,
+  ],
 })
 export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

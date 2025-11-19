@@ -12,7 +12,6 @@ import { MatSliderModule } from '@angular/material/slider';
 import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [DateRangeComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -23,6 +22,7 @@ import { SharedModule } from '@shared';
     MatSlideToggleModule,
     MatSliderModule,
     SharedModule,
+    DateRangeComponent,
   ],
   exports: [DateRangeComponent],
 })

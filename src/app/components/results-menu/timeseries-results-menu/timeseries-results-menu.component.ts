@@ -19,7 +19,7 @@ import {
   Subject,
   withLatestFrom,
 } from 'rxjs';
-import { ResizeEvent } from 'angular-resizable-element';
+import { ResizeEvent, ResizableModule } from 'angular-resizable-element';
 
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
@@ -49,12 +49,28 @@ import {
   MatDialogContent,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { MatButton } from '@angular/material/button';
+import { MatButton, MatIconButton } from '@angular/material/button';
 import { PointHistoryState } from '@services/point-history.service';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 import { AsfLanguageService } from '@services/asf-language.service';
 import { SharedModule } from '@shared';
+import {
+  NgIf,
+  NgTemplateOutlet,
+  AsyncPipe,
+  KeyValuePipe,
+} from '@angular/common';
+import { MatCard, MatCardSubtitle } from '@angular/material/card';
+import { ScenesListHeaderComponent } from '../scenes-list-header/scenes-list-header.component';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatButtonToggle } from '@angular/material/button-toggle';
+import { TimeseriesChartComponent } from '../../timeseries-chart/timeseries-chart.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { AoiIconPipe } from '../../../pipes/aoi-icon.pipe';
 
 export interface Task {
   aoi: string;
@@ -83,7 +99,25 @@ export interface PointSeries {
     './timeseries-results-menu.component.scss',
     '../results-menu.component.scss',
   ],
-  standalone: false,
+  imports: [
+    NgIf,
+    MatCard,
+    MatCardSubtitle,
+    ScenesListHeaderComponent,
+    MatCheckbox,
+    MatIconButton,
+    MatTooltip,
+    MatIcon,
+    NgTemplateOutlet,
+    MatProgressSpinner,
+    ResizableModule,
+    MatButtonToggle,
+    TimeseriesChartComponent,
+    AsyncPipe,
+    KeyValuePipe,
+    TranslateModule,
+    AoiIconPipe,
+  ],
 })
 export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

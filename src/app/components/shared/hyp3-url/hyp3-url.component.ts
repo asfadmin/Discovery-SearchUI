@@ -4,12 +4,14 @@ import { SubSink } from 'subsink';
 import * as services from '@services';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
+import { NgIf } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-hyp3-url',
   templateUrl: './hyp3-url.component.html',
   styleUrls: ['./hyp3-url.component.scss'],
-  standalone: false,
+  imports: [NgIf, MatIcon],
 })
 export class Hyp3UrlComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

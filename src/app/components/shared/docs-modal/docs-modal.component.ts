@@ -19,10 +19,21 @@
 //    </app-docs-modal>
 
 import { Component, Input, OnInit, OnDestroy, inject } from '@angular/core';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MAT_DIALOG_DATA,
+  MatDialogContent,
+  MatDialogActions,
+  MatDialogClose,
+} from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
+import { NgIf } from '@angular/common';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatButton } from '@angular/material/button';
 
 export interface DialogData {
   rawUrl: string;
@@ -33,7 +44,7 @@ export interface DialogData {
   selector: 'app-docs-modal',
   templateUrl: './docs-modal.component.html',
   styleUrls: ['./docs-modal.component.scss'],
-  standalone: false,
+  imports: [NgIf, MatTooltip, MatIcon, TranslateModule],
 })
 export class DocsModalComponent implements OnInit, OnDestroy {
   dialog = inject(MatDialog);
@@ -115,7 +126,14 @@ export class DocsModalComponent implements OnInit, OnDestroy {
   selector: 'app-docs-modal-iframe',
   templateUrl: 'docs-modal-iframe.html',
   styleUrls: ['docs-modal-iframe.scss'],
-  standalone: false,
+  imports: [
+    CdkScrollable,
+    MatDialogContent,
+    MatDialogActions,
+    MatButton,
+    MatDialogClose,
+    TranslateModule,
+  ],
 })
 export class DocsModalIframeComponent {
   data = inject<DialogData>(MAT_DIALOG_DATA);

@@ -8,13 +8,13 @@ import { SharedModule } from '@shared';
 import { Hyp3JobTypeSelectorComponent } from './hyp3-job-type-selector.component';
 
 @NgModule({
-  declarations: [Hyp3JobTypeSelectorComponent],
   imports: [
     CommonModule,
     FormsModule,
     MatCheckboxModule,
     MatSelectModule,
     SharedModule,
+    Hyp3JobTypeSelectorComponent,
   ],
   exports: [Hyp3JobTypeSelectorComponent],
 })

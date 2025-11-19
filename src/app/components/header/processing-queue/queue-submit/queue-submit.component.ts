@@ -9,12 +9,14 @@ import {
   MatBottomSheetRef,
   MAT_BOTTOM_SHEET_DATA,
 } from '@angular/material/bottom-sheet';
+import { MatButton } from '@angular/material/button';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-queue-submit',
   templateUrl: './queue-submit.component.html',
   styleUrls: ['./queue-submit.component.scss'],
-  standalone: false,
+  imports: [MatButton, TranslateModule],
 })
 export class QueueSubmitComponent {
   data = inject(MAT_BOTTOM_SHEET_DATA);

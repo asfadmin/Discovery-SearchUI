@@ -11,13 +11,30 @@ import * as filtersStore from '@store/filters';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { SubSink } from 'subsink';
-import { MatSelectChange } from '@angular/material/select';
+import {
+  MatSelectChange,
+  MatSelect,
+  MatOption,
+} from '@angular/material/select';
+import { MatFormField, MatHint } from '@angular/material/input';
+import { NgFor, NgIf } from '@angular/common';
+import { MatTooltip } from '@angular/material/tooltip';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-short-name-selector',
   templateUrl: './short-name-selector.component.html',
   styleUrl: './short-name-selector.component.scss',
-  standalone: false,
+  imports: [
+    MatFormField,
+    MatSelect,
+    NgFor,
+    MatOption,
+    MatTooltip,
+    NgIf,
+    MatHint,
+    TranslateModule,
+  ],
 })
 export class ShortNameSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

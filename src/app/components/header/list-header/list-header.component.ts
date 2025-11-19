@@ -6,12 +6,28 @@ import * as uiStore from '@store/ui';
 
 import { ScreenSizeService } from '@services';
 import { Breakpoints } from '@models';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { SearchTypeSelectorComponent } from '../../shared/selectors/search-type-selector/search-type-selector.component';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { SearchButtonComponent } from '../../shared/search-button/search-button.component';
+import { HeaderButtonsComponent } from '../header-buttons/header-buttons.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-list-header',
   templateUrl: './list-header.component.html',
   styleUrls: ['./list-header.component.css', '../header.component.scss'],
-  standalone: false,
+  imports: [
+    NgIf,
+    SearchTypeSelectorComponent,
+    MatButton,
+    MatIcon,
+    SearchButtonComponent,
+    HeaderButtonsComponent,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class ListHeaderComponent {
   private store$ = inject<Store<AppState>>(Store);

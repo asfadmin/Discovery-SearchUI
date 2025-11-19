@@ -10,7 +10,7 @@ import {
 import { combineLatest } from 'rxjs';
 import { map, tap, filter } from 'rxjs/operators';
 
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -23,6 +23,8 @@ import { criticalBaselineFor, CMRProduct } from '@models';
 import * as d3 from 'd3';
 import * as models from '@models';
 import * as services from '@services';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { ResizedDirective } from '../../directives/resized.directive';
 export enum ChartDatasets {
   MASTER = 0,
   SELECTED = 1,
@@ -41,7 +43,7 @@ interface Point {
   selector: 'app-baseline-chart',
   templateUrl: './baseline-chart.component.html',
   styleUrls: ['./baseline-chart.component.scss'],
-  standalone: false,
+  imports: [NgIf, ResizedDirective, AsyncPipe, TranslateModule],
 })
 export class BaselineChartComponent implements OnInit, OnDestroy {
   translate = inject(TranslateService);

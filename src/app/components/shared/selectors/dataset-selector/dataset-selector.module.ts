@@ -7,7 +7,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSharedModule } from '@shared';
+
 import { DatasetSelectorComponent } from './dataset-selector.component';
 import { DatasetComponent } from './dataset/dataset.component';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -22,12 +22,12 @@ import { SharedModule } from '@shared';
     MatMenuModule,
     MatSelectModule,
     MatListModule,
-    MatSharedModule,
     MatBadgeModule,
     DocsModalModule,
     SharedModule,
+    DatasetSelectorComponent,
+    DatasetComponent,
   ],
-  declarations: [DatasetSelectorComponent, DatasetComponent],
   exports: [DatasetSelectorComponent, DatasetComponent],
 })
 export class DatasetSelectorModule {}

@@ -1,5 +1,11 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+} from '@angular/material/dialog';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -12,12 +18,46 @@ import * as searchStore from '@store/search';
 
 import * as models from '@models';
 import * as services from '@services';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { ProjectNameSelectorComponent } from '../../../shared/selectors/project-name-selector/project-name-selector.component';
+import {
+  NgFor,
+  NgPlural,
+  NgPluralCase,
+  NgIf,
+  TitleCasePipe,
+} from '@angular/common';
+import {
+  MatSelectionList,
+  MatListOption,
+  MatListItemTitle,
+  MatListItemLine,
+} from '@angular/material/list';
+import { MatButton } from '@angular/material/button';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-confirmation',
   templateUrl: './confirmation.component.html',
   styleUrls: ['./confirmation.component.scss'],
-  standalone: false,
+  imports: [
+    MatDialogTitle,
+    CdkScrollable,
+    MatDialogContent,
+    ProjectNameSelectorComponent,
+    NgFor,
+    MatSelectionList,
+    MatListOption,
+    MatListItemTitle,
+    MatListItemLine,
+    NgPlural,
+    NgPluralCase,
+    MatDialogActions,
+    MatButton,
+    NgIf,
+    TitleCasePipe,
+    TranslateModule,
+  ],
 })
 export class ConfirmationComponent implements OnInit {
   dialogRef = inject<MatDialogRef<ConfirmationComponent>>(MatDialogRef);

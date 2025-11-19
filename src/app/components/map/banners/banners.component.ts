@@ -3,15 +3,13 @@ import { ActiveToast, ToastrService } from 'ngx-toastr';
 import { Banner } from '@models';
 import { MatDialog } from '@angular/material/dialog';
 import { BannerDialogComponent } from '@components/map/banners/banner-dialog/banner-dialog.component';
+import { NgFor } from '@angular/common';
 
 export interface DialogData {
   title: string;
 }
 
-@Directive({
-  selector: '[bannerCreate]',
-  standalone: false,
-})
+@Directive({ selector: '[bannerCreate]' })
 export class BannerCreateDirective implements OnInit {
   private toastr = inject(ToastrService);
   dialog = inject(MatDialog);
@@ -127,7 +125,7 @@ export class BannerCreateDirective implements OnInit {
   selector: 'app-banners',
   templateUrl: './banners.component.html',
   styleUrls: ['./banners.component.scss'],
-  standalone: false,
+  imports: [NgFor, BannerCreateDirective],
 })
 export class BannersComponent {
   @Input() banners: Banner[];

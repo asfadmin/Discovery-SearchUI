@@ -8,7 +8,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [DownloadFileButtonComponent],
   exports: [DownloadFileButtonComponent],
   imports: [
     CommonModule,
@@ -17,6 +16,7 @@ import { SharedModule } from '@shared';
     MatProgressSpinnerModule,
     MatIconModule,
     SharedModule,
+    DownloadFileButtonComponent,
   ],
 })
 export class DownloadFileButtonModule {}

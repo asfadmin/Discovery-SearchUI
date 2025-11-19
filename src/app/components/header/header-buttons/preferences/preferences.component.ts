@@ -11,7 +11,12 @@ import { AppState } from '@store';
 import * as userStore from '@store/user';
 import * as hyp3Store from '@store/hyp3';
 
-import { MatDialogRef } from '@angular/material/dialog';
+import {
+  MatDialogRef,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+} from '@angular/material/dialog';
 import {
   MapLayerTypes,
   UserAuth,
@@ -25,16 +30,43 @@ import {
 import { Hyp3ApiService, ThemingService } from '@services';
 import { SubSink } from 'subsink';
 import { take } from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { AsfLanguageService } from '@services/asf-language.service';
 import * as models from '@models';
 import * as services from '@services';
+import { MatIcon } from '@angular/material/icon';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { FormsModule } from '@angular/forms';
+import { MatFormField, MatLabel } from '@angular/material/input';
+import { MatSelect, MatOption } from '@angular/material/select';
+import { NgFor, UpperCasePipe, TitleCasePipe } from '@angular/common';
+import { DatasetSelectorComponent } from '../../../shared/selectors/dataset-selector/dataset-selector.component';
+import { Hyp3UrlSelectorComponent } from './hyp3-url-selector/hyp3-url-selector.component';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-preferences',
   templateUrl: './preferences.component.html',
   styleUrls: ['./preferences.component.scss'],
-  standalone: false,
+  imports: [
+    MatDialogTitle,
+    MatIcon,
+    CdkScrollable,
+    MatDialogContent,
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    MatSelect,
+    NgFor,
+    MatOption,
+    DatasetSelectorComponent,
+    Hyp3UrlSelectorComponent,
+    MatDialogActions,
+    MatButton,
+    UpperCasePipe,
+    TitleCasePipe,
+    TranslateModule,
+  ],
 })
 export class PreferencesComponent implements OnInit, OnDestroy {
   private dialogRef = inject<MatDialogRef<PreferencesComponent>>(MatDialogRef);

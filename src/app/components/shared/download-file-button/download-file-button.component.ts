@@ -30,12 +30,26 @@ import * as userStore from '@store/user';
 import { SubSink } from 'subsink';
 import { AuthService, NotificationService } from '@services';
 import { HttpClient, HttpEventType } from '@angular/common/http';
+import { NgIf } from '@angular/common';
+import { MatIconButton, MatButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-download-file-button',
   templateUrl: './download-file-button.component.html',
   styleUrls: ['./download-file-button.component.scss'],
-  standalone: false,
+  imports: [
+    NgIf,
+    MatIconButton,
+    MatTooltip,
+    MatIcon,
+    MatButton,
+    MatProgressSpinner,
+    TranslateModule,
+  ],
 })
 export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
   private downloadService = inject(DownloadService);

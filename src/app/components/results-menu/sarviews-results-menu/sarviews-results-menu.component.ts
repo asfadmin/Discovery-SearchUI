@@ -10,6 +10,21 @@ import { SubSink } from 'subsink';
 import * as models from '@models';
 import { map } from 'rxjs/operators';
 import { OpenFiltersMenu } from '@store/ui';
+import { MatCard, MatCardSubtitle } from '@angular/material/card';
+import { NgClass, NgIf, AsyncPipe } from '@angular/common';
+import { ScenesListHeaderComponent } from '../scenes-list-header/scenes-list-header.component';
+import { ScenesListComponent } from '../scenes-list/scenes-list.component';
+import { SceneDetailComponent } from '../scene-detail/scene-detail.component';
+import { EventProductSortSelectorComponent } from '../../shared/event-product-sort-selector/event-product-sort-selector.component';
+import {
+  MatButtonToggleGroup,
+  MatButtonToggle,
+} from '@angular/material/button-toggle';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { SceneFilesComponent } from '../scene-files/scene-files.component';
+import { MatButton } from '@angular/material/button';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-sarviews-results-menu',
@@ -18,7 +33,24 @@ import { OpenFiltersMenu } from '@store/ui';
     './sarviews-results-menu.component.scss',
     '../results-menu.component.scss',
   ],
-  standalone: false,
+  imports: [
+    MatCard,
+    NgClass,
+    MatCardSubtitle,
+    ScenesListHeaderComponent,
+    ScenesListComponent,
+    NgIf,
+    SceneDetailComponent,
+    EventProductSortSelectorComponent,
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    MatTooltip,
+    MatIcon,
+    SceneFilesComponent,
+    MatButton,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class SarviewsResultsMenuComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

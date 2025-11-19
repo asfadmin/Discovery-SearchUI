@@ -5,8 +5,7 @@ import { BaselineSlidersComponent } from './baseline-sliders.component';
 import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [BaselineSlidersComponent],
-  imports: [CommonModule, SharedModule],
+  imports: [CommonModule, SharedModule, BaselineSlidersComponent],
   exports: [BaselineSlidersComponent],
 })
 export class BaselineSlidersModule {}

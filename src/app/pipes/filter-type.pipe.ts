@@ -9,20 +9,14 @@ import {
   DisplacementFiltersType,
 } from '@models';
 
-@Pipe({
-  name: 'baselineFilter',
-  standalone: false,
-})
+@Pipe({ name: 'baselineFilter' })
 export class BaselineFilterPipe implements PipeTransform {
   transform(input: FilterType): BaselineFiltersType {
     return input as BaselineFiltersType;
   }
 }
 
-@Pipe({
-  name: 'SBASFilter',
-  standalone: false,
-})
+@Pipe({ name: 'SBASFilter' })
 export class SBASFilterPipe implements PipeTransform {
   transform(input: FilterType): SbasFiltersType {
     return input as SbasFiltersType;
@@ -38,29 +32,20 @@ export class TimeseriesFilterPipe implements PipeTransform {
     return input as TimeseriesFiltersType;
   }
 }
-@Pipe({
-  name: 'geographicFilter',
-  standalone: false,
-})
+@Pipe({ name: 'geographicFilter' })
 export class GeographicFilterPipe implements PipeTransform {
   transform(input: FilterType): GeographicFiltersType {
     return input as GeographicFiltersType;
   }
 }
 
-@Pipe({
-  name: 'listFilter',
-  standalone: false,
-})
+@Pipe({ name: 'listFilter' })
 export class ListFilterPipe implements PipeTransform {
   transform(input: FilterType): ListFiltersType {
     return input as ListFiltersType;
   }
 }
-@Pipe({
-  name: 'displacementFilter',
-  standalone: false,
-})
+@Pipe({ name: 'displacementFilter' })
 export class DisplacementFilterPipe implements PipeTransform {
   transform(input: FilterType): DisplacementFiltersType {
     return input as DisplacementFiltersType;

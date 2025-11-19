@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatSharedModule } from '@shared';
 
 import { ProductTypeSelectorModule } from '@components/shared/selectors/product-type-selector';
 import { ShortNameSelectorModule } from '@components/shared/selectors/short-name-selector';
@@ -13,22 +12,19 @@ import { OtherSelectorComponent } from './other-selector.component';
 import { BurstSelectorModule } from '../burst-selector';
 import { SharedModule } from '@shared';
 import { MatInputModule } from '@angular/material/input';
-import { OperaCalibrationDataSelectorModule } from '../opera-calibration-data-selector';
 
 @NgModule({
-  declarations: [OtherSelectorComponent],
   imports: [
     CommonModule,
     FormsModule,
     MatSelectModule,
     MatButtonToggleModule,
-    MatSharedModule,
     ProductTypeSelectorModule,
     ShortNameSelectorModule,
     BurstSelectorModule,
     SharedModule,
     MatInputModule,
-    OperaCalibrationDataSelectorModule,
+    OtherSelectorComponent,
   ],
   exports: [OtherSelectorComponent],
 })

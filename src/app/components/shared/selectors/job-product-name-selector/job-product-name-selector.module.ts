@@ -11,7 +11,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [JobProductNameSelectorComponent],
   imports: [
     BrowserAnimationsModule,
     CommonModule,
@@ -23,6 +22,7 @@ import { SharedModule } from '@shared';
     ReactiveFormsModule,
     FormsModule,
     SharedModule,
+    JobProductNameSelectorComponent,
   ],
   exports: [JobProductNameSelectorComponent],
 })

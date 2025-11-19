@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatSharedModule } from '@shared';
 
 import { SearchButtonModule } from '@components/shared/search-button';
 import { ClearButtonModule } from '@components/shared/clear-button';
@@ -15,7 +14,7 @@ import { MapControlsModule } from './map-controls';
 import { AoiOptionsModule } from '@components/shared/aoi-options';
 import { AttributionsComponent } from './attributions/attributions.component';
 import { FiltersDropdownModule } from '@components/filters-dropdown';
-import { BannersModule } from './banners';
+
 import { DisplacementLayersModule } from './displacement-layers';
 
 import { FileUploadModule } from '@components/shared/aoi-options/file-upload';
@@ -24,10 +23,7 @@ import { SharedModule } from '@shared';
 @NgModule({
   imports: [
     CommonModule,
-
     MatDialogModule,
-    MatSharedModule,
-
     ViewSelectorModule,
     LayerSelectorModule,
     GridlinesSelectorModule,
@@ -35,15 +31,14 @@ import { SharedModule } from '@shared';
     FiltersDropdownModule,
     AoiOptionsModule,
     DisplacementLayersModule,
-
     SearchButtonModule,
     ClearButtonModule,
     MaxResultsSelectorModule,
-    BannersModule,
     FileUploadModule,
     SharedModule,
+    MapComponent,
+    AttributionsComponent,
   ],
-  declarations: [MapComponent, AttributionsComponent],
   exports: [MapComponent],
 })
 export class MapModule {}

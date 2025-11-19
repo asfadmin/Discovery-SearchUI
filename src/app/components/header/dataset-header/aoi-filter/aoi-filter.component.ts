@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, OnDestroy, inject } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormsModule } from '@angular/forms';
 import { ClipboardService } from 'ngx-clipboard';
 import { SubSink } from 'subsink';
 
@@ -16,13 +16,37 @@ import { menuAnimation, MapInteractionModeType, SearchType } from '@models';
 import * as services from '@services';
 import { DrawNewPolygon } from '@store/map';
 import { SetGeocode } from '@store/filters';
+import {
+  MatFormField,
+  MatLabel,
+  MatInput,
+  MatSuffix,
+} from '@angular/material/input';
+import { NgIf } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatCard } from '@angular/material/card';
+import { AoiOptionsComponent } from '../../../shared/aoi-options/aoi-options.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-aoi-filter',
   templateUrl: './aoi-filter.component.html',
   styleUrls: ['./aoi-filter.component.scss', '../../header.component.scss'],
   animations: menuAnimation,
-  standalone: false,
+  imports: [
+    MatFormField,
+    MatLabel,
+    MatInput,
+    FormsModule,
+    NgIf,
+    MatIcon,
+    MatSuffix,
+    MatTooltip,
+    MatCard,
+    AoiOptionsComponent,
+    TranslateModule,
+  ],
 })
 export class AoiFilterComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

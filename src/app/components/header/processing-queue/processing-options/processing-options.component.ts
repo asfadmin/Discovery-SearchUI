@@ -6,12 +6,27 @@ import * as hyp3Store from '@store/hyp3';
 import * as queueStore from '@store/queue';
 
 import * as models from '@models';
+import { NgIf, NgFor, UpperCasePipe } from '@angular/common';
+import { DropdownOptionComponent } from './dropdown-option/dropdown-option.component';
+import { RangeOptionComponent } from './range-option/range-option.component';
+import { CheckboxOptionComponent } from './checkbox-option/checkbox-option.component';
+import { SubsetOptionComponent } from './subset-option/subset-option.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-processing-options',
   templateUrl: './processing-options.component.html',
   styleUrls: ['./processing-options.component.scss'],
-  standalone: false,
+  imports: [
+    NgIf,
+    NgFor,
+    DropdownOptionComponent,
+    RangeOptionComponent,
+    CheckboxOptionComponent,
+    SubsetOptionComponent,
+    UpperCasePipe,
+    TranslateModule,
+  ],
 })
 export class ProcessingOptionsComponent implements OnInit {
   private store$ = inject<Store<AppState>>(Store);

@@ -9,7 +9,6 @@ import { DisplacementLayersComponent } from './displacement-layers.component';
 import { MapLegendComponent } from './map-legend/map-legend.component';
 import { DocsModalModule } from '@components/shared/docs-modal';
 
-import { MatSharedModule } from '@shared';
 import { SharedModule } from '@shared';
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import { MatSlider, MatSliderThumb } from '@angular/material/slider';
@@ -21,7 +20,6 @@ import { FormsModule } from '@angular/forms';
     MatMenuModule,
     MatCheckboxModule,
     MatRadioModule,
-    MatSharedModule,
     SharedModule,
     DocsModalModule,
     MapLegendComponent,
@@ -29,8 +27,8 @@ import { FormsModule } from '@angular/forms';
     MatSlider,
     MatSliderThumb,
     FormsModule,
+    DisplacementLayersComponent,
   ],
-  declarations: [DisplacementLayersComponent],
   exports: [DisplacementLayersComponent],
 })
 export class DisplacementLayersModule {}

@@ -9,7 +9,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [EventProductSortSelectorComponent],
   imports: [
     CommonModule,
     MatSelectModule,
@@ -17,6 +16,7 @@ import { SharedModule } from '@shared';
     MatIconModule,
     MatMenuModule,
     SharedModule,
+    EventProductSortSelectorComponent,
   ],
   exports: [EventProductSortSelectorComponent],
 })

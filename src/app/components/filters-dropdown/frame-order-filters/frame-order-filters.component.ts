@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSharedModule } from '@shared';
 
 import { PathSelectorModule } from '@components/shared/selectors/path-selector';
 import { OtherSelectorModule } from '@components/shared/selectors/other-selector';
@@ -50,7 +49,6 @@ enum FilterPanel {
     FlightDirectionSelectorComponent,
     MatSelectModule,
     MatExpansionModule,
-    MatSharedModule,
     DocsModalModule,
     MissionSelectorModule,
     PathSelectorModule,

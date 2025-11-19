@@ -8,11 +8,39 @@ import * as filtersStore from '@store/filters';
 import { PropertyService } from '@services';
 import { SubSink } from 'subsink';
 import * as models from '@models';
+import { MatFormField, MatHint } from '@angular/material/input';
+import {
+  MatSelect,
+  MatSelectTrigger,
+  MatOption,
+} from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
+import { NgFor, NgIf, KeyValuePipe } from '@angular/common';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { MatTooltip } from '@angular/material/tooltip';
+import { TranslateModule } from '@ngx-translate/core';
+import { JoinPipe } from '../../../../pipes/join.pipe';
+import { PolarizationCountPipe } from '../../../../pipes/polarization.pipe';
 @Component({
   selector: 'app-observation-panel-selector',
   templateUrl: './observation-panel-selector.component.html',
   styleUrl: './observation-panel-selector.component.scss',
-  standalone: false,
+  imports: [
+    MatFormField,
+    MatSelect,
+    FormsModule,
+    MatSelectTrigger,
+    NgFor,
+    MatOption,
+    NgIf,
+    MatHint,
+    MatSlideToggle,
+    MatTooltip,
+    KeyValuePipe,
+    TranslateModule,
+    JoinPipe,
+    PolarizationCountPipe,
+  ],
 })
 export class ObservationPanelSelectorComponent implements OnDestroy, OnInit {
   private store$ = inject<Store<AppState>>(Store);

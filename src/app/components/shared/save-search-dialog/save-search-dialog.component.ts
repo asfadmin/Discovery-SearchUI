@@ -1,5 +1,11 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+} from '@angular/material/dialog';
 import { v1 as uuid } from 'uuid';
 
 import { combineLatest } from 'rxjs';
@@ -15,12 +21,33 @@ import { SavedSearchService, NotificationService } from '@services';
 import * as models from '@models';
 
 import { AsfLanguageService } from '@services/asf-language.service';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { FormsModule } from '@angular/forms';
+import { MatFormField, MatInput, MatHint } from '@angular/material/input';
+import { SearchFiltersComponent } from '../../sidebar/saved-searches/saved-search/search-filters/search-filters.component';
+import { MatButton } from '@angular/material/button';
+import { UpperCasePipe, TitleCasePipe } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-save-search-dialog',
   templateUrl: './save-search-dialog.component.html',
   styleUrls: ['./save-search-dialog.component.scss'],
-  standalone: false,
+  imports: [
+    MatDialogTitle,
+    CdkScrollable,
+    MatDialogContent,
+    FormsModule,
+    MatFormField,
+    MatInput,
+    MatHint,
+    SearchFiltersComponent,
+    MatDialogActions,
+    MatButton,
+    UpperCasePipe,
+    TitleCasePipe,
+    TranslateModule,
+  ],
 })
 export class SaveSearchDialogComponent implements OnInit {
   dialogRef = inject<MatDialogRef<SaveSearchDialogComponent>>(MatDialogRef);

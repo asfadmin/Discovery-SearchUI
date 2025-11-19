@@ -5,12 +5,14 @@ import { map } from 'rxjs/operators';
 
 import { ScreenSizeService } from '@services';
 import { SearchType } from '@models';
+import { NgIf } from '@angular/common';
+import { TruncateModule } from '@yellowspot/ng-truncate';
 
 @Component({
   selector: 'app-file-name',
   templateUrl: './file-name.component.html',
   styleUrls: ['./file-name.component.scss'],
-  standalone: false,
+  imports: [NgIf, TruncateModule],
 })
 export class FileNameComponent implements OnInit, OnDestroy {
   private screenSize = inject(ScreenSizeService);

@@ -1,16 +1,23 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { MatSelectChange } from '@angular/material/select';
+import {
+  MatSelectChange,
+  MatSelect,
+  MatOption,
+} from '@angular/material/select';
 import * as models from '@models';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { getHyp3ProductTypes, SetHyp3ProductTypes } from '@store/filters';
 import { SubSink } from 'subsink';
+import { MatFormField } from '@angular/material/input';
+import { NgFor } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-hyp3-job-type-selector',
   templateUrl: './hyp3-job-type-selector.component.html',
   styleUrls: ['./hyp3-job-type-selector.component.scss'],
-  standalone: false,
+  imports: [MatFormField, MatSelect, NgFor, MatOption, TranslateModule],
 })
 export class Hyp3JobTypeSelectorComponent implements OnInit {
   store$ = inject<Store<AppState>>(Store);

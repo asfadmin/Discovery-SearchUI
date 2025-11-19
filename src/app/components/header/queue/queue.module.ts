@@ -8,15 +8,11 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TruncateModule } from '@yellowspot/ng-truncate';
 
-import { MatSharedModule } from '@shared';
-import { PipesModule } from '@pipes';
-import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
-
 import { QueueComponent } from './queue.component';
 import { ResizableModule } from 'angular-resizable-element';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatDialogModule } from '@angular/material/dialog';
-import { ResizedEventModule } from '@directives/resized.directive';
+
 import { FileDownloadDirective } from '@directives/file-download.directive';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -28,7 +24,6 @@ import { DocsModalModule } from '@components/shared/docs-modal';
 import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [QueueComponent, FileDownloadDirective],
   imports: [
     CommonModule,
     MatMenuModule,
@@ -37,19 +32,17 @@ import { SharedModule } from '@shared';
     ClipboardModule,
     DownloadFileButtonModule,
     FontAwesomeModule,
-    CopyToClipboardModule,
-    MatSharedModule,
-    PipesModule,
     ResizableModule,
     DragDropModule,
     MatDialogModule,
-    ResizedEventModule,
     MatProgressBarModule,
     MatCheckboxModule,
     MatProgressSpinnerModule,
     DownloadAllModule,
     DocsModalModule,
     SharedModule,
+    QueueComponent,
+    FileDownloadDirective,
   ],
   exports: [QueueComponent],
 })

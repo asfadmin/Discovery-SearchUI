@@ -1,11 +1,29 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Range } from '@models';
+import {
+  MatFormField,
+  MatLabel,
+  MatInput,
+  MatError,
+} from '@angular/material/input';
+import { MatTooltip } from '@angular/material/tooltip';
+import { FormsModule } from '@angular/forms';
+import { NgIf, LowerCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-range-option',
   templateUrl: './range-option.component.html',
   styleUrls: ['./range-option.component.scss'],
-  standalone: false,
+  imports: [
+    MatFormField,
+    MatTooltip,
+    MatLabel,
+    MatInput,
+    FormsModule,
+    NgIf,
+    MatError,
+    LowerCasePipe,
+  ],
 })
 export class RangeOptionComponent implements OnInit {
   @Input() value: number;

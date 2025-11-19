@@ -10,10 +10,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSharedModule } from '@shared/mat-shared.module';
+
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
-import { PipesModule } from '@pipes';
 import { SceneMetadataModule } from '@components/shared/scene-metadata';
 import { EventMetadataModule } from '@components/shared/event-metadata';
 import { EventProductMetadataModule } from '@components/shared/event-product-metadata';
@@ -25,7 +24,6 @@ import { EventProductSortSelectorModule } from '@components/shared/event-product
 import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [ImageDialogComponent, BrowseListComponent],
   imports: [
     CommonModule,
     ScrollingModule,
@@ -34,12 +32,10 @@ import { SharedModule } from '@shared';
     MatButtonModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    MatSharedModule,
     MatCheckboxModule,
     MatListModule,
     MatDialogModule,
     MatMenuModule,
-    PipesModule,
     SceneMetadataModule,
     EventMetadataModule,
     EventProductMetadataModule,
@@ -47,6 +43,8 @@ import { SharedModule } from '@shared';
     MatSliderModule,
     EventProductSortSelectorModule,
     SharedModule,
+    ImageDialogComponent,
+    BrowseListComponent,
   ],
   exports: [ImageDialogComponent],
 })

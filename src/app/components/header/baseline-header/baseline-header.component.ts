@@ -11,12 +11,43 @@ import { Breakpoints } from '@models';
 import { SubSink } from 'subsink';
 import * as searchStore from '@store/search';
 import * as models from '@models';
+import {
+  NgIf,
+  NgSwitch,
+  NgSwitchCase,
+  NgSwitchDefault,
+  AsyncPipe,
+} from '@angular/common';
+import { SearchTypeSelectorComponent } from '../../shared/selectors/search-type-selector/search-type-selector.component';
+import { BaselineFrameReferenceToggleComponent } from '../../shared/selectors/baseline-frame-reference-toggle/baseline-frame-reference-toggle.component';
+import { DatasetSelectorComponent } from '../../shared/selectors/dataset-selector/dataset-selector.component';
+import { MasterSceneSelectorComponent } from '../../shared/selectors/master-scene-selector/master-scene-selector.component';
+import { SearchButtonComponent } from '../../shared/search-button/search-button.component';
+import { HeaderButtonsComponent } from '../header-buttons/header-buttons.component';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-baseline-header',
   templateUrl: './baseline-header.component.html',
   styleUrls: ['./baseline-header.component.css', '../header.component.scss'],
-  standalone: false,
+  imports: [
+    NgIf,
+    SearchTypeSelectorComponent,
+    BaselineFrameReferenceToggleComponent,
+    DatasetSelectorComponent,
+    MasterSceneSelectorComponent,
+    SearchButtonComponent,
+    HeaderButtonsComponent,
+    MatButton,
+    MatIcon,
+    NgSwitch,
+    NgSwitchCase,
+    NgSwitchDefault,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class BaselineHeaderComponent implements OnInit {
   private store$ = inject<Store<AppState>>(Store);

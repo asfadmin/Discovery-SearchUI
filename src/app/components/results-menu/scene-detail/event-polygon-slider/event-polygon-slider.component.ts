@@ -17,12 +17,13 @@ import * as noUiSlider from 'nouislider';
 import { Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, withLatestFrom } from 'rxjs/operators';
 import { SubSink } from 'subsink';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-event-polygon-slider',
   templateUrl: './event-polygon-slider.component.html',
   styleUrls: ['./event-polygon-slider.component.scss'],
-  standalone: false,
+  imports: [TranslateModule],
 })
 export class EventPolygonSliderComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

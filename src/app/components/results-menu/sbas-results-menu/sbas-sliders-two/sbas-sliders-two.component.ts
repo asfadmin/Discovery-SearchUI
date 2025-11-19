@@ -29,7 +29,16 @@ import {
   UntypedFormControl,
   UntypedFormGroup,
   Validators,
+  FormsModule,
 } from '@angular/forms';
+import {
+  MatFormField,
+  MatLabel,
+  MatInput,
+  MatError,
+} from '@angular/material/input';
+import { NgIf } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 declare let wNumb: any;
 
@@ -37,7 +46,15 @@ declare let wNumb: any;
   selector: 'app-sbas-sliders-two',
   templateUrl: './sbas-sliders-two.component.html',
   styleUrls: ['./sbas-sliders-two.component.scss'],
-  standalone: false,
+  imports: [
+    MatFormField,
+    MatLabel,
+    MatInput,
+    FormsModule,
+    NgIf,
+    MatError,
+    TranslateModule,
+  ],
 })
 export class SbasSlidersTwoComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

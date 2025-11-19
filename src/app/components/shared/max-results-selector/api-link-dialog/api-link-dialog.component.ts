@@ -3,17 +3,60 @@ import { ClipboardService } from 'ngx-clipboard';
 
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { map, withLatestFrom, filter, tap } from 'rxjs/operators';
-import { MatDialogRef } from '@angular/material/dialog';
+import {
+  MatDialogRef,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+  MatDialogClose,
+} from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 
 import * as services from '@services';
 import { asfWebsite } from '@models';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { FormsModule } from '@angular/forms';
+import {
+  MatFormField,
+  MatLabel,
+  MatInput,
+  MatSuffix,
+} from '@angular/material/input';
+import { MatSelect, MatOption } from '@angular/material/select';
+import { NgFor, NgIf } from '@angular/common';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+import { DocsModalComponent } from '../../docs-modal/docs-modal.component';
+import { MatButton } from '@angular/material/button';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-api-link-dialog',
   templateUrl: './api-link-dialog.component.html',
   styleUrls: ['./api-link-dialog.component.scss'],
-  standalone: false,
+  imports: [
+    MatDialogTitle,
+    CdkScrollable,
+    MatDialogContent,
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatSelect,
+    NgFor,
+    MatOption,
+    CdkTextareaAutosize,
+    NgIf,
+    MatIcon,
+    MatSuffix,
+    MatTooltip,
+    MatDialogActions,
+    DocsModalComponent,
+    MatButton,
+    MatDialogClose,
+    TranslateModule,
+  ],
 })
 export class ApiLinkDialogComponent implements OnInit, OnDestroy {
   private asfApiService = inject(services.AsfApiService);

@@ -6,8 +6,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
-import { MatSharedModule } from '@shared';
-
 import { FileUploadModule } from './file-upload';
 import { AoiOptionsComponent } from './aoi-options.component';
 import { DrawSelectorComponent } from './draw-selector/draw-selector.component';
@@ -16,27 +14,22 @@ import { SharedModule } from '@shared';
 import { GeocodeSelectorComponent } from './geocode-selector/geocode-selector.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
-import { PipesModule } from '@pipes';
 
 @NgModule({
-  declarations: [
-    AoiOptionsComponent,
-    DrawSelectorComponent,
-    InteractionSelectorComponent,
-    GeocodeSelectorComponent,
-  ],
   imports: [
     CommonModule,
     MatButtonToggleModule,
     FormsModule,
     MatInputModule,
     MatMenuModule,
-    MatSharedModule,
     FileUploadModule,
     SharedModule,
     MatAutocompleteModule,
     MatSlideToggle,
-    PipesModule,
+    AoiOptionsComponent,
+    DrawSelectorComponent,
+    InteractionSelectorComponent,
+    GeocodeSelectorComponent,
   ],
   exports: [
     AoiOptionsComponent,

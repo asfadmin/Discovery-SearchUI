@@ -8,12 +8,31 @@ import * as filtersStore from '@store/filters';
 import { PropertyService } from '@services';
 import { SubSink } from 'subsink';
 import * as models from '@models';
+import { NgIf, NgFor } from '@angular/common';
+import { ProductTypeSelectorComponent } from '../product-type-selector/product-type-selector.component';
+import { MatFormField, MatHint, MatInput } from '@angular/material/input';
+import { MatSelect, MatOption } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
+import { ShortNameSelectorComponent } from '../short-name-selector/short-name-selector.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-other-selector',
   templateUrl: './other-selector.component.html',
   styleUrls: ['./other-selector.component.scss'],
-  standalone: false,
+  imports: [
+    NgIf,
+    ProductTypeSelectorComponent,
+    MatFormField,
+    MatSelect,
+    FormsModule,
+    NgFor,
+    MatOption,
+    MatHint,
+    MatInput,
+    ShortNameSelectorComponent,
+    TranslateModule,
+  ],
 })
 export class OtherSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

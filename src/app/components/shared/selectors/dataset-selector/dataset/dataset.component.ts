@@ -3,12 +3,14 @@ import { Component, Input } from '@angular/core';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 import { Dataset, DateRange } from '@models';
+import { NgIf } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-dataset',
   templateUrl: './dataset.component.html',
   styleUrls: ['./dataset.component.scss'],
-  standalone: false,
+  imports: [NgIf, MatIcon],
 })
 export class DatasetComponent {
   @Input() dataset: Dataset;

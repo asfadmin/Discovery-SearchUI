@@ -21,12 +21,60 @@ import { SubSink } from 'subsink';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 import moment from 'moment';
+import { MatFormField, MatLabel } from '@angular/material/input';
+import { MatSelect, MatOption } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
+import {
+  NgFor,
+  NgIf,
+  NgPlural,
+  NgPluralCase,
+  UpperCasePipe,
+} from '@angular/common';
+import {
+  MatList,
+  MatListItem,
+  MatListItemAvatar,
+  MatListItemTitle,
+  MatListItemLine,
+  MatListItemMeta,
+} from '@angular/material/list';
+import { MatIconButton, MatButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { ReadableSizeFromBytesPipe } from '../../../../pipes/readable-size-from-bytes.pipe';
+import { ShortDatePipe } from '../../../../pipes/short-date.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-processing-queue-jobs',
   templateUrl: './processing-queue-jobs.component.html',
   styleUrls: ['./processing-queue-jobs.component.scss'],
-  standalone: false,
+  imports: [
+    MatFormField,
+    MatLabel,
+    MatSelect,
+    FormsModule,
+    NgFor,
+    MatOption,
+    NgIf,
+    NgPlural,
+    NgPluralCase,
+    MatList,
+    MatListItem,
+    MatListItemAvatar,
+    MatListItemTitle,
+    MatListItemLine,
+    MatListItemMeta,
+    MatIconButton,
+    MatTooltip,
+    MatIcon,
+    MatButton,
+    UpperCasePipe,
+    ReadableSizeFromBytesPipe,
+    ShortDatePipe,
+    TranslateModule,
+  ],
 })
 export class ProcessingQueueJobsComponent implements OnInit {
   private store$ = inject<Store<AppState>>(Store);

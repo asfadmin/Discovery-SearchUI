@@ -12,12 +12,37 @@ import { MapService, ScreenSizeService } from '@services';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import moment from 'moment';
+import { NgIf, NgClass, AsyncPipe } from '@angular/common';
+import {
+  MatListItem,
+  MatListItemAvatar,
+  MatListItemTitle,
+  MatListItemLine,
+  MatListItemMeta,
+} from '@angular/material/list';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+import { ShortDatePipe } from '../../../../pipes/short-date.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-sarviews-event',
   templateUrl: './sarviews-event.component.html',
   styleUrls: ['./sarviews-event.component.scss'],
-  standalone: false,
+  imports: [
+    NgIf,
+    MatListItem,
+    NgClass,
+    MatListItemAvatar,
+    MatListItemTitle,
+    MatListItemLine,
+    MatListItemMeta,
+    MatIcon,
+    MatTooltip,
+    AsyncPipe,
+    ShortDatePipe,
+    TranslateModule,
+  ],
 })
 export class SarviewsEventComponent {
   private mapService = inject(MapService);

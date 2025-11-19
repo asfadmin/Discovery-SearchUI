@@ -9,8 +9,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { ResizableModule } from 'angular-resizable-element';
 
-import { MatSharedModule } from '@shared';
-import { SBASChartModule } from '@components/sbas-chart/sbas-chart.module';
 import { SceneMetadataModule } from '@components/shared/scene-metadata';
 
 import { ScenesListModule } from '../scenes-list';
@@ -25,14 +23,8 @@ import { SharedModule } from '@shared';
 import { DocsModalModule } from '@components/shared/docs-modal';
 
 @NgModule({
-  declarations: [
-    SBASResultsMenuComponent,
-    SbasSlidersComponent,
-    SbasSlidersTwoComponent,
-  ],
   imports: [
     CommonModule,
-    MatSharedModule,
     ReactiveFormsModule,
     FormsModule,
     ResizableModule,
@@ -41,11 +33,13 @@ import { DocsModalModule } from '@components/shared/docs-modal';
     MatInputModule,
     MatButtonToggleModule,
     SharedModule,
-    SBASChartModule,
     SceneMetadataModule,
     ScenesListModule,
     ScenesListHeaderModule,
     DocsModalModule,
+    SBASResultsMenuComponent,
+    SbasSlidersComponent,
+    SbasSlidersTwoComponent,
   ],
   exports: [
     SBASResultsMenuComponent,

@@ -15,12 +15,30 @@ import {
   SearchType,
 } from '@models';
 import { ThemePalette } from '@angular/material/core';
+import { NgIf, TitleCasePipe } from '@angular/common';
+import { MatButton } from '@angular/material/button';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatIcon } from '@angular/material/icon';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { TranslateModule } from '@ngx-translate/core';
+import { AoiIconPipe } from '../../../../pipes/aoi-icon.pipe';
 
 @Component({
   selector: 'app-draw-selector',
   templateUrl: './draw-selector.component.html',
   styleUrls: ['./draw-selector.component.scss'],
-  standalone: false,
+  imports: [
+    NgIf,
+    MatButton,
+    MatMenuTrigger,
+    MatIcon,
+    MatSlideToggle,
+    MatMenu,
+    MatMenuItem,
+    TitleCasePipe,
+    TranslateModule,
+    AoiIconPipe,
+  ],
 })
 export class DrawSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

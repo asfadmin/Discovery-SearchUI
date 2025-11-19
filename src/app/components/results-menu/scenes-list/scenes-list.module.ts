@@ -8,9 +8,6 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatMenuModule } from '@angular/material/menu';
 
-import { MatSharedModule } from '@shared';
-import { PipesModule } from '@pipes';
-
 import { OnDemandAddMenuModule } from '@components/shared/on-demand-add-menu';
 
 import { ScenesListComponent } from './scenes-list.component';
@@ -20,7 +17,6 @@ import { SarviewsEventComponent } from './sarview-event/sarviews-event.component
 import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [ScenesListComponent, PairComponent, SarviewsEventComponent],
   imports: [
     CommonModule,
     ScrollingModule,
@@ -28,12 +24,13 @@ import { SharedModule } from '@shared';
     MatChipsModule,
     TruncateModule,
     FontAwesomeModule,
-    MatSharedModule,
     MatMenuModule,
-    PipesModule,
     OnDemandAddMenuModule,
     SharedModule,
     SceneModule,
+    ScenesListComponent,
+    PairComponent,
+    SarviewsEventComponent,
   ],
   exports: [ScenesListComponent],
 })

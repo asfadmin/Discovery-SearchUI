@@ -10,12 +10,33 @@ import * as models from '@models';
 import * as searchStore from '@store/search';
 
 import { MapService, ScreenSizeService } from '@services';
+import { MatButton } from '@angular/material/button';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { MatDivider } from '@angular/material/list';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatRadioButton } from '@angular/material/radio';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-layer-selector',
   templateUrl: './layer-selector.component.html',
   styleUrls: ['./layer-selector.component.scss'],
-  standalone: false,
+  imports: [
+    MatButton,
+    MatMenuTrigger,
+    NgIf,
+    MatIcon,
+    MatMenu,
+    MatMenuItem,
+    MatDivider,
+    MatCheckbox,
+    NgFor,
+    MatRadioButton,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class LayerSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

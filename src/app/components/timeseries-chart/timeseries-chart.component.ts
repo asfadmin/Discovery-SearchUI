@@ -30,12 +30,28 @@ import { SubSink } from 'subsink';
 import { AsfLanguageService } from '@services/asf-language.service';
 import { NetcdfService } from '@services';
 import * as models from '@models';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import {
+  CdkVirtualScrollViewport,
+  CdkFixedSizeVirtualScroll,
+  CdkScrollable,
+} from '@angular/cdk/scrolling';
 import * as uiStore from '@store/ui';
 // import {hidden} from '@services/map/polygon.style';
 // import {style} from '@angular/animations';
 import { linearRegression, linearRegressionLine } from './regression-line';
 import { types } from 'sass';
+import { NgStyle, NgFor } from '@angular/common';
+import { MatButton } from '@angular/material/button';
+import { ResizedDirective } from '../../directives/resized.directive';
+import { ContextMenuTriggerDirective } from '../../directives/context-menu.directive';
+import { TimeseriesChartExportComponent } from './timeseries-chart-export/timeseries-chart-export.component';
+import { ChartModalComponent } from '../shared/chart-modal/chart-modal.component';
+import { TimeseriesChartZoomComponent } from './timeseries-chart-zoom/timeseries-chart-zoom.component';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatMenu, MatMenuContent } from '@angular/material/menu';
+import { TimeseriesChartTemporalSliderComponent } from './timeseries-chart-temporal-slider/timeseries-chart-temporal-slider.component';
+import { MatIcon } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 
 interface TimeSeriesFit {
   seriesNumber: number;
@@ -58,7 +74,25 @@ const unSelectedColor = '#9F9F9F9F';
   templateUrl: './timeseries-chart.component.html',
   styleUrl: './timeseries-chart.component.scss',
   encapsulation: ViewEncapsulation.None,
-  standalone: false,
+  imports: [
+    NgStyle,
+    MatButton,
+    CdkVirtualScrollViewport,
+    CdkFixedSizeVirtualScroll,
+    CdkScrollable,
+    NgFor,
+    ResizedDirective,
+    ContextMenuTriggerDirective,
+    TimeseriesChartExportComponent,
+    ChartModalComponent,
+    TimeseriesChartZoomComponent,
+    MatProgressSpinner,
+    MatMenu,
+    MatMenuContent,
+    TimeseriesChartTemporalSliderComponent,
+    MatIcon,
+    TranslateModule,
+  ],
 })
 export class TimeseriesChartComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

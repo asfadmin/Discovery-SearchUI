@@ -8,6 +8,23 @@ import * as filtersStore from '@store/filters';
 import { SubSink } from 'subsink';
 import * as models from '@models';
 import { ScreenSizeService } from '@services';
+import {
+  MatAccordion,
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle,
+} from '@angular/material/expansion';
+import { NgIf, AsyncPipe, UpperCasePipe } from '@angular/common';
+import { SearchTypeSelectorComponent } from '../../shared/selectors/search-type-selector/search-type-selector.component';
+import { BaselineFrameReferenceToggleComponent } from '../../shared/selectors/baseline-frame-reference-toggle/baseline-frame-reference-toggle.component';
+import { DatasetSelectorComponent } from '../../shared/selectors/dataset-selector/dataset-selector.component';
+import { MasterSceneSelectorComponent } from '../../shared/selectors/master-scene-selector/master-scene-selector.component';
+import { CopyToClipboardComponent } from '../../shared/copy-to-clipboard/copy-to-clipboard.component';
+import { DocsModalComponent } from '../../shared/docs-modal/docs-modal.component';
+import { DateSelectorComponent } from '../../shared/selectors/date-selector/date-selector.component';
+import { SeasonSelectorComponent } from '../../shared/selectors/season-selector/season-selector.component';
+import { SbasOverlapSelectorComponent } from '../../shared/selectors/sbas-overlap-selector/sbas-overlap-selector.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 enum FilterPanel {
   SEARCH = 'Search Options',
@@ -23,7 +40,25 @@ enum FilterPanel {
   selector: 'app-sbas-filters',
   templateUrl: './sbas-filters.component.html',
   styleUrls: ['./sbas-filters.component.scss'],
-  standalone: false,
+  imports: [
+    MatAccordion,
+    NgIf,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    SearchTypeSelectorComponent,
+    BaselineFrameReferenceToggleComponent,
+    DatasetSelectorComponent,
+    MasterSceneSelectorComponent,
+    CopyToClipboardComponent,
+    DocsModalComponent,
+    DateSelectorComponent,
+    SeasonSelectorComponent,
+    SbasOverlapSelectorComponent,
+    AsyncPipe,
+    UpperCasePipe,
+    TranslateModule,
+  ],
 })
 export class SbasFiltersComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

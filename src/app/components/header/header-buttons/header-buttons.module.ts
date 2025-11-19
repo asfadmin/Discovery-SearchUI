@@ -7,7 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSharedModule } from '@shared';
+
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { DatasetSelectorModule } from '@components/shared/selectors/dataset-selector';
 
@@ -23,13 +23,6 @@ import { DocsModalModule } from '@components/shared/docs-modal';
 import { SearchButtonModule } from '@components/shared/search-button';
 
 @NgModule({
-  declarations: [
-    HeaderButtonsComponent,
-    PreferencesComponent,
-    CustomizeEnvComponent,
-    OnlynumberDirective,
-    Hyp3UrlSelectorComponent,
-  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -37,7 +30,6 @@ import { SearchButtonModule } from '@components/shared/search-button';
     MatMenuModule,
     MatInputModule,
     MatDialogModule,
-    MatSharedModule,
     MatSelectModule,
     DatasetSelectorModule,
     MatFormFieldModule,
@@ -46,6 +38,11 @@ import { SearchButtonModule } from '@components/shared/search-button';
     DocsModalModule,
     SearchButtonModule,
     MatAutocompleteModule,
+    HeaderButtonsComponent,
+    PreferencesComponent,
+    CustomizeEnvComponent,
+    OnlynumberDirective,
+    Hyp3UrlSelectorComponent,
   ],
   exports: [HeaderButtonsComponent],
 })

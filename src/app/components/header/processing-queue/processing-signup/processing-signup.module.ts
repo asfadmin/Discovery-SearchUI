@@ -6,19 +6,15 @@ import { ProcessingSignupComponent } from './processing-signup.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MatChipsModule } from '@angular/material/chips';
-import { MatSharedModule } from '@shared';
-import { PipesModule } from '@pipes';
+
 import { SharedModule } from '@shared';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
-  declarations: [ProcessingSignupComponent],
   imports: [
     CommonModule,
-    PipesModule,
-    MatSharedModule,
     MatSelectModule,
     MatChipsModule,
     MatExpansionModule,
@@ -28,6 +24,7 @@ import { MatInputModule } from '@angular/material/input';
     ReactiveFormsModule,
     FormsModule,
     SharedModule,
+    ProcessingSignupComponent,
   ],
   exports: [ProcessingSignupComponent],
 })

@@ -6,9 +6,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { TruncateModule } from '@yellowspot/ng-truncate';
 
-import { PipesModule } from '@pipes';
-import { MatSharedModule } from '@shared';
-import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
 import { SceneMetadataModule } from '@components/shared/scene-metadata';
 import { EventMetadataModule } from '@components/shared/event-metadata';
 import { ImageDialogModule } from './image-dialog';
@@ -20,7 +17,6 @@ import { SharedModule } from '@shared';
 import { DocsModalModule } from '@components/shared/docs-modal';
 
 @NgModule({
-  declarations: [SceneDetailComponent],
   imports: [
     CommonModule,
     MatBadgeModule,
@@ -28,9 +24,6 @@ import { DocsModalModule } from '@components/shared/docs-modal';
     MatIconModule,
     MatMenuModule,
     TruncateModule,
-    MatSharedModule,
-    PipesModule,
-    CopyToClipboardModule,
     ImageDialogModule,
     SceneMetadataModule,
     EventMetadataModule,
@@ -39,6 +32,7 @@ import { DocsModalModule } from '@components/shared/docs-modal';
     EventPolygonSliderModule,
     DocsModalModule,
     SharedModule,
+    SceneDetailComponent,
   ],
   exports: [SceneDetailComponent],
 })

@@ -20,6 +20,7 @@ import * as uiStore from '@store/ui';
 import { SubSink } from 'subsink';
 import { ScenesService, PairService } from '@services';
 import { CMRProduct, CMRProductPair } from '@models';
+import { ResizedDirective } from '../../directives/resized.directive';
 
 export enum ChartDatasets {
   MASTER = 0,
@@ -35,7 +36,7 @@ export enum ChartDatasets {
   selector: 'app-sbas-chart',
   templateUrl: './sbas-chart.component.html',
   styleUrls: ['./sbas-chart.component.scss'],
-  standalone: false,
+  imports: [ResizedDirective],
 })
 export class SBASChartComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

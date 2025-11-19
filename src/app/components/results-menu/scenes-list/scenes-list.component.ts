@@ -29,12 +29,22 @@ import * as scenesStore from '@store/scenes';
 import * as queueStore from '@store/queue';
 import * as hyp3Store from '@store/hyp3';
 
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import {
+  CdkVirtualScrollViewport,
+  CdkFixedSizeVirtualScroll,
+  CdkVirtualForOf,
+} from '@angular/cdk/scrolling';
 
 import * as services from '@services';
 import * as models from '@models';
 import { CMRProduct, QueuedHyp3Job, SarviewsEvent } from '@models';
 import { ActiveToast } from 'ngx-toastr';
+import { MatActionList, MatListItem } from '@angular/material/list';
+import { NgClass, NgIf, AsyncPipe, SlicePipe } from '@angular/common';
+import { SceneComponent } from './scene/scene.component';
+import { MatButton } from '@angular/material/button';
+import { SarviewsEventComponent } from './sarview-event/sarviews-event.component';
+import { PairComponent } from './pair/pair.component';
 
 const INFINITY = 2e10;
 
@@ -43,7 +53,21 @@ const INFINITY = 2e10;
   templateUrl: './scenes-list.component.html',
   styleUrls: ['./scenes-list.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  standalone: false,
+  imports: [
+    MatActionList,
+    NgClass,
+    CdkVirtualScrollViewport,
+    CdkFixedSizeVirtualScroll,
+    NgIf,
+    CdkVirtualForOf,
+    SceneComponent,
+    MatListItem,
+    MatButton,
+    SarviewsEventComponent,
+    PairComponent,
+    AsyncPipe,
+    SlicePipe,
+  ],
 })
 export class ScenesListComponent
   implements OnInit, OnDestroy, AfterContentInit

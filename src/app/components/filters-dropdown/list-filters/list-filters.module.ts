@@ -8,8 +8,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { SearchTypeSelectorModule } from '@components/shared/selectors/search-type-selector';
 
-import { MatSharedModule } from '@shared';
-import { CopyToClipboardModule } from '@components/shared/copy-to-clipboard';
 import { NgxCsvParserModule } from 'ngx-csv-parser';
 
 import { ListFiltersComponent } from './list-filters.component';
@@ -17,21 +15,18 @@ import { DocsModalModule } from '@components/shared/docs-modal';
 import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [ListFiltersComponent],
   imports: [
     CommonModule,
     MatExpansionModule,
     SearchTypeSelectorModule,
-
     FormsModule,
-    CopyToClipboardModule,
     NgxCsvParserModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonToggleModule,
-    MatSharedModule,
     DocsModalModule,
     SharedModule,
+    ListFiltersComponent,
   ],
   exports: [ListFiltersComponent],
 })

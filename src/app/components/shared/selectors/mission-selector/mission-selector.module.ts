@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { MatSharedModule } from '@shared';
+
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -18,13 +18,11 @@ import { SharedModule } from '@shared';
 import { MissionSelectorComponent } from './mission-selector.component';
 
 @NgModule({
-  declarations: [MissionSelectorComponent],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     ScrollingModule,
-
     MatDividerModule,
     MatChipsModule,
     MatCheckboxModule,
@@ -34,9 +32,8 @@ import { MissionSelectorComponent } from './mission-selector.component';
     MatListModule,
     MatInputModule,
     MatPaginatorModule,
-
-    MatSharedModule,
     SharedModule,
+    MissionSelectorComponent,
   ],
   exports: [MissionSelectorComponent],
 })
