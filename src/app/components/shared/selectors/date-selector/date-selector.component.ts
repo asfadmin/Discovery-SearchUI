@@ -22,12 +22,16 @@ import { DateRangeExtrema, SearchType } from '@models';
 import { DateExtremaService } from '@services';
 import { DateRangeComponent } from '../date-range/date-range.component';
 import { AsyncPipe } from '@angular/common';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 
 @Component({
   selector: 'app-date-selector',
   templateUrl: './date-selector.component.html',
   styleUrls: ['./date-selector.component.scss'],
   imports: [DateRangeComponent, AsyncPipe],
+  providers: [
+    { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
+  ],
 })
 export class DateSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

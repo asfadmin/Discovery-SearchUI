@@ -12,9 +12,13 @@ import { PairService, ScenesService } from '@services';
 import { NgIf, NgFor } from '@angular/common';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatIcon } from '@angular/material/icon';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {
+  FaIconLibrary,
+  FontAwesomeModule,
+} from '@fortawesome/angular-fontawesome';
 import { DocsModalComponent } from '../docs-modal/docs-modal.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { fas, faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-max-results-selector',
@@ -30,6 +34,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatMenuItem,
     DocsModalComponent,
     TranslateModule,
+    FontAwesomeModule,
   ],
 })
 export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
@@ -51,7 +56,12 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
 
   public possibleMaxResults = [250, 1000];
   private subs = new SubSink();
+  constructor() {
+    const library = inject(FaIconLibrary);
 
+    library.addIconPacks(fas);
+    library.addIcons(faSpinner);
+  }
   ngOnInit() {
     this.subs.add(
       this.store$

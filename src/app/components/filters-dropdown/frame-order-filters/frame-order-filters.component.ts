@@ -6,19 +6,6 @@ import { CommonModule } from '@angular/common';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSelectModule } from '@angular/material/select';
 
-import { PathSelectorModule } from '@components/shared/selectors/path-selector';
-import { OtherSelectorModule } from '@components/shared/selectors/other-selector';
-import { SeasonSelectorModule } from '@components/shared/selectors/season-selector';
-import { MissionSelectorModule } from '@components/shared/selectors/mission-selector';
-import { SearchTypeSelectorModule } from '@components/shared/selectors/search-type-selector';
-
-import { DateSelectorModule } from '@components/shared/selectors/date-selector';
-import { DatasetSelectorModule } from '@components/shared/selectors/dataset-selector';
-import { AoiOptionsModule } from '@components/shared/aoi-options';
-import { DocsModalModule } from '@components/shared/docs-modal';
-import { BurstSelectorModule } from '@components/shared/selectors/burst-selector';
-import { OperaS1SelectorModule } from '@components/shared/selectors/opera-s1-selector';
-
 import { SharedModule } from '@shared';
 
 import { SubSink } from 'subsink';
@@ -31,6 +18,8 @@ import * as filtersStore from '@store/filters';
 import * as models from '@models';
 import { PropertyService, ScreenSizeService } from '@services';
 import { FlightDirectionSelectorComponent } from '@components/shared/selectors/flight-direction-selector/flight-direction-selector.component';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import { PathSelectorComponent } from '@components/shared/selectors/path-selector';
 
 enum FilterPanel {
   DATE = 'Date',
@@ -49,17 +38,8 @@ enum FilterPanel {
     FlightDirectionSelectorComponent,
     MatSelectModule,
     MatExpansionModule,
-    DocsModalModule,
-    MissionSelectorModule,
-    PathSelectorModule,
-    OtherSelectorModule,
-    SeasonSelectorModule,
-    DateSelectorModule,
-    DatasetSelectorModule,
-    AoiOptionsModule,
-    SearchTypeSelectorModule,
-    BurstSelectorModule,
-    OperaS1SelectorModule,
+    DocsModalComponent,
+    PathSelectorComponent,
     SharedModule,
   ],
   templateUrl: './frame-order-filters.component.html',

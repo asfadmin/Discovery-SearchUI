@@ -15,7 +15,7 @@ import {
 } from '@angular/material-moment-adapter';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import {
   NgcCookieConsentModule,
@@ -29,18 +29,11 @@ import { EffectsModule } from '@ngrx/effects';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
-import { SidebarModule } from '@components/sidebar';
-import { MapModule } from '@components/map';
-import { ResultsMenuModule } from '@components/results-menu';
-import { HeaderModule } from '@components/header';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
-import { HelpModule } from '@components/help';
 import { ToastrModule } from 'ngx-toastr';
-import { CodeExportModule } from '@components/shared/code-export';
-import { TimeseriesResultsMenuModule } from '@components/results-menu/timeseries-results-menu/timeseries-results-menu.module';
 import {
   AsfApiService,
   AsfLanguageService,
@@ -131,21 +124,14 @@ bootstrapApplication(AppComponent, {
       MatSidenavModule,
       MatTableModule,
       MatSortModule,
-      SidebarModule,
-      MapModule,
-      ResultsMenuModule,
-      HeaderModule,
       MatMenuModule,
       MatFormFieldModule,
       MatIconModule,
       MatDialogModule,
-      HelpModule,
       ToastrModule.forRoot({
         positionClass: 'inline',
         preventDuplicates: true,
       }),
-      CodeExportModule,
-      TimeseriesResultsMenuModule,
     ),
     AsfApiService,
     AsfLanguageService,
@@ -186,6 +172,7 @@ bootstrapApplication(AppComponent, {
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
     },
     { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
+    provideHttpClient(),
     provideAnimations(),
     provideRouter(routes, withHashLocation()),
   ],

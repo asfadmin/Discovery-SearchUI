@@ -36,7 +36,10 @@ import {
 import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {
+  FaIconLibrary,
+  FontAwesomeModule,
+} from '@fortawesome/angular-fontawesome';
 import { CopyToClipboardComponent } from '../../../shared/copy-to-clipboard/copy-to-clipboard.component';
 import { MatIconButton } from '@angular/material/button';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
@@ -47,6 +50,7 @@ import { TruncateModule } from '@yellowspot/ng-truncate';
 import { ReadableSizeFromBytesPipe } from '../../../../pipes/readable-size-from-bytes.pipe';
 import { FullDatePipe } from '../../../../pipes/short-date.pipe';
 import { TranslateModule } from '@ngx-translate/core';
+import { fas, faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-scene-file',
@@ -106,7 +110,12 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   public copyIcons = models.CopyIcons;
 
   private subs = new SubSink();
+  constructor() {
+    const library = inject(FaIconLibrary);
 
+    library.addIconPacks(fas);
+    library.addIcons(faSpinner);
+  }
   ngOnInit() {
     this.subs.add(
       of(this.product)
