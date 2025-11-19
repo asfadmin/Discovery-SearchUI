@@ -193,11 +193,11 @@ export function scenesReducer(
       products[productId] = {
         ...toUpdate,
         metadata: {
-        ...toUpdate.metadata,
-        job: {
-          ...toUpdate.metadata.job,
-          name,
-        },
+          ...toUpdate.metadata,
+          job: {
+            ...toUpdate.metadata.job,
+            name,
+          },
         },
       };
 
