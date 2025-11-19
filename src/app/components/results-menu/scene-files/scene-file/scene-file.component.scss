@@ -1,3 +1,5 @@
+@use "asf-theme-variables" as *;
+
 .icon-margin {
   margin-left: 5px;
   span {
@@ -28,11 +30,7 @@
   justify-content: center;
   margin-top: 1px;
 
-  mat-icon {
-    opacity: 1 !important; // Ensure icon is not faded
-  }
-
-  &:not([disabled]) mat-icon {
-    opacity: 1 !important;
+  @include themify($themes) {
+    color: themed('light-black');
   }
 }

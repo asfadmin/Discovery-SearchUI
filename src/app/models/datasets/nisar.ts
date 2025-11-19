@@ -22,7 +22,7 @@ export const nisar = {
     Props.INSTRUMENT,
   ],
   apiValue: { dataset: 'NISAR' },
-  date: { start: new Date('2024/01/01 03:44:43 UTC') },
+  date: { start: new Date('2025/08/02 03:44:43 UTC') },
   infoUrl: 'https://nisar.jpl.nasa.gov',
   citationUrl: 'https://asf.alaska.edu/nisar/',
   frequency: 'L-Band',
