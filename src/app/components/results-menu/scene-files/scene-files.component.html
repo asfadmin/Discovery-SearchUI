@@ -16,6 +16,7 @@
       (toggle)="onToggleQueueProduct(product)"
       (unzip)="onOpenUnzipProduct($event)"
       (queueHyp3Job)="onQueueHyp3Job($event)"
+      (renameJobProjectName)="onRenameJobProjectName(product, $event)"
       [loadingHyp3JobName]="loadingHyp3JobName"
       [isUserLoggedIn]="isUserLoggedIn"
       [product]="product"

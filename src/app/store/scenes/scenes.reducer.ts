@@ -184,6 +184,26 @@ export function scenesReducer(
       }
     }
 
+    case ScenesActionType.UPDATE_PRODUCT_WITH_NEW_PROJECT_NAME: {
+      const { productId, name } = action.payload;
+      const products = { ...state.products };
+
+      const toUpdate = products[productId];
+
+      products[productId] = {
+        ...toUpdate,
+        metadata: {
+        ...toUpdate.metadata,
+        job: {
+          ...toUpdate.metadata.job,
+          name,
+        },
+        },
+      };
+
+      return { ...state, products };
+    }
+
     case ScenesActionType.SET_SELECTED_SCENE: {
       return {
         ...state,

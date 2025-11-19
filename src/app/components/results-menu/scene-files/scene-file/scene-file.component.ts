@@ -53,12 +53,16 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   @Output() unzip = new EventEmitter<models.CMRProduct>();
   @Output() closeProduct = new EventEmitter<models.CMRProduct>();
   @Output() queueHyp3Job = new EventEmitter<models.QueuedHyp3Job>();
+  @Output() renameJobProjectName = new EventEmitter<string>();
 
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = SearchType;
   public isHovered = false;
   public paramsList = [];
   public copyIcons = models.CopyIcons;
+
+  public newProjectName = '';
+  public isEditingProjectName = false;
 
   private subs = new SubSink();
 
@@ -153,6 +157,17 @@ export class SceneFileComponent implements OnInit, OnDestroy {
         job_type: job_types[job_type],
       }),
     );
+  }
+
+  public onEditProjectName(oldProjectName: string) {
+    this.newProjectName = oldProjectName;
+    this.isEditingProjectName = true;
+  }
+
+  public onSubmitProjectName() {
+    this.renameJobProjectName.emit(this.newProjectName);
+    this.isEditingProjectName = false;
+    this.newProjectName = '';
   }
 
   private expirationDays(expiration_time: moment.Moment): number {

@@ -157,6 +157,14 @@ export class Hyp3ApiService {
     );
   }
 
+  public updateJobName$(jobId: string, projectName: string): Observable<models.Hyp3Job> {
+    const url = `${this.apiUrl}/jobs/${jobId}`;
+
+    return this.http.patch<models.Hyp3Job>(url, { name: projectName }, { withCredentials: true })
+      .pipe(map((resp) => resp as models.Hyp3Job)
+      );
+  }
+
   public submitJobBatch$(jobBatch: object) {
     const submitJobUrl = `${this.apiUrl}/jobs`;
 
