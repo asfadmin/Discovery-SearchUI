@@ -7,196 +7,193 @@
         !showToolBar && searchType === searchTypes.DISPLACEMENT,
     }"
   >
-    <div class="fx-col" *ngIf="showToolBar === true">
-      <div class="fx-row">
-        <div class="fx-col visible-toggle">
-          <div class="fx-row icon-bar tool-bar-common">
-            <div
-              class="fx-empty group-margin"
-              *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS"
-            >
-              <div class="map-view-button--layout button-group-label">
-                <label>&nbsp;{{ 'MAP_VIEW' | translate }}</label>
-              </div>
-
-              <div class="fx-row">
-                <app-view-selector class="fx-empty"> </app-view-selector>
-              </div>
-            </div>
-
-            <div class="fx-empty zoom-buttons">
-              <div class="fx-row-center button-group-label">
-                <label>{{ 'ZOOM' | translate }}</label>
-              </div>
-              <div class="fx-row">
-                <div>
-                  <mat-button-toggle-group
-                    class="fx-empty"
-                    name="layerType"
-                    [hideSingleSelectionIndicator]="true"
-                  >
-                    <mat-button-toggle
-                      class="control-mat-button-toggle"
-                      (click)="zoomIn()"
-                      matTooltip="{{ 'ZOOM_IN' | translate }}"
+    @if (showToolBar === true) {
+      <div class="fx-col">
+        <div class="fx-row">
+          <div class="fx-col visible-toggle">
+            <div class="fx-row icon-bar tool-bar-common">
+              @if (searchType !== searchTypes.SARVIEWS_EVENTS) {
+                <div class="fx-empty group-margin">
+                  <div class="map-view-button--layout button-group-label">
+                    <label>&nbsp;{{ 'MAP_VIEW' | translate }}</label>
+                  </div>
+                  <div class="fx-row">
+                    <app-view-selector class="fx-empty"> </app-view-selector>
+                  </div>
+                </div>
+              }
+              <div class="fx-empty zoom-buttons">
+                <div class="fx-row-center button-group-label">
+                  <label>{{ 'ZOOM' | translate }}</label>
+                </div>
+                <div class="fx-row">
+                  <div>
+                    <mat-button-toggle-group
+                      class="fx-empty"
+                      name="layerType"
+                      [hideSingleSelectionIndicator]="true"
                     >
-                      <mat-icon class="control-icon">add</mat-icon>
-                    </mat-button-toggle>
-
-                    <mat-button-toggle
-                      class="control-mat-button-toggle"
-                      (click)="zoomOut()"
-                      matTooltip="{{ 'ZOOM_OUT' | translate }}"
-                    >
-                      <mat-icon class="control-icon">remove</mat-icon>
-                    </mat-button-toggle>
-                  </mat-button-toggle-group>
+                      <mat-button-toggle
+                        class="control-mat-button-toggle"
+                        (click)="zoomIn()"
+                        matTooltip="{{ 'ZOOM_IN' | translate }}"
+                      >
+                        <mat-icon class="control-icon">add</mat-icon>
+                      </mat-button-toggle>
+                      <mat-button-toggle
+                        class="control-mat-button-toggle"
+                        (click)="zoomOut()"
+                        matTooltip="{{ 'ZOOM_OUT' | translate }}"
+                      >
+                        <mat-icon class="control-icon">remove</mat-icon>
+                      </mat-button-toggle>
+                    </mat-button-toggle-group>
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <div
-              *ngIf="(view$ | async) === viewTypes.EQUATORIAL"
-              class="fx-empty group-margin"
-            >
-              <div class="fx-row-center button-group-label">
-                <label>{{ 'LAYERS' | translate }}</label>
-              </div>
-              <div class="fx-row">
-                <app-layer-selector></app-layer-selector>
-              </div>
-            </div>
-
-            <div
-              *ngIf="
+              @if ((view$ | async) === viewTypes.EQUATORIAL) {
+                <div class="fx-empty group-margin">
+                  <div class="fx-row-center button-group-label">
+                    <label>{{ 'LAYERS' | translate }}</label>
+                  </div>
+                  <div class="fx-row">
+                    <app-layer-selector></app-layer-selector>
+                  </div>
+                </div>
+              }
+              @if (
                 searchType === searchTypes.DATASET ||
                 searchType === searchTypes.SBAS
-              "
-              class="fx-empty group-margin"
-            >
-              <div class="fx-row-center button-group-label">
-                <label>{{ 'AREA_OF_INTEREST' | translate }}</label>
-              </div>
-              <div class="fx-row">
-                <app-interaction-selector> </app-interaction-selector>
-              </div>
-            </div>
-
-            <!-- Product Browse  -->
-            <div
-              class="fx-empty group-margin"
-              *ngIf="searchType === searchTypes.SARVIEWS_EVENTS"
-            >
-              <div
-                class="fx-row-center button-group-label"
-                style="white-space: nowrap"
-              >
-                <label>{{ 'PRODUCT' | translate }}</label>
-              </div>
-              <div class="fx-row-center">
-                <div>
-                  <mat-button-toggle-group
-                    class="fx-empty"
-                    name="layerType"
-                    [disabled]="!(isBrowseOverlayEnabled$ | async)"
-                    [hideSingleSelectionIndicator]="true"
-                  >
-                    <mat-button-toggle
-                      class="control-mat-button-toggle"
-                      *ngIf="searchType === searchTypes.SARVIEWS_EVENTS"
-                      (click)="onUnpinAll()"
-                      matTooltip="{{
-                        'UNPIN_ALL_SELECTED_PRODUCTS' | translate
-                      }}"
-                    >
-                      <mat-icon class="control-icon" svgIcon="unpin"></mat-icon>
-                    </mat-button-toggle>
-                  </mat-button-toggle-group>
+              ) {
+                <div class="fx-empty group-margin">
+                  <div class="fx-row-center button-group-label">
+                    <label>{{ 'AREA_OF_INTEREST' | translate }}</label>
+                  </div>
+                  <div class="fx-row">
+                    <app-interaction-selector> </app-interaction-selector>
+                  </div>
                 </div>
-              </div>
-            </div>
-
-            <!-- Opacity Control -->
-            <div
-              *ngIf="
+              }
+              <!-- Product Browse  -->
+              @if (searchType === searchTypes.SARVIEWS_EVENTS) {
+                <div class="fx-empty group-margin">
+                  <div
+                    class="fx-row-center button-group-label"
+                    style="white-space: nowrap"
+                  >
+                    <label>{{ 'PRODUCT' | translate }}</label>
+                  </div>
+                  <div class="fx-row-center">
+                    <div>
+                      <mat-button-toggle-group
+                        class="fx-empty"
+                        name="layerType"
+                        [disabled]="!(isBrowseOverlayEnabled$ | async)"
+                        [hideSingleSelectionIndicator]="true"
+                      >
+                        @if (searchType === searchTypes.SARVIEWS_EVENTS) {
+                          <mat-button-toggle
+                            class="control-mat-button-toggle"
+                            (click)="onUnpinAll()"
+                            matTooltip="{{
+                              'UNPIN_ALL_SELECTED_PRODUCTS' | translate
+                            }}"
+                          >
+                            <mat-icon
+                              class="control-icon"
+                              svgIcon="unpin"
+                            ></mat-icon>
+                          </mat-button-toggle>
+                        }
+                      </mat-button-toggle-group>
+                    </div>
+                  </div>
+                </div>
+              }
+              <!-- Opacity Control -->
+              @if (
                 searchType !== searchTypes.BASELINE &&
                 searchType !== searchTypes.SBAS &&
                 searchType !== searchTypes.DISPLACEMENT
-              "
-              class="fx-empty group-margin"
-            >
-              <div class="fx-row-center button-group-label">
-                <label>{{ 'OPACITY' | translate }}</label>
-              </div>
-              <div class="fx-row">
-                <button
-                  mat-stroked-button
-                  class="opacity-slider-button"
-                  [disabled]="!(isBrowseOverlayEnabled$ | async)"
-                  [matMenuTriggerFor]="opacitySlider"
-                  aria-label="Map projection view"
-                >
-                  <span class="opacity-button-text">
-                    {{ browseOverlayOpacity * 100 | number: '1.0-0' }}%
-                  </span>
-                  <span class="fa fa-caret-down bottom-right"></span>
-                </button>
-                <mat-menu
-                  #opacitySlider="matMenu"
-                  class="opacity-slider-mat-menu"
-                >
-                  <div class="opacity-slider-title">
-                    {{ 'BROWSE_IMAGE_OPACITY' | translate }}
+              ) {
+                <div class="fx-empty group-margin">
+                  <div class="fx-row-center button-group-label">
+                    <label>{{ 'OPACITY' | translate }}</label>
                   </div>
-                  <mat-slider
-                    thumbLabel
-                    step="0.05"
-                    min="0.0"
-                    max="1.0"
-                    class="opacity-slider"
-                    name="layerType"
-                    (input)="onSetOpacity($event)"
-                    (click)="$event.stopPropagation()"
-                    color="primary"
-                    [disabled]="!(isBrowseOverlayEnabled$ | async)"
-                  >
-                    <input matSliderThumb value="1" />
-                  </mat-slider>
-                  <div class="opacity-slider-title">
-                    {{ 'OPACITY_OF_COHERENCE_LAYER' | translate }}
+                  <div class="fx-row">
+                    <button
+                      mat-stroked-button
+                      class="opacity-slider-button"
+                      [disabled]="!(isBrowseOverlayEnabled$ | async)"
+                      [matMenuTriggerFor]="opacitySlider"
+                      aria-label="Map projection view"
+                    >
+                      <span class="opacity-button-text">
+                        {{ browseOverlayOpacity * 100 | number: '1.0-0' }}%
+                      </span>
+                      <span class="fa fa-caret-down bottom-right"></span>
+                    </button>
+                    <mat-menu
+                      #opacitySlider="matMenu"
+                      class="opacity-slider-mat-menu"
+                    >
+                      <div class="opacity-slider-title">
+                        {{ 'BROWSE_IMAGE_OPACITY' | translate }}
+                      </div>
+                      <mat-slider
+                        thumbLabel
+                        step="0.05"
+                        min="0.0"
+                        max="1.0"
+                        class="opacity-slider"
+                        name="layerType"
+                        (input)="onSetOpacity($event)"
+                        (click)="$event.stopPropagation()"
+                        color="primary"
+                        [disabled]="!(isBrowseOverlayEnabled$ | async)"
+                      >
+                        <input matSliderThumb value="1" />
+                      </mat-slider>
+                      <div class="opacity-slider-title">
+                        {{ 'OPACITY_OF_COHERENCE_LAYER' | translate }}
+                      </div>
+                      <mat-slider
+                        thumbLabel
+                        step="0.05"
+                        min="0.0"
+                        max="1.0"
+                        class="opacity-slider"
+                        name="layerType"
+                        (input)="onSetCoherenceOpacity($event)"
+                        (click)="$event.stopPropagation()"
+                        color="primary"
+                        [disabled]="!(isCoherenceOverlayEnabled$ | async)"
+                      >
+                        <input matSliderThumb value="1" />
+                      </mat-slider>
+                    </mat-menu>
                   </div>
-                  <mat-slider
-                    thumbLabel
-                    step="0.05"
-                    min="0.0"
-                    max="1.0"
-                    class="opacity-slider"
-                    name="layerType"
-                    (input)="onSetCoherenceOpacity($event)"
-                    (click)="$event.stopPropagation()"
-                    color="primary"
-                    [disabled]="!(isCoherenceOverlayEnabled$ | async)"
-                  >
-                    <input matSliderThumb value="1" />
-                  </mat-slider>
-                </mat-menu>
-              </div>
+                </div>
+              }
             </div>
-          </div>
-
-          <div class="fx-empty lat-lon">
-            <app-map-info [mousePos]="mousePos"></app-map-info>
+            <div class="fx-empty lat-lon">
+              <app-map-info [mousePos]="mousePos"></app-map-info>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    }
     <div class="tool-bar-control" (click)="changeState()">
-      <div *ngIf="showToolBar === true">
-        <mat-icon>arrow_circle_left</mat-icon>
-      </div>
-      <div *ngIf="showToolBar === false">
-        <mat-icon>arrow_circle_right</mat-icon>
-      </div>
+      @if (showToolBar === true) {
+        <div>
+          <mat-icon>arrow_circle_left</mat-icon>
+        </div>
+      }
+      @if (showToolBar === false) {
+        <div>
+          <mat-icon>arrow_circle_right</mat-icon>
+        </div>
+      }
       <div class="tool-bar-control-bottom visible-toggle"></div>
     </div>
   </div>

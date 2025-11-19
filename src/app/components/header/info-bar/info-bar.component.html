@@ -1,159 +1,221 @@
-<div *ngIf="breakpoint$ | async as breakpoint" class="info-bar">
-  <div class="first-info">
-    <span *ngIf="(searchType$ | async) === searchTypes.CUSTOM_PRODUCTS">
-      <app-hyp3-url></app-hyp3-url>
-      <span>
-        <span *ngIf="!!userID">
-          <b>{{ 'USER_ID_INFO_BAR' | translate }}:</b> {{ userID }}
+@if (breakpoint$ | async; as breakpoint) {
+  <div class="info-bar">
+    <div class="first-info">
+      @if ((searchType$ | async) === searchTypes.CUSTOM_PRODUCTS) {
+        <span>
+          <app-hyp3-url></app-hyp3-url>
+          <span>
+            @if (!!userID) {
+              <span>
+                <b>{{ 'USER_ID_INFO_BAR' | translate }}:</b> {{ userID }}
+              </span>
+            }
+            @if (jobIds?.length) {
+              <span>
+                <b>{{ 'HYP3_JOB_IDS_INFO_BAR' | translate }}:</b>
+                {{ jobIds.length }}
+              </span>
+            }
+          </span>
         </span>
-
-        <span *ngIf="jobIds?.length">
-          <b>{{ 'HYP3_JOB_IDS_INFO_BAR' | translate }}:</b> {{ jobIds.length }}
-        </span>
-      </span>
-    </span>
-
-    <span
-      *ngIf="
+      }
+      @if (
         (searchType$ | async) === searchTypes.SARVIEWS_EVENTS &&
         !!eventProductTypes
-      "
-    >
-      <b>{{ 'PRODUCT_TYPES' | translate }}:</b> {{ eventProductTypes }}
-    </span>
-
-    <span *ngIf="breakpoint > breakpoints.SMALL && !!startDate">
-      <b>{{ 'START' | translate }}:</b> {{ startDate | shortDate }}
-    </span>
-    <span *ngIf="breakpoint > breakpoints.SMALL && !!endDate">
-      <b>{{ 'END' | translate }}:</b> {{ endDate | shortDate }}
-    </span>
-    <span *ngIf="pathRange.start || pathRange.end">
-      <b>
-        @if (selectedDatasetIsNISARFormat) {
-          {{ 'TRACK' | translate }}
-        } @else {
-          {{ 'PATH' | translate }}
+      ) {
+        <span>
+          <b>{{ 'PRODUCT_TYPES' | translate }}:</b> {{ eventProductTypes }}
+        </span>
+      }
+      @if (breakpoint > breakpoints.SMALL && !!startDate) {
+        <span>
+          <b>{{ 'START' | translate }}:</b> {{ startDate | shortDate }}
+        </span>
+      }
+      @if (breakpoint > breakpoints.SMALL && !!endDate) {
+        <span>
+          <b>{{ 'END' | translate }}:</b> {{ endDate | shortDate }}
+        </span>
+      }
+      @if (pathRange.start || pathRange.end) {
+        <span>
+          <b>
+            @if (selectedDatasetIsNISARFormat) {
+              {{ 'TRACK' | translate }}
+            } @else {
+              {{ 'PATH' | translate }}
+            }
+            :</b
+          >
+          {{ pathRange.start }} - {{ pathRange.end }}
+        </span>
+      }
+      @if (frameRange.start || frameRange.end) {
+        <span>
+          <b>{{ 'FRAME' | translate }}:</b> {{ frameRange.start }} -
+          {{ frameRange.end }}
+        </span>
+      }
+      @if (season.start || season.end) {
+        <span>
+          <b>{{ 'SEASON' | translate }}:</b> {{ season.start }} -
+          {{ season.end }}
+        </span>
+      }
+      @if (shouldOmitSearchPolygon) {
+        <span>
+          <b>{{ 'OMIT_GEO' | translate }}:</b>
+          {{ shouldOmitSearchPolygon ? 'Yes' : 'No' }}
+        </span>
+      }
+      @if (productTypes) {
+        <span>
+          <b>{{ 'FILE_TYPES' | translate }}:</b> {{ productTypes }}
+        </span>
+      }
+      @if (beamModes.length) {
+        <span>
+          <b>{{ 'BEAM_MODES' | translate | titlecase }}:</b> {{ beamModes }}
+        </span>
+      }
+      @if (polarizations.length) {
+        <span>
+          <b>
+            @if (dataset !== 'NISAR') {
+              {{ 'POLARIZATIONS' | translate }}
+            } @else {
+              {{ 'MAIN_POLARIZATIONS' | translate }}
+            }
+            :</b
+          >
+          {{ polarizations | join: ', ' }}
+        </span>
+      }
+      @if (sidePolarizations.length) {
+        <span>
+          <b>{{ 'SIDE_POLARIZATIONS' | translate }}:</b>
+          {{ sidePolarizations | join: ', ' }}
+        </span>
+      }
+      @if (instruments.length) {
+        <span>
+          <b>{{ 'INSTRUMENTS' | translate }}:</b> {{ instruments }}
+        </span>
+      }
+      @if (frameCoverage.length) {
+        <span>
+          <b>{{ 'FRAME_COVERAGE' | translate }}:</b> {{ frameCoverage }}
+        </span>
+      }
+      @if (rangeBandwidth.length) {
+        <span>
+          <b>{{ 'RANGE_BANDWIDTH' | translate }}:</b> {{ rangeBandwidth }}
+        </span>
+      }
+      @if (jointObservation) {
+        <span>
+          <b>{{ 'DATA_TYPE' | translate }}:</b>
+          {{ 'JOINT_OBSERVATION_ONLY' | translate }}
+        </span>
+      }
+      @if (dataset === 'NISAR') {
+        @if (scienceProducts.length) {
+          <span>
+            <b>{{ 'SCIENCE_PRODUCT' | translate }}:</b>
+            {{ scienceProducts | join: ', ' }}
+          </span>
         }
-        :</b
-      >
-      {{ pathRange.start }} - {{ pathRange.end }}
-    </span>
-    <span *ngIf="frameRange.start || frameRange.end">
-      <b>{{ 'FRAME' | translate }}:</b> {{ frameRange.start }} -
-      {{ frameRange.end }}
-    </span>
-    <span *ngIf="season.start || season.end">
-      <b>{{ 'SEASON' | translate }}:</b> {{ season.start }} - {{ season.end }}
-    </span>
-    <span *ngIf="shouldOmitSearchPolygon">
-      <b>{{ 'OMIT_GEO' | translate }}:</b>
-      {{ shouldOmitSearchPolygon ? 'Yes' : 'No' }}
-    </span>
-    <span *ngIf="productTypes">
-      <b>{{ 'FILE_TYPES' | translate }}:</b> {{ productTypes }}
-    </span>
-    <span *ngIf="beamModes.length">
-      <b>{{ 'BEAM_MODES' | translate | titlecase }}:</b> {{ beamModes }}
-    </span>
-    <span *ngIf="polarizations.length">
-      <b>
-        @if (dataset !== 'NISAR') {
-          {{ 'POLARIZATIONS' | translate }}
-        } @else {
-          {{ 'MAIN_POLARIZATIONS' | translate }}
+        @if (productionConfig.length) {
+          <span>
+            <b>{{ 'PRODUCTION_CONFIGURATION' | translate }}:</b>
+            {{ productionConfig }}
+          </span>
         }
-        :</b
-      >
-      {{ polarizations | join: ', ' }}
-    </span>
-    <span *ngIf="sidePolarizations.length">
-      <b>{{ 'SIDE_POLARIZATIONS' | translate }}:</b>
-      {{ sidePolarizations | join: ', ' }}
-    </span>
-    <span *ngIf="instruments.length">
-      <b>{{ 'INSTRUMENTS' | translate }}:</b> {{ instruments }}
-    </span>
-    <span *ngIf="frameCoverage.length">
-      <b>{{ 'FRAME_COVERAGE' | translate }}:</b> {{ frameCoverage }}
-    </span>
-    <span *ngIf="rangeBandwidth.length">
-      <b>{{ 'RANGE_BANDWIDTH' | translate }}:</b> {{ rangeBandwidth }}
-    </span>
-    <span *ngIf="jointObservation">
-      <b>{{ 'DATA_TYPE' | translate }}:</b>
-      {{ 'JOINT_OBSERVATION_ONLY' | translate }}
-    </span>
-    @if (dataset === 'NISAR') {
-      <span *ngIf="scienceProducts.length">
-        <b>{{ 'SCIENCE_PRODUCT' | translate }}:</b>
-        {{ scienceProducts | join: ', ' }}
+      }
+      @if (flightDirections.length) {
+        <span>
+          <b>{{ 'FLIGHT_DIR' | translate }}:</b> {{ flightDirections }}
+        </span>
+      }
+      @if (subtypes) {
+        <span>
+          <b>{{ 'DATASET' | translate }}:</b> {{ subtypes }}
+        </span>
+      }
+      @if (mission) {
+        <span>
+          <b>{{ 'CAMPAIGN' | translate }}:</b> {{ mission }}
+        </span>
+      }
+      @if ((searchType$ | async) !== searchTypes.DISPLACEMENT) {
+        <span>
+          @if (tempRange.start || tempRange.end) {
+            <span>
+              <b>{{ 'TEMPORAL' | translate }}:</b> {{ tempRange.start }}
+              @if (!!tempRange.end) {
+                <span> {{ 'TO' | translate }} {{ tempRange.end }}</span>
+              }
+            </span>
+          }
+        </span>
+      }
+      @if (perpRange.start || perpRange.end) {
+        <span>
+          <b>{{ 'PERPENDICULAR' | translate }}:</b> {{ perpRange.start }}
+          @if (!!perpRange.end) {
+            <span> {{ 'TO' | translate }} {{ perpRange.end }} </span>
+          }
+        </span>
+      }
+      <span>
+        @if (fullBurstIDs?.length > 0) {
+          <span>
+            <b>{{ 'FULL_BURST_ID' | translate }}:</b>
+            {{
+              fullBurstIDs.length <= 4
+                ? fullBurstIDs.join(', ')
+                : fullBurstIDs.length + ' IDs'
+            }}
+          </span>
+        }
       </span>
-      <span *ngIf="productionConfig.length">
-        <b>{{ 'PRODUCTION_CONFIGURATION' | translate }}:</b>
-        {{ productionConfig }}
+      <span>
+        @if (operaBurstIDs?.length > 0) {
+          <span>
+            <b>{{ 'OPERA_BURST_ID' | translate }}:</b>
+            {{
+              operaBurstIDs.length <= 4
+                ? operaBurstIDs.join(', ')
+                : operaBurstIDs.length + ' IDs'
+            }}
+          </span>
+        }
       </span>
-    }
-    <span *ngIf="flightDirections.length">
-      <b>{{ 'FLIGHT_DIR' | translate }}:</b> {{ flightDirections }}
-    </span>
-    <span *ngIf="subtypes">
-      <b>{{ 'DATASET' | translate }}:</b> {{ subtypes }}
-    </span>
-    <span *ngIf="mission">
-      <b>{{ 'CAMPAIGN' | translate }}:</b> {{ mission }}
-    </span>
-    <span *ngIf="(searchType$ | async) !== searchTypes.DISPLACEMENT">
-      <span *ngIf="tempRange.start || tempRange.end">
-        <b>{{ 'TEMPORAL' | translate }}:</b> {{ tempRange.start }}
-        <span *ngIf="!!tempRange.end">
-          {{ 'TO' | translate }} {{ tempRange.end }}</span
-        >
+      <span>
+        @if (useCalibrationData) {
+          <span>
+            <b>{{ 'DATA_TYPE' | translate }}:</b>
+            {{ 'CALIBRATION' | translate }}
+          </span>
+        }
       </span>
-    </span>
-    <span *ngIf="perpRange.start || perpRange.end">
-      <b>{{ 'PERPENDICULAR' | translate }}:</b> {{ perpRange.start }}
-      <span *ngIf="!!perpRange.end">
-        {{ 'TO' | translate }} {{ perpRange.end }}
+      <span>
+        @if (!!groupID) {
+          <span>
+            <b> {{ 'GROUP_ID_INFO_BAR' | translate }}:</b> {{ groupID }}
+          </span>
+        }
       </span>
-    </span>
-    <span>
-      <span *ngIf="fullBurstIDs?.length > 0">
-        <b>{{ 'FULL_BURST_ID' | translate }}:</b>
-        {{
-          fullBurstIDs.length <= 4
-            ? fullBurstIDs.join(', ')
-            : fullBurstIDs.length + ' IDs'
-        }}
+      <span>
+        @if (!!shortNames) {
+          <span>
+            <b> {{ 'SHORT_NAMES' | translate }}:</b> {{ shortNames }}
+          </span>
+        }
       </span>
-    </span>
-    <span>
-      <span *ngIf="operaBurstIDs?.length > 0">
-        <b>{{ 'OPERA_BURST_ID' | translate }}:</b>
-        {{
-          operaBurstIDs.length <= 4
-            ? operaBurstIDs.join(', ')
-            : operaBurstIDs.length + ' IDs'
-        }}
-      </span>
-    </span>
-    <span>
-      <span *ngIf="useCalibrationData">
-        <b>{{ 'DATA_TYPE' | translate }}:</b> {{ 'CALIBRATION' | translate }}
-      </span>
-    </span>
-    <span>
-      <span *ngIf="!!groupID">
-        <b> {{ 'GROUP_ID_INFO_BAR' | translate }}:</b> {{ groupID }}
-      </span>
-    </span>
-    <span>
-      <span *ngIf="!!shortNames">
-        <b> {{ 'SHORT_NAMES' | translate }}:</b> {{ shortNames }}
-      </span>
-    </span>
+    </div>
+    <div class="last-info">
+      <app-ci-search></app-ci-search>
+    </div>
   </div>
-  <div class="last-info">
-    <app-ci-search></app-ci-search>
-  </div>
-</div>
+}

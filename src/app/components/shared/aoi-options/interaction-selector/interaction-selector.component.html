@@ -42,9 +42,8 @@
     <mat-icon class="interaction-icon">delete</mat-icon>
   </mat-button-toggle>
 
-  <app-file-upload-dialog
-    *ngIf="(breakpoint$ | async) === breakpoints.MOBILE"
-    class="mobile-upload-button"
-  >
-  </app-file-upload-dialog>
+  @if ((breakpoint$ | async) === breakpoints.MOBILE) {
+    <app-file-upload-dialog class="mobile-upload-button">
+    </app-file-upload-dialog>
+  }
 </mat-button-toggle-group>

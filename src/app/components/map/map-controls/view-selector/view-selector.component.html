@@ -4,23 +4,16 @@
   [matMenuTriggerFor]="viewMenu"
   aria-label="Map projection view"
 >
-  <mat-icon
-    *ngIf="view === types.ARCTIC"
-    svgIcon="arctic"
-    class="view-btn view-select-icon"
-  >
-  </mat-icon>
-  <mat-icon
-    *ngIf="view === types.EQUATORIAL"
-    svgIcon="equatorial"
-    class="view-btn view-select-icon"
-  >
-  </mat-icon>
-  <mat-icon
-    *ngIf="view === types.ANTARCTIC"
-    svgIcon="antarctic"
-    class="view-btn view-select-icon"
-  ></mat-icon>
+  @if (view === types.ARCTIC) {
+    <mat-icon svgIcon="arctic" class="view-btn view-select-icon"> </mat-icon>
+  }
+  @if (view === types.EQUATORIAL) {
+    <mat-icon svgIcon="equatorial" class="view-btn view-select-icon">
+    </mat-icon>
+  }
+  @if (view === types.ANTARCTIC) {
+    <mat-icon svgIcon="antarctic" class="view-btn view-select-icon"></mat-icon>
+  }
   <span class="fa fa-caret-down bottom-right"></span>
 </button>
 
