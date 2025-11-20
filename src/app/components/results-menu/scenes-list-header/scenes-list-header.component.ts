@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { saveAs } from 'file-saver';
 
-import { combineLatest, switchMap } from 'rxjs';
+import { combineLatest, switchMap, from } from 'rxjs';
 import {
   debounceTime,
   filter,
@@ -9,6 +9,8 @@ import {
   take,
   tap,
   withLatestFrom,
+  mergeMap,
+  toArray,
 } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
@@ -271,6 +273,9 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public moreHyp3JobsToLoad: boolean;
 
   private selectedEvent: models.SarviewsEvent;
+
+  public isEditingProjectName = false;
+  public newProjectName = '';
 
   ngOnInit() {
     this.subs.add(
@@ -638,6 +643,32 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
           maxHeight: '500px',
         });
       });
+  }
+
+  public onBulkProjectNameUpdate() {
+    this.isEditingProjectName = true;
+    this.newProjectName = '';
+  }
+
+  public onSubmitProjectName() {
+    this.isEditingProjectName = false;
+    const newName = this.newProjectName;
+
+    from(this.products).pipe(
+      mergeMap(
+        (product) => {
+          console.log(product.metadata.job.job_id);
+          return this.hyp3.updateJobName$(product.metadata.job.job_id, newName);
+        },
+        20
+      ),
+      toArray(),
+    ).subscribe(resps => {
+      console.log(resps);
+    });
+
+    console.log(`updating with ${this.newProjectName}`);
+    this.newProjectName = '';
   }
 
   ngOnDestroy(): void {
