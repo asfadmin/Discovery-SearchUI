@@ -37,6 +37,8 @@ $asf-background-white: lighten($asf-primary, 80%);
 
 $themes: (
   light: (
+    light-white: white,
+    light-black: rgb(0 0 0 / 0.87),
     background-white: lighten(mat.m2-get-color-from-palette($asf-app-primary), 80%),
     dark-primary-text: rgb(0 0 0 / 0.87),
     dark-secondary-text: rgb(0 0 0 / 0.54),
@@ -59,6 +61,8 @@ $themes: (
     primary-dark: darken(mat.m2-get-color-from-palette($asf-app-primary), 15%),
   ),
   dark: (
+    light-white: black,
+    light-black: white,
     light-primary-text: white,
     light-secondary-text: rgb(255 255 255 / 0.54),
     light-disabled-text: rgb(255 255 255 / 0.38),
