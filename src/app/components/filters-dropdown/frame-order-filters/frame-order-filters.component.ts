@@ -6,8 +6,6 @@ import { CommonModule } from '@angular/common';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSelectModule } from '@angular/material/select';
 
-import { SharedModule } from '@shared';
-
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
@@ -20,6 +18,7 @@ import { PropertyService, ScreenSizeService } from '@services';
 import { FlightDirectionSelectorComponent } from '@components/shared/selectors/flight-direction-selector/flight-direction-selector.component';
 import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 import { PathSelectorComponent } from '@components/shared/selectors/path-selector';
+import { TranslateModule } from '@ngx-translate/core';
 
 enum FilterPanel {
   DATE = 'Date',
@@ -40,7 +39,7 @@ enum FilterPanel {
     MatExpansionModule,
     DocsModalComponent,
     PathSelectorComponent,
-    SharedModule,
+    TranslateModule,
   ],
   templateUrl: './frame-order-filters.component.html',
   styleUrl: './frame-order-filters.component.scss',

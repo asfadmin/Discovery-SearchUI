@@ -133,6 +133,7 @@ bootstrapApplication(AppComponent, {
         preventDuplicates: true,
       }),
     ),
+    HttpClient, // remove in v21 w/ update to ngx-translate
     AsfApiService,
     AsfLanguageService,
     UrlStateService,

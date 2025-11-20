@@ -54,7 +54,6 @@ import { PointHistoryState } from '@services/point-history.service';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 import { AsfLanguageService } from '@services/asf-language.service';
-import { SharedModule } from '@shared';
 import {
   NgIf,
   NgTemplateOutlet,
@@ -483,7 +482,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
     MatDialogContent,
     MatButton,
     MatDialogClose,
-    SharedModule,
+    TranslateModule,
   ],
 })
 export class ConfirmationDialog {

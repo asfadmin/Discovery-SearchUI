@@ -3,12 +3,12 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { SharedModule } from '@shared';
 import { SubSink } from 'subsink';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import * as filtersStore from '@store/filters';
 import { MatTooltip } from '@angular/material/tooltip';
+import { TranslateModule } from '@ngx-translate/core';
 
 interface prodConfig {
   value: string;
@@ -25,7 +25,7 @@ interface prodConfig {
     FormsModule,
     ReactiveFormsModule,
     MatInputModule,
-    SharedModule,
+    TranslateModule,
     MatTooltip,
   ],
 })
