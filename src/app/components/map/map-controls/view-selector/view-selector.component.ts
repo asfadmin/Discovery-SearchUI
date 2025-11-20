@@ -44,6 +44,12 @@ export class ViewSelectorComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(searchStore.getSearchType).subscribe((searchType) => {
         this.isDisplacementSearch = searchType === SearchType.DISPLACEMENT;
+
+        // Auto-switch to equatorial view if switching to Displacement Search from a polar view
+        if (this.isDisplacementSearch &&
+            (this.view === MapViewType.ARCTIC || this.view === MapViewType.ANTARCTIC)) {
+          this.store$.dispatch(new mapStore.SetMapView(MapViewType.EQUATORIAL));
+        }
       }),
     );
   }
