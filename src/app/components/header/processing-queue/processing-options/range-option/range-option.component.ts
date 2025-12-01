@@ -4,9 +4,10 @@ import { Range } from '@models';
 @Component({
   selector: 'app-range-option',
   templateUrl: './range-option.component.html',
-  styleUrls: ['./range-option.component.scss']
+  styleUrls: ['./range-option.component.scss'],
+  standalone: false,
 })
-export class RangeOptionComponent  implements OnInit{
+export class RangeOptionComponent implements OnInit {
   @Input() value: number;
   @Input() optionName: string;
   @Input() optionInfo: string;
@@ -15,23 +16,21 @@ export class RangeOptionComponent  implements OnInit{
 
   @Output() valueChange = new EventEmitter<number>();
 
-  constructor() {}
-
   ngOnInit(): void {
     this.value = this.default;
   }
 
   public onValueChange(): void {
-    if(this.value < this.range.start) {
+    if (this.value < this.range.start) {
       this.value = Math.max(this.range.start, this.value);
     }
-    if(this.value > this.range.end) {
+    if (this.value > this.range.end) {
       this.value = Math.min(this.range.end, this.value);
     }
-    if(this.value === 0.0) {
+    if (this.value === 0.0) {
       this.value = 0.0;
     }
-    if(this.value === null) {
+    if (this.value === null) {
       this.value = this.default;
     }
 

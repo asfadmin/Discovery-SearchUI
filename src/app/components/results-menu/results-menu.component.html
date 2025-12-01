@@ -1,73 +1,101 @@
 <ng-container *ngIf="isResultsMenuOpen$ | async">
-  <div *ngIf="breakpoint$ | async as breakpoint"
-    [class.mobile-menu-offset]="breakpoint === breakpoints.MOBILE && searchType !== SearchTypes.DISPLACEMENT"
-    [class.mobile-displacement-menu-offset]="breakpoint === breakpoints.MOBILE && searchType === SearchTypes.DISPLACEMENT"
+  <div
+    *ngIf="breakpoint$ | async as breakpoint"
+    [class.mobile-menu-offset]="
+      breakpoint === breakpoints.MOBILE &&
+      searchType !== SearchTypes.DISPLACEMENT
+    "
+    [class.mobile-displacement-menu-offset]="
+      breakpoint === breakpoints.MOBILE &&
+      searchType === SearchTypes.DISPLACEMENT
+    "
     [class.desktop-menu-offset]="breakpoint !== breakpoints.MOBILE"
-    [class.hidden]="!(isResultsMenuOpen$ | async) || (isFrameSelectionEnabled$ | async)"
-    class="rectangle-wrapper w100">
+    [class.hidden]="
+      !(isResultsMenuOpen$ | async) || (isFrameSelectionEnabled$ | async)
+    "
+    class="rectangle-wrapper w100"
+  >
     <div
       id="result-div"
       class="w100"
       [class.displacement-results]="searchType === SearchTypes.DISPLACEMENT"
-      [ngClass]="{'mobile-size': breakpoint === breakpoints.MOBILE}"
+      [ngClass]="{ 'mobile-size': breakpoint === breakpoints.MOBILE }"
       [style.height.px]="menuHeightPx"
       mwlResizable
       [validateResize]="validate"
       [enableGhostResize]="true"
       *ngIf="products.length !== 0 || !(noSarviewsEvents$ | async)"
       (resizeEnd)="onFinalResize()"
-      (resizing)="onResizeEnd($event)">
-
+      (resizing)="onResizeEnd($event)"
+    >
       <div class="resize-controls">
-        <div mwlResizeHandle [resizeEdges]="{ top: !(imageViewerOpen$ | async) }" class="resize-handle-filler">
+        <div
+          mwlResizeHandle
+          [resizeEdges]="{ top: !(imageViewerOpen$ | async) }"
+          class="resize-handle-filler"
+        >
           <mat-icon svgIcon="hgrip" class="hgrip-icon"></mat-icon>
         </div>
       </div>
 
-      <div [class.hidden]="
-        (areNoScenes$ | async) &&
-        !(
-          !(noSarviewsEvents$ | async) &&
-          searchType === SearchTypes.SARVIEWS_EVENTS
-        )"
-        class="h100" style="justify-content: center;">
-
-        <div *ngIf="products.length !== 0 || !(noSarviewsEvents$ | async)"
-          class="results-menu--background h100 w100 mp0 fx-row">
-
+      <div
+        [class.hidden]="
+          (areNoScenes$ | async) &&
+          !(
+            !(noSarviewsEvents$ | async) &&
+            searchType === SearchTypes.SARVIEWS_EVENTS
+          )
+        "
+        class="h100"
+        style="justify-content: center"
+      >
+        <div
+          *ngIf="products.length !== 0 || !(noSarviewsEvents$ | async)"
+          class="results-menu--background h100 w100 mp0 fx-row"
+        >
           <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
-            <app-desktop-results-menu class="w100 h100 results-menu--layout"
+            <app-desktop-results-menu
+              class="w100 h100 results-menu--layout"
               *ngIf="
-              searchType !== SearchTypes.BASELINE &&
-              searchType !== SearchTypes.SBAS &&
-              searchType !== SearchTypes.SARVIEWS_EVENTS &&
-              searchType !== SearchTypes.DISPLACEMENT
+                searchType !== SearchTypes.BASELINE &&
+                searchType !== SearchTypes.SBAS &&
+                searchType !== SearchTypes.SARVIEWS_EVENTS &&
+                searchType !== SearchTypes.DISPLACEMENT
               "
               [class.small-size]="breakpoint === breakpoints.SMALL"
-              [resize$]="resize$">
+              [resize$]="resize$"
+            >
             </app-desktop-results-menu>
 
-            <app-timeseries-results-menu class="w100 h100 results-menu--layout"
-               [resize$]="resize$"
-               *ngIf="searchType === SearchTypes.DISPLACEMENT">
+            <app-timeseries-results-menu
+              class="w100 h100 results-menu--layout"
+              [resize$]="resize$"
+              *ngIf="searchType === SearchTypes.DISPLACEMENT"
+            >
             </app-timeseries-results-menu>
 
-            <app-sarviews-results-menu class="w100 h100 results-menu--layout"
+            <app-sarviews-results-menu
+              class="w100 h100 results-menu--layout"
               *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS"
               [class.small-size]="breakpoint === breakpoints.SMALL"
-              [resize$]="resize$">
+              [resize$]="resize$"
+            >
             </app-sarviews-results-menu>
 
-            <app-baseline-results-menu class="w100 h100 results-menu--layout"
+            <app-baseline-results-menu
+              class="w100 h100 results-menu--layout"
               *ngIf="searchType === SearchTypes.BASELINE"
               [class.small-size]="breakpoint === breakpoints.SMALL"
-              [resize$]="resize$">
+              [resize$]="resize$"
+            >
             </app-baseline-results-menu>
 
-            <app-sbas-results-menu class="w100 h100 results-menu--layout"
+            <app-sbas-results-menu
+              class="w100 h100 results-menu--layout"
               *ngIf="searchType === SearchTypes.SBAS"
               [class.small-size]="breakpoint === breakpoints.SMALL"
-              [resize$]="resize$">
+              [resize$]="resize$"
+            >
             </app-sbas-results-menu>
           </ng-container>
 
@@ -78,31 +106,44 @@
               </div>
             </ng-container>
             <ng-container *ngIf="searchType !== SearchTypes.DISPLACEMENT">
-              <app-mobile-results-menu class="w100 h100 mobile-size"
-                [resize$]="resize$">
+              <app-mobile-results-menu
+                class="w100 h100 mobile-size"
+                [resize$]="resize$"
+              >
               </app-mobile-results-menu>
             </ng-container>
           </ng-container>
         </div>
 
-        <div *ngIf="products.length === 0 && searchType === SearchTypes.CUSTOM_PRODUCTS"
-          class="results-menu--background no-results faint-text h100 w100 mp0 fx-col">
+        <div
+          *ngIf="
+            products.length === 0 && searchType === SearchTypes.CUSTOM_PRODUCTS
+          "
+          class="results-menu--background no-results faint-text h100 w100 mp0 fx-col"
+        >
           <div class="no-products-actions">
-            <div style="margin-bottom: 14px;">
+            <div style="margin-bottom: 14px">
               {{ 'NO_ON_DEMAND_PRODUCTS' | translate }}
             </div>
 
-            <a style="margin-bottom: 5px;" mat-flat-button color="primary"
+            <a
+              style="margin-bottom: 5px"
+              mat-flat-button
+              color="primary"
               href="https://asfhyp3.github.io/using/vertex/"
-              target="_blank">
+              target="_blank"
+            >
               {{ 'GETTING_STARTED' | translate }}
             </a>
 
-            <a mat-flat-button
-              style="margin-bottom: 5px;"
+            <a
+              mat-flat-button
+              style="margin-bottom: 5px"
               color="primary"
-              href="javascript:feedback.showForm();">
-              <mat-icon>comment</mat-icon>{{ 'FEEDBACK' | translate }}</a>
+              href="javascript:feedback.showForm();"
+            >
+              <mat-icon>comment</mat-icon>{{ 'FEEDBACK' | translate }}</a
+            >
           </div>
         </div>
       </div>

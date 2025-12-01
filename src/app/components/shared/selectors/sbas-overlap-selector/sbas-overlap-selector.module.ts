@@ -7,7 +7,7 @@ import { MatSharedModule } from '@shared';
 import { MatSelectModule } from '@angular/material/select';
 
 import { SbasOverlapSelectorComponent } from './sbas-overlap-selector.component';
-import { SharedModule } from "@shared";
+import { SharedModule } from '@shared';
 
 @NgModule({
   declarations: [SbasOverlapSelectorComponent],
@@ -19,8 +19,8 @@ import { SharedModule } from "@shared";
     MatSlideToggleModule,
     MatSliderModule,
     MatSelectModule,
-    SharedModule
+    SharedModule,
   ],
-  exports: [SbasOverlapSelectorComponent]
+  exports: [SbasOverlapSelectorComponent],
 })
-export class SbasOverlapSelectorModule { }
+export class SbasOverlapSelectorModule {}

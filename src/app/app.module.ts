@@ -15,7 +15,7 @@ import { MatSortModule } from '@angular/material/sort';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import {  ToastrModule } from 'ngx-toastr';
+import { ToastrModule } from 'ngx-toastr';
 
 import * as store from './store';
 
@@ -31,49 +31,57 @@ import { AppComponent } from './app.component';
 
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient } from '@angular/common/http';
 
 import * as services from '@services';
 
-import { NgcCookieConsentModule, NgcCookieConsentConfig } from 'ngx-cookieconsent';
+import {
+  NgcCookieConsentModule,
+  NgcCookieConsentConfig,
+} from 'ngx-cookieconsent';
 import { getSaver, SAVER } from '@services/saver.provider';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from "@angular/material/core";
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+} from '@angular/material/core';
 import {
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
   MAT_MOMENT_DATE_FORMATS,
-  MomentDateAdapter
-} from "@angular/material-moment-adapter";
-import {TimeseriesResultsMenuModule} from '@components/results-menu/timeseries-results-menu/timeseries-results-menu.module';
+  MomentDateAdapter,
+} from '@angular/material-moment-adapter';
+import { TimeseriesResultsMenuModule } from '@components/results-menu/timeseries-results-menu/timeseries-results-menu.module';
 
 // info about cookie consent module: https://tinesoft.github.io/ngx-cookieconsent/home
 const cookieConfig: NgcCookieConsentConfig = {
-  'autoOpen': false,
-    'cookie': {
-      'domain': window.location.hostname
+  autoOpen: false,
+  cookie: {
+    domain: window.location.hostname,
   },
-    'position': 'bottom',
-    'theme': 'edgeless',
-    'palette': {
-    'popup': {
-      'background': '#000000',
-        'text': '#ffffff',
-        'link': '#ffffff'
+  position: 'bottom',
+  theme: 'edgeless',
+  palette: {
+    popup: {
+      background: '#000000',
+      text: '#ffffff',
+      link: '#ffffff',
     },
-    'button': {
-      'background': '#236192',
-        'text': '#ffffff',
-        'border': 'transparent'
-    }
+    button: {
+      background: '#236192',
+      text: '#ffffff',
+      border: 'transparent',
+    },
   },
-    'type': 'info',
-    'content': {
-      'message': 'This website uses cookies to ensure you get the best experience on our website.',
-        'dismiss': 'Dismiss',
-        'deny': 'Refuse cookies',
-        'link': 'Learn more',
-        'href': 'https://cookiesandyou.com',
-        'policy': 'Cookie Policy'
-    }
+  type: 'info',
+  content: {
+    message:
+      'This website uses cookies to ensure you get the best experience on our website.',
+    dismiss: 'Dismiss',
+    deny: 'Refuse cookies',
+    link: 'Learn more',
+    href: 'https://cookiesandyou.com',
+    policy: 'Cookie Policy',
+  },
 };
 
 // AoT requires an exported function for factories
@@ -86,24 +94,22 @@ export const routes = [
 ];
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
-      }
+        deps: [HttpClient],
+      },
     }),
     BrowserAnimationsModule,
     NgcCookieConsentModule.forRoot(cookieConfig),
     MatBottomSheetModule,
     MatSharedModule,
-    RouterModule.forRoot(routes, {useHash: true}),
-    StoreModule.forRoot(store.reducers, {metaReducers: store.metaReducers}),
+    RouterModule.forRoot(routes, { useHash: true }),
+    StoreModule.forRoot(store.reducers, { metaReducers: store.metaReducers }),
     EffectsModule.forRoot(store.appEffects),
     MatSidenavModule,
     MatTableModule,
@@ -118,9 +124,9 @@ export const routes = [
     MatDialogModule,
     BaselineChartModule,
     HelpModule,
-    ToastrModule.forRoot({positionClass: 'inline', preventDuplicates: true}),
+    ToastrModule.forRoot({ positionClass: 'inline', preventDuplicates: true }),
     CodeExportModule,
-    TimeseriesResultsMenuModule
+    TimeseriesResultsMenuModule,
   ],
   providers: [
     services.AsfApiService,
@@ -155,17 +161,16 @@ export const routes = [
     services.Hyp3JobPollingService,
     services.PairService,
     services.SceneSelectService,
-    {provide: SAVER, useFactory: getSaver},
+    { provide: SAVER, useFactory: getSaver },
     {
       provide: DateAdapter,
       useClass: MomentDateAdapter,
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
     },
-    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
     // { provide: Window, useValue: window },
   ],
   bootstrap: [AppComponent],
-    exports: [MatTableModule],
+  exports: [MatTableModule],
 })
-
-export class AppModule { }
+export class AppModule {}

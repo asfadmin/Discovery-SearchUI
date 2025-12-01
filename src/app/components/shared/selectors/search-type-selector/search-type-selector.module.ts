@@ -8,12 +8,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { SearchTypeSelectorComponent } from './search-type-selector.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { DocsModalModule } from '@components/shared/docs-modal';
-import { TranslateModule } from "@ngx-translate/core";
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [
-    SearchTypeSelectorComponent,
-  ],
+  declarations: [SearchTypeSelectorComponent],
   imports: [
     CommonModule,
     MatSharedModule,
@@ -23,10 +21,6 @@ import { TranslateModule } from "@ngx-translate/core";
     DocsModalModule,
     TranslateModule,
   ],
-  exports: [
-    SearchTypeSelectorComponent,
-  ]
+  exports: [SearchTypeSelectorComponent],
 })
-
-export class SearchTypeSelectorModule {
-}
+export class SearchTypeSelectorModule {}

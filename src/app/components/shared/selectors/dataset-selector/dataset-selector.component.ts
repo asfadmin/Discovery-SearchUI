@@ -1,4 +1,11 @@
-import {Component, Input, Output, EventEmitter, ViewChild} from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild,
+  inject,
+} from '@angular/core';
 
 import * as models from '@models';
 import { ScreenSizeService } from '@services';
@@ -7,15 +14,20 @@ import { DateRange } from '@models';
 
 // Declare GTM dataLayer array.
 declare global {
-  interface Window { dataLayer: any[]; }
+  interface Window {
+    dataLayer: any[];
+  }
 }
 
 @Component({
   selector: 'app-dataset-selector',
   templateUrl: './dataset-selector.component.html',
-  styleUrls: ['./dataset-selector.component.scss']
+  styleUrls: ['./dataset-selector.component.scss'],
+  standalone: false,
 })
 export class DatasetSelectorComponent {
+  private screenSize = inject(ScreenSizeService);
+
   @Input() datasets: models.Dataset[];
   @Input() selected: string;
   @Output() selectedChange = new EventEmitter<string>();
@@ -25,23 +37,18 @@ export class DatasetSelectorComponent {
   public breakpoints = models.Breakpoints;
   public isReadMore = true;
 
-  constructor(
-    private screenSize: ScreenSizeService,
-    
-  ) {}
-
   public onSelectionChange(dataset: string): void {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-      'event': 'dataset-selected',
-      'dataset': dataset,
+      event: 'dataset-selected',
+      dataset: dataset,
     });
     this.selectedChange.emit(dataset);
   }
 
   public datasetNameLookup(datasetId: string): string {
     let datasetName = '';
-    this.datasets.forEach( (dataset) => {
+    this.datasets.forEach((dataset) => {
       if (dataset.id === datasetId) {
         datasetName = dataset.name;
       }
@@ -53,11 +60,11 @@ export class DatasetSelectorComponent {
     const { start, end } = dateRange;
 
     const startYear = start.getFullYear();
-    const endYear = (!end) ? 'Present' : end.getFullYear();
+    const endYear = !end ? 'Present' : end.getFullYear();
 
-    return startYear === endYear ?
-      `${startYear}`.trim() :
-      `${startYear} to ${endYear}`.trim();
+    return startYear === endYear
+      ? `${startYear}`.trim()
+      : `${startYear} to ${endYear}`.trim();
   }
 
   public onOpenDocs(event, dataset: string) {
@@ -65,5 +72,4 @@ export class DatasetSelectorComponent {
     this.onSelectionChange(dataset);
     event.stopPropagation();
   }
-
 }

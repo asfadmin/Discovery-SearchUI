@@ -1,10 +1,20 @@
 import { MatMenuPanel, MatMenuTrigger } from '@angular/material/menu';
-import { Directive, ElementRef, HostListener, Input, OnInit } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  HostListener,
+  Input,
+  OnInit,
+} from '@angular/core';
 
 @Directive({
   selector: '[contextMenuTriggerFor]',
+  standalone: false,
 })
-export class ContextMenuTriggerDirective extends MatMenuTrigger implements OnInit {
+export class ContextMenuTriggerDirective
+  extends MatMenuTrigger
+  implements OnInit
+{
   private readonly anchorElement = document.createElement('div');
 
   @Input('contextMenuTriggerFor')
@@ -32,15 +42,15 @@ export class ContextMenuTriggerDirective extends MatMenuTrigger implements OnIni
   }
 
   public override _handleClick() {
-
+    // Do nothing
   }
 
   public override openMenu() {
-    if(!this.menuData.tooltipData) {
-        return
+    if (!this.menuData.tooltipData) {
+      return;
     }
-    if(!this.menuData.valid) {
-      return
+    if (!this.menuData.valid) {
+      return;
     }
     document.body.appendChild(this.anchorElement);
     super.openMenu();
@@ -54,9 +64,8 @@ export class ContextMenuTriggerDirective extends MatMenuTrigger implements OnIni
   @HostListener('contextmenu', ['$event'])
   public handleContextMenu(event: MouseEvent) {
     event.preventDefault();
-    this.anchorElement.style.top = `${ event.clientY }px`;
-    this.anchorElement.style.left = `${ event.clientX }px`;
+    this.anchorElement.style.top = `${event.clientY}px`;
+    this.anchorElement.style.left = `${event.clientX}px`;
     super._handleClick(event);
   }
-
 }

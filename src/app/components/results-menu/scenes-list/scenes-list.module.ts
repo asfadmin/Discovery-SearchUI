@@ -17,15 +17,10 @@ import { ScenesListComponent } from './scenes-list.component';
 import { SceneModule } from './scene/scene.module';
 import { PairComponent } from './pair/pair.component';
 import { SarviewsEventComponent } from './sarview-event/sarviews-event.component';
-import { SharedModule } from "@shared";
-
+import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [
-    ScenesListComponent,
-    PairComponent,
-    SarviewsEventComponent,
-  ],
+  declarations: [ScenesListComponent, PairComponent, SarviewsEventComponent],
   imports: [
     CommonModule,
     ScrollingModule,
@@ -38,10 +33,8 @@ import { SharedModule } from "@shared";
     PipesModule,
     OnDemandAddMenuModule,
     SharedModule,
-    SceneModule
+    SceneModule,
   ],
-  exports: [
-    ScenesListComponent
-  ]
+  exports: [ScenesListComponent],
 })
-export class ScenesListModule { }
+export class ScenesListModule {}

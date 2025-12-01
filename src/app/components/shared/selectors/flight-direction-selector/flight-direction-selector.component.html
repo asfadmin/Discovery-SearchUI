@@ -1,23 +1,30 @@
 <mat-form-field>
-    <mat-select (selectionChange)="onNewFlightDirectionsSelected(multiple ? $event.value : [$event.value])"
-        [value]="multiple ? (flightDirections$ | async) : (flightDirections$ | async)[0]"
-        placeholder="{{ 'DIRECTION' | translate }}"
-        [multiple]="multiple">
-        @for(direction of flightDirectionTypes; track direction) {
-        <mat-option [value]="direction">
-            {{direction.toUpperCase() | translate}}
-        </mat-option>
-        }
-    </mat-select>
-    @if(prop.isRelevant(p.FLIGHT_DIRECTION)) {
-    <mat-hint align="start">
-        {{ (flightDirections$ | async)?.length || 0 }}/{{ flightDirectionTypes.length }}
-        {{ 'FLIGHT_DIRECTIONS_SELECTED' | translate }}
-    </mat-hint>
+  <mat-select
+    (selectionChange)="
+      onNewFlightDirectionsSelected(multiple ? $event.value : [$event.value])
+    "
+    [value]="
+      multiple ? (flightDirections$ | async) : (flightDirections$ | async)[0]
+    "
+    placeholder="{{ 'DIRECTION' | translate }}"
+    [multiple]="multiple"
+  >
+    @for (direction of flightDirectionTypes; track direction) {
+      <mat-option [value]="direction">
+        {{ direction.toUpperCase() | translate }}
+      </mat-option>
     }
-    @else {
+  </mat-select>
+  @if (prop.isRelevant(p.FLIGHT_DIRECTION)) {
     <mat-hint align="start">
-        {{ 'NO_FLIGHT_DIRECTIONS_TO_SELECT' | translate }}
+      {{ (flightDirections$ | async)?.length || 0 }}/{{
+        flightDirectionTypes.length
+      }}
+      {{ 'FLIGHT_DIRECTIONS_SELECTED' | translate }}
     </mat-hint>
-    }
+  } @else {
+    <mat-hint align="start">
+      {{ 'NO_FLIGHT_DIRECTIONS_TO_SELECT' | translate }}
+    </mat-hint>
+  }
 </mat-form-field>

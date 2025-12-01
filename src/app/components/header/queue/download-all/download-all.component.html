@@ -1,14 +1,19 @@
-<div [matTooltip]="isDownloadSupported ? disabled ? ('MUST_BE_LOGGED_IN' | translate) : ('DOWNLOAD_ALL_FILES_IN_QUEUE' | translate) : ('ONLY_AVAILABLE_IN_CHROME'| translate)"
-
+<div
+  [matTooltip]="
+    isDownloadSupported
+      ? disabled
+        ? ('MUST_BE_LOGGED_IN' | translate)
+        : ('DOWNLOAD_ALL_FILES_IN_QUEUE' | translate)
+      : ('ONLY_AVAILABLE_IN_CHROME' | translate)
+  "
 >
-<button (click)="downloadAll()"
-        mat-menu-item
-        style="text-decoration: none;"
-        [disabled]="disabled"
->
-{{ 'DOWNLOAD_ALL' |  translate }}
-<div class="badge">{{ 'EXPERIMENTAL' |  translate }}</div>
-</button>
+  <button
+    (click)="downloadAll()"
+    mat-menu-item
+    style="text-decoration: none"
+    [disabled]="disabled"
+  >
+    {{ 'DOWNLOAD_ALL' | translate }}
+    <div class="badge">{{ 'EXPERIMENTAL' | translate }}</div>
+  </button>
 </div>
-
-

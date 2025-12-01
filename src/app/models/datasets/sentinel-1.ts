@@ -19,73 +19,72 @@ export const sentinel_1 = {
   apiValue: { dataset: 'SENTINEL-1' },
   date: { start: new Date('2014/06/15 03:44:43 UTC') },
   infoUrl: 'https://asf.alaska.edu/datasets/daac/sentinel-1/',
-  citationUrl: 'https://asf.alaska.edu/data-sets/sar-data-sets/sentinel-1/sentinel-1-how-to-cite/',
+  citationUrl:
+    'https://asf.alaska.edu/data-sets/sar-data-sets/sentinel-1/sentinel-1-how-to-cite/',
   frequency: 'C-Band',
   source: {
     name: 'ESA',
-    url: 'https://www.esa.int/ESA'
+    url: 'https://www.esa.int/ESA',
   },
   productTypes: [
     {
       apiValue: 'GRD_HD',
-      displayName: 'L1 Detected High-Res Dual-Pol (GRD-HD)'
+      displayName: 'L1 Detected High-Res Dual-Pol (GRD-HD)',
     },
     {
       apiValue: 'GRD_MD',
-      displayName: 'L1 Detected Mid-Res Dual-Pol (GRD-MD)'
+      displayName: 'L1 Detected Mid-Res Dual-Pol (GRD-MD)',
     },
     {
       apiValue: 'GRD_MS',
-      displayName: 'L1 Detected Mid-Res Single-Pol (GRD-MS)'
+      displayName: 'L1 Detected Mid-Res Single-Pol (GRD-MS)',
     },
     {
       apiValue: 'GRD_HS',
-      displayName: 'L1 Detected High-Res Single-Pol (GRD-HS)'
+      displayName: 'L1 Detected High-Res Single-Pol (GRD-HS)',
     },
     {
       apiValue: 'SLC',
-      displayName: 'L1 Single Look Complex (SLC)'
+      displayName: 'L1 Single Look Complex (SLC)',
     },
     {
       apiValue: 'OCN',
-      displayName: 'L2 Ocean (OCN)'
+      displayName: 'L2 Ocean (OCN)',
     },
     {
       apiValue: 'RAW',
-      displayName: 'L0 Raw Data (RAW)'
+      displayName: 'L0 Raw Data (RAW)',
     },
     {
       apiValue: 'METADATA_GRD_MS',
-      displayName: 'XML Metadata (GRD-MS)'
+      displayName: 'XML Metadata (GRD-MS)',
     },
     {
       apiValue: 'METADATA_GRD_HD',
-      displayName: 'XML Metadata (GRD-HD)'
+      displayName: 'XML Metadata (GRD-HD)',
     },
     {
       apiValue: 'METADATA_RAW',
-      displayName: 'XML Metadata (RAW)'
+      displayName: 'XML Metadata (RAW)',
     },
     {
       apiValue: 'METADATA_GRD_HS',
-      displayName: 'XML Metadata (GRD-HS)'
+      displayName: 'XML Metadata (GRD-HS)',
     },
     {
       apiValue: 'METADATA_GRD_MD',
-      displayName: 'XML Metadata (GRD-MD)'
+      displayName: 'XML Metadata (GRD-MD)',
     },
     {
       apiValue: 'METADATA_SLC',
-      displayName: 'XML Metadata (SLC)'
+      displayName: 'XML Metadata (SLC)',
     },
     {
       apiValue: 'METADATA_OCN',
-      displayName: 'XML Metadata (OCN)'
+      displayName: 'XML Metadata (OCN)',
     },
   ],
-  beamModes: [
-    'IW', 'EW', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'WV'
-  ],
+  beamModes: ['IW', 'EW', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'WV'],
   polarizations: [
     'VV+VH',
     'HH+HV',
@@ -96,19 +95,20 @@ export const sentinel_1 = {
     'Dual VH',
     'Dual VV',
   ],
-    subtypes: [
-        {
-            displayName: 'Sentinel-1A',
-            apiValue: 'SA',
-        },
-        {
-            displayName: 'Sentinel-1B',
-            apiValue: 'SB',
-        },
-        {
-            displayName: 'Sentinel-1C',
-            apiValue: 'SC',
-        }],
+  subtypes: [
+    {
+      displayName: 'Sentinel-1A',
+      apiValue: 'SA',
+    },
+    {
+      displayName: 'Sentinel-1B',
+      apiValue: 'SB',
+    },
+    {
+      displayName: 'Sentinel-1C',
+      apiValue: 'SC',
+    },
+  ],
   platformDesc: 'SENTINEL_DESC',
   platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
 };

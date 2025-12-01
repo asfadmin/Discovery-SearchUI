@@ -11,9 +11,7 @@ import { PipesModule } from '@pipes';
 import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [
-    SarviewsEventSearchSelectorComponent
-  ],
+  declarations: [SarviewsEventSearchSelectorComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -21,10 +19,8 @@ import { SharedModule } from '@shared';
     MatInputModule,
     MatAutocompleteModule,
     PipesModule,
-    SharedModule
+    SharedModule,
   ],
-  exports: [
-    SarviewsEventSearchSelectorComponent
-  ]
+  exports: [SarviewsEventSearchSelectorComponent],
 })
-export class SarviewsEventSearchSelectorModule { }
+export class SarviewsEventSearchSelectorModule {}

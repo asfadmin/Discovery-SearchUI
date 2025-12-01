@@ -1,116 +1,169 @@
 <div class="help-container">
   <div class="help-top-section">
-      <div class="help-toc-title-block">
-        <div class="help-toc-all-title">
-          <h1>{{ 'LEARN_THE_BASICS' |  translate }}</h1>
-        </div>
-        <div class="help-toc-all-title subtitle">
-          <h3>{{ 'QUICKLY_LEARN_THE_BASICS_OF_VERTEX_DATA_SEARCH_WITH_THIS_GETTING_STARTED_SERIES' |  translate }}</h3>
-        </div>
+    <div class="help-toc-title-block">
+      <div class="help-toc-all-title">
+        <h1>{{ 'LEARN_THE_BASICS' | translate }}</h1>
       </div>
+      <div class="help-toc-all-title subtitle">
+        <h3>
+          {{
+            'QUICKLY_LEARN_THE_BASICS_OF_VERTEX_DATA_SEARCH_WITH_THIS_GETTING_STARTED_SERIES'
+              | translate
+          }}
+        </h3>
+      </div>
+    </div>
     <div class="help-video">
       <div class="videoWrapper">
-
-        <mat-card  class="mat-card-step" (click)="setHelpTopic('geoSearch')" >
+        <mat-card class="mat-card-step" (click)="setHelpTopic('geoSearch')">
           <mat-card-header>
             <div mat-card-avatar class="help-toc-icon">
               <mat-icon>looks_one</mat-icon>
             </div>
             <div mat-card-avatar></div>
-            <mat-card-title>{{ 'GEO_SEARCH' |  translate }}</mat-card-title>
-            <mat-card-subtitle>{{ 'HOW_TO_BASIC_GEOGRAPHIC_SEARCH' |  translate }}</mat-card-subtitle>
+            <mat-card-title>{{ 'GEO_SEARCH' | translate }}</mat-card-title>
+            <mat-card-subtitle>{{
+              'HOW_TO_BASIC_GEOGRAPHIC_SEARCH' | translate
+            }}</mat-card-subtitle>
           </mat-card-header>
         </mat-card>
 
-        <mat-card  class="mat-card-step" (click)="setHelpTopic('listSearch')" >
+        <mat-card class="mat-card-step" (click)="setHelpTopic('listSearch')">
           <mat-card-header>
             <div mat-card-avatar class="help-toc-icon">
               <mat-icon>looks_two</mat-icon>
             </div>
             <div mat-card-avatar></div>
             <mat-card-title>{{ 'LIST_SEARCH' | translate }}</mat-card-title>
-            <mat-card-subtitle>{{ 'HOW_TO_BASIC_LIST_SEARCH' |  translate }}</mat-card-subtitle>
+            <mat-card-subtitle>{{
+              'HOW_TO_BASIC_LIST_SEARCH' | translate
+            }}</mat-card-subtitle>
           </mat-card-header>
         </mat-card>
 
-        <mat-card class="mat-card-step" (click)="setHelpTopic('searchResults')" >
+        <mat-card class="mat-card-step" (click)="setHelpTopic('searchResults')">
           <mat-card-header>
             <div mat-card-avatar class="help-toc-icon">
               <mat-icon>looks_3</mat-icon>
             </div>
             <div mat-card-avatar></div>
-            <mat-card-title>{{ 'SEARCH_RESULTS' | translate}}</mat-card-title>
-            <mat-card-subtitle>{{ 'REVIEW_SEARCH_RESULTS' |  translate }}</mat-card-subtitle>
+            <mat-card-title>{{ 'SEARCH_RESULTS' | translate }}</mat-card-title>
+            <mat-card-subtitle>{{
+              'REVIEW_SEARCH_RESULTS' | translate
+            }}</mat-card-subtitle>
           </mat-card-header>
         </mat-card>
-
       </div>
     </div>
   </div>
-  <hr class="video-text-line">
+  <hr class="video-text-line" />
 
   <div class="help-rows">
-
-      <div class="help-toc-title-block">
-        <div class="help-toc-all-title">
-          <h2>{{ 'ALL_TUTORIALS' |  translate }}</h2>
-        </div>
-        <div class="help-toc-all-title subtitle">
-          <h3>{{ 'EXPAND_YOUR_SKILLS_WITH_OUR_FULL_LIST_OF_VERTEX_DATA_SEARCH_TUTORIALS' |  translate }}</h3>
-        </div>
+    <div class="help-toc-title-block">
+      <div class="help-toc-all-title">
+        <h2>{{ 'ALL_TUTORIALS' | translate }}</h2>
       </div>
-
-      <div class="help-text-row">
-        <div class="help-toc-1">
-          <table mat-table [dataSource]="searchDataSource" matSort class="help-table">
-            <ng-container matColumnDef="description">
-              <th mat-header-cell *matHeaderCellDef class="help-table-header">
-                {{ 'DEFINING_DATA_SEARCHES' |  translate }}
-              </th>
-              <td mat-cell *matCellDef="let video" class="description">
-                <a href="https://www.youtube.com/watch?v={{video.id.videoId}}" target="_blank">
-                  {{video.snippet.description}} - ({{video.contentDetails.duration}})
-                </a>
-              </td>
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="help-table-row"></tr>
-            </ng-container>
-          </table>
-        </div>
-        <div class="help-toc-2">
-          <table mat-table [dataSource]="resultsDataSource" matSort class="help-table">
-            <ng-container matColumnDef="description">
-              <th mat-header-cell *matHeaderCellDef class="help-table-header">
-                {{ 'USING_SEARCH_RESULTS' |  translate }}
-              </th>
-              <td mat-cell *matCellDef="let video" class="description">
-                <a href="https://www.youtube.com/watch?v={{video.id.videoId}}" target="_blank">
-                  {{video.snippet.description}} - ({{video.contentDetails.duration}})
-                </a>
-              </td>
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="help-table-row"></tr>
-            </ng-container>
-          </table>
-        </div>
-        <div class="help-toc-3">
-          <table mat-table [dataSource]="featuresDataSource" matSort class="help-table">
-            <ng-container matColumnDef="description">
-              <th mat-header-cell *matHeaderCellDef class="help-table-header">
-                {{ 'ADVANCED_FEATURES' |  translate }}
-              </th>
-              <td mat-cell *matCellDef="let video" class="description">
-                <a href="https://www.youtube.com/watch?v={{video.id.videoId}}" target="_blank">
-                  {{video.snippet.description}} - ({{video.contentDetails.duration}})
-                </a>
-              </td>
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="help-table-row"></tr>
-            </ng-container>
-          </table>
-        </div>
+      <div class="help-toc-all-title subtitle">
+        <h3>
+          {{
+            'EXPAND_YOUR_SKILLS_WITH_OUR_FULL_LIST_OF_VERTEX_DATA_SEARCH_TUTORIALS'
+              | translate
+          }}
+        </h3>
       </div>
+    </div>
+
+    <div class="help-text-row">
+      <div class="help-toc-1">
+        <table
+          mat-table
+          [dataSource]="searchDataSource"
+          matSort
+          class="help-table"
+        >
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef class="help-table-header">
+              {{ 'DEFINING_DATA_SEARCHES' | translate }}
+            </th>
+            <td mat-cell *matCellDef="let video" class="description">
+              <a
+                href="https://www.youtube.com/watch?v={{ video.id.videoId }}"
+                target="_blank"
+              >
+                {{ video.snippet.description }} - ({{
+                  video.contentDetails.duration
+                }})
+              </a>
+            </td>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: displayedColumns"
+              class="help-table-row"
+            ></tr>
+          </ng-container>
+        </table>
+      </div>
+      <div class="help-toc-2">
+        <table
+          mat-table
+          [dataSource]="resultsDataSource"
+          matSort
+          class="help-table"
+        >
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef class="help-table-header">
+              {{ 'USING_SEARCH_RESULTS' | translate }}
+            </th>
+            <td mat-cell *matCellDef="let video" class="description">
+              <a
+                href="https://www.youtube.com/watch?v={{ video.id.videoId }}"
+                target="_blank"
+              >
+                {{ video.snippet.description }} - ({{
+                  video.contentDetails.duration
+                }})
+              </a>
+            </td>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: displayedColumns"
+              class="help-table-row"
+            ></tr>
+          </ng-container>
+        </table>
+      </div>
+      <div class="help-toc-3">
+        <table
+          mat-table
+          [dataSource]="featuresDataSource"
+          matSort
+          class="help-table"
+        >
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef class="help-table-header">
+              {{ 'ADVANCED_FEATURES' | translate }}
+            </th>
+            <td mat-cell *matCellDef="let video" class="description">
+              <a
+                href="https://www.youtube.com/watch?v={{ video.id.videoId }}"
+                target="_blank"
+              >
+                {{ video.snippet.description }} - ({{
+                  video.contentDetails.duration
+                }})
+              </a>
+            </td>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: displayedColumns"
+              class="help-table-row"
+            ></tr>
+          </ng-container>
+        </table>
+      </div>
+    </div>
   </div>
-
 </div>
-

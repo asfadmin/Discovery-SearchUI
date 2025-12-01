@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, inject } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
@@ -9,13 +9,16 @@ import * as filtersStore from '@store/filters';
 import * as models from '@models';
 import { PropertyService } from '@services';
 
-
 @Component({
   selector: 'app-scene-metadata',
   templateUrl: './scene-metadata.component.html',
-  styleUrls: ['./scene-metadata.component.scss']
+  styleUrls: ['./scene-metadata.component.scss'],
+  standalone: false,
 })
 export class SceneMetadataComponent implements OnInit, OnDestroy {
+  prop = inject(PropertyService);
+  private store$ = inject<Store<AppState>>(Store);
+
   @Input() scene: models.CMRProduct;
   @Input() dataset: models.Dataset;
   @Input() searchType: models.SearchType;
@@ -23,28 +26,22 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
 
   public p = models.Props;
   public selectedDataset: string;
-  public selectedDatasetIsNISARFormat: boolean = false;
-
+  public selectedDatasetIsNISARFormat = false;
 
   private subs = new SubSink();
 
-  constructor(
-    public prop: PropertyService,
-    private store$: Store<AppState>,
-  ) { }
-
   ngOnInit() {
     this.subs.add(
-      this.store$.select(filtersStore.getSelectedDatasetId).subscribe(
-        selected => {
-          this.selectedDataset = selected
+      this.store$
+        .select(filtersStore.getSelectedDatasetId)
+        .subscribe((selected) => {
+          this.selectedDataset = selected;
           if (this.selectedDataset === 'SENTINEL-1 INTERFEROGRAM (BETA)') {
             this.selectedDatasetIsNISARFormat = true;
           } else {
             this.selectedDatasetIsNISARFormat = false;
           }
-        }
-      )
+        }),
     );
   }
 
@@ -96,28 +93,58 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
   }
 
   public setFlightDirection(): void {
-    const dir = this.scene.metadata.flightDirection
-    .toLowerCase();
+    const dir = this.scene.metadata.flightDirection.toLowerCase();
 
     const capitalized = this.capitalizeFirstLetter(dir);
 
-    const action = new filtersStore.SetFlightDirections([<models.FlightDirection>capitalized]);
+    const action = new filtersStore.SetFlightDirections([
+      capitalized as models.FlightDirection,
+    ]);
+    this.store$.dispatch(action);
+  }
+  public setFrameCoverage(): void {
+    const action = new filtersStore.setFrameCoverage([
+      this.scene.metadata.nisar?.frameCoverage,
+    ]);
     this.store$.dispatch(action);
   }
 
   public addPolarization(): void {
-    const action = new filtersStore.AddPolarization(this.scene.metadata.polarization);
+    const action = new filtersStore.AddPolarization(
+      this.scene.metadata.polarization,
+    );
+    this.store$.dispatch(action);
+  }
+  public addMainPolarization(): void {
+    const action = new filtersStore.AddPolarization(
+      this.scene.metadata.nisar?.mainBandPolarization,
+    );
+    this.store$.dispatch(action);
+  }
+  public addSidePolarization(): void {
+    const action = new filtersStore.AddSidePolarization(
+      this.scene.metadata.nisar?.sideBandPolarization,
+    );
     this.store$.dispatch(action);
   }
 
   public addMission(): void {
-    const action = new filtersStore.SelectMission(this.scene.metadata.missionName);
+    const action = new filtersStore.SelectMission(
+      this.scene.metadata.missionName,
+    );
+    this.store$.dispatch(action);
+  }
+
+  public addRangeBandwidth(): void {
+    const action = new filtersStore.addRangeBandwidth(
+      this.scene.metadata.nisar?.rangeBandwidth,
+    );
     this.store$.dispatch(action);
   }
 
   public setTemporalStart(): void {
     const action = new filtersStore.SetTemporalStart(
-      this.scene.metadata.temporal + this.offsets.temporal
+      this.scene.metadata.temporal + this.offsets.temporal,
     );
 
     this.store$.dispatch(action);
@@ -125,7 +152,7 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
 
   public setTemporalEnd(): void {
     const action = new filtersStore.SetTemporalEnd(
-      this.scene.metadata.temporal + this.offsets.temporal
+      this.scene.metadata.temporal + this.offsets.temporal,
     );
 
     this.store$.dispatch(action);
@@ -133,7 +160,7 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
 
   public setPerpendicularStart(): void {
     const action = new filtersStore.SetPerpendicularStart(
-      this.scene.metadata.perpendicular + this.offsets.perpendicular
+      this.scene.metadata.perpendicular + this.offsets.perpendicular,
     );
 
     this.store$.dispatch(action);
@@ -141,18 +168,24 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
 
   public setPerpendicularEnd(): void {
     const action = new filtersStore.SetPerpendicularEnd(
-      this.scene.metadata.perpendicular + this.offsets.perpendicular
+      this.scene.metadata.perpendicular + this.offsets.perpendicular,
     );
 
     this.store$.dispatch(action);
   }
 
   public setFullBurst(): void {
-    this.store$.dispatch(new filtersStore.setFullBurst([this.scene.metadata.burst.fullBurstID]))
+    this.store$.dispatch(
+      new filtersStore.setFullBurst([this.scene.metadata.burst.fullBurstID]),
+    );
   }
 
   public setOperaBurst(): void {
-    this.store$.dispatch(new filtersStore.setOperaBurstID([this.scene.metadata.opera.operaBurstID]))
+    this.store$.dispatch(
+      new filtersStore.setOperaBurstID([
+        this.scene.metadata.opera.operaBurstID,
+      ]),
+    );
   }
 
   private capitalizeFirstLetter(str) {

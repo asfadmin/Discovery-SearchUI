@@ -1,5 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { env } from './env';
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+import { SetSearchOutOfDate } from '@store/search';
 
 export interface Environments {
   prod: Environment;
@@ -23,11 +26,12 @@ export interface Environment {
   cmr_provider?: string;
 }
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EnvironmentService {
+  private $store = inject<Store<AppState>>(Store);
+
   private maturityKey = 'search-api-maturity';
 
   public envs: Environments;
@@ -41,9 +45,9 @@ export class EnvironmentService {
     if (!this.isProd) {
       const localMaturity = localStorage.getItem(this.maturityKey);
 
-      this.maturity = !(localMaturity === 'test' || localMaturity === 'prod') ?
-        this.envs.defaultEnv :
-        localMaturity;
+      this.maturity = !(localMaturity === 'test' || localMaturity === 'prod')
+        ? this.envs.defaultEnv
+        : localMaturity;
     } else {
       this.maturity = this.envs.defaultEnv;
     }
@@ -57,7 +61,6 @@ export class EnvironmentService {
     }
   }
 
-
   get currentEnv(): Environment {
     return this.envs[this.maturity] as Environment;
   }
@@ -65,10 +68,12 @@ export class EnvironmentService {
   public setMaturity(maturity: string): void {
     this.maturity = maturity;
     localStorage.setItem(this.maturityKey, this.maturity);
+    this.$store.dispatch(new SetSearchOutOfDate(true));
   }
 
   public setEnvs(envs: any): void {
-    this.envs = <Environments>envs;
+    this.envs = envs as Environments;
+    this.$store.dispatch(new SetSearchOutOfDate(true));
   }
 
   private loadWithCustom(): Environments {
@@ -79,17 +84,18 @@ export class EnvironmentService {
         return this.loadFromEnvFile();
       }
 
-      return <Environments>customEnv;
+      return customEnv as Environments;
     } catch {
       return this.loadFromEnvFile();
     }
   }
 
   private loadFromEnvFile(): Environments {
-    return <Environments>env;
+    return env as Environments;
   }
 
   public resetToDefault(): void {
     this.envs = this.loadFromEnvFile();
+    this.$store.dispatch(new SetSearchOutOfDate(true));
   }
 }

@@ -9,12 +9,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSharedModule, SharedModule } from '@shared';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
-
 @NgModule({
-  declarations: [
-    OperaS1SelectorComponent,
-    OperaBurstIdSelectorComponent,
-  ],
+  declarations: [OperaS1SelectorComponent, OperaBurstIdSelectorComponent],
   imports: [
     CommonModule,
     MatFormFieldModule,
@@ -23,11 +19,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     FormsModule,
     MatSharedModule,
     SharedModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
   ],
-  exports: [
-    OperaS1SelectorComponent,
-    OperaBurstIdSelectorComponent
-  ]
+  exports: [OperaS1SelectorComponent, OperaBurstIdSelectorComponent],
 })
-export class OperaS1SelectorModule { }
+export class OperaS1SelectorModule {}

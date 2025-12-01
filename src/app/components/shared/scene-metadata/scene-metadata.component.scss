@@ -1,6 +1,6 @@
 @use "@angular/material" as mat;
 
-@import "asf-theme";
+@use "asf-theme-variables" as *;
 
 // $config: mat.define-legacy-typography-config();
 

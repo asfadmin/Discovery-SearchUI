@@ -1,17 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-ci-search',
   templateUrl: './ci-search.component.html',
-  styleUrls: ['./ci-search.component.scss']
+  styleUrls: ['./ci-search.component.scss'],
+  standalone: false,
 })
-export class CiSearchComponent implements OnInit {
-
+export class CiSearchComponent {
   constructor() {
     this.showSearch();
-  }
-
-  ngOnInit(): void {
   }
 
   public showSearch() {
@@ -23,5 +20,4 @@ export class CiSearchComponent implements OnInit {
     const s = document.getElementsByTagName('script')[0];
     s.parentNode.insertBefore(ci_search, s);
   }
-
 }

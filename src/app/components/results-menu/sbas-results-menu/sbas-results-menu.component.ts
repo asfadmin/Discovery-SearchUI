@@ -1,4 +1,12 @@
-import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  OnDestroy,
+  ViewChild,
+  ElementRef,
+  inject,
+} from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { ResizeEvent } from 'angular-resizable-element';
 
@@ -16,18 +24,25 @@ import { map } from 'rxjs/operators';
 
 enum CardViews {
   LIST = 0,
-  DETAIL = 1
+  DETAIL = 1,
 }
 
 @Component({
   selector: 'app-sbas-results-menu',
   templateUrl: './sbas-results-menu.component.html',
-  styleUrls: ['./sbas-results-menu.component.scss',  '../results-menu.component.scss']
+  styleUrls: [
+    './sbas-results-menu.component.scss',
+    '../results-menu.component.scss',
+  ],
+  standalone: false,
 })
 export class SBASResultsMenuComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+  datasetForProduct = inject(DatasetForProductService);
 
-  @ViewChild('listCard', {read: ElementRef}) listCardView: ElementRef;
-  @ViewChild('chartCard', {read: ElementRef}) chartCardView: ElementRef;
+  @ViewChild('listCard', { read: ElementRef }) listCardView: ElementRef;
+  @ViewChild('chartCard', { read: ElementRef }) chartCardView: ElementRef;
 
   @Input() resize$: Observable<void>;
   public searchType: SearchType;
@@ -48,46 +63,46 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   public zoomInChart$ = new Subject<void>();
-  public zoomOutChart$ =  new Subject<void>();
-  public zoomToFitChart$ =  new Subject<void>();
+  public zoomOutChart$ = new Subject<void>();
+  public zoomToFitChart$ = new Subject<void>();
 
   public isDisconnected = false;
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-    public datasetForProduct: DatasetForProductService,
-  ) { }
 
   ngOnInit(): void {
     this.subs.add(
       this.screenSize.breakpoint$.subscribe(
-        point => this.breakpoint = point
-      )
+        (point) => (this.breakpoint = point),
+      ),
     );
 
     this.subs.add(
-      this.store$.select(searchStore.getSearchType).subscribe(
-        searchType => this.searchType = searchType
-      )
+      this.store$
+        .select(searchStore.getSearchType)
+        .subscribe((searchType) => (this.searchType = searchType)),
     );
 
     this.subs.add(
-      this.store$.select(scenesStore.getIsSelectedPairCustom).subscribe(
-        (isPairCustom: boolean) => this.isSelectedPairCustom = isPairCustom
-      )
+      this.store$
+        .select(scenesStore.getIsSelectedPairCustom)
+        .subscribe(
+          (isPairCustom: boolean) => (this.isSelectedPairCustom = isPairCustom),
+        ),
     );
 
     this.subs.add(
-      this.store$.select(uiStore.getIsAddingCustomPoint).subscribe(
-        isAddingCustomPoint => this.isAddingCustomPoint = isAddingCustomPoint
-      )
+      this.store$
+        .select(uiStore.getIsAddingCustomPoint)
+        .subscribe(
+          (isAddingCustomPoint) =>
+            (this.isAddingCustomPoint = isAddingCustomPoint),
+        ),
     );
 
     this.subs.add(
-      this.store$.select(scenesStore.getSelectedPair).pipe(
-        map(pair => !pair?.[0] ? null : pair),
-      ).subscribe(
-        (selected: CMRProductPair) => {
+      this.store$
+        .select(scenesStore.getSelectedPair)
+        .pipe(map((pair) => (!pair?.[0] ? null : pair)))
+        .subscribe((selected: CMRProductPair) => {
           selected?.sort((a, b) => {
             if (a.metadata.date < b.metadata.date) {
               return -1;
@@ -95,26 +110,32 @@ export class SBASResultsMenuComponent implements OnInit, OnDestroy {
             return 1;
           });
 
-          this.pair = selected?.map(product => ({...product,
+          this.pair = selected?.map((product) => ({
+            ...product,
             metadata: {
               ...product.metadata,
-              temporal: product.metadata.temporal - selected[0].metadata.temporal,
-              perpendicular: product.metadata.perpendicular - selected[0].metadata.perpendicular
-            }}));
-        }
-      )
+              temporal:
+                product.metadata.temporal - selected[0].metadata.temporal,
+              perpendicular:
+                product.metadata.perpendicular -
+                selected[0].metadata.perpendicular,
+            },
+          }));
+        }),
     );
   }
 
   public onResizeEnd(event: ResizeEvent): void {
-    const windowWidth = window.innerWidth
-      || document.documentElement.clientWidth
-      || document.body.clientWidth;
-    const newChartWidth = event.rectangle.width > windowWidth ? windowWidth : event.rectangle.width;
+    const windowWidth =
+      window.innerWidth ||
+      document.documentElement.clientWidth ||
+      document.body.clientWidth;
+    const newChartWidth =
+      event.rectangle.width > windowWidth ? windowWidth : event.rectangle.width;
     const newChartMaxWidth = Math.max(
       this.minChartWidth,
-      Math.round((newChartWidth / windowWidth) * 100)
-      );
+      Math.round((newChartWidth / windowWidth) * 100),
+    );
     const newListMaxWidth = 100 - newChartMaxWidth;
 
     this.listCardMaxWidth = newListMaxWidth.toString() + '%';

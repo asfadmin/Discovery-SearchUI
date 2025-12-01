@@ -7,8 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 import { ProjectNameSelectorComponent } from './project-name-selector.component';
-import { SharedModule } from "@shared";
-
+import { SharedModule } from '@shared';
 
 @NgModule({
   declarations: [ProjectNameSelectorComponent],
@@ -18,10 +17,8 @@ import { SharedModule } from "@shared";
     MatSharedModule,
     MatInputModule,
     MatAutocompleteModule,
-    SharedModule
+    SharedModule,
   ],
-  exports: [
-    ProjectNameSelectorComponent
-  ]
+  exports: [ProjectNameSelectorComponent],
 })
-export class ProjectNameSelectorModule { }
+export class ProjectNameSelectorModule {}

@@ -26,6 +26,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatListModule,
     MatTooltipModule,
     MatDividerModule,
-  ]
+  ],
 })
-export class MatSharedModule { }
+export class MatSharedModule {}

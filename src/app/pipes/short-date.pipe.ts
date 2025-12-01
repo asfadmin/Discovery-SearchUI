@@ -1,13 +1,15 @@
-import { Pipe, PipeTransform } from '@angular/core';
-import { TranslateService } from "@ngx-translate/core";
+import { Pipe, PipeTransform, inject } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 
 @Pipe({
   name: 'fullDate',
-  pure: false
+  pure: false,
+  standalone: false,
 })
 export class FullDatePipe implements PipeTransform {
-  constructor(private translateService: TranslateService) {}
+  private translateService = inject(TranslateService);
+
   transform(date: Date | moment.Moment): string {
     const dateUtc = moment.utc(date);
     dateUtc.locale(this.translateService.currentLang);
@@ -15,14 +17,13 @@ export class FullDatePipe implements PipeTransform {
   }
 }
 
-
 @Pipe({
   name: 'shortDate',
-  pure: false
+  pure: false,
+  standalone: false,
 })
 export class ShortDatePipe implements PipeTransform {
-  constructor(private translateService: TranslateService) {
-  }
+  private translateService = inject(TranslateService);
 
   transform(date: Date | moment.Moment): string {
     const dateUtc = moment.utc(date);
@@ -33,10 +34,12 @@ export class ShortDatePipe implements PipeTransform {
 
 @Pipe({
   name: 'shortDateTime',
-  pure: false
+  pure: false,
+  standalone: false,
 })
 export class ShortDateTimePipe implements PipeTransform {
-  constructor(private translateService: TranslateService) {}
+  private translateService = inject(TranslateService);
+
   transform(date: Date | moment.Moment): string {
     const dateUtc = moment.utc(date);
     dateUtc.locale(this.translateService.currentLang);
@@ -46,11 +49,11 @@ export class ShortDateTimePipe implements PipeTransform {
 
 @Pipe({
   name: 'shortDateSeason',
-  pure: false
+  pure: false,
+  standalone: false,
 })
 export class ShortDateSeasonPipe implements PipeTransform {
-
-  constructor(private translateService: TranslateService) {}
+  private translateService = inject(TranslateService);
 
   transform(dayOfYear: number): string {
     const date = new Date();
@@ -63,8 +66,9 @@ export class ShortDateSeasonPipe implements PipeTransform {
     const dayNumMilli = dayOfYear * dayMilli;
     date.setTime(timeOfFirst + dayNumMilli);
 
-    return  date.toLocaleDateString(this.translateService.currentLang, {
-      month: <'numeric'>'short', day: 'numeric'
+    return date.toLocaleDateString(this.translateService.currentLang, {
+      month: 'short' as 'numeric',
+      day: 'numeric',
     });
   }
 }

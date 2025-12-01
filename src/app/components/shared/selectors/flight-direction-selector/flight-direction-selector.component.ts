@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { SharedModule } from '@shared';
@@ -13,31 +13,32 @@ import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-flight-direction-selector',
-  standalone: true,
   imports: [
     MatSelectModule,
     MatOptionModule,
     MatFormFieldModule,
     SharedModule,
-    AsyncPipe
+    AsyncPipe,
   ],
   templateUrl: './flight-direction-selector.component.html',
-  styleUrl: './flight-direction-selector.component.scss'
+  styleUrl: './flight-direction-selector.component.scss',
 })
 export class FlightDirectionSelectorComponent {
-  @Input() multiple = true;
-  public flightDirections$ = this.store$.select(filtersStore.getFlightDirections);
+  prop = inject(PropertyService);
+  private store$ = inject<Store<AppState>>(Store);
 
-  public flightDirections = []
+  @Input() multiple = true;
+  public flightDirections$ = this.store$.select(
+    filtersStore.getFlightDirections,
+  );
+
+  public flightDirections = [];
   public flightDirectionTypes = models.flightDirections;
   public p = models.Props;
 
-  constructor(
-    public prop: PropertyService,
-    private store$: Store<AppState>,
-  ) {}
-
-  public onNewFlightDirectionsSelected(directions: models.FlightDirection[]): void {
+  public onNewFlightDirectionsSelected(
+    directions: models.FlightDirection[],
+  ): void {
     this.store$.dispatch(new filtersStore.SetFlightDirections(directions));
   }
 }

@@ -1,18 +1,34 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  inject,
+} from '@angular/core';
 
 import * as services from '@services';
 import * as models from '@models';
 
-
 @Component({
   selector: 'app-baseline-scene-controls',
   templateUrl: './baseline-scene-controls.component.html',
-  styleUrls: ['./baseline-scene-controls.component.scss']
+  styleUrls: ['./baseline-scene-controls.component.scss'],
+  standalone: false,
 })
 export class BaselineSceneControlsComponent implements OnInit {
+  private screenSize = inject(services.ScreenSizeService);
+  private hyp3JobStatus = inject(services.Hyp3JobStatusService);
+
   @Input() scene: models.CMRProduct;
-  @Input() offsets: {temporal: number, perpendicular: number} = {temporal: 0, perpendicular: null};
-  @Input() hyp3ableByJobType: { total: number, byJobType: models.Hyp3ableProductByJobType[]};
+  @Input() offsets: { temporal: number; perpendicular: number } = {
+    temporal: 0,
+    perpendicular: null,
+  };
+  @Input() hyp3ableByJobType: {
+    total: number;
+    byJobType: models.Hyp3ableProductByJobType[];
+  };
   @Input() isQueued: boolean;
 
   @Output() onToggleScene = new EventEmitter();
@@ -20,14 +36,9 @@ export class BaselineSceneControlsComponent implements OnInit {
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
 
-  constructor(
-    private screenSize: services.ScreenSizeService,
-    private hyp3JobStatus: services.Hyp3JobStatusService,
-  ) { }
-
   ngOnInit(): void {
     this.screenSize.breakpoint$.subscribe(
-      breakpoint => this.breakpoint = breakpoint
+      (breakpoint) => (this.breakpoint = breakpoint),
     );
   }
 

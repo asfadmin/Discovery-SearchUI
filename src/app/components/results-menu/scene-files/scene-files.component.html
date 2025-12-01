@@ -1,5 +1,5 @@
 <div *ngIf="showDemWarning" class="dem-warning">
-  {{ 'RESAMPLED_DEM_SRTM_OR_NED_USED_FOR_RTC_PROCESSING' |  translate }}
+  {{ 'RESAMPLED_DEM_SRTM_OR_NED_USED_FOR_RTC_PROCESSING' | translate }}
   <a
     class="more-link"
     target="_blank"
@@ -10,8 +10,9 @@
 </div>
 
 <div *ngIf="!showUnzippedProductScreen">
-  <mat-list class="products-list" >
-    <app-scene-file *ngFor="let product of products"
+  <mat-list class="products-list">
+    <app-scene-file
+      *ngFor="let product of products"
       (toggle)="onToggleQueueProduct(product)"
       (unzip)="onOpenUnzipProduct($event)"
       (queueHyp3Job)="onQueueHyp3Job($event)"
@@ -25,7 +26,8 @@
       [isOpen]="false"
     >
     </app-scene-file>
-    <app-scene-file *ngFor="let product of (StaticLayerProduct$ | async)"
+    <app-scene-file
+      *ngFor="let product of dynamicallySearchedProduct$ | async"
       (toggle)="onToggleQueueProduct(product)"
       (unzip)="onOpenUnzipProduct($event)"
       (queueHyp3Job)="onQueueHyp3Job($event)"
@@ -81,7 +83,7 @@
                   {{
                     prod.files.product_size.toString() | readableSizeFromBytes
                   }},
-                  {{ prod.job_type.replace("_", " ") }}
+                  {{ prod.job_type.replace('_', ' ') }}
                 </div>
               </div>
               <div *ngIf="hyp3ableByProduct[prod.product_id] as byJobType">

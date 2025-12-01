@@ -1,14 +1,14 @@
 <ng-container *ngIf="breakpoint$ | async as breakpoint">
-  <div *ngIf="breakpoint > breakpoints.MOBILE"
-    class="breadcrumb-row fx-row">
+  <div *ngIf="breakpoint > breakpoints.MOBILE" class="breadcrumb-row fx-row">
     <div class="fx-row">
-      <app-search-type-selector class="breadcrumb">
-      </app-search-type-selector>
+      <app-search-type-selector class="breadcrumb"> </app-search-type-selector>
 
-     <div class="breadcrumb additional-filters">
-        <button (click)="onToggleFiltersMenu()"
-                mat-flat-button
-                class="search-dialog-button">
+      <div class="breadcrumb additional-filters">
+        <button
+          (click)="onToggleFiltersMenu()"
+          mat-flat-button
+          class="search-dialog-button"
+        >
           <mat-icon>edit_list</mat-icon>
           {{ 'EDIT_LIST' | translate }}
         </button>
@@ -19,24 +19,24 @@
       </div>
 
       <div class="icon-cluster">
-        <app-header-buttons>
-        </app-header-buttons>
+        <app-header-buttons> </app-header-buttons>
       </div>
     </div>
   </div>
 
   <div *ngIf="breakpoint === breakpoints.MOBILE">
     <div class="mobile-nav-bar">
-      <button (click)="onToggleFiltersMenu()"
-          style="margin-left: 5px;"
-          mat-flat-button>
+      <button
+        (click)="onToggleFiltersMenu()"
+        style="margin-left: 5px"
+        mat-flat-button
+      >
         <mat-icon>edit</mat-icon>
-        {{ 'LIST' |  translate }}
+        {{ 'LIST' | translate }}
       </button>
 
       <div class="mobile-icon-cluster">
-        <app-header-buttons>
-        </app-header-buttons>
+        <app-header-buttons> </app-header-buttons>
       </div>
     </div>
   </div>

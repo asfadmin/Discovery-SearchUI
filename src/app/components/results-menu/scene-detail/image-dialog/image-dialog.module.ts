@@ -19,38 +19,35 @@ import { EventMetadataModule } from '@components/shared/event-metadata';
 import { EventProductMetadataModule } from '@components/shared/event-product-metadata';
 import { ImageDialogComponent } from './image-dialog.component';
 import { BrowseListComponent } from './browse-list/browse-list.component';
-import {DownloadFileButtonModule} from '@components/shared/download-file-button/download-file-button.module';
+import { DownloadFileButtonModule } from '@components/shared/download-file-button/download-file-button.module';
 import { MatSliderModule } from '@angular/material/slider';
-import { EventProductSortSelectorModule } from '@components/shared/event-product-sort-selector/event-product-sort-selector.module';
+import { EventProductSortSelectorModule } from '@components/shared/event-product-sort-selector';
 import { SharedModule } from '@shared';
-
 
 @NgModule({
   declarations: [ImageDialogComponent, BrowseListComponent],
-    imports: [
-        CommonModule,
-        ScrollingModule,
-        DragDropModule,
-        MatBadgeModule,
-        MatButtonModule,
-        MatIconModule,
-        MatProgressSpinnerModule,
-        MatSharedModule,
-        MatCheckboxModule,
-        MatListModule,
-        MatDialogModule,
-        MatMenuModule,
-        PipesModule,
-        SceneMetadataModule,
-        EventMetadataModule,
-        EventProductMetadataModule,
-        DownloadFileButtonModule,
-        MatSliderModule,
-        EventProductSortSelectorModule,
-        SharedModule
-
-
-    ],
+  imports: [
+    CommonModule,
+    ScrollingModule,
+    DragDropModule,
+    MatBadgeModule,
+    MatButtonModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
+    MatSharedModule,
+    MatCheckboxModule,
+    MatListModule,
+    MatDialogModule,
+    MatMenuModule,
+    PipesModule,
+    SceneMetadataModule,
+    EventMetadataModule,
+    EventProductMetadataModule,
+    DownloadFileButtonModule,
+    MatSliderModule,
+    EventProductSortSelectorModule,
+    SharedModule,
+  ],
   exports: [ImageDialogComponent],
 })
-export class ImageDialogModule { }
+export class ImageDialogModule {}

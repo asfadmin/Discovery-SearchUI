@@ -19,28 +19,27 @@ import { EventPolygonSliderModule } from './event-polygon-slider';
 import { SharedModule } from '@shared';
 import { DocsModalModule } from '@components/shared/docs-modal';
 
-
 @NgModule({
   declarations: [SceneDetailComponent],
-    imports: [
-        CommonModule,
-        MatBadgeModule,
-        MatButtonModule,
-        MatIconModule,
-        MatMenuModule,
-        TruncateModule,
-        MatSharedModule,
-        PipesModule,
-        CopyToClipboardModule,
-        ImageDialogModule,
-        SceneMetadataModule,
-        EventMetadataModule,
-        MatButtonToggleModule,
-        MatSliderModule,
-        EventPolygonSliderModule,
-        DocsModalModule,
-        SharedModule
-    ],
+  imports: [
+    CommonModule,
+    MatBadgeModule,
+    MatButtonModule,
+    MatIconModule,
+    MatMenuModule,
+    TruncateModule,
+    MatSharedModule,
+    PipesModule,
+    CopyToClipboardModule,
+    ImageDialogModule,
+    SceneMetadataModule,
+    EventMetadataModule,
+    MatButtonToggleModule,
+    MatSliderModule,
+    EventPolygonSliderModule,
+    DocsModalModule,
+    SharedModule,
+  ],
   exports: [SceneDetailComponent],
 })
-export class SceneDetailModule { }
+export class SceneDetailModule {}

@@ -1,59 +1,51 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, combineLatest} from 'rxjs';
-import {filter, map } from 'rxjs/operators';
+import { Observable, combineLatest } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
 import * as moment from 'moment';
 
 import { Dataset, CMRProduct, SarviewsEvent, Range } from '@models';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DateExtremaService {
-
   public getExtrema$(
     selectedDataset$: Observable<Dataset>,
     startDate$: Observable<Date | null>,
     endDate$: Observable<Date | null>,
   ) {
-
     const startMin$ = selectedDataset$.pipe(
-        map(selected => selected.date.start)
+      map((selected) => selected.date.start),
     );
 
-    const startMax$ = combineLatest([
-      selectedDataset$,
-      endDate$]
-    ).pipe(
+    const startMax$ = combineLatest([selectedDataset$, endDate$]).pipe(
       map(([selected, userEnd]) => {
-        if (!!userEnd) {
+        if (userEnd) {
           return userEnd;
         }
 
         return selected.date.end || new Date(Date.now());
-      })
+      }),
     );
 
-    const endMin$ = combineLatest([
-      selectedDataset$,
-      startDate$]
-    ).pipe(
+    const endMin$ = combineLatest([selectedDataset$, startDate$]).pipe(
       map(([selected, userStart]) => {
-        if (!!userStart) {
+        if (userStart) {
           return userStart;
         }
 
         return selected.date.start;
-      })
+      }),
     );
 
     const endMax$ = selectedDataset$.pipe(
-      map(selected => selected.date.end || new Date(Date.now()))
+      map((selected) => selected.date.end || new Date(Date.now())),
     );
 
     return combineLatest([startMin$, startMax$, endMin$, endMax$]).pipe(
-      map(extrema => this.buildExtrema(...extrema)),
+      map((extrema) => this.buildExtrema(...extrema)),
     );
   }
 
@@ -63,68 +55,77 @@ export class DateExtremaService {
     endDate$: Observable<Date | null>,
   ) {
     const sceneMin$ = scenes$.pipe(
-      map(scenes => moment.min(scenes.map(scene => scene.metadata.date))),
-      map(sceneMin => moment.utc(sceneMin).toDate())
+      map((scenes) => {
+        if (!scenes || scenes.length === 0) {
+          // Use a very early date (before any SAR missions) as fallback
+          return moment.utc('2000-01-01');
+        }
+        return moment.min(scenes.map((scene) => scene.metadata.date));
+      }),
+      map((sceneMin) => moment.utc(sceneMin).toDate()),
     );
 
     const sceneMax$ = scenes$.pipe(
-      map(scenes => moment.max(scenes.map(scene => scene.metadata.date))),
-      map(sceneMax => moment.utc(sceneMax).toDate())
+      map((scenes) => {
+        if (!scenes || scenes.length === 0) {
+          // Use current date as fallback
+          return moment.utc();
+        }
+        return moment.max(scenes.map((scene) => scene.metadata.date));
+      }),
+      map((sceneMax) => moment.utc(sceneMax).toDate()),
     );
 
     const startMin$ = sceneMin$;
 
-    const startMax$ = combineLatest([
-      sceneMax$,
-      endDate$]
-    ).pipe(
+    const startMax$ = combineLatest([sceneMax$, endDate$]).pipe(
       map(([sceneMax, userEnd]) => {
-        if (!!userEnd) {
+        if (userEnd) {
           return userEnd;
         }
 
         return sceneMax || new Date(Date.now());
-      })
+      }),
     );
 
-    const endMin$ = combineLatest([
-      sceneMin$,
-      startDate$]
-    ).pipe(
+    const endMin$ = combineLatest([sceneMin$, startDate$]).pipe(
       map(([sceneMin, userStart]) => {
-        if (!!userStart) {
+        if (userStart) {
           return userStart;
         }
 
         return sceneMin;
-      })
+      }),
     );
 
     const endMax$ = sceneMax$;
 
     return combineLatest(startMin$, startMax$, endMin$, endMax$).pipe(
-      map(extrema => this.buildExtrema(...extrema)),
+      map((extrema) => this.buildExtrema(...extrema)),
     );
   }
 
   public getSarviewsExtrema$(events$: Observable<SarviewsEvent[]>) {
     return events$.pipe(
-      filter(events => !!events),
-      filter(events => events.length > 0),
-      map(events => events.map(event => event.processing_timeframe)),
-      map(eventsDateRange => {
+      filter((events) => !!events),
+      filter((events) => events.length > 0),
+      map((events) => events.map((event) => event.processing_timeframe)),
+      map((eventsDateRange) => {
         const min = eventsDateRange
-          .filter(eventRange => !!eventRange?.start)
-          .map(eventRange => new Date( eventRange.start))
-          .reduce((prev, curr) => prev <= curr ? prev : curr);
+          .filter((eventRange) => !!eventRange?.start)
+          .map((eventRange) => new Date(eventRange.start))
+          .reduce((prev, curr) => (prev <= curr ? prev : curr));
 
         const max = eventsDateRange
-          .filter(eventRange => !!eventRange?.end)
-          .map(eventRange => new Date( eventRange.end))
-          .reduce((prev, curr) => prev > curr ? prev : curr);
-        const extrema: Range<Date> = {start: new Date( min), end: new Date( max)};
+          .filter((eventRange) => !!eventRange?.end)
+          .map((eventRange) => new Date(eventRange.end))
+          .reduce((prev, curr) => (prev > curr ? prev : curr));
+        const extrema: Range<Date> = {
+          start: new Date(min),
+          end: new Date(max),
+        };
         return extrema;
-      })
+      }),
     );
   }
 
@@ -132,12 +133,12 @@ export class DateExtremaService {
     const extrema = {
       start: {
         min: startMin,
-        max: startMax
+        max: startMax,
       },
       end: {
         min: endMin,
-        max: endMax
-      }
+        max: endMax,
+      },
     };
 
     return extrema;

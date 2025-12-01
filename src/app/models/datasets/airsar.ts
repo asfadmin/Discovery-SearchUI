@@ -14,44 +14,52 @@ export const airsar = {
   apiValue: { dataset: 'AIRSAR' },
   date: {
     start: new Date('1990/03/02 00:00:00 UTC'),
-    end: new Date('2004/12/03 23:59:59 UTC')
+    end: new Date('2004/12/03 23:59:59 UTC'),
   },
   frequency: 'L-Band, P-Band, or C-Band',
   infoUrl: 'https://asf.alaska.edu/datasets/daac/airsar/',
-  citationUrl: 'https://asf.alaska.edu/data-sets/sar-data-sets/airsar/#airsar_cite',
+  citationUrl:
+    'https://asf.alaska.edu/data-sets/sar-data-sets/airsar/#airsar_cite',
   source: {
     name: 'NASA/JPL',
-    url: 'https://www.jpl.nasa.gov'
+    url: 'https://www.jpl.nasa.gov',
   },
-  productTypes: [{
-    apiValue: 'CTIF',
-    displayName: 'C-Band JPG'
-  }, {
-    apiValue: 'PTIF',
-    displayName: 'P-Band JPG'
-  }, {
-    apiValue: 'LTIF',
-    displayName: 'L-Band JPG'
-  }, {
-    apiValue: 'JPG',
-    displayName: 'JPG'
-  }, {
-    apiValue: 'LSTOKES',
-    displayName: 'L-Band Compressed Stokes Matrix'
-  }, {
-    apiValue: 'PSTOKES',
-    displayName: 'P-Band Compressed Stokes Matrix'
-  }, {
-    apiValue: 'CSTOKES',
-    displayName: 'C-Band DEM & Compressed Stokes Matrix'
-  }, {
-    apiValue: 'DEM',
-    displayName: 'DEM'
-  }],
-  beamModes: [ '3FP', 'ATI', 'XTI' ],
-  polarizations: [
-    'Full'
+  productTypes: [
+    {
+      apiValue: 'CTIF',
+      displayName: 'C-Band JPG',
+    },
+    {
+      apiValue: 'PTIF',
+      displayName: 'P-Band JPG',
+    },
+    {
+      apiValue: 'LTIF',
+      displayName: 'L-Band JPG',
+    },
+    {
+      apiValue: 'JPG',
+      displayName: 'JPG',
+    },
+    {
+      apiValue: 'LSTOKES',
+      displayName: 'L-Band Compressed Stokes Matrix',
+    },
+    {
+      apiValue: 'PSTOKES',
+      displayName: 'P-Band Compressed Stokes Matrix',
+    },
+    {
+      apiValue: 'CSTOKES',
+      displayName: 'C-Band DEM & Compressed Stokes Matrix',
+    },
+    {
+      apiValue: 'DEM',
+      displayName: 'DEM',
+    },
   ],
+  beamModes: ['3FP', 'ATI', 'XTI'],
+  polarizations: ['Full'],
   subtypes: [],
   platformDesc: 'AIRSAR_DESC',
   platformIcon: '/assets/icons/flight_black_48dp.svg',

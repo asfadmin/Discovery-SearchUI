@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
@@ -18,9 +18,13 @@ enum FilterPanel {
 @Component({
   selector: 'app-custom-products-filters',
   templateUrl: './custom-products-filters.component.html',
-  styleUrls: ['./custom-products-filters.component.scss']
+  styleUrls: ['./custom-products-filters.component.scss'],
+  standalone: false,
 })
 export class CustomProductsFiltersComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
   public areResultsLoaded: boolean;
@@ -35,22 +39,17 @@ export class CustomProductsFiltersComponent implements OnInit, OnDestroy {
 
   private subs = new SubSink();
 
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService
-  ) { }
-
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(scenesStore.getAreResultsLoaded).subscribe(
-        areLoaded => this.areResultsLoaded = areLoaded
-      )
+      this.store$
+        .select(scenesStore.getAreResultsLoaded)
+        .subscribe((areLoaded) => (this.areResultsLoaded = areLoaded)),
     );
 
     this.subs.add(
-      this.store$.select(hyp3Store.getHyp3JobIds).subscribe(
-        jobId => this.hyp3JobIds = jobId
-      )
+      this.store$
+        .select(hyp3Store.getHyp3JobIds)
+        .subscribe((jobId) => (this.hyp3JobIds = jobId)),
     );
   }
 

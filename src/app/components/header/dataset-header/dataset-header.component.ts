@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
 
@@ -10,38 +10,37 @@ import * as filterStore from '@store/filters';
 import * as models from '@models';
 import * as services from '@services';
 
-
 @Component({
   selector: 'app-dataset-header',
   templateUrl: './dataset-header.component.html',
   styleUrls: ['./dataset-header.component.scss', '../header.component.scss'],
+  standalone: false,
 })
 export class DatasetHeaderComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(services.ScreenSizeService);
+  prop = inject(services.PropertyService);
+  frameMapService = inject(services.FrameMapService);
+
   public datasets = models.datasetList;
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
   public breakpoint$ = this.screenSize.breakpoint$;
-  public frameSelectionEnabled$ = this.store$.select(uiStore.getIsFrameSelectionEnabled);
+  public frameSelectionEnabled$ = this.store$.select(
+    uiStore.getIsFrameSelectionEnabled,
+  );
   public breakpoints = models.Breakpoints;
   private subs = new SubSink();
 
   public selectedDataset: string;
   public p = models.Props;
 
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: services.ScreenSizeService,
-    public prop: services.PropertyService,
-    public frameMapService: services.FrameMapService,
-
-  ) { }
-
   ngOnInit() {
     this.subs.add(
-      this.store$.select(filterStore.getSelectedDatasetId).subscribe(
-        selected => {
+      this.store$
+        .select(filterStore.getSelectedDatasetId)
+        .subscribe((selected) => {
           this.selectedDataset = selected;
-        }
-      )
+        }),
     );
   }
 
@@ -58,7 +57,7 @@ export class DatasetHeaderComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new filterStore.SetSelectedDataset(dataset));
   }
   public test(value: boolean): void {
-    this.store$.dispatch(new uiStore.SetFrameSelection(value))
+    this.store$.dispatch(new uiStore.SetFrameSelection(value));
   }
 
   ngOnDestroy() {

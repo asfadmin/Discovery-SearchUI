@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { CustomizeEnvComponent } from '@components/header/header-buttons/customize-env/customize-env.component';
@@ -21,35 +21,55 @@ import { MatDialog } from '@angular/material/dialog';
 import { HelpComponent } from '@components/help/help.component';
 import { getFilterMaster } from '@store/scenes';
 import { SaveSearchDialogComponent } from '@components/shared/save-search-dialog';
-import { CodeExportComponent, CodeExportType } from '@components/shared/code-export';
+import {
+  CodeExportComponent,
+  CodeExportType,
+} from '@components/shared/code-export';
 import { ApiLinkDialogComponent } from '../max-results-selector/api-link-dialog/api-link-dialog.component';
 import { ScreenSizeService } from '@services';
 import * as models from '@models';
 
-
 // Declare GTM dataLayer array.
 declare global {
-  interface Window { dataLayer: any[]; }
+  interface Window {
+    dataLayer: any[];
+  }
 }
 
 @Component({
   selector: 'app-search-button',
   templateUrl: './search-button.component.html',
-  styleUrls: ['./search-button.component.scss']
+  styleUrls: ['./search-button.component.scss'],
+  standalone: false,
 })
 export class SearchButtonComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private actions$ = inject(ActionsSubject);
+  env = inject(services.EnvironmentService);
+  private savedSearchService = inject(services.SavedSearchService);
+  clipboard = inject(ClipboardService);
+  private dialog = inject(MatDialog);
+  private notificationService = inject(services.NotificationService);
+  private exportService = inject(services.ExportService);
+  private screenSize = inject(ScreenSizeService);
+
   public searchType: SearchType;
   public searchTypes = SearchType;
   public canSearch$ = this.store$.select(searchStore.getCanSearch);
-  public isMaxResultsLoading$ = this.store$.select(searchStore.getIsMaxResultsLoading);
-  public isFrameSelectionEnabled$ = this.store$.select(uiStore.getIsFrameSelectionEnabled);
+  public isMaxResultsLoading$ = this.store$.select(
+    searchStore.getIsMaxResultsLoading,
+  );
+  public isFrameSelectionEnabled$ = this.store$.select(
+    uiStore.getIsFrameSelectionEnabled,
+  );
   public loading$ = this.store$.select(searchStore.getIsLoading);
   public maturity = this.env.maturity;
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
 
-
-  public areResultsOutOfDate$ = this.store$.select(searchStore.getareResultsOutOfDate);
+  public areResultsOutOfDate$ = this.store$.select(
+    searchStore.getareResultsOutOfDate,
+  );
 
   public isLoggedIn = false;
   public searchError$ = new Subject<void>();
@@ -62,83 +82,83 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   private latestReferenceScene: string;
   private resultsMenuOpen = false;
 
-  constructor(
-    private store$: Store<AppState>,
-    private actions$: ActionsSubject,
-    public env: services.EnvironmentService,
-    private savedSearchService: services.SavedSearchService,
-    public clipboard: ClipboardService,
-    private dialog: MatDialog,
-    private notificationService: services.NotificationService,
-    private exportService: services.ExportService,
-    private screenSize: ScreenSizeService,
-  ) {
-  }
-
   ngOnInit() {
     this.subs.add(
-      this.store$.select(userStore.getIsUserLoggedIn).subscribe(
-        isLoggedIn => this.isLoggedIn = isLoggedIn
-      )
+      this.store$
+        .select(userStore.getIsUserLoggedIn)
+        .subscribe((isLoggedIn) => (this.isLoggedIn = isLoggedIn)),
     );
 
     this.subs.add(
-      this.store$.select(searchStore.getSearchType).subscribe(
-        searchType => this.searchType = searchType
-      )
+      this.store$
+        .select(searchStore.getSearchType)
+        .subscribe((searchType) => (this.searchType = searchType)),
     );
 
     this.subs.add(
-      this.store$.select(uiStore.getIsResultsMenuOpen).subscribe(
-        isOpen => this.resultsMenuOpen = isOpen
-      )
+      this.store$
+        .select(uiStore.getIsResultsMenuOpen)
+        .subscribe((isOpen) => (this.resultsMenuOpen = isOpen)),
     );
 
     this.subs.add(
-      this.actions$.pipe(
-        ofType<searchStore.SearchError>(searchStore.SearchActionType.SEARCH_ERROR),
-      ).subscribe(
-        _ => this.onSearchError()
-      )
+      this.actions$
+        .pipe(
+          ofType<searchStore.SearchError>(
+            searchStore.SearchActionType.SEARCH_ERROR,
+          ),
+        )
+        .subscribe((_) => this.onSearchError()),
     );
 
     this.subs.add(
-      this.actions$.pipe(
-        ofType<searchStore.SearchError>(searchStore.SearchActionType.SET_SEARCH_TYPE)
-      ).subscribe(
-        _ => {
+      this.actions$
+        .pipe(
+          ofType<searchStore.SearchError>(
+            searchStore.SearchActionType.SET_SEARCH_TYPE,
+          ),
+        )
+        .subscribe((_) => {
           this.stackReferenceScene = null;
           this.latestReferenceScene = null;
-        }
-      )
+        }),
     );
 
     this.subs.add(
       combineLatest([
         this.store$.select(getFilterMaster),
-        this.store$.select(uiStore.getIsFiltersMenuOpen)]).subscribe(([latestFilter, isOpen]) => {
-          if (isOpen && this.searchType === this.searchTypes.BASELINE || this.searchType === this.searchTypes.SBAS) {
-            this.latestReferenceScene = latestFilter;
-            if (this.stackReferenceScene == null || '') {
-              this.stackReferenceScene = latestFilter;
-            }
+        this.store$.select(uiStore.getIsFiltersMenuOpen),
+      ]).subscribe(([latestFilter, isOpen]) => {
+        if (
+          (isOpen && this.searchType === this.searchTypes.BASELINE) ||
+          this.searchType === this.searchTypes.SBAS
+        ) {
+          this.latestReferenceScene = latestFilter;
+          if (this.stackReferenceScene == null || '') {
+            this.stackReferenceScene = latestFilter;
           }
-          this.isFiltersOpen = isOpen;
         }
-        )
+        this.isFiltersOpen = isOpen;
+      }),
     );
 
     this.handleSearchErrors();
   }
 
   public onDoSearch(): void {
-    if (((this.searchType === this.searchTypes.SBAS || this.searchType === this.searchTypes.BASELINE) && this.isFiltersOpen &&
-      (this.stackReferenceScene !== this.latestReferenceScene || !this.resultsMenuOpen)) ||
-      ((this.stackReferenceScene !== this.latestReferenceScene || !this.isFiltersOpen) &&
-        (this.searchType === this.searchTypes.SBAS || this.searchType === this.searchTypes.BASELINE)) ||
-      (this.searchType !== this.searchTypes.SBAS && this.searchType !== this.searchTypes.BASELINE)
+    if (
+      ((this.searchType === this.searchTypes.SBAS ||
+        this.searchType === this.searchTypes.BASELINE) &&
+        this.isFiltersOpen &&
+        (this.stackReferenceScene !== this.latestReferenceScene ||
+          !this.resultsMenuOpen)) ||
+      ((this.stackReferenceScene !== this.latestReferenceScene ||
+        !this.isFiltersOpen) &&
+        (this.searchType === this.searchTypes.SBAS ||
+          this.searchType === this.searchTypes.BASELINE)) ||
+      (this.searchType !== this.searchTypes.SBAS &&
+        this.searchType !== this.searchTypes.BASELINE)
     ) {
-
       this.store$.dispatch(new searchStore.MakeSearch());
 
       const search = this.savedSearchService.makeCurrentSearch(`${Date.now()}`);
@@ -164,15 +184,21 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
 
   private handleSearchErrors() {
     this.subs.add(
-      this.searchError$.pipe(
-        tap(_ => {
-          this.isSearchError = true;
-          this.notificationService.error('Trouble loading search results', 'Search Error', { timeOut: 5000 });
+      this.searchError$
+        .pipe(
+          tap((_) => {
+            this.isSearchError = true;
+            this.notificationService.error(
+              'Trouble loading search results',
+              'Search Error',
+              { timeOut: 5000 },
+            );
+          }),
+          delay(820),
+        )
+        .subscribe((_) => {
+          this.isSearchError = false;
         }),
-        delay(820),
-      ).subscribe(_ => {
-        this.isSearchError = false;
-      })
     );
   }
 
@@ -183,8 +209,8 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   public saveCurrentSearch(): void {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-      'event': 'save-current-search',
-      'save-current-search': true
+      event: 'save-current-search',
+      'save-current-search': true,
     });
 
     this.dialog.open(SaveSearchDialogComponent, {
@@ -193,7 +219,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
       height: '500px',
       maxWidth: '550px',
       maxHeight: '500px',
-      data: { saveType: SidebarType.SAVED_SEARCHES }
+      data: { saveType: SidebarType.SAVED_SEARCHES },
     });
 
     this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.SAVED_SEARCHES));
@@ -202,8 +228,8 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   public saveCurrentFilters(): void {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-      'event': 'save-current-filters',
-      'save-current-filters': true
+      event: 'save-current-filters',
+      'save-current-filters': true,
     });
 
     this.dialog.open(SaveSearchDialogComponent, {
@@ -212,51 +238,47 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
       height: '500px',
       maxWidth: '550px',
       maxHeight: '500px',
-      data: { saveType: SidebarType.USER_FILTERS }
+      data: { saveType: SidebarType.USER_FILTERS },
     });
 
     this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.USER_FILTERS));
   }
 
   public onOpenSavedSearches(): void {
-
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-      'event': 'open-saved-searches',
-      'open-saved-searches': true
+      event: 'open-saved-searches',
+      'open-saved-searches': true,
     });
 
     this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.SAVED_SEARCHES));
   }
 
   public onOpenSavedFilters(): void {
-
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-      'event': 'open-saved-filters',
-      'open-saved-filters': true
+      event: 'open-saved-filters',
+      'open-saved-filters': true,
     });
 
     this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.USER_FILTERS));
   }
 
   public onOpenSearchHistory(): void {
-
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-      'event': 'open-search-history',
-      'open-search-history': true
+      event: 'open-search-history',
+      'open-search-history': true,
     });
 
     this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.SEARCH_HISTORY));
   }
 
   public onOpenHelp(helpTopic: string): void {
-
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-      'event': 'open-help',
-      'open-help': helpTopic
+      event: 'open-help',
+      'open-help': helpTopic,
     });
 
     this.dialog.open(HelpComponent, {
@@ -272,8 +294,8 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   public onCopy(): void {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-      'event': 'copy-search-link',
-      'copy-search-link': window.location.href
+      event: 'copy-search-link',
+      'copy-search-link': window.location.href,
     });
 
     this.clipboard.copyFromContent(window.location.href);
@@ -285,13 +307,13 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
 
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-      'event': 'share-with-email',
-      'share-with-email': encodeURIComponent(document.URL)
+      event: 'share-with-email',
+      'share-with-email': encodeURIComponent(document.URL),
     });
 
     window.open(
       `mailto:?subject=${subject}` +
-      `&body=${encodeURIComponent(document.URL)}`
+        `&body=${encodeURIComponent(document.URL)}`,
     );
   }
 
@@ -300,15 +322,13 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
       width: '800px',
       height: '1000px',
       maxWidth: '100%',
-      maxHeight: '100%'
+      maxHeight: '100%',
     });
   }
-
 
   public isDevMode(): boolean {
     return !this.env.isProd;
   }
-
 
   public onMaturitySelect(maturity: string) {
     this.maturity = maturity;
@@ -317,12 +337,13 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
 
   public exportPython(): void {
     if (this.searchType !== SearchType.CUSTOM_PRODUCTS) {
-      this.exportService.convertSearchAPIQueryToAsfSearch.pipe(take(1)).subscribe(
-        (data) => {
+      this.exportService.convertSearchAPIQueryToAsfSearch
+        .pipe(take(1))
+        .subscribe((data) => {
           this.dialog.open(CodeExportComponent, {
             data: {
               codeStuff: data,
-              codeExportType: CodeExportType.ASF_SEARCH
+              codeExportType: CodeExportType.ASF_SEARCH,
             },
             width: '80vh',
             height: '80vh',
@@ -331,18 +352,20 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
           });
         });
     } else {
-      this.exportService.combineSearchOptionsToHyp3SDK$.pipe(take(1)).subscribe(codeStuff => {
-        this.dialog.open(CodeExportComponent, {
-          data: {
-            codeStuff,
-            codeExportType: CodeExportType.HYP3_SDK
-          },
-          width: '80vh',
-          height: '80vh',
-          maxWidth: '800px',
-          maxHeight: '800px',
+      this.exportService.combineSearchOptionsToHyp3SDK$
+        .pipe(take(1))
+        .subscribe((codeStuff) => {
+          this.dialog.open(CodeExportComponent, {
+            data: {
+              codeStuff,
+              codeExportType: CodeExportType.HYP3_SDK,
+            },
+            width: '80vh',
+            height: '80vh',
+            maxWidth: '800px',
+            maxHeight: '800px',
+          });
         });
-      })
     }
   }
 
@@ -355,5 +378,4 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
-
 }

@@ -12,7 +12,7 @@ export enum FiltersActionType {
   CLEAR_TEMPORAL_RANGE = '[Filters-Temporal] Clear Date Range',
 
   SET_PERPENDICULAR_START = '[Filters-Perp] Set Perpendicular Start',
-  SET_PERPENDICULAR_END  = '[Filters-Perp] Set Perpendicular End',
+  SET_PERPENDICULAR_END = '[Filters-Perp] Set Perpendicular End',
   SET_PERPENDICULAR_RANGE = '[Filters-Perp] Set Perpendicular Range',
   CLEAR_PERPENDICULAR_RANGE = '[Filters-Perp] Clear Perpendicular Range',
 
@@ -41,6 +41,9 @@ export enum FiltersActionType {
 
   ADD_POLARIZATION = '[Filters-Polarization] Add Polarization',
   SET_POLARIZATIONS = '[Filters-Polarization] Set Dataset Polarizations',
+
+  ADD_SIDE_POLARIZATION = '[Filters-Polarization] Add Side Polarization',
+  SET_SIDE_POLARIZATIONS = '[Filters-Polarization] Set Dataset Side Polarizations',
 
   SET_JOB_STATUSES = '[Filters-Job-Status] Set Job Statuses',
 
@@ -95,7 +98,17 @@ export enum FiltersActionType {
   SET_OPERA_BURST_ID = '[Filters] Set Full OPERA S1 Burst IDs',
   SET_INCLUDE_CALIBRATION_DATA = '[Filters] Set use calbiration data in OPERA-S1 search',
   SET_GROUP_ID = '[Filters] Set Sentinel-1 Group ID',
-  SET_USER_FRAME_FOR_BASELINE = '[Filters] Set if frame(s) used for baseline/sbas searches as reference scene'
+  SET_SHORT_NAMES = '[Filters] Set Short Names',
+
+  SET_FRAME_COVERAGE = '[Filters] Set Frame Coverage',
+  SET_JOINT_OBSERVATION = '[Filters] Set Joint Observation',
+  SET_RANGE_BANDWIDTH = '[Filters] Set Range Bandwidth',
+  ADD_RANGE_BANDWIDTH = '[Filters] Add Range Bandwidth',
+  SET_INSTRUMENT = '[Filters] Set Instrument',
+  SET_SCIENCE_PRODUCT = '[Filters] Set Science Product',
+  SET_PRODUCTION_CONFIG = '[Filters] Set Production Config',
+
+  SET_USER_FRAME_FOR_BASELINE = '[Filters] Set if frame(s) used for baseline/sbas searches as reference scene',
 }
 
 export class SetSelectedDataset implements Action {
@@ -110,7 +123,7 @@ export class SetPerpendicularStart implements Action {
   constructor(public payload: number) {}
 }
 
-export class SetPerpendicularEnd  implements Action {
+export class SetPerpendicularEnd implements Action {
   public readonly type = FiltersActionType.SET_PERPENDICULAR_END;
 
   constructor(public payload: number) {}
@@ -120,7 +133,7 @@ export class ClearPerpendicularRange implements Action {
   public readonly type = FiltersActionType.CLEAR_PERPENDICULAR_RANGE;
 }
 
-export class SetPerpendicularRange  implements Action {
+export class SetPerpendicularRange implements Action {
   public readonly type = FiltersActionType.SET_PERPENDICULAR_RANGE;
 
   constructor(public payload: models.Range<number>) {}
@@ -132,13 +145,13 @@ export class SetTemporalStart implements Action {
   constructor(public payload: number) {}
 }
 
-export class SetTemporalEnd  implements Action {
+export class SetTemporalEnd implements Action {
   public readonly type = FiltersActionType.SET_TEMPORAL_END;
 
   constructor(public payload: number) {}
 }
 
-export class SetTemporalRange  implements Action {
+export class SetTemporalRange implements Action {
   public readonly type = FiltersActionType.SET_TEMPORAL_RANGE;
 
   constructor(public payload: models.Range<number>) {}
@@ -223,7 +236,9 @@ export class ClearFrameRange implements Action {
 export class SetFiltersSimilarTo implements Action {
   public readonly type = FiltersActionType.SET_FILTERS_SIMILAR_TO;
 
-  constructor(public payload: {product: models.CMRProduct, dataset: models.Dataset}) {}
+  constructor(
+    public payload: { product: models.CMRProduct; dataset: models.Dataset },
+  ) {}
 }
 
 export class SetProductTypes implements Action {
@@ -232,6 +247,11 @@ export class SetProductTypes implements Action {
   constructor(public payload: models.DatasetProductTypes) {}
 }
 
+export class setShortNames implements Action {
+  public readonly type = FiltersActionType.SET_SHORT_NAMES;
+
+  constructor(public payload: models.DatasetShortName) {}
+}
 export class SetListSearchType implements Action {
   public readonly type = FiltersActionType.SET_LIST_SEARCH_TYPE;
 
@@ -280,6 +300,17 @@ export class SetPolarizations implements Action {
 
   constructor(public payload: models.DatasetPolarizations) {}
 }
+export class AddSidePolarization implements Action {
+  public readonly type = FiltersActionType.ADD_SIDE_POLARIZATION;
+
+  constructor(public payload: string) {}
+}
+
+export class SetSidePolarizations implements Action {
+  public readonly type = FiltersActionType.SET_SIDE_POLARIZATIONS;
+
+  constructor(public payload: models.DatasetPolarizations) {}
+}
 
 export class SetSubtypes implements Action {
   public readonly type = FiltersActionType.SET_SUBTYPES;
@@ -296,7 +327,7 @@ export class SetSearchList implements Action {
 export class SetMissions implements Action {
   public readonly type = FiltersActionType.SET_MISSIONS;
 
-  constructor(public payload: {[dataset: string]: string[]}) {}
+  constructor(public payload: Record<string, string[]>) {}
 }
 
 export class SelectMission implements Action {
@@ -330,20 +361,14 @@ export class SetProductNameFilter implements Action {
 
 export class RestoreFilters implements Action {
   public readonly type = FiltersActionType.RESTORE_FILTERS;
-
-  constructor() {}
 }
 
 export class StoreCurrentFilters implements Action {
   public readonly type = FiltersActionType.STORE_CURRENT_FILTERS;
-
-  constructor() {}
 }
 
 export class Toggle50PercentOverlap implements Action {
   public readonly type = FiltersActionType.TOGGLE_50_PERCENT_OVERLAP;
-
-  constructor() {}
 }
 
 export class SetSBASOverlapThreshold implements Action {
@@ -406,12 +431,14 @@ export class SetEventProductSorting implements Action {
 
 export class SetDefaultFilters implements Action {
   public readonly type = FiltersActionType.SET_DEFAULT_FILTERS;
-  constructor(public payload: {
-    'Baseline Search': string,
-    'Geographic Search': string,
-    'SBAS Search': string,
-    'Displacement': string
-  }) {}
+  constructor(
+    public payload: {
+      'Baseline Search': string;
+      'Geographic Search': string;
+      'SBAS Search': string;
+      Displacement: string;
+    },
+  ) {}
 }
 
 export class SetGeocode implements Action {
@@ -422,14 +449,10 @@ export class SetGeocode implements Action {
 
 export class ClearEventFilters implements Action {
   public readonly type = FiltersActionType.CLEAR_EVENT_FILTERS;
-
-  constructor() {}
 }
 
 export class ClearHyp3ProductTypes implements Action {
   public readonly type = FiltersActionType.CLEAR_HYP3_PRODUCT_TYPES;
-
-  constructor() {}
 }
 
 export class setFullBurst implements Action {
@@ -445,7 +468,7 @@ export class setOperaBurstID implements Action {
 }
 
 export class setUseCalibrationData implements Action {
-  public readonly type = FiltersActionType.SET_INCLUDE_CALIBRATION_DATA
+  public readonly type = FiltersActionType.SET_INCLUDE_CALIBRATION_DATA;
 
   constructor(public payload: boolean) {}
 }
@@ -455,13 +478,49 @@ export class setGroupID implements Action {
 
   constructor(public payload: string) {}
 }
+export class setFrameCoverage implements Action {
+  public readonly type = FiltersActionType.SET_FRAME_COVERAGE;
 
-export class SetUseFrameForBaseline implements Action {
-    public readonly type = FiltersActionType.SET_USER_FRAME_FOR_BASELINE;
+  constructor(public payload: string[]) {}
+}
+export class setJointObservation implements Action {
+  public readonly type = FiltersActionType.SET_JOINT_OBSERVATION;
 
-    constructor(public payload: boolean) {}
+  constructor(public payload: boolean) {}
 }
 
+export class setRangeBandwidth implements Action {
+  public readonly type = FiltersActionType.SET_RANGE_BANDWIDTH;
+
+  constructor(public payload: string[]) {}
+}
+export class addRangeBandwidth implements Action {
+  public readonly type = FiltersActionType.ADD_RANGE_BANDWIDTH;
+
+  constructor(public payload: string) {}
+}
+export class setIntstrument implements Action {
+  public readonly type = FiltersActionType.SET_INSTRUMENT;
+
+  constructor(public payload: string[]) {}
+}
+export class setScienceProduct implements Action {
+  public readonly type = FiltersActionType.SET_SCIENCE_PRODUCT;
+
+  constructor(public payload: string[]) {}
+}
+
+export class setProductionConfig implements Action {
+  public readonly type = FiltersActionType.SET_PRODUCTION_CONFIG;
+
+  constructor(public payload: string[]) {}
+}
+
+export class SetUseFrameForBaseline implements Action {
+  public readonly type = FiltersActionType.SET_USER_FRAME_FOR_BASELINE;
+
+  constructor(public payload: boolean) {}
+}
 
 export type FiltersActions =
   | SetSelectedDataset
@@ -489,6 +548,7 @@ export type FiltersActions =
   | SetFiltersSimilarTo
   | ClearFrameRange
   | SetProductTypes
+  | setShortNames
   | SetListSearchType
   | SetSearchList
   | SetFlightDirections
@@ -498,6 +558,8 @@ export type FiltersActions =
   | SetSubtypes
   | AddPolarization
   | SetPolarizations
+  | AddSidePolarization
+  | SetSidePolarizations
   | ClearDatasetFilters
   | ClearListFilters
   | SetMissions
@@ -527,4 +589,11 @@ export type FiltersActions =
   | setOperaBurstID
   | setUseCalibrationData
   | setGroupID
+  | setFrameCoverage
+  | setRangeBandwidth
+  | addRangeBandwidth
+  | setJointObservation
+  | setIntstrument
+  | setScienceProduct
+  | setProductionConfig
   | SetUseFrameForBaseline;

@@ -1,18 +1,17 @@
-<button  mat-stroked-button
+<button
+  mat-stroked-button
   *ngIf="!!polygon && (searchType$ | async) !== searchTypes.SARVIEWS_EVENTS"
-  (click)="onClearSearchArea()">
+  (click)="onClearSearchArea()"
+>
   <span class="button-text">
     {{ 'CLEAR' | translate }} {{ 'AREA_OF_INTEREST' | translate }}
   </span>
 </button>
 
-<button  mat-stroked-button
-  *ngIf="!!savedPolygon"
-  (click)="undoPolygonClear()">
+<button mat-stroked-button *ngIf="!!savedPolygon" (click)="undoPolygonClear()">
   <span class="button-text">
-<!--    {{ 'UNDO' | translate }} {{ 'CLEAR' | translate }} {{ 'AREA_OF_INTEREST' | translate }}-->
-    <mat-icon style="margin-right: 3px;">undo</mat-icon>
+    <!--    {{ 'UNDO' | translate }} {{ 'CLEAR' | translate }} {{ 'AREA_OF_INTEREST' | translate }}-->
+    <mat-icon style="margin-right: 3px">undo</mat-icon>
     {{ 'RESTORE_AREA' | translate }}
   </span>
 </button>
-

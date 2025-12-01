@@ -1,32 +1,47 @@
 <form [formGroup]="stateForm">
   <mat-form-field>
-    <input type="text" matInput placeholder="Filter Campaign" formControlName="missionFilter">
+    <input
+      type="text"
+      matInput
+      placeholder="Filter Campaign"
+      formControlName="missionFilter"
+    />
   </mat-form-field>
 </form>
 
 <ng-container *ngIf="!!selectedMission">
-  <div class="selected" style="padding-top: 12px;">
-    <div style="display: flex; justify-content: space-between;">
+  <div class="selected" style="padding-top: 12px">
+    <div style="display: flex; justify-content: space-between">
       <div>
-        <span style="margin-left: 20px;" class="v-mid">
-          <b>{{ 'SELECTED' | translate }}</b> <span> • </span> {{ selectedMission }} </span>
+        <span style="margin-left: 20px" class="v-mid">
+          <b>{{ 'SELECTED' | translate }}</b> <span> • </span>
+          {{ selectedMission }}
+        </span>
       </div>
       <div>
-        <mat-icon (click)="setMission(null)"
-          style="margin-right: 10px;" class="clickable v-mid" mat-list-icon
-          matTooltip="Clear selected mission">{{'CLEAR' | translate}}</mat-icon>
+        <mat-icon
+          (click)="setMission(null)"
+          style="margin-right: 10px"
+          class="clickable v-mid"
+          mat-list-icon
+          matTooltip="Clear selected mission"
+          >{{ 'CLEAR' | translate }}</mat-icon
+        >
       </div>
     </div>
-    <mat-divider style="margin-top: 12px;" [inset]="true"></mat-divider>
+    <mat-divider style="margin-top: 12px" [inset]="true"></mat-divider>
   </div>
 </ng-container>
 
-<cdk-virtual-scroll-viewport style="height: 250px;"
-  minBufferPx="500" maxBufferPx="600"
-  itemSize="48">
+<cdk-virtual-scroll-viewport
+  style="height: 250px"
+  minBufferPx="500"
+  maxBufferPx="600"
+  itemSize="48"
+>
   <mat-nav-list role="list">
     <div *cdkVirtualFor="let mission of filteredMissions">
-      <a (click)="setMission(mission)" mat-list-item  role="listitem">
+      <a (click)="setMission(mission)" mat-list-item role="listitem">
         {{ mission }}
       </a>
     </div>

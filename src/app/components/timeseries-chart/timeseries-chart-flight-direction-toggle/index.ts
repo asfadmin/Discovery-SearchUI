@@ -1,1 +1,1 @@
-export * from './timeseries-chart-flight-direction-toggle.component'
+export * from './timeseries-chart-flight-direction-toggle.component';

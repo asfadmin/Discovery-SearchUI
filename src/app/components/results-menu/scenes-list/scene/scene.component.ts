@@ -1,4 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  inject,
+} from '@angular/core';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 
 import * as services from '@services';
@@ -7,20 +14,31 @@ import * as models from '@models';
 @Component({
   selector: 'app-scene',
   templateUrl: './scene.component.html',
-  styleUrls: ['./scene.component.scss']
+  styleUrls: ['./scene.component.scss'],
+  standalone: false,
 })
 export class SceneComponent implements OnInit {
+  env = inject(services.EnvironmentService);
+  private screenSize = inject(services.ScreenSizeService);
+  private mapService = inject(services.MapService);
+
   @Input() scene: models.CMRProduct;
   @Input() searchType: models.SearchType;
 
   @Input() isSelected: boolean;
-  @Input() offsets: {temporal: number, perpendicular: number} = {temporal: 0, perpendicular: null};
+  @Input() offsets: { temporal: number; perpendicular: number } = {
+    temporal: 0,
+    perpendicular: null,
+  };
 
   @Input() isQueued: boolean;
   @Input() jobQueued: boolean;
   @Input() numQueued: number;
 
-  @Input() hyp3ableByJobType: { total: number, byJobType: models.Hyp3ableProductByJobType[]};
+  @Input() hyp3ableByJobType: {
+    total: number;
+    byJobType: models.Hyp3ableProductByJobType[];
+  };
 
   @Output() toggleScene = new EventEmitter();
 
@@ -31,15 +49,9 @@ export class SceneComponent implements OnInit {
   public copyIcon = faCopy;
   public SearchTypes = models.SearchType;
 
-  constructor(
-    public env: services.EnvironmentService,
-    private screenSize: services.ScreenSizeService,
-    private mapService: services.MapService,
-  ) { }
-
   ngOnInit(): void {
     this.screenSize.breakpoint$.subscribe(
-      breakpoint => this.breakpoint = breakpoint
+      (breakpoint) => (this.breakpoint = breakpoint),
     );
   }
 

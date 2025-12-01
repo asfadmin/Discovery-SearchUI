@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, inject } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -12,13 +12,16 @@ import { SubSink } from 'subsink';
 import * as searchStore from '@store/search';
 import * as models from '@models';
 
-
 @Component({
   selector: 'app-baseline-header',
   templateUrl: './baseline-header.component.html',
-  styleUrls: ['./baseline-header.component.css',  '../header.component.scss']
+  styleUrls: ['./baseline-header.component.css', '../header.component.scss'],
+  standalone: false,
 })
 export class BaselineHeaderComponent implements OnInit {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   @Output() public openQueue = new EventEmitter<void>();
 
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
@@ -26,34 +29,34 @@ export class BaselineHeaderComponent implements OnInit {
   public breakpoints = Breakpoints;
   public areResultsLoaded: boolean;
 
-  public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
+  public selectedProducts$ = this.store$.select(
+    scenesStore.getSelectedSceneProducts,
+  );
 
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = models.SearchType;
 
   public datasets = [models.beta];
-  public selectedDataset = 'SENTINEL-1 INTERFEROGRAM (BETA)'
-  
+  public selectedDataset = 'SENTINEL-1 INTERFEROGRAM (BETA)';
+
   private subs = new SubSink();
 
-public shouldUseFramesForReference: boolean = false;
-
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-  ) { }
+  public shouldUseFramesForReference = false;
 
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(scenesStore.getAreResultsLoaded).subscribe(
-        areLoaded => this.areResultsLoaded = areLoaded
-      )
+      this.store$
+        .select(scenesStore.getAreResultsLoaded)
+        .subscribe((areLoaded) => (this.areResultsLoaded = areLoaded)),
     );
-        this.subs.add(
-        this.store$.select(filtersStore.getShouldUseFramesForReference).subscribe(
-            shouldUseFrames => this.shouldUseFramesForReference = shouldUseFrames
-        )
-    )
+    this.subs.add(
+      this.store$
+        .select(filtersStore.getShouldUseFramesForReference)
+        .subscribe(
+          (shouldUseFrames) =>
+            (this.shouldUseFramesForReference = shouldUseFrames),
+        ),
+    );
   }
 
   public onToggleFiltersMenu(): void {

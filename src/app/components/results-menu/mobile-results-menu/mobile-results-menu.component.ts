@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, inject } from '@angular/core';
 
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
@@ -15,15 +15,22 @@ enum MobileViews {
   LIST = 0,
   DETAIL = 1,
   CHART = 2,
-  SBAS
+  SBAS,
 }
 
 @Component({
   selector: 'app-mobile-results-menu',
   templateUrl: './mobile-results-menu.component.html',
-  styleUrls: ['./mobile-results-menu.component.scss', '../results-menu.component.scss']
+  styleUrls: [
+    './mobile-results-menu.component.scss',
+    '../results-menu.component.scss',
+  ],
+  standalone: false,
 })
 export class MobileResultsMenuComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  datasetForProduct = inject(DatasetForProductService);
+
   @Input() resize$: Observable<void>;
 
   public isDisconnected = false;
@@ -34,45 +41,45 @@ export class MobileResultsMenuComponent implements OnInit, OnDestroy {
   public view = MobileViews.SBAS;
   public Views = MobileViews;
 
-  public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
+  public selectedProducts$ = this.store$.select(
+    scenesStore.getSelectedSceneProducts,
+  );
 
   public searchType: SearchType;
   public SearchTypes = SearchType;
 
   private subs = new SubSink();
 
-  constructor(
-    private store$: Store<AppState>,
-    public datasetForProduct: DatasetForProductService,
-  ) { }
-
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(searchStore.getSearchType).subscribe(
-        searchType => {
-          this.searchType = searchType;
-          this.view = searchType === SearchType.SBAS ?
-                      MobileViews.SBAS : MobileViews.LIST;
-        }
-      )
+      this.store$.select(searchStore.getSearchType).subscribe((searchType) => {
+        this.searchType = searchType;
+        this.view =
+          searchType === SearchType.SBAS ? MobileViews.SBAS : MobileViews.LIST;
+      }),
     );
 
     this.subs.add(
-      this.store$.select(scenesStore.getIsSelectedPairCustom).subscribe(
-        (isPairCustom: boolean) => this.isSelectedPairCustom = isPairCustom
-      )
+      this.store$
+        .select(scenesStore.getIsSelectedPairCustom)
+        .subscribe(
+          (isPairCustom: boolean) => (this.isSelectedPairCustom = isPairCustom),
+        ),
     );
 
     this.subs.add(
-      this.store$.select(uiStore.getIsAddingCustomPoint).subscribe(
-        isAddingCustomPoint => this.isAddingCustomPoint = isAddingCustomPoint
-      )
+      this.store$
+        .select(uiStore.getIsAddingCustomPoint)
+        .subscribe(
+          (isAddingCustomPoint) =>
+            (this.isAddingCustomPoint = isAddingCustomPoint),
+        ),
     );
 
     this.subs.add(
-      this.store$.select(scenesStore.getSelectedPair).subscribe(
-        (selected: CMRProductPair) => this.pair = selected
-      )
+      this.store$
+        .select(scenesStore.getSelectedPair)
+        .subscribe((selected: CMRProductPair) => (this.pair = selected)),
     );
   }
 

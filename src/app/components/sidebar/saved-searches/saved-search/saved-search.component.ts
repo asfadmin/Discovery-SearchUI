@@ -1,6 +1,13 @@
 import {
-  Component, OnInit, Input, Output, EventEmitter,
-  ViewChild, ElementRef, ChangeDetectionStrategy
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild,
+  ElementRef,
+  ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 
 import { timer } from 'rxjs';
@@ -8,15 +15,18 @@ import * as moment from 'moment';
 
 import * as models from '@models';
 
-import { AsfLanguageService } from "@services/asf-language.service";
+import { AsfLanguageService } from '@services/asf-language.service';
 
 @Component({
   selector: 'app-saved-search',
   templateUrl: './saved-search.component.html',
   styleUrls: ['./saved-search.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class SavedSearchComponent implements OnInit {
+  private language = inject(AsfLanguageService);
+
   @ViewChild('nameEditInput') nameEditInput: ElementRef;
 
   @Input() search: models.Search;
@@ -27,7 +37,7 @@ export class SavedSearchComponent implements OnInit {
   @Input() lockedFocus: boolean;
 
   @Output() updateFilters = new EventEmitter<string>();
-  @Output() updateName = new EventEmitter<{ id: string, name: string }>();
+  @Output() updateName = new EventEmitter<{ id: string; name: string }>();
   @Output() deleteSearch = new EventEmitter<string>();
   @Output() setSearch = new EventEmitter<models.Search>();
   @Output() expand = new EventEmitter<string>();
@@ -36,11 +46,6 @@ export class SavedSearchComponent implements OnInit {
   public SearchType = models.SearchType;
   public isEditingName = false;
   public editName = '';
-
-  constructor(
-    private language: AsfLanguageService,
-  ) {
-  }
   ngOnInit() {
     if (this.isNew) {
       this.onEditName();
@@ -65,12 +70,9 @@ export class SavedSearchComponent implements OnInit {
     }
 
     this.isEditingName = true;
-    this.editName = this.search.name === '(No title)' ?
-      '' : this.search.name;
+    this.editName = this.search.name === '(No title)' ? '' : this.search.name;
 
-    timer(40).subscribe(
-      _ => this.nameEditInput.nativeElement.focus()
-    );
+    timer(40).subscribe((_) => this.nameEditInput.nativeElement.focus());
   }
 
   public onNewName(event: Event): void {
@@ -125,7 +127,7 @@ export class SavedSearchComponent implements OnInit {
   public formatName(searchName: string): string {
     if (this.isSavedSearch) {
       const noName = this.language.translate.instant('NO_NAME');
-      return !!searchName ? searchName : noName;
+      return searchName ? searchName : noName;
     } else {
       const date = this.formatIfDate(new Date(+searchName));
       return `(${date})`;

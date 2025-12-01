@@ -13,10 +13,16 @@ export enum Props {
   STACK_SIZE = 'Stack Size',
   BASELINE_TOOL = 'Baseline Tool',
   SUBTYPE = 'Subtype',
+  INSTRUMENT = 'Instrument',
   POINTING_ANGLE = 'Pointing Angle',
+  COVERAGE_ANGLE = 'Coverage Angle',
+  JOINT_OBSERVATION = 'Joint Observation',
+  SIDE_POLARIZATION = 'Side Polarization',
+  RANGE_BANDWIDTH = 'Range Bandwidth',
   USE_BEAM_MODE = 'Use Beam Mode Filter',
   USE_PROCESSING_TYPE = 'Use Processing Type',
-  FRAME_ORDERING = 'Allow ordering frames via SBAS tooling'
+  USE_TRACK = 'Use Track for Path',
+  FRAME_ORDERING = 'Allow ordering frames via SBAS tooling',
 }
 
 export const apiParamNames = {

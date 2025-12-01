@@ -18,9 +18,7 @@ import { SharedModule } from '@shared';
 import { MissionSelectorComponent } from './mission-selector.component';
 
 @NgModule({
-  declarations: [
-    MissionSelectorComponent
-  ],
+  declarations: [MissionSelectorComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -38,10 +36,8 @@ import { MissionSelectorComponent } from './mission-selector.component';
     MatPaginatorModule,
 
     MatSharedModule,
-    SharedModule
+    SharedModule,
   ],
-  exports: [
-    MissionSelectorComponent
-  ]
+  exports: [MissionSelectorComponent],
 })
-export class MissionSelectorModule { }
+export class MissionSelectorModule {}

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import { MatMenu } from '@angular/material/menu';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -14,19 +14,27 @@ import { getSearchType } from '@store/search';
 import { CMRProduct, Hyp3ableByProductType, SearchType } from '@models';
 import { withLatestFrom } from 'rxjs/operators';
 import { EnvironmentService, Hyp3ApiService } from '@services';
-import { getSelectedDataset, getShouldUseFramesForReference } from '@store/filters';
+import {
+  getSelectedDataset,
+  getShouldUseFramesForReference,
+} from '@store/filters';
 
 @Component({
   selector: 'app-on-demand-add-menu',
   templateUrl: './on-demand-add-menu.component.html',
-  styleUrls: ['./on-demand-add-menu.component.scss']
+  styleUrls: ['./on-demand-add-menu.component.scss'],
+  standalone: false,
 })
 export class OnDemandAddMenuComponent implements OnInit {
+  private store$ = inject<Store<AppState>>(Store);
+  env = inject(EnvironmentService);
+  hyp3 = inject(Hyp3ApiService);
+
   @Input() hyp3ableProducts: models.Hyp3ableProductByJobType;
   @Input() isExpired = false;
   @Input() expiredJobs: models.Hyp3Job;
 
-  @ViewChild('addMenu', {static: true}) addMenu: MatMenu;
+  @ViewChild('addMenu', { static: true }) addMenu: MatMenu;
 
   public isLoggedIn = false;
 
@@ -41,77 +49,83 @@ export class OnDemandAddMenuComponent implements OnInit {
   public InSAR = models.hyp3JobTypes.INSAR_GAMMA;
   public AutoRift = models.hyp3JobTypes.AUTORIFT;
 
-  public isFrameBased: boolean = false; 
+  public isFrameBased = false;
   private referenceID: string;
   public userStatus;
 
   private subs = new SubSink();
 
-  constructor(
-    private store$: Store<AppState>,
-    public env: EnvironmentService,
-    public hyp3: Hyp3ApiService,
-  ) { }
-
   ngOnInit(): void {
-    this.subs.add(this.store$.select(getShouldUseFramesForReference).subscribe(
-        isFrameBased => this.isFrameBased = isFrameBased
-    ))
     this.subs.add(
-      this.store$.select(getSearchType).subscribe(
-        searchtype => this.searchType = searchtype
-      )
+      this.store$
+        .select(getShouldUseFramesForReference)
+        .subscribe((isFrameBased) => (this.isFrameBased = isFrameBased)),
+    );
+    this.subs.add(
+      this.store$
+        .select(getSearchType)
+        .subscribe((searchtype) => (this.searchType = searchtype)),
     );
 
     this.subs.add(
-      this.store$.select(userStore.getIsUserLoggedIn).subscribe(
-        isLoggedIn => this.isLoggedIn = isLoggedIn
-      )
+      this.store$
+        .select(userStore.getIsUserLoggedIn)
+        .subscribe((isLoggedIn) => (this.isLoggedIn = isLoggedIn)),
     );
 
     this.subs.add(
-      this.store$.select(hyp3Store.getCosts).subscribe(
-        costs => this.costs = costs
-      )
+      this.store$
+        .select(hyp3Store.getCosts)
+        .subscribe((costs) => (this.costs = costs)),
     );
 
     this.subs.add(
-      this.store$.select(hyp3Store.getProcessingOptions).subscribe(
-        options => this.options = options
-      )
+      this.store$
+        .select(hyp3Store.getProcessingOptions)
+        .subscribe((options) => (this.options = options)),
     );
     this.subs.add(
-      this.store$.select(hyp3Store.getHyp3User).subscribe(profile => {
+      this.store$.select(hyp3Store.getHyp3User).subscribe((profile) => {
         this.userStatus = profile?.application_status;
-      })
-    )
+      }),
+    );
 
     this.subs.add(
-        this.store$.select(getMasterName).subscribe(
-            sceneName => this.referenceID = sceneName
-        )
-    )
+      this.store$
+        .select(getMasterName)
+        .subscribe((sceneName) => (this.referenceID = sceneName)),
+    );
     this.subs.add(
-      this.store$.select(getScenes).pipe(
-        withLatestFrom(this.store$.select(getMasterName)),
-        withLatestFrom(this.store$.select(getSelectedDataset))
-        ).subscribe(
-        ([[scenes, referenceName], dataset]) => {
+      this.store$
+        .select(getScenes)
+        .pipe(
+          withLatestFrom(this.store$.select(getMasterName)),
+          withLatestFrom(this.store$.select(getSelectedDataset)),
+        )
+        .subscribe(([[scenes, referenceName], dataset]) => {
           this.scenes = scenes;
           this.referenceID = referenceName;
-          if (referenceName && dataset.id !== "SENTINEL-1 INTERFEROGRAM (BETA)") {
-            const referenceSceneIdx = this.scenes.findIndex(scene => scene.name === referenceName);
+          if (
+            referenceName &&
+            dataset.id !== 'SENTINEL-1 INTERFEROGRAM (BETA)'
+          ) {
+            const referenceSceneIdx = this.scenes.findIndex(
+              (scene) => scene.name === referenceName,
+            );
             if (referenceSceneIdx !== -1) {
               this.referenceScene = this.scenes[referenceSceneIdx];
             }
           }
-        }
-      )
+        }),
     );
   }
 
-  public queueAllOnDemand(products: models.CMRProduct[][], job_type: models.Hyp3JobType, isFrameBased: boolean = false): void {
-    const jobs: models.QueuedHyp3Job[] = products.map(product => ({
+  public queueAllOnDemand(
+    products: models.CMRProduct[][],
+    job_type: models.Hyp3JobType,
+    isFrameBased = false,
+  ): void {
+    const jobs: models.QueuedHyp3Job[] = products.map((product) => ({
       granules: [...product].sort((a, b) => {
         if (a.metadata.date < b.metadata.date) {
           return -1;
@@ -119,36 +133,45 @@ export class OnDemandAddMenuComponent implements OnInit {
         return 1;
       }),
       job_type,
-      reference_id: isFrameBased ? this.referenceID : null
+      reference_id: isFrameBased ? this.referenceID : null,
     }));
 
     this.store$.dispatch(new queueStore.AddJobs(jobs));
   }
 
-  public isBaselineStack(byProductType: Hyp3ableByProductType[], searchType: SearchType) {
+  public isBaselineStack(
+    byProductType: Hyp3ableByProductType[],
+    searchType: SearchType,
+  ) {
     if (searchType !== this.searchTypes.BASELINE) {
       return false;
     }
     const slcProducts = this.findSLCs(byProductType).products;
 
-    return (
-      slcProducts.length >= 1 &&
-        this.isNotReferenceScene(slcProducts)
+    return slcProducts.length >= 1 && this.isNotReferenceScene(slcProducts);
+  }
+
+  private findSLCs(
+    byProductType: Hyp3ableByProductType[],
+  ): Hyp3ableByProductType {
+    return byProductType.find(
+      (prod) => prod.productType === 'SLC' || prod.productType === 'BURST',
     );
   }
 
-  private findSLCs(byProductType: Hyp3ableByProductType[]): Hyp3ableByProductType {
-    return byProductType.find(prod => prod.productType === 'SLC' || prod.productType === 'BURST');
-  }
-
   private isNotReferenceScene(products: CMRProduct[][]): boolean {
-    return products[0][0].id !== this.referenceScene.id ||
-      products[products.length - 1][0].id !== this.referenceScene.id;
+    return (
+      products[0][0].id !== this.referenceScene.id ||
+      products[products.length - 1][0].id !== this.referenceScene.id
+    );
   }
 
-  public queueBaselinePairOnDemand(products: models.CMRProduct[][], job_type: models.Hyp3JobType) {
-    products = products.filter(prod => prod[0].id !== this.referenceScene.id);
-    const jobs: models.QueuedHyp3Job[] = products.map(product => {
+  public queueBaselinePairOnDemand(
+    products: models.CMRProduct[][],
+    job_type: models.Hyp3JobType,
+  ) {
+    products = products.filter((prod) => prod[0].id !== this.referenceScene.id);
+    const jobs: models.QueuedHyp3Job[] = products.map((product) => {
       return {
         granules: [this.referenceScene, product[0]]?.sort((a, b) => {
           if (a.metadata.date < b.metadata.date) {
@@ -164,13 +187,18 @@ export class OnDemandAddMenuComponent implements OnInit {
   }
 
   public calculateCost(jobTypeId: string, numberOfJobs: number): number {
-    return this.hyp3.calculateCredits(this.options[jobTypeId], this.costs[jobTypeId]) * numberOfJobs;
+    return (
+      this.hyp3.calculateCredits(
+        this.options[jobTypeId],
+        this.costs[jobTypeId],
+      ) * numberOfJobs
+    );
   }
 
   public onOpenHelp(infoUrl: string) {
     window.open(infoUrl);
   }
-  public onOpenSignup() : void {
+  public onOpenSignup(): void {
     this.store$.dispatch(new uiStore.SetIsOnDemandQueueOpen(true));
   }
 }

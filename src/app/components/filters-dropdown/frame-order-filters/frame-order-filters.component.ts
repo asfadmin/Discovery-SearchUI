@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, inject } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -20,7 +20,7 @@ import { DocsModalModule } from '@components/shared/docs-modal';
 import { BurstSelectorModule } from '@components/shared/selectors/burst-selector';
 import { OperaS1SelectorModule } from '@components/shared/selectors/opera-s1-selector';
 
-import { SharedModule } from "@shared";
+import { SharedModule } from '@shared';
 
 import { SubSink } from 'subsink';
 
@@ -39,16 +39,14 @@ enum FilterPanel {
   CAMPAIGN = 'Campaign',
   PATH = 'Path',
   AOI = 'Aoi',
-  SEARCH = 'Search'
+  SEARCH = 'Search',
 }
 
 @Component({
   selector: 'app-frame-order-filters',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,
-
     FlightDirectionSelectorComponent,
     MatSelectModule,
     MatExpansionModule,
@@ -67,9 +65,13 @@ enum FilterPanel {
     SharedModule,
   ],
   templateUrl: './frame-order-filters.component.html',
-  styleUrl: './frame-order-filters.component.scss'
+  styleUrl: './frame-order-filters.component.scss',
 })
-export class FrameOrderFiltersComponent {
+export class FrameOrderFiltersComponent implements OnInit, OnDestroy {
+  prop = inject(PropertyService);
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   @Input() dataset: models.CMRProduct;
   @Input() selectedPanel: FilterPanel | null = null;
 
@@ -87,22 +89,15 @@ export class FrameOrderFiltersComponent {
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
 
-
   public flightDirectionTypes = models.flightDirections;
 
   private subs = new SubSink();
 
-  constructor(
-    public prop: PropertyService,
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-  ) {}
-
   ngOnInit() {
     this.subs.add(
-      this.store$.select(filtersStore.getSelectedDatasetId).subscribe(
-        selected => this.selectedDataset = selected
-      )
+      this.store$
+        .select(filtersStore.getSelectedDatasetId)
+        .subscribe((selected) => (this.selectedDataset = selected)),
     );
   }
 

@@ -3,43 +3,53 @@
 <div mat-dialog-content class="mat-dialog-content">
   <div>
     <form #saveSearchName="ngForm">
-      <mat-form-field [class.invalid-input-animation]="isNameError" hintLabel="Max 20 {{ 'CHARACTERS' | translate }}">
-        <input type="text"
-               autofocus
-               #saveNameInput="ngModel" ngModel
-               name="searchNameInput"
-               placeholder="{{ (saveTypeName | uppercase | translate) + ' ' + ( 'NAME' | translate) }}"
-               matInput
-               (input)="onSaveNameInput($event)"
-               (change)="onSaveNameChange($event)"
-               [value]="saveName"
-               [(ngModel)]="saveName"
-               [maxLength]="20">
-        <mat-hint align="end">{{saveNameInput.value?.length || 0}}/20</mat-hint>
+      <mat-form-field
+        [class.invalid-input-animation]="isNameError"
+        hintLabel="Max 20 {{ 'CHARACTERS' | translate }}"
+      >
+        <input
+          type="text"
+          #saveNameInput="ngModel"
+          ngModel
+          name="searchNameInput"
+          placeholder="{{
+            (saveTypeName | uppercase | translate) + ' ' + ('NAME' | translate)
+          }}"
+          matInput
+          (input)="onSaveNameInput($event)"
+          (change)="onSaveNameChange($event)"
+          [value]="saveName"
+          [(ngModel)]="saveName"
+          [maxLength]="20"
+        />
+        <mat-hint align="end"
+          >{{ saveNameInput.value?.length || 0 }}/20</mat-hint
+        >
       </mat-form-field>
     </form>
-
   </div>
 
   <div class="save-search-filters">
-    <div style="margin-bottom: 4px;">
+    <div style="margin-bottom: 4px">
       <b>{{ searchTranslation[search.searchType] | translate }}</b>
     </div>
 
-    <app-search-filters [search]="search">
-    </app-search-filters>
+    <app-search-filters [search]="search"> </app-search-filters>
   </div>
 </div>
 
 <div mat-dialog-actions>
-  <button mat-button (click)="onCancelSave()">{{ 'CANCEL' | translate }}</button>
-  <button mat-flat-button
-          color="primary"
-          (click)="onSubmitSave()"
-          cdkFocusInitial>
+  <button mat-button (click)="onCancelSave()">
+    {{ 'CANCEL' | translate }}
+  </button>
+  <button
+    mat-flat-button
+    color="primary"
+    (click)="onSubmitSave()"
+    cdkFocusInitial
+  >
     <span>
       {{ saveTypeName | uppercase | translate | titlecase }}
     </span>
   </button>
 </div>
-

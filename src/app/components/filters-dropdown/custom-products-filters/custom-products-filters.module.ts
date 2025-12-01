@@ -10,7 +10,7 @@ import { CustomProductsFiltersComponent } from './custom-products-filters.compon
 import { JobStatusSelectorModule } from '@components/shared/selectors/job-status-selector';
 import { DateSelectorModule } from '@components/shared/selectors/date-selector';
 import { JobProductNameSelectorModule } from '@components/shared/selectors/job-product-name-selector';
-import { OnDemandUserSelectorModule} from '@components/shared/selectors/on-demand-user-selector';
+import { OnDemandUserSelectorModule } from '@components/shared/selectors/on-demand-user-selector';
 import { JobIdSelectorComponent } from './job-id-selector/job-id-selector.component';
 
 import { SharedModule } from '@shared';
@@ -19,10 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [
-    CustomProductsFiltersComponent,
-    JobIdSelectorComponent,
-  ],
+  declarations: [CustomProductsFiltersComponent, JobIdSelectorComponent],
   imports: [
     CommonModule,
     MatExpansionModule,
@@ -36,10 +33,8 @@ import { FormsModule } from '@angular/forms';
     JobStatusSelectorModule,
     JobProductNameSelectorModule,
     OnDemandUserSelectorModule,
-    SharedModule
+    SharedModule,
   ],
-  exports: [
-    CustomProductsFiltersComponent
-  ]
+  exports: [CustomProductsFiltersComponent],
 })
-export class CustomProductsFiltersModule { }
+export class CustomProductsFiltersModule {}

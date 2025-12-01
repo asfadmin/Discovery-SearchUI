@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
@@ -10,25 +10,22 @@ import * as models from '@models';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss']
+  styleUrls: ['./sidebar.component.scss'],
+  standalone: false,
 })
 export class SidebarComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+
   public sidebar: models.SidebarType;
   public SidebarType = models.SidebarType;
 
   private subs = new SubSink();
 
-  constructor(
-    private store$: Store<AppState>,
-  ) { }
-
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(uiStore.getSidebar).subscribe(
-        sidebar => {
-          this.sidebar = sidebar;
-        }
-      )
+      this.store$.select(uiStore.getSidebar).subscribe((sidebar) => {
+        this.sidebar = sidebar;
+      }),
     );
   }
 

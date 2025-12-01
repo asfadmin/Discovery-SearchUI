@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ScreenSizeService } from '@services';
 import { AppState } from '@store';
@@ -18,13 +18,16 @@ enum FilterPanel {
 @Component({
   selector: 'app-sarviews-filters',
   templateUrl: './sarviews-filters.component.html',
-  styleUrls: ['./sarviews-filters.component.scss']
+  styleUrls: ['./sarviews-filters.component.scss'],
+  standalone: false,
 })
 export class SarviewsFiltersComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
   public areResultsLoaded: boolean;
-
 
   selectedPanel: FilterPanel | null = null;
   panels = FilterPanel;
@@ -35,19 +38,13 @@ export class SarviewsFiltersComponent implements OnInit, OnDestroy {
 
   private subs = new SubSink();
 
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService
-  ) { }
-
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(scenesStore.getAreResultsLoaded).subscribe(
-        areLoaded => this.areResultsLoaded = areLoaded
-      )
+      this.store$
+        .select(scenesStore.getAreResultsLoaded)
+        .subscribe((areLoaded) => (this.areResultsLoaded = areLoaded)),
     );
   }
-
 
   public isSelected(panel: FilterPanel): boolean {
     return this.selectedPanel === panel;

@@ -1,4 +1,11 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  AfterViewInit,
+  inject,
+} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NotificationService } from '@services';
 import { ClipboardService } from 'ngx-clipboard';
@@ -8,28 +15,27 @@ import Prism from 'prismjs';
 
 export enum CodeExportType {
   ASF_SEARCH,
-  HYP3_SDK
+  HYP3_SDK,
 }
 
 @Component({
   selector: 'app-code-export',
   templateUrl: './code-export.component.html',
-  styleUrls: ['./code-export.component.scss']
+  styleUrls: ['./code-export.component.scss'],
+  standalone: false,
 })
-export class CodeExportComponent implements OnInit {
+export class CodeExportComponent implements OnInit, AfterViewInit {
+  dialogRef = inject<MatDialogRef<SaveSearchDialogComponent>>(MatDialogRef);
+  data = inject(MAT_DIALOG_DATA);
+  clipboard = inject(ClipboardService);
+  notificationService = inject(NotificationService);
+
   public codeStuff: string;
 
   public codeExportTypes = CodeExportType;
   public codeExportType: CodeExportType;
 
   @ViewChild('codeblock', { static: false }) divHello: ElementRef;
-
-  constructor(
-    public dialogRef: MatDialogRef<SaveSearchDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data,
-    public clipboard: ClipboardService,
-    public notificationService: NotificationService,
-  ) { }
 
   ngOnInit(): void {
     this.codeStuff = this.data.codeStuff;

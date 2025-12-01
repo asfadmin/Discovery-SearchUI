@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, inject } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ClipboardService } from 'ngx-clipboard';
 import { SubSink } from 'subsink';
@@ -22,8 +22,14 @@ import { SetGeocode } from '@store/filters';
   templateUrl: './aoi-filter.component.html',
   styleUrls: ['./aoi-filter.component.scss', '../../header.component.scss'],
   animations: menuAnimation,
+  standalone: false,
 })
 export class AoiFilterComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private mapService = inject(services.MapService);
+  private clipboard = inject(ClipboardService);
+  private notificationService = inject(services.NotificationService);
+
   @ViewChild('polygonForm') public polygonForm: NgForm;
 
   public aoiErrors$ = new Subject<void>();
@@ -38,41 +44,37 @@ export class AoiFilterComponent implements OnInit, OnDestroy {
   public polygon: string;
   private subs = new SubSink();
 
-  constructor(
-    private store$: Store<AppState>,
-    private mapService: services.MapService,
-    private clipboard: ClipboardService,
-    private notificationService: services.NotificationService
-  ) { }
-
   ngOnInit() {
     this.subs.add(
-      this.store$.select(uiStore.getIsAOIOptionsOpen).subscribe(
-        isAOIOptionsOpen => this.isAOIOptionsOpen = isAOIOptionsOpen
-      )
+      this.store$
+        .select(uiStore.getIsAOIOptionsOpen)
+        .subscribe(
+          (isAOIOptionsOpen) => (this.isAOIOptionsOpen = isAOIOptionsOpen),
+        ),
     );
     this.subs.add(
-      this.searchType$.subscribe( searchtype => this.searchtype = searchtype)
+      this.searchType$.subscribe(
+        (searchtype) => (this.searchtype = searchtype),
+      ),
     );
     this.subs.add(
-      this.mapService.searchPolygon$.subscribe(
-        p => {
-          this.polygon = p;
-          window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({
-            'event': 'input-search-polygon',
-            'input-search-polygon': this.polygon
-          });
-
-        }
-      )
+      this.mapService.searchPolygon$.subscribe((p) => {
+        this.polygon = p;
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: 'input-search-polygon',
+          'input-search-polygon': this.polygon,
+        });
+      }),
     );
 
     this.handleAOIErrors();
   }
 
   public openAOIImport() {
-    const action = new mapStore.SetMapInteractionMode(MapInteractionModeType.UPLOAD);
+    const action = new mapStore.SetMapInteractionMode(
+      MapInteractionModeType.UPLOAD,
+    );
     this.store$.dispatch(action);
   }
 
@@ -89,13 +91,16 @@ export class AoiFilterComponent implements OnInit, OnDestroy {
     const polygon = (event.target as HTMLInputElement).value;
     const didLoad = this.mapService.loadPolygonFrom(polygon);
 
-    if (!didLoad || (this.searchtype === SearchType.DISPLACEMENT && !(polygon.toLowerCase().includes('point')))) {
+    if (
+      !didLoad ||
+      (this.searchtype === SearchType.DISPLACEMENT &&
+        !polygon.toLowerCase().includes('point'))
+    ) {
       this.aoiErrors$.next();
     } else {
       this.store$.dispatch(new SetGeocode(''));
       this.store$.dispatch(new DrawNewPolygon());
     }
-
   }
 
   public onCopy(): void {
@@ -105,22 +110,22 @@ export class AoiFilterComponent implements OnInit, OnDestroy {
 
   private handleAOIErrors(): void {
     this.subs.add(
-      this.aoiErrors$.pipe(
-        tap(_ => {
-          this.isAOIError = true;
-          this.mapService.clearDrawLayer();
-          this.polygonForm.reset();
-          this.polygonForm.form
-            .controls['searchPolygon']
-            .setErrors({'incorrect': true});
+      this.aoiErrors$
+        .pipe(
+          tap((_) => {
+            this.isAOIError = true;
+            this.mapService.clearDrawLayer();
+            this.polygonForm.reset();
+            this.polygonForm.form.controls['searchPolygon'].setErrors({
+              incorrect: true,
+            });
+          }),
+          delay(820),
+        )
+        .subscribe((_) => {
+          this.isAOIError = false;
+          this.polygonForm.form.controls['searchPolygon'].setErrors(null);
         }),
-        delay(820),
-      ).subscribe(_ => {
-        this.isAOIError = false;
-        this.polygonForm.form
-          .controls['searchPolygon']
-          .setErrors(null);
-      })
     );
   }
 

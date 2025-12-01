@@ -1,40 +1,68 @@
 <mat-menu #addMenu>
   <ng-template matMenuContent let-hyp3able="hyp3able">
-    @if(userStatus === 'NOT_STARTED') {
-      <button mat-menu-item (click)="onOpenSignup()">Register Hyp3 Account</button>
-    }
-    <div *ngFor="let productsByJobType of hyp3able" [matTooltip]="">
+    <button
+      *ngIf="userStatus === 'NOT_STARTED'"
+      mat-menu-item
+      (click)="onOpenSignup()"
+    >
+      Register Hyp3 Account
+    </button>
+    <ng-container *ngFor="let productsByJobType of hyp3able" [matTooltip]="">
       <button
         [disabled]="productsByJobType.total === 0"
         [matMenuTriggerFor]="addAllByProductType"
         [matMenuTriggerData]="{ productsByJobType: productsByJobType }"
-        mat-menu-item>
+        mat-menu-item
+      >
         {{ productsByJobType.jobType.name }}
 
-        <mat-icon (click)="onOpenHelp(productsByJobType.jobType.infoUrl)"
-          class="clickable" style="margin-left: 10px;">
-            info
+        <mat-icon
+          (click)="onOpenHelp(productsByJobType.jobType.infoUrl)"
+          class="clickable"
+          style="margin-left: 10px"
+        >
+          info
         </mat-icon>
       </button>
-    </div>
+    </ng-container>
   </ng-template>
 </mat-menu>
 
 <mat-menu #addAllByProductType>
   <ng-template matMenuContent let-byJobType="productsByJobType">
-    <div *ngFor="let prodType of byJobType.byProductType">
-      <button *ngIf="prodType.products.length !== 0"
-        (click)="queueAllOnDemand(prodType.products, byJobType.jobType, isFrameBased)"
-        [disabled]="" mat-menu-item>
+    <ng-container *ngFor="let prodType of byJobType.byProductType">
+      <button
+        *ngIf="prodType.products.length !== 0"
+        (click)="
+          queueAllOnDemand(prodType.products, byJobType.jobType, isFrameBased)
+        "
+        [disabled]=""
+        mat-menu-item
+      >
+        {{ 'ADD' | translate }} {{ isExpired ? '' : prodType.products.length }}
+        {{ isExpired ? '' : prodType.productType }}
+        {{
+          byJobType.jobType.numProducts === 2
+            ? ('PAIR' | translate)
+            : ('JOB' | translate)
+        }}{{ prodType.products.length > 1 ? 's' : '' }}
 
-        {{ 'ADD' | translate }}  {{ isExpired ? '' : prodType.products.length}} {{ isExpired ? '' : prodType.productType }}
-        {{ byJobType.jobType.numProducts === 2 ? ('PAIR' | translate) : ('JOB' | translate) }}{{ prodType.products.length > 1 ? 's' : '' }}
-
-        ({{ calculateCost(byJobType.jobType.id, prodType.products.length) | number }} <span [ngPlural]="calculateCost(byJobType.jobType.id, prodType.products.length)">
-            <ng-template ngPluralCase="=1">{{ 'CREDIT' | translate }}</ng-template>
-            <ng-template ngPluralCase="other">{{ 'CREDITS' | translate }}</ng-template>
-          </span>)
+        ({{
+          calculateCost(byJobType.jobType.id, prodType.products.length) | number
+        }}
+        <span
+          [ngPlural]="
+            calculateCost(byJobType.jobType.id, prodType.products.length)
+          "
+        >
+          <ng-template ngPluralCase="=1">{{
+            'CREDIT' | translate
+          }}</ng-template>
+          <ng-template ngPluralCase="other">{{
+            'CREDITS' | translate
+          }}</ng-template> </span
+        >)
       </button>
-    </div>
+    </ng-container>
   </ng-template>
 </mat-menu>

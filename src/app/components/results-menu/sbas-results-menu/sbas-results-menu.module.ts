@@ -21,9 +21,8 @@ import { SbasSlidersTwoComponent } from './sbas-sliders-two/sbas-sliders-two.com
 
 import { SBASResultsMenuComponent } from './sbas-results-menu.component';
 
-import { SharedModule } from "@shared";
+import { SharedModule } from '@shared';
 import { DocsModalModule } from '@components/shared/docs-modal';
-
 
 @NgModule({
   declarations: [
@@ -46,12 +45,12 @@ import { DocsModalModule } from '@components/shared/docs-modal';
     SceneMetadataModule,
     ScenesListModule,
     ScenesListHeaderModule,
-    DocsModalModule
+    DocsModalModule,
   ],
   exports: [
     SBASResultsMenuComponent,
     SbasSlidersTwoComponent,
     SbasSlidersComponent,
-  ]
+  ],
 })
-export class SbasResultsMenuModule { }
+export class SbasResultsMenuModule {}

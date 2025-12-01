@@ -2,15 +2,27 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ReadableSizeFromBytesPipe } from './readable-size-from-bytes.pipe';
-import { ShortDatePipe, ShortDateTimePipe, FullDatePipe, ShortDateSeasonPipe } from './short-date.pipe';
-import { MomentPipe} from "@pipes/dynamic-moment";
+import {
+  ShortDatePipe,
+  ShortDateTimePipe,
+  FullDatePipe,
+  ShortDateSeasonPipe,
+} from './short-date.pipe';
+import { MomentPipe } from '@pipes/dynamic-moment';
 import { JoinPipe } from './join.pipe';
-import { BaselineFilterPipe, SBASFilterPipe, GeographicFilterPipe, ListFilterPipe, DisplacementFilterPipe } from './filter-type.pipe';
+import {
+  BaselineFilterPipe,
+  SBASFilterPipe,
+  GeographicFilterPipe,
+  ListFilterPipe,
+  DisplacementFilterPipe,
+} from './filter-type.pipe';
 import { HTMLInputValuePipe } from './html-input-value.pipe';
 import { QuakePipe, VolcanoPipe } from './sarviews-event.pipe';
 import { FilterExtensionPipe } from './filter-extension.pipe';
 import { FloatPrecisionPipe } from './float-precision.pipe';
 import { AoiIconPipe } from './aoi-icon.pipe';
+import { PolarizationCountPipe } from './polarization.pipe';
 @NgModule({
   declarations: [
     ReadableSizeFromBytesPipe,
@@ -30,11 +42,10 @@ import { AoiIconPipe } from './aoi-icon.pipe';
     VolcanoPipe,
     FilterExtensionPipe,
     FloatPrecisionPipe,
-    AoiIconPipe
+    AoiIconPipe,
+    PolarizationCountPipe,
   ],
-  imports: [
-    CommonModule
-  ],
+  imports: [CommonModule],
   exports: [
     ReadableSizeFromBytesPipe,
     ShortDatePipe,
@@ -53,7 +64,8 @@ import { AoiIconPipe } from './aoi-icon.pipe';
     VolcanoPipe,
     FilterExtensionPipe,
     FloatPrecisionPipe,
-    AoiIconPipe
-  ]
+    AoiIconPipe,
+    PolarizationCountPipe,
+  ],
 })
-export class PipesModule { }
+export class PipesModule {}

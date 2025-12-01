@@ -1,31 +1,30 @@
 # SearchUI
+[![es](https://img.shields.io/badge/lang-es-red.svg)](./README.ESP.md)
 [![
 CodeFactor](https://www.codefactor.io/repository/github/asfadmin/discovery-searchui/badge?s=fe1df8c7275093962e0c42abffa97803a397c825)](https://www.codefactor.io/repository/github/asfadmin/discovery-searchui) <img src="https://api.ghostinspector.com/v1/suites/5d408f00f1eea0544564fb2a/status-badge" title="Search UI Suite Status">
 
 [![Join the chat at https://gitter.im/ASFDiscovery/Vertex](https://badges.gitter.im/ASFDiscovery/Vertex.svg)](https://gitter.im/ASFDiscovery/Vertex?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
- ASF's Angular search web application
+ASF's Angular search web application
 
 ## Deployments
 | Maturity | Deployment |
 | --- | --- |
-| Devel | https://search-dev.asf.alaska.edu/ |
 | Test | https://search-test.asf.alaska.edu/ |
 | Prod | https://search.asf.alaska.edu/ |
 
 ### Personal Deployment (deployment.py)
 
-- To run install the aws cli ([docs](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html))
-- Then create id credentials for the Discovery-NonProd account ([docs](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey))
- - Set the credentials locally using `aws configure`, set the default region to `us-east-1` and the output format to `json`, and use the credentials generated previously.
-
-**Example:**
-```
- python deployment.py will --branch devel
-```
+ASF Developers have their own personal deployments that build automatically from any branch with the matching identifier with their name `{name}/{topic}`
 
 ## Initialize after downloading
 After you first download the repo, set up your instance by doing `npm install` from the project root directory. If you don't have npm installed go [here](https://www.npmjs.com/get-npm) for installation instructions.
+
+## Code linting
+This project uses eslint and prettier. Install/setup eslint in your formatter of choice, and have prettier pull from .prettierrc for custom config options.
+[Eslint for Webstorm/Jetbrains](https://www.jetbrains.com/help/webstorm/eslint.html#ws_js_linters_eslint_before_you_start)
+[Eslint for VSCode](https://github.com/microsoft/vscode-eslint)
+
 
 ## Development server
 
@@ -35,7 +34,7 @@ After angular is installed, run `ng serve` for a dev server. Navigate to `http:/
 
 ### Custom Domain
 
-In order to get certain services to work, it's necessary to set up a .asf.alaska.edu domain pointing to your local server in your host file. This process varies on the OS you are using. 
+In order to get certain services to work, it's necessary to set up a .asf.alaska.edu domain pointing to your local server in your host file. This process varies on the OS you are using.
 
 Add the following line via the methods below to set up local.asf.alaska.edu to point towards your local development server.
 ```

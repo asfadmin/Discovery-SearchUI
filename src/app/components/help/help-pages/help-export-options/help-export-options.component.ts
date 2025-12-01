@@ -1,15 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-help-export-options',
   templateUrl: './help-export-options.component.html',
-  styleUrls: ['./help-export-options.component.scss']
+  styleUrls: ['./help-export-options.component.scss'],
+  standalone: false,
 })
-export class HelpExportOptionsComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-}
+export class HelpExportOptionsComponent {}

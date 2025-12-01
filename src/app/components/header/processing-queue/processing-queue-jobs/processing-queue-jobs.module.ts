@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {MatExpansionModule} from '@angular/material/expansion';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSelectModule } from '@angular/material/select';
 import { ProcessingQueueJobsComponent } from './processing-queue-jobs.component';
 import { FormsModule } from '@angular/forms';
@@ -10,7 +10,6 @@ import { MatSharedModule } from '@shared';
 import { PipesModule } from '@pipes';
 import { CopyToClipboardModule } from './../../../shared/copy-to-clipboard/copy-to-clipboard.module';
 import { SharedModule } from '@shared';
-
 
 @NgModule({
   declarations: [ProcessingQueueJobsComponent],
@@ -23,10 +22,8 @@ import { SharedModule } from '@shared';
     MatExpansionModule,
     CopyToClipboardModule,
     FormsModule,
-    SharedModule
+    SharedModule,
   ],
-  exports: [
-    ProcessingQueueJobsComponent
-  ]
+  exports: [ProcessingQueueJobsComponent],
 })
-export class ProcessingQueueJobsModule { }
+export class ProcessingQueueJobsModule {}

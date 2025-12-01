@@ -1,4 +1,11 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnDestroy,
+  OnInit,
+  Output,
+  inject,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
@@ -6,8 +13,14 @@ import * as hyp3Store from '@store/hyp3';
 
 import { MatDialogRef } from '@angular/material/dialog';
 import {
-  MapLayerTypes, UserAuth, ProductType,
-  datasetList, SearchType, SavedFilterPreset, FilterType, Breakpoints
+  MapLayerTypes,
+  UserAuth,
+  ProductType,
+  datasetList,
+  SearchType,
+  SavedFilterPreset,
+  FilterType,
+  Breakpoints,
 } from '@models';
 import { Hyp3ApiService, ThemingService } from '@services';
 import { SubSink } from 'subsink';
@@ -20,9 +33,19 @@ import * as services from '@services';
 @Component({
   selector: 'app-preferences',
   templateUrl: './preferences.component.html',
-  styleUrls: ['./preferences.component.scss']
+  styleUrls: ['./preferences.component.scss'],
+  standalone: false,
 })
 export class PreferencesComponent implements OnInit, OnDestroy {
+  private dialogRef = inject<MatDialogRef<PreferencesComponent>>(MatDialogRef);
+  private store$ = inject<Store<AppState>>(Store);
+  private hyp3 = inject(Hyp3ApiService);
+  env = inject(services.EnvironmentService);
+  private themeService = inject(ThemingService);
+  translate = inject(TranslateService);
+  language = inject(AsfLanguageService);
+  private screenSize = inject(services.ScreenSizeService);
+
   @Output() selectedChange = new EventEmitter<string>();
 
   public breakpoint: models.Breakpoints;
@@ -45,9 +68,10 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   public userAuth: UserAuth;
 
   public searchType = SearchType;
-  public searchTypeKeys = Object.keys(this.searchType).filter(val => val !== 'LIST' && val !== 'CUSTOM_PRODUCTS');
+  public searchTypeKeys = Object.keys(this.searchType).filter(
+    (val) => val !== 'LIST' && val !== 'CUSTOM_PRODUCTS',
+  );
   public selectedSearchType = SearchType.DATASET;
-
 
   public themeOptions: string[] = ['light', 'dark', 'System Preferences'];
   public userFiltersBySearchType = {};
@@ -56,91 +80,83 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     'Baseline Search': '',
     'Geographic Search': '',
     'SBAS Search': '',
-    'Displacement': ''
+    Displacement: '',
   };
   public currentTheme = 'light';
   public currentFilterDisplayNames = {};
 
   private subs = new SubSink();
 
-  constructor(
-    private dialogRef: MatDialogRef<PreferencesComponent>,
-    private store$: Store<AppState>,
-    private hyp3: Hyp3ApiService,
-    public env: services.EnvironmentService,
-    private themeService: ThemingService,
-    public translate: TranslateService,
-    public language: AsfLanguageService,
-    private screenSize: services.ScreenSizeService,
-  ) { }
-
   ngOnInit() {
-
     this.screenSize.breakpoint$.subscribe(
-      breakpoint => this.breakpoint = breakpoint
+      (breakpoint) => (this.breakpoint = breakpoint),
     );
 
     this.subs.add(
-      this.store$.select(userStore.getUserProfile).subscribe(
-        profile => {
-          this.defaultLanguage = profile.language;
-          this.defaultMaxResults = +profile.maxResults;
-          this.defaultMapLayer = profile.mapLayer;
-          this.defaultDataset = profile.defaultDataset;
-          this.selectedFiltersIDs = profile.defaultFilterPresets;
-          this.defaultMaxConcurrentDownloads = profile.defaultMaxConcurrentDownloads;
-          this.hyp3BackendUrl = profile.hyp3BackendUrl;
-          this.hyp3SavedUrls = profile.hyp3SavedUrls;
-          this.currentTheme = profile.theme;
-          this.defaultLanguage = profile.language;
+      this.store$.select(userStore.getUserProfile).subscribe((profile) => {
+        this.defaultLanguage = profile.language;
+        this.defaultMaxResults = +profile.maxResults;
+        this.defaultMapLayer = profile.mapLayer;
+        this.defaultDataset = profile.defaultDataset;
+        this.selectedFiltersIDs = profile.defaultFilterPresets;
+        this.defaultMaxConcurrentDownloads =
+          profile.defaultMaxConcurrentDownloads;
+        this.hyp3BackendUrl = profile.hyp3BackendUrl;
+        this.hyp3SavedUrls = profile.hyp3SavedUrls;
+        this.currentTheme = profile.theme;
+        this.defaultLanguage = profile.language;
 
-          if (this.hyp3BackendUrl) {
-            this.hyp3.setApiUrl(this.hyp3BackendUrl);
-          } else {
-            this.hyp3BackendUrl = this.hyp3.apiUrl;
-          }
-
-          if (!this.hyp3SavedUrls) {
-            this.hyp3SavedUrls = [this.hyp3BackendUrl];
-          }
-        }
-      )
-    );
-
-    this.subs.add(
-      this.store$.select(userStore.getUserAuth).subscribe(
-        user => this.userAuth = user
-      )
-    );
-
-    this.subs.add(
-      this.store$.select(userStore.getSavedFilters).subscribe(savedFilters => {
-        this.userFilters = savedFilters;
-
-        for (const searchtype in SearchType) {
-          if (searchtype !== 'LIST' && searchtype !== 'CUSTOM_PRODUCTS') {
-            const defaultPreset: SavedFilterPreset = {
-              filters: {} as FilterType,
-              id: '',
-              name: 'Default',
-              searchType: searchtype[searchtype],
-            };
-            this.userFiltersBySearchType[SearchType[searchtype]] = [defaultPreset];
-          }
+        if (this.hyp3BackendUrl) {
+          this.hyp3.setApiUrl(this.hyp3BackendUrl);
+        } else {
+          this.hyp3BackendUrl = this.hyp3.apiUrl;
         }
 
-        savedFilters.forEach(
-          preset => this.userFiltersBySearchType[preset.searchType]?.push(preset)
-        );
-
-        const searchTypeKeys = Object.keys(this.selectedFiltersIDs);
-        searchTypeKeys.forEach(key =>
-          this.currentFilterDisplayNames[key] = this.userFilters.find(preset => preset.id === this.selectedFiltersIDs[key])?.id
-        );
-      }
-      )
+        if (!this.hyp3SavedUrls) {
+          this.hyp3SavedUrls = [this.hyp3BackendUrl];
+        }
+      }),
     );
 
+    this.subs.add(
+      this.store$
+        .select(userStore.getUserAuth)
+        .subscribe((user) => (this.userAuth = user)),
+    );
+
+    this.subs.add(
+      this.store$
+        .select(userStore.getSavedFilters)
+        .subscribe((savedFilters) => {
+          this.userFilters = savedFilters;
+
+          for (const searchtype in SearchType) {
+            if (searchtype !== 'LIST' && searchtype !== 'CUSTOM_PRODUCTS') {
+              const defaultPreset: SavedFilterPreset = {
+                filters: {} as FilterType,
+                id: '',
+                name: 'Default',
+                searchType: searchtype[searchtype],
+              };
+              this.userFiltersBySearchType[SearchType[searchtype]] = [
+                defaultPreset,
+              ];
+            }
+          }
+
+          savedFilters.forEach((preset) =>
+            this.userFiltersBySearchType[preset.searchType]?.push(preset),
+          );
+
+          const searchTypeKeys = Object.keys(this.selectedFiltersIDs);
+          searchTypeKeys.forEach(
+            (key) =>
+              (this.currentFilterDisplayNames[key] = this.userFilters.find(
+                (preset) => preset.id === this.selectedFiltersIDs[key],
+              )?.id),
+          );
+        }),
+    );
   }
 
   public onClose(): void {
@@ -177,8 +193,8 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   public onChangeDefaultFilterType(filterID: string, searchType: string): void {
     const key = SearchType[searchType];
     this.selectedFiltersIDs = {
-      ... this.selectedFiltersIDs,
-      [key]: filterID
+      ...this.selectedFiltersIDs,
+      [key]: filterID,
     };
 
     this.saveProfile();
@@ -188,9 +204,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     this.currentTheme = theme;
 
     if (theme === 'System Preferences') {
-      this.themeService.theme$.pipe(
-        take(1)
-      ).subscribe(currentPreference => {
+      this.themeService.theme$.pipe(take(1)).subscribe((currentPreference) => {
         this.setTheme(`theme-${currentPreference}`);
       });
     } else {
@@ -207,7 +221,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     this.saveProfile();
   }
 
-  public onSetHyp3Url(event: { backendUrl: string; savedUrls: string[]}) {
+  public onSetHyp3Url(event: { backendUrl: string; savedUrls: string[] }) {
     this.hyp3.setApiUrl(event.backendUrl);
 
     this.hyp3BackendUrl = this.hyp3.apiUrl;
@@ -226,7 +240,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
       hyp3BackendUrl: this.hyp3BackendUrl,
       hyp3SavedUrls: this.hyp3SavedUrls,
       theme: this.currentTheme,
-      language: this.defaultLanguage
+      language: this.defaultLanguage,
     });
 
     this.store$.dispatch(action);

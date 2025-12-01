@@ -8,33 +8,29 @@ import { SarviewsEventActiveSelectorModule } from '@components/shared/selectors/
 import { SarviewsEventMagnitudeSelectorModule } from '@components/shared/selectors/sarviews-event-magnitude-selector';
 import { DateSelectorModule } from '@components/shared/selectors/date-selector';
 import { MatIconModule } from '@angular/material/icon';
-import {SearchTypeSelectorModule} from '@components/shared/selectors/search-type-selector';
+import { SearchTypeSelectorModule } from '@components/shared/selectors/search-type-selector';
 import { PathSelectorModule } from '@components/shared/selectors/path-selector';
 import { Hyp3JobTypeSelectorModule } from '@components/shared/selectors/hyp3-job-type-selector';
-import {DocsModalModule} from '@components/shared/docs-modal';
+import { DocsModalModule } from '@components/shared/docs-modal';
 import { SharedModule } from '@shared';
 
 @NgModule({
-  declarations: [
-    SarviewsFiltersComponent
+  declarations: [SarviewsFiltersComponent],
+  imports: [
+    CommonModule,
+    MatExpansionModule,
+    SarviewsEventSearchSelectorModule,
+    SarviewsEventTypeSelectorModule,
+    SarviewsEventActiveSelectorModule,
+    SarviewsEventMagnitudeSelectorModule,
+    DateSelectorModule,
+    MatIconModule,
+    SearchTypeSelectorModule,
+    PathSelectorModule,
+    Hyp3JobTypeSelectorModule,
+    DocsModalModule,
+    SharedModule,
   ],
-    imports: [
-        CommonModule,
-        MatExpansionModule,
-        SarviewsEventSearchSelectorModule,
-        SarviewsEventTypeSelectorModule,
-        SarviewsEventActiveSelectorModule,
-        SarviewsEventMagnitudeSelectorModule,
-        DateSelectorModule,
-        MatIconModule,
-        SearchTypeSelectorModule,
-        PathSelectorModule,
-        Hyp3JobTypeSelectorModule,
-        DocsModalModule,
-        SharedModule
-    ],
-  exports: [
-    SarviewsFiltersComponent
-  ]
+  exports: [SarviewsFiltersComponent],
 })
-export class SarviewsFiltersModule { }
+export class SarviewsFiltersModule {}
