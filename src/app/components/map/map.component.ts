@@ -9,6 +9,7 @@ import {
   inject,
 } from '@angular/core';
 
+import { toObservable } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
 import { combineLatest, distinctUntilChanged, Observable } from 'rxjs';
 import { filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
@@ -45,6 +46,7 @@ import Geometry from 'ol/geom/Geometry';
 import { MatDialog } from '@angular/material/dialog';
 import WKT from 'ol/format/WKT';
 import { getTimeseriesChartStates } from '@store/charts';
+import { KmlFootprintService } from '@services/kml-footprint.service';
 
 enum FullscreenControls {
   MAP = 'Map',
@@ -67,6 +69,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private eventMonitoringService = inject(SarviewsEventsService);
   dialog = inject(MatDialog);
   private pointHistoryService = inject(PointHistoryService);
+  private kmlFootprintService = inject(KmlFootprintService);
 
   @Output() loadUrlState = new EventEmitter<void>();
   @ViewChild('overlay', { static: true }) overlayRef: ElementRef;
@@ -123,6 +126,19 @@ export class MapComponent implements OnInit, OnDestroy {
   //@ts-expect-error Variable used later
   private selectedSeries: any = null;
 
+  constructor() {
+    const obs$ = toObservable(this.kmlFootprintService.KMLFootPrint$);
+    obs$.subscribe((_) => {
+      if (this.selectedScene?.id?.startsWith('NISAR_L2')) {
+        this.mapService.setSelectedBrowse(
+          this.selectedScene.browses[0],
+          this.selectedScene.metadata.polygon,
+          this.selectedScene,
+          this.kmlFootprintService.KMLFootPrint$(),
+        );
+      }
+    });
+  }
   public buildOnDemandStack() {
     // let id = feature.get('id')
     this.store$.dispatch(new uiStore.SetFrameSelection(false));

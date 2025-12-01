@@ -86,10 +86,11 @@ export class BrowseOverlayService {
     }),
   );
 
-  private createImageSource(url: string, extent: Extent) {
+  private createImageSource(url: string, extent: Extent, projection) {
     return new Static({
       url,
       imageExtent: extent,
+      projection,
     });
   }
 
@@ -112,22 +113,33 @@ export class BrowseOverlayService {
     wkt: string,
     className = 'ol-layer',
     layer_id = '',
+    kmlExtent?: Extent,
   ) {
     const feature = this.wktService.wktToFeature(wkt, 'EPSG:3857');
     const polygon = this.getPolygonFromFeature(feature, wkt);
+    let extent = polygon.getExtent();
 
-    let isNisarL1Browse = url.split('/').pop().startsWith('NISAR_L1')
+    const isNisarL1Browse = url.split('/').pop().startsWith('NISAR_L1');
     if (isNisarL1Browse) {
-        url = this.nisarL1ToL2BrowseImage(url)
+      url = this.nisarL1ToL2BrowseImage(url);
     }
 
-    const source = this.createImageSource(url, polygon.getExtent());
+    const isNisarL2Browse = url.split('/').pop().startsWith('NISAR_L2');
+    if (isNisarL2Browse) {
+      console.log(extent);
+      extent = transform(kmlExtent, 'EPSG:4326', 'EPSG:3857'); // FIGURE OUT WHY EXTENTS ARE SO OFF
+      console.log(extent);
+      //   extent = kmlExtent; // REPROJECT THIS FROM LON LAT TO COORDS
+    }
+
+    const source = this.createImageSource(url, extent, 'EPSG:3857');
+    console.log(source.getProjection());
 
     const output = new ImageLayer({
       source: source as ImageSource,
       className,
       zIndex: 0,
-      extent: polygon.getExtent(),
+      extent,
       opacity: 1.0,
     });
 
@@ -140,17 +152,26 @@ export class BrowseOverlayService {
 
   public nisarL1ToL2BrowseImage(url: string) {
     if (url === '/assets/no-browse.png') {
-        return url
+      return url;
     }
 
     const fileName = url.split('/').pop();
     const metadata = fileName.split('_');
     const productType = metadata[3];
-    const productionConfiguration = metadata[1]
+    const productionConfiguration = metadata[1];
     const shortName = `NISAR_${productionConfiguration}_${productType}`;
-    
-    const outputUrl = url.replaceAll(shortName, L1L2BrowseCollectionMapping[productType].collection).replaceAll(productType, L1L2BrowseCollectionMapping[productType].productType).replaceAll('L1', 'L2');
-    return outputUrl
+
+    const outputUrl = url
+      .replaceAll(
+        shortName,
+        L1L2BrowseCollectionMapping[productType].collection,
+      )
+      .replaceAll(
+        productType,
+        L1L2BrowseCollectionMapping[productType].productType,
+      )
+      .replaceAll('L1', 'L2');
+    return outputUrl;
   }
 
   public createGeotiffLayer(

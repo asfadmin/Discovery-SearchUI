@@ -37,7 +37,7 @@ export class BrowseMapService {
   private view: View;
   private pinnedProducts: LayerGroup;
 
-  public setMapBrowse(browse: string, wkt = ''): void {
+  public setMapBrowse(browse: string, wkt = '', kmlFootprint?: Extent): void {
     const feature = this.wktService.wktToFeature(wkt, 'EPSG:3857');
     const polygon: Polygon = feature.getGeometry() as Polygon;
 
@@ -57,6 +57,9 @@ export class BrowseMapService {
     const Imagelayer = this.browseOverlayService.createNormalImageLayer(
       browse,
       wkt,
+      'ol-layer',
+      'current-overlay',
+      kmlFootprint,
     );
 
     const mapSource = new XYZ({

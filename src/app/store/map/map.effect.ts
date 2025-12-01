@@ -45,11 +45,14 @@ import { getSelectedDataset } from '@store/filters';
 import { getIsFiltersMenuOpen, getIsResultsMenuOpen } from '@store/ui';
 import { ClearBrowseOverlays, SetCoherenceOverlayOpacity } from './map.action';
 import { getIsUserLoggedIn } from '@store/user';
+import { KmlFootprintService } from '@services/kml-footprint.service';
 @Injectable()
 export class MapEffects {
   private actions$ = inject(Actions);
   private mapService = inject(MapService);
   private eventMonitoringService = inject(SarviewsEventsService);
+  private kmlFootprintService = inject(KmlFootprintService);
+
   private store$ = inject<Store<AppState>>(Store);
 
   public clearPinnedProducts = createEffect(() =>
@@ -210,6 +213,15 @@ export class MapEffects {
           if (selectedProduct.browses[0] !== '/assets/no-browse.png') {
             const url = selectedProduct.browses[0];
 
+            if (url.includes('NISAR_L2')) {
+              const kml_url = (
+                selectedProduct as models.CMRProduct
+              ).metadata.nisar.additionalUrls.find((url) =>
+                url.endsWith('kml'),
+              );
+              this.kmlFootprintService.readExtentFromKML(kml_url);
+            }
+
             // for OPERA-S1 geotiffs
             // TODO: Wait for https://github.com/openlayers/openlayers/pull/15402
             // if (loggedIn && selectedProduct.id.startsWith('OPERA') && selectedProduct.downloadUrl.endsWith('.tif')) {
@@ -219,7 +231,7 @@ export class MapEffects {
             this.mapService.setSelectedBrowse(
               url,
               selectedProduct.metadata.polygon,
-              selectedProduct
+              selectedProduct,
             );
           }
         }),
