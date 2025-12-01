@@ -71,6 +71,7 @@
   "AREA_OF_INTEREST_WKT": "Area of Interest • WKT",
   "ARIA_INGEST_DOCS": "ARIA On Demand Ingest Documentation",
   "ARIA_VERSION": "ARIA Version",
+  "ARIAS1GUNW_JOB_TYPE_DESC": "ARIA Sentinel-1 Geocoded Unwrapped Interferogram (ARIA-S1-GUNW) products are a standardized product that provide CF-Compliant 90-m pixel spacing interferometric SAR (InSAR) data ideal for simplified ground displacement measurements. [MORE](https://hyp3-docs.asf.alaska.edu/guides/gunw_product_guide/#aria-sentinel-1-gunw-product-guide)",
   "ARROW_BACKWARD": "arrow_backward",
   "ARROW_FORWARD": "arrow_forward",
   "ASCENDING": "Ascending",
