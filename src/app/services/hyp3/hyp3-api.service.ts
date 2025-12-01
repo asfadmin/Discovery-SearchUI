@@ -5,7 +5,8 @@ import {
   HttpParams,
 } from '@angular/common/http';
 
-import { Observable, of, first, catchError, map, forkJoin } from 'rxjs';
+import { Observable, of, first, catchError, map, forkJoin, from } from 'rxjs';
+import { mergeMap, toArray, bufferCount } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import * as models from '@models';
@@ -157,11 +158,47 @@ export class Hyp3ApiService {
     );
   }
 
-  public updateJobName$(jobId: string, projectName: string): Observable<models.Hyp3Job> {
+  public updateJobName$(
+    jobId: string,
+    newProjectName: string,
+  ): Observable<models.Hyp3Job> {
     const url = `${this.apiUrl}/jobs/${jobId}`;
 
-    return this.http.patch<models.Hyp3Job>(url, { name: projectName }, { withCredentials: true })
+    if (!newProjectName) {
+      newProjectName = null;
+    }
+
+    return this.http
+      .patch<models.Hyp3Job>(
+        url,
+        { name: newProjectName },
+        { withCredentials: true },
+      )
       .pipe(map((resp) => resp as models.Hyp3Job));
+  }
+
+  public updateJobsName$(
+    products: models.CMRProduct[],
+    newProjectName: string,
+  ): Observable<any> {
+    const url = `${this.apiUrl}/jobs`;
+    const jobIds = products.map((product) => product.metadata.job.job_id);
+
+    if (!newProjectName) {
+      newProjectName = null;
+    }
+
+    return from(jobIds).pipe(
+      bufferCount(100),
+      mergeMap((jobIdsBatch) => {
+        return this.http.patch<models.Hyp3Job>(
+          url,
+          { name: newProjectName, job_ids: jobIdsBatch },
+          { withCredentials: true },
+        );
+      }, 5),
+      toArray(),
+    );
   }
 
   public submitJobBatch$(jobBatch: object) {

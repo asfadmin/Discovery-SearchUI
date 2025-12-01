@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { saveAs } from 'file-saver';
 
-import { combineLatest, switchMap, from } from 'rxjs';
+import { combineLatest, switchMap } from 'rxjs';
 import {
   debounceTime,
   filter,
@@ -9,8 +9,6 @@ import {
   take,
   tap,
   withLatestFrom,
-  mergeMap,
-  toArray,
 } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
@@ -652,22 +650,11 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
   public onSubmitProjectName() {
     this.isEditingProjectName = false;
-    const newName = this.newProjectName;
 
-    from(this.products).pipe(
-      mergeMap(
-        (product) => {
-          console.log(product.metadata.job.job_id);
-          return this.hyp3.updateJobName$(product.metadata.job.job_id, newName);
-        },
-        20
-      ),
-      toArray(),
-    ).subscribe(resps => {
-      console.log(resps);
-    });
+    this.hyp3
+      .updateJobsName$(this.products, this.newProjectName)
+      .subscribe(console.log);
 
-    console.log(`updating with ${this.newProjectName}`);
     this.newProjectName = '';
   }
 
