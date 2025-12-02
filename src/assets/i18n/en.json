@@ -243,6 +243,8 @@
   "DISABLE": "Disable",
   "DISP_DOI": "DISP DOI",
   "DISPLACEMENT": "Displacement",
+  "DISPLACEMENT_DATA_DISCLAIMER": "Displacement Data Disclaimer",
+  "DISPLACEMENT_DATA_DISCLAIMER_TEXT": "The displacement data shown here is a short-wavelength filtered visualization product. Filtering removes long-wavelength (> ~25 km) signals, such as atmospheric noise, and highlights short-wavelength signals, such as landslides, but it also can introduce artifacts (e.g., see Central Valley, CA subsidence area) not present in the validated displacement layer. Before interpreting data, please read the FAQ",
   "DISPLACEMENT_DESCRIPTION": "Displacement products provide information on anthropogenic and natural changes of Earth's surface, covering North America.",
   "DISPLACEMENT_FILTERS": "Displacement Filters",
   "DISPLACEMENT_SEARCH": "Displacement Search",
