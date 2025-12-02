@@ -238,10 +238,6 @@
           {{ scene.metadata.nisar?.frameCoverage }}
         </span>
       </li>
-    }
-    @if (
-      prop.isRelevant(p.POLARIZATION, dataset) && scene.metadata.polarization
-    ) {
       <li>
         @if (isGeoSearch()) {
           <mat-icon
