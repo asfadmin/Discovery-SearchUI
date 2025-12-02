@@ -234,13 +234,7 @@
       <b>{{ 'FRAME_COVERAGE' | translate }} </b> •
       {{ scene.metadata.nisar?.frameCoverage }}
     </span>
-  </li>
 
-  <li
-    *ngIf="
-      prop.isRelevant(p.POLARIZATION, dataset) && scene.metadata.polarization
-    "
-  >
     <mat-icon
       *ngIf="isGeoSearch()"
       [matMenuTriggerFor]="setFrameCoverageMenu"
