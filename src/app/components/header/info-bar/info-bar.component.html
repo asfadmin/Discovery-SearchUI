@@ -24,7 +24,7 @@
 
     @if ((searchType$ | async) === searchTypes.DISPLACEMENT) {
     <span>
-        <button mat-button (click)='onOpenDispDataDisclaimer()'><em>Displacement Data Disclaimer</em><mat-icon>info-icon</mat-icon></button>
+        <button mat-button (click)='onOpenDispDataDisclaimer()'><em>{{'DISPLACEMENT_DATA_DISCLAIMER' | translate}}</em><mat-icon>info-icon</mat-icon></button>
     </span>
     }
     <span *ngIf="breakpoint > breakpoints.SMALL && !!startDate">
