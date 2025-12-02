@@ -23,6 +23,7 @@
     aria-label="Arctic map projection"
     (click)="onArcticSelected()"
     [value]="types.ARCTIC"
+    [disabled]="isDisplacementSearch"
   >
     <mat-icon
       svgIcon="arctic"
@@ -52,6 +53,7 @@
     aria-label="Antarctic map projection"
     (click)="onAntarcticSelected()"
     [value]="types.ANTARCTIC"
+    [disabled]="isDisplacementSearch"
   >
     <mat-icon
       svgIcon="antarctic"
