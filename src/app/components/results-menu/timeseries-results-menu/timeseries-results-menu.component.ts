@@ -69,7 +69,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatButtonToggle } from '@angular/material/button-toggle';
 import { TimeseriesChartComponent } from '../../timeseries-chart/timeseries-chart.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { AoiIconPipe } from '../../../pipes/aoi-icon.pipe';
+import { AoiIconPipe } from '@pipes/aoi-icon.pipe';
 
 export interface Task {
   aoi: string;

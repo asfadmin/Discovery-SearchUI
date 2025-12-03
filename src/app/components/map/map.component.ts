@@ -51,11 +51,11 @@ import { NgIf, AsyncPipe } from '@angular/common';
 import { MapControlsComponent } from './map-controls/map-controls.component';
 import { DisplacementLayersComponent } from './displacement-layers/displacement-layers.component';
 import { BannersComponent } from './banners/banners.component';
-import { InteractionSelectorComponent } from '../shared/aoi-options/interaction-selector/interaction-selector.component';
+import { InteractionSelectorComponent } from '@components/shared/aoi-options/interaction-selector/interaction-selector.component';
 import { ViewSelectorComponent } from './map-controls/view-selector/view-selector.component';
 import { LayerSelectorComponent } from './map-controls/layer-selector/layer-selector.component';
 import { FiltersDropdownComponent } from '../filters-dropdown/filters-dropdown.component';
-import { FileUploadComponent } from '../shared/aoi-options/file-upload/file-upload.component';
+import { FileUploadComponent } from '@components/shared/aoi-options/file-upload/file-upload.component';
 import { AttributionsComponent } from './attributions/attributions.component';
 import { TranslateModule } from '@ngx-translate/core';
 

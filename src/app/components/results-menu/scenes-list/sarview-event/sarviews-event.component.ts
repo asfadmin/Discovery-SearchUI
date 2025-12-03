@@ -22,7 +22,7 @@ import {
 } from '@angular/material/list';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
-import { ShortDatePipe } from '../../../../pipes/short-date.pipe';
+import { ShortDatePipe } from '@pipes/short-date.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({

@@ -11,13 +11,13 @@ import * as uiStore from '@store/ui';
 import { SubSink } from 'subsink';
 import * as services from '@services';
 import { NgIf, AsyncPipe } from '@angular/common';
-import { SearchTypeSelectorComponent } from '../../shared/selectors/search-type-selector/search-type-selector.component';
-import { SarviewsEventSearchSelectorComponent } from '../../shared/selectors/sarviews-event-search-selector/sarviews-event-search-selector.component';
-import { SarviewsEventTypeSelectorComponent } from '../../shared/selectors/sarviews-event-type-selector/sarviews-event-type-selector.component';
-import { DateSelectorComponent } from '../../shared/selectors/date-selector/date-selector.component';
+import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
+import { SarviewsEventSearchSelectorComponent } from '@components/shared/selectors/sarviews-event-search-selector/sarviews-event-search-selector.component';
+import { SarviewsEventTypeSelectorComponent } from '@components/shared/selectors/sarviews-event-type-selector/sarviews-event-type-selector.component';
+import { DateSelectorComponent } from '@components/shared/selectors/date-selector/date-selector.component';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { SearchButtonComponent } from '../../shared/search-button/search-button.component';
+import { SearchButtonComponent } from '@components/shared/search-button/search-button.component';
 import { HeaderButtonsComponent } from '../header-buttons/header-buttons.component';
 import { TranslateModule } from '@ngx-translate/core';
 

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { DisplacementFiltersType } from '@models';
 import { KeyValuePipe } from '@angular/common';
-import { ShortDatePipe } from '../../../../../../pipes/short-date.pipe';
+import { ShortDatePipe } from '@pipes/short-date.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({

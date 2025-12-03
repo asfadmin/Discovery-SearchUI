@@ -20,12 +20,12 @@ import * as queueStore from '@store/queue';
 
 import { ScreenSizeService } from '@services';
 import { UnzippedFolder, CMRProduct } from '@models';
-import { FileNameComponent } from '../../../shared/file-name/file-name.component';
-import { DownloadFileButtonComponent } from '../../../shared/download-file-button/download-file-button.component';
-import { CartToggleComponent } from '../../../shared/cart-toggle/cart-toggle.component';
+import { FileNameComponent } from '@components/shared/file-name/file-name.component';
+import { DownloadFileButtonComponent } from '@components/shared/download-file-button/download-file-button.component';
+import { CartToggleComponent } from '@components/shared/cart-toggle/cart-toggle.component';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { ReadableSizeFromBytesPipe } from '../../../../pipes/readable-size-from-bytes.pipe';
+import { ReadableSizeFromBytesPipe } from '@pipes/readable-size-from-bytes.pipe';
 
 interface ExampleFlatNode {
   expandable: boolean;

@@ -19,7 +19,7 @@ import * as searchStore from '@store/search';
 import * as models from '@models';
 import * as services from '@services';
 import { CdkScrollable } from '@angular/cdk/scrolling';
-import { ProjectNameSelectorComponent } from '../../../shared/selectors/project-name-selector/project-name-selector.component';
+import { ProjectNameSelectorComponent } from '@components/shared/selectors/project-name-selector/project-name-selector.component';
 import {
   NgFor,
   NgPlural,

@@ -25,7 +25,7 @@ import { NgIf, NgFor } from '@angular/common';
 import { MatCard, MatCardSubtitle } from '@angular/material/card';
 import { ScenesListHeaderComponent } from '../scenes-list-header/scenes-list-header.component';
 import { ScenesListComponent } from '../scenes-list/scenes-list.component';
-import { SceneMetadataComponent } from '../../shared/scene-metadata/scene-metadata.component';
+import { SceneMetadataComponent } from '@components/shared/scene-metadata/scene-metadata.component';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatIcon } from '@angular/material/icon';
 import {
@@ -33,7 +33,7 @@ import {
   MatButtonToggle,
 } from '@angular/material/button-toggle';
 import { SbasSlidersComponent } from './sbas-sliders/sbas-sliders.component';
-import { DocsModalComponent } from '../../shared/docs-modal/docs-modal.component';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 import { SBASChartComponent } from '../../sbas-chart/sbas-chart.component';
 import { SbasSlidersTwoComponent } from './sbas-sliders-two/sbas-sliders-two.component';
 import { TranslateModule } from '@ngx-translate/core';

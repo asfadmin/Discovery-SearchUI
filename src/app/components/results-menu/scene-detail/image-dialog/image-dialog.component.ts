@@ -46,7 +46,7 @@ import { MatIconButton, MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatCardSmImage } from '@angular/material/card';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { SceneMetadataComponent } from '../../../shared/scene-metadata/scene-metadata.component';
+import { SceneMetadataComponent } from '@components/shared/scene-metadata/scene-metadata.component';
 import { MatActionList, MatListItem } from '@angular/material/list';
 import {
   MatMenuTrigger,
@@ -54,17 +54,17 @@ import {
   MatMenuItem,
   MatMenuContent,
 } from '@angular/material/menu';
-import { DownloadFileButtonComponent } from '../../../shared/download-file-button/download-file-button.component';
-import { EventMetadataComponent } from '../../../shared/event-metadata/event-metadata.component';
-import { EventProductMetadataComponent } from '../../../shared/event-product-metadata/event-product-metadata.component';
+import { DownloadFileButtonComponent } from '@components/shared/download-file-button/download-file-button.component';
+import { EventMetadataComponent } from '@components/shared/event-metadata/event-metadata.component';
+import { EventProductMetadataComponent } from '@components/shared/event-product-metadata/event-product-metadata.component';
 import { BrowseListComponent } from './browse-list/browse-list.component';
 import { MatCheckbox } from '@angular/material/checkbox';
-import { ReadableSizeFromBytesPipe } from '../../../../pipes/readable-size-from-bytes.pipe';
+import { ReadableSizeFromBytesPipe } from '@pipes/readable-size-from-bytes.pipe';
 import {
   ShortDatePipe,
   ShortDateTimePipe,
   FullDatePipe,
-} from '../../../../pipes/short-date.pipe';
+} from '@pipes/short-date.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({

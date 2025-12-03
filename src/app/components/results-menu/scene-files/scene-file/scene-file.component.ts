@@ -40,15 +40,15 @@ import {
   FaIconLibrary,
   FontAwesomeModule,
 } from '@fortawesome/angular-fontawesome';
-import { CopyToClipboardComponent } from '../../../shared/copy-to-clipboard/copy-to-clipboard.component';
+import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
 import { MatIconButton } from '@angular/material/button';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
-import { DownloadFileButtonComponent } from '../../../shared/download-file-button/download-file-button.component';
-import { CartToggleComponent } from '../../../shared/cart-toggle/cart-toggle.component';
-import { Hyp3JobStatusBadgeComponent } from '../../../shared/hyp3-job-status-badge/hyp3-job-status-badge.component';
+import { DownloadFileButtonComponent } from '@components/shared/download-file-button/download-file-button.component';
+import { CartToggleComponent } from '@components/shared/cart-toggle/cart-toggle.component';
+import { Hyp3JobStatusBadgeComponent } from '@components/shared/hyp3-job-status-badge/hyp3-job-status-badge.component';
 import { TruncateModule } from '@yellowspot/ng-truncate';
-import { ReadableSizeFromBytesPipe } from '../../../../pipes/readable-size-from-bytes.pipe';
-import { FullDatePipe } from '../../../../pipes/short-date.pipe';
+import { ReadableSizeFromBytesPipe } from '@pipes/readable-size-from-bytes.pipe';
+import { FullDatePipe } from '@pipes/short-date.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 import { fas, faSpinner } from '@fortawesome/free-solid-svg-icons';
 

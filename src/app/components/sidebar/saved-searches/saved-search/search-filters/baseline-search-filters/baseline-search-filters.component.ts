@@ -2,7 +2,7 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 import { BaselineFiltersType } from '@models';
 import { NgIf } from '@angular/common';
-import { ShortDatePipe } from '../../../../../../pipes/short-date.pipe';
+import { ShortDatePipe } from '@pipes/short-date.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({

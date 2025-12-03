@@ -39,8 +39,8 @@ import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatIcon } from '@angular/material/icon';
 import { MatBadge } from '@angular/material/badge';
-import { SearchButtonComponent } from '../../shared/search-button/search-button.component';
-import { DocsModalComponent } from '../../shared/docs-modal/docs-modal.component';
+import { SearchButtonComponent } from '@components/shared/search-button/search-button.component';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 import { MatSuffix } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
 

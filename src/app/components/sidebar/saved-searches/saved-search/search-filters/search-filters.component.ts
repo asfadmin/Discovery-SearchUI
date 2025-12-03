@@ -13,7 +13,7 @@ import {
   SBASFilterPipe,
   GeographicFilterPipe,
   ListFilterPipe,
-} from '../../../../../pipes/filter-type.pipe';
+} from '@pipes/filter-type.pipe';
 
 @Component({
   selector: 'app-search-filters',

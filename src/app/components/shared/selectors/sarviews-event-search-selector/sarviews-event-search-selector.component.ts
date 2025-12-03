@@ -19,7 +19,7 @@ import { MatFormField, MatInput } from '@angular/material/input';
 import { NgFor, NgIf, AsyncPipe } from '@angular/common';
 import { MatOption } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
-import { ShortDatePipe } from '../../../../pipes/short-date.pipe';
+import { ShortDatePipe } from '@pipes/short-date.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-sarviews-event-search-selector',

@@ -8,13 +8,13 @@ import * as hyp3Store from '@store/hyp3';
 import * as models from '@models';
 import * as services from '@services';
 import { NgIf, AsyncPipe } from '@angular/common';
-import { SearchTypeSelectorComponent } from '../../shared/selectors/search-type-selector/search-type-selector.component';
-import { ProjectNameSelectorComponent } from '../../shared/selectors/project-name-selector/project-name-selector.component';
-import { DateSelectorComponent } from '../../shared/selectors/date-selector/date-selector.component';
-import { JobStatusSelectorComponent } from '../../shared/selectors/job-status-selector/job-status-selector.component';
+import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
+import { ProjectNameSelectorComponent } from '@components/shared/selectors/project-name-selector/project-name-selector.component';
+import { DateSelectorComponent } from '@components/shared/selectors/date-selector/date-selector.component';
+import { JobStatusSelectorComponent } from '@components/shared/selectors/job-status-selector/job-status-selector.component';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { SearchButtonComponent } from '../../shared/search-button/search-button.component';
+import { SearchButtonComponent } from '@components/shared/search-button/search-button.component';
 import { HeaderButtonsComponent } from '../header-buttons/header-buttons.component';
 import { TranslateModule } from '@ngx-translate/core';
 

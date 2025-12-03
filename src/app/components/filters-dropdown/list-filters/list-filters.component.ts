@@ -31,8 +31,8 @@ import {
   MatExpansionPanelHeader,
   MatExpansionPanelTitle,
 } from '@angular/material/expansion';
-import { SearchTypeSelectorComponent } from '../../shared/selectors/search-type-selector/search-type-selector.component';
-import { DocsModalComponent } from '../../shared/docs-modal/docs-modal.component';
+import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 import {
   MatButtonToggleGroup,
   MatButtonToggle,
@@ -40,7 +40,7 @@ import {
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatFormField, MatInput } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
-import { CopyToClipboardComponent } from '../../shared/copy-to-clipboard/copy-to-clipboard.component';
+import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
 import { TranslateModule } from '@ngx-translate/core';
 
 enum ListPanel {

@@ -26,7 +26,7 @@ import { Observable } from 'rxjs';
 import { areFiltersChanged } from '@store/filters';
 import { SBASOverlap } from '@models';
 import { NgIf, AsyncPipe } from '@angular/common';
-import { DocsModalComponent } from '../shared/docs-modal/docs-modal.component';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 import { FrameOrderFiltersComponent } from './frame-order-filters/frame-order-filters.component';
 import { DatasetFiltersComponent } from './dataset-filters/dataset-filters.component';
 import { ListFiltersComponent } from './list-filters/list-filters.component';
@@ -35,9 +35,9 @@ import { SbasFiltersComponent } from './sbas-filters/sbas-filters.component';
 import { CustomProductsFiltersComponent } from './custom-products-filters/custom-products-filters.component';
 import { SarviewsFiltersComponent } from './sarviews-filters/sarviews-filters.component';
 import { TimeseriesFiltersComponent } from './timeseries-filters/timeseries-filters.component';
-import { MaxResultsSelectorComponent } from '../shared/max-results-selector/max-results-selector.component';
-import { CancelFilterChangesComponent } from '../shared/cancel-filter-changes/cancel-filter-changes.component';
-import { SearchButtonComponent } from '../shared/search-button/search-button.component';
+import { MaxResultsSelectorComponent } from '@components/shared/max-results-selector/max-results-selector.component';
+import { CancelFilterChangesComponent } from '@components/shared/cancel-filter-changes/cancel-filter-changes.component';
+import { SearchButtonComponent } from '@components/shared/search-button/search-button.component';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({

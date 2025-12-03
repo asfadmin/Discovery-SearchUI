@@ -33,7 +33,7 @@ import { DownloadService } from '@services/download.service';
 import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { ResizedDirective } from '../../../directives/resized.directive';
 import { MatProgressBar } from '@angular/material/progress-bar';
-import { DocsModalComponent } from '../../shared/docs-modal/docs-modal.component';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 import { MatIcon } from '@angular/material/icon';
 import { NgIf, NgFor, NgClass, AsyncPipe } from '@angular/common';
 import { CdkScrollable } from '@angular/cdk/scrolling';
@@ -44,16 +44,16 @@ import {
   MatListItemLine,
   MatListItemMeta,
 } from '@angular/material/list';
-import { CopyToClipboardComponent } from '../../shared/copy-to-clipboard/copy-to-clipboard.component';
-import { DownloadFileButtonComponent as DownloadFileButtonComponent_1 } from '../../shared/download-file-button/download-file-button.component';
+import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
+import { DownloadFileButtonComponent as DownloadFileButtonComponent_1 } from '@components/shared/download-file-button/download-file-button.component';
 import { MatIconButton, MatButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { DownloadAllComponent } from './download-all/download-all.component';
 import { TruncateModule } from '@yellowspot/ng-truncate';
-import { ReadableSizeFromBytesPipe } from '../../../pipes/readable-size-from-bytes.pipe';
-import { FilterExtensionPipe } from '../../../pipes/filter-extension.pipe';
+import { ReadableSizeFromBytesPipe } from '@pipes/readable-size-from-bytes.pipe';
+import { FilterExtensionPipe } from '@pipes/filter-extension.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 // import { DownloadService } from '@services/download.service';
 

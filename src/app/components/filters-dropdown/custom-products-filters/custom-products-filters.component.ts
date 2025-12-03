@@ -14,13 +14,13 @@ import {
   MatExpansionPanelHeader,
   MatExpansionPanelTitle,
 } from '@angular/material/expansion';
-import { SearchTypeSelectorComponent } from '../../shared/selectors/search-type-selector/search-type-selector.component';
-import { OnDemandUserSelectorComponent } from '../../shared/selectors/on-demand-user-selector/on-demand-user-selector.component';
+import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
+import { OnDemandUserSelectorComponent } from '@components/shared/selectors/on-demand-user-selector/on-demand-user-selector.component';
 import { JobIdSelectorComponent } from './job-id-selector/job-id-selector.component';
-import { DateSelectorComponent } from '../../shared/selectors/date-selector/date-selector.component';
-import { ProjectNameSelectorComponent } from '../../shared/selectors/project-name-selector/project-name-selector.component';
-import { JobStatusSelectorComponent } from '../../shared/selectors/job-status-selector/job-status-selector.component';
-import { JobProductNameSelectorComponent } from '../../shared/selectors/job-product-name-selector/job-product-name-selector.component';
+import { DateSelectorComponent } from '@components/shared/selectors/date-selector/date-selector.component';
+import { ProjectNameSelectorComponent } from '@components/shared/selectors/project-name-selector/project-name-selector.component';
+import { JobStatusSelectorComponent } from '@components/shared/selectors/job-status-selector/job-status-selector.component';
+import { JobProductNameSelectorComponent } from '@components/shared/selectors/job-product-name-selector/job-product-name-selector.component';
 import { TranslateModule } from '@ngx-translate/core';
 
 enum FilterPanel {

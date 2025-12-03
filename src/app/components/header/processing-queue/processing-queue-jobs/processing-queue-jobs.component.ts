@@ -42,8 +42,8 @@ import {
 import { MatIconButton, MatButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatIcon } from '@angular/material/icon';
-import { ReadableSizeFromBytesPipe } from '../../../../pipes/readable-size-from-bytes.pipe';
-import { ShortDatePipe } from '../../../../pipes/short-date.pipe';
+import { ReadableSizeFromBytesPipe } from '@pipes/readable-size-from-bytes.pipe';
+import { ShortDatePipe } from '@pipes/short-date.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({

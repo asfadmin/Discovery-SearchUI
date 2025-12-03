@@ -7,10 +7,10 @@ import * as uiStore from '@store/ui';
 import { ScreenSizeService } from '@services';
 import { Breakpoints } from '@models';
 import { NgIf, AsyncPipe } from '@angular/common';
-import { SearchTypeSelectorComponent } from '../../shared/selectors/search-type-selector/search-type-selector.component';
+import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { SearchButtonComponent } from '../../shared/search-button/search-button.component';
+import { SearchButtonComponent } from '@components/shared/search-button/search-button.component';
 import { HeaderButtonsComponent } from '../header-buttons/header-buttons.component';
 import { TranslateModule } from '@ngx-translate/core';
 

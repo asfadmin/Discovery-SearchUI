@@ -24,7 +24,7 @@ import {
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatIcon } from '@angular/material/icon';
 import { LayerSelectorComponent } from './layer-selector/layer-selector.component';
-import { InteractionSelectorComponent } from '../../shared/aoi-options/interaction-selector/interaction-selector.component';
+import { InteractionSelectorComponent } from '@components/shared/aoi-options/interaction-selector/interaction-selector.component';
 import { MatButton } from '@angular/material/button';
 import { MatMenuTrigger, MatMenu } from '@angular/material/menu';
 import { MatSlider, MatSliderThumb } from '@angular/material/slider';

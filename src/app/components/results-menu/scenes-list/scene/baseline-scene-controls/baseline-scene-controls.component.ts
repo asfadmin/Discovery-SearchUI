@@ -14,7 +14,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatListItemMeta } from '@angular/material/list';
 import { MatTooltip } from '@angular/material/tooltip';
-import { OnDemandAddMenuComponent } from '../../../../shared/on-demand-add-menu/on-demand-add-menu.component';
+import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/on-demand-add-menu.component';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({

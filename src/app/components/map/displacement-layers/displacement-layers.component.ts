@@ -11,7 +11,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
 import * as mapStore from '@store/map';
 import { getVelocityOverlayOpacity } from '@store/map';
 import { MatSlider, MatSliderThumb } from '@angular/material/slider';
-import { DocsModalComponent } from '../../shared/docs-modal/docs-modal.component';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 import { MapLegendComponent } from './map-legend/map-legend.component';
 import { MatTooltip } from '@angular/material/tooltip';
 import { FormsModule } from '@angular/forms';

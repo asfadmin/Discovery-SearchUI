@@ -40,8 +40,8 @@ import {
   DecimalPipe,
   TitleCasePipe,
 } from '@angular/common';
-import { Hyp3UrlComponent } from '../../shared/hyp3-url/hyp3-url.component';
-import { DocsModalComponent } from '../../shared/docs-modal/docs-modal.component';
+import { Hyp3UrlComponent } from '@components/shared/hyp3-url/hyp3-url.component';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 import { MatButton } from '@angular/material/button';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { CdkScrollable } from '@angular/cdk/scrolling';

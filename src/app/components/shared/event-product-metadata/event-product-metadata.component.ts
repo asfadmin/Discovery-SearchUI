@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import * as models from '@models';
 import { NgFor } from '@angular/common';
-import { ShortDateTimePipe } from '../../../pipes/short-date.pipe';
+import { ShortDateTimePipe } from '@pipes/short-date.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 
 interface IEventProductMetadata {

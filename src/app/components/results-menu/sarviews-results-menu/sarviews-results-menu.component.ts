@@ -15,7 +15,7 @@ import { NgClass, NgIf, AsyncPipe } from '@angular/common';
 import { ScenesListHeaderComponent } from '../scenes-list-header/scenes-list-header.component';
 import { ScenesListComponent } from '../scenes-list/scenes-list.component';
 import { SceneDetailComponent } from '../scene-detail/scene-detail.component';
-import { EventProductSortSelectorComponent } from '../../shared/event-product-sort-selector/event-product-sort-selector.component';
+import { EventProductSortSelectorComponent } from '@components/shared/event-product-sort-selector/event-product-sort-selector.component';
 import {
   MatButtonToggleGroup,
   MatButtonToggle,

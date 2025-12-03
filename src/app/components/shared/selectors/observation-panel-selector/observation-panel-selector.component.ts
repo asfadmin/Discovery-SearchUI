@@ -19,8 +19,8 @@ import { NgFor, NgIf, KeyValuePipe } from '@angular/common';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { MatTooltip } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
-import { JoinPipe } from '../../../../pipes/join.pipe';
-import { PolarizationCountPipe } from '../../../../pipes/polarization.pipe';
+import { JoinPipe } from '@pipes/join.pipe';
+import { PolarizationCountPipe } from '@pipes/polarization.pipe';
 @Component({
   selector: 'app-observation-panel-selector',
   templateUrl: './observation-panel-selector.component.html',

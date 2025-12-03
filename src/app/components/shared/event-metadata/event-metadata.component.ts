@@ -12,8 +12,8 @@ import {
   MatMenuContent,
   MatMenuItem,
 } from '@angular/material/menu';
-import { ShortDateTimePipe } from '../../../pipes/short-date.pipe';
-import { QuakePipe, VolcanoPipe } from '../../../pipes/sarviews-event.pipe';
+import { ShortDateTimePipe } from '@pipes/short-date.pipe';
+import { QuakePipe, VolcanoPipe } from '@pipes/sarviews-event.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({

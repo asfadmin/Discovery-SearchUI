@@ -6,8 +6,8 @@ import { NgIf } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { Hyp3JobStatusBadgeComponent } from '../../../../shared/hyp3-job-status-badge/hyp3-job-status-badge.component';
-import { OnDemandAddMenuComponent } from '../../../../shared/on-demand-add-menu/on-demand-add-menu.component';
+import { Hyp3JobStatusBadgeComponent } from '@components/shared/hyp3-job-status-badge/hyp3-job-status-badge.component';
+import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/on-demand-add-menu.component';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({

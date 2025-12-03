@@ -16,14 +16,14 @@ import {
   MatExpansionPanelTitle,
 } from '@angular/material/expansion';
 import { NgIf, AsyncPipe } from '@angular/common';
-import { SearchTypeSelectorComponent } from '../../shared/selectors/search-type-selector/search-type-selector.component';
-import { BaselineFrameReferenceToggleComponent } from '../../shared/selectors/baseline-frame-reference-toggle/baseline-frame-reference-toggle.component';
-import { DatasetSelectorComponent } from '../../shared/selectors/dataset-selector/dataset-selector.component';
-import { MasterSceneSelectorComponent } from '../../shared/selectors/master-scene-selector/master-scene-selector.component';
-import { CopyToClipboardComponent } from '../../shared/copy-to-clipboard/copy-to-clipboard.component';
-import { DocsModalComponent } from '../../shared/docs-modal/docs-modal.component';
-import { DateSelectorComponent } from '../../shared/selectors/date-selector/date-selector.component';
-import { SeasonSelectorComponent } from '../../shared/selectors/season-selector/season-selector.component';
+import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
+import { BaselineFrameReferenceToggleComponent } from '@components/shared/selectors/baseline-frame-reference-toggle/baseline-frame-reference-toggle.component';
+import { DatasetSelectorComponent } from '@components/shared/selectors/dataset-selector/dataset-selector.component';
+import { MasterSceneSelectorComponent } from '@components/shared/selectors/master-scene-selector/master-scene-selector.component';
+import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import { DateSelectorComponent } from '@components/shared/selectors/date-selector/date-selector.component';
+import { SeasonSelectorComponent } from '@components/shared/selectors/season-selector/season-selector.component';
 import { BaselineSlidersComponent } from './baseline-sliders/baseline-sliders.component';
 import { TranslateModule } from '@ngx-translate/core';
 

@@ -17,8 +17,8 @@ import {
   MatMenuContent,
 } from '@angular/material/menu';
 import { MatTooltip } from '@angular/material/tooltip';
-import { ShortDateTimePipe } from '../../../pipes/short-date.pipe';
-import { JoinPipe } from '../../../pipes/join.pipe';
+import { ShortDateTimePipe } from '@pipes/short-date.pipe';
+import { JoinPipe } from '@pipes/join.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({

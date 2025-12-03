@@ -69,10 +69,10 @@ import { SceneFileComponent } from './scene-file/scene-file.component';
 import { MatIconButton } from '@angular/material/button';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatIcon } from '@angular/material/icon';
-import { DownloadFileButtonComponent } from '../../shared/download-file-button/download-file-button.component';
-import { OnDemandAddMenuComponent } from '../../shared/on-demand-add-menu/on-demand-add-menu.component';
+import { DownloadFileButtonComponent } from '@components/shared/download-file-button/download-file-button.component';
+import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/on-demand-add-menu.component';
 import { FileContentsComponent } from './file-contents/file-contents.component';
-import { ReadableSizeFromBytesPipe } from '../../../pipes/readable-size-from-bytes.pipe';
+import { ReadableSizeFromBytesPipe } from '@pipes/readable-size-from-bytes.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({

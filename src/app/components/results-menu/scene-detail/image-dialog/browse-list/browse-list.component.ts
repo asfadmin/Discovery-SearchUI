@@ -35,7 +35,7 @@ import { SarviewsEventsService, ScenesService } from '@services';
 import { PinnedProduct } from '@services/browse-map.service';
 import { NgIf, AsyncPipe } from '@angular/common';
 import { MatBadge } from '@angular/material/badge';
-import { ShortDatePipe } from '../../../../../pipes/short-date.pipe';
+import { ShortDatePipe } from '@pipes/short-date.pipe';
 
 @Component({
   selector: 'app-browse-list',

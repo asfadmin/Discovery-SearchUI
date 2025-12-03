@@ -9,8 +9,8 @@ import * as scenesStore from '@store/scenes';
 
 import { Breakpoints, asfWebsite } from '@models';
 import { NgIf } from '@angular/common';
-import { MaxResultsSelectorComponent } from '../../shared/max-results-selector/max-results-selector.component';
-import { SearchButtonComponent } from '../../shared/search-button/search-button.component';
+import { MaxResultsSelectorComponent } from '@components/shared/max-results-selector/max-results-selector.component';
+import { SearchButtonComponent } from '@components/shared/search-button/search-button.component';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({

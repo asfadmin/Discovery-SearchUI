@@ -26,7 +26,7 @@ import { NgIf } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatCard } from '@angular/material/card';
-import { AoiOptionsComponent } from '../../../shared/aoi-options/aoi-options.component';
+import { AoiOptionsComponent } from '@components/shared/aoi-options/aoi-options.component';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({

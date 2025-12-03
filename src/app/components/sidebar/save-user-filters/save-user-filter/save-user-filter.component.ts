@@ -26,7 +26,7 @@ import {
   BaselineFilterPipe,
   SBASFilterPipe,
   GeographicFilterPipe,
-} from '../../../../pipes/filter-type.pipe';
+} from '@pipes/filter-type.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({

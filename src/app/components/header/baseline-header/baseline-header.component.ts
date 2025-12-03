@@ -18,11 +18,11 @@ import {
   NgSwitchDefault,
   AsyncPipe,
 } from '@angular/common';
-import { SearchTypeSelectorComponent } from '../../shared/selectors/search-type-selector/search-type-selector.component';
-import { BaselineFrameReferenceToggleComponent } from '../../shared/selectors/baseline-frame-reference-toggle/baseline-frame-reference-toggle.component';
-import { DatasetSelectorComponent } from '../../shared/selectors/dataset-selector/dataset-selector.component';
-import { MasterSceneSelectorComponent } from '../../shared/selectors/master-scene-selector/master-scene-selector.component';
-import { SearchButtonComponent } from '../../shared/search-button/search-button.component';
+import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
+import { BaselineFrameReferenceToggleComponent } from '@components/shared/selectors/baseline-frame-reference-toggle/baseline-frame-reference-toggle.component';
+import { DatasetSelectorComponent } from '@components/shared/selectors/dataset-selector/dataset-selector.component';
+import { MasterSceneSelectorComponent } from '@components/shared/selectors/master-scene-selector/master-scene-selector.component';
+import { SearchButtonComponent } from '@components/shared/search-button/search-button.component';
 import { HeaderButtonsComponent } from '../header-buttons/header-buttons.component';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';

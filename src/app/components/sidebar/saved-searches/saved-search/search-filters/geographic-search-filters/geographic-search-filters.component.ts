@@ -2,8 +2,8 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 import { GeographicFiltersType, ProductType } from '@models';
 import { NgIf } from '@angular/common';
-import { ShortDatePipe } from '../../../../../../pipes/short-date.pipe';
-import { JoinPipe } from '../../../../../../pipes/join.pipe';
+import { ShortDatePipe } from '@pipes/short-date.pipe';
+import { JoinPipe } from '@pipes/join.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({

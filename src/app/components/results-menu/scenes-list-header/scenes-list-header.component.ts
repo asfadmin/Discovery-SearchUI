@@ -65,7 +65,7 @@ import {
   MatMenuItem,
   MatMenuContent,
 } from '@angular/material/menu';
-import { OnDemandAddMenuComponent } from '../../shared/on-demand-add-menu/on-demand-add-menu.component';
+import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/on-demand-add-menu.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 

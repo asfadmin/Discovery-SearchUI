@@ -45,7 +45,7 @@ import { MatButton } from '@angular/material/button';
 import { ResizedDirective } from '../../directives/resized.directive';
 import { ContextMenuTriggerDirective } from '../../directives/context-menu.directive';
 import { TimeseriesChartExportComponent } from './timeseries-chart-export/timeseries-chart-export.component';
-import { ChartModalComponent } from '../shared/chart-modal/chart-modal.component';
+import { ChartModalComponent } from '@components/shared/chart-modal/chart-modal.component';
 import { TimeseriesChartZoomComponent } from './timeseries-chart-zoom/timeseries-chart-zoom.component';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatMenu, MatMenuContent } from '@angular/material/menu';

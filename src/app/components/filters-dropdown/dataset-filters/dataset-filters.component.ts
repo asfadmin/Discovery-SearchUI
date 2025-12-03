@@ -15,20 +15,20 @@ import {
   MatExpansionPanelHeader,
   MatExpansionPanelTitle,
 } from '@angular/material/expansion';
-import { SearchTypeSelectorComponent } from '../../shared/selectors/search-type-selector/search-type-selector.component';
-import { DatasetSelectorComponent } from '../../shared/selectors/dataset-selector/dataset-selector.component';
-import { DocsModalComponent } from '../../shared/docs-modal/docs-modal.component';
-import { AoiOptionsComponent } from '../../shared/aoi-options/aoi-options.component';
-import { DateSelectorComponent } from '../../shared/selectors/date-selector/date-selector.component';
-import { SeasonSelectorComponent } from '../../shared/selectors/season-selector/season-selector.component';
-import { ProductScienceSelectorComponent } from '../../shared/selectors/product-science-selector/product-science-selector.component';
-import { ProductionConfigSelectorComponent } from '../../shared/selectors/production-config-selector/production-config-selector.component';
-import { OtherSelectorComponent } from '../../shared/selectors/other-selector/other-selector.component';
-import { ObservationPanelSelectorComponent } from '../../shared/selectors/observation-panel-selector/observation-panel-selector.component';
-import { PathSelectorComponent } from '../../shared/selectors/path-selector/path-selector.component';
-import { MissionSelectorComponent } from '../../shared/selectors/mission-selector/mission-selector.component';
-import { BurstSelectorComponent } from '../../shared/selectors/burst-selector/burst-selector.component';
-import { OperaS1SelectorComponent } from '../../shared/selectors/opera-s1-selector/opera-s1-selector.component';
+import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
+import { DatasetSelectorComponent } from '@components/shared/selectors/dataset-selector/dataset-selector.component';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import { AoiOptionsComponent } from '@components/shared/aoi-options/aoi-options.component';
+import { DateSelectorComponent } from '@components/shared/selectors/date-selector/date-selector.component';
+import { SeasonSelectorComponent } from '@components/shared/selectors/season-selector/season-selector.component';
+import { ProductScienceSelectorComponent } from '@components/shared/selectors/product-science-selector/product-science-selector.component';
+import { ProductionConfigSelectorComponent } from '@components/shared/selectors/production-config-selector/production-config-selector.component';
+import { OtherSelectorComponent } from '@components/shared/selectors/other-selector/other-selector.component';
+import { ObservationPanelSelectorComponent } from '@components/shared/selectors/observation-panel-selector/observation-panel-selector.component';
+import { PathSelectorComponent } from '@components/shared/selectors/path-selector/path-selector.component';
+import { MissionSelectorComponent } from '@components/shared/selectors/mission-selector/mission-selector.component';
+import { BurstSelectorComponent } from '@components/shared/selectors/burst-selector/burst-selector.component';
+import { OperaS1SelectorComponent } from '@components/shared/selectors/opera-s1-selector/opera-s1-selector.component';
 import { TranslateModule } from '@ngx-translate/core';
 // import { TranslateService } from "@ngx-translate/core";
 

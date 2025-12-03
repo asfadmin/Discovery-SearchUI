@@ -21,7 +21,7 @@ import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatIcon } from '@angular/material/icon';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { TranslateModule } from '@ngx-translate/core';
-import { AoiIconPipe } from '../../../../pipes/aoi-icon.pipe';
+import { AoiIconPipe } from '@pipes/aoi-icon.pipe';
 
 @Component({
   selector: 'app-draw-selector',

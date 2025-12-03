@@ -23,10 +23,7 @@ import { FormsModule } from '@angular/forms';
 import { MatFormField, MatInput } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { SearchFiltersComponent } from './search-filters/search-filters.component';
-import {
-  GeographicFilterPipe,
-  ListFilterPipe,
-} from '../../../../pipes/filter-type.pipe';
+import { GeographicFilterPipe, ListFilterPipe } from '@pipes/filter-type.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({

@@ -12,13 +12,13 @@ import * as services from '@services';
 import * as models from '@models';
 import { MatListItem } from '@angular/material/list';
 import { NgStyle, NgIf, NgClass } from '@angular/common';
-import { FileNameComponent } from '../../../shared/file-name/file-name.component';
-import { CopyToClipboardComponent } from '../../../shared/copy-to-clipboard/copy-to-clipboard.component';
+import { FileNameComponent } from '@components/shared/file-name/file-name.component';
+import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatTooltip } from '@angular/material/tooltip';
 import { SceneControlsComponent } from './scene-controls/scene-controls.component';
 import { BaselineSceneControlsComponent } from './baseline-scene-controls/baseline-scene-controls.component';
-import { ShortDatePipe, FullDatePipe } from '../../../../pipes/short-date.pipe';
+import { ShortDatePipe, FullDatePipe } from '@pipes/short-date.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({

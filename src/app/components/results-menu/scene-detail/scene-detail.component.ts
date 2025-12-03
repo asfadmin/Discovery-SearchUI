@@ -45,15 +45,15 @@ import {
   MatCardSubtitle,
   MatCardContent,
 } from '@angular/material/card';
-import { CopyToClipboardComponent } from '../../shared/copy-to-clipboard/copy-to-clipboard.component';
+import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
 import { MatTooltip } from '@angular/material/tooltip';
-import { EventMetadataComponent } from '../../shared/event-metadata/event-metadata.component';
+import { EventMetadataComponent } from '@components/shared/event-metadata/event-metadata.component';
 import { EventPolygonSliderComponent } from './event-polygon-slider/event-polygon-slider.component';
-import { DocsModalComponent } from '../../shared/docs-modal/docs-modal.component';
-import { SceneMetadataComponent } from '../../shared/scene-metadata/scene-metadata.component';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import { SceneMetadataComponent } from '@components/shared/scene-metadata/scene-metadata.component';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
-import { ShortDatePipe } from '../../../pipes/short-date.pipe';
+import { ShortDatePipe } from '@pipes/short-date.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({

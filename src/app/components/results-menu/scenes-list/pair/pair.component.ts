@@ -24,8 +24,8 @@ import { NgIf } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { OnDemandAddMenuComponent } from '../../../shared/on-demand-add-menu/on-demand-add-menu.component';
-import { ShortDatePipe } from '../../../../pipes/short-date.pipe';
+import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/on-demand-add-menu.component';
+import { ShortDatePipe } from '@pipes/short-date.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({

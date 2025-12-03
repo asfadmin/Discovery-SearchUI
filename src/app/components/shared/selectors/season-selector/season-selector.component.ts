@@ -15,7 +15,7 @@ import { FormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { CircleSliderComponent } from '../circle-slider/circle-slider.component';
 import { MatButton } from '@angular/material/button';
-import { ShortDateSeasonPipe } from '../../../../pipes/short-date.pipe';
+import { ShortDateSeasonPipe } from '@pipes/short-date.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({

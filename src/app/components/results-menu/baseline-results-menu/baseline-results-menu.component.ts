@@ -33,7 +33,7 @@ import {
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
-import { OnDemandAddMenuComponent } from '../../shared/on-demand-add-menu/on-demand-add-menu.component';
+import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/on-demand-add-menu.component';
 import { MatButton } from '@angular/material/button';
 import { BaselineChartComponent } from '../../baseline-chart/baseline-chart.component';
 import { TranslateModule } from '@ngx-translate/core';

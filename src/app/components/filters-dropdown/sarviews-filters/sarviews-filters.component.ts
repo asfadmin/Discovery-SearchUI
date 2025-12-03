@@ -14,15 +14,15 @@ import {
   MatExpansionPanelHeader,
   MatExpansionPanelTitle,
 } from '@angular/material/expansion';
-import { SearchTypeSelectorComponent } from '../../shared/selectors/search-type-selector/search-type-selector.component';
-import { DocsModalComponent } from '../../shared/docs-modal/docs-modal.component';
-import { SarviewsEventActiveSelectorComponent } from '../../shared/selectors/sarviews-event-active-selector/sarviews-event-active-selector.component';
-import { SarviewsEventSearchSelectorComponent } from '../../shared/selectors/sarviews-event-search-selector/sarviews-event-search-selector.component';
-import { SarviewsEventTypeSelectorComponent } from '../../shared/selectors/sarviews-event-type-selector/sarviews-event-type-selector.component';
-import { SarviewsEventMagnitudeSelectorComponent } from '../../shared/selectors/sarviews-event-magnitude-selector/sarviews-event-magnitude-selector.component';
-import { DateSelectorComponent } from '../../shared/selectors/date-selector/date-selector.component';
-import { PathSelectorComponent } from '../../shared/selectors/path-selector/path-selector.component';
-import { Hyp3JobTypeSelectorComponent } from '../../shared/selectors/hyp3-job-type-selector/hyp3-job-type-selector.component';
+import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import { SarviewsEventActiveSelectorComponent } from '@components/shared/selectors/sarviews-event-active-selector/sarviews-event-active-selector.component';
+import { SarviewsEventSearchSelectorComponent } from '@components/shared/selectors/sarviews-event-search-selector/sarviews-event-search-selector.component';
+import { SarviewsEventTypeSelectorComponent } from '@components/shared/selectors/sarviews-event-type-selector/sarviews-event-type-selector.component';
+import { SarviewsEventMagnitudeSelectorComponent } from '@components/shared/selectors/sarviews-event-magnitude-selector/sarviews-event-magnitude-selector.component';
+import { DateSelectorComponent } from '@components/shared/selectors/date-selector/date-selector.component';
+import { PathSelectorComponent } from '@components/shared/selectors/path-selector/path-selector.component';
+import { Hyp3JobTypeSelectorComponent } from '@components/shared/selectors/hyp3-job-type-selector/hyp3-job-type-selector.component';
 import { TranslateModule } from '@ngx-translate/core';
 
 enum FilterPanel {
