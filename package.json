@@ -37,7 +37,7 @@
     "@ngrx/router-store": "^20.1.0",
     "@ngrx/store": "^20.1.0",
     "@ngrx/store-devtools": "^20.1.0",
-    "@ngx-translate/core": "^16.0.0",
+    "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
     "@turf/boolean-point-in-polygon": "^6.5.0",
     "@turf/intersect": "^6.5.0",

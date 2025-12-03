@@ -19,6 +19,7 @@ import { JoinPipe } from '../../../pipes/join.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 import { DispDataDisclaimerComponent } from '@components/results-menu/timeseries-results-menu/timeseries-displacement-disclaimer-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { MatIcon } from '@angular/material/icon';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -40,6 +41,7 @@ declare global {
     ShortDatePipe,
     JoinPipe,
     TranslateModule,
+    MatIcon,
   ],
 })
 export class InfoBarComponent implements OnInit, OnDestroy {

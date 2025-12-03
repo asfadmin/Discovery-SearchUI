@@ -6,7 +6,6 @@ import { AppState } from '@store';
 import * as mapStore from '@store/map';
 import * as searchStore from '@store/search';
 
-import { MapViewType } from '@models';
 import { MatButton } from '@angular/material/button';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { NgIf } from '@angular/common';
