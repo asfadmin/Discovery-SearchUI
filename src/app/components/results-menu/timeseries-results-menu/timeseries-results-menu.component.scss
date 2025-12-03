@@ -462,3 +462,12 @@ ul {
 
   }
 }
+
+.disp-disclaimer-title {
+    @include themify($themes) {
+        color: themed('dark-primary-text');
+    }
+  text-align: left;
+  margin-bottom: 9px;
+  margin-left: 20px;
+}

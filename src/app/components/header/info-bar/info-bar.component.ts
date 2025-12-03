@@ -11,6 +11,8 @@ import * as searchStore from '@store/search';
 import * as services from '@services';
 import * as models from '@models';
 import * as userStore from '@store/user';
+import { DispDataDisclaimerComponent } from '@components/results-menu/timeseries-results-menu/timeseries-displacement-disclaimer-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -29,7 +31,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
   private screenSize = inject(services.ScreenSizeService);
   private hyp3 = inject(services.Hyp3ApiService);
-
+  private dialog = inject(MatDialog);
   public searchType: models.SearchType = models.SearchType.DATASET;
   public searchTypes = models.SearchType;
   public searchType$ = this.store$.select(searchStore.getSearchType);
@@ -283,6 +285,15 @@ export class InfoBarComponent implements OnInit, OnDestroy {
         .select(filtersStore.getSelectedDataset)
         .subscribe((dataset) => (this.dataset = dataset.id)),
     );
+  }
+
+  public onOpenDispDataDisclaimer() {
+    this.dialog.open(DispDataDisclaimerComponent, {
+      width: '550px',
+      height: '325px',
+      maxWidth: '550px',
+      maxHeight: '500px',
+    });
   }
 
   ngOnDestroy() {
