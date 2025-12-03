@@ -18,12 +18,14 @@
             >
               @for (sciProd of group.sciProd; track sciProd) {
                 <mat-option [value]="sciProd.value">{{
-                  sciProd.viewValue
-                }}</mat-option>
+                    sciProd.viewValue
+                  }}
+                </mat-option>
               }
             </mat-optgroup>
           }
         }
+        <span class="sci-prod-recommended">*{{ 'RECOMMENDED_PRODUCT' | translate }}</span>
       </div>
 
       <div class="sci-prod-filter-flex-item">

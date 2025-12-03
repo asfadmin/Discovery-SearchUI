@@ -22,6 +22,11 @@
       <b>{{ 'PRODUCT_TYPES' | translate }}:</b> {{ eventProductTypes }}
     </span>
 
+    @if ((searchType$ | async) === searchTypes.DISPLACEMENT) {
+    <span>
+        <button mat-button (click)='onOpenDispDataDisclaimer()'><em>{{'DISPLACEMENT_DATA_DISCLAIMER' | translate}}</em><mat-icon>info-icon</mat-icon></button>
+    </span>
+    }
     <span *ngIf="breakpoint > breakpoints.SMALL && !!startDate">
       <b>{{ 'START' | translate }}:</b> {{ startDate | shortDate }}
     </span>
