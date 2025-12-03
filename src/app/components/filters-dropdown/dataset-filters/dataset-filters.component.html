@@ -38,10 +38,11 @@
       [collapsedHeight]="customCollapsedHeight"
       [expandedHeight]="customExpandedHeight"
     >
-      <mat-panel-title style="align-items: center">
+      <mat-panel-title class="panel-title">
         {{ 'AREA_OF_INTEREST_OPTIONS' | translate }}
         <app-docs-modal
-          class="info-icon"
+          class="info-text"
+          text="DOCUMENTATION"
           url="https://docs.asf.alaska.edu/vertex/manual/#area-of-interest-options"
         >
         </app-docs-modal>
@@ -63,10 +64,11 @@
       [collapsedHeight]="customCollapsedHeight"
       [expandedHeight]="customExpandedHeight"
     >
-      <mat-panel-title style="align-items: center">
+      <mat-panel-title class="panel-title">
         {{ 'DATE_FILTERS' | translate }}
         <app-docs-modal
-          class="info-icon"
+          class="info-text"
+          text="DOCUMENTATION"
           url="https://docs.asf.alaska.edu/vertex/manual/#date-filters"
         >
         </app-docs-modal>
@@ -91,10 +93,11 @@
         [collapsedHeight]="customCollapsedHeight"
         [expandedHeight]="customExpandedHeight"
       >
-        <mat-panel-title style="align-items: center">
+        <mat-panel-title class="panel-title">
           {{ 'PRODUCT_FILTERS' | translate }}
           <app-docs-modal
-            class="info-icon"
+            class="info-text"
+            text="DOCUMENTATION"
             url="https://docs.asf.alaska.edu/vertex/manual/#product-filters"
           >
           </app-docs-modal>
@@ -118,18 +121,20 @@
       [collapsedHeight]="customCollapsedHeight"
       [expandedHeight]="customExpandedHeight"
     >
-      <mat-panel-title style="align-items: center">
+      <mat-panel-title class="panel-title">
         @if (selectedDataset !== 'NISAR') {
           {{ 'ADDITIONAL_FILTERS' | translate }}
           <app-docs-modal
-            class="info-icon"
+            class="info-text"
+            text="DOCUMENTATION"
             url="https://docs.asf.alaska.edu/vertex/manual/#additional-filters"
           >
           </app-docs-modal>
         } @else {
           {{ 'OBSERVATIONAL_FILTERS' | translate }}
           <app-docs-modal
-            class="info-icon"
+            class="info-text"
+            text="DOCUMENTATION"
             url="https://docs.asf.alaska.edu/vertex/manual/#observational-filters"
           >
           </app-docs-modal>
@@ -157,7 +162,7 @@
       [collapsedHeight]="customCollapsedHeight"
       [expandedHeight]="customExpandedHeight"
     >
-      <mat-panel-title style="align-items: center">
+      <mat-panel-title class="panel-title">
         @if (selectedDataset === 'SENTINEL-1 INTERFEROGRAM (BETA)') {
           {{ 'TRACK' | translate }} {{ 'FILTERS' | translate }}
         } @else if (selectedDataset !== 'NISAR') {
@@ -166,7 +171,8 @@
           {{ 'TRACK_AND_FRAME_FILTERS' | translate }}
         }
         <app-docs-modal
-          class="info-icon"
+          class="info-text"
+          text="DOCUMENTATION"
           url="https://docs.asf.alaska.edu/vertex/manual/#path-and-frame-filters"
         >
         </app-docs-modal>
