@@ -5,8 +5,10 @@
     placeholder="{{ 'PRODUCT_TYPE' | translate }}"
     multiple
   >
-    <mat-option [value]="jobType" *ngFor="let jobType of hyp3JobTypes">
-      {{ jobType }}
-    </mat-option>
+    @for (jobType of hyp3JobTypes; track jobType) {
+      <mat-option [value]="jobType">
+        {{ jobType }}
+      </mat-option>
+    }
   </mat-select>
 </mat-form-field>

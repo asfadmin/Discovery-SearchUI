@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, OnDestroy, inject } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSelectModule } from '@angular/material/select';
@@ -45,7 +44,6 @@ enum FilterPanel {
 @Component({
   selector: 'app-frame-order-filters',
   imports: [
-    CommonModule,
     FormsModule,
     FlightDirectionSelectorComponent,
     MatSelectModule,

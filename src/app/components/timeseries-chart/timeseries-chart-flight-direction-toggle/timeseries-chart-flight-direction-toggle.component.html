@@ -9,16 +9,12 @@
         mat-button
       >
         <div class="button-text">
-          <mat-icon
-            class="fd-icon-button-text"
-            *ngIf="flightDirection === FlightDirections.ASCENDING"
-            >north_west</mat-icon
-          >
-          <mat-icon
-            class="fd-icon-button-text"
-            *ngIf="flightDirection === FlightDirections.DESCENDING"
-            >south_west</mat-icon
-          >
+          @if (flightDirection === FlightDirections.ASCENDING) {
+            <mat-icon class="fd-icon-button-text">north_west</mat-icon>
+          }
+          @if (flightDirection === FlightDirections.DESCENDING) {
+            <mat-icon class="fd-icon-button-text">south_west</mat-icon>
+          }
           {{ flightDirection.toString() | translate }}
           <span class="mat-select-arrow"></span>
         </div>

@@ -19,14 +19,16 @@
       cdkScrollable
       itemSize="350"
     >
-      <div *ngFor="let item of bestFitItems" class="ts-best-fit-item">
-        <div [style.background-color]="item.color" class="ts-color-swatch">
-          {{ item.seriesNumber }}
+      @for (item of bestFitItems; track item) {
+        <div class="ts-best-fit-item">
+          <div [style.background-color]="item.color" class="ts-color-swatch">
+            {{ item.seriesNumber }}
+          </div>
+          <div style="display: flex; flex-direction: column">
+            <div>{{ item.formula }}</div>
+          </div>
         </div>
-        <div style="display: flex; flex-direction: column">
-          <div>{{ item.formula }}</div>
-        </div>
-      </div>
+      }
     </cdk-virtual-scroll-viewport>
   </div>
   <div

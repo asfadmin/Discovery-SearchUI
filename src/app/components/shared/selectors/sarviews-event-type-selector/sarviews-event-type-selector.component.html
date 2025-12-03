@@ -5,8 +5,10 @@
     [(value)]="selectedTypesList"
     (selectionChange)="onNewEventTypes($event)"
   >
-    <mat-option [value]="type" *ngFor="let type of eventTypes">
-      {{ type[0].toUpperCase() + type.slice(1) }}
-    </mat-option>
+    @for (type of eventTypes; track type) {
+      <mat-option [value]="type">
+        {{ type[0].toUpperCase() + type.slice(1) }}
+      </mat-option>
+    }
   </mat-select>
 </mat-form-field>
