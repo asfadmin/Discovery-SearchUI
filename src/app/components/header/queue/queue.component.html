@@ -49,30 +49,34 @@
   </div>
 </div>
 
-<div *ngIf="showDemWarning" class="dem-warning">
-  {{ 'RESAMPLED_DEM_SRTM_OR_NED_USED_FOR_RTC_PROCESSING' | translate }}
-  <a
-    class="more-link"
-    target="_blank"
-    href="https://asf.alaska.edu/information/palsar-rtc-dem-information/"
-  >
-    {{ 'MORE' | translate }}...
-  </a>
-</div>
+@if (showDemWarning) {
+  <div class="dem-warning">
+    {{ 'RESAMPLED_DEM_SRTM_OR_NED_USED_FOR_RTC_PROCESSING' | translate }}
+    <a
+      class="more-link"
+      target="_blank"
+      href="https://asf.alaska.edu/information/palsar-rtc-dem-information/"
+    >
+      {{ 'MORE' | translate }}...
+    </a>
+  </div>
+}
 
-<div *ngIf="showRestrictedDatasetWarning" class="dem-warning">
-  {{
-    'PRODUCTS_IN_YOUR_QUEUE_MAY_REQUIRE_A_RESTRICTED_DATASET_AGREEMENT'
-      | translate
-  }}
-  <a
-    class="more-link"
-    target="_blank"
-    href="https://asf.alaska.edu/restricted-data-access-request/"
-  >
-    {{ 'MORE' | translate }}...
-  </a>
-</div>
+@if (showRestrictedDatasetWarning) {
+  <div class="dem-warning">
+    {{
+      'PRODUCTS_IN_YOUR_QUEUE_MAY_REQUIRE_A_RESTRICTED_DATASET_AGREEMENT'
+        | translate
+    }}
+    <a
+      class="more-link"
+      target="_blank"
+      href="https://asf.alaska.edu/restricted-data-access-request/"
+    >
+      {{ 'MORE' | translate }}...
+    </a>
+  </div>
+}
 
 <mat-dialog-content
   class="dl-mat-dialog-content"
@@ -82,340 +86,321 @@
   "
 >
   <mat-list id="matListProducts" role="list" class="dl-list">
-    <ng-container *ngIf="products$ | async as products">
-      <mat-list-item *ngFor="let product of products" role="listitem">
-        <div
-          matListItemTitle
-          class="item-content"
-          [ngClass]="{
-            'dl-list-item-mobile': breakpoint === breakpoints.MOBILE,
-          }"
-        >
-          <b
-            *ngIf="
-              product.metadata.fileName || product.file
-                | filterExtension as fileName
-            "
+    @if (products$ | async; as products) {
+      @for (product of products; track product) {
+        <mat-list-item role="listitem">
+          <div
+            matListItemTitle
+            class="item-content"
+            [ngClass]="{
+              'dl-list-item-mobile': breakpoint === breakpoints.MOBILE,
+            }"
           >
-            <span *ngIf="breakpoint !== breakpoints.MOBILE">{{
-              fileName | truncate: 50
-            }}</span>
-            <span *ngIf="breakpoint === breakpoints.MOBILE">{{
-              fileName | truncate: 10
-            }}</span>
-            <ng-container
-              *ngIf="
-                fileName.length > (breakpoint !== breakpoints.MOBILE ? 50 : 10)
-              "
-            >
-              <span
-                *ngIf="
-                  product.dataset === 'Sentinel-1C' ||
-                  product.dataset === 'Sentinel-1B' ||
-                  product.dataset === 'Sentinel-1A'
-                "
-                >{{ fileName.substr(fileName.length - 4) }}</span
-              >
-              <span
-                *ngIf="product.dataset === 'Sentinel-1 Interferogram (BETA)'"
-                >{{ fileName.substr(fileName.length - 11) }}</span
-              >
-            </ng-container>
-          </b>
-          •
-          <span>
-            <span *ngIf="product.bytes === 0 && !product.id.startsWith('OPERA')"
-              >Virtual</span
-            >
-            <span *ngIf="product.bytes !== 0">{{
-              product.bytes | readableSizeFromBytes
-            }}</span>
-          </span>
-        </div>
-        <div
-          matListItemLine
-          [ngClass]="{
-            'dl-list-item-mobile': breakpoint === breakpoints.MOBILE,
-            'product-display-mobile': breakpoint === breakpoints.MOBILE,
-            'product-display': breakpoint !== breakpoints.MOBILE,
-          }"
-        >
-          {{ product.productTypeDisplay }}
-        </div>
-
-        <app-copy-to-clipboard
-          *ngIf="
+            @if (
+              product.metadata.fileName || product.file | filterExtension;
+              as fileName
+            ) {
+              <b>
+                @if (breakpoint !== breakpoints.MOBILE) {
+                  <span>{{ fileName | truncate: 50 }}</span>
+                }
+                @if (breakpoint === breakpoints.MOBILE) {
+                  <span>{{ fileName | truncate: 10 }}</span>
+                }
+                @if (
+                  fileName.length >
+                  (breakpoint !== breakpoints.MOBILE ? 50 : 10)
+                ) {
+                  @if (
+                    product.dataset === 'Sentinel-1C' ||
+                    product.dataset === 'Sentinel-1B' ||
+                    product.dataset === 'Sentinel-1A'
+                  ) {
+                    <span>{{ fileName.substr(fileName.length - 4) }}</span>
+                  }
+                  @if (product.dataset === 'Sentinel-1 Interferogram (BETA)') {
+                    <span>{{ fileName.substr(fileName.length - 11) }}</span>
+                  }
+                }
+              </b>
+            }
+            •
+            <span>
+              @if (product.bytes === 0 && !product.id.startsWith('OPERA')) {
+                <span>Virtual</span>
+              }
+              @if (product.bytes !== 0) {
+                <span>{{ product.bytes | readableSizeFromBytes }}</span>
+              }
+            </span>
+          </div>
+          <div
+            matListItemLine
+            [ngClass]="{
+              'dl-list-item-mobile': breakpoint === breakpoints.MOBILE,
+              'product-display-mobile': breakpoint === breakpoints.MOBILE,
+              'product-display': breakpoint !== breakpoints.MOBILE,
+            }"
+          >
+            {{ product.productTypeDisplay }}
+          </div>
+          @if (
             !product.isUnzippedFile &&
             !product.metadata.job &&
             product.groupId !== 'SARViews'
-          "
-          prompt="{{ 'COPY_FILE_ID' | translate }}"
-          [value]="
-            product.metadata.productType === 'BURST_XML'
-              ? product.id?.split('-XML')[0]
-              : product.metadata.parentID || product.id
-          "
-          class="clipboard-button"
-          matListItemMeta
-        >
-        </app-copy-to-clipboard>
-
-        <app-download-file-button
-          class="download-button"
-          [attr.id]="'dlq_' + product.id"
-          [product]="product"
-          (productDownloaded)="downloadContinue($event)"
-          (downloadCancelled)="downloadContinue($event)"
-          [useNewDownload]="true"
-          matListItemMeta
-        >
-        </app-download-file-button>
-
-        <button
-          class="close-button"
-          (click)="onRemoveProduct(product)"
-          matTooltip="{{ 'REMOVE_FILE' | translate }}"
-          mat-icon-button
-          matListItemMeta
-        >
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-list-item>
-    </ng-container>
-    <ng-container *ngIf="(products$ | async).length < 1">
+          ) {
+            <app-copy-to-clipboard
+              prompt="{{ 'COPY_FILE_ID' | translate }}"
+              [value]="
+                product.metadata.productType === 'BURST_XML'
+                  ? product.id?.split('-XML')[0]
+                  : product.metadata.parentID || product.id
+              "
+              class="clipboard-button"
+              matListItemMeta
+            >
+            </app-copy-to-clipboard>
+          }
+          <app-download-file-button
+            class="download-button"
+            [attr.id]="'dlq_' + product.id"
+            [product]="product"
+            (productDownloaded)="downloadContinue($event)"
+            (downloadCancelled)="downloadContinue($event)"
+            [useNewDownload]="true"
+            matListItemMeta
+          >
+          </app-download-file-button>
+          <button
+            class="close-button"
+            (click)="onRemoveProduct(product)"
+            matTooltip="{{ 'REMOVE_FILE' | translate }}"
+            mat-icon-button
+            matListItemMeta
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-list-item>
+      }
+    }
+    @if ((products$ | async).length < 1) {
       <div class="dl-empty-message">
         <br /><br />
         {{ 'YOUR_DOWNLOAD_QUEUE_IS_EMPTY' | translate }}
       </div>
-    </ng-container>
+    }
   </mat-list>
 </mat-dialog-content>
 
 <mat-dialog-actions class="dl-mat-dialog-actions">
-  <div class="fx-row dl-card-actions" *ngIf="breakpoint$ | async as breakpoint">
-    <ng-container *ngIf="products$ | async as products">
-      <div class="dl-clear-button btn-primary">
-        <button
-          *ngIf="previousQueue === null"
-          (click)="onClearQueue(products)"
-          mat-button
-        >
-          <mat-icon style="margin-right: 5px">delete</mat-icon>
-          <span
-            *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin"
-            >{{ 'CLEAR' | translate }}</span
-          >
-        </button>
-
-        <button
-          *ngIf="previousQueue !== null"
-          (click)="onRestoreQueue(previousQueue)"
-          mat-button
-        >
-          <mat-icon style="margin-right: 5px">undo</mat-icon>
-          <span>{{ 'RESTORE' | translate }}</span>
-        </button>
-      </div>
-      <ng-container>
-        <div *ngIf="areAnyProducts" class="dl-download-buttons">
-          <button
-            (click)="onCopyQueue(products)"
-            mat-button
-            [disabled]="!areAnyProducts"
-            class="btn-primary"
-            [class.button-clipboard-mobile]="
-              breakpoint === breakpoints.MOBILE || dlWidth < dlWidthMin
-            "
-            matTooltip="{{ 'COPY_FILE_ID_TO_CLIPBOARD' | translate }}"
-            [matTooltipPosition]="'above'"
-          >
-            <fa-icon style="margin-left: 5px" [icon]="copyIcon"></fa-icon>
-            &nbsp;
-            <span
-              *ngIf="
-                breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin;
-                else mobileCopyFileIds
-              "
-              >{{ 'COPY_FILE_IDS' | translate }}</span
-            >
-            <ng-template #mobileCopyFileIds>IDs</ng-template>
-          </button>
-
-          <button
-            (click)="onCopyQueueURLs(products)"
-            *ngIf="(numberOfS3Products$ | async) === 0"
-            mat-button
-            [disabled]="!areAnyProducts"
-            class="btn-primary"
-            [class.button-clipboard-mobile]="
-              breakpoint === breakpoints.MOBILE || dlWidth < dlWidthMin
-            "
-            matTooltip="{{ 'COPY_FILE_URLS_TO_CLIPBOARD' | translate }}"
-            [matTooltipPosition]="'above'"
-          >
-            <fa-icon style="margin-left: 5px" [icon]="copyIcon"></fa-icon>
-            &nbsp;
-            <span
-              *ngIf="
-                breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin;
-                else mobileCopyURLs
-              "
-              >{{ 'COPY_URLS' | translate }}</span
-            >
-            <ng-template #mobileCopyURLs>URLs</ng-template>
-          </button>
-
-          <button
-            [matMenuTriggerFor]="urlTypeMenu"
-            *ngIf="(numberOfS3Products$ | async) > 0"
-            mat-button
-            [disabled]="!areAnyProducts"
-            class="btn-primary"
-            [class.button-clipboard-mobile]="
-              breakpoint === breakpoints.MOBILE || dlWidth < dlWidthMin
-            "
-            matTooltip="{{ 'COPY_FILE_URLS_TO_CLIPBOARD' | translate }}"
-            [matTooltipPosition]="'above'"
-          >
-            <fa-icon style="margin-left: 5px" [icon]="copyIcon"></fa-icon>
-            &nbsp;
-            <span
-              *ngIf="
-                breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin;
-                else mobileCopyURLs
-              "
-              >{{ 'COPY_URLS' | translate }}</span
-            >
-            <ng-template #mobileCopyURLs>URLs</ng-template>
-          </button>
-          <mat-menu #urlTypeMenu>
-            <button mat-menu-item (click)="onCopyQueueURLs(products)">
-              Download URLs
+  @if (breakpoint$ | async; as breakpoint) {
+    <div class="fx-row dl-card-actions">
+      @if (products$ | async; as products) {
+        <div class="dl-clear-button btn-primary">
+          @if (previousQueue === null) {
+            <button (click)="onClearQueue(products)" mat-button>
+              <mat-icon style="margin-right: 5px">delete</mat-icon>
+              @if (breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin) {
+                <span>{{ 'CLEAR' | translate }}</span>
+              }
             </button>
-            <button mat-menu-item (click)="onCopyQueueURLs(products, true)">
-              S3 URLs
+          }
+          @if (previousQueue !== null) {
+            <button (click)="onRestoreQueue(previousQueue)" mat-button>
+              <mat-icon style="margin-right: 5px">undo</mat-icon>
+              <span>{{ 'RESTORE' | translate }}</span>
             </button>
-          </mat-menu>
-
-          <ng-container
-            *ngIf="breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin"
-          >
-            <span
-              *ngIf="
-                queueHasOnDemandProducts || queueHasEventMonitoringProducts
-              "
-              class="on-demand-warning"
-            >
-              {{ limitedExportString() }}
-            </span>
-
-            <button
-              mat-flat-button
-              color="primary"
-              [matMenuTriggerFor]="dataMenu"
-              [disabled]="!areAnyProducts"
-              class="btn-primary"
-              style="margin-left: 15px"
-            >
-              {{ 'DATA_DOWNLOAD' | translate }}
-              <mat-icon>arrow_drop_up</mat-icon>
-            </button>
-            <button
-              mat-flat-button
-              color="primary"
-              [matMenuTriggerFor]="metadataMenu"
-              [disabled]="!areAnyProducts"
-              class="btn-primary"
-            >
-              {{ 'METADATA_DOWNLOAD' | translate }}
-              <mat-icon>arrow_drop_up</mat-icon>
-            </button>
-          </ng-container>
-
-          <ng-container
-            *ngIf="breakpoint === breakpoints.MOBILE || dlWidth < dlWidthMin"
-          >
-            <button
-              mat-flat-button
-              [matMenuTriggerFor]="typesMenu"
-              style="padding: 0 0 0 5px; margin-left: 15px"
-            >
-              {{ 'DOWNLOADS' | translate }}
-              <mat-icon>arrow_drop_up</mat-icon>
-            </button>
-
-            <mat-menu #typesMenu="matMenu">
+          }
+        </div>
+        <ng-container>
+          @if (areAnyProducts) {
+            <div class="dl-download-buttons">
               <button
-                mat-menu-item
-                [matMenuTriggerFor]="dataMenu"
+                (click)="onCopyQueue(products)"
+                mat-button
                 [disabled]="!areAnyProducts"
                 class="btn-primary"
+                [class.button-clipboard-mobile]="
+                  breakpoint === breakpoints.MOBILE || dlWidth < dlWidthMin
+                "
+                matTooltip="{{ 'COPY_FILE_ID_TO_CLIPBOARD' | translate }}"
+                [matTooltipPosition]="'above'"
               >
-                {{ 'DATA' | translate }}
+                <fa-icon style="margin-left: 5px" [icon]="copyIcon"></fa-icon>
+                &nbsp;
+                @if (breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin) {
+                  <span>{{ 'COPY_FILE_IDS' | translate }}</span>
+                } @else {
+                  IDs
+                }
               </button>
-              <button
-                mat-menu-item
-                [matMenuTriggerFor]="metadataMenu"
-                class="btn-primary"
-              >
-                Metadata
-              </button>
-            </mat-menu>
-          </ng-container>
-
-          <mat-menu #dataMenu="matMenu" yPosition="above">
-            <app-download-all
-              (dlAllEvent)="downloadAllFiles()"
-              [disabled]="!(isLoggedIn$ | async)"
-            >
-            </app-download-all>
-            <button mat-menu-item (click)="onMakeDownloadScript()">
-              {{ 'DOWNLOAD_PYTHON_SCRIPT_PY' | translate }}
-            </button>
-            <button
-              mat-menu-item
-              [disabled]="
-                queueHasOnDemandProducts || queueHasEventMonitoringProducts
-              "
-              (click)="onMetalinkDownload()"
-            >
-              {{ 'METADATA_METALINK' | translate }}
-            </button>
-          </mat-menu>
-
-          <mat-menu #metadataMenu="matMenu" yPosition="above">
-            <button
-              mat-menu-item
-              [disabled]="
-                queueHasOnDemandProducts || queueHasEventMonitoringProducts
-              "
-              (click)="onCsvDownload()"
-            >
-              {{ 'METADATA_CSV' | translate }}
-            </button>
-
-            <button
-              mat-menu-item
-              [disabled]="
-                queueHasOnDemandProducts || queueHasEventMonitoringProducts
-              "
-              (click)="onKmlDownload()"
-            >
-              {{ 'METADATA_KML' | translate }}
-            </button>
-
-            <button
-              mat-menu-item
-              [disabled]="
-                queueHasOnDemandProducts || queueHasEventMonitoringProducts
-              "
-              (click)="onGeojsonDownload()"
-            >
-              {{ 'METADATA_GEOJSON' | translate }}
-            </button>
-          </mat-menu>
-        </div>
-      </ng-container>
-    </ng-container>
-  </div>
+              @if ((numberOfS3Products$ | async) === 0) {
+                <button
+                  (click)="onCopyQueueURLs(products)"
+                  mat-button
+                  [disabled]="!areAnyProducts"
+                  class="btn-primary"
+                  [class.button-clipboard-mobile]="
+                    breakpoint === breakpoints.MOBILE || dlWidth < dlWidthMin
+                  "
+                  matTooltip="{{ 'COPY_FILE_URLS_TO_CLIPBOARD' | translate }}"
+                  [matTooltipPosition]="'above'"
+                >
+                  <fa-icon style="margin-left: 5px" [icon]="copyIcon"></fa-icon>
+                  &nbsp;
+                  <span>
+                    @if (
+                      breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin
+                    ) {
+                      {{ 'COPY_URLS' | translate }}
+                    } @else {
+                      URLs
+                    }
+                  </span>
+                </button>
+              }
+              @if ((numberOfS3Products$ | async) > 0) {
+                <button
+                  [matMenuTriggerFor]="urlTypeMenu"
+                  mat-button
+                  [disabled]="!areAnyProducts"
+                  class="btn-primary"
+                  [class.button-clipboard-mobile]="
+                    breakpoint === breakpoints.MOBILE || dlWidth < dlWidthMin
+                  "
+                  matTooltip="{{ 'COPY_FILE_URLS_TO_CLIPBOARD' | translate }}"
+                  [matTooltipPosition]="'above'"
+                >
+                  <fa-icon style="margin-left: 5px" [icon]="copyIcon"></fa-icon>
+                  &nbsp;
+                  <span>
+                    @if (
+                      breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin
+                    ) {
+                      {{ 'COPY_URLS' | translate }}
+                    } @else {
+                      URLs
+                    }
+                  </span>
+                </button>
+              }
+              <mat-menu #urlTypeMenu>
+                <button mat-menu-item (click)="onCopyQueueURLs(products)">
+                  Download URLs
+                </button>
+                <button mat-menu-item (click)="onCopyQueueURLs(products, true)">
+                  S3 URLs
+                </button>
+              </mat-menu>
+              @if (breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin) {
+                @if (
+                  queueHasOnDemandProducts || queueHasEventMonitoringProducts
+                ) {
+                  <span class="on-demand-warning">
+                    {{ limitedExportString() }}
+                  </span>
+                }
+                <button
+                  mat-flat-button
+                  color="primary"
+                  [matMenuTriggerFor]="dataMenu"
+                  [disabled]="!areAnyProducts"
+                  class="btn-primary"
+                  style="margin-left: 15px"
+                >
+                  {{ 'DATA_DOWNLOAD' | translate }}
+                  <mat-icon>arrow_drop_up</mat-icon>
+                </button>
+                <button
+                  mat-flat-button
+                  color="primary"
+                  [matMenuTriggerFor]="metadataMenu"
+                  [disabled]="!areAnyProducts"
+                  class="btn-primary"
+                >
+                  {{ 'METADATA_DOWNLOAD' | translate }}
+                  <mat-icon>arrow_drop_up</mat-icon>
+                </button>
+              }
+              @if (breakpoint === breakpoints.MOBILE || dlWidth < dlWidthMin) {
+                <button
+                  mat-flat-button
+                  [matMenuTriggerFor]="typesMenu"
+                  style="padding: 0 0 0 5px; margin-left: 15px"
+                >
+                  {{ 'DOWNLOADS' | translate }}
+                  <mat-icon>arrow_drop_up</mat-icon>
+                </button>
+                <mat-menu #typesMenu="matMenu">
+                  <button
+                    mat-menu-item
+                    [matMenuTriggerFor]="dataMenu"
+                    [disabled]="!areAnyProducts"
+                    class="btn-primary"
+                  >
+                    {{ 'DATA' | translate }}
+                  </button>
+                  <button
+                    mat-menu-item
+                    [matMenuTriggerFor]="metadataMenu"
+                    class="btn-primary"
+                  >
+                    Metadata
+                  </button>
+                </mat-menu>
+              }
+              <mat-menu #dataMenu="matMenu" yPosition="above">
+                <app-download-all
+                  (dlAllEvent)="downloadAllFiles()"
+                  [disabled]="!(isLoggedIn$ | async)"
+                >
+                </app-download-all>
+                <button mat-menu-item (click)="onMakeDownloadScript()">
+                  {{ 'DOWNLOAD_PYTHON_SCRIPT_PY' | translate }}
+                </button>
+                <button
+                  mat-menu-item
+                  [disabled]="
+                    queueHasOnDemandProducts || queueHasEventMonitoringProducts
+                  "
+                  (click)="onMetalinkDownload()"
+                >
+                  {{ 'METADATA_METALINK' | translate }}
+                </button>
+              </mat-menu>
+              <mat-menu #metadataMenu="matMenu" yPosition="above">
+                <button
+                  mat-menu-item
+                  [disabled]="
+                    queueHasOnDemandProducts || queueHasEventMonitoringProducts
+                  "
+                  (click)="onCsvDownload()"
+                >
+                  {{ 'METADATA_CSV' | translate }}
+                </button>
+                <button
+                  mat-menu-item
+                  [disabled]="
+                    queueHasOnDemandProducts || queueHasEventMonitoringProducts
+                  "
+                  (click)="onKmlDownload()"
+                >
+                  {{ 'METADATA_KML' | translate }}
+                </button>
+                <button
+                  mat-menu-item
+                  [disabled]="
+                    queueHasOnDemandProducts || queueHasEventMonitoringProducts
+                  "
+                  (click)="onGeojsonDownload()"
+                >
+                  {{ 'METADATA_GEOJSON' | translate }}
+                </button>
+              </mat-menu>
+            </div>
+          }
+        </ng-container>
+      }
+    </div>
+  }
 </mat-dialog-actions>

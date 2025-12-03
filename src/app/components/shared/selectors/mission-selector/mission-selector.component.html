@@ -9,7 +9,7 @@
   </mat-form-field>
 </form>
 
-<ng-container *ngIf="!!selectedMission">
+@if (!!selectedMission) {
   <div class="selected" style="padding-top: 12px">
     <div style="display: flex; justify-content: space-between">
       <div>
@@ -31,7 +31,7 @@
     </div>
     <mat-divider style="margin-top: 12px" [inset]="true"></mat-divider>
   </div>
-</ng-container>
+}
 
 <cdk-virtual-scroll-viewport
   style="height: 250px"

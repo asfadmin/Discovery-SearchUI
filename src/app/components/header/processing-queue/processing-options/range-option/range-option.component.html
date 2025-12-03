@@ -11,11 +11,13 @@
     pattern="\-?[0-9]*\.?[0-9]*"
     step="0.01"
   />
-  <mat-error *ngIf="value < range.start || value > range.start">{{
-    (optionName | lowercase) +
-      ' must be between ' +
-      range.start +
-      ' and ' +
-      range.end
-  }}</mat-error>
+  @if (value < range.start || value > range.start) {
+    <mat-error>{{
+      (optionName | lowercase) +
+        ' must be between ' +
+        range.start +
+        ' and ' +
+        range.end
+    }}</mat-error>
+  }
 </mat-form-field>

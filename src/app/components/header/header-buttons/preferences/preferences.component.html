@@ -30,12 +30,11 @@
             (selectionChange)="onChangeDefaultLanguage($event.value)"
             name="preset"
           >
-            <mat-option
-              [value]="lang"
-              *ngFor="let lang of translate.getLangs()"
-            >
-              {{ language.getName(lang) | titlecase }}
-            </mat-option>
+            @for (lang of translate.getLangs(); track lang) {
+              <mat-option [value]="lang">
+                {{ language.getName(lang) | titlecase }}
+              </mat-option>
+            }
           </mat-select>
         </mat-form-field>
 
@@ -46,9 +45,11 @@
             (selectionChange)="onChangeDefaultTheme($event.value)"
             name="preset"
           >
-            <mat-option [value]="theme" *ngFor="let theme of themeOptions">
-              {{ theme | titlecase | uppercase | translate }}
-            </mat-option>
+            @for (theme of themeOptions; track theme) {
+              <mat-option [value]="theme">
+                {{ theme | titlecase | uppercase | translate }}
+              </mat-option>
+            }
           </mat-select>
         </mat-form-field>
       </div>
@@ -79,12 +80,11 @@
             (selectionChange)="onChangeMaxResultsDefault($event.value)"
             name="maxResult"
           >
-            <mat-option
-              *ngFor="let resultAmount of maxResults"
-              [value]="resultAmount"
-            >
-              {{ resultAmount }} {{ 'FILES' | translate }}
-            </mat-option>
+            @for (resultAmount of maxResults; track resultAmount) {
+              <mat-option [value]="resultAmount">
+                {{ resultAmount }} {{ 'FILES' | translate }}
+              </mat-option>
+            }
           </mat-select>
         </mat-form-field>
 
@@ -114,26 +114,29 @@
         >
           {{ 'DEFAULT_SEARCH_FILTERS_PRESETS' | translate }}
         </div>
-        <mat-form-field
-          class="default-filters-presets"
-          *ngFor="let type of searchTypeKeys"
-        >
-          <mat-label>{{
-            type === 'DATASET' ? ('GEOGRAPHIC' | translate) : (type | translate)
-          }}</mat-label>
-          <mat-select
-            [(value)]="currentFilterDisplayNames[searchType[type]]"
-            (selectionChange)="onChangeDefaultFilterType($event.value, type)"
-            name="preset"
-          >
-            <mat-option
-              [value]="preset.id"
-              *ngFor="let preset of userFiltersBySearchType[searchType[type]]"
+        @for (type of searchTypeKeys; track type) {
+          <mat-form-field class="default-filters-presets">
+            <mat-label>{{
+              type === 'DATASET'
+                ? ('GEOGRAPHIC' | translate)
+                : (type | translate)
+            }}</mat-label>
+            <mat-select
+              [(value)]="currentFilterDisplayNames[searchType[type]]"
+              (selectionChange)="onChangeDefaultFilterType($event.value, type)"
+              name="preset"
             >
-              {{ preset.name | uppercase | translate }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+              @for (
+                preset of userFiltersBySearchType[searchType[type]];
+                track preset
+              ) {
+                <mat-option [value]="preset.id">
+                  {{ preset.name | uppercase | translate }}
+                </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        }
       </div>
 
       <hr />

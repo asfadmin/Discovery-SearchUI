@@ -1,249 +1,241 @@
-<mat-accordion *ngIf="breakpoint$ | async as breakpoint" multi>
-  <mat-expansion-panel
-    *ngIf="breakpoint === breakpoints.MOBILE"
-    [expanded]="defaultPanelOpenState"
-    [disabled]="panelIsDisabled"
-    (click)="selectPanel(panels.SEARCH)"
-    [class.raised-section]="isSelected(panels.SEARCH)"
-  >
-    <mat-expansion-panel-header
-      [collapsedHeight]="customCollapsedHeight"
-      [expandedHeight]="customExpandedHeight"
-    >
-      <mat-panel-title>
-        {{ 'SEARCH_OPTIONS' | translate }}
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-
-    <div style="display: flex; margin-top: 25px">
-      <app-search-type-selector style="margin-right: 10px">
-      </app-search-type-selector>
-
-      <app-dataset-selector
-        [(selected)]="selectedDataset"
-        (selectedChange)="onDatasetChange($event)"
-        [datasets]="datasets"
+@if (breakpoint$ | async; as breakpoint) {
+  <mat-accordion multi>
+    @if (breakpoint === breakpoints.MOBILE) {
+      <mat-expansion-panel
+        [expanded]="defaultPanelOpenState"
+        [disabled]="panelIsDisabled"
+        (click)="selectPanel(panels.SEARCH)"
+        [class.raised-section]="isSelected(panels.SEARCH)"
       >
-      </app-dataset-selector>
-    </div>
-  </mat-expansion-panel>
-
-  <mat-expansion-panel
-    [expanded]="defaultPanelOpenState"
-    [disabled]="panelIsDisabled"
-    (click)="selectPanel(panels.AOI)"
-    [class.raised-section]="isSelected(panels.AOI)"
-  >
-    <mat-expansion-panel-header
-      [collapsedHeight]="customCollapsedHeight"
-      [expandedHeight]="customExpandedHeight"
-    >
-      <mat-panel-title class="panel-title">
-        {{ 'AREA_OF_INTEREST_OPTIONS' | translate }}
-        <app-docs-modal
-          class="info-text"
-          text="DOCUMENTATION"
-          url="https://docs.asf.alaska.edu/vertex/manual/#area-of-interest-options"
+        <mat-expansion-panel-header
+          [collapsedHeight]="customCollapsedHeight"
+          [expandedHeight]="customExpandedHeight"
         >
-        </app-docs-modal>
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-
-    <div style="margin-top: 15px">
-      <app-aoi-options [showHeader]="false"></app-aoi-options>
-    </div>
-  </mat-expansion-panel>
-
-  <mat-expansion-panel
-    [expanded]="defaultPanelOpenState"
-    [disabled]="panelIsDisabled"
-    (click)="selectPanel(panels.DATE)"
-    [class.raised-section]="isSelected(panels.DATE)"
-  >
-    <mat-expansion-panel-header
-      [collapsedHeight]="customCollapsedHeight"
-      [expandedHeight]="customExpandedHeight"
-    >
-      <mat-panel-title class="panel-title">
-        {{ 'DATE_FILTERS' | translate }}
-        <app-docs-modal
-          class="info-text"
-          text="DOCUMENTATION"
-          url="https://docs.asf.alaska.edu/vertex/manual/#date-filters"
-        >
-        </app-docs-modal>
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-
-    <div style="margin-top: 20px">
-      <app-date-selector></app-date-selector>
-    </div>
-    <div>
-      <app-season-selector></app-season-selector>
-    </div>
-  </mat-expansion-panel>
-  @if (selectedDataset === 'NISAR') {
+          <mat-panel-title>
+            {{ 'SEARCH_OPTIONS' | translate }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div style="display: flex; margin-top: 25px">
+          <app-search-type-selector style="margin-right: 10px">
+          </app-search-type-selector>
+          <app-dataset-selector
+            [(selected)]="selectedDataset"
+            (selectedChange)="onDatasetChange($event)"
+            [datasets]="datasets"
+          >
+          </app-dataset-selector>
+        </div>
+      </mat-expansion-panel>
+    }
     <mat-expansion-panel
       [expanded]="defaultPanelOpenState"
       [disabled]="panelIsDisabled"
-      (click)="selectPanel(panels.PRODUCT)"
-      [class.raised-section]="isSelected(panels.PRODUCT)"
+      (click)="selectPanel(panels.AOI)"
+      [class.raised-section]="isSelected(panels.AOI)"
     >
       <mat-expansion-panel-header
         [collapsedHeight]="customCollapsedHeight"
         [expandedHeight]="customExpandedHeight"
       >
         <mat-panel-title class="panel-title">
-          {{ 'PRODUCT_FILTERS' | translate }}
+          {{ 'AREA_OF_INTEREST_OPTIONS' | translate }}
           <app-docs-modal
             class="info-text"
             text="DOCUMENTATION"
-            url="https://docs.asf.alaska.edu/vertex/manual/#product-filters"
+            url="https://docs.asf.alaska.edu/vertex/manual/#area-of-interest-options"
           >
           </app-docs-modal>
         </mat-panel-title>
       </mat-expansion-panel-header>
-
       <div style="margin-top: 15px">
-        <app-product-science-selector></app-product-science-selector>
-        <app-production-config-selector></app-production-config-selector>
+        <app-aoi-options [showHeader]="false"></app-aoi-options>
       </div>
     </mat-expansion-panel>
-  }
-
-  <mat-expansion-panel
-    [expanded]="defaultPanelOpenState"
-    [disabled]="panelIsDisabled"
-    (click)="selectPanel(panels.ADDITIONAL)"
-    [class.raised-section]="isSelected(panels.ADDITIONAL)"
-  >
-    <mat-expansion-panel-header
-      [collapsedHeight]="customCollapsedHeight"
-      [expandedHeight]="customExpandedHeight"
+    <mat-expansion-panel
+      [expanded]="defaultPanelOpenState"
+      [disabled]="panelIsDisabled"
+      (click)="selectPanel(panels.DATE)"
+      [class.raised-section]="isSelected(panels.DATE)"
     >
-      <mat-panel-title class="panel-title">
-        @if (selectedDataset !== 'NISAR') {
-          {{ 'ADDITIONAL_FILTERS' | translate }}
+      <mat-expansion-panel-header
+        [collapsedHeight]="customCollapsedHeight"
+        [expandedHeight]="customExpandedHeight"
+      >
+        <mat-panel-title class="panel-title">
+          {{ 'DATE_FILTERS' | translate }}
           <app-docs-modal
             class="info-text"
             text="DOCUMENTATION"
-            url="https://docs.asf.alaska.edu/vertex/manual/#additional-filters"
+            url="https://docs.asf.alaska.edu/vertex/manual/#date-filters"
           >
           </app-docs-modal>
-        } @else {
-          {{ 'OBSERVATIONAL_FILTERS' | translate }}
-          <app-docs-modal
-            class="info-text"
-            text="DOCUMENTATION"
-            url="https://docs.asf.alaska.edu/vertex/manual/#observational-filters"
-          >
-          </app-docs-modal>
-        }
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-
-    <div class="selector-card-spacing">
-      @if (selectedDataset !== 'NISAR') {
-        <app-other-selector></app-other-selector>
-      } @else {
-        <app-observation-panel-selector></app-observation-panel-selector>
-      }
-    </div>
-  </mat-expansion-panel>
-
-  <mat-expansion-panel
-    *ngIf="prop.isRelevant(p.PATH) || prop.isRelevant(p.FRAME)"
-    [expanded]="defaultPanelOpenState"
-    [disabled]="panelIsDisabled"
-    (click)="selectPanel(panels.PATH)"
-    [class.raised-section]="isSelected(panels.PATH)"
-  >
-    <mat-expansion-panel-header
-      [collapsedHeight]="customCollapsedHeight"
-      [expandedHeight]="customExpandedHeight"
-    >
-      <mat-panel-title class="panel-title">
-        @if (selectedDataset === 'SENTINEL-1 INTERFEROGRAM (BETA)') {
-          {{ 'TRACK' | translate }} {{ 'FILTERS' | translate }}
-        } @else if (selectedDataset !== 'NISAR') {
-          {{ 'PATH_AND_FRAME_FILTERS' | translate }}
-        } @else {
-          {{ 'TRACK_AND_FRAME_FILTERS' | translate }}
-        }
-        <app-docs-modal
-          class="info-text"
-          text="DOCUMENTATION"
-          url="https://docs.asf.alaska.edu/vertex/manual/#path-and-frame-filters"
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div style="margin-top: 20px">
+        <app-date-selector></app-date-selector>
+      </div>
+      <div>
+        <app-season-selector></app-season-selector>
+      </div>
+    </mat-expansion-panel>
+    @if (selectedDataset === 'NISAR') {
+      <mat-expansion-panel
+        [expanded]="defaultPanelOpenState"
+        [disabled]="panelIsDisabled"
+        (click)="selectPanel(panels.PRODUCT)"
+        [class.raised-section]="isSelected(panels.PRODUCT)"
+      >
+        <mat-expansion-panel-header
+          [collapsedHeight]="customCollapsedHeight"
+          [expandedHeight]="customExpandedHeight"
         >
-        </app-docs-modal>
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-
-    <div class="selector-card-spacing">
-      <app-path-selector> {{ 'TO' | translate }}</app-path-selector>
-    </div>
-  </mat-expansion-panel>
-
-  <mat-expansion-panel
-    *ngIf="prop.isRelevant(p.MISSION_NAME)"
-    [expanded]="defaultPanelOpenState"
-    [disabled]="panelIsDisabled"
-    class="raised-section"
-    (click)="selectPanel(panels.CAMPAIGN)"
-    [class.raised-section]="isSelected(panels.CAMPAIGN)"
-  >
-    <mat-expansion-panel-header
-      [collapsedHeight]="customCollapsedHeight"
-      [expandedHeight]="customExpandedHeight"
+          <mat-panel-title class="panel-title">
+            {{ 'PRODUCT_FILTERS' | translate }}
+            <app-docs-modal
+              class="info-text"
+              text="DOCUMENTATION"
+              url="https://docs.asf.alaska.edu/vertex/manual/#product-filters"
+            >
+            </app-docs-modal>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div style="margin-top: 15px">
+          <app-product-science-selector></app-product-science-selector>
+          <app-production-config-selector></app-production-config-selector>
+        </div>
+      </mat-expansion-panel>
+    }
+    <mat-expansion-panel
+      [expanded]="defaultPanelOpenState"
+      [disabled]="panelIsDisabled"
+      (click)="selectPanel(panels.ADDITIONAL)"
+      [class.raised-section]="isSelected(panels.ADDITIONAL)"
     >
-      <mat-panel-title>
-        {{ 'CAMPAIGN_SELECTOR' | translate }}
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-
-    <app-mission-selector></app-mission-selector>
-  </mat-expansion-panel>
-
-  <mat-expansion-panel
-    *ngIf="selectedDataset === 'SENTINEL-1 BURSTS'"
-    [expanded]="defaultPanelOpenState"
-    [disabled]="panelIsDisabled"
-    class="raised-section"
-    (click)="selectPanel(panels.CAMPAIGN)"
-    [class.raised-section]="isSelected(panels.CAMPAIGN)"
-  >
-    <mat-expansion-panel-header
-      [collapsedHeight]="customCollapsedHeight"
-      [expandedHeight]="customExpandedHeight"
-    >
-      <mat-panel-title>
-        {{ 'SLC_BURST_FILTERS' | translate }}
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-    <div class="selector-card-spacing">
-      <app-burst-selector></app-burst-selector>
-    </div>
-  </mat-expansion-panel>
-
-  <mat-expansion-panel
-    *ngIf="selectedDataset === 'OPERA-S1'"
-    [expanded]="defaultPanelOpenState"
-    [disabled]="panelIsDisabled"
-    class="raised-section"
-    (click)="selectPanel(panels.CAMPAIGN)"
-    [class.raised-section]="isSelected(panels.CAMPAIGN)"
-  >
-    <mat-expansion-panel-header
-      [collapsedHeight]="customCollapsedHeight"
-      [expandedHeight]="customExpandedHeight"
-    >
-      <mat-panel-title>
-        <!-- {{ 'SLC_BURST_FILTERS' | translate }} -->
-        OPERA S1 Filters
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-    <div class="selector-card-spacing">
-      <app-opera-s1-selector></app-opera-s1-selector>
-    </div>
-  </mat-expansion-panel>
-</mat-accordion>
+      <mat-expansion-panel-header
+        [collapsedHeight]="customCollapsedHeight"
+        [expandedHeight]="customExpandedHeight"
+      >
+        <mat-panel-title class="panel-title">
+          @if (selectedDataset !== 'NISAR') {
+            {{ 'ADDITIONAL_FILTERS' | translate }}
+            <app-docs-modal
+              class="info-text"
+              text="DOCUMENTATION"
+              url="https://docs.asf.alaska.edu/vertex/manual/#additional-filters"
+            >
+            </app-docs-modal>
+          } @else {
+            {{ 'OBSERVATIONAL_FILTERS' | translate }}
+            <app-docs-modal
+              class="info-text"
+              text="DOCUMENTATION"
+              url="https://docs.asf.alaska.edu/vertex/manual/#observational-filters"
+            >
+            </app-docs-modal>
+          }
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="selector-card-spacing">
+        @if (selectedDataset !== 'NISAR') {
+          <app-other-selector></app-other-selector>
+        } @else {
+          <app-observation-panel-selector></app-observation-panel-selector>
+        }
+      </div>
+    </mat-expansion-panel>
+    @if (prop.isRelevant(p.PATH) || prop.isRelevant(p.FRAME)) {
+      <mat-expansion-panel
+        [expanded]="defaultPanelOpenState"
+        [disabled]="panelIsDisabled"
+        (click)="selectPanel(panels.PATH)"
+        [class.raised-section]="isSelected(panels.PATH)"
+      >
+        <mat-expansion-panel-header
+          [collapsedHeight]="customCollapsedHeight"
+          [expandedHeight]="customExpandedHeight"
+        >
+          <mat-panel-title class="panel-title">
+            @if (selectedDataset === 'SENTINEL-1 INTERFEROGRAM (BETA)') {
+              {{ 'TRACK' | translate }} {{ 'FILTERS' | translate }}
+            } @else if (selectedDataset !== 'NISAR') {
+              {{ 'PATH_AND_FRAME_FILTERS' | translate }}
+            } @else {
+              {{ 'TRACK_AND_FRAME_FILTERS' | translate }}
+            }
+            <app-docs-modal
+              class="info-text"
+              text="DOCUMENTATION"
+              url="https://docs.asf.alaska.edu/vertex/manual/#path-and-frame-filters"
+            >
+            </app-docs-modal>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="selector-card-spacing">
+          <app-path-selector> {{ 'TO' | translate }}</app-path-selector>
+        </div>
+      </mat-expansion-panel>
+    }
+    @if (prop.isRelevant(p.MISSION_NAME)) {
+      <mat-expansion-panel
+        [expanded]="defaultPanelOpenState"
+        [disabled]="panelIsDisabled"
+        class="raised-section"
+        (click)="selectPanel(panels.CAMPAIGN)"
+        [class.raised-section]="isSelected(panels.CAMPAIGN)"
+      >
+        <mat-expansion-panel-header
+          [collapsedHeight]="customCollapsedHeight"
+          [expandedHeight]="customExpandedHeight"
+        >
+          <mat-panel-title>
+            {{ 'CAMPAIGN_SELECTOR' | translate }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-mission-selector></app-mission-selector>
+      </mat-expansion-panel>
+    }
+    @if (selectedDataset === 'SENTINEL-1 BURSTS') {
+      <mat-expansion-panel
+        [expanded]="defaultPanelOpenState"
+        [disabled]="panelIsDisabled"
+        class="raised-section"
+        (click)="selectPanel(panels.CAMPAIGN)"
+        [class.raised-section]="isSelected(panels.CAMPAIGN)"
+      >
+        <mat-expansion-panel-header
+          [collapsedHeight]="customCollapsedHeight"
+          [expandedHeight]="customExpandedHeight"
+        >
+          <mat-panel-title>
+            {{ 'SLC_BURST_FILTERS' | translate }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="selector-card-spacing">
+          <app-burst-selector></app-burst-selector>
+        </div>
+      </mat-expansion-panel>
+    }
+    @if (selectedDataset === 'OPERA-S1') {
+      <mat-expansion-panel
+        [expanded]="defaultPanelOpenState"
+        [disabled]="panelIsDisabled"
+        class="raised-section"
+        (click)="selectPanel(panels.CAMPAIGN)"
+        [class.raised-section]="isSelected(panels.CAMPAIGN)"
+      >
+        <mat-expansion-panel-header
+          [collapsedHeight]="customCollapsedHeight"
+          [expandedHeight]="customExpandedHeight"
+        >
+          <mat-panel-title>
+            <!-- {{ 'SLC_BURST_FILTERS' | translate }} -->
+            OPERA S1 Filters
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="selector-card-spacing">
+          <app-opera-s1-selector></app-opera-s1-selector>
+        </div>
+      </mat-expansion-panel>
+    }
+  </mat-accordion>
+}

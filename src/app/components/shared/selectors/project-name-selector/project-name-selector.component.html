@@ -20,12 +20,11 @@
       (optionSelected)="onPNameChange($event.option.value)"
       #projectNameAuto="matAutocomplete"
     >
-      <mat-option
-        *ngFor="let projectName of projectNamesFiltered"
-        [value]="projectName"
-      >
-        {{ projectName }}
-      </mat-option>
+      @for (projectName of projectNamesFiltered; track projectName) {
+        <mat-option [value]="projectName">
+          {{ projectName }}
+        </mat-option>
+      }
     </mat-autocomplete>
   </mat-form-field>
 </form>
