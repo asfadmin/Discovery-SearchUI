@@ -23,13 +23,12 @@
           "
           class="mr-10 scene-count"
         >
-
             @let numberOfProducts = numberOfProducts$ | async;
             @let virtualCount = totalVirtualProducts$ | async;
             @let sceneCountDisplay = numberOfProducts - virtualCount;
-          {{ sceneCountDisplay }} {{ 'SCENE' | translate
-          }}{{ sceneCountDisplay === 1 ? '' : 's' }}
-                        @if (numberOfProducts > 0) {
+            {{ sceneCountDisplay }} {{ 'SCENE' | translate
+            }}{{ sceneCountDisplay === 1 ? '' : 's' }}
+            @if (numberOfProducts > 0) {
               ({{ numberOfProducts }} {{ numberOfProducts == 1 ? 'FILE' : 'FILES' | translate }})
             }
           <span
