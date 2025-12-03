@@ -25,8 +25,10 @@
         >
 
             @let numberOfProducts = numberOfProducts$ | async;
-          {{ numberOfScenes$ | async }} {{ 'SCENE' | translate
-          }}{{ (numberOfScenes$ | async) === 1 ? '' : 's' }}
+            @let virtualCount = totalVirtualProducts$ | async;
+            @let sceneCountDisplay = numberOfProducts - virtualCount;
+          {{ sceneCountDisplay }} {{ 'SCENE' | translate
+          }}{{ sceneCountDisplay === 1 ? '' : 's' }}
                         @if (numberOfProducts > 0) {
               ({{ numberOfProducts }} {{ numberOfProducts == 1 ? 'FILE' : 'FILES' | translate }})
             }
@@ -35,9 +37,7 @@
             style="font-size: small"
           >
             <br />
-            @let virtualCount = totalVirtualProducts$ | async;
-            <!-- @let totalFiles = numberOfProducts; -->
-            {{ numberOfProducts - virtualCount }}
+            {{ sceneCountDisplay }}
             {{ 'OF' | translate }}
             {{ formatNumber(totalResultCount$ | async) }}
             {{'TOTAL' | translate }} {{ numberOfProducts == 1 ? 'SCENE' : 'SCENES' | translate }}
