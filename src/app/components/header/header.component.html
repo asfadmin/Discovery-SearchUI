@@ -1,45 +1,48 @@
-<div *ngIf="breakpoint$ | async as breakpoint" class="bounds">
-  <div
-    class="breadcrumb-list fx-row header--layout"
-    [class.mobile-nav-bar]="breakpoint === breakpoints.MOBILE"
-  >
-    <div class="fx-row">
-      <div class="header-logo--layout">
-        <app-logo></app-logo>
-      </div>
-    </div>
-
+@if (breakpoint$ | async; as breakpoint) {
+  <div class="bounds">
     <div
-      *ngIf="searchType$ | async as searchType"
-      class="header-buttons-input fx-col header-inner--layout"
+      class="breadcrumb-list fx-row header--layout"
+      [class.mobile-nav-bar]="breakpoint === breakpoints.MOBILE"
     >
-      <app-dataset-header *ngIf="searchType === searchTypes.DATASET">
-      </app-dataset-header>
-
-      <app-timeseries-header *ngIf="searchType === searchTypes.DISPLACEMENT">
-      </app-timeseries-header>
-
-      <app-list-header *ngIf="searchType === searchTypes.LIST">
-      </app-list-header>
-
-      <app-baseline-header *ngIf="searchType === searchTypes.BASELINE">
-      </app-baseline-header>
-
-      <app-baseline-header *ngIf="searchType === searchTypes.SBAS">
-      </app-baseline-header>
-
-      <app-sarviews-header *ngIf="searchType === searchTypes.SARVIEWS_EVENTS">
-      </app-sarviews-header>
-
-      <app-hyp3-header *ngIf="searchType === searchTypes.CUSTOM_PRODUCTS">
-      </app-hyp3-header>
-
-      <app-info-bar *ngIf="breakpoint !== breakpoints.MOBILE"></app-info-bar>
+      <div class="fx-row">
+        <div class="header-logo--layout">
+          <app-logo></app-logo>
+        </div>
+      </div>
+      @if (searchType$ | async; as searchType) {
+        <div class="header-buttons-input fx-col header-inner--layout">
+          @if (searchType === searchTypes.DATASET) {
+            <app-dataset-header> </app-dataset-header>
+          }
+          @if (searchType === searchTypes.DISPLACEMENT) {
+            <app-timeseries-header> </app-timeseries-header>
+          }
+          @if (searchType === searchTypes.LIST) {
+            <app-list-header> </app-list-header>
+          }
+          @if (searchType === searchTypes.BASELINE) {
+            <app-baseline-header> </app-baseline-header>
+          }
+          @if (searchType === searchTypes.SBAS) {
+            <app-baseline-header> </app-baseline-header>
+          }
+          @if (searchType === searchTypes.SARVIEWS_EVENTS) {
+            <app-sarviews-header> </app-sarviews-header>
+          }
+          @if (searchType === searchTypes.CUSTOM_PRODUCTS) {
+            <app-hyp3-header> </app-hyp3-header>
+          }
+          @if (breakpoint !== breakpoints.MOBILE) {
+            <app-info-bar></app-info-bar>
+          }
+        </div>
+      }
     </div>
+    @if (isLoading) {
+      <mat-progress-bar
+        style="width: 100%"
+        mode="indeterminate"
+      ></mat-progress-bar>
+    }
   </div>
-  <mat-progress-bar
-    *ngIf="isLoading"
-    style="width: 100%"
-    mode="indeterminate"
-  ></mat-progress-bar>
-</div>
+}

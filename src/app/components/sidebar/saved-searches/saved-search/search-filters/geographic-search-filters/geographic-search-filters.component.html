@@ -1,102 +1,163 @@
-<div *ngIf="!noFilters(filters)">
-  <div *ngIf="!!filters.selectedDataset">
-    <b>{{ 'DATASET' | translate }}:</b> {{ filters.selectedDataset }}
+@if (!noFilters(filters)) {
+  <div>
+    @if (!!filters.selectedDataset) {
+      <div>
+        <b>{{ 'DATASET' | translate }}:</b> {{ filters.selectedDataset }}
+      </div>
+    }
+    @if (!!filters.polygon) {
+      <div>
+        <b>{{ 'SEARCH_AREA' | translate }}:</b>
+        {{ showSearchAreaType(filters.polygon) }}
+      </div>
+    }
+    @if (!!filters.dateRange.start) {
+      <div>
+        <b>{{ 'START' | translate }}:</b>
+        {{ filters.dateRange.start | shortDate }}
+      </div>
+    }
+    @if (!!filters.dateRange.end) {
+      <div>
+        <b>{{ 'END' | translate }}:</b> {{ filters.dateRange.end | shortDate }}
+      </div>
+    }
+    @if (filters.pathRange.start || filters.pathRange.end) {
+      <div>
+        <b>{{ 'PATH' | translate }}:</b> {{ filters.pathRange.start }} -
+        {{ filters.pathRange.end }}
+      </div>
+    }
+    @if (filters.frameRange.start || filters.frameRange.end) {
+      <div>
+        <b>{{ 'FRAME' | translate }}:</b> {{ filters.frameRange.start }} -
+        {{ filters.frameRange.end }}
+      </div>
+    }
+    @if (filters.season.start || filters.season.end) {
+      <div>
+        <b>{{ 'SEASON' | translate }}:</b> {{ filters.season.start }} -
+        {{ filters.season.end }}
+      </div>
+    }
+    @if (filters.productTypes.length) {
+      <div>
+        <b>{{ 'FILE_TYPES' | translate }}:</b>
+        {{ formatTypesList(filters.productTypes) }}
+      </div>
+    }
+    @if (filters.beamModes.length) {
+      <div>
+        <b>{{ 'BEAM_MODES' | translate }}:</b> {{ filters.beamModes }}
+      </div>
+    }
+    @if (filters.polarizations.length) {
+      <div>
+        <b>{{ 'POLARIZATIONS' | translate }}:</b> {{ filters.polarizations }}
+      </div>
+    }
+    @if (filters.flightDirections.length) {
+      <div>
+        <b>{{ 'FLIGHT_DIR' | translate }}:</b> {{ filters.flightDirections }}
+      </div>
+    }
+    @if (filters.subtypes.length) {
+      <div>
+        <b>{{ 'DATASET_SUBTYPES' | translate }}:</b>
+        {{ formatTypesList(filters.subtypes) }}
+      </div>
+    }
+    @if (filters.selectedMission) {
+      <div>
+        <b>{{ 'CAMPAIGN' | translate }}:</b> {{ filters.selectedMission }}
+      </div>
+    }
+    @if (filters.selectedMission) {
+      <div>
+        <b>{{ 'CAMPAIGN' | translate }}:</b> {{ filters.selectedMission }}
+      </div>
+    }
+    @if (filters.fullBurstIDs.length) {
+      <div>
+        <b>{{ 'FULL_BURST_ID' | translate }}:</b> {{ filters.fullBurstIDs }}
+      </div>
+    }
+    @if (filters.operaBurstIDs.length) {
+      <div>
+        <b>{{ 'OPERA_BURST_ID' | translate }}:</b> {{ filters.operaBurstIDs }}
+      </div>
+    }
+    @if (filters.useCalibrationData) {
+      <div>
+        <b>{{ 'DATA_TYPE' | translate }}:</b> {{ 'CALIBRATION' | translate }}
+      </div>
+    }
+    @if (!!filters.shortNames.length) {
+      <div>
+        <b> {{ 'SHORT_NAMES' | translate }}:</b> {{ filters.shortNames }}
+      </div>
+    }
+    @if (filters.scienceProduct.length) {
+      <div>
+        <b>{{ 'SCIENCE_PRODUCT' | translate }}:</b>
+        {{ filters.scienceProduct | join: ', ' }}
+      </div>
+    }
+    @if (filters.productionConfig.length) {
+      <div>
+        <b>{{ 'PRODUCTION_CONFIGURATION' | translate }}:</b>
+        {{ filters.productionConfig }}
+      </div>
+    }
+    @if (filters.sidePolarizations.length) {
+      <div>
+        <b>{{ 'SIDE_POLARIZATIONS' | translate }}:</b>
+        {{ filters.sidePolarizations }}
+      </div>
+    }
+    @if (filters.frameCoverage.length) {
+      <div>
+        <b>{{ 'FRAME_COVERAGE' | translate }}:</b> {{ filters.frameCoverage }}
+      </div>
+    }
+    @if (filters.rangeBandwidth.length) {
+      <div>
+        <b>{{ 'RANGE_BANDWIDTH' | translate }}:</b> {{ filters.rangeBandwidth }}
+      </div>
+    }
+    @if (!!filters.groupID) {
+      <div>
+        <b> {{ 'GROUP_ID_INFO_BAR' | translate }}:</b> {{ filters.groupID }}
+      </div>
+    }
+    @if (filters.instrument.length) {
+      <div>
+        <b>{{ 'INSTRUMENTS' | translate }}:</b> {{ filters.instrument }}
+      </div>
+    }
+    @if (filters.frameCoverage.length) {
+      <div>
+        <b>{{ 'FRAME_COVERAGE' | translate }}:</b> {{ filters.frameCoverage }}
+      </div>
+    }
+    @if (filters.rangeBandwidth.length) {
+      <div>
+        <b>{{ 'RANGE_BANDWIDTH' | translate }}:</b> {{ filters.rangeBandwidth }}
+      </div>
+    }
+    @if (filters.jointObservation) {
+      <div>
+        <b>{{ 'DATA_TYPE' | translate }}:</b>
+        {{ 'JOINT_OBSERVATION_ONLY' | translate }}
+      </div>
+    }
   </div>
-  <div *ngIf="!!filters.polygon">
-    <b>{{ 'SEARCH_AREA' | translate }}:</b>
-    {{ showSearchAreaType(filters.polygon) }}
-  </div>
-  <div *ngIf="!!filters.dateRange.start">
-    <b>{{ 'START' | translate }}:</b> {{ filters.dateRange.start | shortDate }}
-  </div>
-  <div *ngIf="!!filters.dateRange.end">
-    <b>{{ 'END' | translate }}:</b> {{ filters.dateRange.end | shortDate }}
-  </div>
-  <div *ngIf="filters.pathRange.start || filters.pathRange.end">
-    <b>{{ 'PATH' | translate }}:</b> {{ filters.pathRange.start }} -
-    {{ filters.pathRange.end }}
-  </div>
-  <div *ngIf="filters.frameRange.start || filters.frameRange.end">
-    <b>{{ 'FRAME' | translate }}:</b> {{ filters.frameRange.start }} -
-    {{ filters.frameRange.end }}
-  </div>
-  <div *ngIf="filters.season.start || filters.season.end">
-    <b>{{ 'SEASON' | translate }}:</b> {{ filters.season.start }} -
-    {{ filters.season.end }}
-  </div>
-  <div *ngIf="filters.productTypes.length">
-    <b>{{ 'FILE_TYPES' | translate }}:</b>
-    {{ formatTypesList(filters.productTypes) }}
-  </div>
-  <div *ngIf="filters.beamModes.length">
-    <b>{{ 'BEAM_MODES' | translate }}:</b> {{ filters.beamModes }}
-  </div>
-  <div *ngIf="filters.polarizations.length">
-    <b>{{ 'POLARIZATIONS' | translate }}:</b> {{ filters.polarizations }}
-  </div>
-  <div *ngIf="filters.flightDirections.length">
-    <b>{{ 'FLIGHT_DIR' | translate }}:</b> {{ filters.flightDirections }}
-  </div>
-  <div *ngIf="filters.subtypes.length">
-    <b>{{ 'DATASET_SUBTYPES' | translate }}:</b>
-    {{ formatTypesList(filters.subtypes) }}
-  </div>
-  <div *ngIf="filters.selectedMission">
-    <b>{{ 'CAMPAIGN' | translate }}:</b> {{ filters.selectedMission }}
-  </div>
-  <div *ngIf="filters.selectedMission">
-    <b>{{ 'CAMPAIGN' | translate }}:</b> {{ filters.selectedMission }}
-  </div>
-  <div *ngIf="filters.fullBurstIDs.length">
-    <b>{{ 'FULL_BURST_ID' | translate }}:</b> {{ filters.fullBurstIDs }}
-  </div>
-  <div *ngIf="filters.operaBurstIDs.length">
-    <b>{{ 'OPERA_BURST_ID' | translate }}:</b> {{ filters.operaBurstIDs }}
-  </div>
-  <div *ngIf="filters.useCalibrationData">
-    <b>{{ 'DATA_TYPE' | translate }}:</b> {{ 'CALIBRATION' | translate }}
-  </div>
-  <div *ngIf="!!filters.shortNames.length">
-    <b> {{ 'SHORT_NAMES' | translate }}:</b> {{ filters.shortNames }}
-  </div>
-  <div *ngIf="filters.scienceProduct.length">
-    <b>{{ 'SCIENCE_PRODUCT' | translate }}:</b>
-    {{ filters.scienceProduct | join: ', ' }}
-  </div>
-  <div *ngIf="filters.productionConfig.length">
-    <b>{{ 'PRODUCTION_CONFIGURATION' | translate }}:</b>
-    {{ filters.productionConfig }}
-  </div>
-  <div *ngIf="filters.sidePolarizations.length">
-    <b>{{ 'SIDE_POLARIZATIONS' | translate }}:</b>
-    {{ filters.sidePolarizations }}
-  </div>
-  <div *ngIf="filters.frameCoverage.length">
-    <b>{{ 'FRAME_COVERAGE' | translate }}:</b> {{ filters.frameCoverage }}
-  </div>
-  <div *ngIf="filters.rangeBandwidth.length">
-    <b>{{ 'RANGE_BANDWIDTH' | translate }}:</b> {{ filters.rangeBandwidth }}
-  </div>
-  <div *ngIf="!!filters.groupID">
-    <b> {{ 'GROUP_ID_INFO_BAR' | translate }}:</b> {{ filters.groupID }}
-  </div>
-  <div *ngIf="filters.instrument.length">
-    <b>{{ 'INSTRUMENTS' | translate }}:</b> {{ filters.instrument }}
-  </div>
-  <div *ngIf="filters.frameCoverage.length">
-    <b>{{ 'FRAME_COVERAGE' | translate }}:</b> {{ filters.frameCoverage }}
-  </div>
-  <div *ngIf="filters.rangeBandwidth.length">
-    <b>{{ 'RANGE_BANDWIDTH' | translate }}:</b> {{ filters.rangeBandwidth }}
-  </div>
-  <div *ngIf="filters.jointObservation">
-    <b>{{ 'DATA_TYPE' | translate }}:</b>
-    {{ 'JOINT_OBSERVATION_ONLY' | translate }}
-  </div>
-</div>
+}
 
-<div *ngIf="noFilters(filters)">
-  <span class="faint-text">
-    {{ 'NO_FILTERS' | translate }}
-  </span>
-</div>
+@if (noFilters(filters)) {
+  <div>
+    <span class="faint-text">
+      {{ 'NO_FILTERS' | translate }}
+    </span>
+  </div>
+}

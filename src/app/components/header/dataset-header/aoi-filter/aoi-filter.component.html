@@ -13,16 +13,17 @@
     name="searchPolygon"
     matInput
   />
-  <mat-icon
-    *ngIf="!!polygon"
-    (click)="onCopy()"
-    matTooltip="{{ 'COPY_TO_CLIPBOARD' | translate }}"
-    [class.ghost-item]="!isHoveringAOISelector"
-    class="clickable copy-icon"
-    matSuffix
-  >
-    file_copy
-  </mat-icon>
+  @if (!!polygon) {
+    <mat-icon
+      (click)="onCopy()"
+      matTooltip="{{ 'COPY_TO_CLIPBOARD' | translate }}"
+      [class.ghost-item]="!isHoveringAOISelector"
+      class="clickable copy-icon"
+      matSuffix
+    >
+      file_copy
+    </mat-icon>
+  }
 
   <mat-icon
     (click)="toggleAOIOptions()"
@@ -34,10 +35,8 @@
   </mat-icon>
 </mat-form-field>
 
-<mat-card
-  *ngIf="isAOIOptionsOpen"
-  [@fadeTransition]
-  class="breadcrumb-filter aoi-mat-card"
->
-  <app-aoi-options (close)="closeAOIOptions()"></app-aoi-options>
-</mat-card>
+@if (isAOIOptionsOpen) {
+  <mat-card [@fadeTransition] class="breadcrumb-filter aoi-mat-card">
+    <app-aoi-options (close)="closeAOIOptions()"></app-aoi-options>
+  </mat-card>
+}

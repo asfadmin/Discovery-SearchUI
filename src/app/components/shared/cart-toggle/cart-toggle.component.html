@@ -8,6 +8,10 @@
   "
   mat-icon-button
 >
-  <mat-icon *ngIf="!isQueued">add_shopping_cart</mat-icon>
-  <mat-icon *ngIf="isQueued">shopping_cart</mat-icon>
+  @if (!isQueued) {
+    <mat-icon>add_shopping_cart</mat-icon>
+  }
+  @if (isQueued) {
+    <mat-icon>shopping_cart</mat-icon>
+  }
 </a>

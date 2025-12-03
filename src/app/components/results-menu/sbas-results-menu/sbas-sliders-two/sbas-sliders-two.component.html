@@ -41,9 +41,9 @@
         required
         (input)="updatePerpendicular()"
       />
-      <mat-error *ngIf="meterDistanceControl.invalid">{{
-        'INVALID_BASELINE' | translate
-      }}</mat-error>
+      @if (meterDistanceControl.invalid) {
+        <mat-error>{{ 'INVALID_BASELINE' | translate }}</mat-error>
+      }
     </mat-form-field>
 
     <div class="field-spacing"></div>
@@ -65,9 +65,9 @@
         required
         (input)="updateDaysOffset()"
       />
-      <mat-error *ngIf="daysControl.invalid">{{
-        'INVALID_START_DAY' | translate
-      }}</mat-error>
+      @if (daysControl.invalid) {
+        <mat-error>{{ 'INVALID_START_DAY' | translate }}</mat-error>
+      }
     </mat-form-field>
 
     <div class="field-spacing"></div>
@@ -89,9 +89,9 @@
         required
         (input)="updateDaysOffset()"
       />
-      <mat-error *ngIf="daysControl.invalid">{{
-        'INVALID_END_DAY' | translate
-      }}</mat-error>
+      @if (daysControl.invalid) {
+        <mat-error>{{ 'INVALID_END_DAY' | translate }}</mat-error>
+      }
     </mat-form-field>
   </div>
 </div>

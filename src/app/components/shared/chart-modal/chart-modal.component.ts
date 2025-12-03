@@ -15,13 +15,12 @@ import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
 import { getSearchType } from '@store/search';
 import { SearchType } from '@models';
-import { CommonModule } from '@angular/common';
+
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 @Component({
   selector: 'app-chart-modal',
   imports: [
-    CommonModule,
     MatDialogModule,
     MatIconModule,
     MatButtonModule,

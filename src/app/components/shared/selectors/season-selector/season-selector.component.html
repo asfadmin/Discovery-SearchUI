@@ -6,40 +6,50 @@
   {{ 'SEASONAL_SEARCH' | translate }}
 </mat-slide-toggle>
 
-<div *ngIf="isSeasonalSearch" class="season-selector">
-  <app-circle-slider
-    [startValue]="this.start"
-    [endValue]="this.end"
-    (newStart)="onSeasonStartChange($event)"
-    (newEnd)="onSeasonEndChange($event)"
-    (doneSelecting)="onSeasonDoneSelecting()"
-    (swapEvent)="swap()"
-  ></app-circle-slider>
-  <!-- <app-date-range></app-date-range> -->
-  <div class="dates">
-    <div>
-      <b>{{ 'SEASON_START_DAY' | translate }} </b>
-      <div class="buttons">
-        <div *ngIf="start" class="date">{{ this.start | shortDateSeason }}</div>
-        <button (click)="change('start', -1)" mat-raised-button color="accent">
-          -1
-        </button>
-        <button (click)="change('start', 1)" mat-raised-button color="accent">
-          +1
-        </button>
+@if (isSeasonalSearch) {
+  <div class="season-selector">
+    <app-circle-slider
+      [startValue]="this.start"
+      [endValue]="this.end"
+      (newStart)="onSeasonStartChange($event)"
+      (newEnd)="onSeasonEndChange($event)"
+      (doneSelecting)="onSeasonDoneSelecting()"
+      (swapEvent)="swap()"
+    ></app-circle-slider>
+    <!-- <app-date-range></app-date-range> -->
+    <div class="dates">
+      <div>
+        <b>{{ 'SEASON_START_DAY' | translate }} </b>
+        <div class="buttons">
+          @if (start) {
+            <div class="date">{{ this.start | shortDateSeason }}</div>
+          }
+          <button
+            (click)="change('start', -1)"
+            mat-raised-button
+            color="accent"
+          >
+            -1
+          </button>
+          <button (click)="change('start', 1)" mat-raised-button color="accent">
+            +1
+          </button>
+        </div>
       </div>
-    </div>
-    <div>
-      <b>{{ 'SEASON_END_DAY' | translate }} </b>
-      <div class="buttons">
-        <div *ngIf="end" class="date">{{ end | shortDateSeason }}</div>
-        <button (click)="change('end', -1)" mat-raised-button color="accent">
-          -1
-        </button>
-        <button (click)="change('end', 1)" mat-raised-button color="accent">
-          +1
-        </button>
+      <div>
+        <b>{{ 'SEASON_END_DAY' | translate }} </b>
+        <div class="buttons">
+          @if (end) {
+            <div class="date">{{ end | shortDateSeason }}</div>
+          }
+          <button (click)="change('end', -1)" mat-raised-button color="accent">
+            -1
+          </button>
+          <button (click)="change('end', 1)" mat-raised-button color="accent">
+            +1
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
+}

@@ -64,7 +64,8 @@ export class SeasonSelectorComponent implements OnInit, OnDestroy {
       setTimeout(() => {
         this.store$.dispatch(new filtersStore.SetSeasonStart(1));
         this.store$.dispatch(new filtersStore.SetSeasonEnd(180));
-      }, 0);    }
+      }, 0);
+    }
   }
 
   public onSeasonStartChange(dayOfYear: number): void {
