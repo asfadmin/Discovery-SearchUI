@@ -124,10 +124,12 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public currentDatasetID$ = this.store$
     .select(filtersStore.getSelectedDataset)
     .pipe(map((dataset) => dataset.id));
-  public numberOfScenes$ = this.store$.select(scenesStore.getNumberOfScenes);
-  public numberOfProducts$ = this.store$.select(
-    scenesStore.getNumberOfProducts,
+  public numberOfScenes$ = this.scenesService.scenes$.pipe(
+    map((scenes) => scenes.length),
   );
+  public numberOfProducts$ = this.scenesService
+    .products$()
+    .pipe(map((products) => products.length));
   public numberOfFilteredEvents$ = this.eventMonitoringService
     .filteredSarviewsEvents$()
     .pipe(

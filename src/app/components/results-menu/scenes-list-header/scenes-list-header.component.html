@@ -21,8 +21,17 @@
             @let numberOfProducts = numberOfProducts$ | async;
             @let virtualCount = totalVirtualProducts$ | async;
             @let sceneCountDisplay = numberOfProducts - virtualCount;
-            {{ sceneCountDisplay }} {{ 'SCENE' | translate
-            }}{{ sceneCountDisplay === 1 ? '' : 's' }}
+            {{ sceneCountDisplay }}
+            <span
+              [matTooltip]="
+                canHideRawData && !showS1RawData
+                  ? ('RAW_FILES_EXCLUDED' | translate)
+                  : ''
+              "
+              >{{ 'SCENE' | translate
+              }}{{ sceneCountDisplay === 1 ? '' : 's'
+              }}{{ canHideRawData && !showS1RawData ? '*' : '' }}</span
+            >
             @if (numberOfProducts > 0) {
               ({{ numberOfProducts }} {{ numberOfProducts == 1 ? 'FILE' : 'FILES' | translate }})
             }
