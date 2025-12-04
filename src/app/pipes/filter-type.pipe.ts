@@ -5,7 +5,6 @@ import {
   GeographicFiltersType,
   ListFiltersType,
   SbasFiltersType,
-  TimeseriesFiltersType,
   DisplacementFiltersType,
 } from '@models';
 
@@ -23,15 +22,6 @@ export class SBASFilterPipe implements PipeTransform {
   }
 }
 
-@Pipe({
-  name: 'TimeseriesFilter',
-  standalone: false,
-})
-export class TimeseriesFilterPipe implements PipeTransform {
-  transform(input: FilterType): TimeseriesFiltersType {
-    return input as TimeseriesFiltersType;
-  }
-}
 @Pipe({ name: 'geographicFilter' })
 export class GeographicFilterPipe implements PipeTransform {
   transform(input: FilterType): GeographicFiltersType {
