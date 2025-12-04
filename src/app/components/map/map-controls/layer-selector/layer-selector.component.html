@@ -4,13 +4,14 @@
   [matMenuTriggerFor]="layerMenu"
   aria-label="Map projection view"
 >
-  @if (layerType === layerTypes.SATELLITE) {
-    <ng-template class="layer-btn layer-select-icon arctic">
+  <div class="layer-btn layer-select-icon arctic">
+    @if (layerType === layerTypes.SATELLITE) {
       <mat-icon class="control-icon">terrain</mat-icon>
-    </ng-template>
-  } @else {
-    <mat-icon class="control-icon">directions_car</mat-icon>
-  }
+    } @else {
+      <mat-icon class="control-icon">directions_car</mat-icon>
+    }
+  </div>
+
   <span class="fa fa-caret-down bottom-right"></span>
 </button>
 

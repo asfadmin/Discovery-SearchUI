@@ -7,10 +7,7 @@ import {
   OnInit,
 } from '@angular/core';
 
-@Directive({
-  selector: '[contextMenuTriggerFor]',
-  standalone: false,
-})
+@Directive({ selector: '[contextMenuTriggerFor]' })
 export class ContextMenuTriggerDirective
   extends MatMenuTrigger
   implements OnInit

@@ -1,7 +1,6 @@
 import { Component, Input, inject } from '@angular/core';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
-import { SharedModule } from '@shared';
 import * as models from '@models';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Store } from '@ngrx/store';
@@ -10,6 +9,7 @@ import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 import { PropertyService } from '@services';
 import { AsyncPipe } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-flight-direction-selector',
@@ -17,7 +17,7 @@ import { AsyncPipe } from '@angular/common';
     MatSelectModule,
     MatOptionModule,
     MatFormFieldModule,
-    SharedModule,
+    TranslateModule,
     AsyncPipe,
   ],
   templateUrl: './flight-direction-selector.component.html',

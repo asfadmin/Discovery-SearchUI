@@ -10,12 +10,36 @@ import { faCopy } from '@fortawesome/free-solid-svg-icons';
 
 import * as services from '@services';
 import * as models from '@models';
+import { MatListItem } from '@angular/material/list';
+import { NgStyle, NgClass } from '@angular/common';
+import { FileNameComponent } from '@components/shared/file-name/file-name.component';
+import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatTooltip } from '@angular/material/tooltip';
+import { SceneControlsComponent } from './scene-controls/scene-controls.component';
+import { BaselineSceneControlsComponent } from './baseline-scene-controls/baseline-scene-controls.component';
+import { ShortDatePipe, FullDatePipe } from '@pipes/short-date.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-scene',
   templateUrl: './scene.component.html',
   styleUrls: ['./scene.component.scss'],
-  standalone: false,
+  imports: [
+    MatListItem,
+    NgStyle,
+
+    NgClass,
+    FileNameComponent,
+    CopyToClipboardComponent,
+    FontAwesomeModule,
+    MatTooltip,
+    SceneControlsComponent,
+    BaselineSceneControlsComponent,
+    ShortDatePipe,
+    FullDatePipe,
+    TranslateModule,
+  ],
 })
 export class SceneComponent implements OnInit {
   env = inject(services.EnvironmentService);

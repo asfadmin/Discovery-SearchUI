@@ -5,7 +5,13 @@ import {
   ViewChild,
   inject,
 } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogRef,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+} from '@angular/material/dialog';
 
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 
@@ -22,6 +28,28 @@ import * as userStore from '@store/user';
 import * as uiStore from '@store/ui';
 import * as models from '@models';
 import * as services from '@services';
+import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { ResizedDirective } from '../../../directives/resized.directive';
+import { MatIcon } from '@angular/material/icon';
+import {
+  NgPlural,
+  NgPluralCase,
+  NgStyle,
+  DecimalPipe,
+  TitleCasePipe,
+} from '@angular/common';
+import { Hyp3UrlComponent } from '@components/shared/hyp3-url/hyp3-url.component';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import { MatButton } from '@angular/material/button';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { ProcessingOptionsComponent } from './processing-options/processing-options.component';
+import { ProcessingQueueJobsComponent } from './processing-queue-jobs/processing-queue-jobs.component';
+import { ProcessingSignupComponent } from './processing-signup/processing-signup.component';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 enum ProcessingQueueTab {
   SCENES = 'Scenes',
@@ -33,7 +61,34 @@ enum ProcessingQueueTab {
   selector: 'app-processing-queue',
   templateUrl: './processing-queue.component.html',
   styleUrls: ['./processing-queue.component.scss'],
-  standalone: false,
+  imports: [
+    MatDialogTitle,
+    CdkDrag,
+    CdkDragHandle,
+    ResizedDirective,
+    MatIcon,
+    Hyp3UrlComponent,
+    DocsModalComponent,
+    MatButton,
+    NgPlural,
+    NgPluralCase,
+    MatMenuTrigger,
+    MatMenu,
+    MatMenuItem,
+    CdkScrollable,
+    MatDialogContent,
+    ProcessingOptionsComponent,
+    ProcessingQueueJobsComponent,
+    ProcessingSignupComponent,
+    MatDialogActions,
+    MatProgressBar,
+    NgStyle,
+    MatSlideToggle,
+    FormsModule,
+    DecimalPipe,
+    TitleCasePipe,
+    TranslateModule,
+  ],
 })
 export class ProcessingQueueComponent implements OnInit {
   authService = inject(services.AuthService);

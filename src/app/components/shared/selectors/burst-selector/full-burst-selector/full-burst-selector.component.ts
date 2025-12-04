@@ -13,6 +13,9 @@ import * as filtersStore from '@store/filters';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { SearchType } from '@models';
+import { AsyncPipe } from '@angular/common';
+import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
+import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-full-burst-selector',
   templateUrl: './full-burst-selector.component.html',
@@ -20,7 +23,7 @@ import { SearchType } from '@models';
     './full-burst-selector.component.scss',
     '../burst-selector.component.scss',
   ],
-  standalone: false,
+  imports: [MatFormField, MatLabel, MatInput, AsyncPipe, TranslateModule],
 })
 export class FullBurstSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

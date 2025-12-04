@@ -1,5 +1,4 @@
 import {
-  NgModule,
   Directive,
   ElementRef,
   EventEmitter,
@@ -25,10 +24,7 @@ export class ResizedEvent {
   }
 }
 
-@Directive({
-  selector: '[resized]',
-  standalone: false,
-})
+@Directive({ selector: '[resized]' })
 export class ResizedDirective implements OnInit, OnDestroy {
   private readonly element = inject(ElementRef);
   private readonly zone = inject(NgZone);
@@ -61,10 +57,3 @@ export class ResizedDirective implements OnInit, OnDestroy {
     this.resized.emit(resizedEvent);
   }
 }
-
-@NgModule({
-  declarations: [ResizedDirective],
-  imports: [],
-  exports: [ResizedDirective],
-})
-export class ResizedEventModule {}

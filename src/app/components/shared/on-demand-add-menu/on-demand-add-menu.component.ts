@@ -1,5 +1,10 @@
 import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
-import { MatMenu } from '@angular/material/menu';
+import {
+  MatMenu,
+  MatMenuContent,
+  MatMenuItem,
+  MatMenuTrigger,
+} from '@angular/material/menu';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as queueStore from '@store/queue';
@@ -18,12 +23,29 @@ import {
   getSelectedDataset,
   getShouldUseFramesForReference,
 } from '@store/filters';
+import { NgPlural, NgPluralCase, DecimalPipe } from '@angular/common';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-on-demand-add-menu',
   templateUrl: './on-demand-add-menu.component.html',
   styleUrls: ['./on-demand-add-menu.component.scss'],
-  standalone: false,
+  imports: [
+    MatMenu,
+    MatMenuContent,
+
+    MatMenuItem,
+
+    MatTooltip,
+    MatMenuTrigger,
+    MatIcon,
+    NgPlural,
+    NgPluralCase,
+    DecimalPipe,
+    TranslateModule,
+  ],
 })
 export class OnDemandAddMenuComponent implements OnInit {
   private store$ = inject<Store<AppState>>(Store);

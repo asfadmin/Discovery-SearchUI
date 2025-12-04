@@ -11,20 +11,52 @@ import { Subject } from 'rxjs';
 import { tap, delay, map } from 'rxjs/operators';
 import moment from 'moment';
 import { SubSink } from 'subsink';
-import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import {
+  UntypedFormGroup,
+  UntypedFormControl,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import {
+  MatDatepickerInputEvent,
+  MatDatepickerInput,
+  MatDatepickerToggle,
+  MatDatepicker,
+} from '@angular/material/datepicker';
 import { DateAdapter } from '@angular/material/core';
 import { NotificationService, ScreenSizeService } from '@services';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 import * as models from '@models';
+import { NgClass } from '@angular/common';
+import {
+  MatFormField,
+  MatLabel,
+  MatInput,
+  MatHint,
+  MatSuffix,
+} from '@angular/material/input';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-date-range',
   templateUrl: './date-range.component.html',
   styleUrls: ['./date-range.component.scss'],
-  standalone: false,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    NgClass,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatDatepickerInput,
+    MatHint,
+    MatDatepickerToggle,
+    MatSuffix,
+    MatDatepicker,
+    TranslateModule,
+  ],
 })
 export class DateRangeComponent implements OnInit, OnDestroy {
   private notificationService = inject(NotificationService);
