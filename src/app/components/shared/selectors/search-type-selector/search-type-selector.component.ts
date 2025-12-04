@@ -21,13 +21,7 @@ import * as models from '@models';
 import { EnvironmentService, ScreenSizeService } from '@services';
 import { AnalyticsEvent, Breakpoints, derivedDatasets } from '@models';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
-import {
-  NgIf,
-  NgFor,
-  NgClass,
-  AsyncPipe,
-  TitleCasePipe,
-} from '@angular/common';
+import { NgClass, AsyncPipe, TitleCasePipe } from '@angular/common';
 import { MatLabel, MatSuffix } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -46,13 +40,12 @@ declare global {
   templateUrl: './search-type-selector.component.html',
   styleUrls: ['./search-type-selector.component.scss'],
   imports: [
-    NgIf,
     MatLabel,
     MatButton,
     MatMenuTrigger,
     MatTooltip,
     MatMenu,
-    NgFor,
+
     MatMenuItem,
     NgClass,
     DocsModalComponent,

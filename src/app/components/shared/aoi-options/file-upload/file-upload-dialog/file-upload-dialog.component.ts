@@ -18,7 +18,7 @@ import { AppState } from '@store';
 import { DrawNewPolygon } from '@store/map';
 
 import * as models from '@models';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatButtonToggle } from '@angular/material/button-toggle';
@@ -36,7 +36,6 @@ enum FileErrors {
   templateUrl: 'file-upload-dialog.component.html',
   styleUrls: ['./file-upload-dialog.component.scss'],
   imports: [
-    NgIf,
     MatButton,
     MatProgressSpinner,
     MatButtonToggle,

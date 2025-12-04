@@ -22,7 +22,6 @@ import {
   MatInput,
   MatSuffix,
 } from '@angular/material/input';
-import { NgIf } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatCard } from '@angular/material/card';
@@ -39,7 +38,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatLabel,
     MatInput,
     FormsModule,
-    NgIf,
+
     MatIcon,
     MatSuffix,
     MatTooltip,

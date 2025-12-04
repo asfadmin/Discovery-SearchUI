@@ -11,7 +11,7 @@ import * as models from '@models';
 import { ScreenSizeService } from '@services';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { DateRange } from '@models';
-import { NgIf, NgFor, NgClass, AsyncPipe } from '@angular/common';
+import { NgClass, AsyncPipe } from '@angular/common';
 import { MatLabel } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -32,12 +32,11 @@ declare global {
   templateUrl: './dataset-selector.component.html',
   styleUrls: ['./dataset-selector.component.scss'],
   imports: [
-    NgIf,
     MatLabel,
     MatButton,
     MatMenuTrigger,
     MatMenu,
-    NgFor,
+
     MatMenuItem,
     MatTooltip,
     MatIcon,

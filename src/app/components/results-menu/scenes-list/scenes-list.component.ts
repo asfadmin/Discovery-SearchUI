@@ -40,7 +40,7 @@ import * as models from '@models';
 import { CMRProduct, QueuedHyp3Job, SarviewsEvent } from '@models';
 import { ActiveToast } from 'ngx-toastr';
 import { MatActionList, MatListItem } from '@angular/material/list';
-import { NgClass, NgIf, AsyncPipe, SlicePipe } from '@angular/common';
+import { NgClass, AsyncPipe, SlicePipe } from '@angular/common';
 import { SceneComponent } from './scene/scene.component';
 import { MatButton } from '@angular/material/button';
 import { SarviewsEventComponent } from './sarview-event/sarviews-event.component';
@@ -58,7 +58,7 @@ const INFINITY = 2e10;
     NgClass,
     CdkVirtualScrollViewport,
     CdkFixedSizeVirtualScroll,
-    NgIf,
+
     CdkVirtualForOf,
     SceneComponent,
     MatListItem,

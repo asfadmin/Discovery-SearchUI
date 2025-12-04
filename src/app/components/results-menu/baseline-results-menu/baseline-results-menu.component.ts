@@ -21,7 +21,7 @@ import {
 import { SubSink } from 'subsink';
 
 import * as models from '@models';
-import { NgIf, NgClass, AsyncPipe } from '@angular/common';
+import { NgClass, AsyncPipe } from '@angular/common';
 import { MatCard, MatCardSubtitle } from '@angular/material/card';
 import { ScenesListHeaderComponent } from '../scenes-list-header/scenes-list-header.component';
 import { ScenesListComponent } from '../scenes-list/scenes-list.component';
@@ -51,7 +51,6 @@ enum CardViews {
     '../results-menu.component.scss',
   ],
   imports: [
-    NgIf,
     MatCard,
     MatCardSubtitle,
     ScenesListHeaderComponent,

@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import * as models from '@models';
-import { NgFor } from '@angular/common';
+import {} from '@angular/common';
 import { ShortDateTimePipe } from '@pipes/short-date.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -25,7 +25,7 @@ enum Polarizations {
   selector: 'app-event-product-metadata',
   templateUrl: './event-product-metadata.component.html',
   styleUrls: ['./event-product-metadata.component.scss'],
-  imports: [NgFor, ShortDateTimePipe, TranslateModule],
+  imports: [ShortDateTimePipe, TranslateModule],
 })
 export class EventProductMetadataComponent {
   @Input() set product(value: models.SarviewsProduct) {

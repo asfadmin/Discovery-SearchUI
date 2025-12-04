@@ -33,7 +33,7 @@ import * as searchStore from '@store/search';
 import * as models from '@models';
 import { SarviewsEventsService, ScenesService } from '@services';
 import { PinnedProduct } from '@services/browse-map.service';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { MatBadge } from '@angular/material/badge';
 import { ShortDatePipe } from '@pipes/short-date.pipe';
 
@@ -43,7 +43,6 @@ import { ShortDatePipe } from '@pipes/short-date.pipe';
   styleUrls: ['./browse-list.component.scss'],
   encapsulation: ViewEncapsulation.None,
   imports: [
-    NgIf,
     CdkVirtualScrollViewport,
     CdkFixedSizeVirtualScroll,
     CdkVirtualForOf,

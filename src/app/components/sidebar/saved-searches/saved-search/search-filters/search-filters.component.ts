@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 
 import * as models from '@models';
-import { NgIf } from '@angular/common';
 import { ListSearchFiltersComponent } from './list-search-filters/list-search-filters.component';
 import { GeographicSearchFiltersComponent } from './geographic-search-filters/geographic-search-filters.component';
 import { BaselineSearchFiltersComponent } from './baseline-search-filters/baseline-search-filters.component';
@@ -20,7 +19,6 @@ import {
   templateUrl: './search-filters.component.html',
   styleUrls: ['./search-filters.component.scss'],
   imports: [
-    NgIf,
     ListSearchFiltersComponent,
     GeographicSearchFiltersComponent,
     BaselineSearchFiltersComponent,

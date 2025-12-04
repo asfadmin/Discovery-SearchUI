@@ -9,7 +9,7 @@ import * as searchStore from '@store/search';
 import * as models from '@models/index';
 import * as services from '@services';
 import { TranslateService } from '@ngx-translate/core';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { LogoComponent } from './logo/logo.component';
 import { DatasetHeaderComponent } from './dataset-header/dataset-header.component';
 import { TimeseriesHeaderComponent } from './timeseries-header/timeseries-header.component';
@@ -25,7 +25,6 @@ import { MatProgressBar } from '@angular/material/progress-bar';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
   imports: [
-    NgIf,
     LogoComponent,
     DatasetHeaderComponent,
     TimeseriesHeaderComponent,

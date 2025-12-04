@@ -21,7 +21,6 @@ import { ScreenSizeService, DatasetForProductService } from '@services';
 
 import { SubSink } from 'subsink';
 import { map } from 'rxjs/operators';
-import { NgIf, NgFor } from '@angular/common';
 import { MatCard, MatCardSubtitle } from '@angular/material/card';
 import { ScenesListHeaderComponent } from '../scenes-list-header/scenes-list-header.component';
 import { ScenesListComponent } from '../scenes-list/scenes-list.component';
@@ -51,12 +50,11 @@ enum CardViews {
     '../results-menu.component.scss',
   ],
   imports: [
-    NgIf,
     MatCard,
     MatCardSubtitle,
     ScenesListHeaderComponent,
     ScenesListComponent,
-    NgFor,
+
     SceneMetadataComponent,
     MatTooltip,
     ResizableModule,

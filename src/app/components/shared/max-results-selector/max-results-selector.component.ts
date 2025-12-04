@@ -9,7 +9,6 @@ import * as scenesStore from '@store/scenes';
 import * as models from '@models';
 import { SubSink } from 'subsink';
 import { PairService, ScenesService } from '@services';
-import { NgIf, NgFor } from '@angular/common';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatIcon } from '@angular/material/icon';
 import {
@@ -25,12 +24,11 @@ import { fas, faSpinner } from '@fortawesome/free-solid-svg-icons';
   templateUrl: './max-results-selector.component.html',
   styleUrls: ['./max-results-selector.component.scss'],
   imports: [
-    NgIf,
     MatMenuTrigger,
     MatIcon,
     FontAwesomeModule,
     MatMenu,
-    NgFor,
+
     MatMenuItem,
     DocsModalComponent,
     TranslateModule,

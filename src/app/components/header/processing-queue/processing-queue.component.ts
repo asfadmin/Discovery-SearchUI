@@ -32,8 +32,6 @@ import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { ResizedDirective } from '../../../directives/resized.directive';
 import { MatIcon } from '@angular/material/icon';
 import {
-  NgIf,
-  NgFor,
   NgPlural,
   NgPluralCase,
   NgStyle,
@@ -69,11 +67,9 @@ enum ProcessingQueueTab {
     CdkDragHandle,
     ResizedDirective,
     MatIcon,
-    NgIf,
     Hyp3UrlComponent,
     DocsModalComponent,
     MatButton,
-    NgFor,
     NgPlural,
     NgPluralCase,
     MatMenuTrigger,

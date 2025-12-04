@@ -54,12 +54,7 @@ import { PointHistoryState } from '@services/point-history.service';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 import { AsfLanguageService } from '@services/asf-language.service';
-import {
-  NgIf,
-  NgTemplateOutlet,
-  AsyncPipe,
-  KeyValuePipe,
-} from '@angular/common';
+import { NgTemplateOutlet, AsyncPipe, KeyValuePipe } from '@angular/common';
 import { MatCard, MatCardSubtitle } from '@angular/material/card';
 import { ScenesListHeaderComponent } from '../scenes-list-header/scenes-list-header.component';
 import { MatCheckbox } from '@angular/material/checkbox';
@@ -99,7 +94,6 @@ export interface PointSeries {
     '../results-menu.component.scss',
   ],
   imports: [
-    NgIf,
     MatCard,
     MatCardSubtitle,
     ScenesListHeaderComponent,

@@ -33,7 +33,7 @@ import {
 } from '@models';
 
 import { ThemePalette } from '@angular/material/core';
-import { NgIf, NgFor, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { AsyncPipe, TitleCasePipe } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -57,7 +57,6 @@ declare global {
   styleUrls: ['./header-buttons.component.scss'],
   animations: [],
   imports: [
-    NgIf,
     MatButton,
     MatMenuTrigger,
     MatTooltip,
@@ -68,7 +67,6 @@ declare global {
     SearchButtonComponent,
     DocsModalComponent,
     MatSuffix,
-    NgFor,
     AsyncPipe,
     TitleCasePipe,
     TranslateModule,

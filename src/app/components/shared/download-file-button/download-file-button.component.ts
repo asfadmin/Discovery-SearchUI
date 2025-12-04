@@ -30,7 +30,6 @@ import * as userStore from '@store/user';
 import { SubSink } from 'subsink';
 import { AuthService, NotificationService } from '@services';
 import { HttpClient, HttpEventType } from '@angular/common/http';
-import { NgIf } from '@angular/common';
 import { MatIconButton, MatButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatIcon } from '@angular/material/icon';
@@ -42,7 +41,6 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './download-file-button.component.html',
   styleUrls: ['./download-file-button.component.scss'],
   imports: [
-    NgIf,
     MatIconButton,
     MatTooltip,
     MatIcon,

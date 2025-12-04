@@ -15,7 +15,7 @@ import {
   MatOption,
 } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
-import { NgFor, NgIf, KeyValuePipe } from '@angular/common';
+import { KeyValuePipe } from '@angular/common';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { MatTooltip } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
@@ -30,9 +30,9 @@ import { PolarizationCountPipe } from '@pipes/polarization.pipe';
     MatSelect,
     FormsModule,
     MatSelectTrigger,
-    NgFor,
+
     MatOption,
-    NgIf,
+
     MatHint,
     MatSlideToggle,
     MatTooltip,

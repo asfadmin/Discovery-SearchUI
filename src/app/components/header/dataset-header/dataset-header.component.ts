@@ -9,7 +9,7 @@ import * as filterStore from '@store/filters';
 
 import * as models from '@models';
 import * as services from '@services';
-import { NgIf, NgClass, AsyncPipe } from '@angular/common';
+import { NgClass, AsyncPipe } from '@angular/common';
 import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
 import { DatasetSelectorComponent } from '@components/shared/selectors/dataset-selector/dataset-selector.component';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
@@ -29,7 +29,6 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './dataset-header.component.html',
   styleUrls: ['./dataset-header.component.scss', '../header.component.scss'],
   imports: [
-    NgIf,
     SearchTypeSelectorComponent,
     DatasetSelectorComponent,
     MatSlideToggle,

@@ -20,13 +20,7 @@ import * as models from '@models';
 import * as services from '@services';
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import { ProjectNameSelectorComponent } from '@components/shared/selectors/project-name-selector/project-name-selector.component';
-import {
-  NgFor,
-  NgPlural,
-  NgPluralCase,
-  NgIf,
-  TitleCasePipe,
-} from '@angular/common';
+import { NgPlural, NgPluralCase, TitleCasePipe } from '@angular/common';
 import {
   MatSelectionList,
   MatListOption,
@@ -45,7 +39,7 @@ import { TranslateModule } from '@ngx-translate/core';
     CdkScrollable,
     MatDialogContent,
     ProjectNameSelectorComponent,
-    NgFor,
+
     MatSelectionList,
     MatListOption,
     MatListItemTitle,
@@ -54,7 +48,7 @@ import { TranslateModule } from '@ngx-translate/core';
     NgPluralCase,
     MatDialogActions,
     MatButton,
-    NgIf,
+
     TitleCasePipe,
     TranslateModule,
   ],

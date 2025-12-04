@@ -3,7 +3,7 @@ import { ActiveToast, ToastrService } from 'ngx-toastr';
 import { Banner } from '@models';
 import { MatDialog } from '@angular/material/dialog';
 import { BannerDialogComponent } from '@components/map/banners/banner-dialog/banner-dialog.component';
-import { NgFor } from '@angular/common';
+import {} from '@angular/common';
 
 export interface DialogData {
   title: string;
@@ -125,7 +125,7 @@ export class BannerCreateDirective implements OnInit {
   selector: 'app-banners',
   templateUrl: './banners.component.html',
   styleUrls: ['./banners.component.scss'],
-  imports: [NgFor, BannerCreateDirective],
+  imports: [BannerCreateDirective],
 })
 export class BannersComponent {
   @Input() banners: Banner[];

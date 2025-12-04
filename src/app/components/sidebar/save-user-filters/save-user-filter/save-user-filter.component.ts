@@ -14,7 +14,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { timer } from 'rxjs';
 import { NotificationService } from '@services';
-import { NgIf, UpperCasePipe } from '@angular/common';
+import { UpperCasePipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { MatFormField, MatInput } from '@angular/material/input';
@@ -34,7 +34,6 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './save-user-filter.component.html',
   styleUrls: ['./save-user-filter.component.scss'],
   imports: [
-    NgIf,
     MatIcon,
     FormsModule,
     MatFormField,

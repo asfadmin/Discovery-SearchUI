@@ -9,7 +9,7 @@ import {
 
 import * as services from '@services';
 import * as models from '@models';
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatListItemMeta } from '@angular/material/list';
@@ -23,7 +23,7 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./baseline-scene-controls.component.scss'],
   imports: [
     NgClass,
-    NgIf,
+
     MatIcon,
     MatMenuTrigger,
     MatListItemMeta,

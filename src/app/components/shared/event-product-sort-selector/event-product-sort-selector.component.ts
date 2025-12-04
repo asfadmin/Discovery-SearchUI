@@ -14,7 +14,7 @@ import {
 } from '@angular/material/button-toggle';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatIcon } from '@angular/material/icon';
-import { NgFor } from '@angular/common';
+import {} from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -27,7 +27,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatMenuTrigger,
     MatIcon,
     MatMenu,
-    NgFor,
+
     MatMenuItem,
     TranslateModule,
   ],

@@ -40,7 +40,7 @@ import {
 } from '@models';
 import { ClipboardService } from 'ngx-clipboard';
 import { PinnedProduct } from '@services/browse-map.service';
-import { NgIf, NgClass, NgFor, AsyncPipe } from '@angular/common';
+import { NgClass, AsyncPipe } from '@angular/common';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatIconButton, MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -73,12 +73,11 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./image-dialog.component.scss'],
   providers: [BrowseMapService],
   imports: [
-    NgIf,
     NgClass,
     MatTooltip,
     MatIconButton,
     MatIcon,
-    NgFor,
+
     MatCardSmImage,
     MatProgressSpinner,
     SceneMetadataComponent,

@@ -10,7 +10,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-baseline-frame-reference-toggle',
-  imports: [CommonModule, TranslateModule, MatSlideToggleModule, FormsModule],
+  imports: [TranslateModule, MatSlideToggleModule, FormsModule],
   templateUrl: './baseline-frame-reference-toggle.component.html',
   styleUrl: './baseline-frame-reference-toggle.component.scss',
 })

@@ -32,7 +32,7 @@ import {
   MatInput,
   MatSuffix,
 } from '@angular/material/input';
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatIcon } from '@angular/material/icon';
 import { MatOption } from '@angular/material/select';
@@ -48,7 +48,7 @@ import { TranslateModule } from '@ngx-translate/core';
     FormsModule,
     MatFormField,
     MatLabel,
-    NgIf,
+
     MatInput,
     MatAutocompleteTrigger,
     ReactiveFormsModule,
@@ -56,7 +56,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatIcon,
     MatSuffix,
     MatAutocomplete,
-    NgFor,
+
     MatOption,
     MatCard,
     MatCardHeader,

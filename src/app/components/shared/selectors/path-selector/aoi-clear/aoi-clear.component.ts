@@ -10,7 +10,7 @@ import * as filtersStore from '@store/filters';
 import { MapService, WktService } from '@services';
 import { getSearchType } from '@store/search';
 import { SearchType } from '@models';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
@@ -19,7 +19,7 @@ import { TranslateModule } from '@ngx-translate/core';
   selector: 'app-aoi-clear',
   templateUrl: './aoi-clear.component.html',
   styleUrls: ['./aoi-clear.component.scss'],
-  imports: [NgIf, MatButton, MatIcon, AsyncPipe, TranslateModule],
+  imports: [MatButton, MatIcon, AsyncPipe, TranslateModule],
 })
 export class AoiClearComponent implements OnInit, OnDestroy {
   private mapService = inject(MapService);

@@ -8,7 +8,6 @@ import * as filtersStore from '@store/filters';
 import { PropertyService } from '@services';
 import { SubSink } from 'subsink';
 import * as models from '@models';
-import { NgIf, NgFor } from '@angular/common';
 import { ProductTypeSelectorComponent } from '../product-type-selector/product-type-selector.component';
 import { MatFormField, MatHint, MatInput } from '@angular/material/input';
 import { MatSelect, MatOption } from '@angular/material/select';
@@ -21,12 +20,11 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './other-selector.component.html',
   styleUrls: ['./other-selector.component.scss'],
   imports: [
-    NgIf,
     ProductTypeSelectorComponent,
     MatFormField,
     MatSelect,
     FormsModule,
-    NgFor,
+
     MatOption,
     MatHint,
     MatInput,

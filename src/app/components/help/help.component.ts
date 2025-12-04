@@ -4,13 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
-import {
-  NgIf,
-  NgSwitch,
-  NgSwitchCase,
-  NgSwitchDefault,
-  TitleCasePipe,
-} from '@angular/common';
+import { TitleCasePipe } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import { HelpTocComponent } from './help-pages/help-toc/help-toc.component';
 import { HelpGeoSearchComponent } from './help-pages/help-geo-search/help-geo-search.component';
@@ -35,10 +29,7 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './help.component.html',
   styleUrls: ['./help.component.scss'],
   imports: [
-    NgIf,
     MatButton,
-    NgSwitch,
-    NgSwitchCase,
     HelpTocComponent,
     HelpGeoSearchComponent,
     HelpListSearchComponent,
@@ -55,7 +46,6 @@ import { TranslateModule } from '@ngx-translate/core';
     HelpBaselineSearchComponent,
     HelpSbasSearchComponent,
     HelpOnDemandComponent,
-    NgSwitchDefault,
     TitleCasePipe,
     TranslateModule,
   ],

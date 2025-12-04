@@ -37,7 +37,6 @@ import {
   MatInput,
   MatError,
 } from '@angular/material/input';
-import { NgIf } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 
 declare let wNumb: any;
@@ -51,7 +50,7 @@ declare let wNumb: any;
     MatLabel,
     MatInput,
     FormsModule,
-    NgIf,
+
     MatError,
     TranslateModule,
   ],

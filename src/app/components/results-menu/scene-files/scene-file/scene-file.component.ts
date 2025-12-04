@@ -33,7 +33,7 @@ import {
   MatListItemMeta,
   MatListItemLine,
 } from '@angular/material/list';
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import {
@@ -58,7 +58,7 @@ import { fas, faSpinner } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./scene-file.component.scss'],
   imports: [
     MatListItem,
-    NgIf,
+
     MatListItemIcon,
     MatIcon,
     MatTooltip,
@@ -69,7 +69,7 @@ import { fas, faSpinner } from '@fortawesome/free-solid-svg-icons';
     MatListItemMeta,
     MatMenuTrigger,
     MatMenu,
-    NgFor,
+
     MatMenuItem,
     MatListItemLine,
     DownloadFileButtonComponent,

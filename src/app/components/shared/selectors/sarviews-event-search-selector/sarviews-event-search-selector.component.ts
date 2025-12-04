@@ -16,7 +16,7 @@ import { combineLatest } from 'rxjs';
 import { map, withLatestFrom } from 'rxjs/operators';
 import { SubSink } from 'subsink';
 import { MatFormField, MatInput } from '@angular/material/input';
-import { NgFor, NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { MatOption } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
 import { ShortDatePipe } from '@pipes/short-date.pipe';
@@ -31,10 +31,10 @@ import { TranslateModule } from '@ngx-translate/core';
     MatInput,
     MatAutocompleteTrigger,
     MatAutocomplete,
-    NgFor,
+
     MatOption,
     MatTooltip,
-    NgIf,
+
     AsyncPipe,
     ShortDatePipe,
     TranslateModule,

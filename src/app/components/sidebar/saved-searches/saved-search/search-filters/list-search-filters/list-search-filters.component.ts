@@ -1,7 +1,6 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 import { ListFiltersType } from '@models';
-import { NgIf, NgFor } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -9,7 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './list-search-filters.component.html',
   styleUrls: ['./list-search-filters.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgIf, NgFor, TranslateModule],
+  imports: [TranslateModule],
 })
 export class ListSearchFiltersComponent {
   @Input() filters: ListFiltersType;

@@ -8,7 +8,7 @@ import * as filtersStore from '@store/filters';
 
 import * as models from '@models';
 import { PropertyService, ScreenSizeService } from '@services';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
   MatAccordion,
   MatExpansionPanel,
@@ -47,7 +47,6 @@ enum FilterPanel {
   templateUrl: './dataset-filters.component.html',
   styleUrls: ['./dataset-filters.component.scss'],
   imports: [
-    NgIf,
     MatAccordion,
     MatExpansionPanel,
     MatExpansionPanelHeader,

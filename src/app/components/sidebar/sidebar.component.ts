@@ -6,7 +6,6 @@ import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 
 import * as models from '@models';
-import { NgIf } from '@angular/common';
 import { SavedSearchesComponent } from './saved-searches/saved-searches.component';
 import { SaveUserFiltersComponent } from './save-user-filters/save-user-filters.component';
 
@@ -14,7 +13,7 @@ import { SaveUserFiltersComponent } from './save-user-filters/save-user-filters.
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
-  imports: [NgIf, SavedSearchesComponent, SaveUserFiltersComponent],
+  imports: [SavedSearchesComponent, SaveUserFiltersComponent],
 })
 export class SidebarComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

@@ -23,7 +23,7 @@ import {
   MatAutocompleteTrigger,
   MatAutocomplete,
 } from '@angular/material/autocomplete';
-import { NgFor } from '@angular/common';
+import {} from '@angular/common';
 import { MatOption } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -37,7 +37,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatInput,
     MatAutocompleteTrigger,
     MatAutocomplete,
-    NgFor,
+
     MatOption,
     TranslateModule,
   ],

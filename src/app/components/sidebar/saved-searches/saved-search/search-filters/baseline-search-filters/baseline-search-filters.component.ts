@@ -1,7 +1,6 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 import { BaselineFiltersType } from '@models';
-import { NgIf } from '@angular/common';
 import { ShortDatePipe } from '@pipes/short-date.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -10,7 +9,7 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './baseline-search-filters.component.html',
   styleUrls: ['./baseline-search-filters.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgIf, ShortDatePipe, TranslateModule],
+  imports: [ShortDatePipe, TranslateModule],
 })
 export class BaselineSearchFiltersComponent {
   @Input() filters: BaselineFiltersType;

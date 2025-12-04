@@ -12,7 +12,7 @@ import { MapService, ScreenSizeService } from '@services';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import moment from 'moment';
-import { NgIf, NgClass, AsyncPipe } from '@angular/common';
+import { NgClass, AsyncPipe } from '@angular/common';
 import {
   MatListItem,
   MatListItemAvatar,
@@ -30,7 +30,6 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './sarviews-event.component.html',
   styleUrls: ['./sarviews-event.component.scss'],
   imports: [
-    NgIf,
     MatListItem,
     NgClass,
     MatListItemAvatar,

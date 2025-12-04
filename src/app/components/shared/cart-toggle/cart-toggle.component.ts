@@ -1,7 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { MatIconButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
-import { NgIf } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -9,7 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
   selector: 'app-cart-toggle',
   templateUrl: './cart-toggle.component.html',
   styleUrls: ['./cart-toggle.component.scss'],
-  imports: [MatIconButton, MatTooltip, NgIf, MatIcon, TranslateModule],
+  imports: [MatIconButton, MatTooltip, MatIcon, TranslateModule],
 })
 export class CartToggleComponent {
   @Output() toggle = new EventEmitter<boolean>();

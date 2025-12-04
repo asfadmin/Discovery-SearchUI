@@ -17,7 +17,7 @@ import * as searchStore from '@store/search';
 import { DrawSelectorComponent } from '../draw-selector/draw-selector.component';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatIcon } from '@angular/material/icon';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { FileUploadDialogComponent } from '../file-upload/file-upload-dialog/file-upload-dialog.component';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -31,7 +31,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatButtonToggle,
     MatTooltip,
     MatIcon,
-    NgIf,
+
     FileUploadDialogComponent,
     AsyncPipe,
     TranslateModule,

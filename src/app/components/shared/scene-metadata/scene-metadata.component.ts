@@ -8,7 +8,7 @@ import * as filtersStore from '@store/filters';
 
 import * as models from '@models';
 import { PropertyService } from '@services';
-import { NgIf, UpperCasePipe } from '@angular/common';
+import { UpperCasePipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import {
   MatMenuTrigger,
@@ -26,7 +26,6 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './scene-metadata.component.html',
   styleUrls: ['./scene-metadata.component.scss'],
   imports: [
-    NgIf,
     MatIcon,
     MatMenuTrigger,
     MatMenu,

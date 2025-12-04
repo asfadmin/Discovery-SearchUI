@@ -8,20 +8,13 @@ import { AsfLanguageService } from '@services/asf-language.service';
 import { MatMiniFabButton } from '@angular/material/button';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatIcon } from '@angular/material/icon';
-import { NgFor } from '@angular/common';
+import {} from '@angular/common';
 
 @Component({
   selector: 'app-language-selector',
   templateUrl: './language-selector.component.html',
   styleUrls: ['./language-selector.component.scss'],
-  imports: [
-    MatMiniFabButton,
-    MatMenuTrigger,
-    MatIcon,
-    MatMenu,
-    NgFor,
-    MatMenuItem,
-  ],
+  imports: [MatMiniFabButton, MatMenuTrigger, MatIcon, MatMenu, MatMenuItem],
 })
 export class LanguageSelectorComponent implements OnInit {
   translate = inject(TranslateService);

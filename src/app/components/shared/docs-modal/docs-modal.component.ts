@@ -29,7 +29,6 @@ import {
 import { DomSanitizer } from '@angular/platform-browser';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
-import { NgIf } from '@angular/common';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatIcon } from '@angular/material/icon';
 import { CdkScrollable } from '@angular/cdk/scrolling';
@@ -44,7 +43,7 @@ export interface DialogData {
   selector: 'app-docs-modal',
   templateUrl: './docs-modal.component.html',
   styleUrls: ['./docs-modal.component.scss'],
-  imports: [NgIf, MatTooltip, MatIcon, TranslateModule],
+  imports: [MatTooltip, MatIcon, TranslateModule],
 })
 export class DocsModalComponent implements OnInit, OnDestroy {
   dialog = inject(MatDialog);

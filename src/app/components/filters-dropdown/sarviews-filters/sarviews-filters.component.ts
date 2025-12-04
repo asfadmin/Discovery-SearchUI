@@ -7,7 +7,7 @@ import * as models from '@models';
 import * as scenesStore from '@store/scenes';
 
 import { SubSink } from 'subsink';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
   MatAccordion,
   MatExpansionPanel,
@@ -37,7 +37,6 @@ enum FilterPanel {
   templateUrl: './sarviews-filters.component.html',
   styleUrls: ['./sarviews-filters.component.scss'],
   imports: [
-    NgIf,
     MatAccordion,
     MatExpansionPanel,
     MatExpansionPanelHeader,

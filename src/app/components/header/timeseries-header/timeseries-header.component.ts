@@ -11,7 +11,7 @@ import * as filtersStore from '@store/filters';
 import { ScreenSizeService } from '@services';
 import { MapDrawModeType, MapInteractionModeType } from '@models';
 import * as models from '@models';
-import { NgIf, NgOptimizedImage, AsyncPipe } from '@angular/common';
+import { NgOptimizedImage, AsyncPipe } from '@angular/common';
 import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
 import { DrawSelectorComponent } from '@components/shared/aoi-options/draw-selector/draw-selector.component';
 import { TimeseriesChartFlightDirectionToggleComponent } from '../../timeseries-chart/timeseries-chart-flight-direction-toggle/timeseries-chart-flight-direction-toggle.component';
@@ -23,7 +23,6 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './timeseries-header.component.html',
   styleUrls: ['./timeseries-header.component.scss', '../header.component.scss'],
   imports: [
-    NgIf,
     SearchTypeSelectorComponent,
     DrawSelectorComponent,
     TimeseriesChartFlightDirectionToggleComponent,

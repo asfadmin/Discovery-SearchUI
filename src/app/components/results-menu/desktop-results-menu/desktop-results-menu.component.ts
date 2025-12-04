@@ -9,7 +9,7 @@ import { ScenesService, ScreenSizeService } from '@services';
 import { SubSink } from 'subsink';
 import * as models from '@models';
 import { MatCard, MatCardSubtitle } from '@angular/material/card';
-import { NgClass, NgIf, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { NgClass, AsyncPipe, TitleCasePipe } from '@angular/common';
 import { ScenesListHeaderComponent } from '../scenes-list-header/scenes-list-header.component';
 import { ScenesListComponent } from '../scenes-list/scenes-list.component';
 import { SceneDetailComponent } from '../scene-detail/scene-detail.component';
@@ -29,7 +29,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatCardSubtitle,
     ScenesListHeaderComponent,
     ScenesListComponent,
-    NgIf,
+
     SceneDetailComponent,
     SceneFilesComponent,
     AsyncPipe,

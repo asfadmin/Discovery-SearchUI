@@ -11,14 +11,14 @@ import {
 import * as filterStore from '@store/filters';
 import { SubSink } from 'subsink';
 import { MatFormField } from '@angular/material/input';
-import { NgFor } from '@angular/common';
+import {} from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-sarviews-event-type-selector',
   templateUrl: './sarviews-event-type-selector.component.html',
   styleUrls: ['./sarviews-event-type-selector.component.scss'],
-  imports: [MatFormField, MatSelect, NgFor, MatOption, TranslateModule],
+  imports: [MatFormField, MatSelect, MatOption, TranslateModule],
 })
 export class SarviewsEventTypeSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

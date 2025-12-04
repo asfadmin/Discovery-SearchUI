@@ -20,7 +20,6 @@ import {
 } from '@angular/material/select';
 import { combineLatest } from 'rxjs';
 import { MatFormField, MatHint } from '@angular/material/input';
-import { NgFor, NgIf } from '@angular/common';
 import { MatTooltip } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -31,10 +30,10 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [
     MatFormField,
     MatSelect,
-    NgFor,
+
     MatOption,
     MatTooltip,
-    NgIf,
+
     MatHint,
     TranslateModule,
   ],

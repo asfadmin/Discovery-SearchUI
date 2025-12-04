@@ -24,13 +24,7 @@ import moment from 'moment';
 import { MatFormField, MatLabel } from '@angular/material/input';
 import { MatSelect, MatOption } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
-import {
-  NgFor,
-  NgIf,
-  NgPlural,
-  NgPluralCase,
-  UpperCasePipe,
-} from '@angular/common';
+import { NgPlural, NgPluralCase, UpperCasePipe } from '@angular/common';
 import {
   MatList,
   MatListItem,
@@ -55,9 +49,9 @@ import { TranslateModule } from '@ngx-translate/core';
     MatLabel,
     MatSelect,
     FormsModule,
-    NgFor,
+
     MatOption,
-    NgIf,
+
     NgPlural,
     NgPluralCase,
     MatList,

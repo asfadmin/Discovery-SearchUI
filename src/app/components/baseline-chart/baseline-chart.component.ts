@@ -23,7 +23,7 @@ import { criticalBaselineFor, CMRProduct } from '@models';
 import * as d3 from 'd3';
 import * as models from '@models';
 import * as services from '@services';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ResizedDirective } from '../../directives/resized.directive';
 export enum ChartDatasets {
   MASTER = 0,
@@ -43,7 +43,7 @@ interface Point {
   selector: 'app-baseline-chart',
   templateUrl: './baseline-chart.component.html',
   styleUrls: ['./baseline-chart.component.scss'],
-  imports: [NgIf, ResizedDirective, AsyncPipe, TranslateModule],
+  imports: [ResizedDirective, AsyncPipe, TranslateModule],
 })
 export class BaselineChartComponent implements OnInit, OnDestroy {
   translate = inject(TranslateService);

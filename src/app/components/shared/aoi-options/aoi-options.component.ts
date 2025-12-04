@@ -23,7 +23,6 @@ import { SubSink } from 'subsink';
 import { getSearchType, SetSearchOutOfDate } from '@store/search';
 import { getIsFiltersMenuOpen, getIsResultsMenuOpen } from '@store/ui';
 import { SetGeocode } from '@store/filters';
-import { NgIf } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton, MatButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -50,7 +49,6 @@ declare global {
   templateUrl: './aoi-options.component.html',
   styleUrls: ['./aoi-options.component.scss'],
   imports: [
-    NgIf,
     MatIcon,
     MatIconButton,
     MatTooltip,

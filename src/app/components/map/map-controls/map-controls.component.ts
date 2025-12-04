@@ -15,7 +15,7 @@ import { combineLatest, Observable } from 'rxjs';
 
 import { filter, map, startWith, tap } from 'rxjs/operators';
 import { ToggleBrowseOverlay } from '@store/map';
-import { NgClass, NgIf, AsyncPipe, DecimalPipe } from '@angular/common';
+import { NgClass, AsyncPipe, DecimalPipe } from '@angular/common';
 import { ViewSelectorComponent } from './view-selector/view-selector.component';
 import {
   MatButtonToggleGroup,
@@ -37,7 +37,7 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./map-controls.component.scss'],
   imports: [
     NgClass,
-    NgIf,
+
     ViewSelectorComponent,
     MatButtonToggleGroup,
     MatButtonToggle,

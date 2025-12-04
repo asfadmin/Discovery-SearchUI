@@ -2,7 +2,6 @@ import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 
 import * as services from '@services';
 import * as models from '@models';
-import { NgIf } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatMenuTrigger } from '@angular/material/menu';
@@ -15,7 +14,6 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './scene-controls.component.html',
   styleUrls: ['./scene-controls.component.scss'],
   imports: [
-    NgIf,
     MatIcon,
     MatTooltip,
     MatMenuTrigger,

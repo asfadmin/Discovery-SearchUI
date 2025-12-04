@@ -13,7 +13,7 @@ import {
   MatExpansionPanelHeader,
   MatExpansionPanelTitle,
 } from '@angular/material/expansion';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -32,7 +32,7 @@ enum FilterPanel {
   styleUrl: './timeseries-filters.component.scss',
   imports: [
     MatAccordion,
-    NgIf,
+
     MatExpansionPanel,
     MatExpansionPanelHeader,
     MatExpansionPanelTitle,

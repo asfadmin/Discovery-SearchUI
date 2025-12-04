@@ -1,7 +1,6 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 import { GeographicFiltersType, ProductType } from '@models';
-import { NgIf } from '@angular/common';
 import { ShortDatePipe } from '@pipes/short-date.pipe';
 import { JoinPipe } from '@pipes/join.pipe';
 import { TranslateModule } from '@ngx-translate/core';
@@ -11,7 +10,7 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './geographic-search-filters.component.html',
   styleUrls: ['./geographic-search-filters.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgIf, ShortDatePipe, JoinPipe, TranslateModule],
+  imports: [ShortDatePipe, JoinPipe, TranslateModule],
 })
 export class GeographicSearchFiltersComponent {
   @Input() filters: GeographicFiltersType;

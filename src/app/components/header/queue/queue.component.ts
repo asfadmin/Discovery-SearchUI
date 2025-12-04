@@ -35,7 +35,7 @@ import { ResizedDirective } from '../../../directives/resized.directive';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 import { MatIcon } from '@angular/material/icon';
-import { NgIf, NgFor, NgClass, AsyncPipe } from '@angular/common';
+import { NgClass, AsyncPipe } from '@angular/common';
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import {
   MatList,
@@ -74,11 +74,11 @@ export interface selectedItems {
     MatProgressBar,
     DocsModalComponent,
     MatIcon,
-    NgIf,
+
     CdkScrollable,
     MatDialogContent,
     MatList,
-    NgFor,
+
     MatListItem,
     MatListItemTitle,
     NgClass,

@@ -14,7 +14,7 @@ import {
   MatExpansionPanelHeader,
   MatExpansionPanelTitle,
 } from '@angular/material/expansion';
-import { NgIf, AsyncPipe, UpperCasePipe } from '@angular/common';
+import { AsyncPipe, UpperCasePipe } from '@angular/common';
 import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
 import { BaselineFrameReferenceToggleComponent } from '@components/shared/selectors/baseline-frame-reference-toggle/baseline-frame-reference-toggle.component';
 import { DatasetSelectorComponent } from '@components/shared/selectors/dataset-selector/dataset-selector.component';
@@ -42,7 +42,7 @@ enum FilterPanel {
   styleUrls: ['./sbas-filters.component.scss'],
   imports: [
     MatAccordion,
-    NgIf,
+
     MatExpansionPanel,
     MatExpansionPanelHeader,
     MatExpansionPanelTitle,

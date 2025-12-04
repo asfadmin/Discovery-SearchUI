@@ -15,7 +15,6 @@ import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { ClipboardService } from 'ngx-clipboard';
 import { NotificationService } from '@services/notification.service';
 import { CopyIcons } from '@models';
-import { NgIf, NgFor } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
@@ -25,12 +24,11 @@ import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
   templateUrl: './copy-to-clipboard.component.html',
   styleUrls: ['./copy-to-clipboard.component.css'],
   imports: [
-    NgIf,
     FontAwesomeModule,
     MatTooltip,
     MatMenuTrigger,
     MatMenu,
-    NgFor,
+
     MatMenuItem,
   ],
 })

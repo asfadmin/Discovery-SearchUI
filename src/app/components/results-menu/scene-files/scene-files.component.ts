@@ -64,7 +64,7 @@ import {
 } from '@angular/cdk/scrolling';
 import * as filterStore from '@store/filters';
 import { L1L2BrowseCollectionMapping } from '@models/datasets/nisar';
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { SceneFileComponent } from './scene-file/scene-file.component';
 import { MatIconButton } from '@angular/material/button';
 import { MatMenuTrigger } from '@angular/material/menu';
@@ -80,9 +80,8 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './scene-files.component.html',
   styleUrls: ['./scene-files.component.scss'],
   imports: [
-    NgIf,
     MatList,
-    NgFor,
+
     SceneFileComponent,
     CdkVirtualScrollViewport,
     CdkFixedSizeVirtualScroll,

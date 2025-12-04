@@ -9,7 +9,7 @@ import * as models from '@models';
 import { SubSink } from 'subsink';
 import { map } from 'rxjs/operators';
 import { ScreenSizeService } from '@services';
-import { NgClass, NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { NgClass, AsyncPipe } from '@angular/common';
 import { SaveUserFilterComponent } from './save-user-filter/save-user-filter.component';
 import { MatButton } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
@@ -19,8 +19,7 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./save-user-filters.component.scss'],
   imports: [
     NgClass,
-    NgIf,
-    NgFor,
+
     SaveUserFilterComponent,
     MatButton,
     AsyncPipe,

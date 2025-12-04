@@ -29,9 +29,7 @@ import { ApiLinkDialogComponent } from '../max-results-selector/api-link-dialog/
 import { ScreenSizeService } from '@services';
 import * as models from '@models';
 import {
-  NgIf,
   NgStyle,
-  NgFor,
   AsyncPipe,
   UpperCasePipe,
   TitleCasePipe,
@@ -60,7 +58,6 @@ declare global {
   templateUrl: './search-button.component.html',
   styleUrls: ['./search-button.component.scss'],
   imports: [
-    NgIf,
     MatButtonToggleGroup,
     MatButtonToggle,
     MatButton,
@@ -71,7 +68,7 @@ declare global {
     MatMenu,
     MatMenuItem,
     MatDivider,
-    NgFor,
+
     AsyncPipe,
     UpperCasePipe,
     TitleCasePipe,

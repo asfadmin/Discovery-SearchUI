@@ -8,7 +8,7 @@ import {
 } from '@angular/material/input';
 import { MatTooltip } from '@angular/material/tooltip';
 import { FormsModule } from '@angular/forms';
-import { NgIf, LowerCasePipe } from '@angular/common';
+import { LowerCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-range-option',
@@ -20,7 +20,7 @@ import { NgIf, LowerCasePipe } from '@angular/common';
     MatLabel,
     MatInput,
     FormsModule,
-    NgIf,
+
     MatError,
     LowerCasePipe,
   ],

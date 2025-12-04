@@ -2,13 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { MatFormField, MatLabel } from '@angular/material/input';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatSelect, MatOption } from '@angular/material/select';
-import {
-  NgFor,
-  NgIf,
-  NgPlural,
-  NgPluralCase,
-  UpperCasePipe,
-} from '@angular/common';
+import { NgPlural, NgPluralCase, UpperCasePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -20,9 +14,9 @@ import { TranslateModule } from '@ngx-translate/core';
     MatTooltip,
     MatLabel,
     MatSelect,
-    NgFor,
+
     MatOption,
-    NgIf,
+
     NgPlural,
     NgPluralCase,
     UpperCasePipe,

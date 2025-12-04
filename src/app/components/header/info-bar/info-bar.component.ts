@@ -11,7 +11,7 @@ import * as searchStore from '@store/search';
 import * as services from '@services';
 import * as models from '@models';
 import * as userStore from '@store/user';
-import { NgIf, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { AsyncPipe, TitleCasePipe } from '@angular/common';
 import { Hyp3UrlComponent } from '@components/shared/hyp3-url/hyp3-url.component';
 import { CiSearchComponent } from './ci-search/ci-search.component';
 import { ShortDatePipe } from '@pipes/short-date.pipe';
@@ -33,7 +33,6 @@ declare global {
   templateUrl: './info-bar.component.html',
   styleUrls: ['./info-bar.component.scss'],
   imports: [
-    NgIf,
     Hyp3UrlComponent,
     CiSearchComponent,
     AsyncPipe,

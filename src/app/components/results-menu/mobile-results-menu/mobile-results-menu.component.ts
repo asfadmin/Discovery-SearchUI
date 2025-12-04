@@ -11,7 +11,7 @@ import { SubSink } from 'subsink';
 
 import { CMRProductPair, SearchType } from '@models';
 import { MatButton } from '@angular/material/button';
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { MatCard, MatCardSubtitle } from '@angular/material/card';
 import { ScenesListHeaderComponent } from '../scenes-list-header/scenes-list-header.component';
 import { ScenesListComponent } from '../scenes-list/scenes-list.component';
@@ -46,13 +46,13 @@ enum MobileViews {
   ],
   imports: [
     MatButton,
-    NgIf,
+
     MatCard,
     MatCardSubtitle,
     ScenesListHeaderComponent,
     ScenesListComponent,
     SceneDetailComponent,
-    NgFor,
+
     MatTooltip,
     SceneMetadataComponent,
     SceneFilesComponent,

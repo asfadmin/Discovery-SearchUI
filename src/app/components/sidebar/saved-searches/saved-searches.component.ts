@@ -25,7 +25,7 @@ import { SaveSearchDialogComponent } from '@components/shared/save-search-dialog
 import * as models from '@models';
 
 import { AsfLanguageService } from '@services/asf-language.service';
-import { NgClass, NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { NgClass, AsyncPipe } from '@angular/common';
 import {
   MatButtonToggleGroup,
   MatButtonToggle,
@@ -42,14 +42,14 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./saved-searches.component.scss'],
   imports: [
     NgClass,
-    NgIf,
+
     MatButtonToggleGroup,
     MatButtonToggle,
     FormsModule,
     MatFormField,
     MatInput,
     MatButton,
-    NgFor,
+
     SavedSearchComponent,
     AsyncPipe,
     TranslateModule,

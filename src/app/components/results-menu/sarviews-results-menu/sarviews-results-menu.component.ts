@@ -11,7 +11,7 @@ import * as models from '@models';
 import { map } from 'rxjs/operators';
 import { OpenFiltersMenu } from '@store/ui';
 import { MatCard, MatCardSubtitle } from '@angular/material/card';
-import { NgClass, NgIf, AsyncPipe } from '@angular/common';
+import { NgClass, AsyncPipe } from '@angular/common';
 import { ScenesListHeaderComponent } from '../scenes-list-header/scenes-list-header.component';
 import { ScenesListComponent } from '../scenes-list/scenes-list.component';
 import { SceneDetailComponent } from '../scene-detail/scene-detail.component';
@@ -39,7 +39,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatCardSubtitle,
     ScenesListHeaderComponent,
     ScenesListComponent,
-    NgIf,
+
     SceneDetailComponent,
     EventProductSortSelectorComponent,
     MatButtonToggleGroup,

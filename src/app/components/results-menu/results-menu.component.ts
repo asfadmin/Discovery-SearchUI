@@ -19,7 +19,7 @@ import * as scenesStore from '@store/scenes';
 import * as searchStore from '@store/search';
 
 import * as models from '@models';
-import { NgIf, NgClass, AsyncPipe } from '@angular/common';
+import { NgClass, AsyncPipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { DesktopResultsMenuComponent } from './desktop-results-menu/desktop-results-menu.component';
 import { TimeseriesResultsMenuComponent } from './timeseries-results-menu/timeseries-results-menu.component';
@@ -35,7 +35,6 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './results-menu.component.html',
   styleUrls: ['./results-menu.component.scss'],
   imports: [
-    NgIf,
     ResizableModule,
     NgClass,
     MatIcon,

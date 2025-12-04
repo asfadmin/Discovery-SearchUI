@@ -23,7 +23,6 @@ import {
   MatSuffix,
 } from '@angular/material/input';
 import { MatSelect, MatOption } from '@angular/material/select';
-import { NgFor, NgIf } from '@angular/common';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -44,10 +43,10 @@ import { TranslateModule } from '@ngx-translate/core';
     MatLabel,
     MatInput,
     MatSelect,
-    NgFor,
+
     MatOption,
     CdkTextareaAutosize,
-    NgIf,
+
     MatIcon,
     MatSuffix,
     MatTooltip,

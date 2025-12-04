@@ -23,13 +23,7 @@ import {
   getSelectedDataset,
   getShouldUseFramesForReference,
 } from '@store/filters';
-import {
-  NgIf,
-  NgFor,
-  NgPlural,
-  NgPluralCase,
-  DecimalPipe,
-} from '@angular/common';
+import { NgPlural, NgPluralCase, DecimalPipe } from '@angular/common';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatIcon } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
@@ -41,9 +35,9 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [
     MatMenu,
     MatMenuContent,
-    NgIf,
+
     MatMenuItem,
-    NgFor,
+
     MatTooltip,
     MatMenuTrigger,
     MatIcon,

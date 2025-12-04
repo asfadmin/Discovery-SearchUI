@@ -4,7 +4,6 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import moment from 'moment';
 import * as filtersStore from '@store/filters';
-import { NgIf } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import {
   MatMenuTrigger,
@@ -21,7 +20,6 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './event-metadata.component.html',
   styleUrls: ['./event-metadata.component.scss'],
   imports: [
-    NgIf,
     MatIcon,
     MatMenuTrigger,
     MatMenu,

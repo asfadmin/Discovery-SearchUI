@@ -32,7 +32,6 @@ import { DatasetForProductService } from '@services';
 import { PinnedProduct } from '@services/browse-map.service';
 import { Observable } from 'rxjs';
 import {
-  NgIf,
   NgStyle,
   NgClass,
   AsyncPipe,
@@ -62,7 +61,6 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./scene-detail.component.scss'],
   providers: [DatasetForProductService],
   imports: [
-    NgIf,
     MatCardHeader,
     MatCardTitle,
     CopyToClipboardComponent,

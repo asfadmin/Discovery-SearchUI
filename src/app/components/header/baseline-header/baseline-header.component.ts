@@ -11,13 +11,7 @@ import { Breakpoints } from '@models';
 import { SubSink } from 'subsink';
 import * as searchStore from '@store/search';
 import * as models from '@models';
-import {
-  NgIf,
-  NgSwitch,
-  NgSwitchCase,
-  NgSwitchDefault,
-  AsyncPipe,
-} from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
 import { BaselineFrameReferenceToggleComponent } from '@components/shared/selectors/baseline-frame-reference-toggle/baseline-frame-reference-toggle.component';
 import { DatasetSelectorComponent } from '@components/shared/selectors/dataset-selector/dataset-selector.component';
@@ -33,7 +27,6 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './baseline-header.component.html',
   styleUrls: ['./baseline-header.component.css', '../header.component.scss'],
   imports: [
-    NgIf,
     SearchTypeSelectorComponent,
     BaselineFrameReferenceToggleComponent,
     DatasetSelectorComponent,
@@ -42,9 +35,6 @@ import { TranslateModule } from '@ngx-translate/core';
     HeaderButtonsComponent,
     MatButton,
     MatIcon,
-    NgSwitch,
-    NgSwitchCase,
-    NgSwitchDefault,
     AsyncPipe,
     TranslateModule,
   ],

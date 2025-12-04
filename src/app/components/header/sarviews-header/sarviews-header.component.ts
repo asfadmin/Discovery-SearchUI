@@ -10,7 +10,7 @@ import * as uiStore from '@store/ui';
 
 import { SubSink } from 'subsink';
 import * as services from '@services';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
 import { SarviewsEventSearchSelectorComponent } from '@components/shared/selectors/sarviews-event-search-selector/sarviews-event-search-selector.component';
 import { SarviewsEventTypeSelectorComponent } from '@components/shared/selectors/sarviews-event-type-selector/sarviews-event-type-selector.component';
@@ -26,7 +26,6 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './sarviews-header.component.html',
   styleUrls: ['./sarviews-header.component.scss', '../header.component.scss'],
   imports: [
-    NgIf,
     SearchTypeSelectorComponent,
     SarviewsEventSearchSelectorComponent,
     SarviewsEventTypeSelectorComponent,

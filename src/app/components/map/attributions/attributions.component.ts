@@ -8,7 +8,6 @@ import * as uiStore from '@store/ui';
 import * as scenesStore from '@store/scenes';
 
 import { Breakpoints, asfWebsite } from '@models';
-import { NgIf } from '@angular/common';
 import { MaxResultsSelectorComponent } from '@components/shared/max-results-selector/max-results-selector.component';
 import { SearchButtonComponent } from '@components/shared/search-button/search-button.component';
 import { TranslateModule } from '@ngx-translate/core';
@@ -18,7 +17,6 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './attributions.component.html',
   styleUrls: ['./attributions.component.scss'],
   imports: [
-    NgIf,
     MaxResultsSelectorComponent,
     SearchButtonComponent,
     TranslateModule,

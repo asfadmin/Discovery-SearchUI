@@ -25,7 +25,7 @@ import * as models from '@models';
 import { Observable } from 'rxjs';
 import { areFiltersChanged } from '@store/filters';
 import { SBASOverlap } from '@models';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 import { FrameOrderFiltersComponent } from './frame-order-filters/frame-order-filters.component';
 import { DatasetFiltersComponent } from './dataset-filters/dataset-filters.component';
@@ -53,7 +53,6 @@ import { TranslateModule } from '@ngx-translate/core';
     ]),
   ],
   imports: [
-    NgIf,
     DocsModalComponent,
     FrameOrderFiltersComponent,
     DatasetFiltersComponent,

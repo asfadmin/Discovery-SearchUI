@@ -8,7 +8,6 @@ import * as searchStore from '@store/search';
 
 import { MatButton } from '@angular/material/button';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
-import { NgIf } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 import { MapViewType, SearchType } from '@models';
@@ -27,7 +26,7 @@ declare global {
   imports: [
     MatButton,
     MatMenuTrigger,
-    NgIf,
+
     MatIcon,
     MatMenu,
     MatMenuItem,

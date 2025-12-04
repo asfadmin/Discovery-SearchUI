@@ -15,7 +15,7 @@ import {
   SearchType,
 } from '@models';
 import { ThemePalette } from '@angular/material/core';
-import { NgIf, TitleCasePipe } from '@angular/common';
+import { TitleCasePipe } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatIcon } from '@angular/material/icon';
@@ -28,7 +28,6 @@ import { AoiIconPipe } from '@pipes/aoi-icon.pipe';
   templateUrl: './draw-selector.component.html',
   styleUrls: ['./draw-selector.component.scss'],
   imports: [
-    NgIf,
     MatButton,
     MatMenuTrigger,
     MatIcon,

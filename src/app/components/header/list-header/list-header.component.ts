@@ -6,7 +6,7 @@ import * as uiStore from '@store/ui';
 
 import { ScreenSizeService } from '@services';
 import { Breakpoints } from '@models';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -19,7 +19,6 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './list-header.component.html',
   styleUrls: ['./list-header.component.css', '../header.component.scss'],
   imports: [
-    NgIf,
     SearchTypeSelectorComponent,
     MatButton,
     MatIcon,

@@ -20,7 +20,6 @@ import {
   MatListItemTitle,
   MatListItemMeta,
 } from '@angular/material/list';
-import { NgIf } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatMenuTrigger } from '@angular/material/menu';
@@ -36,7 +35,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatListItem,
     MatListItemTitle,
     MatListItemMeta,
-    NgIf,
+
     MatIcon,
     MatTooltip,
     MatMenuTrigger,

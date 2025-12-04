@@ -11,7 +11,6 @@ import * as filtersStore from '@store/filters';
 
 import { Props } from '@models';
 import { PropertyService } from '@services';
-import { NgIf } from '@angular/common';
 import { MatFormField, MatInput } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { AoiClearComponent } from './aoi-clear/aoi-clear.component';
@@ -30,7 +29,7 @@ enum PathFormInputType {
   styleUrls: ['./path-selector.component.scss'],
   imports: [
     FormsModule,
-    NgIf,
+
     MatFormField,
     MatInput,
     MatButton,

@@ -46,9 +46,7 @@ import {
 } from '@components/shared/code-export';
 import { MatDialog } from '@angular/material/dialog';
 import {
-  NgIf,
   NgClass,
-  NgFor,
   AsyncPipe,
   TitleCasePipe,
   KeyValuePipe,
@@ -74,7 +72,6 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './scenes-list-header.component.html',
   styleUrls: ['./scenes-list-header.component.scss'],
   imports: [
-    NgIf,
     NgClass,
     MatIcon,
     MatTooltip,
@@ -85,7 +82,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatMenu,
     MatMenuItem,
     MatMenuContent,
-    NgFor,
+
     FontAwesomeModule,
     AsyncPipe,
     TitleCasePipe,

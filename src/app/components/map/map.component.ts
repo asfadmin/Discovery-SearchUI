@@ -47,7 +47,7 @@ import WKT from 'ol/format/WKT';
 import { getTimeseriesChartStates } from '@store/charts';
 import { MatButton, MatFabButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { MapControlsComponent } from './map-controls/map-controls.component';
 import { DisplacementLayersComponent } from './displacement-layers/displacement-layers.component';
 import { BannersComponent } from './banners/banners.component';
@@ -72,7 +72,7 @@ enum FullscreenControls {
   imports: [
     MatButton,
     MatIcon,
-    NgIf,
+
     MapControlsComponent,
     DisplacementLayersComponent,
     BannersComponent,

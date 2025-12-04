@@ -6,7 +6,7 @@ import * as hyp3Store from '@store/hyp3';
 import * as queueStore from '@store/queue';
 
 import * as models from '@models';
-import { NgIf, NgFor, UpperCasePipe } from '@angular/common';
+import { UpperCasePipe } from '@angular/common';
 import { DropdownOptionComponent } from './dropdown-option/dropdown-option.component';
 import { RangeOptionComponent } from './range-option/range-option.component';
 import { CheckboxOptionComponent } from './checkbox-option/checkbox-option.component';
@@ -18,8 +18,6 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './processing-options.component.html',
   styleUrls: ['./processing-options.component.scss'],
   imports: [
-    NgIf,
-    NgFor,
     DropdownOptionComponent,
     RangeOptionComponent,
     CheckboxOptionComponent,

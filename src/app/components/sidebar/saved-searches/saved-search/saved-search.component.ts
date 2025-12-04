@@ -16,7 +16,7 @@ import * as moment from 'moment';
 import * as models from '@models';
 
 import { AsfLanguageService } from '@services/asf-language.service';
-import { NgIf, UpperCasePipe } from '@angular/common';
+import { UpperCasePipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { FormsModule } from '@angular/forms';
@@ -32,7 +32,6 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./saved-search.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    NgIf,
     MatIcon,
     MatTooltip,
     FormsModule,

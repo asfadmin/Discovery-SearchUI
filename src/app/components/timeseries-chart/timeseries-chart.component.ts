@@ -40,7 +40,7 @@ import * as uiStore from '@store/ui';
 // import {style} from '@angular/animations';
 import { linearRegression, linearRegressionLine } from './regression-line';
 import { types } from 'sass';
-import { NgStyle, NgFor } from '@angular/common';
+import { NgStyle } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import { ResizedDirective } from '../../directives/resized.directive';
 import { ContextMenuTriggerDirective } from '../../directives/context-menu.directive';
@@ -80,7 +80,7 @@ const unSelectedColor = '#9F9F9F9F';
     CdkVirtualScrollViewport,
     CdkFixedSizeVirtualScroll,
     CdkScrollable,
-    NgFor,
+
     ResizedDirective,
     ContextMenuTriggerDirective,
     TimeseriesChartExportComponent,

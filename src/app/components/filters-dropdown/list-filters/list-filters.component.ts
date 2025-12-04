@@ -24,7 +24,7 @@ import * as searchStore from '@store/search';
 import * as models from '@models';
 import * as services from '@services';
 import { ofType } from '@ngrx/effects';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
   MatAccordion,
   MatExpansionPanel,
@@ -58,7 +58,6 @@ enum FileErrors {
   templateUrl: './list-filters.component.html',
   styleUrls: ['./list-filters.component.scss'],
   imports: [
-    NgIf,
     MatAccordion,
     MatExpansionPanel,
     MatExpansionPanelHeader,

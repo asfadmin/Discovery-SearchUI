@@ -7,7 +7,7 @@ import * as hyp3Store from '@store/hyp3';
 
 import * as models from '@models';
 import * as services from '@services';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
 import { ProjectNameSelectorComponent } from '@components/shared/selectors/project-name-selector/project-name-selector.component';
 import { DateSelectorComponent } from '@components/shared/selectors/date-selector/date-selector.component';
@@ -23,7 +23,6 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './hyp3-header.component.html',
   styleUrls: ['./hyp3-header.component.scss', '../header.component.scss'],
   imports: [
-    NgIf,
     SearchTypeSelectorComponent,
     ProjectNameSelectorComponent,
     DateSelectorComponent,
