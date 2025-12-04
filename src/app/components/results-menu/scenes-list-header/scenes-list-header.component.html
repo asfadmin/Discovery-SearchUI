@@ -18,20 +18,21 @@
           searchType === SearchTypes.DATASET || searchType === SearchTypes.LIST
         ) {
           <div class="mr-10 scene-count">
-            {{ numberOfScenes$ | async }} {{ 'SCENE' | translate
-            }}{{ (numberOfScenes$ | async) === 1 ? '' : 's' }}
+            @let numberOfProducts = numberOfProducts$ | async;
+            @let virtualCount = totalVirtualProducts$ | async;
+            @let sceneCountDisplay = numberOfProducts - virtualCount;
+            {{ sceneCountDisplay }} {{ 'SCENE' | translate
+            }}{{ sceneCountDisplay === 1 ? '' : 's' }}
+            @if (numberOfProducts > 0) {
+              ({{ numberOfProducts }} {{ numberOfProducts == 1 ? 'FILE' : 'FILES' | translate }})
+            }
             @if (breakpoint > breakpoints.MOBILE) {
               <span style="font-size: small">
                 <br />
-                @let virtualCount = totalVirtualProducts$ | async;
-                {{ (numberOfProducts$ | async) - virtualCount }}
-                @if (virtualCount > 0) {
-                  ({{ virtualCount }} {{ 'ADDITIONAL' | translate }})
-                }
-                {{ 'OF' | translate }}
-                {{ formatNumber(totalResultCount$ | async) }}
-                {{ 'FILE' | translate
-                }}{{ (numberOfProducts$ | async) === 1 ? '' : 's' }}
+            {{ sceneCountDisplay }}
+            {{ 'OF' | translate }}
+            {{ formatNumber(totalResultCount$ | async) }}
+            {{'TOTAL' | translate }} {{ numberOfProducts == 1 ? 'SCENE' : 'SCENES' | translate }}
               </span>
             }
           </div>
