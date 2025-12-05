@@ -19,8 +19,10 @@
         ) {
           <div class="mr-10 scene-count">
             @let numberOfProducts = numberOfProducts$ | async;
-            @let virtualCount = totalVirtualProducts$ | async;
-            @let sceneCountDisplay = numberOfProducts - virtualCount;
+<!--            @let virtualCount = totalVirtualProducts$ | async;-->
+<!--            @let sceneCountDisplay = numberOfProducts - virtualCount;-->
+            @let sceneCountDisplay = numberOfScenes$ | async;
+
             {{ sceneCountDisplay }}
             <span
               [matTooltip]="
@@ -38,10 +40,10 @@
             @if (breakpoint > breakpoints.MOBILE) {
               <span style="font-size: small">
                 <br />
-            {{ sceneCountDisplay }}
+            {{ numberOfProducts }}
             {{ 'OF' | translate }}
             {{ formatNumber(totalResultCount$ | async) }}
-            {{'TOTAL' | translate }} {{ numberOfProducts == 1 ? 'SCENE' : 'SCENES' | translate }}
+            {{'TOTAL' | translate }} {{ numberOfProducts == 1 ? 'FILE' : 'FILES' | translate }}
               </span>
             }
           </div>
