@@ -17,12 +17,8 @@ export class KmlFootprintService {
         kml_url,
         {},
         {
-          //   responseType: 'text',
-          // observe: 'response',
-          //   mode: 'no-cors',
-          redirect: 'error',
+          redirect: 'follow',
           credentials: 'include',
-          // credentials: 'include',
         },
       )
       .pipe(
@@ -73,21 +69,9 @@ export class KmlFootprintService {
                 const temp = latlon.split(',');
                 return temp.map((coord) => parseFloat(coord));
               });
-
-            // coordinates.push(coordinates[0]);
-
-            // const geomtry = new Polygon(coordinates);
-            
             const extent = boundingExtent(coordinates);
             console.log(extent);
             this.KMLFootPrint$.set(extent);
-
-            // const files: [] = result?.['metalink']?.['files']?.['file'];
-            // const fileNames = files.map((fileMeta) =>
-            //   (fileMeta?.['$']?.['name'] as string)?.split('.')?.shift(),
-            // );
-
-            // this.updateSearchList(fileNames);
           });
         };
 

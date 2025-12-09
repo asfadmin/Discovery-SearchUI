@@ -126,14 +126,13 @@ export class BrowseOverlayService {
 
     const isNisarL2Browse = url.split('/').pop().startsWith('NISAR_L2');
     if (isNisarL2Browse) {
-      console.log(extent);
-      extent = transform(kmlExtent, 'EPSG:4326', 'EPSG:3857'); // FIGURE OUT WHY EXTENTS ARE SO OFF
-      console.log(extent);
-      //   extent = kmlExtent; // REPROJECT THIS FROM LON LAT TO COORDS
+      extent = [
+        ...transform([kmlExtent[0], kmlExtent[1]], 'EPSG:4326', 'EPSG:3857'), // transform is on a coordinate basis 😭
+        ...transform([kmlExtent[2], kmlExtent[3]], 'EPSG:4326', 'EPSG:3857'),
+      ];
     }
 
     const source = this.createImageSource(url, extent, 'EPSG:3857');
-    console.log(source.getProjection());
 
     const output = new ImageLayer({
       source: source as ImageSource,
