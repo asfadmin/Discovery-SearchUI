@@ -361,10 +361,13 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         ),
     );
 
-    const user = this.authService.getUser();
-    if (user.id) {
-      this.store$.dispatch(new userStore.Login(user));
-    }
+    this.subs.add(
+      this.authService.getUser().subscribe((user) => {
+        if (user.id) {
+          this.store$.dispatch(new userStore.Login(user));
+        }
+      }),
+    );
 
     this.subs.add(
       this.actions$

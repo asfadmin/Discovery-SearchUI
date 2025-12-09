@@ -1,5 +1,8 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {
+  HttpClient,
+  //  HttpHeaders
+} from '@angular/common/http';
 
 import { interval, Subject, Observable, of } from 'rxjs';
 import { map, takeUntil, take, filter, catchError } from 'rxjs/operators';
@@ -7,7 +10,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 
 import { EnvironmentService } from './environment.service';
-import jwt_decode from 'jwt-decode';
+// import jwt_decode from 'jwt-decode';
 import * as userStore from '@store/user';
 
 import * as models from '@models';
@@ -27,11 +30,12 @@ export class AuthService {
     if (typeof BroadcastChannel !== 'undefined') {
       this.bc = new BroadcastChannel('asf-vertex');
       this.bc.onmessage = (_event: MessageEvent) => {
-        const user = this.getUser();
+        const user = this.existingUserInfo;
         if (!user.id) {
           this.store$.dispatch(new userStore.Logout());
         } else {
-          this.store$.dispatch(new userStore.Login(user));
+          // TODO: convert to promise then dispatch
+          this.store$.dispatch(new userStore.Login(this.existingUserInfo));
         }
       };
     }
@@ -65,7 +69,6 @@ export class AuthService {
     );
 
     const loginWindowClosed = new Subject<void>();
-
     return interval(500).pipe(
       takeUntil(loginWindowClosed),
       map((_) => {
@@ -78,7 +81,6 @@ export class AuthService {
         try {
           if (loginWindow.location.host === window.location.host) {
             loginWindow.close();
-            user = this.getUser();
             this.bc.postMessage({
               event: 'login',
             });
@@ -112,70 +114,91 @@ export class AuthService {
           this.bc.postMessage({
             event: 'logout',
           });
-          return this.getUser();
+          return this.existingUserInfo;
         }),
         catchError((_) => {
           this.notificationService.error('Trouble logging out', 'Error', {
             timeOut: 5000,
           });
-          return of(this.getUser());
+          return of(this.existingUserInfo);
         }),
         take(1),
       );
   }
 
-  public getUser(): models.UserAuth {
-    const cookies = this.loadCookies();
-    const token = cookies['asf-urs'];
+  private existingUserInfo: models.UserAuth = null;
+  public getUser(): Observable<models.UserAuth> {
+    // const cookies = this.loadCookies();
+    // const token = cookies['asf-urs'];
+    // if (!token) {
+    //   return of(this.nullUser());
+    // }
+    // try {
+    //   const user = jwt_decode(token);
 
-    if (!token) {
-      return this.nullUser();
-    }
-    try {
-      const user = jwt_decode(token);
-
-      if (this.isExpired(user)) {
-        return this.nullUser();
-      }
-
-      setTimeout(
-        () => {
-          this.store$.dispatch(new userStore.Logout());
-          this.notificationService.info(
-            'Session Expired',
-            'Please login again',
-          );
-        },
-        user.exp * 1000 - Date.now(),
+    // TODO: Replace the expired functionality with cookie based timestamps;
+    // if (this.isExpired(user)) {
+    //   return of(this.nullUser());
+    // }
+    return this.http
+      .get<models.UserAuth>(`${this.env.currentEnv.user_data}/info/cookie`, {
+        withCredentials: true,
+      })
+      .pipe(
+        map((x) => {
+          return {
+            id: x['urs-user-id'],
+            groups: x['urs-groups'],
+            token: x['token'],
+          };
+        }),
+        map((final) => {
+          this.existingUserInfo = final;
+          return final;
+        }),
       );
 
-      return this.makeUser(user['urs-user-id'], user['urs-groups'], token);
-    } catch (_error) {
-      return this.nullUser();
-    }
+    // setTimeout(
+    //   () => {
+    //     this.store$.dispatch(new userStore.Logout());
+    //     this.notificationService.info(
+    //       'Session Expired',
+    //       'Please login again',
+    //     );
+    //   },
+    //   user.exp * 1000 - Date.now(),
+    // );
+
+    // return this.makeUser(user['urs-user-id'], user['urs-groups'], token);
+    // } catch (_error) {
+    //   return of(this.nullUser());
+    // }
   }
 
-  private makeUser(
-    id: string,
-    groups: models.URSGroup[],
-    token: string,
-  ): models.UserAuth {
-    return { id, token, groups };
-  }
+  // private makeUser(
+  //   id: string,
+  //   groups: models.URSGroup[],
+  //   token: string,
+  // ): models.UserAuth {
+  //   return { id, token, groups };
+  // }
 
-  private nullUser(): models.UserAuth {
-    return { id: null, token: null, groups: [] };
-  }
+  // private makeAuthHeader(token: string): HttpHeaders {
+  //   return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  // }
+  // private nullUser(): models.UserAuth {
+  //   return { id: null, token: null, groups: [] };
+  // }
 
-  private isExpired(userToken): boolean {
-    return Date.now() > userToken.exp * 1000;
-  }
+  // private isExpired(userToken): boolean {
+  //   return Date.now() > userToken.exp * 1000;
+  // }
 
-  private loadCookies() {
-    return document.cookie
-      .split(';')
-      .map((s) => s.trim().split('='))
-      .map(([name, val]) => ({ [name]: val }))
-      .reduce((allCookies, cookie) => ({ ...allCookies, ...cookie }));
-  }
+  // private loadCookies() {
+  //   return document.cookie
+  //     .split(';')
+  //     .map((s) => s.trim().split('='))
+  //     .map(([name, val]) => ({ [name]: val }))
+  //     .reduce((allCookies, cookie) => ({ ...allCookies, ...cookie }));
+  // }
 }

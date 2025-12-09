@@ -7,6 +7,15 @@ import { EnvironmentService } from './environment.service';
 import { UserAuth } from '@models';
 import { NotificationService } from './notification.service';
 
+interface UserInfo {
+  uid: string;
+  first_name: string;
+  last_name: string;
+  country: string;
+  email_address: string;
+  organization: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -17,12 +26,11 @@ export class UserDataService {
 
   private baseUrl = this.getBaseUrlFrom();
 
-  public getUserInfo$<T>(userAuth: UserAuth): Observable<T> {
-    const url = this.getUserInfoURL(this.baseUrl, userAuth.id);
+  public getUserInfo$(userAuth: UserAuth): Observable<UserInfo> {
+    const url = this.getUserInfoURL(this.baseUrl);
     const headers = this.makeAuthHeader(userAuth.token);
-
     return this.http
-      .get<T>(url, {
+      .get<UserInfo>(url, {
         headers,
       })
       .pipe(
@@ -116,7 +124,7 @@ export class UserDataService {
   private getBaseUrlFrom(): string {
     return this.env.currentEnv.user_data;
   }
-  public getUserInfoURL(baseUrl: string, userId: string): string {
-    return `${baseUrl}/vertex/${userId}/`;
+  public getUserInfoURL(baseUrl: string): string {
+    return `${baseUrl}/info/`;
   }
 }
