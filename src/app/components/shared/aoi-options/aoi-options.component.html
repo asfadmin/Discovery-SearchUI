@@ -1,25 +1,26 @@
 <div (dragover)="onFileHovered($event)" class="layout">
-  <div *ngIf="showHeader" class="header-layout mb">
-    <div class="header-layout">
-      <b>{{ 'AOI_OPTIONS' | translate }}</b>
-      <mat-icon
-        (click)="onOpenHelp()"
-        class="clickable"
-        style="margin-left: 10px"
-        >info</mat-icon
-      >
+  @if (showHeader) {
+    <div class="header-layout mb">
+      <div class="header-layout">
+        <b>{{ 'AOI_OPTIONS' | translate }}</b>
+        <mat-icon
+          (click)="onOpenHelp()"
+          class="clickable"
+          style="margin-left: 10px"
+          >info</mat-icon
+        >
+      </div>
+      <div>
+        <button
+          (click)="onClose()"
+          matTooltip="{{ 'HIDE_OPTIONS' | translate }}"
+          mat-icon-button
+        >
+          <mat-icon>clear</mat-icon>
+        </button>
+      </div>
     </div>
-
-    <div>
-      <button
-        (click)="onClose()"
-        matTooltip="{{ 'HIDE_OPTIONS' | translate }}"
-        mat-icon-button
-      >
-        <mat-icon>clear</mat-icon>
-      </button>
-    </div>
-  </div>
+  }
 
   <div class="aoi-input-area">
     <div class="aoi-text-container">
@@ -61,9 +62,8 @@
       ></app-geocode-selector>
     </div>
 
-    <app-file-upload-dialog
-      *ngIf="breakpoint !== breakpoints.MOBILE"
-      style="width: 40%"
-    ></app-file-upload-dialog>
+    @if (breakpoint !== breakpoints.MOBILE) {
+      <app-file-upload-dialog style="width: 40%"></app-file-upload-dialog>
+    }
   </div>
 </div>

@@ -109,6 +109,8 @@ export class ProductService {
     additionalUrls: g.adu || [],
     fileSizes: isNaN(g.bytes) ? g.s : null,
     ariaVersion: g.ariav ? g.ariav : null,
+    collectionName: g?.cnm,
+    collectionID: g?.cid,
   });
 
   private isNumber = (n) => !isNaN(n) && isFinite(n);
@@ -127,12 +129,15 @@ export class ProductService {
       return this.nisarSubproductsFromScene(product);
     }
     if (product.dataset === 'SEASAT 1') {
-        return this.seasatSubproductsFromScene(product);
+      return this.seasatSubproductsFromScene(product);
     }
     return [];
   }
 
-  public urlToProductType(url: string, productTypeDisplay: {[index: string]: string}) {
+  public urlToProductType(
+    url: string,
+    productTypeDisplay: Record<string, string>,
+  ) {
     const regex = /(_v[0-9]\.[0-9]){1}(\.(\w*)|(_(\w*(_*))*.))*/;
 
     if (url) {
@@ -147,11 +152,7 @@ export class ProductService {
           .split(/[0-9]\.[0-9]_/)
           .pop();
 
-        if (
-          !productTypeDisplay.hasOwnProperty(
-            file_type?.toLowerCase(),
-          )
-        ) {
+        if (!productTypeDisplay.hasOwnProperty(file_type?.toLowerCase())) {
           return file_extension;
         }
         return file_type;
@@ -182,7 +183,7 @@ export class ProductService {
   }
 
   private operaSubproductsFromScene(product: models.CMRProduct) {
-    product.metadata.s3URI = product.metadata.opera.s3Urls[0]
+    product.metadata.s3URI = product.metadata.opera.s3Urls[0];
     if (product.metadata.opera?.validityStartDate) {
       product.metadata.opera.validityStartDate = this.fromCMRDate(
         product.metadata.opera?.validityStartDate as unknown as string,
@@ -195,11 +196,15 @@ export class ProductService {
     if (['DISP-S1', 'TROPO-ZENITH'].includes(product.metadata.productType)) {
       file_suffix = 'nc';
     } else {
-      file_suffix = this.urlToProductType(product.downloadUrl, models.opera_s1.productTypeDisplays);
+      file_suffix = this.urlToProductType(
+        product.downloadUrl,
+        models.opera_s1.productTypeDisplays,
+      );
     }
 
     product.productTypeDisplay =
-      models.opera_s1.productTypeDisplays[file_suffix?.toLowerCase()] ?? 'Download';
+      models.opera_s1.productTypeDisplays[file_suffix?.toLowerCase()] ??
+      'Download';
 
     const thumbnail_index = product.browses.findIndex((url) =>
       url.toLowerCase().includes('thumbnail'),
@@ -209,18 +214,21 @@ export class ProductService {
     }
 
     const s3Index = product.metadata.opera.s3Urls.findIndex((uri) =>
-        uri.toLowerCase().endsWith(file_suffix)
-    )
+      uri.toLowerCase().endsWith(file_suffix),
+    );
 
-    if(s3Index !== -1) {
-        product.metadata.s3URI = product.metadata.opera.s3Urls[s3Index];
+    if (s3Index !== -1) {
+      product.metadata.s3URI = product.metadata.opera.s3Urls[s3Index];
     }
     product.browses = product.browses.filter((url) => !url.includes('low-res'));
 
     for (const p of product.metadata.opera.additionalUrls.filter(
       (url) => url !== product.downloadUrl,
     )) {
-      file_suffix = this.urlToProductType(p, models.opera_s1.productTypeDisplays);
+      file_suffix = this.urlToProductType(
+        p,
+        models.opera_s1.productTypeDisplays,
+      );
 
       let productTypeDisplay =
         models.opera_s1.productTypeDisplays[file_suffix?.toLowerCase()];
@@ -237,11 +245,21 @@ export class ProductService {
       const fileID = p.split('/').slice(-1)[0];
 
       let s3Uri = null;
-      let s3uriIndex = product.metadata.opera.s3Urls.findIndex(x => x.split('/').slice(-1)[0] === fileID)
+      const s3uriIndex = product.metadata.opera.s3Urls.findIndex(
+        (x) => x.split('/').slice(-1)[0] === fileID,
+      );
       if (s3uriIndex !== -1) {
-        s3Uri = product.metadata.opera.s3Urls[s3uriIndex]
+        s3Uri = product.metadata.opera.s3Urls[s3uriIndex];
       }
-      const subproduct =this.createSubproductForScene(product, p, s3Uri, file_suffix, productTypeDisplay, 0, [])
+      const subproduct = this.createSubproductForScene(
+        product,
+        p,
+        s3Uri,
+        file_suffix,
+        productTypeDisplay,
+        0,
+        [],
+      );
       products.push(subproduct);
     }
 
@@ -263,12 +281,16 @@ export class ProductService {
     });
   }
 
-private seasatSubproductsFromScene(product: models.CMRProduct) {
+  private seasatSubproductsFromScene(product: models.CMRProduct) {
     const products = [];
-    let file_extension = this.urlToProductType(product.downloadUrl, models.seasat.productTypeDisplays)
-    product.productTypeDisplay = models.seasat.productTypeDisplays[file_extension];
-    let fileID = product.downloadUrl.split('/').slice(-1)[0];
-    product.bytes = product.metadata.fileSizes[fileID].bytes
+    let file_extension = this.urlToProductType(
+      product.downloadUrl,
+      models.seasat.productTypeDisplays,
+    );
+    product.productTypeDisplay =
+      models.seasat.productTypeDisplays[file_extension];
+    const fileID = product.downloadUrl.split('/').slice(-1)[0];
+    product.bytes = product.metadata.fileSizes[fileID].bytes;
     const thumbnail_index = product.browses.findIndex((url) =>
       url.toLowerCase().includes('thumbnail'),
     );
@@ -277,16 +299,13 @@ private seasatSubproductsFromScene(product: models.CMRProduct) {
     }
     product.browses = product.browses.filter((url) => !url.includes('low-res'));
 
-    const s3UrlsByProductID = product.metadata.s3Urls.reduce(
-      (prev, curr) => {
-        const subproductFileID = curr.split('/').at(-1);
+    const s3UrlsByProductID = product.metadata.s3Urls.reduce((prev, curr) => {
+      const subproductFileID = curr.split('/').at(-1);
 
-        prev[subproductFileID] = curr;
+      prev[subproductFileID] = curr;
 
-        return prev;
-      },
-      {},
-    );
+      return prev;
+    }, {});
 
     product.metadata.s3URI = s3UrlsByProductID[product.file] ?? null;
 
@@ -297,14 +316,17 @@ private seasatSubproductsFromScene(product: models.CMRProduct) {
       ),
       ...product.browses,
     ]) {
-      file_extension = this.urlToProductType(p, models.seasat.productTypeDisplays)
+      file_extension = this.urlToProductType(
+        p,
+        models.seasat.productTypeDisplays,
+      );
 
-      let productTypeDisplay =
+      const productTypeDisplay =
         models.seasat.productTypeDisplays[file_extension.toLowerCase()] ??
         'Missing Display';
       if (productTypeDisplay === 'Missing Display') {
         console.log(
-        `Missing product type display for file extension "${file_extension}"`,
+          `Missing product type display for file extension "${file_extension}"`,
         );
       }
 
@@ -314,8 +336,16 @@ private seasatSubproductsFromScene(product: models.CMRProduct) {
 
       const fileID = p.split('/').slice(-1)[0];
       const s3Url = s3UrlsByProductID[fileID] ?? null;
-      const fileSize = product.metadata.fileSizes[fileID]?.bytes ?? 0
-      const subproduct = this.createSubproductForScene(product, p, s3Url, file_extension, productTypeDisplay, fileSize, browses)
+      const fileSize = product.metadata.fileSizes[fileID]?.bytes ?? 0;
+      const subproduct = this.createSubproductForScene(
+        product,
+        p,
+        s3Url,
+        file_extension,
+        productTypeDisplay,
+        fileSize,
+        browses,
+      );
 
       products.push(subproduct);
     }
@@ -337,27 +367,35 @@ private seasatSubproductsFromScene(product: models.CMRProduct) {
     });
   }
 
-  private createSubproductForScene(scene: models.CMRProduct, url: string, s3uri: string, fileExtension: string, productTypeDisplay: string | null, fileSize: number, browses: string[]) {
+  private createSubproductForScene(
+    scene: models.CMRProduct,
+    url: string,
+    s3uri: string,
+    fileExtension: string,
+    productTypeDisplay: string | null,
+    fileSize: number,
+    browses: string[],
+  ) {
     const fileID = url.split('/').slice(-1)[0];
     return {
-        ...scene,
-        downloadUrl: url,
-        productTypeDisplay: productTypeDisplay || url,
-        file: fileID,
-        id: scene.id + '-' + fileExtension,
-        bytes: fileSize,
-        browses,
-        thumbnail: null,
-        metadata: {
-          ...scene.metadata,
-          productType: scene.metadata.productType,
-          parentID: scene.id,
-          subproducts: [],
-          s3URI: s3uri,
-        },
-        virtual: true,
-      } as models.CMRProduct;
-    } 
+      ...scene,
+      downloadUrl: url,
+      productTypeDisplay: productTypeDisplay || url,
+      file: fileID,
+      id: scene.id + '-' + fileExtension,
+      bytes: fileSize,
+      browses,
+      thumbnail: null,
+      metadata: {
+        ...scene.metadata,
+        productType: scene.metadata.productType,
+        parentID: scene.id,
+        subproducts: [],
+        s3URI: s3uri,
+      },
+      virtual: true,
+    } as models.CMRProduct;
+  }
 
   private nisarSubproductsFromScene(product: models.CMRProduct) {
     const products = [];
@@ -418,7 +456,7 @@ private seasatSubproductsFromScene(product: models.CMRProduct) {
       }
       if (productTypeDisplay === 'Browse Image PNG') {
         if (p === '/assets/no-browse.png') {
-          continue
+          continue;
         }
       }
       if (p.endsWith('.h5') && p.includes('QA_')) {
@@ -431,8 +469,16 @@ private seasatSubproductsFromScene(product: models.CMRProduct) {
 
       const fileID = p.split('/').slice(-1)[0];
       const s3Url = s3UrlsByProductID[fileID] ?? null;
-      const fileSize = product.metadata.nisar?.sizeMB?.[fileID]?.bytes ?? 0
-      const subproduct = this.createSubproductForScene(product, p, s3Url, file_extension, productTypeDisplay, fileSize, browses)
+      const fileSize = product.metadata.nisar?.sizeMB?.[fileID]?.bytes ?? 0;
+      const subproduct = this.createSubproductForScene(
+        product,
+        p,
+        s3Url,
+        file_extension,
+        productTypeDisplay,
+        fileSize,
+        browses,
+      );
 
       products.push(subproduct);
     }

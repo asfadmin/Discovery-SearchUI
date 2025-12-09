@@ -1,7 +1,5 @@
-<ng-container
-  *ngIf="(numberOfScenes$ | async) > 0 || (numSarviewsScenes$ | async) > 0"
->
-  <ng-container *ngIf="breakpoint$ | async as breakpoint">
+@if ((numberOfScenes$ | async) > 0 || (numSarviewsScenes$ | async) > 0) {
+  @if (breakpoint$ | async; as breakpoint) {
     <div
       [className]="
         searchType === SearchTypes.BASELINE && breakpoint > breakpoints.MOBILE
@@ -16,70 +14,64 @@
           'mobile-size': breakpoint <= breakpoints.SMALL,
         }"
       >
-        <div
-          *ngIf="
-            searchType === SearchTypes.DATASET ||
-            searchType === SearchTypes.LIST
-          "
-          class="mr-10 scene-count"
-        >
-          {{ numberOfScenes$ | async }} {{ 'SCENE' | translate
-          }}{{ (numberOfScenes$ | async) === 1 ? '' : 's' }}
-          <span
-            *ngIf="breakpoint > breakpoints.MOBILE"
-            style="font-size: small"
-          >
-            <br />
+        @if (
+          searchType === SearchTypes.DATASET || searchType === SearchTypes.LIST
+        ) {
+          <div class="mr-10 scene-count">
+            @let numberOfProducts = numberOfProducts$ | async;
             @let virtualCount = totalVirtualProducts$ | async;
-            {{ (numberOfProducts$ | async) - virtualCount }}
-            @if (virtualCount > 0) {
-              ({{ virtualCount }} {{ 'ADDITIONAL' | translate }})
+            @let sceneCountDisplay = numberOfProducts - virtualCount;
+            {{ sceneCountDisplay }} {{ 'SCENE' | translate
+            }}{{ sceneCountDisplay === 1 ? '' : 's' }}
+            @if (numberOfProducts > 0) {
+              ({{ numberOfProducts }} {{ numberOfProducts == 1 ? 'FILE' : 'FILES' | translate }})
             }
+            @if (breakpoint > breakpoints.MOBILE) {
+              <span style="font-size: small">
+                <br />
+            {{ sceneCountDisplay }}
             {{ 'OF' | translate }}
             {{ formatNumber(totalResultCount$ | async) }}
-            {{ 'FILE' | translate
-            }}{{ (numberOfProducts$ | async) === 1 ? '' : 's' }}
-          </span>
-        </div>
-
-        <div
-          *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS"
-          class="mr-10 event-count"
-          event
-          [class.mobile-event]="breakpoint === breakpoints.MOBILE"
-        >
-          {{ numberOfFilteredEvents$ | async }} {{ 'EVENT' | translate
-          }}{{ (numSarviewsScenes$ | async) === 1 ? '' : 's' }}
-        </div>
-
-        <div
-          *ngIf="searchType === SearchTypes.SBAS"
-          class="mr-10"
-          style="margin-top: -15px"
-        >
-          {{ numPairs$ | async }} {{ 'PAIR' | translate
-          }}{{ (numPairs$ | async) === 1 ? '' : 's' }}
-          <mat-icon
-            [matTooltip]="'SBAS_COUNT_TOOLTIP' | translate"
-            class="sbas-count-tooltip"
-            >info</mat-icon
+            {{'TOTAL' | translate }} {{ numberOfProducts == 1 ? 'SCENE' : 'SCENES' | translate }}
+              </span>
+            }
+          </div>
+        }
+        @if (searchType === SearchTypes.SARVIEWS_EVENTS) {
+          <div
+            class="mr-10 event-count"
+            event
+            [class.mobile-event]="breakpoint === breakpoints.MOBILE"
           >
-          <span
-            *ngIf="!!sbasProducts && breakpoint > breakpoints.MEDIUM"
-            style="font-size: small"
-          >
-            <br />
-            ({{ sbasProducts.length }} {{ 'SCENE' | translate
-            }}{{ sbasProducts.length === 1 ? '' : 's' }})
-          </span>
-        </div>
-
-        <div *ngIf="searchType === SearchTypes.BASELINE" class="mr-10">
-          {{ numBaselineScenes$ | async }} {{ 'OF' | translate }}
-          {{ numUnfilteredBaselineScenes$ | async }} {{ 'SCENE' | translate
-          }}{{ (numBaselineScenes$ | async) === 1 ? '' : 's' }}
-        </div>
-
+            {{ numberOfFilteredEvents$ | async }} {{ 'EVENT' | translate
+            }}{{ (numSarviewsScenes$ | async) === 1 ? '' : 's' }}
+          </div>
+        }
+        @if (searchType === SearchTypes.SBAS) {
+          <div class="mr-10" style="margin-top: -15px">
+            {{ numPairs$ | async }} {{ 'PAIR' | translate
+            }}{{ (numPairs$ | async) === 1 ? '' : 's' }}
+            <mat-icon
+              [matTooltip]="'SBAS_COUNT_TOOLTIP' | translate"
+              class="sbas-count-tooltip"
+              >info</mat-icon
+            >
+            @if (!!sbasProducts && breakpoint > breakpoints.MEDIUM) {
+              <span style="font-size: small">
+                <br />
+                ({{ sbasProducts.length }} {{ 'SCENE' | translate
+                }}{{ sbasProducts.length === 1 ? '' : 's' }})
+              </span>
+            }
+          </div>
+        }
+        @if (searchType === SearchTypes.BASELINE) {
+          <div class="mr-10">
+            {{ numBaselineScenes$ | async }} {{ 'OF' | translate }}
+            {{ numUnfilteredBaselineScenes$ | async }} {{ 'SCENE' | translate
+            }}{{ (numBaselineScenes$ | async) === 1 ? '' : 's' }}
+          </div>
+        }
         @if (searchType === SearchTypes.CUSTOM_PRODUCTS) {
           <div class="mr-10">
             {{ numBaselineScenes$ | async }}{{ moreHyp3JobsToLoad ? '+' : '' }}
@@ -87,663 +79,656 @@
             }}{{ (numBaselineScenes$ | async) === 1 ? '' : 's' }}
           </div>
         }
-
-        <div
-          class="space-filler"
-          *ngIf="
-            !(
-              searchType === SearchTypes.SARVIEWS_EVENTS &&
-              breakpoint === breakpoints.MOBILE
-            )
-          "
-        ></div>
-
-        <div *ngIf="products" class="scenes-list-buttons--layout">
-          <div *ngIf="canHideRawData" class="list-button-group">
-            <div class="fx-row-center button-group-label">
-              <label>{{ 'RAW' | translate }}</label>
-            </div>
-            <div class="fx-row">
-              <div class="scenes-list-button-container">
-                <mat-button-toggle-group
-                  name="fx-empty layerType"
-                  class="mr-10"
-                  [hideSingleSelectionIndicator]="true"
-                >
-                  <mat-button-toggle
-                    (click)="onToggleS1RawData()"
-                    class="control-mat-button-toggle clickable noselect"
-                    [matTooltip]="
-                      showS1RawData
-                        ? ('HIDE_RAW_DATA' | translate)
-                        : ('SHOW_RAW_DATA' | translate)
-                    "
-                  >
-                    <mat-icon
-                      class="list-icon"
-                      [class.material-icons-outlined]="showS1RawData"
+        @if (
+          !(
+            searchType === SearchTypes.SARVIEWS_EVENTS &&
+            breakpoint === breakpoints.MOBILE
+          )
+        ) {
+          <div class="space-filler"></div>
+        }
+        @if (products) {
+          <div class="scenes-list-buttons--layout">
+            @if (canHideRawData) {
+              <div class="list-button-group">
+                <div class="fx-row-center button-group-label">
+                  <label>{{ 'RAW' | translate }}</label>
+                </div>
+                <div class="fx-row">
+                  <div class="scenes-list-button-container">
+                    <mat-button-toggle-group
+                      name="fx-empty layerType"
+                      class="mr-10"
+                      [hideSingleSelectionIndicator]="true"
                     >
-                      remove_red_eye
-                    </mat-icon>
-                  </mat-button-toggle>
-                </mat-button-toggle-group>
-              </div>
-            </div>
-          </div>
-
-          <div *ngIf="canHideExpiredData" class="fx-empty list-button-group">
-            <div class="fx-row-center button-group-label">
-              <label>{{ 'EXPIRED' | translate }}</label>
-            </div>
-            <div class="fx-row">
-              <div class="scenes-list-button-container">
-                <mat-button-toggle-group
-                  name="layerType"
-                  class="fx-empty mr-10"
-                  [hideSingleSelectionIndicator]="true"
-                >
-                  <mat-button-toggle
-                    (click)="onToggleExpiredData()"
-                    class="control-mat-button-toggle clickable noselect"
-                    [matTooltip]="
-                      showExpiredData
-                        ? 'Hide expired products'
-                        : 'Show expired products'
-                    "
-                  >
-                    <mat-icon
-                      class="list-icon"
-                      [class.material-icons-outlined]="showExpiredData"
-                    >
-                      remove_red_eye
-                    </mat-icon>
-                  </mat-button-toggle>
-                </mat-button-toggle-group>
-              </div>
-            </div>
-          </div>
-
-          <div
-            *ngIf="searchType !== SearchTypes.DISPLACEMENT"
-            class="fx-empty list-button-group"
-          >
-            <div class="fx-row-center button-group-label">
-              <label>{{ 'ZOOM' | translate }}</label>
-            </div>
-            <div class="fx-row">
-              <div class="scenes-list-button-container">
-                <mat-button-toggle-group
-                  name="layerType"
-                  class="fx-empty mr-10"
-                  [hideSingleSelectionIndicator]="true"
-                >
-                  <mat-button-toggle
-                    [disabled]="
-                      (numOfScenesWithPolygon$ | async) === 0 &&
-                      searchType !== SearchTypes.SARVIEWS_EVENTS
-                    "
-                    (click)="onZoomToResults()"
-                    class="control-mat-button-toggle clickable noselect"
-                    matTooltip="{{ 'ZOOM_TO_RESULTS' | translate }}"
-                  >
-                    <mat-icon class="list-icon"> settings_overscan </mat-icon>
-                  </mat-button-toggle>
-                </mat-button-toggle-group>
-              </div>
-            </div>
-          </div>
-
-          <div
-            class="fx-empty list-button-group"
-            *ngIf="
-              searchType !== SearchTypes.SARVIEWS_EVENTS &&
-              searchType !== SearchTypes.DISPLACEMENT
-            "
-          >
-            <div class="fx-row-center button-group-label">
-              <label>{{ 'QUEUE' | translate }}</label>
-            </div>
-            <div class="fx-row">
-              <div class="scenes-list-button-container">
-                <mat-button-toggle-group
-                  name="layerType"
-                  class="fx-empty mr-10 clickable noselect"
-                  [hideSingleSelectionIndicator]="true"
-                >
-                  <mat-button-toggle
-                    class="control-mat-button-toggle"
-                    [matMenuTriggerFor]="addAllProducts"
-                    matTooltip="{{
-                      'ADD_ALL_RESULTS_TO_DOWNLOADS' | translate
-                    }}"
-                  >
-                    <mat-icon class="list-icon"> add_shopping_cart </mat-icon>
-                  </mat-button-toggle>
-                </mat-button-toggle-group>
-              </div>
-            </div>
-          </div>
-
-          <div
-            class="fx-empty list-button-group"
-            *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS"
-          >
-            <div class="fx-row-center button-group-label">
-              <label>{{ 'QUEUE' | translate }}</label>
-            </div>
-            <div class="fx-row">
-              <div class="scenes-list-button-container">
-                <mat-button-toggle-group
-                  name="layerType"
-                  class="fx-empty mr-10 clickable noselect"
-                  [hideSingleSelectionIndicator]="true"
-                >
-                  <mat-button-toggle
-                    class="control-mat-button-toggle"
-                    [matMenuTriggerFor]="QueueAllSARViewsProducts"
-                    matTooltip="{{ 'ADD' | translate | titlecase }} {{
-                      (productsHiddenByFilters$ | async)
-                        ? ('FILTERED' | translate)
-                        : ('ALL' | translate)
-                    }} {{
-                      'PRODUCTS_TO_DOWNLOADS_FROM_SELECTED_EVENT' | translate
-                    }}"
-                  >
-                    <mat-icon class="list-icon"> add_shopping_cart </mat-icon>
-                  </mat-button-toggle>
-                </mat-button-toggle-group>
-              </div>
-            </div>
-          </div>
-
-          <div
-            *ngIf="
-              searchType !== SearchTypes.CUSTOM_PRODUCTS && hyp3able.total > 0
-            "
-            class="fx-empty list-button-group"
-          >
-            <div class="fx-row-center button-group-label">
-              <label>{{ 'ON_DEMAND' | translate }}</label>
-            </div>
-            <div class="fx-row">
-              <div class="scenes-list-button-container">
-                <mat-button-toggle-group
-                  name="layerType"
-                  class="fx-empty mr-10"
-                  [hideSingleSelectionIndicator]="true"
-                >
-                  <mat-button-toggle
-                    class="control-mat-button-toggle clickable noselect"
-                    [matMenuTriggerFor]="listAdd.addMenu"
-                    [matMenuTriggerData]="{ hyp3able: hyp3able.byJobType }"
-                    matTooltip="{{
-                      'ADD_ALL_RESULTS_TO_ON_DEMAND_QUEUE' | translate
-                    }}"
-                  >
-                    <mat-icon class="list-icon" svgIcon="hyp3"> </mat-icon>
-                  </mat-button-toggle>
-                </mat-button-toggle-group>
-
-                <app-on-demand-add-menu #listAdd> </app-on-demand-add-menu>
-              </div>
-            </div>
-          </div>
-
-          @if (searchType === SearchTypes.CUSTOM_PRODUCTS) {
-            <div class="fx-empty list-button-group">
-              <div class="fx-row-center button-group-label">
-                <label> {{ 'EXPORT' | translate }}</label>
-              </div>
-              <div class="fx-row">
-                <div class="scenes-list-button-container">
-                  <mat-button-toggle-group
-                    name="layerType"
-                    class="fx-empty mr-10"
-                    [hideSingleSelectionIndicator]="true"
-                  >
-                    <mat-button-toggle
-                      class="control-mat-button-toggle clickable noselect"
-                      [matMenuTriggerFor]="OnDemandCodeExport"
-                      matTooltip="{{
-                        'SDK_PYTHON_CODE_EXPORT_TOOLTIP' | translate
-                      }}"
-                    >
-                      <mat-icon class="list-icon"> get_app </mat-icon>
-                    </mat-button-toggle>
-                  </mat-button-toggle-group>
+                      <mat-button-toggle
+                        (click)="onToggleS1RawData()"
+                        class="control-mat-button-toggle clickable noselect"
+                        [matTooltip]="
+                          showS1RawData
+                            ? ('HIDE_RAW_DATA' | translate)
+                            : ('SHOW_RAW_DATA' | translate)
+                        "
+                      >
+                        <mat-icon
+                          class="list-icon"
+                          [class.material-icons-outlined]="showS1RawData"
+                        >
+                          remove_red_eye
+                        </mat-icon>
+                      </mat-button-toggle>
+                    </mat-button-toggle-group>
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <mat-menu #OnDemandCodeExport="matMenu">
-              <div>
-                <button (click)="onPythonCodeExport()" mat-menu-item>
-                  {{ 'SDK_PYTHON_CODE_EXPORT' | translate }}
-                </button>
+            }
+            @if (canHideExpiredData) {
+              <div class="fx-empty list-button-group">
+                <div class="fx-row-center button-group-label">
+                  <label>{{ 'EXPIRED' | translate }}</label>
+                </div>
+                <div class="fx-row">
+                  <div class="scenes-list-button-container">
+                    <mat-button-toggle-group
+                      name="layerType"
+                      class="fx-empty mr-10"
+                      [hideSingleSelectionIndicator]="true"
+                    >
+                      <mat-button-toggle
+                        (click)="onToggleExpiredData()"
+                        class="control-mat-button-toggle clickable noselect"
+                        [matTooltip]="
+                          showExpiredData
+                            ? 'Hide expired products'
+                            : 'Show expired products'
+                        "
+                      >
+                        <mat-icon
+                          class="list-icon"
+                          [class.material-icons-outlined]="showExpiredData"
+                        >
+                          remove_red_eye
+                        </mat-icon>
+                      </mat-button-toggle>
+                    </mat-button-toggle-group>
+                  </div>
+                </div>
               </div>
-            </mat-menu>
-          }
-
-          <div
-            *ngIf="searchType === SearchTypes.BASELINE"
-            class="fx-empty list-button-group"
-          >
-            <div class="fx-row-center button-group-label">
-              <label> {{ 'EXPORT' | translate }}</label>
-            </div>
-            <div class="fx-row">
-              <div class="scenes-list-button-container">
-                <mat-button-toggle-group
-                  name="layerType"
-                  class="fx-empty mr-10"
-                  [hideSingleSelectionIndicator]="true"
-                >
-                  <mat-button-toggle
-                    class="control-mat-button-toggle clickable noselect"
-                    [matMenuTriggerFor]="ExportAll"
-                    matTooltip="{{ 'DOWNLOAD_DATA_METADATA_AS' | translate }}"
-                  >
-                    <mat-icon class="list-icon"> get_app </mat-icon>
-                  </mat-button-toggle>
-                </mat-button-toggle-group>
+            }
+            @if (searchType !== SearchTypes.DISPLACEMENT) {
+              <div class="fx-empty list-button-group">
+                <div class="fx-row-center button-group-label">
+                  <label>{{ 'ZOOM' | translate }}</label>
+                </div>
+                <div class="fx-row">
+                  <div class="scenes-list-button-container">
+                    <mat-button-toggle-group
+                      name="layerType"
+                      class="fx-empty mr-10"
+                      [hideSingleSelectionIndicator]="true"
+                    >
+                      <mat-button-toggle
+                        [disabled]="
+                          (numOfScenesWithPolygon$ | async) === 0 &&
+                          searchType !== SearchTypes.SARVIEWS_EVENTS
+                        "
+                        (click)="onZoomToResults()"
+                        class="control-mat-button-toggle clickable noselect"
+                        matTooltip="{{ 'ZOOM_TO_RESULTS' | translate }}"
+                      >
+                        <mat-icon class="list-icon">
+                          settings_overscan
+                        </mat-icon>
+                      </mat-button-toggle>
+                    </mat-button-toggle-group>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-
-          <div
-            *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS"
-            class="fx-empty list-button-group"
-          >
-            <div class="fx-row-center button-group-label">
-              <label>{{ 'EXPORT' | translate }}</label>
-            </div>
-            <div class="fx-row">
-              <div class="scenes-list-button-container">
-                <mat-button-toggle-group
-                  name="layerType"
-                  class="fx-empty mr-10"
-                  [hideSingleSelectionIndicator]="true"
-                >
-                  <mat-button-toggle
-                    class="control-mat-button-toggle clickable noselect"
-                    [matMenuTriggerFor]="ExportAllSARViewsData"
-                    matTooltip="{{ 'DOWNLOAD_DATA_METADATA_AS' | translate }}"
-                  >
-                    <mat-icon class="list-icon"> get_app </mat-icon>
-                  </mat-button-toggle>
-                </mat-button-toggle-group>
+            }
+            @if (
+              searchType !== SearchTypes.SARVIEWS_EVENTS &&
+              searchType !== SearchTypes.DISPLACEMENT
+            ) {
+              <div class="fx-empty list-button-group">
+                <div class="fx-row-center button-group-label">
+                  <label>{{ 'QUEUE' | translate }}</label>
+                </div>
+                <div class="fx-row">
+                  <div class="scenes-list-button-container">
+                    <mat-button-toggle-group
+                      name="layerType"
+                      class="fx-empty mr-10 clickable noselect"
+                      [hideSingleSelectionIndicator]="true"
+                    >
+                      <mat-button-toggle
+                        class="control-mat-button-toggle"
+                        [matMenuTriggerFor]="addAllProducts"
+                        matTooltip="{{
+                          'ADD_ALL_RESULTS_TO_DOWNLOADS' | translate
+                        }}"
+                      >
+                        <mat-icon class="list-icon">
+                          add_shopping_cart
+                        </mat-icon>
+                      </mat-button-toggle>
+                    </mat-button-toggle-group>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-
-          <div
-            *ngIf="
+            }
+            @if (searchType === SearchTypes.SARVIEWS_EVENTS) {
+              <div class="fx-empty list-button-group">
+                <div class="fx-row-center button-group-label">
+                  <label>{{ 'QUEUE' | translate }}</label>
+                </div>
+                <div class="fx-row">
+                  <div class="scenes-list-button-container">
+                    <mat-button-toggle-group
+                      name="layerType"
+                      class="fx-empty mr-10 clickable noselect"
+                      [hideSingleSelectionIndicator]="true"
+                    >
+                      <mat-button-toggle
+                        class="control-mat-button-toggle"
+                        [matMenuTriggerFor]="QueueAllSARViewsProducts"
+                        matTooltip="{{ 'ADD' | translate | titlecase }} {{
+                          (productsHiddenByFilters$ | async)
+                            ? ('FILTERED' | translate)
+                            : ('ALL' | translate)
+                        }} {{
+                          'PRODUCTS_TO_DOWNLOADS_FROM_SELECTED_EVENT'
+                            | translate
+                        }}"
+                      >
+                        <mat-icon class="list-icon">
+                          add_shopping_cart
+                        </mat-icon>
+                      </mat-button-toggle>
+                    </mat-button-toggle-group>
+                  </div>
+                </div>
+              </div>
+            }
+            @if (
+              searchType !== SearchTypes.CUSTOM_PRODUCTS && hyp3able.total > 0
+            ) {
+              <div class="fx-empty list-button-group">
+                <div class="fx-row-center button-group-label">
+                  <label>{{ 'ON_DEMAND' | translate }}</label>
+                </div>
+                <div class="fx-row">
+                  <div class="scenes-list-button-container">
+                    <mat-button-toggle-group
+                      name="layerType"
+                      class="fx-empty mr-10"
+                      [hideSingleSelectionIndicator]="true"
+                    >
+                      <mat-button-toggle
+                        class="control-mat-button-toggle clickable noselect"
+                        [matMenuTriggerFor]="listAdd.addMenu"
+                        [matMenuTriggerData]="{ hyp3able: hyp3able.byJobType }"
+                        matTooltip="{{
+                          'ADD_ALL_RESULTS_TO_ON_DEMAND_QUEUE' | translate
+                        }}"
+                      >
+                        <mat-icon class="list-icon" svgIcon="hyp3"> </mat-icon>
+                      </mat-button-toggle>
+                    </mat-button-toggle-group>
+                    <app-on-demand-add-menu #listAdd> </app-on-demand-add-menu>
+                  </div>
+                </div>
+              </div>
+            }
+            @if (searchType === SearchTypes.CUSTOM_PRODUCTS) {
+              <div class="fx-empty list-button-group">
+                <div class="fx-row-center button-group-label">
+                  <label> {{ 'EXPORT' | translate }}</label>
+                </div>
+                <div class="fx-row">
+                  <div class="scenes-list-button-container">
+                    <mat-button-toggle-group
+                      name="layerType"
+                      class="fx-empty mr-10"
+                      [hideSingleSelectionIndicator]="true"
+                    >
+                      <mat-button-toggle
+                        class="control-mat-button-toggle clickable noselect"
+                        [matMenuTriggerFor]="OnDemandCodeExport"
+                        matTooltip="{{
+                          'SDK_PYTHON_CODE_EXPORT_TOOLTIP' | translate
+                        }}"
+                      >
+                        <mat-icon class="list-icon"> get_app </mat-icon>
+                      </mat-button-toggle>
+                    </mat-button-toggle-group>
+                  </div>
+                </div>
+              </div>
+              <mat-menu #OnDemandCodeExport="matMenu">
+                <div>
+                  <button (click)="onPythonCodeExport()" mat-menu-item>
+                    {{ 'SDK_PYTHON_CODE_EXPORT' | translate }}
+                  </button>
+                </div>
+              </mat-menu>
+            }
+            @if (searchType === SearchTypes.BASELINE) {
+              <div class="fx-empty list-button-group">
+                <div class="fx-row-center button-group-label">
+                  <label> {{ 'EXPORT' | translate }}</label>
+                </div>
+                <div class="fx-row">
+                  <div class="scenes-list-button-container">
+                    <mat-button-toggle-group
+                      name="layerType"
+                      class="fx-empty mr-10"
+                      [hideSingleSelectionIndicator]="true"
+                    >
+                      <mat-button-toggle
+                        class="control-mat-button-toggle clickable noselect"
+                        [matMenuTriggerFor]="ExportAll"
+                        matTooltip="{{
+                          'DOWNLOAD_DATA_METADATA_AS' | translate
+                        }}"
+                      >
+                        <mat-icon class="list-icon"> get_app </mat-icon>
+                      </mat-button-toggle>
+                    </mat-button-toggle-group>
+                  </div>
+                </div>
+              </div>
+            }
+            @if (searchType === SearchTypes.SARVIEWS_EVENTS) {
+              <div class="fx-empty list-button-group">
+                <div class="fx-row-center button-group-label">
+                  <label>{{ 'EXPORT' | translate }}</label>
+                </div>
+                <div class="fx-row">
+                  <div class="scenes-list-button-container">
+                    <mat-button-toggle-group
+                      name="layerType"
+                      class="fx-empty mr-10"
+                      [hideSingleSelectionIndicator]="true"
+                    >
+                      <mat-button-toggle
+                        class="control-mat-button-toggle clickable noselect"
+                        [matMenuTriggerFor]="ExportAllSARViewsData"
+                        matTooltip="{{
+                          'DOWNLOAD_DATA_METADATA_AS' | translate
+                        }}"
+                      >
+                        <mat-icon class="list-icon"> get_app </mat-icon>
+                      </mat-button-toggle>
+                    </mat-button-toggle-group>
+                  </div>
+                </div>
+              </div>
+            }
+            @if (
               searchType === SearchTypes.SARVIEWS_EVENTS &&
               !!sarviewsEventProducts
-            "
-            class="fx-empty list-button-group"
-          >
-            <div class="fx-row-center button-group-label">
-              <label>{{ 'ON_DEMAND' | translate }}</label>
-            </div>
-            <div class="fx-row">
-              <div class="scenes-list-button-container">
-                <mat-button-toggle-group
-                  name="layerType"
-                  class="fx-empty mr-10"
-                  [hideSingleSelectionIndicator]="true"
-                >
-                  <mat-button-toggle
-                    [matMenuTriggerFor]="eventMonitoringOnDemand.addMenu"
-                    [matMenuTriggerData]="{
-                      hyp3able: hyp3ableEventProducts.byJobType,
-                    }"
-                    class="control-mat-button-toggle clickable noselect"
-                    matTooltip="{{ 'ADD' | translate | titlecase }} {{
-                      (productsHiddenByFilters$ | async)
-                        ? ('FILTERED' | translate)
-                        : ('ALL' | translate)
-                    }} {{ 'RESULTS_TO_ON_DEMAND_QUEUE' | translate }}"
-                  >
-                    <mat-icon class="list-icon" svgIcon="hyp3"> </mat-icon>
-                  </mat-button-toggle>
-                </mat-button-toggle-group>
-                <app-on-demand-add-menu #eventMonitoringOnDemand>
-                </app-on-demand-add-menu>
-                <mat-menu #eventMonitoringOnDemandAllProducts>
-                  <ng-template matMenuContent let-jobTypes="job_types">
-                    <button
-                      (click)="addOnDemandEventProductsBySearchType(t)"
-                      mat-menu-item
-                      *ngFor="let t of jobTypes"
+            ) {
+              <div class="fx-empty list-button-group">
+                <div class="fx-row-center button-group-label">
+                  <label>{{ 'ON_DEMAND' | translate }}</label>
+                </div>
+                <div class="fx-row">
+                  <div class="scenes-list-button-container">
+                    <mat-button-toggle-group
+                      name="layerType"
+                      class="fx-empty mr-10"
+                      [hideSingleSelectionIndicator]="true"
                     >
-                      {{ 'ADD' | translate }}
-                      {{ EventMonitoringByJobType(t).length }}
-                      {{ t.name === 'RTC GAMMA' ? 'SLC' : t.name
-                      }}{{ 'JOBS' | translate }}
-                      <mat-icon
-                        (click)="onOpenHelp(t.infoUrl)"
-                        class="clickable"
-                        style="margin-left: 10px"
-                        >info</mat-icon
+                      <mat-button-toggle
+                        [matMenuTriggerFor]="eventMonitoringOnDemand.addMenu"
+                        [matMenuTriggerData]="{
+                          hyp3able: hyp3ableEventProducts.byJobType,
+                        }"
+                        class="control-mat-button-toggle clickable noselect"
+                        matTooltip="{{ 'ADD' | translate | titlecase }} {{
+                          (productsHiddenByFilters$ | async)
+                            ? ('FILTERED' | translate)
+                            : ('ALL' | translate)
+                        }} {{ 'RESULTS_TO_ON_DEMAND_QUEUE' | translate }}"
                       >
-                    </button>
-                  </ng-template>
-                </mat-menu>
-                <mat-menu #eventMonitoringOnDemandSelectedProducts>
-                  <ng-template matMenuContent let-selected="selected_products">
-                    <button
-                      [disabled]="selected.length === 0"
-                      mat-menu-item
-                      (click)="addOnDemandEventProducts(selected)"
+                        <mat-icon class="list-icon" svgIcon="hyp3"> </mat-icon>
+                      </mat-button-toggle>
+                    </mat-button-toggle-group>
+                    <app-on-demand-add-menu #eventMonitoringOnDemand>
+                    </app-on-demand-add-menu>
+                    <mat-menu #eventMonitoringOnDemandAllProducts>
+                      <ng-template matMenuContent let-jobTypes="job_types">
+                        @for (t of jobTypes; track t) {
+                          <button
+                            (click)="addOnDemandEventProductsBySearchType(t)"
+                            mat-menu-item
+                          >
+                            {{ 'ADD' | translate }}
+                            {{ EventMonitoringByJobType(t).length }}
+                            {{ t.name === 'RTC GAMMA' ? 'SLC' : t.name
+                            }}{{ 'JOBS' | translate }}
+                            <mat-icon
+                              (click)="onOpenHelp(t.infoUrl)"
+                              class="clickable"
+                              style="margin-left: 10px"
+                              >info</mat-icon
+                            >
+                          </button>
+                        }
+                      </ng-template>
+                    </mat-menu>
+                    <mat-menu #eventMonitoringOnDemandSelectedProducts>
+                      <ng-template
+                        matMenuContent
+                        let-selected="selected_products"
+                      >
+                        <button
+                          [disabled]="selected.length === 0"
+                          mat-menu-item
+                          (click)="addOnDemandEventProducts(selected)"
+                        >
+                          {{ 'ADD' | translate }}
+                          {{ selected.length > 0 ? selected.length : '' }}
+                          {{ 'SELECTED_JOB' | translate
+                          }}{{ selected.length !== 1 ? 's' : '' }}
+                        </button>
+                      </ng-template>
+                    </mat-menu>
+                  </div>
+                </div>
+              </div>
+            }
+            @if (searchType === SearchTypes.SARVIEWS_EVENTS) {
+              <div class="fx-empty list-button-group">
+                <div class="fx-row-center button-group-label">
+                  <label>{{ 'COPY' | translate }}</label>
+                </div>
+                <div class="fx-row">
+                  <div class="scenes-list-button-container">
+                    <mat-button-toggle-group
+                      name="layerType"
+                      class="fx-empty mr-10"
+                      [hideSingleSelectionIndicator]="true"
                     >
-                      {{ 'ADD' | translate }}
-                      {{ selected.length > 0 ? selected.length : '' }}
-                      {{ 'SELECTED_JOB' | translate
-                      }}{{ selected.length !== 1 ? 's' : '' }}
-                    </button>
-                  </ng-template>
-                </mat-menu>
+                      <mat-button-toggle
+                        class="control-mat-button-toggle clickable noselect"
+                        [matMenuTriggerFor]="eventMonitoringOptions"
+                        [matMenuTriggerData]="{
+                          selected: (selectedEventProducts$ | async),
+                        }"
+                        matTooltip="Copy ids/urls"
+                      >
+                        <fa-icon class="list-icon" [icon]="copyIcon"></fa-icon>
+                      </mat-button-toggle>
+                    </mat-button-toggle-group>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-
-          <div
-            *ngIf="searchType === SearchTypes.SARVIEWS_EVENTS"
-            class="fx-empty list-button-group"
-          >
-            <div class="fx-row-center button-group-label">
-              <label>{{ 'COPY' | translate }}</label>
-            </div>
-            <div class="fx-row">
-              <div class="scenes-list-button-container">
-                <mat-button-toggle-group
-                  name="layerType"
-                  class="fx-empty mr-10"
-                  [hideSingleSelectionIndicator]="true"
-                >
-                  <mat-button-toggle
-                    class="control-mat-button-toggle clickable noselect"
-                    [matMenuTriggerFor]="eventMonitoringOptions"
-                    [matMenuTriggerData]="{
-                      selected: (selectedEventProducts$ | async),
-                    }"
-                    matTooltip="Copy ids/urls"
-                  >
-                    <fa-icon class="list-icon" [icon]="copyIcon"></fa-icon>
-                  </mat-button-toggle>
-                </mat-button-toggle-group>
+            }
+            @if (searchType === SearchTypes.SBAS) {
+              <div class="fx-empty list-button-group">
+                <div class="fx-row-center button-group-label">
+                  <label>{{ 'PAIRS' | translate }}</label>
+                </div>
+                <div class="fx-row">
+                  <div class="scenes-list-button-container">
+                    <mat-button-toggle-group
+                      name="layerType"
+                      class="fx-empty mr-10"
+                      [hideSingleSelectionIndicator]="true"
+                    >
+                      <mat-button-toggle
+                        (click)="onDownloadPairCSV()"
+                        class="control-mat-button-toggle clickable noselect"
+                        matTooltip="{{ 'DOWNLOAD_PAIR_CSV' | translate }}"
+                      >
+                        <mat-icon class="list-icon"> get_app </mat-icon>
+                      </mat-button-toggle>
+                    </mat-button-toggle-group>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-
-          <div
-            *ngIf="searchType === SearchTypes.SBAS"
-            class="fx-empty list-button-group"
-          >
-            <div class="fx-row-center button-group-label">
-              <label>{{ 'PAIRS' | translate }}</label>
-            </div>
-            <div class="fx-row">
-              <div class="scenes-list-button-container">
-                <mat-button-toggle-group
-                  name="layerType"
-                  class="fx-empty mr-10"
-                  [hideSingleSelectionIndicator]="true"
-                >
-                  <mat-button-toggle
-                    (click)="onDownloadPairCSV()"
-                    class="control-mat-button-toggle clickable noselect"
-                    matTooltip="{{ 'DOWNLOAD_PAIR_CSV' | translate }}"
-                  >
-                    <mat-icon class="list-icon"> get_app </mat-icon>
-                  </mat-button-toggle>
-                </mat-button-toggle-group>
-              </div>
-            </div>
-          </div>
-
-          <mat-menu #addAllProducts="matMenu">
-            <button
-              *ngIf="
+            }
+            <mat-menu #addAllProducts="matMenu">
+              @if (
                 searchType !== SearchTypes.SBAS &&
                 !(isBurstStack$ | async) &&
                 !(
                   (currentDatasetID$ | async) === 'SENTINEL-1 BURSTS' &&
                   searchType === SearchTypes.DATASET
                 )
-              "
-              (click)="queueAllProducts(downloadableProds)"
-              mat-menu-item
-            >
-              {{ 'ADD' | translate }} {{ downloadableProds.length }}
-              {{ 'FILE' | translate
-              }}{{ downloadableProds.length === 1 ? '' : 's' }}
-              {{ 'TO_DOWNLOADS' | translate }}
-            </button>
-
-            <button
-              *ngIf="
+              ) {
+                <button
+                  (click)="queueAllProducts(downloadableProds)"
+                  mat-menu-item
+                >
+                  {{ 'ADD' | translate }} {{ downloadableProds.length }}
+                  {{ 'FILE' | translate
+                  }}{{ downloadableProds.length === 1 ? '' : 's' }}
+                  {{ 'TO_DOWNLOADS' | translate }}
+                </button>
+              }
+              @if (
                 searchType === SearchTypes.SBAS && !(isBurstStack$ | async)
-              "
-              (click)="queueSBASProducts(sbasProducts)"
-              mat-menu-item
-            >
-              {{ 'ADD' | translate }} {{ sbasProducts.length }}
-              {{ 'FILE' | translate }}{{ sbasProducts.length === 1 ? '' : 's' }}
-              {{ 'TO_DOWNLOADS' | translate }}
-            </button>
-
-            <button
-              *ngIf="
+              ) {
+                <button (click)="queueSBASProducts(sbasProducts)" mat-menu-item>
+                  {{ 'ADD' | translate }} {{ sbasProducts.length }}
+                  {{ 'FILE' | translate
+                  }}{{ sbasProducts.length === 1 ? '' : 's' }}
+                  {{ 'TO_DOWNLOADS' | translate }}
+                </button>
+              }
+              @if (
                 ((currentDatasetID$ | async) === 'SENTINEL-1 BURSTS' &&
                   searchType === SearchTypes.DATASET) ||
                 (isBurstStack$ | async)
+              ) {
+                <button
+                  mat-menu-item
+                  [matMenuTriggerFor]="addAllBurstProducts"
+                  [matMenuTriggerData]="{
+                    burstData:
+                      searchType === SearchTypes.SBAS
+                        ? (SBASburstDataProducts$ | async)
+                        : (burstDataProducts$ | async),
+                    burstMetadata:
+                      searchType === SearchTypes.SBAS
+                        ? (SBASburstMetadataProducts$ | async)
+                        : (burstMetadataProducts$ | async),
+                  }"
+                >
+                  {{ isBurstStack$ | async }}
+                  {{
+                    searchType !== SearchTypes.SBAS
+                      ? downloadableProds.length
+                      : (SBASBurstProductsLength$ | async)
+                  }}
+                  BURST {{ 'FILE' | translate
+                  }}{{ downloadableProds.length === 1 ? '' : 's' }}
+                </button>
+              }
+              @let currentDatasetID = currentDatasetID$ | async;
+              @if (
+                searchType === SearchTypes.DATASET &&
+                (currentDatasetID === 'OPERA-S1' ||
+                  currentDatasetID === 'NISAR' ||
+                  currentDatasetID === 'SEASAT')
+              ) {
+                <button
+                  mat-menu-item
+                  [matMenuTriggerFor]="addAllProductsOfType"
+                  [matMenuTriggerData]="{
+                    productData: (productCountByType$ | async),
+                  }"
+                >
+                  {{
+                    currentDatasetID === 'NISAR'
+                      ? ('ADD_BY_FILE_TYPE' | translate)
+                      : ('ADD_BY_PRODUCT_TYPE' | translate)
+                  }}
+                </button>
+              }
+            </mat-menu>
+            <mat-menu #addAllProductsOfType>
+              <ng-template matMenuContent let-productData="productData">
+                @for (item of productData | keyvalue; track item) {
+                  <button mat-menu-item (click)="queueProductsOfType(item.key)">
+                    {{ 'ADD' | translate }} {{ item.value }} {{ item.key }}
+                    {{ 'FILE' | translate }}{{ item.value === 1 ? '' : 's' }}
+                    {{ 'TO_DOWNLOADS' | translate }}
+                  </button>
+                }
+              </ng-template>
+            </mat-menu>
+            <mat-menu #addAllBurstProducts>
+              <ng-template
+                matMenuContent
+                let-burstData="burstData"
+                let-burstMetadata="burstMetadata"
+              >
+                <button (click)="queueAllProducts(burstData)" mat-menu-item>
+                  {{ 'ADD' | translate }} {{ burstData.length }}
+                  {{ 'FILE' | translate
+                  }}{{ burstData.length === 1 ? '' : 's' }}
+                  {{ 'TO_DOWNLOADS' | translate }} (TIFF)
+                </button>
+                <button (click)="queueAllProducts(burstMetadata)" mat-menu-item>
+                  {{ 'ADD' | translate }} {{ burstMetadata.length }}
+                  {{ 'FILE' | translate
+                  }}{{ burstMetadata.length === 1 ? '' : 's' }}
+                  {{ 'TO_DOWNLOADS' | translate }} (XML)
+                </button>
+              </ng-template>
+            </mat-menu>
+            <mat-menu #ExportAll="matMenu">
+              <button mat-menu-item [matMenuTriggerFor]="ExportAllMetadata">
+                Metadata
+              </button>
+              <button mat-menu-item [matMenuTriggerFor]="ExportAllData">
+                {{ 'DATA' | translate }}
+              </button>
+            </mat-menu>
+          </div>
+        }
+      </div>
+      <mat-menu #ExportAllMetadata="matMenu">
+        @if (products) {
+          <div>
+            <button (click)="onMetadataExport(ApiFormat.CSV)" mat-menu-item>
+              csv
+            </button>
+            <button (click)="onMetadataExport(ApiFormat.GEOJSON)" mat-menu-item>
+              geojson
+            </button>
+            <button (click)="onMetadataExport(ApiFormat.KML)" mat-menu-item>
+              kml
+            </button>
+          </div>
+        }
+      </mat-menu>
+      <mat-menu #ExportAllData="matMenu">
+        @if (products) {
+          <div>
+            <button (click)="onMakeDownloadScript(products)" mat-menu-item>
+              python (.py)
+            </button>
+            <button
+              (click)="onMetadataExport(ApiFormat.METALINK)"
+              mat-menu-item
+            >
+              metalink
+            </button>
+          </div>
+        }
+      </mat-menu>
+      <mat-menu #ExportAllSARViewsData="matMenu">
+        @if (sarviewsEventProducts) {
+          <div>
+            <button
+              (click)="
+                onMakeSarviewsProductDownloadScript(sarviewsEventProducts)
               "
               mat-menu-item
-              [matMenuTriggerFor]="addAllBurstProducts"
-              [matMenuTriggerData]="{
-                burstData:
-                  searchType === SearchTypes.SBAS
-                    ? (SBASburstDataProducts$ | async)
-                    : (burstDataProducts$ | async),
-                burstMetadata:
-                  searchType === SearchTypes.SBAS
-                    ? (SBASburstMetadataProducts$ | async)
-                    : (burstMetadataProducts$ | async),
-              }"
             >
-              {{ isBurstStack$ | async }}
-              {{
-                searchType !== SearchTypes.SBAS
-                  ? downloadableProds.length
-                  : (SBASBurstProductsLength$ | async)
-              }}
-              BURST {{ 'FILE' | translate
-              }}{{ downloadableProds.length === 1 ? '' : 's' }}
+              python (.py)
             </button>
-
-            @let currentDatasetID = currentDatasetID$ | async;
-            @if ( searchType === SearchTypes.DATASET
-                && (
-                    currentDatasetID === 'OPERA-S1'
-                    || currentDatasetID === 'NISAR'
-                    || currentDatasetID === 'SEASAT'
-                    )
-                ) {
-            <button
-              mat-menu-item
-              [matMenuTriggerFor]="addAllProductsOfType"
-              [matMenuTriggerData]="{
-                productData: (productCountByType$ | async),
-              }"
-            >
-              {{
-                currentDatasetID === 'NISAR'
-                  ? ('ADD_BY_FILE_TYPE' | translate)
-                  : ('ADD_BY_PRODUCT_TYPE' | translate)
-              }}
-            </button>
+          </div>
         }
-          </mat-menu>
-
-          <mat-menu #addAllProductsOfType>
-            <ng-template matMenuContent let-productData="productData">
-              <button
-                mat-menu-item
-                *ngFor="let item of productData | keyvalue"
-                (click)="queueProductsOfType(item.key)"
-              >
-                {{ 'ADD' | translate }} {{ item.value }} {{ item.key }}
-                {{ 'FILE' | translate }}{{ item.value === 1 ? '' : 's' }}
-                {{ 'TO_DOWNLOADS' | translate }}
-              </button>
-            </ng-template>
-          </mat-menu>
-
-          <mat-menu #addAllBurstProducts>
-            <ng-template
-              matMenuContent
-              let-burstData="burstData"
-              let-burstMetadata="burstMetadata"
-            >
-              <button (click)="queueAllProducts(burstData)" mat-menu-item>
-                {{ 'ADD' | translate }} {{ burstData.length }}
-                {{ 'FILE' | translate }}{{ burstData.length === 1 ? '' : 's' }}
-                {{ 'TO_DOWNLOADS' | translate }} (TIFF)
-              </button>
-              <button (click)="queueAllProducts(burstMetadata)" mat-menu-item>
-                {{ 'ADD' | translate }} {{ burstMetadata.length }}
-                {{ 'FILE' | translate
-                }}{{ burstMetadata.length === 1 ? '' : 's' }}
-                {{ 'TO_DOWNLOADS' | translate }} (XML)
-              </button>
-            </ng-template>
-          </mat-menu>
-
-          <mat-menu #ExportAll="matMenu">
-            <button mat-menu-item [matMenuTriggerFor]="ExportAllMetadata">
-              Metadata
-            </button>
-            <button mat-menu-item [matMenuTriggerFor]="ExportAllData">
-              {{ 'DATA' | translate }}
-            </button>
-          </mat-menu>
-        </div>
-      </div>
-
-      <mat-menu #ExportAllMetadata="matMenu">
-        <div *ngIf="products">
-          <button (click)="onMetadataExport(ApiFormat.CSV)" mat-menu-item>
-            csv
-          </button>
-          <button (click)="onMetadataExport(ApiFormat.GEOJSON)" mat-menu-item>
-            geojson
-          </button>
-          <button (click)="onMetadataExport(ApiFormat.KML)" mat-menu-item>
-            kml
-          </button>
-        </div>
       </mat-menu>
-
-      <mat-menu #ExportAllData="matMenu">
-        <div *ngIf="products">
-          <button (click)="onMakeDownloadScript(products)" mat-menu-item>
-            python (.py)
-          </button>
-
-          <button (click)="onMetadataExport(ApiFormat.METALINK)" mat-menu-item>
-            metalink
-          </button>
-        </div>
-      </mat-menu>
-
-      <mat-menu #ExportAllSARViewsData="matMenu">
-        <div *ngIf="sarviewsEventProducts">
-          <button
-            (click)="onMakeSarviewsProductDownloadScript(sarviewsEventProducts)"
-            mat-menu-item
-          >
-            python (.py)
-          </button>
-        </div>
-      </mat-menu>
-
       <mat-menu #QueueAllSARViewsProducts="matMenu">
-        <div *ngIf="sarviewsEventProducts">
-          <button
-            (click)="onQueueSarviewsProducts(sarviewsEventProducts)"
-            mat-menu-item
-          >
-            {{
-              (productsHiddenByFilters$ | async)
-                ? 'Filtered'
-                : ('ALL' | translate | titlecase)
-            }}
-            {{ 'EVENT_PRODUCTS' | translate }} ({{
-              sarviewsEventProducts.length
-            }}
-            {{ 'FILES' | translate }})
-          </button>
-          <button (click)="onQueuePinnedSarviewsProducts()" mat-menu-item>
-            {{ 'SELECTED_EVENT_PRODUCTS' | translate }} ({{
-              pinnedEventIDs.length
-            }}
-            {{ 'FILES' | translate }})
-          </button>
-        </div>
+        @if (sarviewsEventProducts) {
+          <div>
+            <button
+              (click)="onQueueSarviewsProducts(sarviewsEventProducts)"
+              mat-menu-item
+            >
+              {{
+                (productsHiddenByFilters$ | async)
+                  ? 'Filtered'
+                  : ('ALL' | translate | titlecase)
+              }}
+              {{ 'EVENT_PRODUCTS' | translate }} ({{
+                sarviewsEventProducts.length
+              }}
+              {{ 'FILES' | translate }})
+            </button>
+            <button (click)="onQueuePinnedSarviewsProducts()" mat-menu-item>
+              {{ 'SELECTED_EVENT_PRODUCTS' | translate }} ({{
+                pinnedEventIDs.length
+              }}
+              {{ 'FILES' | translate }})
+            </button>
+          </div>
+        }
       </mat-menu>
-
-      <ng-container *ngIf="searchType === SearchTypes.BASELINE">
-        <div class="header-row-right" *ngIf="breakpoint > breakpoints.MOBILE">
-          <div
-            (click)="onTogglePerpendicularSort()"
-            class="header-column noselect clickable"
-          >
-            {{ 'METERS' | translate }}
-            <mat-icon
-              *ngIf="perpendicularSort === SortDirection.NONE"
-              class="sort-icon"
-              >unfold_more</mat-icon
+      @if (searchType === SearchTypes.BASELINE) {
+        @if (breakpoint > breakpoints.MOBILE) {
+          <div class="header-row-right">
+            <div
+              (click)="onTogglePerpendicularSort()"
+              class="header-column noselect clickable"
             >
-            <mat-icon
-              *ngIf="perpendicularSort === SortDirection.INCREASING"
-              class="sort-icon sort-active"
-              >keyboard_arrow_up</mat-icon
+              {{ 'METERS' | translate }}
+              @if (perpendicularSort === SortDirection.NONE) {
+                <mat-icon class="sort-icon">unfold_more</mat-icon>
+              }
+              @if (perpendicularSort === SortDirection.INCREASING) {
+                <mat-icon class="sort-icon sort-active"
+                  >keyboard_arrow_up</mat-icon
+                >
+              }
+              @if (perpendicularSort === SortDirection.DECREASING) {
+                <mat-icon class="sort-icon sort-active"
+                  >keyboard_arrow_down</mat-icon
+                >
+              }
+            </div>
+            <div
+              (click)="onToggleTemporalSort()"
+              class="header-column clickable noselect"
             >
-            <mat-icon
-              *ngIf="perpendicularSort === SortDirection.DECREASING"
-              class="sort-icon sort-active"
-              >keyboard_arrow_down</mat-icon
-            >
+              {{ 'DAYS' | translate }}
+              @if (temporalSort === SortDirection.NONE) {
+                <mat-icon class="sort-icon">unfold_more</mat-icon>
+              }
+              @if (temporalSort === SortDirection.INCREASING) {
+                <mat-icon class="sort-icon sort-active"
+                  >keyboard_arrow_up</mat-icon
+                >
+              }
+              @if (temporalSort === SortDirection.DECREASING) {
+                <mat-icon class="sort-icon sort-active"
+                  >keyboard_arrow_down</mat-icon
+                >
+              }
+            </div>
+            <div class="header-column header-cart"></div>
           </div>
-          <div
-            (click)="onToggleTemporalSort()"
-            class="header-column clickable noselect"
-          >
-            {{ 'DAYS' | translate }}
-            <mat-icon
-              *ngIf="temporalSort === SortDirection.NONE"
-              class="sort-icon"
-              >unfold_more</mat-icon
-            >
-            <mat-icon
-              *ngIf="temporalSort === SortDirection.INCREASING"
-              class="sort-icon sort-active"
-              >keyboard_arrow_up</mat-icon
-            >
-            <mat-icon
-              *ngIf="temporalSort === SortDirection.DECREASING"
-              class="sort-icon sort-active"
-              >keyboard_arrow_down</mat-icon
-            >
-          </div>
-          <div class="header-column header-cart"></div>
-        </div>
-      </ng-container>
+        }
+      }
     </div>
-  </ng-container>
-</ng-container>
+  }
+}
 
 <mat-menu #eventMonitoringOptions="matMenu">
   <ng-template matMenuContent let-selectedProducts="selected">
