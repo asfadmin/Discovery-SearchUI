@@ -6,9 +6,9 @@ import {
   MatDialogContent,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { SharedModule } from '@shared';
-import { DocsModalModule } from '@components/shared/docs-modal';
-import { TranslateService } from '@ngx-translate/core';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
 @Component({
   selector: 'app-disp-disclaimer-dialog',
@@ -41,9 +41,10 @@ import { SubSink } from 'subsink';
     MatDialogContent,
     MatButton,
     MatDialogClose,
-    SharedModule,
-    DocsModalModule,
+    DocsModalComponent,
+    TranslateModule,
   ],
+  standalone: true,
 })
 export class DispDataDisclaimerComponent implements OnInit, OnDestroy {
   dialogRef = inject<MatDialogRef<DispDataDisclaimerComponent>>(MatDialogRef);

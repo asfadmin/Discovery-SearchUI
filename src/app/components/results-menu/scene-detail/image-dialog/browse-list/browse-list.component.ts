@@ -7,7 +7,11 @@ import {
   OnDestroy,
   inject,
 } from '@angular/core';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import {
+  CdkVirtualScrollViewport,
+  CdkFixedSizeVirtualScroll,
+  CdkVirtualForOf,
+} from '@angular/cdk/scrolling';
 import { SubSink } from 'subsink';
 
 import { Observable } from 'rxjs';
@@ -29,13 +33,23 @@ import * as searchStore from '@store/search';
 import * as models from '@models';
 import { SarviewsEventsService, ScenesService } from '@services';
 import { PinnedProduct } from '@services/browse-map.service';
+import { AsyncPipe } from '@angular/common';
+import { MatBadge } from '@angular/material/badge';
+import { ShortDatePipe } from '@pipes/short-date.pipe';
 
 @Component({
   selector: 'app-browse-list',
   templateUrl: './browse-list.component.html',
   styleUrls: ['./browse-list.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  standalone: false,
+  imports: [
+    CdkVirtualScrollViewport,
+    CdkFixedSizeVirtualScroll,
+    CdkVirtualForOf,
+    MatBadge,
+    AsyncPipe,
+    ShortDatePipe,
+  ],
 })
 export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

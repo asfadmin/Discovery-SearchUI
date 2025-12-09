@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, OnDestroy, inject } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormsModule } from '@angular/forms';
 
 import { Subject } from 'rxjs';
 import { tap, map, delay } from 'rxjs/operators';
@@ -11,6 +11,10 @@ import * as filtersStore from '@store/filters';
 
 import { Props } from '@models';
 import { PropertyService } from '@services';
+import { MatFormField, MatInput } from '@angular/material/input';
+import { MatButton } from '@angular/material/button';
+import { AoiClearComponent } from './aoi-clear/aoi-clear.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 enum PathFormInputType {
   PATH_START = 'Path Start',
@@ -23,7 +27,15 @@ enum PathFormInputType {
   selector: 'app-path-selector',
   templateUrl: './path-selector.component.html',
   styleUrls: ['./path-selector.component.scss'],
-  standalone: false,
+  imports: [
+    FormsModule,
+
+    MatFormField,
+    MatInput,
+    MatButton,
+    AoiClearComponent,
+    TranslateModule,
+  ],
 })
 export class PathSelectorComponent implements OnInit, OnDestroy {
   prop = inject(PropertyService);

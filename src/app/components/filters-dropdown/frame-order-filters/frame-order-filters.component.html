@@ -1,29 +1,28 @@
-<mat-expansion-panel
-  *ngIf="prop.isRelevant(p.PATH) || prop.isRelevant(p.FRAME)"
-  [expanded]="defaultPanelOpenState"
-  [disabled]="panelIsDisabled"
-  (click)="selectPanel(panels.PATH)"
-  [class.raised-section]="isSelected(panels.PATH)"
->
-  <mat-expansion-panel-header
-    [collapsedHeight]="customCollapsedHeight"
-    [expandedHeight]="customExpandedHeight"
+@if (prop.isRelevant(p.PATH) || prop.isRelevant(p.FRAME)) {
+  <mat-expansion-panel
+    [expanded]="defaultPanelOpenState"
+    [disabled]="panelIsDisabled"
+    (click)="selectPanel(panels.PATH)"
+    [class.raised-section]="isSelected(panels.PATH)"
   >
-    <mat-panel-title style="align-items: center">
-      {{ 'FRAME_ORDER_FILTERS' | translate }}
-      <app-docs-modal
-        class="info-icon"
-        url="https://docs.asf.alaska.edu/vertex/manual/#path-and-frame-filters"
-      >
-      </app-docs-modal>
-    </mat-panel-title>
-  </mat-expansion-panel-header>
-
-  <div class="selector-card-spacing">
-    <app-path-selector> {{ 'TO' | translate }}</app-path-selector>
-  </div>
-
-  <app-flight-direction-selector
-    [multiple]="false"
-  ></app-flight-direction-selector>
-</mat-expansion-panel>
+    <mat-expansion-panel-header
+      [collapsedHeight]="customCollapsedHeight"
+      [expandedHeight]="customExpandedHeight"
+    >
+      <mat-panel-title style="align-items: center">
+        {{ 'FRAME_ORDER_FILTERS' | translate }}
+        <app-docs-modal
+          class="info-icon"
+          url="https://docs.asf.alaska.edu/vertex/manual/#path-and-frame-filters"
+        >
+        </app-docs-modal>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="selector-card-spacing">
+      <app-path-selector> {{ 'TO' | translate }}</app-path-selector>
+    </div>
+    <app-flight-direction-selector
+      [multiple]="false"
+    ></app-flight-direction-selector>
+  </mat-expansion-panel>
+}

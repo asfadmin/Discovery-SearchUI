@@ -1,46 +1,49 @@
 <div class="saved-filter">
   <div class="filter-description">
     <div (click)="togglePanel()" class="clickable expand-arrow">
-      <mat-icon *ngIf="!expanded" class="expand-arrow--icon"
-        >keyboard_arrow_right</mat-icon
-      >
-      <mat-icon *ngIf="expanded" class="expand-arrow--icon"
-        >keyboard_arrow_down</mat-icon
-      >
+      @if (!expanded) {
+        <mat-icon class="expand-arrow--icon">keyboard_arrow_right</mat-icon>
+      }
+      @if (expanded) {
+        <mat-icon class="expand-arrow--icon">keyboard_arrow_down</mat-icon>
+      }
     </div>
     <div class="filter-header-info">
       <div class="filter-title">
         <div>
-          <span
-            *ngIf="!isEditingName"
-            (click)="onEditName()"
-            class="filter-name clickable"
-          >
-            {{ filterPreset.name }} <mat-icon class="edit-icon">edit</mat-icon>
-          </span>
+          @if (!isEditingName) {
+            <span (click)="onEditName()" class="filter-name clickable">
+              {{ filterPreset.name }}
+              <mat-icon class="edit-icon">edit</mat-icon>
+            </span>
+          }
 
-          <span *ngIf="isEditingName">
-            <form class="name-edit-form" #nameEditForm="ngForm">
-              <mat-form-field>
-                <input
-                  matInput
-                  [(ngModel)]="editName"
-                  (change)="onNewName($event)"
-                  name="editNameInput"
-                  placeholder="{{ 'FILTER_PRESET_NAME' | translate }}"
-                  #nameEditInput
-                />
-              </mat-form-field>
-            </form>
-          </span>
+          @if (isEditingName) {
+            <span>
+              <form class="name-edit-form" #nameEditForm="ngForm">
+                <mat-form-field>
+                  <input
+                    matInput
+                    [(ngModel)]="editName"
+                    (change)="onNewName($event)"
+                    name="editNameInput"
+                    placeholder="{{ 'FILTER_PRESET_NAME' | translate }}"
+                    #nameEditInput
+                  />
+                </mat-form-field>
+              </form>
+            </span>
+          }
 
           {{ filterPreset.searchType | uppercase | translate }}
         </div>
 
         <div style="margin-top: 5px">
-          <span *ngIf="filterPreset.searchType === SearchType.DATASET">
-            {{ (filterPreset.filters | geographicFilter).selectedDataset }}
-          </span>
+          @if (filterPreset.searchType === SearchType.DATASET) {
+            <span>
+              {{ (filterPreset.filters | geographicFilter).selectedDataset }}
+            </span>
+          }
         </div>
       </div>
     </div>
@@ -55,24 +58,25 @@
   </div>
 </div>
 
-<div *ngIf="expanded" class="detailed-view">
-  <div>
-    <app-geographic-search-filters
-      *ngIf="filterPreset.searchType === SearchType.DATASET"
-      [filters]="filterPreset.filters | geographicFilter"
-    >
-    </app-geographic-search-filters>
-
-    <app-baseline-search-filters
-      *ngIf="filterPreset.searchType === SearchType.BASELINE"
-      [filters]="filterPreset.filters | baselineFilter"
-    >
-    </app-baseline-search-filters>
-
-    <app-sbas-search-filters
-      *ngIf="filterPreset.searchType === SearchType.SBAS"
-      [filters]="filterPreset.filters | SBASFilter"
-    >
-    </app-sbas-search-filters>
+@if (expanded) {
+  <div class="detailed-view">
+    <div>
+      @if (filterPreset.searchType === SearchType.DATASET) {
+        <app-geographic-search-filters
+          [filters]="filterPreset.filters | geographicFilter"
+        >
+        </app-geographic-search-filters>
+      }
+      @if (filterPreset.searchType === SearchType.BASELINE) {
+        <app-baseline-search-filters
+          [filters]="filterPreset.filters | baselineFilter"
+        >
+        </app-baseline-search-filters>
+      }
+      @if (filterPreset.searchType === SearchType.SBAS) {
+        <app-sbas-search-filters [filters]="filterPreset.filters | SBASFilter">
+        </app-sbas-search-filters>
+      }
+    </div>
   </div>
-</div>
+}

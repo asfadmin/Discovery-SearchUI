@@ -13,20 +13,19 @@
   }"
 >
   <div class="button-flex-row">
-    <div
-      class="image-flex"
-      *ngIf="
-        searchType !== SearchTypes.BASELINE || breakpoint > breakpoints.SMALL
-      "
-    >
-      <img
-        class="list-thumbnail"
-        [src]="scene.thumbnail"
-        onerror="this.src='assets/no-thumb.png'"
-        matBadgeOverlap="false"
-        matListAvatar
-      />
-    </div>
+    @if (
+      searchType !== SearchTypes.BASELINE || breakpoint > breakpoints.SMALL
+    ) {
+      <div class="image-flex">
+        <img
+          class="list-thumbnail"
+          [src]="scene.thumbnail"
+          onerror="this.src='assets/no-thumb.png'"
+          matBadgeOverlap="false"
+          matListAvatar
+        />
+      </div>
+    }
 
     <div
       [ngClass]="{
@@ -57,20 +56,19 @@
           </app-file-name>
 
           <span style="margin-left: 5px">
-            <app-copy-to-clipboard
-              *ngIf="hovered; else notHovered"
-              prompt="{{ 'COPY_SCENE_NAME' | translate }}"
-              [value]="
-                scene.metadata.fileName ||
-                scene.name ||
-                scene.metadata.job.job_id
-              "
-            >
-            </app-copy-to-clipboard>
-
-            <ng-template #notHovered>
+            @if (hovered) {
+              <app-copy-to-clipboard
+                prompt="{{ 'COPY_SCENE_NAME' | translate }}"
+                [value]="
+                  scene.metadata.fileName ||
+                  scene.name ||
+                  scene.metadata.job.job_id
+                "
+              >
+              </app-copy-to-clipboard>
+            } @else {
               <fa-icon style="visibility: hidden" [icon]="copyIcon"> </fa-icon>
-            </ng-template>
+            }
           </span>
         </div>
       </div>
@@ -78,53 +76,52 @@
       <div class="date-time" matLine>
         @if (scene.metadata.job) {
           {{ scene.metadata.job.job_type }}
-          <br
-            *ngIf="
-              breakpoint === breakpoints.MOBILE &&
-              searchType === SearchTypes.CUSTOM_PRODUCTS
-            "
-          />
+          @if (
+            breakpoint === breakpoints.MOBILE &&
+            searchType === SearchTypes.CUSTOM_PRODUCTS
+          ) {
+            <br />
+          }
           -
         }
 
         @if (!scene.isDummyProduct) {
-          <ng-container
-            *ngIf="
-              breakpoint > breakpoints.MOBILE &&
-              searchType !== SearchTypes.BASELINE &&
-              !!scene.metadata?.opera?.validityStartDate
-            "
-            matTooltip="Validity Start Date"
-          >
-            {{ scene.metadata.opera.validityStartDate | fullDate }}
-          </ng-container>
+          @if (
+            breakpoint > breakpoints.MOBILE &&
+            searchType !== SearchTypes.BASELINE &&
+            !!scene.metadata?.opera?.validityStartDate
+          ) {
+            <ng-container matTooltip="Validity Start Date">
+              {{ scene.metadata.opera.validityStartDate | fullDate }}
+            </ng-container>
+          }
 
-          <span
-            *ngIf="
-              breakpoint > breakpoints.MOBILE &&
-              searchType !== SearchTypes.BASELINE &&
-              !scene.metadata?.opera?.validityStartDate
-            "
-            matTooltip="{{ 'SCENE_START_TIME' | translate }}"
-          >
-            {{ scene.metadata.date | fullDate }}
-          </span>
+          @if (
+            breakpoint > breakpoints.MOBILE &&
+            searchType !== SearchTypes.BASELINE &&
+            !scene.metadata?.opera?.validityStartDate
+          ) {
+            <span matTooltip="{{ 'SCENE_START_TIME' | translate }}">
+              {{ scene.metadata.date | fullDate }}
+            </span>
+          }
 
-          <ng-container
-            *ngIf="
-              breakpoint === breakpoints.MOBILE ||
-              searchType === SearchTypes.BASELINE
-            "
-            matTooltip="{{ 'SCENE_START_TIME' | translate }}"
-          >
-            {{ scene.metadata.date | shortDate }}
-          </ng-container>
+          @if (
+            breakpoint === breakpoints.MOBILE ||
+            searchType === SearchTypes.BASELINE
+          ) {
+            <ng-container matTooltip="{{ 'SCENE_START_TIME' | translate }}">
+              {{ scene.metadata.date | shortDate }}
+            </ng-container>
+          }
         }
-        <span *ngIf="scene.isDummyProduct">Loading...</span>
+        @if (scene.isDummyProduct) {
+          <span>Loading...</span>
+        }
       </div>
     </div>
 
-    <ng-container *ngIf="searchType !== SearchTypes.BASELINE">
+    @if (searchType !== SearchTypes.BASELINE) {
       <app-scene-controls
         (onZoomToScene)="onZoomTo()"
         (onToggleScene)="onToggleScene()"
@@ -135,9 +132,9 @@
         [searchType]="searchType"
       >
       </app-scene-controls>
-    </ng-container>
+    }
 
-    <ng-container *ngIf="searchType === SearchTypes.BASELINE">
+    @if (searchType === SearchTypes.BASELINE) {
       <app-baseline-scene-controls
         (onToggleScene)="onToggleScene()"
         [scene]="scene"
@@ -147,6 +144,6 @@
         style="min-width: 200px"
       >
       </app-baseline-scene-controls>
-    </ng-container>
+    }
   </div>
 </button>

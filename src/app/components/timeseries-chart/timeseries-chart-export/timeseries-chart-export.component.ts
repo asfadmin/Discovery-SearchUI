@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -14,7 +13,6 @@ import { NetcdfService } from '@services';
 @Component({
   selector: 'app-timeseries-chart-export',
   imports: [
-    CommonModule,
     MatDialogModule,
     MatIconModule,
     MatIconModule,

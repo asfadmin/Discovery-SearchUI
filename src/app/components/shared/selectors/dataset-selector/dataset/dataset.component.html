@@ -1,6 +1,8 @@
 <span matLine class="dataset__name" [class.subName__adj]="dataset.subName">
   <b>{{ dataset.name }}</b>
-  <span *ngIf="dataset.beta"><em> (beta)</em></span>
+  @if (dataset.beta) {
+    <span><em> (beta)</em></span>
+  }
   &nbsp;-&nbsp;
 </span>
 <span matLine>
@@ -11,6 +13,8 @@
     >info</mat-icon
   >
 </span>
-<div *ngIf="dataset.subName" class="dataset__subName faint-text">
-  {{ dataset.subName }}
-</div>
+@if (dataset.subName) {
+  <div class="dataset__subName faint-text">
+    {{ dataset.subName }}
+  </div>
+}

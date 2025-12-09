@@ -1,32 +1,40 @@
 <div>
-  <app-product-type-selector
-    style="padding-right: 10px"
-    (typesChange)="onNewProductTypes($event)"
-    *ngIf="dataset.id !== 'SENTINEL-1 BURSTS'"
-  >
-  </app-product-type-selector>
-
-  <mat-form-field *ngIf="prop.isRelevant(p.BEAM_MODE)">
-    <mat-select
-      (selectionChange)="onNewDatasetBeamModes($event.value)"
-      [(ngModel)]="beamModes"
-      [disabled]="!prop.isRelevant(p.BEAM_MODE)"
-      placeholder="{{ 'BEAM_MODE' | translate }}"
-      multiple
+  @if (dataset.id !== 'SENTINEL-1 BURSTS') {
+    <app-product-type-selector
+      style="padding-right: 10px"
+      (typesChange)="onNewProductTypes($event)"
     >
-      <mat-option *ngFor="let mode of dataset.beamModes" [value]="mode">
-        {{ mode }}
-      </mat-option>
-    </mat-select>
-    <mat-hint *ngIf="prop.isRelevant(p.BEAM_MODE)" align="start">
-      {{ beamModes?.length || 0 }}/{{ dataset.beamModes.length }}
-      {{ 'BEAM_MODES_SELECTED' | translate }}
-    </mat-hint>
+    </app-product-type-selector>
+  }
 
-    <mat-hint *ngIf="!prop.isRelevant(p.BEAM_MODE)" align="start">
-      {{ 'NO_BEAM_MODES_TO_SELECT' | translate }}
-    </mat-hint>
-  </mat-form-field>
+  @if (prop.isRelevant(p.BEAM_MODE)) {
+    <mat-form-field>
+      <mat-select
+        (selectionChange)="onNewDatasetBeamModes($event.value)"
+        [(ngModel)]="beamModes"
+        [disabled]="!prop.isRelevant(p.BEAM_MODE)"
+        placeholder="{{ 'BEAM_MODE' | translate }}"
+        multiple
+      >
+        @for (mode of dataset.beamModes; track mode) {
+          <mat-option [value]="mode">
+            {{ mode }}
+          </mat-option>
+        }
+      </mat-select>
+      @if (prop.isRelevant(p.BEAM_MODE)) {
+        <mat-hint align="start">
+          {{ beamModes?.length || 0 }}/{{ dataset.beamModes.length }}
+          {{ 'BEAM_MODES_SELECTED' | translate }}
+        </mat-hint>
+      }
+      @if (!prop.isRelevant(p.BEAM_MODE)) {
+        <mat-hint align="start">
+          {{ 'NO_BEAM_MODES_TO_SELECT' | translate }}
+        </mat-hint>
+      }
+    </mat-form-field>
+  }
 
   <mat-form-field>
     <mat-select
@@ -36,17 +44,23 @@
       placeholder="{{ 'POLARIZATION' | translate }}"
       multiple
     >
-      <mat-option *ngFor="let pol of dataset.polarizations" [value]="pol">
-        {{ pol }}
-      </mat-option>
+      @for (pol of dataset.polarizations; track pol) {
+        <mat-option [value]="pol">
+          {{ pol }}
+        </mat-option>
+      }
     </mat-select>
-    <mat-hint *ngIf="prop.isRelevant(p.POLARIZATION)" align="start">
-      {{ polarizations?.length || 0 }}/{{ dataset.polarizations.length }}
-      {{ 'POLARIZATIONS_SELECTED' | translate }}
-    </mat-hint>
-    <mat-hint *ngIf="!prop.isRelevant(p.POLARIZATION)" align="start">
-      {{ 'NO_POLARIZATIONS_TO_SELECT' | translate }}
-    </mat-hint>
+    @if (prop.isRelevant(p.POLARIZATION)) {
+      <mat-hint align="start">
+        {{ polarizations?.length || 0 }}/{{ dataset.polarizations.length }}
+        {{ 'POLARIZATIONS_SELECTED' | translate }}
+      </mat-hint>
+    }
+    @if (!prop.isRelevant(p.POLARIZATION)) {
+      <mat-hint align="start">
+        {{ 'NO_POLARIZATIONS_TO_SELECT' | translate }}
+      </mat-hint>
+    }
   </mat-form-field>
 
   <mat-form-field>
@@ -57,70 +71,80 @@
       placeholder="{{ 'DIRECTION' | translate }}"
       multiple
     >
-      <mat-option
-        *ngFor="let direction of flightDirectionTypes"
-        [value]="direction"
+      @for (direction of flightDirectionTypes; track direction) {
+        <mat-option [value]="direction">
+          {{ direction.toUpperCase() | translate }}
+        </mat-option>
+      }
+    </mat-select>
+
+    @if (prop.isRelevant(p.FLIGHT_DIRECTION)) {
+      <mat-hint align="start">
+        {{ flightDirections?.length || 0 }}/{{ flightDirectionTypes.length }}
+        {{ 'FLIGHT_DIRECTIONS_SELECTED' | translate }}
+      </mat-hint>
+    }
+    @if (!prop.isRelevant(p.FLIGHT_DIRECTION)) {
+      <mat-hint align="start">
+        {{ 'NO_FLIGHT_DIRECTIONS_TO_SELECT' | translate }}
+      </mat-hint>
+    }
+  </mat-form-field>
+
+  @if (prop.isRelevant(p.SUBTYPE)) {
+    <mat-form-field>
+      <mat-select
+        (selectionChange)="onNewSubtypeSelected($event.value)"
+        [(ngModel)]="subtypes"
+        [disabled]="!prop.isRelevant(p.SUBTYPE)"
+        placeholder="{{ 'SUBTYPE' | translate }}"
+        multiple
       >
-        {{ direction.toUpperCase() | translate }}
-      </mat-option>
-    </mat-select>
+        @for (subtype of dataset.subtypes; track subtype) {
+          <mat-option [value]="subtype">
+            {{ subtype.apiValue }}
+          </mat-option>
+        }
+      </mat-select>
+      @if (prop.isRelevant(p.SUBTYPE)) {
+        <mat-hint align="start">
+          {{ subtypes?.length || 0 }}/{{ dataset.subtypes?.length }}
+          {{ 'SUBTYPES_SELECTED' | translate }}
+        </mat-hint>
+      }
+      @if (!prop.isRelevant(p.SUBTYPE)) {
+        <mat-hint align="start">
+          {{ 'NO_SUBTYPES_TO_SELECT' | translate }}
+        </mat-hint>
+      }
+    </mat-form-field>
+  }
 
-    <mat-hint *ngIf="prop.isRelevant(p.FLIGHT_DIRECTION)" align="start">
-      {{ flightDirections?.length || 0 }}/{{ flightDirectionTypes.length }}
-      {{ 'FLIGHT_DIRECTIONS_SELECTED' | translate }}
-    </mat-hint>
-    <mat-hint *ngIf="!prop.isRelevant(p.FLIGHT_DIRECTION)" align="start">
-      {{ 'NO_FLIGHT_DIRECTIONS_TO_SELECT' | translate }}
-    </mat-hint>
-  </mat-form-field>
-
-  <mat-form-field *ngIf="prop.isRelevant(p.SUBTYPE)">
-    <mat-select
-      (selectionChange)="onNewSubtypeSelected($event.value)"
-      [(ngModel)]="subtypes"
-      [disabled]="!prop.isRelevant(p.SUBTYPE)"
-      placeholder="{{ 'SUBTYPE' | translate }}"
-      multiple
-    >
-      <mat-option *ngFor="let subtype of dataset.subtypes" [value]="subtype">
-        {{ subtype.apiValue }}
-      </mat-option>
-    </mat-select>
-
-    <mat-hint *ngIf="prop.isRelevant(p.SUBTYPE)" align="start">
-      {{ subtypes?.length || 0 }}/{{ dataset.subtypes?.length }}
-      {{ 'SUBTYPES_SELECTED' | translate }}
-    </mat-hint>
-    <mat-hint *ngIf="!prop.isRelevant(p.SUBTYPE)" align="start">
-      {{ 'NO_SUBTYPES_TO_SELECT' | translate }}
-    </mat-hint>
-  </mat-form-field>
-
-  <mat-form-field
-    *ngIf="['SENTINEL-1', 'SENTINEL-1 BURSTS', 'OPERA-S1'].includes(dataset.id)"
-  >
-    <input
-      matInput
-      (input)="onNewGroupID()"
-      [(ngModel)]="groupID"
-      [maxlength]="29"
-      type="text"
-      placeholder="Group ID"
-    />
-
-    <!-- <mat-hint *ngIf="prop.isRelevant(p.SUBTYPE)" align="start">
+  @if (['SENTINEL-1', 'SENTINEL-1 BURSTS', 'OPERA-S1'].includes(dataset.id)) {
+    <mat-form-field>
+      <input
+        matInput
+        (input)="onNewGroupID()"
+        [(ngModel)]="groupID"
+        [maxlength]="29"
+        type="text"
+        placeholder="Group ID"
+      />
+      <!-- <mat-hint *ngIf="prop.isRelevant(p.SUBTYPE)" align="start">
       {{ subtypes?.length || 0 }}/{{ dataset.subtypes?.length }}
       {{ 'SUBTYPES_SELECTED' | translate }}
     </mat-hint>
     <mat-hint *ngIf="!prop.isRelevant(p.SUBTYPE)" align="start">
       {{ 'NO_SUBTYPES_TO_SELECT' | translate }}
     </mat-hint> -->
-  </mat-form-field>
+    </mat-form-field>
+  }
 
-  <app-short-name-selector
-    class="short-name-selector"
-    (shortNamesChange)="onNewShortNames($event)"
-    *ngIf="dataset.id === 'NISAR'"
-  ></app-short-name-selector>
+  @if (dataset.id === 'NISAR') {
+    <app-short-name-selector
+      class="short-name-selector"
+      (shortNamesChange)="onNewShortNames($event)"
+    ></app-short-name-selector>
+  }
   <!-- <app-opera-calibration-data-selector *ngIf="dataset.id === 'OPERA-S1'"></app-opera-calibration-data-selector> -->
 </div>

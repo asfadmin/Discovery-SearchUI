@@ -7,6 +7,15 @@ import * as scenesStore from '@store/scenes';
 import { SubSink } from 'subsink';
 import * as models from '@models';
 import { ScreenSizeService } from '@services';
+import {
+  MatAccordion,
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle,
+} from '@angular/material/expansion';
+import { AsyncPipe } from '@angular/common';
+import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 enum FilterPanel {
   SEARCH = 'Search Options',
@@ -21,7 +30,16 @@ enum FilterPanel {
   selector: 'app-timeseries-filters',
   templateUrl: './timeseries-filters.component.html',
   styleUrl: './timeseries-filters.component.scss',
-  standalone: false,
+  imports: [
+    MatAccordion,
+
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    SearchTypeSelectorComponent,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class TimeseriesFiltersComponent implements OnDestroy, OnInit {
   private store$ = inject<Store<AppState>>(Store);

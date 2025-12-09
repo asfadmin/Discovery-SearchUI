@@ -1,6 +1,17 @@
 import { Component, OnInit, inject } from '@angular/core';
 
 import { EnvironmentService, NotificationService } from '@services';
+import {
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+} from '@angular/material/dialog';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { FormsModule } from '@angular/forms';
+import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { MatButton } from '@angular/material/button';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-customize-env',
@@ -9,7 +20,19 @@ import { EnvironmentService, NotificationService } from '@services';
     './customize-env.component.scss',
     '../preferences/preferences.component.scss',
   ],
-  standalone: false,
+  imports: [
+    MatDialogTitle,
+    CdkScrollable,
+    MatDialogContent,
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    CdkTextareaAutosize,
+    MatDialogActions,
+    MatButton,
+    TranslateModule,
+  ],
 })
 export class CustomizeEnvComponent implements OnInit {
   private env = inject(EnvironmentService);

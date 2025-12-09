@@ -1,6 +1,10 @@
 import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { NgForm, FormsModule } from '@angular/forms';
+import {
+  MatAutocompleteSelectedEvent,
+  MatAutocompleteTrigger,
+  MatAutocomplete,
+} from '@angular/material/autocomplete';
 import { Store } from '@ngrx/store';
 import { NotificationService, SarviewsEventsService } from '@services';
 import { AppState } from '@store';
@@ -11,11 +15,30 @@ import { getIsResultsMenuOpen } from '@store/ui';
 import { combineLatest } from 'rxjs';
 import { map, withLatestFrom } from 'rxjs/operators';
 import { SubSink } from 'subsink';
+import { MatFormField, MatInput } from '@angular/material/input';
+import { AsyncPipe } from '@angular/common';
+import { MatOption } from '@angular/material/select';
+import { MatTooltip } from '@angular/material/tooltip';
+import { ShortDatePipe } from '@pipes/short-date.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-sarviews-event-search-selector',
   templateUrl: './sarviews-event-search-selector.component.html',
   styleUrls: ['./sarviews-event-search-selector.component.scss'],
-  standalone: false,
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatInput,
+    MatAutocompleteTrigger,
+    MatAutocomplete,
+
+    MatOption,
+    MatTooltip,
+
+    AsyncPipe,
+    ShortDatePipe,
+    TranslateModule,
+  ],
 })
 export class SarviewsEventSearchSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

@@ -4,12 +4,25 @@ import { AppState } from '@store';
 import { SubSink } from 'subsink';
 import * as filtersStore from '@store/filters';
 import { SBASOverlap } from '@models';
+import { MatFormField, MatLabel } from '@angular/material/input';
+import { MatSelect, MatOption } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
+import { UpperCasePipe } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-sbas-overlap-selector',
   templateUrl: './sbas-overlap-selector.component.html',
   styleUrls: ['./sbas-overlap-selector.component.scss'],
-  standalone: false,
+  imports: [
+    MatFormField,
+    MatLabel,
+    MatSelect,
+    FormsModule,
+    MatOption,
+    UpperCasePipe,
+    TranslateModule,
+  ],
 })
 export class SbasOverlapSelectorComponent implements OnInit {
   private store$ = inject<Store<AppState>>(Store);
