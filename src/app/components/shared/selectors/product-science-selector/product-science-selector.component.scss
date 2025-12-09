@@ -1,3 +1,6 @@
+@use "@angular/material" as mat;
+@use "asf-theme-variables" as *;
+
 div.cdk-overlay-pane:has(>.sci-prod-select) {
   min-width: fit-content !important;
   //width: fit-content !important;
@@ -35,4 +38,5 @@ div.cdk-overlay-pane:has(>.sci-prod-select) {
   font-weight: 400;
   font-size: small;
   margin-left: 18px;
+
 }
