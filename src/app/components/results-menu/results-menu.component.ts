@@ -5,7 +5,7 @@ import {
   OnDestroy,
   inject,
 } from '@angular/core';
-import { ResizeEvent } from 'angular-resizable-element';
+import { ResizeEvent, ResizableModule } from 'angular-resizable-element';
 import { SubSink } from 'subsink';
 
 import { Subject } from 'rxjs';
@@ -19,12 +19,35 @@ import * as scenesStore from '@store/scenes';
 import * as searchStore from '@store/search';
 
 import * as models from '@models';
+import { NgClass, AsyncPipe } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { DesktopResultsMenuComponent } from './desktop-results-menu/desktop-results-menu.component';
+import { TimeseriesResultsMenuComponent } from './timeseries-results-menu/timeseries-results-menu.component';
+import { SarviewsResultsMenuComponent } from './sarviews-results-menu/sarviews-results-menu.component';
+import { BaselineResultsMenuComponent } from './baseline-results-menu/baseline-results-menu.component';
+import { SBASResultsMenuComponent } from './sbas-results-menu/sbas-results-menu.component';
+import { MobileResultsMenuComponent } from './mobile-results-menu/mobile-results-menu.component';
+import { MatButton } from '@angular/material/button';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-results-menu',
   templateUrl: './results-menu.component.html',
   styleUrls: ['./results-menu.component.scss'],
-  standalone: false,
+  imports: [
+    ResizableModule,
+    NgClass,
+    MatIcon,
+    DesktopResultsMenuComponent,
+    TimeseriesResultsMenuComponent,
+    SarviewsResultsMenuComponent,
+    BaselineResultsMenuComponent,
+    SBASResultsMenuComponent,
+    MobileResultsMenuComponent,
+    MatButton,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class ResultsMenuComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

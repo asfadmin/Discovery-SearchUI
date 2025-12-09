@@ -47,6 +47,19 @@ import { MatDialog } from '@angular/material/dialog';
 import WKT from 'ol/format/WKT';
 import { getTimeseriesChartStates } from '@store/charts';
 import { KmlFootprintService } from '@services/kml-footprint.service';
+import { MatButton, MatFabButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { AsyncPipe } from '@angular/common';
+import { MapControlsComponent } from './map-controls/map-controls.component';
+import { DisplacementLayersComponent } from './displacement-layers/displacement-layers.component';
+import { BannersComponent } from './banners/banners.component';
+import { InteractionSelectorComponent } from '@components/shared/aoi-options/interaction-selector/interaction-selector.component';
+import { ViewSelectorComponent } from './map-controls/view-selector/view-selector.component';
+import { LayerSelectorComponent } from './map-controls/layer-selector/layer-selector.component';
+import { FiltersDropdownComponent } from '../filters-dropdown/filters-dropdown.component';
+import { FileUploadComponent } from '@components/shared/aoi-options/file-upload/file-upload.component';
+import { AttributionsComponent } from './attributions/attributions.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 enum FullscreenControls {
   MAP = 'Map',
@@ -58,7 +71,23 @@ enum FullscreenControls {
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
-  standalone: false,
+  imports: [
+    MatButton,
+    MatIcon,
+
+    MapControlsComponent,
+    DisplacementLayersComponent,
+    BannersComponent,
+    MatFabButton,
+    InteractionSelectorComponent,
+    ViewSelectorComponent,
+    LayerSelectorComponent,
+    FiltersDropdownComponent,
+    FileUploadComponent,
+    AttributionsComponent,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class MapComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

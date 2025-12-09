@@ -6,11 +6,13 @@ import * as filtersStore from '@store/filters';
 import * as searchStore from '@store/search';
 import * as uiStore from '@store/ui';
 import { SubSink } from 'subsink';
+import { MatButton } from '@angular/material/button';
+import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-cancel-filter-changes',
   templateUrl: './cancel-filter-changes.component.html',
   styleUrls: ['./cancel-filter-changes.component.scss'],
-  standalone: false,
+  imports: [MatButton, TranslateModule],
 })
 export class CancelFilterChangesComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

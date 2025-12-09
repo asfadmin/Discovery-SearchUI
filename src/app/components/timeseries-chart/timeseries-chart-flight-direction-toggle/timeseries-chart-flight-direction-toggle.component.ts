@@ -10,7 +10,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatInputModule } from '@angular/material/input';
-import { DocsModalModule } from '@components/shared/docs-modal';
 import { FormsModule } from '@angular/forms';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -25,7 +24,6 @@ import { ScreenSizeService } from '@services';
     MatIconModule,
     MatButtonToggleModule,
     MatInputModule,
-    DocsModalModule,
     FormsModule,
     MatMenu,
     MatMenuItem,

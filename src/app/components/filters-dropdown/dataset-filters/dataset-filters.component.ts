@@ -8,6 +8,28 @@ import * as filtersStore from '@store/filters';
 
 import * as models from '@models';
 import { PropertyService, ScreenSizeService } from '@services';
+import { AsyncPipe } from '@angular/common';
+import {
+  MatAccordion,
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle,
+} from '@angular/material/expansion';
+import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
+import { DatasetSelectorComponent } from '@components/shared/selectors/dataset-selector/dataset-selector.component';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import { AoiOptionsComponent } from '@components/shared/aoi-options/aoi-options.component';
+import { DateSelectorComponent } from '@components/shared/selectors/date-selector/date-selector.component';
+import { SeasonSelectorComponent } from '@components/shared/selectors/season-selector/season-selector.component';
+import { ProductScienceSelectorComponent } from '@components/shared/selectors/product-science-selector/product-science-selector.component';
+import { ProductionConfigSelectorComponent } from '@components/shared/selectors/production-config-selector/production-config-selector.component';
+import { OtherSelectorComponent } from '@components/shared/selectors/other-selector/other-selector.component';
+import { ObservationPanelSelectorComponent } from '@components/shared/selectors/observation-panel-selector/observation-panel-selector.component';
+import { PathSelectorComponent } from '@components/shared/selectors/path-selector/path-selector.component';
+import { MissionSelectorComponent } from '@components/shared/selectors/mission-selector/mission-selector.component';
+import { BurstSelectorComponent } from '@components/shared/selectors/burst-selector/burst-selector.component';
+import { OperaS1SelectorComponent } from '@components/shared/selectors/opera-s1-selector/opera-s1-selector.component';
+import { TranslateModule } from '@ngx-translate/core';
 // import { TranslateService } from "@ngx-translate/core";
 
 enum FilterPanel {
@@ -24,7 +46,28 @@ enum FilterPanel {
   selector: 'app-dataset-filters',
   templateUrl: './dataset-filters.component.html',
   styleUrls: ['./dataset-filters.component.scss'],
-  standalone: false,
+  imports: [
+    MatAccordion,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    SearchTypeSelectorComponent,
+    DatasetSelectorComponent,
+    DocsModalComponent,
+    AoiOptionsComponent,
+    DateSelectorComponent,
+    SeasonSelectorComponent,
+    ProductScienceSelectorComponent,
+    ProductionConfigSelectorComponent,
+    OtherSelectorComponent,
+    ObservationPanelSelectorComponent,
+    PathSelectorComponent,
+    MissionSelectorComponent,
+    BurstSelectorComponent,
+    OperaS1SelectorComponent,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class DatasetFiltersComponent implements OnInit, OnDestroy {
   prop = inject(PropertyService);

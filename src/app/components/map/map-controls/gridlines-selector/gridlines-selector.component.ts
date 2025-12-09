@@ -3,12 +3,16 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
 import { SubSink } from 'subsink';
+import { MatButtonToggle } from '@angular/material/button-toggle';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-gridlines-selector',
   templateUrl: './gridlines-selector.component.html',
   styleUrls: ['./gridlines-selector.component.scss'],
-  standalone: false,
+  imports: [MatButtonToggle, MatTooltip, MatIcon, TranslateModule],
 })
 export class GridlinesSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

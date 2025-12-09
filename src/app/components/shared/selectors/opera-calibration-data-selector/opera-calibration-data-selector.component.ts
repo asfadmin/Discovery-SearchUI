@@ -3,13 +3,18 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { SubSink } from 'subsink';
 import * as filterStore from '@store/filters';
-import { MatRadioChange } from '@angular/material/radio';
+import {
+  MatRadioChange,
+  MatRadioGroup,
+  MatRadioButton,
+} from '@angular/material/radio';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-opera-calibration-data-selector',
   templateUrl: './opera-calibration-data-selector.component.html',
   styleUrls: ['./opera-calibration-data-selector.component.scss'],
-  standalone: false,
+  imports: [MatRadioGroup, MatRadioButton, TranslateModule],
 })
 export class OperaCalibrationDataSelectorComponent
   implements OnInit, OnDestroy

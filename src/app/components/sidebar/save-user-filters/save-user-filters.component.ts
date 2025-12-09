@@ -9,11 +9,22 @@ import * as models from '@models';
 import { SubSink } from 'subsink';
 import { map } from 'rxjs/operators';
 import { ScreenSizeService } from '@services';
+import { NgClass, AsyncPipe } from '@angular/common';
+import { SaveUserFilterComponent } from './save-user-filter/save-user-filter.component';
+import { MatButton } from '@angular/material/button';
+import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-save-user-filters',
   templateUrl: './save-user-filters.component.html',
   styleUrls: ['./save-user-filters.component.scss'],
-  standalone: false,
+  imports: [
+    NgClass,
+
+    SaveUserFilterComponent,
+    MatButton,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class SaveUserFiltersComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
