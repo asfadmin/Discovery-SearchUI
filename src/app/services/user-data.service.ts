@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -26,12 +26,11 @@ export class UserDataService {
 
   private baseUrl = this.getBaseUrlFrom();
 
-  public getUserInfo$(userAuth: UserAuth): Observable<UserInfo> {
+  public getUserInfo$(_userAuth: UserAuth): Observable<UserInfo> {
     const url = this.getUserInfoURL(this.baseUrl);
-    const headers = this.makeAuthHeader(userAuth.token);
     return this.http
       .get<UserInfo>(url, {
-        headers,
+        withCredentials: true,
       })
       .pipe(
         catchError((error) => {
@@ -57,11 +56,10 @@ export class UserDataService {
     attribute: string,
   ): Observable<T> {
     const url = this.makeEndpoint(this.baseUrl, userAuth.id, attribute);
-    const headers = this.makeAuthHeader(userAuth.token);
 
     return this.http
       .get<T>(url, {
-        headers,
+        withCredentials: true,
       })
       .pipe(
         catchError((error) => {
@@ -88,11 +86,10 @@ export class UserDataService {
     value: T,
   ): Observable<any> {
     const url = this.makeEndpoint(this.baseUrl, userAuth.id, attribute);
-    const headers = this.makeAuthHeader(userAuth.token);
 
     return this.http
       .post(url, value, {
-        headers,
+        withCredentials: true,
       })
       .pipe(
         catchError((_) => {
@@ -115,10 +112,6 @@ export class UserDataService {
     attributeName: string,
   ): string {
     return `${baseUrl}/vertex/${userId}/${attributeName}`;
-  }
-
-  private makeAuthHeader(token: string): HttpHeaders {
-    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 
   private getBaseUrlFrom(): string {
