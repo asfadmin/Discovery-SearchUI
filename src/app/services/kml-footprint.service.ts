@@ -1,7 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { catchError, first, from, of } from 'rxjs';
 import * as xml2js from 'xml2js';
-// import { Polygon } from 'ol/geom';
 import { HttpClient } from '@angular/common/http';
 import { boundingExtent, Extent } from 'ol/extent';
 @Injectable({
@@ -13,7 +12,14 @@ export class KmlFootprintService {
 
   public readExtentFromKML(kml_url: string): void {
     this.httpClient
-      .get(kml_url)
+      .get(kml_url, {
+        responseType: 'text',
+        redirect: 'follow',
+        headers: {
+          'Content-Type': 'text/kml',
+          Accept: 'text/kml',
+        },
+      })
       .pipe(
         catchError((rr) => {
           console.log(rr);
@@ -40,40 +46,27 @@ export class KmlFootprintService {
           //   );
         }),
       )
-      .subscribe((blob) => {
-        const filereader = new FileReader();
+      .subscribe((xmlFile) => {
+        const parser = new xml2js.Parser({ explicitArray: false });
+        const observable = from(
+          parser.parseStringPromise(xmlFile).catch((__) => {
+            // Do nothing
+          }),
+        );
 
-        filereader.onload = (_) => {
-          const res = filereader.result as string;
-          const parser = new xml2js.Parser({ explicitArray: false });
-          const observable = from(
-            parser.parseStringPromise(res).catch((__) => {
-              // Do nothing
-            }),
-          );
-
-          observable.pipe(first()).subscribe((result) => {
-            const coordinatesString =
-              result['kml'].Document.GroundOverlay['ns0:LatLonQuad']
-                .coordinates;
-            const coordinates: [][] = coordinatesString
-              .split(' ')
-              .map((latlon) => {
-                const temp = latlon.split(',');
-                return temp.map((coord) => parseFloat(coord));
-              });
-            const extent = boundingExtent(coordinates);
-            console.log(extent);
-            this.KMLFootPrint$.set(extent);
-          });
-        };
-
-        // const body = blob.body;
-        console.log(blob);
-        if (typeof blob === 'string') {
-          blob = new Blob([blob]);
-        }
-        filereader.readAsText(blob as any);
+        observable.pipe(first()).subscribe((result) => {
+          const coordinatesString =
+            result['kml'].Document.GroundOverlay['ns0:LatLonQuad'].coordinates;
+          const coordinates: [][] = coordinatesString
+            .split(' ')
+            .map((latlon) => {
+              const temp = latlon.split(',');
+              return temp.map((coord) => parseFloat(coord));
+            });
+          const extent = boundingExtent(coordinates);
+          console.log(extent);
+          this.KMLFootPrint$.set(extent);
+        });
       });
   }
 }
