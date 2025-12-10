@@ -13,14 +13,7 @@ export class KmlFootprintService {
 
   public readExtentFromKML(kml_url: string): void {
     this.httpClient
-      .post(
-        kml_url,
-        {},
-        {
-          redirect: 'follow',
-          credentials: 'include',
-        },
-      )
+      .get(kml_url)
       .pipe(
         catchError((rr) => {
           console.log(rr);
