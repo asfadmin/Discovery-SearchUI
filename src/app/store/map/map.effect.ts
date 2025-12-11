@@ -214,12 +214,9 @@ export class MapEffects {
             const url = selectedProduct.browses[0];
 
             if (url.includes('NISAR_L2')) {
-              const kml_url = (
-                selectedProduct as models.CMRProduct
-              ).metadata.nisar.additionalUrls.find((url) =>
-                url.endsWith('kml'),
+              this.kmlFootprintService.readExtentFromKML(
+                (selectedProduct as models.CMRProduct).name,
               );
-              this.kmlFootprintService.readExtentFromKML(kml_url);
             }
 
             // for OPERA-S1 geotiffs

@@ -124,6 +124,12 @@ export class AuthService {
       );
   }
 
+  public getToken(): string {
+    if (this.env.currentEnv.cmr_token) {
+      return this.env.currentEnv?.cmr_token;
+    }
+    return this.getUser().token;
+  }
   public getUser(): models.UserAuth {
     const cookies = this.loadCookies();
     const token = cookies['asf-urs'];

@@ -3,23 +3,32 @@ import { catchError, first, from, of } from 'rxjs';
 import * as xml2js from 'xml2js';
 import { HttpClient } from '@angular/common/http';
 import { boundingExtent, Extent } from 'ol/extent';
+import { AuthService } from './auth.service';
+import { EnvironmentService } from './environment.service';
 @Injectable({
   providedIn: 'root',
 })
 export class KmlFootprintService {
   private httpClient = inject(HttpClient);
+  private authService = inject(AuthService);
+  private env = inject(EnvironmentService);
   public KMLFootPrint$ = signal<Extent>(null);
-
-  public readExtentFromKML(kml_url: string): void {
+  public L2Browse: string;
+  public readExtentFromKML(scene_name: string, kmlBrowse?: string): void {
+    this.L2Browse = kmlBrowse;
     this.httpClient
-      .get(kml_url, {
-        responseType: 'text',
-        redirect: 'follow',
-        headers: {
-          'Content-Type': 'text/kml',
-          Accept: 'text/kml',
+      .get(
+        `
+        ${this.env.currentEnv.api}/services/utils/kml_footprint?granule=${scene_name}&maturity=test&cmr_token=${this.authService.getToken()}
+        `,
+        {
+          headers: {
+            'Content-Type': 'text/html',
+            Accept: 'text/html',
+          },
+          responseType: 'text',
         },
-      })
+      )
       .pipe(
         catchError((rr) => {
           console.log(rr);

@@ -158,9 +158,14 @@ export class MapComponent implements OnInit, OnDestroy {
   constructor() {
     const obs$ = toObservable(this.kmlFootprintService.KMLFootPrint$);
     obs$.subscribe((_) => {
-      if (this.selectedScene?.id?.startsWith('NISAR_L2')) {
+      if (
+        this.selectedScene?.id?.startsWith('NISAR_L2') ||
+        this.selectedScene?.id?.startsWith('NISAR_L1')
+      ) {
         this.mapService.setSelectedBrowse(
-          this.selectedScene.browses[0],
+          this.selectedScene?.id?.startsWith('NISAR_L2')
+            ? this.selectedScene.browses[0]
+            : this.kmlFootprintService.L2Browse,
           this.selectedScene.metadata.polygon,
           this.selectedScene,
           this.kmlFootprintService.KMLFootPrint$(),

@@ -74,6 +74,7 @@ import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/
 import { FileContentsComponent } from './file-contents/file-contents.component';
 import { ReadableSizeFromBytesPipe } from '@pipes/readable-size-from-bytes.pipe';
 import { TranslateModule } from '@ngx-translate/core';
+import { KmlFootprintService } from '@services/kml-footprint.service';
 
 @Component({
   selector: 'app-scene-files',
@@ -107,6 +108,7 @@ export class SceneFilesComponent
   private clipboard = inject(ClipboardService);
   private notificationService = inject(NotificationService);
   private eventMonitoringService = inject(SarviewsEventsService);
+  private kmlFootprintService = inject(KmlFootprintService);
   dialog = inject(MatDialog);
   private screenSize = inject(ScreenSizeService);
   private asfApiService = inject(AsfApiService);
@@ -581,15 +583,21 @@ export class SceneFilesComponent
             scene.metadata.productType,
           );
 
-          return this.asfApiService
-            .query<any>(queryParams)
-            .pipe(
-              map((products) =>
-                products?.results?.length > 0
-                  ? this.productService.fromResponse(products).slice(0, 1)
-                  : [],
-              ),
-            );
+          return this.asfApiService.query<any>(queryParams).pipe(
+            map((products) =>
+              products?.results?.length > 0
+                ? this.productService.fromResponse(products).slice(0, 1)
+                : [],
+            ),
+            tap((products) => {
+              if (products.length > 0) {
+                this.kmlFootprintService.readExtentFromKML(
+                  products[0].id,
+                  products[0].browses[0],
+                );
+              }
+            }),
+          );
         } else {
           return of([]);
         }
