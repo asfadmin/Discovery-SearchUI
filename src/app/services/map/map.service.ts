@@ -963,7 +963,7 @@ export class MapService implements OnDestroy {
     url: string,
     wkt: string,
     scene: models.CMRProduct = null,
-    kmlFootprint?: Extent,
+    kmlFootprint?: { extent: Extent; rotation: number },
   ) {
     this.setLayerText('Approximate Placement Only');
     if (this.browseImageLayer) {

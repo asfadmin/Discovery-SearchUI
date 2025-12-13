@@ -12,7 +12,7 @@ export class KmlFootprintService {
   private httpClient = inject(HttpClient);
   private authService = inject(AuthService);
   private env = inject(EnvironmentService);
-  public KMLFootPrint$ = signal<Extent>(null);
+  public KMLFootPrint$ = signal<{ extent: Extent; rotation: number }>(null);
   public L2Browse: string;
   public readExtentFromKML(scene_name: string, kmlBrowse?: string): void {
     this.L2Browse = kmlBrowse;
@@ -66,15 +66,60 @@ export class KmlFootprintService {
         observable.pipe(first()).subscribe((result) => {
           const coordinatesString =
             result['kml'].Document.GroundOverlay['ns0:LatLonQuad'].coordinates;
-          const coordinates: [][] = coordinatesString
+          const coordinates: number[][] = coordinatesString
             .split(' ')
             .map((latlon) => {
               const temp = latlon.split(',');
-              return temp.map((coord) => parseFloat(coord));
+              return temp.map((coord) => parseFloat(coord)) as number[];
             });
           const extent = boundingExtent(coordinates);
           console.log(extent);
-          this.KMLFootPrint$.set(extent);
+          let rotation = 0.0;
+          const coord0 = coordinates[0];
+          const coord1 = coordinates[1];
+
+          if (coord0.length > 0 && coord1.length > 0) {
+            const bottomLeft = [extent[0], extent[1]];
+
+            const distToBottomLeft = coordinates.map((coordinate) =>
+              Math.sqrt(
+                (coordinate[0] - bottomLeft[0]) ** 2 +
+                  (coordinate[1] - bottomLeft[1]) ** 2,
+              ),
+            );
+
+            let minimum = 1000;
+            let minimumIdx = 0;
+            for (
+              let distanceIdx = 0;
+              distanceIdx < distToBottomLeft.length - 1;
+              distanceIdx++
+            ) {
+              if (distToBottomLeft[distanceIdx] < minimum) {
+                minimumIdx = distanceIdx;
+                minimum = distToBottomLeft[distanceIdx];
+              }
+            }
+            // const minIdx = distToTopLeft.findIndex();
+            // const x1 = coord0[0];
+            // const x2 = coord0[0];
+            // const y1 = coord0[1];
+            // const y2 = coord1[1];
+
+            // if (minimumIdx > 0) {
+            // rotation = -(minimumIdx * 90 * Math.PI) / 180; // (1 + minimumIdx * Math.PI) / 2;
+            // }
+            console.log('DISTANCE TO BOTTOM LEFT');
+            console.log(distToBottomLeft);
+            console.log(minimumIdx);
+            if (minimumIdx == 1) {
+              rotation = Math.PI / 2;
+            } else if (minimumIdx == 2) {
+              rotation = -Math.PI / 2;
+            }
+          }
+
+          this.KMLFootPrint$.set({ extent, rotation });
         });
       });
   }

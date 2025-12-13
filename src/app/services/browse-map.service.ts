@@ -37,7 +37,11 @@ export class BrowseMapService {
   private view: View;
   private pinnedProducts: LayerGroup;
 
-  public setMapBrowse(browse: string, wkt = '', kmlFootprint?: Extent): void {
+  public setMapBrowse(
+    browse: string,
+    wkt = '',
+    kmlFootprint?: { extent: Extent; rotation: number },
+  ): void {
     const feature = this.wktService.wktToFeature(wkt, 'EPSG:3857');
     const polygon: Polygon = feature.getGeometry() as Polygon;
 

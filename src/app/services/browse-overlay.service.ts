@@ -113,7 +113,7 @@ export class BrowseOverlayService {
     wkt: string,
     className = 'ol-layer',
     layer_id = '',
-    kmlExtent?: Extent,
+    kmlExtent?: { extent: Extent; rotation: number },
   ) {
     const feature = this.wktService.wktToFeature(wkt, 'EPSG:3857');
     const polygon = this.getPolygonFromFeature(feature, wkt);
@@ -126,18 +126,32 @@ export class BrowseOverlayService {
 
     const isNisarL2Browse = url.split('/').pop().startsWith('NISAR_L2');
 
+    let projection = getProjection('EPSG:3857');
     if (isNisarL2Browse) {
       if (kmlExtent) {
         extent = [
-          ...transform([kmlExtent[0], kmlExtent[1]], 'EPSG:4326', 'EPSG:3857'), // transform is on a coordinate basis 😭
-          ...transform([kmlExtent[2], kmlExtent[3]], 'EPSG:4326', 'EPSG:3857'),
+          ...transform(
+            [kmlExtent.extent[0], kmlExtent.extent[1]],
+            'EPSG:4326',
+            'EPSG:3857',
+          ), // transform is on a coordinate basis 😭
+          ...transform(
+            [kmlExtent.extent[2], kmlExtent.extent[3]],
+            'EPSG:4326',
+            'EPSG:3857',
+          ),
         ];
+        projection = this.rotateProjection(
+          'EPSG:3857',
+          kmlExtent.rotation,
+          extent,
+        );
       } else {
         return new ImageLayer();
       }
     }
 
-    const source = this.createImageSource(url, extent, 'EPSG:3857');
+    const source = this.createImageSource(url, extent, projection); // 'EPSG:3857');
 
     const output = new ImageLayer({
       source: source as ImageSource,
@@ -491,6 +505,62 @@ export class BrowseOverlayService {
     // img.getSource().getImage()
     // static_image_source.getImage()
   }
+
+  rotateProjection = (projection: string, angle: number, extent: number[]) => {
+    function rotateCoordinate(coordinate, angle, anchor) {
+      const coord = rotate(
+        [coordinate[0] - anchor[0], coordinate[1] - anchor[1]],
+        angle,
+      );
+      return [coord[0] + anchor[0], coord[1] + anchor[1]];
+    }
+
+    function rotateTransform(coordinate) {
+      return rotateCoordinate(coordinate, angle, getCenter(extent));
+    }
+
+    function normalTransform(coordinate) {
+      return rotateCoordinate(coordinate, -angle, getCenter(extent));
+    }
+
+    const normalProjection = getProjection(projection);
+
+    const rotatedProjection = new Projection({
+      code:
+        normalProjection.getCode() +
+        ':' +
+        angle.toString() +
+        ':' +
+        extent.toString(),
+      units: normalProjection.getUnits(),
+      extent: extent,
+    });
+    addProjection(rotatedProjection);
+
+    addCoordinateTransforms(
+      'EPSG:4326',
+      rotatedProjection,
+      function (coordinate) {
+        return rotateTransform(transform(coordinate, 'EPSG:4326', projection));
+      },
+      function (coordinate) {
+        return transform(normalTransform(coordinate), projection, 'EPSG:4326');
+      },
+    );
+
+    addCoordinateTransforms(
+      'EPSG:3857',
+      rotatedProjection,
+      function (coordinate) {
+        return rotateTransform(transform(coordinate, 'EPSG:3857', projection));
+      },
+      function (coordinate) {
+        return transform(normalTransform(coordinate), projection, 'EPSG:3857');
+      },
+    );
+
+    return rotatedProjection;
+  };
 
   public setPinnedProducts(
     pinnedProducts: Record<string, PinnedProduct>,
