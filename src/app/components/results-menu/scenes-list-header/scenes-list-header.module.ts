@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -15,6 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
   declarations: [ScenesListHeaderComponent],
   imports: [
     CommonModule,
+    FormsModule,
     MatMenuModule,
     MatIconModule,
     MatSharedModule,

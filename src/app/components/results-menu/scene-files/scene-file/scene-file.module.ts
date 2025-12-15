@@ -1,5 +1,6 @@
 import { NgModule, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatMenuModule } from '@angular/material/menu';
 
@@ -23,6 +24,7 @@ import { SharedModule } from '@shared';
   declarations: [SceneFileComponent],
   imports: [
     CommonModule,
+    FormsModule,
     FontAwesomeModule,
     MatSharedModule,
     MatMenuModule,

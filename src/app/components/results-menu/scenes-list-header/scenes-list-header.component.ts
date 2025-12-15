@@ -272,6 +272,9 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
   private selectedEvent: models.SarviewsEvent;
 
+  public isEditingProjectName = false;
+  public newProjectName = '';
+
   ngOnInit() {
     this.subs.add(
       this.pairProducts$.subscribe((products) => {
@@ -638,6 +641,21 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
           maxHeight: '500px',
         });
       });
+  }
+
+  public onBulkProjectNameUpdate() {
+    this.isEditingProjectName = true;
+    this.newProjectName = '';
+  }
+
+  public onSubmitProjectName() {
+    this.isEditingProjectName = false;
+
+    this.hyp3
+      .updateJobsName$(this.products, this.newProjectName)
+      .subscribe(console.log);
+
+    this.newProjectName = '';
   }
 
   ngOnDestroy(): void {
