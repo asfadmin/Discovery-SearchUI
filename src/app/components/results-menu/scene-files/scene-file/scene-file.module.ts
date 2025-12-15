@@ -19,6 +19,7 @@ import { PipesModule } from '@pipes';
 import { SceneFileComponent } from './scene-file.component';
 import { DownloadFileButtonModule } from '@components/shared/download-file-button/download-file-button.module';
 import { SharedModule } from '@shared';
+import { ProjectNameDialogComponent } from '@components/shared/project-name-dialog';
 
 @NgModule({
   declarations: [SceneFileComponent],
@@ -36,6 +37,7 @@ import { SharedModule } from '@shared';
     PipesModule,
     DownloadFileButtonModule,
     SharedModule,
+    ProjectNameDialogComponent,
   ],
   exports: [SceneFileComponent],
 })

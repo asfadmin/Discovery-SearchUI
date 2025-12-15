@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>{{ 'EDIT_PROJECT_NAME' | translate }}</h2>
+
+<form (ngSubmit)="onSave()">
+  <mat-dialog-content>
+    <mat-form-field class="project-name-field">
+      <mat-label>{{ 'PROJECT_NAME' | translate }}</mat-label>
+      <input
+        matInput
+        [(ngModel)]="projectName"
+        name="projectName"
+        cdkFocusInitial
+      />
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="onCancel()">
+      {{ 'CANCEL' | translate }}
+    </button>
+    <button mat-flat-button color="primary" type="submit">
+      {{ 'SAVE' | translate }}
+    </button>
+  </mat-dialog-actions>
+</form>

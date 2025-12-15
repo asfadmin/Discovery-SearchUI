@@ -17,6 +17,7 @@ import {
   EnvironmentService,
   Hyp3JobStatusService,
   OnDemandService,
+  ProjectNameDialogService,
 } from '@services';
 import * as models from '@models';
 import { SubSink } from 'subsink';
@@ -38,6 +39,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
   env = inject(EnvironmentService);
   private onDemand = inject(OnDemandService);
+  private projectNameDialog = inject(ProjectNameDialogService);
 
   @Input() product: models.CMRProduct;
   @Input() isQueued: boolean;
@@ -60,9 +62,6 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   public isHovered = false;
   public paramsList = [];
   public copyIcons = models.CopyIcons;
-
-  public newProjectName = '';
-  public isEditingProjectName = false;
 
   private subs = new SubSink();
 
@@ -159,15 +158,12 @@ export class SceneFileComponent implements OnInit, OnDestroy {
     );
   }
 
-  public onEditProjectName(oldProjectName: string) {
-    this.newProjectName = oldProjectName;
-    this.isEditingProjectName = true;
-  }
-
-  public onSubmitProjectName() {
-    this.renameJobProjectName.emit(this.newProjectName);
-    this.isEditingProjectName = false;
-    this.newProjectName = '';
+  public onEditProjectName(oldProjectName: string): void {
+    this.projectNameDialog.open(oldProjectName).subscribe((result) => {
+      if (result !== undefined) {
+        this.renameJobProjectName.emit(result);
+      }
+    });
   }
 
   private expirationDays(expiration_time: moment.Moment): number {
