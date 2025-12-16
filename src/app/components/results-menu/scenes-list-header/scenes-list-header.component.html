@@ -322,7 +322,6 @@
                 </button>
               </div>
             </mat-menu>
-          @if (!isEditingProjectName) {
             <div class="fx-empty list-button-group">
               <div class="fx-row-center button-group-label">
                 <label>Project</label>
@@ -353,19 +352,6 @@
                 </button>
               </div>
             </mat-menu>
-            }
-          }
-
-          @if (isEditingProjectName) {
-            <div class="fx-row-center">
-              <input
-                type="text"
-                id="projectNameInput"
-                [(ngModel)]="newProjectName"
-                placeholder="Enter name"
-              />
-              <button (click)="onSubmitProjectName()">Save</button>
-            </div>
           }
 
 

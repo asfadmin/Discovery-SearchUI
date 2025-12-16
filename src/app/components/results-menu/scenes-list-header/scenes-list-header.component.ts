@@ -32,6 +32,7 @@ import {
   SarviewsEventsService,
   NotificationService,
   ExportService,
+  ProjectNameDialogService,
 } from '@services';
 
 import * as models from '@models';
@@ -66,6 +67,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   private possibleHyp3JobsService = inject(PossibleHyp3JobsService);
   private exportService = inject(ExportService);
   private dialog = inject(MatDialog);
+  private projectNameDialog = inject(ProjectNameDialogService);
 
   public copyIcon = faCopy;
   public pairs$ = this.pairService.pairs$;
@@ -271,9 +273,6 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public moreHyp3JobsToLoad: boolean;
 
   private selectedEvent: models.SarviewsEvent;
-
-  public isEditingProjectName = false;
-  public newProjectName = '';
 
   ngOnInit() {
     this.subs.add(
@@ -643,19 +642,12 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onBulkProjectNameUpdate() {
-    this.isEditingProjectName = true;
-    this.newProjectName = '';
-  }
-
-  public onSubmitProjectName() {
-    this.isEditingProjectName = false;
-
-    this.hyp3
-      .updateJobsName$(this.products, this.newProjectName)
-      .subscribe(console.log);
-
-    this.newProjectName = '';
+  public onBulkProjectNameUpdate(): void {
+    this.projectNameDialog.open('').subscribe((result) => {
+      if (result !== undefined) {
+        this.hyp3.updateJobsName$(this.products, result).subscribe(console.log);
+      }
+    });
   }
 
   ngOnDestroy(): void {
