@@ -20,6 +20,7 @@ export const initState: UserState = {
     id: null,
     token: null,
     groups: [],
+    exp: null,
   },
   profile: {
     defaultDataset: 'SENTINEL-1',
@@ -62,6 +63,7 @@ export function userReducer(state = initState, action: UserActions): UserState {
           id: null,
           token: null,
           groups: [],
+          exp: null,
         },
       };
     }

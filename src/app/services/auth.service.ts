@@ -5,7 +5,14 @@ import {
 } from '@angular/common/http';
 
 import { interval, Subject, Observable, of } from 'rxjs';
-import { map, takeUntil, take, filter, catchError } from 'rxjs/operators';
+import {
+  map,
+  takeUntil,
+  take,
+  filter,
+  catchError,
+  mergeMap,
+} from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 
@@ -24,19 +31,25 @@ export class AuthService {
   private http = inject(HttpClient);
   private notificationService = inject(NotificationService);
   private store$ = inject<Store<AppState>>(Store);
+  private existingUserInfo: models.UserAuth = null;
 
   private bc: BroadcastChannel;
   constructor() {
     if (typeof BroadcastChannel !== 'undefined') {
       this.bc = new BroadcastChannel('asf-vertex');
       this.bc.onmessage = (_event: MessageEvent) => {
-        const user = this.existingUserInfo;
-        if (!user.id) {
-          this.store$.dispatch(new userStore.Logout());
-        } else {
-          // TODO: convert to promise then dispatch
-          this.store$.dispatch(new userStore.Login(this.existingUserInfo));
-        }
+        this.getUser()
+          .pipe(
+            take(1),
+            map((user) => {
+              if (!user.id) {
+                this.store$.dispatch(new userStore.Logout());
+              } else {
+                this.store$.dispatch(new userStore.Login(user));
+              }
+            }),
+          )
+          .subscribe();
       };
     }
   }
@@ -72,8 +85,6 @@ export class AuthService {
     return interval(500).pipe(
       takeUntil(loginWindowClosed),
       map((_) => {
-        let user = null;
-
         if (loginWindow.closed) {
           loginWindowClosed.next();
         }
@@ -88,8 +99,6 @@ export class AuthService {
         } catch (_e) {
           // Do nothing
         }
-
-        return user;
       }),
       catchError((_) => {
         this.notificationService.error('Trouble logging in', 'Error', {
@@ -97,6 +106,9 @@ export class AuthService {
         });
         loginWindowClosed.next();
         return of(null);
+      }),
+      mergeMap(() => {
+        return this.getUser();
       }),
       filter((user) => !!user),
       take(1),
@@ -126,79 +138,43 @@ export class AuthService {
       );
   }
 
-  private existingUserInfo: models.UserAuth = null;
   public getUser(): Observable<models.UserAuth> {
-    // const cookies = this.loadCookies();
-    // const token = cookies['asf-urs'];
-    // if (!token) {
-    //   return of(this.nullUser());
-    // }
-    // try {
-    //   const user = jwt_decode(token);
-
-    // TODO: Replace the expired functionality with cookie based timestamps;
-    // if (this.isExpired(user)) {
-    //   return of(this.nullUser());
-    // }
     return this.http
       .get<models.UserAuth>(`${this.env.currentEnv.user_data}/info/cookie`, {
         withCredentials: true,
       })
       .pipe(
-        map((x) => {
-          return {
-            id: x['urs-user-id'],
-            groups: x['urs-groups'],
-            token: x['token'],
-          };
+        map((user) => {
+          return this.makeUser(
+            user['urs-user-id'],
+            user['urs-groups'],
+            user['token'],
+            user['exp'],
+          );
         }),
         map((final) => {
           this.existingUserInfo = final;
+          setTimeout(
+            () => {
+              this.store$.dispatch(new userStore.Logout());
+              this.notificationService.info(
+                'Session Expired',
+                'Please login again',
+              );
+            },
+            final.exp * 1000 - Date.now(),
+          );
           return final;
         }),
       );
-
-    // setTimeout(
-    //   () => {
-    //     this.store$.dispatch(new userStore.Logout());
-    //     this.notificationService.info(
-    //       'Session Expired',
-    //       'Please login again',
-    //     );
-    //   },
-    //   user.exp * 1000 - Date.now(),
-    // );
-
-    // return this.makeUser(user['urs-user-id'], user['urs-groups'], token);
-    // } catch (_error) {
-    //   return of(this.nullUser());
-    // }
   }
 
-  // private makeUser(
-  //   id: string,
-  //   groups: models.URSGroup[],
-  //   token: string,
-  // ): models.UserAuth {
-  //   return { id, token, groups };
-  // }
-
-  // private makeAuthHeader(token: string): HttpHeaders {
-  //   return new HttpHeaders().set('Authorization', `Bearer ${token}`);
-  // }
-  // private nullUser(): models.UserAuth {
-  //   return { id: null, token: null, groups: [] };
-  // }
-
-  // private isExpired(userToken): boolean {
-  //   return Date.now() > userToken.exp * 1000;
-  // }
-
-  // private loadCookies() {
-  //   return document.cookie
-  //     .split(';')
-  //     .map((s) => s.trim().split('='))
-  //     .map(([name, val]) => ({ [name]: val }))
-  //     .reduce((allCookies, cookie) => ({ ...allCookies, ...cookie }));
-  // }
+  private makeUser(
+    id: string,
+    groups: models.URSGroup[],
+    token: string,
+    exp: number,
+  ): models.UserAuth {
+    return { id, token, groups, exp };
+  }
 }
