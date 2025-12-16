@@ -1,1 +1,4 @@
-export { ProjectNameDialogComponent, ProjectNameDialogData } from './project-name-dialog.component';
+export {
+  ProjectNameDialogComponent,
+  ProjectNameDialogData,
+} from './project-name-dialog.component';

@@ -348,12 +348,11 @@
             <mat-menu #BulkProjectNameUpdate="matMenu">
               <div>
                 <button (click)="onBulkProjectNameUpdate()" mat-menu-item>
-                Update project name for {{ products.length }} jobs
+                  Update project name for {{ products.length }} jobs
                 </button>
               </div>
             </mat-menu>
           }
-
 
           <div
             *ngIf="searchType === SearchTypes.BASELINE"
