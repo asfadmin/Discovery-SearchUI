@@ -311,27 +311,35 @@
                 </div>
               </mat-menu>
               <div class="fx-empty list-button-group">
-              <div class="fx-row-center button-group-label">
-                <label>Project</label>
-              </div>
-              <div class="fx-row">
-                <div class="scenes-list-button-container">
-                  <mat-button-toggle-group
-                    name="layerType"
-                    class="fx-empty mr-10"
-                    [hideSingleSelectionIndicator]="true"
-                  >
-                    <mat-button-toggle
-                      class="control-mat-button-toggle clickable noselect"
-                      [matMenuTriggerFor]="BulkProjectNameUpdate"
-                      matTooltip="Update project name for all loaded jobs"
+                <div class="fx-row-center button-group-label">
+                  <label>Project</label>
+                </div>
+                <div class="fx-row">
+                  <div class="scenes-list-button-container">
+                    <mat-button-toggle-group
+                      name="layerType"
+                      class="fx-empty mr-10"
+                      [hideSingleSelectionIndicator]="true"
                     >
-                      <mat-icon class="list-icon"> edit </mat-icon>
-                    </mat-button-toggle>
-                  </mat-button-toggle-group>
+                      <mat-button-toggle
+                        class="control-mat-button-toggle clickable noselect"
+                        [matMenuTriggerFor]="BulkProjectNameUpdate"
+                        matTooltip="Update project name for all loaded jobs"
+                      >
+                        <mat-icon class="list-icon"> edit </mat-icon>
+                      </mat-button-toggle>
+                    </mat-button-toggle-group>
+                  </div>
                 </div>
               </div>
+
+              <mat-menu #BulkProjectNameUpdate="matMenu">
+                <div>
+                  <button (click)="onBulkProjectNameUpdate()" mat-menu-item>
+                    Update project name for {{ products.length }} jobs
+                  </button>
                 </div>
+              </mat-menu>
             }
             @if (searchType === SearchTypes.BASELINE) {
               <div class="fx-empty list-button-group">
