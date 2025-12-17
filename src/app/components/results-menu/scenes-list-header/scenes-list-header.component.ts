@@ -47,6 +47,7 @@ import {
   CodeExportType,
 } from '@components/shared/code-export';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   NgClass,
   AsyncPipe,
@@ -106,6 +107,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   private possibleHyp3JobsService = inject(PossibleHyp3JobsService);
   private exportService = inject(ExportService);
   private dialog = inject(MatDialog);
+  private snackBar = inject(MatSnackBar);
   private projectNameDialog = inject(ProjectNameDialogService);
 
   public copyIcon = faCopy;
@@ -684,10 +686,16 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public onBulkProjectNameUpdate(): void {
     this.projectNameDialog.open('').subscribe((result) => {
       if (result !== undefined) {
+        this.snackBar.open('Renaming jobs...', '', {
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+        });
+
         this.hyp3
           .updateJobsName$(this.products, result)
           .pipe(
             finalize(() => {
+              this.snackBar.dismiss();
               this.store$.dispatch(new scenesStore.ClearScenes());
               this.store$.dispatch(new searchStore.MakeSearch());
             }),
