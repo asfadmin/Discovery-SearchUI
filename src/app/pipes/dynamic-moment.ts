@@ -3,10 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import moment from 'moment';
 import { BehaviorSubject } from 'rxjs';
 
-@Pipe({
-  name: 'dynamicMoment',
-  standalone: false,
-})
+@Pipe({ name: 'dynamicMoment' })
 export class MomentPipe implements PipeTransform {
   private translate = inject(TranslateService);
 

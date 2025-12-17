@@ -1,10 +1,13 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { FormsModule } from '@angular/forms';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-checkbox-option',
   templateUrl: './checkbox-option.component.html',
   styleUrls: ['./checkbox-option.component.scss'],
-  standalone: false,
+  imports: [MatCheckbox, FormsModule, MatTooltip],
 })
 export class CheckboxOptionComponent {
   @Input() value: boolean;

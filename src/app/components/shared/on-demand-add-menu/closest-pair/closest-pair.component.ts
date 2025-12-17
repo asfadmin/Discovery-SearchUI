@@ -8,11 +8,14 @@ import { PairService } from '@services';
 import { CMRProduct } from '@models';
 import { getMasterName, getScenes } from '@store/scenes';
 import { getTemporalRange } from '@store/filters';
+import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
+import { MatMenuItem } from '@angular/material/menu';
+import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-closest-pair',
   templateUrl: './closest-pair.component.html',
   styleUrls: ['./closest-pair.component.scss'],
-  standalone: false,
+  imports: [MatFormField, MatLabel, MatInput, MatMenuItem, TranslateModule],
 })
 export class ClosestPairComponent implements OnInit {
   private store$ = inject<Store<AppState>>(Store);

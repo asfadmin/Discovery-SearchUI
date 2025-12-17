@@ -16,11 +16,11 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { SubSink } from 'subsink';
 import * as chartsStore from '@store/charts';
-import { SharedModule } from '@shared';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-timeseries-chart-config',
-  imports: [MatIconModule, MatButtonModule, MatCheckboxModule, SharedModule],
+  imports: [MatIconModule, MatButtonModule, MatCheckboxModule, TranslateModule],
   templateUrl: './timeseries-chart-config.component.html',
   styleUrl: './timeseries-chart-config.component.scss',
 })

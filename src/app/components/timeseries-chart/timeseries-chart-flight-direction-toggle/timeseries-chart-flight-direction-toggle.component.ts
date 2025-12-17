@@ -10,13 +10,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatInputModule } from '@angular/material/input';
-import { DocsModalModule } from '@components/shared/docs-modal';
 import { FormsModule } from '@angular/forms';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { MatTooltip } from '@angular/material/tooltip';
 import { Breakpoints } from '@models';
 import { ScreenSizeService } from '@services';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-timeseries-chart-flight-direction-toggle',
@@ -26,13 +24,11 @@ import { NgIf } from '@angular/common';
     MatIconModule,
     MatButtonToggleModule,
     MatInputModule,
-    DocsModalModule,
     FormsModule,
     MatMenu,
     MatMenuItem,
     MatTooltip,
     MatMenuTrigger,
-    NgIf,
   ],
   templateUrl: './timeseries-chart-flight-direction-toggle.component.html',
   styleUrl: './timeseries-chart-flight-direction-toggle.component.scss',

@@ -3,68 +3,70 @@
     <div mat-dialog-title class="help-header">
       <h3>{{ 'SEARCH_HELP' | translate }}</h3>
     </div>
-    <div class="help-menu" *ngIf="topic !== 'toc'">
-      <button mat-raised-button color="accent" (click)="setHelpTopic('toc')">
-        {{ 'ALL_HELP_AND_TUTORIALS' | translate | titlecase }}
-      </button>
-    </div>
+    @if (topic !== 'toc') {
+      <div class="help-menu">
+        <button mat-raised-button color="accent" (click)="setHelpTopic('toc')">
+          {{ 'ALL_HELP_AND_TUTORIALS' | translate | titlecase }}
+        </button>
+      </div>
+    }
   </header>
 
   <main>
     <div>
-      <div [ngSwitch]="topic">
-        <ng-template [ngSwitchCase]="'toc'">
+      @switch (topic) {
+        @case ('toc') {
           <app-help-toc></app-help-toc>
-        </ng-template>
-        <ng-template [ngSwitchCase]="'geoSearch'">
+        }
+        @case ('geoSearch') {
           <app-help-geo-search></app-help-geo-search>
-        </ng-template>
-        <ng-template [ngSwitchCase]="'listSearch'">
+        }
+        @case ('help') {
           <app-help-list-search></app-help-list-search>
-        </ng-template>
-        <ng-template [ngSwitchCase]="'searchResults'">
+        }
+        @case ('searchResults') {
           <app-help-search-results></app-help-search-results>
-        </ng-template>
-        <ng-template [ngSwitchCase]="'logIn'">
+        }
+        @case ('logIn') {
           <app-help-login></app-help-login>
-        </ng-template>
-        <ng-template [ngSwitchCase]="'mapControls'">
+        }
+        @case ('mapControls') {
           <app-help-map-controls></app-help-map-controls>
-        </ng-template>
-        <ng-template [ngSwitchCase]="'filters'">
+        }
+        @case ('filters') {
           <app-help-filters></app-help-filters>
-        </ng-template>
-        <ng-template [ngSwitchCase]="'savedSearches'">
+        }
+        @case ('savedSearches') {
           <app-help-saved-searches></app-help-saved-searches>
-        </ng-template>
-        <ng-template [ngSwitchCase]="'newStuff'">
+        }
+        @case ('newStuff') {
           <app-help-new-stuff></app-help-new-stuff>
-        </ng-template>
-        <ng-template [ngSwitchCase]="'unzipping'">
+        }
+        @case ('unzipping') {
           <app-help-unzipping></app-help-unzipping>
-        </ng-template>
-        <ng-template [ngSwitchCase]="'downloadQueue'">
+        }
+        @case ('downloadQueue') {
           <app-help-download-queue></app-help-download-queue>
-        </ng-template>
-        <ng-template [ngSwitchCase]="'exportOptions'">
+        }
+        @case ('exportOptions') {
           <app-help-export-options></app-help-export-options>
-        </ng-template>
-        <ng-template [ngSwitchCase]="'moreLikeThis'">
+        }
+        @case ('moreLikeThis') {
           <app-help-more-like-this></app-help-more-like-this>
-        </ng-template>
-        <ng-template [ngSwitchCase]="'baselineSearch'">
+        }
+        @case ('baselineSearch') {
           <app-help-baseline-search></app-help-baseline-search>
-        </ng-template>
-        <ng-template [ngSwitchCase]="'sbasSearch'">
+        }
+        @case ('sbasSearch') {
           <app-help-sbas-search></app-help-sbas-search>
-        </ng-template>
-        <ng-template [ngSwitchCase]="'onDemand'">
+        }
+        @case ('onDemand') {
           <app-help-on-demand></app-help-on-demand>
-        </ng-template>
-        <ng-template [ngSwitchDefault]>
+        }
+        @default {
           <app-help-toc></app-help-toc>
-        </ng-template>
-      </div>
+        }
+      }
     </div>
   </main>
 

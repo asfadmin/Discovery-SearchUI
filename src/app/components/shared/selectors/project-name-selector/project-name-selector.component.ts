@@ -6,7 +6,7 @@ import {
   OnDestroy,
   inject,
 } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormsModule } from '@angular/forms';
 import { SubSink } from 'subsink';
 
 import { combineLatest, Subject } from 'rxjs';
@@ -18,12 +18,29 @@ import * as hyp3Store from '@store/hyp3';
 import * as filtersStore from '@store/filters';
 import { NotificationService } from '@services/notification.service';
 import { ScenesService } from '@services';
+import { MatFormField, MatInput } from '@angular/material/input';
+import {
+  MatAutocompleteTrigger,
+  MatAutocomplete,
+} from '@angular/material/autocomplete';
+import {} from '@angular/common';
+import { MatOption } from '@angular/material/select';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-project-name-selector',
   templateUrl: './project-name-selector.component.html',
   styleUrls: ['./project-name-selector.component.scss'],
-  standalone: false,
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatInput,
+    MatAutocompleteTrigger,
+    MatAutocomplete,
+
+    MatOption,
+    TranslateModule,
+  ],
 })
 export class ProjectNameSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

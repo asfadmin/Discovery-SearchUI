@@ -8,7 +8,7 @@ import {
   inject,
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { ResizeEvent } from 'angular-resizable-element';
+import { ResizeEvent, ResizableModule } from 'angular-resizable-element';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -21,6 +21,21 @@ import { ScreenSizeService, DatasetForProductService } from '@services';
 
 import { SubSink } from 'subsink';
 import { map } from 'rxjs/operators';
+import { MatCard, MatCardSubtitle } from '@angular/material/card';
+import { ScenesListHeaderComponent } from '../scenes-list-header/scenes-list-header.component';
+import { ScenesListComponent } from '../scenes-list/scenes-list.component';
+import { SceneMetadataComponent } from '@components/shared/scene-metadata/scene-metadata.component';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import {
+  MatButtonToggleGroup,
+  MatButtonToggle,
+} from '@angular/material/button-toggle';
+import { SbasSlidersComponent } from './sbas-sliders/sbas-sliders.component';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import { SBASChartComponent } from '../../sbas-chart/sbas-chart.component';
+import { SbasSlidersTwoComponent } from './sbas-sliders-two/sbas-sliders-two.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 enum CardViews {
   LIST = 0,
@@ -34,7 +49,24 @@ enum CardViews {
     './sbas-results-menu.component.scss',
     '../results-menu.component.scss',
   ],
-  standalone: false,
+  imports: [
+    MatCard,
+    MatCardSubtitle,
+    ScenesListHeaderComponent,
+    ScenesListComponent,
+
+    SceneMetadataComponent,
+    MatTooltip,
+    ResizableModule,
+    MatIcon,
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    SbasSlidersComponent,
+    DocsModalComponent,
+    SBASChartComponent,
+    SbasSlidersTwoComponent,
+    TranslateModule,
+  ],
 })
 export class SBASResultsMenuComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

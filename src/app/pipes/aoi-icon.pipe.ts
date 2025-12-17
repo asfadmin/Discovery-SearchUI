@@ -4,7 +4,6 @@ import { MapDrawModeType } from '@models';
 @Pipe({
   name: 'aoiIcon',
   pure: false,
-  standalone: false,
 })
 export class AoiIconPipe implements PipeTransform {
   public icon: string;

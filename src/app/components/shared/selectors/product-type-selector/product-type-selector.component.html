@@ -7,21 +7,23 @@
     placeholder="{{ 'FILE_TYPE' | translate }}"
     multiple
   >
-    <mat-option
-      *ngFor="let type of selectableProductTypes"
-      [value]="type.apiValue"
-      [matTooltip]="type.displayName"
-    >
-      {{ type.displayName }}
-    </mat-option>
+    @for (type of selectableProductTypes; track type) {
+      <mat-option [value]="type.apiValue" [matTooltip]="type.displayName">
+        {{ type.displayName }}
+      </mat-option>
+    }
   </mat-select>
 
-  <mat-hint *ngIf="selectableProductTypes.length >= 1" align="start">
-    {{ productTypesList?.length || 0 }}/{{ selectableProductTypes.length }}
-    {{ 'FILE_TYPES_SELECTED' | translate }}
-  </mat-hint>
+  @if (selectableProductTypes.length >= 1) {
+    <mat-hint align="start">
+      {{ productTypesList?.length || 0 }}/{{ selectableProductTypes.length }}
+      {{ 'FILE_TYPES_SELECTED' | translate }}
+    </mat-hint>
+  }
 
-  <mat-hint *ngIf="selectableProductTypes.length < 1" align="start">
-    {{ 'NO_FILE_TYPES_TO_SELECT' | translate }}
-  </mat-hint>
+  @if (selectableProductTypes.length < 1) {
+    <mat-hint align="start">
+      {{ 'NO_FILE_TYPES_TO_SELECT' | translate }}
+    </mat-hint>
+  }
 </mat-form-field>

@@ -11,11 +11,13 @@ import { SubSink } from 'subsink';
 import * as filtersStore from '@store/filters';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
+import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
+import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-opera-burst-id-selector',
   templateUrl: './opera-burst-id-selector.component.html',
   styleUrls: ['./opera-burst-id-selector.component.scss'],
-  standalone: false,
+  imports: [MatFormField, MatLabel, MatInput, TranslateModule],
 })
 export class OperaBurstIdSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

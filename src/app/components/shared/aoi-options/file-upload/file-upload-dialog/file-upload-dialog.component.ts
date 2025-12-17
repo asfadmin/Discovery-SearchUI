@@ -18,6 +18,13 @@ import { AppState } from '@store';
 import { DrawNewPolygon } from '@store/map';
 
 import * as models from '@models';
+import { AsyncPipe } from '@angular/common';
+import { MatButton } from '@angular/material/button';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatButtonToggle } from '@angular/material/button-toggle';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 
 enum FileErrors {
   TOO_LARGE = 'Too large',
@@ -28,7 +35,15 @@ enum FileErrors {
   selector: 'app-file-upload-dialog',
   templateUrl: 'file-upload-dialog.component.html',
   styleUrls: ['./file-upload-dialog.component.scss'],
-  standalone: false,
+  imports: [
+    MatButton,
+    MatProgressSpinner,
+    MatButtonToggle,
+    MatTooltip,
+    MatIcon,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class FileUploadDialogComponent implements OnInit, OnDestroy {
   private mapService = inject(MapService);
