@@ -5,6 +5,7 @@ import { combineLatest, switchMap } from 'rxjs';
 import {
   debounceTime,
   filter,
+  finalize,
   map,
   take,
   tap,
@@ -645,7 +646,15 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public onBulkProjectNameUpdate(): void {
     this.projectNameDialog.open('').subscribe((result) => {
       if (result !== undefined) {
-        this.hyp3.updateJobsName$(this.products, result).subscribe(console.log);
+        this.hyp3
+          .updateJobsName$(this.products, result)
+          .pipe(
+            finalize(() => {
+              this.store$.dispatch(new scenesStore.ClearScenes());
+              this.store$.dispatch(new searchStore.MakeSearch());
+            }),
+          )
+          .subscribe();
       }
     });
   }
