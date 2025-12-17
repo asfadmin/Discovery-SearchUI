@@ -5,7 +5,6 @@ import { combineLatest, switchMap } from 'rxjs';
 import {
   debounceTime,
   filter,
-  finalize,
   map,
   take,
   tap,
@@ -699,16 +698,41 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
             },
           );
 
-          this.hyp3
-            .updateJobsName$(this.products, result)
-            .pipe(
-              finalize(() => {
-                this.snackBar.dismiss();
-                this.store$.dispatch(new scenesStore.ClearScenes());
-                this.store$.dispatch(new searchStore.MakeSearch());
-              }),
-            )
-            .subscribe();
+          this.hyp3.updateJobsName$(this.products, result).subscribe({
+            next: ({ success, failed }) => {
+              this.snackBar.dismiss();
+
+              if (failed === 0) {
+                this.notificationService.info(
+                  this.language.translate.instant('RENAME_SUCCESS', {
+                    count: success,
+                  }),
+                );
+              } else if (success === 0) {
+                this.notificationService.error(
+                  this.language.translate.instant('RENAME_ALL_FAILED', {
+                    count: failed,
+                  }),
+                );
+              } else {
+                this.notificationService.warn(
+                  this.language.translate.instant('RENAME_PARTIAL_SUCCESS', {
+                    success,
+                    failed,
+                  }),
+                );
+              }
+
+              this.store$.dispatch(new scenesStore.ClearScenes());
+              this.store$.dispatch(new searchStore.MakeSearch());
+            },
+            error: () => {
+              this.snackBar.dismiss();
+              this.notificationService.error(
+                this.language.translate.instant('RENAME_ERROR'),
+              );
+            },
+          });
         }
       });
   }

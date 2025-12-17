@@ -180,7 +180,7 @@ export class Hyp3ApiService {
   public updateJobsName$(
     products: models.CMRProduct[],
     newProjectName: string,
-  ): Observable<any> {
+  ): Observable<{ success: number; failed: number }> {
     const url = `${this.apiUrl}/jobs`;
     const jobIds = products.map((product) => product.metadata.job.job_id);
 
@@ -191,13 +191,27 @@ export class Hyp3ApiService {
     return from(jobIds).pipe(
       bufferCount(100),
       mergeMap((jobIdsBatch) => {
-        return this.http.patch<models.Hyp3Job>(
-          url,
-          { name: newProjectName, job_ids: jobIdsBatch },
-          { withCredentials: true },
-        );
+        return this.http
+          .patch<models.Hyp3Job>(
+            url,
+            { name: newProjectName, job_ids: jobIdsBatch },
+            { withCredentials: true },
+          )
+          .pipe(
+            map(() => ({ success: jobIdsBatch.length, failed: 0 })),
+            catchError(() => of({ success: 0, failed: jobIdsBatch.length })),
+          );
       }, 5),
       toArray(),
+      map((results) =>
+        results.reduce(
+          (acc, curr) => ({
+            success: acc.success + curr.success,
+            failed: acc.failed + curr.failed,
+          }),
+          { success: 0, failed: 0 },
+        ),
+      ),
     );
   }
 

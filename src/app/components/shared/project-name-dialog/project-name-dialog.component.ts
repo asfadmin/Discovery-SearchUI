@@ -43,11 +43,17 @@ export class ProjectNameDialogComponent {
     this.projectName = this.data.currentName;
   }
 
+  public get isValid(): boolean {
+    return this.projectName?.trim().length > 0;
+  }
+
   public onCancel(): void {
     this.dialogRef.close();
   }
 
   public onSave(): void {
-    this.dialogRef.close(this.projectName);
+    if (this.isValid) {
+      this.dialogRef.close(this.projectName.trim());
+    }
   }
 }

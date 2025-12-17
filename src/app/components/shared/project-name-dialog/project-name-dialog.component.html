@@ -1,11 +1,17 @@
 <h2 mat-dialog-title>
-  {{ (data.jobCount > 1 ? 'EDIT_ALL_PROJECT_NAMES' : 'EDIT_PROJECT_NAME') | translate }}
+  {{
+    (data.jobCount > 1 ? 'EDIT_ALL_PROJECT_NAMES' : 'EDIT_PROJECT_NAME')
+      | translate
+  }}
 </h2>
 
 <form (ngSubmit)="onSave()">
   <mat-dialog-content>
     @if (data.jobCount) {
-      <p class="job-count-info" [class.job-count-warning]="data.jobCount >= 300">
+      <p
+        class="job-count-info"
+        [class.job-count-warning]="data.jobCount >= 300"
+      >
         {{ 'WILL_RENAME_JOBS' | translate: { count: data.jobCount } }}
       </p>
     }
@@ -24,7 +30,7 @@
     <button mat-button type="button" (click)="onCancel()">
       {{ 'CANCEL' | translate }}
     </button>
-    <button mat-flat-button color="primary" type="submit">
+    <button mat-flat-button color="primary" type="submit" [disabled]="!isValid">
       {{ 'SAVE' | translate }}
     </button>
   </mat-dialog-actions>

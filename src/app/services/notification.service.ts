@@ -181,6 +181,17 @@ export class NotificationService {
     title = '',
     options: Partial<IndividualConfig> = {},
   ): ActiveToast<any> {
+    return this.toastr.error(message, title, {
+      ...options,
+      ...this.toastOptions,
+    });
+  }
+
+  public warn(
+    message: string,
+    title = '',
+    options: Partial<IndividualConfig> = {},
+  ): ActiveToast<any> {
     return this.toastr.warning(message, title, {
       ...options,
       ...this.toastOptions,
