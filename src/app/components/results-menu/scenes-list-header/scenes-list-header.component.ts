@@ -34,6 +34,7 @@ import {
   NotificationService,
   ExportService,
   ProjectNameDialogService,
+  AsfLanguageService,
 } from '@services';
 
 import * as models from '@models';
@@ -109,6 +110,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
   private projectNameDialog = inject(ProjectNameDialogService);
+  private language = inject(AsfLanguageService);
 
   public copyIcon = faCopy;
   public pairs$ = this.pairService.pairs$;
@@ -684,25 +686,31 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   }
 
   public onBulkProjectNameUpdate(): void {
-    this.projectNameDialog.open('').subscribe((result) => {
-      if (result !== undefined) {
-        this.snackBar.open('Renaming jobs...', '', {
-          horizontalPosition: 'center',
-          verticalPosition: 'bottom',
-        });
+    this.projectNameDialog
+      .open('', this.products.length)
+      .subscribe((result) => {
+        if (result !== undefined) {
+          this.snackBar.open(
+            this.language.translate.instant('RENAMING_JOBS'),
+            '',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'bottom',
+            },
+          );
 
-        this.hyp3
-          .updateJobsName$(this.products, result)
-          .pipe(
-            finalize(() => {
-              this.snackBar.dismiss();
-              this.store$.dispatch(new scenesStore.ClearScenes());
-              this.store$.dispatch(new searchStore.MakeSearch());
-            }),
-          )
-          .subscribe();
-      }
-    });
+          this.hyp3
+            .updateJobsName$(this.products, result)
+            .pipe(
+              finalize(() => {
+                this.snackBar.dismiss();
+                this.store$.dispatch(new scenesStore.ClearScenes());
+                this.store$.dispatch(new searchStore.MakeSearch());
+              }),
+            )
+            .subscribe();
+        }
+      });
   }
 
   ngOnDestroy(): void {

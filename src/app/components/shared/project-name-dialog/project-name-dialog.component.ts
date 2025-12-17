@@ -14,6 +14,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 export interface ProjectNameDialogData {
   currentName: string;
+  jobCount?: number;
 }
 
 @Component({

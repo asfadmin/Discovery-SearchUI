@@ -11,14 +11,14 @@ import {
 export class ProjectNameDialogService {
   private dialog = inject(MatDialog);
 
-  open(currentName: string): Observable<string | undefined> {
+  open(currentName: string, jobCount?: number): Observable<string | undefined> {
     const dialogRef = this.dialog.open<
       ProjectNameDialogComponent,
       ProjectNameDialogData,
       string
     >(ProjectNameDialogComponent, {
       width: '400px',
-      data: { currentName },
+      data: { currentName, jobCount },
     });
 
     return dialogRef.afterClosed();

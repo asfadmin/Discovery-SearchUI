@@ -45,3 +45,4 @@ local-serve.sh
 # Claude Code
 .claude/
 CLAUDE.md
+TRANSLATIONS_SCRATCH.md

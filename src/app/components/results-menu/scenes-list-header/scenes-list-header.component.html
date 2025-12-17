@@ -312,7 +312,7 @@
               </mat-menu>
               <div class="fx-empty list-button-group">
                 <div class="fx-row-center button-group-label">
-                  <label>Project</label>
+                  <label>{{ 'PROJECT' | translate }}</label>
                 </div>
                 <div class="fx-row">
                   <div class="scenes-list-button-container">
@@ -324,7 +324,9 @@
                       <mat-button-toggle
                         class="control-mat-button-toggle clickable noselect"
                         [matMenuTriggerFor]="BulkProjectNameUpdate"
-                        matTooltip="Update project name for all loaded jobs"
+                        [matTooltip]="
+                          'PROJECT_NAME_UPDATE_ALL_TOOLTIP' | translate
+                        "
                       >
                         <mat-icon class="list-icon"> edit </mat-icon>
                       </mat-button-toggle>
@@ -336,7 +338,10 @@
               <mat-menu #BulkProjectNameUpdate="matMenu">
                 <div>
                   <button (click)="onBulkProjectNameUpdate()" mat-menu-item>
-                    Update project name for {{ products.length }} jobs
+                    {{
+                      'PROJECT_NAME_UPDATE_FOR_JOBS'
+                        | translate: { count: products.length }
+                    }}
                   </button>
                 </div>
               </mat-menu>
