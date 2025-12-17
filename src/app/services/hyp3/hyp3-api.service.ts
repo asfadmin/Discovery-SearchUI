@@ -201,7 +201,7 @@ export class Hyp3ApiService {
             map(() => ({ success: jobIdsBatch.length, failed: 0 })),
             catchError(() => of({ success: 0, failed: jobIdsBatch.length })),
           );
-      }, 5),
+      }, 3),
       toArray(),
       map((results) =>
         results.reduce(
