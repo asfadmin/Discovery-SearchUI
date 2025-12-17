@@ -16,20 +16,20 @@ module.exports = function (config) {
     autoWatch: true,
     browsers: ['ChromeHeadless'],
     customLaunchers: {
-        HeadlessChrome: {
-            base: 'ChromeHeadless',
-            flags: [
-    	      '--no-sandbox',
-	          '--headless',
-            '--disable-setuid-sandbox',
-            '--disable-gpu',
-            '--disable-translate',
-            '--disable-extensions'
-	    ]
-  	}
+      HeadlessChrome: {
+        base: 'ChromeHeadless',
+        flags: [
+          '--no-sandbox',
+          '--headless',
+          '--disable-setuid-sandbox',
+          '--disable-gpu',
+          '--disable-translate',
+          '--disable-extensions',
+        ],
+      },
     },
     singleRun: false,
     browserNoActivityTimeout: 120000,
-    urlRoot: ''
+    urlRoot: '',
   });
 };
