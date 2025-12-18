@@ -242,6 +242,7 @@
   "ENVIRONMENT_FILE": "Umgebungsdatei",
   "EQUATORIAL_MAP_VIEW": "Äquatoriale Kartenansicht",
   "ERROR": "Fehler",
+  "ESTIMATED_TIME_REMAINING": "Geschätzte verbleibende Zeit",
   "ERS_DESC": "Hauptsächlich SAR-Bilder innerhalb der ASF und der McMurdo-Stationsmasken in der Antarktis. Die Daten sind für die Interferometrie geeignet.",
   "EVENT": "Ereignis",
   "EVENT_DATE": "Veranstaltungstermin",

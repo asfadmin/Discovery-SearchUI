@@ -216,25 +216,24 @@ export class Hyp3ApiService {
   }
 
   /**
-   * Result type for rename operations with progress tracking.
+   * Progress info emitted during rename operations.
    */
-  public static readonly RenameResult = class {
-    success: number;
-    failed: number;
-    failedProjectNames: string[];
+  public static readonly RenameProgressInfo = class {
+    percent: number;
+    estimatedSecondsRemaining: number | null;
   };
 
   /**
    * Updates job names with progress reporting.
    * Returns an object with:
-   * - progress$: Observable that emits progress percentage (0-100) as batches complete
+   * - progress$: Observable that emits progress info (percent and estimated time) as batches complete
    * - result$: Observable that emits the final result when all batches are done
    */
   public updateJobsNameWithProgress$(
     products: models.CMRProduct[],
     newProjectName: string,
   ): {
-    progress$: Observable<number>;
+    progress$: Observable<{ percent: number; estimatedSecondsRemaining: number | null }>;
     result$: Observable<{ success: number; failed: number; failedProjectNames: string[] }>;
   } {
     const url = `${this.apiUrl}/jobs`;
@@ -246,11 +245,12 @@ export class Hyp3ApiService {
       newProjectName = null;
     }
 
-    const progressSubject = new Subject<number>();
+    const progressSubject = new Subject<{ percent: number; estimatedSecondsRemaining: number | null }>();
     let completedBatches = 0;
     let successCount = 0;
     let failedCount = 0;
     const failedProjectNamesSet = new Set<string>();
+    const startTime = Date.now();
 
     const result$ = from(products).pipe(
       bufferCount(batchSize),
@@ -274,8 +274,18 @@ export class Hyp3ApiService {
                 const projectName = product.metadata?.job?.name || '(unnamed)';
                 failedProjectNamesSet.add(projectName);
               });
-              const progress = Math.round((completedBatches / totalBatches) * 100);
-              progressSubject.next(progress);
+              const percent = Math.round((completedBatches / totalBatches) * 100);
+
+              // Calculate estimated time remaining
+              let estimatedSecondsRemaining: number | null = null;
+              if (completedBatches > 0) {
+                const elapsedMs = Date.now() - startTime;
+                const msPerBatch = elapsedMs / completedBatches;
+                const remainingBatches = totalBatches - completedBatches;
+                estimatedSecondsRemaining = Math.ceil((msPerBatch * remainingBatches) / 1000);
+              }
+
+              progressSubject.next({ percent, estimatedSecondsRemaining });
             }),
           );
       }, 3),

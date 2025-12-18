@@ -295,6 +295,7 @@
   "ENVIRONMENT_FILE": "Archivo de entorno",
   "EQUATORIAL_MAP_VIEW": "Ver Mapa Ecuatorial",
   "ERROR": "Error",
+  "ESTIMATED_TIME_REMAINING": "Tiempo restante estimado",
   "ERS_DESC": "Principalmente imágenes SAR dentro de las máscaras de la estación ASF y McMurdo, Antártida. Los datos son adecuados para la interferometría.",
   "EVENT": "Evento",
   "EVENT_DATE": "Fecha del evento",

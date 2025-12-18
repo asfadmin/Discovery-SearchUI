@@ -81,6 +81,7 @@ export class ProjectNameDialogComponent implements AfterViewInit {
   // Two-phase UI state
   public phase: DialogPhase = 'input';
   public progress = 0;
+  public estimatedSecondsRemaining: number | null = null;
   public successCount = 0;
   public failedCount = 0;
   public failedProjectNames: string[] = [];
@@ -159,6 +160,29 @@ export class ProjectNameDialogComponent implements AfterViewInit {
     return this.projectName?.trim().length > 0;
   }
 
+  /**
+   * Returns the estimated time remaining formatted as a human-readable string.
+   * Only shows for large operations (1000+ jobs).
+   */
+  public get formattedTimeRemaining(): string | null {
+    // Only show estimated time for large operations
+    if (this.jobCount < 1000 || this.estimatedSecondsRemaining === null) {
+      return null;
+    }
+
+    const seconds = this.estimatedSecondsRemaining;
+    if (seconds < 60) {
+      return `< 1 min`;
+    }
+
+    const minutes = Math.ceil(seconds / 60);
+    if (minutes === 1) {
+      return `~1 min`;
+    }
+
+    return `~${minutes} min`;
+  }
+
   public onCancel(): void {
     this.dialogRef.close();
   }
@@ -188,8 +212,9 @@ export class ProjectNameDialogComponent implements AfterViewInit {
 
     // Subscribe to progress updates
     this.subscriptions.push(
-      progress$.subscribe((progress) => {
-        this.progress = progress;
+      progress$.subscribe(({ percent, estimatedSecondsRemaining }) => {
+        this.progress = percent;
+        this.estimatedSecondsRemaining = estimatedSecondsRemaining;
       }),
     );
 
