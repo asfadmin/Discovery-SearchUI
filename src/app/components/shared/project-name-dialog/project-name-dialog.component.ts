@@ -1,4 +1,10 @@
-import { Component, inject } from '@angular/core';
+import {
+  Component,
+  inject,
+  AfterViewInit,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   MatDialogRef,
@@ -54,7 +60,9 @@ export interface ProjectNameDialogResult {
     TranslateModule,
   ],
 })
-export class ProjectNameDialogComponent {
+export class ProjectNameDialogComponent implements AfterViewInit {
+  @ViewChild('projectNameInput') projectNameInput: ElementRef<HTMLInputElement>;
+
   dialogRef = inject<MatDialogRef<ProjectNameDialogComponent>>(MatDialogRef);
   data = inject<ProjectNameDialogData>(MAT_DIALOG_DATA);
   private hyp3Api = inject(Hyp3ApiService);
@@ -106,6 +114,15 @@ export class ProjectNameDialogComponent {
 
     // Prevent closing during processing
     this.dialogRef.disableClose = false;
+  }
+
+  ngAfterViewInit(): void {
+    // Auto-focus the input field after the view is initialized
+    setTimeout(() => {
+      if (this.projectNameInput && !this.isDisabledByUserFilter) {
+        this.projectNameInput.nativeElement.focus();
+      }
+    });
   }
 
   public sortBy(column: SortColumn): void {

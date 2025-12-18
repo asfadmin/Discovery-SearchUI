@@ -19,10 +19,10 @@
       <mat-form-field class="project-name-field">
         <mat-label>{{ 'PROJECT_NAME' | translate }}</mat-label>
         <input
+          #projectNameInput
           matInput
           [(ngModel)]="projectName"
           name="projectName"
-          cdkFocusInitial
           maxlength="100"
           [disabled]="isDisabledByUserFilter"
         />
@@ -78,7 +78,7 @@
             [(ngModel)]="confirmationChecked"
             name="confirmationChecked"
           >
-            {{ (projectCount === 1 ? 'CONFIRM_RENAME_SINGLE' : 'CONFIRM_RENAME_MULTIPLE') | translate: { projectCount: projectCount, jobCount: jobCount } }}
+            {{ (projectCount === 1 ? 'CONFIRM_RENAME_SINGLE' : 'CONFIRM_RENAME_MULTIPLE') | translate: { projectCount: projectCount, jobCount: jobCount, newName: projectName?.trim() } }}
           </mat-checkbox>
         }
       }
