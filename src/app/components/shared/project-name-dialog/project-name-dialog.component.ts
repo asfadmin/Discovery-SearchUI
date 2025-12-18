@@ -49,7 +49,7 @@ export class ProjectNameDialogComponent {
     this.projectName = this.data.currentName;
 
     const products = this.data?.products;
-    this.jobCount = this.data?.products?.length;
+    this.jobCount = products?.length;
 
     this.uniqueProjectNames = new Set(
       products
