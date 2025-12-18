@@ -53,8 +53,8 @@ export class ProjectNameDialogComponent {
 
     this.uniqueProjectNames = new Set(
       products
-        .filter((product) => product.metadata?.job.name)
-        .map((product) => product.metadata?.job.name),
+        .map((product) => product.metadata?.job.name)
+        .filter((projectName) => !!projectName),
     );
   }
 
