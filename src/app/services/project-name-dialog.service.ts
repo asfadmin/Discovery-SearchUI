@@ -6,6 +6,7 @@ import { Observable, take, combineLatest, switchMap } from 'rxjs';
 import {
   ProjectNameDialogComponent,
   ProjectNameDialogData,
+  ProjectNameDialogResult,
 } from '@components/shared/project-name-dialog';
 import { CMRProduct } from '@models';
 import { AppState } from '@store';
@@ -16,10 +17,19 @@ export class ProjectNameDialogService {
   private dialog = inject(MatDialog);
   private store$ = inject<Store<AppState>>(Store);
 
+  /**
+   * Opens the project name dialog.
+   *
+   * When products are provided (bulk rename), the dialog handles the rename
+   * operation internally and returns ProjectNameDialogResult.
+   *
+   * When no products are provided (single-file rename), the dialog just
+   * returns the new name as a string.
+   */
   open(
     currentName: string,
     products?: CMRProduct[],
-  ): Observable<string | undefined> {
+  ): Observable<string | ProjectNameDialogResult | undefined> {
     return combineLatest([
       this.store$.select(hyp3Store.getHyp3User),
       this.store$.select(hyp3Store.getOnDemandUserId),
@@ -29,7 +39,7 @@ export class ProjectNameDialogService {
         const dialogRef = this.dialog.open<
           ProjectNameDialogComponent,
           ProjectNameDialogData,
-          string
+          string | ProjectNameDialogResult
         >(ProjectNameDialogComponent, {
           width: '400px',
           data: {

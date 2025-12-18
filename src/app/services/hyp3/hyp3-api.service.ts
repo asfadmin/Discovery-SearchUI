@@ -5,8 +5,8 @@ import {
   HttpParams,
 } from '@angular/common/http';
 
-import { Observable, of, first, catchError, map, forkJoin, from } from 'rxjs';
-import { mergeMap, toArray, bufferCount } from 'rxjs/operators';
+import { Observable, of, first, catchError, map, forkJoin, from, Subject } from 'rxjs';
+import { mergeMap, toArray, bufferCount, tap, finalize } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import * as models from '@models';
@@ -213,6 +213,66 @@ export class Hyp3ApiService {
         ),
       ),
     );
+  }
+
+  /**
+   * Updates job names with progress reporting.
+   * Returns an object with:
+   * - progress$: Observable that emits progress percentage (0-100) as batches complete
+   * - result$: Observable that emits the final result when all batches are done
+   */
+  public updateJobsNameWithProgress$(
+    products: models.CMRProduct[],
+    newProjectName: string,
+  ): {
+    progress$: Observable<number>;
+    result$: Observable<{ success: number; failed: number }>;
+  } {
+    const url = `${this.apiUrl}/jobs`;
+    const jobIds = products.map((product) => product.metadata.job.job_id);
+    const totalJobs = jobIds.length;
+    const batchSize = 100;
+    const totalBatches = Math.ceil(totalJobs / batchSize);
+
+    if (!newProjectName) {
+      newProjectName = null;
+    }
+
+    const progressSubject = new Subject<number>();
+    let completedBatches = 0;
+    let successCount = 0;
+    let failedCount = 0;
+
+    const result$ = from(jobIds).pipe(
+      bufferCount(batchSize),
+      mergeMap((jobIdsBatch) => {
+        return this.http
+          .patch<models.Hyp3Job>(
+            url,
+            { name: newProjectName, job_ids: jobIdsBatch },
+            { withCredentials: true },
+          )
+          .pipe(
+            map(() => ({ success: jobIdsBatch.length, failed: 0 })),
+            catchError(() => of({ success: 0, failed: jobIdsBatch.length })),
+            tap((batchResult) => {
+              completedBatches++;
+              successCount += batchResult.success;
+              failedCount += batchResult.failed;
+              const progress = Math.round((completedBatches / totalBatches) * 100);
+              progressSubject.next(progress);
+            }),
+          );
+      }, 3),
+      toArray(),
+      map(() => ({ success: successCount, failed: failedCount })),
+      finalize(() => progressSubject.complete()),
+    );
+
+    return {
+      progress$: progressSubject.asObservable(),
+      result$,
+    };
   }
 
   public submitJobBatch$(jobBatch: object) {

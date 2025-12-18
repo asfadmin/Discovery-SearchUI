@@ -214,7 +214,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
 
   public onEditProjectName(oldProjectName: string): void {
     this.projectNameDialog.open(oldProjectName).subscribe((result) => {
-      if (result !== undefined) {
+      if (result !== undefined && typeof result === 'string') {
         this.renameJobProjectName.emit(result);
       }
     });

@@ -102,3 +102,42 @@
     width: 80px;
   }
 }
+
+// Progress bar styles
+.progress-container {
+  text-align: center;
+  padding: 24px 0;
+
+  mat-progress-bar {
+    margin-bottom: 16px;
+  }
+
+  .progress-text {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 500;
+  }
+}
+
+// Result styles
+.result-container {
+  text-align: center;
+  padding: 16px 0;
+
+  p {
+    margin: 0;
+    font-size: 14px;
+  }
+
+  .result-success {
+    color: #4caf50;
+  }
+
+  .result-warning {
+    color: #ff9800;
+  }
+
+  .result-error {
+    color: #f44336;
+  }
+}

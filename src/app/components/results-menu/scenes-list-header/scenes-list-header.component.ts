@@ -33,7 +33,6 @@ import {
   NotificationService,
   ExportService,
   ProjectNameDialogService,
-  AsfLanguageService,
 } from '@services';
 
 import * as models from '@models';
@@ -47,7 +46,6 @@ import {
   CodeExportType,
 } from '@components/shared/code-export';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   NgClass,
   AsyncPipe,
@@ -107,9 +105,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   private possibleHyp3JobsService = inject(PossibleHyp3JobsService);
   private exportService = inject(ExportService);
   private dialog = inject(MatDialog);
-  private snackBar = inject(MatSnackBar);
   private projectNameDialog = inject(ProjectNameDialogService);
-  private language = inject(AsfLanguageService);
 
   public copyIcon = faCopy;
   public pairs$ = this.pairService.pairs$;
@@ -686,51 +682,11 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
   public onBulkProjectNameUpdate(): void {
     this.projectNameDialog.open('', this.products).subscribe((result) => {
-      if (result !== undefined) {
-        this.snackBar.open(
-          this.language.translate.instant('RENAMING_JOBS'),
-          '',
-          {
-            horizontalPosition: 'center',
-            verticalPosition: 'bottom',
-          },
-        );
-
-        this.hyp3.updateJobsName$(this.products, result).subscribe({
-          next: ({ success, failed }) => {
-            this.snackBar.dismiss();
-
-            if (failed === 0) {
-              this.notificationService.info(
-                this.language.translate.instant('RENAME_SUCCESS', {
-                  count: success,
-                }),
-              );
-            } else if (success === 0) {
-              this.notificationService.error(
-                this.language.translate.instant('RENAME_ALL_FAILED', {
-                  count: failed,
-                }),
-              );
-            } else {
-              this.notificationService.warn(
-                this.language.translate.instant('RENAME_PARTIAL_SUCCESS', {
-                  success,
-                  failed,
-                }),
-              );
-            }
-
-            this.store$.dispatch(new filtersStore.SetProjectName(result));
-            this.store$.dispatch(new searchStore.MakeSearch());
-          },
-          error: () => {
-            this.snackBar.dismiss();
-            this.notificationService.error(
-              this.language.translate.instant('RENAME_ERROR'),
-            );
-          },
-        });
+      if (result !== undefined && typeof result !== 'string') {
+        // Dialog now handles the rename operation and shows progress
+        // We just need to update the filter and refresh search
+        this.store$.dispatch(new filtersStore.SetProjectName(result.newName));
+        this.store$.dispatch(new searchStore.MakeSearch());
       }
     });
   }

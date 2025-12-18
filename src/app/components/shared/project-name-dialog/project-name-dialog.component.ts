@@ -10,18 +10,29 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TranslateModule } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 
 import * as models from '@models';
+import { Hyp3ApiService } from '@services';
 
 type SortColumn = 'name' | 'count';
 type SortDirection = 'asc' | 'desc';
+
+export type DialogPhase = 'input' | 'processing' | 'complete' | 'error';
 
 export interface ProjectNameDialogData {
   currentName: string;
   products?: models.CMRProduct[];
   loggedInUserId?: string;
   filterUserId?: string;
+}
+
+export interface ProjectNameDialogResult {
+  newName: string;
+  success: number;
+  failed: number;
 }
 
 @Component({
@@ -37,12 +48,14 @@ export interface ProjectNameDialogData {
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatProgressBarModule,
     TranslateModule,
   ],
 })
 export class ProjectNameDialogComponent {
   dialogRef = inject<MatDialogRef<ProjectNameDialogComponent>>(MatDialogRef);
   data = inject<ProjectNameDialogData>(MAT_DIALOG_DATA);
+  private hyp3Api = inject(Hyp3ApiService);
 
   public projectName: string;
   public jobCount = null;
@@ -52,6 +65,14 @@ export class ProjectNameDialogComponent {
   public sortDirection: SortDirection = 'asc';
   public isDisabledByUserFilter = false;
   public filterUserId: string;
+
+  // Two-phase UI state
+  public phase: DialogPhase = 'input';
+  public progress = 0;
+  public successCount = 0;
+  public failedCount = 0;
+
+  private subscriptions: Subscription[] = [];
 
   constructor() {
     this.projectName = this.data.currentName;
@@ -77,6 +98,9 @@ export class ProjectNameDialogComponent {
       this.projectNameCounts = counts.size > 0 ? counts : null;
       this.updateSortedEntries();
     }
+
+    // Prevent closing during processing
+    this.dialogRef.disableClose = false;
   }
 
   public sortBy(column: SortColumn): void {
@@ -117,8 +141,62 @@ export class ProjectNameDialogComponent {
   }
 
   public onSave(): void {
-    if (this.isValid) {
-      this.dialogRef.close(this.projectName.trim());
+    if (!this.isValid) {
+      return;
     }
+
+    const trimmedName = this.projectName.trim();
+
+    // If no products, just return the name (single-file rename flow)
+    if (!this.data.products || this.data.products.length === 0) {
+      this.dialogRef.close(trimmedName);
+      return;
+    }
+
+    // Transition to processing phase for bulk rename
+    this.phase = 'processing';
+    this.dialogRef.disableClose = true;
+    this.progress = 0;
+
+    const { progress$, result$ } = this.hyp3Api.updateJobsNameWithProgress$(
+      this.data.products,
+      trimmedName,
+    );
+
+    // Subscribe to progress updates
+    this.subscriptions.push(
+      progress$.subscribe((progress) => {
+        this.progress = progress;
+      }),
+    );
+
+    // Subscribe to final result
+    this.subscriptions.push(
+      result$.subscribe({
+        next: ({ success, failed }) => {
+          this.successCount = success;
+          this.failedCount = failed;
+          this.phase = 'complete';
+          this.dialogRef.disableClose = false;
+        },
+        error: () => {
+          this.phase = 'error';
+          this.dialogRef.disableClose = false;
+        },
+      }),
+    );
+  }
+
+  public onDone(): void {
+    const result: ProjectNameDialogResult = {
+      newName: this.projectName.trim(),
+      success: this.successCount,
+      failed: this.failedCount,
+    };
+    this.dialogRef.close(result);
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 }

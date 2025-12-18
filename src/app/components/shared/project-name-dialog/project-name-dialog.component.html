@@ -1,90 +1,166 @@
-<div mat-dialog-title>
-  <h2 class="dialog-title">
-    {{
-      (jobCount > 1 ? 'EDIT_ALL_PROJECT_NAMES' : 'EDIT_PROJECT_NAME')
-        | translate
-    }}
-  </h2>
-  @if (isDisabledByUserFilter) {
-    <p class="dialog-subtitle cannot-rename-warning">
-      {{ 'CANNOT_RENAME_PROJECTS_FOR' | translate }}: {{ filterUserId }}
-    </p>
-  } @else if (jobCount) {
-    <p
-      class="dialog-subtitle"
-      [class.job-count-warning]="jobCount >= 300"
-    >
-      {{ 'WILL_RENAME_JOBS' | translate: { count: jobCount } }}
-    </p>
-  }
-</div>
-
-<form (ngSubmit)="onSave()">
-  <mat-dialog-content>
-    <mat-form-field class="project-name-field">
-      <mat-label>{{ 'PROJECT_NAME' | translate }}</mat-label>
-      <input
-        matInput
-        [(ngModel)]="projectName"
-        name="projectName"
-        cdkFocusInitial
-        maxlength="100"
-        [disabled]="isDisabledByUserFilter"
-      />
-      <mat-hint align="end">{{ projectName?.length || 0 }}/100</mat-hint>
-      @if (projectName?.length >= 100) {
-        <mat-error>{{ 'PROJECT_NAME_MAX_LENGTH' | translate }}</mat-error>
-      }
-    </mat-form-field>
-
-    @if (projectNameCounts && projectNameCounts.size > 0) {
-      <p class="projects-label">
-        {{ 'PROJECTS_TO_RENAME' | translate }}
+<!-- Input Phase -->
+@if (phase === 'input') {
+  <div mat-dialog-title>
+    <h2 class="dialog-title">
+      {{
+        (jobCount > 1 ? 'EDIT_ALL_PROJECT_NAMES' : 'EDIT_PROJECT_NAME')
+          | translate
+      }}
+    </h2>
+    @if (isDisabledByUserFilter) {
+      <p class="dialog-subtitle cannot-rename-warning">
+        {{ 'CANNOT_RENAME_PROJECTS_FOR' | translate }}: {{ filterUserId }}
       </p>
-      <div
-        class="projects-table-wrapper"
-        [class.scrollable]="projectNameCounts.size > 5"
+    } @else if (jobCount) {
+      <p
+        class="dialog-subtitle"
+        [class.job-count-warning]="jobCount >= 300"
       >
-        <table class="projects-table">
-          <thead>
-            <tr>
-              <th class="sortable" (click)="sortBy('name')">
-                {{ 'PROJECT_NAME' | translate }}
-                @if (sortColumn === 'name') {
-                  <span class="sort-indicator">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
-                }
-              </th>
-              <th class="job-count-header sortable" (click)="sortBy('count')">
-                {{ 'JOBS' | translate }}
-                @if (sortColumn === 'count') {
-                  <span class="sort-indicator">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
-                }
-              </th>
-            </tr>
-          </thead>
-        </table>
-        <div class="projects-table-body-container">
-          <table class="projects-table">
-            <tbody>
-              @for (entry of sortedEntries; track entry.key) {
-                <tr>
-                  <td>{{ entry.key }}</td>
-                  <td class="job-count-cell">{{ entry.value }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div>
-      </div>
+        {{ 'WILL_RENAME_JOBS' | translate: { count: jobCount } }}
+      </p>
     }
+  </div>
+
+  <form (ngSubmit)="onSave()">
+    <mat-dialog-content>
+      <mat-form-field class="project-name-field">
+        <mat-label>{{ 'PROJECT_NAME' | translate }}</mat-label>
+        <input
+          matInput
+          [(ngModel)]="projectName"
+          name="projectName"
+          cdkFocusInitial
+          maxlength="100"
+          [disabled]="isDisabledByUserFilter"
+        />
+        <mat-hint align="end">{{ projectName?.length || 0 }}/100</mat-hint>
+        @if (projectName?.length >= 100) {
+          <mat-error>{{ 'PROJECT_NAME_MAX_LENGTH' | translate }}</mat-error>
+        }
+      </mat-form-field>
+
+      @if (projectNameCounts && projectNameCounts.size > 0) {
+        <p class="projects-label">
+          {{ 'PROJECTS_TO_RENAME' | translate }}
+        </p>
+        <div
+          class="projects-table-wrapper"
+          [class.scrollable]="projectNameCounts.size > 5"
+        >
+          <table class="projects-table">
+            <thead>
+              <tr>
+                <th class="sortable" (click)="sortBy('name')">
+                  {{ 'PROJECT_NAME' | translate }}
+                  @if (sortColumn === 'name') {
+                    <span class="sort-indicator">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+                  }
+                </th>
+                <th class="job-count-header sortable" (click)="sortBy('count')">
+                  {{ 'JOBS' | translate }}
+                  @if (sortColumn === 'count') {
+                    <span class="sort-indicator">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+                  }
+                </th>
+              </tr>
+            </thead>
+          </table>
+          <div class="projects-table-body-container">
+            <table class="projects-table">
+              <tbody>
+                @for (entry of sortedEntries; track entry.key) {
+                  <tr>
+                    <td>{{ entry.key }}</td>
+                    <td class="job-count-cell">{{ entry.value }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      }
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+      <button mat-button type="button" (click)="onCancel()">
+        {{ 'CANCEL' | translate }}
+      </button>
+      <button mat-flat-button color="primary" type="submit" [disabled]="!isValid || isDisabledByUserFilter">
+        {{ 'SAVE' | translate }}
+      </button>
+    </mat-dialog-actions>
+  </form>
+}
+
+<!-- Processing Phase -->
+@if (phase === 'processing') {
+  <div mat-dialog-title>
+    <h2 class="dialog-title">{{ 'RENAMING_JOBS' | translate }}</h2>
+  </div>
+
+  <mat-dialog-content>
+    <div class="progress-container">
+      <mat-progress-bar
+        mode="determinate"
+        [value]="progress"
+      ></mat-progress-bar>
+      <p class="progress-text">{{ progress }}%</p>
+    </div>
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">
-    <button mat-button type="button" (click)="onCancel()">
-      {{ 'CANCEL' | translate }}
-    </button>
-    <button mat-flat-button color="primary" type="submit" [disabled]="!isValid">
-      {{ 'SAVE' | translate }}
+    <!-- No actions during processing -->
+  </mat-dialog-actions>
+}
+
+<!-- Complete Phase -->
+@if (phase === 'complete') {
+  <div mat-dialog-title>
+    <h2 class="dialog-title">{{ 'RENAME_COMPLETE' | translate }}</h2>
+  </div>
+
+  <mat-dialog-content>
+    <div class="result-container">
+      @if (failedCount === 0) {
+        <p class="result-success">
+          {{ 'RENAME_SUCCESS' | translate: { count: successCount } }}
+        </p>
+      } @else if (successCount === 0) {
+        <p class="result-error">
+          {{ 'RENAME_ALL_FAILED' | translate: { count: failedCount } }}
+        </p>
+      } @else {
+        <p class="result-warning">
+          {{ 'RENAME_PARTIAL_SUCCESS' | translate: { success: successCount, failed: failedCount } }}
+        </p>
+      }
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-flat-button color="primary" (click)="onDone()">
+      {{ 'DONE' | translate }}
     </button>
   </mat-dialog-actions>
-</form>
+}
+
+<!-- Error Phase -->
+@if (phase === 'error') {
+  <div mat-dialog-title>
+    <h2 class="dialog-title">{{ 'ERROR' | translate }}</h2>
+  </div>
+
+  <mat-dialog-content>
+    <div class="result-container">
+      <p class="result-error">
+        {{ 'RENAME_ERROR' | translate }}
+      </p>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-flat-button color="primary" (click)="onCancel()">
+      {{ 'CLOSE' | translate }}
+    </button>
+  </mat-dialog-actions>
+}
