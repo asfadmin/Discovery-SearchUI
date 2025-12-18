@@ -51,11 +51,13 @@ export class ProjectNameDialogComponent {
     const products = this.data?.products;
     this.jobCount = products?.length;
 
-    this.uniqueProjectNames = new Set(
-      products
-        .map((product) => product.metadata?.job.name)
-        .filter((projectName) => !!projectName),
-    );
+    if (products) {
+      this.uniqueProjectNames = new Set(
+        products
+          .map((product) => product.metadata?.job.name)
+          .filter((projectName) => !!projectName),
+      );
+    }
   }
 
   public get isValid(): boolean {
