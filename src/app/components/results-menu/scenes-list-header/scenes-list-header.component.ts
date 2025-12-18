@@ -685,56 +685,54 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   }
 
   public onBulkProjectNameUpdate(): void {
-    this.projectNameDialog
-      .open('', this.products.length)
-      .subscribe((result) => {
-        if (result !== undefined) {
-          this.snackBar.open(
-            this.language.translate.instant('RENAMING_JOBS'),
-            '',
-            {
-              horizontalPosition: 'center',
-              verticalPosition: 'bottom',
-            },
-          );
+    this.projectNameDialog.open('', this.products).subscribe((result) => {
+      if (result !== undefined) {
+        this.snackBar.open(
+          this.language.translate.instant('RENAMING_JOBS'),
+          '',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+          },
+        );
 
-          this.hyp3.updateJobsName$(this.products, result).subscribe({
-            next: ({ success, failed }) => {
-              this.snackBar.dismiss();
+        this.hyp3.updateJobsName$(this.products, result).subscribe({
+          next: ({ success, failed }) => {
+            this.snackBar.dismiss();
 
-              if (failed === 0) {
-                this.notificationService.info(
-                  this.language.translate.instant('RENAME_SUCCESS', {
-                    count: success,
-                  }),
-                );
-              } else if (success === 0) {
-                this.notificationService.error(
-                  this.language.translate.instant('RENAME_ALL_FAILED', {
-                    count: failed,
-                  }),
-                );
-              } else {
-                this.notificationService.warn(
-                  this.language.translate.instant('RENAME_PARTIAL_SUCCESS', {
-                    success,
-                    failed,
-                  }),
-                );
-              }
-
-              this.store$.dispatch(new scenesStore.ClearScenes());
-              this.store$.dispatch(new searchStore.MakeSearch());
-            },
-            error: () => {
-              this.snackBar.dismiss();
-              this.notificationService.error(
-                this.language.translate.instant('RENAME_ERROR'),
+            if (failed === 0) {
+              this.notificationService.info(
+                this.language.translate.instant('RENAME_SUCCESS', {
+                  count: success,
+                }),
               );
-            },
-          });
-        }
-      });
+            } else if (success === 0) {
+              this.notificationService.error(
+                this.language.translate.instant('RENAME_ALL_FAILED', {
+                  count: failed,
+                }),
+              );
+            } else {
+              this.notificationService.warn(
+                this.language.translate.instant('RENAME_PARTIAL_SUCCESS', {
+                  success,
+                  failed,
+                }),
+              );
+            }
+
+            this.store$.dispatch(new filtersStore.SetProjectName(result));
+            this.store$.dispatch(new searchStore.MakeSearch());
+          },
+          error: () => {
+            this.snackBar.dismiss();
+            this.notificationService.error(
+              this.language.translate.instant('RENAME_ERROR'),
+            );
+          },
+        });
+      }
+    });
   }
 
   ngOnDestroy(): void {
