@@ -12,9 +12,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
 
+import * as models from '@models';
+import { MatChipsModule } from '@angular/material/chips';
+
 export interface ProjectNameDialogData {
   currentName: string;
-  jobCount?: number;
+  products?: models.CMRProduct[];
 }
 
 @Component({
@@ -31,6 +34,7 @@ export interface ProjectNameDialogData {
     MatInputModule,
     MatButtonModule,
     TranslateModule,
+    MatChipsModule,
   ],
 })
 export class ProjectNameDialogComponent {
@@ -38,9 +42,20 @@ export class ProjectNameDialogComponent {
   data = inject<ProjectNameDialogData>(MAT_DIALOG_DATA);
 
   public projectName: string;
+  public jobCount = null;
+  public uniqueProjectNames: Set<string> | null = null;
 
   constructor() {
     this.projectName = this.data.currentName;
+
+    const products = this.data?.products;
+    this.jobCount = this.data?.products?.length;
+
+    this.uniqueProjectNames = new Set(
+      products
+        .filter((product) => product.metadata?.job.name)
+        .map((product) => product.metadata?.job.name),
+    );
   }
 
   public get isValid(): boolean {

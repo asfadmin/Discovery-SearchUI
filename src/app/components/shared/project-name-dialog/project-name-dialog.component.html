@@ -1,19 +1,36 @@
 <h2 mat-dialog-title>
   {{
-    (data.jobCount > 1 ? 'EDIT_ALL_PROJECT_NAMES' : 'EDIT_PROJECT_NAME')
+    (jobCount > 1 ? 'EDIT_ALL_PROJECT_NAMES' : 'EDIT_PROJECT_NAME')
       | translate
   }}
 </h2>
 
 <form (ngSubmit)="onSave()">
   <mat-dialog-content>
-    @if (data.jobCount) {
+    @if (jobCount) {
       <p
         class="job-count-info"
-        [class.job-count-warning]="data.jobCount >= 300"
+        [class.job-count-warning]="jobCount >= 300"
       >
-        {{ 'WILL_RENAME_JOBS' | translate: { count: data.jobCount } }}
+        {{ 'WILL_RENAME_JOBS' | translate: { count: jobCount } }}
       </p>
+    }
+
+    @if (uniqueProjectNames) {
+      <p
+        class="job-count-info"
+        [class.job-count-warning]="uniqueProjectNames.size > 1"
+      >
+        {{ 'WILL_RENAME_PROJECTS' | translate }}
+      </p>
+
+      <mat-chip-listbox>
+        @for (name of uniqueProjectNames; track name) {
+          <mat-chip-option disabled>
+            {{ name }}
+          </mat-chip-option>
+        }
+      </mat-chip-listbox>
     }
     <mat-form-field class="project-name-field">
       <mat-label>{{ 'PROJECT_NAME' | translate }}</mat-label>
