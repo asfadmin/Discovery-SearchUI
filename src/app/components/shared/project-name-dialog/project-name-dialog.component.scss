@@ -1,15 +1,104 @@
-.project-name-field {
-  width: 100%;
+::ng-deep .mat-mdc-dialog-title {
+  padding-top: 24px !important;
+
+  &::before {
+    display: none;
+  }
 }
 
-.job-count-info {
-  margin: 0 0 16px 0;
+.dialog-title {
+  margin: 0;
+}
+
+.dialog-subtitle {
+  margin: 4px 0 0 0;
   opacity: 0.7;
   font-size: 14px;
 
-  &.job-count-warning {
+  &.job-count-warning,
+  &.cannot-rename-warning {
     color: #f44336;
     opacity: 1;
     font-weight: 500;
+  }
+}
+
+.project-name-field {
+  width: 100%;
+
+  ::ng-deep .mat-mdc-text-field-wrapper {
+    padding-top: 0;
+  }
+}
+
+.projects-label {
+  margin: 16px 0 8px 0;
+  opacity: 0.7;
+  font-size: 14px;
+}
+
+.projects-table-wrapper {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  margin-bottom: 8px;
+
+  &.scrollable {
+    .projects-table-body-container {
+      max-height: 185px;
+      overflow-y: scroll;
+    }
+
+    > .projects-table .job-count-header {
+      padding-right: 29px; // 12px base + 17px scrollbar width
+    }
+  }
+}
+
+.projects-table-body-container {
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.projects-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 8px 12px;
+    font-size: 14px;
+    text-align: left;
+  }
+
+  th {
+    font-weight: 500;
+    opacity: 0.7;
+
+    &.sortable {
+      cursor: pointer;
+      user-select: none;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+
+  td {
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+  }
+
+  tr:first-child td {
+    border-top: none;
+  }
+
+  .sort-indicator {
+    font-size: 10px;
+    margin-left: 4px;
+  }
+
+  .job-count-header,
+  .job-count-cell {
+    text-align: right;
+    width: 80px;
   }
 }

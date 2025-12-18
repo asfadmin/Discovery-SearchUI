@@ -1,37 +1,26 @@
-<h2 mat-dialog-title>
-  {{
-    (jobCount > 1 ? 'EDIT_ALL_PROJECT_NAMES' : 'EDIT_PROJECT_NAME')
-      | translate
-  }}
-</h2>
+<div mat-dialog-title>
+  <h2 class="dialog-title">
+    {{
+      (jobCount > 1 ? 'EDIT_ALL_PROJECT_NAMES' : 'EDIT_PROJECT_NAME')
+        | translate
+    }}
+  </h2>
+  @if (isDisabledByUserFilter) {
+    <p class="dialog-subtitle cannot-rename-warning">
+      {{ 'CANNOT_RENAME_PROJECTS_FOR' | translate }}: {{ filterUserId }}
+    </p>
+  } @else if (jobCount) {
+    <p
+      class="dialog-subtitle"
+      [class.job-count-warning]="jobCount >= 300"
+    >
+      {{ 'WILL_RENAME_JOBS' | translate: { count: jobCount } }}
+    </p>
+  }
+</div>
 
 <form (ngSubmit)="onSave()">
   <mat-dialog-content>
-    @if (jobCount) {
-      <p
-        class="job-count-info"
-        [class.job-count-warning]="jobCount >= 300"
-      >
-        {{ 'WILL_RENAME_JOBS' | translate: { count: jobCount } }}
-      </p>
-    }
-
-    @if (uniqueProjectNames) {
-      <p
-        class="job-count-info"
-        [class.job-count-warning]="uniqueProjectNames.size > 1"
-      >
-        {{ 'WILL_RENAME_PROJECTS' | translate }}
-      </p>
-
-      <mat-chip-listbox>
-        @for (name of uniqueProjectNames; track name) {
-          <mat-chip-option disabled>
-            {{ name }}
-          </mat-chip-option>
-        }
-      </mat-chip-listbox>
-    }
     <mat-form-field class="project-name-field">
       <mat-label>{{ 'PROJECT_NAME' | translate }}</mat-label>
       <input
@@ -39,8 +28,55 @@
         [(ngModel)]="projectName"
         name="projectName"
         cdkFocusInitial
+        maxlength="100"
+        [disabled]="isDisabledByUserFilter"
       />
+      <mat-hint align="end">{{ projectName?.length || 0 }}/100</mat-hint>
+      @if (projectName?.length >= 100) {
+        <mat-error>{{ 'PROJECT_NAME_MAX_LENGTH' | translate }}</mat-error>
+      }
     </mat-form-field>
+
+    @if (projectNameCounts && projectNameCounts.size > 0) {
+      <p class="projects-label">
+        {{ 'PROJECTS_TO_RENAME' | translate }}
+      </p>
+      <div
+        class="projects-table-wrapper"
+        [class.scrollable]="projectNameCounts.size > 5"
+      >
+        <table class="projects-table">
+          <thead>
+            <tr>
+              <th class="sortable" (click)="sortBy('name')">
+                {{ 'PROJECT_NAME' | translate }}
+                @if (sortColumn === 'name') {
+                  <span class="sort-indicator">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+                }
+              </th>
+              <th class="job-count-header sortable" (click)="sortBy('count')">
+                {{ 'JOBS' | translate }}
+                @if (sortColumn === 'count') {
+                  <span class="sort-indicator">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+                }
+              </th>
+            </tr>
+          </thead>
+        </table>
+        <div class="projects-table-body-container">
+          <table class="projects-table">
+            <tbody>
+              @for (entry of sortedEntries; track entry.key) {
+                <tr>
+                  <td>{{ entry.key }}</td>
+                  <td class="job-count-cell">{{ entry.value }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">
