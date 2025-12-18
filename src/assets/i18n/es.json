@@ -680,6 +680,7 @@
   "PROJECT_NAME_MAX_LENGTH": "El nombre del proyecto no puede exceder 100 caracteres",
   "PROJECT_NAME_UPDATE_ALL_TOOLTIP": "Actualizar nombre del proyecto para todos los trabajos cargados",
   "PROJECT_NAME_UPDATE_FOR_JOBS": "Actualizar nombre del proyecto para {{count}} trabajos",
+  "PROJECTS_SELECTED": "Proyectos Seleccionados",
   "PROJECTS_TO_RENAME": "Proyectos a renombrar:",
   "PUSH_PIN": "chincheta",
   "PYTHON_PY": "python (.py)",

@@ -567,6 +567,7 @@
   "PROJECT_NAME": "Projektname",
   "PROJECT_NAME_UPDATE_ALL_TOOLTIP": "Projektname für alle geladenen Aufträge aktualisieren",
   "PROJECT_NAME_UPDATE_FOR_JOBS": "Projektname für {{count}} Aufträge aktualisieren",
+  "PROJECTS_SELECTED": "Ausgewählte Projekte",
   "PROJECTS_TO_RENAME": "Umzubenennende Projekte:",
   "PUSH_PIN": "push_pin",
   "PYTHON_PY": "Python (.py)",
