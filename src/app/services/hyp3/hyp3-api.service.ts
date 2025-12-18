@@ -5,7 +5,16 @@ import {
   HttpParams,
 } from '@angular/common/http';
 
-import { Observable, of, first, catchError, map, forkJoin, from, Subject } from 'rxjs';
+import {
+  Observable,
+  of,
+  first,
+  catchError,
+  map,
+  forkJoin,
+  from,
+  Subject,
+} from 'rxjs';
 import { mergeMap, toArray, bufferCount, tap, finalize } from 'rxjs/operators';
 import * as moment from 'moment';
 
@@ -233,8 +242,15 @@ export class Hyp3ApiService {
     products: models.CMRProduct[],
     newProjectName: string,
   ): {
-    progress$: Observable<{ percent: number; estimatedSecondsRemaining: number | null }>;
-    result$: Observable<{ success: number; failed: number; failedProjectNames: string[] }>;
+    progress$: Observable<{
+      percent: number;
+      estimatedSecondsRemaining: number | null;
+    }>;
+    result$: Observable<{
+      success: number;
+      failed: number;
+      failedProjectNames: string[];
+    }>;
   } {
     const url = `${this.apiUrl}/jobs`;
     const totalJobs = products.length;
@@ -245,7 +261,10 @@ export class Hyp3ApiService {
       newProjectName = null;
     }
 
-    const progressSubject = new Subject<{ percent: number; estimatedSecondsRemaining: number | null }>();
+    const progressSubject = new Subject<{
+      percent: number;
+      estimatedSecondsRemaining: number | null;
+    }>();
     let completedBatches = 0;
     let successCount = 0;
     let failedCount = 0;
@@ -263,8 +282,18 @@ export class Hyp3ApiService {
             { withCredentials: true },
           )
           .pipe(
-            map(() => ({ success: jobIdsBatch.length, failed: 0, failedProducts: [] as models.CMRProduct[] })),
-            catchError(() => of({ success: 0, failed: jobIdsBatch.length, failedProducts: productsBatch })),
+            map(() => ({
+              success: jobIdsBatch.length,
+              failed: 0,
+              failedProducts: [] as models.CMRProduct[],
+            })),
+            catchError(() =>
+              of({
+                success: 0,
+                failed: jobIdsBatch.length,
+                failedProducts: productsBatch,
+              }),
+            ),
             tap((batchResult) => {
               completedBatches++;
               successCount += batchResult.success;
@@ -274,7 +303,9 @@ export class Hyp3ApiService {
                 const projectName = product.metadata?.job?.name || '(unnamed)';
                 failedProjectNamesSet.add(projectName);
               });
-              const percent = Math.round((completedBatches / totalBatches) * 100);
+              const percent = Math.round(
+                (completedBatches / totalBatches) * 100,
+              );
 
               // Calculate estimated time remaining
               let estimatedSecondsRemaining: number | null = null;
@@ -282,7 +313,9 @@ export class Hyp3ApiService {
                 const elapsedMs = Date.now() - startTime;
                 const msPerBatch = elapsedMs / completedBatches;
                 const remainingBatches = totalBatches - completedBatches;
-                estimatedSecondsRemaining = Math.ceil((msPerBatch * remainingBatches) / 1000);
+                estimatedSecondsRemaining = Math.ceil(
+                  (msPerBatch * remainingBatches) / 1000,
+                );
               }
 
               progressSubject.next({ percent, estimatedSecondsRemaining });

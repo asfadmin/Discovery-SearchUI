@@ -4,6 +4,7 @@ import {
   AfterViewInit,
   ViewChild,
   ElementRef,
+  OnDestroy,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -60,7 +61,7 @@ export interface ProjectNameDialogResult {
     TranslateModule,
   ],
 })
-export class ProjectNameDialogComponent implements AfterViewInit {
+export class ProjectNameDialogComponent implements AfterViewInit, OnDestroy {
   @ViewChild('projectNameInput') projectNameInput: ElementRef<HTMLInputElement>;
 
   dialogRef = inject<MatDialogRef<ProjectNameDialogComponent>>(MatDialogRef);
@@ -71,7 +72,7 @@ export class ProjectNameDialogComponent implements AfterViewInit {
   public jobCount = null;
   public projectCount = 0;
   public projectNameCounts: Map<string, number> | null = null;
-  public sortedEntries: Array<{ key: string; value: number }> = [];
+  public sortedEntries: { key: string; value: number }[] = [];
   public sortColumn: SortColumn = 'name';
   public sortDirection: SortDirection = 'asc';
   public isDisabledByUserFilter = false;

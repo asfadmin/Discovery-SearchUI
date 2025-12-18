@@ -46,13 +46,17 @@
                 <th class="sortable" (click)="sortBy('name')">
                   {{ 'PROJECT_NAME' | translate }}
                   @if (sortColumn === 'name') {
-                    <span class="sort-indicator">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+                    <span class="sort-indicator">{{
+                      sortDirection === 'asc' ? '▲' : '▼'
+                    }}</span>
                   }
                 </th>
                 <th class="job-count-header sortable" (click)="sortBy('count')">
                   {{ 'JOBS' | translate }}
                   @if (sortColumn === 'count') {
-                    <span class="sort-indicator">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+                    <span class="sort-indicator">{{
+                      sortDirection === 'asc' ? '▲' : '▼'
+                    }}</span>
                   }
                 </th>
               </tr>
@@ -78,7 +82,18 @@
             [(ngModel)]="confirmationChecked"
             name="confirmationChecked"
           >
-            {{ (projectCount === 1 ? 'CONFIRM_RENAME_SINGLE' : 'CONFIRM_RENAME_MULTIPLE') | translate: { projectCount: projectCount, jobCount: jobCount, newName: projectName?.trim() } }}
+            {{
+              (projectCount === 1
+                ? 'CONFIRM_RENAME_SINGLE'
+                : 'CONFIRM_RENAME_MULTIPLE'
+              )
+                | translate
+                  : {
+                      projectCount: projectCount,
+                      jobCount: jobCount,
+                      newName: projectName?.trim(),
+                    }
+            }}
           </mat-checkbox>
         }
       }
@@ -88,7 +103,16 @@
       <button mat-button type="button" (click)="onCancel()">
         {{ 'CANCEL' | translate }}
       </button>
-      <button mat-flat-button color="primary" type="submit" [disabled]="!isValid || isDisabledByUserFilter || (projectNameCounts && !confirmationChecked)">
+      <button
+        mat-flat-button
+        color="primary"
+        type="submit"
+        [disabled]="
+          !isValid ||
+          isDisabledByUserFilter ||
+          (projectNameCounts && !confirmationChecked)
+        "
+      >
         {{ 'SAVE' | translate }}
       </button>
     </mat-dialog-actions>
@@ -110,7 +134,8 @@
       <p class="progress-text">{{ progress }}%</p>
       @if (formattedTimeRemaining) {
         <p class="estimated-time">
-          {{ 'ESTIMATED_TIME_REMAINING' | translate }}: {{ formattedTimeRemaining }}
+          {{ 'ESTIMATED_TIME_REMAINING' | translate }}:
+          {{ formattedTimeRemaining }}
         </p>
       }
     </div>
@@ -139,7 +164,10 @@
         </p>
       } @else {
         <p class="result-warning">
-          {{ 'RENAME_PARTIAL_SUCCESS' | translate: { success: successCount, failed: failedCount } }}
+          {{
+            'RENAME_PARTIAL_SUCCESS'
+              | translate: { success: successCount, failed: failedCount }
+          }}
         </p>
       }
 
@@ -148,7 +176,10 @@
           <p class="failed-projects-label">
             {{ 'FAILED_PROJECTS' | translate }}:
           </p>
-          <ul class="failed-projects-list" [class.scrollable]="failedProjectNames.length > 5">
+          <ul
+            class="failed-projects-list"
+            [class.scrollable]="failedProjectNames.length > 5"
+          >
             @for (name of failedProjectNames; track name) {
               <li>{{ name }}</li>
             }
