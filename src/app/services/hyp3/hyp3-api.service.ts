@@ -216,6 +216,15 @@ export class Hyp3ApiService {
   }
 
   /**
+   * Result type for rename operations with progress tracking.
+   */
+  public static readonly RenameResult = class {
+    success: number;
+    failed: number;
+    failedProjectNames: string[];
+  };
+
+  /**
    * Updates job names with progress reporting.
    * Returns an object with:
    * - progress$: Observable that emits progress percentage (0-100) as batches complete
@@ -226,11 +235,10 @@ export class Hyp3ApiService {
     newProjectName: string,
   ): {
     progress$: Observable<number>;
-    result$: Observable<{ success: number; failed: number }>;
+    result$: Observable<{ success: number; failed: number; failedProjectNames: string[] }>;
   } {
     const url = `${this.apiUrl}/jobs`;
-    const jobIds = products.map((product) => product.metadata.job.job_id);
-    const totalJobs = jobIds.length;
+    const totalJobs = products.length;
     const batchSize = 100;
     const totalBatches = Math.ceil(totalJobs / batchSize);
 
@@ -242,10 +250,12 @@ export class Hyp3ApiService {
     let completedBatches = 0;
     let successCount = 0;
     let failedCount = 0;
+    const failedProjectNamesSet = new Set<string>();
 
-    const result$ = from(jobIds).pipe(
+    const result$ = from(products).pipe(
       bufferCount(batchSize),
-      mergeMap((jobIdsBatch) => {
+      mergeMap((productsBatch) => {
+        const jobIdsBatch = productsBatch.map((p) => p.metadata.job.job_id);
         return this.http
           .patch<models.Hyp3Job>(
             url,
@@ -253,19 +263,28 @@ export class Hyp3ApiService {
             { withCredentials: true },
           )
           .pipe(
-            map(() => ({ success: jobIdsBatch.length, failed: 0 })),
-            catchError(() => of({ success: 0, failed: jobIdsBatch.length })),
+            map(() => ({ success: jobIdsBatch.length, failed: 0, failedProducts: [] as models.CMRProduct[] })),
+            catchError(() => of({ success: 0, failed: jobIdsBatch.length, failedProducts: productsBatch })),
             tap((batchResult) => {
               completedBatches++;
               successCount += batchResult.success;
               failedCount += batchResult.failed;
+              // Track failed project names
+              batchResult.failedProducts.forEach((product) => {
+                const projectName = product.metadata?.job?.name || '(unnamed)';
+                failedProjectNamesSet.add(projectName);
+              });
               const progress = Math.round((completedBatches / totalBatches) * 100);
               progressSubject.next(progress);
             }),
           );
       }, 3),
       toArray(),
-      map(() => ({ success: successCount, failed: failedCount })),
+      map(() => ({
+        success: successCount,
+        failed: failedCount,
+        failedProjectNames: Array.from(failedProjectNamesSet).sort(),
+      })),
       finalize(() => progressSubject.complete()),
     );
 

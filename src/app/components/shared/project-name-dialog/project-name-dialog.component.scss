@@ -162,3 +162,34 @@
     color: #f44336;
   }
 }
+
+// Failed projects list
+.failed-projects {
+  margin-top: 16px;
+  text-align: left;
+
+  .failed-projects-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #f44336;
+    margin-bottom: 8px;
+  }
+
+  .failed-projects-list {
+    margin: 0;
+    padding-left: 20px;
+    font-size: 13px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 4px;
+    padding: 8px 8px 8px 28px;
+
+    &.scrollable {
+      max-height: 120px;
+      overflow-y: auto;
+    }
+
+    li {
+      padding: 2px 0;
+    }
+  }
+}

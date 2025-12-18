@@ -260,6 +260,7 @@
   "EXPORT_API": "API exportieren",
   "EXPORT_PYTHON": "Python exportieren",
   "FAILED": "Misslungen",
+  "FAILED_PROJECTS": "Fehlgeschlagene Projekte",
   "FALSE": "},false);",
   "FARADAY_ROTATION": "Faraday-Rotation",
   "FEEDBACK": "Feedback",

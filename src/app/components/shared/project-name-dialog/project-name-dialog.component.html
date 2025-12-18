@@ -137,6 +137,19 @@
           {{ 'RENAME_PARTIAL_SUCCESS' | translate: { success: successCount, failed: failedCount } }}
         </p>
       }
+
+      @if (failedProjectNames.length > 0) {
+        <div class="failed-projects">
+          <p class="failed-projects-label">
+            {{ 'FAILED_PROJECTS' | translate }}:
+          </p>
+          <ul class="failed-projects-list" [class.scrollable]="failedProjectNames.length > 5">
+            @for (name of failedProjectNames; track name) {
+              <li>{{ name }}</li>
+            }
+          </ul>
+        </div>
+      }
     </div>
   </mat-dialog-content>
 

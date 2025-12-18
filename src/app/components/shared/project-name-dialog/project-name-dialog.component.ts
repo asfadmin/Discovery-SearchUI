@@ -83,6 +83,7 @@ export class ProjectNameDialogComponent implements AfterViewInit {
   public progress = 0;
   public successCount = 0;
   public failedCount = 0;
+  public failedProjectNames: string[] = [];
 
   private subscriptions: Subscription[] = [];
 
@@ -195,9 +196,10 @@ export class ProjectNameDialogComponent implements AfterViewInit {
     // Subscribe to final result
     this.subscriptions.push(
       result$.subscribe({
-        next: ({ success, failed }) => {
+        next: ({ success, failed, failedProjectNames }) => {
           this.successCount = success;
           this.failedCount = failed;
+          this.failedProjectNames = failedProjectNames;
           this.phase = 'complete';
           this.dialogRef.disableClose = false;
         },
