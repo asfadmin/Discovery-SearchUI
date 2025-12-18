@@ -103,6 +103,27 @@
   }
 }
 
+// Confirmation checkbox
+.confirmation-checkbox {
+  display: block;
+  margin-top: 32px;
+
+  ::ng-deep {
+    .mdc-form-field {
+      align-items: flex-start;
+    }
+
+    .mdc-checkbox {
+      margin-top: -9px;
+
+      .mdc-checkbox__ripple,
+      .mat-mdc-checkbox-ripple {
+        display: none;
+      }
+    }
+  }
+}
+
 // Progress bar styles
 .progress-container {
   text-align: center;

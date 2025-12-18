@@ -124,6 +124,8 @@
   "CANADAS_OPEN_LICENSE": "Canada's Open Government License",
   "CANCEL": "Cancel",
   "CANNOT_RENAME_PROJECTS_FOR": "You cannot rename projects for",
+  "CONFIRM_RENAME_MULTIPLE": "Yes! I really want to rename these {{projectCount}} projects and {{jobCount}} jobs.",
+  "CONFIRM_RENAME_SINGLE": "Yes! I really want to rename this 1 project and {{jobCount}} jobs.",
   "CENTER_COLUMN_AND_FILES_COLUMN_RIGHT_WILL_POPULATE": "(center column) and Files column (right) will populate.",
   "CHARACTERS": "characters",
   "CHART": "Chart",

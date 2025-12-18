@@ -11,6 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TranslateModule } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 
@@ -49,6 +50,7 @@ export interface ProjectNameDialogResult {
     MatInputModule,
     MatButtonModule,
     MatProgressBarModule,
+    MatCheckboxModule,
     TranslateModule,
   ],
 })
@@ -59,12 +61,14 @@ export class ProjectNameDialogComponent {
 
   public projectName: string;
   public jobCount = null;
+  public projectCount = 0;
   public projectNameCounts: Map<string, number> | null = null;
   public sortedEntries: Array<{ key: string; value: number }> = [];
   public sortColumn: SortColumn = 'name';
   public sortDirection: SortDirection = 'asc';
   public isDisabledByUserFilter = false;
   public filterUserId: string;
+  public confirmationChecked = false;
 
   // Two-phase UI state
   public phase: DialogPhase = 'input';
@@ -96,6 +100,7 @@ export class ProjectNameDialogComponent {
         }
       });
       this.projectNameCounts = counts.size > 0 ? counts : null;
+      this.projectCount = counts.size;
       this.updateSortedEntries();
     }
 

@@ -11,13 +11,6 @@
       <p class="dialog-subtitle cannot-rename-warning">
         {{ 'CANNOT_RENAME_PROJECTS_FOR' | translate }}: {{ filterUserId }}
       </p>
-    } @else if (jobCount) {
-      <p
-        class="dialog-subtitle"
-        [class.job-count-warning]="jobCount >= 300"
-      >
-        {{ 'WILL_RENAME_JOBS' | translate: { count: jobCount } }}
-      </p>
     }
   </div>
 
@@ -78,6 +71,16 @@
             </table>
           </div>
         </div>
+
+        @if (!isDisabledByUserFilter) {
+          <mat-checkbox
+            class="confirmation-checkbox"
+            [(ngModel)]="confirmationChecked"
+            name="confirmationChecked"
+          >
+            {{ (projectCount === 1 ? 'CONFIRM_RENAME_SINGLE' : 'CONFIRM_RENAME_MULTIPLE') | translate: { projectCount: projectCount, jobCount: jobCount } }}
+          </mat-checkbox>
+        }
       }
     </mat-dialog-content>
 
@@ -85,7 +88,7 @@
       <button mat-button type="button" (click)="onCancel()">
         {{ 'CANCEL' | translate }}
       </button>
-      <button mat-flat-button color="primary" type="submit" [disabled]="!isValid || isDisabledByUserFilter">
+      <button mat-flat-button color="primary" type="submit" [disabled]="!isValid || isDisabledByUserFilter || (projectNameCounts && !confirmationChecked)">
         {{ 'SAVE' | translate }}
       </button>
     </mat-dialog-actions>

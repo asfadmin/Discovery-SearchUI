@@ -685,6 +685,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
       if (result !== undefined && typeof result !== 'string') {
         // Dialog now handles the rename operation and shows progress
         // We just need to update the filter and refresh search
+        this.store$.dispatch(new searchStore.ClearSearch());
         this.store$.dispatch(new filtersStore.SetProjectName(result.newName));
         this.store$.dispatch(new searchStore.MakeSearch());
       }
