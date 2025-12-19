@@ -129,8 +129,8 @@ export class ProjectNameDialogComponent
   public isValid = computed(() => this.projectName().trim().length > 0);
 
   public formattedTimeRemaining = computed(() => {
-    // Only show estimated time for large operations (1000+ jobs)
-    if (this.jobCount < 1000 || this.estimatedSecondsRemaining() === null) {
+    // Only show estimated time for operations of 5+ jobs
+    if (this.jobCount < 5 || this.estimatedSecondsRemaining() === null) {
       return null;
     }
 
