@@ -9,6 +9,7 @@ import {
   signal,
   computed,
   ViewEncapsulation,
+  HostListener,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -254,6 +255,15 @@ export class ProjectNameDialogComponent
       failed: this.failedCount,
     };
     this.dialogRef.close(result);
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  onBeforeUnload(event: BeforeUnloadEvent): void {
+    if (this.phase === 'processing') {
+      event.preventDefault();
+      // Modern browsers ignore custom messages, but returnValue is still required
+      event.returnValue = '';
+    }
   }
 
   ngOnDestroy(): void {
