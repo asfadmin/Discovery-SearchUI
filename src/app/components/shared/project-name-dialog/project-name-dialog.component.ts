@@ -177,9 +177,6 @@ export class ProjectNameDialogComponent implements AfterViewInit, OnDestroy {
     }
 
     const minutes = Math.ceil(seconds / 60);
-    if (minutes === 1) {
-      return `~1 min`;
-    }
 
     return `~${minutes} min`;
   }

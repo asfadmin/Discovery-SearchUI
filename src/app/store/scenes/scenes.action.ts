@@ -9,7 +9,6 @@ import {
   SarviewsEvent,
   SarviewsProduct,
   CMRProductsById,
-  // Hyp3Job,
 } from '@models';
 import { PinnedProduct } from '@services/browse-map.service';
 
