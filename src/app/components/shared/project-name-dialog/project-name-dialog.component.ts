@@ -105,10 +105,8 @@ export class ProjectNameDialogComponent implements AfterViewInit, OnDestroy {
     if (products) {
       const counts = new Map<string, number>();
       products.forEach((product) => {
-        const name = product.metadata?.job?.name;
-        if (name) {
-          counts.set(name, (counts.get(name) || 0) + 1);
-        }
+        const name = product.metadata?.job?.name || '(unnamed)';
+        counts.set(name, (counts.get(name) || 0) + 1);
       });
       this.projectNameCounts = counts.size > 0 ? counts : null;
       this.projectCount = counts.size;
