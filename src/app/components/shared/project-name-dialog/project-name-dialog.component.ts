@@ -22,14 +22,30 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import {
+  MatTableDataSource,
+  MatTable,
+  MatColumnDef,
+  MatHeaderCellDef,
+  MatHeaderCell,
+  MatCellDef,
+  MatCell,
+  MatHeaderRowDef,
+  MatHeaderRow,
+  MatRowDef,
+  MatRow,
+} from '@angular/material/table';
+import { MatSort, MatSortHeader } from '@angular/material/sort';
 import { TranslateModule } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
 
 import * as models from '@models';
 import { Hyp3ApiService } from '@services';
 
-type SortColumn = 'name' | 'count';
-type SortDirection = 'asc' | 'desc';
+export interface ProjectEntry {
+  name: string;
+  count: number;
+}
 
 export type DialogPhase = 'input' | 'processing' | 'complete' | 'error';
 
@@ -61,11 +77,24 @@ export interface ProjectNameDialogResult {
     MatButtonModule,
     MatProgressBarModule,
     MatCheckboxModule,
+    MatTable,
+    MatSort,
+    MatSortHeader,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatHeaderCell,
+    MatCellDef,
+    MatCell,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRowDef,
+    MatRow,
     TranslateModule,
   ],
 })
 export class ProjectNameDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('projectNameInput') projectNameInput: ElementRef<HTMLInputElement>;
+  @ViewChild(MatSort) sort: MatSort;
 
   dialogRef = inject<MatDialogRef<ProjectNameDialogComponent>>(MatDialogRef);
   data = inject<ProjectNameDialogData>(MAT_DIALOG_DATA);
@@ -75,13 +104,13 @@ export class ProjectNameDialogComponent implements OnInit, AfterViewInit, OnDest
   public projectName = signal<string>('');
   public jobCount: number | null = null;
   public projectCount = 0;
-  public projectNameCounts: Map<string, number> | null = null;
-  public sortedEntries: { key: string; value: number }[] = [];
-  public sortColumn: SortColumn = 'name';
-  public sortDirection: SortDirection = 'asc';
   public isDisabledByUserFilter = false;
   public filterUserId: string;
   public confirmationChecked = false;
+
+  // Material table with sorting
+  public dataSource = new MatTableDataSource<ProjectEntry>([]);
+  public displayedColumns: string[] = ['name', 'count'];
 
   // Two-phase UI state
   public phase: DialogPhase = 'input';
@@ -130,9 +159,13 @@ export class ProjectNameDialogComponent implements OnInit, AfterViewInit, OnDest
         const name = product.metadata?.job?.name || '(unnamed)';
         counts.set(name, (counts.get(name) || 0) + 1);
       });
-      this.projectNameCounts = counts.size > 0 ? counts : null;
+
+      // Convert to array for Material table
+      const entries: ProjectEntry[] = Array.from(counts.entries()).map(
+        ([name, count]) => ({ name, count }),
+      );
+      this.dataSource.data = entries;
       this.projectCount = counts.size;
-      this.updateSortedEntries();
     }
 
     // Prevent closing during processing
@@ -140,41 +173,17 @@ export class ProjectNameDialogComponent implements OnInit, AfterViewInit, OnDest
   }
 
   ngAfterViewInit(): void {
+    // Connect MatSort to dataSource for automatic sorting
+    if (this.sort) {
+      this.dataSource.sort = this.sort;
+    }
+
     // Auto-focus the input field after the view is initialized
     setTimeout(() => {
       if (this.projectNameInput && !this.isDisabledByUserFilter) {
         this.projectNameInput.nativeElement.focus();
       }
     });
-  }
-
-  public sortBy(column: SortColumn): void {
-    if (this.sortColumn === column) {
-      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
-    } else {
-      this.sortColumn = column;
-      this.sortDirection = 'asc';
-    }
-    this.updateSortedEntries();
-  }
-
-  private updateSortedEntries(): void {
-    if (!this.projectNameCounts) {
-      this.sortedEntries = [];
-      return;
-    }
-
-    this.sortedEntries = Array.from(this.projectNameCounts.entries())
-      .map(([key, value]) => ({ key, value }))
-      .sort((a, b) => {
-        let comparison: number;
-        if (this.sortColumn === 'name') {
-          comparison = a.key.localeCompare(b.key);
-        } else {
-          comparison = a.value - b.value;
-        }
-        return this.sortDirection === 'asc' ? comparison : -comparison;
-      });
   }
 
   public onCancel(): void {

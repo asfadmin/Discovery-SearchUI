@@ -36,48 +36,46 @@
         }
       </mat-form-field>
 
-      @if (projectNameCounts && projectNameCounts.size > 0) {
+      @if (dataSource.data.length > 0) {
         <p class="projects-label bold">
           {{ 'PROJECTS_SELECTED' | translate }}
         </p>
         <div
           class="projects-table-wrapper"
-          [class.scrollable]="projectNameCounts.size > 5"
+          [class.scrollable]="dataSource.data.length > 5"
         >
-          <table class="projects-table">
-            <thead>
-              <tr>
-                <th class="sortable" (click)="sortBy('name')">
-                  {{ 'PROJECT_NAME' | translate }}
-                  @if (sortColumn === 'name') {
-                    <span class="sort-indicator">{{
-                      sortDirection === 'asc' ? '▲' : '▼'
-                    }}</span>
-                  }
-                </th>
-                <th class="job-count-header sortable" (click)="sortBy('count')">
-                  {{ 'JOBS' | translate }}
-                  @if (sortColumn === 'count') {
-                    <span class="sort-indicator">{{
-                      sortDirection === 'asc' ? '▲' : '▼'
-                    }}</span>
-                  }
-                </th>
-              </tr>
-            </thead>
+          <table
+            mat-table
+            [dataSource]="dataSource"
+            matSort
+            class="projects-table"
+          >
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                {{ 'PROJECT_NAME' | translate }}
+              </th>
+              <td mat-cell *matCellDef="let entry">{{ entry.name }}</td>
+            </ng-container>
+
+            <!-- Count Column -->
+            <ng-container matColumnDef="count">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                class="job-count-header"
+              >
+                {{ 'JOBS' | translate }}
+              </th>
+              <td mat-cell *matCellDef="let entry" class="job-count-cell">
+                {{ entry.count }}
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
           </table>
-          <div class="projects-table-body-container">
-            <table class="projects-table">
-              <tbody>
-                @for (entry of sortedEntries; track entry.key) {
-                  <tr>
-                    <td>{{ entry.key }}</td>
-                    <td class="job-count-cell">{{ entry.value }}</td>
-                  </tr>
-                }
-              </tbody>
-            </table>
-          </div>
         </div>
 
         @if (!isDisabledByUserFilter && isValid()) {
@@ -114,7 +112,7 @@
         [disabled]="
           !isValid() ||
           isDisabledByUserFilter ||
-          (projectNameCounts && !confirmationChecked)
+          (dataSource.data.length > 0 && !confirmationChecked)
         "
       >
         {{ 'SAVE' | translate }}
