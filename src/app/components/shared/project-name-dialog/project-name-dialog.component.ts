@@ -99,7 +99,8 @@ export class ProjectNameDialogComponent
   @ViewChild('projectNameInput') projectNameInput: ElementRef<HTMLInputElement>;
   @ViewChild(MatSort) sort: MatSort;
 
-  private dialogRef = inject<MatDialogRef<ProjectNameDialogComponent>>(MatDialogRef);
+  private dialogRef =
+    inject<MatDialogRef<ProjectNameDialogComponent>>(MatDialogRef);
   private data = inject<ProjectNameDialogData>(MAT_DIALOG_DATA);
   private hyp3Api = inject(Hyp3ApiService);
   private translateService = inject(TranslateService);
@@ -158,7 +159,9 @@ export class ProjectNameDialogComponent
     this.jobCount = products?.length;
 
     if (products) {
-      const unnamedLabel = this.translateService.instant('PROJECT_NAME_UNNAMED');
+      const unnamedLabel = this.translateService.instant(
+        'PROJECT_NAME_UNNAMED',
+      );
       const counts = new Map<string, number>();
       products.forEach((product) => {
         const name = product.metadata?.job?.name || unnamedLabel;
