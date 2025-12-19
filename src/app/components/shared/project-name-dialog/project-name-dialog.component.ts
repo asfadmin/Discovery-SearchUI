@@ -36,7 +36,7 @@ import {
   MatRow,
 } from '@angular/material/table';
 import { MatSort, MatSortHeader } from '@angular/material/sort';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
 
 import * as models from '@models';
@@ -101,6 +101,7 @@ export class ProjectNameDialogComponent
   private dialogRef = inject<MatDialogRef<ProjectNameDialogComponent>>(MatDialogRef);
   private data = inject<ProjectNameDialogData>(MAT_DIALOG_DATA);
   private hyp3Api = inject(Hyp3ApiService);
+  private translateService = inject(TranslateService);
 
   // Use signals for reactive state
   public projectName = signal<string>('');
@@ -156,9 +157,10 @@ export class ProjectNameDialogComponent
     this.jobCount = products?.length;
 
     if (products) {
+      const unnamedLabel = this.translateService.instant('PROJECT_NAME_UNNAMED');
       const counts = new Map<string, number>();
       products.forEach((product) => {
-        const name = product.metadata?.job?.name || '(unnamed)';
+        const name = product.metadata?.job?.name || unnamedLabel;
         counts.set(name, (counts.get(name) || 0) + 1);
       });
 
