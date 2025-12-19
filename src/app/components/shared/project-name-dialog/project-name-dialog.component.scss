@@ -60,6 +60,14 @@ app-project-name-dialog {
   .projects-table {
     width: 100%;
 
+    // Sticky header so it stays visible while scrolling
+    th.mat-mdc-header-cell {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background-color: white;
+    }
+
     .job-count-header,
     .job-count-cell {
       text-align: right;
