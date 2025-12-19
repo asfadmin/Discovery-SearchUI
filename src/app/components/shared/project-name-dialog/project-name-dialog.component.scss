@@ -65,7 +65,13 @@ app-project-name-dialog {
       position: sticky;
       top: 0;
       z-index: 1;
+      // Default light theme background
       background-color: white;
+
+      // Dark theme background
+      .theme-dark & {
+        background-color: #424242;
+      }
     }
 
     .job-count-header,
