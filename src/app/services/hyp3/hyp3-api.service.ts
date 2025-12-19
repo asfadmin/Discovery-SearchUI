@@ -25,6 +25,22 @@ import { NotificationService } from '../notification.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 
+export interface RenameProgressInfo {
+  percent: number;
+  estimatedSecondsRemaining: number | null;
+}
+
+export interface RenameResult {
+  success: number;
+  failed: number;
+  failedProjectNames: string[];
+}
+
+export interface RenameWithProgressResult {
+  progress$: Observable<RenameProgressInfo>;
+  result$: Observable<RenameResult>;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -225,14 +241,6 @@ export class Hyp3ApiService {
   }
 
   /**
-   * Progress info emitted during rename operations.
-   */
-  public static readonly RenameProgressInfo = class {
-    percent: number;
-    estimatedSecondsRemaining: number | null;
-  };
-
-  /**
    * Updates job names with progress reporting.
    * Returns an object with:
    * - progress$: Observable that emits progress info (percent and estimated time) as batches complete
@@ -241,30 +249,18 @@ export class Hyp3ApiService {
   public updateJobsNameWithProgress$(
     products: models.CMRProduct[],
     newProjectName: string,
-  ): {
-    progress$: Observable<{
-      percent: number;
-      estimatedSecondsRemaining: number | null;
-    }>;
-    result$: Observable<{
-      success: number;
-      failed: number;
-      failedProjectNames: string[];
-    }>;
-  } {
+  ): RenameWithProgressResult {
     const url = `${this.apiUrl}/jobs`;
     const totalJobs = products.length;
     const batchSize = 100;
+    const concurrentBatches = 3;
     const totalBatches = Math.ceil(totalJobs / batchSize);
 
     if (!newProjectName) {
       newProjectName = null;
     }
 
-    const progressSubject = new Subject<{
-      percent: number;
-      estimatedSecondsRemaining: number | null;
-    }>();
+    const progressSubject = new Subject<RenameProgressInfo>();
     let completedBatches = 0;
     let successCount = 0;
     let failedCount = 0;
@@ -321,7 +317,7 @@ export class Hyp3ApiService {
               progressSubject.next({ percent, estimatedSecondsRemaining });
             }),
           );
-      }, 3),
+      }, concurrentBatches),
       toArray(),
       map(() => ({
         success: successCount,
