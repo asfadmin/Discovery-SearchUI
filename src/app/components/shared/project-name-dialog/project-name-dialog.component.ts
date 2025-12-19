@@ -98,8 +98,8 @@ export class ProjectNameDialogComponent
   @ViewChild('projectNameInput') projectNameInput: ElementRef<HTMLInputElement>;
   @ViewChild(MatSort) sort: MatSort;
 
-  dialogRef = inject<MatDialogRef<ProjectNameDialogComponent>>(MatDialogRef);
-  data = inject<ProjectNameDialogData>(MAT_DIALOG_DATA);
+  private dialogRef = inject<MatDialogRef<ProjectNameDialogComponent>>(MatDialogRef);
+  private data = inject<ProjectNameDialogData>(MAT_DIALOG_DATA);
   private hyp3Api = inject(Hyp3ApiService);
 
   // Use signals for reactive state
@@ -112,7 +112,7 @@ export class ProjectNameDialogComponent
 
   // Material table with sorting
   public dataSource = new MatTableDataSource<ProjectEntry>([]);
-  public displayedColumns: string[] = ['name', 'count'];
+  public readonly displayedColumns: string[] = ['name', 'count'];
 
   // Two-phase UI state
   public phase: DialogPhase = 'input';
