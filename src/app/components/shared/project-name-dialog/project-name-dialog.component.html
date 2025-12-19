@@ -15,26 +15,39 @@
   </div>
 
   <form (ngSubmit)="onSave()">
+
+    <section class="selection-type-toggle">
+      <mat-button-toggle-group
+        [(value)]="projectEditType"
+        name="projectEditType"
+        aria-label="projectEditType">
+        <mat-button-toggle value="edit">Edit</mat-button-toggle>
+        <mat-button-toggle value="remove">Remove</mat-button-toggle>
+      </mat-button-toggle-group>
+    </section>
+
     <mat-dialog-content>
-      <mat-form-field class="project-name-field">
-        <mat-label>{{ 'PROJECT_NAME' | translate }}</mat-label>
-        <input
-          #projectNameInput
-          matInput
-          [ngModel]="projectName()"
-          (ngModelChange)="projectName.set($event)"
-          name="projectName"
-          maxlength="100"
-          required
-          [disabled]="isDisabledByUserFilter"
-        />
-        <mat-hint align="end">{{ projectName()?.length || 0 }}/100</mat-hint>
-        @if (!projectName()?.trim()) {
-          <mat-error>{{ 'PROJECT_NAME_REQUIRED' | translate }}</mat-error>
-        } @else if (projectName()?.length >= 100) {
-          <mat-error>{{ 'PROJECT_NAME_MAX_LENGTH' | translate }}</mat-error>
-        }
-      </mat-form-field>
+      @if (isEditMode()) {
+        <mat-form-field class="project-name-field">
+          <mat-label>{{ 'PROJECT_NAME' | translate }}</mat-label>
+          <input
+            #projectNameInput
+            matInput
+            [ngModel]="projectName()"
+            (ngModelChange)="projectName.set($event)"
+            name="projectName"
+            maxlength="100"
+            required
+            [disabled]="isDisabledByUserFilter"
+          />
+          <mat-hint align="end">{{ projectName()?.length || 0 }}/100</mat-hint>
+          @if (!projectName()?.trim()) {
+            <mat-error>{{ 'PROJECT_NAME_REQUIRED' | translate }}</mat-error>
+          } @else if (projectName()?.length >= 100) {
+            <mat-error>{{ 'PROJECT_NAME_MAX_LENGTH' | translate }}</mat-error>
+          }
+        </mat-form-field>
+      }
 
       @if (dataSource.data.length > 0) {
         <p class="projects-label bold">
@@ -86,6 +99,7 @@
             [(ngModel)]="confirmationChecked"
             name="confirmationChecked"
           >
+          @if (isEditMode()) {
             {{
               (projectCount === 1
                 ? 'CONFIRM_RENAME_SINGLE'
@@ -98,6 +112,19 @@
                       newName: projectName()?.trim(),
                     }
             }}
+          } @else {
+            {{
+              (projectCount === 1
+                ? 'CONFIRM_REMOVE_SINGLE'
+                : 'CONFIRM_REMOVE_MULTIPLE'
+              )
+                | translate
+                  : {
+                      projectCount: projectCount,
+                      jobCount: jobCount,
+                    }
+            }}
+          }
           </mat-checkbox>
         }
       }

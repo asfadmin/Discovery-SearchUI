@@ -1,6 +1,7 @@
 // Scoped to this dialog to prevent global style pollution
 // since ViewEncapsulation.None is used
 app-project-name-dialog {
+
   .mat-mdc-dialog-title {
     padding-top: 24px !important;
 
@@ -24,6 +25,10 @@ app-project-name-dialog {
       opacity: 1;
       font-weight: 500;
     }
+  }
+
+  .selection-type-toggle {
+    margin: 8px 16px;
   }
 
   .project-name-field {

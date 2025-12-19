@@ -126,6 +126,8 @@
   "CANNOT_RENAME_PROJECTS_FOR": "No puede cambiar el nombre de los proyectos de",
   "CONFIRM_RENAME_MULTIPLE": "¡Sí! Realmente quiero renombrar estos {{projectCount}} proyectos ({{jobCount}} trabajos) a \"{{newName}}\".",
   "CONFIRM_RENAME_SINGLE": "¡Sí! Realmente quiero renombrar este 1 proyecto ({{jobCount}} trabajos) a \"{{newName}}\".",
+  "CONFIRM_REMOVE_MULTIPLE": "TODO",
+  "CONFIRM_REMOVE_SINGLE": "TODO",
   "CENTER_COLUMN_AND_FILES_COLUMN_RIGHT_WILL_POPULATE": "(columna central) y la columna Archivos (derecha) se completarán.",
   "CHARACTERS": "caracteres",
   "CHART": "Gráfico",
