@@ -17,7 +17,6 @@ import {
   EnvironmentService,
   Hyp3JobStatusService,
   OnDemandService,
-  ProjectNameDialogService,
 } from '@services';
 import * as models from '@models';
 import { SubSink } from 'subsink';
@@ -44,6 +43,11 @@ import {
 import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
 import { MatIconButton } from '@angular/material/button';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatDialog } from '@angular/material/dialog';
+import {
+  ProjectNameDialogComponent,
+  ProjectNameDialogData,
+} from '@components/shared/project-name-dialog';
 import { DownloadFileButtonComponent } from '@components/shared/download-file-button/download-file-button.component';
 import { CartToggleComponent } from '@components/shared/cart-toggle/cart-toggle.component';
 import { Hyp3JobStatusBadgeComponent } from '@components/shared/hyp3-job-status-badge/hyp3-job-status-badge.component';
@@ -88,7 +92,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
   env = inject(EnvironmentService);
   private onDemand = inject(OnDemandService);
-  private projectNameDialog = inject(ProjectNameDialogService);
+  private dialog = inject(MatDialog);
 
   @Input() product: models.CMRProduct;
   @Input() isQueued: boolean;
@@ -213,8 +217,19 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   }
 
   public onEditProjectName(oldProjectName: string): void {
-    this.projectNameDialog.open(oldProjectName).subscribe((result) => {
-      if (result !== undefined && typeof result === 'string') {
+    const dialogRef = this.dialog.open<
+      ProjectNameDialogComponent,
+      ProjectNameDialogData,
+      string
+    >(ProjectNameDialogComponent, {
+      width: '400px',
+      data: {
+        currentName: oldProjectName,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result !== undefined) {
         this.renameJobProjectName.emit(result);
       }
     });

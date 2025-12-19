@@ -32,7 +32,6 @@ import {
   SarviewsEventsService,
   NotificationService,
   ExportService,
-  ProjectNameDialogService,
 } from '@services';
 
 import * as models from '@models';
@@ -45,6 +44,11 @@ import {
   CodeExportComponent,
   CodeExportType,
 } from '@components/shared/code-export';
+import {
+  ProjectNameDialogComponent,
+  ProjectNameDialogData,
+  ProjectNameDialogResult,
+} from '@components/shared/project-name-dialog';
 import { MatDialog } from '@angular/material/dialog';
 import {
   NgClass,
@@ -105,7 +109,6 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   private possibleHyp3JobsService = inject(PossibleHyp3JobsService);
   private exportService = inject(ExportService);
   private dialog = inject(MatDialog);
-  private projectNameDialog = inject(ProjectNameDialogService);
 
   public copyIcon = faCopy;
   public pairs$ = this.pairService.pairs$;
@@ -681,15 +684,36 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   }
 
   public onBulkProjectNameUpdate(): void {
-    this.projectNameDialog.open('', this.products).subscribe((result) => {
-      if (result !== undefined && typeof result !== 'string') {
-        // Dialog now handles the rename operation and shows progress
-        // We just need to update the filter and refresh search
-        this.store$.dispatch(new searchStore.ClearSearch());
-        this.store$.dispatch(new filtersStore.SetProjectName(result.newName));
-        this.store$.dispatch(new searchStore.MakeSearch());
-      }
-    });
+    combineLatest([
+      this.store$.select(hyp3Store.getHyp3User),
+      this.store$.select(hyp3Store.getOnDemandUserId),
+    ])
+      .pipe(take(1))
+      .subscribe(([hyp3User, filterUserId]) => {
+        const dialogRef = this.dialog.open<
+          ProjectNameDialogComponent,
+          ProjectNameDialogData,
+          ProjectNameDialogResult
+        >(ProjectNameDialogComponent, {
+          width: '400px',
+          data: {
+            currentName: '',
+            products: this.products,
+            loggedInUserId: hyp3User?.user_id,
+            filterUserId: filterUserId || undefined,
+          },
+        });
+
+        dialogRef.afterClosed().subscribe((result) => {
+          if (result !== undefined) {
+            // Dialog handles the rename operation and shows progress
+            // We just need to update the filter and refresh search
+            this.store$.dispatch(new searchStore.ClearSearch());
+            this.store$.dispatch(new filtersStore.SetProjectName(result.newName));
+            this.store$.dispatch(new searchStore.MakeSearch());
+          }
+        });
+      });
   }
 
   ngOnDestroy(): void {

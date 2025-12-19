@@ -21,16 +21,17 @@
         <input
           #projectNameInput
           matInput
-          [(ngModel)]="projectName"
+          [ngModel]="projectName()"
+          (ngModelChange)="projectName.set($event)"
           name="projectName"
           maxlength="100"
           required
           [disabled]="isDisabledByUserFilter"
         />
-        <mat-hint align="end">{{ projectName?.length || 0 }}/100</mat-hint>
-        @if (!projectName?.trim()) {
+        <mat-hint align="end">{{ projectName()?.length || 0 }}/100</mat-hint>
+        @if (!projectName()?.trim()) {
           <mat-error>{{ 'PROJECT_NAME_REQUIRED' | translate }}</mat-error>
-        } @else if (projectName?.length >= 100) {
+        } @else if (projectName()?.length >= 100) {
           <mat-error>{{ 'PROJECT_NAME_MAX_LENGTH' | translate }}</mat-error>
         }
       </mat-form-field>
@@ -79,7 +80,7 @@
           </div>
         </div>
 
-        @if (!isDisabledByUserFilter && isValid) {
+        @if (!isDisabledByUserFilter && isValid()) {
           <mat-checkbox
             class="confirmation-checkbox"
             [(ngModel)]="confirmationChecked"
@@ -94,7 +95,7 @@
                   : {
                       projectCount: projectCount,
                       jobCount: jobCount,
-                      newName: projectName?.trim(),
+                      newName: projectName()?.trim(),
                     }
             }}
           </mat-checkbox>
@@ -111,7 +112,7 @@
         color="primary"
         type="submit"
         [disabled]="
-          !isValid ||
+          !isValid() ||
           isDisabledByUserFilter ||
           (projectNameCounts && !confirmationChecked)
         "
@@ -135,10 +136,10 @@
         [value]="progress"
       ></mat-progress-bar>
       <p class="progress-text">{{ progress }}%</p>
-      @if (formattedTimeRemaining) {
+      @if (formattedTimeRemaining()) {
         <p class="estimated-time">
           {{ 'ESTIMATED_TIME_REMAINING' | translate }}:
-          {{ formattedTimeRemaining }}
+          {{ formattedTimeRemaining() }}
         </p>
       }
     </div>

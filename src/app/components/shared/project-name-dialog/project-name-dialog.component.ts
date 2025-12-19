@@ -5,6 +5,8 @@ import {
   ViewChild,
   ElementRef,
   OnDestroy,
+  signal,
+  computed,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -68,8 +70,9 @@ export class ProjectNameDialogComponent implements AfterViewInit, OnDestroy {
   data = inject<ProjectNameDialogData>(MAT_DIALOG_DATA);
   private hyp3Api = inject(Hyp3ApiService);
 
-  public projectName: string;
-  public jobCount = null;
+  // Use signals for reactive state
+  public projectName = signal<string>('');
+  public jobCount: number | null = null;
   public projectCount = 0;
   public projectNameCounts: Map<string, number> | null = null;
   public sortedEntries: { key: string; value: number }[] = [];
@@ -82,15 +85,33 @@ export class ProjectNameDialogComponent implements AfterViewInit, OnDestroy {
   // Two-phase UI state
   public phase: DialogPhase = 'input';
   public progress = 0;
-  public estimatedSecondsRemaining: number | null = null;
+  public estimatedSecondsRemaining = signal<number | null>(null);
   public successCount = 0;
   public failedCount = 0;
   public failedProjectNames: string[] = [];
 
+  // Computed values (only recalculate when dependencies change)
+  public isValid = computed(() => this.projectName().trim().length > 0);
+
+  public formattedTimeRemaining = computed(() => {
+    // Only show estimated time for large operations (1000+ jobs)
+    if (this.jobCount < 1000 || this.estimatedSecondsRemaining() === null) {
+      return null;
+    }
+
+    const seconds = this.estimatedSecondsRemaining();
+    if (seconds < 60) {
+      return `< 1 min`;
+    }
+
+    const minutes = Math.ceil(seconds / 60);
+    return `~${minutes} min`;
+  });
+
   private subscriptions: Subscription[] = [];
 
   constructor() {
-    this.projectName = this.data.currentName;
+    this.projectName.set(this.data.currentName);
 
     // Disable input if filtering by a different user's jobs
     const { loggedInUserId, filterUserId } = this.data;
@@ -155,40 +176,16 @@ export class ProjectNameDialogComponent implements AfterViewInit, OnDestroy {
       });
   }
 
-  public get isValid(): boolean {
-    return this.projectName?.trim().length > 0;
-  }
-
-  /**
-   * Returns the estimated time remaining formatted as a human-readable string.
-   * Only shows for large operations (1000+ jobs).
-   */
-  public get formattedTimeRemaining(): string | null {
-    // Only show estimated time for large operations
-    if (this.jobCount < 1000 || this.estimatedSecondsRemaining === null) {
-      return null;
-    }
-
-    const seconds = this.estimatedSecondsRemaining;
-    if (seconds < 60) {
-      return `< 1 min`;
-    }
-
-    const minutes = Math.ceil(seconds / 60);
-
-    return `~${minutes} min`;
-  }
-
   public onCancel(): void {
     this.dialogRef.close();
   }
 
   public onSave(): void {
-    if (!this.isValid) {
+    if (!this.isValid()) {
       return;
     }
 
-    const trimmedName = this.projectName.trim();
+    const trimmedName = this.projectName().trim();
 
     // If no products, just return the name (single-file rename flow)
     if (!this.data.products || this.data.products.length === 0) {
@@ -210,7 +207,7 @@ export class ProjectNameDialogComponent implements AfterViewInit, OnDestroy {
     this.subscriptions.push(
       progress$.subscribe(({ percent, estimatedSecondsRemaining }) => {
         this.progress = percent;
-        this.estimatedSecondsRemaining = estimatedSecondsRemaining;
+        this.estimatedSecondsRemaining.set(estimatedSecondsRemaining);
       }),
     );
 
@@ -234,7 +231,7 @@ export class ProjectNameDialogComponent implements AfterViewInit, OnDestroy {
 
   public onDone(): void {
     const result: ProjectNameDialogResult = {
-      newName: this.projectName.trim(),
+      newName: this.projectName().trim(),
       success: this.successCount,
       failed: this.failedCount,
     };

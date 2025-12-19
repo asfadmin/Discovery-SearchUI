@@ -43,4 +43,3 @@ export { ExportService } from './export.service';
 export { NetcdfService } from './netcdf-service.service';
 export { PointHistoryService } from './point-history.service';
 export { FrameMapService } from './frame-map.service';
-export { ProjectNameDialogService } from './project-name-dialog.service';
