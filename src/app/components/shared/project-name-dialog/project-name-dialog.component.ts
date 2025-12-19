@@ -5,6 +5,7 @@ import {
   ViewChild,
   ElementRef,
   OnDestroy,
+  OnInit,
   signal,
   computed,
 } from '@angular/core';
@@ -22,7 +23,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TranslateModule } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
+import { SubSink } from 'subsink';
 
 import * as models from '@models';
 import { Hyp3ApiService } from '@services';
@@ -63,7 +64,7 @@ export interface ProjectNameDialogResult {
     TranslateModule,
   ],
 })
-export class ProjectNameDialogComponent implements AfterViewInit, OnDestroy {
+export class ProjectNameDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('projectNameInput') projectNameInput: ElementRef<HTMLInputElement>;
 
   dialogRef = inject<MatDialogRef<ProjectNameDialogComponent>>(MatDialogRef);
@@ -108,9 +109,9 @@ export class ProjectNameDialogComponent implements AfterViewInit, OnDestroy {
     return `~${minutes} min`;
   });
 
-  private subscriptions: Subscription[] = [];
+  private subs = new SubSink();
 
-  constructor() {
+  ngOnInit(): void {
     this.projectName.set(this.data.currentName);
 
     // Disable input if filtering by a different user's jobs
@@ -204,7 +205,7 @@ export class ProjectNameDialogComponent implements AfterViewInit, OnDestroy {
     );
 
     // Subscribe to progress updates
-    this.subscriptions.push(
+    this.subs.add(
       progress$.subscribe(({ percent, estimatedSecondsRemaining }) => {
         this.progress = percent;
         this.estimatedSecondsRemaining.set(estimatedSecondsRemaining);
@@ -212,7 +213,7 @@ export class ProjectNameDialogComponent implements AfterViewInit, OnDestroy {
     );
 
     // Subscribe to final result
-    this.subscriptions.push(
+    this.subs.add(
       result$.subscribe({
         next: ({ success, failed, failedProjectNames }) => {
           this.successCount = success;
@@ -239,6 +240,6 @@ export class ProjectNameDialogComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.subs.unsubscribe();
   }
 }
