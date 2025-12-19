@@ -678,6 +678,7 @@
   "PROJECT": "Proyecto",
   "PROJECT_NAME": "Nombre del Proyecto",
   "PROJECT_NAME_MAX_LENGTH": "El nombre del proyecto no puede exceder 100 caracteres",
+  "PROJECT_NAME_REQUIRED": "El nombre del proyecto es obligatorio",
   "PROJECT_NAME_UPDATE_ALL_TOOLTIP": "Actualizar nombre del proyecto para todos los trabajos cargados",
   "PROJECT_NAME_UPDATE_FOR_JOBS": "Actualizar nombre del proyecto para {{count}} trabajos",
   "PROJECTS_SELECTED": "Proyectos Seleccionados",

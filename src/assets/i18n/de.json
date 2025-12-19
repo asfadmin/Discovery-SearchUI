@@ -565,6 +565,8 @@
   "PROFILE": "Profil",
   "PROJECT": "Projekt",
   "PROJECT_NAME": "Projektname",
+  "PROJECT_NAME_MAX_LENGTH": "Projektname darf 100 Zeichen nicht überschreiten",
+  "PROJECT_NAME_REQUIRED": "Projektname ist erforderlich",
   "PROJECT_NAME_UPDATE_ALL_TOOLTIP": "Projektname für alle geladenen Aufträge aktualisieren",
   "PROJECT_NAME_UPDATE_FOR_JOBS": "Projektname für {{count}} Aufträge aktualisieren",
   "PROJECTS_SELECTED": "Ausgewählte Projekte",

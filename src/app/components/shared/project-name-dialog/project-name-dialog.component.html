@@ -24,10 +24,13 @@
           [(ngModel)]="projectName"
           name="projectName"
           maxlength="100"
+          required
           [disabled]="isDisabledByUserFilter"
         />
         <mat-hint align="end">{{ projectName?.length || 0 }}/100</mat-hint>
-        @if (projectName?.length >= 100) {
+        @if (!projectName?.trim()) {
+          <mat-error>{{ 'PROJECT_NAME_REQUIRED' | translate }}</mat-error>
+        } @else if (projectName?.length >= 100) {
           <mat-error>{{ 'PROJECT_NAME_MAX_LENGTH' | translate }}</mat-error>
         }
       </mat-form-field>
@@ -76,7 +79,7 @@
           </div>
         </div>
 
-        @if (!isDisabledByUserFilter) {
+        @if (!isDisabledByUserFilter && isValid) {
           <mat-checkbox
             class="confirmation-checkbox"
             [(ngModel)]="confirmationChecked"
