@@ -46,60 +46,16 @@
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 4px;
   margin-bottom: 8px;
+  overflow: hidden;
 
   &.scrollable {
-    .projects-table-body-container {
-      max-height: 185px;
-      overflow-y: scroll;
-    }
-
-    > .projects-table .job-count-header {
-      padding-right: 29px; // 12px base + 17px scrollbar width
-    }
+    max-height: 220px;
+    overflow-y: auto;
   }
-}
-
-.projects-table-body-container {
-  border-top: 1px solid rgba(0, 0, 0, 0.12);
 }
 
 .projects-table {
   width: 100%;
-  border-collapse: collapse;
-
-  th,
-  td {
-    padding: 8px 12px;
-    font-size: 14px;
-    text-align: left;
-  }
-
-  th {
-    font-weight: 500;
-    opacity: 0.7;
-
-    &.sortable {
-      cursor: pointer;
-      user-select: none;
-
-      &:hover {
-        opacity: 1;
-      }
-    }
-  }
-
-  td {
-    border-top: 1px solid rgba(0, 0, 0, 0.12);
-  }
-
-  tr:first-child td {
-    border-top: none;
-  }
-
-  .sort-indicator {
-    font-size: 10px;
-    margin-left: 4px;
-  }
 
   .job-count-header,
   .job-count-cell {

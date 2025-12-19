@@ -182,7 +182,7 @@
             class="failed-projects-list"
             [class.scrollable]="failedProjectNames.length > 5"
           >
-            @for (name of failedProjectNames; track name) {
+            @for (name of failedProjectNames; track $index) {
               <li>{{ name }}</li>
             }
           </ul>
