@@ -202,7 +202,6 @@ export class Hyp3ApiService {
       .pipe(map((resp) => resp as models.Hyp3Job));
   }
 
-
   /**
    * Updates job names with progress reporting.
    * Returns an object with:

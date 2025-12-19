@@ -92,7 +92,9 @@ export interface ProjectNameDialogResult {
     TranslateModule,
   ],
 })
-export class ProjectNameDialogComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ProjectNameDialogComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
   @ViewChild('projectNameInput') projectNameInput: ElementRef<HTMLInputElement>;
   @ViewChild(MatSort) sort: MatSort;
 
