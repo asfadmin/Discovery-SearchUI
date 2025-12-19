@@ -186,43 +186,6 @@ export class Hyp3ApiService {
       .pipe(map((resp) => resp as models.Hyp3Job));
   }
 
-  public updateJobsName$(
-    products: models.CMRProduct[],
-    newProjectName: string,
-  ): Observable<{ success: number; failed: number }> {
-    const url = `${this.apiUrl}/jobs`;
-    const jobIds = products.map((product) => product.metadata.job.job_id);
-
-    if (!newProjectName) {
-      newProjectName = null;
-    }
-
-    return from(jobIds).pipe(
-      bufferCount(100),
-      mergeMap((jobIdsBatch) => {
-        return this.http
-          .patch<models.Hyp3Job>(
-            url,
-            { name: newProjectName, job_ids: jobIdsBatch },
-            { withCredentials: true },
-          )
-          .pipe(
-            map(() => ({ success: jobIdsBatch.length, failed: 0 })),
-            catchError(() => of({ success: 0, failed: jobIdsBatch.length })),
-          );
-      }, 3),
-      toArray(),
-      map((results) =>
-        results.reduce(
-          (acc, curr) => ({
-            success: acc.success + curr.success,
-            failed: acc.failed + curr.failed,
-          }),
-          { success: 0, failed: 0 },
-        ),
-      ),
-    );
-  }
 
   /**
    * Progress info emitted during rename operations.
