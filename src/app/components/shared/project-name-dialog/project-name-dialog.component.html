@@ -1,0 +1,222 @@
+<!-- Input Phase -->
+@if (phase === 'input') {
+  <div mat-dialog-title>
+    <h2 class="dialog-title">
+      {{
+        (jobCount > 1 ? 'EDIT_ALL_PROJECT_NAMES' : 'EDIT_PROJECT_NAME')
+          | translate
+      }}
+    </h2>
+    @if (isDisabledByUserFilter) {
+      <p class="dialog-subtitle cannot-rename-warning">
+        {{ 'CANNOT_RENAME_PROJECTS_FOR' | translate }}: {{ filterUserId }}
+      </p>
+    }
+  </div>
+
+  <form (ngSubmit)="onSave()">
+    <mat-dialog-content>
+      <mat-form-field class="project-name-field">
+        <mat-label>{{ 'PROJECT_NAME' | translate }}</mat-label>
+        <input
+          #projectNameInput
+          matInput
+          [ngModel]="projectName()"
+          (ngModelChange)="projectName.set($event)"
+          name="projectName"
+          maxlength="100"
+          required
+          [disabled]="isDisabledByUserFilter"
+        />
+        <mat-hint align="end">{{ projectName()?.length || 0 }}/100</mat-hint>
+        @if (!projectName()?.trim()) {
+          <mat-error>{{ 'PROJECT_NAME_REQUIRED' | translate }}</mat-error>
+        } @else if (projectName()?.length >= 100) {
+          <mat-error>{{ 'PROJECT_NAME_MAX_LENGTH' | translate }}</mat-error>
+        }
+      </mat-form-field>
+
+      @if (dataSource.data.length > 0) {
+        <p class="projects-label bold">
+          {{ 'PROJECTS_SELECTED' | translate }}
+        </p>
+        <div
+          class="projects-table-wrapper"
+          [class.scrollable]="dataSource.data.length > 5"
+        >
+          <table
+            mat-table
+            [dataSource]="dataSource"
+            matSort
+            matSortActive="name"
+            matSortDirection="asc"
+            class="projects-table"
+          >
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                {{ 'PROJECT_NAME' | translate }}
+              </th>
+              <td mat-cell *matCellDef="let entry">{{ entry.name }}</td>
+            </ng-container>
+
+            <!-- Count Column -->
+            <ng-container matColumnDef="count">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                class="job-count-header"
+              >
+                {{ 'JOBS' | translate }}
+              </th>
+              <td mat-cell *matCellDef="let entry" class="job-count-cell">
+                {{ entry.count }}
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </div>
+
+        @if (!isDisabledByUserFilter && isValid()) {
+          <mat-checkbox
+            class="confirmation-checkbox"
+            [(ngModel)]="confirmationChecked"
+            name="confirmationChecked"
+          >
+            {{
+              (projectCount === 1
+                ? 'CONFIRM_RENAME_SINGLE'
+                : 'CONFIRM_RENAME_MULTIPLE'
+              )
+                | translate
+                  : {
+                      projectCount: projectCount,
+                      jobCount: jobCount,
+                      newName: projectName()?.trim(),
+                    }
+            }}
+          </mat-checkbox>
+        }
+      }
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+      <button mat-button type="button" (click)="onCancel()">
+        {{ 'CANCEL' | translate }}
+      </button>
+      <button
+        mat-flat-button
+        color="primary"
+        type="submit"
+        [disabled]="
+          !isValid() ||
+          isDisabledByUserFilter ||
+          (dataSource.data.length > 0 && !confirmationChecked)
+        "
+      >
+        {{ 'SAVE' | translate }}
+      </button>
+    </mat-dialog-actions>
+  </form>
+}
+
+<!-- Processing Phase -->
+@if (phase === 'processing') {
+  <div mat-dialog-title>
+    <h2 class="dialog-title">{{ 'RENAMING_JOBS' | translate }}</h2>
+  </div>
+
+  <mat-dialog-content>
+    <div class="progress-container">
+      <mat-progress-bar
+        mode="determinate"
+        [value]="progress"
+      ></mat-progress-bar>
+      <p class="progress-text">{{ progress }}%</p>
+      @if (formattedTimeRemaining()) {
+        <p class="estimated-time">
+          {{ 'ESTIMATED_TIME_REMAINING' | translate }}:
+          {{ formattedTimeRemaining() }}
+        </p>
+      }
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <!-- No actions during processing -->
+  </mat-dialog-actions>
+}
+
+<!-- Complete Phase -->
+@if (phase === 'complete') {
+  <div mat-dialog-title>
+    <h2 class="dialog-title">{{ 'RENAME_COMPLETE' | translate }}</h2>
+  </div>
+
+  <mat-dialog-content>
+    <div class="result-container">
+      @if (failedCount === 0) {
+        <p class="result-success">
+          {{ 'RENAME_SUCCESS' | translate: { count: successCount } }}
+        </p>
+      } @else if (successCount === 0) {
+        <p class="result-error">
+          {{ 'RENAME_ALL_FAILED' | translate: { count: failedCount } }}
+        </p>
+      } @else {
+        <p class="result-warning">
+          {{
+            'RENAME_PARTIAL_SUCCESS'
+              | translate: { success: successCount, failed: failedCount }
+          }}
+        </p>
+      }
+
+      @if (failedProjectNames.length > 0) {
+        <div class="failed-projects">
+          <p class="failed-projects-label">
+            {{ 'FAILED_PROJECTS' | translate }}:
+          </p>
+          <ul
+            class="failed-projects-list"
+            [class.scrollable]="failedProjectNames.length > 5"
+          >
+            @for (name of failedProjectNames; track $index) {
+              <li>{{ name }}</li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-flat-button color="primary" (click)="onDone()">
+      {{ 'DONE' | translate }}
+    </button>
+  </mat-dialog-actions>
+}
+
+<!-- Error Phase -->
+@if (phase === 'error') {
+  <div mat-dialog-title>
+    <h2 class="dialog-title">{{ 'ERROR' | translate }}</h2>
+  </div>
+
+  <mat-dialog-content>
+    <div class="result-container">
+      <p class="result-error">
+        {{ 'RENAME_ERROR' | translate }}
+      </p>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-flat-button color="primary" (click)="onCancel()">
+      {{ 'CLOSE' | translate }}
+    </button>
+  </mat-dialog-actions>
+}

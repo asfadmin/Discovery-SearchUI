@@ -1,0 +1,188 @@
+// Scoped to this dialog to prevent global style pollution
+// since ViewEncapsulation.None is used
+app-project-name-dialog {
+  .mat-mdc-dialog-title {
+    padding-top: 24px !important;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  .dialog-title {
+    margin: 0;
+  }
+
+  .dialog-subtitle {
+    margin: 4px 0 0 0;
+    opacity: 0.7;
+    font-size: 14px;
+
+    &.job-count-warning,
+    &.cannot-rename-warning {
+      color: #f44336;
+      opacity: 1;
+      font-weight: 500;
+    }
+  }
+
+  .project-name-field {
+    width: 100%;
+
+    .mat-mdc-text-field-wrapper {
+      padding-top: 0;
+    }
+  }
+
+  .projects-label {
+    margin: 16px 0 8px 0;
+    opacity: 0.7;
+    font-size: 14px;
+
+    &.bold {
+      font-weight: 500;
+      opacity: 1;
+    }
+  }
+
+  .projects-table-wrapper {
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 4px;
+    margin-bottom: 8px;
+    overflow: hidden;
+
+    &.scrollable {
+      max-height: 220px;
+      overflow-y: auto;
+    }
+  }
+
+  .projects-table {
+    width: 100%;
+
+    // Sticky header so it stays visible while scrolling
+    th.mat-mdc-header-cell {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      // Default light theme background
+      background-color: white;
+
+      // Dark theme background
+      .theme-dark & {
+        background-color: #424242;
+      }
+    }
+
+    .job-count-header,
+    .job-count-cell {
+      text-align: right;
+      width: 80px;
+    }
+  }
+
+  // Confirmation checkbox
+  .confirmation-checkbox {
+    display: block;
+    margin-top: 32px;
+
+    .mdc-form-field {
+      align-items: flex-start;
+    }
+
+    .mdc-checkbox {
+      margin-top: -9px;
+
+      .mdc-checkbox__ripple,
+      .mat-mdc-checkbox-ripple {
+        display: none;
+      }
+    }
+  }
+
+  // Progress bar styles
+  .progress-container {
+    text-align: center;
+    padding: 24px 0;
+
+    mat-progress-bar {
+      margin-bottom: 16px;
+    }
+
+    .progress-text {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .estimated-time {
+      margin: 8px 0 0 0;
+      font-size: 13px;
+      opacity: 0.7;
+    }
+  }
+
+  // Result styles
+  .result-container {
+    text-align: center;
+    padding: 16px 0;
+
+    p {
+      margin: 0;
+      font-size: 14px;
+    }
+
+    .result-success {
+      color: #4caf50;
+    }
+
+    .result-warning {
+      color: #ff9800;
+    }
+
+    .result-error {
+      color: #f44336;
+    }
+  }
+
+  // Failed projects list
+  .failed-projects {
+    margin-top: 16px;
+    text-align: left;
+
+    .failed-projects-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #f44336;
+      margin-bottom: 8px;
+    }
+
+    .failed-projects-list {
+      margin: 0;
+      padding-left: 20px;
+      font-size: 13px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: 4px;
+      padding: 8px 8px 8px 28px;
+
+      &.scrollable {
+        max-height: 120px;
+        overflow-y: auto;
+      }
+
+      li {
+        padding: 2px 0;
+      }
+    }
+  }
+}
+
+// Remove underline from sort header - must be outside app-project-name-dialog
+// scope because dialog content renders in CDK overlay.
+// The underline appears on keyboard/program focused states.
+.projects-table {
+  [mat-sort-header].cdk-keyboard-focused .mat-sort-header-container,
+  [mat-sort-header].cdk-program-focused .mat-sort-header-container {
+    border-bottom: none;
+  }
+}

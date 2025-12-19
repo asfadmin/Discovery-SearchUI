@@ -151,6 +151,12 @@
         <div matListItemLine>
           <b>{{ 'PROJECT_NAME' | translate }}:</b>
           {{ product.metadata.job.name }}
+          <button
+            mat-icon-button
+            (click)="onEditProjectName(product.metadata.job.name)"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
         </div>
       }
 
