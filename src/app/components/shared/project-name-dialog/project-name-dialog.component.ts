@@ -8,6 +8,7 @@ import {
   OnInit,
   signal,
   computed,
+  ViewEncapsulation,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -35,7 +36,7 @@ import {
   MatRowDef,
   MatRow,
 } from '@angular/material/table';
-import { MatSort, MatSortHeader } from '@angular/material/sort';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
 
@@ -67,6 +68,7 @@ export interface ProjectNameDialogResult {
   templateUrl: './project-name-dialog.component.html',
   styleUrls: ['./project-name-dialog.component.scss'],
   standalone: true,
+  encapsulation: ViewEncapsulation.None,
   imports: [
     FormsModule,
     MatDialogTitle,
@@ -78,8 +80,7 @@ export interface ProjectNameDialogResult {
     MatProgressBarModule,
     MatCheckboxModule,
     MatTable,
-    MatSort,
-    MatSortHeader,
+    MatSortModule,
     MatColumnDef,
     MatHeaderCellDef,
     MatHeaderCell,
