@@ -26,11 +26,33 @@ app-project-name-dialog {
     }
   }
 
+  // Radio group layout for edit/remove toggle
+  .project-edit-radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
   .project-name-field {
-    width: 100%;
+    margin-left: 32px;
+    width: calc(100% - 32px);
 
     .mat-mdc-text-field-wrapper {
       padding-top: 0;
+    }
+
+    // Subtle disabled state when "Remove" is selected
+    &.disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  }
+
+  // Radio button label sizing
+  .mat-mdc-radio-button {
+    .mdc-label {
+      font-size: 14px;
     }
   }
 
