@@ -112,7 +112,7 @@ export class AuthService {
 
   public logout$(): Observable<models.UserAuth> {
     return this.http
-      .get(`${this.authUrl}/loginservice/logout`, {
+      .get(`${this.authUrl}/logout`, {
         responseType: 'text',
         withCredentials: true,
       })
