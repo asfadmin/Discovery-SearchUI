@@ -37,7 +37,7 @@ import {
   MatRowDef,
   MatRow,
 } from '@angular/material/table';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
@@ -93,7 +93,7 @@ export interface ProjectNameDialogResult {
     MatRowDef,
     MatRow,
     TranslateModule,
-    MatButtonToggleModule,
+    MatRadioModule,
   ],
 })
 export class ProjectNameDialogComponent
