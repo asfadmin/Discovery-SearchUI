@@ -126,8 +126,6 @@
   "CANNOT_RENAME_PROJECTS_FOR": "You cannot rename projects for",
   "CONFIRM_RENAME_MULTIPLE": "Yes! I really want to rename these {{projectCount}} projects ({{jobCount}} jobs) to \"{{newName}}\".",
   "CONFIRM_RENAME_SINGLE": "Yes! I really want to rename this 1 project ({{jobCount}} jobs) to \"{{newName}}\".",
-  "CONFIRM_REMOVE_MULTIPLE": "Yes! I really want to remove the names from these {{projectCount}} projects ({{jobCount}} jobs).",
-  "CONFIRM_REMOVE_SINGLE": "Yes! I really want to remove the project name from this project ({{jobCount}} jobs).",
   "CENTER_COLUMN_AND_FILES_COLUMN_RIGHT_WILL_POPULATE": "(center column) and Files column (right) will populate.",
   "CHARACTERS": "characters",
   "CHART": "Chart",
