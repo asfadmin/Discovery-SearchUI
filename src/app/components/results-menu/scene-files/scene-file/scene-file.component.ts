@@ -255,8 +255,9 @@ export class SceneFileComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  public prodDownloaded(_product) {
-    // Do nothing
+  // Event handler required by template but no action needed
+  public prodDownloaded(_product: models.CMRProduct): void {
+    // Intentionally empty - event binding required but no action needed
   }
 
   public onSearchProduct() {
