@@ -164,7 +164,7 @@ export class ProjectNameDialogComponent
     }
 
     const products = this.data?.products;
-    this.jobCount = products?.length;
+    this.jobCount = products?.length ?? 1;
 
     if (products) {
       const unnamedLabel = this.translateService.instant(
