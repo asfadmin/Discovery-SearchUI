@@ -1,23 +1,19 @@
 import { Injectable, inject } from '@angular/core';
-import {
-  HttpClient,
-  //  HttpHeaders
-} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 import { interval, Subject, Observable, of } from 'rxjs';
 import {
   map,
   takeUntil,
   take,
-  filter,
   catchError,
-  mergeMap,
+  filter,
+  switchMap,
 } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 
 import { EnvironmentService } from './environment.service';
-// import jwt_decode from 'jwt-decode';
 import * as userStore from '@store/user';
 
 import * as models from '@models';
@@ -84,21 +80,23 @@ export class AuthService {
     const loginWindowClosed = new Subject<void>();
     return interval(500).pipe(
       takeUntil(loginWindowClosed),
-      map((_) => {
+      switchMap((_) => {
         if (loginWindow.closed) {
           loginWindowClosed.next();
+          return this.getUser();
         }
-
         try {
           if (loginWindow.location.host === window.location.host) {
             loginWindow.close();
             this.bc.postMessage({
               event: 'login',
             });
+            return this.getUser();
           }
         } catch (_e) {
           // Do nothing
         }
+        return of(null);
       }),
       catchError((_) => {
         this.notificationService.error('Trouble logging in', 'Error', {
@@ -106,9 +104,6 @@ export class AuthService {
         });
         loginWindowClosed.next();
         return of(null);
-      }),
-      mergeMap(() => {
-        return this.getUser();
       }),
       filter((user) => !!user),
       take(1),
