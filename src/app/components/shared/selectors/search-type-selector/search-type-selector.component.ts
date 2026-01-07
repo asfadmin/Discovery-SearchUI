@@ -21,7 +21,7 @@ import * as models from '@models';
 import { EnvironmentService, ScreenSizeService } from '@services';
 import { AnalyticsEvent, Breakpoints, derivedDatasets } from '@models';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
-import { NgClass, AsyncPipe, } from '@angular/common';
+import { NgClass, AsyncPipe } from '@angular/common';
 import { MatLabel, MatSuffix } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -240,8 +240,6 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
     this.trigger.closeMenu();
     event.stopPropagation();
   }
-
-  public onSearchTypeMenuOpen() {}
 
   ngOnDestroy() {
     this.subs.unsubscribe();

@@ -37,6 +37,7 @@ import {
   MatRowDef,
   MatRow,
 } from '@angular/material/table';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
@@ -92,6 +93,7 @@ export interface ProjectNameDialogResult {
     MatRowDef,
     MatRow,
     TranslateModule,
+    MatRadioModule,
   ],
 })
 export class ProjectNameDialogComponent
@@ -125,9 +127,14 @@ export class ProjectNameDialogComponent
   public successCount = 0;
   public failedCount = 0;
   public failedProjectNames: string[] = [];
+  public projectEditType = signal<'edit' | 'remove'>('edit');
 
   // Computed values (only recalculate when dependencies change)
-  public isValid = computed(() => this.projectName().trim().length > 0);
+  public isEditMode = computed(() => this.projectEditType() === 'edit');
+  public isRemoveMode = computed(() => this.projectEditType() === 'remove');
+  public isValid = computed(
+    () => this.projectName().trim().length > 0 || this.isRemoveMode(),
+  );
 
   public formattedTimeRemaining = computed(() => {
     // Only show estimated time for operations of 5+ jobs
@@ -157,7 +164,7 @@ export class ProjectNameDialogComponent
     }
 
     const products = this.data?.products;
-    this.jobCount = products?.length;
+    this.jobCount = products?.length ?? 1;
 
     if (products) {
       const unnamedLabel = this.translateService.instant(
@@ -204,7 +211,7 @@ export class ProjectNameDialogComponent
       return;
     }
 
-    const trimmedName = this.projectName().trim();
+    const trimmedName = this.isEditMode() ? this.projectName().trim() : null;
 
     // If no products, just return the name (single-file rename flow)
     if (!this.data.products || this.data.products.length === 0) {

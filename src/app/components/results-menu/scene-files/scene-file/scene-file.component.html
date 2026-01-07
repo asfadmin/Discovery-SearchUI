@@ -1,40 +1,4 @@
 <mat-list-item (mouseenter)="isHovered = true" (mouseleave)="isHovered = false">
-  @if (false) {
-    <ng-container matListItemIcon>
-      @if (!isUnzipLoading && !isOpen) {
-        <mat-icon
-          (click)="onLoadUnzippedProduct()"
-          [matTooltip]="unzipTooltip(isUserLoggedIn, hasAccessToRestrictedData)"
-          [class.clickable]="
-            !isUnzipDisabled(isUserLoggedIn, hasAccessToRestrictedData)
-          "
-          [class.fainter-text]="
-            isUnzipDisabled(isUserLoggedIn, hasAccessToRestrictedData)
-          "
-          [class.disabled-cursor]="
-            isUnzipDisabled(isUserLoggedIn, hasAccessToRestrictedData)
-          "
-        >
-          keyboard_arrow_right
-        </mat-icon>
-      }
-      @if (isOpen) {
-        <mat-icon
-          (click)="onCloseProduct()"
-          matTooltip="{{ 'CLOSE_CONTENTS' | translate }}"
-          class="clickable"
-        >
-          keyboard_arrow_down
-        </mat-icon>
-      }
-      @if (isUnzipLoading) {
-        <div>
-          <fa-icon icon="spinner" [pulse]="true"></fa-icon>
-        </div>
-      }
-    </ng-container>
-  }
-
   <ng-container matListItemIcon>
     <mat-icon mat-icon-button disabled></mat-icon>
   </ng-container>
@@ -88,7 +52,6 @@
           prompt="{{ 'COPY_FILE_ID' | translate }}"
         >
         </app-copy-to-clipboard>
-        <span></span>
         <app-copy-to-clipboard
           prompt="copy S3 URL"
           class="clipboard-icon"
@@ -147,18 +110,22 @@
 
   @if (product.metadata.job) {
     <ng-container>
-      @if (product.metadata.job.name) {
-        <div matListItemLine>
-          <b>{{ 'PROJECT_NAME' | translate }}:</b>
+      <div class="job-metadata-first" matListItemLine>
+        <b>{{ 'PROJECT_NAME' | translate }}:</b>
+        @if (product.metadata.job.name) {
           {{ product.metadata.job.name }}
-          <button
-            mat-icon-button
-            (click)="onEditProjectName(product.metadata.job.name)"
-          >
-            <mat-icon>edit</mat-icon>
-          </button>
-        </div>
-      }
+        } @else {
+          &nbsp;<span class="unnamed-project">{{
+            'PROJECT_NAME_UNNAMED' | translate
+          }}</span>
+        }
+        <button
+          mat-icon-button
+          (click)="onEditProjectName(product.metadata.job.name || '')"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
 
       <div matListItemLine>
         <b>{{ 'JOB_SUBMITTED' | translate }}:</b>
@@ -185,8 +152,8 @@
     </ng-container>
   }
 
-  @for (param of paramsList; track param) {
-    <div matListItemLine>
+  @for (param of paramsList; track param; let first = $first) {
+    <div [class.params-first]="first" matListItemLine>
       <b>{{ param.name }}:</b> {{ param.val }}
     </div>
   }
@@ -215,12 +182,13 @@
   }
 
   @if ((searchType$ | async) === searchTypes.CUSTOM_PRODUCTS) {
-    <ng-container style="margin-right: 10px" matListItemMeta>
+    <ng-container matListItemMeta>
       @if (isExpired(product.metadata.job)) {
         <button
           [matMenuTriggerFor]="expiredJobs"
           mat-icon-button
           matListItemMeta
+          style="margin-right: 10px"
         >
           <mat-icon
             class="hype-icon-button clickable"
