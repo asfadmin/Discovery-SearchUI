@@ -12,19 +12,58 @@ import * as filtersStore from '@store/filters';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import { debounceTime, map } from 'rxjs/operators';
-import { UntypedFormControl } from '@angular/forms';
+import {
+  UntypedFormControl,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { ScenesService, ScreenSizeService } from '@services';
 import { getScenes } from '@store/scenes';
 import { combineLatest } from 'rxjs';
 import { Breakpoints, menuAnimation } from '@models';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import {
+  MatAutocompleteSelectedEvent,
+  MatAutocompleteTrigger,
+  MatAutocomplete,
+} from '@angular/material/autocomplete';
+import {
+  MatFormField,
+  MatLabel,
+  MatInput,
+  MatSuffix,
+} from '@angular/material/input';
+import { AsyncPipe } from '@angular/common';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { MatOption } from '@angular/material/select';
+import { MatCard, MatCardHeader, MatCardContent } from '@angular/material/card';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-job-product-name-selector',
   templateUrl: './job-product-name-selector.component.html',
   styleUrls: ['./job-product-name-selector.component.scss'],
   animations: menuAnimation,
-  standalone: false,
+  imports: [
+    FormsModule,
+    MatFormField,
+    MatLabel,
+
+    MatInput,
+    MatAutocompleteTrigger,
+    ReactiveFormsModule,
+    MatTooltip,
+    MatIcon,
+    MatSuffix,
+    MatAutocomplete,
+
+    MatOption,
+    MatCard,
+    MatCardHeader,
+    MatCardContent,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class JobProductNameSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

@@ -5,20 +5,14 @@ import {
   SarviewsVolcanicEvent,
 } from '@models';
 
-@Pipe({
-  name: 'quakeEvent',
-  standalone: false,
-})
+@Pipe({ name: 'quakeEvent' })
 export class QuakePipe implements PipeTransform {
   transform(input: SarviewsEvent): SarviewsQuakeEvent {
     return input as SarviewsQuakeEvent;
   }
 }
 
-@Pipe({
-  name: 'volcanicEvent',
-  standalone: false,
-})
+@Pipe({ name: 'volcanicEvent' })
 export class VolcanoPipe implements PipeTransform {
   transform(input: SarviewsEvent): SarviewsVolcanicEvent {
     return input as SarviewsVolcanicEvent;

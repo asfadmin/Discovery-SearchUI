@@ -1,5 +1,20 @@
 import { Component, EventEmitter, Output, Input, inject } from '@angular/core';
 import { Hyp3ApiService } from '@services';
+import {
+  MatFormField,
+  MatLabel,
+  MatInput,
+  MatSuffix,
+} from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import {
+  MatAutocompleteTrigger,
+  MatAutocomplete,
+} from '@angular/material/autocomplete';
+import { MatOption } from '@angular/material/select';
+import { MatIconButton, MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-hyp3-url-selector',
@@ -8,7 +23,20 @@ import { Hyp3ApiService } from '@services';
     './hyp3-url-selector.component.scss',
     '../preferences.component.scss',
   ],
-  standalone: false,
+  imports: [
+    MatFormField,
+    MatLabel,
+    MatInput,
+    FormsModule,
+    MatAutocompleteTrigger,
+    MatAutocomplete,
+    MatOption,
+    MatIconButton,
+    MatSuffix,
+    MatIcon,
+    MatButton,
+    TranslateModule,
+  ],
 })
 export class Hyp3UrlSelectorComponent {
   private hyp3 = inject(Hyp3ApiService);

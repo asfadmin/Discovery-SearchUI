@@ -78,7 +78,7 @@ export interface CMRProductMetadata {
   additionalUrls?: string[] | null;
   s3URI?: string;
   s3Urls?: string[] | null;
-  fileSizes?: {} | null;
+  fileSizes?: Record<string, { bytes: number }> | null;
   parentID: string;
 
   // ARIA S1 GUNW

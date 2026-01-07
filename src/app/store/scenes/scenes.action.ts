@@ -29,6 +29,7 @@ export enum ScenesActionType {
   CLOSE_ZIP_CONTENTS = '[Scenes] Close Zip Contents',
 
   ADD_CMR_DATA_TO_ON_DEMAND_JOBS = '[Scenes] Add CMR Data to On Demand Jobs',
+  UPDATE_PRODUCT_WITH_NEW_PROJECT_NAME = '[Scenes] Update product with new project name',
 
   SET_SELECTED_SCENE = '[Scenes] Set Selected Scene',
   SET_SELECTED_PAIR = '[Scenes] Set Selected Pair',
@@ -190,6 +191,12 @@ export class AddCmrDataToOnDemandScenes implements Action {
   constructor(public payload: CMRProductsById) {}
 }
 
+export class UpdateProductWithNewProjectName implements Action {
+  public readonly type = ScenesActionType.UPDATE_PRODUCT_WITH_NEW_PROJECT_NAME;
+
+  constructor(public payload: { productId: string; name: string }) {}
+}
+
 export type ScenesActions =
   | SetScenes
   | ClearScenes
@@ -214,4 +221,5 @@ export type ScenesActions =
   | SetSarviewsEventProducts
   | SetSelectedSarviewProduct
   | AddCmrDataToOnDemandScenes
+  | UpdateProductWithNewProjectName
   | SetImageBrowseProducts;

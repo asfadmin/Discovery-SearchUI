@@ -7,6 +7,23 @@ import * as models from '@models';
 import * as scenesStore from '@store/scenes';
 
 import { SubSink } from 'subsink';
+import { AsyncPipe } from '@angular/common';
+import {
+  MatAccordion,
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle,
+} from '@angular/material/expansion';
+import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import { SarviewsEventActiveSelectorComponent } from '@components/shared/selectors/sarviews-event-active-selector/sarviews-event-active-selector.component';
+import { SarviewsEventSearchSelectorComponent } from '@components/shared/selectors/sarviews-event-search-selector/sarviews-event-search-selector.component';
+import { SarviewsEventTypeSelectorComponent } from '@components/shared/selectors/sarviews-event-type-selector/sarviews-event-type-selector.component';
+import { SarviewsEventMagnitudeSelectorComponent } from '@components/shared/selectors/sarviews-event-magnitude-selector/sarviews-event-magnitude-selector.component';
+import { DateSelectorComponent } from '@components/shared/selectors/date-selector/date-selector.component';
+import { PathSelectorComponent } from '@components/shared/selectors/path-selector/path-selector.component';
+import { Hyp3JobTypeSelectorComponent } from '@components/shared/selectors/hyp3-job-type-selector/hyp3-job-type-selector.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 enum FilterPanel {
   SEARCH = 'Search Options',
@@ -19,7 +36,23 @@ enum FilterPanel {
   selector: 'app-sarviews-filters',
   templateUrl: './sarviews-filters.component.html',
   styleUrls: ['./sarviews-filters.component.scss'],
-  standalone: false,
+  imports: [
+    MatAccordion,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    SearchTypeSelectorComponent,
+    DocsModalComponent,
+    SarviewsEventActiveSelectorComponent,
+    SarviewsEventSearchSelectorComponent,
+    SarviewsEventTypeSelectorComponent,
+    SarviewsEventMagnitudeSelectorComponent,
+    DateSelectorComponent,
+    PathSelectorComponent,
+    Hyp3JobTypeSelectorComponent,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class SarviewsFiltersComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
