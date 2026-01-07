@@ -37,9 +37,7 @@
                         dataset.id === 'SENTINEL-1' ||
                         dataset.id === 'SENTINEL-1 BURSTS'
                       ) {
-                        <span
-                          matTooltip="Available for On Demand Processing (HyP3)"
-                        >
+                        <span matTooltip="{{ 'HYP3_AVAILABLE' | translate }}">
                           <mat-icon class="hyp3-icon" svgIcon="hyp3"></mat-icon>
                         </span>
                       }
@@ -48,7 +46,7 @@
                       }
                       @if (dataset.id === 'NISAR') {
                         <span class="disclaimer">
-                          <em> (coming soon!) </em>
+                          <em> ({{ 'COMING_SOON' | translate }}) </em>
                         </span>
                       }
                       @if (dataset.subName) {
