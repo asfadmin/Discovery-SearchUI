@@ -244,11 +244,15 @@
 }
 
 .disclaimer-link {
+  display: inline-block;
   font-size: 12px;
   font-style: italic;
   color: grey;
   cursor: pointer;
   pointer-events: auto;
+  margin-left: 10px;
+  position: relative;
+  z-index: 10;
 
   &:hover {
     text-decoration: underline;

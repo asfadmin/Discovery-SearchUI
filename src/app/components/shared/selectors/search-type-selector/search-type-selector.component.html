@@ -25,9 +25,12 @@
           <hr class="text-underline" />
         </div>
         @if (searchType === searchTypes.DISPLACEMENT) {
-          <a class="disclaimer-link" (click)="onOpenDisclaimer()">
-            {{ 'DISCLAIMER' | translate }}
-          </a>
+          <span
+            class="disclaimer-link"
+            (click)="onOpenDisclaimer(); $event.stopPropagation()"
+          >
+            *Disclaimer
+          </span>
         }
       </div>
     </div>
