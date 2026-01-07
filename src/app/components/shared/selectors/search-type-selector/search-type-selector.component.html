@@ -24,6 +24,11 @@
         <div class="hr-wrapper">
           <hr class="text-underline" />
         </div>
+        @if (searchType === searchTypes.DISPLACEMENT) {
+          <a class="disclaimer-link" (click)="onOpenDisclaimer()">
+            {{ 'DISCLAIMER' | translate }}
+          </a>
+        }
       </div>
     </div>
     <div class="gtm-search-type-selector fx-nogrow">

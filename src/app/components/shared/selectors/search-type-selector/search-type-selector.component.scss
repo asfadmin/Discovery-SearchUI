@@ -242,3 +242,17 @@
     transform: translateY(0);
   }
 }
+
+.disclaimer-link {
+  @include themify($themes) {
+    color: themed("dark-secondary-text");
+  }
+
+  font-size: 14px;
+  font-style: italic;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
