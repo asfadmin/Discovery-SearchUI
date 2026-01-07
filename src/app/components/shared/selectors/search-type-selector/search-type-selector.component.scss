@@ -244,13 +244,11 @@
 }
 
 .disclaimer-link {
-  @include themify($themes) {
-    color: themed("dark-secondary-text");
-  }
-
-  font-size: 14px;
+  font-size: 12px;
   font-style: italic;
+  color: grey;
   cursor: pointer;
+  pointer-events: auto;
 
   &:hover {
     text-decoration: underline;
