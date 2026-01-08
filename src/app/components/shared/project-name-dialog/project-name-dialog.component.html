@@ -116,8 +116,8 @@
             @if (isEditMode()) {
               {{
                 (projectCount === 1
-                  ? 'CONFIRM_RENAME_SINGLE'
-                  : 'CONFIRM_RENAME_MULTIPLE'
+                  ? ('CONFIRM_RENAME_SINGLE' | translate)
+                  : ('CONFIRM_RENAME_MULTIPLE' | translate)
                 )
                   | translate
                     : {
@@ -129,8 +129,8 @@
             } @else {
               {{
                 (projectCount === 1
-                  ? 'CONFIRM_REMOVE_SINGLE'
-                  : 'CONFIRM_REMOVE_MULTIPLE'
+                  ? ('CONFIRM_REMOVE_SINGLE' | translate)
+                  : ('CONFIRM_REMOVE_MULTIPLE' | translate)
                 )
                   | translate
                     : {
