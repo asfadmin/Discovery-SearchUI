@@ -339,7 +339,8 @@
                 <div>
                   <button (click)="onBulkProjectNameUpdate()" mat-menu-item>
                     {{
-                      'PROJECT_NAME_UPDATE_FOR_JOBS'| translate: { count: products.length }
+                      'PROJECT_NAME_UPDATE_FOR_JOBS'
+                        | translate: { count: products.length }
                     }}
                   </button>
                 </div>
