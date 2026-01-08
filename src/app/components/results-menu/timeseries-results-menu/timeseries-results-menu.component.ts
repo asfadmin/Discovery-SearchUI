@@ -27,6 +27,7 @@ import * as chartStore from '@store/charts';
 import { getTimeseriesChartStates } from '@store/charts';
 
 import {
+  DisplacementDisclaimerService,
   DrawService,
   NetcdfService,
   PointHistoryService,
@@ -120,6 +121,7 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
   private netcdfService = inject(NetcdfService);
   private wktService = inject(WktService);
   private dialog = inject(MatDialog);
+  private disclaimerService = inject(DisplacementDisclaimerService);
   snackBar = inject(MatSnackBar);
   private document = inject<Document>(DOCUMENT);
   private language = inject(AsfLanguageService);
@@ -457,6 +459,10 @@ export class TimeseriesResultsMenuComponent implements OnInit, OnDestroy {
         this.deleteAllPoints();
       }
     });
+  }
+
+  public onOpenDisclaimer(): void {
+    this.disclaimerService.open();
   }
 
   public ngOnDestroy() {
