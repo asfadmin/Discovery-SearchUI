@@ -73,6 +73,24 @@
         }
         @if (searchType === searchTypes.DISPLACEMENT) {
           <app-search-button></app-search-button>
+          <button
+            class="spacing nav-icon-buttons"
+            color="basic"
+            mat-button
+            matTooltip="{{ 'STORYMAP' | translate }}"
+            (click)="onOpenStoryMap()"
+            style="padding: 0"
+          >
+            <img
+              src="assets/StoryMaps.png"
+              alt="StoryMap"
+              class="storymap-icon"
+            />
+            <div class="text-under faint-text" style="margin-top: -3px">
+              {{ 'STORYMAP' | translate }}
+              <mat-icon class="external-link-icon">open_in_new</mat-icon>
+            </div>
+          </button>
           <button class="spacing nav-icon-buttons" color="basic" mat-button>
             <app-docs-modal
               class="icon-description"
