@@ -9,6 +9,7 @@ import {
   catchError,
   filter,
   switchMap,
+  retry,
 } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -124,21 +125,26 @@ export class AuthService {
           return this.existingUserInfo;
         }),
         catchError((_) => {
-          this.notificationService.error('Trouble logging out', 'Error', {
-            timeOut: 5000,
-          });
+          // For now this always throws a CORS error, but it does still logout successfully
+          // this.notificationService.error('Trouble logging out', 'Error', {
+          //   timeOut: 5000,
+          // });
           return of(this.existingUserInfo);
         }),
         take(1),
       );
   }
 
-  public getUser(): Observable<models.UserAuth> {
+  public getUser(): Observable<models.UserAuth | null> {
     return this.http
       .get<models.UserAuth>(`${this.env.currentEnv.user_data}/info/cookie`, {
         withCredentials: true,
       })
       .pipe(
+        retry({
+          count: 3,
+          delay: 100,
+        }),
         map((user) => {
           return this.makeUser(
             user['urs-user-id'],
@@ -161,6 +167,11 @@ export class AuthService {
           );
           return final;
         }),
+        catchError((_error) => {
+          console.error('Failed to get user info');
+          return of(null);
+        }),
+        take(1),
       );
   }
 
