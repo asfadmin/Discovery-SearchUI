@@ -730,6 +730,7 @@
   "REMOVE_FILE_FROM_DOWNLOADS": "Remove file from downloads",
   "REMOVE_FILE_FROM_QUEUE": "Remove file from queue",
   "REMOVE_JOB": "Remove job",
+  "REMOVE_PROJECT_NAME": "Remove {{count}} project name",
   "REMOVE_PROJECT_NAMES": "Remove {{count}} project names",
   "REMOVE_RED_EYE": "remove_red_eye",
   "REMOVE_SCENE_FILES_FROM_DOWNLOADS": "Remove scene files from downloads",
