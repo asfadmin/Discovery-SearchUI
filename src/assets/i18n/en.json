@@ -154,7 +154,7 @@
   "COMPLETE_YOU_CAN_ALSO_SELECT_TO_ONLY_SUBMIT_CERTAIN_PROCESSING_TYPES_OR_ALL_PROCESSING_TYPES_BY_SELECTING": "complete. You can also select to only submit certain processing types or all processing types. By selecting",
   "CONFIRM_REMOVE_MULTIPLE": "Yes! I really want to remove the names from these {{projectCount}} projects ({{jobCount}} jobs).",
   "CONFIRM_REMOVE_SINGLE": "Yes! I really want to remove the project name from this project ({{jobCount}} jobs)",
-  "CONFIRM_RENAME_MULTIPLE": "Confirm rename multiple",
+  "CONFIRM_RENAME_MULTIPLE": "Yes! I really want to remove the project name from this project ({{jobCount}} jobs).",
   "CONFIRM_RENAME_SINGLE": "Yes! I really want to rename this 1 project ({{jobCount}} jobs) to \"{{newName}}\".",
   "CONST_REDIRECT_HTTPS_SEARCH_ASF_ALASKA_EDU_WINDOW_LOCATION_PATHNAME_WINDOW_LOCATION_HASH": "const redirect = `https://search.asf.alaska.edu${window.location.pathname}${window.location.hash}`;",
   "CONST_URL_WINDOW_LOCATION_HOSTNAME_TO_LOWER_CASE": "const url = window.location.hostname.toLowerCase();",
