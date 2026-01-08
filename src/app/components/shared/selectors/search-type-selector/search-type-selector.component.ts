@@ -18,7 +18,11 @@ import * as userStore from '@store/user';
 
 import * as models from '@models';
 
-import { EnvironmentService, ScreenSizeService } from '@services';
+import {
+  DisplacementDisclaimerService,
+  EnvironmentService,
+  ScreenSizeService,
+} from '@services';
 import { AnalyticsEvent, Breakpoints, derivedDatasets } from '@models';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { NgClass, AsyncPipe } from '@angular/common';
@@ -59,6 +63,7 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   translate = inject(TranslateService);
   private store$ = inject<Store<AppState>>(Store);
   private screenSize = inject(ScreenSizeService);
+  private disclaimerService = inject(DisplacementDisclaimerService);
   env = inject(EnvironmentService);
 
   @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
@@ -239,6 +244,10 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   public onCloseMenu(event: Event) {
     this.trigger.closeMenu();
     event.stopPropagation();
+  }
+
+  public onOpenDisclaimer(): void {
+    this.disclaimerService.open();
   }
 
   ngOnDestroy() {

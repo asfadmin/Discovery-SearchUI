@@ -4,7 +4,9 @@
       @if (selectedJobType.id === jobType.id) {
         @if (jobType.options.length === 0) {
           <div class="no-processing-options">
-            <h3>{{ 'NO_PROCESSING_OPTIONS_FOR' | translate }} {{ jobType.name }}</h3>
+            <h3>
+              {{ 'NO_PROCESSING_OPTIONS_FOR' | translate }} {{ jobType.name }}
+            </h3>
           </div>
         } @else {
           <div class="flex-row flex-start">
