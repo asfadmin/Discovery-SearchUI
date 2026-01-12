@@ -24,20 +24,21 @@
       (areResultsLoaded$ | async) && breakpoint === breakpoints.MOBILE
     "
   >
-    <div *ngIf="breakpoint > breakpoints.MOBILE" class="fx-col">
-      <div class="map-controls">
-        <app-map-controls></app-map-controls>
-      </div>
-
-      @if (
-        searchType === searchTypes.DISPLACEMENT &&
-        breakpoint > breakpoints.MOBILE
-      ) {
-        <div class="disp-layers">
-          <app-displacement-layers></app-displacement-layers>
+    @if (breakpoint > breakpoints.MOBILE) {
+      <div class="fx-col">
+        <div class="map-controls">
+          <app-map-controls></app-map-controls>
         </div>
-      }
-    </div>
+        @if (
+          searchType === searchTypes.DISPLACEMENT &&
+          breakpoint > breakpoints.MOBILE
+        ) {
+          <div class="disp-layers">
+            <app-displacement-layers></app-displacement-layers>
+          </div>
+        }
+      </div>
+    }
 
     <div class="fx-row banner-row">
       <div class="fx-col">
@@ -45,67 +46,69 @@
       </div>
     </div>
 
-    <div
-      *ngIf="breakpoint === breakpoints.MOBILE"
-      [class.after-load]="isResultsMenuOpen"
-      [class.before-load]="!isResultsMenuOpen"
-      class="mobile-map-controls"
-    >
-      <button
-        (click)="openMapControl()"
-        style="margin: 4px"
-        color="white"
-        mat-fab
-      >
-        <mat-icon>layers</mat-icon>
-      </button>
-    </div>
-
-    <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
+    @if (breakpoint === breakpoints.MOBILE) {
       <div
-        *ngIf="fullscreenControl !== fc.NONE"
-        (click)="closeMobileFullscreenControls()"
-        class="mobile-controls-background"
-      ></div>
-
-      <div
-        *ngIf="fullscreenControl === fc.MAP"
-        class="mobile-map-controls-full"
+        [class.after-load]="isResultsMenuOpen"
+        [class.before-load]="!isResultsMenuOpen"
+        class="mobile-map-controls"
       >
-        <div class="mobile-control-group">
-          <app-interaction-selector></app-interaction-selector>
-        </div>
-
-        <div class="mobile-control-group">
-          <app-view-selector
-            style="margin-right: 5px"
-            *ngIf="searchType !== searchTypes.SARVIEWS_EVENTS"
-          >
-          </app-view-selector>
-
-          <app-layer-selector *ngIf="(view$ | async) === viewTypes.EQUATORIAL">
-          </app-layer-selector>
-        </div>
+        <button
+          (click)="openMapControl()"
+          style="margin: 4px"
+          color="white"
+          mat-fab
+        >
+          <mat-icon>layers</mat-icon>
+        </button>
       </div>
-    </ng-container>
+    }
+
+    @if (breakpoint === breakpoints.MOBILE) {
+      @if (fullscreenControl !== fc.NONE) {
+        <div
+          (click)="closeMobileFullscreenControls()"
+          class="mobile-controls-background"
+        ></div>
+      }
+      @if (fullscreenControl === fc.MAP) {
+        <div class="mobile-map-controls-full">
+          <div class="mobile-control-group">
+            <app-interaction-selector></app-interaction-selector>
+          </div>
+          <div class="mobile-control-group">
+            @if (searchType !== searchTypes.SARVIEWS_EVENTS) {
+              <app-view-selector style="margin-right: 5px"> </app-view-selector>
+            }
+            @if ((view$ | async) === viewTypes.EQUATORIAL) {
+              <app-layer-selector> </app-layer-selector>
+            }
+          </div>
+        </div>
+      }
+    }
   </div>
 </div>
 
-<img
-  *ngIf="breakpoint > breakpoints.MOBILE"
-  src="/assets/NASA_logo.svg"
-  class="meatball"
-/>
+@if (breakpoint > breakpoints.MOBILE) {
+  <img src="/assets/NASA_logo.svg" class="meatball" />
+}
+
+@if (
+  breakpoint > breakpoints.MOBILE && searchType === searchTypes.DISPLACEMENT
+) {
+  <img src="/assets/opera-disp-logo.png" class="opera-logo" alt="OPERA Logo" />
+}
 
 <app-filters-dropdown></app-filters-dropdown>
 
-<app-file-upload
-  *ngIf="searchType === searchTypes.DATASET"
-  (dialogClose)="onFileUploadDialogClosed($event)"
-  (newSearchPolygon)="onNewSearchPolygon($event)"
-  [interaction$]="interactionMode$"
->
-</app-file-upload>
+@if (searchType === searchTypes.DATASET) {
+  <app-file-upload
+    (dialogClose)="onFileUploadDialogClosed($event)"
+    (newSearchPolygon)="onNewSearchPolygon($event)"
+    [interaction$]="interactionMode$"
+  >
+  </app-file-upload>
+}
 
 <app-attributions [breakpoint]="breakpoint"> </app-attributions>
 

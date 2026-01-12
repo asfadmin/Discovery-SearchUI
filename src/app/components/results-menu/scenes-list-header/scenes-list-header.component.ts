@@ -44,13 +44,56 @@ import {
   CodeExportComponent,
   CodeExportType,
 } from '@components/shared/code-export';
+import {
+  ProjectNameDialogComponent,
+  ProjectNameDialogData,
+  ProjectNameDialogResult,
+} from '@components/shared/project-name-dialog';
 import { MatDialog } from '@angular/material/dialog';
+import {
+  NgClass,
+  AsyncPipe,
+  TitleCasePipe,
+  KeyValuePipe,
+} from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+import {
+  MatButtonToggleGroup,
+  MatButtonToggle,
+} from '@angular/material/button-toggle';
+import {
+  MatMenuTrigger,
+  MatMenu,
+  MatMenuItem,
+  MatMenuContent,
+} from '@angular/material/menu';
+import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/on-demand-add-menu.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-scenes-list-header',
   templateUrl: './scenes-list-header.component.html',
   styleUrls: ['./scenes-list-header.component.scss'],
-  standalone: false,
+  imports: [
+    NgClass,
+    MatIcon,
+    MatTooltip,
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    MatMenuTrigger,
+    OnDemandAddMenuComponent,
+    MatMenu,
+    MatMenuItem,
+    MatMenuContent,
+
+    FontAwesomeModule,
+    AsyncPipe,
+    TitleCasePipe,
+    KeyValuePipe,
+    TranslateModule,
+  ],
 })
 export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
@@ -636,6 +679,41 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
           height: '500px',
           maxWidth: '550px',
           maxHeight: '500px',
+        });
+      });
+  }
+
+  public onBulkProjectNameUpdate(): void {
+    combineLatest([
+      this.store$.select(hyp3Store.getHyp3User),
+      this.store$.select(hyp3Store.getOnDemandUserId),
+    ])
+      .pipe(take(1))
+      .subscribe(([hyp3User, filterUserId]) => {
+        const dialogRef = this.dialog.open<
+          ProjectNameDialogComponent,
+          ProjectNameDialogData,
+          ProjectNameDialogResult
+        >(ProjectNameDialogComponent, {
+          width: '400px',
+          data: {
+            currentName: '',
+            products: this.products,
+            loggedInUserId: hyp3User?.user_id,
+            filterUserId: filterUserId || undefined,
+          },
+        });
+
+        dialogRef.afterClosed().subscribe((result) => {
+          if (result !== undefined) {
+            // Dialog handles the rename operation and shows progress
+            // We just need to update the filter and refresh search
+            this.store$.dispatch(new searchStore.ClearSearch());
+            this.store$.dispatch(
+              new filtersStore.SetProjectName(result.newName),
+            );
+            this.store$.dispatch(new searchStore.MakeSearch());
+          }
         });
       });
   }

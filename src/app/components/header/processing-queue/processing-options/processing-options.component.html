@@ -1,98 +1,107 @@
 <div class="processing-options" xmlns="http://www.w3.org/1999/html">
-  <ng-container *ngIf="selectedJobType">
-    <ng-container *ngFor="let jobType of JobTypesList">
-      <ng-container *ngIf="selectedJobType.id === jobType.id">
+  @if (selectedJobType) {
+    @for (jobType of JobTypesList; track jobType) {
+      @if (selectedJobType.id === jobType.id) {
         @if (jobType.options.length === 0) {
           <div class="no-processing-options">
-            <h3>No processing options for {{ jobType.name }}</h3>
+            <h3>
+              {{ 'NO_PROCESSING_OPTIONS_FOR' | translate }} {{ jobType.name }}
+            </h3>
           </div>
         } @else {
           <div class="flex-row flex-start">
-            <div
-              *ngIf="jobType.id !== 'AUTORIFT'"
-              class="flex-field option-header"
-            >
-              {{ 'PROCESSING_OPTIONS' | translate }}
-            </div>
+            @if (jobType.id !== 'AUTORIFT') {
+              <div class="flex-field option-header">
+                {{ 'PROCESSING_OPTIONS' | translate }}
+              </div>
+            }
           </div>
           <div>
             <div class="flex-row flex-start flex-wrap">
-              <div class="flex-field" *ngFor="let option of jobType.options">
-                <app-dropdown-option
-                  *ngIf="option.type === 'DROPDOWN'"
-                  (valueChange)="onSetOptionValue(option.apiName, $event)"
-                  [value]="optionValues[selectedJobType.id][option.apiName]"
-                  [options]="option.options"
-                  [optionName]="option.name | uppercase | translate"
-                  [optionInfo]="option.info | translate"
-                  [costsTable]="getCostTable(costs, jobType, option)"
-                  class="margin-right"
-                >
-                </app-dropdown-option>
-                <app-range-option
-                  *ngIf="option.type === 'RANGE'"
-                  (valueChange)="onSetOptionValue(option.apiName, $event)"
-                  [value]="optionValues[selectedJobType.id][option.apiName]"
-                  [optionName]="option.name | uppercase | translate"
-                  [optionInfo]="option.info | translate"
-                  [range]="option.range"
-                  [default]="option.default"
-                  class="margin-right"
-                >
-                </app-range-option>
-              </div>
+              @for (option of jobType.options; track option) {
+                <div class="flex-field">
+                  @if (option.type === 'DROPDOWN') {
+                    <app-dropdown-option
+                      (valueChange)="onSetOptionValue(option.apiName, $event)"
+                      [value]="optionValues[selectedJobType.id][option.apiName]"
+                      [options]="option.options"
+                      [optionName]="option.name | uppercase | translate"
+                      [optionInfo]="option.info | translate"
+                      [costsTable]="getCostTable(costs, jobType, option)"
+                      class="margin-right"
+                    >
+                    </app-dropdown-option>
+                  }
+                  @if (option.type === 'RANGE') {
+                    <app-range-option
+                      (valueChange)="onSetOptionValue(option.apiName, $event)"
+                      [value]="optionValues[selectedJobType.id][option.apiName]"
+                      [optionName]="option.name | uppercase | translate"
+                      [optionInfo]="option.info | translate"
+                      [range]="option.range"
+                      [default]="option.default"
+                      class="margin-right"
+                    >
+                    </app-range-option>
+                  }
+                </div>
+              }
             </div>
           </div>
-
           <div class="flex-row flex-start flex-wrap">
             <div class="flex-field toggle-options">
-              <div *ngIf="jobType.id !== 'AUTORIFT'" class="option-header">
-                {{ 'APPLY' | translate }}
-              </div>
-              <div
-                class="flex-field checkbox-list"
-                *ngFor="let option of jobType.options"
-              >
-                <app-checkbox-option
-                  *ngIf="option.type === 'TOGGLE'"
-                  (valueChange)="onSetOptionValue(option.apiName, $event)"
-                  [value]="optionValues[selectedJobType.id][option.apiName]"
-                  [optionName]="option.name"
-                  [optionInfo]="option.info | translate"
-                  class="margin-right"
-                >
-                </app-checkbox-option>
-              </div>
+              @if (jobType.id !== 'AUTORIFT') {
+                <div class="option-header">
+                  {{ 'APPLY' | translate }}
+                </div>
+              }
+              @for (option of jobType.options; track option) {
+                <div class="flex-field checkbox-list">
+                  @if (option.type === 'TOGGLE') {
+                    <app-checkbox-option
+                      (valueChange)="onSetOptionValue(option.apiName, $event)"
+                      [value]="optionValues[selectedJobType.id][option.apiName]"
+                      [optionName]="option.name"
+                      [optionInfo]="option.info | translate"
+                      class="margin-right"
+                    >
+                    </app-checkbox-option>
+                  }
+                </div>
+              }
             </div>
             <div class="flex-field">
-              <div *ngIf="jobType.id !== 'AUTORIFT'" class="option-header">
-                {{ 'INCLUDE' | translate }}
-              </div>
-              <div
-                class="flex-field checkbox-list"
-                *ngFor="let option of jobType.options"
-              >
-                <app-checkbox-option
-                  *ngIf="option.type === 'CHECKBOX'"
-                  (valueChange)="onSetOptionValue(option.apiName, $event)"
-                  [value]="optionValues[selectedJobType.id][option.apiName]"
-                  [optionName]="option.name"
-                  [optionInfo]="option.info | translate"
-                >
-                </app-checkbox-option>
-                <app-subset-option
-                  *ngIf="option.type === 'SUBSET'"
-                  (setSubset)="onSetSubset(option.optionSubset)"
-                  [optionName]="option.name"
-                  [optionInfo]="option.info | uppercase | translate"
-                  class="margin-right"
-                >
-                </app-subset-option>
-              </div>
+              @if (jobType.id !== 'AUTORIFT') {
+                <div class="option-header">
+                  {{ 'INCLUDE' | translate }}
+                </div>
+              }
+              @for (option of jobType.options; track option) {
+                <div class="flex-field checkbox-list">
+                  @if (option.type === 'CHECKBOX') {
+                    <app-checkbox-option
+                      (valueChange)="onSetOptionValue(option.apiName, $event)"
+                      [value]="optionValues[selectedJobType.id][option.apiName]"
+                      [optionName]="option.name"
+                      [optionInfo]="option.info | translate"
+                    >
+                    </app-checkbox-option>
+                  }
+                  @if (option.type === 'SUBSET') {
+                    <app-subset-option
+                      (setSubset)="onSetSubset(option.optionSubset)"
+                      [optionName]="option.name"
+                      [optionInfo]="option.info | uppercase | translate"
+                      class="margin-right"
+                    >
+                    </app-subset-option>
+                  }
+                </div>
+              }
             </div>
           </div>
         }
-      </ng-container>
-    </ng-container>
-  </ng-container>
+      }
+    }
+  }
 </div>

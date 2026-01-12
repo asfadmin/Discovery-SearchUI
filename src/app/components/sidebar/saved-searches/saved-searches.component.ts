@@ -25,12 +25,35 @@ import { SaveSearchDialogComponent } from '@components/shared/save-search-dialog
 import * as models from '@models';
 
 import { AsfLanguageService } from '@services/asf-language.service';
+import { NgClass, AsyncPipe } from '@angular/common';
+import {
+  MatButtonToggleGroup,
+  MatButtonToggle,
+} from '@angular/material/button-toggle';
+import { FormsModule } from '@angular/forms';
+import { MatFormField, MatInput } from '@angular/material/input';
+import { MatButton } from '@angular/material/button';
+import { SavedSearchComponent } from './saved-search/saved-search.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-saved-searches',
   templateUrl: './saved-searches.component.html',
   styleUrls: ['./saved-searches.component.scss'],
-  standalone: false,
+  imports: [
+    NgClass,
+
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    FormsModule,
+    MatFormField,
+    MatInput,
+    MatButton,
+
+    SavedSearchComponent,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class SavedSearchesComponent implements OnInit, OnDestroy {
   private dialog = inject(MatDialog);

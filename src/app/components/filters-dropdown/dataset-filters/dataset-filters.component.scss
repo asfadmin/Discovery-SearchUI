@@ -9,11 +9,19 @@
 .selector-card-spacing {
   margin-top: 20px;
 }
-
-.info-icon {
-  margin-left: 10px;
-  margin-top: 4px;
+.panel-title {
+  align-items: center;
+  justify-content: space-between;
 }
+
+
+.info-text {
+  flex: none;
+  font-size: small;
+  font-style: italic;
+  font-weight: 400;
+}
+
 .header {
 
   @include themify($themes) {

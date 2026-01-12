@@ -20,7 +20,6 @@ import { MapInteractionModeType } from '@models';
   selector: 'app-file-upload',
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.css'],
-  standalone: false,
 })
 export class FileUploadComponent implements OnInit, OnDestroy {
   dialog = inject(MatDialog);

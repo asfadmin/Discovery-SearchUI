@@ -1,16 +1,16 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { SharedModule } from '@shared';
 import { beta } from '@models';
 import * as filtersStore from '@store/filters';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
-import { CommonModule } from '@angular/common';
+
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-baseline-frame-reference-toggle',
-  imports: [CommonModule, SharedModule, MatSlideToggleModule, FormsModule],
+  imports: [TranslateModule, MatSlideToggleModule, FormsModule],
   templateUrl: './baseline-frame-reference-toggle.component.html',
   styleUrl: './baseline-frame-reference-toggle.component.scss',
 })

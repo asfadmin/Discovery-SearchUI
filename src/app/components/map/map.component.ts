@@ -31,6 +31,7 @@ import * as sceneStore from '@store/scenes';
 import * as models from '@models';
 import { CMRProduct, SarviewsEvent } from '@models';
 import {
+  DisplacementDisclaimerService,
   MapService,
   PointHistoryService,
   SarviewsEventsService,
@@ -43,8 +44,22 @@ import { StyleLike } from 'ol/style/Style';
 import { Feature } from 'ol';
 import Geometry from 'ol/geom/Geometry';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import WKT from 'ol/format/WKT';
 import { getTimeseriesChartStates } from '@store/charts';
+import { MatButton, MatFabButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { AsyncPipe } from '@angular/common';
+import { MapControlsComponent } from './map-controls/map-controls.component';
+import { DisplacementLayersComponent } from './displacement-layers/displacement-layers.component';
+import { BannersComponent } from './banners/banners.component';
+import { InteractionSelectorComponent } from '@components/shared/aoi-options/interaction-selector/interaction-selector.component';
+import { ViewSelectorComponent } from './map-controls/view-selector/view-selector.component';
+import { LayerSelectorComponent } from './map-controls/layer-selector/layer-selector.component';
+import { FiltersDropdownComponent } from '../filters-dropdown/filters-dropdown.component';
+import { FileUploadComponent } from '@components/shared/aoi-options/file-upload/file-upload.component';
+import { AttributionsComponent } from './attributions/attributions.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 enum FullscreenControls {
   MAP = 'Map',
@@ -56,7 +71,24 @@ enum FullscreenControls {
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
-  standalone: false,
+  imports: [
+    MatButton,
+    MatIcon,
+
+    MapControlsComponent,
+    DisplacementLayersComponent,
+    BannersComponent,
+    MatFabButton,
+    InteractionSelectorComponent,
+    ViewSelectorComponent,
+    LayerSelectorComponent,
+    FiltersDropdownComponent,
+    FileUploadComponent,
+    AttributionsComponent,
+    AsyncPipe,
+    TranslateModule,
+    MatTooltipModule,
+  ],
 })
 export class MapComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
@@ -67,6 +99,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private eventMonitoringService = inject(SarviewsEventsService);
   dialog = inject(MatDialog);
   private pointHistoryService = inject(PointHistoryService);
+  private disclaimerService = inject(DisplacementDisclaimerService);
 
   @Output() loadUrlState = new EventEmitter<void>();
   @ViewChild('overlay', { static: true }) overlayRef: ElementRef;
@@ -771,6 +804,10 @@ export class MapComponent implements OnInit, OnDestroy {
 
   public closeMobileFullscreenControls() {
     this.fullscreenControl = FullscreenControls.NONE;
+  }
+
+  public onOpenDispDisclaimer(): void {
+    this.disclaimerService.open();
   }
 
   ngOnDestroy() {

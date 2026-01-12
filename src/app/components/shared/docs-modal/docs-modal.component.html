@@ -1,14 +1,14 @@
-<ng-container *ngIf="text && !custStyle">
+@if (text && !custStyle) {
   <a (click)="showDoc()" class="link-pointer text-link">
     {{ text | translate }}
   </a>
-</ng-container>
-<ng-container *ngIf="text && custStyle">
+}
+@if (text && custStyle) {
   <a (click)="showDoc()" style="{{ custStyle }}">
     {{ text | translate }}
   </a>
-</ng-container>
-<ng-container *ngIf="description">
+}
+@if (description) {
   <a
     (click)="showDoc()"
     class="link-pointer"
@@ -18,8 +18,8 @@
       >description</mat-icon
     >
   </a>
-</ng-container>
-<ng-container *ngIf="!description && !text">
+}
+@if (!description && !text) {
   <a
     (click)="showDoc()"
     class="link-pointer"
@@ -27,4 +27,4 @@
   >
     <mat-icon class="material-symbols-outlined icon-size">{{ icon }}</mat-icon>
   </a>
-</ng-container>
+}

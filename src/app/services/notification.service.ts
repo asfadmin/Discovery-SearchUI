@@ -181,6 +181,8 @@ export class NotificationService {
     title = '',
     options: Partial<IndividualConfig> = {},
   ): ActiveToast<any> {
+    // Intentionally uses warning() instead of error() to avoid bright red toast
+    // which was deemed too visually jarring for the UX
     return this.toastr.warning(message, title, {
       ...options,
       ...this.toastOptions,

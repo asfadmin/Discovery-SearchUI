@@ -15,12 +15,15 @@ import { Store } from '@ngrx/store';
 import * as models from '@models';
 import * as hyp3Store from '@store/hyp3';
 import * as queueStore from '@store/queue';
+import { MatChip } from '@angular/material/chips';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-hyp3-job-status-badge',
   templateUrl: './hyp3-job-status-badge.component.html',
   styleUrls: ['./hyp3-job-status-badge.component.scss'],
-  standalone: false,
+  imports: [MatChip, MatMenuTrigger, MatMenu, MatMenuItem, TranslateModule],
 })
 export class Hyp3JobStatusBadgeComponent implements OnInit {
   private hyp3 = inject(Hyp3ApiService);

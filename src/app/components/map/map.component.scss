@@ -86,6 +86,23 @@ button {
   right: 10px;
 }
 
+.opera-logo {
+  position: fixed;
+  bottom: 30px;
+  left: 10px;
+  width: 110px;
+  height: auto;
+  cursor: pointer;
+  pointer-events: auto;
+  opacity: 0.85;
+  transition: opacity 0.2s ease;
+  z-index: 999;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
 .mobile-map-controls {
   pointer-events: auto;
   position: fixed;

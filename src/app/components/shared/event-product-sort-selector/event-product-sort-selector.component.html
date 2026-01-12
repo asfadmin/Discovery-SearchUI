@@ -32,11 +32,9 @@
 </div>
 
 <mat-menu #sortType="matMenu">
-  <button
-    *ngFor="let type of sortTypes"
-    (click)="onSetSortType(type)"
-    mat-menu-item
-  >
-    {{ type.toUpperCase() | translate }}
-  </button>
+  @for (type of sortTypes; track type) {
+    <button (click)="onSetSortType(type)" mat-menu-item>
+      {{ type.toUpperCase() | translate }}
+    </button>
+  }
 </mat-menu>

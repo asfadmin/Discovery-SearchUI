@@ -1,11 +1,21 @@
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { NotificationService } from '@services';
+import { MatFormField, MatInput } from '@angular/material/input';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-job-id-selector',
   templateUrl: './job-id-selector.component.html',
   styleUrl: './job-id-selector.component.scss',
-  standalone: false,
+  imports: [
+    MatFormField,
+    MatInput,
+    CdkTextareaAutosize,
+    FormsModule,
+    TranslateModule,
+  ],
 })
 export class JobIdSelectorComponent {
   private notification = inject(NotificationService);

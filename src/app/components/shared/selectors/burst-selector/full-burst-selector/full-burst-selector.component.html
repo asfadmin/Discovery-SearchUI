@@ -1,5 +1,5 @@
-<ng-container *ngIf="searchType$ | async as type">
-  <ng-container *ngIf="type === searchTypes.DISPLACEMENT; else other_stuff">
+@if (searchType$ | async; as type) {
+  @if (type === searchTypes.DISPLACEMENT) {
     <mat-form-field style="display: block">
       <mat-label>{{ 'BURST_ID_FULL' | translate }}</mat-label>
       <input
@@ -9,8 +9,7 @@
         (input)="onChange($event)"
       />
     </mat-form-field>
-  </ng-container>
-  <ng-template #other_stuff>
+  } @else {
     <mat-form-field style="display: block">
       <mat-label>{{ 'BURST_ID_FULL' | translate }}</mat-label>
       <textarea
@@ -20,5 +19,5 @@
         (input)="onChange($event)"
       ></textarea>
     </mat-form-field>
-  </ng-template>
-</ng-container>
+  }
+}

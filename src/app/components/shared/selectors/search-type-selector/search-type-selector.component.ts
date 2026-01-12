@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { SubSink } from 'subsink';
 
-import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
+import { MatMenu, MatMenuTrigger, MatMenuItem } from '@angular/material/menu';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -18,9 +18,19 @@ import * as userStore from '@store/user';
 
 import * as models from '@models';
 
-import { EnvironmentService, ScreenSizeService } from '@services';
+import {
+  DisplacementDisclaimerService,
+  EnvironmentService,
+  ScreenSizeService,
+} from '@services';
 import { AnalyticsEvent, Breakpoints, derivedDatasets } from '@models';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { NgClass, AsyncPipe } from '@angular/common';
+import { MatLabel, MatSuffix } from '@angular/material/input';
+import { MatButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { DocsModalComponent } from '../../docs-modal/docs-modal.component';
+import { MatCardActions } from '@angular/material/card';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -33,12 +43,27 @@ declare global {
   selector: 'app-search-type-selector',
   templateUrl: './search-type-selector.component.html',
   styleUrls: ['./search-type-selector.component.scss'],
-  standalone: false,
+  imports: [
+    MatLabel,
+    MatButton,
+    MatMenuTrigger,
+    MatTooltip,
+    MatMenu,
+
+    MatMenuItem,
+    NgClass,
+    DocsModalComponent,
+    MatSuffix,
+    MatCardActions,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   translate = inject(TranslateService);
   private store$ = inject<Store<AppState>>(Store);
   private screenSize = inject(ScreenSizeService);
+  private disclaimerService = inject(DisplacementDisclaimerService);
   env = inject(EnvironmentService);
 
   @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
@@ -221,7 +246,9 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
     event.stopPropagation();
   }
 
-  public onSearchTypeMenuOpen() {}
+  public onOpenDisclaimer(): void {
+    this.disclaimerService.open();
+  }
 
   ngOnDestroy() {
     this.subs.unsubscribe();

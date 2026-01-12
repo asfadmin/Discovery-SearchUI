@@ -24,6 +24,24 @@ import * as searchStore from '@store/search';
 import * as models from '@models';
 import * as services from '@services';
 import { ofType } from '@ngrx/effects';
+import { AsyncPipe } from '@angular/common';
+import {
+  MatAccordion,
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle,
+} from '@angular/material/expansion';
+import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import {
+  MatButtonToggleGroup,
+  MatButtonToggle,
+} from '@angular/material/button-toggle';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatFormField, MatInput } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 enum ListPanel {
   SEARCH = 'search',
@@ -39,7 +57,23 @@ enum FileErrors {
   selector: 'app-list-filters',
   templateUrl: './list-filters.component.html',
   styleUrls: ['./list-filters.component.scss'],
-  standalone: false,
+  imports: [
+    MatAccordion,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    SearchTypeSelectorComponent,
+    DocsModalComponent,
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    MatTooltip,
+    MatFormField,
+    MatInput,
+    FormsModule,
+    CopyToClipboardComponent,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class ListFiltersComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

@@ -7,12 +7,33 @@ import * as hyp3Store from '@store/hyp3';
 
 import * as models from '@models';
 import * as services from '@services';
+import { AsyncPipe } from '@angular/common';
+import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
+import { ProjectNameSelectorComponent } from '@components/shared/selectors/project-name-selector/project-name-selector.component';
+import { DateSelectorComponent } from '@components/shared/selectors/date-selector/date-selector.component';
+import { JobStatusSelectorComponent } from '@components/shared/selectors/job-status-selector/job-status-selector.component';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { SearchButtonComponent } from '@components/shared/search-button/search-button.component';
+import { HeaderButtonsComponent } from '../header-buttons/header-buttons.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-hyp3-header',
   templateUrl: './hyp3-header.component.html',
   styleUrls: ['./hyp3-header.component.scss', '../header.component.scss'],
-  standalone: false,
+  imports: [
+    SearchTypeSelectorComponent,
+    ProjectNameSelectorComponent,
+    DateSelectorComponent,
+    JobStatusSelectorComponent,
+    MatButton,
+    MatIcon,
+    SearchButtonComponent,
+    HeaderButtonsComponent,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class Hyp3HeaderComponent {
   private store$ = inject<Store<AppState>>(Store);

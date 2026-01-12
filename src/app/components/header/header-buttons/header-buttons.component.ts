@@ -33,6 +33,16 @@ import {
 } from '@models';
 
 import { ThemePalette } from '@angular/material/core';
+import { AsyncPipe, TitleCasePipe } from '@angular/common';
+import { MatButton } from '@angular/material/button';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { MatBadge } from '@angular/material/badge';
+import { SearchButtonComponent } from '@components/shared/search-button/search-button.component';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import { MatSuffix } from '@angular/material/input';
+import { TranslateModule } from '@ngx-translate/core';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -46,7 +56,21 @@ declare global {
   templateUrl: './header-buttons.component.html',
   styleUrls: ['./header-buttons.component.scss'],
   animations: [],
-  standalone: false,
+  imports: [
+    MatButton,
+    MatMenuTrigger,
+    MatTooltip,
+    MatIcon,
+    MatBadge,
+    MatMenu,
+    MatMenuItem,
+    SearchButtonComponent,
+    DocsModalComponent,
+    MatSuffix,
+    AsyncPipe,
+    TitleCasePipe,
+    TranslateModule,
+  ],
 })
 export class HeaderButtonsComponent implements OnInit, OnDestroy {
   authService = inject(AuthService);
@@ -206,6 +230,17 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     const url = this.asfWebsite.home;
     const analyticsEvent = {
       name: 'open-asf-web-site',
+      value: url,
+    };
+
+    this.openNewWindow(url, analyticsEvent);
+  }
+
+  public onOpenStoryMap(): void {
+    const url =
+      'https://storymaps.arcgis.com/collections/c52e34d6f5a34538a45a9c9c4dfbc3dc';
+    const analyticsEvent = {
+      name: 'open-storymap',
       value: url,
     };
 

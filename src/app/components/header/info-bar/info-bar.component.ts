@@ -11,6 +11,12 @@ import * as searchStore from '@store/search';
 import * as services from '@services';
 import * as models from '@models';
 import * as userStore from '@store/user';
+import { AsyncPipe, TitleCasePipe } from '@angular/common';
+import { Hyp3UrlComponent } from '@components/shared/hyp3-url/hyp3-url.component';
+import { CiSearchComponent } from './ci-search/ci-search.component';
+import { ShortDatePipe } from '@pipes/short-date.pipe';
+import { JoinPipe } from '@pipes/join.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -23,13 +29,20 @@ declare global {
   selector: 'app-info-bar',
   templateUrl: './info-bar.component.html',
   styleUrls: ['./info-bar.component.scss'],
-  standalone: false,
+  imports: [
+    Hyp3UrlComponent,
+    CiSearchComponent,
+    AsyncPipe,
+    TitleCasePipe,
+    ShortDatePipe,
+    JoinPipe,
+    TranslateModule,
+  ],
 })
 export class InfoBarComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
   private screenSize = inject(services.ScreenSizeService);
   private hyp3 = inject(services.Hyp3ApiService);
-
   public searchType: models.SearchType = models.SearchType.DATASET;
   public searchTypes = models.SearchType;
   public searchType$ = this.store$.select(searchStore.getSearchType);

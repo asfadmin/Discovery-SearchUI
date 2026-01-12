@@ -9,12 +9,28 @@ import {
 
 import * as services from '@services';
 import * as models from '@models';
+import { NgClass } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { MatListItemMeta } from '@angular/material/list';
+import { MatTooltip } from '@angular/material/tooltip';
+import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/on-demand-add-menu.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-baseline-scene-controls',
   templateUrl: './baseline-scene-controls.component.html',
   styleUrls: ['./baseline-scene-controls.component.scss'],
-  standalone: false,
+  imports: [
+    NgClass,
+
+    MatIcon,
+    MatMenuTrigger,
+    MatListItemMeta,
+    MatTooltip,
+    OnDemandAddMenuComponent,
+    TranslateModule,
+  ],
 })
 export class BaselineSceneControlsComponent implements OnInit {
   private screenSize = inject(services.ScreenSizeService);

@@ -5,7 +5,17 @@ import {
   HttpParams,
 } from '@angular/common/http';
 
-import { Observable, of, first, catchError, map, forkJoin } from 'rxjs';
+import {
+  Observable,
+  of,
+  first,
+  catchError,
+  map,
+  forkJoin,
+  from,
+  Subject,
+} from 'rxjs';
+import { mergeMap, toArray, bufferCount, tap, finalize } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import * as models from '@models';
@@ -14,6 +24,22 @@ import * as uiStore from '@store/ui';
 import { NotificationService } from '../notification.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
+
+export interface RenameProgressInfo {
+  percent: number;
+  estimatedSecondsRemaining: number | null;
+}
+
+export interface RenameResult {
+  success: number;
+  failed: number;
+  failedProjectNames: string[];
+}
+
+export interface RenameWithProgressResult {
+  progress$: Observable<RenameProgressInfo>;
+  result$: Observable<RenameResult>;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -155,6 +181,118 @@ export class Hyp3ApiService {
         return { hyp3Jobs, next };
       }),
     );
+  }
+
+  public updateJobName$(
+    jobId: string,
+    newProjectName: string,
+  ): Observable<models.Hyp3Job> {
+    const url = `${this.apiUrl}/jobs/${jobId}`;
+
+    if (!newProjectName) {
+      newProjectName = null;
+    }
+
+    return this.http
+      .patch<models.Hyp3Job>(
+        url,
+        { name: newProjectName },
+        { withCredentials: true },
+      )
+      .pipe(map((resp) => resp as models.Hyp3Job));
+  }
+
+  /**
+   * Updates job names with progress reporting.
+   * Returns an object with:
+   * - progress$: Observable that emits progress info (percent and estimated time) as batches complete
+   * - result$: Observable that emits the final result when all batches are done
+   */
+  public updateJobsNameWithProgress$(
+    products: models.CMRProduct[],
+    newProjectName: string,
+  ): RenameWithProgressResult {
+    const url = `${this.apiUrl}/jobs`;
+    const totalJobs = products.length;
+    const batchSize = 100;
+    const concurrentBatches = 3;
+    const totalBatches = Math.ceil(totalJobs / batchSize);
+
+    if (!newProjectName) {
+      newProjectName = null;
+    }
+
+    const progressSubject = new Subject<RenameProgressInfo>();
+    let completedBatches = 0;
+    let successCount = 0;
+    let failedCount = 0;
+    const failedProjectNamesSet = new Set<string>();
+    const startTime = Date.now();
+
+    const result$ = from(products).pipe(
+      bufferCount(batchSize),
+      mergeMap((productsBatch) => {
+        const jobIdsBatch = productsBatch.map((p) => p.metadata.job.job_id);
+        return this.http
+          .patch<models.Hyp3Job>(
+            url,
+            { name: newProjectName, job_ids: jobIdsBatch },
+            { withCredentials: true },
+          )
+          .pipe(
+            map(() => ({
+              success: jobIdsBatch.length,
+              failed: 0,
+              failedProducts: [] as models.CMRProduct[],
+            })),
+            catchError(() =>
+              of({
+                success: 0,
+                failed: jobIdsBatch.length,
+                failedProducts: productsBatch,
+              }),
+            ),
+            tap((batchResult) => {
+              completedBatches++;
+              successCount += batchResult.success;
+              failedCount += batchResult.failed;
+              // Track failed project names
+              batchResult.failedProducts.forEach((product) => {
+                const projectName = product.metadata?.job?.name || '(unnamed)';
+                failedProjectNamesSet.add(projectName);
+              });
+              const percent = Math.round(
+                (completedBatches / totalBatches) * 100,
+              );
+
+              // Calculate estimated time remaining
+              let estimatedSecondsRemaining: number | null = null;
+              if (completedBatches > 0) {
+                const elapsedMs = Date.now() - startTime;
+                const msPerBatch = elapsedMs / completedBatches;
+                const remainingBatches = totalBatches - completedBatches;
+                estimatedSecondsRemaining = Math.ceil(
+                  (msPerBatch * remainingBatches) / 1000,
+                );
+              }
+
+              progressSubject.next({ percent, estimatedSecondsRemaining });
+            }),
+          );
+      }, concurrentBatches),
+      toArray(),
+      map(() => ({
+        success: successCount,
+        failed: failedCount,
+        failedProjectNames: Array.from(failedProjectNamesSet).sort(),
+      })),
+      finalize(() => progressSubject.complete()),
+    );
+
+    return {
+      progress$: progressSubject.asObservable(),
+      result$,
+    };
   }
 
   public submitJobBatch$(jobBatch: object) {
