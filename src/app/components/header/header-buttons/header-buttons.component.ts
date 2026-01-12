@@ -236,6 +236,17 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     this.openNewWindow(url, analyticsEvent);
   }
 
+  public onOpenStoryMap(): void {
+    const url =
+      'https://storymaps.arcgis.com/collections/c52e34d6f5a34538a45a9c9c4dfbc3dc';
+    const analyticsEvent = {
+      name: 'open-storymap',
+      value: url,
+    };
+
+    this.openNewWindow(url, analyticsEvent);
+  }
+
   public onOpenOnDemandDocs(): void {
     const url = 'https://hyp3-docs.asf.alaska.edu/';
     const analyticsEvent = {

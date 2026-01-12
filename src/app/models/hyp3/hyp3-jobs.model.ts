@@ -312,7 +312,8 @@ export const AutoRift: Hyp3JobType = {
 export const AriaS1GunwJobType = {
   id: 'ARIA_S1_GUNW',
   name: 'ARIA_S1_GUNW',
-  infoUrl: 'https://hyp3-docs.asf.alaska.edu/products/#autorift',
+  infoUrl:
+    'https://hyp3-docs.asf.alaska.edu/guides/gunw_product_guide/#aria-sentinel-1-gunw-product-guide',
   description: 'ARIAS1GUNW_JOB_TYPE_DESC',
   numProducts: 2,
   productTypes: [
