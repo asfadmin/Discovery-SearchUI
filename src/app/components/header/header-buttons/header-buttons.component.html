@@ -91,16 +91,20 @@
               <mat-icon class="external-link-icon">open_in_new</mat-icon>
             </div>
           </button>
-          <button class="spacing nav-icon-buttons" color="basic" mat-button>
-            <app-docs-modal
-              class="icon-description"
-              matTooltip="{{ 'DATASET_INFO' | translate }}"
-              description="description"
-              url="https://asf.alaska.edu/datasets/daac/opera/"
+          <button
+            class="spacing nav-icon-buttons"
+            color="basic"
+            mat-button
+            matTooltip="{{ 'DATASET_INFO' | translate }}"
+            (click)="onOpenOperaInfo()"
+            style="padding: 0"
+          >
+            <mat-icon class="material-symbols-outlined large-icon"
+              >description</mat-icon
             >
-            </app-docs-modal>
-            <div class="text-under faint-text" style="margin-top: -3px">
+            <div class="text-under faint-text" style="margin-top: 1px">
               {{ 'INFO' | translate }}
+              <mat-icon class="external-link-icon">open_in_new</mat-icon>
             </div>
           </button>
         }
