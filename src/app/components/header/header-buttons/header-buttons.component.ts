@@ -1,4 +1,17 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  inject,
+  HostListener,
+} from '@angular/core';
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition,
+} from '@angular/animations';
 import { SubSink } from 'subsink';
 import { saveAs } from 'file-saver';
 
@@ -34,7 +47,7 @@ import {
 
 import { ThemePalette } from '@angular/material/core';
 import { AsyncPipe, TitleCasePipe } from '@angular/common';
-import { MatButton } from '@angular/material/button';
+import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatIcon } from '@angular/material/icon';
@@ -54,9 +67,28 @@ declare global {
   selector: 'app-header-buttons',
   templateUrl: './header-buttons.component.html',
   styleUrls: ['./header-buttons.component.scss'],
-  animations: [],
+  animations: [
+    trigger('slidePanel', [
+      state(
+        'collapsed',
+        style({
+          transform: 'translateX(100%)',
+          opacity: 0,
+        }),
+      ),
+      state(
+        'expanded',
+        style({
+          transform: 'translateX(0)',
+          opacity: 1,
+        }),
+      ),
+      transition('collapsed <=> expanded', animate('200ms ease-in-out')),
+    ]),
+  ],
   imports: [
     MatButton,
+    MatIconButton,
     MatMenuTrigger,
     MatTooltip,
     MatIcon,
@@ -103,6 +135,24 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   public searchTypes = SearchType;
 
   public commitUrl = '';
+
+  public isHeaderExpanded = false;
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (
+      this.isHeaderExpanded &&
+      !target.closest('.collapsed-buttons-panel') &&
+      !target.closest('.chevron-toggle')
+    ) {
+      this.isHeaderExpanded = false;
+    }
+  }
+
+  public toggleHeaderExpanded(): void {
+    this.isHeaderExpanded = !this.isHeaderExpanded;
+  }
 
   ngOnInit() {
     this.subs.add(
