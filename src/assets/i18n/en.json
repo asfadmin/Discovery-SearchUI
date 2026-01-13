@@ -675,7 +675,7 @@
   "PRODUCTION_CONFIGURATION": "Production Configuration",
   "PRODUCTION_CONFIGURATION_FILTER": "Production Configuration Filter",
   "PRODUCTION_CONFIGURATION_TOOLTIP": "Processing pipeline used to generate this granule",
-  "PRODUCTS_IN_YOUR_QUEUE_MAY_REQUIRE_A_RESTRICTED_DATASET_AGREEMENT": "Los productos en tu lista pueden requerir un acuerdo de conjunto de datos restringido.",
+  "PRODUCTS_IN_YOUR_QUEUE_MAY_REQUIRE_A_RESTRICTED_DATASET_AGREEMENT": "Products in your queue may require a restricted dataset agreement",
   "PRODUCTS_TO_DOWNLOADS_FROM_SELECTED_EVENT": "products to downloads from selected event",
   "PROFILE": "Profile",
   "PROJECT": "Proyect",
