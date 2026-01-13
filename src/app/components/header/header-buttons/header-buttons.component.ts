@@ -40,7 +40,6 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { MatIcon } from '@angular/material/icon';
 import { MatBadge } from '@angular/material/badge';
 import { SearchButtonComponent } from '@components/shared/search-button/search-button.component';
-import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
 import { MatSuffix } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -65,7 +64,6 @@ declare global {
     MatMenu,
     MatMenuItem,
     SearchButtonComponent,
-    DocsModalComponent,
     MatSuffix,
     AsyncPipe,
     TitleCasePipe,
@@ -241,6 +239,16 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
       'https://storymaps.arcgis.com/collections/c52e34d6f5a34538a45a9c9c4dfbc3dc';
     const analyticsEvent = {
       name: 'open-storymap',
+      value: url,
+    };
+
+    this.openNewWindow(url, analyticsEvent);
+  }
+
+  public onOpenOperaInfo(): void {
+    const url = 'https://asf.alaska.edu/datasets/daac/opera/';
+    const analyticsEvent = {
+      name: 'open-opera-info',
       value: url,
     };
 
