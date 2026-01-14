@@ -80,10 +80,9 @@
             class="collapsed-panel-wrapper"
             [@slidePanel]="isHeaderExpanded ? 'expanded' : 'collapsed'"
           >
-            <!-- Chevron handle (left side of drawer) -->
+            <!-- Drawer tab handle (left side of drawer) -->
             <button
-              class="chevron-toggle"
-              mat-icon-button
+              class="drawer-tab"
               (click)="toggleHeaderExpanded(); $event.stopPropagation()"
               matTooltip="{{ isHeaderExpanded ? 'Collapse' : 'Expand' }}"
             >

@@ -49,6 +49,7 @@
   display: flex;
   align-items: center;
   margin-top: -18px;
+  padding-right: 20px;
 }
 
 .collapsed-buttons-panel {
@@ -60,38 +61,32 @@
   margin-top: -18px;
   overflow: hidden;
   background-color: white;
-
-  .nav-icon-buttons-raised {
-    position: relative;
-    top: 6px;
-  }
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.chevron-toggle {
-  height: 52px;
-  width: 15px;
-  min-width: 15px;
+.drawer-tab {
+  height: 44px;
+  width: 18px;
+  min-width: 18px;
   padding: 0;
-  border-radius: 4px;
+  border-radius: 20px 0 0 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  margin-top: -7px;
+  border: none;
+  background-color: white;
+  box-shadow: -2px 0 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
 
-  @include themify($themes) {
-    background-color: themed("header");
-    color: themed("dark-primary-text");
-    border-color: themed("dark-secondary-text");
-
-    &:hover {
-      background-color: themed("hover-bg");
-    }
+  &:hover {
+    background-color: #f0f0f0;
   }
 
   .mat-icon {
-    font-size: 24px;
-    width: 24px;
-    height: 24px;
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: #666;
   }
 }
