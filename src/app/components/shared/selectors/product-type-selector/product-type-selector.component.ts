@@ -119,4 +119,9 @@ export class ProductTypeSelectorComponent implements OnInit, OnDestroy {
 
     this.typesChange.emit(productTypes);
   }
+
+  public get isAriaS1Gunw(): boolean {
+    return this.dataset?.apiValue?.dataset === 'ARIA S1 GUNW';
+  }
+
 }
