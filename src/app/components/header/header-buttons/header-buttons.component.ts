@@ -72,15 +72,13 @@ declare global {
       state(
         'collapsed',
         style({
-          transform: 'translateX(100%)',
-          opacity: 0,
+          transform: 'translateX(calc(100% - 20px))',
         }),
       ),
       state(
         'expanded',
         style({
           transform: 'translateX(0)',
-          opacity: 1,
         }),
       ),
       transition('collapsed <=> expanded', animate('200ms ease-in-out')),

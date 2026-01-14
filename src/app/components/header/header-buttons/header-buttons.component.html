@@ -75,105 +75,114 @@
           searchType === searchTypes.DISPLACEMENT &&
           breakpoint === breakpoints.SMALL
         ) {
-          <!-- Collapsible panel for Displacement + SMALL breakpoint -->
+          <!-- Drawer wrapper for Displacement + SMALL breakpoint -->
           <div
-            class="collapsed-buttons-panel"
+            class="collapsed-panel-wrapper"
             [@slidePanel]="isHeaderExpanded ? 'expanded' : 'collapsed'"
           >
-            <app-search-button></app-search-button>
+            <!-- Chevron handle (left side of drawer) -->
             <button
-              class="spacing nav-icon-buttons nav-icon-buttons-raised"
-              color="basic"
-              mat-button
-              matTooltip="{{ 'STORYMAP' | translate }}"
-              (click)="onOpenStoryMap()"
-              style="padding: 0; margin-right: 8px; margin-left: -4px"
+              class="chevron-toggle"
+              mat-icon-button
+              (click)="toggleHeaderExpanded(); $event.stopPropagation()"
+              matTooltip="{{ isHeaderExpanded ? 'Collapse' : 'Expand' }}"
             >
-              <img
-                src="assets/StoryMaps.png"
-                alt="StoryMap"
-                class="storymap-icon"
-              />
-              <div class="text-under faint-text" style="margin-top: -3px">
-                {{ 'STORYMAP' | translate }}
-                <mat-icon class="external-link-icon">open_in_new</mat-icon>
-              </div>
+              <mat-icon>{{
+                isHeaderExpanded ? 'chevron_right' : 'chevron_left'
+              }}</mat-icon>
             </button>
-            <button
-              class="spacing nav-icon-buttons nav-icon-buttons-raised"
-              color="basic"
-              mat-button
-              matTooltip="{{ 'DATASET_INFO' | translate }}"
-              (click)="onOpenOperaInfo()"
-              style="padding: 0"
-            >
-              <mat-icon class="material-symbols-outlined large-icon"
-                >description</mat-icon
+            <!-- Panel content (right side of drawer) -->
+            <div class="collapsed-buttons-panel">
+              <app-search-button></app-search-button>
+              <button
+                class="spacing nav-icon-buttons nav-icon-buttons-raised"
+                color="basic"
+                mat-button
+                matTooltip="{{ 'STORYMAP' | translate }}"
+                (click)="onOpenStoryMap()"
+                style="padding: 0; margin-right: 8px; margin-left: -4px"
               >
-              <div class="text-under faint-text" style="margin-top: 1px">
-                {{ 'INFO' | translate }}
-                <mat-icon class="external-link-icon">open_in_new</mat-icon>
-              </div>
-            </button>
-            <button
-              [matMenuTriggerFor]="helpMenu"
-              matTooltip="{{ 'HELP_AND_INFORMATION' | translate }}"
-              class="spacing nav-icon-buttons"
-              color="basic"
-              mat-button
-            >
-              <mat-icon class="large-icon">help_outline</mat-icon>
-              <div class="text-under faint-text">{{ 'HELP' | translate }}</div>
-            </button>
-            <button
-              [matMenuTriggerFor]="languageMenu"
-              matTooltip="{{ 'LANGUAGE' | translate }}"
-              class="spacing nav-icon-buttons"
-              color="basic"
-              mat-button
-            >
-              <mat-icon class="large-icon">translate</mat-icon>
-              <div class="text-under faint-text">{{ language.getName() }}</div>
-            </button>
+                <img
+                  src="assets/StoryMaps.png"
+                  alt="StoryMap"
+                  class="storymap-icon"
+                />
+                <div class="text-under faint-text" style="margin-top: -3px">
+                  {{ 'STORYMAP' | translate }}
+                  <mat-icon class="external-link-icon">open_in_new</mat-icon>
+                </div>
+              </button>
+              <button
+                class="spacing nav-icon-buttons nav-icon-buttons-raised"
+                color="basic"
+                mat-button
+                matTooltip="{{ 'DATASET_INFO' | translate }}"
+                (click)="onOpenOperaInfo()"
+                style="padding: 0"
+              >
+                <mat-icon class="material-symbols-outlined large-icon"
+                  >description</mat-icon
+                >
+                <div class="text-under faint-text" style="margin-top: 1px">
+                  {{ 'INFO' | translate }}
+                  <mat-icon class="external-link-icon">open_in_new</mat-icon>
+                </div>
+              </button>
+              <button
+                [matMenuTriggerFor]="helpMenu"
+                matTooltip="{{ 'HELP_AND_INFORMATION' | translate }}"
+                class="spacing nav-icon-buttons"
+                color="basic"
+                mat-button
+              >
+                <mat-icon class="large-icon">help_outline</mat-icon>
+                <div class="text-under faint-text">
+                  {{ 'HELP' | translate }}
+                </div>
+              </button>
+              <button
+                [matMenuTriggerFor]="languageMenu"
+                matTooltip="{{ 'LANGUAGE' | translate }}"
+                class="spacing nav-icon-buttons"
+                color="basic"
+                mat-button
+              >
+                <mat-icon class="large-icon">translate</mat-icon>
+                <div class="text-under faint-text">
+                  {{ language.getName() }}
+                </div>
+              </button>
+            </div>
           </div>
-          <!-- Chevron toggle button -->
-          <button
-            class="chevron-toggle"
-            mat-icon-button
-            (click)="toggleHeaderExpanded(); $event.stopPropagation()"
-            matTooltip="{{ isHeaderExpanded ? 'Collapse' : 'Expand' }}"
-          >
-            <mat-icon>{{
-              isHeaderExpanded ? 'chevron_right' : 'chevron_left'
-            }}</mat-icon>
-          </button>
           <!-- Login/Profile always visible -->
-          @if (!isLoggedIn) {
-            <button
-              (click)="onAccountButtonClicked()"
-              class="spacing nav-icon-buttons"
-              color="basic"
-              matTooltip="{{ 'LOGIN' | translate }}"
-              mat-button
-            >
-              <mat-icon class="large-icon">account_circle</mat-icon>
-              <div class="text-under faint-text">
-                {{ 'SIGN_IN' | translate }}
-              </div>
-            </button>
-          }
-          @if (isLoggedIn) {
-            <button
-              [matMenuTriggerFor]="profileMenu"
-              class="spacing nav-icon-buttons"
-              color="basic"
-              matTooltip="{{ 'PROFILE' | translate }}"
-              mat-button
-            >
-              <mat-icon class="large-icon">account_circle</mat-icon>
-              <div class="text-under faint-text">{{ this.userAuth.id }}</div>
-            </button>
-          }
+          <div class="login-button-container">
+            @if (!isLoggedIn) {
+              <button
+                (click)="onAccountButtonClicked()"
+                class="spacing nav-icon-buttons"
+                color="basic"
+                matTooltip="{{ 'LOGIN' | translate }}"
+                mat-button
+              >
+                <mat-icon class="large-icon">account_circle</mat-icon>
+                <div class="text-under faint-text">
+                  {{ 'SIGN_IN' | translate }}
+                </div>
+              </button>
+            }
+            @if (isLoggedIn) {
+              <button
+                [matMenuTriggerFor]="profileMenu"
+                class="spacing nav-icon-buttons"
+                color="basic"
+                matTooltip="{{ 'PROFILE' | translate }}"
+                mat-button
+              >
+                <mat-icon class="large-icon">account_circle</mat-icon>
+                <div class="text-under faint-text">{{ this.userAuth.id }}</div>
+              </button>
+            }
+          </div>
         }
         @if (
           searchType === searchTypes.DISPLACEMENT &&
