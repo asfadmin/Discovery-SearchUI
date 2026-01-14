@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SceneFilesComponent } from './scene-files.component';
-import { SceneFilesModule } from './scene-files.module';
 import { provideMockStore } from '@ngrx/store/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -12,7 +11,6 @@ describe('SceneFilesComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        SceneFilesModule,
         ToastrModule.forRoot({
           positionClass: 'toast-bottom-right',
         }),
