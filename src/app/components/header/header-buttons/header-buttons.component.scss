@@ -43,6 +43,7 @@
 
 .login-button-container {
   position: relative;
+  left: 20px;
   z-index: 10;
   background-color: white;
   height: 82px;
@@ -91,4 +92,9 @@
     height: 18px;
     color: #666;
   }
+}
+
+.disp-icon-adjust {
+  position: relative;
+  top: -4px;
 }
