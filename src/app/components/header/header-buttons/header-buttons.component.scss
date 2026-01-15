@@ -39,6 +39,8 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  padding-left: 6px; // Accommodate drawer-tab box-shadow
+  padding-bottom: 6px; // Accommodate drawer-tab box-shadow
 }
 
 .login-button-container {
@@ -97,4 +99,8 @@
 .disp-icon-adjust {
   position: relative;
   top: -4px;
+}
+
+.header-buttons-container {
+  overflow-x: clip;
 }

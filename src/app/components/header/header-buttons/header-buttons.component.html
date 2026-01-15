@@ -1,5 +1,5 @@
 @if (breakpoint$ | async; as breakpoint) {
-  <div xmlns="http://www.w3.org/1999/html" class="fx-row">
+  <div xmlns="http://www.w3.org/1999/html" class="fx-row header-buttons-container">
     @if (breakpoint > breakpoints.MOBILE) {
       @if (searchType$ | async; as searchType) {
         @if (searchType !== searchTypes.DISPLACEMENT) {
