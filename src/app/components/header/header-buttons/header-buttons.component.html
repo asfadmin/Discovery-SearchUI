@@ -87,8 +87,14 @@
               (click)="toggleHeaderExpanded(); $event.stopPropagation()"
               [attr.aria-expanded]="isHeaderExpanded"
               aria-controls="displacement-panel"
-              [attr.aria-label]="(isHeaderExpanded ? 'COLLAPSE_PANEL' : 'EXPAND_PANEL') | translate"
-              matTooltip="{{ (isHeaderExpanded ? 'COLLAPSE_PANEL' : 'EXPAND_PANEL') | translate }}"
+              [attr.aria-label]="
+                (isHeaderExpanded ? 'COLLAPSE_PANEL' : 'EXPAND_PANEL')
+                  | translate
+              "
+              matTooltip="{{
+                (isHeaderExpanded ? 'COLLAPSE_PANEL' : 'EXPAND_PANEL')
+                  | translate
+              }}"
             >
               <mat-icon>{{
                 isHeaderExpanded ? 'chevron_right' : 'chevron_left'
