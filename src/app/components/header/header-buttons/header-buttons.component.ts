@@ -4,14 +4,9 @@ import {
   OnDestroy,
   inject,
   HostListener,
+  ElementRef,
+  ViewChild,
 } from '@angular/core';
-import {
-  trigger,
-  state,
-  style,
-  animate,
-  transition,
-} from '@angular/animations';
 import { SubSink } from 'subsink';
 import { saveAs } from 'file-saver';
 
@@ -67,23 +62,6 @@ declare global {
   selector: 'app-header-buttons',
   templateUrl: './header-buttons.component.html',
   styleUrls: ['./header-buttons.component.scss'],
-  animations: [
-    trigger('slidePanel', [
-      state(
-        'collapsed',
-        style({
-          transform: 'translateX(calc(100% - 20px))',
-        }),
-      ),
-      state(
-        'expanded',
-        style({
-          transform: 'translateX(0)',
-        }),
-      ),
-      transition('collapsed <=> expanded', animate('200ms ease-in-out')),
-    ]),
-  ],
   imports: [
     MatButton,
     MatMenuTrigger,
@@ -135,16 +113,23 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
 
   public isHeaderExpanded = false;
 
+  @ViewChild('panelWrapper') panelWrapper: ElementRef<HTMLElement>;
+  @ViewChild('loginContainer') loginContainer: ElementRef<HTMLElement>;
+
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
-    const target = event.target as HTMLElement;
-    if (
-      this.isHeaderExpanded &&
-      !target.closest('.collapsed-buttons-panel') &&
-      !target.closest('.chevron-toggle')
-    ) {
-      this.isHeaderExpanded = false;
-    }
+    if (!this.isHeaderExpanded) return;
+
+    const target = event.target as Node;
+
+    // Check if click is inside the panel wrapper (drawer-tab + buttons panel)
+    if (this.panelWrapper?.nativeElement.contains(target)) return;
+
+    // Check if click is inside the login container
+    if (this.loginContainer?.nativeElement.contains(target)) return;
+
+    // Click was outside both containers, collapse the panel
+    this.isHeaderExpanded = false;
   }
 
   public toggleHeaderExpanded(): void {

@@ -41,6 +41,12 @@
   align-items: center;
   padding-left: 6px; // Accommodate drawer-tab box-shadow
   padding-bottom: 6px; // Accommodate drawer-tab box-shadow
+  transform: translateX(calc(100% - 20px));
+  transition: transform 200ms ease-in-out;
+
+  &.expanded {
+    transform: translateX(0);
+  }
 }
 
 .login-button-container {

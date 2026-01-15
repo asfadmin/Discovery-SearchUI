@@ -80,8 +80,9 @@
         ) {
           <!-- Drawer wrapper for Displacement + SMALL breakpoint -->
           <div
+            #panelWrapper
             class="collapsed-panel-wrapper"
-            [@slidePanel]="isHeaderExpanded ? 'expanded' : 'collapsed'"
+            [class.expanded]="isHeaderExpanded"
           >
             <!-- Drawer tab handle (left side of drawer) -->
             <button
@@ -157,7 +158,7 @@
             </div>
           </div>
           <!-- Login/Profile always visible -->
-          <div class="login-button-container">
+          <div #loginContainer class="login-button-container">
             @if (!isLoggedIn) {
               <button
                 (click)="onAccountButtonClicked()"
@@ -171,8 +172,7 @@
                   {{ 'SIGN_IN' | translate }}
                 </div>
               </button>
-            }
-            @if (isLoggedIn) {
+            } @else {
               <button
                 [matMenuTriggerFor]="profileMenu"
                 class="spacing nav-icon-buttons"
@@ -265,8 +265,7 @@
                 {{ 'SIGN_IN' | translate }}
               </div>
             </button>
-          }
-          @if (isLoggedIn) {
+          } @else {
             <button
               [matMenuTriggerFor]="profileMenu"
               class="spacing nav-icon-buttons"
@@ -342,8 +341,7 @@
         >
           account_circle
         </mat-icon>
-      }
-      @if (isLoggedIn) {
+      } @else {
         <mat-icon class="mobile-icon-spacing" [matMenuTriggerFor]="profileMenu">
           account_circle
         </mat-icon>
@@ -387,8 +385,7 @@
         <mat-icon>video_library</mat-icon>
         {{ 'VIDEO_TUTORIALS' | translate }}
       </div>
-    }
-    @if ((breakpoint$ | async) !== breakpoints.MOBILE) {
+    } @else {
       <div class="menu-item">
         <div class="menu-item-content">
           <div class="item-title">{{ 'WATCH_OUR_TUTORIALS' | translate }}</div>
@@ -414,8 +411,7 @@
         <mat-icon>menu_book</mat-icon>
         {{ 'VERTEX_USER_GUIDE' | translate }}
       </div>
-    }
-    @if ((breakpoint$ | async) !== breakpoints.MOBILE) {
+    } @else {
       <div class="menu-item">
         <div class="menu-item-content">
           <div class="item-title">{{ 'READ_OUR_USER_GUIDE' | translate }}</div>
@@ -442,8 +438,7 @@
         <mat-icon>book</mat-icon>
         {{ 'HY_P3_USER_GUIDE' | translate | titlecase }}
       </div>
-    }
-    @if ((breakpoint$ | async) !== breakpoints.MOBILE) {
+    } @else {
       <div class="menu-item">
         <div class="menu-item-content">
           <div class="item-title">
@@ -472,8 +467,7 @@
         <mat-icon>api</mat-icon>
         {{ 'ASF_SEARCH_API' | translate }}
       </div>
-    }
-    @if ((breakpoint$ | async) !== breakpoints.MOBILE) {
+    } @else {
       <div class="menu-item">
         <div class="menu-item-content">
           <div class="item-title">
@@ -506,8 +500,7 @@
         <mat-icon>language</mat-icon>
         {{ 'ASF_WEBSITE' | translate }}
       </div>
-    }
-    @if ((breakpoint$ | async) !== breakpoints.MOBILE) {
+    } @else {
       <div class="menu-item">
         <div class="menu-item-content">
           <div class="item-title">
@@ -535,8 +528,7 @@
         <mat-icon>language</mat-icon>
         {{ 'DEVELOPER' | translate }}
       </div>
-    }
-    @if ((breakpoint$ | async) !== breakpoints.MOBILE) {
+    } @else {
       <div class="menu-item">
         <div class="menu-item-content">
           <div class="item-title">
