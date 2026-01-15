@@ -1,8 +1,5 @@
 @if (breakpoint$ | async; as breakpoint) {
-  <div
-    xmlns="http://www.w3.org/1999/html"
-    class="fx-row header-buttons-container"
-  >
+  <div class="fx-row header-buttons-container">
     @if (breakpoint > breakpoints.MOBILE) {
       @if (searchType$ | async; as searchType) {
         @if (searchType !== searchTypes.DISPLACEMENT) {
@@ -88,45 +85,46 @@
             <button
               class="drawer-tab"
               (click)="toggleHeaderExpanded(); $event.stopPropagation()"
-              matTooltip="{{ isHeaderExpanded ? 'Collapse' : 'Expand' }}"
+              [attr.aria-expanded]="isHeaderExpanded"
+              aria-controls="displacement-panel"
+              [attr.aria-label]="(isHeaderExpanded ? 'COLLAPSE_PANEL' : 'EXPAND_PANEL') | translate"
+              matTooltip="{{ (isHeaderExpanded ? 'COLLAPSE_PANEL' : 'EXPAND_PANEL') | translate }}"
             >
               <mat-icon>{{
                 isHeaderExpanded ? 'chevron_right' : 'chevron_left'
               }}</mat-icon>
             </button>
             <!-- Panel content (right side of drawer) -->
-            <div class="collapsed-buttons-panel">
+            <div id="displacement-panel" class="collapsed-buttons-panel">
               <app-search-button></app-search-button>
               <button
-                class="spacing nav-icon-buttons nav-icon-buttons-raised"
+                class="spacing nav-icon-buttons nav-icon-buttons-raised panel-storymap-button"
                 color="basic"
                 mat-button
                 matTooltip="{{ 'STORYMAP' | translate }}"
                 (click)="onOpenStoryMap()"
-                style="padding: 0; margin-right: 8px; margin-left: -4px"
               >
                 <img
                   src="assets/StoryMaps.png"
                   alt="StoryMap"
                   class="storymap-icon"
                 />
-                <div class="text-under faint-text" style="margin-top: -3px">
+                <div class="text-under faint-text text-adjust-storymap">
                   {{ 'STORYMAP' | translate }}
                   <mat-icon class="external-link-icon">open_in_new</mat-icon>
                 </div>
               </button>
               <button
-                class="spacing nav-icon-buttons nav-icon-buttons-raised"
+                class="spacing nav-icon-buttons nav-icon-buttons-raised panel-info-button"
                 color="basic"
                 mat-button
                 matTooltip="{{ 'DATASET_INFO' | translate }}"
                 (click)="onOpenOperaInfo()"
-                style="padding: 0"
               >
                 <mat-icon class="material-symbols-outlined large-icon"
                   >description</mat-icon
                 >
-                <div class="text-under faint-text" style="margin-top: 1px">
+                <div class="text-under faint-text text-adjust-info">
                   {{ 'INFO' | translate }}
                   <mat-icon class="external-link-icon">open_in_new</mat-icon>
                 </div>
@@ -181,7 +179,7 @@
                 mat-button
               >
                 <mat-icon class="large-icon">account_circle</mat-icon>
-                <div class="text-under faint-text">{{ this.userAuth.id }}</div>
+                <div class="text-under faint-text">{{ this.userAuth?.id }}</div>
               </button>
             }
           </div>
@@ -193,35 +191,33 @@
           <!-- Normal Displacement buttons for MEDIUM and FULL breakpoints -->
           <app-search-button></app-search-button>
           <button
-            class="spacing nav-icon-buttons disp-icon-adjust"
+            class="spacing nav-icon-buttons disp-icon-adjust panel-info-button"
             color="basic"
             mat-button
             matTooltip="{{ 'STORYMAP' | translate }}"
             (click)="onOpenStoryMap()"
-            style="padding: 0"
           >
             <img
               src="assets/StoryMaps.png"
               alt="StoryMap"
               class="storymap-icon"
             />
-            <div class="text-under faint-text" style="margin-top: -3px">
+            <div class="text-under faint-text text-adjust-storymap">
               {{ 'STORYMAP' | translate }}
               <mat-icon class="external-link-icon">open_in_new</mat-icon>
             </div>
           </button>
           <button
-            class="spacing nav-icon-buttons disp-icon-adjust"
+            class="spacing nav-icon-buttons disp-icon-adjust panel-info-button"
             color="basic"
             mat-button
             matTooltip="{{ 'DATASET_INFO' | translate }}"
             (click)="onOpenOperaInfo()"
-            style="padding: 0"
           >
             <mat-icon class="material-symbols-outlined large-icon"
               >description</mat-icon
             >
-            <div class="text-under faint-text" style="margin-top: 1px">
+            <div class="text-under faint-text text-adjust-info">
               {{ 'INFO' | translate }}
               <mat-icon class="external-link-icon">open_in_new</mat-icon>
             </div>
@@ -274,7 +270,7 @@
               mat-button
             >
               <mat-icon class="large-icon">account_circle</mat-icon>
-              <div class="text-under faint-text">{{ this.userAuth.id }}</div>
+              <div class="text-under faint-text">{{ this.userAuth?.id }}</div>
             </button>
           }
         }
