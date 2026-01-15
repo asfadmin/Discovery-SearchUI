@@ -150,7 +150,7 @@
               <button
                 [matMenuTriggerFor]="languageMenu"
                 matTooltip="{{ 'LANGUAGE' | translate }}"
-                class="spacing nav-icon-buttons"
+                class="spacing nav-icon-buttons disp-translate-button"
                 color="basic"
                 mat-button
               >
@@ -195,9 +195,9 @@
           breakpoint > breakpoints.SMALL
         ) {
           <!-- Normal Displacement buttons for MEDIUM and FULL breakpoints -->
-          <app-search-button></app-search-button>
+          <app-search-button class="disp-search-adjust"></app-search-button>
           <button
-            class="spacing nav-icon-buttons disp-icon-adjust panel-info-button"
+            class="spacing nav-icon-buttons disp-icon-adjust panel-storymap-button"
             color="basic"
             mat-button
             matTooltip="{{ 'STORYMAP' | translate }}"
@@ -248,6 +248,9 @@
             [matMenuTriggerFor]="languageMenu"
             matTooltip="{{ 'LANGUAGE' | translate }}"
             class="spacing nav-icon-buttons"
+            [class.disp-translate-button]="
+              searchType === searchTypes.DISPLACEMENT
+            "
             color="basic"
             mat-button
           >

@@ -53,6 +53,11 @@ $panel-shadow-padding: 6px; // Accommodates drawer-tab box-shadow
 
 .panel-info-button {
   padding: 0;
+
+  // Extra left padding for non-slider layout (MEDIUM/FULL breakpoints)
+  &.disp-icon-adjust {
+    padding: 0 0 0 5px;
+  }
 }
 
 .text-adjust-storymap {
@@ -144,6 +149,14 @@ $panel-shadow-padding: 6px; // Accommodates drawer-tab box-shadow
 .disp-icon-adjust {
   position: relative;
   top: -4px;
+}
+
+.disp-search-adjust {
+  margin-top: -2px;
+}
+
+.disp-translate-button {
+  padding: 0;
 }
 
 .header-buttons-container {
