@@ -12,7 +12,6 @@ export const beta = {
     Props.FRAME,
     Props.FLIGHT_DIRECTION,
     Props.POLARIZATION,
-    Props.MISSION_NAME,
     Props.ABSOLUTE_ORBIT,
     Props.FRAME_ORDERING,
     Props.BASELINE_TOOL,
