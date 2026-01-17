@@ -1,29 +1,31 @@
-<mat-form-field>
-  <mat-select
-    [(value)]="productTypesList"
-    (selectionChange)="onNewProductTypes($event)"
-    [disabled]="selectableProductTypes.length < 1 || burstSelected"
-    panelClass="product-type-selector"
-    placeholder="{{ 'FILE_TYPE' | translate }}"
-    multiple
-  >
-    @for (type of selectableProductTypes; track type) {
-      <mat-option [value]="type.apiValue" [matTooltip]="type.displayName">
-        {{ type.displayName }}
-      </mat-option>
+@if (!isAriaS1Gunw) {
+  <mat-form-field>
+    <mat-select
+      [(value)]="productTypesList"
+      (selectionChange)="onNewProductTypes($event)"
+      [disabled]="selectableProductTypes.length < 1 || burstSelected"
+      panelClass="product-type-selector"
+      placeholder="{{ 'FILE_TYPE' | translate }}"
+      multiple
+    >
+      @for (type of selectableProductTypes; track type) {
+        <mat-option [value]="type.apiValue" [matTooltip]="type.displayName">
+          {{ type.displayName }}
+        </mat-option>
+      }
+    </mat-select>
+
+    @if (selectableProductTypes.length >= 1) {
+      <mat-hint align="start">
+        {{ productTypesList?.length || 0 }}/{{ selectableProductTypes.length }}
+        {{ 'FILE_TYPES_SELECTED' | translate }}
+      </mat-hint>
     }
-  </mat-select>
 
-  @if (selectableProductTypes.length >= 1) {
-    <mat-hint align="start">
-      {{ productTypesList?.length || 0 }}/{{ selectableProductTypes.length }}
-      {{ 'FILE_TYPES_SELECTED' | translate }}
-    </mat-hint>
-  }
-
-  @if (selectableProductTypes.length < 1) {
-    <mat-hint align="start">
-      {{ 'NO_FILE_TYPES_TO_SELECT' | translate }}
-    </mat-hint>
-  }
-</mat-form-field>
+    @if (selectableProductTypes.length < 1) {
+      <mat-hint align="start">
+        {{ 'NO_FILE_TYPES_TO_SELECT' | translate }}
+      </mat-hint>
+    }
+  </mat-form-field>
+}
