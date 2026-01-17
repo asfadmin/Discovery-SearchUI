@@ -1,4 +1,12 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  inject,
+  HostListener,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
 import { SubSink } from 'subsink';
 import { saveAs } from 'file-saver';
 
@@ -54,7 +62,6 @@ declare global {
   selector: 'app-header-buttons',
   templateUrl: './header-buttons.component.html',
   styleUrls: ['./header-buttons.component.scss'],
-  animations: [],
   imports: [
     MatButton,
     MatMenuTrigger,
@@ -103,6 +110,31 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   public searchTypes = SearchType;
 
   public commitUrl = '';
+
+  public isHeaderExpanded = false;
+
+  @ViewChild('panelWrapper') panelWrapper: ElementRef<HTMLElement>;
+  @ViewChild('loginContainer') loginContainer: ElementRef<HTMLElement>;
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (!this.isHeaderExpanded) return;
+
+    const target = event.target as Node;
+
+    // Check if click is inside the panel wrapper (drawer-tab + buttons panel)
+    if (this.panelWrapper?.nativeElement.contains(target)) return;
+
+    // Check if click is inside the login container
+    if (this.loginContainer?.nativeElement.contains(target)) return;
+
+    // Click was outside both containers, collapse the panel
+    this.isHeaderExpanded = false;
+  }
+
+  public toggleHeaderExpanded(): void {
+    this.isHeaderExpanded = !this.isHeaderExpanded;
+  }
 
   ngOnInit() {
     this.subs.add(
