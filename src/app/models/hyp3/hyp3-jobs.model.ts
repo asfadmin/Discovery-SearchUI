@@ -80,48 +80,42 @@ export const RtcGammaJobType: Hyp3JobType = {
       apiName: 'dem_matching',
       type: JobOptionType.TOGGLE,
       default: false,
-      info: `
-      Coregisters SAR data to the DEM, rather than using
-      dead reckoning based on orbit files.
-    `,
+      info: 'INFO_DEM_MATCHING',
     },
     {
       name: 'Speckle Filter',
       apiName: 'speckle_filter',
       type: JobOptionType.TOGGLE,
       default: false,
-      info: `Apply an Enhanced Lee speckle filter.`,
+      info: 'INFO_SPECKLE_FILTER',
     },
     {
       name: 'DEM',
       apiName: 'include_dem',
       type: JobOptionType.CHECKBOX,
       default: false,
-      info: `Include the DEM file in the product package.`,
+      info: 'INFO_INCLUDE_DEM',
     },
     {
       name: 'Incidence Angle Map',
       apiName: 'include_inc_map',
       type: JobOptionType.CHECKBOX,
       default: false,
-      info: `Include the local incidence angle map in the product package.`,
+      info: 'INFO_INCIDENCE_ANGLE_MAP',
     },
     {
       name: 'Scattering Area Map',
       apiName: 'include_scattering_area',
       type: JobOptionType.CHECKBOX,
       default: false,
-      info: `Include the scattering area map in the product package.`,
+      info: 'INFO_SCATTERING_AREA_MAP',
     },
     {
       name: 'RGB Decomposition',
       apiName: 'include_rgb',
       type: JobOptionType.CHECKBOX,
       default: false,
-      info: `
-      Include a false-color RGB decomposition in the product
-      package for dual-pol granules (ignored for single-pol granules).
-    `,
+      info: 'INFO_RGB_DECOMPOSITION',
     },
   ],
 };
@@ -156,13 +150,13 @@ export const InsarGammaJobType: Hyp3JobType = {
         },
       ],
       default: '20x4',
-      info: `Number of looks to take in range and azimuth.`,
+      info: 'INFO_LOOKS_RANGE_AZIMUTH',
     },
     {
       name: 'Phase Filter',
       apiName: 'phase_filter_parameter',
       type: JobOptionType.RANGE,
-      info: 'Adaptive phase filter parameter. Useful values fall in the range 0.2 to 1. Larger values result in stronger filtering. If zero, adaptive phase filter will be skipped.',
+      info: 'INFO_PHASE_FILTER',
       default: 0.6,
       range: { start: 0.0, end: 1.0 },
     },
@@ -171,55 +165,42 @@ export const InsarGammaJobType: Hyp3JobType = {
       apiName: 'apply_water_mask',
       type: JobOptionType.TOGGLE,
       default: false,
-      info: `
-      Sets pixels over coastal and large inland waterbodies as invalid
-      for phase unwrapping.
-    `,
+      info: 'INFO_WATER_MASK',
     },
     {
       name: 'DEM',
       apiName: 'include_dem',
       type: JobOptionType.CHECKBOX,
       default: false,
-      info: `
-      Include the DEM file in the product package.
-    `,
+      info: 'INFO_INCLUDE_DEM_FILE',
     },
     {
       name: 'Incidence Angle Maps',
       apiName: 'include_inc_map',
       type: JobOptionType.CHECKBOX,
       default: false,
-      info: `
-      Include the incidence angle maps (local and ellipsoidal) in the product package.
-    `,
+      info:'INFO_INCLUDE_INCIDENCE_ANGLE_MAPS',
     },
     {
       name: 'Look Vectors',
       apiName: 'include_look_vectors',
       type: JobOptionType.CHECKBOX,
       default: false,
-      info: `
-      Include the look vector theta and phi files in the product package.
-    `,
+      info: 'INFO_INCLUDE_LOOK_VECTORS',
     },
     {
       name: 'Displacement Maps',
       apiName: 'include_displacement_maps',
       type: JobOptionType.CHECKBOX,
       default: false,
-      info: `
-      Include displacement maps (line-of-sight and vertical) in the product package.
-    `,
+      info: 'INFO_INCLUDE_DISPLACEMENT_MAPS',
     },
     {
       name: 'Wrapped Phase',
       apiName: 'include_wrapped_phase',
       type: JobOptionType.CHECKBOX,
       default: false,
-      info: `
-      Include the wrapped phase GeoTIFF in the product package.
-    `,
+      info: 'INFO_INCLUDE_WRAPPED_PHASE'
     },
     {
       name: 'Set MintPy Options',
@@ -236,9 +217,7 @@ export const InsarGammaJobType: Hyp3JobType = {
           value: true,
         },
       ],
-      info: `
-      Set options to make products compatible with MintPy.
-    `,
+      info:'INFO_MINTPY_OPTIONS'
     },
   ],
 };
@@ -284,10 +263,7 @@ export const InsarIsceBurstJobType: Hyp3JobType = {
       apiName: 'apply_water_mask',
       type: JobOptionType.TOGGLE,
       default: false,
-      info: `
-      Sets pixels over coastal and large inland waterbodies as invalid
-      for phase unwrapping.
-    `,
+      info: 'INFO_INSAR_ISCE_BURST_WATER_MASK'
     },
   ],
 };
@@ -312,7 +288,8 @@ export const AutoRift: Hyp3JobType = {
 export const AriaS1GunwJobType = {
   id: 'ARIA_S1_GUNW',
   name: 'ARIA_S1_GUNW',
-  infoUrl: 'https://hyp3-docs.asf.alaska.edu/products/#autorift',
+  infoUrl:
+    'https://hyp3-docs.asf.alaska.edu/guides/gunw_product_guide/#aria-sentinel-1-gunw-product-guide',
   description: 'ARIAS1GUNW_JOB_TYPE_DESC',
   numProducts: 2,
   productTypes: [

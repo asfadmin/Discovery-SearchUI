@@ -51,7 +51,7 @@ export class ProductScienceSelectorComponent implements OnInit, OnDestroy {
       disabled: false,
       sciProd: [
         { value: 'GSLC', viewValue: 'GSLC (Geocoded Single Look Complex)' },
-        { value: 'GCOV', viewValue: '*GCOV (Geocoded Polarimetric Covariance)' },
+        { value: 'GCOV', viewValue: 'GCOV (Geocoded Polarimetric Covariance)' },
         { value: 'GUNW', viewValue: 'GUNW (Geocoded Interferogram)' },
         { value: 'GOFF', viewValue: 'GOFF (Geocoded Pixel Offsets)' },
       ],

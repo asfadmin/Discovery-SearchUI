@@ -90,8 +90,8 @@
       <div
         [matTooltip]="
           search.searchType === searchType
-            ? 'Update Saved Search With Current Filters'
-            : 'Current Search Wrong Type'
+            ? ('UPDATE_SAVED_SEARCH' | translate)
+            : ('SEARCH_TYPE_MISMATCH' | translate)
         "
       >
         <button

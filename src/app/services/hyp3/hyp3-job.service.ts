@@ -195,7 +195,7 @@ export class Hyp3JobService {
     return newJobProducts;
   }
 
-  private combineJobAndCmrProduct(
+  public combineJobAndCmrProduct(
     job: models.Hyp3Job,
     product: models.CMRProduct,
   ) {
