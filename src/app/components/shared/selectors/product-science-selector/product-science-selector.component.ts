@@ -17,6 +17,7 @@ interface sciProd {
 interface sciProdGroup {
   disabled?: boolean;
   name: string;
+  label: string;
   sciProd: sciProd[];
 }
 
@@ -40,6 +41,7 @@ export class ProductScienceSelectorComponent implements OnInit, OnDestroy {
   sciProdGroups: sciProdGroup[] = [
     {
       name: 'Level-3',
+      label: 'Geophysical Products (Level-3)',
       disabled: false,
       sciProd: [
         { value: 'SME2', viewValue: 'SME2 (Soil Moisture EASE-Grid 2.0)' },
@@ -48,6 +50,7 @@ export class ProductScienceSelectorComponent implements OnInit, OnDestroy {
 
     {
       name: 'Level-2',
+      label: 'Geocoded Products (Level-2)',
       disabled: false,
       sciProd: [
         { value: 'GSLC', viewValue: 'GSLC (Geocoded Single Look Complex)' },
@@ -59,6 +62,7 @@ export class ProductScienceSelectorComponent implements OnInit, OnDestroy {
 
     {
       name: 'Level-1',
+      label: 'Range-Doppler Products (Level-1)',
       disabled: false,
       sciProd: [
         {
@@ -79,6 +83,7 @@ export class ProductScienceSelectorComponent implements OnInit, OnDestroy {
 
     {
       name: 'Level-0',
+      label: 'Unfocused Raw Products (Level-0)',
       sciProd: [{ value: 'L0B', viewValue: 'L0B (Radar Raw Signal Data)' }],
     },
   ];
