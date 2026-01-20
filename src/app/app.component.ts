@@ -303,7 +303,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subs.add(
       this.store$
         .select(userStore.getUserAuth)
-        .pipe(filter((userAuth) => !!userAuth.token))
+        .pipe(filter((userAuth) => !!userAuth?.token))
         .subscribe((_) => this.store$.dispatch(new userStore.LoadProfile())),
     );
 

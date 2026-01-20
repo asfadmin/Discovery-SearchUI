@@ -55,7 +55,7 @@ export class UserDataService {
     userAuth: UserAuth,
     attribute: string,
   ): Observable<T> {
-    const url = this.makeEndpoint(this.baseUrl, userAuth.id, attribute);
+    const url = this.makeEndpoint(this.baseUrl, userAuth?.id, attribute);
 
     return this.http
       .get<T>(url, {
@@ -85,7 +85,7 @@ export class UserDataService {
     attribute: string,
     value: T,
   ): Observable<any> {
-    const url = this.makeEndpoint(this.baseUrl, userAuth.id, attribute);
+    const url = this.makeEndpoint(this.baseUrl, userAuth?.id, attribute);
 
     return this.http
       .post(url, value, {

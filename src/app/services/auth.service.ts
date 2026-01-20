@@ -39,7 +39,7 @@ export class AuthService {
           .pipe(
             take(1),
             map((user) => {
-              if (!user.id) {
+              if (!user?.id) {
                 this.store$.dispatch(new userStore.Logout());
               } else {
                 this.store$.dispatch(new userStore.Login(user));
