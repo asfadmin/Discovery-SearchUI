@@ -127,7 +127,10 @@
           "builder": "@angular/build:unit-test",
           "options": {
             "buildTarget": "search-ui:build:local",
-            "tsConfig": "tsconfig.spec.json"
+            "tsConfig": "tsconfig.spec.json",
+            "coverageExclude": [
+              "src/app/models"
+            ]
           }
         },
         "lint": {
