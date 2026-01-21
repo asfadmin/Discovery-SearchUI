@@ -127,7 +127,7 @@
           "builder": "@angular/build:unit-test",
           "options": {
             "buildTarget": "search-ui:build:local",
-            "runnerConfig": true
+            "tsConfig": "tsconfig.spec.json"
           }
         },
         "lint": {
