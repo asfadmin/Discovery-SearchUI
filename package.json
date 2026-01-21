@@ -99,6 +99,7 @@
     "@angular/language-service": "^21.1.0",
     "@ngrx/schematics": "^21.0.1",
     "angular-eslint": "21.1.0",
+    "canvas": "^3.2.1",
     "esbuild": "0.20.0",
     "eslint": "^9.35.0",
     "eslint-config-prettier": "^10.1.8",
