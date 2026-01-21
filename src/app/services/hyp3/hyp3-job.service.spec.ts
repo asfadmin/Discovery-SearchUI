@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { Hyp3JobService } from './hyp3-job.service';
 import * as testJobs from './testing-jobs/jobs';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('Hyp3JobService', () => {
   let hyp3JobService: Hyp3JobService;
