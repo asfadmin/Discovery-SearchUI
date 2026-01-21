@@ -1,10 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SceneFilesComponent } from './scene-files.component';
-import { provideMockStore } from '@ngrx/store/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ToastrModule } from 'ngx-toastr';
 import { beforeEach, describe, expect, it } from 'vitest';
+import { provideMockStore } from '@ngrx/store/testing';
+import { initState as filtersInit } from '@store/filters/filters.reducer';
+import { initState as scenesInit } from '@store/scenes/scenes.reducer';
+import { initState as userInit } from '@store/user/user.reducer';
+import { initState as queueInit } from '@store/queue/queue.reducer';
+import { initState as hyp3Init } from '@store/hyp3/hyp3.reducer';
+import { initState as searchInit } from '@store/search/search.reducer';
 
 describe('SceneFilesComponent', () => {
   let component: SceneFilesComponent;
@@ -18,9 +24,20 @@ describe('SceneFilesComponent', () => {
         }),
       ],
       providers: [
-        provideMockStore(),
         provideHttpClient(),
         provideHttpClientTesting(),
+        // TODO: move mock store to some other testing handler
+        // we'd need to do this for any component that needed store access.
+        provideMockStore({
+          initialState: {
+            filters: filtersInit,
+            scenes: scenesInit,
+            user: userInit,
+            queue: queueInit,
+            hyp3: hyp3Init,
+            search: searchInit,
+          },
+        }),
       ],
     });
   });
