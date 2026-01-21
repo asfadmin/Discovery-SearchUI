@@ -148,7 +148,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   private subs = new SubSink();
 
   @HostListener('window:keydown.control./', ['$event'])
-  handleKeyDown(_event: KeyboardEvent) {
+  handleKeyDown(_event: Event) {
     console.log('Toggling kiosk mode. Use "ctrl+/" to re-toggle');
     this.store$.dispatch(new searchStore.setSearchKioskMode(!this.kioskMode));
   }
