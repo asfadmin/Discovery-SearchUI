@@ -130,7 +130,8 @@
             "tsConfig": "tsconfig.spec.json",
             "coverageExclude": [
               "src/app/models"
-            ]
+            ],
+            "runnerConfig": true
           }
         },
         "lint": {
@@ -140,6 +141,17 @@
               "src/**/*.ts",
               "src/**/*.html"
             ]
+          }
+        },
+        "e2e": {
+          "builder": "playwright-ng-schematics:playwright",
+          "options": {
+            "devServerTarget": "search-ui:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "search-ui:serve:production"
+            }
           }
         }
       }

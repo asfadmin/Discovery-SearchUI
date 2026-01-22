@@ -7,7 +7,8 @@
     "start_local_asf": "ng serve --port 4447 --ssl true --host local.asf.alaska.edu",
     "build": "ng build --configuration production",
     "test": "ng test",
-    "lint": "eslint -c eslint.config.js  src"
+    "lint": "eslint -c eslint.config.js  src",
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
@@ -98,6 +99,7 @@
     "@angular/build": "^21.1.0",
     "@angular/language-service": "^21.1.0",
     "@ngrx/schematics": "^21.0.1",
+    "@playwright/test": "1.57.0",
     "@vitest/coverage-v8": "^4.0.17",
     "angular-eslint": "21.1.0",
     "canvas": "^3.2.1",
@@ -106,6 +108,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "jsdom": "^27.4.0",
+    "playwright-ng-schematics": "21.0.3",
     "prettier": "3.6.2",
     "stylelint": "^13.13.1",
     "stylelint-config-standard": "^19.0.0",

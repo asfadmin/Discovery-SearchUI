@@ -47,3 +47,13 @@ local-serve.sh
 CLAUDE.md
 TRANSLATIONS_SCRATCH.md
 docs/
+
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/
+
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/
