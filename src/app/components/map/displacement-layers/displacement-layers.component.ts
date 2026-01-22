@@ -10,13 +10,27 @@ import { distinctUntilChanged, filter, map } from 'rxjs';
 import { MatCheckbox } from '@angular/material/checkbox';
 import * as mapStore from '@store/map';
 import { getVelocityOverlayOpacity } from '@store/map';
-import { MatSlider } from '@angular/material/slider';
+import { MatSlider, MatSliderThumb } from '@angular/material/slider';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import { MapLegendComponent } from './map-legend/map-legend.component';
+import { MatTooltip } from '@angular/material/tooltip';
+import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-displacement-layers',
   templateUrl: './displacement-layers.component.html',
   styleUrl: './displacement-layers.component.scss',
-  standalone: false,
+  imports: [
+    MatCheckbox,
+    DocsModalComponent,
+    MapLegendComponent,
+    MatSlider,
+    MatTooltip,
+    MatSliderThumb,
+    FormsModule,
+    TranslateModule,
+  ],
 })
 export class DisplacementLayersComponent implements OnInit, OnDestroy {
   mapService = inject(MapService);

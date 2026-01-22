@@ -6,12 +6,17 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 import { SubSink } from 'subsink';
+import { MatFormField } from '@angular/material/input';
+import { MatSelect, MatOption } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
+import {} from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-job-status-selector',
   templateUrl: './job-status-selector.component.html',
   styleUrls: ['./job-status-selector.component.scss'],
-  standalone: false,
+  imports: [MatFormField, MatSelect, FormsModule, MatOption, TranslateModule],
 })
 export class JobStatusSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

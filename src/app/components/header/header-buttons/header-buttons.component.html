@@ -1,5 +1,5 @@
 @if (breakpoint$ | async; as breakpoint) {
-  <div xmlns="http://www.w3.org/1999/html" class="fx-row">
+  <div class="fx-row header-buttons-container">
     @if (breakpoint > breakpoints.MOBILE) {
       @if (searchType$ | async; as searchType) {
         @if (searchType !== searchTypes.DISPLACEMENT) {
@@ -71,64 +71,217 @@
             </div>
           </button>
         }
-        @if (searchType === searchTypes.DISPLACEMENT) {
-          <app-search-button></app-search-button>
-          <button class="spacing nav-icon-buttons" color="basic" mat-button>
-            <app-docs-modal
-              class="icon-description"
-              matTooltip="{{ 'DATASET_INFO' | translate }}"
-              description="description"
-              url="https://asf.alaska.edu/datasets/daac/opera/"
+        @if (
+          searchType === searchTypes.DISPLACEMENT &&
+          breakpoint === breakpoints.SMALL
+        ) {
+          <!-- Drawer wrapper for Displacement + SMALL breakpoint -->
+          <div
+            #panelWrapper
+            class="collapsed-panel-wrapper"
+            [class.expanded]="isHeaderExpanded"
+          >
+            <!-- Drawer tab handle (left side of drawer) -->
+            <button
+              class="drawer-tab"
+              (click)="toggleHeaderExpanded(); $event.stopPropagation()"
+              [attr.aria-expanded]="isHeaderExpanded"
+              aria-controls="displacement-panel"
+              [attr.aria-label]="
+                (isHeaderExpanded ? 'COLLAPSE_PANEL' : 'EXPAND_PANEL')
+                  | translate
+              "
+              matTooltip="{{
+                (isHeaderExpanded ? 'COLLAPSE_PANEL' : 'EXPAND_PANEL')
+                  | translate
+              }}"
             >
-            </app-docs-modal>
-            <div class="text-under faint-text" style="margin-top: -3px">
+              <mat-icon>{{
+                isHeaderExpanded ? 'chevron_right' : 'chevron_left'
+              }}</mat-icon>
+            </button>
+            <!-- Panel content (right side of drawer) -->
+            <div id="displacement-panel" class="collapsed-buttons-panel">
+              <app-search-button></app-search-button>
+              <button
+                class="spacing nav-icon-buttons nav-icon-buttons-raised panel-storymap-button"
+                color="basic"
+                mat-button
+                matTooltip="{{ 'STORYMAP' | translate }}"
+                (click)="onOpenStoryMap()"
+              >
+                <img
+                  src="assets/StoryMaps.png"
+                  alt="StoryMap"
+                  class="storymap-icon"
+                />
+                <div class="text-under faint-text text-adjust-storymap">
+                  {{ 'STORYMAP' | translate }}
+                  <mat-icon class="external-link-icon">open_in_new</mat-icon>
+                </div>
+              </button>
+              <button
+                class="spacing nav-icon-buttons nav-icon-buttons-raised panel-info-button"
+                color="basic"
+                mat-button
+                matTooltip="{{ 'DATASET_INFO' | translate }}"
+                (click)="onOpenOperaInfo()"
+              >
+                <mat-icon class="material-symbols-outlined large-icon"
+                  >description</mat-icon
+                >
+                <div class="text-under faint-text text-adjust-info">
+                  {{ 'INFO' | translate }}
+                  <mat-icon class="external-link-icon">open_in_new</mat-icon>
+                </div>
+              </button>
+              <button
+                [matMenuTriggerFor]="helpMenu"
+                matTooltip="{{ 'HELP_AND_INFORMATION' | translate }}"
+                class="spacing nav-icon-buttons"
+                color="basic"
+                mat-button
+              >
+                <mat-icon class="large-icon">help_outline</mat-icon>
+                <div class="text-under faint-text">
+                  {{ 'HELP' | translate }}
+                </div>
+              </button>
+              <button
+                [matMenuTriggerFor]="languageMenu"
+                matTooltip="{{ 'LANGUAGE' | translate }}"
+                class="spacing nav-icon-buttons disp-translate-button"
+                color="basic"
+                mat-button
+              >
+                <mat-icon class="large-icon">translate</mat-icon>
+                <div class="text-under faint-text">
+                  {{ language.getName() }}
+                </div>
+              </button>
+            </div>
+          </div>
+          <!-- Login/Profile always visible -->
+          <div #loginContainer class="login-button-container">
+            @if (!isLoggedIn) {
+              <button
+                (click)="onAccountButtonClicked()"
+                class="spacing nav-icon-buttons"
+                color="basic"
+                matTooltip="{{ 'LOGIN' | translate }}"
+                mat-button
+              >
+                <mat-icon class="large-icon">account_circle</mat-icon>
+                <div class="text-under faint-text">
+                  {{ 'SIGN_IN' | translate }}
+                </div>
+              </button>
+            } @else {
+              <button
+                [matMenuTriggerFor]="profileMenu"
+                class="spacing nav-icon-buttons"
+                color="basic"
+                matTooltip="{{ 'PROFILE' | translate }}"
+                mat-button
+              >
+                <mat-icon class="large-icon">account_circle</mat-icon>
+                <div class="text-under faint-text">{{ this.userAuth?.id }}</div>
+              </button>
+            }
+          </div>
+        }
+        @if (
+          searchType === searchTypes.DISPLACEMENT &&
+          breakpoint > breakpoints.SMALL
+        ) {
+          <!-- Normal Displacement buttons for MEDIUM and FULL breakpoints -->
+          <app-search-button class="disp-search-adjust"></app-search-button>
+          <button
+            class="spacing nav-icon-buttons disp-icon-adjust panel-storymap-button"
+            color="basic"
+            mat-button
+            matTooltip="{{ 'STORYMAP' | translate }}"
+            (click)="onOpenStoryMap()"
+          >
+            <img
+              src="assets/StoryMaps.png"
+              alt="StoryMap"
+              class="storymap-icon"
+            />
+            <div class="text-under faint-text text-adjust-storymap">
+              {{ 'STORYMAP' | translate }}
+              <mat-icon class="external-link-icon">open_in_new</mat-icon>
+            </div>
+          </button>
+          <button
+            class="spacing nav-icon-buttons disp-icon-adjust panel-info-button"
+            color="basic"
+            mat-button
+            matTooltip="{{ 'DATASET_INFO' | translate }}"
+            (click)="onOpenOperaInfo()"
+          >
+            <mat-icon class="material-symbols-outlined large-icon"
+              >description</mat-icon
+            >
+            <div class="text-under faint-text text-adjust-info">
               {{ 'INFO' | translate }}
+              <mat-icon class="external-link-icon">open_in_new</mat-icon>
             </div>
           </button>
         }
-        <button
-          [matMenuTriggerFor]="helpMenu"
-          matTooltip="{{ 'HELP_AND_INFORMATION' | translate }}"
-          class="spacing nav-icon-buttons"
-          color="basic"
-          mat-button
-        >
-          <mat-icon class="large-icon">help_outline</mat-icon>
-          <div class="text-under faint-text">{{ 'HELP' | translate }}</div>
-        </button>
-        <button
-          [matMenuTriggerFor]="languageMenu"
-          matTooltip="{{ 'LANGUAGE' | translate }}"
-          class="spacing nav-icon-buttons"
-          color="basic"
-          mat-button
-        >
-          <mat-icon class="large-icon">translate</mat-icon>
-          <div class="text-under faint-text">{{ language.getName() }}</div>
-        </button>
-        @if (!isLoggedIn) {
+        @if (
+          searchType !== searchTypes.DISPLACEMENT ||
+          breakpoint > breakpoints.SMALL
+        ) {
+          <!-- Help, Language, Login for non-Displacement OR Displacement with larger breakpoints -->
           <button
-            (click)="onAccountButtonClicked()"
+            [matMenuTriggerFor]="helpMenu"
+            matTooltip="{{ 'HELP_AND_INFORMATION' | translate }}"
             class="spacing nav-icon-buttons"
             color="basic"
-            matTooltip="{{ 'LOGIN' | translate }}"
             mat-button
           >
-            <mat-icon class="large-icon">account_circle</mat-icon>
-            <div class="text-under faint-text">{{ 'SIGN_IN' | translate }}</div>
+            <mat-icon class="large-icon">help_outline</mat-icon>
+            <div class="text-under faint-text">{{ 'HELP' | translate }}</div>
           </button>
-        }
-        @if (isLoggedIn) {
           <button
-            [matMenuTriggerFor]="profileMenu"
+            [matMenuTriggerFor]="languageMenu"
+            matTooltip="{{ 'LANGUAGE' | translate }}"
             class="spacing nav-icon-buttons"
+            [class.disp-translate-button]="
+              searchType === searchTypes.DISPLACEMENT
+            "
             color="basic"
-            matTooltip="{{ 'PROFILE' | translate }}"
             mat-button
           >
-            <mat-icon class="large-icon">account_circle</mat-icon>
-            <div class="text-under faint-text">{{ this.userAuth.id }}</div>
+            <mat-icon class="large-icon">translate</mat-icon>
+            <div class="text-under faint-text">{{ language.getName() }}</div>
           </button>
+          @if (!isLoggedIn) {
+            <button
+              (click)="onAccountButtonClicked()"
+              class="spacing nav-icon-buttons"
+              color="basic"
+              matTooltip="{{ 'LOGIN' | translate }}"
+              mat-button
+            >
+              <mat-icon class="large-icon">account_circle</mat-icon>
+              <div class="text-under faint-text">
+                {{ 'SIGN_IN' | translate }}
+              </div>
+            </button>
+          } @else {
+            <button
+              [matMenuTriggerFor]="profileMenu"
+              class="spacing nav-icon-buttons"
+              color="basic"
+              matTooltip="{{ 'PROFILE' | translate }}"
+              mat-button
+            >
+              <mat-icon class="large-icon">account_circle</mat-icon>
+              <div class="text-under faint-text">{{ this.userAuth?.id }}</div>
+            </button>
+          }
         }
       }
     }
@@ -193,8 +346,7 @@
         >
           account_circle
         </mat-icon>
-      }
-      @if (isLoggedIn) {
+      } @else {
         <mat-icon class="mobile-icon-spacing" [matMenuTriggerFor]="profileMenu">
           account_circle
         </mat-icon>
@@ -238,8 +390,7 @@
         <mat-icon>video_library</mat-icon>
         {{ 'VIDEO_TUTORIALS' | translate }}
       </div>
-    }
-    @if ((breakpoint$ | async) !== breakpoints.MOBILE) {
+    } @else {
       <div class="menu-item">
         <div class="menu-item-content">
           <div class="item-title">{{ 'WATCH_OUR_TUTORIALS' | translate }}</div>
@@ -265,8 +416,7 @@
         <mat-icon>menu_book</mat-icon>
         {{ 'VERTEX_USER_GUIDE' | translate }}
       </div>
-    }
-    @if ((breakpoint$ | async) !== breakpoints.MOBILE) {
+    } @else {
       <div class="menu-item">
         <div class="menu-item-content">
           <div class="item-title">{{ 'READ_OUR_USER_GUIDE' | translate }}</div>
@@ -293,8 +443,7 @@
         <mat-icon>book</mat-icon>
         {{ 'HY_P3_USER_GUIDE' | translate | titlecase }}
       </div>
-    }
-    @if ((breakpoint$ | async) !== breakpoints.MOBILE) {
+    } @else {
       <div class="menu-item">
         <div class="menu-item-content">
           <div class="item-title">
@@ -323,8 +472,7 @@
         <mat-icon>api</mat-icon>
         {{ 'ASF_SEARCH_API' | translate }}
       </div>
-    }
-    @if ((breakpoint$ | async) !== breakpoints.MOBILE) {
+    } @else {
       <div class="menu-item">
         <div class="menu-item-content">
           <div class="item-title">
@@ -357,8 +505,7 @@
         <mat-icon>language</mat-icon>
         {{ 'ASF_WEBSITE' | translate }}
       </div>
-    }
-    @if ((breakpoint$ | async) !== breakpoints.MOBILE) {
+    } @else {
       <div class="menu-item">
         <div class="menu-item-content">
           <div class="item-title">
@@ -386,8 +533,7 @@
         <mat-icon>language</mat-icon>
         {{ 'DEVELOPER' | translate }}
       </div>
-    }
-    @if ((breakpoint$ | async) !== breakpoints.MOBILE) {
+    } @else {
       <div class="menu-item">
         <div class="menu-item-content">
           <div class="item-title">

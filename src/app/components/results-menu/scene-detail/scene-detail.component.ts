@@ -31,13 +31,56 @@ import { ImageDialogComponent } from './image-dialog';
 import { DatasetForProductService } from '@services';
 import { PinnedProduct } from '@services/browse-map.service';
 import { Observable } from 'rxjs';
+import {
+  NgStyle,
+  NgClass,
+  AsyncPipe,
+  UpperCasePipe,
+  TitleCasePipe,
+} from '@angular/common';
+import {
+  MatCardHeader,
+  MatCardTitle,
+  MatCardSubtitle,
+  MatCardContent,
+} from '@angular/material/card';
+import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
+import { MatTooltip } from '@angular/material/tooltip';
+import { EventMetadataComponent } from '@components/shared/event-metadata/event-metadata.component';
+import { EventPolygonSliderComponent } from './event-polygon-slider/event-polygon-slider.component';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import { SceneMetadataComponent } from '@components/shared/scene-metadata/scene-metadata.component';
+import { MatIcon } from '@angular/material/icon';
+import { MatButton } from '@angular/material/button';
+import { ShortDatePipe } from '@pipes/short-date.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-scene-detail',
   templateUrl: './scene-detail.component.html',
   styleUrls: ['./scene-detail.component.scss'],
   providers: [DatasetForProductService],
-  standalone: false,
+  imports: [
+    MatCardHeader,
+    MatCardTitle,
+    CopyToClipboardComponent,
+    MatCardSubtitle,
+    MatTooltip,
+    MatCardContent,
+    EventMetadataComponent,
+    EventPolygonSliderComponent,
+    DocsModalComponent,
+    SceneMetadataComponent,
+    MatIcon,
+    NgStyle,
+    NgClass,
+    MatButton,
+    AsyncPipe,
+    UpperCasePipe,
+    TitleCasePipe,
+    ShortDatePipe,
+    TranslateModule,
+  ],
 })
 export class SceneDetailComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

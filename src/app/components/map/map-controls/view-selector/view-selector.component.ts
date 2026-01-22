@@ -6,6 +6,10 @@ import { AppState } from '@store';
 import * as mapStore from '@store/map';
 import * as searchStore from '@store/search';
 
+import { MatButton } from '@angular/material/button';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatIcon } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 import { MapViewType, SearchType } from '@models';
 
 // Declare GTM dataLayer array.
@@ -19,7 +23,15 @@ declare global {
   selector: 'app-view-selector',
   templateUrl: './view-selector.component.html',
   styleUrls: ['./view-selector.component.scss'],
-  standalone: false,
+  imports: [
+    MatButton,
+    MatMenuTrigger,
+
+    MatIcon,
+    MatMenu,
+    MatMenuItem,
+    TranslateModule,
+  ],
 })
 export class ViewSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
@@ -46,8 +58,11 @@ export class ViewSelectorComponent implements OnInit, OnDestroy {
         this.isDisplacementSearch = searchType === SearchType.DISPLACEMENT;
 
         // Auto-switch to equatorial view if switching to Displacement Search from a polar view
-        if (this.isDisplacementSearch &&
-            (this.view === MapViewType.ARCTIC || this.view === MapViewType.ANTARCTIC)) {
+        if (
+          this.isDisplacementSearch &&
+          (this.view === MapViewType.ARCTIC ||
+            this.view === MapViewType.ANTARCTIC)
+        ) {
           this.store$.dispatch(new mapStore.SetMapView(MapViewType.EQUATORIAL));
         }
       }),

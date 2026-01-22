@@ -1,4 +1,12 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  inject,
+  HostListener,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
 import { SubSink } from 'subsink';
 import { saveAs } from 'file-saver';
 
@@ -33,6 +41,15 @@ import {
 } from '@models';
 
 import { ThemePalette } from '@angular/material/core';
+import { AsyncPipe, TitleCasePipe } from '@angular/common';
+import { MatButton } from '@angular/material/button';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { MatBadge } from '@angular/material/badge';
+import { SearchButtonComponent } from '@components/shared/search-button/search-button.component';
+import { MatSuffix } from '@angular/material/input';
+import { TranslateModule } from '@ngx-translate/core';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -45,8 +62,20 @@ declare global {
   selector: 'app-header-buttons',
   templateUrl: './header-buttons.component.html',
   styleUrls: ['./header-buttons.component.scss'],
-  animations: [],
-  standalone: false,
+  imports: [
+    MatButton,
+    MatMenuTrigger,
+    MatTooltip,
+    MatIcon,
+    MatBadge,
+    MatMenu,
+    MatMenuItem,
+    SearchButtonComponent,
+    MatSuffix,
+    AsyncPipe,
+    TitleCasePipe,
+    TranslateModule,
+  ],
 })
 export class HeaderButtonsComponent implements OnInit, OnDestroy {
   authService = inject(AuthService);
@@ -81,6 +110,31 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
   public searchTypes = SearchType;
 
   public commitUrl = '';
+
+  public isHeaderExpanded = false;
+
+  @ViewChild('panelWrapper') panelWrapper: ElementRef<HTMLElement>;
+  @ViewChild('loginContainer') loginContainer: ElementRef<HTMLElement>;
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (!this.isHeaderExpanded) return;
+
+    const target = event.target as Node;
+
+    // Check if click is inside the panel wrapper (drawer-tab + buttons panel)
+    if (this.panelWrapper?.nativeElement.contains(target)) return;
+
+    // Check if click is inside the login container
+    if (this.loginContainer?.nativeElement.contains(target)) return;
+
+    // Click was outside both containers, collapse the panel
+    this.isHeaderExpanded = false;
+  }
+
+  public toggleHeaderExpanded(): void {
+    this.isHeaderExpanded = !this.isHeaderExpanded;
+  }
 
   ngOnInit() {
     this.subs.add(
@@ -206,6 +260,27 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     const url = this.asfWebsite.home;
     const analyticsEvent = {
       name: 'open-asf-web-site',
+      value: url,
+    };
+
+    this.openNewWindow(url, analyticsEvent);
+  }
+
+  public onOpenStoryMap(): void {
+    const url =
+      'https://storymaps.arcgis.com/collections/c52e34d6f5a34538a45a9c9c4dfbc3dc';
+    const analyticsEvent = {
+      name: 'open-storymap',
+      value: url,
+    };
+
+    this.openNewWindow(url, analyticsEvent);
+  }
+
+  public onOpenOperaInfo(): void {
+    const url = 'https://asf.alaska.edu/datasets/daac/opera/';
+    const analyticsEvent = {
+      name: 'open-opera-info',
       value: url,
     };
 

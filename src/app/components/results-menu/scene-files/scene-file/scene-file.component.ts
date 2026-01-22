@@ -26,18 +26,73 @@ import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import { SearchType } from '@models';
 import * as filterStore from '@store/filters';
+import {
+  MatListItem,
+  MatListItemIcon,
+  MatListItemTitle,
+  MatListItemMeta,
+  MatListItemLine,
+} from '@angular/material/list';
+import { AsyncPipe } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+import {
+  FaIconLibrary,
+  FontAwesomeModule,
+} from '@fortawesome/angular-fontawesome';
+import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
+import { MatIconButton } from '@angular/material/button';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatDialog } from '@angular/material/dialog';
+import {
+  ProjectNameDialogComponent,
+  ProjectNameDialogData,
+} from '@components/shared/project-name-dialog';
+import { DownloadFileButtonComponent } from '@components/shared/download-file-button/download-file-button.component';
+import { CartToggleComponent } from '@components/shared/cart-toggle/cart-toggle.component';
+import { Hyp3JobStatusBadgeComponent } from '@components/shared/hyp3-job-status-badge/hyp3-job-status-badge.component';
+import { TruncateModule } from '@yellowspot/ng-truncate';
+import { ReadableSizeFromBytesPipe } from '@pipes/readable-size-from-bytes.pipe';
+import { FullDatePipe } from '@pipes/short-date.pipe';
+import { TranslateModule } from '@ngx-translate/core';
+import { fas, faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-scene-file',
   templateUrl: './scene-file.component.html',
   styleUrls: ['./scene-file.component.scss'],
-  standalone: false,
+  imports: [
+    MatListItem,
+
+    MatListItemIcon,
+    MatIcon,
+    MatTooltip,
+    FontAwesomeModule,
+    MatListItemTitle,
+    CopyToClipboardComponent,
+    MatIconButton,
+    MatListItemMeta,
+    MatMenuTrigger,
+    MatMenu,
+
+    MatMenuItem,
+    MatListItemLine,
+    DownloadFileButtonComponent,
+    CartToggleComponent,
+    Hyp3JobStatusBadgeComponent,
+    AsyncPipe,
+    TruncateModule,
+    ReadableSizeFromBytesPipe,
+    FullDatePipe,
+    TranslateModule,
+  ],
 })
 export class SceneFileComponent implements OnInit, OnDestroy {
   private hyp3JobStatus = inject(Hyp3JobStatusService);
   private store$ = inject<Store<AppState>>(Store);
   env = inject(EnvironmentService);
   private onDemand = inject(OnDemandService);
+  private dialog = inject(MatDialog);
 
   @Input() product: models.CMRProduct;
   @Input() isQueued: boolean;
@@ -53,6 +108,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   @Output() unzip = new EventEmitter<models.CMRProduct>();
   @Output() closeProduct = new EventEmitter<models.CMRProduct>();
   @Output() queueHyp3Job = new EventEmitter<models.QueuedHyp3Job>();
+  @Output() renameJobProjectName = new EventEmitter<string>();
 
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = SearchType;
@@ -61,7 +117,12 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   public copyIcons = models.CopyIcons;
 
   private subs = new SubSink();
+  constructor() {
+    const library = inject(FaIconLibrary);
 
+    library.addIconPacks(fas);
+    library.addIcons(faSpinner);
+  }
   ngOnInit() {
     this.subs.add(
       of(this.product)
@@ -155,6 +216,25 @@ export class SceneFileComponent implements OnInit, OnDestroy {
     );
   }
 
+  public onEditProjectName(oldProjectName: string): void {
+    const dialogRef = this.dialog.open<
+      ProjectNameDialogComponent,
+      ProjectNameDialogData,
+      string
+    >(ProjectNameDialogComponent, {
+      width: '400px',
+      data: {
+        currentName: oldProjectName,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result !== undefined) {
+        this.renameJobProjectName.emit(result);
+      }
+    });
+  }
+
   private expirationDays(expiration_time: moment.Moment): number {
     const current = moment.utc();
 
@@ -175,8 +255,9 @@ export class SceneFileComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  public prodDownloaded(_product) {
-    // Do nothing
+  // Event handler required by template but no action needed
+  public prodDownloaded(_product: models.CMRProduct): void {
+    // Intentionally empty - event binding required but no action needed
   }
 
   public onSearchProduct() {

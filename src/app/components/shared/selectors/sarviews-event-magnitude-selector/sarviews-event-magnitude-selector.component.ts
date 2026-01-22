@@ -31,7 +31,6 @@ import { Breakpoints, SarviewsEventType } from '@models';
   selector: 'app-sarviews-event-magnitude-selector',
   templateUrl: './sarviews-event-magnitude-selector.component.html',
   styleUrls: ['./sarviews-event-magnitude-selector.component.scss'],
-  standalone: false,
 })
 export class SarviewsEventMagnitudeSelectorComponent
   implements OnInit, OnDestroy

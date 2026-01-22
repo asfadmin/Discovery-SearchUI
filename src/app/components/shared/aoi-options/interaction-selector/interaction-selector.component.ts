@@ -1,5 +1,8 @@
 import { Component, OnInit, ViewChild, OnDestroy, inject } from '@angular/core';
-import { MatButtonToggle } from '@angular/material/button-toggle';
+import {
+  MatButtonToggle,
+  MatButtonToggleGroup,
+} from '@angular/material/button-toggle';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
@@ -11,12 +14,28 @@ import { MapInteractionModeType, SearchType } from '@models';
 import * as services from '@services';
 import * as models from '@models';
 import * as searchStore from '@store/search';
+import { DrawSelectorComponent } from '../draw-selector/draw-selector.component';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { AsyncPipe } from '@angular/common';
+import { FileUploadDialogComponent } from '../file-upload/file-upload-dialog/file-upload-dialog.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-interaction-selector',
   templateUrl: './interaction-selector.component.html',
   styleUrls: ['./interaction-selector.component.scss'],
-  standalone: false,
+  imports: [
+    MatButtonToggleGroup,
+    DrawSelectorComponent,
+    MatButtonToggle,
+    MatTooltip,
+    MatIcon,
+
+    FileUploadDialogComponent,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class InteractionSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);

@@ -21,6 +21,22 @@ import {
 import { SubSink } from 'subsink';
 
 import * as models from '@models';
+import { NgClass, AsyncPipe } from '@angular/common';
+import { MatCard, MatCardSubtitle } from '@angular/material/card';
+import { ScenesListHeaderComponent } from '../scenes-list-header/scenes-list-header.component';
+import { ScenesListComponent } from '../scenes-list/scenes-list.component';
+import { SceneDetailComponent } from '../scene-detail/scene-detail.component';
+import {
+  MatButtonToggleGroup,
+  MatButtonToggle,
+} from '@angular/material/button-toggle';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/on-demand-add-menu.component';
+import { MatButton } from '@angular/material/button';
+import { BaselineChartComponent } from '../../baseline-chart/baseline-chart.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 enum CardViews {
   LIST = 0,
@@ -34,7 +50,26 @@ enum CardViews {
     './baseline-results-menu.component.scss',
     '../results-menu.component.scss',
   ],
-  standalone: false,
+  imports: [
+    MatCard,
+    MatCardSubtitle,
+    ScenesListHeaderComponent,
+    ScenesListComponent,
+    SceneDetailComponent,
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    MatTooltip,
+    MatIcon,
+    MatMenuTrigger,
+    OnDemandAddMenuComponent,
+    MatMenu,
+    MatMenuItem,
+    MatButton,
+    NgClass,
+    BaselineChartComponent,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class BaselineResultsMenuComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
