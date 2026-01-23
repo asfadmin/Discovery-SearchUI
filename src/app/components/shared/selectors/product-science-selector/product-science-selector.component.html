@@ -12,7 +12,7 @@
         @for (group of sciProdGroups; track group) {
           @if (group.name === 'Level-3' || group.name === 'Level-2') {
             <mat-optgroup
-              [label]="group.name"
+              label="{{ group.label | translate }}"
               [disabled]="group.disabled"
               class="sci-prod-optgroup"
             >
@@ -24,16 +24,13 @@
             </mat-optgroup>
           }
         }
-        <span class="sci-prod-recommended faint-text"
-          >*{{ 'RECOMMENDED_PRODUCT' | translate }}</span
-        >
       </div>
 
       <div class="sci-prod-filter-flex-item">
         @for (group of sciProdGroups; track group) {
           @if (group.name === 'Level-1' || group.name === 'Level-0') {
             <mat-optgroup
-              [label]="group.name"
+              label="{{ group.label | translate }}"
               [disabled]="group.disabled"
               class="sci-prod-optgroup"
             >
