@@ -149,7 +149,7 @@ export class AuthService {
           return this.makeUser(
             user['urs-user-id'],
             user['urs-groups'],
-            user['token'],
+            user['urs-access-token'],
             user['exp'],
           );
         }),
