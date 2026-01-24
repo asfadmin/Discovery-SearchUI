@@ -27,7 +27,7 @@ export interface Dataset {
 
   calibrationDatasets?: string[];
   calibrationProductTypes?: ProductType[];
-  shortNames?: ShortName[]; // For NISAR shortnames
+  shortNames?: string[]; // For NISAR shortnames
   instruments?: { displayName: string; apiValue: string }[];
   bandwidth?: Record<string, string[]>;
   frameMap?: {

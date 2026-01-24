@@ -1,15 +1,15 @@
 import {
   Component,
-  OnInit,
+  //   OnInit,
   Output,
   EventEmitter,
   OnDestroy,
-  inject,
+  //   inject,
 } from '@angular/core';
 import * as models from '@models';
-import * as filtersStore from '@store/filters';
-import { Store } from '@ngrx/store';
-import { AppState } from '@store';
+// import * as filtersStore from '@store/filters';
+// import { Store } from '@ngrx/store';
+// import { AppState } from '@store';
 import { SubSink } from 'subsink';
 import {
   MatSelectChange,
@@ -35,34 +35,34 @@ import { TranslateModule } from '@ngx-translate/core';
     TranslateModule,
   ],
 })
-export class ShortNameSelectorComponent implements OnInit, OnDestroy {
-  private store$ = inject<Store<AppState>>(Store);
+export class ShortNameSelectorComponent implements OnDestroy {
+  //   private store$ = inject<Store<AppState>>(Store);
 
   @Output() shortNamesChange = new EventEmitter<models.DatasetShortName>();
   public dataset: models.Dataset;
   public shortNamesList: string[] = [];
   public selectableShortNames: models.ShortName[] = [];
 
-  private dataset$ = this.store$.select(filtersStore.getSelectedDataset);
+  //   private dataset$ = this.store$.select(filtersStore.getSelectedDataset);
 
   private subs = new SubSink();
 
-  ngOnInit(): void {
-    this.subs.add(
-      this.dataset$.subscribe((dataset) => {
-        this.dataset = dataset;
-        this.selectableShortNames = dataset?.shortNames ?? [];
-      }),
-    );
-    this.subs.add(
-      this.store$
-        .select(filtersStore.getShortNames)
-        .subscribe(
-          (shortNamesList) =>
-            (this.shortNamesList = shortNamesList.map((val) => val.apiValue)),
-        ),
-    );
-  }
+  //   ngOnInit(): void {
+  // this.subs.add(
+  //   this.dataset$.subscribe((dataset) => {
+  //     this.dataset = dataset;
+  //     this.selectableShortNames = dataset?.shortNames ?? [];
+  //   }),
+  // );
+  // this.subs.add(
+  //   this.store$
+  //     .select(filtersStore.getShortNames)
+  //     .subscribe(
+  //       (shortNamesList) =>
+  //         (this.shortNamesList = shortNamesList.map((val) => val.apiValue)),
+  //     ),
+  // );
+  //   }
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
@@ -73,11 +73,11 @@ export class ShortNameSelectorComponent implements OnInit, OnDestroy {
     this.emitShortNames(shortNameAPIValues);
   }
 
-  public emitShortNames(shortNameAPIValues: string[]): void {
-    const shortNames = this.dataset?.shortNames ?? [];
-    const output = shortNameAPIValues.map((shortName) =>
-      shortNames.find((datasetType) => datasetType.apiValue === shortName),
-    );
-    this.shortNamesChange.emit(output);
+  public emitShortNames(_shortNameAPIValues: string[]): void {
+    // const shortNames = this.dataset?.shortNames ?? [];
+    // const output = shortNameAPIValues.map((shortName) =>
+    //   shortNames.find((datasetType) => datasetType.apiValue === shortName),
+    // );
+    // this.shortNamesChange.emit(output);
   }
 }

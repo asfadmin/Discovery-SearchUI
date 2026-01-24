@@ -83,6 +83,16 @@ export class SearchParamsService {
   //     ({dataset: models.opera_s1.calibrationDatasets}) : ({}))
   // )
 
+  private useNisarShortnames$ = this.store$
+    .select(filterStore.getSelectedDatasetId)
+    .pipe(
+      map((dataset) =>
+        dataset === models.nisar.id
+          ? { shortName: models.nisar.shortNames }
+          : {},
+      ),
+    );
+
   private groupID$ = this.store$.select(filterStore.getGroupID).pipe(
     map((groupid) => ({
       groupid,
@@ -305,6 +315,7 @@ export class SearchParamsService {
     this.burstParams$,
     this.operaBurstParams$,
     // this.operaCalibrationParam$,
+    this.useNisarShortnames$,
     this.sciProducts$,
     this.groupID$,
   ]).pipe(
