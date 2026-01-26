@@ -61,7 +61,6 @@ export class BrowseOverlayService {
             datasetID === 'SENTINEL-1' ||
             datasetID === 'SENTINEL-1 INTERFEROGRAM (BETA)' ||
             datasetID === 'UAVSAR' ||
-            datasetID === 'NISAR' ||
             datasetID === 'OPERA-S1'
           );
         case models.SearchType.SARVIEWS_EVENTS:
@@ -73,8 +72,7 @@ export class BrowseOverlayService {
             selectedScene?.dataset === 'Sentinel-1B' ||
             selectedScene?.dataset === 'Sentinel-1C' ||
             selectedScene?.dataset === 'Sentinel-1 Interferogram (BETA)' ||
-            selectedScene?.dataset === 'UAVSAR' ||
-            selectedScene?.dataset === 'NISAR'
+            selectedScene?.dataset === 'UAVSAR'
           );
         case models.SearchType.CUSTOM_PRODUCTS:
           return true;

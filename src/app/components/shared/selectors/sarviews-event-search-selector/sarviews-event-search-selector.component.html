@@ -17,7 +17,7 @@
   >
     @for (event of filteredEvents$ | async; track event) {
       <mat-option [value]="event.description">
-        <div matTooltip="event description, id, or type">
+        <div matTooltip="{{ 'EVENT_DESCRIPTION_ID_TYPE' | translate }}">
           @if (!!event.description) {
             <span>
               {{ event.description }}

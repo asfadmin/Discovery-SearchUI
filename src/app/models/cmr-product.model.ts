@@ -78,7 +78,7 @@ export interface CMRProductMetadata {
   additionalUrls?: string[] | null;
   s3URI?: string;
   s3Urls?: string[] | null;
-  fileSizes?: {} | null;
+  fileSizes?: Record<string, { bytes: number }> | null;
   parentID: string;
 
   // ARIA S1 GUNW
@@ -110,6 +110,7 @@ export interface NISARMetadata {
   jointObservation: string;
   sideBandPolarization: string;
   mainBandPolarization: string;
+  crid: string | null;
   rangeBandwidth: string;
   sizeMB?: Record<string, { bytes: number; format: string }>;
 }

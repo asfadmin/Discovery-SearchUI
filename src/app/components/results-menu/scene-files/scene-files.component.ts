@@ -367,6 +367,20 @@ export class SceneFilesComponent
     this.store$.dispatch(new queueStore.AddJob(job));
   }
 
+  public onRenameJobProjectName(
+    product: models.CMRProduct,
+    newProjectName: string,
+  ) {
+    const job = product.metadata.job;
+    this.hyp3.updateJobName$(job.job_id, newProjectName).subscribe((job) => {
+      const action = new scenesStore.UpdateProductWithNewProjectName({
+        productId: product.id,
+        name: job.name,
+      });
+      this.store$.dispatch(action);
+    });
+  }
+
   public formatProductName(product_name: string, desiredLen?: number) {
     const extrasWidthPx = 260;
     const charWidthPx = 10;

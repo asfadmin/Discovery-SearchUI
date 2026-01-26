@@ -237,8 +237,6 @@
           <b>{{ 'FRAME_COVERAGE' | translate }} </b> •
           {{ scene.metadata.nisar?.frameCoverage }}
         </span>
-      </li>
-      <li>
         @if (isGeoSearch()) {
           <mat-icon
             [matMenuTriggerFor]="setFrameCoverageMenu"
@@ -410,10 +408,16 @@
         {{ scene.metadata.stackSize }}
       </li>
     }
-    @if (hasValue(scene.metadata.pgeVersion)) {
+    @if (hasValue(scene.metadata.pgeVersion) && dataset?.id !== 'NISAR') {
       <li class="detail-item-margin">
         <b> {{ 'PGE_VERSION' | translate }} </b> •
         {{ scene.metadata.pgeVersion }}
+      </li>
+    }
+    @if (hasValue(scene.metadata.nisar?.crid)) {
+      <li class="detail-item-margin">
+        <b> {{ 'CRID' | translate }} </b> •
+        {{ scene.metadata.nisar?.crid }}
       </li>
     }
     @if (
