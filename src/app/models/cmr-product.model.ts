@@ -110,6 +110,7 @@ export interface NISARMetadata {
   jointObservation: string;
   sideBandPolarization: string;
   mainBandPolarization: string;
+  crid: string | null;
   rangeBandwidth: string;
   sizeMB?: Record<string, { bytes: number; format: string }>;
 }
