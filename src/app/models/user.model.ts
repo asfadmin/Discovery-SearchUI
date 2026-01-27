@@ -4,6 +4,7 @@ export interface UserAuth {
   id: string | null;
   token: string | null;
   groups: URSGroup[];
+  exp: number;
 }
 
 export interface UserProfile {
