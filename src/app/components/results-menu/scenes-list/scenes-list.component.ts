@@ -45,6 +45,7 @@ import { SceneComponent } from './scene/scene.component';
 import { MatButton } from '@angular/material/button';
 import { SarviewsEventComponent } from './sarview-event/sarviews-event.component';
 import { PairComponent } from './pair/pair.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 const INFINITY = 2e10;
 
@@ -67,6 +68,7 @@ const INFINITY = 2e10;
     PairComponent,
     AsyncPipe,
     SlicePipe,
+    TranslateModule,
   ],
 })
 export class ScenesListComponent

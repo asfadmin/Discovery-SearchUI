@@ -9,6 +9,7 @@ import { WktService } from './wkt.service';
 
 import * as models from '@models';
 import { NotificationService } from './notification.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +19,7 @@ export class PolygonValidationService {
   private asfApiService = inject(AsfApiService);
   private wktService = inject(WktService);
   private notificationService = inject(NotificationService);
+  private translateService = inject(TranslateService);
 
   private polygons = new Set<string>([]);
   private isUpdatedFromRepair = false;
@@ -70,7 +72,11 @@ export class PolygonValidationService {
     const { report } = error;
 
     this.mapService.setDrawStyle(models.DrawPolygonStyle.INVALID);
-    this.notificationService.info(report, 'Invalid Polygon', { timeOut: 4000 });
+    this.notificationService.info(
+      report,
+      this.translateService.instant('INVALID_POLYGON'),
+      { timeOut: 4000 },
+    );
   }
 
   private setValidPolygon(resp) {
