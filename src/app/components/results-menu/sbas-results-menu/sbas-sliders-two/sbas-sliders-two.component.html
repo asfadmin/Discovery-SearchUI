@@ -28,12 +28,12 @@
       [color]="colorControl.value"
       [style.width.px]="125"
     >
-      <mat-label>Meters</mat-label>
+      <mat-label>{{ 'METERS' | translate }}</mat-label>
       <input
         #meterInputField
         [(ngModel)]="perpendicular"
         matInput
-        placeholder="Meters"
+        [placeholder]="'METERS' | translate"
         type="number"
         pattern="[0-9]*"
         min="-999"
@@ -57,7 +57,7 @@
       <input
         [(ngModel)]="daysRange.start"
         matInput
-        placeholder="daysRange.start"
+        [placeholder]="'MIN_DAYS' | translate"
         type="number"
         pattern="[0-9]*"
         min="0"
@@ -81,7 +81,7 @@
       <input
         [(ngModel)]="daysRange.end"
         matInput
-        placeholder="daysRange.end"
+        [placeholder]="'MAX_DAYS' | translate"
         type="number"
         pattern="[0-9]*"
         min="0"

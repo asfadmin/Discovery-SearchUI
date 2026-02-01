@@ -2,7 +2,7 @@
   <ul class="scene-metadata">
     @if (scene.isDummyProduct) {
       <li>
-        <b>Loading Metadata...</b>
+        <b>{{ 'LOADING_METADATA' | translate }}</b>
       </li>
     }
     @if (scene.metadata.perpendicular !== null) {
@@ -78,7 +78,7 @@
     @if (!!scene.metadata?.opera?.validityStartDate) {
       <li>
         <span class="v-mid">
-          <b>{{ 'Validity Start Date' }}</b> •
+          <b>{{ 'VALIDITY_START_DATE' | translate }}</b> •
           {{ scene.metadata.opera.validityStartDate | shortDateTime }}
         </span>
         @if (isGeoSearch()) {
@@ -432,7 +432,7 @@
         }
         <mat-menu #addOperaBurstMenu="matMenu">
           <button (click)="setOperaBurst()" mat-menu-item>
-            Add OPERA burst ID to search
+            {{ 'ADD_OPERA_BURST_ID_TO_SEARCH' | translate }}
           </button>
         </mat-menu>
       </li>
@@ -451,7 +451,7 @@
         }
         <mat-menu #addFullBurstMenu="matMenu">
           <button (click)="setFullBurst()" mat-menu-item>
-            Add full burst id to search
+            {{ 'ADD_FULL_BURST_ID_TO_SEARCH' | translate }}
           </button>
         </mat-menu>
       </li>

@@ -59,6 +59,7 @@ export class ConfirmationComponent implements OnInit {
   hyp3JobService = inject(services.Hyp3JobService);
   private store$ = inject<Store<AppState>>(Store);
   private notificationService = inject(services.NotificationService);
+  private language = inject(services.AsfLanguageService);
   data = inject<models.ConfirmationDialogData>(MAT_DIALOG_DATA);
 
   public allJobs: models.QueuedHyp3Job[] = [];
@@ -148,8 +149,8 @@ export class ConfirmationComponent implements OnInit {
                     resp.error.detail === 'Provided apikey is not valid'
                   ) {
                     this.notificationService.error(
-                      'Your authorization has expired. Please sign in again.',
-                      'Error',
+                      this.language.translate.instant('AUTHORIZATION_EXPIRED'),
+                      this.language.translate.instant('ERROR'),
                       {
                         timeOut: 0,
                         extendedTimeOut: 0,
@@ -157,7 +158,7 @@ export class ConfirmationComponent implements OnInit {
                       },
                     );
                   } else {
-                    this.notificationService.error(resp.error.detail, 'Error', {
+                    this.notificationService.error(resp.error.detail, this.language.translate.instant('ERROR'), {
                       timeOut: 0,
                       extendedTimeOut: 0,
                       closeButton: true,

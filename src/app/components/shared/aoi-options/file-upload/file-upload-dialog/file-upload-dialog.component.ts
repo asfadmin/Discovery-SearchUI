@@ -7,6 +7,7 @@ import { SubSink } from 'subsink';
 
 import {
   AsfApiService,
+  AsfLanguageService,
   NotificationService,
   MapService,
   WktService,
@@ -52,6 +53,7 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
   private wktService = inject(WktService);
   private screenSize = inject(ScreenSizeService);
   private store$ = inject<Store<AppState>>(Store);
+  private language = inject(AsfLanguageService);
 
   @ViewChild('file', { static: true }) file;
 
@@ -74,14 +76,14 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
           tap((error) => {
             if (error === FileErrors.INVALID_TYPE) {
               this.notificationService.error(
-                `Invalid File Type`,
-                'File Error',
+                this.language.translate.instant('INVALID_FILE_TYPE'),
+                this.language.translate.instant('FILE_ERROR'),
                 { timeOut: 5000 },
               );
             } else if (error === FileErrors.TOO_LARGE) {
               this.notificationService.error(
-                `File is too large (over 10MB)`,
-                'File Error',
+                this.language.translate.instant('FILE_TOO_LARGE'),
+                this.language.translate.instant('FILE_ERROR'),
                 { timeOut: 5000 },
               );
             }
@@ -150,11 +152,11 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
           catchError((error: HttpErrorResponse) => {
             if (error.status !== 0) {
               return of({
-                errors: [{ report: 'Error loading files', type: 'Error' }],
+                errors: [{ report: this.language.translate.instant('ERROR_LOADING_FILES'), type: this.language.translate.instant('ERROR') }],
               });
             } else {
               return of({
-                errors: [{ report: 'File upload timeout', type: 'Error' }],
+                errors: [{ report: this.language.translate.instant('FILE_UPLOAD_TIMEOUT'), type: this.language.translate.instant('ERROR') }],
               });
             }
           }),
@@ -176,8 +178,8 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
           },
           (_) => {
             this.notificationService.error(
-              'Error loading geospatial file',
-              'File Error',
+              this.language.translate.instant('ERROR_LOADING_GEOSPATIAL_FILE'),
+              this.language.translate.instant('FILE_ERROR'),
               { timeOut: 3000 },
             );
             // return
@@ -215,8 +217,8 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
     if (this.isValidFileType(fileName)) {
       this.files.add(file);
       this.notificationService.info(
-        `Importing '${file.name}'...`,
-        'AOI Import',
+        `${this.language.translate.instant('IMPORTING')} '${file.name}'...`,
+        this.language.translate.instant('AOI_IMPORT'),
         { timeOut: 5000 },
       );
     } else {

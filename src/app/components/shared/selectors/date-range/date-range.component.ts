@@ -24,7 +24,7 @@ import {
   MatDatepicker,
 } from '@angular/material/datepicker';
 import { DateAdapter } from '@angular/material/core';
-import { NotificationService, ScreenSizeService } from '@services';
+import { AsfLanguageService, NotificationService, ScreenSizeService } from '@services';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
@@ -63,6 +63,7 @@ export class DateRangeComponent implements OnInit, OnDestroy {
   private dateAdapter = inject<DateAdapter<any>>(DateAdapter);
   private screenSize = inject(ScreenSizeService);
   private store$ = inject<Store<AppState>>(Store);
+  private language = inject(AsfLanguageService);
 
   public dateRangeForm = new UntypedFormGroup({
     StartDateControl: new UntypedFormControl(),
@@ -220,7 +221,7 @@ export class DateRangeComponent implements OnInit, OnDestroy {
             control,
           })),
           tap(({ name, control }) => {
-            this.notificationService.error('', 'Not a valid date');
+            this.notificationService.error('', this.language.translate.instant('NOT_A_VALID_DATE'));
             this.onSetErrorState(name, false);
             this.onSetError(control);
           }),

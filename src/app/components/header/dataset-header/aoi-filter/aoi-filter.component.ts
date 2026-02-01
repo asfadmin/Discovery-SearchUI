@@ -52,6 +52,7 @@ export class AoiFilterComponent implements OnInit, OnDestroy {
   private mapService = inject(services.MapService);
   private clipboard = inject(ClipboardService);
   private notificationService = inject(services.NotificationService);
+  private language = inject(services.AsfLanguageService);
 
   @ViewChild('polygonForm') public polygonForm: NgForm;
 
@@ -128,7 +129,7 @@ export class AoiFilterComponent implements OnInit, OnDestroy {
 
   public onCopy(): void {
     this.clipboard.copyFromContent(this.polygon);
-    this.notificationService.info('Copied to clipboard');
+    this.notificationService.info(this.language.translate.instant('COPIED_TO_CLIPBOARD'));
   }
 
   private handleAOIErrors(): void {
