@@ -12,6 +12,7 @@ import * as userStore from '@store/user';
 
 import * as models from '@models';
 import { NotificationService } from './notification.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +22,7 @@ export class AuthService {
   private http = inject(HttpClient);
   private notificationService = inject(NotificationService);
   private store$ = inject<Store<AppState>>(Store);
+  private translateService = inject(TranslateService);
 
   private bc: BroadcastChannel;
   constructor() {
@@ -90,9 +92,11 @@ export class AuthService {
         return user;
       }),
       catchError((_) => {
-        this.notificationService.error('Trouble logging in', 'Error', {
-          timeOut: 5000,
-        });
+        this.notificationService.error(
+          this.translateService.instant('TROUBLE_LOGGING_IN'),
+          this.translateService.instant('ERROR'),
+          { timeOut: 5000 },
+        );
         loginWindowClosed.next();
         return of(null);
       }),
@@ -115,9 +119,11 @@ export class AuthService {
           return this.getUser();
         }),
         catchError((_) => {
-          this.notificationService.error('Trouble logging out', 'Error', {
-            timeOut: 5000,
-          });
+          this.notificationService.error(
+            this.translateService.instant('TROUBLE_LOGGING_OUT'),
+            this.translateService.instant('ERROR'),
+            { timeOut: 5000 },
+          );
           return of(this.getUser());
         }),
         take(1),

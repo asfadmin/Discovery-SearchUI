@@ -4,6 +4,7 @@ import { Banner } from '@models';
 import { MatDialog } from '@angular/material/dialog';
 import { BannerDialogComponent } from '@components/map/banners/banner-dialog/banner-dialog.component';
 import {} from '@angular/common';
+import { TranslateService } from '@ngx-translate/core';
 
 export interface DialogData {
   title: string;
@@ -12,6 +13,7 @@ export interface DialogData {
 @Directive({ selector: '[bannerCreate]' })
 export class BannerCreateDirective implements OnInit {
   private toastr = inject(ToastrService);
+  private translateService = inject(TranslateService);
   dialog = inject(MatDialog);
 
   @Input() bannerCreate: Banner;
@@ -20,7 +22,6 @@ export class BannerCreateDirective implements OnInit {
   public toastRef;
   public maxMsgLength = 150;
   public msgOverflow = false;
-  public moreMsg = ' <a>[MORE]</a>';
   public overrides = {
     enableHtml: true,
     closeButton: true,
@@ -41,6 +42,8 @@ export class BannerCreateDirective implements OnInit {
     const title: string = this.bannerCreate.name;
     const type: string = this.bannerCreate.type;
     let toast: ActiveToast<any>;
+    const moreText = this.translateService.instant('MORE');
+    const moreMsg = ` <a>[${moreText}]</a>`;
 
     let msg: string = this.bannerCreate.text.substring(0, this.maxMsgLength);
 
@@ -54,10 +57,10 @@ export class BannerCreateDirective implements OnInit {
       lines[1].length <= this.maxMsgLength;
 
     if (oneLiner) {
-      msg = `${lines[0].trim()}${this.moreMsg}`;
+      msg = `${lines[0].trim()}${moreMsg}`;
     } else {
       if (this.msgOverflow) {
-        msg = `${msg.trim()}...${this.moreMsg}`;
+        msg = `${msg.trim()}...${moreMsg}`;
       }
     }
 
