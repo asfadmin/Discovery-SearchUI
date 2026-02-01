@@ -2,7 +2,6 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { UserActionType, UserActions } from './user.action';
 import * as models from '@models';
-import jwt_decode from 'jwt-decode';
 /* State */
 
 export interface UserState {
@@ -20,6 +19,7 @@ export const initState: UserState = {
     id: null,
     token: null,
     groups: [],
+    exp: null,
   },
   profile: {
     defaultDataset: 'SENTINEL-1',
@@ -62,6 +62,7 @@ export function userReducer(state = initState, action: UserActions): UserState {
           id: null,
           token: null,
           groups: [],
+          exp: null,
         },
       };
     }
@@ -263,11 +264,7 @@ export const getIsUserLoggedIn = createSelector(
 export const getUserEDLToken = createSelector(
   getUserState,
   (state: UserState) => {
-    if (state.auth.token) {
-      const decoded = jwt_decode(state.auth.token);
-      return decoded['urs-access-token'] ?? null;
-    }
-    return null;
+    return state.auth.token ?? null;
   },
 );
 
