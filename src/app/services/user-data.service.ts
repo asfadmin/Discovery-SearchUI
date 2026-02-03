@@ -1,20 +1,11 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { EnvironmentService } from './environment.service';
 import { UserAuth } from '@models';
 import { NotificationService } from './notification.service';
-
-interface UserInfo {
-  uid: string;
-  first_name: string;
-  last_name: string;
-  country: string;
-  email_address: string;
-  organization: string;
-}
 
 @Injectable({
   providedIn: 'root',
@@ -26,11 +17,13 @@ export class UserDataService {
 
   private baseUrl = this.getBaseUrlFrom();
 
-  public getUserInfo$(_userAuth: UserAuth): Observable<UserInfo> {
-    const url = this.getUserInfoURL(this.baseUrl);
+  public getUserInfo$<T>(userAuth: UserAuth): Observable<T> {
+    const url = this.getUserInfoURL(this.baseUrl, userAuth.id);
+    const headers = this.makeAuthHeader(userAuth.token);
+
     return this.http
-      .get<UserInfo>(url, {
-        withCredentials: true,
+      .get<T>(url, {
+        headers,
       })
       .pipe(
         catchError((error) => {
@@ -55,11 +48,12 @@ export class UserDataService {
     userAuth: UserAuth,
     attribute: string,
   ): Observable<T> {
-    const url = this.makeEndpoint(this.baseUrl, userAuth?.id, attribute);
+    const url = this.makeEndpoint(this.baseUrl, userAuth.id, attribute);
+    const headers = this.makeAuthHeader(userAuth.token);
 
     return this.http
       .get<T>(url, {
-        withCredentials: true,
+        headers,
       })
       .pipe(
         catchError((error) => {
@@ -85,11 +79,12 @@ export class UserDataService {
     attribute: string,
     value: T,
   ): Observable<any> {
-    const url = this.makeEndpoint(this.baseUrl, userAuth?.id, attribute);
+    const url = this.makeEndpoint(this.baseUrl, userAuth.id, attribute);
+    const headers = this.makeAuthHeader(userAuth.token);
 
     return this.http
       .post(url, value, {
-        withCredentials: true,
+        headers,
       })
       .pipe(
         catchError((_) => {
@@ -114,10 +109,14 @@ export class UserDataService {
     return `${baseUrl}/vertex/${userId}/${attributeName}`;
   }
 
+  private makeAuthHeader(token: string): HttpHeaders {
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  }
+
   private getBaseUrlFrom(): string {
     return this.env.currentEnv.user_data;
   }
-  public getUserInfoURL(baseUrl: string): string {
-    return `${baseUrl}/info/`;
+  public getUserInfoURL(baseUrl: string, userId: string): string {
+    return `${baseUrl}/vertex/${userId}/`;
   }
 }

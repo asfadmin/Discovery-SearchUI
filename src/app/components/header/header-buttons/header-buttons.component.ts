@@ -26,7 +26,6 @@ import {
   AsfApiService,
   EnvironmentService,
   ScreenSizeService,
-  UserDataService,
 } from '@services';
 import {
   CMRProduct,
@@ -80,7 +79,6 @@ declare global {
 })
 export class HeaderButtonsComponent implements OnInit, OnDestroy {
   authService = inject(AuthService);
-  userData = inject(UserDataService);
   env = inject(EnvironmentService);
   private http = inject(HttpClient);
   asfApiService = inject(AsfApiService);
@@ -140,9 +138,9 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subs.add(
-      this.store$.select(userStore.getUserAuth).subscribe((user) => {
-        this.userAuth = user;
-      }),
+      this.store$
+        .select(userStore.getUserAuth)
+        .subscribe((user) => (this.userAuth = user)),
     );
 
     this.subs.add(
