@@ -2,19 +2,12 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { interval, Subject, Observable, of } from 'rxjs';
-import {
-  map,
-  takeUntil,
-  take,
-  catchError,
-  filter,
-  switchMap,
-  retry,
-} from 'rxjs/operators';
+import { map, takeUntil, take, filter, catchError } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 
 import { EnvironmentService } from './environment.service';
+import jwt_decode from 'jwt-decode';
 import * as userStore from '@store/user';
 
 import * as models from '@models';
@@ -28,25 +21,18 @@ export class AuthService {
   private http = inject(HttpClient);
   private notificationService = inject(NotificationService);
   private store$ = inject<Store<AppState>>(Store);
-  private existingUserInfo: models.UserAuth = null;
 
   private bc: BroadcastChannel;
   constructor() {
     if (typeof BroadcastChannel !== 'undefined') {
       this.bc = new BroadcastChannel('asf-vertex');
       this.bc.onmessage = (_event: MessageEvent) => {
-        this.getUser()
-          .pipe(
-            take(1),
-            map((user) => {
-              if (!user?.id) {
-                this.store$.dispatch(new userStore.Logout());
-              } else {
-                this.store$.dispatch(new userStore.Login(user));
-              }
-            }),
-          )
-          .subscribe();
+        const user = this.getUser();
+        if (!user.id) {
+          this.store$.dispatch(new userStore.Logout());
+        } else {
+          this.store$.dispatch(new userStore.Login(user));
+        }
       };
     }
   }
@@ -79,25 +65,29 @@ export class AuthService {
     );
 
     const loginWindowClosed = new Subject<void>();
+
     return interval(500).pipe(
       takeUntil(loginWindowClosed),
-      switchMap((_) => {
+      map((_) => {
+        let user = null;
+
         if (loginWindow.closed) {
           loginWindowClosed.next();
-          return this.getUser();
         }
+
         try {
           if (loginWindow.location.host === window.location.host) {
             loginWindow.close();
+            user = this.getUser();
             this.bc.postMessage({
               event: 'login',
             });
-            return this.getUser();
           }
         } catch (_e) {
           // Do nothing
         }
-        return of(null);
+
+        return user;
       }),
       catchError((_) => {
         this.notificationService.error('Trouble logging in', 'Error', {
@@ -113,7 +103,7 @@ export class AuthService {
 
   public logout$(): Observable<models.UserAuth> {
     return this.http
-      .get(`${this.authUrl}/logout`, {
+      .get(`${this.authUrl}/loginservice/logout`, {
         responseType: 'text',
         withCredentials: true,
       })
@@ -122,65 +112,70 @@ export class AuthService {
           this.bc.postMessage({
             event: 'logout',
           });
-          return this.existingUserInfo;
+          return this.getUser();
         }),
         catchError((_) => {
-          // For now this always throws a CORS error, but it does still logout successfully
-          // this.notificationService.error('Trouble logging out', 'Error', {
-          //   timeOut: 5000,
-          // });
-          return of(this.existingUserInfo);
+          this.notificationService.error('Trouble logging out', 'Error', {
+            timeOut: 5000,
+          });
+          return of(this.getUser());
         }),
         take(1),
       );
   }
 
-  public getUser(): Observable<models.UserAuth | null> {
-    return this.http
-      .get<models.UserAuth>(`${this.env.currentEnv.user_data}/info/cookie`, {
-        withCredentials: true,
-      })
-      .pipe(
-        retry({
-          count: 3,
-          delay: 100,
-        }),
-        map((user) => {
-          return this.makeUser(
-            user['urs-user-id'],
-            user['urs-groups'],
-            user['urs-access-token'],
-            user['exp'],
+  public getUser(): models.UserAuth {
+    const cookies = this.loadCookies();
+    const token = cookies['asf-urs'];
+
+    if (!token) {
+      return this.nullUser();
+    }
+    try {
+      const user = jwt_decode(token);
+
+      if (this.isExpired(user)) {
+        return this.nullUser();
+      }
+
+      setTimeout(
+        () => {
+          this.store$.dispatch(new userStore.Logout());
+          this.notificationService.info(
+            'Session Expired',
+            'Please login again',
           );
-        }),
-        map((final) => {
-          this.existingUserInfo = final;
-          setTimeout(
-            () => {
-              this.store$.dispatch(new userStore.Logout());
-              this.notificationService.info(
-                'Session Expired',
-                'Please login again',
-              );
-            },
-            final.exp * 1000 - Date.now(),
-          );
-          return final;
-        }),
-        catchError((_error) => {
-          console.error('Failed to get user info');
-          return of(null);
-        }),
-        take(1),
+        },
+        user.exp * 1000 - Date.now(),
       );
+
+      return this.makeUser(user['urs-user-id'], user['urs-groups'], token);
+    } catch (_error) {
+      return this.nullUser();
+    }
   }
 
   private makeUser(
     id: string,
     groups: models.URSGroup[],
     token: string,
-    exp: number,
   ): models.UserAuth {
-    return { id, token, groups, exp };
+    return { id, token, groups };
+  }
+
+  private nullUser(): models.UserAuth {
+    return { id: null, token: null, groups: [] };
+  }
+
+  private isExpired(userToken): boolean {
+    return Date.now() > userToken.exp * 1000;
+  }
+
+  private loadCookies() {
+    return document.cookie
+      .split(';')
+      .map((s) => s.trim().split('='))
+      .map(([name, val]) => ({ [name]: val }))
+      .reduce((allCookies, cookie) => ({ ...allCookies, ...cookie }));
   }
 }
