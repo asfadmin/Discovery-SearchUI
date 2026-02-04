@@ -6,7 +6,11 @@ import {
   MatAutocomplete,
 } from '@angular/material/autocomplete';
 import { Store } from '@ngrx/store';
-import { NotificationService, SarviewsEventsService } from '@services';
+import {
+  AsfLanguageService,
+  NotificationService,
+  SarviewsEventsService,
+} from '@services';
 import { AppState } from '@store';
 
 import * as filterStore from '@store/filters';
@@ -44,6 +48,7 @@ export class SarviewsEventSearchSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
   private eventService = inject(SarviewsEventsService);
   private notificationService = inject(NotificationService);
+  private language = inject(AsfLanguageService);
 
   @ViewChild('eventsQueryForm') public eventsQueryForm: NgForm;
 
@@ -86,7 +91,9 @@ export class SarviewsEventSearchSelectorComponent implements OnInit, OnDestroy {
   public onSearchQueryChange(event: Event): void {
     const query = (event.target as HTMLInputElement).value;
     if (query.length > 100) {
-      this.notificationService.error('Event Search Filter Too Long');
+      this.notificationService.error(
+        this.language.translate.instant('EVENT_SEARCH_FILTER_TOO_LONG'),
+      );
     } else {
       this.store$.dispatch(new filterStore.SetSarviewsEventNameFilter(query));
     }

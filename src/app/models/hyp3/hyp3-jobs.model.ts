@@ -179,7 +179,7 @@ export const InsarGammaJobType: Hyp3JobType = {
       apiName: 'include_inc_map',
       type: JobOptionType.CHECKBOX,
       default: false,
-      info:'INFO_INCLUDE_INCIDENCE_ANGLE_MAPS',
+      info: 'INFO_INCLUDE_INCIDENCE_ANGLE_MAPS',
     },
     {
       name: 'Look Vectors',
@@ -200,7 +200,7 @@ export const InsarGammaJobType: Hyp3JobType = {
       apiName: 'include_wrapped_phase',
       type: JobOptionType.CHECKBOX,
       default: false,
-      info: 'INFO_INCLUDE_WRAPPED_PHASE'
+      info: 'INFO_INCLUDE_WRAPPED_PHASE',
     },
     {
       name: 'Set MintPy Options',
@@ -217,7 +217,7 @@ export const InsarGammaJobType: Hyp3JobType = {
           value: true,
         },
       ],
-      info:'INFO_MINTPY_OPTIONS'
+      info: 'INFO_MINTPY_OPTIONS',
     },
   ],
 };
@@ -263,7 +263,7 @@ export const InsarIsceBurstJobType: Hyp3JobType = {
       apiName: 'apply_water_mask',
       type: JobOptionType.TOGGLE,
       default: false,
-      info: 'INFO_INSAR_ISCE_BURST_WATER_MASK'
+      info: 'INFO_INSAR_ISCE_BURST_WATER_MASK',
     },
   ],
 };

@@ -182,6 +182,8 @@ export class ProjectNameDialogComponent
       );
       this.dataSource.data = entries;
       this.projectCount = counts.size;
+    } else {
+      this.projectCount = 1;
     }
 
     // Prevent closing during processing

@@ -14,7 +14,7 @@ import {
   MatDialogActions,
   MatDialogClose,
 } from '@angular/material/dialog';
-import { NotificationService } from '@services';
+import { AsfLanguageService, NotificationService } from '@services';
 import { ClipboardService } from 'ngx-clipboard';
 import { SaveSearchDialogComponent } from '../save-search-dialog';
 
@@ -49,6 +49,7 @@ export class CodeExportComponent implements OnInit, AfterViewInit {
   data = inject(MAT_DIALOG_DATA);
   clipboard = inject(ClipboardService);
   notificationService = inject(NotificationService);
+  private language = inject(AsfLanguageService);
 
   public codeStuff: string;
 
@@ -71,6 +72,8 @@ export class CodeExportComponent implements OnInit, AfterViewInit {
   }
   public copyToClipboard(): void {
     this.clipboard.copy(this.codeStuff);
-    this.notificationService.info('Copied to clipboard');
+    this.notificationService.info(
+      this.language.translate.instant('COPIED_TO_CLIPBOARD'),
+    );
   }
 }

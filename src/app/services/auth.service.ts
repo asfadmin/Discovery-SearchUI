@@ -19,6 +19,7 @@ import * as userStore from '@store/user';
 
 import * as models from '@models';
 import { NotificationService } from './notification.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
@@ -28,6 +29,7 @@ export class AuthService {
   private http = inject(HttpClient);
   private notificationService = inject(NotificationService);
   private store$ = inject<Store<AppState>>(Store);
+  private translateService = inject(TranslateService);
   private existingUserInfo: models.UserAuth = null;
 
   private bc: BroadcastChannel;
@@ -100,9 +102,11 @@ export class AuthService {
         return of(null);
       }),
       catchError((_) => {
-        this.notificationService.error('Trouble logging in', 'Error', {
-          timeOut: 5000,
-        });
+        this.notificationService.error(
+          this.translateService.instant('TROUBLE_LOGGING_IN'),
+          this.translateService.instant('ERROR'),
+          { timeOut: 5000 },
+        );
         loginWindowClosed.next();
         return of(null);
       }),
@@ -125,11 +129,12 @@ export class AuthService {
           return this.existingUserInfo;
         }),
         catchError((_) => {
-          // For now this always throws a CORS error, but it does still logout successfully
-          // this.notificationService.error('Trouble logging out', 'Error', {
-          //   timeOut: 5000,
-          // });
-          return of(this.existingUserInfo);
+          this.notificationService.error(
+            this.translateService.instant('TROUBLE_LOGGING_OUT'),
+            this.translateService.instant('ERROR'),
+            { timeOut: 5000 },
+          );
+          return of(this.getUser());
         }),
         take(1),
       );

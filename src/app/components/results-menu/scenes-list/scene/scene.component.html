@@ -91,7 +91,7 @@
             searchType !== SearchTypes.BASELINE &&
             !!scene.metadata?.opera?.validityStartDate
           ) {
-            <ng-container matTooltip="Validity Start Date">
+            <ng-container [matTooltip]="'VALIDITY_START_DATE' | translate">
               {{ scene.metadata.opera.validityStartDate | fullDate }}
             </ng-container>
           }
@@ -116,7 +116,7 @@
           }
         }
         @if (scene.isDummyProduct) {
-          <span>Loading...</span>
+          <span>{{ 'LOADING' | translate }}...</span>
         }
       </div>
     </div>
