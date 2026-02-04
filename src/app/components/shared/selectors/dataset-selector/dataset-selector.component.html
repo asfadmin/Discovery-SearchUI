@@ -44,11 +44,6 @@
                       @if (dataset.beta) {
                         <span><em> (beta) </em></span>
                       }
-                      @if (dataset.id === 'NISAR') {
-                        <span class="disclaimer">
-                          <em> ({{ 'COMING_SOON' | translate }}) </em>
-                        </span>
-                      }
                       @if (dataset.subName) {
                         <div class="dataset__subName faint-text">
                           {{ dataset.subName }}
