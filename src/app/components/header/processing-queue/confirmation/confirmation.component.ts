@@ -158,11 +158,15 @@ export class ConfirmationComponent implements OnInit {
                       },
                     );
                   } else {
-                    this.notificationService.error(resp.error.detail, this.language.translate.instant('ERROR'), {
-                      timeOut: 0,
-                      extendedTimeOut: 0,
-                      closeButton: true,
-                    });
+                    this.notificationService.error(
+                      resp.error.detail,
+                      this.language.translate.instant('ERROR'),
+                      {
+                        timeOut: 0,
+                        extendedTimeOut: 0,
+                        closeButton: true,
+                      },
+                    );
                   }
                 }
 

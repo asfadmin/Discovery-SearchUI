@@ -72,6 +72,8 @@ export class CodeExportComponent implements OnInit, AfterViewInit {
   }
   public copyToClipboard(): void {
     this.clipboard.copy(this.codeStuff);
-    this.notificationService.info(this.language.translate.instant('COPIED_TO_CLIPBOARD'));
+    this.notificationService.info(
+      this.language.translate.instant('COPIED_TO_CLIPBOARD'),
+    );
   }
 }

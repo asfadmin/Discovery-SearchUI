@@ -152,11 +152,25 @@ export class FileUploadDialogComponent implements OnInit, OnDestroy {
           catchError((error: HttpErrorResponse) => {
             if (error.status !== 0) {
               return of({
-                errors: [{ report: this.language.translate.instant('ERROR_LOADING_FILES'), type: this.language.translate.instant('ERROR') }],
+                errors: [
+                  {
+                    report: this.language.translate.instant(
+                      'ERROR_LOADING_FILES',
+                    ),
+                    type: this.language.translate.instant('ERROR'),
+                  },
+                ],
               });
             } else {
               return of({
-                errors: [{ report: this.language.translate.instant('FILE_UPLOAD_TIMEOUT'), type: this.language.translate.instant('ERROR') }],
+                errors: [
+                  {
+                    report: this.language.translate.instant(
+                      'FILE_UPLOAD_TIMEOUT',
+                    ),
+                    type: this.language.translate.instant('ERROR'),
+                  },
+                ],
               });
             }
           }),

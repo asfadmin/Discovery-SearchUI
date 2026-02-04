@@ -129,7 +129,9 @@ export class AoiFilterComponent implements OnInit, OnDestroy {
 
   public onCopy(): void {
     this.clipboard.copyFromContent(this.polygon);
-    this.notificationService.info(this.language.translate.instant('COPIED_TO_CLIPBOARD'));
+    this.notificationService.info(
+      this.language.translate.instant('COPIED_TO_CLIPBOARD'),
+    );
   }
 
   private handleAOIErrors(): void {

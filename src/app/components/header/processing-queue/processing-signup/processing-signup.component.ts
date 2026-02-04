@@ -94,7 +94,9 @@ export class ProcessingSignupComponent implements OnInit {
   public accessCodeErrorMessage = '';
 
   ngOnInit(): void {
-    this.submitButtonTooltip = this.language.translate.instant('MUST_CONFIRM_INFO_AND_USE_CASE');
+    this.submitButtonTooltip = this.language.translate.instant(
+      'MUST_CONFIRM_INFO_AND_USE_CASE',
+    );
     this.store$.select(userStore.getUserAuth).subscribe((userAuth) => {
       this.userService
         .getUserInfo$(userAuth)
@@ -120,11 +122,17 @@ export class ProcessingSignupComponent implements OnInit {
         !this.signupForm.controls.infoConfirmation.valid &&
         !this.signupForm.controls.useCase.valid
       ) {
-        this.submitButtonTooltip = this.language.translate.instant('MUST_CONFIRM_INFO_AND_USE_CASE');
+        this.submitButtonTooltip = this.language.translate.instant(
+          'MUST_CONFIRM_INFO_AND_USE_CASE',
+        );
       } else if (!this.signupForm.controls.infoConfirmation.valid) {
-        this.submitButtonTooltip = this.language.translate.instant('MUST_CONFIRM_USER_INFO');
+        this.submitButtonTooltip = this.language.translate.instant(
+          'MUST_CONFIRM_USER_INFO',
+        );
       } else if (!this.signupForm.controls.useCase.valid) {
-        this.submitButtonTooltip = this.language.translate.instant('MUST_WRITE_USE_CASE');
+        this.submitButtonTooltip = this.language.translate.instant(
+          'MUST_WRITE_USE_CASE',
+        );
       } else {
         this.submitButtonTooltip = '';
       }
@@ -134,7 +142,9 @@ export class ProcessingSignupComponent implements OnInit {
   public onRegisterPressed() {
     this.hyp3Service.submitSignupForm$(this.signupForm.value).subscribe(
       (_response) => {
-        this.notificationService.info(this.language.translate.instant('SUBMITTED_FORM'));
+        this.notificationService.info(
+          this.language.translate.instant('SUBMITTED_FORM'),
+        );
         this.store$.dispatch(new hyp3Store.LoadUser());
       },
       (error) => {

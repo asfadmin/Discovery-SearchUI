@@ -52,16 +52,22 @@ export class NotificationService {
       headerText = added
         ? this.translateService.instant('JOBS_ADDED_TO_QUEUE')
         : this.translateService.instant('JOBS_REMOVED_FROM_QUEUE');
-      infoText = this.translateService.instant('JOBS_ADDED_TO_ON_DEMAND_QUEUE', {
-        count,
-        jobType: job_type === '' ? '' : job_type + ' ',
-      });
+      infoText = this.translateService.instant(
+        'JOBS_ADDED_TO_ON_DEMAND_QUEUE',
+        {
+          count,
+          jobType: job_type === '' ? '' : job_type + ' ',
+        },
+      );
       if (duplicates && added) {
         infoText +=
           ' ' +
           this.translateService.instant('DUPLICATE_JOBS_NOT_ADDED', {
             count: duplicates,
-            jobWord: duplicates > 1 ? this.translateService.instant('JOBS').toLowerCase() : this.translateService.instant('JOB'),
+            jobWord:
+              duplicates > 1
+                ? this.translateService.instant('JOBS').toLowerCase()
+                : this.translateService.instant('JOB'),
           });
       }
 
@@ -100,8 +106,12 @@ export class NotificationService {
     if (count > 1) {
       headerText = this.translateService.instant('SCENES_ADDED');
       infoText = added
-        ? this.translateService.instant('SCENES_ADDED_TO_DOWNLOAD_QUEUE', { count })
-        : this.translateService.instant('SCENES_REMOVED_FROM_DOWNLOAD_QUEUE', { count });
+        ? this.translateService.instant('SCENES_ADDED_TO_DOWNLOAD_QUEUE', {
+            count,
+          })
+        : this.translateService.instant('SCENES_REMOVED_FROM_DOWNLOAD_QUEUE', {
+            count,
+          });
       this.info(infoText, headerText);
     } else {
       infoText = added
@@ -197,7 +207,9 @@ export class NotificationService {
     const title = this.translateService.instant('LIST_IMPORT_FAILED', {
       extension: fileExtension,
     });
-    const message = this.translateService.instant('CLICK_TO_OPEN_FILE_FORMAT_DOCS');
+    const message = this.translateService.instant(
+      'CLICK_TO_OPEN_FILE_FORMAT_DOCS',
+    );
     const errorToast = this.error(message, title);
     errorToast.onTap
       .pipe(take(1))

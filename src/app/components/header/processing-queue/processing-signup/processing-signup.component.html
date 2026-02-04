@@ -5,16 +5,28 @@
     <h4>{{ 'VERIFY_EARTHDATA_LOGIN_PROFILE' | translate }}</h4>
     {{ 'VERIFY_EARTHDATA_LOGIN_PROFILE_DESCRIPTION' | translate }}
     <ul class="data-list">
-      <li><b>{{ 'NAME' | translate }}:</b> {{ userInfo.first_name }} {{ userInfo.last_name }}</li>
-      <li><b>{{ 'USERNAME' | translate }}:</b> {{ userInfo.uid }}</li>
-      <li><b>{{ 'EMAIL_ADDRESS' | translate }}:</b> {{ userInfo.email_address }}</li>
-      <li><b>{{ 'ORGANIZATION' | translate }}:</b> {{ userInfo.organization }}</li>
+      <li>
+        <b>{{ 'NAME' | translate }}:</b> {{ userInfo.first_name }}
+        {{ userInfo.last_name }}
+      </li>
+      <li>
+        <b>{{ 'USERNAME' | translate }}:</b> {{ userInfo.uid }}
+      </li>
+      <li>
+        <b>{{ 'EMAIL_ADDRESS' | translate }}:</b> {{ userInfo.email_address }}
+      </li>
+      <li>
+        <b>{{ 'ORGANIZATION' | translate }}:</b> {{ userInfo.organization }}
+      </li>
       <li></li>
-      <li><b>{{ 'COUNTRY' | translate }}:</b> {{ userInfo.country }}</li>
+      <li>
+        <b>{{ 'COUNTRY' | translate }}:</b> {{ userInfo.country }}
+      </li>
     </ul>
     <mat-checkbox color="primary" formControlName="infoConfirmation"
       >{{ 'CONFIRM_EARTHDATA_LOGIN_INFO_PART1' | translate }}
-      <b>{{ userInfo.email_address }}</b> {{ 'CONFIRM_EARTHDATA_LOGIN_INFO_PART2' | translate }}</mat-checkbox
+      <b>{{ userInfo.email_address }}</b>
+      {{ 'CONFIRM_EARTHDATA_LOGIN_INFO_PART2' | translate }}</mat-checkbox
     >
   </div>
   <div class="form-column">
@@ -28,15 +40,21 @@
         <mat-list>
           <mat-list-item class="list-item">
             <span matListItemTitle>{{ 'EXAMPLE_1' | translate }}: </span>
-            <span matListItemLine class="list-item-content">{{ 'EXAMPLE_1_DESCRIPTION' | translate }}</span>
+            <span matListItemLine class="list-item-content">{{
+              'EXAMPLE_1_DESCRIPTION' | translate
+            }}</span>
           </mat-list-item>
           <mat-list-item class="list-item">
             <span matListItemTitle>{{ 'EXAMPLE_2' | translate }}: </span>
-            <span matListItemLine class="list-item-content">{{ 'EXAMPLE_2_DESCRIPTION' | translate }}</span>
+            <span matListItemLine class="list-item-content">{{
+              'EXAMPLE_2_DESCRIPTION' | translate
+            }}</span>
           </mat-list-item>
           <mat-list-item class="list-item">
             <span matListItemTitle>{{ 'EXAMPLE_3' | translate }}: </span>
-            <span matListItemLine class="list-item-content">{{ 'EXAMPLE_3_DESCRIPTION' | translate }}</span>
+            <span matListItemLine class="list-item-content">{{
+              'EXAMPLE_3_DESCRIPTION' | translate
+            }}</span>
           </mat-list-item>
         </mat-list>
       </mat-expansion-panel>
@@ -51,7 +69,9 @@
         formControlName="useCase"
       ></textarea>
     </mat-form-field>
-    <h4 style="margin-bottom: 5px">{{ 'WORKSHOP_TUTORIAL_PARTICIPANT' | translate }}</h4>
+    <h4 style="margin-bottom: 5px">
+      {{ 'WORKSHOP_TUTORIAL_PARTICIPANT' | translate }}
+    </h4>
     <span>{{ 'WORKSHOP_TUTORIAL_PARTICIPANT_DESCRIPTION' | translate }}</span>
     <mat-form-field style="width: 100%">
       <mat-label>{{ 'ACCESS_CODE_OPTIONAL' | translate }}</mat-label>
