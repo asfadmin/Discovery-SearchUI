@@ -134,7 +134,7 @@ export class AuthService {
             this.translateService.instant('ERROR'),
             { timeOut: 5000 },
           );
-          return of(this.getUser());
+          return this.getUser();
         }),
         take(1),
       );
