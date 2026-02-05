@@ -60,10 +60,14 @@
   >
     <span>
       {{ 'SUBMIT' | translate }} {{ amountSelected(jobTypesWithQueued) }}
-      {{ 'JOB' | translate | titlecase }}
-      @if (amountSelected(jobTypesWithQueued) > 1) {
-        <span>s</span>
-      }
+      <span [ngPlural]="amountSelected(jobTypesWithQueued)">
+        <ng-template ngPluralCase="=1">{{
+          'JOB' | translate | titlecase
+        }}</ng-template>
+        <ng-template ngPluralCase="other">{{
+          'JOBS' | translate | titlecase
+        }}</ng-template>
+      </span>
       ({{ creditsSelected(jobTypesWithQueued) }}
       <span [ngPlural]="creditsSelected(jobTypesWithQueued)">
         <ng-template ngPluralCase="=1">{{ 'CREDIT' | translate }}</ng-template>

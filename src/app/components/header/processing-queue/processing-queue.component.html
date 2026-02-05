@@ -504,10 +504,14 @@
         @if (!isQueueSubmitProcessing) {
           <span>
             {{ 'SUBMIT' | translate }} {{ allJobs.length }}
-            {{ 'JOB' | translate }}
-            @if (allJobs.length > 1) {
-              <span>s</span>
-            }
+            <span [ngPlural]="allJobs.length">
+              <ng-template ngPluralCase="=1">{{
+                'JOB' | translate
+              }}</ng-template>
+              <ng-template ngPluralCase="other">{{
+                'JOBS' | translate
+              }}</ng-template>
+            </span>
             ({{ totalCreditCost }}
             <span [ngPlural]="totalCreditCost">
               <ng-template ngPluralCase="=1">{{
