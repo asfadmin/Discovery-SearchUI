@@ -147,7 +147,7 @@ export class UserEffects {
             this.store$.select(userReducer.getSearchHistory),
           ]),
         ),
-        filter(([_, [userAuth, _searches]]) => userAuth.id !== null),
+        filter(([_, [userAuth, _searches]]) => userAuth?.id !== null),
         switchMap(([_, [userAuth, searches]]) =>
           this.userDataService.setAttribute$(userAuth, 'History', searches),
         ),
