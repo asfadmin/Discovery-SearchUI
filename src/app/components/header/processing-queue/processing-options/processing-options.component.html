@@ -61,7 +61,7 @@
                     <app-checkbox-option
                       (valueChange)="onSetOptionValue(option.apiName, $event)"
                       [value]="optionValues[selectedJobType.id][option.apiName]"
-                      [optionName]="option.name"
+                      [optionName]="option.name | translate"
                       [optionInfo]="option.info | translate"
                       class="margin-right"
                     >
@@ -82,7 +82,7 @@
                     <app-checkbox-option
                       (valueChange)="onSetOptionValue(option.apiName, $event)"
                       [value]="optionValues[selectedJobType.id][option.apiName]"
-                      [optionName]="option.name"
+                      [optionName]="option.name | translate"
                       [optionInfo]="option.info | translate"
                     >
                     </app-checkbox-option>
@@ -90,7 +90,7 @@
                   @if (option.type === 'SUBSET') {
                     <app-subset-option
                       (setSubset)="onSetSubset(option.optionSubset)"
-                      [optionName]="option.name"
+                      [optionName]="option.name | translate"
                       [optionInfo]="option.info | uppercase | translate"
                       class="margin-right"
                     >
