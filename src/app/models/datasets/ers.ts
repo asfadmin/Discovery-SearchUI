@@ -5,7 +5,7 @@ export const ers = {
   name: 'ERS',
   subName: '',
   beta: false,
-  priority: 13,
+  priority: 140,
   properties: [
     Props.DATE,
     Props.BEAM_MODE,

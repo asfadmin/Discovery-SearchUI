@@ -149,7 +149,8 @@ export class MapEffects {
               dataset?.id === 'SENTINEL-1' ||
               dataset?.id === 'SENTINEL-1 INTERFEROGRAM (BETA)' ||
               dataset?.id === 'UAVSAR' ||
-              dataset?.id === 'OPERA-S1'
+              dataset?.id === 'OPERA-S1' ||
+              dataset?.id === 'TROPO'
             );
           }
           return (

@@ -13,6 +13,7 @@ export interface Dataset {
   infoUrl: string;
   citationUrl: string;
   productTypes: ProductType[];
+  defaultProductTypes?: ProductType[];
   beamModes: string[];
   polarizations: string[];
   sidepolarizations?: string[];
@@ -74,12 +75,31 @@ export function isDatasetActive(dataset: Dataset): boolean {
   return dataset.date.end === undefined;
 }
 
+/**
+ * Dataset ID migration map. When the real TROPO dataset arrives,
+ * update the value to the new dataset ID. Any saved searches,
+ * bookmarked URLs, or user profiles referencing the old ID
+ * will be automatically migrated to the new ID at load time.
+ *
+ * To use: add an entry mapping the old ID to the new ID.
+ * Example: 'TROPO': 'OPERA-TROPO-V2'
+ * Remove entries once all users have migrated.
+ */
+export const DATASET_ID_MIGRATIONS: Record<string, string> = {
+  TROPO: 'TROPO',
+};
+
+export function migrateDatasetId(id: string): string {
+  return DATASET_ID_MIGRATIONS[id] ?? id;
+}
+
 export type DatasetProductTypes = ProductType[];
 export type DatasetShortName = ShortName[];
 export type DatasetBeamModes = string[];
 export type DatasetPolarizations = string[];
 export type DatasetSubtypes = DatasetSubtype[];
 
+export const tropo = fromDatasets.tropo;
 export const sentinel_1 = fromDatasets.sentinel_1;
 export const sentinel_1_bursts = fromDatasets.sentinel_1_bursts;
 export const opera_s1 = fromDatasets.opera_s1;
@@ -98,6 +118,7 @@ export const seasat = fromDatasets.seasat;
 export const nisar = fromDatasets.nisar;
 
 export const datasetList: Dataset[] = [
+  fromDatasets.tropo,
   fromDatasets.nisar,
   fromDatasets.sentinel_1,
   fromDatasets.sentinel_1_bursts,

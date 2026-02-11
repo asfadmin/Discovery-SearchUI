@@ -1,5 +1,5 @@
 <div>
-  @if (dataset.id !== 'SENTINEL-1 BURSTS') {
+  @if (dataset.id !== 'SENTINEL-1 BURSTS' && dataset.productTypes.length > 0) {
     <app-product-type-selector
       style="padding-right: 10px"
       (typesChange)="onNewProductTypes($event)"
@@ -120,7 +120,11 @@
     </mat-form-field>
   }
 
-  @if (['SENTINEL-1', 'SENTINEL-1 BURSTS', 'OPERA-S1'].includes(dataset.id)) {
+  @if (
+    ['SENTINEL-1', 'SENTINEL-1 BURSTS', 'OPERA-S1', 'TROPO'].includes(
+      dataset.id
+    )
+  ) {
     <mat-form-field>
       <input
         matInput

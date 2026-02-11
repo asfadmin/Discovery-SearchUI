@@ -953,13 +953,14 @@ export class UrlStateService {
   };
 
   private loadSelectedDataset = (datasetStr: string): Action | undefined => {
+    const migrated = models.migrateDatasetId(datasetStr);
     const datasetIds = models.datasetIds;
 
-    if (!datasetIds.includes(datasetStr)) {
+    if (!datasetIds.includes(migrated)) {
       return;
     }
 
-    return new filterStore.SetSelectedDataset(datasetStr);
+    return new filterStore.SetSelectedDataset(migrated);
   };
 
   private loadSearchPolygon = (polygon: string): undefined => {

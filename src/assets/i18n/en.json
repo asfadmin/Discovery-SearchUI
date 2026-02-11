@@ -1092,6 +1092,7 @@
   "TRAVEL_EXPLORE": "travel_explore",
   "TROUBLE_LOGGING_IN": "Trouble logging in",
   "TROUBLE_LOGGING_OUT": "Trouble logging out",
+  "TROPO_DESC": "A new dataset that allows radar and radar interferometry users to reduce the effect of atmospheric propagation delays for improved surface retrievals of ground motion.",
   "TYPE": "Type",
   "UAVSAR_DESC": "Uninhabited Aerial Vehicle Synthetic Aperture Radar (UAVSAR) is specifically designed to acquire airborne repeat-track SAR data for differential interferometric measurements.",
   "UNDO": "undo",

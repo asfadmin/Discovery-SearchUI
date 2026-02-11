@@ -5,7 +5,7 @@ export const nisar = {
   name: 'NISAR',
   subName: '',
   beta: false,
-  priority: 1,
+  priority: 20,
   properties: [
     Props.DATE,
     // Props.BEAM_MODE,

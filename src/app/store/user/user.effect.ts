@@ -408,8 +408,11 @@ export class UserEffects {
   private isNumber = (n) => !isNaN(n) && isFinite(n);
 
   private setDatasetFilters(datasetFilter: GeographicFiltersType) {
+    const migratedDataset = models.migrateDatasetId(
+      datasetFilter.selectedDataset,
+    );
     const actions = [
-      new filterStore.SetSelectedDataset(datasetFilter.selectedDataset),
+      new filterStore.SetSelectedDataset(migratedDataset),
       new filterStore.SetStartDate(datasetFilter.dateRange.start),
       new filterStore.SetEndDate(datasetFilter.dateRange.end),
       new filterStore.SetSeasonStart(datasetFilter.season.start),

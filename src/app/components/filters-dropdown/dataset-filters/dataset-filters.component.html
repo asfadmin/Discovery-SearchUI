@@ -215,7 +215,7 @@
         </div>
       </mat-expansion-panel>
     }
-    @if (selectedDataset === 'OPERA-S1') {
+    @if (selectedDataset === 'OPERA-S1' || selectedDataset === 'TROPO') {
       <mat-expansion-panel
         [expanded]="defaultPanelOpenState"
         [disabled]="panelIsDisabled"

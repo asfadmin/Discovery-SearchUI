@@ -6,7 +6,7 @@ export const beta = {
   subName: 'NISAR-format',
   beta: false,
   active: false,
-  priority: 11,
+  priority: 120,
   properties: [
     Props.DATE,
     Props.BEAM_MODE,

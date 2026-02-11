@@ -76,4 +76,20 @@ export class FiltersEffects {
       map((_) => new ResetMaxHyp3ResultsHit()),
     ),
   );
+
+  public applyDefaultProductTypes = createEffect(() =>
+    this.actions$.pipe(
+      ofType<filtersAction.SetSelectedDataset>(
+        filtersAction.FiltersActionType.SET_SELECTED_DATASET,
+      ),
+      map((action) => action.payload?.toUpperCase()),
+      filter((id) => !!id),
+      map((id) => models.datasets[id]),
+      filter((dataset) => !!dataset?.defaultProductTypes?.length),
+      map(
+        (dataset) =>
+          new filtersAction.SetProductTypes(dataset.defaultProductTypes),
+      ),
+    ),
+  );
 }

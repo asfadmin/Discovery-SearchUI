@@ -5,7 +5,7 @@ export const uavsar = {
   name: 'UAVSAR',
   subName: '',
   beta: false,
-  priority: 7,
+  priority: 80,
   properties: [
     Props.DATE,
     Props.BEAM_MODE,
