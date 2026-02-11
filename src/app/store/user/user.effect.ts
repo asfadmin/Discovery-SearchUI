@@ -56,7 +56,13 @@ export class UserEffects {
       switchMap(([_, userAuth]) =>
         this.userDataService.getAttribute$(userAuth, 'Profile'),
       ),
-      map((resp) => {
+      map((resp: any) => {
+        if (resp?.defaultDataset) {
+          resp = {
+            ...resp,
+            defaultDataset: models.migrateDatasetId(resp.defaultDataset),
+          };
+        }
         const defaultProfile = { ...userReducer.initState.profile };
 
         let profile = this.isValidProfile(resp)
@@ -408,8 +414,11 @@ export class UserEffects {
   private isNumber = (n) => !isNaN(n) && isFinite(n);
 
   private setDatasetFilters(datasetFilter: GeographicFiltersType) {
+    const migratedDataset = models.migrateDatasetId(
+      datasetFilter.selectedDataset,
+    );
     const actions = [
-      new filterStore.SetSelectedDataset(datasetFilter.selectedDataset),
+      new filterStore.SetSelectedDataset(migratedDataset),
       new filterStore.SetStartDate(datasetFilter.dateRange.start),
       new filterStore.SetEndDate(datasetFilter.dateRange.end),
       new filterStore.SetSeasonStart(datasetFilter.season.start),

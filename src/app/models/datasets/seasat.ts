@@ -5,7 +5,7 @@ export const seasat = {
   name: 'SEASAT',
   subName: '',
   beta: false,
-  priority: 16,
+  priority: 170,
   properties: [
     Props.DATE,
     Props.BEAM_MODE,

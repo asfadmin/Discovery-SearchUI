@@ -37,6 +37,7 @@ export class OtherSelectorComponent implements OnInit, OnDestroy {
   prop = inject(PropertyService);
 
   dataset: models.Dataset;
+  readonly tropoId = models.tropo.id;
   productTypes: models.DatasetProductTypes;
   flightDirections: models.FlightDirection[];
   beamModes: models.DatasetBeamModes;

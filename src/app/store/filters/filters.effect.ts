@@ -14,6 +14,7 @@ import { AppState } from '@store/app.reducer';
 import { Store } from '@ngrx/store';
 
 import { getSearchType } from '@store/search';
+import { getSelectedDatasetId } from './filters.reducer';
 import { LoadFiltersPreset } from '@store/user';
 import { ResetMaxHyp3ResultsHit } from '@store/hyp3';
 import { SearchType } from '@models';
@@ -74,6 +75,37 @@ export class FiltersEffects {
         filtersAction.FiltersActionType.SET_PROJECT_NAME,
       ),
       map((_) => new ResetMaxHyp3ResultsHit()),
+    ),
+  );
+
+  public applyDefaultProductTypes = createEffect(() =>
+    this.actions$.pipe(
+      ofType<filtersAction.SetSelectedDataset>(
+        filtersAction.FiltersActionType.SET_SELECTED_DATASET,
+      ),
+      map((action) => action.payload?.toUpperCase()),
+      filter((id) => !!id),
+      map((id) => models.datasets[id]),
+      filter((dataset) => !!dataset?.defaultProductTypes?.length),
+      map(
+        (dataset) =>
+          new filtersAction.SetProductTypes(dataset.defaultProductTypes),
+      ),
+    ),
+  );
+
+  public reapplyDefaultProductTypesOnClear = createEffect(() =>
+    this.actions$.pipe(
+      ofType(filtersAction.FiltersActionType.CLEAR_DATASET_FILTERS),
+      withLatestFrom(this.store$.select(getSelectedDatasetId)),
+      map(([_, id]) => id?.toUpperCase()),
+      filter((id) => !!id),
+      map((id) => models.datasets[id]),
+      filter((dataset) => !!dataset?.defaultProductTypes?.length),
+      map(
+        (dataset) =>
+          new filtersAction.SetProductTypes(dataset.defaultProductTypes),
+      ),
     ),
   );
 }

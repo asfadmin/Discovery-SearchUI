@@ -48,6 +48,7 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
   @Input() offsets = { temporal: 0, perpendicular: 0 };
 
   public p = models.Props;
+  readonly tropoId = models.tropo.id;
   public selectedDataset: string;
   public selectedDatasetIsNISARFormat = false;
 

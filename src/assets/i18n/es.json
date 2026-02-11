@@ -1092,6 +1092,7 @@
   "TRAVEL_EXPLORE": "viajar_explorar",
   "TROUBLE_LOGGING_IN": "Problema al iniciar sesión",
   "TROUBLE_LOGGING_OUT": "Problema al cerrar sesión",
+  "TROPO_DESC": "Un nuevo conjunto de datos que permite a los usuarios de radar e interferometría de radar reducir el efecto de los retrasos en la propagación atmosférica para mejorar la recuperación de la superficie del movimiento del suelo.",
   "TYPE": "Tipo",
   "UAVSAR_DESC": "El radar de apertura sintética montado en un vehículo aéreo no tripulado (UAVSAR) está diseñado específicamente para obtener datos aéreos SAR de trayectos repetidos, utilizados en mediciones interferométricas diferenciales.",
   "UNDO": "deshacer",

@@ -111,6 +111,7 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   private dialog = inject(MatDialog);
 
   public copyIcon = faCopy;
+  readonly tropoId = models.tropo.id;
   public pairs$ = this.pairService.pairs$;
   private pairProducts$ = this.pairService.productsFromPairs$;
 
