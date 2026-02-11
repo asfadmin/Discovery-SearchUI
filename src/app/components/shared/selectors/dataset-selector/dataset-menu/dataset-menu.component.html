@@ -1,4 +1,9 @@
-<div class="dataset-menu-panel" [class.mobile-panel]="isMobile">
+<div
+  class="dataset-menu-panel"
+  [class.mobile-panel]="isMobile"
+  role="dialog"
+  [attr.aria-label]="'DATASET' | translate"
+>
   <!-- Close button (mobile only) -->
   @if (isMobile) {
     <button
