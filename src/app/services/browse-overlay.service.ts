@@ -61,7 +61,8 @@ export class BrowseOverlayService {
             datasetID === 'SENTINEL-1' ||
             datasetID === 'SENTINEL-1 INTERFEROGRAM (BETA)' ||
             datasetID === 'UAVSAR' ||
-            datasetID === 'OPERA-S1'
+            datasetID === 'OPERA-S1' ||
+            datasetID === models.tropo.id
           );
         case models.SearchType.SARVIEWS_EVENTS:
           return selectedEventProducts?.length > 0;

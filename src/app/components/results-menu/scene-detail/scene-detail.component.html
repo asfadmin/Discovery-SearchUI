@@ -400,7 +400,7 @@
       [matTooltip]="
         searchType === searchTypes.SARVIEWS_EVENTS
           ? ('GEOGRAPHIC_SEARCH_BASED_ON_EVENT_POLYGON' | translate)
-          : dataset?.id === 'OPERA-S1'
+          : dataset?.id === 'OPERA-S1' || dataset?.id === tropoId
             ? ('OPERA_S1_SOURCE_DATA' | translate)
             : dataset?.id === 'SENTINEL-1 BURSTS'
               ? ('GEOGRAPHIC_SEARCH_BASED_ON_BURST' | translate)
@@ -425,7 +425,8 @@
               prop.isRelevant(p.FRAME, dataset)) ||
             dataset?.id === 'UAVSAR' ||
             dataset?.id === 'SENTINEL-1 BURSTS' ||
-            dataset?.id === 'OPERA-S1'
+            dataset?.id === 'OPERA-S1' ||
+            dataset?.id === tropoId
           )
         "
         (click)="moreLikeThis()"
@@ -437,7 +438,7 @@
         @if (breakpoint !== breakpoints.MOBILE) {
           <span>{{
             searchType !== searchTypes.SARVIEWS_EVENTS
-              ? dataset?.id === 'OPERA-S1'
+              ? dataset?.id === 'OPERA-S1' || dataset?.id === tropoId
                 ? ('SOURCE_DATA' | translate)
                 : ('MORE_LIKE_THIS' | translate)
               : ('GEOGRAPHIC' | translate)

@@ -98,6 +98,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public scene: models.CMRProduct;
   public sarviewEvent: models.SarviewsEvent;
   public eventTypes = models.SarviewsEventType;
+  readonly tropoId = models.tropo.id;
   public isActiveSarviewEvent = false;
 
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
@@ -467,7 +468,8 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
       const scene = this.scene;
       const shouldClear =
         this.searchType !== models.SearchType.DATASET ||
-        this.dataset.id === 'OPERA-S1';
+        this.dataset.id === 'OPERA-S1' ||
+        this.dataset.id === models.tropo.id;
       const dateRange = this.dateRange;
 
       this.store$.dispatch(

@@ -111,7 +111,9 @@
           ><b>{{ 'BEAM_MODE' | translate }} </b> •
           {{ scene.metadata.beamMode }}</span
         >
-        @if (isGeoSearch() && dataset.id !== 'OPERA-S1') {
+        @if (
+          isGeoSearch() && dataset.id !== 'OPERA-S1' && dataset.id !== tropoId
+        ) {
           <mat-icon
             [matMenuTriggerFor]="addBeamModeMenu"
             class="v-mid clickable"

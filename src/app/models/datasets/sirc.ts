@@ -5,7 +5,7 @@ export const sirc = {
   name: 'SIR-C',
   subName: '',
   beta: true,
-  priority: 10,
+  priority: 110,
   properties: [
     Props.DATE,
     Props.BEAM_MODE,

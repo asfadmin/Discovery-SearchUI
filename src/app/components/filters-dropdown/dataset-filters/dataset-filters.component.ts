@@ -85,6 +85,7 @@ export class DatasetFiltersComponent implements OnInit, OnDestroy {
 
   public datasets = models.datasetList;
   public selectedDataset: string;
+  readonly tropoId = models.tropo.id;
   public p = models.Props;
 
   public breakpoint$ = this.screenSize.breakpoint$;
