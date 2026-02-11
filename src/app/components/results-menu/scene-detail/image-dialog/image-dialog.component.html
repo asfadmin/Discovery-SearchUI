@@ -405,8 +405,8 @@
                         eventSelectedProductIds.includes(
                           currentSarviewsProduct?.product_id
                         )
-                          ? 'Unpin browse from map'
-                          : 'Pin browse to map'
+                          ? ('UNPIN_BROWSE_FROM_MAP' | translate)
+                          : ('PIN_BROWSE_TO_MAP' | translate)
                       }}</span>
                       <mat-icon> push_pin </mat-icon>
                     </button>
