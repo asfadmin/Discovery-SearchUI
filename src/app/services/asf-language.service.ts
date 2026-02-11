@@ -37,12 +37,8 @@ export class AsfLanguageService {
   private listLanguagesRegex = ['en', 'es'];
 
   public languageName = {
-    de: 'Deutsch',
     en: 'English',
     es: 'Español',
-    fr: 'Français',
-    pt: 'Português',
-    zh: '中文 (Chinese)',
   };
 
   private subs = new SubSink();

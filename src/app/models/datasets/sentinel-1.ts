@@ -5,6 +5,7 @@ export const sentinel_1 = {
   name: 'Sentinel-1',
   subName: '',
   beta: false,
+  priority: 2,
   properties: [
     Props.DATE,
     Props.BEAM_MODE,

@@ -1,25 +1,6 @@
-@use "asf-theme-variables" as *;
-@use "deluxe-menu" as *;
-@use "deluxe-menu-2" as *;
+@use 'asf-theme-variables' as *;
+@use 'deluxe-menu-2' as *;
 
-.dataset--layout {
-  white-space: normal;
-  flex: 7;
-}
-
-.dataset-aside--layout {
-  flex: 3;
-  text-align: center;
-}
-
-.smaller-font {
-  font-size: smaller;
-}
-
-.increase-right-margin {
-  margin-right: 15px;
-}
-.disclaimer {
-  font-size: large;
-  margin-top: 10px;
+.hr-wrapper {
+  margin-top: -8px;
 }

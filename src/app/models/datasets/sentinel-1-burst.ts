@@ -5,6 +5,7 @@ export const sentinel_1_bursts = {
   name: 'S1 Bursts',
   subName: '',
   beta: true,
+  priority: 3,
   properties: [
     Props.DATE,
     Props.BEAM_MODE,

@@ -1,0 +1,195 @@
+<div class="dataset-menu-panel" [class.mobile-panel]="isMobile">
+  <!-- Close button (mobile only) -->
+  @if (isMobile) {
+    <button
+      class="close-button"
+      mat-icon-button
+      (click)="onClose()"
+      matTooltip="{{ 'CLOSE' | translate }}"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  }
+
+  <!-- Search input -->
+  <div class="search-container">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-icon matPrefix>search</mat-icon>
+      <input
+        matInput
+        #searchInput
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchChange()"
+        placeholder="{{ 'SEARCH_DATASETS' | translate }}"
+        autocomplete="off"
+      />
+      @if (searchTerm) {
+        <button mat-icon-button matSuffix (click)="clearSearch()">
+          <mat-icon>clear</mat-icon>
+        </button>
+      }
+    </mat-form-field>
+  </div>
+
+  <!-- Filter chips -->
+  <div class="filter-chips">
+    <mat-chip-listbox
+      [value]="activeFilter"
+      (change)="onFilterChange($event.value)"
+      hideSingleSelectionIndicator
+    >
+      <mat-chip-option value="all">
+        {{ 'FILTER_ALL' | translate }}
+        <span class="chip-count">{{ searchedCount }}</span>
+      </mat-chip-option>
+      <mat-chip-option value="active">
+        {{ 'DATASET_ACTIVE' | translate }}
+        <span class="chip-count">{{ activeTotalCount }}</span>
+      </mat-chip-option>
+      <mat-chip-option value="inactive">
+        {{ 'DATASET_INACTIVE' | translate }}
+        <span class="chip-count">{{ inactiveTotalCount }}</span>
+      </mat-chip-option>
+    </mat-chip-listbox>
+  </div>
+
+  <!-- Dataset list -->
+  <div
+    class="dataset-list"
+    role="listbox"
+    [attr.aria-label]="'DATASET' | translate"
+  >
+    @if (filteredCount === 0) {
+      <div class="no-results">
+        {{ 'NO_MATCHING_DATASETS' | translate }}
+      </div>
+    } @else {
+      <!-- Active datasets section -->
+      @if (grouped.active.length > 0) {
+        @if (activeFilter === 'all' && grouped.inactive.length > 0) {
+          <div class="section-header">{{ 'ACTIVE_DATASETS' | translate }}</div>
+        }
+        @for (dataset of grouped.active; track dataset.id; let isLast = $last) {
+          <ng-container
+            *ngTemplateOutlet="
+              datasetRow;
+              context: {
+                $implicit: dataset,
+                showDivider: !isLast || grouped.inactive.length > 0,
+              }
+            "
+          ></ng-container>
+        }
+      }
+
+      <!-- Inactive datasets section -->
+      @if (grouped.inactive.length > 0) {
+        @if (activeFilter === 'all' && grouped.active.length > 0) {
+          <div class="section-header">
+            {{ 'INACTIVE_DATASETS' | translate }}
+          </div>
+        }
+        @for (
+          dataset of grouped.inactive;
+          track dataset.id;
+          let isLast = $last
+        ) {
+          <ng-container
+            *ngTemplateOutlet="
+              datasetRow;
+              context: { $implicit: dataset, showDivider: !isLast }
+            "
+          ></ng-container>
+        }
+      }
+    }
+  </div>
+
+  <!-- Footer -->
+  <div class="dataset-menu-footer">
+    {{
+      'SHOWING_X_OF_Y' | translate: { shown: filteredCount, total: totalCount }
+    }}
+  </div>
+</div>
+
+<!-- Shared dataset row template -->
+<ng-template #datasetRow let-dataset let-showDivider="showDivider">
+  <div
+    class="dataset-item"
+    [class.selected-dataset]="dataset.id === selected"
+    role="option"
+    tabindex="0"
+    [attr.aria-selected]="dataset.id === selected"
+    (click)="onSelectDataset(dataset.id)"
+    (keydown.enter)="onSelectDataset(dataset.id)"
+    (keydown.space)="onSelectDataset(dataset.id); $event.preventDefault()"
+  >
+    <div class="menu-item-inner">
+      <div class="dataset--layout menu-item-content">
+        <div class="item-title">
+          {{ dataset.name }}
+          <span class="dataset-light-text">
+            @if (
+              dataset.id === 'SENTINEL-1' || dataset.id === 'SENTINEL-1 BURSTS'
+            ) {
+              <span matTooltip="{{ 'HYP3_AVAILABLE' | translate }}">
+                <mat-icon class="hyp3-icon" svgIcon="hyp3"></mat-icon>
+              </span>
+            }
+            @if (dataset.beta) {
+              <span
+                ><em> {{ 'BETA' | translate }} </em></span
+              >
+            }
+            @if (dataset.subName) {
+              <div class="dataset__subName faint-text">
+                {{ dataset.subName }}
+              </div>
+            }
+          </span>
+        </div>
+        <div class="item-content limitTextHeight">
+          {{ dataset.platformDesc | translate }}
+        </div>
+        <mat-card-actions
+          (click)="onDocsAction($event)"
+          (keydown.enter)="$event.stopPropagation()"
+          (keydown.space)="$event.stopPropagation()"
+        >
+          <app-docs-modal
+            class="info-text"
+            text="{{ 'MORE_INFO' | translate }}"
+            url="{{ dataset.infoUrl }}"
+          >
+          </app-docs-modal>
+        </mat-card-actions>
+      </div>
+      <div class="dataset-aside--layout menu-item-aside">
+        <div class="dataset-date-range faint-text">
+          {{ prettyDateRange(dataset.date) }}
+        </div>
+        <div class="menu-item-icon">
+          <img src="{{ dataset.platformIcon }}" width="53" height="53" alt="" />
+        </div>
+        @if (dataset.source !== null && dataset.source.url !== null) {
+          <div class="dataset-source">
+            <a
+              href="{{ dataset.source.url }}"
+              target="_blank"
+              class="blue-link"
+              (click)="$event.stopPropagation()"
+              (keydown.enter)="$event.stopPropagation()"
+              (keydown.space)="$event.stopPropagation()"
+            >
+              {{ dataset.source.name }}
+            </a>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+  @if (showDivider) {
+    <hr class="dataset-hr" />
+  }
+</ng-template>

@@ -5,6 +5,8 @@ export const beta = {
   name: 'ARIA S1 GUNW',
   subName: 'NISAR-format',
   beta: false,
+  active: false,
+  priority: 11,
   properties: [
     Props.DATE,
     Props.BEAM_MODE,

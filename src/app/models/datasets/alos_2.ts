@@ -5,6 +5,7 @@ export const alos_2 = {
   name: 'ALOS-2',
   subName: '',
   beta: false,
+  priority: 5,
   properties: [
     Props.DATE,
     Props.BEAM_MODE,

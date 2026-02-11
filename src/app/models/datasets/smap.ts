@@ -5,6 +5,7 @@ export const smap = {
   name: 'SMAP',
   subName: '',
   beta: false,
+  priority: 6,
   properties: [
     Props.DATE,
     Props.BEAM_MODE,

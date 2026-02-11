@@ -5,6 +5,7 @@ export const jers_1 = {
   name: 'JERS-1',
   subName: '',
   beta: false,
+  priority: 14,
   properties: [
     Props.DATE,
     Props.BEAM_MODE,

@@ -5,6 +5,7 @@ export const opera_s1 = {
   name: 'OPERA-S1',
   subName: '',
   beta: false,
+  priority: 4,
   properties: [
     Props.DATE,
     Props.BEAM_MODE,

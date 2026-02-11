@@ -1,0 +1,255 @@
+@use 'asf-theme-variables' as *;
+
+// Panel dimensions — width and height are set by the CDK overlay config
+$chips-padding: 8px 16px;
+$footer-padding: 10px 16px;
+
+.dataset-menu-panel {
+  // Reduce chip hover overlay so unselected chip text stays readable
+  --mat-chip-hover-state-layer-opacity: 0.10;
+
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+
+  @include themify($themes) {
+    background-color: themed('background-white');
+    color: themed('light-black');
+  }
+
+  &.mobile-panel {
+    width: 100vw;
+    max-height: 100vh;
+    height: 100vh;
+    border-radius: 0;
+  }
+}
+
+// Close button (mobile)
+.close-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 1;
+}
+
+// Search
+.search-container {
+  padding: 12px 16px 0 16px;
+  flex-shrink: 0;
+}
+
+.search-field {
+  width: 100%;
+
+  ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+    height: 5px;
+  }
+
+  input {
+    @include themify($themes) {
+      caret-color: themed('light-black');
+    }
+  }
+}
+
+// Filter chips
+.filter-chips {
+  padding: $chips-padding;
+  flex-shrink: 0;
+  overflow-x: auto;
+
+  @include themify($themes) {
+    border-bottom: 1px solid themed('dark-dividers');
+  }
+
+  // Override Material chip height — must target the chip element directly
+  // to beat the density mixin selector (.mat-mdc-chip.mat-mdc-standard-chip)
+  ::ng-deep .mat-mdc-chip.mat-mdc-standard-chip {
+    --mat-chip-container-height: 24px;
+    padding: 0;
+  }
+}
+
+.chip-count {
+  margin-left: 4px;
+  opacity: 0.7;
+  font-size: 11px;
+}
+
+// Dataset list
+.dataset-list {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+}
+
+.section-header {
+  padding: 12px 16px 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  @include themify($themes) {
+    color: themed('dark-disabled-text');
+  }
+}
+
+.dataset-item {
+  cursor: pointer;
+  padding: 8px 0 4px;
+  transition: background-color 0.1s;
+
+  .mobile-panel & {
+    padding-bottom: 24px;
+  }
+
+  @include themify($themes) {
+    &:hover {
+      background-color: themed('dark-focused');
+    }
+  }
+}
+
+.selected-dataset {
+  @include themify($themes) {
+    background-color: themed('dark-focused');
+  }
+}
+
+.no-results {
+  padding: 24px 16px;
+  text-align: center;
+  font-style: italic;
+
+  @include themify($themes) {
+    color: themed('dark-disabled-text');
+  }
+}
+
+// Reuse existing dataset row styles
+.menu-item-inner {
+  display: flex;
+  margin: 5px 5px -15px 15px;
+  width: 100%;
+}
+
+.dataset--layout {
+  white-space: normal;
+  flex: 7;
+}
+
+.dataset-aside--layout {
+  flex: 3;
+  text-align: center;
+  margin-right: 10px;
+}
+
+.item-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.item-content {
+  line-height: 18px;
+}
+
+.limitTextHeight {
+  height: 72px;
+  overflow: hidden;
+}
+
+.menu-item-icon {
+  width: 100px;
+  height: 47px;
+  margin-left: 34px;
+  margin-right: 0;
+
+  @include themify($themes) {
+    color: themed('dark-primary-text');
+  }
+
+  img {
+    @include themify($themes) {
+      filter: themed('inverted-image');
+    }
+  }
+}
+
+.dataset-date-range {
+  @include themify($themes) {
+    color: themed('dark-disabled-text') !important;
+  }
+  font-weight: bold;
+  line-height: 30px;
+  font-size: 14px;
+}
+
+.dataset-source {
+  @include themify($themes) {
+    color: themed('blue-link');
+    a {
+      color: themed('blue-link');
+    }
+  }
+  padding-top: 22px;
+  font-size: 12px;
+}
+
+.dataset-hr {
+  padding: 0;
+  margin-block: 0;
+
+  @include themify($themes) {
+    border-top-color: rgba(themed('primary-light'), 0.2);
+  }
+}
+
+// Reset Material card-actions default padding (matches old deluxe-menu-2 reset)
+:host ::ng-deep .mat-mdc-card-actions {
+  padding: 0;
+  margin: 0;
+}
+
+.info-text {
+  font-style: italic;
+  font-size: 14px;
+  line-height: 22px;
+  margin: -20px 0 0;
+}
+
+.dataset-light-text {
+  font-size: 12px;
+  font-style: normal;
+}
+
+.hyp3-icon {
+  width: 15px;
+  height: 15px;
+  margin-top: -7px;
+}
+
+// Footer
+.dataset-menu-footer {
+  padding: $footer-padding;
+  font-size: 12px;
+  text-align: center;
+  flex-shrink: 0;
+
+  @include themify($themes) {
+    color: themed('dark-disabled-text');
+    border-top: 1px solid themed('dark-dividers');
+  }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+  .dataset-item {
+    transition: none;
+  }
+}

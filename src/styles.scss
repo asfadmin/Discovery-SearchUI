@@ -902,6 +902,18 @@ $d-height: 550px;
     overflow: auto;
 }
 
+// Dataset menu dark mode chip styling
+.theme-dark .dataset-menu-panel .mat-mdc-standard-chip {
+  --mat-chip-outline-color: transparent;
+  --mat-chip-label-text-color: rgb(255 255 255 / 0.6);
+  --mat-chip-elevated-selected-container-color: rgb(255 255 255 / 0.20);
+  --mat-chip-selected-label-text-color: white;
+  --mat-chip-flat-selected-outline-width: 1px;
+}
+.theme-dark .dataset-menu-panel .mat-mdc-chip-selected {
+  --mat-chip-outline-color: rgb(255 255 255 / 0.5);
+}
+
 .mat-mdc-menu-panel.search-type-menu {
   max-height: 90vh;
   overflow-y: auto;

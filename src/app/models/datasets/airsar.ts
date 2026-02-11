@@ -5,6 +5,7 @@ export const airsar = {
   name: 'AIRSAR',
   subName: '',
   beta: false,
+  priority: 15,
   properties: [
     Props.DATE,
     Props.BEAM_MODE,

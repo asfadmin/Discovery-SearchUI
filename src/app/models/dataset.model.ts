@@ -6,6 +6,8 @@ export interface Dataset {
   name: string;
   subName: string;
   beta: boolean;
+  active?: boolean; // Override: true=Active, false=Inactive. Omit to derive from date.end
+  priority: number; // Display rank (1 = highest priority, shown first)
   apiValue: Record<string, string>;
   date: DateRange;
   infoUrl: string;
@@ -64,6 +66,13 @@ export interface DatasetSubtype {
 }
 
 export type DatasetCollectionMap = Record<string, string>;
+
+export function isDatasetActive(dataset: Dataset): boolean {
+  if (dataset.active !== undefined) {
+    return dataset.active;
+  }
+  return dataset.date.end === undefined;
+}
 
 export type DatasetProductTypes = ProductType[];
 export type DatasetShortName = ShortName[];
