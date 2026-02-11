@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use 'asf-theme-variables' as *;
 
 // Panel dimensions — width and height are set by the CDK overlay config
@@ -13,7 +14,7 @@ $footer-padding: 10px 16px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 32px rgb(0 0 0 / 0.2);
 
   @include themify($themes) {
     background-color: themed('background-white');
@@ -206,7 +207,7 @@ $footer-padding: 10px 16px;
   margin-block: 0;
 
   @include themify($themes) {
-    border-top-color: rgba(themed('primary-light'), 0.2);
+    border-top-color: color.change(themed('primary-light'), $alpha: 0.2);
   }
 }
 
