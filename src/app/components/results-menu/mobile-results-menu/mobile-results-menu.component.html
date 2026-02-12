@@ -66,8 +66,7 @@
             /
             @if (selectedProducts$ | async; as products) {
               <span>
-                {{ products.length || '' }} {{ 'FILE' | translate
-                }}{{ (products || []).length === 1 ? '' : 's' }}
+                {{ products.length || '' }} {{ (products || []).length === 1 ? ('FILE' | translate) : ('FILES' | translate) }}
               </span>
             } @else {
               {{ 'FILES' | translate }}

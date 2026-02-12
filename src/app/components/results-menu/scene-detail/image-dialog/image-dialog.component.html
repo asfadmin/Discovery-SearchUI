@@ -214,7 +214,7 @@
                         class="primary-text"
                       >
                         @if (product.bytes === 0) {
-                          <span>Virtual</span>
+                          <span>{{ 'VIRTUAL' | translate }}</span>
                         }
                         @if (product.bytes !== 0) {
                           <span>{{

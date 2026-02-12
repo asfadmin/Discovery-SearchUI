@@ -126,7 +126,7 @@
                       class="opacity-slider-button"
                       [disabled]="!(isBrowseOverlayEnabled$ | async)"
                       [matMenuTriggerFor]="opacitySlider"
-                      aria-label="Map projection view"
+                      [attr.aria-label]="'MAP_PROJECTION_VIEW' | translate"
                     >
                       <span class="opacity-button-text">
                         {{ browseOverlayOpacity * 100 | number: '1.0-0' }}%

@@ -30,8 +30,7 @@
     <mat-card-subtitle class="header product-list-header">
       <span style="white-space: nowrap">
         {{ sarviewsProductsLength }} {{ 'OF' | translate }}
-        {{ unfilteredEventProductsLength$ | async }} {{ 'FILE' | translate
-        }}{{ sarviewsProductsLength === 1 ? '' : 's' }}
+        {{ unfilteredEventProductsLength$ | async }} {{ sarviewsProductsLength === 1 ? ('FILE' | translate) : ('FILES' | translate) }}
       </span>
       <div class="space-filler"></div>
       <div style="display: flex; align-items: flex-end; padding-bottom: 7px">
@@ -96,8 +95,7 @@
       {{ 'SCENE_DETAIL' | translate }} /
       @if (selectedProducts$ | async; as products) {
         <span>
-          {{ products.length || '' }}{{ 'FILE' | translate
-          }}{{ (products || []).length === 1 ? '' : 's' }}
+          {{ products.length || '' }}{{ (products || []).length === 1 ? ('FILE' | translate) : ('FILES' | translate) }}
         </span>
       } @else {
         {{ 'FILES' | translate }}

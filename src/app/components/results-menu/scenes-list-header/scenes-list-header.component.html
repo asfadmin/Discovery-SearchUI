@@ -18,8 +18,7 @@
           searchType === SearchTypes.DATASET || searchType === SearchTypes.LIST
         ) {
           <div class="mr-10 scene-count">
-            {{ numberOfScenes$ | async }} {{ 'SCENE' | translate
-            }}{{ (numberOfScenes$ | async) === 1 ? '' : 's' }}
+            {{ numberOfScenes$ | async }} {{ (numberOfScenes$ | async) === 1 ? ('SCENE' | translate) : ('SCENES' | translate) }}
             @if (breakpoint > breakpoints.MOBILE) {
               <span style="font-size: small">
                 <br />
@@ -30,8 +29,7 @@
                 }
                 {{ 'OF' | translate }}
                 {{ formatNumber(totalResultCount$ | async) }}
-                {{ 'FILE' | translate
-                }}{{ (numberOfProducts$ | async) === 1 ? '' : 's' }}
+                {{ (numberOfProducts$ | async) === 1 ? ('FILE' | translate) : ('FILES' | translate) }}
               </span>
             }
           </div>
@@ -42,14 +40,12 @@
             event
             [class.mobile-event]="breakpoint === breakpoints.MOBILE"
           >
-            {{ numberOfFilteredEvents$ | async }} {{ 'EVENT' | translate
-            }}{{ (numSarviewsScenes$ | async) === 1 ? '' : 's' }}
+            {{ numberOfFilteredEvents$ | async }} {{ (numSarviewsScenes$ | async) === 1 ? ('EVENT' | translate) : ('EVENTS' | translate) }}
           </div>
         }
         @if (searchType === SearchTypes.SBAS) {
           <div class="mr-10" style="margin-top: -15px">
-            {{ numPairs$ | async }} {{ 'PAIR' | translate
-            }}{{ (numPairs$ | async) === 1 ? '' : 's' }}
+            {{ numPairs$ | async }} {{ (numPairs$ | async) === 1 ? ('PAIR' | translate) : ('PAIRS' | translate) }}
             <mat-icon
               [matTooltip]="'SBAS_COUNT_TOOLTIP' | translate"
               class="sbas-count-tooltip"
@@ -58,8 +54,7 @@
             @if (!!sbasProducts && breakpoint > breakpoints.MEDIUM) {
               <span style="font-size: small">
                 <br />
-                ({{ sbasProducts.length }} {{ 'SCENE' | translate
-                }}{{ sbasProducts.length === 1 ? '' : 's' }})
+                ({{ sbasProducts.length }} {{ sbasProducts.length === 1 ? ('SCENE' | translate) : ('SCENES' | translate) }})
               </span>
             }
           </div>
@@ -67,15 +62,13 @@
         @if (searchType === SearchTypes.BASELINE) {
           <div class="mr-10">
             {{ numBaselineScenes$ | async }} {{ 'OF' | translate }}
-            {{ numUnfilteredBaselineScenes$ | async }} {{ 'SCENE' | translate
-            }}{{ (numBaselineScenes$ | async) === 1 ? '' : 's' }}
+            {{ numUnfilteredBaselineScenes$ | async }} {{ (numBaselineScenes$ | async) === 1 ? ('SCENE' | translate) : ('SCENES' | translate) }}
           </div>
         }
         @if (searchType === SearchTypes.CUSTOM_PRODUCTS) {
           <div class="mr-10">
             {{ numBaselineScenes$ | async }}{{ moreHyp3JobsToLoad ? '+' : '' }}
-            {{ 'PRODUCT' | translate
-            }}{{ (numBaselineScenes$ | async) === 1 ? '' : 's' }}
+            {{ (numBaselineScenes$ | async) === 1 ? ('PRODUCT' | translate) : ('PRODUCTS' | translate) }}
           </div>
         }
         @if (
@@ -537,8 +530,7 @@
                   mat-menu-item
                 >
                   {{ 'ADD' | translate }} {{ downloadableProds.length }}
-                  {{ 'FILE' | translate
-                  }}{{ downloadableProds.length === 1 ? '' : 's' }}
+                  {{ downloadableProds.length === 1 ? ('FILE' | translate) : ('FILES' | translate) }}
                   {{ 'TO_DOWNLOADS' | translate }}
                 </button>
               }
@@ -547,8 +539,7 @@
               ) {
                 <button (click)="queueSBASProducts(sbasProducts)" mat-menu-item>
                   {{ 'ADD' | translate }} {{ sbasProducts.length }}
-                  {{ 'FILE' | translate
-                  }}{{ sbasProducts.length === 1 ? '' : 's' }}
+                  {{ sbasProducts.length === 1 ? ('FILE' | translate) : ('FILES' | translate) }}
                   {{ 'TO_DOWNLOADS' | translate }}
                 </button>
               }
@@ -577,8 +568,7 @@
                       ? downloadableProds.length
                       : (SBASBurstProductsLength$ | async)
                   }}
-                  BURST {{ 'FILE' | translate
-                  }}{{ downloadableProds.length === 1 ? '' : 's' }}
+                  BURST {{ downloadableProds.length === 1 ? ('FILE' | translate) : ('FILES' | translate) }}
                 </button>
               }
               @let currentDatasetID = currentDatasetID$ | async;
@@ -608,7 +598,7 @@
                 @for (item of productData | keyvalue; track item) {
                   <button mat-menu-item (click)="queueProductsOfType(item.key)">
                     {{ 'ADD' | translate }} {{ item.value }} {{ item.key }}
-                    {{ 'FILE' | translate }}{{ item.value === 1 ? '' : 's' }}
+                    {{ item.value === 1 ? ('FILE' | translate) : ('FILES' | translate) }}
                     {{ 'TO_DOWNLOADS' | translate }}
                   </button>
                 }
@@ -622,21 +612,19 @@
               >
                 <button (click)="queueAllProducts(burstData)" mat-menu-item>
                   {{ 'ADD' | translate }} {{ burstData.length }}
-                  {{ 'FILE' | translate
-                  }}{{ burstData.length === 1 ? '' : 's' }}
+                  {{ burstData.length === 1 ? ('FILE' | translate) : ('FILES' | translate) }}
                   {{ 'TO_DOWNLOADS' | translate }} (TIFF)
                 </button>
                 <button (click)="queueAllProducts(burstMetadata)" mat-menu-item>
                   {{ 'ADD' | translate }} {{ burstMetadata.length }}
-                  {{ 'FILE' | translate
-                  }}{{ burstMetadata.length === 1 ? '' : 's' }}
+                  {{ burstMetadata.length === 1 ? ('FILE' | translate) : ('FILES' | translate) }}
                   {{ 'TO_DOWNLOADS' | translate }} (XML)
                 </button>
               </ng-template>
             </mat-menu>
             <mat-menu #ExportAll="matMenu">
               <button mat-menu-item [matMenuTriggerFor]="ExportAllMetadata">
-                Metadata
+                {{ 'METADATA' | translate }}
               </button>
               <button mat-menu-item [matMenuTriggerFor]="ExportAllData">
                 {{ 'DATA' | translate }}
@@ -649,13 +637,13 @@
         @if (products) {
           <div>
             <button (click)="onMetadataExport(ApiFormat.CSV)" mat-menu-item>
-              csv
+              {{ 'CSV' | translate }}
             </button>
             <button (click)="onMetadataExport(ApiFormat.GEOJSON)" mat-menu-item>
-              geojson
+              {{ 'GEOJSON' | translate }}
             </button>
             <button (click)="onMetadataExport(ApiFormat.KML)" mat-menu-item>
-              kml
+              {{ 'KML' | translate }}
             </button>
           </div>
         }
@@ -664,13 +652,13 @@
         @if (products) {
           <div>
             <button (click)="onMakeDownloadScript(products)" mat-menu-item>
-              python (.py)
+              {{ 'PYTHON_PY' | translate }}
             </button>
             <button
               (click)="onMetadataExport(ApiFormat.METALINK)"
               mat-menu-item
             >
-              metalink
+              {{ 'METALINK' | translate }}
             </button>
           </div>
         }
@@ -684,7 +672,7 @@
               "
               mat-menu-item
             >
-              python (.py)
+              {{ 'PYTHON_PY' | translate }}
             </button>
           </div>
         }
@@ -784,7 +772,7 @@
         products: (sarviewsEventProducts$ | async),
       }"
     >
-      URLs
+      {{ 'URLS' | translate }}
     </button>
   </ng-template>
 </mat-menu>

@@ -2,7 +2,7 @@
   [value]="interaction"
   class="interaction-toggle-group"
   name="viewSelect"
-  aria-label="Font Style"
+  [attr.aria-label]="'FONT_STYLE' | translate"
   [hideSingleSelectionIndicator]="true"
 >
   <app-draw-selector></app-draw-selector>

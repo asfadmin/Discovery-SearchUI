@@ -1,7 +1,6 @@
 <div class="queue-submit">
   <div style="font-size: 26px">
-    {{ data.numJobs }} {{ 'JOB' | translate
-    }}{{ data.numJobs === 1 ? '' : 's' }} processing
+    {{ data.numJobs }} {{ data.numJobs === 1 ? ('JOB' | translate) : ('JOBS' | translate) }} {{ 'PROCESSING' | translate }}
   </div>
   <div>
     <button

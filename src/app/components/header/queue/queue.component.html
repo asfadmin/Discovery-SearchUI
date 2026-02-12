@@ -28,7 +28,7 @@
     >
       <app-docs-modal
         class="text-link"
-        text="Docs"
+        text="DOCS"
         url="https://docs.asf.alaska.edu/vertex/manual/#downloads-queue"
       >
       </app-docs-modal>
@@ -127,7 +127,7 @@
             •
             <span>
               @if (product.bytes === 0 && !product.id.startsWith('OPERA')) {
-                <span>Virtual</span>
+                <span>{{ 'VIRTUAL' | translate }}</span>
               }
               @if (product.bytes !== 0) {
                 <span>{{ product.bytes | readableSizeFromBytes }}</span>
@@ -231,7 +231,7 @@
                 @if (breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin) {
                   <span>{{ 'COPY_FILE_IDS' | translate }}</span>
                 } @else {
-                  IDs
+                  {{ 'IDS' | translate }}
                 }
               </button>
               @if ((numberOfS3Products$ | async) === 0) {
@@ -254,7 +254,7 @@
                     ) {
                       {{ 'COPY_URLS' | translate }}
                     } @else {
-                      URLs
+                      {{ 'URLS' | translate }}
                     }
                   </span>
                 </button>
@@ -279,17 +279,17 @@
                     ) {
                       {{ 'COPY_URLS' | translate }}
                     } @else {
-                      URLs
+                      {{ 'URLS' | translate }}
                     }
                   </span>
                 </button>
               }
               <mat-menu #urlTypeMenu>
                 <button mat-menu-item (click)="onCopyQueueURLs(products)">
-                  Download URLs
+                  {{ 'DOWNLOAD_URLS' | translate }}
                 </button>
                 <button mat-menu-item (click)="onCopyQueueURLs(products, true)">
-                  S3 URLs
+                  {{ 'S3_URLS' | translate }}
                 </button>
               </mat-menu>
               @if (breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin) {
@@ -345,7 +345,7 @@
                     [matMenuTriggerFor]="metadataMenu"
                     class="btn-primary"
                   >
-                    Metadata
+                    {{ 'METADATA' | translate }}
                   </button>
                 </mat-menu>
               }
