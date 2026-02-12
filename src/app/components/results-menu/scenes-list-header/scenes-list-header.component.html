@@ -62,7 +62,7 @@
         @if (searchType === SearchTypes.BASELINE) {
           <div class="mr-10">
             {{ numBaselineScenes$ | async }} {{ 'OF' | translate }}
-            {{ numUnfilteredBaselineScenes$ | async }} {{ (numBaselineScenes$ | async) === 1 ? ('SCENE' | translate) : ('SCENES' | translate) }}
+            {{ numUnfilteredBaselineScenes$ | async }} {{ (numUnfilteredBaselineScenes$ | async) === 1 ? ('SCENE' | translate) : ('SCENES' | translate) }}
           </div>
         }
         @if (searchType === SearchTypes.CUSTOM_PRODUCTS) {
