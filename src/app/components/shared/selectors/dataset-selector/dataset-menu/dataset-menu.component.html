@@ -11,6 +11,7 @@
       mat-icon-button
       (click)="onClose()"
       matTooltip="{{ 'CLOSE' | translate }}"
+      aria-label="{{ 'CLOSE' | translate }}"
     >
       <mat-icon>close</mat-icon>
     </button>
@@ -29,7 +30,12 @@
         autocomplete="off"
       />
       @if (searchTerm) {
-        <button mat-icon-button matSuffix (click)="clearSearch()">
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="clearSearch()"
+          aria-label="{{ 'CLEAR' | translate }}"
+        >
           <mat-icon>clear</mat-icon>
         </button>
       }
