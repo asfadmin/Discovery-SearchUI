@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { SubSink } from 'subsink';
 import * as filtersStore from '@store/filters';
-import { SBASOverlap } from '@models';
+import { SBASOverlap, SBASOverlapTranslation } from '@models';
 import { MatFormField, MatLabel } from '@angular/material/input';
 import { MatSelect, MatOption } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
@@ -30,6 +30,7 @@ export class SbasOverlapSelectorComponent implements OnInit {
   public fiftyPercentOverlapToggled = false;
   public SBASOverlapThreshold: SBASOverlap = SBASOverlap.ALL;
   public SBASOverlapTypes = SBASOverlap;
+  public overlapTranslation = SBASOverlapTranslation;
   private subs = new SubSink();
 
   public overlapTypes = Object.keys(SBASOverlap);

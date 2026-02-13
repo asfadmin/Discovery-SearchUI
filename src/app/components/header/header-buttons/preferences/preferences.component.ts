@@ -106,6 +106,11 @@ export class PreferencesComponent implements OnInit, OnDestroy {
   public selectedSearchType = SearchType.DATASET;
 
   public themeOptions: string[] = ['light', 'dark', 'System Preferences'];
+  public themeTranslation: Record<string, string> = {
+    light: 'LIGHT',
+    dark: 'DARK',
+    'System Preferences': 'SYSTEM_PREFERENCES',
+  };
   public userFiltersBySearchType = {};
   public userFilters: SavedFilterPreset[];
   public selectedFiltersIDs = {

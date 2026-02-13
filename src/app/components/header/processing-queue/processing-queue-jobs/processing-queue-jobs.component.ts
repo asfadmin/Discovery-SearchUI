@@ -193,6 +193,6 @@ export enum ProcessingQueueJobsSortOrder {
   LATEST = 'Latest',
 }
 export enum ProcessingQueueJobsSortType {
-  ACQUISITION = 'Start Date',
-  DATE_ADDED = 'Date Added',
+  ACQUISITION = 'START_DATE',
+  DATE_ADDED = 'DATE_ADDED',
 }
