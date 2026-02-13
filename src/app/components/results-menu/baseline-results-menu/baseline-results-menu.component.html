@@ -29,7 +29,11 @@
                   <span class="control-mat-button-toggle scene-text">
                     {{ numBaselineScenes$ | async }} {{ 'OF' | translate }}
                     {{ numUnfilteredBaselineScenes$ | async }}
-                    {{ (numBaselineScenes$ | async) === 1 ? ('SCENE' | translate) : ('SCENES' | translate) }}
+                    {{
+                      (numBaselineScenes$ | async) === 1
+                        ? ('SCENE' | translate)
+                        : ('SCENES' | translate)
+                    }}
                   </span>
                 </span>
               </div>
@@ -136,7 +140,11 @@
           <mat-menu #addAllProducts="matMenu">
             <button (click)="queueAllProducts(downloadableProds)" mat-menu-item>
               {{ 'ADD' | translate }} {{ downloadableProds.length }}
-              {{ downloadableProds.length === 1 ? ('FILE' | translate) : ('FILES' | translate) }}
+              {{
+                downloadableProds.length === 1
+                  ? ('FILE' | translate)
+                  : ('FILES' | translate)
+              }}
               {{ 'EXPORT' | translate }}
             </button>
           </mat-menu>

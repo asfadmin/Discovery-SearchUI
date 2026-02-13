@@ -18,7 +18,12 @@
           searchType === SearchTypes.DATASET || searchType === SearchTypes.LIST
         ) {
           <div class="mr-10 scene-count">
-            {{ numberOfScenes$ | async }} {{ (numberOfScenes$ | async) === 1 ? ('SCENE' | translate) : ('SCENES' | translate) }}
+            {{ numberOfScenes$ | async }}
+            {{
+              (numberOfScenes$ | async) === 1
+                ? ('SCENE' | translate)
+                : ('SCENES' | translate)
+            }}
             @if (breakpoint > breakpoints.MOBILE) {
               <span style="font-size: small">
                 <br />
@@ -29,7 +34,11 @@
                 }
                 {{ 'OF' | translate }}
                 {{ formatNumber(totalResultCount$ | async) }}
-                {{ (numberOfProducts$ | async) === 1 ? ('FILE' | translate) : ('FILES' | translate) }}
+                {{
+                  (numberOfProducts$ | async) === 1
+                    ? ('FILE' | translate)
+                    : ('FILES' | translate)
+                }}
               </span>
             }
           </div>
@@ -40,12 +49,22 @@
             event
             [class.mobile-event]="breakpoint === breakpoints.MOBILE"
           >
-            {{ numberOfFilteredEvents$ | async }} {{ (numSarviewsScenes$ | async) === 1 ? ('EVENT' | translate) : ('EVENTS' | translate) }}
+            {{ numberOfFilteredEvents$ | async }}
+            {{
+              (numSarviewsScenes$ | async) === 1
+                ? ('EVENT' | translate)
+                : ('EVENTS' | translate)
+            }}
           </div>
         }
         @if (searchType === SearchTypes.SBAS) {
           <div class="mr-10" style="margin-top: -15px">
-            {{ numPairs$ | async }} {{ (numPairs$ | async) === 1 ? ('PAIR' | translate) : ('PAIRS' | translate) }}
+            {{ numPairs$ | async }}
+            {{
+              (numPairs$ | async) === 1
+                ? ('PAIR' | translate)
+                : ('PAIRS' | translate)
+            }}
             <mat-icon
               [matTooltip]="'SBAS_COUNT_TOOLTIP' | translate"
               class="sbas-count-tooltip"
@@ -54,7 +73,12 @@
             @if (!!sbasProducts && breakpoint > breakpoints.MEDIUM) {
               <span style="font-size: small">
                 <br />
-                ({{ sbasProducts.length }} {{ sbasProducts.length === 1 ? ('SCENE' | translate) : ('SCENES' | translate) }})
+                ({{ sbasProducts.length }}
+                {{
+                  sbasProducts.length === 1
+                    ? ('SCENE' | translate)
+                    : ('SCENES' | translate)
+                }})
               </span>
             }
           </div>
@@ -62,13 +86,22 @@
         @if (searchType === SearchTypes.BASELINE) {
           <div class="mr-10">
             {{ numBaselineScenes$ | async }} {{ 'OF' | translate }}
-            {{ numUnfilteredBaselineScenes$ | async }} {{ (numUnfilteredBaselineScenes$ | async) === 1 ? ('SCENE' | translate) : ('SCENES' | translate) }}
+            {{ numUnfilteredBaselineScenes$ | async }}
+            {{
+              (numUnfilteredBaselineScenes$ | async) === 1
+                ? ('SCENE' | translate)
+                : ('SCENES' | translate)
+            }}
           </div>
         }
         @if (searchType === SearchTypes.CUSTOM_PRODUCTS) {
           <div class="mr-10">
             {{ numBaselineScenes$ | async }}{{ moreHyp3JobsToLoad ? '+' : '' }}
-            {{ (numBaselineScenes$ | async) === 1 ? ('PRODUCT' | translate) : ('PRODUCTS' | translate) }}
+            {{
+              (numBaselineScenes$ | async) === 1
+                ? ('PRODUCT' | translate)
+                : ('PRODUCTS' | translate)
+            }}
           </div>
         }
         @if (
@@ -530,7 +563,11 @@
                   mat-menu-item
                 >
                   {{ 'ADD' | translate }} {{ downloadableProds.length }}
-                  {{ downloadableProds.length === 1 ? ('FILE' | translate) : ('FILES' | translate) }}
+                  {{
+                    downloadableProds.length === 1
+                      ? ('FILE' | translate)
+                      : ('FILES' | translate)
+                  }}
                   {{ 'TO_DOWNLOADS' | translate }}
                 </button>
               }
@@ -539,7 +576,11 @@
               ) {
                 <button (click)="queueSBASProducts(sbasProducts)" mat-menu-item>
                   {{ 'ADD' | translate }} {{ sbasProducts.length }}
-                  {{ sbasProducts.length === 1 ? ('FILE' | translate) : ('FILES' | translate) }}
+                  {{
+                    sbasProducts.length === 1
+                      ? ('FILE' | translate)
+                      : ('FILES' | translate)
+                  }}
                   {{ 'TO_DOWNLOADS' | translate }}
                 </button>
               }
@@ -568,7 +609,12 @@
                       ? downloadableProds.length
                       : (SBASBurstProductsLength$ | async)
                   }}
-                  BURST {{ downloadableProds.length === 1 ? ('FILE' | translate) : ('FILES' | translate) }}
+                  BURST
+                  {{
+                    downloadableProds.length === 1
+                      ? ('FILE' | translate)
+                      : ('FILES' | translate)
+                  }}
                 </button>
               }
               @let currentDatasetID = currentDatasetID$ | async;
@@ -598,7 +644,11 @@
                 @for (item of productData | keyvalue; track item) {
                   <button mat-menu-item (click)="queueProductsOfType(item.key)">
                     {{ 'ADD' | translate }} {{ item.value }} {{ item.key }}
-                    {{ item.value === 1 ? ('FILE' | translate) : ('FILES' | translate) }}
+                    {{
+                      item.value === 1
+                        ? ('FILE' | translate)
+                        : ('FILES' | translate)
+                    }}
                     {{ 'TO_DOWNLOADS' | translate }}
                   </button>
                 }
@@ -612,12 +662,20 @@
               >
                 <button (click)="queueAllProducts(burstData)" mat-menu-item>
                   {{ 'ADD' | translate }} {{ burstData.length }}
-                  {{ burstData.length === 1 ? ('FILE' | translate) : ('FILES' | translate) }}
+                  {{
+                    burstData.length === 1
+                      ? ('FILE' | translate)
+                      : ('FILES' | translate)
+                  }}
                   {{ 'TO_DOWNLOADS' | translate }} (TIFF)
                 </button>
                 <button (click)="queueAllProducts(burstMetadata)" mat-menu-item>
                   {{ 'ADD' | translate }} {{ burstMetadata.length }}
-                  {{ burstMetadata.length === 1 ? ('FILE' | translate) : ('FILES' | translate) }}
+                  {{
+                    burstMetadata.length === 1
+                      ? ('FILE' | translate)
+                      : ('FILES' | translate)
+                  }}
                   {{ 'TO_DOWNLOADS' | translate }} (XML)
                 </button>
               </ng-template>
