@@ -7,7 +7,6 @@ import { SBASOverlap, SBASOverlapTranslation } from '@models';
 import { MatFormField, MatLabel } from '@angular/material/input';
 import { MatSelect, MatOption } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
-import { UpperCasePipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -20,7 +19,6 @@ import { TranslateModule } from '@ngx-translate/core';
     MatSelect,
     FormsModule,
     MatOption,
-    UpperCasePipe,
     TranslateModule,
   ],
 })
