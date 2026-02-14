@@ -21,7 +21,7 @@
         (ngModelChange)="projectEditType.set($event)"
         name="projectEditType"
         class="project-edit-radio-group"
-        aria-label="Project edit action"
+        [attr.aria-label]="'PROJECT_EDIT_ACTION' | translate"
       >
         <mat-radio-button value="edit">
           @if (jobCount <= 1) {

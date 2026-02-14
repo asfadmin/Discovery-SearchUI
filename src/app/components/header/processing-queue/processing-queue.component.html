@@ -238,8 +238,11 @@
                   </div>
                   <div style="padding: 7px 10px">
                     <b
-                      >({{ allJobs.length - remaining }} extra job{{
-                        allJobs.length - remaining === 1 ? '' : 's'
+                      >({{ allJobs.length - remaining }}
+                      {{
+                        allJobs.length - remaining === 1
+                          ? ('EXTRA_JOB' | translate)
+                          : ('EXTRA_JOBS' | translate)
                       }})</b
                     >
                   </div>

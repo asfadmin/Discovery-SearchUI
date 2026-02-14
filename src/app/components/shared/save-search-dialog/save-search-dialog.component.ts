@@ -72,7 +72,7 @@ export class SaveSearchDialogComponent implements OnInit {
   ngOnInit(): void {
     this.saveType = this.data.saveType;
     if (this.saveType === models.SidebarType.SAVED_SEARCHES) {
-      this.saveTypeName = 'Save Search';
+      this.saveTypeName = 'SAVE_SEARCH';
 
       this.store$
         .select(filterStore.getGeocodeArea)
@@ -90,7 +90,7 @@ export class SaveSearchDialogComponent implements OnInit {
     }
 
     if (this.saveType === models.SidebarType.USER_FILTERS) {
-      this.saveTypeName = 'Save Filters';
+      this.saveTypeName = 'SAVE_FILTERS';
 
       combineLatest([
         this.store$.select(filterStore.getGeographicSearch).pipe(
@@ -162,9 +162,10 @@ export class SaveSearchDialogComponent implements OnInit {
     }
 
     const addName = ` as '${this.saveName}'`;
-    const searchTypeTranslated = this.language.translate.instant(
-      this.search.searchType,
-    );
+    const searchTypeKey =
+      models.SearchTypeTranslation[this.search.searchType] ??
+      this.search.searchType;
+    const searchTypeTranslated = this.language.translate.instant(searchTypeKey);
     this.notificationService.info(
       `Saved current ${searchTypeTranslated}${this.saveName ? addName : ''}`,
     );

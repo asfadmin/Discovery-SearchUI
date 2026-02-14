@@ -20,7 +20,7 @@
   <button
     matSuffix
     mat-icon-button
-    aria-label="Clear"
+    [attr.aria-label]="'CLEAR' | translate"
     (click)="onResetHyp3Url()"
   >
     <mat-icon>refresh</mat-icon>
@@ -32,7 +32,7 @@
     <button
       matSuffix
       mat-icon-button
-      aria-label="Remove"
+      [attr.aria-label]="'REMOVE' | translate"
       (click)="onRemoveHyp3Url(hyp3BackendUrl)"
     >
       <mat-icon>close</mat-icon>

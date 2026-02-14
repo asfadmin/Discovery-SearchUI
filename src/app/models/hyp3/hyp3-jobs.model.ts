@@ -17,7 +17,7 @@ export const RtcGammaJobType: Hyp3JobType = {
   ],
   options: [
     {
-      name: 'Radiometry',
+      name: 'RADIOMETRY',
       apiName: 'radiometry',
       type: JobOptionType.DROPDOWN,
       options: [
@@ -34,7 +34,7 @@ export const RtcGammaJobType: Hyp3JobType = {
       info: 'INFO_BACKSCATTER_COEFFICIENT',
     },
     {
-      name: 'Scale',
+      name: 'SCALE',
       apiName: 'scale',
       type: JobOptionType.DROPDOWN,
       options: [
@@ -55,20 +55,20 @@ export const RtcGammaJobType: Hyp3JobType = {
       info: 'INFO_SCALE_OF_OUTPUT_IMAGE',
     },
     {
-      name: 'Pixel Spacing',
+      name: 'PIXEL_SPACING',
       apiName: 'resolution',
       type: JobOptionType.DROPDOWN,
       options: [
         {
-          name: '30 meters',
+          name: 'METERS_30',
           apiValue: 30,
         },
         {
-          name: '20 meters',
+          name: 'METERS_20',
           apiValue: 20,
         },
         {
-          name: '10 meters',
+          name: 'METERS_10',
           apiValue: 10,
         },
       ],
@@ -76,14 +76,14 @@ export const RtcGammaJobType: Hyp3JobType = {
       info: 'INFO_PRODUCT_PIXEL',
     },
     {
-      name: 'DEM Matching',
+      name: 'DEM_MATCHING',
       apiName: 'dem_matching',
       type: JobOptionType.TOGGLE,
       default: false,
       info: 'INFO_DEM_MATCHING',
     },
     {
-      name: 'Speckle Filter',
+      name: 'SPECKLE_FILTER',
       apiName: 'speckle_filter',
       type: JobOptionType.TOGGLE,
       default: false,
@@ -97,21 +97,21 @@ export const RtcGammaJobType: Hyp3JobType = {
       info: 'INFO_INCLUDE_DEM',
     },
     {
-      name: 'Incidence Angle Map',
+      name: 'INCIDENCE_ANGLE_MAP',
       apiName: 'include_inc_map',
       type: JobOptionType.CHECKBOX,
       default: false,
       info: 'INFO_INCIDENCE_ANGLE_MAP',
     },
     {
-      name: 'Scattering Area Map',
+      name: 'SCATTERING_AREA_MAP',
       apiName: 'include_scattering_area',
       type: JobOptionType.CHECKBOX,
       default: false,
       info: 'INFO_SCATTERING_AREA_MAP',
     },
     {
-      name: 'RGB Decomposition',
+      name: 'RGB_DECOMPOSITION',
       apiName: 'include_rgb',
       type: JobOptionType.CHECKBOX,
       default: false,
@@ -136,7 +136,7 @@ export const InsarGammaJobType: Hyp3JobType = {
   ],
   options: [
     {
-      name: 'Looks',
+      name: 'LOOKS',
       apiName: 'looks',
       type: JobOptionType.DROPDOWN,
       options: [
@@ -153,7 +153,7 @@ export const InsarGammaJobType: Hyp3JobType = {
       info: 'INFO_LOOKS_RANGE_AZIMUTH',
     },
     {
-      name: 'Phase Filter',
+      name: 'PHASE_FILTER',
       apiName: 'phase_filter_parameter',
       type: JobOptionType.RANGE,
       info: 'INFO_PHASE_FILTER',
@@ -161,42 +161,42 @@ export const InsarGammaJobType: Hyp3JobType = {
       range: { start: 0.0, end: 1.0 },
     },
     {
-      name: 'Water Mask',
+      name: 'APPLY_WATER_MASK',
       apiName: 'apply_water_mask',
       type: JobOptionType.TOGGLE,
       default: false,
       info: 'INFO_WATER_MASK',
     },
     {
-      name: 'DEM',
+      name: 'INCLUDE_DEM',
       apiName: 'include_dem',
       type: JobOptionType.CHECKBOX,
       default: false,
       info: 'INFO_INCLUDE_DEM_FILE',
     },
     {
-      name: 'Incidence Angle Maps',
+      name: 'INCLUDE_INC_MAP',
       apiName: 'include_inc_map',
       type: JobOptionType.CHECKBOX,
       default: false,
       info: 'INFO_INCLUDE_INCIDENCE_ANGLE_MAPS',
     },
     {
-      name: 'Look Vectors',
+      name: 'INCLUDE_LOOK_VECTORS',
       apiName: 'include_look_vectors',
       type: JobOptionType.CHECKBOX,
       default: false,
       info: 'INFO_INCLUDE_LOOK_VECTORS',
     },
     {
-      name: 'Displacement Maps',
+      name: 'INCLUDE_DISPLACEMENT_MAPS',
       apiName: 'include_displacement_maps',
       type: JobOptionType.CHECKBOX,
       default: false,
       info: 'INFO_INCLUDE_DISPLACEMENT_MAPS',
     },
     {
-      name: 'Wrapped Phase',
+      name: 'INCLUDE_WRAPPED_PHASE',
       apiName: 'include_wrapped_phase',
       type: JobOptionType.CHECKBOX,
       default: false,
@@ -238,7 +238,7 @@ export const InsarIsceBurstJobType: Hyp3JobType = {
   ],
   options: [
     {
-      name: 'Looks',
+      name: 'LOOKS',
       apiName: 'looks',
       type: JobOptionType.DROPDOWN,
       options: [
@@ -259,7 +259,7 @@ export const InsarIsceBurstJobType: Hyp3JobType = {
       info: `Number of looks to take in range and azimuth.`,
     },
     {
-      name: 'Water Mask',
+      name: 'APPLY_WATER_MASK',
       apiName: 'apply_water_mask',
       type: JobOptionType.TOGGLE,
       default: false,
