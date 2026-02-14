@@ -14,3 +14,4 @@ export * from './sentinel-1-burst';
 export * from './opera_s1';
 export * from './nisar';
 export * from './alos_2';
+export * from './tropo';

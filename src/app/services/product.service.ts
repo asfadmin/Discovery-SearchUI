@@ -193,7 +193,11 @@ export class ProductService {
 
     let file_suffix = '';
 
-    if (['DISP-S1', 'TROPO-ZENITH'].includes(product.metadata.productType)) {
+    if (
+      ['DISP-S1', 'TROPO-ZENITH', 'ECMWF_TROPO'].includes(
+        product.metadata.productType,
+      )
+    ) {
       file_suffix = 'nc';
     } else {
       file_suffix = this.urlToProductType(
