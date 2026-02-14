@@ -605,8 +605,11 @@ export class SceneFilesComponent
             ),
             tap((products) => {
               if (products.length > 0) {
+                const kml_url = products[0].metadata.nisar.additionalUrls.find(
+                  (url) => url.endsWith('kml'),
+                );
                 this.kmlFootprintService.readExtentFromKML(
-                  products[0].id,
+                  kml_url,
                   products[0].browses[0],
                 );
               }

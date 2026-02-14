@@ -1,32 +1,36 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { catchError, first, from, of } from 'rxjs';
+import { catchError, filter, first, from, of } from 'rxjs';
 import * as xml2js from 'xml2js';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { boundingExtent, Extent } from 'ol/extent';
-import { AuthService } from './auth.service';
-import { EnvironmentService } from './environment.service';
+// import { AuthService } from './auth.service';
+// import { EnvironmentService } from './environment.service';
 @Injectable({
   providedIn: 'root',
 })
 export class KmlFootprintService {
   private httpClient = inject(HttpClient);
-  private authService = inject(AuthService);
-  private env = inject(EnvironmentService);
+  //   private authService = inject(AuthService);
+  //   private env = inject(EnvironmentService);
   public KMLFootPrint$ = signal<{ extent: Extent; rotation: number }>(null);
   public L2Browse: string;
-  public readExtentFromKML(scene_name: string, kmlBrowse?: string): void {
+  public readExtentFromKML(
+    // _scene_name: string,
+    kml_url: string,
+    kmlBrowse?: string,
+  ): void {
     this.L2Browse = kmlBrowse;
     this.httpClient
       .get(
-        `
-        ${this.env.currentEnv.api}/services/utils/kml_footprint?granule=${scene_name}&maturity=test&cmr_token=${this.authService.getToken()}
-        `,
+        kml_url,
+        // `
+        // ${this.env.currentEnv.api}/services/utils/kml_footprint?granule=${scene_name}&maturity=test&cmr_token=${this.authService.getToken()}
+        // `,
         {
-          headers: {
-            'Content-Type': 'text/html',
-            Accept: 'text/html',
-          },
-          responseType: 'text',
+          withCredentials: true,
+          //   context: HttpContext use this to handle triggering interceptor
+          observe: 'events',
+          responseType: 'blob',
         },
       )
       .pipe(
@@ -63,64 +67,70 @@ export class KmlFootprintService {
           }),
         );
 
-        observable.pipe(first()).subscribe((result) => {
-          const coordinatesString =
-            result['kml'].Document.GroundOverlay['ns0:LatLonQuad'].coordinates;
-          const coordinates: number[][] = coordinatesString
-            .split(' ')
-            .map((latlon) => {
-              const temp = latlon.split(',');
-              return temp.map((coord) => parseFloat(coord)) as number[];
-            });
-          const extent = boundingExtent(coordinates);
-          console.log(extent);
-          let rotation = 0.0;
-          const coord0 = coordinates[0];
-          const coord1 = coordinates[1];
+        observable
+          .pipe(
+            filter((f) => !!f),
+            first(),
+          )
+          .subscribe((result) => {
+            const coordinatesString =
+              result['kml'].Document.GroundOverlay['ns0:LatLonQuad']
+                .coordinates;
+            const coordinates: number[][] = coordinatesString
+              .split(' ')
+              .map((latlon) => {
+                const temp = latlon.split(',');
+                return temp.map((coord) => parseFloat(coord)) as number[];
+              });
+            const extent = boundingExtent(coordinates);
+            console.log(extent);
+            let rotation = 0.0;
+            const coord0 = coordinates[0];
+            const coord1 = coordinates[1];
 
-          if (coord0.length > 0 && coord1.length > 0) {
-            const bottomLeft = [extent[0], extent[1]];
+            if (coord0.length > 0 && coord1.length > 0) {
+              const bottomLeft = [extent[0], extent[1]];
 
-            const distToBottomLeft = coordinates.map((coordinate) =>
-              Math.sqrt(
-                (coordinate[0] - bottomLeft[0]) ** 2 +
-                  (coordinate[1] - bottomLeft[1]) ** 2,
-              ),
-            );
+              const distToBottomLeft = coordinates.map((coordinate) =>
+                Math.sqrt(
+                  (coordinate[0] - bottomLeft[0]) ** 2 +
+                    (coordinate[1] - bottomLeft[1]) ** 2,
+                ),
+              );
 
-            let minimum = 1000;
-            let minimumIdx = 0;
-            for (
-              let distanceIdx = 0;
-              distanceIdx < distToBottomLeft.length - 1;
-              distanceIdx++
-            ) {
-              if (distToBottomLeft[distanceIdx] < minimum) {
-                minimumIdx = distanceIdx;
-                minimum = distToBottomLeft[distanceIdx];
+              let minimum = 1000;
+              let minimumIdx = 0;
+              for (
+                let distanceIdx = 0;
+                distanceIdx < distToBottomLeft.length - 1;
+                distanceIdx++
+              ) {
+                if (distToBottomLeft[distanceIdx] < minimum) {
+                  minimumIdx = distanceIdx;
+                  minimum = distToBottomLeft[distanceIdx];
+                }
+              }
+              // const minIdx = distToTopLeft.findIndex();
+              // const x1 = coord0[0];
+              // const x2 = coord0[0];
+              // const y1 = coord0[1];
+              // const y2 = coord1[1];
+
+              // if (minimumIdx > 0) {
+              // rotation = -(minimumIdx * 90 * Math.PI) / 180; // (1 + minimumIdx * Math.PI) / 2;
+              // }
+              console.log('DISTANCE TO BOTTOM LEFT');
+              console.log(distToBottomLeft);
+              console.log(minimumIdx);
+              if (minimumIdx == 1) {
+                rotation = Math.PI / 2;
+              } else if (minimumIdx == 2) {
+                rotation = -Math.PI / 2;
               }
             }
-            // const minIdx = distToTopLeft.findIndex();
-            // const x1 = coord0[0];
-            // const x2 = coord0[0];
-            // const y1 = coord0[1];
-            // const y2 = coord1[1];
 
-            // if (minimumIdx > 0) {
-            // rotation = -(minimumIdx * 90 * Math.PI) / 180; // (1 + minimumIdx * Math.PI) / 2;
-            // }
-            console.log('DISTANCE TO BOTTOM LEFT');
-            console.log(distToBottomLeft);
-            console.log(minimumIdx);
-            if (minimumIdx == 1) {
-              rotation = Math.PI / 2;
-            } else if (minimumIdx == 2) {
-              rotation = -Math.PI / 2;
-            }
-          }
-
-          this.KMLFootPrint$.set({ extent, rotation });
-        });
+            this.KMLFootPrint$.set({ extent, rotation });
+          });
       });
   }
 }

@@ -152,7 +152,8 @@ export class MapEffects {
               dataset?.id === 'SENTINEL-1' ||
               dataset?.id === 'SENTINEL-1 INTERFEROGRAM (BETA)' ||
               dataset?.id === 'UAVSAR' ||
-              dataset?.id === 'OPERA-S1'
+              dataset?.id === 'OPERA-S1' ||
+              dataset?.id === 'NISAR'
             );
           }
           return (
@@ -213,9 +214,12 @@ export class MapEffects {
             const url = selectedProduct.browses[0];
 
             if (url.includes('NISAR_L2')) {
-              this.kmlFootprintService.readExtentFromKML(
-                (selectedProduct as models.CMRProduct).name,
+              const kml_url = (
+                selectedProduct as models.CMRProduct
+              ).metadata.nisar.additionalUrls.find((url) =>
+                url.endsWith('kml'),
               );
+              this.kmlFootprintService.readExtentFromKML(kml_url);
             }
 
             // for OPERA-S1 geotiffs
