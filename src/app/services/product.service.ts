@@ -203,12 +203,10 @@ export class ProductService {
 
     let file_suffix = '';
 
-    if (
-      ['DISP-S1', 'TROPO-ZENITH', 'ECMWF_TROPO'].includes(
-        product.metadata.productType,
-      )
-    ) {
+    if ('DISP-S1' === product.metadata.productType) {
       file_suffix = 'nc';
+    } else if ('DISP-S1-STATIC' === product.metadata.productType) {
+      file_suffix = 'dem';
     } else {
       file_suffix = this.urlToProductType(
         product.downloadUrl,
@@ -254,6 +252,12 @@ export class ProductService {
           productTypeDisplay = 'Frame(Short Wavelength) Zarr Store';
         } else {
           productTypeDisplay = 'Product Zarr Store';
+        }
+      } else if (product.metadata.productType === 'DISP-S1-STATIC') {
+        if (p.includes('line_of_sight')) {
+          productTypeDisplay = 'Line Of Sight GeoTIFF';
+        } else if (p.includes('layover_shadow_mask')) {
+          productTypeDisplay = 'Shadow Mask GeoTIFF';
         }
       }
       const fileID = p.split('/').slice(-1)[0];
