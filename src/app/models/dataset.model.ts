@@ -91,6 +91,7 @@ export const tropo = fromDatasets.tropo;
 
 export const datasetList: Dataset[] = [
   fromDatasets.nisar,
+  fromDatasets.tropo,
   fromDatasets.sentinel_1,
   fromDatasets.sentinel_1_bursts,
   fromDatasets.opera_s1,
@@ -106,7 +107,6 @@ export const datasetList: Dataset[] = [
   fromDatasets.jers_1,
   fromDatasets.airsar,
   fromDatasets.seasat,
-  fromDatasets.tropo,
 ];
 
 export const datasetIds = datasetList.map((dataset) => dataset.id);
