@@ -1,32 +1,36 @@
-.dataset__date {
-  font-size: 11px;
+@use 'asf-theme-variables' as *;
+@use 'deluxe-menu' as *;
+@use 'deluxe-menu-2' as *;
+
+.dataset--layout {
+  white-space: normal;
+  flex: 7;
 }
 
-.dataset__name {
-  font: verdana, sans-serif;
-  font-size: 16px;
+.dataset-aside--layout {
+  flex: 3;
+  text-align: center;
 }
 
-.dataset__info {
-  transition: all 0.5s;
-  animation-timing-function: ease-in;
-  margin-left: 5px;
+.smaller-font {
+  font-size: smaller;
 }
 
-.dataset__info:hover {
-  color: black;
+.increase-right-margin {
+  margin-right: 15px;
 }
-
-.dataset__subName {
-  line-height: 12px;
-  font-size: 11px;
-  display: block;
-  position: relative;
-  top: -10px;
+.disclaimer {
+  font-size: large;
+  margin-top: 10px;
 }
-
-.subName__adj {
-  display: inline-block;
-  top: -1px;
-  position: relative;
+.item-content {
+  @include themify($themes) {
+    color: themed('dark-primary-text') !important;
+  }
+  line-height: 18px;
+}
+.faint-text {
+  @include themify_non_host($themes) {
+    color: themed('dark-secondary-text');
+  }
 }
