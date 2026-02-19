@@ -1,4 +1,12 @@
-import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  inject,
+  input,
+  computed,
+} from '@angular/core';
 
 import * as models from '@models';
 import { ScreenSizeService } from '@services';
@@ -35,13 +43,23 @@ export class DatasetSelectorComponent {
   private screenSize = inject(ScreenSizeService);
 
   @Input() datasets: models.Dataset[];
-  @Input() selected: string;
+
   @Output() selectedChange = new EventEmitter<string>();
 
+  public selected = input<string>();
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
   public isReadMore = true;
 
+  public datasetName = computed(() => {
+    let datasetName = '';
+    this.datasets.forEach((dataset) => {
+      if (dataset.id === this.selected()) {
+        datasetName = dataset.name;
+      }
+    });
+    return datasetName;
+  });
   public onSelectionChange(dataset: string): void {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
@@ -49,15 +67,5 @@ export class DatasetSelectorComponent {
       dataset: dataset,
     });
     this.selectedChange.emit(dataset);
-  }
-
-  public datasetNameLookup(datasetId: string): string {
-    let datasetName = '';
-    this.datasets.forEach((dataset) => {
-      if (dataset.id === datasetId) {
-        datasetName = dataset.name;
-      }
-    });
-    return datasetName;
   }
 }
