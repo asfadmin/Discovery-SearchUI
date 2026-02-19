@@ -3,7 +3,6 @@ import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import * as models from '@models';
 import { ScreenSizeService } from '@services';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
-import { DateRange } from '@models';
 import { AsyncPipe } from '@angular/common';
 import { MatLabel } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
