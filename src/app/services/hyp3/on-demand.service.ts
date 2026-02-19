@@ -1,5 +1,4 @@
-import { Injectable, inject } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { Injectable } from '@angular/core';
 
 import * as models from '@models';
 
@@ -7,29 +6,25 @@ import * as models from '@models';
   providedIn: 'root',
 })
 export class OnDemandService {
-  private translateService = inject(TranslateService);
-
   public jobParamsToList(metadata: models.CMRProductMetadata) {
     const jobType = models.hyp3JobTypes[metadata.job.job_type as string];
     const allOptions = jobType ? jobType.options : models.hyp3JobOptionsOrdered;
 
     const addedOptions = new Set(['granules', 'scenes']);
 
+    const jobParams = metadata.job.job_parameters;
+
     const knownOptions = allOptions
       .filter(
         (option) =>
-          option.apiName != null &&
-          Object.prototype.hasOwnProperty.call(
-            metadata.job.job_parameters,
-            option.apiName,
-          ),
+          option.apiName != null && jobParams.hasOwnProperty(option.apiName),
       )
       .map((option) => {
         addedOptions.add(option.apiName);
 
         return {
           name: option.name,
-          val: metadata.job.job_parameters[option.apiName],
+          val: jobParams[option.apiName],
         };
       });
 
@@ -44,20 +39,6 @@ export class OnDemandService {
   }
 
   private formatJobParamName(apiName: string): string {
-    const translationKey = apiName.toUpperCase();
-    const translated = this.translateService.instant(translationKey);
-
-    if (translated !== translationKey) {
-      return translationKey;
-    }
-
-    return apiName
-      .toLowerCase()
-      .replaceAll('_', ' ')
-      .replaceAll('dem', 'DEM')
-      .replaceAll('rgb', 'RGB')
-      .split(' ')
-      .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-      .join(' ');
+    return apiName.toUpperCase();
   }
 }
