@@ -30,6 +30,7 @@ import * as models from '@models';
 import {
   BrowseMapService,
   DatasetForProductService,
+  OnDemandService,
   SarviewsEventsService,
 } from '@services';
 import * as services from '@services/index';
@@ -106,6 +107,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   dialogRef = inject<MatDialogRef<ImageDialogComponent>>(MatDialogRef);
   private browseMap = inject(BrowseMapService);
   private datasetForProduct = inject(DatasetForProductService);
+  private onDemand = inject(OnDemandService);
   private screenSize = inject(services.ScreenSizeService);
   private clipboard = inject(ClipboardService);
   private notificationService = inject(services.NotificationService);
@@ -187,7 +189,7 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     );
     this.subs.add(
       this.scene$.pipe(filter((prod) => !!prod?.metadata)).subscribe((prod) => {
-        this.paramsList = this.jobParamsToList(prod.metadata);
+        this.paramsList = this.onDemand.jobParamsToList(prod.metadata);
       }),
     );
 
@@ -311,23 +313,6 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     this.image.src = product.files.browse_url;
   }
 
-  public jobParamsToList(metadata) {
-    if (!metadata.job) {
-      return [];
-    }
-
-    const jobType = models.hyp3JobTypes[metadata.job.job_type];
-    const options = jobType ? jobType.options : models.hyp3JobOptionsOrdered;
-
-    return options
-      .filter((option) => metadata.job.job_parameters[option.apiName])
-      .map((option) => {
-        return {
-          name: option.name,
-          val: metadata.job.job_parameters[option.apiName],
-        };
-      });
-  }
   public closeDialog() {
     this.dialogRef.close();
   }

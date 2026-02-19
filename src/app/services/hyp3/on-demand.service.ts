@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 import * as models from '@models';
 
@@ -6,6 +7,8 @@ import * as models from '@models';
   providedIn: 'root',
 })
 export class OnDemandService {
+  private translateService = inject(TranslateService);
+
   public jobParamsToList(metadata: models.CMRProductMetadata) {
     const jobType = models.hyp3JobTypes[metadata.job.job_type as string];
     const allOptions = jobType ? jobType.options : models.hyp3JobOptionsOrdered;
@@ -13,7 +16,14 @@ export class OnDemandService {
     const addedOptions = new Set(['granules', 'scenes']);
 
     const knownOptions = allOptions
-      .filter((option) => metadata.job.job_parameters[option.apiName])
+      .filter(
+        (option) =>
+          option.apiName != null &&
+          Object.prototype.hasOwnProperty.call(
+            metadata.job.job_parameters,
+            option.apiName,
+          ),
+      )
       .map((option) => {
         addedOptions.add(option.apiName);
 
@@ -34,6 +44,13 @@ export class OnDemandService {
   }
 
   private formatJobParamName(apiName: string): string {
+    const translationKey = apiName.toUpperCase();
+    const translated = this.translateService.instant(translationKey);
+
+    if (translated !== translationKey) {
+      return translationKey;
+    }
+
     return apiName
       .toLowerCase()
       .replaceAll('_', ' ')
