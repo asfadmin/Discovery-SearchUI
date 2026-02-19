@@ -22,7 +22,36 @@
     </div>
     <div class="gtm-search-type-selector fx-nogrow">
       <mat-menu #platformMenu="matMenu" class="dataset-selector">
-        @for (dataset of datasets; track dataset; let isLast = $last) {
+        <form
+          class="example-form"
+          (click)="$event.stopPropagation()"
+          (keydown)="$event.stopPropagation()"
+        >
+          <mat-form-field class="search-field" appearance="outline">
+            <mat-icon matPrefix>search</mat-icon>
+            <input
+              matInput
+              placeholder="Filter Datasets..."
+              [(ngModel)]="datasetFilter"
+              name="dataset-options-filter"
+            />
+            @if (datasetFilter()) {
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="datasetFilter.set('')"
+                aria-label="{{ 'CLEAR' | translate }}"
+              >
+                <mat-icon>clear</mat-icon>
+              </button>
+            }
+          </mat-form-field>
+        </form>
+        @for (
+          dataset of filteredDatasets();
+          track dataset;
+          let isLast = $last
+        ) {
           <button mat-menu-item>
             <app-dataset
               [dataset]="dataset"

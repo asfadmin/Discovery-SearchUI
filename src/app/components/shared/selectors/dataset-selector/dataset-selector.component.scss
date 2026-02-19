@@ -1,6 +1,6 @@
-@use "asf-theme-variables" as *;
-@use "deluxe-menu" as *;
-@use "deluxe-menu-2" as *;
+@use 'asf-theme-variables' as *;
+@use 'deluxe-menu' as *;
+@use 'deluxe-menu-2' as *;
 
 .dataset--layout {
   white-space: normal;
@@ -22,4 +22,14 @@
 .disclaimer {
   font-size: large;
   margin-top: 10px;
+}
+
+.search-field {
+  width: 80%;
+  padding-left: 10%;
+  input {
+    @include themify($themes) {
+      caret-color: themed('light-black');
+    }
+  }
 }
