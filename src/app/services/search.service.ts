@@ -150,9 +150,9 @@ export class SearchService {
     switch (redirectInfo.searchType) {
       case models.SearchType.DATASET: {
         const filters = redirectInfo.filters;
-        const dataset = models.datasetList.filter(
+        const dataset = models.datasetList.find(
           (d) => d.id === filters.selectedDataset,
-        )[0];
+        );
 
         const actions = [
           new SetSearchType(models.SearchType.DATASET),
