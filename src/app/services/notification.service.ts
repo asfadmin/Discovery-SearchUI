@@ -228,7 +228,10 @@ export class NotificationService {
   public redirectTo(message_key: string, searchRedirectInfo: SearchRedirect) {
     const title = this.translateService.instant('SEARCH_TYPE_NOTICE');
     const message = this.translateService.instant(message_key);
-    const errorToast = this.error(message, title);
+    const errorToast = this.error(message, title, {
+      disableTimeOut: true,
+      closeButton: true,
+    });
     errorToast.onTap.pipe(take(1)).subscribe((_) => {
       switch (searchRedirectInfo.searchType) {
         case SearchType.DATASET: {
