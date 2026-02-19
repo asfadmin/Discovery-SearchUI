@@ -7,6 +7,8 @@ import * as uiStore from '@store/ui';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import { take } from 'rxjs/operators';
+import { SearchService } from './search.service';
+import { SearchRedirect } from '@models';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +17,7 @@ export class NotificationService {
   private toastr = inject(ToastrService);
   private store$ = inject<Store<AppState>>(Store);
   private translateService = inject(TranslateService);
-
+  private searchService = inject(SearchService);
   private shownSignupMessage = false;
 
   // Custom toastr config example, toastClass styling in styles.scss
@@ -218,6 +220,18 @@ export class NotificationService {
           'https://docs.asf.alaska.edu/vertex/manual/#list-search-file-import',
         ),
       );
+  }
+
+  public redirectTo(message_key: string, searchRedirectInfo: SearchRedirect) {
+    const title = this.translateService.instant('SEARCH_TYPE_NOTICE');
+    const message = this.translateService.instant(message_key);
+    const errorToast = this.error(message, title, {
+      disableTimeOut: true,
+      closeButton: true,
+    });
+    errorToast.onTap.pipe(take(1)).subscribe((_) => {
+      this.searchService.redirectSearch(searchRedirectInfo);
+    });
   }
 
   public info(

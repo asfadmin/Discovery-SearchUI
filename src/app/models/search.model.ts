@@ -127,3 +127,10 @@ export interface DisplacementFiltersType {
 export interface TimeseriesFiltersType {
   fullBurstIDs: string[];
 }
+export interface SearchRedirect {
+  searchType: SearchType;
+  filters: {
+    selectedDataset: string;
+    productTypes: fromDatasets.ProductType[];
+  };
+}
