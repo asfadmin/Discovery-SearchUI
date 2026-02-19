@@ -7,11 +7,8 @@ import * as uiStore from '@store/ui';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import { take } from 'rxjs/operators';
-import { SearchType } from '@models';
-
-import * as models from '@models';
-import { ClearSearch, MakeSearch, SetSearchType } from '@store/search';
-import { SetProductTypes, SetSelectedDataset } from '@store/filters';
+import { SearchService } from './search.service';
+import { SearchRedirect } from '@models';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +17,7 @@ export class NotificationService {
   private toastr = inject(ToastrService);
   private store$ = inject<Store<AppState>>(Store);
   private translateService = inject(TranslateService);
-
+  private searchService = inject(SearchService);
   private shownSignupMessage = false;
 
   // Custom toastr config example, toastClass styling in styles.scss
@@ -233,30 +230,7 @@ export class NotificationService {
       closeButton: true,
     });
     errorToast.onTap.pipe(take(1)).subscribe((_) => {
-      switch (searchRedirectInfo.searchType) {
-        case SearchType.DATASET: {
-          const filters = searchRedirectInfo.filters;
-          const dataset = models.datasetList.filter(
-            (d) => d.id === filters.selectedDataset,
-          )[0];
-
-          const actions = [
-            new SetSearchType(SearchType.DATASET),
-            new ClearSearch(),
-            new SetSelectedDataset(dataset.id),
-            new SetProductTypes(filters.productTypes),
-            new MakeSearch(),
-          ];
-
-          actions.forEach((action) => {
-            this.store$.dispatch(action);
-          });
-
-          break;
-        }
-        default:
-          console.log('unimplemented');
-      }
+      this.searchService.redirectSearch(searchRedirectInfo);
     });
   }
 
@@ -283,9 +257,4 @@ export class NotificationService {
       ...this.toastOptions,
     });
   }
-}
-
-export interface SearchRedirect {
-  searchType: SearchType;
-  filters: { selectedDataset: string; productTypes: models.ProductType[] };
 }

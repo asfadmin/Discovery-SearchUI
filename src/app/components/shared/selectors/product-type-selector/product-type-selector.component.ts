@@ -25,7 +25,7 @@ import { MatTooltip } from '@angular/material/tooltip';
 
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
-import { ClearSearch, MakeSearch } from '@store/search';
+import { SearchService } from '@services';
 
 @Component({
   selector: 'app-product-type-selector',
@@ -52,6 +52,7 @@ export class ProductTypeSelectorComponent implements OnInit, OnDestroy {
   public productTypesList: string[] = [];
   public selectableProductTypes: models.ProductType[] = [];
 
+  private searchService = inject(SearchService);
   private datasetProductTypes$ = this.store$.select(
     filtersStore.getProductTypes,
   );
@@ -130,22 +131,18 @@ export class ProductTypeSelectorComponent implements OnInit, OnDestroy {
   }
 
   public queryTropoZenith() {
-    const actions = [
-      new ClearSearch(),
-      new filtersStore.SetSelectedDataset(models.tropo.id),
-      new filtersStore.SetProductTypes([
-        {
-          apiValue: 'TROPO-ZENITH',
-          displayName: 'L4 Troposphere Zenith Radar Delays (TROPO-ZENITH)',
-        },
-      ]),
-      new MakeSearch(),
-    ];
-
-    actions.forEach((action) => {
-      this.store$.dispatch(action);
+    this.searchService.redirectSearch({
+      searchType: models.SearchType.DATASET,
+      filters: {
+        selectedDataset: models.tropo.id,
+        productTypes: [
+          {
+            apiValue: 'TROPO-ZENITH',
+            displayName: 'L4 Troposphere Zenith Radar Delays (TROPO-ZENITH)',
+          },
+        ],
+      },
     });
-
     this.productTypeSelector.close();
   }
 }
