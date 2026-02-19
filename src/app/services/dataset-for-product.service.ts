@@ -15,6 +15,9 @@ export class DatasetForProductService {
     if (scene.metadata.productType === 'BURST') {
       return models.sentinel_1_bursts;
     }
+    if (['TROPO-ZENITH', 'ECMWF_TROPO'].includes(scene.metadata.productType)) {
+      return models.tropo;
+    }
     if (scene.id.startsWith('OPERA')) {
       if (scene.id.startsWith('OPERA_L3_DISP')) {
         // return models.opera_disp;
