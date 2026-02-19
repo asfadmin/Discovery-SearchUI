@@ -6,6 +6,7 @@ import {
   EventEmitter,
   OnDestroy,
   inject,
+  ViewChild,
 } from '@angular/core';
 
 import * as models from '@models';
@@ -21,7 +22,10 @@ import {
 import { combineLatest } from 'rxjs';
 import { MatFormField, MatHint } from '@angular/material/input';
 import { MatTooltip } from '@angular/material/tooltip';
+
+import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
+import { ClearSearch, MakeSearch } from '@store/search';
 
 @Component({
   selector: 'app-product-type-selector',
@@ -30,7 +34,7 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [
     MatFormField,
     MatSelect,
-
+    MatIconModule,
     MatOption,
     MatTooltip,
 
@@ -39,6 +43,7 @@ import { TranslateModule } from '@ngx-translate/core';
   ],
 })
 export class ProductTypeSelectorComponent implements OnInit, OnDestroy {
+  @ViewChild('productTypeSelector') productTypeSelector: MatSelect;
   private store$ = inject<Store<AppState>>(Store);
 
   @Input() burstSelected = false;
@@ -122,5 +127,25 @@ export class ProductTypeSelectorComponent implements OnInit, OnDestroy {
 
   public get isAriaS1Gunw(): boolean {
     return this.dataset?.apiValue?.dataset === 'ARIA S1 GUNW';
+  }
+
+  public queryTropoZenith() {
+    const actions = [
+      new ClearSearch(),
+      new filtersStore.SetSelectedDataset(models.tropo.id),
+      new filtersStore.SetProductTypes([
+        {
+          apiValue: 'TROPO-ZENITH',
+          displayName: 'L4 Troposphere Zenith Radar Delays (TROPO-ZENITH)',
+        },
+      ]),
+      new MakeSearch(),
+    ];
+
+    actions.forEach((action) => {
+      this.store$.dispatch(action);
+    });
+
+    this.productTypeSelector.close();
   }
 }

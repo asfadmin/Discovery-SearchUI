@@ -1,1 +1,16 @@
 
+.warn-color {
+    color: #ffcd00;
+    cursor: pointer;
+}
+
+.tropo-text {
+    font-weight: bold;
+}
+.tropo-redirect {
+    display: flex; align-items: anchor-center; flex-direction: row; padding-left: 16px; padding-right: 16px;
+}
+
+.tropo-redirect-icon {
+    margin-right: 16px; width: 24px; scale: 1.5
+}
