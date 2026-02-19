@@ -1,24 +1,14 @@
-import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-  ViewChild,
-  inject,
-} from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 
 import * as models from '@models';
 import { ScreenSizeService } from '@services';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { DateRange } from '@models';
-import { NgClass, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { MatLabel } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
-import { MatTooltip } from '@angular/material/tooltip';
-import { MatIcon } from '@angular/material/icon';
-import { MatCardActions } from '@angular/material/card';
-import { DocsModalComponent } from '../../docs-modal/docs-modal.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { DatasetComponent } from './dataset/dataset.component';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -36,15 +26,10 @@ declare global {
     MatButton,
     MatMenuTrigger,
     MatMenu,
-
     MatMenuItem,
-    MatTooltip,
-    MatIcon,
-    NgClass,
-    MatCardActions,
-    DocsModalComponent,
     AsyncPipe,
     TranslateModule,
+    DatasetComponent,
   ],
 })
 export class DatasetSelectorComponent {
@@ -53,7 +38,6 @@ export class DatasetSelectorComponent {
   @Input() datasets: models.Dataset[];
   @Input() selected: string;
   @Output() selectedChange = new EventEmitter<string>();
-  @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
@@ -76,22 +60,5 @@ export class DatasetSelectorComponent {
       }
     });
     return datasetName;
-  }
-
-  public prettyDateRange(dateRange: DateRange): string {
-    const { start, end } = dateRange;
-
-    const startYear = start.getFullYear();
-    const endYear = !end ? 'Present' : end.getFullYear();
-
-    return startYear === endYear
-      ? `${startYear}`.trim()
-      : `${startYear} to ${endYear}`.trim();
-  }
-
-  public onOpenDocs(event, dataset: string) {
-    this.trigger.closeMenu();
-    this.onSelectionChange(dataset);
-    event.stopPropagation();
   }
 }
