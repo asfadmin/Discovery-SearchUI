@@ -43,7 +43,7 @@
       [class.increase-right-margin]="breakpoint === breakpoints.MOBILE"
     >
       <div class="dataset-date-range faint-text">
-        {{ prettyDateRange(dataset.date) }}
+        {{ dataset.date | prettyDateRange }}
       </div>
       <div class="material-icons-outlined menu-item-icon">
         <img src="{{ dataset.platformIcon }}" width="53" height="53" />

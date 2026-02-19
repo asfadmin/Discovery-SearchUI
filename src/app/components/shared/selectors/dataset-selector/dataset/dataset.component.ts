@@ -9,7 +9,7 @@ import {
 
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
-import { Dataset, DateRange } from '@models';
+import { Dataset } from '@models';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -19,6 +19,7 @@ import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.com
 import { TranslateModule } from '@ngx-translate/core';
 import { ScreenSizeService } from '@services';
 import * as models from '@models';
+import { PrettyDateRangePipe } from '@pipes/pretty-date.pipe';
 
 @Component({
   selector: 'app-dataset',
@@ -32,6 +33,7 @@ import * as models from '@models';
     DocsModalComponent,
     TranslateModule,
     AsyncPipe,
+    PrettyDateRangePipe,
   ],
 })
 export class DatasetComponent {
@@ -49,17 +51,6 @@ export class DatasetComponent {
   public isReadMore = true;
   public onOpenHelp() {
     window.open(this.dataset.infoUrl);
-  }
-
-  public prettyDateRange(dateRange: DateRange): string {
-    const { start, end } = dateRange;
-
-    const startYear = start.getFullYear();
-    const endYear = !end ? 'Present' : end.getFullYear();
-
-    return startYear === endYear
-      ? `${startYear}`.trim()
-      : `${startYear} to ${endYear}`.trim();
   }
 
   public onInfoClicked(e: Event): void {
