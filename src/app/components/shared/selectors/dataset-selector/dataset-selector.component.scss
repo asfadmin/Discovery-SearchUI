@@ -33,3 +33,8 @@
     }
   }
 }
+.datasets-wrapper {
+  min-height: calc(95vh - 48px);
+  max-height: calc(95vh - 48px);
+  overflow: auto;
+}

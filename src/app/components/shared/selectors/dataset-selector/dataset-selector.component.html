@@ -47,21 +47,23 @@
             }
           </mat-form-field>
         </form>
-        @for (
-          dataset of filteredDatasets();
-          track dataset;
-          let isLast = $last
-        ) {
-          <button mat-menu-item>
-            <app-dataset
-              [dataset]="dataset"
-              (selected)="onSelectionChange($event)"
-            />
-          </button>
-          @if (!isLast) {
-            <hr class="dataset-hr" />
+        <div class="datasets-wrapper">
+          @for (
+            dataset of filteredDatasets();
+            track dataset;
+            let isLast = $last
+          ) {
+            <button mat-menu-item>
+              <app-dataset
+                [dataset]="dataset"
+                (selected)="onSelectionChange($event)"
+              />
+            </button>
+            @if (!isLast) {
+              <hr class="dataset-hr" />
+            }
           }
-        }
+        </div>
       </mat-menu>
     </div>
   </div>
