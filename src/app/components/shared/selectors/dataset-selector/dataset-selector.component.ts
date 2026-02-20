@@ -85,7 +85,6 @@ export class DatasetSelectorComponent {
           .includes(this.datasetFilter().toUpperCase())
       );
     });
-    return this.datasets();
   });
 
   public onSelectionChange(dataset: string): void {

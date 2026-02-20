@@ -23,7 +23,7 @@
     <div class="gtm-search-type-selector fx-nogrow">
       <mat-menu #platformMenu="matMenu" class="dataset-selector">
         <form
-          class="example-form"
+          class="dataset-filter-form"
           (click)="$event.stopPropagation()"
           (keydown)="$event.stopPropagation()"
         >
@@ -62,6 +62,10 @@
             @if (!isLast) {
               <hr class="dataset-hr" />
             }
+          } @empty {
+            <p class="datasets-empty">
+              {{ 'NO_MATCHING_DATASET' | translate }}
+            </p>
           }
         </div>
       </mat-menu>
