@@ -40,3 +40,9 @@ testem.log
 .DS_Store
 Thumbs.db
 local-serve.sh
+
+# Claude Code
+.claude/
+CLAUDE.md
+TRANSLATIONS_SCRATCH.md
+docs/
