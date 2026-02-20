@@ -42,7 +42,7 @@
                 mat-icon-button
                 matSuffix
                 (click)="datasetFilter.set('')"
-                aria-label="{{ 'CLEAR' | translate }}"
+                [aria-label]="'CLEAR' | translate"
                 class="close-button filter-icon"
               >
                 <mat-icon>clear</mat-icon>
@@ -51,18 +51,17 @@
           </mat-form-field>
         </form>
         <div class="datasets-wrapper">
-          @for (
-            dataset of filteredDatasets();
-            track dataset;
-            let isLast = $last
-          ) {
-            <button mat-menu-item>
+          @for (dataset of filteredDatasets(); track dataset.id) {
+            <button
+              mat-menu-item
+              (keydown.enter)="onSelectionChange(dataset.id)"
+            >
               <app-dataset
                 [dataset]="dataset"
                 (selected)="onSelectionChange($event)"
               />
             </button>
-            @if (!isLast) {
+            @if (!$last) {
               <hr class="dataset-hr" />
             }
           } @empty {
