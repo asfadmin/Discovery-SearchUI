@@ -31,7 +31,7 @@
             <mat-icon matPrefix>search</mat-icon>
             <input
               matInput
-              placeholder="Filter Datasets..."
+              [placeholder]="'SEARCH_DATASETS' | translate"
               [(ngModel)]="datasetFilter"
               name="dataset-options-filter"
             />
@@ -64,9 +64,19 @@
             }
           } @empty {
             <p class="datasets-empty">
-              {{ 'NO_MATCHING_DATASET' | translate }}
+              {{ 'NO_MATCHING_DATASETS' | translate }}
             </p>
           }
+        </div>
+        <div class="footer">
+          {{
+            'SHOWING_X_OF_Y'
+              | translate
+                : {
+                    shown: filteredDatasets().length,
+                    total: datasets()?.length ?? 0,
+                  }
+          }}
         </div>
       </mat-menu>
     </div>
