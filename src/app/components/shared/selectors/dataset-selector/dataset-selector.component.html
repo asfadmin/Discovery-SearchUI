@@ -43,6 +43,7 @@
                 matSuffix
                 (click)="datasetFilter.set('')"
                 aria-label="{{ 'CLEAR' | translate }}"
+                class="close-button"
               >
                 <mat-icon>clear</mat-icon>
               </button>
@@ -70,7 +71,7 @@
             </p>
           }
         </div>
-        <div class="footer">
+        <div class="dataset-footer">
           {{
             'SHOWING_X_OF_Y'
               | translate

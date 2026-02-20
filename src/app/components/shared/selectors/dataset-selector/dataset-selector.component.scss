@@ -5,11 +5,6 @@
 .search-field {
   width: 90%;
   padding-left: 5%;
-  input {
-    @include themify($themes) {
-      caret-color: themed('light-black');
-    }
-  }
 }
 .datasets-wrapper {
   min-height: calc(95vh - 64px);
@@ -21,16 +16,19 @@
   min-width: 100vw;
   margin-left: 35%;
 }
-.dataset-filter-form {
-  border-bottom: 1px solid black;
-}
-.footer {
+
+.dataset-footer {
   display: grid;
   place-content: center;
   padding-top: 8px;
 }
 @media (max-width: 500px) {
-  .footer {
+  .dataset-footer {
     padding: 0px;
   }
+}
+.close-button {
+  height: unset;
+  line-height: unset;
+  min-width: unset;
 }

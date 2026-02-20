@@ -899,7 +899,23 @@ $d-height: 550px;
 }
 
 .mat-mdc-menu-panel.dataset-selector {
-    overflow: unset;
+  overflow: unset;
+  .datasets-empty {
+    @include themify_non_host($themes) {
+      color: themed('dark-primary-text') !important;
+    }
+  }
+  .dataset-footer {
+    @include themify_non_host($themes) {
+      color: themed('dark-secondary-text') !important;
+      border-top: 1px solid themed('dark-dividers');
+    }
+  }
+  .dataset-filter-form {
+    @include themify_non_host($themes) {
+      border-bottom: 1px solid themed('dark-dividers');
+    }
+  }
 }
 
 .mat-mdc-menu-panel.search-type-menu {
