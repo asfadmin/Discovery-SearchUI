@@ -27,7 +27,14 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "assets",
+                "ignore": [
+                  "**/i18n/de.json"
+                ]
+              },
               "src/googlec521d4cf42937ace.html"
             ],
             "styles": [
@@ -141,7 +148,14 @@
             "scripts": [],
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "assets",
+                "ignore": [
+                  "**/i18n/de.json"
+                ]
+              }
             ]
           }
         },
