@@ -11,6 +11,7 @@
           class="button-menu-trigger"
           color="basic"
           mat-button
+          (menuOpened)="menuOpen()"
         >
           <div class="button-text">
             {{ datasetName() }}
@@ -34,6 +35,7 @@
               [placeholder]="'SEARCH_DATASETS' | translate"
               [(ngModel)]="datasetFilter"
               name="dataset-options-filter"
+              #datasetOptions
             />
             @if (datasetFilter()) {
               <button

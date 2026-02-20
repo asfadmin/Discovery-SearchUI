@@ -7,6 +7,8 @@ import {
   computed,
   Signal,
   signal,
+  viewChild,
+  ElementRef,
 } from '@angular/core';
 
 import * as models from '@models';
@@ -60,6 +62,8 @@ export class DatasetSelectorComponent {
   public breakpoints = models.Breakpoints;
   public isReadMore = true;
 
+  public searchElement = viewChild<ElementRef>('datasetOptions');
+
   public datasetName = computed(() => {
     let datasetName = '';
     this.datasets().forEach((dataset) => {
@@ -86,6 +90,9 @@ export class DatasetSelectorComponent {
       );
     });
   });
+  public menuOpen() {
+    this.searchElement().nativeElement.focus();
+  }
 
   public onSelectionChange(dataset: string): void {
     window.dataLayer = window.dataLayer || [];

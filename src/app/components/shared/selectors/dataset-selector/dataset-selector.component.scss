@@ -3,8 +3,8 @@
 @use 'deluxe-menu-2' as *;
 
 .search-field {
-  width: 80%;
-  padding-left: 10%;
+  width: 90%;
+  padding-left: 5%;
   input {
     @include themify($themes) {
       caret-color: themed('light-black');
