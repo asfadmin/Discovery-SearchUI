@@ -916,6 +916,11 @@ $d-height: 550px;
       border-bottom: 1px solid themed('dark-dividers');
     }
   }
+  .filter-icon {
+    @include themify_non_host($themes) {
+      color: themed('dark-primary-text');
+    }
+  }
 }
 
 .mat-mdc-menu-panel.search-type-menu {

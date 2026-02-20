@@ -29,7 +29,7 @@
           (keydown)="$event.stopPropagation()"
         >
           <mat-form-field class="search-field" appearance="outline">
-            <mat-icon matPrefix>search</mat-icon>
+            <mat-icon matPrefix class="filter-icon">search</mat-icon>
             <input
               matInput
               [placeholder]="'SEARCH_DATASETS' | translate"
@@ -43,7 +43,7 @@
                 matSuffix
                 (click)="datasetFilter.set('')"
                 aria-label="{{ 'CLEAR' | translate }}"
-                class="close-button"
+                class="close-button filter-icon"
               >
                 <mat-icon>clear</mat-icon>
               </button>
