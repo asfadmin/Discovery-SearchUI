@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
@@ -7,19 +7,45 @@ import { AppState } from '@store';
 import * as mapStore from '@store/map';
 
 import * as models from '@models';
-import * as filtersStore from '@store/filters';
 import * as searchStore from '@store/search';
 
 import { MapService, ScreenSizeService } from '@services';
-import { map } from 'rxjs';
+import { MatButton } from '@angular/material/button';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { AsyncPipe } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { MatDivider } from '@angular/material/list';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatRadioButton } from '@angular/material/radio';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-layer-selector',
   templateUrl: './layer-selector.component.html',
-  styleUrls: ['./layer-selector.component.scss']
+  styleUrls: ['./layer-selector.component.scss'],
+  imports: [
+    MatButton,
+    MatMenuTrigger,
+
+    MatIcon,
+    MatMenu,
+    MatMenuItem,
+    MatDivider,
+    MatCheckbox,
+
+    MatRadioButton,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class LayerSelectorComponent implements OnInit, OnDestroy {
-  public overviewMapVisible$ = this.store$.select(mapStore.getIsOverviewMapOpen);
+  private store$ = inject<Store<AppState>>(Store);
+  private mapService = inject(MapService);
+  private screenSize = inject(ScreenSizeService);
+
+  public overviewMapVisible$ = this.store$.select(
+    mapStore.getIsOverviewMapOpen,
+  );
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = models.SearchType;
   public overviewMapVisible = false;
@@ -27,88 +53,66 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
   public layerTypes = models.MapLayerTypes;
   public layerType: models.MapLayerTypes;
 
-  public areGridlinesActive$ = this.store$.select(mapStore.getAreGridlinesActive);
+  public areGridlinesActive$ = this.store$.select(
+    mapStore.getAreGridlinesActive,
+  );
   public gridActive = false;
   public coherenceLayerMonths: string | null;
-  public months = [
-    'DEC_JAN_FEB',
-    'MAR_APR_MAY',
-    'JUN_JUL_AUG',
-    'SEP_OCT_NOV',
-  ]
+  public months = ['DEC_JAN_FEB', 'MAR_APR_MAY', 'JUN_JUL_AUG', 'SEP_OCT_NOV'];
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
   private coherenceLayerOpacity: number;
-  private flightDir: models.FlightDirection = models.FlightDirection.ASCENDING;
   public priorityEnabled = false;
-
 
   private subs = new SubSink();
 
-  constructor(
-    private store$: Store<AppState>,
-    private mapService: MapService,
-    private screenSize: ScreenSizeService,
-  ) { }
-
   ngOnInit() {
     this.subs.add(
-      this.store$.select(mapStore.getMapLayerType).subscribe(
-        layerType => this.layerType = layerType
-      )
+      this.store$
+        .select(mapStore.getMapLayerType)
+        .subscribe((layerType) => (this.layerType = layerType)),
     );
 
     this.subs.add(
       this.overviewMapVisible$.subscribe(
-        isOpen => this.overviewMapVisible = isOpen
-      )
+        (isOpen) => (this.overviewMapVisible = isOpen),
+      ),
     );
 
     this.subs.add(
-      this.areGridlinesActive$.subscribe(gridActive => {
+      this.areGridlinesActive$.subscribe((gridActive) => {
         this.gridActive = gridActive;
-      })
+      }),
     );
 
     this.subs.add(
-      this.mapService.hasCoherenceLayer$.subscribe(
-        months => {
-          this.coherenceLayerMonths = months;
-        }
-      )
+      this.mapService.hasCoherenceLayer$.subscribe((months) => {
+        this.coherenceLayerMonths = months;
+      }),
     );
 
+    this.subs.add(this.breakpoint$.subscribe((bp) => (this.breakpoint = bp)));
     this.subs.add(
-      this.breakpoint$.subscribe(bp => this.breakpoint = bp)
-    );
-    this.subs.add(
-      this.store$.select(mapStore.getCoherenceOverlayOpacity).subscribe(
-        opacity => {
+      this.store$
+        .select(mapStore.getCoherenceOverlayOpacity)
+        .subscribe((opacity) => {
           this.coherenceLayerOpacity = opacity;
-        }
-      )
-    )
-
-    this.subs.add(
-      this.store$.select(filtersStore.getFlightDirections).pipe(
-        map(flightDirs => flightDirs[0] ?? models.FlightDirection.ASCENDING)
-      ).subscribe(
-        flightDir => this.flightDir = flightDir
-      )
-    )
+        }),
+    );
   }
 
   public onNewLayerType(layerType: models.MapLayerTypes): void {
-    const action = layerType === models.MapLayerTypes.STREET ?
-      new mapStore.SetStreetView() :
-      new mapStore.SetSatelliteView();
+    const action =
+      layerType === models.MapLayerTypes.STREET
+        ? new mapStore.SetStreetView()
+        : new mapStore.SetSatelliteView();
 
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-      'event': 'new-layer-type',
-      'new-layer-type': action.type
+      event: 'new-layer-type',
+      'new-layer-type': action.type,
     });
 
     this.store$.dispatch(action);
@@ -137,16 +141,6 @@ export class LayerSelectorComponent implements OnInit, OnDestroy {
     }
 
     this.clearCoherenceLayer();
-  }
-  public togglePriority(): void {
-    if(!this.priorityEnabled) {
-      this.mapService.enablePriority(this.flightDir);
-      this.priorityEnabled = true;
-    }
-    else {
-      this.priorityEnabled = false;
-      this.mapService.disablePriority();
-    }
   }
 
   public onToggleOverviewMap(isOpen: boolean): void {

@@ -1,66 +1,108 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  OnDestroy,
+  inject,
+  ViewChild,
+} from '@angular/core';
 
 import * as models from '@models';
 import * as filtersStore from '@store/filters';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { SubSink } from 'subsink';
-import { MatSelectChange } from '@angular/material/select';
+import {
+  MatSelectChange,
+  MatSelect,
+  MatOption,
+} from '@angular/material/select';
 import { combineLatest } from 'rxjs';
+import { MatFormField, MatHint } from '@angular/material/input';
+import { MatTooltip } from '@angular/material/tooltip';
 
+import { MatIconModule } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
+import { SearchService } from '@services';
 
 @Component({
   selector: 'app-product-type-selector',
   templateUrl: './product-type-selector.component.html',
-  styleUrls: ['./product-type-selector.component.css']
+  styleUrls: ['./product-type-selector.component.css'],
+  imports: [
+    MatFormField,
+    MatSelect,
+    MatIconModule,
+    MatOption,
+    MatTooltip,
+
+    MatHint,
+    TranslateModule,
+  ],
 })
 export class ProductTypeSelectorComponent implements OnInit, OnDestroy {
-  @Input() burstSelected: boolean = false;
+  @ViewChild('productTypeSelector') productTypeSelector: MatSelect;
+  private store$ = inject<Store<AppState>>(Store);
+
+  @Input() burstSelected = false;
   @Output() typesChange = new EventEmitter<models.DatasetProductTypes>();
   public dataset: models.Dataset;
   public productTypesList: string[] = [];
-  public selectableProductTypes: models.ProductType[] = []
+  public selectableProductTypes: models.ProductType[] = [];
 
-  private datasetProductTypes$ = this.store$.select(filtersStore.getProductTypes);
-  private useCalibrationData$ = this.store$.select(filtersStore.getUseCalibrationData);
+  private searchService = inject(SearchService);
+  private datasetProductTypes$ = this.store$.select(
+    filtersStore.getProductTypes,
+  );
+  private useCalibrationData$ = this.store$.select(
+    filtersStore.getUseCalibrationData,
+  );
   private dataset$ = this.store$.select(filtersStore.getSelectedDataset);
-  
-  
-  constructor(private store$: Store<AppState>) { }
 
   private subs = new SubSink();
-  
+
   ngOnInit(): void {
     this.subs.add(
-      this.dataset$.subscribe(
-        dataset => this.dataset = dataset
-      )
-    )
-    this.subs.add(
-      this.datasetProductTypes$.subscribe(types => this.productTypesList = types.map(type => type.apiValue).filter(v => v !== 'BURST'))
+      this.dataset$.subscribe((dataset) => (this.dataset = dataset)),
     );
     this.subs.add(
-      this.store$.select(filtersStore.getUseCalibrationData).subscribe(useCalibrationData => {
-        if (useCalibrationData) {
-          this.productTypesList = this.productTypesList.filter(productType => this.dataset.calibrationProductTypes
-            .map(calibrationTypes => calibrationTypes.apiValue)
-            .includes(productType))
+      this.datasetProductTypes$.subscribe(
+        (types) =>
+          (this.productTypesList = types
+            .map((type) => type.apiValue)
+            .filter((v) => v !== 'BURST')),
+      ),
+    );
+    this.subs.add(
+      this.store$
+        .select(filtersStore.getUseCalibrationData)
+        .subscribe((useCalibrationData) => {
+          if (useCalibrationData) {
+            this.productTypesList = this.productTypesList.filter(
+              (productType) =>
+                this.dataset.calibrationProductTypes
+                  .map((calibrationTypes) => calibrationTypes.apiValue)
+                  .includes(productType),
+            );
 
             this.emitProductTypes(this.productTypesList);
-        }
-      })
+          }
+        }),
     );
     this.subs.add(
       combineLatest([this.useCalibrationData$, this.dataset$]).subscribe(
         ([useCalibration, dataset]) => {
-          if(useCalibration) {
-            this.selectableProductTypes = dataset.calibrationProductTypes ?? dataset.productTypes
+          if (useCalibration) {
+            this.selectableProductTypes =
+              dataset.calibrationProductTypes ?? dataset.productTypes;
           } else {
-            this.selectableProductTypes = dataset.productTypes
+            this.selectableProductTypes = dataset.productTypes;
           }
-        }
-      )
-    )
+        },
+      ),
+    );
   }
 
   ngOnDestroy(): void {
@@ -68,15 +110,39 @@ export class ProductTypeSelectorComponent implements OnInit, OnDestroy {
   }
 
   public onNewProductTypes(event: MatSelectChange): void {
-    const productTypesAPIValues = (event.value as string[]);
+    const productTypesAPIValues = event.value as string[];
     this.emitProductTypes(productTypesAPIValues);
   }
 
   public emitProductTypes(productTypesAPIValues: string[]): void {
-    const productTypes = productTypesAPIValues.map(
-        val => this.dataset.productTypes.find(datasetType => datasetType.apiValue === val)
-      ).filter(val => !!val);
+    const productTypes = productTypesAPIValues
+      .map((val) =>
+        this.dataset.productTypes.find(
+          (datasetType) => datasetType.apiValue === val,
+        ),
+      )
+      .filter((val) => !!val);
 
     this.typesChange.emit(productTypes);
+  }
+
+  public get isAriaS1Gunw(): boolean {
+    return this.dataset?.apiValue?.dataset === 'ARIA S1 GUNW';
+  }
+
+  public queryTropoZenith() {
+    this.searchService.redirectSearch({
+      searchType: models.SearchType.DATASET,
+      filters: {
+        selectedDataset: models.tropo.id,
+        productTypes: [
+          {
+            apiValue: 'TROPO-ZENITH',
+            displayName: 'L4 Troposphere Zenith Radar Delays (TROPO-ZENITH)',
+          },
+        ],
+      },
+    });
+    this.productTypeSelector.close();
   }
 }

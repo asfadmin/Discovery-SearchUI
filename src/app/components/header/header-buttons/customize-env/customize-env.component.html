@@ -5,12 +5,21 @@
 <mat-dialog-content class="h100 w100">
   <form #envForm="ngForm">
     <mat-form-field class="w100">
-      <mat-label>{{ 'ENVIRONMENT_FILE'  | translate }}</mat-label>
-      <textarea [(ngModel)]="envStr" name="environFile" [cdkTextareaAutosize]="true" matInput></textarea>
+      <mat-label>{{ 'ENVIRONMENT_FILE' | translate }}</mat-label>
+      <textarea
+        [(ngModel)]="envStr"
+        name="environFile"
+        [cdkTextareaAutosize]="true"
+        matInput
+      ></textarea>
     </mat-form-field>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-flat-button (click)="resetToDefaultEnv()">{{ 'RESET_TO_DEFAULT'  | translate }}</button>
-  <button mat-flat-button (click)="setCustomEnv()" color="primary">{{ 'SET'  | translate }}</button>
+  <button mat-flat-button (click)="resetToDefaultEnv()">
+    {{ 'RESET_TO_DEFAULT' | translate }}
+  </button>
+  <button mat-flat-button (click)="setCustomEnv()" color="primary">
+    {{ 'SET' | translate }}
+  </button>
 </mat-dialog-actions>

@@ -1,4 +1,4 @@
-@import "asf-theme";
+@use "asf-theme-variables" as *;
 .container {
   @include themify($themes) {
     color: themed("dark-primary-text");

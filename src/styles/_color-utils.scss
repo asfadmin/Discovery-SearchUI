@@ -1,0 +1,44 @@
+// Modern Sass color utilities
+// This file provides backward-compatible color functions using modern Sass internally
+@use "sass:color";
+@use "sass:map";
+
+// Backward-compatible lighten function using modern color.adjust
+@function lighten($color, $amount) {
+  @return color.adjust($color, $lightness: $amount);
+}
+
+// Backward-compatible darken function using modern color.adjust
+@function darken($color, $amount) {
+  @return color.adjust($color, $lightness: -$amount);
+}
+
+// Pass-through for adjust-color to use modern color.adjust
+// Only pass non-null values to avoid channel errors
+@function adjust-color($color, $lightness: null, $saturation: null, $hue: null, $alpha: null, $red: null, $green: null, $blue: null) {
+  $adjustments: ();
+
+  @if $lightness != null {
+    $adjustments: map.merge($adjustments, ("lightness": $lightness));
+  }
+  @if $saturation != null {
+    $adjustments: map.merge($adjustments, ("saturation": $saturation));
+  }
+  @if $hue != null {
+    $adjustments: map.merge($adjustments, ("hue": $hue));
+  }
+  @if $alpha != null {
+    $adjustments: map.merge($adjustments, ("alpha": $alpha));
+  }
+  @if $red != null {
+    $adjustments: map.merge($adjustments, ("red": $red));
+  }
+  @if $green != null {
+    $adjustments: map.merge($adjustments, ("green": $green));
+  }
+  @if $blue != null {
+    $adjustments: map.merge($adjustments, ("blue": $blue));
+  }
+
+  @return color.adjust($color, $adjustments...);
+}

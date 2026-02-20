@@ -1,11 +1,60 @@
-<span matLine class="dataset__name" [class.subName__adj]="dataset.subName">
-  <b>{{ dataset.name }}</b>
-  <span *ngIf="dataset.beta"><em> (beta)</em></span>
-  &nbsp;-&nbsp;
-</span>
-<span matLine>
-  <span class="dataset__date" [class.subName__adj]="dataset.subName">{{ prettyDateRange(dataset.date) }}</span>
-  <mat-icon (click)="onOpenHelp()" class="clickable" style="margin-left: 10px;">info</mat-icon>
-</span>
-<div *ngIf="dataset.subName" class="dataset__subName faint-text">{{ dataset.subName }}</div>
-
+@let breakpoint = breakpoint$ | async;
+<div class="menu-item mat-menu-item" (click)="onSelectionChange(dataset.id)">
+  <div class="menu-item-inner">
+    <div class="dataset--layout menu-item-content">
+      <div class="item-title">
+        {{ dataset.name }}
+        <span class="dataset-light-text">
+          @if (
+            dataset.id === 'SENTINEL-1' || dataset.id === 'SENTINEL-1 BURSTS'
+          ) {
+            <span matTooltip="{{ 'HYP3_AVAILABLE' | translate }}">
+              <mat-icon class="hyp3-icon" svgIcon="hyp3"></mat-icon>
+            </span>
+          }
+          @if (dataset.beta) {
+            <span><em> (beta) </em></span>
+          }
+          @if (dataset.subName) {
+            <div class="dataset__subName faint-text">
+              {{ dataset.subName }}
+            </div>
+          }
+        </span>
+      </div>
+      <div
+        class="item-content"
+        [ngClass]="{ limitTextHeight: isReadMore }"
+        [class.smaller-font]="breakpoint === breakpoints.MOBILE"
+      >
+        {{ dataset.platformDesc | translate }}
+      </div>
+      <mat-card-actions (click)="onOpenDocs($event, dataset.id)">
+        <app-docs-modal
+          class="info-text"
+          text="{{ 'MORE_INFO' | translate }}"
+          url="{{ dataset.infoUrl }}"
+        >
+        </app-docs-modal>
+      </mat-card-actions>
+    </div>
+    <div
+      class="dataset-aside--layout menu-item-aside"
+      [class.increase-right-margin]="breakpoint === breakpoints.MOBILE"
+    >
+      <div class="dataset-date-range faint-text">
+        {{ dataset.date | prettyDateRange }}
+      </div>
+      <div class="material-icons-outlined menu-item-icon">
+        <img src="{{ dataset.platformIcon }}" width="53" height="53" />
+      </div>
+      @if (dataset.source !== null) {
+        <div class="dataset-source">
+          <a href="{{ dataset.source.url }}" target="_blank" class="blue-link">
+            {{ dataset.source.name }}
+          </a>
+        </div>
+      }
+    </div>
+  </div>
+</div>

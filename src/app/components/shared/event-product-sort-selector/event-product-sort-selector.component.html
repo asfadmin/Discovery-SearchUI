@@ -1,30 +1,40 @@
-<div style="display: flex;">
+<div style="display: flex">
   <div>
-    <label style="font-size: 12px;">{{ 'SORT_BY' | translate }}</label>
-<mat-button-toggle-group class="sort-button" [hideSingleSelectionIndicator]="true">
-  <mat-button-toggle [matMenuTriggerFor]="sortType" style="min-width: 68px !important;">
-    <span>
-      {{ sortTypeDisplay.toUpperCase() | translate }}
-    </span>
-  </mat-button-toggle>
-</mat-button-toggle-group>
-</div>
+    <label style="font-size: 12px">{{ 'SORT_BY' | translate }}</label>
+    <mat-button-toggle-group
+      class="sort-button"
+      [hideSingleSelectionIndicator]="true"
+    >
+      <mat-button-toggle
+        [matMenuTriggerFor]="sortType"
+        style="min-width: 68px !important"
+      >
+        <span>
+          {{ sortTypeDisplay.toUpperCase() | translate }}
+        </span>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
 
-<div style="margin-left: 5px;">
-  <label style="font-size: 12px;">{{'ORDER' | translate}}</label>
-  <mat-button-toggle-group class="sort-button" [hideSingleSelectionIndicator]="true">
-    <mat-button-toggle (click)="onSetSortDirection()">
-      <mat-icon>
-        {{ sortDescending ? "arrow_downward" : "arrow_upward" }}
-      </mat-icon>
-    </mat-button-toggle>
-  </mat-button-toggle-group>
+  <div style="margin-left: 5px">
+    <label style="font-size: 12px">{{ 'ORDER' | translate }}</label>
+    <mat-button-toggle-group
+      class="sort-button"
+      [hideSingleSelectionIndicator]="true"
+    >
+      <mat-button-toggle (click)="onSetSortDirection()">
+        <mat-icon>
+          {{ sortDescending ? 'arrow_downward' : 'arrow_upward' }}
+        </mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
   </div>
 </div>
 
 <mat-menu #sortType="matMenu">
-  <button *ngFor="let type of sortTypes" (click)="onSetSortType(type)" mat-menu-item>
-    {{ type.toUpperCase() | translate }}
-  </button>
-
+  @for (type of sortTypes; track type) {
+    <button (click)="onSetSortType(type)" mat-menu-item>
+      {{ type.toUpperCase() | translate }}
+    </button>
+  }
 </mat-menu>

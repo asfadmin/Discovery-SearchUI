@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { Map } from 'ol';
 import View from 'ol/View.js';
@@ -26,18 +26,18 @@ export interface PinnedProduct {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BrowseMapService {
+  private wktService = inject(WktService);
+  private browseOverlayService = inject(BrowseOverlayService);
+
   private map: Map;
   private browseLayer: Layer;
   private view: View;
   private pinnedProducts: LayerGroup;
 
-  public constructor(private wktService: WktService,
-    private browseOverlayService: BrowseOverlayService) {}
-
-  public setMapBrowse(browse: string, wkt: string = ''): void {
+  public setMapBrowse(browse: string, wkt = ''): void {
     const feature = this.wktService.wktToFeature(wkt, 'EPSG:3857');
     const polygon: Polygon = feature.getGeometry() as Polygon;
 
@@ -45,58 +45,66 @@ export class BrowseMapService {
 
     const polygonVectorSource = new VectorSource({
       features: [feature],
-      wrapX: mapOptions.wrapX
+      wrapX: mapOptions.wrapX,
     });
     const imagePolygonLayer = new Vector({
       source: polygonVectorSource,
       style: polygonStyle.valid,
     });
 
-    const center = getCenter( polygon.getExtent());
+    const center = getCenter(polygon.getExtent());
 
-    const Imagelayer = this.browseOverlayService.createNormalImageLayer(browse, wkt);
-
+    const Imagelayer = this.browseOverlayService.createNormalImageLayer(
+      browse,
+      wkt,
+    );
 
     const mapSource = new XYZ({
-      url : `https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=bFwkahiCrAA0526OlsHS`,
+      url: `https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=bFwkahiCrAA0526OlsHS`,
       wrapX: mapOptions.wrapX,
-      tileSize: [512, 512]
+      tileSize: [512, 512],
     });
 
     const map_layer = new TileLayer({ source: mapSource });
 
     if (!this.map) {
-    this.view = new View({
-      projection: 'EPSG:3857',
-      center,
-      zoom: 4,
-      minZoom: 1,
-      maxZoom: 14,
-    });
-
+      this.view = new View({
+        projection: 'EPSG:3857',
+        center,
+        zoom: 4,
+        minZoom: 1,
+        maxZoom: 14,
+      });
     }
 
     if (this.map) {
-      this.update(this.view, [ imagePolygonLayer, Imagelayer]);
+      this.update(this.view, [imagePolygonLayer, Imagelayer]);
     } else {
       this.pinnedProducts = new LayerGroup();
-      this.map = this.newMap(this.view, [map_layer, imagePolygonLayer, Imagelayer]);
+      this.map = this.newMap(this.view, [
+        map_layer,
+        imagePolygonLayer,
+        Imagelayer,
+      ]);
       this.map.addLayer(this.pinnedProducts);
 
-      this.map.on('singleclick', e => {
-        this.map.forEachFeatureAtPixel(e.pixel, (_, l, __) => {
+      this.map.on('singleclick', (e) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        (this.map.forEachFeatureAtPixel(e.pixel, (_, l, __) => {
           this.pinnedProducts.getLayers().remove(l);
           this.pinnedProducts.getLayers().push(l);
           return true;
         }),
-        {'layerFilter': (l) => {
-          for (const temp of this.pinnedProducts.getLayersArray()) {
-            if (temp === l) {
-              return true
-            }
-          }
-          return false
-        }}
+          {
+            layerFilter: (l) => {
+              for (const temp of this.pinnedProducts.getLayersArray()) {
+                if (temp === l) {
+                  return true;
+                }
+              }
+              return false;
+            },
+          });
       });
     }
 
@@ -107,8 +115,11 @@ export class BrowseMapService {
     this.browseLayer.setOpacity(opacity);
   }
 
-  public setPinnedProducts(pinnedProductStates: {[product_id in string]: PinnedProduct}) {
-    this.browseOverlayService.setPinnedProducts(pinnedProductStates, this.pinnedProducts);
+  public setPinnedProducts(pinnedProductStates: Record<string, PinnedProduct>) {
+    this.browseOverlayService.setPinnedProducts(
+      pinnedProductStates,
+      this.pinnedProducts,
+    );
   }
 
   public unpinAll() {
@@ -130,7 +141,7 @@ export class BrowseMapService {
     return new Map({
       layers: layers,
       target: 'browse-map',
-      view
+      view,
     });
   }
 
@@ -138,14 +149,13 @@ export class BrowseMapService {
     this.map = null;
   }
 
-
   public setBrowse(browse: string, dim: Dimension): void {
     const extent = [0, 0, dim.width, dim.height] as Extent;
 
     const projection = new Projection({
       code: 'scene-browse',
       units: 'pixels',
-      extent
+      extent,
     });
 
     const layer = new ImageLayer({
@@ -153,9 +163,8 @@ export class BrowseMapService {
         url: browse,
         projection: projection,
         imageExtent: extent,
-      })
+      }),
     });
-
 
     if (!this.map) {
       this.view = new View({

@@ -1,20 +1,70 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { ClipboardService } from 'ngx-clipboard';
 
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { map, withLatestFrom, filter, tap } from 'rxjs/operators';
-import { MatDialogRef } from '@angular/material/dialog';
+import {
+  MatDialogRef,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+  MatDialogClose,
+} from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 
 import * as services from '@services';
 import { asfWebsite } from '@models';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { FormsModule } from '@angular/forms';
+import {
+  MatFormField,
+  MatLabel,
+  MatInput,
+  MatSuffix,
+} from '@angular/material/input';
+import { MatSelect, MatOption } from '@angular/material/select';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+import { DocsModalComponent } from '../../docs-modal/docs-modal.component';
+import { MatButton } from '@angular/material/button';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-api-link-dialog',
   templateUrl: './api-link-dialog.component.html',
-  styleUrls: ['./api-link-dialog.component.scss']
+  styleUrls: ['./api-link-dialog.component.scss'],
+  imports: [
+    MatDialogTitle,
+    CdkScrollable,
+    MatDialogContent,
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatSelect,
+
+    MatOption,
+    CdkTextareaAutosize,
+
+    MatIcon,
+    MatSuffix,
+    MatTooltip,
+    MatDialogActions,
+    DocsModalComponent,
+    MatButton,
+    MatDialogClose,
+    TranslateModule,
+  ],
 })
 export class ApiLinkDialogComponent implements OnInit, OnDestroy {
+  private asfApiService = inject(services.AsfApiService);
+  private searchParams = inject(services.SearchParamsService);
+  private clipboard = inject(ClipboardService);
+  private dialogRef =
+    inject<MatDialogRef<ApiLinkDialogComponent>>(MatDialogRef);
+  private notificationService = inject(services.NotificationService);
+
   public amount$ = new BehaviorSubject<number>(5000);
   public format$ = new BehaviorSubject<string>('CSV');
   public asfWebsite = asfWebsite;
@@ -24,58 +74,57 @@ export class ApiLinkDialogComponent implements OnInit, OnDestroy {
   public apiLink: string;
   private subs = new SubSink();
 
-  public formats = [{
+  public formats = [
+    {
       value: 'CSV',
-      viewValue: 'CSV File'
-    }, {
+      viewValue: 'CSV File',
+    },
+    {
       value: 'JSON',
-      viewValue: 'JSON File'
-    }, {
+      viewValue: 'JSON File',
+    },
+    {
       value: 'KML',
-      viewValue: 'KML File'
-    }, {
+      viewValue: 'KML File',
+    },
+    {
       value: 'METALINK',
-      viewValue: 'METALINK File'
-    }, {
+      viewValue: 'METALINK File',
+    },
+    {
       value: 'DOWNLOAD',
-      viewValue: 'Bulk Download Script'
-    }, {
+      viewValue: 'Bulk Download Script',
+    },
+    {
       value: 'GEOJSON',
-      viewValue: 'GEOJSON File'
+      viewValue: 'GEOJSON File',
     },
   ];
 
-  constructor(
-    private asfApiService: services.AsfApiService,
-    private searchParams: services.SearchParamsService,
-    private clipboard: ClipboardService,
-    private dialogRef: MatDialogRef<ApiLinkDialogComponent>,
-    private notificationService: services.NotificationService,
-  ) { }
-
   ngOnInit() {
     this.subs.add(
-      combineLatest([
-        this.amount$,
-        this.format$]
-      ).pipe(
-        tap(([amount, format]) => {
-          this.amount = amount;
-          this.format = format;
-        }),
-        filter(([amount, format]) => !!amount && !!format),
-        withLatestFrom(this.searchParams.getParams),
-        map(([[format, amount], params]) => {
-          return {
-            ...params,
-            output: amount,
-            maxResults: format
-          };
-        }),
-        map(params => this.asfApiService.queryUrlFrom(params, {
-          apiUrl: 'https://api.daac.asf.alaska.edu'
-        }))
-      ).subscribe(apiLink => this.apiLink = apiLink)
+      combineLatest([this.amount$, this.format$])
+        .pipe(
+          tap(([amount, format]) => {
+            this.amount = amount;
+            this.format = format;
+          }),
+          filter(([amount, format]) => !!amount && !!format),
+          withLatestFrom(this.searchParams.getParams),
+          map(([[format, amount], params]) => {
+            return {
+              ...params,
+              output: amount,
+              maxResults: format,
+            };
+          }),
+          map((params) =>
+            this.asfApiService.queryUrlFrom(params, {
+              apiUrl: 'https://api.daac.asf.alaska.edu',
+            }),
+          ),
+        )
+        .subscribe((apiLink) => (this.apiLink = apiLink)),
     );
   }
 

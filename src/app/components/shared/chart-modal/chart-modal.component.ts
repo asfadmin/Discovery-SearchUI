@@ -1,54 +1,59 @@
-import { Component, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  Output,
+  EventEmitter,
+  inject,
+} from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon'
-import { MatButtonModule } from '@angular/material/button'
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { TimeseriesChartConfigComponent } from '@components/timeseries-chart/timeseries-chart-config';
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
 import { getSearchType } from '@store/search';
 import { SearchType } from '@models';
-import { CommonModule } from '@angular/common';
+
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-chart-modal',
-  standalone: true,
   imports: [
-    CommonModule,
     MatDialogModule,
     MatIconModule,
     MatButtonModule,
     TimeseriesChartConfigComponent,
     MatMenuModule,
     MatButtonToggleModule,
-],
+    TranslateModule,
+  ],
   templateUrl: './chart-modal.component.html',
-  styleUrl: './chart-modal.component.scss'
+  styleUrl: './chart-modal.component.scss',
 })
-
 export class ChartModalComponent implements OnInit, OnDestroy {
-  private subs = new SubSink()
+  dialog = inject(MatDialog);
+  private $store = inject<Store<AppState>>(Store);
+
+  private subs = new SubSink();
   public searchType: SearchType;
   public SearchTypes = SearchType;
   @Output() public resetReferenceEvent = new EventEmitter();
 
-  constructor(public dialog: MatDialog,
-    private $store: Store<AppState>,
-  ) {
-  }
-
   ngOnInit(): void {
-    this.subs.add(this.$store.select(getSearchType).subscribe(
-      searchtype => this.searchType = searchtype
-    ))
+    this.subs.add(
+      this.$store
+        .select(getSearchType)
+        .subscribe((searchtype) => (this.searchType = searchtype)),
+    );
   }
   public onResetReference() {
     this.resetReferenceEvent.emit();
   }
 
   ngOnDestroy(): void {
-    this.subs.unsubscribe()
+    this.subs.unsubscribe();
   }
-
 }

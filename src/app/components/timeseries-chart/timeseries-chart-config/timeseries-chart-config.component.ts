@@ -1,40 +1,46 @@
-import { Component, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  Output,
+  EventEmitter,
+  inject,
+} from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
+import {
+  MatCheckboxChange,
+  MatCheckboxModule,
+} from '@angular/material/checkbox';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { SubSink } from 'subsink';
-import * as chartsStore from '@store/charts'
-import { SharedModule } from "@shared";
+import * as chartsStore from '@store/charts';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-timeseries-chart-config',
-  standalone: true,
-  imports: [MatIconModule, MatButtonModule, MatCheckboxModule,SharedModule,],
+  imports: [MatIconModule, MatButtonModule, MatCheckboxModule, TranslateModule],
   templateUrl: './timeseries-chart-config.component.html',
-  styleUrl: './timeseries-chart-config.component.scss'
+  styleUrl: './timeseries-chart-config.component.scss',
 })
-
-
-
 export class TimeseriesChartConfigComponent implements OnInit, OnDestroy {
-  private subs = new SubSink()
-  public showLines: boolean = true
+  private store$ = inject<Store<AppState>>(Store);
+
+  private subs = new SubSink();
+  public showLines = true;
   public showLinearFit = false;
   @Output() public resetReferenceEvent = new EventEmitter();
-  constructor(private store$: Store<AppState>) { }
-
 
   public onToggleLines(event: MatCheckboxChange) {
     if (event.checked) {
-      this.store$.dispatch(chartsStore.showGraphLines())
+      this.store$.dispatch(chartsStore.showGraphLines());
     } else {
-      this.store$.dispatch(chartsStore.hideGraphLines())
+      this.store$.dispatch(chartsStore.hideGraphLines());
     }
   }
   public onToggleLinearFit(event: MatCheckboxChange) {
-    if(event.checked) {
+    if (event.checked) {
       this.store$.dispatch(chartsStore.showLinearFit());
     } else {
       this.store$.dispatch(chartsStore.hideLinearFit());
@@ -42,13 +48,16 @@ export class TimeseriesChartConfigComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subs.add(this.store$.select(chartsStore.getShowLines).subscribe(
-        showLines => this.showLines = showLines
-      )
+    this.subs.add(
+      this.store$
+        .select(chartsStore.getShowLines)
+        .subscribe((showLines) => (this.showLines = showLines)),
     );
-    this.subs.add(this.store$.select(chartsStore.getShowLinearFit).subscribe(
-      showLinearFit => this.showLinearFit = showLinearFit
-    ))
+    this.subs.add(
+      this.store$
+        .select(chartsStore.getShowLinearFit)
+        .subscribe((showLinearFit) => (this.showLinearFit = showLinearFit)),
+    );
   }
 
   public resetReference() {
@@ -56,6 +65,6 @@ export class TimeseriesChartConfigComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subs.unsubscribe()
+    this.subs.unsubscribe();
   }
 }

@@ -2,8 +2,8 @@
   [class.invalid-input-animation]="isAOIError"
   class="full-width input-field"
   (mouseenter)="isHoveringAOISelector = true"
-  (mouseleave)="isHoveringAOISelector = false">
-
+  (mouseleave)="isHoveringAOISelector = false"
+>
   <mat-label> {{ 'AREA_OF_INTEREST_WKT' | translate }} </mat-label>
 
   <input
@@ -11,26 +11,32 @@
     [value]="polygon"
     [(ngModel)]="polygon"
     name="searchPolygon"
-    matInput>
-  <mat-icon
-    *ngIf="!!polygon" (click)="onCopy()"
-    matTooltip="{{ 'COPY_TO_CLIPBOARD' | translate }}"
-    [class.ghost-item]="!isHoveringAOISelector"
-    class="clickable copy-icon" matSuffix>
-    file_copy
-  </mat-icon>
+    matInput
+  />
+  @if (!!polygon) {
+    <mat-icon
+      (click)="onCopy()"
+      matTooltip="{{ 'COPY_TO_CLIPBOARD' | translate }}"
+      [class.ghost-item]="!isHoveringAOISelector"
+      class="clickable copy-icon"
+      matSuffix
+    >
+      file_copy
+    </mat-icon>
+  }
 
   <mat-icon
     (click)="toggleAOIOptions()"
     matTooltip="{{ 'MORE_OPTIONS' | translate }}"
     class="clickable additional-aoi-toggle"
-    matSuffix>
+    matSuffix
+  >
     {{ isAOIOptionsOpen ? 'arrow_drop_up' : 'arrow_drop_down' }}
   </mat-icon>
 </mat-form-field>
 
-<mat-card *ngIf="isAOIOptionsOpen"
-  [@fadeTransition]
-  class="breadcrumb-filter aoi-mat-card">
-  <app-aoi-options (close)="closeAOIOptions()"></app-aoi-options>
-</mat-card>
+@if (isAOIOptionsOpen) {
+  <mat-card [@fadeTransition] class="breadcrumb-filter aoi-mat-card">
+    <app-aoi-options (close)="closeAOIOptions()"></app-aoi-options>
+  </mat-card>
+}

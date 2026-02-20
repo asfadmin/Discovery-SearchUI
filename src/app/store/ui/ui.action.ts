@@ -30,6 +30,7 @@ export enum UIActionType {
   SET_ACTIVE_UUID = '[UI] Set Active Displacement UUID',
   SET_IS_DOWNLOAD_QUEUE_OPEN = '[UI] Is Download Queue Open',
   SET_IS_ON_DEMAND_QUEUE_OPEN = '[UI] Is On Demand Queue Open',
+  SET_FRAME_SELECTION = '[UI] Set if frame selection mode enabled',
 
   TOGGLE_BOTTOM_MENU = '[UI] Toggle Bottom Menu',
   CLOSE_BOTTOM_MENU = '[UI] Close Bottom Menu',
@@ -128,13 +129,13 @@ export class SetIsBrowseDialogOpen implements Action {
 }
 
 export class SetIsDownloadQueueOpen implements Action {
-  public readonly type = UIActionType.SET_IS_DOWNLOAD_QUEUE_OPEN ;
+  public readonly type = UIActionType.SET_IS_DOWNLOAD_QUEUE_OPEN;
 
   constructor(public payload: boolean) {}
 }
 
 export class SetIsOnDemandQueueOpen implements Action {
-  public readonly type = UIActionType.SET_IS_ON_DEMAND_QUEUE_OPEN ;
+  public readonly type = UIActionType.SET_IS_ON_DEMAND_QUEUE_OPEN;
 
   constructor(public payload: boolean) {}
 }
@@ -179,6 +180,12 @@ export class LoadBanners implements Action {
   public readonly type = UIActionType.LOAD_BANNERS;
 }
 
+export class SetFrameSelection implements Action {
+  public readonly type = UIActionType.SET_FRAME_SELECTION;
+
+  constructor(public payload: boolean) {}
+}
+
 export type UIActions =
   | ToggleAOIOptions
   | CloseAOIOptions
@@ -206,7 +213,7 @@ export type UIActions =
   | SetIsBrowseDialogOpen
   | SetIsDownloadQueueOpen
   | SetIsOnDemandQueueOpen
+  | SetFrameSelection
   | LoadBanners
   | RemoveBanner
   | AddBanners;
-

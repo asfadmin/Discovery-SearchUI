@@ -1,12 +1,12 @@
 {
-  "extends": "../tsconfig.base.json",
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "outDir": "../out-tsc/spec",
     "types": [
       "jasmine",
       "node"
     ],
-    "lib": ["dom", "es2021"]
+    "lib": ["dom", "es2022"]
   },
   "files": [
     "test.ts",

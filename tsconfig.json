@@ -1,16 +1,4 @@
 {
-  "files": [],
-  "references": [
-    {
-      "path": "./src/tsconfig.app.json",
-    },
-    {
-      "path": "./src/tsconfig.spec.json"
-    }
-  ],
-  "include": [
-    ".eslintrc.js",
-  ],
   "compileOnSave": false,
   "angularCompilerOptions": {
     "strictTemplates": true
@@ -20,7 +8,7 @@
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "experimentalDecorators": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -36,25 +24,60 @@
       "dom"
     ],
     "paths": {
-      "@components": ["src/app/components"],
-      "@services": ["src/app/services"],
-      "@pipes": ["src/app/pipes"],
-      "@models": ["src/app/models"],
-      "@directives": ["src/app/directives"],
-      "@store": ["src/app/store"],
-      "@shared": ["src/app/shared"],
-      "@environments": ["src/environments"],
-      "@testing": ["src/app/testing"],
-
-      "@components/*": ["src/app/components/*"],
-      "@services/*": ["src/app/services/*"],
-      "@pipes/*": ["src/app/pipes/*"],
-      "@models/*": ["src/app/models/*"],
-      "@directives/*": ["src/app/directives/*"],
-      "@store/*": ["src/app/store/*"],
-      "@shared/*": ["src/app/shared/*"],
-      "@environments/*": ["src/environments/*"],
-      "@testing/*": ["src/app/testing/*"]
-    },
+      "@components": [
+        "src/app/components"
+      ],
+      "@services": [
+        "src/app/services"
+      ],
+      "@pipes": [
+        "src/app/pipes"
+      ],
+      "@models": [
+        "src/app/models"
+      ],
+      "@directives": [
+        "src/app/directives"
+      ],
+      "@store": [
+        "src/app/store"
+      ],
+      "@shared": [
+        "src/app/shared"
+      ],
+      "@environments": [
+        "src/environments"
+      ],
+      "@testing": [
+        "src/app/testing"
+      ],
+      "@components/*": [
+        "src/app/components/*"
+      ],
+      "@services/*": [
+        "src/app/services/*"
+      ],
+      "@pipes/*": [
+        "src/app/pipes/*"
+      ],
+      "@models/*": [
+        "src/app/models/*"
+      ],
+      "@directives/*": [
+        "src/app/directives/*"
+      ],
+      "@store/*": [
+        "src/app/store/*"
+      ],
+      "@shared/*": [
+        "src/app/shared/*"
+      ],
+      "@environments/*": [
+        "src/environments/*"
+      ],
+      "@testing/*": [
+        "src/app/testing/*"
+      ]
+    }
   }
 }

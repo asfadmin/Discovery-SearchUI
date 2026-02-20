@@ -1,22 +1,20 @@
-<mat-form-field style="padding-left: 25px; padding-right: 25px; max-width: 75px;">
-<mat-label>
-  {{ 'PAIRS' | translate }}:
-</mat-label>
-<input matInput
-type='number'
-[max]="scenes.length - 1"
-[min]='1'
-[placeholder]="points.toString()"
-(input)="updatePairCount($event)"
-(click) = "$event.stopPropagation()"/>
+<mat-form-field
+  style="padding-left: 25px; padding-right: 25px; max-width: 75px"
+>
+  <mat-label> {{ 'PAIRS' | translate }}: </mat-label>
+  <input
+    matInput
+    type="number"
+    [max]="scenes.length - 1"
+    [min]="1"
+    [placeholder]="points.toString()"
+    (input)="updatePairCount($event)"
+    (click)="$event.stopPropagation()"
+  />
 </mat-form-field>
-<button
-    (click)="queueClosestPair(InSAR)"
-    [disabled]="" mat-menu-item>
-    {{ 'IN_SAR_PAIR' | translate }}
+<button (click)="queueClosestPair(InSAR)" [disabled]="" mat-menu-item>
+  {{ 'IN_SAR_PAIR' | translate }}
 </button>
-<button
-    (click)="queueClosestPair(AutoRift)"
-    [disabled]="" mat-menu-item>
-    {{ 'AUTO_RIFT_PAIR' | translate }}
+<button (click)="queueClosestPair(AutoRift)" [disabled]="" mat-menu-item>
+  {{ 'AUTO_RIFT_PAIR' | translate }}
 </button>

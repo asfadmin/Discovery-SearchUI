@@ -1,6 +1,6 @@
-@import "asf-theme";
-@import "deluxe-menu";
-@import "deluxe-menu-2";
+@use "asf-theme-variables" as *;
+@use "deluxe-menu" as *;
+@use "deluxe-menu-2" as *;
 
 .description-layout {
   display: flex;
@@ -232,22 +232,6 @@
   top: 3px;
 }
 
-.badge-new {
-  color: #236192;
-  font-style: italic;
-  font-size: 15px;
-  padding: 3px 8px;
-  border-radius: 12px;
-  font-weight: bold;
-  animation: fadeInUp 1.5s ease-out forwards;
-  position: absolute;
-  margin-left: 3px;
-  margin-top: -2px;
-  text-shadow: 0.3px 0.3px 1.5px rgba(35, 97, 146, 0.2);
-  filter: brightness(1.05);
-}
-
-
 @keyframes fadeInUp {
   0% {
     opacity: 0;
@@ -256,5 +240,22 @@
   100% {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+.disclaimer-link {
+  display: inline-block;
+  font-size: 12px;
+  font-style: italic;
+  color: grey;
+  cursor: pointer;
+  pointer-events: auto;
+  margin-left: 10px;
+  position: relative;
+  top: 2px;
+  z-index: 10;
+
+  &:hover {
+    text-decoration: underline;
   }
 }

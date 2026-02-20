@@ -1,15 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { MatIcon } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-help-filters',
   templateUrl: './help-filters.component.html',
-  styleUrls: ['./help-filters.component.scss']
+  styleUrls: ['./help-filters.component.scss'],
+  imports: [MatIcon, TranslateModule],
 })
-export class HelpFiltersComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-}
+export class HelpFiltersComponent {}

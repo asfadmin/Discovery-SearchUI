@@ -1,37 +1,49 @@
-<mat-button-toggle-group [value]="interaction" class="interaction-toggle-group"
-  name="viewSelect" aria-label="Font Style" [hideSingleSelectionIndicator]="true">
-
+<mat-button-toggle-group
+  [value]="interaction"
+  class="interaction-toggle-group"
+  name="viewSelect"
+  [attr.aria-label]="'FONT_STYLE' | translate"
+  [hideSingleSelectionIndicator]="true"
+>
   <app-draw-selector></app-draw-selector>
 
-    <mat-button-toggle
+  <mat-button-toggle
     (click)="onEditSelected()"
     [value]="types.EDIT"
     class="control-mat-button-toggle"
-    [matTooltip]="interaction === types.EDIT ? ('STOP_EDITING' | translate) : ('EDIT_CURRENT_AREA_OF_INTEREST' | translate)">
+    [matTooltip]="
+      interaction === types.EDIT
+        ? ('STOP_EDITING' | translate)
+        : ('EDIT_CURRENT_AREA_OF_INTEREST' | translate)
+    "
+  >
     <mat-icon class="interaction-icon">edit</mat-icon>
   </mat-button-toggle>
-
 
   <mat-button-toggle
     (click)="onDrawSelected()"
     [value]="types.DRAW"
     class="control-mat-button-toggle"
-    [matTooltip]="interaction === types.DRAW ? ('STOP_DRAWING'| translate) : ('DRAW_NEW_AREA_OF_INTEREST'| translate)">
+    [matTooltip]="
+      interaction === types.DRAW
+        ? ('STOP_DRAWING' | translate)
+        : ('DRAW_NEW_AREA_OF_INTEREST' | translate)
+    "
+  >
     <mat-icon class="interaction-icon">draw</mat-icon>
   </mat-button-toggle>
-
 
   <mat-button-toggle
     (click)="onClearSelected()"
     class="control-mat-button-toggle"
-    matTooltip="{{'CLEAR_CURRENT_AREA_OF_INTEREST' | translate}}"
-    #clearButton>
+    matTooltip="{{ 'CLEAR_CURRENT_AREA_OF_INTEREST' | translate }}"
+    #clearButton
+  >
     <mat-icon class="interaction-icon">delete</mat-icon>
   </mat-button-toggle>
 
-  <app-file-upload-dialog
-  *ngIf="(breakpoint$ | async) === breakpoints.MOBILE"
-  class="mobile-upload-button">
-  </app-file-upload-dialog>
-
+  @if ((breakpoint$ | async) === breakpoints.MOBILE) {
+    <app-file-upload-dialog class="mobile-upload-button">
+    </app-file-upload-dialog>
+  }
 </mat-button-toggle-group>

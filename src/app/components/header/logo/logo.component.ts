@@ -1,25 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { ScreenSizeService } from '@services';
 import { Breakpoints } from '@models';
+import { AsyncPipe } from '@angular/common';
+import { MatCard } from '@angular/material/card';
 
 @Component({
   selector: 'app-logo',
   templateUrl: './logo.component.html',
-  styleUrls: ['./logo.component.scss']
+  styleUrls: ['./logo.component.scss'],
+  imports: [MatCard, AsyncPipe],
 })
-export class LogoComponent implements OnInit {
+export class LogoComponent {
+  private screenSize = inject(ScreenSizeService);
+
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = Breakpoints;
 
-  constructor(
-    private screenSize: ScreenSizeService
-  ) {}
-
-  ngOnInit(): void {
-  }
-
   onResetSearch() {
-    window.location = <any>'/';
+    window.location = '/' as any;
   }
 }

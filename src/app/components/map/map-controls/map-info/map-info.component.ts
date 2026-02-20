@@ -1,25 +1,28 @@
-import { Component, OnInit, Input, ViewChild, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  ViewChild,
+  AfterViewInit,
+  inject,
+} from '@angular/core';
 
 import { LonLat } from '@models';
 import * as services from '@services';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-map-info',
   templateUrl: './map-info.component.html',
-  styleUrls: ['./map-info.component.scss']
+  styleUrls: ['./map-info.component.scss'],
+  imports: [DecimalPipe],
 })
-export class MapInfoComponent implements OnInit, AfterViewInit {
+export class MapInfoComponent implements AfterViewInit {
+  private mapService = inject(services.MapService);
+
   @ViewChild('mapScaleComp', { static: true }) mapScale;
   @Input() public mousePos: LonLat;
 
-  constructor(
-    private mapService: services.MapService,
-  ) { }
-
-  ngOnInit(): void {
-  }
-
   ngAfterViewInit() {
-    this.mapService.addScaleLine(this.mapScale.nativeElement)
+    this.mapService.addScaleLine(this.mapScale.nativeElement);
   }
 }

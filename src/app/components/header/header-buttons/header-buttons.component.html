@@ -1,178 +1,359 @@
-<div *ngIf="breakpoint$ | async as breakpoint" xmlns="http://www.w3.org/1999/html" class="fx-row">
-  <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
-    <ng-container *ngIf="searchType$ | async as searchType">
-      <ng-container *ngIf="searchType !== searchTypes.DISPLACEMENT">
-        <button
+@if (breakpoint$ | async; as breakpoint) {
+  <div class="fx-row header-buttons-container">
+    @if (breakpoint > breakpoints.MOBILE) {
+      @if (searchType$ | async; as searchType) {
+        @if (searchType !== searchTypes.DISPLACEMENT) {
+          <button
             [matMenuTriggerFor]="onDemandQueue"
-            class="spacing nav-icon-buttons" color="basic"
+            class="spacing nav-icon-buttons"
+            color="basic"
             matTooltip="{{ 'ON_DEMAND_QUEUE' | translate }}"
-            mat-button>
+            mat-button
+          >
             <mat-icon
               class="large-icon"
               aria-hidden="false"
               svgIcon="hyp3"
               [matBadge]="queuedCustomProducts.length"
-              [matBadgeColor]="this.queuedProducts.length > 0 ? this.accentPalette : this.primaryPalette"
+              [matBadgeColor]="
+                this.queuedProducts.length > 0
+                  ? this.accentPalette
+                  : this.primaryPalette
+              "
               matBadgePosition="above after"
               matBadgeOverlap="true"
-              matBadgeSize="small">
+              matBadgeSize="small"
+            >
             </mat-icon>
-          <div class="text-under faint-text">{{ 'ON_DEMAND' |  translate }}</div>
-        </button>
-
-        <mat-menu #onDemandQueue="matMenu">
+            <div class="text-under faint-text">
+              {{ 'ON_DEMAND' | translate }}
+            </div>
+          </button>
+          <mat-menu #onDemandQueue="matMenu">
+            <button (click)="onOpenProcessingQueue()" mat-menu-item>
+              {{ 'ON_DEMAND_QUEUE' | translate }}
+            </button>
+            <button
+              mat-menu-item
+              (click)="onSetSearchTypeOnDemand()"
+              [disabled]="!isLoggedIn"
+            >
+              {{ 'SUBMITTED_PRODUCTS' | translate }}
+            </button>
+            <button mat-menu-item (click)="onOpenOnDemandDocs()">
+              {{ 'ON_DEMAND_HY_P3_DOCS' | translate }}
+            </button>
+          </mat-menu>
           <button
-          (click)="onOpenProcessingQueue()"
-          mat-menu-item>{{  'ON_DEMAND_QUEUE'  | translate }}</button>
-
-          <button mat-menu-item
-          (click) = "onSetSearchTypeOnDemand()"
-          [disabled]="!isLoggedIn">{{  'SUBMITTED_PRODUCTS'  | translate }}
-          </button>
-
-          <button mat-menu-item (click)="onOpenOnDemandDocs()">
-            {{  'ON_DEMAND_HY_P3_DOCS'  | translate }}
-          </button>
-        </mat-menu>
-        <button
-          (click)="onOpenDownloadQueue()"
-          class="spacing nav-icon-buttons"
-          color="basic"
-          matTooltip="{{ 'DOWNLOADS' | translate }}" mat-button>
-
-          <mat-icon
-            class="large-icon"
-            aria-hidden="false"
-            [matBadge]="queuedProducts.length"
-            [matBadgeColor]="this.queuedProducts.length > 0 ? this.accentPalette : this.primaryPalette"
-            matBadgePosition="above after"
-            matBadgeOverlap="true"
-            matBadgeSize="small">
+            (click)="onOpenDownloadQueue()"
+            class="spacing nav-icon-buttons"
+            color="basic"
+            matTooltip="{{ 'DOWNLOADS' | translate }}"
+            mat-button
+          >
+            <mat-icon
+              class="large-icon"
+              aria-hidden="false"
+              [matBadge]="queuedProducts.length"
+              [matBadgeColor]="
+                this.queuedProducts.length > 0
+                  ? this.accentPalette
+                  : this.primaryPalette
+              "
+              matBadgePosition="above after"
+              matBadgeOverlap="true"
+              matBadgeSize="small"
+            >
               shopping_cart
-          </mat-icon>
-          <div class="text-under faint-text">{{ 'DOWNLOADS' | translate }}</div>
+            </mat-icon>
+            <div class="text-under faint-text">
+              {{ 'DOWNLOADS' | translate }}
+            </div>
+          </button>
+        }
+        @if (
+          searchType === searchTypes.DISPLACEMENT &&
+          breakpoint === breakpoints.SMALL
+        ) {
+          <!-- Drawer wrapper for Displacement + SMALL breakpoint -->
+          <div
+            #panelWrapper
+            class="collapsed-panel-wrapper"
+            [class.expanded]="isHeaderExpanded"
+          >
+            <!-- Drawer tab handle (left side of drawer) -->
+            <button
+              class="drawer-tab"
+              (click)="toggleHeaderExpanded(); $event.stopPropagation()"
+              [attr.aria-expanded]="isHeaderExpanded"
+              aria-controls="displacement-panel"
+              [attr.aria-label]="
+                (isHeaderExpanded ? 'COLLAPSE_PANEL' : 'EXPAND_PANEL')
+                  | translate
+              "
+              matTooltip="{{
+                (isHeaderExpanded ? 'COLLAPSE_PANEL' : 'EXPAND_PANEL')
+                  | translate
+              }}"
+            >
+              <mat-icon>{{
+                isHeaderExpanded ? 'chevron_right' : 'chevron_left'
+              }}</mat-icon>
+            </button>
+            <!-- Panel content (right side of drawer) -->
+            <div id="displacement-panel" class="collapsed-buttons-panel">
+              <app-search-button></app-search-button>
+              <button
+                class="spacing nav-icon-buttons nav-icon-buttons-raised panel-storymap-button"
+                color="basic"
+                mat-button
+                matTooltip="{{ 'STORYMAP' | translate }}"
+                (click)="onOpenStoryMap()"
+              >
+                <img
+                  src="assets/StoryMaps.png"
+                  alt="StoryMap"
+                  class="storymap-icon"
+                />
+                <div class="text-under faint-text text-adjust-storymap">
+                  {{ 'STORYMAP' | translate }}
+                  <mat-icon class="external-link-icon">open_in_new</mat-icon>
+                </div>
+              </button>
+              <button
+                class="spacing nav-icon-buttons nav-icon-buttons-raised panel-info-button"
+                color="basic"
+                mat-button
+                matTooltip="{{ 'DATASET_INFO' | translate }}"
+                (click)="onOpenOperaInfo()"
+              >
+                <mat-icon class="material-symbols-outlined large-icon"
+                  >description</mat-icon
+                >
+                <div class="text-under faint-text text-adjust-info">
+                  {{ 'INFO' | translate }}
+                  <mat-icon class="external-link-icon">open_in_new</mat-icon>
+                </div>
+              </button>
+              <button
+                [matMenuTriggerFor]="helpMenu"
+                matTooltip="{{ 'HELP_AND_INFORMATION' | translate }}"
+                class="spacing nav-icon-buttons"
+                color="basic"
+                mat-button
+              >
+                <mat-icon class="large-icon">help_outline</mat-icon>
+                <div class="text-under faint-text">
+                  {{ 'HELP' | translate }}
+                </div>
+              </button>
+              <button
+                [matMenuTriggerFor]="languageMenu"
+                matTooltip="{{ 'LANGUAGE' | translate }}"
+                class="spacing nav-icon-buttons disp-translate-button"
+                color="basic"
+                mat-button
+              >
+                <mat-icon class="large-icon">translate</mat-icon>
+                <div class="text-under faint-text">
+                  {{ language.getName() }}
+                </div>
+              </button>
+            </div>
+          </div>
+          <!-- Login/Profile always visible -->
+          <div #loginContainer class="login-button-container">
+            @if (!isLoggedIn) {
+              <button
+                (click)="onAccountButtonClicked()"
+                class="spacing nav-icon-buttons"
+                color="basic"
+                matTooltip="{{ 'LOGIN' | translate }}"
+                mat-button
+              >
+                <mat-icon class="large-icon">account_circle</mat-icon>
+                <div class="text-under faint-text">
+                  {{ 'SIGN_IN' | translate }}
+                </div>
+              </button>
+            } @else {
+              <button
+                [matMenuTriggerFor]="profileMenu"
+                class="spacing nav-icon-buttons"
+                color="basic"
+                matTooltip="{{ 'PROFILE' | translate }}"
+                mat-button
+              >
+                <mat-icon class="large-icon">account_circle</mat-icon>
+                <div class="text-under faint-text">{{ this.userAuth?.id }}</div>
+              </button>
+            }
+          </div>
+        }
+        @if (
+          searchType === searchTypes.DISPLACEMENT &&
+          breakpoint > breakpoints.SMALL
+        ) {
+          <!-- Normal Displacement buttons for MEDIUM and FULL breakpoints -->
+          <app-search-button class="disp-search-adjust"></app-search-button>
+          <button
+            class="spacing nav-icon-buttons disp-icon-adjust panel-storymap-button"
+            color="basic"
+            mat-button
+            matTooltip="{{ 'STORYMAP' | translate }}"
+            (click)="onOpenStoryMap()"
+          >
+            <img
+              src="assets/StoryMaps.png"
+              alt="StoryMap"
+              class="storymap-icon"
+            />
+            <div class="text-under faint-text text-adjust-storymap">
+              {{ 'STORYMAP' | translate }}
+              <mat-icon class="external-link-icon">open_in_new</mat-icon>
+            </div>
+          </button>
+          <button
+            class="spacing nav-icon-buttons disp-icon-adjust panel-info-button"
+            color="basic"
+            mat-button
+            matTooltip="{{ 'DATASET_INFO' | translate }}"
+            (click)="onOpenOperaInfo()"
+          >
+            <mat-icon class="material-symbols-outlined large-icon"
+              >description</mat-icon
+            >
+            <div class="text-under faint-text text-adjust-info">
+              {{ 'INFO' | translate }}
+              <mat-icon class="external-link-icon">open_in_new</mat-icon>
+            </div>
+          </button>
+        }
+        @if (
+          searchType !== searchTypes.DISPLACEMENT ||
+          breakpoint > breakpoints.SMALL
+        ) {
+          <!-- Help, Language, Login for non-Displacement OR Displacement with larger breakpoints -->
+          <button
+            [matMenuTriggerFor]="helpMenu"
+            matTooltip="{{ 'HELP_AND_INFORMATION' | translate }}"
+            class="spacing nav-icon-buttons"
+            color="basic"
+            mat-button
+          >
+            <mat-icon class="large-icon">help_outline</mat-icon>
+            <div class="text-under faint-text">{{ 'HELP' | translate }}</div>
+          </button>
+          <button
+            [matMenuTriggerFor]="languageMenu"
+            matTooltip="{{ 'LANGUAGE' | translate }}"
+            class="spacing nav-icon-buttons"
+            [class.disp-translate-button]="
+              searchType === searchTypes.DISPLACEMENT
+            "
+            color="basic"
+            mat-button
+          >
+            <mat-icon class="large-icon">translate</mat-icon>
+            <div class="text-under faint-text">{{ language.getName() }}</div>
+          </button>
+          @if (!isLoggedIn) {
+            <button
+              (click)="onAccountButtonClicked()"
+              class="spacing nav-icon-buttons"
+              color="basic"
+              matTooltip="{{ 'LOGIN' | translate }}"
+              mat-button
+            >
+              <mat-icon class="large-icon">account_circle</mat-icon>
+              <div class="text-under faint-text">
+                {{ 'SIGN_IN' | translate }}
+              </div>
+            </button>
+          } @else {
+            <button
+              [matMenuTriggerFor]="profileMenu"
+              class="spacing nav-icon-buttons"
+              color="basic"
+              matTooltip="{{ 'PROFILE' | translate }}"
+              mat-button
+            >
+              <mat-icon class="large-icon">account_circle</mat-icon>
+              <div class="text-under faint-text">{{ this.userAuth?.id }}</div>
+            </button>
+          }
+        }
+      }
+    }
+    @if (breakpoint === breakpoints.MOBILE) {
+      <mat-icon
+        [matMenuTriggerFor]="onDemandQueue"
+        class="mobile-icon-spacing"
+        matTooltip="{{ 'ON_DEMAND_QUEUE' | translate }}"
+        svgIcon="hyp3"
+        [matBadge]="queuedCustomProducts.length"
+        [matBadgeColor]="
+          this.queuedProducts.length > 0
+            ? this.accentPalette
+            : this.primaryPalette
+        "
+        matBadgePosition="above after"
+        matBadgeOverlap="true"
+        matBadgeSize="small"
+      >
+      </mat-icon>
+      <mat-menu #onDemandQueue="matMenu">
+        <button (click)="onOpenProcessingQueue()" mat-menu-item>
+          {{ 'ON_DEMAND_QUEUE' | translate }}
         </button>
-      </ng-container>
-
-     <ng-container *ngIf="searchType === searchTypes.DISPLACEMENT">
-
-       <app-search-button></app-search-button>
-
         <button
-          class="spacing nav-icon-buttons" color="basic" mat-button>
-
-          <app-docs-modal class="icon-description"
-                          matTooltip="{{ 'DATASET_INFO' | translate }}"
-                          description="description"
-                          url="https://asf.alaska.edu/datasets/daac/opera/">
-          </app-docs-modal>
-          <div class="text-under faint-text" style="margin-top: -3px;">{{ 'INFO' | translate }}</div>
+          mat-menu-item
+          (click)="onSetSearchTypeOnDemand()"
+          [disabled]="!isLoggedIn"
+        >
+          {{ 'SUBMITTED_PRODUCTS' | translate }}
         </button>
-
-      </ng-container>
-
-        <button
-          [matMenuTriggerFor]="helpMenu"
-          matTooltip="{{ 'HELP_AND_INFORMATION' | translate }}"
-          class="spacing nav-icon-buttons" color="basic" mat-button>
-          <mat-icon class="large-icon">help_outline</mat-icon>
-          <div class="text-under faint-text">{{ 'HELP' | translate }}</div>
+        <button mat-menu-item (click)="onOpenOnDemandDocs()">
+          {{ 'ON_DEMAND_HY_P3_DOCS' | translate }}
         </button>
-
-        <button
-          [matMenuTriggerFor]="languageMenu"
-          matTooltip="{{ 'LANGUAGE' | translate }}"
-          class="spacing nav-icon-buttons" color="basic" mat-button>
-          <mat-icon class="large-icon">translate</mat-icon>
-          <div class="text-under faint-text">{{ language.getName()}}</div>
-        </button>
-
-        <button
-          *ngIf="!isLoggedIn"
-          (click)="onAccountButtonClicked()"
-          class="spacing nav-icon-buttons" color="basic"
-          matTooltip="{{ 'LOGIN' | translate }}" mat-button>
-          <mat-icon class="large-icon">account_circle</mat-icon>
-          <div class="text-under faint-text">{{ 'SIGN_IN' | translate }}</div>
-        </button>
-
-        <button
-          *ngIf="isLoggedIn"
-          [matMenuTriggerFor]="profileMenu"
-          class="spacing nav-icon-buttons" color="basic"
-          matTooltip="{{ 'PROFILE' | translate}}" mat-button>
-            <mat-icon class="large-icon">account_circle</mat-icon>
-            <div class="text-under faint-text"> {{ this.userAuth.id }} </div>
-        </button>
-    </ng-container>
-  </ng-container>
-
-  <ng-container *ngIf="breakpoint === breakpoints.MOBILE">
-    <mat-icon
-      [matMenuTriggerFor]="onDemandQueue"
-      class="mobile-icon-spacing"
-      matTooltip="{{ 'ON_DEMAND_QUEUE' | translate }}"
-      svgIcon="hyp3"
-      [matBadge]="queuedCustomProducts.length"
-      [matBadgeColor]="this.queuedProducts.length > 0 ? this.accentPalette : this.primaryPalette"
-      matBadgePosition="above after"
-      matBadgeOverlap="true"
-      matBadgeSize="small">
-    </mat-icon>
-
-    <mat-menu #onDemandQueue="matMenu">
-      <button
-      (click)="onOpenProcessingQueue()"
-      mat-menu-item>{{ 'ON_DEMAND_QUEUE' | translate }}</button>
-
-      <button mat-menu-item
-      (click) = "onSetSearchTypeOnDemand()"
-      [disabled]="!isLoggedIn">{{ 'SUBMITTED_PRODUCTS' | translate }}</button>
-
-      <button mat-menu-item (click)="onOpenOnDemandDocs()">
-        {{ 'ON_DEMAND_HY_P3_DOCS' | translate }}
-      </button>
-    </mat-menu>
-
-    <mat-icon
-      (click)="onOpenDownloadQueue()"
-      class="mobile-icon-spacing"
-      [matBadge]="queuedProducts.length"
-      [matBadgeColor]="this.queuedProducts.length > 0 ? this.accentPalette : this.primaryPalette"
-      matBadgePosition="above after"
-      matBadgeOverlap="true"
-      matBadgeSize="small">
+      </mat-menu>
+      <mat-icon
+        (click)="onOpenDownloadQueue()"
+        class="mobile-icon-spacing"
+        [matBadge]="queuedProducts.length"
+        [matBadgeColor]="
+          this.queuedProducts.length > 0
+            ? this.accentPalette
+            : this.primaryPalette
+        "
+        matBadgePosition="above after"
+        matBadgeOverlap="true"
+        matBadgeSize="small"
+      >
         shopping_cart
-    </mat-icon>
-
-    <mat-icon
-      [matMenuTriggerFor]="helpMenu"
-      class="mobile-icon-spacing">
-      help_outline
-    </mat-icon>
-
-    <mat-icon
-      [matMenuTriggerFor]="languageMenu"
-      class="mobile-icon-spacing">
-      translate
-    </mat-icon>
-
-    <mat-icon
-      *ngIf="!isLoggedIn"
-      class="mobile-icon-spacing"
-      fontSet="material-icons-outlined"
-      (click)="onAccountButtonClicked()">
-      account_circle
-    </mat-icon>
-
-    <mat-icon
-      *ngIf="isLoggedIn"
-      class="mobile-icon-spacing"
-      [matMenuTriggerFor]="profileMenu">
-      account_circle
-    </mat-icon>
-  </ng-container>
-</div>
+      </mat-icon>
+      <mat-icon [matMenuTriggerFor]="helpMenu" class="mobile-icon-spacing">
+        help_outline
+      </mat-icon>
+      <mat-icon [matMenuTriggerFor]="languageMenu" class="mobile-icon-spacing">
+        translate
+      </mat-icon>
+      @if (!isLoggedIn) {
+        <mat-icon
+          class="mobile-icon-spacing"
+          fontSet="material-icons-outlined"
+          (click)="onAccountButtonClicked()"
+        >
+          account_circle
+        </mat-icon>
+      } @else {
+        <mat-icon class="mobile-icon-spacing" [matMenuTriggerFor]="profileMenu">
+          account_circle
+        </mat-icon>
+      }
+    }
+  </div>
+}
 
 <mat-menu #profileMenu="matMenu">
   <button (click)="onOpenSavedSearches()" mat-menu-item matSuffix>
@@ -181,193 +362,250 @@
   <button (click)="onOpenSearchHistory()" mat-menu-item matSuffix>
     {{ 'SEARCH_HISTORY' | translate }}
   </button>
-  <button [disabled]="(searchType$ | async) === searchTypes.LIST || (searchType$ | async) === searchTypes.CUSTOM_PRODUCTS" (click)="onOpenSavedFilters()" mat-menu-item matSuffix>
+  <button
+    [disabled]="
+      (searchType$ | async) === searchTypes.LIST ||
+      (searchType$ | async) === searchTypes.CUSTOM_PRODUCTS
+    "
+    (click)="onOpenSavedFilters()"
+    mat-menu-item
+    matSuffix
+  >
     {{ 'SAVED_FILTERS' | translate }}
   </button>
   <button (click)="onOpenPreferences()" mat-menu-item matSuffix>
     {{ 'PREFERENCES' | translate }}
   </button>
 
-  <hr class="menu-hr">
-  <button (click)="onLogout()"
-      mat-menu-item matSuffix>
+  <hr class="menu-hr" />
+  <button (click)="onLogout()" mat-menu-item matSuffix>
     {{ 'SIGN_OUT' | translate }}
   </button>
 </mat-menu>
 
 <mat-menu #helpMenu="matMenu">
-  <div mat-menu-item matSuffix (click)="onOpenHelp('toc')">
-    <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
-      <mat-icon>video_library</mat-icon>
-      {{ 'VIDEO_TUTORIALS' | translate }}
-    </div>
-    <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
-      <div class="menu-item-content">
-        <div class="item-title">{{ 'WATCH_OUR_TUTORIALS' | translate }}</div>
-        <div class="item-content">
-          {{ 'WE_HAVE_A_COLLECTION_OF_VIDEOS_TO_HELP_YOU_LEARN_AND_USE_VERTEX_TO_MAXIMUM_ADVANTAGE' | translate }}
+  <button mat-menu-item matSuffix (click)="onOpenHelp('toc')">
+    @if ((breakpoint$ | async) === breakpoints.MOBILE) {
+      <div>
+        <mat-icon>video_library</mat-icon>
+        {{ 'VIDEO_TUTORIALS' | translate }}
+      </div>
+    } @else {
+      <div class="menu-item">
+        <div class="menu-item-content">
+          <div class="item-title">{{ 'WATCH_OUR_TUTORIALS' | translate }}</div>
+          <div class="item-content">
+            {{
+              'WE_HAVE_A_COLLECTION_OF_VIDEOS_TO_HELP_YOU_LEARN_AND_USE_VERTEX_TO_MAXIMUM_ADVANTAGE'
+                | translate
+            }}
+          </div>
+        </div>
+        <div class="menu-item-aside">
+          <mat-icon class="menu-item-icon">video_library</mat-icon>
         </div>
       </div>
-      <div class="menu-item-aside">
-        <mat-icon class="menu-item-icon">video_library</mat-icon>
+    }
+  </button>
+
+  <hr />
+
+  <button mat-menu-item matSuffix (click)="onOpenUserGuide()">
+    @if ((breakpoint$ | async) === breakpoints.MOBILE) {
+      <div>
+        <mat-icon>menu_book</mat-icon>
+        {{ 'VERTEX_USER_GUIDE' | translate }}
       </div>
-    </div>
-  </div>
-
-  <hr>
-
-  <div mat-menu-item matSuffix (click)="onOpenUserGuide()">
-    <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
-      <mat-icon>menu_book</mat-icon>
-      {{ 'VERTEX_USER_GUIDE' | translate }}
-    </div>
-    <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
-      <div class="menu-item-content">
-        <div class="item-title">{{ 'READ_OUR_USER_GUIDE' | translate }}</div>
-        <div class="item-content">
-          {{ 'READ_THE_VERTEX_USER_GUIDE_INCLUDING_SECTIONS_ON_GETTING_STARTED_BASELINE_SEARCHES' | translate }}
-          {{ 'SBAS_SEARCHES_EVENT_SEARCHES_AND_MORE' | translate }}
+    } @else {
+      <div class="menu-item">
+        <div class="menu-item-content">
+          <div class="item-title">{{ 'READ_OUR_USER_GUIDE' | translate }}</div>
+          <div class="item-content">
+            {{
+              'READ_THE_VERTEX_USER_GUIDE_INCLUDING_SECTIONS_ON_GETTING_STARTED_BASELINE_SEARCHES'
+                | translate
+            }}
+            {{ 'SBAS_SEARCHES_EVENT_SEARCHES_AND_MORE' | translate }}
+          </div>
+        </div>
+        <div class="menu-item-aside">
+          <mat-icon class="menu-item-icon">menu_book</mat-icon>
         </div>
       </div>
-      <div class="menu-item-aside">
-        <mat-icon class="menu-item-icon">menu_book</mat-icon>
+    }
+  </button>
+
+  <hr />
+
+  <button mat-menu-item matSuffix (click)="onOpenHyP3Guide()">
+    @if ((breakpoint$ | async) === breakpoints.MOBILE) {
+      <div>
+        <mat-icon>book</mat-icon>
+        {{ 'HY_P3_USER_GUIDE' | translate | titlecase }}
       </div>
-    </div>
-  </div>
-
-  <hr>
-
-  <div mat-menu-item matSuffix (click)="onOpenHyP3Guide()">
-    <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
-      <mat-icon>book</mat-icon>
-      {{ 'HY_P3_USER_GUIDE' | translate | titlecase }}
-    </div>
-    <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
-      <div class="menu-item-content">
-        <div class="item-title">{{ 'READ_OUR_ON_DEMAND_GUIDE' | translate }}</div>
-        <div class="item-content">
-          {{ 'YOU_CAN_HAVE_ASF_PERFORM_SAR_PROCESSING_FOR_YOU_ON_DEMAND_THE_ON_DEMAND_SYSTEM' | translate }}
-          {{ 'IS_POWERED_BY_THE_HY_P3_READ_ABOUT_IT_HERE' | translate }}
+    } @else {
+      <div class="menu-item">
+        <div class="menu-item-content">
+          <div class="item-title">
+            {{ 'READ_OUR_ON_DEMAND_GUIDE' | translate }}
+          </div>
+          <div class="item-content">
+            {{
+              'YOU_CAN_HAVE_ASF_PERFORM_SAR_PROCESSING_FOR_YOU_ON_DEMAND_THE_ON_DEMAND_SYSTEM'
+                | translate
+            }}
+            {{ 'IS_POWERED_BY_THE_HY_P3_READ_ABOUT_IT_HERE' | translate }}
+          </div>
+        </div>
+        <div class="menu-item-aside">
+          <mat-icon class="menu-item-icon" svgIcon="hyp3"></mat-icon>
         </div>
       </div>
-      <div class="menu-item-aside">
-        <mat-icon class="menu-item-icon" svgIcon="hyp3"></mat-icon>
+    }
+  </button>
+
+  <hr />
+
+  <button mat-menu-item matSuffix (click)="onOpenAPIWebSite()">
+    @if ((breakpoint$ | async) === breakpoints.MOBILE) {
+      <div>
+        <mat-icon>api</mat-icon>
+        {{ 'ASF_SEARCH_API' | translate }}
       </div>
-    </div>
-  </div>
-
-  <hr>
-
-  <div mat-menu-item matSuffix (click)="onOpenAPIWebSite()">
-    <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
-      <mat-icon>api</mat-icon>
-      {{ 'ASF_SEARCH_API' | translate }}
-    </div>
-    <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
-      <div class="menu-item-content">
-        <div class="item-title">{{ 'FIND_SAR_DATA_USING_ASF_API' | translate }}</div>
-        <div class="item-content">
-          {{ 'THIS_INTERFACE_IS_POWERED_BY_A_ROBUST_API_YOU_CAN_USE_THAT_API_DIRECTLY_ALLOWING' | translate }}
-          {{ 'YOU_TO_SEARCH_FOR_DATA_FROM_A_COMMAND_LINE_INTERFACE_SO_YOU_CAN_WRITE_YOUR_OWN' | translate }}
-          {{ 'SCRIPTS_FOR_ACCESSING_SAR_DATA' | translate }}
+    } @else {
+      <div class="menu-item">
+        <div class="menu-item-content">
+          <div class="item-title">
+            {{ 'FIND_SAR_DATA_USING_ASF_API' | translate }}
+          </div>
+          <div class="item-content">
+            {{
+              'THIS_INTERFACE_IS_POWERED_BY_A_ROBUST_API_YOU_CAN_USE_THAT_API_DIRECTLY_ALLOWING'
+                | translate
+            }}
+            {{
+              'YOU_TO_SEARCH_FOR_DATA_FROM_A_COMMAND_LINE_INTERFACE_SO_YOU_CAN_WRITE_YOUR_OWN'
+                | translate
+            }}
+            {{ 'SCRIPTS_FOR_ACCESSING_SAR_DATA' | translate }}
+          </div>
+        </div>
+        <div class="menu-item-aside">
+          <mat-icon class="menu-item-icon">api</mat-icon>
         </div>
       </div>
-      <div class="menu-item-aside">
-        <mat-icon class="menu-item-icon">api</mat-icon>
+    }
+  </button>
+
+  <hr />
+
+  <button mat-menu-item (click)="onOpenASFWebSite()">
+    @if ((breakpoint$ | async) === breakpoints.MOBILE) {
+      <div>
+        <mat-icon>language</mat-icon>
+        {{ 'ASF_WEBSITE' | translate }}
       </div>
-    </div>
-  </div>
-
-  <hr>
-
-  <div mat-menu-item (click)="onOpenASFWebSite()">
-    <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
-      <mat-icon>language</mat-icon>
-      {{ 'ASF_WEBSITE' | translate }}
-    </div>
-    <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
-      <div class="menu-item-content">
-        <div class="item-title">{{ 'LEARN_MORE_ABOUT_ASF_AND_SAR' | translate }}</div>
-        <div class="item-content">
-          {{ 'WE_HAVE_A_LARGE_WEBSITE_FULL_OF_RICH_CONTENT_ABOUT_SAR_DATA_AND_HOW_TO_USE_IT' | translate }}
+    } @else {
+      <div class="menu-item">
+        <div class="menu-item-content">
+          <div class="item-title">
+            {{ 'LEARN_MORE_ABOUT_ASF_AND_SAR' | translate }}
+          </div>
+          <div class="item-content">
+            {{
+              'WE_HAVE_A_LARGE_WEBSITE_FULL_OF_RICH_CONTENT_ABOUT_SAR_DATA_AND_HOW_TO_USE_IT'
+                | translate
+            }}
+          </div>
+        </div>
+        <div class="menu-item-aside">
+          <mat-icon class="menu-item-icon">language</mat-icon>
         </div>
       </div>
-      <div class="menu-item-aside">
-        <mat-icon class="menu-item-icon">language</mat-icon>
+    }
+  </button>
+
+  <hr />
+
+  <button mat-menu-item [matMenuTriggerFor]="developerMenu">
+    @if ((breakpoint$ | async) === breakpoints.MOBILE) {
+      <div>
+        <mat-icon>language</mat-icon>
+        {{ 'DEVELOPER' | translate }}
       </div>
-    </div>
-  </div>
-
-  <hr>
-
-  <div mat-menu-item [matMenuTriggerFor]="developerMenu">
-    <div *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
-      <mat-icon>language</mat-icon>
-      {{ 'DEVELOPER' | translate }}
-    </div>
-    <div *ngIf="(breakpoint$ | async) != breakpoints.MOBILE" class="menu-item">
-      <div class="menu-item-content">
-        <div class="item-title">{{ 'STATISTICS_AND_GITHUB_REPOSITORY' | translate }}</div>
-        <div class="item-content">
-          {{ 'VIEW_VERTEX_S_CODE_REPOSITORY_OR_METRICS' | translate }}
+    } @else {
+      <div class="menu-item">
+        <div class="menu-item-content">
+          <div class="item-title">
+            {{ 'STATISTICS_AND_GITHUB_REPOSITORY' | translate }}
+          </div>
+          <div class="item-content">
+            {{ 'VIEW_VERTEX_S_CODE_REPOSITORY_OR_METRICS' | translate }}
+          </div>
+        </div>
+        <div class="menu-item-aside">
+          <mat-icon class="menu-item-icon">developer_mode</mat-icon>
         </div>
       </div>
-      <div class="menu-item-aside">
-        <mat-icon class="menu-item-icon">developer_mode</mat-icon>
-      </div>
-    </div>
-  </div>
+    }
+  </button>
 
-  <ng-container *ngIf="(breakpoint$ | async) === breakpoints.MOBILE">
-    <hr class="menu-hr">
-
-    <button
-        [matMenuTriggerFor]="copyrightMenu"
-        mat-menu-item>
+  @if ((breakpoint$ | async) === breakpoints.MOBILE) {
+    <hr class="menu-hr" />
+    <button [matMenuTriggerFor]="copyrightMenu" mat-menu-item>
       <mat-icon>copyright</mat-icon>{{ 'COPYRIGHT' | translate }}
     </button>
-
-    <hr>
-
-    <button
-        mat-menu-item>
-      <mat-icon>corporate_fare</mat-icon>ASF
+    <hr />
+    <button mat-menu-item>
+      <mat-icon>corporate_fare</mat-icon>{{ 'ASF' | translate }}
     </button>
-
-
     <mat-menu #copyrightMenu="matMenu">
-      <a mat-menu-item [href]="asfWebsite.home" target="_blank">© {{anio}} ASF</a>
-      <a mat-menu-item href="https://www.maptiler.com/copyright/" target="_blank">© {{ 'MAP_TILER'  | translate }}</a>
-      <a mat-menu-item href="https://www.openstreetmap.org/copyright" target="_blank">© {{ 'OPEN_STREET_MAP_CONTRIBUTORS' | translate }}</a>
+      <a mat-menu-item [href]="asfWebsite.home" target="_blank"
+        >© {{ anio }} ASF</a
+      >
+      <a
+        mat-menu-item
+        href="https://www.maptiler.com/copyright/"
+        target="_blank"
+        >© {{ 'MAP_TILER' | translate }}</a
+      >
+      <a
+        mat-menu-item
+        href="https://www.openstreetmap.org/copyright"
+        target="_blank"
+        >© {{ 'OPEN_STREET_MAP_CONTRIBUTORS' | translate }}</a
+      >
     </mat-menu>
-  </ng-container>
+  }
 </mat-menu>
 
 <mat-menu #developerMenu="matMenu">
-    <a mat-menu-item
-        href="https://github.com/asfadmin/Discovery-SearchUI"
-        target="_blank">
-      <mat-icon>code</mat-icon>
-      {{ 'VERTEX_CODE_REPOSITORY' | translate }}
-    </a>
+  <a
+    mat-menu-item
+    href="https://github.com/asfadmin/Discovery-SearchUI"
+    target="_blank"
+  >
+    <mat-icon>code</mat-icon>
+    {{ 'VERTEX_CODE_REPOSITORY' | translate }}
+  </a>
 
-    <a mat-menu-item
-        [href]="commitUrl"
-        target="_blank">
-      <mat-icon>code</mat-icon>
-      {{ 'BUILD_COMMIT' | translate }}
-    </a>
+  <a mat-menu-item [href]="commitUrl" target="_blank">
+    <mat-icon>code</mat-icon>
+    {{ 'BUILD_COMMIT' | translate }}
+  </a>
 
-    <a *ngIf="!env.isProd" (click)="listWebsiteLinks()" mat-menu-item>
+  @if (!env.isProd) {
+    <a (click)="listWebsiteLinks()" mat-menu-item>
       <mat-icon>link</mat-icon>
       {{ 'WEBSITE_LINKS' | translate }}
     </a>
+  }
 </mat-menu>
 
 <mat-menu #languageMenu="matMenu">
-  <div *ngFor="let lang of language.translate.getLangs()">
+  @for (lang of language.translate.getLangs(); track lang) {
     <button mat-menu-item (click)="language.setCurrent(lang)">
-      {{language.getName(lang)}}
+      {{ language.getName(lang) }}
     </button>
-  </div>
+  }
 </mat-menu>

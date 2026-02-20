@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
@@ -8,6 +8,20 @@ import * as hyp3Store from '@store/hyp3';
 import { SubSink } from 'subsink';
 import * as models from '@models';
 import { ScreenSizeService } from '@services';
+import {
+  MatAccordion,
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle,
+} from '@angular/material/expansion';
+import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
+import { OnDemandUserSelectorComponent } from '@components/shared/selectors/on-demand-user-selector/on-demand-user-selector.component';
+import { JobIdSelectorComponent } from './job-id-selector/job-id-selector.component';
+import { DateSelectorComponent } from '@components/shared/selectors/date-selector/date-selector.component';
+import { ProjectNameSelectorComponent } from '@components/shared/selectors/project-name-selector/project-name-selector.component';
+import { JobStatusSelectorComponent } from '@components/shared/selectors/job-status-selector/job-status-selector.component';
+import { JobProductNameSelectorComponent } from '@components/shared/selectors/job-product-name-selector/job-product-name-selector.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 enum FilterPanel {
   SEARCH = 'SEARCH_OPTIONS',
@@ -18,9 +32,26 @@ enum FilterPanel {
 @Component({
   selector: 'app-custom-products-filters',
   templateUrl: './custom-products-filters.component.html',
-  styleUrls: ['./custom-products-filters.component.scss']
+  styleUrls: ['./custom-products-filters.component.scss'],
+  imports: [
+    MatAccordion,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    SearchTypeSelectorComponent,
+    OnDemandUserSelectorComponent,
+    JobIdSelectorComponent,
+    DateSelectorComponent,
+    ProjectNameSelectorComponent,
+    JobStatusSelectorComponent,
+    JobProductNameSelectorComponent,
+    TranslateModule,
+  ],
 })
 export class CustomProductsFiltersComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
   public areResultsLoaded: boolean;
@@ -35,22 +66,17 @@ export class CustomProductsFiltersComponent implements OnInit, OnDestroy {
 
   private subs = new SubSink();
 
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService
-  ) { }
-
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(scenesStore.getAreResultsLoaded).subscribe(
-        areLoaded => this.areResultsLoaded = areLoaded
-      )
+      this.store$
+        .select(scenesStore.getAreResultsLoaded)
+        .subscribe((areLoaded) => (this.areResultsLoaded = areLoaded)),
     );
 
     this.subs.add(
-      this.store$.select(hyp3Store.getHyp3JobIds).subscribe(
-        jobId => this.hyp3JobIds = jobId
-      )
+      this.store$
+        .select(hyp3Store.getHyp3JobIds)
+        .subscribe((jobId) => (this.hyp3JobIds = jobId)),
     );
   }
 

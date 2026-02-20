@@ -1,3 +1,5 @@
+@use "asf-theme-variables" as *;
+
 .number-input--size {
   width: 40%;
 }
@@ -12,9 +14,7 @@
 
 .flex-container {
   display: flex;
-  flex-direction: row;
-  //justify-content: space-between;
-  flex-wrap: wrap;
+  flex-flow: row wrap;
 }
 
 .flex-item {
@@ -28,6 +28,7 @@
 .clear-button {
   margin-top: 7px;
   margin-left: 10px;
+  font-weight: 400;
 }
 
 // Hides input field up/down arrows

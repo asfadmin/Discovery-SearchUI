@@ -4,7 +4,8 @@ export { MapService } from './map/map.service';
 export { DrawService } from './map/draw.service';
 export { LayerService } from './map/layer.service';
 export { UrlStateService } from './url-state.service';
-export { DateExtremaService } from './date-extrema.service'; export { WktService } from './wkt.service';
+export { DateExtremaService } from './date-extrema.service';
+export { WktService } from './wkt.service';
 export { ProductService } from './product.service';
 export { BulkDownloadService } from './bulk-download.service';
 export { SearchParamsService } from './search-params.service';
@@ -25,8 +26,12 @@ export { UnzipApiService } from './unzip-api.service';
 export { ScenesService } from './scenes.service';
 export { SearchService } from './search.service';
 export {
-  Hyp3ApiService, OnDemandService, PossibleHyp3JobsService,
-  Hyp3JobStatusService, Hyp3JobService, Hyp3JobPollingService
+  Hyp3ApiService,
+  OnDemandService,
+  PossibleHyp3JobsService,
+  Hyp3JobStatusService,
+  Hyp3JobService,
+  Hyp3JobPollingService,
 } from './hyp3';
 export { PairService } from './pair.service';
 export { SceneSelectService } from './scene-select.service';
@@ -37,3 +42,5 @@ export { ThemingService } from './theming.service';
 export { ExportService } from './export.service';
 export { NetcdfService } from './netcdf-service.service';
 export { PointHistoryService } from './point-history.service';
+export { FrameMapService } from './frame-map.service';
+export { DisplacementDisclaimerService } from './displacement-disclaimer.service';

@@ -2,9 +2,7 @@ import { View } from 'ol';
 import WMTSTileGrid from 'ol/tilegrid/WMTS.js';
 import { WMTS } from 'ol/source';
 import { Options as WMTS_Options } from 'ol/source/WMTS';
-import {
-  Graticule as GraticuleLayer
- } from 'ol/layer';
+import { Graticule as GraticuleLayer } from 'ol/layer';
 import TileLayer from 'ol/layer/WebGLTile.js';
 
 import * as proj from 'ol/proj';
@@ -17,8 +15,8 @@ export function antarctic(): MapView {
   const projection = new CustomProjection(
     'EPSG:3031',
     '+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 ' +
-    '+datum=WGS84 +units=m +no_defs',
-    extent
+      '+datum=WGS84 +units=m +no_defs',
+    extent,
   );
 
   const options: WMTS_Options = {
@@ -30,12 +28,10 @@ export function antarctic(): MapView {
     style: 'default',
     tileGrid: new WMTSTileGrid({
       origin: [-4194304, 4194304],
-      resolutions: [
-        8192.0, 4096.0, 2048.0, 1024.0, 512.0, 256.0
-      ],
-      matrixIds: [0, 1, 2, 3, 4, 5].map(val => val.toString()),
-      tileSize: 512
-    })
+      resolutions: [8192.0, 4096.0, 2048.0, 1024.0, 512.0, 256.0],
+      matrixIds: [0, 1, 2, 3, 4, 5].map((val) => val.toString()),
+      tileSize: 512,
+    }),
   };
 
   const source = new WMTS(options);
@@ -63,10 +59,5 @@ export function antarctic(): MapView {
 
   graticule.set('name', 'gridlines');
 
-  return new MapView(
-    projection,
-    view,
-    layer,
-    graticule
-  );
+  return new MapView(projection, view, layer, graticule);
 }

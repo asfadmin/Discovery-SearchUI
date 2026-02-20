@@ -1,90 +1,66 @@
 <div class="disp-layers--layout position">
-<!--<div class="disp-layers&#45;&#45;layout position" cdkDrag>-->
+  <!--<div class="disp-layers&#45;&#45;layout position" cdkDrag>-->
   <div class="layers-selector fx-col">
-
-    <mat-checkbox [value]="DispLayerTypes.VELOCITY"
-                  [checked]="this.displacementOverview === DispLayerTypes.VELOCITY"
-                  (change)="onToggleVelocityLayerDisplay($event.checked)"
+    <mat-checkbox
+      [value]="DispLayerTypes.VELOCITY"
+      [checked]="this.displacementOverview === DispLayerTypes.VELOCITY"
+      (change)="onToggleVelocityLayerDisplay($event.checked)"
     >
-      <div class="selector-text">
-        {{ 'VELOCITY' | translate}} 2016-2024
-      </div>
+      <div class="selector-text">{{ 'VELOCITY' | translate }} 2016-2024</div>
     </mat-checkbox>
     <div class="velocity-help-icon">
-      <app-docs-modal custStyle="color: #ffffffb3; cursor: pointer; text-decoration: underline;"
-                      text=""
-                      icon="help_outline"
-                      url="https://docs.asf.alaska.edu/vertex/displacement/#basic-velocity"
+      <app-docs-modal
+        custStyle="color: #ffffffb3; cursor: pointer; text-decoration: underline;"
+        text=""
+        icon="help_outline"
+        url="https://docs.asf.alaska.edu/vertex/displacement/#basic-velocity"
       >
       </app-docs-modal>
     </div>
 
     @if (this.displacementOverview === DispLayerTypes.VELOCITY) {
-      <div style="margin-top: -5px; height: 25px;" >
+      <div style="margin-top: -5px; height: 25px; margin-bottom: 5px">
         <app-map-legend
-          style="display: inline-block; margin-top: -5px;"
+          style="display: inline-block; margin-top: -5px"
           [min]="this.mapService.displacementRange?.range[0]"
           [max]="this.mapService.displacementRange?.range[1]"
-          [units]="this.mapService.displacementRange?.units">
+          [units]="this.mapService.displacementRange?.units"
+        >
         </app-map-legend>
         <div class="slider-formatting">
-          <mat-slider #velocityOpacitySlider
-                      min="0" max="1" step="0.05"
-                      class="opacity-slider"
-                      matTooltip="{{ 'VELOCITY_OVERVIEW_OPACITY' |  translate }}"
-                      matTooltipPosition="right"
-                      discrete
-                      (change)="onSliderDragEnd($event)"
-                      [displayWith]="formatLabel"
-                      (input)="onSetVelocityOpacity($event)"
-                      (click)="$event.stopPropagation()"
+          <mat-slider
+            #velocityOpacitySlider
+            min="0"
+            max="1"
+            step="0.05"
+            class="opacity-slider"
+            matTooltip="{{ 'VELOCITY_OVERVIEW_OPACITY' | translate }}"
+            matTooltipPosition="right"
+            discrete
+            (change)="onSliderDragEnd($event)"
+            [displayWith]="formatLabel"
+            (input)="onSetVelocityOpacity($event)"
+            (click)="$event.stopPropagation()"
           >
             <input matSliderThumb [(ngModel)]="velocityOverlayOpacity" />
           </mat-slider>
         </div>
-
-      </div>
-    }
-
-    <mat-checkbox #priorityRollout class="rollout-checkbox"
-    (change)="onUpdatePriority($event.checked)"
-    [checked]="priorityEnabled">
-      <div class="selector-text">
-        {{ 'ROLLOUT' | translate}}
-      </div>
-    </mat-checkbox>
-    <div class="rollout-help-icon">
-      <app-docs-modal custStyle="color: #ffffffb3; cursor: pointer; text-decoration: underline;"
-                      text=""
-                      icon="help_outline"
-                      url="https://docs.asf.alaska.edu/vertex/displacement/#rollout"
-      >
-      </app-docs-modal>
-    </div>
-
-
-    @if (priorityEnabled) {
-      <div class="priority-legend">
-        <div class="priority-box first-priority">1st</div>
-        <div class="priority-box second-priority">2nd</div>
-        <div class="priority-box third-priority">3rd</div>
       </div>
     }
 
     <div class="footer">
       <div class="footer--text container space-between">
         <div>
-          <app-docs-modal class="info-icon"
-                          custStyle="color: #ffffffb3; cursor: pointer; text-decoration: underline;"
-                          text="{{ 'HELP' | translate}}"
-                          url="https://docs.asf.alaska.edu/vertex/displacement/#map-layers"
+          <app-docs-modal
+            class="info-icon"
+            custStyle="color: #ffffffb3; cursor: pointer; text-decoration: underline;"
+            text="{{ 'HELP' | translate }}"
+            url="https://docs.asf.alaska.edu/vertex/displacement/#map-layers"
           >
           </app-docs-modal>
         </div>
-        <div>{{ 'MAP_LAYERS' | translate}}</div>
+        <div>{{ 'MAP_LAYERS' | translate }}</div>
       </div>
     </div>
-
   </div>
-
 </div>

@@ -1,23 +1,30 @@
 <form #projectNameForm="ngForm">
-  <mat-form-field style="width: 185px;" [class.invalid-input-animation]="isNameError">
-    <input type="text"
-           name="projectNameInput"
-           placeholder="{{'PROJECT_NAME' | translate}}"
-           aria-label="PROJECT_NAME"
-           matInput
-           (input)="onProjectNameInput($event)"
-           (change)="onProjectNameChange($event)"
-           [value]="projectName"
-           [(ngModel)]="projectName"
-
-           [matAutocomplete]="projectNameAuto">
+  <mat-form-field
+    style="width: 185px"
+    [class.invalid-input-animation]="isNameError"
+  >
+    <input
+      type="text"
+      name="projectNameInput"
+      placeholder="{{ 'PROJECT_NAME' | translate }}"
+      aria-label="PROJECT_NAME"
+      matInput
+      (input)="onProjectNameInput($event)"
+      (change)="onProjectNameChange($event)"
+      [value]="projectName"
+      [(ngModel)]="projectName"
+      [matAutocomplete]="projectNameAuto"
+    />
 
     <mat-autocomplete
-           (optionSelected)="onPNameChange($event.option.value)"
-           #projectNameAuto="matAutocomplete">
-      <mat-option *ngFor="let projectName of projectNamesFiltered" [value]="projectName">
-        {{projectName}}
-      </mat-option>
+      (optionSelected)="onPNameChange($event.option.value)"
+      #projectNameAuto="matAutocomplete"
+    >
+      @for (projectName of projectNamesFiltered; track projectName) {
+        <mat-option [value]="projectName">
+          {{ projectName }}
+        </mat-option>
+      }
     </mat-autocomplete>
   </mat-form-field>
 </form>

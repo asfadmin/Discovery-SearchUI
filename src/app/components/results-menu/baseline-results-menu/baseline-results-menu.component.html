@@ -1,163 +1,219 @@
 <!-- SCENE LIST -->
-<ng-container *ngIf="breakpoint > breakpoints.MEDIUM">
-  <mat-card  class="mp0 baseline-header-card--layout">
+@if (breakpoint > breakpoints.MEDIUM) {
+  <mat-card class="mp0 baseline-header-card--layout">
     <mat-card-subtitle class="header">
       <app-scenes-list-header></app-scenes-list-header>
     </mat-card-subtitle>
-
     <div class="app-scene-list">
       <app-scenes-list [resize$]="resize$"></app-scenes-list>
     </div>
   </mat-card>
-
-  <mat-card  class="mp0 no-box-shadow baseline-scene-detail--layout">
-    <mat-card-subtitle class="header"> {{ 'SCENE_DETAIL' |  translate }} </mat-card-subtitle>
-
+  <mat-card class="mp0 no-box-shadow baseline-scene-detail--layout">
+    <mat-card-subtitle class="header">
+      {{ 'SCENE_DETAIL' | translate }}
+    </mat-card-subtitle>
     <app-scene-detail style="height: 100%"></app-scene-detail>
   </mat-card>
-</ng-container>
+}
 
-<ng-container *ngIf="breakpoint <= breakpoints.MEDIUM">
-  <mat-card  *ngIf="view === Views.LIST" class="mp0 baseline-header--medium-layout">
-    <mat-card-subtitle class="header medium-header">
-      <div class="baseline-header--wrapper">
-        <div class="fx-empty list-button-group">
-          <div class="fx-row-center button-group-label">
-            &nbsp;
-          </div>
-          <div class="fx-row">
-            <div>
-              <span class="fx-empty mr-10">
-                <span class="control-mat-button-toggle scene-text">
-                  {{ numBaselineScenes$ | async }} {{ 'OF'  | translate }} {{ numUnfilteredBaselineScenes$ | async }} {{ 'SCENE' | translate }}{{
-                    (numBaselineScenes$ | async) === 1 ? "" : "s"
-                  }}
+@if (breakpoint <= breakpoints.MEDIUM) {
+  @if (view === Views.LIST) {
+    <mat-card class="mp0 baseline-header--medium-layout">
+      <mat-card-subtitle class="header medium-header">
+        <div class="baseline-header--wrapper">
+          <div class="fx-empty list-button-group">
+            <div class="fx-row-center button-group-label">&nbsp;</div>
+            <div class="fx-row">
+              <div>
+                <span class="fx-empty mr-10">
+                  <span class="control-mat-button-toggle scene-text">
+                    {{ numBaselineScenes$ | async }} {{ 'OF' | translate }}
+                    {{ numUnfilteredBaselineScenes$ | async }}
+                    {{
+                      (numBaselineScenes$ | async) === 1
+                        ? ('SCENE' | translate)
+                        : ('SCENES' | translate)
+                    }}
+                  </span>
                 </span>
-              </span>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="fx-empty list-button-group">
-          <div class="fx-row-center button-group-label">
-            <label>{{ 'ZOOM' | translate }}</label>
-          </div>
-          <div class="fx-row">
-            <div class="scenes-list-button-container">
-              <mat-button-toggle-group name="layerType" class="fx-empty mr-10" [hideSingleSelectionIndicator]="true">
-                <mat-button-toggle
-                  (click)="onZoomToResults()"
-                  class="control-mat-button-toggle clickable noselect"
-                  matTooltip="{{ 'ZOOM_TO_RESULTS' | translate }}">
-                  <mat-icon class="list-icon">
-                    settings_overscan
-                  </mat-icon>
-                </mat-button-toggle>
-              </mat-button-toggle-group>
+          <div class="fx-empty list-button-group">
+            <div class="fx-row-center button-group-label">
+              <label>{{ 'ZOOM' | translate }}</label>
+            </div>
+            <div class="fx-row">
+              <div class="scenes-list-button-container">
+                <mat-button-toggle-group
+                  name="layerType"
+                  class="fx-empty mr-10"
+                  [hideSingleSelectionIndicator]="true"
+                >
+                  <mat-button-toggle
+                    (click)="onZoomToResults()"
+                    class="control-mat-button-toggle clickable noselect"
+                    matTooltip="{{ 'ZOOM_TO_RESULTS' | translate }}"
+                  >
+                    <mat-icon class="list-icon"> settings_overscan </mat-icon>
+                  </mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
             </div>
           </div>
-        </div>
-
-        <div class="fx-empty list-button-group">
-          <div class="fx-row-center button-group-label">
-            <label>{{ 'QUEUE' |  translate }}</label>
-          </div>
-          <div class="fx-row">
-            <div class="scenes-list-button-container">
-              <mat-button-toggle-group name="layerType" class="fx-empty criteria-button-group" [hideSingleSelectionIndicator]="true">
-                <mat-button-toggle class="control-mat-button-toggle clickable noselect"
-                                   matTooltip="{{ 'ADD_ALL_RESULTS_TO_DOWNLOADS' | translate }}"
-                                   [matMenuTriggerFor]="addAllProducts">
-                  <mat-icon class="list-icon">
-                    add_shopping_cart
-                  </mat-icon>
-                </mat-button-toggle>
-              </mat-button-toggle-group>
+          <div class="fx-empty list-button-group">
+            <div class="fx-row-center button-group-label">
+              <label>{{ 'QUEUE' | translate }}</label>
+            </div>
+            <div class="fx-row">
+              <div class="scenes-list-button-container">
+                <mat-button-toggle-group
+                  name="layerType"
+                  class="fx-empty criteria-button-group"
+                  [hideSingleSelectionIndicator]="true"
+                >
+                  <mat-button-toggle
+                    class="control-mat-button-toggle clickable noselect"
+                    matTooltip="{{
+                      'ADD_ALL_RESULTS_TO_DOWNLOADS' | translate
+                    }}"
+                    [matMenuTriggerFor]="addAllProducts"
+                  >
+                    <mat-icon class="list-icon"> add_shopping_cart </mat-icon>
+                  </mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
             </div>
           </div>
-        </div>
-
-        <div *ngIf="searchType !== SearchTypes.CUSTOM_PRODUCTS && hyp3able?.total > 0"
-          class="fx-empty list-button-group">
-          <div class="fx-row-center button-group-label">
-            <label>{{ 'ON_DEMAND' | translate }}</label>
-          </div>
-          <div class="fx-row-center">
-            <div>
-              <mat-button-toggle-group name="layerType" class="fx-empty" [hideSingleSelectionIndicator]="true">
-                <mat-button-toggle class="control-mat-button-toggle clickable noselect"
-                                   [matMenuTriggerFor]="baselineAdd?.addMenu"
-                                   [matMenuTriggerData]="{ hyp3able: hyp3able?.byJobType }"
-                                   matTooltip="{{ 'ADD_ALL_RESULTS_TO_ON_DEMAND_QUEUE' | translate }}">
-                  <mat-icon class="list-icon"
-                    svgIcon="hyp3">
-                  </mat-icon>
-                </mat-button-toggle>
-              </mat-button-toggle-group>
+          @if (
+            searchType !== SearchTypes.CUSTOM_PRODUCTS && hyp3able?.total > 0
+          ) {
+            <div class="fx-empty list-button-group">
+              <div class="fx-row-center button-group-label">
+                <label>{{ 'ON_DEMAND' | translate }}</label>
+              </div>
+              <div class="fx-row-center">
+                <div>
+                  <mat-button-toggle-group
+                    name="layerType"
+                    class="fx-empty"
+                    [hideSingleSelectionIndicator]="true"
+                  >
+                    <mat-button-toggle
+                      class="control-mat-button-toggle clickable noselect"
+                      [matMenuTriggerFor]="baselineAdd?.addMenu"
+                      [matMenuTriggerData]="{ hyp3able: hyp3able?.byJobType }"
+                      matTooltip="{{
+                        'ADD_ALL_RESULTS_TO_ON_DEMAND_QUEUE' | translate
+                      }}"
+                    >
+                      <mat-icon class="list-icon" svgIcon="hyp3"> </mat-icon>
+                    </mat-button-toggle>
+                  </mat-button-toggle-group>
+                </div>
+              </div>
+              <app-on-demand-add-menu #baselineAdd> </app-on-demand-add-menu>
+            </div>
+          }
+          <div class="fx-empty list-button-group">
+            <div class="fx-row-center button-group-label">
+              <label>{{ 'EXPORT' | translate }}</label>
+            </div>
+            <div class="fx-row">
+              <div class="scenes-list-button-container">
+                <mat-button-toggle-group
+                  name="layerType"
+                  class="fx-empty mr-10"
+                  [hideSingleSelectionIndicator]="true"
+                >
+                  <mat-button-toggle
+                    class="control-mat-button-toggle clickable noselect"
+                    matTooltip="{{ 'DOWNLOAD_DATA_METADATA_AS' | translate }}"
+                    [matMenuTriggerFor]="ExportAll"
+                  >
+                    <mat-icon class="list-icon"> get_app </mat-icon>
+                  </mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
             </div>
           </div>
-
-          <app-on-demand-add-menu #baselineAdd>
-          </app-on-demand-add-menu>
-        </div>
-
-        <div class="fx-empty list-button-group">
-          <div class="fx-row-center button-group-label">
-            <label>{{ 'EXPORT' |  translate }}</label>
+          <mat-menu #addAllProducts="matMenu">
+            <button (click)="queueAllProducts(downloadableProds)" mat-menu-item>
+              {{ 'ADD' | translate }} {{ downloadableProds.length }}
+              {{
+                downloadableProds.length === 1
+                  ? ('FILE' | translate)
+                  : ('FILES' | translate)
+              }}
+              {{ 'EXPORT' | translate }}
+            </button>
+          </mat-menu>
+          <mat-menu #ExportAll="matMenu">
+            <button mat-menu-item [matMenuTriggerFor]="ExportAllMetadata">
+              {{ 'METADATA' | translate }}
+            </button>
+            <button mat-menu-item [matMenuTriggerFor]="ExportAllData">
+              {{ 'DATA' | translate }}
+            </button>
+          </mat-menu>
+          <mat-menu #ExportAllMetadata="matMenu">
+            <button
+              (click)="onMetadataExport(products, ApiFormat.CSV)"
+              mat-menu-item
+            >
+              {{ 'CSV' | translate }}
+            </button>
+            <button
+              (click)="onMetadataExport(products, ApiFormat.GEOJSON)"
+              mat-menu-item
+            >
+              {{ 'GEOJSON' | translate }}
+            </button>
+            <button
+              (click)="onMetadataExport(products, ApiFormat.KML)"
+              mat-menu-item
+            >
+              {{ 'KML' | translate }}
+            </button>
+          </mat-menu>
+          <mat-menu #ExportAllData="matMenu">
+            <button (click)="onMakeDownloadScript(products)" mat-menu-item>
+              {{ 'PYTHON_PY' | translate }}
+            </button>
+            <button
+              (click)="onMetadataExport(products, ApiFormat.METALINK)"
+              mat-menu-item
+            >
+              {{ 'METALINK' | translate }}
+            </button>
+          </mat-menu>
+          <div class="button-tabs">
+            <button
+              (click)="onSelectList()"
+              [class.selected]="isOfCardView(Views.LIST)"
+              mat-button
+            >
+              {{ 'SCENES' | translate }}
+            </button>
+            <button
+              (click)="onSelectDetail()"
+              [class.selected]="isOfCardView(Views.DETAIL)"
+              mat-button
+            >
+              {{ 'SCENE_DETAIL' | translate }}
+            </button>
           </div>
-          <div class="fx-row">
-            <div class="scenes-list-button-container">
-              <mat-button-toggle-group name="layerType" class="fx-empty mr-10" [hideSingleSelectionIndicator]="true">
-                <mat-button-toggle class="control-mat-button-toggle clickable noselect"
-                                   matTooltip="{{ 'DOWNLOAD_DATA_METADATA_AS' | translate }}"
-                                   [matMenuTriggerFor]="ExportAll">
-                  <mat-icon class="list-icon">
-                    get_app
-                  </mat-icon>
-                </mat-button-toggle>
-              </mat-button-toggle-group>
-            </div>
-          </div>
         </div>
-        <mat-menu #addAllProducts="matMenu">
-          <button (click)="queueAllProducts(downloadableProds)" mat-menu-item>
-            {{'ADD' | translate }} {{ downloadableProds.length }} {{'FILE' | translate}}{{
-              downloadableProds.length === 1 ? "" : "s"
-            }}
-            {{ 'EXPORT' |  translate }}
-          </button>
-        </mat-menu>
-
-        <mat-menu #ExportAll="matMenu">
-          <button mat-menu-item [matMenuTriggerFor]="ExportAllMetadata">
-            Metadata
-          </button>
-          <button mat-menu-item [matMenuTriggerFor]="ExportAllData">
-            {{ 'DATA' |  translate }}
-          </button>
-        </mat-menu>
-
-        <mat-menu #ExportAllMetadata="matMenu">
-          <button (click)="onMetadataExport(products, ApiFormat.CSV)" mat-menu-item>
-            csv
-          </button>
-          <button (click)="onMetadataExport(products, ApiFormat.GEOJSON)" mat-menu-item>
-            geojson
-          </button>
-          <button (click)="onMetadataExport(products, ApiFormat.KML)" mat-menu-item>
-            kml
-          </button>
-        </mat-menu>
-
-        <mat-menu #ExportAllData="matMenu">
-          <button (click)="onMakeDownloadScript(products)" mat-menu-item>
-            python (.py)
-          </button>
-          <button (click)="onMetadataExport(products, ApiFormat.METALINK)" mat-menu-item>
-            metalink
-          </button>
-        </mat-menu>
-
-        <div class="button-tabs">
+      </mat-card-subtitle>
+      <div class="app-scene-list">
+        <app-scenes-list [resize$]="resize$"></app-scenes-list>
+      </div>
+    </mat-card>
+  }
+  @if (isOfCardView(Views.DETAIL)) {
+    <mat-card class="mp0 baseline-detail-view--layout no-box-shadow">
+      <mat-card-subtitle class="header medium-header">
+        <div>
           <button
             (click)="onSelectList()"
             [class.selected]="isOfCardView(Views.LIST)"
@@ -170,62 +226,38 @@
             [class.selected]="isOfCardView(Views.DETAIL)"
             mat-button
           >
-            {{ 'SCENE_DETAIL' |  translate }}
+            {{ 'SCENE_DETAIL' | translate }}
           </button>
         </div>
-      </div>
-    </mat-card-subtitle>
-
-    <div class="app-scene-list">
-      <app-scenes-list [resize$]="resize$"></app-scenes-list>
-    </div>
-  </mat-card>
-
-  <mat-card
-    *ngIf="isOfCardView(Views.DETAIL)"
-    class="mp0 baseline-detail-view--layout no-box-shadow">
-    <mat-card-subtitle class="header medium-header">
-      <div>
-        <button
-          (click)="onSelectList()"
-          [class.selected]="isOfCardView(Views.LIST)"
-          mat-button
-        >
-          {{ 'SCENES' | translate }}
-        </button>
-        <button
-          (click)="onSelectDetail()"
-          [class.selected]="isOfCardView(Views.DETAIL)"
-          mat-button
-        >
-          {{ 'SCENE_DETAIL' |  translate }}
-        </button>
-      </div>
-    </mat-card-subtitle>
-
-    <app-scene-detail></app-scene-detail>
-  </mat-card>
-</ng-container>
+      </mat-card-subtitle>
+      <app-scene-detail></app-scene-detail>
+    </mat-card>
+  }
+}
 
 <mat-card
-
   class="mp0 no-box-shadow"
   [ngClass]="{
     'criteria-header--layout': breakpoint <= breakpoints.MEDIUM,
-    'criteria-header--small-layout': breakpoint > breakpoints.MEDIUM
-  }">
+    'criteria-header--small-layout': breakpoint > breakpoints.MEDIUM,
+  }"
+>
   <mat-card-subtitle
     [class.medium-header]="breakpoint <= breakpoints.MEDIUM"
     class="header"
   >
     <div class="baseline-header-button-group">
-      <mat-button-toggle-group name="baselineCriteria"
-                               class="fx-empty criteria-button-group baseline-criteria-button-toggle-group"
-                               [hideSingleSelectionIndicator]="true">
-        <mat-button-toggle class="control-mat-button-toggle baseline-criteria-button-toggle"
-                           (click)="onToggleFiltersMenu()"
-                           >
-          {{ 'BASELINE_CRITERIA' | translate }}<mat-icon class="more-horiz">more_horiz</mat-icon>
+      <mat-button-toggle-group
+        name="baselineCriteria"
+        class="fx-empty criteria-button-group baseline-criteria-button-toggle-group"
+        [hideSingleSelectionIndicator]="true"
+      >
+        <mat-button-toggle
+          class="control-mat-button-toggle baseline-criteria-button-toggle"
+          (click)="onToggleFiltersMenu()"
+        >
+          {{ 'BASELINE_CRITERIA' | translate
+          }}<mat-icon class="more-horiz">more_horiz</mat-icon>
         </mat-button-toggle>
       </mat-button-toggle-group>
     </div>

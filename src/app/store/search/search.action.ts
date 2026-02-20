@@ -67,19 +67,26 @@ export class SetSearchAmount implements Action {
 export class SearchResponse implements Action {
   public readonly type = SearchActionType.SEARCH_RESPONSE;
 
-  constructor(public payload: {files: CMRProduct[], totalCount?: number, searchType: SearchType, next?: string}) {}
+  constructor(
+    public payload: {
+      files: CMRProduct[];
+      totalCount?: number;
+      searchType: SearchType;
+      next?: string;
+    },
+  ) {}
 }
 
 export class SarviewsEventsResponse implements Action {
   public readonly type = SearchActionType.SARVIEWS_SEARCH_RESPONSE;
 
-  constructor(public payload: {events: SarviewsEvent[]}) {}
+  constructor(public payload: { events: SarviewsEvent[] }) {}
 }
 
 export class TimeseriesSearchResponse implements Action {
   public readonly type = SearchActionType.DISPLACEMENT_SEARCH_RESPONSE;
 
-  constructor(public payload: {}) {}
+  constructor(public payload: object) {}
 }
 
 export class SearchError implements Action {
@@ -97,7 +104,14 @@ export class SetNextJobsUrl implements Action {
 export class Hyp3BatchResponse implements Action {
   public readonly type = SearchActionType.HYP3_BATCH_RESPONSE;
 
-  constructor(public payload: {files: CMRProduct[], totalCount: number, searchType: SearchType, next: string}) {}
+  constructor(
+    public payload: {
+      files: CMRProduct[];
+      totalCount: number;
+      searchType: SearchType;
+      next: string;
+    },
+  ) {}
 }
 
 export class SetSearchType implements Action {

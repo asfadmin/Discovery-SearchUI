@@ -1,6 +1,12 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import {v1 as uuid} from 'uuid';
+import { Component, OnInit, inject } from '@angular/core';
+import {
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+} from '@angular/material/dialog';
+import { v1 as uuid } from 'uuid';
 
 import { combineLatest } from 'rxjs';
 import { map, take } from 'rxjs/operators';
@@ -14,14 +20,43 @@ import * as uiStore from '@store/ui';
 import { SavedSearchService, NotificationService } from '@services';
 import * as models from '@models';
 
-import { AsfLanguageService } from "@services/asf-language.service";
+import { AsfLanguageService } from '@services/asf-language.service';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { FormsModule } from '@angular/forms';
+import { MatFormField, MatInput, MatHint } from '@angular/material/input';
+import { SearchFiltersComponent } from '../../sidebar/saved-searches/saved-search/search-filters/search-filters.component';
+import { MatButton } from '@angular/material/button';
+import { UpperCasePipe, TitleCasePipe } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-save-search-dialog',
   templateUrl: './save-search-dialog.component.html',
-  styleUrls: ['./save-search-dialog.component.scss']
+  styleUrls: ['./save-search-dialog.component.scss'],
+  imports: [
+    MatDialogTitle,
+    CdkScrollable,
+    MatDialogContent,
+    FormsModule,
+    MatFormField,
+    MatInput,
+    MatHint,
+    SearchFiltersComponent,
+    MatDialogActions,
+    MatButton,
+    UpperCasePipe,
+    TitleCasePipe,
+    TranslateModule,
+  ],
 })
 export class SaveSearchDialogComponent implements OnInit {
+  dialogRef = inject<MatDialogRef<SaveSearchDialogComponent>>(MatDialogRef);
+  data = inject(MAT_DIALOG_DATA);
+  private store$ = inject<Store<AppState>>(Store);
+  private savedSearchService = inject(SavedSearchService);
+  private notificationService = inject(NotificationService);
+  language = inject(AsfLanguageService);
+
   public search: models.Search;
   public searchTranslation = models.SearchTypeTranslation;
 
@@ -34,51 +69,49 @@ export class SaveSearchDialogComponent implements OnInit {
   public saveType: models.SidebarType;
   public saveTypeName: string;
 
-  constructor(
-    public dialogRef: MatDialogRef<SaveSearchDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data,
-    private store$: Store<AppState>,
-    private savedSearchService: SavedSearchService,
-    private notificationService: NotificationService,
-    public language: AsfLanguageService,
-  ) { }
-
   ngOnInit(): void {
     this.saveType = this.data.saveType;
     if (this.saveType === models.SidebarType.SAVED_SEARCHES) {
-      this.saveTypeName = 'Save Search';
+      this.saveTypeName = 'SAVE_SEARCH';
 
-      this.store$.select(filterStore.getGeocodeArea).pipe(take(1)).subscribe(geocode => {
-        this.search = this.savedSearchService.makeCurrentSearch(geocode ?? '');
-        this.saveName = geocode;
+      this.store$
+        .select(filterStore.getGeocodeArea)
+        .pipe(take(1))
+        .subscribe((geocode) => {
+          this.search = this.savedSearchService.makeCurrentSearch(
+            geocode ?? '',
+          );
+          this.saveName = geocode;
 
-        if (!this.searchCanBeSaved(this.search)) {
-          this.onCancelSave();
-        }
-      })
+          if (!this.searchCanBeSaved(this.search)) {
+            this.onCancelSave();
+          }
+        });
     }
 
     if (this.saveType === models.SidebarType.USER_FILTERS) {
-      this.saveTypeName = 'Save Filters';
+      this.saveTypeName = 'SAVE_FILTERS';
 
       combineLatest([
         this.store$.select(filterStore.getGeographicSearch).pipe(
-          map(preset => ({... preset, flightDirections: Array.from(preset.flightDirections)}))
+          map((preset) => ({
+            ...preset,
+            flightDirections: Array.from(preset.flightDirections),
+          })),
         ),
         this.store$.select(filterStore.getListSearch),
         this.store$.select(filterStore.getBaselineSearch),
         this.store$.select(filterStore.getSbasSearch),
-        this.store$.select(searchStore.getSearchType)
-      ])
-        .subscribe(([geo, list, baseline, sbas, searchType]) => {
-          this.currentFiltersBySearchType[models.SearchType.DATASET] = geo;
-          this.currentFiltersBySearchType[models.SearchType.LIST] = list;
-          this.currentFiltersBySearchType[models.SearchType.BASELINE] = baseline;
-          this.currentFiltersBySearchType[models.SearchType.SBAS] = sbas;
-          this.searchType = searchType;
+        this.store$.select(searchStore.getSearchType),
+      ]).subscribe(([geo, list, baseline, sbas, searchType]) => {
+        this.currentFiltersBySearchType[models.SearchType.DATASET] = geo;
+        this.currentFiltersBySearchType[models.SearchType.LIST] = list;
+        this.currentFiltersBySearchType[models.SearchType.BASELINE] = baseline;
+        this.currentFiltersBySearchType[models.SearchType.SBAS] = sbas;
+        this.searchType = searchType;
 
-          this.search = this.newFilterPreset();
-        });
+        this.search = this.newFilterPreset();
+      });
     }
   }
 
@@ -88,10 +121,9 @@ export class SaveSearchDialogComponent implements OnInit {
       name: this.saveName,
       id,
       filters: this.currentFiltersBySearchType[this.searchType],
-      searchType: this.searchType
+      searchType: this.searchType,
     } as models.SavedFilterPreset;
   }
-
 
   public onSaveNameChange(event: Event): void {
     const htmlEvent = event.target as HTMLInputElement;
@@ -110,24 +142,32 @@ export class SaveSearchDialogComponent implements OnInit {
 
   public onSubmitSave(): void {
     if (this.saveType === models.SidebarType.SAVED_SEARCHES) {
-      this.store$.dispatch(new userStore.AddNewSearch({
-        ...this.search, name: this.saveName
-      }));
+      this.store$.dispatch(
+        new userStore.AddNewSearch({
+          ...this.search,
+          name: this.saveName,
+        }),
+      );
       this.savedSearchService.saveSearches();
-
     }
 
     if (this.saveType === models.SidebarType.USER_FILTERS) {
-      this.store$.dispatch(new userStore.AddNewFiltersPreset({
-        ...this.search, name: this.saveName
-      }));
+      this.store$.dispatch(
+        new userStore.AddNewFiltersPreset({
+          ...this.search,
+          name: this.saveName,
+        }),
+      );
       this.store$.dispatch(new userStore.SaveFilters());
     }
 
     const addName = ` as '${this.saveName}'`;
-    const searchTypeTranslated = this.language.translate.instant(this.search.searchType);
+    const searchTypeKey =
+      models.SearchTypeTranslation[this.search.searchType] ??
+      this.search.searchType;
+    const searchTypeTranslated = this.language.translate.instant(searchTypeKey);
     this.notificationService.info(
-      `Saved current ${searchTypeTranslated}${this.saveName ? addName : ''}`
+      `Saved current ${searchTypeTranslated}${this.saveName ? addName : ''}`,
     );
     this.dialogRef.close();
   }
@@ -136,7 +176,7 @@ export class SaveSearchDialogComponent implements OnInit {
     const maxLen = 10000;
 
     if (search.searchType === models.SearchType.DATASET) {
-      const filters = <models.GeographicFiltersType>search.filters;
+      const filters = search.filters as models.GeographicFiltersType;
       const len = filters.polygon !== null ? filters.polygon.length : 0;
 
       if (len > maxLen) {
@@ -144,7 +184,7 @@ export class SaveSearchDialogComponent implements OnInit {
         return false;
       }
     } else if (search.searchType === models.SearchType.LIST) {
-      const filters = <models.ListFiltersType>search.filters;
+      const filters = search.filters as models.ListFiltersType;
       const len = filters.list.join(',').length;
 
       if (len > maxLen) {
@@ -158,9 +198,9 @@ export class SaveSearchDialogComponent implements OnInit {
 
   private notifyUserListTooLong(len: number, strType: string): void {
     this.notificationService.error(
-      `${strType} too long, must be under 10,000 characters to save (${len.toLocaleString()})`, `ERROR`,
-      { timeOut: 6000, }
+      `${strType} too long, must be under 10,000 characters to save (${len.toLocaleString()})`,
+      `ERROR`,
+      { timeOut: 6000 },
     );
   }
-
 }

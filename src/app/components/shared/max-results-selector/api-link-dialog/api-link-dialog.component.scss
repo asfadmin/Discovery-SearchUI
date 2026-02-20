@@ -1,13 +1,24 @@
-.dialog-header {
-  font-weight: bold;
-  font-size: 30px;
-  margin-bottom: 13px;
+@use "asf-theme-variables" as *;
+
+.dialog-title {
+  @include themify($themes) {
+    background: darken(themed('background-white'), 10%);
+  }
+  margin-bottom: 9px;
 }
 
-.close-x {
-  position: absolute;
-  top: 15px;
-  right: 35px;
-  text-align: right;
-  cursor: pointer;
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 15px 24px 0 24px;
+  @include themify($themes) {
+    background: darken(themed('background-white'), 10%);
+  }
+
 }
+
+.flex-item {
+  flex: 0 1 auto;
+}
+

@@ -1,67 +1,39 @@
-<div *ngIf="breakpoint$ | async as breakpoint">
-  <div class="menu-button-wrapper" [class.mobile-button-wrapper]="breakpoint === breakpoints.MOBILE">
-    <mat-label class="button-label">{{ 'DATASET' | translate }}</mat-label>
-    <div>
-      <button
-        [matMenuTriggerFor]="platformMenu"
-        class="button-menu-trigger" color="basic"
-        mat-button>
-        <div class="button-text">
-          {{ datasetNameLookup( selected ) }}
-          <span class="mat-select-arrow"></span>
-        </div>
-      </button>
-      <div class="hr-wrapper"><hr class="text-underline"></div>
+@if (breakpoint$ | async; as breakpoint) {
+  <div>
+    <div
+      class="menu-button-wrapper"
+      [class.mobile-button-wrapper]="breakpoint === breakpoints.MOBILE"
+    >
+      <mat-label class="button-label">{{ 'DATASET' | translate }}</mat-label>
+      <div>
+        <button
+          [matMenuTriggerFor]="platformMenu"
+          class="button-menu-trigger"
+          color="basic"
+          mat-button
+        >
+          <div class="button-text">
+            {{ datasetName() }}
+            <span class="mat-select-arrow"></span>
+          </div>
+        </button>
+        <div class="hr-wrapper"><hr class="text-underline" /></div>
+      </div>
+    </div>
+    <div class="gtm-search-type-selector fx-nogrow">
+      <mat-menu #platformMenu="matMenu" class="dataset-selector">
+        @for (dataset of datasets; track dataset; let isLast = $last) {
+          <button mat-menu-item>
+            <app-dataset
+              [dataset]="dataset"
+              (selected)="onSelectionChange($event)"
+            />
+          </button>
+          @if (!isLast) {
+            <hr class="dataset-hr" />
+          }
+        }
+      </mat-menu>
     </div>
   </div>
-
-  <div class="gtm-search-type-selector fx-nogrow">
-    <mat-menu #platformMenu="matMenu" [(ngModel)]="selected" ngDefaultControl class="dataset-selector">
-          <menu *ngFor="let dataset of datasets; last as isLast" mat-menu-item  >
-            <div class="menu-item mat-menu-item" (click)="onSelectionChange(dataset.id)">
-              <div class="menu-item-inner">
-                <div class="dataset--layout menu-item-content">
-                  <div class="item-title">
-                    {{ dataset.name }}
-                    <span class="dataset-light-text">
-                        <span *ngIf="dataset.id == 'SENTINEL-1' || dataset.id == 'SENTINEL-1 BURSTS'"
-                          matTooltip="Available for On Demand Processing (HyP3)">
-                          <mat-icon class="hyp3-icon" svgIcon="hyp3"></mat-icon>
-                        </span>
-                        <span *ngIf="dataset.beta"><em> (beta) </em></span>
-                        <div *ngIf="dataset.subName" class="dataset__subName faint-text">{{ dataset.subName }}</div>
-                      </span>
-                  </div>
-                  <div class="item-content"
-                       [ngClass]="{'limitTextHeight': isReadMore}"
-                       [class.smaller-font]="breakpoint === breakpoints.MOBILE">
-                    {{ dataset.platformDesc | translate }}
-                  </div>
-                  <mat-card-actions (click)="onOpenDocs($event, dataset.id)">
-                    <app-docs-modal class="info-text"
-                                    text="{{ 'MORE_INFO' | translate }}"
-                                    url="{{ dataset.infoUrl }}">
-                    </app-docs-modal>
-                  </mat-card-actions>
-                </div>
-                <div class="dataset-aside--layout menu-item-aside"
-                     [class.increase-right-margin]="breakpoint === breakpoints.MOBILE">
-                  <div class="dataset-date-range faint-text">
-                    {{ prettyDateRange(dataset.date) }}
-                  </div>
-                  <div class="material-icons-outlined menu-item-icon">
-                    <img src="{{ dataset.platformIcon }}" width="53" height="53">
-                  </div>
-                  <div *ngIf="dataset.source !== null" class="dataset-source">
-                    <a href="{{ dataset.source.url }}" target="_blank" class="blue-link">
-                      {{ dataset.source.name }}
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <hr *ngIf="!isLast " class="dataset-hr">
-          </menu>
-    </mat-menu>
-  </div>
-</div>
+}

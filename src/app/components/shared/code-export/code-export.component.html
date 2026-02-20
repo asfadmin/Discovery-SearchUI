@@ -1,34 +1,43 @@
-<mat-dialog-content>
-    <div style="display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 15px;">
-      <div class="dialog-header" mat-dialog-title>
-      @if(codeExportType === codeExportTypes.ASF_SEARCH) {
-        {{ 'ASF_SEARCH_PYTHON_EXPORT' | translate }}
-      }
-      @if(codeExportType === codeExportTypes.HYP3_SDK) {
-        {{ 'HYP3_SDK_PYTHON_EXPORT' | translate }}
-      }
-      </div>
-      <div>
-        <mat-icon (click)="onCloseCodeExport()" class="clickable">
-         close
-        </mat-icon>
-      </div>
-    </div>
-<pre #codeblock class="code-block">{{codeStuff}}</pre>
+<h2 mat-dialog-title class="code-export-title">
+  @if (codeExportType === codeExportTypes.ASF_SEARCH) {
+    {{ 'ASF_SEARCH_PYTHON_EXPORT' | translate }}
+  }
+  @if (codeExportType === codeExportTypes.HYP3_SDK) {
+    {{ 'HYP3_SDK_PYTHON_EXPORT' | translate }}
+  }
+</h2>
+
+<mat-dialog-content class="code-block">
+  <pre #codeblock>{{ codeStuff }}</pre>
 </mat-dialog-content>
 
-<mat-dialog-actions style="margin-top: 15px;">
-    <button mat-flat-button>
-    @if(codeExportType === codeExportTypes.ASF_SEARCH) {
-      <app-docs-modal url="https://docs.asf.alaska.edu/asf_search/basics/"
-      text="ASF Search Docs">
+<mat-dialog-actions class="flex-container">
+  <div class="flex-item">
+    @if (codeExportType === codeExportTypes.ASF_SEARCH) {
+      <app-docs-modal
+        url="https://docs.asf.alaska.edu/asf_search/basics/"
+        text="ASF_SEARCH_DOCS"
+      >
       </app-docs-modal>
     }
-    @if(codeExportType === codeExportTypes.HYP3_SDK) {
-      <app-docs-modal url="https://hyp3-docs.asf.alaska.edu/using/sdk/"
-      text="HyP3 SDK Docs">
+    @if (codeExportType === codeExportTypes.HYP3_SDK) {
+      <app-docs-modal
+        url="https://hyp3-docs.asf.alaska.edu/using/sdk/"
+        text="HYP3_SDK_DOCS"
+      >
       </app-docs-modal>
     }
+  </div>
+  <div class="flex-item">
+    <button mat-button mat-dialog-close>{{ 'CANCEL' | translate }}</button>
+    <button
+      mat-flat-button
+      [mat-dialog-close]="true"
+      cdkFocusInitial
+      (click)="copyToClipboard()"
+      color="primary"
+    >
+      {{ 'COPY' | translate }}
     </button>
-    <button (click)="copyToClipboard()" color="primary" mat-flat-button>{{ 'COPY' | translate }}</button>
+  </div>
 </mat-dialog-actions>

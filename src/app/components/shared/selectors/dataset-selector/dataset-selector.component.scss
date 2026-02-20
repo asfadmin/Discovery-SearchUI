@@ -1,6 +1,6 @@
-@import "asf-theme";
-@import "deluxe-menu";
-@import "deluxe-menu-2";
+@use "asf-theme-variables" as *;
+@use "deluxe-menu" as *;
+@use "deluxe-menu-2" as *;
 
 .dataset--layout {
   white-space: normal;
@@ -18,4 +18,8 @@
 
 .increase-right-margin {
   margin-right: 15px;
+}
+.disclaimer {
+  font-size: large;
+  margin-top: 10px;
 }

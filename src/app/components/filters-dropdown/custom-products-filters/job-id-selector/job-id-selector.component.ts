@@ -1,16 +1,27 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { NotificationService } from '@services';
+import { MatFormField, MatInput } from '@angular/material/input';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-job-id-selector',
   templateUrl: './job-id-selector.component.html',
-  styleUrl: './job-id-selector.component.scss'
+  styleUrl: './job-id-selector.component.scss',
+  imports: [
+    MatFormField,
+    MatInput,
+    CdkTextareaAutosize,
+    FormsModule,
+    TranslateModule,
+  ],
 })
 export class JobIdSelectorComponent {
-  @Input() jobIds: string[];
-  @Output() newJobIds = new EventEmitter<string[]>;
+  private notification = inject(NotificationService);
 
-  constructor(private notification: NotificationService) {}
+  @Input() jobIds: string[];
+  @Output() newJobIds = new EventEmitter<string[]>();
 
   onJobIdsChange(event: Event) {
     const jobIdsInput = (event.target as HTMLInputElement).value;
@@ -26,7 +37,8 @@ export class JobIdSelectorComponent {
   }
 
   private findJobIds(inputStr: string) {
-    const jobIdRegex = /[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}/g;
+    const jobIdRegex =
+      /[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}/g;
     const matches = inputStr.match(jobIdRegex);
 
     return matches;

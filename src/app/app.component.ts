@@ -1,6 +1,18 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, Inject, HostListener } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  AfterViewInit,
+  ViewChild,
+  HostListener,
+  inject,
+} from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { MatSidenav } from '@angular/material/sidenav';
+import {
+  MatSidenav,
+  MatSidenavContainer,
+  MatSidenavContent,
+} from '@angular/material/sidenav';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer, Title } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
@@ -11,7 +23,19 @@ import { ProcessingQueueComponent } from '@components/header/processing-queue';
 import { Store, ActionsSubject } from '@ngrx/store';
 import { ofType } from '@ngrx/effects';
 import { of, combineLatest } from 'rxjs';
-import { skip, filter, map, switchMap, tap, catchError, debounceTime, take, withLatestFrom, distinctUntilChanged } from 'rxjs/operators';
+import {
+  skip,
+  filter,
+  map,
+  switchMap,
+  tap,
+  catchError,
+  debounceTime,
+  take,
+  withLatestFrom,
+  distinctUntilChanged,
+  first,
+} from 'rxjs/operators';
 
 import { NgcCookieConsentService } from 'ngx-cookieconsent';
 import { HelpComponent } from '@components/help/help.component';
@@ -31,8 +55,18 @@ import * as filtersStore from '@store/filters';
 import * as services from '@services';
 import * as models from './models';
 import { SearchType } from './models';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from "@angular/material/core";
-import { MAT_MOMENT_DATE_FORMATS } from "@angular/material-moment-adapter";
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+  NativeDateAdapter,
+} from '@angular/material/core';
+import { MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
+import { NgClass, AsyncPipe } from '@angular/common';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { HeaderComponent } from './components/header/header.component';
+import { MapComponent } from './components/map/map.component';
+import { ResultsMenuComponent } from './components/results-menu/results-menu.component';
 
 @Component({
   selector: 'app-root',
@@ -41,27 +75,67 @@ import { MAT_MOMENT_DATE_FORMATS } from "@angular/material-moment-adapter";
   providers: [
     {
       provide: DateAdapter,
-      useClass: NativeDateAdapter
+      useClass: NativeDateAdapter,
     },
     { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
     { provide: MAT_DATE_LOCALE, useValue: 'en' },
-  ]
+  ],
+  imports: [
+    MatSidenavContainer,
+    MatSidenav,
+    NgClass,
+    SidebarComponent,
+    MatSidenavContent,
+    HeaderComponent,
+    MapComponent,
+    ResultsMenuComponent,
+    AsyncPipe,
+  ],
 })
 export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
+  private store$ = inject<Store<AppState>>(Store);
+  private actions$ = inject(ActionsSubject);
+  private urlStateService = inject(services.UrlStateService);
+  private searchParams$ = inject(services.SearchParamsService);
+  private polygonValidationService = inject(services.PolygonValidationService);
+  private asfSearchApi = inject(services.AsfApiService);
+  private authService = inject(services.AuthService);
+  private screenSize = inject(services.ScreenSizeService);
+  private searchService = inject(services.SearchService);
+  private savedSearchService = inject(services.SavedSearchService);
+  private ccService = inject(NgcCookieConsentService);
+  private matIconRegistry = inject(MatIconRegistry);
+  private domSanitizer = inject(DomSanitizer);
+  private dialog = inject(MatDialog);
+  private notificationService = inject(services.NotificationService);
+  private sarviewsService = inject(services.SarviewsEventsService);
+  private mapService = inject(services.MapService);
+  private hyp3Service = inject(services.Hyp3ApiService);
+  private themeService = inject(services.ThemingService);
+  private drawService = inject(services.DrawService);
+  translate = inject(TranslateService);
+  language = inject(services.AsfLanguageService);
+  _adapter = inject<DateAdapter<any>>(DateAdapter);
+  private titleService = inject(Title);
+  private pointHistoryService = inject(services.PointHistoryService);
+  _locale = inject(MAT_DATE_LOCALE);
+
   @ViewChild('sidenav', { static: true }) sidenav: MatSidenav;
 
   private queueStateKey = 'asf-queue-state-v1';
   private customProductsQueueStateKey = 'asf-custom-products-queue-state-v2';
 
-  public shouldOmitSearchPolygon$ = this.store$.select(filterStore.getShouldOmitSearchPolygon);
+  public shouldOmitSearchPolygon$ = this.store$.select(
+    filterStore.getShouldOmitSearchPolygon,
+  );
   public isLoading$ = this.store$.select(searchStore.getIsLoading);
   public isAutoTheme = false;
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
 
-  public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts).pipe(
-    map(q => q || [])
-  );
+  public queuedProducts$ = this.store$
+    .select(queueStore.getQueuedProducts)
+    .pipe(map((q) => q || []));
   public numberQueuedProducts: number;
   public queuedCustomProducts: models.QueuedHyp3Job[];
   public currentLanguage: string;
@@ -74,72 +148,43 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private subs = new SubSink();
 
-  constructor(
-    private store$: Store<AppState>,
-    private actions$: ActionsSubject,
-    private urlStateService: services.UrlStateService,
-    private searchParams$: services.SearchParamsService,
-    private polygonValidationService: services.PolygonValidationService,
-    private asfSearchApi: services.AsfApiService,
-    private authService: services.AuthService,
-    private screenSize: services.ScreenSizeService,
-    private searchService: services.SearchService,
-    private savedSearchService: services.SavedSearchService,
-    private ccService: NgcCookieConsentService,
-    private matIconRegistry: MatIconRegistry,
-    private domSanitizer: DomSanitizer,
-    private dialog: MatDialog,
-    private notificationService: services.NotificationService,
-    private sarviewsService: services.SarviewsEventsService,
-    private mapService: services.MapService,
-    private hyp3Service: services.Hyp3ApiService,
-    private themeService: services.ThemingService,
-    private drawService: services.DrawService,
-    public translate: TranslateService,
-    public language: services.AsfLanguageService,
-    public _adapter: DateAdapter<any>,
-    private titleService: Title,
-    private pointHistoryService: services.PointHistoryService,
-    @Inject(MAT_DATE_LOCALE) public _locale: string,
-  ) { }
-
   @HostListener('window:keydown.control./', ['$event'])
   handleKeyDown(_event: KeyboardEvent) {
-    console.log('Toggling kiosk mode. Use "ctrl+/" to re-toggle')
-    this.store$.dispatch(new searchStore.setSearchKioskMode(!this.kioskMode))
+    console.log('Toggling kiosk mode. Use "ctrl+/" to re-toggle');
+    this.store$.dispatch(new searchStore.setSearchKioskMode(!this.kioskMode));
   }
   public ngOnInit(): void {
-    console.log('To toggle kiosk mode, use "ctrl+/"')
+    console.log('To toggle kiosk mode, use "ctrl+/"');
     this.store$.dispatch(new hyp3Store.LoadCosts());
 
     this.subs.add(
-      this.themeService.theme$.subscribe(theme => {
+      this.themeService.theme$.subscribe((theme) => {
         // check if the user profile has auto in it.
         if (this.isAutoTheme) {
           this.themeService.setTheme(`theme-${theme}`);
         }
-      })
+      }),
     );
 
     this.subs.add(
-      this.store$.select(queueStore.getQueuedJobs).subscribe(
-        jobs => this.queuedCustomProducts = jobs
-      )
+      this.store$
+        .select(queueStore.getQueuedJobs)
+        .subscribe((jobs) => (this.queuedCustomProducts = jobs)),
     );
 
     this.subs.add(
-      this.store$.select(uiStore.getCurrentLanguage).subscribe(
-        language => {
-          this.currentLanguage = language;
-        }
-      )
+      this.store$.select(uiStore.getCurrentLanguage).subscribe((language) => {
+        this.currentLanguage = language;
+      }),
     );
 
     this.subs.add(
-      this.store$.select(searchStore.getKioskMode).subscribe(kioskMode => this.kioskMode = kioskMode)
-    )
+      this.store$
+        .select(searchStore.getKioskMode)
+        .subscribe((kioskMode) => (this.kioskMode = kioskMode)),
+    );
     this.subs.add(
-      this.store$.select(uiStore.getHelpDialogTopic).subscribe(topic => {
+      this.store$.select(uiStore.getHelpDialogTopic).subscribe((topic) => {
         const previousTopic = this.helpTopic;
         this.helpTopic = topic;
 
@@ -149,8 +194,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
-          'event': 'open-help',
-          'open-help': topic
+          event: 'open-help',
+          'open-help': topic,
         });
 
         const ref = this.dialog.open(HelpComponent, {
@@ -159,76 +204,84 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           width: '80vw',
           height: '80vh',
           maxWidth: '100%',
-          maxHeight: '100%'
+          maxHeight: '100%',
         });
 
-        ref.afterClosed().subscribe(_ => {
+        ref.afterClosed().subscribe((_) => {
           this.store$.dispatch(new uiStore.SetHelpDialogTopic(null));
         });
-      })
+      }),
     );
 
     this.subs.add(
-      this.store$.select(uiStore.getIsDownloadQueueOpen).subscribe(isDownloadQueueOpen => {
-        if (!isDownloadQueueOpen) {
-          return;
-        }
+      this.store$
+        .select(uiStore.getIsDownloadQueueOpen)
+        .subscribe((isDownloadQueueOpen) => {
+          if (!isDownloadQueueOpen) {
+            return;
+          }
 
-        this.store$.dispatch(new hyp3Store.LoadUser());
+          this.store$.dispatch(new hyp3Store.LoadUser());
 
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({
-          'event': 'open-download-queue',
-          'open-download-queue': this.numberQueuedProducts
-        });
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            event: 'open-download-queue',
+            'open-download-queue': this.numberQueuedProducts,
+          });
 
-        const ref = this.dialog.open(QueueComponent, {
-          id: 'dlQueueDialog',
-          maxWidth: '100vw',
-          maxHeight: '100vh'
-        });
+          const ref = this.dialog.open(QueueComponent, {
+            id: 'dlQueueDialog',
+            maxWidth: '100vw',
+            maxHeight: '100vh',
+          });
 
-        this.subs.add(
-          ref.afterClosed().subscribe(
-            _ => this.store$.dispatch(new uiStore.SetIsDownloadQueueOpen(null))
-          )
-        );
-      })
+          this.subs.add(
+            ref
+              .afterClosed()
+              .subscribe((_) =>
+                this.store$.dispatch(new uiStore.SetIsDownloadQueueOpen(null)),
+              ),
+          );
+        }),
     );
 
     this.subs.add(
-      this.store$.select(uiStore.getIsOnDemandQueueOpen).subscribe(isOnDemandQueueOpen => {
-        if (!isOnDemandQueueOpen) {
-          return;
-        }
+      this.store$
+        .select(uiStore.getIsOnDemandQueueOpen)
+        .subscribe((isOnDemandQueueOpen) => {
+          if (!isOnDemandQueueOpen) {
+            return;
+          }
 
-        this.store$.dispatch(new hyp3Store.LoadUser());
+          this.store$.dispatch(new hyp3Store.LoadUser());
 
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({
-          'event': 'open-processing-queue',
-          'open-processing-queue': this.queuedCustomProducts.length
-        });
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            event: 'open-processing-queue',
+            'open-processing-queue': this.queuedCustomProducts.length,
+          });
 
-        const ref = this.dialog.open(ProcessingQueueComponent, {
-          id: 'processingQueueDialog',
-          maxWidth: '100vw',
-          maxHeight: '100vh'
-        });
+          const ref = this.dialog.open(ProcessingQueueComponent, {
+            id: 'processingQueueDialog',
+            maxWidth: '100vw',
+            maxHeight: '100vh',
+          });
 
-        this.subs.add(
-          ref.afterClosed().subscribe(
-            _ => this.store$.dispatch(new uiStore.SetIsOnDemandQueueOpen(null))
-          )
-        );
-      })
+          this.subs.add(
+            ref
+              .afterClosed()
+              .subscribe((_) =>
+                this.store$.dispatch(new uiStore.SetIsOnDemandQueueOpen(null)),
+              ),
+          );
+        }),
     );
 
     this.store$.dispatch(new uiStore.LoadBanners());
     this.subs.add(
       this.screenSize.breakpoint$.subscribe(
-        breakpoint => this.breakpoint = breakpoint
-      )
+        (breakpoint) => (this.breakpoint = breakpoint),
+      ),
     );
 
     this.polygonValidationService.validate();
@@ -237,110 +290,135 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.loadMissions();
 
     this.subs.add(
-      this.store$.select(uiStore.getSidebar).subscribe(
-        sidebar => {
-          const isSidebarOpen = sidebar !== models.SidebarType.NONE;
+      this.store$.select(uiStore.getSidebar).subscribe((sidebar) => {
+        const isSidebarOpen = sidebar !== models.SidebarType.NONE;
 
-          if (isSidebarOpen) {
-            this.sidenav.open();
-          } else {
-            this.sidenav.close();
-          }
+        if (isSidebarOpen) {
+          this.sidenav.open();
+        } else {
+          this.sidenav.close();
         }
-      )
+      }),
     );
 
     this.subs.add(
-      this.store$.select(userStore.getUserAuth).pipe(
-        filter(userAuth => !!userAuth.token)
-      ).subscribe(
-        _ => this.store$.dispatch(new userStore.LoadProfile())
-      )
+      this.store$
+        .select(userStore.getUserAuth)
+        .pipe(filter((userAuth) => !!userAuth?.token))
+        .subscribe((_) => this.store$.dispatch(new userStore.LoadProfile())),
     );
 
     this.subs.add(
-      this.store$.select(userStore.getUserProfile).pipe(
-        withLatestFrom(this.urlStateService.isDefaultSearch$),
-      ).subscribe(
-        ([profile, isDefaultSearch]) => {
+      this.store$
+        .select(userStore.getUserProfile)
+        .pipe(withLatestFrom(this.urlStateService.isDefaultSearch$))
+        .subscribe(([profile, isDefaultSearch]) => {
           this.urlStateService.setDefaults(profile);
           this.language.setProfileLanguage(profile.language);
           this.isAutoTheme = profile.theme === 'System Preferences';
 
-          const presets = Object.entries(profile.defaultFilterPresets).map(([_, val2]) => val2).filter(val2 => val2 !== '')
+          const presets = Object.entries(profile.defaultFilterPresets)
+            .map(([_, val2]) => val2)
+            .filter((val2) => val2 !== '');
           if (isDefaultSearch && presets.length > 0) {
-            this.loadDefaultFilters(profile)
+            this.loadDefaultFilters(profile);
           }
-        })
-    );
-
-    this.subs.add(
-      this.store$.select(userStore.getUserProfile).subscribe(
-        profile => {
-          if (profile.hyp3BackendUrl && profile.hyp3BackendUrl !== this.hyp3Service.baseUrl) {
-            this.hyp3Service.setApiUrl(profile.hyp3BackendUrl);
-            this.store$.dispatch(new searchStore.ClearSearch());
-          }
-
-          this.store$.dispatch(new hyp3Store.LoadCosts());
-          this.store$.dispatch(new hyp3Store.LoadUser());
-        }
-      )
-    );
-
-    this.subs.add(
-      this.actions$.pipe(
-        ofType<userStore.SetProfile>(userStore.UserActionType.SET_PROFILE),
-        withLatestFrom(this.urlStateService.isDefaultSearch$),
-        filter(([action, isDefaultSearch]) => {
-          const hasCustomDefaults = Object.entries(action.payload.defaultFilterPresets).map(([_, val2]) => val2).filter(val2 => val2 !== '').length > 0
-          return isDefaultSearch && hasCustomDefaults;
         }),
-        map(([action, _]) => action.payload.defaultFilterPresets)
-      ).subscribe(defaultFilters =>
-        this.store$.dispatch(new filterStore.SetDefaultFilters(defaultFilters))
-      )
-    );
-
-    const user = this.authService.getUser();
-    if (user.id) {
-      this.store$.dispatch(new userStore.Login(user));
-    }
-
-    this.subs.add(
-      this.actions$.pipe(
-        ofType<searchStore.ClearSearch>(searchStore.SearchActionType.CLEAR_SEARCH),
-      ).subscribe(
-        _ => this.onClearSearch()
-      )
     );
 
     this.subs.add(
-      this.actions$.pipe(
-        ofType<searchStore.SetSearchType>(searchStore.SearchActionType.SET_SEARCH_TYPE),
-        withLatestFrom(this.store$.select(userStore.getUserProfile))
-      ).subscribe(
-        ([action, profile]) => {
-          const saveSearch = this.savedSearchService.makeCurrentSearch(this.searchType);
-          this.savedSearchService.saveSearchState(
+      this.store$.select(userStore.getUserProfile).subscribe((profile) => {
+        if (
+          profile.hyp3BackendUrl &&
+          profile.hyp3BackendUrl !== this.hyp3Service.baseUrl
+        ) {
+          this.hyp3Service.setApiUrl(profile.hyp3BackendUrl);
+          this.store$.dispatch(new searchStore.ClearSearch());
+        }
+
+        this.store$.dispatch(new hyp3Store.LoadCosts());
+        this.store$.dispatch(new hyp3Store.LoadUser());
+      }),
+    );
+
+    this.subs.add(
+      this.actions$
+        .pipe(
+          ofType<userStore.SetProfile>(userStore.UserActionType.SET_PROFILE),
+          withLatestFrom(this.urlStateService.isDefaultSearch$),
+          filter(([action, isDefaultSearch]) => {
+            const hasCustomDefaults =
+              Object.entries(action.payload.defaultFilterPresets)
+                .map(([_, val2]) => val2)
+                .filter((val2) => val2 !== '').length > 0;
+            return isDefaultSearch && hasCustomDefaults;
+          }),
+          map(([action, _]) => action.payload.defaultFilterPresets),
+        )
+        .subscribe((defaultFilters) =>
+          this.store$.dispatch(
+            new filterStore.SetDefaultFilters(defaultFilters),
+          ),
+        ),
+    );
+
+    this.subs.add(
+      this.authService.getUser().subscribe((user) => {
+        if (user?.id) {
+          this.store$.dispatch(new userStore.Login(user));
+        }
+      }),
+    );
+
+    this.subs.add(
+      this.actions$
+        .pipe(
+          ofType<searchStore.ClearSearch>(
+            searchStore.SearchActionType.CLEAR_SEARCH,
+          ),
+        )
+        .subscribe((_) => this.onClearSearch()),
+    );
+
+    this.subs.add(
+      this.actions$
+        .pipe(
+          ofType<searchStore.SetSearchType>(
+            searchStore.SearchActionType.SET_SEARCH_TYPE,
+          ),
+          withLatestFrom(this.store$.select(userStore.getUserProfile)),
+        )
+        .subscribe(([action, profile]) => {
+          const saveSearch = this.savedSearchService.makeCurrentSearch(
             this.searchType,
-            saveSearch
           );
+          this.savedSearchService.saveSearchState(this.searchType, saveSearch);
 
           this.store$.dispatch(new searchStore.ClearSearch());
-          this.store$.dispatch(new searchStore.SetSearchTypeAfterSave(action.payload));
+          this.store$.dispatch(
+            new searchStore.SetSearchTypeAfterSave(action.payload),
+          );
 
-          const searchState = this.savedSearchService.getSearchState(action.payload);
+          const searchState = this.savedSearchService.getSearchState(
+            action.payload,
+          );
 
-          if (!searchState || action.payload === models.SearchType.DERIVED_DATASETS) {
-            this.store$.dispatch(new filterStore.SetDefaultFilters(profile?.defaultFilterPresets));
+          if (
+            !searchState ||
+            action.payload === models.SearchType.DERIVED_DATASETS
+          ) {
+            this.store$.dispatch(
+              new filterStore.SetDefaultFilters(profile?.defaultFilterPresets),
+            );
             return;
           }
 
           this.searchService.loadSearch(searchState);
 
           if (this.isEmptySearch(searchState)) {
-            this.store$.dispatch(new filterStore.SetDefaultFilters(profile?.defaultFilterPresets));
+            this.store$.dispatch(
+              new filterStore.SetDefaultFilters(profile?.defaultFilterPresets),
+            );
             return;
           }
 
@@ -354,55 +432,58 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           if (action.payload !== models.SearchType.SARVIEWS_EVENTS) {
             this.clearEventProductFilters();
           }
-          if(action.payload === models.SearchType.DISPLACEMENT) {
+          if (action.payload === models.SearchType.DISPLACEMENT) {
             this.mapService.clearDrawLayer();
           }
-          
-          if(action.payload !== models.SearchType.DATASET) {
+
+          if (action.payload !== models.SearchType.DATASET) {
             this.store$.dispatch(new searchStore.MakeSearch());
           }
-        }
-      )
+        }),
     );
 
     this.subs.add(
-      this.queuedProducts$.subscribe(
-        products => {
-          this.numberQueuedProducts = products.length;
-          localStorage.setItem(this.queueStateKey, JSON.stringify(products));
-        }
-      )
+      this.queuedProducts$.subscribe((products) => {
+        this.numberQueuedProducts = products.length;
+        localStorage.setItem(this.queueStateKey, JSON.stringify(products));
+      }),
     );
 
     this.subs.add(
       combineLatest([
         this.store$.select(queueStore.getQueuedJobs),
-        this.store$.select(hyp3Store.getProcessingOptions)]
-      ).subscribe(
-        ([jobs, options]) => localStorage.setItem(
-          this.customProductsQueueStateKey, JSON.stringify({ jobs, options })
-        )
-      )
+        this.store$.select(hyp3Store.getProcessingOptions),
+      ]).subscribe(([jobs, options]) =>
+        localStorage.setItem(
+          this.customProductsQueueStateKey,
+          JSON.stringify({ jobs, options }),
+        ),
+      ),
     );
 
     this.subs.add(
-      this.store$.select(searchStore.getSearchType).pipe(
-        tap(searchType => this.searchType = searchType),
-        tap(searchType => {
-          if (searchType === models.SearchType.CUSTOM_PRODUCTS || searchType === models.SearchType.SARVIEWS_EVENTS) {
-            this.store$.dispatch(new searchStore.MakeSearch());
-          }
-        }),
-        skip(1),
-        map(searchType => {
-          return searchType === models.SearchType.DATASET ?
-            models.MapInteractionModeType.DRAW :
-            models.MapInteractionModeType.NONE;
-        })
-      ).subscribe(
-        (mode) => {
+      this.store$
+        .select(searchStore.getSearchType)
+        .pipe(
+          tap((searchType) => (this.searchType = searchType)),
+          tap((searchType) => {
+            if (
+              searchType === models.SearchType.CUSTOM_PRODUCTS ||
+              searchType === models.SearchType.SARVIEWS_EVENTS
+            ) {
+              this.store$.dispatch(new searchStore.MakeSearch());
+            }
+          }),
+          skip(1),
+          map((searchType) => {
+            return searchType === models.SearchType.DATASET
+              ? models.MapInteractionModeType.DRAW
+              : models.MapInteractionModeType.NONE;
+          }),
+        )
+        .subscribe((mode) => {
           this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
-        })
+        }),
     );
 
     this.updateMaxSearchResults();
@@ -421,7 +502,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         experience on our website. \
         <a href="https://cookiesandyou.com/" target="_blank">Learn More</a>',
         '',
-        options
+        options,
       );
 
       toast.onHidden.pipe(take(1)).subscribe(() => {
@@ -431,9 +512,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       });
     }
 
-    this.subs.add(this.ccService.popupOpen$.subscribe(_ => _));
-    this.subs.add(this.ccService.popupClose$.subscribe(_ => _));
-    this.subs.add(this.ccService.revokeChoice$.subscribe(_ => _));
+    this.subs.add(this.ccService.popupOpen$.subscribe((_) => _));
+    this.subs.add(this.ccService.popupClose$.subscribe((_) => _));
+    this.subs.add(this.ccService.revokeChoice$.subscribe((_) => _));
 
     const matIcons = [
       'hyp3',
@@ -454,50 +535,88 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     matIcons.forEach((iconName) => {
       this.matIconRegistry.addSvgIcon(
         iconName,
-        this.domSanitizer.bypassSecurityTrustResourceUrl(`../assets/icons/${iconName}.svg`)
+        this.domSanitizer.bypassSecurityTrustResourceUrl(
+          `../assets/icons/${iconName}.svg`,
+        ),
       );
     });
 
     this.subs.add(
-      combineLatest(
-        [
-          this.drawService.polygon$,
-          this.store$.select(searchStore.getSearchType),
-          this.store$.select(uiStore.getIsResultsMenuOpen),
-          this.store$.select(scenesStore.getAreResultsLoaded)
-        ]).pipe(
+      combineLatest([
+        this.drawService.polygon$,
+        this.store$.select(searchStore.getSearchType),
+        this.store$.select(uiStore.getIsResultsMenuOpen),
+        this.store$.select(scenesStore.getAreResultsLoaded),
+      ])
+        .pipe(
           filter(([_, searchType, _resultsOpen, resultsLoaded]) => {
             // TODO: this seems to sometimes not work, sometimes clearing isn't actually setting resultsLoaded to false
-            return searchType == SearchType.DISPLACEMENT && !resultsLoaded})
-        ).subscribe(([polygon, _, __]) => {
+            return searchType == SearchType.DISPLACEMENT && !resultsLoaded;
+          }),
+        )
+        .subscribe(([polygon, _, __]) => {
           if (polygon) {
             if (polygon?.getGeometry()?.getType() === 'Point') {
               this.store$.dispatch(new searchStore.MakeSearch());
-              this.store$.dispatch(new scenesStore.SetResultsLoaded(true))
-        }
+              this.store$.dispatch(new scenesStore.SetResultsLoaded(true));
+            }
           }
-        }))
+        }),
+    );
 
+    this.subs.add(
+      this.store$
+        .select(chartsStore.getTimeseriesChartStates)
+        .pipe(withLatestFrom(this.pointHistoryService.history$))
+        .subscribe(([chartStates, history]) => {
+          if (Object.keys(chartStates).length === history.length) {
+            const data = [];
 
-        this.subs.add(this.store$.select(chartsStore.getTimeseriesChartStates).pipe(
-          withLatestFrom(this.pointHistoryService.history$)
-        ).subscribe(([chartStates, history]) => {
-          if(Object.keys(chartStates).length === history.length) {
-            let data = []
-
-            for(const state of Object.values(chartStates)) {
-              data.push({ seriesNumber: state.seriesNumber, color: state.color, frames: state.frames, base_wkt: state.wkt, uuid: state.uuidSeries })
+            for (const state of Object.values(chartStates)) {
+              data.push({
+                seriesNumber: state.seriesNumber,
+                color: state.color,
+                frames: state.frames,
+                base_wkt: state.wkt,
+                uuid: state.uuidSeries,
+              });
             }
             this.mapService.setDisplacementLayer(data);
           }
+        }),
+    );
 
-        }));
+    this.subs.add(
+      this.store$
+        .select(filterStore.getSelectedDatasetId)
+        .pipe(
+          filter((dataset) => models.opera_s1.id === dataset),
+          first(),
+        )
+        .subscribe((_) => {
+          this.notificationService.redirectTo('OPERA_TROPO_ZENITH_REDIRECT', {
+            searchType: models.SearchType.DATASET,
+            filters: {
+              selectedDataset: 'TROPO',
+              productTypes: [
+                {
+                  apiValue: 'TROPO-ZENITH',
+                  displayName:
+                    'L4 Troposphere Zenith Radar Delays (TROPO-ZENITH)',
+                },
+              ],
+            },
+          });
+        }),
+    );
   }
 
   public ngAfterViewInit(): void {
-    this.subs.add(this.translate.get('ASF_DATA_SEARCH_TITLE').subscribe(title => {
-      this.titleService.setTitle(title);
-    }));
+    this.subs.add(
+      this.translate.get('ASF_DATA_SEARCH_TITLE').subscribe((title) => {
+        this.titleService.setTitle(title);
+      }),
+    );
   }
 
   public onLoadUrlState(): void {
@@ -543,7 +662,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private loadCustomProductsQueue(): void {
-    const queueItemsStr = localStorage.getItem(this.customProductsQueueStateKey);
+    const queueItemsStr = localStorage.getItem(
+      this.customProductsQueueStateKey,
+    );
 
     if (queueItemsStr) {
       const { jobs, options } = JSON.parse(queueItemsStr);
@@ -560,15 +681,17 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
     return (
       jobTypeIds.size === optionsIds.length &&
-      optionsIds.every(optionId => jobTypeIds.has(optionId))
+      optionsIds.every((optionId) => jobTypeIds.has(optionId))
     );
   }
 
   private loadDefaultFilters(profile: models.UserProfile): void {
     this.urlStateService.setDefaults(profile);
-    if (this.searchType !== models.SearchType.LIST
-      && this.searchType !== models.SearchType.CUSTOM_PRODUCTS
-      && this.searchType !== models.SearchType.SARVIEWS_EVENTS) {
+    if (
+      this.searchType !== models.SearchType.LIST &&
+      this.searchType !== models.SearchType.CUSTOM_PRODUCTS &&
+      this.searchType !== models.SearchType.SARVIEWS_EVENTS
+    ) {
       const defaultFilterID = profile.defaultFilterPresets[this.searchType];
       if (defaultFilterID) {
         this.store$.dispatch(new userStore.LoadFiltersPreset(defaultFilterID));
@@ -582,77 +705,76 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         return JSON.stringify(previous) === JSON.stringify(current);
       }),
       debounceTime(200),
-      filter(_ => this.searchType !== SearchType.SARVIEWS_EVENTS
-        && this.searchType !== SearchType.CUSTOM_PRODUCTS
-        && this.searchType !== SearchType.DISPLACEMENT
+      filter(
+        (_) =>
+          this.searchType !== SearchType.SARVIEWS_EVENTS &&
+          this.searchType !== SearchType.CUSTOM_PRODUCTS &&
+          this.searchType !== SearchType.DISPLACEMENT,
       ),
-      map(params => ({ ...params, output: 'COUNT' })),
-      tap(_ =>
-        this.store$.dispatch(new searchStore.SearchAmountLoading())
-      ),
-      switchMap(params => {
+      map((params) => ({ ...params, output: 'COUNT' })),
+      tap((_) => this.store$.dispatch(new searchStore.SearchAmountLoading())),
+      switchMap((params) => {
         if (this.searchType === models.SearchType.SARVIEWS_EVENTS) {
-          return this.sarviewsService.filteredSarviewsEvents$().pipe(map(events => events.length));
+          return this.sarviewsService
+            .filteredSarviewsEvents$()
+            .pipe(map((events) => events.length));
         }
         return this.asfSearchApi.query<any[]>(params).pipe(
-          catchError(resp => {
+          catchError((resp) => {
             const { error } = resp;
-            if (!resp.ok || error && error.includes('VALIDATION_ERROR')) {
+            if (!resp.ok || (error && error.includes('VALIDATION_ERROR'))) {
               return of(0);
             }
 
             return of(-1);
-          })
+          }),
         );
-      }
-      ),
+      }),
     );
 
     this.subs.add(
-      checkAmount.subscribe(searchAmount => {
-        const amount = +<number>searchAmount;
+      checkAmount.subscribe((searchAmount) => {
+        const amount = +(searchAmount as number);
 
         if (amount < 0) {
           this.setErrorBanner();
         }
 
         this.store$.dispatch(new searchStore.SetSearchAmount(amount));
-      })
+      }),
     );
   }
 
   private loadMissions(): void {
     this.subs.add(
-      this.asfSearchApi.loadMissions$.subscribe(
-        missionsByDataset => this.store$.dispatch(
-          new filterStore.SetMissions(missionsByDataset)
-        )
-      )
+      this.asfSearchApi.loadMissions$.subscribe((missionsByDataset) =>
+        this.store$.dispatch(new filterStore.SetMissions(missionsByDataset)),
+      ),
     );
   }
 
   private healthCheck(): void {
     this.subs.add(
-      this.asfSearchApi.health().pipe(
-        map(health => {
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          const { ASFSearchAPI, CMRSearchAPI } = health;
+      this.asfSearchApi
+        .health()
+        .pipe(
+          map((health) => {
+            const { ASFSearchAPI, CMRSearchAPI } = health;
 
-          return 'error' in CMRSearchAPI || !ASFSearchAPI['ok?'];
-        }),
-        map(isError => {
-          if (isError) {
-            this.setErrorBanner();
-          }
-        }),
-        catchError(
-          _ => {
+            return 'error' in CMRSearchAPI || !ASFSearchAPI['ok?'];
+          }),
+          map((isError) => {
+            if (isError) {
+              this.setErrorBanner();
+            }
+          }),
+          catchError((_) => {
             this.setErrorBanner();
 
             return of(null);
-          }
+          }),
         )
-      ).subscribe(_ => _)
+        .subscribe((_) => _),
     );
   }
 
@@ -665,7 +787,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       id: 'Error',
       text: 'ASF is experiencing errors loading data.  Please try again later.',
       name: 'Error',
-      type: 'error'
+      type: 'error',
     };
   }
 

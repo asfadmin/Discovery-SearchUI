@@ -4,6 +4,7 @@ export interface UserAuth {
   id: string | null;
   token: string | null;
   groups: URSGroup[];
+  exp: number;
 }
 
 export interface UserProfile {
@@ -15,7 +16,7 @@ export interface UserProfile {
     'Baseline Search': string;
     'Geographic Search': string;
     'SBAS Search': string;
-    'Displacement': string;
+    Displacement: string;
   };
   hyp3BackendUrl: string;
   hyp3SavedUrls: string[];

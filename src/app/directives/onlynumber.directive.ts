@@ -1,9 +1,8 @@
-import { Directive, ElementRef, HostListener } from '@angular/core';
+import { Directive, ElementRef, HostListener, inject } from '@angular/core';
 
-@Directive({
-  selector: '[appOnlynumber]'
-})
+@Directive({ selector: '[appOnlynumber]' })
 export class OnlynumberDirective {
+  el = inject(ElementRef);
 
   private navigationKeys = [
     'Backspace',
@@ -17,15 +16,16 @@ export class OnlynumberDirective {
     'ArrowRight',
     'Clear',
     'Copy',
-    'Paste'
+    'Paste',
   ];
   inputElement: HTMLElement;
-  constructor(public el: ElementRef) {
+  constructor() {
+    const el = this.el;
+
     this.inputElement = el.nativeElement;
   }
 
   @HostListener('keydown', ['$event'])
-  // @ts-ignore
   onKeyDown(e: KeyboardEvent) {
     if (
       this.navigationKeys.indexOf(e.key) > -1 || // Allow: navigation keys: backspace, delete, arrows etc.
@@ -43,7 +43,7 @@ export class OnlynumberDirective {
     }
     // Ensure that it is a number and stop the keypress
     if (
-      (e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) &&
+      (e.shiftKey || e.keyCode < 48 || e.keyCode > 57) &&
       (e.keyCode < 96 || e.keyCode > 105)
     ) {
       e.preventDefault();
@@ -51,8 +51,7 @@ export class OnlynumberDirective {
   }
 
   @HostListener('paste', ['$event'])
-    // @ts-ignore
-    onPaste(event: ClipboardEvent) {
+  onPaste(event: ClipboardEvent) {
     event.preventDefault();
     const pastedInput: string = event.clipboardData
       .getData('text/plain')
@@ -61,13 +60,10 @@ export class OnlynumberDirective {
   }
 
   @HostListener('drop', ['$event'])
-  // @ts-ignore
   onDrop(event: DragEvent) {
     event.preventDefault();
     const textData = event.dataTransfer.getData('text').replace(/\D/g, '');
     this.inputElement.focus();
     document.execCommand('insertText', false, textData);
   }
-
-
 }

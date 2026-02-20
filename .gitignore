@@ -9,6 +9,7 @@
 # dependencies
 /node_modules
 bun.lockb
+bun.lock
 # IDEs and editors
 /.idea
 .project

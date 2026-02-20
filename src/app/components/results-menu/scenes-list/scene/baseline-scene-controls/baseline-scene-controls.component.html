@@ -1,36 +1,66 @@
-<div class="action-buttons--container"
-  [ngClass]="{'mobile-padding': breakpoint === breakpoints.MOBILE}">
-  <div style="display: flex; justify-content: space-evenly;">
-    <div [ngClass]="{'mobile-baseline': breakpoint <= breakpoints.SMALL, 'metric-flex-field': true}">
+<div
+  class="action-buttons--container"
+  [ngClass]="{ 'mobile-padding': breakpoint === breakpoints.MOBILE }"
+>
+  <div style="display: flex; justify-content: space-evenly">
+    <div
+      [ngClass]="{
+        'mobile-baseline': breakpoint <= breakpoints.SMALL,
+        'metric-flex-field': true,
+      }"
+    >
       {{ withOffset(scene.metadata.perpendicular, offsets.perpendicular) }}m
     </div>
 
-      <div [ngClass]="{'mobile-baseline': breakpoint <= breakpoints.SMALL, 'metric-flex-field': true}">
-        {{ withOffset(scene.metadata.temporal, offsets.temporal) }}d
-      </div>
+    <div
+      [ngClass]="{
+        'mobile-baseline': breakpoint <= breakpoints.SMALL,
+        'metric-flex-field': true,
+      }"
+    >
+      {{ withOffset(scene.metadata.temporal, offsets.temporal) }}d
+    </div>
 
-      <div class="cart-flex-field">
-        <mat-icon *ngIf="(hyp3ableByJobType?.total ?? 0) > 0"
+    <div class="cart-flex-field">
+      @if ((hyp3ableByJobType?.total ?? 0) > 0) {
+        <mat-icon
           [matMenuTriggerFor]="sceneAdd.addMenu"
           [matMenuTriggerData]="{ hyp3able: hyp3ableByJobType.byJobType }"
           class="icon-margin mobile-svg"
-          svgIcon="hyp3">
+          svgIcon="hyp3"
+        >
         </mat-icon>
-        <mat-icon *ngIf="isDownloadable(scene)"
+      }
+      @if (hyp3ableByJobType.total < 1) {
+        <mat-icon
+          class="noselect list-icon"
+          style="margin-left: 10px; opacity: 0.5"
+          matTooltip="{{ 'ONLY_CO-POLARIZED_BURSTS' | translate }}"
+          svgIcon="hyp3"
+          matListItemMeta
+        >
+        </mat-icon>
+      }
+      @if (isDownloadable(scene)) {
+        <mat-icon
           (click)="onToggle()"
           class="icon-margin"
           matTooltip="{{
-            isQueued ?
-             ('REMOVE_SCENE_FILES_FROM_DOWNLOADS' | translate) :
-              ('ADD_SCENE_FILES_TO_DOWNLOADS' | translate)
-          }}">
+            isQueued
+              ? ('REMOVE_SCENE_FILES_FROM_DOWNLOADS' | translate)
+              : ('ADD_SCENE_FILES_TO_DOWNLOADS' | translate)
+          }}"
+        >
           {{ isQueued ? 'shopping_cart' : 'add_shopping_cart' }}
         </mat-icon>
-      </div>
+      }
+    </div>
   </div>
 
-  <app-on-demand-add-menu #sceneAdd
+  <app-on-demand-add-menu
+    #sceneAdd
     [isExpired]="isExpired(scene.metadata.job)"
-    [expiredJobs]="scene.metadata.job">
+    [expiredJobs]="scene.metadata.job"
+  >
   </app-on-demand-add-menu>
 </div>

@@ -6,7 +6,9 @@ import { Range } from './range.model';
 //   | SarviewsVolcanicEvent
 //   | SarviewsFloodEvent
 
-export interface SarviewsProcessedEvent extends SarviewsQuakeEvent, SarviewsVolcanicEvent {
+export interface SarviewsProcessedEvent
+  extends SarviewsQuakeEvent,
+    SarviewsVolcanicEvent {
   products: SarviewsProduct[];
 }
 
@@ -36,7 +38,7 @@ export interface SarviewsEvent {
 export enum SarviewsEventType {
   QUAKE = 'quake',
   VOLCANO = 'volcano',
-  FLOOD = 'flood'
+  FLOOD = 'flood',
 }
 
 export interface SarviewsProduct {

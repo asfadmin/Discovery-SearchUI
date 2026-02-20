@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs';
 
@@ -10,7 +10,7 @@ import { createBox } from 'ol/interaction/Draw.js';
 
 import * as polygonStyle from './polygon.style';
 import * as models from '@models';
-import { Type as GeometryType} from 'ol/geom/Geometry';
+import { Type as GeometryType } from 'ol/geom/Geometry';
 import Geometry from 'ol/geom/Geometry';
 import Circle from 'ol/geom/Circle';
 import { fromCircle } from 'ol/geom/Polygon';
@@ -21,13 +21,17 @@ import { SetGeocode } from '@store/filters';
 
 // Declare GTM dataLayer array.
 declare global {
-  interface Window { dataLayer: any[]; }
+  interface Window {
+    dataLayer: any[];
+  }
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DrawService {
+  private store$ = inject<Store<AppState>>(Store);
+
   private source: VectorSource;
   private layer: VectorLayer<VectorSource>;
 
@@ -43,14 +47,14 @@ export class DrawService {
 
   public currentDrawMode: models.MapDrawModeType;
 
-  constructor(private store$: Store<AppState>) {
+  constructor() {
     this.source = new VectorSource({
-      wrapX: models.mapOptions.wrapX
+      wrapX: models.mapOptions.wrapX,
     });
 
     this.layer = new VectorLayer({
       source: this.source,
-      style: polygonStyle.valid
+      style: polygonStyle.valid,
     });
   }
 
@@ -83,7 +87,6 @@ export class DrawService {
       map.once('pointermove', (_) => {
         map.getViewport().style.cursor = 'default';
       });
-
     }
   }
 
@@ -132,7 +135,7 @@ export class DrawService {
     this.source.clear();
     this.setValidStyle();
     this.polygon$.next(null);
-  }
+  };
 
   public setDrawEndCallback(callback): void {
     this.drawEndCallback = callback;
@@ -145,33 +148,31 @@ export class DrawService {
 
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-      'event': 'draw',
-      'draw-mode': drawMode
+      event: 'draw',
+      'draw-mode': drawMode,
     });
 
     if (drawMode === models.MapDrawModeType.BOX) {
       draw = new Draw({
         source: this.source,
         type: 'Circle' as GeometryType, // Actually a box...
-        geometryFunction: createBox()
+        geometryFunction: createBox(),
       });
     } else {
       draw = new Draw({
         source: this.source,
-        type: drawMode.valueOf() as GeometryType
+        type: drawMode.valueOf() as GeometryType,
       });
     }
 
-    draw.on('drawstart', _ => {
+    draw.on('drawstart', (_) => {
       this.isDrawing$.next(true);
       this.clear();
     });
 
-    draw.on('drawend', e => {
+    draw.on('drawend', (e) => {
       e.feature?.setId(this.currentDrawMode);
       e.feature?.set('drawMode', this.currentDrawMode);
-      // @ts-ignore
-      // e.feature?.setGeometry(this.currentDrawMode);
       if (e.feature?.getGeometry().getType() === 'Circle') {
         const circle = e.feature.getGeometry() as Circle;
         e.feature.setGeometry(fromCircle(circle));
@@ -185,7 +186,7 @@ export class DrawService {
       this.store$.dispatch(new SetGeocode(''));
     });
 
-    this.snap = new Snap({source: this.source});
+    this.snap = new Snap({ source: this.source });
     this.modify = this.createModify();
 
     return draw;
@@ -194,7 +195,7 @@ export class DrawService {
   private createModify(): Modify {
     const modify = new Modify({ source: this.source });
 
-    modify.on('modifyend', e => {
+    modify.on('modifyend', (e) => {
       const feature = e.features.getArray()[0];
 
       this.drawEndCallback(feature);

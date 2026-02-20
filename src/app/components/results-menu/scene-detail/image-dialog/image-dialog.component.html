@@ -1,389 +1,461 @@
 <div class="browse-dialog">
-  <div *ngIf="(searchType$ | async) !== searchTypes.SARVIEWS_EVENTS">
-    <div
-      *ngIf="scene$ | async as scene"
-      class="dialog-header--layout fx-row"
-    >
-      <div class="fx-auto">
-        <h3 class="mp0">
-          <span
-            [ngClass]="{
-            'mp0-ellipsis-mobile': breakpoint <= breakpoints.SMALL,
-            'mp0-ellipsis': breakpoint > breakpoints.SMALL
-            }"
-          >
-            {{ scene.name }}
-          </span>
-        </h3>
-        <span class="faint-text">
-          <a
-            *ngIf="dataset"
-            [href]="dataset.infoUrl"
-            target="_blank"
-            matTooltip="{{'DATASET' | translate}}"
-          >
-            {{ dataset.name }}
-          </a>
-          •
-          <span *ngIf="breakpoint > breakpoints.MOBILE">
-            {{ scene.metadata.date | fullDate }}
-          </span>
-          <span *ngIf="breakpoint === breakpoints.MOBILE">
-            {{ scene.metadata.date | shortDateTime }}
-          </span>
-        </span>
-      </div>
-      <div class="close-icon">
-        <button (click)="closeDialog()" mat-icon-button>
-          <mat-icon class="close-button">close</mat-icon>
-        </button>
-      </div>
+  @if ((searchType$ | async) !== searchTypes.SARVIEWS_EVENTS) {
+    <div>
+      @if (scene$ | async; as scene) {
+        <div class="dialog-header--layout fx-row">
+          <div class="fx-auto">
+            <h3 class="mp0">
+              <span
+                [ngClass]="{
+                  'mp0-ellipsis-mobile': breakpoint <= breakpoints.SMALL,
+                  'mp0-ellipsis': breakpoint > breakpoints.SMALL,
+                }"
+              >
+                {{ scene.name }}
+              </span>
+            </h3>
+            <span class="faint-text">
+              @if (dataset) {
+                <a
+                  [href]="dataset.infoUrl"
+                  target="_blank"
+                  matTooltip="{{ 'DATASET' | translate }}"
+                >
+                  {{ dataset.name }}
+                </a>
+              }
+              •
+              @if (breakpoint > breakpoints.MOBILE) {
+                <span>
+                  {{ scene.metadata.date | fullDate }}
+                </span>
+              }
+              @if (breakpoint === breakpoints.MOBILE) {
+                <span>
+                  {{ scene.metadata.date | shortDateTime }}
+                </span>
+              }
+            </span>
+          </div>
+          <div class="close-icon">
+            <button (click)="closeDialog()" mat-icon-button>
+              <mat-icon class="close-button">close</mat-icon>
+            </button>
+          </div>
+        </div>
+      }
     </div>
-  </div>
+  }
 
-  <div
-    *ngIf="
+  @if (
     (searchType$ | async) === searchTypes.SARVIEWS_EVENTS &&
     !!(sarviewsEvent$ | async)
-    ">
-    <div
-      *ngIf="sarviewsEvent$ | async as event"
-      class="fx-row dialog-header--layout"
-    >
-      <div class="fx-auto">
-        <h3 class="mp0">
-          <ng-template [ngIf]="!!event.description" [ngIfElse]="NO_DESCRIPTION">
-            <span
-              [ngClass]="{
-              'mp0-ellipsis-mobile': breakpoint <= breakpoints.SMALL,
-              'mp0-ellipsis': breakpoint > breakpoints.SMALL
-              }"
-            >
-              {{ event.description }}
+  ) {
+    <div>
+      @if (sarviewsEvent$ | async; as event) {
+        <div class="fx-row dialog-header--layout">
+          <div class="fx-auto">
+            <h3 class="mp0">
+              @if (!!event.description) {
+                <span
+                  [ngClass]="{
+                    'mp0-ellipsis-mobile': breakpoint <= breakpoints.SMALL,
+                    'mp0-ellipsis': breakpoint > breakpoints.SMALL,
+                  }"
+                >
+                  {{ event.description }}
+                </span>
+              } @else {
+                <span
+                  [ngClass]="{
+                    'mp0-ellipsis-mobile': breakpoint <= breakpoints.SMALL,
+                    'mp0-ellipsis': breakpoint > breakpoints.SMALL,
+                  }"
+                >
+                  {{ event.event_type[0].toLocaleUpperCase()
+                  }}{{ event.event_type.slice(1) }} {{ 'EVENT' | translate }}:
+                  {{ event.processing_timeframe.start | shortDate }}
+                </span>
+              }
+            </h3>
+            <span class="faint-text">
+              <a
+                [href]="getEventURL()"
+                target="_blank"
+                [matTooltip]="
+                  (event?.event_type === 'quake' ? 'USGS' : 'Smithsonian') +
+                  ' event page'
+                "
+                class="faint-text"
+              >
+                {{ event?.event_type === 'quake' ? 'USGS' : 'Smithsonian' }}
+              </a>
+              •
+              @if (breakpoint > breakpoints.MOBILE) {
+                <span>
+                  {{ event.processing_timeframe.start | fullDate }}
+                </span>
+              }
+              @if (breakpoint === breakpoints.MOBILE) {
+                <span>
+                  {{ event.processing_timeframe.start | shortDateTime }}
+                </span>
+              }
             </span>
-          </ng-template>
-          <ng-template #NO_DESCRIPTION>
-            <span
-              [ngClass]="{
-              'mp0-ellipsis-mobile': breakpoint <= breakpoints.SMALL,
-              'mp0-ellipsis': breakpoint > breakpoints.SMALL
-            }">
-              {{event.event_type[0].toLocaleUpperCase()}}{{event.event_type.slice(1)}} {{'EVENT' | translate}}: {{event.processing_timeframe.start | shortDate}}
-            </span>
-          </ng-template>
-        </h3>
-        <span class="faint-text">
-          <a
-            [href]="getEventURL()"
-            target="_blank"
-            [matTooltip]="
-            (event?.event_type === 'quake' ? 'USGS' : 'Smithsonian') +
-            ' event page'
-            "
-            class="faint-text"
-          >
-            {{ event?.event_type === "quake" ? "USGS" : "Smithsonian" }}
-          </a>
-          •
-          <span *ngIf="breakpoint > breakpoints.MOBILE">
-            {{ event.processing_timeframe.start | fullDate }}
-          </span>
-          <span *ngIf="breakpoint === breakpoints.MOBILE">
-            {{ event.processing_timeframe.start | shortDateTime }}
-          </span>
-        </span>
-      </div>
-      <div class="close-icon">
-        <button (click)="closeDialog()" mat-icon-button>
-          <mat-icon class="close-button"></mat-icon>
-        </button>
-      </div>
+          </div>
+          <div class="close-icon">
+            <button (click)="closeDialog()" mat-icon-button>
+              <mat-icon class="close-button"></mat-icon>
+            </button>
+          </div>
+        </div>
+      }
     </div>
-  </div>
+  }
 
   <div
     class="fx-row"
     [ngClass]="
-    breakpoint < breakpoints.SMALL ? 'main-window-mobile' : 'main-window'
-    ">
-    <div
-      class="thumbs"
-      *ngIf="
+      breakpoint < breakpoints.SMALL ? 'main-window-mobile' : 'main-window'
+    "
+  >
+    @if (
       (browses$ | async)?.length > 1 &&
       (searchType$ | async) !== searchTypes.SARVIEWS_EVENTS
-      "
-    >
-      <div
-        *ngFor="let browse of browses$ | async"
-        (click)="onNewBrowseSelected(scene, browse)"
-        class="clickable"
-      >
-        <img mat-card-sm-image src="{{ browse }}" />
-      </div>
-    </div>
-
-    <div
-      id="browse-map"
-      class="browse-map--size browse-map--layout">
-    </div>
-    <div *ngIf="isImageLoading" color="accent" class="browse-map--overlay">
-      <mat-spinner></mat-spinner>
-    </div>
-
-    <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
-      <div *ngIf="!isShow" class="scene-detail--wrapper">
-        <div
-          *ngIf="(searchType$ | async) !== searchTypes.SARVIEWS_EVENTS"
-          class="scene-detail"
-        >
-          <div class="detail-header">{{ 'SCENE_DETAIL' |  translate }}</div>
-          <ul
-            class="on-demand-scene-names"
-            *ngIf="(searchType$ | async) === searchTypes.CUSTOM_PRODUCTS"
-          >
-            <li><b>{{ 'REFERENCE' | translate }}: </b> {{ (scene$ | async).name }}</li>
-          </ul>
-          <app-scene-metadata
-            [scene]="scene$ | async"
-            [dataset]="dataset"
-            [searchType]="searchType$ | async"
-            [offsets]="masterOffsets$ | async"
-          >
-          </app-scene-metadata>
-          <div
-            class="on-demand-scene-names"
-            *ngIf="
-            (scene$ | async).metadata?.job?.scenes?.length > 1
-            "
-          >
-            <ul>
-              <li>
-                <b>{{ 'Secondary:' | translate }} </b>
-                {{
-                  (scene$ | async).metadata?.job?.scenes[1].name
-                }}
-              </li>
-            </ul>
-            <app-scene-metadata
-              [scene]="(scene$ | async).metadata?.job?.scenes[1]"
-              [dataset]="dataset"
-              [searchType]="searchType$ | async"
-              [offsets]="masterOffsets$ | async"
-            >
-            </app-scene-metadata>
+    ) {
+      <div class="thumbs">
+        @for (browse of browses$ | async; track browse) {
+          <div (click)="onNewBrowseSelected(scene, browse)" class="clickable">
+            <img mat-card-sm-image src="{{ browse }}" />
           </div>
-          <hr />
-          <ng-container
-            *ngIf="(searchType$ | async) === searchTypes.CUSTOM_PRODUCTS"
-          >
-            <div class="detail-header">{{ 'PRODUCT_DETAILS' | translate }}</div>
-            <ul style="columns: 1; font-size: 12px;">
-              <li *ngIf="scene.metadata.job.name">
-                <b>{{ 'PROJECT_NAME' | translate }}:</b> {{ scene.metadata.job.name }}
-              </li>
-              <li *ngFor="let param of paramsList">
-                <b>{{ param.name }}:</b> {{ param.val }}
-              </li>
-            </ul>
-            <hr />
-          </ng-container>
-
-          <div class="detail-header">{{ products?.length }} {{ 'FILES' | translate }}</div>
-          <mat-action-list dense class="file-list">
-            <button
-              *ngFor="let product of products"
-              class="file-button-download"
-              [matMenuTriggerFor]="action_menu"
-              mat-list-item
-            >
-              • {{ product.productTypeDisplay }}
-              <mat-menu #action_menu="matMenu" xPosition="before">
-                <span style="margin-right: 10px; margin-left: 10px;" class="primary-text">
-                  <span *ngIf="product.bytes === 0">Virtual</span>
-                  <span *ngIf="product.bytes !== 0">{{
-                    product.bytes.toString() | readableSizeFromBytes
-                    }}</span>
-                </span>
-                <app-download-file-button
-                  [attr.id]="'imgV_' + product.id"
-                  [product]="product"
-                  (click)="$event.stopPropagation()"
-                >
-                </app-download-file-button>
-
-                <button
-                  (click)="
-                  $event.stopPropagation(); onToggleQueueProduct(product)
-                  "
-                  matTooltip="{{
-                  !queuedProductIds.has(product.id)
-                  ? ( 'ADD_FILE_TO_QUEUE' | translate )
-                  : ( 'REMOVE_FILE_FROM_QUEUE' | translate )
-                  }}"
-                  mat-menu-item
-                >
-                  <span *ngIf="!queuedProductIds.has(product.id)">
-                    {{ 'ADD' | translate}}
-                    <mat-icon>add_shopping_cart</mat-icon>
-                  </span>
-                  <span *ngIf="queuedProductIds.has(product.id)">
-                    {{ 'REMOVE' |  translate }}
-                    <mat-icon>shopping_cart</mat-icon>
-                  </span>
-                </button>
-              </mat-menu>
-            </button>
-          </mat-action-list>
-        </div>
-
-        <div
-          *ngIf="(searchType$ | async) === searchTypes.SARVIEWS_EVENTS"
-          class="scene-detail"
-        >
-          <div class="detail-header">{{ 'EVENT_DETAIL' | translate }}</div>
-          <app-event-metadata [event]="sarviewsEvent" [eventType]="eventType">
-          </app-event-metadata>
-          <hr />
-
-          <ng-container>
-            <div class="detail-header">{{ 'SCENE_DETAIL' |  translate }}</div>
-            <div style="font-size: 12px;" *ngIf="!!currentSarviewsProduct">
-              <app-event-product-metadata [product]="currentSarviewsProduct">
-              </app-event-product-metadata>
-            </div>
-            <hr />
-          </ng-container>
-
-          <ng-container>
-            <div class="detail-header">{{ 'PRODUCT_DETAILS' | translate }}</div>
-            <div style="font-size: 12px;" *ngIf="!!currentSarviewsProduct">
-              <ul style="columns: 1; font-size: 12px;">
-                <li style="margin-bottom: 5px; word-break: break-word;">
-                  <b>{{ 'PRODUCT_FILENAME' | translate }}</b>
-                  {{ currentSarviewsProduct.files.product_name }}
-                </li>
-                <li>
-                  <b>{{ 'PROCESSING_DATE' | translate }}</b>
-                  {{ currentSarviewsProduct.processing_date | shortDateTime }}
-                </li>
-                <!-- <li>Frame: {{currentSarviewsProduct.granules[0].frame}}</li> -->
-              </ul>
-            </div>
-            <hr />
-          </ng-container>
-
-          <ng-container>
-            <div class="detail-header">{{ 'FILE' | translate }}</div>
-            <mat-action-list dense class="file-list">
-              <button
-                class="file-button-download"
-                [matMenuTriggerFor]="event_action_menu"
-                [matMenuTriggerData]="{eventProduct: currentSarviewsCMRProduct}"
-                *ngIf="!!currentSarviewsProduct"
-                mat-list-item
-              >
-                <b>• {{ currentSarviewsProduct.job_type.replace('_', ' ') }}</b>
-              </button>
-              <mat-menu #event_action_menu xPosition="before">
-
-                <button
-
-                  mat-menu-item
-                  *ngIf="!!currentSarviewsProduct"
-                >
-                  <ng-template let-eventProduct="eventProduct" matMenuContent>
-                    <span *ngIf="currentSarviewsProduct.files.product_size !== 0">
-                      {{
-                      currentSarviewsProduct.files.product_size.toString()
-                      | readableSizeFromBytes
-                      }}
-                    </span>
-                    <app-download-file-button
-                      [attr.id]="'imgV_' + eventProduct.id"
-                      [product]="eventProduct"
-                      (click)="$event.stopPropagation()"
-                    >
-                    </app-download-file-button>
-                  </ng-template>
-                </button>
-                <button
-                  (click)="onToggleQueueEventProduct(currentSarviewsProduct)"
-                  *ngIf="!!currentSarviewsProduct"
-                  matTooltip="{{
-                  !queuedProductIds.has(currentSarviewsProduct.product_id)
-                  ? ( 'ADD_FILE_TO_QUEUE' | translate )
-                  : ( 'REMOVE_FILE_FROM_QUEUE' | translate )
-                  }}"
-                  mat-menu-item
-                >
-                  <span
-                    *ngIf="
-                    !queuedProductIds.has(currentSarviewsProduct.product_id)
-                    "
-                  >
-                   {{'ADD' | translate }}
-                    <mat-icon>add_shopping_cart</mat-icon>
-                  </span>
-                  <span
-                    *ngIf="
-                    queuedProductIds.has(currentSarviewsProduct.product_id)
-                    "
-                  >
-                    {{ 'REMOVE' |  translate }}
-                    <mat-icon>shopping_cart</mat-icon>
-                  </span>
-                </button>
-                <button
-                  mat-menu-item
-                  (click)="onCopyLink(currentSarviewsProduct.granules)"
-                  matTooltip="{{'COPY_REFERENCE_SCENE_NAMES_TO_CLIPBOARD' | translate}}"
-                >
-                  <span> {{ 'REFERENCE_SCENES' | translate }} </span>
-                  <mat-icon>file_copy</mat-icon>
-                </button>
-                <button (click)="onToggleSarviewsProductPin()" mat-menu-item>
-                  <span>{{eventSelectedProductIds.includes(currentSarviewsProduct?.product_id) ? 'Unpin browse from map' : 'Pin browse to map'}}</span>
-                  <mat-icon>
-                    push_pin
-                  </mat-icon>
-                </button>
-              </mat-menu>
-            </mat-action-list>
-          </ng-container>
-        </div>
+        }
       </div>
-    </ng-container>
+    }
+
+    <div id="browse-map" class="browse-map--size browse-map--layout"></div>
+    @if (isImageLoading) {
+      <div color="accent" class="browse-map--overlay">
+        <mat-spinner></mat-spinner>
+      </div>
+    }
+
+    @if (breakpoint > breakpoints.MOBILE) {
+      @if (!isShow) {
+        <div class="scene-detail--wrapper">
+          @if ((searchType$ | async) !== searchTypes.SARVIEWS_EVENTS) {
+            <div class="scene-detail">
+              <div class="detail-header">{{ 'SCENE_DETAIL' | translate }}</div>
+              @if ((searchType$ | async) === searchTypes.CUSTOM_PRODUCTS) {
+                <ul class="on-demand-scene-names">
+                  <li>
+                    <b>{{ 'REFERENCE' | translate }}: </b>
+                    {{ (scene$ | async).name }}
+                  </li>
+                </ul>
+              }
+              <app-scene-metadata
+                [scene]="scene$ | async"
+                [dataset]="dataset"
+                [searchType]="searchType$ | async"
+                [offsets]="masterOffsets$ | async"
+              >
+              </app-scene-metadata>
+              @if ((scene$ | async).metadata?.job?.scenes?.length > 1) {
+                <div class="on-demand-scene-names">
+                  <ul>
+                    <li>
+                      <b>{{ 'Secondary:' | translate }} </b>
+                      {{ (scene$ | async).metadata?.job?.scenes[1].name }}
+                    </li>
+                  </ul>
+                  <app-scene-metadata
+                    [scene]="(scene$ | async).metadata?.job?.scenes[1]"
+                    [dataset]="dataset"
+                    [searchType]="searchType$ | async"
+                    [offsets]="masterOffsets$ | async"
+                  >
+                  </app-scene-metadata>
+                </div>
+              }
+              <hr />
+              @if ((searchType$ | async) === searchTypes.CUSTOM_PRODUCTS) {
+                <div class="detail-header">
+                  {{ 'PRODUCT_DETAILS' | translate }}
+                </div>
+                <ul style="columns: 1; font-size: 12px">
+                  @if (scene.metadata.job.name) {
+                    <li>
+                      <b>{{ 'PROJECT_NAME' | translate }}:</b>
+                      {{ scene.metadata.job.name }}
+                    </li>
+                  }
+                  @for (param of paramsList; track param) {
+                    <li>
+                      <b>{{ param.name | translate }}:</b> {{ param.val }}
+                    </li>
+                  }
+                </ul>
+                <hr />
+              }
+              <div class="detail-header">
+                {{ products?.length }} {{ 'FILES' | translate }}
+              </div>
+              <mat-action-list dense class="file-list">
+                @for (product of products; track product) {
+                  <button
+                    class="file-button-download"
+                    [matMenuTriggerFor]="action_menu"
+                    mat-list-item
+                  >
+                    • {{ product.productTypeDisplay }}
+                    <mat-menu #action_menu="matMenu" xPosition="before">
+                      <span
+                        style="margin-right: 10px; margin-left: 10px"
+                        class="primary-text"
+                      >
+                        @if (product.bytes === 0) {
+                          <span>{{ 'VIRTUAL' | translate }}</span>
+                        }
+                        @if (product.bytes !== 0) {
+                          <span>{{
+                            product.bytes.toString() | readableSizeFromBytes
+                          }}</span>
+                        }
+                      </span>
+                      <app-download-file-button
+                        [attr.id]="'imgV_' + product.id"
+                        [product]="product"
+                        (click)="$event.stopPropagation()"
+                      >
+                      </app-download-file-button>
+                      <button
+                        (click)="
+                          $event.stopPropagation();
+                          onToggleQueueProduct(product)
+                        "
+                        matTooltip="{{
+                          !queuedProductIds.has(product.id)
+                            ? ('ADD_FILE_TO_QUEUE' | translate)
+                            : ('REMOVE_FILE_FROM_QUEUE' | translate)
+                        }}"
+                        mat-menu-item
+                      >
+                        @if (!queuedProductIds.has(product.id)) {
+                          <span>
+                            {{ 'ADD' | translate }}
+                            <mat-icon>add_shopping_cart</mat-icon>
+                          </span>
+                        }
+                        @if (queuedProductIds.has(product.id)) {
+                          <span>
+                            {{ 'REMOVE' | translate }}
+                            <mat-icon>shopping_cart</mat-icon>
+                          </span>
+                        }
+                      </button>
+                    </mat-menu>
+                  </button>
+                }
+              </mat-action-list>
+            </div>
+          }
+          @if ((searchType$ | async) === searchTypes.SARVIEWS_EVENTS) {
+            <div class="scene-detail">
+              <div class="detail-header">{{ 'EVENT_DETAIL' | translate }}</div>
+              <app-event-metadata
+                [event]="sarviewsEvent"
+                [eventType]="eventType"
+              >
+              </app-event-metadata>
+              <hr />
+              <ng-container>
+                <div class="detail-header">
+                  {{ 'SCENE_DETAIL' | translate }}
+                </div>
+                @if (!!currentSarviewsProduct) {
+                  <div style="font-size: 12px">
+                    <app-event-product-metadata
+                      [product]="currentSarviewsProduct"
+                    >
+                    </app-event-product-metadata>
+                  </div>
+                }
+                <hr />
+              </ng-container>
+              <ng-container>
+                <div class="detail-header">
+                  {{ 'PRODUCT_DETAILS' | translate }}
+                </div>
+                @if (!!currentSarviewsProduct) {
+                  <div style="font-size: 12px">
+                    <ul style="columns: 1; font-size: 12px">
+                      <li style="margin-bottom: 5px; word-break: break-word">
+                        <b>{{ 'PRODUCT_FILENAME' | translate }}</b>
+                        {{ currentSarviewsProduct.files.product_name }}
+                      </li>
+                      <li>
+                        <b>{{ 'PROCESSING_DATE' | translate }}</b>
+                        {{
+                          currentSarviewsProduct.processing_date | shortDateTime
+                        }}
+                      </li>
+                      <!-- <li>Frame: {{currentSarviewsProduct.granules[0].frame}}</li> -->
+                    </ul>
+                  </div>
+                }
+                <hr />
+              </ng-container>
+              <ng-container>
+                <div class="detail-header">{{ 'FILE' | translate }}</div>
+                <mat-action-list dense class="file-list">
+                  @if (!!currentSarviewsProduct) {
+                    <button
+                      class="file-button-download"
+                      [matMenuTriggerFor]="event_action_menu"
+                      [matMenuTriggerData]="{
+                        eventProduct: currentSarviewsCMRProduct,
+                      }"
+                      mat-list-item
+                    >
+                      <b
+                        >•
+                        {{
+                          currentSarviewsProduct.job_type.replace('_', ' ')
+                        }}</b
+                      >
+                    </button>
+                  }
+                  <mat-menu #event_action_menu xPosition="before">
+                    @if (!!currentSarviewsProduct) {
+                      <button mat-menu-item>
+                        <ng-template
+                          let-eventProduct="eventProduct"
+                          matMenuContent
+                        >
+                          @if (
+                            currentSarviewsProduct.files.product_size !== 0
+                          ) {
+                            <span>
+                              {{
+                                currentSarviewsProduct.files.product_size.toString()
+                                  | readableSizeFromBytes
+                              }}
+                            </span>
+                          }
+                          <app-download-file-button
+                            [attr.id]="'imgV_' + eventProduct.id"
+                            [product]="eventProduct"
+                            (click)="$event.stopPropagation()"
+                          >
+                          </app-download-file-button>
+                        </ng-template>
+                      </button>
+                    }
+                    @if (!!currentSarviewsProduct) {
+                      <button
+                        (click)="
+                          onToggleQueueEventProduct(currentSarviewsProduct)
+                        "
+                        matTooltip="{{
+                          !queuedProductIds.has(
+                            currentSarviewsProduct.product_id
+                          )
+                            ? ('ADD_FILE_TO_QUEUE' | translate)
+                            : ('REMOVE_FILE_FROM_QUEUE' | translate)
+                        }}"
+                        mat-menu-item
+                      >
+                        @if (
+                          !queuedProductIds.has(
+                            currentSarviewsProduct.product_id
+                          )
+                        ) {
+                          <span>
+                            {{ 'ADD' | translate }}
+                            <mat-icon>add_shopping_cart</mat-icon>
+                          </span>
+                        }
+                        @if (
+                          queuedProductIds.has(
+                            currentSarviewsProduct.product_id
+                          )
+                        ) {
+                          <span>
+                            {{ 'REMOVE' | translate }}
+                            <mat-icon>shopping_cart</mat-icon>
+                          </span>
+                        }
+                      </button>
+                    }
+                    <button
+                      mat-menu-item
+                      (click)="onCopyLink(currentSarviewsProduct.granules)"
+                      matTooltip="{{
+                        'COPY_REFERENCE_SCENE_NAMES_TO_CLIPBOARD' | translate
+                      }}"
+                    >
+                      <span> {{ 'REFERENCE_SCENES' | translate }} </span>
+                      <mat-icon>file_copy</mat-icon>
+                    </button>
+                    <button
+                      (click)="onToggleSarviewsProductPin()"
+                      mat-menu-item
+                    >
+                      <span>{{
+                        eventSelectedProductIds.includes(
+                          currentSarviewsProduct?.product_id
+                        )
+                          ? ('UNPIN_BROWSE_FROM_MAP' | translate)
+                          : ('PIN_BROWSE_TO_MAP' | translate)
+                      }}</span>
+                      <mat-icon> push_pin </mat-icon>
+                    </button>
+                  </mat-menu>
+                </mat-action-list>
+              </ng-container>
+            </div>
+          }
+        </div>
+      }
+    }
   </div>
 
-  <ng-container *ngIf="breakpoint > breakpoints.MOBILE">
+  @if (breakpoint > breakpoints.MOBILE) {
     <div>
-      <app-browse-list style="height: 150px;"></app-browse-list>
+      <app-browse-list style="height: 150px"></app-browse-list>
     </div>
-  </ng-container>
-  <div
-    *ngIf="breakpoint$ | async as breakpoint"
-    class="bottom-row footer">
-    <div
-      *ngIf="
-      breakpoint > breakpoints.MOBILE &&
-      (searchType$ | async) !== searchTypes.SARVIEWS_EVENTS
-      "
-      class="fx-empty">
-      <mat-checkbox
-        (change)="setOnlyShowBrowse($event.checked)"
-        [checked]="onlyShowScenesWithBrowse"
-        style="margin-right: 6px;"
-        color="warn"
-      >
-      </mat-checkbox>
-      <span *ngIf="breakpoint > breakpoints.MOBILE">
-        {{ 'ONLY_DISPLAY_SCENES_WITH_A_BROWSE_IMAGE' | translate }}
-      </span>
-      <span *ngIf="breakpoint === breakpoints.MOBILE"> {{ 'W_BROWSE_IMAGES' | translate }} </span>
+  }
+  @if (breakpoint$ | async; as breakpoint) {
+    <div class="bottom-row footer">
+      @if (
+        breakpoint > breakpoints.MOBILE &&
+        (searchType$ | async) !== searchTypes.SARVIEWS_EVENTS
+      ) {
+        <div class="fx-empty">
+          <mat-checkbox
+            (change)="setOnlyShowBrowse($event.checked)"
+            [checked]="onlyShowScenesWithBrowse"
+            style="margin-right: 6px"
+            color="warn"
+          >
+          </mat-checkbox>
+          @if (breakpoint > breakpoints.MOBILE) {
+            <span>
+              {{ 'ONLY_DISPLAY_SCENES_WITH_A_BROWSE_IMAGE' | translate }}
+            </span>
+          }
+          @if (breakpoint === breakpoints.MOBILE) {
+            <span>
+              {{ 'W_BROWSE_IMAGES' | translate }}
+            </span>
+          }
+        </div>
+      }
+      <div class="fx-nogrow">
+        <button mat-flat-button (click)="closeDialog()">
+          {{ 'CLOSE' | translate }}
+        </button>
+      </div>
     </div>
-
-    <div class="fx-nogrow">
-      <button mat-flat-button (click)="closeDialog()">Close</button>
-    </div>
-  </div>
+  }
 </div>

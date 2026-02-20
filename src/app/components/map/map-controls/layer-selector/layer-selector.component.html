@@ -1,76 +1,96 @@
-<button mat-stroked-button class="layer-select-button" [matMenuTriggerFor]="layerMenu" aria-label="Map projection view">
-  <ng-template [ngIf]="layerType === layerTypes.SATELLITE" [ngIfElse]="STREET_VIEW" class="layer-btn layer-select-icon arctic">
-    <mat-icon class="control-icon">terrain</mat-icon>
-  </ng-template>
-  <ng-template #STREET_VIEW class="layer-btn layer-select-icon equatorial">
-    <mat-icon class="control-icon">directions_car</mat-icon>
-  </ng-template>
+<button
+  mat-stroked-button
+  class="layer-select-button"
+  [matMenuTriggerFor]="layerMenu"
+  [attr.aria-label]="'LAYER_SELECTOR' | translate"
+>
+  <div class="layer-btn layer-select-icon arctic">
+    @if (layerType === layerTypes.SATELLITE) {
+      <mat-icon class="control-icon">terrain</mat-icon>
+    } @else {
+      <mat-icon class="control-icon">directions_car</mat-icon>
+    }
+  </div>
+
   <span class="fa fa-caret-down bottom-right"></span>
 </button>
 
 <mat-menu #layerMenu="matMenu">
-
-  <button mat-menu-item class="control-mat-button-toggle"
+  <button
+    mat-menu-item
+    class="control-mat-button-toggle"
     (click)="onNewLayerType(layerTypes.SATELLITE)"
-    [value]="layerTypes.SATELLITE | translate">
+    [value]="layerTypes.SATELLITE | translate"
+  >
     <mat-icon class="control-icon" iconPositionEnd>terrain</mat-icon>
-    {{ 'SATELLITE_LAYER' |  translate }}
+    {{ 'SATELLITE_LAYER' | translate }}
   </button>
 
-  <button mat-menu-item class="control-mat-button-toggle"
+  <button
+    mat-menu-item
+    class="control-mat-button-toggle"
     (click)="onNewLayerType(layerTypes.STREET)"
     [value]="layerTypes.STREET"
   >
     <mat-icon class="control-icon" iconPositionEnd>directions_car</mat-icon>
-    {{ 'STREET_LAYER' |  translate }}
+    {{ 'STREET_LAYER' | translate }}
   </button>
 
   <mat-divider></mat-divider>
 
-  <button mat-menu-item
+  <button
+    mat-menu-item
     class="control-mat-checkbox-toggle"
-    (click)="onToggleOverviewMap(overviewMapVisible)">
-      <mat-checkbox class="checkbox"
-                    [disabled]="true"
-                    [checked]="overviewMapVisible">
+    (click)="onToggleOverviewMap(overviewMapVisible)"
+  >
+    <mat-checkbox
+      class="checkbox"
+      [disabled]="true"
+      [checked]="overviewMapVisible"
+    >
     </mat-checkbox>
-      {{ 'OVERVIEW_MAP' |  translate }}
+    {{ 'OVERVIEW_MAP' | translate }}
   </button>
 
-
-    @if ((searchType$ | async) !== searchTypes.DISPLACEMENT) {
-    <button mat-menu-item
+  @if ((searchType$ | async) !== searchTypes.DISPLACEMENT) {
+    <button
+      mat-menu-item
       class="control-mat-checkbox-toggle"
       (click)="onClickCoherenceMenu()"
-      [matMenuTriggerFor]="coherenceLayers">
-      <mat-checkbox class="checkbox"
+      [matMenuTriggerFor]="coherenceLayers"
+    >
+      <mat-checkbox
+        class="checkbox"
         [disabled]="true"
-        [checked]="coherenceLayerMonths">
+        [checked]="coherenceLayerMonths"
+      >
       </mat-checkbox>
-      {{ 'COHERENCE_LAYER' |  translate }}
-
+      {{ 'COHERENCE_LAYER' | translate }}
       <mat-menu #coherenceLayers="matMenu">
-        <button *ngFor="let layer of months"
-          (click)="onToggleCoherenceLayer(layer)"
-          class="control-mat-checkbox-toggle"
-          mat-menu-item>
-          <mat-radio-button
-            [disabled]="true"
-            [checked]="coherenceLayerMonths === layer">
-          </mat-radio-button>
-
-          {{ layer |  translate }}
-        </button>
+        @for (layer of months; track layer) {
+          <button
+            (click)="onToggleCoherenceLayer(layer)"
+            class="control-mat-checkbox-toggle"
+            mat-menu-item
+          >
+            <mat-radio-button
+              [disabled]="true"
+              [checked]="coherenceLayerMonths === layer"
+            >
+            </mat-radio-button>
+            {{ layer | translate }}
+          </button>
+        }
       </mat-menu>
     </button>
   }
-  <button mat-menu-item
+  <button
+    mat-menu-item
     class="control-mat-checkbox-toggle"
-    (click)="onToggleGridlines()">
-    <mat-checkbox class="checkbox"
-      [disabled]="true"
-      [checked]="gridActive">
+    (click)="onToggleGridlines()"
+  >
+    <mat-checkbox class="checkbox" [disabled]="true" [checked]="gridActive">
     </mat-checkbox>
-    {{ 'GRIDLINES_OVERLAY' |  translate }}
+    {{ 'GRIDLINES_OVERLAY' | translate }}
   </button>
 </mat-menu>

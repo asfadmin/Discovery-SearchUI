@@ -1,4 +1,11 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { SubSink } from 'subsink';
@@ -6,22 +13,35 @@ import { SubSink } from 'subsink';
 import * as models from '@models';
 import * as filterStore from '@store/filters';
 
-declare var wNumb: any;
+declare let wNumb: any;
 
 import * as noUiSlider from 'nouislider';
 import { Observable, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map, skip } from 'rxjs/operators';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  skip,
+} from 'rxjs/operators';
 import { ScreenSizeService } from '@services';
 import { Breakpoints, SarviewsEventType } from '@models';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-sarviews-event-magnitude-selector',
   templateUrl: './sarviews-event-magnitude-selector.component.html',
-  styleUrls: ['./sarviews-event-magnitude-selector.component.scss']
+  styleUrls: ['./sarviews-event-magnitude-selector.component.scss'],
+  imports: [TranslateModule],
 })
-export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestroy {
+export class SarviewsEventMagnitudeSelectorComponent
+  implements OnInit, OnDestroy
+{
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   @ViewChild('magnitudeFilter', { static: true }) magnitudeFilter: ElementRef;
-  public magnitudeRange: models.Range<number> = {start: 0, end: 10};
+  public magnitudeRange: models.Range<number> = { start: 0, end: 10 };
   public slider: noUiSlider.API;
   public magSlider;
 
@@ -33,40 +53,44 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
 
   public magnitudeValues$ = new Subject<number[]>();
 
-  public quakeTypesEnabled$ = this.store$.select(filterStore.getSarviewsEventTypes).pipe(
-    map(eventTypes => {
-      return eventTypes.length === 0 || eventTypes.includes(SarviewsEventType.QUAKE); }),
-  );
-
-  constructor(private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-    ) { }
+  public quakeTypesEnabled$ = this.store$
+    .select(filterStore.getSarviewsEventTypes)
+    .pipe(
+      map((eventTypes) => {
+        return (
+          eventTypes.length === 0 ||
+          eventTypes.includes(SarviewsEventType.QUAKE)
+        );
+      }),
+    );
 
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(filterStore.getSarviewsMagnitudeRange).pipe(
-        distinctUntilChanged((a, b) => {
-          return a.start === b.start && a.end === b.end;
-        }),
-        filter(range => !!range),
-      ).subscribe(
-        magnitudeRange => {
+      this.store$
+        .select(filterStore.getSarviewsMagnitudeRange)
+        .pipe(
+          distinctUntilChanged((a, b) => {
+            return a.start === b.start && a.end === b.end;
+          }),
+          filter((range) => !!range),
+        )
+        .subscribe((magnitudeRange) => {
           this.magnitudeRange = {
             start: magnitudeRange?.start,
-            end: magnitudeRange?.end
+            end: magnitudeRange?.end,
           };
-          this.magnitudeValues$.next([magnitudeRange.start, magnitudeRange.end]);
-        }
-      )
+          this.magnitudeValues$.next([
+            magnitudeRange.start,
+            magnitudeRange.end,
+          ]);
+        }),
     );
 
     this.subs.add(
-      this.breakpoint$.pipe(distinctUntilChanged()).subscribe(
-        breakpoint => {
-          this.breakpoint = breakpoint;
-          this.OnUpdatePipSize(this.breakpoint);
-        }
-      )
+      this.breakpoint$.pipe(distinctUntilChanged()).subscribe((breakpoint) => {
+        this.breakpoint = breakpoint;
+        this.OnUpdatePipSize(this.breakpoint);
+      }),
     );
 
     const temp = this.makeMagnitudeSlider$(this.magnitudeFilter);
@@ -74,39 +98,34 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
     const magnitudeValuesObserverable$ = temp.magnitudeValues$;
 
     this.subs.add(
-      magnitudeValuesObserverable$.pipe(
-        skip(1),
-      ).subscribe(
-        ([start, end]) => {
-          const action = new filterStore.SetSarviewsMagnitudeRange({
-            start: start,
-            end:  end
-          });
-          this.store$.dispatch(action);
-        }
-      )
+      magnitudeValuesObserverable$.pipe(skip(1)).subscribe(([start, end]) => {
+        const action = new filterStore.SetSarviewsMagnitudeRange({
+          start: start,
+          end: end,
+        });
+        this.store$.dispatch(action);
+      }),
     );
 
     this.subs.add(
-      this.quakeTypesEnabled$.subscribe(
-        isEnabled => {
-          if (!isEnabled) {
-            this.magnitudeFilter.nativeElement.setAttribute('disabled', true);
-          } else {
-            this.magnitudeFilter.nativeElement.removeAttribute('disabled');
-          }
+      this.quakeTypesEnabled$.subscribe((isEnabled) => {
+        if (!isEnabled) {
+          this.magnitudeFilter.nativeElement.setAttribute('disabled', true);
+        } else {
+          this.magnitudeFilter.nativeElement.removeAttribute('disabled');
         }
-      )
+      }),
     );
-
   }
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
 
-  private makeMagnitudeSlider$(filterRef: ElementRef): {magSlider: noUiSlider.API, magnitudeValues$: Observable<number[]>} {
-    // @ts-ignore
+  private makeMagnitudeSlider$(filterRef: ElementRef): {
+    magSlider: noUiSlider.API;
+    magnitudeValues$: Observable<number[]>;
+  } {
     this.slider = noUiSlider.create(filterRef.nativeElement, {
       orientation: 'horizontal',
       direction: 'ltr',
@@ -116,8 +135,8 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
       step: 0.1,
       connect: true,
       range: {
-        'min': 0,
-        'max': 10
+        min: 0,
+        max: 10,
       },
       pips: {
         mode: noUiSlider.PipsMode.Positions,
@@ -126,23 +145,22 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
         stepped: true,
         format: wNumb({
           decimals: 1,
-          suffix: ' mag'
-        })
-      }
+          suffix: ' mag',
+        }),
+      },
     });
 
     this.slider.on('update', (values: any[], _) => {
-      this.magnitudeValues$.next(values.map(v => +v));
+      this.magnitudeValues$.next(values.map((v) => +v));
     });
 
     this.magnitudeValues$.next([0, 10]);
 
     return {
       magSlider: this.slider,
-      magnitudeValues$: this.magnitudeValues$.asObservable().pipe(
-        debounceTime(500),
-        distinctUntilChanged()
-      )
+      magnitudeValues$: this.magnitudeValues$
+        .asObservable()
+        .pipe(debounceTime(500), distinctUntilChanged()),
     };
   }
 
@@ -157,12 +175,12 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
             stepped: true,
             format: wNumb({
               decimals: 1,
-              suffix: ' mag'
-            })
+              suffix: ' mag',
+            }),
           },
-          step: 0.5
+          step: 0.5,
         },
-        true
+        true,
       );
     } else {
       this.slider.updateOptions(
@@ -174,15 +192,13 @@ export class SarviewsEventMagnitudeSelectorComponent implements OnInit, OnDestro
             stepped: true,
             format: wNumb({
               decimals: 1,
-              suffix: ' mag'
-            })
+              suffix: ' mag',
+            }),
           },
-          step: 0.1
+          step: 0.1,
         },
-        true
+        true,
       );
     }
   }
-
-
 }

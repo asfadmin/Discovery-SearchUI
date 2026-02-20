@@ -1,33 +1,33 @@
-import { Component, OnInit, Input, Directive } from '@angular/core';
+import { Component, OnInit, Input, Directive, inject } from '@angular/core';
 import { ActiveToast, ToastrService } from 'ngx-toastr';
 import { Banner } from '@models';
 import { MatDialog } from '@angular/material/dialog';
 import { BannerDialogComponent } from '@components/map/banners/banner-dialog/banner-dialog.component';
+import {} from '@angular/common';
+import { TranslateService } from '@ngx-translate/core';
 
 export interface DialogData {
   title: string;
 }
 
-@Directive({selector: '[bannerCreate]'})
+@Directive({ selector: '[bannerCreate]' })
 export class BannerCreateDirective implements OnInit {
+  private toastr = inject(ToastrService);
+  private translateService = inject(TranslateService);
+  dialog = inject(MatDialog);
+
   @Input() bannerCreate: Banner;
   private closedBannersKey = 'closed-banners-key';
 
   public toastRef;
   public maxMsgLength = 150;
   public msgOverflow = false;
-  public moreMsg = ' <a>[MORE]</a>';
   public overrides = {
     enableHtml: true,
     closeButton: true,
     disableTimeOut: true,
     tapToDismiss: false,
   };
-
-  constructor(
-    private toastr: ToastrService,
-    public dialog: MatDialog,
-  ) {}
 
   ngOnInit(): void {
     const id: string = this.bannerCreate.id;
@@ -42,24 +42,25 @@ export class BannerCreateDirective implements OnInit {
     const title: string = this.bannerCreate.name;
     const type: string = this.bannerCreate.type;
     let toast: ActiveToast<any>;
+    const moreText = this.translateService.instant('MORE');
+    const moreMsg = ` <a>[${moreText}]</a>`;
 
     let msg: string = this.bannerCreate.text.substring(0, this.maxMsgLength);
 
     const lines = this.bannerCreate.text.split('<br>');
 
-    this.msgOverflow = (this.bannerCreate.text.length > this.maxMsgLength);
+    this.msgOverflow = this.bannerCreate.text.length > this.maxMsgLength;
 
-    const oneLiner = (
+    const oneLiner =
       lines.length > 2 &&
       lines[1].trim().length === 0 &&
-      lines[1].length <= this.maxMsgLength
-    );
+      lines[1].length <= this.maxMsgLength;
 
     if (oneLiner) {
-      msg = `${lines[0].trim()}${this.moreMsg}`;
+      msg = `${lines[0].trim()}${moreMsg}`;
     } else {
       if (this.msgOverflow) {
-        msg = `${msg.trim()}...${this.moreMsg}`;
+        msg = `${msg.trim()}...${moreMsg}`;
       }
     }
 
@@ -82,7 +83,7 @@ export class BannerCreateDirective implements OnInit {
       }
     }
 
-    toast.onHidden.subscribe(_ => {
+    toast.onHidden.subscribe((_) => {
       const closedBanners = this.loadClosedBannerIds();
 
       closedBanners[this.bannerCreate.id] = true;
@@ -90,26 +91,25 @@ export class BannerCreateDirective implements OnInit {
       this.saveClosedBannerIds(closedBanners);
     });
 
-    toast.onTap.subscribe(_x => {
+    toast.onTap.subscribe((_x) => {
       if (this.msgOverflow || oneLiner) {
         const dialogRef = this.dialog.open(BannerDialogComponent, {
-          data: {title: title},
+          data: { title: title },
           panelClass: 'banner-dialog',
           maxWidth: '80vw',
         });
-        dialogRef.componentInstance.htmlContent = this.openLinksInNewTab(this.bannerCreate.text);
+        dialogRef.componentInstance.htmlContent = this.openLinksInNewTab(
+          this.bannerCreate.text,
+        );
       }
     });
   }
 
   private openLinksInNewTab(bannerHtml: string): string {
-      return bannerHtml.replace(
-        '<a href=',
-        '<a target="_blank" href='
-      );
+    return bannerHtml.replace('<a href=', '<a target="_blank" href=');
   }
 
-  private loadClosedBannerIds(): {[id: string]: boolean} {
+  private loadClosedBannerIds(): Record<string, boolean> {
     const closedBannersStr = localStorage.getItem(this.closedBannersKey);
 
     if (closedBannersStr) {
@@ -119,7 +119,7 @@ export class BannerCreateDirective implements OnInit {
     }
   }
 
-  private saveClosedBannerIds(closed: {[id: string]: boolean}): void {
+  private saveClosedBannerIds(closed: Record<string, boolean>): void {
     localStorage.setItem(this.closedBannersKey, JSON.stringify(closed));
   }
 }
@@ -128,13 +128,8 @@ export class BannerCreateDirective implements OnInit {
   selector: 'app-banners',
   templateUrl: './banners.component.html',
   styleUrls: ['./banners.component.scss'],
+  imports: [BannerCreateDirective],
 })
-export class BannersComponent implements OnInit {
+export class BannersComponent {
   @Input() banners: Banner[];
-
-  constructor() {
-  }
-
-  ngOnInit(): void {
-  }
 }

@@ -12,18 +12,18 @@ describe('Hyp3JobService', () => {
   });
 
   it('failed jobs with no files should work', () => {
-    const jobs = [<any>testJobs.failedJobWithEmptyFiles];
+    const jobs = [testJobs.failedJobWithEmptyFiles as any];
 
     const dummyProducts = hyp3JobService.toDummyCMRProducts(jobs);
 
     expect(dummyProducts.length === 1).toBeTruthy();
   });
 
-  it('aria s1 jobs should be skipped', () => {
-    const jobs = [<any>testJobs.ariaS1Job];
+  it('aria s1 jobs should not be skipped', () => {
+    const jobs = [testJobs.ariaS1Job as any];
 
     const dummyProducts = hyp3JobService.toDummyCMRProducts(jobs);
 
-    expect(dummyProducts.length === 0).toBeTruthy();
+    expect(dummyProducts.length !== 0).toBeTruthy();
   });
 });

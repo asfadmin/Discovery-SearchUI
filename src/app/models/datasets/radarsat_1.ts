@@ -18,30 +18,52 @@ export const radarsat_1 = {
   apiValue: { dataset: 'RADARSAT-1' },
   date: {
     start: new Date('1996/02/01 03:19:17 UTC'),
-    end: new Date('2008/05/02 22:05:26 UTC')
+    end: new Date('2008/05/02 22:05:26 UTC'),
   },
   frequency: 'C-Band',
   source: {
     name: 'CSA',
-    url: 'https://www.asc-csa.gc.ca/eng/'
+    url: 'https://www.asc-csa.gc.ca/eng/',
   },
   infoUrl: 'https://asf.alaska.edu/data-sets/sar-data-sets/radarsat-1/',
-  citationUrl: 'https://asf.alaska.edu/data-sets/sar-data-sets/radarsat-1/#radarsat1_cite',
-  productTypes: [{
-    apiValue: 'L0',
-    displayName: 'Level Zero'
-  }, {
-    apiValue: 'L1',
-    displayName: 'Level One Image'
-  }],
+  citationUrl:
+    'https://asf.alaska.edu/data-sets/sar-data-sets/radarsat-1/#radarsat1_cite',
+  productTypes: [
+    {
+      apiValue: 'L0',
+      displayName: 'Level Zero',
+    },
+    {
+      apiValue: 'L1',
+      displayName: 'Level One Image',
+    },
+  ],
   beamModes: [
-    'EH3', 'EH4', 'EH6', 'EL1', 'FN1', 'FN2', 'FN3', 'FN4',
-    'FN5', 'SNA', 'SNB', 'ST1', 'ST2', 'ST3', 'ST4', 'ST5',
-    'ST6', 'ST7', 'SWA', 'SWB', 'WD1', 'WD2', 'WD3'
+    'EH3',
+    'EH4',
+    'EH6',
+    'EL1',
+    'FN1',
+    'FN2',
+    'FN3',
+    'FN4',
+    'FN5',
+    'SNA',
+    'SNB',
+    'ST1',
+    'ST2',
+    'ST3',
+    'ST4',
+    'ST5',
+    'ST6',
+    'ST7',
+    'SWA',
+    'SWB',
+    'WD1',
+    'WD2',
+    'WD3',
   ],
-  polarizations: [
-    'HH'
-  ],
+  polarizations: ['HH'],
   subtypes: [],
   platformDesc: 'RADARSAT_1_DESC',
   platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',

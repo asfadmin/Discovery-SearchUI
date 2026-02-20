@@ -1,2 +1,2 @@
-import { EventProductSortSelectorComponent } from './event-product-sort-selector.component';
-import { EventProductSortSelectorModule } from './event-product-sort-selector.module';
+export * from './event-product-sort-selector.component';
+export * from './event-product-sort-selector.module';

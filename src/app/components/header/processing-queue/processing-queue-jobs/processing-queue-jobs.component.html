@@ -1,112 +1,168 @@
 <div class="jobs-list">
-
   <div class="sort-options">
     <div class="flex-field">
       <mat-form-field>
-        <mat-label>{{ 'SORT_CRITERIA'  |  translate }}</mat-label>
-        <mat-select (selectionChange)="onSortChange()" [(ngModel)]='sortType'>
-          <div *ngFor="let item of sortTypes">
-            <mat-option [value]="item">
-              {{item | uppercase | translate}}
-            </mat-option>
-          </div>
+        <mat-label>{{ 'SORT_CRITERIA' | translate }}</mat-label>
+        <mat-select (selectionChange)="onSortChange()" [(ngModel)]="sortType">
+          @for (item of sortTypes; track item) {
+            <div>
+              <mat-option [value]="item">
+                {{ item | uppercase | translate }}
+              </mat-option>
+            </div>
+          }
         </mat-select>
       </mat-form-field>
     </div>
 
     <div class="flex-field">
       <mat-form-field>
-        <mat-label>{{ 'SORT_ORDER'  |  translate }}</mat-label>
-        <mat-select (selectionChange)="onSortChange()" [(ngModel)]='sortOrder'>
-          <div *ngFor="let item of sortOrders">
-            <mat-option [value]="item">
-              {{item | uppercase | translate }}
-            </mat-option>
-          </div>
+        <mat-label>{{ 'SORT_ORDER' | translate }}</mat-label>
+        <mat-select (selectionChange)="onSortChange()" [(ngModel)]="sortOrder">
+          @for (item of sortOrders; track item) {
+            <div>
+              <mat-option [value]="item">
+                {{ item | uppercase | translate }}
+              </mat-option>
+            </div>
+          }
         </mat-select>
       </mat-form-field>
     </div>
 
-    <div *ngIf="jobsDisplay.length > 0" class="flex-field jobs-overview">
-      <div>
-        {{ jobsDisplay.length }} <span [ngPlural]="jobsDisplay.length">
-          <ng-template ngPluralCase="=1">{{ 'JOB' | translate }}</ng-template>
-          <ng-template ngPluralCase="other">{{ 'JOBS' | translate }}</ng-template>
-        </span>,
-        {{ costPerJob * jobsDisplay.length }} <span [ngPlural]="costPerJob * jobsDisplay.length">
-          <ng-template ngPluralCase="=1">{{ 'CREDIT' | translate }}</ng-template>
-          <ng-template ngPluralCase="other">{{ 'CREDITS' | translate }}</ng-template>
-        </span>
+    @if (jobsDisplay.length > 0) {
+      <div class="flex-field jobs-overview">
+        <div>
+          {{ jobsDisplay.length }}
+          <span [ngPlural]="jobsDisplay.length">
+            <ng-template ngPluralCase="=1">{{ 'JOB' | translate }}</ng-template>
+            <ng-template ngPluralCase="other">{{
+              'JOBS' | translate
+            }}</ng-template> </span
+          >, {{ costPerJob * jobsDisplay.length }}
+          <span [ngPlural]="costPerJob * jobsDisplay.length">
+            <ng-template ngPluralCase="=1">{{
+              'CREDIT' | translate
+            }}</ng-template>
+            <ng-template ngPluralCase="other">{{
+              'CREDITS' | translate
+            }}</ng-template>
+          </span>
+        </div>
       </div>
-    </div>
+    }
   </div>
 
-  <mat-list *ngIf="!areJobsLoading" role="list" class="flex-list">
-    <ng-container
-      *ngIf="jobsDisplay.length > 0 ; then jobsQueued; else emptyQueue">
-    </ng-container>
-
-    <ng-template #jobsQueued>
-      <mat-list-item *ngFor="let job of jobsDisplay">
-          <img matListItemAvatar
-               [src]="job.granules[0].thumbnail"
-               onerror="this.src='assets/no-thumb.png'"
-               matBadgeOverlap="false"
-               matListAvatar>
-
-          <div matListItemTitle class="granule-name">
-            {{ job.granules[0].name }}
+  @if (!areJobsLoading) {
+    <mat-list role="list" class="flex-list">
+      @if (jobsDisplay.length > 0) {
+        @for (job of jobsDisplay; track job) {
+          <mat-list-item>
+            <img
+              matListItemAvatar
+              [src]="job.granules[0].thumbnail"
+              onerror="this.src='assets/no-thumb.png'"
+              matBadgeOverlap="false"
+              matListAvatar
+            />
+            @if (job.job_type.name !== 'ARIA_S1_GUNW') {
+              <div matListItemTitle class="granule-name">
+                {{ job.granules[0].name }}
+              </div>
+            } @else {
+              <div matListItemTitle class="granule-name">
+                {{ job.granules[0].metadata.date | shortDate }} -
+                {{ job.granules[1].metadata.date | shortDate }}
+              </div>
+            }
+            <!-- @if implicitly wraps everything with <span> -->
+            @if (job.job_type.name === 'ARIA_S1_GUNW') {
+              <div matListItemLine>
+                <b> Frame {{ job.reference_id }} </b>
+                <span>
+                  ({{ costPerJob }}
+                  <span [ngPlural]="costPerJob * jobsDisplay.length">
+                    <ng-template ngPluralCase="=1">{{
+                      'CREDIT' | uppercase | translate
+                    }}</ng-template>
+                    <ng-template ngPluralCase="other">{{
+                      'CREDITS' | uppercase | translate
+                    }}</ng-template> </span
+                  >)
+                </span>
+              </div>
+            }
+            @if (job.job_type.name === 'RTC GAMMA') {
+              <div matListItemLine>
+                <b>
+                  {{ job.job_type.name }}
+                </b>
+                <b>
+                  @if (job.granules[0].bytes === 0) {
+                    <span>{{ 'VIRTUAL' | translate }}</span>
+                  }
+                  @if (job.granules[0].bytes !== 0) {
+                    <span>{{
+                      job.granules[0].bytes.toString() | readableSizeFromBytes
+                    }}</span>
+                  }
+                </b>
+                <span>
+                  ({{ costPerJob }}
+                  <span [ngPlural]="costPerJob * jobsDisplay.length">
+                    <ng-template ngPluralCase="=1">{{
+                      'CREDIT' | uppercase | translate
+                    }}</ng-template>
+                    <ng-template ngPluralCase="other">{{
+                      'CREDITS' | uppercase | translate
+                    }}</ng-template> </span
+                  >)
+                </span>
+              </div>
+            }
+            @if (!['ARIA_S1_GUNW', 'RTC GAMMA'].includes(job.job_type.name)) {
+              <div style="font-size: 14px" matListItemLine>
+                {{ job.granules[1]?.name }}
+              </div>
+            }
+            <div class="button-remove-job" matListItemMeta>
+              <button
+                (click)="onRemoveJob(job)"
+                matTooltip="{{ 'REMOVE_JOB' | translate }}"
+                mat-icon-button
+              >
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+          </mat-list-item>
+        }
+      } @else {
+        <div class="empty-queue">
+          <div class="jobs-empty-message">
+            {{ 'YOUR_JOBS_QUEUE_IS_EMPTY' | translate }}
           </div>
-
-          <div *ngIf="job.job_type.name === 'RTC GAMMA'" matListItemLine>
-            <b>
-              {{ job.job_type.name }}
-            </b>
-            <b>
-              <span *ngIf="job.granules[0].bytes === 0">Virtual</span>
-              <span *ngIf="job.granules[0].bytes !== 0">{{ job.granules[0].bytes.toString() | readableSizeFromBytes }}</span>
-            </b>
-            <span> ({{costPerJob}}
-              <span [ngPlural]="costPerJob * jobsDisplay.length">
-            <ng-template ngPluralCase="=1">{{ 'CREDIT' | uppercase | translate }}</ng-template>
-            <ng-template ngPluralCase="other">{{ 'CREDITS' | uppercase | translate }}</ng-template>
-              </span>)
-            </span>
+          <div class="jobs-empty-message-docs-link">
+            <a href="https://hyp3-docs.asf.alaska.edu/" target="_blank">
+              {{ 'ON_DEMAND_HY_P3_DOCUMENTATION' | translate }}
+            </a>
           </div>
-          <div *ngIf="job.job_type.name !== 'RTC GAMMA'" style="font-size: 14px;" matListItemLine>
-          {{job.granules[1]?.name}}
-          </div>
-
-          <div class="button-remove-job" matListItemMeta>
-            <button (click)="onRemoveJob(job)"
-                    matTooltip="{{'REMOVE_JOB' | translate}}"
-                    mat-icon-button>
-              <mat-icon>close</mat-icon>
-            </button>
-          </div>
-      </mat-list-item>
-
-    </ng-template>
-
-    <ng-template #emptyQueue>
-      <div class="empty-queue">
-        <div class="jobs-empty-message">
-          {{ 'YOUR_JOBS_QUEUE_IS_EMPTY' |  translate }}
         </div>
-        <div class="jobs-empty-message-docs-link">
-          <a href="https://hyp3-docs.asf.alaska.edu/" target="_blank">
-            {{'ON_DEMAND_HY_P3_DOCUMENTATION' | translate}}
-          </a>
+        <div class="jobs-search">
+          <button
+            [disabled]="!isLoggedIn"
+            (click)="viewCustomProducts($event)"
+            color="primary"
+            mat-flat-button
+          >
+            {{ 'VIEW_SUBMITTED_JOBS' | translate }}
+          </button>
+          @if (!isLoggedIn) {
+            <p class="not-logged-in">
+              {{ 'SIGN_IN_TO_VIEW_SUBMITTED_JOBS' | translate }}
+            </p>
+          }
         </div>
-      </div>
-
-      <div class="jobs-search">
-        <button [disabled]="!isLoggedIn"
-                (click)="viewCustomProducts($event)" color="primary" mat-flat-button>
-          {{ 'VIEW_SUBMITTED_JOBS' |  translate }}
-        </button>
-        <p class="not-logged-in" *ngIf="!isLoggedIn">{{ 'SIGN_IN_TO_VIEW_SUBMITTED_JOBS' |  translate }}</p>
-      </div>
-    </ng-template>
-  </mat-list>
+      }
+    </mat-list>
+  }
 </div>

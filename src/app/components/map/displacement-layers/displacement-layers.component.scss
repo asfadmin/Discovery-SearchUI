@@ -1,5 +1,5 @@
-@import "asf-theme";
-@import "variables";
+@use "asf-theme-variables" as *;
+@use "variables" as *;
 
 .disp-layers--layout {
   height: 100%;
@@ -70,47 +70,6 @@
   justify-content: space-between;
 }
 
-.rollout-checkbox {
-  margin: 4px 0;
-  position: relative;
-}
-
-.priority-legend {
-  display: inline-flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  //margin: 0 5px 5px;
-  margin-top: -5px;
-  margin-bottom: 7px;
-  margin-left: 40px;
-  width: 170px;
-  height: 20px;
-  padding: 0;
-  border-radius: 4px;
-}
-
-.priority-box {
-  flex: 1;
-  margin: 0;
-  text-align: center;
-  vertical-align: middle;
-}
-
-.first-priority {
-  background-color: rgba(127, 206, 255, 0.8);
-}
-
-.second-priority {
-  color: white;
-  background-color: rgba(45, 128, 179, 0.7);
-}
-
-.third-priority {
-  color: white;
-  background-color: rgba(0, 64, 103, 0.6);
-}
-
 .velocity-help-icon {
   position: absolute;
   margin-top: 9px;
@@ -135,11 +94,11 @@
 ::ng-deep {
   .slider-formatting {
     .mdc-slider {
-      --mdc-slider-active-track-height: 3px;
-      --mdc-slider-active-track-color: #236192;
-      --mdc-slider-handle-height: 10px;
-      --mdc-slider-handle-width: 10px;
-      --mdc-slider-handle-color: #dcbd5b;
+      --mat-slider-active-track-height: 3px;
+      --mat-slider-active-track-color: #236192;
+      --mat-slider-handle-height: 10px;
+      --mat-slider-handle-width: 10px;
+      --mat-slider-handle-color: #dcbd5b;
     }
   }
 }

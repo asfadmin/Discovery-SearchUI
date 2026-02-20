@@ -3,38 +3,35 @@ import { Injectable } from '@angular/core';
 import * as models from '@models';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DatasetForProductService {
-
-  constructor() { }
-
-  public match(scene: models.CMRProduct) : models.Dataset {
+  public match(scene: models.CMRProduct): models.Dataset {
     if (scene.dataset === 'ALOS') {
-      return scene.metadata.instrument === 'AVNIR-2' ?
-        models.avnir : models.alos;
+      return scene.metadata.instrument === 'AVNIR-2'
+        ? models.avnir
+        : models.alos;
     }
-    if(scene.metadata.productType === 'BURST') {
+    if (scene.metadata.productType === 'BURST') {
       return models.sentinel_1_bursts;
     }
-    if(scene.id.startsWith('OPERA')) {
-      if(scene.id.startsWith('OPERA_L3_DISP')) {
+    if (['TROPO-ZENITH', 'ECMWF_TROPO'].includes(scene.metadata.productType)) {
+      return models.tropo;
+    }
+    if (scene.id.startsWith('OPERA')) {
+      if (scene.id.startsWith('OPERA_L3_DISP')) {
         // return models.opera_disp;
       }
       return models.opera_s1;
     }
 
-    const exact = (datasetID, sceneDataset) => (
-      datasetID === sceneDataset
-    );
+    const exact = (datasetID, sceneDataset) => datasetID === sceneDataset;
 
-    const partial = (datasetID, sceneDataset) => (
-      datasetID.includes(sceneDataset) ||
-      sceneDataset.includes(datasetID)
-    );
+    const partial = (datasetID, sceneDataset) =>
+      datasetID.includes(sceneDataset) || sceneDataset.includes(datasetID);
 
-    if(scene.name.startsWith('S1-GUNW')) {
-      return models.datasets['SENTINEL-1 INTERFEROGRAM (BETA)']
+    if (scene?.name?.startsWith('S1-GUNW')) {
+      return models.datasets['SENTINEL-1 INTERFEROGRAM (BETA)'];
     }
 
     return (
@@ -46,16 +43,15 @@ export class DatasetForProductService {
 
   private getDatasetMatching(
     scene: models.CMRProduct,
-    comparator: (datasetName: string, sceneDataset: string) => boolean
+    comparator: (datasetName: string, sceneDataset: string) => boolean,
   ): models.Dataset {
-    return  models.datasetList
-      .filter(dataset => {
-        const [datasetName, sceneDataset] = [
-          dataset.id.toLowerCase(),
-          scene.dataset.toLocaleLowerCase()
-        ];
+    return models.datasetList.filter((dataset) => {
+      const [datasetName, sceneDataset] = [
+        dataset.id.toLowerCase(),
+        scene.dataset.toLocaleLowerCase(),
+      ];
 
-        return comparator(datasetName, sceneDataset);
-      })[0];
+      return comparator(datasetName, sceneDataset);
+    })[0];
   }
 }

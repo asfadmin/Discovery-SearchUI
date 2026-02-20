@@ -4,7 +4,6 @@ import { Banner, SidebarType } from '@models';
 
 import { UIActionType, UIActions } from './ui.action';
 
-
 export interface UIState {
   isFiltersMenuOpen: boolean;
   isResultsMenuOpen: boolean;
@@ -22,6 +21,7 @@ export interface UIState {
   currentLanguage: string | null;
   activeUUID: string | null;
   banners: Banner[];
+  frameSelectionEnabled: boolean;
 }
 
 export const initState: UIState = {
@@ -41,6 +41,7 @@ export const initState: UIState = {
   currentLanguage: 'en',
   activeUUID: null,
   banners: [],
+  frameSelectionEnabled: false,
 };
 
 export function uiReducer(state = initState, action: UIActions): UIState {
@@ -55,70 +56,70 @@ export function uiReducer(state = initState, action: UIActions): UIState {
     case UIActionType.CLOSE_AOI_OPTIONS: {
       return {
         ...state,
-        isAOIOptionsOpen: false
+        isAOIOptionsOpen: false,
       };
     }
 
     case UIActionType.OPEN_AOI_OPTIONS: {
       return {
         ...state,
-        isAOIOptionsOpen: true
+        isAOIOptionsOpen: true,
       };
     }
 
     case UIActionType.OPEN_SIDEBAR: {
       return {
         ...state,
-        sidebar: action.payload
+        sidebar: action.payload,
       };
     }
 
     case UIActionType.CLOSE_SIDEBAR: {
       return {
         ...state,
-        sidebar: SidebarType.NONE
+        sidebar: SidebarType.NONE,
       };
     }
 
     case UIActionType.SHOW_S1_RAW_DATA: {
       return {
         ...state,
-        showS1RawData: true
+        showS1RawData: true,
       };
     }
 
     case UIActionType.HIDE_EXPIRED_DATA: {
       return {
         ...state,
-        showExpiredData: false
+        showExpiredData: false,
       };
     }
 
     case UIActionType.SHOW_EXPIRED_DATA: {
       return {
         ...state,
-        showExpiredData: true
+        showExpiredData: true,
       };
     }
 
     case UIActionType.HIDE_S1_RAW_DATA: {
       return {
         ...state,
-        showS1RawData: false
+        showS1RawData: false,
       };
     }
 
     case UIActionType.START_ADDING_CUSTOM_POINT: {
       return {
         ...state,
-        isAddingCustomPoint: true
+        isAddingCustomPoint: true,
       };
     }
 
     case UIActionType.STOP_ADDING_CUSTOM_POINT: {
       return {
         ...state,
-        isAddingCustomPoint: false
+        isAddingCustomPoint: false,
       };
     }
 
@@ -132,119 +133,125 @@ export function uiReducer(state = initState, action: UIActions): UIState {
     case UIActionType.CLOSE_FILTERS_MENU: {
       return {
         ...state,
-        isFiltersMenuOpen: false
+        isFiltersMenuOpen: false,
       };
     }
 
     case UIActionType.OPEN_FILTERS_MENU: {
       return {
         ...state,
-        isFiltersMenuOpen: true
+        isFiltersMenuOpen: true,
       };
     }
 
     case UIActionType.TOGGLE_BOTTOM_MENU: {
       return {
         ...state,
-        isResultsMenuOpen: !state.isResultsMenuOpen
+        isResultsMenuOpen: !state.isResultsMenuOpen,
       };
     }
 
     case UIActionType.CLOSE_BOTTOM_MENU: {
       return {
         ...state,
-        isResultsMenuOpen: false
+        isResultsMenuOpen: false,
       };
     }
 
     case UIActionType.OPEN_BOTTOM_MENU: {
       return {
         ...state,
-        isResultsMenuOpen: true
+        isResultsMenuOpen: true,
       };
     }
 
     case UIActionType.OPEN_PREFERENCE_MENU: {
       return {
         ...state,
-        isPreferenceMenuOpen: true
+        isPreferenceMenuOpen: true,
       };
     }
 
     case UIActionType.CLOSE_PREFERENCE_MENU: {
       return {
         ...state,
-        isPreferenceMenuOpen: false
+        isPreferenceMenuOpen: false,
       };
     }
 
     case UIActionType.SET_ONLY_SCENES_WITH_BROWSE: {
       return {
         ...state,
-        onlyScenesWithBrowse: action.payload
+        onlyScenesWithBrowse: action.payload,
       };
     }
 
     case UIActionType.SET_IS_BROWSE_DIALOG_OPEN: {
       return {
         ...state,
-        isBrowseDialogOpen: action.payload
+        isBrowseDialogOpen: action.payload,
       };
     }
 
     case UIActionType.SET_IS_ON_DEMAND_QUEUE_OPEN: {
       return {
         ...state,
-        isOnDemandQueueOpen: action.payload
+        isOnDemandQueueOpen: action.payload,
       };
     }
 
     case UIActionType.SET_IS_DOWNLOAD_QUEUE_OPEN: {
       return {
         ...state,
-        isDownloadQueueOpen: action.payload
+        isDownloadQueueOpen: action.payload,
       };
     }
 
     case UIActionType.SET_HELP_DIALOG_TOPIC: {
       return {
         ...state,
-        helpDialogTopic: action.payload
+        helpDialogTopic: action.payload,
       };
     }
 
     case UIActionType.SET_CURRENT_LANGUAGE: {
       return {
         ...state,
-        currentLanguage: action.payload
+        currentLanguage: action.payload,
       };
     }
 
     case UIActionType.SET_ACTIVE_UUID: {
       return {
         ...state,
-        activeUUID: action.payload
+        activeUUID: action.payload,
+      };
+    }
+
+    case UIActionType.SET_FRAME_SELECTION: {
+      return {
+        ...state,
+        frameSelectionEnabled: action.payload,
       };
     }
 
     case UIActionType.ADD_BANNERS: {
-      const banners = [
-        ...state.banners, ...action.payload
-      ];
+      const banners = [...state.banners, ...action.payload];
 
       return {
         ...state,
-        banners
+        banners,
       };
     }
 
     case UIActionType.REMOVE_BANNER: {
-      const banners = [ ...state.banners ]
-        .filter(banner => banner !== action.payload);
+      const banners = [...state.banners].filter(
+        (banner) => banner !== action.payload,
+      );
 
       return {
         ...state,
-        banners
+        banners,
       };
     }
 
@@ -254,85 +261,83 @@ export function uiReducer(state = initState, action: UIActions): UIState {
   }
 }
 
-
 export const getUIState = createFeatureSelector<UIState>('ui');
 
 export const getIsAOIOptionsOpen = createSelector(
   getUIState,
-  (state: UIState) => state.isAOIOptionsOpen
+  (state: UIState) => state.isAOIOptionsOpen,
 );
 
 export const getIsFiltersMenuOpen = createSelector(
   getUIState,
-  (state: UIState) => state.isFiltersMenuOpen
+  (state: UIState) => state.isFiltersMenuOpen,
 );
 
 export const getIsResultsMenuOpen = createSelector(
   getUIState,
-  state => state.isResultsMenuOpen
+  (state) => state.isResultsMenuOpen,
 );
 
 export const getIsBrowseDialogOpen = createSelector(
   getUIState,
-  state => state.isBrowseDialogOpen
+  (state) => state.isBrowseDialogOpen,
 );
 
 export const getOnlyScenesWithBrowse = createSelector(
   getUIState,
-  state => state.onlyScenesWithBrowse
+  (state) => state.onlyScenesWithBrowse,
 );
 
-export const getBanners = createSelector(
-  getUIState,
-  state => state.banners
-);
+export const getBanners = createSelector(getUIState, (state) => state.banners);
 
-export const getSidebar = createSelector(
-  getUIState,
-  state => state.sidebar
-);
+export const getSidebar = createSelector(getUIState, (state) => state.sidebar);
 
 export const getIsAddingCustomPoint = createSelector(
   getUIState,
-  state => state.isAddingCustomPoint
+  (state) => state.isAddingCustomPoint,
 );
 
 export const getShowS1RawData = createSelector(
   getUIState,
-  state => state.showS1RawData
+  (state) => state.showS1RawData,
 );
 
 export const getShowExpiredData = createSelector(
   getUIState,
-  state => state.showExpiredData
+  (state) => state.showExpiredData,
 );
 
 export const getHelpDialogTopic = createSelector(
   getUIState,
-  state => state.helpDialogTopic
+  (state) => state.helpDialogTopic,
 );
 
 export const getCurrentLanguage = createSelector(
   getUIState,
-  state => state.currentLanguage
+  (state) => state.currentLanguage,
 );
 
 export const getActiveUUID = createSelector(
   getUIState,
-  state => state.activeUUID
+  (state) => state.activeUUID,
 );
 
 export const getIsDownloadQueueOpen = createSelector(
   getUIState,
-  state => state.isDownloadQueueOpen
+  (state) => state.isDownloadQueueOpen,
 );
 
 export const getIsOnDemandQueueOpen = createSelector(
   getUIState,
-  state => state.isOnDemandQueueOpen
+  (state) => state.isOnDemandQueueOpen,
 );
 
 export const getIsPreferenceMenuOpen = createSelector(
   getUIState,
-  state => state.isPreferenceMenuOpen
+  (state) => state.isPreferenceMenuOpen,
+);
+
+export const getIsFrameSelectionEnabled = createSelector(
+  getUIState,
+  (state: UIState) => state.frameSelectionEnabled,
 );

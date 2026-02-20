@@ -1,4 +1,4 @@
-@import "asf-theme";
+@use "asf-theme-variables" as *;
 
 .dialog-header {
   font-weight: bold;
@@ -15,11 +15,30 @@
 }
 
 .code-block {
+  margin: 0;
+  overflow: scroll;
+  border-radius: 10px;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 16px 24px;
   @include themify($themes) {
     background: darken(themed('background-white'), 10%);
   }
-  padding: 10px;
-  max-height: 300px;
-  overflow: auto;
-  border-radius: 10px;
+
 }
+
+.flex-item {
+  flex: 0 1 auto;
+}
+
+.code-export-title {
+  @include themify($themes) {
+    background: darken(themed('background-white'), 10%);
+  }
+  margin-bottom: 9px;
+}
+

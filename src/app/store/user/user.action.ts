@@ -1,6 +1,12 @@
 import { Action } from '@ngrx/store';
 
-import { UserAuth, UserProfile, Search, GeographicFiltersType, SavedFilterPreset } from '@models';
+import {
+  UserAuth,
+  UserProfile,
+  Search,
+  GeographicFiltersType,
+  SavedFilterPreset,
+} from '@models';
 
 export enum UserActionType {
   LOGIN = '[User] Login',
@@ -32,7 +38,7 @@ export enum UserActionType {
   DELETE_FILTERS_PRESET = '[User] Delete Saved Filters Preset',
   LOAD_FILTERS_PRESET = '[User] Load Saved Filters Preset',
 
-  UPDATE_FILTERS_PRESET_NAME = '[User] Change Filter Preset Name'
+  UPDATE_FILTERS_PRESET_NAME = '[User] Change Filter Preset Name',
 }
 
 export class Login implements Action {
@@ -103,7 +109,6 @@ export class SaveFilters implements Action {
   public readonly type = UserActionType.SAVE_FILTERS;
 }
 
-
 export class SetFilters implements Action {
   public readonly type = UserActionType.SET_FILTERS;
 
@@ -119,19 +124,23 @@ export class AddNewSearch implements Action {
 export class UpdateSearchWithFilters implements Action {
   public readonly type = UserActionType.UPDATE_SEARCH_WITH_FILTERS;
 
-  constructor(public payload: {
-    id: string,
-    filters: GeographicFiltersType
-  }) {}
+  constructor(
+    public payload: {
+      id: string;
+      filters: GeographicFiltersType;
+    },
+  ) {}
 }
 
 export class UpdateSearchName implements Action {
   public readonly type = UserActionType.UPDATE_SEARCH_NAME;
 
-  constructor(public payload: {
-    id: string;
-    name: string;
-  }) {}
+  constructor(
+    public payload: {
+      id: string;
+      name: string;
+    },
+  ) {}
 }
 
 export class DeleteSavedSearch implements Action {
@@ -161,7 +170,7 @@ export class LoadFiltersPreset implements Action {
 export class UpdateFilterPresetName implements Action {
   public readonly type = UserActionType.UPDATE_FILTERS_PRESET_NAME;
 
-  constructor(public payload: {presetID: string, newName: string}) {}
+  constructor(public payload: { presetID: string; newName: string }) {}
 }
 
 export type UserActions =
