@@ -91,7 +91,7 @@
     "typescript": "~5.9.3",
     "ua-parser-js": "^0.7.28",
     "uuid": "^7.0.3",
-    "webpack": "^5.72.1",
+    "webpack": "^5.105.2",
     "wnumb": "^1.2.0",
     "xml2js": "^0.5.0",
     "zone.js": "~0.15.1"
