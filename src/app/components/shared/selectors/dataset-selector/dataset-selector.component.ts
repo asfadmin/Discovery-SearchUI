@@ -79,18 +79,19 @@ export class DatasetSelectorComponent {
     if (!this.datasetFilter()) {
       return this.datasets();
     }
+    const userInput = this.datasetFilter().toUpperCase();
     return this.datasets().filter((dataset) => {
       return (
-        dataset.name
-          .toUpperCase()
-          .includes(this.datasetFilter().toUpperCase()) ||
+        dataset.name.toUpperCase().includes(userInput) ||
         this.translate
           .instant(dataset.platformDesc)
           .toUpperCase()
-          .includes(this.datasetFilter().toUpperCase())
+          .includes(userInput) ||
+        dataset.source.name.includes(userInput)
       );
     });
   });
+
   public menuOpen() {
     this.searchElement().nativeElement.focus();
   }
