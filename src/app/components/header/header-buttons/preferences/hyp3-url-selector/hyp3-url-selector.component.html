@@ -1,0 +1,49 @@
+<mat-form-field class="hyp3-url">
+  <mat-label>{{ 'HY_P3_API_URL' | translate }}</mat-label>
+  <input
+    matInput
+    (change)="onNewHyp3Url($event)"
+    [(ngModel)]="hyp3BackendUrl"
+    name="backendUrl"
+    [matAutocomplete]="auto"
+  />
+
+  <mat-autocomplete
+    (optionSelected)="onAutoCompleteChangeHyp3Url($event.option.value)"
+    #auto="matAutocomplete"
+  >
+    @for (url of hyp3SavedUrls; track url) {
+      <mat-option [value]="url">{{ url }} </mat-option>
+    }
+  </mat-autocomplete>
+
+  <button
+    matSuffix
+    mat-icon-button
+    [attr.aria-label]="'CLEAR' | translate"
+    (click)="onResetHyp3Url()"
+  >
+    <mat-icon>refresh</mat-icon>
+  </button>
+
+  @if (
+    hyp3BackendUrl !== baseHyp3Url && hyp3SavedUrls.includes(hyp3BackendUrl)
+  ) {
+    <button
+      matSuffix
+      mat-icon-button
+      [attr.aria-label]="'REMOVE' | translate"
+      (click)="onRemoveHyp3Url(hyp3BackendUrl)"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  }
+</mat-form-field>
+
+<a
+  class="default-filters-presets"
+  mat-flat-button
+  [href]="hyp3BackendUrl"
+  target="_blank"
+  >HyP3 API UI</a
+>

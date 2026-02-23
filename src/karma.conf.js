@@ -1,6 +1,6 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
-process.env.CHROME_BIN = require('puppeteer').executablePath()
+// process.env.CHROME_BIN = require('puppeteer').executablePath()
 
 module.exports = function (config) {
   config.set({
@@ -13,22 +13,23 @@ module.exports = function (config) {
       require('karma-coverage-istanbul-reporter'),
       require('@angular-devkit/build-angular/plugins/karma'),
     ],
-    autoWatch: false,
+    autoWatch: true,
     browsers: ['ChromeHeadless'],
     customLaunchers: {
-        HeadlessChrome: {
-            base: 'ChromeHeadless',
-            flags: [
-	      '--no-sandbox',
-	      '--headless',
-              '--disable-gpu',
-              '--disable-translate',
-              '--disable-extensions'
-	    ]
-  	}
+      HeadlessChrome: {
+        base: 'ChromeHeadless',
+        flags: [
+          '--no-sandbox',
+          '--headless',
+          '--disable-setuid-sandbox',
+          '--disable-gpu',
+          '--disable-translate',
+          '--disable-extensions',
+        ],
+      },
     },
-    singleRun: true,
+    singleRun: false,
     browserNoActivityTimeout: 120000,
-    urlRoot: ''
+    urlRoot: '',
   });
 };

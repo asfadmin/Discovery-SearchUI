@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import * as models from '@models';
 
 import { Store } from '@ngrx/store';
@@ -10,13 +10,38 @@ import * as uiStore from '@store/ui';
 
 import { SubSink } from 'subsink';
 import * as services from '@services';
+import { AsyncPipe } from '@angular/common';
+import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
+import { SarviewsEventSearchSelectorComponent } from '@components/shared/selectors/sarviews-event-search-selector/sarviews-event-search-selector.component';
+import { SarviewsEventTypeSelectorComponent } from '@components/shared/selectors/sarviews-event-type-selector/sarviews-event-type-selector.component';
+import { DateSelectorComponent } from '@components/shared/selectors/date-selector/date-selector.component';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { SearchButtonComponent } from '@components/shared/search-button/search-button.component';
+import { HeaderButtonsComponent } from '../header-buttons/header-buttons.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-sarviews-header',
   templateUrl: './sarviews-header.component.html',
-  styleUrls: ['./sarviews-header.component.scss', '../header.component.scss']
+  styleUrls: ['./sarviews-header.component.scss', '../header.component.scss'],
+  imports: [
+    SearchTypeSelectorComponent,
+    SarviewsEventSearchSelectorComponent,
+    SarviewsEventTypeSelectorComponent,
+    DateSelectorComponent,
+    MatButton,
+    MatIcon,
+    SearchButtonComponent,
+    HeaderButtonsComponent,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
-export class SarviewsHeaderComponent implements OnInit {
+export class SarviewsHeaderComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(services.ScreenSizeService);
+
   public datasets = models.datasetList;
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
   public breakpoint$ = this.screenSize.breakpoint$;
@@ -25,16 +50,11 @@ export class SarviewsHeaderComponent implements OnInit {
 
   public selectedDataset: string;
 
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: services.ScreenSizeService,
-  ) { }
-
   ngOnInit() {
     this.subs.add(
-      this.store$.select(filterStore.getSelectedDatasetId).subscribe(
-        selected => this.selectedDataset = selected
-      )
+      this.store$
+        .select(filterStore.getSelectedDatasetId)
+        .subscribe((selected) => (this.selectedDataset = selected)),
     );
   }
 

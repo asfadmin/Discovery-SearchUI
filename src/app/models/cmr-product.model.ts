@@ -1,8 +1,9 @@
 import * as moment from 'moment';
 
-import { Hyp3Job } from './hyp3.model';
+import { Hyp3Job } from './hyp3';
 
 export type CMRProductPair = CMRProduct[];
+export type CMRProductsById = Record<string, CMRProduct>;
 
 export interface CMRProduct {
   name: string;
@@ -17,6 +18,7 @@ export interface CMRProduct {
   groupId: string;
   isUnzippedFile: boolean;
   isDummyProduct: boolean;
+  virtual?: boolean;
 
   metadata: CMRProductMetadata;
 }
@@ -34,6 +36,9 @@ export interface CMRProductMetadata {
   path: number;
   frame: number;
   absoluteOrbit: number[];
+
+  collectionName: string;
+  collectionID: string;
 
   stackSize: number;
   // ALOS PALSAR
@@ -60,15 +65,20 @@ export interface CMRProductMetadata {
 
   // OPERA-S1
   opera: OperaS1Metadata | null;
+  nisar: NISARMetadata | null;
 
   fileName: string | null;
   job: Hyp3Job | null;
 
   // versioning
-  pgeVersion: number | null;
+  pgeVersion: string | null;
 
-  // BURST XML, OPERA-S1
+  // BURST XML, OPERA-S1, NISAR
   subproducts: any[];
+  additionalUrls?: string[] | null;
+  s3URI?: string;
+  s3Urls?: string[] | null;
+  fileSizes?: Record<string, { bytes: number }> | null;
   parentID: string;
 
   // ARIA S1 GUNW
@@ -89,7 +99,20 @@ export interface SLCBurstMetadata {
 export interface OperaS1Metadata {
   operaBurstID: string;
   additionalUrls: string[];
+  s3Urls: string[];
   validityStartDate?: moment.Moment | null;
+}
+
+export interface NISARMetadata {
+  additionalUrls: string[];
+  s3Urls: string[];
+  frameCoverage: string;
+  jointObservation: string;
+  sideBandPolarization: string;
+  mainBandPolarization: string;
+  crid: string | null;
+  rangeBandwidth: string;
+  sizeMB?: Record<string, { bytes: number; format: string }>;
 }
 
 export enum FlightDirection {

@@ -1,23 +1,48 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, inject } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as queueStore from '@store/queue';
 import * as scenesStore from '@store/scenes';
 import * as uiStore from '@store/ui';
-
+import * as filtersStore from '@store/filters';
 import { ScreenSizeService } from '@services';
 import { Breakpoints } from '@models';
 import { SubSink } from 'subsink';
 import * as searchStore from '@store/search';
 import * as models from '@models';
+import { AsyncPipe } from '@angular/common';
+import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
+import { BaselineFrameReferenceToggleComponent } from '@components/shared/selectors/baseline-frame-reference-toggle/baseline-frame-reference-toggle.component';
+import { DatasetSelectorComponent } from '@components/shared/selectors/dataset-selector/dataset-selector.component';
+import { MasterSceneSelectorComponent } from '@components/shared/selectors/master-scene-selector/master-scene-selector.component';
+import { SearchButtonComponent } from '@components/shared/search-button/search-button.component';
+import { HeaderButtonsComponent } from '../header-buttons/header-buttons.component';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-baseline-header',
   templateUrl: './baseline-header.component.html',
-  styleUrls: ['./baseline-header.component.css',  '../header.component.scss']
+  styleUrls: ['./baseline-header.component.css', '../header.component.scss'],
+  imports: [
+    SearchTypeSelectorComponent,
+    BaselineFrameReferenceToggleComponent,
+    DatasetSelectorComponent,
+    MasterSceneSelectorComponent,
+    SearchButtonComponent,
+    HeaderButtonsComponent,
+    MatButton,
+    MatIcon,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class BaselineHeaderComponent implements OnInit {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   @Output() public openQueue = new EventEmitter<void>();
 
   public queuedProducts$ = this.store$.select(queueStore.getQueuedProducts);
@@ -25,28 +50,42 @@ export class BaselineHeaderComponent implements OnInit {
   public breakpoints = Breakpoints;
   public areResultsLoaded: boolean;
 
-  public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
+  public selectedProducts$ = this.store$.select(
+    scenesStore.getSelectedSceneProducts,
+  );
 
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = models.SearchType;
 
+  public datasets = [models.beta];
+  public selectedDataset = 'SENTINEL-1 INTERFEROGRAM (BETA)';
+
   private subs = new SubSink();
 
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-  ) { }
+  public shouldUseFramesForReference = false;
 
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(scenesStore.getAreResultsLoaded).subscribe(
-        areLoaded => this.areResultsLoaded = areLoaded
-      )
+      this.store$
+        .select(scenesStore.getAreResultsLoaded)
+        .subscribe((areLoaded) => (this.areResultsLoaded = areLoaded)),
+    );
+    this.subs.add(
+      this.store$
+        .select(filtersStore.getShouldUseFramesForReference)
+        .subscribe(
+          (shouldUseFrames) =>
+            (this.shouldUseFramesForReference = shouldUseFrames),
+        ),
     );
   }
 
   public onToggleFiltersMenu(): void {
     this.store$.dispatch(new uiStore.OpenFiltersMenu());
+  }
+
+  public onDatasetChange(dataset: string): void {
+    this.store$.dispatch(new filtersStore.SetSelectedDataset(dataset));
   }
 
   public onOpenDownloadQueue(): void {

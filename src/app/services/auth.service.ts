@@ -1,39 +1,54 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { interval, Subject, Observable, of } from 'rxjs';
-import { map, takeUntil, take, filter, catchError } from 'rxjs/operators';
+import {
+  map,
+  takeUntil,
+  take,
+  catchError,
+  filter,
+  switchMap,
+  retry,
+} from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 
 import { EnvironmentService } from './environment.service';
-import jwt_decode from 'jwt-decode';
 import * as userStore from '@store/user';
 
 import * as models from '@models';
 import { NotificationService } from './notification.service';
-
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
+  private env = inject(EnvironmentService);
+  private http = inject(HttpClient);
+  private notificationService = inject(NotificationService);
+  private store$ = inject<Store<AppState>>(Store);
+  private translateService = inject(TranslateService);
+  private existingUserInfo: models.UserAuth = null;
+
   private bc: BroadcastChannel;
-  constructor(
-    private env: EnvironmentService,
-    private http: HttpClient,
-    private notificationService: NotificationService,
-    private store$: Store<AppState>,
-  ) {
+  constructor() {
     if (typeof BroadcastChannel !== 'undefined') {
       this.bc = new BroadcastChannel('asf-vertex');
       this.bc.onmessage = (_event: MessageEvent) => {
-        const user = this.getUser();
-        if (!user.id) {
-          this.store$.dispatch(new userStore.Logout());
-        } else {
-          this.store$.dispatch(new userStore.Login(user));
-        }
+        this.getUser()
+          .pipe(
+            take(1),
+            map((user) => {
+              if (!user?.id) {
+                this.store$.dispatch(new userStore.Logout());
+              } else {
+                this.store$.dispatch(new userStore.Login(user));
+              }
+            }),
+          )
+          .subscribe();
       };
     }
   }
@@ -62,113 +77,115 @@ export class AuthService {
     const loginWindow = window.open(
       url,
       'SAR Search: URS Earth Data Authorization',
-      'scrollbars=yes, width=600, height= 600'
+      'scrollbars=yes, width=600, height= 600',
     );
 
     const loginWindowClosed = new Subject<void>();
-
     return interval(500).pipe(
       takeUntil(loginWindowClosed),
-      map(_ => {
-        let user = null;
-
+      switchMap((_) => {
         if (loginWindow.closed) {
           loginWindowClosed.next();
+          return this.getUser();
         }
-
         try {
           if (loginWindow.location.host === window.location.host) {
             loginWindow.close();
-            user = this.getUser();
             this.bc.postMessage({
-              event : 'login'
+              event: 'login',
             });
+            return this.getUser();
           }
-        } catch (e) {
+        } catch (_e) {
+          // Do nothing
         }
-
-        return user;
+        return of(null);
       }),
-      catchError(_ => {
-        this.notificationService.error('Trouble logging in', 'Error', {
-          timeOut: 5000,
-        });
+      catchError((_) => {
+        this.notificationService.error(
+          this.translateService.instant('TROUBLE_LOGGING_IN'),
+          this.translateService.instant('ERROR'),
+          { timeOut: 5000 },
+        );
         loginWindowClosed.next();
         return of(null);
       }),
-      filter(user => !!user),
-      take(1)
+      filter((user) => !!user),
+      take(1),
     );
   }
 
-  public logout$(): Observable<models.UserAuth>  {
-    return this.http.get(
-      `${this.authUrl}/loginservice/logout`, {
+  public logout$(): Observable<models.UserAuth> {
+    return this.http
+      .get(`${this.authUrl}/logout`, {
         responseType: 'text',
-        withCredentials: true
-      }).pipe(
-        map(_ => {
-        this.bc.postMessage({
-          event : 'logout'
-        });
-        return this.getUser(); }),
-        catchError(_ => {
-          this.notificationService.error('Trouble logging out', 'Error', {
-            timeOut: 5000,
+        withCredentials: true,
+      })
+      .pipe(
+        map((_) => {
+          this.bc.postMessage({
+            event: 'logout',
           });
-          return of(this.getUser());
+          return this.existingUserInfo;
         }),
-        take(1)
+        catchError((_) => {
+          this.notificationService.error(
+            this.translateService.instant('TROUBLE_LOGGING_OUT'),
+            this.translateService.instant('ERROR'),
+            { timeOut: 5000 },
+          );
+          return this.getUser();
+        }),
+        take(1),
       );
   }
 
-  public getUser(): models.UserAuth {
-    const cookies = this.loadCookies();
-    const token = cookies['asf-urs'];
-
-    if (!token) {
-      return this.nullUser();
-    }
-    try {
-      const user = jwt_decode(token);
-
-      if (this.isExpired(user)) {
-        return this.nullUser();
-      }
-
-      setTimeout(() => {
-        this.store$.dispatch(new userStore.Logout());
-        this.notificationService.info('Session Expired', 'Please login again');
-      }, user.exp * 1000 - Date.now());
-
-      return this.makeUser(
-        user['urs-user-id'],
-        user['urs-groups'],
-        token
+  public getUser(): Observable<models.UserAuth | null> {
+    return this.http
+      .get<models.UserAuth>(`${this.env.currentEnv.user_data}/info/cookie`, {
+        withCredentials: true,
+      })
+      .pipe(
+        retry({
+          count: 3,
+          delay: 100,
+        }),
+        map((user) => {
+          return this.makeUser(
+            user['urs-user-id'],
+            user['urs-groups'],
+            user['urs-access-token'],
+            user['exp'],
+          );
+        }),
+        map((final) => {
+          this.existingUserInfo = final;
+          setTimeout(
+            () => {
+              this.store$.dispatch(new userStore.Logout());
+              this.notificationService.info(
+                'Session Expired',
+                'Please login again',
+              );
+            },
+            final.exp * 1000 - Date.now(),
+          );
+          return final;
+        }),
+        catchError((_error) => {
+          console.error('Failed to get user info');
+          return of(null);
+        }),
+        take(1),
       );
-    } catch (error) {
-      return this.nullUser();
-    }
   }
 
-  private makeUser(id: string, groups: models.URSGroup[], token: string): models.UserAuth {
-    return { id, token, groups };
+  private makeUser(
+    id: string,
+    groups: models.URSGroup[],
+    token: string,
+    exp: number,
+  ): models.UserAuth {
+    return { id, token, groups, exp };
   }
-
-  private nullUser(): models.UserAuth {
-    return { id: null, token: null, groups: [] };
-  }
-
-  private isExpired(userToken): boolean {
-    return Date.now() > userToken.exp * 1000;
-  }
-
-  private loadCookies() {
-    return document.cookie.split(';')
-      .map(s => s.trim().split('='))
-      .map(([name, val]) => ({[name]: val}))
-      .reduce(
-        (allCookies, cookie) => ({ ...allCookies, ...cookie })
-        );
-      }
 }

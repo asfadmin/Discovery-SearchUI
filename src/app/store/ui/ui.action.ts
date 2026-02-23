@@ -27,8 +27,10 @@ export enum UIActionType {
   SET_ONLY_SCENES_WITH_BROWSE = '[UI] Set Only Scenes With Browse',
   SET_HELP_DIALOG_TOPIC = '[UI] Set Help Dialog Topic',
   SET_CURRENT_LANGUAGE = '[UI] Set Current Language',
+  SET_ACTIVE_UUID = '[UI] Set Active Displacement UUID',
   SET_IS_DOWNLOAD_QUEUE_OPEN = '[UI] Is Download Queue Open',
   SET_IS_ON_DEMAND_QUEUE_OPEN = '[UI] Is On Demand Queue Open',
+  SET_FRAME_SELECTION = '[UI] Set if frame selection mode enabled',
 
   TOGGLE_BOTTOM_MENU = '[UI] Toggle Bottom Menu',
   CLOSE_BOTTOM_MENU = '[UI] Close Bottom Menu',
@@ -40,7 +42,6 @@ export enum UIActionType {
   LOAD_BANNERS = '[Banner] Load Banners',
   ADD_BANNERS = '[Banner] Set Banners',
   REMOVE_BANNER = '[Banner] Remove Banner',
-
 }
 
 export class ToggleAOIOptions implements Action {
@@ -128,13 +129,13 @@ export class SetIsBrowseDialogOpen implements Action {
 }
 
 export class SetIsDownloadQueueOpen implements Action {
-  public readonly type = UIActionType.SET_IS_DOWNLOAD_QUEUE_OPEN ;
+  public readonly type = UIActionType.SET_IS_DOWNLOAD_QUEUE_OPEN;
 
   constructor(public payload: boolean) {}
 }
 
 export class SetIsOnDemandQueueOpen implements Action {
-  public readonly type = UIActionType.SET_IS_ON_DEMAND_QUEUE_OPEN ;
+  public readonly type = UIActionType.SET_IS_ON_DEMAND_QUEUE_OPEN;
 
   constructor(public payload: boolean) {}
 }
@@ -157,6 +158,12 @@ export class SetCurrentLanguage implements Action {
   constructor(public payload: string | null) {}
 }
 
+export class SetActiveUUID implements Action {
+  public readonly type = UIActionType.SET_ACTIVE_UUID;
+
+  constructor(public payload: string | null) {}
+}
+
 export class RemoveBanner implements Action {
   public readonly type = UIActionType.REMOVE_BANNER;
 
@@ -171,6 +178,12 @@ export class AddBanners implements Action {
 
 export class LoadBanners implements Action {
   public readonly type = UIActionType.LOAD_BANNERS;
+}
+
+export class SetFrameSelection implements Action {
+  public readonly type = UIActionType.SET_FRAME_SELECTION;
+
+  constructor(public payload: boolean) {}
 }
 
 export type UIActions =
@@ -196,10 +209,11 @@ export type UIActions =
   | SetOnlyScenesWithBrowse
   | SetHelpDialogTopic
   | SetCurrentLanguage
+  | SetActiveUUID
   | SetIsBrowseDialogOpen
   | SetIsDownloadQueueOpen
   | SetIsOnDemandQueueOpen
+  | SetFrameSelection
   | LoadBanners
   | RemoveBanner
   | AddBanners;
-

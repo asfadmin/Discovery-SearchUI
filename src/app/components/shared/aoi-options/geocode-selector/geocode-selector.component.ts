@@ -1,10 +1,17 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnDestroy,
+  OnInit,
+  Output,
+  inject,
+} from '@angular/core';
 import { MapService, WktService } from '@services';
 import { debounceTime, Subject, switchMap } from 'rxjs';
 import { Vector as VectorSource } from 'ol/source';
 import GeoJSON from 'ol/format/GeoJSON';
-import {transformExtent} from 'ol/proj';
+import { transformExtent } from 'ol/proj';
 
 import { SubSink } from 'subsink';
 import { AppState } from '@store';
@@ -12,13 +19,38 @@ import { Store } from '@ngrx/store';
 import { getGeocodeArea } from '@store/filters';
 import { Feature } from 'ol';
 import * as models from '@models';
+import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
+import {
+  MatAutocompleteTrigger,
+  MatAutocomplete,
+} from '@angular/material/autocomplete';
+import { FormsModule } from '@angular/forms';
+import {} from '@angular/common';
+import { MatOption } from '@angular/material/select';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-geocode-selector',
   templateUrl: './geocode-selector.component.html',
-  styleUrls: ['./geocode-selector.component.scss']
+  styleUrls: ['./geocode-selector.component.scss'],
+  imports: [
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatAutocompleteTrigger,
+    FormsModule,
+    MatAutocomplete,
+
+    MatOption,
+    TranslateModule,
+  ],
 })
 export class GeocodeSelectorComponent implements OnInit, OnDestroy {
+  private http = inject(HttpClient);
+  private wkt = inject(WktService);
+  private store$ = inject<Store<AppState>>(Store);
+  private mapService = inject(MapService);
+
   @Output() geocodeWkt = new EventEmitter();
   public options = [];
   public search_key = '';
@@ -28,40 +60,35 @@ export class GeocodeSelectorComponent implements OnInit, OnDestroy {
 
   private subs = new SubSink();
 
-  constructor(private http: HttpClient,
-    private wkt: WktService,
-    private store$: Store<AppState>,
-    private mapService: MapService
-  ) { }
-
   ngOnInit(): void {
     this.subs.add(
-      this.subject.pipe(
-        debounceTime(500),
-        switchMap((geocodeText: string) => this.http.get(
-          `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(geocodeText)}.json?access_token=${models.mapboxToken}`
-        ))
-      ).subscribe(res => {
-          this.options = res['features'].map(
-            (feature: any) => ({
-              'name': feature['place_name'],
-              'id': feature['id'],
-              'bbox': feature['bbox']
-            }));
+      this.subject
+        .pipe(
+          debounceTime(500),
+          switchMap((geocodeText: string) =>
+            this.http.get(
+              `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(geocodeText)}.json?access_token=${models.mapboxToken}`,
+            ),
+          ),
+        )
+        .subscribe((res) => {
+          this.options = res['features'].map((feature: any) => ({
+            name: feature['place_name'],
+            id: feature['id'],
+            bbox: feature['bbox'],
+          }));
 
           this.vectorSource = new VectorSource({
             features: new GeoJSON().readFeatures(res),
           });
-        })
-    )
+        }),
+    );
 
     this.subs.add(
-      this.store$.select(getGeocodeArea).subscribe(
-        (value) => {
-          this.search_key = value;
-        }
-      )
-    )
+      this.store$.select(getGeocodeArea).subscribe((value) => {
+        this.search_key = value;
+      }),
+    );
   }
 
   ngOnDestroy(): void {
@@ -79,13 +106,18 @@ export class GeocodeSelectorComponent implements OnInit, OnDestroy {
 
   public onSelect(option) {
     this.search_key = option.name;
-    let feature: Feature = this.vectorSource.getFeatures().find(feat => feat.getId() === option.id);
+    const feature: Feature = this.vectorSource
+      .getFeatures()
+      .find((feat) => feat.getId() === option.id);
 
-    let zoomExtent = transformExtent(feature.getGeometry().getExtent(), 'EPSG:4326', this.mapService.epsg());
+    const zoomExtent = transformExtent(
+      feature.getGeometry().getExtent(),
+      'EPSG:4326',
+      this.mapService.epsg(),
+    );
     this.mapService.zoomToExtent(zoomExtent);
 
-    let wktFeature = this.wkt.featureToWkt(feature, 'EPSG:4326');
+    const wktFeature = this.wkt.featureToWkt(feature, 'EPSG:4326');
     this.geocodeWkt.emit({ wkt: wktFeature, geocode: option.name });
   }
-
 }

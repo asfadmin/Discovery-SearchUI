@@ -1,3 +1,5 @@
+@use "asf-theme-variables" as *;
+
 hr {
   @include themify($themes) {
     border-top-color: rgba(themed('primary-light'), 0.2);

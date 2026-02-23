@@ -1,49 +1,109 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as mapStore from '@store/map';
 import * as uiStore from '@store/ui';
+import * as searchStore from '@store/search';
 
 import { ScreenSizeService } from '@services';
-import { MapDrawModeType, MapInteractionModeType, Breakpoints } from '@models';
+import {
+  MapDrawModeType,
+  MapInteractionModeType,
+  Breakpoints,
+  SearchType,
+} from '@models';
+import { ThemePalette } from '@angular/material/core';
+import { TitleCasePipe } from '@angular/common';
+import { MatButton } from '@angular/material/button';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatIcon } from '@angular/material/icon';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { TranslateModule } from '@ngx-translate/core';
+import { AoiIconPipe } from '@pipes/aoi-icon.pipe';
 
 @Component({
   selector: 'app-draw-selector',
   templateUrl: './draw-selector.component.html',
-  styleUrls: ['./draw-selector.component.scss']
+  styleUrls: ['./draw-selector.component.scss'],
+  imports: [
+    MatButton,
+    MatMenuTrigger,
+    MatIcon,
+    MatSlideToggle,
+    MatMenu,
+    MatMenuItem,
+    TitleCasePipe,
+    TranslateModule,
+    AoiIconPipe,
+  ],
 })
 export class DrawSelectorComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   public drawMode: MapDrawModeType;
   public types = MapDrawModeType;
   private subs = new SubSink();
 
   public breakpoint: Breakpoints;
+  public searchType: SearchType;
+  public searchTypes = SearchType;
   public breakpoints = Breakpoints;
 
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService,
-  ) {}
+  public interaction: MapInteractionModeType;
+  public interactionTypes = MapInteractionModeType;
+
+  public isDrawing = true;
+  isDisabled = false;
+  color: ThemePalette = 'accent';
 
   ngOnInit() {
     this.subs.add(
-      this.store$.select(mapStore.getMapDrawMode).subscribe(
-        drawMode => this.drawMode = drawMode
-      )
+      this.store$
+        .select(mapStore.getMapInteractionMode)
+        .subscribe(
+          (mode) => (this.isDrawing = mode === MapInteractionModeType.DRAW),
+        ),
+    );
+
+    this.subs.add(
+      this.store$
+        .select(mapStore.getMapDrawMode)
+        .subscribe((drawMode) => (this.drawMode = drawMode)),
     );
 
     this.subs.add(
       this.screenSize.breakpoint$.subscribe(
-        breakpoint => this.breakpoint = breakpoint
-      )
+        (breakpoint) => (this.breakpoint = breakpoint),
+      ),
+    );
+
+    this.subs.add(
+      this.store$
+        .select(searchStore.getSearchType)
+        .subscribe((searchType) => (this.searchType = searchType)),
     );
   }
 
   public onNewDrawMode(mode: MapDrawModeType): void {
-    this.store$.dispatch(new mapStore.SetMapInteractionMode(MapInteractionModeType.DRAW));
+    this.store$.dispatch(
+      new mapStore.SetMapInteractionMode(MapInteractionModeType.DRAW),
+    );
     this.store$.dispatch(new mapStore.SetMapDrawMode(mode));
+  }
+
+  public toggleDrawMode() {
+    let newMode = MapInteractionModeType.DRAW;
+    if (this.isDrawing) {
+      newMode = MapInteractionModeType.NONE;
+    }
+    this.onNewInteractionMode(newMode);
+  }
+
+  public onNewInteractionMode(mode: MapInteractionModeType): void {
+    this.store$.dispatch(new mapStore.SetMapInteractionMode(mode));
   }
 
   public onImportSelected() {
@@ -51,20 +111,16 @@ export class DrawSelectorComponent implements OnInit, OnDestroy {
     this.store$.dispatch(action);
   }
 
-  public onPolygonSelected =
-    () => this.selectMode(MapDrawModeType.POLYGON)
+  public onPolygonSelected = () => this.selectMode(MapDrawModeType.POLYGON);
 
-  public onLineStringSelected =
-    () => this.selectMode(MapDrawModeType.LINESTRING)
+  public onLineStringSelected = () =>
+    this.selectMode(MapDrawModeType.LINESTRING);
 
-  public onPointSelected =
-    () => this.selectMode(MapDrawModeType.POINT)
+  public onPointSelected = () => this.selectMode(MapDrawModeType.POINT);
 
-  public onBoxSelected =
-    () => this.selectMode(MapDrawModeType.BOX)
+  public onBoxSelected = () => this.selectMode(MapDrawModeType.BOX);
 
-  public onCircleSelected =
-    () => this.selectMode(MapDrawModeType.CIRCLE)
+  public onCircleSelected = () => this.selectMode(MapDrawModeType.CIRCLE);
 
   private selectMode(mode): void {
     this.onNewDrawMode(mode);
@@ -73,4 +129,6 @@ export class DrawSelectorComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
+
+  protected readonly MapDrawModeType = MapDrawModeType;
 }

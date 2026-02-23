@@ -1,58 +1,81 @@
-<mat-dialog-content>
-  <div style="display: flex; flex-direction: row; justify-content: space-between; margin-bottom: 15px;">
-    <div class="dialog-header" mat-dialog-title>{{ 'API_URL_DOWNLOAD_SEARCH_RESULTS' | translate }}</div>
-    <div>
-      <mat-icon (click)="onCloseDownloadQueue()" class="clickable">
-        close
-      </mat-icon>
-    </div>
-  </div>
+<h2 mat-dialog-title class="dialog-title">
+  {{ 'API_URL_DOWNLOAD_SEARCH_RESULTS' | translate }}
+</h2>
 
-  <div style="margin-bottom: 10px;">
-    {{ 'USE_AN_ASF_SEARCH_API_QUERY_TO_DOWNLOAD_MORE_RESULTS_MANUALLY' | translate }}
+<mat-dialog-content>
+  <div style="margin-bottom: 10px">
+    {{
+      'USE_AN_ASF_SEARCH_API_QUERY_TO_DOWNLOAD_MORE_RESULTS_MANUALLY'
+        | translate
+    }}
   </div>
 
   <form #apiLinkForm="ngForm" onsubmit="return false">
-    <mat-form-field style="margin-right: 15px;">
+    <mat-form-field style="margin-right: 15px">
       <mat-label>{{ 'AMOUNT' | translate }}</mat-label>
-      <input type="number" name="amount"
-      [(ngModel)]="amount"
-      (change)="onAmountChange($event)"
-      matInput>
+      <input
+        type="number"
+        name="amount"
+        [(ngModel)]="amount"
+        (change)="onAmountChange($event)"
+        matInput
+      />
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>{{ 'FORMAT' | translate }}</mat-label>
       <mat-select
         [(ngModel)]="format"
-        (selectionChange)="onFormatChange($event.value)" name="format">
-        <mat-option *ngFor="let format of formats" [value]="format.value">
-          {{format.viewValue}}
-        </mat-option>
+        (selectionChange)="onFormatChange($event.value)"
+        name="format"
+      >
+        @for (format of formats; track format) {
+          <mat-option [value]="format.value">
+            {{ format.viewValue }}
+          </mat-option>
+        }
       </mat-select>
     </mat-form-field>
 
     <mat-form-field class="w100">
       <mat-label>{{ 'API_URL' | translate }}</mat-label>
-      <textarea (click)="$event.target"
-        name="Api URL" [readonly]="true" [(ngModel)]="apiLink" matInput
-        cdkTextareaAutosize cdkAutosizeMinRows="2"
-        cdkAutosizeMaxRows="5">
+      <textarea
+        (click)="($event.target)"
+        name="Api URL"
+        [readonly]="true"
+        [(ngModel)]="apiLink"
+        matInput
+        cdkTextareaAutosize
+        cdkAutosizeMinRows="2"
+        cdkAutosizeMaxRows="5"
+      >
       </textarea>
 
-      <mat-icon
-        *ngIf="!!apiLink" (click)="onCopyLink()"
-        matTooltip="{{ 'COPY_TO_CLIPBOARD' | translate }}"
-        class="clickable copy-icon" matSuffix>
-        file_copy
-      </mat-icon>
+      @if (!!apiLink) {
+        <mat-icon
+          (click)="onCopyLink()"
+          matTooltip="{{ 'COPY_TO_CLIPBOARD' | translate }}"
+          class="clickable copy-icon"
+          matSuffix
+        >
+          file_copy
+        </mat-icon>
+      }
     </mat-form-field>
   </form>
 </mat-dialog-content>
 
-<mat-dialog-actions style="margin-top: 15px;">
-  <a [href]="asfWebsite.api_get_data" target="_blank" mat-flat-button>{{ 'API_DOCS' | translate }}</a>
-  <a [href]="apiLink" target="_blank" color="primary" mat-flat-button>
-    {{ 'DOWNLOAD_RESULTS' | translate }}
-  </a>
+<mat-dialog-actions class="flex-container">
+  <div class="flex-item" style="margin-bottom: 15px">
+    <app-docs-modal
+      url="https://docs.asf.alaska.edu/api/basics/"
+      text="API_DOCS"
+    ></app-docs-modal>
+  </div>
+  <div class="flex-item" style="margin-bottom: 15px">
+    <button mat-button mat-dialog-close>{{ 'CANCEL' | translate }}</button>
+    <a [href]="apiLink" target="_blank" color="primary" mat-flat-button>
+      {{ 'DOWNLOAD_RESULTS' | translate }}
+    </a>
+  </div>
 </mat-dialog-actions>

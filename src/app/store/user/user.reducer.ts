@@ -18,7 +18,8 @@ export const initState: UserState = {
   auth: {
     id: null,
     token: null,
-    groups: []
+    groups: [],
+    exp: null,
   },
   profile: {
     defaultDataset: 'SENTINEL-1',
@@ -26,20 +27,21 @@ export const initState: UserState = {
     maxResults: 250,
     defaultMaxConcurrentDownloads: 3,
     defaultFilterPresets: {
-      'Baseline Search' : '',
-      'Geographic Search' : '',
-      'SBAS Search' : ''
+      'Baseline Search': '',
+      'Geographic Search': '',
+      'SBAS Search': '',
+      Displacement: '',
     },
     hyp3BackendUrl: '',
+    hyp3SavedUrls: [],
     theme: 'light',
-    language: ''
+    language: '',
   },
   savedSearches: {
     searches: [],
-    searchHistory: []
+    searchHistory: [],
   },
-  savedFilterPresets: []
-
+  savedFilterPresets: [],
 };
 
 /* Reducer */
@@ -49,7 +51,7 @@ export function userReducer(state = initState, action: UserActions): UserState {
     case UserActionType.LOGIN: {
       return {
         ...state,
-        auth: action.payload
+        auth: action.payload,
       };
     }
 
@@ -59,15 +61,16 @@ export function userReducer(state = initState, action: UserActions): UserState {
         auth: {
           id: null,
           token: null,
-          groups: []
-        }
+          groups: [],
+          exp: null,
+        },
       };
     }
 
     case UserActionType.SET_PROFILE: {
       return {
         ...state,
-        profile: action.payload
+        profile: action.payload,
       };
     }
 
@@ -76,20 +79,20 @@ export function userReducer(state = initState, action: UserActions): UserState {
         ...state,
         savedSearches: {
           ...state.savedSearches,
-          searches: action.payload
-        }
+          searches: action.payload,
+        },
       };
     }
 
     case UserActionType.ADD_NEW_SEARCH: {
-      const searches = [ action.payload, ...state.savedSearches.searches ];
+      const searches = [action.payload, ...state.savedSearches.searches];
 
       return {
         ...state,
         savedSearches: {
           ...state.savedSearches,
-          searches
-        }
+          searches,
+        },
       };
     }
 
@@ -98,21 +101,23 @@ export function userReducer(state = initState, action: UserActions): UserState {
         ...state,
         savedSearches: {
           ...state.savedSearches,
-          searchHistory: action.payload
-        }
+          searchHistory: action.payload,
+        },
       };
     }
 
     case UserActionType.ADD_SEARCH_TO_HISTORY: {
-      const searchHistory = [ action.payload, ...state.savedSearches.searchHistory ]
-        .slice(0, 10);
+      const searchHistory = [
+        action.payload,
+        ...state.savedSearches.searchHistory,
+      ].slice(0, 10);
 
       return {
         ...state,
         savedSearches: {
           ...state.savedSearches,
-          searchHistory
-        }
+          searchHistory,
+        },
       };
     }
 
@@ -120,7 +125,7 @@ export function userReducer(state = initState, action: UserActions): UserState {
       const updateFunc = (search, _) => {
         return {
           ...search,
-          filters: action.payload.filters
+          filters: action.payload.filters,
         };
       };
 
@@ -131,7 +136,7 @@ export function userReducer(state = initState, action: UserActions): UserState {
       const updateFunc = (search, _) => {
         return {
           ...search,
-          name: action.payload.name
+          name: action.payload.name,
         };
       };
 
@@ -139,52 +144,61 @@ export function userReducer(state = initState, action: UserActions): UserState {
     }
 
     case UserActionType.DELETE_SAVED_SEARCH: {
-      const searches = [ ...state.savedSearches.searches ]
-        .filter(search => search.id !== action.payload);
+      const searches = [...state.savedSearches.searches].filter(
+        (search) => search.id !== action.payload,
+      );
 
       return {
         ...state,
         savedSearches: {
           ...state.savedSearches,
-          searches
-        }
+          searches,
+        },
       };
     }
 
     case UserActionType.ADD_NEW_FILTERS_PRESET: {
       return {
         ...state,
-        savedFilterPresets: [ ...state.savedFilterPresets, action.payload]
+        savedFilterPresets: [...state.savedFilterPresets, action.payload],
       };
     }
 
     case UserActionType.DELETE_FILTERS_PRESET: {
       return {
         ...state,
-        savedFilterPresets: state.savedFilterPresets.filter(preset => preset.id !== action.payload)
+        savedFilterPresets: state.savedFilterPresets.filter(
+          (preset) => preset.id !== action.payload,
+        ),
       };
     }
 
     case UserActionType.UPDATE_FILTERS_PRESET_NAME: {
-      const newFilterIdx = state.savedFilterPresets.findIndex(preset => preset.id === action.payload.presetID);
+      const newFilterIdx = state.savedFilterPresets.findIndex(
+        (preset) => preset.id === action.payload.presetID,
+      );
 
       const newFilter = {
-        ... state.savedFilterPresets.find(preset => preset.id === action.payload.presetID),
-        name: action.payload.newName
+        ...state.savedFilterPresets.find(
+          (preset) => preset.id === action.payload.presetID,
+        ),
+        name: action.payload.newName,
       };
 
-      const newFilterPresets = state.savedFilterPresets.filter(preset => preset.id !== action.payload.presetID);
+      const newFilterPresets = state.savedFilterPresets.filter(
+        (preset) => preset.id !== action.payload.presetID,
+      );
       newFilterPresets.splice(newFilterIdx, 0, newFilter);
       return {
         ...state,
-        savedFilterPresets: newFilterPresets
+        savedFilterPresets: newFilterPresets,
       };
     }
 
     case UserActionType.SET_FILTERS: {
       return {
         ...state,
-        savedFilterPresets: action.payload
+        savedFilterPresets: action.payload,
       };
     }
 
@@ -195,9 +209,10 @@ export function userReducer(state = initState, action: UserActions): UserState {
 }
 
 function updateItem(state, action, updateFunc) {
-  const searches = [ ...state.savedSearches.searches ];
-  const updateSearch = searches
-    .filter(search => search.id === action.payload.id)[0];
+  const searches = [...state.savedSearches.searches];
+  const updateSearch = searches.filter(
+    (search) => search.id === action.payload.id,
+  )[0];
 
   const searchIdx = searches.indexOf(updateSearch);
 
@@ -211,8 +226,8 @@ function updateItem(state, action, updateFunc) {
     ...state,
     savedSearches: {
       ...state.savedSearches,
-      searches
-    }
+      searches,
+    },
   };
 }
 
@@ -222,7 +237,7 @@ export const getUserState = createFeatureSelector<UserState>('user');
 
 export const getUserAuth = createSelector(
   getUserState,
-  (state: UserState) => state.auth
+  (state: UserState) => state.auth,
 );
 
 export const getHasRestrictedDataAccess = createSelector(
@@ -231,35 +246,39 @@ export const getHasRestrictedDataAccess = createSelector(
     const groups = state.auth.groups;
     return (
       groups.length > 0 &&
-      groups.some(
-        group => group.name === 'HAS_ACCESS_TO_RESTRICTED_DATA'
-      )
+      groups.some((group) => group.name === 'HAS_ACCESS_TO_RESTRICTED_DATA')
     );
-  }
+  },
 );
-
 
 export const getUserProfile = createSelector(
   getUserState,
-  (state: UserState) => state.profile
+  (state: UserState) => state.profile,
 );
 
 export const getIsUserLoggedIn = createSelector(
   getUserState,
-  (state: UserState) => !!state.auth.id
+  (state: UserState) => !!state.auth.id,
+);
+
+export const getUserEDLToken = createSelector(
+  getUserState,
+  (state: UserState) => {
+    return state.auth.token ?? null;
+  },
 );
 
 export const getSavedSearches = createSelector(
   getUserState,
-  (state: UserState) => state.savedSearches.searches
+  (state: UserState) => state.savedSearches.searches,
 );
 
 export const getSearchHistory = createSelector(
   getUserState,
-  (state: UserState) => state.savedSearches.searchHistory
+  (state: UserState) => state.savedSearches.searchHistory,
 );
 
 export const getSavedFilters = createSelector(
   getUserState,
-  (state: UserState) => state.savedFilterPresets
+  (state: UserState) => state.savedFilterPresets,
 );

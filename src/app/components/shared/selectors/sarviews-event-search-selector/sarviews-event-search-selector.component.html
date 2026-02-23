@@ -1,35 +1,36 @@
 <form #eventsQueryForm="ngForm">
   <mat-form-field>
-    <input type="text"
-    placeholder="{{ 'EVENT_SEARCH' | translate }}"
-    (input)="onSearchQueryChange($event)"
-    matInput
-    [(ngModel)]="eventQuery"
-    [ngModelOptions]="{standalone: true}"
-    [matAutocomplete]="jobNameSelector"
-    >
+    <input
+      type="text"
+      placeholder="{{ 'EVENT_SEARCH' | translate }}"
+      (input)="onSearchQueryChange($event)"
+      matInput
+      [(ngModel)]="eventQuery"
+      [ngModelOptions]="{ standalone: true }"
+      [matAutocomplete]="jobNameSelector"
+    />
   </mat-form-field>
   <mat-autocomplete
-    [panelWidth] = "500"
+    [panelWidth]="500"
     (optionSelected)="onMatAutoCompleteSelect($event)"
-    #jobNameSelector="matAutocomplete">
-    <mat-option *ngFor="let event of (filteredEvents$ | async)"
-        [value]="event.description">
-        <div matTooltip = 'event description, id, or type'>
-            <ng-template [ngIf]="!!event.description" [ngIfElse]="NO_DESCRIPTION">
+    #jobNameSelector="matAutocomplete"
+  >
+    @for (event of filteredEvents$ | async; track event) {
+      <mat-option [value]="event.description">
+        <div matTooltip="{{ 'EVENT_DESCRIPTION_ID_TYPE' | translate }}">
+          @if (!!event.description) {
             <span>
-              {{event.description}}
+              {{ event.description }}
             </span>
-          </ng-template>
-
-          <ng-template #NO_DESCRIPTION>
+          } @else {
             <span>
-              {{event.event_type[0].toLocaleUpperCase()}}{{event.event_type.slice(1)}} {{'EVENT' | translate}}: {{event.processing_timeframe.start | shortDate}}
+              {{ event.event_type[0].toLocaleUpperCase()
+              }}{{ event.event_type.slice(1) }} {{ 'EVENT' | translate }}:
+              {{ event.processing_timeframe.start | shortDate }}
             </span>
-          </ng-template>
-
-
+          }
         </div>
-    </mat-option>
+      </mat-option>
+    }
   </mat-autocomplete>
 </form>

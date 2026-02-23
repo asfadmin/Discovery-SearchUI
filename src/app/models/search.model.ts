@@ -3,9 +3,12 @@ import { ListSearchType } from './filter-types.model';
 import { Range } from './range.model';
 import { FlightDirection } from './cmr-product.model';
 import * as fromDatasets from './dataset.model';
-import { Hyp3JobStatusCode } from './hyp3.model';
-import { SarviewsEventType, SBASOverlap } from '@models';
-// import { SarviewsEventType } from './sarviews-event.model';
+import { Hyp3JobStatusCode } from './hyp3';
+import {
+  SarviewsEventType,
+  SBASOverlap,
+  timeseriesChartItemState,
+} from '@models';
 
 export interface Search {
   searchType: SearchType;
@@ -15,12 +18,14 @@ export interface Search {
 }
 
 export type FilterType =
-  ListFiltersType |
-  GeographicFiltersType |
-  BaselineFiltersType |
-  CustomProductFiltersType |
-  SbasFiltersType |
-  SarviewsFiltersType;
+  | ListFiltersType
+  | GeographicFiltersType
+  | BaselineFiltersType
+  | CustomProductFiltersType
+  | SbasFiltersType
+  | TimeseriesFiltersType
+  | SarviewsFiltersType
+  | DisplacementFiltersType;
 
 export interface ListFiltersType {
   listType: ListSearchType;
@@ -81,7 +86,22 @@ export interface GeographicFiltersType {
 
   fullBurstIDs: string[];
   operaBurstIDs: string[];
-  useCalibrationData: boolean,
+  useCalibrationData: boolean;
+  // shortNames: state.shortNames,
+  // sciProducts: state.scienceProduct,
+  // productConfig: state.productionConfig,
+  // sidePolarizations : state.sidePolarizations,
+  // frameCoverage: state.frameCoverage,
+  // jointObservation: state.jointObservation,
+  shortNames: fromDatasets.DatasetShortName;
+  scienceProduct: string[];
+  productionConfig: string[];
+  sidePolarizations: fromDatasets.DatasetPolarizations;
+  frameCoverage: string[];
+  jointObservation: boolean;
+  rangeBandwidth: string[];
+  instrument: string[];
+  groupID: null | string;
 }
 
 export interface SarviewsFiltersType {
@@ -97,4 +117,20 @@ export interface SarviewsFiltersType {
   sarviewsEventNameFilter: string;
   pinnedProductIDs: string[];
   selectedEventID: string;
+}
+
+export interface DisplacementFiltersType {
+  seriesStates: Record<string, timeseriesChartItemState>;
+  flightDirections: FlightDirection[];
+  dateRange: Range<null | Date>;
+}
+export interface TimeseriesFiltersType {
+  fullBurstIDs: string[];
+}
+export interface SearchRedirect {
+  searchType: SearchType;
+  filters: {
+    selectedDataset: string;
+    productTypes: fromDatasets.ProductType[];
+  };
 }

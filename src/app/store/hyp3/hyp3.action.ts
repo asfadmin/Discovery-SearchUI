@@ -1,6 +1,12 @@
 import { Action } from '@ngrx/store';
 
-import { Hyp3Job, Hyp3User, Hyp3ProcessingOptions, Hyp3Costs, ApplicationStatus } from '@models';
+import {
+  Hyp3Job,
+  Hyp3User,
+  Hyp3ProcessingOptions,
+  Hyp3Costs,
+  ApplicationStatus,
+} from '@models';
 
 export enum Hyp3ActionType {
   LOAD_JOBS = '[Hyp3] Load Jobs',
@@ -10,6 +16,7 @@ export enum Hyp3ActionType {
   SET_PROCESSING_PROJECT_NAME = '[Hyp3] Set Processing Project Name',
 
   SET_ON_DEMAND_USER_ID = '[Hyp3] Set On Demand User ID',
+  SET_HYP3_JOB_IDS = '[Hyp3] Set Hyp3 Job IDs',
 
   LOAD_USER = '[Hyp3] Load User',
   SET_USER = '[Hyp3] Set User',
@@ -17,13 +24,13 @@ export enum Hyp3ActionType {
   LOAD_COSTS = '[Hyp3] Load Costs',
   SET_COSTS = '[Hyp3] Set Costs',
 
-  SUBMIT_JOB = '[Hyp3] Submit Job',
-  SUCCESSFUL_JOB_SUBMISSION = '[Hyp3] Successful Job Submission',
-  ERROR_JOB_SUBMISSION = '[Hyp3] Error Job Submission',
-
   CLEAR_PROCESSING_OPTIONS = '[Hyp3] Clear Processing Options',
   SET_DEBUG_STATUS = '[Hyp3] Set debug status',
 
+  SET_MAX_HYP3_JOBS = '[Hyp3] Set max hyp3 job',
+  MAX_HYP3_RESULTS_HIT = '[Hyp3] Max on demand results hit',
+  RESET_MAX_HYP3_RESULTS_HIT = '[Hyp3] Reset if max on demand results hit',
+  SET_SEARCH_JOB_IDS = '[Hyp3] Set search job ids',
 }
 
 export class LoadJobs implements Action {
@@ -39,7 +46,9 @@ export class SetJobs implements Action {
 export class SetProcessingOptions implements Action {
   public readonly type = Hyp3ActionType.SET_PROCESSING_OPTIONS;
 
-  constructor(public payload: {jobTypeId: string; options: Hyp3ProcessingOptions}) {}
+  constructor(
+    public payload: { jobTypeId: string; options: Hyp3ProcessingOptions },
+  ) {}
 }
 
 export class ClearProcessingOptions implements Action {
@@ -57,18 +66,10 @@ export class SetOnDemandUserID implements Action {
   constructor(public payload: string) {}
 }
 
-export class SubmitJob implements Action {
-  public readonly type = Hyp3ActionType.SUBMIT_JOB;
+export class SetHyp3JobIDs implements Action {
+  public readonly type = Hyp3ActionType.SET_HYP3_JOB_IDS;
 
-  constructor(public payload: string) {}
-}
-
-export class SuccessfulJobSubmission implements Action {
-  public readonly type = Hyp3ActionType.SUCCESSFUL_JOB_SUBMISSION;
-}
-
-export class ErrorJobSubmission implements Action {
-  public readonly type = Hyp3ActionType.ERROR_JOB_SUBMISSION;
+  constructor(public payload: string[]) {}
 }
 
 export class LoadUser implements Action {
@@ -99,6 +100,25 @@ export class ErrorLoadingUser implements Action {
   public readonly type = Hyp3ActionType.ERROR_LOADING_USER;
 }
 
+export class SetMaxHyp3Jobs implements Action {
+  public readonly type = Hyp3ActionType.SET_MAX_HYP3_JOBS;
+
+  constructor(public payload: number) {}
+}
+export class SetSearchJobIds implements Action {
+  public readonly type = Hyp3ActionType.SET_SEARCH_JOB_IDS;
+
+  constructor(public payload: string[]) {}
+}
+
+export class MaxHyp3ResultsHit implements Action {
+  public readonly type = Hyp3ActionType.MAX_HYP3_RESULTS_HIT;
+}
+
+export class ResetMaxHyp3ResultsHit implements Action {
+  public readonly type = Hyp3ActionType.RESET_MAX_HYP3_RESULTS_HIT;
+}
+
 export type Hyp3Actions =
   | LoadJobs
   | SetJobs
@@ -111,7 +131,9 @@ export type Hyp3Actions =
   | ClearProcessingOptions
   | SetProcessingProjectName
   | SetOnDemandUserID
-  | SubmitJob
-  | SuccessfulJobSubmission
-  | ErrorJobSubmission
-  | SetDebugStatus;
+  | SetHyp3JobIDs
+  | SetDebugStatus
+  | SetMaxHyp3Jobs
+  | SetSearchJobIds
+  | MaxHyp3ResultsHit
+  | ResetMaxHyp3ResultsHit;

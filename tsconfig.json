@@ -1,33 +1,83 @@
-/*
-  This is a "Solution Style" tsconfig.json file, and is used by editors and TypeScript’s language server to improve development experience.
-  It is not intended to be used to perform a compilation.
-  To learn more about this file see: https://angular.io/config/solution-tsconfig.
-*/
 {
-  "files": [],
-  "references": [
-    {
-      "path": "./src/tsconfig.app.json",
-    },
-    {
-      "path": "./src/tsconfig.spec.json"
-    },
-    {
-      "path": "./e2e/tsconfig.e2e.json"
-    }
-  ],
-  "include": [
-    ".eslintrc.js",
-  ],
+  "compileOnSave": false,
+  "angularCompilerOptions": {
+    "strictTemplates": true
+  },
   "compilerOptions": {
     "baseUrl": "./",
-    "outDir": "./dist/search-ui",
+    "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
-    "downlevelIteration": true,
+    "moduleResolution": "bundler",
     "experimentalDecorators": true,
-    "moduleResolution": "node",
-    "importHelpers": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "esModuleInterop": true,
+    "target": "ES2022",
+    "module": "ES2022",
+    "useDefineForClassFields": false,
+    "lib": [
+      "ES2022",
+      "dom"
+    ],
+    "paths": {
+      "@components": [
+        "src/app/components"
+      ],
+      "@services": [
+        "src/app/services"
+      ],
+      "@pipes": [
+        "src/app/pipes"
+      ],
+      "@models": [
+        "src/app/models"
+      ],
+      "@directives": [
+        "src/app/directives"
+      ],
+      "@store": [
+        "src/app/store"
+      ],
+      "@shared": [
+        "src/app/shared"
+      ],
+      "@environments": [
+        "src/environments"
+      ],
+      "@testing": [
+        "src/app/testing"
+      ],
+      "@components/*": [
+        "src/app/components/*"
+      ],
+      "@services/*": [
+        "src/app/services/*"
+      ],
+      "@pipes/*": [
+        "src/app/pipes/*"
+      ],
+      "@models/*": [
+        "src/app/models/*"
+      ],
+      "@directives/*": [
+        "src/app/directives/*"
+      ],
+      "@store/*": [
+        "src/app/store/*"
+      ],
+      "@shared/*": [
+        "src/app/shared/*"
+      ],
+      "@environments/*": [
+        "src/environments/*"
+      ],
+      "@testing/*": [
+        "src/app/testing/*"
+      ]
+    }
   }
-
 }

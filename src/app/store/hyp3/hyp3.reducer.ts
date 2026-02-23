@@ -2,9 +2,12 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { Hyp3ActionType, Hyp3Actions } from './hyp3.action';
 import {
-  Hyp3Job, Hyp3User, Hyp3ProcessingOptions,
-  hyp3DefaultJobOptions, Hyp3Costs,
-  ApplicationStatus
+  Hyp3Job,
+  Hyp3User,
+  Hyp3ProcessingOptions,
+  hyp3DefaultJobOptions,
+  Hyp3Costs,
+  ApplicationStatus,
 } from '@models';
 
 /* State */
@@ -14,12 +17,16 @@ export interface Hyp3State {
   user: Hyp3User | null;
   isUserLoading: boolean;
   areJobsLoading: boolean;
+  areMoreJobsToLoad: boolean;
   submittingJobName: string | null;
   processingOptions: Hyp3ProcessingOptions;
   projectName: string;
   userId: string;
+  jobIds: string[];
+  searchJobIds: string[];
   costs: Hyp3Costs;
   debug_status: ApplicationStatus | null;
+  maxHyp3Jobs: number | null;
 }
 
 const initState: Hyp3State = {
@@ -27,25 +34,29 @@ const initState: Hyp3State = {
   user: null,
   isUserLoading: false,
   areJobsLoading: false,
+  areMoreJobsToLoad: false,
   submittingJobName: null,
   processingOptions: hyp3DefaultJobOptions,
   projectName: '',
   debug_status: null,
   userId: '',
+  jobIds: [],
+  searchJobIds: [],
+  maxHyp3Jobs: 3000,
   costs: {
-    "AUTORIFT": {
-      "cost": 1,
+    AUTORIFT: {
+      cost: 1,
     },
-    "INSAR_GAMMA": {
-      "cost": 1,
+    INSAR_GAMMA: {
+      cost: 1,
     },
-    "RTC_GAMMA": {
-      "cost": 1,
+    RTC_GAMMA: {
+      cost: 1,
     },
-    "INSAR_ISCE_BURST": {
-      "cost": 1,
-    }
-  }
+    INSAR_ISCE_BURST: {
+      cost: 1,
+    },
+  },
 };
 
 /* Reducer */
@@ -55,7 +66,7 @@ export function hyp3Reducer(state = initState, action: Hyp3Actions): Hyp3State {
     case Hyp3ActionType.LOAD_JOBS: {
       return {
         ...state,
-        areJobsLoading: true
+        areJobsLoading: true,
       };
     }
 
@@ -63,102 +74,118 @@ export function hyp3Reducer(state = initState, action: Hyp3Actions): Hyp3State {
       return {
         ...state,
         jobs: action.payload,
-        areJobsLoading: false
+        areJobsLoading: false,
       };
     }
 
-
     case Hyp3ActionType.SET_PROCESSING_OPTIONS: {
-      const {jobTypeId, options} = action.payload;
+      const { jobTypeId, options } = action.payload;
       const newOptions = { ...state.processingOptions };
       newOptions[jobTypeId] = options;
 
       return {
         ...state,
-        processingOptions: newOptions
+        processingOptions: newOptions,
       };
     }
 
     case Hyp3ActionType.CLEAR_PROCESSING_OPTIONS: {
       return {
         ...state,
-        processingOptions: hyp3DefaultJobOptions
+        processingOptions: hyp3DefaultJobOptions,
       };
     }
 
     case Hyp3ActionType.SET_PROCESSING_PROJECT_NAME: {
       return {
         ...state,
-        projectName: action.payload
+        projectName: action.payload,
+        areMoreJobsToLoad: false,
       };
     }
 
     case Hyp3ActionType.SET_ON_DEMAND_USER_ID: {
       return {
         ...state,
-        userId: action.payload
+        userId: action.payload,
+      };
+    }
+
+    case Hyp3ActionType.SET_HYP3_JOB_IDS: {
+      return {
+        ...state,
+        jobIds: action.payload,
       };
     }
 
     case Hyp3ActionType.LOAD_USER: {
       return {
         ...state,
-        isUserLoading: true
+        isUserLoading: true,
       };
     }
 
     case Hyp3ActionType.SET_COSTS: {
       return {
         ...state,
-        costs: action.payload
+        costs: action.payload,
       };
     }
 
     case Hyp3ActionType.SET_DEBUG_STATUS: {
       return {
         ...state,
-        debug_status: action.payload
-      }
+        debug_status: action.payload,
+      };
     }
 
     case Hyp3ActionType.SET_USER: {
-      let temp_user = {
-        ...action.payload
-      }
-      if(state.debug_status) {
-        temp_user.application_status = state.debug_status
+      const temp_user = {
+        ...action.payload,
+      };
+      if (state.debug_status) {
+        temp_user.application_status = state.debug_status;
       }
       return {
         ...state,
         user: temp_user,
-        isUserLoading: false
+        isUserLoading: false,
       };
     }
 
     case Hyp3ActionType.ERROR_LOADING_USER: {
       return {
         ...state,
-        isUserLoading: false
+        isUserLoading: false,
       };
     }
 
-    case Hyp3ActionType.SUBMIT_JOB: {
+    case Hyp3ActionType.SET_MAX_HYP3_JOBS: {
       return {
         ...state,
-        submittingJobName: action.payload,
+        maxHyp3Jobs: action.payload,
+        areMoreJobsToLoad: false,
       };
     }
 
-    case Hyp3ActionType.SUCCESSFUL_JOB_SUBMISSION: {
+    case Hyp3ActionType.SET_SEARCH_JOB_IDS: {
       return {
         ...state,
-        submittingJobName: null,
-      }; }
+        searchJobIds: action.payload,
+      };
+    }
 
-    case Hyp3ActionType.ERROR_JOB_SUBMISSION: {
+    case Hyp3ActionType.MAX_HYP3_RESULTS_HIT: {
       return {
         ...state,
-        submittingJobName: null,
+        areMoreJobsToLoad: true,
+      };
+    }
+
+    case Hyp3ActionType.RESET_MAX_HYP3_RESULTS_HIT: {
+      return {
+        ...state,
+        areMoreJobsToLoad: false,
       };
     }
 
@@ -174,45 +201,65 @@ export const getHyp3State = createFeatureSelector<Hyp3State>('hyp3');
 
 export const getHyp3Jobs = createSelector(
   getHyp3State,
-  (state: Hyp3State) => state.jobs
+  (state: Hyp3State) => state.jobs,
 );
 
 export const getAreHyp3JobsLoading = createSelector(
   getHyp3State,
-  (state: Hyp3State) => state.areJobsLoading
+  (state: Hyp3State) => state.areJobsLoading,
 );
 
 export const getSubmittingJobName = createSelector(
   getHyp3State,
-  (state: Hyp3State) => state.submittingJobName
+  (state: Hyp3State) => state.submittingJobName,
 );
 
 export const getHyp3User = createSelector(
   getHyp3State,
-  (state: Hyp3State) => state.user
+  (state: Hyp3State) => state.user,
 );
 
 export const getIsHyp3UserLoading = createSelector(
   getHyp3State,
-  (state: Hyp3State) => state.isUserLoading
+  (state: Hyp3State) => state.isUserLoading,
 );
 
 export const getProcessingOptions = createSelector(
   getHyp3State,
-  (state: Hyp3State) => state.processingOptions
+  (state: Hyp3State) => state.processingOptions,
 );
 
 export const getProcessingProjectName = createSelector(
   getHyp3State,
-  (state: Hyp3State) => state.projectName
+  (state: Hyp3State) => state.projectName,
 );
 
 export const getOnDemandUserId = createSelector(
   getHyp3State,
-  (state: Hyp3State) => state.userId
+  (state: Hyp3State) => state.userId,
+);
+
+export const getHyp3JobIds = createSelector(
+  getHyp3State,
+  (state: Hyp3State) => state.jobIds,
 );
 
 export const getCosts = createSelector(
   getHyp3State,
-  (state: Hyp3State) => state.costs
+  (state: Hyp3State) => state.costs,
+);
+
+export const getMaxHyp3Jobs = createSelector(
+  getHyp3State,
+  (state: Hyp3State) => state.maxHyp3Jobs,
+);
+
+export const getSearchJobIds = createSelector(
+  getHyp3State,
+  (state: Hyp3State) => state.searchJobIds,
+);
+
+export const getAreMoreJobsToLoad = createSelector(
+  getHyp3State,
+  (state: Hyp3State) => state.areMoreJobsToLoad,
 );

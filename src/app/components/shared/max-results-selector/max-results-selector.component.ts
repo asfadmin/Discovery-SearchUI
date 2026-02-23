@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -9,13 +9,37 @@ import * as scenesStore from '@store/scenes';
 import * as models from '@models';
 import { SubSink } from 'subsink';
 import { PairService, ScenesService } from '@services';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatIcon } from '@angular/material/icon';
+import {
+  FaIconLibrary,
+  FontAwesomeModule,
+} from '@fortawesome/angular-fontawesome';
+import { DocsModalComponent } from '../docs-modal/docs-modal.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { fas, faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-max-results-selector',
   templateUrl: './max-results-selector.component.html',
-  styleUrls: ['./max-results-selector.component.scss']
+  styleUrls: ['./max-results-selector.component.scss'],
+  imports: [
+    MatMenuTrigger,
+    MatIcon,
+    FontAwesomeModule,
+    MatMenu,
+
+    MatMenuItem,
+    DocsModalComponent,
+    TranslateModule,
+    FontAwesomeModule,
+  ],
 })
 export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private pairService = inject(PairService);
+  private sceneService = inject(ScenesService);
+
   public maxResults: number;
   public numberOfScenes: number;
   public isMaxResultsLoading: boolean;
@@ -26,62 +50,64 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
   public searchTypes = models.SearchType;
   public sbasProducts: models.CMRProduct[];
 
-  public burstXMLFileCount: number = 0;
+  public burstXMLFileCount = 0;
 
-  public possibleMaxResults = [250, 1000, 5000];
+  public possibleMaxResults = [250, 1000];
   private subs = new SubSink();
+  constructor() {
+    const library = inject(FaIconLibrary);
 
-  constructor(
-    private store$: Store<AppState>,
-    private pairService: PairService,
-    private sceneService: ScenesService,
-  ) {}
-
+    library.addIconPacks(fas);
+    library.addIcons(faSpinner);
+  }
   ngOnInit() {
     this.subs.add(
-      this.store$.select(searchStore.getSearchType).subscribe(
-        searchType => this.searchType = searchType
-      )
+      this.store$
+        .select(searchStore.getSearchType)
+        .subscribe((searchType) => (this.searchType = searchType)),
     );
 
     this.subs.add(
-      this.store$.select(filtersStore.getMaxSearchResults).subscribe(
-        maxResults => this.maxResults = maxResults
-      )
+      this.store$
+        .select(filtersStore.getMaxSearchResults)
+        .subscribe((maxResults) => (this.maxResults = maxResults)),
     );
 
     this.subs.add(
-      this.store$.select(searchStore.getIsMaxResultsLoading).subscribe(
-        isLoading => this.isMaxResultsLoading = isLoading
-      )
+      this.store$
+        .select(searchStore.getIsMaxResultsLoading)
+        .subscribe((isLoading) => (this.isMaxResultsLoading = isLoading)),
     );
 
     this.subs.add(
-      this.store$.select(searchStore.getSearchAmount).subscribe(
-        amount => this.currentSearchAmount = Number.isNaN(amount) ? 0 : amount
-      )
+      this.store$
+        .select(searchStore.getSearchAmount)
+        .subscribe(
+          (amount) =>
+            (this.currentSearchAmount = Number.isNaN(amount) ? 0 : amount),
+        ),
     );
 
     this.subs.add(
-      this.store$.select(scenesStore.getAreResultsLoaded).subscribe(
-        areLoaded => this.areResultsLoaded = areLoaded
-      )
+      this.store$
+        .select(scenesStore.getAreResultsLoaded)
+        .subscribe((areLoaded) => (this.areResultsLoaded = areLoaded)),
     );
 
     this.subs.add(
-      this.sceneService.scenes$.subscribe(
-        scenes => {
-          this.numberOfScenes = scenes.length;
-          this.burstXMLFileCount = scenes.filter(p => p.metadata.productType === 'BURST').length
-        })
+      this.sceneService.scenes$.subscribe((scenes) => {
+        this.numberOfScenes = scenes.length;
+        this.burstXMLFileCount = scenes.filter(
+          (p) => p.metadata.productType === 'BURST',
+        ).length;
+      }),
     );
 
     this.subs.add(
       this.pairService.productsFromPairs$.subscribe(
-        products => this.sbasProducts = products
-      )
+        (products) => (this.sbasProducts = products),
+      ),
     );
-
   }
 
   public onNewMaxResults(maxResults: number): void {
@@ -92,15 +118,12 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
     }
   }
 
-
   public formatNumber(num: number): string {
     if (typeof num !== 'number') {
       return '';
     }
 
-    return num
-      .toString()
-      .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
   }
 
   ngOnDestroy() {

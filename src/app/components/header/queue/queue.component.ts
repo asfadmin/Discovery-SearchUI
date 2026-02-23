@@ -1,4 +1,12 @@
-import { Component, OnInit, OnDestroy, Input, QueryList, ViewChildren } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Input,
+  QueryList,
+  ViewChildren,
+  inject,
+} from '@angular/core';
 
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { ClipboardService } from 'ngx-clipboard';
@@ -10,13 +18,43 @@ import * as queueStore from '@store/queue';
 
 import { NotificationService, ScreenSizeService } from '@services';
 import { CMRProduct, AsfApiOutputFormat, Breakpoints } from '@models';
-import { MatDialogRef } from '@angular/material/dialog';
+import {
+  MatDialogRef,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+} from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 import { ResizedEvent } from '@directives/resized.directive';
 import * as userStore from '@store/user';
 import { DownloadFileButtonComponent } from '@components/shared/download-file-button/download-file-button.component';
 import UAParser from 'ua-parser-js';
 import { DownloadService } from '@services/download.service';
+import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { ResizedDirective } from '../../../directives/resized.directive';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import { MatIcon } from '@angular/material/icon';
+import { NgClass, AsyncPipe } from '@angular/common';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import {
+  MatList,
+  MatListItem,
+  MatListItemTitle,
+  MatListItemLine,
+  MatListItemMeta,
+} from '@angular/material/list';
+import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
+import { DownloadFileButtonComponent as DownloadFileButtonComponent_1 } from '@components/shared/download-file-button/download-file-button.component';
+import { MatIconButton, MatButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { DownloadAllComponent } from './download-all/download-all.component';
+import { TruncateModule } from '@yellowspot/ng-truncate';
+import { ReadableSizeFromBytesPipe } from '@pipes/readable-size-from-bytes.pipe';
+import { FilterExtensionPipe } from '@pipes/filter-extension.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 // import { DownloadService } from '@services/download.service';
 
 export interface selectedItems {
@@ -27,14 +65,55 @@ export interface selectedItems {
 @Component({
   selector: 'app-queue',
   templateUrl: './queue.component.html',
-  styleUrls: ['./queue.component.scss']
+  styleUrls: ['./queue.component.scss'],
+  imports: [
+    MatDialogTitle,
+    CdkDrag,
+    CdkDragHandle,
+    ResizedDirective,
+    MatProgressBar,
+    DocsModalComponent,
+    MatIcon,
+
+    CdkScrollable,
+    MatDialogContent,
+    MatList,
+
+    MatListItem,
+    MatListItemTitle,
+    NgClass,
+    MatListItemLine,
+    CopyToClipboardComponent,
+    MatListItemMeta,
+    DownloadFileButtonComponent_1,
+    MatIconButton,
+    MatTooltip,
+    MatDialogActions,
+    MatButton,
+    FontAwesomeModule,
+    MatMenuTrigger,
+    MatMenu,
+    MatMenuItem,
+    DownloadAllComponent,
+    AsyncPipe,
+    TruncateModule,
+    ReadableSizeFromBytesPipe,
+    FilterExtensionPipe,
+    TranslateModule,
+  ],
 })
 export class QueueComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private clipboardService = inject(ClipboardService);
+  private dialogRef = inject<MatDialogRef<QueueComponent>>(MatDialogRef);
+  private screenSize = inject(ScreenSizeService);
+  private notificationService = inject(NotificationService);
+  private downloadService = inject(DownloadService);
 
   @Input() appQueueComponentModel: string;
 
-
-  @ViewChildren(DownloadFileButtonComponent) downloadButtons !: QueryList<DownloadFileButtonComponent>;
+  @ViewChildren(DownloadFileButtonComponent)
+  downloadButtons!: QueryList<DownloadFileButtonComponent>;
 
   public queueHasOnDemandProducts = false;
   public queueHasEventMonitoringProducts = false;
@@ -48,6 +127,7 @@ export class QueueComponent implements OnInit, OnDestroy {
 
   public previousQueue: any[] | null = null;
   public areAnyProducts = false;
+  public areAnyS3Products = false;
 
   public style: object = {};
   public dlWidth = 1000;
@@ -63,65 +143,71 @@ export class QueueComponent implements OnInit, OnDestroy {
   public dlDefaultChunkSize = 3;
   public dlQueueProgress = 0;
   public productList: DownloadFileButtonComponent[] = [];
-  public isLoggedIn$ = this.store$.select(userStore.getIsUserLoggedIn).pipe(
-    map(
-      loggedIn => loggedIn && new UAParser().getBrowser().name === 'Chrome'
-    )
-  );
+  public isLoggedIn$ = this.store$
+    .select(userStore.getIsUserLoggedIn)
+    .pipe(
+      map(
+        (loggedIn) => loggedIn && new UAParser().getBrowser().name === 'Chrome',
+      ),
+    );
   public products$ = this.store$.select(queueStore.getQueuedProducts).pipe(
-    tap(products => this.areAnyProducts = products.length > 0),
-    tap(products => {
-      this.queueHasOnDemandProducts = !products.every(product => !product.metadata.job);
-      this.queueHasEventMonitoringProducts = !products.every(product => product.groupId !== 'SARViews');
-      this.showDemWarning = (this.areAnyProducts) ? this.demWarning((products)) : false;
-      this.showRestrictedDatasetWarning = (this.areAnyProducts) ? this.restrictedDatasetWarning(products) : false;
-    })
+    tap((products) => (this.areAnyProducts = products.length > 0)),
+    tap((products) => {
+      this.queueHasOnDemandProducts = !products.every(
+        (product) => !product.metadata.job,
+      );
+      this.queueHasEventMonitoringProducts = !products.every(
+        (product) => product.groupId !== 'SARViews',
+      );
+      this.showDemWarning = this.areAnyProducts
+        ? this.demWarning(products)
+        : false;
+      this.showRestrictedDatasetWarning = this.areAnyProducts
+        ? this.restrictedDatasetWarning(products)
+        : false;
+    }),
   );
 
   public numberOfProducts$ = this.products$.pipe(
-    map(products => products.length)
+    map((products) => products.length),
   );
   public totalSize$ = this.products$.pipe(
-    map(products => products.reduce(
-      (total, product) => total + product.bytes,
-      0
-    ))
+    map((products) =>
+      products.reduce((total, product) => total + product.bytes, 0),
+    ),
+  );
+  public numberOfS3Products$ = this.products$.pipe(
+    map(
+      (products) =>
+        products.filter((product) => !!product.metadata.s3URI).length,
+    ),
   );
 
   private subs = new SubSink();
 
-  constructor(
-    private store$: Store<AppState>,
-    private clipboardService: ClipboardService,
-    private dialogRef: MatDialogRef<QueueComponent>,
-    private screenSize: ScreenSizeService,
-    private notificationService: NotificationService,
-    private downloadService: DownloadService
-  ) {}
-
   ngOnInit() {
     this.subs.add(
       this.screenSize.breakpoint$.subscribe(
-        breakpoint => this.breakpoint = breakpoint
-      )
+        (breakpoint) => (this.breakpoint = breakpoint),
+      ),
     );
 
     this.subs.add(
-      this.store$.select(userStore.getUserProfile).subscribe(
-        profile => {
-          this.dlDefaultChunkSize = profile.defaultMaxConcurrentDownloads;
-        }
-      )
+      this.store$.select(userStore.getUserProfile).subscribe((profile) => {
+        this.dlDefaultChunkSize = profile.defaultMaxConcurrentDownloads;
+      }),
     );
-
-
   }
   private keepGoing(product) {
-    const removedButton = this.downloadButtons.find(button => button.product === product);
+    const removedButton = this.downloadButtons.find(
+      (button) => button.product === product,
+    );
     if (removedButton?.dFile?.state !== 'DONE' && removedButton.dFile) {
       removedButton.cancelDownload();
       this.dlQueueNumProcessed--;
-      this.productList = this.productList?.filter(button => button.product !== product);
+      this.productList = this.productList?.filter(
+        (button) => button.product !== product,
+      );
       this.dlQueueCount--;
       this.downloadContinue(product);
     }
@@ -164,10 +250,10 @@ export class QueueComponent implements OnInit, OnDestroy {
 
   public onCopyQueue(products: CMRProduct[]): void {
     const productListStr = products
-      .filter(product => !product.isUnzippedFile)
-      .map(product => {
+      .filter((product) => !product.isUnzippedFile)
+      .map((product) => {
         if (product.metadata.productType === 'BURST_XML') {
-          return product.id?.split('-XML')[0]
+          return product.id?.split('-XML')[0];
         }
         return product.metadata.parentID || product.id;
       })
@@ -178,27 +264,29 @@ export class QueueComponent implements OnInit, OnDestroy {
     if (lines > 0) {
       this.notificationService.clipboardCopyQueue(lines, true);
     }
-
   }
 
-  public onCopyQueueURLs(products: CMRProduct[]): void {
+  public onCopyQueueURLs(products: CMRProduct[], useS3Urls = false): void {
     const productListStr = products
-      .filter(product => !product.isUnzippedFile)
-      .map(product => product.downloadUrl)
+      .filter((product) => !product.isUnzippedFile)
+      .map((product) =>
+        useS3Urls ? (product.metadata?.s3URI ?? null) : product.downloadUrl,
+      )
+      .filter((url) => !!url)
       .join('\n');
     this.clipboardService.copyFromContent(productListStr);
     const lines = this.lineCount(productListStr);
     this.notificationService.clipboardCopyQueue(lines, false);
   }
 
-  private lineCount( str: string ) {
+  private lineCount(str: string) {
     if (str === '') {
       return 0;
     }
 
     let length = 1;
-    for ( let i = 0; i < str.length; ++i ) {
-      if ( str[i] === '\n') {
+    for (const char of str) {
+      if (char === '\n') {
         length++;
       }
     }
@@ -210,18 +298,18 @@ export class QueueComponent implements OnInit, OnDestroy {
   }
 
   public toggleItemSelected(productId, downloadUrl) {
-    const idx = this.selectedItems.findIndex( o => o.id === productId );
+    const idx = this.selectedItems.findIndex((o) => o.id === productId);
     if (idx > -1) {
-      this.selectedItems.splice( idx, 1 );
+      this.selectedItems.splice(idx, 1);
     } else {
       this.selectedItems.push({
         id: productId,
         url: downloadUrl,
       });
     }
-    if ( this.selectedItems.length > 0 ) {
-        this.someChecked = true;
-      }
+    if (this.selectedItems.length > 0) {
+      this.someChecked = true;
+    }
   }
 
   public demWarning(products: CMRProduct[]) {
@@ -229,17 +317,21 @@ export class QueueComponent implements OnInit, OnDestroy {
       return false;
     }
 
-    return products.filter(product => product.metadata.productType !== null)
-    .some(product => product.dataset === 'ALOS' &&
-        product.metadata.productType.includes('RTC_')
+    return products
+      .filter((product) => product.metadata.productType !== null)
+      .some(
+        (product) =>
+          product.dataset === 'ALOS' &&
+          product.metadata.productType.includes('RTC_'),
       );
   }
   public restrictedDatasetWarning(products: CMRProduct[]) {
-    if(!products) {
+    if (!products) {
       return false;
     }
-    return products.filter(product => product.metadata.productType !== null).
-    some(product => product.dataset === 'JERS-1')
+    return products
+      .filter((product) => product.metadata.productType !== null)
+      .some((product) => product.dataset === 'JERS-1');
   }
   public onResized(event: ResizedEvent) {
     this.dlWidth = event.newRect.width;
@@ -248,7 +340,9 @@ export class QueueComponent implements OnInit, OnDestroy {
 
   public async downloadAllFiles() {
     this.downloadService.getDirectory(true).then(() => {
-      const buttons = this.downloadButtons.toArray().filter(b => !b?.dFile?.state);
+      const buttons = this.downloadButtons
+        .toArray()
+        .filter((b) => !b?.dFile?.state);
       for (const button of buttons.slice(0, 3)) {
         const state = button?.dFile?.state;
         if (!state) {

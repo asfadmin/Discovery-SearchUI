@@ -15,12 +15,15 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser-esbuild",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/search-ui",
+            "outputPath": {
+              "base": "dist/search-ui"
+            },
             "index": "src/index.html",
-            "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
+            "polyfills": [
+              "src/polyfills.ts"
+            ],
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
@@ -62,15 +65,20 @@
               "prismjs",
               "ua-parser-js",
               "@formatjs/intl-displaynames/polyfill",
+              "@formatjs/intl-displaynames/locale-data/en",
+              "@formatjs/intl-displaynames/locale-data/es",
               "webfont-matcher/lib/fonts/google.js",
               "mapbox-to-css-font",
-              "polygon-clipping"
+              "polygon-clipping",
+              "lerc",
+              "xml-utils",
+              "earcut"
             ],
             "extractLicenses": false,
-            "buildOptimizer": false,
             "sourceMap": true,
             "optimization": false,
-            "namedChunks": true
+            "namedChunks": true,
+            "browser": "src/main.ts"
           },
           "configurations": {
             "production": {
@@ -84,12 +92,15 @@
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true
+              "extractLicenses": true
+            },
+            "local": {
+              "sourceMap": true,
+              "optimization": false,
+              "extractLicenses": false
             }
           },
-          "defaultConfiguration": ""
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -99,8 +110,12 @@
           "configurations": {
             "production": {
               "buildTarget": "search-ui:build:production"
+            },
+            "local": {
+              "buildTarget": "search-ui:build:local"
             }
-          }
+          },
+          "defaultConfiguration": "local"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -129,23 +144,14 @@
               "src/assets"
             ]
           }
-        }
-      }
-    },
-    "search-ui-e2e": {
-      "root": "e2e/",
-      "projectType": "application",
-      "architect": {
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "search-ui:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "search-ui:serve:production"
-            }
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
           }
         }
       }
@@ -154,31 +160,48 @@
   "cli": {
     "analytics": false,
     "schematicCollections": [
+      "angular-eslint",
       "@ngrx/schematics"
     ]
   },
   "schematics": {
     "@schematics/angular:component": {
       "style": "scss",
-      "skipTests": true
+      "skipTests": true,
+      "type": "component"
     },
     "@schematics/angular:class": {
       "skipTests": true
     },
     "@schematics/angular:directive": {
-      "skipTests": true
+      "skipTests": true,
+      "type": "directive"
     },
     "@schematics/angular:pipe": {
-      "skipTests": true
+      "skipTests": true,
+      "typeSeparator": "."
     },
     "@schematics/angular:service": {
-      "skipTests": true
+      "skipTests": false,
+      "type": "service"
     },
     "@angular-eslint/schematics:application": {
       "setParserOptionsProject": true
     },
     "@angular-eslint/schematics:library": {
       "setParserOptionsProject": true
+    },
+    "@schematics/angular:guard": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:interceptor": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:module": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:resolver": {
+      "typeSeparator": "."
     }
   }
 }

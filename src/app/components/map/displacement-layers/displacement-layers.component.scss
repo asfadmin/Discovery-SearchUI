@@ -1,0 +1,104 @@
+@use "asf-theme-variables" as *;
+@use "variables" as *;
+
+.disp-layers--layout {
+  height: 100%;
+  min-height: 100%;
+  width: 220px;
+  flex-direction: column;
+  box-sizing: border-box;
+  display: flex;
+}
+
+.position {
+  z-index: 998;
+  margin-left: 20px;
+  top: 20px;
+}
+
+.layers-selector {
+  @include themify($themes) {
+    background-color: themed('primary-light');
+  }
+
+  //padding-bottom: 4px;
+  //padding-right: 10px;
+  pointer-events: auto;
+}
+
+.selector-text {
+  font-weight: bold;
+}
+
+.help-text {
+  padding-left: 10px;
+  font-size: small;
+}
+
+.footer {
+  @include themify($themes) {
+    background-color: themed('primary');
+  }
+
+  margin: 0;
+  padding: 0;
+  height: 16px;
+  //display: flex;
+}
+
+.footer--text {
+  @include themify($themes) {
+    background-color: themed('primary');
+    color: themed('light-secondary-text');
+  }
+
+  font-size: 12px;
+  margin-top: 0;
+  //text-align: end;
+  padding: 5px 10px
+}
+
+.container {
+  display: flex;
+}
+
+.container.space-around {
+  justify-content: space-around;
+}
+
+.container.space-between {
+  justify-content: space-between;
+}
+
+.velocity-help-icon {
+  position: absolute;
+  margin-top: 9px;
+  margin-left: 180px;
+  font-size: 16px !important;
+}
+
+.rollout-help-icon {
+  position: relative;
+  margin-top: -30px;
+  margin-left: 180px;
+  margin-bottom: 8px;
+  font-size: 16px !important;
+}
+
+.opacity-slider {
+  width: 170px;
+  margin-left: 40px;
+  margin-top: -37px;
+}
+
+::ng-deep {
+  .slider-formatting {
+    .mdc-slider {
+      --mat-slider-active-track-height: 3px;
+      --mat-slider-active-track-color: #236192;
+      --mat-slider-handle-height: 10px;
+      --mat-slider-handle-width: 10px;
+      --mat-slider-handle-color: #dcbd5b;
+    }
+  }
+}

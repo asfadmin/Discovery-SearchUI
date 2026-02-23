@@ -1,29 +1,74 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 
 import { AppState } from '@store';
 import { Store } from '@ngrx/store';
 import * as scenesStore from '@store/scenes';
+import * as filtersStore from '@store/filters';
 
 import { SubSink } from 'subsink';
 import * as models from '@models';
 import { ScreenSizeService } from '@services';
+import { beta } from '@models/datasets';
+import {
+  MatAccordion,
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle,
+} from '@angular/material/expansion';
+import { AsyncPipe } from '@angular/common';
+import { SearchTypeSelectorComponent } from '@components/shared/selectors/search-type-selector/search-type-selector.component';
+import { BaselineFrameReferenceToggleComponent } from '@components/shared/selectors/baseline-frame-reference-toggle/baseline-frame-reference-toggle.component';
+import { DatasetSelectorComponent } from '@components/shared/selectors/dataset-selector/dataset-selector.component';
+import { MasterSceneSelectorComponent } from '@components/shared/selectors/master-scene-selector/master-scene-selector.component';
+import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import { DateSelectorComponent } from '@components/shared/selectors/date-selector/date-selector.component';
+import { SeasonSelectorComponent } from '@components/shared/selectors/season-selector/season-selector.component';
+import { BaselineSlidersComponent } from './baseline-sliders/baseline-sliders.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 enum FilterPanel {
   MASTER = 'Master',
   DATE = 'Date',
   BASELINE = 'Baseline',
-  SEARCH = 'Search'
+  SEARCH = 'Search',
 }
 
 @Component({
   selector: 'app-baseline-filters',
   templateUrl: './baseline-filters.component.html',
-  styleUrls: ['./baseline-filters.component.scss']
+  styleUrls: ['./baseline-filters.component.scss'],
+  imports: [
+    MatAccordion,
+
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    SearchTypeSelectorComponent,
+    BaselineFrameReferenceToggleComponent,
+    DatasetSelectorComponent,
+    MasterSceneSelectorComponent,
+    CopyToClipboardComponent,
+    DocsModalComponent,
+    DateSelectorComponent,
+    SeasonSelectorComponent,
+    BaselineSlidersComponent,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class BaselineFiltersComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private screenSize = inject(ScreenSizeService);
+
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
   public areResultsLoaded: boolean;
+
+  public datasets = [beta];
+  public selectedDataset = 'SENTINEL-1 INTERFEROGRAM (BETA)';
+  public masterScene: string;
+  public shouldUseFramesForReference = false;
 
   selectedPanel: FilterPanel | null = null;
   panels = FilterPanel;
@@ -34,16 +79,19 @@ export class BaselineFiltersComponent implements OnInit, OnDestroy {
 
   private subs = new SubSink();
 
-  constructor(
-    private store$: Store<AppState>,
-    private screenSize: ScreenSizeService
-  ) { }
-
   ngOnInit() {
     this.subs.add(
-      this.store$.select(scenesStore.getAreResultsLoaded).subscribe(
-        areLoaded => this.areResultsLoaded = areLoaded
-      )
+      this.store$
+        .select(scenesStore.getAreResultsLoaded)
+        .subscribe((areLoaded) => (this.areResultsLoaded = areLoaded)),
+    );
+    this.subs.add(
+      this.store$
+        .select(filtersStore.getShouldUseFramesForReference)
+        .subscribe(
+          (shouldUseFrames) =>
+            (this.shouldUseFramesForReference = shouldUseFrames),
+        ),
     );
   }
 
@@ -51,6 +99,9 @@ export class BaselineFiltersComponent implements OnInit, OnDestroy {
     return this.selectedPanel === panel;
   }
 
+  public onDatasetChange(dataset: string): void {
+    this.store$.dispatch(new filtersStore.SetSelectedDataset(dataset));
+  }
   public selectPanel(panel: FilterPanel): void {
     this.selectedPanel = panel;
   }

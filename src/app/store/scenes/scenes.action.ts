@@ -1,6 +1,15 @@
 import { Action } from '@ngrx/store';
 
-import { CMRProduct, UnzippedFolder, ColumnSortDirection, SearchType, CMRProductPair, SarviewsEvent, SarviewsProduct } from '@models';
+import {
+  CMRProduct,
+  UnzippedFolder,
+  ColumnSortDirection,
+  SearchType,
+  CMRProductPair,
+  SarviewsEvent,
+  SarviewsProduct,
+  CMRProductsById,
+} from '@models';
 import { PinnedProduct } from '@services/browse-map.service';
 
 export enum ScenesActionType {
@@ -8,6 +17,7 @@ export enum ScenesActionType {
   CLEAR = '[Granules] Clear Scenes',
   SET_SARVIEWS_EVENTS = '[SARViews] Set SARViews Events',
   SET_SARVIEWS_EVENT_PRODUCTS = '[SARViews] Set Selected SARViews Event Products',
+  SET_DISPLACEMENT_PRODUCTS = '[Timeseries] Set Selected Timeseries Products',
 
   SET_IMAGE_BROWSE_PRODUCTS = '[Products-Browse] Set product browse image view',
 
@@ -19,6 +29,7 @@ export enum ScenesActionType {
   CLOSE_ZIP_CONTENTS = '[Scenes] Close Zip Contents',
 
   ADD_CMR_DATA_TO_ON_DEMAND_JOBS = '[Scenes] Add CMR Data to On Demand Jobs',
+  UPDATE_PRODUCT_WITH_NEW_PROJECT_NAME = '[Scenes] Update product with new project name',
 
   SET_SELECTED_SCENE = '[Scenes] Set Selected Scene',
   SET_SELECTED_PAIR = '[Scenes] Set Selected Pair',
@@ -34,19 +45,21 @@ export enum ScenesActionType {
 
   ADD_CUSTOM_PAIR = '[Scenes] Add Custom Pair',
   ADD_CUSTOM_PAIRS = '[Scenes] Add Custom Pairs',
-  REMOVE_CUSTOM_PAIR = '[Scenes] Remove Custom Pair'
+  REMOVE_CUSTOM_PAIR = '[Scenes] Remove Custom Pair',
 }
 
 export class SetScenes implements Action {
   public readonly type = ScenesActionType.SET_SCENES;
 
-  constructor(public payload: {products: CMRProduct[], searchType: SearchType} ) {}
+  constructor(
+    public payload: { products: CMRProduct[]; searchType: SearchType },
+  ) {}
 }
 
 export class SetSarviewsEvents implements Action {
   public readonly type = ScenesActionType.SET_SARVIEWS_EVENTS;
 
-  constructor(public payload: {events: SarviewsEvent[]}) {}
+  constructor(public payload: { events: SarviewsEvent[] }) {}
 }
 
 export class SetSelectedSarviewsEvent implements Action {
@@ -109,7 +122,9 @@ export class CloseZipContents implements Action {
 export class AddUnzippedProduct implements Action {
   public readonly type = ScenesActionType.ADD_UNZIPPED_PRODUCT;
 
-  constructor(public payload: { product: CMRProduct, unzipped: UnzippedFolder[] }) {}
+  constructor(
+    public payload: { product: CMRProduct; unzipped: UnzippedFolder[] },
+  ) {}
 }
 
 export class SetMaster implements Action {
@@ -167,13 +182,19 @@ export class SetSarviewsEventProducts implements Action {
 export class SetImageBrowseProducts implements Action {
   public readonly type = ScenesActionType.SET_IMAGE_BROWSE_PRODUCTS;
 
-  constructor(public payload: {[product_id in string]: PinnedProduct}) {}
+  constructor(public payload: Record<string, PinnedProduct>) {}
 }
 
 export class AddCmrDataToOnDemandScenes implements Action {
   public readonly type = ScenesActionType.ADD_CMR_DATA_TO_ON_DEMAND_JOBS;
 
-  constructor(public payload: CMRProduct[]) {}
+  constructor(public payload: CMRProductsById) {}
+}
+
+export class UpdateProductWithNewProjectName implements Action {
+  public readonly type = ScenesActionType.UPDATE_PRODUCT_WITH_NEW_PROJECT_NAME;
+
+  constructor(public payload: { productId: string; name: string }) {}
 }
 
 export type ScenesActions =
@@ -200,4 +221,5 @@ export type ScenesActions =
   | SetSarviewsEventProducts
   | SetSelectedSarviewProduct
   | AddCmrDataToOnDemandScenes
+  | UpdateProductWithNewProjectName
   | SetImageBrowseProducts;

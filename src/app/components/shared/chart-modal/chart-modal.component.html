@@ -1,0 +1,18 @@
+<div class="toggle-group-wrapper--layout">
+  <button
+    mat-mini-fab
+    [matMenuTriggerFor]="menu"
+    type="button"
+    class="control-mat-button-toggle ts-criteria-button-toggle"
+    [attr.aria-label]="'CONFIGURE_DISPLACEMENT_CHART' | translate"
+  >
+    <mat-icon class="settings-icon"> settings </mat-icon>
+  </button>
+</div>
+<mat-menu #menu="matMenu">
+  <div class="chart-config-menu-panel" (click)="$event.stopPropagation()">
+    <app-timeseries-chart-config
+      (resetReferenceEvent)="onResetReference()"
+    ></app-timeseries-chart-config>
+  </div>
+</mat-menu>

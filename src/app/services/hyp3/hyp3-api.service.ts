@@ -1,0 +1,511 @@
+import { Injectable, inject } from '@angular/core';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpParams,
+} from '@angular/common/http';
+
+import {
+  Observable,
+  of,
+  first,
+  catchError,
+  map,
+  forkJoin,
+  from,
+  Subject,
+} from 'rxjs';
+import { mergeMap, toArray, bufferCount, tap, finalize } from 'rxjs/operators';
+import * as moment from 'moment';
+
+import * as models from '@models';
+import * as uiStore from '@store/ui';
+
+import { NotificationService } from '../notification.service';
+import { Store } from '@ngrx/store';
+import { AppState } from '@store';
+
+export interface RenameProgressInfo {
+  percent: number;
+  estimatedSecondsRemaining: number | null;
+}
+
+export interface RenameResult {
+  success: number;
+  failed: number;
+  failedProjectNames: string[];
+}
+
+export interface RenameWithProgressResult {
+  progress$: Observable<RenameProgressInfo>;
+  result$: Observable<RenameResult>;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class Hyp3ApiService {
+  private http = inject(HttpClient);
+  private notifcationService = inject(NotificationService);
+  private store$ = inject<Store<AppState>>(Store);
+
+  private hyp3ApiUrl = 'https://hyp3-api.asf.alaska.edu';
+  private baseHyp3ApiUrl = 'https://hyp3-api.asf.alaska.edu';
+
+  private costs: models.Hyp3Costs;
+
+  public get apiUrl() {
+    return this.hyp3ApiUrl;
+  }
+
+  public get baseUrl() {
+    return this.baseHyp3ApiUrl;
+  }
+
+  public setApiUrl(url: string): void {
+    this.hyp3ApiUrl = url;
+  }
+
+  public setDefaultApiUrl(): void {
+    this.hyp3ApiUrl = this.baseHyp3ApiUrl;
+  }
+
+  public isDefaultApi(): boolean {
+    return this.hyp3ApiUrl === this.baseHyp3ApiUrl;
+  }
+
+  public get getCosts(): models.Hyp3Costs {
+    return this.costs;
+  }
+
+  public getUser$(): Observable<models.Hyp3User> {
+    const userUrl = `${this.apiUrl}/user`;
+
+    return this.http.get<any>(userUrl, { withCredentials: true }).pipe(
+      map((user) => {
+        if (user.quota) {
+          return {
+            ...user,
+            quota: {
+              ...user.quota,
+              unlimited: user.quota.max_jobs_per_month === null,
+            },
+          };
+        }
+
+        return {
+          ...user,
+          quota: {
+            remaining: user.remaining_credits,
+            unlimited: user.remaining_credits === null,
+          },
+        };
+      }),
+    );
+  }
+
+  public getJobs$(
+    params: models.Hyp3SearchParams,
+  ): Observable<{ hyp3Jobs: models.Hyp3Job[]; next: string }> {
+    let httpParams = new HttpParams();
+
+    if (params.userID) {
+      httpParams = httpParams.set('user_id', params.userID);
+    }
+
+    if (params.statusCode) {
+      httpParams = httpParams.set('status_code', params.statusCode);
+    }
+
+    if (params.name) {
+      httpParams = httpParams.set('name', params.name);
+    }
+
+    const getJobsUrl = `${this.apiUrl}/jobs?${httpParams.toString()}`;
+
+    return this.getJobsByUrl$(getJobsUrl);
+  }
+
+  public getJobById$(
+    jobId: string,
+  ): Observable<{ hyp3Jobs: models.Hyp3Job[]; next: string }> {
+    const getJobsUrl = `${this.apiUrl}/jobs/${jobId}`;
+
+    return this.getJobsByUrl$(getJobsUrl);
+  }
+
+  public getJobsByIds$(jobIds: string[]) {
+    return forkJoin(jobIds.map((jobId) => this.getJobById$(jobId))).pipe(
+      map((resps) => {
+        const allJobs = resps.reduce((jobs, resp) => {
+          return [...jobs, ...resp.hyp3Jobs];
+        }, []);
+
+        return { hyp3Jobs: allJobs, next: '' };
+      }),
+    );
+  }
+
+  public getJobsByUrl$(
+    url: string,
+  ): Observable<{ hyp3Jobs: models.Hyp3Job[]; next: string }> {
+    return this.http.get(url, { withCredentials: true }).pipe(
+      catchError((err: HttpErrorResponse) => {
+        if (this.apiUrl === this.baseUrl) {
+          this.notifcationService.error(
+            'There was a problem connecting to the HyP3 API',
+            `HyP3 API ${err.status} Error`,
+          );
+        } else {
+          this.onHyp3APIUrlError(err.status);
+        }
+        return of({});
+      }),
+      map((resp: any) => {
+        if (resp.job_id) {
+          resp = { jobs: [resp], next: '' };
+        }
+
+        if (!('jobs' in resp)) {
+          return { hyp3Jobs: [], next: '' };
+        }
+
+        const { jobs, next } = resp;
+
+        const hyp3Jobs = (jobs as models.Hyp3Job[]).map((job) => ({
+          ...job,
+          expiration_time: moment.utc(job.expiration_time),
+          request_time: moment.utc(job.request_time),
+        }));
+
+        return { hyp3Jobs, next };
+      }),
+    );
+  }
+
+  public updateJobName$(
+    jobId: string,
+    newProjectName: string,
+  ): Observable<models.Hyp3Job> {
+    const url = `${this.apiUrl}/jobs/${jobId}`;
+
+    if (!newProjectName) {
+      newProjectName = null;
+    }
+
+    return this.http
+      .patch<models.Hyp3Job>(
+        url,
+        { name: newProjectName },
+        { withCredentials: true },
+      )
+      .pipe(map((resp) => resp as models.Hyp3Job));
+  }
+
+  /**
+   * Updates job names with progress reporting.
+   * Returns an object with:
+   * - progress$: Observable that emits progress info (percent and estimated time) as batches complete
+   * - result$: Observable that emits the final result when all batches are done
+   */
+  public updateJobsNameWithProgress$(
+    products: models.CMRProduct[],
+    newProjectName: string,
+  ): RenameWithProgressResult {
+    const url = `${this.apiUrl}/jobs`;
+    const totalJobs = products.length;
+    const batchSize = 100;
+    const concurrentBatches = 3;
+    const totalBatches = Math.ceil(totalJobs / batchSize);
+
+    if (!newProjectName) {
+      newProjectName = null;
+    }
+
+    const progressSubject = new Subject<RenameProgressInfo>();
+    let completedBatches = 0;
+    let successCount = 0;
+    let failedCount = 0;
+    const failedProjectNamesSet = new Set<string>();
+    const startTime = Date.now();
+
+    const result$ = from(products).pipe(
+      bufferCount(batchSize),
+      mergeMap((productsBatch) => {
+        const jobIdsBatch = productsBatch.map((p) => p.metadata.job.job_id);
+        return this.http
+          .patch<models.Hyp3Job>(
+            url,
+            { name: newProjectName, job_ids: jobIdsBatch },
+            { withCredentials: true },
+          )
+          .pipe(
+            map(() => ({
+              success: jobIdsBatch.length,
+              failed: 0,
+              failedProducts: [] as models.CMRProduct[],
+            })),
+            catchError(() =>
+              of({
+                success: 0,
+                failed: jobIdsBatch.length,
+                failedProducts: productsBatch,
+              }),
+            ),
+            tap((batchResult) => {
+              completedBatches++;
+              successCount += batchResult.success;
+              failedCount += batchResult.failed;
+              // Track failed project names
+              batchResult.failedProducts.forEach((product) => {
+                const projectName = product.metadata?.job?.name || '(unnamed)';
+                failedProjectNamesSet.add(projectName);
+              });
+              const percent = Math.round(
+                (completedBatches / totalBatches) * 100,
+              );
+
+              // Calculate estimated time remaining
+              let estimatedSecondsRemaining: number | null = null;
+              if (completedBatches > 0) {
+                const elapsedMs = Date.now() - startTime;
+                const msPerBatch = elapsedMs / completedBatches;
+                const remainingBatches = totalBatches - completedBatches;
+                estimatedSecondsRemaining = Math.ceil(
+                  (msPerBatch * remainingBatches) / 1000,
+                );
+              }
+
+              progressSubject.next({ percent, estimatedSecondsRemaining });
+            }),
+          );
+      }, concurrentBatches),
+      toArray(),
+      map(() => ({
+        success: successCount,
+        failed: failedCount,
+        failedProjectNames: Array.from(failedProjectNamesSet).sort(),
+      })),
+      finalize(() => progressSubject.complete()),
+    );
+
+    return {
+      progress$: progressSubject.asObservable(),
+      result$,
+    };
+  }
+
+  public submitJobBatch$(jobBatch: object) {
+    const submitJobUrl = `${this.apiUrl}/jobs`;
+
+    return this.http.post(submitJobUrl, jobBatch, { withCredentials: true });
+  }
+
+  public submitSignupForm$(form) {
+    const signupFormURL = `${this.apiUrl}/user`;
+    const body = {
+      use_case: form.useCase,
+      access_code: form.accessCode,
+    };
+    return this.http.patch(signupFormURL, body, { withCredentials: true });
+  }
+
+  public getCosts$(): Observable<models.Hyp3Costs> {
+    const costsUrl = `${this.apiUrl}/costs`;
+
+    return this.http
+      .get<models.Hyp3Costs | models.Hyp3CostsOld>(costsUrl)
+      .pipe(map((costsResp) => this.formatCosts(costsResp)));
+  }
+
+  public formatCosts(
+    costsResp: models.Hyp3CostsOld | models.Hyp3Costs,
+  ): models.Hyp3Costs {
+    if (Array.isArray(costsResp)) {
+      // TODO: This is for Hyp3CostsOld support. Remove this after hyp3 is updated.
+      const byType = costsResp.reduce((byJobType, jobCost) => {
+        if (!jobCost.cost_table) {
+          byJobType[jobCost.job_type] = jobCost;
+        } else {
+          const byCostTableValue = jobCost.cost_table.reduce(
+            (byValue, costTableValue) => {
+              byValue[costTableValue.parameter_value] = costTableValue.cost;
+
+              return byValue;
+            },
+            {},
+          );
+
+          byJobType[jobCost.job_type] = {
+            cost_parameters: [jobCost.cost_parameter],
+            cost_table: byCostTableValue,
+          };
+        }
+
+        return byJobType;
+      }, {});
+
+      return byType as models.Hyp3Costs;
+    } else {
+      return costsResp;
+    }
+  }
+
+  public getHyp3ableProducts(products: models.CMRProduct[][]): {
+    byJobType: models.Hyp3ableProductByJobType[];
+    total: number;
+  } {
+    const byJobType = models.hyp3JobTypesList
+      .map((jobType) => {
+        const hyp3ableProducts = products.filter((product) =>
+          this.isHyp3able(product, jobType),
+        );
+
+        const byProdType: Record<string, models.CMRProduct[][]> =
+          jobType.productTypes.reduce((types, prodType) => {
+            prodType.productTypes.forEach((pt) => {
+              types[pt] = [];
+            });
+            return types;
+          }, {});
+
+        hyp3ableProducts.forEach((product) => {
+          const prodType = product[0].metadata.productType;
+          byProdType[prodType].push(
+            product?.sort((a, b) => {
+              if (a.metadata.date < b.metadata.date) {
+                return -1;
+              }
+
+              return 1;
+            }),
+          );
+        });
+
+        const byProductType: models.Hyp3ableByProductType[] = Object.entries(
+          byProdType,
+        ).map(([productType, prods]) => ({
+          productType,
+          products: prods as any,
+        }));
+
+        return {
+          jobType,
+          byProductType,
+          total: Object.values(byProdType).reduce(
+            (sum, prods) => sum + (prods as any).length,
+            0,
+          ),
+        };
+      })
+      .filter((hyp3able) => hyp3able.total > 0);
+
+    const total = byJobType.reduce((sum, jobType) => sum + jobType.total, 0);
+
+    return { byJobType, total };
+  }
+
+  public getValidJobTypes(product: models.CMRProduct[]): models.Hyp3JobType[] {
+    return models.hyp3JobTypesList.filter((jobType) =>
+      this.isHyp3able(product, jobType),
+    );
+  }
+
+  public isHyp3able(
+    products: models.CMRProduct[],
+    jobType: models.Hyp3JobType,
+  ): boolean {
+    return (
+      products.length === jobType.numProducts &&
+      jobType.productTypes.some((productType) => {
+        const types = new Set(productType.productTypes);
+        const pols = new Set(productType.polarizations);
+        const beamModes = new Set(productType.beamModes);
+        return products.every(
+          (product) =>
+            types.has(product.metadata.productType) &&
+            pols.has(product.metadata.polarization) &&
+            beamModes.has(product.metadata.beamMode),
+        );
+      })
+    );
+  }
+
+  public getExpiredHyp3ableObject(scene: models.CMRProduct): {
+    byJobType: models.Hyp3ableProductByJobType[];
+    total: number;
+  } {
+    const job_types = models.hyp3JobTypes;
+    const job_type = Object.keys(job_types).find((id) => {
+      return scene.metadata.job.job_type === (id as any);
+    });
+
+    const byJobType: models.Hyp3ableProductByJobType[] = [];
+
+    const temp: models.Hyp3ableByProductType = {
+      productType: scene.metadata.job.job_type as any,
+      products: [scene.metadata.job.scenes],
+    };
+
+    const byProductType: models.Hyp3ableByProductType[] = [];
+    byProductType.push(temp);
+
+    const hyp3ableProduct = {
+      byProductType,
+      total: 1,
+      jobType: job_types[job_type],
+    } as models.Hyp3ableProductByJobType;
+
+    byJobType.push(hyp3ableProduct);
+
+    const output = {
+      byJobType,
+      total: 1,
+    } as { byJobType: models.Hyp3ableProductByJobType[]; total: number };
+
+    return output;
+  }
+
+  public calculateCredits(
+    options: models.Hyp3ProcessingOptions,
+    cost: models.Hyp3JobCost,
+  ): number {
+    if (!cost) {
+      return 1;
+    }
+
+    if ('cost' in cost) {
+      const fixedCost = cost;
+      return fixedCost.cost;
+    } else if ('cost_table' in cost) {
+      const selectedCostValue = cost.cost_parameters.reduce(
+        (costLookup, parameterKey) => {
+          const lookupValue = options[parameterKey];
+
+          return costLookup[lookupValue];
+        },
+        cost.cost_table,
+      ) as number;
+
+      return selectedCostValue || 1;
+    } else {
+      return 1;
+    }
+  }
+
+  private onHyp3APIUrlError(status_code: number) {
+    const error_code = status_code !== 0 ? status_code.toString() : 'Uknown';
+    const title = `HyP3 API URL ${error_code} Error`;
+    const message =
+      'There was a problem with your preferred HyP3 API URL, click to open preferences.';
+
+    const toast = this.notifcationService.error(message, title, {
+      timeOut: 500000,
+      enableHtml: true,
+    });
+
+    toast.onTap
+      .pipe(first())
+      .subscribe((_) => this.store$.dispatch(new uiStore.OpenPreferenceMenu()));
+  }
+}

@@ -1,29 +1,66 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { NotificationService } from '@services';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  AfterViewInit,
+  inject,
+} from '@angular/core';
+import {
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+  MatDialogClose,
+} from '@angular/material/dialog';
+import { AsfLanguageService, NotificationService } from '@services';
 import { ClipboardService } from 'ngx-clipboard';
 import { SaveSearchDialogComponent } from '../save-search-dialog';
 
 import Prism from 'prismjs';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { DocsModalComponent } from '../docs-modal/docs-modal.component';
+import { MatButton } from '@angular/material/button';
+import { TranslateModule } from '@ngx-translate/core';
+
+export enum CodeExportType {
+  ASF_SEARCH,
+  HYP3_SDK,
+}
 
 @Component({
   selector: 'app-code-export',
   templateUrl: './code-export.component.html',
-  styleUrls: ['./code-export.component.scss']
+  styleUrls: ['./code-export.component.scss'],
+  imports: [
+    MatDialogTitle,
+    CdkScrollable,
+    MatDialogContent,
+    MatDialogActions,
+    DocsModalComponent,
+    MatButton,
+    MatDialogClose,
+    TranslateModule,
+  ],
 })
-export class CodeExportComponent implements OnInit {
-  public codeStuff;
-  @ViewChild('codeblock', { static: false }) divHello: ElementRef;
+export class CodeExportComponent implements OnInit, AfterViewInit {
+  dialogRef = inject<MatDialogRef<SaveSearchDialogComponent>>(MatDialogRef);
+  data = inject(MAT_DIALOG_DATA);
+  clipboard = inject(ClipboardService);
+  notificationService = inject(NotificationService);
+  private language = inject(AsfLanguageService);
 
-  constructor(
-    public dialogRef: MatDialogRef<SaveSearchDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data,
-    public clipboard: ClipboardService,
-    public notificationService: NotificationService,
-  ) { }
+  public codeStuff: string;
+
+  public codeExportTypes = CodeExportType;
+  public codeExportType: CodeExportType;
+
+  @ViewChild('codeblock', { static: false }) divHello: ElementRef;
 
   ngOnInit(): void {
     this.codeStuff = this.data.codeStuff;
+    this.codeExportType = this.data.codeExportType;
   }
   ngAfterViewInit(): void {
     const grammar = Prism.languages['python'];
@@ -35,6 +72,8 @@ export class CodeExportComponent implements OnInit {
   }
   public copyToClipboard(): void {
     this.clipboard.copy(this.codeStuff);
-    this.notificationService.info('Copied to clipboard');
+    this.notificationService.info(
+      this.language.translate.instant('COPIED_TO_CLIPBOARD'),
+    );
   }
 }

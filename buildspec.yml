@@ -5,9 +5,9 @@ phases:
     runtime-versions:
       nodejs: 14
     commands:
-      - n 18
+      - n 24
       - npm set progress=false
-      - npm install -g @angular/cli@17.3.10
+      - npm install -g @angular/cli@20.3.10
   pre_build:
     commands:
       - cp src/app/services/envs/env-${MATURITY}.ts src/app/services/env.ts
@@ -18,8 +18,8 @@ phases:
       - ng build --configuration production
   post_build:
     commands:
-      - cd dist/${APPLICATION}
+      - cd dist/${APPLICATION}/browser
       - aws s3 sync . "s3://${S3_BUCKET}"
-      - cd ../..
+      - cd ../../..
       - chmod +x ./invalidate-cf.sh
       - . ./invalidate-cf.sh ${CDN_ID}

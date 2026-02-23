@@ -1,6 +1,6 @@
-@import "asf-theme";
-@import "deluxe-menu";
-@import "deluxe-menu-2";
+@use "asf-theme-variables" as *;
+@use "deluxe-menu" as *;
+@use "deluxe-menu-2" as *;
 
 .description-layout {
   display: flex;
@@ -9,15 +9,23 @@
 .menu-item-icon {
   @include themify($themes) {
     color: themed("dark-primary-text");
+    font-size: 50px !important;
+    height: 50px !important;
+    width: 50px !important;
   }
 
-  @include md-icon-size(70px);
+  @include md-icon-size(50px);
 
   margin-right: 0;
 }
 
 .dataset-hr {
   padding: 0;
+}
+
+.category-hr {
+  padding: 0;
+  border-top: 2px solid;
 }
 
 .mat-mdc-menu-item {
@@ -28,8 +36,24 @@
   display: flex;
 }
 
+.menu-item-inner {
+  width: calc(100% - 20px) !important;
+  margin: 5px 5px 15px 15px;
+}
+
+.menu-item-content {
+  //min-width: 400px;
+}
+
+.menu-item-aside {
+  //min-width: 130px;
+}
+
 .item-title {
   font-weight: bold;
+}
+
+.item-content {
 }
 
 .mat-mdc-card-actions {
@@ -47,7 +71,7 @@
 }
 
 .limitTextHeight {
-  height: 37px;
+  height: 55px;
   overflow: hidden;
 }
 
@@ -78,7 +102,7 @@
     translateY(-1.2812em)
     scale(0.75)
     perspective(100px)
-    tranlatez(0.0011px);
+    translateZ(0.0011px);
 }
 
 .button-menu-trigger {
@@ -176,12 +200,23 @@
   }
 
   /* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
-  mat-card-actions {
+  mat-card-actions,
+  .enable-search-type-on-demand {
     pointer-events: auto;
-    opacity: 1 !important;
   }
 }
 
+::ng-deep .enable-search-type-on-demand .icon-size {
+  opacity: 1;
+  color: black !important;
+  font-weight: bold !important;
+}
+
+.enable-search-type-on-demand .icon-size {
+  opacity: 1;
+  color: black;
+  font-weight: bold;
+}
 
 .login-prompt {
   font-style: italic;
@@ -189,4 +224,38 @@
 
 .login-hidden {
   display: none;
+}
+
+
+.read-more-icon {
+  position: relative;
+  top: 3px;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.disclaimer-link {
+  display: inline-block;
+  font-size: 12px;
+  font-style: italic;
+  color: grey;
+  cursor: pointer;
+  pointer-events: auto;
+  margin-left: 10px;
+  position: relative;
+  top: 2px;
+  z-index: 10;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }

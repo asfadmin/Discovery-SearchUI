@@ -1,31 +1,53 @@
-<a [href]="href ?? product.downloadUrl" (click)="hijackDownloadClick($event)" class="link">
-  <button [disabled]="(!product?.downloadUrl && !href ) ||  disabled" mat-icon-button
-    [matTooltip]="('DOWNLOAD_FILE' | translate)"
-    class="download-file-button"
-    *ngIf="!dFile || (dFile && dFile.state === 'DONE')"
-    >
-    <ng-container *ngIf="dFile && dFile.state === 'DONE'">
-      <mat-icon>done</mat-icon>
-    </ng-container>
-    <ng-container *ngIf="!dFile">
-      <mat-icon>cloud_download</mat-icon>
-    </ng-container>
-  </button>
-
-  <button [disabled]="disabled" mat-button
-  [matTooltip]="('STOP_DOWNLOAD' | translate)"
-  class="download-file-button"
-  *ngIf="dFile && (dFile.state !== 'DONE')"
+@if (!disabled) {
+  <a
+    [href]="href ?? product.downloadUrl"
+    (click)="hijackDownloadClick($event)"
+    class="link"
   >
-  <ng-container *ngIf="dFile as download">
-    <div *ngIf="download.state !== 'DONE'" class="progress-spinner">
-      <mat-progress-spinner [mode]="download.state === 'IN_PROGRESS' ? 'determinate' : 'indeterminate'"
-        [value]='download.progress' [diameter]="40">
-      </mat-progress-spinner>
-      <span class="progress-spinner-value" *ngIf="download.state === 'IN_PROGRESS'">
-        {{ download.progress }}
-      </span>
-    </div>
-  </ng-container>
-  </button>
-</a>
+    @if (!dFile || (dFile && dFile.state === 'DONE')) {
+      <button
+        [disabled]="(!product?.downloadUrl && !href) || disabled"
+        mat-icon-button
+        [matTooltip]="'DOWNLOAD_FILE' | translate"
+        class="download-file-button"
+      >
+        @if (dFile && dFile.state === 'DONE') {
+          <mat-icon>done</mat-icon>
+        }
+        @if (!dFile) {
+          <mat-icon>cloud_download</mat-icon>
+        }
+      </button>
+    }
+    @if (dFile && dFile.state !== 'DONE') {
+      <button
+        [disabled]="disabled"
+        mat-button
+        [matTooltip]="'STOP_DOWNLOAD' | translate"
+        class="download-file-button"
+      >
+        @if (dFile; as download) {
+          @if (download.state !== 'DONE') {
+            <div class="progress-spinner">
+              <mat-progress-spinner
+                [mode]="
+                  download.state === 'IN_PROGRESS'
+                    ? 'determinate'
+                    : 'indeterminate'
+                "
+                [value]="download.progress"
+                [diameter]="40"
+              >
+              </mat-progress-spinner>
+              @if (download.state === 'IN_PROGRESS') {
+                <span class="progress-spinner-value">
+                  {{ download.progress }}
+                </span>
+              }
+            </div>
+          }
+        }
+      </button>
+    }
+  </a>
+}

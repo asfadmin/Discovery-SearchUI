@@ -1,5 +1,11 @@
+@use "asf-theme-variables" as *;
+
 .icon-margin {
   margin-left: 5px;
+
+  span {
+    margin: 0 5px;
+  }
 }
 
 .disabled-cursor {
@@ -24,4 +30,21 @@
   align-items: center;
   justify-content: center;
   margin-top: 1px;
+
+  @include themify($themes) {
+    color: themed('light-black');
+  }
+}
+
+.unnamed-project {
+  font-style: italic;
+  opacity: 0.7;
+}
+
+.job-metadata-first {
+  margin-top: -18px;
+}
+
+.params-first {
+  margin-top: -8px;
 }

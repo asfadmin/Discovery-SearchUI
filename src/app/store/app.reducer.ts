@@ -9,7 +9,7 @@ import { SearchState, searchReducer } from './search';
 import { QueueState, queueReducer } from './queue';
 import { UserState, userReducer } from './user';
 import { Hyp3State, hyp3Reducer } from './hyp3';
-
+import { chartsReducer, ChartsState } from './charts';
 
 export interface AppState {
   scenes: ScenesState;
@@ -20,6 +20,7 @@ export interface AppState {
   queue: QueueState;
   user: UserState;
   hyp3: Hyp3State;
+  charts: ChartsState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -31,8 +32,9 @@ export const reducers: ActionReducerMap<AppState> = {
   queue: queueReducer,
   user: userReducer,
   hyp3: hyp3Reducer,
+  charts: chartsReducer,
 };
 
-export const metaReducers: MetaReducer<AppState>[] =
-  !environment.production ?
-  [] : [];
+export const metaReducers: MetaReducer<AppState>[] = !environment.production
+  ? []
+  : [];

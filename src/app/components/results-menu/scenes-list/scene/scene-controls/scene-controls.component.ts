@@ -1,15 +1,35 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 
 import * as services from '@services';
 import * as models from '@models';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { Hyp3JobStatusBadgeComponent } from '@components/shared/hyp3-job-status-badge/hyp3-job-status-badge.component';
+import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/on-demand-add-menu.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-scene-controls',
   templateUrl: './scene-controls.component.html',
-  styleUrls: ['./scene-controls.component.scss']
+  styleUrls: ['./scene-controls.component.scss'],
+  imports: [
+    MatIcon,
+    MatTooltip,
+    MatMenuTrigger,
+    Hyp3JobStatusBadgeComponent,
+    OnDemandAddMenuComponent,
+    TranslateModule,
+  ],
 })
-export class SceneControlsComponent implements OnInit {
-  @Input() hyp3ableByJobType: { total: number, byJobType: models.Hyp3ableProductByJobType[]};
+export class SceneControlsComponent {
+  private hyp3 = inject(services.Hyp3ApiService);
+  private hyp3JobStatus = inject(services.Hyp3JobStatusService);
+
+  @Input() hyp3ableByJobType: {
+    total: number;
+    byJobType: models.Hyp3ableProductByJobType[];
+  };
   @Input() scene: models.CMRProduct;
   @Input() isQueued: boolean;
   @Input() numQueued: number;
@@ -20,13 +40,6 @@ export class SceneControlsComponent implements OnInit {
 
   public SearchTypes = models.SearchType;
 
-  constructor(
-    private hyp3: services.Hyp3Service,
-  ) { }
-
-  ngOnInit(): void {
-  }
-
   public onZoomTo(): void {
     this.onZoomToScene.emit();
   }
@@ -36,14 +49,17 @@ export class SceneControlsComponent implements OnInit {
   }
 
   public isExpired(job: models.Hyp3Job): boolean {
-    return this.hyp3.isExpired(job);
+    return this.hyp3JobStatus.isExpired(job);
   }
 
   public isDownloadable(product: models.CMRProduct): boolean {
-    return this.hyp3.isDownloadable(product);
+    return this.hyp3JobStatus.isDownloadable(product.metadata.job);
   }
 
-  public getExpiredHyp3ableObject(): {byJobType: models.Hyp3ableProductByJobType[], total: number} {
+  public getExpiredHyp3ableObject(): {
+    byJobType: models.Hyp3ableProductByJobType[];
+    total: number;
+  } {
     return this.hyp3.getExpiredHyp3ableObject(this.scene);
   }
 }

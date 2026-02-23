@@ -14,39 +14,41 @@ export const sentinel_1_bursts = {
     Props.BASELINE_TOOL,
     Props.SUBTYPE,
     Props.PATH,
-    Props.USE_BEAM_MODE
+    Props.USE_BEAM_MODE,
   ],
   apiValue: { dataset: 'SLC-BURST' },
   date: { start: new Date('2014/06/15 03:44:43 UTC') },
-  infoUrl: 'https://sentinels.copernicus.eu/web/sentinel/user-guides/sentinel-1-sar/acquisition-modes/interferometric-wide-swath',
-  citationUrl: 'https://asf.alaska.edu/data-sets/sar-data-sets/sentinel-1/sentinel-1-how-to-cite/',
+  infoUrl:
+    'https://sentiwiki.copernicus.eu/web/s1-mission#S1-Mission-Interferometric-Wide-Swath',
+  citationUrl:
+    'https://asf.alaska.edu/data-sets/sar-data-sets/sentinel-1/sentinel-1-how-to-cite/',
   frequency: 'C-Band',
   source: {
     name: 'ESA',
-    url: 'https://www.esa.int/ESA'
+    url: 'https://www.esa.int/ESA',
   },
   productTypes: [
     {
       apiValue: 'BURST',
-      displayName: 'SLC Burst (BURST)'
-    }
+      displayName: 'SLC Burst (BURST)',
+    },
   ],
-  beamModes: [
-    'IW', 'EW'
+  beamModes: ['IW', 'EW'],
+  polarizations: ['VV', 'HH', 'HV', 'VH'],
+  subtypes: [
+    {
+      displayName: 'Sentinel-1A',
+      apiValue: 'SA',
+    },
+    {
+      displayName: 'Sentinel-1B',
+      apiValue: 'SB',
+    },
+    {
+      displayName: 'Sentinel-1C',
+      apiValue: 'SC',
+    },
   ],
-  polarizations: [
-    'VV',
-    'HH',
-    'HV',
-    'VH'
-  ],
-  subtypes: [{
-    displayName: 'Sentinel-1A',
-    apiValue: 'SA',
-  }, {
-    displayName: 'Sentinel-1B',
-    apiValue: 'SB',
-  }],
   platformDesc: 'SENTINEL_1_BURST_DESC',
   platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
 };

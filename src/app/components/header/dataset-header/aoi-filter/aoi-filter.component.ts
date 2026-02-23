@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, OnInit, ViewChild, OnDestroy, inject } from '@angular/core';
+import { NgForm, FormsModule } from '@angular/forms';
 import { ClipboardService } from 'ngx-clipboard';
 import { SubSink } from 'subsink';
 
@@ -7,22 +7,53 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
 import * as mapStore from '@store/map';
+import * as searchStore from '@store/search';
 
 import { Subject } from 'rxjs';
 import { tap, delay } from 'rxjs/operators';
 
-import { menuAnimation, MapInteractionModeType } from '@models';
+import { menuAnimation, MapInteractionModeType, SearchType } from '@models';
 import * as services from '@services';
 import { DrawNewPolygon } from '@store/map';
 import { SetGeocode } from '@store/filters';
+import {
+  MatFormField,
+  MatLabel,
+  MatInput,
+  MatSuffix,
+} from '@angular/material/input';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatCard } from '@angular/material/card';
+import { AoiOptionsComponent } from '@components/shared/aoi-options/aoi-options.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-aoi-filter',
   templateUrl: './aoi-filter.component.html',
   styleUrls: ['./aoi-filter.component.scss', '../../header.component.scss'],
   animations: menuAnimation,
+  imports: [
+    MatFormField,
+    MatLabel,
+    MatInput,
+    FormsModule,
+
+    MatIcon,
+    MatSuffix,
+    MatTooltip,
+    MatCard,
+    AoiOptionsComponent,
+    TranslateModule,
+  ],
 })
 export class AoiFilterComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private mapService = inject(services.MapService);
+  private clipboard = inject(ClipboardService);
+  private notificationService = inject(services.NotificationService);
+  private language = inject(services.AsfLanguageService);
+
   @ViewChild('polygonForm') public polygonForm: NgForm;
 
   public aoiErrors$ = new Subject<void>();
@@ -31,42 +62,43 @@ export class AoiFilterComponent implements OnInit, OnDestroy {
   public isHoveringAOISelector = false;
   public isAOIOptionsOpen: boolean;
 
+  public searchType$ = this.store$.select(searchStore.getSearchType);
+  public searchtype: SearchType;
+
   public polygon: string;
   private subs = new SubSink();
 
-  constructor(
-    private store$: Store<AppState>,
-    private mapService: services.MapService,
-    private clipboard: ClipboardService,
-    private notificationService: services.NotificationService
-  ) { }
-
   ngOnInit() {
     this.subs.add(
-      this.store$.select(uiStore.getIsAOIOptionsOpen).subscribe(
-        isAOIOptionsOpen => this.isAOIOptionsOpen = isAOIOptionsOpen
-      )
+      this.store$
+        .select(uiStore.getIsAOIOptionsOpen)
+        .subscribe(
+          (isAOIOptionsOpen) => (this.isAOIOptionsOpen = isAOIOptionsOpen),
+        ),
     );
-
     this.subs.add(
-      this.mapService.searchPolygon$.subscribe(
-        p => {
-          this.polygon = p;
-          window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({
-            'event': 'input-search-polygon',
-            'input-search-polygon': this.polygon
-          });
-
-        }
-      )
+      this.searchType$.subscribe(
+        (searchtype) => (this.searchtype = searchtype),
+      ),
+    );
+    this.subs.add(
+      this.mapService.searchPolygon$.subscribe((p) => {
+        this.polygon = p;
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: 'input-search-polygon',
+          'input-search-polygon': this.polygon,
+        });
+      }),
     );
 
     this.handleAOIErrors();
   }
 
   public openAOIImport() {
-    const action = new mapStore.SetMapInteractionMode(MapInteractionModeType.UPLOAD);
+    const action = new mapStore.SetMapInteractionMode(
+      MapInteractionModeType.UPLOAD,
+    );
     this.store$.dispatch(action);
   }
 
@@ -83,38 +115,43 @@ export class AoiFilterComponent implements OnInit, OnDestroy {
     const polygon = (event.target as HTMLInputElement).value;
     const didLoad = this.mapService.loadPolygonFrom(polygon);
 
-    if (!didLoad) {
+    if (
+      !didLoad ||
+      (this.searchtype === SearchType.DISPLACEMENT &&
+        !polygon.toLowerCase().includes('point'))
+    ) {
       this.aoiErrors$.next();
     } else {
       this.store$.dispatch(new SetGeocode(''));
       this.store$.dispatch(new DrawNewPolygon());
     }
-
   }
 
   public onCopy(): void {
     this.clipboard.copyFromContent(this.polygon);
-    this.notificationService.info('Copied to clipboard');
+    this.notificationService.info(
+      this.language.translate.instant('COPIED_TO_CLIPBOARD'),
+    );
   }
 
   private handleAOIErrors(): void {
     this.subs.add(
-      this.aoiErrors$.pipe(
-        tap(_ => {
-          this.isAOIError = true;
-          this.mapService.clearDrawLayer();
-          this.polygonForm.reset();
-          this.polygonForm.form
-            .controls['searchPolygon']
-            .setErrors({'incorrect': true});
+      this.aoiErrors$
+        .pipe(
+          tap((_) => {
+            this.isAOIError = true;
+            this.mapService.clearDrawLayer();
+            this.polygonForm.reset();
+            this.polygonForm.form.controls['searchPolygon'].setErrors({
+              incorrect: true,
+            });
+          }),
+          delay(820),
+        )
+        .subscribe((_) => {
+          this.isAOIError = false;
+          this.polygonForm.form.controls['searchPolygon'].setErrors(null);
         }),
-        delay(820),
-      ).subscribe(_ => {
-        this.isAOIError = false;
-        this.polygonForm.form
-          .controls['searchPolygon']
-          .setErrors(null);
-      })
     );
   }
 

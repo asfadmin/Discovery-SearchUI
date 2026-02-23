@@ -1,18 +1,11 @@
-import { Pipe, PipeTransform } from "@angular/core";
-import { TranslateService } from "@ngx-translate/core";
-import moment from "moment";
-import { BehaviorSubject } from "rxjs";
+import { Pipe, PipeTransform, inject } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import moment from 'moment';
+import { BehaviorSubject } from 'rxjs';
 
-@Pipe({
-  name: 'dynamicMoment'
-})
+@Pipe({ name: 'dynamicMoment' })
 export class MomentPipe implements PipeTransform {
-  /**
-   * MomentPipe constructor
-   * @param {TranslateService} translate
-   */
-  constructor(private translate: TranslateService) {
-  }
+  private translate = inject(TranslateService);
 
   /**
    * Make moment dynamic
@@ -35,5 +28,4 @@ export class MomentPipe implements PipeTransform {
     });
     return momentObs; // needs to be piped into the async pipe
   }
-
 }

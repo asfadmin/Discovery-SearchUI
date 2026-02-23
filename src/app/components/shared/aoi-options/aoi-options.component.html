@@ -1,50 +1,69 @@
 <div (dragover)="onFileHovered($event)" class="layout">
-  <div *ngIf="showHeader" class="header-layout mb">
-    <div class="header-layout">
-      <b>{{ 'AOI_OPTIONS' |  translate }}</b>
-      <mat-icon (click)="onOpenHelp()" class="clickable" style="margin-left: 10px;">info</mat-icon>
+  @if (showHeader) {
+    <div class="header-layout mb">
+      <div class="header-layout">
+        <b>{{ 'AOI_OPTIONS' | translate }}</b>
+        <mat-icon
+          (click)="onOpenHelp()"
+          class="clickable"
+          style="margin-left: 10px"
+          >info</mat-icon
+        >
+      </div>
+      <div>
+        <button
+          (click)="onClose()"
+          matTooltip="{{ 'HIDE_OPTIONS' | translate }}"
+          mat-icon-button
+        >
+          <mat-icon>clear</mat-icon>
+        </button>
+      </div>
     </div>
-
-    <div>
-      <button (click)="onClose()" matTooltip="{{'HIDE_OPTIONS' | translate}}" mat-icon-button>
-        <mat-icon>clear</mat-icon>
-      </button>
-    </div>
-  </div>
+  }
 
   <div class="aoi-input-area">
     <div class="aoi-text-container">
-      <form #polygonInputForm="ngForm"
-      (keydown.enter)="$event.preventDefault()"
-      [class.aoi-input--desktop]="breakpoint !== breakpoints.MOBILE"
-      [class.aoi-input--mobile]="breakpoint === breakpoints.MOBILE">
+      <form
+        #polygonInputForm="ngForm"
+        (keydown.enter)="$event.preventDefault()"
+        [class.aoi-input--desktop]="breakpoint !== breakpoints.MOBILE"
+        [class.aoi-input--mobile]="breakpoint === breakpoints.MOBILE"
+      >
+        <mat-form-field
+          [class.invalid-input-animation]="isAOIError"
+          class="w100"
+        >
+          <mat-label> {{ 'AREA_OF_INTEREST_WKT' | translate }} </mat-label>
+          <textarea
+            (change)="onInputSearchPolygon($event)"
+            [value]="polygon"
+            [(ngModel)]="polygon"
+            name="searchPolygonLarge"
+            cdkTextareaAutosize
+            cdkAutosizeMinRows="7"
+            cdkAutosizeMaxRows="8"
+            matInput
+          >
+          </textarea>
+          <button
+            matSuffix
+            mat-button
+            (click)="onClearPolygon()"
+            [attr.aria-label]="'CLEAR' | translate"
+          >
+            {{ 'CLEAR' | translate }}
+          </button>
+        </mat-form-field>
+      </form>
 
-      <mat-form-field [class.invalid-input-animation]="isAOIError" class="w100">
-        <mat-label> {{ 'AREA_OF_INTEREST_WKT' | translate }} </mat-label>
-        <textarea
-          (change)="onInputSearchPolygon($event)"
-          [value]="polygon"
-          [(ngModel)]="polygon"
-          name="searchPolygonLarge"
-          cdkTextareaAutosize cdkAutosizeMinRows="7"
-          cdkAutosizeMaxRows="8"
-          matInput>
-        </textarea>
-        <button matSuffix mat-button
-          (click)="onClearPolygon()"
-          aria-label="Clear" >
-          {{ 'CLEAR' | translate }}
-        </button>
-      </mat-form-field>
-    </form>
-
-    <app-geocode-selector
-    (geocodeWkt)="onInputGeocodePolygon($event)"
-    ></app-geocode-selector>
+      <app-geocode-selector
+        (geocodeWkt)="onInputGeocodePolygon($event)"
+      ></app-geocode-selector>
     </div>
 
-    <app-file-upload-dialog *ngIf="breakpoint !== breakpoints.MOBILE" style="width: 40%;"></app-file-upload-dialog>
+    @if (breakpoint !== breakpoints.MOBILE) {
+      <app-file-upload-dialog style="width: 40%"></app-file-upload-dialog>
+    }
   </div>
-
 </div>
-

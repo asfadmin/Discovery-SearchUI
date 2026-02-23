@@ -1,4 +1,4 @@
-@import "asf-theme";
+@use "asf-theme-variables" as *;
 
 .icon-bar--layout {
   height: 100%;
@@ -36,6 +36,7 @@
   pointer-events: auto;
   height: 45px !important;
   max-height: 45px !important;
+  width: fit-content;
 }
 
 .ribbon-info-top {
@@ -207,7 +208,7 @@ label {
 
   width: calc(100% + 10px);
   margin: 3px 0 0 -10px;
-  height: 16px;
+  height: 14px;
 }
 
 .visible-toggle {
@@ -226,4 +227,8 @@ label {
 /* TODO(mdc-migration): The following rule targets internal classes of slider that may no longer apply for the MDC version. */
 ::ng-deep .mat-mdc-slider.mat-slider-horizontal .mat-slider-wrapper {
   top: 50%;
+}
+
+.toolbar-collpased {
+  width: 18%;
 }

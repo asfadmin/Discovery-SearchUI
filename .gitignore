@@ -8,7 +8,8 @@
 
 # dependencies
 /node_modules
-
+bun.lockb
+bun.lock
 # IDEs and editors
 /.idea
 .project
@@ -40,3 +41,9 @@ testem.log
 .DS_Store
 Thumbs.db
 local-serve.sh
+
+# Claude Code
+.claude/
+CLAUDE.md
+TRANSLATIONS_SCRATCH.md
+docs/

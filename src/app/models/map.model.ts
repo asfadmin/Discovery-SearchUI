@@ -18,7 +18,7 @@ export enum MapDrawModeType {
   LINESTRING = 'LineString',
   POLYGON = 'Polygon',
   BOX = 'Box',
-  CIRCLE = 'Circle'
+  CIRCLE = 'Circle',
 }
 
 export enum MapInteractionModeType {
@@ -27,12 +27,14 @@ export enum MapInteractionModeType {
   UPLOAD = 'Upload',
   NONE = 'None',
   CLEAR = 'Clear',
+  TIMERSERIES = 'TimeSeries',
 }
 
 export enum DrawPolygonStyle {
   VALID = 'Valid',
+  VALID_DISPLACEMENT = 'ValidDisplacement',
   INVALID = 'Invalid',
-  OMITTED = 'Omitted'
+  OMITTED = 'Omitted',
 }
 
 export interface LonLat {

@@ -1,10 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({
-    name: 'filterExtension'
-})
+@Pipe({ name: 'filterExtension' })
 export class FilterExtensionPipe implements PipeTransform {
-    transform(input: string): string {
-        return input?.split('.')[0];
-    }
+  transform(input: string): string {
+    return input?.split('.')[0];
+  }
 }

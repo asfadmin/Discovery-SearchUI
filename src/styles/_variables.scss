@@ -1,7 +1,7 @@
 // variables
 
-$asf-font-size: '16px';
-$asf-line-height: '17px';
+$asf-font-size: 16px;
+$asf-line-height: 17px;
 $asf-ribbon-icon-size: 18px;
 
 $uaf-primary-blue: #236192;
@@ -14,16 +14,16 @@ $uaf-neutrals-3: #d7d2cb;
 
 $uaf-accent-4: #65665c;
 
-$dark-primary-text: rgba(black, 0.87);
-$dark-secondary-text: rgba(black, 0.54);
-$dark-disabled-text: rgba(black, 0.38);
-$dark-dividers: rgba(black, 0.12);
-$dark-focused: rgba(black, 0.12);
+$dark-primary-text: rgba(0,0,0, 0.87);
+$dark-secondary-text: rgba(0,0,0, 0.54);
+$dark-disabled-text: rgba(0,0,0, 0.38);
+$dark-dividers: rgba(0,0,0, 0.12);
+$dark-focused: rgba(0,0,0, 0.12);
 $light-primary-text: white;
-$light-secondary-text: rgba(white, 0.7);
-$light-disabled-text: rgba(white, 0.5);
-$light-dividers: rgba(white, 0.12);
-$light-focused: rgba(white, 0.12);
+$light-secondary-text: rgba(255,255,255, 0.7);
+$light-disabled-text: rgba(255,255,255, 0.5);
+$light-dividers: rgba(255,255,255, 0.12);
+$light-focused: rgba(255,255,255, 0.12);
 
 $contrast: (
   50: $dark-primary-text,

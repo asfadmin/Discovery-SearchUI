@@ -1,10 +1,14 @@
-  <mat-form-field>
-    <mat-select
-      (selectionChange)="onNewJobStatusSelected($event.value)"
-      [(ngModel)]="selectedJobStatuses"
-      placeholder="{{'JOB_STATUS' | translate}}" multiple>
-      <mat-option *ngFor="let jobStatus of jobStatuses" [value]="jobStatus">
+<mat-form-field>
+  <mat-select
+    (selectionChange)="onNewJobStatusSelected($event.value)"
+    [(ngModel)]="selectedJobStatuses"
+    placeholder="{{ 'JOB_STATUS' | translate }}"
+    multiple
+  >
+    @for (jobStatus of jobStatuses; track jobStatus) {
+      <mat-option [value]="jobStatus">
         {{ upperCaseFirst(jobStatus | translate, true) }}
       </mat-option>
-    </mat-select>
-  </mat-form-field>
+    }
+  </mat-select>
+</mat-form-field>

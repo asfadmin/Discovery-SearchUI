@@ -1,48 +1,77 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { EventProductSortDirection, EventProductSortType } from '@models';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
-import { getSarviewsEventProductSorting, SetEventProductSorting } from '@store/filters';
+import {
+  getSarviewsEventProductSorting,
+  SetEventProductSorting,
+} from '@store/filters';
 import { SubSink } from 'subsink';
+import {
+  MatButtonToggleGroup,
+  MatButtonToggle,
+} from '@angular/material/button-toggle';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatIcon } from '@angular/material/icon';
+import {} from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-event-product-sort-selector',
   templateUrl: './event-product-sort-selector.component.html',
-  styleUrls: ['./event-product-sort-selector.component.scss']
+  styleUrls: ['./event-product-sort-selector.component.scss'],
+  imports: [
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    MatMenuTrigger,
+    MatIcon,
+    MatMenu,
+
+    MatMenuItem,
+    TranslateModule,
+  ],
 })
 export class EventProductSortSelectorComponent implements OnInit {
+  private store$ = inject<Store<AppState>>(Store);
 
   private subs = new SubSink();
 
   public sortType: EventProductSortType = EventProductSortType.DATE;
   public sortTypeDisplay: string;
-  public sortDirection: EventProductSortDirection = EventProductSortDirection.DESCENDING;
+  public sortDirection: EventProductSortDirection =
+    EventProductSortDirection.DESCENDING;
 
   public sortTypes = Object.values(EventProductSortType);
   public sortDirections = Object.values(EventProductSortDirection);
   public sortDescending = true;
 
-  constructor(private store$: Store<AppState>) { }
-
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(getSarviewsEventProductSorting).subscribe(
-        sorting => {
+      this.store$
+        .select(getSarviewsEventProductSorting)
+        .subscribe((sorting) => {
           this.sortType = sorting.sortType;
           this.sortTypeDisplay = this.sortType.valueOf();
           this.sortDirection = sorting.sortDirection;
 
-          this.sortDescending = this.sortDirection === EventProductSortDirection.DESCENDING;
-        }
-      )
+          this.sortDescending =
+            this.sortDirection === EventProductSortDirection.DESCENDING;
+        }),
     );
   }
 
   public onSetSortDirection() {
     this.sortDescending = !this.sortDescending;
-    this.sortDirection = this.sortDescending ? EventProductSortDirection.DESCENDING : EventProductSortDirection.ASCENDING;
-    this.store$.dispatch(new SetEventProductSorting({sortDirection: this.sortDirection, sortType: this.sortType}));
+    this.sortDirection = this.sortDescending
+      ? EventProductSortDirection.DESCENDING
+      : EventProductSortDirection.ASCENDING;
+    this.store$.dispatch(
+      new SetEventProductSorting({
+        sortDirection: this.sortDirection,
+        sortType: this.sortType,
+      }),
+    );
   }
 
   public onSetSortType(value: string) {
@@ -59,6 +88,11 @@ export class EventProductSortSelectorComponent implements OnInit {
         break;
     }
 
-    this.store$.dispatch(new SetEventProductSorting({sortDirection: this.sortDirection, sortType}));
+    this.store$.dispatch(
+      new SetEventProductSorting({
+        sortDirection: this.sortDirection,
+        sortType,
+      }),
+    );
   }
 }

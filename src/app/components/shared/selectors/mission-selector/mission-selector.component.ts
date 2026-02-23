@@ -1,5 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 
 import { startWith, map, tap } from 'rxjs/operators';
 import { SubSink } from 'subsink';
@@ -9,6 +14,16 @@ import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
 
 import * as models from '@models';
+import { MatFormField, MatInput } from '@angular/material/input';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatDivider, MatNavList, MatListItem } from '@angular/material/list';
+import {
+  CdkVirtualScrollViewport,
+  CdkFixedSizeVirtualScroll,
+  CdkVirtualForOf,
+} from '@angular/cdk/scrolling';
+import { TranslateModule } from '@ngx-translate/core';
 
 export interface StateGroup {
   letter: string;
@@ -18,23 +33,43 @@ export interface StateGroup {
 export const _filter = (opt: string[], value: string): string[] => {
   const filterValue = value.toLowerCase();
 
-  return opt.filter(item => item.toLowerCase().includes(filterValue));
+  return opt.filter((item) => item.toLowerCase().includes(filterValue));
 };
-
 
 @Component({
   selector: 'app-mission-selector',
   templateUrl: './mission-selector.component.html',
-  styleUrls: ['./mission-selector.component.css']
+  styleUrls: ['./mission-selector.component.css'],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormField,
+    MatInput,
+
+    MatIcon,
+    MatTooltip,
+    MatDivider,
+    CdkVirtualScrollViewport,
+    CdkFixedSizeVirtualScroll,
+    MatNavList,
+    CdkVirtualForOf,
+    MatListItem,
+    TranslateModule,
+  ],
 })
 export class MissionSelectorComponent implements OnInit, OnDestroy {
-  public missionsByDataset$ = this.store$.select(filtersStore.getMissionsByDataset);
+  private store$ = inject<Store<AppState>>(Store);
+  private fb = inject(UntypedFormBuilder);
+
+  public missionsByDataset$ = this.store$.select(
+    filtersStore.getMissionsByDataset,
+  );
   public missionDatasets$ = this.missionsByDataset$.pipe(
-    map(missions => Object.keys(missions))
+    map((missions) => Object.keys(missions)),
   );
   public dataset$ = this.store$.select(filtersStore.getSelectedDataset);
 
-  public missionsByDataset: {[dataset: string]: string[]};
+  public missionsByDataset: Record<string, string[]>;
   public missionDatasets: string[];
   public selectedMission: string | null;
 
@@ -51,72 +86,67 @@ export class MissionSelectorComponent implements OnInit, OnDestroy {
     missionFilter: '',
   });
 
-  constructor(
-    private store$: Store<AppState>,
-    private fb: UntypedFormBuilder
-  ) {}
-
   ngOnInit() {
     this.subs.add(
-      this.missionsByDataset$.subscribe(
-        missions => {
-          this.missionsByDataset = missions;
-          this.filteredMissions = this._filterGroup(this.currentFilter);
-        }
-      )
+      this.missionsByDataset$.subscribe((missions) => {
+        this.missionsByDataset = missions;
+        this.filteredMissions = this._filterGroup(this.currentFilter);
+      }),
     );
 
     this.subs.add(
-      this.store$.select(filtersStore.getSelectedMission).subscribe(
-        selected => this.selectedMission = selected
-      )
+      this.store$
+        .select(filtersStore.getSelectedMission)
+        .subscribe((selected) => (this.selectedMission = selected)),
     );
 
     this.subs.add(
       this.missionDatasets$.subscribe(
-        datasets => this.missionDatasets = datasets
-      )
+        (datasets) => (this.missionDatasets = datasets),
+      ),
     );
 
     this.subs.add(
-      this.dataset$.pipe(
-        map(dataset => {
-          return dataset.id === models.beta.id ?
-            models.MissionDataset.S1_BETA :
-            dataset.name;
-        })
-      ).subscribe(name => {
-        this.datasetFilter = name;
-        this.stateForm.patchValue({
-          'missionFilter': ''
-        });
-        this.filteredMissions = this._filterGroup(this.currentFilter);
-      })
-    );
-
-    this.subs.add(
-      this.stateForm.get('missionFilter').valueChanges
+      this.dataset$
         .pipe(
-          startWith(this.currentFilter),
-          tap(filterValue => this.currentFilter = filterValue),
-          map(filterValue => this._filterGroup(filterValue))
-        ).subscribe(
-          filtered => this.filteredMissions = filtered
+          map((dataset) => {
+            return dataset.id === models.beta.id
+              ? models.MissionDataset.S1_BETA
+              : dataset.name;
+          }),
         )
+        .subscribe((name) => {
+          this.datasetFilter = name;
+          this.stateForm.patchValue({
+            missionFilter: '',
+          });
+          this.filteredMissions = this._filterGroup(this.currentFilter);
+        }),
+    );
+
+    this.subs.add(
+      this.stateForm
+        .get('missionFilter')
+        .valueChanges.pipe(
+          startWith(this.currentFilter),
+          tap((filterValue) => (this.currentFilter = filterValue)),
+          map((filterValue) => this._filterGroup(filterValue)),
+        )
+        .subscribe((filtered) => (this.filteredMissions = filtered)),
     );
   }
 
   private _filterGroup(filterValue: string): string[] {
+    const missionsUnfiltered = this.datasetFilter
+      ? this.missionsByDataset[this.datasetFilter]
+      : Object.values(this.missionsByDataset).reduce(
+          (allMissions, missions) => [...allMissions, ...missions],
+          [],
+        );
 
-    const missionsUnfiltered = this.datasetFilter ?
-      this.missionsByDataset[this.datasetFilter] :
-      Object.values(this.missionsByDataset).reduce(
-      (allMissions, missions) => [...allMissions, ...missions], []
-    );
-
-    return filterValue === '' ?
-      missionsUnfiltered :
-      _filter(missionsUnfiltered, filterValue);
+    return filterValue === ''
+      ? missionsUnfiltered
+      : _filter(missionsUnfiltered, filterValue);
   }
 
   public setMission(mission: string): void {

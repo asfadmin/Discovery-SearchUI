@@ -1,3 +1,5 @@
-<span *ngFor="let banner of banners">
-  <span [bannerCreate]=banner></span>
-</span>
+@for (banner of banners; track banner) {
+  <span>
+    <span [bannerCreate]="banner"></span>
+  </span>
+}

@@ -1,91 +1,127 @@
-<div [ngClass]="{'saved-searches-mobile': breakpoint <= breakpoints.SMALL,
-               'saved-searches': breakpoint > breakpoints.SMALL}">
+<div
+  [ngClass]="{
+    'saved-searches-mobile': breakpoint <= breakpoints.SMALL,
+    'saved-searches': breakpoint > breakpoints.SMALL,
+  }"
+>
   <div class="saved-searches__header">
-      <div class="saved-searches__header-title">
-        <span *ngIf="sidebarType === SidebarType.SAVED_SEARCHES">{{'SAVED_SEARCHES'| translate }}</span>
-        <span *ngIf="sidebarType === SidebarType.SEARCH_HISTORY">{{'SEARCH_HISTORY' | translate }}</span>
-      </div>
-      <div class="saved-searches__header-actions" >
-          <div class="saved-searches__more-menu">
-            <mat-button-toggle-group
-               (change)="onSidebarTypeChange($event.value)"
-               [value]="sidebarType"
-               name="SavedSearchType" aria-label="Saved Search Type">
-              <mat-button-toggle
-                [value]="SidebarType.SEARCH_HISTORY">{{'HISTORY' | translate }}</mat-button-toggle>
-              <mat-button-toggle
-                [value]="SidebarType.SAVED_SEARCHES">{{'SAVED' | translate }}</mat-button-toggle>
-            </mat-button-toggle-group>
-          </div>
+    <div class="saved-searches__header-title">
+      @if (sidebarType === SidebarType.SAVED_SEARCHES) {
+        <span>{{ 'SAVED_SEARCHES' | translate }}</span>
+      }
+      @if (sidebarType === SidebarType.SEARCH_HISTORY) {
+        <span>{{ 'SEARCH_HISTORY' | translate }}</span>
+      }
+    </div>
+    <div class="saved-searches__header-actions">
+      <div class="saved-searches__more-menu">
+        <mat-button-toggle-group
+          [hideSingleSelectionIndicator]="true"
+          [hideMultipleSelectionIndicator]="true"
+          (change)="onSidebarTypeChange($event.value)"
+          [value]="sidebarType"
+          name="SavedSearchType"
+          [attr.aria-label]="'SAVED_SEARCH_TYPE' | translate"
+          [hideSingleSelectionIndicator]="true"
+        >
+          <mat-button-toggle [value]="SidebarType.SEARCH_HISTORY">{{
+            'HISTORY' | translate
+          }}</mat-button-toggle>
+          <mat-button-toggle [value]="SidebarType.SAVED_SEARCHES">{{
+            'SAVED' | translate
+          }}</mat-button-toggle>
+        </mat-button-toggle-group>
       </div>
     </div>
+  </div>
 
   <div class="saved-searches__subhead">
-    <div [ngClass]="{'saved-searches__filter-form-mobile': breakpoint <= breakpoints.SMALL,
-                     'saved-searches__filter-form': breakpoint > breakpoints.SMALL}">
+    <div
+      [ngClass]="{
+        'saved-searches__filter-form-mobile': breakpoint <= breakpoints.SMALL,
+        'saved-searches__filter-form': breakpoint > breakpoints.SMALL,
+      }"
+    >
       <form onsubmit="return false">
         <mat-form-field>
-          <input matInput
-                 [(ngModel)]="searchFilter"
-                 (change)="onNewFilter($event)"
-                 (input)="onNewFilter($event)"
-                 (keyup.enter)="unfocusFilter()"
-                 name="filterSearches"
-                 placeholder="{{'FILTER_SEARCHES' | translate}}">
+          <input
+            matInput
+            [(ngModel)]="searchFilter"
+            (change)="onNewFilter($event)"
+            (input)="onNewFilter($event)"
+            (keyup.enter)="unfocusFilter()"
+            name="filterSearches"
+            placeholder="{{ 'FILTER_SEARCHES' | translate }}"
+          />
         </mat-form-field>
       </form>
     </div>
 
     <div class="saved-searches__save-button">
-      <button
-         *ngIf="sidebarType === SidebarType.SAVED_SEARCHES &&
-           (searchType$ | async) !== SearchType.CUSTOM_PRODUCTS"
-         (click)="saveCurrentSearch()"
-              mat-raised-button
-              color="accent">
-        {{ 'SAVE_CURRENT_SEARCH' | translate}}
-      </button>
+      @if (
+        sidebarType === SidebarType.SAVED_SEARCHES &&
+        (searchType$ | async) !== SearchType.CUSTOM_PRODUCTS
+      ) {
+        <button (click)="saveCurrentSearch()" mat-raised-button color="accent">
+          {{ 'SAVE_CURRENT_SEARCH' | translate }}
+        </button>
+      }
     </div>
   </div>
 
   <div class="content-wrapper">
-      <div *ngIf="searchType$ | async as searchType"
-           [ngClass]="{'saved-searches__content-mobile': breakpoint <= breakpoints.SMALL,
-                       'saved-searches__content': breakpoint > breakpoints.SMALL}">
-        <div *ngIf="(searches$ | async).length > 0; else noSavedSearchBlock">
-          <div *ngFor="let search of (searches$ | async)" class="saved-searches-row">
-            <div *ngIf="filteredSearches.has(search.id)">
-              <app-saved-search
-                [search]="search"
-                [searchType]="searchType"
-                [isExpanded]="search.id === expandedSearchId"
-                [isNew]="search.id === newSearchId"
-                [isSavedSearch]="sidebarType === SidebarType.SAVED_SEARCHES"
-                [lockedFocus]="lockedFocus"
-                (unlockFocus)="onUnlockFocus()"
-                (expand)="onExpandSearch($event)"
-                (updateFilters)="updateSearchFilters($event)"
-                (updateName)="updateSearchName($event)"
-                (deleteSearch)="deleteSearch($event)"
-                (setSearch)="onSetSearch($event)">
-              </app-saved-search>
-            </div>
+    @if (searchType$ | async; as searchType) {
+      <div
+        [ngClass]="{
+          'saved-searches__content-mobile': breakpoint <= breakpoints.SMALL,
+          'saved-searches__content': breakpoint > breakpoints.SMALL,
+        }"
+      >
+        @if ((searches$ | async).length > 0) {
+          <div>
+            @for (search of searches$ | async; track search) {
+              <div class="saved-searches-row">
+                @if (filteredSearches.has(search.id)) {
+                  <div>
+                    <app-saved-search
+                      [search]="search"
+                      [searchType]="searchType"
+                      [isExpanded]="search.id === expandedSearchId"
+                      [isNew]="search.id === newSearchId"
+                      [isSavedSearch]="
+                        sidebarType === SidebarType.SAVED_SEARCHES
+                      "
+                      [lockedFocus]="lockedFocus"
+                      (unlockFocus)="onUnlockFocus()"
+                      (expand)="onExpandSearch($event)"
+                      (updateFilters)="updateSearchFilters($event)"
+                      (updateName)="updateSearchName($event)"
+                      (deleteSearch)="deleteSearch($event)"
+                      (setSearch)="onSetSearch($event)"
+                    >
+                    </app-saved-search>
+                  </div>
+                }
+              </div>
+            }
           </div>
-        </div>
-        <ng-template #noSavedSearchBlock>
+        } @else {
           <div class="no-saved-searches">
-            <h2>{{ 'YOU_HAVE_NO_SAVED_SEARCHES' | translate}}</h2>
+            <h2>{{ 'YOU_HAVE_NO_SAVED_SEARCHES' | translate }}</h2>
           </div>
-        </ng-template>
+        }
       </div>
+    }
   </div>
 
-  <div [ngClass]="{'saved-searches__footer-mobile': breakpoint <= breakpoints.SMALL,
-                 'saved-searches__footer': breakpoint > breakpoints.SMALL}">
+  <div
+    [ngClass]="{
+      'saved-searches__footer-mobile': breakpoint <= breakpoints.SMALL,
+      'saved-searches__footer': breakpoint > breakpoints.SMALL,
+    }"
+  >
     <div class="saved-searches__close-button">
-      <button (click)="onClose()"
-              mat-raised-button
-              color="primary">
+      <button (click)="onClose()" mat-raised-button color="primary">
         {{ 'DONE' | translate }}
       </button>
     </div>

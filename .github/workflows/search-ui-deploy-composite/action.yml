@@ -23,7 +23,7 @@ runs:
     - name: Use Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: 18
+        node-version: 24
 
     - name: Configure AWS credentials from Test account
       uses: aws-actions/configure-aws-credentials@v3
@@ -51,7 +51,7 @@ runs:
     - name: Deploy to AWS
       shell: bash
       run: |
-        cd dist/search-ui
+        cd dist/search-ui/browser
         aws s3 sync . "s3://${{ inputs.s3-bucket }}"
         aws cloudfront create-invalidation \
             --distribution-id ${{ inputs.cdn-id }} \

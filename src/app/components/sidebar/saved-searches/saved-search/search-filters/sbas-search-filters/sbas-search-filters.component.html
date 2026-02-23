@@ -1,20 +1,34 @@
 <div>
-  <div *ngIf="!!filters.reference">
-    <b>{{ 'REFERENCE' | translate }}: </b> {{ filters.reference }}
-  </div>
-  <div *ngIf="!!filters.customPairIds && filters.customPairIds.length !== 0">
-    <b>{{'CUSTOM_PAIRS' | translate}}: </b> {{ filters.customPairIds.length }}
-  </div>
-  <div *ngIf="filters.temporalRange !== null">
-    <b>{{ 'TEMPORAL' | translate }}: </b> {{ filters.temporalRange.start }} {{ 'TO' | translate }} {{ filters.temporalRange.end }}
-  </div>
-  <div *ngIf="filters.perpendicular !== null">
-    <b>{{'PERPENDICULAR' | translate}}: </b> {{ filters.perpendicular }}
-  </div>
-  <div *ngIf="filters.season.start !== null || filters.season.end !== null">
-    <b>{{'SEASON' | translate}}: </b> {{ filters.season.start }} {{ 'TO' | translate }} {{ filters.season.end }}
-  </div>
+  @if (!!filters.reference) {
+    <div>
+      <b>{{ 'REFERENCE' | translate }}: </b> {{ filters.reference }}
+    </div>
+  }
+  @if (!!filters.customPairIds && filters.customPairIds.length !== 0) {
+    <div>
+      <b>{{ 'CUSTOM_PAIRS' | translate }}: </b>
+      {{ filters.customPairIds.length }}
+    </div>
+  }
+  @if (filters.temporalRange !== null) {
+    <div>
+      <b>{{ 'TEMPORAL' | translate }}: </b> {{ filters.temporalRange.start }}
+      {{ 'TO' | translate }} {{ filters.temporalRange.end }}
+    </div>
+  }
+  @if (filters.perpendicular !== null) {
+    <div>
+      <b>{{ 'PERPENDICULAR' | translate }}: </b> {{ filters.perpendicular }}
+    </div>
+  }
+  @if (filters.season.start !== null || filters.season.end !== null) {
+    <div>
+      <b>{{ 'SEASON' | translate }}: </b> {{ filters.season.start }}
+      {{ 'TO' | translate }} {{ filters.season.end }}
+    </div>
+  }
   <div>
-    <b>{{'PAIR_OVERLAP_THRESHOLD' | translate}}: </b> {{ filters.thresholdOverlap}}
+    <b>{{ 'PAIR_OVERLAP_THRESHOLD' | translate }}: </b>
+    {{ filters.thresholdOverlap }}
   </div>
 </div>

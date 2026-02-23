@@ -1,3 +1,5 @@
+@use "asf-theme-variables" as *;
+
 $light-grey: rgb(0 0 0 / 60%);
 .description-layout {
   display: flex;
@@ -48,7 +50,7 @@ $light-grey: rgb(0 0 0 / 60%);
 }
 
 .limitTextHeight {
-  height: 55px;
+  height: 72px;
   overflow: hidden;
 }
 
@@ -79,7 +81,7 @@ $light-grey: rgb(0 0 0 / 60%);
     translateY(-1.2812em)
     scale(0.75)
     perspective(100px)
-    tranlatez(0.0011px);
+    translateZ(0.0011px);
 }
 
 .button-menu-trigger {
@@ -205,8 +207,6 @@ $light-grey: rgb(0 0 0 / 60%);
   }
   padding-top: 22px;
   font-size: 12px;
-
-
 }
 
 .hyp3-icon {

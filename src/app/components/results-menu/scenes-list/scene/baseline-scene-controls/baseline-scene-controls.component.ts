@@ -1,18 +1,50 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  inject,
+} from '@angular/core';
 
 import * as services from '@services';
 import * as models from '@models';
-
+import { NgClass } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { MatListItemMeta } from '@angular/material/list';
+import { MatTooltip } from '@angular/material/tooltip';
+import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/on-demand-add-menu.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-baseline-scene-controls',
   templateUrl: './baseline-scene-controls.component.html',
-  styleUrls: ['./baseline-scene-controls.component.scss']
+  styleUrls: ['./baseline-scene-controls.component.scss'],
+  imports: [
+    NgClass,
+
+    MatIcon,
+    MatMenuTrigger,
+    MatListItemMeta,
+    MatTooltip,
+    OnDemandAddMenuComponent,
+    TranslateModule,
+  ],
 })
 export class BaselineSceneControlsComponent implements OnInit {
+  private screenSize = inject(services.ScreenSizeService);
+  private hyp3JobStatus = inject(services.Hyp3JobStatusService);
+
   @Input() scene: models.CMRProduct;
-  @Input() offsets: {temporal: number, perpendicular: number} = {temporal: 0, perpendicular: null};
-  @Input() hyp3ableByJobType: { total: number, byJobType: models.Hyp3ableProductByJobType[]};
+  @Input() offsets: { temporal: number; perpendicular: number } = {
+    temporal: 0,
+    perpendicular: null,
+  };
+  @Input() hyp3ableByJobType: {
+    total: number;
+    byJobType: models.Hyp3ableProductByJobType[];
+  };
   @Input() isQueued: boolean;
 
   @Output() onToggleScene = new EventEmitter();
@@ -20,14 +52,9 @@ export class BaselineSceneControlsComponent implements OnInit {
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
 
-  constructor(
-    private screenSize: services.ScreenSizeService,
-    private hyp3: services.Hyp3Service,
-  ) { }
-
   ngOnInit(): void {
     this.screenSize.breakpoint$.subscribe(
-      breakpoint => this.breakpoint = breakpoint
+      (breakpoint) => (this.breakpoint = breakpoint),
     );
   }
 
@@ -40,10 +67,10 @@ export class BaselineSceneControlsComponent implements OnInit {
   }
 
   public isDownloadable(product: models.CMRProduct): boolean {
-    return this.hyp3.isDownloadable(product);
+    return this.hyp3JobStatus.isDownloadable(product.metadata.job);
   }
 
   public isExpired(job: models.Hyp3Job): boolean {
-    return this.hyp3.isExpired(job);
+    return this.hyp3JobStatus.isExpired(job);
   }
 }

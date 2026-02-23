@@ -1,13 +1,34 @@
-@import "asf-theme";
-@import "deluxe-menu";
-@import "deluxe-menu-2";
+@use 'asf-theme-variables' as *;
+@use 'deluxe-menu' as *;
+@use 'deluxe-menu-2' as *;
 
-.dataset--layout {
-  white-space: normal;
-  flex: 7;
+.search-field {
+  width: 90%;
+  padding-left: 5%;
+}
+.datasets-wrapper {
+  min-height: calc(95vh - 64px);
+  max-height: calc(95vh - 64px);
+  overflow: auto;
+  overflow-x: hidden;
+}
+.datasets-empty {
+  min-width: 100vw;
+  margin-left: 35%;
 }
 
-.dataset-aside--layout {
-  flex: 3;
-  text-align: center;
+.dataset-footer {
+  display: grid;
+  place-content: center;
+  padding-top: 8px;
+}
+@media (width <= 500px) {
+  .dataset-footer {
+    padding: 0;
+  }
+}
+.close-button {
+  height: unset;
+  line-height: unset;
+  min-width: unset;
 }

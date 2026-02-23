@@ -4,7 +4,6 @@ import * as models from '@models';
 
 import { MapActionType, MapActions } from './map.action';
 
-
 export interface MapState {
   view: models.MapViewType;
   drawMode: models.MapDrawModeType;
@@ -13,6 +12,7 @@ export interface MapState {
   gridLinesActive: boolean;
   isMapInitialized: boolean;
   browseOverlayOpacity: number;
+  velocityOverlayOpacity: number;
   coherenceOverlayOpacity: number;
   overviewMapOpen: boolean;
 }
@@ -25,18 +25,18 @@ export const initState: MapState = {
   gridLinesActive: false,
   isMapInitialized: false,
   browseOverlayOpacity: 1.0,
+  velocityOverlayOpacity: 0.8,
   coherenceOverlayOpacity: 1.0,
 
-  overviewMapOpen: false
+  overviewMapOpen: false,
 };
-
 
 export function mapReducer(state = initState, action: MapActions): MapState {
   switch (action.type) {
     case MapActionType.SET_MAP_VIEW: {
       return {
         ...state,
-        view: action.payload
+        view: action.payload,
       };
     }
 
@@ -57,21 +57,21 @@ export function mapReducer(state = initState, action: MapActions): MapState {
     case MapActionType.SET_MAP_DRAW_MODE: {
       return {
         ...state,
-        drawMode: action.payload
+        drawMode: action.payload,
       };
     }
 
     case MapActionType.SET_MAP_INTERACTION_MODE: {
       return {
         ...state,
-        interactionMode: action.payload
+        interactionMode: action.payload,
       };
     }
 
     case MapActionType.SET_MAP_GRID_LINES: {
       return {
         ...state,
-        gridLinesActive: action.payload
+        gridLinesActive: action.payload,
       };
     }
 
@@ -83,28 +83,34 @@ export function mapReducer(state = initState, action: MapActions): MapState {
     }
 
     case MapActionType.SET_BROWSE_OVERLAY_OPACITY: {
-      const browseOverlayOpacity = action.payload < 0
-        ? 0 : action.payload > 1.0
-        ? 1.0 : action.payload;
+      const browseOverlayOpacity =
+        action.payload < 0 ? 0 : action.payload > 1.0 ? 1.0 : action.payload;
       return {
         ...state,
-        browseOverlayOpacity
+        browseOverlayOpacity,
       };
     }
-    
+
     case MapActionType.SET_COHERENCE_OVERLAY_OPACITY: {
-      const coherenceOverlayOpacity = action.payload < 0
-        ? 0 : action.payload > 1.0
-        ? 1.0 : action.payload;
+      const coherenceOverlayOpacity =
+        action.payload < 0 ? 0 : action.payload > 1.0 ? 1.0 : action.payload;
       return {
         ...state,
-        coherenceOverlayOpacity
+        coherenceOverlayOpacity,
+      };
+    }
+    case MapActionType.SET_VELOCITY_OVERLAY_OPACITY: {
+      const velocityOverlayOpacity =
+        action.payload < 0 ? 0 : action.payload > 1.0 ? 1.0 : action.payload;
+      return {
+        ...state,
+        velocityOverlayOpacity,
       };
     }
     case MapActionType.TOGGLE_OVERVIEW_MAP: {
       return {
         ...state,
-        overviewMapOpen: action.payload
+        overviewMapOpen: action.payload,
       };
     }
 
@@ -114,49 +120,52 @@ export function mapReducer(state = initState, action: MapActions): MapState {
   }
 }
 
-
 export const getMapState = createFeatureSelector<MapState>('map');
 
 export const getMapView = createSelector(
   getMapState,
-  (state: MapState) => state.view
+  (state: MapState) => state.view,
 );
 
 export const getMapLayerType = createSelector(
   getMapState,
-  (state: MapState) => state.layerType
+  (state: MapState) => state.layerType,
 );
 
 export const getMapDrawMode = createSelector(
   getMapState,
-  (state: MapState) => state.drawMode
+  (state: MapState) => state.drawMode,
 );
 
 export const getMapInteractionMode = createSelector(
   getMapState,
-  (state: MapState) => state.interactionMode
+  (state: MapState) => state.interactionMode,
 );
 
 export const getAreGridlinesActive = createSelector(
   getMapState,
-  (state: MapState) => state.gridLinesActive
+  (state: MapState) => state.gridLinesActive,
 );
 
 export const getIsMapInitialization = createSelector(
   getMapState,
-  (state: MapState) => state.isMapInitialized
+  (state: MapState) => state.isMapInitialized,
 );
 
 export const getIsOverviewMapOpen = createSelector(
   getMapState,
-  (state: MapState) => state.overviewMapOpen
+  (state: MapState) => state.overviewMapOpen,
 );
 
 export const getBrowseOverlayOpacity = createSelector(
   getMapState,
-  (state: MapState) => state.browseOverlayOpacity
+  (state: MapState) => state.browseOverlayOpacity,
+);
+export const getVelocityOverlayOpacity = createSelector(
+  getMapState,
+  (state: MapState) => state.velocityOverlayOpacity,
 );
 export const getCoherenceOverlayOpacity = createSelector(
   getMapState,
-  (state: MapState) => state.coherenceOverlayOpacity
+  (state: MapState) => state.coherenceOverlayOpacity,
 );

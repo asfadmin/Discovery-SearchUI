@@ -3,7 +3,7 @@ name: Deploy Displacement SearchUI EDC
 on:
   push:
     branches:
-      - test-edc/*
+      - prod
 
 jobs:
   deploy:

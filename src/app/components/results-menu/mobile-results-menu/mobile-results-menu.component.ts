@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, inject } from '@angular/core';
 
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
@@ -10,20 +10,67 @@ import { DatasetForProductService } from '@services';
 import { SubSink } from 'subsink';
 
 import { CMRProductPair, SearchType } from '@models';
+import { MatButton } from '@angular/material/button';
+import { AsyncPipe } from '@angular/common';
+import { MatCard, MatCardSubtitle } from '@angular/material/card';
+import { ScenesListHeaderComponent } from '../scenes-list-header/scenes-list-header.component';
+import { ScenesListComponent } from '../scenes-list/scenes-list.component';
+import { SceneDetailComponent } from '../scene-detail/scene-detail.component';
+import { MatTooltip } from '@angular/material/tooltip';
+import { SceneMetadataComponent } from '@components/shared/scene-metadata/scene-metadata.component';
+import { SceneFilesComponent } from '../scene-files/scene-files.component';
+import {
+  MatButtonToggleGroup,
+  MatButtonToggle,
+} from '@angular/material/button-toggle';
+import { MatIcon } from '@angular/material/icon';
+import { BaselineChartComponent } from '../../baseline-chart/baseline-chart.component';
+import { DocsModalComponent } from '@components/shared/docs-modal/docs-modal.component';
+import { SBASChartComponent } from '../../sbas-chart/sbas-chart.component';
+import { SbasSlidersTwoComponent } from '../sbas-results-menu/sbas-sliders-two/sbas-sliders-two.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 enum MobileViews {
   LIST = 0,
   DETAIL = 1,
   CHART = 2,
-  SBAS
+  SBAS,
 }
 
 @Component({
   selector: 'app-mobile-results-menu',
   templateUrl: './mobile-results-menu.component.html',
-  styleUrls: ['./mobile-results-menu.component.scss', '../results-menu.component.scss']
+  styleUrls: [
+    './mobile-results-menu.component.scss',
+    '../results-menu.component.scss',
+  ],
+  imports: [
+    MatButton,
+
+    MatCard,
+    MatCardSubtitle,
+    ScenesListHeaderComponent,
+    ScenesListComponent,
+    SceneDetailComponent,
+
+    MatTooltip,
+    SceneMetadataComponent,
+    SceneFilesComponent,
+    MatButtonToggleGroup,
+    MatButtonToggle,
+    MatIcon,
+    BaselineChartComponent,
+    DocsModalComponent,
+    SBASChartComponent,
+    SbasSlidersTwoComponent,
+    AsyncPipe,
+    TranslateModule,
+  ],
 })
 export class MobileResultsMenuComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  datasetForProduct = inject(DatasetForProductService);
+
   @Input() resize$: Observable<void>;
 
   public isDisconnected = false;
@@ -34,45 +81,45 @@ export class MobileResultsMenuComponent implements OnInit, OnDestroy {
   public view = MobileViews.SBAS;
   public Views = MobileViews;
 
-  public selectedProducts$ = this.store$.select(scenesStore.getSelectedSceneProducts);
+  public selectedProducts$ = this.store$.select(
+    scenesStore.getSelectedSceneProducts,
+  );
 
   public searchType: SearchType;
   public SearchTypes = SearchType;
 
   private subs = new SubSink();
 
-  constructor(
-    private store$: Store<AppState>,
-    public datasetForProduct: DatasetForProductService,
-  ) { }
-
   ngOnInit(): void {
     this.subs.add(
-      this.store$.select(searchStore.getSearchType).subscribe(
-        searchType => {
-          this.searchType = searchType;
-          this.view = searchType === SearchType.SBAS ?
-                      MobileViews.SBAS : MobileViews.LIST;
-        }
-      )
+      this.store$.select(searchStore.getSearchType).subscribe((searchType) => {
+        this.searchType = searchType;
+        this.view =
+          searchType === SearchType.SBAS ? MobileViews.SBAS : MobileViews.LIST;
+      }),
     );
 
     this.subs.add(
-      this.store$.select(scenesStore.getIsSelectedPairCustom).subscribe(
-        (isPairCustom: boolean) => this.isSelectedPairCustom = isPairCustom
-      )
+      this.store$
+        .select(scenesStore.getIsSelectedPairCustom)
+        .subscribe(
+          (isPairCustom: boolean) => (this.isSelectedPairCustom = isPairCustom),
+        ),
     );
 
     this.subs.add(
-      this.store$.select(uiStore.getIsAddingCustomPoint).subscribe(
-        isAddingCustomPoint => this.isAddingCustomPoint = isAddingCustomPoint
-      )
+      this.store$
+        .select(uiStore.getIsAddingCustomPoint)
+        .subscribe(
+          (isAddingCustomPoint) =>
+            (this.isAddingCustomPoint = isAddingCustomPoint),
+        ),
     );
 
     this.subs.add(
-      this.store$.select(scenesStore.getSelectedPair).subscribe(
-        (selected: CMRProductPair) => this.pair = selected
-      )
+      this.store$
+        .select(scenesStore.getSelectedPair)
+        .subscribe((selected: CMRProductPair) => (this.pair = selected)),
     );
   }
 

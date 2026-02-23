@@ -1,10 +1,30 @@
-<ng-container *ngIf="text; else elseBlock">
+@if (text && !custStyle) {
   <a (click)="showDoc()" class="link-pointer text-link">
-    {{ text }}
+    {{ text | translate }}
   </a>
-</ng-container>
-<ng-template #elseBlock>
-  <a (click)="showDoc()" class="link-pointer" matTooltip="{{this.tooltip ?? 'OPEN_LINK_TO_DOCUMENTATION' | translate}}">
-    <mat-icon>{{ icon }}</mat-icon>
+}
+@if (text && custStyle) {
+  <a (click)="showDoc()" style="{{ custStyle }}">
+    {{ text | translate }}
   </a>
-</ng-template>
+}
+@if (description) {
+  <a
+    (click)="showDoc()"
+    class="link-pointer"
+    [matTooltip]="this.tooltip ?? ('DATASET_INFO' | translate)"
+  >
+    <mat-icon class="material-symbols-outlined large-icon"
+      >description</mat-icon
+    >
+  </a>
+}
+@if (!description && !text) {
+  <a
+    (click)="showDoc()"
+    class="link-pointer"
+    matTooltip="{{ this.tooltip ?? 'OPEN_LINK_TO_DOCUMENTATION' | translate }}"
+  >
+    <mat-icon class="material-symbols-outlined icon-size">{{ icon }}</mat-icon>
+  </a>
+}

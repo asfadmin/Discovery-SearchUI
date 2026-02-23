@@ -1,5 +1,14 @@
-import { Component, OnInit, Output, Input, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import {
+  Component,
+  OnInit,
+  Output,
+  Input,
+  EventEmitter,
+  ViewChild,
+  OnDestroy,
+  inject,
+} from '@angular/core';
+import { NgForm, FormsModule } from '@angular/forms';
 
 import { Subject } from 'rxjs';
 import { tap, delay } from 'rxjs/operators';
@@ -14,18 +23,52 @@ import { SubSink } from 'subsink';
 import { getSearchType, SetSearchOutOfDate } from '@store/search';
 import { getIsFiltersMenuOpen, getIsResultsMenuOpen } from '@store/ui';
 import { SetGeocode } from '@store/filters';
+import { MatIcon } from '@angular/material/icon';
+import { MatIconButton, MatButton } from '@angular/material/button';
+import { MatTooltip } from '@angular/material/tooltip';
+import {
+  MatFormField,
+  MatLabel,
+  MatInput,
+  MatSuffix,
+} from '@angular/material/input';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { GeocodeSelectorComponent } from './geocode-selector/geocode-selector.component';
+import { FileUploadDialogComponent } from './file-upload/file-upload-dialog/file-upload-dialog.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 // Declare GTM dataLayer array.
 declare global {
-  interface Window { dataLayer: any[]; }
+  interface Window {
+    dataLayer: any[];
+  }
 }
 
 @Component({
   selector: 'app-aoi-options',
   templateUrl: './aoi-options.component.html',
   styleUrls: ['./aoi-options.component.scss'],
+  imports: [
+    MatIcon,
+    MatIconButton,
+    MatTooltip,
+    FormsModule,
+    MatFormField,
+    MatLabel,
+    CdkTextareaAutosize,
+    MatInput,
+    MatButton,
+    MatSuffix,
+    GeocodeSelectorComponent,
+    FileUploadDialogComponent,
+    TranslateModule,
+  ],
 })
 export class AoiOptionsComponent implements OnInit, OnDestroy {
+  private store$ = inject<Store<AppState>>(Store);
+  private mapService = inject(MapService);
+  private screenSize = inject(ScreenSizeService);
+
   @ViewChild('polygonInputForm') public polygonForm: NgForm;
 
   @Input() showHeader = true;
@@ -49,44 +92,40 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
   public isAOIError = false;
   private subs = new SubSink();
 
-  constructor(
-    private store$: Store<AppState>,
-    private mapService: MapService,
-    private screenSize: ScreenSizeService,
-  ) {}
-
   ngOnInit() {
-
     this.subs.add(
-      this.mapService.searchPolygon$.subscribe(
-        polygon => {
-          this.polygon = polygon;
-          window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({
-            'event': 'input-search-polygon',
-            'input-search-polygon': this.polygon
-          });
-
-        }
-      )
+      this.mapService.searchPolygon$.subscribe((polygon) => {
+        this.polygon = polygon;
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: 'input-search-polygon',
+          'input-search-polygon': this.polygon,
+        });
+      }),
     );
 
     this.subs.add(
       this.screenSize.breakpoint$.subscribe(
-        breakpoint => this.breakpoint = breakpoint
-      )
+        (breakpoint) => (this.breakpoint = breakpoint),
+      ),
     );
 
     this.subs.add(
-      this.searchType$.subscribe( searchtype => this.searchtype = searchtype)
+      this.searchType$.subscribe(
+        (searchtype) => (this.searchtype = searchtype),
+      ),
     );
 
     this.subs.add(
-      this.store$.select(getIsFiltersMenuOpen).subscribe(isOpen => this.isFiltersMenuOpen = isOpen)
+      this.store$
+        .select(getIsFiltersMenuOpen)
+        .subscribe((isOpen) => (this.isFiltersMenuOpen = isOpen)),
     );
 
     this.subs.add(
-      this.store$.select(getIsResultsMenuOpen).subscribe(isOpen => this.isResultsMenuOpen = isOpen)
+      this.store$
+        .select(getIsResultsMenuOpen)
+        .subscribe((isOpen) => (this.isResultsMenuOpen = isOpen)),
     );
 
     this.handleAOIErrors();
@@ -100,27 +139,45 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
     const polygon = (event.target as HTMLInputElement).value;
     const didLoad = this.mapService.loadPolygonFrom(polygon);
 
-    if (!didLoad) {
+    if (
+      !didLoad ||
+      (this.searchtype === SearchType.DISPLACEMENT &&
+        !polygon.toLowerCase().includes('point'))
+    ) {
       this.aoiErrors$.next();
     } else {
-      if (this.searchtype === SearchType.DATASET && this.isResultsMenuOpen && !this.isFiltersMenuOpen) {
+      if (
+        this.searchtype === SearchType.DATASET &&
+        this.isResultsMenuOpen &&
+        !this.isFiltersMenuOpen
+      ) {
         this.store$.dispatch(new SetSearchOutOfDate(true));
       }
     }
   }
-  public onInputGeocodePolygon(event: {wkt: string, geocode: string}): void {
+  public onInputGeocodePolygon(event: { wkt: string; geocode: string }): void {
     const didLoad = this.mapService.loadPolygonFrom(event.wkt);
     this.store$.dispatch(new SetGeocode(event.geocode));
-    if (!didLoad) {
+    if (
+      !didLoad ||
+      (this.searchtype === SearchType.DISPLACEMENT &&
+        !event.wkt.toLowerCase().includes('point'))
+    ) {
       this.aoiErrors$.next();
     } else {
-      if (this.searchtype === SearchType.DATASET && this.isResultsMenuOpen && !this.isFiltersMenuOpen) {
+      if (
+        this.searchtype === SearchType.DATASET &&
+        this.isResultsMenuOpen &&
+        !this.isFiltersMenuOpen
+      ) {
         this.store$.dispatch(new SetSearchOutOfDate(true));
       }
     }
   }
   public onFileUpload(): void {
-    const action = new mapStore.SetMapInteractionMode(MapInteractionModeType.UPLOAD);
+    const action = new mapStore.SetMapInteractionMode(
+      MapInteractionModeType.UPLOAD,
+    );
     this.store$.dispatch(action);
   }
 
@@ -139,27 +196,29 @@ export class AoiOptionsComponent implements OnInit, OnDestroy {
   }
 
   public onOpenHelp(): void {
-    window.open('https://docs.asf.alaska.edu/vertex/manual/#area-of-interest-options');
+    window.open(
+      'https://docs.asf.alaska.edu/vertex/manual/#area-of-interest-options',
+    );
   }
 
   private handleAOIErrors(): void {
     this.subs.add(
-      this.aoiErrors$.pipe(
-        tap(_ => {
-          this.isAOIError = true;
-          this.mapService.clearDrawLayer();
-          this.polygonForm.reset();
-          this.polygonForm.form
-            .controls['searchPolygonLarge']
-            .setErrors({'incorrect': true});
+      this.aoiErrors$
+        .pipe(
+          tap((_) => {
+            this.isAOIError = true;
+            this.mapService.clearDrawLayer();
+            this.polygonForm.reset();
+            this.polygonForm.form.controls['searchPolygonLarge'].setErrors({
+              incorrect: true,
+            });
+          }),
+          delay(820),
+        )
+        .subscribe((_) => {
+          this.isAOIError = false;
+          this.polygonForm.form.controls['searchPolygonLarge'].setErrors(null);
         }),
-        delay(820),
-      ).subscribe(_ => {
-        this.isAOIError = false;
-        this.polygonForm.form
-          .controls['searchPolygonLarge']
-          .setErrors(null);
-      })
     );
   }
 

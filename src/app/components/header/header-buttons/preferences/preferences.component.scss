@@ -1,4 +1,4 @@
-@import "asf-theme";
+@use "asf-theme-variables" as *;
 
 .preferences-group {
   display: flex;
@@ -64,11 +64,6 @@
 .default-map {
   margin-right: 30px;
   width: 220px;
-}
-
-.hyp3-url {
-  width: 300px;
-  margin-top: 0;
 }
 
 .section-heading {

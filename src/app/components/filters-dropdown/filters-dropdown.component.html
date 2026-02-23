@@ -1,83 +1,95 @@
-<div *ngIf="searchType$ | async as selectedSearchType"
-  [@isOpen]="isFiltersMenuOpen$ | async"
-  [class.no-pointer]="breakpoint === breakpoints.FULL"
-  class="dataset-filters-div padding-for-box-shadow">
-  <div class="dataset-filters-card"
-    [class.pointer]="breakpoint === breakpoints.FULL"
+@if (searchType$ | async; as selectedSearchType) {
+  <div
+    [@isOpen]="isFiltersMenuOpen$ | async"
+    [class.no-pointer]="breakpoint === breakpoints.FULL"
+    class="dataset-filters-div padding-for-box-shadow"
+  >
+    <div
+      class="dataset-filters-card"
+      [class.pointer]="breakpoint === breakpoints.FULL"
     >
-    <div class="header">
-      <div class="header-title">
-        <ng-container *ngIf="selectedSearchType === searchTypes.DATASET">
-          {{ 'SEARCH_FILTERS' | translate }}
-        </ng-container>
-
-        <ng-container *ngIf="selectedSearchType === searchTypes.LIST">
-          {{ 'LIST_SEARCH' | translate }}
-        </ng-container>
-
-        <ng-container *ngIf="selectedSearchType === searchTypes.BASELINE">
-          {{ 'BASELINE_SEARCH' | translate }}
-        </ng-container>
-
-        <ng-container *ngIf="selectedSearchType === searchTypes.SBAS">
-          {{ 'SBAS_SEARCH' | translate }}
-        </ng-container>
-
-        <ng-container *ngIf="selectedSearchType === searchTypes.CUSTOM_PRODUCTS">
-          {{ 'ON_DEMAND_SEARCH' | translate }}
-          <app-docs-modal class="info-icon"
-                          url="https://docs.asf.alaska.edu/vertex/manual/#on-demand-products-search-options">
-          </app-docs-modal>
-        </ng-container>
-
-        <ng-container *ngIf="selectedSearchType === searchTypes.SARVIEWS_EVENTS">
-          {{ 'EVENT_SEARCH' | translate }}
+      <div class="header">
+        <div class="header-title">
+          @if (selectedSearchType === searchTypes.DATASET) {
+            {{ 'SEARCH_FILTERS' | translate }}
+          }
+          @if (selectedSearchType === searchTypes.LIST) {
+            {{ 'LIST_SEARCH' | translate }}
+          }
+          @if (selectedSearchType === searchTypes.BASELINE) {
+            {{ 'BASELINE_SEARCH' | translate }}
+          }
+          @if (selectedSearchType === searchTypes.SBAS) {
+            {{ 'SBAS_SEARCH' | translate }}
+          }
+          @if (selectedSearchType === searchTypes.CUSTOM_PRODUCTS) {
+            {{ 'ON_DEMAND_SEARCH' | translate }}
+            <app-docs-modal
+              class="info-icon"
+              url="https://docs.asf.alaska.edu/vertex/manual/#on-demand-products-search-options"
+            >
+            </app-docs-modal>
+          }
+          @if (selectedSearchType === searchTypes.SARVIEWS_EVENTS) {
+            {{ 'EVENT_SEARCH' | translate }}
+          }
+          @if (selectedSearchType === searchTypes.DISPLACEMENT) {
+            {{ 'DISPLACEMENT_SEARCH' | translate }}
+          }
+        </div>
+      </div>
+      <div
+        class="filters-list"
+        [class.filters-list-mobile]="breakpoint === breakpoints.MOBILE"
+      >
+        @if (selectedSearchType === searchTypes.DATASET) {
+          @if (frameSelectionEnabled$ | async) {
+            <app-frame-order-filters></app-frame-order-filters>
+          } @else {
+            <app-dataset-filters [dataset]="dataset$ | async">
+            </app-dataset-filters>
+          }
+        }
+        @if (selectedSearchType === searchTypes.LIST) {
+          <app-list-filters></app-list-filters>
+        }
+        @if (selectedSearchType === searchTypes.BASELINE) {
+          <app-baseline-filters></app-baseline-filters>
+        }
+        @if (selectedSearchType === searchTypes.SBAS) {
+          <app-sbas-filters></app-sbas-filters>
+        }
+        @if (selectedSearchType === searchTypes.CUSTOM_PRODUCTS) {
+          <app-custom-products-filters></app-custom-products-filters>
+        }
+        @if (selectedSearchType === searchTypes.SARVIEWS_EVENTS) {
+          <app-sarviews-filters></app-sarviews-filters>
+        }
+        @if (
+          selectedSearchType === searchTypes.DISPLACEMENT &&
+          breakpoint !== breakpoints.FULL
+        ) {
+          <app-timeseries-filters></app-timeseries-filters>
+        }
+      </div>
+      <div class="footer">
+        <ng-container>
+          @if (
+            selectedSearchType !== searchTypes.BASELINE &&
+            selectedSearchType !== searchTypes.SBAS &&
+            selectedSearchType !== searchTypes.CUSTOM_PRODUCTS &&
+            selectedSearchType !== searchTypes.SARVIEWS_EVENTS
+          ) {
+            <app-max-results-selector
+              class="search-button"
+              style="margin-right: 10px; align-self: center"
+            >
+            </app-max-results-selector>
+          }
+          <app-cancel-filter-changes></app-cancel-filter-changes>
+          <app-search-button></app-search-button>
         </ng-container>
       </div>
     </div>
-
-    <div class="filters-list"
-          [class.filters-list-mobile]="breakpoint === breakpoints.MOBILE">
-      <ng-container *ngIf="selectedSearchType === searchTypes.DATASET">
-        <app-dataset-filters [dataset]="(dataset$ | async)">
-        </app-dataset-filters>
-      </ng-container>
-
-      <ng-container *ngIf="selectedSearchType === searchTypes.LIST">
-        <app-list-filters></app-list-filters>
-      </ng-container>
-
-      <ng-container *ngIf="selectedSearchType === searchTypes.BASELINE">
-        <app-baseline-filters></app-baseline-filters>
-      </ng-container>
-
-      <ng-container *ngIf="selectedSearchType === searchTypes.SBAS">
-        <app-sbas-filters></app-sbas-filters>
-      </ng-container>
-
-      <ng-container *ngIf="selectedSearchType === searchTypes.CUSTOM_PRODUCTS">
-        <app-custom-products-filters></app-custom-products-filters>
-      </ng-container>
-
-      <ng-container *ngIf="selectedSearchType === searchTypes.SARVIEWS_EVENTS">
-        <app-sarviews-filters></app-sarviews-filters>
-      </ng-container>
-    </div>
-
-    <div class="footer">
-      <ng-container>
-        <app-max-results-selector class="search-button"
-          *ngIf="
-             selectedSearchType !== searchTypes.BASELINE &&
-             selectedSearchType !== searchTypes.SBAS &&
-             selectedSearchType !== searchTypes.CUSTOM_PRODUCTS &&
-             selectedSearchType !== searchTypes.SARVIEWS_EVENTS
-          "
-          style="margin-right: 10px; align-self: center;">
-        </app-max-results-selector>
-        <app-cancel-filter-changes></app-cancel-filter-changes>
-        <app-search-button></app-search-button>
-      </ng-container>
-    </div>
   </div>
-</div>
+}
