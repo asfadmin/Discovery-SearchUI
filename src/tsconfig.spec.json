@@ -5,8 +5,7 @@
     "types": [
       "jasmine",
       "node"
-    ],
-    "lib": ["dom", "es2022"]
+    ]
   },
   "files": [
     "test.ts",
