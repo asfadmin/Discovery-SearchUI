@@ -34,10 +34,3 @@
     color: themed('dark-secondary-text');
   }
 }
-.menu-item-icon {
-  img {
-    @include themify($themes) {
-      filter: themed('inverted-image');
-    }
-  }
-}
