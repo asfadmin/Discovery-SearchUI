@@ -11,6 +11,7 @@ import { initState as userInit } from '@store/user/user.reducer';
 import { initState as queueInit } from '@store/queue/queue.reducer';
 import { initState as hyp3Init } from '@store/hyp3/hyp3.reducer';
 import { initState as searchInit } from '@store/search/search.reducer';
+import { provideTranslateService } from '@ngx-translate/core';
 
 describe('SceneFilesComponent', () => {
   let component: SceneFilesComponent;
@@ -26,7 +27,7 @@ describe('SceneFilesComponent', () => {
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
-        // TODO: move mock store to some other testing handler
+        provideTranslateService(),
         // we'd need to do this for any component that needed store access.
         provideMockStore({
           initialState: {

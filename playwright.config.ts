@@ -25,8 +25,7 @@ export default defineConfig({
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL:
-      process.env['PLAYWRIGHT_TEST_BASE_URL'] ??
-      'http://local.asf.alaska.edu:4200',
+      process.env['PLAYWRIGHT_TEST_BASE_URL'] ?? 'https://local.asf.alaska.edu',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
