@@ -47,7 +47,7 @@
           >
             @for (theme of themeOptions; track theme) {
               <mat-option [value]="theme">
-                {{ theme | titlecase | uppercase | translate }}
+                {{ themeTranslation[theme] || theme | translate }}
               </mat-option>
             }
           </mat-select>

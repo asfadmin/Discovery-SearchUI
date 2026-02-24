@@ -191,7 +191,7 @@
                   }
                   @for (param of paramsList; track param) {
                     <li>
-                      <b>{{ param.name }}:</b> {{ param.val }}
+                      <b>{{ param.name | translate }}:</b> {{ param.val }}
                     </li>
                   }
                 </ul>
@@ -214,7 +214,7 @@
                         class="primary-text"
                       >
                         @if (product.bytes === 0) {
-                          <span>Virtual</span>
+                          <span>{{ 'VIRTUAL' | translate }}</span>
                         }
                         @if (product.bytes !== 0) {
                           <span>{{
@@ -405,8 +405,8 @@
                         eventSelectedProductIds.includes(
                           currentSarviewsProduct?.product_id
                         )
-                          ? 'Unpin browse from map'
-                          : 'Pin browse to map'
+                          ? ('UNPIN_BROWSE_FROM_MAP' | translate)
+                          : ('PIN_BROWSE_TO_MAP' | translate)
                       }}</span>
                       <mat-icon> push_pin </mat-icon>
                     </button>
@@ -452,7 +452,9 @@
         </div>
       }
       <div class="fx-nogrow">
-        <button mat-flat-button (click)="closeDialog()">Close</button>
+        <button mat-flat-button (click)="closeDialog()">
+          {{ 'CLOSE' | translate }}
+        </button>
       </div>
     </div>
   }

@@ -2,7 +2,7 @@
   mat-stroked-button
   class="view-select-button"
   [matMenuTriggerFor]="viewMenu"
-  aria-label="Map projection view"
+  [attr.aria-label]="'MAP_PROJECTION_VIEW' | translate"
 >
   @if (view === types.ARCTIC) {
     <mat-icon svgIcon="arctic" class="view-btn view-select-icon"> </mat-icon>
@@ -20,7 +20,7 @@
 <mat-menu #viewMenu="matMenu">
   <button
     mat-menu-item
-    aria-label="Arctic map projection"
+    [attr.aria-label]="'ARCTIC_MAP_PROJECTION' | translate"
     (click)="onArcticSelected()"
     [value]="types.ARCTIC"
     [disabled]="isDisplacementSearch"
@@ -36,7 +36,7 @@
 
   <button
     mat-menu-item
-    aria-label="Equatorial map projection"
+    [attr.aria-label]="'EQUATORIAL_MAP_PROJECTION' | translate"
     (click)="onEquatorialSelected()"
     [value]="types.EQUATORIAL"
   >
@@ -50,7 +50,7 @@
 
   <button
     mat-menu-item
-    aria-label="Antarctic map projection"
+    [attr.aria-label]="'ANTARCTIC_MAP_PROJECTION' | translate"
     (click)="onAntarcticSelected()"
     [value]="types.ANTARCTIC"
     [disabled]="isDisplacementSearch"

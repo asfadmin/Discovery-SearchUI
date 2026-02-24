@@ -46,8 +46,9 @@ export const opera_s1 = {
       displayName: 'L3 Surface Displacement (DISP-S1)',
     },
     {
-      apiValue: 'TROPO-ZENITH',
-      displayName: 'L4 Troposphere Zenith Radar Delays (TROPO-ZENITH)',
+      apiValue: 'DISP-S1-STATIC',
+      displayName:
+        'L3 Co-registered Surface Displacement Static Layer (DISP-S1-STATIC)',
     },
   ],
   beamModes: ['IW', 'EW'],
@@ -80,5 +81,6 @@ export const opera_s1 = {
     incidence_angle: 'Incidence Angle GeoTIFF',
     rtc_anf_gamma0_to_beta0: 'RTC Gamm to Beta GeoTIFF',
     local_incidence_angle: 'Local Incidence Angle GeoTIFF',
+    dem: 'DEM GeoTIFF',
   },
 };

@@ -556,7 +556,9 @@
       <mat-icon>copyright</mat-icon>{{ 'COPYRIGHT' | translate }}
     </button>
     <hr />
-    <button mat-menu-item><mat-icon>corporate_fare</mat-icon>ASF</button>
+    <button mat-menu-item>
+      <mat-icon>corporate_fare</mat-icon>{{ 'ASF' | translate }}
+    </button>
     <mat-menu #copyrightMenu="matMenu">
       <a mat-menu-item [href]="asfWebsite.home" target="_blank"
         >© {{ anio }} ASF</a

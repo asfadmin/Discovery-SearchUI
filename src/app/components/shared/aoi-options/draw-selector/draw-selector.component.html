@@ -3,7 +3,7 @@
     mat-stroked-button
     class="shape-select-button"
     [matMenuTriggerFor]="drawMenu"
-    aria-label="Map projection view"
+    [attr.aria-label]="'MAP_PROJECTION_VIEW' | translate"
   >
     <div class="shape-select-icon equatorial">
       @if (drawMode === types.POINT) {

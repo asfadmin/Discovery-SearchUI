@@ -18,6 +18,7 @@ import { SearchType } from '@models';
 
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { TranslateModule } from '@ngx-translate/core';
 @Component({
   selector: 'app-chart-modal',
   imports: [
@@ -27,6 +28,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     TimeseriesChartConfigComponent,
     MatMenuModule,
     MatButtonToggleModule,
+    TranslateModule,
   ],
   templateUrl: './chart-modal.component.html',
   styleUrl: './chart-modal.component.scss',

@@ -4,6 +4,10 @@
   </p>
 </mat-dialog-content>
 <mat-dialog-actions style="justify-content: flex-end">
-  <button mat-button mat-dialog-close tabindex="-1">Cancel</button>
-  <button mat-button (click)="onYesClick()" tabindex="1">Delete</button>
+  <button mat-button mat-dialog-close tabindex="-1">
+    {{ 'CANCEL' | translate }}
+  </button>
+  <button mat-button (click)="onYesClick()" tabindex="1">
+    {{ 'DELETE' | translate }}
+  </button>
 </mat-dialog-actions>

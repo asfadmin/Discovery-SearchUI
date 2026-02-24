@@ -21,7 +21,7 @@
         (ngModelChange)="projectEditType.set($event)"
         name="projectEditType"
         class="project-edit-radio-group"
-        aria-label="Project edit action"
+        [attr.aria-label]="'PROJECT_EDIT_ACTION' | translate"
       >
         <mat-radio-button value="edit">
           @if (jobCount <= 1) {
@@ -56,7 +56,7 @@
 
         <mat-radio-button value="remove">
           @if (projectCount <= 1) {
-            {{ 'REMOVE_PROJECT_NAME' | translate }}
+            {{ 'REMOVE_PROJECT_NAME' | translate: { count: projectCount } }}
           } @else {
             {{ 'REMOVE_PROJECT_NAMES' | translate: { count: projectCount } }}
           }

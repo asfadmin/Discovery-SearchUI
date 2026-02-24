@@ -50,7 +50,7 @@
             matSuffix
             mat-button
             (click)="onClearPolygon()"
-            aria-label="Clear"
+            [attr.aria-label]="'CLEAR' | translate"
           >
             {{ 'CLEAR' | translate }}
           </button>

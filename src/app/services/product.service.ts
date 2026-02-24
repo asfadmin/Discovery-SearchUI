@@ -131,6 +131,13 @@ export class ProductService {
     if (product.dataset === 'SEASAT 1') {
       return this.seasatSubproductsFromScene(product);
     }
+    if (
+      models.tropo.productTypes
+        .map((t) => t.apiValue)
+        .includes(product.metadata.productType)
+    ) {
+      return this.tropoSubproductsFromScene(product);
+    }
     return [];
   }
 
@@ -152,7 +159,10 @@ export class ProductService {
           .split(/[0-9]\.[0-9]_/)
           .pop();
 
-        if (!productTypeDisplay.hasOwnProperty(file_type?.toLowerCase())) {
+        if (file_type === undefined) {
+          return 'null';
+        }
+        if (!productTypeDisplay.hasOwnProperty(file_type.toLowerCase())) {
           return file_extension;
         }
         return file_type;
@@ -193,8 +203,10 @@ export class ProductService {
 
     let file_suffix = '';
 
-    if (['DISP-S1', 'TROPO-ZENITH'].includes(product.metadata.productType)) {
+    if ('DISP-S1' === product.metadata.productType) {
       file_suffix = 'nc';
+    } else if ('DISP-S1-STATIC' === product.metadata.productType) {
+      file_suffix = 'dem';
     } else {
       file_suffix = this.urlToProductType(
         product.downloadUrl,
@@ -241,6 +253,12 @@ export class ProductService {
         } else {
           productTypeDisplay = 'Product Zarr Store';
         }
+      } else if (product.metadata.productType === 'DISP-S1-STATIC') {
+        if (p.includes('line_of_sight')) {
+          productTypeDisplay = 'Line Of Sight GeoTIFF';
+        } else if (p.includes('layover_shadow_mask')) {
+          productTypeDisplay = 'Shadow Mask GeoTIFF';
+        }
       }
       const fileID = p.split('/').slice(-1)[0];
 
@@ -281,6 +299,81 @@ export class ProductService {
     });
   }
 
+  private tropoSubproductsFromScene(product: models.CMRProduct) {
+    const products = [];
+    let file_extension = this.urlToProductType(
+      product.downloadUrl,
+      models.tropo.productTypeDisplays,
+    );
+    product.productTypeDisplay =
+      models.tropo.productTypeDisplays[file_extension];
+    const fileID = product.downloadUrl.split('/').slice(-1)[0];
+    product.bytes = product.metadata.fileSizes[fileID]?.bytes;
+    const thumbnail_index = product.browses.findIndex((url) =>
+      url.toLowerCase().includes('thumbnail'),
+    );
+    if (thumbnail_index !== -1) {
+      product.thumbnail = product.browses.splice(thumbnail_index, 1)[0];
+    }
+    product.browses = product.browses.filter((url) => !url.includes('low-res'));
+
+    const s3UrlsByProductID = product.metadata.s3Urls.reduce((prev, curr) => {
+      const subproductFileID = curr.split('/').at(-1);
+
+      prev[subproductFileID] = curr;
+
+      return prev;
+    }, {});
+
+    product.metadata.s3URI = s3UrlsByProductID[product.file] ?? null;
+
+    const browses = [];
+    for (const p of [
+      ...product.metadata.additionalUrls.filter(
+        (url) => url !== product.downloadUrl,
+      ),
+      ...product.browses,
+    ]) {
+      file_extension = this.urlToProductType(
+        p,
+        models.tropo.productTypeDisplays,
+      );
+
+      if (p === '/assets/no-browse.png') {
+        continue;
+      }
+      const productTypeDisplay =
+        models.tropo.productTypeDisplays[file_extension.toLowerCase()] ??
+        'Missing Display';
+
+      if (productTypeDisplay === 'Missing Display') {
+        console.log(
+          `Missing product type display for file extension "${file_extension}"`,
+        );
+      }
+
+      if (['Metadata IN'].includes(productTypeDisplay)) {
+        continue;
+      }
+
+      const fileID = p.split('/').slice(-1)[0];
+      const s3Url = s3UrlsByProductID[fileID] ?? null;
+      const fileSize = product.metadata.fileSizes[fileID]?.bytes ?? 0;
+      const subproduct = this.createSubproductForScene(
+        product,
+        p,
+        s3Url,
+        file_extension,
+        productTypeDisplay,
+        fileSize,
+        browses,
+      );
+
+      products.push(subproduct);
+    }
+
+    return products;
+  }
   private seasatSubproductsFromScene(product: models.CMRProduct) {
     const products = [];
     let file_extension = this.urlToProductType(

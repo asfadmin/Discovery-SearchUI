@@ -1,24 +1,27 @@
 import {
   Component,
-  Input,
   Output,
   EventEmitter,
-  ViewChild,
   inject,
+  input,
+  computed,
+  Signal,
+  signal,
+  viewChild,
+  ElementRef,
 } from '@angular/core';
 
 import * as models from '@models';
 import { ScreenSizeService } from '@services';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
-import { DateRange } from '@models';
-import { NgClass, AsyncPipe } from '@angular/common';
-import { MatLabel } from '@angular/material/input';
-import { MatButton } from '@angular/material/button';
-import { MatTooltip } from '@angular/material/tooltip';
-import { MatIcon } from '@angular/material/icon';
-import { MatCardActions } from '@angular/material/card';
-import { DocsModalComponent } from '../../docs-modal/docs-modal.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { AsyncPipe } from '@angular/common';
+import { MatLabel, MatInputModule } from '@angular/material/input';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { DatasetComponent } from './dataset/dataset.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -36,28 +39,62 @@ declare global {
     MatButton,
     MatMenuTrigger,
     MatMenu,
-
     MatMenuItem,
-    MatTooltip,
-    MatIcon,
-    NgClass,
-    MatCardActions,
-    DocsModalComponent,
     AsyncPipe,
     TranslateModule,
+    DatasetComponent,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    MatIconModule,
+    MatIconButton,
   ],
 })
 export class DatasetSelectorComponent {
   private screenSize = inject(ScreenSizeService);
-
-  @Input() datasets: models.Dataset[];
-  @Input() selected: string;
+  private translate = inject(TranslateService);
   @Output() selectedChange = new EventEmitter<string>();
-  @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
 
+  public datasets = input<models.Dataset[]>();
+  public selected = input<string>();
+
+  public datasetFilter = signal<string>(null);
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
   public isReadMore = true;
+
+  public searchElement = viewChild<ElementRef>('datasetOptions');
+
+  public datasetName = computed(() => {
+    let datasetName = '';
+    this.datasets().forEach((dataset) => {
+      if (dataset.id === this.selected()) {
+        datasetName = dataset.name;
+      }
+    });
+    return datasetName;
+  });
+
+  public filteredDatasets: Signal<models.Dataset[]> = computed(() => {
+    if (!this.datasetFilter()) {
+      return this.datasets();
+    }
+    const userInput = this.datasetFilter().toUpperCase();
+    return this.datasets().filter((dataset) => {
+      return (
+        dataset.name.toUpperCase().includes(userInput) ||
+        this.translate
+          .instant(dataset.platformDesc)
+          .toUpperCase()
+          .includes(userInput) ||
+        dataset.source.name.includes(userInput)
+      );
+    });
+  });
+
+  public menuOpen() {
+    this.searchElement().nativeElement.focus();
+  }
 
   public onSelectionChange(dataset: string): void {
     window.dataLayer = window.dataLayer || [];
@@ -66,32 +103,5 @@ export class DatasetSelectorComponent {
       dataset: dataset,
     });
     this.selectedChange.emit(dataset);
-  }
-
-  public datasetNameLookup(datasetId: string): string {
-    let datasetName = '';
-    this.datasets.forEach((dataset) => {
-      if (dataset.id === datasetId) {
-        datasetName = dataset.name;
-      }
-    });
-    return datasetName;
-  }
-
-  public prettyDateRange(dateRange: DateRange): string {
-    const { start, end } = dateRange;
-
-    const startYear = start.getFullYear();
-    const endYear = !end ? 'Present' : end.getFullYear();
-
-    return startYear === endYear
-      ? `${startYear}`.trim()
-      : `${startYear} to ${endYear}`.trim();
-  }
-
-  public onOpenDocs(event, dataset: string) {
-    this.trigger.closeMenu();
-    this.onSelectionChange(dataset);
-    event.stopPropagation();
   }
 }

@@ -154,7 +154,7 @@
 
   @for (param of paramsList; track param; let first = $first) {
     <div [class.params-first]="first" matListItemLine>
-      <b>{{ param.name }}:</b> {{ param.val }}
+      <b>{{ param.name | translate }}:</b> {{ param.val }}
     </div>
   }
 
