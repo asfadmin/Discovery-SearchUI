@@ -2,7 +2,7 @@
   mat-stroked-button
   class="layer-select-button"
   [matMenuTriggerFor]="layerMenu"
-  aria-label="Map projection view"
+  [attr.aria-label]="'LAYER_SELECTOR' | translate"
 >
   <div class="layer-btn layer-select-icon arctic">
     @if (layerType === layerTypes.SATELLITE) {

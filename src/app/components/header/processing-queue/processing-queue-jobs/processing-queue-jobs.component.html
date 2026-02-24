@@ -99,7 +99,7 @@
                 </b>
                 <b>
                   @if (job.granules[0].bytes === 0) {
-                    <span>Virtual</span>
+                    <span>{{ 'VIRTUAL' | translate }}</span>
                   }
                   @if (job.granules[0].bytes !== 0) {
                     <span>{{

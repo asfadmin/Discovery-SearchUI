@@ -11,9 +11,10 @@
           class="button-menu-trigger"
           color="basic"
           mat-button
+          (menuOpened)="menuOpen()"
         >
           <div class="button-text">
-            {{ datasetNameLookup(selected) }}
+            {{ datasetName() }}
             <span class="mat-select-arrow"></span>
           </div>
         </button>
@@ -22,86 +23,63 @@
     </div>
     <div class="gtm-search-type-selector fx-nogrow">
       <mat-menu #platformMenu="matMenu" class="dataset-selector">
-        @for (dataset of datasets; track dataset; let isLast = $last) {
-          <button mat-menu-item>
-            <div
-              class="menu-item mat-menu-item"
-              (click)="onSelectionChange(dataset.id)"
+        <form
+          class="dataset-filter-form"
+          (click)="$event.stopPropagation()"
+          (keydown)="$event.stopPropagation()"
+        >
+          <mat-form-field class="search-field" appearance="outline">
+            <mat-icon matPrefix class="filter-icon">search</mat-icon>
+            <input
+              matInput
+              [placeholder]="'SEARCH_DATASETS' | translate"
+              [(ngModel)]="datasetFilter"
+              name="dataset-options-filter"
+              #datasetOptions
+            />
+            @if (datasetFilter()) {
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="datasetFilter.set('')"
+                [aria-label]="'CLEAR' | translate"
+                class="close-button filter-icon"
+              >
+                <mat-icon>clear</mat-icon>
+              </button>
+            }
+          </mat-form-field>
+        </form>
+        <div class="datasets-wrapper">
+          @for (dataset of filteredDatasets(); track dataset.id) {
+            <button
+              mat-menu-item
+              (keydown.enter)="onSelectionChange(dataset.id)"
             >
-              <div class="menu-item-inner">
-                <div class="dataset--layout menu-item-content">
-                  <div class="item-title">
-                    {{ dataset.name }}
-                    <span class="dataset-light-text">
-                      @if (
-                        dataset.id === 'SENTINEL-1' ||
-                        dataset.id === 'SENTINEL-1 BURSTS'
-                      ) {
-                        <span matTooltip="{{ 'HYP3_AVAILABLE' | translate }}">
-                          <mat-icon class="hyp3-icon" svgIcon="hyp3"></mat-icon>
-                        </span>
-                      }
-                      @if (dataset.beta) {
-                        <span><em> (beta) </em></span>
-                      }
-                      @if (dataset.subName) {
-                        <div class="dataset__subName faint-text">
-                          {{ dataset.subName }}
-                        </div>
-                      }
-                    </span>
-                  </div>
-                  <div
-                    class="item-content"
-                    [ngClass]="{ limitTextHeight: isReadMore }"
-                    [class.smaller-font]="breakpoint === breakpoints.MOBILE"
-                  >
-                    {{ dataset.platformDesc | translate }}
-                  </div>
-                  <mat-card-actions (click)="onOpenDocs($event, dataset.id)">
-                    <app-docs-modal
-                      class="info-text"
-                      text="{{ 'MORE_INFO' | translate }}"
-                      url="{{ dataset.infoUrl }}"
-                    >
-                    </app-docs-modal>
-                  </mat-card-actions>
-                </div>
-                <div
-                  class="dataset-aside--layout menu-item-aside"
-                  [class.increase-right-margin]="
-                    breakpoint === breakpoints.MOBILE
-                  "
-                >
-                  <div class="dataset-date-range faint-text">
-                    {{ prettyDateRange(dataset.date) }}
-                  </div>
-                  <div class="material-icons-outlined menu-item-icon">
-                    <img
-                      src="{{ dataset.platformIcon }}"
-                      width="53"
-                      height="53"
-                    />
-                  </div>
-                  @if (dataset.source !== null) {
-                    <div class="dataset-source">
-                      <a
-                        href="{{ dataset.source.url }}"
-                        target="_blank"
-                        class="blue-link"
-                      >
-                        {{ dataset.source.name }}
-                      </a>
-                    </div>
-                  }
-                </div>
-              </div>
-            </div>
-            @if (!isLast) {
+              <app-dataset
+                [dataset]="dataset"
+                (selected)="onSelectionChange($event)"
+              />
+            </button>
+            @if (!$last) {
               <hr class="dataset-hr" />
             }
-          </button>
-        }
+          } @empty {
+            <p class="datasets-empty">
+              {{ 'NO_MATCHING_DATASETS' | translate }}
+            </p>
+          }
+        </div>
+        <div class="dataset-footer">
+          {{
+            'SHOWING_X_OF_Y'
+              | translate
+                : {
+                    shown: filteredDatasets().length,
+                    total: datasets()?.length ?? 0,
+                  }
+          }}
+        </div>
       </mat-menu>
     </div>
   </div>

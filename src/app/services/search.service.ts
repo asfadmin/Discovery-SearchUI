@@ -18,6 +18,7 @@ import { WktService } from './wkt.service';
 import { PinnedProduct } from './browse-map.service';
 import { PointHistoryService } from './point-history.service';
 import { resetTimeseriesStates } from '@store/charts';
+import { SetProductTypes, SetSelectedDataset } from '@store/filters';
 
 @Injectable({
   providedIn: 'root',
@@ -142,6 +143,33 @@ export class SearchService {
       );
 
       this.mapService.setDrawFeature(features);
+    }
+  }
+
+  public redirectSearch(redirectInfo: models.SearchRedirect) {
+    switch (redirectInfo.searchType) {
+      case models.SearchType.DATASET: {
+        const filters = redirectInfo.filters;
+        const dataset = models.datasetList.find(
+          (d) => d.id === filters.selectedDataset,
+        );
+
+        const actions = [
+          new SetSearchType(models.SearchType.DATASET),
+          new ClearSearch(),
+          new SetSelectedDataset(dataset.id),
+          new SetProductTypes(filters.productTypes),
+          new MakeSearch(),
+        ];
+
+        actions.forEach((action) => {
+          this.store$.dispatch(action);
+        });
+
+        break;
+      }
+      default:
+        console.log('unimplemented');
     }
   }
 }

@@ -9,6 +9,7 @@ import {
 } from '@angular/material/dialog';
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import { MatButton } from '@angular/material/button';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-banner-dialog',
@@ -22,6 +23,7 @@ import { MatButton } from '@angular/material/button';
     MatDialogActions,
     MatButton,
     MatDialogClose,
+    TranslateModule,
   ],
 })
 export class BannerDialogComponent {

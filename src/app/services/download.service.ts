@@ -8,6 +8,7 @@ import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { catchError, distinctUntilChanged, scan } from 'rxjs/operators';
 import { CMRProduct } from '@models';
 import { NotificationService } from './notification.service';
+import { TranslateService } from '@ngx-translate/core';
 
 import { Store } from '@ngrx/store';
 import * as queueStore from '@store/queue';
@@ -19,6 +20,7 @@ export class DownloadService {
   private save = inject<Saver>(SAVER);
   private notificationService = inject(NotificationService);
   private store$ = inject<Store<AppState>>(Store);
+  private translateService = inject(TranslateService);
 
   public dir;
   public hasDownloadedBursts = false;
@@ -130,7 +132,7 @@ export class DownloadService {
                 saver(event.body).then((fileResponse) => {
                   if (fileResponse.status === 'error') {
                     this.notificationService.error(
-                      'There was an error downloading the file. Make sure that you allowed your browser to access the right files',
+                      this.translateService.instant('DOWNLOAD_FILE_ERROR'),
                     );
                   }
                   this.store$.dispatch(

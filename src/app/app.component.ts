@@ -34,6 +34,7 @@ import {
   take,
   withLatestFrom,
   distinctUntilChanged,
+  first,
 } from 'rxjs/operators';
 
 import { NgcCookieConsentService } from 'ngx-cookieconsent';
@@ -582,6 +583,30 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             }
             this.mapService.setDisplacementLayer(data);
           }
+        }),
+    );
+
+    this.subs.add(
+      this.store$
+        .select(filterStore.getSelectedDatasetId)
+        .pipe(
+          filter((dataset) => models.opera_s1.id === dataset),
+          first(),
+        )
+        .subscribe((_) => {
+          this.notificationService.redirectTo('OPERA_TROPO_ZENITH_REDIRECT', {
+            searchType: models.SearchType.DATASET,
+            filters: {
+              selectedDataset: 'TROPO',
+              productTypes: [
+                {
+                  apiValue: 'TROPO-ZENITH',
+                  displayName:
+                    'L4 Troposphere Zenith Radar Delays (TROPO-ZENITH)',
+                },
+              ],
+            },
+          });
         }),
     );
   }

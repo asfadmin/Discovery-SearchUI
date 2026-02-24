@@ -26,11 +26,13 @@ import {
 } from 'rxjs/operators';
 import { ScreenSizeService } from '@services';
 import { Breakpoints, SarviewsEventType } from '@models';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-sarviews-event-magnitude-selector',
   templateUrl: './sarviews-event-magnitude-selector.component.html',
   styleUrls: ['./sarviews-event-magnitude-selector.component.scss'],
+  imports: [TranslateModule],
 })
 export class SarviewsEventMagnitudeSelectorComponent
   implements OnInit, OnDestroy
