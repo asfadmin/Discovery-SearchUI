@@ -777,6 +777,7 @@ export function filtersReducer(
           rangeBandwidth: filters.rangeBandwidth || [],
           instrument: filters.instrument || [],
           groupID: filters.groupID,
+          ariaVersion: filters.ariaVersion,
         };
       }
     }
@@ -1159,6 +1160,7 @@ export const getGeographicSearch = createSelector(
     rangeBandwidth: state.rangeBandwidth,
     instrument: state.instrument,
     groupID: state.groupID,
+    ariaVersion: state.ariaVersion,
   }),
 );
 

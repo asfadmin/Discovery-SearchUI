@@ -821,6 +821,13 @@ export class UrlStateService {
         loader: this.loadProduction,
       },
       {
+        name: 'ariaVersion',
+        source: this.store$
+          .select(filterStore.getAriaVersion)
+          .pipe(map((ariaVersion) => ({ ariaVersion }))),
+        loader: this.loadAriaVersion,
+      },
+      {
         name: 'useFrameForBaseline',
         source: this.store$
           .select(filterStore.getShouldUseFramesForReference)
@@ -1340,6 +1347,10 @@ export class UrlStateService {
     usingseFrameForBaseline: string,
   ): Action => {
     return new filterStore.SetUseFrameForBaseline(!!usingseFrameForBaseline);
+  };
+
+  private loadAriaVersion = (version: string): Action => {
+    return new filterStore.setAriaVersion(version);
   };
 
   private loadSeriesState = (seriesState) => {
