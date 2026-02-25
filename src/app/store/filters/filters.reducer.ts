@@ -72,6 +72,7 @@ export interface FiltersState {
   groupID: null | string;
 
   useFramesForReference: boolean;
+  ariaVersion: string;
 }
 
 export type DateRangeState = models.Range<null | Date>;
@@ -157,6 +158,7 @@ export const initState: FiltersState = {
   shortNames: [],
 
   useFramesForReference: false,
+  ariaVersion: null,
 };
 
 export function filtersReducer(
@@ -194,6 +196,7 @@ export function filtersReducer(
         shortNames: [],
         useCalibrationData: false,
         selectedMission: null,
+        ariaVersion: null,
       };
     }
 
@@ -470,6 +473,7 @@ export function filtersReducer(
         rangeBandwidth: [],
         scienceProduct: [],
         productionConfig: [],
+        ariaVersion: null,
       };
     }
 
@@ -954,6 +958,12 @@ export function filtersReducer(
         useFramesForReference: action.payload,
       };
     }
+    case FiltersActionType.SET_ARIA_VERSION: {
+      return {
+        ...state,
+        ariaVersion: action.payload,
+      };
+    }
     default: {
       return state;
     }
@@ -1305,4 +1315,8 @@ export const getProductionConfig = createSelector(
 export const getShouldUseFramesForReference = createSelector(
   getFiltersState,
   (state: FiltersState) => state.useFramesForReference,
+);
+export const getAriaVersion = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.ariaVersion,
 );

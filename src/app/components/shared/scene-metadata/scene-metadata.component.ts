@@ -211,6 +211,12 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
     );
   }
 
+  public setAriaVersion(): void {
+    this.store$.dispatch(
+      new filtersStore.setAriaVersion(this.scene.metadata.ariaVersion),
+    );
+  }
+
   private capitalizeFirstLetter(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }

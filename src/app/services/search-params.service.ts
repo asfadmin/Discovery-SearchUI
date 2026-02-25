@@ -89,6 +89,12 @@ export class SearchParamsService {
     })),
   );
 
+  private ariaVersion$ = this.store$.select(filterStore.getAriaVersion).pipe(
+    map((ariaVersion) => ({
+      ariaVersion,
+    })),
+  );
+
   private searchPolygon$ = combineLatest([
     this.mapService.searchPolygon$.pipe(startWith(null)),
     this.store$.select(filterStore.getShouldOmitSearchPolygon),
@@ -307,6 +313,7 @@ export class SearchParamsService {
     // this.operaCalibrationParam$,
     this.sciProducts$,
     this.groupID$,
+    this.ariaVersion$,
   ]).pipe(
     map((params: any[]) =>
       params.reduce((total, param) => ({ ...total, ...param }), {}),
