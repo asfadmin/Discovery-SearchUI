@@ -6,6 +6,10 @@
   span {
     margin: 0 5px;
   }
+
+  app-copy-to-clipboard + app-copy-to-clipboard {
+    margin-left: 6px;
+  }
 }
 
 .disabled-cursor {
