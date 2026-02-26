@@ -1125,6 +1125,7 @@
   "TROUBLE_LOGGING_OUT": "Problema al cerrar sesión",
   "TYPE": "Tipo",
   "UAVSAR_DESC": "El radar de apertura sintética montado en un vehículo aéreo no tripulado (UAVSAR) está diseñado específicamente para obtener datos aéreos SAR de trayectos repetidos, utilizados en mediciones interferométricas diferenciales.",
+  "UNCALIBRATED": "Sin calibrar",
   "UNDO": "deshacer",
   "UNLIMITED": "Ilimitado",
   "UNPIN_ALL_SELECTED_PRODUCTS": "Desanclar todos los productos seleccionados",
