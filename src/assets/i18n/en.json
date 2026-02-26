@@ -998,6 +998,7 @@
   "TRAVEL_EXPLORE": "travel_explore",
   "TYPE": "Type",
   "UAVSAR_DESC": "Uninhabited Aerial Vehicle Synthetic Aperture Radar (UAVSAR) is specifically designed to acquire airborne repeat-track SAR data for differential interferometric measurements.",
+  "UNCALIBRATED": "Uncalibrated",
   "UNDO": "undo",
   "UNPIN_ALL_SELECTED_PRODUCTS": "Unpin All Selected Products",
   "UPDATE": "Update",
