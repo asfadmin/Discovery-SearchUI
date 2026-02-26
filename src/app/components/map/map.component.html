@@ -96,7 +96,16 @@
 @if (
   breakpoint > breakpoints.MOBILE && searchType === searchTypes.DISPLACEMENT
 ) {
-  <img src="/assets/opera-disp-logo.png" class="opera-logo" alt="OPERA Logo" />
+  <a
+    href="https://www.jpl.nasa.gov/go/opera/products/disp-product-suite/"
+    target="_blank"
+  >
+    <img
+      src="/assets/opera-disp-logo.png"
+      class="opera-logo"
+      alt="OPERA Logo"
+    />
+  </a>
   <div class="disclaimer-chip" (click)="onOpenDispDisclaimer()">
     <mat-icon class="disclaimer-icon">info_outline</mat-icon>
     <span>{{ 'DISCLAIMER' | translate }}</span>
