@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Setup credentials
-        run: echo "${{ secrets.TEST_ACCOUNT_CREDS }}" > .env
+        run: echo "${{ secrets.TEST_ACCOUNT_CREDS }}" > playwright/.auth/creds.json
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Playwright tests
