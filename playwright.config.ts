@@ -43,6 +43,7 @@ export default defineConfig({
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
+        viewport: { width: 1920, height: 1080 },
         // storageState: 'playwright/.auth/user.json',
         // TODO: this makes all tests authenticated, we probably want to define test suites that use authentication instead of general projects
       },
@@ -52,6 +53,7 @@ export default defineConfig({
       name: 'firefox',
       use: {
         ...devices['Desktop Firefox'],
+        viewport: { width: 1920, height: 1080 },
       },
     },
 
