@@ -41,8 +41,12 @@ test('Bounding Boxes Return Results in Mercator Projection', async ({
     .locator('#mat-button-toggle-6-button')
     .getByRole('button', { name: 'SEARCH' })
     .click();
+  await page
+    .getByRole('button', {
+      name: 'S1A_IW_GRDH_1SDV_20220826T01345… 9CD9 August 26, 2022, 01:34:58Z 0/',
+    })
+    .click();
   await expect(page.locator('mat-card-title')).toContainText(
     'S1A_IW_GRDH_1SDV_20220826T013458_20220826T013523_044717_0556CA_9CD9',
-    { timeout: 10_000 },
   );
 });

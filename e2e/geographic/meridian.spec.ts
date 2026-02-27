@@ -24,5 +24,8 @@ test('Anti-Meridian Granules', async ({ page }) => {
     .locator('#mat-button-toggle-8-button')
     .getByRole('button', { name: 'SEARCH' })
     .click();
+  await page
+    .getByRole('button', { name: 'ALAV2A236613470 July 4, 2010' })
+    .click();
   await expect(page.locator('mat-card-title')).toContainText('ALAV2A236613470');
 });
