@@ -25,7 +25,7 @@ jobs:
       - name: Setup credentials
         run: mkdir -p playwright/.auth
       - name: Import Credentials
-        run: echo "${{ secrets.TEST_ACCOUNT_CREDS }}" > playwright/.auth/creds.json
+        run: echo "${{ secrets.TEST_ACCOUNT_CREDS }}" | base64 --decode > playwright/.auth/creds.json
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Playwright tests
