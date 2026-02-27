@@ -3,11 +3,12 @@ on:
   push:
     branches:
       - test
-      - tyler/vitest
   pull_request:
     branches:
       - test
       - prod
+permissions:
+  contents: read
 jobs:
   test:
     timeout-minutes: 60
