@@ -45,6 +45,7 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
         viewport: { width: 1920, height: 1080 },
         timezoneId: 'America/New_York',
+        bypassCSP: true,
         // storageState: 'playwright/.auth/user.json',
         // TODO: this makes all tests authenticated, we probably want to define test suites that use authentication instead of general projects
       },
@@ -55,6 +56,7 @@ export default defineConfig({
       use: {
         ...devices['Desktop Firefox'],
         timezoneId: 'America/New_York',
+        bypassCSP: true,
         viewport: { width: 1920, height: 1080 },
       },
     },
