@@ -52,7 +52,7 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
 
   public burstXMLFileCount = 0;
 
-  public possibleMaxResults = [250, 1000];
+  public possibleMaxResults = [250, 500];
   private subs = new SubSink();
   constructor() {
     const library = inject(FaIconLibrary);
