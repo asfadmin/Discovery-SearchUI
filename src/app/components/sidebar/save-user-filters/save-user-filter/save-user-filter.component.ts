@@ -14,7 +14,6 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import { timer } from 'rxjs';
 import { NotificationService } from '@services';
-import { UpperCasePipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { MatFormField, MatInput } from '@angular/material/input';
@@ -42,7 +41,6 @@ import { TranslateModule } from '@ngx-translate/core';
     GeographicSearchFiltersComponent,
     BaselineSearchFiltersComponent,
     SbasSearchFiltersComponent,
-    UpperCasePipe,
     BaselineFilterPipe,
     SBASFilterPipe,
     GeographicFilterPipe,
@@ -61,6 +59,7 @@ export class SaveUserFilterComponent implements OnInit {
   @Output() updateName = new EventEmitter<string>();
 
   public SearchType = models.SearchType;
+  public searchTranslation = models.SearchTypeTranslation;
   public expanded = false;
   public isEditingName = false;
   public editName: string;

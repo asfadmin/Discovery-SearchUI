@@ -53,7 +53,7 @@
         >
         </app-copy-to-clipboard>
         <app-copy-to-clipboard
-          prompt="copy S3 URL"
+          prompt="{{ 'COPY_URLS' | translate }}"
           class="clipboard-icon"
           [submenu]="[
             ['Download URL', product.downloadUrl],
@@ -154,7 +154,7 @@
 
   @for (param of paramsList; track param; let first = $first) {
     <div [class.params-first]="first" matListItemLine>
-      <b>{{ param.name }}:</b> {{ param.val }}
+      <b>{{ param.name | translate }}:</b> {{ param.val }}
     </div>
   }
 

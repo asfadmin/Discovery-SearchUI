@@ -21,7 +21,7 @@
           (change)="onSidebarTypeChange($event.value)"
           [value]="sidebarType"
           name="SavedSearchType"
-          aria-label="Saved Search Type"
+          [attr.aria-label]="'SAVED_SEARCH_TYPE' | translate"
           [hideSingleSelectionIndicator]="true"
         >
           <mat-button-toggle [value]="SidebarType.SEARCH_HISTORY">{{

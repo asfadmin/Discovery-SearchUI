@@ -87,12 +87,14 @@ export const jers_1 = fromDatasets.jers_1;
 export const airsar = fromDatasets.airsar;
 export const seasat = fromDatasets.seasat;
 export const nisar = fromDatasets.nisar;
+export const tropo = fromDatasets.tropo;
 
 export const datasetList: Dataset[] = [
   fromDatasets.nisar,
   fromDatasets.sentinel_1,
   fromDatasets.sentinel_1_bursts,
   fromDatasets.opera_s1,
+  fromDatasets.tropo,
   fromDatasets.alos_2,
   fromDatasets.alos,
   fromDatasets.avnir,

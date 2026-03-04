@@ -16,7 +16,6 @@ import * as moment from 'moment';
 import * as models from '@models';
 
 import { AsfLanguageService } from '@services/asf-language.service';
-import { UpperCasePipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import { FormsModule } from '@angular/forms';
@@ -39,7 +38,6 @@ import { TranslateModule } from '@ngx-translate/core';
     MatInput,
     MatButton,
     SearchFiltersComponent,
-    UpperCasePipe,
     GeographicFilterPipe,
     ListFilterPipe,
     TranslateModule,
@@ -65,6 +63,7 @@ export class SavedSearchComponent implements OnInit {
   @Output() unlockFocus = new EventEmitter<void>();
 
   public SearchType = models.SearchType;
+  public searchTranslation = models.SearchTypeTranslation;
   public isEditingName = false;
   public editName = '';
   ngOnInit() {

@@ -29,8 +29,11 @@
                   <span class="control-mat-button-toggle scene-text">
                     {{ numBaselineScenes$ | async }} {{ 'OF' | translate }}
                     {{ numUnfilteredBaselineScenes$ | async }}
-                    {{ 'SCENE' | translate
-                    }}{{ (numBaselineScenes$ | async) === 1 ? '' : 's' }}
+                    {{
+                      (numBaselineScenes$ | async) === 1
+                        ? ('SCENE' | translate)
+                        : ('SCENES' | translate)
+                    }}
                   </span>
                 </span>
               </div>
@@ -137,14 +140,17 @@
           <mat-menu #addAllProducts="matMenu">
             <button (click)="queueAllProducts(downloadableProds)" mat-menu-item>
               {{ 'ADD' | translate }} {{ downloadableProds.length }}
-              {{ 'FILE' | translate
-              }}{{ downloadableProds.length === 1 ? '' : 's' }}
+              {{
+                downloadableProds.length === 1
+                  ? ('FILE' | translate)
+                  : ('FILES' | translate)
+              }}
               {{ 'EXPORT' | translate }}
             </button>
           </mat-menu>
           <mat-menu #ExportAll="matMenu">
             <button mat-menu-item [matMenuTriggerFor]="ExportAllMetadata">
-              Metadata
+              {{ 'METADATA' | translate }}
             </button>
             <button mat-menu-item [matMenuTriggerFor]="ExportAllData">
               {{ 'DATA' | translate }}
@@ -155,30 +161,30 @@
               (click)="onMetadataExport(products, ApiFormat.CSV)"
               mat-menu-item
             >
-              csv
+              {{ 'CSV' | translate }}
             </button>
             <button
               (click)="onMetadataExport(products, ApiFormat.GEOJSON)"
               mat-menu-item
             >
-              geojson
+              {{ 'GEOJSON' | translate }}
             </button>
             <button
               (click)="onMetadataExport(products, ApiFormat.KML)"
               mat-menu-item
             >
-              kml
+              {{ 'KML' | translate }}
             </button>
           </mat-menu>
           <mat-menu #ExportAllData="matMenu">
             <button (click)="onMakeDownloadScript(products)" mat-menu-item>
-              python (.py)
+              {{ 'PYTHON_PY' | translate }}
             </button>
             <button
               (click)="onMetadataExport(products, ApiFormat.METALINK)"
               mat-menu-item
             >
-              metalink
+              {{ 'METALINK' | translate }}
             </button>
           </mat-menu>
           <div class="button-tabs">

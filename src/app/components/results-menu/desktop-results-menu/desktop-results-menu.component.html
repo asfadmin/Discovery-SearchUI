@@ -35,8 +35,12 @@
       @let products = selectedProducts$ | async;
       <span>
         @if (products) {
-          {{ products.length || '' }} {{ 'FILE' | translate
-          }}{{ (products || []).length === 1 ? '' : 's' }}
+          {{ products.length || '' }}
+          {{
+            (products || []).length === 1
+              ? ('FILE' | translate)
+              : ('FILES' | translate)
+          }}
         } @else {
           {{ 'FILES' | translate }}
         }
@@ -57,8 +61,12 @@
       @let products = selectedProducts$ | async;
       <span>
         @if (products) {
-          {{ products.length || '' }} {{ 'FILE' | translate
-          }}{{ (products || []).length === 1 ? '' : 's' }}
+          {{ products.length || '' }}
+          {{
+            (products || []).length === 1
+              ? ('FILE' | translate)
+              : ('FILES' | translate)
+          }}
         } @else {
           {{ 'FILES' | translate }}
         }

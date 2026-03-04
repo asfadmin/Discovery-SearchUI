@@ -6,13 +6,13 @@
       (selectionChange)="onSetThreshold($event.value)"
     >
       <mat-option [value]="SBASOverlapTypes.HALF_OVERLAP">{{
-        SBASOverlapTypes.HALF_OVERLAP | uppercase | translate
+        overlapTranslation[SBASOverlapTypes.HALF_OVERLAP] | translate
       }}</mat-option>
       <mat-option [value]="SBASOverlapTypes.ANY_OVERLAP">{{
-        SBASOverlapTypes.ANY_OVERLAP | uppercase | translate
+        overlapTranslation[SBASOverlapTypes.ANY_OVERLAP] | translate
       }}</mat-option>
       <mat-option [value]="SBASOverlapTypes.ALL">{{
-        SBASOverlapTypes.ALL | uppercase | translate
+        overlapTranslation[SBASOverlapTypes.ALL] | translate
       }}</mat-option>
     </mat-select>
   </mat-form-field>
