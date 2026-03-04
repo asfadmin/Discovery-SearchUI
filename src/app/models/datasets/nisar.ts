@@ -21,7 +21,7 @@ export const nisar = {
     Props.USE_TRACK,
     Props.INSTRUMENT,
   ],
-  apiValue: { dataset: 'NISAR' },
+  apiValue: { dataset: 'NISAR-SCIENCE-PRODUCTS' },
   date: { start: new Date('2025/08/02 03:44:43 UTC') },
   infoUrl: 'https://nisar.jpl.nasa.gov',
   citationUrl: 'https://asf.alaska.edu/nisar/',
