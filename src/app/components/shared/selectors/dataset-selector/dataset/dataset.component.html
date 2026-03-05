@@ -17,9 +17,13 @@
           }
 
           @if (dataset.id === 'NISAR') {
-            <span
-              ><em> ({{ 'UNCALIBRATED' | translate }}) </em></span
-            >
+            <span>
+              <app-docs-modal
+                class="info-text"
+                [text]="'(' + ('UNCALIBRATED' | translate) + ')'"
+                url="https://nisar-docs.asf.alaska.edu/product-limitations/"
+              ></app-docs-modal
+            ></span>
           }
           @if (dataset.subName) {
             <div class="dataset__subName faint-text">
