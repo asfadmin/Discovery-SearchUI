@@ -11,7 +11,7 @@ setup('authenticate', async ({ page }) => {
     const data = fs.readFileSync(credsFile, 'utf8');
     userData = JSON.parse(data);
   } catch (e) {
-    console.error('Error reading or parsing JSON file:', e);
+    console.error('Error reading or parsing auth JSON file.');
     return;
   }
   await page.goto('https://search.asf.alaska.edu');
