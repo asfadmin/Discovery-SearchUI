@@ -13,5 +13,7 @@ test('Auto Search when max results changes', async ({ page }) => {
     .click();
 
   await page.getByRole('menuitem', { name: '500 Files' }).click();
+  await waitForASFAPIResponse(page);
+
   await expect(page.locator('app-scenes-list-header')).toContainText('500 of');
 });

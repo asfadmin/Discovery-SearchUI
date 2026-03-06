@@ -28,7 +28,6 @@ test('Multiple beam mode selections available', async ({ page }) => {
     .getByRole('option', { name: 'S6' })
     .locator('mat-pseudo-checkbox')
     .click();
-  await page.locator('.cdk-overlay-backdrop').click();
 
   await expect(page.locator('app-info-bar')).toContainText(
     'Beam Modes: EW,S3,S6',
