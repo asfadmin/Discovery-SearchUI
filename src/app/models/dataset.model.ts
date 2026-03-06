@@ -91,10 +91,10 @@ export const tropo = fromDatasets.tropo;
 
 export const datasetList: Dataset[] = [
   fromDatasets.nisar,
-  fromDatasets.tropo,
   fromDatasets.sentinel_1,
   fromDatasets.sentinel_1_bursts,
   fromDatasets.opera_s1,
+  fromDatasets.tropo,
   fromDatasets.alos_2,
   fromDatasets.alos,
   fromDatasets.avnir,
