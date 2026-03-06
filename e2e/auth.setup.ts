@@ -10,7 +10,7 @@ setup('authenticate', async ({ page }) => {
   try {
     const data = fs.readFileSync(credsFile, 'utf8');
     userData = JSON.parse(data);
-  } catch (e) {
+  } catch (_e) {
     console.error('Error reading or parsing auth JSON file.');
     return;
   }
