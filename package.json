@@ -102,7 +102,7 @@
     "@ngrx/schematics": "^21.0.1",
     "@playwright/test": "1.57.0",
     "@vitest/coverage-v8": "^4.0.17",
-    "angular-eslint": "21.1.0",
+    "angular-eslint": "21.3.0",
     "canvas": "^3.2.1",
     "esbuild": "0.20.0",
     "eslint": "^9.35.0",
