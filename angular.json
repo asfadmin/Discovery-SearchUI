@@ -124,25 +124,14 @@
           }
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
-            "karmaConfig": "src/karma.conf.js",
-            "styles": [
-              "src/styles.scss"
+            "buildTarget": "search-ui:build:local",
+            "tsConfig": "tsconfig.spec.json",
+            "coverageExclude": [
+              "src/app/models"
             ],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "src/styles"
-              ]
-            },
-            "scripts": [],
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ]
+            "runnerConfig": true
           }
         },
         "lint": {
@@ -152,6 +141,17 @@
               "src/**/*.ts",
               "src/**/*.html"
             ]
+          }
+        },
+        "e2e": {
+          "builder": "playwright-ng-schematics:playwright",
+          "options": {
+            "devServerTarget": "search-ui:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "search-ui:serve:production"
+            }
           }
         }
       }
