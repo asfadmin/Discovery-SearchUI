@@ -4,6 +4,7 @@ import * as moment from 'moment';
 
 import * as models from '@models';
 import { Hyp3JobStatusService } from './hyp3-job-status.service';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('Hyp3JobStatusService', () => {
   let service: Hyp3JobStatusService;
@@ -58,7 +59,7 @@ describe('Hyp3JobStatusService', () => {
   });
 
   it('have old jobs be expired', () => {
-    expect(service.isExpired(expired)).toBeTrue();
+    expect(service.isExpired(expired)).toBe(true);
   });
 
   it('have new jobs not be expired', () => {
