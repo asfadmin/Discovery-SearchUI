@@ -102,6 +102,8 @@ export interface GeographicFiltersType {
   rangeBandwidth: string[];
   instrument: string[];
   groupID: null | string;
+
+  ariaVersion?: string;
 }
 
 export interface SarviewsFiltersType {

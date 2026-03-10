@@ -82,6 +82,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public jobIds: string[];
   public selectedDataset: string;
   public selectedDatasetIsNISARFormat = false;
+  public ariaVersion: string;
 
   private subs = new SubSink();
 
@@ -240,6 +241,9 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       .subscribe(
         (productionConfig) => (this.productionConfig = productionConfig),
       );
+    const ariaVersionSub = this.store$
+      .select(filtersStore.getAriaVersion)
+      .subscribe((version) => (this.ariaVersion = version));
     [
       startSub,
       endSub,
@@ -272,6 +276,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       productionConfigSub,
       scienceProductsSub,
       jobIdsSub,
+      ariaVersionSub,
     ].forEach((sub) => this.subs.add(sub));
 
     this.subs.add(
