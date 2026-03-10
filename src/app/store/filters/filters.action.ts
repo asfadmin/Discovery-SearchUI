@@ -108,6 +108,8 @@ export enum FiltersActionType {
   SET_SCIENCE_PRODUCT = '[Filters] Set Science Product',
   SET_PRODUCTION_CONFIG = '[Filters] Set Production Config',
 
+  SET_ARIA_VERSION = '[Filters] Set ARIA Version',
+
   SET_USER_FRAME_FOR_BASELINE = '[Filters] Set if frame(s) used for baseline/sbas searches as reference scene',
 }
 
@@ -516,6 +518,12 @@ export class setProductionConfig implements Action {
   constructor(public payload: string[]) {}
 }
 
+export class setAriaVersion implements Action {
+  public readonly type = FiltersActionType.SET_ARIA_VERSION;
+
+  constructor(public payload: string) {}
+}
+
 export class SetUseFrameForBaseline implements Action {
   public readonly type = FiltersActionType.SET_USER_FRAME_FOR_BASELINE;
 
@@ -596,4 +604,5 @@ export type FiltersActions =
   | setIntstrument
   | setScienceProduct
   | setProductionConfig
+  | setAriaVersion
   | SetUseFrameForBaseline;

@@ -9,7 +9,12 @@ import { PropertyService } from '@services';
 import { SubSink } from 'subsink';
 import * as models from '@models';
 import { ProductTypeSelectorComponent } from '../product-type-selector/product-type-selector.component';
-import { MatFormField, MatHint, MatInput } from '@angular/material/input';
+import {
+  MatFormField,
+  MatHint,
+  MatInput,
+  MatLabel,
+} from '@angular/material/input';
 import { MatSelect, MatOption } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { ShortNameSelectorComponent } from '../short-name-selector/short-name-selector.component';
@@ -27,6 +32,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
     MatOption,
     MatHint,
+    MatLabel,
     MatInput,
     ShortNameSelectorComponent,
     TranslateModule,
@@ -43,6 +49,7 @@ export class OtherSelectorComponent implements OnInit, OnDestroy {
   polarizations: models.DatasetPolarizations;
   subtypes: models.DatasetSubtypes;
   groupID: string;
+  ariaVersion: string;
 
   public datasetProductTypes$ = this.store$.select(
     filtersStore.getProductTypes,
@@ -55,7 +62,6 @@ export class OtherSelectorComponent implements OnInit, OnDestroy {
   public selectedDataset$ = this.store$.select(filtersStore.getSelectedDataset);
   public subtypes$ = this.store$.select(filtersStore.getSubtypes);
   public groupID$ = this.store$.select(filtersStore.getGroupID);
-
   public flightDirectionTypes = models.flightDirections;
   public p = models.Props;
   private subs = new SubSink();
@@ -96,6 +102,11 @@ export class OtherSelectorComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.groupID$.subscribe((groupID) => (this.groupID = groupID)),
     );
+    this.subs.add(
+      this.store$
+        .select(filtersStore.getAriaVersion)
+        .subscribe((version) => (this.ariaVersion = version)),
+    );
   }
 
   public onNewDatasetBeamModes(beamModes: string[]): void {
@@ -126,6 +137,9 @@ export class OtherSelectorComponent implements OnInit, OnDestroy {
 
   public onNewSubtypeSelected(subtypes): void {
     this.store$.dispatch(new filtersStore.SetSubtypes(subtypes));
+  }
+  public onNewAriaVersionSelected(version): void {
+    this.store$.dispatch(new filtersStore.setAriaVersion(version));
   }
 
   public onNewGroupID(): void {
