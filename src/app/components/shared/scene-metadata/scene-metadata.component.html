@@ -476,6 +476,19 @@
       <li>
         <b> {{ 'ARIA_VERSION' | translate }} </b> •
         {{ scene.metadata.ariaVersion }}
+        @if (isGeoSearch()) {
+          <mat-icon
+            [matMenuTriggerFor]="addAriaVersionMenu"
+            class="v-mid clickable"
+          >
+            settings
+          </mat-icon>
+        }
+        <mat-menu #addAriaVersionMenu="matMenu">
+          <button (click)="setAriaVersion()" mat-menu-item>
+            {{ 'SET_ARIA_VERSION' | translate }}
+          </button>
+        </mat-menu>
       </li>
     }
     @if (dataset.source; as source) {
