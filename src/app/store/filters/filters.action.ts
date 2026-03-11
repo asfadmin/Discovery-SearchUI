@@ -2,6 +2,7 @@ import { Action } from '@ngrx/store';
 
 import * as models from '@models';
 import { EventProductSort, SBASOverlap } from '@models';
+import { FiltersState } from './filters.reducer';
 
 export enum FiltersActionType {
   SET_SELECTED_DATASET = '[Filters-Dataset] Set Selected Dataset',
@@ -111,6 +112,8 @@ export enum FiltersActionType {
   SET_ARIA_VERSION = '[Filters] Set ARIA Version',
 
   SET_USER_FRAME_FOR_BASELINE = '[Filters] Set if frame(s) used for baseline/sbas searches as reference scene',
+
+  APPLY_DATASET_DEFAULTS = '[Filters] Apply dataset default filters',
 }
 
 export class SetSelectedDataset implements Action {
@@ -443,6 +446,12 @@ export class SetDefaultFilters implements Action {
   ) {}
 }
 
+export class ApplyDatasetDefaults implements Action {
+  public readonly type = FiltersActionType.APPLY_DATASET_DEFAULTS;
+
+  constructor(public payload: Partial<FiltersState>) {}
+}
+
 export class SetGeocode implements Action {
   public readonly type = FiltersActionType.SET_GEOCODE;
 
@@ -605,4 +614,5 @@ export type FiltersActions =
   | setScienceProduct
   | setProductionConfig
   | setAriaVersion
-  | SetUseFrameForBaseline;
+  | SetUseFrameForBaseline
+  | ApplyDatasetDefaults;
