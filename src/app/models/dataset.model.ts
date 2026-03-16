@@ -1,3 +1,4 @@
+import { FiltersState } from '@store/filters';
 import * as fromDatasets from './datasets';
 import { Props } from './filters.model';
 
@@ -8,6 +9,7 @@ export interface Dataset {
   beta: boolean;
   apiValue: Record<string, string>;
   date: DateRange;
+  defaultFilters?: Partial<FiltersState>;
   infoUrl: string;
   citationUrl: string;
   productTypes: ProductType[];

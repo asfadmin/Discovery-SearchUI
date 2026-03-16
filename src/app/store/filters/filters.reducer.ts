@@ -498,6 +498,13 @@ export function filtersReducer(
       return { ...state, shouldOmitSearchPolygon: false };
     }
 
+    case FiltersActionType.APPLY_DATASET_DEFAULTS: {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    }
+
     case FiltersActionType.OMIT_SEARCH_POLYGON: {
       return { ...state, shouldOmitSearchPolygon: true };
     }
