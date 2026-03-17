@@ -44,3 +44,4 @@ export { NetcdfService } from './netcdf-service.service';
 export { PointHistoryService } from './point-history.service';
 export { FrameMapService } from './frame-map.service';
 export { DisplacementDisclaimerService } from './displacement-disclaimer.service';
+export { RemoteParseService } from './remote-parse.service';

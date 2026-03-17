@@ -28,12 +28,13 @@ import * as queueStore from '@store/queue';
 import * as userStore from '@store/user';
 import * as hyp3Store from '@store/hyp3';
 import * as uiStore from '@store/ui';
-
+import { toObservable } from '@angular/core/rxjs-interop';
 import {
   AsfApiService,
   Hyp3ApiService,
   NotificationService,
   ProductService,
+  RemoteParseService,
   SarviewsEventsService,
 } from '@services';
 import * as models from '@models';
@@ -111,6 +112,7 @@ export class SceneFilesComponent
   private screenSize = inject(ScreenSizeService);
   private asfApiService = inject(AsfApiService);
   private productService = inject(ProductService);
+  private remoteParseService = inject(RemoteParseService);
 
   @ViewChild(CdkVirtualScrollViewport, { static: false })
   scrollPort: CdkVirtualScrollViewport;
@@ -221,7 +223,9 @@ export class SceneFilesComponent
           }
         }),
     );
-
+    toObservable(this.remoteParseService.orbitResponse.progress).subscribe(
+      (x) => console.log(x.loaded),
+    );
     this.subs.add(
       this.sarviewsEventsProductsByProcessingType$.subscribe(
         (val) => (this.productsByProductType = val),
@@ -594,7 +598,8 @@ export class SceneFilesComponent
             scene.id,
             scene.metadata.productType,
           );
-
+          this.remoteParseService.granule.set(scene);
+          console.log(this.remoteParseService.orbitFile());
           return this.asfApiService
             .query<any>(queryParams)
             .pipe(
