@@ -259,6 +259,23 @@ export class ProductService {
         } else if (p.includes('layover_shadow_mask')) {
           productTypeDisplay = 'Shadow Mask GeoTIFF';
         }
+      } else if (product.metadata.productType === 'DIST-ALERT-S1') {
+        const operaDistMap = {
+          'DIST-COUNT': 'Count',
+          'DIST-DATE': 'Date',
+          'LAST-DATE': 'Last Date',
+          'DIST-PERC': 'Percentage',
+          'DIST-STATUS': 'Status',
+          'STATUS-ACQ': 'Status ACQ',
+          'GEN-METRIC': 'Metric',
+          'METRIC-MAX': 'Metric Max',
+          'DIST-DUR.': 'Duration',
+        };
+        for (const key of Object.keys(operaDistMap)) {
+          if (p.includes(key)) {
+            productTypeDisplay = operaDistMap[key];
+          }
+        }
       }
       const fileID = p.split('/').slice(-1)[0];
 
@@ -475,7 +492,7 @@ export class ProductService {
       downloadUrl: url,
       productTypeDisplay: productTypeDisplay || url,
       file: fileID,
-      id: scene.id + '-' + fileExtension,
+      id: scene.id + '-' + fileExtension + '-' + productTypeDisplay,
       bytes: fileSize,
       browses,
       thumbnail: null,

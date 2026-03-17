@@ -50,6 +50,10 @@ export const opera_s1 = {
       displayName:
         'L3 Co-registered Surface Displacement Static Layer (DISP-S1-STATIC)',
     },
+    {
+      apiValue: 'DISP-S1-ALERT',
+      displayName: 'DISP ALERT Products',
+    },
   ],
   beamModes: ['IW', 'EW'],
   polarizations: ['VV', 'HH', 'HV', 'VH'],

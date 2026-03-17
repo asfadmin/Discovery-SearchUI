@@ -101,6 +101,8 @@ export interface OperaS1Metadata {
   additionalUrls: string[];
   s3Urls: string[];
   validityStartDate?: moment.Moment | null;
+  tileID?: string;
+  productVersion?: string;
 }
 
 export interface NISARMetadata {
