@@ -78,7 +78,7 @@ export class ProductService {
     path: +g.p,
     frame: +g.f,
     absoluteOrbit: Array.isArray(g.o)
-      ? g.o.map((val) => +val)
+      ? g.o.map((val) => +val).filter((x) => !isNaN(x))
       : g.o !== null
         ? [+g.o]
         : [],
@@ -261,15 +261,16 @@ export class ProductService {
         }
       } else if (product.metadata.productType === 'DIST-ALERT-S1') {
         const operaDistMap = {
-          'DIST-COUNT': 'Count',
-          'DIST-DATE': 'Date',
-          'LAST-DATE': 'Last Date',
-          'DIST-PERC': 'Percentage',
-          'DIST-STATUS': 'Status',
-          'STATUS-ACQ': 'Status ACQ',
-          'GEN-METRIC': 'Metric',
-          'METRIC-MAX': 'Metric Max',
-          'DIST-DUR.': 'Duration',
+          'DIST-COUNT': 'GEN-DIST-COUNT',
+          'DIST-DATE': 'GEN-DIST-DATE',
+          'LAST-DATE': 'GEN-DIST-LAST-DATE',
+          'DIST-PERC': 'GEN-DIST-PERC',
+          'DIST-STATUS': 'GEN-DIST-STATUS',
+          'STATUS-ACQ': 'GEN-DIST-STATUS-ACQ',
+          'GEN-METRIC': 'GEN-METRIC',
+          'METRIC-MAX': 'GEN-METRIC-MAX',
+          'DIST-DUR.': 'GEN-DIST-DUR',
+          'DIST-CONF': 'GEN-DIST-CONF',
         };
         for (const key of Object.keys(operaDistMap)) {
           if (p.includes(key)) {
