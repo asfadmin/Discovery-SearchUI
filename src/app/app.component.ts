@@ -113,6 +113,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   private hyp3Service = inject(services.Hyp3ApiService);
   private themeService = inject(services.ThemingService);
   private drawService = inject(services.DrawService);
+  private frameService = inject(services.FrameMapService);
   translate = inject(TranslateService);
   language = inject(services.AsfLanguageService);
   _adapter = inject<DateAdapter<any>>(DateAdapter);
@@ -147,11 +148,20 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   private helpTopic: string | null;
 
   private subs = new SubSink();
-
+  private currentScene: models.CMRProduct;
   @HostListener('window:keydown.control./', ['$event'])
   handleKeyDown(_event: Event) {
     console.log('Toggling kiosk mode. Use "ctrl+/" to re-toggle');
     this.store$.dispatch(new searchStore.setSearchKioskMode(!this.kioskMode));
+  }
+  @HostListener('window:keydown.control.enter', ['$event'])
+  handleKeyEnter(_event: Event) {
+    console.log('Download current file');
+    this.frameService.downloadFileFromUrl(
+      this.currentScene.downloadUrl,
+      this.currentScene.metadata.fileName,
+    );
+    // this.store$.dispatch(new searchStore.setSearchKioskMode(!this.kioskMode));
   }
   public ngOnInit(): void {
     console.log('To toggle kiosk mode, use "ctrl+/"');
@@ -176,6 +186,12 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       this.store$.select(uiStore.getCurrentLanguage).subscribe((language) => {
         this.currentLanguage = language;
       }),
+    );
+
+    this.subs.add(
+      this.store$
+        .select(scenesStore.getSelectedScene)
+        .subscribe((scene) => (this.currentScene = scene)),
     );
 
     this.subs.add(
