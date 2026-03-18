@@ -111,6 +111,16 @@
           ><b>{{ 'TILE_ID' | translate }} </b> •
           {{ scene.metadata.opera.tileID }}</span
         >
+        @if (isGeoSearch()) {
+          <mat-icon [matMenuTriggerFor]="addTileIDMenu" class="v-mid clickable">
+            settings
+          </mat-icon>
+        }
+        <mat-menu #addTileIDMenu="matMenu">
+          <button (click)="setTileID()" mat-menu-item>
+            {{ 'SET_AS_TILE_ID' | translate }}
+          </button>
+        </mat-menu>
       </li>
     }
     @if (!!scene.metadata?.opera?.productVersion) {

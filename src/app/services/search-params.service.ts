@@ -95,6 +95,12 @@ export class SearchParamsService {
     })),
   );
 
+  private tileID$ = this.store$.select(filterStore.getTileID).pipe(
+    map((tileID) => ({
+      tileID,
+    })),
+  );
+
   private searchPolygon$ = combineLatest([
     this.mapService.searchPolygon$.pipe(startWith(null)),
     this.store$.select(filterStore.getShouldOmitSearchPolygon),
@@ -314,6 +320,7 @@ export class SearchParamsService {
     this.sciProducts$,
     this.groupID$,
     this.ariaVersion$,
+    this.tileID$,
   ]).pipe(
     map((params: any[]) =>
       params.reduce((total, param) => ({ ...total, ...param }), {}),
