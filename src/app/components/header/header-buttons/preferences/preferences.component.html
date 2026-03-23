@@ -164,10 +164,18 @@
               (selectionChange)="onDebugStatus($event.value)"
               name="debugStatus"
             >
-              <mat-option value="NOT_STARTED">{{ 'NOT_STARTED' | translate }}</mat-option>
-              <mat-option value="PENDING">{{ 'PENDING' | translate }}</mat-option>
-              <mat-option value="APPROVED">{{ 'APPROVED' | translate }}</mat-option>
-              <mat-option value="REJECTED">{{ 'REJECTED' | translate }}</mat-option>
+              <mat-option value="NOT_STARTED">
+                {{ 'NOT_STARTED' | translate }}
+              </mat-option>
+              <mat-option value="PENDING">
+                {{ 'PENDING' | translate }}
+              </mat-option>
+              <mat-option value="APPROVED">
+                {{ 'APPROVED' | translate }}
+              </mat-option>
+              <mat-option value="REJECTED">
+                {{ 'REJECTED' | translate }}
+              </mat-option>
             </mat-select>
           </mat-form-field>
         }
