@@ -90,11 +90,19 @@ export class CiSearchComponent implements OnInit, OnDestroy {
 
   private replaceNoResultsText(element: HTMLElement) {
     const text = element.textContent || '';
-    const hasRawHtml = text.includes('<div') || text.includes('<br>') || text.includes('<a href');
-    const hasNoResults = text.includes('No results found') || text.includes('Keine Ergebnisse') || text.includes('Ingen resultater');
+    const hasRawHtml =
+      text.includes('<div') ||
+      text.includes('<br>') ||
+      text.includes('<a href');
+    const hasNoResults =
+      text.includes('No results found') ||
+      text.includes('Keine Ergebnisse') ||
+      text.includes('Ingen resultater');
 
     if (hasRawHtml || hasNoResults) {
-      const translation = this.noResultsTranslations[this.currentLang] || this.noResultsTranslations['en'];
+      const translation =
+        this.noResultsTranslations[this.currentLang] ||
+        this.noResultsTranslations['en'];
       element.textContent = translation;
     }
   }
