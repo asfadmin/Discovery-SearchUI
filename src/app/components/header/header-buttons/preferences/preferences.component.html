@@ -158,16 +158,16 @@
 
         @if (!this.env.isProd) {
           <mat-form-field class="default-map">
-            <mat-label>Debug Status</mat-label>
+            <mat-label>{{ 'DEBUG_STATUS' | translate }}</mat-label>
             <mat-select
               [(ngModel)]="hyp3DebugStatus"
               (selectionChange)="onDebugStatus($event.value)"
               name="debugStatus"
             >
-              <mat-option value="NOT_STARTED"> NOT_STARTED </mat-option>
-              <mat-option value="PENDING"> PENDING </mat-option>
-              <mat-option value="APPROVED"> APPROVED </mat-option>
-              <mat-option value="REJECTED"> REJECTED </mat-option>
+              <mat-option value="NOT_STARTED">{{ 'NOT_STARTED' | translate }}</mat-option>
+              <mat-option value="PENDING">{{ 'PENDING' | translate }}</mat-option>
+              <mat-option value="APPROVED">{{ 'APPROVED' | translate }}</mat-option>
+              <mat-option value="REJECTED">{{ 'REJECTED' | translate }}</mat-option>
             </mat-select>
           </mat-form-field>
         }
