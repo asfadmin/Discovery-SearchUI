@@ -12,7 +12,7 @@ export class ReadableSizeFromBytesPipe implements PipeTransform {
   public getReadableSize(bytes: number): string {
     const decimals = 2;
 
-    if (!bytes || isNaN(bytes)) {
+    if (bytes === 0) {
       return '0 Bytes';
     }
     const k = 1000;
