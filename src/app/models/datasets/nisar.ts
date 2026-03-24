@@ -1,3 +1,4 @@
+import { CMRProduct } from '@models/cmr-product.model';
 import { Props } from '../filters.model';
 
 export const nisar = {
@@ -392,3 +393,23 @@ export const L1L2BrowseCollectionMapping = {
   RUNW: { collection: 'NISAR_L2_GUNW', productType: 'GUNW' },
   ROFF: { collection: 'NISAR_L2_GOFF', productType: 'GOFF' },
 };
+
+export function getNisarL2Params(productID: string, productType: string) {
+  return {
+    granule_list: productID
+      .replaceAll(
+        productType,
+        L1L2BrowseCollectionMapping[productType].productType,
+      )
+      .replaceAll('L1', 'L2'),
+  };
+}
+
+export function getNisarOEParams(scene: CMRProduct, latest = false) {
+  return {
+    processingLevel: scene.metadata.nisar.orbitType,
+    end: latest ? '' : scene.metadata.date.toISOString(),
+    dataset: 'NISAR',
+    maxResults: 1,
+  };
+}

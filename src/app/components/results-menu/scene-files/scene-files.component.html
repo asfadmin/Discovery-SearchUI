@@ -31,24 +31,33 @@
         >
         </app-scene-file>
       }
-      @for (product of dynamicallySearchedProduct$ | async; track product) {
-        <app-scene-file
-          (toggle)="onToggleQueueProduct(product)"
-          (unzip)="onOpenUnzipProduct($event)"
-          (queueHyp3Job)="onQueueHyp3Job($event)"
-          (renameJobProjectName)="onRenameJobProjectName(product, $event)"
-          [loadingHyp3JobName]="loadingHyp3JobName"
-          [isUserLoggedIn]="isUserLoggedIn"
-          [product]="product"
-          [validHyp3JobTypes]="[]"
-          [hasAccessToRestrictedData]="hasAccessToRestrictedData"
-          [isUnzipLoading]="unzippedLoading === product.id"
-          [isQueued]="(queuedProductIds$ | async).has(product.id)"
-          [isOpen]="false"
-          [isSearchableProduct]="true"
-        >
-        </app-scene-file>
-      }
+        @for (product of dynamicallySearchedProduct$ | async; track product) {
+            @if(dynamicQueryLoaded()) {
+            <app-scene-file
+            (toggle)="onToggleQueueProduct(product)"
+            (unzip)="onOpenUnzipProduct($event)"
+            (queueHyp3Job)="onQueueHyp3Job($event)"
+            (renameJobProjectName)="onRenameJobProjectName(product, $event)"
+            [loadingHyp3JobName]="loadingHyp3JobName"
+            [isUserLoggedIn]="isUserLoggedIn"
+            [product]="product"
+            [validHyp3JobTypes]="[]"
+            [hasAccessToRestrictedData]="hasAccessToRestrictedData"
+            [isUnzipLoading]="unzippedLoading === product.id"
+            [isQueued]="(queuedProductIds$ | async).has(product.id)"
+            [isOpen]="false"
+            [isSearchableProduct]="true"
+            >
+            </app-scene-file>
+        }
+
+    }
+            @if(!dynamicQueryLoaded()) {
+                        <mat-spinner
+                            diameter="20"
+                            class="loading-spinner"
+                          ></mat-spinner>
+        }
     </mat-list>
   </div>
 }

@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { Props } from '../filters.model';
 
 export const opera_s1 = {
@@ -84,3 +85,17 @@ export const opera_s1 = {
     dem: 'DEM GeoTIFF',
   },
 };
+
+export function getStaticQueryParams(
+  productType: string,
+  date: moment.Moment,
+  operaBurstID: string,
+) {
+  return {
+    processinglevel: productType + '-STATIC',
+    end: date === null ? '' : moment.utc(date).format(),
+    operaburstid: operaBurstID,
+    dataset: opera_s1.apiValue.dataset,
+    maxResults: 1,
+  };
+}

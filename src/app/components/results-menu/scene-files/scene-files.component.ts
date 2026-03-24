@@ -6,10 +6,11 @@ import {
   Input,
   ViewChild,
   inject,
+  signal,
 } from '@angular/core';
 import { SubSink } from 'subsink';
 
-import { combineLatest, of } from 'rxjs';
+import { combineLatest, forkJoin, of } from 'rxjs';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -33,7 +34,6 @@ import {
   AsfApiService,
   Hyp3ApiService,
   NotificationService,
-  ProductService,
   SarviewsEventsService,
 } from '@services';
 import * as models from '@models';
@@ -63,17 +63,23 @@ import {
   CdkVirtualForOf,
 } from '@angular/cdk/scrolling';
 import * as filterStore from '@store/filters';
-import { L1L2BrowseCollectionMapping } from '@models/datasets/nisar';
+import {
+  L1L2BrowseCollectionMapping,
+  getNisarL2Params,
+  getNisarOEParams,
+} from '@models/datasets/nisar';
 import { AsyncPipe } from '@angular/common';
 import { SceneFileComponent } from './scene-file/scene-file.component';
 import { MatIconButton } from '@angular/material/button';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatIcon } from '@angular/material/icon';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { DownloadFileButtonComponent } from '@components/shared/download-file-button/download-file-button.component';
 import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/on-demand-add-menu.component';
 import { FileContentsComponent } from './file-contents/file-contents.component';
 import { ReadableSizeFromBytesPipe } from '@pipes/readable-size-from-bytes.pipe';
 import { TranslateModule } from '@ngx-translate/core';
+import { getStaticQueryParams } from '@models/datasets/opera_s1';
 
 @Component({
   selector: 'app-scene-files',
@@ -81,7 +87,7 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./scene-files.component.scss'],
   imports: [
     MatList,
-
+    MatProgressSpinner,
     SceneFileComponent,
     CdkVirtualScrollViewport,
     CdkFixedSizeVirtualScroll,
@@ -110,7 +116,6 @@ export class SceneFilesComponent
   dialog = inject(MatDialog);
   private screenSize = inject(ScreenSizeService);
   private asfApiService = inject(AsfApiService);
-  private productService = inject(ProductService);
 
   @ViewChild(CdkVirtualScrollViewport, { static: false })
   scrollPort: CdkVirtualScrollViewport;
@@ -184,6 +189,8 @@ export class SceneFilesComponent
   public showDemWarning: boolean;
   public selectedSarviewsProducts: SarviewsProduct[] = [];
   public selectedSarviewEventID: string;
+
+  public dynamicQueryLoaded = signal(false);
   private subs = new SubSink();
 
   private selectedSarviewsProductIndex$ = this.store$
@@ -546,6 +553,7 @@ export class SceneFilesComponent
     .pipe(
       debounceTime(100),
       distinctUntilChanged((prev, curr) => prev?.id === curr?.id),
+      tap((_) => this.dynamicQueryLoaded.set(false)),
       withLatestFrom(this.store$.select(filterStore.getUseCalibrationData)),
       switchMap(([scene, useCalibrationData]) => {
         if (
@@ -554,21 +562,13 @@ export class SceneFilesComponent
           ['RTC', 'CSLC'].includes(scene?.metadata?.productType) &&
           scene?.id.startsWith('OPERA')
         ) {
-          const queryParams = {
-            processinglevel: scene.metadata.productType + '-STATIC',
-            end:
-              scene.metadata.date === null
-                ? ''
-                : moment.utc(scene.metadata.date).format(),
-            operaburstid: scene.metadata?.opera?.operaBurstID,
-            dataset: models.opera_s1.apiValue.dataset,
-          };
-          return this.asfApiService.query<any>(queryParams).pipe(
-            map((products) =>
-              products?.results?.length > 0
-                ? this.productService.fromResponse(products).slice(0, 1)
-                : [],
-            ),
+          const queryParams = getStaticQueryParams(
+            scene.metadata.productType,
+            scene.metadata.date,
+            scene.metadata?.opera?.operaBurstID,
+          );
+
+          return this.asfApiService.miniQuery(queryParams).pipe(
             tap((products) =>
               products.map((product) => {
                 product.productTypeDisplay = 'Local Incidence Angle GeoTIFF';
@@ -581,45 +581,68 @@ export class SceneFilesComponent
               }),
             ),
           );
-        } else if (!!scene && scene.id?.startsWith('NISAR_L1')) {
-          if (
-            !Object.keys(L1L2BrowseCollectionMapping).includes(
+        } else if (!!scene && scene.id?.startsWith('NISAR')) {
+          let browseQuery = of<models.CMRProduct[]>([]);
+          if (scene.id.startsWith('NISAR_L1')) {
+            if (
+              !Object.keys(L1L2BrowseCollectionMapping).includes(
+                scene.metadata.productType,
+              )
+            ) {
+              return of([]);
+            }
+
+            const queryParams = getNisarL2Params(
+              scene.id,
               scene.metadata.productType,
-            )
-          ) {
-            return of([]);
-          }
-
-          const queryParams = this.getNisarL2Params(
-            scene.id,
-            scene.metadata.productType,
-          );
-
-          return this.asfApiService
-            .query<any>(queryParams)
-            .pipe(
-              map((products) =>
-                products?.results?.length > 0
-                  ? this.productService.fromResponse(products).slice(0, 1)
-                  : [],
-              ),
             );
+
+            browseQuery = this.asfApiService.miniQuery(queryParams);
+          }
+          let concurrentOrbitQuery = of<models.CMRProduct[]>([]);
+          let latestOrbitQuery = of<models.CMRProduct[]>([]);
+          if (scene.metadata.nisar.orbitType) {
+            concurrentOrbitQuery = this.asfApiService
+              .miniQuery(getNisarOEParams(scene))
+              .pipe(
+                tap((products) =>
+                  products.map((product) => {
+                    product.productTypeDisplay = `${scene.metadata.nisar.orbitType} Orbit Ephemera XML (Concurrent)`;
+                    return product;
+                  }),
+                ),
+              );
+            latestOrbitQuery = this.asfApiService
+              .miniQuery(getNisarOEParams(scene, true))
+              .pipe(
+                tap((products) =>
+                  products.map((product) => {
+                    product.productTypeDisplay = `${scene.metadata.nisar.orbitType} Orbit Ephemera XML (Latest)`;
+                    return product;
+                  }),
+                ),
+              );
+          }
+          return forkJoin({
+            browseQuery,
+            concurrentOrbitQuery,
+            latestOrbitQuery,
+          }).pipe(
+            map((results) => {
+              return [
+                ...results.browseQuery,
+                ...results.concurrentOrbitQuery,
+                ...results.latestOrbitQuery,
+              ];
+            }),
+          );
         } else {
           return of([]);
         }
       }),
+      tap((_) => this.dynamicQueryLoaded.set(true)),
     );
 
-  public getNisarL2Params(productID: string, productType: string) {
-    return {
-      granule_list: productID
-        .replaceAll(
-          productType,
-          L1L2BrowseCollectionMapping[productType].productType,
-        )
-        .replaceAll('L1', 'L2'),
-    };
-  }
   public getProductSceneCount(products: SarviewsProduct[]) {
     const outputList = products.reduce((prev, product) => {
       const temp = product.granules.map((granule) => granule.granule_name);
