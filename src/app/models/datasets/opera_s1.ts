@@ -52,7 +52,7 @@ export const opera_s1 = {
     },
     {
       apiValue: 'DIST-ALERT-S1',
-      displayName: 'DIST ALERT Products',
+      displayName: 'DIST ALERT Products (DIST-ALERT-S1)',
     },
   ],
   beamModes: ['IW', 'EW'],
