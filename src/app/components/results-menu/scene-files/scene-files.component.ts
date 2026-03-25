@@ -52,6 +52,7 @@ import {
   MatList,
   MatSelectionList,
   MatListOption,
+  MatListItem,
 } from '@angular/material/list';
 import { PinnedProduct } from '@services/browse-map.service';
 import { ImageDialogComponent } from '../scene-detail/image-dialog';
@@ -103,6 +104,7 @@ import { getStaticQueryParams } from '@models/datasets/opera_s1';
     AsyncPipe,
     ReadableSizeFromBytesPipe,
     TranslateModule,
+    MatListItem,
   ],
 })
 export class SceneFilesComponent
@@ -547,7 +549,48 @@ export class SceneFilesComponent
     };
     return toCMRProduct;
   }
+  public hasSubquery$ = this.store$.select(scenesStore.getSelectedScene).pipe(
+    debounceTime(100),
+    distinctUntilChanged((prev, curr) => prev?.id === curr?.id),
+    withLatestFrom(this.store$.select(filterStore.getUseCalibrationData)),
+    map(([scene, useCalibrationData]) => {
+      return (
+        this.operaSubqueryCriteria(scene, useCalibrationData) ||
+        this.nisarSubqueryCriteria(scene)
+      );
+    }),
+  );
 
+  private operaSubqueryCriteria(
+    scene: models.CMRProduct,
+    useCalibrationData: boolean,
+  ) {
+    return (
+      !useCalibrationData &&
+      !!scene &&
+      ['RTC', 'CSLC'].includes(scene?.metadata?.productType) &&
+      scene?.id.startsWith('OPERA')
+    );
+  }
+  private nisarSubqueryCriteria(scene: models.CMRProduct) {
+    const isNisar = !!scene && scene.id?.startsWith('NISAR');
+    const processingLevel = scene.metadata.productType ?? '';
+
+    return (
+      isNisar &&
+      [
+        'RSLC',
+        'RIFG',
+        'RUNW',
+        'ROFF',
+        'GSLC',
+        'GCOV',
+        'GUNW',
+        'GOFF',
+        'RRSD',
+      ].includes(processingLevel)
+    );
+  }
   public dynamicallySearchedProduct$ = this.store$
     .select(scenesStore.getSelectedScene)
     .pipe(
