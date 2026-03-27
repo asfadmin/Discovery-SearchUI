@@ -34,7 +34,7 @@
 
       @if(hasSubquery$ | async) {
         @let subqueryProducts = dynamicallySearchedProduct$ | async;
-        @if(subqueryProducts.length > 0) {
+        @if(subqueryProducts?.length > 0) {
             <hr>
             <div class='related-data-header'>
                 <h4>Related Data</h4> 

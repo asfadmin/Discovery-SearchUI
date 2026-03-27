@@ -104,6 +104,18 @@ export class AsfApiService {
     );
   }
 
+  public getNisarOrbitEphemera() {
+    return this.http
+      .get<any>(`${this.nisarOrbitEphemeraEndpoint()}`)
+      .pipe(
+        map((products) =>
+          products?.results?.length > 0
+            ? this.productService.fromResponse(products)
+            : [],
+        ),
+      );
+  }
+
   public queryUrlFrom(stateParamsObj, options?: { apiUrl: string }) {
     const params = this.queryParamsFrom(stateParamsObj);
 
@@ -126,6 +138,10 @@ export class AsfApiService {
 
   private baselineEndpoint(): string {
     return `${this.apiUrl}/services/search/baseline`;
+  }
+
+  private nisarOrbitEphemeraEndpoint(): string {
+    return `${this.apiUrl}/services/utils/nisar_orbit_ephemera`;
   }
 
   private queryParamsFrom(stateParamsObj) {

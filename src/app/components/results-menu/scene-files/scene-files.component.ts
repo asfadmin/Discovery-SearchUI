@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { SubSink } from 'subsink';
 
-import { combineLatest, forkJoin, of } from 'rxjs';
+import { combineLatest, of } from 'rxjs';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -67,7 +67,6 @@ import * as filterStore from '@store/filters';
 import {
   L1L2BrowseCollectionMapping,
   getNisarL2Params,
-  getNisarOEParams,
 } from '@models/datasets/nisar';
 import { AsyncPipe } from '@angular/common';
 import { SceneFileComponent } from './scene-file/scene-file.component';
@@ -177,6 +176,14 @@ export class SceneFilesComponent
       map((products) => products !== null && products !== undefined),
     );
 
+  private nisarOrbitEphemera$ = this.asfApiService.getNisarOrbitEphemera().pipe(
+    map((products) =>
+      products.map((product) => {
+        product.productTypeDisplay = `${product.metadata.productType} Orbit Ephemera XML`;
+        return product;
+      }),
+    ),
+  );
   public unzippedLoading: string;
   public loadingHyp3JobName: string | null;
   public validJobTypesByProduct: Record<string, models.Hyp3JobType[]> = {};
@@ -591,87 +598,73 @@ export class SceneFilesComponent
       ].includes(processingLevel)
     );
   }
-  public dynamicallySearchedProduct$ = this.store$
-    .select(scenesStore.getSelectedScene)
-    .pipe(
-      debounceTime(100),
-      distinctUntilChanged((prev, curr) => prev?.id === curr?.id),
-      tap((_) => this.dynamicQueryLoaded.set(false)),
-      withLatestFrom(this.store$.select(filterStore.getUseCalibrationData)),
-      switchMap(([scene, useCalibrationData]) => {
-        if (
-          !useCalibrationData &&
-          !!scene &&
-          ['RTC', 'CSLC'].includes(scene?.metadata?.productType) &&
-          scene?.id.startsWith('OPERA')
-        ) {
-          const queryParams = getStaticQueryParams(
-            scene.metadata.productType,
-            scene.metadata.date,
-            scene.metadata?.opera?.operaBurstID,
-          );
+  public dynamicallySearchedProduct$ = combineLatest([
+    this.store$.select(scenesStore.getSelectedScene),
+    this.nisarOrbitEphemera$,
+  ]).pipe(
+    debounceTime(100),
+    distinctUntilChanged((prev, curr) => prev[0]?.id === curr[0]?.id),
+    tap((_) => this.dynamicQueryLoaded.set(false)),
+    withLatestFrom(this.store$.select(filterStore.getUseCalibrationData)),
+    switchMap(([[scene, orbitEphemera], useCalibrationData]) => {
+      if (
+        !useCalibrationData &&
+        !!scene &&
+        ['RTC', 'CSLC'].includes(scene?.metadata?.productType) &&
+        scene?.id.startsWith('OPERA')
+      ) {
+        const queryParams = getStaticQueryParams(
+          scene.metadata.productType,
+          scene.metadata.date,
+          scene.metadata?.opera?.operaBurstID,
+        );
 
-          return this.asfApiService.miniQuery(queryParams).pipe(
-            tap((products) =>
-              products.map((product) => {
-                product.productTypeDisplay = 'Local Incidence Angle GeoTIFF';
-                product.bytes = 0;
-                product.downloadUrl =
-                  product.metadata.opera.additionalUrls.find((url) =>
-                    url.endsWith('local_incidence_angle.tif'),
-                  );
-                return product;
-              }),
-            ),
-          );
-        } else if (!!scene && scene.id?.startsWith('NISAR')) {
-          let browseQuery = of<models.CMRProduct[]>([]);
-          if (scene.id.startsWith('NISAR_L1')) {
-            if (
-              !Object.keys(L1L2BrowseCollectionMapping).includes(
-                scene.metadata.productType,
-              )
-            ) {
-              return of([]);
-            }
-
-            const queryParams = getNisarL2Params(
-              scene.id,
-              scene.metadata.productType,
-            );
-
-            browseQuery = this.asfApiService.miniQuery(queryParams);
-          }
-          let orbitQueries = of<models.CMRProduct[]>([]);
-          if (scene.metadata.nisar.orbitType) {
-            orbitQueries = forkJoin(
-              ['POE', 'MOE', 'NOE', 'FOE'].map((processingLevel) =>
-                this.asfApiService
-                  .miniQuery(getNisarOEParams(processingLevel))
-                  .pipe(
-                    map((productList) => {
-                      const product = productList[0];
-                      product.productTypeDisplay = `${product.metadata.productType} Orbit Ephemera XML`;
-                      return product;
-                    }),
-                  ),
-              ),
-            );
-          }
-          return forkJoin({
-            browseQuery,
-            orbitQueries,
-          }).pipe(
-            map((results) => {
-              return [...results.browseQuery, ...results.orbitQueries];
+        return this.asfApiService.miniQuery(queryParams).pipe(
+          tap((products) =>
+            products.map((product) => {
+              product.productTypeDisplay = 'Local Incidence Angle GeoTIFF';
+              product.bytes = 0;
+              product.downloadUrl = product.metadata.opera.additionalUrls.find(
+                (url) => url.endsWith('local_incidence_angle.tif'),
+              );
+              return product;
             }),
+          ),
+        );
+      } else if (!!scene && scene.id?.startsWith('NISAR')) {
+        let browseQuery = of<models.CMRProduct[]>([]);
+        if (scene.id.startsWith('NISAR_L1')) {
+          if (
+            !Object.keys(L1L2BrowseCollectionMapping).includes(
+              scene.metadata.productType,
+            )
+          ) {
+            return of([]);
+          }
+
+          const queryParams = getNisarL2Params(
+            scene.id,
+            scene.metadata.productType,
           );
-        } else {
-          return of([]);
+
+          browseQuery = this.asfApiService.miniQuery(queryParams);
         }
-      }),
-      tap((_) => this.dynamicQueryLoaded.set(true)),
-    );
+
+        return browseQuery.pipe(
+          map((results) => {
+            let output = [...results];
+            if (scene.metadata.nisar.orbitType) {
+              output = output.concat(orbitEphemera);
+            }
+            return output;
+          }),
+        );
+      } else {
+        return of([]);
+      }
+    }),
+    tap((_) => this.dynamicQueryLoaded.set(true)),
+  );
 
   public getProductSceneCount(products: SarviewsProduct[]) {
     const outputList = products.reduce((prev, product) => {
