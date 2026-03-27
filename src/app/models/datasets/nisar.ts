@@ -1,4 +1,3 @@
-import { CMRProduct } from '@models/cmr-product.model';
 import { Props } from '../filters.model';
 
 export const nisar = {
@@ -405,11 +404,10 @@ export function getNisarL2Params(productID: string, productType: string) {
   };
 }
 
-export function getNisarOEParams(scene: CMRProduct, latest = false) {
+export function getNisarOEParams(processingLevel: string) {
   return {
-    processingLevel: scene.metadata.nisar.orbitType,
-    end: latest ? '' : scene.metadata.date.toISOString(),
-    dataset: 'NISAR',
+    shortName: 'NISAR_OE',
+    processingLevel,
     maxResults: 1,
   };
 }

@@ -642,41 +642,28 @@ export class SceneFilesComponent
 
             browseQuery = this.asfApiService.miniQuery(queryParams);
           }
-          let concurrentOrbitQuery = of<models.CMRProduct[]>([]);
-          let latestOrbitQuery = of<models.CMRProduct[]>([]);
+          let orbitQueries = of<models.CMRProduct[]>([]);
           if (scene.metadata.nisar.orbitType) {
-            concurrentOrbitQuery = this.asfApiService
-              .miniQuery(getNisarOEParams(scene))
-              .pipe(
-                tap((products) =>
-                  products.map((product) => {
-                    product.productTypeDisplay = `${scene.metadata.nisar.orbitType} Orbit Ephemera XML (Concurrent)`;
-                    return product;
-                  }),
-                ),
-              );
-            latestOrbitQuery = this.asfApiService
-              .miniQuery(getNisarOEParams(scene, true))
-              .pipe(
-                tap((products) =>
-                  products.map((product) => {
-                    product.productTypeDisplay = `${scene.metadata.nisar.orbitType} Orbit Ephemera XML (Latest)`;
-                    return product;
-                  }),
-                ),
-              );
+            orbitQueries = forkJoin(
+              ['POE', 'MOE', 'NOE', 'FOE'].map((processingLevel) =>
+                this.asfApiService
+                  .miniQuery(getNisarOEParams(processingLevel))
+                  .pipe(
+                    map((productList) => {
+                      const product = productList[0];
+                      product.productTypeDisplay = `${product.metadata.productType} Orbit Ephemera XML`;
+                      return product;
+                    }),
+                  ),
+              ),
+            );
           }
           return forkJoin({
             browseQuery,
-            concurrentOrbitQuery,
-            latestOrbitQuery,
+            orbitQueries,
           }).pipe(
             map((results) => {
-              return [
-                ...results.browseQuery,
-                ...results.concurrentOrbitQuery,
-                ...results.latestOrbitQuery,
-              ];
+              return [...results.browseQuery, ...results.orbitQueries];
             }),
           );
         } else {
