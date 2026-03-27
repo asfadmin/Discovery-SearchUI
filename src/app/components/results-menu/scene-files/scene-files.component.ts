@@ -64,10 +64,7 @@ import {
   CdkVirtualForOf,
 } from '@angular/cdk/scrolling';
 import * as filterStore from '@store/filters';
-import {
-  L1L2BrowseCollectionMapping,
-  getNisarL2Params,
-} from '@models/datasets/nisar';
+import { L1L2BrowseCollectionMapping } from '@models/datasets/nisar';
 import { AsyncPipe } from '@angular/common';
 import { SceneFileComponent } from './scene-file/scene-file.component';
 import { MatIconButton } from '@angular/material/button';
@@ -642,7 +639,7 @@ export class SceneFilesComponent
             return of([]);
           }
 
-          const queryParams = getNisarL2Params(
+          const queryParams = this.getNisarL2Params(
             scene.id,
             scene.metadata.productType,
           );
@@ -666,6 +663,16 @@ export class SceneFilesComponent
     tap((_) => this.dynamicQueryLoaded.set(true)),
   );
 
+  public getNisarL2Params(productID: string, productType: string) {
+    return {
+      granule_list: productID
+        .replaceAll(
+          productType,
+          L1L2BrowseCollectionMapping[productType].productType,
+        )
+        .replaceAll('L1', 'L2'),
+    };
+  }
   public getProductSceneCount(products: SarviewsProduct[]) {
     const outputList = products.reduce((prev, product) => {
       const temp = product.granules.map((granule) => granule.granule_name);

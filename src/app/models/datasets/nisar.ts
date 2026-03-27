@@ -392,22 +392,3 @@ export const L1L2BrowseCollectionMapping = {
   RUNW: { collection: 'NISAR_L2_GUNW', productType: 'GUNW' },
   ROFF: { collection: 'NISAR_L2_GOFF', productType: 'GOFF' },
 };
-
-export function getNisarL2Params(productID: string, productType: string) {
-  return {
-    granule_list: productID
-      .replaceAll(
-        productType,
-        L1L2BrowseCollectionMapping[productType].productType,
-      )
-      .replaceAll('L1', 'L2'),
-  };
-}
-
-export function getNisarOEParams(processingLevel: string) {
-  return {
-    shortName: 'NISAR_OE',
-    processingLevel,
-    maxResults: 1,
-  };
-}
