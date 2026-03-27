@@ -1,149 +1,208 @@
 @if (showDemWarning) {
-<div class="dem-warning">
+  <div class="dem-warning">
     {{ 'RESAMPLED_DEM_SRTM_OR_NED_USED_FOR_RTC_PROCESSING' | translate }}
-    <a class="more-link" target="_blank" href="https://asf.alaska.edu/information/palsar-rtc-dem-information/">
-        Read this first
+    <a
+      class="more-link"
+      target="_blank"
+      href="https://asf.alaska.edu/information/palsar-rtc-dem-information/"
+    >
+      Read this first
     </a>
-</div>
+  </div>
 }
 
 @if (!showUnzippedProductScreen) {
-<div>
+  <div>
     <mat-list class="products-list">
-        @for (product of products; track product) {
-        <app-scene-file (toggle)="onToggleQueueProduct(product)" (unzip)="onOpenUnzipProduct($event)"
-            (queueHyp3Job)="onQueueHyp3Job($event)" (renameJobProjectName)="onRenameJobProjectName(product, $event)"
-            [loadingHyp3JobName]="loadingHyp3JobName" [isUserLoggedIn]="isUserLoggedIn" [product]="product"
-            [validHyp3JobTypes]="validJobTypesByProduct[product.id]"
-            [hasAccessToRestrictedData]="hasAccessToRestrictedData" [isUnzipLoading]="unzippedLoading === product.id"
-            [isQueued]="(queuedProductIds$ | async).has(product.id)" [isOpen]="false">
+      @for (product of products; track product) {
+        <app-scene-file
+          (toggle)="onToggleQueueProduct(product)"
+          (unzip)="onOpenUnzipProduct($event)"
+          (queueHyp3Job)="onQueueHyp3Job($event)"
+          (renameJobProjectName)="onRenameJobProjectName(product, $event)"
+          [loadingHyp3JobName]="loadingHyp3JobName"
+          [isUserLoggedIn]="isUserLoggedIn"
+          [product]="product"
+          [validHyp3JobTypes]="validJobTypesByProduct[product.id]"
+          [hasAccessToRestrictedData]="hasAccessToRestrictedData"
+          [isUnzipLoading]="unzippedLoading === product.id"
+          [isQueued]="(queuedProductIds$ | async).has(product.id)"
+          [isOpen]="false"
+        >
         </app-scene-file>
-        }
+      }
 
-        @if (hasSubquery$ | async) {
+      @if (hasSubquery$ | async) {
         @let subqueryProducts = dynamicallySearchedProduct$ | async;
         @if (subqueryProducts?.length > 0) {
-        <hr />
-        <div class="related-data-header">
+          <hr />
+          <div class="related-data-header">
             <h4>Related Data</h4>
-        </div>
-        @if (!dynamicQueryLoaded()) {
-        <mat-list-item>
-            <mat-spinner diameter="20" class="loading-spinner"> </mat-spinner>
-        </mat-list-item>
-        }
+          </div>
+          @if (!dynamicQueryLoaded()) {
+            <mat-list-item>
+              <mat-spinner diameter="20" class="loading-spinner"> </mat-spinner>
+            </mat-list-item>
+          }
         }
         @for (product of subqueryProducts; track product) {
-        @if (dynamicQueryLoaded()) {
-        <app-scene-file (toggle)="onToggleQueueProduct(product)" (unzip)="onOpenUnzipProduct($event)"
-            (queueHyp3Job)="onQueueHyp3Job($event)" (renameJobProjectName)="onRenameJobProjectName(product, $event)"
-            [loadingHyp3JobName]="loadingHyp3JobName" [isUserLoggedIn]="isUserLoggedIn" [product]="product"
-            [validHyp3JobTypes]="[]" [hasAccessToRestrictedData]="hasAccessToRestrictedData"
-            [isUnzipLoading]="unzippedLoading === product.id" [isQueued]="(queuedProductIds$ | async).has(product.id)"
-            [isOpen]="false" [isSearchableProduct]="true">
-        </app-scene-file>
+          @if (dynamicQueryLoaded()) {
+            <app-scene-file
+              (toggle)="onToggleQueueProduct(product)"
+              (unzip)="onOpenUnzipProduct($event)"
+              (queueHyp3Job)="onQueueHyp3Job($event)"
+              (renameJobProjectName)="onRenameJobProjectName(product, $event)"
+              [loadingHyp3JobName]="loadingHyp3JobName"
+              [isUserLoggedIn]="isUserLoggedIn"
+              [product]="product"
+              [validHyp3JobTypes]="[]"
+              [hasAccessToRestrictedData]="hasAccessToRestrictedData"
+              [isUnzipLoading]="unzippedLoading === product.id"
+              [isQueued]="(queuedProductIds$ | async).has(product.id)"
+              [isOpen]="false"
+              [isSearchableProduct]="true"
+            >
+            </app-scene-file>
+          }
         }
-        }
-        }
+      }
     </mat-list>
-</div>
+  </div>
 }
 
 @if (breakpoint$ | async; as breakpoint) {
-<span>
+  <span>
     @if (selectedSarviewEventID && !!sarviewsProducts) {
-    <div class="event-wrapper">
+      <div class="event-wrapper">
         <div class="event-products-wrapper">
-            <cdk-virtual-scroll-viewport id="event-selection-list" itemSize="50" class="products-list event-products"
-                dense role="list">
-                <mat-selection-list multiple (selectionChange)="onSelectSarviewsProduct($event)">
-                    <mat-list-option [value]="prod.product_id"
-                        [selected]="!!this.selectedProducts.includes(prod.product_id)"
-                        *cdkVirtualFor="let prod of sarviewsEventProducts$ | async" checkboxPosition="before"
-                        class="prod-viewport virtual-scroll prod-list-option">
-                        <div class="sarview-products-list">
-                            @if (breakpoint > breakpoints.MOBILE) {
-                            <img class="prod-thumb" src="{{ prod.files.thumbnail_url }}" />
-                            }
-                            <div class="sarview-product">
-                                <div>
-                                    <b>{{ formatProductName(prod.files.product_name) }}</b>
-                                </div>
-                                <div class="sarview-product-sub">
-                                    {{
-                                    prod.files.product_size.toString()
-                                    | readableSizeFromBytes
-                                    }},
-                                    {{ prod.job_type.replace('_', ' ') }}
-                                </div>
-                            </div>
-                            @if (hyp3ableByProduct[prod.product_id]; as byJobType) {
-                            <div>
-                                <button mat-icon-button (click)="$event.stopPropagation()"
-                                    [matMenuTriggerFor]="EventOnDemandQueue.addMenu"
-                                    [matMenuTriggerData]="{ hyp3able: byJobType }">
-                                    <mat-icon class="list-icon" svgIcon="hyp3"></mat-icon>
-                                </button>
-                                <button mat-icon-button (click)="
+          <cdk-virtual-scroll-viewport
+            id="event-selection-list"
+            itemSize="50"
+            class="products-list event-products"
+            dense
+            role="list"
+          >
+            <mat-selection-list
+              multiple
+              (selectionChange)="onSelectSarviewsProduct($event)"
+            >
+              <mat-list-option
+                [value]="prod.product_id"
+                [selected]="!!this.selectedProducts.includes(prod.product_id)"
+                *cdkVirtualFor="let prod of sarviewsEventProducts$ | async"
+                checkboxPosition="before"
+                class="prod-viewport virtual-scroll prod-list-option"
+              >
+                <div class="sarview-products-list">
+                  @if (breakpoint > breakpoints.MOBILE) {
+                    <img
+                      class="prod-thumb"
+                      src="{{ prod.files.thumbnail_url }}"
+                    />
+                  }
+                  <div class="sarview-product">
+                    <div>
+                      <b>{{ formatProductName(prod.files.product_name) }}</b>
+                    </div>
+                    <div class="sarview-product-sub">
+                      {{
+                        prod.files.product_size.toString()
+                          | readableSizeFromBytes
+                      }},
+                      {{ prod.job_type.replace('_', ' ') }}
+                    </div>
+                  </div>
+                  @if (hyp3ableByProduct[prod.product_id]; as byJobType) {
+                    <div>
+                      <button
+                        mat-icon-button
+                        (click)="$event.stopPropagation()"
+                        [matMenuTriggerFor]="EventOnDemandQueue.addMenu"
+                        [matMenuTriggerData]="{ hyp3able: byJobType }"
+                      >
+                        <mat-icon class="list-icon" svgIcon="hyp3"></mat-icon>
+                      </button>
+                      <button
+                        mat-icon-button
+                        (click)="
                           onQueueSarviewsProduct(prod); $event.stopPropagation()
-                        ">
-                                    @if (!queuedProductIds.includes(prod.product_id)) {
-                                    <mat-icon>add_shopping_cart</mat-icon>
-                                    }
-                                    @if (queuedProductIds.includes(prod.product_id)) {
-                                    <mat-icon>shopping_cart</mat-icon>
-                                    }
-                                </button>
-                                <app-download-file-button [product]="getCMRProductSarviews(prod)">
-                                </app-download-file-button>
-                                <!-- <button
+                        "
+                      >
+                        @if (!queuedProductIds.includes(prod.product_id)) {
+                          <mat-icon>add_shopping_cart</mat-icon>
+                        }
+                        @if (queuedProductIds.includes(prod.product_id)) {
+                          <mat-icon>shopping_cart</mat-icon>
+                        }
+                      </button>
+                      <app-download-file-button
+                        [product]="getCMRProductSarviews(prod)"
+                      >
+                      </app-download-file-button>
+                      <!-- <button
                           mat-icon-button
                           (click)="downloadProduct(prod.files.product_url); $event.stopPropagation();"
                           >
                           <mat-icon>cloud_download</mat-icon>
                         </button> -->
-                                <app-on-demand-add-menu #EventOnDemandQueue>
-                                </app-on-demand-add-menu>
-                            </div>
-                            }
-                        </div>
-                    </mat-list-option>
-                </mat-selection-list>
-            </cdk-virtual-scroll-viewport>
+                      <app-on-demand-add-menu #EventOnDemandQueue>
+                      </app-on-demand-add-menu>
+                    </div>
+                  }
+                </div>
+              </mat-list-option>
+            </mat-selection-list>
+          </cdk-virtual-scroll-viewport>
         </div>
-    </div>
+      </div>
     }
-</span>
+  </span>
 }
 
 @if (showUnzippedProductScreen) {
-<div class="products-list zip-contents">
+  <div class="products-list zip-contents">
     <mat-list class="products-list">
-        @for (product of beforeWithUnzip; track product) {
-        <app-scene-file (toggle)="onToggleQueueProduct(product)" (unzip)="onOpenUnzipProduct($event)"
-            (closeProduct)="onCloseProduct($event)" (queueHyp3Job)="onQueueHyp3Job($event)"
-            (renameJobProjectName)="onRenameJobProjectName(product, $event)" [isUserLoggedIn]="isUserLoggedIn"
-            [product]="product" [validHyp3JobTypes]="validJobTypesByProduct[product.id]"
-            [loadingHyp3JobName]="loadingHyp3JobName" [hasAccessToRestrictedData]="hasAccessToRestrictedData"
-            [isUnzipLoading]="unzippedLoading === product.id" [isQueued]="(queuedProductIds$ | async).has(product.id)"
-            [isOpen]="product.id === openUnzippedProduct.id">
+      @for (product of beforeWithUnzip; track product) {
+        <app-scene-file
+          (toggle)="onToggleQueueProduct(product)"
+          (unzip)="onOpenUnzipProduct($event)"
+          (closeProduct)="onCloseProduct($event)"
+          (queueHyp3Job)="onQueueHyp3Job($event)"
+          (renameJobProjectName)="onRenameJobProjectName(product, $event)"
+          [isUserLoggedIn]="isUserLoggedIn"
+          [product]="product"
+          [validHyp3JobTypes]="validJobTypesByProduct[product.id]"
+          [loadingHyp3JobName]="loadingHyp3JobName"
+          [hasAccessToRestrictedData]="hasAccessToRestrictedData"
+          [isUnzipLoading]="unzippedLoading === product.id"
+          [isQueued]="(queuedProductIds$ | async).has(product.id)"
+          [isOpen]="product.id === openUnzippedProduct.id"
+        >
         </app-scene-file>
-        }
+      }
     </mat-list>
     <div>
-        <app-file-contents> </app-file-contents>
+      <app-file-contents> </app-file-contents>
     </div>
     <mat-list class="products-list">
-        @for (product of afterUnzip; track product) {
-        <app-scene-file (toggle)="onToggleQueueProduct(product)" (unzip)="onOpenUnzipProduct($event)"
-            (closeProduct)="onCloseProduct($event)" (queueHyp3Job)="onQueueHyp3Job($event)"
-            (renameJobProjectName)="onRenameJobProjectName(product, $event)" [isUserLoggedIn]="isUserLoggedIn"
-            [product]="product" [loadingHyp3JobName]="loadingHyp3JobName"
-            [hasAccessToRestrictedData]="hasAccessToRestrictedData"
-            [validHyp3JobTypes]="validJobTypesByProduct[product.id]" [isUnzipLoading]="unzippedLoading === product.id"
-            [isQueued]="(queuedProductIds$ | async).has(product.id)" [isOpen]="product.id === openUnzippedProduct.id">
+      @for (product of afterUnzip; track product) {
+        <app-scene-file
+          (toggle)="onToggleQueueProduct(product)"
+          (unzip)="onOpenUnzipProduct($event)"
+          (closeProduct)="onCloseProduct($event)"
+          (queueHyp3Job)="onQueueHyp3Job($event)"
+          (renameJobProjectName)="onRenameJobProjectName(product, $event)"
+          [isUserLoggedIn]="isUserLoggedIn"
+          [product]="product"
+          [loadingHyp3JobName]="loadingHyp3JobName"
+          [hasAccessToRestrictedData]="hasAccessToRestrictedData"
+          [validHyp3JobTypes]="validJobTypesByProduct[product.id]"
+          [isUnzipLoading]="unzippedLoading === product.id"
+          [isQueued]="(queuedProductIds$ | async).has(product.id)"
+          [isOpen]="product.id === openUnzippedProduct.id"
+        >
         </app-scene-file>
-        }
+      }
     </mat-list>
-</div>
+  </div>
 }
