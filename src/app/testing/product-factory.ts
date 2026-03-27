@@ -1,9 +1,4 @@
-import {
-  CMRProduct,
-  CMRProductMetadata,
-  Dataset,
-  FlightDirection,
-} from '@models';
+import { CMRProduct, CMRProductMetadata, FlightDirection } from '@models';
 import moment from 'moment';
 
 function createProduct(product: CMRProduct): CMRProduct {
@@ -81,10 +76,25 @@ class NestedProductFactory {
         'POLYGON((-124.3885 36.7031,-120.6971 36.7031,-120.6971 38.9246,-124.3885 38.9246,-124.3885 36.7031))',
     });
   }
-  withDataset(productDataset: Dataset) {
-    return this._extendWith({
-      dataset: productDataset.id,
-    });
+
+  withDataset(dataset: string): NestedProductFactory {
+    return this._extendWith({ dataset });
+  }
+
+  withInstrument(instrument: string): NestedProductFactory {
+    return this._extendWithMetadata({ instrument });
+  }
+
+  withProductType(productType: string): NestedProductFactory {
+    return this._extendWithMetadata({ productType });
+  }
+
+  withId(id: string): NestedProductFactory {
+    return this._extendWith({ id });
+  }
+
+  withName(name: string): NestedProductFactory {
+    return this._extendWith({ name });
   }
 
   private _extendWith(product: Partial<CMRProduct>) {
