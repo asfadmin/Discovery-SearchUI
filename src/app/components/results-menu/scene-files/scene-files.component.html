@@ -34,17 +34,17 @@
 
       @if (hasSubquery$ | async) {
         @let subqueryProducts = dynamicallySearchedProduct$ | async;
-        @if (subqueryProducts?.length > 0) {
-          <hr />
-          <div class="related-data-header">
-            <h4>Related Data</h4>
-          </div>
-          @if (!dynamicQueryLoaded()) {
-            <mat-list-item>
-              <mat-spinner diameter="20" class="loading-spinner"> </mat-spinner>
-            </mat-list-item>
-          }
+
+        <hr />
+        <div class="related-data-header">
+          <h4>Related Data</h4>
+        </div>
+        @if (!dynamicQueryLoaded()) {
+          <mat-list-item>
+            <mat-spinner diameter="20" class="loading-spinner"> </mat-spinner>
+          </mat-list-item>
         }
+
         @for (product of subqueryProducts; track product) {
           @if (dynamicQueryLoaded()) {
             <app-scene-file
