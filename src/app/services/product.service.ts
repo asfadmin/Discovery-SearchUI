@@ -309,22 +309,33 @@ export class ProductService {
         )
       )
         return 1;
-
+      else if (product.metadata.productType === 'DIST-ALERT-S1') {
+        const idxA = this.operaDistDisplayValues.findIndex(
+          (x) => x === a.productTypeDisplay,
+        );
+        const idxB = this.operaDistDisplayValues.findIndex(
+          (x) => x === b.productTypeDisplay,
+        );
+        return idxA < idxB ? -1 : 1;
+      }
       return a.productTypeDisplay < b.productTypeDisplay ? -1 : 1;
     });
   }
   private operaDistDisplayMap = {
-    'DIST-COUNT': 'Number of Disturbances TIF',
-    'DIST-DATE': 'Date of First Disturbance TIF',
-    'LAST-DATE': 'Date of Last Observation Assessed TIF',
-    'DIST-PERC': 'Percentage of Disturbances TIF',
     'DIST-STATUS': 'Disturbance Status TIF',
     'STATUS-ACQ': 'Disturbance Status Latest TIF',
     'GEN-METRIC': 'Current Metric Anomaly TIF',
     'METRIC-MAX': 'Maximum Metric Anomaly TIF',
-    'DIST-DUR.': 'Disturbance Duration TIF',
     'DIST-CONF': 'Generic Disturbance Confidence TIF',
+    'DIST-DATE': 'Date of First Disturbance TIF',
+    'DIST-COUNT': 'Number of Disturbances TIF',
+    'DIST-PERC': 'Percentage of Disturbances TIF',
+    'DIST-DUR.': 'Disturbance Duration TIF',
+    'LAST-DATE': 'Date of Last Observation Assessed TIF',
+    xml: 'Metadata XML',
   };
+
+  private operaDistDisplayValues = Object.values(this.operaDistDisplayMap);
   private tropoSubproductsFromScene(product: models.CMRProduct) {
     const products = [];
     let file_extension = this.urlToProductType(
@@ -469,7 +480,6 @@ export class ProductService {
       products.push(subproduct);
     }
 
-    // TODO: Support sort order for DIST ALERT products
     return products.sort((a, b) => {
       if (
         a.productTypeDisplay.includes('Metadata') ||
