@@ -218,6 +218,15 @@ export class ProductService {
       models.opera_s1.productTypeDisplays[file_suffix?.toLowerCase()] ??
       'Download';
 
+    if (product.metadata.productType === 'DIST-ALERT-S1') {
+      product.productTypeDisplay =
+        this.operaDistDisplayMap[
+          Object.keys(this.operaDistDisplayMap).find((key) =>
+            product.downloadUrl.includes(key),
+          )
+        ];
+    }
+
     const thumbnail_index = product.browses.findIndex((url) =>
       url.toLowerCase().includes('thumbnail'),
     );
@@ -260,21 +269,9 @@ export class ProductService {
           productTypeDisplay = 'Shadow Mask GeoTIFF';
         }
       } else if (product.metadata.productType === 'DIST-ALERT-S1') {
-        const operaDistMap = {
-          'DIST-COUNT': 'GEN-DIST-COUNT',
-          'DIST-DATE': 'GEN-DIST-DATE',
-          'LAST-DATE': 'GEN-DIST-LAST-DATE',
-          'DIST-PERC': 'GEN-DIST-PERC',
-          'DIST-STATUS': 'GEN-DIST-STATUS',
-          'STATUS-ACQ': 'GEN-DIST-STATUS-ACQ',
-          'GEN-METRIC': 'GEN-METRIC',
-          'METRIC-MAX': 'GEN-METRIC-MAX',
-          'DIST-DUR.': 'GEN-DIST-DUR',
-          'DIST-CONF': 'GEN-DIST-CONF',
-        };
-        for (const key of Object.keys(operaDistMap)) {
+        for (const key of Object.keys(this.operaDistDisplayMap)) {
           if (p.includes(key)) {
-            productTypeDisplay = operaDistMap[key];
+            productTypeDisplay = this.operaDistDisplayMap[key];
           }
         }
       }
@@ -316,7 +313,18 @@ export class ProductService {
       return a.productTypeDisplay < b.productTypeDisplay ? -1 : 1;
     });
   }
-
+  private operaDistDisplayMap = {
+    'DIST-COUNT': 'Number of Disturbances TIF',
+    'DIST-DATE': 'Date of First Disturbance TIF',
+    'LAST-DATE': 'Date of Last Observation Assessed TIF',
+    'DIST-PERC': 'Percentage of Disturbances TIF',
+    'DIST-STATUS': 'Disturbance Status TIF',
+    'STATUS-ACQ': 'Disturbance Status Latest TIF',
+    'GEN-METRIC': 'Current Metric Anomaly TIF',
+    'METRIC-MAX': 'Maximum Metric Anomaly TIF',
+    'DIST-DUR.': 'Disturbance Duration TIF',
+    'DIST-CONF': 'Generic Disturbance Confidence TIF',
+  };
   private tropoSubproductsFromScene(product: models.CMRProduct) {
     const products = [];
     let file_extension = this.urlToProductType(
@@ -461,6 +469,7 @@ export class ProductService {
       products.push(subproduct);
     }
 
+    // TODO: Support sort order for DIST ALERT products
     return products.sort((a, b) => {
       if (
         a.productTypeDisplay.includes('Metadata') ||
