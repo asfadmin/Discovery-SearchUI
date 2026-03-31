@@ -111,6 +111,8 @@ export enum FiltersActionType {
 
   SET_ARIA_VERSION = '[Filters] Set ARIA Version',
 
+  SET_TILE_ID = '[Filters] Set OPERA-S1 Tile ID',
+
   SET_USER_FRAME_FOR_BASELINE = '[Filters] Set if frame(s) used for baseline/sbas searches as reference scene',
 
   APPLY_DATASET_DEFAULTS = '[Filters] Apply dataset default filters',
@@ -533,6 +535,12 @@ export class setAriaVersion implements Action {
   constructor(public payload: string) {}
 }
 
+export class setTileID implements Action {
+  public readonly type = FiltersActionType.SET_TILE_ID;
+
+  constructor(public payload: string) {}
+}
+
 export class SetUseFrameForBaseline implements Action {
   public readonly type = FiltersActionType.SET_USER_FRAME_FOR_BASELINE;
 
@@ -614,5 +622,6 @@ export type FiltersActions =
   | setScienceProduct
   | setProductionConfig
   | setAriaVersion
+  | setTileID
   | SetUseFrameForBaseline
   | ApplyDatasetDefaults;

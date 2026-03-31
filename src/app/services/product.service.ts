@@ -78,7 +78,7 @@ export class ProductService {
     path: +g.p,
     frame: +g.f,
     absoluteOrbit: Array.isArray(g.o)
-      ? g.o.map((val) => +val)
+      ? g.o.map((val) => +val).filter((x) => !isNaN(x))
       : g.o !== null
         ? [+g.o]
         : [],
@@ -218,6 +218,15 @@ export class ProductService {
       models.opera_s1.productTypeDisplays[file_suffix?.toLowerCase()] ??
       'Download';
 
+    if (product.metadata.productType === 'DIST-ALERT-S1') {
+      product.productTypeDisplay =
+        this.operaDistDisplayMap[
+          Object.keys(this.operaDistDisplayMap).find((key) =>
+            product.downloadUrl.includes(key),
+          )
+        ];
+    }
+
     const thumbnail_index = product.browses.findIndex((url) =>
       url.toLowerCase().includes('thumbnail'),
     );
@@ -259,6 +268,12 @@ export class ProductService {
         } else if (p.includes('layover_shadow_mask')) {
           productTypeDisplay = 'Shadow Mask GeoTIFF';
         }
+      } else if (product.metadata.productType === 'DIST-ALERT-S1') {
+        for (const key of Object.keys(this.operaDistDisplayMap)) {
+          if (p.includes(key)) {
+            productTypeDisplay = this.operaDistDisplayMap[key];
+          }
+        }
       }
       const fileID = p.split('/').slice(-1)[0];
 
@@ -294,11 +309,33 @@ export class ProductService {
         )
       )
         return 1;
-
+      else if (product.metadata.productType === 'DIST-ALERT-S1') {
+        const idxA = this.operaDistDisplayValues.findIndex(
+          (x) => x === a.productTypeDisplay,
+        );
+        const idxB = this.operaDistDisplayValues.findIndex(
+          (x) => x === b.productTypeDisplay,
+        );
+        return idxA < idxB ? -1 : 1;
+      }
       return a.productTypeDisplay < b.productTypeDisplay ? -1 : 1;
     });
   }
+  private operaDistDisplayMap = {
+    'DIST-STATUS': 'Disturbance Status TIF',
+    'STATUS-ACQ': 'Disturbance Status Latest TIF',
+    'GEN-METRIC': 'Current Metric Anomaly TIF',
+    'METRIC-MAX': 'Maximum Metric Anomaly TIF',
+    'DIST-CONF': 'Generic Disturbance Confidence TIF',
+    'DIST-DATE': 'Date of First Disturbance TIF',
+    'DIST-COUNT': 'Number of Disturbances TIF',
+    'DIST-PERC': 'Percentage of Disturbances TIF',
+    'DIST-DUR.': 'Disturbance Duration TIF',
+    'LAST-DATE': 'Date of Last Observation Assessed TIF',
+    xml: 'Metadata XML',
+  };
 
+  private operaDistDisplayValues = Object.values(this.operaDistDisplayMap);
   private tropoSubproductsFromScene(product: models.CMRProduct) {
     const products = [];
     let file_extension = this.urlToProductType(
@@ -475,7 +512,7 @@ export class ProductService {
       downloadUrl: url,
       productTypeDisplay: productTypeDisplay || url,
       file: fileID,
-      id: scene.id + '-' + fileExtension,
+      id: scene.id + '-' + fileExtension + '-' + productTypeDisplay,
       bytes: fileSize,
       browses,
       thumbnail: null,

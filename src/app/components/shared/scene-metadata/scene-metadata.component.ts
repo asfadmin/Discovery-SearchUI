@@ -217,6 +217,12 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
     );
   }
 
+  public setTileID(): void {
+    this.store$.dispatch(
+      new filtersStore.setTileID(this.scene.metadata.opera.tileID),
+    );
+  }
+
   private capitalizeFirstLetter(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }

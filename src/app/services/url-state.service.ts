@@ -828,6 +828,13 @@ export class UrlStateService {
         loader: this.loadAriaVersion,
       },
       {
+        name: 'tileID',
+        source: this.store$
+          .select(filterStore.getTileID)
+          .pipe(map((tileID) => ({ tileID }))),
+        loader: this.loadTileID,
+      },
+      {
         name: 'useFrameForBaseline',
         source: this.store$
           .select(filterStore.getShouldUseFramesForReference)
@@ -1351,6 +1358,10 @@ export class UrlStateService {
 
   private loadAriaVersion = (version: string): Action => {
     return new filterStore.setAriaVersion(version);
+  };
+
+  private loadTileID = (tileID: string): Action => {
+    return new filterStore.setTileID(tileID);
   };
 
   private loadSeriesState = (seriesState) => {

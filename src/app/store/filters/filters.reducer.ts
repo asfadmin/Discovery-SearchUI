@@ -70,6 +70,7 @@ export interface FiltersState {
   useCalibrationData: boolean; // used to toggle OPERA-S1 Calval (calibration) datasets
 
   groupID: null | string;
+  tileID: null | string;
 
   useFramesForReference: boolean;
   ariaVersion: string;
@@ -155,6 +156,7 @@ export const initState: FiltersState = {
   productionConfig: [],
 
   groupID: null,
+  tileID: null,
   shortNames: [],
 
   useFramesForReference: false,
@@ -193,6 +195,7 @@ export function filtersReducer(
         flightDirections: new Set<models.FlightDirection>([]),
 
         groupID: null,
+        tileID: null,
         shortNames: [],
         useCalibrationData: false,
         selectedMission: null,
@@ -465,6 +468,7 @@ export function filtersReducer(
         operaBurstIDs: [],
         useCalibrationData: false,
         groupID: null,
+        tileID: null,
         shortNames: [],
         frameCoverage: [],
         sidePolarizations: [],
@@ -784,6 +788,7 @@ export function filtersReducer(
           rangeBandwidth: filters.rangeBandwidth || [],
           instrument: filters.instrument || [],
           groupID: filters.groupID,
+          tileID: filters.tileID,
           ariaVersion: filters.ariaVersion,
         };
       }
@@ -970,6 +975,12 @@ export function filtersReducer(
       return {
         ...state,
         ariaVersion: action.payload,
+      };
+    }
+    case FiltersActionType.SET_TILE_ID: {
+      return {
+        ...state,
+        tileID: action.payload,
       };
     }
     default: {
@@ -1167,6 +1178,7 @@ export const getGeographicSearch = createSelector(
     rangeBandwidth: state.rangeBandwidth,
     instrument: state.instrument,
     groupID: state.groupID,
+    tileID: state.tileID,
     ariaVersion: state.ariaVersion,
   }),
 );
@@ -1328,4 +1340,8 @@ export const getShouldUseFramesForReference = createSelector(
 export const getAriaVersion = createSelector(
   getFiltersState,
   (state: FiltersState) => state.ariaVersion,
+);
+export const getTileID = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.tileID,
 );

@@ -220,6 +220,11 @@
           </span>
         }
       </span>
+      @if (!!tileID) {
+        <span>
+          <b> {{ 'TILE_ID' | translate }}:</b> {{ tileID }}
+        </span>
+      }
     </div>
     <div class="last-info">
       <app-ci-search></app-ci-search>

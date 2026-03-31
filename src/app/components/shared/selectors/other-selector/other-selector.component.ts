@@ -49,6 +49,7 @@ export class OtherSelectorComponent implements OnInit, OnDestroy {
   polarizations: models.DatasetPolarizations;
   subtypes: models.DatasetSubtypes;
   groupID: string;
+  tileID: string;
   ariaVersion: string;
 
   public datasetProductTypes$ = this.store$.select(
@@ -62,6 +63,7 @@ export class OtherSelectorComponent implements OnInit, OnDestroy {
   public selectedDataset$ = this.store$.select(filtersStore.getSelectedDataset);
   public subtypes$ = this.store$.select(filtersStore.getSubtypes);
   public groupID$ = this.store$.select(filtersStore.getGroupID);
+  public tileID$ = this.store$.select(filtersStore.getTileID);
   public flightDirectionTypes = models.flightDirections;
   public p = models.Props;
   private subs = new SubSink();
@@ -102,6 +104,7 @@ export class OtherSelectorComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.groupID$.subscribe((groupID) => (this.groupID = groupID)),
     );
+    this.subs.add(this.tileID$.subscribe((tileID) => (this.tileID = tileID)));
     this.subs.add(
       this.store$
         .select(filtersStore.getAriaVersion)
@@ -140,6 +143,10 @@ export class OtherSelectorComponent implements OnInit, OnDestroy {
   }
   public onNewAriaVersionSelected(version): void {
     this.store$.dispatch(new filtersStore.setAriaVersion(version));
+  }
+
+  public onNewTileID(): void {
+    this.store$.dispatch(new filtersStore.setTileID(this.tileID));
   }
 
   public onNewGroupID(): void {
