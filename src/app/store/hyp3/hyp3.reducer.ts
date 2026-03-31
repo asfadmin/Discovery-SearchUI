@@ -29,7 +29,7 @@ export interface Hyp3State {
   maxHyp3Jobs: number | null;
 }
 
-const initState: Hyp3State = {
+export const initState: Hyp3State = {
   jobs: [],
   user: null,
   isUserLoading: false,

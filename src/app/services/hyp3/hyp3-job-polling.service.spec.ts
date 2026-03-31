@@ -1,3 +1,11 @@
+import {
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+  type MockedObject,
+} from 'vitest';
 import { TestBed } from '@angular/core/testing';
 
 import { Hyp3JobPollingService } from './hyp3-job-polling.service';
@@ -10,7 +18,7 @@ import * as models from '@models';
 describe('Hyp3JobPollingService', () => {
   // let _testScheduler: TestScheduler;
   let service: Hyp3JobPollingService;
-  let hyp3Spy: jasmine.SpyObj<Hyp3ApiService>;
+  let hyp3Spy: MockedObject<Hyp3ApiService>;
 
   const scenes$ = new BehaviorSubject<models.CMRProduct[]>([]);
   const searchType$ = new BehaviorSubject<models.SearchType>(
@@ -19,7 +27,9 @@ describe('Hyp3JobPollingService', () => {
   const userId$ = new BehaviorSubject<models.SearchType>(null);
 
   beforeEach(() => {
-    const spy = jasmine.createSpyObj('Hyp3Service', ['getJobs$']);
+    const spy = {
+      getJobs$: vi.fn().mockName('Hyp3Service.getJobs$'),
+    };
 
     TestBed.configureTestingModule({
       providers: [
@@ -28,7 +38,7 @@ describe('Hyp3JobPollingService', () => {
       ],
     });
     service = TestBed.inject(Hyp3JobPollingService);
-    hyp3Spy = TestBed.inject(Hyp3ApiService) as jasmine.SpyObj<Hyp3ApiService>;
+    hyp3Spy = TestBed.inject(Hyp3ApiService) as MockedObject<Hyp3ApiService>;
 
     // Still need to figure out how to test observables
     // _testScheduler = new TestScheduler((actual, expected) => {
@@ -37,13 +47,13 @@ describe('Hyp3JobPollingService', () => {
   });
 
   it('should be created', () => {
-    hyp3Spy.getJobs$.and.returnValue(of({ hyp3Jobs: [], next: '' }));
+    hyp3Spy.getJobs$.mockReturnValue(of({ hyp3Jobs: [], next: '' }));
 
     const numFinished$ = service.pollHyp3Jobs$(searchType$, scenes$, userId$);
 
     numFinished$.subscribe((numFinished) => {
       console.log(numFinished);
-      expect(numFinished).toBeTruthy(numFinished === 0);
+      expect(numFinished).toBeTruthy();
     });
   });
 });

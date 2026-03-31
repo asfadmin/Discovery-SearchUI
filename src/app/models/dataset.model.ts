@@ -1,3 +1,4 @@
+import { FiltersState } from '@store/filters';
 import * as fromDatasets from './datasets';
 import { Props } from './filters.model';
 
@@ -8,6 +9,7 @@ export interface Dataset {
   beta: boolean;
   apiValue: Record<string, string>;
   date: DateRange;
+  defaultFilters?: Partial<FiltersState>;
   infoUrl: string;
   citationUrl: string;
   productTypes: ProductType[];
@@ -91,10 +93,10 @@ export const tropo = fromDatasets.tropo;
 
 export const datasetList: Dataset[] = [
   fromDatasets.nisar,
-  fromDatasets.tropo,
   fromDatasets.sentinel_1,
   fromDatasets.sentinel_1_bursts,
   fromDatasets.opera_s1,
+  fromDatasets.tropo,
   fromDatasets.alos_2,
   fromDatasets.alos,
   fromDatasets.avnir,

@@ -1,6 +1,10 @@
-import { enableProdMode, importProvidersFrom } from '@angular/core';
+import {
+  enableProdMode,
+  importProvidersFrom,
+  provideZoneChangeDetection,
+} from '@angular/core';
 
-import { HttpLoaderFactory, routes } from './app/app.module';
+import { routes } from './app/app.module';
 import { environment } from './environments/environment';
 import { SAVER, getSaver } from '@services/saver.provider';
 import {
@@ -14,7 +18,7 @@ import {
   MAT_MOMENT_DATE_FORMATS,
 } from '@angular/material-moment-adapter';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import {
@@ -70,6 +74,7 @@ import {
 } from '@services';
 import { metaReducers, reducers } from '@store/app.reducer';
 import { appEffects } from '@store/app.effect';
+import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 
 const cookieConfig: NgcCookieConsentConfig = {
   autoOpen: false,
@@ -108,15 +113,9 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
   providers: [
+    provideZoneChangeDetection(),
     importProvidersFrom(
       BrowserModule,
-      TranslateModule.forRoot({
-        loader: {
-          provide: TranslateLoader,
-          useFactory: HttpLoaderFactory,
-          deps: [HttpClient],
-        },
-      }),
       NgcCookieConsentModule.forRoot(cookieConfig),
       MatBottomSheetModule,
       StoreModule.forRoot(reducers, { metaReducers: metaReducers }),
@@ -133,6 +132,13 @@ bootstrapApplication(AppComponent, {
         preventDuplicates: true,
       }),
     ),
+    provideTranslateService({
+      lang: 'en',
+      loader: provideTranslateHttpLoader({
+        prefix: '/assets/i18n/',
+        suffix: '.json',
+      }),
+    }),
     HttpClient, // remove in v21 w/ update to ngx-translate
     AsfApiService,
     AsfLanguageService,

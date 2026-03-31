@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { Props } from '../filters.model';
 
 export const opera_s1 = {
@@ -50,6 +51,10 @@ export const opera_s1 = {
       displayName:
         'L3 Co-registered Surface Displacement Static Layer (DISP-S1-STATIC)',
     },
+    {
+      apiValue: 'DIST-ALERT-S1',
+      displayName: 'DIST ALERT Products (DIST-ALERT-S1)',
+    },
   ],
   beamModes: ['IW', 'EW'],
   polarizations: ['VV', 'HH', 'HV', 'VH'],
@@ -84,3 +89,17 @@ export const opera_s1 = {
     dem: 'DEM GeoTIFF',
   },
 };
+
+export function getStaticQueryParams(
+  productType: string,
+  date: moment.Moment,
+  operaBurstID: string,
+) {
+  return {
+    processinglevel: productType + '-STATIC',
+    end: date === null ? '' : moment.utc(date).format(),
+    operaburstid: operaBurstID,
+    dataset: opera_s1.apiValue.dataset,
+    maxResults: 1,
+  };
+}

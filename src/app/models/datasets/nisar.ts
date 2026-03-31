@@ -23,7 +23,10 @@ export const nisar = {
   ],
   apiValue: { dataset: 'NISAR' },
   date: { start: new Date('2025/08/02 03:44:43 UTC') },
-  infoUrl: 'https://nisar.jpl.nasa.gov',
+  defaultFilters: {
+    productionConfig: ['PR'],
+  },
+  infoUrl: 'https://nisar-docs.asf.alaska.edu/',
   citationUrl: 'https://asf.alaska.edu/nisar/',
   frequency: 'L-Band',
   source: {

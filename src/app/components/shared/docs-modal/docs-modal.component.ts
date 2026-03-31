@@ -100,7 +100,7 @@ export class DocsModalComponent implements OnInit, OnDestroy {
 
   public isAsfUrl(url: string): boolean {
     const domain = new URL(url).hostname.replace('www.', '');
-    return domain.includes('asf.alaska.edu');
+    return domain.includes('asf.alaska.edu') && domain !== 'asf.alaska.edu';
   }
 
   public docsLanguageAdjust(url: string): string {
