@@ -599,9 +599,9 @@ export class SceneFilesComponent
     this.store$.select(scenesStore.getSelectedScene),
     this.nisarOrbitEphemera$,
   ]).pipe(
+    tap((_) => this.dynamicQueryLoaded.set(false)),
     debounceTime(100),
     distinctUntilChanged((prev, curr) => prev[0]?.id === curr[0]?.id),
-    tap((_) => this.dynamicQueryLoaded.set(false)),
     withLatestFrom(this.store$.select(filterStore.getUseCalibrationData)),
     switchMap(([[scene, orbitEphemera], useCalibrationData]) => {
       if (

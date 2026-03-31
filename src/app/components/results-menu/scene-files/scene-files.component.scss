@@ -1,4 +1,4 @@
-@use "asf-theme-variables" as *;
+@use 'asf-theme-variables' as *;
 
 $prod-row-height: 58px;
 $thumb-size: 50px;
@@ -19,23 +19,26 @@ $thumb-size: 50px;
 
 .dem-warning {
   @include themify($themes) {
-    background-color: lighten(themed("primary-light"), 10%);
-    color: themed("err");
+    background-color: lighten(themed('primary-light'), 10%);
+    color: themed('err');
   }
 
   font-size: 14px;
   padding-left: 25px;
   padding-top: 2px;
   padding-bottom: 5px;
-  background-color: rgb(220  220  220);
+  background-color: rgb(220 220 220);
 }
 
 .more-link {
   @include themify($themes) {
-    color: themed("blue-link");
+    color: themed('blue-link');
   }
 }
-
+.no-related {
+  padding-left: 24px;
+  font-weight: 600;
+}
 .map-icon {
   cursor: pointer;
   position: absolute;
@@ -45,8 +48,8 @@ $thumb-size: 50px;
 
 .map-button-toggle {
   @include themify($themes) {
-    background-color: themed("primary") !important;
-    color: themed("light-primary-text") !important;
+    background-color: themed('primary') !important;
+    color: themed('light-primary-text') !important;
   }
 
   padding-right: 40px;
@@ -149,7 +152,7 @@ mat-expansion-panel-header {
   &:link,
   &:active,
   &:focus,
-  &[aria-disabled="true"] {
+  &[aria-disabled='true'] {
     @extend .mat-header-base;
   }
 }
