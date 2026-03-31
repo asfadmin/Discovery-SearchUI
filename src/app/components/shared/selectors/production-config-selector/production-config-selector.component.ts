@@ -33,7 +33,7 @@ export class ProductionConfigSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
 
   prodConfigControl = new FormControl(['']);
-  public selectedConfig: string[] = ['PR']; // Default selected config
+  public selectedConfig: string[] = [];
 
   prodConfigs: prodConfig[] = [
     { value: 'PR', viewValue: 'PRODUCTION' },
@@ -44,8 +44,6 @@ export class ProductionConfigSelectorComponent implements OnInit, OnDestroy {
   private subs: SubSink = new SubSink();
 
   public ngOnInit(): void {
-    this.onProductionConfigSelect(this.selectedConfig);
-
     this.subs.add(
       this.store$
         .select(filtersStore.getProductionConfig)

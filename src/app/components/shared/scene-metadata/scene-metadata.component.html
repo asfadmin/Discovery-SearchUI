@@ -105,6 +105,32 @@
         </mat-menu>
       </li>
     }
+    @if (!!scene.metadata?.opera?.tileID) {
+      <li>
+        <span class="v-mid"
+          ><b>{{ 'TILE_ID' | translate }} </b> •
+          {{ scene.metadata.opera.tileID }}</span
+        >
+        @if (isGeoSearch()) {
+          <mat-icon [matMenuTriggerFor]="addTileIDMenu" class="v-mid clickable">
+            settings
+          </mat-icon>
+        }
+        <mat-menu #addTileIDMenu="matMenu">
+          <button (click)="setTileID()" mat-menu-item>
+            {{ 'SET_AS_TILE_ID' | translate }}
+          </button>
+        </mat-menu>
+      </li>
+    }
+    @if (!!scene.metadata?.opera?.productVersion) {
+      <li>
+        <span class="v-mid"
+          ><b>{{ 'PRODUCT_VERSION' | translate }} </b> •
+          {{ scene.metadata.opera.productVersion }}</span
+        >
+      </li>
+    }
     @if (prop.isRelevant(p.BEAM_MODE, dataset) && scene.metadata.beamMode) {
       <li>
         <span class="v-mid"
@@ -183,7 +209,7 @@
         </mat-menu>
       </li>
     }
-    @if (prop.isRelevant(p.FRAME, dataset)) {
+    @if (prop.isRelevant(p.FRAME, dataset) && scene.metadata.frame !== null) {
       <li>
         <span class="v-mid">
           <b>{{ 'FRAME' | translate }} </b> • {{ scene.metadata.frame }}
@@ -254,7 +280,8 @@
     }
     @if (
       prop.isRelevant(p.POLARIZATION, dataset) &&
-      !prop.isRelevant(p.SIDE_POLARIZATION, dataset)
+      !prop.isRelevant(p.SIDE_POLARIZATION, dataset) &&
+      scene.metadata.polarization
     ) {
       <li>
         <span class="v-mid">
@@ -421,7 +448,9 @@
       </li>
     }
     @if (
-      !!scene.metadata.opera && scene.metadata.productType !== 'TROPO-ZENITH'
+      !!scene.metadata.opera &&
+      scene.metadata.productType !== 'TROPO-ZENITH' &&
+      scene.metadata.opera.operaBurstID
     ) {
       <li>
         <b> {{ 'OPERA_BURST_ID' | translate }} </b> •
@@ -476,6 +505,19 @@
       <li>
         <b> {{ 'ARIA_VERSION' | translate }} </b> •
         {{ scene.metadata.ariaVersion }}
+        @if (isGeoSearch()) {
+          <mat-icon
+            [matMenuTriggerFor]="addAriaVersionMenu"
+            class="v-mid clickable"
+          >
+            settings
+          </mat-icon>
+        }
+        <mat-menu #addAriaVersionMenu="matMenu">
+          <button (click)="setAriaVersion()" mat-menu-item>
+            {{ 'SET_ARIA_VERSION' | translate }}
+          </button>
+        </mat-menu>
       </li>
     }
     @if (dataset.source; as source) {

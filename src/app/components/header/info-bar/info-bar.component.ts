@@ -82,6 +82,8 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public jobIds: string[];
   public selectedDataset: string;
   public selectedDatasetIsNISARFormat = false;
+  public ariaVersion: string;
+  public tileID: string;
 
   private subs = new SubSink();
 
@@ -219,6 +221,10 @@ export class InfoBarComponent implements OnInit, OnDestroy {
         (useCalibrationData) => (this.useCalibrationData = useCalibrationData),
       );
 
+    const tileIDSub = this.store$
+      .select(filtersStore.getTileID)
+      .subscribe((tile) => (this.tileID = tile));
+
     const groupIDSub = this.store$
       .select(filtersStore.getGroupID)
       .subscribe((groupID) => (this.groupID = groupID));
@@ -240,6 +246,9 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       .subscribe(
         (productionConfig) => (this.productionConfig = productionConfig),
       );
+    const ariaVersionSub = this.store$
+      .select(filtersStore.getAriaVersion)
+      .subscribe((version) => (this.ariaVersion = version));
     [
       startSub,
       endSub,
@@ -272,6 +281,8 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       productionConfigSub,
       scienceProductsSub,
       jobIdsSub,
+      ariaVersionSub,
+      tileIDSub,
     ].forEach((sub) => this.subs.add(sub));
 
     this.subs.add(

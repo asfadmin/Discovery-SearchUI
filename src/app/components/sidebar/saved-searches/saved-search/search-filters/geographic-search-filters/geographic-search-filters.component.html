@@ -151,6 +151,11 @@
         {{ 'JOINT_OBSERVATION_ONLY' | translate }}
       </div>
     }
+    @if (filters.ariaVersion) {
+      <div>
+        <b>{{ 'ARIA_VERSION' | translate }}:</b> {{ filters.ariaVersion }}
+      </div>
+    }
   </div>
 }
 

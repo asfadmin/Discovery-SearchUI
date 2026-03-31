@@ -17,6 +17,7 @@ import { getSearchType } from '@store/search';
 import { LoadFiltersPreset } from '@store/user';
 import { ResetMaxHyp3ResultsHit } from '@store/hyp3';
 import { SearchType } from '@models';
+import { getSelectedDataset } from './filters.reducer';
 
 @Injectable()
 export class FiltersEffects {
@@ -74,6 +75,26 @@ export class FiltersEffects {
         filtersAction.FiltersActionType.SET_PROJECT_NAME,
       ),
       map((_) => new ResetMaxHyp3ResultsHit()),
+    ),
+  );
+
+  public applyDefaultFilters = createEffect(() =>
+    this.actions$.pipe(
+      ofType(
+        filtersAction.FiltersActionType.CLEAR_DATASET_FILTERS,
+        filtersAction.FiltersActionType.SET_SELECTED_DATASET,
+      ),
+      withLatestFrom(this.store$.select(getSelectedDataset)),
+      filter(([_, dataset]) => !!dataset),
+      map(([_, dataset]) => {
+        const defaults = dataset.defaultFilters;
+        if (!defaults) {
+          return null;
+        }
+
+        return new filtersAction.ApplyDatasetDefaults(defaults);
+      }),
+      filter((a) => a !== null),
     ),
   );
 }
