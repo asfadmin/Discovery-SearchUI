@@ -3,6 +3,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({ name: 'readableSizeFromBytes' })
 export class ReadableSizeFromBytesPipe implements PipeTransform {
   transform(bytes: string | number): string {
+    if (bytes === null || bytes === undefined || isNaN(+bytes)) {
+      return '0 Bytes';
+    }
     return this.getReadableSize(+bytes);
   }
 
