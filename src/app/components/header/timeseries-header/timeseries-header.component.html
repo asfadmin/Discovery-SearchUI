@@ -39,14 +39,23 @@
             }
           </span>
           <span class="line-of-site-icon">
-            <img
-              ngSrc="assets/satellite-graphics/sat-1.png"
-              class="invert-icon"
-              [class.flip-icon]="flightDesc"
-              alt="Line of Site"
-              height="70"
-              width="84"
-            />
+            @if (isDarkMode$ | async) {
+              <img
+                ngSrc="assets/satellite-graphics/sat-1-dark.png"
+                [class.flip-icon]="flightDesc"
+                alt="Line of Site"
+                height="70"
+                width="84"
+              />
+            } @else {
+              <img
+                ngSrc="assets/satellite-graphics/sat-1.png"
+                [class.flip-icon]="flightDesc"
+                alt="Line of Site"
+                height="70"
+                width="84"
+              />
+            }
           </span>
           <span class="line-of-site-icon-text">
             {{ 'INCIDENCE_ANGLE' | translate }}: 29° &ndash; 46°
