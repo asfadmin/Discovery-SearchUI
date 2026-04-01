@@ -35,16 +35,23 @@ import { TranslateModule } from '@ngx-translate/core';
 export class TimeseriesHeaderComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
   private screenSize = inject(ScreenSizeService);
-
   public breakpoint$ = this.screenSize.breakpoint$;
+  public isDarkMode = false;
   public breakpoints = models.Breakpoints;
   public isDrawing = false;
   public flightDirections: models.FlightDirection[];
   public flightDesc = false;
 
   private subs = new SubSink();
+  private themeObserver: MutationObserver;
 
   ngOnInit() {
+    this.isDarkMode = document.body.classList.contains('theme-dark');
+    this.themeObserver = new MutationObserver(() => {
+      this.isDarkMode = document.body.classList.contains('theme-dark');
+    });
+    this.themeObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
     this.flightDesc = false;
     this.subs.add(
       this.store$
@@ -85,5 +92,6 @@ export class TimeseriesHeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subs.unsubscribe();
+    this.themeObserver?.disconnect();
   }
 }
