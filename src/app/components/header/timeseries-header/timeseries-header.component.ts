@@ -8,7 +8,7 @@ import * as searchStore from '@store/search';
 import * as mapStore from '@store/map';
 import * as filtersStore from '@store/filters';
 
-import { ScreenSizeService } from '@services';
+import { ScreenSizeService, ThemingService } from '@services';
 import { MapDrawModeType, MapInteractionModeType } from '@models';
 import * as models from '@models';
 import { NgOptimizedImage, AsyncPipe } from '@angular/common';
@@ -35,6 +35,8 @@ import { TranslateModule } from '@ngx-translate/core';
 export class TimeseriesHeaderComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
   private screenSize = inject(ScreenSizeService);
+  private themingService = inject(ThemingService);
+
   public breakpoint$ = this.screenSize.breakpoint$;
   public isDarkMode = false;
   public breakpoints = models.Breakpoints;
@@ -43,14 +45,13 @@ export class TimeseriesHeaderComponent implements OnInit, OnDestroy {
   public flightDesc = false;
 
   private subs = new SubSink();
-  private themeObserver: MutationObserver;
 
   ngOnInit() {
-    this.isDarkMode = document.body.classList.contains('theme-dark');
-    this.themeObserver = new MutationObserver(() => {
-      this.isDarkMode = document.body.classList.contains('theme-dark');
-    });
-    this.themeObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    this.subs.add(
+      this.themingService.theme$.subscribe(theme => {
+        this.isDarkMode = theme === 'dark';
+      }),
+    );
 
     this.flightDesc = false;
     this.subs.add(
@@ -92,6 +93,5 @@ export class TimeseriesHeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subs.unsubscribe();
-    this.themeObserver?.disconnect();
   }
 }
