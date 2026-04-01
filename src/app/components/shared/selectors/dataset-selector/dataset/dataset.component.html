@@ -15,6 +15,16 @@
           @if (dataset.beta) {
             <span><em> (beta) </em></span>
           }
+
+          @if (dataset.id === 'NISAR') {
+            <span>
+              <app-docs-modal
+                class="info-text"
+                [text]="'(' + ('UNCALIBRATED' | translate) + ')'"
+                url="https://nisar-docs.asf.alaska.edu/product-known-issues/"
+              ></app-docs-modal
+            ></span>
+          }
           @if (dataset.subName) {
             <div class="dataset__subName faint-text">
               {{ dataset.subName }}

@@ -2,7 +2,7 @@
   <div
     class="detail-card scrollable"
     [class.scrollable]="isScrollable"
-    [class.detail-card-info-mobile]="breakpoint < breakpoints.FULL"
+    [class.detail-card-info-mobile]="breakpoint < breakpoints.MEDIUM"
   >
     @if (sarviewEvent) {
       <div>
@@ -93,6 +93,16 @@
             <span matTooltip="{{ 'FREQUENCY' | translate }}">{{
               dataset.frequency
             }}</span>
+            @if (dataset.id === 'NISAR') {
+              <em class="uncalibrated"
+                ><app-docs-modal
+                  class="info-text"
+                  [text]="'(' + ('UNCALIBRATED' | translate) + ')'"
+                  url="https://nisar-docs.asf.alaska.edu/product-known-issues/"
+                >
+                </app-docs-modal>
+              </em>
+            }
           </mat-card-subtitle>
         </mat-card-header>
         <div class="detail-card-info">

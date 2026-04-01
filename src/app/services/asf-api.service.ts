@@ -14,6 +14,7 @@ import {
 } from '@models';
 import { EnvironmentService } from './environment.service';
 import { PropertyService } from './property.service';
+import { ProductService } from './product.service';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +22,7 @@ import { PropertyService } from './property.service';
 export class AsfApiService {
   private env = inject(EnvironmentService);
   private prop = inject(PropertyService);
+  private productService = inject(ProductService);
   private http = inject(HttpClient);
 
   public get apiUrl() {
@@ -91,6 +93,29 @@ export class AsfApiService {
       : this.http.post<T>(endpoint, formData, { responseType });
   }
 
+  public miniQuery(queryParams) {
+    // Helper method for building queries that we're only interested in the first results from
+    return this.query<any>(queryParams).pipe(
+      map((products) =>
+        products?.results?.length > 0
+          ? this.productService.fromResponse(products).slice(0, 1)
+          : [],
+      ),
+    );
+  }
+
+  public getNisarOrbitEphemera() {
+    return this.http
+      .get<any>(`${this.nisarOrbitEphemeraEndpoint()}`)
+      .pipe(
+        map((products) =>
+          products?.results?.length > 0
+            ? this.productService.fromResponse(products)
+            : [],
+        ),
+      );
+  }
+
   public queryUrlFrom(stateParamsObj, options?: { apiUrl: string }) {
     const params = this.queryParamsFrom(stateParamsObj);
 
@@ -113,6 +138,10 @@ export class AsfApiService {
 
   private baselineEndpoint(): string {
     return `${this.apiUrl}/services/search/baseline`;
+  }
+
+  private nisarOrbitEphemeraEndpoint(): string {
+    return `${this.apiUrl}/services/utils/nisar_orbit_ephemera`;
   }
 
   private queryParamsFrom(stateParamsObj) {

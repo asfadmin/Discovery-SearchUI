@@ -70,8 +70,10 @@ export interface FiltersState {
   useCalibrationData: boolean; // used to toggle OPERA-S1 Calval (calibration) datasets
 
   groupID: null | string;
+  tileID: null | string;
 
   useFramesForReference: boolean;
+  ariaVersion: string;
 }
 
 export type DateRangeState = models.Range<null | Date>;
@@ -154,9 +156,11 @@ export const initState: FiltersState = {
   productionConfig: [],
 
   groupID: null,
+  tileID: null,
   shortNames: [],
 
   useFramesForReference: false,
+  ariaVersion: null,
 };
 
 export function filtersReducer(
@@ -191,9 +195,11 @@ export function filtersReducer(
         flightDirections: new Set<models.FlightDirection>([]),
 
         groupID: null,
+        tileID: null,
         shortNames: [],
         useCalibrationData: false,
         selectedMission: null,
+        ariaVersion: null,
       };
     }
 
@@ -462,6 +468,7 @@ export function filtersReducer(
         operaBurstIDs: [],
         useCalibrationData: false,
         groupID: null,
+        tileID: null,
         shortNames: [],
         frameCoverage: [],
         sidePolarizations: [],
@@ -470,6 +477,7 @@ export function filtersReducer(
         rangeBandwidth: [],
         scienceProduct: [],
         productionConfig: [],
+        ariaVersion: null,
       };
     }
 
@@ -492,6 +500,13 @@ export function filtersReducer(
 
     case FiltersActionType.USE_SEARCH_POLYGON: {
       return { ...state, shouldOmitSearchPolygon: false };
+    }
+
+    case FiltersActionType.APPLY_DATASET_DEFAULTS: {
+      return {
+        ...state,
+        ...action.payload,
+      };
     }
 
     case FiltersActionType.OMIT_SEARCH_POLYGON: {
@@ -773,6 +788,8 @@ export function filtersReducer(
           rangeBandwidth: filters.rangeBandwidth || [],
           instrument: filters.instrument || [],
           groupID: filters.groupID,
+          tileID: filters.tileID,
+          ariaVersion: filters.ariaVersion,
         };
       }
     }
@@ -952,6 +969,18 @@ export function filtersReducer(
       return {
         ...state,
         useFramesForReference: action.payload,
+      };
+    }
+    case FiltersActionType.SET_ARIA_VERSION: {
+      return {
+        ...state,
+        ariaVersion: action.payload,
+      };
+    }
+    case FiltersActionType.SET_TILE_ID: {
+      return {
+        ...state,
+        tileID: action.payload,
       };
     }
     default: {
@@ -1149,6 +1178,8 @@ export const getGeographicSearch = createSelector(
     rangeBandwidth: state.rangeBandwidth,
     instrument: state.instrument,
     groupID: state.groupID,
+    tileID: state.tileID,
+    ariaVersion: state.ariaVersion,
   }),
 );
 
@@ -1305,4 +1336,12 @@ export const getProductionConfig = createSelector(
 export const getShouldUseFramesForReference = createSelector(
   getFiltersState,
   (state: FiltersState) => state.useFramesForReference,
+);
+export const getAriaVersion = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.ariaVersion,
+);
+export const getTileID = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.tileID,
 );
