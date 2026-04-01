@@ -1,0 +1,22 @@
+[     735ms] [LOG] To toggle kiosk mode, use "ctrl+/" @ https://search-test.asf.alaska.edu/main-Q2BMN7SI.js:1102
+[     989ms] [ERROR] Failed to load resource: the server responded with a status of 401 () @ https://hyp3-api.asf.alaska.edu/user:0
+[    1016ms] [ERROR] Failed to load resource: the server responded with a status of 500 () @ https://appdata-test.asf.alaska.edu/info/cookie:0
+[    1164ms] [ERROR] Failed to load resource: the server responded with a status of 500 () @ https://appdata-test.asf.alaska.edu/info/cookie:0
+[    1275ms] [ERROR] Failed to load resource: the server responded with a status of 500 () @ https://appdata-test.asf.alaska.edu/info/cookie:0
+[    1363ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://d3g9emy65n853h.cloudfront.net/main/asc/vel/3/2/1.png:0
+[    1365ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://d3g9emy65n853h.cloudfront.net/main/asc/vel/3/1/1.png:0
+[    1373ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://d3g9emy65n853h.cloudfront.net/main/asc/vel/3/3/2.png:0
+[    1374ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://d3g9emy65n853h.cloudfront.net/main/asc/vel/3/3/4.png:0
+[    1379ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://d3g9emy65n853h.cloudfront.net/main/asc/vel/3/3/3.png:0
+[    1386ms] [ERROR] Failed to load resource: the server responded with a status of 500 () @ https://appdata-test.asf.alaska.edu/info/cookie:0
+[    1387ms] [ERROR] Failed to get user info @ https://search-test.asf.alaska.edu/main-Q2BMN7SI.js:206
+[    1387ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://d3g9emy65n853h.cloudfront.net/main/asc/vel/3/1/4.png:0
+[    1412ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://d3g9emy65n853h.cloudfront.net/main/asc/vel/3/4/1.png:0
+[    1413ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://d3g9emy65n853h.cloudfront.net/main/asc/vel/3/4/2.png:0
+[    1413ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://d3g9emy65n853h.cloudfront.net/main/asc/vel/3/4/4.png:0
+[    1415ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://d3g9emy65n853h.cloudfront.net/main/asc/vel/3/7/1.png:0
+[    1421ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://d3g9emy65n853h.cloudfront.net/main/asc/vel/3/4/3.png:0
+[    1423ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://d3g9emy65n853h.cloudfront.net/main/asc/vel/3/7/3.png:0
+[    1531ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://d3g9emy65n853h.cloudfront.net/main/asc/vel/3/7/4.png:0
+[    1547ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://d3g9emy65n853h.cloudfront.net/main/asc/vel/3/2/4.png:0
+[    1560ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://d3g9emy65n853h.cloudfront.net/main/asc/vel/3/3/1.png:0
