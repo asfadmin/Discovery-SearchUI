@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { SubSink } from 'subsink';
+import { map } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -38,7 +39,7 @@ export class TimeseriesHeaderComponent implements OnInit, OnDestroy {
   private themingService = inject(ThemingService);
 
   public breakpoint$ = this.screenSize.breakpoint$;
-  public isDarkMode = false;
+  public isDarkMode$ = this.themingService.theme$.pipe(map(theme => theme === 'dark'));
   public breakpoints = models.Breakpoints;
   public isDrawing = false;
   public flightDirections: models.FlightDirection[];
@@ -47,12 +48,6 @@ export class TimeseriesHeaderComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   ngOnInit() {
-    this.subs.add(
-      this.themingService.theme$.subscribe(theme => {
-        this.isDarkMode = theme === 'dark';
-      }),
-    );
-
     this.flightDesc = false;
     this.subs.add(
       this.store$

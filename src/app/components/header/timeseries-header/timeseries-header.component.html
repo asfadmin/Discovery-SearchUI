@@ -39,7 +39,7 @@
             }
           </span>
           <span class="line-of-site-icon">
-            @if (isDarkMode) {
+            @if (isDarkMode$ | async) {
               <img
                 ngSrc="assets/satellite-graphics/sat-1-dark.png"
                 [class.flip-icon]="flightDesc"
