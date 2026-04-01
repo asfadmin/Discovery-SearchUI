@@ -57,4 +57,4 @@ docs/
 /test-results/
 /playwright-report/
 /playwright/.cache/
-playwright/
+playwright/.playwright-cli/
