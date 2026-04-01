@@ -1,0 +1,280 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - link [ref=e1162] [cursor=pointer]:
+      - /url: https://search-test.asf.alaska.edu
+      - text: "| EARTH"
+      - generic [ref=e7]: DATA
+    - link [ref=e1163] [cursor=pointer]:
+      - /url: javascript:void(0);
+      - generic [ref=e10]: 
+    - link [ref=e1164] [cursor=pointer]:
+      - /url: javascript:void(0);
+      - text: Feedback
+    - link [ref=e1165] [cursor=pointer]:
+      - /url: javascript:void(0);
+      - text: Other DAACs▾
+  - img [ref=e17]
+  - generic [ref=e78]:
+    - generic [ref=e81]:
+      - img [ref=e88] [cursor=pointer]
+      - generic [ref=e89]:
+        - generic [ref=e92]:
+          - generic [ref=e95]:
+            - text: Search Type
+            - generic [ref=e96]:
+              - button [ref=e1166]:
+                - generic [ref=e99]: Displacement
+              - separator [ref=e104]
+          - generic [ref=e105]:
+            - generic [ref=e108]:
+              - generic [ref=e109]: Area Of Interest
+              - generic [ref=e110]:
+                - button [ref=e1167]:
+                  - generic [ref=e113]:
+                    - img [ref=e114]: place
+                    - text: Point
+                - separator [ref=e119]
+                - generic [ref=e122]:
+                  - switch [checked] [ref=e1168] [cursor=pointer]:
+                    - generic [ref=e129]:
+                      - img [ref=e130]
+                      - img [ref=e132]
+                  - generic [ref=e134] [cursor=pointer]: Draw
+            - generic [ref=e137]:
+              - generic [ref=e138]: Flight Direction
+              - generic [ref=e139]:
+                - button [ref=e1169]:
+                  - generic [ref=e142]:
+                    - img [ref=e143]: north_west
+                    - text: Ascending
+                - separator [ref=e148]
+            - img [ref=e1170]
+            - generic [ref=e151]: "Radar Look Direction: 78°"
+            - img [ref=e1171]
+            - generic [ref=e154]: "Incidence Angle: 29° – 46°"
+          - generic [ref=e157]:
+            - button [ref=e1172]:
+              - img [ref=e359]: share
+              - generic [ref=e361]: Share/Save
+            - button [ref=e1173]:
+              - generic [ref=e365]:
+                - img [ref=e1174]
+                - generic [ref=e367]:
+                  - text: StoryMap
+                  - img [ref=e368]: open_in_new
+            - button [ref=e1175]:
+              - img [ref=e372]: description
+              - generic [ref=e374]:
+                - text: Info
+                - img [ref=e375]: open_in_new
+            - button [ref=e1176]:
+              - img [ref=e379]: help_outline
+              - generic [ref=e381]: Help
+            - button [ref=e1177]:
+              - img [ref=e385]: translate
+              - generic [ref=e387]: English
+            - button [ref=e1178]:
+              - img [ref=e391]: account_circle
+              - generic [ref=e393]: Sign In
+        - generic [ref=e205]:
+          - generic [ref=e206]:
+            - generic [ref=e481]: "Start: Aug 22 2016"
+            - generic [ref=e482]: "End: Oct 03 2024"
+          - form [ref=e212]:
+            - text: 
+            - searchbox [ref=e1180]
+            - button [ref=e1181]:
+              - generic [ref=e215] [cursor=pointer]: 
+            - button [ref=e1182] [cursor=pointer]:
+              - generic [ref=e217]: 
+    - generic [ref=e218]:
+      - generic:
+        - generic:
+          - generic:
+            - generic [ref=e225]:
+              - generic [ref=e228]:
+                - generic [ref=e229]:
+                  - generic [ref=e230]:
+                    - generic [ref=e232]: Map View
+                    - button [ref=e1183]:
+                      - img [ref=e236]:
+                        - img [ref=e237]
+                      - generic [ref=e239]: 
+                  - generic [ref=e242]:
+                    - generic [ref=e244]: Zoom
+                    - radiogroup [ref=e247]:
+                      - radio [ref=e249] [cursor=pointer]:
+                        - img [ref=e251]: add
+                      - radio [ref=e253] [cursor=pointer]:
+                        - img [ref=e255]: remove
+                  - generic [ref=e256]:
+                    - generic [ref=e258]: Layers
+                    - button [ref=e1184]:
+                      - generic [ref=e262]:
+                        - img [ref=e264]: terrain
+                        - generic [ref=e265]: 
+                - generic [ref=e270]:
+                  - generic [ref=e271]:
+                    - generic [ref=e272]: lat 51.8625°
+                    - generic [ref=e273]: lon -125.619°
+                  - generic [ref=e274]:
+                    - generic:
+                      - generic: 1000 km
+              - img [ref=e277] [cursor=pointer]: arrow_circle_left
+            - generic [ref=e279]:
+              - generic [ref=e281]:
+                - generic [ref=e282] [cursor=pointer]:
+                  - checkbox [checked] [ref=e1185]
+                  - generic:
+                    - img
+                - generic [ref=e286] [cursor=pointer]: Velocity 2016-2024
+              - img [ref=e290] [cursor=pointer]: help_outline
+              - generic [ref=e291]:
+                - generic [ref=e294]:
+                  - generic [ref=e295]: "-0.03"
+                  - generic [ref=e296]: m/yr
+                  - generic [ref=e297]: "0.03"
+                - slider [ref=e300] [cursor=pointer]: "0.8"
+              - generic [ref=e302]:
+                - generic [ref=e304]: Help
+                - generic [ref=e305]: Map Layers
+      - img
+      - img [ref=e1186] [cursor=pointer]
+      - generic [ref=e307] [cursor=pointer]:
+        - img [ref=e308]: info_outline
+        - generic [ref=e309]: Disclaimer
+      - generic [ref=e311]:
+        - generic [ref=e313]: Displacement Search
+        - generic [ref=e315]:
+          - generic [ref=e317]:
+            - generic [ref=e400]: 4,010
+            - text: Files
+          - button [ref=e1187]:
+            - generic [ref=e324]: Cancel
+          - button [ref=e1188]:
+            - img [ref=e331]: share
+            - generic [ref=e333]: Share/Save
+      - link [ref=e1189] [cursor=pointer]:
+        - /url: http://mapbox.com/about/maps
+        - text: Mapbox
+      - generic [ref=e337]:
+        - text: © 2026 ASF |
+        - link [ref=e1190] [cursor=pointer]:
+          - /url: https://www.asf.alaska.edu/asf/contact-us
+          - text: Contact
+        - text: "|"
+        - link [ref=e1191] [cursor=pointer]:
+          - /url: https://www.alaska.edu/nondiscrimination
+          - text: Non-Discrimination
+        - text: "|"
+        - link [ref=e1192] [cursor=pointer]:
+          - /url: https://www.mapbox.com/about/maps/
+          - text: © Mapbox
+        - text: "|"
+        - link [ref=e1193] [cursor=pointer]:
+          - /url: https://www.openstreetmap.org/copyright
+          - text: © OpenStreetMap contributors
+        - text: "|"
+        - link [ref=e1194] [cursor=pointer]:
+          - /url: https://www.mapbox.com/map-feedback/
+          - strong [ref=e343]: Improve this map
+      - generic [ref=e346]: TOOLTIP
+      - img [ref=e348]: map
+    - generic [ref=e402]:
+      - img [ref=e405]:
+        - img [ref=e406]
+      - generic [ref=e409]:
+        - generic [ref=e417]:
+          - generic [ref=e420]:
+            - generic [ref=e421] [cursor=pointer]:
+              - checkbox [ref=e1195]
+              - generic:
+                - img
+            - generic [ref=e424] [cursor=pointer]: All AOIs
+          - list [ref=e426]:
+            - listitem [ref=e458]:
+              - generic [ref=e486]:
+                - generic [ref=e487] [cursor=pointer]:
+                  - checkbox [ref=e1196]
+                  - generic:
+                    - img
+                - generic [ref=e490] [cursor=pointer]:
+                  - img [ref=e491]: place
+                  - generic [ref=e493]:
+                    - text: Series 2
+                    - generic [ref=e494]: "Frame: 09167"
+        - generic [ref=e442]:
+          - generic [ref=e443]:
+            - link [ref=e1197] [cursor=pointer]:
+              - /url: https://www.jpl.nasa.gov/go/opera/products/disp-product-suite/
+              - text: Data courtesy of OPERA
+            - text: "| Disclaimer |"
+            - link [ref=e1198] [cursor=pointer]:
+              - /url: https://creativecommons.org/publicdomain/zero/1.0/legalcode
+              - text: License
+            - text: "|"
+            - link [ref=e1199] [cursor=pointer]:
+              - /url: https://www.earthdata.nasa.gov/data/catalog/asf-opera-l3-disp-s1-v1-1
+              - text: DISP DOI
+          - generic [ref=e447]:
+            - generic [ref=e498]:
+              - img [ref=e500]:
+                - generic [ref=e501]:
+                  - generic [ref=e905]:
+                    - generic [ref=e908]: "2016"
+                    - generic [ref=e910]: "2017"
+                    - generic [ref=e912]: "2018"
+                    - generic [ref=e914]: "2019"
+                    - generic [ref=e916]: "2020"
+                    - generic [ref=e918]: "2021"
+                    - generic [ref=e920]: "2022"
+                    - generic [ref=e922]: "2023"
+                    - generic [ref=e924]: "2024"
+                    - generic [ref=e926]: "2025"
+                  - generic [ref=e927]:
+                    - generic [ref=e930]: "-0.02m"
+                    - generic [ref=e932]: "-0.01m"
+                    - generic [ref=e934]: 0m
+                    - generic [ref=e936]: 0.01m
+                    - generic [ref=e938]: 0.02m
+                  - generic [ref=e939]: Local Displacement
+                  - generic [ref=e940]: (Meters)
+                  - generic [ref=e941]: Scene Date
+              - button [ref=e664] [cursor=pointer]:
+                - img [ref=e665]: download
+              - button [ref=e1200] [cursor=pointer]:
+                - img [ref=e671]: settings
+              - radiogroup [ref=e678]:
+                - radio [ref=e680] [cursor=pointer]:
+                  - img [ref=e682]: add
+                - radio [ref=e684] [cursor=pointer]:
+                  - img [ref=e686]: aspect_ratio
+                - radio [ref=e688] [cursor=pointer]:
+                  - img [ref=e690]: remove
+            - generic [ref=e692]:
+              - generic [ref=e693]:
+                - slider [ref=e696]:
+                  - generic [ref=e698]: 8/22/2016
+                - slider [ref=e699]:
+                  - generic [ref=e701]: 10/3/2024
+              - generic [ref=e702]:
+                - generic [ref=e704]: 8/22/2016
+                - generic [ref=e711]: 9/2/2018
+                - generic [ref=e718]: 9/12/2020
+                - generic [ref=e725]: 9/23/2022
+                - generic [ref=e732]: 10/3/2024
+  - generic [ref=e349]:
+    - button "Close" [ref=e350] [cursor=pointer]: ×
+    - alert [ref=e351]:
+      - text: This website uses cookies to ensure you get the best experience on our website.
+      - link "Learn More" [ref=e352] [cursor=pointer]:
+        - /url: https://cookiesandyou.com/
+  - text:       
+  - dialog [ref=e1204]:
+    - generic [ref=e1207]:
+      - paragraph [ref=e1209]: Do you want to delete all series?
+      - generic [ref=e1210]:
+        - button "Cancel" [ref=e1211]:
+          - generic [ref=e1212]: Cancel
+        - button "Delete" [active] [ref=e1215]:
+          - generic [ref=e1216]: Delete

@@ -1,0 +1,34 @@
+[     699ms] [LOG] To toggle kiosk mode, use "ctrl+/" @ https://search-test.asf.alaska.edu/main-Q2BMN7SI.js:1102
+[     928ms] [ERROR] Failed to load resource: the server responded with a status of 401 () @ https://hyp3-api.asf.alaska.edu/user:0
+[    1042ms] [ERROR] Failed to load resource: the server responded with a status of 500 () @ https://appdata-test.asf.alaska.edu/info/cookie:0
+[    1164ms] [ERROR] Failed to load resource: the server responded with a status of 500 () @ https://appdata-test.asf.alaska.edu/info/cookie:0
+[    1286ms] [ERROR] Failed to load resource: the server responded with a status of 500 () @ https://appdata-test.asf.alaska.edu/info/cookie:0
+[    1319ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://d3g9emy65n853h.cloudfront.net/main/asc/vel/3/2/1.png:0
+[    1346ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://d3g9emy65n853h.cloudfront.net/main/asc/vel/3/3/1.png:0
+[    1347ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://d3g9emy65n853h.cloudfront.net/main/asc/vel/3/2/4.png:0
+[    1351ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://d3g9emy65n853h.cloudfront.net/main/asc/vel/3/4/3.png:0
+[    1351ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://d3g9emy65n853h.cloudfront.net/main/asc/vel/3/4/2.png:0
+[    1351ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://d3g9emy65n853h.cloudfront.net/main/asc/vel/3/1/4.png:0
+[    1352ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://d3g9emy65n853h.cloudfront.net/main/asc/vel/3/3/2.png:0
+[    1372ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://d3g9emy65n853h.cloudfront.net/main/asc/vel/3/3/4.png:0
+[    1372ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://d3g9emy65n853h.cloudfront.net/main/asc/vel/3/7/4.png:0
+[    1372ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://d3g9emy65n853h.cloudfront.net/main/asc/vel/3/7/1.png:0
+[    1373ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://d3g9emy65n853h.cloudfront.net/main/asc/vel/3/7/3.png:0
+[    1373ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://d3g9emy65n853h.cloudfront.net/main/asc/vel/3/4/1.png:0
+[    1394ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://d3g9emy65n853h.cloudfront.net/main/asc/vel/3/4/4.png:0
+[    1399ms] [ERROR] Failed to load resource: the server responded with a status of 500 () @ https://appdata-test.asf.alaska.edu/info/cookie:0
+[    1399ms] [ERROR] Failed to get user info @ https://search-test.asf.alaska.edu/main-Q2BMN7SI.js:206
+[    1415ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://d3g9emy65n853h.cloudfront.net/main/asc/vel/3/3/3.png:0
+[    1502ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://d3g9emy65n853h.cloudfront.net/main/asc/vel/3/1/1.png:0
+[    5885ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://d8itg4twhevb5.cloudfront.net/timeseries:0
+[    5892ms] [ERROR] ERROR TypeError: Cannot convert undefined or null to object
+    at Object.keys (<anonymous>)
+    at Object.next (https://search-test.asf.alaska.edu/main-Q2BMN7SI.js:1103:10569)
+    at _U.next (https://search-test.asf.alaska.edu/main-Q2BMN7SI.js:22:3125)
+    at of._next (https://search-test.asf.alaska.edu/main-Q2BMN7SI.js:22:2806)
+    at of.next (https://search-test.asf.alaska.edu/main-Q2BMN7SI.js:22:2531)
+    at https://search-test.asf.alaska.edu/main-Q2BMN7SI.js:22:25210
+    at ow._next (https://search-test.asf.alaska.edu/main-Q2BMN7SI.js:22:5452)
+    at ow.next (https://search-test.asf.alaska.edu/main-Q2BMN7SI.js:22:2531)
+    at https://search-test.asf.alaska.edu/main-Q2BMN7SI.js:22:24632
+    at ow._next (https://search-test.asf.alaska.edu/main-Q2BMN7SI.js:22:5452) @ https://search-test.asf.alaska.edu/main-Q2BMN7SI.js:22

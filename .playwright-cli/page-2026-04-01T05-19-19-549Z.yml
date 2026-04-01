@@ -1,0 +1,195 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - link "| EARTHDATA" [ref=e6] [cursor=pointer]:
+      - /url: https://search-test.asf.alaska.edu
+      - text: "| EARTH"
+      - generic [ref=e7]: DATA
+    - link "" [ref=e9] [cursor=pointer]:
+      - /url: javascript:void(0);
+      - generic [ref=e10]: 
+    - link "Feedback" [ref=e12] [cursor=pointer]:
+      - /url: javascript:void(0);
+    - link "Other DAACs▾" [ref=e14] [cursor=pointer]:
+      - /url: javascript:void(0);
+  - img [ref=e17]
+  - generic [ref=e78]:
+    - generic [ref=e81]:
+      - img [ref=e88] [cursor=pointer]
+      - generic [ref=e89]:
+        - generic [ref=e92]:
+          - generic [ref=e95]:
+            - text: Search Type
+            - generic [ref=e96]:
+              - button "Displacement" [ref=e97]:
+                - generic [ref=e99]: Displacement
+              - separator [ref=e104]
+          - generic [ref=e105]:
+            - generic [ref=e108]:
+              - generic [ref=e109]: Area Of Interest
+              - generic [ref=e110]:
+                - button "Point" [ref=e111]:
+                  - generic [ref=e113]:
+                    - img [ref=e114]: place
+                    - text: Point
+                - separator [ref=e119]
+                - generic [ref=e122]:
+                  - switch "Draw" [checked] [ref=e123] [cursor=pointer]:
+                    - generic [ref=e129]:
+                      - img [ref=e130]
+                      - img [ref=e132]
+                  - generic [ref=e134] [cursor=pointer]: Draw
+            - generic [ref=e137]:
+              - generic [ref=e138]: Flight Direction
+              - generic [ref=e139]:
+                - button "Ascending" [ref=e140]:
+                  - generic [ref=e142]:
+                    - img [ref=e143]: north_west
+                    - text: Ascending
+                - separator [ref=e148]
+            - img "Azimuth" [ref=e150]
+            - generic [ref=e151]: "Radar Look Direction: 78°"
+            - img "Line of Site" [ref=e153]
+            - generic [ref=e154]: "Incidence Angle: 29° – 46°"
+          - generic [ref=e157]:
+            - generic [ref=e158]:
+              - button "Expand panel" [ref=e159] [cursor=pointer]:
+                - img [ref=e160]: chevron_left
+              - generic [ref=e161]:
+                - button "Share/Save" [ref=e165]:
+                  - img [ref=e166]: share
+                  - generic [ref=e168]: Share/Save
+                - button "StoryMap StoryMap" [ref=e171]:
+                  - generic [ref=e172]:
+                    - img "StoryMap" [ref=e173]
+                    - generic [ref=e174]:
+                      - text: StoryMap
+                      - img [ref=e175]: open_in_new
+                - button "Info" [ref=e178]:
+                  - img [ref=e179]: description
+                  - generic [ref=e181]:
+                    - text: Info
+                    - img [ref=e182]: open_in_new
+                - button "Help" [ref=e185]:
+                  - img [ref=e186]: help_outline
+                  - generic [ref=e188]: Help
+                - button "English" [ref=e191]:
+                  - img [ref=e192]: translate
+                  - generic [ref=e194]: English
+            - button "Sign In" [ref=e198]:
+              - img [ref=e199]: account_circle
+              - generic [ref=e201]: Sign In
+        - generic "Search Box" [ref=e211]:
+          - form [ref=e212]:
+            - text: 
+            - searchbox "search input" [active] [ref=e213]
+            - button "search by voice" [ref=e214]:
+              - generic [ref=e215] [cursor=pointer]: 
+            - button "Search" [ref=e216] [cursor=pointer]:
+              - generic [ref=e217]: 
+    - generic [ref=e218]:
+      - generic:
+        - generic:
+          - generic:
+            - generic [ref=e225]:
+              - generic [ref=e228]:
+                - generic [ref=e229]:
+                  - generic [ref=e230]:
+                    - generic [ref=e232]: Map View
+                    - button "Map projection view" [ref=e235]:
+                      - img [ref=e236]:
+                        - img [ref=e237]
+                      - generic [ref=e239]: 
+                  - generic [ref=e242]:
+                    - generic [ref=e244]: Zoom
+                    - radiogroup [ref=e247]:
+                      - radio [ref=e249] [cursor=pointer]:
+                        - img [ref=e251]: add
+                      - radio [ref=e253] [cursor=pointer]:
+                        - img [ref=e255]: remove
+                  - generic [ref=e256]:
+                    - generic [ref=e258]: Layers
+                    - button "LAYER_SELECTOR" [ref=e261]:
+                      - generic [ref=e262]:
+                        - img [ref=e264]: terrain
+                        - generic [ref=e265]: 
+                - generic [ref=e270]:
+                  - generic [ref=e271]:
+                    - generic [ref=e272]: lat 00.0°
+                    - generic [ref=e273]: lon 00.0°
+                  - generic [ref=e274]:
+                    - generic:
+                      - generic: 1000 km
+              - img [ref=e277] [cursor=pointer]: arrow_circle_left
+            - generic [ref=e279]:
+              - generic [ref=e281]:
+                - generic [ref=e282] [cursor=pointer]:
+                  - checkbox "Velocity 2016-2024" [checked] [ref=e284]
+                  - generic:
+                    - img
+                - generic [ref=e286] [cursor=pointer]: Velocity 2016-2024
+              - img [ref=e290] [cursor=pointer]: help_outline
+              - generic [ref=e291]:
+                - generic [ref=e294]:
+                  - generic [ref=e295]: "-0.03"
+                  - generic [ref=e296]: m/yr
+                  - generic [ref=e297]: "0.03"
+                - generic [ref=e299] [cursor=pointer]:
+                  - slider [ref=e300]: "0.8"
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic: 80%
+              - generic [ref=e302]:
+                - generic [ref=e304]: Help
+                - generic [ref=e305]: Map Layers
+      - img
+      - link "OPERA Logo":
+        - /url: https://www.jpl.nasa.gov/go/opera/products/disp-product-suite/
+        - img "OPERA Logo" [ref=e306] [cursor=pointer]
+      - generic [ref=e307] [cursor=pointer]:
+        - img [ref=e308]: info_outline
+        - generic [ref=e309]: Disclaimer
+      - generic [ref=e311]:
+        - generic [ref=e313]: Displacement Search
+        - generic [ref=e315]:
+          - generic [ref=e317]:
+            - generic [ref=e318]: 23,054,338
+            - text: Files
+          - button "Cancel" [ref=e320]:
+            - generic [ref=e321]: Cancel
+          - button "Share/Save" [ref=e327]:
+            - img [ref=e328]: share
+            - generic [ref=e330]: Share/Save
+      - generic:
+        - link "Mapbox" [ref=e333] [cursor=pointer]:
+          - /url: http://mapbox.com/about/maps
+        - generic [ref=e334]:
+          - text: © 2026 ASF |
+          - link "Contact" [ref=e335] [cursor=pointer]:
+            - /url: https://www.asf.alaska.edu/asf/contact-us
+          - text: "|"
+          - link "Non-Discrimination" [ref=e336] [cursor=pointer]:
+            - /url: https://www.alaska.edu/nondiscrimination
+          - text: "|"
+          - link "© Mapbox" [ref=e337] [cursor=pointer]:
+            - /url: https://www.mapbox.com/about/maps/
+          - text: "|"
+          - link "© OpenStreetMap contributors" [ref=e338] [cursor=pointer]:
+            - /url: https://www.openstreetmap.org/copyright
+          - text: "|"
+          - link "Improve this map" [ref=e339] [cursor=pointer]:
+            - /url: https://www.mapbox.com/map-feedback/
+            - strong [ref=e340]: Improve this map
+      - generic [ref=e343]: TOOLTIP
+      - img [ref=e345]: map
+  - generic [ref=e346]:
+    - button "Close" [ref=e347] [cursor=pointer]: ×
+    - alert [ref=e348]:
+      - text: This website uses cookies to ensure you get the best experience on our website.
+      - link "Learn More" [ref=e349] [cursor=pointer]:
+        - /url: https://cookiesandyou.com/
+  - generic [ref=e358]: Please select a point on the map.
+  - generic:
+    - text:    
+    - generic:
+      - generic:   

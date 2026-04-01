@@ -1,0 +1,235 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - link "| EARTHDATA" [ref=e6] [cursor=pointer]:
+      - /url: https://search-test.asf.alaska.edu
+      - text: "| EARTH"
+      - generic [ref=e7]: DATA
+    - link "" [ref=e9] [cursor=pointer]:
+      - /url: javascript:void(0);
+      - generic [ref=e10]: 
+    - link "Feedback" [ref=e12] [cursor=pointer]:
+      - /url: javascript:void(0);
+    - link "Other DAACs▾" [ref=e14] [cursor=pointer]:
+      - /url: javascript:void(0);
+  - img [ref=e17]
+  - generic [ref=e78]:
+    - generic [ref=e81]:
+      - img [ref=e88] [cursor=pointer]
+      - generic [ref=e94]:
+        - button "Filters" [ref=e96]:
+          - generic [ref=e97]: Filters
+          - img [ref=e98]: more_horiz
+        - generic [ref=e104] [cursor=pointer]:
+          - generic [ref=e105]:
+            - generic [ref=e106]:
+              - text: "250"
+              - img [ref=e107]: arrow_drop_down
+            - text: of
+          - img [ref=e110]: 
+          - text: Files
+    - generic [ref=e116]:
+      - generic [ref=e122]:
+        - generic [ref=e125]:
+          - generic [ref=e126]:
+            - generic [ref=e127]:
+              - generic [ref=e129]: Map View
+              - button "Map projection view" [ref=e132]:
+                - img [ref=e133]:
+                  - img [ref=e134]
+                - generic [ref=e136]: 
+            - generic [ref=e139]:
+              - generic [ref=e141]: Zoom
+              - radiogroup [ref=e144]:
+                - radio [ref=e146] [cursor=pointer]:
+                  - img [ref=e148]: add
+                - radio [ref=e150] [cursor=pointer]:
+                  - img [ref=e152]: remove
+            - generic [ref=e153]:
+              - generic [ref=e155]: Layers
+              - button "LAYER_SELECTOR" [ref=e158]:
+                - generic [ref=e159]:
+                  - img [ref=e161]: terrain
+                  - generic [ref=e162]: 
+            - generic [ref=e165]:
+              - generic [ref=e167]: Area Of Interest
+              - radiogroup "Font Style" [ref=e170]:
+                - button "Map projection view" [ref=e172]:
+                  - generic [ref=e173]:
+                    - img [ref=e175]: format_shapes
+                    - generic [ref=e176]: 
+                - radio [ref=e180] [cursor=pointer]:
+                  - img [ref=e182]: edit
+                - radio [checked] [ref=e184] [cursor=pointer]:
+                  - img [ref=e186]: draw
+                - radio [ref=e188] [cursor=pointer]:
+                  - img [ref=e190]: delete
+            - generic [ref=e191]:
+              - generic [ref=e193]: Opacity
+              - button "Browse Image Opacity" [ref=e195]:
+                - generic [ref=e196]:
+                  - generic [ref=e197]: 100%
+                  - generic [ref=e198]: 
+          - generic [ref=e203]:
+            - generic [ref=e204]:
+              - generic [ref=e205]: lat 00.0°
+              - generic [ref=e206]: lon 00.0°
+            - generic [ref=e207]:
+              - generic:
+                - generic: 1000 km
+        - img [ref=e210] [cursor=pointer]: arrow_circle_left
+      - img
+      - generic [ref=e213]:
+        - generic [ref=e215]: Search Filters
+        - generic [ref=e218]:
+          - generic [ref=e219]:
+            - button "Area of Interest Options Documentation" [disabled] [expanded] [ref=e220]:
+              - generic [ref=e222]:
+                - text: Area of Interest Options
+                - generic [ref=e223]: Documentation
+            - region "Area of Interest Options Documentation" [ref=e225]:
+              - generic [ref=e230]:
+                - generic [ref=e231]:
+                  - generic [ref=e235]:
+                    - generic [ref=e236]:
+                      - generic [ref=e237]: Area of Interest • WKT
+                      - textbox "Area of Interest • WKT" [ref=e238]
+                    - button "Clear" [ref=e240]:
+                      - generic: Clear
+                  - generic [ref=e248]:
+                    - generic [ref=e249]: Search for a location
+                    - combobox "Search for a location" [ref=e250]
+                - generic [ref=e257]:
+                  - generic [ref=e258]:
+                    - generic [ref=e259]: Drag and Drop
+                    - generic [ref=e260]: Geospatial Files Here
+                    - generic [ref=e261]: (shp, geojson, kml, zip)
+                  - button "Import File" [ref=e263]:
+                    - generic [ref=e264]: Import File
+          - generic [ref=e267]:
+            - button "Date Filters Documentation" [disabled] [expanded] [ref=e268]:
+              - generic [ref=e270]:
+                - text: Date Filters
+                - generic [ref=e271]: Documentation
+            - region "Date Filters Documentation" [ref=e273]:
+              - generic [ref=e274]:
+                - generic [ref=e278]:
+                  - generic [ref=e279]:
+                    - generic [ref=e281]:
+                      - generic [ref=e282]:
+                        - generic [ref=e283]: Start Date
+                        - textbox "Start Date" [ref=e284] [cursor=pointer]
+                      - button "Open calendar" [ref=e287] [cursor=pointer]:
+                        - img [ref=e288]
+                    - generic [ref=e294]: MM/DD/YYYY
+                  - generic [ref=e296]:
+                    - generic [ref=e298]:
+                      - generic [ref=e299]:
+                        - generic [ref=e300]: End Date
+                        - textbox "End Date" [ref=e301]
+                      - button "Open calendar" [ref=e304] [cursor=pointer]:
+                        - img [ref=e305]
+                    - generic [ref=e311]: MM/DD/YYYY
+                - generic [ref=e316]:
+                  - switch "Seasonal Search" [ref=e317] [cursor=pointer]:
+                    - generic [ref=e323]:
+                      - img [ref=e324]
+                      - img [ref=e326]
+                  - generic [ref=e328] [cursor=pointer]: Seasonal Search
+          - generic [ref=e329]:
+            - button "Additional Filters Documentation" [disabled] [expanded] [ref=e330]:
+              - generic [ref=e332]:
+                - text: Additional Filters
+                - generic [ref=e333]: Documentation
+            - region "Additional Filters Documentation" [ref=e335]:
+              - generic [ref=e339]:
+                - generic [ref=e341]:
+                  - combobox "File Type" [ref=e345] [cursor=pointer]:
+                    - generic [ref=e346]:
+                      - generic [ref=e347]: File Type
+                      - img [ref=e350]
+                  - generic [ref=e354]: 0/14 file types selected
+                - generic [ref=e356]:
+                  - combobox "Beam Mode" [ref=e360] [cursor=pointer]:
+                    - generic [ref=e361]:
+                      - generic [ref=e362]: Beam Mode
+                      - img [ref=e365]
+                  - generic [ref=e369]: 0/9 beam modes selected
+                - generic [ref=e371]:
+                  - combobox "Polarization" [ref=e375] [cursor=pointer]:
+                    - generic [ref=e376]:
+                      - generic [ref=e377]: Polarization
+                      - img [ref=e380]
+                  - generic [ref=e384]: 0/8 polarizations selected
+                - generic [ref=e386]:
+                  - combobox "Direction" [ref=e390] [cursor=pointer]:
+                    - generic [ref=e391]:
+                      - generic [ref=e392]: Direction
+                      - img [ref=e395]
+                  - generic [ref=e399]: 0/2 flight directions selected
+                - generic [ref=e401]:
+                  - combobox "Subtype" [ref=e405] [cursor=pointer]:
+                    - generic [ref=e406]:
+                      - generic [ref=e407]: Subtype
+                      - img [ref=e410]
+                  - generic [ref=e414]: 0/3 subtypes selected
+                - textbox "Group ID" [ref=e420]
+          - generic [ref=e422]:
+            - button "Path and Frame Filters Documentation" [disabled] [expanded] [ref=e423]:
+              - generic [ref=e425]:
+                - text: Path and Frame Filters
+                - generic [ref=e426]: Documentation
+            - region "Path and Frame Filters Documentation" [ref=e428]:
+              - generic [ref=e433]:
+                - generic [ref=e434]:
+                  - spinbutton [ref=e439]
+                  - spinbutton [ref=e445]
+                - generic [ref=e447]:
+                  - spinbutton [ref=e452]
+                  - spinbutton [ref=e458]
+                - button "Clear Path / Frame" [ref=e461]:
+                  - generic [ref=e462]: Clear Path / Frame
+        - generic [ref=e465]:
+          - generic [ref=e467] [cursor=pointer]:
+            - generic [ref=e468]:
+              - generic [ref=e469]:
+                - text: "250"
+                - img [ref=e470]: arrow_drop_down
+              - text: of
+            - img [ref=e473]: 
+            - text: Files
+          - button "Cancel" [ref=e476]:
+            - generic [ref=e477]: Cancel
+          - radiogroup [ref=e482]:
+            - radio "SEARCH" [ref=e483] [cursor=pointer]:
+              - button "SEARCH" [ref=e485]:
+                - generic: SEARCH
+            - radio [ref=e488] [cursor=pointer]:
+              - img [ref=e490]: arrow_drop_down
+      - generic:
+        - link "Mapbox" [ref=e491] [cursor=pointer]:
+          - /url: http://mapbox.com/about/maps
+        - generic [ref=e492]:
+          - text: © 2026 ASF |
+          - link "Contact" [ref=e493] [cursor=pointer]:
+            - /url: https://www.asf.alaska.edu/asf/contact-us
+          - text: "|"
+          - link "Non-Discrimination" [ref=e494] [cursor=pointer]:
+            - /url: https://www.alaska.edu/nondiscrimination
+          - text: "|"
+          - link "© Mapbox" [ref=e495] [cursor=pointer]:
+            - /url: https://www.mapbox.com/about/maps/
+          - text: "|"
+          - link "© OpenStreetMap contributors" [ref=e496] [cursor=pointer]:
+            - /url: https://www.openstreetmap.org/copyright
+          - text: "|"
+          - link "Improve this map" [ref=e497] [cursor=pointer]:
+            - /url: https://www.mapbox.com/map-feedback/
+            - strong [ref=e498]: Improve this map
+      - generic [ref=e501]: TOOLTIP
+      - img [ref=e503]: map
+  - generic [ref=e504]:
+    - button "Close" [ref=e505] [cursor=pointer]: ×
+    - alert [ref=e506]:
+      - text: This website uses cookies to ensure you get the best experience on our website.
+      - link "Learn More" [ref=e507] [cursor=pointer]:
+        - /url: https://cookiesandyou.com/
