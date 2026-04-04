@@ -37,12 +37,10 @@ test('Invalid Manual Entry', async ({ page }) => {
     .getByLabel('Area of Interest • WKT')
     .fill('-122.255 38.959,-97.470 13.239');
 
-  await page
-    .getByRole('region', { name: 'Search for a location' })
-    .getByLabel('Area of Interest • WKT');
+  await page.getByRole('combobox', { name: 'Search for a location' }).click();
   const value = await page
     .getByLabel('Area of Interest Options')
     .getByLabel('Area of Interest • WKT')
     .inputValue();
-  await expect(value).toContain('');
+  await expect(value).toBe('');
 });
