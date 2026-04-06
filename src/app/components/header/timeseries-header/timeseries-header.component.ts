@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { SubSink } from 'subsink';
+import { map } from 'rxjs/operators';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -8,7 +9,7 @@ import * as searchStore from '@store/search';
 import * as mapStore from '@store/map';
 import * as filtersStore from '@store/filters';
 
-import { ScreenSizeService } from '@services';
+import { ScreenSizeService, ThemingService } from '@services';
 import { MapDrawModeType, MapInteractionModeType } from '@models';
 import * as models from '@models';
 import { NgOptimizedImage, AsyncPipe } from '@angular/common';
@@ -35,8 +36,10 @@ import { TranslateModule } from '@ngx-translate/core';
 export class TimeseriesHeaderComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
   private screenSize = inject(ScreenSizeService);
+  private themingService = inject(ThemingService);
 
   public breakpoint$ = this.screenSize.breakpoint$;
+  public isDarkMode$ = this.themingService.theme$.pipe(map(theme => theme === 'dark'));
   public breakpoints = models.Breakpoints;
   public isDrawing = false;
   public flightDirections: models.FlightDirection[];
