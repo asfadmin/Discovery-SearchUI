@@ -41,9 +41,12 @@ test('Bounding box polygon is preserved after search in Mercator projection', as
     .getByRole('button', { name: /S1A_IW_GRDH.*2022/ })
     .first();
   await expect(firstResult).toBeVisible({ timeout: 30000 });
+  await expect(page).toHaveScreenshot('mercator-3-search-results.png');
+
   await firstResult.click();
 
   await expect(page.locator('input[name="searchPolygon"]')).toHaveValue(
     WKT_POLYGON,
   );
+  await expect(page).toHaveScreenshot('mercator-3-result-selected.png');
 });
