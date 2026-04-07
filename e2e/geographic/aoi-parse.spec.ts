@@ -29,6 +29,46 @@ test('Area of interest should parse polygon coordinate strings', async ({
   );
 });
 
+test('Manual Entry Cases, (Self-Intersecting, clear, valid)', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Filters', exact: true }).click();
+
+  await page
+    .getByRole('region', { name: 'Area of Interest Options' })
+    .getByLabel('Area of Interest • WKT')
+    .fill(
+      'POLYGON((-114.4775 55.628,-95.2734 54.5721,-114.0381 41.1456,-97.251 41.1125,-114.4775 55.628))',
+    );
+  await page.keyboard.press('Tab');
+  await expect(page.locator('#mat-button-toggle-6-button')).toHaveText(
+    'NO RESULTS',
+  );
+
+  await page.getByRole('button', { name: 'Clear', exact: true }).click();
+  let value = await page
+    .getByLabel('Area of Interest Options')
+    .getByLabel('Area of Interest • WKT')
+    .inputValue();
+  await expect(value).toBe('');
+  await page
+    .getByRole('region', { name: 'Area of Interest Options' })
+    .getByLabel('Area of Interest • WKT')
+    .fill(
+      'POLYGON((-148.8144 64.3268,-146.5039 64.3268,-146.5039 65.2329,-148.8144 65.2329,-148.8144 64.3268))',
+    );
+
+  await page.getByRole('combobox', { name: 'Search for a location' }).click();
+  value = await page
+    .getByLabel('Area of Interest Options')
+    .getByLabel('Area of Interest • WKT')
+    .inputValue();
+  await expect(value).toBe(
+    'POLYGON((-148.8144 64.3268,-146.5039 64.3268,-146.5039 65.2329,-148.8144 65.2329,-148.8144 64.3268))',
+  );
+});
+
 test('Invalid Manual Entry', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
