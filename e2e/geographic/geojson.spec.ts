@@ -8,13 +8,10 @@ test('Import a geojson file', async ({ page }) => {
     .getByRole('button', { name: 'Import File' })
     .click();
 
-  const fileChooserPromise = page.waitForEvent('filechooser');
   await page
     .locator('app-aoi-filter')
-    .getByRole('button', { name: 'Import File' })
-    .click();
-  const fileChooser = await fileChooserPromise;
-  await fileChooser.setFiles('./e2e/geographic/assets/basic.geojson');
+    .locator('input[type="file"]')
+    .setInputFiles('./e2e/geographic/assets/basic.geojson');
 
   await page.waitForResponse((response) =>
     response.url().includes('files_to_wkt'),
