@@ -13,7 +13,9 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    environment: playwright
+    environment:
+      name: playwright
+      deployment: false
     permissions:
       contents: read
     strategy:
@@ -35,7 +37,7 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Playwright tests
-        run: npm run e2e --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+        run: npm run e2e -- --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
