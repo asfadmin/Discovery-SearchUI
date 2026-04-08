@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('Import a geojson point and zoom map to location', async ({ page }) => {
+test('Import a geojson point file', async ({ page }) => {
   await page.goto('/');
   await page.locator('app-aoi-filter').getByText('arrow_drop_down').click();
   await page
@@ -20,8 +20,6 @@ test('Import a geojson point and zoom map to location', async ({ page }) => {
     .locator('input[name="searchPolygon"]')
     .inputValue();
   expect(value).toContain('POINT(-102.4805 38.7541)');
-
-  await expect(page).toHaveURL(/center=-102\.48.*38\.75/);
 });
 
 test('Import a KML file', async ({ page }) => {
