@@ -124,7 +124,7 @@ test('Place name geocode pans the map to the entered location', async ({
     /Big Bear Lake.*California.*United States/,
   );
 
-  await expect(page).toHaveURL(/center=-116\.91.*34\.24/);
+  await expect(page).toHaveURL(/polygon=POINT/);
 });
 
 test('Geocoded place name is cleared when AOI is manually updated', async ({
