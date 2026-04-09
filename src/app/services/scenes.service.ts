@@ -129,6 +129,7 @@ export class ScenesService {
           !scenes.every(
             (scene) =>
               scene.dataset === 'Sentinel-1C' ||
+              scene.dataset === 'Sentinel-1D' ||
               scene.dataset === 'Sentinel-1B' ||
               scene.dataset === 'Sentinel-1A',
           )
