@@ -3,10 +3,6 @@ import { test, expect } from '@playwright/test';
 test('Import a geojson point file', async ({ page }) => {
   await page.goto('/');
   await page.locator('app-aoi-filter').getByText('arrow_drop_down').click();
-  await page
-    .locator('app-aoi-filter')
-    .getByRole('button', { name: 'Import File' })
-    .click();
 
   await page
     .locator('app-aoi-filter')
@@ -25,10 +21,6 @@ test('Import a geojson point file', async ({ page }) => {
 test('Import a KML file', async ({ page }) => {
   await page.goto('/');
   await page.locator('app-aoi-filter').getByText('arrow_drop_down').click();
-  await page
-    .locator('app-aoi-filter')
-    .getByRole('button', { name: 'Import File' })
-    .click();
 
   await page
     .locator('app-aoi-filter')
@@ -48,10 +40,6 @@ test('Import a KML file', async ({ page }) => {
 test('Import a .shp shape file', async ({ page }) => {
   await page.goto('/');
   await page.locator('app-aoi-filter').getByText('arrow_drop_down').click();
-  await page
-    .locator('app-aoi-filter')
-    .getByRole('button', { name: 'Import File' })
-    .click();
 
   await page
     .locator('app-aoi-filter')
@@ -70,10 +58,6 @@ test('Import a .shp shape file', async ({ page }) => {
 test('Import a .zip shape file', async ({ page }) => {
   await page.goto('/');
   await page.locator('app-aoi-filter').getByText('arrow_drop_down').click();
-  await page
-    .locator('app-aoi-filter')
-    .getByRole('button', { name: 'Import File' })
-    .click();
 
   await page
     .locator('app-aoi-filter')
@@ -92,10 +76,6 @@ test('Import a .zip shape file', async ({ page }) => {
 test('Import multiple geojson files sequentially', async ({ page }) => {
   await page.goto('/');
   await page.locator('app-aoi-filter').getByText('arrow_drop_down').click();
-  await page
-    .locator('app-aoi-filter')
-    .getByRole('button', { name: 'Import File' })
-    .click();
 
   await page
     .locator('app-aoi-filter')
@@ -109,11 +89,6 @@ test('Import multiple geojson files sequentially', async ({ page }) => {
     .locator('input[name="searchPolygon"]')
     .inputValue();
   expect(firstValue).toContain('POLYGON');
-
-  await page
-    .locator('app-aoi-filter')
-    .getByRole('button', { name: 'Import File' })
-    .click();
 
   await page
     .locator('app-aoi-filter')
@@ -133,10 +108,6 @@ test('Import multiple geojson files sequentially', async ({ page }) => {
 test('Import rejects invalid file type', async ({ page }) => {
   await page.goto('/');
   await page.locator('app-aoi-filter').getByText('arrow_drop_down').click();
-  await page
-    .locator('app-aoi-filter')
-    .getByRole('button', { name: 'Import File' })
-    .click();
 
   await page
     .locator('app-aoi-filter')
