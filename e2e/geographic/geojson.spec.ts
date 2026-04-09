@@ -3,10 +3,6 @@ import { test, expect } from '@playwright/test';
 test('Import a geojson file', async ({ page }) => {
   await page.goto('/');
   await page.locator('app-aoi-filter').getByText('arrow_drop_down').click();
-  await page
-    .locator('app-aoi-filter')
-    .getByRole('button', { name: 'Import File' })
-    .click();
 
   await page
     .locator('app-aoi-filter')
