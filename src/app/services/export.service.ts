@@ -42,7 +42,7 @@ export class ExportService {
         : `, api_url='${this.hyp3APIService.apiUrl}'`;
       const python = `from hyp3_sdk import HyP3
 from getpass import getpass
-hyp3 = HyP3(username='${username}', password=getpass(\`EDL Password\`)${deploymentSetting})
+hyp3 = HyP3(username='${username}', password=getpass('EDL Password')${deploymentSetting})
 ${pythonSearchCode}
 `;
       return python;
