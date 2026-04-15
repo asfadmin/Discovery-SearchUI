@@ -540,6 +540,12 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         ),
       );
     });
+    this.matIconRegistry.addSvgIcon(
+      'hyp3',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(
+        '../assets/asf-logos/plus/hyp3+.svg',
+      ),
+    );
 
     this.subs.add(
       combineLatest([
