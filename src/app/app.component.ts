@@ -143,6 +143,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   public interactionTypes = models.MapInteractionModeType;
   public searchType: models.SearchType;
   public kioskMode = false;
+  private hyp3plus = false;
 
   private helpTopic: string | null;
 
@@ -152,6 +153,12 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   handleKeyDown(_event: Event) {
     console.log('Toggling kiosk mode. Use "ctrl+/" to re-toggle');
     this.store$.dispatch(new searchStore.setSearchKioskMode(!this.kioskMode));
+  }
+
+  @HostListener(`window:keydown.control.'`, ['$event'])
+  handleKeyDown2(_event: Event) {
+    console.log(`Toggling hyp3+ mode. Use "ctrl+'" to re-toggle`);
+    this.store$.dispatch(new searchStore.SetHyp3PlusMode(!this.hyp3plus));
   }
 
   public ngOnInit(): void {
@@ -192,13 +199,15 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           const iconPath = isHyp3PlusMode
             ? '../assets/asf-logos/plus/hyp3+.svg'
             : '../assets/icons/hyp3.svg';
-
+          this.hyp3plus = isHyp3PlusMode;
           console.log(isHyp3PlusMode, iconPath);
-
           this.matIconRegistry.addSvgIcon(
             'hyp3',
             this.domSanitizer.bypassSecurityTrustResourceUrl(iconPath),
           );
+          if (isHyp3PlusMode) {
+            this.hyp3Service.setApiUrl('https://hyp3-plus.asf.alaska.edu');
+          }
         }),
     );
 
@@ -346,10 +355,14 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     );
 
     this.subs.add(
-      this.store$.select(userStore.getUserProfile).subscribe((profile) => {
+      combineLatest([
+        this.store$.select(userStore.getUserProfile),
+        this.store$.select(searchStore.getHyp3PlusMode),
+      ]).subscribe(([profile, hyp3Plus]) => {
         if (
           profile.hyp3BackendUrl &&
-          profile.hyp3BackendUrl !== this.hyp3Service.baseUrl
+          profile.hyp3BackendUrl !== this.hyp3Service.baseUrl &&
+          !hyp3Plus
         ) {
           this.hyp3Service.setApiUrl(profile.hyp3BackendUrl);
           this.store$.dispatch(new searchStore.ClearSearch());

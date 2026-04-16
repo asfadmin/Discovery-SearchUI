@@ -151,7 +151,7 @@ export function searchReducer(
     case SearchActionType.SET_HYP3_PLUS_MODE: {
       return {
         ...state,
-        kioskMode: action.payload,
+        hyp3PlusMode: action.payload,
       };
     }
 
