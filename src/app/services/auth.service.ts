@@ -158,19 +158,22 @@ export class AuthService {
             user['exp'],
           );
         }),
-        map((final) => {
-          this.existingUserInfo = final;
-          setTimeout(
-            () => {
-              this.store$.dispatch(new userStore.Logout());
-              this.notificationService.info(
-                'Session Expired',
-                'Please login again',
-              );
-            },
-            final.exp * 1000 - Date.now(),
-          );
-          return final;
+        map((user) => {
+          this.existingUserInfo = user;
+          const expMs = user.exp * 1000;
+
+          if (this.isExpired(expMs)) {
+            return null;
+          }
+          setTimeout(() => {
+            this.store$.dispatch(new userStore.Logout());
+            this.notificationService.info(
+              'Session Expired',
+              'Please login again',
+            );
+          }, expMs - Date.now());
+
+          return user;
         }),
         catchError((_error) => {
           console.error('Failed to get user info');
@@ -178,6 +181,10 @@ export class AuthService {
         }),
         take(1),
       );
+  }
+
+  private isExpired(expMs: number): boolean {
+    return Date.now() > expMs;
   }
 
   private makeUser(
