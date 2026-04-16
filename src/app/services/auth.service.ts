@@ -160,21 +160,19 @@ export class AuthService {
         }),
         map((user) => {
           this.existingUserInfo = user;
+          const expMs = user.exp * 1000;
 
-          if (this.isExpired(user)) {
+          if (this.isExpired(expMs)) {
             return null;
           }
+          setTimeout(() => {
+            this.store$.dispatch(new userStore.Logout());
+            this.notificationService.info(
+              'Session Expired',
+              'Please login again',
+            );
+          }, expMs - Date.now());
 
-          setTimeout(
-            () => {
-              this.store$.dispatch(new userStore.Logout());
-              this.notificationService.info(
-                'Session Expired',
-                'Please login again',
-              );
-            },
-            user.exp * 1000 - Date.now(),
-          );
           return user;
         }),
         catchError((_error) => {
@@ -185,8 +183,8 @@ export class AuthService {
       );
   }
 
-  private isExpired(userToken: models.UserAuth): boolean {
-    return Date.now() > userToken.exp * 1000;
+  private isExpired(expMs: number): boolean {
+    return Date.now() > expMs;
   }
 
   private makeUser(
