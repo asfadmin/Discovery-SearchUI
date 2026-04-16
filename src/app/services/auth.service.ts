@@ -158,8 +158,13 @@ export class AuthService {
             user['exp'],
           );
         }),
-        map((final) => {
-          this.existingUserInfo = final;
+        map((user) => {
+          this.existingUserInfo = user;
+
+          if (this.isExpired(user)) {
+            return null;
+          }
+
           setTimeout(
             () => {
               this.store$.dispatch(new userStore.Logout());
@@ -168,9 +173,9 @@ export class AuthService {
                 'Please login again',
               );
             },
-            final.exp * 1000 - Date.now(),
+            user.exp * 1000 - Date.now(),
           );
-          return final;
+          return user;
         }),
         catchError((_error) => {
           console.error('Failed to get user info');
@@ -178,6 +183,10 @@ export class AuthService {
         }),
         take(1),
       );
+  }
+
+  private isExpired(userToken: models.UserAuth): boolean {
+    return Date.now() > userToken.exp * 1000;
   }
 
   private makeUser(
