@@ -29,7 +29,11 @@
             {{ 'ON_DEMAND' | translate }}
           </div>
           <div class="on-demand-subtitle">
-            {{ 'POWERED_BY_HY_P3' | translate }}
+            @if (!isHyp3PlusMode) {
+              {{ 'POWERED_BY_HYP3' | translate }}
+            } @else {
+              {{ 'POWERED_BY_HYP3_PLUS' | translate }}
+            }
           </div>
         </div>
       }
@@ -257,7 +261,11 @@
               ) {
                 <div class="w100 error-header">
                   <div style="padding-left: 10px">
-                    <b>{{ 'NO_CREDITS_LEFT_THIS_MONTH' | translate }}</b>
+                    @if (!isHyp3PlusMode) {
+                      <b>{{ 'NO_CREDITS_LEFT_THIS_MONTH' | translate }}</b>
+                    } @else {
+                      <b>{{ 'NO_CREDITS_LEFT' | translate }}</b>
+                    }
                   </div>
                   <div>
                     <button (click)="onCloseDialog()" mat-flat-button>
