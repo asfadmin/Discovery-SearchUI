@@ -156,7 +156,7 @@
       @if (isHyp3PlusMode) {
         <div class="jobs-empty-message-docs-link">
           <a href="https://hyp3-docs.asf.alaska.edu/" target="_blank">
-            HyP3+ Documentation (Pay for processing)
+            {{ 'HYP3_PLUS_DOCUMENTATION_PAY' | translate }}
           </a>
         </div>
       }
@@ -172,12 +172,6 @@
             {{ 'VIEW_SUBMITTED_JOBS' | translate }}
           </button>
         </div>
-
-        @if (isHyp3PlusMode) {
-          <div class="purchase-credits--button">
-            <button color="primary" mat-flat-button>Purchase Credits</button>
-          </div>
-        }
 
         @if (!isLoggedIn) {
           <p class="not-logged-in">
