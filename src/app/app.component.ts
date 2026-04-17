@@ -197,7 +197,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         .select(searchStore.getHyp3PlusMode)
         .subscribe((isHyp3PlusMode) => {
           const iconPath = isHyp3PlusMode
-            ? '../assets/asf-logos/plus/hyp3+.svg'
+            ? '../assets/icons/hyp3+.svg'
             : '../assets/icons/hyp3.svg';
           this.hyp3plus = isHyp3PlusMode;
           console.log(isHyp3PlusMode, iconPath);
