@@ -191,8 +191,11 @@ export class AuthService {
     id: string,
     groups: models.URSGroup[],
     token: string,
-    exp: number,
+    _exp: number,
   ): models.UserAuth {
-    return { id, token, groups, exp };
+    const cmr_content = JSON.parse(
+      Buffer.from(token.split('.')[1], 'base64').toString(),
+    );
+    return { id, token, groups, exp: cmr_content.exp };
   }
 }
