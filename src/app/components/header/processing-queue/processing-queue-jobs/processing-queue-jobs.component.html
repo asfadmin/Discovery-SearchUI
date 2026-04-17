@@ -146,26 +146,45 @@
       <div class="jobs-empty-message">
         {{ 'YOUR_JOBS_QUEUE_IS_EMPTY' | translate }}
       </div>
+
       <div class="jobs-empty-message-docs-link">
         <a href="https://hyp3-docs.asf.alaska.edu/" target="_blank">
           {{ 'ON_DEMAND_HYP3_DOCUMENTATION' | translate }}
         </a>
       </div>
-    </div>
-    <div class="jobs-search">
-      <button
-        [disabled]="!isLoggedIn"
-        (click)="viewCustomProducts($event)"
-        color="primary"
-        mat-flat-button
-      >
-        {{ 'VIEW_SUBMITTED_JOBS' | translate }}
-      </button>
-      @if (!isLoggedIn) {
-        <p class="not-logged-in">
-          {{ 'SIGN_IN_TO_VIEW_SUBMITTED_JOBS' | translate }}
-        </p>
+
+      @if (isHyp3PlusMode) {
+        <div class="jobs-empty-message-docs-link">
+          <a href="https://hyp3-docs.asf.alaska.edu/" target="_blank">
+            HyP3+ Documentation (Pay for processing)
+          </a>
+        </div>
       }
+
+      <div class="empty-queue--action-buttons">
+        <div class="job-search--button">
+          <button
+            [disabled]="!isLoggedIn"
+            (click)="viewCustomProducts($event)"
+            color="primary"
+            mat-flat-button
+          >
+            {{ 'VIEW_SUBMITTED_JOBS' | translate }}
+          </button>
+        </div>
+
+        @if (isHyp3PlusMode) {
+          <div class="purchase-credits--button">
+            <button color="primary" mat-flat-button>Purchase Credits</button>
+          </div>
+        }
+
+        @if (!isLoggedIn) {
+          <p class="not-logged-in">
+            {{ 'SIGN_IN_TO_VIEW_SUBMITTED_JOBS' | translate }}
+          </p>
+        }
+      </div>
     </div>
   }
 </div>
