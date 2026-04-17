@@ -51,30 +51,42 @@
   <button mat-button (click)="onCancelQueue()">
     {{ 'CANCEL' | translate | titlecase }}
   </button>
-  <button
-    mat-flat-button
-    color="primary"
-    (click)="onSubmitQueue()"
-    [disabled]="amountSelected(jobTypesWithQueued) === 0"
-    cdkFocusInitial
-  >
-    <span>
-      {{ 'SUBMIT' | translate }} {{ amountSelected(jobTypesWithQueued) }}
-      <span [ngPlural]="amountSelected(jobTypesWithQueued)">
-        <ng-template ngPluralCase="=1">{{
-          'JOB' | translate | titlecase
-        }}</ng-template>
-        <ng-template ngPluralCase="other">{{
-          'JOBS' | translate | titlecase
-        }}</ng-template>
+
+  @if (!isQueueSubmitProcessing) {
+    <button
+      mat-flat-button
+      color="primary"
+      (click)="onSubmitQueue()"
+      [disabled]="amountSelected(jobTypesWithQueued) === 0"
+      cdkFocusInitial
+    >
+      <span>
+        {{ 'SUBMIT' | translate }} {{ amountSelected(jobTypesWithQueued) }}
+        <span [ngPlural]="amountSelected(jobTypesWithQueued)">
+          <ng-template ngPluralCase="=1">{{
+            'JOB' | translate | titlecase
+          }}</ng-template>
+          <ng-template ngPluralCase="other">{{
+            'JOBS' | translate | titlecase
+          }}</ng-template>
+        </span>
+        ({{ creditsSelected(jobTypesWithQueued) }}
+        <span [ngPlural]="creditsSelected(jobTypesWithQueued)">
+          <ng-template ngPluralCase="=1">{{
+            'CREDIT' | translate
+          }}</ng-template>
+          <ng-template ngPluralCase="other">{{
+            'CREDITS' | translate
+          }}</ng-template> </span
+        >)
       </span>
-      ({{ creditsSelected(jobTypesWithQueued) }}
-      <span [ngPlural]="creditsSelected(jobTypesWithQueued)">
-        <ng-template ngPluralCase="=1">{{ 'CREDIT' | translate }}</ng-template>
-        <ng-template ngPluralCase="other">{{
-          'CREDITS' | translate
-        }}</ng-template> </span
-      >)
-    </span>
-  </button>
+    </button>
+  } @else {
+    <button mat-flat-button color="primary">
+      <span class="loading-button-content">
+        Submitting...
+        <mat-spinner diameter="18"></mat-spinner>
+      </span>
+    </button>
+  }
 </div>

@@ -6,6 +6,7 @@ import {
   MatDialogContent,
   MatDialogActions,
 } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -48,6 +49,7 @@ import { TranslateModule } from '@ngx-translate/core';
     NgPluralCase,
     MatDialogActions,
     MatButton,
+    MatProgressSpinnerModule,
 
     TitleCasePipe,
     TranslateModule,

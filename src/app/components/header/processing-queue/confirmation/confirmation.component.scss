@@ -28,3 +28,9 @@ a {
     color: themed('blue-link');
   }
 }
+
+.loading-button-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
