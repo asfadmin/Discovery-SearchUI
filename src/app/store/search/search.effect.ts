@@ -633,6 +633,10 @@ export class SearchEffects {
               : new SearchCanceled();
           }),
           catchError((err: HttpErrorResponse) => {
+            const errorMsg = err?.error?.error?.report;
+            if (errorMsg) {
+              return of(new SearchError(errorMsg));
+            }
             if (err.status !== 400) {
               return of(new SearchError('Unknown Error'));
             }
