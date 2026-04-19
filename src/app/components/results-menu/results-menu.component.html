@@ -15,7 +15,11 @@
       "
       class="rectangle-wrapper w100"
     >
-      @if (products.length !== 0 || !(noSarviewsEvents$ | async)) {
+      @if (
+        products.length !== 0 ||
+        !(noSarviewsEvents$ | async) ||
+        searchType === SearchTypes.CUSTOM_PRODUCTS
+      ) {
         <div
           id="result-div"
           class="w100"
@@ -43,7 +47,8 @@
               !(
                 !(noSarviewsEvents$ | async) &&
                 searchType === SearchTypes.SARVIEWS_EVENTS
-              )
+              ) &&
+              searchType !== SearchTypes.CUSTOM_PRODUCTS
             "
             class="h100"
             style="justify-content: center"
@@ -121,7 +126,7 @@
               >
                 <div class="no-products-actions">
                   <div style="margin-bottom: 14px">
-                    {{ 'NO_ON_DEMAND_PRODUCTS' | translate }}
+                    {{ 'NO_JOBS_SUBMITTED' | translate }}
                   </div>
                   <a
                     style="margin-bottom: 5px"
