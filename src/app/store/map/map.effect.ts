@@ -175,8 +175,7 @@ export class MapEffects {
               product.dataset === 'Sentinel-1B' ||
               product.dataset === 'Sentinel-1C' ||
               product.dataset === 'Sentinel-1 Interferogram (BETA)' ||
-              product.dataset === 'UAVSAR' ||
-              product.dataset === 'NISAR'
+              product.dataset === 'UAVSAR'
             );
           } else if (searchType === SearchType.CUSTOM_PRODUCTS) {
             const failed =
@@ -224,6 +223,25 @@ export class MapEffects {
         }),
       ),
     { dispatch: false },
+  );
+
+  public clearBrowseOverlaysForNisarListSelection = createEffect(() =>
+    this.actions$.pipe(
+      ofType<SetSelectedScene>(ScenesActionType.SET_SELECTED_SCENE),
+      map((action) => action.payload),
+      withLatestFrom(
+        this.store$.select(getSearchType),
+        this.store$.select(getProducts),
+      ),
+      filter(([selectedSceneID, searchType, products]) => {
+        if (searchType !== SearchType.LIST || !selectedSceneID || !products) {
+          return false;
+        }
+        const product = products?.[selectedSceneID];
+        return product?.dataset === 'NISAR';
+      }),
+      map(() => new ClearBrowseOverlays()),
+    ),
   );
 
   public pinEventProductOnSelection = createEffect(() =>
