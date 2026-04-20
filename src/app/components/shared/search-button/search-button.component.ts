@@ -106,7 +106,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
   );
 
   public isLoggedIn = false;
-  public searchError$ = new Subject<void>();
+  public searchError$ = new Subject<searchStore.SearchError>();
   public isSearchError = false;
   public isFiltersOpen = false;
 
@@ -142,7 +142,7 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
             searchStore.SearchActionType.SEARCH_ERROR,
           ),
         )
-        .subscribe((_) => this.onSearchError()),
+        .subscribe((error) => this.onSearchError(error)),
     );
 
     this.subs.add(
@@ -220,13 +220,11 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.searchError$
         .pipe(
-          tap((_) => {
+          tap((error) => {
+            const errorMessage =
+              error.payload || 'Trouble loading search results';
             this.isSearchError = true;
-            this.notificationService.error(
-              'Trouble loading search results',
-              'Search Error',
-              { timeOut: 5000 },
-            );
+            this.notificationService.error(errorMessage, 'Search Error');
           }),
           delay(820),
         )
@@ -236,8 +234,8 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     );
   }
 
-  public onSearchError(): void {
-    this.searchError$.next();
+  public onSearchError(error: searchStore.SearchError): void {
+    this.searchError$.next(error);
   }
 
   public saveCurrentSearch(): void {
