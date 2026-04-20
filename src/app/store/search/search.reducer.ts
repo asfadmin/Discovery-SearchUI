@@ -30,7 +30,7 @@ export const initState: SearchState = {
   nextHyp3JobUrl: null,
   areResultsOutOfDate: false,
   kioskMode: false,
-  hyp3PlusMode: true,
+  hyp3PlusMode: false,
 };
 
 export function searchReducer(

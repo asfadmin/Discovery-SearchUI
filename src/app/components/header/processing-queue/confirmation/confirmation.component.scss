@@ -4,6 +4,10 @@ $header-height: 120px;
 $footer-height: 60px;
 $bottom-offset: 10px;
 
+.api-subtitle {
+
+}
+
 .mat-mdc-dialog-content {
   @include themify($themes) {
     background-color: themed('background-white');
