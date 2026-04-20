@@ -10,9 +10,11 @@
       #productTypeSelector
     >
       @for (type of selectableProductTypes; track type) {
-        <mat-option [value]="type.apiValue" [matTooltip]="type.displayName">
-          {{ type.displayName }}
-        </mat-option>
+        @if (!(env.isProd && type.apiValue === 'DIST-ALERT-S1')) {
+          <mat-option [value]="type.apiValue" [matTooltip]="type.displayName">
+            {{ type.displayName }}
+          </mat-option>
+        }
       }
 
       @if (dataset.id === 'OPERA-S1') {

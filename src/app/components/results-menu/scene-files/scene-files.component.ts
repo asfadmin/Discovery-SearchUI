@@ -6,6 +6,7 @@ import {
   Input,
   ViewChild,
   inject,
+  signal,
 } from '@angular/core';
 import { SubSink } from 'subsink';
 
@@ -33,7 +34,6 @@ import {
   AsfApiService,
   Hyp3ApiService,
   NotificationService,
-  ProductService,
   SarviewsEventsService,
 } from '@services';
 import * as models from '@models';
@@ -52,6 +52,7 @@ import {
   MatList,
   MatSelectionList,
   MatListOption,
+  MatListItem,
 } from '@angular/material/list';
 import { PinnedProduct } from '@services/browse-map.service';
 import { ImageDialogComponent } from '../scene-detail/image-dialog';
@@ -69,11 +70,13 @@ import { SceneFileComponent } from './scene-file/scene-file.component';
 import { MatIconButton } from '@angular/material/button';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatIcon } from '@angular/material/icon';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { DownloadFileButtonComponent } from '@components/shared/download-file-button/download-file-button.component';
 import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/on-demand-add-menu.component';
 import { FileContentsComponent } from './file-contents/file-contents.component';
 import { ReadableSizeFromBytesPipe } from '@pipes/readable-size-from-bytes.pipe';
 import { TranslateModule } from '@ngx-translate/core';
+import { getStaticQueryParams } from '@models/datasets/opera_s1';
 
 @Component({
   selector: 'app-scene-files',
@@ -81,7 +84,7 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrls: ['./scene-files.component.scss'],
   imports: [
     MatList,
-
+    MatProgressSpinner,
     SceneFileComponent,
     CdkVirtualScrollViewport,
     CdkFixedSizeVirtualScroll,
@@ -97,6 +100,7 @@ import { TranslateModule } from '@ngx-translate/core';
     AsyncPipe,
     ReadableSizeFromBytesPipe,
     TranslateModule,
+    MatListItem,
   ],
 })
 export class SceneFilesComponent
@@ -110,7 +114,6 @@ export class SceneFilesComponent
   dialog = inject(MatDialog);
   private screenSize = inject(ScreenSizeService);
   private asfApiService = inject(AsfApiService);
-  private productService = inject(ProductService);
 
   @ViewChild(CdkVirtualScrollViewport, { static: false })
   scrollPort: CdkVirtualScrollViewport;
@@ -170,6 +173,14 @@ export class SceneFilesComponent
       map((products) => products !== null && products !== undefined),
     );
 
+  private nisarOrbitEphemera$ = this.asfApiService.getNisarOrbitEphemera().pipe(
+    map((products) =>
+      products.map((product) => {
+        product.productTypeDisplay = `${product.metadata.productType} Orbit Ephemera XML`;
+        return product;
+      }),
+    ),
+  );
   public unzippedLoading: string;
   public loadingHyp3JobName: string | null;
   public validJobTypesByProduct: Record<string, models.Hyp3JobType[]> = {};
@@ -184,6 +195,8 @@ export class SceneFilesComponent
   public showDemWarning: boolean;
   public selectedSarviewsProducts: SarviewsProduct[] = [];
   public selectedSarviewEventID: string;
+
+  public dynamicQueryLoaded = signal(false);
   private subs = new SubSink();
 
   private selectedSarviewsProductIndex$ = this.store$
@@ -540,48 +553,84 @@ export class SceneFilesComponent
     };
     return toCMRProduct;
   }
+  public hasSubquery$ = this.store$.select(scenesStore.getSelectedScene).pipe(
+    debounceTime(100),
+    distinctUntilChanged((prev, curr) => prev?.id === curr?.id),
+    withLatestFrom(this.store$.select(filterStore.getUseCalibrationData)),
+    map(([scene, useCalibrationData]) => {
+      return (
+        this.operaSubqueryCriteria(scene, useCalibrationData) ||
+        this.nisarSubqueryCriteria(scene)
+      );
+    }),
+  );
 
-  public dynamicallySearchedProduct$ = this.store$
-    .select(scenesStore.getSelectedScene)
-    .pipe(
-      debounceTime(100),
-      distinctUntilChanged((prev, curr) => prev?.id === curr?.id),
-      withLatestFrom(this.store$.select(filterStore.getUseCalibrationData)),
-      switchMap(([scene, useCalibrationData]) => {
-        if (
-          !useCalibrationData &&
-          !!scene &&
-          ['RTC', 'CSLC'].includes(scene?.metadata?.productType) &&
-          scene?.id.startsWith('OPERA')
-        ) {
-          const queryParams = {
-            processinglevel: scene.metadata.productType + '-STATIC',
-            end:
-              scene.metadata.date === null
-                ? ''
-                : moment.utc(scene.metadata.date).format(),
-            operaburstid: scene.metadata?.opera?.operaBurstID,
-            dataset: models.opera_s1.apiValue.dataset,
-          };
-          return this.asfApiService.query<any>(queryParams).pipe(
-            map((products) =>
-              products?.results?.length > 0
-                ? this.productService.fromResponse(products).slice(0, 1)
-                : [],
-            ),
-            tap((products) =>
-              products.map((product) => {
-                product.productTypeDisplay = 'Local Incidence Angle GeoTIFF';
-                product.bytes = 0;
-                product.downloadUrl =
-                  product.metadata.opera.additionalUrls.find((url) =>
-                    url.endsWith('local_incidence_angle.tif'),
-                  );
-                return product;
-              }),
-            ),
-          );
-        } else if (!!scene && scene.id?.startsWith('NISAR_L1')) {
+  private operaSubqueryCriteria(
+    scene: models.CMRProduct,
+    useCalibrationData: boolean,
+  ) {
+    return (
+      !useCalibrationData &&
+      !!scene &&
+      ['RTC', 'CSLC'].includes(scene?.metadata?.productType) &&
+      scene?.id.startsWith('OPERA')
+    );
+  }
+  private nisarSubqueryCriteria(scene: models.CMRProduct) {
+    const isNisar = !!scene && scene.id?.startsWith('NISAR');
+    const processingLevel = scene.metadata.productType ?? '';
+
+    return (
+      isNisar &&
+      [
+        'RSLC',
+        'RIFG',
+        'RUNW',
+        'ROFF',
+        'GSLC',
+        'GCOV',
+        'GUNW',
+        'GOFF',
+        'RRSD',
+      ].includes(processingLevel)
+    );
+  }
+  public dynamicallySearchedProduct$ = combineLatest([
+    this.store$.select(scenesStore.getSelectedScene),
+    this.nisarOrbitEphemera$,
+  ]).pipe(
+    tap((_) => this.dynamicQueryLoaded.set(false)),
+    debounceTime(100),
+    distinctUntilChanged((prev, curr) => prev[0]?.id === curr[0]?.id),
+    withLatestFrom(this.store$.select(filterStore.getUseCalibrationData)),
+    switchMap(([[scene, orbitEphemera], useCalibrationData]) => {
+      if (
+        !useCalibrationData &&
+        !!scene &&
+        ['RTC', 'CSLC'].includes(scene?.metadata?.productType) &&
+        scene?.id.startsWith('OPERA')
+      ) {
+        const queryParams = getStaticQueryParams(
+          scene.metadata.productType,
+          scene.metadata.date,
+          scene.metadata?.opera?.operaBurstID,
+        );
+
+        return this.asfApiService.miniQuery(queryParams).pipe(
+          tap((products) =>
+            products.map((product) => {
+              product.productTypeDisplay = 'Local Incidence Angle GeoTIFF';
+              product.bytes = 0;
+              product.downloadUrl = product.metadata.opera.additionalUrls.find(
+                (url) => url.endsWith('local_incidence_angle.tif'),
+              );
+              return product;
+            }),
+          ),
+        );
+      } else if (!!scene && scene.id?.startsWith('NISAR')) {
+        let browseQuery = of<models.CMRProduct[]>([]);
+        if (scene.id.startsWith('NISAR_L1')) {
           if (
             !Object.keys(L1L2BrowseCollectionMapping).includes(
               scene.metadata.productType,
@@ -595,20 +644,24 @@ export class SceneFilesComponent
             scene.metadata.productType,
           );
 
-          return this.asfApiService
-            .query<any>(queryParams)
-            .pipe(
-              map((products) =>
-                products?.results?.length > 0
-                  ? this.productService.fromResponse(products).slice(0, 1)
-                  : [],
-              ),
-            );
-        } else {
-          return of([]);
+          browseQuery = this.asfApiService.miniQuery(queryParams);
         }
-      }),
-    );
+
+        return browseQuery.pipe(
+          map((results) => {
+            let output = [...results];
+            if (scene.metadata.nisar.orbitType) {
+              output = output.concat(orbitEphemera);
+            }
+            return output;
+          }),
+        );
+      } else {
+        return of([]);
+      }
+    }),
+    tap((_) => this.dynamicQueryLoaded.set(true)),
+  );
 
   public getNisarL2Params(productID: string, productType: string) {
     return {

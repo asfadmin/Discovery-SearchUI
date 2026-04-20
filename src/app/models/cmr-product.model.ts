@@ -101,6 +101,8 @@ export interface OperaS1Metadata {
   additionalUrls: string[];
   s3Urls: string[];
   validityStartDate?: moment.Moment | null;
+  tileID?: string;
+  productVersion?: string;
 }
 
 export interface NISARMetadata {
@@ -113,6 +115,7 @@ export interface NISARMetadata {
   crid: string | null;
   rangeBandwidth: string;
   sizeMB?: Record<string, { bytes: number; format: string }>;
+  orbitType?: string;
 }
 
 export enum FlightDirection {

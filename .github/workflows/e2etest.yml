@@ -1,0 +1,47 @@
+name: Playwright Tests
+on:
+  push:
+    branches:
+      - test
+  pull_request:
+    branches:
+      - test
+      - prod
+permissions:
+  contents: read
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.59.1-noble
+      options: --user 1001
+    environment:
+      name: playwright
+      deployment: false
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        shardIndex: [1, 2, 3, 4]
+        shardTotal: [4]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: lts/*
+      - name: Install dependencies
+        run: npm ci
+      - name: Setup credentials
+        run: mkdir -p playwright/.auth
+      - name: Import Credentials
+        run: echo "${{ secrets.TEST_ACCOUNT_CREDS }}" | base64 --decode > playwright/.auth/creds.json
+      - name: Run Playwright tests
+        run: npm run e2e -- --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: blob-report-${{ matrix.shardIndex }}
+          path: blob-report
+          retention-days: 30

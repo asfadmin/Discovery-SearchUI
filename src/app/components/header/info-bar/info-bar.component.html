@@ -213,6 +213,18 @@
           </span>
         }
       </span>
+      <span>
+        @if (!!ariaVersion) {
+          <span>
+            <b> {{ 'ARIA_VERSION' | translate }}:</b> {{ ariaVersion }}
+          </span>
+        }
+      </span>
+      @if (!!tileID) {
+        <span>
+          <b> {{ 'TILE_ID' | translate }}:</b> {{ tileID }}
+        </span>
+      }
     </div>
     <div class="last-info">
       <app-ci-search></app-ci-search>

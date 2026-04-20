@@ -139,6 +139,29 @@
     </mat-hint> -->
     </mat-form-field>
   }
+  @if (dataset.id === 'OPERA-S1') {
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        (input)="onNewTileID()"
+        [(ngModel)]="tileID"
+        [placeholder]="'TILE_ID' | translate"
+      />
+    </mat-form-field>
+  }
+  @if (dataset.apiValue.dataset === 'ARIA S1 GUNW') {
+    <mat-form-field>
+      <mat-label> Version Number </mat-label>
+      <input
+        matInput
+        type="text"
+        placeholder="3.0.1"
+        (input)="onNewAriaVersionSelected($event.target.value)"
+        [(ngModel)]="ariaVersion"
+      />
+    </mat-form-field>
+  }
 
   @if (dataset.id === 'NISAR') {
     <app-short-name-selector
