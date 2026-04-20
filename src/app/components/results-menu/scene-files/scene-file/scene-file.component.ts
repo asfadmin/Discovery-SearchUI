@@ -85,6 +85,7 @@ import { fas, faSpinner } from '@fortawesome/free-solid-svg-icons';
     ReadableSizeFromBytesPipe,
     FullDatePipe,
     TranslateModule,
+    FontAwesomeModule,
   ],
 })
 export class SceneFileComponent implements OnInit, OnDestroy {
