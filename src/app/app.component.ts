@@ -153,6 +153,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     console.log('Toggling kiosk mode. Use "ctrl+/" to re-toggle');
     this.store$.dispatch(new searchStore.setSearchKioskMode(!this.kioskMode));
   }
+
   public ngOnInit(): void {
     console.log('To toggle kiosk mode, use "ctrl+/"');
     this.store$.dispatch(new hyp3Store.LoadCosts());
@@ -183,6 +184,24 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         .select(searchStore.getKioskMode)
         .subscribe((kioskMode) => (this.kioskMode = kioskMode)),
     );
+
+    this.subs.add(
+      this.store$
+        .select(searchStore.getHyp3PlusMode)
+        .subscribe((isHyp3PlusMode) => {
+          const iconPath = isHyp3PlusMode
+            ? '../assets/icons/hyp3_plus.svg'
+            : '../assets/icons/hyp3.svg';
+          this.matIconRegistry.addSvgIcon(
+            'hyp3',
+            this.domSanitizer.bypassSecurityTrustResourceUrl(iconPath),
+          );
+          if (isHyp3PlusMode) {
+            this.hyp3Service.setApiUrl('https://hyp3-plus.asf.alaska.edu');
+          }
+        }),
+    );
+
     this.subs.add(
       this.store$.select(uiStore.getHelpDialogTopic).subscribe((topic) => {
         const previousTopic = this.helpTopic;
@@ -327,10 +346,14 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     );
 
     this.subs.add(
-      this.store$.select(userStore.getUserProfile).subscribe((profile) => {
+      combineLatest([
+        this.store$.select(userStore.getUserProfile),
+        this.store$.select(searchStore.getHyp3PlusMode),
+      ]).subscribe(([profile, hyp3Plus]) => {
         if (
           profile.hyp3BackendUrl &&
-          profile.hyp3BackendUrl !== this.hyp3Service.baseUrl
+          profile.hyp3BackendUrl !== this.hyp3Service.baseUrl &&
+          !hyp3Plus
         ) {
           this.hyp3Service.setApiUrl(profile.hyp3BackendUrl);
           this.store$.dispatch(new searchStore.ClearSearch());
@@ -517,7 +540,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subs.add(this.ccService.revokeChoice$.subscribe((_) => _));
 
     const matIcons = [
-      'hyp3',
       'gridlines',
       'Earthquake_inactive',
       'Earthquake',
