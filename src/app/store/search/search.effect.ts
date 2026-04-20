@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, Action } from '@ngrx/store';
 
-import { of, forkJoin, combineLatest, Observable, EMPTY } from 'rxjs';
+import { of, forkJoin, combineLatest, Observable } from 'rxjs';
 import {
   map,
   withLatestFrom,
@@ -198,11 +198,21 @@ export class SearchEffects {
           return this.customProductsQuery$();
         } else if (searchType === SearchType.DISPLACEMENT) {
           return this.timeseriesQuery$();
+        } else {
+          this.logCountries();
+          return this.asfApiQuery$;
+        }
+      }),
+      catchError((err: HttpErrorResponse) => {
+        const errorMsg = err?.error?.error?.report;
+        if (errorMsg) {
+          return of(new SearchError(errorMsg));
+        }
+        if (err.status !== 400) {
+          return of(new SearchError('Unknown Error'));
         }
 
-        this.logCountries();
-
-        return this.asfApiQuery$;
+        return of(new SearchError('Error loading search results'));
       }),
     ),
   );
@@ -599,12 +609,6 @@ export class SearchEffects {
               })
             : new SearchCanceled(),
         ),
-        catchError((err: HttpErrorResponse) => {
-          if (err.status !== 400) {
-            return of(new SearchError('Unknown Error'));
-          }
-          return EMPTY;
-        }),
       ),
     ),
   );
@@ -632,12 +636,6 @@ export class SearchEffects {
                 })
               : new SearchCanceled();
           }),
-          catchError((err: HttpErrorResponse) => {
-            if (err.status !== 400) {
-              return of(new SearchError('Unknown Error'));
-            }
-            return EMPTY;
-          }),
         );
       }),
     );
@@ -662,10 +660,6 @@ export class SearchEffects {
             })
           : new SearchCanceled(),
       ),
-      catchError((error) => {
-        console.log(error);
-        return of(new SearchError('Error loading search results'));
-      }),
     );
   }
 
