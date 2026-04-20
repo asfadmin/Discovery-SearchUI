@@ -1,8 +1,5 @@
 name: Playwright Tests
 on:
-  push:
-    branches:
-      - test
   pull_request:
     branches:
       - test
@@ -27,8 +24,8 @@ jobs:
         shardIndex: [1, 2, 3, 4]
         shardTotal: [4]
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6.4
         with:
           node-version: lts/*
       - name: Install dependencies
