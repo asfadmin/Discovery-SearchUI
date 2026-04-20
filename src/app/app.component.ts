@@ -143,7 +143,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   public interactionTypes = models.MapInteractionModeType;
   public searchType: models.SearchType;
   public kioskMode = false;
-  private hyp3plus = false;
 
   private helpTopic: string | null;
 
@@ -153,12 +152,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   handleKeyDown(_event: Event) {
     console.log('Toggling kiosk mode. Use "ctrl+/" to re-toggle');
     this.store$.dispatch(new searchStore.setSearchKioskMode(!this.kioskMode));
-  }
-
-  @HostListener(`window:keydown.control.'`, ['$event'])
-  handleKeyDown2(_event: Event) {
-    console.log(`Toggling hyp3+ mode. Use "ctrl+'" to re-toggle`);
-    this.store$.dispatch(new searchStore.SetHyp3PlusMode(!this.hyp3plus));
   }
 
   public ngOnInit(): void {
@@ -199,8 +192,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           const iconPath = isHyp3PlusMode
             ? '../assets/icons/hyp3_plus.svg'
             : '../assets/icons/hyp3.svg';
-          this.hyp3plus = isHyp3PlusMode;
-          console.log(isHyp3PlusMode, iconPath);
           this.matIconRegistry.addSvgIcon(
             'hyp3',
             this.domSanitizer.bypassSecurityTrustResourceUrl(iconPath),
