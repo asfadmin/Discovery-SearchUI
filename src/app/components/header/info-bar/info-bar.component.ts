@@ -294,9 +294,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$.select(userStore.getUserProfile).subscribe((profile) => {
         this.hyp3BackendUrl = profile.hyp3BackendUrl;
-        if (this.hyp3BackendUrl) {
-          this.hyp3.setApiUrl(this.hyp3BackendUrl);
-        } else {
+        if (!this.hyp3BackendUrl) {
           this.hyp3BackendUrl = this.hyp3.apiUrl;
         }
       }),

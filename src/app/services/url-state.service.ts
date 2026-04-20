@@ -21,6 +21,7 @@ import * as filterStore from '@store/filters';
 import * as uiStore from '@store/ui';
 import {
   MakeSearch,
+  SetHyp3PlusMode,
   setSearchKioskMode,
   SetSearchType,
 } from '@store/search/search.action';
@@ -67,6 +68,8 @@ export class UrlStateService {
     'displacement-test.asf.alaska.edu',
   ];
 
+  private hyp3PlusNames = ['vertex-plus.asf.alaska.edu'];
+
   public isDefaultSearch$ = this.activatedRoute.queryParams.pipe(
     map((params) => {
       const keys = Object.keys(params);
@@ -82,6 +85,11 @@ export class UrlStateService {
     this.kioskMode = this.displacementHostNames.includes(
       window.location.hostname,
     );
+
+    const hyp3Plus = this.hyp3PlusNames.includes(window.location.hostname);
+    if (hyp3Plus) {
+      this.store$.dispatch(new SetHyp3PlusMode(true));
+    }
     let params = [];
     if (this.kioskMode) {
       this.store$.dispatch(new setSearchKioskMode(true));

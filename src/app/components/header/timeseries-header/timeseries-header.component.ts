@@ -39,7 +39,9 @@ export class TimeseriesHeaderComponent implements OnInit, OnDestroy {
   private themingService = inject(ThemingService);
 
   public breakpoint$ = this.screenSize.breakpoint$;
-  public isDarkMode$ = this.themingService.theme$.pipe(map(theme => theme === 'dark'));
+  public isDarkMode$ = this.themingService.theme$.pipe(
+    map((theme) => theme === 'dark'),
+  );
   public breakpoints = models.Breakpoints;
   public isDrawing = false;
   public flightDirections: models.FlightDirection[];
