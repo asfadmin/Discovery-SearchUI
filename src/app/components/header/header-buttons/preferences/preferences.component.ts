@@ -143,9 +143,9 @@ export class PreferencesComponent implements OnInit, OnDestroy {
         this.currentTheme = profile.theme;
         this.defaultLanguage = profile.language;
 
-        if (this.hyp3BackendUrl && this.hyp3.apiUrl.includes('plus')) {
+        if (this.hyp3BackendUrl && !this.hyp3.apiUrl.includes('plus')) {
           this.hyp3.setApiUrl(this.hyp3BackendUrl);
-        } else {
+        } else if (!this.hyp3.apiUrl.includes('plus')) {
           this.hyp3BackendUrl = this.hyp3.apiUrl;
         }
 
