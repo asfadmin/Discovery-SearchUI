@@ -14,6 +14,7 @@ export enum SearchActionType {
   ENABLE_SEARCH = '[Search] Enable Search',
   DISABLE_SEARCH = '[Search] Disable Search',
 
+  SET_HYP3_PLUS_MODE = '[Search] Set Vertex to hyp3 plus version',
   SET_NEXT_JOBS_URL = '[Search] Sets the next url to search for user jobs',
   HYP3_BATCH_RESPONSE = '[Search] Hyp3 Response Batch',
   SET_SEARCH_AMOUNT = '[Search] Set Search Results Amount',
@@ -28,6 +29,7 @@ export enum SearchActionType {
   EVENT_PRODUCT_CMR_RESPONSE = '[Search] Event Monitoring CMR Search Response',
   SET_SEARCH_OUT_OF_DATE = '[Search] Set if Search is Out of Date',
   SET_SEARCH_KIOSK_MODE = '[Search] Set Vertex to kiosk mode for Opera Displacement',
+
 }
 
 export class MakeSearch implements Action {
@@ -144,6 +146,12 @@ export class setSearchKioskMode implements Action {
   constructor(public payload: boolean) {}
 }
 
+export class SetHyp3PlusMode implements Action {
+  public readonly type = SearchActionType.SET_HYP3_PLUS_MODE;
+
+  constructor(public payload: boolean) {}
+}
+
 export type SearchActions =
   | MakeSearch
   | SetSearchAmount
@@ -162,4 +170,5 @@ export type SearchActions =
   | SarviewsEventsResponse
   | TimeseriesSearchResponse
   | SetSearchOutOfDate
-  | setSearchKioskMode;
+  | setSearchKioskMode
+  | SetHyp3PlusMode;

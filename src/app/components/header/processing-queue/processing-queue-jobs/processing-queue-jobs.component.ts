@@ -78,6 +78,7 @@ export class ProcessingQueueJobsComponent implements OnInit {
 
   @Input() areJobsLoading: boolean;
   @Input() costPerJob: number;
+  @Input() isHyp3PlusMode: boolean;
 
   @Input() set jobs(val: models.QueuedHyp3Job[]) {
     this.jobs$.next(val);

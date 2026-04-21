@@ -78,6 +78,8 @@ export class SearchTypeSelectorComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
   public isReadMore = true;
 
+  public isHyp3Plus = this.store$.selectSignal(searchStore.getHyp3PlusMode);
+
   public searchTypeSelectors: {
     search: models.SearchTypeSelector[];
     tools: models.SearchTypeSelector[];
