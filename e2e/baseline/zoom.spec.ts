@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('Results Menu Export CSV', async ({ page }) => {
+test('Baseline zoom to results', async ({ page }) => {
   page.goto('/');
   await page.getByRole('button', { name: 'Geographic Search' }).click();
   await page
@@ -17,7 +17,10 @@ test('Results Menu Export CSV', async ({ page }) => {
     .locator('#mat-button-toggle-6-button')
     .getByRole('button', { name: 'SEARCH' })
     .click();
-  await page.locator('#mat-button-toggle-13-button').click();
+  await page
+    .getByRole('radiogroup')
+    .filter({ hasText: 'settings_overscan' })
+    .click();
   await page.waitForTimeout(1500);
   await page.mouse.move(800, 600);
   await expect(page.locator('app-map-info')).toContainText('lat -20.');
