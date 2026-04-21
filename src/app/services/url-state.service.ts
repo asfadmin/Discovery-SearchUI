@@ -68,7 +68,10 @@ export class UrlStateService {
     'displacement-test.asf.alaska.edu',
   ];
 
-  private hyp3PlusNames = ['vertex-plus.asf.alaska.edu'];
+  private hyp3PlusNames = [
+    'vertex-plus.asf.alaska.edu',
+    'vertex-plus-test.asf.alaska.edu',
+  ];
 
   public isDefaultSearch$ = this.activatedRoute.queryParams.pipe(
     map((params) => {
