@@ -169,15 +169,19 @@ export class MapEffects {
         withLatestFrom(this.store$.select(getSearchType)),
         filter(([product, searchType]) => {
           if (searchType === SearchType.LIST) {
-            return (
+            const isAllowed =
               product.dataset === 'ALOS' ||
               product.dataset === 'Sentinel-1A' ||
               product.dataset === 'Sentinel-1B' ||
               product.dataset === 'Sentinel-1C' ||
               product.dataset === 'Sentinel-1 Interferogram (BETA)' ||
-              product.dataset === 'UAVSAR' ||
-              product.dataset === 'NISAR'
-            );
+              product.dataset === 'UAVSAR';
+
+            if (!isAllowed) {
+              this.store$.dispatch(new ClearBrowseOverlays());
+            }
+
+            return isAllowed;
           } else if (searchType === SearchType.CUSTOM_PRODUCTS) {
             const failed =
               product.metadata.job?.status_code ===
