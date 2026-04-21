@@ -8,7 +8,7 @@
   cdkDragBoundary=".cdk-global-overlay-wrapper"
 >
   <div class="pq-card-title-group">
-    <div style="display: flex">
+    <div style="display: flex; margin: 5px">
       <div class="on-demand-branding">
         <mat-icon
           class="on-demand-icon"
@@ -29,7 +29,11 @@
             {{ 'ON_DEMAND' | translate }}
           </div>
           <div class="on-demand-subtitle">
-            {{ 'POWERED_BY_HY_P3' | translate }}
+            @if (!isHyp3PlusMode) {
+              {{ 'POWERED_BY_HYP3' | translate }}
+            } @else {
+              {{ 'POWERED_BY_HYP3_PLUS' | translate }}
+            }
           </div>
         </div>
       }
@@ -257,7 +261,11 @@
               ) {
                 <div class="w100 error-header">
                   <div style="padding-left: 10px">
-                    <b>{{ 'NO_CREDITS_LEFT_THIS_MONTH' | translate }}</b>
+                    @if (!isHyp3PlusMode) {
+                      <b>{{ 'NO_CREDITS_LEFT_THIS_MONTH' | translate }}</b>
+                    } @else {
+                      <b>{{ 'NO_CREDITS_LEFT' | translate }}</b>
+                    }
                   </div>
                   <div>
                     <button (click)="onCloseDialog()" mat-flat-button>
@@ -274,23 +282,25 @@
                       [jobs]="jobs"
                       [costPerJob]="costPerJobByType[selectedJobTypeId]"
                       [areJobsLoading]="areJobsLoading"
+                      [isHyp3PlusMode]="isHyp3PlusMode"
                       (removeJob)="onRemoveJob($event)"
                     >
                     </app-processing-queue-jobs>
                   </div>
                 </div>
-              }
-
-              @if (breakpoint === breakpoints.MOBILE) {
+              } @else {
                 <div>
                   <div class="jobs-display--mobile">
-                    <app-processing-queue-jobs
-                      [jobs]="jobs"
-                      [costPerJob]="costPerJobByType[selectedJobTypeId]"
-                      [areJobsLoading]="areJobsLoading"
-                      (removeJob)="onRemoveJob($event)"
-                    >
-                    </app-processing-queue-jobs>
+                    <div class="jobs-list-panel">
+                      <app-processing-queue-jobs
+                        [jobs]="jobs"
+                        [costPerJob]="costPerJobByType[selectedJobTypeId]"
+                        [areJobsLoading]="areJobsLoading"
+                        [isHyp3PlusMode]="isHyp3PlusMode"
+                        (removeJob)="onRemoveJob($event)"
+                      >
+                      </app-processing-queue-jobs>
+                    </div>
                   </div>
                 </div>
               }
@@ -531,6 +541,15 @@
           <span> {{ 'LOADING' | translate }}... </span>
         }
       </button>
+      @if (isHyp3PlusMode) {
+        <a
+          href="https://hyp3-docs.asf.alaska.edu/about/hyp3_plus/#purchasing-credits"
+          target="_blank"
+          mat-flat-button
+        >
+          {{ 'PURCHASE_CREDITS' | translate }}
+        </a>
+      }
     </div>
   </div>
 </mat-dialog-actions>
