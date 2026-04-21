@@ -4,6 +4,7 @@ import {
   OnInit,
   ViewChild,
   inject,
+  DestroyRef,
 } from '@angular/core';
 import {
   MatDialog,
@@ -12,6 +13,7 @@ import {
   MatDialogContent,
   MatDialogActions,
 } from '@angular/material/dialog';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 
@@ -23,6 +25,7 @@ import { delay } from 'rxjs/operators';
 import { ApplicationStatus } from '@models';
 
 import * as queueStore from '@store/queue';
+import * as searchStore from '@store/search';
 import * as hyp3Store from '@store/hyp3';
 import * as userStore from '@store/user';
 import * as uiStore from '@store/ui';
@@ -99,6 +102,7 @@ export class ProcessingQueueComponent implements OnInit {
     inject<MatDialogRef<ProcessingQueueComponent>>(MatDialogRef);
   private store$ = inject<Store<AppState>>(Store);
   private screenSize = inject(services.ScreenSizeService);
+  private destroyRef = inject(DestroyRef);
 
   readonly ApplicationStatus = ApplicationStatus;
 
@@ -111,6 +115,7 @@ export class ProcessingQueueComponent implements OnInit {
   public jobs: models.QueuedHyp3Job[] = [];
   public user = '';
   public isUserLoggedIn = false;
+  public isHyp3PlusMode = false;
   public isUserLoading = true;
   public remaining = 0;
   public isUnlimitedUser = false;
@@ -149,6 +154,7 @@ export class ProcessingQueueComponent implements OnInit {
 
     this.store$
       .select(hyp3Store.getIsHyp3UserLoading)
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((isUserLoading) => {
         this.isUserLoading = isUserLoading;
       });
@@ -157,94 +163,110 @@ export class ProcessingQueueComponent implements OnInit {
       this.store$.select(queueStore.getQueuedJobs),
       this.store$.select(hyp3Store.getCosts),
       this.store$.select(hyp3Store.getProcessingOptions),
-    ).subscribe(([jobs, costs, options]) => {
-      const jobTypes: models.Hyp3JobType[] = Object.values(
-        jobs
-          .map((job) => job.job_type)
-          .reduce((types, jobType) => {
-            types[jobType.id] = jobType;
-            return types;
-          }, {}),
-      );
-
-      this.hyp3JobTypesList = jobTypes as any;
-
-      if (!this.selectedJobTypeId) {
-        this.selectDefaultJobType();
-      }
-
-      this.allJobs = jobs;
-      this.jobs = jobs.filter(
-        (job) => job.job_type.id === this.selectedJobTypeId,
-      );
-
-      this.processingOptions = options;
-
-      this.jobTypesWithQueued = jobTypes.map((jobType) => {
-        const costPerJob = this.hyp3.calculateCredits(
-          options[jobType.id],
-          costs[jobType.id],
-        );
-        this.costPerJobByType[jobType.id] = costPerJob;
-
-        const jobsFiltered = this.allJobs.filter(
-          (job) => job.job_type.id === jobType.id,
+    )
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(([jobs, costs, options]) => {
+        const jobTypes: models.Hyp3JobType[] = Object.values(
+          jobs
+            .map((job) => job.job_type)
+            .reduce((types, jobType) => {
+              types[jobType.id] = jobType;
+              return types;
+            }, {}),
         );
 
-        return {
-          jobType: jobType,
-          selected: true,
-          jobs: jobsFiltered,
-          creditTotal: costPerJob * jobsFiltered.length,
-        };
+        this.hyp3JobTypesList = jobTypes as any;
+
+        if (!this.selectedJobTypeId) {
+          this.selectDefaultJobType();
+        }
+
+        this.allJobs = jobs;
+        this.jobs = jobs.filter(
+          (job) => job.job_type.id === this.selectedJobTypeId,
+        );
+
+        this.processingOptions = options;
+
+        this.jobTypesWithQueued = jobTypes.map((jobType) => {
+          const costPerJob = this.hyp3.calculateCredits(
+            options[jobType.id],
+            costs[jobType.id],
+          );
+          this.costPerJobByType[jobType.id] = costPerJob;
+
+          const jobsFiltered = this.allJobs.filter(
+            (job) => job.job_type.id === jobType.id,
+          );
+
+          return {
+            jobType: jobType,
+            selected: true,
+            jobs: jobsFiltered,
+            creditTotal: costPerJob * jobsFiltered.length,
+          };
+        });
+
+        this.totalCreditCost = this.jobTypesWithQueued.reduce(
+          (total, jobType) => {
+            total += jobType.creditTotal;
+            return total;
+          },
+          0,
+        );
       });
 
-      this.totalCreditCost = this.jobTypesWithQueued.reduce(
-        (total, jobType) => {
-          total += jobType.creditTotal;
-          return total;
-        },
-        0,
-      );
-    });
+    this.store$
+      .select(hyp3Store.getHyp3User)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((user) => {
+        if (user === null) {
+          return;
+        }
 
-    this.store$.select(hyp3Store.getHyp3User).subscribe((user) => {
-      if (user === null) {
-        return;
-      }
+        this.user = user.user_id;
+        this.isUnlimitedUser = user.quota.unlimited;
+        this.remaining = user.quota.remaining;
+        this.userStatus = user.application_status;
+        if (
+          this.userStatus === ApplicationStatus.NOT_STARTED ||
+          this.userStatus === ApplicationStatus.PENDING ||
+          this.userStatus === ApplicationStatus.REJECTED
+        ) {
+          this.isSignupSelected = true;
+          this.selectedJobTypeId = null;
+        } else if (
+          this.isSignupSelected &&
+          this.userStatus === ApplicationStatus.APPROVED
+        ) {
+          this.isSignupSelected = false;
+          this.selectDefaultJobType();
+        }
+      });
 
-      this.user = user.user_id;
-      this.isUnlimitedUser = user.quota.unlimited;
-      this.remaining = user.quota.remaining;
-      this.userStatus = user.application_status;
-      if (
-        this.userStatus === ApplicationStatus.NOT_STARTED ||
-        this.userStatus === ApplicationStatus.PENDING ||
-        this.userStatus === ApplicationStatus.REJECTED
-      ) {
-        this.isSignupSelected = true;
-        this.selectedJobTypeId = null;
-      } else if (
-        this.isSignupSelected &&
-        this.userStatus === ApplicationStatus.APPROVED
-      ) {
-        this.isSignupSelected = false;
-        this.selectDefaultJobType();
-      }
-    });
-
-    this.screenSize.breakpoint$.subscribe(
-      (breakpoint) => (this.breakpoint = breakpoint),
-    );
+    this.screenSize.breakpoint$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((breakpoint) => (this.breakpoint = breakpoint));
 
     this.store$
       .select(hyp3Store.getProcessingProjectName)
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((projectName) => (this.projectName = projectName));
 
-    this.store$.select(userStore.getIsUserLoggedIn).subscribe((isLoggedIn) => {
-      this.isUserLoggedIn = isLoggedIn;
-      this.updateContentBottomHeight();
-    });
+    this.store$
+      .select(userStore.getIsUserLoggedIn)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((isLoggedIn) => {
+        this.isUserLoggedIn = isLoggedIn;
+        this.updateContentBottomHeight();
+      });
+
+    this.store$
+      .select(searchStore.getHyp3PlusMode)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((isHyp3PlusMode) => {
+        this.isHyp3PlusMode = isHyp3PlusMode;
+      });
 
     if (!this.isUserLoggedIn && !this.isUserLoading) {
       if (this.errorHeaderRef !== undefined) {
