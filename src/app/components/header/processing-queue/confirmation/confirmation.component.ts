@@ -147,7 +147,7 @@ export class ConfirmationComponent implements OnInit {
 
     this.isQueueSubmitProcessing = true;
     this.progress = 0;
-    this.validateOnly = true;
+    this.validateOnly = false;
 
     from(hyp3JobRequestBatches)
       .pipe(
