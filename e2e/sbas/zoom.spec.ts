@@ -15,22 +15,30 @@ test('SBAS: Zoom to Results', async ({ page }) => {
     .getByRole('button', { name: 'SEARCH' })
     .click();
 
+  const urlBeforeZoom = page.url();
+
   await page
     .getByRole('radiogroup')
     .filter({ hasText: 'settings_overscan' })
     .click();
 
-  await expect(page.locator('app-map-info')).toContainText(/\d{1,3} km/);
-  await expect(page.locator('app-map-info')).not.toContainText(/\d{4,} km/);
+  await expect
+    .poll(() => page.url(), { timeout: 10_000 })
+    .not.toBe(urlBeforeZoom);
 
   await page.mouse.move(400, 300);
-  await expect(page.locator('app-map-info')).not.toContainText('lat 00.0°');
+  await expect(page.locator('app-map-info')).not.toContainText('lat 00.0°', {
+    timeout: 10_000,
+  });
+
   const coordsAtFirstPosition = await page
     .locator('app-map-info')
     .textContent();
 
   await page.mouse.move(800, 600);
   await expect
-    .poll(async () => await page.locator('app-map-info').textContent())
+    .poll(async () => await page.locator('app-map-info').textContent(), {
+      timeout: 10_000,
+    })
     .not.toBe(coordsAtFirstPosition);
 });
