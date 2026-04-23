@@ -3,6 +3,14 @@
 </div>
 
 <mat-dialog-content class="h100 w100">
+  <mat-slide-toggle
+    style="margin-right: 16px; padding-bottom: 16px"
+    (change)="onValidateOnlyToggle($event.checked)"
+    [(ngModel)]="env.validateOnlyHyp3"
+  >
+  Validate Only HyP3
+  </mat-slide-toggle>
+
   <form #envForm="ngForm">
     <mat-form-field class="w100">
       <mat-label>{{ 'ENVIRONMENT_FILE' | translate }}</mat-label>

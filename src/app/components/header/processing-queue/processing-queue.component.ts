@@ -131,7 +131,6 @@ export class ProcessingQueueComponent implements OnInit {
 
   public projectName = '';
   public processingOptions: models.Hyp3ProcessingOptions;
-  public validateOnly = false;
 
   public hyp3JobTypes = models.hyp3JobTypes;
   public hyp3JobTypesList: models.Hyp3JobType[];
@@ -306,7 +305,7 @@ export class ProcessingQueueComponent implements OnInit {
         jobTypesWithQueued: this.jobTypesWithQueued,
         projectName: this.projectName,
         processingOptions: this.processingOptions,
-        validateOnly: this.validateOnly,
+        validateOnly: this.env.validateOnlyHyp3,
       },
     });
 
@@ -316,7 +315,7 @@ export class ProcessingQueueComponent implements OnInit {
       }
 
       if (this.env.maturity === 'prod') {
-        this.validateOnly = false;
+        this.env.validateOnlyHyp3 = false;
       }
 
       this.onSubmitQueue();
@@ -454,7 +453,7 @@ export class ProcessingQueueComponent implements OnInit {
   }
 
   public onValidateOnlyToggle(val: boolean): void {
-    this.validateOnly = val;
+    this.env.validateOnlyHyp3 = val;
   }
 
   private selectDefaultJobType(): void {

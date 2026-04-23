@@ -12,6 +12,7 @@ import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { MatButton } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-customize-env',
@@ -32,10 +33,11 @@ import { TranslateModule } from '@ngx-translate/core';
     MatDialogActions,
     MatButton,
     TranslateModule,
+    MatSlideToggle,
   ],
 })
 export class CustomizeEnvComponent implements OnInit {
-  private env = inject(EnvironmentService);
+  public env = inject(EnvironmentService);
   private notificationService = inject(NotificationService);
 
   public envStr: string;
@@ -77,5 +79,9 @@ export class CustomizeEnvComponent implements OnInit {
     localStorage.removeItem('customEnv-1');
     this.env.resetToDefault();
     this.envStr = JSON.stringify(this.env.envs, null, 2);
+  }
+
+  public onValidateOnlyToggle(validateOnly: boolean) {
+    this.env.validateOnlyHyp3 = validateOnly;
   }
 }

@@ -491,7 +491,7 @@
         <mat-slide-toggle
           style="margin-right: 16px"
           (change)="onValidateOnlyToggle($event.checked)"
-          [(ngModel)]="validateOnly"
+          [(ngModel)]="env.validateOnlyHyp3"
         >
           {{ 'VALIDATE_ONLY' | translate }}
         </mat-slide-toggle>

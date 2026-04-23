@@ -37,6 +37,7 @@ export class EnvironmentService {
   public envs: Environments;
   public maturity: string;
   public isProd: boolean;
+  public validateOnlyHyp3 = false;
 
   constructor() {
     this.isProd = env.defaultEnv === 'prod';
