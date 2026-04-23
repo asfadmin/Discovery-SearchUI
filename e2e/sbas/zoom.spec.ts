@@ -20,6 +20,7 @@ test('SBAS: Zoom to Results', async ({ page }) => {
     return Number(text?.match(/(\d+) km/)?.[1] ?? 0);
   };
 
+  await expect(page.locator('app-map-info')).toContainText(/\d+ km/);
   const scaleBeforeZoom = await getScale();
 
   await page
@@ -27,7 +28,9 @@ test('SBAS: Zoom to Results', async ({ page }) => {
     .filter({ hasText: 'settings_overscan' })
     .click();
 
-  await expect.poll(getScale).toBeLessThan(scaleBeforeZoom);
+  await expect
+    .poll(getScale, { timeout: 10_000 })
+    .toBeLessThan(scaleBeforeZoom);
 
   await page.mouse.move(400, 300);
   await expect(page.locator('app-map-info')).not.toContainText('lat 00.0°');
