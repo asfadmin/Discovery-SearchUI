@@ -30,8 +30,9 @@ jobs:
         run: npm ci
       - name: Setup credentials
         run: mkdir -p playwright/.auth
-      - name: Import Credentials
-        run: echo "${{ secrets.TEST_ACCOUNT_CREDS }}" | base64 --decode > playwright/.auth/creds.json
+      # - name: Import Credentials
+      #   run: echo "${{ secrets.TEST_ACCOUNT_CREDS }}" | base64 --decode > playwright/.auth/creds.json
+      # adjust to environment based
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Playwright tests
@@ -39,7 +40,7 @@ jobs:
       - uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
-          name: blob-report-${{ matrix.shardIndex }}
+          name: blob-report-${{ matrix.shardIndex }}-${{ matrix.os }}
           path: blob-report
           retention-days: 30
   merge-reports:
