@@ -24,10 +24,19 @@ test('SBAS: Download All Pairs', async ({ page }) => {
     .getByRole('radiogroup')
     .filter({ hasText: 'add_shopping_cart' })
     .click();
-  await page
-    .getByRole('menuitem', { name: /Add \d+ Files to downloads/ })
-    .click();
+
+  const addMenuItem = page.getByRole('menuitem', {
+    name: /Add [1-9]\d* Files to downloads/,
+  });
+  const menuText = (await addMenuItem.textContent()) ?? '';
+  const fileCount = menuText.match(/Add ([1-9]\d*)/)?.[1];
+  expect(fileCount).toBeTruthy();
+  await addMenuItem.click();
+
   await page.getByRole('button', { name: 'Downloads' }).click();
 
-  await expect(page.locator('.dl-subtitle')).toContainText('Files');
+  await expect(page.locator('.dl-subtitle')).toContainText(`${fileCount} Files`);
+  await expect(page.locator('.dl-mat-dialog-content mat-list-item')).toHaveCount(
+    Number(fileCount),
+  );
 });
