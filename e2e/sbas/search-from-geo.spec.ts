@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { waitForASFAPIResponse } from 'e2e/helpers';
 
 test('SBAS: Search for a Scene from Geo Search', async ({ page }) => {
   await page.goto('/');
@@ -20,7 +21,10 @@ test('SBAS: Search for a Scene from Geo Search', async ({ page }) => {
     .click();
 
   await page.locator('app-scene').first().click();
+
+  const sbasSearch = waitForASFAPIResponse(page);
   await page.getByRole('button', { name: 'SBAS', exact: true }).click();
+  await sbasSearch;
 
   await expect(page.locator('app-scenes-list-header')).toContainText('Pairs');
 });
