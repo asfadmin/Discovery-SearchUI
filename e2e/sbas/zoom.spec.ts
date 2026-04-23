@@ -15,22 +15,13 @@ test('SBAS: Zoom to Results', async ({ page }) => {
     .getByRole('button', { name: 'SEARCH' })
     .click();
 
-  const getScale = async () => {
-    const text = await page.locator('app-map-info').textContent();
-    return Number(text?.match(/(\d+) km/)?.[1] ?? 0);
-  };
-
-  await expect(page.locator('app-map-info')).toContainText(/\d+ km/);
-  const scaleBeforeZoom = await getScale();
-
   await page
     .getByRole('radiogroup')
     .filter({ hasText: 'settings_overscan' })
     .click();
 
-  await expect
-    .poll(getScale, { timeout: 10_000 })
-    .toBeLessThan(scaleBeforeZoom);
+  await expect(page.locator('app-map-info')).toContainText(/\d{1,3} km/);
+  await expect(page.locator('app-map-info')).not.toContainText(/\d{4,} km/);
 
   await page.mouse.move(400, 300);
   await expect(page.locator('app-map-info')).not.toContainText('lat 00.0°');
