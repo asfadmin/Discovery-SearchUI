@@ -36,9 +36,38 @@ jobs:
         run: echo "${{ secrets.TEST_ACCOUNT_CREDS }}" | base64 --decode > playwright/.auth/creds.json
       - name: Run Playwright tests
         run: npm run e2e -- --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: blob-report-${{ matrix.shardIndex }}
           path: blob-report
           retention-days: 30
+  merge-reports:
+    if: ${{ !cancelled() }}
+    needs: [test]
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download blob reports from GitHub Actions Artifacts
+        uses: actions/download-artifact@v8
+        with:
+          path: all-blob-reports
+          pattern: blob-report-*
+          merge-multiple: true
+
+      - name: Merge into HTML Report
+        run: npx playwright merge-reports --reporter html ./all-blob-reports
+
+      - name: Upload HTML report
+        uses: actions/upload-artifact@v7
+        with:
+          name: html-report--attempt-${{ github.run_attempt }}
+          path: playwright-report
+          retention-days: 14
