@@ -1,0 +1,36 @@
+import { test, expect } from '@playwright/test';
+import * as fs from 'fs';
+import { parse } from 'csv-parse/sync';
+
+test('Results Menu Export CSV', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Geographic Search' }).click();
+  await page
+    .getByRole('menuitem', { name: 'Baseline Baseline search' })
+    .click();
+  await page.getByRole('region', { name: 'Scene' }).getByLabel('Scene').click();
+  await page
+    .getByRole('region', { name: 'Scene' })
+    .getByLabel('Scene')
+    .fill(
+      'S1B_IW_SLC__1SDV_20210128T101605_20210128T101636_025353_030505_9FF1',
+    );
+
+  await page
+    .locator('#mat-button-toggle-6-button')
+    .getByRole('button', { name: 'SEARCH' })
+    .click();
+  await page.getByRole('radiogroup').filter({ hasText: 'get_app' }).click();
+  await page.getByRole('menuitem', { name: 'Metadata' }).click();
+  const downloadPromise = page.waitForEvent('download');
+  await page.getByRole('menuitem', { name: 'csv' }).click();
+  const download = await downloadPromise;
+  const path = await download.path();
+
+  const records = parse(fs.readFileSync(path), {
+    columns: true,
+    skip_empty_lines: true,
+  });
+
+  expect(records[1]).not.toBe('');
+});
