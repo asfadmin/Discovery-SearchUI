@@ -40,15 +40,10 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
 
   private costs: models.Hyp3Costs;
   private processingOptions: Hyp3ProcessingOptions;
-  private projectName = '';
   private validateOnly = false;
   public remaining = 0;
 
   ngOnInit(): void {
-    this.store$
-      .select(hyp3Store.getProcessingProjectName)
-      .subscribe((projectName) => (this.projectName = projectName));
-
     this.store$
       .select(hyp3Store.getProcessingOptions)
       .subscribe((options) => (this.processingOptions = options));
@@ -156,7 +151,6 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
       maxHeight: '500px',
       data: {
         jobTypesWithQueued: jobTypesWithQueued,
-        projectName: this.projectName,
         processingOptions: options,
         validateOnly: this.validateOnly,
       },
