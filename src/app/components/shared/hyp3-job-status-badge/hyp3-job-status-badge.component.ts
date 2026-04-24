@@ -33,9 +33,11 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
   private store$ = inject<Store<AppState>>(Store);
 
   @Input() job: Hyp3Job;
-  @Input() isFileDetails = true;
 
-  private jobs: models.Hyp3Job[];
+  public projectJobs: models.Hyp3Job[];
+  public expiredJobs: models.Hyp3Job[];
+  public failedJobs: models.Hyp3Job[];
+
   private costs: models.Hyp3Costs;
   private processingOptions: Hyp3ProcessingOptions;
   private projectName = '';
@@ -64,7 +66,12 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
     });
 
     this.scenesService.scenes$.subscribe((scenes) => {
-      this.jobs = scenes.map((scene) => scene.metadata.job);
+      this.projectJobs = scenes
+        .map((scene) => scene.metadata.job)
+        .filter((job) => this.job.name && this.job.name === job.name);
+
+      this.expiredJobs = this.projectJobs.filter((job) => this.isExpired(job));
+      this.failedJobs = this.projectJobs.filter((job) => this.isFailed(job));
     });
   }
 
@@ -84,7 +91,7 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
     return this.hyp3JobStatus.isRunning(job);
   }
 
-  public onReviewExpiredJob() {
+  public onSubmitExpiredJob() {
     const jobType = models.hyp3JobTypes[this.job.job_type as string];
 
     const job = {
@@ -96,24 +103,17 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
     this.openConfirmationDialog(jobType, job);
   }
 
-  public onReviewExpiredJobs() {
+  public onQueueJobs(jobs: Hyp3Job[]) {
     const job_types = hyp3JobTypes;
 
-    const projectJobs = this.jobs
-      .filter(
-        (job) =>
-          job.name === this.job.name &&
-          this.isExpired(job) &&
-          !this.isFailed(job),
-      )
-      .map((job) => {
-        return {
-          granules: job.scenes,
-          job_type: job_types[job.job_type as string],
-        } as QueuedHyp3Job;
-      });
+    const jobsToQueue = jobs.map((job) => {
+      return {
+        granules: job.scenes,
+        job_type: job_types[job.job_type as string],
+      } as QueuedHyp3Job;
+    });
 
-    this.store$.dispatch(new queueStore.AddJobs(projectJobs));
+    this.store$.dispatch(new queueStore.AddJobs(jobsToQueue));
   }
 
   private openConfirmationDialog(jobType: models.Hyp3JobType, job) {
