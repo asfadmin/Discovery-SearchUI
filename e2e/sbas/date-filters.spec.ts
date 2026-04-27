@@ -18,8 +18,8 @@ test('SBAS Start & End Date Filters', async ({ page }) => {
   const sbasFiltersButton = page
     .locator('mat-button-toggle')
     .filter({ hasText: 'SBAS Filters' });
-  await expect(sbasFiltersButton).toBeVisible();
-  await sbasFiltersButton.click({ force: true });
+  await expect(sbasFiltersButton).toBeVisible({ timeout: 20_000 });
+  await sbasFiltersButton.click();
 
   await page.getByRole('textbox', { name: 'Start Date' }).fill('9/1/2018');
   await page.getByRole('textbox', { name: 'End Date' }).fill('11/1/2020');

@@ -16,16 +16,22 @@ test('SBAS: Download All Pairs', async ({ page }) => {
     .getByRole('button', { name: 'SEARCH' })
     .click();
 
-  await expect(
-    page.locator('mat-button-toggle').filter({ hasText: 'SBAS Filters' }),
-  ).toBeVisible();
+  const sbasFiltersButton = page
+    .locator('mat-button-toggle')
+    .filter({ hasText: 'SBAS Filters' });
+  await expect(sbasFiltersButton).toBeVisible({ timeout: 20_000 });
 
-  const queueButton = page
-    .locator('mat-icon')
-    .filter({ hasText: 'add_shopping_cart' })
-    .first();
-  await expect(queueButton).toBeVisible();
-  await queueButton.click({ force: true });
+  const scenesListHeader = page.locator('app-scenes-list-header');
+  await expect(scenesListHeader).toContainText(/\d+\s+Pairs?/i, {
+    timeout: 20_000,
+  });
+
+  const queueButton = scenesListHeader
+    .locator('.list-button-group')
+    .filter({ hasText: /QUEUE/i })
+    .locator('mat-button-toggle.control-mat-button-toggle');
+  await expect(queueButton).toBeVisible({ timeout: 20_000 });
+  await queueButton.click();
 
   const addMenuItem = page.getByRole('menuitem', {
     name: /Add [1-9]\d* Files to downloads/,
