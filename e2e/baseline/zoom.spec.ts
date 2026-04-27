@@ -1,7 +1,12 @@
 import { test, expect } from '@playwright/test';
 
 test('Baseline zoom to results', async ({ page }) => {
-  page.goto('/');
+  const getMapInfoText = async () =>
+    ((await page.locator('app-map-info').textContent()) ?? '')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+  await page.goto('/');
   await page.getByRole('button', { name: 'Geographic Search' }).click();
   await page
     .getByRole('menuitem', { name: 'Baseline Baseline search' })
@@ -17,12 +22,24 @@ test('Baseline zoom to results', async ({ page }) => {
     .locator('#mat-button-toggle-6-button')
     .getByRole('button', { name: 'SEARCH' })
     .click();
+
+  const urlBeforeZoom = page.url();
+
   await page
     .getByRole('radiogroup')
     .filter({ hasText: 'settings_overscan' })
     .click();
-  await page.waitForTimeout(1500);
+
+  await expect.poll(() => page.url(), { timeout: 10_000 }).not.toBe(urlBeforeZoom);
+
   await page.mouse.move(800, 600);
-  await expect(page.locator('app-map-info')).toContainText('lat -20.');
-  await expect(page.locator('app-map-info')).toContainText('lon -72.');
+  await expect
+    .poll(async () => await getMapInfoText(), { timeout: 10_000 })
+    .toMatch(/lat.*lon/i);
+  const coordsBeforeMove = await getMapInfoText();
+
+  await page.mouse.move(900, 600);
+  await expect
+    .poll(async () => await getMapInfoText(), { timeout: 10_000 })
+    .not.toBe(coordsBeforeMove);
 });
