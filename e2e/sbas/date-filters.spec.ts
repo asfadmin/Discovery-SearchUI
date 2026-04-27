@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test('SBAS Start & End Date Filters', async ({ page }) => {
   await page.goto('/');
+  const baselineHeader = page.locator('app-baseline-header');
   await page.getByRole('button', { name: 'Geographic Search' }).click();
   await page
     .getByRole('menuitem', { name: 'SBAS SBAS search provides' })
@@ -10,7 +11,7 @@ test('SBAS Start & End Date Filters', async ({ page }) => {
     .getByRole('region', { name: 'Scene' })
     .getByLabel('Scene')
     .fill('S1A_IW_SLC__1SDV_20180616T210817_20180616T210845_022387_026C91_EDAA');
-  await page
+  await baselineHeader
     .locator('app-search-button')
     .getByRole('button', { name: 'SEARCH' })
     .click();

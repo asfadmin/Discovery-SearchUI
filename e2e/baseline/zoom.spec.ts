@@ -19,6 +19,13 @@ test('Baseline zoom to results', async ({ page }) => {
       .replace(/\s+/g, ' ')
       .trim();
 
+  const getScaleMeters = async () =>
+    parseScaleMeters(
+      ((await page.locator('.ol-custom-scale-line').textContent()) ?? '')
+        .replace(/\s+/g, ' ')
+        .trim(),
+    );
+
   await page.goto('/');
   await page.getByRole('button', { name: 'Geographic Search' }).click();
   await page
@@ -38,11 +45,8 @@ test('Baseline zoom to results', async ({ page }) => {
 
   const scaleLine = page.locator('.ol-custom-scale-line');
   const urlBeforeZoom = page.url();
-  const scaleBefore = parseScaleMeters(
-    ((await scaleLine.textContent()) ?? '').replace(/\s+/g, ' ').trim(),
-  );
-
-  expect(scaleBefore).toBeGreaterThan(0);
+  await expect.poll(getScaleMeters, { timeout: 10_000 }).toBeGreaterThan(0);
+  const scaleBefore = await getScaleMeters();
 
   await page
     .getByRole('radiogroup')
@@ -51,13 +55,7 @@ test('Baseline zoom to results', async ({ page }) => {
 
   await expect.poll(() => page.url(), { timeout: 10_000 }).not.toBe(urlBeforeZoom);
   await expect
-    .poll(
-      async () =>
-        parseScaleMeters(
-          ((await scaleLine.textContent()) ?? '').replace(/\s+/g, ' ').trim(),
-        ),
-      { timeout: 10_000 },
-    )
+    .poll(getScaleMeters, { timeout: 10_000 })
     .toBeLessThan(scaleBefore);
 
   await page.mouse.move(800, 600);
