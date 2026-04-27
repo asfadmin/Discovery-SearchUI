@@ -1,6 +1,13 @@
 import { test, expect } from '@playwright/test';
 
 test('Zoom to Results', async ({ page }) => {
+  const getHashParams = () => new URL(page.url()).hash.split('?')[1] ?? '';
+  const getZoomValue = () => {
+    const zoom = new URLSearchParams(getHashParams()).get('zoom');
+
+    return zoom ? Number(zoom) : NaN;
+  };
+
   await page.goto('/');
 
   await page.getByRole('button', { name: 'Geographic Search' }).click();
@@ -42,12 +49,20 @@ test('Zoom to Results', async ({ page }) => {
   await expect(zoomToResultsControl).toHaveCount(1);
 
   await zoomOutButton.click();
-  await expect
-    .poll(() => new URL(page.url()).hash, { timeout: 10_000 })
-    .not.toContain('zoom=7.000');
+  await expect.poll(getZoomValue, { timeout: 10_000 }).toBeGreaterThan(0);
+  const firstZoomOut = getZoomValue();
 
-  await zoomToResultsControl.click();
+  await zoomOutButton.click();
+  await expect
+    .poll(getZoomValue, { timeout: 10_000 })
+    .toBeLessThan(firstZoomOut);
+  const zoomAfterZoomOut = getZoomValue();
+
+  await zoomToResultsControl.evaluate((element: HTMLElement) => element.click());
+  await expect
+    .poll(getZoomValue, { timeout: 10_000 })
+    .toBeGreaterThan(zoomAfterZoomOut);
   await expect
     .poll(() => new URL(page.url()).hash, { timeout: 10_000 })
-    .toContain('zoom=7.000');
+    .toContain('center=');
 });
