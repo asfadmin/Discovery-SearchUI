@@ -5,7 +5,6 @@ import { defineConfig, devices } from '@playwright/test';
  * https://github.com/motdotla/dotenv
  */
 // require('dotenv').config();
-
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -29,6 +28,10 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+
+    viewport: { width: 1920, height: 1080 },
+    timezoneId: 'America/New_York',
+    bypassCSP: true,
   },
   expect: {
     toHaveScreenshot: {
@@ -38,28 +41,36 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
-    { name: 'setup', testMatch: /.*\.setup\.ts/ },
+    {
+      name: 'setup',
+      testMatch: /.*\.setup\.ts/,
+      use: { trace: 'off' },
+    },
 
     {
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
-        viewport: { width: 1920, height: 1080 },
-        timezoneId: 'America/New_York',
-        bypassCSP: true,
-        // storageState: 'playwright/.auth/user.json',
-        // TODO: this makes all tests authenticated, we probably want to define test suites that use authentication instead of general projects
       },
+      grepInvert: /@auth/,
     },
 
     {
       name: 'firefox',
       use: {
         ...devices['Desktop Firefox'],
-        timezoneId: 'America/New_York',
-        bypassCSP: true,
-        viewport: { width: 1920, height: 1080 },
       },
+      grepInvert: /@auth/,
+    },
+
+    {
+      name: 'chromium-auth',
+      use: {
+        ...devices['Desktop Chrome'],
+        trace: 'off',
+        storageState: 'playwright/.auth/user.json',
+      },
+      grep: /@auth/,
     },
 
     // {
