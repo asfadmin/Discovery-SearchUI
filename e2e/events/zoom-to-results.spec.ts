@@ -23,6 +23,9 @@ test('Zoom to Results', async ({ page }) => {
   const zoomActions = queueHeader.locator('.list-button-group').filter({
     hasText: 'Zoom',
   });
+  const zoomToResultsControl = zoomActions.locator(
+    'mat-button-toggle.control-mat-button-toggle',
+  );
   const zoomOutButton = page
     .getByRole('radiogroup')
     .filter({ hasText: 'addremove' })
@@ -36,14 +39,14 @@ test('Zoom to Results', async ({ page }) => {
   await expect(page.locator('.product-list-header')).toContainText(
     /\d+\s+of\s+\d+\s+Files?/i,
   );
-  await expect(zoomActions).toHaveCount(1);
+  await expect(zoomToResultsControl).toHaveCount(1);
 
   await zoomOutButton.click();
   await expect
     .poll(() => new URL(page.url()).hash, { timeout: 10_000 })
     .not.toContain('zoom=7.000');
 
-  await zoomActions.click();
+  await zoomToResultsControl.click();
   await expect
     .poll(() => new URL(page.url()).hash, { timeout: 10_000 })
     .toContain('zoom=7.000');
