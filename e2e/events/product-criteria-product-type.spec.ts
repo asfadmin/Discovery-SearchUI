@@ -59,8 +59,7 @@ test('Product Criteria: Product Type', async ({ page }) => {
   await productType.focus();
   await page.keyboard.press('Space');
   const rtcGammaOption = page.getByRole('option', { name: 'RTC_GAMMA' });
-  await rtcGammaOption.focus();
-  await page.keyboard.press('Space');
+  await rtcGammaOption.press('Enter');
   await page.keyboard.press('Escape');
   await searchButton.click();
 
