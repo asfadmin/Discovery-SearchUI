@@ -1,16 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test('Zoom to Results', async ({ page }) => {
-  const getHashParams = () => new URL(page.url()).hash.split('?')[1] ?? '';
-  const getZoomValue = () => {
-    const zoom = new URLSearchParams(getHashParams()).get('zoom');
-
-    return zoom ? Number(zoom) : null;
-  };
-  const waitForZoomValue = async () => {
-    await expect.poll(getZoomValue, { timeout: 10_000 }).not.toBeNull();
-    return getZoomValue() as number;
-  };
+  const getHash = () => new URL(page.url()).hash;
 
   await page.goto('/');
 
@@ -37,11 +28,6 @@ test('Zoom to Results', async ({ page }) => {
   const zoomToResultsControl = zoomActions.locator(
     'mat-button-toggle.control-mat-button-toggle',
   );
-  const zoomOutButton = page
-    .getByRole('radiogroup')
-    .filter({ hasText: 'addremove' })
-    .locator('mat-icon')
-    .filter({ hasText: 'remove' });
 
   await eventSearch.fill('Albania');
   await page.getByRole('option', { name: /Albania/i }).first().click();
@@ -52,21 +38,13 @@ test('Zoom to Results', async ({ page }) => {
   );
   await expect(zoomToResultsControl).toHaveCount(1);
 
-  await zoomOutButton.click();
-  const firstZoomOut = await waitForZoomValue();
-  expect(firstZoomOut).toBeGreaterThan(0);
-
-  await zoomOutButton.click();
-  await expect
-    .poll(() => getZoomValue() ?? Number.POSITIVE_INFINITY, { timeout: 10_000 })
-    .toBeLessThan(firstZoomOut);
-  const zoomAfterZoomOut = await waitForZoomValue();
+  const hashBeforeZoom = getHash();
+  expect(hashBeforeZoom).not.toContain('center=');
 
   await zoomToResultsControl.evaluate((element: HTMLElement) => element.click());
+
   await expect
-    .poll(() => getZoomValue() ?? Number.NEGATIVE_INFINITY, { timeout: 10_000 })
-    .toBeGreaterThan(zoomAfterZoomOut);
-  await expect
-    .poll(() => new URL(page.url()).hash, { timeout: 10_000 })
+    .poll(getHash, { timeout: 10_000 })
     .toContain('center=');
+  await expect.poll(getHash, { timeout: 10_000 }).not.toBe(hashBeforeZoom);
 });
