@@ -5,7 +5,11 @@ test('Zoom to Results', async ({ page }) => {
   const getZoomValue = () => {
     const zoom = new URLSearchParams(getHashParams()).get('zoom');
 
-    return zoom ? Number(zoom) : NaN;
+    return zoom ? Number(zoom) : null;
+  };
+  const waitForZoomValue = async () => {
+    await expect.poll(getZoomValue, { timeout: 10_000 }).not.toBeNull();
+    return getZoomValue() as number;
   };
 
   await page.goto('/');
@@ -49,18 +53,18 @@ test('Zoom to Results', async ({ page }) => {
   await expect(zoomToResultsControl).toHaveCount(1);
 
   await zoomOutButton.click();
-  await expect.poll(getZoomValue, { timeout: 10_000 }).toBeGreaterThan(0);
-  const firstZoomOut = getZoomValue();
+  const firstZoomOut = await waitForZoomValue();
+  expect(firstZoomOut).toBeGreaterThan(0);
 
   await zoomOutButton.click();
   await expect
-    .poll(getZoomValue, { timeout: 10_000 })
+    .poll(() => getZoomValue() ?? Number.POSITIVE_INFINITY, { timeout: 10_000 })
     .toBeLessThan(firstZoomOut);
-  const zoomAfterZoomOut = getZoomValue();
+  const zoomAfterZoomOut = await waitForZoomValue();
 
   await zoomToResultsControl.evaluate((element: HTMLElement) => element.click());
   await expect
-    .poll(getZoomValue, { timeout: 10_000 })
+    .poll(() => getZoomValue() ?? Number.NEGATIVE_INFINITY, { timeout: 10_000 })
     .toBeGreaterThan(zoomAfterZoomOut);
   await expect
     .poll(() => new URL(page.url()).hash, { timeout: 10_000 })
