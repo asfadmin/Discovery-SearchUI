@@ -22,9 +22,12 @@ test('Results Menu Export CSV', async ({ page }) => {
     .click();
   await page.getByRole('radiogroup').filter({ hasText: 'get_app' }).click();
   await page.getByRole('menuitem', { name: 'Metadata' }).click();
-  const downloadPromise = page.waitForEvent('download');
-  await page.getByRole('menuitem', { name: 'csv' }).click();
-  const download = await downloadPromise;
+  const csvMenuItem = page.getByRole('menuitem', { name: 'csv' });
+  await expect(csvMenuItem).toBeVisible();
+  const [download] = await Promise.all([
+    page.waitForEvent('download'),
+    csvMenuItem.click(),
+  ]);
   const path = await download.path();
 
   const records = parse(fs.readFileSync(path), {
