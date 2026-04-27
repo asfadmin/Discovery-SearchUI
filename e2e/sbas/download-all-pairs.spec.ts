@@ -1,9 +1,7 @@
 import { test, expect } from '@playwright/test';
-import { waitForASFAPIResponse } from 'e2e/helpers';
 
 test('SBAS: Download All Pairs', async ({ page }) => {
   await page.goto('/');
-  const baselineHeader = page.locator('app-baseline-header');
   await page.getByRole('button', { name: 'Geographic Search' }).click();
   await page
     .getByRole('menuitem', { name: 'SBAS SBAS search provides' })
@@ -13,19 +11,21 @@ test('SBAS: Download All Pairs', async ({ page }) => {
     .getByLabel('Scene')
     .fill('S1A_IW_SLC__1SDV_20200710T150225_20200710T150252_033394_03DE82_92BB');
 
-  await Promise.all([
-    waitForASFAPIResponse(page),
-    baselineHeader
-      .locator('app-search-button')
-      .getByRole('button', { name: 'SEARCH' })
-      .click(),
-  ]);
-
   await page
-    .locator('app-scenes-list-header')
-    .getByRole('radiogroup')
-    .filter({ hasText: 'add_shopping_cart' })
+    .getByText('Cancel SEARCH arrow_drop_down')
+    .getByRole('button', { name: 'SEARCH' })
     .click();
+
+  await expect(
+    page.locator('mat-button-toggle').filter({ hasText: 'SBAS Filters' }),
+  ).toBeVisible();
+
+  const queueButton = page
+    .locator('mat-icon')
+    .filter({ hasText: 'add_shopping_cart' })
+    .first();
+  await expect(queueButton).toBeVisible();
+  await queueButton.click({ force: true });
 
   const addMenuItem = page.getByRole('menuitem', {
     name: /Add [1-9]\d* Files to downloads/,
