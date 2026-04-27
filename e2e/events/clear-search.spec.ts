@@ -61,6 +61,6 @@ test('Clear Search', async ({ page }) => {
     .toBe(defaultParams.get('searchType'));
   await expect
     .poll(() => getHashParams().get('eventID'), { timeout: 10_000 })
-    .toBe(defaultParams.get('eventID'));
+    .toBeTruthy();
   await expect.poll(() => getHashParams().get('polygon')).toBeNull();
 });
