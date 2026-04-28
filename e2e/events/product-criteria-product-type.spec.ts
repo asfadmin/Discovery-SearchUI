@@ -12,11 +12,6 @@ test('Product Criteria: Product Type', async ({ page }) => {
     /\d+\s+Events?/,
   );
 
-  const getHashParams = () => {
-    const [, hash = ''] = page.url().split('#/');
-    return new URLSearchParams(hash.startsWith('?') ? hash.slice(1) : hash);
-  };
-
   const getFileCounts = async () => {
     const headerText =
       (await page.locator('.product-list-header').textContent()) ?? '';
