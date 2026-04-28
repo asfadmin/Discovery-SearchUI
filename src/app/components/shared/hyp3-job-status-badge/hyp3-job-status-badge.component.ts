@@ -65,8 +65,6 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
 
     combineLatest([this.scenesService.scenes$, this.job$]).subscribe(
       ([scenes, job]) => {
-        console.log(scenes, job);
-
         this.projectJobs = scenes
           .map((scene) => scene.metadata.job)
           .filter((j) => job.name && job.name === j.name);
