@@ -1,4 +1,6 @@
-import { Component, OnInit, Input, inject } from '@angular/core';
+import { Component, OnInit, input, inject } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { combineLatest } from 'rxjs';
 
 import { Hyp3ApiService, ScenesService, Hyp3JobStatusService } from '@services';
 import {
@@ -32,11 +34,12 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
   private dialog = inject(MatDialog);
   private store$ = inject<Store<AppState>>(Store);
 
-  @Input() job: Hyp3Job;
+  public job = input.required<Hyp3Job>();
+  private job$ = toObservable(this.job);
 
-  public projectJobs: models.Hyp3Job[];
-  public expiredJobs: models.Hyp3Job[];
-  public failedJobs: models.Hyp3Job[];
+  public projectJobs: models.Hyp3Job[] = [];
+  public expiredJobs: models.Hyp3Job[] = [];
+  public failedJobs: models.Hyp3Job[] = [];
 
   private costs: models.Hyp3Costs;
   private processingOptions: Hyp3ProcessingOptions;
@@ -60,14 +63,18 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
       this.remaining = user.quota.remaining;
     });
 
-    this.scenesService.scenes$.subscribe((scenes) => {
-      this.projectJobs = scenes
-        .map((scene) => scene.metadata.job)
-        .filter((job) => this.job.name && this.job.name === job.name);
+    combineLatest([this.scenesService.scenes$, this.job$]).subscribe(
+      ([scenes, job]) => {
+        console.log(scenes, job);
 
-      this.expiredJobs = this.projectJobs.filter((job) => this.isExpired(job));
-      this.failedJobs = this.projectJobs.filter((job) => this.isFailed(job));
-    });
+        this.projectJobs = scenes
+          .map((scene) => scene.metadata.job)
+          .filter((j) => job.name && job.name === j.name);
+
+        this.expiredJobs = this.projectJobs.filter((j) => this.isExpired(j));
+        this.failedJobs = this.projectJobs.filter((j) => this.isFailed(j));
+      },
+    );
   }
 
   public isExpired(job: Hyp3Job): boolean {
@@ -87,12 +94,12 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
   }
 
   public onSubmitExpiredJob() {
-    const jobType = models.hyp3JobTypes[this.job.job_type as string];
+    const jobType = models.hyp3JobTypes[this.job().job_type as string];
 
     const job = {
-      granules: this.job.scenes,
+      granules: this.job().scenes,
       job_type: jobType,
-      processingOptions: this.job.job_parameters,
+      processingOptions: this.job().job_parameters,
     };
 
     this.openConfirmationDialog(jobType, job);
