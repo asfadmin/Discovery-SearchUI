@@ -64,13 +64,15 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
     });
 
     combineLatest([this.scenesService.scenes$, this.job$]).subscribe(
-      ([scenes, job]) => {
+      ([scenes, selectedJob]) => {
         this.projectJobs = scenes
           .map((scene) => scene.metadata.job)
-          .filter((j) => job.name && job.name === j.name);
+          .filter((job) => selectedJob.name && selectedJob.name === job.name);
 
-        this.expiredJobs = this.projectJobs.filter((j) => this.isExpired(j));
-        this.failedJobs = this.projectJobs.filter((j) => this.isFailed(j));
+        this.expiredJobs = this.projectJobs.filter((job) =>
+          this.isExpired(job),
+        );
+        this.failedJobs = this.projectJobs.filter((job) => this.isFailed(job));
       },
     );
   }
