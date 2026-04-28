@@ -17,7 +17,6 @@ export const alos_2 = {
     Props.FARADAY_ROTATION,
     Props.BASELINE_TOOL,
     Props.USE_BEAM_MODE,
-    Props.USE_PROCESSING_TYPE,
   ],
   apiValue: { dataset: 'ALOS-2' },
   date: {
@@ -31,20 +30,7 @@ export const alos_2 = {
     name: 'JAXA/METI',
     url: 'https://global.jaxa.jp/',
   },
-  productTypes: [
-    {
-      apiValue: '1.1',
-      displayName: 'Level 1.1',
-    },
-    {
-      apiValue: '1.5',
-      displayName: 'Level 1.5',
-    },
-    {
-      apiValue: '3.1',
-      displayName: 'Level 3.1',
-    },
-  ],
+  productTypes: [],
   beamModes: ['WBS', 'WBD', 'WWS', 'WWD', 'VBS', 'VBD', 'WD1', 'WD2'],
   polarizations: ['HH', 'HV', 'VV', 'VH'],
   subtypes: [],
