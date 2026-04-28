@@ -14,7 +14,7 @@
 @if (!showUnzippedProductScreen) {
   <div>
     <mat-list class="products-list">
-      @for (product of products; track product) {
+      @for (product of products; track product.id) {
         <app-scene-file
           (toggle)="onToggleQueueProduct(product)"
           (unzip)="onOpenUnzipProduct($event)"
@@ -45,7 +45,7 @@
           </mat-list-item>
         }
 
-        @for (product of subqueryProducts; track product) {
+        @for (product of subqueryProducts; track product.id) {
           @if (dynamicQueryLoaded()) {
             <app-scene-file
               (toggle)="onToggleQueueProduct(product)"
