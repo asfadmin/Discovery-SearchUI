@@ -23,10 +23,6 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
-
-    viewport: { width: 1920, height: 1080 },
-    timezoneId: 'America/New_York',
-    bypassCSP: true,
   },
   expect: {
     toHaveScreenshot: {
@@ -39,13 +35,21 @@ export default defineConfig({
     {
       name: 'setup',
       testMatch: /.*\.setup\.ts/,
-      use: { trace: 'off' },
+      use: {
+        trace: 'off',
+        viewport: { width: 1920, height: 1080 },
+        timezoneId: 'America/New_York',
+        bypassCSP: true,
+      },
     },
 
     {
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
+        viewport: { width: 1920, height: 1080 },
+        timezoneId: 'America/New_York',
+        bypassCSP: true,
       },
       grepInvert: /@auth/,
     },
@@ -54,6 +58,9 @@ export default defineConfig({
       name: 'firefox',
       use: {
         ...devices['Desktop Firefox'],
+        viewport: { width: 1920, height: 1080 },
+        timezoneId: 'America/New_York',
+        bypassCSP: true,
       },
       grepInvert: /@auth/,
     },
@@ -64,6 +71,9 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
         trace: 'off',
         storageState: 'playwright/.auth/user.json',
+        viewport: { width: 1920, height: 1080 },
+        timezoneId: 'America/New_York',
+        bypassCSP: true,
       },
       grep: /@auth/,
       dependencies: ['setup'],
