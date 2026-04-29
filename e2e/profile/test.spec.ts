@@ -1,11 +1,7 @@
-import { test, expect } from '@playwright/test';
-import { overrideUserCookieHeaders } from 'e2e/helpers';
+import { test, expect } from 'e2e/pages/auth.page';
 
-test('Profile: Logged In', { tag: '@auth' }, async ({ page }) => {
-  await overrideUserCookieHeaders(page);
-  await page.goto('/');
-
+test('Profile: Logged In', { tag: '@auth' }, async ({ loggedInPage }) => {
   await expect(
-    page.getByRole('button', { name: 'automatedtesting_fullaccess' }),
+    loggedInPage.getByRole('button', { name: 'automatedtesting_fullaccess' }),
   ).toBeVisible();
 });

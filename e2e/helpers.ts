@@ -6,7 +6,6 @@ export async function waitForASFAPIResponse(page: Page) {
   );
 }
 
-// TODO: This seems like a good candidate for page fixtures, but needs more research
 export async function overrideUserCookieHeaders(page: Page) {
   await page.route('**appdata-**/info/cookie', async (route) => {
     const response = await route.fetch();
