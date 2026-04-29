@@ -886,6 +886,8 @@
   "REQUEST_ACCESS_REJECTED": "Request for access has been rejected.",
   "REQUEST_ON_DEMAND_ACCESS": "Request On Demand Access",
   "REQUEUE_PROJECT": "Requeue project",
+  "REQUEUE_FAILED": "Failed jobs",
+  "REQUEUE_EXPIRED": "Expired jobs",
   "RESAMPLED_DEM_SRTM_OR_NED_USED_FOR_RTC_PROCESSING": "Resampled DEM (SRTM or NED) used for RTC processing.",
   "RESET_CHART_REFERENCE": "Reset chart reference",
   "RESET_TO_DEFAULT": "Reset to Default",
