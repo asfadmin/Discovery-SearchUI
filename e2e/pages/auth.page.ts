@@ -3,8 +3,9 @@ import { overrideUserCookieHeaders } from 'e2e/helpers';
 
 export const test = base.extend<{ loggedInPage: Page }>({
   loggedInPage: async ({ page }, use) => {
-    page.goto('/');
     await overrideUserCookieHeaders(page);
+
+    page.goto('/');
 
     await use(page);
   },
