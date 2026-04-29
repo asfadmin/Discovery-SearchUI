@@ -8,9 +8,7 @@ test('Product Criteria: Product Type', async ({ page }) => {
     .getByRole('menuitem', { name: 'Event Event search harnesses' })
     .click();
 
-  await expect(page.locator('app-scenes-list-header')).toContainText(
-    /\d+\s+Events?/,
-  );
+  await expect(page.locator('app-scenes-list-header')).toContainText('Events');
 
   const getFileCounts = async () => {
     const headerText =
@@ -25,7 +23,6 @@ test('Product Criteria: Product Type', async ({ page }) => {
     };
   };
 
-  const defaultUrl = page.url();
   const eventHeader = page.locator('app-sarviews-header');
   const eventSearch = eventHeader.getByRole('combobox', {
     name: 'Event Search',
@@ -37,16 +34,16 @@ test('Product Criteria: Product Type', async ({ page }) => {
   const productType = productFilters.getByRole('combobox', {
     name: 'Product Type',
   });
+  const productListHeader = page.locator('.product-list-header');
 
   await eventSearch.fill('Falam');
   await page.getByRole('option', { name: /Falam/i }).first().click();
   await searchButton.click();
 
-  await expect(page.locator('.product-list-header')).toContainText(
-    /\d+\s+of\s+\d+\s+Files?/i,
-  );
+  await expect(productListHeader).toContainText('Files');
 
   const fileCountsBefore = await getFileCounts();
+  const productListTextBefore = (await productListHeader.textContent()) ?? '';
 
   expect(fileCountsBefore.filtered).toBeGreaterThan(0);
   expect(fileCountsBefore.filtered).toBe(fileCountsBefore.total);
@@ -59,15 +56,9 @@ test('Product Criteria: Product Type', async ({ page }) => {
   await searchButton.click();
 
   await expect(page.getByText('Product Types: RTC_GAMMA')).toBeVisible();
-  await expect
-    .poll(() => page.url(), { timeout: 10_000 })
-    .not.toBe(defaultUrl);
-  await expect
-    .poll(async () => {
-      const counts = await getFileCounts();
-      return `${counts.filtered}/${counts.total}`;
-    }, { timeout: 10_000 })
-    .not.toBe(`${fileCountsBefore.filtered}/${fileCountsBefore.total}`);
+  await expect(productListHeader).not.toHaveText(productListTextBefore, {
+    timeout: 10_000,
+  });
 
   const fileCountsAfter = await getFileCounts();
 

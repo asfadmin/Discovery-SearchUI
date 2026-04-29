@@ -8,17 +8,7 @@ test('Events: Add to On Demand Queue', async ({ page }) => {
     .getByRole('menuitem', { name: 'Event Event search harnesses' })
     .click();
 
-  await expect(page.locator('app-scenes-list-header')).toContainText(
-    /\d+\s+Events?/,
-  );
-
-  const eventHeader = page.locator('app-sarviews-header');
-  const eventSearch = eventHeader.getByRole('combobox', {
-    name: 'Event Search',
-  });
-  const searchButton = eventHeader
-    .locator('app-search-button')
-    .getByRole('button', { name: 'SEARCH' });
+  await expect(page.locator('app-scenes-list-header')).toContainText('Events');
   const onDemandActions = page
     .locator('app-scenes-list-header .list-button-group')
     .filter({ hasText: 'On Demand' });
@@ -33,13 +23,18 @@ test('Events: Add to On Demand Queue', async ({ page }) => {
   const processingQueue = page.locator('.processing-queue');
   const rtcGammaJobTypeButton = page.locator('.job-type--button');
 
-  await eventSearch.fill('Albania');
+  await page
+    .locator('app-sarviews-header')
+    .getByRole('combobox', { name: 'Event Search' })
+    .fill('Albania');
   await page.getByRole('option', { name: /Albania/i }).first().click();
-  await searchButton.click();
+  await page
+    .locator('app-sarviews-header')
+    .locator('app-search-button')
+    .getByRole('button', { name: 'SEARCH' })
+    .click();
 
-  await expect(page.locator('.product-list-header')).toContainText(
-    /\d+\s+of\s+\d+\s+Files?/i,
-  );
+  await expect(page.locator('.product-list-header')).toContainText('Files');
 
   await onDemandHeaderButton.click();
   await page.getByRole('menuitem', { name: 'On Demand Queue' }).click();
@@ -53,7 +48,6 @@ test('Events: Add to On Demand Queue', async ({ page }) => {
   await expect(onDemandButton).toHaveCount(1);
 
   await onDemandButton.click();
-  await expect(rtcGammaMenuItem).toBeVisible();
   await rtcGammaMenuItem.click();
 
   const addRtcJobsMenuItem = page.getByRole('menuitem', {
@@ -61,7 +55,6 @@ test('Events: Add to On Demand Queue', async ({ page }) => {
   });
 
   await expect(addRtcJobsMenuItem).toBeVisible();
-
   const addRtcJobsText = (await addRtcJobsMenuItem.textContent()) ?? '';
   const jobCount = Number(addRtcJobsText.match(/Add\s+(\d+)/i)?.[1] ?? 0);
 

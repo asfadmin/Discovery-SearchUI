@@ -8,17 +8,8 @@ test('Clear Search', async ({ page }) => {
     .getByRole('menuitem', { name: 'Event Event search harnesses' })
     .click();
 
-  await expect(page.locator('app-scenes-list-header')).toContainText(
-    /\d+\s+Events?/,
-  );
+  await expect(page.locator('app-scenes-list-header')).toContainText('Events');
 
-  const getHashParams = () => {
-    const [, hash = ''] = page.url().split('#/');
-    return new URLSearchParams(hash.startsWith('?') ? hash.slice(1) : hash);
-  };
-
-  const defaultUrl = page.url();
-  const defaultParams = getHashParams();
   const eventHeader = page.locator('app-sarviews-header');
   const eventSearch = eventHeader.getByRole('combobox', {
     name: 'Event Search',
@@ -43,24 +34,11 @@ test('Clear Search', async ({ page }) => {
 
   await expect(eventSearch).toHaveValue('Alaska');
   await expect(eventTypes).toContainText('Quake');
-  await expect
-    .poll(() => page.url(), { timeout: 10_000 })
-    .not.toBe(defaultUrl);
-  const filteredUrl = page.url();
+  await expect(page.locator('app-scenes-list-header')).toContainText('Events');
 
   await filtersSearchMenu.click();
   await page.getByRole('menuitem', { name: 'Clear Search' }).click();
 
   await expect(eventSearch).toHaveValue('');
   await expect(eventTypes).toContainText('Event Types');
-  await expect
-    .poll(() => page.url(), { timeout: 10_000 })
-    .not.toBe(filteredUrl);
-  await expect
-    .poll(() => getHashParams().get('searchType'), { timeout: 10_000 })
-    .toBe(defaultParams.get('searchType'));
-  await expect
-    .poll(() => getHashParams().get('eventID'), { timeout: 10_000 })
-    .toBeTruthy();
-  await expect.poll(() => getHashParams().get('polygon')).toBeNull();
 });

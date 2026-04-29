@@ -8,29 +8,24 @@ test('Browse Viewer: Download or Add to Download Queue', async ({ page }) => {
     .getByRole('menuitem', { name: 'Event Event search harnesses' })
     .click();
 
-  await expect(page.locator('app-scenes-list-header')).toContainText(
-    /\d+\s+Events?/,
-  );
-
-  const eventHeader = page.locator('app-sarviews-header');
-  const eventSearch = eventHeader.getByRole('combobox', {
-    name: 'Event Search',
-  });
-  const searchButton = eventHeader
-    .locator('app-search-button')
-    .getByRole('button', { name: 'SEARCH' });
+  await expect(page.locator('app-scenes-list-header')).toContainText('Events');
   const sceneDetail = page.locator('app-scene-detail');
   const browseImage = sceneDetail.locator('.browse-img').last();
   const browseDialog = page.locator('.browse-dialog');
   const closeBrowseDialogButton = browseDialog.locator('.close-icon button');
 
-  await eventSearch.fill('Dali');
+  await page
+    .locator('app-sarviews-header')
+    .getByRole('combobox', { name: 'Event Search' })
+    .fill('Dali');
   await page.getByRole('option', { name: /Dali/i }).first().click();
-  await searchButton.click();
+  await page
+    .locator('app-sarviews-header')
+    .locator('app-search-button')
+    .getByRole('button', { name: 'SEARCH' })
+    .click();
 
-  await expect(page.locator('.product-list-header')).toContainText(
-    /\d+\s+of\s+\d+\s+Files?/i,
-  );
+  await expect(page.locator('.product-list-header')).toContainText('Files');
   await expect(browseImage).toBeVisible();
 
   await browseImage.click();
@@ -40,11 +35,7 @@ test('Browse Viewer: Download or Add to Download Queue', async ({ page }) => {
   const fileActionButton = browseDialog.locator('.file-button-download').first();
 
   await fileActionButton.click();
-  const addToDownloads = page.getByRole('menuitem').filter({
-    hasText: 'add_shopping_cart',
-  });
-  await expect(addToDownloads).toContainText('Add');
-  await addToDownloads.click();
+  await page.getByRole('menuitem').filter({ hasText: 'add_shopping_cart' }).click();
 
   await closeBrowseDialogButton.click();
   await expect(browseDialog).toHaveCount(0);

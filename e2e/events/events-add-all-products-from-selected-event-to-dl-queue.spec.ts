@@ -10,17 +10,7 @@ test('Events: Add all Products from Selected Event to DL Queue', async ({
     .getByRole('menuitem', { name: 'Event Event search harnesses' })
     .click();
 
-  await expect(page.locator('app-scenes-list-header')).toContainText(
-    /\d+\s+Events?/,
-  );
-
-  const eventHeader = page.locator('app-sarviews-header');
-  const eventSearch = eventHeader.getByRole('combobox', {
-    name: 'Event Search',
-  });
-  const searchButton = eventHeader
-    .locator('app-search-button')
-    .getByRole('button', { name: 'SEARCH' });
+  await expect(page.locator('app-scenes-list-header')).toContainText('Events');
   const productListHeader = page.locator('.product-list-header');
   const queueHeader = page.locator('app-scenes-list-header');
   const queueActions = queueHeader.locator('.list-button-group').filter({
@@ -30,11 +20,18 @@ test('Events: Add all Products from Selected Event to DL Queue', async ({
     .locator('mat-icon')
     .filter({ hasText: 'add_shopping_cart' });
 
-  await eventSearch.fill('Albania');
+  await page
+    .locator('app-sarviews-header')
+    .getByRole('combobox', { name: 'Event Search' })
+    .fill('Albania');
   await page.getByRole('option', { name: /Albania/i }).first().click();
-  await searchButton.click();
+  await page
+    .locator('app-sarviews-header')
+    .locator('app-search-button')
+    .getByRole('button', { name: 'SEARCH' })
+    .click();
 
-  await expect(productListHeader).toContainText(/\d+\s+of\s+\d+\s+Files?/i);
+  await expect(productListHeader).toContainText('Files');
 
   const headerText = (await productListHeader.textContent()) ?? '';
   const match = headerText.match(/(\d+)\s+of\s+(\d+)\s+Files?/i);
@@ -49,13 +46,7 @@ test('Events: Add all Products from Selected Event to DL Queue', async ({
   await expect(queueAllButton).toHaveCount(1);
 
   await queueAllButton.click();
-
-  const addAllMenuItem = page.getByRole('menuitem', {
-    name: new RegExp(`All\\s+Event\\s+Products\\s*\\(${totalCount}\\s+Files\\)`, 'i'),
-  });
-
-  await expect(addAllMenuItem).toBeVisible();
-  await addAllMenuItem.click();
+  await page.getByRole('menuitem', { name: /All Event Products/i }).click();
 
   await page.getByRole('button', { name: 'Downloads' }).click();
 

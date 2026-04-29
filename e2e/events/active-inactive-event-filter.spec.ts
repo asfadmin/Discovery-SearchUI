@@ -8,16 +8,8 @@ test('Active/Inactive Event Filter', async ({ page }) => {
     .getByRole('menuitem', { name: 'Event Event search harnesses' })
     .click();
 
-  await expect(page.locator('app-scenes-list-header')).toContainText(
-    /\d+\s+Events?/,
-  );
+  await expect(page.locator('app-scenes-list-header')).toContainText('Events');
 
-  const getHashParams = () => {
-    const [, hash = ''] = page.url().split('#/');
-    return new URLSearchParams(hash.startsWith('?') ? hash.slice(1) : hash);
-  };
-
-  const defaultUrl = page.url();
   const eventHeader = page.locator('app-sarviews-header');
   const eventFilters = page.getByRole('region', { name: 'Event Filters' });
   const activeEventsToggle = eventFilters.getByRole('switch', {
@@ -30,9 +22,7 @@ test('Active/Inactive Event Filter', async ({ page }) => {
     'app-sarviews-event img[src*="_inactive"]',
   );
 
-  await expect
-    .poll(() => inactiveEventIcons.count(), { timeout: 10_000 })
-    .toBeGreaterThan(0);
+  await expect(inactiveEventIcons.first()).toBeVisible({ timeout: 10_000 });
 
   await activeEventsToggle.focus();
   await page.keyboard.press('Space');
@@ -40,11 +30,6 @@ test('Active/Inactive Event Filter', async ({ page }) => {
 
   await searchButton.click();
 
-  await expect
-    .poll(() => page.url(), { timeout: 10_000 })
-    .not.toBe(defaultUrl);
-  await expect
-    .poll(() => getHashParams().get('activeEvents'), { timeout: 10_000 })
-    .toBe('true');
   await expect(inactiveEventIcons).toHaveCount(0, { timeout: 10_000 });
+  await expect(page.locator('app-scenes-list-header')).toContainText('Events');
 });

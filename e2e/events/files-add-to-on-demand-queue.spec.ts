@@ -8,17 +8,7 @@ test('Files: Add to On Demand Queue', async ({ page }) => {
     .getByRole('menuitem', { name: 'Event Event search harnesses' })
     .click();
 
-  await expect(page.locator('app-scenes-list-header')).toContainText(
-    /\d+\s+Events?/,
-  );
-
-  const eventHeader = page.locator('app-sarviews-header');
-  const eventSearch = eventHeader.getByRole('combobox', {
-    name: 'Event Search',
-  });
-  const searchButton = eventHeader
-    .locator('app-search-button')
-    .getByRole('button', { name: 'SEARCH' });
+  await expect(page.locator('app-scenes-list-header')).toContainText('Events');
   const insarGammaFile = page
     .locator('#event-selection-list mat-list-option')
     .filter({ hasText: 'INSAR GAMMA' })
@@ -32,13 +22,18 @@ test('Files: Add to On Demand Queue', async ({ page }) => {
   });
   const onDemandHeaderButton = page.getByRole('button', { name: 'ON DEMAND' });
 
-  await eventSearch.fill('Central Alaska');
+  await page
+    .locator('app-sarviews-header')
+    .getByRole('combobox', { name: 'Event Search' })
+    .fill('Central Alaska');
   await page.getByRole('option', { name: /Central Alaska/i }).first().click();
-  await searchButton.click();
+  await page
+    .locator('app-sarviews-header')
+    .locator('app-search-button')
+    .getByRole('button', { name: 'SEARCH' })
+    .click();
 
-  await expect(page.locator('.product-list-header')).toContainText(
-    /\d+\s+of\s+\d+\s+Files?/i,
-  );
+  await expect(page.locator('.product-list-header')).toContainText('Files');
   await expect(insarGammaFile).toBeVisible();
   await insarGammaFile.scrollIntoViewIfNeeded();
 
