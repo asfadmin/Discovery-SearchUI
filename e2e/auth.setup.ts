@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 
 const authFile = path.join(__dirname, '../playwright/.auth/user.json');
 setup('authenticate', async ({ page }) => {
-  dotenv.config();
+  dotenv.config({ quiet: true });
 
   await page.goto('https://search.asf.alaska.edu');
   const popupPromise = page.waitForEvent('popup');
