@@ -5,8 +5,6 @@ export const test = base.extend<{ loggedInPage: Page }>({
   loggedInPage: async ({ page }, use) => {
     await overrideUserCookieHeaders(page);
 
-    page.goto('/');
-
     await use(page);
   },
 });

@@ -29,20 +29,9 @@ export default defineConfig({
       maxDiffPixelRatio: 0.2,
     },
   },
-
+  globalSetup: './e2e/auth.setup',
   /* Configure projects for major browsers */
   projects: [
-    {
-      name: 'setup',
-      testMatch: /.*\.setup\.ts/,
-      use: {
-        trace: 'off',
-        viewport: { width: 1920, height: 1080 },
-        timezoneId: 'America/New_York',
-        bypassCSP: true,
-      },
-    },
-
     {
       name: 'chromium',
       use: {
@@ -76,7 +65,6 @@ export default defineConfig({
         bypassCSP: true,
       },
       grep: /@auth/,
-      dependencies: ['setup'],
     },
 
     // {
