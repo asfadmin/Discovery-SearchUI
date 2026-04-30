@@ -63,10 +63,7 @@
 
   @if (!isDownloadable(scene)) {
     <div class="scene-control ml-2">
-      <app-hyp3-job-status-badge
-        [job]="scene.metadata.job"
-        [isFileDetails]="false"
-      >
+      <app-hyp3-job-status-badge [job]="scene.metadata.job">
       </app-hyp3-job-status-badge>
     </div>
   }
