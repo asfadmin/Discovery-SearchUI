@@ -9,10 +9,6 @@ test('Browse Viewer: Download or Add to Download Queue', async ({ page }) => {
     .click();
 
   await expect(page.locator('app-scenes-list-header')).toContainText('Events');
-  const sceneDetail = page.locator('app-scene-detail');
-  const browseImage = sceneDetail.locator('.browse-img').last();
-  const browseDialog = page.locator('.browse-dialog');
-  const closeBrowseDialogButton = browseDialog.locator('.close-icon button');
 
   await page
     .locator('app-sarviews-header')
@@ -26,19 +22,18 @@ test('Browse Viewer: Download or Add to Download Queue', async ({ page }) => {
     .click();
 
   await expect(page.locator('.product-list-header')).toContainText('Files');
-  await expect(browseImage).toBeVisible();
 
+  const browseImage = page.locator('app-scene-detail .browse-img').last();
+  await expect(browseImage).toBeVisible();
   await browseImage.click();
 
-  await expect(browseDialog).toBeVisible();
+  await expect(page.locator('.browse-dialog')).toBeVisible();
 
-  const fileActionButton = browseDialog.locator('.file-button-download').first();
-
-  await fileActionButton.click();
+  await page.locator('.browse-dialog .file-button-download').first().click();
   await page.getByRole('menuitem').filter({ hasText: 'add_shopping_cart' }).click();
 
-  await closeBrowseDialogButton.click();
-  await expect(browseDialog).toHaveCount(0);
+  await page.locator('.browse-dialog .close-icon button').click();
+  await expect(page.locator('.browse-dialog')).toHaveCount(0);
 
   await page.getByRole('button', { name: 'Downloads' }).click();
 

@@ -17,12 +17,6 @@ test('Clear Search', async ({ page }) => {
   const eventTypes = eventHeader
     .locator('app-sarviews-event-type-selector')
     .getByRole('combobox');
-  const filtersSearchButton = eventHeader
-    .locator('app-search-button')
-    .getByRole('button', { name: 'SEARCH' });
-  const filtersSearchMenu = eventHeader.locator(
-    'app-search-button .arrow-button-toggle',
-  );
 
   await eventSearch.fill('Alaska');
   await page.keyboard.press('Escape');
@@ -30,13 +24,16 @@ test('Clear Search', async ({ page }) => {
   await page.getByRole('option', { name: 'Quake' }).click();
   await page.locator('.cdk-overlay-backdrop').click();
 
-  await filtersSearchButton.click();
+  await eventHeader
+    .locator('app-search-button')
+    .getByRole('button', { name: 'SEARCH' })
+    .click();
 
   await expect(eventSearch).toHaveValue('Alaska');
   await expect(eventTypes).toContainText('Quake');
   await expect(page.locator('app-scenes-list-header')).toContainText('Events');
 
-  await filtersSearchMenu.click();
+  await eventHeader.locator('app-search-button .arrow-button-toggle').click();
   await page.getByRole('menuitem', { name: 'Clear Search' }).click();
 
   await expect(eventSearch).toHaveValue('');

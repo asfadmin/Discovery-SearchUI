@@ -9,19 +9,6 @@ test('Events: Add to On Demand Queue', async ({ page }) => {
     .click();
 
   await expect(page.locator('app-scenes-list-header')).toContainText('Events');
-  const onDemandActions = page
-    .locator('app-scenes-list-header .list-button-group')
-    .filter({ hasText: 'On Demand' });
-  const onDemandButton = onDemandActions
-    .locator('mat-icon')
-    .filter({ hasText: /./ })
-    .first();
-  const rtcGammaMenuItem = page.getByRole('menuitem', {
-    name: /RTC GAMMA/i,
-  });
-  const onDemandHeaderButton = page.getByRole('button', { name: 'ON DEMAND' });
-  const processingQueue = page.locator('.processing-queue');
-  const rtcGammaJobTypeButton = page.locator('.job-type--button');
 
   await page
     .locator('app-sarviews-header')
@@ -36,6 +23,10 @@ test('Events: Add to On Demand Queue', async ({ page }) => {
 
   await expect(page.locator('.product-list-header')).toContainText('Files');
 
+  const onDemandHeaderButton = page.getByRole('button', { name: 'ON DEMAND' });
+  const processingQueue = page.locator('.processing-queue');
+  const rtcGammaJobTypeButton = page.locator('.job-type--button');
+
   await onDemandHeaderButton.click();
   await page.getByRole('menuitem', { name: 'On Demand Queue' }).click();
   await expect(processingQueue).toBeVisible();
@@ -45,10 +36,16 @@ test('Events: Add to On Demand Queue', async ({ page }) => {
   await page.locator('.close-x').click();
   await expect(processingQueue).toHaveCount(0);
 
+  const onDemandButton = page
+    .locator('app-scenes-list-header .list-button-group')
+    .filter({ hasText: 'On Demand' })
+    .locator('mat-icon')
+    .filter({ hasText: /./ })
+    .first();
   await expect(onDemandButton).toHaveCount(1);
 
   await onDemandButton.click();
-  await rtcGammaMenuItem.click();
+  await page.getByRole('menuitem', { name: /RTC GAMMA/i }).click();
 
   const addRtcJobsMenuItem = page.getByRole('menuitem', {
     name: /Add\s+\d+.*(Pair|Job|Jobs)/i,

@@ -9,9 +9,6 @@ test('Event Detail: Open Browse Viewer', async ({ page }) => {
     .click();
 
   await expect(page.locator('app-scenes-list-header')).toContainText('Events');
-  const sceneDetail = page.locator('app-scene-detail');
-  const browseImage = sceneDetail.locator('.browse-img').last();
-  const browseDialog = page.locator('.browse-dialog');
 
   await page
     .locator('app-sarviews-header')
@@ -25,6 +22,10 @@ test('Event Detail: Open Browse Viewer', async ({ page }) => {
     .click();
 
   await expect(page.locator('.product-list-header')).toContainText('Files');
+
+  const browseImage = page.locator('app-scene-detail .browse-img').last();
+  const browseDialog = page.locator('.browse-dialog');
+
   await expect(browseImage).toBeVisible();
   await expect(browseDialog).toHaveCount(0);
 

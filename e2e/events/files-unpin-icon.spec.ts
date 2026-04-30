@@ -10,35 +10,35 @@ test('Files: Unpin Icon', async ({ page }) => {
 
   await expect(page.locator('app-scenes-list-header')).toContainText('Events');
 
-  const eventHeader = page.locator('app-sarviews-header');
-  const eventSearch = eventHeader.getByRole('combobox', {
-    name: 'Event Search',
-  });
-  const searchButton = eventHeader
+  await page
+    .locator('app-sarviews-header')
+    .getByRole('combobox', { name: 'Event Search' })
+    .fill('Lebu');
+  await page.getByRole('option', { name: /Lebu/i }).first().click();
+  await page
+    .locator('app-sarviews-header')
     .locator('app-search-button')
-    .getByRole('button', { name: 'SEARCH' });
-  const productListHeader = page.locator('.product-list-header');
+    .getByRole('button', { name: 'SEARCH' })
+    .click();
+
+  await expect(page.locator('.product-list-header')).toContainText('Files');
+
   const fileOptions = page.locator('#event-selection-list mat-list-option');
   const firstPinnedFile = fileOptions.first();
   const secondPinnedFile = fileOptions.nth(3);
-  const queueHeader = page.locator('app-scenes-list-header');
-  const queueActions = queueHeader.locator('.list-button-group').filter({
-    hasText: 'Queue',
-  });
-  const queueAllButton = queueActions
-    .locator('mat-icon')
-    .filter({ hasText: 'add_shopping_cart' });
 
-  await eventSearch.fill('Lebu');
-  await page.getByRole('option', { name: /Lebu/i }).first().click();
-  await searchButton.click();
-
-  await expect(productListHeader).toContainText('Files');
   await expect(firstPinnedFile).toBeVisible();
   await expect(secondPinnedFile).toBeVisible();
 
   await firstPinnedFile.click();
   await secondPinnedFile.click();
+
+  const queueAllButton = page
+    .locator('app-scenes-list-header')
+    .locator('.list-button-group')
+    .filter({ hasText: 'Queue' })
+    .locator('mat-icon')
+    .filter({ hasText: 'add_shopping_cart' });
 
   await queueAllButton.click();
   await expect(

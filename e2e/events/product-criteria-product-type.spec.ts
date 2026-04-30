@@ -10,9 +10,23 @@ test('Product Criteria: Product Type', async ({ page }) => {
 
   await expect(page.locator('app-scenes-list-header')).toContainText('Events');
 
+  await page
+    .locator('app-sarviews-header')
+    .getByRole('combobox', { name: 'Event Search' })
+    .fill('Falam');
+  await page.getByRole('option', { name: /Falam/i }).first().click();
+
+  const searchButton = page
+    .locator('app-sarviews-header')
+    .locator('app-search-button')
+    .getByRole('button', { name: 'SEARCH' });
+  await searchButton.click();
+
+  const productListHeader = page.locator('.product-list-header');
+  await expect(productListHeader).toContainText('Files');
+
   const getFileCounts = async () => {
-    const headerText =
-      (await page.locator('.product-list-header').textContent()) ?? '';
+    const headerText = (await productListHeader.textContent()) ?? '';
     const match = headerText.match(/(\d+)\s+of\s+(\d+)\s+Files?/i);
 
     expect(match).toBeTruthy();
@@ -23,35 +37,18 @@ test('Product Criteria: Product Type', async ({ page }) => {
     };
   };
 
-  const eventHeader = page.locator('app-sarviews-header');
-  const eventSearch = eventHeader.getByRole('combobox', {
-    name: 'Event Search',
-  });
-  const searchButton = eventHeader
-    .locator('app-search-button')
-    .getByRole('button', { name: 'SEARCH' });
-  const productFilters = page.getByRole('region', { name: 'Product Filters' });
-  const productType = productFilters.getByRole('combobox', {
-    name: 'Product Type',
-  });
-  const productListHeader = page.locator('.product-list-header');
-
-  await eventSearch.fill('Falam');
-  await page.getByRole('option', { name: /Falam/i }).first().click();
-  await searchButton.click();
-
-  await expect(productListHeader).toContainText('Files');
-
   const fileCountsBefore = await getFileCounts();
   const productListTextBefore = (await productListHeader.textContent()) ?? '';
 
   expect(fileCountsBefore.filtered).toBeGreaterThan(0);
   expect(fileCountsBefore.filtered).toBe(fileCountsBefore.total);
 
-  await productType.focus();
+  await page
+    .getByRole('region', { name: 'Product Filters' })
+    .getByRole('combobox', { name: 'Product Type' })
+    .focus();
   await page.keyboard.press('Space');
-  const rtcGammaOption = page.getByRole('option', { name: 'RTC_GAMMA' });
-  await rtcGammaOption.press('Enter');
+  await page.getByRole('option', { name: 'RTC_GAMMA' }).press('Enter');
   await page.keyboard.press('Escape');
   await searchButton.click();
 

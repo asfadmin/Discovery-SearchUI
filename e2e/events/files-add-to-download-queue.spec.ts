@@ -9,11 +9,6 @@ test('Files: Add to download queue', async ({ page }) => {
     .click();
 
   await expect(page.locator('app-scenes-list-header')).toContainText('Events');
-  const firstFile = page.locator('#event-selection-list mat-list-option').first();
-  const addToDownloadsIcon = firstFile
-    .locator('mat-icon')
-    .filter({ hasText: 'add_shopping_cart' })
-    .first();
 
   await page
     .locator('app-sarviews-header')
@@ -27,6 +22,13 @@ test('Files: Add to download queue', async ({ page }) => {
     .click();
 
   await expect(page.locator('.product-list-header')).toContainText('Files');
+
+  const firstFile = page.locator('#event-selection-list mat-list-option').first();
+  const addToDownloadsIcon = firstFile
+    .locator('mat-icon')
+    .filter({ hasText: 'add_shopping_cart' })
+    .first();
+
   await expect(firstFile).toBeVisible();
   await firstFile.scrollIntoViewIfNeeded();
   await expect(addToDownloadsIcon).toHaveCount(1);

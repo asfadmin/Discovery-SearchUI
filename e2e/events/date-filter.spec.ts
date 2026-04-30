@@ -13,9 +13,6 @@ test('Date Filter', async ({ page }) => {
   const eventHeader = page.locator('app-sarviews-header');
   const startDate = eventHeader.getByRole('textbox', { name: 'Start Date' });
   const endDate = eventHeader.getByRole('textbox', { name: 'End Date' });
-  const searchButton = eventHeader
-    .locator('app-search-button')
-    .getByRole('button', { name: 'SEARCH' });
   const resultsHeader = page.locator('app-scenes-list-header');
   const initialResultsText = (await resultsHeader.textContent()) ?? '';
 
@@ -23,7 +20,10 @@ test('Date Filter', async ({ page }) => {
   await endDate.fill('1/1/2020');
   await page.keyboard.press('Tab');
 
-  await searchButton.click();
+  await eventHeader
+    .locator('app-search-button')
+    .getByRole('button', { name: 'SEARCH' })
+    .click();
 
   await expect(startDate).toHaveValue('1/1/2018');
   await expect(endDate).toHaveValue('1/1/2020');

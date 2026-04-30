@@ -11,14 +11,6 @@ test('Events: Add all Products from Selected Event to DL Queue', async ({
     .click();
 
   await expect(page.locator('app-scenes-list-header')).toContainText('Events');
-  const productListHeader = page.locator('.product-list-header');
-  const queueHeader = page.locator('app-scenes-list-header');
-  const queueActions = queueHeader.locator('.list-button-group').filter({
-    hasText: 'Queue',
-  });
-  const queueAllButton = queueActions
-    .locator('mat-icon')
-    .filter({ hasText: 'add_shopping_cart' });
 
   await page
     .locator('app-sarviews-header')
@@ -31,6 +23,7 @@ test('Events: Add all Products from Selected Event to DL Queue', async ({
     .getByRole('button', { name: 'SEARCH' })
     .click();
 
+  const productListHeader = page.locator('.product-list-header');
   await expect(productListHeader).toContainText('Files');
 
   const headerText = (await productListHeader.textContent()) ?? '';
@@ -43,6 +36,13 @@ test('Events: Add all Products from Selected Event to DL Queue', async ({
 
   expect(filteredCount).toBeGreaterThan(0);
   expect(filteredCount).toBe(totalCount);
+
+  const queueAllButton = page
+    .locator('app-scenes-list-header')
+    .locator('.list-button-group')
+    .filter({ hasText: 'Queue' })
+    .locator('mat-icon')
+    .filter({ hasText: 'add_shopping_cart' });
   await expect(queueAllButton).toHaveCount(1);
 
   await queueAllButton.click();

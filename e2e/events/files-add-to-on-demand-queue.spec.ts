@@ -9,18 +9,6 @@ test('Files: Add to On Demand Queue', async ({ page }) => {
     .click();
 
   await expect(page.locator('app-scenes-list-header')).toContainText('Events');
-  const insarGammaFile = page
-    .locator('#event-selection-list mat-list-option')
-    .filter({ hasText: 'INSAR GAMMA' })
-    .first();
-  const onDemandButton = insarGammaFile.locator('button[mat-icon-button]').first();
-  const insarGammaMenuItem = page.getByRole('menuitem', {
-    name: /InSAR GAMMA/i,
-  });
-  const addJobMenuItem = page.getByRole('menuitem', {
-    name: /Add 1 .* (Pair|Job)/i,
-  });
-  const onDemandHeaderButton = page.getByRole('button', { name: 'ON DEMAND' });
 
   await page
     .locator('app-sarviews-header')
@@ -34,16 +22,29 @@ test('Files: Add to On Demand Queue', async ({ page }) => {
     .click();
 
   await expect(page.locator('.product-list-header')).toContainText('Files');
+
+  const insarGammaFile = page
+    .locator('#event-selection-list mat-list-option')
+    .filter({ hasText: 'INSAR GAMMA' })
+    .first();
   await expect(insarGammaFile).toBeVisible();
   await insarGammaFile.scrollIntoViewIfNeeded();
 
-  await onDemandButton.click();
+  await insarGammaFile.locator('button[mat-icon-button]').first().click();
+
+  const insarGammaMenuItem = page.getByRole('menuitem', {
+    name: /InSAR GAMMA/i,
+  });
+  const addJobMenuItem = page.getByRole('menuitem', {
+    name: /Add 1 .* (Pair|Job)/i,
+  });
+
   await expect(insarGammaMenuItem).toBeVisible();
   await insarGammaMenuItem.click();
   await expect(addJobMenuItem).toBeVisible();
   await addJobMenuItem.click();
 
-  await onDemandHeaderButton.click();
+  await page.getByRole('button', { name: 'ON DEMAND' }).click();
   await page.getByRole('menuitem', { name: 'On Demand Queue' }).click();
 
   await expect(page.locator('.processing-queue')).toBeVisible();

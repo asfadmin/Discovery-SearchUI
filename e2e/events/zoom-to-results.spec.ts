@@ -15,26 +15,24 @@ test('Zoom to Results', async ({ page, browserName }) => {
 
   await expect(page.locator('app-scenes-list-header')).toContainText('Events');
 
-  const eventHeader = page.locator('app-sarviews-header');
-  const eventSearch = eventHeader.getByRole('combobox', {
-    name: 'Event Search',
-  });
-  const searchButton = eventHeader
-    .locator('app-search-button')
-    .getByRole('button', { name: 'SEARCH' });
-  const queueHeader = page.locator('app-scenes-list-header');
-  const zoomActions = queueHeader.locator('.list-button-group').filter({
-    hasText: 'Zoom',
-  });
-  const zoomToResultsButton = zoomActions.locator(
-    'mat-button-toggle.control-mat-button-toggle',
-  );
-
-  await eventSearch.fill('Albania');
+  await page
+    .locator('app-sarviews-header')
+    .getByRole('combobox', { name: 'Event Search' })
+    .fill('Albania');
   await page.getByRole('option', { name: /Albania/i }).first().click();
-  await searchButton.click();
+  await page
+    .locator('app-sarviews-header')
+    .locator('app-search-button')
+    .getByRole('button', { name: 'SEARCH' })
+    .click();
 
   await expect(page.locator('.product-list-header')).toContainText('Files');
+
+  const zoomToResultsButton = page
+    .locator('app-scenes-list-header')
+    .locator('.list-button-group')
+    .filter({ hasText: 'Zoom' })
+    .locator('mat-button-toggle.control-mat-button-toggle');
   await expect(zoomToResultsButton).toHaveCount(1);
   const urlBeforeZoom = page.url();
 
