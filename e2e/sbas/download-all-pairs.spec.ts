@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures';
 
 test('SBAS: Download All Pairs', async ({ page }) => {
   await page.goto('/');

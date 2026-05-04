@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures';
 import { waitForASFAPIResponse } from 'e2e/helpers';
 
 test('Campaign Filter', async ({ page }) => {

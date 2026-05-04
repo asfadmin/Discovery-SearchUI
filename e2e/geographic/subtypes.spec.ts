@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures';
 
 test('Sentinel Satellite Filter', async ({ page }) => {
   await page.goto('/');

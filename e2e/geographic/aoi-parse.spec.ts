@@ -1,4 +1,4 @@
-import test, { expect } from '@playwright/test';
+import { test, expect } from '../fixtures';
 
 test('Area of interest should parse polygon coordinate strings', async ({
   page,

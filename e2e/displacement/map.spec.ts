@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures';
 
 test('Click on displacement map', async ({ page }) => {
   await page.goto('/');

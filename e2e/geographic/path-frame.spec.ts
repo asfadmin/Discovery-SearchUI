@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures';
 
 test('Button to clear path/frame', async ({ page }) => {
   await page.goto('/');

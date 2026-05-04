@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures';
 test('Multiple beam mode selections available', async ({ page }) => {
   await page.goto('');
   await page

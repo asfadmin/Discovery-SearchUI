@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures';
 import { waitForASFAPIResponse } from 'e2e/helpers';
 
 test('S1 Burst ID filter returns matching results', async ({ page }) => {

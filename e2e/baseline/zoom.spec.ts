@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures';
 
 test('Baseline zoom to results', async ({ page }) => {
   const getMapInfoText = async () =>

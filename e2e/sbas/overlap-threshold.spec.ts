@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures';
 
 test('SBAS overlap threshold filter changes the selected value', async ({
   page,
