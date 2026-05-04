@@ -1,4 +1,4 @@
-import { test, expect } from '@e2e/fixtures';
+import { test, expect } from 'e2e/fixtures';
 
 test('Set Start and End Date', async ({ page }) => {
   await page.goto('/');

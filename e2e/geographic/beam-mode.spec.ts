@@ -1,4 +1,4 @@
-import { test, expect } from '@e2e/fixtures';
+import { test, expect } from 'e2e/fixtures';
 
 test('Multiple beam mode selections available', async ({ page }) => {
   await page.goto('');

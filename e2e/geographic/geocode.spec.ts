@@ -1,4 +1,4 @@
-import { test, expect } from '@e2e/fixtures';
+import { test, expect } from 'e2e/fixtures';
 import { waitForASFAPIResponse } from 'e2e/helpers';
 
 const MAPBOX_API_GLOB = 'https://api.mapbox.com/geocoding/**';
