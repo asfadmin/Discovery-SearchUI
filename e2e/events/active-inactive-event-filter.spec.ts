@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures';
 
 test('Active/Inactive Event Filter', async ({ page }) => {
   await page.goto('/');

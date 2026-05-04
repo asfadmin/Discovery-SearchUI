@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures';
 
 test('Event Detail: Open Browse Viewer', async ({ page }) => {
   await page.goto('/');

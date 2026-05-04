@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures';
 
 test('Zoom to Results', async ({ page, browserName }) => {
   test.skip(

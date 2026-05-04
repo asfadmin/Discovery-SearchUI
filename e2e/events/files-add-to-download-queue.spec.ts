@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures';
 
 test('Files: Add to download queue', async ({ page }) => {
   await page.goto('/');
