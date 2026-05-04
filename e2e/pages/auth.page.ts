@@ -1,4 +1,5 @@
-import { test as base, Page } from '@playwright/test';
+import { Page } from '@playwright/test';
+import { test as base } from 'e2e/fixtures';
 const userServiceMock = async (
   page: Page,
   route: string,
