@@ -1,7 +1,10 @@
 import { test as base, Page } from '@playwright/test';
-
-const userServiceMock = async (page: Page, route: string) => {
-  let data = [];
+const userServiceMock = async (
+  page: Page,
+  route: string,
+  default_data: any[] | unknown = [],
+) => {
+  let data = default_data;
   await page.route(route, async (route) => {
     if (route.request().method() === 'POST') {
       data = JSON.parse(route.request().postData());
@@ -16,7 +19,22 @@ export const test = base.extend<{ loggedInPage: Page }>({
     await userServiceMock(page, '**appdata**/**/vertex/**/History');
     await userServiceMock(page, '**appdata**/**/vertex/**/SavedSearches');
     await userServiceMock(page, '**appdata**/**/vertex/**/SavedFilters');
-
+    await userServiceMock(page, '**appdata**/**/Profile', {
+      defaultDataset: 'SENTINEL-1',
+      defaultFilterPresets: {
+        'Baseline Search': '',
+        'Geographic Search': '',
+        'SBAS Search': '',
+        Displacement: '',
+      },
+      defaultMaxConcurrentDownloads: 3,
+      hyp3BackendUrl: 'https://hyp3-api.asf.alaska.edu',
+      hyp3SavedUrls: ['https://hyp3-api.asf.alaska.edu'],
+      language: 'en',
+      mapLayer: 'Satellite',
+      maxResults: 250,
+      theme: 'light',
+    });
     await page.route('**appdata**/info/cookie', async (route) => {
       route.fulfill({
         body: JSON.stringify({
@@ -28,27 +46,6 @@ export const test = base.extend<{ loggedInPage: Page }>({
           'urs-user-id': 'automatedtesting_fullaccess',
         }),
       });
-    });
-    let userProfile = {
-      defaultDataset: 'SENTINEL-1',
-      defaultFilterPresets: {
-        'Baseline Search': '',
-        'Geographic Search': '',
-        'SBAS Search': '',
-      },
-      hyp3BackendUrl: 'https://hyp3-api.asf.alaska.edu',
-      hyp3SavedUrls: ['https://hyp3-api.asf.alaska.edu'],
-      language: 'en',
-      mapLayer: 'Satellite',
-      maxResults: '250',
-      theme: 'light',
-    };
-    await page.route('**appdata**/**Profile', async (route) => {
-      if (route.request().method() === 'POST') {
-        userProfile = JSON.parse(route.request().postData());
-      } else {
-        route.fulfill({ body: JSON.stringify(userProfile) });
-      }
     });
     await page.route('**/services/search/param**', async (route) => {
       const url = new URL(route.request().url());
