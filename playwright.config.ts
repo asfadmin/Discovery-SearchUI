@@ -29,7 +29,7 @@ export default defineConfig({
       maxDiffPixelRatio: 0.2,
     },
   },
-  globalSetup: './e2e/auth.setup',
+  // globalSetup: './e2e/auth.setup',
   /* Configure projects for major browsers */
   projects: [
     {
@@ -40,7 +40,6 @@ export default defineConfig({
         timezoneId: 'America/New_York',
         bypassCSP: true,
       },
-      grepInvert: /@auth/,
     },
 
     {
@@ -51,20 +50,6 @@ export default defineConfig({
         timezoneId: 'America/New_York',
         bypassCSP: true,
       },
-      grepInvert: /@auth/,
-    },
-
-    {
-      name: 'chromium-auth',
-      use: {
-        ...devices['Desktop Chrome'],
-        trace: 'off',
-        storageState: 'playwright/.auth/user.json',
-        viewport: { width: 1920, height: 1080 },
-        timezoneId: 'America/New_York',
-        bypassCSP: true,
-      },
-      grep: /@auth/,
     },
 
     // {
