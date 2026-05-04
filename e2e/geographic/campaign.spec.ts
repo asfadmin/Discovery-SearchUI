@@ -24,6 +24,9 @@ test('Campaign Filter', async ({ page }) => {
   );
 });
 test('Selecting Multiple Campaigns', async ({ page }) => {
+  await page.route('**/services/utils/mission_list**', (route) => {
+    return route.continue();
+  });
   await page.goto('/');
   await page.getByRole('button', { name: 'Sentinel-' }).click();
   await page
