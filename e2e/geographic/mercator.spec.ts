@@ -1,4 +1,4 @@
-import { test, expect } from '../fixtures';
+import { test, expect } from '@e2e/fixtures';
 
 test('Bounding Boxes Return Results in Mercator Projection', async ({
   page,

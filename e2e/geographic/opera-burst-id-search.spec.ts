@@ -1,4 +1,4 @@
-import { test, expect } from '../fixtures';
+import { test, expect } from '@e2e/fixtures';
 import { waitForASFAPIResponse } from 'e2e/helpers';
 
 test('Opera Burst ID search returns matching results', async ({ page }) => {

@@ -1,4 +1,4 @@
-import { test, expect } from '../fixtures';
+import { test, expect } from '@e2e/fixtures';
 
 test('Event Detail: Open Browse Viewer', async ({ page }) => {
   await page.goto('/');

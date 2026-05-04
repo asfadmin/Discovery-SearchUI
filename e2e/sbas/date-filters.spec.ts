@@ -1,4 +1,4 @@
-import { test, expect } from '../fixtures';
+import { test, expect } from '@e2e/fixtures';
 
 test('SBAS Start & End Date Filters', async ({ page }) => {
   await page.goto('/');

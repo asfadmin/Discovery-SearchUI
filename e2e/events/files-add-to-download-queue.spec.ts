@@ -1,4 +1,4 @@
-import { test, expect } from '../fixtures';
+import { test, expect } from '@e2e/fixtures';
 
 test('Files: Add to download queue', async ({ page }) => {
   await page.goto('/');

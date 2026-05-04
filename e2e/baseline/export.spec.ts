@@ -1,4 +1,4 @@
-import { test, expect } from '../fixtures';
+import { test, expect } from '@e2e/fixtures';
 import * as fs from 'fs';
 import { parse } from 'csv-parse/sync';
 

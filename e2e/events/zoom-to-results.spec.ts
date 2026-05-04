@@ -1,4 +1,4 @@
-import { test, expect } from '../fixtures';
+import { test, expect } from '@e2e/fixtures';
 
 test('Zoom to Results', async ({ page, browserName }) => {
   test.skip(

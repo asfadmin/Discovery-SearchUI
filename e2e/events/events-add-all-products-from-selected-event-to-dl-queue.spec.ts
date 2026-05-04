@@ -1,4 +1,4 @@
-import { test, expect } from '../fixtures';
+import { test, expect } from '@e2e/fixtures';
 
 test('Events: Add all Products from Selected Event to DL Queue', async ({
   page,

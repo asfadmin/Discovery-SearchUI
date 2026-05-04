@@ -1,4 +1,4 @@
-import { test, expect } from '../fixtures';
+import { test, expect } from '@e2e/fixtures';
 import { waitForASFAPIResponse } from 'e2e/helpers';
 
 test('ERS subtype E2 filter returns matching results', async ({ page }) => {
