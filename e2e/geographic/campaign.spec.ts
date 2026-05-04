@@ -2,6 +2,10 @@ import { test, expect } from '../fixtures';
 import { waitForASFAPIResponse } from 'e2e/helpers';
 
 test('Campaign Filter', async ({ page }) => {
+  await page.route('**/services/utils/mission_list**', (route) => {
+    return route.continue();
+  });
+
   await page.goto('/');
   await page.getByRole('button', { name: 'Sentinel-' }).click();
   await page
