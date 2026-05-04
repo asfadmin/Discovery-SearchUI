@@ -29,7 +29,7 @@ export default defineConfig({
       maxDiffPixelRatio: 0.2,
     },
   },
-  globalSetup: './e2e/auth.setup',
+  // globalSetup: './e2e/auth.setup',
   /* Configure projects for major browsers */
   projects: [
     {
