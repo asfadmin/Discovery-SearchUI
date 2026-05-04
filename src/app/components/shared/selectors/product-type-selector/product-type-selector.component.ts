@@ -25,7 +25,7 @@ import { MatTooltip } from '@angular/material/tooltip';
 
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
-import { EnvironmentService, SearchService } from '@services';
+import { SearchService } from '@services';
 
 @Component({
   selector: 'app-product-type-selector',
@@ -61,7 +61,6 @@ export class ProductTypeSelectorComponent implements OnInit, OnDestroy {
   );
   private dataset$ = this.store$.select(filtersStore.getSelectedDataset);
 
-  public env = inject(EnvironmentService);
   private subs = new SubSink();
 
   ngOnInit(): void {
