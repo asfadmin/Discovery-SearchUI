@@ -23,7 +23,7 @@ async function globalSetup() {
   await overrideUserCookieHeaders(page);
   await popup.getByRole('button', { name: 'Log in' }).click();
   await expect(page.getByRole('button', { name: 'Sign In' })).toHaveCount(0);
-  console.log('Sign in successfull');
+  console.log('Sign in successful');
   await page.context().storageState({ path: 'playwright/.auth/user.json' });
   await browser.close();
 }
