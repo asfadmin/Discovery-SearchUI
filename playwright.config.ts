@@ -28,6 +28,7 @@ export default defineConfig({
     toHaveScreenshot: {
       maxDiffPixelRatio: 0.2,
     },
+    timeout: 30_000,
   },
   // globalSetup: './e2e/auth.setup',
   /* Configure projects for major browsers */

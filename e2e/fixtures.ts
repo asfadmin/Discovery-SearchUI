@@ -2,7 +2,7 @@ import { test as base, expect } from '@playwright/test';
 
 const THIRD_PARTY_PATTERN =
   /(googletagmanager|crazyegg|earthdata\.nasa\.gov|feedback\.js)/;
-const EXTERNAL_ASSET_PATTERN = /\.(png|jpg|jpeg|pbf|webp|gif)(\?.*)?$/;
+const EXTERNAL_ASSET_PATTERN = /\.(png|jpg|jpeg|pbf|webp|gif|js|css)(\?.*)?$/;
 
 export const test = base.extend({
   page: async ({ page }, use) => {
