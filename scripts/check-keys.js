@@ -5,88 +5,138 @@ const path = require('path');
 const { globSync } = require('glob');
 const { Project, SyntaxKind } = require('ts-morph');
 
-const tsconfig = 'tsconfig.json';
-const htmlGlob = 'src/**/*.html';
-const translationFile = 'src/assets/i18n/en.json';
+const CONFIG = {
+  tsconfig: 'tsconfig.json',
+  htmlGlob: 'src/**/*.html',
+  translationGlob: 'src/assets/i18n/*.json',
+};
 
-// ── TypeScript — AST via ts-morph ────────────────────────────────────────────
-const project = new Project({ tsConfigFilePath: path.resolve(tsconfig) });
+function extractKeysFromTS(project) {
+  const keys = new Map();
 
-const tsKeys = new Map(); // key → [file, ...]
+  for (const sourceFile of project.getSourceFiles()) {
+    if (sourceFile.getFilePath().includes('node_modules')) continue;
 
-for (const sourceFile of project.getSourceFiles()) {
-  if (sourceFile.getFilePath().includes('node_modules')) continue;
+    const relPath = path.relative(process.cwd(), sourceFile.getFilePath());
 
-  const relPath = path.relative(process.cwd(), sourceFile.getFilePath());
+    sourceFile
+      .getDescendantsOfKind(SyntaxKind.CallExpression)
+      .forEach((call) => {
+        const expr = call.getExpression();
+        if (expr.getKind() !== SyntaxKind.PropertyAccessExpression) return;
+        if (expr.getName() !== 'instant') return;
 
-  sourceFile.getDescendantsOfKind(SyntaxKind.CallExpression).forEach((call) => {
-    const expr = call.getExpression();
-    if (expr.getKind() !== SyntaxKind.PropertyAccessExpression) return;
-    if (expr.getName() !== 'instant') return;
+        const firstArg = call.getArguments()[0];
+        if (!firstArg) return;
 
-    const first = call.getArguments()[0];
-    if (!first) return;
+        if (
+          firstArg.getKind() === SyntaxKind.StringLiteral ||
+          firstArg.getKind() === SyntaxKind.NoSubstitutionTemplateLiteral
+        ) {
+          const key = firstArg.getLiteralValue();
+          addKeyToMap(keys, key, relPath);
+        }
+      });
+  }
+  return keys;
+}
 
-    if (
-      first.getKind() === SyntaxKind.StringLiteral ||
-      first.getKind() === SyntaxKind.NoSubstitutionTemplateLiteral
-    ) {
-      const key = first.getLiteralValue();
-      tsKeys.set(key, [...(tsKeys.get(key) ?? []), relPath]);
+function extractKeysFromHTML(pattern, globPath) {
+  const keys = new Map();
+  const files = globSync(globPath);
+
+  for (const file of files) {
+    const src = fs.readFileSync(file, 'utf8');
+    let match;
+    const regex = new RegExp(pattern);
+
+    while ((match = regex.exec(src)) !== null) {
+      addKeyToMap(keys, match[1], file);
+    }
+  }
+  return keys;
+}
+
+function loadDefinedKeys(folderGlob) {
+  const translationFiles = globSync(folderGlob);
+
+  if (translationFiles.length === 0) {
+    console.error(`❌ No translation files found for glob: ${folderGlob}`);
+    process.exit(1);
+  }
+
+  const keySets = translationFiles.map((filePath) => {
+    const content = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    return [path.basename(filePath), new Set(Object.keys(content))];
+  });
+
+  keySets.sort(([, setA], [, setB]) => setB.size - setA.size);
+  const [[_, firstKeySet], ...rest] = keySets;
+
+  rest.forEach(([filePath, keySet]) => {
+    const missing = firstKeySet.difference(keySet);
+    if (missing.size > 0) {
+      console.log(`❌ ${filePath} is missing ${missing.size} keys:`);
+      console.log(`   ${[...missing].join(', ')}`);
+      process.exit(1);
     }
   });
+
+  return firstKeySet;
 }
 
-// ── HTML — translate pipe ─────────────────────────────────────────────────────
-const HTML_PATTERN =
-  /['"`]([A-Z0-9_]+(?:\.[A-Z0-9_]+)*)['"`]\s*\|\s*translate/g;
-
-const htmlKeys = new Map(); // key → [file, ...]
-
-for (const file of globSync(htmlGlob, {
-  ignore: ['node_modules/**', 'dist/**'],
-})) {
-  const src = fs.readFileSync(file, 'utf8');
-  let m;
-  HTML_PATTERN.lastIndex = 0;
-  while ((m = HTML_PATTERN.exec(src)) !== null) {
-    const key = m[1];
-    htmlKeys.set(key, [...(htmlKeys.get(key) ?? []), file]);
+function addKeyToMap(map, key, file) {
+  const existing = map.get(key) || [];
+  if (!existing.includes(file)) {
+    map.set(key, [...existing, file]);
   }
 }
 
-// ── Load translation file ─────────────────────────────────────────────────────
-const definedKeys = new Set(
-  Object.keys(
-    JSON.parse(fs.readFileSync(path.resolve(translationFile), 'utf8')),
-  ),
-);
+function main() {
+  const project = new Project({
+    tsConfigFilePath: path.resolve(CONFIG.tsconfig),
+  });
+  const html_pattern =
+    /['"`]([A-Z0-9_]+(?:\.[A-Z0-9_]+)*)['"`]\s*\|\s*translate/g;
 
-// ── Check ─────────────────────────────────────────────────────────────────────
-const KEY_PATTERN = /^[A-Z][A-Z0-9_]*$/;
+  const tsKeys = extractKeysFromTS(project);
+  const htmlKeys = extractKeysFromHTML(html_pattern, CONFIG.htmlGlob);
+  const definedKeys = loadDefinedKeys(CONFIG.translationGlob);
 
-const allKeys = new Map([...tsKeys, ...htmlKeys]);
-const missing = [];
+  const combinedKeys = new Set([...tsKeys.keys(), ...htmlKeys.keys()]);
+  const sortedKeys = Array.from(combinedKeys).sort((a, b) =>
+    a.localeCompare(b),
+  );
 
-for (const [key, _] of [...allKeys.entries()].sort(([a], [b]) =>
-  a.localeCompare(b),
-)) {
-  if (!KEY_PATTERN.test(key)) continue;
-  const merged = [
-    ...new Set([...(tsKeys.get(key) ?? []), ...(htmlKeys.get(key) ?? [])]),
-  ];
-  if (!definedKeys.has(key)) {
-    missing.push({ key, files: merged });
+  const keyPattern = /^[A-Z][A-Z0-9_]*$/;
+
+  const missing = [];
+  for (const key of sortedKeys) {
+    if (!keyPattern.test(key)) continue;
+
+    if (!definedKeys.has(key)) {
+      const occurrences = new Set([
+        ...(tsKeys.get(key) || []),
+        ...(htmlKeys.get(key) || []),
+      ]);
+      missing.push({ key, files: Array.from(occurrences) });
+    }
+  }
+
+  const totalCount = definedKeys.size;
+
+  if (missing.length === 0) {
+    console.log(`✅ All ${totalCount} keys found in ${CONFIG.translationGlob}`);
+  } else {
+    console.log(
+      `❌ ${missing.length} missing keys out of ${totalCount} total:\n`,
+    );
+    for (const { key, files } of missing) {
+      console.log(`  ${key}`);
+      for (const f of files) console.log(`    └─ ${f}`);
+    }
+    process.exit(1);
   }
 }
 
-if (missing.length === 0) {
-  console.log(`✅  All ${allKeys.size} keys found in ${translationFile}`);
-} else {
-  console.log(`❌  ${missing.length} missing keys:\n`);
-  for (const { key, files } of missing) {
-    console.log(`  ${key}`);
-    for (const f of files) console.log(`    ${f}`);
-  }
-  process.exit(1);
-}
+main();

@@ -7,7 +7,7 @@ on:
 
 
 jobs:
-  i18n-check:
+  check-keys:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
