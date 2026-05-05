@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from 'e2e/fixtures';
 import { waitForASFAPIResponse } from 'e2e/helpers';
 
 test('SBAS: Search for a Scene from Geo Search', async ({ page }) => {

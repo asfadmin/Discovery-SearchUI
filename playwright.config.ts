@@ -22,14 +22,15 @@ export default defineConfig({
     baseURL: process.env['PLAYWRIGHT_TEST_BASE_URL'] ?? 'http://localhost:4200',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    trace: process.env['CI'] ? 'on-first-retry' : 'on',
   },
   expect: {
     toHaveScreenshot: {
       maxDiffPixelRatio: 0.2,
     },
+    timeout: 30_000,
   },
-  globalSetup: './e2e/auth.setup',
+  // globalSetup: './e2e/auth.setup',
   /* Configure projects for major browsers */
   projects: [
     {
@@ -40,7 +41,6 @@ export default defineConfig({
         timezoneId: 'America/New_York',
         bypassCSP: true,
       },
-      grepInvert: /@auth/,
     },
 
     {
@@ -51,20 +51,6 @@ export default defineConfig({
         timezoneId: 'America/New_York',
         bypassCSP: true,
       },
-      grepInvert: /@auth/,
-    },
-
-    {
-      name: 'chromium-auth',
-      use: {
-        ...devices['Desktop Chrome'],
-        trace: 'off',
-        storageState: 'playwright/.auth/user.json',
-        viewport: { width: 1920, height: 1080 },
-        timezoneId: 'America/New_York',
-        bypassCSP: true,
-      },
-      grep: /@auth/,
     },
 
     // {
