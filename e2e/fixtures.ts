@@ -6,14 +6,12 @@ const EXTERNAL_ASSET_PATTERN = /\.(png|jpg|jpeg|pbf|webp|gif)(\?.*)?$/;
 
 export const test = base.extend({
   page: async ({ page }, use) => {
-    await page.route(
-      '**/api-test.asf.alaska.edu/services/utils/mission_list',
-      (route) =>
-        route.fulfill({
-          status: 200,
-          contentType: 'application/json',
-          body: JSON.stringify({ result: [] }),
-        }),
+    await page.route('**/*/services/utils/mission_list**', (route) =>
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ result: [] }),
+      }),
     );
 
     await page.route('**/banners.asf.alaska.edu/calendar', (route) =>
