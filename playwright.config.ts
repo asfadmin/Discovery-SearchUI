@@ -1,12 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// require('dotenv').config();
-
-/**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
@@ -35,11 +29,9 @@ export default defineConfig({
       maxDiffPixelRatio: 0.2,
     },
   },
-
+  globalSetup: './e2e/auth.setup',
   /* Configure projects for major browsers */
   projects: [
-    { name: 'setup', testMatch: /.*\.setup\.ts/ },
-
     {
       name: 'chromium',
       use: {
@@ -47,19 +39,32 @@ export default defineConfig({
         viewport: { width: 1920, height: 1080 },
         timezoneId: 'America/New_York',
         bypassCSP: true,
-        // storageState: 'playwright/.auth/user.json',
-        // TODO: this makes all tests authenticated, we probably want to define test suites that use authentication instead of general projects
       },
+      grepInvert: /@auth/,
     },
 
     {
       name: 'firefox',
       use: {
         ...devices['Desktop Firefox'],
+        viewport: { width: 1920, height: 1080 },
         timezoneId: 'America/New_York',
         bypassCSP: true,
-        viewport: { width: 1920, height: 1080 },
       },
+      grepInvert: /@auth/,
+    },
+
+    {
+      name: 'chromium-auth',
+      use: {
+        ...devices['Desktop Chrome'],
+        trace: 'off',
+        storageState: 'playwright/.auth/user.json',
+        viewport: { width: 1920, height: 1080 },
+        timezoneId: 'America/New_York',
+        bypassCSP: true,
+      },
+      grep: /@auth/,
     },
 
     // {

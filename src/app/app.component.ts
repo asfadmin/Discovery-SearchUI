@@ -520,10 +520,12 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         tapToDismiss: false,
       };
 
+      const cookieBannerMessage = this.translate.instant(
+        'COOKIE_BANNER_MESSAGE',
+      );
+      const learnMore = this.translate.instant('LEARN_MORE');
       const toast = this.notificationService.info(
-        'This website uses cookies to ensure you get the best \
-        experience on our website. \
-        <a href="https://cookiesandyou.com/" target="_blank">Learn More</a>',
+        `${cookieBannerMessage} <a href="https://cookiesandyou.com/" target="_blank">${learnMore}</a>`,
         '',
         options,
       );

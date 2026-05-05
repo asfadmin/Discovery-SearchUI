@@ -1,28 +1,31 @@
-import { expect, test as setup } from '@playwright/test';
-import path from 'path';
-import fs from 'fs';
+import { chromium, expect } from '@playwright/test';
+import dotenv from 'dotenv';
+import { overrideUserCookieHeaders } from 'e2e/helpers';
 
-// import { username, password } from '../playwright/.auth/creds.json';
-const authFile = path.join(__dirname, '../playwright/.auth/user.json');
-const credsFile = path.join(__dirname, '../playwright/.auth/creds.json');
-setup('authenticate', async ({ page }) => {
-  let userData = {};
-  try {
-    const data = fs.readFileSync(credsFile, 'utf8');
-    userData = JSON.parse(data);
-  } catch (_e) {
-    console.error('Error reading or parsing auth JSON file.');
-    return;
-  }
+async function globalSetup() {
+  // const { baseURL } = config.projects[0].use;
+  const browser = await chromium.launch();
+  const page = await browser.newPage();
+  console.log('Running auth setup function');
+  dotenv.config({ quiet: true });
+
   await page.goto('https://search.asf.alaska.edu');
   const popupPromise = page.waitForEvent('popup');
-
+  if (!process.env['PLAYWRIGHT_USERNAME']) {
+    console.log('No credentials defined: Some tests may fail');
+    return;
+  }
+  console.log('Signing in');
   await page.getByRole('button', { name: 'Sign In' }).click();
   const popup = await popupPromise;
-  await popup.getByLabel('username').fill(userData['username']);
-  await popup.getByLabel('password').fill(userData['password']);
+  await popup.getByLabel('username').fill(process.env['PLAYWRIGHT_USERNAME']);
+  await popup.getByLabel('password').fill(process.env['PLAYWRIGHT_PASSWORD']);
+  await overrideUserCookieHeaders(page);
   await popup.getByRole('button', { name: 'Log in' }).click();
   await expect(page.getByRole('button', { name: 'Sign In' })).toHaveCount(0);
+  console.log('Sign in successful');
+  await page.context().storageState({ path: 'playwright/.auth/user.json' });
+  await browser.close();
+}
 
-  await page.context().storageState({ path: authFile });
-});
+export default globalSetup;
