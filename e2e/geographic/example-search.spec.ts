@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from 'e2e/fixtures';
 
 // made using the playwright test generator
 // loads up a browser and listens to what you click on
