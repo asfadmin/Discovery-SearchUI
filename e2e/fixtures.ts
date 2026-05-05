@@ -32,6 +32,10 @@ export const test = base.extend({
       (route) => route.abort(),
     );
 
+    await page.route(
+      (url) => url.hostname === 'localhost',
+      (route) => route.continue(),
+    );
     await use(page);
   },
 });
