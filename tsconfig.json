@@ -73,6 +73,9 @@
       ],
       "@testing/*": [
         "src/app/testing/*"
+      ],
+      "@e2e/*": [
+        "@e2e/*"
       ]
     }
   }
