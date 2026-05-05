@@ -1,42 +1,39 @@
 import { test as base, expect } from '@playwright/test';
 
+const THIRD_PARTY_PATTERN =
+  /(googletagmanager|crazyegg|earthdata\.nasa\.gov|feedback\.js)/;
+const EXTERNAL_ASSET_PATTERN = /\.(png|jpg|jpeg|pbf|webp|gif)(\?.*)?$/;
+
 export const test = base.extend({
   page: async ({ page }, use) => {
-    await page.route('**/*', (route) => {
-      const url = route.request().url();
-
-      if (url.includes('localhost')) {
-        return route.continue();
-      }
-
-      if (url.includes('api-test.asf.alaska.edu/services/utils/mission_list')) {
-        return route.fulfill({
+    await page.route(
+      '**/api-test.asf.alaska.edu/services/utils/mission_list',
+      (route) =>
+        route.fulfill({
           status: 200,
           contentType: 'application/json',
           body: JSON.stringify({ result: [] }),
-        });
-      }
+        }),
+    );
 
-      if (url.includes('banners.asf.alaska.edu/calendar')) {
-        return route.fulfill({
-          status: 200,
-          contentType: 'application/json',
-          body: JSON.stringify([]),
-        });
-      }
+    await page.route('**/banners.asf.alaska.edu/calendar', (route) =>
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify([]),
+      }),
+    );
 
-      const isThirdPartyScript =
-        /(googletagmanager|crazyegg|earthdata\.nasa\.gov|feedback\.js)/.test(
-          url,
-        );
-      const isExternalAsset = /\.(png|jpg|jpeg|pbf|webp|gif)(\?.*)?$/.test(url);
+    await page.route(
+      (url) => THIRD_PARTY_PATTERN.test(url.href),
+      (route) => route.abort(),
+    );
 
-      if (isThirdPartyScript || isExternalAsset) {
-        return route.abort();
-      }
+    await page.route(
+      (url) => EXTERNAL_ASSET_PATTERN.test(url.pathname),
+      (route) => route.abort(),
+    );
 
-      return route.continue();
-    });
     await use(page);
   },
 });
