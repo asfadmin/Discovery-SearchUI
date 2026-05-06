@@ -1,66 +1,34 @@
-<button
-  mat-stroked-button
-  class="view-select-button"
-  [matMenuTriggerFor]="viewMenu"
-  [attr.aria-label]="'MAP_PROJECTION_VIEW' | translate"
->
-  @if (view === types.ARCTIC) {
-    <mat-icon svgIcon="arctic" class="view-btn view-select-icon"> </mat-icon>
-  }
-  @if (view === types.EQUATORIAL) {
-    <mat-icon svgIcon="equatorial" class="view-btn view-select-icon">
-    </mat-icon>
-  }
-  @if (view === types.ANTARCTIC) {
-    <mat-icon svgIcon="antarctic" class="view-btn view-select-icon"></mat-icon>
-  }
-  <span class="fa fa-caret-down bottom-right"></span>
-</button>
-
-<mat-menu #viewMenu="matMenu">
+<div class="projection-container">
   <button
-    mat-menu-item
-    [attr.aria-label]="'ARCTIC_MAP_PROJECTION' | translate"
+    mat-stroked-button
+    class="view-select-button"
     (click)="onArcticSelected()"
     [value]="types.ARCTIC"
     [disabled]="isDisplacementSearch"
+    [attr.aria-label]="'ARCTIC_MAP_PROJECTION' | translate"
   >
-    <mat-icon
-      svgIcon="arctic"
-      class="view-btn view-menu-icon"
-      iconPositionEnd
-    ></mat-icon>
-
-    <span>{{ 'ARCTIC_MAP_VIEW' | translate }}</span>
+    <mat-icon svgIcon="arctic" class="view-btn view-select-icon"> </mat-icon>
   </button>
 
   <button
-    mat-menu-item
+    mat-stroked-button
+    class="view-select-button"
     [attr.aria-label]="'EQUATORIAL_MAP_PROJECTION' | translate"
     (click)="onEquatorialSelected()"
     [value]="types.EQUATORIAL"
   >
-    <mat-icon
-      svgIcon="equatorial"
-      class="view-btn view-menu-icon"
-      iconPositionEnd
-    ></mat-icon>
-    <span>{{ 'EQUATORIAL_MAP_VIEW' | translate }}</span>
+    <mat-icon svgIcon="equatorial" class="view-btn view-select-icon">
+    </mat-icon>
   </button>
 
   <button
-    mat-menu-item
+    mat-stroked-button
+    class="view-select-button"
     [attr.aria-label]="'ANTARCTIC_MAP_PROJECTION' | translate"
     (click)="onAntarcticSelected()"
     [value]="types.ANTARCTIC"
     [disabled]="isDisplacementSearch"
   >
-    <mat-icon
-      svgIcon="antarctic"
-      class="view-btn view-menu-icon"
-      iconPositionEnd
-    ></mat-icon>
-
-    <span>{{ 'ANTARCTIC_MAP_VIEW' | translate }}</span>
+    <mat-icon svgIcon="antarctic" class="view-btn view-select-icon"></mat-icon>
   </button>
-</mat-menu>
+</div>

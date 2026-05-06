@@ -16,6 +16,11 @@
   line-height: 14px !important;
 }
 
+.projection-container {
+ display: flex;
+ flex-direction: row;
+}
+
 .view-select-button {
   @include themify($themes) {
     background: themed('background-white');
