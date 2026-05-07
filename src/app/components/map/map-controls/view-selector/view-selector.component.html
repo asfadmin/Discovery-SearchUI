@@ -6,7 +6,6 @@
       class="view-select-button"
       [class.selected]="view === types.ARCTIC"
       [value]="types.ARCTIC"
-      [disabled]="isDisplacementSearch"
       [attr.aria-label]="'ARCTIC_MAP_PROJECTION' | translate"
       matTooltip="{{ 'ARCTIC_MAP_PROJECTION' | translate }}"
     >
@@ -35,7 +34,6 @@
       [class.selected]="view === types.ANTARCTIC"
       [attr.aria-label]="'ANTARCTIC_MAP_PROJECTION' | translate"
       [value]="types.ANTARCTIC"
-      [disabled]="isDisplacementSearch"
       matTooltip="{{ 'ANTARCTIC_MAP_PROJECTION' | translate }}"
     >
       <mat-icon
