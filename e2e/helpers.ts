@@ -22,9 +22,9 @@ export async function overrideUserCookieHeaders(page: Page) {
   });
 }
 
-const MAPBOX_API_GLOB = 'https://api.mapbox.com/geocoding/**';
+const MAPBOX_GEOCODING_API_GLOB = 'https://api.mapbox.com/geocoding/**';
 
-const MOCK_RESPONSES = {
+const MOCK_GEOCODING_RESPONSES = {
   Tibet: {
     type: 'FeatureCollection',
     features: [
@@ -71,13 +71,13 @@ const MOCK_RESPONSES = {
 };
 
 export async function mockGeocoding(page: any) {
-  await page.route(MAPBOX_API_GLOB, (route: any) => {
+  await page.route(MAPBOX_GEOCODING_API_GLOB, (route: any) => {
     const url = route.request().url();
-    let response = MOCK_RESPONSES['Tibet'];
+    let response = MOCK_GEOCODING_RESPONSES['Tibet'];
 
-    for (const key of Object.keys(MOCK_RESPONSES)) {
+    for (const key of Object.keys(MOCK_GEOCODING_RESPONSES)) {
       if (url.includes(encodeURIComponent(key))) {
-        response = MOCK_RESPONSES[key];
+        response = MOCK_GEOCODING_RESPONSES[key];
         break;
       }
     }
