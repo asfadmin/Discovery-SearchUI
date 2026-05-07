@@ -24,7 +24,7 @@
 .view-select-button {
   @include themify($themes) {
     background: themed('background-white');
-    color: themed('dark-primary-text')
+    color: themed('dark-primary-text');
   }
   margin: 0;
   font-size: 18px !important;
