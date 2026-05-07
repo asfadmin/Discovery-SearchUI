@@ -19,7 +19,7 @@
     (click)="onEquatorialSelected()"
     class="view-select-button"
     [class.selected]="view === types.EQUATORIAL && !isDisplacementSearch"
-    [class.clickable]="view !== types.EQUATORIAL"
+    [class.clickable]="view !== types.EQUATORIAL && !isDisplacementSearch"
     [attr.aria-label]="'EQUATORIAL_MAP_PROJECTION' | translate"
     matTooltip="{{ 'EQUATORIAL_MAP_PROJECTION' | translate }}"
     [value]="types.EQUATORIAL"
