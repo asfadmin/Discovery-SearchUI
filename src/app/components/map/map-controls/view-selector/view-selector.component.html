@@ -3,8 +3,9 @@
     <button
       mat-stroked-button
       (click)="onArcticSelected()"
-      class="view-select-button clickable"
+      class="view-select-button"
       [class.selected]="view === types.ARCTIC"
+      [class.clickable]="view !== types.ARCTIC"
       [value]="types.ARCTIC"
       [attr.aria-label]="'ARCTIC_MAP_PROJECTION' | translate"
       matTooltip="{{ 'ARCTIC_MAP_PROJECTION' | translate }}"
@@ -16,8 +17,9 @@
   <button
     mat-stroked-button
     (click)="onEquatorialSelected()"
-    class="view-select-button clickable"
+    class="view-select-button"
     [class.selected]="view === types.EQUATORIAL && !isDisplacementSearch"
+    [class.clickable]="view !== types.EQUATORIAL"
     [attr.aria-label]="'EQUATORIAL_MAP_PROJECTION' | translate"
     matTooltip="{{ 'EQUATORIAL_MAP_PROJECTION' | translate }}"
     [value]="types.EQUATORIAL"
@@ -30,8 +32,9 @@
     <button
       mat-stroked-button
       (click)="onAntarcticSelected()"
-      class="view-select-button clickable"
+      class="view-select-button"
       [class.selected]="view === types.ANTARCTIC"
+      [class.clickable]="view !== types.ANTARCTIC"
       [attr.aria-label]="'ANTARCTIC_MAP_PROJECTION' | translate"
       [value]="types.ANTARCTIC"
       matTooltip="{{ 'ANTARCTIC_MAP_PROJECTION' | translate }}"
