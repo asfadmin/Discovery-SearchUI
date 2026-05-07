@@ -5,5 +5,5 @@ test('Profile: Logged In', { tag: '@auth' }, async ({ loggedInPage }) => {
 
   await expect(
     loggedInPage.getByRole('button', { name: 'automatedtesting_fullaccess' }),
-  ).toBeVisible({ timeout: 15_000 });
+  ).toBeVisible();
 });

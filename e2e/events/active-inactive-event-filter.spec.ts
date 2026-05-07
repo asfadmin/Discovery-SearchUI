@@ -13,7 +13,7 @@ test('Active/Inactive Event Filter', async ({ page }) => {
   const inactiveEventIcons = page.locator(
     'app-sarviews-event img[src*="_inactive"]',
   );
-  await expect(inactiveEventIcons.first()).toBeVisible({ timeout: 10_000 });
+  await expect(inactiveEventIcons.first()).toBeVisible();
 
   const activeEventsToggle = page
     .getByRole('region', { name: 'Event Filters' })
@@ -28,6 +28,6 @@ test('Active/Inactive Event Filter', async ({ page }) => {
     .getByRole('button', { name: 'SEARCH' })
     .click();
 
-  await expect(inactiveEventIcons).toHaveCount(0, { timeout: 10_000 });
+  await expect(inactiveEventIcons).toHaveCount(0);
   await expect(page.locator('app-scenes-list-header')).toContainText('Events');
 });

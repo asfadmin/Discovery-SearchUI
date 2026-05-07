@@ -9,7 +9,9 @@ test('SBAS Start & End Date Filters', async ({ page }) => {
   await page
     .getByRole('region', { name: 'Scene' })
     .getByLabel('Scene')
-    .fill('S1A_IW_SLC__1SDV_20180616T210817_20180616T210845_022387_026C91_EDAA');
+    .fill(
+      'S1A_IW_SLC__1SDV_20180616T210817_20180616T210845_022387_026C91_EDAA',
+    );
   await page
     .getByText('Cancel SEARCH arrow_drop_down')
     .getByRole('button', { name: 'SEARCH' })
@@ -18,7 +20,7 @@ test('SBAS Start & End Date Filters', async ({ page }) => {
   const sbasFiltersButton = page
     .locator('mat-button-toggle')
     .filter({ hasText: 'SBAS Filters' });
-  await expect(sbasFiltersButton).toBeVisible({ timeout: 20_000 });
+  await expect(sbasFiltersButton).toBeVisible();
   await sbasFiltersButton.click();
 
   await page.getByRole('textbox', { name: 'Start Date' }).fill('9/1/2018');

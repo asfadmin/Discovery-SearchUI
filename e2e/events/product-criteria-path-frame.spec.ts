@@ -14,7 +14,9 @@ test('Product Criteria: Path & Frame', async ({ page }) => {
     .locator('app-sarviews-header')
     .getByRole('combobox', { name: 'Event Search' })
     .fill('Salcha');
-  await page.getByRole('option', { name: '7 km SSE of Salcha, Alaska' }).click();
+  await page
+    .getByRole('option', { name: '7 km SSE of Salcha, Alaska' })
+    .click();
 
   const searchButton = page
     .locator('app-sarviews-header')
@@ -53,9 +55,7 @@ test('Product Criteria: Path & Frame', async ({ page }) => {
 
   await expect(pathStart).toHaveValue('90');
   await expect(pathEnd).toHaveValue('95');
-  await expect(productListHeader).not.toHaveText(productListTextBefore, {
-    timeout: 10_000,
-  });
+  await expect(productListHeader).not.toHaveText(productListTextBefore);
 
   const fileCountsAfter = await getFileCounts();
 

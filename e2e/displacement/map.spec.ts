@@ -11,7 +11,5 @@ test('Click on displacement map', async ({ page }) => {
   await page.mouse.up();
   await expect(page.locator('#mat-mdc-checkbox-7')).toContainText(
     'Frame: 09167',
-    // Displacement requests take a while
-    { timeout: 30_000 },
   );
 });
