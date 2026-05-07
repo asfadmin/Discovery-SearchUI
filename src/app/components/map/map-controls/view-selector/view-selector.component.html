@@ -1,22 +1,24 @@
 <div class="projection-container">
-  <button
-    mat-stroked-button
-    (click)="onArcticSelected()"
-    class="view-select-button"
-    [class.selected]="view === types.ARCTIC"
-    [value]="types.ARCTIC"
-    [disabled]="isDisplacementSearch"
-    [attr.aria-label]="'ARCTIC_MAP_PROJECTION' | translate"
-    matTooltip="{{ 'ARCTIC_MAP_PROJECTION' | translate }}"
-  >
-    <mat-icon svgIcon="arctic" class="view-btn view-select-icon"> </mat-icon>
-  </button>
+  @if (!isDisplacementSearch) {
+    <button
+      mat-stroked-button
+      (click)="onArcticSelected()"
+      class="view-select-button"
+      [class.selected]="view === types.ARCTIC"
+      [value]="types.ARCTIC"
+      [disabled]="isDisplacementSearch"
+      [attr.aria-label]="'ARCTIC_MAP_PROJECTION' | translate"
+      matTooltip="{{ 'ARCTIC_MAP_PROJECTION' | translate }}"
+    >
+      <mat-icon svgIcon="arctic" class="view-btn view-select-icon"> </mat-icon>
+    </button>
+  }
 
   <button
     mat-stroked-button
     (click)="onEquatorialSelected()"
     class="view-select-button"
-    [class.selected]="view === types.EQUATORIAL"
+    [class.selected]="view === types.EQUATORIAL && !isDisplacementSearch"
     [attr.aria-label]="'EQUATORIAL_MAP_PROJECTION' | translate"
     matTooltip="{{ 'EQUATORIAL_MAP_PROJECTION' | translate }}"
     [value]="types.EQUATORIAL"
@@ -25,16 +27,21 @@
     </mat-icon>
   </button>
 
-  <button
-    mat-stroked-button
-    (click)="onAntarcticSelected()"
-    class="view-select-button"
-    [class.selected]="view === types.ANTARCTIC"
-    [attr.aria-label]="'ANTARCTIC_MAP_PROJECTION' | translate"
-    [value]="types.ANTARCTIC"
-    [disabled]="isDisplacementSearch"
-    matTooltip="{{ 'ANTARCTIC_MAP_PROJECTION' | translate }}"
-  >
-    <mat-icon svgIcon="antarctic" class="view-btn view-select-icon"></mat-icon>
-  </button>
+  @if (!isDisplacementSearch) {
+    <button
+      mat-stroked-button
+      (click)="onAntarcticSelected()"
+      class="view-select-button"
+      [class.selected]="view === types.ANTARCTIC"
+      [attr.aria-label]="'ANTARCTIC_MAP_PROJECTION' | translate"
+      [value]="types.ANTARCTIC"
+      [disabled]="isDisplacementSearch"
+      matTooltip="{{ 'ANTARCTIC_MAP_PROJECTION' | translate }}"
+    >
+      <mat-icon
+        svgIcon="antarctic"
+        class="view-btn view-select-icon"
+      ></mat-icon>
+    </button>
+  }
 </div>
