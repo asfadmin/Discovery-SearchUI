@@ -1,4 +1,6 @@
 {
+  "LAYER_SELECTOR": "layer selector",
+  "SET_ARIA_VERSION": "Set ARIA Version",
   "METERS_10": "10 meters",
   "METERS_20": "20 meters",
   "METERS_30": "30 meters",
@@ -204,6 +206,7 @@
   "COPY_UR_LS": "Copy URLs",
   "COPY_URLS": "Copy URLs",
   "COPYRIGHT": "Copyright",
+  "COOKIE_BANNER_MESSAGE": "This website uses cookies to ensure you get the best experience on our website.",
   "COREGISTERS_SAR_DATA_TO_THE_DEM_RATHER_THAN_USING_DEAD_RECKONING_BASED_ON_ORBIT_FILES": "Coregisters SAR data to the DEM, rather than using dead reckoning based on orbit files.",
   "CORPORATE_FARE_ASF": "corporate_fareASF",
   "COUNTRY": "Country",
@@ -491,6 +494,7 @@
   "IF_YOU_NEED_MORE_INFORMATION_ABOUT_A_PARTICULAR_DATASET_CLICK_ON_THE_HELP_ICON_IN_THE_DATASET_SELECTOR": "If you need more information about a particular dataset, click on the help icon in the Dataset selector.",
   "IF_YOU_WISH_TO": "If you wish to",
   "IMAGE_SEARCH": "image_search",
+  "IMPROVE_THIS_MAP": "Improve this map",
   "IMPORT_AREA_OF_INTEREST": "Import Area of Interest",
   "IMPORT_FILE": "Import File",
   "IMPORTING": "Importing",
