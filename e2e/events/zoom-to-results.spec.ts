@@ -19,7 +19,10 @@ test('Zoom to Results', async ({ page, browserName }) => {
     .locator('app-sarviews-header')
     .getByRole('combobox', { name: 'Event Search' })
     .fill('Albania');
-  await page.getByRole('option', { name: /Albania/i }).first().click();
+  await page
+    .getByRole('option', { name: /Albania/i })
+    .first()
+    .click();
   await page
     .locator('app-sarviews-header')
     .locator('app-search-button')
@@ -38,5 +41,5 @@ test('Zoom to Results', async ({ page, browserName }) => {
 
   await zoomToResultsButton.evaluate((element: HTMLElement) => element.click());
 
-  await expect.poll(() => page.url(), { timeout: 10_000 }).not.toBe(urlBeforeZoom);
+  await expect.poll(() => page.url()).not.toBe(urlBeforeZoom);
 });
