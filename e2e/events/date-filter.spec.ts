@@ -27,7 +27,5 @@ test('Date Filter', async ({ page }) => {
 
   await expect(startDate).toHaveValue('1/1/2018');
   await expect(endDate).toHaveValue('1/1/2020');
-  await expect(resultsHeader).not.toHaveText(initialResultsText, {
-    timeout: 10_000,
-  });
+  await expect(resultsHeader).not.toHaveText(initialResultsText);
 });
