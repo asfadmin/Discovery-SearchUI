@@ -1,5 +1,7 @@
 <mat-sidenav-container
   class="container tophat-offset"
+  [class.tophat-offset]="!isHyp3PlusMode"
+  [class.no-tophat-offset]="isHyp3PlusMode"
   (backdropClick)="onCloseSidebar()"
 >
   <mat-sidenav

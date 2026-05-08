@@ -132,6 +132,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   public isAutoTheme = false;
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
+  public isHyp3PlusMode = false;
 
   public queuedProducts$ = this.store$
     .select(queueStore.getQueuedProducts)
@@ -189,6 +190,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       this.store$
         .select(searchStore.getHyp3PlusMode)
         .subscribe((isHyp3PlusMode) => {
+          this.isHyp3PlusMode = isHyp3PlusMode;
           const iconPath = isHyp3PlusMode
             ? '../assets/icons/hyp3_plus.svg'
             : '../assets/icons/hyp3.svg';
