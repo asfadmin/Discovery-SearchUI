@@ -26,6 +26,22 @@ test('Map: Gridlines Overlay toggle updates checkbox state', async ({
   await expect(gridlinesItem.locator('input[type="checkbox"]')).toBeChecked();
 });
 
+test('Map: Coherence Layer activates when a month range is selected', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const layerButton = page.getByRole('button', { name: 'layer selector' });
+  const coherenceItem = page.getByRole('menuitem', { name: 'Coherence Layer' });
+
+  await layerButton.click();
+  await coherenceItem.click();
+  await page.getByRole('menuitem', { name: 'Mar, Apr, May' }).click();
+
+  await layerButton.click();
+  await expect(coherenceItem.locator('input[type="checkbox"]')).toBeChecked();
+});
+
 test('Map: switch base layer between Satellite and Street', async ({
   page,
 }) => {
