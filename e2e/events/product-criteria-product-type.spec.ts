@@ -53,9 +53,7 @@ test('Product Criteria: Product Type', async ({ page }) => {
   await searchButton.click();
 
   await expect(page.getByText('Product Types: RTC_GAMMA')).toBeVisible();
-  await expect(productListHeader).not.toHaveText(productListTextBefore, {
-    timeout: 10_000,
-  });
+  await expect(productListHeader).not.toHaveText(productListTextBefore);
 
   const fileCountsAfter = await getFileCounts();
 

@@ -48,7 +48,7 @@ export const test = base.extend<{ loggedInPage: Page }>({
         }),
       });
     });
-    await page.route('**/services/search/param**', async (route) => {
+    await page.route('**/services/search/**', async (route) => {
       const url = new URL(route.request().url());
 
       // remove the fake cmr_token

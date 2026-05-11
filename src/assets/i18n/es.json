@@ -1,4 +1,6 @@
 {
+  "LAYER_SELECTOR": "layer selector",
+  "SET_ARIA_VERSION": "Set ARIA Version",
   "METERS_10": "10 metros",
   "METERS_20": "20 metros",
   "METERS_30": "30 metros",
