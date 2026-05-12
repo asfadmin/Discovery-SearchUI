@@ -74,7 +74,13 @@ import {
 } from '@services';
 import { metaReducers, reducers } from '@store/app.reducer';
 import { appEffects } from '@store/app.effect';
-import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
+
+import translationsEN from '@i18n/en.json';
+import translationsES from '@i18n/es.json';
+import { Observable, of } from 'rxjs';
+import { TranslateLoader } from '@ngx-translate/core';
+
+
 
 const cookieConfig: NgcCookieConsentConfig = {
   autoOpen: false,
@@ -111,6 +117,17 @@ if (environment.production) {
   enableProdMode();
 }
 
+export class StaticTranslateLoader implements TranslateLoader {
+  private translations: any = {
+    en: translationsEN,
+    es: translationsES,
+  };
+
+  getTranslation(lang: string): Observable<any> {
+    return of(this.translations[lang] || translationsEN);
+  }
+}
+
 bootstrapApplication(AppComponent, {
   providers: [
     provideZoneChangeDetection(),
@@ -133,11 +150,11 @@ bootstrapApplication(AppComponent, {
       }),
     ),
     provideTranslateService({
-      lang: 'en',
-      loader: provideTranslateHttpLoader({
-        prefix: '/assets/i18n/',
-        suffix: '.json',
-      }),
+      defaultLanguage: 'en',
+      loader: {
+        provide: TranslateLoader,
+        useClass: StaticTranslateLoader,
+      },
     }),
     HttpClient, // remove in v21 w/ update to ngx-translate
     AsfApiService,
