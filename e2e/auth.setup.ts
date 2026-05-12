@@ -24,11 +24,9 @@ async function globalSetup() {
   await popup.getByLabel('password').fill(process.env['PLAYWRIGHT_PASSWORD']);
   await overrideUserCookieHeaders(page);
 
-  await popup
-    .getByRole('button', { name: 'Log in' })
-    .click({ timeout: 10_000 });
+  await popup.getByRole('button', { name: 'Log in' }).click();
 
-  await popup.waitForEvent('close', { timeout: 15_000 });
+  await popup.waitForEvent('close');
 
   await expect(page.getByRole('button', { name: 'Sign In' })).toHaveCount(0, {
     timeout: 15_000,

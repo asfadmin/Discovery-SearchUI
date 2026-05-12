@@ -9,7 +9,9 @@ test('SBAS: Zoom to Results', async ({ page }) => {
   await page
     .getByRole('region', { name: 'Scene' })
     .getByLabel('Scene')
-    .fill('S1B_IW_SLC__1SDV_20210704T135937_20210704T140004_027645_034CB0_4B2C');
+    .fill(
+      'S1B_IW_SLC__1SDV_20210704T135937_20210704T140004_027645_034CB0_4B2C',
+    );
   await page
     .locator('app-search-button')
     .getByRole('button', { name: 'SEARCH' })
@@ -22,14 +24,10 @@ test('SBAS: Zoom to Results', async ({ page }) => {
     .filter({ hasText: 'settings_overscan' })
     .click();
 
-  await expect
-    .poll(() => page.url(), { timeout: 10_000 })
-    .not.toBe(urlBeforeZoom);
+  await expect.poll(() => page.url()).not.toBe(urlBeforeZoom);
 
   await page.mouse.move(400, 300);
-  await expect(page.locator('app-map-info')).not.toContainText('lat 00.0°', {
-    timeout: 10_000,
-  });
+  await expect(page.locator('app-map-info')).not.toContainText('lat 00.0°');
 
   const coordsAtFirstPosition = await page
     .locator('app-map-info')
@@ -37,8 +35,6 @@ test('SBAS: Zoom to Results', async ({ page }) => {
 
   await page.mouse.move(800, 600);
   await expect
-    .poll(async () => await page.locator('app-map-info').textContent(), {
-      timeout: 10_000,
-    })
+    .poll(async () => await page.locator('app-map-info').textContent())
     .not.toBe(coordsAtFirstPosition);
 });
