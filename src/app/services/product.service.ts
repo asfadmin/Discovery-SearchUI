@@ -241,7 +241,9 @@ export class ProductService {
     if (s3Index !== -1) {
       product.metadata.s3URI = product.metadata.opera.s3Urls[s3Index];
     }
-    product.browses = product.browses.filter((url) => !url.includes('low-res'));
+    product.browses = product.browses.filter(
+      (url) => !url.includes('low-res') && !url.startsWith('s3'),
+    );
 
     for (const p of product.metadata.opera.additionalUrls.filter(
       (url) => url !== product.downloadUrl,
