@@ -80,8 +80,6 @@ import translationsES from '@i18n/es.json';
 import { Observable, of } from 'rxjs';
 import { TranslateLoader } from '@ngx-translate/core';
 
-
-
 const cookieConfig: NgcCookieConsentConfig = {
   autoOpen: false,
   cookie: {
@@ -117,14 +115,16 @@ if (environment.production) {
   enableProdMode();
 }
 
+type TranslationKeys = keyof typeof translationsEN;
+type Translations = Record<TranslationKeys, string>;
+
 export class StaticTranslateLoader implements TranslateLoader {
-  private translations: any = {
+  private translations: Record<string, Translations> = {
     en: translationsEN,
     es: translationsES,
   };
-
-  getTranslation(lang: string): Observable<any> {
-    return of(this.translations[lang] || translationsEN);
+  getTranslation(lang: string): Observable<Translations> {
+    return of(this.translations[lang] ?? translationsEN);
   }
 }
 
