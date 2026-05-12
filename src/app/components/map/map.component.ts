@@ -127,7 +127,7 @@ export class MapComponent implements OnInit, OnDestroy {
   public currentOverlayPosition;
   public shouldShowOverlay: boolean;
   public isResultsMenuOpen: boolean;
-  public isHyp3PlusMode$ = this.store$.select(searchStore.getHyp3PlusMode);
+  public isHyp3PlusMode = this.store$.selectSignal(searchStore.getHyp3PlusMode);
 
   public fullscreenControl = FullscreenControls.NONE;
   public fc = FullscreenControls;

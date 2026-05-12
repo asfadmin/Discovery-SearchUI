@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="en">
   <head>
-
     <meta charset="utf-8" />
     <title>ASF Data Search</title>
     <base href="/" />
@@ -43,7 +42,7 @@
   </head>
   <body class="theme-light">
     <!-- NASA Google Tag Manager (noscript) -->
-    <noscript id="nasatag"
+    <noscript
       ><iframe
         src="https://www.googletagmanager.com/ns.html?id=GTM-WNP7MLF"
         height="0"
@@ -64,10 +63,6 @@
         window.location = redirect;
       }
 
-      if (url === 'vertex-plus.asf.alaska.edu') {
-        document.getElementById('nasatag').remove();
-      }
-
       <!-- NASA Google Tag Manager -->
       if (
         window.location.hostname.toLowerCase() !== 'vertex-plus.asf.alaska.edu'
@@ -83,7 +78,7 @@
           f.parentNode.insertBefore(j, f);
         })(window, document, 'script', 'dataLayer', 'GTM-WNP7MLF');
       }
-    <!-- End NASA Google Tag Manager -->
+      <!-- End NASA Google Tag Manager -->
     </script>
 
     <style>
@@ -788,7 +783,9 @@
     <script src="https://cdn.jsdelivr.net/npm/streamsaver@2.0.3/StreamSaver.min.js"></script>
 
     <script>
-      if (window.location.hostname.toLowerCase() !== 'vertex-plus.asf.alaska.edu') {
+      if (
+        window.location.hostname.toLowerCase() !== 'vertex-plus.asf.alaska.edu'
+      ) {
         const tophat = document.createElement('script');
         tophat.src = 'https://cdn.earthdata.nasa.gov/tophat2/tophat2.js';
         tophat.id = 'earthdata-tophat-script';
@@ -800,13 +797,17 @@
         document.currentScript.after(tophat);
 
         const feedbackScript = document.createElement('script');
-        feedbackScript.src = 'https://fbm.earthdata.nasa.gov/for/ASF/feedback.js';
+        feedbackScript.src =
+          'https://fbm.earthdata.nasa.gov/for/ASF/feedback.js';
         tophat.after(feedbackScript);
 
         feedbackScript.onload = () => {
-          const feedbackInit = document.createElement('script');
-          feedbackInit.textContent = `feedback.init({ showIcon: false, title: 'How can we help you?', subject: '', details: '' });`;
-          feedbackScript.after(feedbackInit);
+          feedback.init({
+            showIcon: false,
+            title: 'How can we help you?',
+            subject: '',
+            details: '',
+          });
         };
       }
     </script>

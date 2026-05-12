@@ -89,7 +89,7 @@
   </div>
 </div>
 
-@if (breakpoint > breakpoints.MOBILE && !(isHyp3PlusMode$ | async)) {
+@if (breakpoint > breakpoints.MOBILE && !isHyp3PlusMode()) {
   <img src="/assets/NASA_logo.svg" class="meatball" />
 }
 
