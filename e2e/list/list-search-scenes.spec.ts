@@ -26,7 +26,9 @@ test('List Search: searching by scene names returns scenes', async ({
   );
 
   const searchResponse = waitForASFAPIResponse(page);
-  const searchButton = page.locator('app-search-button').last();
+  const searchButton = page
+    .locator('app-filters-dropdown')
+    .locator('app-search-button');
 
   await searchButton.getByRole('button', { name: 'SEARCH' }).click();
   await searchResponse;
