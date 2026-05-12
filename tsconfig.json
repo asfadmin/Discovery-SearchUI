@@ -19,6 +19,7 @@
     "target": "ES2022",
     "module": "ES2022",
     "useDefineForClassFields": false,
+    "resolveJsonModule": true,
     "paths": {
       "@components": [
         "src/app/components"
@@ -76,6 +77,9 @@
       ],
       "@e2e/*": [
         "@e2e/*"
+      ],
+      "@i18n/*": [
+        "src/assets/i18n/*"
       ]
     }
   }
