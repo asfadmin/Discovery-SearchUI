@@ -27,7 +27,7 @@ test('SBAS: Cancel restores filter changes after editing start date', async ({
   await page.keyboard.press('Enter');
   await initialSearch;
 
-  await page.locator('mat-button-toggle').filter({ hasText: 'SBAS Filters' }).click();
+  await page.getByRole('button', { name: 'SBAS Filters', exact: true }).click();
 
   const startDate = page
     .locator('app-sbas-filters')
@@ -41,6 +41,6 @@ test('SBAS: Cancel restores filter changes after editing start date', async ({
     .getByRole('button', { name: 'Cancel' })
     .click();
 
-  await page.locator('mat-button-toggle').filter({ hasText: 'SBAS Filters' }).click();
+  await page.getByRole('button', { name: 'SBAS Filters', exact: true }).click();
   await expect(startDate).toHaveValue('');
 });
