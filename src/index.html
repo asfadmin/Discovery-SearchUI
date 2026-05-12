@@ -64,9 +64,7 @@
       }
 
       <!-- NASA Google Tag Manager -->
-      if (
-        window.location.hostname.toLowerCase() !== 'vertex-plus.asf.alaska.edu'
-      ) {
+      if (window.location.hostname.toLowerCase().startsWith('vertex-plus')) {
         (function (w, d, s, l, i) {
           w[l] = w[l] || [];
           w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
@@ -783,9 +781,7 @@
     <script src="https://cdn.jsdelivr.net/npm/streamsaver@2.0.3/StreamSaver.min.js"></script>
 
     <script>
-      if (
-        window.location.hostname.toLowerCase() !== 'vertex-plus.asf.alaska.edu'
-      ) {
+      if (!window.location.hostname.toLowerCase().startsWith('vertex-plus')) {
         const tophat = document.createElement('script');
         tophat.src = 'https://cdn.earthdata.nasa.gov/tophat2/tophat2.js';
         tophat.id = 'earthdata-tophat-script';
