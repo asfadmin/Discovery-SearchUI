@@ -1,4 +1,3 @@
-import { waitForASFAPIResponse } from 'e2e/helpers';
 import { test, expect } from 'e2e/pages/auth.page';
 
 test(
