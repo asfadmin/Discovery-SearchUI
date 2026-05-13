@@ -59,3 +59,4 @@ docs/
 /playwright-report/
 /playwright/.cache/
 playwright/
+e2e/results/e2e-coverage
