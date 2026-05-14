@@ -6,6 +6,8 @@ import {
   ViewChild,
   HostListener,
   inject,
+  effect,
+  Injector,
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
@@ -143,10 +145,11 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   public interactionTypes = models.MapInteractionModeType;
   public searchType: models.SearchType;
   public kioskMode = false;
-
+  private injector = inject(Injector);
   private helpTopic: string | null;
 
   private subs = new SubSink();
+  public hyp3PlusMode = this.store$.selectSignal(searchStore.getHyp3PlusMode);
 
   @HostListener('window:keydown.control./', ['$event'])
   handleKeyDown(_event: Event) {
@@ -184,22 +187,20 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         .select(searchStore.getKioskMode)
         .subscribe((kioskMode) => (this.kioskMode = kioskMode)),
     );
-
-    this.subs.add(
-      this.store$
-        .select(searchStore.getHyp3PlusMode)
-        .subscribe((isHyp3PlusMode) => {
-          const iconPath = isHyp3PlusMode
-            ? '../assets/icons/hyp3_plus.svg'
-            : '../assets/icons/hyp3.svg';
-          this.matIconRegistry.addSvgIcon(
-            'hyp3',
-            this.domSanitizer.bypassSecurityTrustResourceUrl(iconPath),
-          );
-          if (isHyp3PlusMode) {
-            this.hyp3Service.setApiUrl('https://hyp3-plus.asf.alaska.edu');
-          }
-        }),
+    effect(
+      () => {
+        const iconPath = this.hyp3PlusMode()
+          ? '../assets/icons/hyp3_plus.svg'
+          : '../assets/icons/hyp3.svg';
+        this.matIconRegistry.addSvgIcon(
+          'hyp3',
+          this.domSanitizer.bypassSecurityTrustResourceUrl(iconPath),
+        );
+        if (this.hyp3PlusMode()) {
+          this.hyp3Service.setApiUrl('https://hyp3-plus.asf.alaska.edu');
+        }
+      },
+      { injector: this.injector },
     );
 
     this.subs.add(

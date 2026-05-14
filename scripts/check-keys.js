@@ -41,19 +41,18 @@ function extractKeysFromTS(project) {
   return keys;
 }
 
-function extractKeysFromHTML(pattern, globPath) {
+function extractKeysFromHTML(globPath) {
   const keys = new Map();
-  const files = globSync(globPath);
 
-  for (const file of files) {
-    const src = fs.readFileSync(file, 'utf8');
+  for (const htmlFile of globSync(globPath)) {
+    const src = fs.readFileSync(htmlFile, 'utf8');
+    const htmlPattern = /['"`]([A-Z0-9_]+)['"`]\s*\|\s*translate/g;
     let match;
-    const regex = new RegExp(pattern);
-
-    while ((match = regex.exec(src)) !== null) {
-      addKeyToMap(keys, match[1], file);
+    while ((match = htmlPattern.exec(src)) !== null) {
+      addKeyToMap(keys, match[1], htmlFile);
     }
   }
+
   return keys;
 }
 
@@ -92,21 +91,50 @@ function addKeyToMap(map, key, file) {
   }
 }
 
+function checkForUnusedKeys(definedKeys) {
+  const srcFiles = globSync('src/**/*.{ts,html}');
+  const unused = [];
+
+  for (const key of definedKeys) {
+    const found = srcFiles.some((file) =>
+      fs.readFileSync(file, 'utf8').includes(key),
+    );
+    if (!found) unused.push(key);
+  }
+
+  if (unused.length > 0) {
+    console.log(`\n⚠️  ${unused.length} unused keys:\n`);
+    for (const key of unused) {
+      console.log(`  ${key}`);
+    }
+  }
+}
+
 function main() {
   const project = new Project({
     tsConfigFilePath: path.resolve(CONFIG.tsconfig),
   });
-  const html_pattern =
-    /['"`]([A-Z0-9_]+(?:\.[A-Z0-9_]+)*)['"`]\s*\|\s*translate/g;
 
   const tsKeys = extractKeysFromTS(project);
-  const htmlKeys = extractKeysFromHTML(html_pattern, CONFIG.htmlGlob);
+  const htmlKeys = extractKeysFromHTML(CONFIG.htmlGlob);
   const definedKeys = loadDefinedKeys(CONFIG.translationGlob);
+
+  checkForUnusedKeys(definedKeys);
 
   const combinedKeys = new Set([...tsKeys.keys(), ...htmlKeys.keys()]);
   const sortedKeys = Array.from(combinedKeys).sort((a, b) =>
     a.localeCompare(b),
   );
+
+  const srcFiles = globSync('src/**/*.{ts,html}');
+  for (const [key] of definedKeys) {
+    const found = srcFiles.some((file) =>
+      fs.readFileSync(file, 'utf8').includes(key),
+    );
+    if (!found) {
+      console.log(`UNUSED: ${key}`);
+    }
+  }
 
   const keyPattern = /^[A-Z][A-Z0-9_]*$/;
 
