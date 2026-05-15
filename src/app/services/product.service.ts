@@ -510,6 +510,19 @@ export class ProductService {
     });
   }
 
+  private getUAVSARURLPolarization(
+    url: string,
+    polarization: string | string[],
+  ) {
+    let regex = /.*([VH]{2})_.*(\.(mlc)|(grd))/;
+    if (polarization instanceof Array) {
+      regex = /.*([VH]{4})_.*(\.(mlc)|(grd))/;
+    }
+
+    const reg = url.match(regex) ?? [''];
+    console.log(reg);
+    return reg[1];
+  }
   private uavsarSubproductsFromScene(product: models.CMRProduct) {
     const products = [];
     let file_extension = product.downloadUrl.endsWith('-END')
@@ -520,6 +533,14 @@ export class ProductService {
         );
     product.productTypeDisplay =
       models.uavsar.productTypeDisplays[file_extension];
+
+    let polarization = this.getUAVSARURLPolarization(
+      product.downloadUrl,
+      product.metadata.polarization,
+    );
+    if (polarization != undefined) {
+      product.productTypeDisplay = `${polarization} ${product.productTypeDisplay}`;
+    }
     const fileID = product.downloadUrl.split('/').slice(-1)[0];
     product.bytes = product.metadata.fileSizes[fileID]?.bytes ?? 0;
     const thumbnail_index = product.browses.findIndex((url) =>
@@ -554,9 +575,16 @@ export class ProductService {
         ? 'end'
         : this.urlToProductType(p, models.uavsar.productTypeDisplays);
 
-      const productTypeDisplay =
+      let productTypeDisplay =
         models.uavsar.productTypeDisplays[file_extension.toLowerCase()] ??
         'Missing Display';
+      polarization = this.getUAVSARURLPolarization(
+        p,
+        product.metadata.polarization,
+      );
+      if (polarization != undefined) {
+        productTypeDisplay = `${polarization} ${productTypeDisplay}`;
+      }
       if (productTypeDisplay === 'Missing Display') {
         console.log(
           `Missing product type display for file extension "${file_extension}"`,
