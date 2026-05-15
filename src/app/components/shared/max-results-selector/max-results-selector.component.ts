@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as searchStore from '@store/search';
 import * as filtersStore from '@store/filters';
+import * as scenesStore from '@store/scenes';
 
 import * as models from '@models';
 import { SubSink } from 'subsink';
@@ -80,6 +81,11 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
       this.store$
         .select(filtersStore.getMaxSearchResults)
         .subscribe((maxResults) => (this.maxResults = maxResults)),
+    );
+    this.subs.add(
+      this.store$
+        .select(scenesStore.getAreResultsLoaded)
+        .subscribe((areLoaded) => (this.areResultsLoaded = areLoaded)),
     );
 
     this.subs.add(
