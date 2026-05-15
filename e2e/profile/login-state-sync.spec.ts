@@ -11,11 +11,14 @@ test('Profile: login state is synced across instances', async ({
 
   await context.route('**/*', async (route) => {
     const url = route.request().url();
+    const parsedUrl = new URL(url);
+    const hostname = parsedUrl.hostname;
+    const pathname = parsedUrl.pathname;
 
     if (
       url.includes('googletagmanager') ||
       url.includes('crazyegg') ||
-      url.includes('earthdata.nasa.gov') ||
+      hostname === 'earthdata.nasa.gov' ||
       url.includes('feedback.js') ||
       /\.(png|jpg|jpeg|webp|gif|pbf)(\?|$)/i.test(url)
     ) {
@@ -24,7 +27,7 @@ test('Profile: login state is synced across instances', async ({
 
     if (
       url.includes('/services/utils/mission_list') ||
-      url.includes('banners.asf.alaska.edu/calendar')
+      (hostname === 'banners.asf.alaska.edu' && pathname === '/calendar')
     ) {
       return route.fulfill({
         status: 200,
