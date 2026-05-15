@@ -34,7 +34,7 @@ export const sentinel_1_bursts = {
     },
   ],
   beamModes: ['IW', 'EW'],
-  polarizations: ['VV', 'HH', 'HV', 'VH'],
+  polarizations: ['VV', 'VH', 'HH', 'HV'],
   subtypes: [
     {
       displayName: 'Sentinel-1A',
