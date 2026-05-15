@@ -87,6 +87,11 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
         .select(scenesStore.getAreResultsLoaded)
         .subscribe((areLoaded) => (this.areResultsLoaded = areLoaded)),
     );
+    this.subs.add(
+      this.store$
+        .select(searchStore.getIsMaxResultsLoading)
+        .subscribe((isLoading) => (this.isMaxResultsLoading = isLoading)),
+    );
 
     this.subs.add(
       combineLatest([
