@@ -71,7 +71,8 @@ export class AsfApiService {
     }
     if (
       this.env.currentEnv.api_maturity !== 'prod' &&
-      this.env.currentEnv.api_maturity
+      this.env.currentEnv.api_maturity &&
+      !this.env.currentEnv.force_token
     ) {
       delete stateParamsObj['cmr_token'];
     }

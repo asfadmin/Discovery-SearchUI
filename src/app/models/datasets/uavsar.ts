@@ -88,4 +88,16 @@ export const uavsar = {
   subtypes: [],
   platformDesc: 'UAVSAR_DESC',
   platformIcon: '/assets/icons/flight_black_48dp.svg',
+  productTypeDisplays: {
+    gif: '_gif',
+    mlc: 'Multi-look Complex',
+    grd: '_grd',
+    end: 'Figure out',
+    ann: 'Annotation file / Metadata',
+    dat: '_dat',
+    hgt: '_hgt',
+    inc: 'Incidence Angle',
+    kmz: 'GoogleEarth KMZ',
+    slope: 'Slope',
+  },
 };

@@ -135,6 +135,9 @@ export class ProductService {
     if (product.dataset === 'SEASAT 1') {
       return this.seasatSubproductsFromScene(product);
     }
+    if (product.dataset === 'UAVSAR') {
+      return this.uavsarSubproductsFromScene(product);
+    }
     if (
       models.tropo.productTypes
         .map((t) => t.apiValue)
@@ -507,6 +510,95 @@ export class ProductService {
     });
   }
 
+  private uavsarSubproductsFromScene(product: models.CMRProduct) {
+    const products = [];
+    let file_extension = product.downloadUrl.endsWith('-END')
+      ? 'end'
+      : this.urlToProductType(
+          product.downloadUrl,
+          models.uavsar.productTypeDisplays,
+        );
+    product.productTypeDisplay =
+      models.uavsar.productTypeDisplays[file_extension];
+    const fileID = product.downloadUrl.split('/').slice(-1)[0];
+    product.bytes = product.metadata.fileSizes[fileID]?.bytes ?? 0;
+    const thumbnail_index = product.browses.findIndex((url) =>
+      url.toLowerCase().includes('thumbnail'),
+    );
+    if (thumbnail_index !== -1) {
+      product.thumbnail = product.browses.splice(thumbnail_index, 1)[0];
+    }
+    product.browses = product.browses.filter((url) => !url.includes('low-res'));
+
+    const s3UrlsByProductID = product.metadata.s3Urls.reduce((prev, curr) => {
+      const subproductFileID = curr.split('/').at(-1);
+
+      prev[subproductFileID] = curr;
+
+      return prev;
+    }, {});
+
+    product.metadata.s3URI = s3UrlsByProductID[product.file] ?? null;
+
+    const browses = [];
+    for (const p of [
+      ...product.metadata.additionalUrls.filter(
+        (url) => url !== product.downloadUrl,
+      ),
+      ...product.browses,
+    ]) {
+      if (p === '/assets/no-browse.png') {
+        continue;
+      }
+      file_extension = p.endsWith('-END')
+        ? 'end'
+        : this.urlToProductType(p, models.uavsar.productTypeDisplays);
+
+      const productTypeDisplay =
+        models.uavsar.productTypeDisplays[file_extension.toLowerCase()] ??
+        'Missing Display';
+      if (productTypeDisplay === 'Missing Display') {
+        console.log(
+          `Missing product type display for file extension "${file_extension}"`,
+        );
+      }
+
+      if (['Metadata IN'].includes(productTypeDisplay)) {
+        continue;
+      }
+
+      const fileID = p.split('/').slice(-1)[0];
+      const s3Url = s3UrlsByProductID[fileID] ?? null;
+      const fileSize = product.metadata.fileSizes[fileID]?.bytes ?? 0;
+      const subproduct = this.createSubproductForScene(
+        product,
+        p,
+        s3Url,
+        file_extension,
+        productTypeDisplay,
+        fileSize,
+        browses,
+      );
+
+      products.push(subproduct);
+    }
+
+    return products.sort((a, b) => {
+      if (
+        a.productTypeDisplay.includes('Metadata') ||
+        a.productTypeDisplay.includes('QA')
+      ) {
+        return 1;
+      } else if (
+        b.productTypeDisplay.includes('Metadata') ||
+        b.productTypeDisplay.includes('QA')
+      ) {
+        return -1;
+      }
+
+      return a.productTypeDisplay < b.productTypeDisplay ? -1 : 1;
+    });
+  }
   private createSubproductForScene(
     scene: models.CMRProduct,
     url: string,
