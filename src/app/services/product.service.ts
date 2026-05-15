@@ -58,6 +58,10 @@ export class ProductService {
       };
 
       product.metadata.subproducts = this.getSubproducts(product);
+      if (product.metadata?.opera) {
+        product.bytes =
+          product?.metadata?.opera?.bytes?.[product.file]?.bytes || 0;
+      }
 
       return product;
     });
@@ -295,6 +299,10 @@ export class ProductService {
         0,
         [],
       );
+
+      subproduct.bytes =
+        subproduct?.metadata?.opera?.bytes?.[subproduct.file]?.bytes || 0;
+
       products.push(subproduct);
     }
 

@@ -150,7 +150,7 @@ bootstrapApplication(AppComponent, {
       }),
     ),
     provideTranslateService({
-      defaultLanguage: 'en',
+      fallbackLang: 'en',
       loader: {
         provide: TranslateLoader,
         useClass: StaticTranslateLoader,
