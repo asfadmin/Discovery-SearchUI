@@ -18,6 +18,23 @@ import {
 import { DocsModalComponent } from '../docs-modal/docs-modal.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { fas, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({
+  name: 'formatNumber',
+  standalone: true,
+})
+export class FormatNumberPipe implements PipeTransform {
+  transform(num: number | string): string {
+    const n = typeof num === 'string' ? parseFloat(num) : num;
+
+    if (isNaN(n)) {
+      return '';
+    }
+
+    return n.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+  }
+}
 
 @Component({
   selector: 'app-max-results-selector',
@@ -28,7 +45,7 @@ import { fas, faSpinner } from '@fortawesome/free-solid-svg-icons';
     MatIcon,
     FontAwesomeModule,
     MatMenu,
-
+    FormatNumberPipe,
     MatMenuItem,
     DocsModalComponent,
     TranslateModule,
@@ -70,7 +87,9 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
     this.subs.add(
       this.store$
         .select(filtersStore.getMaxSearchResults)
-        .subscribe((maxResults) => (this.maxResults = maxResults)),
+        .subscribe((maxResults) => {
+          this.maxResults = maxResults;
+        }),
     );
 
     this.subs.add(
@@ -116,14 +135,6 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
     if (this.areResultsLoaded) {
       this.store$.dispatch(new searchStore.MakeSearch());
     }
-  }
-
-  public formatNumber(num: number): string {
-    if (typeof num !== 'number') {
-      return '';
-    }
-
-    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
   }
 
   ngOnDestroy() {

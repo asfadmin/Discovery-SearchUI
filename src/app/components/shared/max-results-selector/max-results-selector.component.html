@@ -5,21 +5,20 @@
     class="faint-text clickable perspective"
   >
     <span [class.invisible]="searchType !== searchTypes.DATASET">
-      <span
-        >{{ formatNumber(maxResults)
-        }}<mat-icon class="faint-text clickable"
-          >arrow_drop_down</mat-icon
-        > </span
-      >{{ 'OF' | translate }}</span
-    >
+      <span>
+        {{ maxResults | formatNumber }}
+        <mat-icon class="faint-text clickable">arrow_drop_down</mat-icon>
+      </span>
+      {{ 'OF' | translate }}
+    </span>
     @if (!isMaxResultsLoading) {
       <span>
         {{
           currentSearchAmount + burstXMLFileCount !== -1
-            ? formatNumber(currentSearchAmount + burstXMLFileCount)
+            ? (currentSearchAmount + burstXMLFileCount | formatNumber)
             : '0'
-        }}</span
-      >
+        }}
+      </span>
     }
     @if (isMaxResultsLoading) {
       <span style="margin: 0 4px">
@@ -37,7 +36,7 @@
   <div style="padding: 8px 2px" class="faint-text perspective">
     <span [class.invisible]="true">
       <span>
-        {{ formatNumber(burstXMLFileCount + maxResults) }}
+        {{ burstXMLFileCount + maxResults | formatNumber }}
         <mat-icon class="faint-text clickable">arrow_drop_down</mat-icon>
       </span>
       {{ 'OF' | translate }}
@@ -51,7 +50,7 @@
           <span>
             {{
               currentSearchAmount !== -1
-                ? formatNumber(currentSearchAmount)
+                ? (currentSearchAmount | formatNumber)
                 : '0'
             }}
           </span>
@@ -60,14 +59,14 @@
           <span>
             {{
               sbasProducts?.length !== -1
-                ? formatNumber(sbasProducts?.length)
+                ? (sbasProducts?.length | formatNumber)
                 : '0'
             }}
           </span>
         }
         @if (searchType === searchTypes.CUSTOM_PRODUCTS) {
           <span>
-            {{ numberOfScenes !== 0 ? formatNumber(numberOfScenes) : '0' }}
+            {{ numberOfScenes !== 0 ? (numberOfScenes | formatNumber) : '0' }}
           </span>
         }
       </span>
@@ -84,7 +83,7 @@
 <mat-menu #menu="matMenu">
   @for (amount of possibleMaxResults; track amount) {
     <button (click)="onNewMaxResults(amount)" mat-menu-item>
-      <span>{{ formatNumber(amount) }} {{ 'FILES' | translate }}</span>
+      <span>{{ amount | formatNumber }} {{ 'FILES' | translate }}</span>
     </button>
   }
   <button mat-menu-item>
