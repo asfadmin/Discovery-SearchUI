@@ -96,6 +96,13 @@ export interface SLCBurstMetadata {
   subswath: string;
 }
 
+export interface OperaFileEntry {
+  bytes: number;
+  format: string;
+}
+
+export type OperaBytes = Record<string, OperaFileEntry>;
+
 export interface OperaS1Metadata {
   operaBurstID: string;
   additionalUrls: string[];
@@ -103,6 +110,7 @@ export interface OperaS1Metadata {
   validityStartDate?: moment.Moment | null;
   tileID?: string;
   productVersion?: string;
+  bytes: OperaBytes;
 }
 
 export interface NISARMetadata {
