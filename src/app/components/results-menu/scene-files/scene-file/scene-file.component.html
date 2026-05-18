@@ -104,7 +104,9 @@
       <span>{{ 'VIRTUAL' | translate }}</span>
     }
     @if (isDownloadable(product) && product.bytes !== 0) {
-      <span>{{ product.bytes.toString() | readableSizeFromBytes }}</span>
+      <span>
+        {{ product.bytes.toString() | readableSizeFromBytes }}
+      </span>
     }
   </div>
 
