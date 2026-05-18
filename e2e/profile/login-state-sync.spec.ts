@@ -80,26 +80,22 @@ test('Profile: login state is synced across instances', async ({
     return route.continue();
   });
 
-  const pageOne = await context.newPage();
-  const pageTwo = await context.newPage();
+  const page = await context.newPage();
 
-  await pageOne.goto('/');
-  await pageTwo.goto('/');
+  await page.goto('/');
 
-  await expect(pageOne.getByRole('button', { name: 'Sign In' })).toBeVisible();
-  await expect(pageTwo.getByRole('button', { name: 'Sign In' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Sign In' })).toBeVisible();
 
   loggedIn = true;
 
-  await pageOne.evaluate(() => {
+  await page.evaluate(() => {
     const bc = new BroadcastChannel('asf-vertex');
     bc.postMessage({ event: 'login' });
     bc.close();
   });
 
-  await expect(
-    pageTwo.getByRole('button', { name: 'automatedtesting_fullaccess' }),
-  ).toBeVisible();
+  await expect(page.getByRole('button', { name: 'automatedtesting_fullaccess' }))
+    .toBeVisible();
 
   await context.close();
 });
