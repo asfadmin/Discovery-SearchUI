@@ -120,7 +120,7 @@ export async function setupOnDemand(page: Page, job_overrides: object = {}) {
             thumbnail_images: [],
             logs: [],
             credit_cost: 5,
-            expiration_time: '2030-05-13T00:00:00+00:00',
+            expiration_time: '2000-05-13T00:00:00+00:00',
             request_time: '2026-04-28T18:48:40+00:00',
             execution_started: true,
             status_code: 'SUCCEEDED',

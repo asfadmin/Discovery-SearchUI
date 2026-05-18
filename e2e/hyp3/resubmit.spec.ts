@@ -6,9 +6,7 @@ test(
   { tag: '@auth' },
   async ({ loggedInPage }) => {
     await loggedInPage.goto('/');
-    await setupOnDemand(loggedInPage, {
-      expiration_time: '2000-05-13T00:00:00+00:00',
-    });
+    await setupOnDemand(loggedInPage);
     await loggedInPage
       .getByRole('button', { name: 'Geographic Search' })
       .click();
