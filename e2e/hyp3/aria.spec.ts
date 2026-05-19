@@ -4,26 +4,16 @@ test(
   { tag: '@auth' },
   async ({ loggedInPage }) => {
     await loggedInPage.goto('/');
-    await loggedInPage.route(
-      '**ARIA_S1_GUNW/ascending.geojson',
-      async (request) => {
-        const response = await request.fetch();
-        await request.fulfill({
-          response,
-          headers: {
-            ...response.headers(),
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET',
-          },
-        });
-      },
-    );
+    await loggedInPage.route('**ARIA_S1_GUNW/**.geojson', async (request) => {
+      await request.fulfill({
+        path: 'e2e/hyp3/assets/aria_frame_map.geojson',
+      });
+    });
     await loggedInPage.getByRole('button', { name: 'Sentinel-' }).click();
     await loggedInPage
       .getByRole('menuitem', { name: 'ARIA S1 GUNW NISAR-format' })
       .click();
     await loggedInPage.getByRole('switch', { name: 'On Demand' }).click();
-    await loggedInPage.waitForResponse('**ARIA_S1_GUNW/ascending.geojson');
 
     await loggedInPage
       .locator('canvas')
