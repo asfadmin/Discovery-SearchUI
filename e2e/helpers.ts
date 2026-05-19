@@ -94,8 +94,8 @@ export async function setupOnDemand(page: Page, job_overrides: object = {}) {
   await page.route('**hyp3**/jobs**', (route) => {
     route.fulfill({
       body: JSON.stringify({
-        jobs: [
-          {
+        jobs: [...Array(10)].map((x) => {
+          return {
             job_type: 'RTC_GAMMA',
             browse_images: [],
             files: [],
@@ -115,7 +115,7 @@ export async function setupOnDemand(page: Page, job_overrides: object = {}) {
               include_dem: false,
               include_scattering_area: false,
             },
-            job_id: 'c8fc2117-bb35-4e96-9037-ff5ea9acf6ab',
+            job_id: crypto.randomUUID(),
             processing_times: [487.668],
             thumbnail_images: [],
             logs: [],
@@ -126,8 +126,8 @@ export async function setupOnDemand(page: Page, job_overrides: object = {}) {
             status_code: 'SUCCEEDED',
             user_id: 'automatedtesting_fullaccess',
             ...job_overrides,
-          },
-        ],
+          };
+        }),
       }),
     });
   });
