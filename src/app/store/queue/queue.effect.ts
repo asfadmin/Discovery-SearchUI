@@ -127,7 +127,11 @@ export class QueueEffects {
         map((action) => action.payload),
         withLatestFrom(
           this.store$.select(getQueuedProducts).pipe(
-            map((products) => products.map((product) => product.id).join(',')),
+            map((products) =>
+              products
+                .map((product) => product.metadata?.parentID ?? product.id)
+                .join(','),
+            ),
             map((productIds) => ({
               product_list: productIds,
             })),
