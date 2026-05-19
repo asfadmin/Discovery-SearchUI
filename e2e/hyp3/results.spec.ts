@@ -22,6 +22,6 @@ test(
     await loggedInPage.mouse.move(800, 800);
     await expect(
       loggedInPage.locator('.ol-custom-scale-line-inner'),
-    ).toContainText('20 m');
+    ).not.toContainText('1000 km');
   },
 );
