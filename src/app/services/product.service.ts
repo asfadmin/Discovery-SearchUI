@@ -520,15 +520,13 @@ export class ProductService {
     }
 
     const reg = url.match(regex) ?? [''];
-    console.log(reg);
     return reg[1];
   }
 
-  private getUAVSARFileTypeExtension(url: string) {
+  public getUAVSARFileTypeExtension(url: string) {
     const regex =
       /(unw\.|cor\.|int\.|amp1\.|amp2\.|hgt\.|T1\.|T2\.)?(grd|hgt|int|unw|cor|amp1|amp2|kmz|png|inc|gif|ann|slc|slope|mlc|dat)$/;
     const reg = url.match(regex) ?? [''];
-    console.log(reg[0]);
     return reg[0];
   }
   private uavsarSubproductsFromScene(product: models.CMRProduct) {
@@ -616,24 +614,7 @@ export class ProductService {
       products.push(subproduct);
     }
 
-    return products.sort((a, b) => {
-      const extensionA = this.getUAVSARFileTypeExtension(a.downloadUrl);
-      const extensionB = this.getUAVSARFileTypeExtension(b.downloadUrl);
-      //   if (a.downloadUrl.endsWith('-END') || b.downloadUrl.endsWith('-END')) {
-      //     return partsA.length - partsB.length;
-      //   }
-
-      const rankA = Object.keys(models.uavsar.productTypeDisplays).findIndex(
-        (ext) => ext === extensionA,
-      );
-      const rankB = Object.keys(models.uavsar.productTypeDisplays).findIndex(
-        (ext) => ext === extensionB,
-      );
-
-      return rankA - rankB;
-
-      //   return a.productTypeDisplay <= b.productTypeDisplay ? -1 : 1;
-    });
+    return products;
   }
   private createSubproductForScene(
     scene: models.CMRProduct,
