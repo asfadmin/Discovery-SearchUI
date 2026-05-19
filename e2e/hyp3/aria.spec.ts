@@ -1,7 +1,7 @@
 import { test, expect } from 'e2e/pages/auth.page';
 test(
   'On Demand: Aria On Demand',
-  { tag: '@auth' },
+  { tag: ['@auth', '@webgl'] },
   async ({ loggedInPage }) => {
     await loggedInPage.goto('/');
     await loggedInPage.route('**ARIA_S1_GUNW/**.geojson', async (request) => {
@@ -14,13 +14,8 @@ test(
       .getByRole('menuitem', { name: 'ARIA S1 GUNW NISAR-format' })
       .click();
     await loggedInPage.getByRole('switch', { name: 'On Demand' }).click();
-    while (
-      !(await loggedInPage
-        .getByRole('button', { name: 'Build SBAS SLC Stack' })
-        .isVisible())
-    ) {
-      await loggedInPage.mouse.click(790, 503);
-    }
+    await loggedInPage.waitForTimeout(1000);
+    await loggedInPage.mouse.click(790, 503);
     await loggedInPage
       .getByRole('button', { name: 'Build SBAS SLC Stack' })
       .click();
