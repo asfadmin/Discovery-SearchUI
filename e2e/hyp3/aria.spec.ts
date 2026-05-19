@@ -14,8 +14,13 @@ test(
       .getByRole('menuitem', { name: 'ARIA S1 GUNW NISAR-format' })
       .click();
     await loggedInPage.getByRole('switch', { name: 'On Demand' }).click();
-    await loggedInPage.waitForTimeout(1500);
-    await loggedInPage.mouse.click(790, 503);
+    while (
+      !(await loggedInPage
+        .getByRole('button', { name: 'Build SBAS SLC Stack' })
+        .isVisible())
+    ) {
+      await loggedInPage.mouse.click(790, 503);
+    }
     await loggedInPage
       .getByRole('button', { name: 'Build SBAS SLC Stack' })
       .click();
