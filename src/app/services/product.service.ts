@@ -523,14 +523,19 @@ export class ProductService {
     console.log(reg);
     return reg[1];
   }
+
+  private getUAVSARFileTypeExtension(url: string) {
+    const regex =
+      /(unw\.|cor\.|int\.|amp1\.|amp2\.|hgt\.|T1\.|T2\.)?(grd|hgt|int|unw|cor|amp1|amp2|kmz|png|inc|gif|ann|slc|slope|mlc|dat)$/;
+    const reg = url.match(regex) ?? [''];
+    console.log(reg[0]);
+    return reg[0];
+  }
   private uavsarSubproductsFromScene(product: models.CMRProduct) {
     const products = [];
     let file_extension = product.downloadUrl.endsWith('-END')
       ? 'end'
-      : this.urlToProductType(
-          product.downloadUrl,
-          models.uavsar.productTypeDisplays,
-        );
+      : this.getUAVSARFileTypeExtension(product.downloadUrl);
     product.productTypeDisplay =
       models.uavsar.productTypeDisplays[file_extension];
 
@@ -539,7 +544,7 @@ export class ProductService {
       product.metadata.polarization,
     );
     if (polarization != undefined) {
-      product.productTypeDisplay = `${polarization} ${product.productTypeDisplay}`;
+      product.productTypeDisplay = `${product.productTypeDisplay} ${polarization}`;
     }
     const fileID = product.downloadUrl.split('/').slice(-1)[0];
     product.bytes = product.metadata.fileSizes[fileID]?.bytes ?? 0;
@@ -573,7 +578,7 @@ export class ProductService {
       }
       file_extension = p.endsWith('-END')
         ? 'end'
-        : this.urlToProductType(p, models.uavsar.productTypeDisplays);
+        : this.getUAVSARFileTypeExtension(p);
 
       let productTypeDisplay =
         models.uavsar.productTypeDisplays[file_extension.toLowerCase()] ??
@@ -583,7 +588,7 @@ export class ProductService {
         product.metadata.polarization,
       );
       if (polarization != undefined) {
-        productTypeDisplay = `${polarization} ${productTypeDisplay}`;
+        productTypeDisplay = `${productTypeDisplay} ${polarization}`;
       }
       if (productTypeDisplay === 'Missing Display') {
         console.log(
@@ -612,19 +617,22 @@ export class ProductService {
     }
 
     return products.sort((a, b) => {
-      if (
-        a.productTypeDisplay.includes('Metadata') ||
-        a.productTypeDisplay.includes('QA')
-      ) {
-        return 1;
-      } else if (
-        b.productTypeDisplay.includes('Metadata') ||
-        b.productTypeDisplay.includes('QA')
-      ) {
-        return -1;
-      }
+      const extensionA = this.getUAVSARFileTypeExtension(a.downloadUrl);
+      const extensionB = this.getUAVSARFileTypeExtension(b.downloadUrl);
+      //   if (a.downloadUrl.endsWith('-END') || b.downloadUrl.endsWith('-END')) {
+      //     return partsA.length - partsB.length;
+      //   }
 
-      return a.productTypeDisplay < b.productTypeDisplay ? -1 : 1;
+      const rankA = Object.keys(models.uavsar.productTypeDisplays).findIndex(
+        (ext) => ext === extensionA,
+      );
+      const rankB = Object.keys(models.uavsar.productTypeDisplays).findIndex(
+        (ext) => ext === extensionB,
+      );
+
+      return rankA - rankB;
+
+      //   return a.productTypeDisplay <= b.productTypeDisplay ? -1 : 1;
     });
   }
   private createSubproductForScene(
