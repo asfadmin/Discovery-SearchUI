@@ -16,7 +16,7 @@ test(
     await expect(loggedInPage.locator('mat-list-item')).toContainText(
       'Type: RTC_GAMMA, GRD_HD',
     );
-    await loggedInPage.locator('#mat-mdc-chip-1').click();
+    await loggedInPage.locator('#mat-mdc-chip-0').click();
     await loggedInPage
       .getByRole('menuitem', { name: 'Resubmit Job...' })
       .click();

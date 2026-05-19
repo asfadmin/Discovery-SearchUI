@@ -17,6 +17,8 @@ test(
       .getByRole('radiogroup')
       .filter({ hasText: 'settings_overscan' })
       .click();
+    await loggedInPage.waitForTimeout(2000);
+    await loggedInPage.mouse.move(800, 600);
     await expect(loggedInPage.locator('app-map-info')).toContainText('20 m');
   },
 );

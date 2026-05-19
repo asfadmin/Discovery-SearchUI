@@ -94,7 +94,7 @@ export async function setupOnDemand(page: Page, job_overrides: object = {}) {
   await page.route('**hyp3**/jobs**', (route) => {
     route.fulfill({
       body: JSON.stringify({
-        jobs: [...Array(10)].map((x) => {
+        jobs: [...Array(10)].map((_x) => {
           return {
             job_type: 'RTC_GAMMA',
             browse_images: [],

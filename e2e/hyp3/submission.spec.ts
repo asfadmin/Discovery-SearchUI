@@ -53,7 +53,7 @@ test(
 test(
   'On Demand: SBAS submit job',
   { tag: '@auth' },
-  async ({ loggedInPage }) => {
+  async ({ loggedInPage, browserName }) => {
     await loggedInPage.goto('/');
     await loggedInPage
       .getByRole('button', { name: 'Geographic Search' })
@@ -71,9 +71,14 @@ test(
       .locator('#mat-button-toggle-6-button')
       .getByRole('button', { name: 'SEARCH' })
       .click();
-    await loggedInPage.locator('#mat-button-toggle-21-button').click(); // no aria label for this
-
-    await loggedInPage.getByRole('menuitem', { name: 'RTC GAMMA' }).hover();
+    await loggedInPage
+      .locator(
+        browserName === 'firefox'
+          ? '#mat-button-toggle-22-button'
+          : '#mat-button-toggle-21-button',
+      )
+      .click(); // no aria label for this and for some reason it changes in firefox? TODO: make this not weird
+    await loggedInPage.getByRole('menuitem', { name: 'RTC GAMMA' }).click();
 
     await loggedInPage
       .getByRole('menuitem', { name: 'Add 411 SLC jobs (2,055' })
