@@ -53,7 +53,7 @@ test(
 test(
   'On Demand: SBAS submit job',
   { tag: '@auth' },
-  async ({ loggedInPage, browserName }) => {
+  async ({ loggedInPage }) => {
     await loggedInPage.goto('/');
     await loggedInPage
       .getByRole('button', { name: 'Geographic Search' })
@@ -72,24 +72,16 @@ test(
       .getByRole('button', { name: 'SEARCH' })
       .click();
     await loggedInPage
-      .locator(
-        browserName === 'firefox'
-          ? '#mat-button-toggle-22-button'
-          : '#mat-button-toggle-21-button',
-      )
-      .click(); // no aria label for this and for some reason it changes in firefox? TODO: make this not weird
+      .getByRole('radio', { name: 'Add all results to On Demand' })
+      .click();
     await loggedInPage.getByRole('menuitem', { name: 'RTC GAMMA' }).click();
 
-    await loggedInPage
-      .getByRole('menuitem', { name: 'Add 411 SLC jobs (2,055' })
-      .click();
+    await loggedInPage.getByRole('menuitem', { name: 'SLC jobs' }).click();
     await loggedInPage.getByRole('button', { name: 'On Demand' }).click();
     await loggedInPage
       .getByRole('menuitem', { name: 'On Demand Queue' })
       .click();
-    await loggedInPage
-      .getByRole('button', { name: 'Submit 411 Jobs (2055 credits)' })
-      .click();
+    await loggedInPage.getByRole('button', { name: 'Submit ' }).click();
     await expect(loggedInPage.locator('app-confirmation')).toContainText(
       'Submit',
     );
@@ -117,18 +109,18 @@ test(
       .locator('#mat-button-toggle-6-button')
       .getByRole('button', { name: 'SEARCH' })
       .click();
-    await loggedInPage.locator('#mat-button-toggle-15-button').click();
+    await loggedInPage
+      .getByRole('radio', { name: 'Add all results to On Demand' })
+      .click();
 
     await loggedInPage.getByRole('menuitem', { name: 'InSAR GAMMA' }).click();
+    await loggedInPage.getByRole('menuitem', { name: 'SLC Pairs' }).click();
     await loggedInPage
-      .getByRole('menuitem', { name: 'Add 265 SLC Pairs (2,650' })
+      .getByRole('radio', { name: 'Add all results to On Demand' })
       .click();
-    await loggedInPage.locator('#mat-button-toggle-15-button').click();
     await loggedInPage.getByRole('menuitem', { name: 'autoRIFT' }).click();
 
-    await loggedInPage
-      .getByRole('menuitem', { name: 'Add 265 SLC Pairs (6,625' })
-      .click();
+    await loggedInPage.getByRole('menuitem', { name: 'SLC Pairs' }).click();
     await loggedInPage.getByRole('button', { name: 'On Demand' }).click();
     await loggedInPage
       .getByRole('menuitem', { name: 'On Demand Queue' })
@@ -137,9 +129,7 @@ test(
     await loggedInPage
       .getByRole('button', { name: 'Clear InSAR GAMMA (265)' })
       .click();
-    await loggedInPage
-      .getByRole('button', { name: 'Submit 265 Jobs (6625 credits)' })
-      .click();
+    await loggedInPage.getByRole('button', { name: 'Submit' }).click();
     await expect(loggedInPage.locator('app-confirmation')).toContainText(
       'Submit',
     );
