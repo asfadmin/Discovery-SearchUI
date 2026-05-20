@@ -186,33 +186,41 @@ export class SearchEffects {
       ofType(SearchActionType.MAKE_SEARCH),
       withLatestFrom(this.store$.select(getSearchType)),
       switchMap(([_, searchType]) => {
+        let searchRequest$: Observable<any>;
+
         if (searchType === SearchType.SARVIEWS_EVENTS) {
-          return this.sarviewsEventsQuery$();
+          searchRequest$ = this.sarviewsEventsQuery$();
         } else if (
           searchType === SearchType.BASELINE ||
           searchType === SearchType.SBAS
         ) {
           this.logCountries();
-          return this.asfApiBaselineQuery$();
+          searchRequest$ = this.asfApiBaselineQuery$();
         } else if (searchType === SearchType.CUSTOM_PRODUCTS) {
-          return this.customProductsQuery$();
+          searchRequest$ = this.customProductsQuery$();
         } else if (searchType === SearchType.DISPLACEMENT) {
-          return this.timeseriesQuery$();
+          searchRequest$ = this.timeseriesQuery$();
         } else {
           this.logCountries();
-          return this.asfApiQuery$;
-        }
-      }),
-      catchError((err: HttpErrorResponse) => {
-        const errorMsg = err?.error?.error?.report;
-        if (errorMsg) {
-          return of(new SearchError(errorMsg));
-        }
-        if (err.status !== 400) {
-          return of(new SearchError('Unknown Error'));
+          searchRequest$ = this.asfApiQuery$;
         }
 
-        return of(new SearchError('Error loading search results'));
+        return searchRequest$.pipe(
+          catchError(
+            (err: HttpErrorResponse) => {
+              const errorMsg = err?.error?.error?.report;
+              if (errorMsg) {
+                return of(new SearchError(errorMsg));
+              }
+              if (err.status !== 400) {
+                return of(new SearchError('Unknown Error'));
+              }
+
+              return of(new SearchError('Error loading search results'));
+            }
+
+          )
+        )
       }),
     ),
   );
