@@ -28,14 +28,37 @@
       [color]="colorControl.value"
       [style.width.px]="125"
     >
-      <mat-label>{{ 'METERS' | translate }}</mat-label>
+      <mat-label>{{ 'MIN_METERS' | translate }}</mat-label>
       <input
         #meterInputField
-        [(ngModel)]="perpendicular"
+        [(ngModel)]="perpendicular.start"
         matInput
-        [placeholder]="'METERS' | translate"
+        [placeholder]="'MIN_METERS' | translate"
         type="number"
-        pattern="[0-9]*"
+        min="-999"
+        max="999"
+        required
+        (input)="updatePerpendicular()"
+      />
+      @if (meterDistanceControl.invalid) {
+        <mat-error>{{ 'INVALID_BASELINE' | translate }}</mat-error>
+      }
+    </mat-form-field>
+
+    <div class="field-spacing"></div>
+
+    <mat-form-field
+      appearance="fill"
+      [color]="colorControl.value"
+      [style.width.px]="125"
+    >
+      <mat-label>{{ 'MAX_METERS' | translate }}</mat-label>
+      <input
+        #meterInputField
+        [(ngModel)]="perpendicular.end"
+        matInput
+        [placeholder]="'MAX_METERS' | translate"
+        type="number"
         min="-999"
         max="999"
         required
