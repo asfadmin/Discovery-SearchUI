@@ -10,6 +10,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as userStore from '@store/user';
 import * as hyp3Store from '@store/hyp3';
+import * as searchStore from '@store/search';
 
 import {
   MatDialogRef,
@@ -104,6 +105,7 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     (val) => val !== 'LIST' && val !== 'CUSTOM_PRODUCTS',
   );
   public selectedSearchType = SearchType.DATASET;
+  public isHyp3PlusMode = this.store$.selectSignal(searchStore.getHyp3PlusMode);
 
   public themeOptions: string[] = ['light', 'dark', 'System Preferences'];
   public themeTranslation: Record<string, string> = {

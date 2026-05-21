@@ -149,12 +149,15 @@
           {{ 'DEFAULT_ON_DEMAND_PRESETS' | translate }}
         </div>
 
-        <app-hyp3-url-selector
-          [hyp3BackendUrl]="hyp3BackendUrl"
-          [hyp3SavedUrls]="hyp3SavedUrls"
-          (newHyp3Url)="onSetHyp3Url($event)"
-        >
-        </app-hyp3-url-selector>
+        @if (!isHyp3PlusMode()) {
+          <app-hyp3-url-selector
+            [hyp3BackendUrl]="hyp3BackendUrl"
+            [hyp3SavedUrls]="hyp3SavedUrls"
+            (newHyp3Url)="onSetHyp3Url($event)"
+          >
+          </app-hyp3-url-selector>
+        }
+
 
         @if (!this.env.isProd) {
           <mat-form-field class="default-map">
