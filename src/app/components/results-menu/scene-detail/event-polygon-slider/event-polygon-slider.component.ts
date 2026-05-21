@@ -11,7 +11,7 @@ import { Store } from '@ngrx/store';
 import { MapService } from '@services';
 import { AppState } from '@store';
 import { getSelectedSarviewsEvent } from '@store/scenes';
-declare let wNumb: any;
+import wNumb from 'wnumb';
 
 import * as noUiSlider from 'nouislider';
 import { Observable, Subject } from 'rxjs';
