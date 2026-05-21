@@ -30,6 +30,7 @@ import { MissionSelectorComponent } from '@components/shared/selectors/mission-s
 import { BurstSelectorComponent } from '@components/shared/selectors/burst-selector/burst-selector.component';
 import { OperaS1SelectorComponent } from '@components/shared/selectors/opera-s1-selector/opera-s1-selector.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { GranuleListSelectorComponent } from '@components/shared/selectors/granule-list-selector/granule-list-selector.component';
 // import { TranslateService } from "@ngx-translate/core";
 
 enum FilterPanel {
@@ -65,6 +66,7 @@ enum FilterPanel {
     MissionSelectorComponent,
     BurstSelectorComponent,
     OperaS1SelectorComponent,
+    GranuleListSelectorComponent,
     AsyncPipe,
     TranslateModule,
   ],

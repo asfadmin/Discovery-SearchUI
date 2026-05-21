@@ -1,0 +1,11 @@
+<form>
+  <mat-form-field class="granule-field">
+    <mat-label>{{'GRANULE_LIST' | translate }}</mat-label>
+    <textarea [formField]="granuleListForm.list" matInput class="granule-box"> </textarea>
+    @if(granuleListForm.list().errors().length > 0) {
+      <mat-error>{{granuleListForm.list().errors()[0].message}}</mat-error>
+    } @else {
+      <mat-hint>Supports wildcard matching e.g. S1C* matches all granules that start with S1C.</mat-hint>
+    }
+  </mat-form-field>
+</form>

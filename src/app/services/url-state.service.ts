@@ -852,6 +852,13 @@ export class UrlStateService {
           .pipe(map((useFrameForBaseline) => ({ useFrameForBaseline }))),
         loader: this.loadUseFrameForBaseline,
       },
+      {
+        name: 'granuleList',
+        source: this.store$
+          .select(filterStore.getGranuleList)
+          .pipe(map((granuleList) => ({ granuleList }))),
+        loader: this.loadGranuleList,
+      },
     ];
   }
 
@@ -1365,6 +1372,9 @@ export class UrlStateService {
     usingseFrameForBaseline: string,
   ): Action => {
     return new filterStore.SetUseFrameForBaseline(!!usingseFrameForBaseline);
+  };
+  private loadGranuleList = (granuleList: string): Action => {
+    return new filterStore.setGranuleList(granuleList);
   };
 
   private loadAriaVersion = (version: string): Action => {

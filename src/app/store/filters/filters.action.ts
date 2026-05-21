@@ -115,6 +115,8 @@ export enum FiltersActionType {
 
   SET_USER_FRAME_FOR_BASELINE = '[Filters] Set if frame(s) used for baseline/sbas searches as reference scene',
 
+  SET_GRANULE_LIST = '[Filters] Set granule list',
+
   APPLY_DATASET_DEFAULTS = '[Filters] Apply dataset default filters',
 }
 
@@ -547,6 +549,12 @@ export class SetUseFrameForBaseline implements Action {
   constructor(public payload: boolean) {}
 }
 
+export class setGranuleList implements Action {
+  public readonly type = FiltersActionType.SET_GRANULE_LIST;
+
+  constructor(public payload: string) {}
+}
+
 export type FiltersActions =
   | SetSelectedDataset
   | SetPerpendicularStart
@@ -623,5 +631,6 @@ export type FiltersActions =
   | setProductionConfig
   | setAriaVersion
   | setTileID
+  | setGranuleList
   | SetUseFrameForBaseline
   | ApplyDatasetDefaults;

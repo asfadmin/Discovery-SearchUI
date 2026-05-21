@@ -53,6 +53,24 @@
     </mat-expansion-panel>
     <mat-expansion-panel
       [expanded]="defaultPanelOpenState"
+      [disabled]="panelIsDisabled">
+      <mat-expansion-panel-header
+
+      >
+        <mat-panel-title class="panel-title">
+          {{ 'GRANULE_LIST' | translate }}
+          <app-docs-modal
+            class="info-text"
+            text="DOCUMENTATION"
+            url="https://docs.asf.alaska.edu/vertex/manual/#date-filters"
+          >
+          </app-docs-modal>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <app-granule-list-selector/>
+    </mat-expansion-panel>
+    <mat-expansion-panel
+      [expanded]="defaultPanelOpenState"
       [disabled]="panelIsDisabled"
       (click)="selectPanel(panels.DATE)"
       [class.raised-section]="isSelected(panels.DATE)"
