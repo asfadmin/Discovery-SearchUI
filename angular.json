@@ -22,7 +22,7 @@
             },
             "index": "src/index.html",
             "polyfills": [
-              "src/polyfills.ts"
+              "src/polyfills.ts",
             ],
             "tsConfig": "src/tsconfig.app.json",
             "assets": [

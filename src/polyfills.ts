@@ -63,6 +63,7 @@ import 'zone.js'; // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
+import 'web-streams-polyfill/polyfill';
 
 // Polyfill for Node.js built-in modules required by some dependencies
 import { Buffer } from 'buffer';
