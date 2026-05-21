@@ -53,5 +53,23 @@ describe('SceneFilesComponent', () => {
     expect(component).toBeDefined();
   });
 
-  it('should be working', () => expect('').toEqual(''));
+  it('should be invalid for lists with >5 leading wildcards', () => {
+    component.granuleListModel.set({
+      list: '*1A, *1B, *1C, ?1D, *1E, *1F',
+    });
+    expect(component.granuleListForm().invalid()).toBeTruthy();
+  });
+
+  it('should be valid for lists with <=5 leading wildcards', () => {
+    component.granuleListModel.set({
+      list: '*1A, *1B, *1C, ?1D, *1E',
+    });
+    expect(component.granuleListForm().invalid()).toBeFalsy();
+  });
+  it('should be valid for lists with >5 non-leading wildcards', () => {
+    component.granuleListModel.set({
+      list: 'S1A, S1B, S1C, S1D, S1E, S1F, S1G',
+    });
+    expect(component.granuleListForm().invalid()).toBeFalsy();
+  });
 });
