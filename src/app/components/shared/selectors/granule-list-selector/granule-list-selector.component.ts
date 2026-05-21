@@ -30,6 +30,7 @@ export class GranuleListSelectorComponent {
   granuleListModel = signal({
     list: '',
   });
+  granuleList = this.store$.selectSignal(filtersStore.getGranuleList);
   granuleListForm = form(this.granuleListModel, (schemaPath) => {
     debounce(schemaPath.list, 500);
     // TODO: add validator for granule wildcard requirements. No leading char, no more than 4(or more?) granules
@@ -40,6 +41,11 @@ export class GranuleListSelectorComponent {
       this.store$.dispatch(
         new filtersStore.setGranuleList(this.granuleListModel().list),
       );
+    });
+    effect(() => {
+      this.granuleListModel.set({
+        list: this.granuleList(),
+      });
     });
   }
 }
