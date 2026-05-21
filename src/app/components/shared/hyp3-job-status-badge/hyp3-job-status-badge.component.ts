@@ -1,4 +1,6 @@
-import { Component, OnInit, Input, inject } from '@angular/core';
+import { Component, OnInit, input, inject } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { combineLatest } from 'rxjs';
 
 import { Hyp3ApiService, ScenesService, Hyp3JobStatusService } from '@services';
 import {
@@ -32,21 +34,19 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
   private dialog = inject(MatDialog);
   private store$ = inject<Store<AppState>>(Store);
 
-  @Input() job: Hyp3Job;
-  @Input() isFileDetails = true;
+  public job = input.required<Hyp3Job>();
+  private job$ = toObservable(this.job);
 
-  private jobs: models.Hyp3Job[];
+  public projectJobs: models.Hyp3Job[] = [];
+  public expiredJobs: models.Hyp3Job[] = [];
+  public failedJobs: models.Hyp3Job[] = [];
+
   private costs: models.Hyp3Costs;
   private processingOptions: Hyp3ProcessingOptions;
-  private projectName = '';
   private validateOnly = false;
   public remaining = 0;
 
   ngOnInit(): void {
-    this.store$
-      .select(hyp3Store.getProcessingProjectName)
-      .subscribe((projectName) => (this.projectName = projectName));
-
     this.store$
       .select(hyp3Store.getProcessingOptions)
       .subscribe((options) => (this.processingOptions = options));
@@ -63,9 +63,18 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
       this.remaining = user.quota.remaining;
     });
 
-    this.scenesService.scenes$.subscribe((scenes) => {
-      this.jobs = scenes.map((scene) => scene.metadata.job);
-    });
+    combineLatest([this.scenesService.scenes$, this.job$]).subscribe(
+      ([scenes, selectedJob]) => {
+        this.projectJobs = scenes
+          .map((scene) => scene.metadata.job)
+          .filter((job) => selectedJob.name && selectedJob.name === job.name);
+
+        this.expiredJobs = this.projectJobs.filter((job) =>
+          this.isExpired(job),
+        );
+        this.failedJobs = this.projectJobs.filter((job) => this.isFailed(job));
+      },
+    );
   }
 
   public isExpired(job: Hyp3Job): boolean {
@@ -84,36 +93,29 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
     return this.hyp3JobStatus.isRunning(job);
   }
 
-  public onReviewExpiredJob() {
-    const jobType = models.hyp3JobTypes[this.job.job_type as string];
+  public onSubmitExpiredJob() {
+    const jobType = models.hyp3JobTypes[this.job().job_type as string];
 
     const job = {
-      granules: this.job.scenes,
+      granules: this.job().scenes,
       job_type: jobType,
-      processingOptions: this.job.job_parameters,
+      processingOptions: this.job().job_parameters,
     };
 
     this.openConfirmationDialog(jobType, job);
   }
 
-  public onReviewExpiredJobs() {
+  public onQueueJobs(jobs: Hyp3Job[]) {
     const job_types = hyp3JobTypes;
 
-    const projectJobs = this.jobs
-      .filter(
-        (job) =>
-          job.name === this.job.name &&
-          this.isExpired(job) &&
-          !this.isFailed(job),
-      )
-      .map((job) => {
-        return {
-          granules: job.scenes,
-          job_type: job_types[job.job_type as string],
-        } as QueuedHyp3Job;
-      });
+    const jobsToQueue = jobs.map((job) => {
+      return {
+        granules: job.scenes,
+        job_type: job_types[job.job_type as string],
+      } as QueuedHyp3Job;
+    });
 
-    this.store$.dispatch(new queueStore.AddJobs(projectJobs));
+    this.store$.dispatch(new queueStore.AddJobs(jobsToQueue));
   }
 
   private openConfirmationDialog(jobType: models.Hyp3JobType, job) {
@@ -156,7 +158,6 @@ export class Hyp3JobStatusBadgeComponent implements OnInit {
       maxHeight: '500px',
       data: {
         jobTypesWithQueued: jobTypesWithQueued,
-        projectName: this.projectName,
         processingOptions: options,
         validateOnly: this.validateOnly,
       },

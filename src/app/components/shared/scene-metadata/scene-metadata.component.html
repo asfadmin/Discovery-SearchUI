@@ -464,8 +464,11 @@
           </mat-icon>
         }
         <mat-menu #addOperaBurstMenu="matMenu">
-          <button (click)="setOperaBurst()" mat-menu-item>
+          <button (click)="addOperaBurst()" mat-menu-item>
             {{ 'ADD_OPERA_BURST_ID_TO_SEARCH' | translate }}
+          </button>
+          <button (click)="setOperaBurst()" mat-menu-item>
+            {{ 'SET_OPERA_BURST_ID_TO_SEARCH' | translate }}
           </button>
         </mat-menu>
       </li>
@@ -483,8 +486,11 @@
           </mat-icon>
         }
         <mat-menu #addFullBurstMenu="matMenu">
-          <button (click)="setFullBurst()" mat-menu-item>
+          <button (click)="addFullBurst()" mat-menu-item>
             {{ 'ADD_FULL_BURST_ID_TO_SEARCH' | translate }}
+          </button>
+          <button (click)="setFullBurst()" mat-menu-item>
+            {{ 'SET_FULL_BURST_ID_TO_SEARCH' | translate }}
           </button>
         </mat-menu>
       </li>

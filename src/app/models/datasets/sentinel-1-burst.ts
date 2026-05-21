@@ -4,7 +4,7 @@ export const sentinel_1_bursts = {
   id: 'SENTINEL-1 BURSTS',
   name: 'S1 Bursts',
   subName: '',
-  beta: true,
+  beta: false,
   properties: [
     Props.DATE,
     Props.BEAM_MODE,
@@ -34,7 +34,7 @@ export const sentinel_1_bursts = {
     },
   ],
   beamModes: ['IW', 'EW'],
-  polarizations: ['VV', 'HH', 'HV', 'VH'],
+  polarizations: ['VV', 'VH', 'HH', 'HV'],
   subtypes: [
     {
       displayName: 'Sentinel-1A',

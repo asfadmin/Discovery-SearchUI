@@ -41,8 +41,7 @@ export class FullBurstSelectorComponent implements OnInit, OnDestroy {
         debounceTime(3.0),
         filter((ids) => ids !== null),
         map((ids) => {
-          const idsArray = ids.split(',').map((id) => id.trim());
-          return idsArray.filter((entry) => entry.length > 0);
+          return ids.split(/[\s,]+/).filter(Boolean);
         }),
         filter((ids) => ids !== this.fullBurstIDs),
       ).subscribe((ids) => this.updateIDs(ids)),
@@ -65,6 +64,6 @@ export class FullBurstSelectorComponent implements OnInit, OnDestroy {
   }
 
   private updateIDs(ids: string[]) {
-    this.store$.dispatch(new filtersStore.setFullBurst(ids));
+    this.store$.dispatch(new filtersStore.setFullBursts(ids));
   }
 }

@@ -118,6 +118,6 @@ export class UserDataService {
     return this.env.currentEnv.user_data;
   }
   public getUserInfoURL(baseUrl: string): string {
-    return `${baseUrl}/info/`;
+    return `${baseUrl}/info`;
   }
 }

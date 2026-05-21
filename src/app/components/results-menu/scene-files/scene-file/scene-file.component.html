@@ -81,7 +81,7 @@
         </mat-icon>
       }
       @if (loadingHyp3JobName === product.name) {
-        <fa-icon icon="spinner" [pulse]="true"></fa-icon>
+        <fa-icon icon="spinner" animation="spin-pulse"></fa-icon>
       }
       <mat-menu #customJobTypes="matMenu">
         @for (jobType of validHyp3JobTypes; track jobType) {
@@ -104,7 +104,9 @@
       <span>{{ 'VIRTUAL' | translate }}</span>
     }
     @if (isDownloadable(product) && product.bytes !== 0) {
-      <span>{{ product.bytes.toString() | readableSizeFromBytes }}</span>
+      <span>
+        {{ product.bytes.toString() | readableSizeFromBytes }}
+      </span>
     }
   </div>
 

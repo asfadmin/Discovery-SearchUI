@@ -58,6 +58,10 @@ export class ProductService {
       };
 
       product.metadata.subproducts = this.getSubproducts(product);
+      if (product.metadata?.opera) {
+        product.bytes =
+          product?.metadata?.opera?.bytes?.[product.file]?.bytes || 0;
+      }
 
       return product;
     });
@@ -241,7 +245,9 @@ export class ProductService {
     if (s3Index !== -1) {
       product.metadata.s3URI = product.metadata.opera.s3Urls[s3Index];
     }
-    product.browses = product.browses.filter((url) => !url.includes('low-res'));
+    product.browses = product.browses.filter(
+      (url) => !url.includes('low-res') && !url.startsWith('s3'),
+    );
 
     for (const p of product.metadata.opera.additionalUrls.filter(
       (url) => url !== product.downloadUrl,
@@ -293,6 +299,10 @@ export class ProductService {
         0,
         [],
       );
+
+      subproduct.bytes =
+        subproduct?.metadata?.opera?.bytes?.[subproduct.file]?.bytes || 0;
+
       products.push(subproduct);
     }
 

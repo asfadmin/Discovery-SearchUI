@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from 'e2e/fixtures';
 
 test('Add files to Download Queue', async ({ page }) => {
   await page.goto('/');
@@ -16,10 +16,24 @@ test('Add files to Download Queue', async ({ page }) => {
     .getByRole('button', { name: 'SEARCH' })
     .click();
   await page.locator('#mat-button-toggle-14-button').click();
-  await page
-    .getByRole('menuitem', { name: 'Add 41 Files to downloads' })
-    .click();
+
+  const addToDownloadsMenuItem = page.getByRole('menuitem', {
+    name: /Add \d+ Files to downloads/,
+  });
+  const menuText = (await addToDownloadsMenuItem.textContent()) ?? '';
+  const fileCount = Number(
+    menuText.match(/Add (\d+) Files to downloads/i)?.[1] ?? 0,
+  );
+
+  expect(fileCount).toBeGreaterThan(0);
+
+  await addToDownloadsMenuItem.click();
   await page.getByRole('button', { name: 'Downloads' }).click();
 
-  await expect(page.getByText('Files, 6.94 GB')).toContainText('41');
+  await expect(page.locator('.dl-subtitle')).toContainText(
+    `${fileCount} Files`,
+  );
+  await expect(
+    page.locator('.dl-mat-dialog-content mat-list-item'),
+  ).toHaveCount(fileCount);
 });
