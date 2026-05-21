@@ -225,6 +225,11 @@
           <b> {{ 'TILE_ID' | translate }}:</b> {{ tileID }}
         </span>
       }
+      @if(granuleList()) {
+        <span>
+          <b> {{'GRANULE_LIST' | translate }}:</b> {{ granuleListMinified() }} {{ 'GRANULES' | translate }}
+        </span>
+      }
     </div>
     <div class="last-info">
       <app-ci-search></app-ci-search>

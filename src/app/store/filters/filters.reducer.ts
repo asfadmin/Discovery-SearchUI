@@ -1189,6 +1189,7 @@ export const getGeographicSearch = createSelector(
     rangeBandwidth: state.rangeBandwidth,
     instrument: state.instrument,
     groupID: state.groupID,
+    granuleList: state.granuleList,
     tileID: state.tileID,
     ariaVersion: state.ariaVersion,
   }),

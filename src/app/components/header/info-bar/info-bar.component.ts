@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, computed } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
@@ -84,6 +84,10 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public selectedDatasetIsNISARFormat = false;
   public ariaVersion: string;
   public tileID: string;
+  public granuleList = this.store$.selectSignal(filtersStore.getGranuleList);
+  public granuleListMinified = computed(() => {
+    return this.granuleList().split(',').length;
+  });
 
   private subs = new SubSink();
 
