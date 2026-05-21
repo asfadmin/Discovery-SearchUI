@@ -1,5 +1,5 @@
 import { Component, effect, signal, inject } from '@angular/core';
-import { debounce, form, FormField } from '@angular/forms/signals';
+import { debounce, form, FormField, validate } from '@angular/forms/signals';
 import {
   MatError,
   MatFormField,
@@ -33,8 +33,20 @@ export class GranuleListSelectorComponent {
   granuleList = this.store$.selectSignal(filtersStore.getGranuleList);
   granuleListForm = form(this.granuleListModel, (schemaPath) => {
     debounce(schemaPath.list, 500);
-    // TODO: add validator for granule wildcard requirements. No leading char, no more than 4(or more?) granules
-    // Probably just a regex validator?
+    validate(schemaPath.list, ({ value }) => {
+      if (
+        value()
+          ?.split(',')
+          .filter((x) => x.trim().startsWith('*') || x.trim().startsWith('?'))
+          .length > 5 // CMR limits to five leading wildcards per search
+      ) {
+        return {
+          kind: 'invalid',
+          message: 'GRANULE_LIST_MAX_ERROR',
+        };
+      }
+      return null;
+    });
   });
   constructor() {
     effect(() => {

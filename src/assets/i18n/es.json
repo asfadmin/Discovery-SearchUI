@@ -459,6 +459,8 @@
   "GISMO": "GISMO",
   "GLACIER_SPEED": "Velocidad del Glaciar",
   "GLOBAL_SEASONAL_SENTINEL": "Conjunto de datos global de coherencia interferométrica y retrodispersión estacional de Sentinel-1",
+  "GRANULE_LIST": "Granule List",
+  "GRANULE_LIST_MAX_ERROR": "Granule list has a recommended maximum of 5 granules with leading wildcards per search",
   "GRATICULE_OVERLAY": "Superposición de Retícula",
   "GRAZING_ANGLE": "Ángulo Rasante",
   "GRIDLINES_OVERLAY": "Superposición de líneas de cuadrícula",
