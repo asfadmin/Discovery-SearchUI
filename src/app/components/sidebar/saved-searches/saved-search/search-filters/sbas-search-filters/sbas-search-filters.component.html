@@ -18,7 +18,9 @@
   }
   @if (filters.perpendicular !== null) {
     <div>
-      <b>{{ 'PERPENDICULAR' | translate }}: </b> {{ filters.perpendicular }}
+      <b>{{ 'PERPENDICULAR' | translate }}: </b>
+      {{ filters.perpendicular.start }} {{ 'TO' | translate }}
+      {{ filters.perpendicular.end }}
     </div>
   }
   @if (filters.season.start !== null || filters.season.end !== null) {
