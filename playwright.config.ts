@@ -51,6 +51,7 @@ export default defineConfig({
         timezoneId: 'America/New_York',
         bypassCSP: true,
       },
+      grepInvert: /@webgl/, // firefox has WebGL disabled in the github runner, for tests that use this skip
     },
 
     // {

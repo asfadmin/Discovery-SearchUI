@@ -9,7 +9,7 @@ test('Auto Search when max results changes', async ({ page }) => {
   await waitForASFAPIResponse(page);
   await page
     .locator('app-dataset-header')
-    .getByText('250arrow_drop_down')
+    .getByText('250 arrow_drop_down')
     .click();
 
   await page.getByRole('menuitem', { name: '500 Files' }).click();
