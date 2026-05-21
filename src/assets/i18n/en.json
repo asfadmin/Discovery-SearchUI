@@ -459,6 +459,7 @@
   "GISMO": "GISMO",
   "GLACIER_SPEED": "Glacier Speed",
   "GLOBAL_SEASONAL_SENTINEL": "Global Seasonal Sentinel-1 Interferometric Coherence & Backscatter Dataset",
+  "GRANULES": "Granules",
   "GRANULE_LIST": "Granule List",
   "GRANULE_LIST_MAX_ERROR": "Granule list has a recommended maximum of 5 granules with leading wildcards per search",
   "GRATICULE_OVERLAY": "Graticule Overlay",
