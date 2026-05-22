@@ -156,8 +156,17 @@
             (newHyp3Url)="onSetHyp3Url($event)"
           >
           </app-hyp3-url-selector>
+        } @else {
+          <mat-form-field class="hyp3-plus-url">
+            <mat-label>{{ 'HYP3_API_URL' | translate }}</mat-label>
+            <input
+              matInput
+              [value]="hyp3.apiUrl"
+              name="backendUrl"
+              [disabled]="true"
+            />
+          </mat-form-field>
         }
-
 
         @if (!this.env.isProd) {
           <mat-form-field class="default-map">
@@ -193,7 +202,7 @@
       <mat-icon>comment</mat-icon> {{ 'FEEDBACK' | translate }}</a
     >
   </div>
-  <div class="done-button">
+  <div class="done-button clickable">
     <button (click)="onClose()" color="primary" mat-flat-button>
       {{ 'DONE' | translate }}
     </button>

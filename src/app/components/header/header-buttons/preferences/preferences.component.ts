@@ -39,6 +39,8 @@ import { MatIcon } from '@angular/material/icon';
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import { FormsModule } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/input';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelect, MatOption } from '@angular/material/select';
 import { UpperCasePipe, TitleCasePipe } from '@angular/common';
 import { DatasetSelectorComponent } from '@components/shared/selectors/dataset-selector/dataset-selector.component';
@@ -58,6 +60,8 @@ import { MatButton } from '@angular/material/button';
     MatFormField,
     MatLabel,
     MatSelect,
+    MatInputModule,
+    MatFormFieldModule,
 
     MatOption,
     DatasetSelectorComponent,
@@ -72,12 +76,12 @@ import { MatButton } from '@angular/material/button';
 export class PreferencesComponent implements OnInit, OnDestroy {
   private dialogRef = inject<MatDialogRef<PreferencesComponent>>(MatDialogRef);
   private store$ = inject<Store<AppState>>(Store);
-  private hyp3 = inject(Hyp3ApiService);
   env = inject(services.EnvironmentService);
   private themeService = inject(ThemingService);
   translate = inject(TranslateService);
   language = inject(AsfLanguageService);
   private screenSize = inject(services.ScreenSizeService);
+  public hyp3 = inject(Hyp3ApiService);
 
   @Output() selectedChange = new EventEmitter<string>();
 
