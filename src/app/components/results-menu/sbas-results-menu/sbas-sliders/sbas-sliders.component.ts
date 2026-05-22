@@ -18,7 +18,7 @@ import * as filtersStore from '@store/filters';
 
 import { SubSink } from 'subsink';
 import * as models from '@models';
-declare let wNumb: any;
+import wNumb from 'wnumb';
 
 @Component({
   selector: 'app-sbas-sliders',

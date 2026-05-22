@@ -13,7 +13,7 @@ import { SubSink } from 'subsink';
 import * as models from '@models';
 import * as filterStore from '@store/filters';
 
-declare let wNumb: any;
+import wNumb from 'wnumb';
 
 import * as noUiSlider from 'nouislider';
 import { Observable, Subject } from 'rxjs';
