@@ -31,6 +31,18 @@ export class GranuleListSelectorComponent {
     list: '',
   });
   granuleList = this.store$.selectSignal(filtersStore.getGranuleList);
+
+  _storeUpdater = effect(() => {
+    this.store$.dispatch(
+      new filtersStore.setGranuleList(this.granuleListModel().list),
+    );
+  });
+  _formUpdater = effect(() => {
+    this.granuleListModel.set({
+      list: this.granuleList(),
+    });
+  });
+
   granuleListForm = form(this.granuleListModel, (schemaPath) => {
     debounce(schemaPath.list, 500);
     validate(schemaPath.list, ({ value }) => {
@@ -48,16 +60,4 @@ export class GranuleListSelectorComponent {
       return null;
     });
   });
-  constructor() {
-    effect(() => {
-      this.store$.dispatch(
-        new filtersStore.setGranuleList(this.granuleListModel().list),
-      );
-    });
-    effect(() => {
-      this.granuleListModel.set({
-        list: this.granuleList(),
-      });
-    });
-  }
 }
