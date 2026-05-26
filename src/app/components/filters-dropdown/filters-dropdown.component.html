@@ -87,7 +87,9 @@
             </app-max-results-selector>
           }
           <app-cancel-filter-changes></app-cancel-filter-changes>
-          <app-search-button></app-search-button>
+          <app-search-button
+            [ariaLabel]="'FILTERS_SEARCH_BUTTON' | translate"
+          ></app-search-button>
         </ng-container>
       </div>
     </div>

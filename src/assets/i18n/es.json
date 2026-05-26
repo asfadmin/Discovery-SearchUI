@@ -416,6 +416,7 @@
   "FILTER_PRESET_NAME": "Nombre del Filtro Preestablecido",
   "FILTER_SEARCHES": "Filtrar búsquedas",
   "FILTERS": "Filtros",
+  "FILTERS_SEARCH_BUTTON": "Boton de busqueda de filtros",
   "FILTERS_ALLOW_YOU_TUNE_YOUR_SEARCH_TO_RETURN_EXACTLY_WHAT_INTERESTS_YOU": "Los filtros le permiten ajustar su búsqueda para devolver exactamente lo que le interesa.",
   "FILTERS_DISMISSED_NOT_APPLIED": "Filtros descartados y no aplicados",
   "FIND_A_SUITABLE_FILE": "Encuentre un archivo adecuado",

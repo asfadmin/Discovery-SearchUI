@@ -16,10 +16,12 @@ test('Results Menu Export CSV', async ({ page }) => {
       'S1B_IW_SLC__1SDV_20210128T101605_20210128T101636_025353_030505_9FF1',
     );
 
-  await page
-    .locator('#mat-button-toggle-6-button')
-    .getByRole('button', { name: 'SEARCH' })
-    .click();
+  const footerSearchButton = page
+    .locator('app-filters-dropdown')
+    .getByRole('button', { name: 'Filters search button' });
+  await expect(footerSearchButton).toContainText('SEARCH');
+  await expect(footerSearchButton).toBeEnabled();
+  await footerSearchButton.click();
   await page.getByRole('radiogroup').filter({ hasText: 'get_app' }).click();
   await page.getByRole('menuitem', { name: 'Metadata' }).click();
   const downloadPromise = page.waitForEvent('download');
