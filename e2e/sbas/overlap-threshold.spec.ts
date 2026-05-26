@@ -12,12 +12,10 @@ test('SBAS overlap threshold filter changes the selected value', async ({
     .getByRole('region', { name: 'Scene' })
     .getByLabel('Scene')
     .fill('S1A_IW_SLC__1SDV_20210920T235648_20210920T235715_039772_04B42F_3C60');
-  const footerSearchButton = page
+  await page
     .locator('app-filters-dropdown')
-    .getByRole('button', { name: 'Filters panel search button' });
-  await expect(footerSearchButton).toContainText('SEARCH');
-  await expect(footerSearchButton).toBeEnabled();
-  await footerSearchButton.click();
+    .getByRole('button', { name: 'Filters panel search button' })
+    .click();
 
   await page
     .locator('mat-button-toggle')

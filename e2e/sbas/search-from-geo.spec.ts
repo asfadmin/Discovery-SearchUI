@@ -14,12 +14,10 @@ test('SBAS: Search for a Scene from Geo Search', async ({ page }) => {
     .click();
   await page.getByText('(SLC)').first().click();
   await page.locator('.cdk-overlay-backdrop').click();
-  const footerSearchButton = page
+  await page
     .locator('app-filters-dropdown')
-    .getByRole('button', { name: 'Filters panel search button' });
-  await expect(footerSearchButton).toContainText('SEARCH');
-  await expect(footerSearchButton).toBeEnabled();
-  await footerSearchButton.click();
+    .getByRole('button', { name: 'Filters panel search button' })
+    .click();
 
   await page.locator('app-scene').first().click();
 

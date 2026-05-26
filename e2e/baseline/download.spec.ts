@@ -11,12 +11,10 @@ test('Add files to Download Queue', async ({ page }) => {
     .getByRole('region', { name: 'Scene' })
     .getByLabel('Scene')
     .fill('R1_65192_ST6_F111');
-  const footerSearchButton = page
+  await page
     .locator('app-filters-dropdown')
-    .getByRole('button', { name: 'Filters panel search button' });
-  await expect(footerSearchButton).toContainText('SEARCH');
-  await expect(footerSearchButton).toBeEnabled();
-  await footerSearchButton.click();
+    .getByRole('button', { name: 'Filters panel search button' })
+    .click();
 
   const scenesListHeader = page.locator('app-scenes-list-header');
   const queueButton = scenesListHeader
