@@ -38,13 +38,14 @@ export const test = base.extend<{ loggedInPage: Page }>({
     });
     await page.route('**appdata**/info/cookie', async (route) => {
       const current_date = new Date();
-      const future_date = new Date(
-        // 20 days in the future
-        current_date.setDate(current_date.getDate() + 20),
-      ).getTime();
+      const future_date =
+        new Date(
+          // 20 days in the future
+          current_date.setDate(current_date.getDate() + 20),
+        ).getTime() / 1000;
       route.fulfill({
         body: JSON.stringify({
-          exp: 2978525424,
+          exp: future_date,
           // fake token with just expiration date in it
           'urs-access-token': `a.${btoa(
             JSON.stringify({
