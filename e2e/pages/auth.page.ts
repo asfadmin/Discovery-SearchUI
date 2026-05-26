@@ -37,12 +37,20 @@ export const test = base.extend<{ loggedInPage: Page }>({
       theme: 'light',
     });
     await page.route('**appdata**/info/cookie', async (route) => {
+      const current_date = new Date();
+      const future_date = new Date(
+        // 20 days in the future
+        current_date.setDate(current_date.getDate() + 20),
+      ).getTime();
       route.fulfill({
         body: JSON.stringify({
           exp: 2978525424,
           // fake token with just expiration date in it
-          'urs-access-token':
-            'eyJhbGciOiJub25lIn0.eyJzdWIiOiIxMjM0NTY3ODkwIiwiaWF0IjoxNzc4MDExOTc4LCJleHAiOjI5Nzg1MjU0MjR9.',
+          'urs-access-token': `a.${btoa(
+            JSON.stringify({
+              exp: future_date,
+            }),
+          )}`,
           'urs-groups': [],
           'urs-user-id': 'automatedtesting_fullaccess',
         }),
