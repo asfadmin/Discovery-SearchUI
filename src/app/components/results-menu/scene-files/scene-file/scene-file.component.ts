@@ -275,7 +275,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
         new filterStore.ClearDatasetFilters(),
         new filterStore.SetSelectedDataset(models.opera_s1.apiValue.dataset),
         new filterStore.SetProductTypes([productType]),
-        new filterStore.setOperaBurstID([operaburstid]),
+        new filterStore.setOperaBurstIDs([operaburstid]),
         new searchStore.MakeSearch(),
       ].forEach((action) => this.store$.dispatch(action));
     }
