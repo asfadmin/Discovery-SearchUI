@@ -12,12 +12,12 @@ test('SBAS: Download All Pairs', async ({ page }) => {
     .fill(
       'S1A_IW_SLC__1SDV_20200710T150225_20200710T150252_033394_03DE82_92BB',
     );
-
-  await page
-    .locator('app-baseline-header')
-    .locator('app-search-button')
-    .getByRole('button', { name: 'SEARCH' })
-    .click();
+  const footerSearchButton = page
+    .locator('app-filters-dropdown')
+    .getByRole('button', { name: 'Filters panel search button' });
+  await expect(footerSearchButton).toContainText('SEARCH');
+  await expect(footerSearchButton).toBeEnabled();
+  await footerSearchButton.click();
 
   const sbasFiltersButton = page
     .locator('mat-button-toggle')

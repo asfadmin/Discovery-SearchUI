@@ -19,15 +19,19 @@ test('SBAS: Cancel restores filter changes after editing start date', async ({
     );
 
   const initialSearch = waitForASFAPIResponse(page);
-  const headerSearchButton = page
-    .locator('app-baseline-header')
-    .locator('app-search-button')
-    .getByRole('button', { name: 'SEARCH' });
-  await headerSearchButton.focus();
-  await page.keyboard.press('Enter');
+  const footerSearchButton = page
+    .locator('app-filters-dropdown')
+    .getByRole('button', { name: 'Filters panel search button' });
+  await expect(footerSearchButton).toContainText('SEARCH');
+  await expect(footerSearchButton).toBeEnabled();
+  await footerSearchButton.click();
   await initialSearch;
 
-  await page.getByRole('button', { name: 'SBAS Filters', exact: true }).click();
+  const sbasFiltersButton = page
+    .locator('mat-button-toggle')
+    .filter({ hasText: 'SBAS Filters' });
+  await expect(sbasFiltersButton).toBeVisible();
+  await sbasFiltersButton.click();
 
   const startDate = page
     .locator('app-sbas-filters')
@@ -41,6 +45,6 @@ test('SBAS: Cancel restores filter changes after editing start date', async ({
     .getByRole('button', { name: 'Cancel' })
     .click();
 
-  await page.getByRole('button', { name: 'SBAS Filters', exact: true }).click();
+  await sbasFiltersButton.click();
   await expect(startDate).toHaveValue('');
 });

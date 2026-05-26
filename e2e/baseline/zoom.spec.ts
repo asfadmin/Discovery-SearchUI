@@ -18,10 +18,12 @@ test('Baseline zoom to results', async ({ page }) => {
     .fill(
       'S1B_IW_SLC__1SDV_20210128T101605_20210128T101636_025353_030505_9FF1',
     );
-  await page
-    .locator('#mat-button-toggle-6-button')
-    .getByRole('button', { name: 'SEARCH' })
-    .click();
+  const footerSearchButton = page
+    .locator('app-filters-dropdown')
+    .getByRole('button', { name: 'Filters panel search button' });
+  await expect(footerSearchButton).toContainText('SEARCH');
+  await expect(footerSearchButton).toBeEnabled();
+  await footerSearchButton.click();
 
   const urlBeforeZoom = page.url();
 

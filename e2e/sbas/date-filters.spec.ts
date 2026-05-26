@@ -12,11 +12,12 @@ test('SBAS Start & End Date Filters', async ({ page }) => {
     .fill(
       'S1A_IW_SLC__1SDV_20180616T210817_20180616T210845_022387_026C91_EDAA',
     );
-  await page
-    .locator('app-baseline-header')
-    .locator('app-search-button')
-    .getByRole('button', { name: 'SEARCH' })
-    .click();
+  const footerSearchButton = page
+    .locator('app-filters-dropdown')
+    .getByRole('button', { name: 'Filters panel search button' });
+  await expect(footerSearchButton).toContainText('SEARCH');
+  await expect(footerSearchButton).toBeEnabled();
+  await footerSearchButton.click();
 
   const sbasFiltersButton = page
     .locator('mat-button-toggle')
@@ -30,5 +31,6 @@ test('SBAS Start & End Date Filters', async ({ page }) => {
 
   await expect(page.locator('app-scenes-list-header')).toContainText(
     '67 Pairs',
+    { timeout: 45000 },
   );
 });

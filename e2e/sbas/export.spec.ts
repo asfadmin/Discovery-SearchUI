@@ -14,11 +14,12 @@ test('SBAS Download Pair CSV', async ({ page }) => {
     .fill(
       'S1B_WV_SLC__1SSV_20200720T132328_20200720T135106_022555_02ACF6_F823',
     );
-  await page
-    .locator('app-baseline-header')
-    .locator('app-search-button')
-    .getByRole('button', { name: 'SEARCH' })
-    .click();
+  const footerSearchButton = page
+    .locator('app-filters-dropdown')
+    .getByRole('button', { name: 'Filters panel search button' });
+  await expect(footerSearchButton).toContainText('SEARCH');
+  await expect(footerSearchButton).toBeEnabled();
+  await footerSearchButton.click();
   const downloadPromise = page.waitForEvent('download');
   await page.getByRole('radiogroup').filter({ hasText: 'get_app' }).click();
   const download = await downloadPromise;
