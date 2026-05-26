@@ -42,7 +42,7 @@ export const test = base.extend<{ loggedInPage: Page }>({
         new Date(
           // 20 days in the future
           current_date.setDate(current_date.getDate() + 20),
-        ).getTime() * 1000;
+        ).getTime() / 1000;
       route.fulfill({
         body: JSON.stringify({
           exp: future_date,
