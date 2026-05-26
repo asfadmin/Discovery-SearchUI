@@ -18,7 +18,7 @@ test('Results Menu Export CSV', async ({ page }) => {
 
   const footerSearchButton = page
     .locator('app-filters-dropdown')
-    .getByRole('button', { name: 'Filters search button' });
+    .getByRole('button', { name: 'Filters panel search button' });
   await expect(footerSearchButton).toContainText('SEARCH');
   await expect(footerSearchButton).toBeEnabled();
   await footerSearchButton.click();
