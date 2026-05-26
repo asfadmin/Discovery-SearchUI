@@ -1,6 +1,14 @@
 import { test, expect } from 'e2e/fixtures';
 
 test('SBAS Manually Add Point', async ({ page }) => {
+  const readPairCount = async () => {
+    const headerText = await page.locator('app-scenes-list-header').innerText();
+    return Number.parseInt(
+      headerText.match(/(\d+)\s+Pairs?/i)?.[1] || '0',
+      10,
+    );
+  };
+
   await page.goto('/');
   await page.getByRole('button', { name: 'Geographic Search' }).click();
   await page
@@ -13,25 +21,29 @@ test('SBAS Manually Add Point', async ({ page }) => {
     .fill(
       'S1B_WV_SLC__1SSV_20200720T132328_20200720T135106_022555_02ACF6_F823',
     );
+  const footerSearchButton = page
+    .locator('app-filters-dropdown')
+    .getByRole('button', { name: 'Filters panel search button' });
+  await expect(footerSearchButton).toContainText('SEARCH');
+  await expect(footerSearchButton).toBeEnabled();
+  await footerSearchButton.click();
+
+  const scenesListHeader = page.locator('app-scenes-list-header');
+  await expect(scenesListHeader).toContainText(/\d+\s+Pairs?/i);
+  await expect.poll(async () => readPairCount()).toBeGreaterThan(0);
+  const initialPairCount = await readPairCount();
+
   await page
-    .locator('app-baseline-header')
-    .locator('app-search-button')
-    .getByRole('button', { name: 'SEARCH' })
-    .click();
-  await page
-    .getByText('add_circlestop_circleremove_circle')
-    .getByText('add_circle')
+    .locator('.sbas-ribbon-group .control-mat-button-toggle')
+    .first()
     .click();
   await page.waitForTimeout(500);
   await page.locator('circle').nth(3).click();
   await page.locator('circle:nth-child(26)').click({ force: true });
-  await page.waitForTimeout(500);
-
-  await page
-    .locator('cdk-virtual-scroll-viewport')
-    .evaluate((e) => (e.scrollTop += 10000));
-
+  await expect
+    .poll(async () => readPairCount())
+    .toBe(initialPairCount + 1);
   await expect(page.locator('cdk-virtual-scroll-viewport')).toContainText(
-    'Jan 13 2017 to May 08',
+    /\w{3}\s+\d{2}\s+\d{4}\s+to\s+\w{3}\s+\d{2}/,
   );
 });

@@ -9,17 +9,17 @@ test('SBAS: Search for a Scene from Geo Search', async ({ page }) => {
     .getByLabel('Area of Interest • WKT')
     .fill('POINT(-166.6953 53.8476)');
   await page
-    .locator('div')
-    .filter({ hasText: /^File Type$/ })
-    .first()
+    .locator('app-filters-dropdown')
+    .getByRole('combobox', { name: 'File Type' })
     .click();
   await page.getByText('(SLC)').first().click();
   await page.locator('.cdk-overlay-backdrop').click();
-  await page
-    .locator('app-baseline-header')
-    .locator('app-search-button')
-    .getByRole('button', { name: 'SEARCH' })
-    .click();
+  const footerSearchButton = page
+    .locator('app-filters-dropdown')
+    .getByRole('button', { name: 'Filters panel search button' });
+  await expect(footerSearchButton).toContainText('SEARCH');
+  await expect(footerSearchButton).toBeEnabled();
+  await footerSearchButton.click();
 
   await page.locator('app-scene').first().click();
 
