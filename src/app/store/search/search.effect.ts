@@ -69,6 +69,7 @@ import Geometry from 'ol/geom/Geometry';
 import { FiltersActionType } from '@store/filters';
 import { getIsFiltersMenuOpen, getIsResultsMenuOpen } from '@store/ui';
 import * as searchStore from '@store/search';
+
 @Injectable()
 export class SearchEffects {
   private actions$ = inject(Actions);
@@ -186,7 +187,12 @@ export class SearchEffects {
       ofType(SearchActionType.MAKE_SEARCH),
       withLatestFrom(this.store$.select(getSearchType)),
       switchMap(([_, searchType]) => {
-        let searchRequest$: Observable<any>;
+        let searchRequest$: Observable<
+          | SearchResponse
+          | SarviewsEventsResponse
+          | TimeseriesSearchResponse
+          | Action<string>
+        >;
 
         if (searchType === SearchType.SARVIEWS_EVENTS) {
           searchRequest$ = this.sarviewsEventsQuery$();
@@ -206,21 +212,18 @@ export class SearchEffects {
         }
 
         return searchRequest$.pipe(
-          catchError(
-            (err: HttpErrorResponse) => {
-              const errorMsg = err?.error?.error?.report;
-              if (errorMsg) {
-                return of(new SearchError(errorMsg));
-              }
-              if (err.status !== 400) {
-                return of(new SearchError('Unknown Error'));
-              }
-
-              return of(new SearchError('Error loading search results'));
+          catchError((err: HttpErrorResponse) => {
+            const errorMsg = err?.error?.error?.report;
+            if (errorMsg) {
+              return of(new SearchError(errorMsg));
+            }
+            if (err.status !== 400) {
+              return of(new SearchError('Unknown Error'));
             }
 
-          )
-        )
+            return of(new SearchError('Error loading search results'));
+          }),
+        );
       }),
     ),
   );
