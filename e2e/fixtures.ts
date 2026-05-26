@@ -6,6 +6,12 @@ const EXTERNAL_ASSET_PATTERN = /\.(png|jpg|jpeg|pbf|webp|gif)(\?.*)?$/;
 
 export const test = base.extend({
   page: async ({ page }, use) => {
+    await page.route('**/*/tiles**', (route) => {
+      route.fulfill({
+        status: 200,
+        path: 'e2e/assets/test_tile.png',
+      });
+    });
     await page.route('**/*/services/utils/mission_list**', (route) =>
       route.fulfill({
         status: 200,

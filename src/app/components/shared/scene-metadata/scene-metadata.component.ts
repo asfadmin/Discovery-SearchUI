@@ -199,13 +199,27 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
 
   public setFullBurst(): void {
     this.store$.dispatch(
-      new filtersStore.setFullBurst([this.scene.metadata.burst.fullBurstID]),
+      new filtersStore.setFullBursts([this.scene.metadata.burst.fullBurstID]),
     );
   }
 
   public setOperaBurst(): void {
     this.store$.dispatch(
-      new filtersStore.setOperaBurstID([
+      new filtersStore.setOperaBurstIDs([
+        this.scene.metadata.opera.operaBurstID,
+      ]),
+    );
+  }
+
+  public addFullBurst(): void {
+    this.store$.dispatch(
+      new filtersStore.addFullBursts([this.scene.metadata.burst.fullBurstID]),
+    );
+  }
+
+  public addOperaBurst(): void {
+    this.store$.dispatch(
+      new filtersStore.addOperaBurstIDs([
         this.scene.metadata.opera.operaBurstID,
       ]),
     );

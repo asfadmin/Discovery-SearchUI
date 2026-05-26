@@ -39,7 +39,7 @@ import {
 } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
 
-declare let wNumb: any;
+import wNumb from 'wnumb';
 
 @Component({
   selector: 'app-sbas-sliders-two',
