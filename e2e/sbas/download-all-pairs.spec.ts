@@ -14,7 +14,8 @@ test('SBAS: Download All Pairs', async ({ page }) => {
     );
 
   await page
-    .getByText('Cancel SEARCH arrow_drop_down')
+    .locator('app-baseline-header')
+    .locator('app-search-button')
     .getByRole('button', { name: 'SEARCH' })
     .click();
 
