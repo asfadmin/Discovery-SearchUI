@@ -13,19 +13,24 @@ test('Baseline Start & End Date Filters', async ({ page }) => {
     .fill(
       'S1A_IW_SLC__1SDV_20180616T210817_20180616T210845_022387_026C91_EDAA',
     );
-  await page
-    .locator('#mat-button-toggle-6-button')
-    .getByRole('button', { name: 'SEARCH' })
-    .click();
-  await page.getByRole('radio', { name: 'Baseline Criteria' }).click();
+  const footerSearchButton = page
+    .locator('app-filters-dropdown')
+    .getByRole('button', { name: 'Filters panel search button' });
+  await expect(footerSearchButton).toContainText('SEARCH');
+  await expect(footerSearchButton).toBeEnabled();
+  await footerSearchButton.click();
+  const baselineCriteriaButton = page
+    .locator('mat-button-toggle')
+    .filter({ hasText: 'Baseline Criteria' });
+  await expect(baselineCriteriaButton).toBeVisible();
+  await baselineCriteriaButton.click();
   await page.getByText('Start Date').click();
   await page.getByRole('textbox', { name: 'Start Date' }).fill('9/1/2018');
   await page.getByText('End Date').click();
   await page.getByRole('textbox', { name: 'End Date' }).fill('1/1/21');
-  await page
-    .locator('#mat-button-toggle-6-button')
-    .getByRole('button', { name: 'SEARCH' })
-    .click();
+  await expect(footerSearchButton).toContainText('SEARCH');
+  await expect(footerSearchButton).toBeEnabled();
+  await footerSearchButton.click();
   await expect(page.locator('app-scenes-list-header')).toContainText('72 of');
 });
 
@@ -41,10 +46,12 @@ test('Select a different reference scene', async ({ page }) => {
     .getByRole('region', { name: 'Scene' })
     .getByLabel('Scene')
     .fill('S1_049134_IW2_20230821T073937_VV_4A4C-BURST');
-  await page
-    .locator('#mat-button-toggle-6-button')
-    .getByRole('button', { name: 'SEARCH' })
-    .click();
+  const footerSearchButton = page
+    .locator('app-filters-dropdown')
+    .getByRole('button', { name: 'Filters panel search button' });
+  await expect(footerSearchButton).toContainText('SEARCH');
+  await expect(footerSearchButton).toBeEnabled();
+  await footerSearchButton.click();
 
   await page
     .getByRole('button', {

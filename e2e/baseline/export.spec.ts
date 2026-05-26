@@ -15,7 +15,6 @@ test('Results Menu Export CSV', async ({ page }) => {
     .fill(
       'S1B_IW_SLC__1SDV_20210128T101605_20210128T101636_025353_030505_9FF1',
     );
-
   const footerSearchButton = page
     .locator('app-filters-dropdown')
     .getByRole('button', { name: 'Filters panel search button' });
@@ -23,9 +22,13 @@ test('Results Menu Export CSV', async ({ page }) => {
   await expect(footerSearchButton).toBeEnabled();
   await footerSearchButton.click();
   await page.getByRole('radiogroup').filter({ hasText: 'get_app' }).click();
-  await page.getByRole('menuitem', { name: 'Metadata' }).click();
+  const metadataMenuItem = page.getByRole('menuitem', { name: 'Metadata' });
+  await expect(metadataMenuItem).toBeVisible();
+  await metadataMenuItem.click();
+  const csvMenuItem = page.getByRole('menuitem', { name: 'csv' });
+  await expect(csvMenuItem).toBeVisible();
   const downloadPromise = page.waitForEvent('download');
-  await page.getByRole('menuitem', { name: 'csv' }).click();
+  await csvMenuItem.click();
   const download = await downloadPromise;
   const path = await download.path();
 
