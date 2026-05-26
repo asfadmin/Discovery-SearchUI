@@ -29,8 +29,5 @@ test('SBAS Start & End Date Filters', async ({ page }) => {
   await page.getByRole('textbox', { name: 'End Date' }).fill('11/1/2020');
   await page.keyboard.press('Tab');
 
-  await expect(page.locator('app-scenes-list-header')).toContainText(
-    '67 Pairs',
-    { timeout: 45000 },
-  );
+  await expect(page.locator('app-scenes-list-header')).toContainText('67 Pairs');
 });
