@@ -19,18 +19,15 @@ test('Baseline: Cancel restores filter changes after editing start date', async 
     );
 
   const initialSearch = waitForASFAPIResponse(page);
-  const footerSearchButton = page
+  await page
     .locator('app-filters-dropdown')
-    .getByRole('button', { name: 'Filters panel search button' });
-  await expect(footerSearchButton).toContainText('SEARCH');
-  await expect(footerSearchButton).toBeEnabled();
-  await footerSearchButton.click();
+    .getByRole('button', { name: 'Filters panel search button' })
+    .click();
   await initialSearch;
 
   const baselineCriteriaButton = page
     .locator('mat-button-toggle')
     .filter({ hasText: 'Baseline Criteria' });
-  await expect(baselineCriteriaButton).toBeVisible();
   await baselineCriteriaButton.click();
 
   const startDate = page

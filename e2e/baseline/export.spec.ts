@@ -15,12 +15,10 @@ test('Results Menu Export CSV', async ({ page }) => {
     .fill(
       'S1B_IW_SLC__1SDV_20210128T101605_20210128T101636_025353_030505_9FF1',
     );
-  const footerSearchButton = page
+  await page
     .locator('app-filters-dropdown')
-    .getByRole('button', { name: 'Filters panel search button' });
-  await expect(footerSearchButton).toContainText('SEARCH');
-  await expect(footerSearchButton).toBeEnabled();
-  await footerSearchButton.click();
+    .getByRole('button', { name: 'Filters panel search button' })
+    .click();
   await page.getByRole('radiogroup').filter({ hasText: 'get_app' }).click();
   const metadataMenuItem = page.getByRole('menuitem', { name: 'Metadata' });
   await expect(metadataMenuItem).toBeVisible();

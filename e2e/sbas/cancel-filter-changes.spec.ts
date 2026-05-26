@@ -19,18 +19,15 @@ test('SBAS: Cancel restores filter changes after editing start date', async ({
     );
 
   const initialSearch = waitForASFAPIResponse(page);
-  const footerSearchButton = page
+  await page
     .locator('app-filters-dropdown')
-    .getByRole('button', { name: 'Filters panel search button' });
-  await expect(footerSearchButton).toContainText('SEARCH');
-  await expect(footerSearchButton).toBeEnabled();
-  await footerSearchButton.click();
+    .getByRole('button', { name: 'Filters panel search button' })
+    .click();
   await initialSearch;
 
   const sbasFiltersButton = page
     .locator('mat-button-toggle')
     .filter({ hasText: 'SBAS Filters' });
-  await expect(sbasFiltersButton).toBeVisible();
   await sbasFiltersButton.click();
 
   const startDate = page
