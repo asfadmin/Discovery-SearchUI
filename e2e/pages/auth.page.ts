@@ -42,7 +42,7 @@ export const test = base.extend<{ loggedInPage: Page }>({
           exp: 2978525424,
           // fake token with just expiration date in it
           'urs-access-token':
-            'eyJhbGciOiJub25lIn0.eyJzdWIiOiIxMjM0NTY3ODkwIiwiaWF0IjoxNzc4MDExOTc4LCJleHAiOjk5OTk5OTk5OTl9.',
+            'eyJhbGciOiJub25lIn0.eyJzdWIiOiIxMjM0NTY3ODkwIiwiaWF0IjoxNzc4MDExOTc4LCJleHAiOjI5Nzg1MjU0MjR9.',
           'urs-groups': [],
           'urs-user-id': 'automatedtesting_fullaccess',
         }),
