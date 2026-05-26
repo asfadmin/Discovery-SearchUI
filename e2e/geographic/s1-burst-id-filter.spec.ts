@@ -11,7 +11,8 @@ test('S1 Burst ID filter returns matching results', async ({ page }) => {
 
   const responsePromise = waitForASFAPIResponse(page);
   await page
-    .locator('#mat-button-toggle-6-button')
+    .locator('app-filters-dropdown')
+    .locator('app-search-button')
     .getByRole('button', { name: 'SEARCH' })
     .click();
   await responsePromise;

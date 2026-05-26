@@ -6,15 +6,22 @@ test('Anti-Meridian Granules', async ({ page }) => {
   await page
     .getByRole('menuitem', { name: 'ALOS AVNIR-2 Advanced Visible' })
     .click();
-  const dateFilters = page.getByRole('region', {
-    name: 'Date Filters Documentation',
-  });
-
-  await dateFilters.getByRole('textbox', { name: 'Start Date' }).fill('4/30/2010');
-  await dateFilters.getByRole('textbox', { name: 'End Date' }).fill('7/3/2010');
   await page
-    .locator('app-dataset-header')
-    .locator('app-search-button')
+    .locator('div')
+    .filter({ hasText: 'Search Type Geographic Search' })
+    .getByText('Start Date')
+    .nth(0)
+    .click();
+  await page.locator('#mat-input-10').fill('4/30/2010');
+  await page
+    .locator('div')
+    .filter({ hasText: 'Search Type Geographic Search' })
+    .getByText('End Date')
+    .nth(0)
+    .click();
+  await page.locator('#mat-input-11').fill('7/3/2010');
+  await page
+    .locator('#mat-button-toggle-8-button')
     .getByRole('button', { name: 'SEARCH' })
     .click();
   await page

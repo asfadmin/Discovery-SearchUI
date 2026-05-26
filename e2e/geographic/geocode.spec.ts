@@ -25,7 +25,8 @@ test('Place name is geocoded to WKT AOI and returns search results', async ({
 
   const responsePromise = waitForASFAPIResponse(page);
   await page
-    .locator('#mat-button-toggle-8-button')
+    .locator('app-dataset-header')
+    .locator('app-search-button')
     .getByRole('button', { name: 'SEARCH' })
     .click();
   await responsePromise;
@@ -88,7 +89,8 @@ test('Geocoded place name is cleared when AOI is manually updated', async ({
 
   const responsePromise = waitForASFAPIResponse(page);
   await page
-    .locator('#mat-button-toggle-8-button')
+    .locator('app-dataset-header')
+    .locator('app-search-button')
     .getByRole('button', { name: 'SEARCH' })
     .click();
   await responsePromise;
