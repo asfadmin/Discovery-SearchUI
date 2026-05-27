@@ -12,7 +12,9 @@ test('SBAS: Search for a Scene from Geo Search', async ({ page }) => {
     .locator('app-filters-dropdown')
     .getByRole('combobox', { name: 'File Type' })
     .click();
-  await page.getByText('(SLC)').first().click();
+  await page
+    .getByRole('option', { name: 'L1 Single Look Complex (SLC)' })
+    .click();
   await page.locator('.cdk-overlay-backdrop').click();
   await page
     .locator('app-filters-dropdown')
