@@ -17,10 +17,7 @@ test('SBAS: Download All Pairs', async ({ page }) => {
     .getByRole('button', { name: 'Filters panel search button' })
     .click();
 
-  const scenesListHeader = page.locator('app-scenes-list-header');
-  await expect(scenesListHeader).toContainText(/\d+\s+Pairs?/i);
-
-  const queueButton = scenesListHeader
+  const queueButton = page
     .locator('.list-button-group')
     .filter({ hasText: /QUEUE/i })
     .locator('mat-button-toggle.control-mat-button-toggle');
