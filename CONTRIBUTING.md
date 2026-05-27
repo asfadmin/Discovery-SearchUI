@@ -79,6 +79,29 @@ All must pass.
 
 ---
 
+## E2E Test Rules (Important)
+
+- Prefer the clearest user-facing locator available:
+  - `getByRole(...)`
+  - `getByLabel(...)`
+  - `getByPlaceholder(...)`
+- Do not use generated Material selectors such as:
+  - `#mat-button-toggle-*`
+  - `#mat-input-*`
+  - `#mat-select-value-*`
+  - `#mat-mdc-*`
+- Avoid fragile positional locators such as `.first()` and `.nth()` when a stable accessible locator is available.
+- Do not replace a clear locator with a more indirect or harder-to-read one just to make it look more uniform.
+- Do not add duplicate visibility checks immediately before `.click()` when the click already requires the element to be visible, enabled, and stable.
+- Only keep an explicit `expect(...).toBeVisible()` before a click when it adds distinct value, such as a clearer failure message or a separate assertion.
+- Reuse locator variables only when they are used more than once or clearly improve readability.
+- Prefer validating the real result of a flow over only checking that a container exists or is visible.
+- If a test no longer provides meaningful coverage, consider removing it instead of keeping low-value maintenance cost.
+
+These rules should be treated as high-priority review checks for any E2E refactor or new Playwright test.
+
+---
+
 ## Commit Style
 
 Use descriptive commit messages. [Conventional Commit](https://www.conventionalcommits.org/en/v1.0.0/) style is preferred:
