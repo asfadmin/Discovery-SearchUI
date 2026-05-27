@@ -17,9 +17,9 @@ test('Baseline Start & End Date Filters', async ({ page }) => {
     .locator('app-filters-dropdown')
     .getByRole('button', { name: 'Filters panel search button' })
     .click();
-  const baselineCriteriaButton = page
-    .locator('mat-button-toggle')
-    .filter({ hasText: 'Baseline Criteria' });
+  const baselineCriteriaButton = page.getByRole('radio', {
+    name: 'Baseline Criteria',
+  });
   await baselineCriteriaButton.click();
   await page.getByText('Start Date').click();
   await page.getByRole('textbox', { name: 'Start Date' }).fill('9/1/2018');

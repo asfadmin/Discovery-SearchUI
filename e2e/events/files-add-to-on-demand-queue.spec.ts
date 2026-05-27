@@ -39,9 +39,7 @@ test('Files: Add to On Demand Queue', async ({ page }) => {
     name: /Add 1 .* (Pair|Job)/i,
   });
 
-  await expect(insarGammaMenuItem).toBeVisible();
   await insarGammaMenuItem.click();
-  await expect(addJobMenuItem).toBeVisible();
   await addJobMenuItem.click();
 
   await page.getByRole('button', { name: 'ON DEMAND' }).click();

@@ -17,10 +17,6 @@ test('SBAS: Download All Pairs', async ({ page }) => {
     .getByRole('button', { name: 'Filters panel search button' })
     .click();
 
-  const sbasFiltersButton = page
-    .locator('mat-button-toggle')
-    .filter({ hasText: 'SBAS Filters' });
-
   const scenesListHeader = page.locator('app-scenes-list-header');
   await expect(scenesListHeader).toContainText(/\d+\s+Pairs?/i);
 
@@ -28,7 +24,6 @@ test('SBAS: Download All Pairs', async ({ page }) => {
     .locator('.list-button-group')
     .filter({ hasText: /QUEUE/i })
     .locator('mat-button-toggle.control-mat-button-toggle');
-  await expect(queueButton).toBeVisible();
   await queueButton.click();
 
   const addMenuItem = page.getByRole('menuitem', {

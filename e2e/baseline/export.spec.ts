@@ -21,10 +21,8 @@ test('Results Menu Export CSV', async ({ page }) => {
     .click();
   await page.getByRole('radiogroup').filter({ hasText: 'get_app' }).click();
   const metadataMenuItem = page.getByRole('menuitem', { name: 'Metadata' });
-  await expect(metadataMenuItem).toBeVisible();
   await metadataMenuItem.click();
   const csvMenuItem = page.getByRole('menuitem', { name: 'csv' });
-  await expect(csvMenuItem).toBeVisible();
   const downloadPromise = page.waitForEvent('download');
   await csvMenuItem.click();
   const download = await downloadPromise;

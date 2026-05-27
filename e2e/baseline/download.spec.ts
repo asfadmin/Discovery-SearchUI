@@ -21,7 +21,6 @@ test('Add files to Download Queue', async ({ page }) => {
     .locator('.list-button-group')
     .filter({ hasText: /QUEUE/i })
     .locator('mat-button-toggle.control-mat-button-toggle');
-  await expect(queueButton).toBeVisible();
   await queueButton.click();
 
   const addToDownloadsMenuItem = page.getByRole('menuitem', {

@@ -25,9 +25,9 @@ test('Baseline: Cancel restores filter changes after editing start date', async 
     .click();
   await initialSearch;
 
-  const baselineCriteriaButton = page
-    .locator('mat-button-toggle')
-    .filter({ hasText: 'Baseline Criteria' });
+  const baselineCriteriaButton = page.getByRole('radio', {
+    name: 'Baseline Criteria',
+  });
   await baselineCriteriaButton.click();
 
   const startDate = page
