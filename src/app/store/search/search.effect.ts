@@ -416,7 +416,6 @@ export class SearchEffects {
                 thumbnail: 'string',
                 dataset: 'sentinel-1',
                 groupId: 'string',
-                isUnzippedFile: false,
                 isDummyProduct: false,
                 metadata: {
                   date: moment2(),
