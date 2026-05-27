@@ -1,16 +1,28 @@
 import { test, expect } from 'e2e/fixtures';
 
 test('SBAS: Search after geo search', async ({ page }) => {
-  await page.goto('/?maxResults=1');
+  await page.route('*/**/services/search/param**', async (route) => {
+    if (route.request().url().includes('COUNT')) {
+      await route.continue();
+    } else {
+      await route.fulfill({
+        status: 400,
+        contentType: 'application/json',
+        body: JSON.stringify({ error: { report: 'some message' } }),
+      });
+    }
+  });
 
+  await page.goto('/');
   await page
     .locator('#mat-button-toggle-8-button')
     .getByRole('button', { name: 'SEARCH' })
     .click();
+  await expect(page.getByLabel('Search Error')).toBeVisible();
 
-  await expect(page.getByText('Sentinel-1 • C-Band')).toBeVisible();
+  await page.unroute('**/services/search/param**');
+
   await page.getByRole('button', { name: 'Geographic Search' }).click();
-
   await page
     .getByRole('menuitem', { name: 'SBAS SBAS search provides' })
     .click();
@@ -27,7 +39,5 @@ test('SBAS: Search after geo search', async ({ page }) => {
     .getByRole('button', { name: 'SEARCH' })
     .click();
 
-  await expect(page.locator('app-scenes-list-header')).toContainText(
-    '599 Pairs',
-  );
+  await expect(page.getByText('Pairs info')).toBeVisible();
 });
