@@ -1,5 +1,7 @@
 import { test, expect } from 'e2e/fixtures';
 
+test.use({ viewport: { width: 1600, height: 1200 } });
+
 test('Button to clear path/frame', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
@@ -59,7 +61,11 @@ test('Button to restore path/frame', async ({ page }) => {
   await expect(aoiValue).toContain(
     'LINESTRING(-75.6738 34.5247,-80.8594 30.7513,-79.7168 25.7999)',
   );
-  await page.locator('#mat-button-toggle-7-button').click();
+  const searchActionsButton = page
+    .locator('app-dataset-header')
+    .locator('app-search-button')
+    .locator('.arrow-button-toggle');
+  await searchActionsButton.dispatchEvent('click');
   await page.getByRole('menuitem', { name: 'Clear Search' }).click();
   await page
     .getByRole('region', { name: 'Area of Interest Options' })
