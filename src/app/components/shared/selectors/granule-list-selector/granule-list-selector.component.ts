@@ -32,25 +32,28 @@ export class GranuleListSelectorComponent {
   });
   granuleList = this.store$.selectSignal(filtersStore.getGranuleList);
 
-  _formUpdater = effect(() => {
-    this.granuleListModel.set({
-      list: this.granuleList(),
+  constructor() {
+    effect(() => {
+      this.granuleListModel.set({
+        list: this.granuleList(),
+      });
     });
-  });
-  _storeUpdater = effect(() => {
-    this.store$.dispatch(
-      new filtersStore.setGranuleList(this.granuleListModel().list),
-    );
-  });
+    effect(() => {
+      this.store$.dispatch(
+        new filtersStore.setGranuleList(this.granuleListModel().list),
+      );
+    });
+  }
 
   granuleListForm = form(this.granuleListModel, (schemaPath) => {
     debounce(schemaPath.list, 500);
     validate(schemaPath.list, ({ value }) => {
+      const CMRLeadingWildcardLimit = 5;
       if (
         value()
           ?.split(',')
           .filter((x) => x.trim().startsWith('*') || x.trim().startsWith('?'))
-          .length > 5 // CMR limits to five leading wildcards per search
+          .length > CMRLeadingWildcardLimit
       ) {
         return {
           kind: 'invalid',
