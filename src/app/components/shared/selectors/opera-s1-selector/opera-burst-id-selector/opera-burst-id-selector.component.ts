@@ -32,8 +32,7 @@ export class OperaBurstIdSelectorComponent implements OnInit, OnDestroy {
         debounceTime(3.0),
         filter((ids) => ids !== null),
         map((ids) => {
-          const idsArray = ids.split(',').map((id) => id.trim());
-          return idsArray.filter((entry) => entry.length > 0);
+          return ids.split(/[\s,]+/).filter(Boolean);
         }),
         filter((ids) => ids !== this.operaBurstIDs),
       ).subscribe((ids) => this.updateIDs(ids)),
@@ -56,6 +55,6 @@ export class OperaBurstIdSelectorComponent implements OnInit, OnDestroy {
   }
 
   private updateIDs(ids: string[]) {
-    this.store$.dispatch(new filtersStore.setOperaBurstID(ids));
+    this.store$.dispatch(new filtersStore.setOperaBurstIDs(ids));
   }
 }

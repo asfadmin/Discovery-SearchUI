@@ -506,7 +506,7 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     const staticType = this.scene.metadata.productType + '-STATIC';
     this.store$.dispatch(new searchStore.ClearSearch());
     this.store$.dispatch(new filtersStore.SetSelectedDataset('OPERA-S1'));
-    this.store$.dispatch(new filtersStore.setOperaBurstID([operaBurstID]));
+    this.store$.dispatch(new filtersStore.setOperaBurstIDs([operaBurstID]));
     this.store$.dispatch(
       new filtersStore.SetProductTypes([
         models.opera_s1.productTypes.find((t) => t.apiValue === staticType),
