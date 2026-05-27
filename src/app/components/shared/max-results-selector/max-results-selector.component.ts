@@ -18,6 +18,22 @@ import {
 import { DocsModalComponent } from '../docs-modal/docs-modal.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { fas, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { Pipe, PipeTransform } from '@angular/core';
+import { combineLatest } from 'rxjs';
+
+@Pipe({
+  name: 'formatNumber',
+  standalone: true,
+})
+export class FormatNumberPipe implements PipeTransform {
+  transform(num: number | string): string {
+    const n = typeof num === 'string' ? parseFloat(num) : num;
+    if (isNaN(n)) {
+      return '';
+    }
+    return n.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+  }
+}
 
 @Component({
   selector: 'app-max-results-selector',
@@ -28,7 +44,7 @@ import { fas, faSpinner } from '@fortawesome/free-solid-svg-icons';
     MatIcon,
     FontAwesomeModule,
     MatMenu,
-
+    FormatNumberPipe,
     MatMenuItem,
     DocsModalComponent,
     TranslateModule,
@@ -41,38 +57,36 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
   private sceneService = inject(ScenesService);
 
   public maxResults: number;
-  public numberOfScenes: number;
   public isMaxResultsLoading: boolean;
-  public currentSearchAmount: number;
   public areResultsLoaded = false;
 
   public searchType: models.SearchType;
   public searchTypes = models.SearchType;
-  public sbasProducts: models.CMRProduct[];
 
+  public isDataset = false;
+  public totalResultsCount = 0;
   public burstXMLFileCount = 0;
 
   public possibleMaxResults = [250, 500, 1000, 2000];
   private subs = new SubSink();
+
   constructor() {
     const library = inject(FaIconLibrary);
-
     library.addIconPacks(fas);
     library.addIcons(faSpinner);
   }
-  ngOnInit() {
-    this.subs.add(
-      this.store$
-        .select(searchStore.getSearchType)
-        .subscribe((searchType) => (this.searchType = searchType)),
-    );
 
+  ngOnInit() {
     this.subs.add(
       this.store$
         .select(filtersStore.getMaxSearchResults)
         .subscribe((maxResults) => (this.maxResults = maxResults)),
     );
-
+    this.subs.add(
+      this.store$
+        .select(scenesStore.getAreResultsLoaded)
+        .subscribe((areLoaded) => (this.areResultsLoaded = areLoaded)),
+    );
     this.subs.add(
       this.store$
         .select(searchStore.getIsMaxResultsLoading)
@@ -80,33 +94,36 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
     );
 
     this.subs.add(
-      this.store$
-        .select(searchStore.getSearchAmount)
-        .subscribe(
-          (amount) =>
-            (this.currentSearchAmount = Number.isNaN(amount) ? 0 : amount),
-        ),
-    );
+      combineLatest([
+        this.store$.select(searchStore.getSearchType),
+        this.store$.select(searchStore.getSearchAmount),
+        this.sceneService.scenes$,
+        this.pairService.productsFromPairs$,
+      ]).subscribe(([searchType, amount, scenes, sbasProducts]) => {
+        this.searchType = searchType;
+        this.isDataset = searchType === this.searchTypes.DATASET;
 
-    this.subs.add(
-      this.store$
-        .select(scenesStore.getAreResultsLoaded)
-        .subscribe((areLoaded) => (this.areResultsLoaded = areLoaded)),
-    );
+        const currentSearchAmount = Number.isNaN(amount) ? 0 : amount;
 
-    this.subs.add(
-      this.sceneService.scenes$.subscribe((scenes) => {
-        this.numberOfScenes = scenes.length;
         this.burstXMLFileCount = scenes.filter(
           (p) => p.metadata.productType === 'BURST',
         ).length;
-      }),
-    );
 
-    this.subs.add(
-      this.pairService.productsFromPairs$.subscribe(
-        (products) => (this.sbasProducts = products),
-      ),
+        switch (searchType) {
+          case this.searchTypes.SBAS:
+            this.totalResultsCount = sbasProducts?.length ?? 0;
+            break;
+          case this.searchTypes.CUSTOM_PRODUCTS:
+            this.totalResultsCount = scenes.length;
+            break;
+          case this.searchTypes.DATASET:
+            this.totalResultsCount =
+              currentSearchAmount + this.burstXMLFileCount;
+            break;
+          default:
+            this.totalResultsCount = currentSearchAmount;
+        }
+      }),
     );
   }
 
@@ -116,14 +133,6 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
     if (this.areResultsLoaded) {
       this.store$.dispatch(new searchStore.MakeSearch());
     }
-  }
-
-  public formatNumber(num: number): string {
-    if (typeof num !== 'number') {
-      return '';
-    }
-
-    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
   }
 
   ngOnDestroy() {

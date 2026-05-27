@@ -905,16 +905,30 @@ export function filtersReducer(
         hyp3ProductTypes: [],
       };
     }
-    case FiltersActionType.SET_FULL_BURST: {
+    case FiltersActionType.SET_FULL_BURSTS: {
       return {
         ...state,
-        fullBurstIDs: action.payload,
+        fullBurstIDs: [...new Set([...action.payload])],
       };
     }
-    case FiltersActionType.SET_OPERA_BURST_ID: {
+    case FiltersActionType.SET_OPERA_BURST_IDS: {
       return {
         ...state,
-        operaBurstIDs: action.payload,
+        operaBurstIDs: [...new Set([...action.payload])],
+      };
+    }
+    case FiltersActionType.ADD_FULL_BURSTS: {
+      return {
+        ...state,
+        fullBurstIDs: [...new Set([...state.fullBurstIDs, ...action.payload])],
+      };
+    }
+    case FiltersActionType.ADD_OPERA_BURST_IDS: {
+      return {
+        ...state,
+        operaBurstIDs: [
+          ...new Set([...state.operaBurstIDs, ...action.payload]),
+        ],
       };
     }
     case FiltersActionType.SET_INCLUDE_CALIBRATION_DATA: {

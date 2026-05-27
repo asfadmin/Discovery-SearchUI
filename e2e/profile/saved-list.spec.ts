@@ -17,9 +17,10 @@ test(
       .fill(
         'S1B_IW_GRDH_1SDV_20161124T032008_20161124T032033_003095_005430_9906, S1-GUNW-D-R-087-tops-20190301_20190223-161540-20645N_18637N-PP-7a85-v2_0_1, ALPSRP111041130S1B_IW_GRDH_1SDV_20161124T032008_20161124T032033_003095_005430_9906, S1-GUNW-D-R-087-tops-20190301_20190223-161540-20645N_18637N-PP-7a85-v2_0_1, ALPSRP111041130',
       );
-    await loggedInPage.waitForResponse((response) =>
-      response.url().includes('output=COUNT'),
-    );
+    await expect(
+      loggedInPage.locator('app-max-results-selector'),
+    ).toContainText('10 Files');
+
     await loggedInPage.locator('#mat-button-toggle-7-button').click();
     await loggedInPage
       .getByRole('menuitem', { name: 'Saved Searches' })
@@ -50,8 +51,8 @@ test('Profile: List save files', { tag: '@auth' }, async ({ loggedInPage }) => {
     .fill(
       'S1B_IW_GRDH_1SDV_20161124T032008_20161124T032033_003095_005430_9906-GRD_HD, S1-GUNW-D-R-087-tops-20190301_20190223-161540-20645N_18637N-PP-7a85-v2_0_1-unwrappedPhase, ALPSRP111041130-RTC_HI_RESS1B_IW_GRDH_1SDV_20161124T032008_20161124T032033_003095_005430_9906-GRD_HD, S1-GUNW-D-R-087-tops-20190301_20190223-161540-20645N_18637N-PP-7a85-v2_0_1-unwrappedPhase, ALPSRP111041130-RTC_HI_RES',
     );
-  await loggedInPage.waitForResponse((response) =>
-    response.url().includes('output=COUNT'),
+  await expect(loggedInPage.locator('app-max-results-selector')).toContainText(
+    '2 Files',
   );
   await loggedInPage.locator('#mat-button-toggle-7').click();
   await loggedInPage.getByRole('menuitem', { name: 'Saved Searches' }).click();

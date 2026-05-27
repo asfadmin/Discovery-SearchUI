@@ -1313,13 +1313,13 @@ export class UrlStateService {
 
   private loadFullBurstIDs = (ids: string): Action => {
     const list = ids.split(',');
-    return new filterStore.setFullBurst(list);
+    return new filterStore.setFullBursts(list);
   };
 
   private loadOperaBurstIDs = (ids: string): Action => {
     // Deep links from opera products use '-' instead of '_'
     const list = ids.split(',').map((id) => id.replaceAll('-', '_'));
-    return new filterStore.setOperaBurstID(list);
+    return new filterStore.setOperaBurstIDs(list);
   };
 
   private loadGroupId = (id: string): Action => {
