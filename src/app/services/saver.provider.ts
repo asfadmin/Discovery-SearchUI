@@ -1,7 +1,5 @@
 import { InjectionToken } from '@angular/core';
 
-// import streamSaver from 'streamsaver';
-
 export type Saver = (
   blob: Blob,
   url: string,
