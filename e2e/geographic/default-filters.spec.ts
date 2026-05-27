@@ -1,7 +1,5 @@
 import { test, expect } from 'e2e/fixtures';
 
-test.use({ viewport: { width: 1600, height: 1200 } });
-
 test('NISAR default filter sticks around', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Sentinel-' }).click();

@@ -1,7 +1,5 @@
 import { test, expect } from 'e2e/fixtures';
 
-test.use({ viewport: { width: 1600, height: 1200 } });
-
 test('Area of interest should parse polygon coordinate strings', async ({
   page,
 }) => {
