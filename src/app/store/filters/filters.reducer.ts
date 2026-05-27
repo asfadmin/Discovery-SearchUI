@@ -787,6 +787,7 @@ export function filtersReducer(
           shortNames: filters.shortNames || [],
           scienceProduct: filters.scienceProduct || [],
           productionConfig: filters.productionConfig || [],
+          granuleList: filters.granuleList || null,
           sidePolarizations: filters.sidePolarizations || [],
           frameCoverage: filters.frameCoverage || [],
           jointObservation: filters.jointObservation,

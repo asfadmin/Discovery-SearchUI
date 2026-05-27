@@ -32,15 +32,15 @@ export class GranuleListSelectorComponent {
   });
   granuleList = this.store$.selectSignal(filtersStore.getGranuleList);
 
-  _storeUpdater = effect(() => {
-    this.store$.dispatch(
-      new filtersStore.setGranuleList(this.granuleListModel().list),
-    );
-  });
   _formUpdater = effect(() => {
     this.granuleListModel.set({
       list: this.granuleList(),
     });
+  });
+  _storeUpdater = effect(() => {
+    this.store$.dispatch(
+      new filtersStore.setGranuleList(this.granuleListModel().list),
+    );
   });
 
   granuleListForm = form(this.granuleListModel, (schemaPath) => {
