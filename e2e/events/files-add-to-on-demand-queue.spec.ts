@@ -28,7 +28,6 @@ test('Files: Add to On Demand Queue', async ({ page }) => {
     .filter({ hasText: 'INSAR GAMMA' })
     .first();
   await expect(insarGammaFile).toBeVisible();
-  await insarGammaFile.scrollIntoViewIfNeeded();
 
   await insarGammaFile.locator('button[mat-icon-button]').first().click();
 
