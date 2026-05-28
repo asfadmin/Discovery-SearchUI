@@ -598,6 +598,13 @@ export class ProductService {
           continue;
         }
       }
+      const polarizationMatch = /.*_([AB])_([VH]{4}|[VH]{2})\.(png|kml)/;
+      const matched = p.match(polarizationMatch) ?? [];
+      if (matched.length > 0) {
+        const [frequency, polarization] = [matched[1], matched[2]];
+        productTypeDisplay = `Frequency ${frequency} ${polarization} ${productTypeDisplay}`;
+      }
+
       if (p.endsWith('.h5') && p.includes('QA_')) {
         productTypeDisplay = models.nisar.productTypeDisplays.qa;
       }
