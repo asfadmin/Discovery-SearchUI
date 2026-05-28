@@ -11,6 +11,7 @@
   max-height: calc(95vh - 64px);
   overflow: auto;
   overflow-x: hidden;
+  scrollbar-gutter: stable;
 }
 .datasets-empty {
   min-width: 100vw;
