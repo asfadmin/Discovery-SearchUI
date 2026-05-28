@@ -19,9 +19,14 @@ test(
     await loggedInPage.waitForResponse((response) =>
       response.url().includes('output=COUNT'),
     );
-    const listSearchButton = loggedInPage
-      .locator('#mat-button-toggle-6-button')
-      .getByRole('button', { name: 'SEARCH' });
+    const searchButton = loggedInPage
+      .locator('app-filters-dropdown')
+      .locator('app-search-button');
+
+    const listSearchButton = searchButton.getByRole('button', {
+      name: 'SEARCH',
+    });
+
     await expect(listSearchButton).toBeEnabled();
     await listSearchButton.click();
 
@@ -68,9 +73,13 @@ test(
       .fill(
         'S1B_IW_SLC__1SDV_20210704T135937_20210704T140004_027645_034CB0_4B2C',
       );
-    const sbasSearchButton = loggedInPage
-      .locator('#mat-button-toggle-6-button')
-      .getByRole('button', { name: 'SEARCH' });
+    const searchButton = loggedInPage
+      .locator('app-filters-dropdown')
+      .locator('app-search-button');
+
+    const sbasSearchButton = searchButton.getByRole('button', {
+      name: 'SEARCH',
+    });
     await expect(sbasSearchButton).toBeEnabled();
     await sbasSearchButton.click();
     await loggedInPage
@@ -107,9 +116,14 @@ test(
       .fill(
         'S1A_IW_SLC__1SSV_20150601T010209_20150601T010236_006173_00808F_20A0',
       );
-    const baselineSearchButton = loggedInPage
-      .locator('#mat-button-toggle-6-button')
-      .getByRole('button', { name: 'SEARCH' });
+    const searchButton = loggedInPage
+      .locator('app-filters-dropdown')
+      .locator('app-search-button');
+
+    const baselineSearchButton = searchButton.getByRole('button', {
+      name: 'SEARCH',
+    });
+
     await expect(baselineSearchButton).toBeEnabled();
     await baselineSearchButton.click();
     await loggedInPage
