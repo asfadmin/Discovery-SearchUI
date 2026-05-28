@@ -1,5 +1,5 @@
-import { CMRProduct, CMRProductMetadata, FlightDirection } from '@models';
-import moment from 'moment';
+import { CMRProduct, CMRProductMetadata, FlightDirection } from "@models";
+import moment from "moment";
 
 function createProduct(product: CMRProduct): CMRProduct {
   return product;
@@ -10,7 +10,7 @@ function createProduct(product: CMRProduct): CMRProduct {
  *
  * @method {NestedProductFactory} withBasicInfo - Create a single product for testing utilizing the builder pattern.
  */
-class ProductFactory {
+export class ProductFactory {
   /**
    * Builds products for testing products using the builder pattern.
    *
@@ -27,53 +27,53 @@ class ProductFactory {
     return new NestedProductFactory(
       createProduct({
         name: name,
-        productTypeDisplay: '',
-        file: '',
-        id: '',
-        downloadUrl: '',
+        productTypeDisplay: "",
+        file: "",
+        id: "",
+        downloadUrl: "",
         bytes: 100 * 1000000,
-        dataset: 'SENTINEL-1',
+        dataset: "SENTINEL-1",
         browses: [],
-        thumbnail: '',
-        groupId: '',
+        thumbnail: "",
+        groupId: "",
         isUnzippedFile: false,
         isDummyProduct: false,
         metadata: {
           date: moment(),
           stopDate: moment().add(2),
-          polygon: '',
+          polygon: "",
 
-          productType: '',
-          beamMode: '',
-          polarization: '',
+          productType: "",
+          beamMode: "",
+          polarization: "",
           flightDirection: FlightDirection.ASCENDING,
 
           path: 0,
           frame: 0,
           absoluteOrbit: [],
 
-          collectionName: '',
-          collectionID: '',
+          collectionName: "",
+          collectionID: "",
 
           stackSize: 0,
           faradayRotation: 0,
           offNadirAngle: 0,
-          instrument: '',
-          pointingAngle: '',
-          missionName: '',
-          flightLine: '',
+          instrument: "",
+          pointingAngle: "",
+          missionName: "",
+          flightLine: "",
           perpendicular: 0,
           temporal: 0,
           canInSAR: false,
           burst: undefined,
           opera: undefined,
           nisar: undefined,
-          fileName: '',
+          fileName: "",
           job: undefined,
-          pgeVersion: '',
+          pgeVersion: "",
           subproducts: [],
-          parentID: '',
-          ariaVersion: '',
+          parentID: "",
+          ariaVersion: "",
         },
       }),
     );
@@ -86,184 +86,118 @@ class ProductFactory {
  * @example
  * productfactory.withDataset("ALOS").build()
  */
-class NestedProductFactory {
-  constructor(private _product: Readonly<CMRProduct>) {}
+export class NestedProductFactory {
+  constructor(
+    private _product: Readonly<CMRProduct>,
+    private _partials: {
+      productPart?: Partial<Omit<CMRProduct, "metadata">>;
+      metadataPart?: Partial<CMRProductMetadata>;
+    }[] = [{}],
+  ) {}
 
   /**
    * Get a product with the specified parameters
    */
   build() {
-    return this._product;
+    const extendChoice = this._partials.pop();
+    if (extendChoice === undefined) {
+      return null;
+    }
+
+    return this.withPartialCMRProduct(
+      extendChoice.productPart,
+    ).withPartialCMRProductMetadata(extendChoice.metadataPart)._product;
   }
 
-  withAOI(): NestedProductFactory {
-    return this._extendWithMetadata({
-      polygon:
-        'POLYGON((-124.3885 36.7031,-120.6971 36.7031,-120.6971 38.9246,-124.3885 38.9246,-124.3885 36.7031))',
-    });
+  withAllDatasets(): NestedProductFactory {
+    const datasets = [
+      "NISAR",
+      "Sentinel-1",
+      "S1 Bursts",
+      "OPERA-S1",
+      "TROPO",
+      "ALOS-2",
+      "ALOS PALSAR",
+      "ALOS AVNIR-2",
+      "SIR-C",
+      "ARIA S1 GUNW",
+      "SMAP",
+      "UAVSAR",
+      "RADARSAT-1",
+      "ERS",
+      "JERS-1",
+      "AIRSAR",
+      "SEASAT",
+    ];
+
+    return this.withPartialCMRProducts(
+      datasets.map((dataset) => {
+        return { dataset: dataset };
+      }),
+    );
   }
 
-  withName(name: string): NestedProductFactory {
-    return this._extendWith({ name });
+  withPartialCMRProducts(
+    partials: Iterable<Partial<Omit<CMRProduct, "metadata">>>,
+  ): NestedProductFactory {
+    if (partials === []) {
+      return this;
+    }
+
+    const newPartials: {
+      productPart?: Partial<Omit<CMRProduct, "metadata">>;
+      metadataPart?: Partial<CMRProductMetadata>;
+    }[] = [];
+
+    for (const partial of this._partials) {
+      for (const newPartial of partials) {
+        newPartials.push({
+          productPart: { ...partial, ...newPartial },
+          metadataPart: partial.metadataPart,
+        });
+      }
+    }
+
+    return new NestedProductFactory(
+      {
+        ...this._product,
+      },
+      [...this._partials, ...newPartials],
+    );
   }
 
-  withFile(file: string): NestedProductFactory {
-    return this._extendWith({ file });
+  withPartialCMRProduct(
+    partial: Partial<Omit<CMRProduct, "metadata">>,
+  ): NestedProductFactory {
+    return this._extendWith(partial);
   }
 
-  withId(id: string): NestedProductFactory {
-    return this._extendWith({ id });
+  withPartialCMRProductMetadata(
+    partial: Partial<CMRProductMetadata>,
+  ): NestedProductFactory {
+    return this._extendWithMetadata(partial);
   }
 
-  withDownloadUrl(downloadUrl: string): NestedProductFactory {
-    return this._extendWith({ downloadUrl });
-  }
-
-  withBytes(bytes: number): NestedProductFactory {
-    return this._extendWith({ bytes });
-  }
-
-  withDataset(dataset: string): NestedProductFactory {
-    return this._extendWith({ dataset });
-  }
-
-  withBrowses(browses: string[]): NestedProductFactory {
-    return this._extendWith({ browses });
-  }
-
-  withThumbnail(thumbnail: string): NestedProductFactory {
-    return this._extendWith({ thumbnail });
-  }
-
-  withGroupId(groupId: string): NestedProductFactory {
-    return this._extendWith({ groupId });
-  }
-
-  withIsUnzippedFile(isUnzippedFile = true): NestedProductFactory {
-    return this._extendWith({ isUnzippedFile });
-  }
-
-  withIsDummyProduct(isDummyProduct = true): NestedProductFactory {
-    return this._extendWith({ isDummyProduct });
-  }
-
-  withDate(date: moment.Moment): NestedProductFactory {
-    return this._extendWithMetadata({ date });
-  }
-
-  withStopDate(stopDate: moment.Moment): NestedProductFactory {
-    return this._extendWithMetadata({ stopDate });
-  }
-
-  withPolygon(polygon: string): NestedProductFactory {
-    return this._extendWithMetadata({ polygon });
-  }
-
-  withProductType(productType: string): NestedProductFactory {
-    return this._extendWithMetadata({ productType });
-  }
-
-  withBeamMode(beamMode: string): NestedProductFactory {
-    return this._extendWithMetadata({ beamMode });
-  }
-
-  withPolarization(polarization: string): NestedProductFactory {
-    return this._extendWithMetadata({ polarization });
-  }
-
-  withFlightDirection(flightDirection: FlightDirection): NestedProductFactory {
-    return this._extendWithMetadata({ flightDirection });
-  }
-
-  withPath(path: number): NestedProductFactory {
-    return this._extendWithMetadata({ path });
-  }
-
-  withFrame(path: number): NestedProductFactory {
-    return this._extendWithMetadata({ path });
-  }
-
-  withAbsoluteOrbit(absoluteOrbit: number[]): NestedProductFactory {
-    return this._extendWithMetadata({ absoluteOrbit });
-  }
-
-  withCollectionName(collectionName: string): NestedProductFactory {
-    return this._extendWithMetadata({ collectionName });
-  }
-
-  withCollectionID(collectionID: string): NestedProductFactory {
-    return this._extendWithMetadata({ collectionID });
-  }
-
-  withStackSize(stackSize: number): NestedProductFactory {
-    return this._extendWithMetadata({ stackSize });
-  }
-
-  withFaradayRotation(faradayRotation: number | null): NestedProductFactory {
-    return this._extendWithMetadata({ faradayRotation });
-  }
-
-  withOffNadirAngle(offNadirAngle: number | null): NestedProductFactory {
-    return this._extendWithMetadata({ offNadirAngle });
-  }
-
-  withInstrument(instrument: string | null): NestedProductFactory {
-    return this._extendWithMetadata({ instrument });
-  }
-
-  withPointingAngle(pointingAngle: string | null): NestedProductFactory {
-    return this._extendWithMetadata({ pointingAngle });
-  }
-
-  withMissionName(missionName: string | null): NestedProductFactory {
-    return this._extendWithMetadata({ missionName });
-  }
-
-  withFlightLine(flightLine: string | null): NestedProductFactory {
-    return this._extendWithMetadata({ flightLine });
-  }
-
-  withPerpendicular(perpendicular: number | null): NestedProductFactory {
-    return this._extendWithMetadata({ perpendicular });
-  }
-
-  withTemporal(temporal: number | null): NestedProductFactory {
-    return this._extendWithMetadata({ temporal });
-  }
-
-  withCanInSAR(canInSAR = true): NestedProductFactory {
-    return this._extendWithMetadata({ canInSAR });
-  }
-
-  withFileName(fileName: string | null): NestedProductFactory {
-    return this._extendWithMetadata({ fileName });
-  }
-
-  withPgeVersion(pgeVersion: string | null): NestedProductFactory {
-    return this._extendWithMetadata({ pgeVersion });
-  }
-
-  withParentID(parentID: string): NestedProductFactory {
-    return this._extendWithMetadata({ parentID });
-  }
-
-  withAriaVersion(ariaVersion: string): NestedProductFactory {
-    return this._extendWithMetadata({ ariaVersion });
-  }
-
-  private _extendWith(product: Partial<CMRProduct>) {
-    return new NestedProductFactory({ ...this._product, ...product });
+  private _extendWith(product: Partial<Omit<CMRProduct, "metadata">>) {
+    return new NestedProductFactory(
+      {
+        ...this._product,
+        ...product,
+      },
+      this._partials,
+    );
   }
 
   private _extendWithMetadata(productMetadata: Partial<CMRProductMetadata>) {
-    return new NestedProductFactory({
-      ...this._product,
-      metadata: {
-        ...this._product.metadata,
-        ...productMetadata,
+    return new NestedProductFactory(
+      {
+        ...this._product,
+        metadata: {
+          ...this._product.metadata,
+          ...productMetadata,
+        },
       },
-    });
+      this._partials,
+    );
   }
 }
-
-export const productFactory = new ProductFactory();
