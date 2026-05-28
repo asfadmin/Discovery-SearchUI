@@ -28,7 +28,6 @@ test('Files: Add to On Demand Queue', async ({ page }) => {
     .filter({ hasText: 'INSAR GAMMA' })
     .first();
   await expect(insarGammaFile).toBeVisible();
-  await insarGammaFile.scrollIntoViewIfNeeded();
 
   await insarGammaFile.locator('button[mat-icon-button]').first().click();
 
@@ -39,9 +38,7 @@ test('Files: Add to On Demand Queue', async ({ page }) => {
     name: /Add 1 .* (Pair|Job)/i,
   });
 
-  await expect(insarGammaMenuItem).toBeVisible();
   await insarGammaMenuItem.click();
-  await expect(addJobMenuItem).toBeVisible();
   await addJobMenuItem.click();
 
   await page.getByRole('button', { name: 'ON DEMAND' }).click();

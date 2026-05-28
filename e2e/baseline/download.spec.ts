@@ -12,10 +12,16 @@ test('Add files to Download Queue', async ({ page }) => {
     .getByLabel('Scene')
     .fill('R1_65192_ST6_F111');
   await page
-    .locator('#mat-button-toggle-6-button')
-    .getByRole('button', { name: 'SEARCH' })
+    .locator('app-filters-dropdown')
+    .getByRole('button', { name: 'Filters panel search button' })
     .click();
-  await page.locator('#mat-button-toggle-14-button').click();
+
+  const scenesListHeader = page.locator('app-scenes-list-header');
+  const queueButton = scenesListHeader
+    .locator('.list-button-group')
+    .filter({ hasText: /QUEUE/i })
+    .locator('mat-button-toggle.control-mat-button-toggle');
+  await queueButton.click();
 
   const addToDownloadsMenuItem = page.getByRole('menuitem', {
     name: /Add \d+ Files to downloads/,
