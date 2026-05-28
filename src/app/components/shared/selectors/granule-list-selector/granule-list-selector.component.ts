@@ -27,6 +27,7 @@ import { TranslateModule } from '@ngx-translate/core';
 })
 export class GranuleListSelectorComponent {
   private store$ = inject(Store);
+
   granuleListModel = signal({
     list: '',
   });
@@ -39,9 +40,11 @@ export class GranuleListSelectorComponent {
       });
     });
     effect(() => {
-      this.store$.dispatch(
-        new filtersStore.setGranuleList(this.granuleListModel().list),
-      );
+      if (this.granuleList() !== this.granuleListModel().list) {
+        this.store$.dispatch(
+          new filtersStore.setGranuleList(this.granuleListModel().list),
+        );
+      }
     });
   }
 
