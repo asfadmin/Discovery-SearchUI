@@ -97,6 +97,8 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public hyp3BackendUrl: string;
 
   public dataset = '';
+
+  public maxStringLength = 30;
   ngOnInit() {
     this.subs.add(
       this.store$
