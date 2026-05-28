@@ -14,10 +14,7 @@ test('SBAS: Search after geo search', async ({ page }) => {
   });
 
   await page.goto('/');
-  await page
-    .locator('#mat-button-toggle-8-button')
-    .getByRole('button', { name: 'SEARCH' })
-    .click();
+  await page.getByRole('button', { name: 'SEARCH', exact: true }).click();
   await expect(page.getByLabel('Search Error')).toBeVisible();
 
   await page.unroute('**/services/search/param**');
@@ -35,8 +32,7 @@ test('SBAS: Search after geo search', async ({ page }) => {
     );
 
   await page
-    .locator('#mat-button-toggle-6-button')
-    .getByRole('button', { name: 'SEARCH' })
+    .getByRole('button', { name: 'Filters panel search button' })
     .click();
 
   await expect(page.getByText('Pairs info')).toBeVisible();
