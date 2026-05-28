@@ -6,7 +6,8 @@ test(
   async ({ loggedInPage }) => {
     await loggedInPage.goto('/?maxResults=1');
     await loggedInPage
-      .locator('#mat-button-toggle-8-button')
+      .locator('app-dataset-header')
+      .locator('app-search-button')
       .getByRole('button', { name: 'SEARCH' })
       .click();
     await loggedInPage

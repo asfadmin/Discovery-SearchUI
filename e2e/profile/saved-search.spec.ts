@@ -5,6 +5,10 @@ test(
   { tag: '@auth' },
   async ({ loggedInPage }) => {
     await loggedInPage.goto('/?maxResults=1');
+    const searchActionsButton = loggedInPage
+      .locator('.dataset-filters-card .footer')
+      .locator('app-search-button')
+      .locator('.arrow-button-toggle');
     await loggedInPage
       .getByRole('button', { name: 'Filters', exact: true })
       .click();
@@ -13,11 +17,11 @@ test(
       .filter({ hasText: /^File Type$/ })
       .first()
       .click();
-    await loggedInPage
+  await loggedInPage
       .getByRole('option', { name: 'L1 Detected High-Res Dual-Pol' })
       .click();
     await loggedInPage.locator('.cdk-overlay-backdrop').click();
-    await loggedInPage.locator('#mat-button-toggle-7-button').click();
+    await searchActionsButton.click();
     await loggedInPage
       .getByRole('menuitem', { name: 'Saved Searches' })
       .click();
@@ -50,10 +54,14 @@ test(
   { tag: '@auth' },
   async ({ loggedInPage }) => {
     await loggedInPage.goto('/?maxResults=1');
+    const searchActionsButton = loggedInPage
+      .locator('.dataset-filters-card .footer')
+      .locator('app-search-button')
+      .locator('.arrow-button-toggle');
     await loggedInPage
       .getByRole('button', { name: 'Filters', exact: true })
       .click();
-    await loggedInPage.locator('#mat-button-toggle-7-button').click();
+    await searchActionsButton.click();
     await loggedInPage
       .getByRole('menuitem', { name: 'Saved Searches' })
       .click();

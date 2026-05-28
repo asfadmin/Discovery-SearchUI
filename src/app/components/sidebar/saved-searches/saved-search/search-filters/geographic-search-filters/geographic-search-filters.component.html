@@ -156,6 +156,11 @@
         <b>{{ 'ARIA_VERSION' | translate }}:</b> {{ filters.ariaVersion }}
       </div>
     }
+    @if (filters.granuleList) {
+      <div>
+        <b>{{ 'GRANULE_LIST' | translate }}:</b> {{ filters.granuleList }}
+      </div>
+    }
   </div>
 }
 
