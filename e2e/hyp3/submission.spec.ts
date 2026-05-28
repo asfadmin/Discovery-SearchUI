@@ -130,7 +130,7 @@ test(
       .click();
     await loggedInPage.getByRole('button', { name: 'Clear' }).click();
     await loggedInPage
-      .getByRole('button', { name: 'Clear InSAR GAMMA (265)' })
+      .getByRole('button', { name: /Clear InSAR GAMMA \(\d+\)/ })
       .click();
     await loggedInPage.getByRole('button', { name: 'Submit' }).click();
     await expect(loggedInPage.locator('app-confirmation')).toContainText(
