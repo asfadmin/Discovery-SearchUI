@@ -60,7 +60,6 @@ import {
   KeyboardService,
   UserDataService,
   SavedSearchService,
-  UnzipApiService,
   ScenesService,
   SearchService,
   Hyp3ApiService,
@@ -150,7 +149,7 @@ bootstrapApplication(AppComponent, {
       }),
     ),
     provideTranslateService({
-      defaultLanguage: 'en',
+      fallbackLang: 'en',
       loader: {
         provide: TranslateLoader,
         useClass: StaticTranslateLoader,
@@ -178,7 +177,6 @@ bootstrapApplication(AppComponent, {
     KeyboardService,
     UserDataService,
     SavedSearchService,
-    UnzipApiService,
     ScenesService,
     SearchService,
     Hyp3ApiService,

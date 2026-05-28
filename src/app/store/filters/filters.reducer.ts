@@ -73,6 +73,7 @@ export interface FiltersState {
   tileID: null | string;
 
   useFramesForReference: boolean;
+  granuleList: null | string;
   ariaVersion: string;
 }
 
@@ -159,6 +160,8 @@ export const initState: FiltersState = {
   tileID: null,
   shortNames: [],
 
+  granuleList: null,
+
   useFramesForReference: false,
   ariaVersion: null,
 };
@@ -195,6 +198,7 @@ export function filtersReducer(
         flightDirections: new Set<models.FlightDirection>([]),
 
         groupID: null,
+        granuleList: null,
         tileID: null,
         shortNames: [],
         useCalibrationData: false,
@@ -473,6 +477,7 @@ export function filtersReducer(
         frameCoverage: [],
         sidePolarizations: [],
         jointObservation: false,
+        granuleList: null,
         instrument: [],
         rangeBandwidth: [],
         scienceProduct: [],
@@ -782,6 +787,7 @@ export function filtersReducer(
           shortNames: filters.shortNames || [],
           scienceProduct: filters.scienceProduct || [],
           productionConfig: filters.productionConfig || [],
+          granuleList: filters.granuleList || null,
           sidePolarizations: filters.sidePolarizations || [],
           frameCoverage: filters.frameCoverage || [],
           jointObservation: filters.jointObservation,
@@ -905,16 +911,30 @@ export function filtersReducer(
         hyp3ProductTypes: [],
       };
     }
-    case FiltersActionType.SET_FULL_BURST: {
+    case FiltersActionType.SET_FULL_BURSTS: {
       return {
         ...state,
-        fullBurstIDs: action.payload,
+        fullBurstIDs: [...new Set([...action.payload])],
       };
     }
-    case FiltersActionType.SET_OPERA_BURST_ID: {
+    case FiltersActionType.SET_OPERA_BURST_IDS: {
       return {
         ...state,
-        operaBurstIDs: action.payload,
+        operaBurstIDs: [...new Set([...action.payload])],
+      };
+    }
+    case FiltersActionType.ADD_FULL_BURSTS: {
+      return {
+        ...state,
+        fullBurstIDs: [...new Set([...state.fullBurstIDs, ...action.payload])],
+      };
+    }
+    case FiltersActionType.ADD_OPERA_BURST_IDS: {
+      return {
+        ...state,
+        operaBurstIDs: [
+          ...new Set([...state.operaBurstIDs, ...action.payload]),
+        ],
       };
     }
     case FiltersActionType.SET_INCLUDE_CALIBRATION_DATA: {
@@ -981,6 +1001,12 @@ export function filtersReducer(
       return {
         ...state,
         tileID: action.payload,
+      };
+    }
+    case FiltersActionType.SET_GRANULE_LIST: {
+      return {
+        ...state,
+        granuleList: action.payload,
       };
     }
     default: {
@@ -1178,6 +1204,7 @@ export const getGeographicSearch = createSelector(
     rangeBandwidth: state.rangeBandwidth,
     instrument: state.instrument,
     groupID: state.groupID,
+    granuleList: state.granuleList,
     tileID: state.tileID,
     ariaVersion: state.ariaVersion,
   }),
@@ -1344,4 +1371,8 @@ export const getAriaVersion = createSelector(
 export const getTileID = createSelector(
   getFiltersState,
   (state: FiltersState) => state.tileID,
+);
+export const getGranuleList = createSelector(
+  getFiltersState,
+  (state: FiltersState) => state.granuleList,
 );

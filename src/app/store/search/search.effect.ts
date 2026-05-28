@@ -69,6 +69,7 @@ import Geometry from 'ol/geom/Geometry';
 import { FiltersActionType } from '@store/filters';
 import { getIsFiltersMenuOpen, getIsResultsMenuOpen } from '@store/ui';
 import * as searchStore from '@store/search';
+
 @Injectable()
 export class SearchEffects {
   private actions$ = inject(Actions);
@@ -186,33 +187,43 @@ export class SearchEffects {
       ofType(SearchActionType.MAKE_SEARCH),
       withLatestFrom(this.store$.select(getSearchType)),
       switchMap(([_, searchType]) => {
+        let searchRequest$: Observable<
+          | SearchResponse
+          | SarviewsEventsResponse
+          | TimeseriesSearchResponse
+          | Action<string>
+        >;
+
         if (searchType === SearchType.SARVIEWS_EVENTS) {
-          return this.sarviewsEventsQuery$();
+          searchRequest$ = this.sarviewsEventsQuery$();
         } else if (
           searchType === SearchType.BASELINE ||
           searchType === SearchType.SBAS
         ) {
           this.logCountries();
-          return this.asfApiBaselineQuery$();
+          searchRequest$ = this.asfApiBaselineQuery$();
         } else if (searchType === SearchType.CUSTOM_PRODUCTS) {
-          return this.customProductsQuery$();
+          searchRequest$ = this.customProductsQuery$();
         } else if (searchType === SearchType.DISPLACEMENT) {
-          return this.timeseriesQuery$();
+          searchRequest$ = this.timeseriesQuery$();
         } else {
           this.logCountries();
-          return this.asfApiQuery$;
-        }
-      }),
-      catchError((err: HttpErrorResponse) => {
-        const errorMsg = err?.error?.error?.report;
-        if (errorMsg) {
-          return of(new SearchError(errorMsg));
-        }
-        if (err.status !== 400) {
-          return of(new SearchError('Unknown Error'));
+          searchRequest$ = this.asfApiQuery$;
         }
 
-        return of(new SearchError('Error loading search results'));
+        return searchRequest$.pipe(
+          catchError((err: HttpErrorResponse) => {
+            const errorMsg = err?.error?.error?.report;
+            if (errorMsg) {
+              return of(new SearchError(errorMsg));
+            }
+            if (err.status !== 400) {
+              return of(new SearchError('Unknown Error'));
+            }
+
+            return of(new SearchError('Error loading search results'));
+          }),
+        );
       }),
     ),
   );
@@ -416,7 +427,6 @@ export class SearchEffects {
                 thumbnail: 'string',
                 dataset: 'sentinel-1',
                 groupId: 'string',
-                isUnzippedFile: false,
                 isDummyProduct: false,
                 metadata: {
                   date: moment2(),

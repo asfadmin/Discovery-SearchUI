@@ -852,6 +852,13 @@ export class UrlStateService {
           .pipe(map((useFrameForBaseline) => ({ useFrameForBaseline }))),
         loader: this.loadUseFrameForBaseline,
       },
+      {
+        name: 'granuleList',
+        source: this.store$
+          .select(filterStore.getGranuleList)
+          .pipe(map((granuleList) => ({ granuleList }))),
+        loader: this.loadGranuleList,
+      },
     ];
   }
 
@@ -1313,13 +1320,13 @@ export class UrlStateService {
 
   private loadFullBurstIDs = (ids: string): Action => {
     const list = ids.split(',');
-    return new filterStore.setFullBurst(list);
+    return new filterStore.setFullBursts(list);
   };
 
   private loadOperaBurstIDs = (ids: string): Action => {
     // Deep links from opera products use '-' instead of '_'
     const list = ids.split(',').map((id) => id.replaceAll('-', '_'));
-    return new filterStore.setOperaBurstID(list);
+    return new filterStore.setOperaBurstIDs(list);
   };
 
   private loadGroupId = (id: string): Action => {
@@ -1365,6 +1372,9 @@ export class UrlStateService {
     usingseFrameForBaseline: string,
   ): Action => {
     return new filterStore.SetUseFrameForBaseline(!!usingseFrameForBaseline);
+  };
+  private loadGranuleList = (granuleList: string): Action => {
+    return new filterStore.setGranuleList(granuleList);
   };
 
   private loadAriaVersion = (version: string): Action => {

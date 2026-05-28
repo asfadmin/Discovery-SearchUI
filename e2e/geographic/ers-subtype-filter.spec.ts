@@ -3,6 +3,7 @@ import { waitForASFAPIResponse } from 'e2e/helpers';
 
 test('ERS subtype E2 filter returns matching results', async ({ page }) => {
   await page.goto('/');
+  const filtersDropdown = page.locator('app-filters-dropdown');
   await page.getByRole('button', { name: 'Sentinel-' }).click();
   await page
     .getByRole('menuitem', { name: 'ERS Primarily SAR imagery' })
@@ -18,8 +19,8 @@ test('ERS subtype E2 filter returns matching results', async ({ page }) => {
   await page.keyboard.press('Escape');
 
   const responsePromise = waitForASFAPIResponse(page);
-  await page
-    .locator('#mat-button-toggle-6-button')
+  await filtersDropdown
+    .locator('app-search-button')
     .getByRole('button', { name: 'SEARCH' })
     .click();
   await responsePromise;

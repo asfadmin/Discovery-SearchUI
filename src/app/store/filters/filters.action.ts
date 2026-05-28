@@ -94,9 +94,11 @@ export enum FiltersActionType {
 
   SET_GEOCODE = '[Filters] Set geocode area name',
 
-  SET_FULL_BURST = '[Filters] Set Full Burst IDs',
+  SET_FULL_BURSTS = '[Filters] Set Full Burst IDs',
+  ADD_FULL_BURSTS = '[Filters] Add Full Burst IDs',
 
-  SET_OPERA_BURST_ID = '[Filters] Set Full OPERA S1 Burst IDs',
+  SET_OPERA_BURST_IDS = '[Filters] Set Full OPERA S1 Burst IDs',
+  ADD_OPERA_BURST_IDS = '[Filters] Add Full OPERA S1 Burst IDs',
   SET_INCLUDE_CALIBRATION_DATA = '[Filters] Set use calbiration data in OPERA-S1 search',
   SET_GROUP_ID = '[Filters] Set Sentinel-1 Group ID',
   SET_SHORT_NAMES = '[Filters] Set Short Names',
@@ -114,6 +116,8 @@ export enum FiltersActionType {
   SET_TILE_ID = '[Filters] Set OPERA-S1 Tile ID',
 
   SET_USER_FRAME_FOR_BASELINE = '[Filters] Set if frame(s) used for baseline/sbas searches as reference scene',
+
+  SET_GRANULE_LIST = '[Filters] Set granule list',
 
   APPLY_DATASET_DEFAULTS = '[Filters] Apply dataset default filters',
 }
@@ -468,14 +472,26 @@ export class ClearHyp3ProductTypes implements Action {
   public readonly type = FiltersActionType.CLEAR_HYP3_PRODUCT_TYPES;
 }
 
-export class setFullBurst implements Action {
-  public readonly type = FiltersActionType.SET_FULL_BURST;
+export class setFullBursts implements Action {
+  public readonly type = FiltersActionType.SET_FULL_BURSTS;
 
   constructor(public payload: string[]) {}
 }
 
-export class setOperaBurstID implements Action {
-  public readonly type = FiltersActionType.SET_OPERA_BURST_ID;
+export class setOperaBurstIDs implements Action {
+  public readonly type = FiltersActionType.SET_OPERA_BURST_IDS;
+
+  constructor(public payload: string[]) {}
+}
+
+export class addFullBursts implements Action {
+  public readonly type = FiltersActionType.ADD_FULL_BURSTS;
+
+  constructor(public payload: string[]) {}
+}
+
+export class addOperaBurstIDs implements Action {
+  public readonly type = FiltersActionType.ADD_OPERA_BURST_IDS;
 
   constructor(public payload: string[]) {}
 }
@@ -547,6 +563,12 @@ export class SetUseFrameForBaseline implements Action {
   constructor(public payload: boolean) {}
 }
 
+export class setGranuleList implements Action {
+  public readonly type = FiltersActionType.SET_GRANULE_LIST;
+
+  constructor(public payload: string) {}
+}
+
 export type FiltersActions =
   | SetSelectedDataset
   | SetPerpendicularStart
@@ -610,8 +632,10 @@ export type FiltersActions =
   | SetEventProductSorting
   | ClearEventFilters
   | ClearHyp3ProductTypes
-  | setFullBurst
-  | setOperaBurstID
+  | setFullBursts
+  | setOperaBurstIDs
+  | addFullBursts
+  | addOperaBurstIDs
   | setUseCalibrationData
   | setGroupID
   | setFrameCoverage
@@ -623,5 +647,6 @@ export type FiltersActions =
   | setProductionConfig
   | setAriaVersion
   | setTileID
+  | setGranuleList
   | SetUseFrameForBaseline
   | ApplyDatasetDefaults;
