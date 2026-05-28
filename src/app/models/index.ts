@@ -13,7 +13,6 @@ export * from './banner.model';
 export * from './breakpoints.model';
 export * from './user.model';
 export * from './search.model';
-export * from './unzip.model';
 export * from './critical-baseline.model';
 export * from './hyp3';
 export * from './saved-filter-preset.model';

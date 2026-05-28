@@ -73,7 +73,6 @@ import { MatIcon } from '@angular/material/icon';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { DownloadFileButtonComponent } from '@components/shared/download-file-button/download-file-button.component';
 import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/on-demand-add-menu.component';
-import { FileContentsComponent } from './file-contents/file-contents.component';
 import { ReadableSizeFromBytesPipe } from '@pipes/readable-size-from-bytes.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 import { getStaticQueryParams } from '@models/datasets/opera_s1';
@@ -96,7 +95,6 @@ import { getStaticQueryParams } from '@models/datasets/opera_s1';
     MatIcon,
     DownloadFileButtonComponent,
     OnDemandAddMenuComponent,
-    FileContentsComponent,
     AsyncPipe,
     ReadableSizeFromBytesPipe,
     TranslateModule,
@@ -181,15 +179,9 @@ export class SceneFilesComponent
       }),
     ),
   );
-  public unzippedLoading: string;
   public loadingHyp3JobName: string | null;
   public validJobTypesByProduct: Record<string, models.Hyp3JobType[]> = {};
 
-  public showUnzippedProductScreen: boolean;
-  public openUnzippedProduct: models.CMRProduct;
-  public beforeWithUnzip: models.CMRProduct[] = [];
-  public afterUnzip: models.CMRProduct[] = [];
-  public unzippedProducts: Record<string, models.UnzippedFolder[]>;
   public isUserLoggedIn: boolean;
   public hasAccessToRestrictedData: boolean;
   public showDemWarning: boolean;
@@ -211,27 +203,17 @@ export class SceneFilesComponent
 
   ngOnInit() {
     this.subs.add(
-      combineLatest([
-        this.store$.select(scenesStore.getSelectedSceneProducts),
-        this.store$.select(scenesStore.getOpenUnzippedProduct),
-        this.store$.select(scenesStore.getUnzippedProducts),
-      ])
+      this.store$
+        .select(scenesStore.getSelectedSceneProducts)
         .pipe(debounceTime(0))
-        .subscribe(([products, unzipped, unzippedFiles]) => {
-          this.unzippedProducts = unzippedFiles;
+        .subscribe((products) => {
           this.products = products;
           this.validJobTypesByProduct = {};
           this.products?.forEach((product) => {
             this.validJobTypesByProduct[product.id] =
               this.hyp3.getValidJobTypes([product]);
           });
-          this.openUnzippedProduct = unzipped;
           this.showDemWarning = this.demWarning(products);
-
-          if (unzipped && products) {
-            this.beforeWithUnzip = this.getBeforeWithUnzip(products);
-            this.afterUnzip = this.getAfterUnzip(products);
-          }
         }),
     );
 
@@ -256,20 +238,6 @@ export class SceneFilesComponent
       this.store$
         .select(userStore.getHasRestrictedDataAccess)
         .subscribe((hasAccess) => (this.hasAccessToRestrictedData = hasAccess)),
-    );
-    this.subs.add(
-      this.store$
-        .select(scenesStore.getShowUnzippedProduct)
-        .subscribe(
-          (showUnzipped) => (this.showUnzippedProductScreen = showUnzipped),
-        ),
-    );
-    this.subs.add(
-      this.store$
-        .select(scenesStore.getUnzipLoading)
-        .subscribe(
-          (unzippedLoading) => (this.unzippedLoading = unzippedLoading),
-        ),
     );
     this.subs.add(
       this.store$
@@ -314,44 +282,6 @@ export class SceneFilesComponent
 
   public onToggleQueueProduct(product: models.CMRProduct): void {
     this.store$.dispatch(new queueStore.ToggleProduct(product));
-  }
-
-  public onOpenUnzipProduct(product: models.CMRProduct): void {
-    if (this.unzippedProducts[product.id]) {
-      this.store$.dispatch(new scenesStore.OpenUnzippedProduct(product));
-    } else {
-      this.store$.dispatch(new scenesStore.LoadUnzippedProduct(product));
-    }
-  }
-
-  public onCloseProduct(product: models.CMRProduct): void {
-    this.store$.dispatch(new scenesStore.CloseZipContents(product));
-  }
-
-  public getBeforeWithUnzip(
-    products: models.CMRProduct[],
-  ): models.CMRProduct[] {
-    const pivotIdx = this.getPivotIdx(products);
-
-    return products.slice(0, pivotIdx + 1);
-  }
-
-  public getAfterUnzip(products: models.CMRProduct[]): models.CMRProduct[] {
-    const pivotIdx = this.getPivotIdx(products);
-
-    return products.slice(pivotIdx + 1, products.length);
-  }
-
-  public getPivotIdx(products): number {
-    let pivotIdx = 0;
-
-    products.forEach((product, idx) => {
-      if (this.openUnzippedProduct.id === product.id) {
-        pivotIdx = idx;
-      }
-    });
-
-    return pivotIdx;
   }
 
   public demWarning(products): boolean {
@@ -508,7 +438,6 @@ export class SceneFilesComponent
       thumbnail: product.files.thumbnail_url,
       dataset: 'Sentinel-1',
       groupId: 'SARViews',
-      isUnzippedFile: false,
       isDummyProduct: false,
 
       metadata: {
@@ -541,7 +470,6 @@ export class SceneFilesComponent
       thumbnail: product.files.thumbnail_url,
       dataset: 'Sentinel-1',
       groupId: 'SARViews',
-      isUnzippedFile: false,
       isDummyProduct: false,
 
       metadata: {
