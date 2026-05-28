@@ -14,8 +14,11 @@ test('Geo: Saved Filters', { tag: '@auth' }, async ({ loggedInPage }) => {
     .getByRole('option', { name: 'L1 Detected High-Res Dual-Pol' })
     .click();
   await loggedInPage.locator('.cdk-overlay-backdrop').click();
-  await loggedInPage.locator('#mat-button-toggle-7').click();
-  await loggedInPage.getByRole('menuitem', { name: 'Saved Filters' }).click();
+  await loggedInPage
+    .locator('app-dataset-header app-search-button .arrow-button-toggle')
+    .dispatchEvent('click');
+  await loggedInPage.getByRole('menuitem', { name: 'Saved Filters' }).focus();
+  await loggedInPage.keyboard.press('ArrowRight');
   await loggedInPage.getByRole('menuitem', { name: 'Save Filters' }).click();
   await loggedInPage.getByRole('button', { name: 'Save Filters' }).click();
   await loggedInPage.getByText('keyboard_arrow_right').click();

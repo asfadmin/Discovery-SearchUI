@@ -14,9 +14,9 @@ test('SBAS: Saved filters', { tag: '@auth' }, async ({ loggedInPage }) => {
       'S1B_IW_SLC__1SDV_20210704T135937_20210704T140004_027645_034CB0_4B2C',
     );
   await loggedInPage
-    .locator('#mat-button-toggle-6-button')
+    .locator('app-baseline-header app-search-button')
     .getByRole('button', { name: 'SEARCH' })
-    .click();
+    .press('Enter');
 
   await loggedInPage.getByRole('button', { name: 'SBAS Filters' }).click();
   await loggedInPage.getByText('% Overlap Threshold').click();
@@ -25,9 +25,11 @@ test('SBAS: Saved filters', { tag: '@auth' }, async ({ loggedInPage }) => {
     .click();
   await loggedInPage.getByRole('switch', { name: 'Seasonal Search' }).click();
 
-  await loggedInPage.locator('#mat-button-toggle-7').click();
-
-  await loggedInPage.getByRole('menuitem', { name: 'Saved Filters' }).click();
+  await loggedInPage
+    .locator('app-baseline-header app-search-button .arrow-button-toggle')
+    .dispatchEvent('click');
+  await loggedInPage.getByRole('menuitem', { name: 'Saved Filters' }).focus();
+  await loggedInPage.keyboard.press('ArrowRight');
   await loggedInPage.getByRole('menuitem', { name: 'Save Filters' }).click();
   await loggedInPage.getByRole('button', { name: 'Save Filters' }).click();
 
