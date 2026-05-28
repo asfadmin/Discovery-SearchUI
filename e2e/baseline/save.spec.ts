@@ -14,11 +14,15 @@ test('Baseline: Saved Search', { tag: '@auth' }, async ({ loggedInPage }) => {
       'S1B_IW_SLC__1SDV_20210704T135937_20210704T140004_027645_034CB0_4B2C',
     );
   await loggedInPage
-    .locator('#mat-button-toggle-6-button')
+    .locator('app-baseline-header app-search-button')
     .getByRole('button', { name: 'SEARCH' })
-    .click();
-  await loggedInPage.locator('#mat-button-toggle-11-button').click();
-  await loggedInPage.getByRole('menuitem', { name: 'Saved Searches' }).click();
+    .press('Enter');
+  await loggedInPage
+    .locator('app-baseline-header app-search-button .arrow-button-toggle')
+    .dispatchEvent('click');
+  await loggedInPage
+    .getByRole('menuitem', { name: 'Saved Searches' })
+    .press('ArrowRight');
   await loggedInPage.getByRole('menuitem', { name: 'Save Search' }).click();
 
   await loggedInPage

@@ -17,10 +17,12 @@ test(
       .getByLabel('Search for a location')
       .fill('f');
     await loggedInPage.getByText('Tibet Autonomous Region, China').click();
-    await loggedInPage.locator('#mat-button-toggle-9').click();
+    await loggedInPage
+      .locator('app-dataset-header app-search-button .arrow-button-toggle')
+      .dispatchEvent('click');
     await loggedInPage
       .getByRole('menuitem', { name: 'Saved Searches' })
-      .click();
+      .press('ArrowRight');
     await loggedInPage.getByRole('menuitem', { name: 'Save Search' }).click();
     await expect(
       loggedInPage.getByRole('textbox', { name: 'Save Search Name' }),
