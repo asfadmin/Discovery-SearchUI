@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, inject } from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { CustomizeEnvComponent } from '@components/header/header-buttons/customize-env/customize-env.component';
@@ -77,6 +77,8 @@ declare global {
   ],
 })
 export class SearchButtonComponent implements OnInit, OnDestroy {
+  @Input() ariaLabel?: string;
+
   private store$ = inject<Store<AppState>>(Store);
   private actions$ = inject(ActionsSubject);
   env = inject(services.EnvironmentService);
