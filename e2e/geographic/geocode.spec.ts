@@ -33,7 +33,9 @@ test('Place name is geocoded to WKT AOI and returns search results', async ({
     .click();
   await responsePromise;
 
-  await expect(page.locator('mat-card-header').first()).toBeVisible();
+  await expect(page.locator('mat-card-header').first()).toContainText(
+    'S1_023809_IW3_',
+  );
 });
 
 test('Place name geocode pans the map to the entered location', async ({

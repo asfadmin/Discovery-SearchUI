@@ -5,12 +5,16 @@ test(
   { tag: '@auth' },
   async ({ loggedInPage }) => {
     await loggedInPage.goto('/');
+    const searchActionsButton = loggedInPage
+      .locator('app-dataset-header')
+      .locator('app-search-button')
+      .locator('.arrow-button-toggle');
 
     await loggedInPage
       .getByRole('button', { name: 'Filters', exact: true })
       .click();
 
-    await loggedInPage.locator('#mat-button-toggle-7').click();
+    await searchActionsButton.dispatchEvent('click');
     await loggedInPage
       .getByRole('menuitem', { name: 'Saved Searches' })
       .click();
@@ -35,11 +39,15 @@ test(
   { tag: '@auth' },
   async ({ loggedInPage }) => {
     await loggedInPage.goto('/');
+    const searchActionsButton = loggedInPage
+      .locator('app-dataset-header')
+      .locator('app-search-button')
+      .locator('.arrow-button-toggle');
 
     await loggedInPage
       .getByRole('button', { name: 'Filters', exact: true })
       .click();
-    await loggedInPage.locator('#mat-button-toggle-7').click();
+    await searchActionsButton.dispatchEvent('click');
     await loggedInPage
       .getByRole('menuitem', { name: 'Saved Searches' })
       .click();
@@ -60,11 +68,15 @@ test(
   { tag: '@auth' },
   async ({ loggedInPage }) => {
     await loggedInPage.goto('/');
+    const searchActionsButton = loggedInPage
+      .locator('app-dataset-header')
+      .locator('app-search-button')
+      .locator('.arrow-button-toggle');
 
     await loggedInPage
       .getByRole('button', { name: 'Filters', exact: true })
       .click();
-    await loggedInPage.locator('#mat-button-toggle-7').click();
+    await searchActionsButton.dispatchEvent('click');
     await loggedInPage
       .getByRole('menuitem', { name: 'Saved Searches' })
       .click();
