@@ -4,6 +4,8 @@
     style="padding: 8px 2px"
     class="faint-text perspective"
     [class.clickable]="isDataset"
+    [attr.aria-label]="'SELECT_MAX_RESULTS' | translate"
+    role="button"
   >
     @if (isDataset) {
       <span>
