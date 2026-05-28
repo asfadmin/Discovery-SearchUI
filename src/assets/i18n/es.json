@@ -465,6 +465,7 @@
   "GRANULE_LIST": "Granule List",
   "GRANULE_LIST_COUNT": "{{ count }} Granule",
   "GRANULE_LIST_COUNTS": "{{ count }} Granules",
+  "GRANULE_LIST_HINT": "Supports wildcard matching (* for multiple characters, ? for single characters) e.g. NISAR_L2_*X05010* matches all Level 2 NISAR products with CRID version X05010.",
   "GRANULE_LIST_MAX_ERROR": "Granule list has a recommended maximum of 5 granules with leading wildcards per search",
   "GRATICULE_OVERLAY": "Superposición de Retícula",
   "GRAZING_ANGLE": "Ángulo Rasante",
