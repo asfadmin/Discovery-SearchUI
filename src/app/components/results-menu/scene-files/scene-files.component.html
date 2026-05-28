@@ -11,70 +11,64 @@
   </div>
 }
 
-@if (!showUnzippedProductScreen) {
-  <div>
-    <mat-list class="products-list">
-      @for (product of products; track product.id) {
-        <app-scene-file
-          (toggle)="onToggleQueueProduct(product)"
-          (unzip)="onOpenUnzipProduct($event)"
-          (queueHyp3Job)="onQueueHyp3Job($event)"
-          (renameJobProjectName)="onRenameJobProjectName(product, $event)"
-          [loadingHyp3JobName]="loadingHyp3JobName"
-          [isUserLoggedIn]="isUserLoggedIn"
-          [product]="product"
-          [validHyp3JobTypes]="validJobTypesByProduct[product.id]"
-          [hasAccessToRestrictedData]="hasAccessToRestrictedData"
-          [isUnzipLoading]="unzippedLoading === product.id"
-          [isQueued]="(queuedProductIds$ | async).has(product.id)"
-          [isOpen]="false"
-        >
-        </app-scene-file>
+<div>
+  <mat-list class="products-list">
+    @for (product of products; track product.id) {
+      <app-scene-file
+        (toggle)="onToggleQueueProduct(product)"
+        (queueHyp3Job)="onQueueHyp3Job($event)"
+        (renameJobProjectName)="onRenameJobProjectName(product, $event)"
+        [loadingHyp3JobName]="loadingHyp3JobName"
+        [isUserLoggedIn]="isUserLoggedIn"
+        [product]="product"
+        [validHyp3JobTypes]="validJobTypesByProduct[product.id]"
+        [hasAccessToRestrictedData]="hasAccessToRestrictedData"
+        [isQueued]="(queuedProductIds$ | async).has(product.id)"
+        [isOpen]="false"
+      >
+      </app-scene-file>
+    }
+
+    @if (hasSubquery$ | async) {
+      @let subqueryProducts = dynamicallySearchedProduct$ | async;
+
+      <hr />
+      <div class="related-data-header">
+        <h4>{{ 'RELATED_DATA' | translate }}</h4>
+      </div>
+      @if (!dynamicQueryLoaded()) {
+        <mat-list-item>
+          <mat-spinner diameter="20" class="loading-spinner"> </mat-spinner>
+        </mat-list-item>
       }
 
-      @if (hasSubquery$ | async) {
-        @let subqueryProducts = dynamicallySearchedProduct$ | async;
-
-        <hr />
-        <div class="related-data-header">
-          <h4>{{ 'RELATED_DATA' | translate }}</h4>
-        </div>
-        @if (!dynamicQueryLoaded()) {
-          <mat-list-item>
-            <mat-spinner diameter="20" class="loading-spinner"> </mat-spinner>
+      @for (product of subqueryProducts; track product.id) {
+        @if (dynamicQueryLoaded()) {
+          <app-scene-file
+            (toggle)="onToggleQueueProduct(product)"
+            (queueHyp3Job)="onQueueHyp3Job($event)"
+            (renameJobProjectName)="onRenameJobProjectName(product, $event)"
+            [loadingHyp3JobName]="loadingHyp3JobName"
+            [isUserLoggedIn]="isUserLoggedIn"
+            [product]="product"
+            [validHyp3JobTypes]="[]"
+            [hasAccessToRestrictedData]="hasAccessToRestrictedData"
+            [isQueued]="(queuedProductIds$ | async).has(product.id)"
+            [isOpen]="false"
+            [isSearchableProduct]="true"
+          >
+          </app-scene-file>
+        }
+      } @empty {
+        @if (dynamicQueryLoaded()) {
+          <mat-list-item class="no-related">
+            {{ 'NO_RELATED_DATA' | translate }}
           </mat-list-item>
         }
-
-        @for (product of subqueryProducts; track product.id) {
-          @if (dynamicQueryLoaded()) {
-            <app-scene-file
-              (toggle)="onToggleQueueProduct(product)"
-              (unzip)="onOpenUnzipProduct($event)"
-              (queueHyp3Job)="onQueueHyp3Job($event)"
-              (renameJobProjectName)="onRenameJobProjectName(product, $event)"
-              [loadingHyp3JobName]="loadingHyp3JobName"
-              [isUserLoggedIn]="isUserLoggedIn"
-              [product]="product"
-              [validHyp3JobTypes]="[]"
-              [hasAccessToRestrictedData]="hasAccessToRestrictedData"
-              [isUnzipLoading]="unzippedLoading === product.id"
-              [isQueued]="(queuedProductIds$ | async).has(product.id)"
-              [isOpen]="false"
-              [isSearchableProduct]="true"
-            >
-            </app-scene-file>
-          }
-        } @empty {
-          @if (dynamicQueryLoaded()) {
-            <mat-list-item class="no-related">
-              {{ 'NO_RELATED_DATA' | translate }}
-            </mat-list-item>
-          }
-        }
       }
-    </mat-list>
-  </div>
-}
+    }
+  </mat-list>
+</div>
 
 @if (breakpoint$ | async; as breakpoint) {
   <span>
@@ -163,52 +157,4 @@
       </div>
     }
   </span>
-}
-
-@if (showUnzippedProductScreen) {
-  <div class="products-list zip-contents">
-    <mat-list class="products-list">
-      @for (product of beforeWithUnzip; track product) {
-        <app-scene-file
-          (toggle)="onToggleQueueProduct(product)"
-          (unzip)="onOpenUnzipProduct($event)"
-          (closeProduct)="onCloseProduct($event)"
-          (queueHyp3Job)="onQueueHyp3Job($event)"
-          (renameJobProjectName)="onRenameJobProjectName(product, $event)"
-          [isUserLoggedIn]="isUserLoggedIn"
-          [product]="product"
-          [validHyp3JobTypes]="validJobTypesByProduct[product.id]"
-          [loadingHyp3JobName]="loadingHyp3JobName"
-          [hasAccessToRestrictedData]="hasAccessToRestrictedData"
-          [isUnzipLoading]="unzippedLoading === product.id"
-          [isQueued]="(queuedProductIds$ | async).has(product.id)"
-          [isOpen]="product.id === openUnzippedProduct.id"
-        >
-        </app-scene-file>
-      }
-    </mat-list>
-    <div>
-      <app-file-contents> </app-file-contents>
-    </div>
-    <mat-list class="products-list">
-      @for (product of afterUnzip; track product) {
-        <app-scene-file
-          (toggle)="onToggleQueueProduct(product)"
-          (unzip)="onOpenUnzipProduct($event)"
-          (closeProduct)="onCloseProduct($event)"
-          (queueHyp3Job)="onQueueHyp3Job($event)"
-          (renameJobProjectName)="onRenameJobProjectName(product, $event)"
-          [isUserLoggedIn]="isUserLoggedIn"
-          [product]="product"
-          [loadingHyp3JobName]="loadingHyp3JobName"
-          [hasAccessToRestrictedData]="hasAccessToRestrictedData"
-          [validHyp3JobTypes]="validJobTypesByProduct[product.id]"
-          [isUnzipLoading]="unzippedLoading === product.id"
-          [isQueued]="(queuedProductIds$ | async).has(product.id)"
-          [isOpen]="product.id === openUnzippedProduct.id"
-        >
-        </app-scene-file>
-      }
-    </mat-list>
-  </div>
 }

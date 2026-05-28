@@ -41,7 +41,7 @@ export class ProductService {
         // the new property also auto converts to the right scale already
         g.s = (g.nsr.sizeMB[filename]?.bytes ?? 0) / 1000000;
       }
-      const product = {
+      const product: models.CMRProduct = {
         name: g.gn,
         productTypeDisplay: g.ptd ?? g.gn,
         file: filename,
@@ -52,7 +52,6 @@ export class ProductService {
         browses,
         thumbnail,
         groupId: g.gid.replaceAll('{gn}', g.gn),
-        isUnzippedFile: false,
         isDummyProduct: false,
         metadata: this.getMetadataFrom(g),
       };
