@@ -598,6 +598,11 @@ export class ProductService {
         if (p === '/assets/no-browse.png') {
           continue;
         }
+        const polarizationMatch = /.*_([AB])_([VH]{4}|[VH]{2})\.png/;
+        const matched = p.match(polarizationMatch) ?? [''];
+        if (matched[0] !== '') {
+          productTypeDisplay = `Frequency ${matched[1]} ${matched[2]} Browse Image PNG`;
+        }
       }
       if (p.endsWith('.h5') && p.includes('QA_')) {
         productTypeDisplay = models.nisar.productTypeDisplays.qa;
