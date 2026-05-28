@@ -19,10 +19,10 @@ test('SBAS: Saved Search', { tag: '@auth' }, async ({ loggedInPage }) => {
     .press('Enter');
   await loggedInPage
     .locator('app-baseline-header app-search-button .arrow-button-toggle')
-    .dispatchEvent('click');
+    .click();
   await loggedInPage
     .getByRole('menuitem', { name: 'Saved Searches' })
-    .press('ArrowRight');
+    .click();
   await loggedInPage.getByRole('menuitem', { name: 'Save Search' }).click();
 
   await loggedInPage
