@@ -1,4 +1,5 @@
 import { test, expect } from 'e2e/pages/auth.page';
+import { waitForASFAPIResponse } from 'e2e/helpers';
 
 test('Baseline: Search History', { tag: '@auth' }, async ({ loggedInPage }) => {
   await loggedInPage.goto('/');
@@ -13,10 +14,12 @@ test('Baseline: Search History', { tag: '@auth' }, async ({ loggedInPage }) => {
     .fill(
       'S1B_IW_SLC__1SDV_20210704T135937_20210704T140004_027645_034CB0_4B2C',
     );
+  const searchResponse = waitForASFAPIResponse(loggedInPage);
   await loggedInPage
-    .locator('#mat-button-toggle-6-button')
-    .getByRole('button', { name: 'SEARCH' })
+    .locator('app-filters-dropdown')
+    .getByRole('button', { name: 'Filters panel search button' })
     .click();
+  await searchResponse;
   await loggedInPage
     .getByRole('button', { name: 'automatedtesting_fullaccess' })
     .click();

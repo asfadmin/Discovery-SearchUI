@@ -19,10 +19,16 @@ test(
     await loggedInPage.waitForResponse((response) =>
       response.url().includes('output=COUNT'),
     );
-    await loggedInPage
-      .locator('#mat-button-toggle-6-button')
-      .getByRole('button', { name: 'SEARCH' })
-      .click();
+    const searchButton = loggedInPage
+      .locator('app-filters-dropdown')
+      .locator('app-search-button');
+
+    const listSearchButton = searchButton.getByRole('button', {
+      name: 'SEARCH',
+    });
+
+    await expect(listSearchButton).toBeEnabled();
+    await listSearchButton.click();
 
     await loggedInPage
       .getByRole('button', {
@@ -67,10 +73,15 @@ test(
       .fill(
         'S1B_IW_SLC__1SDV_20210704T135937_20210704T140004_027645_034CB0_4B2C',
       );
-    await loggedInPage
-      .locator('#mat-button-toggle-6-button')
-      .getByRole('button', { name: 'SEARCH' })
-      .click();
+    const searchButton = loggedInPage
+      .locator('app-filters-dropdown')
+      .locator('app-search-button');
+
+    const sbasSearchButton = searchButton.getByRole('button', {
+      name: 'SEARCH',
+    });
+    await expect(sbasSearchButton).toBeEnabled();
+    await sbasSearchButton.click();
     await loggedInPage
       .getByRole('radio', { name: 'Add all results to On Demand' })
       .click();
@@ -105,10 +116,16 @@ test(
       .fill(
         'S1A_IW_SLC__1SSV_20150601T010209_20150601T010236_006173_00808F_20A0',
       );
-    await loggedInPage
-      .locator('#mat-button-toggle-6-button')
-      .getByRole('button', { name: 'SEARCH' })
-      .click();
+    const searchButton = loggedInPage
+      .locator('app-filters-dropdown')
+      .locator('app-search-button');
+
+    const baselineSearchButton = searchButton.getByRole('button', {
+      name: 'SEARCH',
+    });
+
+    await expect(baselineSearchButton).toBeEnabled();
+    await baselineSearchButton.click();
     await loggedInPage
       .getByRole('radio', { name: 'Add all results to On Demand' })
       .click();
@@ -127,7 +144,7 @@ test(
       .click();
     await loggedInPage.getByRole('button', { name: 'Clear' }).click();
     await loggedInPage
-      .getByRole('button', { name: 'Clear InSAR GAMMA (265)' })
+      .getByRole('button', { name: /Clear InSAR GAMMA \(\d+\)/ })
       .click();
     await loggedInPage.getByRole('button', { name: 'Submit' }).click();
     await expect(loggedInPage.locator('app-confirmation')).toContainText(
