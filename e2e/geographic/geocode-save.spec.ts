@@ -19,10 +19,10 @@ test(
     await loggedInPage.getByText('Tibet Autonomous Region, China').click();
     await loggedInPage
       .locator('app-dataset-header app-search-button .arrow-button-toggle')
-      .dispatchEvent('click');
+      .click();
     await loggedInPage
       .getByRole('menuitem', { name: 'Saved Searches' })
-      .press('ArrowRight');
+      .click();
     await loggedInPage.getByRole('menuitem', { name: 'Save Search' }).click();
     await expect(
       loggedInPage.getByRole('textbox', { name: 'Save Search Name' }),

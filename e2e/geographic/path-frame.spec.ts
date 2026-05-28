@@ -60,10 +60,10 @@ test('Button to restore path/frame', async ({ page }) => {
     'LINESTRING(-75.6738 34.5247,-80.8594 30.7513,-79.7168 25.7999)',
   );
   const searchActionsButton = page
-    .locator('app-dataset-header')
+    .locator('.dataset-filters-card .footer')
     .locator('app-search-button')
     .locator('.arrow-button-toggle');
-  await searchActionsButton.dispatchEvent('click');
+  await searchActionsButton.click();
   await page.getByRole('menuitem', { name: 'Clear Search' }).click();
   await page
     .getByRole('region', { name: 'Area of Interest Options' })

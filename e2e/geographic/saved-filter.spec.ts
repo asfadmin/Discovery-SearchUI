@@ -15,10 +15,9 @@ test('Geo: Saved Filters', { tag: '@auth' }, async ({ loggedInPage }) => {
     .click();
   await loggedInPage.locator('.cdk-overlay-backdrop').click();
   await loggedInPage
-    .locator('app-dataset-header app-search-button .arrow-button-toggle')
-    .dispatchEvent('click');
-  await loggedInPage.getByRole('menuitem', { name: 'Saved Filters' }).focus();
-  await loggedInPage.keyboard.press('ArrowRight');
+    .locator('.dataset-filters-card .footer app-search-button .arrow-button-toggle')
+    .click();
+  await loggedInPage.getByRole('menuitem', { name: 'Saved Filters' }).click();
   await loggedInPage.getByRole('menuitem', { name: 'Save Filters' }).click();
   await loggedInPage.getByRole('button', { name: 'Save Filters' }).click();
   await loggedInPage.getByText('keyboard_arrow_right').click();

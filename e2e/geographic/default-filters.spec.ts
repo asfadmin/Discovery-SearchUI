@@ -9,11 +9,15 @@ test('NISAR default filter sticks around', async ({ page }) => {
   await expect(page.locator('app-info-bar')).toContainText(
     'Production Configuration: PR',
   );
-  const searchActionsButton = page
+  const headerSearchActionsButton = page
     .locator('app-dataset-header')
     .locator('app-search-button')
     .locator('.arrow-button-toggle');
-  await searchActionsButton.dispatchEvent('click');
+  const filterPanelSearchActionsButton = page
+    .locator('.dataset-filters-card .footer')
+    .locator('app-search-button')
+    .locator('.arrow-button-toggle');
+  await headerSearchActionsButton.click();
   await page.getByRole('menuitem', { name: 'Clear Search' }).click();
   await expect(page.locator('app-info-bar')).toContainText(
     'Production Configuration: PR',
@@ -27,7 +31,7 @@ test('NISAR default filter sticks around', async ({ page }) => {
   await expect(page.locator('app-info-bar')).toContainText(
     'Production Configuration: UR',
   );
-  await searchActionsButton.dispatchEvent('click');
+  await filterPanelSearchActionsButton.click();
   await page.getByRole('menuitem', { name: 'Clear Search' }).click();
   await expect(page.locator('app-info-bar')).toContainText(
     'Production Configuration: PR',

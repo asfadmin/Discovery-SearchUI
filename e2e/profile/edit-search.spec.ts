@@ -6,7 +6,7 @@ test(
   async ({ loggedInPage }) => {
     await loggedInPage.goto('/');
     const searchActionsButton = loggedInPage
-      .locator('app-dataset-header')
+      .locator('.dataset-filters-card .footer')
       .locator('app-search-button')
       .locator('.arrow-button-toggle');
 
@@ -14,7 +14,7 @@ test(
       .getByRole('button', { name: 'Filters', exact: true })
       .click();
 
-    await searchActionsButton.dispatchEvent('click');
+    await searchActionsButton.click();
     await loggedInPage
       .getByRole('menuitem', { name: 'Saved Searches' })
       .click();
@@ -40,14 +40,14 @@ test(
   async ({ loggedInPage }) => {
     await loggedInPage.goto('/');
     const searchActionsButton = loggedInPage
-      .locator('app-dataset-header')
+      .locator('.dataset-filters-card .footer')
       .locator('app-search-button')
       .locator('.arrow-button-toggle');
 
     await loggedInPage
       .getByRole('button', { name: 'Filters', exact: true })
       .click();
-    await searchActionsButton.dispatchEvent('click');
+    await searchActionsButton.click();
     await loggedInPage
       .getByRole('menuitem', { name: 'Saved Searches' })
       .click();
@@ -69,14 +69,14 @@ test(
   async ({ loggedInPage }) => {
     await loggedInPage.goto('/');
     const searchActionsButton = loggedInPage
-      .locator('app-dataset-header')
+      .locator('.dataset-filters-card .footer')
       .locator('app-search-button')
       .locator('.arrow-button-toggle');
 
     await loggedInPage
       .getByRole('button', { name: 'Filters', exact: true })
       .click();
-    await searchActionsButton.dispatchEvent('click');
+    await searchActionsButton.click();
     await loggedInPage
       .getByRole('menuitem', { name: 'Saved Searches' })
       .click();
