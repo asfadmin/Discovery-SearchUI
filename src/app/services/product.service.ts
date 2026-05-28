@@ -603,6 +603,12 @@ export class ProductService {
         if (matched[0] !== '') {
           productTypeDisplay = `Frequency ${matched[1]} ${matched[2]} Browse Image PNG`;
         }
+      } else if (productTypeDisplay === 'Footprint KML') {
+        const polarizationMatch = /.*_([AB])_([VH]{4}|[VH]{2})\.kml/;
+        const matched = p.match(polarizationMatch) ?? [''];
+        if (matched[0] !== '') {
+          productTypeDisplay = `Frequency ${matched[1]} ${matched[2]} Footprint KML`;
+        }
       }
       if (p.endsWith('.h5') && p.includes('QA_')) {
         productTypeDisplay = models.nisar.productTypeDisplays.qa;
