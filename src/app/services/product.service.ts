@@ -598,18 +598,14 @@ export class ProductService {
         if (p === '/assets/no-browse.png') {
           continue;
         }
-        const polarizationMatch = /.*_([AB])_([VH]{4}|[VH]{2})\.png/;
-        const matched = p.match(polarizationMatch) ?? [''];
-        if (matched[0] !== '') {
-          productTypeDisplay = `Frequency ${matched[1]} ${matched[2]} Browse Image PNG`;
-        }
-      } else if (productTypeDisplay === 'Footprint KML') {
-        const polarizationMatch = /.*_([AB])_([VH]{4}|[VH]{2})\.kml/;
-        const matched = p.match(polarizationMatch) ?? [''];
-        if (matched[0] !== '') {
-          productTypeDisplay = `Frequency ${matched[1]} ${matched[2]} Footprint KML`;
-        }
       }
+      const polarizationMatch = /.*_([AB])_([VH]{4}|[VH]{2})\.(png|kml)/;
+      const matched = p.match(polarizationMatch) ?? [];
+      if (matched.length > 0) {
+        productTypeDisplay =
+          `Frequency ${matched[1]} ${matched[2]} ` + productTypeDisplay;
+      }
+
       if (p.endsWith('.h5') && p.includes('QA_')) {
         productTypeDisplay = models.nisar.productTypeDisplays.qa;
       }
