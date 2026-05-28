@@ -19,15 +19,16 @@ test('Baseline: Cancel restores filter changes after editing start date', async 
     );
 
   const initialSearch = waitForASFAPIResponse(page);
-  const headerSearchButton = page
-    .locator('app-baseline-header')
-    .locator('app-search-button')
-    .getByRole('button', { name: 'SEARCH' });
-  await headerSearchButton.focus();
-  await page.keyboard.press('Enter');
+  await page
+    .locator('app-filters-dropdown')
+    .getByRole('button', { name: 'Filters panel search button' })
+    .click();
   await initialSearch;
 
-  await page.getByRole('radio', { name: 'Baseline Criteria' }).click();
+  const baselineCriteriaButton = page.getByRole('radio', {
+    name: 'Baseline Criteria',
+  });
+  await baselineCriteriaButton.click();
 
   const startDate = page
     .locator('app-baseline-filters')
@@ -41,6 +42,6 @@ test('Baseline: Cancel restores filter changes after editing start date', async 
     .getByRole('button', { name: 'Cancel' })
     .click();
 
-  await page.getByRole('radio', { name: 'Baseline Criteria' }).click();
+  await baselineCriteriaButton.click();
   await expect(startDate).toHaveValue('');
 });
