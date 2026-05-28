@@ -601,7 +601,7 @@ export class ProductService {
       const polarizationMatch = /.*_([AB])_([VH]{4}|[VH]{2})\.(png|kml)/;
       const matched = p.match(polarizationMatch) ?? [];
       if (matched.length > 0) {
-        const [_, frequency, polarization] = [...matched];
+        const [frequency, polarization] = [matched[1], matched[2]];
         productTypeDisplay = `Frequency ${frequency} ${polarization} ${productTypeDisplay}`;
       }
 
