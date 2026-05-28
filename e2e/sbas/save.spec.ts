@@ -14,9 +14,9 @@ test('SBAS: Saved Search', { tag: '@auth' }, async ({ loggedInPage }) => {
       'S1B_IW_SLC__1SDV_20210704T135937_20210704T140004_027645_034CB0_4B2C',
     );
   await loggedInPage
-    .locator('app-baseline-header app-search-button')
-    .getByRole('button', { name: 'SEARCH' })
-    .press('Enter');
+    .locator('app-filters-dropdown')
+    .getByRole('button', { name: 'Filters panel search button' })
+    .click();
   await loggedInPage
     .locator('app-baseline-header app-search-button .arrow-button-toggle')
     .click();

@@ -15,9 +15,9 @@ test('Baseline: Saved filters', { tag: '@auth' }, async ({ loggedInPage }) => {
     .getByLabel('Scene')
     .fill('R1_65192_ST6_F111');
   await loggedInPage
-    .locator('app-baseline-header app-search-button')
-    .getByRole('button', { name: 'SEARCH' })
-    .press('Enter');
+    .locator('app-filters-dropdown')
+    .getByRole('button', { name: 'Filters panel search button' })
+    .click();
   await loggedInPage.getByRole('radio', { name: 'Baseline Criteria' }).click();
 
   await loggedInPage.getByRole('switch', { name: 'Seasonal Search' }).click();
