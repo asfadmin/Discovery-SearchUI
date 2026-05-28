@@ -19,7 +19,6 @@ class ProductFactory {
         browses: [],
         thumbnail: '',
         groupId: '',
-        isUnzippedFile: false,
         isDummyProduct: false,
         metadata: {
           date: moment(),

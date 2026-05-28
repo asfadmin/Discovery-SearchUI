@@ -225,6 +225,21 @@
           <b> {{ 'TILE_ID' | translate }}:</b> {{ tileID }}
         </span>
       }
+      @if (granuleList()) {
+        <span>
+          <b> {{ 'GRANULE_LIST' | translate }}:</b>
+          @if (granuleList().length > maxStringLength) {
+            {{
+              (granuleListMinified() > 1
+                ? 'GRANULE_LIST_COUNTS'
+                : 'GRANULE_LIST_COUNT'
+              ) | translate: { count: granuleListMinified() }
+            }}
+          } @else {
+            {{ granuleList() }}
+          }
+        </span>
+      }
     </div>
     <div class="last-info">
       <app-ci-search></app-ci-search>

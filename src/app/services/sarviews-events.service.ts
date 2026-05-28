@@ -216,7 +216,6 @@ export class SarviewsEventsService {
       thumbnail: '',
       dataset: 'Sentinel-1',
       groupId: 'SARViews',
-      isUnzippedFile: false,
       isDummyProduct: false,
 
       metadata: {
