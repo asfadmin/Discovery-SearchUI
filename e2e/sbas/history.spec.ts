@@ -16,9 +16,9 @@ test('SBAS: Search History', { tag: '@auth' }, async ({ loggedInPage }) => {
     );
   const searchResponse = waitForASFAPIResponse(loggedInPage);
   await loggedInPage
-    .locator('app-baseline-header app-search-button')
-    .getByRole('button', { name: 'SEARCH' })
-    .press('Enter');
+    .locator('app-filters-dropdown')
+    .getByRole('button', { name: 'Filters panel search button' })
+    .click();
   await searchResponse;
   await loggedInPage
     .getByRole('button', { name: 'automatedtesting_fullaccess' })
