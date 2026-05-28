@@ -1,12 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// require('dotenv').config();
-
-/**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
@@ -21,25 +15,24 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   // workers: process.env['CI'] ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: process.env['CI'] ? 'blob' : 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: process.env['PLAYWRIGHT_TEST_BASE_URL'] ?? 'http://localhost:4200',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    trace: process.env['CI'] ? 'on-first-retry' : 'on',
   },
   expect: {
     toHaveScreenshot: {
       maxDiffPixelRatio: 0.2,
     },
+    timeout: 30_000,
   },
-
+  // globalSetup: './e2e/auth.setup',
   /* Configure projects for major browsers */
   projects: [
-    { name: 'setup', testMatch: /.*\.setup\.ts/ },
-
     {
       name: 'chromium',
       use: {
@@ -47,8 +40,6 @@ export default defineConfig({
         viewport: { width: 1920, height: 1080 },
         timezoneId: 'America/New_York',
         bypassCSP: true,
-        // storageState: 'playwright/.auth/user.json',
-        // TODO: this makes all tests authenticated, we probably want to define test suites that use authentication instead of general projects
       },
     },
 
@@ -56,10 +47,11 @@ export default defineConfig({
       name: 'firefox',
       use: {
         ...devices['Desktop Firefox'],
+        viewport: { width: 1920, height: 1080 },
         timezoneId: 'America/New_York',
         bypassCSP: true,
-        viewport: { width: 1920, height: 1080 },
       },
+      grepInvert: /@webgl/, // firefox has WebGL disabled in the github runner, for tests that use this skip
     },
 
     // {

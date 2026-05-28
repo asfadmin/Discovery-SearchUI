@@ -90,8 +90,8 @@
         mat-button
       >
         {{ 'CLEAR' | translate }}
-        @if (selectedDatasetIsNISARFormat) {
-          {{ 'TRACK' | translate }}
+        @if (selectedDatasetIsNISARFormat || prop.isRelevant(p.USE_TRACK)) {
+          {{ 'TRACK' | translate }} / {{ 'FRAME' | translate }}
         } @else {
           {{ 'PATH' | translate }} / {{ 'FRAME' | translate }}
         }

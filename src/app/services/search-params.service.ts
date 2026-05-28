@@ -217,6 +217,10 @@ export class SearchParamsService {
     ),
   );
 
+  private granuleList$ = this.store$
+    .select(filterStore.getGranuleList)
+    .pipe(map((wildcard) => ({ granule_list: wildcard })));
+
   private polarizations$ = this.store$
     .select(filterStore.getPolarizations)
     .pipe(
@@ -321,6 +325,7 @@ export class SearchParamsService {
     this.groupID$,
     this.ariaVersion$,
     this.tileID$,
+    this.granuleList$,
   ]).pipe(
     map((params: any[]) =>
       params.reduce((total, param) => ({ ...total, ...param }), {}),

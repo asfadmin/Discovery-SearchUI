@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from 'e2e/fixtures';
 
 test('Anti-Meridian Granules', async ({ page }) => {
   await page.goto('/');
@@ -6,22 +6,15 @@ test('Anti-Meridian Granules', async ({ page }) => {
   await page
     .getByRole('menuitem', { name: 'ALOS AVNIR-2 Advanced Visible' })
     .click();
+  const dateFilters = page.getByRole('region', {
+    name: 'Date Filters Documentation',
+  });
+
+  await dateFilters.getByRole('textbox', { name: 'Start Date' }).fill('4/30/2010');
+  await dateFilters.getByRole('textbox', { name: 'End Date' }).fill('7/3/2010');
   await page
-    .locator('div')
-    .filter({ hasText: 'Search Type Geographic Search' })
-    .getByText('Start Date')
-    .nth(0)
-    .click();
-  await page.locator('#mat-input-10').fill('4/30/2010');
-  await page
-    .locator('div')
-    .filter({ hasText: 'Search Type Geographic Search' })
-    .getByText('End Date')
-    .nth(0)
-    .click();
-  await page.locator('#mat-input-11').fill('7/3/2010');
-  await page
-    .locator('#mat-button-toggle-8-button')
+    .locator('app-dataset-header')
+    .locator('app-search-button')
     .getByRole('button', { name: 'SEARCH' })
     .click();
   await page

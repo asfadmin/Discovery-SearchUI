@@ -26,6 +26,7 @@
     <mat-datepicker-toggle
       matSuffix
       [for]="startDatePicker"
+      [attr.aria-label]="'OPEN_START_DATE_CALENDAR' | translate"
     ></mat-datepicker-toggle>
     <mat-datepicker
       touchUi="true"
@@ -54,6 +55,7 @@
     <mat-datepicker-toggle
       matSuffix
       [for]="endDatePicker"
+      [attr.aria-label]="'OPEN_END_DATE_CALENDAR' | translate"
     ></mat-datepicker-toggle>
     <mat-datepicker
       touchUi="true"
