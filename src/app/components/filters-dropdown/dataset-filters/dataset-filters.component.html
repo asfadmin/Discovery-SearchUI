@@ -108,7 +108,8 @@
     }
     <mat-expansion-panel
       [expanded]="defaultPanelOpenState"
-      [disabled]="panelIsDisabled">
+      [disabled]="panelIsDisabled"
+    >
       <mat-expansion-panel-header
         [collapsedHeight]="customCollapsedHeight"
         [expandedHeight]="customExpandedHeight"
@@ -117,7 +118,7 @@
           {{ 'GRANULE_LIST' | translate }}
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <app-granule-list-selector/>
+      <app-granule-list-selector />
     </mat-expansion-panel>
     <mat-expansion-panel
       [expanded]="defaultPanelOpenState"

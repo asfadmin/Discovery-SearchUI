@@ -144,10 +144,7 @@
           >
             {{ product.productTypeDisplay }}
           </div>
-          @if (
-            !product.metadata.job &&
-            product.groupId !== 'SARViews'
-          ) {
+          @if (!product.metadata.job && product.groupId !== 'SARViews') {
             <app-copy-to-clipboard
               prompt="{{ 'COPY_FILE_ID' | translate }}"
               [value]="
