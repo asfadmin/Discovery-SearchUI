@@ -96,23 +96,20 @@ class SplitPartial {
   metadataPart?: Partial<CMRProductMetadata>;
 }
 
+function _hash(x: any): number {
+  return Buffer.from(
+    createHash('sha256').update(JSON.stringify(x)).digest('base64'),
+    'base64',
+  ).readUint32BE(0);
+}
+
 export class NestedProductFactory {
   constructor(
     private _product: Readonly<CMRProduct>,
     private _partials: SplitPartial[] = [{}],
   ) {
     this._product = _product;
-    this._partials = _partials.sort(
-      (x, y) =>
-        Buffer.from(
-          createHash('sha256').update(JSON.stringify(x)).digest('base64'),
-          'base64',
-        ).readUint32BE(0) -
-        Buffer.from(
-          createHash('sha256').update(JSON.stringify(y)).digest('base64'),
-          'base64',
-        ).readUint32BE(0),
-    );
+    this._partials = _partials.sort((x, y) => _hash(x) - _hash(y));
   }
 
   build() {
@@ -121,9 +118,9 @@ export class NestedProductFactory {
       return null;
     }
 
-    return this.withPartialCMRProduct(
-      extendChoice.productPart,
-    ).withPartialCMRProductMetadata(extendChoice.metadataPart)._product;
+    return this.withProduct(extendChoice.productPart).withMetadata(
+      extendChoice.metadataPart,
+    )._product;
   }
 
   choose(n: number) {
@@ -151,7 +148,7 @@ export class NestedProductFactory {
       'SEASAT',
     ];
 
-    return this.withPartialCMRProducts(
+    return this.withProducts(
       datasets.map((dataset) => {
         return { dataset: dataset };
       }),
@@ -241,10 +238,10 @@ export class NestedProductFactory {
       return { bytes: stride * v + low };
     });
 
-    return this.withPartialCMRProducts(bytes);
+    return this.withProducts(bytes);
   }
 
-  withPartialCMRProducts(
+  withProducts(
     partials: Iterable<Partial<Omit<CMRProduct, 'metadata'>>>,
   ): NestedProductFactory {
     const newPartials: SplitPartial[] = [];
@@ -266,7 +263,7 @@ export class NestedProductFactory {
     );
   }
 
-  withPartialCMRProductMetadatas(
+  withMetadatas(
     partials: Iterable<Partial<CMRProductMetadata>>,
   ): NestedProductFactory {
     const newPartials: {
@@ -313,15 +310,13 @@ export class NestedProductFactory {
     );
   }
 
-  withPartialCMRProduct(
+  withProduct(
     partial: Partial<Omit<CMRProduct, 'metadata'>>,
   ): NestedProductFactory {
     return this._extendWith(partial);
   }
 
-  withPartialCMRProductMetadata(
-    partial: Partial<CMRProductMetadata>,
-  ): NestedProductFactory {
+  withMetadata(partial: Partial<CMRProductMetadata>): NestedProductFactory {
     return this._extendWithMetadata(partial);
   }
 

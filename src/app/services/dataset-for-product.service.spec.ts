@@ -20,7 +20,7 @@ describe('DatasetForProductService', () => {
       const product = productFactory
         .withBasicInfo('test-scene')
         .withDatasetFull(alos)
-        .withPartialCMRProductMetadata({ instrument: null })
+        .withMetadata({ instrument: null })
         .build();
       expect(service.match(product)).toBe(models.alos);
     });
@@ -28,10 +28,10 @@ describe('DatasetForProductService', () => {
     it('returns avnir for ALOS dataset with AVNIR-2 instrument', () => {
       const product = productFactory
         .withBasicInfo('test-scene')
-        .withPartialCMRProduct({
+        .withProduct({
           dataset: 'ALOS',
         })
-        .withPartialCMRProductMetadata({
+        .withMetadata({
           instrument: 'AVNIR-2',
         })
         .build();
@@ -41,7 +41,7 @@ describe('DatasetForProductService', () => {
     it('returns sentinel_1_bursts for BURST product type', () => {
       const product = productFactory
         .withBasicInfo('test-scene')
-        .withPartialCMRProductMetadata({ productType: 'BURST' })
+        .withMetadata({ productType: 'BURST' })
         .build();
       expect(service.match(product)).toBe(models.sentinel_1_bursts);
     });
@@ -49,7 +49,7 @@ describe('DatasetForProductService', () => {
     it('returns tropo for TROPO-ZENITH product type', () => {
       const product = productFactory
         .withBasicInfo('test-scene')
-        .withPartialCMRProductMetadata({ productType: 'TROPO-ZENITH' })
+        .withMetadata({ productType: 'TROPO-ZENITH' })
         .build();
       expect(service.match(product)).toBe(models.tropo);
     });
@@ -57,7 +57,7 @@ describe('DatasetForProductService', () => {
     it('returns tropo for ECMWF_TROPO product type', () => {
       const product = productFactory
         .withBasicInfo('test-scene')
-        .withPartialCMRProductMetadata({ productType: 'ECMWF_TROPO' })
+        .withMetadata({ productType: 'ECMWF_TROPO' })
         .build();
       expect(service.match(product)).toBe(models.tropo);
     });
@@ -65,7 +65,7 @@ describe('DatasetForProductService', () => {
     it('returns opera_s1 for OPERA product id', () => {
       const product = productFactory
         .withBasicInfo('test-scene')
-        .withPartialCMRProduct({ id: 'OPERA_L2_RTC-S1_T001' })
+        .withProduct({ id: 'OPERA_L2_RTC-S1_T001' })
         .build();
       expect(service.match(product)).toBe(models.opera_s1);
     });
@@ -73,7 +73,7 @@ describe('DatasetForProductService', () => {
     it('returns SENTINEL-1 INTERFEROGRAM (BETA) for S1-GUNW name', () => {
       const product = productFactory
         .withBasicInfo('test-scene')
-        .withPartialCMRProduct({
+        .withProduct({
           name: 'S1-GUNW-D-N-123456-123456-HH-R-N-0001',
         })
         .build();
@@ -90,7 +90,7 @@ describe('DatasetForProductService', () => {
     it('returns sentinel-1 dataset for Sentinel-1A via partial match', () => {
       const product = productFactory
         .withBasicInfo('test-scene')
-        .withPartialCMRProduct({ dataset: 'Sentinel-1A' })
+        .withProduct({ dataset: 'Sentinel-1A' })
         .build();
       expect(service.match(product)).toBe(models.datasets['SENTINEL-1']);
     });
@@ -98,7 +98,7 @@ describe('DatasetForProductService', () => {
     it('returns NISAR for non matching dataset', () => {
       const product = productFactory
         .withBasicInfo('test-scene')
-        .withPartialCMRProduct({ dataset: '' })
+        .withProduct({ dataset: '' })
         .build();
       expect(service.match(product)).toBe(models.datasets.NISAR);
     });
