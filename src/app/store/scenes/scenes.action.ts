@@ -2,7 +2,6 @@ import { Action } from '@ngrx/store';
 
 import {
   CMRProduct,
-  UnzippedFolder,
   ColumnSortDirection,
   SearchType,
   CMRProductPair,
@@ -22,11 +21,6 @@ export enum ScenesActionType {
   SET_IMAGE_BROWSE_PRODUCTS = '[Products-Browse] Set product browse image view',
 
   SET_RESULTS_LOADED = '[Scenes] Set Results Loaded',
-  LOAD_UNZIPPED_PRODUCT = '[Scenes] Load unzipped product',
-  OPEN_UNZIPPED_PRODUCT = '[Scenes] Open unzipped product',
-  ADD_UNZIPPED_PRODUCT = '[Scenes] Add unzipped product',
-  ERROR_LOADING_UNZIPPED = '[Scenes] Error loading unzipped',
-  CLOSE_ZIP_CONTENTS = '[Scenes] Close Zip Contents',
 
   ADD_CMR_DATA_TO_ON_DEMAND_JOBS = '[Scenes] Add CMR Data to On Demand Jobs',
   UPDATE_PRODUCT_WITH_NEW_PROJECT_NAME = '[Scenes] Update product with new project name',
@@ -93,38 +87,6 @@ export class SetSelectedPair implements Action {
   public readonly type = ScenesActionType.SET_SELECTED_PAIR;
 
   constructor(public payload: string[]) {}
-}
-
-export class LoadUnzippedProduct implements Action {
-  public readonly type = ScenesActionType.LOAD_UNZIPPED_PRODUCT;
-
-  constructor(public payload: CMRProduct) {}
-}
-
-export class OpenUnzippedProduct implements Action {
-  public readonly type = ScenesActionType.OPEN_UNZIPPED_PRODUCT;
-
-  constructor(public payload: CMRProduct) {}
-}
-
-export class ErrorLoadingUnzipped implements Action {
-  public readonly type = ScenesActionType.ERROR_LOADING_UNZIPPED;
-
-  constructor(public payload: CMRProduct) {}
-}
-
-export class CloseZipContents implements Action {
-  public readonly type = ScenesActionType.CLOSE_ZIP_CONTENTS;
-
-  constructor(public payload: CMRProduct) {}
-}
-
-export class AddUnzippedProduct implements Action {
-  public readonly type = ScenesActionType.ADD_UNZIPPED_PRODUCT;
-
-  constructor(
-    public payload: { product: CMRProduct; unzipped: UnzippedFolder[] },
-  ) {}
 }
 
 export class SetMaster implements Action {
@@ -200,11 +162,6 @@ export class UpdateProductWithNewProjectName implements Action {
 export type ScenesActions =
   | SetScenes
   | ClearScenes
-  | OpenUnzippedProduct
-  | AddUnzippedProduct
-  | LoadUnzippedProduct
-  | CloseZipContents
-  | ErrorLoadingUnzipped
   | SetSelectedScene
   | SetSelectedPair
   | SetResultsLoaded

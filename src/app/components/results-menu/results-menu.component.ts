@@ -82,7 +82,6 @@ export class ResultsMenuComponent implements OnInit, OnDestroy {
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
-  public isUnzipOpen: boolean;
   public searchType: models.SearchType;
   public SearchTypes = models.SearchType;
 
@@ -101,14 +100,6 @@ export class ResultsMenuComponent implements OnInit, OnDestroy {
       this.store$
         .select(searchStore.getSearchType)
         .subscribe((searchType) => (this.searchType = searchType)),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(scenesStore.getShowUnzippedProduct)
-        .subscribe(
-          (showUnzippedProduct) => (this.isUnzipOpen = showUnzippedProduct),
-        ),
     );
   }
 

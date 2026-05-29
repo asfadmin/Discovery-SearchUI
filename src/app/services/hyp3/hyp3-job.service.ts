@@ -238,7 +238,6 @@ export class Hyp3JobService {
       browses: ['/assets/no-browse.png'],
       thumbnail: '/assets/no-thumb.png',
       groupId: '',
-      isUnzippedFile: false,
       isDummyProduct: true,
       metadata: {
         date: moment.utc('1970-01-01T00:00:00+00:00'),
