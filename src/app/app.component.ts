@@ -6,6 +6,8 @@ import {
   ViewChild,
   HostListener,
   inject,
+  effect,
+  Injector,
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
@@ -143,16 +145,18 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   public interactionTypes = models.MapInteractionModeType;
   public searchType: models.SearchType;
   public kioskMode = false;
-
+  private injector = inject(Injector);
   private helpTopic: string | null;
 
   private subs = new SubSink();
+  public hyp3PlusMode = this.store$.selectSignal(searchStore.getHyp3PlusMode);
 
   @HostListener('window:keydown.control./', ['$event'])
   handleKeyDown(_event: Event) {
     console.log('Toggling kiosk mode. Use "ctrl+/" to re-toggle');
     this.store$.dispatch(new searchStore.setSearchKioskMode(!this.kioskMode));
   }
+
   public ngOnInit(): void {
     console.log('To toggle kiosk mode, use "ctrl+/"');
     this.store$.dispatch(new hyp3Store.LoadCosts());
@@ -183,6 +187,22 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         .select(searchStore.getKioskMode)
         .subscribe((kioskMode) => (this.kioskMode = kioskMode)),
     );
+    effect(
+      () => {
+        const iconPath = this.hyp3PlusMode()
+          ? '../assets/icons/hyp3_plus.svg'
+          : '../assets/icons/hyp3.svg';
+        this.matIconRegistry.addSvgIcon(
+          'hyp3',
+          this.domSanitizer.bypassSecurityTrustResourceUrl(iconPath),
+        );
+        if (this.hyp3PlusMode()) {
+          this.hyp3Service.setApiUrl('https://hyp3-plus.asf.alaska.edu');
+        }
+      },
+      { injector: this.injector },
+    );
+
     this.subs.add(
       this.store$.select(uiStore.getHelpDialogTopic).subscribe((topic) => {
         const previousTopic = this.helpTopic;
@@ -327,10 +347,14 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     );
 
     this.subs.add(
-      this.store$.select(userStore.getUserProfile).subscribe((profile) => {
+      combineLatest([
+        this.store$.select(userStore.getUserProfile),
+        this.store$.select(searchStore.getHyp3PlusMode),
+      ]).subscribe(([profile, hyp3Plus]) => {
         if (
           profile.hyp3BackendUrl &&
-          profile.hyp3BackendUrl !== this.hyp3Service.baseUrl
+          profile.hyp3BackendUrl !== this.hyp3Service.baseUrl &&
+          !hyp3Plus
         ) {
           this.hyp3Service.setApiUrl(profile.hyp3BackendUrl);
           this.store$.dispatch(new searchStore.ClearSearch());
@@ -497,10 +521,12 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         tapToDismiss: false,
       };
 
+      const cookieBannerMessage = this.translate.instant(
+        'COOKIE_BANNER_MESSAGE',
+      );
+      const learnMore = this.translate.instant('LEARN_MORE');
       const toast = this.notificationService.info(
-        'This website uses cookies to ensure you get the best \
-        experience on our website. \
-        <a href="https://cookiesandyou.com/" target="_blank">Learn More</a>',
+        `${cookieBannerMessage} <a href="https://cookiesandyou.com/" target="_blank">${learnMore}</a>`,
         '',
         options,
       );
@@ -517,7 +543,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subs.add(this.ccService.revokeChoice$.subscribe((_) => _));
 
     const matIcons = [
-      'hyp3',
       'gridlines',
       'Earthquake_inactive',
       'Earthquake',

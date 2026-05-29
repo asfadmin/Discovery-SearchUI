@@ -19,6 +19,7 @@ import { ClipboardService } from 'ngx-clipboard';
 import { SaveSearchDialogComponent } from '../save-search-dialog';
 
 import Prism from 'prismjs';
+import 'prismjs/components/prism-python';
 import { CdkScrollable } from '@angular/cdk/scrolling';
 import { DocsModalComponent } from '../docs-modal/docs-modal.component';
 import { MatButton } from '@angular/material/button';
@@ -51,12 +52,12 @@ export class CodeExportComponent implements OnInit, AfterViewInit {
   notificationService = inject(NotificationService);
   private language = inject(AsfLanguageService);
 
-  public codeStuff: string;
+  public codeStuff = '';
 
   public codeExportTypes = CodeExportType;
-  public codeExportType: CodeExportType;
+  public codeExportType: CodeExportType = CodeExportType.ASF_SEARCH;
 
-  @ViewChild('codeblock', { static: false }) divHello: ElementRef;
+  @ViewChild('codeblock', { static: false }) divHello!: ElementRef;
 
   ngOnInit(): void {
     this.codeStuff = this.data.codeStuff;

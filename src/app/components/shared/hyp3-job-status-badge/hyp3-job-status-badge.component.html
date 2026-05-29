@@ -1,37 +1,48 @@
-@if (isExpired(job) && !isFileDetails) {
+@if (isExpired(job())) {
   <mat-chip
     class="clickable"
     [matMenuTriggerFor]="resubmitJobMenu"
     color="primary"
     >{{ 'EXPIRED' | translate }}...
   </mat-chip>
-} @else if (isFailed(job) && !isFileDetails) {
+} @else if (isFailed(job())) {
   <mat-chip
     class="clickable"
     [matMenuTriggerFor]="resubmitJobMenu"
     color="primary"
     >{{ 'FAILED' | translate }}...
   </mat-chip>
-} @else if (isExpired(job) && isFileDetails) {
-  <mat-chip color="primary">{{ 'EXPIRED' | translate }}</mat-chip>
-} @else if (isPending(job)) {
+} @else if (isPending(job())) {
   <mat-chip color="secondary">{{ 'PENDING' | translate }}</mat-chip>
-} @else if (isFailed(job) && isFileDetails) {
-  <mat-chip color="accent">{{ 'FAILED' | translate }}</mat-chip>
-} @else if (isRunning(job)) {
+} @else if (isRunning(job())) {
   <mat-chip color="secondary">{{ 'RUNNING' | translate }}</mat-chip>
 }
 
 <mat-menu #resubmitJobMenu="matMenu">
   <button
-    (click)="onReviewExpiredJob()"
+    (click)="onSubmitExpiredJob()"
     [disabled]="remaining < 1"
     mat-menu-item
   >
     {{ 'RESUBMIT_JOB' | translate }}...
   </button>
 
-  <button (click)="onReviewExpiredJobs()" mat-menu-item>
-    {{ 'REQUEUE_PROJECT' | translate }} <b>({{ job.name }})</b>...
-  </button>
+  @if (expiredJobs.length > 0 || failedJobs.length > 0) {
+    <button mat-menu-item [matMenuTriggerFor]="requeueProjectMenu">
+      {{ 'REQUEUE_PROJECT' | translate }} <b>({{ job().name }})</b>...
+    </button>
+  }
+</mat-menu>
+
+<mat-menu #requeueProjectMenu="matMenu">
+  @if (expiredJobs.length > 0) {
+    <button (click)="onQueueJobs(expiredJobs)" mat-menu-item>
+      {{ 'REQUEUE_EXPIRED' | translate }} ({{ expiredJobs.length }} jobs)
+    </button>
+  }
+  @if (failedJobs.length > 0) {
+    <button (click)="onQueueJobs(failedJobs)" mat-menu-item>
+      {{ 'REQUEUE_FAILED' | translate }} ({{ failedJobs.length }} jobs)
+    </button>
+  }
 </mat-menu>

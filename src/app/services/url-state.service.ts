@@ -21,6 +21,7 @@ import * as filterStore from '@store/filters';
 import * as uiStore from '@store/ui';
 import {
   MakeSearch,
+  SetHyp3PlusMode,
   setSearchKioskMode,
   SetSearchType,
 } from '@store/search/search.action';
@@ -67,6 +68,11 @@ export class UrlStateService {
     'displacement-test.asf.alaska.edu',
   ];
 
+  private hyp3PlusNames = [
+    'vertex-plus.asf.alaska.edu',
+    'vertex-plus-test.asf.alaska.edu',
+  ];
+
   public isDefaultSearch$ = this.activatedRoute.queryParams.pipe(
     map((params) => {
       const keys = Object.keys(params);
@@ -82,6 +88,11 @@ export class UrlStateService {
     this.kioskMode = this.displacementHostNames.includes(
       window.location.hostname,
     );
+
+    const hyp3Plus = this.hyp3PlusNames.includes(window.location.hostname);
+    if (hyp3Plus) {
+      this.store$.dispatch(new SetHyp3PlusMode(true));
+    }
     let params = [];
     if (this.kioskMode) {
       this.store$.dispatch(new setSearchKioskMode(true));
@@ -1302,13 +1313,13 @@ export class UrlStateService {
 
   private loadFullBurstIDs = (ids: string): Action => {
     const list = ids.split(',');
-    return new filterStore.setFullBurst(list);
+    return new filterStore.setFullBursts(list);
   };
 
   private loadOperaBurstIDs = (ids: string): Action => {
     // Deep links from opera products use '-' instead of '_'
     const list = ids.split(',').map((id) => id.replaceAll('-', '_'));
-    return new filterStore.setOperaBurstID(list);
+    return new filterStore.setOperaBurstIDs(list);
   };
 
   private loadGroupId = (id: string): Action => {

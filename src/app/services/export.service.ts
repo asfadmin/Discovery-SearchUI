@@ -6,6 +6,7 @@ import { combineLatest, first, map, switchMap } from 'rxjs';
 import { SearchParamsService } from './search-params.service';
 import * as hyp3Store from '@store/hyp3';
 import { AsfApiService } from './asf-api.service';
+import { Hyp3ApiService } from './hyp3';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +15,7 @@ export class ExportService {
   private searchParamsService = inject(SearchParamsService);
   private store$ = inject<Store<AppState>>(Store);
   private apiService = inject(AsfApiService);
+  private hyp3APIService = inject(Hyp3ApiService);
 
   public convertSearchAPIQueryToAsfSearch =
     this.searchParamsService.getParams.pipe(
@@ -35,8 +37,12 @@ export class ExportService {
           ? this.hyp3JobIdSearch(params.jobIds)
           : this.hyp3FindJobsSearch(params);
 
+      const deploymentSetting = this.hyp3APIService.isDefaultApi()
+        ? ''
+        : `, api_url='${this.hyp3APIService.apiUrl}'`;
       const python = `from hyp3_sdk import HyP3
-hyp3 = HyP3(username='${username}', password=MyPassword)
+from getpass import getpass
+hyp3 = HyP3(username='${username}', password=getpass('EDL Password')${deploymentSetting})
 ${pythonSearchCode}
 `;
       return python;

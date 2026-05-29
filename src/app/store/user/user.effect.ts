@@ -427,7 +427,7 @@ export class UserEffects {
         Array.from(datasetFilter.flightDirections),
       ),
       new filterStore.SelectMission(datasetFilter.selectedMission),
-      new filterStore.setFullBurst(datasetFilter.fullBurstIDs),
+      new filterStore.setFullBursts(datasetFilter.fullBurstIDs),
       new filterStore.setUseCalibrationData(datasetFilter.useCalibrationData),
     ];
 
@@ -463,7 +463,7 @@ export class UserEffects {
   }
   private setTimeseriesFilters(timeseriesFilter: TimeseriesFiltersType) {
     const actions = [
-      new filterStore.setFullBurst(timeseriesFilter.fullBurstIDs),
+      new filterStore.setFullBursts(timeseriesFilter.fullBurstIDs),
     ];
 
     return actions;

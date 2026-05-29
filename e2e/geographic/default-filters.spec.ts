@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from 'e2e/fixtures';
 
 test('NISAR default filter sticks around', async ({ page }) => {
   await page.goto('/');

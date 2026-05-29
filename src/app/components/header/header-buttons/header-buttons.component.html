@@ -16,7 +16,7 @@
               svgIcon="hyp3"
               [matBadge]="queuedCustomProducts.length"
               [matBadgeColor]="
-                this.queuedProducts.length > 0
+                this.queuedCustomProducts.length > 0
                   ? this.accentPalette
                   : this.primaryPalette
               "
@@ -41,7 +41,7 @@
               {{ 'SUBMITTED_PRODUCTS' | translate }}
             </button>
             <button mat-menu-item (click)="onOpenOnDemandDocs()">
-              {{ 'ON_DEMAND_HY_P3_DOCS' | translate }}
+              {{ 'ON_DEMAND_HYP3_DOCS' | translate }}
             </button>
           </mat-menu>
           <button
@@ -314,7 +314,7 @@
           {{ 'SUBMITTED_PRODUCTS' | translate }}
         </button>
         <button mat-menu-item (click)="onOpenOnDemandDocs()">
-          {{ 'ON_DEMAND_HY_P3_DOCS' | translate }}
+          {{ 'ON_DEMAND_HYP3_DOCS' | translate }}
         </button>
       </mat-menu>
       <mat-icon
@@ -441,7 +441,7 @@
     @if ((breakpoint$ | async) === breakpoints.MOBILE) {
       <div>
         <mat-icon>book</mat-icon>
-        {{ 'HY_P3_USER_GUIDE' | translate | titlecase }}
+        {{ 'HYP3_USER_GUIDE' | translate | titlecase }}
       </div>
     } @else {
       <div class="menu-item">
@@ -454,7 +454,7 @@
               'YOU_CAN_HAVE_ASF_PERFORM_SAR_PROCESSING_FOR_YOU_ON_DEMAND_THE_ON_DEMAND_SYSTEM'
                 | translate
             }}
-            {{ 'IS_POWERED_BY_THE_HY_P3_READ_ABOUT_IT_HERE' | translate }}
+            {{ 'IS_POWERED_BY_THE_HYP3_READ_ABOUT_IT_HERE' | translate }}
           </div>
         </div>
         <div class="menu-item-aside">

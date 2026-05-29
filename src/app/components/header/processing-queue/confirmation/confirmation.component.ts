@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, Pipe, PipeTransform } from '@angular/core';
 import {
   MatDialogRef,
   MAT_DIALOG_DATA,
@@ -6,6 +6,7 @@ import {
   MatDialogContent,
   MatDialogActions,
 } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
@@ -29,6 +30,14 @@ import {
 } from '@angular/material/list';
 import { MatButton } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+
+@Pipe({ name: 'shorthyp3name', standalone: true })
+class ShortHyp3Name implements PipeTransform {
+  transform(url: string): string {
+    return url.match(/https?:\/\/(?:www\.)?([^.]+)/)?.[1] ?? '';
+  }
+}
 
 @Component({
   selector: 'app-confirmation',
@@ -48,8 +57,11 @@ import { TranslateModule } from '@ngx-translate/core';
     NgPluralCase,
     MatDialogActions,
     MatButton,
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
 
     TitleCasePipe,
+    ShortHyp3Name,
     TranslateModule,
   ],
 })
@@ -134,7 +146,8 @@ export class ConfirmationComponent implements OnInit {
     let current = 0;
 
     this.isQueueSubmitProcessing = true;
-    this.progress = null;
+    this.progress = 0;
+    this.validateOnly = false;
 
     from(hyp3JobRequestBatches)
       .pipe(
@@ -145,8 +158,8 @@ export class ConfirmationComponent implements OnInit {
               catchError((resp) => {
                 if (resp.error) {
                   if (
-                    resp.error.detail === 'No authorization token provided' ||
-                    resp.error.detail === 'Provided apikey is not valid'
+                    resp.error?.detail === 'No authorization token provided' ||
+                    resp.error?.detail === 'Provided apikey is not valid'
                   ) {
                     this.notificationService.error(
                       this.language.translate.instant('AUTHORIZATION_EXPIRED'),

@@ -1,21 +1,6 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- NASA Google Tag Manager -->
-    <script>
-      (function (w, d, s, l, i) {
-        w[l] = w[l] || [];
-        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-        var f = d.getElementsByTagName(s)[0],
-          j = d.createElement(s),
-          dl = l != 'dataLayer' ? '&l=' + l : '';
-        j.async = true;
-        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-        f.parentNode.insertBefore(j, f);
-      })(window, document, 'script', 'dataLayer', 'GTM-WNP7MLF');
-    </script>
-    <!-- End NASA Google Tag Manager -->
-
     <meta charset="utf-8" />
     <title>ASF Data Search</title>
     <base href="/" />
@@ -28,27 +13,11 @@
       content="Alaska Satellite Facility: find and download SAR, InSAR, and other data."
     />
 
-    <!--  Crazy Egg -->
-    <script
-      type="text/javascript"
-      src="//script.crazyegg.com/pages/scripts/0013/2090.js"
-      async="async"
-    ></script>
-
     <link
       href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i"
       rel="stylesheet"
     />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/6.5.95/css/materialdesignicons.min.css"
-      media="all"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
-    />
+
     <!--  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">-->
     <link
       rel="stylesheet"
@@ -77,6 +46,21 @@
         const redirect = `https://search.asf.alaska.edu${window.location.pathname}${window.location.hash}`;
         window.location = redirect;
       }
+
+      <!-- NASA Google Tag Manager -->
+      if (window.location.hostname.toLowerCase().startsWith('vertex-plus')) {
+        (function (w, d, s, l, i) {
+          w[l] = w[l] || [];
+          w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+          var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s),
+            dl = l != 'dataLayer' ? '&l=' + l : '';
+          j.async = true;
+          j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+          f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-WNP7MLF');
+      }
+      <!-- End NASA Google Tag Manager -->
     </script>
 
     <style>
@@ -763,11 +747,6 @@
       </div>
     </div>
 
-    <!--  ExpertRec Search Componenet -->
-    <!--  <div style="position: fixed; display: block; width: 185px; height: 30px; right: 25px; top: 104px; z-index: 999;">-->
-    <!--    <ci-search></ci-search>-->
-    <!--  </div>-->
-
     <app-root></app-root>
 
     <link
@@ -780,31 +759,32 @@
     />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.2.0/wNumb.min.js"></script>
-    <script
-      src="https://fbm.earthdata.nasa.gov/for/ASF/feedback.js"
-      type="text/javascript"
-    ></script>
+    <script>
+      if (!window.location.hostname.toLowerCase().startsWith('vertex-plus')) {
+        const tophat = document.createElement('script');
+        tophat.src = 'https://cdn.earthdata.nasa.gov/tophat2/tophat2.js';
+        tophat.id = 'earthdata-tophat-script';
+        tophat.async = true;
+        tophat.defer = true;
+        tophat.dataset.showFbm = 'true';
+        tophat.dataset.showStatus = 'false';
+        tophat.dataset.currentDaac = 'ASF DAAC';
+        document.currentScript.after(tophat);
 
-    <script src="https://cdn.jsdelivr.net/npm/web-streams-polyfill@2.0.2/dist/ponyfill.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/streamsaver@2.0.3/StreamSaver.min.js"></script>
+        const feedbackScript = document.createElement('script');
+        feedbackScript.src =
+          'https://fbm.earthdata.nasa.gov/for/ASF/feedback.js';
+        tophat.after(feedbackScript);
 
-    <script type="text/javascript">
-      feedback.init({
-        showIcon: false,
-        title: 'How can we help you?',
-        subject: '',
-        details: '',
-      });
+        feedbackScript.onload = () => {
+          feedback.init({
+            showIcon: false,
+            title: 'How can we help you?',
+            subject: '',
+            details: '',
+          });
+        };
+      }
     </script>
-
-    <script
-      type="text/javascript"
-      src="https://cdn.earthdata.nasa.gov/tophat2/tophat2.js"
-      id="earthdata-tophat-script"
-      data-show-fbm="true"
-      data-show-status="false"
-      data-current-daac="ASF DAAC"
-    ></script>
   </body>
 </html>

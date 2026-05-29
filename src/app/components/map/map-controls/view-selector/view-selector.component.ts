@@ -6,11 +6,11 @@ import { AppState } from '@store';
 import * as mapStore from '@store/map';
 import * as searchStore from '@store/search';
 
-import { MatButton } from '@angular/material/button';
-import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatIcon } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 import { MapViewType, SearchType } from '@models';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatTooltip } from '@angular/material/tooltip';
 
 // Declare GTM dataLayer array.
 declare global {
@@ -23,15 +23,7 @@ declare global {
   selector: 'app-view-selector',
   templateUrl: './view-selector.component.html',
   styleUrls: ['./view-selector.component.scss'],
-  imports: [
-    MatButton,
-    MatMenuTrigger,
-
-    MatIcon,
-    MatMenu,
-    MatMenuItem,
-    TranslateModule,
-  ],
+  imports: [MatIcon, TranslateModule, MatTooltip, MatButtonToggleModule],
 })
 export class ViewSelectorComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
