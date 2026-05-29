@@ -24,7 +24,8 @@ import { waitForASFAPIResponse } from 'e2e/helpers';
     await page.getByRole('button', { name: 'Sentinel-' }).click();
     await page.getByRole('menuitem', { name: menuSelector }).click();
     await page
-      .locator('#mat-button-toggle-8-button')
+      .locator('app-dataset-header')
+      .locator('app-search-button')
       .getByRole('button', { name: 'SEARCH' })
       .click();
     await waitForASFAPIResponse(page);

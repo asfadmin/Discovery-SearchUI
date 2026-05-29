@@ -15,7 +15,6 @@ import { HelpMapControlsComponent } from './help-pages/help-map-controls/help-ma
 import { HelpFiltersComponent } from './help-pages/help-filters/help-filters.component';
 import { HelpSavedSearchesComponent } from './help-pages/help-saved-searches/help-saved-searches.component';
 import { HelpNewStuffComponent } from './help-pages/help-new-stuff/help-new-stuff.component';
-import { HelpUnzippingComponent } from './help-pages/help-unzipping/help-unzipping.component';
 import { HelpDownloadQueueComponent } from './help-pages/help-download-queue/help-download-queue.component';
 import { HelpExportOptionsComponent } from './help-pages/help-export-options/help-export-options.component';
 import { HelpMoreLikeThisComponent } from './help-pages/help-more-like-this/help-more-like-this.component';
@@ -39,7 +38,6 @@ import { TranslateModule } from '@ngx-translate/core';
     HelpFiltersComponent,
     HelpSavedSearchesComponent,
     HelpNewStuffComponent,
-    HelpUnzippingComponent,
     HelpDownloadQueueComponent,
     HelpExportOptionsComponent,
     HelpMoreLikeThisComponent,

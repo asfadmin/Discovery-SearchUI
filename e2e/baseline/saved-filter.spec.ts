@@ -15,13 +15,15 @@ test('Baseline: Saved filters', { tag: '@auth' }, async ({ loggedInPage }) => {
     .getByLabel('Scene')
     .fill('R1_65192_ST6_F111');
   await loggedInPage
-    .locator('#mat-button-toggle-6-button')
-    .getByRole('button', { name: 'SEARCH' })
+    .locator('app-filters-dropdown')
+    .getByRole('button', { name: 'Filters panel search button' })
     .click();
   await loggedInPage.getByRole('radio', { name: 'Baseline Criteria' }).click();
 
   await loggedInPage.getByRole('switch', { name: 'Seasonal Search' }).click();
-  await loggedInPage.locator('#mat-button-toggle-7').click();
+  await loggedInPage
+    .locator('.dataset-filters-card .footer app-search-button .arrow-button-toggle')
+    .click();
   await loggedInPage.getByRole('menuitem', { name: 'Saved Filters' }).click();
   await loggedInPage.getByRole('menuitem', { name: 'Save Filters' }).click();
   await loggedInPage.getByRole('button', { name: 'Save Filters' }).click();

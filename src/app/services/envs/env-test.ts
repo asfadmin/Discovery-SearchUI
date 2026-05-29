@@ -6,7 +6,6 @@ export const env = {
     urs_client_id: 'BO_n7nTIlMljdvU6kRRB3g',
     banner: 'https://banners.asf.alaska.edu',
     user_data: 'https://appdata.asf.alaska.edu',
-    unzip: 'https://unzip.asf.alaska.edu',
     bulk_download: 'https://bulk-download.asf.alaska.edu',
   },
   test: {
@@ -17,7 +16,6 @@ export const env = {
     urs_client_id: 'BO_n7nTIlMljdvU6kRRB3g',
     banner: 'https://banners.asf.alaska.edu',
     user_data: 'https://appdata-test.asf.alaska.edu',
-    unzip: 'https://unzip.asf.alaska.edu',
     bulk_download: 'https://bulk-download.asf.alaska.edu',
   },
   defaultEnv: 'test',

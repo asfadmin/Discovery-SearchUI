@@ -11,6 +11,7 @@
         <mat-button-toggle>
           <button
             (click)="onDoSearch()"
+            [attr.aria-label]="ariaLabel || null"
             [disabled]="
               (!(canSearch$ | async) && !(isMaxResultsLoading$ | async)) ||
               ((isFrameSelectionEnabled$ | async) &&

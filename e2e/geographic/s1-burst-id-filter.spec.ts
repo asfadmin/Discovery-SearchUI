@@ -11,7 +11,8 @@ test('S1 Burst ID filter returns matching results', async ({ page }) => {
 
   const responsePromise = waitForASFAPIResponse(page);
   await page
-    .locator('#mat-button-toggle-6-button')
+    .locator('app-filters-dropdown')
+    .locator('app-search-button')
     .getByRole('button', { name: 'SEARCH' })
     .click();
   await responsePromise;
@@ -19,5 +20,7 @@ test('S1 Burst ID filter returns matching results', async ({ page }) => {
   await expect(page.locator('app-info-bar')).toContainText(
     'Full Burst ID: 088_187244_IW3',
   );
-  await expect(page.locator('mat-card-header').first()).toBeVisible();
+  await expect(page.locator('mat-card-header').first()).toContainText(
+    'S1_187244_IW3_',
+  );
 });

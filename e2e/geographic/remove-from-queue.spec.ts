@@ -15,9 +15,7 @@ test('Geographic: remove scene files from download queue', async ({ page }) => {
     .locator('app-filters-dropdown')
     .locator('app-search-button')
     .getByRole('button', { name: 'SEARCH' });
-  await searchButton.scrollIntoViewIfNeeded();
-  await searchButton.focus();
-  await page.keyboard.press('Enter');
+  await searchButton.click();
   await searchResponse;
 
   const firstScene = page.locator('app-scene').first();
@@ -27,7 +25,6 @@ test('Geographic: remove scene files from download queue', async ({ page }) => {
     .first();
 
   await expect(firstScene).toBeVisible();
-  await firstScene.scrollIntoViewIfNeeded();
   await expect(addToDownloadsIcon).toHaveCount(1);
 
   await addToDownloadsIcon.click();

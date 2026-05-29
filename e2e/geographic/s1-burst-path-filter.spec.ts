@@ -12,11 +12,14 @@ test('S1 Burst path filter returns matching results', async ({ page }) => {
 
   const responsePromise = waitForASFAPIResponse(page);
   await page
-    .locator('#mat-button-toggle-6-button')
+    .locator('app-filters-dropdown')
+    .locator('app-search-button')
     .getByRole('button', { name: 'SEARCH' })
     .click();
   await responsePromise;
 
   await expect(page.locator('app-info-bar')).toContainText('Path : 86 - 86');
-  await expect(page.locator('mat-card-header').first()).toBeVisible();
+  await expect(page.locator('mat-card-header').first()).toContainText(
+    'S1_184644_IW2_',
+  );
 });
