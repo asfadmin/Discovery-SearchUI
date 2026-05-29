@@ -4,7 +4,6 @@ import { ScenesActionType, ScenesActions } from './scenes.action';
 
 import {
   CMRProduct,
-  UnzippedFolder,
   ColumnSortDirection,
   SarviewsEvent,
   SarviewsProduct,
@@ -26,9 +25,6 @@ export interface ScenesState {
   areResultsLoaded: boolean;
   scenes: Record<string, string[]>;
   timeseriesResults: any;
-  unzipped: Record<string, UnzippedFolder[]>;
-  openUnzippedProduct: string | null;
-  productUnzipLoading: string | null;
   selected: string | null;
   master: string | null;
   filterMaster: string | null;
@@ -51,9 +47,6 @@ export const initState: ScenesState = {
   selectedSarviewsProduct: null,
   selectedSarviewsEventProducts: [],
   selectedPair: null,
-  unzipped: {},
-  productUnzipLoading: null,
-  openUnzippedProduct: null,
   products: {},
   areResultsLoaded: false,
   timeseriesResults: {},
@@ -159,9 +152,6 @@ export function scenesReducer(
         areResultsLoaded: true,
         products,
         scenes,
-        unzipped: {},
-        productUnzipLoading: null,
-        openUnzippedProduct: null,
       };
     }
 
@@ -208,8 +198,6 @@ export function scenesReducer(
       return {
         ...state,
         selected: action.payload,
-        productUnzipLoading: null,
-        openUnzippedProduct: null,
       };
     }
 
@@ -217,8 +205,6 @@ export function scenesReducer(
       return {
         ...state,
         selectedPair: action.payload,
-        productUnzipLoading: null,
-        openUnzippedProduct: null,
       };
     }
 
@@ -271,34 +257,6 @@ export function scenesReducer(
       };
     }
 
-    case ScenesActionType.OPEN_UNZIPPED_PRODUCT: {
-      return {
-        ...state,
-        openUnzippedProduct: action.payload.id,
-      };
-    }
-
-    case ScenesActionType.LOAD_UNZIPPED_PRODUCT: {
-      return {
-        ...state,
-        productUnzipLoading: action.payload.id,
-        openUnzippedProduct: action.payload.id,
-      };
-    }
-
-    case ScenesActionType.ADD_UNZIPPED_PRODUCT: {
-      const unzipped = { ...state.unzipped };
-      const product = action.payload.product;
-
-      unzipped[product.id] = action.payload.unzipped;
-
-      return {
-        ...state,
-        unzipped,
-        productUnzipLoading: null,
-      };
-    }
-
     case ScenesActionType.SET_PERPENDICULAR_SORT_DIRECTION: {
       return {
         ...state,
@@ -310,21 +268,6 @@ export function scenesReducer(
       return {
         ...state,
         temporalSort: action.payload,
-      };
-    }
-
-    case ScenesActionType.ERROR_LOADING_UNZIPPED: {
-      return {
-        ...state,
-        productUnzipLoading: null,
-        openUnzippedProduct: null,
-      };
-    }
-
-    case ScenesActionType.CLOSE_ZIP_CONTENTS: {
-      return {
-        ...state,
-        openUnzippedProduct: null,
       };
     }
 
@@ -615,27 +558,6 @@ export const getSelectedSarviewsEvent = createSelector(
 export const getSelectedSarviewsProduct = createSelector(
   getScenesState,
   (state: ScenesState) => state.selectedSarviewsProduct,
-);
-
-export const getUnzipLoading = createSelector(
-  getScenesState,
-  (state: ScenesState) => state.productUnzipLoading,
-);
-
-export const getUnzippedProducts = createSelector(
-  getScenesState,
-  (state: ScenesState) => state.unzipped,
-);
-
-export const getOpenUnzippedProduct = createSelector(
-  getScenesState,
-  (state: ScenesState) => state.products[state.openUnzippedProduct] || null,
-);
-
-export const getShowUnzippedProduct = createSelector(
-  getScenesState,
-  (state: ScenesState) =>
-    state.openUnzippedProduct && !state.productUnzipLoading,
 );
 
 export const getMasterName = createSelector(

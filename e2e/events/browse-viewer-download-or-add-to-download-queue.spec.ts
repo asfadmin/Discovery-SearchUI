@@ -24,7 +24,6 @@ test('Browse Viewer: Download or Add to Download Queue', async ({ page }) => {
   await expect(page.locator('.product-list-header')).toContainText('Files');
 
   const browseImage = page.locator('app-scene-detail .browse-img').last();
-  await expect(browseImage).toBeVisible();
   await browseImage.click();
 
   await expect(page.locator('.browse-dialog')).toBeVisible();

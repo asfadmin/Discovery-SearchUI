@@ -16,7 +16,6 @@ export interface CMRProduct {
   thumbnail: string;
   dataset: string;
   groupId: string;
-  isUnzippedFile: boolean;
   isDummyProduct: boolean;
   virtual?: boolean;
 

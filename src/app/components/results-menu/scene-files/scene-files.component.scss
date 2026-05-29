@@ -13,10 +13,6 @@ $thumb-size: 50px;
   height: 100%;
 }
 
-.zip-contents {
-  padding-bottom: 20px;
-}
-
 .dem-warning {
   @include themify($themes) {
     background-color: lighten(themed('primary-light'), 10%);

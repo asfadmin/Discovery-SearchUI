@@ -52,7 +52,8 @@ test('Selecting Multiple Campaigns', async ({ page }) => {
     .first()
     .click();
   await page
-    .locator('#mat-button-toggle-6-button')
+    .locator('app-filters-dropdown')
+    .locator('app-search-button')
     .getByRole('button', { name: 'SEARCH' })
     .click();
   await waitForASFAPIResponse(page);

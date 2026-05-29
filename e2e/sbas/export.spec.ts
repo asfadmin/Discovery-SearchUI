@@ -15,8 +15,8 @@ test('SBAS Download Pair CSV', async ({ page }) => {
       'S1B_WV_SLC__1SSV_20200720T132328_20200720T135106_022555_02ACF6_F823',
     );
   await page
-    .getByText('Cancel SEARCH arrow_drop_down')
-    .getByRole('button', { name: 'SEARCH' })
+    .locator('app-filters-dropdown')
+    .getByRole('button', { name: 'Filters panel search button' })
     .click();
   const downloadPromise = page.waitForEvent('download');
   await page.getByRole('radiogroup').filter({ hasText: 'get_app' }).click();
