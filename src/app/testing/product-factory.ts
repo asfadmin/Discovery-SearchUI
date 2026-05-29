@@ -45,7 +45,8 @@ export class ProductFactory {
         bytes: 100 * 1000000,
         dataset: 'SENTINEL-1',
         browses: [],
-        thumbnail: '',
+        thumbnail:
+          'https://datapool.asf.alaska.edu/BROWSE/SC/S1C_IW_GRDH_1SDV_20260529T164032_20260529T164054_007871_010017_2BB7.jpg',
         groupId: '',
         isDummyProduct: false,
         metadata: {
