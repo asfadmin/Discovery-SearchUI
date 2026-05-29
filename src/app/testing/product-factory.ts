@@ -1,4 +1,9 @@
-import { CMRProduct, CMRProductMetadata, FlightDirection } from '@models';
+import {
+  CMRProduct,
+  CMRProductMetadata,
+  FlightDirection,
+  Dataset,
+} from '@models';
 
 import {
   airsar,
@@ -21,6 +26,8 @@ import {
 } from '@models/datasets';
 
 import moment from 'moment';
+
+import { createHash } from 'crypto';
 
 function createProduct(product: CMRProduct): CMRProduct {
   return product;
@@ -92,7 +99,20 @@ export class NestedProductFactory {
   constructor(
     private _product: Readonly<CMRProduct>,
     private _partials: SplitPartial[] = [{}],
-  ) {}
+  ) {
+    this._product = _product;
+    this._partials = _partials.sort(
+      (x, y) =>
+        Buffer.from(
+          createHash('sha256').update(JSON.stringify(x)).digest('base64'),
+          'base64',
+        ).readUint32BE(0) -
+        Buffer.from(
+          createHash('sha256').update(JSON.stringify(y)).digest('base64'),
+          'base64',
+        ).readUint32BE(0),
+    );
+  }
 
   build() {
     const extendChoice = this._partials.pop();
@@ -103,6 +123,10 @@ export class NestedProductFactory {
     return this.withPartialCMRProduct(
       extendChoice.productPart,
     ).withPartialCMRProductMetadata(extendChoice.metadataPart)._product;
+  }
+
+  choose(n: number) {
+    return Array.from({ length: n }, () => this.build());
   }
 
   withAllDatasets(): NestedProductFactory {
@@ -133,6 +157,49 @@ export class NestedProductFactory {
     );
   }
 
+  withDatasetFull(dataset: Dataset): NestedProductFactory {
+    const partials: SplitPartial[] = [];
+
+    const baseProductPart: Partial<CMRProduct> = {
+      dataset: dataset.apiValue.dataset,
+    };
+
+    for (const productType of dataset.productTypes) {
+      for (const beamMode of dataset.beamModes) {
+        for (const polarization of dataset.polarizations) {
+          for (const flightDirection of Object.values(FlightDirection)) {
+            if ('instruments' in dataset) {
+              for (const instrument of dataset.instruments) {
+                partials.push({
+                  productPart: baseProductPart,
+                  metadataPart: {
+                    productType: productType.apiValue,
+                    beamMode: beamMode,
+                    polarization: polarization,
+                    instrument: instrument.apiValue,
+                    flightDirection: flightDirection,
+                  },
+                });
+              }
+            } else {
+              partials.push({
+                productPart: baseProductPart,
+                metadataPart: {
+                  productType: productType.apiValue,
+                  beamMode: beamMode,
+                  polarization: polarization,
+                  flightDirection: flightDirection,
+                },
+              });
+            }
+          }
+        }
+      }
+    }
+
+    return this._withSplitPartials(partials);
+  }
+
   withAllDatasetsFull(): NestedProductFactory {
     const partials: SplitPartial[] = [];
 
@@ -157,37 +224,7 @@ export class NestedProductFactory {
     ];
 
     for (const dataset of datasets) {
-      const baseProductPart: Partial<CMRProduct> = {
-        dataset: dataset.apiValue.dataset,
-      };
-      for (const productType of dataset.productTypes) {
-        for (const beamMode of dataset.beamModes) {
-          for (const polarization of dataset.polarizations) {
-            if (datasets.instruments !== undefined) {
-              for (const instrument of dataset.instruments) {
-                partials.push({
-                  productPart: baseProductPart,
-                  metadataPart: {
-                    productType: productType.apiValue,
-                    beamMode: beamMode,
-                    polarization: polarization,
-                    instrument: instrument.apiValue,
-                  },
-                });
-              }
-            } else {
-              partials.push({
-                productPart: baseProductPart,
-                metadataPart: {
-                  productType: productType.apiValue,
-                  beamMode: beamMode,
-                  polarization: polarization,
-                },
-              });
-            }
-          }
-        }
-      }
+      partials.push(...this.withDatasetFull(dataset)._partials);
     }
 
     return this._withSplitPartials(partials);
