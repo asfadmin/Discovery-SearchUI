@@ -348,3 +348,5 @@ export class NestedProductFactory {
     );
   }
 }
+
+export const productFactory = new ProductFactory();
