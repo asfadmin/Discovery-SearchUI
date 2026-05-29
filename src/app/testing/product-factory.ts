@@ -1,4 +1,25 @@
 import { CMRProduct, CMRProductMetadata, FlightDirection } from '@models';
+
+import {
+  airsar,
+  alos,
+  ers,
+  jers_1,
+  radarsat_1,
+  seasat,
+  sentinel_1,
+  smap,
+  uavsar,
+  beta,
+  sirc,
+  avnir,
+  sentinel_1_bursts,
+  opera_s1,
+  nisar,
+  alos_2,
+  tropo,
+} from '@models/datasets';
+
 import moment from 'moment';
 
 function createProduct(product: CMRProduct): CMRProduct {
@@ -63,13 +84,15 @@ export class ProductFactory {
   }
 }
 
+class SplitPartial {
+  productPart?: Partial<Omit<CMRProduct, 'metadata'>>;
+  metadataPart?: Partial<CMRProductMetadata>;
+}
+
 export class NestedProductFactory {
   constructor(
     private _product: Readonly<CMRProduct>,
-    private _partials: {
-      productPart?: Partial<Omit<CMRProduct, 'metadata'>>;
-      metadataPart?: Partial<CMRProductMetadata>;
-    }[] = [{}],
+    private _partials: SplitPartial[] = [{}],
   ) {}
 
   build() {
@@ -111,13 +134,104 @@ export class NestedProductFactory {
     );
   }
 
+  withAllDatasetsFull(): NestedProductFactory {
+    const partials: SplitPartial[] = [];
+
+    const datasets = [
+      airsar,
+      alos,
+      ers,
+      jers_1,
+      radarsat_1,
+      seasat,
+      sentinel_1,
+      smap,
+      uavsar,
+      beta,
+      sirc,
+      avnir,
+      sentinel_1_bursts,
+      opera_s1,
+      nisar,
+      alos_2,
+      tropo,
+    ];
+
+    for (const dataset of datasets) {
+      const baseProductPart: Partial<CMRProduct> = {
+        dataset: dataset.apiValue.dataset,
+      };
+      for (const productType of dataset.productTypes) {
+        for (const beamMode of dataset.beamModes) {
+          for (const polarization of dataset.polarizations) {
+            if (datasets.instruments !== undefined) {
+              for (const instrument of dataset.instruments) {
+                partials.push({
+                  productPart: baseProductPart,
+                  metadataPart: {
+                    productType: productType.apiValue,
+                    beamMode: beamMode,
+                    polarization: polarization,
+                    instrument: instrument.apiValue,
+                  },
+                });
+              }
+            } else {
+              partials.push({
+                productPart: baseProductPart,
+                metadataPart: {
+                  productType: productType.apiValue,
+                  beamMode: beamMode,
+                  polarization: polarization,
+                },
+              });
+            }
+          }
+        }
+      }
+    }
+
+    return this._withSplitPartials(partials);
+  }
+
+  withBytesRange(
+    count: number,
+    low = 0,
+    high = 100 * 1000000,
+  ): NestedProductFactory {
+    const stride = Math.floor((high - low) / count);
+    const bytes = [...Array(count).keys()].map((v) => {
+      return { bytes: stride * v + low };
+    });
+
+    return this.withPartialCMRProducts(bytes);
+  }
+
   withPartialCMRProducts(
     partials: Iterable<Partial<Omit<CMRProduct, 'metadata'>>>,
   ): NestedProductFactory {
-    if (partials === []) {
-      return this;
+    const newPartials: SplitPartial[] = [];
+
+    for (const partial of this._partials) {
+      for (const newPartial of partials) {
+        newPartials.push({
+          productPart: { ...partial.productPart, ...newPartial },
+          metadataPart: partial.metadataPart,
+        });
+      }
     }
 
+    return new NestedProductFactory(
+      {
+        ...this._product,
+      },
+      [...this._partials, ...newPartials],
+    );
+  }
+
+  withPartialCMRProductMetadatas(
+    partials: Iterable<Partial<CMRProductMetadata>>,
+  ): NestedProductFactory {
     const newPartials: {
       productPart?: Partial<Omit<CMRProduct, 'metadata'>>;
       metadataPart?: Partial<CMRProductMetadata>;
@@ -126,8 +240,30 @@ export class NestedProductFactory {
     for (const partial of this._partials) {
       for (const newPartial of partials) {
         newPartials.push({
-          productPart: { ...partial.productPart, ...newPartial },
-          metadataPart: partial.metadataPart,
+          productPart: partial.productPart,
+          metadataPart: { ...partial.metadataPart, ...newPartial },
+        });
+      }
+    }
+
+    return new NestedProductFactory(
+      {
+        ...this._product,
+      },
+      [...this._partials, ...newPartials],
+    );
+  }
+
+  _withSplitPartials(
+    splitPartials: Iterable<SplitPartial>,
+  ): NestedProductFactory {
+    const newPartials: SplitPartial[] = [];
+
+    for (const partial of this._partials) {
+      for (const newPartial of splitPartials) {
+        newPartials.push({
+          productPart: { ...partial.productPart, ...newPartial.productPart },
+          metadataPart: { ...partial.metadataPart, ...newPartial.metadataPart },
         });
       }
     }
