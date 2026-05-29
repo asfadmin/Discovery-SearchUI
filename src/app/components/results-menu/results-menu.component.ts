@@ -9,7 +9,7 @@ import { ResizeEvent, ResizableModule } from 'angular-resizable-element';
 import { SubSink } from 'subsink';
 
 import { Subject } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { ScreenSizeService } from '@services';
 
@@ -23,12 +23,12 @@ import { NgClass, AsyncPipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { DesktopResultsMenuComponent } from './desktop-results-menu/desktop-results-menu.component';
 import { TimeseriesResultsMenuComponent } from './timeseries-results-menu/timeseries-results-menu.component';
-import { SarviewsResultsMenuComponent } from './sarviews-results-menu/sarviews-results-menu.component';
 import { BaselineResultsMenuComponent } from './baseline-results-menu/baseline-results-menu.component';
 import { SBASResultsMenuComponent } from './sbas-results-menu/sbas-results-menu.component';
 import { MobileResultsMenuComponent } from './mobile-results-menu/mobile-results-menu.component';
 import { MatButton } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
+import { SarviewsResultsMenuComponent } from './sarviews-results-menu/sarviews-results-menu.component';
 
 @Component({
   selector: 'app-results-menu',
@@ -40,10 +40,10 @@ import { TranslateModule } from '@ngx-translate/core';
     MatIcon,
     DesktopResultsMenuComponent,
     TimeseriesResultsMenuComponent,
-    SarviewsResultsMenuComponent,
     BaselineResultsMenuComponent,
     SBASResultsMenuComponent,
     MobileResultsMenuComponent,
+    SarviewsResultsMenuComponent,
     MatButton,
     AsyncPipe,
     TranslateModule,
@@ -64,13 +64,6 @@ export class ResultsMenuComponent implements OnInit, OnDestroy {
   public areNoScenes$ = this.store$
     .select(scenesStore.getScenes)
     .pipe(map((scenes) => scenes.length === 0));
-
-  public noSarviewsEvents$ = this.store$
-    .select(scenesStore.getSarviewsEvents)
-    .pipe(
-      filter((events) => events !== undefined && events !== null),
-      map((events) => events.length === 0),
-    );
 
   public isFrameSelectionEnabled$ = this.store$.select(
     uiStore.getIsFrameSelectionEnabled,

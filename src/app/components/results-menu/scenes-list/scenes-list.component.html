@@ -58,15 +58,6 @@
           </button>
         }
       }
-      @if (searchType === SearchTypes.SARVIEWS_EVENTS) {
-        <ng-container *cdkVirtualFor="let event of sarviewsEvents">
-          <app-sarviews-event
-            [event]="event"
-            [selected]="event.event_id === selectedEvent"
-          >
-          </app-sarviews-event>
-        </ng-container>
-      }
       @if (searchType === SearchTypes.SBAS) {
         <ng-container *cdkVirtualFor="let pair of pairs">
           <app-pair

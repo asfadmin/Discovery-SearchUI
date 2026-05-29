@@ -86,15 +86,6 @@ export function searchReducer(
       };
     }
 
-    case SearchActionType.SARVIEWS_SEARCH_RESPONSE: {
-      return {
-        ...state,
-        totalResults: action.payload.events.length,
-        isLoading: false,
-        isCanceled: false,
-      };
-    }
-
     case SearchActionType.DISPLACEMENT_SEARCH_RESPONSE: {
       return {
         ...state,

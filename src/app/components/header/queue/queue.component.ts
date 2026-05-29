@@ -116,7 +116,6 @@ export class QueueComponent implements OnInit, OnDestroy {
   downloadButtons!: QueryList<DownloadFileButtonComponent>;
 
   public queueHasOnDemandProducts = false;
-  public queueHasEventMonitoringProducts = false;
   public showDemWarning: boolean;
   public showRestrictedDatasetWarning;
 
@@ -155,9 +154,6 @@ export class QueueComponent implements OnInit, OnDestroy {
     tap((products) => {
       this.queueHasOnDemandProducts = !products.every(
         (product) => !product.metadata.job,
-      );
-      this.queueHasEventMonitoringProducts = !products.every(
-        (product) => product.groupId !== 'SARViews',
       );
       this.showDemWarning = this.areAnyProducts
         ? this.demWarning(products)
@@ -361,15 +357,6 @@ export class QueueComponent implements OnInit, OnDestroy {
       if (!button?.dFile?.state) {
         button.downloadFile(true);
       }
-    }
-  }
-  public limitedExportString() {
-    if (this.queueHasEventMonitoringProducts && this.queueHasOnDemandProducts) {
-      return 'On Demand and Event products in queue - limited export options';
-    } else if (this.queueHasEventMonitoringProducts) {
-      return 'Event Monitoring products in queue - limited export options';
-    } else {
-      return 'On Demand products in queue - limited export options';
     }
   }
 

@@ -4,11 +4,7 @@ import { Range } from './range.model';
 import { FlightDirection } from './cmr-product.model';
 import * as fromDatasets from './dataset.model';
 import { Hyp3JobStatusCode } from './hyp3';
-import {
-  SarviewsEventType,
-  SBASOverlap,
-  timeseriesChartItemState,
-} from '@models';
+import { SBASOverlap, timeseriesChartItemState } from '@models';
 
 export interface Search {
   searchType: SearchType;
@@ -24,7 +20,6 @@ export type FilterType =
   | CustomProductFiltersType
   | SbasFiltersType
   | TimeseriesFiltersType
-  | SarviewsFiltersType
   | DisplacementFiltersType;
 
 export interface ListFiltersType {
@@ -106,21 +101,6 @@ export interface GeographicFiltersType {
   tileID?: null | string;
 
   ariaVersion?: string;
-}
-
-export interface SarviewsFiltersType {
-  sarviewsEventTypes: SarviewsEventType[];
-
-  pathRange: Range<number | null>;
-  frameRange: Range<number | null>;
-  hyp3ProductTypes: string[];
-  // season: Range<number | null>;
-  dateRange: Range<null | Date>;
-  magnitude: Range<null | number>;
-  activeOnly: boolean;
-  sarviewsEventNameFilter: string;
-  pinnedProductIDs: string[];
-  selectedEventID: string;
 }
 
 export interface DisplacementFiltersType {

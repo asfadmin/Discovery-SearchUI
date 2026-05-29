@@ -4,7 +4,6 @@ import {
   CMRProduct,
   AsfApiOutputFormat,
   QueuedHyp3Job,
-  SarviewsProduct,
   DownloadStatus,
 } from '@models';
 
@@ -27,7 +26,6 @@ export enum QueueActionType {
 
   MAKE_DOWNLOAD_SCRIPT = '[Queue] Make Bulk Download From Queue',
   MAKE_DOWNLOAD_SCRIPT_FROM_LIST = '[Queue] Make a bulk Download script from search results',
-  MAKE_DOWNLOAD_SCRIPT_FROM_SARVIEWS_PRODUCTS = '[Queue] Make a bulk Download Script From SARViews Event Products',
   DOWNLOAD_METADATA = '[Queue] Download Metadata',
   DOWNLOAD_SEARCHTYPE_METADATA = '[Queue] Download Search Result Metadata',
 
@@ -118,13 +116,6 @@ export class MakeDownloadScriptFromList implements Action {
   constructor(public payload: CMRProduct[]) {}
 }
 
-export class MakeDownloadScriptFromSarviewsProducts implements Action {
-  public readonly type =
-    QueueActionType.MAKE_DOWNLOAD_SCRIPT_FROM_SARVIEWS_PRODUCTS;
-
-  constructor(public payload: SarviewsProduct[]) {}
-}
-
 export class DownloadMetadata implements Action {
   public readonly type = QueueActionType.DOWNLOAD_METADATA;
 
@@ -169,7 +160,6 @@ export type QueueActions =
   | ClearProcessingQueueByJobType
   | MakeDownloadScript
   | MakeDownloadScriptFromList
-  | MakeDownloadScriptFromSarviewsProducts
   | DownloadMetadata
   | DownloadSearchtypeMetadata
   | FindPair

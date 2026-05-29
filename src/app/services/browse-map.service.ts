@@ -12,17 +12,11 @@ import { Layer, Vector } from 'ol/layer';
 import Polygon from 'ol/geom/Polygon';
 import { Extent, getCenter } from 'ol/extent';
 import VectorSource from 'ol/source/Vector';
-import LayerGroup from 'ol/layer/Group';
 import Projection from 'ol/proj/Projection';
 import { BrowseOverlayService, WktService } from '@services';
 interface Dimension {
   width: number;
   height: number;
-}
-
-export interface PinnedProduct {
-  url: string;
-  wkt: string;
 }
 
 @Injectable({
@@ -35,7 +29,6 @@ export class BrowseMapService {
   private map: Map;
   private browseLayer: Layer;
   private view: View;
-  private pinnedProducts: LayerGroup;
 
   public setMapBrowse(browse: string, wkt = ''): void {
     const feature = this.wktService.wktToFeature(wkt, 'EPSG:3857');
@@ -80,32 +73,11 @@ export class BrowseMapService {
     if (this.map) {
       this.update(this.view, [imagePolygonLayer, Imagelayer]);
     } else {
-      this.pinnedProducts = new LayerGroup();
       this.map = this.newMap(this.view, [
         map_layer,
         imagePolygonLayer,
         Imagelayer,
       ]);
-      this.map.addLayer(this.pinnedProducts);
-
-      this.map.on('singleclick', (e) => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        (this.map.forEachFeatureAtPixel(e.pixel, (_, l, __) => {
-          this.pinnedProducts.getLayers().remove(l);
-          this.pinnedProducts.getLayers().push(l);
-          return true;
-        }),
-          {
-            layerFilter: (l) => {
-              for (const temp of this.pinnedProducts.getLayersArray()) {
-                if (temp === l) {
-                  return true;
-                }
-              }
-              return false;
-            },
-          });
-      });
     }
 
     this.browseLayer = Imagelayer;
@@ -113,17 +85,6 @@ export class BrowseMapService {
 
   public updateBrowseOpacity(opacity: number) {
     this.browseLayer.setOpacity(opacity);
-  }
-
-  public setPinnedProducts(pinnedProductStates: Record<string, PinnedProduct>) {
-    this.browseOverlayService.setPinnedProducts(
-      pinnedProductStates,
-      this.pinnedProducts,
-    );
-  }
-
-  public unpinAll() {
-    this.pinnedProducts.getLayers().clear();
   }
 
   private update(view: View, layers: Layer[]): void {

@@ -22,7 +22,6 @@ import {
   QueueScene,
   FindPair,
   MakeDownloadScriptFromList,
-  MakeDownloadScriptFromSarviewsProducts,
 } from './queue.action';
 import { getDuplicates, getQueuedProducts } from './queue.reducer';
 import * as scenesStore from '@store/scenes';
@@ -73,23 +72,6 @@ export class QueueEffects {
         map((action) => action.payload),
         switchMap((products) =>
           this.bulkDownloadService.downloadCMRProductsScript$(products),
-        ),
-        map((blob) =>
-          FileSaver.saveAs(blob.body, `download-all-${this.currentDate()}.py`),
-        ),
-      ),
-    { dispatch: false },
-  );
-
-  public MakeDownloadScriptFromSarviewsProductsList = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType<MakeDownloadScriptFromSarviewsProducts>(
-          QueueActionType.MAKE_DOWNLOAD_SCRIPT_FROM_SARVIEWS_PRODUCTS,
-        ),
-        map((action) => action.payload),
-        switchMap((products) =>
-          this.bulkDownloadService.downloadSarviewsProductsScript$(products),
         ),
         map((blob) =>
           FileSaver.saveAs(blob.body, `download-all-${this.currentDate()}.py`),

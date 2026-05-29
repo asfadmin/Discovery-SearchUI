@@ -1,4 +1,4 @@
-@if ((numberOfScenes$ | async) > 0 || (numSarviewsScenes$ | async) > 0) {
+@if ((numberOfScenes$ | async) > 0) {
   @if (breakpoint$ | async; as breakpoint) {
     <div
       [className]="
@@ -41,20 +41,6 @@
                 }}
               </span>
             }
-          </div>
-        }
-        @if (searchType === SearchTypes.SARVIEWS_EVENTS) {
-          <div
-            class="mr-10 event-count"
-            event
-            [class.mobile-event]="breakpoint === breakpoints.MOBILE"
-          >
-            {{ numberOfFilteredEvents$ | async }}
-            {{
-              (numSarviewsScenes$ | async) === 1
-                ? ('EVENT' | translate)
-                : ('EVENTS' | translate)
-            }}
           </div>
         }
         @if (searchType === SearchTypes.SBAS) {
@@ -104,12 +90,7 @@
             }}
           </div>
         }
-        @if (
-          !(
-            searchType === SearchTypes.SARVIEWS_EVENTS &&
-            breakpoint === breakpoints.MOBILE
-          )
-        ) {
+        @if (breakpoint !== breakpoints.MOBILE) {
           <div class="space-filler"></div>
         }
         @if (products) {
@@ -193,10 +174,7 @@
                       [hideSingleSelectionIndicator]="true"
                     >
                       <mat-button-toggle
-                        [disabled]="
-                          (numOfScenesWithPolygon$ | async) === 0 &&
-                          searchType !== SearchTypes.SARVIEWS_EVENTS
-                        "
+                        [disabled]="(numOfScenesWithPolygon$ | async) === 0"
                         (click)="onZoomToResults()"
                         class="control-mat-button-toggle clickable noselect"
                         matTooltip="{{ 'ZOOM_TO_RESULTS' | translate }}"
@@ -210,10 +188,7 @@
                 </div>
               </div>
             }
-            @if (
-              searchType !== SearchTypes.SARVIEWS_EVENTS &&
-              searchType !== SearchTypes.DISPLACEMENT
-            ) {
+            @if (searchType !== SearchTypes.DISPLACEMENT) {
               <div class="fx-empty list-button-group">
                 <div class="fx-row-center button-group-label">
                   <label>{{ 'QUEUE' | translate }}</label>
@@ -230,39 +205,6 @@
                         [matMenuTriggerFor]="addAllProducts"
                         matTooltip="{{
                           'ADD_ALL_RESULTS_TO_DOWNLOADS' | translate
-                        }}"
-                      >
-                        <mat-icon class="list-icon">
-                          add_shopping_cart
-                        </mat-icon>
-                      </mat-button-toggle>
-                    </mat-button-toggle-group>
-                  </div>
-                </div>
-              </div>
-            }
-            @if (searchType === SearchTypes.SARVIEWS_EVENTS) {
-              <div class="fx-empty list-button-group">
-                <div class="fx-row-center button-group-label">
-                  <label>{{ 'QUEUE' | translate }}</label>
-                </div>
-                <div class="fx-row">
-                  <div class="scenes-list-button-container">
-                    <mat-button-toggle-group
-                      name="layerType"
-                      class="fx-empty mr-10 clickable noselect"
-                      [hideSingleSelectionIndicator]="true"
-                    >
-                      <mat-button-toggle
-                        class="control-mat-button-toggle"
-                        [matMenuTriggerFor]="QueueAllSARViewsProducts"
-                        matTooltip="{{ 'ADD' | translate | titlecase }} {{
-                          (productsHiddenByFilters$ | async)
-                            ? ('FILTERED' | translate)
-                            : ('ALL' | translate)
-                        }} {{
-                          'PRODUCTS_TO_DOWNLOADS_FROM_SELECTED_EVENT'
-                            | translate
                         }}"
                       >
                         <mat-icon class="list-icon">
@@ -295,7 +237,9 @@
                         matTooltip="{{
                           'ADD_ALL_RESULTS_TO_ON_DEMAND_QUEUE' | translate
                         }}"
-                        [aria-label]="'ADD_ALL_RESULTS_TO_ON_DEMAND_QUEUE' | translate"
+                        [aria-label]="
+                          'ADD_ALL_RESULTS_TO_ON_DEMAND_QUEUE' | translate
+                        "
                       >
                         <mat-icon class="list-icon" svgIcon="hyp3"> </mat-icon>
                       </mat-button-toggle>
@@ -393,133 +337,6 @@
                         }}"
                       >
                         <mat-icon class="list-icon"> get_app </mat-icon>
-                      </mat-button-toggle>
-                    </mat-button-toggle-group>
-                  </div>
-                </div>
-              </div>
-            }
-            @if (searchType === SearchTypes.SARVIEWS_EVENTS) {
-              <div class="fx-empty list-button-group">
-                <div class="fx-row-center button-group-label">
-                  <label>{{ 'EXPORT' | translate }}</label>
-                </div>
-                <div class="fx-row">
-                  <div class="scenes-list-button-container">
-                    <mat-button-toggle-group
-                      name="layerType"
-                      class="fx-empty mr-10"
-                      [hideSingleSelectionIndicator]="true"
-                    >
-                      <mat-button-toggle
-                        class="control-mat-button-toggle clickable noselect"
-                        [matMenuTriggerFor]="ExportAllSARViewsData"
-                        matTooltip="{{
-                          'DOWNLOAD_DATA_METADATA_AS' | translate
-                        }}"
-                      >
-                        <mat-icon class="list-icon"> get_app </mat-icon>
-                      </mat-button-toggle>
-                    </mat-button-toggle-group>
-                  </div>
-                </div>
-              </div>
-            }
-            @if (
-              searchType === SearchTypes.SARVIEWS_EVENTS &&
-              !!sarviewsEventProducts
-            ) {
-              <div class="fx-empty list-button-group">
-                <div class="fx-row-center button-group-label">
-                  <label>{{ 'ON_DEMAND' | translate }}</label>
-                </div>
-                <div class="fx-row">
-                  <div class="scenes-list-button-container">
-                    <mat-button-toggle-group
-                      name="layerType"
-                      class="fx-empty mr-10"
-                      [hideSingleSelectionIndicator]="true"
-                    >
-                      <mat-button-toggle
-                        [matMenuTriggerFor]="eventMonitoringOnDemand.addMenu"
-                        [matMenuTriggerData]="{
-                          hyp3able: hyp3ableEventProducts.byJobType,
-                        }"
-                        class="control-mat-button-toggle clickable noselect"
-                        matTooltip="{{ 'ADD' | translate | titlecase }} {{
-                          (productsHiddenByFilters$ | async)
-                            ? ('FILTERED' | translate)
-                            : ('ALL' | translate)
-                        }} {{ 'RESULTS_TO_ON_DEMAND_QUEUE' | translate }}"
-                      >
-                        <mat-icon class="list-icon" svgIcon="hyp3"> </mat-icon>
-                      </mat-button-toggle>
-                    </mat-button-toggle-group>
-                    <app-on-demand-add-menu #eventMonitoringOnDemand>
-                    </app-on-demand-add-menu>
-                    <mat-menu #eventMonitoringOnDemandAllProducts>
-                      <ng-template matMenuContent let-jobTypes="job_types">
-                        @for (t of jobTypes; track t) {
-                          <button
-                            (click)="addOnDemandEventProductsBySearchType(t)"
-                            mat-menu-item
-                          >
-                            {{ 'ADD' | translate }}
-                            {{ EventMonitoringByJobType(t).length }}
-                            {{ t.name === 'RTC GAMMA' ? 'SLC' : t.name
-                            }}{{ 'JOBS' | translate }}
-                            <mat-icon
-                              (click)="onOpenHelp(t.infoUrl)"
-                              class="clickable"
-                              style="margin-left: 10px"
-                              >info</mat-icon
-                            >
-                          </button>
-                        }
-                      </ng-template>
-                    </mat-menu>
-                    <mat-menu #eventMonitoringOnDemandSelectedProducts>
-                      <ng-template
-                        matMenuContent
-                        let-selected="selected_products"
-                      >
-                        <button
-                          [disabled]="selected.length === 0"
-                          mat-menu-item
-                          (click)="addOnDemandEventProducts(selected)"
-                        >
-                          {{ 'ADD' | translate }}
-                          {{ selected.length > 0 ? selected.length : '' }}
-                          {{ 'SELECTED_JOB' | translate
-                          }}{{ selected.length !== 1 ? 's' : '' }}
-                        </button>
-                      </ng-template>
-                    </mat-menu>
-                  </div>
-                </div>
-              </div>
-            }
-            @if (searchType === SearchTypes.SARVIEWS_EVENTS) {
-              <div class="fx-empty list-button-group">
-                <div class="fx-row-center button-group-label">
-                  <label>{{ 'COPY' | translate }}</label>
-                </div>
-                <div class="fx-row">
-                  <div class="scenes-list-button-container">
-                    <mat-button-toggle-group
-                      name="layerType"
-                      class="fx-empty mr-10"
-                      [hideSingleSelectionIndicator]="true"
-                    >
-                      <mat-button-toggle
-                        class="control-mat-button-toggle clickable noselect"
-                        [matMenuTriggerFor]="eventMonitoringOptions"
-                        [matMenuTriggerData]="{
-                          selected: (selectedEventProducts$ | async),
-                        }"
-                        matTooltip="{{ 'COPY_IDS_URLS' | translate }}"
-                      >
-                        <fa-icon class="list-icon" [icon]="copyIcon"></fa-icon>
                       </mat-button-toggle>
                     </mat-button-toggle-group>
                   </div>
@@ -722,46 +539,6 @@
           </div>
         }
       </mat-menu>
-      <mat-menu #ExportAllSARViewsData="matMenu">
-        @if (sarviewsEventProducts) {
-          <div>
-            <button
-              (click)="
-                onMakeSarviewsProductDownloadScript(sarviewsEventProducts)
-              "
-              mat-menu-item
-            >
-              {{ 'PYTHON_PY' | translate }}
-            </button>
-          </div>
-        }
-      </mat-menu>
-      <mat-menu #QueueAllSARViewsProducts="matMenu">
-        @if (sarviewsEventProducts) {
-          <div>
-            <button
-              (click)="onQueueSarviewsProducts(sarviewsEventProducts)"
-              mat-menu-item
-            >
-              {{
-                (productsHiddenByFilters$ | async)
-                  ? 'Filtered'
-                  : ('ALL' | translate | titlecase)
-              }}
-              {{ 'EVENT_PRODUCTS' | translate }} ({{
-                sarviewsEventProducts.length
-              }}
-              {{ 'FILES' | translate }})
-            </button>
-            <button (click)="onQueuePinnedSarviewsProducts()" mat-menu-item>
-              {{ 'SELECTED_EVENT_PRODUCTS' | translate }} ({{
-                pinnedEventIDs.length
-              }}
-              {{ 'FILES' | translate }})
-            </button>
-          </div>
-        }
-      </mat-menu>
       @if (searchType === SearchTypes.BASELINE) {
         @if (breakpoint > breakpoints.MOBILE) {
           <div class="header-row-right">
@@ -810,74 +587,3 @@
     </div>
   }
 }
-
-<mat-menu #eventMonitoringOptions="matMenu">
-  <ng-template matMenuContent let-selectedProducts="selected">
-    <button
-      mat-menu-item
-      [matMenuTriggerFor]="eventMonitoringIDs"
-      [matMenuTriggerData]="{
-        selectedProducts: selectedProducts,
-        products: (sarviewsEventProducts$ | async),
-      }"
-    >
-      {{ 'SCENE_I_DS' | translate }}
-    </button>
-    <button
-      mat-menu-item
-      [matMenuTriggerFor]="eventMonitoringUrls"
-      [matMenuTriggerData]="{
-        selectedProducts: selectedProducts,
-        products: (sarviewsEventProducts$ | async),
-      }"
-    >
-      {{ 'URLS' | translate }}
-    </button>
-  </ng-template>
-</mat-menu>
-
-<mat-menu #eventMonitoringIDs="matMenu">
-  <ng-template
-    matMenuContent
-    let-selectedProducts="selectedProducts"
-    let-sarviewsProducts="products"
-  >
-    <button mat-menu-item (click)="copyProductSourceScenes(sarviewsProducts)">
-      {{ 'ALL PRODUCTS' | translate }} ({{
-        getProductSceneCount(sarviewsProducts)
-      }})
-    </button>
-    <button
-      [disabled]="getProductSceneCount(selectedProducts) === 0"
-      mat-menu-item
-      (click)="copyProductSourceScenes(selectedProducts)"
-    >
-      {{ 'SELECTED_PRODUCTS' | translate }} ({{
-        getProductSceneCount(selectedProducts)
-      }})
-    </button>
-  </ng-template>
-</mat-menu>
-
-<mat-menu #eventMonitoringUrls="matMenu">
-  <ng-template
-    matMenuContent
-    let-selectedProducts="selectedProducts"
-    let-sarviewsProducts="products"
-  >
-    <button
-      [disabled]="sarviewsProducts.length === 0"
-      mat-menu-item
-      (click)="getProductDownloadUrl(sarviewsProducts)"
-    >
-      {{ 'ALL PRODUCTS' | translate }}({{ sarviewsProducts.length }})
-    </button>
-    <button
-      [disabled]="getProductSceneCount(selectedProducts) === 0"
-      mat-menu-item
-      (click)="getProductDownloadUrl(selectedProducts)"
-    >
-      {{ 'SELECTED_PRODUCTS' | translate }} ({{ selectedProducts.length }})
-    </button>
-  </ng-template>
-</mat-menu>

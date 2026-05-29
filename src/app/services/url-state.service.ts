@@ -3,14 +3,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { Action, Store } from '@ngrx/store';
 import * as moment from 'moment';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  map,
-  skip,
-  take,
-} from 'rxjs/operators';
+import { debounceTime, filter, map, skip, take } from 'rxjs/operators';
 
 import { AppState } from '@store';
 import * as hyp3Store from '@store/hyp3';
@@ -303,69 +296,7 @@ export class UrlStateService {
   }
 
   private eventMonitorParameters(): models.UrlParameter[] {
-    return [
-      {
-        name: 'eventID',
-        source: this.store$.select(scenesStore.getSelectedSarviewsEvent).pipe(
-          // filter(event => !!event),
-          map((event) => ({
-            eventID: event?.event_id ?? '',
-          })),
-        ),
-        loader: this.loadEventID,
-      },
-      {
-        name: 'pinnedProducts',
-        source: this.store$.select(scenesStore.getPinnedEventBrowseIDs).pipe(
-          distinctUntilChanged(),
-          map((ids) => ({
-            pinnedProducts: ids.join(','),
-          })),
-        ),
-        loader: this.loadPinnedProducts,
-      },
-      {
-        name: 'magnitude',
-        source: this.store$.select(filterStore.getSarviewsMagnitudeRange).pipe(
-          map((range) => this.rangeService.toStringWithNegatives(range)),
-          map((magnitudeRange) => ({ magnitude: magnitudeRange })),
-        ),
-        loader: this.loadMagnitudeRange,
-      },
-      {
-        name: 'activeEvents',
-        source: this.store$
-          .select(filterStore.getSarviewsEventActiveFilter)
-          .pipe(map((activeEvents) => ({ activeEvents }))),
-        loader: this.loadOnlyActiveEvents,
-      },
-      {
-        name: 'eventTypes',
-        source: this.store$.select(filterStore.getSarviewsEventTypes).pipe(
-          map((types) => types.join(',')),
-          map((eventTypes) => ({ eventTypes })),
-        ),
-        loader: this.loadEventTypes,
-      },
-      {
-        name: 'eventQuery',
-        source: this.store$
-          .select(filterStore.getSarviewsEventNameFilter)
-          .pipe(map((eventQuery) => ({ eventQuery }))),
-        loader: this.loadEventNameFilter,
-      },
-      {
-        name: 'eventProductTypes',
-        source: this.store$.select(filterStore.getHyp3ProductTypes).pipe(
-          map((productTypes) =>
-            productTypes.map((productType) => productType.id),
-          ),
-          map((productTypeStrings) => productTypeStrings.join(',')),
-          map((productTypes) => ({ eventProductTypes: productTypes ?? '' })),
-        ),
-        loader: this.loadEventProductTypes,
-      },
-    ];
+    return [];
   }
 
   private displacementParameters() {
@@ -1239,70 +1170,12 @@ export class UrlStateService {
     return new hyp3Store.SetHyp3JobIDs(jobIds);
   };
 
-  private loadEventID = (event_id: string): Action =>
-    new scenesStore.SetSelectedSarviewsEvent(event_id);
-
-  private loadPinnedProducts = (pinnedProducts: string): Action => {
-    const productIDs = pinnedProducts.split(',');
-    return new mapStore.SetBrowseOverlays(productIDs);
-  };
-
   private loadIsDownloadQueueOpen = (isDownloadQueueOpen: string): Action => {
     return new uiStore.SetIsDownloadQueueOpen(!!isDownloadQueueOpen);
   };
 
   private loadIsOnDemandQueueOpen = (isOnDemandQueueOpen: string): Action => {
     return new uiStore.SetIsOnDemandQueueOpen(!!isOnDemandQueueOpen);
-  };
-
-  private loadEventNameFilter = (eventStr: string): Action => {
-    if (eventStr.length > 100) {
-      return new filterStore.SetSarviewsEventNameFilter('');
-    }
-
-    return new filterStore.SetSarviewsEventNameFilter(eventStr);
-  };
-
-  private loadMagnitudeRange = (rangeStr: string): Action => {
-    const range = rangeStr.split('to').map((v) => +v);
-
-    return new filterStore.SetSarviewsMagnitudeRange({
-      start: range[0],
-      end: range[1],
-    });
-  };
-
-  private loadEventTypes = (eventTypesStr: string): Action => {
-    const eventTypes: models.SarviewsEventType[] = eventTypesStr
-      .split(',')
-      .filter(
-        (direction) =>
-          !Object.values(models.SarviewsEventType).includes(
-            models.SarviewsEventType[direction],
-          ),
-      )
-      .map((direction) => direction as models.SarviewsEventType);
-
-    return new filterStore.SetSarviewsEventTypes(eventTypes);
-  };
-
-  private loadOnlyActiveEvents = (activeOnly: string): Action =>
-    new filterStore.SetSarviewsEventActiveFilter(activeOnly === 'true');
-
-  private loadEventProductTypes = (types: string): Action => {
-    const productTypes = types
-      .split(',')
-      .filter(
-        (type) =>
-          Object.keys(models.hyp3JobTypes).find(
-            (jobType) => jobType === type,
-          ) !== undefined,
-      );
-
-    if (productTypes?.length === 0) {
-      return new filterStore.SetHyp3ProductTypes([]);
-    }
-    return new filterStore.SetHyp3ProductTypes(productTypes);
   };
 
   private updateShouldSearch(): void {

@@ -29,16 +29,11 @@ import {
   PairService,
   Hyp3ApiService,
   Hyp3JobStatusService,
-  SarviewsEventsService,
-  NotificationService,
   ExportService,
 } from '@services';
 
 import * as models from '@models';
 import { SubSink } from 'subsink';
-import { hyp3JobTypes, SarviewsProduct } from '@models';
-import { AddItems, AddJobs } from '@store/queue';
-import { ClipboardService } from 'ngx-clipboard';
 import { Observable } from 'rxjs';
 import {
   CodeExportComponent,
@@ -99,13 +94,10 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
   private mapService = inject(MapService);
   private scenesService = inject(ScenesService);
-  private eventMonitoringService = inject(SarviewsEventsService);
   private pairService = inject(PairService);
   private screenSize = inject(ScreenSizeService);
   private hyp3 = inject(Hyp3ApiService);
   private hyp3JobStatus = inject(Hyp3JobStatusService);
-  private clipboard = inject(ClipboardService);
-  private notificationService = inject(NotificationService);
   private possibleHyp3JobsService = inject(PossibleHyp3JobsService);
   private exportService = inject(ExportService);
   private dialog = inject(MatDialog);
@@ -133,22 +125,9 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public numberOfProducts$ = this.store$.select(
     scenesStore.getNumberOfProducts,
   );
-  public numberOfFilteredEvents$ = this.eventMonitoringService
-    .filteredSarviewsEvents$()
-    .pipe(
-      filter((events) => !!events),
-      map((events) => events.length),
-    );
-  public productsHiddenByFilters$ =
-    this.eventMonitoringService.areEventProductsFiltered$();
 
-  public numSarviewsScenes$ = this.store$.select(
-    scenesStore.getNumberOfSarviewsEvents,
-  );
   public products = [];
   public downloadableProds = [];
-  public sarviewsEventProducts: SarviewsProduct[] = [];
-  public pinnedEventIDs: string[];
 
   public productsByType$: Observable<Record<string, models.CMRProduct[]>> =
     this.store$.select(scenesStore.getAllProducts).pipe(
@@ -217,19 +196,6 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     filter((pairs) => !!pairs),
     map((pairs) => pairs.pairs.length + pairs.custom.length),
   );
-
-  public sarviewsEventProducts$ =
-    this.eventMonitoringService.filteredEventProducts$();
-
-  public selectedEventProducts$ = this.store$
-    .select(scenesStore.getPinnedEventBrowseIDs)
-    .pipe(
-      map((browseIds) =>
-        this.sarviewsEventProducts.filter((prod) =>
-          browseIds.includes(prod.product_id),
-        ),
-      ),
-    );
 
   private currentBurstProducts$ = this.products$.pipe(
     map((products) =>
@@ -312,8 +278,6 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   public hyp3able = { total: 0, byJobType: [] };
   public hyp3ableEventProducts = { total: 0, byJobType: [] };
   public moreHyp3JobsToLoad: boolean;
-
-  private selectedEvent: models.SarviewsEvent;
 
   ngOnInit() {
     this.subs.add(
@@ -427,38 +391,10 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
         .select(hyp3Store.getAreMoreJobsToLoad)
         .subscribe((moreToLoad) => (this.moreHyp3JobsToLoad = moreToLoad)),
     );
-
-    this.subs.add(
-      this.eventMonitoringService
-        .filteredEventProducts$()
-        .subscribe((products) => {
-          this.sarviewsEventProducts = products;
-          this.hyp3ableEventProducts =
-            this.eventMonitoringService.toHyp3ableProducts(
-              this.sarviewsEventProducts,
-            );
-        }),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(scenesStore.getPinnedEventBrowseIDs)
-        .subscribe((ids) => (this.pinnedEventIDs = ids)),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(scenesStore.getSelectedSarviewsEvent)
-        .subscribe((event) => (this.selectedEvent = event)),
-    );
   }
 
   public onZoomToResults(): void {
-    if (this.searchType === models.SearchType.SARVIEWS_EVENTS) {
-      this.mapService.zoomToEvent(this.selectedEvent);
-    } else {
-      this.mapService.zoomToResults();
-    }
+    this.mapService.zoomToResults();
   }
 
   public onToggleS1RawData(): void {
@@ -567,52 +503,6 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new queueStore.MakeDownloadScriptFromList(products));
   }
 
-  public onMakeSarviewsProductDownloadScript(
-    products: models.SarviewsProduct[],
-  ): void {
-    this.store$.dispatch(
-      new queueStore.MakeDownloadScriptFromSarviewsProducts(products),
-    );
-  }
-
-  public onQueuePinnedSarviewsProducts(): void {
-    const pinned = this.sarviewsEventProducts.filter((prod) =>
-      this.pinnedEventIDs.includes(prod.product_id),
-    );
-
-    this.onQueueSarviewsProducts(pinned);
-  }
-
-  public onQueueSarviewsProducts(products: models.SarviewsProduct[]): void {
-    this.store$.dispatch(
-      new AddItems(
-        products.map((product) =>
-          this.eventMonitoringService.eventProductToCMRProduct(product),
-        ),
-      ),
-    );
-  }
-
-  public addOnDemandEventProducts(targetProducts: SarviewsProduct[]) {
-    const jobs: models.QueuedHyp3Job[] = targetProducts.map((prod) => ({
-      granules: this.eventMonitoringService.getSourceCMRProducts(prod),
-      job_type: hyp3JobTypes[prod.job_type],
-    }));
-
-    this.store$.dispatch(new AddJobs(jobs));
-  }
-
-  public addOnDemandEventProductsBySearchType(jobType: models.Hyp3JobType) {
-    this.addOnDemandEventProducts(this.EventMonitoringByJobType(jobType));
-  }
-
-  public EventMonitoringByJobType(jobType: models.Hyp3JobType) {
-    const targetProducts = this.sarviewsEventProducts.filter(
-      (product) => hyp3JobTypes[product.job_type] === jobType,
-    );
-    return targetProducts;
-  }
-
   public onMetadataExport(format: models.AsfApiOutputFormat): void {
     const action = new queueStore.DownloadSearchtypeMetadata(format);
 
@@ -623,47 +513,6 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
 
   public onOpenHelp(infoUrl) {
     window.open(infoUrl);
-  }
-
-  public getProductSceneCount(products: SarviewsProduct[]) {
-    const outputList = products.reduce((prev, product) => {
-      const temp = product.granules.map((granule) => granule.granule_name);
-
-      prev = prev.concat(temp);
-
-      return prev;
-    }, [] as string[]);
-
-    return new Set(outputList).size;
-  }
-
-  public getProductDownloadUrl(products: SarviewsProduct[]) {
-    const productListStr = products.map((product) => product.files.product_url);
-    this.clipboard.copyFromContent(productListStr.join('\n '));
-    const lines = products.length;
-    this.notificationService.clipboardCopyQueue(lines, false);
-  }
-
-  public onAddEventToOnDemand(product: SarviewsProduct) {
-    const job: models.QueuedHyp3Job = {
-      granules: this.eventMonitoringService.getSourceCMRProducts(product),
-      job_type: hyp3JobTypes[product.job_type],
-    };
-
-    this.store$.dispatch(new queueStore.AddJob(job));
-  }
-
-  public copyProductSourceScenes(products: SarviewsProduct[]) {
-    const granuleNameList = products
-      .reduce(
-        (acc, curr) => (acc = acc.concat(curr.granules)),
-        [] as models.SarviewProductGranule[],
-      )
-      .map((gran) => gran.granule_name);
-    const granuleNameListSet = new Set(granuleNameList);
-
-    this.clipboard.copyFromContent(Array.from(granuleNameListSet).join(','));
-    this.notificationService.clipboardCopyIcon('', granuleNameListSet.size);
   }
 
   public onPythonCodeExport() {

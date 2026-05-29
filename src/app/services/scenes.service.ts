@@ -7,9 +7,9 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@store/app.reducer';
 import {
   getAllProducts,
+  getPerpendicularSortDirection,
   getScenes,
   getTemporalSortDirection,
-  getPerpendicularSortDirection,
 } from '@store/scenes/scenes.reducer';
 import {
   getTemporalRange,

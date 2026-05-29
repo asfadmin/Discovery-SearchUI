@@ -23,7 +23,6 @@ import {
   SetSearchType,
   SetNextJobsUrl,
   Hyp3BatchResponse,
-  SarviewsEventsResponse,
   SetSearchOutOfDate,
   TimeseriesSearchResponse,
   setSearchKioskMode,
@@ -57,11 +56,9 @@ import WKT from 'ol/format/WKT';
 import GeoJSON from 'ol/format/GeoJSON';
 import VectorSource from 'ol/source/Vector';
 import {
-  ClearScenes,
   getAreResultsLoaded,
   getScenes,
   ScenesActionType,
-  SetSarviewsEvents,
 } from '@store/scenes';
 import { SearchType } from '@models';
 import { Feature } from 'ol';
@@ -79,7 +76,6 @@ export class SearchEffects {
   private productService = inject(services.ProductService);
   private hyp3Service = inject(services.Hyp3ApiService);
   private hyp3JobService = inject(services.Hyp3JobService);
-  private sarviewsService = inject(services.SarviewsEventsService);
   private http = inject(HttpClient);
   private notificationService = inject(services.NotificationService);
 
@@ -139,7 +135,6 @@ export class SearchEffects {
         withLatestFrom(this.store$.select(getSearchType)),
         filter(
           ([_, searchType]) =>
-            searchType !== SearchType.SARVIEWS_EVENTS &&
             searchType !== SearchType.CUSTOM_PRODUCTS &&
             searchType !== SearchType.BASELINE &&
             searchType !== SearchType.SBAS,
@@ -167,36 +162,16 @@ export class SearchEffects {
     { dispatch: false },
   );
 
-  public setEventSearchProductsOnClear = createEffect(() =>
-    this.actions$.pipe(
-      ofType<ClearScenes>(ScenesActionType.CLEAR),
-      withLatestFrom(this.store$.select(getSearchType)),
-      switchMap(([_, searchType]) => {
-        if (searchType === SearchType.SARVIEWS_EVENTS) {
-          return this.sarviewsService.getSarviewsEvents$;
-        } else {
-          return of([]);
-        }
-      }),
-      map((events) => new SetSarviewsEvents({ events })),
-    ),
-  );
-
   public makeSearches = createEffect(() =>
     this.actions$.pipe(
       ofType(SearchActionType.MAKE_SEARCH),
       withLatestFrom(this.store$.select(getSearchType)),
       switchMap(([_, searchType]) => {
         let searchRequest$: Observable<
-          | SearchResponse
-          | SarviewsEventsResponse
-          | TimeseriesSearchResponse
-          | Action<string>
+          SearchResponse | TimeseriesSearchResponse | Action<string>
         >;
 
-        if (searchType === SearchType.SARVIEWS_EVENTS) {
-          searchRequest$ = this.sarviewsEventsQuery$();
-        } else if (
+        if (
           searchType === SearchType.BASELINE ||
           searchType === SearchType.SBAS
         ) {
@@ -391,20 +366,6 @@ export class SearchEffects {
     ),
   );
 
-  public sarviewsSearchResponse = createEffect(() =>
-    this.actions$.pipe(
-      ofType<SarviewsEventsResponse>(SearchActionType.SARVIEWS_SEARCH_RESPONSE),
-      withLatestFrom(this.store$.select(getSearchType)),
-      filter(([_, searchType]) => searchType === SearchType.SARVIEWS_EVENTS),
-      switchMap(([action, _]) => [
-        new scenesStore.SetSarviewsEvents({
-          events: action.payload.events,
-        }),
-        new SetSearchAmount(action.payload.events.length),
-      ]),
-    ),
-  );
-
   public timeseriesSearchResponse = createEffect(() =>
     this.actions$.pipe(
       ofType<TimeseriesSearchResponse>(
@@ -474,13 +435,6 @@ export class SearchEffects {
   public showResultsMenuOnSearchResponse = createEffect(() =>
     this.actions$.pipe(
       ofType<SearchResponse>(SearchActionType.SEARCH_RESPONSE),
-      map((_) => new uiStore.OpenResultsMenu()),
-    ),
-  );
-
-  public showSarviewsEventResultsMenuOnSearchResponse = createEffect(() =>
-    this.actions$.pipe(
-      ofType<SarviewsEventsResponse>(SearchActionType.SARVIEWS_SEARCH_RESPONSE),
       map((_) => new uiStore.OpenResultsMenu()),
     ),
   );
@@ -703,13 +657,6 @@ export class SearchEffects {
           }),
         );
       }),
-    );
-  }
-
-  private sarviewsEventsQuery$() {
-    return this.sarviewsService.getSarviewsEvents$.pipe(
-      filter((events) => !!events),
-      map((events) => new SarviewsEventsResponse({ events })),
     );
   }
 
