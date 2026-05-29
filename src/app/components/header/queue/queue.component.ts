@@ -250,7 +250,6 @@ export class QueueComponent implements OnInit, OnDestroy {
 
   public onCopyQueue(products: CMRProduct[]): void {
     const productListStr = products
-      .filter((product) => !product.isUnzippedFile)
       .map((product) => {
         if (product.metadata.productType === 'BURST_XML') {
           return product.id?.split('-XML')[0];
@@ -268,7 +267,6 @@ export class QueueComponent implements OnInit, OnDestroy {
 
   public onCopyQueueURLs(products: CMRProduct[], useS3Urls = false): void {
     const productListStr = products
-      .filter((product) => !product.isUnzippedFile)
       .map((product) =>
         useS3Urls ? (product.metadata?.s3URI ?? null) : product.downloadUrl,
       )

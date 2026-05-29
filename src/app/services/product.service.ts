@@ -41,7 +41,7 @@ export class ProductService {
         // the new property also auto converts to the right scale already
         g.s = (g.nsr.sizeMB[filename]?.bytes ?? 0) / 1000000;
       }
-      const product = {
+      const product: models.CMRProduct = {
         name: g.gn,
         productTypeDisplay: g.ptd ?? g.gn,
         file: filename,
@@ -52,7 +52,6 @@ export class ProductService {
         browses,
         thumbnail,
         groupId: g.gid.replaceAll('{gn}', g.gn),
-        isUnzippedFile: false,
         isDummyProduct: false,
         metadata: this.getMetadataFrom(g),
       };
@@ -599,6 +598,13 @@ export class ProductService {
           continue;
         }
       }
+      const polarizationMatch = /.*_([AB])_([VH]{4}|[VH]{2})\.(png|kml)/;
+      const matched = p.match(polarizationMatch) ?? [];
+      if (matched.length > 0) {
+        const [frequency, polarization] = [matched[1], matched[2]];
+        productTypeDisplay = `Frequency ${frequency} ${polarization} ${productTypeDisplay}`;
+      }
+
       if (p.endsWith('.h5') && p.includes('QA_')) {
         productTypeDisplay = models.nisar.productTypeDisplays.qa;
       }

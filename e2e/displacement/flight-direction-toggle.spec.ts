@@ -16,8 +16,7 @@ test('Displacement: flight direction toggles between ascending and descending', 
   const flightDirectionButton =
     flightDirectionToggle.getByRole('button', { name: /Ascending/i });
 
-  await flightDirectionButton.focus();
-  await page.keyboard.press('Enter');
+  await flightDirectionButton.click();
 
   const descendingMenuItem = page.getByRole('menuitem', {
     name: 'Descending',
@@ -29,8 +28,7 @@ test('Displacement: flight direction toggles between ascending and descending', 
     name: /Descending/i,
   });
 
-  await descendingButton.focus();
-  await page.keyboard.press('Enter');
+  await descendingButton.click();
 
   const ascendingMenuItem = page.getByRole('menuitem', {
     name: 'Ascending',

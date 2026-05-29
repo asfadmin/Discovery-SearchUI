@@ -21,7 +21,9 @@ test(
       loggedInPage.locator('app-max-results-selector'),
     ).toContainText('10 Files');
 
-    await loggedInPage.locator('#mat-button-toggle-7-button').click();
+    await loggedInPage
+      .locator('app-list-header app-search-button .arrow-button-toggle')
+      .click();
     await loggedInPage
       .getByRole('menuitem', { name: 'Saved Searches' })
       .click();
@@ -54,7 +56,9 @@ test('Profile: List save files', { tag: '@auth' }, async ({ loggedInPage }) => {
   await expect(loggedInPage.locator('app-max-results-selector')).toContainText(
     '2 Files',
   );
-  await loggedInPage.locator('#mat-button-toggle-7').click();
+  await loggedInPage
+    .locator('app-list-header app-search-button .arrow-button-toggle')
+    .click();
   await loggedInPage.getByRole('menuitem', { name: 'Saved Searches' }).click();
   await loggedInPage.getByRole('menuitem', { name: 'Save Search' }).click();
   await loggedInPage.getByRole('button', { name: 'Save Search' }).click();

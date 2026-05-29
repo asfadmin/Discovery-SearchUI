@@ -30,7 +30,6 @@ test('Files: Add to download queue', async ({ page }) => {
     .first();
 
   await expect(firstFile).toBeVisible();
-  await firstFile.scrollIntoViewIfNeeded();
   await expect(addToDownloadsIcon).toHaveCount(1);
 
   await addToDownloadsIcon.click();
