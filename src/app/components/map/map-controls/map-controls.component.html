@@ -12,16 +12,14 @@
         <div class="fx-row">
           <div class="fx-col visible-toggle">
             <div class="fx-row icon-bar tool-bar-common">
-              @if (searchType !== searchTypes.SARVIEWS_EVENTS) {
-                <div class="fx-empty group-margin">
-                  <div class="map-view-button--layout button-group-label">
-                    <label>&nbsp;{{ 'MAP_VIEW' | translate }}</label>
-                  </div>
-                  <div class="fx-row">
-                    <app-view-selector class="fx-empty"> </app-view-selector>
-                  </div>
+              <div class="fx-empty group-margin">
+                <div class="map-view-button--layout button-group-label">
+                  <label>&nbsp;{{ 'MAP_VIEW' | translate }}</label>
                 </div>
-              }
+                <div class="fx-row">
+                  <app-view-selector class="fx-empty"> </app-view-selector>
+                </div>
+              </div>
               <div class="fx-empty zoom-buttons">
                 <div class="fx-row-center button-group-label">
                   <label>{{ 'ZOOM' | translate }}</label>
@@ -71,42 +69,6 @@
                   </div>
                   <div class="fx-row">
                     <app-interaction-selector> </app-interaction-selector>
-                  </div>
-                </div>
-              }
-              <!-- Product Browse  -->
-              @if (searchType === searchTypes.SARVIEWS_EVENTS) {
-                <div class="fx-empty group-margin">
-                  <div
-                    class="fx-row-center button-group-label"
-                    style="white-space: nowrap"
-                  >
-                    <label>{{ 'PRODUCT' | translate }}</label>
-                  </div>
-                  <div class="fx-row-center">
-                    <div>
-                      <mat-button-toggle-group
-                        class="fx-empty"
-                        name="layerType"
-                        [disabled]="!(isBrowseOverlayEnabled$ | async)"
-                        [hideSingleSelectionIndicator]="true"
-                      >
-                        @if (searchType === searchTypes.SARVIEWS_EVENTS) {
-                          <mat-button-toggle
-                            class="control-mat-button-toggle"
-                            (click)="onUnpinAll()"
-                            matTooltip="{{
-                              'UNPIN_ALL_SELECTED_PRODUCTS' | translate
-                            }}"
-                          >
-                            <mat-icon
-                              class="control-icon"
-                              svgIcon="unpin"
-                            ></mat-icon>
-                          </mat-button-toggle>
-                        }
-                      </mat-button-toggle-group>
-                    </div>
                   </div>
                 </div>
               }
