@@ -29,7 +29,6 @@ export enum SearchActionType {
   EVENT_PRODUCT_CMR_RESPONSE = '[Search] Event Monitoring CMR Search Response',
   SET_SEARCH_OUT_OF_DATE = '[Search] Set if Search is Out of Date',
   SET_SEARCH_KIOSK_MODE = '[Search] Set Vertex to kiosk mode for Opera Displacement',
-
 }
 
 export class MakeSearch implements Action {
