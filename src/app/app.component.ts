@@ -69,7 +69,6 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HeaderComponent } from './components/header/header.component';
 import { MapComponent } from './components/map/map.component';
 import { ResultsMenuComponent } from './components/results-menu/results-menu.component';
-import { WelcomeEnvelopeDemoComponent } from './components/welcome-envelope-demo/welcome-envelope-demo.component';
 
 @Component({
   selector: 'app-root',
@@ -92,7 +91,6 @@ import { WelcomeEnvelopeDemoComponent } from './components/welcome-envelope-demo
     HeaderComponent,
     MapComponent,
     ResultsMenuComponent,
-    WelcomeEnvelopeDemoComponent,
     AsyncPipe,
   ],
 })
@@ -136,7 +134,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   public isAutoTheme = false;
   public breakpoint: models.Breakpoints;
   public breakpoints = models.Breakpoints;
-  public showWelcomeOverlay = false;
 
   public queuedProducts$ = this.store$
     .select(queueStore.getQueuedProducts)
@@ -161,9 +158,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public ngOnInit(): void {
-    this.showWelcomeOverlay =
-      sessionStorage.getItem('searchui-welcome-dismissed') !== 'true';
-
     console.log('To toggle kiosk mode, use "ctrl+/"');
     this.store$.dispatch(new hyp3Store.LoadCosts());
 
@@ -640,11 +634,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           });
         }),
     );
-  }
-
-  public closeWelcomeOverlay(): void {
-    this.showWelcomeOverlay = false;
-    sessionStorage.setItem('searchui-welcome-dismissed', 'true');
   }
 
   public ngAfterViewInit(): void {

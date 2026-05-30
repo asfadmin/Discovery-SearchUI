@@ -1,11 +1,3 @@
-@if (showWelcomeOverlay) {
-  <div class="welcome-overlay">
-    <app-welcome-envelope-demo
-      (closed)="closeWelcomeOverlay()"
-    ></app-welcome-envelope-demo>
-  </div>
-}
-
 <mat-sidenav-container
   class="container"
   [class.tophat-offset]="!hyp3PlusMode()"
