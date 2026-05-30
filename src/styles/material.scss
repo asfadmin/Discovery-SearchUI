@@ -1,0 +1,332 @@
+@use "@angular/material" as mat;
+@use "asf-theme-variables" as *;
+@use 'asf-theme' as *;
+
+// Apply Angular Material theme styles ONCE here in the global stylesheet
+// Include base theme styles (typography and density) once
+@include mat.all-component-typographies($asf-light-theme);
+@include mat.all-component-densities($asf-light-theme);
+
+// Apply color themes separately for light and dark modes
+.theme-light {
+  @include mat.all-component-colors($asf-light-theme);
+}
+
+.theme-dark {
+  @include mat.all-component-colors($asf-dark-theme);
+}
+
+// Create a config with the default typography levels.
+$config: mat.m2-define-legacy-typography-config();
+
+.mat-header-base {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-left-width: 0;
+  border-right-width: 0;
+  border-top-width: 0;
+  border-bottom-width: 0.5px;
+  border-style: solid;
+
+  @include themify_non_host($themes) {
+    background-color: themed('primary-light');
+    color: themed('dark-primary-text');
+    border-color: themed('primary');
+  }
+}
+
+.mat-expansion-panel-header,
+.mat-expansion-panel-header.mat-expanded {
+  @extend .mat-header-base;
+
+  &:hover,
+  &:visited,
+  &:link,
+  &:active,
+  &:focus,
+  &[aria-disabled="true"] {
+
+    @extend .mat-header-base;
+
+    @include themify_non_host($themes) {
+      background-color: themed('primary-light');
+      color: themed('dark-secondary-text');
+      border-color: themed('primary');
+    }
+  }
+}
+
+.mat-expansion-panel-header-title {
+  color: white;
+  font-size: mat.m2-font-size($config, subheading-2);
+}
+
+.mat-expansion-panel-header-description {
+  color: white;
+}
+
+button,
+.mat-expansion-panel,
+.mat-panel,
+.mat-mdc-card {
+  border-radius: 0 !important;
+}
+
+// Angular Material 20 MDC slide-toggle styles
+.mat-mdc-slide-toggle.mat-mdc-slide-toggle-checked .mdc-switch__handle::after {
+  background-color: $asf-primary;
+}
+
+.mat-mdc-slide-toggle.mat-mdc-slide-toggle-checked .mdc-switch__track::after {
+  background-color: darkgrey;
+}
+
+// Ensure slide toggle handle (thumb) is circular
+.mdc-switch__handle::after {
+  border-radius: 50% !important;
+}
+
+// Remove white square background from handle
+.mdc-switch__handle::before {
+  background: transparent !important;
+}
+
+// Ensure the track is rounded
+.mdc-switch__track {
+  border-radius: 14px !important;
+}
+
+/* Rules for sizing the icon. */
+.material-icons.md-18 {
+  font-size: 18px;
+}
+
+.material-icons.md-24 {
+  font-size: 24px;
+}
+
+.material-icons.md-36 {
+  font-size: 36px;
+}
+
+.material-icons.md-48 {
+  font-size: 48px;
+}
+
+.material-icons.md-asf-ribbon-icon {
+  font-size: $asf-ribbon-icon-size;
+}
+
+.mat-mdc-dialog-container {
+  @include themify_non_host($themes) {
+    // background-color: themed('primary-light');
+  }
+
+  border-radius: 0 !important;
+}
+
+.mat-mdc-select-panel {
+  max-width: fit-content !important;
+  //max-width: 340px !important;
+  max-height: 400px !important;
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
+.mat-button-toggle-label-content .mat-button-toggle-appearance-standard .scene-actions {
+  // UNUSED
+  line-height: 24px;
+  padding: 0 9px 1px;
+}
+
+.mat-mdc-list-base .mat-mdc-list-item.mat-2-line,
+.mat-list-base .mat-list-option.mat-2-line {
+  // UNUSED
+  height: 58px !important;
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version. */
+.mat-list-base-item {
+
+  // UNUSED
+  .job-list-item {
+    display: flex;
+  }
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of menu that may no longer apply for the MDC version. */
+.mat-menu {
+
+  // UNUSED
+  @include themify_non_host($themes) {
+    background-color: themed('background-white') !important;
+  }
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
+.mat-button-toggle {
+  background: #424242;
+}
+
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+  @include themify_non_host($themes) {
+    border-color: themed('blue-link') !important;
+  }
+}
+
+.mat-radio-button.mat-accent .mat-radio-inner-circle {
+  @include themify_non_host($themes) {
+    color: themed('blue-link') !important;
+    background-color: themed('blue-link') !important;
+  }
+}
+
+.md-icon {
+  @include themify_non_host($themes) {
+    color: themed('dark-primary-text');
+  }
+}
+
+.mdc-text-field {
+  background: transparent !important;
+}
+
+.mdc-text-field--filled {
+  background: transparent !important;
+}
+
+.mdc-list-item__primary-text {
+  //  text-overflow: ellipsis;
+  white-space: normal;
+  /* overflow: hidden; */
+}
+
+.mat-mdc-dialog-container .mdc-dialog__container {
+  width: 100%;
+  height: 100%;
+}
+
+.mat-mdc-menu-panel.dataset-selector {
+  overflow: unset;
+
+  .datasets-empty {
+    @include themify_non_host($themes) {
+      color: themed('dark-primary-text') !important;
+    }
+  }
+
+  .dataset-footer {
+    @include themify_non_host($themes) {
+      color: themed('dark-secondary-text') !important;
+      border-top: 1px solid themed('dark-dividers');
+    }
+  }
+
+  .dataset-filter-form {
+    @include themify_non_host($themes) {
+      border-bottom: 1px solid themed('dark-dividers');
+    }
+  }
+
+  .filter-icon {
+    @include themify_non_host($themes) {
+      color: themed('dark-primary-text');
+    }
+  }
+}
+
+// Fix for Angular Material 20 MDC badges to ensure they remain circular
+.mat-badge-content {
+  border-radius: 30% !important;
+}
+
+.mat-badge-small .mat-badge-content {
+  width: 80% !important;
+}
+
+// Fix for Angular Material 20 MDC sliders to ensure thumbs are circular
+.mdc-slider__thumb-knob {
+  border-radius: 50% !important;
+}
+
+// Ensure the slider track end caps are rounded
+.mdc-slider__track--active_fill,
+.mdc-slider__track--inactive {
+  border-radius: 2px !important;
+}
+
+// Fix for icons turning black on hover in result-div button toggles
+// The mat-icon-no-color class prevents color inheritance, so we need to override it
+// Since SVG uses fill="currentColor", we need to set the color property
+
+// Target mat-button-toggle-appearance-standard specifically
+.control-mat-button-toggle.mat-button-toggle-appearance-standard:hover .mat-icon,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-focused .mat-icon,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-icon,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard:hover .list-icon,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-focused .list-icon,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-mouse-focused .list-icon,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard:hover .mat-icon-no-color,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-focused .mat-icon-no-color,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-icon-no-color,
+.mat-button-toggle-appearance-standard:hover .mat-icon,
+.mat-button-toggle-appearance-standard.cdk-focused .mat-icon,
+.mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-icon,
+.mat-button-toggle-appearance-standard:hover .list-icon,
+.mat-button-toggle-appearance-standard.cdk-focused .list-icon,
+.mat-button-toggle-appearance-standard.cdk-mouse-focused .list-icon,
+.mat-button-toggle-appearance-standard:hover .mat-icon-no-color,
+.mat-button-toggle-appearance-standard.cdk-focused .mat-icon-no-color,
+.mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-icon-no-color {
+  @include themify_non_host($themes) {
+    color: themed('dark-primary-text') !important;
+  }
+}
+
+// Broader fallback for all mat-button-toggles
+.mat-button-toggle:hover .mat-icon-no-color,
+.mat-button-toggle.cdk-focused .mat-icon-no-color,
+.mat-button-toggle.cdk-mouse-focused .mat-icon-no-color,
+.mat-button-toggle:hover .list-icon,
+.mat-button-toggle.cdk-focused .list-icon,
+.mat-button-toggle.cdk-mouse-focused .list-icon {
+  @include themify_non_host($themes) {
+    color: themed('dark-primary-text') !important;
+  }
+}
+
+
+// Make internal button elements transparent
+.mat-button-toggle-appearance-standard:hover .mat-button-toggle-button,
+.mat-button-toggle-appearance-standard.cdk-focused .mat-button-toggle-button,
+.mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-button-toggle-button,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard:hover .mat-button-toggle-button,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-focused .mat-button-toggle-button,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-button-toggle-button {
+  background-color: transparent !important;
+}
+
+// Target the focus overlay and make it transparent
+.mat-button-toggle-appearance-standard .mat-button-toggle-focus-overlay,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard .mat-button-toggle-focus-overlay {
+  background-color: transparent !important;
+  opacity: 0 !important;
+}
+
+// Hide ripple effects on button toggles
+.mat-button-toggle-appearance-standard .mat-button-toggle-ripple,
+.mat-button-toggle-appearance-standard .mat-ripple,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard .mat-button-toggle-ripple,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard .mat-ripple {
+  display: none !important;
+}
+
+.mat-mdc-form-field.mat-focused {
+
+  /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
+  .mat-form-field-label {
+    @include themify_non_host($themes) {
+      color: themed('dark-secondary-text') !important;
+    }
+  }
+}
+

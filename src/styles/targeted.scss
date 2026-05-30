@@ -1,0 +1,432 @@
+@use "@angular/material" as mat;
+@use "asf-theme-variables" as *;
+@use "asf-theme" as *;
+
+
+// Only for styling specific third party components such as material, noui, or toast used within another component.
+
+.banner-dialog {
+  /* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version. */
+  mat-dialog-container {
+    padding: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+    resize: none;
+    outline: 0;
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+    max-height: inherit;
+  }
+
+  /* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version. */
+  mat-dialog-content {
+    padding: 15px 40px;
+  }
+
+  /* TODO(mdc-migration): The following rule targets internal classes of dialog that may no longer apply for the MDC version. */
+  mat-dialog-actions {
+    padding: 7px 15px 7px 15px;
+    margin: 0;
+  }
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
+.control-mat-button-toggle {
+  pointer-events: auto;
+
+  /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
+  .mat-button-toggle-label-content,
+  .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+    line-height: 26px !important;
+  }
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
+.ls-card .mat-button-toggle {
+  // UNUSED
+  font-size: $asf-font-size;
+
+  /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
+  .mat-button-toggle-label-content,
+  .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+    line-height: 24px;
+  }
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
+.ls-card-content-list .mat-form-field-infix {
+
+  // UNUSED
+  @include themify_non_host($themes) {
+    border-color: themed('primary-light');
+  }
+
+  width: 100%;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.image-dialog {
+
+  .mat-mdc-dialog-container {
+    @include themify_non_host($themes) {
+      // background-color: themed('primary-light');
+    }
+
+    padding-bottom: 0;
+    padding-top: 11px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+
+.file-list {
+  // USED IN image-dialog
+
+  /* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version. */
+  .mat-list-item-content {
+    padding: 0 !important;
+  }
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
+.saved-searches__filter-form-mobile .mat-form-field-infix {
+  // USED IN saved-searches
+  width: 143px !important;
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
+#dataset-button-toggle-group .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+  // USED IN search-button
+  line-height: 0;
+  padding: 0;
+}
+
+.help-panel-config {
+  .mat-mdc-dialog-container {
+    padding: 0;
+    overflow: hidden;
+  }
+}
+
+.sbas-column-1 {
+  // USED IN sbas-sliders-two
+
+  div.noUi-handle.noUi-handle-lower,
+  div.noUi-handle.noUi-handle-upper {
+    width: 16px;
+    right: -5px;
+  }
+
+  .noUi-vertical .noUi-handle::after,
+  .noUi-vertical .noUi-handle::before {
+    // UNUSED?
+    width: 8px;
+    left: 3px;
+    background-color: $asf-primary-dark;
+  }
+
+  .noUi-value-vertical {
+    // UNUSED?
+    font-size: 13px;
+  }
+}
+
+.displacement-slider.noUi-horizontal,
+.sbas-column-2.noUi-horizontal {
+  .noUi-handle {
+    height: 16px;
+    top: -5px;
+  }
+
+  .noUi-handle::after,
+  .noUi-handle::before {
+    height: 8px;
+    top: 3px;
+    background-color: $asf-primary-dark;
+  }
+
+  .noUi-value-horizontal {
+    font-size: 13px;
+    top: 17px;
+  }
+
+  .noUi-tooltip {
+    font-size: 14px;
+  }
+}
+
+.jobs-display--mobile .mat-mdc-list-base .mat-mdc-list-item .mat-list-item-content,
+.jobs-display--mobile .mat-list-base .mat-list-option .mat-list-item-content {
+  // USED IN processing-queue
+  width: 100%;
+}
+
+#ConfirmProcess {
+  .mat-mdc-list-base {
+    padding-top: 0;
+  }
+
+  .mat-mdc-dialog-content {
+    padding-right: 10px;
+  }
+}
+
+#preferencesDialog {
+  .mat-mdc-dialog-content {
+    @include themify($themes) {
+      background-color: themed("background-white");
+    }
+
+    padding: 0;
+  }
+}
+
+.content-block .mat-step-header .mat-step-icon {
+
+  // USED IN processing-queue
+  @include themify_non_host($themes) {
+    background-color: themed('primary');
+    color: themed('light-primary-text');
+  }
+}
+
+.content-block .mat-step-label-selected {
+  // USED IN processing-queue
+  font-size: 16px !important;
+}
+
+.content-block .mat-step-label {
+  // USED IN processing-queue
+  font-size: 20px;
+}
+
+.content-block .mat-horizontal-stepper-header-container {
+  // USED IN processing-queue
+  margin-bottom: 20px;
+}
+
+.content-block .mat-step-header .mat-step-icon-selected {
+  background-color: $asf-blue !important;
+
+  @include themify_non_host($themes) {
+    color: themed('dark-primary-text');
+  }
+}
+
+.event-slider {
+  // USED IN event-polygon-slider
+
+  .noUi-handle::after,
+  .noUi-handle::before {
+    height: 10px;
+    top: 4px;
+  }
+
+  .noUi-handle::before {
+    left: 12px;
+  }
+
+  .noUi-handle::after {
+    left: 16px;
+  }
+
+  .noUi-handle {
+    width: 30px !important;
+    height: 20px !important;
+  }
+
+  .noUi-pips {
+    font-size: 14px !important;
+  }
+
+  .noUi-value {
+    margin-top: 4px;
+  }
+}
+
+.pair-row .mat-list-item-content {
+  // USED IN pair
+  width: 100%;
+  justify-content: space-between;
+}
+
+.layer-select-button {
+
+  // USED IN layer-selector
+  .mdc-button__label {
+    height: 26px;
+  }
+}
+
+.breadcrumb-row .mdc-text-field-wrapper {
+  // hyp3-header timeseries-header baseline-header list-header sarviews-header dataset-header
+  height: 50px !important;
+}
+
+.field-test .mdc-text-field {
+  // UNUTEF
+  height: 50px !important;
+  background: red !important;
+}
+
+.product-type-selector.mat-mdc-select-panel {
+  // product-type-selector
+  max-width: 340px !important;
+}
+
+.short-name-selector.mat-mdc-select-panel {
+  // short-name-selector other-selector
+  max-width: 900px !important;
+}
+
+.cdk-overlay-pane:has(.mat-mdc-select-panel) {
+  min-width: fit-content;
+}
+
+.breadcrumb-list .mat-mdc-form-field {
+  // header
+  margin-top: -2px;
+}
+
+.displacement-header-menu .mat-mdc-button,
+.displacement-header-menu .mdc-button {
+  // timeseries-header search-button
+  font-size: 16px !important;
+  font-weight: normal !important;
+  //margin-top: 30px;
+  //margin-left: 20px;
+}
+
+.mat-mdc-menu-panel.search-type-menu {
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.mat-mdc-snack-bar-container.ts-snackbar {
+  @include themify($themes) {
+    background-color: themed('primary-light');
+    color: themed('dark-primary-text');
+  }
+
+  //--mat-snack-bar-button-color: #fff;
+  //--mat-snackbar-container-color: #c40202;
+  //--mat-snackbar-supporting-text-color: themed('primary-light');
+  //--mat-snackbar-supporting-text-color: yellow;
+}
+
+// USED IN results-menu
+// Also target within result-div
+#result-div .mat-button-toggle-appearance-standard:hover .mat-icon-no-color,
+#result-div .mat-button-toggle-appearance-standard.cdk-focused .mat-icon-no-color,
+#result-div .mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-icon-no-color,
+#result-div .mat-button-toggle-appearance-standard:hover .list-icon,
+#result-div .mat-button-toggle-appearance-standard.cdk-focused .list-icon,
+#result-div .mat-button-toggle-appearance-standard.cdk-mouse-focused .list-icon {
+  @include themify_non_host($themes) {
+    color: themed('dark-primary-text') !important;
+  }
+}
+
+// Also target the scenes-list-buttons layout specifically
+.scenes-list-buttons--layout .mat-button-toggle-appearance-standard:hover .mat-icon-no-color,
+.scenes-list-buttons--layout .mat-button-toggle-appearance-standard.cdk-focused .mat-icon-no-color,
+.scenes-list-buttons--layout .mat-button-toggle-appearance-standard.cdk-mouse-focused .mat-icon-no-color,
+.scenes-list-buttons--layout .mat-button-toggle-appearance-standard:hover .list-icon,
+.scenes-list-buttons--layout .mat-button-toggle-appearance-standard.cdk-focused .list-icon,
+.scenes-list-buttons--layout .mat-button-toggle-appearance-standard.cdk-mouse-focused .list-icon {
+  @include themify_non_host($themes) {
+    color: themed('dark-primary-text') !important;
+  }
+}
+
+// Fix button background turning black/white on hover
+// Override button backgrounds to maintain themed colors
+.control-mat-button-toggle.mat-button-toggle-appearance-standard:hover,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-focused,
+.control-mat-button-toggle.mat-button-toggle-appearance-standard.cdk-mouse-focused,
+.mat-button-toggle-appearance-standard:hover,
+.mat-button-toggle-appearance-standard.cdk-focused,
+.mat-button-toggle-appearance-standard.cdk-mouse-focused {
+  @include themify_non_host($themes) {
+    background-color: themed('background-white') !important;
+  }
+}
+
+.slider .noUi-connect {
+  background: $asf-blue;
+}
+
+.slider [disabled] .noUi-connect {
+  color: grey !important;
+}
+
+.image-dialog {
+  // MOVE TO image-dialog
+  margin: 0;
+  padding: 0;
+}
+
+.tooltip {
+  position: absolute;
+  text-align: center;
+  padding: 6px 10px;
+  font: 12px sans-serif;
+  background: #c9cac4;
+  border: 0;
+  border-radius: 8px;
+  pointer-events: none;
+  z-index: 100000;
+}
+
+.on-demand-tooltip {
+  // USED IN range-option toggle-option dropdown-option checkbox-option
+  font-size: 16px;
+}
+
+.opacity-slider-title {
+
+  // USED IN map-controls.
+  @include themify_non_host($themes) {
+    color: themed('dark-primary-text');
+  }
+}
+
+.draw-svg {
+
+  // USED in draw-selector
+  @include themify_non_host($themes) {
+    fill: themed('dark-secondary-text');
+  }
+}
+
+.view-btn {
+
+  // USED in view-selector
+  @include themify_non_host($themes) {
+    fill: themed('dark-primary-text');
+  }
+}
+
+.critical-baseline {
+
+  // USED in baseline-chart??
+  @include themify_non_host($themes) {
+    fill: darken(themed('background-white'), 5%);
+  }
+}
+
+.ol-custom-scale-line {
+  // USED IN map
+  height: 14px;
+  width: auto;
+  color: $asf-primary-light;
+  background: $asf-primary-dark;
+  border-style: solid;
+  border-color: $asf-primary-light;
+  border-width: 0 2px 0 2px;
+  text-align: center;
+}

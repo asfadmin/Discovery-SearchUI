@@ -1,0 +1,16 @@
+@use 'asf-theme-variables' as *;
+
+.noUi-handle {
+  background-color: $asf-primary-light;
+  border-color: $asf-primary-dark;
+}
+
+.displacement-slider.noUi-horizontal,
+.sbas-column-2.noUi-horizontal {
+  height: 8px;
+}
+
+.tick>line {
+  opacity: 0.2;
+}
+

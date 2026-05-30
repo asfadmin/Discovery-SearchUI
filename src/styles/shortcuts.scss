@@ -1,0 +1,166 @@
+@use 'asf-theme' as *;
+
+.primary-text {
+
+  // USED IN image-dialog
+  @include themify_non_host($themes) {
+    color: themed('dark-primary-text');
+  }
+}
+
+.faint-text {
+  @include themify_non_host($themes) {
+    color: themed('dark-secondary-text');
+  }
+}
+
+.fainter-text {
+
+  // UNUSED
+  @include themify_non_host($themes) {
+    color: themed('dark-disabled-text');
+  }
+}
+
+.v-mid {
+  // USED IN mission-selector, scene-metadata, event-metadata
+  vertical-align: middle;
+}
+
+.active-btn {
+  // REDEFINED AT COMPONENT LEVEL
+  background-color: rgba(0, 0, 0, 0.07);
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.w100 {
+  width: 100%;
+}
+
+.w90 {
+  // UNUSED
+  width: 90%;
+}
+
+.h100 {
+  // merge with w100?
+  height: 100%;
+}
+
+.mp0 {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.bold {
+  // USED IN project-name-dialog, scene, sarviews-event
+  font-weight: bold !important;
+}
+
+.hidden {
+  // USED BY VARIOUS JS LOGIC
+  display: none;
+}
+
+.fx-row {
+  flex-direction: row;
+  box-sizing: border-box;
+  display: flex;
+}
+
+.fx-col {
+  flex-direction: column;
+  box-sizing: border-box;
+  display: flex;
+}
+
+.fx-empty {
+  flex: 1 1 0%;
+  box-sizing: border-box;
+}
+
+.fx-auto {
+  flex: 1 1 auto;
+  box-sizing: border-box;
+}
+
+.fx-nogrow {
+  flex: 0 1 auto;
+  box-sizing: border-box;
+}
+
+.fx-75 {
+  // UNUSED
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 75%;
+}
+
+.fx-25 {
+  // UNUSED
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 25%;
+}
+
+.fx-80 {
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 80%;
+}
+
+.fx-20 {
+  flex: 1 1 100%;
+  box-sizing: border-box;
+  max-width: 20%;
+}
+
+.fx-row-center {
+  flex-direction: row;
+  box-sizing: border-box;
+  display: flex;
+  place-content: stretch center;
+  // align-items: stretch;
+}
+
+.noselect {
+  // USED BY scenes-list/pair baseline-results-menu scenes-list-header baseline-scene-controls sarviews-results-menu
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+.no-drag {
+  // USED IN browse-list
+  /* https://stackoverflow.com/questions/12906789/preventing-an-image-from-being-draggable-or-selectable-without-using-js */
+  user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
+.blue-link {
+  // USED IN search-type-selector dataset
+  @include themify_non_host($themes) {
+    color: themed('blue-link') !important;
+  }
+}
+
+.selected {
+  background-color: rgba(0, 0, 0, 0.08) !important;
+}
