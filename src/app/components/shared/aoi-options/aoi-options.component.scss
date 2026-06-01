@@ -34,19 +34,11 @@
   justify-content: center;
   align-items: stretch;
   width: 100%;
-  margin-top: 15px;
 }
 
 .aoi-input-area {
   display: flex;
   flex-direction: row;
-  height: 200px;
-}
-
-.aoi-input--size {
-  min-height: 105px;
-  max-height: 120px;
-  resize: none;
 }
 
 .drop-text-box {
