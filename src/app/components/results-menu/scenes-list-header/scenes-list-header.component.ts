@@ -365,8 +365,8 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
             searchType === models.SearchType.DATASET &&
             scenes.every(
               (scene) =>
-                scene.dataset === 'Sentinel-1C' ||
                 scene.dataset === 'Sentinel-1D' ||
+                scene.dataset === 'Sentinel-1C' ||
                 scene.dataset === 'Sentinel-1B' ||
                 scene.dataset === 'Sentinel-1A',
             ) &&

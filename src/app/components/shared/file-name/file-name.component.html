@@ -13,10 +13,10 @@
         </span>
       }
       @if (
-        dataset === 'Sentinel-1B' ||
-        dataset === 'Sentinel-1A' ||
+        dataset === 'Sentinel-1D' ||
         dataset === 'Sentinel-1C' ||
-        dataset === 'Sentinel-1D'
+        dataset === 'Sentinel-1B' ||
+        dataset === 'Sentinel-1A'
       ) {
         <span>
           {{ name | truncate: sceneNameLen - 4 }}
