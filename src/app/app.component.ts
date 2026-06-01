@@ -40,7 +40,6 @@ import {
 } from 'rxjs/operators';
 
 import { NgcCookieConsentService } from 'ngx-cookieconsent';
-import { HelpComponent } from '@components/help/help.component';
 
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
@@ -146,7 +145,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   public searchType: models.SearchType;
   public kioskMode = false;
   private injector = inject(Injector);
-  private helpTopic: string | null;
 
   private subs = new SubSink();
   public hyp3PlusMode = this.store$.selectSignal(searchStore.getHyp3PlusMode);
@@ -201,36 +199,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       },
       { injector: this.injector },
-    );
-
-    this.subs.add(
-      this.store$.select(uiStore.getHelpDialogTopic).subscribe((topic) => {
-        const previousTopic = this.helpTopic;
-        this.helpTopic = topic;
-
-        if (!topic || !!previousTopic) {
-          return;
-        }
-
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({
-          event: 'open-help',
-          'open-help': topic,
-        });
-
-        const ref = this.dialog.open(HelpComponent, {
-          panelClass: 'help-panel-config',
-          data: { helpTopic: topic },
-          width: '80vw',
-          height: '80vh',
-          maxWidth: '100%',
-          maxHeight: '100%',
-        });
-
-        ref.afterClosed().subscribe((_) => {
-          this.store$.dispatch(new uiStore.SetHelpDialogTopic(null));
-        });
-      }),
     );
 
     this.subs.add(

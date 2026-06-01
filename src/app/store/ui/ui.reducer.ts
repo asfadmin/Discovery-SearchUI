@@ -17,7 +17,6 @@ export interface UIState {
   isAddingCustomPoint: boolean;
   isDownloadQueueOpen: boolean;
   isOnDemandQueueOpen: boolean;
-  helpDialogTopic: string | null;
   currentLanguage: string | null;
   activeUUID: string | null;
   banners: Banner[];
@@ -37,7 +36,6 @@ export const initState: UIState = {
   isAddingCustomPoint: false,
   isDownloadQueueOpen: false,
   isOnDemandQueueOpen: false,
-  helpDialogTopic: null,
   currentLanguage: 'en',
   activeUUID: null,
   banners: [],
@@ -207,13 +205,6 @@ export function uiReducer(state = initState, action: UIActions): UIState {
       };
     }
 
-    case UIActionType.SET_HELP_DIALOG_TOPIC: {
-      return {
-        ...state,
-        helpDialogTopic: action.payload,
-      };
-    }
-
     case UIActionType.SET_CURRENT_LANGUAGE: {
       return {
         ...state,
@@ -305,11 +296,6 @@ export const getShowS1RawData = createSelector(
 export const getShowExpiredData = createSelector(
   getUIState,
   (state) => state.showExpiredData,
-);
-
-export const getHelpDialogTopic = createSelector(
-  getUIState,
-  (state) => state.helpDialogTopic,
 );
 
 export const getCurrentLanguage = createSelector(
