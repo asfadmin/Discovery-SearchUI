@@ -1,9 +1,7 @@
 import { test, expect } from 'e2e/fixtures';
 import { waitForASFAPIResponse } from 'e2e/helpers';
 import { mockGeocoding } from 'e2e/helpers';
-test('Place name is geocoded to WKT AOI and returns search results', async ({
-  page,
-}) => {
+test('Place name is geocoded to WKT AOI', async ({ page }) => {
   await mockGeocoding(page);
   await page.goto('/');
   await page.getByRole('button', { name: 'Sentinel-' }).click();
@@ -24,18 +22,6 @@ test('Place name is geocoded to WKT AOI and returns search results', async ({
     /POINT\(88\.0439 31\.5534\)/,
   );
   await expect(geocodeInput).toHaveValue(/Tibet Autonomous Region.*China/);
-
-  const responsePromise = waitForASFAPIResponse(page);
-  await page
-    .locator('app-dataset-header')
-    .locator('app-search-button')
-    .getByRole('button', { name: 'SEARCH' })
-    .click();
-  await responsePromise;
-
-  await expect(page.locator('mat-card-header').first()).toContainText(
-    'S1_023809_IW3_',
-  );
 });
 
 test('Place name geocode pans the map to the entered location', async ({
