@@ -1,14 +1,12 @@
-@use 'asf-theme' as *;
+@use "asf-theme" as *;
 
 .ts-best-fit-formulas {
   timeseries-chart .cdk-virtual-scrollable {
-    overflow-y: clip;
-    overflow-x: auto;
+    overflow: auto clip;
   }
 }
 
 .ts-snackbar {
-
   // timeseries-results-menu
   @include themify($themes) {
     background-color: themed('primary-light');
@@ -27,7 +25,7 @@
 
 .ts-invalid-point {
   // timeseries-chart
-  fill: rgb(0, 0, 0, 0) !important;
+  fill: rgb(0 0 0 / 0%) !important;
   stroke-dasharray: 2;
   stroke-width: 1;
 }

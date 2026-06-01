@@ -1,4 +1,4 @@
-@use './asf-theme' as *;
+@use "./asf-theme" as *;
 
 
 #toast-container {
@@ -19,7 +19,6 @@
 
   .toast-close-button,
   #toast-container>.toast-close-button {
-
     color: $asf-background-white;
   }
 
@@ -55,7 +54,6 @@
 
   @include themify_non_host($themes) {
     box-shadow: 0 0 12px themed('primary');
-
     background-color: themed('background-white');
     color: themed('dark-primary-text');
 
@@ -101,7 +99,7 @@
   margin: 0 0 6px;
   padding: 15px 15px 15px 50px;
   width: 300px;
-  border-radius: 3px 3px 3px 3px;
+  border-radius: 3px;
   background-position: 15px center;
   background-repeat: no-repeat;
   background-size: 24px;

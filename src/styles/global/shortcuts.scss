@@ -1,7 +1,6 @@
-@use 'asf-theme' as *;
+@use "asf-theme" as *;
 
 .primary-text {
-
   // USED IN image-dialog
   @include themify_non_host($themes) {
     color: themed('dark-primary-text');
@@ -15,7 +14,6 @@
 }
 
 .fainter-text {
-
   // UNUSED
   @include themify_non_host($themes) {
     color: themed('dark-disabled-text');
@@ -29,7 +27,7 @@
 
 .active-btn {
   // REDEFINED AT COMPONENT LEVEL
-  background-color: rgba(0, 0, 0, 0.07);
+  background-color: rgb(0 0 0 / 7%);
 }
 
 .clickable {
@@ -123,35 +121,36 @@
   box-sizing: border-box;
   display: flex;
   place-content: stretch center;
+
   // align-items: stretch;
 }
 
 .noselect {
   // USED BY scenes-list/pair baseline-results-menu scenes-list-header baseline-scene-controls sarviews-results-menu
   -webkit-touch-callout: none;
+
   /* iOS Safari */
-  -webkit-user-select: none;
+
   /* Safari */
-  -khtml-user-select: none;
+
   /* Konqueror HTML */
-  -moz-user-select: none;
+
   /* Firefox */
-  -ms-user-select: none;
+
   /* Internet Explorer/Edge */
   user-select: none;
+
   /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
 
 .no-drag {
   // USED IN browse-list
+
   /* https://stackoverflow.com/questions/12906789/preventing-an-image-from-being-draggable-or-selectable-without-using-js */
   user-drag: none;
-  user-select: none;
-  -moz-user-select: none;
   -webkit-user-drag: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
+  user-select: none;
 }
 
 .blue-link {
@@ -162,5 +161,5 @@
 }
 
 .selected {
-  background-color: rgba(0, 0, 0, 0.08) !important;
+  background-color: rgb(0 0 0 / 8%) !important;
 }

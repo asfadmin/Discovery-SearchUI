@@ -1,16 +1,12 @@
-/* You can add global styles to this file, and also import other style files */
-
 @use "@angular/material" as mat;
-@use './styles/asf-theme.scss' as *;
-@use 'ngx-toastr/toastr';
-@use './styles/material.scss';
-@use './styles/targeted.scss';
-@use './styles/noui.scss';
-@use './styles/toast.scss';
-
-@use './styles/timeseries.scss';
-@use './styles/shortcuts.scss';
-
+@use "./styles/asf-theme" as *;
+@use "ngx-toastr/toastr";
+@use "./styles/global/material";
+@use "./styles/global/targeted";
+@use "./styles/global/noui";
+@use "./styles/global/toast";
+@use "./styles/global/timeseries";
+@use "./styles/global/shortcuts";
 @import "prismjs/themes/prism-solarizedlight.css";
 
 $theme-map: null;
@@ -45,7 +41,6 @@ ul {
 }
 
 #dlQueueDialog {
-
   // USED ONCE in app.component.ts
   @include themify_non_host($themes) {
     // background-color: themed('primary-light') !important;
@@ -58,7 +53,6 @@ ul {
 }
 
 #processingQueueDialog {
-
   // USED ONCE in app.component.ts
   @include themify_non_host($themes) {
     // background-color: themed('primary-light');
@@ -66,13 +60,12 @@ ul {
 
   position: relative;
   margin: 0;
-  padding: 0 0px 10px 0 !important;
-  padding-right: 0px !important;
+  padding: 0 0 10px !important;
+  padding-right: 0 !important;
   overflow: hidden;
 }
 
 #subscriptionQueueDialog {
-
   // UNUSED
   @include themify_non_host($themes) {
     background-color: themed('primary-light');
@@ -86,7 +79,6 @@ ul {
 
 
 @keyframes shake {
-
   10%,
   90% {
     transform: translate3d(-1px, 0, 0);
@@ -125,11 +117,10 @@ ul {
 
 // for the sbas chart
 
-//$d-width: 600px;
+// $d-width: 600px;
 $d-height: 550px;
 
 #ConfirmProcess {
-
   // USED IN search-button hyp3-job-status-badge processing-queue saved-searches
   @include themify_non_host($themes) {
     background: themed('primary-light') !important;
@@ -137,9 +128,11 @@ $d-height: 550px;
 
   resize: none;
   overflow: hidden;
-  //width: $d-width !important;
+
+  // width: $d-width !important;
   height: $d-height !important;
-  //max-width: $d-width !important;
+
+  // max-width: $d-width !important;
   max-height: $d-height !important;
 
 }
@@ -159,7 +152,6 @@ $d-height: 550px;
 }
 
 #processingQueueDialog {
-
   // USED IN app.component
   @include themify($themes) {
     // background: themed('primary-light');
@@ -173,7 +165,6 @@ $d-height: 550px;
 }
 
 #subscriptionQueueDialog {
-
   // UNUSED
   @include themify($themes) {
     background: themed('primary-light');

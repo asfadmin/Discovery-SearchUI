@@ -20,23 +20,36 @@
 //  you can delete this line and instead use:
 //    `@include mat.legacy-typography-hierarchy(mat.define-legacy-typography-config());`
 // @include mat.all-legacy-component-typographies();
-@include mat.elevation-classes();
-@include mat.app-background();
+@include mat.elevation-classes;
+@include mat.app-background;
+
 
 $theme-ignore-duplication-warnings: true;
 
+button,
+.mat-expansion-panel,
+.mat-panel,
+.mat-mdc-card {
+  border-radius: 0 !important;
+  //font-size: 14px;
+}
+
 // Define light theme
-$asf-light-theme: mat.m2-define-light-theme((color: (primary: $asf-app-primary,
-        accent: $asf-app-accent,
-      ),
-      typography: mat.m2-define-typography-config(),
-      density: -1,
-    ));
+$asf-light-theme: mat.m2-define-light-theme((
+  color: (
+    primary: $asf-app-primary,
+    accent: $asf-app-accent,
+  ),
+  typography: mat.m2-define-typography-config(),
+  density: -1,
+));
 
 // Define dark theme
-$asf-dark-theme: mat.m2-define-dark-theme((color: (primary: $asf-app-dark-primary,
-        accent: $asf-app-accent,
-      ),
-      typography: mat.m2-define-typography-config(),
-      density: -1,
-    ));
+$asf-dark-theme: mat.m2-define-dark-theme((
+  color: (
+    primary: $asf-app-dark-primary,
+    accent: $asf-app-accent,
+  ),
+  typography: mat.m2-define-typography-config(),
+  density: -1,
+));

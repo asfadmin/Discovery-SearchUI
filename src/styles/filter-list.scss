@@ -1,0 +1,50 @@
+@use "@angular/material" as mat;
+@use "asf-theme-variables" as *;
+
+// Create a config with the default typography levels.
+$config: mat.m2-define-legacy-typography-config();
+
+.mat-header-base {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-left-width: 0;
+  border-right-width: 0;
+  border-top-width: 0;
+  border-bottom-width: 0.5px;
+  border-style: solid;
+
+  @include themify_non_host($themes) {
+    background-color: themed('primary-light');
+    color: themed('dark-primary-text');
+    border-color: themed('primary');
+  }
+}
+
+.mat-expansion-panel-header,
+.mat-expansion-panel-header.mat-expanded {
+  @extend .mat-header-base;
+
+  &:hover,
+  &:visited,
+  &:link,
+  &:active,
+  &:focus,
+  &[aria-disabled="true"] {
+
+    @extend .mat-header-base;
+    @include themify_non_host($themes) {
+      background-color: themed('primary-light');
+      color: themed('dark-secondary-text');
+      border-color: themed('primary');
+    }
+  }
+}
+
+.mat-expansion-panel-header-title {
+  color: white;
+  font-size: mat.m2-font-size($config, subheading-2);
+}
+
+.mat-expansion-panel-header-description {
+  color: white;
+}

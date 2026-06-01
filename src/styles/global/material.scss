@@ -1,6 +1,6 @@
 @use "@angular/material" as mat;
 @use "asf-theme-variables" as *;
-@use 'asf-theme' as *;
+@use "asf-theme" as *;
 
 // Apply Angular Material theme styles ONCE here in the global stylesheet
 // Include base theme styles (typography and density) once
@@ -22,10 +22,7 @@ $config: mat.m2-define-legacy-typography-config();
 .mat-header-base {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  border-left-width: 0;
-  border-right-width: 0;
-  border-top-width: 0;
-  border-bottom-width: 0.5px;
+  border-width: 0 0 0.5px;
   border-style: solid;
 
   @include themify_non_host($themes) {
@@ -45,7 +42,6 @@ $config: mat.m2-define-legacy-typography-config();
   &:active,
   &:focus,
   &[aria-disabled="true"] {
-
     @extend .mat-header-base;
 
     @include themify_non_host($themes) {
@@ -127,7 +123,8 @@ button,
 
 .mat-mdc-select-panel {
   max-width: fit-content !important;
-  //max-width: 340px !important;
+
+  // max-width: 340px !important;
   max-height: 400px !important;
 }
 
@@ -146,7 +143,6 @@ button,
 
 /* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version. */
 .mat-list-base-item {
-
   // UNUSED
   .job-list-item {
     display: flex;
@@ -155,7 +151,6 @@ button,
 
 /* TODO(mdc-migration): The following rule targets internal classes of menu that may no longer apply for the MDC version. */
 .mat-menu {
-
   // UNUSED
   @include themify_non_host($themes) {
     background-color: themed('background-white') !important;
@@ -197,6 +192,7 @@ button,
 .mdc-list-item__primary-text {
   //  text-overflow: ellipsis;
   white-space: normal;
+
   /* overflow: hidden; */
 }
 
@@ -321,7 +317,6 @@ button,
 }
 
 .mat-mdc-form-field.mat-focused {
-
   /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
   .mat-form-field-label {
     @include themify_non_host($themes) {
