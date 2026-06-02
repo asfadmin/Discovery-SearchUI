@@ -28,7 +28,6 @@ import { SBASResultsMenuComponent } from './sbas-results-menu/sbas-results-menu.
 import { MobileResultsMenuComponent } from './mobile-results-menu/mobile-results-menu.component';
 import { MatButton } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
-import { SarviewsResultsMenuComponent } from './sarviews-results-menu/sarviews-results-menu.component';
 
 @Component({
   selector: 'app-results-menu',
@@ -43,7 +42,6 @@ import { SarviewsResultsMenuComponent } from './sarviews-results-menu/sarviews-r
     BaselineResultsMenuComponent,
     SBASResultsMenuComponent,
     MobileResultsMenuComponent,
-    SarviewsResultsMenuComponent,
     MatButton,
     AsyncPipe,
     TranslateModule,

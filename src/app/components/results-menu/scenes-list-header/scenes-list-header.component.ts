@@ -45,12 +45,7 @@ import {
   ProjectNameDialogResult,
 } from '@components/shared/project-name-dialog';
 import { MatDialog } from '@angular/material/dialog';
-import {
-  NgClass,
-  AsyncPipe,
-  TitleCasePipe,
-  KeyValuePipe,
-} from '@angular/common';
+import { NgClass, AsyncPipe, KeyValuePipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
 import {
@@ -85,7 +80,6 @@ import { TranslateModule } from '@ngx-translate/core';
 
     FontAwesomeModule,
     AsyncPipe,
-    TitleCasePipe,
     KeyValuePipe,
     TranslateModule,
   ],

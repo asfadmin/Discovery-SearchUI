@@ -69,13 +69,6 @@
                     >
                     </app-timeseries-results-menu>
                   }
-                  @if (searchType === SearchTypes.SARVIEWS_EVENTS) {
-                    <app-sarviews-results-menu
-                      class="w100 h100 results-menu--layout"
-                      [class.small-size]="breakpoint === breakpoints.SMALL"
-                    >
-                    </app-sarviews-results-menu>
-                  }
                   @if (searchType === SearchTypes.BASELINE) {
                     <app-baseline-results-menu
                       class="w100 h100 results-menu--layout"

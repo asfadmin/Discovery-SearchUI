@@ -8,8 +8,9 @@ import {
   inject,
   effect,
   Injector,
+  Input,
 } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
   MatSidenav,
   MatSidenavContainer,
@@ -17,7 +18,13 @@ import {
 } from '@angular/material/sidenav';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer, Title } from '@angular/platform-browser';
-import { MatDialog } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+  MatDialogTitle,
+} from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 import { QueueComponent } from '@components/header/queue';
 import { ProcessingQueueComponent } from '@components/header/processing-queue';
@@ -69,6 +76,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HeaderComponent } from './components/header/header.component';
 import { MapComponent } from './components/map/map.component';
 import { ResultsMenuComponent } from './components/results-menu/results-menu.component';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-root',
@@ -264,6 +272,16 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         }),
     );
 
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe((searchType) => {
+        if (searchType === models.SearchType.SARVIEWS_EVENTS) {
+          this.openDeprecationDialog(
+            'Event Search Deprecation',
+            "Event search has been deprecated. Use ASF's hyp3 service",
+          );
+        }
+      }),
+    );
     this.subs.add(
       this.store$
         .select(uiStore.getIsOnDemandQueueOpen)
@@ -802,7 +820,109 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.store$.dispatch(new filtersStore.ClearTemporalRange());
   }
 
+  private openDeprecationDialog(title: string, text: string) {
+    // this.notificationService
+    //   .error(
+    //     "Event Search has been deprecated. Use ASF's Hyp3 Service instead to generate Sentinel-1 Interferograms",
+    //     'Event Search Deprecated',
+    //     {
+    //       disableTimeOut: true,
+    //       positionClass: 'toast-center',
+    //     },
+    //   )
+    //   .onTap.subscribe((_) =>
+    //     this.store$.dispatch(
+    //       new searchStore.SetSearchType(models.SearchType.DATASET),
+    //     ),
+    //   );
+    // return;
+    const dialogRef = this.dialog.open(DeprecationComponent, {
+      data: { title: title },
+      panelClass: 'banner-dialog',
+      maxWidth: '80vw',
+    });
+    dialogRef.componentInstance.deprecationHeader = title;
+    dialogRef.componentInstance.deprecationText = text;
+
+    dialogRef
+      .afterClosed()
+      .pipe(
+        first(),
+        tap((_) => {
+          this.store$.dispatch(
+            new searchStore.SetSearchType(models.SearchType.DATASET),
+          );
+        }),
+      )
+      .subscribe();
+  }
+
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
+}
+
+@Component({
+  selector: 'app-banners',
+  template: `
+    <div class="banner-title" mat-dialog-title>
+      <div>
+        {{ deprecationHeader }}
+      </div>
+    </div>
+
+    <mat-dialog-content class="banner-content">
+      <div [innerHtml]>{{ deprecationText }}</div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end" class="banner-actions">
+      <button
+        mat-flat-button
+        cdkFocusInitial
+        [mat-dialog-close]="true"
+        color="primary"
+      >
+        {{ 'CLOSE' | translate }}
+      </button>
+    </mat-dialog-actions>
+  `,
+  //   templateUrl: './banners.component.html',
+  styles: `
+    @use 'asf-theme-variables' as *;
+
+    [mat-dialog-title] {
+      margin: 0;
+    }
+
+    .banner-title {
+      @include themify_non_host($themes) {
+        color: themed('dark-primary-text');
+        background-color: themed('primary-light');
+      }
+
+      padding: 10px 0 !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      cursor: move;
+      text-align: center;
+      font-size: x-large !important;
+      border-bottom: 1px solid $asf-primary-dark;
+    }
+  `,
+  imports: [
+    MatDialogTitle,
+    // CdkScrollable,
+    MatDialogContent,
+    MatDialogActions,
+    MatButton,
+    MatDialogClose,
+    TranslateModule,
+  ],
+  //   styleUrls: [],
+})
+export class DeprecationComponent {
+  @Input() deprecationHeader = '';
+  @Input() deprecationText = '';
 }

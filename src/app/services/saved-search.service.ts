@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { combineLatest, Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { filter, map, switchMap } from 'rxjs/operators';
 import { v1 as uuid } from 'uuid';
 
 import { MapService } from './map/map.service';
@@ -128,6 +128,7 @@ export class SavedSearchService {
   private searchType$ = this.store$.select(getSearchType);
 
   public currentSearch$ = this.searchType$.pipe(
+    filter((searchType) => searchType !== models.SearchType.SARVIEWS_EVENTS),
     switchMap(
       (searchType) =>
         ({
@@ -136,7 +137,6 @@ export class SavedSearchService {
           [models.SearchType.BASELINE]: this.currentBaselineSearch$,
           [models.SearchType.SBAS]: this.currentSbasSearch$,
           [models.SearchType.CUSTOM_PRODUCTS]: this.currentCustomProductSearch$,
-          [models.SearchType.SARVIEWS_EVENTS]: this.currentGeographicSearch$,
           [models.SearchType.DERIVED_DATASETS]: this.currentGeographicSearch$,
           [models.SearchType.DISPLACEMENT]: this.currentDisplacementSearch$,
         })[searchType],

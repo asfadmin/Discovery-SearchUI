@@ -50,10 +50,6 @@ export class SearchService {
       this.store$.dispatch(new filterStore.ClearDateRange());
       this.store$.dispatch(new filterStore.SetProductNameFilter(''));
     }
-
-    if (searchType === models.SearchType.SARVIEWS_EVENTS) {
-      this.store$.dispatch(new filterStore.ClearHyp3ProductTypes());
-    }
   }
 
   public load(search: models.Search) {
