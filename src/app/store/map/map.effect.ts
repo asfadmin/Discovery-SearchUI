@@ -174,6 +174,7 @@ export class MapEffects {
               product.dataset === 'Sentinel-1A' ||
               product.dataset === 'Sentinel-1B' ||
               product.dataset === 'Sentinel-1C' ||
+              product.dataset === 'Sentinel-1D' ||
               product.dataset === 'Sentinel-1 Interferogram (BETA)' ||
               product.dataset === 'UAVSAR';
 
