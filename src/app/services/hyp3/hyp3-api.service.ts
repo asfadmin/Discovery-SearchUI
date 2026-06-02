@@ -425,7 +425,8 @@ export class Hyp3ApiService {
           (product) =>
             types.has(product.metadata.productType) &&
             pols.has(product.metadata.polarization) &&
-            beamModes.has(product.metadata.beamMode),
+            beamModes.has(product.metadata.beamMode) &&
+            product.dataset !== 'Sentinel-1D',
         );
       })
     );

@@ -1,14 +1,14 @@
-name: Deploy Yoreley SearchUI
+name: Deploy Lily SearchUI
 
 on:
   push:
     branches:
-      - yoreley/*
+      - lily/*
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: dev-yoreley
+    environment: dev-lily
     permissions:
       id-token: write
       contents: read

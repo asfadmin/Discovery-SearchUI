@@ -1,14 +1,14 @@
-name: Deploy andy SearchUI
+name: Deploy Jackie SearchUI
 
 on:
   push:
     branches:
-      - andy/*
+      - jackie/*
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: dev-andy
+    environment: dev-jackie
     permissions:
       id-token: write
       contents: read
