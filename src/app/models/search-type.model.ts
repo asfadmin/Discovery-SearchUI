@@ -5,7 +5,7 @@ export enum SearchType {
   SBAS = 'SBAS Search',
   CUSTOM_PRODUCTS = 'On Demand',
   DISPLACEMENT = 'Displacement',
-  SARVIEWS_EVENTS = 'Event Search [DEPRECATED]',
+  SARVIEWS_EVENTS = 'Event Search',
   DERIVED_DATASETS = 'Derived Datasets',
 }
 

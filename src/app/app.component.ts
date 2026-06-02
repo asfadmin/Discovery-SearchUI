@@ -277,7 +277,9 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         if (searchType === models.SearchType.SARVIEWS_EVENTS) {
           this.openDeprecationDialog(
             'Event Search Deprecation',
-            "Event search has been deprecated. Use ASF's hyp3 service",
+            `Event search has been deprecated. Use ASF's free 
+            <a href='https://hyp3-docs.asf.alaska.edu/' target='_blank'>hyp3 service</a> 
+            instead to create S1 RTC and INSAR products.`,
           );
         }
       }),
@@ -871,11 +873,11 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       </div>
     </div>
 
-    <mat-dialog-content class="banner-content">
-      <div [innerHtml]>{{ deprecationText }}</div>
+    <mat-dialog-content>
+      <div id="banner-text" [innerHtml]="deprecationText"></div>
     </mat-dialog-content>
 
-    <mat-dialog-actions align="end" class="banner-actions">
+    <mat-dialog-actions align="end">
       <button
         mat-flat-button
         cdkFocusInitial
