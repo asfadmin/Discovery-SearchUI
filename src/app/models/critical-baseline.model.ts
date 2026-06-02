@@ -3,6 +3,7 @@ import {
   sentinel1a,
   sentinel1b,
   sentinel1c,
+  sentinel1d,
   radarsat1,
 } from './critical-baselines';
 
@@ -13,6 +14,7 @@ const criticalBaselines = {
   'SENTINEL-1A': sentinel1a, // Beam -> Pol
   'SENTINEL-1B': sentinel1b, // Beam -> Pol
   'SENTINEL-1C': sentinel1c, // Beam -> Pol
+  'SENTINEL-1D': sentinel1d, // Beam -> Pol
   'RADARSAT-1': radarsat1, // Beam
   'ERS-1': 1061,
   'ERS-2': 1061,

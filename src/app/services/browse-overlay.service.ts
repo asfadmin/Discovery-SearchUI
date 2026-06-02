@@ -66,6 +66,7 @@ export class BrowseOverlayService {
             selectedScene?.dataset === 'Sentinel-1A' ||
             selectedScene?.dataset === 'Sentinel-1B' ||
             selectedScene?.dataset === 'Sentinel-1C' ||
+            selectedScene?.dataset === 'Sentinel-1D' ||
             selectedScene?.dataset === 'Sentinel-1 Interferogram (BETA)' ||
             selectedScene?.dataset === 'UAVSAR'
           );
