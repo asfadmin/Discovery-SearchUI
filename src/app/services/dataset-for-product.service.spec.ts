@@ -98,7 +98,7 @@ describe('DatasetForProductService', () => {
     it('returns sentinel-1 dataset for Sentinel-1D via partial match', () => {
       const product = productFactory
         .withBasicInfo('test-scene')
-        .withDataset('Sentinel-1D')
+        .withProduct({ dataset: 'Sentinel-1D' })
         .build();
       expect(service.match(product)).toBe(models.datasets['SENTINEL-1']);
     });
