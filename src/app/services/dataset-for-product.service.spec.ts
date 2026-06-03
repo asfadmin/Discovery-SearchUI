@@ -94,6 +94,14 @@ describe('DatasetForProductService', () => {
         .build();
       expect(service.match(product)).toBe(models.datasets['SENTINEL-1']);
     });
+
+    it('returns sentinel-1 dataset for Sentinel-1D via partial match', () => {
+      const product = productFactory
+        .withBasicInfo('test-scene')
+        .withProduct({ dataset: 'Sentinel-1D' })
+        .build();
+      expect(service.match(product)).toBe(models.datasets['SENTINEL-1']);
+    });
     // TODO: Change this to default to SENTINEL-1 again?
     it('returns NISAR for non matching dataset', () => {
       const product = productFactory

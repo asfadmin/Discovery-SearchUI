@@ -48,6 +48,10 @@ export const sentinel_1_bursts = {
       displayName: 'Sentinel-1C',
       apiValue: 'SC',
     },
+    {
+      displayName: 'Sentinel-1D',
+      apiValue: 'SD',
+    },
   ],
   platformDesc: 'SENTINEL_1_BURST_DESC',
   platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
