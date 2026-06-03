@@ -108,6 +108,10 @@ export const sentinel_1 = {
       displayName: 'Sentinel-1C',
       apiValue: 'SC',
     },
+    {
+      displayName: 'Sentinel-1D',
+      apiValue: 'SD',
+    },
   ],
   platformDesc: 'SENTINEL_DESC',
   platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
