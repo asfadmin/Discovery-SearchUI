@@ -30,7 +30,7 @@ export const nisar = {
   citationUrl: 'https://asf.alaska.edu/nisar/',
   frequency: 'L-Band',
   source: {
-    name: 'JPL',
+    name: 'NASA/JPL',
     url: 'https://nisar.jpl.nasa.gov',
   },
   collectionMap: {
