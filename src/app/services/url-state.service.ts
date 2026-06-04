@@ -447,13 +447,6 @@ export class UrlStateService {
         loader: this.loadSelectedScene,
       },
       {
-        name: 'topic',
-        source: this.store$
-          .select(uiStore.getHelpDialogTopic)
-          .pipe(map((topic) => ({ topic }))),
-        loader: this.loadHelpTopic,
-      },
-      {
         name: 'isDlOpen',
         source: this.store$
           .select(uiStore.getIsDownloadQueueOpen)
@@ -1144,10 +1137,6 @@ export class UrlStateService {
 
   private loadMasterScene = (master: string): Action => {
     return new scenesStore.SetFilterMaster(master);
-  };
-
-  private loadHelpTopic = (topic: string): Action => {
-    return new uiStore.SetHelpDialogTopic(topic);
   };
 
   private loadSbasPairs = (pairsStr: string): Action => {

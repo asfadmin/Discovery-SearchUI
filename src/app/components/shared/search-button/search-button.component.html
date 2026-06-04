@@ -106,14 +106,6 @@
         {{ 'SHARE_SEARCH' | translate }}
       </button>
       @if (searchType !== searchTypes.DISPLACEMENT) {
-        <span
-          matTooltip="{{ 'GET_HELP_ON_HOW_TO_USER_VERTEX' | translate }}"
-          matTooltipPosition="after"
-        >
-          <button mat-menu-item (click)="onOpenHelp('toc')">
-            {{ 'HELP_AND_TUTORIALS' | translate }}
-          </button>
-        </span>
         <button mat-menu-item [matMenuTriggerFor]="exportSearchMenu">
           {{ 'EXPORT' | translate }}
         </button>
