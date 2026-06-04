@@ -1,4 +1,4 @@
-@if (!!polygon && (searchType$ | async) !== searchTypes.SARVIEWS_EVENTS) {
+@if (!!polygon) {
   <button mat-stroked-button (click)="onClearSearchArea()">
     <span class="button-text">
       {{ 'CLEAR' | translate }} {{ 'AREA_OF_INTEREST' | translate }}

@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { combineLatest, Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { filter, map, switchMap } from 'rxjs/operators';
 import { v1 as uuid } from 'uuid';
 
 import { MapService } from './map/map.service';
@@ -20,7 +20,6 @@ import {
 } from '@store/user/user.action';
 
 import * as models from '@models';
-import { getSarviewsMagnitudeRange } from '@store/filters';
 
 @Injectable({
   providedIn: 'root',
@@ -114,51 +113,6 @@ export class SavedSearchService {
     ),
   );
 
-  private currentSarviewsEventSearch$ = combineLatest([
-    this.store$.select(filtersStore.getDateRange),
-    this.store$.select(filtersStore.getSarviewsEventTypes),
-    this.store$.select(filtersStore.getSarviewsEventNameFilter),
-    this.store$.select(filtersStore.getSarviewsEventActiveFilter),
-    this.store$.select(getSarviewsMagnitudeRange),
-    this.store$.select(scenesStore.getPinnedEventBrowseIDs),
-    this.store$
-      .select(scenesStore.getSelectedSarviewsEvent)
-      .pipe(map((event) => event?.event_id ?? '')),
-    this.store$
-      .select(filtersStore.getHyp3ProductTypes)
-      .pipe(
-        map((productTypes) =>
-          productTypes.map((productType) => productType.id),
-        ),
-      ),
-    this.store$.select(filtersStore.getPathFrameRanges),
-  ]).pipe(
-    map(
-      ([
-        dateRange,
-        sarviewsEventTypes,
-        sarviewsEventNameFilter,
-        activeOnly,
-        magnitude,
-        pinnedProductIDs,
-        selectedEventID,
-        hyp3ProductTypes,
-        pathAndFrame,
-      ]) => ({
-        dateRange,
-        sarviewsEventTypes,
-        sarviewsEventNameFilter,
-        activeOnly,
-        magnitude,
-        pinnedProductIDs,
-        selectedEventID,
-        pathRange: pathAndFrame.pathRange,
-        frameRange: pathAndFrame.frameRange,
-        hyp3ProductTypes,
-      }),
-    ),
-  );
-
   private currentDisplacementSearch$ = combineLatest([
     this.store$.select(chartsStore.getTimeseriesChartStates),
     this.store$.select(filtersStore.getFlightDirections),
@@ -174,6 +128,7 @@ export class SavedSearchService {
   private searchType$ = this.store$.select(getSearchType);
 
   public currentSearch$ = this.searchType$.pipe(
+    filter((searchType) => searchType !== models.SearchType.SARVIEWS_EVENTS),
     switchMap(
       (searchType) =>
         ({
@@ -182,9 +137,7 @@ export class SavedSearchService {
           [models.SearchType.BASELINE]: this.currentBaselineSearch$,
           [models.SearchType.SBAS]: this.currentSbasSearch$,
           [models.SearchType.CUSTOM_PRODUCTS]: this.currentCustomProductSearch$,
-          [models.SearchType.SARVIEWS_EVENTS]: this.currentSarviewsEventSearch$,
-          [models.SearchType.DERIVED_DATASETS]:
-            this.currentSarviewsEventSearch$,
+          [models.SearchType.DERIVED_DATASETS]: this.currentGeographicSearch$,
           [models.SearchType.DISPLACEMENT]: this.currentDisplacementSearch$,
         })[searchType],
     ),

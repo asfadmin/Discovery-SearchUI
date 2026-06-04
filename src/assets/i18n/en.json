@@ -1262,5 +1262,10 @@
   "ZOOM_TO_EVENT": "Zoom to event",
   "ZOOM_TO_FIT": "Zoom To Fit",
   "ZOOM_TO_RESULTS": "Zoom to results",
-  "ZOOM_TO_SCENE": "Zoom to scene"
+  "ZOOM_TO_SCENE": "Zoom to scene",
+  "EVENT_SEARCH_DEPRECATION_TITLE": "Event Search Deprecation",
+  "EVENT_SEARCH_DEPRECATION_BODY": "Event search has been deprecated. Use ASF's free",
+  "EVENT_SEARCH_DEPRECATION_LINK_TEXT": "HyP3 service",
+  "EVENT_SEARCH_DEPRECATION_LINK_ARIA": "HyP3 service (opens in new tab)",
+  "EVENT_SEARCH_DEPRECATION_BODY_SUFFIX": "instead to create S1 RTC and InSAR products."
 }

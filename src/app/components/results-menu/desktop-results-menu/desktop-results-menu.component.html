@@ -19,13 +19,9 @@
 @if (breakpoint > breakpoints.SMALL) {
   <mat-card class="mp0 no-box-shadow scene-detail--layout no-padding">
     <mat-card-subtitle class="header">
-      {{
-        sarviewsEventsLength !== 0
-          ? ('EVENT' | translate)
-          : ('SCENE_DETAIL' | translate | titlecase)
-      }}
+      {{ 'SCENE_DETAIL' | translate | titlecase }}
     </mat-card-subtitle>
-    @if (scenesLength !== 0 || sarviewsEventsLength !== 0) {
+    @if (scenesLength !== 0) {
       <app-scene-detail></app-scene-detail>
     }
   </mat-card>
@@ -73,7 +69,7 @@
       </span>
     </mat-card-subtitle>
     <div class="app-scene-list scroll-y scroll-x">
-      @if (scenesLength !== 0 || sarviewsEventsLength !== 0) {
+      @if (scenesLength !== 0) {
         <app-scene-detail [isScrollable]="false"></app-scene-detail>
       }
       <hr />
