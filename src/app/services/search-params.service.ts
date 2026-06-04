@@ -217,9 +217,15 @@ export class SearchParamsService {
     ),
   );
 
-  private granuleList$ = this.store$
-    .select(filterStore.getGranuleList)
-    .pipe(map((wildcard) => ({ granule_list: wildcard })));
+  private granuleList$ = this.store$.select(filterStore.getGranuleList).pipe(
+    map((wildcard) => {
+      if (wildcard?.endsWith(',')) {
+        return wildcard.slice(0, -1);
+      }
+      return wildcard;
+    }),
+    map((wildcard) => ({ granule_list: wildcard })),
+  );
 
   private polarizations$ = this.store$
     .select(filterStore.getPolarizations)
