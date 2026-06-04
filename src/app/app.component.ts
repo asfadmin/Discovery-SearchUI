@@ -68,6 +68,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HeaderComponent } from './components/header/header.component';
 import { MapComponent } from './components/map/map.component';
 import { ResultsMenuComponent } from './components/results-menu/results-menu.component';
+import { EventSearchDeprecationComponent } from './components/shared/event-search-deprecation/event-search-deprecation.component';
 
 @Component({
   selector: 'app-root',
@@ -109,7 +110,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   private domSanitizer = inject(DomSanitizer);
   private dialog = inject(MatDialog);
   private notificationService = inject(services.NotificationService);
-  private sarviewsService = inject(services.SarviewsEventsService);
   private mapService = inject(services.MapService);
   private hyp3Service = inject(services.Hyp3ApiService);
   private themeService = inject(services.ThemingService);
@@ -231,6 +231,14 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
               ),
           );
         }),
+    );
+
+    this.subs.add(
+      this.store$.select(searchStore.getSearchType).subscribe((searchType) => {
+        if (searchType === models.SearchType.SARVIEWS_EVENTS) {
+          this.openDeprecationDialog();
+        }
+      }),
     );
 
     this.subs.add(
@@ -420,10 +428,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           ) {
             this.clearBaselineRanges();
           }
-
-          if (action.payload !== models.SearchType.SARVIEWS_EVENTS) {
-            this.clearEventProductFilters();
-          }
           if (action.payload === models.SearchType.DISPLACEMENT) {
             this.mapService.clearDrawLayer();
           }
@@ -459,10 +463,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         .pipe(
           tap((searchType) => (this.searchType = searchType)),
           tap((searchType) => {
-            if (
-              searchType === models.SearchType.CUSTOM_PRODUCTS ||
-              searchType === models.SearchType.SARVIEWS_EVENTS
-            ) {
+            if (searchType === models.SearchType.CUSTOM_PRODUCTS) {
               this.store$.dispatch(new searchStore.MakeSearch());
             }
           }),
@@ -620,7 +621,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.pointHistoryService.clear();
     this.store$.dispatch(new scenesStore.ClearScenes());
     this.store$.dispatch(new hyp3Store.SetHyp3JobIDs([]));
-    this.store$.dispatch(new scenesStore.SetSelectedSarviewsEvent(''));
     this.mapService.clearDrawLayer();
     this.store$.dispatch(new uiStore.CloseResultsMenu());
     this.searchService.clear(this.searchType);
@@ -638,10 +638,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       return !searchState.filters.filterMaster;
     } else if (searchState.searchType === models.SearchType.SBAS) {
       return !searchState.filters.reference;
-    } else if (searchState.searchType === models.SearchType.SARVIEWS_EVENTS) {
-      return searchState.filters.selectedEventID !== '';
     }
-
     return false;
   }
 
@@ -682,8 +679,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.urlStateService.setDefaults(profile);
     if (
       this.searchType !== models.SearchType.LIST &&
-      this.searchType !== models.SearchType.CUSTOM_PRODUCTS &&
-      this.searchType !== models.SearchType.SARVIEWS_EVENTS
+      this.searchType !== models.SearchType.CUSTOM_PRODUCTS
     ) {
       const defaultFilterID = profile.defaultFilterPresets[this.searchType];
       if (defaultFilterID) {
@@ -700,18 +696,12 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       debounceTime(200),
       filter(
         (_) =>
-          this.searchType !== SearchType.SARVIEWS_EVENTS &&
           this.searchType !== SearchType.CUSTOM_PRODUCTS &&
           this.searchType !== SearchType.DISPLACEMENT,
       ),
       map((params) => ({ ...params, output: 'COUNT' })),
       tap((_) => this.store$.dispatch(new searchStore.SearchAmountLoading())),
       switchMap((params) => {
-        if (this.searchType === models.SearchType.SARVIEWS_EVENTS) {
-          return this.sarviewsService
-            .filteredSarviewsEvents$()
-            .pipe(map((events) => events.length));
-        }
         return this.asfSearchApi.query<any[]>(params).pipe(
           catchError((resp) => {
             const { error } = resp;
@@ -789,8 +779,15 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.store$.dispatch(new filtersStore.ClearTemporalRange());
   }
 
-  private clearEventProductFilters() {
-    this.store$.dispatch(new filterStore.ClearHyp3ProductTypes());
+  private openDeprecationDialog() {
+    this.store$.dispatch(
+      new searchStore.SetSearchType(models.SearchType.DATASET),
+    );
+
+    this.dialog.open(EventSearchDeprecationComponent, {
+      panelClass: 'banner-dialog',
+      maxWidth: '80vw',
+    });
   }
 
   ngOnDestroy() {

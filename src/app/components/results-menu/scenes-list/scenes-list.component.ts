@@ -37,13 +37,12 @@ import {
 
 import * as services from '@services';
 import * as models from '@models';
-import { CMRProduct, QueuedHyp3Job, SarviewsEvent } from '@models';
+import { CMRProduct, QueuedHyp3Job } from '@models';
 import { ActiveToast } from 'ngx-toastr';
 import { MatActionList, MatListItem } from '@angular/material/list';
 import { NgClass, AsyncPipe, SlicePipe } from '@angular/common';
 import { SceneComponent } from './scene/scene.component';
 import { MatButton } from '@angular/material/button';
-import { SarviewsEventComponent } from './sarview-event/sarviews-event.component';
 import { PairComponent } from './pair/pair.component';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -64,7 +63,6 @@ const INFINITY = 2e10;
     SceneComponent,
     MatListItem,
     MatButton,
-    SarviewsEventComponent,
     PairComponent,
     AsyncPipe,
     SlicePipe,
@@ -75,14 +73,12 @@ export class ScenesListComponent
   implements OnInit, OnDestroy, AfterContentInit
 {
   private store$ = inject<Store<AppState>>(Store);
-  private mapService = inject(services.MapService);
   private screenSize = inject(services.ScreenSizeService);
   private keyboardService = inject(services.KeyboardService);
   private scenesService = inject(services.ScenesService);
   private pairService = inject(services.PairService);
   private hyp3 = inject(services.Hyp3ApiService);
   private hyp3JobPolling = inject(services.Hyp3JobPollingService);
-  private eventMonitoringService = inject(services.SarviewsEventsService);
   private notificationService = inject(services.NotificationService);
 
   @ViewChild(CdkVirtualScrollViewport, { static: true })
@@ -90,22 +86,20 @@ export class ScenesListComponent
   @Input() resize$: Observable<void>;
   private pairs$ = this.pairService.pairs$;
 
-  public scenes: CMRProduct[];
+  public scenes: CMRProduct[] = [];
   public pairs: {
     pair: models.CMRProductPair;
     hyp3able: {
       byJobType: models.Hyp3ableProductByJobType[];
       total: number;
     };
-  }[];
-  public sarviewsEvents: SarviewsEvent[];
+  }[] = [];
 
-  public numberOfQueue: Record<string, number>;
-  public allQueued: Record<string, boolean>;
-  public allJobNames: string[];
-  public queuedJobs: QueuedHyp3Job[];
+  public numberOfQueue: Record<string, number> = {};
+  public allQueued: Record<string, boolean> = {};
+  public allJobNames: string[] = [];
+  public queuedJobs: QueuedHyp3Job[] = [];
   public selected: string;
-  public selectedEvent: string;
 
   public hyp3ableByScene: Record<
     string,
@@ -222,52 +216,6 @@ export class ScenesListComponent
           }
 
           this.selectedFromList = false;
-        }),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(scenesStore.getSelectedSarviewsEvent)
-        .pipe(
-          withLatestFrom(this.eventMonitoringService.filteredSarviewsEvents$()),
-          delay(20),
-          filter(([selected, _]) => !!selected),
-          tap(([selected, _]) => (this.selectedEvent = selected.event_id)),
-          map(([selected, events]) => {
-            const sceneIdx = events.findIndex(
-              (event) => event.event_id === selected.event_id,
-            );
-            return Math.max(0, sceneIdx - 1);
-          }),
-        )
-        .subscribe((idx) => {
-          if (!this.selectedFromList) {
-            this.scrollTo(idx);
-          }
-
-          this.selectedFromList = false;
-        }),
-    );
-
-    this.subs.add(
-      this.eventMonitoringService
-        .filteredSarviewsEvents$()
-        .pipe(
-          filter((_) => this.searchType === this.SearchTypes.SARVIEWS_EVENTS),
-        )
-        .subscribe((events) => {
-          this.sarviewsEvents = events;
-
-          const eventIds = events.map((event) => event.event_id);
-          if (
-            !eventIds.includes(this.selectedEvent) &&
-            eventIds.length > 0 &&
-            !!this.selectedEvent
-          ) {
-            this.store$.dispatch(
-              new scenesStore.SetSelectedSarviewsEvent(eventIds[0]),
-            );
-          }
         }),
     );
 
@@ -495,37 +443,6 @@ export class ScenesListComponent
   }
 
   ngAfterContentInit() {
-    this.subs.add(
-      this.eventMonitoringService
-        .filteredSarviewsEvents$()
-        .pipe(
-          filter((loaded) => !!loaded),
-          withLatestFrom(
-            this.store$.select(scenesStore.getSelectedSarviewsEvent),
-          ),
-          map(([events, selected]) => ({ selectedEvent: selected, events })),
-          delay(400),
-          filter((selected) => !!selected.selectedEvent),
-          tap((selected) => {
-            this.mapService.zoomToEvent(selected.selectedEvent);
-            this.selectedEvent = selected.selectedEvent.event_id;
-          }),
-          first(),
-          map((selected) => {
-            const sceneIdx = selected.events.findIndex(
-              (event) => event.event_id === selected.selectedEvent.event_id,
-            );
-
-            return Math.max(0, sceneIdx - 1);
-          }),
-        )
-        .subscribe((idx) => {
-          if (!this.selectedFromList) {
-            this.scrollTo(idx);
-          }
-        }),
-    );
-
     this.subs.add(
       this.pairs$
         .pipe(

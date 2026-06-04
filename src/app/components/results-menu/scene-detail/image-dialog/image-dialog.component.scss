@@ -151,13 +151,6 @@ a {
   overflow-y: auto;
 }
 
-.sarviews-product-list {
-  overflow-y: scroll;
-
-  button {
-    height: 25px;
-  }
-}
 
 .detail-header {
   font-weight: bold;
@@ -195,16 +188,6 @@ a {
   z-index: 9;
 }
 
-.sarviews-thumbs {
-  box-sizing: border-box;
-  position: relative;
-  bottom: 10px;
-  left: 20px;
-  z-index: 9;
-  overflow-x: scroll;
-  width: 100%;
-  min-height: 150px;
-}
 
 .mat-mdc-card-sm-image {
   width: 50px;
