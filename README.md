@@ -1,7 +1,7 @@
 # SearchUI
 [![es](https://img.shields.io/badge/lang-es-red.svg)](./README.ESP.md)
 [![
-CodeFactor](https://www.codefactor.io/repository/github/asfadmin/discovery-searchui/badge?s=fe1df8c7275093962e0c42abffa97803a397c825)](https://www.codefactor.io/repository/github/asfadmin/discovery-searchui) <img src="https://api.ghostinspector.com/v1/suites/5d408f00f1eea0544564fb2a/status-badge" title="Search UI Suite Status">
+CodeFactor](https://www.codefactor.io/repository/github/asfadmin/discovery-searchui/badge?s=fe1df8c7275093962e0c42abffa97803a397c825)](https://www.codefactor.io/repository/github/asfadmin/discovery-searchui) 
 
 [![Join the chat at https://gitter.im/ASFDiscovery/Vertex](https://badges.gitter.im/ASFDiscovery/Vertex.svg)](https://gitter.im/ASFDiscovery/Vertex?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -13,7 +13,7 @@ ASF's Angular search web application
 | Test | https://search-test.asf.alaska.edu/ |
 | Prod | https://search.asf.alaska.edu/ |
 
-### Personal Deployment (deployment.py)
+### Personal Deployment
 
 ASF Developers have their own personal deployments that build automatically from any branch with the matching identifier with their name `{name}/{topic}`
 
@@ -72,14 +72,14 @@ Run `npm install --save package_name` to install a package.
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
 ## Translating Text
-The package [ngx-translate](http://www.ngx-translate.com/) is use enable multilingual support. Any text a user can view on the UI, excluding possibly
+The package [ngx-translate](http://www.ngx-translate.com/) is used to enable multilingual support. Any text a user can view on the UI, excluding
 metadata values and brand names, should be displayed using a translate pipe.
 
 Here is an example:
 ```
 <button
   [matMenuTriggerFor]="helpMenu"
-  matTooltip="{{ 'HELP_AND_INFORMATION' | translate }}"
+  [matTooltip]="HELP_AND_INFORMATION' | translate"
   class="spacing nav-icon-buttons" color="basic" mat-button>
   <mat-icon class="large-icon">help_outline</mat-icon>
   <div class="text-under faint-text">{{ 'HELP' | translate }}</div>
@@ -87,14 +87,33 @@ Here is an example:
 ```
 You can see both text in the Tool Tip and the button text itself are both run through the 'translate' pipe: `{{ 'HELP_AND_INFORMATION' | translate }}`.
 The translate pipe will translate the key e.g. 'HELP_AND_INFORMATION' and replace it with the value from the current language json file
-in use, e.g. 'assets/i18n/en.json'. Add key/value pairs to the json files using [BabelEdit](https://www.codeandweb.com/babeledit).
-
-The 'assets/i18n/vertex.babel' file is the project file to open with BabelEdit to access all json translation files.
-Use BabelEdit to add, change, and delete key/value pairs.
+in use, e.g. 'assets/i18n/en.json'.
 
 ## Testing
-Testing run via [Ghost Inspector](https://ghostinspector.com/).
 
+### End to end testing
+Testing workflows meant to be a user's journey through the site and catch things going wrong. These tests can be found under the `e2e` folder.
+
+Uses [Playwright](https://playwright.dev/) for test creation
+#### Angular CLI
+```bash
+ng e2e
+```
+#### Playwright CLI
+```bash
+npx playwright test
+```
+##### Playwright CLI Visual Tool
+```bash
+npx playwright test --ui
+```
+### Unit testing
+Meant to be specific component logic. For example testing input validators, sorting items, or interaction logic.
+Uses Angular's [vitest](https://vitest.dev/) integration.
+#### Angular CLI
+```bash
+ng test
+```
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
