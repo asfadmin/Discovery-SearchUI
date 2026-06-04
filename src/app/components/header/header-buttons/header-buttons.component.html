@@ -384,32 +384,6 @@
 </mat-menu>
 
 <mat-menu #helpMenu="matMenu">
-  <button mat-menu-item matSuffix (click)="onOpenHelp('toc')">
-    @if ((breakpoint$ | async) === breakpoints.MOBILE) {
-      <div>
-        <mat-icon>video_library</mat-icon>
-        {{ 'VIDEO_TUTORIALS' | translate }}
-      </div>
-    } @else {
-      <div class="menu-item">
-        <div class="menu-item-content">
-          <div class="item-title">{{ 'WATCH_OUR_TUTORIALS' | translate }}</div>
-          <div class="item-content">
-            {{
-              'WE_HAVE_A_COLLECTION_OF_VIDEOS_TO_HELP_YOU_LEARN_AND_USE_VERTEX_TO_MAXIMUM_ADVANTAGE'
-                | translate
-            }}
-          </div>
-        </div>
-        <div class="menu-item-aside">
-          <mat-icon class="menu-item-icon">video_library</mat-icon>
-        </div>
-      </div>
-    }
-  </button>
-
-  <hr />
-
   <button mat-menu-item matSuffix (click)="onOpenUserGuide()">
     @if ((breakpoint$ | async) === breakpoints.MOBILE) {
       <div>

@@ -60,7 +60,7 @@ export class GranuleListSelectorComponent {
       ) {
         return {
           kind: 'invalid',
-          message: 'GRANULE_LIST_MAX_ERROR',
+          message: 'SCENE_PATTERN_LIST_MAX_ERROR',
         };
       }
       return null;

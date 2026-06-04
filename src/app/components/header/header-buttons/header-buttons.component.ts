@@ -224,10 +224,6 @@ export class HeaderButtonsComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new uiStore.OpenPreferenceMenu());
   }
 
-  public onOpenHelp(helpSelection: string): void {
-    this.store$.dispatch(new uiStore.SetHelpDialogTopic(helpSelection));
-  }
-
   public onOpenUserGuide(): void {
     const url = 'https://docs.asf.alaska.edu/vertex/manual/';
     const analyticsEvent = {

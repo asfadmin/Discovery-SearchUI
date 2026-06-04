@@ -78,31 +78,6 @@ $thumb-size: 50px;
   outline: 0;
 }
 
-.sarview-products-list {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: space-between;
-}
-
-.sarview-product {
-  flex: 4 1 auto;
-  align-self: center;
-  justify-self: flex-start;
-  font-size: 16px;
-}
-
-.sarview-product-sub {
-  font-size: 14px;
-}
-
-.sarviews-button-display {
-  flex-direction: row;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
 .event-wrapper {
   display: flex;
   flex-direction: column;

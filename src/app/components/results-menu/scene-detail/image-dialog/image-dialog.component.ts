@@ -8,16 +8,7 @@ import {
 import { MatDialogRef } from '@angular/material/dialog';
 import { SubSink } from 'subsink';
 
-import {
-  filter,
-  map,
-  tap,
-  debounceTime,
-  first,
-  // distinctUntilChanged,
-  delay,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { filter, map, tap, debounceTime } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import { AppState } from '@store';
@@ -27,19 +18,9 @@ import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
 
 import * as models from '@models';
-import {
-  BrowseMapService,
-  DatasetForProductService,
-  SarviewsEventsService,
-} from '@services';
+import { BrowseMapService, DatasetForProductService } from '@services';
 import * as services from '@services/index';
-import {
-  // Breakpoints,
-  SarviewProductGranule,
-  SarviewsProduct,
-} from '@models';
-import { ClipboardService } from 'ngx-clipboard';
-import { PinnedProduct } from '@services/browse-map.service';
+
 import { NgClass, AsyncPipe } from '@angular/common';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatIconButton, MatButton } from '@angular/material/button';
@@ -48,23 +29,12 @@ import { MatCardSmImage } from '@angular/material/card';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { SceneMetadataComponent } from '@components/shared/scene-metadata/scene-metadata.component';
 import { MatActionList, MatListItem } from '@angular/material/list';
-import {
-  MatMenuTrigger,
-  MatMenu,
-  MatMenuItem,
-  MatMenuContent,
-} from '@angular/material/menu';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { DownloadFileButtonComponent } from '@components/shared/download-file-button/download-file-button.component';
-import { EventMetadataComponent } from '@components/shared/event-metadata/event-metadata.component';
-import { EventProductMetadataComponent } from '@components/shared/event-product-metadata/event-product-metadata.component';
 import { BrowseListComponent } from './browse-list/browse-list.component';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { ReadableSizeFromBytesPipe } from '@pipes/readable-size-from-bytes.pipe';
-import {
-  ShortDatePipe,
-  ShortDateTimePipe,
-  FullDatePipe,
-} from '@pipes/short-date.pipe';
+import { ShortDateTimePipe, FullDatePipe } from '@pipes/short-date.pipe';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -87,15 +57,11 @@ import { TranslateModule } from '@ngx-translate/core';
     MatMenu,
     DownloadFileButtonComponent,
     MatMenuItem,
-    EventMetadataComponent,
-    EventProductMetadataComponent,
-    MatMenuContent,
     BrowseListComponent,
     MatCheckbox,
     MatButton,
     AsyncPipe,
     ReadableSizeFromBytesPipe,
-    ShortDatePipe,
     ShortDateTimePipe,
     FullDatePipe,
     TranslateModule,
@@ -107,37 +73,22 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
   private browseMap = inject(BrowseMapService);
   private datasetForProduct = inject(DatasetForProductService);
   private screenSize = inject(services.ScreenSizeService);
-  private clipboard = inject(ClipboardService);
-  private notificationService = inject(services.NotificationService);
-  private sarviewsService = inject(SarviewsEventsService);
 
   public scene$ = this.store$.select(scenesStore.getSelectedScene);
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
-  public sarviewsEventProducts$ = this.sarviewsService.filteredEventProducts$();
-  public sarviewsEventBrowses$ = this.store$.select(
-    scenesStore.getSelectedSarviewsEventProductBrowses,
-  );
-  public sarviewsEvent$ = this.store$.select(
-    scenesStore.getSelectedSarviewsEvent,
-  );
+
   public masterOffsets$ = this.store$.select(scenesStore.getMasterOffsets);
   public searchType$ = this.store$.select(searchStore.getSearchType);
   public searchTypes = models.SearchType;
   public onlyShowScenesWithBrowse: boolean;
   public queuedProductIds: Set<string>;
   public scene: models.CMRProduct;
-  public sarviewsEvent: models.SarviewsEvent;
-  public eventType: models.SarviewsEventType;
-  public currentSarviewsProduct: models.SarviewsProduct;
   public products: models.CMRProduct[];
-  public selectedEventProducts: models.SarviewsProduct[];
-  public eventSelectedProductIds: string[];
   public dataset: models.Dataset;
   public isImageLoading = false;
   public isShow = false;
   public currentBrowse = null;
   public paramsList: any;
-  public currentSarviewsCMRProduct: models.CMRProduct;
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
   public breakpoint: models.Breakpoints = models.Breakpoints.FULL;
@@ -190,44 +141,6 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         this.paramsList = this.jobParamsToList(prod.metadata);
       }),
     );
-
-    this.subs.add(
-      this.sarviewsEvent$
-        .pipe(filter((event) => !!event))
-        .subscribe((event) => {
-          this.sarviewsEvent = event;
-          this.eventType =
-            event.event_type === 'quake'
-              ? models.SarviewsEventType.QUAKE
-              : models.SarviewsEventType.VOLCANO;
-        }),
-    );
-    this.subs.add(
-      this.store$
-        .select(scenesStore.getSelectedSarviewsProduct)
-        .pipe(delay(100))
-        .subscribe((product) => {
-          if (product) {
-            this.onNewSarviewsBrowseSelected(product);
-          }
-        }),
-    );
-
-    this.subs.add(
-      this.sarviewsService
-        .filteredEventProducts$()
-        .pipe(filter((eventProducts) => !!eventProducts))
-        .subscribe(
-          (selectedEventProducts) =>
-            (this.selectedEventProducts = selectedEventProducts),
-        ),
-    );
-
-    this.subs.add(
-      this.store$
-        .select(scenesStore.getPinnedEventBrowseIDs)
-        .subscribe((ids) => (this.eventSelectedProductIds = ids)),
-    );
   }
 
   ngAfterViewInit() {
@@ -240,27 +153,6 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
         .subscribe((scene) => {
           this.currentBrowse = scene.browses[0];
           this.loadBrowseImage(scene, this.currentBrowse);
-        }),
-    );
-    this.subs.add(
-      this.sarviewsEventProducts$
-        .pipe(
-          withLatestFrom(this.searchType$),
-          filter(
-            ([_, searchtype]) =>
-              searchtype === models.SearchType.SARVIEWS_EVENTS,
-          ),
-          map(([products, _]) => products),
-          filter((products) => !!products),
-          filter((products) => products.length > 0),
-          debounceTime(500),
-          first(),
-        )
-        .subscribe((products) => {
-          if (!this.currentSarviewsProduct) {
-            this.currentBrowse = products[0].files.product_url;
-            this.loadSarviewsBrowseImage(products[0]);
-          }
         }),
     );
   }
@@ -285,30 +177,6 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     this.image.src = browse;
-  }
-
-  private loadSarviewsBrowseImage(product: SarviewsProduct): void {
-    this.isImageLoading = true;
-    this.image = new Image();
-    const browseService = this.browseMap;
-    const currentProd = this.currentSarviewsProduct;
-    this.currentSarviewsProduct = product;
-    this.currentSarviewsCMRProduct =
-      this.sarviewsService.eventProductToCMRProduct(product);
-    const self = this;
-
-    this.image.addEventListener('load', function () {
-      if (currentProd === product) {
-        return;
-      }
-
-      self.isImageLoading = false;
-      const [width, height] = [this.naturalWidth, this.naturalHeight];
-
-      browseService.setBrowse(product.files.browse_url, { width, height });
-    });
-
-    this.image.src = product.files.browse_url;
   }
 
   public jobParamsToList(metadata) {
@@ -336,12 +204,6 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     this.store$.dispatch(new queueStore.ToggleProduct(product));
   }
 
-  public onToggleQueueEventProduct(product: models.SarviewsProduct): void {
-    this.onToggleQueueProduct(
-      this.sarviewsService.eventProductToCMRProduct(product),
-    );
-  }
-
   public toggleDisplay() {
     this.isShow = !this.isShow;
   }
@@ -352,71 +214,6 @@ export class ImageDialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public onNewBrowseSelected(scene, browse): void {
     this.loadBrowseImage(scene, browse);
-  }
-
-  public onNewSarviewsBrowseSelected(browse: SarviewsProduct): void {
-    this.loadSarviewsBrowseImage(browse);
-  }
-
-  public onCopyLink(content: SarviewProductGranule[]): void {
-    const names = content.map((val) => val.granule_name).join(',');
-    this.clipboard.copyFromContent(names);
-    this.notificationService.info(
-      '',
-      `Scene${content.length > 1 ? 's ' : ' '}Copied`,
-    );
-  }
-
-  public getEventURL() {
-    const isQuake = this.sarviewsEvent.event_type === 'quake';
-
-    if (isQuake) {
-      return this.sarviewsService.getUSGSEventUrl(
-        (this.sarviewsEvent as models.SarviewsQuakeEvent).usgs_event_id,
-      );
-    } else {
-      return this.sarviewsService.getSmithsonianURL(
-        (this.sarviewsEvent as models.SarviewsVolcanicEvent)
-          .smithsonian_event_id,
-      );
-    }
-  }
-
-  public onToggleSarviewsProductPin() {
-    if (this.selectedEventProducts?.length === 0) {
-      return;
-    }
-
-    const currentProductId = this.currentSarviewsProduct.product_id;
-    const isPinned = this.eventSelectedProductIds.includes(currentProductId);
-
-    if (isPinned) {
-      this.eventSelectedProductIds = this.eventSelectedProductIds.filter(
-        (productId) => productId !== currentProductId,
-      );
-    } else {
-      this.eventSelectedProductIds.push(currentProductId);
-    }
-    this.onUpdatePinnedUrl(this.eventSelectedProductIds);
-  }
-
-  public onUpdatePinnedUrl(selectedProducts: string[]) {
-    const pinned = selectedProducts.reduce(
-      (prev, key) => {
-        const output = {} as PinnedProduct;
-        const sarviewsProduct = this.selectedEventProducts.find(
-          (prod) => prod.product_id === key,
-        );
-        output.url = sarviewsProduct.files.browse_url;
-        output.wkt = sarviewsProduct.granules[0].wkt;
-
-        prev[key] = output;
-        return prev;
-      },
-      {} as Record<string, PinnedProduct>,
-    );
-
-    this.store$.dispatch(new scenesStore.SetImageBrowseProducts(pinned));
   }
 
   ngOnDestroy() {

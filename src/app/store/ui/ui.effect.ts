@@ -75,7 +75,6 @@ export class UIEffects {
         withLatestFrom(this.store$.select(getSearchType)),
         map(([_, searchType]) => {
           if (
-            searchType !== SearchType.SARVIEWS_EVENTS &&
             searchType !== SearchType.CUSTOM_PRODUCTS &&
             searchType !== SearchType.SBAS &&
             searchType !== SearchType.BASELINE
