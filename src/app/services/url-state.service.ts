@@ -103,7 +103,6 @@ export class UrlStateService {
         ...this.baselineParameters(),
         ...this.sbasParameters(),
         ...this.onDemandParameters(),
-        ...this.eventMonitorParameters(),
         ...this.displacementParameters(),
       ];
     }
@@ -293,10 +292,6 @@ export class UrlStateService {
         loader: this.loadHyp3JobIds,
       },
     ];
-  }
-
-  private eventMonitorParameters(): models.UrlParameter[] {
-    return [];
   }
 
   private displacementParameters() {
