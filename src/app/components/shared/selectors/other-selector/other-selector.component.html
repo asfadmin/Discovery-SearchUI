@@ -97,7 +97,7 @@
         (selectionChange)="onNewSubtypeSelected($event.value)"
         [(ngModel)]="subtypes"
         [disabled]="!prop.isRelevant(p.SUBTYPE)"
-        placeholder="{{ 'SUBTYPE' | translate }}"
+        placeholder="{{ 'SATELLITE' | translate }}"
         multiple
       >
         @for (subtype of dataset.subtypes; track subtype) {
@@ -109,12 +109,12 @@
       @if (prop.isRelevant(p.SUBTYPE)) {
         <mat-hint align="start">
           {{ subtypes?.length || 0 }}/{{ dataset.subtypes?.length }}
-          {{ 'SUBTYPES_SELECTED' | translate }}
+          {{ 'SATELLITES_SELECTED' | translate }}
         </mat-hint>
       }
       @if (!prop.isRelevant(p.SUBTYPE)) {
         <mat-hint align="start">
-          {{ 'NO_SUBTYPES_TO_SELECT' | translate }}
+          {{ 'NO_SATELLITES_TO_SELECT' | translate }}
         </mat-hint>
       }
     </mat-form-field>
@@ -130,13 +130,6 @@
         type="text"
         [placeholder]="'GROUP_ID' | translate"
       />
-      <!-- <mat-hint *ngIf="prop.isRelevant(p.SUBTYPE)" align="start">
-      {{ subtypes?.length || 0 }}/{{ dataset.subtypes?.length }}
-      {{ 'SUBTYPES_SELECTED' | translate }}
-    </mat-hint>
-    <mat-hint *ngIf="!prop.isRelevant(p.SUBTYPE)" align="start">
-      {{ 'NO_SUBTYPES_TO_SELECT' | translate }}
-    </mat-hint> -->
     </mat-form-field>
   }
   @if (dataset.id === 'OPERA-S1') {
