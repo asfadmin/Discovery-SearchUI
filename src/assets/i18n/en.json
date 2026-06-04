@@ -953,7 +953,7 @@
   "SCENE_NAMES": "scene names",
   "SCENE_PATTERN_LIST": "Scene Name Patterns",
   "SCENE_PATTERN_LIST_COUNT": "{{ count }} Pattern",
-  "SCENE_PATTERN_LIST_HINT": "Supports wildcard matching (* for multiple characters, ? for single characters) \n e.g. NISAR_L2_*X05010* matches all Level 2 NISAR products with CRID version X05010.",
+  "SCENE_PATTERN_LIST_HINT": "Takes a list of comma separated patterns, searching for scenes that match any of the provided patterns. Supports wildcard matching (* for multiple characters, ? for single characters) e.g. NISAR_L2_*X05010* matches all Level 2 NISAR products with CRID version X05010.",
   "SCENE_PATTERN_LIST_COUNTS": "{{ count }} Patterns",
   "SCENE_PATTERN_LIST_MAX_ERROR": "Scene name patterns have a recommended maximum of 5 granules with leading wildcards per search",
   "SCENE_START_TIME": "Scene Start Time",
