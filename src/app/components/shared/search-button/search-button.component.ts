@@ -18,7 +18,6 @@ import * as services from '@services';
 import { ClipboardService } from 'ngx-clipboard';
 import { SidebarType, SearchType } from '@models';
 import { MatDialog } from '@angular/material/dialog';
-import { HelpComponent } from '@components/help/help.component';
 import { getFilterMaster } from '@store/scenes';
 import { SaveSearchDialogComponent } from '@components/shared/save-search-dialog';
 import {
@@ -306,23 +305,6 @@ export class SearchButtonComponent implements OnInit, OnDestroy {
     });
 
     this.store$.dispatch(new uiStore.OpenSidebar(SidebarType.SEARCH_HISTORY));
-  }
-
-  public onOpenHelp(helpTopic: string): void {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      event: 'open-help',
-      'open-help': helpTopic,
-    });
-
-    this.dialog.open(HelpComponent, {
-      panelClass: 'help-panel-config',
-      data: { helpTopic },
-      width: '80vw',
-      height: '80vh',
-      maxWidth: '100%',
-      maxHeight: '100%',
-    });
   }
 
   public onCopy(): void {
