@@ -1,26 +1,28 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogRef } from '@angular/material/dialog';
-import { TranslateModule } from '@ngx-translate/core';
-import { beforeEach, describe, expect, it } from 'vitest';
 import { EventSearchDeprecationComponent } from './event-search-deprecation.component';
+import { beforeEach, describe, expect, it } from 'vitest';
+import testProviders from '@testing/providers';
 
 describe('EventSearchDeprecationComponent', () => {
   let fixture: ComponentFixture<EventSearchDeprecationComponent>;
+  let component: EventSearchDeprecationComponent;
   let compiled: HTMLElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EventSearchDeprecationComponent, TranslateModule.forRoot()],
-      providers: [{ provide: MatDialogRef, useValue: {} }],
+      imports: [EventSearchDeprecationComponent],
+      providers: [...testProviders, { provide: MatDialogRef, useValue: {} }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(EventSearchDeprecationComponent);
+    component = fixture.componentInstance;
     fixture.detectChanges();
     compiled = fixture.nativeElement;
   });
 
   it('should create', () => {
-    expect(fixture.componentInstance).toBeDefined();
+    expect(component).toBeTruthy();
   });
 
   it('should display deprecation title', () => {
