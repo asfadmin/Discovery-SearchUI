@@ -57,7 +57,7 @@ export class BrowseListComponent implements OnInit, AfterViewInit, OnDestroy {
   public browses$ = this.store$.select(scenesStore.getSelectedSceneBrowses);
 
   public searchType$ = this.store$.select(searchStore.getSearchType);
-  public searchtype: models.SearchType = models.SearchType.DATASET;
+  public searchtype = models.SearchType.DATASET;
   public searchTypes = models.SearchType;
 
   private selectedFromList = false;
