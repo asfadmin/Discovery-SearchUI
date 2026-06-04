@@ -5,8 +5,10 @@ test('test', async ({ page }) => {
   await expect(page.locator('#deprecation-dialog-title')).toContainText(
     'Event Search Deprecation',
   );
-
-  await page.getByRole('button', { name: 'Close deprecation notice' }).click();
+  await page
+    .getByRole('dialog', { name: 'Event Search Deprecation' })
+    .getByRole('button')
+    .click();
   await expect(page.locator('app-search-type-selector')).toContainText(
     'Geographic Search',
   );
