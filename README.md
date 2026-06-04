@@ -95,11 +95,25 @@ in use, e.g. 'assets/i18n/en.json'.
 Testing workflows meant to be a user's journey through the site and catch things going wrong. These tests can be found under the `e2e` folder.
 
 Uses [Playwright](https://playwright.dev/) for test creation
-
+#### Angular CLI
+```bash
+ng e2e
+```
+#### Playwright CLI
+```bash
+npx playwright test
+```
+##### Playwright CLI Visual Tool
+```bash
+npx playwright test --ui
+```
 ### Unit testing
 Meant to be specific component logic. For example testing input validators, sorting items, or interaction logic.
 Uses Angular's [vitest](https://vitest.dev/) integration.
-
+#### Angular CLI
+```bash
+ng test
+```
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
