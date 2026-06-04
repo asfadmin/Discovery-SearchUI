@@ -227,12 +227,12 @@
       }
       @if (granuleList()) {
         <span>
-          <b> {{ 'GRANULE_LIST' | translate }}:</b>
+          <b> {{ 'SCENE_PATTERN_LIST' | translate }}:</b>
           @if (granuleList().length > maxStringLength) {
             {{
               (granuleListMinified() > 1
-                ? 'GRANULE_LIST_COUNTS'
-                : 'GRANULE_LIST_COUNT'
+                ? 'SCENE_PATTERN_LIST_COUNTS'
+                : 'SCENE_PATTERN_LIST_COUNT'
               ) | translate: { count: granuleListMinified() }
             }}
           } @else {
