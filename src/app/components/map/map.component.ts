@@ -16,7 +16,6 @@ import { filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 import Overlay from 'ol/Overlay';
-import Point from 'ol/geom/Point';
 
 import tippy, { followCursor } from 'tippy.js';
 import { SubSink } from 'subsink';
@@ -29,12 +28,11 @@ import * as uiStore from '@store/ui';
 import * as filtersStore from '@store/filters';
 import * as sceneStore from '@store/scenes';
 import * as models from '@models';
-import { CMRProduct, SarviewsEvent } from '@models';
+import { CMRProduct } from '@models';
 import {
   DisplacementDisclaimerService,
   MapService,
   PointHistoryService,
-  SarviewsEventsService,
   ScenesService,
   ScreenSizeService,
   WktService,
@@ -54,7 +52,6 @@ import { MapControlsComponent } from './map-controls/map-controls.component';
 import { DisplacementLayersComponent } from './displacement-layers/displacement-layers.component';
 import { BannersComponent } from './banners/banners.component';
 import { InteractionSelectorComponent } from '@components/shared/aoi-options/interaction-selector/interaction-selector.component';
-import { ViewSelectorComponent } from './map-controls/view-selector/view-selector.component';
 import { LayerSelectorComponent } from './map-controls/layer-selector/layer-selector.component';
 import { FiltersDropdownComponent } from '../filters-dropdown/filters-dropdown.component';
 import { FileUploadComponent } from '@components/shared/aoi-options/file-upload/file-upload.component';
@@ -80,7 +77,6 @@ enum FullscreenControls {
     BannersComponent,
     MatFabButton,
     InteractionSelectorComponent,
-    ViewSelectorComponent,
     LayerSelectorComponent,
     FiltersDropdownComponent,
     FileUploadComponent,
@@ -96,7 +92,6 @@ export class MapComponent implements OnInit, OnDestroy {
   private wktService = inject(WktService);
   private screenSize = inject(ScreenSizeService);
   private scenesService = inject(ScenesService);
-  private eventMonitoringService = inject(SarviewsEventsService);
   dialog = inject(MatDialog);
   private pointHistoryService = inject(PointHistoryService);
   private disclaimerService = inject(DisplacementDisclaimerService);
@@ -139,7 +134,6 @@ export class MapComponent implements OnInit, OnDestroy {
   public searchTypes = models.SearchType;
 
   public selectedScene: CMRProduct;
-  public selectedSarviewEvent: SarviewsEvent;
   public SelectedOnDemandFrameID: Feature = null;
   public OnDemandFrames: { frameID: string; feature: Feature<Geometry> }[] = [];
   private subs = new SubSink();
@@ -152,7 +146,6 @@ export class MapComponent implements OnInit, OnDestroy {
     this.store$.select(mapStore.getMapLayerType),
   ]);
 
-  private sarviewsEvents: SarviewsEvent[];
   private chartStates: models.timeseriesChartItemState[] = [];
   //@ts-expect-error Variable used later
   private selectedSeries: any = null;
@@ -192,16 +185,6 @@ export class MapComponent implements OnInit, OnDestroy {
         );
         // this.ariaPopup.nativeElement
       });
-    this.subs.add(
-      this.mapService.selectedSarviewEvent$
-        .pipe(filter((id) => !!id))
-        .subscribe(
-          (id) =>
-            (this.selectedSarviewEvent = this.sarviewsEvents?.find(
-              (event) => event?.event_id === id,
-            )),
-        ),
-    );
 
     this.subs.add(
       this.store$
@@ -628,14 +611,6 @@ export class MapComponent implements OnInit, OnDestroy {
         .subscribe((layer) => this.mapService.setLayer(layer)),
     );
 
-    this.subs.add(
-      this.sceneSARViewsEventsLayer$(this.mapService.epsg())
-        .pipe(filter((layers) => !!layers))
-        .subscribe((sarviewsEventsLayer) =>
-          this.mapService.setEventsLayer(sarviewsEventsLayer),
-        ),
-    );
-
     const selectedAfterInitialization$ = this.isMapInitialized$.pipe(
       filter((isMapInitialized) => isMapInitialized),
       switchMap((_) => this.viewType$),
@@ -703,20 +678,6 @@ export class MapComponent implements OnInit, OnDestroy {
     return vectorLayer;
   }
 
-  private sceneSARViewsEventsLayer$(
-    projection: string,
-  ): Observable<VectorLayer<VectorSource>> {
-    return this.eventMonitoringService.filteredSarviewsEvents$().pipe(
-      // filter(events => !!events),
-      tap((events) => (this.sarviewsEvents = events)),
-      map((events) =>
-        this.mapService.sarviewsEventsToFeatures(events, projection),
-      ),
-      map((features) => this.featuresToSource(features, polygonStyle.icon)),
-      tap((vectorLayer) => vectorLayer.set('selectable_events', true)),
-    );
-  }
-
   private scenesToFeature(scenes: models.CMRProduct[], projection: string) {
     const features = scenes
       .filter((scene) => !!scene.metadata.polygon)
@@ -727,36 +688,6 @@ export class MapComponent implements OnInit, OnDestroy {
 
         return feature;
       });
-
-    return features;
-  }
-
-  public sarviewsEventsToFeature(events: SarviewsEvent[], projection: string) {
-    const features = events.map((sarviewEvent) => {
-      const wkt = sarviewEvent.wkt;
-      const feature = this.wktService.wktToFeature(wkt, projection);
-      feature.set('filename', sarviewEvent.description);
-
-      const polygon = feature.getGeometry()[0][0].slice(0, 4);
-
-      if (polygon.length === 2) {
-        const eventPoint = new Point([polygon[0], polygon[1]]);
-        feature.set('eventPoint', eventPoint);
-        feature.setGeometryName('eventPoint');
-        return feature;
-      }
-
-      const centerLat =
-        (polygon[0][0] + polygon[1][0] + polygon[2][0] + polygon[3][0]) / 4.0;
-      const centerLon =
-        (polygon[0][1] + polygon[1][1] + polygon[2][1] + polygon[3][1]) / 4.0;
-      const point = new Point([centerLat, centerLon]);
-
-      feature.set('eventPoint', point);
-      feature.setGeometryName('eventPoint');
-
-      return feature;
-    });
 
     return features;
   }

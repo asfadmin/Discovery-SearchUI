@@ -33,7 +33,6 @@ import { ListFiltersComponent } from './list-filters/list-filters.component';
 import { BaselineFiltersComponent } from './baseline-filters/baseline-filters.component';
 import { SbasFiltersComponent } from './sbas-filters/sbas-filters.component';
 import { CustomProductsFiltersComponent } from './custom-products-filters/custom-products-filters.component';
-import { SarviewsFiltersComponent } from './sarviews-filters/sarviews-filters.component';
 import { TimeseriesFiltersComponent } from './timeseries-filters/timeseries-filters.component';
 import { MaxResultsSelectorComponent } from '@components/shared/max-results-selector/max-results-selector.component';
 import { CancelFilterChangesComponent } from '@components/shared/cancel-filter-changes/cancel-filter-changes.component';
@@ -60,7 +59,6 @@ import { TranslateModule } from '@ngx-translate/core';
     BaselineFiltersComponent,
     SbasFiltersComponent,
     CustomProductsFiltersComponent,
-    SarviewsFiltersComponent,
     TimeseriesFiltersComponent,
     MaxResultsSelectorComponent,
     CancelFilterChangesComponent,

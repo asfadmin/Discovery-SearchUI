@@ -25,7 +25,6 @@ export enum UIActionType {
 
   SET_IS_BROWSE_DIALOG_OPEN = '[UI] Set Is Browse Dialog Open',
   SET_ONLY_SCENES_WITH_BROWSE = '[UI] Set Only Scenes With Browse',
-  SET_HELP_DIALOG_TOPIC = '[UI] Set Help Dialog Topic',
   SET_CURRENT_LANGUAGE = '[UI] Set Current Language',
   SET_ACTIVE_UUID = '[UI] Set Active Displacement UUID',
   SET_IS_DOWNLOAD_QUEUE_OPEN = '[UI] Is Download Queue Open',
@@ -146,12 +145,6 @@ export class SetOnlyScenesWithBrowse implements Action {
   constructor(public payload: boolean) {}
 }
 
-export class SetHelpDialogTopic implements Action {
-  public readonly type = UIActionType.SET_HELP_DIALOG_TOPIC;
-
-  constructor(public payload: string | null) {}
-}
-
 export class SetCurrentLanguage implements Action {
   public readonly type = UIActionType.SET_CURRENT_LANGUAGE;
 
@@ -207,7 +200,6 @@ export type UIActions =
   | OpenPreferenceMenu
   | ClosePreferenceMenu
   | SetOnlyScenesWithBrowse
-  | SetHelpDialogTopic
   | SetCurrentLanguage
   | SetActiveUUID
   | SetIsBrowseDialogOpen

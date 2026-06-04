@@ -9,8 +9,6 @@ import Static from 'ol/source/ImageStatic';
 // import * as olExtent from 'ol/extent';
 import { Coordinate, rotate } from 'ol/coordinate';
 import MultiPolygon from 'ol/geom/MultiPolygon';
-import { PinnedProduct } from './browse-map.service';
-import LayerGroup from 'ol/layer/Group';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -50,9 +48,8 @@ export class BrowseOverlayService {
     this.store$.select(searchStore.getSearchType),
     this.store$.select(sceneStore.getSelectedScene),
     this.store$.select(filtersStore.getSelectedDatasetId),
-    this.store$.select(sceneStore.getSelectedSarviewsEventProducts),
   ]).pipe(
-    map(([searchtype, selectedScene, datasetID, selectedEventProducts]) => {
+    map(([searchtype, selectedScene, datasetID]) => {
       switch (searchtype) {
         case models.SearchType.DATASET:
           return (
@@ -63,8 +60,6 @@ export class BrowseOverlayService {
             datasetID === 'UAVSAR' ||
             datasetID === 'OPERA-S1'
           );
-        case models.SearchType.SARVIEWS_EVENTS:
-          return selectedEventProducts?.length > 0;
         case models.SearchType.LIST:
           return (
             selectedScene?.dataset === 'ALOS' ||
@@ -473,57 +468,5 @@ export class BrowseOverlayService {
     return img;
     // img.getSource().getImage()
     // static_image_source.getImage()
-  }
-
-  public setPinnedProducts(
-    pinnedProducts: Record<string, PinnedProduct>,
-    productLayerGroup: LayerGroup,
-  ) {
-    const pinnedProductIds = Object.keys(pinnedProducts);
-    const currentPinnedProductsIds: string[] = productLayerGroup
-      .getLayersArray()
-      .map((layer) => layer.get('layer_id'));
-    const toAdd = pinnedProductIds.filter(
-      (id) => !currentPinnedProductsIds.includes(id),
-    );
-    const toRemove = currentPinnedProductsIds.filter(
-      (id) => !pinnedProductIds.includes(id),
-    );
-    if (pinnedProductIds.length === 0) {
-      productLayerGroup.getLayers().clear();
-    } else {
-      this.unpinProducts(toRemove, productLayerGroup);
-      this.pinProducts(toAdd, pinnedProducts, productLayerGroup);
-    }
-  }
-
-  private pinProducts(
-    layersToAdd: string[],
-    pinnedProductStates: Record<string, PinnedProduct>,
-    productLayerGroup: LayerGroup,
-  ) {
-    const newLayers = layersToAdd.map((layer_id) =>
-      this.createNormalImageLayer(
-        pinnedProductStates[layer_id].url,
-        pinnedProductStates[layer_id].wkt,
-        'ol-layer',
-        layer_id,
-      ),
-    );
-    productLayerGroup.getLayers().extend(newLayers);
-  }
-
-  private unpinProducts(
-    layersToRemove: string[],
-    productLayerGroup: LayerGroup,
-  ) {
-    layersToRemove.forEach((product_id) => {
-      const found = productLayerGroup
-        .getLayersArray()
-        .find((layer) => layer.get('layer_id') === product_id);
-      if (found) {
-        productLayerGroup.getLayers().remove(found);
-      }
-    });
   }
 }

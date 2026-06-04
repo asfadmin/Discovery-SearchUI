@@ -19,14 +19,6 @@
           </span>
         </span>
       }
-      @if (
-        (searchType$ | async) === searchTypes.SARVIEWS_EVENTS &&
-        !!eventProductTypes
-      ) {
-        <span>
-          <b>{{ 'PRODUCT_TYPES' | translate }}:</b> {{ eventProductTypes }}
-        </span>
-      }
       @if (breakpoint > breakpoints.SMALL && !!startDate) {
         <span>
           <b>{{ 'START' | translate }}:</b> {{ startDate | shortDate }}
