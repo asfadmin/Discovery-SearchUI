@@ -1263,9 +1263,9 @@
   "ZOOM_TO_FIT": "Acercar para ajustar",
   "ZOOM_TO_RESULTS": "Acercar a los resultados",
   "ZOOM_TO_SCENE": "Acercar a la escena",
-  "EVENT_SEARCH_DEPRECATION_TITLE": "Event Search Deprecation",
-  "EVENT_SEARCH_DEPRECATION_BODY": "Event search has been deprecated. Use ASF's free",
-  "EVENT_SEARCH_DEPRECATION_LINK_TEXT": "HyP3 service",
-  "EVENT_SEARCH_DEPRECATION_LINK_ARIA": "HyP3 service (opens in new tab)",
-  "EVENT_SEARCH_DEPRECATION_BODY_SUFFIX": "instead to create S1 RTC and InSAR products."
+  "EVENT_SEARCH_DEPRECATION_TITLE": "Desuso de la búsqueda de eventos",
+  "EVENT_SEARCH_DEPRECATION_BODY": "La búsqueda de eventos ha quedado obsoleta. Use el servicio gratuito de",
+  "EVENT_SEARCH_DEPRECATION_LINK_TEXT": "HyP3",
+  "EVENT_SEARCH_DEPRECATION_LINK_ARIA": "Servicio HyP3 (se abre en una nueva pestaña)",
+  "EVENT_SEARCH_DEPRECATION_BODY_SUFFIX": "para crear productos S1 RTC e InSAR."
 }
