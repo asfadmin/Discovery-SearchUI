@@ -466,7 +466,7 @@
   "SCENE_PATTERN_LIST": "Lista de gránulos",
   "SCENE_PATTERN_LIST_COUNT": "{{ count }} gránulo",
   "SCENE_PATTERN_LIST_COUNTS": "{{ count }} gránulos",
-  "SCENE_PATTERN_LIST_HINT": "Admite coincidencias con comodines (* para varios caracteres, ? para un solo carácter); por ejemplo, NISAR_L2_*X05010* coincide con todos los productos NISAR de Nivel 2 con la versión CRID X05010.",
+  "SCENE_PATTERN_LIST_HINT": "Acepta una lista de patrones separados por comas y busca escenas que coincidan con cualquiera de los patrones proporcionados. Admite coincidencias con comodines (* para varios caracteres, ? para un solo carácter); por ejemplo, NISAR_L2_*X05010* coincide con todos los productos NISAR de Nivel 2 con la versión CRID X05010.",
   "SCENE_PATTERN_LIST_MAX_ERROR": "La lista de gránulos tiene un máximo recomendado de 5 gránulos con comodines iniciales por búsqueda",
   "GRATICULE_OVERLAY": "Superposición de Retícula",
   "GRAZING_ANGLE": "Ángulo Rasante",
@@ -1264,9 +1264,9 @@
   "ZOOM_TO_FIT": "Acercar para ajustar",
   "ZOOM_TO_RESULTS": "Acercar a los resultados",
   "ZOOM_TO_SCENE": "Acercar a la escena",
-  "EVENT_SEARCH_DEPRECATION_TITLE": "Event Search Deprecation",
-  "EVENT_SEARCH_DEPRECATION_BODY": "Event search has been deprecated. Use ASF's free",
-  "EVENT_SEARCH_DEPRECATION_LINK_TEXT": "HyP3 service",
-  "EVENT_SEARCH_DEPRECATION_LINK_ARIA": "HyP3 service (opens in new tab)",
-  "EVENT_SEARCH_DEPRECATION_BODY_SUFFIX": "instead to create S1 RTC and InSAR products."
+  "EVENT_SEARCH_DEPRECATION_TITLE": "Desuso de la búsqueda de eventos",
+  "EVENT_SEARCH_DEPRECATION_BODY": "La búsqueda de eventos ha quedado obsoleta. Use el servicio gratuito de",
+  "EVENT_SEARCH_DEPRECATION_LINK_TEXT": "HyP3",
+  "EVENT_SEARCH_DEPRECATION_LINK_ARIA": "Servicio HyP3 (se abre en una nueva pestaña)",
+  "EVENT_SEARCH_DEPRECATION_BODY_SUFFIX": "para crear productos S1 RTC e InSAR."
 }
