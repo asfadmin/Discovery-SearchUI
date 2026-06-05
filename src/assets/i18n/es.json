@@ -466,7 +466,7 @@
   "SCENE_PATTERN_LIST": "Lista de gránulos",
   "SCENE_PATTERN_LIST_COUNT": "{{ count }} gránulo",
   "SCENE_PATTERN_LIST_COUNTS": "{{ count }} gránulos",
-  "SCENE_PATTERN_LIST_HINT": "Admite coincidencias con comodines (* para varios caracteres, ? para un solo carácter); por ejemplo, NISAR_L2_*X05010* coincide con todos los productos NISAR de Nivel 2 con la versión CRID X05010.",
+  "SCENE_PATTERN_LIST_HINT": "Acepta una lista de patrones separados por comas y busca escenas que coincidan con cualquiera de los patrones proporcionados. Admite coincidencias con comodines (* para varios caracteres, ? para un solo carácter); por ejemplo, NISAR_L2_*X05010* coincide con todos los productos NISAR de Nivel 2 con la versión CRID X05010.",
   "SCENE_PATTERN_LIST_MAX_ERROR": "La lista de gránulos tiene un máximo recomendado de 5 gránulos con comodines iniciales por búsqueda",
   "GRATICULE_OVERLAY": "Superposición de Retícula",
   "GRAZING_ANGLE": "Ángulo Rasante",
