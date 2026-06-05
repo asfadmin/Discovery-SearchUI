@@ -4,22 +4,37 @@ test('Set Start and End Date', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
   const filtersDropdown = page.locator('app-filters-dropdown');
-  const startDate = filtersDropdown.getByRole('textbox', { name: 'Start Date' });
+  const startDate = filtersDropdown.getByRole('textbox', {
+    name: 'Start Date',
+  });
   const endDate = filtersDropdown.getByRole('textbox', { name: 'End Date' });
   const openStartDateCalendar = filtersDropdown.getByLabel(
     'Open start date calendar',
   );
-  const openEndDateCalendar = filtersDropdown.getByLabel('Open end date calendar');
+  const openEndDateCalendar = filtersDropdown.getByLabel(
+    'Open end date calendar',
+  );
 
   await openStartDateCalendar.click();
+  await expect(page).toHaveScreenshot();
+
   await page.getByRole('button', { name: '2015' }).click();
+  await expect(page).toHaveScreenshot();
+
   await page.getByRole('button', { name: '1/1/2015', exact: true }).click();
+  await expect(page).toHaveScreenshot();
+
   await page.getByRole('button', { name: '/1/2015' }).click();
 
   await openEndDateCalendar.click();
   await page.getByRole('button', { name: '2015' }).click();
+  await expect(page).toHaveScreenshot();
+
   await page.getByRole('button', { name: '1/1/2015', exact: true }).click();
+  await expect(page).toHaveScreenshot();
+
   await page.getByRole('button', { name: '/31/2015' }).click();
+  await expect(page).toHaveScreenshot();
 
   await expect(startDate).toHaveValue('1/1/2015');
   await expect(endDate).toHaveValue('1/31/2015');
@@ -29,12 +44,16 @@ test('Clamp End Date to Start', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
   const filtersDropdown = page.locator('app-filters-dropdown');
-  const startDate = filtersDropdown.getByRole('textbox', { name: 'Start Date' });
+  const startDate = filtersDropdown.getByRole('textbox', {
+    name: 'Start Date',
+  });
   const endDate = filtersDropdown.getByRole('textbox', { name: 'End Date' });
   const openStartDateCalendar = filtersDropdown.getByLabel(
     'Open start date calendar',
   );
-  const openEndDateCalendar = filtersDropdown.getByLabel('Open end date calendar');
+  const openEndDateCalendar = filtersDropdown.getByLabel(
+    'Open end date calendar',
+  );
 
   await openStartDateCalendar.click();
   await page.getByRole('button', { name: '2015' }).click();
@@ -53,7 +72,9 @@ test('Clamp End Date to Start', async ({ page }) => {
 test('Invalid Dates', async ({ page }) => {
   await page.goto('/');
   const filtersDropdown = page.locator('app-filters-dropdown');
-  const startDate = filtersDropdown.getByRole('textbox', { name: 'Start Date' });
+  const startDate = filtersDropdown.getByRole('textbox', {
+    name: 'Start Date',
+  });
   const endDate = filtersDropdown.getByRole('textbox', { name: 'End Date' });
 
   await startDate.fill('1/1/2000');

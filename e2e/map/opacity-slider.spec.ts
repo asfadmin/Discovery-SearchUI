@@ -37,4 +37,5 @@ test('Map: opacity slider changes browse image opacity', async ({ page }) => {
   await page.keyboard.press('ArrowLeft');
 
   await expect.poll(() => slider.inputValue()).not.toBe(initialValue);
+  await expect(page).toHaveScreenshot();
 });

@@ -19,7 +19,11 @@ test(
       .getByRole('menuitem', { name: 'Saved Searches' })
       .click();
     await loggedInPage.getByRole('menuitem', { name: 'Save Search' }).click();
+    await expect(loggedInPage).toHaveScreenshot();
+
     await loggedInPage.getByRole('button', { name: 'Save Search' }).click();
+    await expect(loggedInPage).toHaveScreenshot();
+
     await loggedInPage.locator('app-saved-search').getByText('edit').click();
     await loggedInPage.getByRole('textbox', { name: 'Search Name' }).click();
     await loggedInPage

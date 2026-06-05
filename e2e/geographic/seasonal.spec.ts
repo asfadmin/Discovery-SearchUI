@@ -16,4 +16,5 @@ test('test', async ({ page }) => {
   await seasonEnd.getByRole('button', { name: '-1' }).click();
   await seasonEnd.getByRole('button', { name: '-1' }).click();
   await expect(page.locator('app-info-bar')).toContainText('Season: 3 - 177');
+  await expect(page).toHaveScreenshot();
 });

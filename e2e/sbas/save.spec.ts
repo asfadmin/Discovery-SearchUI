@@ -20,9 +20,7 @@ test('SBAS: Saved Search', { tag: '@auth' }, async ({ loggedInPage }) => {
   await loggedInPage
     .locator('app-baseline-header app-search-button .arrow-button-toggle')
     .click();
-  await loggedInPage
-    .getByRole('menuitem', { name: 'Saved Searches' })
-    .click();
+  await loggedInPage.getByRole('menuitem', { name: 'Saved Searches' }).click();
   await loggedInPage.getByRole('menuitem', { name: 'Save Search' }).click();
 
   await loggedInPage
@@ -33,4 +31,5 @@ test('SBAS: Saved Search', { tag: '@auth' }, async ({ loggedInPage }) => {
   await expect(loggedInPage.locator('app-sbas-search-filters')).toContainText(
     'Reference: S1B_IW_SLC__1SDV_20210704T135937_20210704T140004_027645_034CB0_4B2C',
   );
+  await expect(loggedInPage).toHaveScreenshot();
 });

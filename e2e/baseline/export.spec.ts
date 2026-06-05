@@ -8,6 +8,8 @@ test('Results Menu Export CSV', async ({ page }) => {
   await page
     .getByRole('menuitem', { name: 'Baseline Baseline search' })
     .click();
+  await expect(page).toHaveScreenshot();
+
   await page.getByRole('region', { name: 'Scene' }).getByLabel('Scene').click();
   await page
     .getByRole('region', { name: 'Scene' })
@@ -15,6 +17,8 @@ test('Results Menu Export CSV', async ({ page }) => {
     .fill(
       'S1B_IW_SLC__1SDV_20210128T101605_20210128T101636_025353_030505_9FF1',
     );
+  await expect(page).toHaveScreenshot();
+
   await page
     .locator('app-filters-dropdown')
     .getByRole('button', { name: 'Filters panel search button' })
@@ -34,4 +38,5 @@ test('Results Menu Export CSV', async ({ page }) => {
   });
 
   expect(records[1]).not.toBe('');
+  await expect(page).toHaveScreenshot();
 });

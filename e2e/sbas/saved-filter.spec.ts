@@ -26,7 +26,9 @@ test('SBAS: Saved filters', { tag: '@auth' }, async ({ loggedInPage }) => {
   await loggedInPage.getByRole('switch', { name: 'Seasonal Search' }).click();
 
   await loggedInPage
-    .locator('.dataset-filters-card .footer app-search-button .arrow-button-toggle')
+    .locator(
+      '.dataset-filters-card .footer app-search-button .arrow-button-toggle',
+    )
     .click();
   await loggedInPage.getByRole('menuitem', { name: 'Saved Filters' }).click();
   await loggedInPage.getByRole('menuitem', { name: 'Save Filters' }).click();
@@ -39,4 +41,5 @@ test('SBAS: Saved filters', { tag: '@auth' }, async ({ loggedInPage }) => {
   await expect(loggedInPage.locator('app-save-user-filter')).toContainText(
     'Pair Overlap Threshold: Any Overlap Threshold',
   );
+  await expect(loggedInPage).toHaveScreenshot();
 });

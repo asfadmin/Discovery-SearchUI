@@ -23,8 +23,14 @@ test('SBAS Start & End Date Filters', async ({ page }) => {
   await sbasFiltersButton.click();
 
   await page.getByRole('textbox', { name: 'Start Date' }).fill('9/1/2018');
+  await expect(page).toHaveScreenshot();
+
   await page.getByRole('textbox', { name: 'End Date' }).fill('11/1/2020');
+  await expect(page).toHaveScreenshot();
+
   await page.keyboard.press('Tab');
 
-  await expect(page.locator('app-scenes-list-header')).toContainText('67 Pairs');
+  await expect(page.locator('app-scenes-list-header')).toContainText(
+    '67 Pairs',
+  );
 });

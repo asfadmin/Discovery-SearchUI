@@ -33,6 +33,7 @@ test(
     await expect(loggedInPage.locator('app-saved-search')).toContainText(
       '4 Scenes',
     );
+    await expect(loggedInPage).toHaveScreenshot();
     await expect(loggedInPage.locator('app-list-search-filters')).toContainText(
       'List Type: Scene S1B_IW_GRDH_1SDV_20161124T032008_20161124T032033_003095_005430_9906 S1-GUNW-D-R-087-tops-20190301_20190223-161540-20645N_18637N-PP-7a85-v2_0_1 ALPSRP111041130S1B_IW_GRDH_1SDV_20161124T032008_20161124T032033_003095_005430_9906 ALPSRP111041130',
     );
@@ -66,6 +67,7 @@ test('Profile: List save files', { tag: '@auth' }, async ({ loggedInPage }) => {
   await expect(loggedInPage.locator('app-saved-search')).toContainText(
     '4 Products',
   );
+  await expect(loggedInPage).toHaveScreenshot();
   await expect(loggedInPage.locator('app-list-search-filters')).toContainText(
     'List Type: Product S1B_IW_GRDH_1SDV_20161124T032008_20161124T032033_003095_005430_9906-GRD_HD S1-GUNW-D-R-087-tops-20190301_20190223-161540-20645N_18637N-PP-7a85-v2_0_1-unwrappedPhase ALPSRP111041130-RTC_HI_RESS1B_IW_GRDH_1SDV_20161124T032008_20161124T032033_003095_005430_9906-GRD_HD ALPSRP111041130-RTC_HI_RES',
   );

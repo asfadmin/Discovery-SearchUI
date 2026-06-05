@@ -28,4 +28,5 @@ test('SBAS Download Pair CSV', async ({ page }) => {
   });
 
   expect(records[1]).not.toBe('');
+  await expect(page).toHaveScreenshot();
 });
