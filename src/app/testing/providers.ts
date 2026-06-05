@@ -11,6 +11,9 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideHttpClient } from '@angular/common/http';
 
+import { TranslateLoader } from '@ngx-translate/core';
+import { StaticTranslateLoader } from 'src/translation';
+
 const testProviders: (Provider | EnvironmentProviders)[] = [
   provideHttpClientTesting(),
   provideMockStore({
@@ -25,6 +28,14 @@ const testProviders: (Provider | EnvironmentProviders)[] = [
   }),
   provideHttpClient(),
   provideTranslateService(),
+
+  provideTranslateService({
+    fallbackLang: 'en',
+    loader: {
+      provide: TranslateLoader,
+      useClass: StaticTranslateLoader,
+    },
+  }),
 ];
 
 export default testProviders;

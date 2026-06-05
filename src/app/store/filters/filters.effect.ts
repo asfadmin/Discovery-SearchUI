@@ -60,8 +60,7 @@ export class FiltersEffects {
       filter(
         ([_, searchtype]) =>
           searchtype !== SearchType.LIST &&
-          searchtype !== SearchType.CUSTOM_PRODUCTS &&
-          searchtype !== SearchType.SARVIEWS_EVENTS,
+          searchtype !== SearchType.CUSTOM_PRODUCTS,
       ),
       map(([defaultFilters, searchtype]) => defaultFilters[searchtype]),
       filter((targetFilterID) => targetFilterID === '' || !!targetFilterID),

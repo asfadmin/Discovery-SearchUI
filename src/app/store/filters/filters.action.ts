@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 
 import * as models from '@models';
-import { EventProductSort, SBASOverlap } from '@models';
+import { SBASOverlap } from '@models';
 import { FiltersState } from './filters.reducer';
 
 export enum FiltersActionType {
@@ -78,18 +78,7 @@ export enum FiltersActionType {
   SET_SBAS_OVERLAP_THRESHOLD = '[Filters] Set SBAS Pair Overlap Threshold',
   SET_DEFAULT_FILTERS = '[Filters] Set User Profile Default Filters',
 
-  SET_SARVIEWS_EVENT_TYPES = '[Filters] Set SARViews event types',
-  SET_SARVIEWS_EVENT_NAME_FILTER = '[Filters] Set SARViews event name filter',
-  SET_SARVIEWS_EVENT_ACTIVE_FILTER = '[Filters] Set SARViews event active processing filter',
-  SET_SARVIEWS_MAGNITUDE_START = '[Filters] Set SARViews quake event magnitude range filter start',
-  SET_SARVIEWS_MAGNITUDE_END = '[Filters] Set SARViews quake event magnitude range filter end',
-  SET_SARVIEWS_MAGNITUDE_RANGE = '[Filters] Set SARViews quake event magnitude range filter',
-  CLEAR_SARVIEWS_MAGNITUDE_RANGE = '[Filters] Clear SARViews quake event magnitude range',
-
   SET_HYP3_PRODUCT_TYPES = '[Filters] Set Hyp3 product types filter',
-  SET_EVENT_PRODUCT_SORT = '[Filters] Set event product sorting order',
-
-  CLEAR_EVENT_FILTERS = '[Filters] Clear Event Search Filters',
   CLEAR_HYP3_PRODUCT_TYPES = '[Filters] Clear Hyp3 product types filter',
 
   SET_GEOCODE = '[Filters] Set geocode area name',
@@ -388,56 +377,10 @@ export class SetSBASOverlapThreshold implements Action {
   constructor(public payload: SBASOverlap) {}
 }
 
-export class SetSarviewsEventTypes implements Action {
-  public readonly type = FiltersActionType.SET_SARVIEWS_EVENT_TYPES;
-
-  constructor(public payload: models.SarviewsEventType[]) {}
-}
-
-export class SetSarviewsEventNameFilter implements Action {
-  public readonly type = FiltersActionType.SET_SARVIEWS_EVENT_NAME_FILTER;
-
-  constructor(public payload: string) {}
-}
-
-export class SetSarviewsEventActiveFilter implements Action {
-  public readonly type = FiltersActionType.SET_SARVIEWS_EVENT_ACTIVE_FILTER;
-
-  constructor(public payload: boolean) {}
-}
-
-export class SetSarviewsMagnitudeStart implements Action {
-  public readonly type = FiltersActionType.SET_SARVIEWS_MAGNITUDE_START;
-
-  constructor(public payload: number) {}
-}
-
-export class SetSarviewsMagnitudeEnd implements Action {
-  public readonly type = FiltersActionType.SET_SARVIEWS_MAGNITUDE_END;
-
-  constructor(public payload: number) {}
-}
-
-export class SetSarviewsMagnitudeRange implements Action {
-  public readonly type = FiltersActionType.SET_SARVIEWS_MAGNITUDE_RANGE;
-
-  constructor(public payload: models.Range<number>) {}
-}
-
-export class ClearSarviewsMagnitudeRange implements Action {
-  public readonly type = FiltersActionType.CLEAR_SARVIEWS_MAGNITUDE_RANGE;
-}
-
 export class SetHyp3ProductTypes implements Action {
   public readonly type = FiltersActionType.SET_HYP3_PRODUCT_TYPES;
 
   constructor(public payload: string[]) {}
-}
-
-export class SetEventProductSorting implements Action {
-  public readonly type = FiltersActionType.SET_EVENT_PRODUCT_SORT;
-
-  constructor(public payload: EventProductSort) {}
 }
 
 export class SetDefaultFilters implements Action {
@@ -462,10 +405,6 @@ export class SetGeocode implements Action {
   public readonly type = FiltersActionType.SET_GEOCODE;
 
   constructor(public payload: string) {}
-}
-
-export class ClearEventFilters implements Action {
-  public readonly type = FiltersActionType.CLEAR_EVENT_FILTERS;
 }
 
 export class ClearHyp3ProductTypes implements Action {
@@ -620,17 +559,8 @@ export type FiltersActions =
   | Toggle50PercentOverlap
   | SetSBASOverlapThreshold
   | SetDefaultFilters
-  | SetSarviewsEventTypes
-  | SetSarviewsEventNameFilter
-  | SetSarviewsEventActiveFilter
-  | SetSarviewsMagnitudeStart
-  | SetSarviewsMagnitudeEnd
-  | SetSarviewsMagnitudeRange
   | SetGeocode
-  | ClearSarviewsMagnitudeRange
   | SetHyp3ProductTypes
-  | SetEventProductSorting
-  | ClearEventFilters
   | ClearHyp3ProductTypes
   | setFullBursts
   | setOperaBurstIDs

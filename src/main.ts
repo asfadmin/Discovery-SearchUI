@@ -74,10 +74,8 @@ import {
 import { metaReducers, reducers } from '@store/app.reducer';
 import { appEffects } from '@store/app.effect';
 
-import translationsEN from '@i18n/en.json';
-import translationsES from '@i18n/es.json';
-import { Observable, of } from 'rxjs';
 import { TranslateLoader } from '@ngx-translate/core';
+import { StaticTranslateLoader } from 'src/translation';
 
 const cookieConfig: NgcCookieConsentConfig = {
   autoOpen: false,
@@ -112,19 +110,6 @@ const cookieConfig: NgcCookieConsentConfig = {
 
 if (environment.production) {
   enableProdMode();
-}
-
-type TranslationKeys = keyof typeof translationsEN;
-type Translations = Record<TranslationKeys, string>;
-
-export class StaticTranslateLoader implements TranslateLoader {
-  private translations: Record<string, Translations> = {
-    en: translationsEN,
-    es: translationsES,
-  };
-  getTranslation(lang: string): Observable<Translations> {
-    return of(this.translations[lang] ?? translationsEN);
-  }
 }
 
 bootstrapApplication(AppComponent, {
