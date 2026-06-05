@@ -33,6 +33,10 @@
   }
 
   @if (hyp3able.total < 1) {
+    @let isS1DPair =
+      (this.pair[0].dataset === 'SENTINEL-1D' ||
+        this.pair[1].dataset === 'SENTINEL-1D') &&
+      this.pair[0].metadata.productType === 'BURST';
     <mat-icon
       class="noselect list-icon"
       style="margin-left: 10px; opacity: 0.5"
