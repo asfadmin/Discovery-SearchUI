@@ -58,16 +58,13 @@ export class PairComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   ngOnInit(): void {
-    // TODO: this isn't catching like it should
-    this.isS1DPair = this.pair.includes((scene: models.CMRProduct) => {
-      return (
-        scene.dataset === 'SENTINEL-1D' &&
-        scene.metadata?.productType === 'BURST'
-      );
-    });
-    if (this.isS1DPair) {
-      console.log(this.pair);
+    if (
+      this.pair[0].dataset === 'SENTINEL-1D' ||
+      this.pair[1].dataset === 'SENTINEL-1D'
+    ) {
+      this.isS1DPair = this.pair[0].metadata.productType === 'BURST';
     }
+
     this.subs.add(
       this.store$
         .select(scenesStore.getSelectedPairIds)
