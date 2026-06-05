@@ -1112,6 +1112,7 @@
   "SWAP_HORIZONTAL_CIRCLE": "swap_horizontal_circle",
   "SWAP_THE_START_AND_END_SEASON_DATE": "Swap the start and end season dates",
   "SYSTEM_PREFERENCES": "System Preferences",
+  "S1D_ISCE_DISABLED": "INSAR ISCE BURST processing unavailable for S1D products",
   "TEMPORAL": "Temporal",
   "TEMPORAL_CRITERIA": "Temporal Criteria:",
   "TEST": "Test",
