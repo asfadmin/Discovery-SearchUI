@@ -8,6 +8,8 @@ test('List Search: searching by file IDs returns scenes', async ({ page }) => {
     .locator('app-search-type-selector')
     .locator('button.button-menu-trigger')
     .click();
+  await expect(page).toHaveScreenshot();
+
   await page.getByText('List', { exact: true }).click();
 
   await page

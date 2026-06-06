@@ -11,6 +11,7 @@ test('Profile: Set dark mode', { tag: '@auth' }, async ({ loggedInPage }) => {
   const preferencesDialog = loggedInPage.getByRole('dialog', {
     name: /Preferences for automatedtesting_fullaccess/i,
   });
+  await expect(loggedInPage).toHaveScreenshot();
 
   await preferencesDialog
     .getByRole('combobox', { name: 'Theme', exact: true })
