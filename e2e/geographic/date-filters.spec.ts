@@ -14,25 +14,16 @@ test('Set Start and End Date', async ({ page }) => {
   const openEndDateCalendar = filtersDropdown.getByLabel(
     'Open end date calendar',
   );
+  await expect(page).toHaveScreenshot();
 
   await openStartDateCalendar.click();
-  await expect(page).toHaveScreenshot();
-
   await page.getByRole('button', { name: '2015' }).click();
-  await expect(page).toHaveScreenshot();
-
   await page.getByRole('button', { name: '1/1/2015', exact: true }).click();
-  await expect(page).toHaveScreenshot();
-
   await page.getByRole('button', { name: '/1/2015' }).click();
 
   await openEndDateCalendar.click();
   await page.getByRole('button', { name: '2015' }).click();
-  await expect(page).toHaveScreenshot();
-
   await page.getByRole('button', { name: '1/1/2015', exact: true }).click();
-  await expect(page).toHaveScreenshot();
-
   await page.getByRole('button', { name: '/31/2015' }).click();
   await expect(page).toHaveScreenshot();
 

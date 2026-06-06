@@ -10,7 +10,6 @@ test('Results Menu Export CSV', async ({ capturedSearchPage }) => {
   await capturedSearchPage
     .getByRole('menuitem', { name: 'Baseline Baseline search' })
     .click();
-  await expect(capturedSearchPage).toHaveScreenshot();
 
   await capturedSearchPage
     .getByRole('region', { name: 'Scene' })

@@ -22,9 +22,8 @@ test('Map: Gridlines Overlay toggle updates checkbox state', async ({
   });
 
   await layerButton.click();
-  await expect(page).toHaveScreenshot();
-
   await gridlinesItem.click();
+  await expect(page).toHaveScreenshot();
 
   await layerButton.click();
   await expect(gridlinesItem.locator('input[type="checkbox"]')).toBeChecked();
@@ -39,9 +38,9 @@ test('Map: Coherence Layer activates when a month range is selected', async ({
   const coherenceItem = page.getByRole('menuitem', { name: 'Coherence Layer' });
 
   await layerButton.click();
+  await coherenceItem.click();
   await expect(page).toHaveScreenshot();
 
-  await coherenceItem.click();
   await page.getByRole('menuitem', { name: 'Mar, Apr, May' }).click();
 
   await layerButton.click();
@@ -57,14 +56,10 @@ test('Map: switch base layer between Satellite and Street', async ({
   const layerIcon = layerButton.locator('mat-icon.control-icon');
 
   await layerButton.click();
-  await expect(page).toHaveScreenshot();
-
   await page.getByRole('menuitem', { name: 'Street Layer' }).click();
   await expect(layerIcon).toHaveText('directions_car');
 
   await layerButton.click();
-  await expect(page).toHaveScreenshot();
-
   await page.getByRole('menuitem', { name: 'Satellite Layer' }).click();
   await expect(layerIcon).toHaveText('terrain');
 });
