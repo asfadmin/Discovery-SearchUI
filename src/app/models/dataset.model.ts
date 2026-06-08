@@ -16,7 +16,7 @@ export interface Dataset {
   beamModes: string[];
   polarizations: string[];
   sidepolarizations?: string[];
-  subtypes: DatasetSubtype[];
+  satellites: DatasetSatellite[];
   frequency: string;
   source: {
     name: string;
@@ -60,7 +60,7 @@ export interface ShortName {
   apiValue: string;
 }
 
-export interface DatasetSubtype {
+export interface DatasetSatellite {
   displayName: string;
   apiValue: string;
 }
@@ -71,7 +71,7 @@ export type DatasetProductTypes = ProductType[];
 export type DatasetShortName = ShortName[];
 export type DatasetBeamModes = string[];
 export type DatasetPolarizations = string[];
-export type DatasetSubtypes = DatasetSubtype[];
+export type DatasetSatellites = DatasetSatellite[];
 
 export const sentinel_1 = fromDatasets.sentinel_1;
 export const sentinel_1_bursts = fromDatasets.sentinel_1_bursts;

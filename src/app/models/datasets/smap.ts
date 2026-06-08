@@ -70,7 +70,7 @@ export const smap = {
   ],
   beamModes: ['STD'],
   polarizations: [],
-  subtypes: [],
+  satellites: [],
   platformDesc: 'SMAP_DESC',
   platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
 };

@@ -52,7 +52,7 @@ export class ObservationPanelSelectorComponent implements OnDestroy, OnInit {
   beamModes: models.DatasetBeamModes;
   polarizations: models.DatasetPolarizations;
   sidePolarizations: models.DatasetPolarizations;
-  subtypes: models.DatasetSubtypes;
+  satellites: models.DatasetSatellites;
   groupID: string;
   frameCoverage: string[];
   rangeBandwidth: string[];
@@ -72,7 +72,7 @@ export class ObservationPanelSelectorComponent implements OnDestroy, OnInit {
   );
   public polarizations$ = this.store$.select(filtersStore.getPolarizations);
   public selectedDataset$ = this.store$.select(filtersStore.getSelectedDataset);
-  public subtypes$ = this.store$.select(filtersStore.getSubtypes);
+  public satellites$ = this.store$.select(filtersStore.getSatellites);
   public groupID$ = this.store$.select(filtersStore.getGroupID);
   public frameCoverage$ = this.store$.select(filtersStore.getFrameCoverage);
   public jointObservation$ = this.store$.select(
@@ -126,7 +126,9 @@ export class ObservationPanelSelectorComponent implements OnDestroy, OnInit {
       ),
     );
     this.subs.add(
-      this.subtypes$.subscribe((subtypes) => (this.subtypes = subtypes)),
+      this.satellites$.subscribe(
+        (satellites) => (this.satellites = satellites),
+      ),
     );
     this.subs.add(
       this.groupID$.subscribe((groupID) => (this.groupID = groupID)),
@@ -183,8 +185,8 @@ export class ObservationPanelSelectorComponent implements OnDestroy, OnInit {
     this.store$.dispatch(new filtersStore.SetMaxResults(maxResults));
   }
 
-  public onNewSubtypeSelected(subtypes): void {
-    this.store$.dispatch(new filtersStore.SetSubtypes(subtypes));
+  public onNewSatelliteSelected(satellites): void {
+    this.store$.dispatch(new filtersStore.SetSatellites(satellites));
   }
   public onNewFrameCoverageSelected(coverage): void {
     this.store$.dispatch(new filtersStore.setFrameCoverage(coverage));

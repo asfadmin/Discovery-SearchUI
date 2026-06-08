@@ -12,7 +12,7 @@ export const sirc = {
     Props.FLIGHT_DIRECTION,
     Props.POLARIZATION,
     Props.ABSOLUTE_ORBIT,
-    Props.SUBTYPE,
+    Props.SATELLITE,
   ],
   apiValue: { dataset: 'SIR-C' },
   date: {
@@ -38,7 +38,7 @@ export const sirc = {
   ],
   beamModes: ['11', '13', '16', '20'],
   polarizations: ['HH+HV', 'HH+VV', 'HH+HV+VH+VV', 'VV'],
-  subtypes: [
+  satellites: [
     {
       displayName: '',
       apiValue: 'STS-59',

@@ -31,7 +31,7 @@ export const seasat = {
   productTypes: [],
   beamModes: ['STD'],
   polarizations: ['HH'],
-  subtypes: [],
+  satellites: [],
   platformDesc: 'SEASAT_DESC',
   platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
   productTypeDisplays: {

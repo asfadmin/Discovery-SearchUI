@@ -174,7 +174,7 @@ export const nisar = {
     //     apiValue: 'S-SAR',
     // },
   ],
-  subtypes: [
+  satellites: [
     //     {
     //     displayName: 'Sentinel-1A',
     //     apiValue: 'SA',

@@ -73,7 +73,7 @@ export const alos = {
     'VV+VH',
     'quadrature',
   ],
-  subtypes: [],
+  satellites: [],
   platformDesc: 'PALSAR_DESC',
   platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
 };

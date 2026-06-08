@@ -33,7 +33,7 @@ export const alos_2 = {
   productTypes: [],
   beamModes: ['WBS', 'WBD', 'WWS', 'WWD', 'VBS', 'VBD', 'WD1', 'WD2'],
   polarizations: ['VV', 'VH', 'HH', 'HV'],
-  subtypes: [],
+  satellites: [],
   platformDesc: 'ALOS_2_DESC',
   platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
 };

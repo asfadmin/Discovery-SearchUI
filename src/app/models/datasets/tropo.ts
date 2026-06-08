@@ -36,7 +36,7 @@ export const tropo = {
   },
   beamModes: [],
   polarizations: [],
-  subtypes: [],
+  satellites: [],
   platformDesc: 'TROPO_DESC',
   platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
   productTypeDisplays: {

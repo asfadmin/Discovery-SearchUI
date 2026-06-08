@@ -26,7 +26,7 @@ export interface FiltersState {
   polarizations: models.DatasetPolarizations;
   sidePolarizations: models.DatasetPolarizations;
   flightDirections: Set<models.FlightDirection>;
-  subtypes: models.DatasetSubtypes;
+  satellites: models.DatasetSatellites;
   jobStatuses: models.Hyp3JobStatusCode[];
 
   missions: Record<string, string[]>;
@@ -101,7 +101,7 @@ export const initState: FiltersState = {
   beamModes: [],
   polarizations: [],
   sidePolarizations: [],
-  subtypes: [],
+  satellites: [],
   flightDirections: new Set<models.FlightDirection>([]),
   jobStatuses: [],
 
@@ -161,7 +161,7 @@ export function filtersReducer(
         productTypes: [],
         beamModes: [],
         polarizations: [],
-        subtypes: [],
+        satellites: [],
         fullBurstIDs: [],
         operaBurstIDs: [],
 
@@ -441,7 +441,7 @@ export function filtersReducer(
         productTypes: [],
         beamModes: [],
         polarizations: [],
-        subtypes: [],
+        satellites: [],
         flightDirections: new Set<models.FlightDirection>([]),
         selectedMission: null,
         geocode: null,
@@ -567,10 +567,10 @@ export function filtersReducer(
         sidePolarizations: [...action.payload],
       };
     }
-    case FiltersActionType.SET_SUBTYPES: {
+    case FiltersActionType.SET_SATELLITES: {
       return {
         ...state,
-        subtypes: [...action.payload],
+        satellites: [...action.payload],
       };
     }
 
@@ -689,12 +689,12 @@ export function filtersReducer(
           (d) => d.id === filters.selectedDataset,
         )[0];
 
-        const filterSubtypes = new Set(
-          (filters.subtypes || []).map((t) => t.apiValue),
+        const filterSatellites = new Set(
+          (filters.satellites || []).map((t) => t.apiValue),
         );
 
-        const subtypes = dataset.subtypes.filter((subtype) =>
-          filterSubtypes.has(subtype.apiValue),
+        const satellites = dataset.satellites.filter((satellite) =>
+          filterSatellites.has(satellite.apiValue),
         );
 
         const filterProductTypes = new Set(
@@ -726,7 +726,7 @@ export function filtersReducer(
           beamModes: filters.beamModes || [],
           polarizations: filters.polarizations || [],
           flightDirections: new Set(filters.flightDirections || []),
-          subtypes,
+          satellites,
           selectedMission: filters.selectedMission,
           fullBurstIDs: filters.fullBurstIDs || [],
           operaBurstIDs: filters.operaBurstIDs || [],
@@ -1025,9 +1025,9 @@ export const getSidePolarizations = createSelector(
   (state: FiltersState) => state.sidePolarizations,
 );
 
-export const getSubtypes = createSelector(
+export const getSatellites = createSelector(
   getFiltersState,
-  (state: FiltersState) => state.subtypes,
+  (state: FiltersState) => state.satellites,
 );
 
 export const getFlightDirections = createSimpleArraySelector(
@@ -1078,7 +1078,7 @@ export const getGeographicSearch = createSelector(
     beamModes: state.beamModes,
     polarizations: state.polarizations,
     flightDirections: state.flightDirections,
-    subtypes: state.subtypes,
+    satellites: state.satellites,
     selectedMission: state.selectedMission,
     fullBurstIDs: state.fullBurstIDs,
     operaBurstIDs: state.operaBurstIDs,

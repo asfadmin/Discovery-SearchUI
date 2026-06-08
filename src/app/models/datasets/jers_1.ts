@@ -40,7 +40,7 @@ export const jers_1 = {
   ],
   beamModes: ['STD'],
   polarizations: ['HH'],
-  subtypes: [],
+  satellites: [],
   platformDesc: 'JERS_DESC',
   platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
 };

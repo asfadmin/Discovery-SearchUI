@@ -61,10 +61,10 @@
         <b>{{ 'FLIGHT_DIR' | translate }}:</b> {{ filters.flightDirections }}
       </div>
     }
-    @if (filters.subtypes.length) {
+    @if (filters.satellites.length) {
       <div>
         <b>{{ 'DATASET_SATELLITES' | translate }}:</b>
-        {{ formatTypesList(filters.subtypes) }}
+        {{ formatTypesList(filters.satellites) }}
       </div>
     }
     @if (filters.selectedMission) {

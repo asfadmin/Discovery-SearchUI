@@ -421,7 +421,7 @@ export class UserEffects {
       new filterStore.SetProductTypes(datasetFilter.productTypes),
       new filterStore.SetBeamModes(datasetFilter.beamModes),
       new filterStore.SetPolarizations(datasetFilter.polarizations),
-      new filterStore.SetSubtypes(datasetFilter.subtypes),
+      new filterStore.SetSatellites(datasetFilter.satellites),
       new filterStore.SetFlightDirections(
         Array.from(datasetFilter.flightDirections),
       ),

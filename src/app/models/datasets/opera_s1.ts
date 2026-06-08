@@ -58,7 +58,7 @@ export const opera_s1 = {
   ],
   beamModes: ['IW', 'EW'],
   polarizations: ['VV', 'VH', 'HH', 'HV'],
-  subtypes: [],
+  satellites: [],
   calibrationDatasets: ['OPERA-S1-CALVAL'],
   calibrationProductTypes: [
     {

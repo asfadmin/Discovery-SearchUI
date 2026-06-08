@@ -63,7 +63,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public beamModes: models.DatasetBeamModes;
   public polarizations: models.DatasetPolarizations;
   public flightDirections: models.FlightDirection[];
-  public subtypes: string;
+  public satellites: string;
   public mission: string;
   public perpRange: models.Range<number | null>;
   public tempRange: models.Range<number | null>;
@@ -141,7 +141,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       .subscribe(
         (productTypes) =>
           (this.productTypes = productTypes
-            .map((subtype) => subtype.apiValue)
+            .map((productType) => productType.apiValue)
             .join(',')),
       );
     const shortNamesSub = this.store$
@@ -149,7 +149,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       .subscribe(
         (shortNames) =>
           (this.shortNames = shortNames
-            .map((subtype) => subtype.apiValue)
+            .map((shortName) => shortName.apiValue)
             .join(',')),
       );
     const polsSub = this.store$
@@ -186,12 +186,12 @@ export class InfoBarComponent implements OnInit, OnDestroy {
     const flightDirsSub = this.store$
       .select(filtersStore.getFlightDirections)
       .subscribe((flightDirs) => (this.flightDirections = flightDirs));
-    const subtypeSub = this.store$
-      .select(filtersStore.getSubtypes)
+    const satellitesSub = this.store$
+      .select(filtersStore.getSatellites)
       .subscribe(
-        (subtypes) =>
-          (this.subtypes = subtypes
-            .map((subtype) => subtype.apiValue)
+        (satellites) =>
+          (this.satellites = satellites
+            .map((satellite) => satellite.apiValue)
             .join(',')),
       );
     const missionSub = this.store$
@@ -274,7 +274,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       jointObservationSub,
       beamModesSub,
       flightDirsSub,
-      subtypeSub,
+      satellitesSub,
       missionSub,
       tempSub,
       perpSub,

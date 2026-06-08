@@ -91,28 +91,28 @@
     }
   </mat-form-field>
 
-  @if (prop.isRelevant(p.SUBTYPE)) {
+  @if (prop.isRelevant(p.SATELLITE)) {
     <mat-form-field>
       <mat-select
-        (selectionChange)="onNewSubtypeSelected($event.value)"
-        [(ngModel)]="subtypes"
-        [disabled]="!prop.isRelevant(p.SUBTYPE)"
+        (selectionChange)="onNewSatelliteSelected($event.value)"
+        [(ngModel)]="satellites"
+        [disabled]="!prop.isRelevant(p.SATELLITE)"
         placeholder="{{ 'SATELLITE' | translate }}"
         multiple
       >
-        @for (subtype of dataset.subtypes; track subtype) {
-          <mat-option [value]="subtype">
-            {{ subtype.apiValue }}
+        @for (satellite of dataset.satellites; track satellite) {
+          <mat-option [value]="satellite">
+            {{ satellite.apiValue }}
           </mat-option>
         }
       </mat-select>
-      @if (prop.isRelevant(p.SUBTYPE)) {
+      @if (prop.isRelevant(p.SATELLITE)) {
         <mat-hint align="start">
-          {{ subtypes?.length || 0 }}/{{ dataset.subtypes?.length }}
+          {{ satellites?.length || 0 }}/{{ dataset.satellites?.length }}
           {{ 'SATELLITES_SELECTED' | translate }}
         </mat-hint>
       }
-      @if (!prop.isRelevant(p.SUBTYPE)) {
+      @if (!prop.isRelevant(p.SATELLITE)) {
         <mat-hint align="start">
           {{ 'NO_SATELLITES_TO_SELECT' | translate }}
         </mat-hint>

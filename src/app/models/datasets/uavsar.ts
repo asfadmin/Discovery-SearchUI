@@ -85,7 +85,7 @@ export const uavsar = {
   ],
   beamModes: ['POL', 'RPI'],
   polarizations: ['Full', 'HH'],
-  subtypes: [],
+  satellites: [],
   platformDesc: 'UAVSAR_DESC',
   platformIcon: '/assets/icons/flight_black_48dp.svg',
 };

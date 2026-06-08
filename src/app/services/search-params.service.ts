@@ -150,12 +150,14 @@ export class SearchParamsService {
 
   private selectedDataset$ = combineLatest([
     this.store$.select(filterStore.getSelectedDataset),
-    this.store$.select(filterStore.getSubtypes),
+    this.store$.select(filterStore.getSatellites),
   ]).pipe(
-    map(([dataset, subtypes]) => {
-      return subtypes.length > 0
+    map(([dataset, satellites]) => {
+      return satellites.length > 0
         ? {
-            platform: subtypes.map((subtype) => subtype.apiValue).join(','),
+            platform: satellites
+              .map((satellite) => satellite.apiValue)
+              .join(','),
             ...Object.entries(dataset.apiValue).reduce((prev, curr) => {
               if (curr[0] !== 'platform') {
                 prev[curr[0]] = curr[1];

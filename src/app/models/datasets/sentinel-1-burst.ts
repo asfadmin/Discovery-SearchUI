@@ -12,7 +12,7 @@ export const sentinel_1_bursts = {
     Props.POLARIZATION,
     Props.ABSOLUTE_ORBIT,
     Props.BASELINE_TOOL,
-    Props.SUBTYPE,
+    Props.SATELLITE,
     Props.PATH,
     Props.USE_BEAM_MODE,
   ],
@@ -35,7 +35,7 @@ export const sentinel_1_bursts = {
   ],
   beamModes: ['IW', 'EW'],
   polarizations: ['VV', 'VH', 'HH', 'HV'],
-  subtypes: [
+  satellites: [
     {
       displayName: 'Sentinel-1A',
       apiValue: 'SA',

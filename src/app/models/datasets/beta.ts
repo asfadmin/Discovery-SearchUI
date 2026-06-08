@@ -51,7 +51,7 @@ export const beta = {
   ],
   beamModes: ['slc'],
   polarizations: ['VV'],
-  subtypes: [],
+  satellites: [],
   platformDesc: 'SENTINEL_1_INTERFEROGRAM_BETA_DESC',
   platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
   frameMap: {
