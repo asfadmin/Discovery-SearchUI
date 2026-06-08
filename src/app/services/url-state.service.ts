@@ -1076,6 +1076,7 @@ export class UrlStateService {
 
     return new filterStore.SetSidePolarizations(polarizations);
   };
+
   private loadSatellites = (satellitesStr: string): Action | undefined => {
     const satellites = this.prop.loadProperties(
       satellitesStr,

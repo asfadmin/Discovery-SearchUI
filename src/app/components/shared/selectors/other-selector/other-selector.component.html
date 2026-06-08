@@ -102,21 +102,19 @@
       >
         @for (satellite of dataset.satellites; track satellite) {
           <mat-option [value]="satellite">
-            {{ satellite.apiValue }}
+            {{ satellite.displayName }}
           </mat-option>
         }
       </mat-select>
-      @if (prop.isRelevant(p.SATELLITE)) {
-        <mat-hint align="start">
+
+      <mat-hint align="start">
+        @if (prop.isRelevant(p.SATELLITE)) {
           {{ satellites?.length || 0 }}/{{ dataset.satellites?.length }}
           {{ 'SATELLITES_SELECTED' | translate }}
-        </mat-hint>
-      }
-      @if (!prop.isRelevant(p.SATELLITE)) {
-        <mat-hint align="start">
+        } @else {
           {{ 'NO_SATELLITES_TO_SELECT' | translate }}
-        </mat-hint>
-      }
+        }
+      </mat-hint>
     </mat-form-field>
   }
 

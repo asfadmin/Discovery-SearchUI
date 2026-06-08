@@ -136,14 +136,15 @@ export class OtherSelectorComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new filtersStore.setShortNames(shortNames));
   }
 
-  public onNewMaxResults(maxResults): void {
+  public onNewMaxResults(maxResults: number): void {
     this.store$.dispatch(new filtersStore.SetMaxResults(maxResults));
   }
 
-  public onNewSatelliteSelected(satellites): void {
+  public onNewSatelliteSelected(satellites: models.DatasetSatellites): void {
     this.store$.dispatch(new filtersStore.SetSatellites(satellites));
   }
-  public onNewAriaVersionSelected(version): void {
+
+  public onNewAriaVersionSelected(version: string): void {
     this.store$.dispatch(new filtersStore.setAriaVersion(version));
   }
 
