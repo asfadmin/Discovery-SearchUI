@@ -40,11 +40,11 @@ export const sirc = {
   polarizations: ['HH+HV', 'HH+VV', 'HH+HV+VH+VV', 'VV'],
   satellites: [
     {
-      displayName: '',
+      displayName: 'STS-59',
       apiValue: 'STS-59',
     },
     {
-      displayName: '',
+      displayName: 'STS-59',
       apiValue: 'STS-68',
     },
   ],
