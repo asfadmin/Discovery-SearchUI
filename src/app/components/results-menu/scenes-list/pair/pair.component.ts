@@ -64,6 +64,14 @@ export class PairComponent implements OnInit, OnDestroy {
     );
   }
 
+  get isS1DPair(): boolean {
+    return (
+      (this.pair[0].dataset === 'SENTINEL-1D' ||
+        this.pair[1].dataset === 'SENTINEL-1D') &&
+      this.pair[0].metadata.productType === 'BURST'
+    );
+  }
+
   public onPairSelected(pair): void {
     // const action = new scenesStore.SetSelectedPair(pair.map(p => p.id));
     this.togglePair.emit(pair.map((p) => p.id));
