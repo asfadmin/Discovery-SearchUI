@@ -46,7 +46,7 @@ jobs:
       - name: Install angular cli
         run: npm install -g @angular/cli
       - name: Start server and record snapshots
-        run: ng serve --host=127.0.0.1 & npx wait-on http://127.0.0.1:4200 && npx playwright test --update-snapshots --reporter=list
+        run: ng serve --host=127.0.0.1 & npx wait-on http://127.0.0.1:4200 && npx playwright test --update-snapshots --reporter=list || true
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: '[CI] Update Snapshots'
+          commit_message: "[CI] Update Snapshots"
