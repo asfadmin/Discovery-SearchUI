@@ -22,8 +22,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Install jq
         run: |
-          wget https://github.com/jqlang/jq/releases/jq-1.8.1/download/jq-linux-amd64 -O $HOME/bin/jq
-          chmod +x $HOME/bin/jq
+          wget https://github.com/jqlang/jq/releases/download/jq-1.8.1/jq-linux-amd64 -O $HOME/jq
+          chmod +x $HOME/jq
       - name: Get SHA and branch name
         id: get-branch-and-sha
         run: |
@@ -31,7 +31,7 @@ jobs:
             curl \
               -H 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
               https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.issue.number }} \
-            | jq -r '.head.sha," ",.head.ref');
+            | $HOME/jq -r '.head.sha," ",.head.ref');
           echo "::set-output name=sha::$(echo $sha_and_branch | cut -d " " -f 1)";
           echo "::set-output name=branch::$(echo $sha_and_branch | cut -d " " -f 2)"
       - name: Fetch Branch
