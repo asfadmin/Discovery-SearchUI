@@ -8,6 +8,8 @@ test('List Search: searching by file IDs returns scenes', async ({ page }) => {
     .locator('app-search-type-selector')
     .locator('button.button-menu-trigger')
     .click();
+  await expect(page).toHaveScreenshot();
+
   await page.getByText('List', { exact: true }).click();
 
   await page
@@ -19,14 +21,17 @@ test('List Search: searching by file IDs returns scenes', async ({ page }) => {
     .locator('app-list-filters')
     .getByRole('radio', { name: 'File', exact: true })
     .click();
+  await expect(page).toHaveScreenshot();
 
-  await page.getByPlaceholder('List of File IDs').fill(
-    [
-      'S1C_IW_RAW__0SDV_20260512T032011_20260512T032043_007615_00F774_B7C5-RAW',
-      'S1C_IW_RAW__0SDV_20260512T032011_20260512T032043_007615_00F774_B7C5-SLC',
-      'S1C_IW_RAW__0SDV_20260512T032011_20260512T032043_007615_00F774_B7C5-GRD_HD',
-    ].join('\n'),
-  );
+  await page
+    .getByPlaceholder('List of File IDs')
+    .fill(
+      [
+        'S1C_IW_RAW__0SDV_20260512T032011_20260512T032043_007615_00F774_B7C5-RAW',
+        'S1C_IW_RAW__0SDV_20260512T032011_20260512T032043_007615_00F774_B7C5-SLC',
+        'S1C_IW_RAW__0SDV_20260512T032011_20260512T032043_007615_00F774_B7C5-GRD_HD',
+      ].join('\n'),
+    );
 
   const searchResponse = waitForASFAPIResponse(page);
   const searchButton = page

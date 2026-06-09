@@ -15,7 +15,9 @@ test('Geo: Saved Filters', { tag: '@auth' }, async ({ loggedInPage }) => {
     .click();
   await loggedInPage.locator('.cdk-overlay-backdrop').click();
   await loggedInPage
-    .locator('.dataset-filters-card .footer app-search-button .arrow-button-toggle')
+    .locator(
+      '.dataset-filters-card .footer app-search-button .arrow-button-toggle',
+    )
     .click();
   await loggedInPage.getByRole('menuitem', { name: 'Saved Filters' }).click();
   await loggedInPage.getByRole('menuitem', { name: 'Save Filters' }).click();
@@ -24,4 +26,5 @@ test('Geo: Saved Filters', { tag: '@auth' }, async ({ loggedInPage }) => {
   await expect(
     loggedInPage.locator('app-geographic-search-filters'),
   ).toContainText('File Types: GRD_HD');
+  await expect(loggedInPage).toHaveScreenshot();
 });

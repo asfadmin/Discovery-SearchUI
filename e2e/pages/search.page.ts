@@ -1,0 +1,15 @@
+import { Page } from '@playwright/test';
+import { test as base } from 'e2e/fixtures';
+
+export const test = base.extend<{ capturedSearchPage: Page }>({
+  capturedSearchPage: async ({ page }, use) => {
+    await page.routeFromHAR('./e2e/hars/capturedSearch.har', {
+      url: '**/*/services/search/**',
+      update: process.env.PLAYWRIGHT_HAR_RECORD === '1',
+      //notFound: 'fallback',
+    });
+
+    await use(page);
+  },
+});
+export { expect } from '@playwright/test';

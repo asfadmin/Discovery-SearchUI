@@ -22,7 +22,9 @@ test('Baseline: Saved filters', { tag: '@auth' }, async ({ loggedInPage }) => {
 
   await loggedInPage.getByRole('switch', { name: 'Seasonal Search' }).click();
   await loggedInPage
-    .locator('.dataset-filters-card .footer app-search-button .arrow-button-toggle')
+    .locator(
+      '.dataset-filters-card .footer app-search-button .arrow-button-toggle',
+    )
     .click();
   await loggedInPage.getByRole('menuitem', { name: 'Saved Filters' }).click();
   await loggedInPage.getByRole('menuitem', { name: 'Save Filters' }).click();
@@ -31,4 +33,5 @@ test('Baseline: Saved filters', { tag: '@auth' }, async ({ loggedInPage }) => {
   await expect(loggedInPage.locator('app-save-user-filter')).toContainText(
     'Season: 1 to 180',
   );
+  await expect(loggedInPage).toHaveScreenshot();
 });

@@ -42,4 +42,6 @@ test('SBAS: Download All Pairs', async ({ page }) => {
   await expect(
     page.locator('.dl-mat-dialog-content mat-list-item'),
   ).toHaveCount(Number(fileCount));
+
+  await expect(page).toHaveScreenshot();
 });

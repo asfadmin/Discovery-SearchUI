@@ -11,11 +11,14 @@ test(
     await loggedInPage
       .getByRole('menuitem', { name: 'List List search allows you' })
       .click();
+
     await loggedInPage
       .getByRole('textbox', { name: 'List of scene names' })
       .fill(
         'S1B_IW_GRDH_1SDV_20161124T032008_20161124T032033_003095_005430_9906',
       );
+    await expect(loggedInPage).toHaveScreenshot();
+
     await loggedInPage.waitForResponse((response) =>
       response.url().includes('output=COUNT'),
     );
@@ -35,14 +38,20 @@ test(
         name: 'S1B_IW_GRDH_1SDV_20161124T03200… 9906 November 24, 2016, 03:20:08Z 0/',
       })
       .click();
+    await expect(loggedInPage).toHaveScreenshot();
+
     await loggedInPage.locator('.mdc-icon-button').first().click();
     await loggedInPage
       .getByRole('menuitem', { name: 'Add RTC GAMMA to On Demand' })
       .click();
     await loggedInPage.getByRole('button', { name: 'On Demand' }).click();
+    await expect(loggedInPage).toHaveScreenshot();
+
     await loggedInPage
       .getByRole('menuitem', { name: 'On Demand Queue' })
       .click();
+    await expect(loggedInPage).toHaveScreenshot();
+
     await loggedInPage
       .getByRole('button', { name: 'Submit 1 job (5 credits)' })
       .click();
@@ -53,6 +62,7 @@ test(
     await expect(loggedInPage.locator('app-confirmation')).toContainText(
       'Submit 1 Job (5 credits)',
     );
+    await expect(loggedInPage).toHaveScreenshot();
   },
 );
 

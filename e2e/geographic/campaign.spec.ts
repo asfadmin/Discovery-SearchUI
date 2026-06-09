@@ -60,4 +60,5 @@ test('Selecting Multiple Campaigns', async ({ page }) => {
   await expect(page.locator('mat-card-title')).toContainText(
     'UA_permaf_20015_15147_009_151005_L090_CX_02',
   );
+  await expect(page).toHaveScreenshot();
 });

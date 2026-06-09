@@ -30,4 +30,5 @@ test('Baseline: Search History', { tag: '@auth' }, async ({ loggedInPage }) => {
   ).toContainText(
     'Reference: S1B_IW_SLC__1SDV_20210704T135937_20210704T140004_027645_034CB0_4B2C',
   );
+  await expect(loggedInPage).toHaveScreenshot();
 });

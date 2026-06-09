@@ -17,7 +17,7 @@ test(
       .filter({ hasText: /^File Type$/ })
       .first()
       .click();
-  await loggedInPage
+    await loggedInPage
       .getByRole('option', { name: 'L1 Detected High-Res Dual-Pol' })
       .click();
     await loggedInPage.locator('.cdk-overlay-backdrop').click();
@@ -26,7 +26,11 @@ test(
       .getByRole('menuitem', { name: 'Saved Searches' })
       .click();
     await loggedInPage.getByRole('menuitem', { name: 'Save Search' }).click();
+    await expect(loggedInPage).toHaveScreenshot();
+
     await loggedInPage.getByRole('button', { name: 'Save Search' }).click();
+    await expect(loggedInPage).toHaveScreenshot();
+
     await loggedInPage.getByRole('button', { name: 'Done' }).click();
     await loggedInPage.getByRole('button', { name: 'Cancel' }).click();
     await loggedInPage.getByRole('button', { name: 'Sentinel-' }).click();
@@ -39,6 +43,8 @@ test(
     await loggedInPage
       .getByRole('menuitem', { name: 'Saved Searches' })
       .click();
+    await expect(loggedInPage).toHaveScreenshot();
+
     await loggedInPage.getByRole('button', { name: 'image_search' }).click();
     await expect(loggedInPage.locator('app-info-bar')).toContainText(
       'File Types: GRD_HD',
