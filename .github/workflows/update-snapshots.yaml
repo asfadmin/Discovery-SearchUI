@@ -21,7 +21,9 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Install jq
-        run: sudo apt-get update && sudo apt-get install jq --no-install-recommends
+        run: |
+          wget https://github.com/jqlang/jq/releases/jq-1.8.1/download/jq-linux-amd64 -O $HOME/bin/jq
+          chmod +x $HOME/bin/jq
       - name: Get SHA and branch name
         id: get-branch-and-sha
         run: |
