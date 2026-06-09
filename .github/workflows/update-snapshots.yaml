@@ -12,6 +12,9 @@ jobs:
     if: ${{ github.event.issue.pull_request && github.event.comment.body == '/update-snapshots'}}
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.59.1-noble
+      options: --user 1001
     steps:
       - uses: actions/checkout@v6
         with:
