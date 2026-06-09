@@ -94,6 +94,9 @@ in use, e.g. 'assets/i18n/en.json'.
 ### End to end testing
 Testing workflows meant to be a user's journey through the site and catch things going wrong. These tests can be found under the `e2e` folder.
 
+#### Visual Regression Testing
+Testing workflows contain visual regression testing, anytime you create a UI change you must add a comment to your pull request containing `/update-snapshots` to trigger an update of the screenshots used for visual regression testing. Do not locally update snapshots as snapshots are highly dependent on the environment they are run in and must be generated in the github actions runner for consistency.
+
 Uses [Playwright](https://playwright.dev/) for test creation
 #### Angular CLI
 ```bash
