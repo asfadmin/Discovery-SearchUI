@@ -46,7 +46,7 @@ jobs:
       - name: Start server
         run: npm run start &
       - name: Wait on server to start
-        run: npx wait-on localhost:4200
+        run: npx wait-on http://localhost:4200
       - name: Update snapshots
         run: npx playwright test --update-snapshots --reporter=list
       - uses: stefanzweifel/git-auto-commit-action@v5
