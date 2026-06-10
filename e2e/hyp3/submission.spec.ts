@@ -2,7 +2,7 @@ import { test, expect } from 'e2e/pages/auth.page';
 
 test(
   'On Demand: Geographic submit job with name',
-  { tag: '@auth' },
+  { tag: ['@auth', '@visual'] },
   async ({ loggedInPage }) => {
     await loggedInPage.goto('/');
     await loggedInPage

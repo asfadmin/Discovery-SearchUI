@@ -1,6 +1,6 @@
 import { test, expect } from 'e2e/fixtures';
 
-test('SBAS Start & End Date Filters', async ({ page }) => {
+test('SBAS Start & End Date Filters', { tag: '@visual' }, async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Geographic Search' }).click();
   await page
