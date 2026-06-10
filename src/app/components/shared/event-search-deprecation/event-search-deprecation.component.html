@@ -1,0 +1,29 @@
+<div class="banner-title" mat-dialog-title id="deprecation-dialog-title">
+  <div>{{ 'EVENT_SEARCH_DEPRECATION_TITLE' | translate }}</div>
+</div>
+<mat-dialog-content aria-labelledby="deprecation-dialog-title">
+  <div id="banner-text">
+    {{ 'EVENT_SEARCH_DEPRECATION_BODY' | translate }}
+
+    <a
+      href="https://hyp3-docs.asf.alaska.edu/"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="{{ 'EVENT_SEARCH_DEPRECATION_LINK_ARIA' | translate }}"
+    >
+      {{ 'EVENT_SEARCH_DEPRECATION_LINK_TEXT' | translate }}
+    </a>
+
+    {{ 'EVENT_SEARCH_DEPRECATION_BODY_SUFFIX' | translate }}
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button
+    mat-flat-button
+    cdkFocusInitial
+    [mat-dialog-close]="true"
+    color="primary"
+  >
+    {{ 'CLOSE' | translate }}
+  </button>
+</mat-dialog-actions>

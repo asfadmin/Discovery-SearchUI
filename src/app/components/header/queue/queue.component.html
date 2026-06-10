@@ -112,6 +112,7 @@
                   (breakpoint !== breakpoints.MOBILE ? 50 : 10)
                 ) {
                   @if (
+                    product.dataset === 'Sentinel-1D' ||
                     product.dataset === 'Sentinel-1C' ||
                     product.dataset === 'Sentinel-1B' ||
                     product.dataset === 'Sentinel-1A'
@@ -144,10 +145,7 @@
           >
             {{ product.productTypeDisplay }}
           </div>
-          @if (
-            !product.metadata.job &&
-            product.groupId !== 'SARViews'
-          ) {
+          @if (!product.metadata.job) {
             <app-copy-to-clipboard
               prompt="{{ 'COPY_FILE_ID' | translate }}"
               [value]="
@@ -292,11 +290,9 @@
                 </button>
               </mat-menu>
               @if (breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin) {
-                @if (
-                  queueHasOnDemandProducts || queueHasEventMonitoringProducts
-                ) {
+                @if (queueHasOnDemandProducts) {
                   <span class="on-demand-warning">
-                    {{ limitedExportString() }}
+                    {{ 'On Demand products in queue - limited export options' }}
                   </span>
                 }
                 <button
@@ -359,9 +355,7 @@
                 </button>
                 <button
                   mat-menu-item
-                  [disabled]="
-                    queueHasOnDemandProducts || queueHasEventMonitoringProducts
-                  "
+                  [disabled]="queueHasOnDemandProducts"
                   (click)="onMetalinkDownload()"
                 >
                   {{ 'METADATA_METALINK' | translate }}
@@ -370,27 +364,21 @@
               <mat-menu #metadataMenu="matMenu" yPosition="above">
                 <button
                   mat-menu-item
-                  [disabled]="
-                    queueHasOnDemandProducts || queueHasEventMonitoringProducts
-                  "
+                  [disabled]="queueHasOnDemandProducts"
                   (click)="onCsvDownload()"
                 >
                   {{ 'METADATA_CSV' | translate }}
                 </button>
                 <button
                   mat-menu-item
-                  [disabled]="
-                    queueHasOnDemandProducts || queueHasEventMonitoringProducts
-                  "
+                  [disabled]="queueHasOnDemandProducts"
                   (click)="onKmlDownload()"
                 >
                   {{ 'METADATA_KML' | translate }}
                 </button>
                 <button
                   mat-menu-item
-                  [disabled]="
-                    queueHasOnDemandProducts || queueHasEventMonitoringProducts
-                  "
+                  [disabled]="queueHasOnDemandProducts"
                   (click)="onGeojsonDownload()"
                 >
                   {{ 'METADATA_GEOJSON' | translate }}

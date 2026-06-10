@@ -1,4 +1,4 @@
-name: Deploy yoreley SearchUI
+name: Deploy Yoreley SearchUI
 
 on:
   push:

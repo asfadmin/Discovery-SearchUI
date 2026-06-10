@@ -287,8 +287,7 @@ export class UserEffects {
           ([filterPresetID, searchtype]) =>
             (filterPresetID === '' || !!filterPresetID) &&
             searchtype !== SearchType.LIST &&
-            searchtype !== SearchType.CUSTOM_PRODUCTS &&
-            searchtype !== SearchType.SARVIEWS_EVENTS,
+            searchtype !== SearchType.CUSTOM_PRODUCTS,
         ),
         withLatestFrom(this.store$.select(userReducer.getSavedFilters)),
         map(([[presetId, searchType], userFilters]) => {

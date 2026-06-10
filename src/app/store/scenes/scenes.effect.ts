@@ -2,7 +2,6 @@ import { Injectable, inject } from '@angular/core';
 
 import {
   map,
-  switchMap,
   distinctUntilChanged,
   filter,
   withLatestFrom,
@@ -12,48 +11,17 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { CMRProduct, SearchType } from '@models';
 import { ScenesActionType, SetScenes, SetSelectedScene } from './scenes.action';
-import {
-  allScenesFrom,
-  getSelectedScene,
-  SetSarviewsEventProducts,
-  SetSelectedSarviewsEvent,
-} from '.';
-import { SarviewsEventsService, ScenesService } from '@services';
+import { allScenesFrom, getSelectedScene } from '.';
+import { ScenesService } from '@services';
 import { AppState } from '@store/app.reducer';
 import { Store } from '@ngrx/store';
 import { HideS1RawData, UIActionType } from '@store/ui';
-import { getSearchType } from '@store/search';
 
 @Injectable()
 export class ScenesEffects {
   private actions$ = inject(Actions);
-  private sarviewsService = inject(SarviewsEventsService);
   private store$ = inject<Store<AppState>>(Store);
   private sceneService = inject(ScenesService);
-
-  public loadSarviewsEventProductsOnSelect = createEffect(() =>
-    this.actions$.pipe(
-      ofType<SetSelectedSarviewsEvent>(
-        ScenesActionType.SET_SELECTED_SARVIEWS_EVENT,
-      ),
-      distinctUntilChanged(),
-      withLatestFrom(this.store$.select(getSearchType)),
-      filter(
-        ([action, searchType]) =>
-          searchType === SearchType.SARVIEWS_EVENTS && !!action.payload,
-      ),
-      switchMap(([action, _]) => {
-        return this.sarviewsService.getEventFeature(action.payload);
-      }),
-      filter((event) => !!event.products),
-      map(
-        (processedEvent) =>
-          new SetSarviewsEventProducts(
-            processedEvent.products ? processedEvent.products : [],
-          ),
-      ),
-    ),
-  );
 
   public setSelectedSceneOnLoad = createEffect(() =>
     this.actions$.pipe(

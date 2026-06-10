@@ -30,9 +30,6 @@
             >
             </app-docs-modal>
           }
-          @if (selectedSearchType === searchTypes.SARVIEWS_EVENTS) {
-            {{ 'EVENT_SEARCH' | translate }}
-          }
           @if (selectedSearchType === searchTypes.DISPLACEMENT) {
             {{ 'DISPLACEMENT_SEARCH' | translate }}
           }
@@ -62,9 +59,6 @@
         @if (selectedSearchType === searchTypes.CUSTOM_PRODUCTS) {
           <app-custom-products-filters></app-custom-products-filters>
         }
-        @if (selectedSearchType === searchTypes.SARVIEWS_EVENTS) {
-          <app-sarviews-filters></app-sarviews-filters>
-        }
         @if (
           selectedSearchType === searchTypes.DISPLACEMENT &&
           breakpoint !== breakpoints.FULL
@@ -77,8 +71,7 @@
           @if (
             selectedSearchType !== searchTypes.BASELINE &&
             selectedSearchType !== searchTypes.SBAS &&
-            selectedSearchType !== searchTypes.CUSTOM_PRODUCTS &&
-            selectedSearchType !== searchTypes.SARVIEWS_EVENTS
+            selectedSearchType !== searchTypes.CUSTOM_PRODUCTS
           ) {
             <app-max-results-selector
               class="search-button"

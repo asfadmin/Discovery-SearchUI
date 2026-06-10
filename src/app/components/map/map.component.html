@@ -76,9 +76,6 @@
             <app-interaction-selector></app-interaction-selector>
           </div>
           <div class="mobile-control-group">
-            @if (searchType !== searchTypes.SARVIEWS_EVENTS) {
-              <app-view-selector style="margin-right: 5px"> </app-view-selector>
-            }
             @if ((view$ | async) === viewTypes.EQUATORIAL) {
               <app-layer-selector> </app-layer-selector>
             }

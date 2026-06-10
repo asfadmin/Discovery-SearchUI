@@ -12,7 +12,7 @@ export const sentinel_1_bursts = {
     Props.POLARIZATION,
     Props.ABSOLUTE_ORBIT,
     Props.BASELINE_TOOL,
-    Props.SUBTYPE,
+    // Props.SUBTYPE,
     Props.PATH,
     Props.USE_BEAM_MODE,
   ],
@@ -47,6 +47,10 @@ export const sentinel_1_bursts = {
     {
       displayName: 'Sentinel-1C',
       apiValue: 'SC',
+    },
+    {
+      displayName: 'Sentinel-1D',
+      apiValue: 'SD',
     },
   ],
   platformDesc: 'SENTINEL_1_BURST_DESC',

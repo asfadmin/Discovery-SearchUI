@@ -16,9 +16,7 @@
       class="rectangle-wrapper w100"
     >
       @if (
-        products.length !== 0 ||
-        !(noSarviewsEvents$ | async) ||
-        searchType === SearchTypes.CUSTOM_PRODUCTS
+        products.length !== 0 || searchType === SearchTypes.CUSTOM_PRODUCTS
       ) {
         <div
           id="result-div"
@@ -44,22 +42,17 @@
           <div
             [class.hidden]="
               (areNoScenes$ | async) &&
-              !(
-                !(noSarviewsEvents$ | async) &&
-                searchType === SearchTypes.SARVIEWS_EVENTS
-              ) &&
               searchType !== SearchTypes.CUSTOM_PRODUCTS
             "
             class="h100"
             style="justify-content: center"
           >
-            @if (products.length !== 0 || !(noSarviewsEvents$ | async)) {
+            @if (products.length !== 0) {
               <div class="results-menu--background h100 w100 mp0 fx-row">
                 @if (breakpoint > breakpoints.MOBILE) {
                   @if (
                     searchType !== SearchTypes.BASELINE &&
                     searchType !== SearchTypes.SBAS &&
-                    searchType !== SearchTypes.SARVIEWS_EVENTS &&
                     searchType !== SearchTypes.DISPLACEMENT
                   ) {
                     <app-desktop-results-menu
@@ -75,14 +68,6 @@
                       [resize$]="resize$"
                     >
                     </app-timeseries-results-menu>
-                  }
-                  @if (searchType === SearchTypes.SARVIEWS_EVENTS) {
-                    <app-sarviews-results-menu
-                      class="w100 h100 results-menu--layout"
-                      [class.small-size]="breakpoint === breakpoints.SMALL"
-                      [resize$]="resize$"
-                    >
-                    </app-sarviews-results-menu>
                   }
                   @if (searchType === SearchTypes.BASELINE) {
                     <app-baseline-results-menu

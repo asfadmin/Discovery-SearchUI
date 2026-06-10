@@ -19,27 +19,23 @@ import { DrawService } from './draw.service';
 import { LayerService } from './layer.service';
 import { LegacyAreaFormatService } from '../legacy-area-format.service';
 import * as models from '@models';
-import * as sceneStore from '@store/scenes';
 import { HttpClient } from '@angular/common/http';
 
 import * as polygonStyle from './polygon.style';
 // import * as tileStyle from 'ol/style'
 import * as views from './views';
-import { SarviewsEvent } from '@models';
 import { EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import {
   Circle as CircleStyle,
   Fill,
-  Icon,
   Stroke,
   Style,
   Text as olText,
 } from 'ol/style';
 import Geometry from 'ol/geom/Geometry';
 import LayerGroup from 'ol/layer/Group';
-import { PinnedProduct } from '@services/browse-map.service';
 import { BrowseOverlayService, PointHistoryService } from '@services';
 import { ViewOptions } from 'ol/View';
 import { Type as GeometryType } from 'ol/geom/Geometry';
@@ -50,10 +46,8 @@ import Polygon from 'ol/geom/Polygon';
 import LineString from 'ol/geom/LineString';
 import TileLayer from 'ol/layer/WebGLTile.js';
 
-import SimpleGeometry from 'ol/geom/SimpleGeometry';
 import { SetGeocode } from '@store/filters';
 import { Extent, isEmpty } from 'ol/extent';
-import { MultiPolygon } from 'ol/geom';
 import GeoJSON from 'ol/format/GeoJSON.js';
 import * as uiStore from '@store/ui';
 import * as searchStore from '@store/search';
@@ -87,7 +81,6 @@ export class MapService implements OnDestroy {
   private scaleLine: ScaleLine;
 
   private polygonLayer: VectorLayer<VectorSource>;
-  private sarviewsEventsLayer: VectorLayer<VectorSource>;
   public displacmentLayer: VectorLayer<VectorSource>;
   public frameSelectionOverlay = new VectorImageLayer<VectorSource>();
   public selectedOnDemandFrameOverlays = new VectorLayer<VectorSource>({
@@ -102,7 +95,6 @@ export class MapService implements OnDestroy {
   private browseImageLayer: Layer;
 
   private gridLinesVisible: boolean;
-  private sarviewsFeaturesByID: Record<string, Feature> = {};
   private pinnedCollection: Collection<Layer> = new Collection<Layer>([], {
     unique: true,
   });
@@ -238,12 +230,6 @@ export class MapService implements OnDestroy {
     return this.mapView.projection.epsg;
   }
 
-  public getEventCoordinate(sarviews_id: string): Point {
-    return (
-      (this.sarviewsFeaturesByID[sarviews_id]?.getGeometry() as Point) ?? null
-    );
-  }
-
   public zoomIn(): void {
     this.zoom(0.5);
   }
@@ -309,73 +295,8 @@ export class MapService implements OnDestroy {
     this.map.addLayer(this.polygonLayer);
   }
 
-  public setEventsLayer(layer: VectorLayer<VectorSource>): void {
-    if (this.sarviewsEventsLayer) {
-      this.map.removeLayer(this.sarviewsEventsLayer);
-    }
-
-    this.sarviewsEventsLayer = layer;
-    this.map.addLayer(layer);
-  }
-
   public addLayer(layer: Layer) {
     this.map.addLayer(layer);
-  }
-
-  public sarviewsEventsToFeatures(
-    events: SarviewsEvent[],
-    projection: string,
-  ): Feature<Geometry>[] {
-    const currentDate = new Date();
-    const features = events.map((sarviewEvent) => {
-      const wkt = sarviewEvent.wkt;
-      const feature = this.wktService.wktToFeature(wkt, projection);
-      feature.set('filename', sarviewEvent.description);
-
-      const point: Point = new Point([
-        sarviewEvent.point.lat,
-        sarviewEvent.point.lon,
-      ]);
-
-      feature.set('eventPoint', point);
-      feature.setGeometryName('eventPoint');
-      feature.set('sarviews_id', sarviewEvent.event_id);
-
-      if (sarviewEvent.event_type !== 'flood') {
-        let active = false;
-        let iconName =
-          sarviewEvent.event_type === 'quake'
-            ? 'Earthquake_inactive.svg'
-            : 'Volcano_inactive.svg';
-        if (sarviewEvent.processing_timeframe.end) {
-          if (currentDate <= new Date(sarviewEvent.processing_timeframe.end)) {
-            active = true;
-            iconName = iconName.replace('_inactive', '');
-          }
-        } else {
-          active = true;
-          iconName = iconName.replace('_inactive', '');
-        }
-        const iconStyle = new Style({
-          image: new Icon({
-            anchor: [0.5, 46],
-            anchorXUnits: 'fraction',
-            anchorYUnits: 'pixels',
-            src: `/assets/icons/${iconName}`,
-            scale: 0.1,
-            offset: [0, 10],
-          }),
-          zIndex: active ? 1 : 0,
-        });
-
-        feature.setStyle(iconStyle);
-      }
-
-      this.sarviewsFeaturesByID[sarviewEvent.event_id] = feature;
-
-      return feature;
-    });
-    return features;
   }
 
   public setOverlayUpdate(updateCallback): void {
@@ -591,40 +512,10 @@ export class MapService implements OnDestroy {
     this.zoomToFeature(feature);
   }
 
-  public zoomToEvent(targetEvent: models.SarviewsEvent): void {
-    const feature = this.wktService.wktToFeature(targetEvent.wkt, this.epsg());
-    this.wktService.fixPolygonAntimeridian(feature, targetEvent.wkt);
-
-    this.map
-      .getView()
-      .fit(feature.getGeometry().getSimplifiedGeometry(0) as SimpleGeometry, {
-        maxZoom: 7,
-        size: this.map.getSize(),
-        padding: [0, 0, 500, 0],
-        duration: 750,
-      });
-  }
-
   public zoomToFeature(feature: Feature<Geometry>): void {
     const extent = feature.getGeometry().getExtent();
 
     this.zoomToExtent(extent);
-  }
-
-  public onSetSarviewsPolygon(sarviewEvent: SarviewsEvent, radius: number) {
-    const wkt = sarviewEvent.wkt;
-    const features = this.wktService.wktToFeature(wkt, this.epsg());
-
-    this.wktService.fixPolygonAntimeridian(features, sarviewEvent.wkt);
-
-    features.getGeometry().scale(radius);
-
-    if (features.getGeometry().getType() === 'MultiPolygon') {
-      features.setGeometry(
-        (features.getGeometry() as MultiPolygon).getPolygon(0),
-      );
-    }
-    this.setDrawFeature(features);
   }
 
   public onMapReady(m: Map) {
@@ -798,22 +689,6 @@ export class MapService implements OnDestroy {
 
     newMap.on('moveend', () => {
       newMap.getViewport().style.cursor = 'default';
-    });
-
-    newMap.on('singleclick', (evnt) => {
-      if (this.map.hasFeatureAtPixel(evnt.pixel)) {
-        this.map.forEachFeatureAtPixel(evnt.pixel, (feature) => {
-          const sarview_id: string = feature.get('sarviews_id');
-          if (sarview_id) {
-            this.selectedSarviewEvent$.next(sarview_id);
-            this.store$.dispatch(
-              new sceneStore.SetSelectedSarviewsEvent(sarview_id),
-            );
-          }
-
-          evnt.preventDefault();
-        });
-      }
     });
 
     this.drawService.getLayer().setZIndex(100);
@@ -1260,13 +1135,6 @@ export class MapService implements OnDestroy {
     collection.forEach((element) => {
       this.map.addLayer(element);
     });
-  }
-
-  public setPinnedProducts(pinnedProductStates: Record<string, PinnedProduct>) {
-    this.browseOverlayService.setPinnedProducts(
-      pinnedProductStates,
-      this.pinnedProducts,
-    );
   }
 
   public clearBrowseOverlays() {

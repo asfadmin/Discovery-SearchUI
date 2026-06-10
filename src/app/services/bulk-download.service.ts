@@ -4,7 +4,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { EnvironmentService } from '@services/environment.service';
-import { CMRProduct, SarviewsProduct } from '@models';
+import { CMRProduct } from '@models';
 
 @Injectable({
   providedIn: 'root',
@@ -21,15 +21,6 @@ export class BulkDownloadService {
   ): Observable<HttpResponse<Blob>> {
     const productsStr = products
       .map((product) => product.downloadUrl)
-      .join(',');
-
-    return this.downloadScript$(productsStr);
-  }
-  public downloadSarviewsProductsScript$(
-    products: SarviewsProduct[],
-  ): Observable<HttpResponse<Blob>> {
-    const productsStr = products
-      .map((product) => product.files.product_url)
       .join(',');
 
     return this.downloadScript$(productsStr);

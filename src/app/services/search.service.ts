@@ -15,7 +15,6 @@ import * as uiStore from '@store/ui';
 import * as models from '@models';
 import { MapService } from './map/map.service';
 import { WktService } from './wkt.service';
-import { PinnedProduct } from './browse-map.service';
 import { PointHistoryService } from './point-history.service';
 import { resetTimeseriesStates } from '@store/charts';
 import { SetProductTypes, SetSelectedDataset } from '@store/filters';
@@ -51,20 +50,6 @@ export class SearchService {
       this.store$.dispatch(new filterStore.ClearDateRange());
       this.store$.dispatch(new filterStore.SetProductNameFilter(''));
     }
-
-    if (searchType === models.SearchType.SARVIEWS_EVENTS) {
-      this.store$.dispatch(new filterStore.SetSarviewsEventNameFilter(''));
-      this.store$.dispatch(new filterStore.SetSarviewsEventTypes([]));
-      this.store$.dispatch(new filterStore.SetSarviewsEventActiveFilter(false));
-      this.store$.dispatch(
-        new filterStore.SetSarviewsMagnitudeRange({
-          start: null,
-          end: null,
-        }),
-      );
-      this.store$.dispatch(new filterStore.ClearSarviewsMagnitudeRange());
-      this.store$.dispatch(new filterStore.ClearHyp3ProductTypes());
-    }
   }
 
   public load(search: models.Search) {
@@ -97,28 +82,8 @@ export class SearchService {
       }
     }
     if (search.searchType === models.SearchType.SARVIEWS_EVENTS) {
-      const filters = search.filters as models.SarviewsFiltersType;
-      const pinnedProductIds = filters.pinnedProductIDs;
-      this.store$.dispatch(
-        new scenesStore.SetSelectedSarviewsEvent(filters.selectedEventID),
-      );
-
-      if (pinnedProductIds) {
-        this.store$.dispatch(
-          new scenesStore.SetImageBrowseProducts(
-            pinnedProductIds.reduce(
-              (prev, curr) => {
-                prev[curr] = {
-                  url: '',
-                  wkt: '',
-                };
-                return prev;
-              },
-              {} as Record<string, PinnedProduct>,
-            ),
-          ),
-        );
-      }
+      this.clear(search.searchType);
+      return;
     }
     if (search.searchType === models.SearchType.DISPLACEMENT) {
       const filters = search.filters as models.DisplacementFiltersType;
