@@ -6,6 +6,6 @@ test(
   async ({ page }) => {
     await page.goto('/');
     await page.getByRole('button', { name: 'Sentinel-' }).click();
-    expect(page).toHaveScreenshot();
+    await expect(page).toHaveScreenshot();
   },
 );
