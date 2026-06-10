@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from 'e2e/fixtures';
 
 test('Switch back to English works', { tag: '@visual' }, async ({ page }) => {
   await page.goto('/');
