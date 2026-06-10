@@ -59,3 +59,9 @@ docs/
 /playwright-report/
 /playwright/.cache/
 playwright/
+
+# End to end snapshots
+# Non-ci
+e2e/**/*.png
+# CI
+!e2e/**/*-linux.png
