@@ -10,6 +10,10 @@ test('Ensure browse image styling remains unchanged.', async ({ page }) => {
   await page
     .getByRole('textbox', { name: 'List of scene names' })
     .press('ControlOrMeta+m');
+  // TODO: Ideally we aren't firing off this request in vertex, but for now we do
+  await page.waitForResponse((response) =>
+    response.url().includes('output=COUNT'),
+  );
   await page
     .getByRole('textbox', { name: 'List of scene names' })
     .fill(
