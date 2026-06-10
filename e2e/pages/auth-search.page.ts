@@ -6,7 +6,7 @@ export const test = base.extend<{ capturedSearchPage: Page }>({
     await page.routeFromHAR('./e2e/hars/capturedSearch.har', {
       url: '**/*/services/search/**',
       update: process.env.PLAYWRIGHT_HAR_RECORD === '1',
-      //notFound: 'fallback',
+      notFound: 'fallback',
     });
 
     await use(page);
