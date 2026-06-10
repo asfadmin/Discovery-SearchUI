@@ -5,6 +5,7 @@
 @use './styles/filter-list';
 @use 'ngx-toastr/toastr';
 @use './styles/toast';
+@use './styles/text-helpers';
 @import "prismjs/themes/prism-solarizedlight.css";
 
 // Apply Angular Material theme styles ONCE here in the global stylesheet
@@ -79,23 +80,6 @@ $theme-map: null;
 
 .card-spacing {
   margin: 4px;
-}
-
-.primary-text {
-  @include themify_non_host($themes) {
-    color: themed('dark-primary-text');
-  }
-}
-.faint-text {
-  @include themify_non_host($themes) {
-    color: themed('dark-secondary-text');
-  }
-}
-
-.fainter-text {
-  @include themify_non_host($themes) {
-    color: themed('dark-disabled-text');
-  }
 }
 
 .v-mid {
