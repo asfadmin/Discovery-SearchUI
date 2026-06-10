@@ -1,6 +1,6 @@
 import { test, expect } from 'e2e/fixtures';
 
-test('SBAS: Download All Pairs', { tag: '@auth' }, async ({ page }) => {
+test('SBAS: Download All Pairs', { tag: '@visual' }, async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Geographic Search' }).click();
   await page

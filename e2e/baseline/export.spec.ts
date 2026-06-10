@@ -4,7 +4,7 @@ import { parse } from 'csv-parse/sync';
 
 test(
   'Results Menu Export CSV',
-  { tag: '@auth' },
+  { tag: '@visual' },
   async ({ capturedSearchPage }) => {
     await capturedSearchPage.goto('/');
     await capturedSearchPage

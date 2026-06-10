@@ -25,7 +25,8 @@ test('Campaign Filter', async ({ page }) => {
     'Campaign: Alaska borehole sites, AK',
   );
 });
-test('Selecting Multiple Campaigns', { tag: '@auth' }, async ({ page }) => {
+
+test('Selecting Multiple Campaigns', { tag: '@visual' }, async ({ page }) => {
   await page.route('**/services/utils/mission_list**', (route) => {
     return route.continue();
   });

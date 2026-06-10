@@ -2,7 +2,7 @@ import { test, expect } from 'e2e/fixtures';
 
 test(
   'Map: Overview Map toggle shows overview map',
-  { tag: '@auth' },
+  { tag: '@visual' },
   async ({ page }) => {
     await page.goto('/');
 
@@ -17,7 +17,7 @@ test(
 
 test(
   'Map: Gridlines Overlay toggle updates checkbox state',
-  { tag: '@auth' },
+  { tag: '@visual' },
   async ({ page }) => {
     await page.goto('/');
 
@@ -37,7 +37,7 @@ test(
 
 test(
   'Map: Coherence Layer activates when a month range is selected',
-  { tag: '@auth' },
+  { tag: '@visual' },
   async ({ page }) => {
     await page.goto('/');
 

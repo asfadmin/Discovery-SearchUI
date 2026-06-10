@@ -3,7 +3,7 @@ import { waitForASFAPIResponse } from 'e2e/helpers';
 
 test(
   'List Search: searching by file IDs returns scenes',
-  { tag: '@auth' },
+  { tag: '@visual' },
   async ({ page }) => {
     await page.goto('/?maxResults=10');
 
