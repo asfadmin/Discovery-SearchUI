@@ -41,6 +41,12 @@
   pointer-events: auto;
 }
 
+.results-menu-secondary {
+  @include themify_non_host($themes) {
+    color: themed("dark-secondary-text");
+  }
+}
+
 .header {
   height: 30px;
   min-height: 30px;
@@ -196,4 +202,3 @@
 .visible {
   visibility: visible;
 }
-

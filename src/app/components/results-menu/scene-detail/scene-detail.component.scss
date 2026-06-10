@@ -209,6 +209,12 @@ a {
   }
 }
 
+.scene-detail-empty-secondary {
+  @include themify_non_host($themes) {
+    color: themed("dark-secondary-text");
+  }
+}
+
 .search-button {
   margin-left: 20px;
   width: auto !important; // Prevent expansion

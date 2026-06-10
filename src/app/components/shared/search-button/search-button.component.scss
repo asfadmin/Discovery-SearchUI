@@ -21,4 +21,9 @@
   border-radius: 0 !important;
 }
 
+.search-button-secondary {
+  @include themify_non_host($themes) {
+    color: themed("dark-secondary-text");
+  }
+}
 

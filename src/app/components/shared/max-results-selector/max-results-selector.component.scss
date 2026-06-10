@@ -1,3 +1,11 @@
-.perspective{ 
-    transform: perspective(1px);
+@use "asf-theme-variables" as *;
+
+.perspective {
+  transform: perspective(1px);
+}
+
+.max-results-secondary {
+  @include themify_non_host($themes) {
+    color: themed("dark-secondary-text");
+  }
 }

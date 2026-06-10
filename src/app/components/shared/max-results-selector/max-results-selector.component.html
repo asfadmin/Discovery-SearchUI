@@ -1,7 +1,7 @@
 <div
   [matMenuTriggerFor]="isDataset ? menu : null"
   style="padding: 8px 2px"
-  class="faint-text perspective"
+  class="max-results-secondary perspective"
   [class.clickable]="isDataset"
   [attr.aria-label]="'SELECT_MAX_RESULTS' | translate"
   role="button"
@@ -10,7 +10,7 @@
     <span>
       <span>
         {{ maxResults | formatNumber }}
-        <mat-icon class="faint-text clickable"> arrow_drop_down</mat-icon>
+        <mat-icon class="max-results-secondary clickable"> arrow_drop_down</mat-icon>
       </span>
       {{ 'OF' | translate }}
     </span>
