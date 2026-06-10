@@ -2,14 +2,14 @@ import { Page } from '@playwright/test';
 import { test as base } from 'e2e/pages/auth.page';
 
 export const test = base.extend<{ capturedSearchPage: Page }>({
-  loggedInPage: async ({ page }, use) => {
-    await page.routeFromHAR('./e2e/hars/capturedSearch.har', {
+  loggedInPage: async ({ loggedInPage }, use) => {
+    await loggedInPage.routeFromHAR('./e2e/hars/capturedSearch.har', {
       url: '**/*/services/search/**',
       update: process.env.PLAYWRIGHT_HAR_RECORD === '1',
       notFound: 'fallback',
     });
 
-    await use(page);
+    await use(loggedInPage);
   },
 });
 export { expect } from '@playwright/test';
