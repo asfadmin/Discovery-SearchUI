@@ -1,6 +1,6 @@
 import { test, expect } from 'e2e/fixtures';
 
-test('Set Start and End Date', async ({ page }) => {
+test('Set Start and End Date', { tag: '@auth' }, async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
   const filtersDropdown = page.locator('app-filters-dropdown');

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('Switch back to English works', async ({ page }) => {
+test('Switch back to English works', { tag: '@auth' }, async ({ page }) => {
   await page.goto('/');
 
   await page.getByRole('button', { name: 'English' }).click();
