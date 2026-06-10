@@ -147,6 +147,12 @@ a {
   margin-bottom: 5px;
 }
 
+.image-dialog-secondary {
+  @include themify_non_host($themes) {
+    color: themed('dark-secondary-text');
+  }
+}
+
 .file-list {
   overflow-y: auto;
 }
