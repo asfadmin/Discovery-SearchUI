@@ -1,38 +1,34 @@
 <button
   class="button-flex-row pair-row"
   mat-list-item
-  (click)="onPairSelected(pair)"
+  (click)="onPairSelected(pair())"
   (mouseenter)="onSetHovered()"
   (mouseleave)="onClearHovered()"
-  [class.selected]="
-    selectedPair
-      ? pair[0].id + pair[1].id === selectedPair[0] + selectedPair[1]
-      : false
-  "
+  [class.selected]="isSelected()"
   [class.hovered]="hovered"
 >
   <span matListItemTitle
-    >{{ pair[0].metadata.date | shortDate }} to
-    {{ pair[1].metadata.date | shortDate }}</span
+    >{{ pair()[0].metadata.date | shortDate }} to
+    {{ pair()[1].metadata.date | shortDate }}</span
   >
 
-  <div class="date" matListItemMeta>{{ pairPerpBaseline(pair) }}m</div>
-  <div class="date" matListItemMeta>{{ pairTempBaseline(pair) }}d</div>
+  <div class="date" matListItemMeta>{{ pairPerpBaseline() }}m</div>
+  <div class="date" matListItemMeta>{{ pairTempBaseline() }}d</div>
 
-  @if (hyp3able.total > 0) {
+  @if (hyp3able().total > 0) {
     <mat-icon
       class="clickable noselect list-icon"
       style="margin-left: 10px"
       matTooltip="{{ 'ADD_PAIR_TO_ON_DEMAND_QUEUE' | translate }}"
       [matMenuTriggerFor]="pairAdd.addMenu"
-      [matMenuTriggerData]="{ hyp3able: hyp3able.byJobType }"
+      [matMenuTriggerData]="{ hyp3able: hyp3able().byJobType }"
       svgIcon="hyp3"
       matListItemMeta
     >
     </mat-icon>
   }
 
-  @if (hyp3able.total < 1) {
+  @if (hyp3able().total < 1) {
     <mat-icon
       class="noselect list-icon"
       style="margin-left: 10px; opacity: 0.5"
