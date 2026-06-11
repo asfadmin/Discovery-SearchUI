@@ -58,7 +58,6 @@ import {
   MatMenuContent,
 } from '@angular/material/menu';
 import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/on-demand-add-menu.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -77,7 +76,6 @@ import { TranslateModule } from '@ngx-translate/core';
     MatMenuItem,
     MatMenuContent,
 
-    FontAwesomeModule,
     AsyncPipe,
     KeyValuePipe,
     TranslateModule,
