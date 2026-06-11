@@ -22,10 +22,3 @@
   // UNUSED?? duplicates timeseries-chart ::ng-deep style
   fill: red !important;
 }
-
-.ts-invalid-point {
-  // timeseries-chart
-  fill: rgb(0 0 0 / 0%) !important;
-  stroke-dasharray: 2;
-  stroke-width: 1;
-}
