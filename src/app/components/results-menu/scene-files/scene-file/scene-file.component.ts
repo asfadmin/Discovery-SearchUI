@@ -36,10 +36,6 @@ import {
 import { AsyncPipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
-import {
-  FaIconLibrary,
-  FontAwesomeModule,
-} from '@fortawesome/angular-fontawesome';
 import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/copy-to-clipboard.component';
 import { MatIconButton } from '@angular/material/button';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
@@ -55,7 +51,7 @@ import { TruncateModule } from '@yellowspot/ng-truncate';
 import { ReadableSizeFromBytesPipe } from '@pipes/readable-size-from-bytes.pipe';
 import { FullDatePipe } from '@pipes/short-date.pipe';
 import { TranslateModule } from '@ngx-translate/core';
-import { fas, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-scene-file',
@@ -67,13 +63,13 @@ import { fas, faSpinner } from '@fortawesome/free-solid-svg-icons';
     MatListItemIcon,
     MatIcon,
     MatTooltip,
-    FontAwesomeModule,
     MatListItemTitle,
     CopyToClipboardComponent,
     MatIconButton,
     MatListItemMeta,
     MatMenuTrigger,
     MatMenu,
+    MatProgressSpinner,
 
     MatMenuItem,
     MatListItemLine,
@@ -114,12 +110,7 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   public paramsList = [];
 
   private subs = new SubSink();
-  constructor() {
-    const library = inject(FaIconLibrary);
 
-    library.addIconPacks(fas);
-    library.addIcons(faSpinner);
-  }
   ngOnInit() {
     this.subs.add(
       of(this.product)
