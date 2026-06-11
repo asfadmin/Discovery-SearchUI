@@ -73,19 +73,6 @@ $theme-map: null;
   min-height: 600px;
 }
 
-#subscriptionQueueDialog {
-  // UNUSED
-  @include themify($themes) {
-    background: themed('primary-light');
-  }
-
-  resize: both;
-  width: 80vw;
-  height: 86vh;
-  min-width: 350px;
-  min-height: 500px;
-}
-
 #preferencesDialog {
   // USED IN ui.effects.ts
   width: 80vw;
