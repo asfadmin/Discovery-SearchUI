@@ -30,4 +30,5 @@ test('Single beam mode selections available', async ({ page }) => {
   await page.getByRole('option', { name: 'slc' }).click();
   await page.locator('.cdk-overlay-backdrop').click();
   await expect(page.locator('app-info-bar')).toContainText('Beam Modes: slc');
+  await expect(page).toHaveScreenshot();
 });

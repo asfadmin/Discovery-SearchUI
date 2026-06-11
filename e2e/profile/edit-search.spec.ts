@@ -2,7 +2,7 @@ import { test, expect } from 'e2e/pages/auth.page';
 
 test(
   'Profile: Edit saved search',
-  { tag: '@auth' },
+  { tag: ['@auth', '@visual'] },
   async ({ loggedInPage }) => {
     await loggedInPage.goto('/');
     const searchActionsButton = loggedInPage
@@ -19,7 +19,11 @@ test(
       .getByRole('menuitem', { name: 'Saved Searches' })
       .click();
     await loggedInPage.getByRole('menuitem', { name: 'Save Search' }).click();
+    await expect(loggedInPage).toHaveScreenshot();
+
     await loggedInPage.getByRole('button', { name: 'Save Search' }).click();
+    await expect(loggedInPage).toHaveScreenshot();
+
     await loggedInPage.locator('app-saved-search').getByText('edit').click();
     await loggedInPage.getByRole('textbox', { name: 'Search Name' }).click();
     await loggedInPage
