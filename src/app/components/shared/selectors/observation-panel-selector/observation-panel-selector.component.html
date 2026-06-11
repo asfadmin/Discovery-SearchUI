@@ -100,25 +100,25 @@
     }
   </mat-form-field>
 
-  @if (prop.isRelevant(p.SATELLITE)) {
+  @if (prop.isRelevant(p.PLATFORM)) {
     <mat-form-field>
       <mat-select
-        (selectionChange)="onNewSatelliteSelected($event.value)"
-        [(ngModel)]="satellites"
-        [disabled]="!prop.isRelevant(p.SATELLITE)"
+        (selectionChange)="onNewPlatformSelected($event.value)"
+        [(ngModel)]="platforms"
+        [disabled]="!prop.isRelevant(p.PLATFORM)"
         placeholder="{{ 'SATELLITE' | translate }}"
         multiple
       >
-        @for (satellite of dataset.satellites; track satellite) {
-          <mat-option [value]="satellite">
-            {{ satellite.displayName }}
+        @for (platform of dataset.platforms; track platform) {
+          <mat-option [value]="platform">
+            {{ platform.displayName }}
           </mat-option>
         }
       </mat-select>
 
       <mat-hint align="start">
-        @if (prop.isRelevant(p.SATELLITE)) {
-          {{ satellites?.length || 0 }}/{{ dataset.satellites?.length }}
+        @if (prop.isRelevant(p.PLATFORM)) {
+          {{ platforms?.length || 0 }}/{{ dataset.platforms?.length }}
           {{ 'SATELLITES_SELECTED' | translate }}
         } @else {
           {{ 'NO_SATELLITES_TO_SELECT' | translate }}

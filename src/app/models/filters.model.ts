@@ -12,7 +12,7 @@ export enum Props {
   FARADAY_ROTATION = 'Faraday Rotation',
   STACK_SIZE = 'Stack Size',
   BASELINE_TOOL = 'Baseline Tool',
-  SATELLITE = 'Satellite',
+  PLATFORM = 'Platform',
   INSTRUMENT = 'Instrument',
   POINTING_ANGLE = 'Pointing Angle',
   COVERAGE_ANGLE = 'Coverage Angle',

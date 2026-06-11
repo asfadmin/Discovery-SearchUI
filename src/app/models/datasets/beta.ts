@@ -51,9 +51,9 @@ export const beta = {
   ],
   beamModes: ['slc'],
   polarizations: ['VV'],
-  satellites: [],
-  platformDesc: 'SENTINEL_1_INTERFEROGRAM_BETA_DESC',
-  platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
+  platforms: [],
+  description: 'SENTINEL_1_INTERFEROGRAM_BETA_DESC',
+  icon: '/assets/icons/satellite_alt_black_48dp.svg',
   frameMap: {
     ascending:
       'https://d3g9emy65n853h.cloudfront.net/ARIA_S1_GUNW/ascending.geojson',

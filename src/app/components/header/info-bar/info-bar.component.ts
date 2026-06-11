@@ -63,7 +63,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
   public beamModes: models.DatasetBeamModes;
   public polarizations: models.DatasetPolarizations;
   public flightDirections: models.FlightDirection[];
-  public satellites: string;
+  public platforms: string;
   public mission: string;
   public perpRange: models.Range<number | null>;
   public tempRange: models.Range<number | null>;
@@ -186,12 +186,12 @@ export class InfoBarComponent implements OnInit, OnDestroy {
     const flightDirsSub = this.store$
       .select(filtersStore.getFlightDirections)
       .subscribe((flightDirs) => (this.flightDirections = flightDirs));
-    const satellitesSub = this.store$
-      .select(filtersStore.getSatellites)
+    const platformsSub = this.store$
+      .select(filtersStore.getPlatforms)
       .subscribe(
-        (satellites) =>
-          (this.satellites = satellites
-            .map((satellite) => satellite.apiValue)
+        (platforms) =>
+          (this.platforms = platforms
+            .map((platform) => platform.apiValue)
             .join(',')),
       );
     const missionSub = this.store$
@@ -274,7 +274,7 @@ export class InfoBarComponent implements OnInit, OnDestroy {
       jointObservationSub,
       beamModesSub,
       flightDirsSub,
-      satellitesSub,
+      platformsSub,
       missionSub,
       tempSub,
       perpSub,

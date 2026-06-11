@@ -356,7 +356,7 @@ export class UserEffects {
     searches,
   ): models.Search[] | models.SavedFilterPreset[] {
     return searches?.map((search) => {
-      const migrated = this.migrateSubtypesToSatellites(search);
+      const migrated = this.migrateSubtypesToPlatforms(search);
 
       if (
         migrated.searchType === models.SearchType.LIST ||
@@ -379,12 +379,12 @@ export class UserEffects {
     });
   }
 
-  private migrateSubtypesToSatellites(search: any): any {
+  private migrateSubtypesToPlatforms(search: any): any {
     if (!search.filters.subtypes) {
       return search;
     }
     const { subtypes, ...rest } = search.filters;
-    return { ...search, filters: { ...rest, satellites: subtypes } };
+    return { ...search, filters: { ...rest, platforms: subtypes } };
   }
 
   private loadIfDate(date: string | null): Date | null {
@@ -430,7 +430,7 @@ export class UserEffects {
       new filterStore.SetProductTypes(datasetFilter.productTypes),
       new filterStore.SetBeamModes(datasetFilter.beamModes),
       new filterStore.SetPolarizations(datasetFilter.polarizations),
-      new filterStore.SetSatellites(datasetFilter.satellites),
+      new filterStore.SetPlatforms(datasetFilter.platforms),
       new filterStore.SetFlightDirections(
         Array.from(datasetFilter.flightDirections),
       ),

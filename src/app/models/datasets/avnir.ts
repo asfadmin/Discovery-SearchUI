@@ -35,7 +35,7 @@ export const avnir = {
   ],
   beamModes: ['OBS'],
   polarizations: [],
-  satellites: [],
-  platformDesc: 'ADVANCED_DESC',
-  platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
+  platforms: [],
+  description: 'ADVANCED_DESC',
+  icon: '/assets/icons/satellite_alt_black_48dp.svg',
 };

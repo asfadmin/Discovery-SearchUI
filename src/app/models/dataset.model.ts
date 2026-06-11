@@ -16,15 +16,15 @@ export interface Dataset {
   beamModes: string[];
   polarizations: string[];
   sidepolarizations?: string[];
-  satellites: DatasetSatellite[];
+  platforms: DatasetPlatform[];
   frequency: string;
   source: {
     name: string;
     url: string | null;
   } | null;
   properties: Props[];
-  platformDesc: string;
-  platformIcon: string;
+  description: string;
+  icon: string;
   collectionMap?: DatasetCollectionMap;
 
   calibrationDatasets?: string[];
@@ -60,7 +60,7 @@ export interface ShortName {
   apiValue: string;
 }
 
-export interface DatasetSatellite {
+export interface DatasetPlatform {
   displayName: string;
   apiValue: string;
 }
@@ -71,7 +71,7 @@ export type DatasetProductTypes = ProductType[];
 export type DatasetShortName = ShortName[];
 export type DatasetBeamModes = string[];
 export type DatasetPolarizations = string[];
-export type DatasetSatellites = DatasetSatellite[];
+export type DatasetPlatforms = DatasetPlatform[];
 
 export const sentinel_1 = fromDatasets.sentinel_1;
 export const sentinel_1_bursts = fromDatasets.sentinel_1_bursts;

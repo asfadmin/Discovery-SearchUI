@@ -47,7 +47,7 @@ export class OtherSelectorComponent implements OnInit, OnDestroy {
   flightDirections: models.FlightDirection[];
   beamModes: models.DatasetBeamModes;
   polarizations: models.DatasetPolarizations;
-  satellites: models.DatasetSatellites;
+  platforms: models.DatasetPlatforms;
   groupID: string;
   tileID: string;
   ariaVersion: string;
@@ -61,7 +61,7 @@ export class OtherSelectorComponent implements OnInit, OnDestroy {
   public beamModes$ = this.store$.select(filtersStore.getBeamModes);
   public polarizations$ = this.store$.select(filtersStore.getPolarizations);
   public selectedDataset$ = this.store$.select(filtersStore.getSelectedDataset);
-  public satellites$ = this.store$.select(filtersStore.getSatellites);
+  public platforms$ = this.store$.select(filtersStore.getPlatforms);
   public groupID$ = this.store$.select(filtersStore.getGroupID);
   public tileID$ = this.store$.select(filtersStore.getTileID);
   public flightDirectionTypes = models.flightDirections;
@@ -99,9 +99,7 @@ export class OtherSelectorComponent implements OnInit, OnDestroy {
       this.polarizations$.subscribe((pols) => (this.polarizations = pols)),
     );
     this.subs.add(
-      this.satellites$.subscribe(
-        (satellites) => (this.satellites = satellites),
-      ),
+      this.platforms$.subscribe((platforms) => (this.platforms = platforms)),
     );
     this.subs.add(
       this.groupID$.subscribe((groupID) => (this.groupID = groupID)),
@@ -140,8 +138,8 @@ export class OtherSelectorComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new filtersStore.SetMaxResults(maxResults));
   }
 
-  public onNewSatelliteSelected(satellites: models.DatasetSatellites): void {
-    this.store$.dispatch(new filtersStore.SetSatellites(satellites));
+  public onNewPlatformSelected(platforms: models.DatasetPlatforms): void {
+    this.store$.dispatch(new filtersStore.SetPlatforms(platforms));
   }
 
   public onNewAriaVersionSelected(version: string): void {

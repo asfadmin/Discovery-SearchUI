@@ -75,7 +75,7 @@ export interface GeographicFiltersType {
   beamModes: fromDatasets.DatasetBeamModes;
   polarizations: fromDatasets.DatasetPolarizations;
   flightDirections: FlightDirection[];
-  satellites: fromDatasets.DatasetSatellites;
+  platforms: fromDatasets.DatasetPlatforms;
 
   selectedMission: null | string;
 

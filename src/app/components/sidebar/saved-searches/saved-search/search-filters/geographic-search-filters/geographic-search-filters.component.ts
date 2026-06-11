@@ -38,7 +38,7 @@ export class GeographicSearchFiltersComponent {
       filters.beamModes.length === 0 &&
       filters.polarizations.length === 0 &&
       filters.flightDirections.length === 0 &&
-      filters.satellites.length === 0
+      filters.platforms.length === 0
     );
   }
 

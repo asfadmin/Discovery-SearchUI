@@ -58,7 +58,7 @@ export const opera_s1 = {
   ],
   beamModes: ['IW', 'EW'],
   polarizations: ['VV', 'VH', 'HH', 'HV'],
-  satellites: [],
+  platforms: [],
   calibrationDatasets: ['OPERA-S1-CALVAL'],
   calibrationProductTypes: [
     {
@@ -70,8 +70,8 @@ export const opera_s1 = {
       displayName: 'L2 Co-registered Single Look Complex (CSLC)',
     },
   ],
-  platformDesc: 'OPERA_S1_DESC',
-  platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
+  description: 'OPERA_S1_DESC',
+  icon: '/assets/icons/satellite_alt_black_48dp.svg',
   productTypeDisplays: {
     hh: 'HH GeoTIFF',
     hv: 'HV GeoTIFF',
