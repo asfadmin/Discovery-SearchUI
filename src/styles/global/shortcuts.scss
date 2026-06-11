@@ -13,13 +13,6 @@
   }
 }
 
-.fainter-text {
-  // UNUSED
-  @include themify_non_host($themes) {
-    color: themed('dark-disabled-text');
-  }
-}
-
 .v-mid {
   // USED IN mission-selector, scene-metadata, event-metadata
   vertical-align: middle;
@@ -36,11 +29,6 @@
 
 .w100 {
   width: 100%;
-}
-
-.w90 {
-  // UNUSED
-  width: 90%;
 }
 
 .h100 {
@@ -88,20 +76,6 @@
 .fx-nogrow {
   flex: 0 1 auto;
   box-sizing: border-box;
-}
-
-.fx-75 {
-  // UNUSED
-  flex: 1 1 100%;
-  box-sizing: border-box;
-  max-width: 75%;
-}
-
-.fx-25 {
-  // UNUSED
-  flex: 1 1 100%;
-  box-sizing: border-box;
-  max-width: 25%;
 }
 
 .fx-80 {
