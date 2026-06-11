@@ -92,27 +92,6 @@ button,
   border-radius: 14px !important;
 }
 
-/* Rules for sizing the icon. */
-.material-icons.md-18 {
-  font-size: 18px;
-}
-
-.material-icons.md-24 {
-  font-size: 24px;
-}
-
-.material-icons.md-36 {
-  font-size: 36px;
-}
-
-.material-icons.md-48 {
-  font-size: 48px;
-}
-
-.material-icons.md-asf-ribbon-icon {
-  font-size: $asf-ribbon-icon-size;
-}
-
 .mat-mdc-dialog-container {
   @include themify_non_host($themes) {
     // background-color: themed('primary-light');
@@ -169,12 +148,6 @@ button,
   @include themify_non_host($themes) {
     color: themed('blue-link') !important;
     background-color: themed('blue-link') !important;
-  }
-}
-
-.md-icon {
-  @include themify_non_host($themes) {
-    color: themed('dark-primary-text');
   }
 }
 
