@@ -91,3 +91,12 @@
 .hyp3-plus-url {
   width: 300px;
 }
+
+#preferencesDialog {
+  // USED IN ui.effects.ts
+  width: 80vw;
+  max-width: 100vw;
+  max-height: 100vh;
+  min-width: 350px;
+  min-height: 500px;
+}

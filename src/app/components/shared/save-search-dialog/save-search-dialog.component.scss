@@ -8,6 +8,7 @@ $bottom-offset: 10px;
   @include themify($themes) {
     background-color: themed('background-white');
   }
+
   display: block;
   height: 350px;
   overflow-y: auto;
