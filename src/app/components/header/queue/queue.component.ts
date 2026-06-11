@@ -8,7 +8,6 @@ import {
   inject,
 } from '@angular/core';
 
-import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { ClipboardService } from 'ngx-clipboard';
 import { map, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
@@ -119,7 +118,6 @@ export class QueueComponent implements OnInit, OnDestroy {
   public showDemWarning: boolean;
   public showRestrictedDatasetWarning;
 
-  public copyIcon = faCopy;
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = Breakpoints;
   public breakpoint: Breakpoints;

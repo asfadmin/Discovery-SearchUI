@@ -42,7 +42,7 @@
     }
 
     @if (!product.metadata.job) {
-      <a class="icon-margin">
+      <a class="icon-margin icon">
         <app-copy-to-clipboard
           [value]="
             product.metadata.productType === 'BURST_XML'
@@ -59,7 +59,7 @@
             ['Download URL', product.downloadUrl],
             ['S3 URL', product.metadata?.s3URI],
           ]"
-          [copyIcon]="copyIcons.LINK"
+          copyIcon="link_2"
         ></app-copy-to-clipboard>
       </a>
     }

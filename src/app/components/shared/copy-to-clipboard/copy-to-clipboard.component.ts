@@ -10,27 +10,17 @@ import { SubSink } from 'subsink';
 
 import { of } from 'rxjs';
 import { tap, delay } from 'rxjs/operators';
-
-import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { ClipboardService } from 'ngx-clipboard';
 import { NotificationService } from '@services/notification.service';
-import { CopyIcons } from '@models';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-copy-to-clipboard',
   templateUrl: './copy-to-clipboard.component.html',
   styleUrls: ['./copy-to-clipboard.component.css'],
-  imports: [
-    FontAwesomeModule,
-    MatTooltip,
-    MatMenuTrigger,
-    MatMenu,
-
-    MatMenuItem,
-  ],
+  imports: [MatIcon, MatTooltip, MatMenuTrigger, MatMenu, MatMenuItem],
 })
 export class CopyToClipboardComponent implements OnDestroy {
   private clipboardService = inject(ClipboardService);
@@ -41,7 +31,7 @@ export class CopyToClipboardComponent implements OnDestroy {
   @Input() prompt = 'Copy to clipboard';
   @Input() notification = 'Copied';
   @Input() toast = true;
-  @Input({ required: false }) copyIcon: IconDefinition = CopyIcons.COPY;
+  @Input({ required: false }) copyIcon = 'file_copy';
   @ViewChild('copyTooltip', { static: true }) copyTooltip: ElementRef;
 
   private subs = new SubSink();

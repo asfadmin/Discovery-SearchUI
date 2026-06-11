@@ -223,7 +223,7 @@
                 matTooltip="{{ 'COPY_FILE_ID_TO_CLIPBOARD' | translate }}"
                 [matTooltipPosition]="'above'"
               >
-                <fa-icon style="margin-left: 5px" [icon]="copyIcon"></fa-icon>
+                <mat-icon style="margin-left: 5px" fontIcon="file_copy"></mat-icon>
                 &nbsp;
                 @if (breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin) {
                   <span>{{ 'COPY_FILE_IDS' | translate }}</span>
@@ -243,7 +243,7 @@
                   matTooltip="{{ 'COPY_FILE_URLS_TO_CLIPBOARD' | translate }}"
                   [matTooltipPosition]="'above'"
                 >
-                  <fa-icon style="margin-left: 5px" [icon]="copyIcon"></fa-icon>
+                  <mat-icon style="margin-left: 5px" fontIcon="file_copy"></mat-icon>
                   &nbsp;
                   <span>
                     @if (
@@ -268,7 +268,7 @@
                   matTooltip="{{ 'COPY_FILE_URLS_TO_CLIPBOARD' | translate }}"
                   [matTooltipPosition]="'above'"
                 >
-                  <fa-icon style="margin-left: 5px" [icon]="copyIcon"></fa-icon>
+                  <mat-icon style="margin-left: 5px" fontIcon="file_copy"></mat-icon>
                   &nbsp;
                   <span>
                     @if (

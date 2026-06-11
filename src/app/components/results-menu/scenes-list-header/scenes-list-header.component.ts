@@ -19,7 +19,6 @@ import * as queueStore from '@store/queue';
 import * as searchStore from '@store/search';
 import * as filtersStore from '@store/filters';
 import * as hyp3Store from '@store/hyp3';
-import { faCopy } from '@fortawesome/free-solid-svg-icons';
 
 import {
   MapService,
@@ -96,7 +95,6 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   private exportService = inject(ExportService);
   private dialog = inject(MatDialog);
 
-  public copyIcon = faCopy;
   public pairs$ = this.pairService.pairs$;
   private pairProducts$ = this.pairService.productsFromPairs$;
 

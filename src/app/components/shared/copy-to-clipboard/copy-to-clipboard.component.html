@@ -1,24 +1,26 @@
 @if (submenu.length === 0) {
-  <fa-icon
+  <mat-icon
     (click)="onCopyIconClicked($event)"
-    class="clickable"
+    class="clickable icon"
     [matTooltip]="prompt"
     matTooltipPosition="left"
-    [icon]="copyIcon"
+    inline="true"
   >
-  </fa-icon>
+    {{copyIcon}}
+  </mat-icon>
 }
 
 @if (submenu.length > 0) {
-  <fa-icon
+  <mat-icon
     (click)="$event.stopPropagation()"
     [matMenuTriggerFor]="promptMenu"
-    class="clickable"
+    class="clickable icon"
     [matTooltip]="prompt"
     matTooltipPosition="left"
-    [icon]="copyIcon"
+    inline="true"
   >
-  </fa-icon>
+    {{copyIcon}}
+  </mat-icon>
 }
 
 <mat-menu #promptMenu>

@@ -112,7 +112,6 @@ export class SceneFileComponent implements OnInit, OnDestroy {
   public searchTypes = SearchType;
   public isHovered = false;
   public paramsList = [];
-  public copyIcons = models.CopyIcons;
 
   private subs = new SubSink();
   constructor() {
