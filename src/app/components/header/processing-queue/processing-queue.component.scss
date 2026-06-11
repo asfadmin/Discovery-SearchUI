@@ -478,3 +478,15 @@ a {
     color: themed('blue-link')
   }
 }
+
+#processingQueueDialog {
+  @include themify_non_host($themes) {
+    // background-color: themed('primary-light');
+  }
+
+  position: relative;
+  margin: 0;
+  padding: 0 0 10px !important;
+  padding-right: 0 !important;
+  overflow: hidden;
+}
