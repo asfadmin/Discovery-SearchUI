@@ -64,7 +64,7 @@ export const radarsat_1 = {
     'WD3',
   ],
   polarizations: ['HH'],
-  subtypes: [],
-  platformDesc: 'RADARSAT_1_DESC',
-  platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
+  platforms: [],
+  description: 'RADARSAT_1_DESC',
+  icon: '/assets/icons/satellite_alt_black_48dp.svg',
 };

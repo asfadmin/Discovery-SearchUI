@@ -100,32 +100,30 @@
     }
   </mat-form-field>
 
-  @if (prop.isRelevant(p.SUBTYPE)) {
+  @if (prop.isRelevant(p.PLATFORM)) {
     <mat-form-field>
       <mat-select
-        (selectionChange)="onNewSubtypeSelected($event.value)"
-        [(ngModel)]="subtypes"
-        [disabled]="!prop.isRelevant(p.SUBTYPE)"
-        placeholder="{{ 'SUBTYPE' | translate }}"
+        (selectionChange)="onNewPlatformSelected($event.value)"
+        [(ngModel)]="platforms"
+        [disabled]="!prop.isRelevant(p.PLATFORM)"
+        placeholder="{{ 'SATELLITE' | translate }}"
         multiple
       >
-        @for (subtype of dataset.subtypes; track subtype) {
-          <mat-option [value]="subtype">
-            {{ subtype.apiValue }}
+        @for (platform of dataset.platforms; track platform) {
+          <mat-option [value]="platform">
+            {{ platform.displayName }}
           </mat-option>
         }
       </mat-select>
-      @if (prop.isRelevant(p.SUBTYPE)) {
-        <mat-hint align="start">
-          {{ subtypes?.length || 0 }}/{{ dataset.subtypes?.length }}
-          {{ 'SUBTYPES_SELECTED' | translate }}
-        </mat-hint>
-      }
-      @if (!prop.isRelevant(p.SUBTYPE)) {
-        <mat-hint align="start">
-          {{ 'NO_SUBTYPES_TO_SELECT' | translate }}
-        </mat-hint>
-      }
+
+      <mat-hint align="start">
+        @if (prop.isRelevant(p.PLATFORM)) {
+          {{ platforms?.length || 0 }}/{{ dataset.platforms?.length }}
+          {{ 'SATELLITES_SELECTED' | translate }}
+        } @else {
+          {{ 'NO_SATELLITES_TO_SELECT' | translate }}
+        }
+      </mat-hint>
     </mat-form-field>
   }
 
