@@ -28,6 +28,7 @@
     @include themify($themes) {
       color: themed('blue-link');
     }
+
     text-decoration: none;
   }
 }
@@ -52,6 +53,7 @@
   @include themify($themes) {
     background-color: themed("background-white");
   }
+
   display: flex;
   width: 100%;
   padding-top: 15px;
@@ -93,7 +95,6 @@
 }
 
 #preferencesDialog {
-  // USED IN ui.effects.ts
   width: 80vw;
   max-width: 100vw;
   max-height: 100vh;
