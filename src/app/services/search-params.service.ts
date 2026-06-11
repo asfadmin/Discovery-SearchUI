@@ -155,9 +155,7 @@ export class SearchParamsService {
     map(([dataset, platforms]) => {
       return platforms.length > 0
         ? {
-            platform: platforms
-              .map((satellite) => satellite.apiValue)
-              .join(','),
+            platform: platforms.map((platform) => platform.apiValue).join(','),
             ...Object.entries(dataset.apiValue).reduce((prev, curr) => {
               if (curr[0] !== 'platform') {
                 prev[curr[0]] = curr[1];
