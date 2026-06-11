@@ -129,12 +129,6 @@ $chart-ctrl-top-x: 70px;
   fill: red !important;
 }
 
-:host ::ng-deep .ts-invalid-point {
-  fill: rgb(0 0 0 / 0%) !important;
-  stroke-dasharray: 2;
-  stroke-width: 1;
-}
-
 .message-container{
   text-align: center;
   padding-top: 50px;
