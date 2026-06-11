@@ -470,13 +470,13 @@ export class UrlStateService {
       {
         name: 'subtypes',
         source: this.store$
-          .select(filterStore.getSubtypes)
+          .select(filterStore.getPlatforms)
           .pipe(
             map((types) =>
               this.prop.saveProperties(types, 'subtypes', (v) => v.apiValue),
             ),
           ),
-        loader: this.loadSubtypes,
+        loader: this.loadPlatforms,
       },
       {
         name: 'maxResults',
@@ -1076,18 +1076,19 @@ export class UrlStateService {
 
     return new filterStore.SetSidePolarizations(polarizations);
   };
-  private loadSubtypes = (subtypesStr: string): Action | undefined => {
-    const subtypes = this.prop.loadProperties(
-      subtypesStr,
+
+  private loadPlatforms = (platformsStr: string): Action | undefined => {
+    const platforms = this.prop.loadProperties(
+      platformsStr,
       'subtypes',
       (v) => v.apiValue,
     );
 
-    if (!subtypes) {
+    if (!platforms) {
       return;
     }
 
-    return new filterStore.SetSubtypes(subtypes);
+    return new filterStore.SetPlatforms(platforms);
   };
 
   private loadFlightDirections = (dirsStr: string): Action => {

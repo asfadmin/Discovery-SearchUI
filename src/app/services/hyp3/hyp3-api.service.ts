@@ -351,10 +351,9 @@ export class Hyp3ApiService {
     }
   }
 
-  public getHyp3ableProducts(products: models.CMRProduct[][]): {
-    byJobType: models.Hyp3ableProductByJobType[];
-    total: number;
-  } {
+  public getHyp3ableProducts(
+    products: models.CMRProduct[][],
+  ): models.Hyp3ableProducts {
     const byJobType = models.hyp3JobTypesList
       .map((jobType) => {
         const hyp3ableProducts = products.filter((product) =>

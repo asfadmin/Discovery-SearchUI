@@ -36,6 +36,11 @@ export interface Hyp3ableProductByJobType {
   total: number;
 }
 
+export interface Hyp3ableProducts {
+  byJobType: Hyp3ableProductByJobType[];
+  total: number;
+}
+
 export interface Hyp3ableByProductType {
   productType: string;
   products: CMRProduct[][];
