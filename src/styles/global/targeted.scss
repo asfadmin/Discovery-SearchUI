@@ -43,32 +43,6 @@
   }
 }
 
-/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
-
-/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
-.ls-card .mat-button-toggle {
-  // UNUSED
-  font-size: $asf-font-size;
-
-  /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
-  .mat-button-toggle-label-content,
-  .mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
-    line-height: 24px;
-  }
-}
-
-/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
-.ls-card-content-list .mat-form-field-infix {
-  // UNUSED
-  @include themify_non_host($themes) {
-    border-color: themed('primary-light');
-  }
-
-  width: 100%;
-  border-style: solid;
-  border-width: 1px;
-}
-
 .image-dialog {
   .mat-mdc-dialog-container {
     @include themify_non_host($themes) {

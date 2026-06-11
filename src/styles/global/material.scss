@@ -146,27 +146,6 @@ button,
   max-height: 400px !important;
 }
 
-/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
-.mat-button-toggle-label-content .mat-button-toggle-appearance-standard .scene-actions {
-  // UNUSED
-  line-height: 24px;
-  padding: 0 9px 1px;
-}
-
-.mat-mdc-list-base .mat-mdc-list-item.mat-2-line,
-.mat-list-base .mat-list-option.mat-2-line {
-  // UNUSED
-  height: 58px !important;
-}
-
-/* TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version. */
-.mat-list-base-item {
-  // UNUSED
-  .job-list-item {
-    display: flex;
-  }
-}
-
 /* TODO(mdc-migration): The following rule targets internal classes of menu that may no longer apply for the MDC version. */
 .mat-menu {
   // UNUSED
