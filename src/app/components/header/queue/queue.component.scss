@@ -321,3 +321,30 @@ button {
     color: themed("dark-primary-text");
   }
 }
+
+#dlQueueDialog {
+  // USED ONCE in app.component.ts
+  @include themify_non_host($themes) {
+    // background-color: themed('primary-light') !important;
+  }
+
+  position: relative;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+#dlQueueDialog {
+  // USED in app.component
+  resize: both;
+
+  @include themify($themes) {
+    // background-color: themed('primary-light');
+  }
+
+  width: 80vw;
+  height: 86vh;
+  min-width: 350px;
+  min-height: 500px;
+}
+

@@ -40,44 +40,6 @@ ul {
   padding-left: 0;
 }
 
-#dlQueueDialog {
-  // USED ONCE in app.component.ts
-  @include themify_non_host($themes) {
-    // background-color: themed('primary-light') !important;
-  }
-
-  position: relative;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
-
-#processingQueueDialog {
-  // USED ONCE in app.component.ts
-  @include themify_non_host($themes) {
-    // background-color: themed('primary-light');
-  }
-
-  position: relative;
-  margin: 0;
-  padding: 0 0 10px !important;
-  padding-right: 0 !important;
-  overflow: hidden;
-}
-
-#subscriptionQueueDialog {
-  // UNUSED
-  @include themify_non_host($themes) {
-    background-color: themed('primary-light');
-  }
-
-  position: relative;
-  margin: 0;
-  padding: 0 10px 10px 0 !important;
-  overflow: hidden;
-}
-
-
 @keyframes shake {
   10%,
   90% {
