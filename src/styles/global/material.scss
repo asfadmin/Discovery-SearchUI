@@ -121,6 +121,24 @@ button,
   border-radius: 0 !important;
 }
 
+.cdk-overlay-container {
+  position: absolute;
+  z-index: 2000;
+
+  .cdk-overlay-connected-position-bounding-box {
+    z-index: 2000;
+  }
+
+  // Fix for Angular Material 19 menu positioning
+  .cdk-overlay-pane {
+    z-index: 2000;
+  }
+
+  .mat-mdc-menu-panel {
+    z-index: 2000;
+  }
+}
+
 .mat-mdc-select-panel {
   max-width: fit-content !important;
 
@@ -324,4 +342,3 @@ button,
     }
   }
 }
-
