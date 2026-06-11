@@ -46,28 +46,6 @@ $theme-map: null;
   perspective: 1000px;
 }
 
-// for the sbas chart
-
-// $d-width: 600px;
-$d-height: 550px;
-
-#ConfirmProcess {
-  // USED IN search-button hyp3-job-status-badge processing-queue saved-searches
-  @include themify_non_host($themes) {
-    background: themed('primary-light') !important;
-  }
-
-  resize: none;
-  overflow: hidden;
-
-  // width: $d-width !important;
-  height: $d-height !important;
-
-  // max-width: $d-width !important;
-  max-height: $d-height !important;
-
-}
-
 #dlQueueDialog {
   // USED in app.component
   resize: both;
