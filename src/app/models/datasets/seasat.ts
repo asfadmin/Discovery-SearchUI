@@ -31,9 +31,9 @@ export const seasat = {
   productTypes: [],
   beamModes: ['STD'],
   polarizations: ['HH'],
-  subtypes: [],
-  platformDesc: 'SEASAT_DESC',
-  platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
+  platforms: [],
+  description: 'SEASAT_DESC',
+  icon: '/assets/icons/satellite_alt_black_48dp.svg',
   productTypeDisplays: {
     h5: 'Level One HDF5 Image',
     in: 'Metadata IN',

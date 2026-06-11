@@ -84,7 +84,7 @@ export class DatasetSelectorComponent {
       return (
         dataset.name.toUpperCase().includes(userInput) ||
         this.translate
-          .instant(dataset.platformDesc)
+          .instant(dataset.description)
           .toUpperCase()
           .includes(userInput) ||
         dataset.source.name.includes(userInput)

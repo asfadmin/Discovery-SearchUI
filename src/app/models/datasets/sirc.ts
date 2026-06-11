@@ -12,7 +12,7 @@ export const sirc = {
     Props.FLIGHT_DIRECTION,
     Props.POLARIZATION,
     Props.ABSOLUTE_ORBIT,
-    Props.SUBTYPE,
+    Props.PLATFORM,
   ],
   apiValue: { dataset: 'SIR-C' },
   date: {
@@ -38,16 +38,16 @@ export const sirc = {
   ],
   beamModes: ['11', '13', '16', '20'],
   polarizations: ['HH+HV', 'HH+VV', 'HH+HV+VH+VV', 'VV'],
-  subtypes: [
+  platforms: [
     {
-      displayName: '',
+      displayName: 'STS-59',
       apiValue: 'STS-59',
     },
     {
-      displayName: '',
+      displayName: 'STS-59',
       apiValue: 'STS-68',
     },
   ],
-  platformDesc: 'SIRC_DESC',
-  platformIcon: '/assets/icons/rocket_black_48dp.svg',
+  description: 'SIRC_DESC',
+  icon: '/assets/icons/rocket_black_48dp.svg',
 };
