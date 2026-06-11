@@ -20,8 +20,8 @@
       {{ totalResultsCount !== -1 ? (totalResultsCount | formatNumber) : '0' }}
     </span>
   } @else {
-    <span style="margin: 0 4px">
-      <fa-icon icon="spinner" animation="spin-pulse"></fa-icon>
+    <span style="" class="loading-spinner">
+      <mat-spinner diameter="16"></mat-spinner>
     </span>
   }
   {{ 'FILES' | translate }}

@@ -20,6 +20,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { fas, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { Pipe, PipeTransform } from '@angular/core';
 import { combineLatest } from 'rxjs';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Pipe({
   name: 'formatNumber',
@@ -44,6 +45,7 @@ export class FormatNumberPipe implements PipeTransform {
     MatIcon,
     FontAwesomeModule,
     MatMenu,
+    MatProgressSpinner,
     FormatNumberPipe,
     MatMenuItem,
     DocsModalComponent,
