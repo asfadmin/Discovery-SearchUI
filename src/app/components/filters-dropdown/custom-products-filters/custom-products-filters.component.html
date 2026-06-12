@@ -15,17 +15,17 @@
     </mat-expansion-panel-header>
 
     <div style="display: flex; margin-top: 25px">
-      <app-search-type-selector style="margin-right: 25px">
+      <app-search-type-selector class="selector-spacing-right">
       </app-search-type-selector>
 
       <app-on-demand-user-selector
-        style="margin-top: 11px"
+        class="selector-top-offset"
       ></app-on-demand-user-selector>
 
       <app-job-id-selector
         [jobIds]="hyp3JobIds"
         (newJobIds)="onNewHyp3JobIds($event)"
-        style="margin-top: 11px"
+        class="selector-top-offset"
       ></app-job-id-selector>
     </div>
   </mat-expansion-panel>
@@ -71,7 +71,7 @@
         style="display: flex; flex-wrap: wrap; margin-top: 25px"
       >
         <app-project-name-selector
-          style="margin-right: 25px"
+          class="selector-spacing-right"
         ></app-project-name-selector>
         <app-job-status-selector></app-job-status-selector>
       </div>
