@@ -39,7 +39,7 @@ import * as uiStore from '@store/ui';
 // import {hidden} from '@services/map/polygon.style';
 // import {style} from '@angular/animations';
 import { linearRegression, linearRegressionLine } from './regression-line';
-import { types } from 'sass';
+
 import { NgStyle } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import { ResizedDirective } from '../../directives/resized.directive';
@@ -1051,6 +1051,5 @@ export class TimeseriesChartComponent implements OnInit, OnDestroy {
   protected readonly Date = Date;
 
   protected readonly length = length;
-  protected readonly types = types;
   protected readonly Number = Number;
 }
