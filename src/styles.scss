@@ -6,6 +6,10 @@
 @use 'ngx-toastr/toastr';
 @import "prismjs/themes/prism-solarizedlight.css";
 
+@import '@fontsource/roboto/300.css';
+@import '@fontsource/roboto/400.css';
+@import '@fontsource/roboto/500.css';
+
 // Apply Angular Material theme styles ONCE here in the global stylesheet
 // Include base theme styles (typography and density) once
 @include mat.all-component-typographies($asf-light-theme);
