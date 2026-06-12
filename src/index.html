@@ -754,6 +754,7 @@
         document.currentScript.after(tophat);
 
         const feedbackScript = document.createElement('script');
+        feedbackScript.async = true;
         feedbackScript.src =
           'https://fbm.earthdata.nasa.gov/for/ASF/feedback.js';
         tophat.after(feedbackScript);
