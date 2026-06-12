@@ -35,10 +35,7 @@
           {{ panels.MASTER | uppercase | translate }}
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <div
-        class="breadcrumb"
-        style="display: flex; align-items: center; margin-top: 15px"
-      >
+      <div class="breadcrumb reference-toggle-row">
         <app-baseline-frame-reference-toggle></app-baseline-frame-reference-toggle>
       </div>
       @if (shouldUseFramesForReference) {
@@ -94,7 +91,7 @@
           </app-docs-modal>
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <div style="margin-top: 20px">
+      <div class="selector-card-spacing">
         <app-date-selector></app-date-selector>
         <app-season-selector></app-season-selector>
       </div>

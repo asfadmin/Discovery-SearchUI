@@ -44,16 +44,8 @@
           </mat-expansion-panel-header>
           <div>
             <div>
-              <div
-                style="
-                  display: flex;
-                  flex-direction: row;
-                  justify-content: flex-start;
-                  align-items: center;
-                  margin-bottom: 10px;
-                "
-              >
-                <div style="margin-right: 15px">
+              <div class="list-type-row">
+                <div class="list-type-label">
                   <h4>
                     <span>{{ 'LIST_TYPE' | translate }} </span>
                   </h4>
@@ -86,7 +78,7 @@
                     matInput
                     (input)="onTextInputChange($event)"
                     [(ngModel)]="searchList"
-                    style="height: 150px"
+                    class="search-list-input"
                     placeholder="{{ 'LIST_OF' | translate }} {{
                       mode === types.SCENE
                         ? ('SCENE_NAMES' | translate)

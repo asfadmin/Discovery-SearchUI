@@ -19,6 +19,22 @@
   margin: 0 3px;
 }
 
+.list-type-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.list-type-label {
+  margin-right: 15px;
+}
+
+.search-list-input {
+  height: 150px;
+}
+
 .file-upload-container {
   width: 30%;
   margin-bottom: 20px;

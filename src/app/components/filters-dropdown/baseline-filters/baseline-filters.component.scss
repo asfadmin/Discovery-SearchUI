@@ -11,6 +11,11 @@
   margin-top: 20px;
 }
 
+.scene-selectors-column {
+  display: flex;
+  flex-direction: column;
+}
+
 .panel-title {
   align-items: center;
 }
