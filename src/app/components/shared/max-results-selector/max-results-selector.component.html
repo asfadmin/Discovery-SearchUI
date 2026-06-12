@@ -1,7 +1,6 @@
 <div
   [matMenuTriggerFor]="isDataset ? menu : null"
-  style="padding: 8px 2px"
-  class="faint-text perspective"
+  class="faint-text perspective results-count"
   [class.clickable]="isDataset"
   [attr.aria-label]="'SELECT_MAX_RESULTS' | translate"
   role="button"
@@ -20,7 +19,7 @@
       {{ totalResultsCount !== -1 ? (totalResultsCount | formatNumber) : '0' }}
     </span>
   } @else {
-    <span style="margin: 0 4px">
+    <span class="spinner-spacing">
       <fa-icon icon="spinner" animation="spin-pulse"></fa-icon>
     </span>
   }

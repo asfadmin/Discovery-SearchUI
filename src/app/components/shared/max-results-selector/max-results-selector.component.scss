@@ -1,3 +1,11 @@
-.perspective{ 
+.perspective{
     transform: perspective(1px);
+}
+
+.results-count {
+  padding: 8px 2px;
+}
+
+.spinner-spacing {
+  margin: 0 4px;
 }
