@@ -1,5 +1,14 @@
 @use "asf-theme-variables" as *;
 
+.search-options-row {
+  display: flex;
+  margin-top: 25px;
+
+  app-search-type-selector {
+    margin-right: 10px;
+  }
+}
+
 .ls-example {
   font-style: italic;
   color: grey;

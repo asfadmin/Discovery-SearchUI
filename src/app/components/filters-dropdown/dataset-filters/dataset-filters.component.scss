@@ -1,4 +1,14 @@
 @use "asf-theme-variables" as *;
+
+.search-options-row {
+  display: flex;
+  margin-top: 25px;
+
+  app-search-type-selector {
+    margin-right: 10px;
+  }
+}
+
 .raised-section {
   box-shadow:
     0 8px 10px 1px rgba(0, 0, 0, 0.14),
