@@ -3,8 +3,7 @@
     <div class="flex-item">
       @if (prop.isRelevant(p.PATH)) {
         <mat-form-field
-          style="width: 160px"
-          class="date-item"
+          class="date-item path-field"
           [class.invalid-input-animation]="typeHasError(inputTypes.PATH_START)"
         >
           <input
@@ -24,8 +23,7 @@
 
       @if (prop.isRelevant(p.PATH)) {
         <mat-form-field
-          style="width: 160px"
-          class="range-form-input"
+          class="range-form-input path-field"
           class="date-item"
           [class.invalid-input-animation]="typeHasError(inputTypes.PATH_END)"
         >
@@ -48,8 +46,7 @@
     <div class="flex-item">
       @if (prop.isRelevant(p.FRAME)) {
         <mat-form-field
-          style="width: 150px"
-          class="date-item"
+          class="date-item frame-field"
           [class.invalid-input-animation]="typeHasError(inputTypes.FRAME_START)"
         >
           <input
@@ -65,8 +62,7 @@
 
       @if (prop.isRelevant(p.FRAME)) {
         <mat-form-field
-          style="width: 150px"
-          class="range-form-input"
+          class="range-form-input frame-field"
           class="date-item"
           [class.invalid-input-animation]="typeHasError(inputTypes.FRAME_END)"
         >
