@@ -1,7 +1,3 @@
-import '@formatjs/intl-displaynames/polyfill';
-import '@formatjs/intl-displaynames/locale-data/en';
-import '@formatjs/intl-displaynames/locale-data/es';
-
 import { TranslateService } from '@ngx-translate/core';
 import { CookieService } from 'ngx-cookie-service';
 import * as moment from 'moment';
