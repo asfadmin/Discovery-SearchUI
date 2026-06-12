@@ -10,12 +10,12 @@ test('ERS subtype E2 filter returns matching results', async ({ page }) => {
     .click();
 
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
-  await expect(page.getByText('subtypes selected')).toContainText(
-    '0/2 subtypes selected',
+  await expect(page.getByText('satellites selected')).toContainText(
+    '0/2 satellites selected',
   );
 
-  await page.getByText('Subtype', { exact: true }).click();
-  await page.getByRole('option', { name: 'E2' }).click();
+  await page.getByText('Satellite', { exact: true }).click();
+  await page.getByRole('option', { name: 'ERS-2' }).click();
   await page.keyboard.press('Escape');
 
   const responsePromise = waitForASFAPIResponse(page);
@@ -25,6 +25,6 @@ test('ERS subtype E2 filter returns matching results', async ({ page }) => {
     .click();
   await responsePromise;
 
-  await expect(page.locator('app-info-bar')).toContainText('Dataset: E2');
+  await expect(page.locator('app-info-bar')).toContainText('Satellites: E2');
   await expect(page.locator('mat-card-header')).toContainText('E2');
 });

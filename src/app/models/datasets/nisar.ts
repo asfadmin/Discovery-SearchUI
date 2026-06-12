@@ -174,7 +174,7 @@ export const nisar = {
     //     apiValue: 'S-SAR',
     // },
   ],
-  subtypes: [
+  platforms: [
     //     {
     //     displayName: 'Sentinel-1A',
     //     apiValue: 'SA',
@@ -369,8 +369,8 @@ export const nisar = {
   //       apiValue: "NISAR_LSAR_INT_CAL"
   //     },
   //   ],
-  platformDesc: 'NISAR_DESC',
-  platformIcon: '/assets/icons/satellite_alt_black_48dp.svg',
+  description: 'NISAR_DESC',
+  icon: '/assets/icons/satellite_alt_black_48dp.svg',
 
   productTypeDisplays: {
     yaml: 'Runconfig YAML',
