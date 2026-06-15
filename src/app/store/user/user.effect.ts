@@ -165,10 +165,10 @@ export class UserEffects {
         this.userDataService.getAttribute$(userAuth, 'History'),
       ),
       filter((resp) => this.isSuccessfulResponse(resp)),
-      map(
-        (searchHistory) =>
-          new userActions.SetSearchHistory(searchHistory as models.Search[]),
-      ),
+      map((searchHistory) => {
+        const searches = this.updateSearchObjects(searchHistory);
+        return new userActions.SetSearchHistory(searches as models.Search[]);
+      }),
     ),
   );
 
@@ -180,24 +180,37 @@ export class UserEffects {
         this.userDataService.getAttribute$(userAuth, 'History'),
       ),
       filter((resp) => this.isSuccessfulResponse(resp)),
-      map(
-        (searchHistory) =>
-          new userActions.SetSearchHistory(searchHistory as models.Search[]),
+      map((searchHistory) => {
+        const searches = this.updateSearchObjects(searchHistory);
+        return new userActions.SetSearchHistory(searches as models.Search[]);
+      }),
+    ),
+  );
+
+  private readonly loadSavedSearches$ = (userAuth: models.UserAuth) => {
+    return this.userDataService.getAttribute$(userAuth, 'SavedSearches').pipe(
+      filter((resp) => this.isSuccessfulResponse(resp)),
+      map((searchesResp: any[]) => {
+        const searches = this.updateSearchObjects(searchesResp);
+        return new userActions.SetSearches(searches as models.Search[]);
+      }),
+    );
+  };
+
+  public loadSavedSearches = createEffect(() =>
+    this.actions$.pipe(
+      ofType<userActions.LoadSavedSearches>(
+        userActions.UserActionType.LOAD_SAVED_SEARCHES,
       ),
+      withLatestFrom(this.store$.select(userReducer.getUserAuth)),
+      switchMap(([_, userAuth]) => this.loadSavedSearches$(userAuth)),
     ),
   );
 
   public loadSavedSearchesOnLogin = createEffect(() =>
     this.actions$.pipe(
       ofType<userActions.Login>(userActions.UserActionType.LOGIN),
-      switchMap((action) =>
-        this.userDataService.getAttribute$(action.payload, 'SavedSearches'),
-      ),
-      filter((resp) => this.isSuccessfulResponse(resp)),
-      map((searches) => this.datesToDateObjectFor(searches) as models.Search[]),
-      map(
-        (searches) => new userActions.SetSearches(searches as models.Search[]),
-      ),
+      switchMap((action) => this.loadSavedSearches$(action.payload)),
     ),
   );
 
@@ -210,7 +223,7 @@ export class UserEffects {
       filter((resp) => this.isSuccessfulResponse(resp)),
       map(
         (filters) =>
-          this.datesToDateObjectFor(filters) as models.SavedFilterPreset[],
+          this.updateSearchObjects(filters) as models.SavedFilterPreset[],
       ),
       map(
         (Filterpresets) =>
@@ -229,23 +242,6 @@ export class UserEffects {
     ),
   );
 
-  public loadSavedSearches = createEffect(() =>
-    this.actions$.pipe(
-      ofType<userActions.LoadSavedSearches>(
-        userActions.UserActionType.LOAD_SAVED_SEARCHES,
-      ),
-      withLatestFrom(this.store$.select(userReducer.getUserAuth)),
-      switchMap(([_, userAuth]) =>
-        this.userDataService.getAttribute$(userAuth, 'SavedSearches'),
-      ),
-      filter((resp) => this.isSuccessfulResponse(resp)),
-      map((searches) => this.datesToDateObjectFor(searches) as models.Search[]),
-      map(
-        (searches) => new userActions.SetSearches(searches as models.Search[]),
-      ),
-    ),
-  );
-
   public loadSavedFiltersPresets = createEffect(() =>
     this.actions$.pipe(
       ofType<userActions.LoadSavedFilters>(
@@ -258,7 +254,7 @@ export class UserEffects {
       filter((resp) => this.isSuccessfulResponse(resp)),
       map(
         (filtersPresets) =>
-          this.datesToDateObjectFor(
+          this.updateSearchObjects(
             filtersPresets,
           ) as models.SavedFilterPreset[],
       ),
@@ -356,26 +352,39 @@ export class UserEffects {
     }
   }
 
-  private datesToDateObjectFor(
+  private updateSearchObjects(
     searches,
   ): models.Search[] | models.SavedFilterPreset[] {
     return searches?.map((search) => {
+      const migrated = this.migrateSubtypesToPlatforms(search);
+
       if (
-        search.searchType === models.SearchType.LIST ||
-        !search.filters.dateRange
+        migrated.searchType === models.SearchType.LIST ||
+        !migrated.filters.dateRange
       ) {
-        return search;
+        return migrated;
       }
 
-      const { start, end } = search.filters.dateRange;
-
-      search.filters.dateRange = {
-        start: this.loadIfDate(start),
-        end: this.loadIfDate(end),
+      const { start, end } = migrated.filters.dateRange;
+      return {
+        ...migrated,
+        filters: {
+          ...migrated.filters,
+          dateRange: {
+            start: this.loadIfDate(start),
+            end: this.loadIfDate(end),
+          },
+        },
       };
-
-      return search;
     });
+  }
+
+  private migrateSubtypesToPlatforms(search: any): any {
+    if (!search.filters.subtypes) {
+      return search;
+    }
+    const { subtypes, ...rest } = search.filters;
+    return { ...search, filters: { ...rest, platforms: subtypes } };
   }
 
   private loadIfDate(date: string | null): Date | null {
@@ -421,7 +430,7 @@ export class UserEffects {
       new filterStore.SetProductTypes(datasetFilter.productTypes),
       new filterStore.SetBeamModes(datasetFilter.beamModes),
       new filterStore.SetPolarizations(datasetFilter.polarizations),
-      new filterStore.SetSubtypes(datasetFilter.subtypes),
+      new filterStore.SetPlatforms(datasetFilter.platforms),
       new filterStore.SetFlightDirections(
         Array.from(datasetFilter.flightDirections),
       ),

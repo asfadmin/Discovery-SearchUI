@@ -1,6 +1,6 @@
 import { test, expect } from 'e2e/fixtures';
 
-test('SBAS: Download All Pairs', async ({ page }) => {
+test('SBAS: Download All Pairs', { tag: '@visual' }, async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Geographic Search' }).click();
   await page
@@ -42,4 +42,6 @@ test('SBAS: Download All Pairs', async ({ page }) => {
   await expect(
     page.locator('.dl-mat-dialog-content mat-list-item'),
   ).toHaveCount(Number(fileCount));
+
+  await expect(page).toHaveScreenshot();
 });

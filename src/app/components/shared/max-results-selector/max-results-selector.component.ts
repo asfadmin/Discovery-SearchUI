@@ -11,15 +11,11 @@ import { SubSink } from 'subsink';
 import { PairService, ScenesService } from '@services';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatIcon } from '@angular/material/icon';
-import {
-  FaIconLibrary,
-  FontAwesomeModule,
-} from '@fortawesome/angular-fontawesome';
 import { DocsModalComponent } from '../docs-modal/docs-modal.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { fas, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { Pipe, PipeTransform } from '@angular/core';
 import { combineLatest } from 'rxjs';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Pipe({
   name: 'formatNumber',
@@ -42,13 +38,12 @@ export class FormatNumberPipe implements PipeTransform {
   imports: [
     MatMenuTrigger,
     MatIcon,
-    FontAwesomeModule,
     MatMenu,
+    MatProgressSpinner,
     FormatNumberPipe,
     MatMenuItem,
     DocsModalComponent,
     TranslateModule,
-    FontAwesomeModule,
   ],
 })
 export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
@@ -69,12 +64,6 @@ export class MaxResultsSelectorComponent implements OnInit, OnDestroy {
 
   public possibleMaxResults = [250, 500, 1000, 2000];
   private subs = new SubSink();
-
-  constructor() {
-    const library = inject(FaIconLibrary);
-    library.addIconPacks(fas);
-    library.addIcons(faSpinner);
-  }
 
   ngOnInit() {
     this.subs.add(

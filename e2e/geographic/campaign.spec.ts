@@ -25,7 +25,8 @@ test('Campaign Filter', async ({ page }) => {
     'Campaign: Alaska borehole sites, AK',
   );
 });
-test('Selecting Multiple Campaigns', async ({ page }) => {
+
+test('Selecting Multiple Campaigns', { tag: '@visual' }, async ({ page }) => {
   await page.route('**/services/utils/mission_list**', (route) => {
     return route.continue();
   });
@@ -60,4 +61,5 @@ test('Selecting Multiple Campaigns', async ({ page }) => {
   await expect(page.locator('mat-card-title')).toContainText(
     'UA_permaf_20015_15147_009_151005_L090_CX_02',
   );
+  await expect(page).toHaveScreenshot();
 });

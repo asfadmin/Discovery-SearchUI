@@ -1,6 +1,6 @@
 import { test, expect } from 'e2e/fixtures';
 
-test('test', async ({ page }) => {
+test('test', { tag: '@visual' }, async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
   await page.getByRole('switch', { name: 'Seasonal Search' }).click();
@@ -16,4 +16,5 @@ test('test', async ({ page }) => {
   await seasonEnd.getByRole('button', { name: '-1' }).click();
   await seasonEnd.getByRole('button', { name: '-1' }).click();
   await expect(page.locator('app-info-bar')).toContainText('Season: 3 - 177');
+  await expect(page).toHaveScreenshot();
 });
