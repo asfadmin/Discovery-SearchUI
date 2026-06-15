@@ -57,7 +57,7 @@
               <app-date-selector></app-date-selector>
             </div>
           }
-          <div class="breadcrumb fx-row-center" style="align-items: center">
+          <div class="breadcrumb fx-row-center filters-toggle-row">
             <button
               (click)="onToggleFiltersMenu()"
               mat-button
@@ -84,7 +84,7 @@
       <div class="mobile-nav-bar">
         <button
           (click)="onToggleFiltersMenu()"
-          style="margin-left: 5px"
+          class="mobile-filters-button"
           mat-flat-button
         >
           {{ 'FILTERS' | translate }}
