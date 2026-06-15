@@ -8,7 +8,6 @@ import {
   inject,
 } from '@angular/core';
 
-import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { ClipboardService } from 'ngx-clipboard';
 import { map, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
@@ -48,7 +47,6 @@ import { CopyToClipboardComponent } from '@components/shared/copy-to-clipboard/c
 import { DownloadFileButtonComponent as DownloadFileButtonComponent_1 } from '@components/shared/download-file-button/download-file-button.component';
 import { MatIconButton, MatButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 import { DownloadAllComponent } from './download-all/download-all.component';
 import { TruncateModule } from '@yellowspot/ng-truncate';
@@ -90,7 +88,6 @@ export interface selectedItems {
     MatTooltip,
     MatDialogActions,
     MatButton,
-    FontAwesomeModule,
     MatMenuTrigger,
     MatMenu,
     MatMenuItem,
@@ -119,7 +116,6 @@ export class QueueComponent implements OnInit, OnDestroy {
   public showDemWarning: boolean;
   public showRestrictedDatasetWarning;
 
-  public copyIcon = faCopy;
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = Breakpoints;
   public breakpoint: Breakpoints;

@@ -1,28 +1,30 @@
 @if (submenu.length === 0) {
-  <fa-icon
+  <mat-icon
     (click)="onCopyIconClicked($event)"
-    class="clickable"
-    [matTooltip]="prompt"
+    class="clickable icon"
+    [matTooltip]="display"
     matTooltipPosition="left"
-    [icon]="copyIcon"
+    inline="true"
   >
-  </fa-icon>
+    {{ copyIcon() }}
+  </mat-icon>
 }
 
 @if (submenu.length > 0) {
-  <fa-icon
+  <mat-icon
     (click)="$event.stopPropagation()"
     [matMenuTriggerFor]="promptMenu"
-    class="clickable"
-    [matTooltip]="prompt"
+    class="clickable icon"
+    [matTooltip]="display"
     matTooltipPosition="left"
-    [icon]="copyIcon"
+    inline="true"
   >
-  </fa-icon>
+    {{ copyIcon() }}
+  </mat-icon>
 }
 
 <mat-menu #promptMenu>
-  @for (item of submenu; track item) {
+  @for (item of submenu(); track item) {
     <button mat-menu-item (click)="onCopyFromMenu(item[0], item[1])">
       {{ item[0] }}
     </button>
