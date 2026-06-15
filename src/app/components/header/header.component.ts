@@ -1,7 +1,3 @@
-import '@formatjs/intl-displaynames/polyfill';
-import '@formatjs/intl-displaynames/locale-data/en';
-import '@formatjs/intl-displaynames/locale-data/es';
-
 import { Component, Input, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
