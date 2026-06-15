@@ -432,19 +432,19 @@
         {{ scene().metadata.absoluteOrbit | join: ', ' }}
       </li>
     }
-    @if (hasValue(scene().metadata.stackSize)) {
+    @if (scene().metadata?.stackSize) {
       <li class="detail-item-margin">
         <b>{{ 'MATCHING_FRAMES' | translate }} </b> •
         {{ scene().metadata.stackSize }}
       </li>
     }
-    @if (hasValue(scene().metadata.pgeVersion) && dataset()?.id !== 'NISAR') {
+    @if (scene().metadata?.pgeVersion && dataset()?.id !== 'NISAR') {
       <li class="detail-item-margin">
         <b> {{ 'PGE_VERSION' | translate }} </b> •
         {{ scene().metadata.pgeVersion }}
       </li>
     }
-    @if (hasValue(scene().metadata.nisar?.crid)) {
+    @if (scene().metadata.nisar?.crid) {
       <li class="detail-item-margin">
         <b> {{ 'CRID' | translate }} </b> •
         {{ scene().metadata.nisar?.crid }}

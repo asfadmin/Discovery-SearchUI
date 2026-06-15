@@ -1,4 +1,11 @@
-import { Component, OnInit, OnDestroy, inject, input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  inject,
+  input,
+  computed,
+} from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
@@ -69,18 +76,12 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
         }),
     );
   }
-
-  public isGeoSearch(): boolean {
+  isGeoSearch = computed(() => {
     return this.searchType() === models.SearchType.DATASET;
-  }
-
-  public isBaselineSearch(): boolean {
+  });
+  isBaselineSearch = computed(() => {
     return this.searchType() === models.SearchType.BASELINE;
-  }
-
-  public hasValue(v: any): boolean {
-    return v !== null && v !== undefined;
-  }
+  });
 
   public setBeamMode(): void {
     const action = new filtersStore.AddBeamMode(this.scene().metadata.beamMode);
