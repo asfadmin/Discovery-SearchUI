@@ -42,7 +42,7 @@
     }
 
     @if (!product.metadata.job) {
-      <a class="icon-margin">
+      <a class="icon-margin icon">
         <app-copy-to-clipboard
           [value]="
             product.metadata.productType === 'BURST_XML'
@@ -59,7 +59,7 @@
             ['Download URL', product.downloadUrl],
             ['S3 URL', product.metadata?.s3URI],
           ]"
-          [copyIcon]="copyIcons.LINK"
+          copyIcon="link_2"
         ></app-copy-to-clipboard>
       </a>
     }
@@ -79,9 +79,6 @@
           matTooltip="{{ 'ADD_TO_ON_DEMAND_QUEUE' | translate }}"
         >
         </mat-icon>
-      }
-      @if (loadingHyp3JobName === product.name) {
-        <fa-icon icon="spinner" animation="spin-pulse"></fa-icon>
       }
       <mat-menu #customJobTypes="matMenu">
         @for (jobType of validHyp3JobTypes; track jobType) {
