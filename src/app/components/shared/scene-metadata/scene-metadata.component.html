@@ -22,7 +22,7 @@
       </li>
     }
     @if (
-      prop.isRelevant(p.DATE, dataset()) &&
+      (dataset() | isRelevant: p.DATE) &&
       !scene().metadata?.opera?.validityStartDate
     ) {
       <li>
@@ -49,7 +49,7 @@
       </li>
     }
     @if (
-      prop.isRelevant(p.DATE, dataset()) &&
+      (dataset() | isRelevant: p.DATE) &&
       !scene().metadata?.opera?.validityStartDate
     ) {
       <li>
@@ -134,7 +134,7 @@
         >
       </li>
     }
-    @if (prop.isRelevant(p.BEAM_MODE, dataset()) && scene().metadata.beamMode) {
+    @if ((dataset() | isRelevant: p.BEAM_MODE) && scene().metadata.beamMode) {
       <li>
         <span class="v-mid"
           ><b>{{ 'BEAM_MODE' | translate }} </b> •
@@ -155,13 +155,13 @@
         </mat-menu>
       </li>
     }
-    @if (prop.isRelevant(p.PATH, dataset())) {
+    @if (dataset() | isRelevant: p.PATH) {
       <li>
         <span class="v-mid"
           ><b>
             @if (
               selectedDatasetIsNISARFormat ||
-              prop.isRelevant(p.USE_TRACK, dataset())
+              (dataset() | isRelevant: p.USE_TRACK)
             ) {
               {{ 'TRACK' | translate }}
             } @else {
@@ -173,9 +173,7 @@
         @if (isGeoSearch()) {
           <mat-icon
             [matMenuTriggerFor]="
-              prop.isRelevant(p.USE_TRACK, dataset())
-                ? addTrackMenu
-                : addPathMenu
+              (dataset() | isRelevant: p.USE_TRACK) ? addTrackMenu : addPathMenu
             "
             class="v-mid clickable"
           >
@@ -214,9 +212,7 @@
         </mat-menu>
       </li>
     }
-    @if (
-      prop.isRelevant(p.FRAME, dataset()) && scene().metadata.frame !== null
-    ) {
+    @if ((dataset() | isRelevant: p.FRAME) && scene().metadata.frame !== null) {
       <li>
         <span class="v-mid">
           <b>{{ 'FRAME' | translate }} </b> • {{ scene().metadata.frame }}
@@ -240,7 +236,7 @@
       </li>
     }
     @if (
-      prop.isRelevant(p.FLIGHT_DIRECTION, dataset()) &&
+      (dataset() | isRelevant: p.FLIGHT_DIRECTION) &&
       scene().metadata.flightDirection
     ) {
       <li>
@@ -264,7 +260,7 @@
         </mat-menu>
       </li>
     }
-    @if (prop.isRelevant(p.COVERAGE_ANGLE, dataset())) {
+    @if (dataset() | isRelevant: p.COVERAGE_ANGLE) {
       <li>
         <span class="v-mid">
           <b>{{ 'FRAME_COVERAGE' | translate }} </b> •
@@ -286,8 +282,8 @@
       </li>
     }
     @if (
-      prop.isRelevant(p.POLARIZATION, dataset()) &&
-      !prop.isRelevant(p.SIDE_POLARIZATION, dataset()) &&
+      (dataset() | isRelevant: p.POLARIZATION) &&
+      !(dataset() | isRelevant: p.SIDE_POLARIZATION) &&
       scene().metadata.polarization
     ) {
       <li>
@@ -308,8 +304,8 @@
       </li>
     }
     @if (
-      prop.isRelevant(p.POLARIZATION, dataset()) &&
-      prop.isRelevant(p.SIDE_POLARIZATION, dataset())
+      (dataset() | isRelevant: p.POLARIZATION) &&
+      (dataset() | isRelevant: p.SIDE_POLARIZATION)
     ) {
       <li>
         <span class="v-mid">
@@ -331,7 +327,7 @@
         </mat-menu>
       </li>
     }
-    @if (prop.isRelevant(p.SIDE_POLARIZATION, dataset())) {
+    @if (dataset() | isRelevant: p.SIDE_POLARIZATION) {
       <li>
         <span class="v-mid">
           <b>{{ 'POLARIZATION_SIDE' | translate }} </b> •
@@ -352,7 +348,7 @@
         </mat-menu>
       </li>
     }
-    @if (prop.isRelevant(p.RANGE_BANDWIDTH, dataset())) {
+    @if (dataset() | isRelevant: p.RANGE_BANDWIDTH) {
       <li>
         <span class="v-mid">
           <b>{{ 'RANGE_BANDWIDTH' | translate }} </b> •
@@ -370,7 +366,7 @@
         </mat-menu>
       </li>
     }
-    @if (prop.isRelevant(p.RANGE_BANDWIDTH, dataset())) {
+    @if (dataset() | isRelevant: p.JOINT_OBSERVATION) {
       <li>
         <span class="v-mid">
           <b>{{ 'JOINT_OBSERVATION_ONLY' | translate }} </b> •
@@ -378,20 +374,20 @@
         </span>
       </li>
     }
-    @if (prop.isRelevant(p.OFF_NADIR_ANGLE, dataset())) {
+    @if (dataset() | isRelevant: p.OFF_NADIR_ANGLE) {
       <li class="detail-item-margin">
         <b>{{ 'OFF_NADIR_ANGLE' | translate }} </b> •
         {{ scene().metadata.offNadirAngle }}
       </li>
     }
-    @if (prop.isRelevant(p.POINTING_ANGLE, dataset())) {
+    @if (dataset() | isRelevant: p.POINTING_ANGLE) {
       <li class="detail-item-margin">
         <b>{{ 'POINTING_ANGLE' | translate }} </b> •
         {{ scene().metadata.pointingAngle }}
       </li>
     }
     @if (
-      prop.isRelevant(p.FARADAY_ROTATION, dataset()) &&
+      (dataset() | isRelevant: p.FARADAY_ROTATION) &&
       scene().metadata.faradayRotation !== 0
     ) {
       <li class="detail-item-margin">
@@ -399,7 +395,7 @@
         {{ scene().metadata.faradayRotation }}
       </li>
     }
-    @if (prop.isRelevant(p.MISSION_NAME, dataset())) {
+    @if (dataset() | isRelevant: p.MISSION_NAME) {
       <li class="detail-item-margin">
         <span class="v-mid">
           <b>{{ 'CAMPAIGN_NAME' | translate }} </b> •
@@ -420,14 +416,14 @@
         </mat-menu>
       </li>
     }
-    @if (prop.isRelevant(p.FLIGHT_LINE, dataset())) {
+    @if (dataset() | isRelevant: p.FLIGHT_LINE) {
       <li class="detail-item-margin">
         <b>{{ 'FLIGHT_LINE' | translate }} </b> •
         {{ scene().metadata.flightLine }}
       </li>
     }
     @if (
-      prop.isRelevant(p.ABSOLUTE_ORBIT, dataset()) &&
+      (dataset() | isRelevant: p.ABSOLUTE_ORBIT) &&
       scene().metadata.absoluteOrbit.length > 0 &&
       scene()?.metadata?.productType !== 'TROPO-ZENITH'
     ) {

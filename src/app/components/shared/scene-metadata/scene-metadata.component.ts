@@ -20,6 +20,7 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { ShortDateTimePipe } from '@pipes/short-date.pipe';
 import { JoinPipe } from '@pipes/join.pipe';
 import { TranslateModule } from '@ngx-translate/core';
+import { IsRelevantPipe } from '@pipes/relevant.pipe';
 
 @Component({
   selector: 'app-scene-metadata',
@@ -36,6 +37,7 @@ import { TranslateModule } from '@ngx-translate/core';
     ShortDateTimePipe,
     JoinPipe,
     TranslateModule,
+    IsRelevantPipe,
   ],
 })
 export class SceneMetadataComponent implements OnInit, OnDestroy {
