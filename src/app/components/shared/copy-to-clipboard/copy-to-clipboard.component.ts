@@ -1,10 +1,11 @@
 import {
   Component,
-  Input,
   ViewChild,
   ElementRef,
   OnDestroy,
   inject,
+  input,
+  effect,
 } from '@angular/core';
 import { SubSink } from 'subsink';
 
@@ -26,32 +27,39 @@ export class CopyToClipboardComponent implements OnDestroy {
   private clipboardService = inject(ClipboardService);
   private notificationService = inject(NotificationService);
 
-  @Input() value: string;
-  @Input({ required: false }) submenu: [string, string][] = [];
-  @Input() prompt = 'Copy to clipboard';
-  @Input() notification = 'Copied';
-  @Input() toast = true;
-  @Input({ required: false }) copyIcon = 'file_copy';
+  value = input<string>('');
+  submenu = input<[string, string][]>([]);
+  prompt = input<string>('Copy to clipboard');
+  notification = input<string>('Copied');
+  toast = input<boolean>(true);
+  copyIcon = input<string>('file_copy');
+
   @ViewChild('copyTooltip', { static: true }) copyTooltip: ElementRef;
 
+  display = '';
   private subs = new SubSink();
 
+  constructor() {
+    effect(() => {
+      this.display = this.prompt();
+    });
+  }
   public onCopyIconClicked(e: Event): void {
-    this.clipboardService.copyFromContent(this.value);
+    this.clipboardService.copyFromContent(this.value());
     if (this.toast) {
       this.notificationService.clipboardCopyIcon(
-        this.prompt,
-        this.value.split(',').length,
+        this.prompt(),
+        this.value().split(',').length,
       );
     }
 
     this.subs.add(
-      of((' ' + this.prompt).slice(1))
+      of((' ' + this.prompt()).slice(1))
         .pipe(
-          tap(() => (this.prompt = this.notification)),
+          tap(() => (this.display = this.notification())),
           delay(2200),
         )
-        .subscribe((msg) => (this.prompt = msg)),
+        .subscribe((msg) => (this.display = msg)),
     );
 
     e.stopPropagation();
@@ -66,10 +74,10 @@ export class CopyToClipboardComponent implements OnDestroy {
     this.subs.add(
       of((' ' + prompt).slice(1))
         .pipe(
-          tap(() => (prompt = this.notification)),
+          tap(() => (this.display = this.notification())),
           delay(2200),
         )
-        .subscribe((msg) => (prompt = msg)),
+        .subscribe((msg) => (this.display = msg)),
     );
   }
 

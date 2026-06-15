@@ -2,11 +2,11 @@
   <mat-icon
     (click)="onCopyIconClicked($event)"
     class="clickable icon"
-    [matTooltip]="prompt"
+    [matTooltip]="display"
     matTooltipPosition="left"
     inline="true"
   >
-    {{ copyIcon }}
+    {{ copyIcon() }}
   </mat-icon>
 }
 
@@ -15,16 +15,16 @@
     (click)="$event.stopPropagation()"
     [matMenuTriggerFor]="promptMenu"
     class="clickable icon"
-    [matTooltip]="prompt"
+    [matTooltip]="display"
     matTooltipPosition="left"
     inline="true"
   >
-    {{ copyIcon }}
+    {{ copyIcon() }}
   </mat-icon>
 }
 
 <mat-menu #promptMenu>
-  @for (item of submenu; track item) {
+  @for (item of submenu(); track item) {
     <button mat-menu-item (click)="onCopyFromMenu(item[0], item[1])">
       {{ item[0] }}
     </button>

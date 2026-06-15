@@ -51,7 +51,6 @@ import { TruncateModule } from '@yellowspot/ng-truncate';
 import { ReadableSizeFromBytesPipe } from '@pipes/readable-size-from-bytes.pipe';
 import { FullDatePipe } from '@pipes/short-date.pipe';
 import { TranslateModule } from '@ngx-translate/core';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-scene-file',
@@ -69,7 +68,6 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
     MatListItemMeta,
     MatMenuTrigger,
     MatMenu,
-    MatProgressSpinner,
 
     MatMenuItem,
     MatListItemLine,
