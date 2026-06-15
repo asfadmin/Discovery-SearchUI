@@ -55,7 +55,7 @@
           >
           </app-file-name>
 
-          <span style="margin-left: 5px">
+          <span class="copy-name-wrapper">
             @if (hovered) {
               <app-copy-to-clipboard
                 prompt="{{ 'COPY_SCENE_NAME' | translate }}"
@@ -67,7 +67,8 @@
               >
               </app-copy-to-clipboard>
             } @else {
-              <fa-icon style="visibility: hidden" [icon]="copyIcon"> </fa-icon>
+              <fa-icon class="copy-icon-placeholder" [icon]="copyIcon">
+              </fa-icon>
             }
           </span>
         </div>
@@ -141,7 +142,7 @@
         [offsets]="offsets"
         [hyp3ableByJobType]="hyp3ableByJobType"
         [isQueued]="isQueued"
-        style="min-width: 200px"
+        class="baseline-controls-width"
       >
       </app-baseline-scene-controls>
     }
