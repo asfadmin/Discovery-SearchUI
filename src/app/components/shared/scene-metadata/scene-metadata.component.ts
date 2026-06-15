@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, input } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import { SubSink } from 'subsink';
@@ -42,10 +42,10 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
   prop = inject(PropertyService);
   private store$ = inject<Store<AppState>>(Store);
 
-  @Input() scene: models.CMRProduct;
-  @Input() dataset: models.Dataset;
-  @Input() searchType: models.SearchType;
-  @Input() offsets = { temporal: 0, perpendicular: 0 };
+  scene = input<models.CMRProduct>(null);
+  dataset = input<models.Dataset>(null);
+  searchType = input<models.SearchType>(null);
+  offsets = input({ temporal: 0, perpendicular: 0 });
 
   public p = models.Props;
   public selectedDataset: string;
@@ -69,11 +69,11 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
   }
 
   public isGeoSearch(): boolean {
-    return this.searchType === models.SearchType.DATASET;
+    return this.searchType() === models.SearchType.DATASET;
   }
 
   public isBaselineSearch(): boolean {
-    return this.searchType === models.SearchType.BASELINE;
+    return this.searchType() === models.SearchType.BASELINE;
   }
 
   public hasValue(v: any): boolean {
@@ -81,7 +81,7 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
   }
 
   public setBeamMode(): void {
-    const action = new filtersStore.AddBeamMode(this.scene.metadata.beamMode);
+    const action = new filtersStore.AddBeamMode(this.scene().metadata.beamMode);
     this.store$.dispatch(action);
   }
 
@@ -96,27 +96,27 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
   }
 
   public setPathStart(): void {
-    const action = new filtersStore.SetPathStart(this.scene.metadata.path);
+    const action = new filtersStore.SetPathStart(this.scene().metadata.path);
     this.store$.dispatch(action);
   }
 
   public setPathEnd(): void {
-    const action = new filtersStore.SetPathEnd(this.scene.metadata.path);
+    const action = new filtersStore.SetPathEnd(this.scene().metadata.path);
     this.store$.dispatch(action);
   }
 
   public setFrameStart(): void {
-    const action = new filtersStore.SetFrameStart(this.scene.metadata.frame);
+    const action = new filtersStore.SetFrameStart(this.scene().metadata.frame);
     this.store$.dispatch(action);
   }
 
   public setFrameEnd(): void {
-    const action = new filtersStore.SetFrameEnd(this.scene.metadata.frame);
+    const action = new filtersStore.SetFrameEnd(this.scene().metadata.frame);
     this.store$.dispatch(action);
   }
 
   public setFlightDirection(): void {
-    const dir = this.scene.metadata.flightDirection.toLowerCase();
+    const dir = this.scene().metadata.flightDirection.toLowerCase();
 
     const capitalized = this.capitalizeFirstLetter(dir);
 
@@ -127,47 +127,47 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
   }
   public setFrameCoverage(): void {
     const action = new filtersStore.setFrameCoverage([
-      this.scene.metadata.nisar?.frameCoverage,
+      this.scene().metadata.nisar?.frameCoverage,
     ]);
     this.store$.dispatch(action);
   }
 
   public addPolarization(): void {
     const action = new filtersStore.AddPolarization(
-      this.scene.metadata.polarization,
+      this.scene().metadata.polarization,
     );
     this.store$.dispatch(action);
   }
   public addMainPolarization(): void {
     const action = new filtersStore.AddPolarization(
-      this.scene.metadata.nisar?.mainBandPolarization,
+      this.scene().metadata.nisar?.mainBandPolarization,
     );
     this.store$.dispatch(action);
   }
   public addSidePolarization(): void {
     const action = new filtersStore.AddSidePolarization(
-      this.scene.metadata.nisar?.sideBandPolarization,
+      this.scene().metadata.nisar?.sideBandPolarization,
     );
     this.store$.dispatch(action);
   }
 
   public addMission(): void {
     const action = new filtersStore.SelectMission(
-      this.scene.metadata.missionName,
+      this.scene().metadata.missionName,
     );
     this.store$.dispatch(action);
   }
 
   public addRangeBandwidth(): void {
     const action = new filtersStore.addRangeBandwidth(
-      this.scene.metadata.nisar?.rangeBandwidth,
+      this.scene().metadata.nisar?.rangeBandwidth,
     );
     this.store$.dispatch(action);
   }
 
   public setTemporalStart(): void {
     const action = new filtersStore.SetTemporalStart(
-      this.scene.metadata.temporal + this.offsets.temporal,
+      this.scene().metadata.temporal + this.offsets().temporal,
     );
 
     this.store$.dispatch(action);
@@ -175,7 +175,7 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
 
   public setTemporalEnd(): void {
     const action = new filtersStore.SetTemporalEnd(
-      this.scene.metadata.temporal + this.offsets.temporal,
+      this.scene().metadata.temporal + this.offsets().temporal,
     );
 
     this.store$.dispatch(action);
@@ -183,7 +183,7 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
 
   public setPerpendicularStart(): void {
     const action = new filtersStore.SetPerpendicularStart(
-      this.scene.metadata.perpendicular + this.offsets.perpendicular,
+      this.scene().metadata.perpendicular + this.offsets().perpendicular,
     );
 
     this.store$.dispatch(action);
@@ -191,7 +191,7 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
 
   public setPerpendicularEnd(): void {
     const action = new filtersStore.SetPerpendicularEnd(
-      this.scene.metadata.perpendicular + this.offsets.perpendicular,
+      this.scene().metadata.perpendicular + this.offsets().perpendicular,
     );
 
     this.store$.dispatch(action);
@@ -199,41 +199,41 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
 
   public setFullBurst(): void {
     this.store$.dispatch(
-      new filtersStore.setFullBursts([this.scene.metadata.burst.fullBurstID]),
+      new filtersStore.setFullBursts([this.scene().metadata.burst.fullBurstID]),
     );
   }
 
   public setOperaBurst(): void {
     this.store$.dispatch(
       new filtersStore.setOperaBurstIDs([
-        this.scene.metadata.opera.operaBurstID,
+        this.scene().metadata.opera.operaBurstID,
       ]),
     );
   }
 
   public addFullBurst(): void {
     this.store$.dispatch(
-      new filtersStore.addFullBursts([this.scene.metadata.burst.fullBurstID]),
+      new filtersStore.addFullBursts([this.scene().metadata.burst.fullBurstID]),
     );
   }
 
   public addOperaBurst(): void {
     this.store$.dispatch(
       new filtersStore.addOperaBurstIDs([
-        this.scene.metadata.opera.operaBurstID,
+        this.scene().metadata.opera.operaBurstID,
       ]),
     );
   }
 
   public setAriaVersion(): void {
     this.store$.dispatch(
-      new filtersStore.setAriaVersion(this.scene.metadata.ariaVersion),
+      new filtersStore.setAriaVersion(this.scene().metadata.ariaVersion),
     );
   }
 
   public setTileID(): void {
     this.store$.dispatch(
-      new filtersStore.setTileID(this.scene.metadata.opera.tileID),
+      new filtersStore.setTileID(this.scene().metadata.opera.tileID),
     );
   }
 
