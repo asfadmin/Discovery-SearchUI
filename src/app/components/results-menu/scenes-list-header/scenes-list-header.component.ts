@@ -19,7 +19,6 @@ import * as queueStore from '@store/queue';
 import * as searchStore from '@store/search';
 import * as filtersStore from '@store/filters';
 import * as hyp3Store from '@store/hyp3';
-import { faCopy } from '@fortawesome/free-solid-svg-icons';
 
 import {
   MapService,
@@ -59,7 +58,6 @@ import {
   MatMenuContent,
 } from '@angular/material/menu';
 import { OnDemandAddMenuComponent } from '@components/shared/on-demand-add-menu/on-demand-add-menu.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -78,7 +76,6 @@ import { TranslateModule } from '@ngx-translate/core';
     MatMenuItem,
     MatMenuContent,
 
-    FontAwesomeModule,
     AsyncPipe,
     KeyValuePipe,
     TranslateModule,
@@ -96,7 +93,6 @@ export class ScenesListHeaderComponent implements OnInit, OnDestroy {
   private exportService = inject(ExportService);
   private dialog = inject(MatDialog);
 
-  public copyIcon = faCopy;
   public pairs$ = this.pairService.pairs$;
   private pairProducts$ = this.pairService.productsFromPairs$;
 

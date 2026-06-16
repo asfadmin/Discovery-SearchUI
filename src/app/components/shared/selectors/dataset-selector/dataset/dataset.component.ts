@@ -7,8 +7,6 @@ import {
   ViewChild,
 } from '@angular/core';
 
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-
 import { Dataset } from '@models';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenuTrigger } from '@angular/material/menu';
@@ -41,8 +39,6 @@ export class DatasetComponent {
   @Input() isSelected: boolean;
   @Output() selected: EventEmitter<string> = new EventEmitter<string>();
   private screenSize = inject(ScreenSizeService);
-
-  public detailedDatasetInfoIcon = faInfoCircle;
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;

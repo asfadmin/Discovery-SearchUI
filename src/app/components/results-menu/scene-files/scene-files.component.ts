@@ -29,7 +29,6 @@ import * as hyp3Store from '@store/hyp3';
 import { AsfApiService, Hyp3ApiService } from '@services';
 import * as models from '@models';
 
-import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { MatList, MatListItem } from '@angular/material/list';
 import { MatDialog } from '@angular/material/dialog';
 import { ScreenSizeService } from '@services';
@@ -68,7 +67,6 @@ export class SceneFilesComponent implements OnInit, OnDestroy {
 
   public breakpoint$ = this.screenSize.breakpoint$;
   public breakpoints = models.Breakpoints;
-  public copyIcon = faCopy;
   public products: models.CMRProduct[] = [];
   public queuedProductIds: string[] = [];
   public hyp3ableByProduct: object;
