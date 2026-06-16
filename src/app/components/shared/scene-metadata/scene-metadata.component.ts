@@ -51,9 +51,9 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
   prop = inject(PropertyService);
   private store$ = inject<Store<AppState>>(Store);
 
-  scene = input<models.CMRProduct>(null);
-  dataset = input<models.Dataset>(null);
-  searchType = input<models.SearchType>(null);
+  scene = input<models.CMRProduct | null>(null);
+  dataset = input<models.Dataset | null>(null);
+  searchType = input<models.SearchType | null>(null);
   offsets = input({ temporal: 0, perpendicular: 0 });
 
   public p = models.Props;
