@@ -1,4 +1,4 @@
-import { test, expect } from 'e2e/pages/auth.page';
+import { test, expect } from 'e2e/pages/auth-search.page';
 
 test(
   'On Demand: Geographic submit job with name',
