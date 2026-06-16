@@ -48,7 +48,6 @@ import { DownloadFileButtonComponent as DownloadFileButtonComponent_1 } from '@c
 import { MatIconButton, MatButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
-import { DownloadAllComponent } from './download-all/download-all.component';
 import { TruncateModule } from '@yellowspot/ng-truncate';
 import { ReadableSizeFromBytesPipe } from '@pipes/readable-size-from-bytes.pipe';
 import { FilterExtensionPipe } from '@pipes/filter-extension.pipe';
@@ -91,7 +90,6 @@ export interface selectedItems {
     MatMenuTrigger,
     MatMenu,
     MatMenuItem,
-    DownloadAllComponent,
     AsyncPipe,
     TruncateModule,
     ReadableSizeFromBytesPipe,
