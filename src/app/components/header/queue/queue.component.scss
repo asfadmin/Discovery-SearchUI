@@ -7,6 +7,14 @@ $warn-msg-height: 27px;
 $warn-msg-mobile-height: 49px;
 $idk-pad: 21px;
 
+.dl-action-icon {
+  margin-right: 5px;
+}
+
+.dl-copy-icon {
+  margin-left: 5px;
+}
+
 .dl-title-group {
   @include themify($themes) {
     color: themed("dark-primary-text");
