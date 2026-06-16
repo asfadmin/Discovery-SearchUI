@@ -132,3 +132,31 @@ export async function setupOnDemand(page: Page, job_overrides: object = {}) {
     });
   });
 }
+
+/*
+From node-sanitize-filename-js
+https://github.com/parshap/node-sanitize-filename
+*/
+const illegalRe = /[\/\?<>\\:\*\|"]/g;
+const controlRe = /[\x00-\x1f\x80-\x9f]/g; // eslint-disable-line
+const reservedRe = /^\.+$/;
+const windowsReservedRe = /^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\..*)?$/i;
+
+function replaceTrailingDotsAndSpaces(str, replacement) {
+  let end = str.length;
+  while (end > 0 && (str[end - 1] === '.' || str[end - 1] === ' ')) end--;
+  return end < str.length ? str.slice(0, end) + replacement : str;
+}
+
+export function sanitize(input: string): string {
+  if (typeof input !== 'string') {
+    throw new Error('Input must be string');
+  }
+  let sanitized = input
+    .replace(illegalRe, '')
+    .replace(controlRe, '')
+    .replace(reservedRe, '')
+    .replace(windowsReservedRe, '');
+  sanitized = replaceTrailingDotsAndSpaces(sanitized, '');
+  return sanitized.slice(0, 255);
+}

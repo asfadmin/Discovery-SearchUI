@@ -1,6 +1,6 @@
 import { Page } from '@playwright/test';
 import { test as base } from 'e2e/fixtures';
-import sanitize from 'sanitize-filename';
+import { sanitize } from 'e2e/helpers';
 export const test = base.extend<{ capturedSearchPage: Page }>({
   capturedSearchPage: async ({ page }, use, testInfo) => {
     await page.routeFromHAR(

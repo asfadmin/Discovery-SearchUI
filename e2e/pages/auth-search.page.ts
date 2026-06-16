@@ -1,6 +1,6 @@
 import { Page } from '@playwright/test';
 import { test as base } from 'e2e/pages/auth.page';
-import sanitize from 'sanitize-filename';
+import { sanitize } from 'e2e/helpers';
 
 export const test = base.extend<{ capturedSearchPage: Page }>({
   loggedInPage: async ({ loggedInPage }, use, testInfo) => {
