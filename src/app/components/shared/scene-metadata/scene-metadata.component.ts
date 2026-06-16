@@ -1,14 +1,6 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  inject,
-  input,
-  computed,
-} from '@angular/core';
+import { Component, inject, input, computed } from '@angular/core';
 
 import { Store } from '@ngrx/store';
-import { SubSink } from 'subsink';
 
 import { AppState } from '@store';
 import * as filtersStore from '@store/filters';
@@ -47,7 +39,7 @@ import { IsRelevantPipe } from '@pipes/relevant.pipe';
     IsRelevantPipe,
   ],
 })
-export class SceneMetadataComponent implements OnInit, OnDestroy {
+export class SceneMetadataComponent {
   prop = inject(PropertyService);
   private store$ = inject<Store<AppState>>(Store);
 
@@ -57,30 +49,25 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
   offsets = input({ temporal: 0, perpendicular: 0 });
 
   public p = models.Props;
-  public selectedDataset: string;
-  public selectedDatasetIsNISARFormat = false;
 
-  private subs = new SubSink();
-
-  ngOnInit() {
-    this.subs.add(
-      this.store$
-        .select(filtersStore.getSelectedDatasetId)
-        .subscribe((selected) => {
-          this.selectedDataset = selected;
-          if (this.selectedDataset === 'SENTINEL-1 INTERFEROGRAM (BETA)') {
-            this.selectedDatasetIsNISARFormat = true;
-          } else {
-            this.selectedDatasetIsNISARFormat = false;
-          }
-        }),
-    );
-  }
+  selectedDatasetIsNISARFormat = computed(() => {
+    return this.dataset().id === 'SENTINEL-1 INTERFEROGRAM (BETA)';
+  });
   isGeoSearch = computed(() => {
     return this.searchType() === models.SearchType.DATASET;
   });
   isBaselineSearch = computed(() => {
     return this.searchType() === models.SearchType.BASELINE;
+  });
+
+  collectionMapped = computed(() => {
+    return this.scene().metadata?.collectionName;
+  });
+  citation = computed(() => {
+    return (
+      this.dataset()?.collectionMap?.[this.collectionMapped()] ??
+      this.dataset().citationUrl
+    );
   });
 
   public setBeamMode(): void {
@@ -242,9 +229,5 @@ export class SceneMetadataComponent implements OnInit, OnDestroy {
 
   private capitalizeFirstLetter(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
-  }
-
-  ngOnDestroy() {
-    this.subs.unsubscribe();
   }
 }

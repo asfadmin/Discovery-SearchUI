@@ -160,7 +160,7 @@
         <span class="v-mid"
           ><b>
             @if (
-              selectedDatasetIsNISARFormat ||
+              selectedDatasetIsNISARFormat() ||
               (dataset() | isRelevant: p.USE_TRACK)
             ) {
               {{ 'TRACK' | translate }}
@@ -182,14 +182,14 @@
         }
         <mat-menu #addPathMenu="matMenu">
           <button (click)="setPathStart()" mat-menu-item>
-            @if (selectedDatasetIsNISARFormat) {
+            @if (selectedDatasetIsNISARFormat()) {
               {{ 'SET_AS_TRACK_START' | translate }}
             } @else {
               {{ 'SET_AS_PATH_START' | translate }}
             }
           </button>
           <button (click)="setPathEnd()" mat-menu-item>
-            @if (selectedDatasetIsNISARFormat) {
+            @if (selectedDatasetIsNISARFormat()) {
               {{ 'SET_AS_TRACK_END' | translate }}
             } @else {
               {{ 'SET_AS_PATH_END' | translate }}
@@ -543,18 +543,15 @@
         }
       </li>
     }
-    @let collectionName = scene().metadata?.collectionName;
-    @let collectionMapped = dataset()?.collectionMap?.[collectionName];
-    @let citation = collectionMapped ?? dataset().citationUrl;
-    @if (citation) {
+    @if (citation()) {
       <li class="detail-item-margin">
         <a
-          [href]="citation"
+          [href]="citation()"
           target="_blank"
           matTooltip="{{ 'HOW_TO_CITE_USING_THIS_DATA' | translate }}"
         >
-          @if (collectionMapped) {
-            {{ collectionName }}
+          @if (collectionMapped()) {
+            {{ collectionMapped() }}
           }
           {{ 'CITATION' | translate }}</a
         >
