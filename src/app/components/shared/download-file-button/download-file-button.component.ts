@@ -184,7 +184,6 @@ export class DownloadFileButtonComponent implements OnInit, AfterViewInit {
     } else {
       this.classicDownload(this.url);
     }
-    return;
     // }
     // TODO: Reenable when CORS figured out for data
     return;
