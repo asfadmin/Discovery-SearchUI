@@ -5,7 +5,7 @@
       <input
         type="text"
         matInput
-        [value]="fullBurstIDs.join(', ')"
+        [value]="fullBurstIDs | join: ', '"
         (input)="onChange($event)"
       />
     </mat-form-field>
@@ -15,7 +15,7 @@
       <textarea
         matInput
         style="height: 75px"
-        [value]="fullBurstIDs.join(', ')"
+        [value]="fullBurstIDs | join: ', '"
         (input)="onChange($event)"
       ></textarea>
     </mat-form-field>
