@@ -19,8 +19,8 @@
       {{ totalResultsCount !== -1 ? (totalResultsCount | formatNumber) : '0' }}
     </span>
   } @else {
-    <span class="spinner-spacing">
-      <fa-icon icon="spinner" animation="spin-pulse"></fa-icon>
+    <span class="loading-spinner">
+      <mat-spinner diameter="16"></mat-spinner>
     </span>
   }
   {{ 'FILES' | translate }}

@@ -1,34 +1,34 @@
-@if (scene !== null) {
+@if (scene() !== null) {
   <ul class="scene-metadata">
-    @if (scene.isDummyProduct) {
+    @if (scene().isDummyProduct) {
       <li>
         <b>{{ 'LOADING_METADATA' | translate }}</b>
       </li>
     }
-    @if (scene.metadata.perpendicular !== null) {
+    @if (scene().metadata.perpendicular !== null) {
       <li>
         <span class="v-mid"
           ><b>{{ 'PERPENDICULAR' | translate }}</b> •
-          {{ scene.metadata.perpendicular + offsets.perpendicular }}</span
+          {{ scene().metadata.perpendicular + offsets().perpendicular }}</span
         >
       </li>
     }
-    @if (scene.metadata.temporal !== null) {
+    @if (scene().metadata.temporal !== null) {
       <li>
         <span class="v-mid"
           ><b>{{ 'TEMPORAL' | translate }}</b> •
-          {{ scene.metadata.temporal + offsets.temporal }}</span
+          {{ scene().metadata.temporal + offsets().temporal }}</span
         >
       </li>
     }
     @if (
-      prop.isRelevant(p.DATE, dataset) &&
-      !scene.metadata?.opera?.validityStartDate
+      (dataset() | isRelevant: p.DATE) &&
+      !scene().metadata?.opera?.validityStartDate
     ) {
       <li>
         <span class="v-mid"
           ><b>{{ 'START_TIME' | translate }}</b> •
-          {{ scene.metadata.date | shortDateTime }}</span
+          {{ scene().metadata.date | shortDateTime }}</span
         >
         @if (isGeoSearch()) {
           <mat-icon
@@ -39,23 +39,23 @@
           </mat-icon>
         }
         <mat-menu #addSceneDateMenu="matMenu">
-          <button (click)="setStartDate(scene.metadata.date)" mat-menu-item>
+          <button (click)="setStartDate(scene().metadata.date)" mat-menu-item>
             {{ 'SET_AS_START_DATE' | translate }}
           </button>
-          <button (click)="setEndDate(scene.metadata.date)" mat-menu-item>
+          <button (click)="setEndDate(scene().metadata.date)" mat-menu-item>
             {{ 'SET_AS_END_DATE' | translate }}
           </button>
         </mat-menu>
       </li>
     }
     @if (
-      prop.isRelevant(p.DATE, dataset) &&
-      !scene.metadata?.opera?.validityStartDate
+      (dataset() | isRelevant: p.DATE) &&
+      !scene().metadata?.opera?.validityStartDate
     ) {
       <li>
         <span class="v-mid"
           ><b>{{ 'STOP_TIME' | translate }}</b> •
-          {{ scene.metadata.stopDate | shortDateTime }}</span
+          {{ scene().metadata.stopDate | shortDateTime }}</span
         >
         @if (isGeoSearch()) {
           <mat-icon
@@ -66,20 +66,23 @@
           </mat-icon>
         }
         <mat-menu #addSceneStopDateMenu="matMenu">
-          <button (click)="setStartDate(scene.metadata.stopDate)" mat-menu-item>
+          <button
+            (click)="setStartDate(scene().metadata.stopDate)"
+            mat-menu-item
+          >
             {{ 'SET_AS_START_DATE' | translate }}
           </button>
-          <button (click)="setEndDate(scene.metadata.stopDate)" mat-menu-item>
+          <button (click)="setEndDate(scene().metadata.stopDate)" mat-menu-item>
             {{ 'SET_AS_END_DATE' | translate }}
           </button>
         </mat-menu>
       </li>
     }
-    @if (!!scene.metadata?.opera?.validityStartDate) {
+    @if (!!scene().metadata?.opera?.validityStartDate) {
       <li>
         <span class="v-mid">
           <b>{{ 'VALIDITY_START_DATE' | translate }}</b> •
-          {{ scene.metadata.opera.validityStartDate | shortDateTime }}
+          {{ scene().metadata.opera.validityStartDate | shortDateTime }}
         </span>
         @if (isGeoSearch()) {
           <mat-icon
@@ -91,13 +94,13 @@
         }
         <mat-menu #addSceneStopDateMenu="matMenu">
           <button
-            (click)="setStartDate(scene.metadata.opera.validityStartDate)"
+            (click)="setStartDate(scene().metadata.opera.validityStartDate)"
             mat-menu-item
           >
             {{ 'SET_AS_START_DATE' | translate }}
           </button>
           <button
-            (click)="setEndDate(scene.metadata.opera.validityStartDate)"
+            (click)="setEndDate(scene().metadata.opera.validityStartDate)"
             mat-menu-item
           >
             {{ 'SET_AS_END_DATE' | translate }}
@@ -105,11 +108,11 @@
         </mat-menu>
       </li>
     }
-    @if (!!scene.metadata?.opera?.tileID) {
+    @if (!!scene().metadata?.opera?.tileID) {
       <li>
         <span class="v-mid"
           ><b>{{ 'TILE_ID' | translate }} </b> •
-          {{ scene.metadata.opera.tileID }}</span
+          {{ scene().metadata.opera.tileID }}</span
         >
         @if (isGeoSearch()) {
           <mat-icon [matMenuTriggerFor]="addTileIDMenu" class="v-mid clickable">
@@ -123,21 +126,21 @@
         </mat-menu>
       </li>
     }
-    @if (!!scene.metadata?.opera?.productVersion) {
+    @if (!!scene().metadata?.opera?.productVersion) {
       <li>
         <span class="v-mid"
           ><b>{{ 'PRODUCT_VERSION' | translate }} </b> •
-          {{ scene.metadata.opera.productVersion }}</span
+          {{ scene().metadata.opera.productVersion }}</span
         >
       </li>
     }
-    @if (prop.isRelevant(p.BEAM_MODE, dataset) && scene.metadata.beamMode) {
+    @if ((dataset() | isRelevant: p.BEAM_MODE) && scene().metadata.beamMode) {
       <li>
         <span class="v-mid"
           ><b>{{ 'BEAM_MODE' | translate }} </b> •
-          {{ scene.metadata.beamMode }}</span
+          {{ scene().metadata.beamMode }}</span
         >
-        @if (isGeoSearch() && dataset.id !== 'OPERA-S1') {
+        @if (isGeoSearch() && dataset().id !== 'OPERA-S1') {
           <mat-icon
             [matMenuTriggerFor]="addBeamModeMenu"
             class="v-mid clickable"
@@ -152,25 +155,25 @@
         </mat-menu>
       </li>
     }
-    @if (prop.isRelevant(p.PATH, dataset)) {
+    @if (dataset() | isRelevant: p.PATH) {
       <li>
         <span class="v-mid"
           ><b>
             @if (
-              selectedDatasetIsNISARFormat ||
-              prop.isRelevant(p.USE_TRACK, dataset)
+              selectedDatasetIsNISARFormat() ||
+              (dataset() | isRelevant: p.USE_TRACK)
             ) {
               {{ 'TRACK' | translate }}
             } @else {
               {{ 'PATH' | translate }}
             }
           </b>
-          • {{ scene.metadata.path }}</span
+          • {{ scene().metadata.path }}</span
         >
         @if (isGeoSearch()) {
           <mat-icon
             [matMenuTriggerFor]="
-              prop.isRelevant(p.USE_TRACK, dataset) ? addTrackMenu : addPathMenu
+              (dataset() | isRelevant: p.USE_TRACK) ? addTrackMenu : addPathMenu
             "
             class="v-mid clickable"
           >
@@ -179,14 +182,14 @@
         }
         <mat-menu #addPathMenu="matMenu">
           <button (click)="setPathStart()" mat-menu-item>
-            @if (selectedDatasetIsNISARFormat) {
+            @if (selectedDatasetIsNISARFormat()) {
               {{ 'SET_AS_TRACK_START' | translate }}
             } @else {
               {{ 'SET_AS_PATH_START' | translate }}
             }
           </button>
           <button (click)="setPathEnd()" mat-menu-item>
-            @if (selectedDatasetIsNISARFormat) {
+            @if (selectedDatasetIsNISARFormat()) {
               {{ 'SET_AS_TRACK_END' | translate }}
             } @else {
               {{ 'SET_AS_PATH_END' | translate }}
@@ -209,10 +212,10 @@
         </mat-menu>
       </li>
     }
-    @if (prop.isRelevant(p.FRAME, dataset) && scene.metadata.frame !== null) {
+    @if ((dataset() | isRelevant: p.FRAME) && scene().metadata.frame !== null) {
       <li>
         <span class="v-mid">
-          <b>{{ 'FRAME' | translate }} </b> • {{ scene.metadata.frame }}
+          <b>{{ 'FRAME' | translate }} </b> • {{ scene().metadata.frame }}
         </span>
         @if (isGeoSearch()) {
           <mat-icon [matMenuTriggerFor]="addFrameMenu" class="v-mid clickable">
@@ -233,14 +236,13 @@
       </li>
     }
     @if (
-      prop.isRelevant(p.FLIGHT_DIRECTION, dataset) &&
-      scene.metadata.flightDirection
+      (dataset() | isRelevant: p.FLIGHT_DIRECTION) &&
+      scene().metadata.flightDirection
     ) {
       <li>
         <span class="v-mid">
           <b>{{ 'FLIGHT_DIRECTION' | translate }} </b> •
-          {{ scene.metadata.flightDirection | uppercase }}
-          <!--      {{ scene.metadata.flightDirection | uppercase | translate }}-->
+          {{ scene().metadata.flightDirection | uppercase }}
         </span>
         @if (isGeoSearch()) {
           <mat-icon
@@ -257,11 +259,11 @@
         </mat-menu>
       </li>
     }
-    @if (prop.isRelevant(p.COVERAGE_ANGLE, dataset)) {
+    @if (dataset() | isRelevant: p.COVERAGE_ANGLE) {
       <li>
         <span class="v-mid">
           <b>{{ 'FRAME_COVERAGE' | translate }} </b> •
-          {{ scene.metadata.nisar?.frameCoverage }}
+          {{ scene().metadata.nisar?.frameCoverage }}
         </span>
         @if (isGeoSearch()) {
           <mat-icon
@@ -279,14 +281,14 @@
       </li>
     }
     @if (
-      prop.isRelevant(p.POLARIZATION, dataset) &&
-      !prop.isRelevant(p.SIDE_POLARIZATION, dataset) &&
-      scene.metadata.polarization
+      (dataset() | isRelevant: p.POLARIZATION) &&
+      !(dataset() | isRelevant: p.SIDE_POLARIZATION) &&
+      scene().metadata.polarization
     ) {
       <li>
         <span class="v-mid">
           <b>{{ 'POLARIZATION' | translate }} </b> •
-          {{ scene.metadata.polarization }}
+          {{ scene().metadata.polarization }}
         </span>
         @if (isGeoSearch()) {
           <mat-icon [matMenuTriggerFor]="addPolMenu" class="v-mid clickable">
@@ -301,13 +303,13 @@
       </li>
     }
     @if (
-      prop.isRelevant(p.POLARIZATION, dataset) &&
-      prop.isRelevant(p.SIDE_POLARIZATION, dataset)
+      (dataset() | isRelevant: p.POLARIZATION) &&
+      (dataset() | isRelevant: p.SIDE_POLARIZATION)
     ) {
       <li>
         <span class="v-mid">
           <b>{{ 'POLARIZATION_MAIN' | translate }} </b> •
-          {{ scene.metadata.nisar?.mainBandPolarization }}
+          {{ scene().metadata.nisar?.mainBandPolarization }}
         </span>
         @if (isGeoSearch()) {
           <mat-icon
@@ -324,11 +326,11 @@
         </mat-menu>
       </li>
     }
-    @if (prop.isRelevant(p.SIDE_POLARIZATION, dataset)) {
+    @if (dataset() | isRelevant: p.SIDE_POLARIZATION) {
       <li>
         <span class="v-mid">
           <b>{{ 'POLARIZATION_SIDE' | translate }} </b> •
-          {{ scene.metadata.nisar?.sideBandPolarization }}
+          {{ scene().metadata.nisar?.sideBandPolarization }}
         </span>
         @if (isGeoSearch()) {
           <mat-icon
@@ -345,11 +347,11 @@
         </mat-menu>
       </li>
     }
-    @if (prop.isRelevant(p.RANGE_BANDWIDTH, dataset)) {
+    @if (dataset() | isRelevant: p.RANGE_BANDWIDTH) {
       <li>
         <span class="v-mid">
           <b>{{ 'RANGE_BANDWIDTH' | translate }} </b> •
-          {{ scene.metadata.nisar?.rangeBandwidth }}
+          {{ scene().metadata.nisar?.rangeBandwidth }}
         </span>
         @if (isGeoSearch()) {
           <mat-icon [matMenuTriggerFor]="addPolMenu" class="v-mid clickable">
@@ -363,40 +365,40 @@
         </mat-menu>
       </li>
     }
-    @if (prop.isRelevant(p.RANGE_BANDWIDTH, dataset)) {
+    @if (dataset() | isRelevant: p.JOINT_OBSERVATION) {
       <li>
         <span class="v-mid">
           <b>{{ 'JOINT_OBSERVATION_ONLY' | translate }} </b> •
-          {{ scene.metadata.nisar?.jointObservation }}
+          {{ scene().metadata.nisar?.jointObservation }}
         </span>
       </li>
     }
-    @if (prop.isRelevant(p.OFF_NADIR_ANGLE, dataset)) {
+    @if (dataset() | isRelevant: p.OFF_NADIR_ANGLE) {
       <li class="detail-item-margin">
         <b>{{ 'OFF_NADIR_ANGLE' | translate }} </b> •
-        {{ scene.metadata.offNadirAngle }}
+        {{ scene().metadata.offNadirAngle }}
       </li>
     }
-    @if (prop.isRelevant(p.POINTING_ANGLE, dataset)) {
+    @if (dataset() | isRelevant: p.POINTING_ANGLE) {
       <li class="detail-item-margin">
         <b>{{ 'POINTING_ANGLE' | translate }} </b> •
-        {{ scene.metadata.pointingAngle }}
+        {{ scene().metadata.pointingAngle }}
       </li>
     }
     @if (
-      prop.isRelevant(p.FARADAY_ROTATION, dataset) &&
-      scene.metadata.faradayRotation !== 0
+      (dataset() | isRelevant: p.FARADAY_ROTATION) &&
+      scene().metadata.faradayRotation !== 0
     ) {
       <li class="detail-item-margin">
         <b>{{ 'FARADAY_ROTATION' | translate }} </b> •
-        {{ scene.metadata.faradayRotation }}
+        {{ scene().metadata.faradayRotation }}
       </li>
     }
-    @if (prop.isRelevant(p.MISSION_NAME, dataset)) {
+    @if (dataset() | isRelevant: p.MISSION_NAME) {
       <li class="detail-item-margin">
         <span class="v-mid">
           <b>{{ 'CAMPAIGN_NAME' | translate }} </b> •
-          {{ scene.metadata.missionName }}
+          {{ scene().metadata.missionName }}
         </span>
         @if (isGeoSearch()) {
           <mat-icon
@@ -413,48 +415,48 @@
         </mat-menu>
       </li>
     }
-    @if (prop.isRelevant(p.FLIGHT_LINE, dataset)) {
+    @if (dataset() | isRelevant: p.FLIGHT_LINE) {
       <li class="detail-item-margin">
         <b>{{ 'FLIGHT_LINE' | translate }} </b> •
-        {{ scene.metadata.flightLine }}
+        {{ scene().metadata.flightLine }}
       </li>
     }
     @if (
-      prop.isRelevant(p.ABSOLUTE_ORBIT, dataset) &&
-      scene.metadata.absoluteOrbit.length > 0 &&
-      scene?.metadata?.productType !== 'TROPO-ZENITH'
+      (dataset() | isRelevant: p.ABSOLUTE_ORBIT) &&
+      scene().metadata.absoluteOrbit.length > 0 &&
+      scene()?.metadata?.productType !== 'TROPO-ZENITH'
     ) {
       <li class="detail-item-margin">
         <b>{{ 'ABSOLUTE_ORBIT' | translate }} </b> •
-        {{ scene.metadata.absoluteOrbit | join: ', ' }}
+        {{ scene().metadata.absoluteOrbit | join: ', ' }}
       </li>
     }
-    @if (hasValue(scene.metadata.stackSize)) {
+    @if (scene().metadata?.stackSize) {
       <li class="detail-item-margin">
         <b>{{ 'MATCHING_FRAMES' | translate }} </b> •
-        {{ scene.metadata.stackSize }}
+        {{ scene().metadata.stackSize }}
       </li>
     }
-    @if (hasValue(scene.metadata.pgeVersion) && dataset?.id !== 'NISAR') {
+    @if (scene().metadata?.pgeVersion && dataset()?.id !== 'NISAR') {
       <li class="detail-item-margin">
         <b> {{ 'PGE_VERSION' | translate }} </b> •
-        {{ scene.metadata.pgeVersion }}
+        {{ scene().metadata.pgeVersion }}
       </li>
     }
-    @if (hasValue(scene.metadata.nisar?.crid)) {
+    @if (scene().metadata.nisar?.crid) {
       <li class="detail-item-margin">
         <b> {{ 'CRID' | translate }} </b> •
-        {{ scene.metadata.nisar?.crid }}
+        {{ scene().metadata.nisar?.crid }}
       </li>
     }
     @if (
-      !!scene.metadata.opera &&
-      scene.metadata.productType !== 'TROPO-ZENITH' &&
-      scene.metadata.opera.operaBurstID
+      !!scene().metadata.opera &&
+      scene().metadata.productType !== 'TROPO-ZENITH' &&
+      scene().metadata.opera.operaBurstID
     ) {
       <li>
         <b> {{ 'OPERA_BURST_ID' | translate }} </b> •
-        {{ scene.metadata.opera.operaBurstID }}
+        {{ scene().metadata.opera.operaBurstID }}
         @if (isGeoSearch()) {
           <mat-icon
             [matMenuTriggerFor]="addOperaBurstMenu"
@@ -473,10 +475,10 @@
         </mat-menu>
       </li>
     }
-    @if (!!scene.metadata.burst) {
+    @if (!!scene().metadata.burst) {
       <li>
         <b> {{ 'BURST_ID_FULL' | translate }} </b> •
-        {{ scene.metadata.burst.fullBurstID }}
+        {{ scene().metadata.burst.fullBurstID }}
         @if (isGeoSearch()) {
           <mat-icon
             [matMenuTriggerFor]="addFullBurstMenu"
@@ -495,22 +497,22 @@
         </mat-menu>
       </li>
     }
-    @if (!!scene.metadata.burst) {
+    @if (!!scene().metadata.burst) {
       <li>
         <b> {{ 'BURST_INDEX' | translate }} </b> •
-        {{ scene.metadata.burst.burstIndex }}
+        {{ scene().metadata.burst.burstIndex }}
       </li>
     }
-    @if (!!scene.metadata.burst) {
+    @if (!!scene().metadata.burst) {
       <li>
         <b> {{ 'AZIMUTH_TIME' | translate }} </b> •
-        {{ scene.metadata.burst.azimuthTime | shortDateTime }}
+        {{ scene().metadata.burst.azimuthTime | shortDateTime }}
       </li>
     }
-    @if (!!scene.metadata.ariaVersion) {
+    @if (!!scene().metadata.ariaVersion) {
       <li>
         <b> {{ 'ARIA_VERSION' | translate }} </b> •
-        {{ scene.metadata.ariaVersion }}
+        {{ scene().metadata.ariaVersion }}
         @if (isGeoSearch()) {
           <mat-icon
             [matMenuTriggerFor]="addAriaVersionMenu"
@@ -526,32 +528,30 @@
         </mat-menu>
       </li>
     }
-    @if (dataset.source; as source) {
+    @if (dataset().source; as source) {
       <li class="detail-item-margin">
         @if (source.url) {
           <a [href]="source.url" target="_blank">
-            {{ 'DATA_COURTESY_OF' | translate }} {{ dataset.source.name }}</a
+            {{ 'DATA_COURTESY_OF' | translate }} {{ dataset().source.name }}</a
           >
         }
         @if (!source.url) {
           <span class="faint-text">
-            {{ 'DATA_COURTESY_OF' | translate }} {{ dataset.source.name }}</span
+            {{ 'DATA_COURTESY_OF' | translate }}
+            {{ dataset().source.name }}</span
           >
         }
       </li>
     }
-    @let collectionName = scene.metadata?.collectionName;
-    @let collectionMapped = dataset?.collectionMap?.[collectionName];
-    @let citation = collectionMapped ?? dataset.citationUrl;
-    @if (citation) {
+    @if (citation()) {
       <li class="detail-item-margin">
         <a
-          [href]="citation"
+          [href]="citation()"
           target="_blank"
           matTooltip="{{ 'HOW_TO_CITE_USING_THIS_DATA' | translate }}"
         >
-          @if (collectionMapped) {
-            {{ collectionName }}
+          @if (collectionMapped()) {
+            {{ collectionMapped() }}
           }
           {{ 'CITATION' | translate }}</a
         >
@@ -569,9 +569,3 @@
     </mat-menu>
   </ul>
 }
-
-<!-- <div *ngIf="!!scene.metadata.burst">
-                <hr>
-                  <h3>SLC Burst Metadata</h3>
-
-                </div> -->

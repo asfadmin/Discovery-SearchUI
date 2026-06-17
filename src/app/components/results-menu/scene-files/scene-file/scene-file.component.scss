@@ -1,4 +1,4 @@
-@use "asf-theme-variables" as *;
+@use 'asf-theme-variables' as *;
 
 .icon-margin {
   margin-left: 5px;
@@ -51,6 +51,9 @@
 
 .params-first {
   margin-top: -8px;
+}
+.icon {
+  font-size: 1.2rem;
 }
 
 .file-type-label {

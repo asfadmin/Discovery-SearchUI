@@ -110,7 +110,7 @@
           {{ 'EXPORT' | translate }}
         </button>
       }
-      @if (isDevMode()) {
+      @if (!env.isProd) {
         <button mat-menu-item [matMenuTriggerFor]="apiMaturity" matSuffix>
           <mat-icon>swap_horizontal_circle</mat-icon>
           {{ 'MATURITY' | translate }}

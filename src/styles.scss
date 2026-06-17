@@ -9,6 +9,9 @@
 @use "./styles/global/shortcuts";
 @import "prismjs/themes/prism-solarizedlight.css";
 
+@import '@fontsource/roboto/300.css';
+@import '@fontsource/roboto/400.css';
+@import '@fontsource/roboto/500.css';
 $theme-map: null;
 
 * {

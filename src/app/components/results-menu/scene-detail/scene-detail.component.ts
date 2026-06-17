@@ -111,7 +111,6 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     this.browseOverlayService.isBrowseOverlayEnabled$;
 
   public isBrowseOverlayEnabled = false;
-  public copyIcons = models.CopyIcons;
 
   private subs = new SubSink();
 
