@@ -39,8 +39,6 @@ import {
 } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
 
-import wNumb from 'wnumb';
-
 @Component({
   selector: 'app-sbas-sliders-two',
   templateUrl: './sbas-sliders-two.component.html',
@@ -234,10 +232,10 @@ export class SbasSlidersTwoComponent implements OnInit, OnDestroy {
         values: [0, 20, 40, 60, 80, 100],
         density: 4,
         stepped: true,
-        format: wNumb({
-          decimals: 0,
-          suffix: ' days',
-        }),
+        format: {
+          to: (value: number) => `${Math.round(value)} days`,
+          from: (value: string) => Number(value.replace(' days', '')),
+        },
       },
     });
 
