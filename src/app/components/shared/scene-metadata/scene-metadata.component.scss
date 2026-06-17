@@ -14,6 +14,9 @@ a {
 .scene-metadata {
   font-size: 12px;
   margin-top: 5px;
+  margin-bottom: 0;
+  padding-left: 0;
+  list-style: none;
   columns: 2;
 
   .mat-icon {
