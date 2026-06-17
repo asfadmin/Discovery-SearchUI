@@ -7,12 +7,12 @@
     </app-product-type-selector>
   }
 
-  @if (prop.isRelevant(p.BEAM_MODE)) {
+  @if (dataset | isRelevant: p.BEAM_MODE) {
     <mat-form-field>
       <mat-select
         (selectionChange)="onNewDatasetBeamModes($event.value)"
         [(ngModel)]="beamModes"
-        [disabled]="!prop.isRelevant(p.BEAM_MODE)"
+        [disabled]="!(dataset | isRelevant: p.BEAM_MODE)"
         placeholder="{{ 'BEAM_MODE' | translate }}"
         multiple
       >
@@ -22,13 +22,12 @@
           </mat-option>
         }
       </mat-select>
-      @if (prop.isRelevant(p.BEAM_MODE)) {
+      @if (dataset | isRelevant: p.BEAM_MODE) {
         <mat-hint align="start">
           {{ beamModes?.length || 0 }}/{{ dataset.beamModes.length }}
           {{ 'BEAM_MODES_SELECTED' | translate }}
         </mat-hint>
-      }
-      @if (!prop.isRelevant(p.BEAM_MODE)) {
+      } @else {
         <mat-hint align="start">
           {{ 'NO_BEAM_MODES_TO_SELECT' | translate }}
         </mat-hint>
@@ -40,7 +39,7 @@
     <mat-select
       (selectionChange)="onNewDatasetPolarizations($event.value)"
       [(ngModel)]="polarizations"
-      [disabled]="!prop.isRelevant(p.POLARIZATION)"
+      [disabled]="!(dataset | isRelevant: p.POLARIZATION)"
       placeholder="{{ 'POLARIZATION' | translate }}"
       multiple
     >
@@ -50,13 +49,12 @@
         </mat-option>
       }
     </mat-select>
-    @if (prop.isRelevant(p.POLARIZATION)) {
+    @if (dataset | isRelevant: p.POLARIZATION) {
       <mat-hint align="start">
         {{ polarizations?.length || 0 }}/{{ dataset.polarizations.length }}
         {{ 'POLARIZATIONS_SELECTED' | translate }}
       </mat-hint>
-    }
-    @if (!prop.isRelevant(p.POLARIZATION)) {
+    } @else {
       <mat-hint align="start">
         {{ 'NO_POLARIZATIONS_TO_SELECT' | translate }}
       </mat-hint>
@@ -67,36 +65,35 @@
     <mat-select
       (selectionChange)="onNewFlightDirectionsSelected($event.value)"
       [(ngModel)]="flightDirections"
-      [disabled]="!prop.isRelevant(p.FLIGHT_DIRECTION)"
+      [disabled]="!(dataset | isRelevant: p.FLIGHT_DIRECTION)"
       placeholder="{{ 'DIRECTION' | translate }}"
       multiple
     >
       @for (direction of flightDirectionTypes; track direction) {
         <mat-option [value]="direction">
-          {{ direction.toUpperCase() | translate }}
+          {{ direction | uppercase | translate }}
         </mat-option>
       }
     </mat-select>
 
-    @if (prop.isRelevant(p.FLIGHT_DIRECTION)) {
+    @if (dataset | isRelevant: p.FLIGHT_DIRECTION) {
       <mat-hint align="start">
         {{ flightDirections?.length || 0 }}/{{ flightDirectionTypes.length }}
         {{ 'FLIGHT_DIRECTIONS_SELECTED' | translate }}
       </mat-hint>
-    }
-    @if (!prop.isRelevant(p.FLIGHT_DIRECTION)) {
+    } @else {
       <mat-hint align="start">
         {{ 'NO_FLIGHT_DIRECTIONS_TO_SELECT' | translate }}
       </mat-hint>
     }
   </mat-form-field>
 
-  @if (prop.isRelevant(p.PLATFORM)) {
+  @if (dataset | isRelevant: p.PLATFORM) {
     <mat-form-field>
       <mat-select
         (selectionChange)="onNewPlatformSelected($event.value)"
         [(ngModel)]="platforms"
-        [disabled]="!prop.isRelevant(p.PLATFORM)"
+        [disabled]="!(dataset | isRelevant: p.PLATFORM)"
         placeholder="{{ 'SATELLITE' | translate }}"
         multiple
       >
@@ -108,7 +105,7 @@
       </mat-select>
 
       <mat-hint align="start">
-        @if (prop.isRelevant(p.PLATFORM)) {
+        @if (dataset | isRelevant: p.PLATFORM) {
           {{ platforms?.length || 0 }}/{{ dataset.platforms?.length }}
           {{ 'SATELLITES_SELECTED' | translate }}
         } @else {

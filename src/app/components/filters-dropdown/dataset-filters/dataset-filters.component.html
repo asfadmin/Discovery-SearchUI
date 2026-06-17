@@ -5,7 +5,7 @@
         [expanded]="defaultPanelOpenState"
         [disabled]="panelIsDisabled"
         (click)="selectPanel(panels.SEARCH)"
-        [class.raised-section]="isSelected(panels.SEARCH)"
+        [class.raised-section]="selectedPanel() === panels.SEARCH"
       >
         <mat-expansion-panel-header
           [collapsedHeight]="customCollapsedHeight"
@@ -31,7 +31,7 @@
       [expanded]="defaultPanelOpenState"
       [disabled]="panelIsDisabled"
       (click)="selectPanel(panels.AOI)"
-      [class.raised-section]="isSelected(panels.AOI)"
+      [class.raised-section]="selectedPanel() === panels.AOI"
     >
       <mat-expansion-panel-header
         [collapsedHeight]="customCollapsedHeight"
@@ -56,7 +56,7 @@
       [expanded]="defaultPanelOpenState"
       [disabled]="panelIsDisabled"
       (click)="selectPanel(panels.DATE)"
-      [class.raised-section]="isSelected(panels.DATE)"
+      [class.raised-section]="selectedPanel() === panels.DATE"
     >
       <mat-expansion-panel-header
         [collapsedHeight]="customCollapsedHeight"
@@ -84,7 +84,7 @@
         [expanded]="defaultPanelOpenState"
         [disabled]="panelIsDisabled"
         (click)="selectPanel(panels.PRODUCT)"
-        [class.raised-section]="isSelected(panels.PRODUCT)"
+        [class.raised-section]="selectedPanel() === panels.PRODUCT"
       >
         <mat-expansion-panel-header
           [collapsedHeight]="customCollapsedHeight"
@@ -130,7 +130,7 @@
       [expanded]="defaultPanelOpenState"
       [disabled]="panelIsDisabled"
       (click)="selectPanel(panels.ADDITIONAL)"
-      [class.raised-section]="isSelected(panels.ADDITIONAL)"
+      [class.raised-section]="selectedPanel() === panels.ADDITIONAL"
     >
       <mat-expansion-panel-header
         [collapsedHeight]="customCollapsedHeight"
@@ -164,12 +164,15 @@
         }
       </div>
     </mat-expansion-panel>
-    @if (prop.isRelevant(p.PATH) || prop.isRelevant(p.FRAME)) {
+    @if (
+      (actualDataset() | isRelevant: p.PATH) ||
+      (actualDataset() | isRelevant: p.FRAME)
+    ) {
       <mat-expansion-panel
         [expanded]="defaultPanelOpenState"
         [disabled]="panelIsDisabled"
         (click)="selectPanel(panels.PATH)"
-        [class.raised-section]="isSelected(panels.PATH)"
+        [class.raised-section]="selectedPanel() === panels.PATH"
       >
         <mat-expansion-panel-header
           [collapsedHeight]="customCollapsedHeight"
@@ -196,13 +199,13 @@
         </div>
       </mat-expansion-panel>
     }
-    @if (prop.isRelevant(p.MISSION_NAME)) {
+    @if (actualDataset() | isRelevant: p.MISSION_NAME) {
       <mat-expansion-panel
         [expanded]="defaultPanelOpenState"
         [disabled]="panelIsDisabled"
         class="raised-section"
         (click)="selectPanel(panels.CAMPAIGN)"
-        [class.raised-section]="isSelected(panels.CAMPAIGN)"
+        [class.raised-section]="selectedPanel() === panels.CAMPAIGN"
       >
         <mat-expansion-panel-header
           [collapsedHeight]="customCollapsedHeight"
@@ -221,7 +224,7 @@
         [disabled]="panelIsDisabled"
         class="raised-section"
         (click)="selectPanel(panels.CAMPAIGN)"
-        [class.raised-section]="isSelected(panels.CAMPAIGN)"
+        [class.raised-section]="selectedPanel() === panels.CAMPAIGN"
       >
         <mat-expansion-panel-header
           [collapsedHeight]="customCollapsedHeight"
@@ -242,7 +245,7 @@
         [disabled]="panelIsDisabled"
         class="raised-section"
         (click)="selectPanel(panels.CAMPAIGN)"
-        [class.raised-section]="isSelected(panels.CAMPAIGN)"
+        [class.raised-section]="selectedPanel() === panels.CAMPAIGN"
       >
         <mat-expansion-panel-header
           [collapsedHeight]="customCollapsedHeight"
