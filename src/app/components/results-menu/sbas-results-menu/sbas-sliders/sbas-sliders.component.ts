@@ -18,7 +18,6 @@ import * as filtersStore from '@store/filters';
 
 import { SubSink } from 'subsink';
 import * as models from '@models';
-import wNumb from 'wnumb';
 
 @Component({
   selector: 'app-sbas-sliders',
@@ -101,10 +100,10 @@ export class SbasSlidersComponent implements OnInit, OnDestroy {
         ],
         density: 4,
         stepped: true,
-        format: wNumb({
-          decimals: 0,
-          suffix: ' m',
-        }),
+        format: {
+          to: (value: number) => `${Math.round(value)} m`,
+          from: (value: string) => Number(value.replace(' m', '')),
+        },
       },
     });
 
