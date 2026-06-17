@@ -283,8 +283,8 @@
             ? ('GEOGRAPHIC_SEARCH_BASED_ON_BURST' | translate)
             : !(
                   !(
-                    prop.isRelevant(p.PATH, dataset) &&
-                    prop.isRelevant(p.FRAME, dataset)
+                    (dataset | isRelevant: p.PATH) &&
+                    (dataset | isRelevant: p.FRAME)
                   ) || dataset?.id === 'UAVSAR'
                 )
               ? ('GEOGRAPHIC_SEARCH_BASED_ON_THIS_SCENE_S_PATH_FRAME'
@@ -298,8 +298,8 @@
         color="primary"
         [disabled]="
           !(
-            (prop.isRelevant(p.PATH, dataset) &&
-              prop.isRelevant(p.FRAME, dataset)) ||
+            ((dataset | isRelevant: p.PATH) &&
+              (dataset | isRelevant: p.FRAME)) ||
             dataset?.id === 'UAVSAR' ||
             dataset?.id === 'SENTINEL-1 BURSTS' ||
             dataset?.id === 'OPERA-S1'

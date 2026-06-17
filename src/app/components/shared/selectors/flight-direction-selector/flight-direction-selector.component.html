@@ -15,7 +15,7 @@
       </mat-option>
     }
   </mat-select>
-  @if (prop.isRelevant(p.FLIGHT_DIRECTION)) {
+  @if (dataset() | isRelevant: p.FLIGHT_DIRECTION) {
     <mat-hint align="start">
       {{ (flightDirections$ | async)?.length || 0 }}/{{
         flightDirectionTypes.length
