@@ -1,14 +1,13 @@
-import { Injectable, inject } from '@angular/core';
-
-import { fromEvent, combineLatest } from 'rxjs';
-import { filter, map, withLatestFrom } from 'rxjs/operators';
-
+import { Injectable, inject, computed } from '@angular/core';
+import { fromEvent } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
 import { AppState } from '@store';
 import * as scenesStore from '@store/scenes';
 import * as uiStore from '@store/ui';
 import { ScenesService } from './scenes.service';
 import { SceneSelectService } from './scene-select.service';
+import * as models from '@models';
 
 @Injectable({
   providedIn: 'root',
@@ -18,65 +17,93 @@ export class KeyboardService {
   private sceneSelect = inject(SceneSelectService);
   private scenesService = inject(ScenesService);
 
-  init() {
-    const scenesSorted$ = this.scenesService.sortScenes$(
-      this.scenesService.scenes$,
+  private isPreferencesOpen = this.store$.selectSignal(
+    uiStore.getIsPreferenceMenuOpen,
+  );
+  private isFiltersMenuOpen = this.store$.selectSignal(
+    uiStore.getIsFiltersMenuOpen,
+  );
+  private isDownloadQueueOpen = this.store$.selectSignal(
+    uiStore.getIsDownloadQueueOpen,
+  );
+  private isOnDemandQueueOpen = this.store$.selectSignal(
+    uiStore.getIsOnDemandQueueOpen,
+  );
+
+  private selectedScene = this.store$.selectSignal(
+    scenesStore.getSelectedScene,
+  );
+  private onlyScenesWithBrowse = this.store$.selectSignal(
+    uiStore.getOnlyScenesWithBrowse,
+  );
+  private isBrowseDialogOpen = this.store$.selectSignal(
+    uiStore.getIsBrowseDialogOpen,
+  );
+
+  private scenesSorted = toSignal(
+    this.scenesService.sortScenes$(this.scenesService.scenes$),
+    { initialValue: [] },
+  );
+  private scenesWithBrowses = toSignal(
+    this.scenesService.withBrowses$(
+      this.scenesService.sortScenes$(this.scenesService.scenes$),
+    ),
+    { initialValue: [] },
+  );
+
+  private isMenuOpen = computed(() => {
+    return (
+      this.isPreferencesOpen() ||
+      this.isFiltersMenuOpen() ||
+      this.isDownloadQueueOpen() ||
+      this.isOnDemandQueueOpen()
     );
+  });
 
-    fromEvent(document, 'keydown')
-      .pipe(
-        withLatestFrom(this.store$.select(uiStore.getIsPreferenceMenuOpen)),
-        filter(([_, arePreferencesOpen]) => !arePreferencesOpen),
-        map(([e, _]) => e),
-        withLatestFrom(
-          combineLatest([
-            scenesSorted$,
-            this.scenesService.withBrowses$(scenesSorted$),
-            this.store$.select(scenesStore.getSelectedScene),
-            this.store$.select(uiStore.getOnlyScenesWithBrowse),
-            this.store$.select(uiStore.getIsBrowseDialogOpen),
-          ]),
-        ),
-      )
-      .subscribe(
-        ([
-          e,
-          [
-            scenes,
-            scenesWithBrowses,
-            selected,
-            onlyScenesWithBrowse,
-            isBrowseDialogOpen,
-          ],
-        ]) => {
-          const { key } = e as KeyboardEvent;
-          const withBrowse = isBrowseDialogOpen && onlyScenesWithBrowse;
-          const sceneList = withBrowse ? scenesWithBrowses : scenes;
+  private sceneList = computed(() => {
+    const withBrowse = this.isBrowseDialogOpen() && this.onlyScenesWithBrowse();
+    return withBrowse ? this.scenesWithBrowses() : this.scenesSorted();
+  });
 
-          switch (key) {
-            case 'ArrowRight': {
-              return this.selectNextScene(sceneList, selected);
-            }
-            case 'ArrowLeft': {
-              return this.selectPreviousScene(sceneList, selected);
-            }
-            case 'ArrowDown': {
-              return this.selectNextScene(sceneList, selected);
-            }
-            case 'ArrowUp': {
-              return this.selectPreviousScene(sceneList, selected);
-            }
-          }
-        },
-      );
+  private initialized = false;
+
+  init() {
+    if (this.initialized) {
+      return;
+    }
+    this.initialized = true;
+
+    fromEvent<KeyboardEvent>(document, 'keydown').subscribe((e) => {
+      if (this.isMenuOpen()) {
+        return;
+      }
+
+      const sceneList = this.sceneList();
+      const selected = this.selectedScene();
+
+      switch (e.key) {
+        case 'ArrowRight':
+        case 'ArrowDown':
+          return this.selectNextScene(sceneList, selected);
+        case 'ArrowLeft':
+        case 'ArrowUp':
+          return this.selectPreviousScene(sceneList, selected);
+      }
+    });
   }
 
-  private selectNextScene(scenes, selected) {
+  private selectNextScene(
+    scenes: models.CMRProduct[],
+    selected: models.CMRProduct,
+  ) {
     const id = this.sceneSelect.nextId(scenes, selected);
     this.store$.dispatch(new scenesStore.SetSelectedScene(id));
   }
 
-  private selectPreviousScene(scenes, selected) {
+  private selectPreviousScene(
+    scenes: models.CMRProduct[],
+    selected: models.CMRProduct,
+  ) {
     const id = this.sceneSelect.previousId(scenes, selected);
     this.store$.dispatch(new scenesStore.SetSelectedScene(id));
   }
