@@ -3,6 +3,14 @@
 @use "asf-theme-variables" as *;
 $config: mat.m2-define-legacy-typography-config();
 
+.count-detail {
+  font-size: small;
+}
+
+.pair-count-offset {
+  margin-top: -15px;
+}
+
 .mobile-size {
   margin-left: 5px !important;
 }

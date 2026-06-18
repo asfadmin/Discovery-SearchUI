@@ -17,7 +17,6 @@ import { AppState } from '@store';
 // import * as filtersStore from "@store/filters";
 import { SubSink } from 'subsink';
 // import {debounceTime, distinctUntilChanged} from "rxjs/operators";
-// import wNumb from 'wnumb';
 import * as filtersStore from '@store/filters';
 import * as models from '@models';
 // import moment from 'moment/moment';

@@ -3,7 +3,7 @@
     <mat-select
       (selectionChange)="onNewDatasetPolarizations($event.value)"
       [(ngModel)]="polarizations"
-      [disabled]="!prop.isRelevant(p.POLARIZATION)"
+      [disabled]="!(dataset | isRelevant: p.POLARIZATION)"
       [placeholder]="
         dataset?.id === 'NISAR'
           ? ('MAIN_BAND_FREQ_A_POLARIZATION' | translate)
@@ -23,17 +23,14 @@
         </mat-option>
       }
     </mat-select>
-    @if (prop.isRelevant(p.POLARIZATION)) {
-      <mat-hint align="start">
+    <mat-hint align="start">
+      @if (dataset | isRelevant: p.POLARIZATION) {
         {{ polarizations?.length || 0 }}/{{ dataset.polarizations.length }}
         {{ 'POLARIZATIONS_SELECTED' | translate }}
-      </mat-hint>
-    }
-    @if (!prop.isRelevant(p.POLARIZATION)) {
-      <mat-hint align="start">
+      } @else {
         {{ 'NO_POLARIZATIONS_TO_SELECT' | translate }}
-      </mat-hint>
-    }
+      }
+    </mat-hint>
   </mat-form-field>
 
   <mat-form-field class="polarization-select-container">
@@ -59,24 +56,21 @@
         </mat-option>
       }
     </mat-select>
-    @if (prop.isRelevant(p.POLARIZATION)) {
-      <mat-hint align="start">
+    <mat-hint align="start">
+      @if (dataset | isRelevant: p.POLARIZATION) {
         {{ sidePolarizations?.length || 0 }}/{{ dataset.polarizations.length }}
         {{ 'POLARIZATIONS_SELECTED' | translate }}
-      </mat-hint>
-    }
-    @if (!prop.isRelevant(p.POLARIZATION)) {
-      <mat-hint align="start">
+      } @else {
         {{ 'NO_POLARIZATIONS_TO_SELECT' | translate }}
-      </mat-hint>
-    }
+      }
+    </mat-hint>
   </mat-form-field>
 
   <mat-form-field class="flight-direction-field">
     <mat-select
       (selectionChange)="onNewFlightDirectionsSelected($event.value)"
       [(ngModel)]="flightDirections"
-      [disabled]="!prop.isRelevant(p.FLIGHT_DIRECTION)"
+      [disabled]="!(dataset | isRelevant: p.FLIGHT_DIRECTION)"
       placeholder="{{ 'DIRECTION' | translate }}"
       multiple
     >
@@ -87,25 +81,22 @@
       }
     </mat-select>
 
-    @if (prop.isRelevant(p.FLIGHT_DIRECTION)) {
-      <mat-hint align="start">
+    <mat-hint align="start">
+      @if (dataset | isRelevant: p.FLIGHT_DIRECTION) {
         {{ flightDirections?.length || 0 }}/{{ flightDirectionTypes.length }}
         {{ 'FLIGHT_DIRECTIONS_SELECTED' | translate }}
-      </mat-hint>
-    }
-    @if (!prop.isRelevant(p.FLIGHT_DIRECTION)) {
-      <mat-hint align="start">
+      } @else {
         {{ 'NO_FLIGHT_DIRECTIONS_TO_SELECT' | translate }}
-      </mat-hint>
-    }
+      }
+    </mat-hint>
   </mat-form-field>
 
-  @if (prop.isRelevant(p.PLATFORM)) {
+  @if (dataset | isRelevant: p.PLATFORM) {
     <mat-form-field>
       <mat-select
         (selectionChange)="onNewPlatformSelected($event.value)"
         [(ngModel)]="platforms"
-        [disabled]="!prop.isRelevant(p.PLATFORM)"
+        [disabled]="!(dataset | isRelevant: p.PLATFORM)"
         placeholder="{{ 'SATELLITE' | translate }}"
         multiple
       >
@@ -117,7 +108,7 @@
       </mat-select>
 
       <mat-hint align="start">
-        @if (prop.isRelevant(p.PLATFORM)) {
+        @if (dataset | isRelevant: p.PLATFORM) {
           {{ platforms?.length || 0 }}/{{ dataset.platforms?.length }}
           {{ 'SATELLITES_SELECTED' | translate }}
         } @else {
@@ -131,7 +122,7 @@
     <mat-select
       (selectionChange)="onNewInstrument($event.value)"
       [(ngModel)]="instruments"
-      [disabled]="!prop.isRelevant(p.INSTRUMENT)"
+      [disabled]="!(dataset | isRelevant: p.INSTRUMENT)"
       placeholder="{{ 'INSTRUMENT' | translate }}"
       multiple
     >
@@ -142,17 +133,14 @@
       }
     </mat-select>
 
-    @if (prop.isRelevant(p.INSTRUMENT)) {
-      <mat-hint align="start">
+    <mat-hint align="start">
+      @if (dataset | isRelevant: p.INSTRUMENT) {
         {{ instruments?.length || 0 }}/{{ dataset.instruments.length }}
         {{ 'INSTRUMENTS_SELECTED' | translate }}
-      </mat-hint>
-    }
-    @if (!prop.isRelevant(p.INSTRUMENT)) {
-      <mat-hint align="start">
+      } @else {
         {{ 'NO_INSTRUMENTS_TO_SELECT' | translate }}
-      </mat-hint>
-    }
+      }
+    </mat-hint>
   </mat-form-field>
 
   <mat-form-field>
@@ -170,17 +158,14 @@
       </mat-option>
     </mat-select>
 
-    @if (prop.isRelevant(p.FRAME)) {
-      <mat-hint align="start">
+    <mat-hint align="start">
+      @if (dataset | isRelevant: p.FRAME) {
         {{ frameCoverage?.length || 0 }}/2
         {{ 'FRAMES_SELECTED' | translate }}
-      </mat-hint>
-    }
-    @if (!prop.isRelevant(p.FRAME)) {
-      <mat-hint align="start">
+      } @else {
         {{ 'NO_FRAMES_TO_SELECT' | translate }}
-      </mat-hint>
-    }
+      }
+    </mat-hint>
   </mat-form-field>
 
   <mat-form-field class="half-width">
@@ -199,17 +184,14 @@
       }
     </mat-select>
 
-    @if (prop.isRelevant(p.RANGE_BANDWIDTH)) {
-      <mat-hint align="start">
+    <mat-hint align="start">
+      @if (dataset | isRelevant: p.RANGE_BANDWIDTH) {
         {{ rangeBandwidth?.length || 0 }}/{{ totalBandwithCount }}
         {{ 'RANGE_BANDWITH_SELECTED' | translate }}
-      </mat-hint>
-    }
-    @if (!prop.isRelevant(p.RANGE_BANDWIDTH)) {
-      <mat-hint align="start">
+      } @else {
         {{ 'NO_BANDWITH_TO_SELECT' | translate }}
-      </mat-hint>
-    }
+      }
+    </mat-hint>
   </mat-form-field>
 
   <mat-slide-toggle
@@ -221,10 +203,4 @@
   >
     {{ 'JOINT_OBSERVATION_ONLY' | translate }}
   </mat-slide-toggle>
-
-  <!-- <app-short-name-selector
-      class="short-name-selector"
-      (shortNamesChange)="onNewShortNames($event)"
-    *ngIf="dataset.id === 'NISAR'"></app-short-name-selector> -->
-  <!-- <app-opera-calibration-data-selector *ngIf="dataset.id === 'OPERA-S1'"></app-opera-calibration-data-selector> -->
 </div>

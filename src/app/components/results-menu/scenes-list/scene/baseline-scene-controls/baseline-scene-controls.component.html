@@ -2,7 +2,7 @@
   class="action-buttons--container"
   [ngClass]="{ 'mobile-padding': breakpoint === breakpoints.MOBILE }"
 >
-  <div style="display: flex; justify-content: space-evenly">
+  <div class="metrics-row">
     <div
       [ngClass]="{
         'mobile-baseline': breakpoint <= breakpoints.SMALL,
@@ -36,8 +36,7 @@
           scene.dataset === 'SENTINEL-1D' &&
           scene.metadata.productType === 'BURST';
         <mat-icon
-          class="noselect list-icon"
-          style="margin-left: 10px; opacity: 0.5"
+          class="noselect list-icon icon-margin icon-disabled"
           matTooltip="{{
             (isS1DBurst ? 'S1D_ISCE_DISABLED' : 'ONLY_CO-POLARIZED_BURSTS')
               | translate

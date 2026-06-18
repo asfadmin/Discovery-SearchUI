@@ -10,6 +10,7 @@ import * as filtersStore from '@store/filters';
 import { PropertyService } from '@services';
 import { AsyncPipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
+import { IsRelevantPipe } from '@pipes/relevant.pipe';
 
 @Component({
   selector: 'app-flight-direction-selector',
@@ -19,6 +20,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatFormFieldModule,
     TranslateModule,
     AsyncPipe,
+    IsRelevantPipe,
   ],
   templateUrl: './flight-direction-selector.component.html',
   styleUrl: './flight-direction-selector.component.scss',
@@ -31,6 +33,7 @@ export class FlightDirectionSelectorComponent {
   public flightDirections$ = this.store$.select(
     filtersStore.getFlightDirections,
   );
+  public dataset = this.store$.selectSignal(filtersStore.getSelectedDataset);
 
   public flightDirections = [];
   public flightDirectionTypes = models.flightDirections;

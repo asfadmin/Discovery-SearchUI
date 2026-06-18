@@ -14,9 +14,8 @@
           {{ 'SEARCH_OPTIONS' | translate }}
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <div style="display: flex; margin-top: 25px">
-        <app-search-type-selector style="margin-right: 10px">
-        </app-search-type-selector>
+      <div class="search-options-row">
+        <app-search-type-selector> </app-search-type-selector>
       </div>
     </mat-expansion-panel>
   }
@@ -36,9 +35,9 @@
           {{ 'SCENE' | translate }}
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <div class="w100" style="display: flex; margin-top: 25px">
+      <div class="w100 search-options-row">
         <app-baseline-frame-reference-toggle></app-baseline-frame-reference-toggle>
-        <div style="display: flex; flex-direction: column" class="w100">
+        <div class="w100 scene-selectors-column">
           @if (shouldUseFramesForReference) {
             <app-dataset-selector
               class="w100"
@@ -56,7 +55,6 @@
         <app-copy-to-clipboard
           value="S1A_IW_SLC__1SSV_20150601T010209_20150601T010236_006173_00808F_20A0"
           prompt="{{ 'COPY_NAME' | translate }}"
-          style="margin: 0 3px"
           class="clipboard-icon"
         >
         </app-copy-to-clipboard>
@@ -82,7 +80,7 @@
         [collapsedHeight]="customCollapsedHeight"
         [expandedHeight]="customExpandedHeight"
       >
-        <mat-panel-title style="align-items: center">
+        <mat-panel-title class="panel-title">
           {{ 'DATA_FILTERS' | translate }}
           <app-docs-modal
             class="info-icon"
@@ -91,10 +89,10 @@
           </app-docs-modal>
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <div style="margin-top: 20px">
+      <div class="selector-card-spacing">
         <app-date-selector></app-date-selector>
       </div>
-      <div style="margin-top: 20px">
+      <div class="selector-card-spacing">
         <app-season-selector></app-season-selector>
       </div>
     </mat-expansion-panel>
@@ -111,7 +109,7 @@
         [collapsedHeight]="customCollapsedHeight"
         [expandedHeight]="customExpandedHeight"
       >
-        <mat-panel-title style="align-items: center">
+        <mat-panel-title class="panel-title">
           {{ 'BASELINE_CRITERIA' | translate }}
           <app-docs-modal
             class="info-icon"

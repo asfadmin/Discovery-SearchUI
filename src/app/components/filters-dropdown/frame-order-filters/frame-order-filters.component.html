@@ -1,4 +1,4 @@
-@if (prop.isRelevant(p.PATH) || prop.isRelevant(p.FRAME)) {
+@if ((dataset() | isRelevant: p.PATH) || (dataset() | isRelevant: p.FRAME)) {
   <mat-expansion-panel
     [expanded]="defaultPanelOpenState"
     [disabled]="panelIsDisabled"
@@ -9,7 +9,7 @@
       [collapsedHeight]="customCollapsedHeight"
       [expandedHeight]="customExpandedHeight"
     >
-      <mat-panel-title style="align-items: center">
+      <mat-panel-title class="panel-title">
         {{ 'FRAME_ORDER_FILTERS' | translate }}
         <app-docs-modal
           class="info-icon"

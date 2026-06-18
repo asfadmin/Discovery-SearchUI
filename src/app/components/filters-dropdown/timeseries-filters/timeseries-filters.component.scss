@@ -1,0 +1,8 @@
+.search-options-row {
+  display: flex;
+  margin-top: 25px;
+
+  app-search-type-selector {
+    margin-right: 10px;
+  }
+}

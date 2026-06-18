@@ -25,7 +25,7 @@
                 : ('SCENES' | translate)
             }}
             @if (breakpoint > breakpoints.MOBILE) {
-              <span style="font-size: small">
+              <span class="count-detail">
                 <br />
                 @let virtualCount = totalVirtualProducts$ | async;
                 {{ (numberOfProducts$ | async) - virtualCount }}
@@ -44,7 +44,7 @@
           </div>
         }
         @if (searchType === SearchTypes.SBAS) {
-          <div class="mr-10" style="margin-top: -15px">
+          <div class="mr-10 pair-count-offset">
             {{ numPairs$ | async }}
             {{
               (numPairs$ | async) === 1
@@ -57,7 +57,7 @@
               >info</mat-icon
             >
             @if (!!sbasProducts && breakpoint > breakpoints.MEDIUM) {
-              <span style="font-size: small">
+              <span class="count-detail">
                 <br />
                 ({{ sbasProducts.length }}
                 {{
