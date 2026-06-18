@@ -1,4 +1,4 @@
-import { test, expect } from 'e2e/pages/auth.page';
+import { test, expect } from 'e2e/pages/auth-search.page';
 import { waitForASFAPIResponse } from 'e2e/helpers';
 
 test('SBAS: Search History', { tag: '@auth' }, async ({ loggedInPage }) => {

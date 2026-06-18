@@ -1,32 +1,32 @@
-import { test, expect } from 'e2e/fixtures';
+import { test, expect } from 'e2e/pages/search.page';
 import { waitForASFAPIResponse } from 'e2e/helpers';
 
 test(
   'List Search: searching by file IDs returns scenes',
   { tag: '@visual' },
-  async ({ page }) => {
-    await page.goto('/?maxResults=10');
+  async ({ capturedSearchPage }) => {
+    await capturedSearchPage.goto('/?maxResults=10');
 
-    await page
+    await capturedSearchPage
       .locator('app-search-type-selector')
       .locator('button.button-menu-trigger')
       .click();
-    await expect(page).toHaveScreenshot();
+    await expect(capturedSearchPage).toHaveScreenshot();
 
-    await page.getByText('List', { exact: true }).click();
+    await capturedSearchPage.getByText('List', { exact: true }).click();
 
-    await page
+    await capturedSearchPage
       .locator('app-list-header')
       .getByRole('button', { name: 'Edit List' })
       .click();
 
-    await page
+    await capturedSearchPage
       .locator('app-list-filters')
       .getByRole('radio', { name: 'File', exact: true })
       .click();
-    await expect(page).toHaveScreenshot();
+    await expect(capturedSearchPage).toHaveScreenshot();
 
-    await page
+    await capturedSearchPage
       .getByPlaceholder('List of File IDs')
       .fill(
         [
@@ -36,8 +36,8 @@ test(
         ].join('\n'),
       );
 
-    const searchResponse = waitForASFAPIResponse(page);
-    const searchButton = page
+    const searchResponse = waitForASFAPIResponse(capturedSearchPage);
+    const searchButton = capturedSearchPage
       .locator('app-filters-dropdown')
       .locator('app-search-button');
 
@@ -45,8 +45,8 @@ test(
     await searchResponse;
 
     await expect(searchButton).not.toContainText('NO RESULTS');
-    await expect(page.locator('app-max-results-selector')).toContainText(
-      /\d+\s+Files?/i,
-    );
+    await expect(
+      capturedSearchPage.locator('app-max-results-selector'),
+    ).toContainText(/\d+\s+Files?/i);
   },
 );
