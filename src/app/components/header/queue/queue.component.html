@@ -196,7 +196,7 @@
         <div class="dl-clear-button btn-primary">
           @if (previousQueue === null) {
             <button (click)="onClearQueue(products)" mat-button>
-              <mat-icon style="margin-right: 5px">delete</mat-icon>
+              <mat-icon class="dl-action-icon">delete</mat-icon>
               @if (breakpoint > breakpoints.MOBILE && dlWidth >= dlWidthMin) {
                 <span>{{ 'CLEAR' | translate }}</span>
               }
@@ -204,7 +204,7 @@
           }
           @if (previousQueue !== null) {
             <button (click)="onRestoreQueue(previousQueue)" mat-button>
-              <mat-icon style="margin-right: 5px">undo</mat-icon>
+              <mat-icon class="dl-action-icon">undo</mat-icon>
               <span>{{ 'RESTORE' | translate }}</span>
             </button>
           }

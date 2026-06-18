@@ -1,9 +1,34 @@
 @use "asf-theme-variables" as *;
 
+.search-options-row {
+  display: flex;
+  margin-top: 25px;
+
+  app-search-type-selector {
+    margin-right: 10px;
+  }
+}
+
 .ls-example {
   font-style: italic;
   color: grey;
   word-break: break-all;
+}
+
+.list-type-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.list-type-label {
+  margin-right: 15px;
+}
+
+.search-list-input {
+  height: 150px;
 }
 
 .file-upload-container {

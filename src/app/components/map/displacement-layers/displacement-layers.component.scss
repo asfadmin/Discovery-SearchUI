@@ -1,6 +1,17 @@
 @use "asf-theme-variables" as *;
 @use "variables" as *;
 
+.legend-row {
+  margin-top: -5px;
+  height: 25px;
+  margin-bottom: 5px;
+}
+
+.legend-inline {
+  display: inline-block;
+  margin-top: -5px;
+}
+
 .disp-layers--layout {
   height: 100%;
   min-height: 100%;

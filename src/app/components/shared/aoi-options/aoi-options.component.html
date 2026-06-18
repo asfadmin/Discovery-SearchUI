@@ -3,10 +3,7 @@
     <div class="header-layout mb">
       <div class="header-layout">
         <b>{{ 'AOI_OPTIONS' | translate }}</b>
-        <mat-icon
-          (click)="onOpenHelp()"
-          class="clickable"
-          style="margin-left: 10px"
+        <mat-icon (click)="onOpenHelp()" class="clickable help-icon"
           >info</mat-icon
         >
       </div>
@@ -62,7 +59,7 @@
     </div>
 
     @if (breakpoint !== breakpoints.MOBILE) {
-      <app-file-upload-dialog style="width: 40%"></app-file-upload-dialog>
+      <app-file-upload-dialog class="upload-trigger"></app-file-upload-dialog>
     }
   </div>
 </div>

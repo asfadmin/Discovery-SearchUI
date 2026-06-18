@@ -21,4 +21,9 @@
   border-radius: 0 !important;
 }
 
+.share-save-label {
+  // !important preserved from the previous inline style; overrides Material button typography
+  font-size: 14px !important;
+}
+
 

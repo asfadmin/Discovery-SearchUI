@@ -4,6 +4,14 @@
   display: none;
 }
 
+.filters-toggle-row {
+  align-items: center;
+}
+
+.mobile-filters-button {
+  margin-left: 5px;
+}
+
 ::ng-deep .on-demand-toggle {
 display: flex;
 justify-content: center;
