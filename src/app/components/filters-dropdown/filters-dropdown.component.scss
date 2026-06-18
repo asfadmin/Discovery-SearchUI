@@ -110,6 +110,11 @@
   z-index: 1;
 }
 
+.max-results-spacing {
+  margin-right: 10px;
+  align-self: center;
+}
+
 h3 {
   @include themify($themes) {
     color: themed('primary')

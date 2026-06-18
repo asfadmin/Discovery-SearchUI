@@ -1,8 +1,8 @@
-<mat-form-field style="display: block">
+<mat-form-field class="burst-id-field">
   <mat-label>{{ 'OPERA_BURST_ID' | translate }}</mat-label>
   <textarea
     matInput
-    style="height: 75px"
+    class="burst-ids-input"
     [value]="operaBurstIDs.join(', ')"
     (input)="onChange($event)"
   ></textarea>

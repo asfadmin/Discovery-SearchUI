@@ -1,4 +1,4 @@
-<div style="display: flex">
+<div class="scene-controls-row">
   <div class="scene-control">
     @if (!!scene.metadata.polygon) {
       <mat-icon
@@ -44,7 +44,7 @@
   }
 
   @if (searchType === SearchTypes.CUSTOM_PRODUCTS) {
-    <div class="scene-control" style="margin-right: 10px">
+    <div class="scene-control scene-control-spacing">
       @if (!scene.isDummyProduct) {
         @if (isExpired(scene.metadata.job)) {
           <mat-icon

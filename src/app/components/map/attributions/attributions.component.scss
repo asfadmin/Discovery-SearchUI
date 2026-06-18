@@ -4,6 +4,11 @@
 
 $config: mat.m2-define-legacy-typography-config();
 
+.max-results-spacing {
+  margin-right: 10px;
+  align-self: center;
+}
+
 .position-right {
   position: fixed;
   right: 0;

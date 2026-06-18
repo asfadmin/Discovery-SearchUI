@@ -23,14 +23,14 @@
     } @else {
       @if (product.productTypeDisplay.length > 40) {
         <span>
-          <b style="font-size: 14px">{{ 'TYPE' | translate }}:</b>
+          <b class="file-type-label">{{ 'TYPE' | translate }}:</b>
           {{ product.productTypeDisplay | truncate: 36
           }}{{ product.productTypeDisplay | truncate: -4 : '' }}
         </span>
       }
       @if (product.productTypeDisplay.length <= 40) {
         <span>
-          <b style="font-size: 14px">{{ 'TYPE' | translate }}:</b>
+          <b class="file-type-label">{{ 'TYPE' | translate }}:</b>
           {{ product.productTypeDisplay }}
         </span>
       }
@@ -86,8 +86,7 @@
             {{ 'ADD' | translate }} {{ jobType.name }} to On Demand
             <mat-icon
               (click)="onOpenHelp($event, jobType.infoUrl)"
-              class="clickable"
-              style="margin-left: 10px"
+              class="clickable info-icon"
               >info</mat-icon
             >
           </button>
@@ -187,7 +186,7 @@
           [matMenuTriggerFor]="expiredJobs"
           mat-icon-button
           matListItemMeta
-          style="margin-right: 10px"
+          class="expired-job-button"
         >
           <mat-icon
             class="hype-icon-button clickable"

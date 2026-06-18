@@ -19,8 +19,10 @@ test(
       );
     await expect(loggedInPage).toHaveScreenshot();
 
-    await loggedInPage.waitForResponse((response) =>
-      response.url().includes('output=COUNT'),
+    await loggedInPage.waitForResponse(
+      (response) =>
+        response.url().includes('granule_list=') &&
+        response.url().includes('output=COUNT'),
     );
     const searchButton = loggedInPage
       .locator('app-filters-dropdown')
@@ -34,9 +36,8 @@ test(
     await listSearchButton.click();
 
     await loggedInPage
-      .getByRole('button', {
-        name: 'S1B_IW_GRDH_1SDV_20161124T03200… 9906 November 24, 2016, 03:20:08Z 0/',
-      })
+      .locator('app-scenes-list button[mat-list-item]')
+      .first()
       .click();
     await expect(loggedInPage).toHaveScreenshot();
 
@@ -91,9 +92,16 @@ test(
       name: 'SEARCH',
     });
     await expect(sbasSearchButton).toBeEnabled();
-    await sbasSearchButton.click();
+    await Promise.all([
+      loggedInPage.waitForResponse(
+        (response) =>
+          response.url().includes('/services/search/baseline') &&
+          response.url().includes('output=jsonlite2'),
+      ),
+      sbasSearchButton.click(),
+    ]);
     await loggedInPage
-      .getByRole('radio', { name: 'Add all results to On Demand' })
+      .getByLabel('Add all results to On Demand queue')
       .click();
     await loggedInPage.getByRole('menuitem', { name: 'RTC GAMMA' }).click();
 
@@ -133,18 +141,28 @@ test(
     const baselineSearchButton = searchButton.getByRole('button', {
       name: 'SEARCH',
     });
+    const addAllToOnDemand = loggedInPage
+      .locator('app-baseline-results-menu')
+      .locator('mat-button-toggle')
+      .filter({
+        has: loggedInPage.locator('mat-icon[svgIcon="hyp3"]'),
+      })
+      .first();
 
     await expect(baselineSearchButton).toBeEnabled();
-    await baselineSearchButton.click();
-    await loggedInPage
-      .getByRole('radio', { name: 'Add all results to On Demand' })
-      .click();
+    await Promise.all([
+      loggedInPage.waitForResponse(
+        (response) =>
+          response.url().includes('/services/search/baseline') &&
+          response.url().includes('output=jsonlite2'),
+      ),
+      baselineSearchButton.click(),
+    ]);
+    await addAllToOnDemand.click();
 
     await loggedInPage.getByRole('menuitem', { name: 'InSAR GAMMA' }).click();
     await loggedInPage.getByRole('menuitem', { name: 'SLC Pairs' }).click();
-    await loggedInPage
-      .getByRole('radio', { name: 'Add all results to On Demand' })
-      .click();
+    await addAllToOnDemand.click();
     await loggedInPage.getByRole('menuitem', { name: 'autoRIFT' }).click();
 
     await loggedInPage.getByRole('menuitem', { name: 'SLC Pairs' }).click();

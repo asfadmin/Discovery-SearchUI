@@ -19,9 +19,9 @@
     </div>
 
     @if (this.displacementOverview === DispLayerTypes.VELOCITY) {
-      <div style="margin-top: -5px; height: 25px; margin-bottom: 5px">
+      <div class="legend-row">
         <app-map-legend
-          style="display: inline-block; margin-top: -5px"
+          class="legend-inline"
           [min]="this.mapService.displacementRange?.range[0]"
           [max]="this.mapService.displacementRange?.range[1]"
           [units]="this.mapService.displacementRange?.units"
