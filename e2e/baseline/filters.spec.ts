@@ -1,4 +1,4 @@
-import { test, expect } from 'e2e/fixtures';
+import { test, expect } from 'e2e/pages/search.page';
 
 test('Baseline Start & End Date Filters', async ({ page }) => {
   await page.goto('/');
@@ -32,32 +32,39 @@ test('Baseline Start & End Date Filters', async ({ page }) => {
   await expect(page.locator('app-scenes-list-header')).toContainText('72 of');
 });
 
-test('Select a different reference scene', async ({ page }) => {
-  await page.goto('/');
+test('Select a different reference scene', async ({ capturedSearchPage }) => {
+  await capturedSearchPage.goto('/');
 
-  await page.getByRole('button', { name: 'Geographic Search' }).click();
-  await page
+  await capturedSearchPage
+    .getByRole('button', { name: 'Geographic Search' })
+    .click();
+  await capturedSearchPage
     .getByRole('menuitem', { name: 'Baseline Baseline search' })
     .click();
-  await page.getByRole('region', { name: 'Scene' }).getByLabel('Scene').click();
-  await page
+  await capturedSearchPage
+    .getByRole('region', { name: 'Scene' })
+    .getByLabel('Scene')
+    .click();
+  await capturedSearchPage
     .getByRole('region', { name: 'Scene' })
     .getByLabel('Scene')
     .fill('S1_049134_IW2_20230821T073937_VV_4A4C-BURST');
-  await page
+  await capturedSearchPage
     .locator('app-filters-dropdown')
     .getByRole('button', { name: 'Filters panel search button' })
     .click();
 
-  await page
+  await capturedSearchPage
     .getByRole('button', {
       name: 'S1_049134_IW2_20141124T073843_VV_1B… Nov 24 2014 -201m -3192d',
     })
     .click();
-  await page.getByRole('button', { name: 'Baseline', exact: true }).click();
+  await capturedSearchPage
+    .getByRole('button', { name: 'Baseline', exact: true })
+    .click();
 
   await expect(
-    page
+    capturedSearchPage
       .getByRole('region', { name: 'Scene' })
       .locator('app-master-scene-selector')
       .getByRole('textbox'),

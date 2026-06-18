@@ -44,7 +44,6 @@
     "@types/d3": "^7.1.0",
     "@types/topojson": "^3.2.3",
     "@types/ua-parser-js": "^0.7.36",
-    "@types/wnumb": "^1.2.0",
     "@types/xml2js": "^0.4.8",
     "@yellowspot/ng-truncate": "^2.0.0",
     "angular-resizable-element": "^5.0.0",
@@ -88,7 +87,6 @@
     "uuid": "^14.0.0",
     "web-streams-polyfill": "^4.3.0",
     "webpack": "^5.72.1",
-    "wnumb": "^1.2.0",
     "xml2js": "^0.5.0",
     "zone.js": "~0.15.1"
   },
