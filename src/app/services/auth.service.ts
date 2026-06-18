@@ -72,7 +72,7 @@ export class AuthService {
     const redirect = `${this.authUrl}/login&state=${appRedirect}`;
     const clientId = this.ursClientId;
 
-    const url = `${this.earthdataUrl}/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirect};`;
+    const url = `${this.earthdataUrl}/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirect}`;
 
     const loginWindow = window.open(
       url,
