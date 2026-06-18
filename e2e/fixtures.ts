@@ -20,7 +20,7 @@ export const test = base.extend({
       }),
     );
 
-    await page.route('**/banners.asf.alaska.edu/calendar', (route) =>
+    await page.route('**/banners.asf.alaska.edu/calendar/**', (route) =>
       route.fulfill({
         status: 200,
         contentType: 'application/json',

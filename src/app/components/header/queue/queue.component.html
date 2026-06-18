@@ -354,11 +354,12 @@
                 </mat-menu>
               }
               <mat-menu #dataMenu="matMenu" yPosition="above">
-                <app-download-all
+                <!-- TODO: Reenable when CORS figured out for data -->
+                <!-- <app-download-all
                   (dlAllEvent)="downloadAllFiles()"
                   [disabled]="!(isLoggedIn$ | async)"
                 >
-                </app-download-all>
+                </app-download-all> -->
                 <button mat-menu-item (click)="onMakeDownloadScript()">
                   {{ 'DOWNLOAD_PYTHON_SCRIPT_PY' | translate }}
                 </button>
