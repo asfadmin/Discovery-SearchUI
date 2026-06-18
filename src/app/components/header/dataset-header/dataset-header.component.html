@@ -9,7 +9,7 @@
         </app-search-type-selector>
         <div class="dataset-header-wrapper">
           <app-dataset-selector
-            [(selected)]="dataset().id"
+            [selected]="dataset().id"
             (selectedChange)="onDatasetChange($event)"
             [datasets]="datasets"
             (click)="closeAOIOptions()"
