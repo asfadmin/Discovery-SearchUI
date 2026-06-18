@@ -23,16 +23,14 @@
         </mat-option>
       }
     </mat-select>
-    @if (dataset | isRelevant: p.POLARIZATION) {
-      <mat-hint align="start">
+    <mat-hint align="start">
+      @if (dataset | isRelevant: p.POLARIZATION) {
         {{ polarizations?.length || 0 }}/{{ dataset.polarizations.length }}
         {{ 'POLARIZATIONS_SELECTED' | translate }}
-      </mat-hint>
-    } @else {
-      <mat-hint align="start">
+      } @else {
         {{ 'NO_POLARIZATIONS_TO_SELECT' | translate }}
-      </mat-hint>
-    }
+      }
+    </mat-hint>
   </mat-form-field>
 
   <mat-form-field class="polarization-select-container">
@@ -58,16 +56,14 @@
         </mat-option>
       }
     </mat-select>
-    @if (dataset | isRelevant: p.POLARIZATION) {
-      <mat-hint align="start">
+    <mat-hint align="start">
+      @if (dataset | isRelevant: p.POLARIZATION) {
         {{ sidePolarizations?.length || 0 }}/{{ dataset.polarizations.length }}
         {{ 'POLARIZATIONS_SELECTED' | translate }}
-      </mat-hint>
-    } @else {
-      <mat-hint align="start">
+      } @else {
         {{ 'NO_POLARIZATIONS_TO_SELECT' | translate }}
-      </mat-hint>
-    }
+      }
+    </mat-hint>
   </mat-form-field>
 
   <mat-form-field class="flight-direction-field">
@@ -85,16 +81,14 @@
       }
     </mat-select>
 
-    @if (dataset | isRelevant: p.FLIGHT_DIRECTION) {
-      <mat-hint align="start">
+    <mat-hint align="start">
+      @if (dataset | isRelevant: p.FLIGHT_DIRECTION) {
         {{ flightDirections?.length || 0 }}/{{ flightDirectionTypes.length }}
         {{ 'FLIGHT_DIRECTIONS_SELECTED' | translate }}
-      </mat-hint>
-    } @else {
-      <mat-hint align="start">
+      } @else {
         {{ 'NO_FLIGHT_DIRECTIONS_TO_SELECT' | translate }}
-      </mat-hint>
-    }
+      }
+    </mat-hint>
   </mat-form-field>
 
   @if (dataset | isRelevant: p.PLATFORM) {
@@ -139,16 +133,14 @@
       }
     </mat-select>
 
-    @if (dataset | isRelevant: p.INSTRUMENT) {
-      <mat-hint align="start">
+    <mat-hint align="start">
+      @if (dataset | isRelevant: p.INSTRUMENT) {
         {{ instruments?.length || 0 }}/{{ dataset.instruments.length }}
         {{ 'INSTRUMENTS_SELECTED' | translate }}
-      </mat-hint>
-    } @else {
-      <mat-hint align="start">
+      } @else {
         {{ 'NO_INSTRUMENTS_TO_SELECT' | translate }}
-      </mat-hint>
-    }
+      }
+    </mat-hint>
   </mat-form-field>
 
   <mat-form-field>
@@ -166,16 +158,14 @@
       </mat-option>
     </mat-select>
 
-    @if (dataset | isRelevant: p.FRAME) {
-      <mat-hint align="start">
+    <mat-hint align="start">
+      @if (dataset | isRelevant: p.FRAME) {
         {{ frameCoverage?.length || 0 }}/2
         {{ 'FRAMES_SELECTED' | translate }}
-      </mat-hint>
-    } @else {
-      <mat-hint align="start">
+      } @else {
         {{ 'NO_FRAMES_TO_SELECT' | translate }}
-      </mat-hint>
-    }
+      }
+    </mat-hint>
   </mat-form-field>
 
   <mat-form-field class="half-width">
@@ -194,16 +184,14 @@
       }
     </mat-select>
 
-    @if (dataset | isRelevant: p.RANGE_BANDWIDTH) {
-      <mat-hint align="start">
+    <mat-hint align="start">
+      @if (dataset | isRelevant: p.RANGE_BANDWIDTH) {
         {{ rangeBandwidth?.length || 0 }}/{{ totalBandwithCount }}
         {{ 'RANGE_BANDWITH_SELECTED' | translate }}
-      </mat-hint>
-    } @else {
-      <mat-hint align="start">
+      } @else {
         {{ 'NO_BANDWITH_TO_SELECT' | translate }}
-      </mat-hint>
-    }
+      }
+    </mat-hint>
   </mat-form-field>
 
   <mat-slide-toggle
