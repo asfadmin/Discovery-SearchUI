@@ -15,16 +15,14 @@
       </mat-option>
     }
   </mat-select>
-  @if (prop.isRelevant(p.FLIGHT_DIRECTION)) {
-    <mat-hint align="start">
+  <mat-hint align="start">
+    @if (dataset() | isRelevant: p.FLIGHT_DIRECTION) {
       {{ (flightDirections$ | async)?.length || 0 }}/{{
         flightDirectionTypes.length
       }}
       {{ 'FLIGHT_DIRECTIONS_SELECTED' | translate }}
-    </mat-hint>
-  } @else {
-    <mat-hint align="start">
+    } @else {
       {{ 'NO_FLIGHT_DIRECTIONS_TO_SELECT' | translate }}
-    </mat-hint>
-  }
+    }
+  </mat-hint>
 </mat-form-field>

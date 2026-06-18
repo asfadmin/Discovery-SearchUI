@@ -1,4 +1,11 @@
-import { Component, Input, OnInit, OnDestroy, inject } from '@angular/core';
+import {
+  Component,
+  input,
+  OnInit,
+  OnDestroy,
+  inject,
+  signal,
+} from '@angular/core';
 import { SubSink } from 'subsink';
 
 import { Store } from '@ngrx/store';
@@ -31,6 +38,7 @@ import { BurstSelectorComponent } from '@components/shared/selectors/burst-selec
 import { OperaS1SelectorComponent } from '@components/shared/selectors/opera-s1-selector/opera-s1-selector.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { GranuleListSelectorComponent } from '@components/shared/selectors/granule-list-selector/granule-list-selector.component';
+import { IsRelevantPipe } from '@pipes/relevant.pipe';
 // import { TranslateService } from "@ngx-translate/core";
 
 enum FilterPanel {
@@ -68,6 +76,7 @@ enum FilterPanel {
     OperaS1SelectorComponent,
     GranuleListSelectorComponent,
     AsyncPipe,
+    IsRelevantPipe,
     TranslateModule,
   ],
 })
@@ -76,9 +85,12 @@ export class DatasetFiltersComponent implements OnInit, OnDestroy {
   private store$ = inject<Store<AppState>>(Store);
   private screenSize = inject(ScreenSizeService);
 
-  @Input() dataset: models.CMRProduct;
-  @Input() selectedPanel: FilterPanel | null = null;
+  dataset = input<models.CMRProduct | null>(null);
+  selectedPanel = signal<FilterPanel | null>(null);
 
+  public actualDataset = this.store$.selectSignal(
+    filtersStore.getSelectedDataset,
+  );
   panels = FilterPanel;
   defaultPanelOpenState = true;
   panelIsDisabled = true;
@@ -106,12 +118,8 @@ export class DatasetFiltersComponent implements OnInit, OnDestroy {
     this.store$.dispatch(new filtersStore.SetSelectedDataset(dataset));
   }
 
-  public isSelected(panel: FilterPanel): boolean {
-    return this.selectedPanel === panel;
-  }
-
   public selectPanel(panel: FilterPanel): void {
-    this.selectedPanel = panel;
+    this.selectedPanel.set(panel);
   }
 
   public onOpenHelp(url: string): void {

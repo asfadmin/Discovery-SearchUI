@@ -9,14 +9,14 @@
         </app-search-type-selector>
         <div class="dataset-header-wrapper">
           <app-dataset-selector
-            [(selected)]="selectedDataset"
+            [selected]="dataset().id"
             (selectedChange)="onDatasetChange($event)"
             [datasets]="datasets"
             (click)="closeAOIOptions()"
             class="breadcrumb dataset-selector--layout"
           >
           </app-dataset-selector>
-          @if (prop.isRelevant(p.FRAME_ORDERING)) {
+          @if (dataset() | isRelevant: p.FRAME_ORDERING) {
             <div class="on-demand-mode-toggle-wrapper">
               <mat-slide-toggle
                 (change)="test($event.checked)"
@@ -34,9 +34,7 @@
                   class="download-frame-map"
                   matTooltip="{{ 'DOWNLOAD_FRAME_MAP_TOOLTIP' | translate }}"
                 >
-                  <a
-                    (click)="frameMapService.downloadFrameMap(selectedDataset)"
-                  >
+                  <a (click)="frameMapService.downloadFrameMap(dataset().id)">
                     <mat-icon>download</mat-icon>
                   </a>
                 </div>
