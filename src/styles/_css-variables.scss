@@ -1,0 +1,9 @@
+@use 'asf-theme-variables' as *;
+
+@each $theme, $map in $themes {
+  .theme-#{$theme} {
+    @each $key, $value in $map {
+      --asf-#{$key}: #{$value};
+    }
+  }
+}
