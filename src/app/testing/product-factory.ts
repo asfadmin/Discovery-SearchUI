@@ -195,6 +195,10 @@ export class NestedProductFactory {
       }
     }
 
+    if (partials.length === 0) {
+      return this._extendWith(baseProductPart);
+    }
+
     return this._withSplitPartials(partials);
   }
 

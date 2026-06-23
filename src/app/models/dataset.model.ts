@@ -37,6 +37,7 @@ export interface Dataset {
     descending: string;
   };
   productTypeDisplays?: Record<string, string>;
+  productTypeGroups?: Record<string, string[]>;
 }
 
 export enum MissionDataset {

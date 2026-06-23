@@ -143,8 +143,17 @@ export class ProductService {
     }
     return [];
   }
-  public productTypeToGroup(_product: models.CMRProduct, _type: string) {
-    throw new Error('Not implemented');
+  public productTypeToGroup(product: models.CMRProduct, type: string): string {
+    const dataset = models.datasets[product.dataset];
+    if (!dataset.productTypeGroups) {
+      return '';
+    }
+    for (const [group, displays] of Object.entries(dataset.productTypeGroups)) {
+      if (displays.includes(type)) {
+        return group;
+      }
+    }
+    return '';
   }
   public urlToProductType(
     url: string,

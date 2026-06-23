@@ -81,49 +81,54 @@ describe('ProductService', () => {
   });
 
   describe('product types to dataset grouping', () => {
-    it.todo('NISAR Metadata files', () => {
-      expect(
-        service.productTypeToGroup(
-          productFactory
-            .withBasicInfo('NISAR')
-            .withDatasetFull(models.nisar)
-            .build(),
-          'Runconfig YAML',
-        ),
-      ).toBe('Metadata');
+    it('Groups NISAR Metadata files', () => {
+      const product = productFactory
+        .withBasicInfo('NISAR')
+        .withDatasetFull(models.nisar)
+        .build();
+      expect(service.productTypeToGroup(product, 'Runconfig YAML')).toBe(
+        'Metadata',
+      );
     });
-    it.todo('NISAR Product/Data files', () => {
-      expect(
-        service.productTypeToGroup(
-          productFactory
-            .withBasicInfo('NISAR')
-            .withDatasetFull(models.nisar)
-            .build(),
-          'HDF5',
-        ),
-      ).toBe('');
+    it('Groups NISAR Product/Data files', () => {
+      const product = productFactory
+        .withBasicInfo('NISAR')
+        .withDatasetFull(models.nisar)
+        .build();
+      expect(service.productTypeToGroup(product, 'HDF5')).toBe('');
     });
-    it.todo('NISAR Visualization files', () => {
-      expect(
-        service.productTypeToGroup(
-          productFactory
-            .withBasicInfo('NISAR')
-            .withDatasetFull(models.nisar)
-            .build(),
-          'Browse Image PNG',
-        ),
-      ).toBe('Visualizations');
+    it('Groups NISAR Visualization files', () => {
+      const product = productFactory
+        .withBasicInfo('NISAR')
+        .withDatasetFull(models.nisar)
+        .build();
+      expect(service.productTypeToGroup(product, 'Browse Image PNG')).toBe(
+        'Visualizations',
+      );
     });
-    it.todo('NISAR Documentation files', () => {
-      expect(
-        service.productTypeToGroup(
-          productFactory
-            .withBasicInfo('NISAR')
-            .withDatasetFull(models.nisar)
-            .build(),
-          'Log File',
-        ),
-      ).toBe('Documentation');
+    it('Groups NISAR Documentation files', () => {
+      const product = productFactory
+        .withBasicInfo('NISAR')
+        .withDatasetFull(models.nisar)
+        .build();
+      expect(service.productTypeToGroup(product, 'Log File')).toBe(
+        'Documentation',
+      );
+    });
+    it('Returns no group for a dataset without groups defined', () => {
+      const product = productFactory
+        .withBasicInfo('Sentinel-1')
+        .withDatasetFull(models.sentinel_1)
+        .build();
+      expect(service.productTypeToGroup(product, 'Log File')).toBe('');
+    });
+    it.todo('Works for groups defined by pattern (?)', () => {
+      const product = productFactory
+        .withBasicInfo('NISAR')
+        .withDatasetFull(models.nisar)
+        .build();
+
+      expect(service.productTypeToGroup(product, 'L3 SME2 HDF5')).toBe('');
     });
   });
 });
