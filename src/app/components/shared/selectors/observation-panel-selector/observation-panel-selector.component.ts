@@ -21,6 +21,7 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { JoinPipe } from '@pipes/join.pipe';
 import { PolarizationCountPipe } from '@pipes/polarization.pipe';
+import { IsRelevantPipe } from '@pipes/relevant.pipe';
 @Component({
   selector: 'app-observation-panel-selector',
   templateUrl: './observation-panel-selector.component.html',
@@ -40,6 +41,7 @@ import { PolarizationCountPipe } from '@pipes/polarization.pipe';
     TranslateModule,
     JoinPipe,
     PolarizationCountPipe,
+    IsRelevantPipe,
   ],
 })
 export class ObservationPanelSelectorComponent implements OnDestroy, OnInit {

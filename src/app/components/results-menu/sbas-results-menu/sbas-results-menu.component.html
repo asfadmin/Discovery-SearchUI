@@ -5,15 +5,7 @@
     class="mp0 sbas-list-card"
     [style.width]="listCardMaxWidth"
   >
-    <mat-card-subtitle
-      style="
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-      "
-      class="header"
-    >
+    <mat-card-subtitle class="header list-header-row">
       <app-scenes-list-header></app-scenes-list-header>
     </mat-card-subtitle>
     @if (view === Views.LIST) {
@@ -22,7 +14,7 @@
       </div>
     }
     @if (view === Views.DETAIL) {
-      <div style="max-width: 100%" class="w100 h100 scrollable">
+      <div class="w100 h100 scrollable pair-detail-pane">
         @if (pair) {
           <div>
             @for (product of pair; track product) {
@@ -44,26 +36,17 @@
     }
   </mat-card>
   <mat-card class="mp0 sbas-list-card" [style.width]="listCardMaxWidth">
-    <mat-card-subtitle
-      style="
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: flex-start;
-      "
-      class="header"
-    >
-    </mat-card-subtitle>
+    <mat-card-subtitle class="header metadata-header-row"> </mat-card-subtitle>
     <div class="sbas-metadata scrollable">
       @if (!!pair) {
-        <div style="margin: 5px; padding-bottom: 36px">
+        <div class="pair-metadata">
           @for (product of pair; track product) {
             <div>
-              <div style="margin-bottom: 4px">
+              <div class="product-name-spacing">
                 <b class="product-name">{{ product.name }}</b>
               </div>
               @if (datasetForProduct.match(product); as dataset) {
-                <div style="margin-bottom: 12px">
+                <div class="dataset-link-spacing">
                   <a
                     [href]="dataset.infoUrl"
                     target="_blank"
@@ -90,11 +73,8 @@
         </div>
       }
       @if (!pair) {
-        <div style="margin: 5px; padding-bottom: 36px">
-          <div
-            class="faint-text w100 h100"
-            style="text-align: center; padding-top: 10px"
-          >
+        <div class="pair-metadata">
+          <div class="faint-text w100 h100 no-pair-message">
             {{ 'NO_PAIR_SELECTED' | translate }}
           </div>
         </div>

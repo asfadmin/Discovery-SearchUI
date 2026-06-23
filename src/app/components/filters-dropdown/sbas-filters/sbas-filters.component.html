@@ -14,9 +14,8 @@
           {{ 'SEARCH_OPTIONS' | translate }}
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <div style="display: flex; margin-top: 25px">
-        <app-search-type-selector style="margin-right: 10px">
-        </app-search-type-selector>
+      <div class="search-options-row">
+        <app-search-type-selector> </app-search-type-selector>
       </div>
     </mat-expansion-panel>
   }
@@ -36,10 +35,7 @@
           {{ panels.MASTER | uppercase | translate }}
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <div
-        class="breadcrumb"
-        style="display: flex; align-items: center; margin-top: 15px"
-      >
+      <div class="breadcrumb reference-toggle-row">
         <app-baseline-frame-reference-toggle></app-baseline-frame-reference-toggle>
       </div>
       @if (shouldUseFramesForReference) {
@@ -52,7 +48,7 @@
           ></app-dataset-selector>
         </div>
       }
-      <div class="w100" style="display: flex; margin-top: 25px">
+      <div class="w100 search-options-row">
         <app-master-scene-selector class="w100"></app-master-scene-selector>
       </div>
       <div class="sbas-example">
@@ -61,7 +57,6 @@
         <app-copy-to-clipboard
           value="S1B_IW_SLC__1SDV_20210704T135937_20210704T140004_027645_034CB0_4B2C"
           prompt="{{ 'COPY_NAME' | translate }}"
-          style="margin: 0 3px"
           class="clipboard-icon"
         >
         </app-copy-to-clipboard>
@@ -87,7 +82,7 @@
         [collapsedHeight]="customCollapsedHeight"
         [expandedHeight]="customExpandedHeight"
       >
-        <mat-panel-title style="align-items: center">
+        <mat-panel-title class="panel-title">
           {{ 'DATE_FILTERS' | translate }}
           <app-docs-modal
             class="info-icon"
@@ -96,7 +91,7 @@
           </app-docs-modal>
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <div style="margin-top: 20px">
+      <div class="selector-card-spacing">
         <app-date-selector></app-date-selector>
         <app-season-selector></app-season-selector>
       </div>
@@ -138,7 +133,7 @@
           </app-docs-modal>
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <div style="margin-top: 20px">
+      <div class="selector-card-spacing">
         <app-sbas-overlap-selector></app-sbas-overlap-selector>
       </div>
     </mat-expansion-panel>

@@ -38,7 +38,7 @@
           {{ searchTranslation[filterPreset.searchType] | translate }}
         </div>
 
-        <div style="margin-top: 5px">
+        <div class="filter-detail-spacing">
           @if (filterPreset.searchType === SearchType.DATASET) {
             <span>
               {{ (filterPreset.filters | geographicFilter).selectedDataset }}

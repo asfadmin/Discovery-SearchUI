@@ -74,6 +74,13 @@ $bottom-offset: 10px;
   overflow: hidden;
 }
 
+.mini-button {
+  font-size: 12px !important;
+  padding: 0 4px !important;
+  line-height: 24px !important;
+  min-width: 1% !important;
+}
+
 .no-job-selected {
   font-size: 18px;
   display: flex;
