@@ -12,7 +12,8 @@
 
 $config: mat.m2-define-legacy-typography-config();
 .breadcrumb-list {
-  background-color: var(--asf-background-white, white);
+  color-scheme: light dark;
+  background-color: light-dark($asf-background-white, darken($asf-dark-primary, 5%));
 }
 
 .header-buttons-input {
