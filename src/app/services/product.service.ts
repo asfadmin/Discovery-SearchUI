@@ -143,7 +143,9 @@ export class ProductService {
     }
     return [];
   }
-
+  public productTypeToGroup(_product: models.CMRProduct, _type: string) {
+    throw new Error('Not implemented');
+  }
   public urlToProductType(
     url: string,
     productTypeDisplay: Record<string, string>,
