@@ -5,7 +5,7 @@
     background: themed('background-white');
   }
 
-  position: fixed;
+  position: relative; // hacky fix to prevent z-index issues with the canvas element.
 }
 
 .results-menu--layout {

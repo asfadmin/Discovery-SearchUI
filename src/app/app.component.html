@@ -1,21 +1,14 @@
-<mat-sidenav-container
-  class="container"
-  [class.tophat-offset]="!hyp3PlusMode()"
-  [class.no-tophat-offset]="hyp3PlusMode()"
-  (backdropClick)="onCloseSidebar()"
->
-  <mat-sidenav
-    [ngClass]="{
+<mat-sidenav-container class="container" [class.tophat-offset]="!hyp3PlusMode()"
+  [class.no-tophat-offset]="hyp3PlusMode()" (backdropClick)="onCloseSidebar()">
+  <mat-sidenav [ngClass]="{
       'app-sidenav-mobile': breakpoint <= breakpoints.SMALL,
       'app-sidenav': breakpoint > breakpoints.SMALL,
-    }"
-    #sidenav
-  >
+    }" #sidenav>
     <app-sidebar></app-sidebar>
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <div>
+    <div class="sidenav-content">
       <app-header [isLoading]="isLoading$ | async"> </app-header>
 
       <app-map (loadUrlState)="onLoadUrlState()"> </app-map>
