@@ -19,6 +19,8 @@ import { MatSelect, MatOption } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { ShortNameSelectorComponent } from '../short-name-selector/short-name-selector.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { IsRelevantPipe } from '@pipes/relevant.pipe';
+import { UpperCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-other-selector',
@@ -36,6 +38,8 @@ import { TranslateModule } from '@ngx-translate/core';
     MatInput,
     ShortNameSelectorComponent,
     TranslateModule,
+    IsRelevantPipe,
+    UpperCasePipe,
   ],
 })
 export class OtherSelectorComponent implements OnInit, OnDestroy {

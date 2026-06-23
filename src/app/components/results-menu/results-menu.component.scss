@@ -171,9 +171,21 @@
   }
 }
 
+.results-pane {
+  justify-content: center;
+}
+
 .no-products-actions {
   display: flex;
   flex-direction: column;
+}
+
+.no-jobs-message {
+  margin-bottom: 14px;
+}
+
+.action-link-spacing {
+  margin-bottom: 5px;
 }
 
 .mat-mdc-card-content {

@@ -43,6 +43,7 @@ import { SceneMetadataComponent } from '@components/shared/scene-metadata/scene-
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
+import { IsRelevantPipe } from '@pipes/relevant.pipe';
 
 @Component({
   selector: 'app-scene-detail',
@@ -66,6 +67,7 @@ import { TranslateModule } from '@ngx-translate/core';
     UpperCasePipe,
     TitleCasePipe,
     TranslateModule,
+    IsRelevantPipe,
   ],
 })
 export class SceneDetailComponent implements OnInit, OnDestroy {

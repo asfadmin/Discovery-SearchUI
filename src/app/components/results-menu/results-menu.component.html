@@ -43,8 +43,7 @@
               (areNoScenes$ | async) &&
               searchType !== SearchTypes.CUSTOM_PRODUCTS
             "
-            class="h100"
-            style="justify-content: center"
+            class="h100 results-pane"
           >
             @if (products.length !== 0) {
               <div class="results-menu--background h100 w100 mp0 fx-row">
@@ -109,11 +108,11 @@
                 class="results-menu--background no-results faint-text h100 w100 mp0 fx-col"
               >
                 <div class="no-products-actions">
-                  <div style="margin-bottom: 14px">
+                  <div class="no-jobs-message">
                     {{ 'NO_JOBS_SUBMITTED' | translate }}
                   </div>
                   <a
-                    style="margin-bottom: 5px"
+                    class="action-link-spacing"
                     mat-flat-button
                     color="primary"
                     href="https://asfhyp3.github.io/using/vertex/"
@@ -123,7 +122,7 @@
                   </a>
                   <a
                     mat-flat-button
-                    style="margin-bottom: 5px"
+                    class="action-link-spacing"
                     color="primary"
                     href="javascript:feedback.showForm();"
                   >

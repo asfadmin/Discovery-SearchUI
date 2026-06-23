@@ -1,6 +1,5 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { SubSink } from 'subsink';
 
 import { AppState } from '@store';
 import * as uiStore from '@store/ui';
@@ -23,6 +22,7 @@ import { SearchButtonComponent } from '@components/shared/search-button/search-b
 import { MaxResultsSelectorComponent } from '@components/shared/max-results-selector/max-results-selector.component';
 import { HeaderButtonsComponent } from '../header-buttons/header-buttons.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { IsRelevantPipe } from '@pipes/relevant.pipe';
 
 @Component({
   selector: 'app-dataset-header',
@@ -44,9 +44,10 @@ import { TranslateModule } from '@ngx-translate/core';
     HeaderButtonsComponent,
     AsyncPipe,
     TranslateModule,
+    IsRelevantPipe,
   ],
 })
-export class DatasetHeaderComponent implements OnInit, OnDestroy {
+export class DatasetHeaderComponent {
   private store$ = inject<Store<AppState>>(Store);
   private screenSize = inject(services.ScreenSizeService);
   prop = inject(services.PropertyService);
@@ -59,20 +60,8 @@ export class DatasetHeaderComponent implements OnInit, OnDestroy {
     uiStore.getIsFrameSelectionEnabled,
   );
   public breakpoints = models.Breakpoints;
-  private subs = new SubSink();
-
-  public selectedDataset: string;
+  public dataset = this.store$.selectSignal(filterStore.getSelectedDataset);
   public p = models.Props;
-
-  ngOnInit() {
-    this.subs.add(
-      this.store$
-        .select(filterStore.getSelectedDatasetId)
-        .subscribe((selected) => {
-          this.selectedDataset = selected;
-        }),
-    );
-  }
 
   public onToggleFiltersMenu(): void {
     this.store$.dispatch(new uiStore.OpenFiltersMenu());
@@ -88,9 +77,5 @@ export class DatasetHeaderComponent implements OnInit, OnDestroy {
   }
   public test(value: boolean): void {
     this.store$.dispatch(new uiStore.SetFrameSelection(value));
-  }
-
-  ngOnDestroy() {
-    this.subs.unsubscribe();
   }
 }

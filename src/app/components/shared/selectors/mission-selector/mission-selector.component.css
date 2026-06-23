@@ -1,0 +1,24 @@
+.selected {
+  padding-top: 12px;
+}
+
+.selected-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.selected-label {
+  margin-left: 20px;
+}
+
+.clear-mission-icon {
+  margin-right: 10px;
+}
+
+.selected-divider {
+  margin-top: 12px;
+}
+
+.mission-list-viewport {
+  height: 250px;
+}

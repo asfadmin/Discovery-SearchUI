@@ -1,6 +1,6 @@
 @if (searchType$ | async; as type) {
   @if (type === searchTypes.DISPLACEMENT) {
-    <mat-form-field style="display: block">
+    <mat-form-field class="burst-id-field">
       <mat-label>{{ 'BURST_ID_FULL' | translate }}</mat-label>
       <input
         type="text"
@@ -10,7 +10,7 @@
       />
     </mat-form-field>
   } @else {
-    <mat-form-field style="display: block">
+    <mat-form-field class="burst-id-field">
       <mat-label>{{ 'BURST_ID_FULL' | translate }}</mat-label>
       <textarea
         matInput
