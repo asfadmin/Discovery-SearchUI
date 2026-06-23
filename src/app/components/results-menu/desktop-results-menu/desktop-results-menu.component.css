@@ -1,3 +1,8 @@
+#results-div {
+  display: flex;
+  flex-direction: column;
+}
+
 .desktop-results-menu {
   display: flex;
 }
@@ -36,4 +41,8 @@
   flex: 1 1 100%;
   box-sizing: border-box;
   max-width: 50%;
+}
+
+.mat-mdc-card {
+  box-shadow: none;
 }
