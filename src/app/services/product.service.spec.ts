@@ -107,7 +107,7 @@ describe('ProductService', () => {
         .withBasicInfo('NISAR')
         .withDatasetFull(models.nisar)
         .build();
-      expect(service.productTypeToGroup(product, 'HDF5')).toBe('');
+      expect(service.productTypeToGroup(product, 'HDF5')).toBe(null);
     });
 
     it('Groups NISAR Visualization files', () => {
@@ -135,7 +135,7 @@ describe('ProductService', () => {
         .withBasicInfo('Sentinel-1')
         .withDatasetFull(models.sentinel_1)
         .build();
-      expect(service.productTypeToGroup(product, 'Log File')).toBe('');
+      expect(service.productTypeToGroup(product, 'Log File')).toBe(null);
     });
 
     it('Groups by regular expression pattern', () => {
@@ -147,7 +147,7 @@ describe('ProductService', () => {
         // not sure which ones this is needed for yet so mock this
         {
           name: 'Visualizations',
-          files: ['.*PNG', '.*KML'],
+          files: [/.*PNG/, /.*KML/],
         },
       ]);
 

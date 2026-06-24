@@ -44,7 +44,7 @@ export class ProductService {
       const product: models.CMRProduct = {
         name: g.gn,
         productTypeDisplay: g.ptd ?? g.gn,
-        productTypeGroup: '',
+        productTypeGroup: null,
         file: filename,
         id: g.pid.replaceAll('{gn}', g.gn),
         downloadUrl: g.du.replaceAll('{gn}', g.gn),
@@ -161,14 +161,14 @@ export class ProductService {
   public productTypeToGroup(product: models.CMRProduct, type: string): string {
     const dataset = models.datasets[product.dataset];
     if (!dataset.productTypeGroups) {
-      return '';
+      return null;
     }
     for (const { name, files } of dataset.productTypeGroups) {
-      if (files.some((pattern) => new RegExp(pattern).test(type))) {
+      if (files.some((pattern) => pattern.test(type))) {
         return name;
       }
     }
-    return '';
+    return null;
   }
   public urlToProductType(
     url: string,
