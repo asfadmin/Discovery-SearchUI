@@ -61,7 +61,7 @@ export class ProductService {
         (subproduct) => {
           subproduct.productTypeGroup = this.productTypeToGroup(
             subproduct,
-            subproduct.productTypeDisplay,
+            subproduct?.productTypeDisplay,
           );
           return subproduct;
         },
@@ -69,7 +69,7 @@ export class ProductService {
 
       product.productTypeGroup = this.productTypeToGroup(
         product,
-        product.productTypeDisplay,
+        product?.productTypeDisplay,
       );
 
       if (product.metadata?.opera) {
@@ -160,7 +160,7 @@ export class ProductService {
   }
   public productTypeToGroup(product: models.CMRProduct, type: string): string {
     const dataset = models.datasets[product.dataset];
-    if (!dataset.productTypeGroups) {
+    if (!dataset?.productTypeGroups) {
       return null;
     }
     for (const { name, files } of dataset.productTypeGroups) {

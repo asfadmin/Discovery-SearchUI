@@ -193,6 +193,7 @@ export class SearchEffects {
               return of(new SearchError(errorMsg));
             }
             if (err.status !== 400) {
+              console.log(err);
               return of(new SearchError('Unknown Error'));
             }
 
