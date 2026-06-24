@@ -169,11 +169,11 @@ export const nisar = {
     qa: 'QA Statistics HDF5',
     bin: 'Bin File',
   },
-  productTypeGroups: {
-    Metadata: ['Runconfig YAML', 'Footprint KML'],
-    Visualizations: ['Browse Image PNG'],
-    Documentation: ['Log File'],
-  },
+  productTypeGroups: [
+    { name: 'Metadata', files: ['Runconfig YAML', 'Footprint KML'] },
+    { name: 'Visualizations', files: ['Browse Image PNG', '.*PNG'] },
+    { name: 'Documentation', files: ['Log File'] },
+  ],
 };
 
 export const L1L2BrowseCollectionMapping = {

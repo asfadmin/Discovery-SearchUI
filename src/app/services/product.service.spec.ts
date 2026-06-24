@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { ProductService } from './product.service';
 import * as models from '@models';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { productFactory } from '@testing/product-factory';
 
 describe('ProductService', () => {
@@ -13,9 +13,14 @@ describe('ProductService', () => {
     service = TestBed.inject(ProductService);
   });
 
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
   it('should parse old links correctly', () => {
     const url =
       'https://datapool.asf.alaska.edu/RTC/OPERA-S1/OPERA_L2_RTC-S1_T001-000189-IW2_20211028T180924Z_20250703T015334Z_S1A_30_v1.0_VH.tif';
@@ -31,6 +36,7 @@ describe('ProductService', () => {
         service.urlToProductType(url, models.opera_s1.productTypeDisplays),
       ).toBe('VH');
     });
+
     it('should parse a base download url', () => {
       const url =
         'https://cumulus.asf.earthdatacloud.nasa.gov/OPERA/OPERA_L2_RTC-S1/OPERA_L2_RTC-S1_T140-299545-IW1_20250929T073003Z_20251003T012020Z_S1C_30_v1.0/OPERA_L2_RTC-S1_T140-299545-IW1_20250929T073003Z_20251003T012020Z_S1C_30_v1.0.h5';
@@ -38,6 +44,7 @@ describe('ProductService', () => {
         service.urlToProductType(url, models.opera_s1.productTypeDisplays),
       ).toBe('h5');
     });
+
     it('should parse links with more than one word', () => {
       const datapool =
         'https://datapool.asf.alaska.edu/RTC-STATIC/OPERA-S1/OPERA_L2_RTC-S1-STATIC_T144-308004-IW3_20140403_S1A_30_v1.0_number_of_looks.tif';
@@ -50,6 +57,7 @@ describe('ProductService', () => {
         service.urlToProductType(cumulus, models.opera_s1.productTypeDisplays),
       ).toBe('number_of_looks');
     });
+
     it('should parse xml cumulus link', () => {
       const url =
         'https://cumulus.asf.earthdatacloud.nasa.gov/OPERA/OPERA_L4_TROPO-ZENITH_V1/OPERA_L4_TROPO-ZENITH_20251003T180000Z_20251006T000715Z_HRES_v1.0/OPERA_L4_TROPO-ZENITH_20251003T180000Z_20251006T000715Z_HRES_v1.0.iso.xml';
@@ -57,6 +65,7 @@ describe('ProductService', () => {
         service.urlToProductType(url, models.opera_s1.productTypeDisplays),
       ).toBe('xml');
     });
+
     it('should parse netcdf cumulus link', () => {
       const url =
         'https://cumulus.asf.earthdatacloud.nasa.gov/OPERA/OPERA_L4_TROPO-ZENITH_V1/OPERA_L4_TROPO-ZENITH_20251003T180000Z_20251006T000715Z_HRES_v1.0/OPERA_L4_TROPO-ZENITH_20251003T180000Z_20251006T000715Z_HRES_v1.0.nc';
@@ -64,6 +73,7 @@ describe('ProductService', () => {
         service.urlToProductType(url, models.opera_s1.productTypeDisplays),
       ).toBe('nc');
     });
+
     it('should parse seasat hdf5 link', () => {
       const url =
         'https://cumulus.asf.earthdatacloud.nasa.gov/SEASAT/SS_01502_STD_F2536/SS_01502_STD_F2536.h5';
@@ -71,6 +81,7 @@ describe('ProductService', () => {
         service.urlToProductType(url, models.seasat.productTypeDisplays),
       ).toBe('h5');
     });
+
     it('should parse seasat geotiff s3 link', () => {
       const url =
         'https://cumulus.asf.earhtdatacloud.nasa.gov/SEASAT/SS_01502_STD_F2536/SS_01502_STD_F2536.tif';
@@ -90,6 +101,7 @@ describe('ProductService', () => {
         'Metadata',
       );
     });
+
     it('Groups NISAR Product/Data files', () => {
       const product = productFactory
         .withBasicInfo('NISAR')
@@ -97,6 +109,7 @@ describe('ProductService', () => {
         .build();
       expect(service.productTypeToGroup(product, 'HDF5')).toBe('');
     });
+
     it('Groups NISAR Visualization files', () => {
       const product = productFactory
         .withBasicInfo('NISAR')
@@ -106,6 +119,7 @@ describe('ProductService', () => {
         'Visualizations',
       );
     });
+
     it('Groups NISAR Documentation files', () => {
       const product = productFactory
         .withBasicInfo('NISAR')
@@ -115,6 +129,7 @@ describe('ProductService', () => {
         'Documentation',
       );
     });
+
     it('Returns no group for a dataset without groups defined', () => {
       const product = productFactory
         .withBasicInfo('Sentinel-1')
@@ -122,13 +137,42 @@ describe('ProductService', () => {
         .build();
       expect(service.productTypeToGroup(product, 'Log File')).toBe('');
     });
-    it.todo('Works for groups defined by pattern (?)', () => {
+
+    it('Groups by regular expression pattern', () => {
+      vi.spyOn(
+        models.datasets['NISAR'],
+        'productTypeGroups',
+        'get',
+      ).mockReturnValue([
+        // not sure which ones this is needed for yet so mock this
+        {
+          name: 'Visualizations',
+          files: ['.*PNG', '.*KML'],
+        },
+      ]);
+
       const product = productFactory
         .withBasicInfo('NISAR')
         .withDatasetFull(models.nisar)
         .build();
 
-      expect(service.productTypeToGroup(product, 'L3 SME2 HDF5')).toBe('');
+      expect(service.productTypeToGroup(product, 'Browse Image PNG')).toBe(
+        'Visualizations',
+      );
+      expect(service.productTypeToGroup(product, 'Footprint KML')).toBe(
+        'Visualizations',
+      );
+    });
+
+    it('Groups by regular expression pattern for real dataset value', () => {
+      const product = productFactory
+        .withBasicInfo('NISAR')
+        .withDatasetFull(models.nisar)
+        .build();
+
+      expect(service.productTypeToGroup(product, 'Really cool test PNG')).toBe(
+        'Visualizations',
+      );
     });
   });
 });

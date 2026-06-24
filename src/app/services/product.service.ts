@@ -148,9 +148,9 @@ export class ProductService {
     if (!dataset.productTypeGroups) {
       return '';
     }
-    for (const [group, displays] of Object.entries(dataset.productTypeGroups)) {
-      if (displays.includes(type)) {
-        return group;
+    for (const { name, files } of dataset.productTypeGroups) {
+      if (files.some((pattern) => new RegExp(pattern).test(type))) {
+        return name;
       }
     }
     return '';
