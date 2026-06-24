@@ -94,7 +94,17 @@
               </app-docs-modal>
             } @else {
               <details open (open)="onSetDetailsOpen($event)">
-                <summary class="clickable"></summary>
+                <summary class="clickable">
+                  @if (dataset.id === 'NISAR') {
+                    <app-docs-modal
+                      class="info-text"
+                      text="{{ scene.metadata.productType }} docs"
+                      url="{{ productTypeDocsUrl }}"
+                    >
+                    </app-docs-modal>
+                  }
+                </summary>
+
                 <app-scene-metadata
                   [scene]="scene"
                   [dataset]="dataset"
@@ -128,25 +138,6 @@
                     </app-scene-metadata>
                   </div>
                 }
-                <!-- <div *ngIf="scene.metadata.job.scenes.length > 1">
-                    <hr />
-                    <span class="detail-card-header">
-                      <b>{{ scene.metadata.job.scenes[1].name }}</b>
-                      (<i>{{ 'SECONDARY_SCENE' | translate }}</i>)
-                    </span>
-                    <app-copy-to-clipboard
-                      [value]="scene.metadata.job.scenes[1].name"
-                      prompt="{{'COPY_SECONDARY_SCENE_NAME' | translate}}"
-                      class="clipboard-icon"
-                    ></app-copy-to-clipboard>
-                    <app-scene-metadata
-                      [scene]="scene.metadata.job.scenes[1]"
-                      [dataset]="dataset"
-                      [searchType]="searchType"
-                      [offsets]="masterOffsets$ | async"
-                      >
-                    </app-scene-metadata>
-                  </div> -->
               </div>
             }
           </div>
