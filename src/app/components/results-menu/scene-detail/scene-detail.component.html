@@ -98,8 +98,10 @@
                   @if (dataset.id === 'NISAR') {
                     <app-docs-modal
                       class="info-text"
-                      text="{{ scene.metadata.productType }} docs"
-                      url="{{ productTypeDocsUrl }}"
+                      text="{{ scene.metadata.productType }} {{
+                        'DOCS' | translate
+                      }}"
+                      [url]="productTypeDocsUrl"
                     >
                     </app-docs-modal>
                   }
