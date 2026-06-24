@@ -44,6 +44,7 @@ export class ProductService {
       const product: models.CMRProduct = {
         name: g.gn,
         productTypeDisplay: g.ptd ?? g.gn,
+        productTypeGroup: '',
         file: filename,
         id: g.pid.replaceAll('{gn}', g.gn),
         downloadUrl: g.du.replaceAll('{gn}', g.gn),
@@ -56,7 +57,21 @@ export class ProductService {
         metadata: this.getMetadataFrom(g),
       };
 
-      product.metadata.subproducts = this.getSubproducts(product);
+      product.metadata.subproducts = this.getSubproducts(product).map(
+        (subproduct) => {
+          subproduct.productTypeGroup = this.productTypeToGroup(
+            subproduct,
+            subproduct.productTypeDisplay,
+          );
+          return subproduct;
+        },
+      );
+
+      product.productTypeGroup = this.productTypeToGroup(
+        product,
+        product.productTypeDisplay,
+      );
+
       if (product.metadata?.opera) {
         product.bytes =
           product?.metadata?.opera?.bytes?.[product.file]?.bytes || 0;

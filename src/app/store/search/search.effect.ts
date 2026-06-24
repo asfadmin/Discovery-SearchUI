@@ -380,6 +380,7 @@ export class SearchEffects {
               {
                 name: '20221107_20221213.unw.nc',
                 productTypeDisplay: '20221107_20221213.unw.nc',
+                productTypeGroup: '',
                 file: '20221107_20221213.unw.nc',
                 id: '20221107_20221213.unw.nc',
                 downloadUrl: '',

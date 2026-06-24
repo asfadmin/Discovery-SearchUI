@@ -39,6 +39,7 @@ export class ProductFactory {
       createProduct({
         name: name,
         productTypeDisplay: '',
+        productTypeGroup: '',
         file: '',
         id: '',
         downloadUrl: '',

@@ -8,6 +8,7 @@ export type CMRProductsById = Record<string, CMRProduct>;
 export interface CMRProduct {
   name: string;
   productTypeDisplay: string;
+  productTypeGroup: string;
   file: string;
   id: string;
   downloadUrl: string;
