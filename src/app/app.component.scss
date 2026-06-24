@@ -53,4 +53,6 @@
 
 .mat-sidenav-content {
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }

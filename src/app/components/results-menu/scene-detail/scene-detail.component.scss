@@ -228,6 +228,8 @@ a {
   flex-direction: row;
   box-sizing: border-box;
   display: flex;
+
+  margin-bottom: 56px; // Add margin space for toolbar
 }
 
 .scene-detail--layout {
@@ -243,3 +245,4 @@ a {
   padding-left: 0;
   padding-right: 0;
 }
+
