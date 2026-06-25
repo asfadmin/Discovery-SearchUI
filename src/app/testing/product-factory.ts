@@ -39,6 +39,7 @@ export class ProductFactory {
       createProduct({
         name: name,
         productTypeDisplay: '',
+        productTypeGroup: '',
         file: '',
         id: '',
         downloadUrl: '',
@@ -193,6 +194,10 @@ export class NestedProductFactory {
           }
         }
       }
+    }
+
+    if (partials.length === 0) {
+      return this._extendWith(baseProductPart);
     }
 
     return this._withSplitPartials(partials);

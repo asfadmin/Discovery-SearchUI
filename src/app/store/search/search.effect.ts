@@ -193,6 +193,7 @@ export class SearchEffects {
               return of(new SearchError(errorMsg));
             }
             if (err.status !== 400) {
+              console.log(err);
               return of(new SearchError('Unknown Error'));
             }
 
@@ -380,6 +381,7 @@ export class SearchEffects {
               {
                 name: '20221107_20221213.unw.nc',
                 productTypeDisplay: '20221107_20221213.unw.nc',
+                productTypeGroup: '',
                 file: '20221107_20221213.unw.nc',
                 id: '20221107_20221213.unw.nc',
                 downloadUrl: '',
