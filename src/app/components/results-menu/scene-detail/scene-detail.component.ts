@@ -101,7 +101,6 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public selectedProducts: models.CMRProduct[];
   public hasBaseline: boolean;
   public browseIndex = 0;
-  public detailsOpen = true;
   public masterOffsets$ = this.store$.select(scenesStore.getMasterOffsets);
   public asfWebsite = models.asfWebsite;
   public productTypeDocsUrl: string | null = null;
@@ -437,10 +436,6 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     }
 
     this.store$.dispatch(new searchStore.MakeSearch());
-  }
-
-  public onSetDetailsOpen(event: Event) {
-    this.detailsOpen = (event.target as HTMLDetailsElement).open;
   }
 
   public isRestrictedDataset(): boolean {
