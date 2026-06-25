@@ -421,7 +421,6 @@
                         : (burstMetadataProducts$ | async),
                   }"
                 >
-                  {{ isBurstStack$ | async }}
                   {{
                     searchType !== SearchTypes.SBAS
                       ? downloadableProds.length
