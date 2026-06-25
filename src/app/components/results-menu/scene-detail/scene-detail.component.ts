@@ -101,9 +101,9 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
   public selectedProducts: models.CMRProduct[];
   public hasBaseline: boolean;
   public browseIndex = 0;
-  public detailsOpen = true;
   public masterOffsets$ = this.store$.select(scenesStore.getMasterOffsets);
   public asfWebsite = models.asfWebsite;
+  public productTypeDocsUrl: string | null = null;
 
   private defaultBaselineFiltersID = '';
   private defaultSBASFiltersID = '';
@@ -154,7 +154,14 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
           map((scene) => this.datasetForProduct.match(scene)),
           tap((dataset) => (this.dataset = dataset)),
         )
-        .subscribe((_) => this.updateHasBaseline()),
+        .subscribe((_) => {
+          if (this.dataset.id == 'NISAR') {
+            this.productTypeDocsUrl = `https://nisar-docs.asf.alaska.edu/${this.scene.metadata.productType.toLowerCase()}/`;
+          } else {
+            this.productTypeDocsUrl = null;
+          }
+          this.updateHasBaseline();
+        }),
     );
 
     this.subs.add(
@@ -429,10 +436,6 @@ export class SceneDetailComponent implements OnInit, OnDestroy {
     }
 
     this.store$.dispatch(new searchStore.MakeSearch());
-  }
-
-  public onSetDetailsOpen(event: Event) {
-    this.detailsOpen = (event.target as HTMLDetailsElement).open;
   }
 
   public isRestrictedDataset(): boolean {
