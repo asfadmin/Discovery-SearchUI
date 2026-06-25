@@ -135,7 +135,7 @@ export class ResultsMenuComponent implements OnInit, OnDestroy {
   }
 
   public onResizeEnd(event: ResizeEvent): void {
-    const maxHeight = window.innerHeight - 160;
+    const maxHeight = window.innerHeight - 384;
     const newHeight = event.rectangle.height;
 
     this.menuHeightPx = Math.min(newHeight, maxHeight);
