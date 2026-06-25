@@ -25,7 +25,10 @@ describe('ProductService', () => {
     const url =
       'https://datapool.asf.alaska.edu/RTC/OPERA-S1/OPERA_L2_RTC-S1_T001-000189-IW2_20211028T180924Z_20250703T015334Z_S1A_30_v1.0_VH.tif';
     expect(
-      service.urlToProductType(url, models.opera_s1.productTypeDisplays),
+      service.urlToProductType(
+        url,
+        models.opera_s1.productTypeDisplays.displays,
+      ),
     ).toBe('VH');
   });
   describe('parse to product types', () => {
@@ -33,7 +36,10 @@ describe('ProductService', () => {
       const url =
         'https://cumulus.asf.earthdatacloud.nasa.gov/OPERA/OPERA_L2_RTC-S1/OPERA_L2_RTC-S1_T139-297356-IW2_20250929T054926Z_20251002T213318Z_S1C_30_v1.0/OPERA_L2_RTC-S1_T139-297356-IW2_20250929T054926Z_20251002T213318Z_S1C_30_v1.0_VH.tif';
       expect(
-        service.urlToProductType(url, models.opera_s1.productTypeDisplays),
+        service.urlToProductType(
+          url,
+          models.opera_s1.productTypeDisplays.displays,
+        ),
       ).toBe('VH');
     });
 
@@ -41,7 +47,10 @@ describe('ProductService', () => {
       const url =
         'https://cumulus.asf.earthdatacloud.nasa.gov/OPERA/OPERA_L2_RTC-S1/OPERA_L2_RTC-S1_T140-299545-IW1_20250929T073003Z_20251003T012020Z_S1C_30_v1.0/OPERA_L2_RTC-S1_T140-299545-IW1_20250929T073003Z_20251003T012020Z_S1C_30_v1.0.h5';
       expect(
-        service.urlToProductType(url, models.opera_s1.productTypeDisplays),
+        service.urlToProductType(
+          url,
+          models.opera_s1.productTypeDisplays.displays,
+        ),
       ).toBe('h5');
     });
 
@@ -51,10 +60,16 @@ describe('ProductService', () => {
       const cumulus =
         'https://cumulus.asf.earthdatacloud.nasa.gov/OPERA/OPERA-S1/OPERA_L2_RTC-S1-STATIC_T144-308004-IW3_20140403_S1A_30_v1.0_number_of_looks.tif';
       expect(
-        service.urlToProductType(datapool, models.opera_s1.productTypeDisplays),
+        service.urlToProductType(
+          datapool,
+          models.opera_s1.productTypeDisplays.displays,
+        ),
       ).toBe('number_of_looks');
       expect(
-        service.urlToProductType(cumulus, models.opera_s1.productTypeDisplays),
+        service.urlToProductType(
+          cumulus,
+          models.opera_s1.productTypeDisplays.displays,
+        ),
       ).toBe('number_of_looks');
     });
 
@@ -62,7 +77,10 @@ describe('ProductService', () => {
       const url =
         'https://cumulus.asf.earthdatacloud.nasa.gov/OPERA/OPERA_L4_TROPO-ZENITH_V1/OPERA_L4_TROPO-ZENITH_20251003T180000Z_20251006T000715Z_HRES_v1.0/OPERA_L4_TROPO-ZENITH_20251003T180000Z_20251006T000715Z_HRES_v1.0.iso.xml';
       expect(
-        service.urlToProductType(url, models.opera_s1.productTypeDisplays),
+        service.urlToProductType(
+          url,
+          models.opera_s1.productTypeDisplays.displays,
+        ),
       ).toBe('xml');
     });
 
@@ -70,7 +88,10 @@ describe('ProductService', () => {
       const url =
         'https://cumulus.asf.earthdatacloud.nasa.gov/OPERA/OPERA_L4_TROPO-ZENITH_V1/OPERA_L4_TROPO-ZENITH_20251003T180000Z_20251006T000715Z_HRES_v1.0/OPERA_L4_TROPO-ZENITH_20251003T180000Z_20251006T000715Z_HRES_v1.0.nc';
       expect(
-        service.urlToProductType(url, models.opera_s1.productTypeDisplays),
+        service.urlToProductType(
+          url,
+          models.opera_s1.productTypeDisplays.displays,
+        ),
       ).toBe('nc');
     });
 
@@ -78,7 +99,10 @@ describe('ProductService', () => {
       const url =
         'https://cumulus.asf.earthdatacloud.nasa.gov/SEASAT/SS_01502_STD_F2536/SS_01502_STD_F2536.h5';
       expect(
-        service.urlToProductType(url, models.seasat.productTypeDisplays),
+        service.urlToProductType(
+          url,
+          models.seasat.productTypeDisplays.displays,
+        ),
       ).toBe('h5');
     });
 
@@ -86,7 +110,10 @@ describe('ProductService', () => {
       const url =
         'https://cumulus.asf.earhtdatacloud.nasa.gov/SEASAT/SS_01502_STD_F2536/SS_01502_STD_F2536.tif';
       expect(
-        service.urlToProductType(url, models.seasat.productTypeDisplays),
+        service.urlToProductType(
+          url,
+          models.seasat.productTypeDisplays.displays,
+        ),
       ).toBe('tif');
     });
   });
@@ -140,8 +167,8 @@ describe('ProductService', () => {
 
     it('Groups by regular expression pattern', () => {
       vi.spyOn(
-        models.datasets['NISAR'],
-        'productTypeGroups',
+        models.datasets['NISAR'].productTypeDisplays,
+        'groups',
         'get',
       ).mockReturnValue([
         // not sure which ones this is needed for yet so mock this

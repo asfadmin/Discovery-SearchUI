@@ -160,10 +160,11 @@ export class ProductService {
   }
   public productTypeToGroup(product: models.CMRProduct, type: string): string {
     const dataset = models.datasets[product.dataset];
-    if (!dataset?.productTypeGroups) {
+    if (!dataset?.productTypeDisplays?.groups) {
+      console.log('not found');
       return null;
     }
-    for (const { name, files } of dataset.productTypeGroups) {
+    for (const { name, files } of dataset.productTypeDisplays.groups) {
       if (files.some((pattern) => pattern.test(type))) {
         return name;
       }
@@ -239,13 +240,14 @@ export class ProductService {
     } else {
       file_suffix = this.urlToProductType(
         product.downloadUrl,
-        models.opera_s1.productTypeDisplays,
+        models.opera_s1.productTypeDisplays.displays,
       );
     }
 
     product.productTypeDisplay =
-      models.opera_s1.productTypeDisplays[file_suffix?.toLowerCase()] ??
-      'Download';
+      models.opera_s1.productTypeDisplays.displays[
+        file_suffix?.toLowerCase()
+      ] ?? 'Download';
 
     if (product.metadata.productType === 'DIST-ALERT-S1') {
       product.productTypeDisplay =
@@ -279,11 +281,13 @@ export class ProductService {
     )) {
       file_suffix = this.urlToProductType(
         p,
-        models.opera_s1.productTypeDisplays,
+        models.opera_s1.productTypeDisplays.displays,
       );
 
       let productTypeDisplay =
-        models.opera_s1.productTypeDisplays[file_suffix?.toLowerCase()];
+        models.opera_s1.productTypeDisplays.displays[
+          file_suffix?.toLowerCase()
+        ];
       if (
         product.metadata.productType === 'DISP-S1' &&
         productTypeDisplay == null
@@ -375,10 +379,10 @@ export class ProductService {
     const products = [];
     let file_extension = this.urlToProductType(
       product.downloadUrl,
-      models.tropo.productTypeDisplays,
+      models.tropo.productTypeDisplays.displays,
     );
     product.productTypeDisplay =
-      models.tropo.productTypeDisplays[file_extension];
+      models.tropo.productTypeDisplays.displays[file_extension];
     const fileID = product.downloadUrl.split('/').slice(-1)[0];
     product.bytes = product.metadata.fileSizes[fileID]?.bytes;
     const thumbnail_index = product.browses.findIndex((url) =>
@@ -408,15 +412,16 @@ export class ProductService {
     ]) {
       file_extension = this.urlToProductType(
         p,
-        models.tropo.productTypeDisplays,
+        models.tropo.productTypeDisplays.displays,
       );
 
       if (p === '/assets/no-browse.png') {
         continue;
       }
       const productTypeDisplay =
-        models.tropo.productTypeDisplays[file_extension.toLowerCase()] ??
-        'Missing Display';
+        models.tropo.productTypeDisplays.displays[
+          file_extension.toLowerCase()
+        ] ?? 'Missing Display';
 
       if (productTypeDisplay === 'Missing Display') {
         console.log(
@@ -450,10 +455,10 @@ export class ProductService {
     const products = [];
     let file_extension = this.urlToProductType(
       product.downloadUrl,
-      models.seasat.productTypeDisplays,
+      models.seasat.productTypeDisplays.displays,
     );
     product.productTypeDisplay =
-      models.seasat.productTypeDisplays[file_extension];
+      models.seasat.productTypeDisplays.displays[file_extension];
     const fileID = product.downloadUrl.split('/').slice(-1)[0];
     product.bytes = product.metadata.fileSizes[fileID].bytes;
     const thumbnail_index = product.browses.findIndex((url) =>
@@ -483,12 +488,13 @@ export class ProductService {
     ]) {
       file_extension = this.urlToProductType(
         p,
-        models.seasat.productTypeDisplays,
+        models.seasat.productTypeDisplays.displays,
       );
 
       const productTypeDisplay =
-        models.seasat.productTypeDisplays[file_extension.toLowerCase()] ??
-        'Missing Display';
+        models.seasat.productTypeDisplays.displays[
+          file_extension.toLowerCase()
+        ] ?? 'Missing Display';
       if (productTypeDisplay === 'Missing Display') {
         console.log(
           `Missing product type display for file extension "${file_extension}"`,
@@ -608,8 +614,9 @@ export class ProductService {
       temp = p.split('.');
       file_extension = temp[temp.length - 1];
       let productTypeDisplay =
-        models.nisar.productTypeDisplays[file_extension.toLowerCase()] ??
-        'Missing Display';
+        models.nisar.productTypeDisplays.displays[
+          file_extension.toLowerCase()
+        ] ?? 'Missing Display';
       if (productTypeDisplay === 'Missing Display') {
         if (file_extension.includes('vc')) {
           productTypeDisplay = file_extension.toUpperCase();
@@ -632,7 +639,7 @@ export class ProductService {
       }
 
       if (p.endsWith('.h5') && p.includes('QA_')) {
-        productTypeDisplay = models.nisar.productTypeDisplays.qa;
+        productTypeDisplay = models.nisar.productTypeDisplays.displays.qa;
       }
 
       if (['Log File', 'Metadata JSON'].includes(productTypeDisplay)) {

@@ -157,23 +157,25 @@ export const nisar = {
   icon: '/assets/icons/satellite_alt_black_48dp.svg',
 
   productTypeDisplays: {
-    yaml: 'Runconfig YAML',
-    kml: 'Footprint KML',
-    png: 'Browse Image PNG',
-    csv: 'QA Summary CSV',
-    h5: 'HDF5',
-    xml: 'ISO Metadata XML',
-    json: 'Metadata JSON',
-    pdf: 'QA Report PDF',
-    log: 'Log File',
-    qa: 'QA Statistics HDF5',
-    bin: 'Bin File',
+    displays: {
+      yaml: 'Runconfig YAML',
+      kml: 'Footprint KML',
+      png: 'Browse Image PNG',
+      csv: 'QA Summary CSV',
+      h5: 'HDF5',
+      xml: 'ISO Metadata XML',
+      json: 'Metadata JSON',
+      pdf: 'QA Report PDF',
+      log: 'Log File',
+      qa: 'QA Statistics HDF5',
+      bin: 'Bin File',
+    },
+    groups: [
+      { name: 'Metadata', files: [/Runconfig YAML/, /Footprint KML/] },
+      { name: 'Visualizations', files: [/Browse Image PNG/, /.*PNG/] },
+      { name: 'Documentation', files: [/Log File/] },
+    ],
   },
-  productTypeGroups: [
-    { name: 'Metadata', files: [/Runconfig YAML/, /Footprint KML/] },
-    { name: 'Visualizations', files: [/Browse Image PNG/, /.*PNG/] },
-    { name: 'Documentation', files: [/Log File/] },
-  ],
 };
 
 export const L1L2BrowseCollectionMapping = {
