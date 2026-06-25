@@ -1,5 +1,9 @@
 @use "asf-theme-variables" as *;
 
+.results-pane {
+  min-height: 0;
+}
+
 .rectangle-wrapper {
   @include themify($themes) {
     background: themed('background-white');
@@ -13,6 +17,9 @@
   @include themify($themes) {
     background-color: themed('primary-light');
   }
+
+  display: flex;
+  flex-direction: column;
 }
 
 .results-menu--layout {
@@ -26,7 +33,8 @@
 }
 
 .mobile-menu-offset {
-  bottom: 117px;
+  position: relative;
+  bottom: 100px;
   z-index: 2000;
 }
 

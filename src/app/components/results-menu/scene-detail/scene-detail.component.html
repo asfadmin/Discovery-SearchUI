@@ -214,112 +214,114 @@
         </div>
       </mat-card-content>
     }
-  </div>
-}
-@if (scene && breakpoint$ | async; as breakpoint) {
-  <div
-    class="tool-menu"
-    [ngStyle]="{
-      bottom:
-        searchType === searchTypes.BASELINE && breakpoint <= breakpoints.MEDIUM
-          ? '20px'
-          : breakpoint < breakpoints.SMALL
-            ? '0px'
-            : '0',
-    }"
-    [ngClass]="{
-      'menu-override':
-        searchType === searchTypes.BASELINE && breakpoint === breakpoints.FULL,
-    }"
-  >
-    <div class="search-button-label">
-      {{ 'SEARCH' | translate | uppercase }}:
-    </div>
-    <div
-      [matTooltip]="
-        hasBaseline
-          ? ('USE_THIS_SCENE_IN_THE_BASELINE_TOOL_FOR_INTERFEROMETRY'
-            | translate)
-          : ('NO_SUITABLE_PRODUCTS_FOR_THIS_TOOL' | translate)
-      "
-    >
-      <button
-        mat-stroked-button
-        color="primary"
-        [disabled]="!hasBaseline"
-        (click)="makeBaselineSearch()"
-        class="mini-toggle-button search-button"
-        target="_blank"
+    @if (scene && breakpoint$ | async; as breakpoint) {
+      <div
+        class="tool-menu"
+        [ngStyle]="{
+          bottom:
+            searchType === searchTypes.BASELINE &&
+            breakpoint <= breakpoints.MEDIUM
+              ? '20px'
+              : breakpoint < breakpoints.SMALL
+                ? '0px'
+                : '0',
+        }"
+        [ngClass]="{
+          'menu-override':
+            searchType === searchTypes.BASELINE &&
+            breakpoint === breakpoints.FULL,
+        }"
       >
-        {{ 'BASELINE' | translate }}
-      </button>
-    </div>
-
-    <div
-      [matTooltip]="
-        hasBaseline
-          ? ('USE_THIS_SCENE_IN_THE_SBAS_TOOL_TO_MAKE_PRODUCT_PAIRS_FOR_INTERFEROMETRY'
-            | translate)
-          : ('NO_SUITABLE_PRODUCTS_FOR_THIS_TOOL' | translate)
-      "
-    >
-      <button
-        mat-stroked-button
-        color="primary"
-        [disabled]="!hasBaseline"
-        (click)="makeSBASSearch()"
-        class="mini-toggle-button search-button"
-        target="_blank"
-      >
-        {{ 'SBAS' | translate }}
-      </button>
-    </div>
-
-    <div
-      [matTooltip]="
-        dataset?.id === 'OPERA-S1'
-          ? ('OPERA_S1_SOURCE_DATA' | translate)
-          : dataset?.id === 'SENTINEL-1 BURSTS'
-            ? ('GEOGRAPHIC_SEARCH_BASED_ON_BURST' | translate)
-            : !(
-                  !(
-                    (dataset | isRelevant: p.PATH) &&
-                    (dataset | isRelevant: p.FRAME)
-                  ) || dataset?.id === 'UAVSAR'
-                )
-              ? ('GEOGRAPHIC_SEARCH_BASED_ON_THIS_SCENE_S_PATH_FRAME'
+        <div class="search-button-label">
+          {{ 'SEARCH' | translate | uppercase }}:
+        </div>
+        <div
+          [matTooltip]="
+            hasBaseline
+              ? ('USE_THIS_SCENE_IN_THE_BASELINE_TOOL_FOR_INTERFEROMETRY'
                 | translate)
-              : ('NOT_ABLE_TO_SELECT_SIMILAR_SCENES_FROM_THIS_SOURCE'
+              : ('NO_SUITABLE_PRODUCTS_FOR_THIS_TOOL' | translate)
+          "
+        >
+          <button
+            mat-stroked-button
+            color="primary"
+            [disabled]="!hasBaseline"
+            (click)="makeBaselineSearch()"
+            class="mini-toggle-button search-button"
+            target="_blank"
+          >
+            {{ 'BASELINE' | translate }}
+          </button>
+        </div>
+
+        <div
+          [matTooltip]="
+            hasBaseline
+              ? ('USE_THIS_SCENE_IN_THE_SBAS_TOOL_TO_MAKE_PRODUCT_PAIRS_FOR_INTERFEROMETRY'
                 | translate)
-      "
-    >
-      <button
-        mat-stroked-button
-        color="primary"
-        [disabled]="
-          !(
-            ((dataset | isRelevant: p.PATH) &&
-              (dataset | isRelevant: p.FRAME)) ||
-            dataset?.id === 'UAVSAR' ||
-            dataset?.id === 'SENTINEL-1 BURSTS' ||
+              : ('NO_SUITABLE_PRODUCTS_FOR_THIS_TOOL' | translate)
+          "
+        >
+          <button
+            mat-stroked-button
+            color="primary"
+            [disabled]="!hasBaseline"
+            (click)="makeSBASSearch()"
+            class="mini-toggle-button search-button"
+            target="_blank"
+          >
+            {{ 'SBAS' | translate }}
+          </button>
+        </div>
+
+        <div
+          [matTooltip]="
             dataset?.id === 'OPERA-S1'
-          )
-        "
-        (click)="moreLikeThis()"
-        class="mini-toggle-button search-button"
-      >
-        @if (breakpoint === breakpoints.MOBILE) {
-          <span>{{ 'MORE' | translate }}</span>
-        }
-        @if (breakpoint !== breakpoints.MOBILE) {
-          <span>{{
-            dataset?.id === 'OPERA-S1'
-              ? ('SOURCE_DATA' | translate)
-              : ('MORE_LIKE_THIS' | translate)
-          }}</span>
-        }
-      </button>
-    </div>
+              ? ('OPERA_S1_SOURCE_DATA' | translate)
+              : dataset?.id === 'SENTINEL-1 BURSTS'
+                ? ('GEOGRAPHIC_SEARCH_BASED_ON_BURST' | translate)
+                : !(
+                      !(
+                        (dataset | isRelevant: p.PATH) &&
+                        (dataset | isRelevant: p.FRAME)
+                      ) || dataset?.id === 'UAVSAR'
+                    )
+                  ? ('GEOGRAPHIC_SEARCH_BASED_ON_THIS_SCENE_S_PATH_FRAME'
+                    | translate)
+                  : ('NOT_ABLE_TO_SELECT_SIMILAR_SCENES_FROM_THIS_SOURCE'
+                    | translate)
+          "
+        >
+          <button
+            mat-stroked-button
+            color="primary"
+            [disabled]="
+              !(
+                ((dataset | isRelevant: p.PATH) &&
+                  (dataset | isRelevant: p.FRAME)) ||
+                dataset?.id === 'UAVSAR' ||
+                dataset?.id === 'SENTINEL-1 BURSTS' ||
+                dataset?.id === 'OPERA-S1'
+              )
+            "
+            (click)="moreLikeThis()"
+            class="mini-toggle-button search-button"
+          >
+            @if (breakpoint === breakpoints.MOBILE) {
+              <span>{{ 'MORE' | translate }}</span>
+            }
+            @if (breakpoint !== breakpoints.MOBILE) {
+              <span>{{
+                dataset?.id === 'OPERA-S1'
+                  ? ('SOURCE_DATA' | translate)
+                  : ('MORE_LIKE_THIS' | translate)
+              }}</span>
+            }
+          </button>
+        </div>
+      </div>
+    }
   </div>
 }
 

@@ -53,3 +53,9 @@
   flex-direction: column;
   height: calc(100vh - 32px);
 }
+
+@media screen and (max-width: 800px) {
+  :host, .container {
+    height: calc(100vh - 40px);
+  }
+}
