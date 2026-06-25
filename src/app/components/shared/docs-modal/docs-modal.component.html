@@ -1,10 +1,10 @@
 @if (text() && !custStyle()) {
-  <a (click)="showDoc()" class="link-pointer text-link"
-    >{{ text() | translate }}
-  </a>
+  <a (click)="showDoc()" class="link-pointer text-link">{{
+    text() | translate
+  }}</a>
 }
 @if (text() && custStyle()) {
-  <a (click)="showDoc()" style="{{ custStyle() }}">{{ text() | translate }} </a>
+  <a (click)="showDoc()" style="{{ custStyle() }}">{{ text() | translate }}</a>
 }
 @if (description()) {
   <a

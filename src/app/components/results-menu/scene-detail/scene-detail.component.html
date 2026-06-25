@@ -32,11 +32,18 @@
             }
           </a>
           •
-          <span matTooltip="{{ 'FREQUENCY' | translate }}">{{
-            dataset.frequency
-          }}</span>
           @if (dataset.id === 'NISAR') {
-            <em class="uncalibrated"
+            <app-docs-modal
+              class="info-text nisar-product-type"
+              text="{{ scene.metadata.productType }}"
+              [url]="productTypeDocsUrl"
+            ></app-docs-modal>
+          }
+          <span matTooltip="{{ 'FREQUENCY' | translate }}">
+            {{ dataset.frequency }}
+          </span>
+          @if (dataset.id === 'NISAR') {
+            <em
               ><app-docs-modal
                 class="info-text"
                 [text]="'(' + ('UNCALIBRATED' | translate) + ')'"
@@ -93,19 +100,6 @@
               >
               </app-docs-modal>
             } @else {
-              @if (dataset.id === 'NISAR') {
-                <span (click)="$event.stopPropagation()">
-                  <app-docs-modal
-                    class="info-text"
-                    text="{{ scene.metadata.productType }} {{
-                      'DOCS' | translate
-                    }}"
-                    [url]="productTypeDocsUrl"
-                  >
-                  </app-docs-modal>
-                </span>
-              }
-
               <app-scene-metadata
                 [scene]="scene"
                 [dataset]="dataset"
