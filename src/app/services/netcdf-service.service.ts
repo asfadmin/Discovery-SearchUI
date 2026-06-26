@@ -40,7 +40,7 @@ export class NetcdfService {
   private store$ = inject<Store<AppState>>(Store);
   private wktService = inject(WktService);
 
-  private url = 'https://d8itg4twhevb5.cloudfront.net/';
+  private url = 'https://d2qmcvu7qty7vn.cloudfront.net/';
   //   private url: string = 'http://127.0.0.1:8080/'
   private bucket = 'asf-cumulus-prod-opera-products';
   private itemsEndpoint = 'items/';
