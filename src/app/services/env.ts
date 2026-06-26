@@ -7,7 +7,7 @@ export const env = {
     banner: 'https://banners.asf.alaska.edu',
     user_data: 'https://appdata.asf.alaska.edu',
     bulk_download: 'https://bulk-download.asf.alaska.edu',
-    displacement_api: 'https://d2qmcvu7qty7vn.cloudfront.net/',
+    displacement_api: 'https://d2qmcvu7qty7vn.cloudfront.net',
   },
   test: {
     api: 'https://api-test.asf.alaska.edu',
@@ -18,7 +18,7 @@ export const env = {
     banner: 'https://banners.asf.alaska.edu',
     user_data: 'https://appdata-test.asf.alaska.edu',
     bulk_download: 'https://bulk-download.asf.alaska.edu',
-    displacement_api: 'https://d8itg4twhevb5.cloudfront.net/',
+    displacement_api: 'https://d8itg4twhevb5.cloudfront.net',
   },
   defaultEnv: 'test',
 };
